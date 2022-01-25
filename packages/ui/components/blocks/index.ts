@@ -1,3 +1,4 @@
 import { ImageSlider } from "./ImageSlider";
 import { Sidebar } from "./Sidebar";
-export { ImageSlider, Sidebar };
+import { Card } from "./Card";
+export { ImageSlider, Sidebar, Card };

@@ -21,14 +21,14 @@ export const Footer: React.FC = () => {
             <p className="text-sm text-gray-400">
               Register now to get updates on promotions and coupons
             </p>
-            <div className="flex w-full lg:w-4/5 px-2 py-1.5 rounded-lg items-center space-x-2 bg-gray-700">
+            <div className="flex w-4/5 lg:w-3/4 px-2 py-1.5 rounded-lg items-center space-x-2 bg-gray-700">
               <FaAt className="text-gray-400 pointer-events-none w-4 h-4" />
               <input
                 placeholder="Email"
                 className="flex w-full px-2 py-1.5 text-white bg-gray-700 appearance-none focus:outline-none"
               />
             </div>
-            <div className="flex w-full lg:w-4/5 px-2 py-1.5 rounded-lg items-center space-x-2 bg-gray-700">
+            <div className="flex w-4/5 lg:w-3/4 px-2 py-1.5 rounded-lg items-center space-x-2 bg-gray-700">
               <FaUserAlt className="text-gray-400 pointer-events-none w-4 h-4" />
               <input
                 placeholder="Name"

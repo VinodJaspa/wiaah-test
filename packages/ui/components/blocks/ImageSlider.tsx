@@ -14,10 +14,10 @@ export const ImageSlider: React.FC = () => {
         <SimpleImageSlider
           autoPlay
           width="100%"
-          height={500}
+          height={350}
           images={images}
           showBullets={true}
-          showNavs={true}
+          showNavs={false}
         />
       </div>
     </>
