@@ -1,5 +1,5 @@
 {
-  "name": "turborepo-basic-shared",
+  "name": "wiaah-mono",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
@@ -10,11 +10,18 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "prepare": "husky install",
+    "sonar": "sonar-scanner -Dsonar.login=admin"
   },
   "devDependencies": {
+    "husky": "^7.0.4",
+    "lint-staged": "^12.2.2",
     "prettier": "^2.5.1",
     "turbo": "latest"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "turbo": {
     "pipeline": {
