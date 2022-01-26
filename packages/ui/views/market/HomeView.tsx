@@ -86,20 +86,20 @@ export const HomeView: React.FC = () => {
 
         <div className="flex w-full justify-center">
           <ul className="inline-flex space-x-4 text-white items-center">
-            <li className="flex w-10 h-10 p-3 rounded-full bg-green-400 cursor-pointer">
-              <FaAngleDoubleLeft className="w-4 h-4" />
+            <li className="flex w-10 h-10 p-3 items-center rounded-full bg-green-400 cursor-pointer">
+              <FaAngleDoubleLeft className="w-5 h-5" />
             </li>
-            <li className="flex w-10 h-10 p-3 rounded-full bg-green-400 cursor-pointer">
-              <FaAngleLeft className="w-4 h-4" />
+            <li className="flex w-10 h-10 p-3 items-center rounded-full bg-green-400 cursor-pointer">
+              <FaAngleLeft className="w-5 h-5" />
             </li>
-            <li className="flex w-10 h-10 p-3 justify-center items-center rounded-full bg-green-400 cursor-pointer">
+            <li className="flex w-10 h-10 p-3 items-center justify-center items-center rounded-full bg-green-400 cursor-pointer">
               1
             </li>
-            <li className="flex p-3 rounded-full bg-green-400 cursor-pointer">
-              <FaAngleRight className="w-4 h-4" />
+            <li className="flex w-10 h-10 p-3 items-center rounded-full bg-green-400 cursor-pointer">
+              <FaAngleRight className="w-5 h-5" />
             </li>
-            <li className="flex w-10 h-10 p-3 rounded-full bg-green-400 cursor-pointer">
-              <FaAngleDoubleRight className="w-4 h-4" />
+            <li className="flex w-10 h-10 p-3 items-center rounded-full bg-green-400 cursor-pointer">
+              <FaAngleDoubleRight className="w-5 h-5" />
             </li>
           </ul>
         </div>

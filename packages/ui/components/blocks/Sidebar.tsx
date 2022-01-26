@@ -16,11 +16,6 @@ export const Sidebar: React.FC = () => {
     setStep(step + 1);
   };
 
-  const prevStep = () => {
-    if (step === 1) return;
-    setStep(step - 1);
-  };
-
   const resetSteps = () => {
     setStep(1);
   };
@@ -106,14 +101,12 @@ export const Sidebar: React.FC = () => {
               onClick={() => nextStep()}
             >
               <p className="group-hover:text-green-400">Dresses</p>{" "}
-              <FaChevronRight className="w-4 h-4" />
             </li>
             <li
               className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
               onClick={() => nextStep()}
             >
               <p className="group-hover:text-green-400">Skirts</p>{" "}
-              <FaChevronRight className="w-4 h-4" />
             </li>
           </ul>
         )}

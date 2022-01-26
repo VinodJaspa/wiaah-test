@@ -66,21 +66,30 @@ export const Header: React.FC = () => {
         </div>
 
         <div className="flex w-full bg-gray-800 px-6 py-4 text-white">
-          <ul className="inline-flex space-x-4 items-center">
+          <ul className="inline-flex space-x-10 items-center">
             <li
-              className="cursor-pointer"
+              className="flex items-center space-x-2 cursor-pointer"
               onClick={() => {
                 sidebar?.toggleVisibility();
               }}
             >
               <FaAlignJustify className="w-4 h-4" />
+              <span className="inline-flex">All</span>
             </li>
-            {[...Array(3)].map((_, i: number) => (
+            {[...Array(1)].map((_, i: number) => (
               <React.Fragment key={i}>
                 <li className="cursor-pointer">Dress</li>
                 <li className="cursor-pointer">Jewelry</li>
                 <li className="cursor-pointer">Clothing</li>
                 <li className="cursor-pointer">Shoes</li>
+                <li className="cursor-pointer">Accessories</li>
+                <li className="cursor-pointer">Dress</li>
+                <li className="cursor-pointer">Jewelry</li>
+                <li className="cursor-pointer">Clothing</li>
+                <li className="cursor-pointer">Shoes</li>
+                <li className="cursor-pointer">Accessories</li>
+                <li className="cursor-pointer">Shoes</li>
+                <li className="cursor-pointer">Accessories</li>
               </React.Fragment>
             ))}
           </ul>
