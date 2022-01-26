@@ -1,6 +1,6 @@
 import React from "react";
 import { FaChevronDown } from "react-icons/fa";
-import { Card } from "../../components";
+import { Card, ImageCard, Divider } from "../../components";
 import {
   FaAngleDoubleLeft,
   FaAngleDoubleRight,
@@ -102,6 +102,18 @@ export const HomeView: React.FC = () => {
               <FaAngleDoubleRight className="w-4 h-4" />
             </li>
           </ul>
+        </div>
+
+        <Divider />
+
+        <div className="flex w-full justify-center">
+          <p className="text-2xl font-bold uppercase">Collaboration</p>
+        </div>
+
+        <div className="grid w-full grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i: number) => (
+            <ImageCard key={i} imgUrl="/shop-2.jpeg" />
+          ))}
         </div>
       </div>
     </>

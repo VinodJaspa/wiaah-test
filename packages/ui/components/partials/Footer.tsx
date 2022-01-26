@@ -85,7 +85,7 @@ export const Footer: React.FC = () => {
             </ul>
           </div>
         </div>
-        <div className="flex mt-8 w-full justify-end">
+        <div className="flex mt-8 w-full justify-center md:justify-end">
           <div className="flex border border-gray-400">
             <div className="flex p-4 items-center text-green-300 border-r border-gray-400">
               <FaGlobeEurope className="w-4 h-4 mr-2" />

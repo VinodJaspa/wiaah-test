@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { SidebarContext } from "../helpers/SidebarContext";
 import {
   FaSearch,
   FaUser,
@@ -10,11 +11,7 @@ import {
 import { Sidebar } from "../blocks";
 
 export const Header: React.FC = () => {
-  let [visible, setVisible] = useState<boolean>(false);
-
-  const closeSidebar = () => {
-    setVisible(false);
-  };
+  const sidebar = useContext(SidebarContext);
 
   return (
     <>
@@ -73,7 +70,7 @@ export const Header: React.FC = () => {
             <li
               className="cursor-pointer"
               onClick={() => {
-                setVisible(!visible);
+                sidebar?.toggleVisibility();
               }}
             >
               <FaAlignJustify className="w-4 h-4" />
@@ -94,7 +91,12 @@ export const Header: React.FC = () => {
       <nav className="block lg:hidden p-6 w-full space-y-6 bg-gray-800">
         <div className="flex w-full justify-between items-center">
           <div className="flex items-center space-x-4">
-            <FaAlignJustify className="w-5 h-5 text-white cursor-pointer" />
+            <FaAlignJustify
+              className="w-5 h-5 text-white cursor-pointer"
+              onClick={() => {
+                sidebar?.toggleVisibility();
+              }}
+            />
             <p className="text-lg font-black text-green-300">Wiaah</p>
           </div>
           <div className="flex">
@@ -113,13 +115,13 @@ export const Header: React.FC = () => {
         </div>
         <div className="flex w-full h-12 justify-center">
           <input
-            className="px-2.5 py-1.5 w-48 rounded-l-lg border-r bg-gray-700 border-gray-600 text-white appearance-none focus:outline-none"
+            className="px-2.5 py-1.5 w-48 md:w-72 rounded-l-lg border-r bg-gray-700 border-gray-600 text-white appearance-none focus:outline-none"
             placeholder="Search"
           />
           <label htmlFor="Category" className="relative flex">
             <FaChevronDown className="text-green-400 pointer-events-none w-4 h-4 absolute inset-y-1/3 right-3" />
             <select
-              className="px-2.5 py-1.5 w-28 border-l bg-gray-700 border-gray-600 text-white appearance-none focus:outline-none"
+              className="px-2.5 py-1.5 w-28 md:w-60 border-l bg-gray-700 border-gray-600 text-white appearance-none focus:outline-none"
               placeholder="Category"
             >
               <option>Category</option>
@@ -135,7 +137,7 @@ export const Header: React.FC = () => {
         </div>
       </nav>
 
-      <Sidebar visible={visible} close={closeSidebar} />
+      <Sidebar />
     </>
   );
 };
