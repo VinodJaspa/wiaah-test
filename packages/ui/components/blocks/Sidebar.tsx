@@ -21,6 +21,10 @@ export const Sidebar: React.FC = () => {
     setStep(step - 1);
   };
 
+  const resetSteps = () => {
+    setStep(1);
+  };
+
   return (
     <>
       <aside
@@ -43,11 +47,17 @@ export const Sidebar: React.FC = () => {
         </div>
         {step === 1 && (
           <ul className="block p-4 space-y-6">
-            <li className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100">
+            <li
+              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
+              onClick={() => nextStep()}
+            >
               <p className="group-hover:text-green-400">Clothing</p>{" "}
               <FaChevronRight className="w-4 h-4" />
             </li>
-            <li className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100">
+            <li
+              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
+              onClick={() => nextStep()}
+            >
               <p className="group-hover:text-green-400">Home &amp; Living</p>{" "}
               <FaChevronRight className="w-4 h-4" />
             </li>
@@ -55,17 +65,26 @@ export const Sidebar: React.FC = () => {
         )}
         {step === 2 && (
           <ul className="block p-4 space-y-6">
-            <li className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100">
+            <li
+              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
+              onClick={() => resetSteps()}
+            >
               <FaChevronLeft className="w-4 h-4" />
               <p className="group-hover:text-green-400 uppercase">
                 Main Menu
               </p>{" "}
             </li>
-            <li className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100">
+            <li
+              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
+              onClick={() => nextStep()}
+            >
               <p className="group-hover:text-green-400">Women&apos;s</p>{" "}
               <FaChevronRight className="w-4 h-4" />
             </li>
-            <li className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100">
+            <li
+              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
+              onClick={() => nextStep()}
+            >
               <p className="group-hover:text-green-400">Men&apos;s</p>{" "}
               <FaChevronRight className="w-4 h-4" />
             </li>
@@ -73,18 +92,27 @@ export const Sidebar: React.FC = () => {
         )}
         {step === 3 && (
           <ul className="block p-4 space-y-6">
-            <li className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100">
+            <li
+              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
+              onClick={() => resetSteps()}
+            >
               <FaChevronLeft className="w-4 h-4" />
               <p className="group-hover:text-green-400 uppercase">
                 Main Menu
               </p>{" "}
             </li>
-            <li className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100">
-              <p className="group-hover:text-green-400">Women&apos;s</p>{" "}
+            <li
+              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
+              onClick={() => nextStep()}
+            >
+              <p className="group-hover:text-green-400">Dresses</p>{" "}
               <FaChevronRight className="w-4 h-4" />
             </li>
-            <li className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100">
-              <p className="group-hover:text-green-400">Men&apos;s</p>{" "}
+            <li
+              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
+              onClick={() => nextStep()}
+            >
+              <p className="group-hover:text-green-400">Skirts</p>{" "}
               <FaChevronRight className="w-4 h-4" />
             </li>
           </ul>
