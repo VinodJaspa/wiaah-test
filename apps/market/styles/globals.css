@@ -135,3 +135,7 @@ button.image-gallery-icon {
 .login-view-container {
   background-image: url("/bg-img.jpg");
 }
+.login-form{
+  height: 24rem;
+  
+}

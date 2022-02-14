@@ -24,7 +24,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
   }
   return (
     <>
-      <div className="login-view-container flex flex-col-reverse items-start p-4 lg:flex-row lg:p-24 xl:p-36">
+      <div className="login-view-container flex flex-col-reverse items-start p-4 lg:flex-row lg:p-24 xl:py-34 xl:px-36">
         <div className="hidden w-full text-white lg:block lg:w-7/12">
           <h1 className="text-5xl text-white">
             Welcome to Wiaah: The First and Reference Social Marketplace
@@ -51,7 +51,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
                 centered
               >
                 <TabPane
-                  className="login-form flex h-full flex-col justify-center"
+                  className="login-form"
                   tab={
                     <span className="px-5 text-xl font-light text-gray-800">
                       Login!
