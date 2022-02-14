@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import Link from "next/link";
 import {
   FaTimes,
   FaUserAlt,
@@ -7,17 +8,36 @@ import {
 } from "react-icons/fa";
 import { SidebarContext } from "../helpers/SidebarContext";
 
-export const Sidebar: React.FC = () => {
-  const sidebar = useContext(SidebarContext);
-  let [step, setStep] = useState<number>(1);
+interface NastedMenu {
+  label: string;
+  children?: NastedMenu[];
+  url: string;
+}
 
-  const nextStep = () => {
-    if (step === 3) return;
-    setStep(step + 1);
+interface SidebarProps {
+  menu?: NastedMenu[];
+}
+
+export const Sidebar: React.FC<SidebarProps> = ({ menu = [] }) => {
+  const sidebar = useContext(SidebarContext);
+  let [path, setPath] = useState<number[]>([]);
+  let [menuToRender, setMenuToRender] = useState(menu);
+
+  const pushPath = (route: number) => {
+    let newPath = path;
+    path.push(route);
+    setPath(newPath);
+    let toRender: any;
+    toRender = menu;
+    path.forEach((item) => {
+      toRender = toRender[item].children;
+    });
+    setMenuToRender(toRender);
   };
 
-  const resetSteps = () => {
-    setStep(1);
+  const resetPath = () => {
+    setPath([]);
+    setMenuToRender(menu);
   };
 
   return (
@@ -25,91 +45,64 @@ export const Sidebar: React.FC = () => {
       <aside
         className={`${
           sidebar?.visible ? "flex" : "hidden"
-        } flex flex-col w-72 h-full top-0 left-0 z-30 absolute bg-white text-gray-700 overscroll-contain`}
+        } absolute top-0 left-0 z-30 h-full w-72 flex-col overscroll-contain bg-white text-gray-700`}
       >
-        <div className="flex w-full p-4 justify-between items-center bg-gray-800 text-white">
+        <div className="flex w-full items-center justify-between bg-gray-800 p-4 text-white">
           <span className="inline-flex items-center">
-            <FaUserAlt className="w-4 h-4 mr-2" /> Hello, Sign in
+            <Link href="/login">
+              <a className="flex">
+                <FaUserAlt className="mr-2 h-4 w-4" /> Hello, Sign in
+              </a>
+            </Link>
           </span>
           <div className="flex">
             <button
+              id="hideSidebarButton"
               className="px-2 py-1.5"
               onClick={() => sidebar?.toggleVisibility()}
             >
-              <FaTimes className="w-4 h-4" />
+              <FaTimes className="h-4 w-4" />
             </button>
           </div>
         </div>
-        {step === 1 && (
-          <ul className="block p-4 space-y-6">
+        {path}
+        <ul className="nasted-menu block space-y-6 p-4">
+          {path.length > 0 && (
             <li
-              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
-              onClick={() => nextStep()}
+              className="group flex w-full cursor-pointer items-center justify-between rounded-full p-4 hover:bg-green-100"
+              onClick={() => resetPath()}
             >
-              <p className="group-hover:text-green-400">Clothing</p>{" "}
-              <FaChevronRight className="w-4 h-4" />
+              <FaChevronLeft className="h-4 w-4" />
+              <p className="uppercase group-hover:text-green-400">Main Menu</p>
             </li>
-            <li
-              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
-              onClick={() => nextStep()}
-            >
-              <p className="group-hover:text-green-400">Home &amp; Living</p>{" "}
-              <FaChevronRight className="w-4 h-4" />
-            </li>
-          </ul>
-        )}
-        {step === 2 && (
-          <ul className="block p-4 space-y-6">
-            <li
-              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
-              onClick={() => resetSteps()}
-            >
-              <FaChevronLeft className="w-4 h-4" />
-              <p className="group-hover:text-green-400 uppercase">
-                Main Menu
-              </p>{" "}
-            </li>
-            <li
-              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
-              onClick={() => nextStep()}
-            >
-              <p className="group-hover:text-green-400">Women&apos;s</p>{" "}
-              <FaChevronRight className="w-4 h-4" />
-            </li>
-            <li
-              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
-              onClick={() => nextStep()}
-            >
-              <p className="group-hover:text-green-400">Men&apos;s</p>{" "}
-              <FaChevronRight className="w-4 h-4" />
-            </li>
-          </ul>
-        )}
-        {step === 3 && (
-          <ul className="block p-4 space-y-6">
-            <li
-              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
-              onClick={() => resetSteps()}
-            >
-              <FaChevronLeft className="w-4 h-4" />
-              <p className="group-hover:text-green-400 uppercase">
-                Main Menu
-              </p>{" "}
-            </li>
-            <li
-              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
-              onClick={() => nextStep()}
-            >
-              <p className="group-hover:text-green-400">Dresses</p>{" "}
-            </li>
-            <li
-              className="flex group w-full p-4 rounded-full justify-between items-center cursor-pointer hover:bg-green-100"
-              onClick={() => nextStep()}
-            >
-              <p className="group-hover:text-green-400">Skirts</p>{" "}
-            </li>
-          </ul>
-        )}
+          )}
+
+          {menuToRender.map((item, key: number) => {
+            if (item.children) {
+              return (
+                <li
+                  key={key}
+                  className="nasted-menu-children group flex w-full cursor-pointer items-center justify-between rounded-full p-4 hover:bg-green-100"
+                  onClick={() => pushPath(key)}
+                >
+                  <p className="group-hover:text-green-400">{item.label}</p>
+                  <FaChevronRight className="h-4 w-4" />
+                </li>
+              );
+            } else {
+              return (
+                <li
+                  key={key}
+                  className="nasted-menu-children group flex w-full cursor-pointer items-center justify-between rounded-full p-4 hover:bg-green-100"
+                >
+                  <Link href={item.url}>
+                    <p className="group-hover:text-green-400">{item.label}</p>
+                  </Link>
+                </li>
+              );
+            }
+          })}
+        </ul>
       </aside>
     </>
   );

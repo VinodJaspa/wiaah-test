@@ -80,7 +80,7 @@ export const HomeView: React.FC = () => {
 
         <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {[...Array(12)].map((_, i: number) => (
-            <Card key={i} imgUrl="/shop.jpeg" />
+            <Card key={i} name="Shop Name" imgUrl="/shop.jpeg" />
           ))}
         </div>
 
@@ -112,7 +112,7 @@ export const HomeView: React.FC = () => {
 
         <div className="grid w-full grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {[...Array(4)].map((_, i: number) => (
-            <ImageCard key={i} imgUrl="/shop-2.jpeg" />
+            <ImageCard key={i} name="Item Name" imgUrl="/shop-2.jpeg" />
           ))}
         </div>
       </div>

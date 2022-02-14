@@ -9,31 +9,65 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 import { Sidebar } from "../blocks";
+import Link from "next/link";
+
+let menup = [
+  {
+    label: "Clothing",
+    url: "",
+    children: [
+      {
+        label: "Women's",
+        url: "",
+        children: [
+          {
+            label: "Dresses",
+            url: "/category/dresses",
+          },
+          {
+            label: "Shirts",
+            url: "/category/shirts",
+          },
+        ],
+      },
+      {
+        label: "Men's",
+        url: "/category/mens",
+      },
+    ],
+  },
+  {
+    label: "Home & Living",
+    url: "/category/home-and-living",
+  },
+];
 
 export const Header: React.FC = () => {
   const sidebar = useContext(SidebarContext);
 
   return (
     <>
-      <nav className="hidden lg:block w-full">
+      <nav className="hidden w-full lg:block">
         {/* Top Navbar */}
-        <div className="flex w-full px-6 py-2 justify-between items-center bg-black">
-          <div className="w-44 h-20 cursor-pointer">
-            <img
-              alt="wiaah_logo"
-              src="/wiaah_logo.png"
-              className="w-full h-full object-cover"
-            />
+        <div className="flex w-full items-center justify-between bg-black px-6 py-2">
+          <div className="h-20 w-44 cursor-pointer">
+            <Link href="/">
+              <img
+                alt="wiaah_logo"
+                src="/wiaah_logo.png"
+                className="h-full w-full object-cover"
+              />
+            </Link>
           </div>
           <div className="flex h-12">
             <input
-              className="px-2.5 py-1.5 w-60 rounded-l-lg border-r bg-gray-700 border-gray-600 text-white appearance-none focus:outline-none"
+              className="w-60 appearance-none rounded-l-lg border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none"
               placeholder="Search"
             />
             <label htmlFor="Category" className="relative flex">
-              <FaChevronDown className="text-green-400 pointer-events-none w-4 h-4 absolute inset-y-1/3 right-3" />
+              <FaChevronDown className="pointer-events-none absolute inset-y-1/3 right-3 h-4 w-4 text-green-400" />
               <select
-                className="px-2.5 py-1.5 w-60 border-l bg-gray-700 border-gray-600 text-white appearance-none focus:outline-none"
+                className="w-60 appearance-none border-l border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none"
                 placeholder="Category"
               >
                 <option>Category</option>
@@ -43,21 +77,25 @@ export const Header: React.FC = () => {
                 <option>Shoes</option>
               </select>
             </label>
-            <button className="px-2.5 py-1.5 rounded-r-lg bg-green-400">
-              <FaSearch className="w-5 h-5 text-white" />
+            <button className="rounded-r-lg bg-green-400 px-2.5 py-1.5">
+              <FaSearch className="h-5 w-5 text-white" />
             </button>
           </div>
           <div className="flex text-white">
-            <ul className="inline-flex space-x-4 items-center">
-              <li className="flex items-center text-sm cursor-pointer">
-                Sign In <FaUser className="inline-flex ml-2 w-6 h-6" />
+            <ul className="inline-flex items-center space-x-9">
+              <li className="flex cursor-pointer items-center text-sm">
+                <Link href="/login">
+                  <div>
+                    Sign In <FaUser className="ml-0 inline-flex h-8 w-8" />
+                  </div>
+                </Link>
               </li>
               <li className="cursor-pointer">
-                <FaHeart className="w-6 h-6" />
+                <FaHeart className="h-8 w-8" />
               </li>
-              <li className="flex relative cursor-pointer">
-                <FaShoppingBag className="w-6 h-6" />
-                <div className="flex p-2 w-3 h-3 justify-center items-center bg-red-500 rounded-full absolute -bottom-2 -right-1 text-xs">
+              <li className="relative flex cursor-pointer">
+                <FaShoppingBag className="h-8 w-8" />
+                <div className="absolute -bottom-2 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 p-2 text-xs">
                   3
                 </div>
               </li>
@@ -66,14 +104,15 @@ export const Header: React.FC = () => {
         </div>
 
         <div className="flex w-full bg-gray-800 px-6 py-4 text-white">
-          <ul className="inline-flex space-x-10 items-center">
+          <ul className="inline-flex items-center space-x-10">
             <li
-              className="flex items-center space-x-2 cursor-pointer"
+              id="burger-menu-toggle"
+              className="flex cursor-pointer items-center space-x-2"
               onClick={() => {
                 sidebar?.toggleVisibility();
               }}
             >
-              <FaAlignJustify className="w-4 h-4" />
+              <FaAlignJustify className="h-4 w-4" />
               <span className="inline-flex">All</span>
             </li>
             {[...Array(1)].map((_, i: number) => (
@@ -97,11 +136,11 @@ export const Header: React.FC = () => {
       </nav>
 
       {/* Mobile Nav */}
-      <nav className="block lg:hidden p-6 w-full space-y-6 bg-gray-800">
-        <div className="flex w-full justify-between items-center">
+      <nav className="block w-full space-y-6 bg-gray-800 p-6 lg:hidden">
+        <div className="flex w-full items-center justify-between">
           <div className="flex items-center space-x-4">
             <FaAlignJustify
-              className="w-5 h-5 text-white cursor-pointer"
+              className="h-5 w-5 cursor-pointer text-white"
               onClick={() => {
                 sidebar?.toggleVisibility();
               }}
@@ -111,26 +150,26 @@ export const Header: React.FC = () => {
           <div className="flex">
             <ul className="inline-flex space-x-4 text-white">
               <li className="cursor-pointer">
-                <FaHeart className="w-5 h-5" />
+                <FaHeart className="h-5 w-5" />
               </li>
-              <li className="flex relative cursor-pointer">
-                <FaShoppingBag className="w-5 h-5" />
-                <div className="flex p-2 w-3 h-3 justify-center items-center bg-red-500 rounded-full absolute -bottom-2 -right-1 text-xs">
+              <li className="relative flex cursor-pointer">
+                <FaShoppingBag className="h-5 w-5" />
+                <div className="absolute -bottom-2 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 p-2 text-xs">
                   3
                 </div>
               </li>
             </ul>
           </div>
         </div>
-        <div className="flex w-full h-12 justify-center">
+        <div className="flex h-12 w-full justify-center">
           <input
-            className="px-2.5 py-1.5 w-48 md:w-72 rounded-l-lg border-r bg-gray-700 border-gray-600 text-white appearance-none focus:outline-none"
+            className="w-48 appearance-none rounded-l-lg border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none md:w-72"
             placeholder="Search"
           />
           <label htmlFor="Category" className="relative flex">
-            <FaChevronDown className="text-green-400 pointer-events-none w-4 h-4 absolute inset-y-1/3 right-3" />
+            <FaChevronDown className="pointer-events-none absolute inset-y-1/3 right-3 h-4 w-4 text-green-400" />
             <select
-              className="px-2.5 py-1.5 w-28 md:w-60 border-l bg-gray-700 border-gray-600 text-white appearance-none focus:outline-none"
+              className="w-28 appearance-none border-l border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none md:w-60"
               placeholder="Category"
             >
               <option>Category</option>
@@ -140,13 +179,13 @@ export const Header: React.FC = () => {
               <option>Shoes</option>
             </select>
           </label>
-          <button className="px-2.5 py-1.5 rounded-r-lg bg-green-400">
-            <FaSearch className="w-5 h-5 text-white" />
+          <button className="rounded-r-lg bg-green-400 px-2.5 py-1.5">
+            <FaSearch className="h-5 w-5 text-white" />
           </button>
         </div>
       </nav>
 
-      <Sidebar />
+      <Sidebar menu={menup} />
     </>
   );
 };

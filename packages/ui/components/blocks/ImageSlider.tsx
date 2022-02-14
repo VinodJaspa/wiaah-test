@@ -10,7 +10,6 @@ const images = [
 
 export const ImageSlider: React.FC = () => {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
-
   return (
     <>
       <div className="flex w-full justify-center">

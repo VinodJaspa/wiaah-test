@@ -3,9 +3,10 @@ import { colorShades } from "../helpers/colorShades";
 
 interface CardProps {
   imgUrl?: string;
+  name?:string
 }
 
-export const Card: React.FC<CardProps> = ({ imgUrl }) => {
+export const Card: React.FC<CardProps> = ({ imgUrl, name="" }) => {
   let [shadeColor, setShadeColor] = useState<string | undefined>();
 
   useEffect(() => {
@@ -16,7 +17,7 @@ export const Card: React.FC<CardProps> = ({ imgUrl }) => {
     <>
       <div className="block w-70 relative">
         <div className="flex w-full p-4 justify-center bg-black text-white">
-          <p className="uppercase">Shop Name</p>
+          <p className="uppercase">{name}</p>
         </div>
         <img src={imgUrl} alt="shop_img" className="w-full h-56 object-cover" />
         <div
