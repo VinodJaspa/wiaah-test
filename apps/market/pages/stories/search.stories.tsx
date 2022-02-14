@@ -1,5 +1,5 @@
 import React from "react";
-import { value ComponentStory, value ComponentMeta } from "@storybook/react";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 import Search from "../search";
 export default {
   title: "Market/Search Results",

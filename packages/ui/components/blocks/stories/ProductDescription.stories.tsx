@@ -1,6 +1,6 @@
 import React from "react";
-import { value ComponentStory, value ComponentMeta } from "@storybook/react";
-import { value ProductDescription } from "../index";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ProductDescription } from "../index";
 
 export default {
   title: "UI/blocks/ProductDescription",

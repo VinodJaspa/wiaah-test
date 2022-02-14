@@ -1,6 +1,6 @@
-import { value BreadCrumb } from "../BreadCrumb";
+import { BreadCrumb } from "../BreadCrumb";
 import React from "react";
-import { value ComponentStory, value ComponentMeta } from "@storybook/react";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
 
 export default {
   title: "UI/BLOCKS/BreadCrumb",

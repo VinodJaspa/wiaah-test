@@ -1,6 +1,6 @@
 import React from "react";
-import { value ComponentStory, value ComponentMeta } from "@storybook/react";
-import { value BuyerComment } from "../BuyerComment";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { BuyerComment } from "../BuyerComment";
 export default {
   title: "UI/blocks/BuyerComment",
   component: BuyerComment,

@@ -1,6 +1,6 @@
 import React from "react";
-import { value ComponentStory, value ComponentMeta } from "@storybook/react";
-import { value ProductViewRight } from "../index";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ProductViewRight } from "../index";
 export default {
   title: "UI/blocks/ProductViewRight",
   component: ProductViewRight,

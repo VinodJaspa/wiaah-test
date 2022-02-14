@@ -1,6 +1,6 @@
 import React from "react";
-import { value ComponentStory, value ComponentMeta } from "@storybook/react";
-import { value ProductImageGallery } from "../index";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { ProductImageGallery } from "../index";
 
 export default {
   title: "UI/blocks/ProductImageGallery",

@@ -1,6 +1,6 @@
 import React from "react";
-import { value ComponentStory, value ComponentMeta } from "@storybook/react";
-import { value SellerCard } from "../index";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { SellerCard } from "../index";
 export default {
   title: "UI/blocks/SellerCard",
   component: SellerCard,
