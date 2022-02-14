@@ -97,7 +97,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
           <video
             ref={vidRef}
             className={`${playVideo ? "" : "hidden"}`}
-            src="/BigBuckBunny.mp4"
+            src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
             controls
           ></video>
         </div>
