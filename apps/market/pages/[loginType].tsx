@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { LoginView } from "ui/views";
 import { useRouter } from "next/router";
+import MasterLayout from "../components/MasterLayout";
 
 const Login: NextPage = () => {
   const router = useRouter();
@@ -23,15 +24,17 @@ const Login: NextPage = () => {
       <Head>
         <title>Wiaah | Login</title>
       </Head>
-      <main className="block w-full grow">
-        {loginType?.toString() == "login" ||
-        loginType?.toString() == "seller-signup" ||
-        loginType?.toString() == "buyer-signup" ? (
-          <LoginView loginType={loginType?.toString()} />
-        ) : (
-          ""
-        )}
-      </main>
+      <MasterLayout>
+        <main className="block w-full grow">
+          {loginType?.toString() == "login" ||
+          loginType?.toString() == "seller-signup" ||
+          loginType?.toString() == "buyer-signup" ? (
+            <LoginView loginType={loginType?.toString()} />
+          ) : (
+            ""
+          )}
+        </main>
+      </MasterLayout>
     </>
   );
 };

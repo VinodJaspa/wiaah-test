@@ -1,7 +1,6 @@
 import React from "react";
 import { Tabs, Input } from "antd";
-import {IoMdMail,IoMdKey,IoMdPerson,
-} from "react-icons/io";
+import { IoMdMail, IoMdKey, IoMdPerson } from "react-icons/io";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -24,12 +23,12 @@ export const LoginView: React.FC<LoginViewProps> = ({
   }
   return (
     <>
-      <div className="login-view-container flex flex-col-reverse items-start p-4 lg:flex-row lg:p-24 xl:py-34 xl:px-36">
-        <div className="hidden w-full text-white lg:block lg:w-7/12">
-          <h1 className="text-5xl text-white">
+      <div className="login-view-container xl:py-34 flex flex-col items-start p-4 lg:flex-row lg:p-24 xl:px-36">
+        <div className="w-full text-white lg:w-7/12">
+          <h1 className="text-3xl text-white lg:text-5xl">
             Welcome to Wiaah: The First and Reference Social Marketplace
           </h1>
-          <p className="mt-10 mb-5 text-justify text-lg font-light">
+          <p className="text-md mt-5 mb-5 text-justify font-light lg:mt-10 lg:text-lg">
             With Wiaah, connect with the world's leading fashion brands and your
             favourite brands, participate in their success while succeding in
             your turn.
@@ -39,7 +38,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
               "It is by participating in the success of others that we acheive
               our own success"
             </cite>
-            <div className="mt-5">Founder of Wiaah</div>
+            <div className="mt-5 mb-5 lg:mb-0">Founder of Wiaah</div>
           </div>
         </div>
         <div className="flex w-full justify-end lg:w-6/12">

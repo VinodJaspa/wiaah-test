@@ -1,17 +1,18 @@
-import React, {useState } from "react";
-import {BreadCrumb } from "ui/components/blocks/BreadCrumb";
+import React, { useState } from "react";
+import { BreadCrumb } from "ui/components/blocks/BreadCrumb";
 import {
-ProductImageGallery,
-ProductViewRight,
-ProductDescription,
-SellerCard,
+  ProductImageGallery,
+  ProductViewRight,
+  ProductDescription,
+  SellerCard,
 } from "ui/components";
-import {Product } from "../../components/blocks/products/product";
-import {Swiper,SwiperSlide } from "swiper/react";
-import {Navigation } from "swiper";
-import {useMediaQuery } from "react-responsive";
+import { Product } from "../../components/blocks/products/product";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper";
+import { useMediaQuery } from "react-responsive";
 import "swiper/css";
 import "swiper/css/navigation";
+import { useTranslation } from "react-i18next";
 
 const breadcrumb = [
   {
@@ -79,15 +80,17 @@ const productComments = [
   },
 ];
 export const ProductView: React.FC = () => {
+  const { t } = useTranslation();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
   return (
     <>
       <div className="block w-full space-y-6 p-5">
         <div className="">
+          {t("common.translated-text")}
           <BreadCrumb breadcrumb={breadcrumb} />
         </div>
         <div>
-          <div className="flex-column mb-20 flex-wrap items-end lg:flex lg:justify-between">
+          <div className="flex-column mb-10 flex-wrap items-end lg:flex lg:justify-between">
             <div className="w-full lg:w-8/12">
               <ProductImageGallery images={images} />
             </div>

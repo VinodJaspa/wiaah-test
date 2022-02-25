@@ -1,12 +1,15 @@
 import type { AppProps } from "next/app";
 import "../styles/globals.css";
-import MasterLayout from "../components/MasterLayout";
+import "ui/languages/i18n";
+import { CookiesProvider } from "react-cookie";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <MasterLayout>
-      <Component {...pageProps} />
-    </MasterLayout>
+    <>
+      <CookiesProvider>
+        <Component {...pageProps} />
+      </CookiesProvider>
+    </>
   );
 }
 

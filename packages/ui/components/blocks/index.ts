@@ -4,15 +4,17 @@ import { Card } from "./Card";
 import { ImageCard } from "./ImageCard";
 import { ProductImageGallery } from "./ProductImageGallery";
 import { ProductViewRight } from "./ProductViewRight";
-import { ProductDescription } from "./ProductDescription"
+import { ProductDescription } from "./ProductDescription";
 import { SellerCard } from "./SellerCard";
-export { 
-    ImageSlider, 
-    Sidebar, 
-    Card, 
-    ImageCard,  
-    ProductImageGallery, 
-    ProductViewRight, 
-    ProductDescription,
-    SellerCard
+import { CountryLanguageCurrencySwitch } from "./CountryLanguageCurrencySwitch";
+export {
+  ImageSlider,
+  Sidebar,
+  Card,
+  ImageCard,
+  ProductImageGallery,
+  ProductViewRight,
+  ProductDescription,
+  SellerCard,
+  CountryLanguageCurrencySwitch,
 };

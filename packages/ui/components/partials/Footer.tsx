@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  FaGlobeEurope,
   FaTwitter,
   FaFacebook,
   FaInstagram,
@@ -10,32 +9,33 @@ import {
   FaAt,
   FaUserAlt,
 } from "react-icons/fa";
+import { CountryLanguageCurrencySwitch } from "ui/components";
 
 export const Footer: React.FC = () => {
   return (
     <>
-      <footer className="block w-full p-6 bg-gray-800">
-        <div className="grid w-full grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4 place-content-center">
-          <div className="lg:col-span-2 block w-full space-y-4">
+      <footer className="block w-full bg-gray-800 p-6">
+        <div className="grid w-full grid-cols-1 place-content-center gap-4 md:grid-cols-3 lg:grid-cols-5">
+          <div className="block w-full space-y-4 lg:col-span-2">
             <p className="font-bold uppercase text-green-300">Wiaah Alert En</p>
             <p className="text-sm text-gray-400">
               Register now to get updates on promotions and coupons
             </p>
-            <div className="flex w-4/5 lg:w-3/4 px-2 py-1.5 rounded-lg items-center space-x-2 bg-gray-700">
-              <FaAt className="text-gray-400 pointer-events-none w-4 h-4" />
+            <div className="flex w-4/5 items-center space-x-2 rounded-lg bg-gray-700 px-2 py-1.5 lg:w-3/4">
+              <FaAt className="pointer-events-none h-4 w-4 text-gray-400" />
               <input
                 placeholder="Email"
-                className="flex w-full px-2 py-1.5 text-white bg-gray-700 appearance-none focus:outline-none"
+                className="flex w-full appearance-none bg-gray-700 px-2 py-1.5 text-white focus:outline-none"
               />
             </div>
-            <div className="flex w-4/5 lg:w-3/4 px-2 py-1.5 rounded-lg items-center space-x-2 bg-gray-700">
-              <FaUserAlt className="text-gray-400 pointer-events-none w-4 h-4" />
+            <div className="flex w-4/5 items-center space-x-2 rounded-lg bg-gray-700 px-2 py-1.5 lg:w-3/4">
+              <FaUserAlt className="pointer-events-none h-4 w-4 text-gray-400" />
               <input
                 placeholder="Name"
-                className="flex w-full px-2 py-1.5 text-white bg-gray-700 appearance-none focus:outline-none"
+                className="flex w-full appearance-none bg-gray-700 px-2 py-1.5 text-white focus:outline-none"
               />
             </div>
-            <button className="px-3.5 py-2 rounded-lg bg-green-400 text-white uppercase">
+            <button className="rounded-lg bg-green-400 px-3.5 py-2 uppercase text-white">
               Subscribe
             </button>
           </div>
@@ -60,43 +60,32 @@ export const Footer: React.FC = () => {
             <p className="font-bold uppercase text-green-300">Stay Connected</p>
             <ul className="block space-y-4 text-sm text-gray-400">
               <li className="flex items-center">
-                <FaTwitter className="w-4 h-4 mr-2 text-sky-400" /> Twitter
+                <FaTwitter className="mr-2 h-4 w-4 text-sky-400" /> Twitter
               </li>
               <li className="flex items-center">
-                <FaFacebook className="w-4 h-4 mr-2 text-blue-500" />
+                <FaFacebook className="mr-2 h-4 w-4 text-blue-500" />
                 Facebook
               </li>
               <li className="flex items-center">
-                <FaInstagram className="w-4 h-4 mr-2 text-rose-500" />
+                <FaInstagram className="mr-2 h-4 w-4 text-rose-500" />
                 Instagram
               </li>
               <li className="flex items-center">
-                <FaYoutube className="w-4 h-4 mr-2 text-red-700" />
+                <FaYoutube className="mr-2 h-4 w-4 text-red-700" />
                 Youtube
               </li>
               <li className="flex items-center">
-                <FaTiktok className="w-4 h-4 mr-2 text-stone-100" />
+                <FaTiktok className="mr-2 h-4 w-4 text-stone-100" />
                 Tiktok
               </li>
               <li className="flex items-center">
-                <FaSnapchat className="w-4 h-4 mr-2 text-amber-300" />
+                <FaSnapchat className="mr-2 h-4 w-4 text-amber-300" />
                 Snapchat
               </li>
             </ul>
           </div>
         </div>
-        <div className="flex mt-8 w-full justify-center md:justify-end">
-          <div className="flex border border-gray-400">
-            <div className="flex p-4 items-center text-green-300 border-r border-gray-400">
-              <FaGlobeEurope className="w-4 h-4 mr-2" />
-              Switzerland
-            </div>
-            <div className="flex p-4 text-green-300 border-r border-gray-400">
-              English
-            </div>
-            <div className="flex p-4 text-green-300">(USD)</div>
-          </div>
-        </div>
+        <CountryLanguageCurrencySwitch />
       </footer>
     </>
   );

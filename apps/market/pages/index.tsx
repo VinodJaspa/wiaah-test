@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { ImageSlider } from "ui/components";
 import { HomeView } from "ui/views";
+import MasterLayout from "../components/MasterLayout";
 
 const Market: NextPage = () => {
   return (
@@ -10,10 +11,12 @@ const Market: NextPage = () => {
       <Head>
         <title>Wiaah | Market</title>
       </Head>
-      <main className="block w-full grow">
-        <ImageSlider />
-        <HomeView />
-      </main>
+      <MasterLayout>
+        <main className="block w-full grow">
+          <ImageSlider />
+          <HomeView />
+        </main>
+      </MasterLayout>
     </>
   );
 };

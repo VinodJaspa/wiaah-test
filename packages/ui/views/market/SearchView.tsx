@@ -11,10 +11,7 @@ import {
   FaAngleRight,
 } from "react-icons/fa";
 import { BsArrowLeft } from "react-icons/bs";
-import {
-  HiOutlineViewGrid,
-  HiOutlineViewList,
-} from "react-icons/hi";
+import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
 import { useRouter } from "next/router";
 
 const breadcrumb = [
@@ -36,6 +33,7 @@ export const SearchView: React.FC = () => {
   let [isGrid, setGrid] = useState(false);
   let [filterVisibleOnMobile, setFilterVisibleOnMobile] = useState(false);
   const router = useRouter();
+  const { locale, locales, defaultLocale } = router;
   return (
     <>
       <div className="block w-full space-y-6 p-5">
@@ -104,14 +102,15 @@ export const SearchView: React.FC = () => {
             >
               {[...Array(12)].map((_, i: number) => (
                 <Product
-                name="Camera Digital with extra lenses"
-                imgUrl="/shop-2.jpeg"
-                price={518.68}
-                rating={4}
-                cashback={10}
-                off={10}
-                oldPrice={600}
-              ></Product>
+                  name="Camera Digital with extra lenses"
+                  imgUrl="/shop-2.jpeg"
+                  price={518.68}
+                  rating={4}
+                  cashback={10}
+                  off={10}
+                  oldPrice={600}
+                  key={i}
+                ></Product>
               ))}
             </div>
             <div className="flex w-full justify-center">
