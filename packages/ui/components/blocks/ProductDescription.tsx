@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BuyerComment } from "./BuyerComment";
 import { Collapse } from "antd";
+import { t } from "i18next";
 
 const { Panel } = Collapse;
 
@@ -32,10 +33,24 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
       <div className="">
         <div className="mb-10 block md:hidden">
           <Collapse ghost>
-            <Panel header="DESCRIPTION" key="1">
+            <Panel
+              header={
+                <span className="uppercase">
+                  {t("Description", "Description")}
+                </span>
+              }
+              key="1"
+            >
               <div dangerouslySetInnerHTML={{ __html: description }}></div>
             </Panel>
-            <Panel header={"REVIEWS " + "(" + comments.length + ")"} key="2">
+            <Panel
+              header={
+                <span className="uppercase">
+                  {t("Reviews", "Reviews") + " (" + comments.length + ")"}
+                </span>
+              }
+              key="2"
+            >
               <p>
                 {comments.map((item, key: number) => {
                   return (
@@ -63,7 +78,7 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
                 tab == 0 ? "green-background text-white" : "text-gray-500"
               }  h-9 px-4`}
             >
-              Description
+              {t("Description", "Description")}
             </button>
             <button
               onClick={() => {
@@ -73,7 +88,7 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
                 tab == 1 ? "green-background text-white" : "text-gray-500"
               }  h-9 px-4`}
             >
-              Reviews ({comments.length})
+              {t("Reviews", "Reviews")} ({comments.length})
             </button>
           </div>
           <div className={`${tab == 1 ? "" : "hidden"} h-96 overflow-scroll`}>

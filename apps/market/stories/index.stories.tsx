@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import Market from "../index";
+import Market from "../pages/index";
 export default {
   title: "Market/Home",
   component: Market,

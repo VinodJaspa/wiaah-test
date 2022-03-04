@@ -1,306 +1,252 @@
 import React, { useState, useEffect } from "react";
-import {FaChevronUp} from "react-icons/fa";
-import {AiFillStar} from "react-icons/ai";
-import Select from 'react-select';
-import { Country, City }  from 'country-state-city';
-import {Divider} from '../../../components'
+import { FaChevronUp } from "react-icons/fa";
+import { AiFillStar } from "react-icons/ai";
+//import Select from 'react-select';
+import { Country, City } from "country-state-city";
+import { Divider } from "../../../components";
+import { t } from "i18next";
+import { Select, Slider, Collapse, Tree } from "antd";
+
+const { Option } = Select;
+const { Panel } = Collapse;
 
 interface ProductFilterProps {
-    priceRange?: {min:number, max:number};
-    shipping?: Array<{label:string, value:string}>;
-    brands?: Array<{label:string, value:string}>;
-    colors?: Array<string>
-};
+  priceRange?: { min: number; max: number };
+  shipping?: Array<{ label: string; value: string }>;
+  brands?: Array<{ label: string; value: string }>;
+  colors?: Array<string>;
+}
 
 let countriesOptions = Array();
 const countries = Country.getAllCountries();
-countries.forEach(element => {
-    countriesOptions.push({
-        value: element.isoCode, label: element.name
-    });
+countries.forEach((element) => {
+  countriesOptions.push({
+    value: element.isoCode,
+    label: element.name,
+  });
 });
 
-export const ProductFilter: React.FC<ProductFilterProps> = (
-    {priceRange={min:0, max:1000},
-    shipping=[
-        {label:'Click and Collect', value:'click_and_collect'},
-        {label:'Free', value:'free'},
-        {label:'International', value:'international'}
-    ], brands=[], colors=[],}) => {
+export const ProductFilter: React.FC<ProductFilterProps> = ({
+  priceRange = { min: 0, max: 1000 },
+  shipping = [
+    {
+      label: t("Click_and_Collect", "Click and Collect"),
+      value: "click_and_collect",
+    },
+    { label: t("Free", "Free"), value: "free" },
+    { label: t("International", "International"), value: "international" },
+  ],
+  brands = [],
+  colors = [],
+}) => {
+  let [minPrice, setMinPrice] = useState(priceRange.min);
+  let [maxPrice, setMaxPrice] = useState(priceRange.max);
+  let [countryCode, setCountryCode] = useState("");
+  let [cities, setCities] = useState<any | []>();
 
-    
+  function handleCountryChange(value: any) {
+    setCountryCode(value);
+    setCities(City.getCitiesOfCountry(value));
+  }
+  function handlePriceRangeChange(price: any) {
+    setMinPrice(price[0]);
+    setMaxPrice(price[1]);
+  }
 
-    let [minPrice, setMinPrice] = useState(priceRange.min);
-    let [maxPrice, setMaxPrice] = useState(priceRange.max);
-    let [minPosition, setMinPosition] = useState(0);
-    let [maxPosition, setMaxPosition] = useState(1000);
-    let [sizeOne, setSizeOne] = useState('0');
-    let [sizetwo, setSizeTwo] = useState('full');
-    let [priceOpened, setPriceOpened] = useState<boolean | false>();
-    let [shippingOpened, setShippingOpened] = useState<boolean | false>();
-    let [brandOpened, setBrandOpened] = useState<boolean | false>();
-    let [ratingOpened, setRatingOpened] = useState<boolean | false>();
-    let [colorOpened, setColorOpened] = useState<boolean | false>();
-    let [countryCode, setCountryCode] = useState('');
-    let [cities, setCities] = useState([{ value: '', label: 'Select country first!'}]);
-
-    
-    useEffect(() => {
-        const citiesArray = City.getCitiesOfCountry(countryCode);
-        let index = 0;
-        citiesArray?.forEach( element =>{
-            cities[index] = {value: element.name, label: element.name};
-            index++;
-        });
-    }, [countryCode]);
-
-    useEffect(() =>{
-        setMinPrice(priceRange.min + minPosition*(priceRange.max-priceRange.min)/1000.0);
-        setMaxPrice(priceRange.min + maxPosition*(priceRange.max-priceRange.min)/1000.0);
-        if(minPosition == 0){
-            setSizeOne('0');
-            if(maxPosition == 1000){
-                setSizeTwo('full');
-            }else{
-                setSizeTwo((maxPosition/10)+'p');
-            }
-        }else{
-            setSizeOne((minPosition/10)+'p');
-            setSizeTwo(((maxPosition-minPosition)/10)+'p');
-        }
-    }, [minPosition,maxPosition]);
-
-    function handleMaxPriceChange(value:any){
-        if(value.target.value < (minPosition + 100)){
-            setMaxPosition(minPosition + 100);
-        }else{
-            setMaxPosition(value.target.value - (value.target.value%100));
-        }
-    };
-
-    function handleMinPriceChange(value:any){
-        if(value.target.value > (maxPosition - 100)){
-            setMinPosition(maxPosition - 100);
-        }else{
-            setMinPosition(value.target.value - (value.target.value%100));
-        }
-    };
-
-    function handleCountryChange(value:any){
-        setCountryCode(value.value);
-    }
-    return ( 
-        <>            
-            <div className={`${
-                    priceOpened ? "" : "h-10"
-                  } price-selector border md:border-solid border-none px-2 overflow-hidden transition-height ease-in-out duration-300`}>
-                <div className="accordion-toggle mb-2 h-10 items-center flex justify-between" onClick={() => {setPriceOpened(!priceOpened);}}>
-                    <span>Price ($)</span>
-                    <FaChevronUp 
-                    
-                    className={`${
-                        priceOpened ? "" : "rotate-180"
-                    } `}
-                    />
-                </div>
-                <div className="flex justify-left items-center mb-2">
-                    <div className="w-full relative priceRangeSlider h-10 mt-2">
-                        <input 
-                            onChange={ (value) =>{
-                                handleMinPriceChange(value);
-                            }}
-                            type="range"
-                            value={minPosition}
-                            min={0}
-                            max={1000}
-                            step={100}
-                            className="w-full slider absolute left-0 top-0" />
-                        <input
-                            onChange={ (value) =>{
-                                handleMaxPriceChange(value);
-                            }} 
-                            type="range" 
-                            
-                            value={maxPosition} 
-                            min={0} 
-                            max={1000} 
-                            step={100}
-                            className="w-full slider absolute left-0 top-0" />
-                        <div className="w-full bg-gray-300 rounded-lg h-1 absolute left-0 top-0"></div>
-                        <div>
-                            <span className="absolute left-0 bottom-0 text-xs min-price">${minPrice}</span>
-                            <span className="absolute right-0 bottom-0 text-xs max-price">${maxPrice}</span>
-                        </div>
-                        <div className="flex justify-start items-center">
-                            <div
-                                className={`${
-                                    'w-'+sizeOne
-                                } relative h-1 flex items-center justify-end`}
-                            >
-                                <div className="absolute right-0 translate-x-2  bg-green-700 h-3 w-3 rounded-full"></div>
-                            </div>
-                            <div
-                                className={`${
-                                    'w-'+sizetwo
-                                } bg-green-700 h-1 flex items-center translate-x-1 justify-end`}
-                            >
-                                <div className="bg-green-700 h-3 w-3 rounded-full"></div>
-                            </div>   
-                        </div>
-                    </div>
-                </div>
+  const treeData = [
+    {
+      title: "parent 1",
+      key: "0-0",
+      children: [
+        {
+          title: "parent 1-0",
+          key: "0-0-0",
+          disabled: true,
+          children: [
+            {
+              title: "leaf",
+              key: "0-0-0-0",
+              disableCheckbox: true,
+            },
+            {
+              title: "leaf",
+              key: "0-0-0-1",
+            },
+          ],
+        },
+        {
+          title: "parent 1-1",
+          key: "0-0-1",
+          children: [
+            {
+              title: <span style={{ color: "#1890ff" }}>sss</span>,
+              key: "0-0-1-0",
+            },
+          ],
+        },
+      ],
+    },
+  ];
+  return (
+    <>
+      <Collapse ghost>
+        <Panel
+          className="filter-panel"
+          header={t("Category", "Category")}
+          key="6"
+        >
+          <Tree treeData={treeData}></Tree>
+        </Panel>
+        <Panel
+          className="filter-panel"
+          header={t("Price", "Price") + " ($)"}
+          key="1"
+        >
+          <Slider
+            className=""
+            min={priceRange.min}
+            max={priceRange.max}
+            onChange={handlePriceRangeChange}
+            trackStyle={[
+              { backgroundColor: "#57bf9c" },
+              { borderColor: "#57bf9c" },
+            ]}
+            range
+            defaultValue={[priceRange.min, priceRange.max]}
+          />
+          <div className="flex justify-between">
+            <div>{minPrice + " $"}</div>
+            <div>{maxPrice + " $"}</div>
+          </div>
+        </Panel>
+        <Panel
+          className="filter-panel"
+          header={t("Shipping", "Shipping")}
+          key="2"
+        >
+          {shipping.map((item, i: number) => (
+            <div className="justify-left mb-2 flex items-center" key={i}>
+              <input
+                name="shipping"
+                type="radio"
+                value={item.value}
+                className="rounded text-pink-500"
+              />
+              <span className="ml-2 text-xs">{item.label}</span>
             </div>
-            <div className="md:hidden block"><Divider /></div>
-            <div 
-                className={`${
-                    shippingOpened ? "" : "h-10"
-                  } shipping-selector border md:border-solid border-none px-2 overflow-hidden transition-height ease-in-out duration-300`}
-            >
-                <div className="accordion-toggle mb-3 h-10 flex items-center justify-between" onClick={() => {setShippingOpened(!shippingOpened);}}>
-                    <span>Shipping</span>
-                    <FaChevronUp 
-                        
-                        className={`${
-                            shippingOpened ? "" : "rotate-180"
-                        } `}
-                    />
-                </div>
-                {shipping.map((item, i:number) => (
-                    <div className="flex justify-left items-center mb-2" key={i}>
-                        <input name="shipping" type="radio" value={item.value} className="rounded text-pink-500" />
-                        <span className="text-xs ml-2">{item.label}</span>
-                    </div>
-                ))}
+          ))}
+        </Panel>
+        <Panel className="filter-panel" header={t("Brand", "Brand")} key="3">
+          {brands.map((item, i: number) => (
+            <div key={i} className="justify-left mb-2 flex items-center">
+              <input
+                type="checkbox"
+                value={item.value}
+                className="rounded text-pink-500"
+              />
+              <span className="ml-2 text-xs">{item.label}</span>
             </div>
-            <div className="md:hidden block"><Divider /></div>
-            {brands.length !== 0? (
-                <div className={`${
-                    brandOpened ? "" : "h-10"
-                  } brand-selector border md:border-solid border-none px-2 overflow-hidden transition-height ease-in-out duration-300`}>
-                    <div className="accordion-toggle mb-2 h-10 flex items-center justify-between" onClick={() => {setBrandOpened(!brandOpened);}}>
-                        <span>Brand</span>
-                        <FaChevronUp 
-                        className={`${
-                            brandOpened ? "" : "rotate-180"
-                        } `}
-                        />
-                    </div>
-                    {brands.map((item, i:number) =>(
-                        <div key={i} className="flex justify-left items-center mb-2">
-                            <input type="checkbox" value={item.value} className="rounded text-pink-500" />
-                            <span className="text-xs ml-2">{item.label}</span>
-                        </div>
-                    ))}
-                </div>
-            ) : '' }
-            
-            <div className="md:hidden block"><Divider /></div>
-            <div className={`${
-                    ratingOpened ? "" : "h-10"
-                  } rating-selector border md:border-solid border-none px-2 overflow-hidden transition-height ease-in-out duration-300`}>
-                <div 
-                    onClick={() => {setRatingOpened(!ratingOpened);}}
-                    className="accordion-toggle mb-2 h-10 items-center flex justify-between"
-                >
-                    <span>Rating</span>
-                    <FaChevronUp 
-                        className={`${
-                            ratingOpened ? "" : "rotate-180"
-                        } `}
-                    />
-                </div>
-                <div className="flex justify-left items-center mb-2">
-                    <input type="checkbox" className="rounded text-pink-500" />
-                    <AiFillStar className="inline text-orange-500 ml-2"/>
-                    <AiFillStar className="inline text-orange-500 ml-2"/>
-                    <AiFillStar className="inline text-orange-500 ml-2"/>
-                    <AiFillStar className="inline text-orange-500 ml-2"/>
-                    <AiFillStar className="inline text-orange-500 ml-2"/>
-                </div>
-                <div className="flex justify-left items-center mb-2">
-                    <input type="checkbox" className="rounded text-pink-500" />
-                    <AiFillStar className="inline text-orange-500 ml-2"/>
-                    <AiFillStar className="inline text-orange-500 ml-2"/>
-                    <AiFillStar className="inline text-orange-500 ml-2"/>
-                    <AiFillStar className="inline text-orange-500 ml-2"/>
-                </div>
-                <div className="flex justify-left items-center mb-2">
-                    <input type="checkbox" className="rounded text-pink-500" />
-                    <AiFillStar className="inline text-orange-500 ml-2"/>
-                    <AiFillStar className="inline text-orange-500 ml-2"/>
-                    <AiFillStar className="inline text-orange-500 ml-2"/>
-                </div>
-                <div className="flex justify-left items-center mb-2">
-                    <input type="checkbox" className="rounded text-pink-500" />
-                    <AiFillStar className="inline text-orange-500 ml-2"/>
-                    <AiFillStar className="inline text-orange-500 ml-2"/>
-                </div>
-                <div className="flex justify-left items-center mb-2">
-                    <input type="checkbox" className="rounded text-pink-500" />
-                    <AiFillStar className="inline text-orange-500 ml-2"/>
-                </div>
-            </div>
-            <div className="md:hidden block my-5"></div>
-            {colors.length !== 0?(
-               <div className={`${
-                    colorOpened ? "" : "h-10"
-                  } color-selector border md:border-solid border-none px-2 overflow-hidden transition-height ease-in-out duration-300`}>
-                    <div className="accordion-toggle mb-2 h-10 items-center flex justify-between" onClick={() => {setColorOpened(!colorOpened);}}>
-                        <span>Color</span>
-                        <FaChevronUp 
-                        className={`${
-                            colorOpened ? "" : "rotate-180"
-                        } `}
-                        />
-                    </div>
-                    <div className="flex justify-left items-center mb-2">
-                        <input type="checkbox" className="rounded text-pink-500" />
-                        <div className="inline-block bg-red-500 border w-4 h-4 ml-2"></div>
-                    </div>
-                    <div className="flex justify-left items-center mb-2">
-                        <input type="checkbox" className="rounded text-pink-500" />
-                        <div className="inline-block bg-green-500 border w-4 h-4 ml-2"></div>
-                    </div>
-                    <div className="flex justify-left items-center mb-2">
-                        <input type="checkbox" className="rounded text-pink-500" />
-                        <div className="inline-block bg-yellow-500 border w-4 h-4 ml-2"></div>
-                    </div>
-                    <div className="flex justify-left items-center mb-2">
-                        <input type="checkbox" className="rounded text-pink-500" />
-                        <div className="inline-block bg-gray-500 border w-4 h-4 ml-2"></div>
-                    </div>
-                    <div className="flex justify-left items-center mb-2">
-                        <input type="checkbox" className="rounded text-pink-500" />
-                        <div className="inline-block bg-white border w-4 h-4 ml-2"></div>
-                    </div>
-                </div> 
-            ) : '' }
-            
-
-            <div className="country-selector">
-                <div className=" w-full">
-                    <Select 
-                        id="countryselect"
-                        instanceId='countryselect'
-                        className='react-select-container' 
-                        classNamePrefix="react-select" 
-                        options={countriesOptions} placeholder={'Countries'}
-                        onChange={(value) =>{ handleCountryChange(value);}}    
-                    />
-                </div>
-            </div>
-            <div className="city-selector">
-                <div className="mb-2 w-full">
-                    <Select 
-                        id='cityselect'
-                        instanceId='cityselect'
-                        className='react-select-container' 
-                        classNamePrefix="react-select" 
-                        options={cities} placeholder={'Cities'} />
-                </div>
-            </div>
-            <button className="flex mt-5 w-full h-10 p-3 text-white items-center justify-center rounded-lg bg-green-400 cursor-pointer">Clear</button>
-        </>
-    );
+          ))}
+        </Panel>
+        <Panel className="filter-panel" header={t("Rating", "Rating")} key="4">
+          <div className="justify-left mb-2 flex items-center">
+            <input type="checkbox" className="rounded text-pink-500" />
+            <AiFillStar className="ml-2 inline text-orange-500" />
+            <AiFillStar className="ml-2 inline text-orange-500" />
+            <AiFillStar className="ml-2 inline text-orange-500" />
+            <AiFillStar className="ml-2 inline text-orange-500" />
+            <AiFillStar className="ml-2 inline text-orange-500" />
+          </div>
+          <div className="justify-left mb-2 flex items-center">
+            <input type="checkbox" className="rounded text-pink-500" />
+            <AiFillStar className="ml-2 inline text-orange-500" />
+            <AiFillStar className="ml-2 inline text-orange-500" />
+            <AiFillStar className="ml-2 inline text-orange-500" />
+            <AiFillStar className="ml-2 inline text-orange-500" />
+          </div>
+          <div className="justify-left mb-2 flex items-center">
+            <input type="checkbox" className="rounded text-pink-500" />
+            <AiFillStar className="ml-2 inline text-orange-500" />
+            <AiFillStar className="ml-2 inline text-orange-500" />
+            <AiFillStar className="ml-2 inline text-orange-500" />
+          </div>
+          <div className="justify-left mb-2 flex items-center">
+            <input type="checkbox" className="rounded text-pink-500" />
+            <AiFillStar className="ml-2 inline text-orange-500" />
+            <AiFillStar className="ml-2 inline text-orange-500" />
+          </div>
+          <div className="justify-left mb-2 flex items-center">
+            <input type="checkbox" className="rounded text-pink-500" />
+            <AiFillStar className="ml-2 inline text-orange-500" />
+          </div>
+        </Panel>
+        <Panel className="filter-panel" header={t("Color", "Color")} key="5">
+          <div className="justify-left mb-2 flex items-center">
+            <input type="checkbox" className="rounded text-pink-500" />
+            <div className="ml-2 inline-block h-4 w-4 border bg-red-500"></div>
+          </div>
+          <div className="justify-left mb-2 flex items-center">
+            <input type="checkbox" className="rounded text-pink-500" />
+            <div className="ml-2 inline-block h-4 w-4 border bg-green-500"></div>
+          </div>
+          <div className="justify-left mb-2 flex items-center">
+            <input type="checkbox" className="rounded text-pink-500" />
+            <div className="ml-2 inline-block h-4 w-4 border bg-yellow-500"></div>
+          </div>
+          <div className="justify-left mb-2 flex items-center">
+            <input type="checkbox" className="rounded text-pink-500" />
+            <div className="ml-2 inline-block h-4 w-4 border bg-gray-500"></div>
+          </div>
+          <div className="justify-left mb-2 flex items-center">
+            <input type="checkbox" className="rounded text-pink-500" />
+            <div className="ml-2 inline-block h-4 w-4 border bg-white"></div>
+          </div>
+        </Panel>
+      </Collapse>
+      <div className="country-selector">
+        <div className=" w-full">
+          <Select
+            showSearch
+            size="large"
+            id="countryselect"
+            className="react-select-container w-full"
+            placeholder={t("Countries", "Countries")}
+            onChange={(value) => {
+              handleCountryChange(value);
+            }}
+          >
+            {countries.map((item, key: number) => {
+              return (
+                <Option key={key} value={item.isoCode}>
+                  {item.name}
+                </Option>
+              );
+            })}
+          </Select>
+        </div>
+      </div>
+      <div className="city-selector">
+        <div className="mb-2 w-full">
+          <Select
+            showSearch
+            size="large"
+            id="cityselect"
+            className="react-select-container w-full"
+            placeholder={t("Cities", "Cities")}
+          >
+            {cities?.map((item: any, key: number) => {
+              return (
+                <Option key={key} value={item.name}>
+                  {item.name}
+                </Option>
+              );
+            })}
+          </Select>
+        </div>
+      </div>
+      <button className="mt-5 flex h-10 w-full cursor-pointer items-center justify-center rounded-lg bg-green-400 p-3 text-white">
+        {t("Clear", "Clear")}
+      </button>
+    </>
+  );
 };
-

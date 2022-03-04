@@ -14,6 +14,7 @@ import { Divider } from "ui/components";
 import Webcam from "react-webcam";
 import { blobToDataURL } from "blob-util";
 import { Progress } from "antd";
+import { t } from "i18next";
 
 const { Option } = AntSelect;
 const { TextArea } = Input;
@@ -51,18 +52,18 @@ countries.forEach((element) => {
 export const SellerProfileStartupView: React.FC = ({}) => {
   let [formStep, setFormStep] = useState(0);
   const formStepTitle = [
-    "Shop information",
-    "Select a plan",
-    "Payment Gate",
-    "Shipping Settings",
-    "Find your freinds",
-    "Add Profile Pic",
+    t("Shop_information", "Shop information"),
+    t("Select_a_plan", "Select a plan"),
+    t("Payment_Gate", "Payment Gate"),
+    t("Shipping Settings", "Shipping Settings"),
+    t("Find_your_freinds", "Find your freinds"),
+    t("Add_Profile_Pic", "Add Profile Pic"),
   ];
   let [states, setState] = useState([
-    { value: "", label: "Select country first!" },
+    { value: "", label: t("Select_country_first!", "Select country first!") },
   ]);
   let [cities, setCities] = useState([
-    { value: "", label: "Select state first!" },
+    { value: "", label: t("Select_state_first!", "Select state first!") },
   ]);
   let [countryCode, setCountryCode] = useState("");
   let [stateCode, setStateCode] = useState("");
@@ -130,20 +131,22 @@ export const SellerProfileStartupView: React.FC = ({}) => {
               <div className="text-xs text-gray-400">
                 {formStepTitle[formStep + 1]
                   ? "Next: " + formStepTitle[formStep + 1]
-                  : "Finalisation"}
+                  : t("Finalisation", "Finalisation")}
               </div>
             </div>
           </div>
-          <div className="hidden justify-start bg-gray-200 lg:flex">
+          <div className="hidden items-stretch justify-start bg-gray-200 lg:flex">
             {formStepTitle.map((item, key: number) => {
               return (
                 <div
                   key={key}
                   className={`${
                     formStep == key ? "green-background text-white" : ""
-                  } flex h-full w-4/12 flex-col justify-center px-6 py-4`}
+                  } flex w-4/12 flex-col justify-center px-6 py-4`}
                 >
-                  <div className="text-lg font-bold">Step {key + 1}</div>
+                  <div className="text-lg font-bold">
+                    {t("Step", "Step")} {key + 1}
+                  </div>
                   <div>{item}</div>
                 </div>
               );
@@ -154,24 +157,24 @@ export const SellerProfileStartupView: React.FC = ({}) => {
           {formStep == 0 && (
             <div>
               <h2 className="hidden text-xl font-bold lg:block">
-                Fill out shop information
+                {t("Fill_out_shop_information", "Fill out shop information")}
               </h2>
               <div className="flex lg:p-5">
-                <div className="w-full lg:mr-4">
+                <div className="w-full">
                   <Input
                     className="mb-4 rounded-md border-gray-300"
                     size="large"
-                    placeholder="Compony Name"
+                    placeholder={t("Company", "Company")}
                   />
                   <Input
                     className="mb-4 rounded-md border-gray-300"
                     size="large"
-                    placeholder="Address 1"
+                    placeholder={t("Address", "Address") + " 1"}
                   />
                   <Input
                     className="mb-4 rounded-md border-gray-300"
                     size="large"
-                    placeholder="Address 2"
+                    placeholder={t("Address", "Address") + " 2"}
                   />
                   <Select
                     id="countryselect"
@@ -179,7 +182,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                     className="react-select-container mb-4 rounded-md border-gray-300"
                     classNamePrefix="react-select"
                     options={countriesArray}
-                    placeholder={"Countries"}
+                    placeholder={t("Country", "Country")}
                     onChange={(value) => {
                       handleCountryChange(value);
                     }}
@@ -193,7 +196,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                       handleStateChange(value);
                     }}
                     options={states}
-                    placeholder={"State"}
+                    placeholder={t("State", "State")}
                   />
                   <Select
                     id="cityselect"
@@ -201,15 +204,18 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                     className="react-select-container mb-4 rounded-md border-gray-300"
                     classNamePrefix="react-select"
                     options={cities}
-                    placeholder={"City"}
+                    placeholder={t("City", "City")}
                   />
                   <Input
                     className="mb-4 rounded-md border-gray-300"
                     size="large"
-                    placeholder="Company Registered Number (CRN)"
+                    placeholder={t(
+                      "company_CRN",
+                      "Company Registered Number (CRN)"
+                    )}
                   />
                   <AntSelect
-                    placeholder="Currency"
+                    placeholder={t("Currency", "Currency")}
                     className="mb-4 w-full border-gray-300"
                     size="large"
                   >
@@ -217,35 +223,35 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                     <Option value="femal">EUR</Option>
                   </AntSelect>
                   <AntSelect
-                    placeholder="Type of Seller"
+                    placeholder={t("Type_of_Seller", "Type of Seller")}
                     className="mb-4 w-full border-gray-300"
                     size="large"
                   >
-                    <Option value="male">ONE</Option>
-                    <Option value="femal">TOW</Option>
+                    <Option value="male">{t("ONE", "ONE")}</Option>
+                    <Option value="femal">{t("TOW", "TOW")}</Option>
                   </AntSelect>
                   <AntSelect
-                    placeholder="Type of Shop"
+                    placeholder={t("Type_of_Shop", "Type of Shop")}
                     className="mb-4 w-full border-gray-300"
                     size="large"
                   >
-                    <Option value="male">ONE</Option>
-                    <Option value="femal">TOW</Option>
+                    <Option value="male">{t("ONE", "ONE")}</Option>
+                    <Option value="femal">{t("TOW", "TOW")}</Option>
                   </AntSelect>
                   <TextArea
                     rows={4}
-                    placeholder="Brand presentation"
+                    placeholder={t("Brand_presentation", "Brand presentation")}
                     className="mb-4 w-full border-gray-300"
                     maxLength={6}
                   />
                   <div className="">
-                    <label htmlFor="">Store for</label>
+                    <label htmlFor="">{t("Store_for", "Store for")}</label>
                     <div className="mt-2">
-                      <Checkbox>All</Checkbox>
-                      <Checkbox>Men</Checkbox>
-                      <Checkbox>Women</Checkbox>
-                      <Checkbox>Children</Checkbox>
-                      <Checkbox>Babies</Checkbox>
+                      <Checkbox>{t("All", "All")}</Checkbox>
+                      <Checkbox>{t("Men", "Men")}</Checkbox>
+                      <Checkbox>{t("Women", "Women")}</Checkbox>
+                      <Checkbox>{t("Children", "Children")}</Checkbox>
+                      <Checkbox>{t("Babies", "Babies")}</Checkbox>
                     </div>
                   </div>
                 </div>
@@ -255,9 +261,9 @@ export const SellerProfileStartupView: React.FC = ({}) => {
           {formStep == 1 && (
             <div className="">
               <h2 className="hidden text-xl font-bold lg:block">
-                Select a plan
+                {t("Select_a_plan", "Select a plan")}
               </h2>
-              <div className="lg:centered-step flex flex-col justify-center lg:flex-row">
+              <div className="lg-centered-step flex flex-col justify-center lg:flex-row">
                 <div
                   onClick={() => {
                     setPlan(0);
@@ -271,26 +277,31 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                       <FiBox />
                     </div>
                     <div>
-                      <div className="text-lg text-white">Free Plan</div>
+                      <div className="text-lg text-white">
+                        {t("Free_Plan", "Free Plan")}
+                      </div>
                       <div className="text-gray-400">
                         <span>$</span>
                         <span className="mx-1 text-2xl text-white">0</span>
-                        <span>/ mounth</span>
+                        <span>/ {t("mounth", "mounth")}</span>
                       </div>
                     </div>
                   </div>
                   <div className="my-4 h-px bg-white opacity-50"></div>
                   <div className="mb-2 flex items-center text-lg text-white">
                     <AiFillCheckCircle className="mr-2 text-xl" />{" "}
-                    <span>$0 / no limit</span>
+                    <span>$0 / {t("no_limit", "no limit")}</span>
                   </div>
                   <div className="flex items-center text-lg text-white">
                     <AiFillCheckCircle className="mr-2 text-xl" />{" "}
-                    <span>20% commission on each sale</span>
+                    <span>
+                      20%{" "}
+                      {t("commission_on_each_sale", "commission on each sale")}
+                    </span>
                   </div>
                   <div className="mt-9 mb-6">
                     <button className="green-background h-10 w-full rounded-md text-white">
-                      Choose a plan
+                      {t("Choose_a_plan", "Choose a plan")}
                     </button>
                   </div>
                 </div>
@@ -307,26 +318,30 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                       <AiOutlineInbox />
                     </div>
                     <div>
-                      <div className="text-lg text-white">Pay Plan</div>
+                      <div className="text-lg text-white">
+                        {t("Pay_Plan", "Pay Plan")}
+                      </div>
                       <div className="text-gray-400">
                         <span>$</span>
                         <span className="mx-1 text-2xl text-white">500</span>
-                        <span>/ mounth</span>
+                        <span>/ {t("mounth", "mounth")}</span>
                       </div>
                     </div>
                   </div>
                   <div className="my-4 h-px bg-white opacity-50"></div>
                   <div className="mb-2 flex items-center text-lg text-white">
                     <AiFillCheckCircle className="mr-2 text-xl" />{" "}
-                    <span>$500 / no limit</span>
+                    <span>$500 / {t("no_limit", "no limit")}</span>
                   </div>
                   <div className="flex items-center text-lg text-white">
                     <AiFillCheckCircle className="mr-2 text-xl" />{" "}
-                    <span>No commission on sales</span>
+                    <span>
+                      {t("No_commission_on_sales", "No commission on sales")}
+                    </span>
                   </div>
                   <div className="mt-9 mb-6">
                     <button className="green-background h-10 w-full rounded-md text-white">
-                      Choose a plan
+                      {t("Choose_a_plan", "Choose a plan")}
                     </button>
                   </div>
                 </div>
@@ -336,13 +351,15 @@ export const SellerProfileStartupView: React.FC = ({}) => {
           {formStep == 2 && (
             <div>
               <h2 className="hidden text-xl font-bold lg:block">
-                Enter payment details
+                {t("Enter_paymen_details", "Enter payment details")}
               </h2>
               <div className="rounded-md border-2 border-gray-300 px-4 py-6 lg:mt-8">
-                <h3 className="text-lg font-bold">Payment</h3>
+                <h3 className="text-lg font-bold">{t("Payment", "Payment")}</h3>
                 <div className="flex flex-wrap items-center">
                   <Input type="radio" checked />
-                  <span className="ml-4">Credit / Debit card</span>
+                  <span className="ml-4">
+                    {t("Credit_Debit_card", "Credit / Debit card")}
+                  </span>
                   <img
                     className="ml-2 inline h-8"
                     src="/visa-logo.png"
@@ -365,17 +382,17 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                   />
                 </div>
                 <div className="mt-4">
-                  <label htmlFor="">Name on Card</label>
+                  <label htmlFor="">{t("Name_on_Card", "Name on Card")}</label>
                   <Input
                     className="mt-2 mb-4 rounded-md border-gray-300"
-                    placeholder="Enter name"
+                    placeholder={t("Enter_Name", "Enter name")}
                     name="name-on-card"
                     id="name-on-card"
                     type="text"
                   />
                 </div>
                 <div className="mt-4">
-                  <label htmlFor="">Card Number</label>
+                  <label htmlFor="">{t("Card_Number", "Card Number")}</label>
                   <Input
                     className="mt-2 mb-4 rounded-md border-gray-300"
                     placeholder="2222 2222 2222 2222"
@@ -386,7 +403,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                 </div>
                 <div className="mt-4 flex justify-between">
                   <div className="mr-2 w-6/12">
-                    <label htmlFor="">Expiry Date</label>
+                    <label htmlFor="">{t("Expiry_Date", "Expiry Date")}</label>
                     <Input
                       className="mt-2 mb-4 rounded-md border-gray-300"
                       placeholder="MM/YY"
@@ -408,7 +425,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                 </div>
                 <div className="flex justify-end">
                   <button className="green-background rounded-md py-2 px-4 text-white">
-                    Pay Now
+                    {t("Pay_Now", "Pay Now")}
                   </button>
                 </div>
               </div>
@@ -417,103 +434,132 @@ export const SellerProfileStartupView: React.FC = ({}) => {
           {formStep == 3 && (
             <div>
               <h2 className="hidden text-xl font-bold lg:block">
-                Enter shippind details
+                {t("Enter_shipping_details", "Enter shipping details")}
               </h2>
               <div>
                 <div className="flex justify-between lg:mt-6">
                   <div className="mr-2 w-6/12">
-                    <label htmlFor="">Sending Country</label>
+                    <label htmlFor="">
+                      {t("Sending_Country", "Sending Country")}
+                    </label>
                     <Select
                       id="sending-country"
                       instanceId="sending-country"
                       className="react-select-container mt-2 mb-4 rounded-md border-gray-300"
                       classNamePrefix="react-select"
                       options={countriesArray}
-                      placeholder={"Country"}
+                      placeholder={t("Country", "Country")}
                     />
                   </div>
                   <div className="ml-2 w-6/12">
-                    <label htmlFor="">Treatment Time</label>
+                    <label htmlFor="">
+                      {t("Treatment_Time", "Treatment Time")}
+                    </label>
                     <AntSelect
-                      placeholder="Treatment Time"
+                      placeholder={t("Treatment_Time", "Treatment Time")}
                       className="mt-2 mb-4 w-full rounded-md border-gray-300"
                       size="large"
                     >
-                      <Option value="1-3">1-3 days</Option>
-                      <Option value="3-5">3-5 days</Option>
-                      <Option value="7">7 days</Option>
-                      <Option value="1-2weeks">1-2 Weeks</Option>
-                      <Option value="2-3weeks">2-3 Weeks</Option>
-                      <Option value="3-4weeks">3-4 Weeks</Option>
+                      <Option value="1-3">1-3 {t("days", "days")}</Option>
+                      <Option value="3-5">3-5 {t("days", "days")}</Option>
+                      <Option value="7">7 {t("days", "days")}</Option>
+                      <Option value="1-2weeks">
+                        1-2 {t("Weeks", "Weeks")}
+                      </Option>
+                      <Option value="2-3weeks">
+                        2-3 {t("Weeks", "Weeks")}
+                      </Option>
+                      <Option value="3-4weeks">
+                        3-4 {t("Weeks", "Weeks")}
+                      </Option>
                     </AntSelect>
                   </div>
                 </div>
                 {shippingMethode && (
                   <div className="mr-4 mb-8 w-full rounded-lg bg-slate-100 p-4">
                     <div>
-                      <label htmlFor="">Destination</label>
+                      <label htmlFor="">
+                        {t("Destination", "Destination")}
+                      </label>
                       <Select
                         id="destination-country"
                         instanceId="destination-country"
                         className="react-select-container mt-2 mb-4 rounded-md border-gray-300"
                         classNamePrefix="react-select"
                         options={countriesArray}
-                        placeholder="Destination"
+                        placeholder={t("Destination", "Destination")}
                       />
                     </div>
                     <div>
-                      <label htmlFor="">Transporter</label>
+                      <label htmlFor="">
+                        {t("Transporter", "Transporter")}
+                      </label>
                       <Input
                         className="mb-4 mt-2 rounded-md border-gray-300"
                         size="large"
-                        placeholder="First Name*"
+                        placeholder={t("Name", "Name") + "*"}
                       />
                     </div>
                     <div className="">
-                      <label htmlFor="">Delivery Time</label>
+                      <label htmlFor="">
+                        {t("Delivery_Time", "Delivery Time")}
+                      </label>
                       <AntSelect
-                        placeholder="Delivery Time"
+                        placeholder={t("Delivery_Time", "Delivery Time")}
                         className="mt-2 mb-4 w-full rounded-md border-gray-300"
                         size="large"
                       >
-                        <Option value="1-3">1-3 days</Option>
-                        <Option value="3-5">3-5 days</Option>
-                        <Option value="7">7 days</Option>
-                        <Option value="1-2weeks">1-2 Weeks</Option>
-                        <Option value="2-3weeks">2-3 Weeks</Option>
-                        <Option value="3-4weeks">3-4 Weeks</Option>
+                        <Option value="1-3">1-3 {t("days", "days")}</Option>
+                        <Option value="3-5">3-5 {t("days", "days")}</Option>
+                        <Option value="7">7 {t("days", "days")}</Option>
+                        <Option value="1-2weeks">
+                          1-2 {t("Weeks", "Weeks")}
+                        </Option>
+                        <Option value="2-3weeks">
+                          2-3 {t("Weeks", "Weeks")}
+                        </Option>
+                        <Option value="3-4weeks">
+                          3-4 {t("Weeks", "Weeks")}
+                        </Option>
                       </AntSelect>
                     </div>
                     <div className="">
-                      <label htmlFor="">Type of Shipping</label>
+                      <label htmlFor="">
+                        {t("Type_of_Shipping", "Type of Shipping")}
+                      </label>
                       <AntSelect
-                        placeholder="Type of Shipping"
+                        placeholder={t("Type_of_Shipping", "Type of Shipping")}
                         className="mt-2 mb-4 w-full rounded-md border-gray-300"
                         size="large"
                       >
-                        <Option value="1-3">One</Option>
-                        <Option value="3-5">Two</Option>
+                        <Option value="1-3">{t("One", "One")}</Option>
+                        <Option value="3-5">{t("Two", "Two")}</Option>
                       </AntSelect>
                     </div>
                     <div>
-                      <label htmlFor="">Price</label>
+                      <label htmlFor="">{t("Price", "Price")}</label>
                       <Input
                         className="mb-4 mt-2 rounded-md border-gray-300"
                         size="large"
-                        placeholder="Price"
+                        placeholder={t("Price", "Price")}
                       />
                     </div>
                     <div>
-                      <label htmlFor="">Price by Additional Item</label>
+                      <label htmlFor="">
+                        {t(
+                          "Price_by_Additional_Item",
+                          "Price by Additional Item"
+                        )}
+                      </label>
                       <Input
                         className="mb-4 mt-2 rounded-md border-gray-300"
                         size="large"
-                        placeholder="Price"
+                        placeholder={t("Price", "Price")}
                       />
                     </div>
                     <div>
                       <button className="green-background rounded-md py-2 px-4 text-white">
-                        Save
+                        {t("Save", "Save")}
                       </button>
                       <button
                         className="ml-4 rounded-md bg-red-400 py-2 px-4 text-white"
@@ -521,7 +567,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                           setShippingMethod(false);
                         }}
                       >
-                        Remove
+                        {t("Remove", "Remove")}
                       </button>
                     </div>
                   </div>
@@ -533,7 +579,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                       setShippingMethod(true);
                     }}
                   >
-                    Add Method
+                    {t("Add_Method", "Add Method")}
                   </button>
                 </div>
               </div>
@@ -542,10 +588,13 @@ export const SellerProfileStartupView: React.FC = ({}) => {
           {formStep == 4 && (
             <div>
               <h2 className="hidden text-xl font-bold lg:block">
-                Find friends on Wiaah
+                {t("Find_friends_on_Wiaah", "Find friends on Wiaah")}
               </h2>
               <p className="mb-8 text-gray-400 lg:mb-0">
-                This information will help you find friends on Wiaah
+                {t(
+                  "This_information_will_help",
+                  "This information will help you find friends on Wiaah"
+                )}
               </p>
               <div className="lg:p-12">
                 <div>
@@ -566,7 +615,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                         setMailService(GMAIL_MAIL_SERVICE);
                       }}
                     >
-                      Find Friends
+                      {t("Find_Friends", "Find Friends")}
                     </div>
                   </div>
                   {mailService == 1 && (
@@ -574,10 +623,10 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                       <Input
                         className="mt-8 mb-4 block w-4/12 border-gray-300"
                         type="email"
-                        placeholder="Enter email"
+                        placeholder={t("Email", "Email")}
                       />
                       <button className="green-background h-10 rounded-sm px-4 text-white">
-                        Find friends
+                        {t("Find_Friends", "Find Friends")}
                       </button>
                     </div>
                   )}
@@ -601,7 +650,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                         setMailService(YAHOO_MAIL_SERVICE);
                       }}
                     >
-                      Find Friends
+                      {t("Find_Friends", "Find Friends")}
                     </div>
                   </div>
                   {mailService == 2 && (
@@ -609,10 +658,10 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                       <Input
                         className="mt-8 mb-4 block w-4/12 border-gray-300"
                         type="email"
-                        placeholder="Enter email"
+                        placeholder={t("Email", "Email")}
                       />
                       <button className="green-background h-10 rounded-sm px-4 text-white">
-                        Find friends
+                        {t("Find_Friends", "Find Friends")}
                       </button>
                     </div>
                   )}
@@ -636,7 +685,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                         setMailService(OUTLOOK_MAIL_SERVICE);
                       }}
                     >
-                      Find Friends
+                      {t("Find_Friends", "Find Friends")}
                     </div>
                   </div>
                   {mailService == 3 && (
@@ -644,10 +693,10 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                       <Input
                         className="mt-8 mb-4 block w-4/12 border-gray-300"
                         type="email"
-                        placeholder="Enter email"
+                        placeholder={t("Email", "Email")}
                       />
                       <button className="green-background h-10 rounded-sm px-4 text-white">
-                        Find friends
+                        {t("Find_Friends", "Find Friends")}
                       </button>
                     </div>
                   )}
@@ -671,7 +720,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                         setMailService(WHATSAPP_MAIL_SERVICE);
                       }}
                     >
-                      Find Friends
+                      {t("Find_Friends", "Find Friends")}
                     </div>
                   </div>
                   {mailService == 4 && (
@@ -679,10 +728,10 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                       <Input
                         className="mt-8 mb-4 block w-4/12 border-gray-300"
                         type="text"
-                        placeholder="Enter phone"
+                        placeholder={t("Enter_phone", "Enter phone")}
                       />
                       <button className="green-background h-10 rounded-sm px-4 text-white">
-                        Find friends
+                        {t("Find_Friends", "Find Friends")}
                       </button>
                     </div>
                   )}
@@ -695,7 +744,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                         <IoMdMail className="text-3xl" />
                       </div>
                       <span className="text-lg font-bold">
-                        Others Email Service
+                        {t("Others_Email_Service", "Others Email Service")}
                       </span>
                     </div>
                     <div
@@ -704,7 +753,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                         setMailService(OTHER_MAIL_SERVICE);
                       }}
                     >
-                      Find Friends
+                      {t("Find_Friends", "Find Friends")}
                     </div>
                   </div>
                   {mailService == 5 && (
@@ -712,10 +761,10 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                       <Input
                         className="mt-8 mb-4 block w-4/12 border-gray-300"
                         type="email"
-                        placeholder="Enter email"
+                        placeholder={t("Email", "Email")}
                       />
                       <button className="green-background h-10 rounded-sm px-4 text-white">
-                        Find friends
+                        {t("Find_Friends", "Find Friends")}
                       </button>
                     </div>
                   )}
@@ -727,7 +776,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
           {formStep == 5 && (
             <div className="">
               <h2 className="hidden text-xl font-bold lg:block">
-                Set your profile picture
+                {t("Set_your_profile_picture", "Set your profile picture")}
               </h2>
               <div className="centered-step flex flex flex-col items-center justify-center lg:flex-row lg:p-0 lg:p-12">
                 <div className="mb-2  justify-center lg:w-4/12">
@@ -789,10 +838,10 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                       }}
                     >
                       <div className="profil-pic-btn-text text-center text-lg">
-                        Upload a photo
+                        {t("Upload_a_photo", "Upload a photo")}
                       </div>
                       <div className="hidden text-center text-gray-500 lg:block">
-                        From your computer
+                        {t("From_your_computer", "From your computer")}
                       </div>
                     </div>
                   </div>
@@ -807,10 +856,10 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                       }}
                     >
                       <div className="profil-pic-btn-text text-center text-lg">
-                        Take a Photo
+                        {t("Take_a_Photo", "Take a Photo")}
                       </div>
                       <div className="hidden text-center text-gray-500 lg:block">
-                        with your webcam
+                        {t("with_your_webcam", "with your webcam")}
                       </div>
                     </div>
                   </div>
@@ -827,7 +876,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
             }}
           >
             <MdArrowBackIosNew className="mr-1 inline" />
-            Back
+            {t("Back", "Back")}
           </button>
           <div>
             <button
@@ -836,7 +885,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                 setFormStep(formStep + 1);
               }}
             >
-              Skip
+              {t("Skip", "Skip")}
             </button>
             <button
               className="green-background ml-4 rounded-md py-2 px-6 text-white"
@@ -844,7 +893,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                 setFormStep(formStep + 1);
               }}
             >
-              Next
+              {t("Next", "Next")}
             </button>
           </div>
         </div>

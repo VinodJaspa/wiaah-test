@@ -10,40 +10,40 @@ import {
 } from "react-icons/fa";
 import { Sidebar } from "../blocks";
 import Link from "next/link";
-
-let menup = [
-  {
-    label: "Clothing",
-    url: "",
-    children: [
-      {
-        label: "Women's",
-        url: "",
-        children: [
-          {
-            label: "Dresses",
-            url: "/category/dresses",
-          },
-          {
-            label: "Shirts",
-            url: "/category/shirts",
-          },
-        ],
-      },
-      {
-        label: "Men's",
-        url: "/category/mens",
-      },
-    ],
-  },
-  {
-    label: "Home & Living",
-    url: "/category/home-and-living",
-  },
-];
+import { t } from "i18next";
 
 export const Header: React.FC = () => {
   const sidebar = useContext(SidebarContext);
+  let menup = [
+    {
+      label: t("Clothing", "Clothing"),
+      url: "",
+      children: [
+        {
+          label: t("Women_s", "Women's"),
+          url: "",
+          children: [
+            {
+              label: t("Dresses", "Dresses"),
+              url: "/category/dresses",
+            },
+            {
+              label: t("Shirts", "Shirts"),
+              url: "/category/shirts",
+            },
+          ],
+        },
+        {
+          label: t("Men_s", "Men's"),
+          url: "/category/mens",
+        },
+      ],
+    },
+    {
+      label: t("Home_&_Living", "Home & Living"),
+      url: "/category/home-and-living",
+    },
+  ];
 
   return (
     <>
@@ -62,19 +62,19 @@ export const Header: React.FC = () => {
           <div className="flex h-12">
             <input
               className="w-60 appearance-none rounded-l-lg border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none"
-              placeholder="Search"
+              placeholder={t("Search", "Search")}
             />
             <label htmlFor="Category" className="relative flex">
               <FaChevronDown className="pointer-events-none absolute inset-y-1/3 right-3 h-4 w-4 text-green-400" />
               <select
                 className="w-60 appearance-none border-l border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none"
-                placeholder="Category"
+                placeholder={t("Category", "Category")}
               >
-                <option>Category</option>
-                <option>Dress</option>
-                <option>Jewelry</option>
-                <option>Clothing</option>
-                <option>Shoes</option>
+                <option>{t("Category", "Category")}</option>
+                <option>{t("Dress", "Dress")}</option>
+                <option>{t("Jewelry", "Jewelry")}</option>
+                <option>{t("Clothing", "Clothing")}</option>
+                <option>{t("Shoes", "Shoes")}</option>
               </select>
             </label>
             <button className="rounded-r-lg bg-green-400 px-2.5 py-1.5">
@@ -86,7 +86,8 @@ export const Header: React.FC = () => {
               <li className="flex cursor-pointer items-center text-sm">
                 <Link href="/login">
                   <div>
-                    Sign In <FaUser className="ml-0 inline-flex h-8 w-8" />
+                    {t("Sign_In", "Sign In")}{" "}
+                    <FaUser className="ml-0 inline-flex h-8 w-8" />
                   </div>
                 </Link>
               </li>
@@ -113,22 +114,28 @@ export const Header: React.FC = () => {
               }}
             >
               <FaAlignJustify className="h-4 w-4" />
-              <span className="inline-flex">All</span>
+              <span className="inline-flex">{t("All", "All")}</span>
             </li>
             {[...Array(1)].map((_, i: number) => (
               <React.Fragment key={i}>
-                <li className="cursor-pointer">Dress</li>
-                <li className="cursor-pointer">Jewelry</li>
-                <li className="cursor-pointer">Clothing</li>
-                <li className="cursor-pointer">Shoes</li>
-                <li className="cursor-pointer">Accessories</li>
-                <li className="cursor-pointer">Dress</li>
-                <li className="cursor-pointer">Jewelry</li>
-                <li className="cursor-pointer">Clothing</li>
-                <li className="cursor-pointer">Shoes</li>
-                <li className="cursor-pointer">Accessories</li>
-                <li className="cursor-pointer">Shoes</li>
-                <li className="cursor-pointer">Accessories</li>
+                <li className="cursor-pointer">{t("Shoes", "Shoes")}</li>
+                <li className="cursor-pointer">{t("Jewelry", "Jewelry")}</li>
+                <li className="cursor-pointer">{t("Clothing", "Clothing")}</li>
+                <li className="cursor-pointer">{t("Shoes", "Shoes")}</li>
+                <li className="cursor-pointer">
+                  {t("Accessories", "Accessories")}
+                </li>
+                <li className="cursor-pointer">{t("Shoes", "Shoes")}</li>
+                <li className="cursor-pointer">{t("Jewelry", "Jewelry")}</li>
+                <li className="cursor-pointer">{t("Clothing", "Clothing")}</li>
+                <li className="cursor-pointer">{t("Shoes", "Shoes")}</li>
+                <li className="cursor-pointer">
+                  {t("Accessories", "Accessories")}
+                </li>
+                <li className="cursor-pointer">{t("Shoes", "Shoes")}</li>
+                <li className="cursor-pointer">
+                  {t("Accessories", "Accessories")}
+                </li>
               </React.Fragment>
             ))}
           </ul>
@@ -164,7 +171,7 @@ export const Header: React.FC = () => {
         <div className="flex h-12 w-full justify-center">
           <input
             className="w-48 appearance-none rounded-l-lg border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none md:w-72"
-            placeholder="Search"
+            placeholder={t("Search", "Search")}
           />
           <label htmlFor="Category" className="relative flex">
             <FaChevronDown className="pointer-events-none absolute inset-y-1/3 right-3 h-4 w-4 text-green-400" />
@@ -172,11 +179,11 @@ export const Header: React.FC = () => {
               className="w-28 appearance-none border-l border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none md:w-60"
               placeholder="Category"
             >
-              <option>Category</option>
-              <option>Dress</option>
-              <option>Jewelry</option>
-              <option>Clothing</option>
-              <option>Shoes</option>
+              <option>{t("Category", "Category")}</option>
+              <option>{t("Dress", "Dress")}</option>
+              <option>{t("Jewelry", "Jewelry")}</option>
+              <option>{t("Clothing", "Clothing")}</option>
+              <option>{t("Shoes", "Shoes")}</option>
             </select>
           </label>
           <button className="rounded-r-lg bg-green-400 px-2.5 py-1.5">

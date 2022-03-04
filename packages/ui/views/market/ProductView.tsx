@@ -12,7 +12,7 @@ import { Navigation } from "swiper";
 import { useMediaQuery } from "react-responsive";
 import "swiper/css";
 import "swiper/css/navigation";
-import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 const breadcrumb = [
   {
@@ -80,27 +80,27 @@ const productComments = [
   },
 ];
 export const ProductView: React.FC = () => {
-  const { t } = useTranslation();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
   return (
     <>
       <div className="block w-full space-y-6 p-5">
         <div className="">
-          {t("common.translated-text")}
           <BreadCrumb breadcrumb={breadcrumb} />
         </div>
         <div>
-          <div className="flex-column mb-10 flex-wrap items-end lg:flex lg:justify-between">
+          <div className="flex-column mb-10 flex-wrap items-stretch lg:flex lg:justify-between">
             <div className="w-full lg:w-8/12">
               <ProductImageGallery images={images} />
             </div>
-            <div className="mt-0 w-full md:mt-4 lg:w-4/12 lg:pl-5">
+            <div className="mt-4 w-full lg:mt-0  lg:w-4/12 lg:pl-5 ">
               <ProductViewRight
                 price={1000}
+                oldPrice={1500}
                 name="Camera Digital with extra lenses"
                 reviews={5}
                 off={10}
                 rating={4}
+                category="Horology"
               />
             </div>
           </div>
@@ -116,8 +116,8 @@ export const ProductView: React.FC = () => {
             </div>
           </div>
           <div className="">
-            <p className="my-10 flex justify-center text-2xl font-bold uppercase">
-              RELATED PRODUCTS
+            <p className="my-10 flex justify-center text-2xl font-bold uppercase uppercase">
+              {t("Related_Products", "Related Products")}
             </p>
             <div className="relative mb-10 md:px-20">
               <Swiper
@@ -129,7 +129,7 @@ export const ProductView: React.FC = () => {
                 {[...Array(12)].map((_, i: number) => (
                   <SwiperSlide className="flex justify-center" key={i}>
                     <Product
-                      name="Camera Digital with extra lenses"
+                      name={t("Camera Digital with extra lenses")}
                       imgUrl="/shop-2.jpeg"
                       price={518.68}
                       rating={4}

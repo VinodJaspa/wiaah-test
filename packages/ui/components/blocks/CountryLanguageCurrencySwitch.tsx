@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Language } from "../../languages/enums/Language";
+import { Language } from "ui/languages/enums/Language";
 import { Modal } from "antd";
 import { Select } from "antd";
 import { Divider } from "ui/components";
@@ -8,17 +8,18 @@ import { Country } from "country-state-city";
 import { useRouter } from "next/router";
 import { FaGlobeEurope } from "react-icons/fa";
 import { useCookies } from "react-cookie";
+import { t } from "i18next";
 
 const countries = Country.getAllCountries();
 const { Option } = Select;
 
 export const CountryLanguageCurrencySwitch: React.FC = () => {
   const router = useRouter();
-  const { locale, locales, defaultLocale } = router;
+  const { locale } = router;
   const [cookie, setCookie] = useCookies(["country", "currency"]);
   const { i18n } = useTranslation();
   const [langCode, setLang] = useState<Language>(locale as Language);
-  const [countryCode, setCountryCode] = useState("us");
+  const [countryCode, setCountryCode] = useState("US");
   const [currency, setCurrency] = useState("usd");
   const [langCaption, setLanguageCaption] = useState(locale);
   const [countryName, setCountryName] = useState("United States");
@@ -57,6 +58,7 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
   useEffect(() => {
     if (cookie.country) {
       setCountryName(Country.getCountryByCode(cookie.country)?.name as string);
+      setCountryCode(cookie.country);
     }
     if (cookie.currency) {
       setCurrency(cookie.currency);
@@ -145,16 +147,23 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
           closeIcon=" "
           visible={isModalVisible}
         >
-          <div className="px-4 text-3xl font-light">Update Language</div>
+          <div className="px-4 text-3xl font-light">
+            {t("Update_Language", "Update Language")}
+          </div>
           <div className="py-1">
             <Divider />
           </div>
           <div className="mb-5 text-lg">
-            Set your Languages, Country and Currency
+            {t(
+              "Set_Languages_Country_Currency",
+              "Set your Languages, Country and Currency"
+            )}
           </div>
           <div className="mb-8">
-            <div className="text-lg">Language</div>
-            <div className="mt-2 text-gray-400">Language you prefer</div>
+            <div className="text-lg">{t("Language", "Language")}</div>
+            <div className="mt-2 text-gray-400">
+              {t("Language_you_prefer", "Language you prefer")}
+            </div>
             <div className="int-motal-input-container">
               <Select
                 defaultValue={langCode}
@@ -170,12 +179,14 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
             </div>
           </div>
           <div className="mb-8">
-            <div className="text-lg">Country</div>
-            <div className="mt-2 text-gray-400">Country you live in</div>
+            <div className="text-lg">{t("Country", "Country")}</div>
+            <div className="mt-2 text-gray-400">
+              {t("Country_you_live_in", "Country you live in")}
+            </div>
             <div className="int-motal-input-container">
               <Select
                 showSearch
-                defaultValue="US"
+                defaultValue={countryCode}
                 className="w-full text-lg"
                 bordered={false}
                 optionFilterProp="children"
@@ -192,8 +203,10 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
             </div>
           </div>
           <div className="mb-8">
-            <div className="text-lg">Currency</div>
-            <div className="mt-2 text-gray-400">Currency you use</div>
+            <div className="text-lg">{t("Currency", "Currency")}</div>
+            <div className="mt-2 text-gray-400">
+              {t("Currency_you_use", "Currency you use")}
+            </div>
             <div className="int-motal-input-container">
               <Select
                 defaultValue="usd"
@@ -202,9 +215,15 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
                 bordered={false}
                 style={{}}
               >
-                <Option value="usd">$ United State Dollar (USD)</Option>
-                <Option value="chf">Swiss Franc (CHF)</Option>
-                <Option value="gbp">£ The pound sterling (GBP)</Option>
+                <Option value="usd">
+                  $ {t("United_State_Dollar", "United State Dollar")} (USD)
+                </Option>
+                <Option value="chf">
+                  {t("Swiss_Franc", "Swiss Franc")} (CHF)
+                </Option>
+                <Option value="gbp">
+                  £ {t("The_pound_sterling", "The pound sterling")} (GBP)
+                </Option>
                 <Option value="eur">€ Euro (EUR)</Option>
               </Select>
             </div>
@@ -219,13 +238,13 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
                 setIsModalVisible(false);
               }}
             >
-              Close
+              {t("Close", "Close")}
             </button>
             <button
               className="green-background rounded-md py-2 px-6 text-white"
               onClick={saveInternationalSettings}
             >
-              Save
+              {t("Save", "Save")}
             </button>
           </div>
         </Modal>

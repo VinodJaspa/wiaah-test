@@ -12,28 +12,27 @@ import {
 } from "react-icons/fa";
 import { BsArrowLeft } from "react-icons/bs";
 import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
-import { useRouter } from "next/router";
-
-const breadcrumb = [
-  {
-    text: "Clothing",
-    url: "/category/clothing",
-  },
-  {
-    text: "Women",
-    url: "/category/clothing/women",
-  },
-  {
-    text: "Dresses",
-    url: "/category/clothing/women/dresses",
-  },
-];
+import { t } from "i18next";
 
 export const SearchView: React.FC = () => {
   let [isGrid, setGrid] = useState(false);
   let [filterVisibleOnMobile, setFilterVisibleOnMobile] = useState(false);
-  const router = useRouter();
-  const { locale, locales, defaultLocale } = router;
+
+  const breadcrumb = [
+    {
+      text: t("Clothing", "Clothing"),
+      url: "/category/clothing",
+    },
+    {
+      text: t("Women_s", "Women's"),
+      url: "/category/clothing/women",
+    },
+    {
+      text: t("Dresses", "Dresses"),
+      url: "/category/clothing/women/dresses",
+    },
+  ];
+
   return (
     <>
       <div className="block w-full space-y-6 p-5">
@@ -47,7 +46,7 @@ export const SearchView: React.FC = () => {
             }}
             className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs md:hidden"
           >
-            <samp>Filter</samp>
+            <samp>{t("Filter", "Filter")}</samp>
             <FaChevronDown className="ml-2" />
           </div>
           <HiOutlineViewList
@@ -82,10 +81,10 @@ export const SearchView: React.FC = () => {
                 }}
                 className="back-button ml-2  h-full text-xl"
               />
-              <span className="ml-8">Filter</span>
+              <span className="ml-8">{t("Filter", "Filter")}</span>
             </div>
             <ProductFilter
-              priceRange={{ min: 200, max: 500 }}
+              priceRange={{ min: 0, max: 1000 }}
               brands={[
                 { label: "Merishop", value: "merishop" },
                 { label: "Rehanseller", value: "rehanseller" },
@@ -138,7 +137,9 @@ export const SearchView: React.FC = () => {
         <Divider />
 
         <div className="flex w-full justify-center">
-          <p className="text-2xl font-bold uppercase">Collaboration</p>
+          <p className="text-2xl font-bold uppercase">
+            {t("Collaboration", "Collaboration")}
+          </p>
         </div>
 
         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">

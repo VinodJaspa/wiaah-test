@@ -7,6 +7,7 @@ import {
   FaChevronLeft,
 } from "react-icons/fa";
 import { SidebarContext } from "../helpers/SidebarContext";
+import { t } from "i18next";
 
 interface NastedMenu {
   label: string;
@@ -51,7 +52,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ menu = [] }) => {
           <span className="inline-flex items-center">
             <Link href="/login">
               <a className="flex">
-                <FaUserAlt className="mr-2 h-4 w-4" /> Hello, Sign in
+                <FaUserAlt className="mr-2 h-4 w-4" />{" "}
+                {t("Hello_Sign_in", "Hello, Sign in")}
               </a>
             </Link>
           </span>
@@ -73,11 +75,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ menu = [] }) => {
               onClick={() => resetPath()}
             >
               <FaChevronLeft className="h-4 w-4" />
-              <p className="uppercase group-hover:text-green-400">Main Menu</p>
+              <p className="uppercase group-hover:text-green-400">
+                {t("Main_Menu", "Main Menu")}
+              </p>
             </li>
           )}
 
-          {menuToRender.map((item, key: number) => {
+          {menuToRender?.map((item, key: number) => {
             if (item.children) {
               return (
                 <li

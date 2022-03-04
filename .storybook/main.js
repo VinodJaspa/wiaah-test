@@ -15,6 +15,7 @@ module.exports = {
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
+    "storybook-react-i18next",
     {
       /**
        * Fix Storybook issue with PostCSS@8

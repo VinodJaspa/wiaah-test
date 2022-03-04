@@ -89,37 +89,6 @@ button.image-gallery-icon {
   border-color: #57bf9c;
 }
 
-.w-10p {
-  width: 10%;
-}
-.w-20p {
-  width: 20%;
-}
-.w-30p {
-  width: 30%;
-}
-.w-40p {
-  width: 40%;
-}
-.w-50p {
-  width: 50%;
-}
-.w-60p {
-  width: 60%;
-}
-.w-70p {
-  width: 70%;
-}
-.w-80p {
-  width: 80%;
-}
-.w-90p {
-  width: 90%;
-}
-.w-100 {
-  width: 100%;
-}
-
 .swiper-button-prev,
 .swiper-button-next {
   background-color: #57bf9c;
@@ -169,12 +138,18 @@ button.image-gallery-icon {
   .profil-pic-btn-text {
     color: #57bf9c;
   }
-  .centered-step {
+  .centered-step,
+  .lg-centered-step {
     position: fixed;
     top: calc(50% + 40px);
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
+  }
+  .filter-panel {
+    border-bottom: #c9c9c9 1px solid;
+    border-left: #c9c9c9 1px solid;
+    border-right: #c9c9c9 1px solid;
   }
 }
 .int-motal-input-container {
@@ -187,4 +162,17 @@ button.image-gallery-icon {
   top: 0px;
   left: -12px;
   width: calc(100% + 23px);
+}
+
+.product-image-slider-container {
+  background-color: #000000;
+}
+.product-image-slider-container::before {
+  content: "";
+  display: inline-block;
+  padding-bottom: 60%;
+}
+.slider-arrow {
+  top: 50%;
+  transform: translateY(-50%);
 }

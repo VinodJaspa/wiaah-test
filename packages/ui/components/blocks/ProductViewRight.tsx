@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { FaChevronUp } from "react-icons/fa";
-import { AiOutlineStar, AiFillStar } from "react-icons/ai";
+import { Rate } from "antd";
+import { Select } from "antd";
+import { t } from "i18next";
+
+const { Option } = Select;
 
 export interface ProductProps {
   name?: string;
@@ -10,7 +14,7 @@ export interface ProductProps {
   rating?: number;
   off?: number;
   reviews?: number;
-  category?: "";
+  category?: string;
   saved?: boolean;
   avaible?: number;
   shippedToYourCountry?: boolean;
@@ -29,26 +33,17 @@ export const ProductViewRight: React.FC<ProductProps> = ({
 }) => {
   let [optionOpened, setOptionOpened] = useState(false);
   return (
-    <>
+    <div className="flex h-full flex-col items-start justify-between">
       <samp className="green-text">{category}</samp>
       <h1 className="m-0 text-2xl font-bold text-gray-800 ">{name}</h1>
       <div className="flex items-center">
         <div className="inline-flex items-center">
-          {rating <= 5 && rating >= 0 ? (
-            <div className="product-rating flex items-center text-xl">
-              {[...Array(rating)].map((_, i: number) => (
-                <AiFillStar className="inline text-orange-500" key={i} />
-              ))}
-              {[...Array(5 - rating)].map((_, i: number) => (
-                <AiOutlineStar className="inline text-orange-500" key={i} />
-              ))}
-            </div>
-          ) : (
-            ""
-          )}
+          <Rate allowHalf value={rating} className="text-orange-500" />
         </div>
         <div className="mx-3 h-5 w-px bg-gray-300"></div>
-        <span className="text-gray-500">{reviews} Reviews</span>
+        <span className="text-gray-500">
+          {reviews} {t("Reviews", "Reviews")}
+        </span>
       </div>
       <div className="mt-2 flex items-center font-bold">
         <span className="product-price text-3xl">${price}</span>
@@ -56,63 +51,54 @@ export const ProductViewRight: React.FC<ProductProps> = ({
           ""
         ) : (
           <span className="product-old-price ml-5 text-2xl text-slate-400 line-through">
-            {oldPrice}
+            ${oldPrice}
           </span>
         )}
       </div>
       <div className="my-2 inline-block rounded-md bg-red-400 px-4 py-1 font-bold text-white">
         <span>{off}% </span>
-        <span> OFF</span>
+        <span>{t("OFF", "OFF")}</span>
       </div>
       <div className="mb-2 text-lg">
         <div>
           <span className="font-bold">
-            {avaible ? "Available:" + avaible : "Not Available"}{" "}
+            {avaible
+              ? t("Available", "Available") + ":" + avaible
+              : t("Not_Available", "Not Available")}{" "}
           </span>
-          <span className="text-gray-500"> In Stock</span>
+          <span className="text-gray-500">{t("In_Stock", "In Stock")} </span>
         </div>
         <div className="text-red-500">
-          {shippedToYourCountry ? "Shipping available in your country" : ""}
+          {shippedToYourCountry
+            ? t(
+                "Shipping_available_in_your_country",
+                "Shipping available in your country"
+              )
+            : ""}
         </div>
       </div>
       <div className="mb-2">
-        <div className="mb-1 font-light">Color</div>
+        <div className="mb-1 font-light">{t("Color", "Color")}</div>
         <div className="flex">
           <div className="mr-3 h-8 w-8 rounded-sm border-2 border-black bg-red-500"></div>
           <div className="green-background mr-3 h-8 w-8 rounded-sm "></div>
           <div className="mr-3 h-8 w-8 rounded-sm bg-blue-500 "></div>
         </div>
       </div>
-      <div>
-        <div className="mb-1 font-light">Size</div>
-        <div
-          className={`${
-            optionOpened ? "" : "h-10"
-          } shipping-selector mb-7 overflow-hidden rounded-sm border border-solid px-2 transition-height duration-300 ease-in-out`}
+      <div className="mb-4 w-full">
+        <div className="mb-1 font-light">{t("Size", "Size")}</div>
+        <Select
+          size="large"
+          id="cityselect"
+          className="w-full"
+          placeholder={t("Size", "Size")}
         >
-          <div
-            className="accordion-toggle mb-3 flex h-10 items-center justify-between"
-            onClick={() => {
-              setOptionOpened(!optionOpened);
-            }}
-          >
-            <span className="font-light">Small</span>
-            <FaChevronUp className={`${optionOpened ? "" : "rotate-180"} `} />
-          </div>
-          <div className="justify-left mb-2 flex items-center">
-            <input
-              name="shipping"
-              type="radio"
-              value="val"
-              className="rounded text-pink-500"
-            />
-            <span className="ml-2 text-xs">Label</span>
-          </div>
-        </div>
+          <Option value="small">{t("Small", "Small")}</Option>
+        </Select>
       </div>
-      <button className="green-background w-full rounded-sm py-2 text-white">
-        ADD TO CART
+      <button className="green-background w-full rounded-sm py-2 uppercase text-white">
+        {t("Add_To_Cart", "Add To Cart")}
       </button>
-    </>
+    </div>
   );
 };

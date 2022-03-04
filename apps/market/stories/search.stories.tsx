@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import Search from "../search";
+import Search from "../pages/search";
 export default {
   title: "Market/Search Results",
   component: Search,
