@@ -89,7 +89,7 @@ export const ProductFilter: React.FC<ProductFilterProps> = ({
   ];
   return (
     <>
-      <Collapse ghost>
+      <Collapse ghost expandIconPosition="right">
         <Panel
           className="filter-panel"
           header={t("Category", "Category")}

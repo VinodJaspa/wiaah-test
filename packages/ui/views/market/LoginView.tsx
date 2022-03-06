@@ -51,7 +51,7 @@ export const LoginView: React.FC<LoginViewProps> = ({
           </div>
         </div>
         <div className="flex w-full justify-end lg:w-6/12">
-          <div className="rounded-lg bg-white px-7 pt-4 pb-6 shadow-xl lg:w-10/12">
+          <div className="w-full rounded-lg bg-white px-7 pt-4 pb-6 shadow-xl lg:w-10/12">
             {(loginType == "login" || loginType == "buyer-signup") && (
               <Tabs
                 activeKey={loginType == "login" ? "1" : "2"}

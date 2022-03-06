@@ -16,7 +16,7 @@ export const ImageSlider: React.FC = () => {
         <SimpleImageSlider
           autoPlay
           width="100%"
-          height={isTabletOrMobile ? 300 : 350}
+          height={isTabletOrMobile ? 230 : 350}
           images={images}
           showBullets={true}
           showNavs={false}

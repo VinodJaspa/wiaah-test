@@ -4,8 +4,8 @@ const path = require("path");
 
 module.exports = {
   stories: [
-    "../apps/market/pages/**/*.stories.mdx",
-    "../apps/market/pages/**/*.stories.@(js|jsx|ts|tsx)",
+    "../apps/**/*.stories.mdx",
+    "../apps/**/*.stories.@(js|jsx|ts|tsx)",
     "../packages/ui/**/*.stories.mdx",
     "../packages/ui/**/*.stories.@(js|jsx|ts|tsx)",
   ],

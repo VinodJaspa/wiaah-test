@@ -143,16 +143,18 @@ export const Header: React.FC = () => {
       </nav>
 
       {/* Mobile Nav */}
-      <nav className="block w-full space-y-6 bg-gray-800 p-6 lg:hidden">
+      <nav className="block w-full space-y-6 bg-black p-6 lg:hidden">
         <div className="flex w-full items-center justify-between">
           <div className="flex items-center space-x-4">
-            <FaAlignJustify
-              className="h-5 w-5 cursor-pointer text-white"
-              onClick={() => {
-                sidebar?.toggleVisibility();
-              }}
-            />
-            <p className="text-lg font-black text-green-300">Wiaah</p>
+            <p className="h-16 cursor-pointer text-lg font-black text-green-300">
+              <Link href="/">
+                <img
+                  alt="wiaah_logo"
+                  src="/wiaah_logo.png"
+                  className="h-full"
+                />
+              </Link>
+            </p>
           </div>
           <div className="flex">
             <ul className="inline-flex space-x-4 text-white">
@@ -168,24 +170,19 @@ export const Header: React.FC = () => {
             </ul>
           </div>
         </div>
-        <div className="flex h-12 w-full justify-center">
+        <div className="flex h-12 w-full">
+          <div className="flex items-center pr-5">
+            <FaAlignJustify
+              className="h-5 w-5 cursor-pointer text-white"
+              onClick={() => {
+                sidebar?.toggleVisibility();
+              }}
+            />
+          </div>
           <input
-            className="w-48 appearance-none rounded-l-lg border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none md:w-72"
+            className="min-w-min grow appearance-none rounded-l-lg border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none md:w-72"
             placeholder={t("Search", "Search")}
           />
-          <label htmlFor="Category" className="relative flex">
-            <FaChevronDown className="pointer-events-none absolute inset-y-1/3 right-3 h-4 w-4 text-green-400" />
-            <select
-              className="w-28 appearance-none border-l border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none md:w-60"
-              placeholder="Category"
-            >
-              <option>{t("Category", "Category")}</option>
-              <option>{t("Dress", "Dress")}</option>
-              <option>{t("Jewelry", "Jewelry")}</option>
-              <option>{t("Clothing", "Clothing")}</option>
-              <option>{t("Shoes", "Shoes")}</option>
-            </select>
-          </label>
           <button className="rounded-r-lg bg-green-400 px-2.5 py-1.5">
             <FaSearch className="h-5 w-5 text-white" />
           </button>
