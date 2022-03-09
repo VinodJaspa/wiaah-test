@@ -10,7 +10,7 @@ const SellerSignup: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Wiaah | Login</title>
+        <title>Wiaah | Seller SignUp</title>
       </Head>
       <MasterLayout>
         <main className="block w-full grow">
