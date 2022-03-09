@@ -3,22 +3,21 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { LoginView } from "ui/views";
 import MasterLayout from "../components/MasterLayout";
-import LoignTypes from "../../lib/LoignTypes";
+import LoignTypes from "../lib/LoignTypes";
 
-const BuyerSignup: NextPage = () => {
-
+const SellerSignup: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Wiaah | Buyer SignUp</title>
+        <title>Wiaah | Seller SignUp</title>
       </Head>
       <MasterLayout>
         <main className="block w-full grow">
-            <LoginView loginType={LoignTypes.buyer_signup} />
+          <LoginView loginType={LoignTypes.seller_signup} />
         </main>
       </MasterLayout>
     </>
   );
 };
 
-export default BuyerSignup
+export default SellerSignup;
