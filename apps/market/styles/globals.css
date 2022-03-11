@@ -106,9 +106,10 @@ button.image-gallery-icon {
 }
 .login-view-container {
   background-image: url("/bg-img.jpg");
+  background-repeat: no-repeat;
 }
 .login-form {
-  height: 24rem;
+  min-height: 24rem;
 }
 
 .profile-pic-container {

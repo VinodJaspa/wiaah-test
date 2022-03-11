@@ -38,11 +38,7 @@ export const Product: React.FC<ProductProps> = ({
         <div className="relative block max-w-xs cursor-pointer overflow-hidden rounded-lg border-2 border-cyan-400/30">
           <div className="relative block">
             <div className="aspect-[custum-aspect] overflow-hidden">
-              <img
-                src={imgUrl}
-                alt="shop_img"
-                className="w-full w-full object-fill"
-              />
+              <img src={imgUrl} alt="shop_img" className="w-full object-fill" />
             </div>
 
             {off ? (

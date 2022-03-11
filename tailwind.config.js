@@ -7,15 +7,16 @@ module.exports = {
   theme: {
     extend: {
       transitionProperty: {
-        'height': 'height'
+        height: "height",
       },
       aspectRatio: {
-        '4/3': '4 / 3',
-        'custum-aspect': '5 / 4'
+        "4/3": "4 / 3",
+        "custum-aspect": "5 / 4",
+      },
+      colors: {
+        PrimaryGreen: "#57bf9c",
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/forms')
-  ],
+  plugins: [require("@tailwindcss/forms")],
 };

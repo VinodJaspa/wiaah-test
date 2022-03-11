@@ -1,6 +1,6 @@
 import React from "react";
 import { FaChevronDown } from "react-icons/fa";
-import { Card, ImageCard, Divider } from "../../components";
+import { Card, Divider } from "../../components";
 import {
   FaAngleDoubleLeft,
   FaAngleDoubleRight,
@@ -8,6 +8,7 @@ import {
   FaAngleRight,
 } from "react-icons/fa";
 import { t } from "i18next";
+import { Collaboration } from "./Collaboration";
 
 export const HomeView: React.FC = () => {
   return (
@@ -93,7 +94,7 @@ export const HomeView: React.FC = () => {
             <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
               <FaAngleLeft className="h-5 w-5" />
             </li>
-            <li className="flex h-10 w-10 cursor-pointer items-center items-center justify-center rounded-full bg-green-400 p-3">
+            <li className="flex h-10 w-10 cursor-pointer  items-center justify-center rounded-full bg-green-400 p-3">
               1
             </li>
             <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
@@ -107,17 +108,7 @@ export const HomeView: React.FC = () => {
 
         <Divider />
 
-        <div className="flex w-full justify-center">
-          <p className="text-2xl font-bold uppercase">
-            {t("Collaboration", "Collaboration")}
-          </p>
-        </div>
-
-        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {[...Array(4)].map((_, i: number) => (
-            <ImageCard key={i} name="Item Name" imgUrl="/shop-2.jpeg" />
-          ))}
-        </div>
+        <Collaboration />
       </div>
     </>
   );

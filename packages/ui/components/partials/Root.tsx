@@ -1,16 +1,14 @@
-import React, { useContext } from "react";
-import { SidebarProvider, SidebarContext } from "../helpers/SidebarContext";
+import React from "react";
+import { SidebarProvider } from "../helpers/SidebarContext";
 import classNames from "classnames";
 
 export const Root: React.FC = ({ children }) => {
-  const sidebar = useContext(SidebarContext);
-
   return (
     <>
       <SidebarProvider>
         <div
           className={classNames(
-            "flex flex-col w-full min-h-screen relative overflow-hidden"
+            "relative flex min-h-screen w-full flex-col overflow-hidden"
           )}
         >
           {children}

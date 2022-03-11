@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { LoginView } from "ui/views";
+import { Login as LoginView } from "ui/views";
 import MasterLayout from "../components/MasterLayout";
 import LoignTypes from "../lib/LoignTypes";
 
