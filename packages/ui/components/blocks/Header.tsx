@@ -8,7 +8,7 @@ import {
   FaAlignJustify,
   FaChevronDown,
 } from "react-icons/fa";
-import { Sidebar } from "../blocks";
+import { Sidebar } from ".";
 import Link from "next/link";
 import { t } from "i18next";
 

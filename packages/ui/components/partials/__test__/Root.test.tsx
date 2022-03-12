@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { Root } from "../../components";
+import { Root } from "../../";
 
 describe("Root component render as expected", () => {
   test("check for last snapshot", () => {

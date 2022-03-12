@@ -4,9 +4,9 @@ import { CountryLanguageCurrencySwitch } from "ui/components";
 import {
   CustomerService,
   Information,
-  SocialMediaNav,
+  SocialMediaLinks,
   SubscribeForm,
-} from "../../views/index";
+} from "../../components/index";
 
 export const Footer: React.FC = () => {
   return (
@@ -17,7 +17,7 @@ export const Footer: React.FC = () => {
             <SubscribeForm />
             <CustomerService />
             <Information />
-            <SocialMediaNav />
+            <SocialMediaLinks />
           </div>
           <CountryLanguageCurrencySwitch />
         </div>

@@ -1,6 +1,7 @@
 import { shallow } from "enzyme";
 import { DividerWidthChild } from "../DividerWithChild";
 import toJSON from "enzyme-to-json";
+import React from "react";
 
 describe("dividerWithChild", () => {
   it("should render properly", () => {

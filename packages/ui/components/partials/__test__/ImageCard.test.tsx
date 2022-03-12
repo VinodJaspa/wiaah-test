@@ -1,5 +1,5 @@
 import React from "react";
-import { ImageCard } from "../../components";
+import { ImageCard } from "../../blocks";
 import { shallow } from "enzyme";
 
 it("renders as expected without parameters", () => {

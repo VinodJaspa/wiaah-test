@@ -1,5 +1,5 @@
 import React from "react";
-import { ImageSlider } from "../../components";
+import { ImageSlider } from "../../";
 import { shallow } from "enzyme";
 
 it("renders as expected without parameters", () => {

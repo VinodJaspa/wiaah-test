@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { Footer } from "../../components";
+import { Footer } from "../../blocks";
 
 describe("Footer component render as expected", () => {
   it("check for last snapshot", () => {

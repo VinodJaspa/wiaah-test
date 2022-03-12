@@ -1,6 +1,7 @@
 import { shallow } from "enzyme";
 import { Container } from "../Container";
 import toJSON from "enzyme-to-json";
+import React from "react";
 
 describe("container wrapper", () => {
   it("should render properly", () => {

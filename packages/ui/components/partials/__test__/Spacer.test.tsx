@@ -1,6 +1,7 @@
 import { shallow } from "enzyme";
 import { Spacer } from "../Spacer";
 import toJSON from "enzyme-to-json";
+import React from "react";
 
 describe("spacer component", () => {
   it("should render properly", () => {

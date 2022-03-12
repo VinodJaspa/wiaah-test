@@ -1,5 +1,5 @@
 import React from "react";
-import { Card } from "../../components";
+import { Card } from "../../blocks";
 import { shallow } from "enzyme";
 
 it("renders as expected without parameters", () => {

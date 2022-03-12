@@ -10,7 +10,7 @@ import {
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { social } from "../../../../apps/market/lib/Links";
-export const SocialMediaNav: FC = () => {
+export const SocialMediaLinks: FC = () => {
   const { t, i18n } = useTranslation();
   return (
     <div className="block w-full space-y-4">

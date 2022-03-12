@@ -7,6 +7,15 @@ import { ProductViewRight } from "./ProductViewRight";
 import { ProductDescription } from "./ProductDescription";
 import { SellerCard } from "./SellerCard";
 import { CountryLanguageCurrencySwitch } from "./CountryLanguageCurrencySwitch";
+import { Collaboration } from "./Collaboration";
+import { Information } from "./Information";
+import { SocialMediaLinks } from "./SocialMediaLinks";
+import { CustomerService } from "./CustomerService";
+import { SubscribeForm } from "./SubscribeForm";
+import { Footer } from "./Footer";
+import { Header } from "./Header";
+import { AuthFooter } from "./AuthFooter";
+import { ContactUsForm } from "./ContactUsForm";
 export {
   ImageSlider,
   Sidebar,
@@ -17,4 +26,13 @@ export {
   ProductDescription,
   SellerCard,
   CountryLanguageCurrencySwitch,
+  Collaboration,
+  Information,
+  SocialMediaLinks,
+  CustomerService,
+  Footer,
+  SubscribeForm,
+  Header,
+  AuthFooter,
+  ContactUsForm,
 };

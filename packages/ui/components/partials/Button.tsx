@@ -17,9 +17,7 @@ export interface ButtonProps extends ButtonHTMLProps {
   customClasses?: string;
   text: string;
   hexBackgroundColor?: string;
-  //   tailwindBackgroundColor?: string;
   hexTextColor?: string;
-  //   tailwindTextColor?: string;
   fontSizeInRem?:
     | 0.25
     | 0.5

@@ -1,8 +1,8 @@
 import React, { FC } from "react";
-import { ImageCard, Spacer } from "../../components";
+import { ImageCard, Spacer } from "..";
 import { t } from "i18next";
 
-export const CollaborationView: FC = () => {
+export const Collaboration: FC = () => {
   return (
     <div className="">
       <div className="flex w-full justify-center">

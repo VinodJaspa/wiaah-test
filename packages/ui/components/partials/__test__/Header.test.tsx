@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow, mount } from "enzyme";
-import { Header } from "../../components";
-import { SidebarContext } from "../helpers/SidebarContext";
+import { Header } from "../../blocks";
+import { SidebarContext } from "../../helpers/SidebarContext";
 
 describe("Header component render as expected", () => {
   it("check for last snapshot", () => {

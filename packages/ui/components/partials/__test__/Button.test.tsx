@@ -1,6 +1,7 @@
 import { shallow } from "enzyme";
 import { Button } from "../Button";
 import toJSON from "enzyme-to-json";
+import React from "react";
 
 describe("button component", () => {
   it("should render correctly", () => {

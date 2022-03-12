@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { Divider } from "../../components";
+import { Divider } from "../";
 
 describe("Divider component render as expected", () => {
   it("check for last snapshot", () => {

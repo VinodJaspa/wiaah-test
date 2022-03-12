@@ -1,6 +1,7 @@
 import { shallow } from "enzyme";
 import { DividerWidthText } from "../DividerWithText";
 import toJSON from "enzyme-to-json";
+import React from "react";
 
 describe("divider with text", () => {
   it("should render properly", () => {

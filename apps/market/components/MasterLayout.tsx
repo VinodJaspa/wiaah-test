@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Root,
-  Header,
-  Footer,
-  AuthFooter,
-  ImageSlider,
-  ImageCard,
-} from "ui/components";
+import { Root, Header, Footer, AuthFooter, ImageCard } from "ui/components";
 import { useTranslation } from "react-i18next";
 export default function MasterLayout({ children }) {
   const { t, i18n } = useTranslation();

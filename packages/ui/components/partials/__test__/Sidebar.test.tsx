@@ -1,7 +1,7 @@
 import React from "react";
-import { Sidebar } from "../../components";
+import { Sidebar } from "../../";
 import { shallow, mount } from "enzyme";
-import { SidebarContext } from "../helpers/SidebarContext";
+import { SidebarContext } from "../../helpers/SidebarContext";
 
 describe("Sidebar work as expected", () => {
   it("check for last snapshot", () => {
