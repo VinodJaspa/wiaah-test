@@ -1,0 +1,1 @@
+describe("Privacy policy", () => {});

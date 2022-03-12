@@ -12,7 +12,7 @@ const Template: ComponentStory<typeof BreadCrumb> = (args) => (
 );
 
 export const Exemple = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
+
 Exemple.args = {
   breadcrumb: [
     {

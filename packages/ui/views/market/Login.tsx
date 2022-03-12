@@ -83,13 +83,13 @@ export const Login: React.FC<LoginViewProps> = ({ loginType = "login" }) => {
                 "Welcome to Wiaah: The First and Reference Social Marketplace"
               )}
             </h1>
-            <p className="text-md mt-5 mb-5 text-justify font-light lg:mt-10 lg:text-lg">
+            <p className="mt-5 mb-5 text-justify text-base font-light lg:mt-10 lg:text-xl">
               {t(
                 "With_Wiaah_Text",
                 "With Wiaah, connect with the world's leading fashion brands and your favourite brands, participate in their success while succeding in your turn."
               )}
             </p>
-            <div className="flex flex-col items-end text-lg font-light">
+            <div className="flex flex-col items-end text-lg font-light lg:text-xl">
               <cite className="text-justify">
                 {t(
                   "founder_of_wiaah_cite",

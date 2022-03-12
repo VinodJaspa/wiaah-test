@@ -1,11 +1,12 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import { Input } from "antd";
 import { IoMdMail, IoMdKey, IoMdPerson } from "react-icons/io";
 import Link from "next/link";
 import { t } from "i18next";
+
 export const SellerSignupView: FC = () => {
   return (
-    <div>
+    <div id="SellerSignupView">
       <h2 className="text-3xl capitalize">
         {t("create_an_account", "create an account")}
       </h2>

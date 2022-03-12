@@ -1,21 +1,79 @@
 import { mount } from "enzyme";
-import React from "react";
 import { Login } from "../index";
+import React from "react";
 
-beforeEach(() => {});
+export interface ViewsSettings {
+  loginView: {
+    selection: string;
+    type: "login";
+  };
+  BuyerSignupView: {
+    selection: string;
+    type: "buyer-signup";
+  };
+  SellerSignupView: {
+    selection: string;
+    type: "seller-signup";
+  };
+}
 
-afterEach(() => {});
+const { BuyerSignupView, SellerSignupView, loginView }: ViewsSettings = {
+  loginView: {
+    selection: "#LoginView",
+    type: "login",
+  },
+  BuyerSignupView: {
+    selection: "#BuyerSignupView",
+    type: "buyer-signup",
+  },
+  SellerSignupView: {
+    selection: "#SellerSignupView",
+    type: "seller-signup",
+  },
+};
 
-describe("Login Component", () => {
+const { CreateNewAccountButton } = {
+  CreateNewAccountButton: {
+    selection: "#CreateNewAccountBtn",
+  },
+};
+
+describe("login compoenent render diffrerent Views", () => {
   it("should render login view when logintype prop equals 'login'", () => {
+    const component = mount(<Login loginType={loginView.type} />);
+    const loginSection = component.find(loginView.selection);
+
+    expect(component.prop("loginType")).toBe(loginView.type);
+    expect(loginSection.length).toBe(1);
+  });
+
+  it("should render buyer signup view when logintype prop equals 'buyer-signup'", () => {
+    const component = mount(<Login loginType={BuyerSignupView.type} />);
+    const buyerSignupSection = component.find(BuyerSignupView.selection);
+
+    expect(component.prop("loginType")).toBe(BuyerSignupView.type);
+    expect(buyerSignupSection.length).toBe(1);
+    component.unmount();
+  });
+
+  it("should render seller signup view when logintype prop equals 'seller-signup'", () => {
+    const component = mount(<Login loginType={SellerSignupView.type} />);
+    const sellerSignupSection = component.find(SellerSignupView.selection);
+
+    expect(component.prop("loginType")).toBe(SellerSignupView.type);
+    expect(sellerSignupSection.length).toBe(1);
+    component.unmount();
+  });
+});
+
+describe("test create new account button functionanlty", () => {
+  it("should be only 1 create new account button", () => {
     const component = mount(<Login loginType="login" />);
-    const emailInput = component.find("[role='email']");
-    const passwordInput = component.find("[role='password']");
-    // make sure there is only 1 email input and 1 password input
-    expect(emailInput).not.toBeGreaterThan(1);
-    expect(passwordInput).not.toBeGreaterThan(1);
-    // make sure email and password inputs are there
-    expect(emailInput).toBeDefined();
-    expect(passwordInput).toBeDefined();
+    const createAccountButton = component.find(
+      CreateNewAccountButton.selection
+    );
+
+    expect(createAccountButton.length).toBeGreaterThan(1);
+    component.unmount();
   });
 });

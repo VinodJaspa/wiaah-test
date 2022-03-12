@@ -4,14 +4,14 @@ import { ProductView } from "./ProductView";
 import { Login } from "./Login";
 import { SellerProfileStartupView } from "./SellerProfileStartupView";
 import { BuyerProfileStartUpView } from "./BuyerProfileStartupView";
-import { AboutWiaah } from "./AboutWiaah";
-import { CustomerService } from "./CustomerService";
+import { AboutWiaahView } from "./AboutWiaahView";
+import { CustomerService } from "./CustomerServiceView";
 import { SocialMediaNav } from "./SocialMediaNav";
-import { Information } from "./Information";
-import { SubscribeForm } from "./SubscribeForm";
-import { Collaboration } from "./Collaboration";
-import { PrivacyPolicy } from "./PrivacyPolicy";
-import { TermsAndConditions } from "./TermsAndConditions";
+import { Information } from "./InformationView";
+import { SubscribeForm } from "./SubscribeFormView";
+import { CollaborationView } from "./CollaborationView";
+import { PrivacyPolicy } from "./PrivacyPolicyView";
+import { TermsAndConditions } from "./TermsAndConditionsView";
 export {
   HomeView,
   SearchView,
@@ -19,12 +19,12 @@ export {
   Login,
   SellerProfileStartupView,
   BuyerProfileStartUpView,
-  AboutWiaah,
+  AboutWiaahView,
   SocialMediaNav,
   CustomerService,
   Information,
   SubscribeForm,
-  Collaboration,
+  CollaborationView,
   PrivacyPolicy,
   TermsAndConditions,
 };

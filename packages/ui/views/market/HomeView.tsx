@@ -8,7 +8,7 @@ import {
   FaAngleRight,
 } from "react-icons/fa";
 import { t } from "i18next";
-import { Collaboration } from "./Collaboration";
+import { CollaborationView } from "./CollaborationView";
 
 export const HomeView: React.FC = () => {
   return (
@@ -108,7 +108,7 @@ export const HomeView: React.FC = () => {
 
         <Divider />
 
-        <Collaboration />
+        <CollaborationView />
       </div>
     </>
   );

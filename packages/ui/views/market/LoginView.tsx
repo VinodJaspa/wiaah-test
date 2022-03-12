@@ -3,25 +3,24 @@ import Link from "next/link";
 import { IoMdMail, IoMdKey } from "react-icons/io";
 import { Input } from "antd";
 import { t } from "i18next";
-import { Button } from "../../components/index";
-import { DividerWidthText } from "../../components/index";
-import { Spacer } from "../../components/index";
-
-interface LoginInputs {
-  email: string;
-  password: string;
-  remember_me: boolean;
-}
+import { Button } from "../../components/partials/Button";
+import { DividerWidthText } from "../../components/partials/DividerWithText";
+import { Spacer } from "../../components/partials/Spacer";
+import { LoginInputsType } from "../../../types/market/authenticating/loginInput.interface";
+import { HandleLoginRequest } from "../../../../apps/market/ApiCalls/Authenticating/Login";
 
 export const LoginView: FC = () => {
-  const [FormInput, setFormInput] = useState<LoginInputs>({
+  const [FormInput, setFormInput] = useState<LoginInputsType>({
     email: "",
     password: "",
     remember_me: false,
   });
-  React.useEffect(() => {
-    console.log(FormInput);
-  }, [FormInput]);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    HandleLoginRequest(FormInput);
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormInput((state) => ({ ...state, [e.target.name]: e.target.value }));
   };
@@ -31,13 +30,14 @@ export const LoginView: FC = () => {
   };
 
   return (
-    <>
+    <section id="LoginView">
       <h2 className="text-3xl">
         {t("Login_to_Wiaah", "Login to Wiaah account")}
       </h2>
       <Spacer spaceInRem={2} />
-      <form action="">
+      <form onSubmit={handleSubmit}>
         <Input
+          id="EmailInput"
           name="email"
           className="h-12"
           value={FormInput.email}
@@ -48,6 +48,7 @@ export const LoginView: FC = () => {
         <Spacer />
         <Input
           name="password"
+          id="PasswordInput"
           className="h-12"
           value={FormInput.password}
           onChange={handleInputChange}
@@ -79,11 +80,13 @@ export const LoginView: FC = () => {
       <DividerWidthText text={t("new_to_wiaah?", "new to Wiaah ?")} />
       <Link href="/buyer-signup">
         <Button
-          text={t("create_your_wiaah_account", "create your Wiaah Account now")}
+          id="CreateNewAccountBtn"
           outlined={true}
+          type="submit"
           hexTextColor={"#000"}
+          text={t("create_your_wiaah_account", "create your Wiaah Account now")}
         />
       </Link>
-    </>
+    </section>
   );
 };

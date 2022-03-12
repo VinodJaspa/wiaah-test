@@ -3,6 +3,7 @@ import React, {
   ButtonHTMLAttributes,
   DetailedHTMLProps,
   FC,
+  ReactElement,
   useState,
 } from "react";
 import { colorPalette } from "../helpers/colorPalette";
@@ -40,12 +41,9 @@ export interface ButtonProps extends ButtonHTMLProps {
 }
 
 export const Button: FC<ButtonProps> = ({
-  children,
   text,
   hexBackgroundColor,
-
   hexTextColor,
-
   fontSizeInRem,
   customFontSizeInRem,
   customClasses,
@@ -110,7 +108,7 @@ export const Button: FC<ButtonProps> = ({
         customClasses ? customClasses : ""
       } flex h-12 w-full flex-col items-center justify-center rounded-sm py-2 capitalize text-white lg:px-8  lg:text-lg `}
     >
-      {text}
+      {text && text}
     </button>
   );
 };

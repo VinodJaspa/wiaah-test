@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { ImageCard, Spacer } from "../../components";
 import { t } from "i18next";
 
-export const Collaboration: FC = () => {
+export const CollaborationView: FC = () => {
   return (
     <div className="">
       <div className="flex w-full justify-center">
@@ -16,6 +16,7 @@ export const Collaboration: FC = () => {
           <ImageCard key={i} name="Item Name" imgUrl="/shop-2.jpeg" />
         ))}
       </div>
+      <Spacer />
     </div>
   );
 };
