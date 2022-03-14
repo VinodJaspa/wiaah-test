@@ -10,14 +10,14 @@ const images = [
 
 export const ImageSlider: React.FC = () => {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
-
+  const isLargeScreen = useMediaQuery({ query: "(min-width: 1980px)" });
   return (
     <>
       <div className="flex w-full justify-center">
         <SimpleImageSlider
           autoPlay
           width="100%"
-          height={isTabletOrMobile ? 300 : 350}
+          height={isTabletOrMobile ? 230 : isLargeScreen ? 500 : 350}
           images={images}
           showBullets={true}
           showNavs={false}

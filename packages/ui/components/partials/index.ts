@@ -1,6 +1,22 @@
 import { Root } from "./Root";
-import { Header } from "./Header";
-import { Footer } from "./Footer";
 import { Divider } from "./Divider";
-import { AuthFooter } from "./AuthFooter";
-export { Root, Header, Footer, Divider, AuthFooter };
+import { Button } from "./Button";
+import { DividerWidthText } from "./DividerWithText";
+import { DividerWidthChild } from "./DividerWithChild";
+import { Spacer } from "./Spacer";
+import { Container } from "./Container";
+import { FlexStack } from "./FlexStack";
+import { Input } from "./Input";
+import { TextArea } from "./TextArea";
+export {
+  FlexStack,
+  Root,
+  Divider,
+  Button,
+  DividerWidthText,
+  DividerWidthChild,
+  Spacer,
+  Container,
+  Input,
+  TextArea,
+};

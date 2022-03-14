@@ -5,7 +5,18 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      transitionProperty: {
+        height: "height",
+      },
+      aspectRatio: {
+        "4/3": "4 / 3",
+        "custum-aspect": "5 / 4",
+      },
+      colors: {
+        PrimaryGreen: "#57bf9c",
+      },
+    },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/forms")],
 };
