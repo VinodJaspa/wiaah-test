@@ -20,6 +20,7 @@ import { AuthPopup } from "./AuthPopup";
 import { FormContainer } from "./FormContainer";
 import { AuthSwitcher } from "./AuthSwitcher";
 import { Carousel } from "./Carousel";
+import { CarouselPreviewer } from "./CarouselPreviewer";
 export {
   ImageSlider,
   Sidebar,
@@ -43,4 +44,5 @@ export {
   FormContainer,
   AuthSwitcher,
   Carousel,
+  CarouselPreviewer,
 };
