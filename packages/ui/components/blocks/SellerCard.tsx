@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { IoMdMail } from "react-icons/io";
 import { Rate } from "antd";
 import { t } from "i18next";
+import { AuthPopup } from "./AuthPopup";
 
 export interface SellerProps {
   name: string;
@@ -14,6 +15,8 @@ export const SellerCard: React.FC<SellerProps> = ({
   reviews = 0,
   rating = 0,
 }) => {
+  const [authPopup, setAuthPopup] = useState<boolean>(true);
+
   return (
     <>
       <div className="">
@@ -44,7 +47,11 @@ export const SellerCard: React.FC<SellerProps> = ({
             {reviews + " " + t("Reviews", "Reviews")}
           </div>
           <div className="mt-3 flex justify-center">
-            <button className="green-text inline-flex items-center rounded-sm bg-white px-8 py-2">
+            <AuthPopup show={authPopup} onClose={() => setAuthPopup(false)} />
+            <button
+              onClick={() => setAuthPopup(true)}
+              className="green-text inline-flex items-center rounded-sm bg-white px-8 py-2"
+            >
               {" "}
               <IoMdMail className="mr-2 inline text-lg uppercase" />{" "}
               {t("Contact_The_Seller", "Contact The Seller")}

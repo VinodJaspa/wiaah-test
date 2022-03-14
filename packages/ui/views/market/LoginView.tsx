@@ -1,16 +1,16 @@
 import React, { FC, useState } from "react";
 import Link from "next/link";
 import { IoMdMail, IoMdKey } from "react-icons/io";
-import { Input } from "antd";
 import { t } from "i18next";
-import { Button } from "../../components/partials/Button";
-import { DividerWidthText } from "../../components/partials/DividerWithText";
-import { Spacer } from "../../components/partials/Spacer";
+import { Button, Spacer, DividerWidthText, Input } from "../../components";
 import { LoginInputsType } from "../../../types/market/authenticating/loginInput.interface";
 import { HandleLoginRequest } from "../../../../apps/market/ApiCalls/Authenticating/Login";
+import { LoginType } from "../../../../apps/market/lib/LoignTypes";
 
-export const LoginView: FC = () => {
-  const [FormInput, setFormInput] = useState<LoginInputsType>({
+export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
+  setAuthView,
+}) => {
+  const [formInput, setFormInput] = useState<LoginInputsType>({
     email: "",
     password: "",
     remember_me: false,
@@ -18,7 +18,7 @@ export const LoginView: FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    HandleLoginRequest(FormInput);
+    HandleLoginRequest(formInput);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,30 +37,25 @@ export const LoginView: FC = () => {
       <Spacer spaceInRem={2} />
       <form onSubmit={handleSubmit}>
         <Input
-          id="EmailInput"
+          setId="Email"
           name="email"
-          className="h-12"
-          value={FormInput.email}
-          onChange={handleInputChange}
-          placeholder={t("Email", "Email")}
-          prefix={<IoMdMail className="mr-2 text-xl text-gray-400" />}
+          placeholder="Email"
+          value={formInput.email}
+          icon={<IoMdMail />}
         />
         <Spacer />
         <Input
+          setId="Password"
           name="password"
-          id="PasswordInput"
-          className="h-12"
-          value={FormInput.password}
-          onChange={handleInputChange}
-          type="password"
-          placeholder={t("Password", "Password")}
-          prefix={<IoMdKey className="mr-2 text-xl text-gray-400" />}
+          placeholder="Password"
+          value={formInput.password}
+          icon={<IoMdKey />}
         />
         <Spacer />
         <div className="flex items-center justify-between font-light">
           <div className="flex items-center justify-between pl-1">
-            <Input
-              checked={FormInput.remember_me}
+            <input
+              checked={formInput.remember_me}
               onChange={handleCheckBoxChange}
               name="remember_me"
               type="checkbox"
@@ -78,15 +73,14 @@ export const LoginView: FC = () => {
       </form>
       <Spacer />
       <DividerWidthText text={t("new_to_wiaah?", "new to Wiaah ?")} />
-      <Link href="/buyer-signup">
-        <Button
-          id="CreateNewAccountBtn"
-          outlined={true}
-          type="submit"
-          hexTextColor={"#000"}
-          text={t("create_your_wiaah_account", "create your Wiaah Account now")}
-        />
-      </Link>
+      <Button
+        onClick={() => setAuthView("buyer-signup")}
+        id="CreateNewAccountBtn"
+        outlined={true}
+        type="submit"
+        hexTextColor={"#000"}
+        text={t("create_your_wiaah_account", "create your Wiaah Account now")}
+      />
     </section>
   );
 };

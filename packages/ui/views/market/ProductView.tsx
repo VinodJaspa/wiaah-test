@@ -116,7 +116,7 @@ export const ProductView: React.FC = () => {
             </div>
           </div>
           <div className="">
-            <p className="my-10 flex justify-center text-2xl font-bold uppercase uppercase">
+            <p className="my-10 flex justify-center text-2xl font-bold uppercase">
               {t("Related_Products", "Related Products")}
             </p>
             <div className="relative mb-10 md:px-20">

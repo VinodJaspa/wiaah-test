@@ -120,7 +120,7 @@ export const SearchView: React.FC = () => {
                 <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
                   <FaAngleLeft className="h-5 w-5" />
                 </li>
-                <li className="flex h-10 w-10 cursor-pointer items-center items-center justify-center rounded-full bg-green-400 p-3">
+                <li className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-green-400 p-3">
                   1
                 </li>
                 <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">

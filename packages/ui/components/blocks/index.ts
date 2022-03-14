@@ -16,6 +16,10 @@ import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { AuthFooter } from "./AuthFooter";
 import { ContactUsForm } from "./ContactUsForm";
+import { AuthPopup } from "./AuthPopup";
+import { FormContainer } from "./FormContainer";
+import { AuthSwitcher } from "./AuthSwitcher";
+import { Carousel } from "./Carousel";
 export {
   ImageSlider,
   Sidebar,
@@ -35,4 +39,8 @@ export {
   Header,
   AuthFooter,
   ContactUsForm,
+  AuthPopup,
+  FormContainer,
+  AuthSwitcher,
+  Carousel,
 };

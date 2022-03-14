@@ -1,49 +1,80 @@
-import { Input } from "antd";
 import { IoMdMail, IoMdKey, IoMdPerson } from "react-icons/io";
 import Link from "next/link";
 import { t } from "i18next";
 import React, { FC } from "react";
-import { Button, Spacer } from "../../components/index";
+import { Button, Spacer, Input } from "../../components/index";
 
-export const BuyerSignupView: FC = () => {
+export interface BuyerSignupInputType {
+  username: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+  terms_and_conditions: boolean;
+}
+
+export const BuyerSignupView: FC<{}> = () => {
+  const [formInput, setFormInput] = React.useState<BuyerSignupInputType>({
+    username: "",
+    password: "",
+    confirm_password: "",
+    email: "",
+    terms_and_conditions: false,
+  });
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // handle signup api call
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormInput((state) => ({ ...state, [e.target.name]: e.target.value }));
+  };
+
+  const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormInput((state) => ({ ...state, [e.target.name]: e.target.checked }));
+  };
+
   return (
     <section id="BuyerSignupView">
       <h2 className="text-3xl capitalize">
         {t("create_an_account", "create an account")}
       </h2>
       <Spacer spaceInRem={2} />
-      <form action="">
+      <form onSubmit={handleSubmit} action="">
         <Input
-          className="h-12"
-          placeholder={t("Username", "Username")}
-          type="text"
-          prefix={<IoMdPerson className="mr-2 text-xl text-gray-400" />}
+          setId="Username"
+          placeholder="Username"
+          name="username"
+          value={formInput.username}
+          icon={<IoMdPerson />}
         />
         <Spacer />
         <Input
-          className="h-12"
-          placeholder={t("Email", "Email")}
-          type="email"
-          prefix={<IoMdMail className="mr-2 text-xl text-gray-400" />}
+          setId="Email"
+          name="email"
+          placeholder="Email"
+          value={formInput.email}
+          icon={<IoMdMail />}
         />
         <Spacer />
         <Input
-          className="h-12"
-          type="password"
-          placeholder={t("Password", "Password")}
-          prefix={<IoMdKey className="mr-2 text-xl text-gray-400" />}
+          setId="Password"
+          name="password"
+          placeholder="Password"
+          value={formInput.password}
+          icon={<IoMdKey />}
         />
         <Spacer />
         <Input
-          className="h-12"
-          type="password"
-          placeholder={t("confirm_Password", "confirm Password")}
-          prefix={<IoMdKey className="mr-2 text-xl text-gray-400" />}
+          setId="ConfirmPassword"
+          name="confirm_password"
+          placeholder="ConfirmPassword"
+          value={formInput.confirm_password}
+          icon={<IoMdKey />}
         />
         <Spacer />
         <div className="flex items-center justify-between font-light">
           <div className="flex items-center justify-between">
-            <Input className="pl-1" type="checkbox" />
+            <input className="pl-1" type="checkbox" />
             <p className="ml-2">
               I read and accept
               <Link href="/terms-conditions">
@@ -53,7 +84,7 @@ export const BuyerSignupView: FC = () => {
           </div>
         </div>
         <Spacer />
-        <Button text="SIGN UP" />
+        <Button type="submit" text="SIGN UP" />
       </form>
     </section>
   );
