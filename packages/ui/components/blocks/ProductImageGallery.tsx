@@ -1,98 +1,88 @@
 import React, { useRef } from "react";
-import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-import { Carousel } from "antd";
+import { Carousel, CarouselPreviewer } from "./";
 import { t } from "i18next";
+import { useMediaQuery } from "react-responsive";
+import { Spacer } from "../partials";
+import { ProductGalleryItem } from "../../views/market/ProductView";
 
 export interface ProductImageGalleryProps {
-  images?: Array<{
-    original: string;
-    thumbnail: string | "";
-    alt?: string | "";
-  }>;
-  video?: string | false;
+  images?: ProductGalleryItem[];
+  cashback?: number;
 }
 
 export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
   images = [],
-  video = false,
+  cashback,
 }) => {
-  let ref = useRef<any>();
-  const vidRef = useRef<any>();
-
-  function nextImage() {
-    ref?.current?.next();
-  }
-
-  function previousImage() {
-    ref?.current?.prev();
-  }
-
-  function silideToIndex(index: number) {
-    ref?.current?.goTo(index, false);
-  }
-
-  function handleSlideChange(index: any) {
-    // if (index == images.length) {
-    //   vidRef?.current?.play();
-    // } else {
-    //   vidRef?.current?.pause();
-    // }
-  }
+  const small = useMediaQuery({
+    query: "(max-width: 1024px)",
+  });
+  console.log("small", small);
+  const [currentComponent, setCurrentComponent] = React.useState<number>();
   return (
     <>
-      <div className="flex flex-col-reverse items-start justify-start xl:flex-row">
-        <div className="mt-3 mr-0 inline-flex flex-row xl:mr-4 xl:mt-0 xl:flex-col">
-          {images.map((item, key: number) => {
-            return (
-              <div
-                key={key}
-                onClick={() => silideToIndex(key)}
-                className="mr-4 mb-0 inline-block h-16 w-16 cursor-pointer xl:mb-4 xl:mr-0 "
-              >
-                <img
-                  src={item.thumbnail}
-                  alt={item.alt}
-                  className="h-full w-full rounded-lg object-cover"
-                />
-              </div>
-            );
-          })}
+      <div className="flex h-full w-full flex-col-reverse lg:flex-row">
+        <div className="h-full w-full lg:h-full lg:w-fit">
+          <CarouselPreviewer
+            setCurrentComponentNum={currentComponent}
+            borderColor="#57bf9c"
+            direction={small ? "horizontal" : "vertical"}
+            getCurrentComponent={(component) => setCurrentComponent(component)}
+            components={images.map(({ original, thumbnail, alt, type }, i) => {
+              if (type === "image") {
+                return {
+                  Component: (
+                    <img alt={alt} src={original} className="w-full" />
+                  ),
+                };
+              } else if (type === "video") {
+                return {
+                  Component: (
+                    <video className="bg-orange-100">
+                      <source src={thumbnail} type="video/webm" />
+                    </video>
+                  ),
+                };
+              } else {
+                return {
+                  Component: <div>{original}</div>,
+                };
+              }
+            })}
+          />
         </div>
-        <div className="relative w-full overflow-hidden lg:grow">
-          <div className="product-cashback absolute top-1 right-1 z-10 rounded-md bg-red-400 p-1 text-xs text-white">
-            10% {t("Cashback", "Cashback")}
-          </div>
 
-          <div
-            onClick={() => previousImage()}
-            className="slider-arrow absolute left-2 z-10 hidden cursor-pointer rounded-full bg-white py-2 px-2 lg:inline-flex"
-          >
-            <AiOutlineLeft className="text-xl" />
-          </div>
-          <div
-            onClick={() => nextImage()}
-            className="slider-arrow absolute right-2 z-10 hidden cursor-pointer rounded-full bg-white py-2 px-2 lg:inline-flex"
-          >
-            <AiOutlineRight className="text-xl" />
-          </div>
-
-          <div className="">
-            <Carousel
-              ref={ref}
-              className=""
-              afterChange={handleSlideChange}
-              dots={false}
-            >
-              {images.map((item, key: number) => {
-                return (
-                  <img src={item.original} alt="" key={key} className="" />
-                );
-              })}
-              {video && (
-                <video ref={vidRef} className="" src={video} controls />
-              )}
-            </Carousel>
-          </div>
+        <div className="relative h-full w-full">
+          {cashback && (
+            <div className="absolute top-0 right-4 z-10 m-2 rounded-full bg-red-400 px-4 py-2 text-white">
+              Cashback {cashback}%
+            </div>
+          )}
+          <Carousel
+            setCurrentComponentNum={currentComponent}
+            getCurrentComponent={(component) => setCurrentComponent(component)}
+            components={images.map(({ original, thumbnail, alt, type }, i) => {
+              if (type === "image") {
+                return {
+                  Component: (
+                    <img alt={alt} src={original} className="w-full" />
+                  ),
+                };
+              } else if (type === "video") {
+                return {
+                  Component: (
+                    <video className="h-full w-auto " controls>
+                      <source src={original} type="video/webm" />
+                    </video>
+                  ),
+                };
+              } else {
+                return {
+                  Component: <div>{original}</div>,
+                };
+              }
+            })}
+          />
         </div>
       </div>
     </>

@@ -14,6 +14,13 @@ import "swiper/css";
 import "swiper/css/navigation";
 import { t } from "i18next";
 
+export interface ProductGalleryItem {
+  original: string;
+  thumbnail: string | "";
+  alt?: string | "";
+  type: "image" | "video";
+}
+
 const breadcrumb = [
   {
     text: "Home",
@@ -28,23 +35,66 @@ const breadcrumb = [
     url: "",
   },
 ];
-const images = [
+const productGalleryitems: ProductGalleryItem[] = [
   {
+    type: "image",
     original: "https://picsum.photos/id/1018/1000/600/",
     thumbnail: "https://picsum.photos/id/1018/250/150/",
   },
   {
+    type: "image",
     original: "https://picsum.photos/id/1015/1000/600/",
     thumbnail: "https://picsum.photos/id/1015/250/150/",
   },
   {
+    type: "image",
     original: "https://picsum.photos/id/1019/1000/600/",
     thumbnail: "https://picsum.photos/id/1019/250/150/",
   },
   {
+    type: "image",
     original: "https://picsum.photos/id/1020/1000/600/",
     thumbnail: "https://picsum.photos/id/1020/250/150/",
   },
+  {
+    type: "video",
+    original:
+      "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
+    thumbnail:
+      "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
+  },
+  // {
+  //   original: "https://picsum.photos/id/1018/1000/600/",
+  //   thumbnail: "https://picsum.photos/id/1018/250/150/",
+  // },
+  // {
+  //   original: "https://picsum.photos/id/1015/1000/600/",
+  //   thumbnail: "https://picsum.photos/id/1015/250/150/",
+  // },
+  // {
+  //   original: "https://picsum.photos/id/1019/1000/600/",
+  //   thumbnail: "https://picsum.photos/id/1019/250/150/",
+  // },
+  // {
+  //   original: "https://picsum.photos/id/1020/1000/600/",
+  //   thumbnail: "https://picsum.photos/id/1020/250/150/",
+  // },
+  // {
+  //   original: "https://picsum.photos/id/1018/1000/600/",
+  //   thumbnail: "https://picsum.photos/id/1018/250/150/",
+  // },
+  // {
+  //   original: "https://picsum.photos/id/1015/1000/600/",
+  //   thumbnail: "https://picsum.photos/id/1015/250/150/",
+  // },
+  // {
+  //   original: "https://picsum.photos/id/1019/1000/600/",
+  //   thumbnail: "https://picsum.photos/id/1019/250/150/",
+  // },
+  // {
+  //   original: "https://picsum.photos/id/1020/1000/600/",
+  //   thumbnail: "https://picsum.photos/id/1020/250/150/",
+  // },
 ];
 
 const productComments = [
@@ -88,11 +138,11 @@ export const ProductView: React.FC = () => {
           <BreadCrumb breadcrumb={breadcrumb} />
         </div>
         <div>
-          <div className="flex-column mb-10 flex-wrap items-stretch lg:flex lg:justify-between">
-            <div className="w-full lg:w-8/12">
-              <ProductImageGallery images={images} />
+          <div className="flex-column mb-10 flex-wrap items-stretch lg:flex lg:h-[28rem] lg:justify-between">
+            <div className="h-full w-full lg:w-8/12">
+              <ProductImageGallery images={productGalleryitems} />
             </div>
-            <div className="mt-4 w-full lg:mt-0  lg:w-4/12 lg:pl-5 ">
+            <div className="mt-4 h-fit w-full lg:mt-0  lg:w-4/12 lg:pl-5 ">
               <ProductViewRight
                 price={1000}
                 oldPrice={1500}
@@ -105,13 +155,13 @@ export const ProductView: React.FC = () => {
             </div>
           </div>
           <div className="flex-column flex-wrap lg:flex lg:justify-between">
-            <div className="w-full lg:w-8/12 xl:w-9/12">
+            <div className="w-full lg:w-8/12 xl:w-8/12">
               <ProductDescription
                 description="The product description goes here!"
                 comments={productComments}
               />
             </div>
-            <div className="mt-10 w-full pl-0 sm:w-6/12 md:w-5/12 lg:w-4/12 lg:pl-8 xl:w-3/12">
+            <div className="mt-10 w-full pl-0 sm:w-6/12 md:w-5/12 lg:w-4/12 lg:pl-8 xl:w-4/12">
               <SellerCard name="EMH Test Shop" reviews={5} rating={4} />
             </div>
           </div>

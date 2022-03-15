@@ -41,6 +41,7 @@ export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
           name="email"
           placeholder="Email"
           value={formInput.email}
+          onChange={(e) => handleInputChange(e)}
           icon={<IoMdMail />}
         />
         <Spacer />
@@ -48,6 +49,7 @@ export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
           setId="Password"
           name="password"
           placeholder="Password"
+          onChange={(e) => handleInputChange(e)}
           value={formInput.password}
           icon={<IoMdKey />}
         />

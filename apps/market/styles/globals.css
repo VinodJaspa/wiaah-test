@@ -5,6 +5,15 @@
 @import "~react-image-gallery/styles/css/image-gallery.css";
 @import "~antd/dist/antd.css";
 
+.no-scroll::-webkit-scrollbar {
+  display: none;
+  width: 0%;
+}
+.no-scroll {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
 .priceRangeSlider > input[type="range"] {
   -webkit-appearance: none;
   width: 100%;

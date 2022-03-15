@@ -41,7 +41,7 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
               }
               key="1"
             >
-              <div dangerouslySetInnerHTML={{ __html: description }}></div>
+              <div>{description}</div>
             </Panel>
             <Panel
               header={
@@ -106,9 +106,11 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
             })}
           </div>
           <div
-            className={`${tab == 0 ? "" : "hidden"} h-96 overflow-scroll pt-3`}
+            className={`${
+              tab == 0 ? "" : "hidden"
+            } no-scroll mt-2 h-96 overflow-scroll rounded-lg border-2 border-gray-500  border-opacity-30 p-3`}
           >
-            <div dangerouslySetInnerHTML={{ __html: description }}></div>
+            <div>{description}</div>
           </div>
         </div>
       </div>

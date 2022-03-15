@@ -15,17 +15,17 @@ export const SellerCard: React.FC<SellerProps> = ({
   reviews = 0,
   rating = 0,
 }) => {
-  const [authPopup, setAuthPopup] = useState<boolean>(true);
+  const [authPopup, setAuthPopup] = useState<boolean>(false);
 
   return (
     <>
-      <div className="">
-        <div className="green-background rounded-lg py-3 text-white">
-          <div className="flex w-full justify-end pr-3">
-            <button className="green-text h-8 w-24 rounded-sm bg-white uppercase">
-              {t("Follow", "FOLLOW")}
-            </button>
-          </div>
+      <div className="green-background flex h-full flex-col justify-between rounded-lg py-3 text-white">
+        <div className="flex w-full justify-end pr-3">
+          <button className="green-text h-8 w-24 rounded-sm bg-white uppercase">
+            {t("Follow", "FOLLOW")}
+          </button>
+        </div>
+        <div className="flex flex-col gap-2">
           <div className="flex justify-center">
             <img
               src="/shop-3.jpeg"

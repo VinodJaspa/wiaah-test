@@ -55,8 +55,9 @@ export const Carousel: FC<CarouselProps> = ({
   }, [currentComponent]);
 
   React.useEffect(() => {
-    if (!setCurrentComponentNum) return;
-    setCurrentComponent(setCurrentComponentNum);
+    if (setCurrentComponentNum || setCurrentComponentNum === 0) {
+      setCurrentComponent(setCurrentComponentNum);
+    }
   }, [setCurrentComponentNum]);
 
   React.useEffect(() => {
@@ -77,7 +78,7 @@ export const Carousel: FC<CarouselProps> = ({
   }, [currentComponent]);
 
   return (
-    <div className="relative h-72 w-full overflow-hidden bg-slate-400">
+    <div className="relative h-full w-full overflow-hidden py-4">
       {controls && (
         <div
           onClick={() => handlePrev()}
@@ -86,7 +87,7 @@ export const Carousel: FC<CarouselProps> = ({
           <FaArrowLeft />
         </div>
       )}
-      <div className="relative h-full w-full p-1">
+      <div className="relative h-full w-full">
         <div className="h-full w-full overflow-hidden">
           <div
             style={{
@@ -99,8 +100,9 @@ export const Carousel: FC<CarouselProps> = ({
           >
             {components.map(({ Component }, i) => (
               <div
+                key={i}
                 style={{ left: `${100 * i}%` }}
-                className={`absolute top-1/2 flex h-auto w-full -translate-y-1/2 items-center justify-center px-2`}
+                className={`absolute top-1/2 flex h-full w-full -translate-y-1/2 items-center justify-center px-2`}
               >
                 {Component}
               </div>
