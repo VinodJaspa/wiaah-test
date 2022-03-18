@@ -1,19 +1,34 @@
-import React, { useContext } from "react";
-import { SidebarContext } from "../helpers/SidebarContext";
+import React from "react";
+import { value SidebarContext } from "../helpers/SidebarContext";
 import {
-  FaSearch,
-  FaUser,
-  FaHeart,
-  FaShoppingBag,
-  FaAlignJustify,
-  FaChevronDown,
+  value FaSearch,
+  value FaUser,
+  value FaHeart,
+  value FaShoppingBag,
+  value FaAlignJustify,
+  value FaChevronDown,
 } from "react-icons/fa";
-import { Sidebar } from ".";
+import { value Sidebar } from ".";
 import Link from "next/link";
-import { t } from "i18next";
+import { value t } from "i18next";
+import { value ShoppingCart } from "./";
+import { value ShoppingCartItem } from "../../../../apps/market/types/shoppingCart/shoopingCartItem.interface";
+import { value ShoppingCartRef } from "./ShoppingCart";
 
-export const Header: React.FC = () => {
-  const sidebar = useContext(SidebarContext);
+export const Header: React.FC<{ TotalCartItemsLength: number }> = ({
+  TotalCartItemsLength,
+}) => {
+  const cartRef = React.useRef<ShoppingCartRef>();
+  const [items, setItems] = React.useState<ShoppingCartItem[]>([
+    {
+      id: "1",
+      name: "item 1",
+      price: 5,
+      quantity: 3,
+      thumbnail: "/shop.jpeg",
+    },
+  ]);
+  const sidebar = React.useContext(SidebarContext);
   let menup = [
     {
       label: t("Clothing", "Clothing"),
@@ -44,6 +59,8 @@ export const Header: React.FC = () => {
       url: "/category/home-and-living",
     },
   ];
+
+  const handleItemDeletion = (item: ShoppingCartItem) => {};
 
   return (
     <>
@@ -82,24 +99,23 @@ export const Header: React.FC = () => {
             </button>
           </div>
           <div className="flex text-white">
-            <ul className="inline-flex items-center space-x-9">
+            <ul className="inline-flex items-center gap-4">
               <li className="flex cursor-pointer items-center text-sm">
                 <Link href="/login">
-                  <div>
+                  <div className="flex items-center gap-2">
                     {t("Sign_In", "Sign In")}{" "}
-                    <FaUser className="ml-0 inline-flex h-8 w-8" />
+                    <FaUser className="ml-0 inline-flex h-6 w-6" />
                   </div>
                 </Link>
               </li>
               <li className="cursor-pointer">
-                <FaHeart className="h-8 w-8" />
+                <FaHeart className="h-6 w-6" />
               </li>
-              <li className="relative flex cursor-pointer">
-                <FaShoppingBag className="h-8 w-8" />
-                <div className="absolute -bottom-2 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 p-2 text-xs">
-                  3
-                </div>
-              </li>
+              <ShoppingCart
+                ref={cartRef}
+                items={items}
+                onItemDelete={(item) => handleItemDeletion(item)}
+              />
             </ul>
           </div>
         </div>

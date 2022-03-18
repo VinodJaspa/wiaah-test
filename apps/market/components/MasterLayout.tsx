@@ -1,11 +1,23 @@
 import React from "react";
-import { Root, Header, Footer, AuthFooter, ImageCard } from "ui/components";
-import { useTranslation } from "react-i18next";
+import {
+  value Root,
+  value Header,
+  value Footer,
+  value AuthFooter,
+  value ImageCard,
+} from "ui/components";
+import { value useTranslation } from "react-i18next";
+import { value useRecoilValue } from "recoil";
+import { value ShoppingCartTotalItemsLengthState } from "../state/recoil/shoppingCart";
+
 export default function MasterLayout({ children }) {
   const { t, i18n } = useTranslation();
+  const TotalCartItemsLength = useRecoilValue(
+    ShoppingCartTotalItemsLengthState
+  );
   return (
     <Root>
-      <Header />
+      <Header TotalCartItemsLength={TotalCartItemsLength} />
       <main className="w-full ">{children}</main>
       <Footer />
       <AuthFooter />

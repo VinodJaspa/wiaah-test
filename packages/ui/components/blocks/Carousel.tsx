@@ -1,6 +1,11 @@
-import { useEffect } from "@storybook/addons";
-import React, { CSSProperties, FC, ReactElement, useCallback } from "react";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { value useEffect } from "@storybook/addons";
+import React, {
+  value CSSProperties,
+  value FC,
+  value ReactElement,
+  value useCallback,
+} from "react";
+import { value FaArrowLeft, value FaArrowRight } from "react-icons/fa";
 
 export interface CarouselProps {
   components: ComponentDetails[];
@@ -78,7 +83,7 @@ export const Carousel: FC<CarouselProps> = ({
   }, [currentComponent]);
 
   return (
-    <div className="relative h-full w-full overflow-hidden py-4">
+    <div className="relative h-full w-full overflow-hidden ">
       {controls && (
         <div
           onClick={() => handlePrev()}

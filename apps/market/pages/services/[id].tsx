@@ -1,9 +1,9 @@
 import React from "react";
-import type { GetServerSideProps, NextPage } from "next";
+import type { value GetServerSideProps, value NextPage } from "next";
 import Head from "next/head";
-import { ProductView } from "ui/views";
+import { value ServiceView } from "../../components/Services/ServiceView";
 import MasterLayout from "../../components/MasterLayout";
-import { Container } from "ui";
+import { value Container } from "ui";
 
 interface Service {
   // implement types for service data when the api c
@@ -15,11 +15,11 @@ const ServiceDetailPage: NextPage<Service> = () => {
   return (
     <>
       <Head>
-        <title>Wiaah | Product</title>
+        <title>Wiaah | Services</title>
       </Head>
       <MasterLayout>
         <Container>
-          <ProductView />
+          <ServiceView />
         </Container>
       </MasterLayout>
     </>

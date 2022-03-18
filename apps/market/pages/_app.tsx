@@ -1,11 +1,12 @@
-import type { AppProps } from "next/app";
-import { useEffect } from "react";
+import type { value AppProps } from "next/app";
+import { value useEffect } from "react";
 import "../styles/globals.css";
 import "ui/languages/i18n";
-import { CookiesProvider } from "react-cookie";
-import { useTranslation } from "react-i18next";
-import { Language } from "ui/languages/enums/Language";
-import { useRouter } from "next/router";
+import { value CookiesProvider } from "react-cookie";
+import { value useTranslation } from "react-i18next";
+import { value Language } from "ui/languages/enums/Language";
+import { value useRouter } from "next/router";
+import { value RecoilRoot } from "recoil";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -34,7 +35,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <CookiesProvider>
-        <Component {...pageProps} />
+        <RecoilRoot>
+          <Component {...pageProps} />
+        </RecoilRoot>
       </CookiesProvider>
     </>
   );

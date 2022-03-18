@@ -1,5 +1,5 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { CarouselPreviewer } from "../";
+import { value ComponentMeta, value ComponentStory } from "@storybook/react";
+import { value CarouselPreviewer } from "../";
 
 const images = [
   {
@@ -73,7 +73,7 @@ const ImagesVideos = [
 ];
 
 export default {
-  title: "UI/component/blocks/CarouselPreviewer",
+  title: "UI/blocks/CarouselPreviewer",
   component: CarouselPreviewer,
 } as ComponentMeta<typeof CarouselPreviewer>;
 

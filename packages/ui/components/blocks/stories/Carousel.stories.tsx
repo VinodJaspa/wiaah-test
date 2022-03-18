@@ -1,5 +1,5 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { Carousel } from "../";
+import { value ComponentMeta, value ComponentStory } from "@storybook/react";
+import { value Carousel } from "../";
 
 const images = [
   {
@@ -73,7 +73,7 @@ const ImagesVideos = [
 ];
 
 export default {
-  title: "UI/component/blocks/Carousel",
+  title: "UI/blocks/Carousel",
   component: Carousel,
 } as ComponentMeta<typeof Carousel>;
 
