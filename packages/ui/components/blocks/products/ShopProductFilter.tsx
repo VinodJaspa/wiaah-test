@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { FaChevronUp } from "react-icons/fa";
+import React, { useState } from "react";
 import { AiFillStar } from "react-icons/ai";
 import { Country, City } from "country-state-city";
 import { t } from "i18next";
@@ -13,6 +12,7 @@ interface ProductFilterProps {
   shipping?: Array<{ label: string; value: string }>;
   brands?: Array<{ label: string; value: string }>;
   colors?: Array<string>;
+  locationFilter?: boolean;
 }
 
 let countriesOptions = Array();
@@ -24,7 +24,7 @@ countries.forEach((element) => {
   });
 });
 
-export const ProductFilter: React.FC<ProductFilterProps> = ({
+export const ShopProductFilter: React.FC<ProductFilterProps> = ({
   priceRange = { min: 0, max: 1000 },
   shipping = [
     {
@@ -34,8 +34,8 @@ export const ProductFilter: React.FC<ProductFilterProps> = ({
     { label: t("Free", "Free"), value: "free" },
     { label: t("International", "International"), value: "international" },
   ],
-  brands = [],
-  colors = [],
+  brands,
+  locationFilter,
 }) => {
   let [minPrice, setMinPrice] = useState(priceRange.min);
   let [maxPrice, setMaxPrice] = useState(priceRange.max);
@@ -134,18 +134,20 @@ export const ProductFilter: React.FC<ProductFilterProps> = ({
             </div>
           ))}
         </Panel>
-        <Panel className="filter-panel" header={t("Brand", "Brand")} key="3">
-          {brands.map((item, i: number) => (
-            <div key={i} className="justify-left mb-2 flex items-center">
-              <input
-                type="checkbox"
-                value={item.value}
-                className="rounded text-pink-500"
-              />
-              <span className="ml-2 text-xs">{item.label}</span>
-            </div>
-          ))}
-        </Panel>
+        {brands && (
+          <Panel className="filter-panel" header={t("Brand", "Brand")} key="3">
+            {brands.map((item, i: number) => (
+              <div key={i} className="justify-left mb-2 flex items-center">
+                <input
+                  type="checkbox"
+                  value={item.value}
+                  className="rounded text-pink-500"
+                />
+                <span className="ml-2 text-xs">{item.label}</span>
+              </div>
+            ))}
+          </Panel>
+        )}
         <Panel className="filter-panel" header={t("Rating", "Rating")} key="4">
           <div className="justify-left mb-2 flex items-center">
             <input type="checkbox" className="rounded text-pink-500" />
@@ -201,47 +203,51 @@ export const ProductFilter: React.FC<ProductFilterProps> = ({
           </div>
         </Panel>
       </Collapse>
-      <div className="country-selector">
-        <div className=" w-full">
-          <Select
-            showSearch
-            size="large"
-            id="countryselect"
-            className="react-select-container w-full"
-            placeholder={t("Countries", "Countries")}
-            onChange={(value) => {
-              handleCountryChange(value);
-            }}
-          >
-            {countries.map((item, key: number) => {
-              return (
-                <Option key={key} value={item.isoCode}>
-                  {item.name}
-                </Option>
-              );
-            })}
-          </Select>
-        </div>
-      </div>
-      <div className="city-selector">
-        <div className="mb-2 w-full">
-          <Select
-            showSearch
-            size="large"
-            id="cityselect"
-            className="react-select-container w-full"
-            placeholder={t("Cities", "Cities")}
-          >
-            {cities?.map((item: any, key: number) => {
-              return (
-                <Option key={key} value={item.name}>
-                  {item.name}
-                </Option>
-              );
-            })}
-          </Select>
-        </div>
-      </div>
+      {locationFilter && (
+        <>
+          <div className="country-selector">
+            <div className=" w-full">
+              <Select
+                showSearch
+                size="large"
+                id="countryselect"
+                className="react-select-container w-full"
+                placeholder={t("Countries", "Countries")}
+                onChange={(value) => {
+                  handleCountryChange(value);
+                }}
+              >
+                {countries.map((item, key: number) => {
+                  return (
+                    <Option key={key} value={item.isoCode}>
+                      {item.name}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </div>
+          </div>
+          <div className="city-selector">
+            <div className="mb-2 w-full">
+              <Select
+                showSearch
+                size="large"
+                id="cityselect"
+                className="react-select-container w-full"
+                placeholder={t("Cities", "Cities")}
+              >
+                {cities?.map((item: any, key: number) => {
+                  return (
+                    <Option key={key} value={item.name}>
+                      {item.name}
+                    </Option>
+                  );
+                })}
+              </Select>
+            </div>
+          </div>
+        </>
+      )}
       <button className="mt-5 flex h-10 w-full cursor-pointer items-center justify-center rounded-lg bg-green-400 p-3 text-white">
         {t("Clear", "Clear")}
       </button>

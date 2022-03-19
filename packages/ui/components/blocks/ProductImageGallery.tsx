@@ -21,8 +21,8 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
   const [currentComponent, setCurrentComponent] = React.useState<number>();
   return (
     <>
-      <div className="flex h-full w-full flex-col-reverse lg:flex-row">
-        <div className="h-full w-full lg:h-full lg:w-fit">
+      <div className="flex h-[28rem] w-full flex-col-reverse gap-4 lg:h-full lg:flex-row">
+        <div className="h-fit w-full lg:h-full lg:w-fit">
           <CarouselPreviewer
             setCurrentComponentNum={currentComponent}
             borderColor="#57bf9c"

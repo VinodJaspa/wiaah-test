@@ -1,11 +1,6 @@
-import { value useEffect } from "@storybook/addons";
-import React, {
-  value CSSProperties,
-  value FC,
-  value ReactElement,
-  value useCallback,
-} from "react";
-import { value FaArrowLeft, value FaArrowRight } from "react-icons/fa";
+import { useEffect } from "@storybook/addons";
+import React, { CSSProperties, FC, ReactElement, useCallback } from "react";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export interface CarouselProps {
   components: ComponentDetails[];

@@ -142,8 +142,9 @@ export const ProductView: React.FC = () => {
             <div className="h-full w-full lg:w-8/12">
               <ProductImageGallery images={productGalleryitems} />
             </div>
-            <div className="mt-4 h-fit w-full lg:mt-0  lg:w-4/12 lg:pl-5 ">
+            <div className="mt-4 h-full w-full lg:mt-0  lg:w-4/12 lg:pl-5 ">
               <ProductViewRight
+                id="wasdwad"
                 price={1000}
                 oldPrice={1500}
                 name="Camera Digital with extra lenses"
@@ -151,6 +152,7 @@ export const ProductView: React.FC = () => {
                 off={10}
                 rating={4}
                 category="Horology"
+                imgUrl="/shop.jpeg"
               />
             </div>
           </div>

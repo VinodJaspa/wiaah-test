@@ -1,5 +1,5 @@
-import { value ComponentMeta, value ComponentStory } from "@storybook/react";
-import { value Carousel } from "../";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { Carousel } from "../";
 
 const images = [
   {

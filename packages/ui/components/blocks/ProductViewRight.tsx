@@ -1,12 +1,15 @@
-import React, { useState } from "react";
-import { FaChevronUp } from "react-icons/fa";
+import React from "react";
 import { Rate } from "antd";
 import { Select } from "antd";
 import { t } from "i18next";
+import { useShoppingCart } from "../../state";
+import { Button } from "../partials";
+import { ShoppingCartItem } from "../../types/shoppingCart/shoppingCartItem.interface";
 
 const { Option } = Select;
 
 export interface ProductProps {
+  id: string;
   name?: string;
   price: number;
   oldPrice?: number;
@@ -16,8 +19,9 @@ export interface ProductProps {
   reviews?: number;
   category?: string;
   saved?: boolean;
-  avaible?: number;
+  available?: number;
   shippedToYourCountry?: boolean;
+  cashBack?: number;
 }
 
 export const ProductViewRight: React.FC<ProductProps> = ({
@@ -26,79 +30,101 @@ export const ProductViewRight: React.FC<ProductProps> = ({
   oldPrice,
   rating = 0,
   shippedToYourCountry = true,
-  avaible,
+  available,
   off = "",
   category = "",
   reviews = 0,
+  imgUrl,
+  id,
+  saved,
 }) => {
-  let [optionOpened, setOptionOpened] = useState(false);
+  const { AddNewItem, OpenShoppingCart } = useShoppingCart();
+
+  function handleNewItem(item: ShoppingCartItem) {
+    AddNewItem(item);
+    OpenShoppingCart();
+  }
+
   return (
     <div className="flex h-full flex-col items-start justify-between">
-      <samp className="green-text">{category}</samp>
-      <h1 className="m-0 text-2xl font-bold text-gray-800 ">{name}</h1>
-      <div className="flex items-center">
-        <div className="inline-flex items-center">
-          <Rate allowHalf value={rating} className="text-orange-500" />
-        </div>
-        <div className="mx-3 h-5 w-px bg-gray-300"></div>
-        <span className="text-gray-500">
-          {reviews} {t("Reviews", "Reviews")}
-        </span>
-      </div>
-      <div className="mt-2 flex items-center font-bold">
-        <span className="product-price text-3xl">${price}</span>
-        {!oldPrice ? (
-          ""
-        ) : (
-          <span className="product-old-price ml-5 text-2xl text-slate-400 line-through">
-            ${oldPrice}
+      <div className="flex w-full flex-col">
+        <samp className="green-text">{category}</samp>
+        <h1 className="m-0 text-2xl font-bold text-gray-800 ">{name}</h1>
+        <div className="flex items-center">
+          <div className="inline-flex items-center">
+            <Rate allowHalf value={rating} className="text-orange-500" />
+          </div>
+          <div className="mx-3 h-5 w-px bg-gray-300"></div>
+          <span className="text-gray-500">
+            {reviews} {t("Reviews", "Reviews")}
           </span>
-        )}
-      </div>
-      <div className="my-2 inline-block rounded-md bg-red-400 px-4 py-1 font-bold text-white">
-        <span>{off}% </span>
-        <span>{t("OFF", "OFF")}</span>
-      </div>
-      <div className="mb-2 text-lg">
-        <div>
-          <span className="font-bold">
-            {avaible
-              ? t("Available", "Available") + ":" + avaible
-              : t("Not_Available", "Not Available")}{" "}
-          </span>
-          <span className="text-gray-500">{t("In_Stock", "In Stock")} </span>
         </div>
-        <div className="text-red-500">
-          {shippedToYourCountry
-            ? t(
-                "Shipping_available_in_your_country",
-                "Shipping available in your country"
-              )
-            : ""}
+        <div className="mt-2 flex items-center font-bold">
+          <span className="product-price text-3xl">${price}</span>
+          {!oldPrice ? (
+            ""
+          ) : (
+            <span className="product-old-price ml-5 text-2xl text-slate-400 line-through">
+              ${oldPrice}
+            </span>
+          )}
+        </div>
+        <div className="my-2 inline-block w-fit rounded-md bg-red-400 px-4 py-1 font-bold text-white">
+          <span>{off}% </span>
+          <span>{t("OFF", "OFF")}</span>
+        </div>
+        <div className="mb-2 text-lg">
+          <div>
+            <span className="font-bold">
+              {available
+                ? t("Available", "Available") + ":" + available
+                : t("Not_Available", "Not Available")}{" "}
+            </span>
+            <span className="text-gray-500">{t("In_Stock", "In Stock")} </span>
+          </div>
+          <div className="text-red-500">
+            {shippedToYourCountry
+              ? t(
+                  "Shipping_available_in_your_country",
+                  "Shipping available in your country"
+                )
+              : ""}
+          </div>
         </div>
       </div>
-      <div className="mb-2">
-        <div className="mb-1 font-light">{t("Color", "Color")}</div>
-        <div className="flex">
-          <div className="mr-3 h-8 w-8 rounded-sm border-2 border-black bg-red-500"></div>
-          <div className="green-background mr-3 h-8 w-8 rounded-sm "></div>
-          <div className="mr-3 h-8 w-8 rounded-sm bg-blue-500 "></div>
+      <div className="w-full">
+        <div className="mb-2">
+          <div className="mb-1 font-light">{t("Color", "Color")}</div>
+          <div className="flex">
+            <div className="mr-3 h-8 w-8 rounded-sm border-2 border-black bg-red-500"></div>
+            <div className="green-background mr-3 h-8 w-8 rounded-sm "></div>
+            <div className="mr-3 h-8 w-8 rounded-sm bg-blue-500 "></div>
+          </div>
         </div>
+        <div className="mb-4 w-full">
+          <div className="mb-1 font-light">{t("Size", "Size")}</div>
+          <Select
+            size="large"
+            id="cityselect"
+            className="w-full"
+            placeholder={t("Size", "Size")}
+          >
+            <Option value="small">{t("Small", "Small")}</Option>
+          </Select>
+        </div>
+        <Button
+          onClick={() =>
+            handleNewItem({
+              id,
+              name,
+              price,
+              quantity: 1,
+              thumbnail: imgUrl || "",
+            })
+          }
+          text={t("Add_To_Cart", "Add To Cart")}
+        />
       </div>
-      <div className="mb-4 w-full">
-        <div className="mb-1 font-light">{t("Size", "Size")}</div>
-        <Select
-          size="large"
-          id="cityselect"
-          className="w-full"
-          placeholder={t("Size", "Size")}
-        >
-          <Option value="small">{t("Small", "Small")}</Option>
-        </Select>
-      </div>
-      <button className="green-background w-full rounded-sm py-2 uppercase text-white">
-        {t("Add_To_Cart", "Add To Cart")}
-      </button>
     </div>
   );
 };

@@ -1,7 +1,7 @@
-import React, { value useImperativeHandle } from "react";
-import { value Event } from "./ServiceBookingCalander";
-import { value ServiceBookingCalander } from "ui";
-import { value useOutsideClick } from "ui/Hooks/useOutsideClick";
+import React, { useImperativeHandle } from "react";
+import { Event } from "./ServiceBookingCalander";
+import { ServiceBookingCalander } from "ui";
+import { useOutsideClick } from "ui/Hooks/useOutsideClick";
 
 export interface BookingEventProps {
   ref?: any;

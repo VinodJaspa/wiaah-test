@@ -1,7 +1,8 @@
-import { value ComponentMeta, value ComponentStory } from "@storybook/react";
-import { value useState } from "react";
-import { value ShoppingCart } from "../";
-import { value ShoppingCartItem } from "../../../../../apps/market/types/shoppingCart/shoopingCartItem.interface";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { useState } from "react";
+import { RecoilRoot } from "recoil";
+import { ShoppingCart } from "../";
+import { ShoppingCartItem } from "../../../types/shoppingCart/shoppingCartItem.interface";
 
 export default {
   title: "UI/blocks/ShoppingCart",
@@ -44,16 +45,18 @@ Default.decorators = [
     const [Items, setItems] = useState<ShoppingCartItem[]>([...items]);
 
     return (
-      <div className=" flex justify-end  p-4 px-12">
-        <Story
-          args={{
-            items: Items,
-            onItemDelete: (Item) => {
-              setItems((state) => state.filter((item) => item !== Item));
-            },
-          }}
-        />
-      </div>
+      <RecoilRoot>
+        <div className=" flex justify-end  p-4 px-12">
+          <Story
+            args={{
+              items: Items,
+              onItemDelete: (Item) => {
+                setItems((state) => state.filter((item) => item !== Item));
+              },
+            }}
+          />
+        </div>
+      </RecoilRoot>
     );
   },
 ];

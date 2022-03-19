@@ -1,19 +1,18 @@
-import React, { value useState } from "react";
-import { value BreadCrumb } from "ui";
+import React, { useState } from "react";
+import { BreadCrumb } from "ui";
 import {
-  value ProductImageGallery,
-  value ProductViewRight,
-  value ProductDescription,
-  value SellerCard,
+  ProductImageGallery,
+  ProductDescription,
+  SellerCard,
 } from "ui/components";
-import { value Product } from "ui";
-import { value Swiper, value SwiperSlide } from "swiper/react";
-import { value Navigation } from "swiper";
-import { value useMediaQuery } from "react-responsive";
+import { Product } from "ui";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper";
+import { useMediaQuery } from "react-responsive";
 import "swiper/css";
 import "swiper/css/navigation";
-import { value ServiceRightView } from "./ServiceRightView";
-import { value t } from "i18next";
+import { ServiceRightView } from "./ServiceRightView";
+import { t } from "i18next";
 
 export interface ProductGalleryItem {
   original: string;
@@ -107,7 +106,7 @@ export const ServiceView: React.FC = () => {
           <BreadCrumb breadcrumb={breadcrumb} />
         </div>
         <div>
-          <div className="flex-column mb-10 flex-wrap items-stretch lg:flex lg:h-[28rem] lg:justify-between">
+          <div className="flex-column mb-10 flex-wrap  lg:flex lg:h-[28rem] lg:justify-between">
             <div className="h-full w-full lg:w-8/12">
               <ProductImageGallery images={productGalleryitems} />
             </div>
@@ -120,6 +119,9 @@ export const ServiceView: React.FC = () => {
                 off={10}
                 rating={4}
                 category="Horology"
+                available={15}
+                discontUnits={5}
+                included={["breakfast", "food"]}
               />
             </div>
           </div>

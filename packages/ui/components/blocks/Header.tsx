@@ -1,34 +1,25 @@
 import React from "react";
-import { value SidebarContext } from "../helpers/SidebarContext";
+import { SidebarContext } from "../helpers/SidebarContext";
 import {
-  value FaSearch,
-  value FaUser,
-  value FaHeart,
-  value FaShoppingBag,
-  value FaAlignJustify,
-  value FaChevronDown,
+  FaSearch,
+  FaUser,
+  FaHeart,
+  FaShoppingBag,
+  FaAlignJustify,
+  FaChevronDown,
 } from "react-icons/fa";
-import { value Sidebar } from ".";
+import { Sidebar } from ".";
 import Link from "next/link";
-import { value t } from "i18next";
-import { value ShoppingCart } from "./";
-import { value ShoppingCartItem } from "../../../../apps/market/types/shoppingCart/shoopingCartItem.interface";
-import { value ShoppingCartRef } from "./ShoppingCart";
+import { t } from "i18next";
+import { ShoppingCart } from "./";
+import { useRecoilValue } from "recoil";
+import { ShoppingCartItem } from "../../types/shoppingCart/shoppingCartItem.interface";
+import { ShoppingCartItemsState } from "../../state";
 
-export const Header: React.FC<{ TotalCartItemsLength: number }> = ({
-  TotalCartItemsLength,
-}) => {
-  const cartRef = React.useRef<ShoppingCartRef>();
-  const [items, setItems] = React.useState<ShoppingCartItem[]>([
-    {
-      id: "1",
-      name: "item 1",
-      price: 5,
-      quantity: 3,
-      thumbnail: "/shop.jpeg",
-    },
-  ]);
+export const Header: React.FC = () => {
+  const items = useRecoilValue(ShoppingCartItemsState);
   const sidebar = React.useContext(SidebarContext);
+
   let menup = [
     {
       label: t("Clothing", "Clothing"),
@@ -112,7 +103,6 @@ export const Header: React.FC<{ TotalCartItemsLength: number }> = ({
                 <FaHeart className="h-6 w-6" />
               </li>
               <ShoppingCart
-                ref={cartRef}
                 items={items}
                 onItemDelete={(item) => handleItemDeletion(item)}
               />

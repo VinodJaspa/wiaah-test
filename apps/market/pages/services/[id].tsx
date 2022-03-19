@@ -1,9 +1,9 @@
 import React from "react";
-import type { value GetServerSideProps, value NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { value ServiceView } from "../../components/Services/ServiceView";
+import { ServiceView } from "../../components/Services/ServiceView";
 import MasterLayout from "../../components/MasterLayout";
-import { value Container } from "ui";
+import { Container } from "ui";
 
 interface Service {
   // implement types for service data when the api c

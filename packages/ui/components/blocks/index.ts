@@ -1,31 +1,31 @@
-import { value ImageSlider } from "./ImageSlider";
-import { value Sidebar } from "./Sidebar";
-import { value Card } from "./Card";
-import { value ImageCard } from "./ImageCard";
-import { value ProductImageGallery } from "./ProductImageGallery";
-import { value ProductViewRight } from "./ProductViewRight";
-import { value ProductDescription } from "./ProductDescription";
-import { value SellerCard } from "./SellerCard";
-import { value CountryLanguageCurrencySwitch } from "./CountryLanguageCurrencySwitch";
-import { value Collaboration } from "./Collaboration";
-import { value Information } from "./Information";
-import { value SocialMediaLinks } from "./SocialMediaLinks";
-import { value CustomerService } from "./CustomerService";
-import { value SubscribeForm } from "./SubscribeForm";
-import { value Footer } from "./Footer";
-import { value Header } from "./Header";
-import { value AuthFooter } from "./AuthFooter";
-import { value ContactUsForm } from "./ContactUsForm";
-import { value AuthPopup } from "./AuthPopup";
-import { value FormContainer } from "./FormContainer";
-import { value AuthSwitcher } from "./AuthSwitcher";
-import { value Carousel } from "./Carousel";
-import { value CarouselPreviewer } from "./CarouselPreviewer";
-import { value ShoppingCart } from "./ShoppingCart";
-import { value ServiceBookingCalander } from "./ServiceBookingCalander";
-import { value BreadCrumb } from "./BreadCrumb";
-import { value BookingEventPopup } from "./BookingEventPopup";
-
+import { ImageSlider } from "./ImageSlider";
+import { Sidebar } from "./Sidebar";
+import { Card } from "./Card";
+import { ImageCard } from "./ImageCard";
+import { ProductImageGallery } from "./ProductImageGallery";
+import { ProductViewRight } from "./ProductViewRight";
+import { ProductDescription } from "./ProductDescription";
+import { SellerCard } from "./SellerCard";
+import { CountryLanguageCurrencySwitch } from "./CountryLanguageCurrencySwitch";
+import { Collaboration } from "./Collaboration";
+import { Information } from "./Information";
+import { SocialMediaLinks } from "./SocialMediaLinks";
+import { CustomerService } from "./CustomerService";
+import { SubscribeForm } from "./SubscribeForm";
+import { Footer } from "./Footer";
+import { Header } from "./Header";
+import { AuthFooter } from "./AuthFooter";
+import { ContactUsForm } from "./ContactUsForm";
+import { AuthPopup } from "./AuthPopup";
+import { FormContainer } from "./FormContainer";
+import { AuthSwitcher } from "./AuthSwitcher";
+import { Carousel } from "./Carousel";
+import { CarouselPreviewer } from "./CarouselPreviewer";
+import { ShoppingCart } from "./ShoppingCart";
+import { ServiceBookingCalander } from "./ServiceBookingCalander";
+import { BreadCrumb } from "./BreadCrumb";
+import { BookingEventPopup } from "./BookingEventPopup";
+import { ProductCard } from "./ProductCard";
 export * from "./products";
 
 export {
@@ -56,4 +56,5 @@ export {
   ServiceBookingCalander,
   BreadCrumb,
   BookingEventPopup,
+  ProductCard,
 };

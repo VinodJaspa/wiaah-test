@@ -1,13 +1,9 @@
 import React from "react";
-import { value useTranslation } from "react-i18next";
-import {
-  value MdClose,
-  value MdArrowLeft,
-  value MdArrowRight,
-} from "react-icons/md";
-import { value Spacer } from "../";
-import { value Button, value Divider } from "../";
-import { value getTimeInAmPm } from "../helpers/getTimeInAmPm";
+import { useTranslation } from "react-i18next";
+import { MdClose, MdArrowLeft, MdArrowRight } from "react-icons/md";
+import { Spacer } from "../";
+import { Button, Divider } from "../";
+import { getTimeInAmPm } from "../helpers/getTimeInAmPm";
 
 export interface ServiceBookingCalanderProps {
   month: Month;

@@ -1,37 +1,26 @@
 import React from "react";
-import { value FaShoppingBag, value FaTrash } from "react-icons/fa";
-import { value MdDeleteOutline, value MdClose } from "react-icons/md";
-import { value ShoppingCartItem } from "../../../../apps/market/types/shoppingCart/shoopingCartItem.interface";
-import { value useOutsideClick } from "../../Hooks/useOutsideClick";
+import { FaShoppingBag, FaTrash } from "react-icons/fa";
+import { MdDeleteOutline, MdClose } from "react-icons/md";
+import { useOutsideClick } from "../../Hooks/useOutsideClick";
+import { useShoppingCart } from "../../state";
+import { ShoppingCartItem } from "../../types/shoppingCart/shoppingCartItem.interface";
 
 export interface ShoppingCartProps {
   items: ShoppingCartItem[];
   onItemDelete?: (item: ShoppingCartItem) => void;
   ref?: any;
 }
-export interface ShoppingCartRef {
-  openShoppingCart: () => void;
-  closeShoppingCart: () => void;
-}
-export const ShoppingCart: React.FC<ShoppingCartProps> = React.forwardRef<
-  ShoppingCartRef,
-  ShoppingCartProps
->(({ items, onItemDelete }, ref) => {
+
+export const ShoppingCart: React.FC<ShoppingCartProps> = ({
+  items,
+  onItemDelete,
+}) => {
   const cartRef = React.useRef<HTMLDivElement>(null);
   const [DropdownStyles, setDropdownStyles] =
     React.useState<React.CSSProperties>({});
   const [total, setTotal] = React.useState<number>(0);
-  const [open, setOpen] = React.useState<boolean>(false);
-
-  React.useImperativeHandle(ref, () => ({
-    openShoppingCart() {
-      handleOpen();
-    },
-
-    closeShoppingCart() {
-      handleClose();
-    },
-  }));
+  const { ShoppingCartOpen, OpenShoppingCart, closeShoppingCart, RemoveItem } =
+    useShoppingCart();
 
   useOutsideClick(cartRef, () => {
     handleClose();
@@ -46,7 +35,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = React.forwardRef<
   }, [items]);
 
   React.useEffect(() => {
-    if (open) {
+    if (ShoppingCartOpen) {
       setDropdownStyles((state) => ({
         ...state,
         opacity: "100%",
@@ -61,24 +50,25 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = React.forwardRef<
         transform: "translateY(0rem)",
       }));
     }
-  }, [open]);
+  }, [ShoppingCartOpen]);
 
   function handleDeleteitem(item: ShoppingCartItem) {
+    RemoveItem(item.id);
     if (onItemDelete) {
       onItemDelete(item);
     }
   }
 
   function handleOpen() {
-    setOpen(true);
+    OpenShoppingCart();
   }
 
   function handleClose() {
-    setOpen(false);
+    closeShoppingCart();
   }
 
   function handleToggleOpen() {
-    if (!open) return handleOpen();
+    if (!ShoppingCartOpen) return handleOpen();
     handleClose();
   }
 
@@ -101,7 +91,6 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = React.forwardRef<
         <div className="mr-8 flex justify-end">
           <div
             style={{
-              // clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
               clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
             }}
             className="h-4 w-8 bg-gray-200 "
@@ -160,4 +149,4 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = React.forwardRef<
       </div>
     </div>
   );
-});
+};

@@ -186,3 +186,62 @@ button.image-gallery-icon {
   top: 50%;
   transform: translateY(-50%);
 }
+
+.RangeInput {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+  outline: none;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  background-color: transparent;
+  pointer-events: none;
+}
+.RangeInput::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  height: 5px;
+}
+.RangeInput::-moz-range-track {
+  -moz-appearance: none;
+  height: 5px;
+}
+.RangeInput::-ms-track {
+  appearance: none;
+  height: 5px;
+}
+.RangeInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 1rem;
+  width: 1rem;
+  background-color: #57bf9c;
+  cursor: pointer;
+  /* margin-top: ; */
+  transform: translateY(-50%);
+  pointer-events: auto;
+  border-radius: 50%;
+}
+.RangeInput::-moz-range-thumb {
+  -webkit-appearance: none;
+  height: 1rem;
+  width: 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #57bf9c;
+  pointer-events: auto;
+}
+.RangeInput::-ms-thumb {
+  appearance: none;
+  height: 1rem;
+  width: 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #3264fe;
+  pointer-events: auto;
+}
+.RangeInput:active::-webkit-slider-thumb {
+  background-color: #ffffff;
+  border: 3px solid #57bf9c;
+}

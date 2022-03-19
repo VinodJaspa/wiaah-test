@@ -1,5 +1,5 @@
-import { value ComponentMeta, value ComponentStory } from "@storybook/react";
-import { value ServiceBookingCalander } from "../";
+import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { ServiceBookingCalander } from "../";
 export default {
   title: "UI/blocks/ServiceBookingCalander",
   component: ServiceBookingCalander,

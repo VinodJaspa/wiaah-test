@@ -28,29 +28,6 @@ export const CarouselPreviewer: FC<CarouselPreviewerProps> = ({
   React.useEffect(() => {
     // set styles
     setItemStyles((state) => ({ ...state, borderColor: borderColor }));
-
-    // switch (itemSize) {
-    //   case "sm":
-    //     setItemStyles((state) => ({
-    //       ...state,
-    //       width: "4.5rem",
-    //       height: "3rem",
-    //     }));
-    //     break;
-    //   case "md":
-    //     setItemStyles((state) => ({ ...state, width: "6rem", height: "4rem" }));
-    //     break;
-    //   case "lg":
-    //     setItemStyles((state) => ({
-    //       ...state,
-    //       width: "7.5rem",
-    //       height: "5rem",
-    //     }));
-    //     break;
-    //   case "xl":
-    //     setItemStyles((state) => ({ ...state, width: "9rem", height: "6rem" }));
-    //     break;
-    // }
   }, []);
 
   React.useEffect(() => {
@@ -96,7 +73,7 @@ export const CarouselPreviewer: FC<CarouselPreviewerProps> = ({
       return (
         <div
           style={containerStyles}
-          className={`no-scroll m-2 flex h-full w-24 overflow-y-scroll`}
+          className={`no-scroll flex h-full w-24 overflow-y-scroll`}
         >
           <div
             style={subContainerStyles}

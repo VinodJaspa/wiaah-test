@@ -1,19 +1,9 @@
-import { value atom, value selector } from "recoil";
-import { value ShoppingCartItem } from "../../types/shoppingCart/shoopingCartItem.interface";
+import { atom, selector } from "recoil";
+import { ShoppingCartItem } from "../../types/shoppingCart/shoppingCartItem.interface";
 
-export const ShoppingCartItemsState = atom<{ items: ShoppingCartItem[] }>({
+export const ShoppingCartItemsState = atom<ShoppingCartItem[]>({
   key: "ShoppingCartItemsState",
-  default: {
-    items: [
-      {
-        id: "1",
-        name: "item 1",
-        price: 5,
-        quantity: 3,
-        thumbnail: "/shop",
-      },
-    ],
-  },
+  default: [],
 });
 
 export const ShoppingCartToggleState = atom<boolean>({
@@ -25,14 +15,14 @@ export const ShoppingCartTotalItemsLengthState = selector<number>({
   key: "ShoppingCartTotalItemsLength",
   get: ({ get }) => {
     const cartItems = get(ShoppingCartItemsState);
-    return cartItems.items.length;
+    return cartItems.length;
   },
 });
 
 export const ShoppingCartTotalItemsCost = selector<number>({
   key: "ShoppingCartTotalItemsCost",
   get: ({ get }) => {
-    const items = get(ShoppingCartItemsState).items;
+    const items = get(ShoppingCartItemsState);
     const total = items.reduce((acc, item) => {
       const totalItemPrice = item.price * item.quantity;
       return acc + totalItemPrice;

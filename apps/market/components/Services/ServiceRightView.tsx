@@ -1,15 +1,10 @@
 import React from "react";
-import { value Rate } from "antd";
-import { value t } from "i18next";
-import {
-  value Button,
-  value BookingEventPopup,
-  value CloseIcon,
-  value Spacer,
-} from "ui";
-import { value Event } from "ui/components/blocks/ServiceBookingCalander";
-import { value BookingEventRefProps } from "ui/components/blocks/BookingEventPopup";
-import { value getTimeInAmPm } from "ui/components/helpers/getTimeInAmPm";
+import { Rate } from "antd";
+import { t } from "i18next";
+import { Button, BookingEventPopup, CloseIcon, Spacer } from "ui";
+import { Event } from "ui/components/blocks/ServiceBookingCalander";
+import { BookingEventRefProps } from "ui/components/blocks/BookingEventPopup";
+import { getTimeInAmPm } from "ui/components/helpers/getTimeInAmPm";
 
 export interface ProductProps {
   name?: string;
@@ -22,7 +17,10 @@ export interface ProductProps {
   category?: string;
   saved?: boolean;
   available?: number;
+  cashBack?: number;
   shippedToYourCountry?: boolean;
+  discontUnits?: number;
+  included?: string[];
 }
 
 export const ServiceRightView: React.FC<ProductProps> = ({
@@ -35,9 +33,11 @@ export const ServiceRightView: React.FC<ProductProps> = ({
   off = "",
   category = "",
   reviews = 0,
+  discontUnits,
+  included,
 }) => {
   const bookEventPopupRef = React.useRef<BookingEventRefProps>(null);
-  //   const [optionOpened, setOptionOpened] = React.useState(false);
+
   const [event, setEvent] = React.useState<Event>();
 
   function handleCancelBookedEvent() {
@@ -94,6 +94,17 @@ export const ServiceRightView: React.FC<ProductProps> = ({
           <span>{off}% </span>
           <span>{t("OFF", "OFF")}</span>
         </div>
+        <div>
+          {discontUnits && (
+            <div className="text-lg font-bold text-red-500">
+              {t("Only", "Only")} {discontUnits}{" "}
+              {t(
+                "Discount_Units_Left",
+                "Tickets left at this price on our site"
+              )}
+            </div>
+          )}
+        </div>
         <div className="mb-2 text-lg">
           <div>
             <span className="font-bold">
@@ -102,7 +113,7 @@ export const ServiceRightView: React.FC<ProductProps> = ({
                 : t("Service_Not_Available", "Service Not Available")}{" "}
             </span>
           </div>
-          <div className="text-red-500">
+          <div className=" text-red-500">
             {shippedToYourCountry
               ? t(
                   "Service_available_for_international_customers",
@@ -110,6 +121,17 @@ export const ServiceRightView: React.FC<ProductProps> = ({
                 )
               : ""}
           </div>
+        </div>
+        <div>
+          {included && (
+            <div className="flex flex-wrap gap-2">
+              {included.map((service, i) => (
+                <span className="rounded-lg border-2 border-green-500 px-2 py-1 text-green-500 ">
+                  {service} included
+                </span>
+              ))}
+            </div>
+          )}
         </div>
         {event && (
           <div className="flex w-full flex-col gap-2 p-2 shadow">
