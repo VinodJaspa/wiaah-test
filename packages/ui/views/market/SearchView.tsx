@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
-import { Card, ImageCard, Divider } from "../../components";
+import {
+  Card,
+  ImageCard,
+  Divider,
+  ShopProductFilter,
+  ProductCard,
+} from "../../components";
 import { Product } from "ui/components/blocks/products/product";
 import { ProductFilter } from "ui/components/blocks/products/productFilter";
 import { BreadCrumb } from "ui/components/blocks/BreadCrumb";
@@ -13,6 +19,7 @@ import {
 import { BsArrowLeft } from "react-icons/bs";
 import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
 import { t } from "i18next";
+import { products } from "../../placeholder/products";
 
 export const SearchView: React.FC = () => {
   let [isGrid, setGrid] = useState(false);
@@ -66,13 +73,13 @@ export const SearchView: React.FC = () => {
             } grid-button inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
           />
         </div>
-        <div className="flex items-start">
+        <div className="flex items-start justify-center">
           <div
             className={`${
               !filterVisibleOnMobile
                 ? "hidden"
                 : "fixed h-screen overflow-y-scroll pb-4 pl-3"
-            } filter-section inset-0 z-10  bg-white pr-3 md:block md:w-2/6 lg:block lg:w-1/5`}
+            } filter-section inset-0 z-50  w-full bg-white pr-3 `}
           >
             <div className="flex h-20 w-full items-center justify-start md:hidden">
               <BsArrowLeft
@@ -83,56 +90,70 @@ export const SearchView: React.FC = () => {
               />
               <span className="ml-8">{t("Filter", "Filter")}</span>
             </div>
-            <ProductFilter
-              priceRange={{ min: 0, max: 1000 }}
-              brands={[
-                { label: "Merishop", value: "merishop" },
-                { label: "Rehanseller", value: "rehanseller" },
-                { label: "Wihaa", value: "wihaa" },
-                { label: "Hussaindesigner01", value: "hussaindesigner01" },
-              ]}
-            ></ProductFilter>
-          </div>
-          <div className="w-full md:w-4/6 lg:w-4/5">
-            <div
-              className={`${
-                isGrid ? "grid-cols-2" : "grid-cols-1"
-              } product-list grid w-full gap-4 md:grid-cols-2 lg:grid-cols-3`}
-            >
-              {[...Array(12)].map((_, i: number) => (
-                <Product
-                  name="Camera Digital with extra lenses"
-                  imgUrl="/shop-2.jpeg"
-                  price={518.68}
-                  rating={4}
-                  cashback={10}
-                  off={10}
-                  oldPrice={600}
-                  key={i}
-                ></Product>
-              ))}
+            <div className="flex w-full justify-center gap-4">
+              <ShopProductFilter
+                open={true}
+                shipping={["Click and Collect", "Free", "International"]}
+                locations={["USA", "FR", "UK"]}
+                colors={["#920", "#059", "#229"]}
+                rating={true}
+              />
             </div>
-            <div className="flex w-full justify-center">
-              <ul className="inline-flex items-center space-x-4 p-20 text-white">
-                <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
-                  <FaAngleDoubleLeft className="h-5 w-5" />
-                </li>
-                <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
-                  <FaAngleLeft className="h-5 w-5" />
-                </li>
-                <li className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-green-400 p-3">
-                  1
-                </li>
-                <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
-                  <FaAngleRight className="h-5 w-5" />
-                </li>
-                <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
-                  <FaAngleDoubleRight className="h-5 w-5" />
-                </li>
-              </ul>
+          </div>
+          <div className="flex w-full justify-center gap-4">
+            <div className="hidden md:block">
+              <ShopProductFilter
+                open={true}
+                priceRange={{ max: 1000, min: 10 }}
+                shipping={["Click and Collect", "Free", "International"]}
+                colors={["#920", "#059", "#229"]}
+                size={["S", "M", "L", "XL", "XXL", "XXXL"]}
+                stockStatus={true}
+                rating={true}
+                brands={["nike", "or", "zake"]}
+                categories={["men", "women", "childrens"]}
+                countryFilter={true}
+                cityFilter={true}
+              />
+            </div>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {/* shop items */}
+              {products.map((product, i) => (
+                <ProductCard
+                  buttonText="Add to Cart"
+                  id={product.id || ""}
+                  name={product.name || ""}
+                  imageUrl={product.imgUrl || ""}
+                  price={product.price}
+                  rating={product.rating}
+                  cashback={product.cashBack}
+                  discount={product.off}
+                  oldPrice={product.oldPrice}
+                  key={i}
+                />
+              ))}
             </div>
           </div>
         </div>
+        {/* <div className="flex w-full justify-center">
+            <ul className="inline-flex items-center space-x-4 p-20 text-white">
+              <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
+                <FaAngleDoubleLeft className="h-5 w-5" />
+              </li>
+              <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
+                <FaAngleLeft className="h-5 w-5" />
+              </li>
+              <li className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-green-400 p-3">
+                1
+              </li>
+              <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
+                <FaAngleRight className="h-5 w-5" />
+              </li>
+              <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
+                <FaAngleDoubleRight className="h-5 w-5" />
+              </li>
+            </ul>
+          </div> */}
 
         <Divider />
 

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaChevronUp } from "react-icons/fa";
 import { AiFillStar } from "react-icons/ai";
-//import Select from 'react-select';
 import { Country, City } from "country-state-city";
-import { Divider } from "../../../components";
 import { t } from "i18next";
 import { Select, Slider, Collapse, Tree } from "antd";
 

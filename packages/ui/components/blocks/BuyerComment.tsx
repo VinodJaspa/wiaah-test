@@ -1,6 +1,5 @@
 import React from "react";
 import { Rate } from "antd";
-
 export interface BuyerCommentProps {
   name?: string;
   date?: string;

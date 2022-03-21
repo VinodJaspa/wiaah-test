@@ -50,7 +50,6 @@
     "jest-sonar-reporter": "^2.0.0",
     "lint-staged": "^12.2.2",
     "postcss": "^8.4.6",
-    "prettier": "^2.5.1",
     "react-test-renderer": "^17.0.2",
     "sonarqube-scanner": "^2.8.1",
     "storybook-react-i18next": "^1.0.17",

@@ -1,0 +1,42 @@
+import React from "react";
+import type { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
+import MasterLayout from "../../components/MasterLayout";
+import { ShopView } from "../../components/Shop/ShopView";
+import { products } from "ui/placeholder/products";
+
+interface ShopProps {
+  // implement types for service data when the api c
+  shop: any;
+}
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const { shopid } = query;
+  // get shop details by its id and return it to the page as props
+  return {
+    props: {},
+  };
+};
+const shop = {
+  shopDetails: "wiaah shop detials",
+  shopLocation: "Switzerland, Geneva",
+  shopName: "Wiaah",
+  shopRating: 5,
+  shopSince: new Date().toLocaleDateString(),
+  shopThumbnailUrl: "/shop-2.jpeg",
+};
+
+const ServiceDetailPage: NextPage<ShopProps> = () => {
+  // get product details from api
+  return (
+    <>
+      <Head>
+        <title>Wiaah | Shop</title>
+      </Head>
+      <MasterLayout>
+        <ShopView shop={shop} products={products} />
+      </MasterLayout>
+    </>
+  );
+};
+
+export default ServiceDetailPage;

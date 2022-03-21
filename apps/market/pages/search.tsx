@@ -4,6 +4,7 @@ import Head from "next/head";
 import { SearchView } from "ui/views";
 import type { AppProps } from "next/app";
 import MasterLayout from "../components/MasterLayout";
+import { Container } from "ui";
 const Search: NextPage = () => {
   return (
     <>
@@ -11,9 +12,9 @@ const Search: NextPage = () => {
         <title>Wiaah | Search results</title>
       </Head>
       <MasterLayout>
-        <main className="block w-full grow">
+        <Container>
           <SearchView></SearchView>
-        </main>
+        </Container>
       </MasterLayout>
     </>
   );

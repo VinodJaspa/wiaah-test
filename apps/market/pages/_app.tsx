@@ -6,6 +6,7 @@ import { CookiesProvider } from "react-cookie";
 import { useTranslation } from "react-i18next";
 import { Language } from "ui/languages/enums/Language";
 import { useRouter } from "next/router";
+import { RecoilRoot } from "recoil";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -34,7 +35,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <CookiesProvider>
-        <Component {...pageProps} />
+        <RecoilRoot>
+          <Component {...pageProps} />
+        </RecoilRoot>
       </CookiesProvider>
     </>
   );

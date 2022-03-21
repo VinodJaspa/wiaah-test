@@ -1,0 +1,119 @@
+import { ProductDetails } from "../types/products/ProductDetail.interface";
+export const products: ProductDetails[] = [
+  {
+    price: 15,
+    imgUrl:
+      "https://cdn.mena-tech.com/wp-content/uploads/2021/08/MR-Future-Products-2020-2.png",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    name: "Camera Digital with extra lenses",
+    imgUrl:
+      "https://images.prismic.io/rushordertees-web/c46d32cd-469a-49a9-b175-7362171d29a7_Custom+Short+Sleeve+T-Shirt.jpg?auto=compress%2Cformat&rect=0%2C0%2C800%2C900&w=800&h=900",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    price: 15,
+    imgUrl:
+      "https://4.imimg.com/data4/AA/HC/MY-26596027/men-s-fancy-t-shirt-500x500.jpg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    name: "Camera Digital with extra lenses",
+    imgUrl:
+      "https://contents.mediadecathlon.com/p1981373/k$9b63009207eb708712157b83d42dd74b/adults-category-3-hiking-sunglasses-mh140.jpg?&f=800x800",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    price: 15,
+    imgUrl:
+      "https://www.eisenberg.com/upload/images/eisenberg/4f/173_BANNER-CATEGORIE-FRAGRANCE-1170X500PX.jpeg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    name: "test item",
+    imgUrl:
+      "https://cdn.shopify.com/s/files/1/0505/7019/9217/products/P04.jpg?v=1613769249",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    price: 15,
+    imgUrl:
+      "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/amazon-secret-sneaker-sale-1600978103.jpg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    name: "Camera Digital with extra lenses",
+    imgUrl:
+      "https://www.dhresource.com/0x0/f2/albu/g2/M01/D7/53/rBVaG1Z7yPeAZyVbAALpWonCzOk728.jpg/fashion-new-qulaity-pu-leather-men-wallets.jpg",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    price: 15,
+    imgUrl: "/shop-3.jpeg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    name: "Camera Digital with extra lenses",
+    imgUrl: "/shop-2.jpeg",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    price: 15,
+    imgUrl: "/shop-3.jpeg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    name: "Camera Digital with extra lenses",
+    imgUrl: "/shop-2.jpeg",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+];

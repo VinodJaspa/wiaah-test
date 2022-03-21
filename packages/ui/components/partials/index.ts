@@ -8,6 +8,9 @@ import { Container } from "./Container";
 import { FlexStack } from "./FlexStack";
 import { Input } from "./Input";
 import { TextArea } from "./TextArea";
+import { CloseIcon } from "./CloseIcon";
+import { DropdownPanel } from "./DropdownPanel";
+import { FilterInput } from "./FilterInput";
 export {
   FlexStack,
   Root,
@@ -19,4 +22,7 @@ export {
   Container,
   Input,
   TextArea,
+  CloseIcon,
+  DropdownPanel,
+  FilterInput,
 };

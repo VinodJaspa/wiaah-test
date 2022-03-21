@@ -20,6 +20,14 @@ import { AuthPopup } from "./AuthPopup";
 import { FormContainer } from "./FormContainer";
 import { AuthSwitcher } from "./AuthSwitcher";
 import { Carousel } from "./Carousel";
+import { CarouselPreviewer } from "./CarouselPreviewer";
+import { ShoppingCart } from "./ShoppingCart";
+import { ServiceBookingCalander } from "./ServiceBookingCalander";
+import { BreadCrumb } from "./BreadCrumb";
+import { BookingEventPopup } from "./BookingEventPopup";
+import { ProductCard } from "./ProductCard";
+import { ShopProductFilter } from "./products/ShopProductFilter";
+
 export {
   ImageSlider,
   Sidebar,
@@ -43,4 +51,11 @@ export {
   FormContainer,
   AuthSwitcher,
   Carousel,
+  CarouselPreviewer,
+  ShoppingCart,
+  ServiceBookingCalander,
+  BreadCrumb,
+  BookingEventPopup,
+  ProductCard,
+  ShopProductFilter,
 };

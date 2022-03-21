@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import MasterLayout from "../components/MasterLayout";
-import { AboutWiaah, Collaboration, Container, Divider, Spacer } from "ui";
+import { AboutWiaahView, Collaboration, Container, Divider, Spacer } from "ui";
 
 const aboutWiaah: NextPage = () => {
   return (
@@ -12,7 +12,7 @@ const aboutWiaah: NextPage = () => {
       </Head>
       <MasterLayout>
         <Container>
-          <AboutWiaah />
+          <AboutWiaahView />
           <Spacer spaceInRem={2} />
           <Divider />
           <Collaboration />
