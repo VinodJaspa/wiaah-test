@@ -8,6 +8,7 @@ import React, {
 export interface StackProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   direction?: "vertical" | "horizontal";
+  alignItems?: "center" | "start" | "end";
   reverse?: boolean;
   wrap?: boolean;
   setId?: string;
@@ -55,6 +56,7 @@ export const FlexStack: FC<StackProps> = ({
   horizontalSpacingInRem,
   className,
   fullWidth,
+  alignItems,
   justify = "center",
   ...props
 }) => {
@@ -79,6 +81,10 @@ export const FlexStack: FC<StackProps> = ({
       default:
         setStyles((state) => ({ ...state, flexDirection: "row" }));
         break;
+    }
+
+    if (alignItems) {
+      setStyles((state) => ({ ...state, alignItems: alignItems }));
     }
 
     if (wrap) {

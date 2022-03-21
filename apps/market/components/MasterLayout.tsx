@@ -12,7 +12,7 @@ export default function MasterLayout({ children }) {
       <main className="w-full ">{children}</main>
       <Footer />
       <AuthFooter />
-      <div className="container mx-auto block w-full space-y-6 p-6">
+      <div className="container mx-auto block w-full space-y-6 py-6">
         <div className="flex w-full justify-center">
           <p className="text-2xl font-bold uppercase">
             {t("Our_Partners", "Our Partners")}

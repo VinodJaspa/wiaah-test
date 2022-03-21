@@ -1,5 +1,5 @@
 import React from "react";
-import { FaHeart } from "react-icons/fa";
+import { Rate } from "antd";
 import { IoHeartOutline, IoHeart } from "react-icons/io5";
 
 export interface ProductCardProps {
@@ -12,8 +12,12 @@ export interface ProductCardProps {
   colors?: string[];
   liked?: boolean;
   buttonText: string;
-  onLikeClick: () => void;
-  onButtonClick: (id: string) => void;
+  cashback?: string;
+  discount?: number;
+  oldPrice?: number;
+  rating?: number;
+  onLikeClick?: () => void;
+  onButtonClick?: (id: string) => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
@@ -26,6 +30,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   imageUrl,
   liked,
   buttonText,
+  cashback,
+  discount,
+  oldPrice,
+  rating,
   onButtonClick,
   onLikeClick,
 }) => {
@@ -43,17 +51,37 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   }
 
   function handleButtonClick() {
-    onButtonClick(id);
+    if (onButtonClick) {
+      onButtonClick(id);
+    }
   }
 
   return (
-    <div className="flex flex-col bg-white">
+    <div className="flex w-56 flex-col bg-white">
       <div
         onMouseOver={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-        className="relative h-72 w-60"
+        className="relative h-72 w-full "
       >
         {/* image */}
+        <div className="absolute top-0 z-10 flex w-full items-center justify-between p-2">
+          {cashback ? (
+            <div className="bg-red-400 bg-opacity-70 px-4 text-white">
+              {/* cash ack */}
+              {cashback} Cashback
+            </div>
+          ) : (
+            <span></span>
+          )}
+          <span
+            onClick={() => handleLikeClick()}
+            className="cursor-pointer text-2xl"
+          >
+            {/* love */}
+            {liked ? <IoHeart className="fill-red-400" /> : <IoHeartOutline />}
+          </span>
+        </div>
+
         <div
           className={`${
             hovered
@@ -72,40 +100,47 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         <img className="h-full w-full object-cover" src={imageUrl} alt={name} />
       </div>
       <div className="p-2">
-        <div>
-          {/* name */}
-          {name}
+        {/* name */}
+        <span>{name}</span>
+        <div className="flex items-center justify-between">
+          {/* price and colors */}
+          <div className="flex items-center gap-2">
+            {/* price */}
+            <span className="text-lg  font-bold">
+              {currencySymbol}
+              {price}
+            </span>{" "}
+            {oldPrice && (
+              <span className="font-bold text-gray-400 line-through">
+                {/* old price */}
+                {currencySymbol}
+                {oldPrice}
+              </span>
+            )}
+          </div>
+          {discount && (
+            <span className="bg-red-400 px-2 text-white">{discount}% OFF</span>
+          )}
         </div>
         <div className="flex items-center justify-between">
-          {/* price */}
-          <span className="font-bold">
-            {currency} {currencySymbol}
-            {price}
-          </span>
-          <span
-            onClick={() => handleLikeClick()}
-            className="cursor-pointer text-lg"
-          >
-            {/* love */}
-            {liked ? <IoHeart className="fill-red-500" /> : <IoHeartOutline />}
-          </span>
-        </div>
-        <div className="flex gap-2">
-          {/* colors */}
-          {colors.map((color, i) => (
-            <div
-              onClick={() => handleColorSelection(i)}
-              className={`cursor-pointer rounded-full border-[1px] ${
-                selectedColor === i ? "border-black" : ""
-              } p-[1px]`}
-            >
+          <div className="flex gap-2">
+            {/* colors */}
+            {colors.map((color, i) => (
               <div
-                key={i}
-                style={{ backgroundColor: color }}
-                className="h-4 w-4 rounded-full"
-              ></div>
-            </div>
-          ))}
+                onClick={() => handleColorSelection(i)}
+                className={`cursor-pointer rounded-full border-[1px] ${
+                  selectedColor === i ? "border-black" : ""
+                } p-[1px]`}
+              >
+                <div
+                  key={i}
+                  style={{ backgroundColor: color }}
+                  className="h-3 w-3 rounded-full"
+                ></div>
+              </div>
+            ))}
+          </div>
+          <Rate className="text-sm" allowHalf disabled value={rating} />
         </div>
       </div>
     </div>

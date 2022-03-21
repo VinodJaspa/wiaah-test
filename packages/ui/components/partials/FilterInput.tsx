@@ -5,11 +5,11 @@ export interface FilterCheckBoxProps
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
-  label: string;
+  label?: string;
   currency?: string;
   currencySymbol?: string;
-  min: number;
-  max: number;
+  min?: number;
+  max?: number;
   onRangeChange?: (Range: { min: number; max: number }) => void;
   variant?: "radio" | "box" | "range";
 }
@@ -40,8 +40,8 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
   onRangeChange,
   ...props
 }) => {
-  const [maxRange, setMaxRange] = React.useState<number>(max / 2);
-  const [minRange, setMinRange] = React.useState<number>(max / 4);
+  const [maxRange, setMaxRange] = React.useState<number>(max);
+  const [minRange, setMinRange] = React.useState<number>(min);
   const [trackStyles, setTrackStyles] = React.useState<React.CSSProperties>({});
 
   function fillColor(minSlideValue: number, maxSlideValue: number) {
@@ -52,7 +52,6 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
       ...state,
       right: `${100 - maxPercent}%`,
       width: `${maxPercent - minPercent}%`,
-      // transform: `translate`
     }));
   }
 
@@ -61,37 +60,38 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
       if (Number(e.target.value) > maxRange) return state;
       return Number(e.target.value);
     });
-    // fillColor(Number(minRange), Number(maxRange));
   }
+
   function handleMaxChange(e: React.ChangeEvent<HTMLInputElement>) {
     setMaxRange((state) => {
       if (Number(e.target.value) < minRange) return state;
       return Number(e.target.value);
     });
-    // fillColor(Number(minRange), Number(maxRange));
   }
+
   React.useEffect(() => {
     fillColor(Number(minRange), Number(maxRange));
     if (onRangeChange) {
       onRangeChange({ min: minRange, max: maxRange });
     }
   }, [minRange, maxRange]);
+
   switch (variant) {
     case "radio":
       return (
-        <div className="flex w-full items-center gap-2">
+        <div className="flex w-fit items-center gap-2 ">
           <input {...props} type="radio" />
-          <span>{label}</span>
+          {label && <span>{label}</span>}
         </div>
       );
     case "range":
       return (
-        <div className="flex w-full flex-col  gap-2">
+        <div className="flex w-full flex-col  gap-2 ">
           <span className="font-bold">{label}</span>
           <div className="relative mt-2">
             <span
               style={trackStyles}
-              className="pointer-events-none absolute top-0 right-0 h-2  -translate-y-3/4 bg-[#57bf9c] "
+              className="pointer-events-none absolute top-0 right-0 h-2 -translate-y-3/4 rounded-full bg-[#57bf9c] "
             ></span>
             <input
               {...props}
@@ -138,8 +138,8 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
       );
     default:
       return (
-        <div className="flex w-full items-center gap-2">
-          <input {...props} type="checkbox" />
+        <div className="flex w-fit items-center gap-2 outline-none ">
+          <input {...props} className="focus:ring-0" type="checkbox" />
           <div>{label}</div>
         </div>
       );

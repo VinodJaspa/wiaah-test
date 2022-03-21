@@ -3,7 +3,7 @@ import React from "react";
 import { FilterInput } from "../";
 
 export default {
-  title: "UI/partials/FilterCheckBox",
+  title: "UI/partials/FilterInput",
   component: FilterInput,
 } as ComponentMeta<typeof FilterInput>;
 

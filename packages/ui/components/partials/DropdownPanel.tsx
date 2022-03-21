@@ -9,10 +9,10 @@ export interface DropdownPanelProps {
 export const DropdownPanel: React.FC<DropdownPanelProps> = ({
   name,
   children,
-  open,
+  open = false,
   columns = 1,
 }) => {
-  const [Opened, setOpened] = React.useState<boolean>(false);
+  const [Opened, setOpened] = React.useState<boolean>(open);
   const [ChildrensContainerStyle, setChildrensContainerStyle] =
     React.useState<React.CSSProperties>({});
   React.useEffect(() => {
@@ -21,13 +21,6 @@ export const DropdownPanel: React.FC<DropdownPanelProps> = ({
       gridTemplateColumns: `repeat(${columns}, minmax(0,${100 / columns}%))`,
     }));
   }, []);
-
-  //   React.useEffect(() => {
-  //     setChildrensContainerStyle((state) => ({
-  //       ...state,
-  //       height: Opened ? "fit-content" : "0%",
-  //     }));
-  //   }, [Opened]);
 
   React.useEffect(() => {
     if (!open) return;
@@ -41,12 +34,11 @@ export const DropdownPanel: React.FC<DropdownPanelProps> = ({
   function handleDropdownToggle() {
     setOpened((opened) => !opened);
   }
-  console.log(children);
   return (
-    <div className="bg-white px-4">
+    <div className="w-fit bg-white px-4 shadow-md">
       <div
         onClick={() => handleDropdownToggle()}
-        className="flex w-48 cursor-pointer select-none items-center justify-between  py-2 font-semibold text-black"
+        className="flex w-60 cursor-pointer select-none items-center justify-between  py-2 font-semibold text-black"
       >
         <span>{name}</span>
         <span className="text-lg">{Opened ? "-" : "+"}</span>
@@ -55,7 +47,7 @@ export const DropdownPanel: React.FC<DropdownPanelProps> = ({
         style={ChildrensContainerStyle}
         className={`${
           Opened ? "h-fit" : "h-0"
-        } grid transform gap-y-2 overflow-clip transition-all duration-1000`}
+        } grid transform gap-y-2 overflow-clip  transition-all duration-1000`}
       >
         {children}
       </div>

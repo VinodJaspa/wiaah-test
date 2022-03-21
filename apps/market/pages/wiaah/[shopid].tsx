@@ -2,9 +2,8 @@ import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import MasterLayout from "../../components/MasterLayout";
-import { Container } from "ui";
 import { ShopView } from "../../components/Shop/ShopView";
-import { ProductProps } from "../../components/Services/ServiceRightView";
+import { products } from "ui/placeholder/products";
 
 interface ShopProps {
   // implement types for service data when the api c
@@ -41,114 +40,3 @@ const ServiceDetailPage: NextPage<ShopProps> = () => {
 };
 
 export default ServiceDetailPage;
-
-const products: ProductProps[] = [
-  {
-    price: 15,
-    imgUrl: "/shop-3.jpeg",
-    name: "test item",
-    rating: 3,
-    cashBack: 12,
-    off: 5,
-    oldPrice: 20,
-  },
-  {
-    name: "Camera Digital with extra lenses",
-    imgUrl: "/shop-2.jpeg",
-    price: 518.68,
-    rating: 4,
-    cashBack: 10,
-    off: 10,
-    oldPrice: 600,
-  },
-  {
-    price: 15,
-    imgUrl: "/shop-3.jpeg",
-    name: "test item",
-    rating: 3,
-    cashBack: 12,
-    off: 5,
-    oldPrice: 20,
-  },
-  {
-    name: "Camera Digital with extra lenses",
-    imgUrl: "/shop-2.jpeg",
-    price: 518.68,
-    rating: 4,
-    cashBack: 10,
-    off: 10,
-    oldPrice: 600,
-  },
-  {
-    price: 15,
-    imgUrl: "/shop-3.jpeg",
-    name: "test item",
-    rating: 3,
-    cashBack: 12,
-    off: 5,
-    oldPrice: 20,
-  },
-  {
-    name: "Camera Digital with extra lenses",
-    imgUrl: "/shop-2.jpeg",
-    price: 518.68,
-    rating: 4,
-    cashBack: 10,
-    off: 10,
-    oldPrice: 600,
-  },
-  {
-    price: 15,
-    imgUrl: "/shop-3.jpeg",
-    name: "test item",
-    rating: 3,
-    cashBack: 12,
-    off: 5,
-    oldPrice: 20,
-  },
-  {
-    name: "Camera Digital with extra lenses",
-    imgUrl: "/shop-2.jpeg",
-    price: 518.68,
-    rating: 4,
-    cashBack: 10,
-    off: 10,
-    oldPrice: 600,
-  },
-  {
-    price: 15,
-    imgUrl: "/shop-3.jpeg",
-    name: "test item",
-    rating: 3,
-    cashBack: 12,
-    off: 5,
-    oldPrice: 20,
-  },
-  {
-    name: "Camera Digital with extra lenses",
-    imgUrl: "/shop-2.jpeg",
-    price: 518.68,
-    rating: 4,
-    cashBack: 10,
-    off: 10,
-    oldPrice: 600,
-  },
-  {
-    price: 15,
-    imgUrl: "/shop-3.jpeg",
-    name: "test item",
-    rating: 3,
-    cashBack: 12,
-    off: 5,
-    oldPrice: 20,
-  },
-  {
-    name: "Camera Digital with extra lenses",
-    imgUrl: "/shop-2.jpeg",
-    price: 518.68,
-    rating: 4,
-    cashBack: 10,
-    off: 10,
-    oldPrice: 600,
-  },
-];

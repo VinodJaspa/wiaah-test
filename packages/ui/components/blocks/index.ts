@@ -26,7 +26,7 @@ import { ServiceBookingCalander } from "./ServiceBookingCalander";
 import { BreadCrumb } from "./BreadCrumb";
 import { BookingEventPopup } from "./BookingEventPopup";
 import { ProductCard } from "./ProductCard";
-export * from "./products";
+import { ShopProductFilter } from "./products/ShopProductFilter";
 
 export {
   ImageSlider,
@@ -57,4 +57,5 @@ export {
   BreadCrumb,
   BookingEventPopup,
   ProductCard,
+  ShopProductFilter,
 };

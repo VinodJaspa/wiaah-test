@@ -7,6 +7,7 @@ import { BookingEventRefProps } from "ui/components/blocks/BookingEventPopup";
 import { getTimeInAmPm } from "ui/components/helpers/getTimeInAmPm";
 
 export interface ProductProps {
+  id?: string;
   name?: string;
   price: number;
   oldPrice?: number;
@@ -17,7 +18,7 @@ export interface ProductProps {
   category?: string;
   saved?: boolean;
   available?: number;
-  cashBack?: number;
+  cashBack?: string;
   shippedToYourCountry?: boolean;
   discontUnits?: number;
   included?: string[];
