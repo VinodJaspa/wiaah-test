@@ -5,6 +5,7 @@ import {
   ProductViewRight,
   ProductDescription,
   SellerCard,
+  Spacer,
 } from "ui/components";
 import { Product } from "../../components/blocks/products/product";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -138,11 +139,11 @@ export const ProductView: React.FC = () => {
           <BreadCrumb breadcrumb={breadcrumb} />
         </div>
         <div>
-          <div className="flex-column mb-10 flex-wrap items-stretch lg:flex lg:h-[28rem] lg:justify-between">
+          <div className="flex-column h-fit flex-wrap items-stretch lg:flex lg:h-[28rem] lg:justify-between">
             <div className="h-full w-full lg:w-8/12">
               <ProductImageGallery images={productGalleryitems} />
             </div>
-            <div className="mt-4 h-full w-full lg:mt-0  lg:w-4/12 lg:pl-5 ">
+            <div className=" h-full w-full lg:mt-0  lg:w-4/12 lg:pl-5 ">
               <ProductViewRight
                 id="wasdwad"
                 price={1000}
@@ -156,6 +157,9 @@ export const ProductView: React.FC = () => {
               />
             </div>
           </div>
+          <Spacer />
+          <Spacer />
+          <Spacer />
           <div className="flex-column flex-wrap lg:flex lg:justify-between">
             <div className="w-full lg:w-8/12 xl:w-8/12">
               <ProductDescription

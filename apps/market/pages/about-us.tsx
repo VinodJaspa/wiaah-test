@@ -2,7 +2,8 @@ import { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import MasterLayout from "../components/MasterLayout";
-import { AboutWiaahView, Collaboration, Container, Divider, Spacer } from "ui";
+import { AboutWiaahView, Container, Divider, Spacer } from "ui";
+import { Collaboration } from "ui/components/blocks/Collaboration";
 
 const aboutWiaah: NextPage = () => {
   return (

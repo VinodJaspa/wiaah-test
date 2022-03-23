@@ -12,7 +12,6 @@ export const GridContainerPager: React.FC<GridContainerPager> = ({
   children,
   onPageChange,
 }) => {
-  console.log("childs", children);
   const [components, setComponents] = React.useState<React.ReactNode[]>([]);
   const [currentPage, setCurrentPage] = React.useState<number>(1);
 
@@ -27,18 +26,18 @@ export const GridContainerPager: React.FC<GridContainerPager> = ({
         : start + componentsLimit;
     const currentPageComponents = children.slice(start, end);
     setComponents(currentPageComponents);
-  }, [currentPage]);
+  }, [currentPage, children]);
 
   function handlePageChange(pageNumber: number) {
     setCurrentPage(pageNumber);
   }
 
   return (
-    <>
-      <div className="grid w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+    <div className="flex w-full flex-col items-center justify-center">
+      <div className="grid  grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {components.map((comp, i) => {
           if (i < componentsLimit) {
-            return <>{comp}</>;
+            return <div key={i}>{comp}</div>;
           }
         })}
       </div>
@@ -48,6 +47,6 @@ export const GridContainerPager: React.FC<GridContainerPager> = ({
         onPageChange={(pageNumber) => handlePageChange(pageNumber)}
         maxPages={Math.ceil(children.length / componentsLimit)}
       />
-    </>
+    </div>
   );
 };

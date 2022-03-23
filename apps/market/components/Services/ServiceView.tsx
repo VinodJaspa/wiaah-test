@@ -1,11 +1,6 @@
-import React, { useState } from "react";
-import { BreadCrumb } from "ui";
-import {
-  ProductImageGallery,
-  ProductDescription,
-  SellerCard,
-} from "ui/components";
-import { Product } from "ui";
+import React from "react";
+import { BreadCrumb, ProductCard, ProductImageGallery } from "ui";
+import { ProductDescription, SellerCard } from "ui/components";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import { useMediaQuery } from "react-responsive";
@@ -149,15 +144,17 @@ export const ServiceView: React.FC = () => {
               >
                 {[...Array(12)].map((_, i: number) => (
                   <SwiperSlide className="flex justify-center" key={i}>
-                    <Product
+                    <ProductCard
+                      buttonText="Add to Card"
+                      id={`${i}`}
                       name={t("Camera Digital with extra lenses")}
-                      imgUrl="/shop-2.jpeg"
+                      imageUrl="/shop-2.jpeg"
                       price={518.68}
                       rating={4}
-                      cashback={10}
-                      off={10}
+                      cashback="5%"
+                      // off={15}
                       oldPrice={600}
-                    ></Product>
+                    />
                   </SwiperSlide>
                 ))}
               </Swiper>

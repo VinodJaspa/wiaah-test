@@ -9,7 +9,7 @@ import {
 } from "react-icons/fa";
 import { t } from "i18next";
 import { Collaboration } from "../../components/blocks";
-
+import { CookiesInfoBanner } from "ui/components/blocks/CookiesInfoBanner";
 export const HomeView: React.FC = () => {
   return (
     <>

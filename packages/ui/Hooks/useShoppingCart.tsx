@@ -1,10 +1,7 @@
 import React from "react";
 import { useRecoilState } from "recoil";
-import { ShoppingCartItem } from "../../../types/shoppingCart/shoppingCartItem.interface";
-import {
-  ShoppingCartItemsState,
-  ShoppingCartToggleState,
-} from "../ShoppingCart";
+import { ShoppingCartItemsState, ShoppingCartToggleState } from "../state";
+import { ShoppingCartItem } from "../types/shoppingCart/shoppingCartItem.interface";
 
 interface useAddItemToCartProps {}
 

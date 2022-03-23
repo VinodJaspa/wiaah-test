@@ -1,13 +1,19 @@
 import React from "react";
-import { Root, Header, Footer, AuthFooter, ImageCard } from "ui/components";
+import {
+  Root,
+  Header,
+  Footer,
+  AuthFooter,
+  ImageCard,
+  AuthPopup,
+} from "ui/components";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue } from "recoil";
-import { ShoppingCartTotalItemsLengthState } from "ui/state";
 
 export default function MasterLayout({ children }) {
   const { t, i18n } = useTranslation();
   return (
     <Root>
+      <AuthPopup />
       <Header />
       <main className="w-full ">{children}</main>
       <Footer />

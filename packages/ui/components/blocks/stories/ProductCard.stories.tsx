@@ -79,3 +79,27 @@ WithLongName.decorators = [
     );
   },
 ];
+
+export const ServiceVariant = Template.bind({});
+ServiceVariant.args = {
+  name: "product 1 long title to test text wrap",
+  price: 15,
+  colors: ["red", "green", "blue"],
+  buttonText: "Book now",
+  cashback: "5%",
+  discount: 20,
+  oldPrice: 20,
+  rating: 4,
+  variant: "service",
+  imageUrl:
+    "https://i.guim.co.uk/img/media/2ce8db064eabb9e22a69cc45a9b6d4e10d595f06/392_612_4171_2503/master/4171.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=45b5856ba8cd83e6656fbe5c166951a4",
+};
+ServiceVariant.decorators = [
+  (Story, { args }) => {
+    return (
+      <section className="flex h-screen w-full items-center justify-center bg-gray-200">
+        <Story {...args} />
+      </section>
+    );
+  },
+];

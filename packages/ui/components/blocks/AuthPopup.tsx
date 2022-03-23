@@ -1,37 +1,37 @@
-import React, { CSSProperties, FC, useEffect } from "react";
+import React, { CSSProperties, FC } from "react";
 import { AuthSwitcher } from ".";
-import { LoginType } from "../../../../apps/market/lib/LoignTypes";
+import { useLoginPopup } from "../../Hooks";
 import { FormContainer } from "./FormContainer";
 
 interface AuthPopupProp {
   onClose?: () => void;
-  show: boolean;
 }
 
-export const AuthPopup: FC<AuthPopupProp> = ({ onClose, show }) => {
-  const [style, setStyle] = React.useState<CSSProperties>({});
+export const AuthPopup: FC<AuthPopupProp> = ({ onClose }) => {
+  const { popupOpen, CloseLoginPopup } = useLoginPopup();
   const [showSwitcher, setShowSwitcher] = React.useState<boolean>(true);
 
   const handleClose = () => {
     if (onClose) {
       onClose();
     }
+    CloseLoginPopup();
   };
 
   React.useEffect(() => {
-    if (show) {
+    if (popupOpen) {
       setShowSwitcher(true);
     } else {
       setTimeout(() => {
         setShowSwitcher(false);
       }, 300);
     }
-  }, [show]);
+  }, [popupOpen]);
 
   return (
     <div
       className={`${
-        show ? "opacity-100" : "pointer-events-none opacity-0"
+        popupOpen ? "opacity-100" : "pointer-events-none opacity-0"
       } fixed top-0 left-0 z-50 flex h-screen w-full items-center justify-center transition-opacity`}
     >
       <div
@@ -39,9 +39,8 @@ export const AuthPopup: FC<AuthPopupProp> = ({ onClose, show }) => {
         onClick={handleClose}
       ></div>
       <FormContainer
-        style={style}
         className={`${
-          show && showSwitcher
+          popupOpen && showSwitcher
             ? "translate-y-0 opacity-100"
             : "translate-y-3/4 opacity-0"
         } transform transition-all`}

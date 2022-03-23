@@ -2,9 +2,9 @@ import React from "react";
 import { Rate } from "antd";
 import { Select } from "antd";
 import { t } from "i18next";
-import { useShoppingCart } from "../../state";
-import { Button } from "../partials";
-import { ShoppingCartItem } from "../../types/shoppingCart/shoppingCartItem.interface";
+import { Button, FlexStack, WishListIcon } from "ui";
+import { ShoppingCartItem } from "ui/types/shoppingCart/shoppingCartItem.interface";
+import { useShoppingCart } from "ui/Hooks/useShoppingCart";
 
 const { Option } = Select;
 
@@ -43,6 +43,9 @@ export const ProductViewRight: React.FC<ProductProps> = ({
   function handleNewItem(item: ShoppingCartItem) {
     AddNewItem(item);
     OpenShoppingCart();
+  }
+  function handleAddToWishList() {
+    // add to wishList
   }
 
   return (
@@ -112,18 +115,22 @@ export const ProductViewRight: React.FC<ProductProps> = ({
             <Option value="small">{t("Small", "Small")}</Option>
           </Select>
         </div>
-        <Button
-          onClick={() =>
-            handleNewItem({
-              id,
-              name,
-              price,
-              quantity: 1,
-              thumbnail: imgUrl || "",
-            })
-          }
-          text={t("Add_To_Cart", "Add To Cart")}
-        />
+        <FlexStack fullWidth={true} horizontalSpacingInRem={0.5}>
+          <Button
+            onClick={() =>
+              handleNewItem({
+                id,
+                name,
+                price,
+                quantity: 1,
+                thumbnail: imgUrl || "",
+              })
+            }
+          >
+            {t("Add_To_Cart", "Add To Cart")}
+          </Button>
+          <WishListIcon onClick={handleAddToWishList} />
+        </FlexStack>
       </div>
     </div>
   );

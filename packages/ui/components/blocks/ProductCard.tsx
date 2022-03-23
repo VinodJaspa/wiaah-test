@@ -1,9 +1,10 @@
 import React from "react";
 import { Rate } from "antd";
-import { IoHeartOutline, IoHeart } from "react-icons/io5";
+import { IoHeartOutline, IoHeart, IoTrash } from "react-icons/io5";
 
 export interface ProductCardProps {
   id: string;
+  variant?: "product" | "service";
   name: string;
   price: number;
   imageUrl: string;
@@ -16,8 +17,11 @@ export interface ProductCardProps {
   discount?: number;
   oldPrice?: number;
   rating?: number;
-  onLikeClick?: () => void;
+  forceHover?: boolean | undefined;
+  postion?: "save" | "delete";
+  onLike?: (id: string) => void;
   onButtonClick?: (id: string) => void;
+  onDelete?: (id: string) => void;
 }
 
 export const ProductCard: React.FC<ProductCardProps> = ({
@@ -27,26 +31,32 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   colors = [],
   currency = "USD",
   currencySymbol = "$",
+  variant = "product",
+  postion = "save",
   imageUrl,
   liked,
+  forceHover,
   buttonText,
   cashback,
   discount,
   oldPrice,
   rating,
   onButtonClick,
-  onLikeClick,
+  onDelete,
+  onLike,
 }) => {
   const [selectedColor, setSelectedColor] = React.useState<number>(0);
-  const [hovered, setHovered] = React.useState<boolean>(false);
+  const [hovered, setHovered] = React.useState<boolean>(forceHover || false);
 
   function handleColorSelection(i: number) {
     setSelectedColor(i);
   }
 
-  function handleLikeClick() {
-    if (onLikeClick) {
-      onLikeClick();
+  function handleClick() {
+    if (postion === "save" && onLike) {
+      onLike(id);
+    } else if (postion === "delete" && onDelete) {
+      onDelete(id);
     }
   }
 
@@ -55,12 +65,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       onButtonClick(id);
     }
   }
-
+  function handleHoverIn() {
+    if (forceHover !== undefined) return;
+    setHovered(true);
+  }
+  function handleHoverOut() {
+    if (forceHover !== undefined) return;
+    setHovered(false);
+  }
   return (
     <div className="flex w-56 flex-col bg-white">
       <div
-        onMouseOver={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
+        onMouseOver={handleHoverIn}
+        onMouseLeave={handleHoverOut}
         className="relative h-72 w-full "
       >
         {/* image */}
@@ -74,14 +91,32 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             <span></span>
           )}
           <span
-            onClick={() => handleLikeClick()}
+            onClick={() => handleClick()}
             className="cursor-pointer text-2xl"
           >
-            {/* love */}
-            {liked ? <IoHeart className="fill-red-400" /> : <IoHeartOutline />}
+            {postion === "save" ? (
+              liked ? (
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-opacity-40 shadow-sm">
+                  <IoHeart className="fill-red-400" />
+                </div>
+              ) : (
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-opacity-40 shadow-sm">
+                  <IoHeartOutline />
+                </div>
+              )
+            ) : (
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-opacity-40 shadow-sm">
+                <IoTrash />
+              </div>
+            )}
           </span>
         </div>
-
+        {variant === "service" && (
+          <div className="absolute bottom-2 right-0 z-10 bg-[#57bf9c] bg-opacity-70 px-4  text-white">
+            {/* service */}
+            Booking
+          </div>
+        )}
         <div
           className={`${
             hovered
@@ -92,7 +127,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           <div className={`h-full w-full bg-black bg-opacity-20`}></div>
           <span
             onClick={() => handleButtonClick()}
-            className="absolute left-1/2 bottom-12 w-8/12 -translate-x-1/2 cursor-pointer bg-white py-2 text-center text-xs text-black"
+            className="absolute left-1/2 bottom-12 w-8/12 -translate-x-1/2 cursor-pointer bg-white py-2 text-center text-sm text-black"
           >
             {buttonText}
           </span>

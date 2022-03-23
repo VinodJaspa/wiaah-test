@@ -36,6 +36,8 @@ export interface ButtonProps extends ButtonHTMLProps {
   borderWidthInPx?: number;
   borderColor?: string;
   marginTop?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | number;
+  paddingXInRem?: number;
+  paddingYInRem?: number;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -50,6 +52,8 @@ export const Button: FC<ButtonProps> = ({
   borderWidthInPx,
   marginTop,
   children,
+  paddingXInRem,
+  paddingYInRem,
   ...props
 }) => {
   const [BtnStyles, setBtnStyles] = React.useState<React.CSSProperties>({});
@@ -97,6 +101,21 @@ export const Button: FC<ButtonProps> = ({
         ...styles,
         marginTop: `${marginTop * 0.25}rem`,
       }));
+
+    if (paddingXInRem) {
+      setBtnStyles((state) => ({
+        ...state,
+        paddingLeft: `${paddingXInRem}rem`,
+        paddingRight: `${paddingXInRem}rem`,
+      }));
+    }
+    if (paddingYInRem) {
+      setBtnStyles((state) => ({
+        ...state,
+        paddingBottom: `${paddingYInRem}rem`,
+        paddingTop: `${paddingYInRem}rem`,
+      }));
+    }
   }, []);
 
   return (
@@ -107,6 +126,7 @@ export const Button: FC<ButtonProps> = ({
         customClasses ? customClasses : ""
       } flex h-12 w-full flex-col items-center justify-center rounded-sm text-lg capitalize  text-white `}
     >
+      {text && text}
       {children && children}
     </button>
   );

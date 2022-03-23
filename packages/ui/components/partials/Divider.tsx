@@ -1,9 +1,10 @@
 import React from "react";
-
-export const Divider: React.FC = () => {
+export interface DividerProps {}
+export const Divider: React.FC<DividerProps> = (props) => {
+  const {} = props;
   return (
     <>
-      <div className="flex w-full h-0.5 my-4 bg-gray-100"></div>
+      <div className="my-4 flex h-0.5 w-full bg-gray-100"></div>
     </>
   );
 };

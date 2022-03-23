@@ -1,7 +1,14 @@
 import React from "react";
 import { Rate } from "antd";
 import { t } from "i18next";
-import { Button, BookingEventPopup, CloseIcon, Spacer } from "ui";
+import {
+  Button,
+  BookingEventPopup,
+  CloseIcon,
+  Spacer,
+  FlexStack,
+  WishListIcon,
+} from "ui";
 import { Event } from "ui/components/blocks/ServiceBookingCalander";
 import { BookingEventRefProps } from "ui/components/blocks/BookingEventPopup";
 import { getTimeInAmPm } from "ui/components/helpers/getTimeInAmPm";
@@ -61,6 +68,9 @@ export const ServiceRightView: React.FC<ProductProps> = ({
   function handleOnSuccess(event: Event) {
     setEvent(event);
     handleCloseBookEvent();
+  }
+  function handleAddToWishList() {
+    // add to wishList
   }
 
   return (
@@ -148,15 +158,16 @@ export const ServiceRightView: React.FC<ProductProps> = ({
         )}
       </div>
       <Spacer />
-      <div className="w-full cursor-pointer">
-        <Button
-          onClick={() => handleOpenBookEvent()}
-          text={
-            event
+      <div className="flex w-full cursor-pointer">
+        <FlexStack fullWidth={true} horizontalSpacingInRem={0.5}>
+          <Button onClick={() => handleOpenBookEvent()}>
+            {event
               ? t("Update_Booking", "Update Booking")
-              : t("Book_Now", "Book Now")
-          }
-        />
+              : t("Book_Now", "Book Now")}
+          </Button>
+          <WishListIcon onClick={handleAddToWishList} />
+        </FlexStack>
+        {/* <WishListIcon /> */}
       </div>
     </div>
   );

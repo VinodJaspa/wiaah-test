@@ -30,7 +30,7 @@ import { ShopProductFilter } from "./products/ShopProductFilter";
 import { Reviews } from "./Reviews";
 import { GridContainerPager } from "./GridContainerPager";
 import { CookiesInfoBanner } from "./CookiesInfoBanner";
-
+import { TipTextContainer } from "./TipTextContainer";
 export {
   ImageSlider,
   Sidebar,
@@ -64,4 +64,5 @@ export {
   Reviews,
   GridContainerPager,
   CookiesInfoBanner,
+  TipTextContainer,
 };

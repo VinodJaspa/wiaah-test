@@ -4,6 +4,7 @@ import { t } from "i18next";
 import { useMediaQuery } from "react-responsive";
 import { Spacer } from "../partials";
 import { ProductGalleryItem } from "../../views/market/ProductView";
+import { getScreenWidth } from "../../Hooks";
 
 export interface ProductImageGalleryProps {
   images?: ProductGalleryItem[];
@@ -14,15 +15,13 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
   images = [],
   cashback,
 }) => {
-  const small = useMediaQuery({
-    query: "(max-width: 1024px)",
-  });
+  const { min: small } = getScreenWidth({ minWidth: 1280 });
   console.log("small", small);
   const [currentComponent, setCurrentComponent] = React.useState<number>();
   return (
     <>
-      <div className="flex h-[28rem] w-full flex-col-reverse gap-4 lg:h-full lg:flex-row">
-        <div className="h-fit w-full lg:h-full lg:w-fit">
+      <div className="flex h-[28rem] w-full flex-col-reverse gap-4 xl:h-full xl:flex-row">
+        <div className="h-fit w-full xl:h-full xl:w-fit">
           <CarouselPreviewer
             setCurrentComponentNum={currentComponent}
             borderColor="#57bf9c"

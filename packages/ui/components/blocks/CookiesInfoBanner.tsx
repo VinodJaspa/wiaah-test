@@ -1,12 +1,12 @@
 import React from "react";
 import { Button, FlexStack } from "../partials";
 import { getScreenWidth } from "ui";
-export interface CookiesInfoBanner {
+export interface CookiesInfoBannerProps {
   onAcceptAll?: () => void;
   onLetMeChoose?: () => void;
 }
 
-export const CookiesInfoBanner: React.FC<CookiesInfoBanner> = ({
+export const CookiesInfoBanner: React.FC<CookiesInfoBannerProps> = ({
   onAcceptAll,
   onLetMeChoose,
 }) => {
@@ -24,6 +24,8 @@ export const CookiesInfoBanner: React.FC<CookiesInfoBanner> = ({
         verticalSpacingInRem={min ? 0 : 1}
         direction={min ? "vertical" : "horizontal"}
         alignItems={min ? "start" : "center"}
+        fullWidth={true}
+        justify={"between"}
         customClassName="w-full bg-white p-4 rounded-md"
       >
         <FlexStack direction="vertical">

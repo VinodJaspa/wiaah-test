@@ -6,7 +6,11 @@ export interface WishListIcon
 export const WishListIcon: React.FC<WishListIcon> = () => {
   return (
     <div className="h-12 w-12 cursor-pointer bg-gray-100 px-2 ">
-      <img className="h-full w-full" src="heart.svg" alt="wishlist" />
+      <img
+        className="h-full w-full object-contain"
+        src="/heart.svg"
+        alt="wishlist"
+      />
     </div>
   );
 };
