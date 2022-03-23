@@ -1,39 +1,32 @@
 import { Rate } from "antd";
 import { t } from "i18next";
 import React from "react";
-import { Button, Container, Spacer } from "ui";
+import { Container, Pagination, Spacer } from "ui";
+import { GridContainerPager } from "ui/components/blocks/GridContainerPager";
+import { Reviews } from "ui/components/blocks/Reviews";
 import { ShopProductFilter } from "ui/components/blocks/products/ShopProductFilter";
 import { ProductCard } from "ui/components/blocks/ProductCard";
 import { ProductDetails } from "ui/types/products/ProductDetail.interface";
 import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
+import { categories } from "ui/placeholder/categories";
 import { FaChevronDown } from "react-icons/fa";
 import { BsArrowLeft } from "react-icons/bs";
+import { Shop, ShopProfile } from "./ShopProfile";
+import { BuyerCommentProps } from "ui/components/blocks/BuyerComment";
+import { useRouter } from "next/router";
 
 interface ShopViewProps {
   shop: Shop;
   products: ProductDetails[];
-}
-
-interface Shop {
-  shopName: string;
-  shopDetails: string;
-  shopRating: number;
-  shopSince: string;
-  shopThumbnailUrl: string;
-  shopLocation: string;
+  reviews: BuyerCommentProps[];
 }
 
 export const ShopView: React.FC<ShopViewProps> = ({
-  shop: {
-    shopDetails,
-    shopLocation,
-    shopName,
-    shopRating,
-    shopSince,
-    shopThumbnailUrl,
-  },
+  shop,
   products,
+  reviews,
 }) => {
+  const router = useRouter();
   const [isGrid, setGrid] = React.useState(false);
   const [filterVisibleOnMobile, setFilterVisibleOnMobile] =
     React.useState(false);
@@ -41,79 +34,7 @@ export const ShopView: React.FC<ShopViewProps> = ({
   return (
     <section className="flex flex-col items-center justify-center">
       {/* shop info */}
-      <div className="flex h-fit w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#32D298] to-[#5FE9D2]  py-8 md:flex-row md:items-stretch ">
-        <div className="flex flex-col gap-4 md:flex-row">
-          <div className="relative flex h-96 w-fit flex-col items-center justify-end overflow-hidden rounded-md bg-white py-4 px-12">
-            <div className="absolute top-0 left-0 h-1/4 w-full bg-black "></div>
-            {/* shop profile */}
-            <div className="relative flex h-3/4 w-full flex-col items-center justify-between">
-              <div className="absolute top-0 left-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border-2 border-white ">
-                {/* shop thumbnail */}
-                <img
-                  className="h-full w-full object-cover"
-                  src={shopThumbnailUrl}
-                  alt={shopName}
-                />
-              </div>
-              <Spacer spaceInRem={5} />
-              <div className="flex w-full flex-col items-center gap-2">
-                {/* shop name, rating and creatation date */}
-                <div className="text-lg font-bold">
-                  {/* shop name */}
-                  {shopName}
-                </div>
-                <div>
-                  {/* shop ratting */}
-                  <Rate
-                    disabled
-                    allowHalf
-                    value={shopRating}
-                    className="text-orange-500"
-                  />
-                </div>
-                <div>
-                  {/* shop creation date */}
-                  {shopSince}
-                </div>
-              </div>
-              <Spacer spaceInRem={1} />
-              <div className="flex gap-4">
-                {/* buttons */}
-                <div>
-                  {/* message button */}
-                  <Button
-                    hexBackgroundColor="#5FE9D4"
-                    text={t("Message", "Message")}
-                  />
-                </div>
-                <div>
-                  {/* follow button */}
-                  <Button
-                    hexBackgroundColor="#5FE9D4"
-                    text={t("Follow", "Follow")}
-                  />
-                </div>
-              </div>
-              <Spacer />
-              <div className="flex w-full justify-end">
-                {/* shop location */}
-                {shopLocation}
-              </div>
-            </div>
-          </div>
-          <div className="flex h-auto w-full flex-col gap-4 md:w-96 lg:w-[30rem]">
-            {/* shop destails */}
-            <div className="flex h-16 items-center justify-center rounded-md bg-white p-4 text-lg font-bold">
-              {/* shop name */}
-              {shopName}
-            </div>
-            <div className="h-full bg-white p-4">
-              {/* shop Desc */}
-              {shopDetails}
-            </div>
-          </div>
-        </div>
-      </div>
+      <ShopProfile shop={shop} />
       <Spacer />
       <Container>
         <div className="flex justify-end">
@@ -164,9 +85,14 @@ export const ShopView: React.FC<ShopViewProps> = ({
               <ShopProductFilter
                 open={true}
                 shipping={["Click and Collect", "Free", "International"]}
-                locations={["USA", "FR", "UK"]}
                 colors={["#920", "#059", "#229"]}
+                size={["S", "M", "L", "XL", "XXL", "XXXL"]}
+                stockStatus={true}
                 rating={true}
+                countryFilter={true}
+                cityFilter={true}
+                categories={categories}
+                priceRange={{ max: 1000, min: 10 }}
               />
             </div>
           </div>
@@ -181,61 +107,36 @@ export const ShopView: React.FC<ShopViewProps> = ({
                 rating={true}
                 countryFilter={true}
                 cityFilter={true}
-                categories={["men", "women", "childrens"]}
+                categories={categories}
                 priceRange={{ max: 1000, min: 10 }}
               />
             </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-              {/* shop items */}
-              {products.map((product, i) => (
-                <ProductCard
-                  buttonText="Add to Cart"
-                  id={product.id || ""}
-                  name={product.name || ""}
-                  imageUrl={product.imgUrl || ""}
-                  price={product.price}
-                  rating={product.rating}
-                  cashback={product.cashBack}
-                  discount={product.off}
-                  oldPrice={product.oldPrice}
-                  key={i}
-                />
-              ))}
+            <div className="flex w-full flex-col items-center">
+              <GridContainerPager componentsLimit={20}>
+                {/* shop items */}
+                {products.map((product, i) => (
+                  <ProductCard
+                    onButtonClick={(id) => router.push(`/products/${id}`)}
+                    buttonText="Add to Cart"
+                    id={product.id || ""}
+                    name={product.name || ""}
+                    imageUrl={product.imgUrl || ""}
+                    price={product.price}
+                    rating={product.rating}
+                    cashback={product.cashBack}
+                    discount={product.off}
+                    oldPrice={product.oldPrice}
+                    key={i}
+                  />
+                ))}
+              </GridContainerPager>
+
+              <Spacer />
+              <Spacer />
+              <Reviews reviews={reviews} />
             </div>
           </div>
         </div>
-        {/* <div className="flex w-full justify-center gap-4">
-          <div>
-            {/* shop filter */}
-        {/* <h1>Filter</h1>
-            <ShopProductFilter
-              open={true}
-              priceRange={{ max: 1000, min: 10 }}
-              shipping={["Click and Collect", "Free", "International"]}
-              colors={["#920", "#059", "#229"]}
-              size={["S", "M", "L", "XL", "XXL", "XXXL"]}
-              stockStatus={true}
-              rating={true}
-            />
-          </div>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {/* shop items */}
-        {/* {products.map((product, i) => (
-              <ProductCard
-                buttonText="Add to Cart"
-                id={product.id}
-                name={product.name}
-                imageUrl={product.imgUrl}
-                price={product.price}
-                rating={product.rating}
-                cashback={product.cashBack}
-                discount={product.off}
-                oldPrice={product.oldPrice}
-                key={i}
-              />
-            ))}
-          </div>
-        </div> */}
       </Container>
       <Spacer />
     </section>

@@ -27,6 +27,8 @@ import { BreadCrumb } from "./BreadCrumb";
 import { BookingEventPopup } from "./BookingEventPopup";
 import { ProductCard } from "./ProductCard";
 import { ShopProductFilter } from "./products/ShopProductFilter";
+import { Reviews } from "./Reviews";
+import { GridContainerPager } from "./GridContainerPager";
 
 export {
   ImageSlider,
@@ -58,4 +60,6 @@ export {
   BookingEventPopup,
   ProductCard,
   ShopProductFilter,
+  Reviews,
+  GridContainerPager,
 };

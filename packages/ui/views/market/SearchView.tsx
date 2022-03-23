@@ -1,25 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import {
-  Card,
-  ImageCard,
   Divider,
   ShopProductFilter,
   ProductCard,
+  Collaboration,
+  Spacer,
+  Pagination,
+  GridContainerPager,
 } from "../../components";
-import { Product } from "ui/components/blocks/products/product";
-import { ProductFilter } from "ui/components/blocks/products/productFilter";
 import { BreadCrumb } from "ui/components/blocks/BreadCrumb";
-import {
-  FaAngleDoubleLeft,
-  FaAngleDoubleRight,
-  FaAngleLeft,
-  FaAngleRight,
-} from "react-icons/fa";
 import { BsArrowLeft } from "react-icons/bs";
 import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
 import { t } from "i18next";
 import { products } from "../../placeholder/products";
+import { categories } from "../../placeholder/categories";
 
 export const SearchView: React.FC = () => {
   let [isGrid, setGrid] = useState(false);
@@ -111,63 +106,34 @@ export const SearchView: React.FC = () => {
                 stockStatus={true}
                 rating={true}
                 brands={["nike", "or", "zake"]}
-                categories={["men", "women", "childrens"]}
+                categories={categories}
                 countryFilter={true}
                 cityFilter={true}
               />
             </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {/* shop items */}
-              {products.map((product, i) => (
-                <ProductCard
-                  buttonText="Add to Cart"
-                  id={product.id || ""}
-                  name={product.name || ""}
-                  imageUrl={product.imgUrl || ""}
-                  price={product.price}
-                  rating={product.rating}
-                  cashback={product.cashBack}
-                  discount={product.off}
-                  oldPrice={product.oldPrice}
-                  key={i}
-                />
-              ))}
+            <div className="flex w-full flex-col items-center">
+              <GridContainerPager componentsLimit={40}>
+                {/* shop items */}
+                {products.map((product, i) => (
+                  <ProductCard
+                    buttonText="Add to Cart"
+                    id={product.id || ""}
+                    name={product.name || ""}
+                    imageUrl={product.imgUrl || ""}
+                    price={product.price}
+                    rating={product.rating}
+                    cashback={product.cashBack}
+                    discount={product.off}
+                    oldPrice={product.oldPrice}
+                    key={i}
+                  />
+                ))}
+              </GridContainerPager>
             </div>
           </div>
         </div>
-        {/* <div className="flex w-full justify-center">
-            <ul className="inline-flex items-center space-x-4 p-20 text-white">
-              <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
-                <FaAngleDoubleLeft className="h-5 w-5" />
-              </li>
-              <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
-                <FaAngleLeft className="h-5 w-5" />
-              </li>
-              <li className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-green-400 p-3">
-                1
-              </li>
-              <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
-                <FaAngleRight className="h-5 w-5" />
-              </li>
-              <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
-                <FaAngleDoubleRight className="h-5 w-5" />
-              </li>
-            </ul>
-          </div> */}
-
         <Divider />
-
-        <div className="flex w-full justify-center">
-          <p className="text-2xl font-bold uppercase">
-            {t("Collaboration", "Collaboration")}
-          </p>
-        </div>
-
-        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {[...Array(4)].map((_, i: number) => (
-            <ImageCard key={i} imgUrl="/shop-2.jpeg" />
-          ))}
-        </div>
+        <Collaboration />
       </div>
     </>
   );

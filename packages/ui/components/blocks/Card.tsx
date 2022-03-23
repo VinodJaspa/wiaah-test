@@ -2,20 +2,33 @@ import React, { useState, useEffect } from "react";
 import { colorShades } from "../helpers/colorShades";
 
 interface CardProps {
-  imgUrl?: string;
-  name?: string;
+  imgUrl: string;
+  id: string;
+  name: string;
+  onShopClick?: (shopId: string) => void;
 }
 
-export const Card: React.FC<CardProps> = ({ imgUrl, name = "" }) => {
+export const Card: React.FC<CardProps> = ({
+  imgUrl,
+  name = "",
+  id,
+  onShopClick,
+}) => {
   let [shadeColor, setShadeColor] = useState<string | undefined>();
 
   useEffect(() => {
     setShadeColor(colorShades[Math.floor(Math.random() * 5)]);
   }, [shadeColor]);
 
+  function handleShopClick() {
+    if (onShopClick) {
+      onShopClick(id);
+    }
+  }
+
   return (
     <>
-      <div className="w-70 relative block">
+      <div onClick={() => handleShopClick()} className="w-70 relative block">
         <div className="flex w-full justify-center bg-black p-4 text-white">
           <p className="uppercase">{name}</p>
         </div>

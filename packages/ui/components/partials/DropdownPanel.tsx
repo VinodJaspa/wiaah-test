@@ -3,6 +3,8 @@ import React from "react";
 export interface DropdownPanelProps {
   name: string;
   open?: boolean;
+  subPanel?: boolean;
+
   columns?: 1 | 2 | 3;
 }
 
@@ -11,6 +13,8 @@ export const DropdownPanel: React.FC<DropdownPanelProps> = ({
   children,
   open = false,
   columns = 1,
+
+  subPanel,
 }) => {
   const [Opened, setOpened] = React.useState<boolean>(open);
   const [ChildrensContainerStyle, setChildrensContainerStyle] =
@@ -35,19 +39,25 @@ export const DropdownPanel: React.FC<DropdownPanelProps> = ({
     setOpened((opened) => !opened);
   }
   return (
-    <div className="w-fit bg-white px-4 shadow-md">
+    <div
+      className={`bg-white ${subPanel ? "w-full pl-4" : "w-60 px-4 shadow-md"}`}
+    >
       <div
         onClick={() => handleDropdownToggle()}
-        className="flex w-60 cursor-pointer select-none items-center justify-between  py-2 font-semibold text-black"
+        data-test="DropdownPanelHead"
+        className={`flex w-full cursor-pointer select-none items-center justify-between py-2 font-semibold text-black`}
       >
-        <span>{name}</span>
-        <span className="text-lg">{Opened ? "-" : "+"}</span>
+        <span data-test="DropdownName">{name}</span>
+        <span data-test="DropdownSymbol" className="text-lg">
+          {Opened ? "-" : "+"}
+        </span>
       </div>
       <div
         style={ChildrensContainerStyle}
+        data-test="DropdownChildsContainer"
         className={`${
           Opened ? "h-fit" : "h-0"
-        } grid transform gap-y-2 overflow-clip  transition-all duration-1000`}
+        }  grid transform gap-y-2 overflow-clip  transition-all duration-1000`}
       >
         {children}
       </div>

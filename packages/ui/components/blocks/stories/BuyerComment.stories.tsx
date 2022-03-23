@@ -16,4 +16,17 @@ Default.args = {
   date: "08-Oct-2020",
   rating: 4,
   comment: "Really great product highly recommand it",
+  product: {
+    name: "Pink Wiaah Dress",
+    description: "Beautiful silk dress",
+    thumbnailUrl: "/shop-2.jpeg",
+  },
 };
+
+Default.decorators = [
+  (Story, { args }) => (
+    <section className=" flex flex-col items-center justify-center bg-slate-200">
+      <Story args={args} />
+    </section>
+  ),
+];

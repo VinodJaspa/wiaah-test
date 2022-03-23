@@ -47,7 +47,6 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
   function fillColor(minSlideValue: number, maxSlideValue: number) {
     const minPercent = (minSlideValue / max) * 100;
     const maxPercent = (maxSlideValue / max) * 100;
-    console.log(100 - maxPercent);
     setTrackStyles((state) => ({
       ...state,
       right: `${100 - maxPercent}%`,
@@ -57,14 +56,16 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
 
   function handleMinChange(e: React.ChangeEvent<HTMLInputElement>) {
     setMinRange((state) => {
-      if (Number(e.target.value) > maxRange) return state;
+      if (Number(e.target.value) > maxRange || Number(e.target.value) < min)
+        return state;
       return Number(e.target.value);
     });
   }
 
   function handleMaxChange(e: React.ChangeEvent<HTMLInputElement>) {
     setMaxRange((state) => {
-      if (Number(e.target.value) < minRange) return state;
+      if (Number(e.target.value) < minRange || Number(e.target.value) > max)
+        return state;
       return Number(e.target.value);
     });
   }
@@ -81,7 +82,7 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
       return (
         <div className="flex w-fit items-center gap-2 ">
           <input {...props} type="radio" />
-          {label && <span>{label}</span>}
+          {label && <span data-test="FilterInputLabel">{label}</span>}
         </div>
       );
     case "range":
@@ -95,6 +96,7 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
             ></span>
             <input
               {...props}
+              data-test="minRangeInput"
               min={min}
               max={max}
               value={minRange}
@@ -105,6 +107,7 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
             <input
               {...props}
               min={min}
+              data-test="maxRangeInput"
               max={max}
               value={maxRange}
               onChange={(e) => handleMaxChange(e)}
@@ -140,7 +143,7 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
       return (
         <div className="flex w-fit items-center gap-2 outline-none ">
           <input {...props} className="focus:ring-0" type="checkbox" />
-          <div>{label}</div>
+          {label && <span data-test="FilterInputLabel">{label}</span>}
         </div>
       );
   }
