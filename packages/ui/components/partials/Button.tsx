@@ -15,7 +15,7 @@ type ButtonHTMLProps = DetailedHTMLProps<
 
 export interface ButtonProps extends ButtonHTMLProps {
   customClasses?: string;
-  text: string;
+  text?: string;
   hexBackgroundColor?: string;
   hexTextColor?: string;
   fontSizeInRem?:
@@ -49,6 +49,7 @@ export const Button: FC<ButtonProps> = ({
   borderColor,
   borderWidthInPx,
   marginTop,
+  children,
   ...props
 }) => {
   const [BtnStyles, setBtnStyles] = React.useState<React.CSSProperties>({});
@@ -104,9 +105,9 @@ export const Button: FC<ButtonProps> = ({
       style={BtnStyles}
       className={` ${
         customClasses ? customClasses : ""
-      } flex h-12 w-full flex-col items-center justify-center rounded-sm py-2 px-8 text-lg capitalize  text-white `}
+      } flex h-12 w-full flex-col items-center justify-center rounded-sm text-lg capitalize  text-white `}
     >
-      {text && text}
+      {children && children}
     </button>
   );
 };

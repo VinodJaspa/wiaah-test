@@ -13,6 +13,8 @@ import { DropdownPanel } from "./DropdownPanel";
 import { FilterInput } from "./FilterInput";
 import { Pagination } from "./Pagination";
 import { Verified } from "./Verified";
+
+export * from "./icons";
 export {
   FlexStack,
   Root,

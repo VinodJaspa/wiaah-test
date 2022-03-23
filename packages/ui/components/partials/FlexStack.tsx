@@ -43,7 +43,7 @@ export interface StackProps
     | 2.75
     | 3
     | number;
-  className?: string;
+  customClassName?: string;
 }
 
 export const FlexStack: FC<StackProps> = ({
@@ -54,7 +54,7 @@ export const FlexStack: FC<StackProps> = ({
   setId,
   verticalSpacingInRem,
   horizontalSpacingInRem,
-  className,
+  customClassName,
   fullWidth,
   alignItems,
   justify = "center",
@@ -127,10 +127,26 @@ export const FlexStack: FC<StackProps> = ({
     }
 
     if (fullWidth) setStyles((state) => ({ ...state, width: "100%" }));
-  }, []);
+  }, [
+    reverse,
+    direction,
+    wrap,
+    setId,
+    verticalSpacingInRem,
+    horizontalSpacingInRem,
+    customClassName,
+    fullWidth,
+    alignItems,
+    justify,
+  ]);
 
   return (
-    <div style={styles} className={`flex h-fit w-fit`} {...props} id={setId}>
+    <div
+      style={styles}
+      className={`${customClassName} flex h-fit w-fit`}
+      {...props}
+      id={setId}
+    >
       {children}
     </div>
   );

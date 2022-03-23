@@ -1,0 +1,31 @@
+import React, { useEffect } from "react";
+
+export interface useScreenWidthProps {
+  minWidth: number;
+}
+
+export const getScreenWidth = ({
+  minWidth,
+}: useScreenWidthProps): { min: boolean } => {
+  const [min, setMin] = React.useState<boolean>(false);
+
+  function handleScreenChange(e: any) {
+    const width = e.target.outerWidth;
+    if (width <= minWidth) {
+      setMin(true);
+    } else {
+      setMin(false);
+    }
+  }
+
+  useEffect(() => {
+    window.addEventListener("resize", handleScreenChange);
+    return () => {
+      // Unbind the event listener on clean up
+      window.removeEventListener("resize", handleScreenChange);
+    };
+  }, []);
+  return {
+    min,
+  };
+};

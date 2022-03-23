@@ -16,7 +16,6 @@ Default.args = {};
 Default.decorators = [
   (Story, { args }) => {
     const [page, setPage] = React.useState<number>(1);
-    console.log(page);
     return (
       <section className="flex h-screen w-full flex-col items-center justify-center gap-4 bg-slate-200">
         <h1>Page: {page}</h1>

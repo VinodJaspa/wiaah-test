@@ -29,6 +29,7 @@ import { ProductCard } from "./ProductCard";
 import { ShopProductFilter } from "./products/ShopProductFilter";
 import { Reviews } from "./Reviews";
 import { GridContainerPager } from "./GridContainerPager";
+import { CookiesInfoBanner } from "./CookiesInfoBanner";
 
 export {
   ImageSlider,
@@ -62,4 +63,5 @@ export {
   ShopProductFilter,
   Reviews,
   GridContainerPager,
+  CookiesInfoBanner,
 };
