@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BuyerComment } from "./BuyerComment";
 import { Collapse } from "antd";
 import { t } from "i18next";
+import { useProductDescTabs } from "../../Hooks";
 
 const { Panel } = Collapse;
 
@@ -27,10 +28,11 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
   comments,
   description = "Product Description here!",
 }) => {
-  let [tab, setTab] = useState(0);
+  const { tab, ChangeTab } = useProductDescTabs();
+
   return (
     <>
-      <div className="">
+      <div id="reviews" className="">
         <div className="mb-10 block md:hidden">
           <Collapse ghost>
             <Panel
@@ -72,26 +74,34 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
           <div className="product-tab-titles">
             <button
               onClick={() => {
-                setTab(0);
+                ChangeTab("description");
               }}
               className={`${
-                tab == 0 ? "green-background text-white" : "text-gray-500"
+                tab === "description"
+                  ? "green-background text-white"
+                  : "text-gray-500"
               }  h-9 px-4`}
             >
               {t("Description", "Description")}
             </button>
             <button
               onClick={() => {
-                setTab(1);
+                ChangeTab("reviews");
               }}
               className={`${
-                tab == 1 ? "green-background text-white" : "text-gray-500"
+                tab === "reviews"
+                  ? "green-background text-white"
+                  : "text-gray-500"
               }  h-9 px-4`}
             >
               {t("Reviews", "Reviews")} ({comments.length})
             </button>
           </div>
-          <div className={`${tab == 1 ? "" : "hidden"} h-96 overflow-scroll`}>
+          <div
+            className={`${
+              tab === "reviews" ? "" : "hidden"
+            } h-96 overflow-scroll`}
+          >
             {comments.map((item, key: number) => {
               return (
                 <div className="mt-3" key={key}>
@@ -107,7 +117,7 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
           </div>
           <div
             className={`${
-              tab == 0 ? "" : "hidden"
+              tab === "description" ? "" : "hidden"
             } no-scroll mt-2 h-96 overflow-scroll rounded-lg border-2 border-gray-500  border-opacity-30 p-3`}
           >
             <div>{description}</div>

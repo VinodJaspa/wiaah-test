@@ -130,7 +130,10 @@ const productComments = [
     comment: "Really great product highly recommand it",
   },
 ];
-export const ProductView: React.FC = () => {
+
+interface ProductViewProps {}
+
+export const ProductView: React.FC<ProductViewProps> = () => {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
   return (
     <>
@@ -168,7 +171,7 @@ export const ProductView: React.FC = () => {
               />
             </div>
             <div className="mt-10 w-full pl-0 sm:w-6/12 md:w-5/12 lg:w-4/12 lg:pl-8 xl:w-4/12">
-              <SellerCard name="EMH Test Shop" reviews={5} rating={4} />
+              <SellerCard id="15" name="EMH Test Shop" reviews={5} rating={4} />
             </div>
           </div>
           <div className="">

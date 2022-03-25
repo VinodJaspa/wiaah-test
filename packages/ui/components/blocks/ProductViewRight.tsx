@@ -5,6 +5,7 @@ import { t } from "i18next";
 import { Button, FlexStack, WishListIcon } from "ui";
 import { ShoppingCartItem } from "ui/types/shoppingCart/shoppingCartItem.interface";
 import { useShoppingCart } from "ui/Hooks/useShoppingCart";
+import { useProductDescTabs } from "../../Hooks";
 
 const { Option } = Select;
 
@@ -39,7 +40,7 @@ export const ProductViewRight: React.FC<ProductProps> = ({
   saved,
 }) => {
   const { AddNewItem, OpenShoppingCart } = useShoppingCart();
-
+  const { ChangeTab } = useProductDescTabs();
   function handleNewItem(item: ShoppingCartItem) {
     AddNewItem(item);
     OpenShoppingCart();
@@ -48,15 +49,20 @@ export const ProductViewRight: React.FC<ProductProps> = ({
     // add to wishList
   }
 
+  function sendToReviews() {}
   return (
     <div className="flex h-full flex-col items-start justify-between">
       <div className="flex w-full flex-col">
         <samp className="green-text">{category}</samp>
         <h1 className="m-0 text-2xl font-bold text-gray-800 ">{name}</h1>
         <div className="flex items-center">
-          <div className="inline-flex items-center">
-            <Rate allowHalf value={rating} className="text-orange-500" />
-          </div>
+          <a
+            href="#reviews"
+            onClick={() => ChangeTab("reviews")}
+            className="inline-flex cursor-pointer items-center"
+          >
+            <Rate disabled allowHalf value={rating} />
+          </a>
           <div className="mx-3 h-5 w-px bg-gray-300"></div>
           <span className="text-gray-500">
             {reviews} {t("Reviews", "Reviews")}

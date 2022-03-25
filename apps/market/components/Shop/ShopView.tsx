@@ -133,7 +133,7 @@ export const ShopView: React.FC<ShopViewProps> = ({
 
               <Spacer />
               <Spacer />
-              <Reviews reviews={reviews} />
+              <Reviews id="reviews" reviews={reviews} />
             </div>
           </div>
         </div>

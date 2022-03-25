@@ -31,6 +31,8 @@ import { Reviews } from "./Reviews";
 import { GridContainerPager } from "./GridContainerPager";
 import { CookiesInfoBanner } from "./CookiesInfoBanner";
 import { TipTextContainer } from "./TipTextContainer";
+import { ItemsTable } from "./ItemsTable";
+import { CollaboratorCard } from "./CollaboratorCard";
 export {
   ImageSlider,
   Sidebar,
@@ -65,4 +67,6 @@ export {
   GridContainerPager,
   CookiesInfoBanner,
   TipTextContainer,
+  ItemsTable,
+  CollaboratorCard,
 };

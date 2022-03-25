@@ -1,5 +1,6 @@
 import { Rate } from "antd";
 import { t } from "i18next";
+import { useRouter } from "next/router";
 import React from "react";
 
 import { Spacer, Button, Verified } from "ui";
@@ -32,6 +33,8 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
     shopThumbnailUrl,
   },
 }) => {
+  const router = useRouter();
+
   return (
     <div className="flex h-fit w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#32D298] to-[#5FE9D2]  py-8 md:flex-row md:items-stretch ">
       <div className="flex flex-col gap-4 md:flex-row">
@@ -55,10 +58,15 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
                 {shopName}
                 {verified && <Verified />}
               </div>
-              <div>
+              <a href="#reviews" className="cursor-pointer">
                 {/* shop ratting */}
-                <Rate disabled allowHalf value={shopRating} />
-              </div>
+                <Rate
+                  className="cursor-pointer"
+                  disabled
+                  allowHalf
+                  value={shopRating}
+                />
+              </a>
               <div>
                 {/* shop creation date */}
                 {shopSince}
@@ -70,6 +78,7 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
               <div>
                 {/* message button */}
                 <Button
+                  paddingXInRem={1}
                   hexBackgroundColor="#5FE9D4"
                   text={t("Message", "Message")}
                 />
@@ -77,6 +86,7 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
               <div>
                 {/* follow button */}
                 <Button
+                  paddingXInRem={1}
                   hexBackgroundColor="#5FE9D4"
                   text={t("Follow", "Follow")}
                 />

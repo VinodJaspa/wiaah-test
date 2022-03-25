@@ -6,7 +6,8 @@ import {
 } from "./ShoppingCart";
 import { SavedItemsState } from "./SavedItems";
 import { LoginPopupState } from "./LoginPopup";
-
+import { ProductDescriptionTabsState } from "./ProductDescTabs";
+import { CartSummaryItems } from "./CartSummaryItems";
 export {
   ShoppingCartItemsState,
   ShoppingCartToggleState,
@@ -14,4 +15,6 @@ export {
   ShoppingCartTotalItemsLengthState,
   SavedItemsState,
   LoginPopupState,
+  ProductDescriptionTabsState,
+  CartSummaryItems,
 };

@@ -4,11 +4,12 @@ import { BuyerComment, BuyerCommentProps } from "./BuyerComment";
 
 interface ReviewsProps {
   reviews: BuyerCommentProps[];
+  id: string;
 }
 
-export const Reviews: React.FC<ReviewsProps> = ({ reviews }) => {
+export const Reviews: React.FC<ReviewsProps> = ({ reviews, id }) => {
   return (
-    <div className="flex w-full flex-col">
+    <div id={id} className="flex w-full flex-col">
       <h1 className="w-full text-center text-3xl font-bold">Reviews</h1>
       <Spacer />
       <div className="flex flex-col gap-4">

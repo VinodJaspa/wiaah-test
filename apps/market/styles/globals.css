@@ -5,6 +5,10 @@
 @import "~react-image-gallery/styles/css/image-gallery.css";
 @import "~antd/dist/antd.css";
 
+* {
+  scroll-behavior: smooth;
+}
+
 .no-scroll::-webkit-scrollbar {
   display: none;
   width: 0%;

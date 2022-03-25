@@ -76,43 +76,58 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   return (
     <div className="flex w-56 flex-col bg-white">
       <div
+        data-test="image-container"
         onMouseOver={handleHoverIn}
         onMouseLeave={handleHoverOut}
         className="relative h-72 w-full "
       >
         {/* image */}
         <div className="absolute top-0 z-10 flex w-full items-center justify-between p-2">
-          {cashback ? (
-            <div className="bg-red-400 bg-opacity-70 px-4 text-white">
+          {cashback && (
+            <div
+              data-test="productCashback"
+              className="bg-red-400 bg-opacity-70 px-4 text-white"
+            >
               {/* cash ack */}
               {cashback} Cashback
             </div>
-          ) : (
-            <span></span>
           )}
           <span
+            data-test="actionButton"
             onClick={() => handleClick()}
             className="cursor-pointer text-2xl"
           >
             {postion === "save" ? (
               liked ? (
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-opacity-40 shadow-sm">
+                <div
+                  data-test="productLiked"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-opacity-40 shadow-sm"
+                >
                   <IoHeart className="fill-red-400" />
                 </div>
               ) : (
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-opacity-40 shadow-sm">
+                <div
+                  data-test="productNotLiked"
+                  className="flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-opacity-40 shadow-sm"
+                >
                   <IoHeartOutline />
                 </div>
               )
             ) : (
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-opacity-40 shadow-sm">
+              <div
+                data-test="productDelete"
+                className="flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-opacity-40 shadow-sm"
+              >
                 <IoTrash />
               </div>
             )}
           </span>
         </div>
         {variant === "service" && (
-          <div className="absolute bottom-2 right-0 z-10 bg-[#57bf9c] bg-opacity-70 px-4  text-white">
+          <div
+            data-test="bookingText"
+            className="absolute bottom-2 right-0 z-10 bg-[#57bf9c] bg-opacity-70 px-4  text-white"
+          >
             {/* service */}
             Booking
           </div>
@@ -126,6 +141,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
         >
           <div className={`h-full w-full bg-black bg-opacity-20`}></div>
           <span
+            data-test="productButtonText"
             onClick={() => handleButtonClick()}
             className="absolute left-1/2 bottom-12 w-8/12 -translate-x-1/2 cursor-pointer bg-white py-2 text-center text-sm text-black"
           >
@@ -136,17 +152,23 @@ export const ProductCard: React.FC<ProductCardProps> = ({
       </div>
       <div className="p-2">
         {/* name */}
-        <span>{name}</span>
+        <span data-test="productName">{name}</span>
         <div className="flex items-center justify-between">
           {/* price and colors */}
           <div className="flex items-center gap-2">
             {/* price */}
-            <span className="text-lg  font-bold">
-              {currencySymbol}
-              {price}
+            <span
+              data-test="productPriceContainer"
+              className="text-lg  font-bold"
+            >
+              <span data-test="productCurrencySymbol">{currencySymbol}</span>
+              <span data-test="productPrice">{price}</span>
             </span>{" "}
             {oldPrice && (
-              <span className="font-bold text-gray-400 line-through">
+              <span
+                data-test="productOldPrice"
+                className="font-bold text-gray-400 line-through"
+              >
                 {/* old price */}
                 {currencySymbol}
                 {oldPrice}
@@ -154,11 +176,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             )}
           </div>
           {discount && (
-            <span className="bg-red-400 px-2 text-white">{discount}% OFF</span>
+            <span
+              data-test="productDiscount"
+              className="bg-red-400 px-2 text-white"
+            >
+              {discount}% OFF
+            </span>
           )}
         </div>
-        <div className="flex items-center justify-between">
-          <div className="flex gap-2">
+        <div
+          data-test="productColorsRateContainer"
+          className="flex items-center justify-between"
+        >
+          <div data-test="productColors" className="flex gap-2">
             {/* colors */}
             {colors.map((color, i) => (
               <div
@@ -168,6 +198,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 } p-[1px]`}
               >
                 <div
+                  data-test="productColor"
                   key={i}
                   style={{ backgroundColor: color }}
                   className="h-3 w-3 rounded-full"

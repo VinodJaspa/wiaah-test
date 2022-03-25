@@ -5,12 +5,14 @@ import { t } from "i18next";
 import { useLoginPopup } from "ui/Hooks";
 
 export interface SellerProps {
+  id: String;
   name: string;
   reviews?: number;
   rating?: number;
 }
 
 export const SellerCard: React.FC<SellerProps> = ({
+  id = "15",
   name = "No_Name",
   reviews = 0,
   rating = 0,
@@ -34,14 +36,9 @@ export const SellerCard: React.FC<SellerProps> = ({
           </div>
 
           <div className="my-2 flex justify-center">{name}</div>
-          <div className="flex justify-center">
-            <Rate
-              disabled
-              allowHalf
-              value={rating}
-              className="text-orange-500"
-            />
-          </div>
+          <a href={`/wiaah/${id}#reviews`} className="flex justify-center">
+            <Rate disabled allowHalf value={rating} />
+          </a>
           <div className="my-2 flex justify-center font-light">
             {reviews + " " + t("Reviews", "Reviews")}
           </div>
