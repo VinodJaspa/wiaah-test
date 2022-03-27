@@ -41,7 +41,7 @@ export const SelectDropdown: React.FC<SelectDropdownProps> = ({
       data-test="SelectDropdown"
       style={fullWidth ? { width: "100%" } : {}}
       value={value}
-      className="w-56 rounded-md border-[1px] border-gray-500 border-opacity-50 px-1 pr-10 font-semibold capitalize text-gray-500"
+      className="w-56 rounded-md border-[1px] border-gray-500 border-opacity-50  pr-10 font-semibold capitalize text-gray-500"
       onChange={handleOptionSelection}
       {...props}
     >

@@ -1,17 +1,11 @@
 import React from "react";
-
+import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
 export interface BorderProps {
-  thinkness?: {
-    value: number;
-    unit?: "rem" | "em" | "px";
-  };
+  thinkness?: CSSValueUnit;
   color?: {
     inHex: string;
   };
-  rounded?: {
-    value: number;
-    unit?: "rem" | "em" | "px";
-  };
+  rounded?: CSSValueUnit;
 }
 
 export const Border: React.FC<BorderProps> = ({

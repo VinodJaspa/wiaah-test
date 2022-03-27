@@ -13,6 +13,16 @@ export interface CartSummaryItem {
   eventAdresses?: string;
   sizes?: ProductSize[];
   colors?: Color[];
+  discount?: {
+    value: number;
+    unit: "%" | "$";
+  };
+  oldPrice?: number;
+  cashback?: {
+    value: number;
+    unit: "%" | "$";
+  };
+  description?: string;
 }
 
 export interface Color {

@@ -14,6 +14,9 @@ export interface StackProps
   setId?: string;
   justify?: "center" | "between" | "around" | "evenly" | "start" | "end";
   fullWidth?: boolean;
+  fullHeight?: boolean;
+  widthFit?: boolean;
+  heightFit?: boolean;
   horizontalSpacingInRem?:
     | 0.25
     | 0.5
@@ -57,7 +60,10 @@ export const FlexStack: FC<StackProps> = ({
   customClassName,
   fullWidth,
   alignItems,
+  fullHeight,
   justify = "center",
+  widthFit,
+  heightFit,
   ...props
 }) => {
   const [styles, setStyles] = React.useState<CSSProperties>({});
@@ -127,6 +133,9 @@ export const FlexStack: FC<StackProps> = ({
     }
 
     if (fullWidth) setStyles((state) => ({ ...state, width: "100%" }));
+    if (fullHeight) setStyles((state) => ({ ...state, height: "100%" }));
+    if (widthFit) setStyles((state) => ({ ...state, width: "fit-content" }));
+    if (heightFit) setStyles((state) => ({ ...state, height: "fit-content" }));
   }, [
     reverse,
     direction,
@@ -143,7 +152,7 @@ export const FlexStack: FC<StackProps> = ({
   return (
     <div
       style={styles}
-      className={`${customClassName} flex h-fit w-fit`}
+      className={`${customClassName} flex`}
       {...props}
       id={setId}
     >
