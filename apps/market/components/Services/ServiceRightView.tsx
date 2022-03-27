@@ -8,6 +8,7 @@ import {
   Spacer,
   FlexStack,
   WishListIcon,
+  useCartSummary,
 } from "ui";
 import { Event } from "ui/components/blocks/ServiceBookingCalander";
 import { BookingEventRefProps } from "ui/components/blocks/BookingEventPopup";
@@ -45,11 +46,10 @@ export const ServiceRightView: React.FC<ProductProps> = ({
   included,
 }) => {
   const bookEventPopupRef = React.useRef<BookingEventRefProps>(null);
-
+  const { AddNewItem } = useCartSummary();
   const [event, setEvent] = React.useState<Event>();
 
   function handleCancelBookedEvent() {
-    console.log("cancel");
     setEvent(undefined);
   }
 

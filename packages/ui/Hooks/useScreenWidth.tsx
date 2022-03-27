@@ -4,7 +4,7 @@ export interface useScreenWidthProps {
   minWidth: number;
 }
 
-export const getScreenWidth = ({
+export const useScreenWidth = ({
   minWidth,
 }: useScreenWidthProps): { min: boolean } => {
   const [min, setMin] = React.useState<boolean>(false);

@@ -12,7 +12,7 @@ export interface ProductCardProps {
   currencySymbol?: string;
   colors?: string[];
   liked?: boolean;
-  buttonText: string;
+  buttonText?: string;
   cashback?: string;
   discount?: number;
   oldPrice?: number;
@@ -145,7 +145,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             onClick={() => handleButtonClick()}
             className="absolute left-1/2 bottom-12 w-8/12 -translate-x-1/2 cursor-pointer bg-white py-2 text-center text-sm text-black"
           >
-            {buttonText}
+            {buttonText && buttonText}
           </span>
         </div>
         <img className="h-full w-full object-cover" src={imageUrl} alt={name} />

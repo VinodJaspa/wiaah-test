@@ -3,7 +3,7 @@ import { Pagination, Spacer } from "../partials";
 
 interface GridContainerPager {
   componentsLimit: number;
-  children: React.ReactNode[];
+  children?: React.ReactNode[];
   onPageChange?: (pageNum: number) => void;
 }
 
@@ -19,6 +19,7 @@ export const GridContainerPager: React.FC<GridContainerPager> = ({
     if (onPageChange) {
       onPageChange(currentPage);
     }
+    if (!children) return;
     const start = componentsLimit * currentPage - componentsLimit;
     const end =
       start + componentsLimit > children.length - 1
@@ -45,7 +46,7 @@ export const GridContainerPager: React.FC<GridContainerPager> = ({
       <Spacer />
       <Pagination
         onPageChange={(pageNumber) => handlePageChange(pageNumber)}
-        maxPages={Math.ceil(children.length / componentsLimit)}
+        maxPages={children ? Math.ceil(children.length / componentsLimit) : 1}
       />
     </div>
   );

@@ -25,7 +25,7 @@ export const ItemsTable: React.FC<ItemTable> = ({
     }
   }
   return (
-    <div className="min-w-[12rem] border-2 border-gray-200 border-opacity-60">
+    <div className="h-fit min-w-[12rem] border-2 border-gray-200 border-opacity-60">
       <FlexStack fullWidth={true} direction="vertical" verticalSpacingInRem={2}>
         <div className="bg-[#3AD398] p-4 font-semibold text-white">
           {/* header */}

@@ -19,7 +19,9 @@ export const CollaboratorCard: React.FC<CollaboratorCardProps> = ({
         <img className="h-full w-full object-cover" src={imageUrl} alt={name} />
       </div>
       <Spacer spaceInRem={2} />
-      <h1 className="text-lg font-bold">{name}</h1>
+      <h1 className="w-full overflow-clip whitespace-nowrap text-lg font-bold">
+        {name}
+      </h1>
       <p>{location}</p>
     </div>
   );

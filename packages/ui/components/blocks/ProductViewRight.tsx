@@ -5,7 +5,8 @@ import { t } from "i18next";
 import { Button, FlexStack, WishListIcon } from "ui";
 import { ShoppingCartItem } from "ui/types/shoppingCart/shoppingCartItem.interface";
 import { useShoppingCart } from "ui/Hooks/useShoppingCart";
-import { useProductDescTabs } from "../../Hooks";
+import { useCartSummary, useProductDescTabs } from "../../Hooks";
+import { CartSummaryItem } from "types/market/CartSummary";
 
 const { Option } = Select;
 
@@ -23,6 +24,7 @@ export interface ProductProps {
   available?: number;
   shippedToYourCountry?: boolean;
   cashBack?: number;
+  location?: string;
 }
 
 export const ProductViewRight: React.FC<ProductProps> = ({
@@ -39,9 +41,10 @@ export const ProductViewRight: React.FC<ProductProps> = ({
   id,
   saved,
 }) => {
-  const { AddNewItem, OpenShoppingCart } = useShoppingCart();
+  const { OpenShoppingCart } = useShoppingCart();
+  const { AddNewItem } = useCartSummary();
   const { ChangeTab } = useProductDescTabs();
-  function handleNewItem(item: ShoppingCartItem) {
+  function handleNewItem(item: CartSummaryItem) {
     AddNewItem(item);
     OpenShoppingCart();
   }
@@ -128,8 +131,9 @@ export const ProductViewRight: React.FC<ProductProps> = ({
                 id,
                 name,
                 price,
-                quantity: 1,
-                thumbnail: imgUrl || "",
+                qty: 1,
+                imageUrl: imgUrl || "",
+                type: "product",
               })
             }
           >

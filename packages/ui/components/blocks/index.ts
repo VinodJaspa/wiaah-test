@@ -33,6 +33,7 @@ import { CookiesInfoBanner } from "./CookiesInfoBanner";
 import { TipTextContainer } from "./TipTextContainer";
 import { ItemsTable } from "./ItemsTable";
 import { CollaboratorCard } from "./CollaboratorCard";
+import { CartSummaryTable } from "./CartSummaryTable";
 export {
   ImageSlider,
   Sidebar,
@@ -69,4 +70,5 @@ export {
   TipTextContainer,
   ItemsTable,
   CollaboratorCard,
+  CartSummaryTable,
 };

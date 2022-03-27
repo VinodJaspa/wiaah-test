@@ -124,7 +124,7 @@ export const Button: FC<ButtonProps> = ({
       style={BtnStyles}
       className={` ${
         customClasses ? customClasses : ""
-      } flex h-12 w-full flex-col items-center justify-center rounded-sm text-lg capitalize  text-white `}
+      } flex h-12 items-center justify-center rounded-sm text-lg capitalize text-white `}
     >
       {text && text}
       {children && children}

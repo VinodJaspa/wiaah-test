@@ -3,7 +3,9 @@ import { FaShoppingBag, FaTrash } from "react-icons/fa";
 import { MdDeleteOutline, MdClose } from "react-icons/md";
 import { useOutsideClick } from "../../Hooks/useOutsideClick";
 import { ShoppingCartItem } from "../../types/shoppingCart/shoppingCartItem.interface";
+import { useCartSummary } from "ui/Hooks";
 import { useShoppingCart } from "ui/Hooks/";
+
 export interface ShoppingCartProps {
   items: ShoppingCartItem[];
   onItemDelete?: (item: ShoppingCartItem) => void;
@@ -18,8 +20,10 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
   const [DropdownStyles, setDropdownStyles] =
     React.useState<React.CSSProperties>({});
   const [total, setTotal] = React.useState<number>(0);
-  const { ShoppingCartOpen, OpenShoppingCart, closeShoppingCart, RemoveItem } =
+  const { ShoppingCartOpen, OpenShoppingCart, closeShoppingCart } =
     useShoppingCart();
+
+  const { RemoveItem } = useCartSummary();
 
   useOutsideClick(cartRef, () => {
     handleClose();
