@@ -2,9 +2,11 @@ import React from "react";
 import { Rate } from "antd";
 import { Select } from "antd";
 import { t } from "i18next";
-import { useShoppingCart } from "../../state";
-import { Button } from "../partials";
-import { ShoppingCartItem } from "../../types/shoppingCart/shoppingCartItem.interface";
+import { Button, FlexStack, WishListIcon } from "ui";
+import { ShoppingCartItem } from "ui/types/shoppingCart/shoppingCartItem.interface";
+import { useShoppingCart } from "ui/Hooks/useShoppingCart";
+import { useCartSummary, useProductDescTabs } from "../../Hooks";
+import { CartSummaryItem } from "types/market/CartSummary";
 
 const { Option } = Select;
 
@@ -22,6 +24,7 @@ export interface ProductProps {
   available?: number;
   shippedToYourCountry?: boolean;
   cashBack?: number;
+  location?: string;
 }
 
 export const ProductViewRight: React.FC<ProductProps> = ({
@@ -38,22 +41,31 @@ export const ProductViewRight: React.FC<ProductProps> = ({
   id,
   saved,
 }) => {
-  const { AddNewItem, OpenShoppingCart } = useShoppingCart();
-
-  function handleNewItem(item: ShoppingCartItem) {
+  const { OpenShoppingCart } = useShoppingCart();
+  const { AddNewItem } = useCartSummary();
+  const { ChangeTab } = useProductDescTabs();
+  function handleNewItem(item: CartSummaryItem) {
     AddNewItem(item);
     OpenShoppingCart();
   }
+  function handleAddToWishList() {
+    // add to wishList
+  }
 
+  function sendToReviews() {}
   return (
     <div className="flex h-full flex-col items-start justify-between">
       <div className="flex w-full flex-col">
         <samp className="green-text">{category}</samp>
         <h1 className="m-0 text-2xl font-bold text-gray-800 ">{name}</h1>
         <div className="flex items-center">
-          <div className="inline-flex items-center">
-            <Rate allowHalf value={rating} className="text-orange-500" />
-          </div>
+          <a
+            href="#reviews"
+            onClick={() => ChangeTab("reviews")}
+            className="inline-flex cursor-pointer items-center"
+          >
+            <Rate disabled allowHalf value={rating} />
+          </a>
           <div className="mx-3 h-5 w-px bg-gray-300"></div>
           <span className="text-gray-500">
             {reviews} {t("Reviews", "Reviews")}
@@ -112,18 +124,23 @@ export const ProductViewRight: React.FC<ProductProps> = ({
             <Option value="small">{t("Small", "Small")}</Option>
           </Select>
         </div>
-        <Button
-          onClick={() =>
-            handleNewItem({
-              id,
-              name,
-              price,
-              quantity: 1,
-              thumbnail: imgUrl || "",
-            })
-          }
-          text={t("Add_To_Cart", "Add To Cart")}
-        />
+        <FlexStack fullWidth={true} horizontalSpacingInRem={0.5}>
+          <Button
+            onClick={() =>
+              handleNewItem({
+                id,
+                name,
+                price,
+                qty: 1,
+                imageUrl: imgUrl || "",
+                type: "product",
+              })
+            }
+          >
+            {t("Add_To_Cart", "Add To Cart")}
+          </Button>
+          <WishListIcon onClick={handleAddToWishList} />
+        </FlexStack>
       </div>
     </div>
   );

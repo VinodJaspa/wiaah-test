@@ -24,7 +24,8 @@
     "recoil": "^0.6.1",
     "swiper": "^8.0.3",
     "tailwindcss": "^3.0.20",
-    "ui": "*"
+    "ui": "*",
+    "types": "*"
   },
   "devDependencies": {
     "@types/react": "17.0.37",

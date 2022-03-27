@@ -2,8 +2,9 @@ import React from "react";
 import { FaShoppingBag, FaTrash } from "react-icons/fa";
 import { MdDeleteOutline, MdClose } from "react-icons/md";
 import { useOutsideClick } from "../../Hooks/useOutsideClick";
-import { useShoppingCart } from "../../state";
 import { ShoppingCartItem } from "../../types/shoppingCart/shoppingCartItem.interface";
+import { useCartSummary } from "ui/Hooks";
+import { useShoppingCart } from "ui/Hooks/";
 
 export interface ShoppingCartProps {
   items: ShoppingCartItem[];
@@ -19,8 +20,10 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
   const [DropdownStyles, setDropdownStyles] =
     React.useState<React.CSSProperties>({});
   const [total, setTotal] = React.useState<number>(0);
-  const { ShoppingCartOpen, OpenShoppingCart, closeShoppingCart, RemoveItem } =
+  const { ShoppingCartOpen, OpenShoppingCart, closeShoppingCart } =
     useShoppingCart();
+
+  const { RemoveItem } = useCartSummary();
 
   useOutsideClick(cartRef, () => {
     handleClose();
@@ -109,7 +112,10 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
           </div>
           <div className="no-scroll flex max-h-64 flex-col gap-2 overflow-y-scroll">
             {items.map((item, i) => (
-              <div className="mr-4 ml-0.5 flex gap-4 rounded bg-gray-100 py-2 px-4 shadow-md">
+              <div
+                key={i}
+                className="mr-4 ml-0.5 flex gap-4 rounded bg-gray-100 py-2 px-4 shadow-md"
+              >
                 <div className="h-24 w-24 rounded">
                   <img
                     className="h-full w-full object-cover"

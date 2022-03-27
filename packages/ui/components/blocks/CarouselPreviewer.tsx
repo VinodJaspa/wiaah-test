@@ -51,7 +51,7 @@ export const CarouselPreviewer: FC<CarouselPreviewerProps> = ({
       return (
         <div
           style={containerStyles}
-          className={` m-2 mx-2 flex h-fit w-full overflow-x-scroll px-2`}
+          className={`no-scroll m-2 mx-2 flex h-fit w-full overflow-x-scroll px-2`}
         >
           <div style={subContainerStyles} className="flex h-full w-fit gap-4">
             {components.map(({ Component }, i) => (

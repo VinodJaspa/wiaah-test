@@ -5,6 +5,10 @@
 @import "~react-image-gallery/styles/css/image-gallery.css";
 @import "~antd/dist/antd.css";
 
+* {
+  scroll-behavior: smooth;
+}
+
 .no-scroll::-webkit-scrollbar {
   display: none;
   width: 0%;
@@ -12,6 +16,16 @@
 .no-scroll {
   overflow-y: scroll;
   overflow-x: hidden;
+}
+
+.no-arrows::-webkit-outer-spin-button,
+.no-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-arrows {
+  -moz-appearance: textfield;
 }
 
 .priceRangeSlider > input[type="range"] {

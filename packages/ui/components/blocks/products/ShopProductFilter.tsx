@@ -21,10 +21,16 @@ export interface ShopProductFilterProps {
   stockStatus?: boolean;
   countryFilter?: boolean;
   cityFilter?: boolean;
-  categories?: string[];
+  categories?: Category[];
   brands?: string[];
   open?: boolean;
 }
+
+export interface Category {
+  name: string;
+  subCategories: Category[];
+}
+
 const { Option } = Select;
 let countriesOptions = Array();
 const countries = Country.getAllCountries();
@@ -54,12 +60,34 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
     setCountryCode(value);
     setCities(City.getCitiesOfCountry(value));
   }
+
+  function renderNested({ name, subCategories }: Category) {
+    const haveNestedCategories = subCategories.length > 0;
+    console.log(name, haveNestedCategories);
+    if (haveNestedCategories) {
+      console.log(subCategories);
+      return (
+        <DropdownPanel subPanel={true} name={name}>
+          {subCategories.map((cate) => (
+            <>{renderNested(cate)}</>
+          ))}
+        </DropdownPanel>
+      );
+    } else {
+      return <FilterInput variant="box" label={name} />;
+    }
+  }
+
   return (
     <div className="flex flex-col gap-2 bg-white">
       {categories && (
-        <DropdownPanel open={open} name={t("Category", "Category")}>
+        <DropdownPanel
+          // contained={true}
+          open={open}
+          name={t("Category", "Category")}
+        >
           {categories.map((cate, i) => (
-            <FilterInput key={i} variant="box" label={cate} />
+            <>{renderNested(cate)}</>
           ))}
           <Spacer />
         </DropdownPanel>
@@ -68,6 +96,7 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
         <DropdownPanel open={open} name={t("Price", "Price")}>
           <FilterInput
             variant="range"
+            onRangeChange={(r) => console.log(r)}
             min={priceRange.min}
             max={priceRange.max}
           />
@@ -83,7 +112,7 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
         </DropdownPanel>
       )}
       {brands && (
-        <DropdownPanel open={open} name={t("Category", "Category")}>
+        <DropdownPanel open={open} name={t("Brands", "Brands")}>
           {brands.map((brand, i) => (
             <FilterInput key={i} variant="box" label={brand} />
           ))}
@@ -127,6 +156,7 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
         <DropdownPanel open={open} name={t("Stock_Status", "Stock Status")}>
           <FilterInput variant="radio" label={t("Available", "Available")} />
           <FilterInput
+            name="stock_status"
             variant="radio"
             label={t("Unavailable", "Unavailable")}
           />

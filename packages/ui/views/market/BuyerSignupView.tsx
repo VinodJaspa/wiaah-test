@@ -45,6 +45,12 @@ export const BuyerSignupView: FC<{}> = () => {
           placeholder="Username"
           name="username"
           value={formInput.username}
+          onChange={(e) =>
+            setFormInput((state) => ({
+              ...state,
+              [e.target.name]: e.target.value,
+            }))
+          }
           icon={<IoMdPerson />}
         />
         <Spacer />
@@ -53,6 +59,12 @@ export const BuyerSignupView: FC<{}> = () => {
           name="email"
           placeholder="Email"
           value={formInput.email}
+          onChange={(e) =>
+            setFormInput((state) => ({
+              ...state,
+              [e.target.name]: e.target.value,
+            }))
+          }
           icon={<IoMdMail />}
         />
         <Spacer />
@@ -61,6 +73,12 @@ export const BuyerSignupView: FC<{}> = () => {
           name="password"
           placeholder="Password"
           value={formInput.password}
+          onChange={(e) =>
+            setFormInput((state) => ({
+              ...state,
+              [e.target.name]: e.target.value,
+            }))
+          }
           icon={<IoMdKey />}
         />
         <Spacer />
@@ -69,6 +87,12 @@ export const BuyerSignupView: FC<{}> = () => {
           name="confirm_password"
           placeholder="ConfirmPassword"
           value={formInput.confirm_password}
+          onChange={(e) =>
+            setFormInput((state) => ({
+              ...state,
+              [e.target.name]: e.target.value,
+            }))
+          }
           icon={<IoMdKey />}
         />
         <Spacer />

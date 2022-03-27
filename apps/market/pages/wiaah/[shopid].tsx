@@ -4,6 +4,8 @@ import Head from "next/head";
 import MasterLayout from "../../components/MasterLayout";
 import { ShopView } from "../../components/Shop/ShopView";
 import { products } from "ui/placeholder/products";
+import { Shop } from "../../components/Shop/ShopProfile";
+import { reviews } from "ui/placeholder/reviews";
 
 interface ShopProps {
   // implement types for service data when the api c
@@ -16,9 +18,13 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     props: {},
   };
 };
-const shop = {
+const shop: Shop = {
   shopDetails: "wiaah shop detials",
-  shopLocation: "Switzerland, Geneva",
+  shopLocation: {
+    flag: "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Flag_of_Switzerland.svg/512px-Flag_of_Switzerland.svg.png",
+    location: "Switzerland, Geneva",
+  },
+  verified: true,
   shopName: "Wiaah",
   shopRating: 5,
   shopSince: new Date().toLocaleDateString(),
@@ -33,7 +39,7 @@ const ServiceDetailPage: NextPage<ShopProps> = () => {
         <title>Wiaah | Shop</title>
       </Head>
       <MasterLayout>
-        <ShopView shop={shop} products={products} />
+        <ShopView reviews={reviews} shop={shop} products={products} />
       </MasterLayout>
     </>
   );

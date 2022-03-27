@@ -15,7 +15,7 @@ type ButtonHTMLProps = DetailedHTMLProps<
 
 export interface ButtonProps extends ButtonHTMLProps {
   customClasses?: string;
-  text: string;
+  text?: string;
   hexBackgroundColor?: string;
   hexTextColor?: string;
   fontSizeInRem?:
@@ -36,6 +36,8 @@ export interface ButtonProps extends ButtonHTMLProps {
   borderWidthInPx?: number;
   borderColor?: string;
   marginTop?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | number;
+  paddingXInRem?: number;
+  paddingYInRem?: number;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -49,6 +51,9 @@ export const Button: FC<ButtonProps> = ({
   borderColor,
   borderWidthInPx,
   marginTop,
+  children,
+  paddingXInRem,
+  paddingYInRem,
   ...props
 }) => {
   const [BtnStyles, setBtnStyles] = React.useState<React.CSSProperties>({});
@@ -96,6 +101,21 @@ export const Button: FC<ButtonProps> = ({
         ...styles,
         marginTop: `${marginTop * 0.25}rem`,
       }));
+
+    if (paddingXInRem) {
+      setBtnStyles((state) => ({
+        ...state,
+        paddingLeft: `${paddingXInRem}rem`,
+        paddingRight: `${paddingXInRem}rem`,
+      }));
+    }
+    if (paddingYInRem) {
+      setBtnStyles((state) => ({
+        ...state,
+        paddingBottom: `${paddingYInRem}rem`,
+        paddingTop: `${paddingYInRem}rem`,
+      }));
+    }
   }, []);
 
   return (
@@ -104,9 +124,10 @@ export const Button: FC<ButtonProps> = ({
       style={BtnStyles}
       className={` ${
         customClasses ? customClasses : ""
-      } flex h-12 w-full flex-col items-center justify-center rounded-sm py-2 px-8 text-lg capitalize  text-white `}
+      } flex h-12 items-center justify-center whitespace-nowrap rounded-sm text-lg capitalize text-white `}
     >
       {text && text}
+      {children && children}
     </button>
   );
 };

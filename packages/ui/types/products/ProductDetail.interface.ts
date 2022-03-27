@@ -1,9 +1,9 @@
 export interface ProductDetails {
   id?: string;
-  name?: string;
+  name: string;
   price: number;
   oldPrice?: number;
-  imgUrl?: string;
+  imgUrl: string;
   rating?: number;
   off?: number;
   category?: string;

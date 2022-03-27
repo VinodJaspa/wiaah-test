@@ -1,6 +1,7 @@
 import { ProductDetails } from "../types/products/ProductDetail.interface";
 export const products: ProductDetails[] = [
   {
+    id: "1",
     price: 15,
     imgUrl:
       "https://cdn.mena-tech.com/wp-content/uploads/2021/08/MR-Future-Products-2020-2.png",
@@ -11,6 +12,8 @@ export const products: ProductDetails[] = [
     oldPrice: 20,
   },
   {
+    id: "2",
+
     name: "Camera Digital with extra lenses",
     imgUrl:
       "https://images.prismic.io/rushordertees-web/c46d32cd-469a-49a9-b175-7362171d29a7_Custom+Short+Sleeve+T-Shirt.jpg?auto=compress%2Cformat&rect=0%2C0%2C800%2C900&w=800&h=900",
@@ -21,6 +24,7 @@ export const products: ProductDetails[] = [
     oldPrice: 600,
   },
   {
+    id: "3",
     price: 15,
     imgUrl:
       "https://4.imimg.com/data4/AA/HC/MY-26596027/men-s-fancy-t-shirt-500x500.jpg",
@@ -31,6 +35,7 @@ export const products: ProductDetails[] = [
     oldPrice: 20,
   },
   {
+    id: "4",
     name: "Camera Digital with extra lenses",
     imgUrl:
       "https://contents.mediadecathlon.com/p1981373/k$9b63009207eb708712157b83d42dd74b/adults-category-3-hiking-sunglasses-mh140.jpg?&f=800x800",
@@ -41,6 +46,7 @@ export const products: ProductDetails[] = [
     oldPrice: 600,
   },
   {
+    id: "5",
     price: 15,
     imgUrl:
       "https://www.eisenberg.com/upload/images/eisenberg/4f/173_BANNER-CATEGORIE-FRAGRANCE-1170X500PX.jpeg",
@@ -51,6 +57,7 @@ export const products: ProductDetails[] = [
     oldPrice: 20,
   },
   {
+    id: "6",
     name: "test item",
     imgUrl:
       "https://cdn.shopify.com/s/files/1/0505/7019/9217/products/P04.jpg?v=1613769249",
@@ -61,6 +68,7 @@ export const products: ProductDetails[] = [
     oldPrice: 600,
   },
   {
+    id: "7",
     price: 15,
     imgUrl:
       "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/amazon-secret-sneaker-sale-1600978103.jpg",
@@ -71,6 +79,7 @@ export const products: ProductDetails[] = [
     oldPrice: 20,
   },
   {
+    id: "8",
     name: "Camera Digital with extra lenses",
     imgUrl:
       "https://www.dhresource.com/0x0/f2/albu/g2/M01/D7/53/rBVaG1Z7yPeAZyVbAALpWonCzOk728.jpg/fashion-new-qulaity-pu-leather-men-wallets.jpg",
@@ -81,8 +90,10 @@ export const products: ProductDetails[] = [
     oldPrice: 600,
   },
   {
+    id: "9",
     price: 15,
-    imgUrl: "/shop-3.jpeg",
+    imgUrl:
+      "https://cdn.mena-tech.com/wp-content/uploads/2021/08/MR-Future-Products-2020-2.png",
     name: "test item",
     rating: 3,
     cashBack: "5%",
@@ -90,17 +101,10 @@ export const products: ProductDetails[] = [
     oldPrice: 20,
   },
   {
-    name: "Camera Digital with extra lenses",
-    imgUrl: "/shop-2.jpeg",
-    price: 518.68,
-    rating: 4,
-    cashBack: "5%",
-    off: 10,
-    oldPrice: 600,
-  },
-  {
+    id: "10",
     price: 15,
-    imgUrl: "/shop-3.jpeg",
+    imgUrl:
+      "https://cdn.mena-tech.com/wp-content/uploads/2021/08/MR-Future-Products-2020-2.png",
     name: "test item",
     rating: 3,
     cashBack: "5%",
@@ -108,12 +112,333 @@ export const products: ProductDetails[] = [
     oldPrice: 20,
   },
   {
+    id: "11",
     name: "Camera Digital with extra lenses",
-    imgUrl: "/shop-2.jpeg",
+    imgUrl:
+      "https://images.prismic.io/rushordertees-web/c46d32cd-469a-49a9-b175-7362171d29a7_Custom+Short+Sleeve+T-Shirt.jpg?auto=compress%2Cformat&rect=0%2C0%2C800%2C900&w=800&h=900",
     price: 518.68,
     rating: 4,
     cashBack: "5%",
     off: 10,
     oldPrice: 600,
+  },
+  {
+    id: "12",
+    price: 15,
+    imgUrl:
+      "https://4.imimg.com/data4/AA/HC/MY-26596027/men-s-fancy-t-shirt-500x500.jpg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    id: "13",
+    name: "Camera Digital with extra lenses",
+    imgUrl:
+      "https://contents.mediadecathlon.com/p1981373/k$9b63009207eb708712157b83d42dd74b/adults-category-3-hiking-sunglasses-mh140.jpg?&f=800x800",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    id: "14",
+    price: 15,
+    imgUrl:
+      "https://www.eisenberg.com/upload/images/eisenberg/4f/173_BANNER-CATEGORIE-FRAGRANCE-1170X500PX.jpeg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    id: "15",
+    name: "test item",
+    imgUrl:
+      "https://cdn.shopify.com/s/files/1/0505/7019/9217/products/P04.jpg?v=1613769249",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    id: "16",
+    price: 15,
+    imgUrl:
+      "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/amazon-secret-sneaker-sale-1600978103.jpg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    id: "17",
+    name: "Camera Digital with extra lenses",
+    imgUrl:
+      "https://www.dhresource.com/0x0/f2/albu/g2/M01/D7/53/rBVaG1Z7yPeAZyVbAALpWonCzOk728.jpg/fashion-new-qulaity-pu-leather-men-wallets.jpg",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    id: "18",
+    price: 15,
+    imgUrl:
+      "https://cdn.mena-tech.com/wp-content/uploads/2021/08/MR-Future-Products-2020-2.png",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    id: "19",
+    name: "Camera Digital with extra lenses",
+    imgUrl:
+      "https://images.prismic.io/rushordertees-web/c46d32cd-469a-49a9-b175-7362171d29a7_Custom+Short+Sleeve+T-Shirt.jpg?auto=compress%2Cformat&rect=0%2C0%2C800%2C900&w=800&h=900",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    id: "20",
+    price: 15,
+    imgUrl:
+      "https://4.imimg.com/data4/AA/HC/MY-26596027/men-s-fancy-t-shirt-500x500.jpg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    id: "21",
+    name: "Camera Digital with extra lenses",
+    imgUrl:
+      "https://contents.mediadecathlon.com/p1981373/k$9b63009207eb708712157b83d42dd74b/adults-category-3-hiking-sunglasses-mh140.jpg?&f=800x800",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    id: "22",
+    price: 15,
+    imgUrl:
+      "https://www.eisenberg.com/upload/images/eisenberg/4f/173_BANNER-CATEGORIE-FRAGRANCE-1170X500PX.jpeg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    id: "23",
+    name: "test item",
+    imgUrl:
+      "https://cdn.shopify.com/s/files/1/0505/7019/9217/products/P04.jpg?v=1613769249",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    id: "24",
+    price: 15,
+    imgUrl:
+      "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/amazon-secret-sneaker-sale-1600978103.jpg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    id: "25",
+    price: 15,
+    imgUrl:
+      "https://cdn.mena-tech.com/wp-content/uploads/2021/08/MR-Future-Products-2020-2.png",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    id: "26",
+    name: "Camera Digital with extra lenses",
+    imgUrl:
+      "https://images.prismic.io/rushordertees-web/c46d32cd-469a-49a9-b175-7362171d29a7_Custom+Short+Sleeve+T-Shirt.jpg?auto=compress%2Cformat&rect=0%2C0%2C800%2C900&w=800&h=900",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    id: "27",
+    price: 15,
+    imgUrl:
+      "https://4.imimg.com/data4/AA/HC/MY-26596027/men-s-fancy-t-shirt-500x500.jpg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    id: "28",
+    name: "Camera Digital with extra lenses",
+    imgUrl:
+      "https://contents.mediadecathlon.com/p1981373/k$9b63009207eb708712157b83d42dd74b/adults-category-3-hiking-sunglasses-mh140.jpg?&f=800x800",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    id: "29",
+    price: 15,
+    imgUrl:
+      "https://www.eisenberg.com/upload/images/eisenberg/4f/173_BANNER-CATEGORIE-FRAGRANCE-1170X500PX.jpeg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    id: "30",
+    name: "Camera Digital with extra lenses",
+    imgUrl:
+      "https://images.prismic.io/rushordertees-web/c46d32cd-469a-49a9-b175-7362171d29a7_Custom+Short+Sleeve+T-Shirt.jpg?auto=compress%2Cformat&rect=0%2C0%2C800%2C900&w=800&h=900",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    id: "31",
+    price: 15,
+    imgUrl:
+      "https://4.imimg.com/data4/AA/HC/MY-26596027/men-s-fancy-t-shirt-500x500.jpg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    id: "32",
+    name: "Camera Digital with extra lenses",
+    imgUrl:
+      "https://contents.mediadecathlon.com/p1981373/k$9b63009207eb708712157b83d42dd74b/adults-category-3-hiking-sunglasses-mh140.jpg?&f=800x800",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    id: "33",
+    price: 15,
+    imgUrl:
+      "https://www.eisenberg.com/upload/images/eisenberg/4f/173_BANNER-CATEGORIE-FRAGRANCE-1170X500PX.jpeg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    id: "34",
+    name: "test item",
+    imgUrl:
+      "https://cdn.shopify.com/s/files/1/0505/7019/9217/products/P04.jpg?v=1613769249",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    id: "35",
+    price: 15,
+    imgUrl:
+      "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/amazon-secret-sneaker-sale-1600978103.jpg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    id: "36",
+    price: 15,
+    imgUrl:
+      "https://cdn.mena-tech.com/wp-content/uploads/2021/08/MR-Future-Products-2020-2.png",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    id: "37",
+    name: "Camera Digital with extra lenses",
+    imgUrl:
+      "https://images.prismic.io/rushordertees-web/c46d32cd-469a-49a9-b175-7362171d29a7_Custom+Short+Sleeve+T-Shirt.jpg?auto=compress%2Cformat&rect=0%2C0%2C800%2C900&w=800&h=900",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    id: "38",
+    price: 15,
+    imgUrl:
+      "https://4.imimg.com/data4/AA/HC/MY-26596027/men-s-fancy-t-shirt-500x500.jpg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
+  },
+  {
+    id: "39",
+    name: "Camera Digital with extra lenses",
+    imgUrl:
+      "https://contents.mediadecathlon.com/p1981373/k$9b63009207eb708712157b83d42dd74b/adults-category-3-hiking-sunglasses-mh140.jpg?&f=800x800",
+    price: 518.68,
+    rating: 4,
+    cashBack: "5%",
+    off: 10,
+    oldPrice: 600,
+  },
+  {
+    id: "40",
+    price: 15,
+    imgUrl:
+      "https://www.eisenberg.com/upload/images/eisenberg/4f/173_BANNER-CATEGORIE-FRAGRANCE-1170X500PX.jpeg",
+    name: "test item",
+    rating: 3,
+    cashBack: "5%",
+    off: 5,
+    oldPrice: 20,
   },
 ];
