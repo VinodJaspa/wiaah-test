@@ -35,41 +35,7 @@ export { ItemsTable } from "./ItemsTable";
 export { CollaboratorCard } from "./CollaboratorCard";
 export { CartSummaryTable } from "./CartSummaryTable";
 export { CartSummaryProductCard } from "./CartSummaryProductCard";
-// export {
-//   ImageSlider,
-//   Sidebar,
-//   Card,
-//   ImageCard,
-//   ProductImageGallery,
-//   ProductViewRight,
-//   ProductDescription,
-//   SellerCard,
-//   CountryLanguageCurrencySwitch,
-//   Collaboration,
-//   Information,
-//   SocialMediaLinks,
-//   CustomerService,
-//   Footer,
-//   SubscribeForm,
-//   Header,
-//   AuthFooter,
-//   ContactUsForm,
-//   AuthPopup,
-//   FormContainer,
-//   AuthSwitcher,
-//   Carousel,
-//   CarouselPreviewer,
-//   ShoppingCart,
-//   ServiceBookingCalander,
-//   BreadCrumb,
-//   BookingEventPopup,
-//   ProductCard,
-//   ShopProductFilter,
-//   Reviews,
-//   GridContainerPager,
-//   CookiesInfoBanner,
-//   TipTextContainer,
-//   ItemsTable,
-//   CollaboratorCard,
-//   CartSummaryTable,
-// };
+export { AddressCard } from "./AddressCard";
+export { HorizontalCollaboration } from "./HorizontalCollaboration";
+export { AddressInputs } from "./AddressInputs";
+export { SearchInput } from "./SearchInput";

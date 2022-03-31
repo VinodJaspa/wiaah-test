@@ -7,6 +7,7 @@ import { Spacer, Button, Verified } from "ui";
 
 export interface ShopProfileProps {
   shop: Shop;
+  fullWidth?: boolean;
 }
 
 export interface Shop {
@@ -32,13 +33,20 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
     shopSince,
     shopThumbnailUrl,
   },
+  fullWidth,
 }) => {
   const router = useRouter();
 
   return (
     <div className="flex h-fit w-full flex-col items-center justify-center gap-4 bg-gradient-to-b from-[#32D298] to-[#5FE9D2]  py-8 md:flex-row md:items-stretch ">
-      <div className="flex flex-col gap-4 md:flex-row">
-        <div className="relative flex h-96 w-fit flex-col items-center justify-end overflow-hidden rounded-md bg-white px-12">
+      <div
+        style={{ width: fullWidth ? "100%" : "" }}
+        className="flex flex-col gap-4 px-8 md:flex-row"
+      >
+        <div
+          style={{ width: fullWidth ? "100%" : "fit-content" }}
+          className="relative flex h-96 w-fit flex-col items-center justify-end overflow-hidden rounded-md bg-white px-12"
+        >
           <div className="absolute top-0 left-0 h-1/4 w-full bg-black "></div>
           {/* shop profile */}
           <div className="relative flex h-3/4 w-full flex-col items-center justify-between">
@@ -78,7 +86,8 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
               <div>
                 {/* message button */}
                 <Button
-                  paddingXInRem={1}
+                  paddingY={{ value: 0.25 }}
+                  paddingX={{ value: 1 }}
                   hexBackgroundColor="#5FE9D4"
                   text={t("Message", "Message")}
                 />
@@ -86,7 +95,8 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
               <div>
                 {/* follow button */}
                 <Button
-                  paddingXInRem={1}
+                  paddingY={{ value: 0.25 }}
+                  paddingX={{ value: 1 }}
                   hexBackgroundColor="#5FE9D4"
                   text={t("Follow", "Follow")}
                 />

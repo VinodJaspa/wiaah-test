@@ -3,4 +3,4 @@ export interface CSSValueUnit {
   unit?: CSSUnit;
 }
 
-export type CSSUnit = "rem" | "em" | "px";
+export type CSSUnit = "rem" | "em" | "px" | "%";

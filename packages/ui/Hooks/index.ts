@@ -1,16 +1,8 @@
-import { useOutsideClick } from "./useOutsideClick";
-import { useScreenWidth } from "./useScreenWidth";
-import { useLoginPopup } from "./useLoginPopup";
-import { useShoppingCart } from "./useShoppingCart";
-import { useSavedItems } from "./useSavedItems";
-import { useProductDescTabs } from "./useProductDescTabs";
-import { useCartSummary } from "./useCartSummary";
-export {
-  useSavedItems,
-  useOutsideClick,
-  useScreenWidth,
-  useLoginPopup,
-  useShoppingCart,
-  useProductDescTabs,
-  useCartSummary,
-};
+export { useOutsideClick } from "./useOutsideClick";
+export { useScreenWidth } from "./useScreenWidth";
+export { useLoginPopup } from "./useLoginPopup";
+export { useShoppingCart } from "./useShoppingCart";
+export { useSavedItems } from "./useSavedItems";
+export { useProductDescTabs } from "./useProductDescTabs";
+export { useCartSummary } from "./useCartSummary";
+export { useUserAddresses } from "./useUserAddresses";

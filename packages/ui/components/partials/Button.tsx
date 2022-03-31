@@ -6,7 +6,9 @@ import React, {
   ReactElement,
   useState,
 } from "react";
+import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
 import { colorPalette } from "../helpers/colorPalette";
+import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
 
 type ButtonHTMLProps = DetailedHTMLProps<
   ButtonHTMLAttributes<HTMLButtonElement>,
@@ -36,8 +38,9 @@ export interface ButtonProps extends ButtonHTMLProps {
   borderWidthInPx?: number;
   borderColor?: string;
   marginTop?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | number;
-  paddingXInRem?: number;
-  paddingYInRem?: number;
+  paddingY?: CSSValueUnit;
+  paddingX?: CSSValueUnit;
+  fitWidth?: boolean;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -52,79 +55,65 @@ export const Button: FC<ButtonProps> = ({
   borderWidthInPx,
   marginTop,
   children,
-  paddingXInRem,
-  paddingYInRem,
+  paddingX,
+  paddingY,
+  fitWidth,
   ...props
 }) => {
-  const [BtnStyles, setBtnStyles] = React.useState<React.CSSProperties>({});
+  const styles: React.CSSProperties = {};
 
-  React.useEffect(() => {
-    //  background color
-    if (hexBackgroundColor && !outlined)
-      setBtnStyles((styles) => ({
-        ...styles,
-        backgroundColor: hexBackgroundColor,
-      }));
-    if (!hexBackgroundColor && !outlined)
-      setBtnStyles((styles) => ({
-        ...styles,
-        background: colorPalette.PrimaryGreen,
-      }));
-    // text color
-    if (hexTextColor)
-      setBtnStyles((styles) => ({ ...styles, color: hexTextColor }));
+  //  background color
+  if (hexBackgroundColor && !outlined) {
+    styles.backgroundColor = hexBackgroundColor;
+  }
+  if (!hexBackgroundColor && !outlined) {
+    styles.background = colorPalette.PrimaryGreen;
+  }
+  // text color
+  if (hexTextColor) {
+    styles.color = hexTextColor;
+  }
 
-    if (!hexTextColor)
-      setBtnStyles((styles) => ({ ...styles, color: hexTextColor }));
-    // text size
-    if (customFontSizeInRem)
-      setBtnStyles((styles) => ({
-        ...styles,
-        fontSize: `${customFontSizeInRem}rem`,
-      }));
-    if (fontSizeInRem)
-      setBtnStyles((styles) => ({
-        ...styles,
-        fontSize: `${fontSizeInRem}rem`,
-      }));
-    // outlined border
-    if (outlined) {
-      setBtnStyles((styles) => ({
-        ...styles,
-        borderColor: borderColor || colorPalette.PrimaryGreen,
-        borderWidth: `${borderWidthInPx || 2}px`,
-      }));
-    }
-    // marginTop
-    if (marginTop)
-      setBtnStyles((styles) => ({
-        ...styles,
-        marginTop: `${marginTop * 0.25}rem`,
-      }));
+  if (!hexTextColor) {
+    styles.color = hexTextColor;
+  }
+  // text size
+  if (customFontSizeInRem) {
+    styles.fontSize = `${customFontSizeInRem}rem`;
+  }
+  if (fontSizeInRem) {
+    styles.fontSize = `${fontSizeInRem}rem`;
+  }
 
-    if (paddingXInRem) {
-      setBtnStyles((state) => ({
-        ...state,
-        paddingLeft: `${paddingXInRem}rem`,
-        paddingRight: `${paddingXInRem}rem`,
-      }));
-    }
-    if (paddingYInRem) {
-      setBtnStyles((state) => ({
-        ...state,
-        paddingBottom: `${paddingYInRem}rem`,
-        paddingTop: `${paddingYInRem}rem`,
-      }));
-    }
-  }, []);
+  // outlined border
+  if (outlined) {
+    styles.borderColor = borderColor || colorPalette.PrimaryGreen;
+    styles.borderWidth = `${borderWidthInPx || 2}px`;
+  }
+  // marginTop
+  if (marginTop) {
+    styles.marginTop = `${marginTop * 0.25}rem`;
+  }
+
+  if (paddingX) {
+    styles.paddingLeft = CSSValueUnitToString(paddingX);
+    styles.paddingRight = CSSValueUnitToString(paddingX);
+  }
+  if (paddingY) {
+    styles.paddingBottom = CSSValueUnitToString(paddingY);
+    styles.paddingTop = CSSValueUnitToString(paddingY);
+  }
+  if (fitWidth) {
+    styles.width = "fit-content";
+  }
 
   return (
     <button
       {...props}
-      style={BtnStyles}
+      style={styles}
       className={` ${
         customClasses ? customClasses : ""
-      } flex h-12 items-center justify-center whitespace-nowrap rounded-sm text-lg capitalize text-white `}
+      } flex items-center justify-center whitespace-nowrap rounded-sm text-lg capitalize text-white `}
     >
       {text && text}
       {children && children}

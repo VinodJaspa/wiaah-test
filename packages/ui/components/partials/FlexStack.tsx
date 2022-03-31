@@ -4,6 +4,8 @@ import React, {
   FC,
   HTMLAttributes,
 } from "react";
+import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
+import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
 
 export interface StackProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -15,8 +17,8 @@ export interface StackProps
   justify?: "center" | "between" | "around" | "evenly" | "start" | "end";
   fullWidth?: boolean;
   fullHeight?: boolean;
-  widthFit?: boolean;
-  heightFit?: boolean;
+  fitWidth?: boolean;
+  fitHeight?: boolean;
   horizontalSpacingInRem?:
     | 0.25
     | 0.5
@@ -47,6 +49,8 @@ export interface StackProps
     | 3
     | number;
   customClassName?: string;
+  width?: CSSValueUnit;
+  height?: CSSValueUnit;
 }
 
 export const FlexStack: FC<StackProps> = ({
@@ -61,94 +65,80 @@ export const FlexStack: FC<StackProps> = ({
   fullWidth,
   alignItems,
   fullHeight,
-  justify = "center",
-  widthFit,
-  heightFit,
+  justify = "start",
+  fitWidth,
+  fitHeight,
+  width,
+  height,
   ...props
 }) => {
-  const [styles, setStyles] = React.useState<CSSProperties>({});
+  const styles: React.CSSProperties = {};
 
-  React.useEffect(() => {
-    switch (direction) {
-      case "horizontal":
-        if (reverse) {
-          setStyles((state) => ({ ...state, flexDirection: "row-reverse" }));
-        } else {
-          setStyles((state) => ({ ...state, flexDirection: "row" }));
-        }
-        break;
-      case "vertical":
-        if (reverse) {
-          setStyles((state) => ({ ...state, flexDirection: "column-reverse" }));
-        } else {
-          setStyles((state) => ({ ...state, flexDirection: "column" }));
-        }
-        break;
-      default:
-        setStyles((state) => ({ ...state, flexDirection: "row" }));
-        break;
-    }
+  switch (direction) {
+    case "horizontal":
+      if (reverse) {
+        styles.flexDirection = "row-reverse";
+      } else {
+        styles.flexDirection = "row";
+      }
+      break;
+    case "vertical":
+      if (reverse) {
+        styles.flexDirection = "column-reverse";
+      } else {
+        styles.flexDirection = "column";
+      }
+      break;
+  }
 
-    if (alignItems) {
-      setStyles((state) => ({ ...state, alignItems: alignItems }));
-    }
+  if (alignItems) {
+    styles.alignItems = alignItems;
+  }
 
-    if (wrap) {
-      setStyles((state) => ({ ...state, flexWrap: "wrap" }));
-    } else {
-      setStyles((state) => ({ ...state, flexWrap: "nowrap" }));
-    }
-    if (verticalSpacingInRem) {
-      setStyles((state) => ({
-        ...state,
-        rowGap: `${verticalSpacingInRem}rem`,
-      }));
-    }
-    if (horizontalSpacingInRem) {
-      setStyles((state) => ({
-        ...state,
-        columnGap: `${horizontalSpacingInRem}rem`,
-      }));
-    }
+  if (wrap) {
+    styles.flexWrap = "wrap";
+  } else {
+    styles.flexWrap = "nowrap";
+  }
+  if (verticalSpacingInRem) {
+    styles.rowGap = `${verticalSpacingInRem}rem`;
+  }
+  if (horizontalSpacingInRem) {
+    styles.columnGap = `${horizontalSpacingInRem}rem`;
+  }
 
-    switch (justify) {
-      case "between":
-        setStyles((state) => ({ ...state, justifyContent: "space-between" }));
-        break;
-      case "around":
-        setStyles((state) => ({ ...state, justifyContent: "space-around" }));
-        break;
-      case "evenly":
-        setStyles((state) => ({ ...state, justifyContent: "space-evenly" }));
-        break;
-      case "center":
-        setStyles((state) => ({ ...state, justifyContent: "center" }));
-        break;
-      case "end":
-        setStyles((state) => ({ ...state, justifyContent: "end" }));
-        break;
-      default:
-        setStyles((state) => ({ ...state, justifyContent: "end" }));
-        break;
-    }
+  switch (justify) {
+    case "between":
+      styles.justifyContent = "space-between";
+      break;
+    case "around":
+      styles.justifyContent = "space-around";
+      break;
+    case "evenly":
+      styles.justifyContent = "space-evenly";
+      break;
+    case "center":
+      styles.justifyContent = "center";
+      break;
+    case "end":
+      styles.justifyContent = "end";
+      break;
+    default:
+      styles.justifyContent = "start";
+      break;
+  }
 
-    if (fullWidth) setStyles((state) => ({ ...state, width: "100%" }));
-    if (fullHeight) setStyles((state) => ({ ...state, height: "100%" }));
-    if (widthFit) setStyles((state) => ({ ...state, width: "fit-content" }));
-    if (heightFit) setStyles((state) => ({ ...state, height: "fit-content" }));
-  }, [
-    reverse,
-    direction,
-    wrap,
-    setId,
-    verticalSpacingInRem,
-    horizontalSpacingInRem,
-    customClassName,
-    fullWidth,
-    alignItems,
-    justify,
-  ]);
+  if (fullWidth) styles.width = "100%";
+  if (fullHeight) styles.height = "100%";
+  if (fitWidth) styles.width = "fit-content";
+  if (fitHeight) styles.height = "fit-content";
 
+  if (width && !fullWidth && !fitWidth) {
+    styles.width = CSSValueUnitToString(width);
+  }
+  if (height && !fullHeight && !fitHeight) {
+    styles.height = CSSValueUnitToString(height);
+  }
   return (
     <div
       style={styles}

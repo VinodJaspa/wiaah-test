@@ -9,6 +9,7 @@ export interface TextProps {
   size?: Size;
   customSize?: CSSValueUnit;
   lineThrough?: boolean;
+  noWrap?: boolean;
 }
 
 export const Text: React.FC<TextProps> = ({
@@ -18,6 +19,7 @@ export const Text: React.FC<TextProps> = ({
   size,
   lineThrough,
   customSize,
+  noWrap,
 }) => {
   const styles: React.CSSProperties = {
     color,
@@ -31,10 +33,15 @@ export const Text: React.FC<TextProps> = ({
   if (customSize) {
     styles.fontSize = CSSValueUnitToString(customSize);
   }
+  if (noWrap) {
+    styles.whiteSpace = "nowrap";
+  }
 
   return (
     <p
-      className={`text-${size} ${lineThrough ? "line-through" : ""}`}
+      className={`${size ? `text-${size}` : ""} ${
+        lineThrough ? "line-through" : ""
+      }`}
       style={styles}
     >
       {children}

@@ -4,13 +4,17 @@ import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
 export interface DividerProps {
   height?: CSSValueUnit;
   marginY?: CSSValueUnit;
+  color?: string;
 }
-export const Divider: React.FC<DividerProps> = ({ height, marginY }) => {
+export const Divider: React.FC<DividerProps> = ({ height, marginY, color }) => {
   const styles: React.CSSProperties = {
     height: height ? CSSValueUnitToString(height) : "1px",
     marginTop: marginY ? CSSValueUnitToString(marginY) : "1rem",
     marginBottom: marginY ? CSSValueUnitToString(marginY) : "1rem",
   };
+  if (color) {
+    styles.backgroundColor = color;
+  }
   return (
     <>
       <div style={styles} className={`flex w-full bg-gray-200`}></div>

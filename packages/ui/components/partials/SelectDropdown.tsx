@@ -28,8 +28,6 @@ export const SelectDropdown: React.FC<SelectDropdownProps> = ({
   const [value, setValue] = React.useState<string | undefined>(initialValue);
   function handleOptionSelection(e: React.ChangeEvent<HTMLSelectElement>) {
     setValue(e.target.value);
-    if (e.target.value === name) return;
-
     if (onSelection) {
       const i = options.findIndex((opt) => opt.value === e.target.value);
       onSelection(e.target.value, i >= 0 ? i : undefined);

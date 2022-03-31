@@ -1,4 +1,12 @@
 import { WishlistItem } from "./Wishlist.interface";
+export interface CartSummaryItemData {
+  shop: {
+    name: string;
+    id: string;
+    imageUrl: string;
+  };
+  item: CartSummaryItem;
+}
 export interface CartSummaryItem {
   id: string;
   name: string;
@@ -11,8 +19,8 @@ export interface CartSummaryItem {
   date?: number;
   eventDuration?: number;
   eventAdresses?: string;
-  sizes?: ProductSize[];
-  colors?: Color[];
+  size?: string;
+  color?: string;
   discount?: {
     value: number;
     unit: "%" | "$";
@@ -25,14 +33,9 @@ export interface CartSummaryItem {
   description?: string;
 }
 
-export interface Color {
-  name: string;
-  hexCode: string;
-}
-
-export interface ProductSize {
-  size: "S" | "M" | "L" | "XL" | "XXL" | "XXXL";
-}
+// export interface ProductSize {
+//   size: "S" | "M" | "L" | "XL" | "XXL" | "XXXL";
+// }
 
 export interface ShippingMothed {
   name: "Click & Collect" | "European union" | "International";

@@ -23,28 +23,7 @@ export { Rounded } from "./Rounded";
 export { Image } from "./Image";
 export { Prefix } from "./Prefix";
 export { Text } from "./Text";
+export { Grid } from "./Grid";
+export { Releative } from "./Releative";
+export { Absolute } from "./Absolute";
 export * from "./icons";
-// export {
-//   FlexStack,
-//   Root,
-//   Divider,
-//   Button,
-//   DividerWidthText,
-//   DividerWidthChild,
-//   Spacer,
-//   Container,
-//   Input,
-//   TextArea,
-//   CloseIcon,
-//   DropdownPanel,
-//   FilterInput,
-//   Pagination,
-//   Verified,
-//   SelectDropdown,
-//   Clickable,
-//   BoldText,
-//   Border,
-//   Padding,
-//   BoxShadow,
-//   Rounded,
-// };
