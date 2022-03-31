@@ -1,6 +1,6 @@
 import React from "react";
 import { Button, FlexStack } from "../partials";
-import { getScreenWidth } from "ui";
+import { useScreenWidth } from "ui";
 export interface CookiesInfoBannerProps {
   onAcceptAll?: () => void;
   onLetMeChoose?: () => void;
@@ -10,7 +10,7 @@ export const CookiesInfoBanner: React.FC<CookiesInfoBannerProps> = ({
   onAcceptAll,
   onLetMeChoose,
 }) => {
-  const { min } = getScreenWidth({ minWidth: 1000 });
+  const { min } = useScreenWidth({ minWidth: 1000 });
 
   console.log("min", min);
 

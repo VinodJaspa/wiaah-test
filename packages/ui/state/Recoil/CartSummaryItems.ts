@@ -1,8 +1,8 @@
 import { atom, selector } from "recoil";
-import { CartSummaryItem } from "types/market/CartSummary";
+import { CartSummaryItemData } from "types/market/CartSummary";
 
-export const CartSummaryItemsState = atom<CartSummaryItem[]>({
-  key: "CartSummaryItems",
+export const CartSummaryItemsState = atom<CartSummaryItemData[]>({
+  key: "CartSummaryItemsData",
   default: [],
 });
 
@@ -11,7 +11,7 @@ export const CartSummaryTotalPriceState = selector<number>({
   get: ({ get }) => {
     const currentItems = get(CartSummaryItemsState);
     const total = currentItems.reduce((prev, current) => {
-      const totalItemPrice = current.price * current.qty;
+      const totalItemPrice = current.item.price * current.item.qty;
       return prev + totalItemPrice;
     }, 0);
     return total;

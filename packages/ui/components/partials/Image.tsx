@@ -27,6 +27,8 @@ export interface ImageProps {
   size?: Size;
   width?: CSSValueUnit;
   height?: CSSValueUnit;
+  fitHeight?: boolean;
+  fitWidth?: boolean;
 }
 export const Image: React.FC<ImageProps> = ({
   src,
@@ -35,15 +37,24 @@ export const Image: React.FC<ImageProps> = ({
   size = "md",
   width,
   height,
+  fitHeight,
+  fitWidth,
 }) => {
   const { w, h } = getSizeInRem(size, rotation);
   const styles: React.CSSProperties = {
-    objectFit: fit,
-    width: width ? CSSValueUnitToString(width) : w,
-    height: height ? CSSValueUnitToString(height) : h,
+    width: fitWidth ? "fit-content" : width ? CSSValueUnitToString(width) : w,
+    height: fitHeight
+      ? "fit-content"
+      : height
+      ? CSSValueUnitToString(height)
+      : h,
   };
 
-  return <img style={styles} className={``} src={src} />;
+  return (
+    <div style={styles}>
+      <img className={`h-full w-full object-${fit}`} src={src} />
+    </div>
+  );
 };
 
 function getSizeInRem(size: Size, rotation: "landscape" | "portrait") {

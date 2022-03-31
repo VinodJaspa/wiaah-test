@@ -6,7 +6,8 @@ import { ShopView } from "../../components/Shop/ShopView";
 import { products } from "ui/placeholder/products";
 import { Shop } from "../../components/Shop/ShopProfile";
 import { reviews } from "ui/placeholder/reviews";
-
+import { Container } from "ui";
+import { Collaboration } from "ui/components/blocks/Collaboration";
 interface ShopProps {
   // implement types for service data when the api c
   shop: any;
@@ -40,6 +41,9 @@ const ServiceDetailPage: NextPage<ShopProps> = () => {
       </Head>
       <MasterLayout>
         <ShopView reviews={reviews} shop={shop} products={products} />
+        <Container>
+          <Collaboration />
+        </Container>
       </MasterLayout>
     </>
   );

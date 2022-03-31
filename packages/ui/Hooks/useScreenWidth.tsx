@@ -10,7 +10,7 @@ export const useScreenWidth = ({
   const [min, setMin] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    const width = window.outerWidth;
+    const width = window.innerWidth;
     handleScreenChange({ target: { outerWidth: width } });
   }, []);
 

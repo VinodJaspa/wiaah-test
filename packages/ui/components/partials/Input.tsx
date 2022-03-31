@@ -5,41 +5,36 @@ import React, {
   InputHTMLAttributes,
   ReactElement,
 } from "react";
+import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
+import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
 
 interface InputProps
   extends DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
-  setId?: string;
   icon?: ReactElement;
   iconAlign?: "start" | "end";
-  containerClassName?: string;
-  labelClassName?: string;
   fullWidth?: boolean;
-  inputClassName?: string;
   variant?: "text" | "number";
   initialValue?: string | number;
+  explictWidth?: CSSValueUnit;
   onValueChange?: (value: string | number) => void;
 }
 
 export const Input: FC<InputProps> = ({
-  setId = undefined,
   icon = null,
   iconAlign,
-  containerClassName = "",
-  labelClassName = "",
-  inputClassName,
   fullWidth,
   initialValue,
   variant,
+  explictWidth,
   onValueChange,
   ...props
 }) => {
   const [value, setValue] = React.useState<any>(initialValue);
-  const [ContainerStyles, setContainerStyles] = React.useState<CSSProperties>(
-    {}
-  );
+  const ContainerStyles: React.CSSProperties = {};
+  const inputStyles: React.CSSProperties = {};
 
   React.useEffect(() => {
     if (onValueChange) {
@@ -47,19 +42,19 @@ export const Input: FC<InputProps> = ({
     }
   }, [value]);
 
-  React.useEffect(() => {
-    if (fullWidth) setContainerStyles((state) => ({ ...state, width: "100%" }));
-  }, []);
-  React.useEffect(() => {
-    switch (iconAlign) {
-      case "end":
-        setContainerStyles((state) => ({
-          ...state,
-          flexDirection: "row-reverse",
-        }));
-        break;
-    }
-  }, []);
+  if (fullWidth) {
+    inputStyles.width = "100%";
+  }
+
+  switch (iconAlign) {
+    case "end":
+      ContainerStyles.flexDirection = "row-reverse";
+      break;
+  }
+  if (explictWidth) {
+    ContainerStyles.width = CSSValueUnitToString(explictWidth);
+  }
+
   switch (variant) {
     case "number":
       return (
@@ -75,20 +70,20 @@ export const Input: FC<InputProps> = ({
       return (
         <div
           style={ContainerStyles}
-          className={`${containerClassName} flex items-center gap-4 rounded border-2 border-gray-400 border-opacity-50 py-1 px-3`}
+          className={` flex w-fit items-center gap-4 rounded border-2 border-gray-400 border-opacity-50 py-1 px-3`}
         >
-          <label
-            className={`${labelClassName} text-lg text-gray-400`}
-            htmlFor={setId}
-          >
-            {icon}
-          </label>
+          {icon && (
+            <label className={`text-lg text-gray-400`} htmlFor={props.id}>
+              {icon}
+            </label>
+          )}
           <input
-            className={`${inputClassName} w-full py-2 placeholder-opacity-50`}
+            style={inputStyles}
+            className={`
+             w-full border-none py-2 placeholder-opacity-50 outline-none focus:ring-0`}
             value={value}
             onChange={(e) => setValue(e.target.value)}
             {...props}
-            id={setId}
           />
         </div>
       );

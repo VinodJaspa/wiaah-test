@@ -1,39 +1,50 @@
 import React from "react";
 import { useRecoilState } from "recoil";
-import { CartSummaryItem } from "types/market/CartSummary";
+import { CartSummaryItem, CartSummaryItemData } from "types/market/CartSummary";
 import { CartSummaryItemsState } from "../state";
 
 export const useCartSummary = () => {
   const [cartSummaryItems, setCartSummaryItems] = useRecoilState(
     CartSummaryItemsState
   );
-  function AddNewItem(item: CartSummaryItem) {
-    const itemExists = cartSummaryItems.filter((Item) => Item.id === item.id);
+  function AddNewItem({ item, shop }: CartSummaryItemData) {
+    const itemExists = cartSummaryItems.filter(
+      (Item) => Item.item.id === item.id
+    );
     if (itemExists.length > 0) {
       // item exists
       const restOfItems = cartSummaryItems.filter(
-        (Item) => Item.id !== item.id
+        ({ item: Item }) => Item.id !== item.id
       );
 
-      const UpdatedItem: CartSummaryItem = {
+      const UpdatedItem: CartSummaryItemData = {
         ...itemExists[0],
-        qty: itemExists[0].qty + 1,
+        item: {
+          ...itemExists[0].item,
+          qty: itemExists[0].item.qty,
+        },
       };
+      // qty: itemExists[0].qty + 1,
 
       setCartSummaryItems([...restOfItems, UpdatedItem]);
     } else {
-      setCartSummaryItems((state) => [...state, item]);
+      setCartSummaryItems((state) => [...state, { item, shop }]);
     }
   }
   function ChangeQuantity(id: string, qty: number) {
-    const itemExists = cartSummaryItems.filter((Item) => Item.id === id);
+    const itemExists = cartSummaryItems.filter((Item) => Item.item.id === id);
     if (itemExists.length > 0) {
       // item exists
-      const restOfItems = cartSummaryItems.filter((Item) => Item.id !== id);
+      const restOfItems = cartSummaryItems.filter(
+        (Item) => Item.item.id !== id
+      );
 
-      const UpdatedItem: CartSummaryItem = {
+      const UpdatedItem: CartSummaryItemData = {
         ...itemExists[0],
-        qty: qty,
+        item: {
+          ...itemExists[0].item,
+          qty,
+        },
       };
 
       setCartSummaryItems([...restOfItems, UpdatedItem]);
@@ -41,7 +52,9 @@ export const useCartSummary = () => {
   }
 
   function RemoveItem(itemId: string) {
-    setCartSummaryItems((state) => state.filter((item) => item.id !== itemId));
+    setCartSummaryItems((state) =>
+      state.filter((item) => item.item.id !== itemId)
+    );
   }
 
   return {

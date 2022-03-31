@@ -10,7 +10,10 @@ import {
   Divider,
   FlexStack,
   Padding,
+  Spacer,
+  Text,
   useCartSummary,
+  useScreenWidth,
 } from "ui";
 import { Rounded } from "ui/components/partials/Rounded";
 import { CartSummaryTotalPriceState } from "ui/state";
@@ -19,6 +22,7 @@ import EmptyCartSummary from "./EmptyCartSummary";
 
 const CartSummaryView: React.FC = () => {
   const router = useRouter();
+  const { min } = useScreenWidth({ minWidth: 900 });
   const { ChangeQuantity, RemoveItem, cartSummaryItems } = useCartSummary();
   const totalPrice = useRecoilValue(CartSummaryTotalPriceState);
   const deliveryFee = 0;
@@ -28,47 +32,74 @@ const CartSummaryView: React.FC = () => {
   }
 
   return (
-    <FlexStack fullWidth horizontalSpacingInRem={1}>
-      <BoxShadow>
-        <FlexStack fullWidth={true}>
-          <Padding X={{ value: 1 }} Y={{ value: 1 }}>
-            <div className="w-full text-4xl font-bold">
-              {t("shopping_cart", "SHOPPING CART")}{" "}
-              {cartSummaryItems.length > 0
-                ? `(${cartSummaryItems.length} items)`
-                : null}
-            </div>
-            {cartSummaryItems.length < 1 ? (
-              <EmptyCartSummary />
-            ) : (
+    <FlexStack direction="vertical" fullWidth horizontalSpacingInRem={1}>
+      <Spacer spaceInRem={2} />
+      <FlexStack
+        fitHeight
+        fullWidth
+        horizontalSpacingInRem={2}
+        verticalSpacingInRem={2}
+        direction={min ? "vertical" : "horizontal"}
+      >
+        {cartSummaryItems.length < 1 ? (
+          <EmptyCartSummary />
+        ) : (
+          <div className="bg-white">
+            <Padding X={{ value: 1 }} Y={{ value: 1 }}>
+              <div className="w-full text-3xl font-bold">
+                {t("shopping_cart", "SHOPPING CART")}{" "}
+                {cartSummaryItems.length > 0
+                  ? `(${cartSummaryItems.length} ${t("items", "items")})`
+                  : null}
+              </div>
+              <Spacer />
               <CartSummaryFilled items={cartSummaryItems} />
-            )}
-          </Padding>
-        </FlexStack>
-      </BoxShadow>
-      <BoxShadow>
-        <Padding X={{ value: 1, unit: "rem" }} Y={{ value: 1, unit: "rem" }}>
-          <FlexStack direction="vertical" verticalSpacingInRem={1}>
-            {/* checkout */}
-            <BoldText>Total</BoldText>
-            <FlexStack justify="between" fullWidth>
-              <p>{t("sub_total", "SubTotal")}</p>
-              <BoldText>${totalPrice}</BoldText>
-            </FlexStack>
-            <FlexStack justify="between" fullWidth>
-              <p>{t("delivery", "Delivery")}</p>
-              <BoldText>${deliveryFee}</BoldText>
-            </FlexStack>
-            <Divider />
-            <BoldText>{t("total_vat", "Total (VAT included)")}</BoldText>
-            <Rounded radius="xl">
-              <Button onClick={handleCheckout} paddingXInRem={2}>
-                {t("go_to_checkout", "GO TO CHECKOUT")}
-              </Button>
-            </Rounded>
-          </FlexStack>
-        </Padding>
-      </BoxShadow>
+            </Padding>
+          </div>
+        )}
+        <div>
+          <BoxShadow>
+            <div className="bg-white">
+              <Padding X={{ value: 1 }} Y={{ value: 1 }}>
+                <FlexStack
+                  width={min ? { value: 100, unit: "%" } : { value: 30 }}
+                  direction="vertical"
+                  verticalSpacingInRem={2}
+                >
+                  {/* checkout */}
+                  <BoldText>
+                    <Text size="3xl">Total</Text>
+                  </BoldText>
+                  <Text size="lg">
+                    <FlexStack justify="between" fullWidth>
+                      {t("sub_total", "SubTotal")}
+                      <BoldText>${totalPrice}</BoldText>
+                    </FlexStack>
+                  </Text>
+                  <Text size="lg">
+                    <FlexStack justify="between" fullWidth>
+                      {t("delivery", "Delivery")}
+                      <BoldText>${deliveryFee}</BoldText>
+                    </FlexStack>
+                  </Text>
+                  <Divider marginY={{ value: 0.9 }} />
+                  <Text size="xl">
+                    <FlexStack justify="between">
+                      <BoldText>
+                        {t("total_vat", "Total (VAT included)")}
+                      </BoldText>
+                      <BoldText>${totalPrice}</BoldText>
+                    </FlexStack>
+                  </Text>
+                  <Button paddingY={{ value: 0.5 }} onClick={handleCheckout}>
+                    {t("go_to_checkout", "GO TO CHECKOUT")}
+                  </Button>
+                </FlexStack>
+              </Padding>
+            </div>
+          </BoxShadow>
+        </div>
+      </FlexStack>
     </FlexStack>
   );
 };

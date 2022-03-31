@@ -19,6 +19,7 @@ export interface ProductCardProps {
   rating?: number;
   forceHover?: boolean | undefined;
   postion?: "save" | "delete";
+  full?: boolean;
   onLike?: (id: string) => void;
   onButtonClick?: (id: string) => void;
   onDelete?: (id: string) => void;
@@ -44,6 +45,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   onButtonClick,
   onDelete,
   onLike,
+  full,
 }) => {
   const [selectedColor, setSelectedColor] = React.useState<number>(0);
   const [hovered, setHovered] = React.useState<boolean>(forceHover || false);
@@ -74,12 +76,16 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     setHovered(false);
   }
   return (
-    <div className="flex w-56 flex-col bg-white">
+    <div
+      style={{ width: full ? "100%" : "14rem" }}
+      className="flex w-56 flex-col bg-white"
+    >
       <div
+        style={{ height: full ? "45rem" : "18rem" }}
         data-test="image-container"
         onMouseOver={handleHoverIn}
         onMouseLeave={handleHoverOut}
-        className="relative h-72 w-full "
+        className="relative w-full "
       >
         {/* image */}
         <div className="absolute top-0 z-10 flex w-full items-center justify-between p-2">

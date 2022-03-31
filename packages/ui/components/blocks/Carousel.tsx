@@ -3,7 +3,7 @@ import React, { CSSProperties, FC, ReactElement, useCallback } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export interface CarouselProps {
-  components: ComponentDetails[];
+  children?: ReactElement[];
   componentsPerView?: number;
   getCurrentComponent?: (component: number) => void;
   auto?: {
@@ -14,12 +14,8 @@ export interface CarouselProps {
   setCurrentComponentNum?: number;
 }
 
-export interface ComponentDetails {
-  Component: ReactElement;
-}
-
 export const Carousel: FC<CarouselProps> = ({
-  components,
+  children,
   componentsPerView,
   getCurrentComponent,
   auto,
@@ -28,13 +24,20 @@ export const Carousel: FC<CarouselProps> = ({
 }) => {
   const [styles, setStyles] = React.useState<CSSProperties>({});
   const [currentComponent, setCurrentComponent] = React.useState<number>(0);
+  const [translation, setTranslation] = React.useState<number>(
+    100 * currentComponent
+  );
+  const [dragging, setDragging] = React.useState<boolean>(false);
+
   let autoMoveInterval: any;
+
+  if (!children) return null;
 
   const handleNext = useCallback(() => {
     if (autoMoveInterval) {
       clearTimeout(autoMoveInterval);
     }
-    const maxLength = components.length;
+    const maxLength = children.length;
     const offset =
       componentsPerView && componentsPerView > 0 ? componentsPerView : 1;
     if (currentComponent + 1 + offset > maxLength)
@@ -46,13 +49,21 @@ export const Carousel: FC<CarouselProps> = ({
     if (autoMoveInterval) {
       clearTimeout(autoMoveInterval);
     }
-    const maxLength = components.length;
+    const maxLength = children.length;
     const offset =
       componentsPerView && componentsPerView > 0 ? componentsPerView : 1;
     if (currentComponent - 1 < 0)
       return setCurrentComponent(maxLength - offset);
     setCurrentComponent((state) => state - 1);
   }, [currentComponent]);
+
+  function handleMouseDragging(e: React.MouseEvent<HTMLDivElement>) {
+    console.log();
+    if (dragging) {
+      console.log(e);
+      // setTranslation(state => state+)
+    }
+  }
 
   React.useEffect(() => {
     if (setCurrentComponentNum || setCurrentComponentNum === 0) {
@@ -63,11 +74,15 @@ export const Carousel: FC<CarouselProps> = ({
   React.useEffect(() => {
     setStyles((state) => ({
       ...state,
-      transform: `translate(-${100 * currentComponent}%)`,
+      transform: `translate(-${translation}%)`,
     }));
-    if (getCurrentComponent) {
-      getCurrentComponent(currentComponent);
-    }
+    // if (getCurrentComponent) {
+    //   getCurrentComponent(currentComponent);
+    // }
+  }, [translation]);
+
+  React.useEffect(() => {
+    setTranslation(100 * currentComponent);
   }, [currentComponent]);
 
   React.useEffect(() => {
@@ -90,6 +105,9 @@ export const Carousel: FC<CarouselProps> = ({
       <div className="relative h-full w-full">
         <div className="h-full w-full overflow-hidden">
           <div
+            onMouseDown={() => setDragging(true)}
+            onMouseOver={handleMouseDragging}
+            onMouseUp={() => setDragging(false)}
             style={{
               ...styles,
               width: `${
@@ -98,7 +116,7 @@ export const Carousel: FC<CarouselProps> = ({
             }}
             className={`h-full transition-all duration-500`}
           >
-            {components.map(({ Component }, i) => (
+            {children.map((Component, i) => (
               <div
                 key={i}
                 style={{ left: `${100 * i}%` }}

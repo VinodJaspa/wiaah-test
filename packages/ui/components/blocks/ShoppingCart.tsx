@@ -17,12 +17,11 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
   onItemDelete,
 }) => {
   const cartRef = React.useRef<HTMLDivElement>(null);
-  const [DropdownStyles, setDropdownStyles] =
-    React.useState<React.CSSProperties>({});
   const [total, setTotal] = React.useState<number>(0);
   const { ShoppingCartOpen, OpenShoppingCart, closeShoppingCart } =
     useShoppingCart();
 
+  const DropdownStyles: React.CSSProperties = {};
   const { RemoveItem } = useCartSummary();
 
   useOutsideClick(cartRef, () => {
@@ -37,23 +36,15 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
     setTotal(total);
   }, [items]);
 
-  React.useEffect(() => {
-    if (ShoppingCartOpen) {
-      setDropdownStyles((state) => ({
-        ...state,
-        opacity: "100%",
-        pointerEvents: "all",
-        transform: "translateY(1rem)",
-      }));
-    } else {
-      setDropdownStyles((state) => ({
-        ...state,
-        pointerEvents: "none",
-        opacity: "0%",
-        transform: "translateY(0rem)",
-      }));
-    }
-  }, [ShoppingCartOpen]);
+  if (ShoppingCartOpen) {
+    DropdownStyles.opacity = "100%";
+    DropdownStyles.pointerEvents = "all";
+    DropdownStyles.transform = "translateY(1rem)";
+  } else {
+    DropdownStyles.pointerEvents = "none";
+    DropdownStyles.opacity = "0%";
+    DropdownStyles.transform = "translateY(0rem)";
+  }
 
   function handleDeleteitem(item: ShoppingCartItem) {
     RemoveItem(item.id);

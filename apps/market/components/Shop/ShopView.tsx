@@ -1,7 +1,7 @@
 import { Rate } from "antd";
 import { t } from "i18next";
 import React from "react";
-import { Container, Pagination, Spacer } from "ui";
+import { Container, Padding, Pagination, Spacer, useScreenWidth } from "ui";
 import { GridContainerPager } from "ui/components/blocks/GridContainerPager";
 import { Reviews } from "ui/components/blocks/Reviews";
 import { ShopProductFilter } from "ui/components/blocks/products/ShopProductFilter";
@@ -28,13 +28,14 @@ export const ShopView: React.FC<ShopViewProps> = ({
 }) => {
   const router = useRouter();
   const [isGrid, setGrid] = React.useState(false);
+  const { min } = useScreenWidth({ minWidth: 640 });
   const [filterVisibleOnMobile, setFilterVisibleOnMobile] =
     React.useState(false);
 
   return (
     <section className="flex flex-col items-center justify-center">
       {/* shop info */}
-      <ShopProfile shop={shop} />
+      <ShopProfile shop={shop} fullWidth={min} />
       <Spacer />
       <Container>
         <div className="flex justify-end">
@@ -64,6 +65,7 @@ export const ShopView: React.FC<ShopViewProps> = ({
             } grid-button inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
           />
         </div>
+        <Spacer />
         <div className="flex items-start justify-center">
           <div
             className={`${
@@ -111,7 +113,7 @@ export const ShopView: React.FC<ShopViewProps> = ({
                 priceRange={{ max: 1000, min: 10 }}
               />
             </div>
-            <div className="flex w-full flex-col items-center">
+            <div className="flex w-full flex-col items-center px-8">
               <GridContainerPager componentsLimit={20}>
                 {/* shop items */}
                 {products.map((product, i) => (
@@ -127,13 +129,16 @@ export const ShopView: React.FC<ShopViewProps> = ({
                     discount={product.off}
                     oldPrice={product.oldPrice}
                     key={i}
+                    full={min}
                   />
                 ))}
               </GridContainerPager>
 
               <Spacer />
               <Spacer />
-              <Reviews id="reviews" reviews={reviews} />
+              <Padding X={{ value: 1 }}>
+                <Reviews id="reviews" reviews={reviews} />
+              </Padding>
             </div>
           </div>
         </div>
