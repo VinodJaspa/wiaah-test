@@ -22,6 +22,7 @@ import {
   FilterInput,
   ShippingMotheds,
   PaymentGateway,
+  TotalCost,
 } from "ui";
 import { useRouter } from "next/router";
 import {
@@ -33,7 +34,7 @@ import {
   CheckoutProductsTotalPriceState,
   VoucherState,
 } from "ui/state";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ShippingMothed } from "types/market/Checkout";
 const shippingMotheds: ShippingMothed[] = [
   {
@@ -68,14 +69,11 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
   const { min } = useScreenWidth({ minWidth: 1024 });
   const { addresses, AddAddress, DeleteAddress, UpdateAddress } =
     useUserAddresses();
-
-  const [Voucher, setVoucher] = useRecoilState(VoucherState);
   const totalPrice = useRecoilValue(CheckoutProductsTotalPriceState);
   const products = useRecoilValue(CheckoutProductsState);
+  const setVoucher = useSetRecoilState(VoucherState);
 
   const [activeAddress, setActiveAddress] = React.useState<number>();
-  const shippingFee = 5;
-  const TotalWithFee = totalPrice + shippingFee;
 
   React.useEffect(() => {
     if (addresses.length < 1) {
@@ -113,15 +111,6 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
         ...input,
       });
       handleCancelEdit();
-    }
-  }
-
-  function handleRemoveVoucher() {
-    // call backend endpoint to remove voucher
-    // ok is true if the server removes the voucher successfully
-    let ok = true;
-    if (ok) {
-      setVoucher(undefined);
     }
   }
 
@@ -223,7 +212,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                     </BoldText>
                   </Text>
                   <Text size="lg">
-                    <Clickable onClick={() => router.push("/cart-summary")}>
+                    <Clickable onClick={() => router.push("cart-summary")}>
                       Change
                     </Clickable>
                   </Text>
@@ -237,42 +226,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                     </>
                   ))}
                 </FlexStack>
-                <div className="text-lg">
-                  <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
-                    <FlexStack justify="between">
-                      <BoldText>{t("subtotal", "Subtotal")}</BoldText>
-                      <BoldText>${totalPrice}</BoldText>
-                    </FlexStack>
-                    {Voucher && (
-                      <FlexStack justify="between">
-                        <BoldText>{t("voucher", "Voucher")}</BoldText>
-                        <Text size="md">
-                          <FlexStack direction="vertical">
-                            <span className="text-green-500">
-                              {Voucher.voucherName} - {Voucher.value}
-                              {Voucher.unit} {t("off", "OFF")}
-                            </span>
-
-                            <span
-                              className="cursor-pointer text-red-500"
-                              onClick={handleRemoveVoucher}
-                            >
-                              {t("remove", "Remove")}
-                            </span>
-                          </FlexStack>
-                        </Text>
-                      </FlexStack>
-                    )}
-                    <FlexStack justify="between">
-                      <BoldText>{t("shipping_fee", "Shipping Fee")}</BoldText>
-                      <BoldText>${shippingFee}</BoldText>
-                    </FlexStack>
-                    <FlexStack justify="between">
-                      <BoldText>{t("total_to_pay", "Total to Pay")}</BoldText>
-                      <BoldText>${TotalWithFee}</BoldText>
-                    </FlexStack>
-                  </FlexStack>
-                </div>
+                <TotalCost voucherRemoveable />
               </FlexStack>
             </Padding>
           </div>

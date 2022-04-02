@@ -34,3 +34,19 @@ export const CartSummaryTotalPriceState = selector<number>({
     }
   },
 });
+export const CartSummaryOnlyProdcutsState = selector<CartSummaryItemData[]>({
+  key: "CartSummaryOnlyProdcutsState",
+  get: ({ get }) => {
+    const currentItems = get(CartSummaryItemsState);
+
+    return currentItems.filter((item) => item.item.type === "product");
+  },
+});
+export const CartSummaryOnlyServicesState = selector<CartSummaryItemData[]>({
+  key: "CartSummaryOnlyServicesState",
+  get: ({ get }) => {
+    const currentItems = get(CartSummaryItemsState);
+
+    return currentItems.filter((item) => item.item.type === "service");
+  },
+});

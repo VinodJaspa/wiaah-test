@@ -8,7 +8,7 @@ import {
   IoHome,
   IoLocation,
 } from "react-icons/io5";
-import { CartSummaryItem } from "types/market/CartSummary";
+import { CartSummaryItem, ShopContactDetails } from "types/market/CartSummary";
 import { useScreenWidth } from "../../Hooks";
 import { colorPalette } from "../helpers/colorPalette";
 import { getDate, getTime } from "../helpers/Date";
@@ -30,11 +30,7 @@ import {
 } from "../partials";
 
 export interface CartSummaryProdcutCardProps {
-  profile?: {
-    name: string;
-    thumbnailUrl: string;
-    profileId: string;
-  };
+  profile?: ShopContactDetails;
   product: CartSummaryItem;
   minimal?: boolean;
   onRemove?: (itemId: string) => void;
@@ -70,12 +66,12 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
   }
   function handleProfileClick() {
     if (onProfileClick && profile) {
-      onProfileClick(profile.profileId);
+      onProfileClick(profile.id);
     }
   }
   function handleContactClick() {
     if (onContactClick && profile) {
-      onContactClick(profile.profileId);
+      onContactClick(profile.id);
     }
   }
   function handleLocationClick() {}
@@ -89,13 +85,13 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
               <Clickable onClick={handleProfileClick}>
                 <Prefix
                   prefix={
-                    profile.thumbnailUrl ? (
+                    profile.imageUrl ? (
                       <Rounded radius="sm">
                         <BoxShadow>
                           <Image
                             height={{ value: 2 }}
                             width={{ value: 2 }}
-                            src={profile.thumbnailUrl}
+                            src={profile.imageUrl}
                           />
                         </BoxShadow>
                       </Rounded>
@@ -192,7 +188,7 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
               >
                 {product.type === "service" && (
                   <div className="text-xs">
-                    <Grid colsGap={{ value: 0.5 }} cols={min ? 1 : 2}>
+                    <Grid fitWidth colsGap={{ value: 0.5 }} cols={min ? 1 : 2}>
                       {product.date && (
                         <FlexStack
                           direction="vertical"

@@ -132,11 +132,6 @@ export const getServerSideProps: GetServerSideProps<CartSummaryPageProps> =
     };
   };
 const cartSummary: NextPage<CartSummaryPageProps> = ({ Products }) => {
-  const setItems = useSetRecoilState(CartSummaryItemsState);
-  React.useEffect(() => {
-    setItems(Products);
-  }, []);
-
   return (
     <>
       <Head>

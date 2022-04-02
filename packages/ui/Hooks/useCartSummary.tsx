@@ -1,12 +1,19 @@
 import React from "react";
-import { useRecoilState } from "recoil";
-import { CartSummaryItem, CartSummaryItemData } from "types/market/CartSummary";
-import { CartSummaryItemsState } from "../state";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { CartSummaryItemData } from "types/market/CartSummary";
+import {
+  CartSummaryItemsState,
+  CartSummaryOnlyProdcutsState,
+  CartSummaryOnlyServicesState,
+} from "../state";
 
 export const useCartSummary = () => {
   const [cartSummaryItems, setCartSummaryItems] = useRecoilState(
     CartSummaryItemsState
   );
+  const products = useRecoilValue(CartSummaryOnlyProdcutsState);
+  const services = useRecoilValue(CartSummaryOnlyServicesState);
+
   function AddNewItem({ item, shop }: CartSummaryItemData) {
     const itemExists = cartSummaryItems.filter(
       (Item) => Item.item.id === item.id
@@ -59,6 +66,8 @@ export const useCartSummary = () => {
 
   return {
     cartSummaryItems,
+    products,
+    services,
     AddNewItem,
     RemoveItem,
     ChangeQuantity,
