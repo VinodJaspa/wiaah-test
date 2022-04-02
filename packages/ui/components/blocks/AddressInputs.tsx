@@ -4,16 +4,19 @@ import {
   BoldText,
   Button,
   Clickable,
+  Divider,
   DropdownPanel,
   FilterInput,
   FlexStack,
+  Grid,
   Input,
+  Padding,
   Prefix,
+  Rounded,
+  Spacer,
   Text,
 } from "../partials";
 import { AddressDetails } from "types/market/AddressDetails.interface";
-import { colorPalette } from "../helpers/colorPalette";
-import { IoClose } from "react-icons/io5";
 import { SearchInput } from "./SearchInput";
 import { FlagIcon } from "react-flag-kit";
 import { Country } from "country-state-city";
@@ -44,7 +47,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
         }
   );
   const [currentCountryCode, setCurrentCountryCode] =
-    React.useState<string | number>("");
+    React.useState<string | undefined>("EG");
   const [manual, setManual] = React.useState<boolean>(false);
   function handleCancel() {
     if (onCancel) {
@@ -60,46 +63,19 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
   return (
     <div className="text-lg">
       <FlexStack direction="vertical" verticalSpacingInRem={2}>
-        <FlexStack alignItems="center" justify="between">
-          <BoldText>
-            <Text size="2xl">{inputs ? "Edit Address" : "Add Address"}</Text>
-          </BoldText>
-          <Text size="2xl">
-            <Clickable onClick={handleCancel}>
-              <IoClose />
-            </Clickable>
-          </Text>
-        </FlexStack>
         <FlexStack direction="vertical">
-          <BoldText>{t("first_name", "First Name")}</BoldText>
-          <Input
-            onChange={(e) =>
-              setInputs((state) => ({ ...state, firstName: e.target.value }))
-            }
-            value={input.firstName}
-            explictWidth={{ value: 20 }}
-          />
-        </FlexStack>
-        <FlexStack direction="vertical">
-          <BoldText>{t("last_name", "Last Name")}</BoldText>
-          <Input
-            onChange={(e) =>
-              setInputs((state) => ({ ...state, lastName: e.target.value }))
-            }
-            value={input.lastName}
-            explictWidth={{ value: 20 }}
-          />
-        </FlexStack>
-        {!manual && (
-          <>
-            <FlexStack direction="vertical">
-              <BoldText>{t("country", "Country")}</BoldText>
+          <Padding X={{ value: 2 }} Y={{ value: 1 }}>
+            <FlexStack verticalSpacingInRem={1} direction="vertical">
+              <div className="text-3xl capitalize">
+                {t("delivery_country", "delivery country")}
+              </div>
               <SearchInput
                 icon={
                   currentCountryCode ? (
                     <FlagIcon code={currentCountryCode} />
                   ) : undefined
                 }
+                initialValue={"Egypt"}
                 explictWidth={{ value: 20 }}
                 components={Country.getAllCountries().map((country, i) => ({
                   name: country.name,
@@ -110,104 +86,175 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                     </Prefix>
                   ),
                 }))}
+                onValueChange={(value) => {
+                  if (value.length < 1) setCurrentCountryCode(undefined);
+                }}
                 onSelection={(code) => setCurrentCountryCode(code)}
               />
             </FlexStack>
-            <FlexStack direction="vertical">
-              <BoldText>{t("address", "Address")}</BoldText>
-              <SearchInput
-                icon={<FaSearch />}
-                placeholder="start typing the first lines of your address"
-                explictWidth={{ value: 20 }}
+          </Padding>
+          <Divider color="#F3F3F3" height={{ value: 1 }} />
+          <Padding X={{ value: 2 }}>
+            <Grid cols={1}>
+              <div className="text-3xl capitalize">
+                {t("delivery_address", "delivery address")}
+              </div>
+              <Spacer />
+              <FlexStack direction="vertical">
+                <BoldText>{t("first_name", "First Name")}</BoldText>
+                <Input
+                  onChange={(e) =>
+                    setInputs((state) => ({
+                      ...state,
+                      firstName: e.target.value,
+                    }))
+                  }
+                  value={input.firstName}
+                  explictWidth={{ value: 20 }}
+                />
+              </FlexStack>
+              <FlexStack direction="vertical">
+                <BoldText>{t("last_name", "Last Name")}</BoldText>
+                <Input
+                  onChange={(e) =>
+                    setInputs((state) => ({
+                      ...state,
+                      lastName: e.target.value,
+                    }))
+                  }
+                  value={input.lastName}
+                  explictWidth={{ value: 20 }}
+                />
+              </FlexStack>
+              <FlexStack direction="vertical">
+                <BoldText>{t("zip_code", "Zip Code")}</BoldText>
+                <Input
+                  onChange={(e) =>
+                    setInputs((state) => ({
+                      ...state,
+                      zipCode: Number(e.target.value),
+                    }))
+                  }
+                  value={input.zipCode}
+                  explictWidth={{ value: 20 }}
+                />
+              </FlexStack>
+              <FlexStack direction="vertical">
+                <BoldText>{t("contact", "Contact")}</BoldText>
+                <Input
+                  onChange={(e) =>
+                    setInputs((state) => ({
+                      ...state,
+                      contact: e.target.value,
+                    }))
+                  }
+                  value={input.contact}
+                  explictWidth={{ value: 20 }}
+                />
+              </FlexStack>
+              <Spacer />
+              {!manual && (
+                <>
+                  <BoldText>{t("address_finder", "Address finder")}</BoldText>
+                  <SearchInput
+                    icon={<FaSearch />}
+                    placeholder="start typing the first lines of your address"
+                    explictWidth={{ value: 20 }}
+                  />
+                </>
+              )}
+              {manual && (
+                <>
+                  <FlexStack direction="vertical">
+                    <BoldText>{t("address", "Address")}</BoldText>
+                    <Input
+                      onChange={(e) =>
+                        setInputs((state) => ({
+                          ...state,
+                          adFdress: e.target.value,
+                        }))
+                      }
+                      value={input.address}
+                      explictWidth={{ value: 20 }}
+                    />
+                  </FlexStack>
+                  <FlexStack direction="vertical">
+                    <BoldText>{t("address_2", "Address 2")}</BoldText>
+                    <Input
+                      onChange={(e) =>
+                        setInputs((state) => ({
+                          ...state,
+                          address2: e.target.value,
+                        }))
+                      }
+                      value={input.address2}
+                      explictWidth={{ value: 20 }}
+                    />
+                  </FlexStack>
+                  <FlexStack direction="vertical">
+                    <BoldText>{t("city", "City")}</BoldText>
+                    <Input
+                      onChange={(e) =>
+                        setInputs((state) => ({
+                          ...state,
+                          city: e.target.value,
+                        }))
+                      }
+                      value={input.city}
+                      explictWidth={{ value: 20 }}
+                    />
+                  </FlexStack>
+                  <FlexStack direction="vertical">
+                    <BoldText>{t("country", "Country")}</BoldText>
+                    <Input
+                      onChange={(e) =>
+                        setInputs((state) => ({
+                          ...state,
+                          country: e.target.value,
+                        }))
+                      }
+                      value={input.country}
+                      explictWidth={{ value: 20 }}
+                    />
+                  </FlexStack>
+                  <Spacer />
+                </>
+              )}
+              <Spacer />
+              <FilterInput
+                onChange={(e) => setManual(e.target.checked)}
+                variant="box"
+                label={`${t("add_address_manually", "Add address manually")}?`}
+              />
+            </Grid>
+            <Spacer />
+            <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
+              <FilterInput
+                variant="box"
+                label={t(
+                  "set_default_delivery_address",
+                  "Set as default delivery address"
+                )}
+              />
+              <FilterInput
+                variant="box"
+                label={t(
+                  "set_default_billing_address",
+                  "Set as default billing address"
+                )}
               />
             </FlexStack>
-          </>
-        )}
-        <FilterInput
-          onChange={(e) => setManual(e.target.checked)}
-          variant="box"
-          label="Add Address manually?"
-        />
-        {manual && (
-          <>
-            <FlexStack direction="vertical">
-              <BoldText>{t("address", "Address")}</BoldText>
-              <Input
-                onChange={(e) =>
-                  setInputs((state) => ({ ...state, address: e.target.value }))
-                }
-                value={input.address}
-                explictWidth={{ value: 20 }}
-              />
+            <FlexStack justify="end" fullWidth>
+              <Button
+                onClick={handleSave}
+                paddingX={{ value: 3 }}
+                paddingY={{ value: 0.5 }}
+                hexBackgroundColor="#000"
+              >
+                {t("add_address", "add address".toUpperCase())}
+              </Button>
             </FlexStack>
-            <FlexStack direction="vertical">
-              <BoldText>{t("address_2", "Address 2")}</BoldText>
-              <Input
-                onChange={(e) =>
-                  setInputs((state) => ({ ...state, address2: e.target.value }))
-                }
-                value={input.address2}
-                explictWidth={{ value: 20 }}
-              />
-            </FlexStack>
-            <FlexStack direction="vertical">
-              <BoldText>{t("city", "City")}</BoldText>
-              <Input
-                onChange={(e) =>
-                  setInputs((state) => ({ ...state, city: e.target.value }))
-                }
-                value={input.city}
-                explictWidth={{ value: 20 }}
-              />
-            </FlexStack>
-            <FlexStack direction="vertical">
-              <BoldText>{t("country", "Country")}</BoldText>
-              <Input
-                onChange={(e) =>
-                  setInputs((state) => ({ ...state, country: e.target.value }))
-                }
-                value={input.country}
-                explictWidth={{ value: 20 }}
-              />
-            </FlexStack>
-          </>
-        )}
-        <FlexStack direction="vertical">
-          <BoldText>{t("zip_code", "Zip Code")}</BoldText>
-          <Input
-            type={"number"}
-            onChange={(e) =>
-              setInputs((state) => ({
-                ...state,
-                zipCode: Number(e.target.value),
-              }))
-            }
-            value={input.zipCode}
-            explictWidth={{ value: 20 }}
-          />
-        </FlexStack>
-        <FlexStack direction="vertical">
-          <BoldText>{t("contact", "Contact")}</BoldText>
-          <Input
-            onChange={(e) =>
-              setInputs((state) => ({ ...state, contact: e.target.value }))
-            }
-            value={input.contact}
-            explictWidth={{ value: 20 }}
-          />
-        </FlexStack>
-        <FlexStack horizontalSpacingInRem={1}>
-          <Button onClick={handleSave} paddingX={{ value: 1 }}>
-            {t("save", "Save")}
-          </Button>
-          <Button
-            onClick={handleCancel}
-            paddingX={{ value: 1 }}
-            outlined
-            hexTextColor={colorPalette.PrimaryGreen}
-          >
-            {t("cancel", "Cancel")}
-          </Button>
+          </Padding>
         </FlexStack>
       </FlexStack>
     </div>

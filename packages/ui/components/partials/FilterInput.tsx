@@ -37,6 +37,7 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
   currencySymbol = "$",
   min = 0,
   max = 10000,
+  children,
   onRangeChange,
   ...props
 }) => {
@@ -81,6 +82,7 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
     case "radio":
       return (
         <div className="flex w-fit items-center gap-2 ">
+          {children && <label htmlFor={props.id}>{children}</label>}
           <input {...props} type="radio" />
           {label && <span data-test="FilterInputLabel">{label}</span>}
         </div>

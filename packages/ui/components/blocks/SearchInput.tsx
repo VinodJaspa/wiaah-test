@@ -14,12 +14,12 @@ export interface SearchInputProps
   initialValue?: string;
   explictWidth?: CSSValueUnit;
   components?: Component[];
-  onValueChange?: (value: string | number) => void;
-  onSelection?: (value: string | number) => void;
+  onValueChange?: (value: string) => void;
+  onSelection?: (value: string) => void;
 }
 interface Component {
   name: string;
-  value?: string | number;
+  value?: string;
   comp: React.ReactElement;
 }
 export const SearchInput: React.FC<SearchInputProps> = ({

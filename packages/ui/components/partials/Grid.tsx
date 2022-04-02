@@ -57,7 +57,7 @@ export const Grid: React.FC<GridProps> = ({
     })`;
   }
   return (
-    <div style={styles} className="grid w-fit">
+    <div style={styles} className="grid">
       {children}
     </div>
   );
