@@ -1,3 +1,2 @@
-import { WishListIcon } from "./WishList";
-
-export { WishListIcon };
+export { WishListIcon } from "./WishList";
+export { ChecklistIcon } from "./ChecklistIcon";
