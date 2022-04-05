@@ -12,7 +12,7 @@ import {
 } from "../partials";
 
 const VoucherSchema = object().shape({
-  code: string().min(1, "Enter a voucher code").required(),
+  code: string().required("Enter a voucher code"),
 });
 
 export interface VoucherInputProps {
@@ -69,6 +69,7 @@ export const VoucherInput: React.FC<VoucherInputProps> = ({ onSuccess }) => {
               <Text size="3xl">{t("voucher", "Voucher")}</Text>
             </div>
             <Input
+              id="VoucherInput"
               icon={<IoTicket />}
               onValueChange={(value) => setValue({ code: value })}
               fullWidth
@@ -79,6 +80,7 @@ export const VoucherInput: React.FC<VoucherInputProps> = ({ onSuccess }) => {
               hexBackgroundColor="#000"
               paddingX={{ value: 2 }}
               paddingY={{ value: 0.5 }}
+              id="ApplyVoucherButton"
               onClick={handleSubmit}
             >
               {t("apply", "Apply")}

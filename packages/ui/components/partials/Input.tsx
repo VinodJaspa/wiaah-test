@@ -107,6 +107,7 @@ export const Input: FC<InputProps> = ({
             </div>
             {message && (
               <span
+                id={`${props.id || ""}InputMessage`}
                 className={`${
                   message.error ? "text-red-500" : "text-green-500"
                 } w-full px-1 text-sm `}

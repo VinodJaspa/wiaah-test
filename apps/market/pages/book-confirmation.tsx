@@ -38,6 +38,12 @@ export const getServerSideProps: GetServerSideProps<BookConfirmationPageProps> =
           nights: 1,
         },
       ],
+      location: {
+        streetName: "Shri New Homestay, Coorg, Madikeri Road",
+        streetNumber: 571201,
+        city: "Karnataka",
+        country: "",
+      },
     };
 
     return {

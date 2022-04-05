@@ -11,3 +11,8 @@ export interface AddressDetails {
   city: string;
   contact: string | number;
 }
+
+export interface AddressInputsFields extends AddressDetails {
+  defaultDeliveryAddress?: boolean;
+  defaultBillingAddress?: boolean;
+}

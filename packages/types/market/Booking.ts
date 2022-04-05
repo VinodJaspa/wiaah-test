@@ -12,4 +12,10 @@ export interface Service {
     email?: string;
   };
   rooms: Room[];
+  location: {
+    streetNumber: number;
+    streetName: string;
+    city: string;
+    country: string;
+  };
 }

@@ -3,39 +3,43 @@ import React from "react";
 import {
   BoldText,
   Button,
-  Clickable,
   Divider,
-  DropdownPanel,
   FilterInput,
   FlexStack,
   Grid,
   Input,
   Padding,
   Prefix,
-  Rounded,
   Spacer,
-  Text,
 } from "../partials";
-import { AddressDetails } from "types/market/AddressDetails.interface";
+import {
+  AddressDetails,
+  AddressInputsFields,
+} from "types/market/AddressDetails.interface";
 import { SearchInput } from "./SearchInput";
 import { FlagIcon } from "react-flag-kit";
 import { Country } from "country-state-city";
 import { FaSearch } from "react-icons/fa";
 
 export interface AddressInputsProps {
-  inputs?: AddressDetails;
+  initialInputs?: AddressDetails;
   onCancel?: () => void;
   onSuccess?: (input: AddressDetails) => void;
 }
 
 export const AddressInputs: React.FC<AddressInputsProps> = ({
-  inputs,
+  initialInputs,
   onCancel,
   onSuccess,
 }) => {
-  const [input, setInputs] = React.useState<AddressDetails>(
-    inputs
-      ? inputs
+  const [edit, setEdit] = React.useState<boolean>(initialInputs ? true : false);
+  const [input, setInputs] = React.useState<AddressInputsFields>(
+    initialInputs
+      ? {
+          ...initialInputs,
+          defaultBillingAddress: false,
+          defaultDeliveryAddress: false,
+        }
       : {
           firstName: "",
           lastName: "",
@@ -44,11 +48,14 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
           city: "",
           country: "",
           contact: "",
+          defaultBillingAddress: false,
+          defaultDeliveryAddress: false,
         }
   );
+
   const [currentCountryCode, setCurrentCountryCode] =
     React.useState<string | undefined>("EG");
-  const [manual, setManual] = React.useState<boolean>(false);
+  const [manual, setManual] = React.useState<boolean>(edit ? true : false);
   function handleCancel() {
     if (onCancel) {
       onCancel();
@@ -70,6 +77,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                 {t("delivery_country", "delivery country")}
               </div>
               <SearchInput
+                id="DeliverySearchInput"
                 icon={
                   currentCountryCode ? (
                     <FlagIcon code={currentCountryCode} />
@@ -103,6 +111,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
               <FlexStack direction="vertical">
                 <BoldText>{t("first_name", "First Name")}</BoldText>
                 <Input
+                  id="FirstNameInput"
                   onChange={(e) =>
                     setInputs((state) => ({
                       ...state,
@@ -116,6 +125,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
               <FlexStack direction="vertical">
                 <BoldText>{t("last_name", "Last Name")}</BoldText>
                 <Input
+                  id="LastNameInput"
                   onChange={(e) =>
                     setInputs((state) => ({
                       ...state,
@@ -129,6 +139,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
               <FlexStack direction="vertical">
                 <BoldText>{t("zip_code", "Zip Code")}</BoldText>
                 <Input
+                  id="ZipCodeInput"
                   onChange={(e) =>
                     setInputs((state) => ({
                       ...state,
@@ -142,6 +153,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
               <FlexStack direction="vertical">
                 <BoldText>{t("contact", "Contact")}</BoldText>
                 <Input
+                  id="ContactInput"
                   onChange={(e) =>
                     setInputs((state) => ({
                       ...state,
@@ -157,6 +169,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                 <>
                   <BoldText>{t("address_finder", "Address finder")}</BoldText>
                   <SearchInput
+                    id="AddressFinderInput"
                     icon={<FaSearch />}
                     placeholder="start typing the first lines of your address"
                     explictWidth={{ value: 20 }}
@@ -168,6 +181,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                   <FlexStack direction="vertical">
                     <BoldText>{t("address", "Address")}</BoldText>
                     <Input
+                      id="AddressInput"
                       onChange={(e) =>
                         setInputs((state) => ({
                           ...state,
@@ -181,6 +195,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                   <FlexStack direction="vertical">
                     <BoldText>{t("address_2", "Address 2")}</BoldText>
                     <Input
+                      id="Address2Input"
                       onChange={(e) =>
                         setInputs((state) => ({
                           ...state,
@@ -194,6 +209,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                   <FlexStack direction="vertical">
                     <BoldText>{t("city", "City")}</BoldText>
                     <Input
+                      id="CityInput"
                       onChange={(e) =>
                         setInputs((state) => ({
                           ...state,
@@ -207,6 +223,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                   <FlexStack direction="vertical">
                     <BoldText>{t("country", "Country")}</BoldText>
                     <Input
+                      id="CountryInput"
                       onChange={(e) =>
                         setInputs((state) => ({
                           ...state,
@@ -222,7 +239,9 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
               )}
               <Spacer />
               <FilterInput
+                id="AddAddressManuallySwitcher"
                 onChange={(e) => setManual(e.target.checked)}
+                checked={manual}
                 variant="box"
                 label={`${t("add_address_manually", "Add address manually")}?`}
               />
@@ -230,6 +249,14 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
             <Spacer />
             <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
               <FilterInput
+                onChange={(e) =>
+                  setInputs((state) => ({
+                    ...state,
+                    defaultDeliveryAddress: e.target.checked,
+                  }))
+                }
+                checked={input.defaultDeliveryAddress}
+                id="SetDefaultDeliveryAddressInput"
                 variant="box"
                 label={t(
                   "set_default_delivery_address",
@@ -237,7 +264,15 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                 )}
               />
               <FilterInput
+                id="SetDefaultBillingAddressInput"
                 variant="box"
+                checked={input.defaultBillingAddress}
+                onChange={(e) =>
+                  setInputs((state) => ({
+                    ...state,
+                    defaultBillingAddress: e.target.checked,
+                  }))
+                }
                 label={t(
                   "set_default_billing_address",
                   "Set as default billing address"
@@ -246,13 +281,30 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
             </FlexStack>
             <FlexStack justify="end" fullWidth>
               <Button
+                id="AddAddressButton"
                 onClick={handleSave}
                 paddingX={{ value: 3 }}
                 paddingY={{ value: 0.5 }}
                 hexBackgroundColor="#000"
               >
-                {t("add_address", "add address".toUpperCase())}
+                {edit
+                  ? t("save_address", "save address".toUpperCase())
+                  : t("add_address", "add address".toUpperCase())}
               </Button>
+              {edit && (
+                <Button
+                  id="CancelAddAddressButton"
+                  outlined
+                  borderColor="#000"
+                  hexTextColor="#000"
+                  onClick={handleCancel}
+                  paddingX={{ value: 3 }}
+                  paddingY={{ value: 0.5 }}
+                  hexBackgroundColor="#000"
+                >
+                  {t("cancel", "cancel".toUpperCase())}
+                </Button>
+              )}
             </FlexStack>
           </Padding>
         </FlexStack>

@@ -8,16 +8,18 @@ import {
   Table,
   Tr,
   Td,
+  VStack,
   Thead,
   Tbody,
   Image,
   AspectRatio,
   HStack,
 } from "@chakra-ui/react";
-import { CalanderPage, ChecklistIcon, Prefix } from "ui";
+import { CalanderPage, ChecklistIcon } from "ui";
 import { t } from "i18next";
 import { Service } from "types/market/Booking";
-import { IoCall, MdEmail } from "react-icons/all";
+import { IoCall, IoLocation } from "react-icons/io5";
+import { MdEmail } from "react-icons/md";
 import { QRCodeSVG } from "qrcode.react";
 
 export interface BookConfirmationViewProps {
@@ -25,7 +27,14 @@ export interface BookConfirmationViewProps {
 }
 
 export const BookConfirmationView: React.FC<BookConfirmationViewProps> = ({
-  service: { serviceName, serviceOwner, serviceThumbnail, contacts, rooms },
+  service: {
+    location,
+    serviceName,
+    serviceOwner,
+    serviceThumbnail,
+    contacts,
+    rooms,
+  },
 }) => {
   const bookId = "45DG9QY";
 
@@ -124,7 +133,7 @@ export const BookConfirmationView: React.FC<BookConfirmationViewProps> = ({
             </Box>
           </Flex>
         </Flex>
-        <Flex fontSize={"2xl"} w="40rem" gap="0.5rem" direction={"column"}>
+        <Flex fontSize={"xl"} w="40rem" gap="0.5rem" direction={"column"}>
           {/* hotel details */}
           <AspectRatio w={"100%"} ratio={9 / 10}>
             <Image src={serviceThumbnail} objectFit="cover" />
@@ -138,6 +147,15 @@ export const BookConfirmationView: React.FC<BookConfirmationViewProps> = ({
               {serviceOwner}
             </Text>
           </Flex>
+          <HStack>
+            <IoLocation />
+            <Flex direction={"column"}>
+              <Text>{location.streetName}</Text>
+              <Text>
+                {location.city}-{location.streetNumber}
+              </Text>
+            </Flex>
+          </HStack>
           {contacts && (
             <>
               {contacts.phone && (

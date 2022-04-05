@@ -1,6 +1,5 @@
 import { t } from "i18next";
 import React from "react";
-import { CartSummaryItem } from "types/market/CartSummary";
 import { useScreenWidth } from "ui/Hooks/useScreenWidth";
 import {
   BoxShadow,
@@ -34,31 +33,10 @@ import {
   CheckoutProductsTotalPriceState,
   VoucherState,
 } from "ui/state";
+
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { ShippingMothed } from "types/market/Checkout";
-const shippingMotheds: ShippingMothed[] = [
-  {
-    cost: 0,
-    name: "Click and collect",
-    description: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. ",
-    id: "1",
-  },
-  {
-    cost: 0,
-    name: "Free shipping",
-    id: "2",
-  },
-  {
-    cost: 0.99,
-    name: "European shipping",
-    id: "3",
-  },
-  {
-    cost: 5.99,
-    name: "International",
-    id: "4",
-  },
-];
+import { shippingMotheds } from "ui/placeholder";
+
 export interface CheckoutViewProps {}
 
 export const CheckoutView: React.FC<CheckoutViewProps> = () => {
@@ -146,7 +124,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                 <Spacer />
                 {edit ? (
                   <AddressInputs
-                    inputs={editAddress}
+                    initialInputs={editAddress}
                     onCancel={handleCancelEdit}
                     onSuccess={handleSaveAddress}
                   />
