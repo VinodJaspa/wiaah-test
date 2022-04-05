@@ -3,8 +3,8 @@ export function getDate(date: number) {
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   const dateString = new Date(date).toLocaleDateString("Default", {
     timeZone,
-    month: "narrow",
-    weekday: "narrow",
+    month: "short",
+    weekday: "short",
     day: "numeric",
     year: "numeric",
   });

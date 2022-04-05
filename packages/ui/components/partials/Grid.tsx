@@ -11,6 +11,8 @@ export interface GridProps {
   rowHeight?: CSSValueUnit;
   fullWidth?: boolean;
   fullHeight?: boolean;
+  fitWidth?: boolean;
+  fitHeight?: boolean;
   width?: CSSValueUnit;
   height?: CSSValueUnit;
 }
@@ -25,6 +27,8 @@ export const Grid: React.FC<GridProps> = ({
   rowHeight,
   fullWidth,
   fullHeight,
+  fitHeight,
+  fitWidth,
   width,
   height,
 }) => {
@@ -45,6 +49,12 @@ export const Grid: React.FC<GridProps> = ({
   if (fullHeight) {
     styles.height = "100%";
   }
+  if (fitWidth) {
+    styles.width = "fit-content";
+  }
+  if (fitHeight) {
+    styles.height = "fit-content";
+  }
   if (colsGap) {
     styles.columnGap = CSSValueUnitToString(colsGap);
   }
@@ -57,7 +67,7 @@ export const Grid: React.FC<GridProps> = ({
     })`;
   }
   return (
-    <div style={styles} className="grid w-fit">
+    <div style={styles} className="grid">
       {children}
     </div>
   );

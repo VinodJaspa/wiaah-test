@@ -1,12 +1,14 @@
-import { WishlistItem } from "./Wishlist.interface";
 export interface CartSummaryItemData {
-  shop: {
-    name: string;
-    id: string;
-    imageUrl: string;
-  };
+  shop: ShopContactDetails;
   item: CartSummaryItem;
 }
+
+export interface ShopContactDetails {
+  name: string;
+  id: string;
+  imageUrl: string;
+}
+
 export interface CartSummaryItem {
   id: string;
   name: string;
@@ -23,16 +25,17 @@ export interface CartSummaryItem {
   color?: string;
   discount?: {
     value: number;
-    unit: "%" | "$";
+    unit: DiscountUnit;
   };
   oldPrice?: number;
   cashback?: {
     value: number;
-    unit: "%" | "$";
+    unit: DiscountUnit;
   };
   description?: string;
 }
 
+export type DiscountUnit = "%" | "$";
 // export interface ProductSize {
 //   size: "S" | "M" | "L" | "XL" | "XXL" | "XXXL";
 // }

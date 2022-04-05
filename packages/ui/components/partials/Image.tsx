@@ -12,8 +12,8 @@ const sizes = {
     max: 6,
   },
   lg: {
-    min: 6,
-    max: 9,
+    min: 5,
+    max: 7.5,
   },
   xl: {
     min: 8,

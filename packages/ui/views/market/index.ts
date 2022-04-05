@@ -11,7 +11,7 @@ import { ContactUsView } from "./ContactUsView";
 export {
   HomeView,
   SearchView,
-  ProductView,
+  // ProductView,
   Login,
   SellerProfileStartupView,
   BuyerProfileStartUpView,

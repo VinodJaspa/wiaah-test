@@ -7,6 +7,15 @@ export {
 export { SavedItemsState } from "./SavedItems";
 export { LoginPopupState } from "./LoginPopup";
 export { ProductDescriptionTabsState } from "./ProductDescTabs";
-export { CartSummaryItemsState } from "./CartSummaryItems";
-export { CartSummaryTotalPriceState } from "./CartSummaryItems";
+export {
+  CartSummaryItemsState,
+  CartSummaryOnlyProdcutsState,
+  CartSummaryOnlyServicesState,
+  CartSummaryTotalPriceState,
+} from "./CartSummaryItems";
 export { UserAddressesState } from "./UserAddresses";
+export {
+  VoucherState,
+  CheckoutProductsState,
+  CheckoutProductsTotalPriceState,
+} from "./Checkout";

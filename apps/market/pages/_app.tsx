@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { Language } from "ui/languages/enums/Language";
 import { useRouter } from "next/router";
 import { RecoilRoot } from "recoil";
+import { ChakraProvider } from "@chakra-ui/react";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -34,11 +35,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [locale]);
   return (
     <>
-      <CookiesProvider>
-        <RecoilRoot>
-          <Component {...pageProps} />
-        </RecoilRoot>
-      </CookiesProvider>
+      <ChakraProvider>
+        <CookiesProvider>
+          <RecoilRoot>
+            <Component {...pageProps} />
+          </RecoilRoot>
+        </CookiesProvider>
+      </ChakraProvider>
     </>
   );
 }

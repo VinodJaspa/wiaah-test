@@ -8,7 +8,7 @@ import {
   IoHome,
   IoLocation,
 } from "react-icons/io5";
-import { CartSummaryItem } from "types/market/CartSummary";
+import { CartSummaryItem, ShopContactDetails } from "types/market/CartSummary";
 import { useScreenWidth } from "../../Hooks";
 import { colorPalette } from "../helpers/colorPalette";
 import { getDate, getTime } from "../helpers/Date";
@@ -30,11 +30,7 @@ import {
 } from "../partials";
 
 export interface CartSummaryProdcutCardProps {
-  profile?: {
-    name: string;
-    thumbnailUrl: string;
-    profileId: string;
-  };
+  profile?: ShopContactDetails;
   product: CartSummaryItem;
   minimal?: boolean;
   onRemove?: (itemId: string) => void;
@@ -70,12 +66,12 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
   }
   function handleProfileClick() {
     if (onProfileClick && profile) {
-      onProfileClick(profile.profileId);
+      onProfileClick(profile.id);
     }
   }
   function handleContactClick() {
     if (onContactClick && profile) {
-      onContactClick(profile.profileId);
+      onContactClick(profile.id);
     }
   }
   function handleLocationClick() {}
@@ -89,13 +85,13 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
               <Clickable onClick={handleProfileClick}>
                 <Prefix
                   prefix={
-                    profile.thumbnailUrl ? (
+                    profile.imageUrl ? (
                       <Rounded radius="sm">
                         <BoxShadow>
                           <Image
                             height={{ value: 2 }}
                             width={{ value: 2 }}
-                            src={profile.thumbnailUrl}
+                            src={profile.imageUrl}
                           />
                         </BoxShadow>
                       </Rounded>
@@ -132,7 +128,7 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                   height={min ? { value: 16 } : undefined}
                   rotation={min ? "landscape" : "portrait"}
                   fit={"cover"}
-                  size={minimal ? "md" : "xl"}
+                  size={minimal ? "lg" : "xl"}
                   src={product.imageUrl}
                 />
                 {product.cashback && !minimal && (
@@ -167,7 +163,10 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
               </Releative>
             </FlexStack>
             <FlexStack direction="vertical" fullHeight justify="between">
-              <FlexStack verticalSpacingInRem={0.5} direction="vertical">
+              <FlexStack
+                verticalSpacingInRem={minimal ? 0 : 0.5}
+                direction="vertical"
+              >
                 <BoldText>{product.name}</BoldText>
                 <Text maxLines={minimal ? 1 : 2}>{product.description}</Text>
                 <div>
@@ -183,10 +182,13 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                   )}
                 </div>
               </FlexStack>
-              <FlexStack verticalSpacingInRem={0.5} direction="vertical">
+              <FlexStack
+                verticalSpacingInRem={minimal ? 0 : 0.5}
+                direction="vertical"
+              >
                 {product.type === "service" && (
                   <div className="text-xs">
-                    <Grid cols={min ? 1 : 2}>
+                    <Grid fitWidth colsGap={{ value: 0.5 }} cols={min ? 1 : 2}>
                       {product.date && (
                         <FlexStack
                           direction="vertical"
@@ -226,7 +228,8 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                   </div>
                 )}
 
-                {!minimal && (
+                {/* {!minimal && ( */}
+                <Text size={minimal ? "xs" : "md"}>
                   <FlexStack
                     alignItems="center"
                     fitWidth
@@ -243,7 +246,8 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                       </Prefix>
                     </Clickable>
                   </FlexStack>
-                )}
+                </Text>
+                {/* )} */}
               </FlexStack>
             </FlexStack>
           </FlexStack>
@@ -296,7 +300,10 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                 alignItems="end"
                 verticalSpacingInRem={0.25}
               >
-                {minimal && product.cashback && (
+                <Text>
+                  {product.qty} {t("units", "Units")}
+                </Text>
+                {product.cashback && (
                   <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
                     <div className="bg-red-500 bg-opacity-70 text-xs">
                       <Padding X={{ value: 0.5 }}>
@@ -310,7 +317,7 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                     </div>
                   </FlexStack>
                 )}
-                {minimal && product.type === "service" && (
+                {product.type === "service" && (
                   <div className="w-fit bg-[#57bf9c] bg-opacity-70 text-xs">
                     <Padding X={{ value: 0.5 }}>
                       <Text color={colorPalette.whiteText}>
