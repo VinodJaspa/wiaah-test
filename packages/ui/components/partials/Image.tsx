@@ -1,6 +1,5 @@
-import React from "react";
+import React, { DetailedHTMLProps, HTMLAttributes } from "react";
 import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
-import { Size } from "types/sharedTypes/css/size";
 import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
 const sizes = {
   sm: {
@@ -20,11 +19,15 @@ const sizes = {
     max: 12,
   },
 };
-export interface ImageProps {
+
+type size = keyof typeof sizes;
+
+export interface ImageProps
+  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   src: string;
   fit?: "contain" | "cover";
   rotation?: "landscape" | "portrait";
-  size?: Size;
+  size?: size;
   width?: CSSValueUnit;
   height?: CSSValueUnit;
   fitHeight?: boolean;
@@ -57,7 +60,7 @@ export const Image: React.FC<ImageProps> = ({
   );
 };
 
-function getSizeInRem(size: Size, rotation: "landscape" | "portrait") {
+function getSizeInRem(size: size, rotation: "landscape" | "portrait") {
   let { height, width }: { width: string; height: string } = {
     width: "",
     height: "",

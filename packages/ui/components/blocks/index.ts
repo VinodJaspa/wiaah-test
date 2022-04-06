@@ -45,3 +45,4 @@ export { PaymentGateway } from "./PaymentGateway";
 export { UserInfoConfirmation } from "./UserInfoConfirmation";
 export { TotalCost } from "./TotalCost";
 export { CalanderPage } from "./CalanderPage";
+export { OrderConfirmationProductsTable } from "./OrderConfirmationProductsTable";

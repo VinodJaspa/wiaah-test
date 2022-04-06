@@ -76,7 +76,9 @@ export const BookConfirmationView: React.FC<BookConfirmationViewProps> = ({
               <Flex direction="column">
                 <Flex direction="column">
                   {t("booking_number", "Booking Number")}
-                  <Text fontWeight={"bold"}>#{bookId}</Text>
+                  <Text data-testid="BookNumber" fontWeight={"bold"}>
+                    #{bookId}
+                  </Text>
                 </Flex>
                 <Spacer />
                 <Button colorScheme={"cyan"} variant="outline">
@@ -114,18 +116,21 @@ export const BookConfirmationView: React.FC<BookConfirmationViewProps> = ({
                     <Td textAlign={"end"}>Total</Td>
                   </Tr>
                 </Thead>
-                <Tbody>
+                <Tbody data-testid="RoomsTable">
                   {rooms.map((room, i) => (
-                    <Tr>
-                      <Td>
+                    <Tr key={i} data-testid="Room">
+                      <Td data-testid="RoomType">
                         <Text>Room Type {room.type}</Text>
                       </Td>
                       <Td textAlign={"end"}>
-                        <Text>
-                          {room.nightPrice}*{room.nights}
+                        <Text data-testid="RoomNightPrice">
+                          {room.nightPrice}
                         </Text>
+                        *<Text data-testid="RoomNights">{room.nights}</Text>
                       </Td>
-                      <Td textAlign={"end"}>{room.nightPrice * room.nights}</Td>
+                      <Td data-testid="RoomTotalPrice" textAlign={"end"}>
+                        {room.nightPrice * room.nights}
+                      </Td>
                     </Tr>
                   ))}
                 </Tbody>
@@ -136,13 +141,22 @@ export const BookConfirmationView: React.FC<BookConfirmationViewProps> = ({
         <Flex fontSize={"xl"} w="40rem" gap="0.5rem" direction={"column"}>
           {/* hotel details */}
           <AspectRatio w={"100%"} ratio={9 / 10}>
-            <Image src={serviceThumbnail} objectFit="cover" />
+            <Image
+              data-testid="ServicePhoto"
+              src={serviceThumbnail}
+              objectFit="cover"
+            />
           </AspectRatio>
-          <Text fontWeight={"bold"} color="4A4A4A" fontSize={"2xl"}>
+          <Text
+            data-testid="ServiceName"
+            fontWeight={"bold"}
+            color="4A4A4A"
+            fontSize={"2xl"}
+          >
             {serviceName}
           </Text>
-          <Flex gap="0.5rem">
-            Owner:
+          <Flex data-testid="ServiceOwner" gap="0.5rem">
+            Owner:{" "}
             <Text color="4A4A4A" fontWeight={"bold"}>
               {serviceOwner}
             </Text>
@@ -150,9 +164,10 @@ export const BookConfirmationView: React.FC<BookConfirmationViewProps> = ({
           <HStack>
             <IoLocation />
             <Flex direction={"column"}>
-              <Text>{location.streetName}</Text>
+              <Text data-testid="StreetName">{location.streetName}</Text>
               <Text>
-                {location.city}-{location.streetNumber}
+                <Text data-testid="LocationCity">{location.city}</Text>-
+                <Text data-testid="StreetNumber">{location.streetNumber}</Text>
               </Text>
             </Flex>
           </HStack>
@@ -161,13 +176,13 @@ export const BookConfirmationView: React.FC<BookConfirmationViewProps> = ({
               {contacts.phone && (
                 <HStack>
                   <IoCall />
-                  <Text>{contacts.phone}</Text>
+                  <Text data-testid="ContactPhone">{contacts.phone}</Text>
                 </HStack>
               )}
               {contacts.email && (
                 <HStack>
                   <MdEmail />
-                  <Text>{contacts.email}</Text>
+                  <Text data-testid="ContactEmail">{contacts.email}</Text>
                 </HStack>
               )}
             </>

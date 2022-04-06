@@ -14,6 +14,16 @@ export interface CartSummaryFilledProps {
 }
 
 const CartSummaryFilled: React.FC<CartSummaryFilledProps> = ({ items }) => {
+  function handleContactClick(shopId: string) {}
+
+  function handleMoveToWishlist(productId: string) {}
+
+  function handleProfileClick(shopId: string) {}
+
+  function handleQtyChange(productId: string) {}
+
+  function handleRemove(productId: string) {}
+
   return (
     <BoxShadow>
       <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
@@ -23,9 +33,14 @@ const CartSummaryFilled: React.FC<CartSummaryFilledProps> = ({ items }) => {
               key={i}
               profile={{
                 name: shop.name,
-                profileId: shop.id,
-                thumbnailUrl: shop.imageUrl,
+                id: shop.id,
+                imageUrl: shop.imageUrl,
               }}
+              onContactClick={(id) => handleContactClick(id)}
+              onMoveToWishList={handleMoveToWishlist}
+              onProfileClick={handleProfileClick}
+              onQtyChange={handleQtyChange}
+              onRemove={handleRemove}
               product={item}
             />
             {i + 1 < items.length && <Divider marginY={{ value: 0.25 }} />}

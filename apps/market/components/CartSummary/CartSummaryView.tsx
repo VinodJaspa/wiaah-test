@@ -6,7 +6,6 @@ import {
   BoldText,
   BoxShadow,
   Button,
-  CartSummaryTable,
   Divider,
   FlexStack,
   Padding,
@@ -15,7 +14,6 @@ import {
   useCartSummary,
   useScreenWidth,
 } from "ui";
-import { Rounded } from "ui/components/partials/Rounded";
 import { CartSummaryTotalPriceState } from "ui/state";
 import CartSummaryFilled from "./CartSummaryFilled";
 import EmptyCartSummary from "./EmptyCartSummary";
@@ -23,7 +21,7 @@ import EmptyCartSummary from "./EmptyCartSummary";
 const CartSummaryView: React.FC = () => {
   const router = useRouter();
   const { min } = useScreenWidth({ minWidth: 900 });
-  const { ChangeQuantity, RemoveItem, cartSummaryItems } = useCartSummary();
+  const { cartSummaryItems } = useCartSummary();
   const totalPrice = useRecoilValue(CartSummaryTotalPriceState);
   const deliveryFee = 0;
 
@@ -41,22 +39,20 @@ const CartSummaryView: React.FC = () => {
         verticalSpacingInRem={2}
         direction={min ? "vertical" : "horizontal"}
       >
-        {cartSummaryItems.length < 1 ? (
-          <EmptyCartSummary />
-        ) : (
-          <div className="bg-white">
-            <Padding X={{ value: 1 }} Y={{ value: 1 }}>
-              <div className="w-full text-3xl font-bold">
-                {t("shopping_cart", "SHOPPING CART")}{" "}
-                {cartSummaryItems.length > 0
-                  ? `(${cartSummaryItems.length} ${t("items", "items")})`
-                  : null}
-              </div>
-              <Spacer />
-              <CartSummaryFilled items={cartSummaryItems} />
-            </Padding>
+        <div className="flex flex-grow flex-col bg-white p-4">
+          <div className="w-full text-3xl font-bold">
+            {t("shopping_cart", "SHOPPING CART")}{" "}
+            {cartSummaryItems.length > 0
+              ? `(${cartSummaryItems.length} ${t("items", "items")})`
+              : null}
           </div>
-        )}
+          <Spacer />
+          {cartSummaryItems.length > 0 ? (
+            <CartSummaryFilled items={cartSummaryItems} />
+          ) : (
+            <EmptyCartSummary />
+          )}
+        </div>
         <div>
           <BoxShadow>
             <div className="bg-white">

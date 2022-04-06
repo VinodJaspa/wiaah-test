@@ -1,13 +1,15 @@
-import React from "react";
+import React, { DetailedHTMLProps, HTMLAttributes } from "react";
 import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
 import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
-export interface PrefixProps {
-  prefix: React.ReactNode;
+
+export interface PrefixProps
+  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+  Prefix: React.ReactNode;
   spacing?: CSSValueUnit;
 }
 export const Prefix: React.FC<PrefixProps> = ({
   children,
-  prefix,
+  Prefix,
   spacing,
 }) => {
   const styles: React.CSSProperties = {
@@ -15,7 +17,7 @@ export const Prefix: React.FC<PrefixProps> = ({
   };
   return (
     <div className="flex items-center" style={styles}>
-      {prefix}
+      {Prefix}
       {children}
     </div>
   );

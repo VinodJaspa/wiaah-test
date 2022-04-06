@@ -279,7 +279,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                 )}
               />
             </FlexStack>
-            <FlexStack justify="end" fullWidth>
+            <FlexStack horizontalSpacingInRem={1} justify="end" fullWidth>
               <Button
                 id="AddAddressButton"
                 onClick={handleSave}
