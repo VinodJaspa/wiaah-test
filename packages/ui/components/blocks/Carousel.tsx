@@ -3,7 +3,7 @@ import React, { CSSProperties, FC, ReactElement, useCallback } from "react";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export interface CarouselProps {
-  children?: ReactElement[];
+  children?: React.ReactNode[];
   componentsPerView?: number;
   getCurrentComponent?: (component: number) => void;
   auto?: {

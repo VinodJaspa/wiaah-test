@@ -1,8 +1,9 @@
 // .storybook/main.js
+import type { StorybookConfig } from "@storybook/core-common";
 
 const path = require("path");
 
-module.exports = {
+const config: StorybookConfig = {
   stories: [
     "../apps/**/*.stories.mdx",
     "../apps/**/*.stories.@(js|jsx|ts|tsx)",
@@ -43,7 +44,7 @@ module.exports = {
         path.resolve(__dirname, "../apps/market/pages/"),
         path.resolve(__dirname, "../apps/market/"),
         path.resolve(__dirname, "../packages/ui/components/"),
-        path.resolve(__dirname, "../packages/ui/components/"),
+        path.resolve(__dirname, "../packages/ui/components/blocks"),
       ],
     };
 
@@ -59,3 +60,5 @@ module.exports = {
     return config;
   },
 };
+
+module.exports = config;

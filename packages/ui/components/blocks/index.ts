@@ -46,3 +46,5 @@ export { UserInfoConfirmation } from "./UserInfoConfirmation";
 export { TotalCost } from "./TotalCost";
 export { CalanderPage } from "./CalanderPage";
 export { OrderConfirmationProductsTable } from "./OrderConfirmationProductsTable";
+export { Countdown } from "./Countdown";
+export { VideoPopup } from "./VideoPopup";

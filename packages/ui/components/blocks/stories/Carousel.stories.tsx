@@ -83,7 +83,7 @@ const Templete: ComponentStory<typeof Carousel> = (args) => (
 
 export const Default = Templete.bind({});
 Default.args = {
-  components: images.map((img, i) => {
+  children: images.map((img, i) => {
     return {
       title: "test",
       Component: <img src={img.itemSrc} />,
@@ -99,7 +99,7 @@ Default.decorators = [
 ];
 export const WithMoreViews = Templete.bind({});
 WithMoreViews.args = {
-  components: images.map((img, i) => {
+  children: images.map((img, i) => {
     return {
       Component: <img src={img.itemSrc} />,
     };
@@ -115,7 +115,7 @@ WithMoreViews.decorators = [
 ];
 export const WithoutControls = Templete.bind({});
 WithoutControls.args = {
-  components: images.map((img, i) => {
+  children: images.map((img, i) => {
     return {
       Component: <img src={img.itemSrc} />,
     };
@@ -136,7 +136,7 @@ WithoutControls.decorators = [
 
 export const AutoMoving = Templete.bind({});
 AutoMoving.args = {
-  components: images.map((img, i) => {
+  children: images.map((img, i) => {
     return {
       Component: <img src={img.itemSrc} />,
     };
@@ -156,7 +156,7 @@ AutoMoving.decorators = [
 
 export const WithVideo = Templete.bind({});
 WithVideo.args = {
-  components: ImagesVideos.map(({ itemSrc, title, type: itemType }, i) => {
+  children: ImagesVideos.map(({ itemSrc, title, type: itemType }, i) => {
     return {
       Component:
         itemType == "image" ? (

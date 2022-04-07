@@ -89,7 +89,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                   name: country.name,
                   value: country.isoCode,
                   comp: (
-                    <Prefix prefix={<FlagIcon code={country.isoCode} />}>
+                    <Prefix Prefix={<FlagIcon code={country.isoCode} />}>
                       {country.name}
                     </Prefix>
                   ),
