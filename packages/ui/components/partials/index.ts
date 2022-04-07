@@ -26,4 +26,5 @@ export { Text } from "./Text";
 export { Grid } from "./Grid";
 export { Releative } from "./Releative";
 export { Absolute } from "./Absolute";
+export { TableDivider } from "./TableDivider";
 export * from "./icons";

@@ -14,6 +14,9 @@ const selectors = {
   mothedName: "[data-testId='ShippingMothedName']",
   mothedDescription: "[data-testId='ShippingMothedDescription']",
 };
+const props = {
+  mothedId: "data-testMothedId",
+};
 
 describe("ShippingMotheds component render tests", () => {
   let wrapper: ShallowWrapper;
@@ -80,11 +83,21 @@ describe("ShippingMotheds component functionallty tests", () => {
   let wrapperMotheds: ReactWrapper;
   let wrapperWithDataMotheds: ReactWrapper;
   let mothedsContainer: ReactWrapper;
+  let onSelectionMock: jest.Mock;
 
   beforeEach(() => {
-    wrapperWithData = mount(<ShippingMotheds motheds={shippingMotheds} />);
-    wrapperMotheds = wrapperWithData.find(selectors.mothed);
-    mothedsContainer = wrapperWithData.find(selectors.mothedsContainer);
+    onSelectionMock = jest.fn();
+    wrapperWithData = mount(
+      <ShippingMotheds
+        motheds={shippingMotheds}
+        onSelection={onSelectionMock}
+      />
+    );
+    wrapperMotheds = getMountedComponent(wrapperWithData, selectors.mothed);
+    mothedsContainer = getMountedComponent(
+      wrapperWithData,
+      selectors.mothedsContainer
+    );
   });
 
   afterEach(() => {
@@ -99,7 +112,10 @@ describe("ShippingMotheds component functionallty tests", () => {
       });
       mothed.update();
       wrapperWithData.update();
-      const updatedMotheds = wrapperWithData.find(selectors.mothed);
+      const updatedMotheds = getMountedComponent(
+        wrapperWithData,
+        selectors.mothed
+      );
       const inputs = updatedMotheds.map((mothed) =>
         getMountedComponent(mothed, selectors.mothedInput, 2)
       );
@@ -109,6 +125,18 @@ describe("ShippingMotheds component functionallty tests", () => {
         (input) => input.prop("checked") === false
       );
       expect(filtered.length).toBe(wrapperMotheds.length - 1);
+    });
+  });
+  it("should call onSelection callback with the right mothed Id on mothed click", () => {
+    expect(wrapperMotheds.length).toBe(shippingMotheds.length);
+    wrapperMotheds.forEach((mothed, i) => {
+      act(() => {
+        mothed.simulate("click");
+      });
+      mothed.update();
+      wrapperWithData.update();
+      const mothedId = mothed.prop(props.mothedId);
+      expect(onSelectionMock).toBeCalledWith(mothedId);
     });
   });
 });

@@ -89,7 +89,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                   name: country.name,
                   value: country.isoCode,
                   comp: (
-                    <Prefix prefix={<FlagIcon code={country.isoCode} />}>
+                    <Prefix Prefix={<FlagIcon code={country.isoCode} />}>
                       {country.name}
                     </Prefix>
                   ),
@@ -279,7 +279,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                 )}
               />
             </FlexStack>
-            <FlexStack justify="end" fullWidth>
+            <FlexStack horizontalSpacingInRem={1} justify="end" fullWidth>
               <Button
                 id="AddAddressButton"
                 onClick={handleSave}

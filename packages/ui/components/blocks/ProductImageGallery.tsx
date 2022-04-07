@@ -4,7 +4,7 @@ import { t } from "i18next";
 import { useMediaQuery } from "react-responsive";
 import { Spacer } from "../partials";
 import { ProductGalleryItem } from "../../views/market/ProductView";
-import { getScreenWidth } from "../../Hooks";
+import { useScreenWidth } from "../../Hooks";
 
 export interface ProductImageGalleryProps {
   images?: ProductGalleryItem[];
@@ -15,7 +15,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
   images = [],
   cashback,
 }) => {
-  const { min: small } = getScreenWidth({ minWidth: 1280 });
+  const { min: small } = useScreenWidth({ minWidth: 1280 });
   console.log("small", small);
   const [currentComponent, setCurrentComponent] = React.useState<number>();
   return (
@@ -60,7 +60,8 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
           <Carousel
             setCurrentComponentNum={currentComponent}
             getCurrentComponent={(component) => setCurrentComponent(component)}
-            components={images.map(({ original, thumbnail, alt, type }, i) => {
+          >
+            {images.map(({ original, thumbnail, alt, type }, i) => {
               if (type === "image") {
                 return {
                   Component: (
@@ -81,7 +82,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
                 };
               }
             })}
-          />
+          </Carousel>
         </div>
       </div>
     </>

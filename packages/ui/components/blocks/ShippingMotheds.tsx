@@ -1,3 +1,4 @@
+import { Table, Tbody, Td, Tr } from "@chakra-ui/react";
 import { t } from "i18next";
 import React from "react";
 import { ShippingMothed } from "types/market/Checkout";
@@ -25,25 +26,25 @@ export const ShippingMotheds: React.FC<ShippingMothedsProps> = ({
             <span id="ShippingMothedTitle" className="px-2 text-3xl font-bold">
               {t("shipping_mothed", "Shipping Mothed")}
             </span>
-            <table className="w-full">
-              <tbody id="ShippingMothedsContainer" className="w-1/4 text-2xl">
+            <Table className="w-full">
+              <Tbody id="ShippingMothedsContainer" className="w-1/4 text-2xl">
                 {motheds.map((mothed, i) => (
-                  <tr
+                  <Tr
                     key={mothed.id}
                     data-testMothedId={mothed.id}
                     data-testId="ShippingMothed"
-                    className="cursor-pointer"
+                    className="cursor-pointer py-4"
                     onClick={() => setShippingMothedId(mothed.id)}
                   >
-                    <td className="px-2 align-top">
+                    <Td paddingX={"0.5rem"} className="px-2 align-top">
                       <span
                         data-testId="ShippingMothedCost"
                         className="font-bold"
                       >
                         {mothed.cost > 0 ? `$${mothed.cost}` : "FREE"}
                       </span>
-                    </td>
-                    <td className="flex w-[45rem] flex-col gap-4 px-4 font-semibold">
+                    </Td>
+                    <Td className="flex w-[45rem] flex-col gap-4 px-4 font-semibold">
                       <div
                         data-testId="ShippingMothedName"
                         className="whitespace-nowrap"
@@ -59,8 +60,8 @@ export const ShippingMotheds: React.FC<ShippingMothedsProps> = ({
                           {mothed.description}
                         </div>
                       )}
-                    </td>
-                    <td className="">
+                    </Td>
+                    <Td className="">
                       <FilterInput
                         data-testId="ShippingMothedInput"
                         className="scale-150 text-black ring-0 focus:ring-0"
@@ -70,11 +71,11 @@ export const ShippingMotheds: React.FC<ShippingMothedsProps> = ({
                         variant="radio"
                         name="shippingMothed"
                       />
-                    </td>
-                  </tr>
+                    </Td>
+                  </Tr>
                 ))}
-              </tbody>
-            </table>
+              </Tbody>
+            </Table>
           </div>
         </Padding>
       </BoxShadow>

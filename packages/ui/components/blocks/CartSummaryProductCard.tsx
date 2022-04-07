@@ -25,7 +25,6 @@ import {
   Releative,
   Rounded,
   SelectDropdown,
-  Spacer,
   Text,
 } from "../partials";
 
@@ -84,11 +83,12 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
               {/* shop info */}
               <Clickable onClick={handleProfileClick}>
                 <Prefix
-                  prefix={
+                  Prefix={
                     profile.imageUrl ? (
                       <Rounded radius="sm">
                         <BoxShadow>
                           <Image
+                            id="ProductImage"
                             height={{ value: 2 }}
                             width={{ value: 2 }}
                             src={profile.imageUrl}
@@ -98,7 +98,7 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                     ) : null
                   }
                 >
-                  {profile.name ? profile.name : null}
+                  {profile.name}
                 </Prefix>
               </Clickable>
               <Clickable onClick={handleContactClick}>
@@ -112,7 +112,6 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
           fullWidth
           direction={min ? "vertical" : "horizontal"}
           verticalSpacingInRem={1}
-          // horizontalSpacingInRem={min ? 1 : 2}
           justify="between"
         >
           <FlexStack
@@ -167,16 +166,20 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                 verticalSpacingInRem={minimal ? 0 : 0.5}
                 direction="vertical"
               >
-                <BoldText>{product.name}</BoldText>
-                <Text maxLines={minimal ? 1 : 2}>{product.description}</Text>
+                <span id="ProductName" className="font-bold">
+                  {product.name}
+                </span>
+                <Text id="ProductDesc" maxLines={minimal ? 1 : 2}>
+                  {product.description}
+                </Text>
                 <div>
                   {product.color && (
-                    <Text>
+                    <Text id="ProductColor">
                       {t("color", "Color")}: {product.color}
                     </Text>
                   )}
                   {product.size && (
-                    <Text>
+                    <Text id="ProductSize">
                       {t("size", "Size")}: {product.size}
                     </Text>
                   )}
@@ -194,12 +197,12 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                           direction="vertical"
                           horizontalSpacingInRem={0.5}
                         >
-                          <Prefix prefix={<IoCalendar />}>
+                          <Prefix Prefix={<IoCalendar />}>
                             {getDate(product.date)}
                           </Prefix>
 
                           {product.eventDuration && (
-                            <Prefix prefix={<IoMdClock />}>
+                            <Prefix id="" Prefix={<IoMdClock />}>
                               {getTime(product.date, product.eventDuration)}
                             </Prefix>
                           )}
@@ -211,13 +214,16 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                           horizontalSpacingInRem={0.5}
                         >
                           {product.eventAdresses && (
-                            <Prefix prefix={<IoHome />}>
+                            <Prefix id="ProductAddress" Prefix={<IoHome />}>
                               {product.eventAdresses}
                             </Prefix>
                           )}
                           {product.location && (
                             <Clickable onClick={handleLocationClick}>
-                              <Prefix prefix={<IoLocation />}>
+                              <Prefix
+                                id="ProductLocation"
+                                Prefix={<IoLocation />}
+                              >
                                 {product.location}
                               </Prefix>
                             </Clickable>
@@ -235,13 +241,19 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                     fitWidth
                     horizontalSpacingInRem={1}
                   >
-                    <Clickable onClick={handleItemDeletion}>
-                      <Prefix prefix={<BsTrash />}>
+                    <Clickable
+                      id="RemoveProductButton"
+                      onClick={handleItemDeletion}
+                    >
+                      <Prefix Prefix={<BsTrash />}>
                         {t("remove", "Remove")}
                       </Prefix>
                     </Clickable>
-                    <Clickable onClick={handleMoveToWishList}>
-                      <Prefix prefix={<IoHeartOutline />}>
+                    <Clickable
+                      id="MoveToWishListButton"
+                      onClick={handleMoveToWishList}
+                    >
+                      <Prefix Prefix={<IoHeartOutline />}>
                         {t("move_to_wishlist", "Move to wish list")}
                       </Prefix>
                     </Clickable>
@@ -260,6 +272,7 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
             {!minimal && (
               <div className="w-28 rounded-md">
                 <SelectDropdown
+                  id="ProductQty"
                   onSelection={(value) =>
                     handleItemQtyChange(Number(value), product.id)
                   }
@@ -275,18 +288,23 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
             <FlexStack alignItems={min ? "start" : "end"} direction="vertical">
               <FlexStack horizontalSpacingInRem={0.5}>
                 <BoldText>
-                  <Text lineThrough={product.oldPrice ? true : false}>
+                  <Text
+                    id="ProductOldPrice"
+                    lineThrough={product.oldPrice ? true : false}
+                  >
                     ${product.oldPrice ? product.oldPrice : product.price}
                   </Text>
                 </BoldText>
                 {product.oldPrice && (
                   <BoldText>
-                    <Text color="#ff0000">${product.price}</Text>
+                    <Text id="ProductPrice" color="#ff0000">
+                      ${product.price}
+                    </Text>
                   </BoldText>
                 )}
               </FlexStack>
               {product.discount && (
-                <Text noWrap color="#ff0000">
+                <Text id="ProductDiscount" noWrap color="#ff0000">
                   {t("you_save", "You Save")}{" "}
                   {product.discount.unit === "$" && product.discount.unit}
                   {product.discount.value}
@@ -300,14 +318,17 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                 alignItems="end"
                 verticalSpacingInRem={0.25}
               >
-                <Text>
+                <Text id="ProductQty">
                   {product.qty} {t("units", "Units")}
                 </Text>
                 {product.cashback && (
                   <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
                     <div className="bg-red-500 bg-opacity-70 text-xs">
                       <Padding X={{ value: 0.5 }}>
-                        <Text color={colorPalette.whiteText}>
+                        <Text
+                          id="ProductCashBack"
+                          color={colorPalette.whiteText}
+                        >
                           {product.cashback.unit === "$" && "$"}
                           {product.cashback.value}
                           {product.cashback.unit === "%" && "%"}
@@ -320,7 +341,10 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                 {product.type === "service" && (
                   <div className="w-fit bg-[#57bf9c] bg-opacity-70 text-xs">
                     <Padding X={{ value: 0.5 }}>
-                      <Text color={colorPalette.whiteText}>
+                      <Text
+                        id="ProductBookingIndicator"
+                        color={colorPalette.whiteText}
+                      >
                         {t("booking", "Booking")}
                       </Text>
                     </Padding>

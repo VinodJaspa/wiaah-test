@@ -1,9 +1,13 @@
-import React from "react";
+import React, { DetailedHTMLProps, HTMLAttributes } from "react";
 import { Size } from "types/sharedTypes/css/size";
 import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
 import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
 
-export interface TextProps {
+export interface TextProps
+  extends DetailedHTMLProps<
+    HTMLAttributes<HTMLParagraphElement>,
+    HTMLParagraphElement
+  > {
   maxLines?: number;
   color?: string;
   size?: Size;
@@ -20,6 +24,7 @@ export const Text: React.FC<TextProps> = ({
   lineThrough,
   customSize,
   noWrap,
+  ...props
 }) => {
   const styles: React.CSSProperties = {
     color,
@@ -39,6 +44,7 @@ export const Text: React.FC<TextProps> = ({
 
   return (
     <p
+      {...props}
       className={`${size ? `text-${size}` : ""} ${
         lineThrough ? "line-through" : ""
       }`}

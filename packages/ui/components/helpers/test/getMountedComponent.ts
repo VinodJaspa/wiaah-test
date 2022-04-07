@@ -5,6 +5,8 @@ export const getMountedComponent = (
   uniqeSelector: string,
   depth?: number
 ): ReactWrapper => {
+  const element = wrapper.find(uniqeSelector);
+  if (element.length <= 1) return element;
   if (depth) {
     let child: ReactWrapper | undefined = undefined;
     for (let i = 0; i < depth; i++) {

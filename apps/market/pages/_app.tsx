@@ -8,6 +8,9 @@ import { Language } from "ui/languages/enums/Language";
 import { useRouter } from "next/router";
 import { RecoilRoot } from "recoil";
 import { ChakraProvider } from "@chakra-ui/react";
+import { CoomingSoon } from "../components/ComingSoon";
+
+const coomingSoon = true;
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -38,7 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ChakraProvider>
         <CookiesProvider>
           <RecoilRoot>
-            <Component {...pageProps} />
+            {coomingSoon ? <CoomingSoon /> : <Component {...pageProps} />}
           </RecoilRoot>
         </CookiesProvider>
       </ChakraProvider>
