@@ -1,3 +1,4 @@
+import { t } from "i18next";
 import React from "react";
 
 export interface useDateProps {
@@ -5,11 +6,17 @@ export interface useDateProps {
   to: Date;
 }
 
+export interface SinceReturn {
+  value: number;
+  timeUnit: string;
+}
+
 export interface useDateReturnType {
   days: number;
   hours: number;
   minutes: number;
   seconds: number;
+  getSince: () => SinceReturn;
 }
 
 export const useDateDiff = ({ from, to }: useDateProps): useDateReturnType => {
@@ -28,10 +35,59 @@ export const useDateDiff = ({ from, to }: useDateProps): useDateReturnType => {
   const minutes = Math.floor((distance % hour) / minute);
   const seconds = Math.floor((distance % minute) / second);
 
+  const years = days / 365;
+  const months = days / 30;
+  const weeks = days / 7;
+
+  function getSince(): SinceReturn {
+    if (seconds < 0)
+      return {
+        timeUnit: t("seconds", "seconds"),
+        value: 0,
+      };
+    if (days > 365) {
+      return {
+        timeUnit: t("years", "years"),
+        value: Math.floor(years),
+      };
+    } else if (days > 30) {
+      return {
+        timeUnit: t("months", "months"),
+        value: Math.floor(months),
+      };
+    } else if (days > 7) {
+      return {
+        timeUnit: t("weeks", "weeks"),
+        value: Math.floor(weeks),
+      };
+    } else if (days > 1) {
+      return {
+        timeUnit: t("days", "days"),
+        value: Math.floor(days),
+      };
+    } else if (hours > 1) {
+      return {
+        timeUnit: t("hours", "hours"),
+        value: Math.floor(hours),
+      };
+    } else if (minutes > 1) {
+      return {
+        timeUnit: t("minutes", "minutes"),
+        value: Math.floor(minutes),
+      };
+    } else {
+      return {
+        timeUnit: t("seconds", "seconds"),
+        value: Math.floor(seconds),
+      };
+    }
+  }
+
   return {
     days,
     hours,
     minutes,
     seconds,
+    getSince,
   };
 };

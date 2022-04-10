@@ -19,3 +19,9 @@ export {
   CheckoutProductsState,
   CheckoutProductsTotalPriceState,
 } from "./Checkout";
+export {
+  SocialProfileInfoState,
+  SocialNewsfeedPosts,
+  SocialNewsfeedOtherPosts,
+  SocialNewsfeedPost,
+} from "./Social";

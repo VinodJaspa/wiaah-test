@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { AddressCard } from "..";
+import { AddressCard } from "../AddressCard";
 
 export default {
   title: "UI/blocks/AddressCard",

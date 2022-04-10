@@ -8,7 +8,25 @@
 * {
   scroll-behavior: smooth;
 }
+.thinScroll::-webkit-scrollbar {
+  width: 5px;
+  border-radius: 2rem;
+}
 
+/* Track */
+.thinScroll::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+/* Handle */
+.thinScroll::-webkit-scrollbar-thumb {
+  background: #999999;
+}
+
+/* Handle on hover */
+.thinScroll::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
 .no-scroll::-webkit-scrollbar {
   display: none;
   width: 0%;

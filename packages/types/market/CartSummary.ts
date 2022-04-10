@@ -28,12 +28,14 @@ export interface CartSummaryItem {
     unit: DiscountUnit;
   };
   oldPrice?: number;
-  cashback?: {
-    value: number;
-    unit: DiscountUnit;
-  };
+  cashback?: CashBack;
   description?: string;
 }
+
+export type CashBack = {
+  value: number;
+  unit: DiscountUnit;
+};
 
 export type DiscountUnit = "%" | "$";
 // export interface ProductSize {
