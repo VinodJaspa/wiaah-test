@@ -1,5 +1,3 @@
-import { Product } from "./product";
-import { ProductFilter } from "./productFilter";
-import { ShopProductFilter } from "./ShopProductFilter";
-
-export { Product, ProductFilter, ShopProductFilter };
+export { Product } from "./product";
+export { ProductFilter } from "./productFilter";
+export { ShopProductFilter } from "./ShopProductFilter";

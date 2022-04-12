@@ -9,8 +9,9 @@ import { useRouter } from "next/router";
 import { RecoilRoot } from "recoil";
 import { ChakraProvider } from "@chakra-ui/react";
 import { CoomingSoon } from "../components/ComingSoon";
+import theme from "ui/themes/chakra_ui/theme";
 
-const coomingSoon = true;
+const coomingSoon = false;
 
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -38,7 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [locale]);
   return (
     <>
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <CookiesProvider>
           <RecoilRoot>
             {coomingSoon ? <CoomingSoon /> : <Component {...pageProps} />}

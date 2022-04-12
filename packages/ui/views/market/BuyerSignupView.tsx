@@ -2,7 +2,8 @@ import { IoMdMail, IoMdKey, IoMdPerson } from "react-icons/io";
 import Link from "next/link";
 import { t } from "i18next";
 import React, { FC } from "react";
-import { Button, Spacer, Input } from "../../components/index";
+import { Spacer, Input } from "../../components/index";
+import { Button } from "@chakra-ui/react";
 
 export interface BuyerSignupInputType {
   username: string;
@@ -39,9 +40,9 @@ export const BuyerSignupView: FC<{}> = () => {
         {t("create_an_account", "create an account")}
       </h2>
       <Spacer spaceInRem={2} />
-      <form onSubmit={handleSubmit} action="">
+      <form className="flex flex-col" onSubmit={handleSubmit} action="">
         <Input
-          setId="Username"
+          id="Username"
           placeholder="Username"
           name="username"
           value={formInput.username}
@@ -55,7 +56,7 @@ export const BuyerSignupView: FC<{}> = () => {
         />
         <Spacer />
         <Input
-          setId="Email"
+          id="Email"
           name="email"
           placeholder="Email"
           value={formInput.email}
@@ -69,7 +70,7 @@ export const BuyerSignupView: FC<{}> = () => {
         />
         <Spacer />
         <Input
-          setId="Password"
+          id="Password"
           name="password"
           placeholder="Password"
           value={formInput.password}
@@ -83,7 +84,7 @@ export const BuyerSignupView: FC<{}> = () => {
         />
         <Spacer />
         <Input
-          setId="ConfirmPassword"
+          id="ConfirmPassword"
           name="confirm_password"
           placeholder="ConfirmPassword"
           value={formInput.confirm_password}
@@ -108,7 +109,15 @@ export const BuyerSignupView: FC<{}> = () => {
           </div>
         </div>
         <Spacer />
-        <Button type="submit" text="SIGN UP" />
+        <Button
+          colorScheme={"primary"}
+          bgColor="primary.main"
+          _focus={{ ring: "0px" }}
+          textTransform={"uppercase"}
+          type="submit"
+        >
+          {t("signup", "sign up")}
+        </Button>
       </form>
     </section>
   );

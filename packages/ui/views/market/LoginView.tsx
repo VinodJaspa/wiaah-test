@@ -2,7 +2,8 @@ import React, { FC, useState } from "react";
 import Link from "next/link";
 import { IoMdMail, IoMdKey } from "react-icons/io";
 import { t } from "i18next";
-import { Button, Spacer, DividerWidthText, Input } from "../../components";
+import { Button } from "@chakra-ui/react";
+import { Spacer, DividerWidthText, Input } from "../../components";
 import { LoginInputsType } from "../../../types/market/authenticating/loginInput.interface";
 import { HandleLoginRequest } from "../../../../apps/market/ApiCalls/Authenticating/Login";
 import { LoginType } from "../../../../apps/market/lib/LoignTypes";
@@ -35,9 +36,9 @@ export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
         {t("Login_to_Wiaah", "Login to Wiaah account")}
       </h2>
       <Spacer spaceInRem={2} />
-      <form onSubmit={handleSubmit}>
+      <form className=" flex flex-col" onSubmit={handleSubmit}>
         <Input
-          setId="Email"
+          id="Email"
           name="email"
           placeholder="Email"
           value={formInput.email}
@@ -46,7 +47,7 @@ export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
         />
         <Spacer />
         <Input
-          setId="Password"
+          id="Password"
           name="password"
           placeholder="Password"
           onChange={(e) => handleInputChange(e)}
@@ -71,18 +72,19 @@ export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
           </Link>
         </div>
         <Spacer />
-        <Button text={t("log_in", "log in")} />
+        <Button type="submit">{t("log_in", "log in")}</Button>
       </form>
       <Spacer />
       <DividerWidthText text={t("new_to_wiaah?", "new to Wiaah ?")} />
-      <Button
-        onClick={() => setAuthView("buyer-signup")}
-        id="CreateNewAccountBtn"
-        outlined={true}
-        type="submit"
-        hexTextColor={"#000"}
-        text={t("create_your_wiaah_account", "create your Wiaah Account now")}
-      />
+      <div className="align flex w-full flex-col">
+        <Button
+          onClick={() => setAuthView("buyer-signup")}
+          id="CreateNewAccountBtn"
+          variant={"outline"}
+        >
+          {t("create_your_wiaah_account", "create your Wiaah Account now")}
+        </Button>
+      </div>
     </section>
   );
 };
