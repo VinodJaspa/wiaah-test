@@ -57,7 +57,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
   });
 
   const since = getSince();
-
+  console.log("show comments", showComments);
   function handleCopyLink() {
     navigator.clipboard.writeText(affiliationLink);
   }
@@ -67,6 +67,8 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
       color="white"
       gap="1rem"
       rounded={"lg"}
+      boxShadow={"main"}
+      w="100%"
       direction={"column"}
       bg="primary.main"
     >
@@ -77,7 +79,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
         <Flex gap="0.5rem" direction={"column"}>
           <HStack w="100%" justify={"space-between"}>
             <HStack>
-              <Avatar src={user.thumbnail} name={user.name} />
+              <Avatar bgColor={"black"} src={user.thumbnail} name={user.name} />
               <Flex direction={"column"}>
                 <Text>{user.name}</Text>
                 <Text>
@@ -158,9 +160,9 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
       </Box>
       <Box color="black" bg="white" px="1rem">
         <PostInteractions comments={noOfComments} likes={noOfLikes} />
-        {showComments && (
-          <CommentsViewer maxInitailComments={4} comments={comments} />
-        )}
+        {/* {showComments && ( */}
+        <CommentsViewer maxInitailComments={4} comments={comments} />
+        {/* )} */}
       </Box>
     </Flex>
   );

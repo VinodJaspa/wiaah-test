@@ -30,7 +30,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
 
   return (
     <Flex w="100%" gap={"0.5rem"}>
-      <Avatar src={user.thumbnail} name={user.name} />
+      <Avatar bgColor="black" src={user.thumbnail} name={user.name} />
       <Flex w="100%" direction={"column"}>
         <Flex
           w="100%"

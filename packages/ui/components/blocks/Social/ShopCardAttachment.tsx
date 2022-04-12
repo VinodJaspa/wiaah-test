@@ -1,6 +1,7 @@
 import {
   Badge,
   Box,
+  Button,
   Center,
   Circle,
   Flex,
@@ -27,6 +28,7 @@ export interface ShopCardAttachmentProps {
   discount?: CashBack;
   productType: "product" | "service";
   onInteraction: (interaction: Interactions) => any;
+  showbook?: boolean;
 }
 
 export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
@@ -38,6 +40,7 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
   discount,
   alt,
   onInteraction,
+  showbook,
 }) => {
   return (
     <Box position={"relative"}>
@@ -97,10 +100,11 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
               </Text>
             </Box>
           )}
-          {productType === "service" ? (
-            <Text
+          {productType === "service" && showbook ? (
+            <Button
+              colorScheme={"white"}
               px="0.5rem"
-              bg="white"
+              bgColor="white"
               color="black"
               fontWeight={"semibold"}
               w="fit-content"
@@ -112,7 +116,7 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
               onClick={() => onInteraction("book")}
             >
               {t("book_service", "book service")}
-            </Text>
+            </Button>
           ) : null}
         </Flex>
         <Flex

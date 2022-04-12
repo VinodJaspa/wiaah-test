@@ -10,11 +10,11 @@ import {
   PostCommentPlaceholder,
   postProfilesPlaceholder,
 } from "ui/placeholder/social";
-import { SocialNewsfeedPosts, SocialProfileInfoState } from "ui/state";
+import { SocialNewsfeedPostsState, SocialProfileInfoState } from "ui/state";
 import MasterLayout from "../../../components/MasterLayout";
 import SocialView from "../../../components/Social/SocialView";
 import { products } from "ui/placeholder/products";
-import { Spacer } from "@chakra-ui/react";
+import { newsfeedPosts } from "ui/placeholder/social";
 
 interface SocialPageProps {
   profile: ProfileInfo;
@@ -58,157 +58,9 @@ const getRandomUser = () =>
 
 const ShopSocialProfile: NextPage = () => {
   const setprofile = useSetRecoilState(SocialProfileInfoState);
-  const setFeedPosts = useSetRecoilState(SocialNewsfeedPosts);
+  const setFeedPosts = useSetRecoilState(SocialNewsfeedPostsState);
   const profile: ProfileInfo = SocialProfileInfo;
-  const newsfeedPosts: PostCardInfo[] = [
-    {
-      profileInfo: PostCardPlaceHolder.profileInfo,
-      postInfo: {
-        ...PostCardPlaceHolder.postInfo,
-        attachment: {
-          src: "/verticalImage.jpg",
-          type: "image",
-        },
-        content: "",
-        comments: [
-          {
-            ...PostCommentPlaceholder,
-            attachment: null,
-          },
-        ],
-      },
-    },
-    {
-      profileInfo: PostCardPlaceHolder.profileInfo,
-      postInfo: {
-        ...PostCardPlaceHolder.postInfo,
-        attachment: {
-          src: "/verticalVideo.mp4",
-          type: "video",
-        },
-        comments: [],
-      },
-    },
-    {
-      profileInfo: PostCardPlaceHolder.profileInfo,
-      postInfo: {
-        ...PostCardPlaceHolder.postInfo,
-        attachment: {
-          src: "/video.mp4",
-          type: "video",
-        },
-        content: "test content",
-        comments: [
-          {
-            ...PostCommentPlaceholder,
-            user: getRandomUser(),
-            content: "nice video",
-            attachment: {
-              src: "/shop.jpeg",
-              type: "image",
-            },
-          },
-          {
-            ...PostCommentPlaceholder,
-            user: getRandomUser(),
-            content: "nice video",
-            attachment: null,
-          },
-          {
-            ...PostCommentPlaceholder,
-            user: getRandomUser(),
-            content: "nice video",
-            attachment: null,
-          },
-          {
-            ...PostCommentPlaceholder,
-            user: getRandomUser(),
-            content: "nice video",
-            attachment: null,
-          },
 
-          {
-            ...PostCommentPlaceholder,
-            user: getRandomUser(),
-            content: "nice video",
-            attachment: null,
-          },
-        ],
-      },
-    },
-    {
-      profileInfo: PostCardPlaceHolder.profileInfo,
-      postInfo: {
-        ...PostCardPlaceHolder.postInfo,
-        attachment: {
-          src: images[Math.floor(Math.random() * images.length)],
-          type: "image",
-        },
-        tags: [],
-        comments: [],
-      },
-    },
-    {
-      profileInfo: PostCardPlaceHolder.profileInfo,
-      postInfo: {
-        ...PostCardPlaceHolder.postInfo,
-        attachment: {
-          src: images[Math.floor(Math.random() * images.length)],
-          type: "image",
-        },
-        content: "",
-        comments: [],
-      },
-    },
-    {
-      profileInfo: PostCardPlaceHolder.profileInfo,
-      postInfo: {
-        ...PostCardPlaceHolder.postInfo,
-        attachment: {
-          src: images[Math.floor(Math.random() * images.length)],
-          type: "image",
-        },
-        content: "",
-        comments: [],
-      },
-    },
-    {
-      profileInfo: PostCardPlaceHolder.profileInfo,
-      postInfo: {
-        ...PostCardPlaceHolder.postInfo,
-        attachment: {
-          src: images[Math.floor(Math.random() * images.length)],
-          type: "image",
-        },
-        content: "",
-        comments: [],
-      },
-    },
-    {
-      profileInfo: PostCardPlaceHolder.profileInfo,
-      postInfo: {
-        ...PostCardPlaceHolder.postInfo,
-        attachment: {
-          src: images[Math.floor(Math.random() * images.length)],
-          type: "image",
-        },
-        content: "",
-        comments: [],
-      },
-    },
-    {
-      profileInfo: PostCardPlaceHolder.profileInfo,
-      postInfo: {
-        ...PostCardPlaceHolder.postInfo,
-        attachment: {
-          src: images[Math.floor(Math.random() * images.length)],
-          type: "image",
-        },
-        content: "",
-        comments: [],
-      },
-    },
-  ];
   setprofile(profile);
 
   setFeedPosts(newsfeedPosts);
@@ -218,7 +70,7 @@ const ShopSocialProfile: NextPage = () => {
       <Head>
         <title>Wiaah | Social</title>
       </Head>
-      <MasterLayout socialFooter socialHeader>
+      <MasterLayout social>
         <SocialView />
       </MasterLayout>
       <div className="h-8" />

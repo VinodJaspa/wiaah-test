@@ -95,3 +95,8 @@ export interface AffiliationOfferCardInfo {
   noOfComments: number;
   noOfLikes: number;
 }
+
+export interface HashTagCardInfo {
+  title: string;
+  attachment: PostAttachment;
+}

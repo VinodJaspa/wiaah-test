@@ -1,18 +1,13 @@
 import { Flex } from "@chakra-ui/react";
 import React from "react";
-import { ShopCardInfo } from "types/market/Social";
-import { PostCard } from "./PostCard";
 import { SocialShopCard } from "./SocialShopCard";
 
-export interface ShopCardsListWrapperProps {
-  items: ShopCardInfo[];
-  cols?: number;
+export interface ListWrapperProps {
+  children: React.ReactElement[];
+  cols: number;
 }
 
-export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
-  items,
-  cols = 1,
-}) => {
+export const ListWrapper: React.FC<ListWrapperProps> = ({ cols, children }) => {
   function sort<T>(items: T[], cols: number): { item: T; postion: number }[] {
     let postion = 0;
     const newItems: { item: T; postion: number }[] = [];
@@ -29,11 +24,11 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
     <Flex justify={"space-between"} gap="1rem">
       {[...Array(cols)].map((_, index) => (
         <Flex w="100%" gap="1rem" direction={"column"} key={index}>
-          {sort(items, cols).map(
+          {sort(children, cols).map(
             ({ item, postion }, i) =>
               postion == index && (
                 <Flex direction={"column"} key={i}>
-                  <SocialShopCard showbook shopCardInfo={item} showComments />
+                  {item}
                 </Flex>
               )
           )}

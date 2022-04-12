@@ -17,6 +17,7 @@ export const CommentsViewer: React.FC<CommentsViewerProps> = ({
   const commentsContainerRef = React.useRef<HTMLDivElement>(null);
   const MockCommentsContainerRef = React.useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = React.useState<boolean>(false);
+  const isShowMore = (Comments.length || 1) > maxInitailComments;
 
   function setHeight(): number {
     const maxH = MockCommentsContainerRef.current?.offsetHeight;
@@ -39,8 +40,6 @@ export const CommentsViewer: React.FC<CommentsViewerProps> = ({
     });
   }, [showMore]);
 
-  const isShowMore = (Comments.length || 1) > maxInitailComments;
-
   function handleShowMoreComments() {
     setShowMore(true);
   }
@@ -61,30 +60,24 @@ export const CommentsViewer: React.FC<CommentsViewerProps> = ({
           gap="0.5rem"
         >
           {comments.map((comment, i) => (
-            <PostCommentCard {...comment} />
+            <PostCommentCard key={i} {...comment} />
           ))}
         </Flex>
-        <Box
-          visibility={"hidden"}
-          pointerEvents="none"
-          overflow={"scroll"}
-          h="1rem"
-          position={"relative"}
+
+        <Flex
+          onLoad={handleLoaded}
+          ref={MockCommentsContainerRef}
+          position="absolute"
+          pointerEvents={"none"}
+          w="100%"
+          visibility="hidden"
+          direction={"column"}
+          gap="0.5rem"
         >
-          <Flex
-            onLoad={handleLoaded}
-            ref={MockCommentsContainerRef}
-            position="absolute"
-            pointerEvents={"none"}
-            visibility="hidden"
-            direction={"column"}
-            gap="0.5rem"
-          >
-            {comments.slice(0, maxInitailComments).map((comment, i) => (
-              <PostCommentCard {...comment} />
-            ))}
-          </Flex>
-        </Box>
+          {comments.slice(0, maxInitailComments).map((comment, i) => (
+            <PostCommentCard key={i} {...comment} />
+          ))}
+        </Flex>
       </Flex>
       {isShowMore && (
         <Box

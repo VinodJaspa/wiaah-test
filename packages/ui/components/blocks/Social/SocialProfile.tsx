@@ -37,7 +37,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
     <Flex
       // gap="0.5rem"
       align={"center"}
-      bg={"primary.main"}
+      bg={{ md: "primary.main" }}
       p="1rem"
       color={"white"}
       fontSize="1.5rem"
@@ -62,10 +62,18 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           objectFit={"contain"}
           name={shopInfo.name}
           src={shopInfo.thumbnail}
+          bgColor="black"
         ></Avatar>
         <Icon cursor={"pointer"} rotate={180} as={BiMessageAltDetail} />
       </Flex>
-      <Flex align={"center"} gap="0.5rem">
+      <Flex
+        bgColor={{ base: "primary.main", md: "transparent" }}
+        align={"center"}
+        my="0.5rem"
+        px="0.25rem"
+        rounded={"lg"}
+        gap="0.5rem"
+      >
         <Text>{shopInfo.name}</Text>
         {shopInfo.verifed && <Icon fontSize={"x-large"} as={MdVerified} />}
       </Flex>
@@ -103,6 +111,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
         ring={"0px"}
         _focus={{ ring: "0px" }}
         rounded={"md"}
+        my="0.5rem"
         borderWidth={"1px"}
         boxShadow={"lg"}
         px="2rem"
@@ -111,11 +120,19 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
       >
         {t("follow", "Follow")}
       </Button>
-      <Flex gap="0.5rem" w="100%" align={"center"} justify={"end"}>
+      <Flex
+        bg={{ base: "whiteAlpha.200", md: "transparent" }}
+        gap="0.5rem"
+        w="100%"
+        align={"center"}
+        justify={"end"}
+      >
         <Text fontSize={"lg"}>
           <FlagIcon code={shopInfo.countryCode} />
         </Text>
-        <Text fontSize={"md"}>{shopInfo.location}</Text>
+        <Text color={{ base: "black", md: "white" }} fontSize={"md"}>
+          {shopInfo.location}
+        </Text>
       </Flex>
     </Flex>
   );

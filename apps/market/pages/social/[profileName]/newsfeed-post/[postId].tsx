@@ -4,14 +4,14 @@ import React from "react";
 import { useSetRecoilState } from "recoil";
 import { PostCardInfo } from "types/market/Social";
 import { Container, Collaboration } from "ui";
-import { PostCardPlaceHolder } from "ui/placeholder/social";
+import { newsfeedPosts, PostCardPlaceHolder } from "ui/placeholder/social";
 import {
-  SocialNewsfeedPosts,
-  SocialNewsfeedPost,
-  SocialNewsfeedOtherPosts,
+  SocialNewsfeedPostsState,
+  SocialNewsfeedPostState,
+  SocialNewsfeedOtherPostsState,
 } from "ui/state";
 import MasterLayout from "../../../../components/MasterLayout";
-import { NewsFeedPostView } from "../../../../components/Social/NewsFeedPostView";
+import { PostView } from "../../../../components/Social/PostView";
 
 interface SocialPageProps {
   newsfeedPost: PostCardInfo;
@@ -21,8 +21,17 @@ interface SocialPageProps {
 export const getServerSideProps: GetServerSideProps<SocialPageProps> =
   async () => {
     // get post info
-    const newsfeedPost: PostCardInfo = PostCardPlaceHolder;
-    const otherPosts: PostCardInfo[] = [...Array(10)].map(
+    const newsfeedPost: PostCardInfo = {
+      ...newsfeedPosts[2],
+      postInfo: {
+        ...newsfeedPosts[2].postInfo,
+        attachment: {
+          src: "/shop-2.jpeg",
+          type: "image",
+        },
+      },
+    };
+    const otherPosts: PostCardInfo[] = [...Array(3)].map(
       () => PostCardPlaceHolder
     );
     return {
@@ -37,23 +46,20 @@ const NewsfeedPost: NextPage<SocialPageProps> = ({
   newsfeedPost,
   otherPosts,
 }) => {
-  const setPost = useSetRecoilState(SocialNewsfeedPost);
-  const setOtherPosts = useSetRecoilState(SocialNewsfeedOtherPosts);
+  const setPost = useSetRecoilState(SocialNewsfeedPostState);
+  const setOtherPosts = useSetRecoilState(SocialNewsfeedOtherPostsState);
 
-  console.log("post", newsfeedPost.profileInfo);
+  // console.log("post", newsfeedPost.profileInfo);
   setPost(newsfeedPost);
 
-  setOtherPosts(otherPosts);
+  setOtherPosts(newsfeedPosts);
   return (
     <>
       <Head>
         <title>Wiaah | newsfeed</title>
       </Head>
-      <MasterLayout>
-        <Container>
-          {newsfeedPost && <NewsFeedPostView />}
-          <Collaboration />
-        </Container>
+      <MasterLayout social>
+        <Container>{newsfeedPost && <PostView />}</Container>
       </MasterLayout>
     </>
   );

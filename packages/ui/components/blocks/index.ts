@@ -51,3 +51,4 @@ export { VideoPopup } from "./VideoPopup";
 export * from "./products";
 export * from "./Social";
 export { EllipsisText } from "./EllipsisText";
+export { FilterModal } from "./FilterModal";

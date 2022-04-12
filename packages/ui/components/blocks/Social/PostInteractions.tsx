@@ -43,7 +43,6 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
       <VStack cursor={"pointer"} onClick={() => handleInteraction("share")}>
         <Icon fontSize={"xx-large"} fill={"primary.main"} as={HiShare} />
         <Text fontWeight={"semibold"} textTransform={"capitalize"}>
-          {shares && shares > 0 && shares}
           {t("shares", "shares")}
         </Text>
       </VStack>

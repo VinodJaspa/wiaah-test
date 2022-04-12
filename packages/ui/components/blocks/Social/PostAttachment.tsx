@@ -4,12 +4,14 @@ import { BsPlayFill } from "react-icons/bs";
 import { PostAttachment as PostAttachmentType } from "types/market/Social";
 export interface PostAttachmentProps extends PostAttachmentType {
   alt?: string;
+  fixedSize?: boolean;
 }
 
 export const PostAttachment: React.FC<PostAttachmentProps> = ({
-  type,
+  type = "image",
   src,
   alt,
+  fixedSize,
 }) => {
   const [playing, setPlaying] = React.useState<boolean>(false);
 
@@ -22,11 +24,25 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
 
   switch (type) {
     case "image":
-      return <Image alt={alt && alt} src={src} />;
+      return (
+        <Image
+          objectFit={fixedSize ? "cover" : "initial"}
+          w="100%"
+          h="100%"
+          alt={alt && alt}
+          src={src}
+        />
+      );
 
     case "video":
       return (
-        <Box position={"relative"} w="100%" h={"auto"}>
+        <Flex
+          overflow={fixedSize ? "clip" : "auto"}
+          position={"relative"}
+          w="100%"
+          h={"100%"}
+          align={"center"}
+        >
           {!playing && (
             <Flex
               position={"absolute"}
@@ -50,14 +66,15 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
             </Flex>
           )}
           <video
+            className="object-cover"
             onPause={handlePause}
             onPlay={handlePlay}
             controls
             width={"100%"}
-            height="auto"
+            height={"100%"}
             src={src}
           />
-        </Box>
+        </Flex>
       );
   }
 };

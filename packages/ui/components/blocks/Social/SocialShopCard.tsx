@@ -10,30 +10,40 @@ import { useLoginPopup } from "../../../Hooks";
 export interface SocialShopCardProps {
   showComments?: boolean;
   shopCardInfo: ShopCardInfo;
+  showbook?: boolean;
 }
 
 export const SocialShopCard: React.FC<SocialShopCardProps> = ({
   showComments,
+  showbook,
   shopCardInfo,
 }) => {
   const { OpenLoginPopup } = useLoginPopup();
+  function handleAddToCart() {
+    OpenLoginPopup();
+  }
   return (
     <Flex
       bg="white"
       p="1rem"
-      style={{ boxShadow: "0px 3px 15px -5px gray" }}
+      boxShadow={"main"}
       rounded="lg"
       w="100%"
       direction={"column"}
     >
       <ShopCardAttachment
+        showbook={showbook}
         onInteraction={OpenLoginPopup}
         productType={shopCardInfo.type}
         cashback={shopCardInfo.cashback}
         discount={shopCardInfo.discount}
         {...shopCardInfo.attachment}
       />
-      <ShopCardDetails {...shopCardInfo} />
+      <ShopCardDetails
+        onAddToCart={handleAddToCart}
+        service={shopCardInfo.type === "service"}
+        {...shopCardInfo}
+      />
       <PostInteractions
         comments={shopCardInfo.noOfComments}
         likes={shopCardInfo.likes}

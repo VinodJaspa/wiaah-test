@@ -8,20 +8,23 @@ import {
   TabsViewer,
   ShopCardsListWrapper,
   AffiliationOffersCardListWrapper,
+  FilterModal,
 } from "ui";
 import {
   PostCommentPlaceholder,
   postProfilesPlaceholder,
   shopCardInfoPlaceholder,
+  ShopCardsInfoPlaceholder,
   socialAffiliationCardPlaceholders,
   SocialProfileInfo,
 } from "ui/placeholder/social";
 import { randomNum } from "ui/components/helpers/randomNumber";
 import { TabType } from "types/market/misc/tabs";
 import { useRecoilValue } from "recoil";
-import { SocialNewsfeedPosts, SocialProfileInfoState } from "ui/state";
+import { SocialNewsfeedPostsState, SocialProfileInfoState } from "ui/state";
 import { PostComment, ShopCardInfo } from "types/market/Social";
 import { products } from "ui/placeholder";
+import { FaChevronDown } from "react-icons/fa";
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 export const getRandomUser = () =>
   postProfilesPlaceholder[
@@ -63,110 +66,15 @@ const comments: PostComment[] = [
     attachment: null,
   },
 ];
-const stringplaceholder =
-  "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit nostrum nulla rem excepturi unde iusto voluptatum tempora accusantium ducimus laborum, repellat tempore mollitia error animi doloribus eum inventore voluptate ab.";
-const ShopCardInfoPlaceholder: ShopCardInfo[] = [
-  {
-    ...shopCardInfoPlaceholder,
-    attachment: {
-      src: "/verticalImage.jpg",
-      type: "image",
-    },
-    title: stringplaceholder.substring(0, randomNum(30)),
-    rating: randomNum(5),
-    noOfComments: randomNum(50),
-    likes: randomNum(50),
-    views: randomNum(50),
-    comments: [{ ...comments[0], attachment: null }],
-  },
-  {
-    ...shopCardInfoPlaceholder,
-    attachment: {
-      src: "/verticalVideo.mp4",
-      type: "video",
-    },
-    title: stringplaceholder.substring(0, randomNum(30)),
-    rating: randomNum(5),
-    noOfComments: randomNum(50),
-    likes: randomNum(50),
-    views: randomNum(50),
-    comments: [
-      { ...comments[0], attachment: null },
-      { ...comments[1], attachment: null },
-    ],
-  },
-  {
-    ...shopCardInfoPlaceholder,
-    attachment: {
-      src: "/video.mp4",
-      type: "video",
-    },
-    title: stringplaceholder.substring(0, randomNum(30)),
-    rating: randomNum(5),
-    noOfComments: 1600,
-    likes: 105100,
-    views: 2200000,
-    comments: comments,
-  },
-  {
-    ...shopCardInfoPlaceholder,
-    attachment: {
-      src: "/shop.jpeg",
-      type: "image",
-    },
-    title: stringplaceholder.substring(0, randomNum(30)),
-    rating: randomNum(5),
-    noOfComments: randomNum(50),
-    likes: randomNum(50),
-    views: randomNum(50),
-    comments: [],
-  },
-  {
-    ...shopCardInfoPlaceholder,
-    attachment: {
-      src: images[randomNum(images.length)],
-      type: "image",
-    },
-    title: stringplaceholder.substring(0, randomNum(30)),
-    rating: randomNum(5),
-    noOfComments: randomNum(50),
-    likes: randomNum(50),
-    views: randomNum(50),
-    comments: [],
-  },
-  {
-    ...shopCardInfoPlaceholder,
-    attachment: {
-      src: images[randomNum(images.length)],
-      type: "image",
-    },
-    title: stringplaceholder.substring(0, randomNum(30)),
-    rating: randomNum(5),
-    noOfComments: randomNum(50),
-    likes: randomNum(50),
-    views: randomNum(50),
-    comments: [],
-  },
-  {
-    ...shopCardInfoPlaceholder,
-    attachment: {
-      src: images[randomNum(images.length)],
-      type: "image",
-    },
-    title: stringplaceholder.substring(0, randomNum(30)),
-    rating: randomNum(5),
-    noOfComments: randomNum(50),
-    likes: randomNum(50),
-    views: randomNum(50),
-    comments: [],
-  },
-];
+
 export interface SocialViewProps {}
 
 const SocialView: React.FC<SocialViewProps> = () => {
   const profileInfo = useRecoilValue(SocialProfileInfoState);
-  const posts = useRecoilValue(SocialNewsfeedPosts);
+  const posts = useRecoilValue(SocialNewsfeedPostsState);
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+
+  const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
   const sellerTabs: TabType[] = [
     {
       name: t("news_feed", "news feed"),
@@ -175,13 +83,31 @@ const SocialView: React.FC<SocialViewProps> = () => {
     {
       name: t("shop", "shop"),
       component: (
-        <ShopCardsListWrapper cols={3} items={ShopCardInfoPlaceholder} />
+        <Flex gap="1rem" direction={"column"}>
+          <div className="flex justify-end">
+            <div
+              onClick={() => {
+                setFilterOpen(true);
+              }}
+              className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs md:hidden"
+            >
+              <samp>{t("Filter", "Filter")}</samp>
+              <FaChevronDown className="ml-2" />
+            </div>
+          </div>
+          <FilterModal
+            isOpen={filterOpen}
+            onClose={() => setFilterOpen(false)}
+          />
+          <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} />
+        </Flex>
       ),
     },
     {
       name: t("affiliation offers", "affiliation offers"),
       component: (
         <AffiliationOffersCardListWrapper
+          cols={cols}
           items={socialAffiliationCardPlaceholders}
         />
       ),
@@ -190,14 +116,24 @@ const SocialView: React.FC<SocialViewProps> = () => {
   const buyerTabs: TabType[] = [
     {
       name: t("news_feed", "news feed"),
-      component: <div></div>,
+      component: <PostCardsListWrapper cols={cols} posts={posts} />,
     },
   ];
   return (
     <Flex direction={"column"}>
-      <Flex maxH={"23rem"}>
+      <Flex position={{ base: "relative", md: "initial" }} maxH={"25rem"}>
         <SocialProfile shopInfo={SocialProfileInfo} />
-        <Image src="/shop.jpeg" w="100%" objectFit={"cover"} />
+        <Image
+          position={{ base: "absolute", md: "unset" }}
+          top="0px"
+          left="0px"
+          w="100%"
+          bgColor={"blackAlpha.200"}
+          zIndex={-1}
+          h={{ base: "100%", md: "unset" }}
+          src="/shop.jpeg"
+          objectFit={"cover"}
+        />
       </Flex>
       <Container>
         <TabsViewer

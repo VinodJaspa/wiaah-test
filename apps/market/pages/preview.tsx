@@ -1,6 +1,7 @@
 import React from "react";
 import { NextPage } from "next";
 import {
+  HashTagCard,
   PostCard,
   PostCommentCard,
   SocialAffiliationCard,
@@ -9,6 +10,7 @@ import {
 } from "ui";
 import { Box } from "@chakra-ui/react";
 import {
+  hashtagCardInfoPlaceholder,
   PostCommentPlaceholder,
   socialAffiliationCardPlaceholder,
 } from "ui/placeholder/social";
@@ -16,8 +18,9 @@ import {
   PostCardPlaceHolder,
   postProfilesPlaceholder,
 } from "ui/placeholder/social";
-import { ShopCardInfo } from "types/market/Social";
+import { HashTagCardInfo, ShopCardInfo } from "types/market/Social";
 import { SocialAffiliationCardProps } from "ui/components/blocks/Social/SocialAffiliationCard";
+import { t } from "i18next";
 
 const preview: NextPage = () => {
   return (
@@ -31,10 +34,11 @@ const preview: NextPage = () => {
         /> */}
         {/* <SocialShopCard showComments shopCardInfo={shopCardInfoPlaceholder} /> */}
         {/* <PostCommentCard {...PostCommentPlaceholder} /> */}
-        <SocialAffiliationCard
+        {/* <SocialAffiliationCard
           showComments
           {...socialAffiliationCardPlaceholder}
-        />
+        /> */}
+        <HashTagCard {...hashtagCardInfoPlaceholder} />
       </Box>
     </section>
   );

@@ -13,6 +13,8 @@ export interface ShopCardDetailsProps {
   oldPrice: number;
   views: number;
   onFollow?: () => any;
+  onAddToCart?: () => any;
+  service?: boolean;
 }
 
 export const ShopCardDetails: React.FC<ShopCardDetailsProps> = ({
@@ -23,7 +25,12 @@ export const ShopCardDetails: React.FC<ShopCardDetailsProps> = ({
   user,
   views,
   onFollow,
+  onAddToCart,
+  service,
 }) => {
+  function handleFollowClick() {
+    onFollow && onFollow();
+  }
   return (
     <Flex
       p="1rem"
@@ -34,13 +41,15 @@ export const ShopCardDetails: React.FC<ShopCardDetailsProps> = ({
     >
       <HStack justify={"space-between"} w="100%">
         <HStack color="white">
-          <Avatar src={user.thumbnail} name={user.name} />
+          <Avatar bgColor={"black"} src={user.thumbnail} name={user.name} />
           <Text>{user.name}</Text>
         </HStack>
         <Button
           _focus={{ ring: "0px" }}
           bgColor={"primary.main"}
           colorScheme={"primary"}
+          onClick={handleFollowClick}
+          // pr="0px"
           textTransform={"capitalize"}
         >
           {t("follow", "follow")}
@@ -72,14 +81,25 @@ export const ShopCardDetails: React.FC<ShopCardDetailsProps> = ({
         )}
       </Flex>
       <Rate disabled allowHalf value={rating} className="" />
-      <Text
-        color="white"
-        fontWeight={"semibold"}
-        fontSize="xl"
-        textTransform={"capitalize"}
-      >
-        {NumberShortner(views)} {t("views", "views")}
-      </Text>
+      <HStack w="100%" justify={"space-between"}>
+        <Text
+          color="white"
+          fontWeight={"semibold"}
+          fontSize="xl"
+          textTransform={"capitalize"}
+        >
+          {NumberShortner(views)} {t("views", "views")}
+        </Text>
+        <Button
+          colorScheme={"primary"}
+          bgColor="primary.main"
+          textTransform={"capitalize"}
+        >
+          {service
+            ? t("book_now", "book now")
+            : t("add_to_cart", "add to cart")}
+        </Button>
+      </HStack>
     </Flex>
   );
 };

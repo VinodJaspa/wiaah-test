@@ -12,11 +12,23 @@ import { t } from "i18next";
 
 export const SocialHeader: React.FC = () => {
   return (
-    <HStack py="0.5rem" px="4rem" bg="black" justify={"space-between"}>
+    <Flex
+      align={"center"}
+      py="0.5rem"
+      px="4rem"
+      boxShadow={"main"}
+      bg={{ base: "white", md: "black" }}
+      justify={{ base: "center", md: "space-between" }}
+    >
       <Box h="5rem">
         <Image h="100%" src="/wiaah_logo.png" />
       </Box>
-      <HStack color="white" gap="1rem">
+      <Flex
+        display={{ base: "none", md: "flex" }}
+        align={"center"}
+        color="white"
+        gap="1rem"
+      >
         <Flex gap="0.5rem" direction={"column"}>
           <Text>{t("email_or_phone", "Email or Phone")}</Text>
           <Input
@@ -53,7 +65,7 @@ export const SocialHeader: React.FC = () => {
         >
           {t("login", "login")}
         </Button>
-      </HStack>
-    </HStack>
+      </Flex>
+    </Flex>
   );
 };

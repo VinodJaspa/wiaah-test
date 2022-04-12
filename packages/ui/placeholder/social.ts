@@ -1,5 +1,7 @@
+import { t } from "i18next";
 import {
   AffiliationOfferCardInfo,
+  HashTagCardInfo,
   PostCardInfo,
   PostComment,
   PostInfo,
@@ -118,7 +120,7 @@ export const PostCardPlaceHolder: PostCardInfo = {
     createdAt: new Date(Date.UTC(2022, 3, 5)).toJSON(),
     comments: [
       { ...PostCommentPlaceholder },
-      { ...PostCommentPlaceholder, attachment: undefined },
+      { ...PostCommentPlaceholder, attachment: null },
       { ...PostCommentPlaceholder },
       { ...PostCommentPlaceholder },
       { ...PostCommentPlaceholder },
@@ -324,4 +326,285 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
   //     type: "image",
   //   },
   // },
+];
+export const newsfeedPosts: PostCardInfo[] = [
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      attachment: {
+        src: "/verticalImage.jpg",
+        type: "image",
+      },
+      content: "",
+      comments: [
+        {
+          ...PostCommentPlaceholder,
+          attachment: null,
+        },
+      ],
+    },
+  },
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      attachment: {
+        src: "/verticalVideo.mp4",
+        type: "video",
+      },
+      comments: [],
+    },
+  },
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      attachment: {
+        src: "/video.mp4",
+        type: "video",
+      },
+      content: "test content",
+      comments: [
+        {
+          ...PostCommentPlaceholder,
+          user: getRandomUser(),
+          content: "nice video",
+          attachment: {
+            src: "/shop.jpeg",
+            type: "image",
+          },
+        },
+        {
+          ...PostCommentPlaceholder,
+          user: getRandomUser(),
+          content: "nice video",
+          attachment: null,
+        },
+        {
+          ...PostCommentPlaceholder,
+          user: getRandomUser(),
+          content: "nice video",
+          attachment: null,
+        },
+        {
+          ...PostCommentPlaceholder,
+          user: getRandomUser(),
+          content: "nice video",
+          attachment: null,
+        },
+
+        {
+          ...PostCommentPlaceholder,
+          user: getRandomUser(),
+          content: "nice video",
+          attachment: null,
+        },
+      ],
+    },
+  },
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      attachment: {
+        src: images[Math.floor(Math.random() * images.length)],
+        type: "image",
+      },
+      tags: [],
+      comments: [],
+    },
+  },
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      attachment: {
+        src: images[Math.floor(Math.random() * images.length)],
+        type: "image",
+      },
+      content: "",
+      comments: [],
+    },
+  },
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      attachment: {
+        src: images[Math.floor(Math.random() * images.length)],
+        type: "image",
+      },
+      content: "",
+      comments: [],
+    },
+  },
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      attachment: {
+        src: images[Math.floor(Math.random() * images.length)],
+        type: "image",
+      },
+      content: "",
+      comments: [],
+    },
+  },
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      attachment: {
+        src: images[Math.floor(Math.random() * images.length)],
+        type: "image",
+      },
+      content: "",
+      comments: [],
+    },
+  },
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      attachment: {
+        src: images[Math.floor(Math.random() * images.length)],
+        type: "image",
+      },
+      content: "",
+      comments: [],
+    },
+  },
+];
+export const stringplaceholder =
+  "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Reprehenderit nostrum nulla rem excepturi unde iusto voluptatum tempora accusantium ducimus laborum, repellat tempore mollitia error animi doloribus eum inventore voluptate ab.";
+const getRandomType = (): "service" | "product" =>
+  randomNum(10) > 4 ? "product" : "service";
+export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
+  {
+    ...shopCardInfoPlaceholder,
+    attachment: {
+      src: "/verticalImage.jpg",
+      type: "image",
+    },
+    title: stringplaceholder.substring(0, randomNum(30)),
+    rating: randomNum(5),
+    noOfComments: randomNum(50),
+    likes: randomNum(50),
+    views: randomNum(50),
+    comments: [{ ...comments[0], attachment: null }],
+    type: getRandomType(),
+  },
+  {
+    ...shopCardInfoPlaceholder,
+    attachment: {
+      src: "/verticalVideo.mp4",
+      type: "video",
+    },
+    title: stringplaceholder.substring(0, randomNum(30)),
+    rating: randomNum(5),
+    noOfComments: randomNum(50),
+    likes: randomNum(50),
+    views: randomNum(50),
+    type: getRandomType(),
+    comments: [
+      { ...comments[0], attachment: null },
+      { ...comments[1], attachment: null },
+    ],
+  },
+  {
+    ...shopCardInfoPlaceholder,
+    attachment: {
+      src: "/video.mp4",
+      type: "video",
+    },
+    title: stringplaceholder.substring(0, randomNum(30)),
+    rating: randomNum(5),
+    noOfComments: 1600,
+    likes: 105100,
+    views: 2200000,
+    comments: comments,
+    type: getRandomType(),
+  },
+  {
+    ...shopCardInfoPlaceholder,
+    attachment: {
+      src: "/shop.jpeg",
+      type: "image",
+    },
+    title: stringplaceholder.substring(0, randomNum(30)),
+    rating: randomNum(5),
+    noOfComments: randomNum(50),
+    likes: randomNum(50),
+    views: randomNum(50),
+    type: getRandomType(),
+    comments: [],
+  },
+  {
+    ...shopCardInfoPlaceholder,
+    attachment: {
+      src: images[randomNum(images.length)],
+      type: "image",
+    },
+    title: stringplaceholder.substring(0, randomNum(30)),
+    rating: randomNum(5),
+    noOfComments: randomNum(50),
+    likes: randomNum(50),
+    views: randomNum(50),
+    type: getRandomType(),
+    comments: [],
+  },
+  {
+    ...shopCardInfoPlaceholder,
+    attachment: {
+      src: images[randomNum(images.length)],
+      type: "image",
+    },
+    title: stringplaceholder.substring(0, randomNum(30)),
+    rating: randomNum(5),
+    noOfComments: randomNum(50),
+    likes: randomNum(50),
+    views: randomNum(50),
+    type: getRandomType(),
+    comments: [],
+  },
+];
+
+export const hashtagCardInfoPlaceholder: HashTagCardInfo = {
+  attachment: {
+    src: "/video.mp4",
+    type: "video",
+  },
+  title: t("most_liked_post", "most liked post"),
+};
+
+export const hashTagCardsInfoPlaceholder: HashTagCardInfo[] = [
+  {
+    attachment: {
+      src: "/verticalImage.jpg",
+      type: "image",
+    },
+    title: t("most_liked_post", "most liked post"),
+  },
+  {
+    attachment: {
+      src: images[randomNum(images.length)],
+      type: "image",
+    },
+    title: t("most_commented_post", "most commented post"),
+  },
+  {
+    attachment: {
+      src: "/verticalVideo.mp4",
+      type: "video",
+    },
+    title: t("most_viewed_video", "most viewed video"),
+  },
+  {
+    attachment: {
+      src: "/video.mp4",
+      type: "video",
+    },
+    title: t("most_liked_video", "most liked video"),
+  },
 ];

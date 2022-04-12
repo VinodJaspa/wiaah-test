@@ -154,10 +154,13 @@ export const SocialFooter: React.FC<SocialFooterProps> = ({
     onLinkClick && onLinkClick(link);
   }
   return (
-    <Flex gap="0.5rem" align={"center"} direction={"column"}>
-      <Flex gap="2rem" justify={"center"}>
+    <Flex gap="1rem" align={"center"} direction={"column"}>
+      <Flex flexWrap={"wrap"} justify={"center"}>
         {links.map(({ label, link }, i) => (
           <Text
+            key={i}
+            mx="1rem"
+            my="0.25rem"
             cursor={"pointer"}
             _hover={{
               textDecorationColor: "primary.main",

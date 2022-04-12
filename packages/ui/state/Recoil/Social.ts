@@ -1,21 +1,51 @@
 import { atom } from "recoil";
-import { PostCardInfo, ProfileInfo } from "types/market/Social";
+import {
+  AffiliationOfferCardInfo,
+  HashTagCardInfo,
+  PostCardInfo,
+  ProfileInfo,
+  ShopCardInfo,
+} from "types/market/Social";
 
 export const SocialProfileInfoState = atom<ProfileInfo | null>({
   key: "SocialProfileInfoState",
   default: null,
 });
 
-export const SocialNewsfeedPosts = atom<PostCardInfo[]>({
-  key: "SocialNewsfeedPosts",
+export const SocialNewsfeedPostsState = atom<PostCardInfo[]>({
+  key: "SocialNewsfeedPostsState",
   default: [],
 });
-export const SocialNewsfeedPost = atom<PostCardInfo | null>({
-  key: "SocialNewsfeedPost",
+export const SocialNewsfeedPostState = atom<PostCardInfo | null>({
+  key: "SocialNewsfeedPostState",
   default: null,
 });
 
-export const SocialNewsfeedOtherPosts = atom<PostCardInfo[]>({
-  key: "SocialNewsfeedOtherPosts",
+export const SocialNewsfeedOtherPostsState = atom<PostCardInfo[]>({
+  key: "SocialNewsfeedOtherPostsState",
+  default: [],
+});
+export const SocialShopPostState = atom<ShopCardInfo | null>({
+  key: "SocialShopPostState",
+  default: null,
+});
+
+export const SocialShopOtherPostsState = atom<ShopCardInfo[]>({
+  key: "SocialShopOtherPostsState",
+  default: [],
+});
+export const SocialAffiliationOfferState =
+  atom<AffiliationOfferCardInfo | null>({
+    key: "SocialAffiliationOfferState",
+    default: null,
+  });
+
+export const SocialAffiliationOffersState = atom<AffiliationOfferCardInfo[]>({
+  key: "SocialAffiliationOffersState",
+  default: [],
+});
+
+export const SocialHashTagTopPosts = atom<HashTagCardInfo[]>({
+  key: "SocialHashTagTopPosts",
   default: [],
 });

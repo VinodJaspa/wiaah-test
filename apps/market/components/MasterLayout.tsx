@@ -146,34 +146,10 @@ const userAddresses: AddressCardDetails[] = [
 ];
 
 export interface MasterLayoutProps {
-  header?: boolean;
-  footer?: boolean;
-  authFooter?: boolean;
-  partners?: boolean;
-  copyrights?: boolean;
-  shopHeader?: boolean;
-  socialHeader?: boolean;
-  socialFooter?: boolean;
+  social?: boolean;
 }
 
-const MasterLayout: React.FC<MasterLayoutProps> = ({
-  children,
-  authFooter,
-  copyrights,
-  footer,
-  header,
-  partners,
-  socialFooter,
-  socialHeader,
-}) => {
-  const All =
-    !header &&
-    !footer &&
-    !authFooter &&
-    !partners &&
-    !copyrights &&
-    !socialFooter &&
-    !socialHeader;
+const MasterLayout: React.FC<MasterLayoutProps> = ({ children, social }) => {
   let voucher;
   const { t, i18n } = useTranslation();
   const setCheckoutAddress = useSetRecoilState(UserAddressesState);
@@ -187,12 +163,12 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
   return (
     <Root>
       <AuthPopup />
-      {(All || header) && <Header />}
-      {(All || socialHeader) && <SocialHeader />}
+      {!social && <Header />}
+      {social && <SocialHeader />}
       <main className="w-full ">{children}</main>
-      {(All || footer) && <Footer />}
-      {(All || authFooter) && <AuthFooter />}
-      {(All || partners) && (
+      {!social && <Footer />}
+      {!social && <AuthFooter />}
+      {!social && (
         <div className="container mx-auto block w-full space-y-6 py-6">
           <div className="flex w-full justify-center">
             <p className="text-2xl font-bold uppercase">
@@ -206,7 +182,7 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
           </div>
         </div>
       )}
-      {(All || copyrights) && (
+      {!social && (
         <div className="flex w-full justify-start bg-gray-800 p-6">
           <p className="text-gray-500">
             Copyrights &copy; Wiaah 2021.
@@ -214,7 +190,7 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
           </p>
         </div>
       )}
-      {(All || socialFooter) && <SocialFooter copyRightYear={2022} />}
+      {social && <SocialFooter copyRightYear={2022} />}
     </Root>
   );
 };
