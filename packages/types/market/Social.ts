@@ -1,4 +1,5 @@
 import { CashBack } from "./CartSummary";
+import { FlagIconCode } from "react-flag-kit";
 
 export interface ProfileInfo {
   id: string;
@@ -12,7 +13,7 @@ export interface ShopScoialProfileInfo extends ProfileInfo {
   publications: number;
   subscriptions: number;
   subscribers: number;
-  countryCode: string;
+  countryCode: FlagIconCode;
   location: string;
 }
 export interface SubscribersUserInfo {

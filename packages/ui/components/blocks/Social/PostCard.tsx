@@ -24,7 +24,9 @@ export const PostCard: React.FC<PostCardProps> = ({
   showComments,
 }) => {
   const { OpenLoginPopup } = useLoginPopup();
-
+  function handleOpenLogin() {
+    OpenLoginPopup;
+  }
   return (
     <Flex
       bg="white"
@@ -54,7 +56,7 @@ export const PostCard: React.FC<PostCardProps> = ({
         />
       )}
       <PostInteractions
-        onInteraction={() => OpenLoginPopup()}
+        onInteraction={handleOpenLogin}
         shares={0}
         comments={postInfo.numberOfComments}
         likes={postInfo.numberOfLikes}

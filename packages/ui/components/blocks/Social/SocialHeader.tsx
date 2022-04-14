@@ -26,6 +26,7 @@ export const SocialHeader: React.FC = () => {
       <Flex
         display={{ base: "none", md: "flex" }}
         align={"center"}
+        direction={{ base: "column", lg: "row" }}
         color="white"
         gap="1rem"
       >

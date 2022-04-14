@@ -1,0 +1,19 @@
+import React from "react";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { PostCard } from "ui";
+import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import { PostCardPlaceHolder } from "ui/placeholder";
+export default {
+  title: "UI/blocks/Social/PostCard",
+  component: PostCard,
+  decorators: [ChakraUiDecorator],
+} as ComponentMeta<typeof PostCard>;
+
+const Template: ComponentStory<typeof PostCard> = (args) => (
+  <PostCard {...args} />
+);
+
+export const Default = Template.bind({});
+Default.args = {
+  ...PostCardPlaceHolder,
+};

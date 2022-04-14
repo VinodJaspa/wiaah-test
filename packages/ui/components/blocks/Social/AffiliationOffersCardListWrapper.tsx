@@ -24,15 +24,18 @@ export const AffiliationOffersCardListWrapper: React.FC<AffiliationOffersCardLis
       return newItems;
     }
     return (
-      <Flex justify={"space-between"} gap="1rem">
+      <Flex data-testid="ColumnsWrapper" justify={"space-between"} gap="1rem">
         {[...Array(cols)].map((_, index) => (
           <Flex w="100%" gap="1rem" direction={"column"} key={index}>
             {sort(items, cols).map(
               ({ item, postion }, i) =>
                 postion == index && (
-                  <Flex direction={"column"} key={i}>
-                    <SocialAffiliationCard {...item} showComments />
-                  </Flex>
+                  <SocialAffiliationCard
+                    key={i}
+                    data-testid="AffiliationCard"
+                    {...item}
+                    showComments
+                  />
                 )
             )}
           </Flex>

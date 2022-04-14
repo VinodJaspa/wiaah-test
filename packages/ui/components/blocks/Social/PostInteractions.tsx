@@ -26,7 +26,11 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
     <Flex py="0.5rem" justify={"space-around"}>
       <VStack>
         <Icon fontSize={"xx-large"} fill={"primary.main"} as={HiHeart} />
-        <Text fontWeight={"semibold"} textTransform={"capitalize"}>
+        <Text
+          onClick={() => handleInteraction("like")}
+          fontWeight={"semibold"}
+          textTransform={"capitalize"}
+        >
           {NumberShortner(likes)} {t("likes", "likes")}
         </Text>
       </VStack>
@@ -36,7 +40,11 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
           stroke={"primary.main"}
           as={HiOutlineChat}
         />
-        <Text fontWeight={"semibold"} textTransform={"capitalize"}>
+        <Text
+          onClick={() => handleInteraction("comment")}
+          fontWeight={"semibold"}
+          textTransform={"capitalize"}
+        >
           {NumberShortner(comments)} {t("comments", "comments")}
         </Text>
       </VStack>

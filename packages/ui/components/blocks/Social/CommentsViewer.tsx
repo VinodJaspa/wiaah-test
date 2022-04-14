@@ -12,7 +12,9 @@ export const CommentsViewer: React.FC<CommentsViewerProps> = ({
   comments: Comments,
   maxInitailComments,
 }) => {
-  const [comments, setComments] = React.useState<PostComment[]>([]);
+  const [comments, setComments] = React.useState<PostComment[]>(
+    Comments.slice(0, maxInitailComments)
+  );
   const [showMore, setShowMore] = React.useState<boolean>(false);
   const commentsContainerRef = React.useRef<HTMLDivElement>(null);
   const MockCommentsContainerRef = React.useRef<HTMLDivElement>(null);
@@ -45,9 +47,12 @@ export const CommentsViewer: React.FC<CommentsViewerProps> = ({
   }
 
   function handleShowLessComments() {
-    commentsContainerRef.current?.scrollTo(0, 0);
+    if (commentsContainerRef.current && commentsContainerRef.current.scrollTo) {
+      commentsContainerRef.current.scrollTo(0, 0);
+    }
     setShowMore(false);
   }
+
   return (
     <>
       <Flex onLoad={handleLoaded} position={"relative"}>
@@ -58,9 +63,10 @@ export const CommentsViewer: React.FC<CommentsViewerProps> = ({
           className="thinScroll"
           height={containerHeight}
           gap="0.5rem"
+          data-testid="CommentsWrapper"
         >
           {comments.map((comment, i) => (
-            <PostCommentCard key={i} {...comment} />
+            <PostCommentCard data-testid="CommentCard" key={i} {...comment} />
           ))}
         </Flex>
 
@@ -90,11 +96,11 @@ export const CommentsViewer: React.FC<CommentsViewerProps> = ({
           textTransform={"capitalize"}
         >
           {showMore === false ? (
-            <Text onClick={handleShowMoreComments}>
+            <Text data-testid="ShowMoreBtn" onClick={handleShowMoreComments}>
               {t("show_more", "show more")}
             </Text>
           ) : (
-            <Text onClick={handleShowLessComments}>
+            <Text data-testid="ShowLessBtn" onClick={handleShowLessComments}>
               {t("show_less", "show less")}
             </Text>
           )}

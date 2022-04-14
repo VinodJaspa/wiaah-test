@@ -3,11 +3,11 @@ import { t } from "i18next";
 import React from "react";
 import { TabType } from "types/market/misc/tabs";
 
-export interface TabsProps {
+export interface TabsViewerProps {
   tabs: TabType[];
 }
 
-export const TabsViewer: React.FC<TabsProps> = ({ tabs }) =>
+export const TabsViewer: React.FC<TabsViewerProps> = ({ tabs }) =>
   tabs.length > 0 ? (
     <Tabs align="center">
       <TabList my="1rem">

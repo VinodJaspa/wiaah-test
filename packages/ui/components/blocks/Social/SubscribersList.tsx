@@ -13,6 +13,7 @@ import {
 import { MdClose } from "react-icons/md";
 import { SubscribersUserInfo } from "types/market/Social";
 import { t } from "i18next";
+import { SubscriberCard } from "./SubscriberCard";
 
 export interface SubscribersListProps {
   users: SubscribersUserInfo[];
@@ -56,21 +57,7 @@ export const SubscribersList: React.FC<SubscribersListProps> = ({
         direction={"column"}
       >
         {users.map((user, i) => (
-          <Flex gap="1rem" w="100%" justify={"space-between"}>
-            <Flex gap="0.5rem">
-              <Avatar name={user.name} src={user.avatar} />
-              <Text fontWeight={"semibold"}>{user.name}</Text>
-            </Flex>
-            <Button
-              rounded={"full"}
-              color={"white"}
-              _hover={{ backgroundColor: "primary.hover" }}
-              _focus={{ ring: "0" }}
-              backgroundColor={"primary.main"}
-            >
-              {t("follow", "Follow")}
-            </Button>
-          </Flex>
+          <SubscriberCard key={user.id} {...user} />
         ))}
       </VStack>
     </Flex>

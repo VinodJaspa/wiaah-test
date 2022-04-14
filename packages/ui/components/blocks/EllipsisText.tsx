@@ -33,7 +33,9 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
 
     copy.remove();
 
-    helperTextRef.current?.textContent = text;
+    if (helperTextRef.current) {
+      helperTextRef.current.textContent = text;
+    }
 
     const textHeight = helperTextRef.current?.offsetHeight;
 
