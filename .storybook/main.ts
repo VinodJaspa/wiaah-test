@@ -16,6 +16,7 @@ const config: StorybookConfig = {
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
+    "@chakra-ui/storybook-addon",
     "storybook-react-i18next",
     {
       /**
@@ -43,8 +44,8 @@ const config: StorybookConfig = {
       "@": [
         path.resolve(__dirname, "../apps/market/pages/"),
         path.resolve(__dirname, "../apps/market/"),
-        path.resolve(__dirname, "../packages/ui/components/"),
-        path.resolve(__dirname, "../packages/ui/components/blocks"),
+        path.resolve(__dirname, "../packages/ui/components/*"),
+        path.resolve(__dirname, "../packages/ui/components/blocks/*"),
       ],
     };
 

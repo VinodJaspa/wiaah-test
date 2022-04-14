@@ -59,7 +59,7 @@ export const SubscribersPopup: React.FC<SubscribersPopupProps> = ({
             </Flex>
           </ModalHeader>
           {/* <ModalCloseButton />  */}
-          <ModalBody p="0.25rem">
+          <ModalBody maxH={"40rem"} p="0.25rem">
             <SubscribersList
               onClose={onClose}
               users={SubscribersUsersPlaceholder}

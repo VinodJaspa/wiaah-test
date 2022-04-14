@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { BuyerProfileStartUpView } from "../index";
+import { BuyerProfileStartUpView } from "../BuyerProfileStartupView";
 export default {
   title: "UI/View/Market/BuyerProfileStartUpView",
   component: BuyerProfileStartUpView,

@@ -8,6 +8,7 @@ import {
   AuthPopup,
   SocialFooter,
   SocialHeader,
+  SocialAuthFooter,
 } from "ui/components";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
@@ -18,6 +19,8 @@ import {
 } from "ui/state";
 import { CartSummaryItem } from "types/market/CartSummary";
 import { AddressCardDetails } from "types/market/AddressDetails.interface";
+import { Box } from "@chakra-ui/react";
+import { useLoginPopup } from "ui";
 
 const products: CartSummaryItem[] = [
   {
@@ -160,6 +163,12 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({ children, social }) => {
     setCheckoutAddress(userAddresses);
     setVoucher(voucher);
   }, []);
+
+  const { OpenLoginPopup } = useLoginPopup();
+  function handleOpenLogin() {
+    OpenLoginPopup;
+  }
+
   return (
     <Root>
       <AuthPopup />
@@ -189,6 +198,20 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({ children, social }) => {
             {t("copyrights", "All Rights Reserved.")}
           </p>
         </div>
+      )}
+      {social && (
+        <Box
+          position={"fixed"}
+          bottom="0px"
+          w="100%"
+          zIndex={50}
+          visibility={{ sm: "hidden" }}
+        >
+          <SocialAuthFooter
+            onLoginClick={handleOpenLogin}
+            onSignupClick={handleOpenLogin}
+          />
+        </Box>
       )}
       {social && <SocialFooter copyRightYear={2022} />}
     </Root>

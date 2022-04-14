@@ -17,6 +17,8 @@ import { MdVerified } from "react-icons/md";
 import { Verified } from "ui";
 import { FlagIcon } from "react-flag-kit";
 import { SubscribersPopup } from "./SubscribersPopup";
+import { useLoginPopup } from "../../../Hooks";
+import { NumberShortner } from "../../helpers/numberShortener";
 
 export interface SocialProfileProps {
   shopInfo: ShopScoialProfileInfo;
@@ -27,6 +29,10 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
   onFollow,
   shopInfo,
 }) => {
+  const { OpenLoginPopup } = useLoginPopup();
+  function handleOpenLogin() {
+    OpenLoginPopup;
+  }
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: subscriptionsIsOpen,
@@ -55,7 +61,11 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
         onClose={subscriptionsOnClose}
       />
       <Flex w="100%" justify={"space-between"}>
-        <Icon cursor={"pointer"} as={CgMoreVertical} />
+        <Icon
+          onClick={handleOpenLogin}
+          cursor={"pointer"}
+          as={CgMoreVertical}
+        />
         <Avatar
           showBorder
           size={"2xl"}
@@ -64,7 +74,12 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           src={shopInfo.thumbnail}
           bgColor="black"
         ></Avatar>
-        <Icon cursor={"pointer"} rotate={180} as={BiMessageAltDetail} />
+        <Icon
+          onClick={handleOpenLogin}
+          cursor={"pointer"}
+          rotate={180}
+          as={BiMessageAltDetail}
+        />
       </Flex>
       <Flex
         bgColor={{ base: "primary.main", md: "transparent" }}
@@ -78,8 +93,15 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
         {shopInfo.verifed && <Icon fontSize={"x-large"} as={MdVerified} />}
       </Flex>
       <Flex lineHeight={"1.8rem"} gap="1rem">
-        <Flex direction={"column"} align={"center"} cursor={"pointer"}>
-          <Text fontWeight={"bold"}>{shopInfo.publications}</Text>
+        <Flex
+          onClick={handleOpenLogin}
+          direction={"column"}
+          align={"center"}
+          cursor={"pointer"}
+        >
+          <Text fontWeight={"bold"}>
+            {NumberShortner(shopInfo.publications)}
+          </Text>
           <Text textTransform={"capitalize"}>
             {t("publications", "publications")}
           </Text>
@@ -90,7 +112,9 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           onClick={subscriptionsOnOpen}
           cursor={"pointer"}
         >
-          <Text fontWeight={"bold"}>{shopInfo.subscriptions}</Text>
+          <Text fontWeight={"bold"}>
+            {NumberShortner(shopInfo.subscriptions)}
+          </Text>
           <Text textTransform={"capitalize"}>
             {t("subscriptions", "subscriptions")}
           </Text>
@@ -101,7 +125,9 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           onClick={onOpen}
           cursor={"pointer"}
         >
-          <Text fontWeight={"bold"}>{shopInfo.subscribers}</Text>
+          <Text fontWeight={"bold"}>
+            {NumberShortner(shopInfo.subscribers)}
+          </Text>
           <Text textTransform={"capitalize"}>
             {t("subscribers", "Subscribers")}
           </Text>
@@ -117,6 +143,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
         px="2rem"
         borderColor="black"
         colorScheme={"primary.main"}
+        onClick={handleOpenLogin}
       >
         {t("follow", "Follow")}
       </Button>

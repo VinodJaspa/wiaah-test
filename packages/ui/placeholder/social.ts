@@ -139,6 +139,10 @@ export const PostCardPlaceHolder: PostCardInfo = {
 import { products } from "ui/placeholder/products";
 import { randomNum } from "../components/helpers/randomNumber";
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
+
+export const getRandomImage = (): string =>
+  images[Math.floor(Math.random() * images.length)];
+
 export const postProfilesPlaceholder: ProfileInfo[] = [
   {
     id: "1",

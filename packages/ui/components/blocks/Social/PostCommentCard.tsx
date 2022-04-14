@@ -5,7 +5,7 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import { MdOutlineReply, MdReply } from "react-icons/md";
 import { PostComment } from "types/market/Social";
 import { PostAttachment, Verified, EllipsisText } from "ui";
-import { useDateDiff } from "ui/Hooks";
+import { useDateDiff, useLoginPopup } from "ui/Hooks";
 
 export interface PostCommentCardProps extends PostComment {
   onReply?: (message: string) => void;
@@ -27,7 +27,10 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   const since = getSince();
 
   function handleMoreCommentOptions() {}
-
+  const { OpenLoginPopup } = useLoginPopup();
+  function handleOpenLogin() {
+    OpenLoginPopup;
+  }
   return (
     <Flex w="100%" gap={"0.5rem"}>
       <Avatar bgColor="black" src={user.thumbnail} name={user.name} />
@@ -69,10 +72,16 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
         <Flex py="0.5rem" w="100%" align={"center"} justify={"space-between"}>
           {/* like,reply, and replies count */}
           <HStack>
-            <Text textTransform={"capitalize"} color="primary.main">
+            <Text
+              onClick={handleOpenLogin}
+              textTransform={"capitalize"}
+              color="primary.main"
+            >
               {t("like", "like")}
             </Text>
-            <Text textTransform={"capitalize"}>{t("reply", "reply")}</Text>
+            <Text onClick={handleOpenLogin} textTransform={"capitalize"}>
+              {t("reply", "reply")}
+            </Text>
             <Flex gap="0.2rem" h="100%" align={"end"}>
               <Icon fill="primary.main" fontSize={"lg"} as={MdOutlineReply} />
               <Text color="gray" textTransform={"capitalize"}>
