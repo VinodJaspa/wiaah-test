@@ -39,10 +39,10 @@ describe("AffiliationOffersCardListWrapper render tests", () => {
 });
 
 describe("AffiliationOffersCardListWrapper snapshot tests", () => {
-  let wrapper: ReactWrapper;
+  let wrapper: ShallowWrapper;
 
   beforeEach(() => {
-    wrapper = mount(
+    wrapper = shallow(
       <RecoilRoot>
         <AffiliationOffersCardListWrapper items={[]} />
       </RecoilRoot>
@@ -53,7 +53,7 @@ describe("AffiliationOffersCardListWrapper snapshot tests", () => {
     expect(wrapper).toMatchSnapshot();
   });
   it("should match snapshot with items", () => {
-    wrapper = mount(
+    wrapper = shallow(
       <RecoilRoot>
         <AffiliationOffersCardListWrapper
           items={socialAffiliationCardPlaceholders}
