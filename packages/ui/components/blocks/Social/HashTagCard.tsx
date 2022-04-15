@@ -28,7 +28,11 @@ export const HashTagCard: React.FC<HashTagCardProps> = ({
       align={"center"}
       direction={"column"}
     >
-      <Text textTransform={"capitalize"} fontWeight={"semibold"}>
+      <Text
+        data-testid="CardTitle"
+        textTransform={"capitalize"}
+        fontWeight={"semibold"}
+      >
         {title}
       </Text>
       <Box
@@ -39,9 +43,15 @@ export const HashTagCard: React.FC<HashTagCardProps> = ({
         w="100%"
         h="25rem"
       >
-        <PostAttachment fixedSize {...attachment} alt={title} />
+        <PostAttachment
+          data-testid="PostAttachment"
+          fixedSize
+          {...attachment}
+          alt={title}
+        />
       </Box>
       <Button
+        data-testid="ViewPostBtn"
         onClick={handleViewPostClick}
         w="100%"
         textTransform={"capitalize"}

@@ -10,9 +10,9 @@ export const HashTagPostsListWrapper: React.FC = () => {
   const topPosts = useRecoilValue(SocialHashTagTopPosts);
 
   return (
-    <ListWrapper cols={cols || 1}>
+    <ListWrapper data-testid="HashTagCardsContainer" cols={cols || 1}>
       {topPosts.map((post, i) => (
-        <HashTagCard key={i} {...post} />
+        <HashTagCard data-testid="HashTagCard" key={i} {...post} />
       ))}
     </ListWrapper>
   );

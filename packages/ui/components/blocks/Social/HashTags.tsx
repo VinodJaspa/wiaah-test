@@ -17,10 +17,11 @@ export const HashTags: React.FC<HashTagsProps> = ({
   }
 
   return (
-    <Wrap>
+    <Wrap data-testid="TagsContainer">
       {tags.map((tag, i) => (
         <WrapItem key={i}>
           <Text
+            data-testid="Tag"
             onClick={() => handleHashtagClick(tag)}
             cursor={"pointer"}
             fontWeight={"semibold"}

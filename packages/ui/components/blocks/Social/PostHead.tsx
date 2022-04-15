@@ -1,5 +1,4 @@
 import { Flex, HStack, Avatar, Icon, Text } from "@chakra-ui/react";
-import { t } from "i18next";
 import React from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { useDateDiff } from "../../../Hooks";
@@ -23,8 +22,15 @@ export const PostHead: React.FC<PostHeadProps> = ({
   return (
     <Flex w="100%" align={"center"} justify={"space-between"}>
       <HStack>
-        <Avatar bgColor={"black"} name={creatorName} src={creatorPhoto} />
-        <Text fontWeight={"bold"}>{creatorName}</Text>
+        <Avatar
+          data-testid="PostCreatorThumbnail"
+          bgColor={"black"}
+          name={creatorName}
+          src={creatorPhoto}
+        />
+        <Text data-testid="PostCreatorName" fontWeight={"bold"}>
+          {creatorName}
+        </Text>
       </HStack>
       <Flex direction={"column"} align="end">
         <Icon
@@ -33,7 +39,7 @@ export const PostHead: React.FC<PostHeadProps> = ({
           cursor={"pointer"}
           as={HiDotsHorizontal}
         />
-        <Text px="1" color={"gray"}>
+        <Text data-testid="PostCreatedSince" px="1" color={"gray"}>
           {since.value} {since.timeUnit}
         </Text>
       </Flex>

@@ -2,6 +2,7 @@ import { Box, Flex, Image } from "@chakra-ui/react";
 import React from "react";
 import { BsPlayFill } from "react-icons/bs";
 import { PostAttachment as PostAttachmentType } from "types/market/Social";
+
 export interface PostAttachmentProps extends PostAttachmentType {
   alt?: string;
   fixedSize?: boolean;
@@ -31,6 +32,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           h="100%"
           alt={alt && alt}
           src={src}
+          data-testid="PostAttachmentImage"
         />
       );
 
@@ -70,6 +72,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
             onPause={handlePause}
             onPlay={handlePlay}
             controls
+            data-testid="PostAttachmentVideo"
             width={"100%"}
             height={"100%"}
             src={src}

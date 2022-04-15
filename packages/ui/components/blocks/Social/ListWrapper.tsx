@@ -3,11 +3,14 @@ import React from "react";
 import { SocialShopCard } from "./SocialShopCard";
 
 export interface ListWrapperProps {
-  children: React.ReactElement[];
-  cols: number;
+  children?: React.ReactElement[];
+  cols?: number;
 }
 
-export const ListWrapper: React.FC<ListWrapperProps> = ({ cols, children }) => {
+export const ListWrapper: React.FC<ListWrapperProps> = ({
+  cols = 1,
+  children,
+}) => {
   function sort<T>(items: T[], cols: number): { item: T; postion: number }[] {
     let postion = 0;
     const newItems: { item: T; postion: number }[] = [];
@@ -23,11 +26,21 @@ export const ListWrapper: React.FC<ListWrapperProps> = ({ cols, children }) => {
   return (
     <Flex justify={"space-between"} gap="1rem">
       {[...Array(cols)].map((_, index) => (
-        <Flex w="100%" gap="1rem" direction={"column"} key={index}>
-          {sort(children, cols).map(
+        <Flex
+          data-testid="ListWrapperListContainer"
+          w="100%"
+          gap="1rem"
+          direction={"column"}
+          key={index}
+        >
+          {sort(children || [], cols).map(
             ({ item, postion }, i) =>
               postion == index && (
-                <Flex direction={"column"} key={i}>
+                <Flex
+                  data-testid="ListWrapperItem"
+                  direction={"column"}
+                  key={i}
+                >
                   {item}
                 </Flex>
               )

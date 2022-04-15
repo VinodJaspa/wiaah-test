@@ -139,4 +139,30 @@ describe("CommentsViewer Snapshot Tests", () => {
     );
     expect(wrapper).toMatchSnapshot();
   });
+  it("should match snapshot with comments after clicking on show more", () => {
+    const wrapper = mount(
+      <RecoilRoot>
+        <CommentsViewer maxInitailComments={4} comments={commentsMock} />
+      </RecoilRoot>
+    );
+    expect(commentsMock.length).toBeGreaterThan(4);
+    let comments = getMountedComponent(
+      wrapper,
+      selectors.commentsWrapper,
+      3
+    ).children();
+    const showMore = getMountedComponent(wrapper, selectors.showMoreBtn, 3);
+    expect(comments.length).toBe(4);
+    showMore.simulate("click");
+    wrapper.update();
+
+    comments = getMountedComponent(
+      wrapper,
+      selectors.commentsWrapper,
+      3
+    ).children();
+
+    expect(comments.length).toBe(commentsMock.length);
+    expect(wrapper).toMatchSnapshot();
+  });
 });

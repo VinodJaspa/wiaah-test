@@ -24,31 +24,35 @@ export const PostInteractions: React.FC<PostInteractionsProps> = ({
 
   return (
     <Flex py="0.5rem" justify={"space-around"}>
-      <VStack>
+      <VStack
+        data-testid="PostInteractionLikes"
+        cursor={"pointer"}
+        onClick={() => handleInteraction("like")}
+      >
         <Icon fontSize={"xx-large"} fill={"primary.main"} as={HiHeart} />
-        <Text
-          onClick={() => handleInteraction("like")}
-          fontWeight={"semibold"}
-          textTransform={"capitalize"}
-        >
+        <Text fontWeight={"semibold"} textTransform={"capitalize"}>
           {NumberShortner(likes)} {t("likes", "likes")}
         </Text>
       </VStack>
-      <VStack>
+      <VStack
+        data-testid="PostInteractionComments"
+        cursor={"pointer"}
+        onClick={() => handleInteraction("comment")}
+      >
         <Icon
           fontSize={"xx-large"}
           stroke={"primary.main"}
           as={HiOutlineChat}
         />
-        <Text
-          onClick={() => handleInteraction("comment")}
-          fontWeight={"semibold"}
-          textTransform={"capitalize"}
-        >
+        <Text fontWeight={"semibold"} textTransform={"capitalize"}>
           {NumberShortner(comments)} {t("comments", "comments")}
         </Text>
       </VStack>
-      <VStack cursor={"pointer"} onClick={() => handleInteraction("share")}>
+      <VStack
+        data-testid="PostInteractionShares"
+        cursor={"pointer"}
+        onClick={() => handleInteraction("share")}
+      >
         <Icon fontSize={"xx-large"} fill={"primary.main"} as={HiShare} />
         <Text fontWeight={"semibold"} textTransform={"capitalize"}>
           {t("shares", "shares")}
