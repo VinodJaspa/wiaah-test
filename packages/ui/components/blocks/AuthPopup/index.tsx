@@ -7,12 +7,10 @@ import {
   Icon,
   ModalBody,
 } from "@chakra-ui/react";
-import React, { CSSProperties, FC } from "react";
-import { MdClose } from "react-icons/md";
-import { AuthSwitcher, SubscribersList } from ".";
-import { useLoginPopup } from "../../Hooks";
-import { SubscribersUsersPlaceholder } from "../../placeholder/social";
-import { FormContainer } from "./FormContainer";
+import React, { FC } from "react";
+import { AuthSwitcher } from "ui/components/blocks";
+import { useLoginPopup } from "ui/Hooks";
+import { FormContainer } from "ui/components/blocks";
 
 interface AuthPopupProp {
   onClose?: () => void;

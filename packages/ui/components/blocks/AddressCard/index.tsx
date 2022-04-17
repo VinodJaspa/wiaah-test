@@ -1,12 +1,9 @@
 import React from "react";
-import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
 import { AddressCardDetails } from "types/market/AddressDetails.interface";
 import { Border, Grid, Padding, Text, BoldText, FlexStack } from "ui";
-import { t } from "i18next";
-import { colorPalette } from "../helpers/colorPalette";
-import { IoTrash } from "react-icons/io5";
-import { FaEdit } from "react-icons/fa";
-import { Clickable } from "../partials";
+import { colorPalette } from "../../helpers/colorPalette";
+import { Clickable } from "ui";
+import { useTranslation } from "react-i18next";
 export interface AddressCardProps {
   addressDetails: AddressCardDetails;
   onEdit?: (address: AddressCardDetails) => void;
@@ -22,6 +19,7 @@ export const AddressCard: React.FC<AddressCardProps> = ({
   active,
   borderColor,
 }) => {
+  const { t } = useTranslation();
   function handleDeleteClick() {
     if (onDelete) {
       onDelete(addressDetails.id);

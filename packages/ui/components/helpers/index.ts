@@ -9,3 +9,4 @@ export * from "./getTimeInAmPm";
 export * from "./numberShortener";
 export * from "./percentage";
 export * from "./randomNumber";
+export * from "./SidebarContext";

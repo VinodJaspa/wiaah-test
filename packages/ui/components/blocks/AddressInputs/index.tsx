@@ -1,4 +1,3 @@
-import { t } from "i18next";
 import React from "react";
 import {
   BoldText,
@@ -11,15 +10,16 @@ import {
   Padding,
   Prefix,
   Spacer,
-} from "../partials";
+} from "ui/components/partials";
 import {
   AddressDetails,
   AddressInputsFields,
 } from "types/market/AddressDetails.interface";
-import { SearchInput } from "./SearchInput";
 import { FlagIcon } from "react-flag-kit";
 import { Country } from "country-state-city";
 import { FaSearch } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
+import { SearchInput } from "ui/components/blocks";
 
 export interface AddressInputsProps {
   initialInputs?: AddressDetails;
@@ -32,6 +32,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
   onCancel,
   onSuccess,
 }) => {
+  const { t } = useTranslation();
   const [edit, setEdit] = React.useState<boolean>(initialInputs ? true : false);
   const [input, setInputs] = React.useState<AddressInputsFields>(
     initialInputs
@@ -94,10 +95,10 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                     </Prefix>
                   ),
                 }))}
-                onValueChange={(value) => {
+                onValueChange={(value: any) => {
                   if (value.length < 1) setCurrentCountryCode(undefined);
                 }}
-                onSelection={(code) => setCurrentCountryCode(code)}
+                onSelection={(code: any) => setCurrentCountryCode(code)}
               />
             </FlexStack>
           </Padding>
