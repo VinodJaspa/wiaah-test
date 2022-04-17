@@ -27,4 +27,8 @@ export { Grid } from "./Grid";
 export { Releative } from "./Releative";
 export { Absolute } from "./Absolute";
 export { TableDivider } from "./TableDivider";
+export { DisplayPostedSince } from "./DisplayPostedSince";
+export { Avatar } from "./Avatar";
+export { ProgressBars } from "./ProgressBars";
+
 export * from "./icons";

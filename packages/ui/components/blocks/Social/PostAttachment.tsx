@@ -2,7 +2,7 @@ import { Box, Flex, Image } from "@chakra-ui/react";
 import React from "react";
 import { BsPlayFill } from "react-icons/bs";
 import { PostAttachment as PostAttachmentType } from "types/market/Social";
-
+import { useRouter } from "next/router";
 export interface PostAttachmentProps extends PostAttachmentType {
   alt?: string;
   fixedSize?: boolean;
@@ -14,6 +14,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
   alt,
   fixedSize,
 }) => {
+  const router = useRouter();
   const [playing, setPlaying] = React.useState<boolean>(false);
 
   function handlePlay() {
@@ -21,6 +22,10 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
   }
   function handlePause() {
     setPlaying(false);
+  }
+
+  function handleGoToPost() {
+    router.push("localhost:3002/social/wiaah/newsfeed-post/15");
   }
 
   switch (type) {
@@ -33,6 +38,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           alt={alt && alt}
           src={src}
           data-testid="PostAttachmentImage"
+          onClick={handleGoToPost}
         />
       );
 
@@ -44,6 +50,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           w="100%"
           h={"100%"}
           align={"center"}
+          onClick={handleGoToPost}
         >
           {!playing && (
             <Flex

@@ -1,7 +1,8 @@
-import { Avatar, Button, Text, VStack } from "@chakra-ui/react";
-import { t } from "i18next";
+import { Button, Text, VStack } from "@chakra-ui/react";
 import React from "react";
-
+import { useTranslation } from "react-i18next";
+import { Avatar } from "ui";
+import { useStory } from "../../../Hooks";
 export interface SocialPostHeaderProps {
   thumbnail: string;
   name: string;
@@ -13,6 +14,8 @@ export const SocialPostHeader: React.FC<SocialPostHeaderProps> = ({
   onViewProfile,
   thumbnail,
 }) => {
+  const { t } = useTranslation();
+  const { OpenStories, newStory } = useStory();
   return (
     <VStack
       rounded={"lg"}
@@ -23,7 +26,13 @@ export const SocialPostHeader: React.FC<SocialPostHeaderProps> = ({
       gap="0.5rem"
       w={{ base: "100%", md: "fit-content" }}
     >
-      <Avatar bgColor={"black"} size={"xl"} src={thumbnail} name={name} />
+      <Avatar
+        onClick={OpenStories}
+        newStory={newStory}
+        size={"xl"}
+        photoSrc={thumbnail}
+        name={name}
+      />
       <Text fontSize={"lg"}>{name}</Text>
       <Button
         _focus={{ ring: "0" }}

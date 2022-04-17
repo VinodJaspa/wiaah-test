@@ -7,6 +7,7 @@ export interface ProfileInfo {
   name: string;
   thumbnail: string;
   accountType: "seller" | "buyer";
+  public: boolean;
 }
 
 export interface ShopScoialProfileInfo extends ProfileInfo {
@@ -100,4 +101,28 @@ export interface AffiliationOfferCardInfo {
 export interface HashTagCardInfo {
   title: string;
   attachment: PostAttachment;
+}
+
+export interface SocialStoryData {
+  id: string;
+  storyType: "text" | "image" | "video";
+  storySrc?: string;
+  storyText?: string;
+  storyCreationDate: string;
+  storyViews: number;
+}
+
+export interface SocialStoryContentData
+  extends Pick<
+    SocialStoryData,
+    "storyType" | "storySrc" | "storyText" | "id"
+  > {}
+
+export interface SocialStoryDataWithUser extends SocialStoryData {
+  user: ProfileInfo;
+}
+
+export interface StorySeenByUserInfo {
+  photoSrc: string;
+  name: string;
 }

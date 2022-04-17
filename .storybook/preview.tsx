@@ -13,7 +13,7 @@ addDecorator((story) => (
   <ChakraProvider theme={theme}>
     <CookiesProvider>
       <RecoilRoot>
-        <section className="flex min-h-screen w-full items-center justify-center bg-slate-200">
+        <section className="flex min-h-screen w-full items-center justify-center bg-slate-200 p-8">
           {story()}
         </section>
       </RecoilRoot>

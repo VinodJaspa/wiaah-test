@@ -1,24 +1,18 @@
 import React from "react";
-import {
-  Avatar,
-  Flex,
-  Icon,
-  VStack,
-  Text,
-  Button,
-  HStack,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Flex, Icon, Text, Button, useDisclosure } from "@chakra-ui/react";
 import { BiMessageAltDetail } from "react-icons/bi";
 import { CgMoreVertical } from "react-icons/cg";
 import { ShopScoialProfileInfo } from "types/market/Social";
-import { t } from "i18next";
 import { MdVerified } from "react-icons/md";
-import { Verified } from "ui";
+import { Avatar } from "ui";
 import { FlagIcon } from "react-flag-kit";
 import { SubscribersPopup } from "./SubscribersPopup";
-import { useLoginPopup } from "../../../Hooks";
+import { useLoginPopup, useStory } from "../../../Hooks";
 import { NumberShortner } from "../../helpers/numberShortener";
+import { SocialStoriesModal } from "./SocialStoriesModal";
+import { useTranslation } from "react-i18next";
+import { useRecoilValue } from "recoil";
+import { SocialStoryState } from "../../../state";
 
 export interface SocialProfileProps {
   shopInfo: ShopScoialProfileInfo;
@@ -29,16 +23,28 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
   onFollow,
   shopInfo,
 }) => {
+  const { t } = useTranslation();
+  const { newStory, OpenStories, removeNewStory } = useStory();
+  const storyData = useRecoilValue(SocialStoryState);
   const { OpenLoginPopup } = useLoginPopup();
+
+  function handleOpenStory() {
+    OpenStories();
+    removeNewStory();
+  }
+
   function handleOpenLogin() {
-    OpenLoginPopup;
+    OpenLoginPopup();
+    onFollow && onFollow();
   }
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const {
     isOpen: subscriptionsIsOpen,
     onOpen: subscriptionsOnOpen,
     onClose: subscriptionsOnClose,
   } = useDisclosure();
+
   return (
     <Flex
       // gap="0.5rem"
@@ -50,6 +56,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
       justify={"space-between"}
       direction={"column"}
     >
+      {storyData && <SocialStoriesModal />}
       <SubscribersPopup
         title={t("subscribers", "subscribers")}
         isOpen={isOpen}
@@ -67,13 +74,12 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           as={CgMoreVertical}
         />
         <Avatar
-          showBorder
-          size={"2xl"}
-          objectFit={"contain"}
           name={shopInfo.name}
-          src={shopInfo.thumbnail}
-          bgColor="black"
-        ></Avatar>
+          photoSrc={shopInfo.thumbnail}
+          newStory={newStory}
+          size={"2xl"}
+          onClick={handleOpenStory}
+        />
         <Icon
           onClick={handleOpenLogin}
           cursor={"pointer"}
@@ -144,8 +150,11 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
         borderColor="black"
         colorScheme={"primary.main"}
         onClick={handleOpenLogin}
+        textTransform="capitalize"
       >
-        {t("follow", "Follow")}
+        {shopInfo.public
+          ? t("follow", "follow")
+          : t("ask_for_follow", "ask for follow")}
       </Button>
       <Flex
         bg={{ base: "whiteAlpha.200", md: "transparent" }}

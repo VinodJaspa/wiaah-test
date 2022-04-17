@@ -9,6 +9,7 @@ import {
   SocialPostHeader,
   SocialAffiliationCard,
   AffiliationOffersCardListWrapper,
+  SocialStoriesModal,
 } from "ui";
 import { t } from "i18next";
 
@@ -26,6 +27,11 @@ export const AffiliationPostView: React.FC<AffiliationPostViewProps> = () => {
         mb="6rem"
         align={"start"}
       >
+        <SocialStoriesModal />
+        <SocialPostHeader
+          name={product.user.name}
+          thumbnail={product.user.thumbnail}
+        />
         <SocialAffiliationCard showComments {...product} />
       </Flex>
       <Text

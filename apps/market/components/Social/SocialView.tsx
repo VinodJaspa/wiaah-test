@@ -1,4 +1,11 @@
-import { Flex, Image, useBreakpointValue, Divider } from "@chakra-ui/react";
+import {
+  Flex,
+  Image,
+  useBreakpointValue,
+  Divider,
+  Text,
+  Center,
+} from "@chakra-ui/react";
 import { t } from "i18next";
 import React from "react";
 import {
@@ -135,11 +142,34 @@ const SocialView: React.FC<SocialViewProps> = () => {
           objectFit={"cover"}
         />
       </Flex>
-      <Container>
-        <TabsViewer
-          tabs={profileInfo.accountType === "seller" ? sellerTabs : buyerTabs}
-        />
-        <Divider my="2rem" />
+      <Container className="flex-grow flex-col">
+        {profileInfo && profileInfo.public ? (
+          <>
+            <TabsViewer
+              tabs={
+                profileInfo.accountType === "seller" ? sellerTabs : buyerTabs
+              }
+            />
+            <Divider my="2rem" />
+          </>
+        ) : (
+          <>
+            <Flex
+              h="100%"
+              flexGrow={"inherit"}
+              align="center"
+              justify={"center"}
+            >
+              <Text
+                fontWeight={"bold"}
+                textTransform={"capitalize"}
+                fontSize={"xx-large"}
+              >
+                {t("this_profile_is_private", "this profile is private")}
+              </Text>
+            </Flex>
+          </>
+        )}
       </Container>
     </Flex>
   );

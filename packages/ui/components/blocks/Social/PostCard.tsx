@@ -10,22 +10,36 @@ import {
 } from "ui";
 import EllipsisText from "../EllipsisText";
 import { CommentsViewer } from "ui";
-import { useLoginPopup } from "ui/Hooks";
+import { useLoginPopup, useStory } from "ui/Hooks";
+import { useRouter } from "next/router";
 
 export interface PostCardProps {
   profileInfo: ProfileInfo;
   postInfo: PostInfo;
   showComments?: boolean;
+  profileFunctional?: boolean;
+  newStory?: boolean;
 }
 
 export const PostCard: React.FC<PostCardProps> = ({
   postInfo,
   profileInfo,
   showComments,
+  profileFunctional,
+  newStory,
 }) => {
+  const router = useRouter();
   const { OpenLoginPopup } = useLoginPopup();
+  const { removeNewStory } = useStory();
   function handleOpenLogin() {
     OpenLoginPopup;
+  }
+  function handleProfileClick() {
+    if (profileFunctional) {
+      removeNewStory();
+    } else {
+      router.push("localhost:3002/social/wiaah/newsfeed-post/15");
+    }
   }
   return (
     <Flex
@@ -42,6 +56,9 @@ export const PostCard: React.FC<PostCardProps> = ({
           createdAt={postInfo.createdAt}
           creatorName={profileInfo.name}
           creatorPhoto={profileInfo.thumbnail}
+          newStory={newStory}
+          functional={profileFunctional}
+          onProfileClick={handleProfileClick}
         />
       )}
       {postInfo.content && (

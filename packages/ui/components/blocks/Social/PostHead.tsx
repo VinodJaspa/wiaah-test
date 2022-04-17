@@ -1,32 +1,43 @@
-import { Flex, HStack, Avatar, Icon, Text } from "@chakra-ui/react";
+import { Flex, HStack, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
-import { useDateDiff } from "../../../Hooks";
+import { useStory } from "ui/Hooks";
+import { DisplayPostedSince, Avatar } from "ui";
 
 export interface PostHeadProps {
   creatorName: string;
   creatorPhoto: string;
   createdAt: string;
+  newStory?: boolean;
+  functional?: boolean;
+  onProfileClick?: () => any;
 }
 
 export const PostHead: React.FC<PostHeadProps> = ({
   creatorName,
   createdAt,
   creatorPhoto,
+  newStory,
+  functional,
+  onProfileClick,
 }) => {
-  const { getSince } = useDateDiff({
-    from: new Date(createdAt),
-    to: new Date(Date.now()),
-  });
-  const since = getSince();
+  const { OpenStories } = useStory();
+
+  function handleOpenStories() {
+    if (functional) {
+      OpenStories();
+    }
+    onProfileClick && onProfileClick();
+  }
+
   return (
     <Flex w="100%" align={"center"} justify={"space-between"}>
       <HStack>
         <Avatar
-          data-testid="PostCreatorThumbnail"
-          bgColor={"black"}
+          onClick={handleOpenStories}
           name={creatorName}
-          src={creatorPhoto}
+          photoSrc={creatorPhoto}
+          newStory={newStory && functional}
         />
         <Text data-testid="PostCreatorName" fontWeight={"bold"}>
           {creatorName}
@@ -39,9 +50,7 @@ export const PostHead: React.FC<PostHeadProps> = ({
           cursor={"pointer"}
           as={HiDotsHorizontal}
         />
-        <Text data-testid="PostCreatedSince" px="1" color={"gray"}>
-          {since.value} {since.timeUnit}
-        </Text>
+        <DisplayPostedSince since={createdAt} />
       </Flex>
     </Flex>
   );

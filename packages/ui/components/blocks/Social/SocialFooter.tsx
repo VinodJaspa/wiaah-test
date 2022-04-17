@@ -1,4 +1,4 @@
-import { Flex, Link, Text, Select, HStack, Icon } from "@chakra-ui/react";
+import { Flex, Divider, Text, Select, Icon } from "@chakra-ui/react";
 import { Language } from "ui/languages/enums/Language";
 import { t } from "i18next";
 import { useRouter } from "next/router";
@@ -154,44 +154,47 @@ export const SocialFooter: React.FC<SocialFooterProps> = ({
     onLinkClick && onLinkClick(link);
   }
   return (
-    <Flex gap="1rem" align={"center"} direction={"column"}>
-      <Flex flexWrap={"wrap"} justify={"center"}>
-        {links.map(({ label, link }, i) => (
-          <Text
-            key={i}
-            mx="1rem"
-            my="0.25rem"
-            cursor={"pointer"}
-            _hover={{
-              textDecorationColor: "primary.main",
-              color: "primary.main",
-            }}
-            textTransform={"capitalize"}
-            color="gray"
-            onClick={() => handleLinkClick(link)}
+    <>
+      {/* <Divider my="2rem" /> */}
+      <Flex gap="1rem" align={"center"} direction={"column"}>
+        <Flex flexWrap={"wrap"} justify={"center"}>
+          {links.map(({ label, link }, i) => (
+            <Text
+              key={i}
+              mx="1rem"
+              my="0.25rem"
+              cursor={"pointer"}
+              _hover={{
+                textDecorationColor: "primary.main",
+                color: "primary.main",
+              }}
+              textTransform={"capitalize"}
+              color="gray"
+              onClick={() => handleLinkClick(link)}
+            >
+              {label}
+            </Text>
+          ))}
+        </Flex>
+        <Flex gap="1rem">
+          <Select
+            _focus={{ ringColor: "primary.main" }}
+            minW="8rem"
+            defaultValue={langCode}
+            onChange={onLanguageChange}
           >
-            {label}
-          </Text>
-        ))}
-      </Flex>
-      <Flex gap="1rem">
-        <Select
-          _focus={{ ringColor: "primary.main" }}
-          minW="8rem"
-          defaultValue={langCode}
-          onChange={onLanguageChange}
-        >
-          <option value="en">English</option>
-          <option value="fr">Français</option>
-          <option value="es">Española</option>
-          <option value="de">Deutsch</option>
-        </Select>
-        <Flex gap="0.5rem" color="gray" align={"center"}>
-          <Icon as={FaRegCopyright} />
-          {copyRightYear}
-          <Text>Wiaah</Text>
+            <option value="en">English</option>
+            <option value="fr">Français</option>
+            <option value="es">Española</option>
+            <option value="de">Deutsch</option>
+          </Select>
+          <Flex gap="0.5rem" color="gray" align={"center"}>
+            <Icon as={FaRegCopyright} />
+            {copyRightYear}
+            <Text>Wiaah</Text>
+          </Flex>
         </Flex>
       </Flex>
-    </Flex>
+    </>
   );
 };

@@ -19,3 +19,10 @@ Default.args = {
   createdAt: PostCardPlaceHolder.postInfo.createdAt,
   creatorPhoto: PostCardPlaceHolder.profileInfo.thumbnail,
 };
+export const newStory = Template.bind({});
+newStory.args = {
+  newStory: true,
+  creatorName: PostCardPlaceHolder.profileInfo.name,
+  createdAt: PostCardPlaceHolder.postInfo.createdAt,
+  creatorPhoto: PostCardPlaceHolder.profileInfo.thumbnail,
+};

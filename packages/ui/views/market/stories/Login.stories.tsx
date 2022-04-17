@@ -1,8 +1,10 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Login } from "ui/views";
+import ChakaraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
 export default {
   title: "UI/View/Market/Login",
   component: Login,
+  decorators: [ChakaraUiDecorator],
   argTypes: {
     loginType: {
       name: "loginType",
