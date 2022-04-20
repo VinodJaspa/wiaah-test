@@ -14,9 +14,21 @@ import React from "react";
 import { useStorySeenBy, Avatar } from "ui";
 import { useTranslation } from "react-i18next";
 import { MdClose } from "react-icons/md";
-export const StorySeenByPopup: React.FC = () => {
+import { StorySeenByUserInfo } from "types/market/Social";
+
+export interface StorySeenByPopupProps {
+  storyId: String;
+}
+
+export const StorySeenByPopup: React.FC<StorySeenByPopupProps> = ({}) => {
   const { t } = useTranslation();
-  const { CloseStorySeenBy, isOpen, users, setStorySeenBy } = useStorySeenBy();
+  const [userFilter, setUserFilter] = React.useState<string>("");
+  const [Users, setUsers] = React.useState<StorySeenByUserInfo[]>([]);
+  const { CloseStorySeenBy, isOpen, users } = useStorySeenBy();
+
+  React.useEffect(() => {
+    setUsers(users.filter((user) => user.name.includes(userFilter)));
+  }, [users, userFilter]);
 
   React.useEffect(() => {}, []);
 
@@ -41,6 +53,7 @@ export const StorySeenByPopup: React.FC = () => {
                 )}
               </Text>
               <Icon
+                data-testid="CloseModalBtn"
                 cursor={"pointer"}
                 onClick={CloseStorySeenBy}
                 as={MdClose}
@@ -49,21 +62,28 @@ export const StorySeenByPopup: React.FC = () => {
           </ModalHeader>
           <ModalBody px="0.5rem">
             <Flex gap="1rem" direction={"column"}>
-              <Input variant={"flushed"} placeholder={t("search", "search")} />
+              <Input
+                data-testid="SearchUserInput"
+                value={userFilter}
+                onChange={(e) => setUserFilter(e.target.value)}
+                variant={"flushed"}
+                placeholder={t("search", "search")}
+              />
               <Flex
                 maxH="30rem"
                 overflowY={"scroll"}
                 className="thinScroll"
                 direction={"column"}
+                data-testid="UsersListContainer"
               >
-                {users.map((user, i) => (
-                  <HStack fontSize={"lg"} key={i}>
+                {Users.map((user, i) => (
+                  <HStack data-testid="UserCard" fontSize={"lg"} key={i}>
                     <Avatar
                       size={"lg"}
                       name={user.name}
                       photoSrc={user.photoSrc}
                     />
-                    <Text>{user.name}</Text>
+                    <Text data-testid="Username">{user.name}</Text>
                   </HStack>
                 ))}
               </Flex>

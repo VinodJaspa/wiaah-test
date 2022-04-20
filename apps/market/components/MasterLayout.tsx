@@ -19,8 +19,10 @@ import {
 } from "ui/state";
 import { CartSummaryItem } from "types/market/CartSummary";
 import { AddressCardDetails } from "types/market/AddressDetails.interface";
+import { NavLink } from "types/sharedTypes/misc/NavLink";
 import { Box } from "@chakra-ui/react";
-import { useLoginPopup } from "ui";
+import { Container, useLoginPopup } from "ui";
+import { category } from "uris";
 
 const products: CartSummaryItem[] = [
   {
@@ -148,6 +150,149 @@ const userAddresses: AddressCardDetails[] = [
   },
 ];
 
+const navLinks: NavLink[] = [
+  {
+    name: {
+      translationKey: "shoes",
+      fallbackText: "shoes",
+    },
+    destination: `${category}/shoes`,
+  },
+  {
+    name: {
+      translationKey: "jewelry",
+      fallbackText: "jewelry",
+    },
+    destination: `${category}/jewelry`,
+  },
+  {
+    name: {
+      translationKey: "clothing",
+      fallbackText: "clothing",
+    },
+    destination: `${category}/clothing`,
+  },
+  {
+    name: {
+      translationKey: "accessories",
+      fallbackText: "accessories",
+    },
+    destination: `${category}/accessories`,
+  },
+  {
+    name: {
+      translationKey: "shoes",
+      fallbackText: "shoes",
+    },
+    destination: `${category}/shoes`,
+  },
+  {
+    name: {
+      translationKey: "jewelry",
+      fallbackText: "jewelry",
+    },
+    destination: `${category}/jewelry`,
+  },
+  {
+    name: {
+      translationKey: "clothing",
+      fallbackText: "clothing",
+    },
+    destination: `${category}/clothing`,
+  },
+  {
+    name: {
+      translationKey: "accessories",
+      fallbackText: "accessories",
+    },
+    destination: `${category}/accessories`,
+  },
+  {
+    name: {
+      translationKey: "shoes",
+      fallbackText: "shoes",
+    },
+    destination: `${category}/shoes`,
+  },
+  {
+    name: {
+      translationKey: "jewelry",
+      fallbackText: "jewelry",
+    },
+    destination: `${category}/jewelry`,
+  },
+  {
+    name: {
+      translationKey: "clothing",
+      fallbackText: "clothing",
+    },
+    destination: `${category}/clothing`,
+  },
+  {
+    name: {
+      translationKey: "accessories",
+      fallbackText: "accessories",
+    },
+    destination: `${category}/accessories`,
+  },
+  {
+    name: {
+      translationKey: "shoes",
+      fallbackText: "shoes",
+    },
+    destination: `${category}/shoes`,
+  },
+  {
+    name: {
+      translationKey: "jewelry",
+      fallbackText: "jewelry",
+    },
+    destination: `${category}/jewelry`,
+  },
+  {
+    name: {
+      translationKey: "clothing",
+      fallbackText: "clothing",
+    },
+    destination: `${category}/clothing`,
+  },
+  {
+    name: {
+      translationKey: "accessories",
+      fallbackText: "accessories",
+    },
+    destination: `${category}/accessories`,
+  },
+  {
+    name: {
+      translationKey: "shoes",
+      fallbackText: "shoes",
+    },
+    destination: `${category}/shoes`,
+  },
+  {
+    name: {
+      translationKey: "jewelry",
+      fallbackText: "jewelry",
+    },
+    destination: `${category}/jewelry`,
+  },
+  {
+    name: {
+      translationKey: "clothing",
+      fallbackText: "clothing",
+    },
+    destination: `${category}/clothing`,
+  },
+  {
+    name: {
+      translationKey: "accessories",
+      fallbackText: "accessories",
+    },
+    destination: `${category}/accessories`,
+  },
+];
+
 export interface MasterLayoutProps {
   social?: boolean;
 }
@@ -172,52 +317,48 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({ children, social }) => {
   return (
     <Root>
       <AuthPopup />
-      <div className="flex flex-grow flex-col items-stretch">
-        {!social && <Header />}
-        {social && <SocialHeader />}
-        <main className="flex w-full flex-grow">{children}</main>
-      </div>
-      <div>
-        {!social && <Footer />}
-        {!social && <AuthFooter />}
-        {!social && (
-          <div className="container mx-auto block w-full space-y-6 py-6">
-            <div className="flex w-full justify-center">
-              <p className="text-2xl font-bold uppercase">
-                {t("Our_Partners", "Our Partners")}
-              </p>
-            </div>
-            <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
-              {[...Array(4)].map((_, i: number) => (
-                <ImageCard key={i} imgUrl="/shop-3.jpeg" />
-              ))}
-            </div>
-          </div>
-        )}
-        {!social && (
-          <div className="flex w-full justify-start bg-gray-800 p-6">
-            <p className="text-gray-500">
-              Copyrights &copy; Wiaah 2021.
-              {t("copyrights", "All Rights Reserved.")}
+      {!social && <Header categories={navLinks} />}
+      {social && <SocialHeader />}
+      <main className="flex w-full flex-col">{children}</main>
+      {!social && <Footer />}
+      {!social && <AuthFooter />}
+      {!social && (
+        <div className="container mx-auto block w-full space-y-6 py-6">
+          <div className="flex w-full justify-center">
+            <p className="text-2xl font-bold uppercase">
+              {t("Our_Partners", "Our Partners")}
             </p>
           </div>
-        )}
-        {social && (
-          <Box
-            position={"fixed"}
-            bottom="0px"
-            w="100%"
-            zIndex={50}
-            visibility={{ sm: "hidden" }}
-          >
-            <SocialAuthFooter
-              onLoginClick={handleOpenLogin}
-              onSignupClick={handleOpenLogin}
-            />
-          </Box>
-        )}
-        {social && <SocialFooter copyRightYear={2022} />}
-      </div>
+          <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-4">
+            {[...Array(4)].map((_, i: number) => (
+              <ImageCard key={i} imgUrl="/shop-3.jpeg" />
+            ))}
+          </div>
+        </div>
+      )}
+      {!social && (
+        <div className="flex w-full justify-start bg-gray-800 p-6">
+          <p className="text-gray-500">
+            Copyrights &copy; Wiaah 2021.
+            {t("copyrights", "All Rights Reserved.")}
+          </p>
+        </div>
+      )}
+      {social && (
+        <Box
+          position={"fixed"}
+          bottom="0px"
+          w="100%"
+          zIndex={50}
+          visibility={{ sm: "hidden" }}
+        >
+          <SocialAuthFooter
+            onLoginClick={handleOpenLogin}
+            onSignupClick={handleOpenLogin}
+          />
+        </Box>
+      )}
+      {social && <SocialFooter copyRightYear={2022} />}
     </Root>
   );
 };

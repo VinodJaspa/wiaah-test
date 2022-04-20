@@ -1,105 +1,164 @@
 import React from "react";
+import { t } from "i18next";
 import { SidebarContext } from "ui/components/helpers";
 import {
   FaSearch,
   FaUser,
   FaHeart,
-  FaShoppingBag,
   FaAlignJustify,
   FaChevronDown,
 } from "react-icons/fa";
-import { Sidebar, ShoppingCart } from "ui";
+import { MultiStepDrawer, ShoppingCart, SelectDropdown, Container } from "ui";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
 import { ShoppingCartItem } from "ui/types/shoppingCart/shoppingCartItem.interface";
 import { ShoppingCartItemsState } from "ui/state";
 import { useTranslation } from "react-i18next";
+import {
+  Flex,
+  Link as ChakraLink,
+  useBreakpointValue,
+  Button,
+} from "@chakra-ui/react";
+import { NavLink } from "types/sharedTypes/misc/NavLink";
+import { Step } from "../Drawers";
 
-export const Header: React.FC = () => {
+export interface HeaderProps {
+  categories: NavLink[];
+}
+
+export const Header: React.FC<HeaderProps> = ({ categories }) => {
   const items = useRecoilValue(ShoppingCartItemsState);
+  const isMobile = useBreakpointValue({ base: true, md: false });
   const sidebar = React.useContext(SidebarContext);
+  const [isopen, setisopen] = React.useState(false);
   const { t } = useTranslation();
-  let menup = [
-    {
-      label: t("Clothing", "Clothing"),
-      url: "",
-      children: [
-        {
-          label: t("Women_s", "Women's"),
-          url: "",
-          children: [
-            {
-              label: t("Dresses", "Dresses"),
-              url: "/category/dresses",
-            },
-            {
-              label: t("Shirts", "Shirts"),
-              url: "/category/shirts",
-            },
-          ],
-        },
-        {
-          label: t("Men_s", "Men's"),
-          url: "/category/mens",
-        },
-      ],
-    },
-    {
-      label: t("Home_&_Living", "Home & Living"),
-      url: "/category/home-and-living",
-    },
-  ];
+  const putsteps = Math.round(Math.random() * 5) > 5;
+  const steps: Step[] = categories.map((cate, i) => ({
+    label: cate.name.fallbackText,
+    url: cate.destination,
+    steps: [
+      {
+        label: t("Clothing", "Clothing"),
+        url: "/clothing",
+        steps: [
+          {
+            label: t("Women_s", "Womsen's"),
+            url: "womens",
+            steps: [
+              {
+                label: t("Dresses", "Dreasses"),
+                url: "/dresses",
+                steps: [
+                  {
+                    label: t("Dresses", "Dresses"),
+                    url: "/dresses",
+                    steps: [],
+                  },
+                  {
+                    label: t("Shirts", "Shirts"),
+                    url: "/shirts",
+                  },
+                ],
+              },
+              {
+                label: t("Shirts", "Shidrts"),
+                url: "/shirts",
+              },
+            ],
+          },
+          {
+            label: t("Men_s", "Men's"),
+            url: "/mens",
+          },
+        ],
+      },
+      {
+        label: t("Home_&_Living", "Home & Living"),
+        url: "/home-and-living",
+      },
+    ],
+  }));
 
   const handleItemDeletion = (item: ShoppingCartItem) => {};
 
   return (
-    <>
-      <nav className="hidden w-full lg:block">
-        {/* Top Navbar */}
-        <div className="flex w-full items-center justify-between bg-black px-6 py-2">
-          <div className="h-20 w-44 cursor-pointer">
+    <nav className="w-full bg-black">
+      {/* Top Navbar */}
+
+      <Container>
+        <Flex
+          w="100%"
+          h="fit"
+          py="1rem"
+          gap="1rem"
+          justify={"space-between"}
+          direction={{ base: "column", lg: "row" }}
+          align="center"
+        >
+          <div className="h-20 cursor-pointer">
             <Link href="/">
               <img
                 alt="wiaah_logo"
                 src="/wiaah_logo.png"
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain"
               />
             </Link>
           </div>
-          <div className="flex h-12">
+
+          <Flex
+            borderColor="primary.main"
+            rounded={"lg"}
+            borderWidth={"1px"}
+            gap={{ base: "1rem", sm: "0rem" }}
+            direction={{ base: "column", sm: "row" }}
+            maxW="40rem"
+            justifySelf={"stretch"}
+          >
             <input
               className="w-60 appearance-none rounded-l-lg border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none"
               placeholder={t("Search", "Search")}
             />
+
+            <SelectDropdown
+              rounded={"none"}
+              // color="white"
+              borderColor="primary.main"
+              borderLeftWidth={"1px"}
+              maxW={"max-content"}
+              className="appearance-none border-none border-gray-600 bg-gray-700  px-2.5 text-white outline-none focus:outline-none"
+              // className="w-60 border-gray-600"
+              textTransform={"capitalize"}
+              options={categories.map((cate, i) => ({
+                name: t(cate.name.translationKey, cate.name.translationKey),
+                value: cate.name.fallbackText,
+              }))}
+            />
             <label htmlFor="Category" className="relative flex">
               <FaChevronDown className="pointer-events-none absolute inset-y-1/3 right-3 h-4 w-4 text-green-400" />
-              <select
-                className="w-60 appearance-none border-l border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none"
-                placeholder={t("Category", "Category")}
-              >
-                <option>{t("Category", "Category")}</option>
-                <option>{t("Dress", "Dress")}</option>
-                <option>{t("Jewelry", "Jewelry")}</option>
-                <option>{t("Clothing", "Clothing")}</option>
-                <option>{t("Shoes", "Shoes")}</option>
-              </select>
             </label>
-            <button className="rounded-r-lg bg-green-400 px-2.5 py-1.5">
+            <Button
+              roundedLeft={"0px"}
+              bgColor={"primary"}
+              fontSize="lg"
+              p="0.5rem"
+            >
               <FaSearch className="h-5 w-5 text-white" />
-            </button>
-          </div>
+            </Button>
+          </Flex>
+
           <div className="flex text-white">
-            <ul className="inline-flex items-center gap-4">
+            <ul className="inline-flex items-center gap-8">
               <li className="flex cursor-pointer items-center text-sm">
                 <Link href="/login">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-4">
                     {t("Sign_In", "Sign In")}{" "}
-                    <FaUser className="ml-0 inline-flex h-6 w-6" />
+                    <FaUser className="ml-0 inline-flex h-8 w-8" />
                   </div>
                 </Link>
               </li>
               <li className="cursor-pointer">
-                <FaHeart className="h-6 w-6" />
+                <FaHeart className="h-8 w-8" />
               </li>
               <ShoppingCart
                 items={items}
@@ -107,94 +166,44 @@ export const Header: React.FC = () => {
               />
             </ul>
           </div>
-        </div>
-
-        <div className="flex w-full bg-gray-800 px-6 py-4 text-white">
-          <ul className="inline-flex items-center space-x-10">
+        </Flex>
+      </Container>
+      <div className="flex w-full bg-gray-800 px-6 py-4 text-white">
+        <Container>
+          <ul className="no-scrollBar inline-flex w-full items-center space-x-10 overflow-x-scroll">
             <li
               id="burger-menu-toggle"
               className="flex cursor-pointer items-center space-x-2"
               onClick={() => {
-                sidebar?.toggleVisibility();
+                setisopen(true);
               }}
             >
               <FaAlignJustify className="h-4 w-4" />
               <span className="inline-flex">{t("All", "All")}</span>
             </li>
-            {[...Array(1)].map((_, i: number) => (
-              <React.Fragment key={i}>
-                <li className="cursor-pointer">{t("Shoes", "Shoes")}</li>
-                <li className="cursor-pointer">{t("Jewelry", "Jewelry")}</li>
-                <li className="cursor-pointer">{t("Clothing", "Clothing")}</li>
-                <li className="cursor-pointer">{t("Shoes", "Shoes")}</li>
-                <li className="cursor-pointer">
-                  {t("Accessories", "Accessories")}
+            {!isMobile &&
+              categories.length > 0 &&
+              categories.map((cate, i) => (
+                <li key={i}>
+                  <ChakraLink
+                    textTransform={"capitalize"}
+                    colorScheme={"primary"}
+                    _hover={{ color: "primary.main" }}
+                    as={Link}
+                    href={cate.destination}
+                  >
+                    {t(cate.name.translationKey, cate.name.fallbackText)}
+                  </ChakraLink>
                 </li>
-                <li className="cursor-pointer">{t("Shoes", "Shoes")}</li>
-                <li className="cursor-pointer">{t("Jewelry", "Jewelry")}</li>
-                <li className="cursor-pointer">{t("Clothing", "Clothing")}</li>
-                <li className="cursor-pointer">{t("Shoes", "Shoes")}</li>
-                <li className="cursor-pointer">
-                  {t("Accessories", "Accessories")}
-                </li>
-                <li className="cursor-pointer">{t("Shoes", "Shoes")}</li>
-                <li className="cursor-pointer">
-                  {t("Accessories", "Accessories")}
-                </li>
-              </React.Fragment>
-            ))}
+              ))}
           </ul>
-        </div>
-      </nav>
-
-      {/* Mobile Nav */}
-      <nav className="block w-full space-y-6 bg-black p-6 lg:hidden">
-        <div className="flex w-full items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <p className="h-16 cursor-pointer text-lg font-black text-green-300">
-              <Link href="/">
-                <img
-                  alt="wiaah_logo"
-                  src="/wiaah_logo.png"
-                  className="h-full"
-                />
-              </Link>
-            </p>
-          </div>
-          <div className="flex">
-            <ul className="inline-flex space-x-4 text-white">
-              <li className="cursor-pointer">
-                <FaHeart className="h-5 w-5" />
-              </li>
-              <li className="relative flex cursor-pointer">
-                <FaShoppingBag className="h-5 w-5" />
-                <div className="absolute -bottom-2 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 p-2 text-xs">
-                  3
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div className="flex h-12 w-full">
-          <div className="flex items-center pr-5">
-            <FaAlignJustify
-              className="h-5 w-5 cursor-pointer text-white"
-              onClick={() => {
-                sidebar?.toggleVisibility();
-              }}
-            />
-          </div>
-          <input
-            className="min-w-min grow appearance-none rounded-l-lg border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none md:w-72"
-            placeholder={t("Search", "Search")}
-          />
-          <button className="rounded-r-lg bg-green-400 px-2.5 py-1.5">
-            <FaSearch className="h-5 w-5 text-white" />
-          </button>
-        </div>
-      </nav>
-
-      <Sidebar menu={menup} />
-    </>
+        </Container>
+      </div>
+      <MultiStepDrawer
+        isOpen={isopen}
+        onClose={() => setisopen(false)}
+        steps={steps}
+      />
+    </nav>
   );
 };

@@ -18,6 +18,7 @@ export const SocialStoriesCarousel: React.FC<SocialStoriesCarouselProps> = ({
         trackBgColor="blackAlpha.800"
         activeItem={currentStory}
         setActiveItem={goToStory}
+        navigateOnClick
         gap={32}
       >
         {stories.map((story, i) => (

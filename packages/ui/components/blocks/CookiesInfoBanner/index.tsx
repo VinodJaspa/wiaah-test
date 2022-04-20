@@ -12,11 +12,13 @@ export const CookiesInfoBanner: React.FC<CookiesInfoBannerProps> = ({
 }) => {
   const { min } = useScreenWidth({ minWidth: 1000 });
 
-  console.log("min", min);
+  function handleLetMeChoose() {
+    onLetMeChoose && onLetMeChoose();
+  }
 
-  function handleLetMeChoose() {}
-
-  function handleAcceptAll() {}
+  function handleAcceptAll() {
+    onAcceptAll && onAcceptAll();
+  }
   return (
     <>
       <FlexStack

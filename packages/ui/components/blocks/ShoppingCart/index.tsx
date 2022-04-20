@@ -72,7 +72,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
         onClick={() => handleToggleOpen()}
         className="relative cursor-pointer select-none"
       >
-        <FaShoppingBag className="h-6 w-6" />
+        <FaShoppingBag className="h-8 w-8" />
         <div className="absolute -bottom-2 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
           {items.length}
         </div>

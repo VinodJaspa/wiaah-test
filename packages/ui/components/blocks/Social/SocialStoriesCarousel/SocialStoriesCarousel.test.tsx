@@ -1,9 +1,13 @@
-import { shallow } from "enzyme";
+import { ChakraProvider } from "@chakra-ui/react";
+import { mount, ReactWrapper, shallow } from "enzyme";
 import React from "react";
+import { RecoilRoot } from "recoil";
 import { SocialStoryContentData } from "types/market/Social";
 import { SocialStoriesCarousel } from "./";
 
-const selectors = {};
+const selectors = {
+  story: "[data-testid='StoryContent']",
+};
 
 const storiesPlaceholder: SocialStoryContentData[] = [
   {
@@ -24,14 +28,31 @@ const storiesPlaceholder: SocialStoryContentData[] = [
 ];
 
 describe("SocialStoriesCarousel render tests", () => {
-  it("should render properly", () => {
-    shallow(<SocialStoriesCarousel stories={storiesPlaceholder} />);
+  let wrapper: ReactWrapper;
+  let stories: ReactWrapper;
+
+  beforeEach(() => {
+    wrapper = mount(
+      <RecoilRoot>
+        <ChakraProvider>
+          <SocialStoriesCarousel stories={storiesPlaceholder} />
+        </ChakraProvider>
+      </RecoilRoot>
+    );
+    stories = wrapper.find(selectors.story);
+  });
+
+  it("should have the right amount of stories", () => {
+    // console.log(wrapper.debug());
+    wrapper.update();
+    console.log(wrapper.debug());
+    expect(stories.length).toBe(storiesPlaceholder.length);
   });
 });
 
-describe("SocialStoriesCarousel snapshot tests", () => {
-  it("should match snapshot", () => {
-    expect(shallow(<SocialStoriesCarousel stories={storiesPlaceholder} />))
-      .toMatchSnapshot;
-  });
-});
+// describe("SocialStoriesCarousel snapshot tests", () => {
+//   it("should match snapshot", () => {
+//     expect(shallow(<SocialStoriesCarousel stories={storiesPlaceholder} />))
+//       .toMatchSnapshot;
+//   });
+// });

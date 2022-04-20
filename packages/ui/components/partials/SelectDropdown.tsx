@@ -1,10 +1,7 @@
 import React, { DetailedHTMLProps, SelectHTMLAttributes } from "react";
+import { Select, SelectProps } from "@chakra-ui/react";
 
-export interface SelectDropdownProps
-  extends DetailedHTMLProps<
-    SelectHTMLAttributes<HTMLSelectElement>,
-    HTMLSelectElement
-  > {
+export interface SelectDropdownProps extends SelectProps {
   name?: string;
   onSelection?: (value: string, index: number | undefined) => void;
   options: option[];
@@ -35,11 +32,9 @@ export const SelectDropdown: React.FC<SelectDropdownProps> = ({
   }
 
   return (
-    <select
+    <Select
       data-test="SelectDropdown"
-      style={fullWidth ? { width: "100%" } : {}}
       value={value}
-      className="w-56 rounded-md border-[1px] border-gray-500 border-opacity-50  pr-10 font-semibold capitalize text-gray-500"
       onChange={handleOptionSelection}
       {...props}
     >
@@ -59,7 +54,7 @@ export const SelectDropdown: React.FC<SelectDropdownProps> = ({
           {opt.name}
         </option>
       ))}
-    </select>
+    </Select>
   );
 };
 

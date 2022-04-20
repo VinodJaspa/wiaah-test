@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, Icon } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import React from "react";
 import { ProfileInfo, SocialStoryData } from "types/market/Social";
 import {
@@ -35,7 +35,7 @@ export const SocialStoryViewer: React.FC<SocialStoryViewerProps> = ({
         createdAt={storyCreationDate}
         views={storyViews}
       />
-      <StorySeenByPopup />
+      <StorySeenByPopup storyId={story.id} />
       <StoiresProgressBars />
       <SocialStoriesCarousel stories={stories} />
     </Flex>

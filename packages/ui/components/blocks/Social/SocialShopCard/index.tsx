@@ -9,6 +9,7 @@ import {
 } from "ui";
 import { ShopCardInfo } from "types/market/Social";
 import { useLoginPopup } from "ui/Hooks";
+import { ControlledCarousel } from "ui";
 
 export interface SocialShopCardProps {
   showComments?: boolean;
@@ -21,6 +22,7 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
   showbook,
   shopCardInfo,
 }) => {
+  const [active, setActive] = React.useState<number>(0);
   const { OpenLoginPopup } = useLoginPopup();
   function handleAddToCart() {
     OpenLoginPopup();
@@ -34,14 +36,38 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
       w="100%"
       direction={"column"}
     >
-      <ShopCardAttachment
-        showbook={showbook}
-        onInteraction={OpenLoginPopup}
-        productType={shopCardInfo.type}
-        cashback={shopCardInfo.cashback}
-        discount={shopCardInfo.discount}
-        {...shopCardInfo.attachment}
-      />
+      {shopCardInfo.attachments && shopCardInfo.attachments.length > 1 ? (
+        <ControlledCarousel
+          arrows={shopCardInfo.attachments.length > 1}
+          gap={32}
+          onCurrentActiveChange={setActive}
+        >
+          {shopCardInfo.attachments.map((attachment, i) => (
+            <ShopCardAttachment
+              key={i}
+              showbook={showbook}
+              onInteraction={OpenLoginPopup}
+              productType={shopCardInfo.type}
+              cashback={shopCardInfo.cashback}
+              discount={shopCardInfo.discount}
+              {...attachment}
+            />
+          ))}
+        </ControlledCarousel>
+      ) : (
+        shopCardInfo.attachments &&
+        shopCardInfo.attachments.length === 1 && (
+          <ShopCardAttachment
+            showbook={showbook}
+            onInteraction={OpenLoginPopup}
+            productType={shopCardInfo.type}
+            cashback={shopCardInfo.cashback}
+            discount={shopCardInfo.discount}
+            {...shopCardInfo.attachments[0]}
+          />
+        )
+      )}
+
       <ShopCardDetails
         onAddToCart={handleAddToCart}
         service={shopCardInfo.type === "service"}

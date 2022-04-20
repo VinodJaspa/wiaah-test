@@ -7,18 +7,17 @@ import React, {
   useRef,
   Dispatch,
   SetStateAction,
-  KeyboardEventHandler,
   ReactElement,
 } from "react";
 
 import {
   useMediaQuery,
   useTheme,
-  Progress,
   VStack,
   Button,
   Flex,
   Box,
+  FlexProps,
 } from "@chakra-ui/react";
 
 import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
@@ -34,7 +33,7 @@ const transitionProps = {
   mass: 3,
 };
 
-export interface ChakaraCarouselProps {
+export interface ChakaraCarouselProps extends FlexProps {
   children: React.ReactElement[];
   gap?: number;
   activeItem: number;
@@ -42,6 +41,8 @@ export interface ChakaraCarouselProps {
   onCurrentActiveChange?: (currentActive: number) => any;
   trackBgColor?: string;
   arrows?: boolean;
+  swipe?: boolean;
+  navigateOnClick?: boolean;
 }
 
 export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
@@ -52,6 +53,9 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
   setActiveItem,
   trackBgColor,
   arrows,
+  swipe,
+  navigateOnClick,
+  ...props
 }) => {
   const [trackIsActive, setTrackIsActive] = React.useState(false);
   const [multiplier, setMultiplier] = React.useState(0.35);
@@ -115,6 +119,7 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
     itemWidth,
     positions,
     arrows,
+    navigateOnClick,
     gap,
   };
 
@@ -144,7 +149,7 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
   };
 
   return (
-    <Slider {...sliderProps}>
+    <Slider {...props} {...sliderProps}>
       <Track {...trackProps}>
         {children &&
           children.map((child, index) => (
@@ -157,7 +162,7 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
   );
 };
 
-interface SliderProps {
+interface SliderProps extends FlexProps {
   setTrackIsActive: Dispatch<SetStateAction<boolean>>;
   initSliderWidth: (width: number) => any;
   setActiveItem: (item: number) => any;
@@ -168,6 +173,7 @@ interface SliderProps {
   children: ReactElement;
   arrows?: boolean;
   gap: number;
+  navigateOnClick?: boolean;
 }
 
 const Slider: React.FC<SliderProps> = ({
@@ -176,18 +182,33 @@ const Slider: React.FC<SliderProps> = ({
   setActiveItem,
   activeItem,
   constraint,
-  itemWidth,
   positions,
   children,
   gap,
   arrows,
+  itemWidth,
+  navigateOnClick,
+  ...props
 }) => {
-  const [ref, { width }] = useBoundingRect();
+  const sliderRef = React.useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(
-    () => initSliderWidth(Math.round(width)),
-    [width, initSliderWidth]
-  );
+  function adjustWidth() {
+    initSliderWidth(Math.round(sliderRef.current?.offsetWidth || 0));
+  }
+  adjustWidth();
+  useEffect(() => {
+    if ("undefined" !== typeof window) {
+      adjustWidth();
+      window.addEventListener("resize", adjustWidth);
+      window.addEventListener("load", adjustWidth);
+      window.addEventListener("scroll", adjustWidth);
+      return () => {
+        window.removeEventListener("load", adjustWidth);
+        window.removeEventListener("resize", adjustWidth);
+        window.removeEventListener("scroll", adjustWidth);
+      };
+    }
+  }, [sliderRef, initSliderWidth, activeItem]);
 
   const handleFocus = () => setTrackIsActive(true);
 
@@ -206,6 +227,7 @@ const Slider: React.FC<SliderProps> = ({
   }, [activeItem]);
 
   function handleSliderClick(e: React.MouseEvent<HTMLDivElement>) {
+    if (!navigateOnClick) return;
     const itemRect = e.currentTarget.getBoundingClientRect();
     const itemXPosition = itemRect.left;
     const itemWidth = itemRect.width;
@@ -220,17 +242,23 @@ const Slider: React.FC<SliderProps> = ({
   }
 
   return (
-    <Flex w="100%" position={"relative"} align={"center"} direction={"row"}>
+    <Flex
+      position={"relative"}
+      {...props}
+      // overflowX={"auto"}
+      align={"center"}
+      direction={"row"}
+      ref={sliderRef}
+    >
       <Box
         onClick={handleSliderClick}
-        ref={ref}
         w="100%"
         transition="all"
         transitionDuration={"500ms"}
         // w={{ base: "100%", md: `calc(100% + ${gap}px)` }}
         // ml={{ base: 0, md: `-${gap / 2}px` }}
         // px={`${gap / 2}px`}
-        position="relative"
+        position={"relative"}
         overflow="hidden"
         _before={{
           bgGradient: "linear(to-r, base.d400, transparent)",
@@ -307,6 +335,7 @@ interface TrackProps {
   positions: number[];
   trackBgColor?: string;
   children: ReactElement[];
+  swipe?: boolean;
 }
 
 const Track: React.FC<TrackProps> = ({
@@ -320,6 +349,7 @@ const Track: React.FC<TrackProps> = ({
   positions,
   children,
   trackBgColor,
+  swipe,
 }) => {
   const [dragStartPosition, setDragStartPosition] = useState(0);
   const controls = useAnimation();
@@ -329,7 +359,6 @@ const Track: React.FC<TrackProps> = ({
   const handleDragStart = () => setDragStartPosition(positions[activeItem]);
 
   const handleDragEnd = (_: any, info: any) => {
-    console.log(info);
     const distance = info.offset.x;
     const velocity = info.velocity.x * multiplier;
     const direction = velocity < 0 || distance < 0 ? 1 : -1;
@@ -423,24 +452,24 @@ const Track: React.FC<TrackProps> = ({
 
   return (
     <>
-      {itemWidth && (
-        <VStack bg={trackBgColor} ref={node} spacing={5} alignItems="stretch">
-          <MotionFlex
-            dragConstraints={node}
-            onDragStart={handleDragStart}
-            onDragEnd={handleDragEnd}
-            animate={controls}
-            style={{ x }}
-            drag="x"
-            _active={{ cursor: "grabbing" }}
-            minWidth="min-content"
-            flexWrap="nowrap"
-            cursor="grab"
-          >
-            {children}
-          </MotionFlex>
-        </VStack>
-      )}
+      {/* {itemWidth && ( */}
+      <VStack bg={trackBgColor} ref={node} spacing={5} alignItems="stretch">
+        <MotionFlex
+          dragConstraints={node}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+          animate={controls}
+          style={{ x }}
+          drag={swipe && "x"}
+          _active={swipe && { cursor: "grabbing" }}
+          minWidth="min-content"
+          flexWrap="nowrap"
+          cursor={swipe && "grab"}
+        >
+          {children}
+        </MotionFlex>
+      </VStack>
+      {/* )} */}
     </>
   );
 };

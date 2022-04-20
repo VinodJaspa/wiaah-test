@@ -14,7 +14,7 @@ const Template: ComponentStory<typeof BreadCrumb> = (args) => (
 export const Exemple = Template.bind({});
 
 Exemple.args = {
-  breadcrumb: [
+  links: [
     {
       text: "Root",
       url: "root",

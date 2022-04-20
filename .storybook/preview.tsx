@@ -23,7 +23,7 @@ addDecorator((story) => (
 
 export const parameters = {
   i18n,
-  locale: "fr",
+  locale: "en",
   locales: {
     en: "English",
     fr: "Français",

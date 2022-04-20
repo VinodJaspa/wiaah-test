@@ -1,38 +1,30 @@
 import React from "react";
 import Link from "next/link";
 import { FaChevronRight } from "react-icons/fa";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
+
+export type BreadCrumbLink = { text: string; url: string };
 
 export interface BreadCrumbProps {
-  breadcrumb?: Array<{ text: string; url: string }>;
+  links: Array<BreadCrumbLink>;
+  onLinkClick: (link: BreadCrumbLink) => any;
 }
 
-export const BreadCrumb: React.FC<BreadCrumbProps> = ({ breadcrumb = [] }) => {
+export const BreadCrumb: React.FC<BreadCrumbProps> = ({
+  links,
+  onLinkClick,
+}) => {
   return (
-    <ul>
-      {breadcrumb.map((item, i: number) => {
-        if (i + 1 == breadcrumb.length) {
-          return (
-            <li className="inline-flex text-xs" key={i}>
-              {item.text}
-            </li>
-          );
-        } else {
-          return (
-            <li className="inline-flex" key={i}>
-              <div className="inline text-xs text-blue-500">
-                <Link href={item.url}>
-                  <a>{item.text}</a>
-                </Link>
-              </div>
-              <FaChevronRight className="ml-3 mr-3 inline" />
-            </li>
-          );
-        }
-      })}
-    </ul>
+    <Breadcrumb separator={<FaChevronRight />}>
+      {links &&
+        links.length > 0 &&
+        links.map((link, i) => (
+          <BreadcrumbItem isLastChild={i + 1 == links.length}>
+            <BreadcrumbLink onClick={() => onLinkClick && onLinkClick(link)}>
+              {link.text}
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        ))}
+    </Breadcrumb>
   );
-};
-
-BreadCrumb.defaultProps = {
-  breadcrumb: [{ text: "Home", url: "/" }],
 };

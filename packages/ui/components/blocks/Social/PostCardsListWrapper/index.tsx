@@ -1,6 +1,6 @@
 import React from "react";
 import { PostCardInfo } from "types/market/Social";
-import { SimpleGrid, Grid, Wrap, WrapItem, Flex } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import { PostCard } from "ui";
 
 export interface PostCardsListWrapperProps {
@@ -27,7 +27,12 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
   return (
     <Flex justify={"space-between"} gap="1rem">
       {[...Array(cols)].map((_, index) => (
-        <Flex w="100%" gap="1rem" direction={"column"} key={index}>
+        <Flex
+          width={`${100 / cols}%`}
+          gap="1rem"
+          direction={"column"}
+          key={index}
+        >
           {sort(posts, cols).map(
             ({ item: { postInfo, profileInfo }, postion }, i) =>
               postion == index && (

@@ -2,11 +2,13 @@ import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { useState } from "react";
 import { RecoilRoot } from "recoil";
 import { ShoppingCart } from "../";
-import { ShoppingCartItem } from "../../../types/shoppingCart/shoppingCartItem.interface";
+import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import { ShoppingCartItem } from "ui/types/shoppingCart/shoppingCartItem.interface";
 
 export default {
   title: "UI/blocks/ShoppingCart",
   component: ShoppingCart,
+  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof ShoppingCart>;
 
 const Templete: ComponentStory<typeof ShoppingCart> = (args) => (
@@ -45,18 +47,16 @@ Default.decorators = [
     const [Items, setItems] = useState<ShoppingCartItem[]>([...items]);
 
     return (
-      <RecoilRoot>
-        <div className=" flex justify-end  p-4 px-12">
-          <Story
-            args={{
-              items: Items,
-              onItemDelete: (Item) => {
-                setItems((state) => state.filter((item) => item !== Item));
-              },
-            }}
-          />
-        </div>
-      </RecoilRoot>
+      <div className=" flex justify-end  p-4 px-12">
+        <Story
+          args={{
+            items: Items,
+            onItemDelete: (Item) => {
+              setItems((state) => state.filter((item) => item !== Item));
+            },
+          }}
+        />
+      </div>
     );
   },
 ];

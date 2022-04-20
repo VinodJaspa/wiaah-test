@@ -1,5 +1,4 @@
 export { ImageSlider } from "./ImageSlider";
-export { Sidebar } from "./Sidebar";
 export { Card } from "./Card";
 export { ImageCard } from "./ImageCard";
 export { ProductImageGallery } from "./ProductImageGallery";
@@ -52,5 +51,7 @@ export { VideoPopup } from "./VideoPopup";
 export { EllipsisText } from "./EllipsisText";
 export { FilterModal } from "./FilterModal";
 export { ChakraCarousel } from "./ChakaraCarousel";
+export { ControlledCarousel } from "./ControlledCarousel";
 export * from "./products";
 export * from "./Social";
+export * from "./Drawers";

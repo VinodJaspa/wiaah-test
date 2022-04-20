@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import {
-  BoldText,
-  CollaboratorCard,
   Container,
   FlexStack,
   GridContainerPager,
   ItemsTable,
+  Clickable,
+  CollaboratorCard,
 } from "ui";
 import { useScreenWidth } from "ui/Hooks/useScreenWidth";
 import { Shop, ShopProfile } from "../Shop/ShopProfile";
@@ -14,6 +14,7 @@ import {
   CollaboratorShop,
 } from "types/market/Collaboration";
 import { useRouter } from "next/router";
+import { shopRouting } from "uris";
 export interface CollaborationViewProps {
   shop: Shop;
   categories: CollaboratorCategory[];
@@ -38,6 +39,11 @@ export const CollaborationView: React.FC<CollaborationViewProps> = ({
     const arry = Array.isArray(type);
     setShopType(arry ? type[0] : type);
   }, [router.query.category]);
+
+  function handleNavToShop(shopId: string) {
+    router.push(shopRouting.shopPage + "/" + shopId);
+  }
+
   return (
     <FlexStack direction="vertical" fullWidth verticalSpacingInRem={2}>
       <ShopProfile shop={shop} />
@@ -59,11 +65,13 @@ export const CollaborationView: React.FC<CollaborationViewProps> = ({
           />
           <GridContainerPager componentsLimit={5}>
             {shops.map((shop) => (
-              <CollaboratorCard
-                imageUrl={shop.thumbnailUrl}
-                name={shop.name}
-                location={shop.location}
-              />
+              <Clickable onClick={() => handleNavToShop(shop.id)}>
+                <CollaboratorCard
+                  imageUrl={shop.thumbnailUrl}
+                  name={shop.name}
+                  location={shop.location}
+                />
+              </Clickable>
             ))}
           </GridContainerPager>
         </FlexStack>

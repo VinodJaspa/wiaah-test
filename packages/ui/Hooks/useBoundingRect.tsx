@@ -10,7 +10,7 @@ const debounce = (limit: number, callback: () => any) => {
   };
 };
 
-function getDimensionObject(node: React.ReactNode) {
+function getDimensionObject(node: any) {
   if (node) {
     const rect = node.getBoundingClientRect();
     return {

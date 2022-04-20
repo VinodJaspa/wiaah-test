@@ -7,7 +7,8 @@ import { useMediaQuery } from "react-responsive";
 import "swiper/css";
 import "swiper/css/navigation";
 import { ServiceRightView } from "./ServiceRightView";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
+import { useRouter } from "next/router";
 
 export interface ProductGalleryItem {
   original: string;
@@ -94,12 +95,19 @@ const productComments = [
 ];
 export const ServiceView: React.FC = () => {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
+  const { t } = useTranslation();
+  const router = useRouter();
+  // const breadCrumbLinks = [{ text: "wiaah", url: "/" }].concat(
+  //   [...(router.query.categories || [])].map((cate, i) => ({
+  //     text: cate,
+  //     url: `/${cate}`,
+  //   }))
+  // );
+
   return (
     <>
       <div className="block w-full space-y-6 p-5">
-        <div className="">
-          <BreadCrumb breadcrumb={breadcrumb} />
-        </div>
+        <div className="">{/* <BreadCrumb links={breadCrumbLinks} /> */}</div>
         <div>
           <div className="flex-column mb-10 flex-wrap  lg:flex lg:h-[28rem] lg:justify-between">
             <div className="h-full w-full lg:w-8/12">
@@ -128,7 +136,12 @@ export const ServiceView: React.FC = () => {
               />
             </div>
             <div className="mt-10 w-full pl-0 sm:w-6/12 md:w-5/12 lg:w-4/12 lg:pl-8 xl:w-4/12">
-              <SellerCard name="EMH Test Shop" reviews={5} rating={4} />
+              <SellerCard
+                id={"1"}
+                name="EMH Test Shop"
+                reviews={5}
+                rating={4}
+              />
             </div>
           </div>
           <div className="">

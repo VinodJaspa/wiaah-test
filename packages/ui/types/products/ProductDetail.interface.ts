@@ -1,3 +1,5 @@
+import { ProductTypes } from "types/market/Product";
+
 export interface ProductDetails {
   id?: string;
   name: string;
@@ -5,6 +7,7 @@ export interface ProductDetails {
   oldPrice?: number;
   imgUrl: string;
   rating?: number;
+  type: ProductTypes;
   off?: number;
   category?: string;
   saved?: boolean;

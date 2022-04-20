@@ -4,6 +4,7 @@ export interface CollaboratorCategory {
 }
 
 export interface CollaboratorShop {
+  id: string;
   name: string;
   location: string;
   thumbnailUrl: string;

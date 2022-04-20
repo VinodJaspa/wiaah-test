@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import {
   PostCard,
   PostCardsListWrapper,

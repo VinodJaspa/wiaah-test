@@ -1,10 +1,11 @@
 import React from "react";
 import { Rate } from "antd";
 import { IoHeartOutline, IoHeart, IoTrash } from "react-icons/io5";
+import { ProductTypes } from "types/market/Product";
 
 export interface ProductCardProps {
   id: string;
-  variant?: "product" | "service";
+  variant?: ProductTypes;
   name: string;
   price: number;
   imageUrl: string;

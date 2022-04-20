@@ -28,10 +28,24 @@ export const getServerSideProps: GetServerSideProps<SocialPageProps> =
       ...newsfeedPosts[2],
       postInfo: {
         ...newsfeedPosts[2].postInfo,
-        attachment: {
-          src: "/shop-2.jpeg",
-          type: "image",
-        },
+        attachments: [
+          {
+            type: "image",
+            src: "/verticalImage.jpg",
+          },
+          {
+            src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
+            type: "video",
+          },
+          {
+            src: "/shop.jpeg",
+            type: "image",
+          },
+          {
+            src: "/verticalVideo.mp4",
+            type: "video",
+          },
+        ],
       },
     };
     const otherPosts: PostCardInfo[] = [...Array(3)].map(

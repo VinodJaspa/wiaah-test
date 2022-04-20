@@ -8,6 +8,7 @@ import { Country } from "country-state-city";
 import { useRouter } from "next/router";
 import { FaGlobeEurope } from "react-icons/fa";
 import { useCookies } from "react-cookie";
+import { Box } from "@chakra-ui/react";
 
 const countries = Country.getAllCountries();
 const { Option } = Select;
@@ -123,19 +124,22 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
 
   return (
     <>
-      <div className="mt-8 flex w-full justify-center md:justify-end">
+      <Box
+        color="primary.main"
+        className="mt-8 flex w-full justify-center md:justify-end"
+      >
         <div
           onClick={() => showInternationalModal()}
           className="flex cursor-pointer border border-gray-400"
         >
-          <div className="flex items-center border-r border-gray-400 p-4 text-green-300">
+          <div className="flex items-center border-r border-gray-400 p-4 ">
             <FaGlobeEurope className="mr-2 h-4 w-4" />
             {countryName}
           </div>
-          <div className="flex border-r border-gray-400 p-4 text-green-300">
+          <div className="flex border-r border-gray-400 p-4 ">
             {langCaption}
           </div>
-          <div className="flex p-4 uppercase text-green-300">({currency})</div>
+          <div className="flex p-4 uppercase ">({currency})</div>
         </div>
         <Modal
           className=""
@@ -247,7 +251,7 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
             </button>
           </div>
         </Modal>
-      </div>
+      </Box>
     </>
   );
 };

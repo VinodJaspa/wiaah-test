@@ -6,7 +6,6 @@ import {
   Text,
   Center,
 } from "@chakra-ui/react";
-import { t } from "i18next";
 import React from "react";
 import {
   Container,
@@ -32,6 +31,7 @@ import { SocialNewsfeedPostsState, SocialProfileInfoState } from "ui/state";
 import { PostComment, ShopCardInfo } from "types/market/Social";
 import { products } from "ui/placeholder";
 import { FaChevronDown } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 export const getRandomUser = () =>
   postProfilesPlaceholder[
@@ -77,6 +77,7 @@ const comments: PostComment[] = [
 export interface SocialViewProps {}
 
 const SocialView: React.FC<SocialViewProps> = () => {
+  const { t } = useTranslation();
   const profileInfo = useRecoilValue(SocialProfileInfoState);
   const posts = useRecoilValue(SocialNewsfeedPostsState);
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
@@ -87,38 +88,38 @@ const SocialView: React.FC<SocialViewProps> = () => {
       name: t("news_feed", "news feed"),
       component: <PostCardsListWrapper cols={cols} posts={posts} />,
     },
-    {
-      name: t("shop", "shop"),
-      component: (
-        <Flex gap="1rem" direction={"column"}>
-          <div className="flex justify-end">
-            <div
-              onClick={() => {
-                setFilterOpen(true);
-              }}
-              className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs md:hidden"
-            >
-              <samp>{t("Filter", "Filter")}</samp>
-              <FaChevronDown className="ml-2" />
-            </div>
-          </div>
-          <FilterModal
-            isOpen={filterOpen}
-            onClose={() => setFilterOpen(false)}
-          />
-          <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} />
-        </Flex>
-      ),
-    },
-    {
-      name: t("affiliation offers", "affiliation offers"),
-      component: (
-        <AffiliationOffersCardListWrapper
-          cols={cols}
-          items={socialAffiliationCardPlaceholders}
-        />
-      ),
-    },
+    // {
+    //   name: t("shop", "shop"),
+    //   component: (
+    //     <Flex gap="1rem" direction={"column"}>
+    //       <div className="flex justify-end">
+    //         <div
+    //           onClick={() => {
+    //             setFilterOpen(true);
+    //           }}
+    //           className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs md:hidden"
+    //         >
+    //           <samp>{t("Filter", "Filter")}</samp>
+    //           <FaChevronDown className="ml-2" />
+    //         </div>
+    //       </div>
+    //       <FilterModal
+    //         isOpen={filterOpen}
+    //         onClose={() => setFilterOpen(false)}
+    //       />
+    //       <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} />
+    //     </Flex>
+    //   ),
+    // },
+    // {
+    //   name: t("affiliation offers", "affiliation offers"),
+    //   component: (
+    //     <AffiliationOffersCardListWrapper
+    //       cols={cols}
+    //       items={socialAffiliationCardPlaceholders}
+    //     />
+    //   ),
+    // },
   ];
   const buyerTabs: TabType[] = [
     {

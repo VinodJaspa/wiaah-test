@@ -100,6 +100,7 @@
     "react-cookie": "^4.1.1",
     "react-flag-kit": "^1.0.0",
     "react-i18next": "^11.15.5",
+    "react-query": "^3.35.0",
     "react-select": "^5.2.2",
     "react-webcam": "^6.0.1",
     "swiper": "^8.0.5",

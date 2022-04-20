@@ -43,7 +43,7 @@ export interface PostInfo {
   id: string;
   content?: string;
   tags: string[];
-  attachment?: PostAttachment;
+  attachments?: PostAttachment[];
   numberOfLikes: number;
   numberOfComments: number;
   comments?: PostComment[];
@@ -69,7 +69,7 @@ export type Interactions =
   | "moreOpts";
 
 export interface ShopCardInfo {
-  attachment: PostAttachment;
+  attachments: PostAttachment[];
   rating: number;
   type: "product" | "service";
   cashback: CashBack;
@@ -89,7 +89,7 @@ export interface AffiliationOfferCardInfo {
   commission: number;
   price: number;
   affiliationLink: string;
-  attachment: PostAttachment;
+  attachments: PostAttachment[];
   name: string;
   createdAt: string;
   comments?: PostComment[];

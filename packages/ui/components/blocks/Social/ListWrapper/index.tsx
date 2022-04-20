@@ -28,7 +28,7 @@ export const ListWrapper: React.FC<ListWrapperProps> = ({
       {[...Array(cols)].map((_, index) => (
         <Flex
           data-testid="ListWrapperListContainer"
-          w="100%"
+          w={`${100 / cols}%`}
           gap="1rem"
           direction={"column"}
           key={index}

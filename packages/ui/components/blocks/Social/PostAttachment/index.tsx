@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 export interface PostAttachmentProps extends PostAttachmentType {
   alt?: string;
   fixedSize?: boolean;
+  play?: boolean;
 }
 
 export const PostAttachment: React.FC<PostAttachmentProps> = ({
@@ -13,9 +14,21 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
   src,
   alt,
   fixedSize,
+  play,
 }) => {
   const router = useRouter();
+  const videoRef = React.useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    if (videoRef.current) {
+      if (play) {
+        // do something if this is the current showing attachment
+      } else {
+        videoRef.current.pause();
+      }
+    }
+  }, [play]);
 
   function handlePlay() {
     setPlaying(true);
@@ -32,9 +45,9 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
     case "image":
       return (
         <Image
-          objectFit={fixedSize ? "cover" : "initial"}
+          objectFit={"contain"}
           w="100%"
-          h="100%"
+          h={"100%"}
           alt={alt && alt}
           src={src}
           data-testid="PostAttachmentImage"
@@ -48,7 +61,6 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           overflow={fixedSize ? "clip" : "auto"}
           position={"relative"}
           w="100%"
-          h={"100%"}
           align={"center"}
           onClick={handleGoToPost}
         >
@@ -75,13 +87,13 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
             </Flex>
           )}
           <video
-            className="object-cover"
+            ref={videoRef}
             onPause={handlePause}
             onPlay={handlePlay}
             controls
             data-testid="PostAttachmentVideo"
             width={"100%"}
-            height={"100%"}
+            height={"auto"}
             src={src}
           />
         </Flex>

@@ -15,24 +15,14 @@ import {
   PostAttachment as PostAttachmentType,
   PostComment,
   ProfileInfo,
+  AffiliationOfferCardInfo,
 } from "types/market/Social";
 import { useDateDiff } from "ui/Hooks";
 import { CommentsViewer, PostAttachment, PostInteractions } from "ui";
 import { useTranslation } from "react-i18next";
+import { ControlledCarousel } from "ui";
 
-export interface SocialAffiliationCardProps {
-  user: ProfileInfo;
-  commission: number;
-  price: number;
-  affiliationLink: string;
-  attachment: PostAttachmentType;
-  name: string;
-  createdAt: string;
-  comments?: PostComment[];
-  showComments?: boolean;
-  noOfComments: number;
-  noOfLikes: number;
-}
+export interface SocialAffiliationCardProps extends AffiliationOfferCardInfo {}
 
 export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
   affiliationLink,
@@ -40,13 +30,14 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
   createdAt,
   name,
   price,
-  attachment,
+  attachments,
   user,
   noOfComments,
   noOfLikes,
   comments = [],
   showComments,
 }) => {
+  const [active, setActive] = React.useState<number>(0);
   const { t } = useTranslation();
   const { getSince } = useDateDiff({
     from: new Date(createdAt),
@@ -105,7 +96,28 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
           </Flex>
           <Box color="black">
             <Box position={"relative"}>
-              <PostAttachment {...attachment} alt={name} />
+              {attachments && attachments.length > 1 ? (
+                <ControlledCarousel
+                  arrows={attachments.length > 1}
+                  gap={32}
+                  onCurrentActiveChange={setActive}
+                >
+                  {attachments.map((attachment, i) => (
+                    <PostAttachment
+                      play={i === active}
+                      key={attachment.src + i}
+                      type={attachment.type}
+                      src={attachment.src}
+                      alt={name}
+                    />
+                  ))}
+                </ControlledCarousel>
+              ) : (
+                attachments &&
+                attachments.length === 1 && (
+                  <PostAttachment {...attachments[0]} alt={name} />
+                )
+              )}
               <Center
                 position={"absolute"}
                 bottom="0px"
