@@ -1,5 +1,3 @@
-import { Rate } from "antd";
-import { t } from "i18next";
 import React from "react";
 import {
   Container,
@@ -17,10 +15,12 @@ import { ProductDetails } from "ui/types/products/ProductDetail.interface";
 import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
 import { categories } from "ui/placeholder/categories";
 import { FaChevronDown } from "react-icons/fa";
-import { BsArrowLeft } from "react-icons/bs";
 import { Shop, ShopProfile } from "./ShopProfile";
 import { BuyerCommentProps } from "ui/components/blocks/BuyerComment";
 import { useRouter } from "next/router";
+import { ProductTypes } from "types/market/Product";
+import { shopRouting } from "uris";
+import { useTranslation } from "react-i18next";
 
 interface ShopViewProps {
   shop: Shop;
@@ -33,11 +33,23 @@ export const ShopView: React.FC<ShopViewProps> = ({
   products,
   reviews,
 }) => {
+  const { t } = useTranslation();
   const router = useRouter();
   const [isGrid, setGrid] = React.useState(false);
   const { min } = useScreenWidth({ minWidth: 640 });
   const [filterVisibleOnMobile, setFilterVisibleOnMobile] =
     React.useState(false);
+
+  function handleNavToProduct(id: string, type: ProductTypes) {
+    switch (type) {
+      case "product":
+        router.push(`${shopRouting.productPage}/${id}`);
+        break;
+      case "service":
+        router.push(`${shopRouting.servicePage}/${id}`);
+        break;
+    }
+  }
 
   return (
     <section className="flex flex-col items-center justify-center">
@@ -98,13 +110,16 @@ export const ShopView: React.FC<ShopViewProps> = ({
                 {/* shop items */}
                 {products.map((product, i) => (
                   <ProductCard
-                    onButtonClick={(id) => router.push(`/products/${id}`)}
+                    onButtonClick={() =>
+                      handleNavToProduct(product.id, product.type)
+                    }
                     buttonText="Add to Cart"
                     id={product.id || ""}
                     name={product.name || ""}
                     imageUrl={product.imgUrl || ""}
                     price={product.price}
                     rating={product.rating}
+                    variant={product.type}
                     cashback={product.cashBack}
                     discount={product.off}
                     oldPrice={product.oldPrice}

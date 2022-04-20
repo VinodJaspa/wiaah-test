@@ -6,3 +6,5 @@ export * from "./CartSummaryItems";
 export * from "./UserAddresses";
 export * from "./Checkout";
 export * from "./Social";
+export * from "./SocialStory";
+export * from "./StorySeenByState";

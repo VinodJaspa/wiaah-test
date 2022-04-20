@@ -1,16 +1,18 @@
 import React from "react";
+import { useRouter } from "next/router";
 import { FaChevronDown } from "react-icons/fa";
-import { Card, Divider } from "../../components";
-import {
-  FaAngleDoubleLeft,
-  FaAngleDoubleRight,
-  FaAngleLeft,
-  FaAngleRight,
-} from "react-icons/fa";
-import { t } from "i18next";
-import { Collaboration } from "../../components/blocks";
-import { CookiesInfoBanner } from "ui/components/blocks/CookiesInfoBanner";
+import { Collaboration, Pagination, Card, Divider } from "ui";
+import { useTranslation } from "react-i18next";
+import { shopRouting } from "uris";
+
 export const HomeView: React.FC = () => {
+  const { t } = useTranslation();
+  const router = useRouter();
+
+  function handleNavToShop(shopId: number) {
+    router.push(shopRouting.shopPage + `/${shopId}`);
+  }
+
   return (
     <>
       <div className="block w-full space-y-6 p-6">
@@ -82,29 +84,17 @@ export const HomeView: React.FC = () => {
 
         <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {[...Array(12)].map((_, i: number) => (
-            <Card id={String(i)} key={i} name="Shop Name" imgUrl="/shop.jpeg" />
+            <Card
+              onShopClick={() => handleNavToShop(i)}
+              id={String(i)}
+              key={i}
+              name="Shop Name"
+              imgUrl="/shop.jpeg"
+            />
           ))}
         </div>
 
-        <div className="flex w-full justify-center">
-          <ul className="inline-flex items-center space-x-4 text-white">
-            <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
-              <FaAngleDoubleLeft className="h-5 w-5" />
-            </li>
-            <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
-              <FaAngleLeft className="h-5 w-5" />
-            </li>
-            <li className="flex h-10 w-10 cursor-pointer  items-center justify-center rounded-full bg-green-400 p-3">
-              1
-            </li>
-            <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
-              <FaAngleRight className="h-5 w-5" />
-            </li>
-            <li className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-400 p-3">
-              <FaAngleDoubleRight className="h-5 w-5" />
-            </li>
-          </ul>
-        </div>
+        <Pagination maxPages={1} />
 
         <Divider />
 

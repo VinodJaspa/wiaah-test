@@ -5,41 +5,30 @@ import {
   ShopProductFilter,
   ProductCard,
   Collaboration,
-  Spacer,
-  Pagination,
   GridContainerPager,
-} from "../../components";
+} from "ui/components";
 import { BreadCrumb } from "ui/components/blocks/BreadCrumb";
 import { BsArrowLeft } from "react-icons/bs";
 import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
 import { t } from "i18next";
-import { products } from "../../placeholder/products";
-import { categories } from "../../placeholder/categories";
-
+import { products } from "ui/placeholder/products";
+import { categories } from "ui/placeholder/categories";
+import { useRouter } from "next/router";
 export const SearchView: React.FC = () => {
   let [isGrid, setGrid] = useState(false);
   let [filterVisibleOnMobile, setFilterVisibleOnMobile] = useState(false);
-
-  const breadcrumb = [
-    {
-      text: t("Clothing", "Clothing"),
-      url: "/category/clothing",
-    },
-    {
-      text: t("Women_s", "Women's"),
-      url: "/category/clothing/women",
-    },
-    {
-      text: t("Dresses", "Dresses"),
-      url: "/category/clothing/women/dresses",
-    },
-  ];
-
+  const router = useRouter();
+  const breadCrumbLinks = [{ text: "wiaah", url: "/" }].concat(
+    [...(router.query.categories || [])].map((cate, i) => ({
+      text: cate,
+      url: `/${cate}`,
+    }))
+  );
   return (
     <>
       <div className="block w-full space-y-6 p-5">
         <div className="">
-          <BreadCrumb breadcrumb={breadcrumb} />
+          <BreadCrumb links={breadCrumbLinks} />
         </div>
         <div className="flex justify-end">
           <div

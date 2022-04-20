@@ -1,8 +1,7 @@
 import React from "react";
 import { Rate } from "antd";
-import { t } from "i18next";
+import { Button } from "@chakra-ui/react";
 import {
-  Button,
   BookingEventPopup,
   CloseIcon,
   Spacer,
@@ -13,6 +12,7 @@ import {
 import { Event } from "ui/components/blocks/ServiceBookingCalander";
 import { BookingEventRefProps } from "ui/components/blocks/BookingEventPopup";
 import { getTimeInAmPm } from "ui/components/helpers/getTimeInAmPm";
+import { useTranslation } from "react-i18next";
 
 export interface ProductProps {
   id?: string;
@@ -45,6 +45,7 @@ export const ServiceRightView: React.FC<ProductProps> = ({
   discontUnits,
   included,
 }) => {
+  const { t } = useTranslation();
   const bookEventPopupRef = React.useRef<BookingEventRefProps>(null);
   const { AddNewItem } = useCartSummary();
   const [event, setEvent] = React.useState<Event>();
@@ -160,7 +161,7 @@ export const ServiceRightView: React.FC<ProductProps> = ({
       <Spacer />
       <div className="flex w-full cursor-pointer">
         <FlexStack fullWidth={true} horizontalSpacingInRem={0.5}>
-          <Button onClick={() => handleOpenBookEvent()}>
+          <Button w="100%" onClick={() => handleOpenBookEvent()}>
             {event
               ? t("Update_Booking", "Update Booking")
               : t("Book_Now", "Book Now")}

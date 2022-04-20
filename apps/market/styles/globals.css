@@ -27,13 +27,9 @@
 .thinScroll::-webkit-scrollbar-thumb:hover {
   background: #888;
 }
-.no-scroll::-webkit-scrollbar {
+.no-scrollBar::-webkit-scrollbar {
   display: none;
   width: 0%;
-}
-.no-scroll {
-  overflow-y: scroll;
-  overflow-x: hidden;
 }
 
 .no-arrows::-webkit-outer-spin-button,

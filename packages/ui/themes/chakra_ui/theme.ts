@@ -1,41 +1,6 @@
 import { ComponentStyleConfig, extendTheme } from "@chakra-ui/react";
-
-// borderWidth={"0.125rem"}
-// color="black"
-// borderColor={"primary.main"}
-
-const Button: ComponentStyleConfig = {
-  baseStyle: {
-    _focus: { ring: "0px" },
-  },
-  variants: {
-    solid: {
-      bgColor: "primary.main",
-      color: "white",
-    },
-    outline: {
-      color: "black",
-      borderWidth: "0.125rem",
-      borderColor: "primary.main",
-    },
-  },
-  defaultProps: {
-    variant: "solid",
-    colorScheme: "primary",
-  },
-};
-
-const Avatar: ComponentStyleConfig = {
-  variants: {
-    blackBg: {
-      bgColor: "black",
-    },
-  },
-
-  defaultProps: {
-    variant: "blackBg",
-  },
-};
+import Button from "./Button";
+import Avatar from "./Avatar";
 
 const theme = extendTheme({
   colors: {
@@ -56,13 +21,14 @@ const theme = extendTheme({
     },
     lightBlue: "#729FE5",
     secondaryRed: "#F67171",
+    transparentBlue: "rgba(40,119,197,0.7)",
   },
   shadows: {
     main: "0px 3px 15px -5px gray",
   },
   components: {
-    Button,
     Avatar,
+    Button,
   },
 });
 

@@ -19,8 +19,10 @@ import {
 } from "ui/state";
 import { CartSummaryItem } from "types/market/CartSummary";
 import { AddressCardDetails } from "types/market/AddressDetails.interface";
+import { NavLink } from "types/sharedTypes/misc/NavLink";
 import { Box } from "@chakra-ui/react";
-import { useLoginPopup } from "ui";
+import { Container, useLoginPopup } from "ui";
+import { category } from "uris";
 
 const products: CartSummaryItem[] = [
   {
@@ -148,6 +150,149 @@ const userAddresses: AddressCardDetails[] = [
   },
 ];
 
+const navLinks: NavLink[] = [
+  {
+    name: {
+      translationKey: "shoes",
+      fallbackText: "shoes",
+    },
+    destination: `${category}/shoes`,
+  },
+  {
+    name: {
+      translationKey: "jewelry",
+      fallbackText: "jewelry",
+    },
+    destination: `${category}/jewelry`,
+  },
+  {
+    name: {
+      translationKey: "clothing",
+      fallbackText: "clothing",
+    },
+    destination: `${category}/clothing`,
+  },
+  {
+    name: {
+      translationKey: "accessories",
+      fallbackText: "accessories",
+    },
+    destination: `${category}/accessories`,
+  },
+  {
+    name: {
+      translationKey: "shoes",
+      fallbackText: "shoes",
+    },
+    destination: `${category}/shoes`,
+  },
+  {
+    name: {
+      translationKey: "jewelry",
+      fallbackText: "jewelry",
+    },
+    destination: `${category}/jewelry`,
+  },
+  {
+    name: {
+      translationKey: "clothing",
+      fallbackText: "clothing",
+    },
+    destination: `${category}/clothing`,
+  },
+  {
+    name: {
+      translationKey: "accessories",
+      fallbackText: "accessories",
+    },
+    destination: `${category}/accessories`,
+  },
+  {
+    name: {
+      translationKey: "shoes",
+      fallbackText: "shoes",
+    },
+    destination: `${category}/shoes`,
+  },
+  {
+    name: {
+      translationKey: "jewelry",
+      fallbackText: "jewelry",
+    },
+    destination: `${category}/jewelry`,
+  },
+  {
+    name: {
+      translationKey: "clothing",
+      fallbackText: "clothing",
+    },
+    destination: `${category}/clothing`,
+  },
+  {
+    name: {
+      translationKey: "accessories",
+      fallbackText: "accessories",
+    },
+    destination: `${category}/accessories`,
+  },
+  {
+    name: {
+      translationKey: "shoes",
+      fallbackText: "shoes",
+    },
+    destination: `${category}/shoes`,
+  },
+  {
+    name: {
+      translationKey: "jewelry",
+      fallbackText: "jewelry",
+    },
+    destination: `${category}/jewelry`,
+  },
+  {
+    name: {
+      translationKey: "clothing",
+      fallbackText: "clothing",
+    },
+    destination: `${category}/clothing`,
+  },
+  {
+    name: {
+      translationKey: "accessories",
+      fallbackText: "accessories",
+    },
+    destination: `${category}/accessories`,
+  },
+  {
+    name: {
+      translationKey: "shoes",
+      fallbackText: "shoes",
+    },
+    destination: `${category}/shoes`,
+  },
+  {
+    name: {
+      translationKey: "jewelry",
+      fallbackText: "jewelry",
+    },
+    destination: `${category}/jewelry`,
+  },
+  {
+    name: {
+      translationKey: "clothing",
+      fallbackText: "clothing",
+    },
+    destination: `${category}/clothing`,
+  },
+  {
+    name: {
+      translationKey: "accessories",
+      fallbackText: "accessories",
+    },
+    destination: `${category}/accessories`,
+  },
+];
+
 export interface MasterLayoutProps {
   social?: boolean;
 }
@@ -172,9 +317,9 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({ children, social }) => {
   return (
     <Root>
       <AuthPopup />
-      {!social && <Header />}
+      {!social && <Header categories={navLinks} />}
       {social && <SocialHeader />}
-      <main className="w-full ">{children}</main>
+      <main className="flex w-full flex-col">{children}</main>
       {!social && <Footer />}
       {!social && <AuthFooter />}
       {!social && (

@@ -1,13 +1,12 @@
 import React from "react";
+import { Box, Button, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import {
-  Avatar,
-  Button,
-  Flex,
-  HStack,
-  Text,
-  useBreakpointValue,
-} from "@chakra-ui/react";
-import { PostCard, PostCardsListWrapper, SocialPostHeader } from "ui";
+  PostCard,
+  PostCardsListWrapper,
+  SocialStoriesModal,
+  useStory,
+  SocialPostHeader,
+} from "ui";
 import { useRecoilValue } from "recoil";
 import {
   SocialNewsfeedOtherPostsState,
@@ -28,6 +27,11 @@ export const PostView: React.FC = () => {
         mb="6rem"
         align={"start"}
       >
+        <SocialStoriesModal />
+        <SocialPostHeader
+          name={postCardInfo.profileInfo.name}
+          thumbnail={postCardInfo.profileInfo.thumbnail}
+        />
         <PostCard
           showComments
           postInfo={postCardInfo.postInfo}

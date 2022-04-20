@@ -7,6 +7,7 @@ export interface ProfileInfo {
   name: string;
   thumbnail: string;
   accountType: "seller" | "buyer";
+  public: boolean;
 }
 
 export interface ShopScoialProfileInfo extends ProfileInfo {
@@ -42,7 +43,7 @@ export interface PostInfo {
   id: string;
   content?: string;
   tags: string[];
-  attachment?: PostAttachment;
+  attachments?: PostAttachment[];
   numberOfLikes: number;
   numberOfComments: number;
   comments?: PostComment[];
@@ -68,7 +69,7 @@ export type Interactions =
   | "moreOpts";
 
 export interface ShopCardInfo {
-  attachment: PostAttachment;
+  attachments: PostAttachment[];
   rating: number;
   type: "product" | "service";
   cashback: CashBack;
@@ -88,7 +89,7 @@ export interface AffiliationOfferCardInfo {
   commission: number;
   price: number;
   affiliationLink: string;
-  attachment: PostAttachment;
+  attachments: PostAttachment[];
   name: string;
   createdAt: string;
   comments?: PostComment[];
@@ -100,4 +101,28 @@ export interface AffiliationOfferCardInfo {
 export interface HashTagCardInfo {
   title: string;
   attachment: PostAttachment;
+}
+
+export interface SocialStoryData {
+  id: string;
+  storyType: "text" | "image" | "video";
+  storySrc?: string;
+  storyText?: string;
+  storyCreationDate: string;
+  storyViews: number;
+}
+
+export interface SocialStoryContentData
+  extends Pick<
+    SocialStoryData,
+    "storyType" | "storySrc" | "storyText" | "id"
+  > {}
+
+export interface SocialStoryDataWithUser extends SocialStoryData {
+  user: ProfileInfo;
+}
+
+export interface StorySeenByUserInfo {
+  photoSrc: string;
+  name: string;
 }

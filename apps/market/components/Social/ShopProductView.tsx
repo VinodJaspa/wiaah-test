@@ -2,7 +2,12 @@ import { Button, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import { t } from "i18next";
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { ShopCardsListWrapper, SocialPostHeader, SocialShopCard } from "ui";
+import {
+  ShopCardsListWrapper,
+  SocialPostHeader,
+  SocialShopCard,
+  SocialStoriesModal,
+} from "ui";
 
 import { SocialShopOtherPostsState, SocialShopPostState } from "ui/state";
 
@@ -21,6 +26,11 @@ export const ShopProductView: React.FC<ShopProductViewProps> = ({}) => {
         mb="6rem"
         align={"start"}
       >
+        <SocialStoriesModal />
+        <SocialPostHeader
+          name={product.user.name}
+          thumbnail={product.user.thumbnail}
+        />
         <SocialShopCard showComments shopCardInfo={product} />
       </Flex>
       <Text

@@ -17,6 +17,7 @@ const getRandomShops = (): CollaboratorShop[] => {
       name,
       location: "test location",
       thumbnailUrl: imgUrl,
+      id: `${Math.random() * 100}`,
     });
   }
 
