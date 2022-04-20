@@ -1,6 +1,8 @@
 import React from "react";
 import SimpleImageSlider from "react-simple-image-slider";
 import { useMediaQuery } from "react-responsive";
+import { useRouter } from "next/router";
+import { shopRouting } from "uris";
 
 const images = [
   { url: "/shop.jpeg" },
@@ -9,11 +11,15 @@ const images = [
 ];
 
 export const ImageSlider: React.FC = () => {
+  const router = useRouter();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
   const isLargeScreen = useMediaQuery({ query: "(min-width: 1980px)" });
   return (
     <>
-      <div className="flex w-full justify-center">
+      <div
+        onClick={() => router.push(shopRouting.searchRefaults)}
+        className="flex w-full justify-center"
+      >
         <SimpleImageSlider
           autoPlay
           width="100%"
