@@ -7,6 +7,8 @@ export interface PostAttachmentProps extends PostAttachmentType {
   alt?: string;
   fixedSize?: boolean;
   play?: boolean;
+  controls?: boolean;
+  autoPlay?: boolean;
 }
 
 export const PostAttachment: React.FC<PostAttachmentProps> = ({
@@ -15,6 +17,8 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
   alt,
   fixedSize,
   play,
+  autoPlay,
+  controls = true,
 }) => {
   const router = useRouter();
   const videoRef = React.useRef<HTMLVideoElement>(null);
@@ -22,7 +26,8 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
 
   React.useEffect(() => {
     if (videoRef.current) {
-      if (play) {
+      if (play && autoPlay) {
+        videoRef.current.play();
         // do something if this is the current showing attachment
       } else {
         videoRef.current.pause();
@@ -64,7 +69,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           align={"center"}
           onClick={handleGoToPost}
         >
-          {!playing && (
+          {!playing && !autoPlay && (
             <Flex
               position={"absolute"}
               top="0%"
@@ -90,7 +95,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
             ref={videoRef}
             onPause={handlePause}
             onPlay={handlePlay}
-            controls
+            controls={controls}
             data-testid="PostAttachmentVideo"
             width={"100%"}
             height={"auto"}

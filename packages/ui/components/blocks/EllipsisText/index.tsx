@@ -19,6 +19,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   const [showMore, setShowMore] = React.useState<boolean>(false);
   const postTextRef = React.useRef<HTMLParagraphElement>(null);
   const helperTextRef = React.useRef<HTMLParagraphElement>(null);
+  const EllipsisRef = React.useRef<HTMLParagraphElement>(null);
 
   function getLineHeight(element: HTMLElement | null, text: string) {
     if (!element) return;
@@ -90,7 +91,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
           transform="auto"
         >
           <Flex bg="primary.light" gap="0.5rem">
-            <Text color="black" bg="primary.light">
+            <Text ref={EllipsisRef} color="black" bg="primary.light">
               ...
             </Text>
             <Text

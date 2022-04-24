@@ -30,6 +30,32 @@ const theme = extendTheme({
     Avatar,
     Button,
   },
+  global: {
+    ".thinScroll::-webkit-scrollbar": {
+      width: "5px",
+      borderRadius: "2rem",
+    },
+
+    /* Track */
+    ".thinScroll::-webkit-scrollbar-track": {
+      background: "#fff",
+    },
+
+    /* Handle */
+    ".thinScroll::-webkit-scrollbar-thumb": {
+      background: "#999999",
+    },
+
+    /* Handle on hover */
+    ".thinScroll::-webkit-scrollbar-thumb:hover": {
+      background: "#888",
+    },
+    ".no-scrollBar::-webkit-scrollbar": {
+      display: "none",
+      width: "0px",
+      height: "0px",
+    },
+  },
 });
 
 export default theme;

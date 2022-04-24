@@ -8,3 +8,4 @@ export * from "./Checkout";
 export * from "./Social";
 export * from "./SocialStory";
 export * from "./StorySeenByState";
+export * from "./Seller";
