@@ -390,18 +390,18 @@ export const newsfeedPosts: PostCardInfo[] = [
           type: "image",
           src: "/verticalImage.jpg",
         },
-        {
-          src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
-          type: "video",
-        },
-        {
-          src: "/shop.jpeg",
-          type: "image",
-        },
-        {
-          src: "/verticalVideo.mp4",
-          type: "video",
-        },
+        // {
+        //   src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
+        //   type: "video",
+        // },
+        // {
+        //   src: "/shop.jpeg",
+        //   type: "image",
+        // },
+        // {
+        //   src: "/verticalVideo.mp4",
+        //   type: "video",
+        // },
       ],
       content: "",
       comments: [

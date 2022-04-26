@@ -1,3 +1,3 @@
-import { LoginInputsType } from "../../../../packages/types/market/authenticating/loginInput.interface";
+// import { LoginInputsType } from "../../../../packages/types/market/authenticating/loginInput.interface";
 
-export const HandleLoginRequest = ({}: LoginInputsType) => {};
+export const HandleLoginRequest = () => {};

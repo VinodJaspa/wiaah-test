@@ -3,60 +3,61 @@ import { PostComment } from "types/market/Social";
 import { Flex, Text, Box } from "@chakra-ui/react";
 import { PostCommentCard } from "ui";
 import { useTranslation } from "react-i18next";
+import { ScrollableContainer } from "../../DataDisplay";
 export interface CommentsViewerProps {
   comments: PostComment[];
   maxInitailComments: number;
 }
 
 export const CommentsViewer: React.FC<CommentsViewerProps> = ({
-  comments: Comments,
+  comments,
   maxInitailComments,
 }) => {
-  const { t } = useTranslation();
-  const [comments, setComments] = React.useState<PostComment[]>(
-    Comments.slice(0, maxInitailComments)
-  );
-  const [showMore, setShowMore] = React.useState<boolean>(false);
-  const commentsContainerRef = React.useRef<HTMLDivElement>(null);
-  const MockCommentsContainerRef = React.useRef<HTMLDivElement>(null);
-  const [loaded, setLoaded] = React.useState<boolean>(false);
-  const isShowMore = (Comments.length || 1) > maxInitailComments;
+  // const { t } = useTranslation();
+  // const [comments, setComments] = React.useState<PostComment[]>(
+  //   Comments.slice(0, maxInitailComments)
+  // );
+  // const [showMore, setShowMore] = React.useState<boolean>(false);
+  // const commentsContainerRef = React.useRef<HTMLDivElement>(null);
+  // const MockCommentsContainerRef = React.useRef<HTMLDivElement>(null);
+  // const [loaded, setLoaded] = React.useState<boolean>(false);
+  // const isShowMore = (Comments.length || 1) > maxInitailComments;
 
-  function setHeight(): number {
-    const maxH = MockCommentsContainerRef.current?.offsetHeight;
-    return maxH || 1;
-  }
+  // function setHeight(): number {
+  //   const maxH = MockCommentsContainerRef.current?.offsetHeight;
+  //   return maxH || 1;
+  // }
 
-  const containerHeight = setHeight();
+  // const containerHeight = setHeight();
 
-  function handleLoaded() {
-    setLoaded((state) => !state);
-  }
+  // function handleLoaded() {
+  //   setLoaded((state) => !state);
+  // }
 
-  React.useEffect(() => {
-    setComments(() => {
-      if (Comments && !showMore) {
-        return Comments.slice(0, 4);
-      } else {
-        return Comments || [];
-      }
-    });
-  }, [showMore]);
+  // React.useEffect(() => {
+  //   setComments(() => {
+  //     if (Comments && !showMore) {
+  //       return Comments.slice(0, 4);
+  //     } else {
+  //       return Comments || [];
+  //     }
+  //   });
+  // }, [showMore]);
 
-  function handleShowMoreComments() {
-    setShowMore(true);
-  }
+  // function handleShowMoreComments() {
+  //   setShowMore(true);
+  // }
 
-  function handleShowLessComments() {
-    if (commentsContainerRef.current && commentsContainerRef.current.scrollTo) {
-      commentsContainerRef.current.scrollTo(0, 0);
-    }
-    setShowMore(false);
-  }
+  // function handleShowLessComments() {
+  //   if (commentsContainerRef.current && commentsContainerRef.current.scrollTo) {
+  //     commentsContainerRef.current.scrollTo(0, 0);
+  //   }
+  //   setShowMore(false);
+  // }
 
   return (
     <>
-      <Flex onLoad={handleLoaded} position={"relative"}>
+      {/* <Flex onLoad={handleLoaded} position={"relative"}>
         <Flex
           ref={commentsContainerRef}
           overflowY={showMore ? "scroll" : "hidden"}
@@ -106,7 +107,12 @@ export const CommentsViewer: React.FC<CommentsViewerProps> = ({
             </Text>
           )}
         </Box>
-      )}
+      )} */}
+      <ScrollableContainer maxInitialItems={maxInitailComments}>
+        {comments.map((comment, i) => (
+          <PostCommentCard {...comment} key={i} />
+        ))}
+      </ScrollableContainer>
     </>
   );
 };

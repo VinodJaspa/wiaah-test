@@ -1,9 +1,12 @@
 import React from "react";
 
-export const Verified: React.FC = () => {
+export const Verified: React.FC = ({ ...props }) => {
   return (
-    <>
-      <img src="/verified.png" className="h-4 w-4 " alt="shop verified" />
-    </>
+    <img
+      {...props}
+      src="/verified.png"
+      className="h-4 w-4 "
+      alt="shop verified"
+    />
   );
 };

@@ -14,7 +14,6 @@ export interface SocialStoryViewerProps {
   stories: SocialStoryData[];
 }
 
-let timeout: NodeJS.Timer;
 export const SocialStoryViewer: React.FC<SocialStoryViewerProps> = ({
   stories,
   user,

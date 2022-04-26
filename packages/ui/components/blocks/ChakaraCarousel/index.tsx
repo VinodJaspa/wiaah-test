@@ -21,10 +21,10 @@ import {
 } from "@chakra-ui/react";
 
 import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
-import { motion, useAnimation, useMotionValue } from "framer-motion";
+import { motion, PanInfo, useAnimation, useMotionValue } from "framer-motion";
 import { useBoundingRect } from "ui/Hooks";
 
-const MotionFlex = motion(Flex);
+const MotionFlex = motion<FlexProps>(Flex);
 
 const transitionProps = {
   stiffness: 400,
@@ -36,13 +36,17 @@ const transitionProps = {
 export interface ChakaraCarouselProps extends FlexProps {
   children: React.ReactElement[];
   gap?: number;
-  activeItem: number;
-  setActiveItem: (item: number) => any;
-  onCurrentActiveChange?: (currentActive: number) => any;
+  activeItem?: number;
+  setActiveItem?: (item: number) => any;
+  onCurrentActiveChange?: (
+    currentActive: number,
+    currentActiveData?: any
+  ) => any;
   trackBgColor?: string;
   arrows?: boolean;
   swipe?: boolean;
   navigateOnClick?: boolean;
+  movementDirection?: "vertical" | "horizontal";
 }
 
 export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
@@ -55,14 +59,19 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
   arrows,
   swipe,
   navigateOnClick,
+  movementDirection = "horizontal",
   ...props
 }) => {
   const [trackIsActive, setTrackIsActive] = React.useState(false);
   const [multiplier, setMultiplier] = React.useState(0.35);
   const [sliderWidth, setSliderWidth] = React.useState(0);
-  // const [activeItem, setActiveItem] = useState(0);
+  const [ActiveItem, SetActiveItem] = useState(0);
   const [constraint, setConstraint] = React.useState(0);
   const [itemWidth, setItemWidth] = React.useState(0);
+
+  React.useEffect(() => {
+    SetActiveItem(activeItem);
+  }, [activeItem]);
 
   const initSliderWidth = useCallback((width) => setSliderWidth(width), []);
 
@@ -91,7 +100,7 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
 
   useEffect(() => {
     setItemWidth(sliderWidth);
-    setMultiplier(0.65);
+    setMultiplier(0.2);
     setConstraint(1);
     // if (isBetweenBaseAndMd) {
     //   setItemWidth(sliderWidth - gap);
@@ -113,8 +122,8 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
   const sliderProps = {
     setTrackIsActive,
     initSliderWidth,
-    setActiveItem,
-    activeItem,
+    setActiveItem: SetActiveItem,
+    activeItem: ActiveItem,
     constraint,
     itemWidth,
     positions,
@@ -126,9 +135,9 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
   const trackProps = {
     setTrackIsActive,
     trackIsActive,
-    setActiveItem,
+    setActiveItem: SetActiveItem,
+    activeItem: ActiveItem,
     sliderWidth,
-    activeItem,
     constraint,
     multiplier,
     itemWidth,
@@ -140,8 +149,8 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
   const itemProps = {
     setTrackIsActive,
     trackIsActive,
-    setActiveItem,
-    activeItem,
+    setActiveItem: SetActiveItem,
+    activeItem: ActiveItem,
     constraint,
     itemWidth,
     positions,
@@ -335,7 +344,8 @@ interface TrackProps {
   positions: number[];
   trackBgColor?: string;
   children: ReactElement[];
-  swipe?: boolean;
+  swipe?: true;
+  movementDirection?: "vertical" | "horizontal";
 }
 
 const Track: React.FC<TrackProps> = ({
@@ -350,6 +360,7 @@ const Track: React.FC<TrackProps> = ({
   children,
   trackBgColor,
   swipe,
+  movementDirection,
 }) => {
   const [dragStartPosition, setDragStartPosition] = useState(0);
   const controls = useAnimation();
@@ -358,7 +369,7 @@ const Track: React.FC<TrackProps> = ({
 
   const handleDragStart = () => setDragStartPosition(positions[activeItem]);
 
-  const handleDragEnd = (_: any, info: any) => {
+  const handleDragEnd = (event: React.MouseEvent, info: PanInfo) => {
     const distance = info.offset.x;
     const velocity = info.velocity.x * multiplier;
     const direction = velocity < 0 || distance < 0 ? 1 : -1;
@@ -460,7 +471,7 @@ const Track: React.FC<TrackProps> = ({
           onDragEnd={handleDragEnd}
           animate={controls}
           style={{ x }}
-          drag={swipe && "x"}
+          drag={"x"}
           _active={swipe && { cursor: "grabbing" }}
           minWidth="min-content"
           flexWrap="nowrap"

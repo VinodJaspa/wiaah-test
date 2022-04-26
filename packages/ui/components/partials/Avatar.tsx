@@ -1,22 +1,15 @@
-import { Avatar as ChakaraAvatar, ThemingProps } from "@chakra-ui/react";
+import {
+  Avatar as ChakaraAvatar,
+  ThemingProps,
+  AvatarProps as ChakraAvatarProps,
+} from "@chakra-ui/react";
 import React from "react";
 
-export interface AvatarProps {
+export interface AvatarProps extends ChakraAvatarProps {
   name: string;
   photoSrc: string;
   newStory?: boolean;
   onClick?: () => any;
-  size?:
-    | (string & {})
-    | "2xl"
-    | "2xs"
-    | "xs"
-    | "sm"
-    | "md"
-    | "lg"
-    | "xl"
-    | "full"
-    | undefined;
   showBorder?: boolean;
 }
 
@@ -25,8 +18,8 @@ export const Avatar: React.FC<AvatarProps> = ({
   photoSrc,
   newStory,
   onClick,
-  showBorder,
-  size,
+  showBorder = true,
+  ...props
 }) => {
   function handleAvatarClick() {
     if (onClick) {
@@ -38,7 +31,6 @@ export const Avatar: React.FC<AvatarProps> = ({
     <ChakaraAvatar
       onClick={handleAvatarClick}
       showBorder={showBorder}
-      size={size}
       name={name}
       src={photoSrc}
       sx={{
@@ -50,7 +42,8 @@ export const Avatar: React.FC<AvatarProps> = ({
       cursor={"pointer"}
       borderColor={newStory ? "crimson" : "white"}
       bgColor="black"
-      borderWidth={"0.25rem"}
+      borderWidth={showBorder ? "0.25rem" : "0px"}
+      {...props}
     />
   );
 };

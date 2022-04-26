@@ -49,7 +49,6 @@ export const PostCard: React.FC<PostCardProps> = ({
       bg="white"
       gap="0.5rem"
       p="1rem"
-      boxShadow={"main"}
       rounded="lg"
       maxW="100%"
       overflow={"auto"}
