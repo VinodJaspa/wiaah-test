@@ -7,29 +7,44 @@ const transitionProps = {
   damping: 60,
   mass: 3,
 };
-export interface ActionsDisplayProps extends FlexProps {
+export interface VerticalCarouselProps extends FlexProps {
   children: React.ReactElement[];
   gap?: number;
-  onActiveItemChange?: (index: number) => any;
+  explicitActiveItem?: number;
+  onCurrentActiveChange?: (index: number) => any;
   itemProps?: FlexProps;
+  arrows?: boolean;
+  onPassMaxLimit?: () => any;
+  onPassMinLimit?: () => any;
 }
 
 const MotionFlex = motion<FlexProps>(Flex);
 
-export const ActionsDisplay: React.FC<ActionsDisplayProps> = ({
+export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
   children,
   gap = 0,
-  onActiveItemChange,
+  onCurrentActiveChange,
   itemProps,
+  onPassMaxLimit,
+  onPassMinLimit,
+  arrows,
+  explicitActiveItem,
   ...props
 }) => {
   const [dragStartPosition, setDragStartPosition] = React.useState(0);
   const [activeItem, setActiveItem] = React.useState<number>(0);
   const [itemHeight, setItemHeight] = React.useState<number>(0);
+  const [itemWidth, setItemWidth] = React.useState(0);
 
   React.useEffect(() => {
-    onActiveItemChange && onActiveItemChange(activeItem);
+    onCurrentActiveChange && onCurrentActiveChange(activeItem);
   }, [activeItem]);
+
+  React.useEffect(() => {
+    if (explicitActiveItem) {
+      setActiveItem(explicitActiveItem);
+    }
+  }, [explicitActiveItem]);
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const TrackContainerRef = React.useRef<HTMLDivElement>(null);
@@ -46,6 +61,7 @@ export const ActionsDisplay: React.FC<ActionsDisplayProps> = ({
     if (containerRef.current) {
       const containerProps = containerRef.current.getBoundingClientRect();
       setItemHeight(containerProps.height);
+      setItemWidth(containerProps.width);
     }
   }, [containerRef]);
 
@@ -61,7 +77,15 @@ export const ActionsDisplay: React.FC<ActionsDisplayProps> = ({
       (direction === 1
         ? Math.min(velocity, distance)
         : Math.max(velocity, distance));
-
+    if (
+      extrapolatedPosition < positions[positions.length - 1] &&
+      activeItem === positions.length - 1
+    ) {
+      onPassMaxLimit && onPassMaxLimit();
+    }
+    if (extrapolatedPosition > 0 && activeItem === 0) {
+      onPassMinLimit && onPassMinLimit();
+    }
     const closestPosition = positions.reduce((prev, curr) => {
       return Math.abs(curr - extrapolatedPosition) <
         Math.abs(prev - extrapolatedPosition)
@@ -91,7 +115,13 @@ export const ActionsDisplay: React.FC<ActionsDisplayProps> = ({
   };
 
   return (
-    <Flex {...props} ref={containerRef} w="100%" position={"relative"}>
+    <Flex
+      data-testid="CarouselSlider"
+      {...props}
+      ref={containerRef}
+      w="100%"
+      position={"relative"}
+    >
       <Box w="100%" ref={TrackContainerRef}>
         <MotionFlex
           dragConstraints={TrackContainerRef}
@@ -107,21 +137,35 @@ export const ActionsDisplay: React.FC<ActionsDisplayProps> = ({
           w="100%"
           gap={gap}
         >
-          {children &&
+          {/* {children && */}
+          {children && children.length > 1 ? (
             children.map((child, i) => (
               <Flex
                 align="center"
                 justify={"center"}
                 key={i}
                 data-testid="Item"
-                w="100%"
+                w={itemWidth}
                 h={itemHeight}
                 overflow="hidden"
                 {...itemProps}
               >
                 {child}
               </Flex>
-            ))}
+            ))
+          ) : (
+            <Flex
+              align="center"
+              justify={"center"}
+              data-testid="Item"
+              w={"auto"}
+              h={itemHeight}
+              overflow="hidden"
+              {...itemProps}
+            >
+              {children}
+            </Flex>
+          )}
         </MotionFlex>
       </Box>
     </Flex>

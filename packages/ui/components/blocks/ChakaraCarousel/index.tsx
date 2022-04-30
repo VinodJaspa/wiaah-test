@@ -18,6 +18,7 @@ import {
   Flex,
   Box,
   FlexProps,
+  StackProps,
 } from "@chakra-ui/react";
 
 import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
@@ -47,6 +48,9 @@ export interface ChakaraCarouselProps extends FlexProps {
   swipe?: boolean;
   navigateOnClick?: boolean;
   movementDirection?: "vertical" | "horizontal";
+  trackStyle?: StackProps;
+  onPassMaxLimit?: () => any;
+  onPassMinLimit?: () => any;
 }
 
 export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
@@ -60,6 +64,9 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
   swipe,
   navigateOnClick,
   movementDirection = "horizontal",
+  trackStyle,
+  onPassMaxLimit,
+  onPassMinLimit,
   ...props
 }) => {
   const [trackIsActive, setTrackIsActive] = React.useState(false);
@@ -130,20 +137,25 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
     arrows,
     navigateOnClick,
     gap,
+    onPassMaxLimit,
+    onPassMinLimit,
   };
 
-  const trackProps = {
+  const trackProps: TrackProps = {
     setTrackIsActive,
     trackIsActive,
     setActiveItem: SetActiveItem,
     activeItem: ActiveItem,
-    sliderWidth,
     constraint,
     multiplier,
     itemWidth,
     positions,
-    gap,
     trackBgColor,
+    style: trackStyle,
+    onPassMaxLimit,
+    onPassMinLimit,
+    swipe,
+    gap,
   };
 
   const itemProps = {
@@ -183,6 +195,8 @@ interface SliderProps extends FlexProps {
   arrows?: boolean;
   gap: number;
   navigateOnClick?: boolean;
+  onPassMaxLimit?: () => any;
+  onPassMinLimit?: () => any;
 }
 
 const Slider: React.FC<SliderProps> = ({
@@ -197,6 +211,8 @@ const Slider: React.FC<SliderProps> = ({
   arrows,
   itemWidth,
   navigateOnClick,
+  onPassMaxLimit,
+  onPassMinLimit,
   ...props
 }) => {
   const sliderRef = React.useRef<HTMLDivElement>(null);
@@ -222,12 +238,18 @@ const Slider: React.FC<SliderProps> = ({
   const handleFocus = () => setTrackIsActive(true);
 
   const handleDecrementClick = () => {
+    if (activeItem === 0) {
+      onPassMinLimit && onPassMinLimit();
+    }
     setTrackIsActive(true);
     !(activeItem === positions.length - positions.length) &&
       setActiveItem(activeItem - 1);
   };
 
   const handleIncrementClick = () => {
+    if (activeItem === positions.length - 1) {
+      onPassMaxLimit && onPassMaxLimit();
+    }
     !(activeItem === positions.length - constraint) &&
       setActiveItem(activeItem + 1);
   };
@@ -262,6 +284,7 @@ const Slider: React.FC<SliderProps> = ({
       <Box
         onClick={handleSliderClick}
         w="100%"
+        h="100%"
         transition="all"
         transitionDuration={"500ms"}
         // w={{ base: "100%", md: `calc(100% + ${gap}px)` }}
@@ -343,9 +366,13 @@ interface TrackProps {
   itemWidth: number;
   positions: number[];
   trackBgColor?: string;
-  children: ReactElement[];
-  swipe?: true;
+  children?: ReactElement[];
+  swipe?: boolean;
   movementDirection?: "vertical" | "horizontal";
+  style?: StackProps;
+  gap: number;
+  onPassMaxLimit?: () => any;
+  onPassMinLimit?: () => any;
 }
 
 const Track: React.FC<TrackProps> = ({
@@ -361,6 +388,10 @@ const Track: React.FC<TrackProps> = ({
   trackBgColor,
   swipe,
   movementDirection,
+  style,
+  gap,
+  onPassMaxLimit,
+  onPassMinLimit,
 }) => {
   const [dragStartPosition, setDragStartPosition] = useState(0);
   const controls = useAnimation();
@@ -380,11 +411,28 @@ const Track: React.FC<TrackProps> = ({
         ? Math.min(velocity, distance)
         : Math.max(velocity, distance));
 
+    if (
+      extrapolatedPosition < positions[positions.length - 1] &&
+      activeItem === positions.length - 1
+    ) {
+      onPassMaxLimit && onPassMaxLimit();
+    }
+    if (extrapolatedPosition > 0 && activeItem === 0) {
+      onPassMinLimit && onPassMinLimit();
+    }
     const closestPosition = positions.reduce((prev, curr) => {
-      return Math.abs(curr - extrapolatedPosition) <
+      if (
+        Math.abs(curr - extrapolatedPosition) <
         Math.abs(prev - extrapolatedPosition)
-        ? curr
-        : prev;
+      ) {
+        // console.log("test 1", extrapolatedPosition, curr, prev);
+        return curr;
+      } else {
+        // if (prev < 1 && extrapolatedPosition > 0) {
+        //   console.log("call prev");
+        // }
+        return prev;
+      }
     }, 0);
 
     if (!(closestPosition < positions[positions.length - constraint])) {
@@ -464,18 +512,26 @@ const Track: React.FC<TrackProps> = ({
   return (
     <>
       {/* {itemWidth && ( */}
-      <VStack bg={trackBgColor} ref={node} spacing={5} alignItems="stretch">
+      <VStack
+        {...style}
+        bg={trackBgColor}
+        ref={node}
+        spacing={5}
+        alignItems="stretch"
+      >
         <MotionFlex
           dragConstraints={node}
           onDragStart={handleDragStart}
           onDragEnd={handleDragEnd}
           animate={controls}
           style={{ x }}
+          w={`calc((100% + ${gap}px) * ${positions.length})`}
           drag={"x"}
-          _active={swipe && { cursor: "grabbing" }}
+          h="100%"
+          _active={swipe ? { cursor: "grabbing" } : undefined}
           minWidth="min-content"
           flexWrap="nowrap"
-          cursor={swipe && "grab"}
+          cursor={swipe ? "grab" : "auto"}
         >
           {children}
         </MotionFlex>
@@ -527,7 +583,10 @@ const Item: React.FC<ItemProps> = ({
       onKeyUp={handleKeyUp}
       onKeyDown={handleKeyDown}
       // onMouseOver={(e) => console.log(e)}
-      w={`${itemWidth}px`}
+      w={`calc((100% / ${positions.length}) + ${gap}px )`}
+      h="100%"
+      justify="center"
+      align={"center"}
       _notLast={{
         mr: `${gap}px`,
       }}

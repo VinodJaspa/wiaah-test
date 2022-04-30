@@ -17,14 +17,14 @@ import React from "react";
 import { SellerDrawerOpenState } from "ui/state";
 import { HiMenu } from "react-icons/hi";
 import { useRecoilState } from "recoil";
-import { IconType } from "react-icons";
 import { NavigationLinkType } from "types/sharedTypes/misc/SellerNavigationLink";
+import { useResponsive } from "ui";
 
 export interface SellerNavigationDrawerProps
   extends Omit<DrawerProps, "children" | "isOpen" | "onClose"> {
   links: NavigationLinkType[];
-  activeLink?: number;
-  onLinkClick?: (link: NavigationLinkType, idx: number) => any;
+  activeLink?: string;
+  onLinkClick?: (link: NavigationLinkType) => any;
 }
 
 export const SellerNavigationDrawer: React.FC<SellerNavigationDrawerProps> = ({
@@ -34,13 +34,14 @@ export const SellerNavigationDrawer: React.FC<SellerNavigationDrawerProps> = ({
   children,
   ...props
 }) => {
+  const { isMobile } = useResponsive();
   const [isOpen, setOpen] = useRecoilState(SellerDrawerOpenState);
   return (
     <Drawer
       {...props}
       isOpen={isOpen}
       placement="left"
-      size={"xs"}
+      size={isMobile ? "full" : "xs"}
       onClose={() => setOpen(false)}
     >
       <DrawerOverlay />
@@ -72,13 +73,13 @@ export const SellerNavigationDrawer: React.FC<SellerNavigationDrawerProps> = ({
                   spacing="2rem"
                   py="0.5rem"
                   w="100%"
-                  onClick={() => onLinkClick && onLinkClick(link, i)}
+                  onClick={() => onLinkClick && onLinkClick(link)}
                 >
                   <Icon
                     w={"2rem"}
                     h={"2rem"}
                     fontSize={"xx-large"}
-                    as={activeLink === i ? link.activeIcon : link.icon}
+                    as={activeLink === link.url ? link.activeIcon : link.icon}
                   />
                   <Text
                     textTransform={"capitalize"}

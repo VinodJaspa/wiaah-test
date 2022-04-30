@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, HStack, Icon, Text, FlexProps } from "@chakra-ui/react";
 import { ProfileInfo, PostInfo } from "types/market/Social";
 import {
   PostInteractions,
@@ -14,6 +14,8 @@ import {
 import { useLoginPopup, useStory } from "ui/Hooks";
 import { useRouter } from "next/router";
 import { ControlledCarousel } from "../../ControlledCarousel";
+import { HiLocationMarker, HiUser } from "react-icons/hi";
+import { PostAttachmentsViewer } from "../../DataDisplay";
 
 export interface PostCardProps {
   profileInfo: ProfileInfo;
@@ -21,6 +23,7 @@ export interface PostCardProps {
   showComments?: boolean;
   profileFunctional?: boolean;
   newStory?: boolean;
+  innerProps?: FlexProps;
 }
 
 export const PostCard: React.FC<PostCardProps> = ({
@@ -29,6 +32,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   showComments,
   profileFunctional,
   newStory,
+  innerProps,
 }) => {
   const [active, setActive] = React.useState(0);
   const router = useRouter();
@@ -44,15 +48,19 @@ export const PostCard: React.FC<PostCardProps> = ({
       router.push("localhost:3002/social/wiaah/newsfeed-post/15");
     }
   }
+  function handleViewPost() {
+    router.push("/", { query: { postId: postInfo.id } }, { shallow: true });
+  }
   return (
     <Flex
       bg="white"
-      gap="0.5rem"
-      p="1rem"
+      gap="0.25rem"
+      // p="1rem"
       rounded="lg"
       maxW="100%"
-      overflow={"auto"}
+      overflow={"hidden"}
       direction={"column"}
+      {...innerProps}
     >
       {profileInfo && (
         <PostHead
@@ -62,37 +70,24 @@ export const PostCard: React.FC<PostCardProps> = ({
           newStory={newStory}
           functional={profileFunctional}
           onProfileClick={handleProfileClick}
+          onViewPostClick={handleViewPost}
         />
       )}
       {postInfo.content && (
         <EllipsisText wordBreak content={postInfo.content} maxLines={3} />
       )}
-      <HashTags color="primary.main" tags={postInfo.tags} />
-      {postInfo.attachments && postInfo.attachments.length > 1 ? (
-        <ControlledCarousel
-          arrows={postInfo.attachments.length > 1}
-          gap={32}
-          onCurrentActiveChange={setActive}
-        >
-          {postInfo.attachments.map((attachment, i) => (
-            <PostAttachment
-              play={i === active}
-              key={attachment.src + i}
-              type={attachment.type}
-              src={attachment.src}
-              alt={profileInfo && profileInfo.name}
-            />
-          ))}
-        </ControlledCarousel>
-      ) : (
-        postInfo.attachments &&
-        postInfo.attachments.length === 1 && (
-          <PostAttachment
-            {...postInfo.attachments[0]}
-            alt={profileInfo && profileInfo.name}
-          />
-        )
-      )}
+      <HashTags
+        style={{ pb: "0.5" }}
+        color="primary.main"
+        tags={postInfo.tags}
+      />
+      <PostAttachmentsViewer
+        attachments={postInfo.attachments || []}
+        profileInfo={profileInfo}
+        carouselProps={{
+          bg: "black",
+        }}
+      />
       <PostInteractions
         onInteraction={handleOpenLogin}
         shares={0}

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { ScrollableContainer } from "../../DataDisplay";
 export interface CommentsViewerProps {
   comments: PostComment[];
-  maxInitailComments: number;
+  maxInitailComments?: number;
 }
 
 export const CommentsViewer: React.FC<CommentsViewerProps> = ({

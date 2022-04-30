@@ -1,27 +1,27 @@
 import React from "react";
 import { NextPage } from "next";
-import { SocialAuthFooter } from "ui";
+import { PlaceCard, PlaceCardProps } from "ui";
 import { Box } from "@chakra-ui/react";
+import { PostCardPlaceHolder } from "ui/placeholder";
+
+export const placeCardPlaceholder: PlaceCardProps = {
+  user: PostCardPlaceHolder.profileInfo,
+  placeAttachments: [
+    {
+      src: "/place-1.jpg",
+      type: "image",
+    },
+  ],
+  placeLocation: "los angeles",
+  placeType: "Hotel",
+  openFrom: "07:30 AM",
+  openTo: "10:30 PM",
+};
 
 const preview: NextPage = () => {
   return (
     <section className="flex min-h-screen w-full items-center justify-center bg-slate-200">
-      <Box w="100%">
-        {/* <SocialHeader /> */}
-        {/* <PostCard
-          showComments
-          postInfo={PostCardPlaceHolder.postInfo}
-          profileInfo={PostCardPlaceHolder.profileInfo}
-        /> */}
-        {/* <SocialShopCard showComments shopCardInfo={shopCardInfoPlaceholder} /> */}
-        {/* <PostCommentCard {...PostCommentPlaceholder} /> */}
-        {/* <SocialAffiliationCard
-          showComments
-          {...socialAffiliationCardPlaceholder}
-        /> */}
-        {/* <HashTagCard {...hashtagCardInfoPlaceholder} /> */}
-        <SocialAuthFooter />
-      </Box>
+      <PlaceCard {...placeCardPlaceholder} />
     </section>
   );
 };

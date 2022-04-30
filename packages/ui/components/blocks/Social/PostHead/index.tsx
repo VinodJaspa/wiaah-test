@@ -1,9 +1,20 @@
-import { Flex, HStack, Icon, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  HStack,
+  Icon,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+  useTheme,
+} from "@chakra-ui/react";
 import React from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { useStory } from "ui/Hooks";
 import { DisplayPostedSince, Avatar } from "ui";
-
+import { useTranslation } from "react-i18next";
 export interface PostHeadProps {
   creatorName: string;
   creatorPhoto: string;
@@ -11,6 +22,7 @@ export interface PostHeadProps {
   newStory?: boolean;
   functional?: boolean;
   onProfileClick?: () => any;
+  onViewPostClick?: () => any;
 }
 
 export const PostHead: React.FC<PostHeadProps> = ({
@@ -20,12 +32,15 @@ export const PostHead: React.FC<PostHeadProps> = ({
   newStory,
   functional,
   onProfileClick,
+  onViewPostClick,
 }) => {
-  const { OpenStories } = useStory();
-
+  // const { OpenStories } = useStory();
+  const { t } = useTranslation();
+  const { __cssVars } = useTheme();
+  const primaryColor = __cssVars["--chakra-colors-primary-main"];
   function handleOpenStories() {
     if (functional) {
-      OpenStories();
+      // OpenStories();
     }
     onProfileClick && onProfileClick();
   }
@@ -43,12 +58,13 @@ export const PostHead: React.FC<PostHeadProps> = ({
           {creatorName}
         </Text>
       </HStack>
-      <Flex direction={"column"} align="end">
-        <Icon
+      <Flex direction={"column"} align="end" pt="1.1rem">
+        <HiDotsHorizontal
+          viewBox="0 5 20 10"
           fontSize="xx-large"
-          color="primary.main"
+          color={primaryColor}
           cursor={"pointer"}
-          as={HiDotsHorizontal}
+          style={{ height: "0.5em" }}
         />
         <DisplayPostedSince since={createdAt} />
       </Flex>

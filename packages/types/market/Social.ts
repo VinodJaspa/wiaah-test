@@ -27,6 +27,7 @@ export interface SubscribersUserInfo {
 export interface PostAttachment {
   type: "image" | "video";
   src: string;
+  postLocation?: string;
 }
 
 export interface PostComment {
@@ -69,6 +70,7 @@ export type Interactions =
   | "moreOpts";
 
 export interface ShopCardInfo {
+  id: string;
   attachments: PostAttachment[];
   rating: number;
   type: "product" | "service";
@@ -86,6 +88,7 @@ export interface ShopCardInfo {
 
 export interface AffiliationOfferCardInfo {
   user: ProfileInfo;
+  id: string;
   commission: number;
   price: number;
   affiliationLink: string;

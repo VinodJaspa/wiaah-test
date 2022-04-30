@@ -23,3 +23,6 @@ export { customRender as render };
 export function getTestId(id: string): string {
   return `[data-testid='${id}']`;
 }
+export function getRoleId(id: string): string {
+  return `[role='${id}']`;
+}

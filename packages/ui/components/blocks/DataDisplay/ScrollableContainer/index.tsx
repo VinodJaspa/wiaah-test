@@ -6,20 +6,20 @@ import { PostCommentCard } from "ui";
 export interface ScrollableContainerProps extends FlexProps {
   children: React.ReactElement[];
   maxShowMoreItems?: number;
-  maxInitialItems: number;
+  maxInitialItems?: number;
   doesShowMore?: boolean;
 }
 
 export const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
   children,
-  maxInitialItems,
+  maxInitialItems = children.length,
   doesShowMore = true,
   maxShowMoreItems = maxInitialItems,
   ...props
 }) => {
   const { t } = useTranslation();
   const [items, setItems] = React.useState<React.ReactElement[]>(
-    children.slice(0, maxInitialItems)
+    Array.isArray(children) ? children.slice(0, maxInitialItems) : []
   );
   const [showMore, setShowMore] = React.useState<boolean>(false);
   const commentsContainerRef = React.useRef<HTMLDivElement>(null);

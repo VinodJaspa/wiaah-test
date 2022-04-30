@@ -7,18 +7,20 @@ import {
   Container,
 } from "ui";
 import {
-  HiUserGroup,
-  HiOutlineUserGroup,
   HiMenu,
   HiHome,
   HiOutlineHome,
-  HiLocationMarker,
+  HiUserCircle,
+  HiOutlineUserCircle,
 } from "react-icons/hi";
+import { BiUserCircle } from "react-icons/bi";
+import { FaUserCircle, FaRegUserCircle } from "react-icons/fa";
+import { IoEarth, IoEarthOutline } from "react-icons/io5";
 import { IoVideocam } from "react-icons/io5";
 import { CgPlayButtonR } from "react-icons/cg";
 import { AiOutlineShop, AiFillShop } from "react-icons/ai";
-import { NavigationLinkType } from "types/sharedTypes/misc/SellerNavigationLink";
 import { AffiliationIcon, AffiliationIconOutline, UsersProfiles } from "ui";
+import { NavigationLinkType } from "types/sharedTypes/misc/SellerNavigationLink";
 import {
   Box,
   Button,
@@ -31,35 +33,61 @@ import {
 import { useSetRecoilState } from "recoil";
 import { SellerDrawerOpenState } from "ui/state";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/router";
+import { useResponsive } from "ui";
+import { DiscoverHeader, LocationButton } from "ui";
 const NavigationLinks: NavigationLinkType[] = [
   {
     name: "homepage",
     icon: HiOutlineHome,
     activeIcon: HiHome,
+    url: "",
   },
   {
     name: "discover",
-    icon: HiOutlineUserGroup,
-    activeIcon: HiUserGroup,
+    icon: IoEarthOutline,
+    activeIcon: IoEarth,
+    url: "discover",
   },
   {
     name: "action",
     icon: CgPlayButtonR,
-    activeIcon: IoVideocam,
+    activeIcon: CgPlayButtonR,
+    url: "action",
   },
   {
     name: "shop",
     icon: AiOutlineShop,
     activeIcon: AiFillShop,
+    url: "shop",
+    size: {
+      w: "1.2em",
+      h: "1.2em",
+    },
   },
   {
     name: "affiliation",
-    icon: () => <AffiliationIconOutline />,
-    activeIcon: () => <AffiliationIcon />,
+    icon: FaRegUserCircle,
+    activeIcon: FaUserCircle,
+    url: "affiliation",
+    size: {
+      w: "1.2em",
+      h: "1.2em",
+    },
   },
+  // {
+  //   name: "affiliation",
+  //   icon: () => <AffiliationIconOutline />,
+  //   activeIcon: () => <AffiliationIcon />,
+  //   url: "affiliation",
+  //   size: {
+  //     w: "1.2em",
+  //     h: "1.2em",
+  //   },
+  // },
 ];
 
-const usersProfilesPlaceHolder = [
+export const usersProfilesPlaceHolder = [
   {
     name: "Wiaah",
     userPhotoSrc: "/shop-3.jpeg",
@@ -122,20 +150,44 @@ const usersProfilesPlaceHolder = [
   },
 ];
 
-const places: string[] = [
+export const placesPlaceholder: string[] = [
   "shop",
   "hotel",
   "babershop",
   "restaurant",
   "theatre museum",
 ];
+export type HeadersTypes = "main" | "discover";
 
-export const SellerLayout: React.FC = ({ children }) => {
+export interface SellerLayoutProps {
+  header?: HeadersTypes;
+}
+
+export const SellerLayout: React.FC<SellerLayoutProps> = ({
+  children,
+  header = "main",
+}) => {
+  const [test, settest] = React.useState(false);
   const { t } = useTranslation();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
+  const { isMobile } = useResponsive();
+  const headerRef = React.useRef<HTMLDivElement>(null);
+  const headerHeight = headerRef?.current?.offsetHeight;
+  const router = useRouter();
+  const route = router.pathname.split("/")[1];
+
+  const handleLinkClick = (link: NavigationLinkType) => {
+    const Link = link.url.length < 1 ? "/" : link.url;
+    router.replace(Link);
+    setDrawerOpen(false);
+  };
   return (
     <Root>
-      <SellerNavigationDrawer links={NavigationLinks}>
+      <SellerNavigationDrawer
+        activeLink={route}
+        onLinkClick={handleLinkClick}
+        links={NavigationLinks}
+      >
         <Text
           textTransform={"capitalize"}
           px="2rem"
@@ -146,21 +198,12 @@ export const SellerLayout: React.FC = ({ children }) => {
         </Text>
 
         <Flex direction={"column"} gap="1rem">
-          {places.map((place, i) => (
-            <Button
-              px="0"
-              justifyContent={"start"}
-              color="black"
-              bgColor={"white"}
-              colorScheme={"gray"}
-            >
-              <HStack px="2rem" spacing="2rem">
-                <Icon fontSize={"xx-large"} as={HiLocationMarker} />
-                <Text textTransform={"capitalize"} fontWeight={"semibold"}>
-                  {place}
-                </Text>
-              </HStack>
-            </Button>
+          {placesPlaceholder.map((place, i) => (
+            <LocationButton
+              style={{ px: "2rem" }}
+              locationName={place}
+              key={i}
+            />
           ))}
         </Flex>
         <Divider />
@@ -177,26 +220,50 @@ export const SellerLayout: React.FC = ({ children }) => {
         </Box>
       </SellerNavigationDrawer>
       <SellerNavigationSideBar
-        position={"fixed"}
-        py="1rem"
         headerElement={
           <HiMenu cursor={"pointer"} onClick={() => setDrawerOpen(true)} />
         }
-        gap="2rem"
-        left="1rem"
-        top="0rem"
-        zIndex={20}
         links={NavigationLinks}
-        activeLink={0}
+        onLinkClick={handleLinkClick}
+        activeLink={route}
       >
         <UsersProfiles maxNarrowItems={5} users={usersProfilesPlaceHolder} />
       </SellerNavigationSideBar>
-      <Container className="pl-24 pr-8">
-        <SellerHeader />
-        <Box mt="3.75rem" as={"main"}>
+      <Container className={`${isMobile ? "" : "pl-24 pr-8"}`}>
+        {header && (
+          <Box
+            ref={headerRef}
+            bgColor={"white"}
+            position="fixed"
+            zIndex={10}
+            w="100%"
+            px={header ? "1rem" : "0px"}
+            top="0px"
+            left="0px"
+          >
+            <HeaderSwitcher headerType={header} />
+          </Box>
+        )}
+        <Box mt={`calc(${headerHeight || 0}px + 2rem)`} as={"main"}>
           {children}
         </Box>
       </Container>
     </Root>
   );
+};
+
+export interface HeaderSwitcherProps {
+  headerType: HeadersTypes;
+}
+
+export const HeaderSwitcher: React.FC<HeaderSwitcherProps> = ({
+  headerType,
+}) => {
+  switch (headerType) {
+    case "discover":
+      return <DiscoverHeader />;
+
+    default:
+      return <SellerHeader />;
+  }
 };

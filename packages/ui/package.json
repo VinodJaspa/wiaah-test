@@ -10,6 +10,7 @@
     "config": "*",
     "tsconfig": "*",
     "types": "*",
+    "api": "*",
     "typescript": "^4.5.3"
   },
   "dependencies": {

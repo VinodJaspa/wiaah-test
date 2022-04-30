@@ -1,5 +1,5 @@
 {
-  "name": "api-call",
+  "name": "api",
   "version": "0.0.0",
   "main": "./index.ts",
   "types": "./index.ts",

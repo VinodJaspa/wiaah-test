@@ -1,6 +1,6 @@
 import { Avatar, HStack, Flex, Text, FlexProps } from "@chakra-ui/react";
 import React from "react";
-import { Verified, ScrollableContainer } from "ui";
+import { ScrollableContainer, UserProfile } from "ui";
 
 export interface UserProfileData {
   name: string;
@@ -39,26 +39,7 @@ export const UsersProfiles: React.FC<UsersProfilesProps> = ({
           users
             .slice(0, variant === "narrow" ? maxNarrowItems : users.length)
             .map((user, i) => (
-              <HStack key={i} data-testid="UserProfile" spacing="1rem">
-                {variant === "narrow" ? (
-                  <Avatar name={user.name} src={user.userPhotoSrc} />
-                ) : (
-                  <>
-                    <Avatar name={user.name} src={user.userPhotoSrc} />
-                    <Flex direction={"column"}>
-                      <HStack>
-                        <Text data-testid="UserName">{user.name}</Text>
-                        {user.verified && (
-                          <Verified data-testid="UserVerified" />
-                        )}
-                      </HStack>
-                      <Text data-testid="UserActivity">
-                        {user.activityType}
-                      </Text>
-                    </Flex>
-                  </>
-                )}
-              </HStack>
+              <UserProfile user={user} key={i} variant={variant} />
             ))}
       </ScrollableContainer>
     </Flex>

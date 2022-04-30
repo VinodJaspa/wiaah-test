@@ -91,7 +91,7 @@ describe("UsersProfiles 'narrow' variant  tests", () => {
     profilesContainer = wrapper.getByTestId(selectors.profilesContainer);
   });
   it("should have the right users profiles as provided in maxNarrowItems", () => {
-    expect(usersProfiles.length).toBe(5 * 2);
+    expect(usersProfiles.length).toBe(5);
   });
 
   it("should not have users names,activity, or verified indicator with 'narrow' variant", () => {
@@ -123,7 +123,7 @@ describe("UsersProfiles 'long' variant  tests", () => {
     profilesContainer = wrapper.getByTestId(selectors.profilesContainer);
   });
   it("should have the right users profiles as provided in maxLongItems", () => {
-    expect(usersProfiles.length).toBe(7 * 2);
+    expect(usersProfiles.length).toBe(7);
   });
   it("should have users names,activityType and weather users are verified or not with the 'long' variant", () => {
     console.log(profilesContainer.innerHTML);

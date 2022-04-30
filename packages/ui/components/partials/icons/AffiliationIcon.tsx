@@ -1,11 +1,12 @@
 import React from "react";
 import { GenIcon, IconBaseProps, IconType } from "react-icons";
-export const AffiliationIcon: IconType = () => {
+export const AffiliationIcon: IconType = (props) => {
   return (
     <svg
+      {...props}
       version="1.1"
-      width={"2rem"}
-      height={"2rem"}
+      width={"1em"}
+      height={"1em"}
       id="Icons"
       x="0px"
       y="0px"
@@ -34,7 +35,7 @@ export const AffiliationIcon: IconType = () => {
   );
 };
 
-export const AffiliationIconOutline: IconType = () => {
+export const AffiliationIconOutline: IconType = (props) => {
   const st0: React.CSSProperties = {
     fill: "none",
     stroke: "#000000",
@@ -45,9 +46,10 @@ export const AffiliationIconOutline: IconType = () => {
   };
   return (
     <svg
+      {...props}
       version="1.1"
-      width={"2rem"}
-      height={"2rem"}
+      width={"1.2em"}
+      height={"1.2em"}
       id="Icons"
       x="0px"
       y="0px"

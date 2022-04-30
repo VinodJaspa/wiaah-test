@@ -2,7 +2,7 @@ import { Center, Flex, FlexProps, HStack, Icon } from "@chakra-ui/react";
 import React from "react";
 import { HiPlus } from "react-icons/hi";
 import { StoryDisplay, StoryDisplayProps } from "ui";
-
+import { useResponsive } from "ui/hooks";
 export interface RecentStoriesProps extends FlexProps {
   stories: StoryDisplayProps[];
 }
@@ -43,11 +43,12 @@ export const RecentStories: React.FC<RecentStoriesProps> = ({
   align = "center",
   ...props
 }) => {
+  const { isMobile } = useResponsive();
   return (
     <Flex
       {...props}
       w={w}
-      gap={gap}
+      gap={isMobile ? "1rem" : "0.25rem"}
       overflowX={overflowX}
       align={align}
       className={`${props.className && props.className} no-scrollBar`}

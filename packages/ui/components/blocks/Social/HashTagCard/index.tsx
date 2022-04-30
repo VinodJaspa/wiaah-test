@@ -43,6 +43,7 @@ export const HashTagCard: React.FC<HashTagCardProps> = ({
         bg="black"
         w="100%"
         h="25rem"
+        overflow={"hidden"}
       >
         <PostAttachment
           data-testid="PostAttachment"
