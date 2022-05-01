@@ -57,9 +57,7 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
 
   function renderNested({ name, subCategories }: Category) {
     const haveNestedCategories = subCategories.length > 0;
-    console.log(name, haveNestedCategories);
     if (haveNestedCategories) {
-      console.log(subCategories);
       return (
         <DropdownPanel subPanel={true} name={name}>
           {subCategories.map((cate) => (

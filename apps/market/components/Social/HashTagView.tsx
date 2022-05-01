@@ -5,28 +5,28 @@ import {
   HStack,
   Text,
   Button,
-  Box,
   useBreakpointValue,
   Divider,
 } from "@chakra-ui/react";
 import { SocialHashTagTopPosts } from "ui/state";
 import { TabType } from "types/market/misc/tabs";
 import { useRouter } from "next/router";
-import { t } from "i18next";
 import {
-  FilterModal,
   HashTagPostsListWrapper,
-  ListWrapper,
   PostCardsListWrapper,
   ShopCardsListWrapper,
   TabsViewer,
 } from "ui";
 import { newsfeedPosts, ShopCardsInfoPlaceholder } from "ui/placeholder/social";
+import { useTranslation } from "react-i18next";
 
 export interface HashTagViewProps {}
 
 export const HashTagView: React.FC<HashTagViewProps> = () => {
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+  const topPosts = useRecoilValue(SocialHashTagTopPosts);
+
+  const { t } = useTranslation();
 
   const router = useRouter();
   const { tag } = router.query;
@@ -36,7 +36,7 @@ export const HashTagView: React.FC<HashTagViewProps> = () => {
       name: t("news_feed", "news feed"),
       component: (
         <Flex direction={"column"} gap="4rem">
-          <HashTagPostsListWrapper />
+          <HashTagPostsListWrapper hashtags={topPosts} />
           <Divider />
           <PostCardsListWrapper cols={cols} posts={newsfeedPosts} />
         </Flex>
@@ -46,7 +46,7 @@ export const HashTagView: React.FC<HashTagViewProps> = () => {
       name: t("shop", "shop"),
       component: (
         <Flex direction={"column"} gap="4rem">
-          <HashTagPostsListWrapper />
+          <HashTagPostsListWrapper hashtags={topPosts} />
 
           <Divider />
 

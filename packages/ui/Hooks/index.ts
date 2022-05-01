@@ -11,3 +11,6 @@ export { useStory } from "./useStory";
 export { useBoundingRect } from "./useBoundingRect";
 export { useTimer } from "./useTimer";
 export { useStorySeenBy } from "./useStorySeenBy";
+export * from "./useResponsive";
+export * from "./useDiscoverTabs";
+export * from "./useActionComments";

@@ -1,6 +1,7 @@
 import {
   Badge,
   Box,
+  BoxProps,
   Button,
   Center,
   Circle,
@@ -19,6 +20,7 @@ import {
 import { CashBack } from "types/market/CartSummary";
 import { Interactions } from "types/market/Social";
 import { PostAttachment } from "ui";
+import { PostAttachmentProps } from "../PostAttachment";
 
 export interface ShopCardAttachmentProps {
   src: string;
@@ -27,8 +29,10 @@ export interface ShopCardAttachmentProps {
   cashback?: CashBack;
   discount?: CashBack;
   productType: "product" | "service";
-  onInteraction: (interaction: Interactions) => any;
+  onInteraction?: (interaction: Interactions) => any;
   showbook?: boolean;
+  attachmentProps?: Partial<PostAttachmentProps>;
+  innerProps?: React.PropsWithRef<BoxProps>;
 }
 
 export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
@@ -41,11 +45,13 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
   alt,
   onInteraction,
   showbook,
+  attachmentProps,
+  innerProps,
 }) => {
   const { t } = useTranslation();
   return (
-    <Box position={"relative"}>
-      <PostAttachment src={src} type={type} alt={alt} />
+    <Box {...innerProps} maxW="100%" h="100%" position={"relative"}>
+      <PostAttachment {...attachmentProps} src={src} type={type} alt={alt} />
       <Flex
         w="100%"
         h="100%"
@@ -62,7 +68,7 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
             fontSize="x-large"
             rounded={"lg"}
             pointerEvents="all"
-            onClick={() => onInteraction("moreOpts")}
+            onClick={() => onInteraction && onInteraction("moreOpts")}
             as={HiDotsHorizontal}
           />
         </Center>
@@ -114,7 +120,7 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
               textTransform={"capitalize"}
               pointerEvents="all"
               cursor={"pointer"}
-              onClick={() => onInteraction("book")}
+              onClick={() => onInteraction && onInteraction("book")}
             >
               {t("book_service", "book service")}
             </Button>
@@ -130,7 +136,7 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
             <Circle
               pointerEvents="all"
               cursor={"pointer"}
-              onClick={() => onInteraction("saveToWL")}
+              onClick={() => onInteraction && onInteraction("saveToWL")}
               maxWidth={"fit-content"}
               p="0.25rem"
               bg="white"
@@ -140,7 +146,7 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
             <Circle
               pointerEvents="all"
               cursor={"pointer"}
-              onClick={() => onInteraction("addToCart")}
+              onClick={() => onInteraction && onInteraction("addToCart")}
               maxWidth={"fit-content"}
               p="0.25rem"
               bg="white"

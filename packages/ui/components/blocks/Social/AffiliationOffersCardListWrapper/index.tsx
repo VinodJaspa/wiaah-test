@@ -5,7 +5,7 @@ import { SocialAffiliationCard, ListWrapper } from "ui";
 import { SocialAffiliationCardProps } from "../SocialAffiliationCard";
 
 export interface AffiliationOffersCardListWrapperProps
-  extends Pick<SocialAffiliationCardProps, "showComments"> {
+  extends Partial<SocialAffiliationCardProps> {
   items: AffiliationOfferCardInfo[];
   cols?: number;
 }

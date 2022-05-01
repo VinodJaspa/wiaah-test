@@ -9,6 +9,9 @@ export interface FloatingItemProps
   bottom?: FloatingPosition;
   left?: FloatingPosition;
   right?: FloatingPosition;
+  centerX?: boolean;
+  centerY?: boolean;
+  floatingItemProps?: BoxProps;
 }
 
 export interface FloatingContainerProps extends BoxProps {
@@ -31,21 +34,34 @@ export const FloatingContainer: React.FC<FloatingContainerProps> = ({
   return (
     <Box {...props} position={"relative"}>
       {items &&
-        items.map(({ top, left, bottom, right, label }, i) => (
-          <Box
-            zIndex={5}
-            position={"absolute"}
-            top={setPosition(top)}
-            left={setPosition(left)}
-            right={setPosition(right)}
-            bottom={setPosition(bottom)}
-            transform="auto"
-            translateX={left ? "-50%" : right ? "50%" : "0%"}
-            translateY={top ? "-50%" : bottom ? "50%" : "0%"}
-          >
-            {label}
-          </Box>
-        ))}
+        items.map(
+          (
+            {
+              top,
+              left,
+              bottom,
+              right,
+              label,
+              centerX,
+              centerY,
+              floatingItemProps,
+            },
+            i
+          ) => (
+            <Box
+              {...floatingItemProps}
+              zIndex={5}
+              position={"absolute"}
+              top={setPosition(top)}
+              left={setPosition(left)}
+              right={setPosition(right)}
+              bottom={setPosition(bottom)}
+              transform="auto"
+            >
+              {label}
+            </Box>
+          )
+        )}
       {children}
     </Box>
   );

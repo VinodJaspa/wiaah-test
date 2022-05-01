@@ -7,22 +7,24 @@ import {
   VStack,
   Box,
   Button,
+  Text,
 } from "@chakra-ui/react";
 import {
   FloatingContainer,
   PostCardsListWrapper,
+  PostViewPopup,
   RecentStories,
-  RecentStoriesProps,
   SellerLayout,
   SellerPostInput,
-  Spacer,
   StoryDisplayProps,
-  TabsViewer,
+  AddNewPostModal,
+  PostAttachmentsViewer,
 } from "ui";
 import { newsfeedPosts } from "ui/placeholder/social";
-import { TabType } from "types/market/misc/tabs";
 import { useTranslation } from "react-i18next";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { useRouter } from "next/router";
+import { PostCardInfo } from "types";
 
 const RecentStoriesPlaceHolder: StoryDisplayProps[] = [
   {
@@ -63,68 +65,102 @@ const RecentStoriesPlaceHolder: StoryDisplayProps[] = [
 ];
 
 const seller: NextPage = () => {
+  const router = useRouter();
   const { t } = useTranslation();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
-
+  const isMobile = useBreakpointValue({ base: true, md: false });
   return (
     <>
       <Head>
         <title>Wiaah | seller</title>
       </Head>
-      <SellerLayout>
-        <VStack
-          w={"100%"}
-          spacing={"1rem"}
-          divider={<Divider borderColor={"gray.200"} opacity="1" />}
-        >
+      <SellerLayout header="main">
+        <PostViewPopup
+          fetcher={async ({ queryKey }) => {
+            const id = queryKey[1].postId;
+            console.log("idParam", queryKey);
+            const post = newsfeedPosts.find((post) => post.postInfo.id === id);
+            return post ? post : null;
+          }}
+          queryName="newFeedPost"
+          idParam="newsfeedpostid"
+          renderChild={(props: PostCardInfo) => {
+            return (
+              <PostAttachmentsViewer
+                attachments={props.postInfo.attachments}
+                profileInfo={props.profileInfo}
+                carouselProps={{
+                  arrows: true,
+                }}
+              />
+            );
+          }}
+        />
+        {/* <AddNewPostModal /> */}
+        <VStack w={"100%"} py="2rem" spacing={"1rem"}>
           <FloatingContainer
             w={"100%"}
             // px="1rem"
-            items={[
-              {
-                label: (
-                  <Button
-                    colorScheme={"primary"}
-                    variant="link"
-                    rounded={"full"}
-                    bgColor="whiteAlpha.600"
-                    minW={0}
-                    boxShadow={"md"}
-                  >
-                    <ChevronRightIcon boxSize={9} />
-                  </Button>
-                ),
-                right: true,
-                top: "center",
-              },
-              {
-                label: (
-                  <Button
-                    colorScheme={"primary"}
-                    variant="link"
-                    rounded={"full"}
-                    bgColor="whiteAlpha.600"
-                    boxShadow={"md"}
-                    minW={0}
-                  >
-                    <ChevronLeftIcon boxSize={9} />
-                  </Button>
-                ),
-                left: true,
-                top: "center",
-              },
-            ]}
+            items={
+              isMobile
+                ? []
+                : [
+                    {
+                      label: (
+                        <Button
+                          colorScheme={"primary"}
+                          variant="link"
+                          rounded={"full"}
+                          bgColor="whiteAlpha.600"
+                          minW={0}
+                          boxShadow={"md"}
+                        >
+                          <ChevronRightIcon boxSize={9} />
+                        </Button>
+                      ),
+                      right: "1rem",
+                      top: "center",
+                    },
+                    {
+                      label: (
+                        <Button
+                          colorScheme={"primary"}
+                          variant="link"
+                          rounded={"full"}
+                          bgColor="whiteAlpha.600"
+                          boxShadow={"md"}
+                          minW={0}
+                        >
+                          <ChevronLeftIcon boxSize={9} />
+                        </Button>
+                      ),
+                      left: "1rem",
+                      top: "center",
+                    },
+                  ]
+            }
           >
             <RecentStories
               justify={"space-between"}
               mx="auto"
-              mt="2rem"
               stories={RecentStoriesPlaceHolder}
             />
           </FloatingContainer>
-          <SellerPostInput userName="wiaah" userPhotoSrc="/wiaah_logo.png" />
+          {!isMobile && (
+            <SellerPostInput userName="wiaah" userPhotoSrc="/wiaah_logo.png" />
+          )}
           <Box w="100%">
-            <PostCardsListWrapper cols={cols} posts={newsfeedPosts} />
+            <PostCardsListWrapper
+              onPostClick={(post) =>
+                router.push(
+                  "/",
+                  { query: { newsfeedpostid: post.postInfo.id } },
+                  { shallow: true }
+                )
+              }
+              cols={cols}
+              posts={newsfeedPosts}
+            />
           </Box>
         </VStack>
       </SellerLayout>

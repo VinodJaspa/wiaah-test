@@ -1,7 +1,14 @@
-import { Box, Image, Text, VStack } from "@chakra-ui/react";
+import {
+  AspectRatio,
+  Box,
+  Image,
+  Text,
+  VStack,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import React from "react";
 import { FloatingContainer, FloatingContainerProps } from "ui";
-
+import { useResponsive } from "ui/hooks";
 export type StoryUserData = {
   name: string;
   userPhotoSrc: string;
@@ -18,12 +25,14 @@ export const StoryDisplay: React.FC<StoryDisplayProps> = ({
   seen,
   floatingIcon,
 }) => {
+  const { isMobile } = useResponsive();
   return (
     <VStack spacing="0.5rem">
       <FloatingContainer {...floatingIcon}>
         <Box
-          w="10rem"
-          h="10rem"
+          // ratio={1 / 1}
+          w={isMobile ? "3.5rem" : "10rem"}
+          h={isMobile ? "3.5rem" : "10rem"}
           rounded={"xl"}
           bgGradient="linear(to-r, primary.200, primary.700)"
           p={seen ? "0.0625rem" : "0.125rem"}
@@ -39,7 +48,7 @@ export const StoryDisplay: React.FC<StoryDisplayProps> = ({
           </Box>
         </Box>
       </FloatingContainer>
-      <Text fontSize={"xl"}>{storyUserData.name}</Text>
+      <Text fontSize={{ base: "md", md: "xl" }}>{storyUserData.name}</Text>
     </VStack>
   );
 };

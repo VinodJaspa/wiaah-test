@@ -8,6 +8,7 @@ import {
   Icon,
   Input,
   Text,
+  useDimensions,
 } from "@chakra-ui/react";
 import React from "react";
 import { HiDotsHorizontal, HiOutlineLink } from "react-icons/hi";
@@ -21,8 +22,12 @@ import { useDateDiff } from "ui/Hooks";
 import { CommentsViewer, PostAttachment, PostInteractions } from "ui";
 import { useTranslation } from "react-i18next";
 import { ControlledCarousel } from "ui";
+import { PostAttachmentsViewer } from "../../DataDisplay";
 
-export interface SocialAffiliationCardProps extends AffiliationOfferCardInfo {}
+export interface SocialAffiliationCardProps extends AffiliationOfferCardInfo {
+  showPostInteraction?: boolean;
+  onCardClick?: (id: string) => any;
+}
 
 export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
   affiliationLink,
@@ -36,7 +41,12 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
   noOfLikes,
   comments = [],
   showComments,
+  id,
+  onCardClick,
+  showPostInteraction = true,
 }) => {
+  const detailsRef = React.useRef(null);
+  const detailsDimensions = useDimensions(detailsRef);
   const [active, setActive] = React.useState<number>(0);
   const { t } = useTranslation();
   const { getSince } = useDateDiff({
@@ -54,16 +64,18 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
       color="white"
       gap="1rem"
       rounded={"lg"}
-      boxShadow={"main"}
-      w="100%"
+      maxH="100%"
+      maxW="100%"
       direction={"column"}
       bg="primary.main"
+      data-testid="socialAffiliationContainer"
+      onClick={() => onCardClick && onCardClick(id)}
     >
-      <Box p="1rem">
+      <Box h="100%" p="1rem">
         <Flex justify={"end"} w="100%">
           <Icon as={HiDotsHorizontal} fontSize="lg" />
         </Flex>
-        <Flex gap="0.5rem" direction={"column"}>
+        <Flex h="100%" gap="0.5rem" direction={"column"}>
           <HStack w="100%" justify={"space-between"}>
             <HStack>
               <Avatar bgColor={"black"} src={user.thumbnail} name={user.name} />
@@ -95,11 +107,19 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
             </Text>
           </Flex>
           <Box color="black">
-            <Box position={"relative"}>
-              {attachments && attachments.length > 1 ? (
+            <Box
+              h={
+                detailsDimensions
+                  ? `calc(100% - ${detailsDimensions.borderBox.height}px)`
+                  : "100%"
+              }
+              position={"relative"}
+            >
+              <PostAttachmentsViewer attachments={attachments} />
+              {/* {attachments && attachments.length > 1 ? (
                 <ControlledCarousel
                   arrows={attachments.length > 1}
-                  gap={32}
+                  // gap={32}
                   onCurrentActiveChange={setActive}
                 >
                   {attachments.map((attachment, i) => (
@@ -117,7 +137,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
                 attachments.length === 1 && (
                   <PostAttachment {...attachments[0]} alt={name} />
                 )
-              )}
+              )} */}
               <Center
                 position={"absolute"}
                 bottom="0px"
@@ -130,9 +150,14 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
                 ${price.toFixed(2)}
               </Center>
             </Box>
-            <Flex bg="white" gap="0.5rem" p="0.5rem" direction={"column"}>
+            <Flex
+              ref={detailsRef}
+              bg="white"
+              gap="0.5rem"
+              p="0.5rem"
+              direction={"column"}
+            >
               <Text fontWeight={"bold"}>{name}</Text>
-
               <Flex
                 borderWidth={"0.5rem"}
                 borderColor="primary.main"
@@ -167,12 +192,17 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
           </Box>
         </Flex>
       </Box>
-      <Box color="black" bg="white" px="1rem">
-        <PostInteractions comments={noOfComments} likes={noOfLikes} />
-        {showComments && (
-          <CommentsViewer maxInitailComments={4} comments={comments} />
-        )}
-      </Box>
+      {showPostInteraction ||
+        (showComments && (
+          <Box color="black" bg="white" px="1rem">
+            {showPostInteraction && (
+              <PostInteractions comments={noOfComments} likes={noOfLikes} />
+            )}
+            {showComments && (
+              <CommentsViewer maxInitailComments={4} comments={comments} />
+            )}
+          </Box>
+        ))}
     </Flex>
   );
 };

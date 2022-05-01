@@ -3,16 +3,23 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import { SocialHashTagTopPosts } from "ui/state";
 import { HashTagCard, ListWrapper } from "ui";
+import { HashTagCardInfo } from "types";
 
-export const HashTagPostsListWrapper: React.FC = () => {
-  const cols = useBreakpointValue({ base: 1, sm: 2, md: 3, lg: 4 });
-  const topPosts = useRecoilValue(SocialHashTagTopPosts);
+export interface HashTagPostsListWrapperProps {
+  hashtags: HashTagCardInfo[];
+  cols?: number;
+}
 
-  return (
-    <ListWrapper data-testid="HashTagCardsContainer" cols={cols || 1}>
-      {topPosts.map((post, i) => (
-        <HashTagCard data-testid="HashTagCard" key={i} {...post} />
-      ))}
-    </ListWrapper>
-  );
-};
+export const HashTagPostsListWrapper: React.FC<HashTagPostsListWrapperProps> =
+  ({ hashtags, cols }) => {
+    const Cols = useBreakpointValue({ base: 1, sm: 2, md: 3, lg: 4 });
+
+    return (
+      <ListWrapper data-testid="HashTagCardsContainer" cols={cols || Cols}>
+        {hashtags &&
+          hashtags.map((post, i) => (
+            <HashTagCard data-testid="HashTagCard" key={i} {...post} />
+          ))}
+      </ListWrapper>
+    );
+  };

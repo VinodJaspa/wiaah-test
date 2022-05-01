@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Flex } from "@chakra-ui/react";
+import { Box, Flex, useDimensions } from "@chakra-ui/react";
 import {
   ShopCardAttachment,
   ShopCardDetails,
@@ -13,15 +13,25 @@ import { ControlledCarousel } from "ui";
 
 export interface SocialShopCardProps {
   showComments?: boolean;
+  showInteraction?: boolean;
   shopCardInfo: ShopCardInfo;
+  showCommentInput?: boolean;
   showbook?: boolean;
+  onCardClick?: (id: string) => any;
 }
 
 export const SocialShopCard: React.FC<SocialShopCardProps> = ({
   showComments,
+  showInteraction = true,
+  showCommentInput = true,
   showbook,
   shopCardInfo,
+  onCardClick,
 }) => {
+  const attachmentRef = React.useRef(null);
+  const productDetailsRef = React.useRef(null);
+
+  const productDetailsDimensions = useDimensions(productDetailsRef);
   const [active, setActive] = React.useState<number>(0);
   const { OpenLoginPopup } = useLoginPopup();
   function handleAddToCart() {
@@ -29,18 +39,23 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
   }
   return (
     <Flex
-      bg="white"
-      p="1rem"
-      boxShadow={"main"}
+      onClick={() => onCardClick && onCardClick(shopCardInfo.id)}
       rounded="lg"
       w="100%"
+      h="100%"
+      data-testid="ShopCardContainer"
       direction={"column"}
     >
       {shopCardInfo.attachments && shopCardInfo.attachments.length > 1 ? (
         <ControlledCarousel
           arrows={shopCardInfo.attachments.length > 1}
-          gap={32}
+          // gap={32}
           onCurrentActiveChange={setActive}
+          h={
+            productDetailsDimensions
+              ? `calc(100% - ${productDetailsDimensions.borderBox.height}px)`
+              : "100%"
+          }
         >
           {shopCardInfo.attachments.map((attachment, i) => (
             <ShopCardAttachment
@@ -50,6 +65,10 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
               productType={shopCardInfo.type}
               cashback={shopCardInfo.cashback}
               discount={shopCardInfo.discount}
+              innerProps={{
+                // ["data-testid"]: "test attachment",
+                ref: attachmentRef,
+              }}
               {...attachment}
             />
           ))}
@@ -67,25 +86,38 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
           />
         )
       )}
-
-      <ShopCardDetails
-        onAddToCart={handleAddToCart}
-        service={shopCardInfo.type === "service"}
-        {...shopCardInfo}
-      />
-      <PostInteractions
-        comments={shopCardInfo.noOfComments}
-        likes={shopCardInfo.likes}
-      />
-      <CommentInput />
-      <Box py="0.5rem">
-        {showComments && (
+      <Box
+        // w={
+        //   attachmentDimensions
+        //     ? `${attachmentDimensions.contentBox.width}px`
+        //     : "100%"
+        // }
+        w="100%"
+        ref={productDetailsRef}
+        alignSelf={"center"}
+      >
+        <ShopCardDetails
+          data-testid="ShopCardDetails"
+          onAddToCart={handleAddToCart}
+          service={shopCardInfo.type === "service"}
+          {...shopCardInfo}
+        />
+        {showInteraction && (
+          <PostInteractions
+            comments={shopCardInfo.noOfComments}
+            likes={shopCardInfo.likes}
+          />
+        )}
+        {showCommentInput && <CommentInput />}
+      </Box>
+      {showComments && (
+        <Box py="0.5rem">
           <CommentsViewer
             comments={shopCardInfo.comments}
             maxInitailComments={4}
           />
-        )}
-      </Box>
+        </Box>
+      )}
     </Flex>
   );
 };

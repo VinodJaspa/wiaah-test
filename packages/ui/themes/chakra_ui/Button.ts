@@ -14,6 +14,9 @@ export default {
       borderWidth: "0.125rem",
       borderColor: "primary.main",
     },
+    noBg: {
+      backgroundColor: "transperant",
+    },
   },
   defaultProps: {
     variant: "solid",

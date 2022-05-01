@@ -193,6 +193,7 @@ export const postProfilesPlaceholder: ProfileInfo[] = [
   },
 ];
 export const shopCardInfoPlaceholder: ShopCardInfo = {
+  id: "1",
   title: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Earum",
   cashback: {
     unit: "$",
@@ -212,7 +213,7 @@ export const shopCardInfoPlaceholder: ShopCardInfo = {
   attachments: [
     {
       type: "video",
-      src: "video.mp4",
+      src: "/video.mp4",
     },
   ],
   comments: PostCardPlaceHolder.postInfo.comments || [],
@@ -224,12 +225,13 @@ const imgs: string[] = [...products.map((pro) => pro.imgUrl)];
 export const socialAffiliationCardPlaceholder: AffiliationOfferCardInfo = {
   user: postProfilesPlaceholder[0],
   affiliationLink: "http://localhost:3002/wiaah",
+  id: "1",
   commission: 15,
   createdAt: new Date(Date.UTC(2022, 3, 5)).toString(),
   name: "affiliation product",
   attachments: [
     {
-      src: "verticalImage.jpg",
+      src: "/verticalImage.jpg",
       type: "image",
     },
   ],
@@ -282,6 +284,7 @@ const comments: PostComment[] = [
 export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
   {
     ...socialAffiliationCardPlaceholder,
+    id: "1",
     commission: randomNum(20),
     price: randomNum(100),
     attachments: [
@@ -290,22 +293,23 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
         src: "/verticalImage.jpg",
       },
       {
-        src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
-        type: "video",
-      },
-      {
-        src: "/shop.jpeg",
         type: "image",
+        src: "/shop.jpeg",
       },
       {
-        src: "/verticalVideo.mp4",
-        type: "video",
+        type: "image",
+        src: "/verticalImage.jpg",
+      },
+      {
+        type: "image",
+        src: "/verticalImage.jpg",
       },
     ],
     comments: [comments[randomNum(comments.length)]],
   },
   {
     ...socialAffiliationCardPlaceholder,
+    id: "2",
     commission: randomNum(20),
     price: randomNum(100),
 
@@ -318,6 +322,7 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
   },
   {
     ...socialAffiliationCardPlaceholder,
+    id: "3",
     commission: randomNum(20),
     price: randomNum(100),
     attachments: [
@@ -330,6 +335,7 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
   },
   {
     ...socialAffiliationCardPlaceholder,
+    id: "4",
     commission: randomNum(20),
     price: randomNum(100),
     attachments: [
@@ -341,6 +347,7 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
   },
   {
     ...socialAffiliationCardPlaceholder,
+    id: "5",
     commission: randomNum(20),
     price: randomNum(100),
     attachments: [
@@ -352,6 +359,7 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
   },
   {
     ...socialAffiliationCardPlaceholder,
+    id: "6",
     commission: randomNum(20),
     price: randomNum(100),
     attachments: [
@@ -385,28 +393,68 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
+      id: "1",
       attachments: [
         {
           type: "image",
           src: "/verticalImage.jpg",
+          postLocation: "New York",
         },
         // {
         //   src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
         //   type: "video",
         // },
         // {
-        //   src: "/shop.jpeg",
-        //   type: "image",
-        // },
-        // {
-        //   src: "/verticalVideo.mp4",
         //   type: "video",
+        //   src: "/video.mp4",
         // },
+        {
+          src: "/shop.jpeg",
+          type: "image",
+        },
+        {
+          src: "/verticalVideo.mp4",
+          type: "video",
+        },
       ],
       content: "",
       comments: [
         {
           ...PostCommentPlaceholder,
+          attachment: null,
+        },
+        {
+          ...PostCommentPlaceholder,
+          user: getRandomUser(),
+          content: "nice video",
+          attachment: {
+            src: "/shop.jpeg",
+            type: "image",
+          },
+        },
+        {
+          ...PostCommentPlaceholder,
+          user: getRandomUser(),
+          content: "nice video",
+          attachment: null,
+        },
+        {
+          ...PostCommentPlaceholder,
+          user: getRandomUser(),
+          content: "nice video",
+          attachment: null,
+        },
+        {
+          ...PostCommentPlaceholder,
+          user: getRandomUser(),
+          content: "nice video",
+          attachment: null,
+        },
+
+        {
+          ...PostCommentPlaceholder,
+          user: getRandomUser(),
+          content: "nice video",
           attachment: null,
         },
       ],
@@ -416,10 +464,29 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
+      id: "2",
       attachments: [
         {
           src: "/verticalVideo.mp4",
           type: "video",
+          postLocation: "New York",
+        },
+        {
+          type: "image",
+          src: "/verticalImage.jpg",
+          postLocation: "New York",
+        },
+        // {
+        //   src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
+        //   type: "video",
+        // },
+        {
+          type: "video",
+          src: "/video.mp4",
+        },
+        {
+          src: "/shop.jpeg",
+          type: "image",
         },
       ],
       comments: [],
@@ -429,10 +496,12 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
+      id: "3",
       attachments: [
         {
           src: "/video.mp4",
           type: "video",
+          postLocation: "New York",
         },
       ],
       content: "test content",
@@ -478,10 +547,12 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
+      id: "4",
       attachments: [
         {
           src: images[Math.floor(Math.random() * images.length)],
           type: "image",
+          postLocation: "New York",
         },
       ],
       tags: [],
@@ -492,10 +563,28 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
+      id: "5",
       attachments: [
         {
           src: images[Math.floor(Math.random() * images.length)],
           type: "image",
+          postLocation: "New York",
+        },
+      ],
+      content: "",
+      comments: [],
+    },
+  },
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      id: "6",
+      attachments: [
+        {
+          src: images[Math.floor(Math.random() * images.length)],
+          type: "image",
+          postLocation: "New York",
         },
       ],
       content: "",
@@ -510,6 +599,7 @@ export const newsfeedPosts: PostCardInfo[] = [
         {
           src: images[Math.floor(Math.random() * images.length)],
           type: "image",
+          postLocation: "New York",
         },
       ],
       content: "",
@@ -520,10 +610,12 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
+      id: "7",
       attachments: [
         {
           src: images[Math.floor(Math.random() * images.length)],
           type: "image",
+          postLocation: "New York",
         },
       ],
       content: "",
@@ -534,24 +626,12 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
+      id: "8",
       attachments: [
         {
           src: images[Math.floor(Math.random() * images.length)],
           type: "image",
-        },
-      ],
-      content: "",
-      comments: [],
-    },
-  },
-  {
-    profileInfo: PostCardPlaceHolder.profileInfo,
-    postInfo: {
-      ...PostCardPlaceHolder.postInfo,
-      attachments: [
-        {
-          src: images[Math.floor(Math.random() * images.length)],
-          type: "image",
+          postLocation: "New York",
         },
       ],
       content: "",
@@ -566,6 +646,7 @@ const getRandomType = (): "service" | "product" =>
 export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
   {
     ...shopCardInfoPlaceholder,
+    id: "1",
     attachments: [
       {
         type: "image",
@@ -613,6 +694,7 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
   },
   {
     ...shopCardInfoPlaceholder,
+    id: "2",
     attachments: [
       {
         src: "/video.mp4",
@@ -629,6 +711,7 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
   },
   {
     ...shopCardInfoPlaceholder,
+    id: "5",
     attachments: [
       {
         src: "/shop.jpeg",
@@ -645,6 +728,7 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
   },
   {
     ...shopCardInfoPlaceholder,
+    id: "3",
     attachments: [
       {
         src: images[randomNum(images.length)],
@@ -661,6 +745,7 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
   },
   {
     ...shopCardInfoPlaceholder,
+    id: "4",
     attachments: [
       {
         src: images[randomNum(images.length)],

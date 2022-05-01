@@ -11,11 +11,11 @@ import {
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiImage } from "react-icons/bi";
+import { IoVideocamOutline } from "react-icons/io5";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { BsEmojiSmile } from "react-icons/bs";
 import { CgPlayButtonR } from "react-icons/cg";
 import { Avatar } from "ui";
-import { IoVideocamOutline } from "react-icons/io5";
 
 export interface SellerPostInputProps extends FlexProps {
   userPhotoSrc: string;

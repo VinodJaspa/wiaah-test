@@ -1,20 +1,11 @@
 import React from "react";
-import {
-  Container,
-  FilterModal,
-  Padding,
-  Pagination,
-  Spacer,
-  useScreenWidth,
-} from "ui";
+import { Container, Padding, ShopFilter, Spacer, useScreenWidth } from "ui";
 import { GridContainerPager } from "ui/components/blocks/GridContainerPager";
 import { Reviews } from "ui/components/blocks/Reviews";
 import { ShopProductFilter } from "ui/components/blocks/products/ShopProductFilter";
 import { ProductCard } from "ui/components/blocks/ProductCard";
 import { ProductDetails } from "ui/types/products/ProductDetail.interface";
-import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
 import { categories } from "ui/placeholder/categories";
-import { FaChevronDown } from "react-icons/fa";
 import { Shop, ShopProfile } from "./ShopProfile";
 import { BuyerCommentProps } from "ui/components/blocks/BuyerComment";
 import { useRouter } from "next/router";
@@ -35,10 +26,7 @@ export const ShopView: React.FC<ShopViewProps> = ({
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const [isGrid, setGrid] = React.useState(false);
   const { min } = useScreenWidth({ minWidth: 640 });
-  const [filterVisibleOnMobile, setFilterVisibleOnMobile] =
-    React.useState(false);
 
   function handleNavToProduct(id: string, type: ProductTypes) {
     switch (type) {
@@ -57,39 +45,9 @@ export const ShopView: React.FC<ShopViewProps> = ({
       <ShopProfile shop={shop} fullWidth={min} />
       <Spacer />
       <Container>
-        <div className="flex justify-end">
-          <div
-            onClick={() => {
-              setFilterVisibleOnMobile(true);
-            }}
-            className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs md:hidden"
-          >
-            <samp>{t("Filter", "Filter")}</samp>
-            <FaChevronDown className="ml-2" />
-          </div>
-          <HiOutlineViewList
-            onClick={() => {
-              setGrid(false);
-            }}
-            className={`${
-              isGrid ? "" : "bg-gray-200"
-            } list-button mr-2 inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
-          />
-          <HiOutlineViewGrid
-            onClick={() => {
-              setGrid(true);
-            }}
-            className={`${
-              isGrid ? "bg-gray-200" : ""
-            } grid-button inline-block h-9 w-9 rounded-lg border p-2 text-lg md:hidden`}
-          />
-        </div>
+        <ShopFilter />
         <Spacer />
         <div className="flex items-start justify-center">
-          <FilterModal
-            isOpen={filterVisibleOnMobile}
-            onClose={() => setFilterVisibleOnMobile(false)}
-          />
           <div className="flex w-full justify-center gap-4">
             <div className="hidden md:block">
               <ShopProductFilter

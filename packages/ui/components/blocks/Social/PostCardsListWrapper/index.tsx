@@ -2,51 +2,29 @@ import React from "react";
 import { PostCardInfo } from "types/market/Social";
 import { Flex } from "@chakra-ui/react";
 import { PostCard } from "ui";
+import { ListWrapper } from "ui";
 
 export interface PostCardsListWrapperProps {
   posts: PostCardInfo[];
   cols?: number;
+  onPostClick?: (post: PostCardInfo) => any;
 }
 
 export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
   posts,
   cols = 1,
+  onPostClick,
 }) => {
-  function sort<T>(items: T[], cols: number): { item: T; postion: number }[] {
-    let postion = 0;
-    const newItems: { item: T; postion: number }[] = [];
-
-    items.map((item) => {
-      if (postion >= cols) postion = 0;
-      newItems.push({ item, postion });
-      postion++;
-    });
-
-    return newItems;
-  }
   return (
-    <Flex justify={"space-between"} gap="1rem">
-      {[...Array(cols)].map((_, index) => (
-        <Flex
-          width={`${100 / cols}%`}
-          gap="1rem"
-          direction={"column"}
-          key={index}
-        >
-          {sort(posts, cols).map(
-            ({ item: { postInfo, profileInfo }, postion }, i) =>
-              postion == index && (
-                <Flex direction={"column"} key={i}>
-                  <PostCard
-                    showComments
-                    profileInfo={profileInfo}
-                    postInfo={postInfo}
-                  />
-                </Flex>
-              )
-          )}
-        </Flex>
-      ))}
-    </Flex>
+    <ListWrapper cols={cols}>
+      {posts &&
+        posts.map((post) => (
+          <PostCard
+            innerProps={{ onClick: () => onPostClick && onPostClick(post) }}
+            {...post}
+            key={post.postInfo.id}
+          />
+        ))}
+    </ListWrapper>
   );
 };

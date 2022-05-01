@@ -9,8 +9,8 @@ const Buyer: NextPage = () => {
         <title>Wiaah | Buyer</title>
       </Head>
       <Root>
-        <Header />
-        <main className="flex w-full p-6 grow"></main>
+        <Header categories={[]} />
+        <main className="flex w-full grow p-6"></main>
         <Footer />
       </Root>
     </>

@@ -1,4 +1,4 @@
-import { Box, Flex, Image } from "@chakra-ui/react";
+import { Box, Flex, FlexProps, Image } from "@chakra-ui/react";
 import React from "react";
 import { BsPlayFill } from "react-icons/bs";
 import { PostAttachment as PostAttachmentType } from "types/market/Social";
@@ -9,6 +9,8 @@ export interface PostAttachmentProps extends PostAttachmentType {
   play?: boolean;
   controls?: boolean;
   autoPlay?: boolean;
+  footer?: React.ReactElement;
+  style?: FlexProps;
 }
 
 export const PostAttachment: React.FC<PostAttachmentProps> = ({
@@ -19,6 +21,8 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
   play,
   autoPlay,
   controls = true,
+  footer,
+  style,
 }) => {
   const router = useRouter();
   const videoRef = React.useRef<HTMLVideoElement>(null);
@@ -43,21 +47,42 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
   }
 
   function handleGoToPost() {
-    router.push("localhost:3002/social/wiaah/newsfeed-post/15");
+    // router.push("localhost:3002/social/wiaah/newsfeed-post/15");
   }
 
   switch (type) {
     case "image":
       return (
-        <Image
-          objectFit={"contain"}
+        <Flex
+          justify={"center"}
+          align="center"
           w="100%"
-          h={"100%"}
-          alt={alt && alt}
-          src={src}
-          data-testid="PostAttachmentImage"
-          onClick={handleGoToPost}
-        />
+          h="100%"
+          position={"relative"}
+          {...style}
+        >
+          <Image
+            objectFit={"contain"}
+            maxW="100%"
+            maxH={"100%"}
+            alt={alt && alt}
+            src={src}
+            data-testid="PostAttachmentImage"
+            onClick={handleGoToPost}
+          />
+          {footer && (
+            <Box
+              bgGradient="linear(to-t, blackAlpha.500 80%,transparent)"
+              w="100%"
+              bottom="0px"
+              left="0px"
+              zIndex={5}
+              position={"absolute"}
+            >
+              {footer}
+            </Box>
+          )}
+        </Flex>
       );
 
     case "video":
@@ -66,8 +91,11 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           overflow={fixedSize ? "clip" : "auto"}
           position={"relative"}
           w="100%"
+          h="100%"
           align={"center"}
+          justify="center"
           onClick={handleGoToPost}
+          {...style}
         >
           {!playing && !autoPlay && (
             <Flex
@@ -97,10 +125,24 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
             onPlay={handlePlay}
             controls={controls}
             data-testid="PostAttachmentVideo"
-            width={"100%"}
-            height={"auto"}
+            style={{
+              maxHeight: "100%",
+              maxWidth: "100%",
+            }}
             src={src}
           />
+          {/* {footer && (
+            <Box
+              bgColor="blackAlpha.300"
+              w="100%"
+              bottom="4rem"
+              left="0px"
+              zIndex={5}
+              position={"absolute"}
+            >
+              {footer}
+            </Box>
+          )} */}
         </Flex>
       );
   }
