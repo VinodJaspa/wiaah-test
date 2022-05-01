@@ -1,34 +1,15 @@
-import {
-  VStack,
-  Box,
-  Divider,
-  Button,
-  useBreakpointValue,
-  Text,
-  HStack,
-  Icon,
-} from "@chakra-ui/react";
+import { VStack, Box, Divider, useBreakpointValue } from "@chakra-ui/react";
 import React from "react";
 import {
   PostViewPopup,
   ShopCardsListWrapper,
   ShopFilter,
-  PostAttachmentsViewer,
-  ControlledCarouselProps,
-  ControlledCarousel,
-  ShopCardAttachment,
-  PostAttachment,
   SocialShopCard,
 } from "ui";
 import { ShopCardsInfoPlaceholder } from "ui/placeholder/social";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
-import {
-  ProfileInfo,
-  PostAttachment as PostAttachmentType,
-  ShopCardInfo,
-} from "types";
-import { HiLocationMarker, HiUser } from "react-icons/hi";
+import { ShopCardInfo } from "types";
 
 export const SellerShopView: React.FC = () => {
   const { t } = useTranslation();
@@ -84,108 +65,3 @@ export const SellerShopView: React.FC = () => {
     </>
   );
 };
-
-// export interface ShopPostAttachmentsViewerProps {
-//   cardInfo: ShopCardInfo;
-//   showFooter?: boolean;
-//   carouselProps?: Partial<ControlledCarouselProps>;
-//   renderOne?: boolean;
-// }
-
-// export const ShopPostAttachmentsViewer: React.FC<ShopPostAttachmentsViewerProps> =
-//   ({ attachments, cardInfo, showFooter, carouselProps, renderOne }) => {
-//     const [active, setActive] = React.useState<number>();
-//     return (
-//       <>
-//         {attachments && !renderOne && attachments.length > 1 ? (
-//           <ControlledCarousel
-//             w={"100%"}
-//             h="100%"
-//             arrows={attachments.length > 1}
-//             gap={32}
-//             onCurrentActiveChange={setActive}
-//             {...carouselProps}
-//           >
-//             {attachments.map((attachment, i) => (
-//               <SocialShopCard
-//                 {...cardInfo}
-//                 key={attachment.src + i}
-//                 productType={"product"}
-//                 attachmentProps={{
-//                   play: i === active,
-//                   footer: showFooter ? (
-//                     <HStack color="white" fontSize={"x-large"}>
-//                       {attachment.postLocation && (
-//                         <HStack>
-//                           <Icon as={HiLocationMarker} />
-//                           <Text fontSize={"md"}>{attachment.postLocation}</Text>
-//                         </HStack>
-//                       )}
-//                       {/* {profileInfo && profileInfo.name && (
-//                         <HStack>
-//                           <Icon as={HiUser} />
-//                           <Text fontSize={"md"}>{profileInfo.name}</Text>
-//                         </HStack>
-//                       )} */}
-//                     </HStack>
-//                   ) : undefined,
-//                 }}
-//               />
-//             ))}
-//           </ControlledCarousel>
-//         ) : (
-//           attachments &&
-//           attachments.length > 0 && (
-//             <ShopCardAttachment
-//               {...cardInfo}
-//               {...attachments[0]}
-//               productType={"product"}
-//               attachmentProps={{
-//                 // play: i === active,
-//                 footer: showFooter ? (
-//                   <HStack color="white" fontSize={"x-large"}>
-//                     {attachments[0].postLocation && (
-//                       <HStack>
-//                         <Icon as={HiLocationMarker} />
-//                         <Text fontSize={"md"}>
-//                           {attachments[0].postLocation}
-//                         </Text>
-//                       </HStack>
-//                     )}
-//                     {/* {profileInfo && profileInfo.name && (
-//                         <HStack>
-//                           <Icon as={HiUser} />
-//                           <Text fontSize={"md"}>{profileInfo.name}</Text>
-//                         </HStack>
-//                       )} */}
-//                   </HStack>
-//                 ) : undefined,
-//               }}
-//             />
-//             // <PostAttachment
-//             //   {...attachments[0]}
-//             //   alt={profileInfo && profileInfo.name}
-//             //   footer={
-//             //     <HStack p="0.5rem" color="white" fontSize={"xx-large"}>
-//             //       {attachments[0].postLocation && (
-//             //         <HStack>
-//             //           <Icon as={HiLocationMarker} />
-//             //           <Text fontSize={"md"}>{attachments[0].postLocation}</Text>
-//             //         </HStack>
-//             //       )}
-//             //       {profileInfo && profileInfo.name && (
-//             //         <HStack>
-//             //           <Icon as={HiUser} />
-//             //           <Text fontSize={"md"}>
-//             //             {profileInfo && profileInfo.name}
-//             //           </Text>
-//             //         </HStack>
-//             //       )}
-//             //     </HStack>
-//             //   }
-//             // />
-//           )
-//         )}
-//       </>
-//     );
-//   };

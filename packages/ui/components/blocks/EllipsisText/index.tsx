@@ -7,12 +7,14 @@ export interface EllipsisTextProps {
   content: string;
   maxLines: number;
   wordBreak?: boolean;
+  ShowMore?: boolean;
 }
 
 export const EllipsisText: React.FC<EllipsisTextProps> = ({
   content,
   maxLines,
   wordBreak,
+  ShowMore = true,
 }) => {
   const { t } = useTranslation();
   const [MaxLines, setMaxLines] = React.useState<number>(maxLines);
@@ -79,7 +81,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
       >
         {content}
       </Text>
-      {!textEllipsising ? null : showMore === true ? (
+      {!textEllipsising || !ShowMore ? null : showMore === true ? (
         <Flex
           position={"absolute"}
           bottom="0px"

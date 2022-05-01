@@ -12,9 +12,20 @@ export interface PlaceCardProps {
   placeType?: string;
   openFrom?: string;
   openTo?: string;
+  openDays?: string[];
   fixedHeight?: string;
   headerProps?: Partial<ActionHeaderProps>;
 }
+
+const weekdays = [
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
+  "sunday",
+];
 
 export const PlaceCard: React.FC<PlaceCardProps> = ({
   placeAttachments,
@@ -25,6 +36,7 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
   openFrom,
   openTo,
   headerProps,
+  openDays,
 }) => {
   const router = useRouter();
   return (
@@ -41,6 +53,8 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
       {openFrom && openTo && (
         <Flex
           position={"absolute"}
+          direction="column"
+          align={"center"}
           top="50%"
           left="0px"
           justify={"center"}
@@ -48,18 +62,43 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
           transform="auto"
           translateY={"-50%"}
           w="100%"
-          bg="blackAlpha.400"
+          bg="blackAlpha.600"
           fontSize={"x-large"}
           fontWeight="bold"
           gap="0.25rem"
         >
           <HStack>
-            <Text>{openFrom}</Text>
+            <HStack>
+              <Text>{openFrom}</Text>
+            </HStack>
+            <Text>-</Text>
+            <HStack>
+              <Text>{openTo}</Text>
+            </HStack>
           </HStack>
-          <Text>-</Text>
-          <HStack>
-            <Text>{openTo}</Text>
-          </HStack>
+          {openDays && (
+            <HStack fontWeight={"normal"}>
+              <HStack>
+                <Text fontWeight={"bold"} color="primary.main">
+                  Open
+                </Text>
+                {/* <Text color="#f53858">Closed</Text>
+                <Text textTransform={"capitalize"}>
+                  opens on friday 10:00 AM
+                </Text> */}
+              </HStack>
+              {/* {weekdays.map((day,i)=>{
+
+             const dayFound = openDays.findIndex((openDay:string)=> openDay.toLocaleLowerCase() === day.toLocaleLowerCase())
+            return (
+                <Text textTransform={"capitalize"} color={dayFound > -1 ? "primary.main" : "whiteAlpha.900"}>
+                {day.substring(0,2)}
+              </Text>
+            )
+          }
+            )} */}
+            </HStack>
+          )}
         </Flex>
       )}
       {user && (

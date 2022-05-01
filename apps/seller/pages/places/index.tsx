@@ -4,6 +4,7 @@ import Head from "next/head";
 import { SellerLayout } from "ui";
 import { PlacesView } from "../../components/views/Places";
 import { dehydrate, QueryClient } from "react-query";
+import { useResponsive } from "ui";
 import { placesPH } from "ui/placeholder";
 
 interface PlacesPageProps {}
@@ -26,12 +27,13 @@ export const getServerSideProps: GetServerSideProps<PlacesPageProps> =
   };
 
 const places: NextPage = () => {
+  const { isMobile } = useResponsive();
   return (
     <>
       <Head>
         <title>Seller | places</title>
       </Head>
-      <SellerLayout>
+      <SellerLayout header={isMobile ? "minimal" : "main"}>
         <PlacesView />
       </SellerLayout>
     </>

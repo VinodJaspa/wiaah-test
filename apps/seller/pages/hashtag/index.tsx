@@ -1,7 +1,7 @@
 import React from "react";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
-import { SellerLayout } from "ui";
+import { SellerLayout, useResponsive } from "ui";
 import { dehydrate, QueryClient } from "react-query";
 import { HashtagsView } from "../../components";
 
@@ -23,12 +23,13 @@ export const getServerSideProps: GetServerSideProps<HashtagPageProps> =
   };
 
 const HashtagPage: NextPage<HashtagPageProps> = () => {
+  const { isMobile } = useResponsive();
   return (
     <>
       <Head>
         <title>seller | hashtags</title>
       </Head>
-      <SellerLayout>
+      <SellerLayout header={isMobile ? "minimal" : "main"}>
         <HashtagsView />
       </SellerLayout>
     </>

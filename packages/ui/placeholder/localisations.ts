@@ -49,6 +49,7 @@ export const placeCardPlaceholder: PlaceCardProps = {
   placeType: "Hotel",
   openFrom: "07:30 AM",
   openTo: "10:30 PM",
+  openDays: ["tuesday", "wednesday", "thursday", "friday"],
 };
 
 export const costumPH: PlaceCardProps[] = [

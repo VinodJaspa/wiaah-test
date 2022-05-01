@@ -6,7 +6,7 @@ import { CookiesProvider } from "react-cookie";
 import { RecoilRoot } from "recoil";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "ui/themes/chakra_ui/theme";
-import { SellerLayout } from "ui";
+import { DataInitializationWrapper } from "ui";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -17,7 +17,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ChakraProvider theme={theme}>
         <CookiesProvider>
           <RecoilRoot>
-            <Component {...pageProps} />
+            <DataInitializationWrapper>
+              <Component {...pageProps} />
+            </DataInitializationWrapper>
           </RecoilRoot>
         </CookiesProvider>
       </ChakraProvider>

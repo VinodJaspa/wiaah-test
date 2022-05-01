@@ -3,9 +3,8 @@ import { GetServerSideProps, NextPage } from "next";
 import { dehydrate, QueryClient } from "react-query";
 import { placesPH } from "ui/placeholder";
 import Head from "next/head";
-import { PlaceCardProps, SellerLayout } from "ui";
+import { SellerLayout, useResponsive } from "ui";
 import { LocalisationsView } from "../../components";
-import { PostCardPlaceHolder } from "ui/placeholder";
 
 const getLoclisations = async () => {
   return placesPH;
@@ -27,12 +26,13 @@ export const getServerSideProps: GetServerSideProps<LocalisationPageProps> =
   };
 
 const localisation: NextPage = () => {
+  const { isMobile } = useResponsive();
   return (
     <>
       <Head>
         <title>Seller | Localisation</title>
       </Head>
-      <SellerLayout>
+      <SellerLayout header={isMobile ? "minimal" : "main"}>
         <LocalisationsView />
       </SellerLayout>
     </>

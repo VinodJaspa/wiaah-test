@@ -96,7 +96,7 @@ const seller: NextPage = () => {
             );
           }}
         />
-        {/* <AddNewPostModal /> */}
+        <AddNewPostModal />
         <VStack w={"100%"} py="2rem" spacing={"1rem"}>
           <FloatingContainer
             w={"100%"}
