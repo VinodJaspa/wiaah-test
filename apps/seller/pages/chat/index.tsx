@@ -27,7 +27,7 @@ const messages: React.FC<MessagesPageProps> = () => {
       <Head>
         <title>Wiaah | Messages</title>
       </Head>
-      <SellerLayout>
+      <SellerLayout sideBar={false} containerProps={{ h: "100%" }}>
         <ChatView />
       </SellerLayout>
     </>

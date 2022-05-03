@@ -129,3 +129,10 @@ export interface StorySeenByUserInfo {
   photoSrc: string;
   name: string;
 }
+export interface SocialActionData extends SocialStoryDataWithUser {
+  likes: number;
+  dislikes: number;
+  comments: number;
+  shares: number;
+  title: string;
+}

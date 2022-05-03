@@ -1,0 +1,108 @@
+import { SocialActionData } from "types";
+import { SocialProfileInfo } from "./social";
+
+export const actionsPlaceholders: SocialActionData[] = [
+  {
+    storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
+    storyType: "video",
+    storyViews: 1300000,
+    storySrc: "/verticalVideo.mp4",
+    id: "5",
+    user: SocialProfileInfo,
+    comments: 45,
+    dislikes: 45,
+    likes: 232,
+    shares: 15,
+    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+  },
+  {
+    storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
+    storyType: "image",
+    storyViews: 12300,
+    storySrc: "/verticalImage.jpg",
+    user: SocialProfileInfo,
+    comments: 45,
+    dislikes: 45,
+    likes: 232,
+    shares: 15,
+    id: "3",
+
+    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+  },
+  {
+    storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
+    storyType: "image",
+    storyViews: 1900,
+    storySrc: "/shop-2.jpeg",
+    id: "2",
+    storyText: "image story with text",
+    user: SocialProfileInfo,
+    comments: 45,
+    dislikes: 45,
+    likes: 232,
+    shares: 15,
+
+    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+  },
+  {
+    storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
+    storyType: "image",
+    storyViews: 12300,
+    storySrc: "/verticalImage.jpg",
+    user: SocialProfileInfo,
+    comments: 45,
+    dislikes: 45,
+    likes: 232,
+    shares: 15,
+    id: "3",
+
+    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+  },
+  {
+    storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
+    storyType: "video",
+    storyViews: 500,
+    storySrc: "/video.mp4",
+    storyText: "video story with Text",
+    user: SocialProfileInfo,
+    comments: 45,
+    dislikes: 45,
+    likes: 232,
+    shares: 15,
+    id: "4",
+
+    title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+  },
+];
+export const profileActionsPlaceholder = [...Array(20)]
+  .map(() => [
+    {
+      storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
+      storyType: "video",
+      storyViews: 1300000,
+      storySrc: "/verticalVideo.mp4",
+      id: "5",
+      user: SocialProfileInfo,
+      comments: 45,
+      dislikes: 45,
+      likes: 232,
+      shares: 15,
+      title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    },
+    // {
+    //   storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
+    //   storyType: "video",
+    //   storyViews: 500,
+    //   storySrc: "/video.mp4",
+    //   storyText: "video story with Text",
+    //   user: SocialProfileInfo,
+    //   comments: 45,
+    //   dislikes: 45,
+    //   likes: 232,
+    //   shares: 15,
+    //   id: "4",
+
+    //   title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
+    // },
+  ])
+  .flat();

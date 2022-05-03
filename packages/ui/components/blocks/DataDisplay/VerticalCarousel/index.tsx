@@ -33,7 +33,7 @@ export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
 }) => {
   const [dragStartPosition, setDragStartPosition] = React.useState(0);
   const [activeItem, setActiveItem] = React.useState<number>(0);
-  const [itemHeight, setItemHeight] = React.useState<number>(0);
+  // const [itemHeight, setItemHeight] = React.useState<number>(0);
   const [itemWidth, setItemWidth] = React.useState(0);
 
   React.useEffect(() => {
@@ -47,23 +47,25 @@ export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
   }, [explicitActiveItem]);
 
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const itemHeight = containerRef.current
+    ? containerRef.current.getBoundingClientRect().height
+    : 0;
   const TrackContainerRef = React.useRef<HTMLDivElement>(null);
 
   const controls = useAnimation();
   const y = useMotionValue(0);
-
+  console.log("height", itemHeight);
   const positions = React.useMemo(
     () => children && children.map((_, index) => -Math.abs(itemHeight * index)),
     [children, itemHeight, gap]
   );
 
-  React.useEffect(() => {
-    if (containerRef.current) {
-      const containerProps = containerRef.current.getBoundingClientRect();
-      setItemHeight(containerProps.height);
-      setItemWidth(containerProps.width);
-    }
-  }, [containerRef]);
+  // React.useEffect(() => {
+  //   if (containerRef.current) {
+  //     setItemHeight(containerProps.height);
+  //     setItemWidth(containerProps.width);
+  //   }
+  // }, [containerRef]);
 
   const handleDragStart = () => setDragStartPosition(positions[activeItem]);
 
@@ -92,6 +94,7 @@ export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
         ? curr
         : prev;
     }, 0);
+    console.log(closestPosition, positions);
 
     if (!(closestPosition < positions[positions.length])) {
       setActiveItem(positions.indexOf(closestPosition));
@@ -133,6 +136,7 @@ export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
           drag={"y"}
           _active={{ cursor: "grabbing" }}
           minWidth="min-content"
+          h={`calc(100% * ${positions.length})`}
           flexWrap="nowrap"
           w="100%"
           gap={gap}
@@ -141,12 +145,13 @@ export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
           {children && children.length > 1 ? (
             children.map((child, i) => (
               <Flex
+                mt={`${gap}px`}
                 align="center"
                 justify={"center"}
                 key={i}
                 data-testid="Item"
-                w={itemWidth}
-                h={itemHeight}
+                w={"auto"}
+                h={`calc((100% / ${positions.length}) + ${gap}px )`}
                 overflow="hidden"
                 {...itemProps}
               >
@@ -159,7 +164,7 @@ export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
               justify={"center"}
               data-testid="Item"
               w={"auto"}
-              h={itemHeight}
+              h={`calc((100% / ${positions.length}) + ${gap}px )`}
               overflow="hidden"
               {...itemProps}
             >

@@ -16,3 +16,5 @@ export * from "./useDiscoverTabs";
 export * from "./useActionComments";
 export * from "./useNewPost";
 export * from "./User";
+export * from "./useLocale";
+export * from "./Chat";

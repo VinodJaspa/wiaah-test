@@ -22,6 +22,8 @@ const theme = extendTheme({
     lightBlue: "#729FE5",
     secondaryRed: "#F67171",
     transparentBlue: "rgba(40,119,197,0.7)",
+    lightGray: "#F6F6F6",
+    darkerGray: "#E8E8E8",
   },
   shadows: {
     main: "0px 3px 15px -5px gray",

@@ -13,7 +13,7 @@ import { CgPlayButtonR } from "react-icons/cg";
 import { AiOutlineShop, AiFillShop } from "react-icons/ai";
 import { UsersProfiles } from "ui";
 import { NavigationLinkType } from "types/sharedTypes/misc/SellerNavigationLink";
-import { Box, Divider, Flex, Text } from "@chakra-ui/react";
+import { Box, BoxProps, Divider, Flex, Text } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
 import { SellerDrawerOpenState } from "ui/state";
 import { useTranslation } from "react-i18next";
@@ -140,11 +140,15 @@ export type HeadersTypes = "main" | "discover" | "minimal";
 
 export interface SellerLayoutProps {
   header?: HeadersTypes;
+  sideBar?: boolean;
+  containerProps?: BoxProps;
 }
 
 export const SellerLayout: React.FC<SellerLayoutProps> = ({
   children,
   header = "main",
+  containerProps,
+  sideBar = true,
 }) => {
   const { t } = useTranslation();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
@@ -197,17 +201,23 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           />
         </Box>
       </SellerNavigationDrawer>
-      <SellerNavigationSideBar
-        headerElement={
-          <HiMenu cursor={"pointer"} onClick={() => setDrawerOpen(true)} />
-        }
-        links={NavigationLinks}
-        onLinkClick={handleLinkClick}
-        activeLink={route}
+      {sideBar && (
+        <SellerNavigationSideBar
+          headerElement={
+            <HiMenu cursor={"pointer"} onClick={() => setDrawerOpen(true)} />
+          }
+          links={NavigationLinks}
+          onLinkClick={handleLinkClick}
+          activeLink={route}
+        >
+          <UsersProfiles maxNarrowItems={5} users={usersProfilesPlaceHolder} />
+        </SellerNavigationSideBar>
+      )}
+      <Container
+        className={`${
+          isMobile ? "px-4" : sideBar ? "pl-24 pr-8" : "px-8"
+        } h-full`}
       >
-        <UsersProfiles maxNarrowItems={5} users={usersProfilesPlaceHolder} />
-      </SellerNavigationSideBar>
-      <Container className={`${isMobile ? "" : "pl-24 pr-8"}`}>
         {header && (
           <Box
             ref={headerRef}
@@ -218,12 +228,20 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
             top="0px"
             left="0px"
           >
-            <Container className={`${isMobile ? "px-4" : "pl-24 pr-8"}`}>
+            <Container
+              className={`${
+                isMobile ? "px-4" : sideBar ? "pl-24 pr-8" : "px-8"
+              }`}
+            >
               <HeaderSwitcher headerType={header} />
             </Container>
           </Box>
         )}
-        <Box mt={`calc(${headerHeight || 0}px + 1rem)`} as={"main"}>
+        <Box
+          {...containerProps}
+          pt={`calc(${headerHeight || 0}px + 1rem)`}
+          as={"main"}
+        >
           {children}
         </Box>
       </Container>

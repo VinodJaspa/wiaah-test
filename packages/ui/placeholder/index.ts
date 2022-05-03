@@ -5,3 +5,4 @@ export * from "./reviews";
 export * from "./shippingMotheds";
 export * from "./social";
 export * from "./localisations";
+export * from "./actions";

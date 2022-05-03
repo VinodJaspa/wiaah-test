@@ -75,45 +75,6 @@ export const ActionsView: React.FC = () => {
         }}
       />
 
-      {/* <FloatingContainer
-        h="100%"
-        items={[
-          {
-            label: (
-              <Flex
-                justify={"center"}
-                px="0.25"
-                textAlign={"center"}
-                gap="0.5rem"
-                direction={"column"}
-                color={isMobile ? "white" : "black"}
-                fontSize={{ base: "6xl", md: "7xl" }}
-              >
-                <VStack spacing="0rem">
-                  <Icon as={HiHeart} />
-                  <Text fontSize={"lg"}>1.5k</Text>
-                </VStack>
-                <VStack spacing="0rem">
-                  <Icon as={HiOutlineChat} />
-                  <Text fontSize={"lg"}>500</Text>
-                </VStack>
-                <VStack spacing="0rem">
-                  <Icon as={HiShare} />
-                  <Text fontSize="lg">{t("share", "share")}</Text>
-                </VStack>
-                <VStack spacing="0rem">
-                  <Icon as={HiDotsHorizontal} />
-                </VStack>
-              </Flex>
-            ),
-            right: "0.5rem",
-            top: "center",
-            floatingItemProps: {
-              translateY: "-50%",
-            },
-          },
-        ]}
-      > */}
       <Flex
         h="100%"
         // w={{ base: "100%", sm: "container.sm", md: "25rem" }}
@@ -145,12 +106,14 @@ export interface ActionsViewerProps {
   action: SocialActionData;
   play?: boolean;
   onActionClick?: (actionId: string) => any;
+  dark?: boolean;
 }
 
 export const ActionViewer: React.FC<ActionsViewerProps> = ({
   action,
   play,
   onActionClick,
+  dark,
 }) => {
   const { ToggleComments } = useActionComments();
   const { isMobile } = useResponsive();
@@ -171,8 +134,8 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
                   textAlign={"center"}
                   gap="0.5rem"
                   direction={"column"}
-                  color={"white"}
-                  bg="blackAlpha.300"
+                  color={dark ? "white" : "black"}
+                  bg={dark && "blackAlpha.300"}
                   rounded="full"
                   fontSize={{ base: "6xl", md: "7xl" }}
                 >

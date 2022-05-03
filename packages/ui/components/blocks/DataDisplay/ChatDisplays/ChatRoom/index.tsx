@@ -1,17 +1,24 @@
 import { Flex, FlexProps } from "@chakra-ui/react";
 import React from "react";
-import { ChatMessage } from "types";
-import { ChatRoomHeader } from "ui";
-
+import { ChatMessageType } from "types";
+import { ChatRoomHeader, ChatRoomContent, ChatRoomInput } from "ui";
+import { ChatRoomHeaderData } from "types";
 export interface ChatRoomProps {
-  messages: ChatMessage[];
+  messages: ChatMessageType[];
+  roomHeaderData: ChatRoomHeaderData;
   style: FlexProps;
 }
 
-export const ChatRoom: React.FC<ChatRoomProps> = ({ messages, style }) => {
+export const ChatRoom: React.FC<ChatRoomProps> = ({
+  messages,
+  roomHeaderData,
+  style,
+}) => {
   return (
-    <Flex {...style} direction={"column"}>
-      <ChatRoomHeader />
+    <Flex {...style} justify="space-between" direction={"column"}>
+      <ChatRoomHeader roomData={roomHeaderData} />
+      <ChatRoomContent />
+      <ChatRoomInput />
     </Flex>
   );
 };

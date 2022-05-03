@@ -496,6 +496,38 @@ export const newsfeedPosts: PostCardInfo[] = [
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
       ...PostCardPlaceHolder.postInfo,
+      id: "4",
+      attachments: [
+        {
+          src: images[Math.floor(Math.random() * images.length)],
+          type: "image",
+          postLocation: "New York",
+        },
+      ],
+      tags: [],
+      comments: [],
+    },
+  },
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      id: "5",
+      attachments: [
+        {
+          src: images[Math.floor(Math.random() * images.length)],
+          type: "image",
+          postLocation: "New York",
+        },
+      ],
+      content: "",
+      comments: [],
+    },
+  },
+  {
+    profileInfo: PostCardPlaceHolder.profileInfo,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
       id: "3",
       attachments: [
         {
@@ -543,38 +575,7 @@ export const newsfeedPosts: PostCardInfo[] = [
       ],
     },
   },
-  {
-    profileInfo: PostCardPlaceHolder.profileInfo,
-    postInfo: {
-      ...PostCardPlaceHolder.postInfo,
-      id: "4",
-      attachments: [
-        {
-          src: images[Math.floor(Math.random() * images.length)],
-          type: "image",
-          postLocation: "New York",
-        },
-      ],
-      tags: [],
-      comments: [],
-    },
-  },
-  {
-    profileInfo: PostCardPlaceHolder.profileInfo,
-    postInfo: {
-      ...PostCardPlaceHolder.postInfo,
-      id: "5",
-      attachments: [
-        {
-          src: images[Math.floor(Math.random() * images.length)],
-          type: "image",
-          postLocation: "New York",
-        },
-      ],
-      content: "",
-      comments: [],
-    },
-  },
+
   {
     profileInfo: PostCardPlaceHolder.profileInfo,
     postInfo: {
@@ -597,7 +598,8 @@ export const newsfeedPosts: PostCardInfo[] = [
       ...PostCardPlaceHolder.postInfo,
       attachments: [
         {
-          src: images[Math.floor(Math.random() * images.length)],
+          src: "/shop.jpeg",
+          // images[Math.floor(Math.random() * images.length)],
           type: "image",
           postLocation: "New York",
         },

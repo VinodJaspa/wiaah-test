@@ -11,6 +11,8 @@ export interface PostAttachmentProps extends PostAttachmentType {
   autoPlay?: boolean;
   footer?: React.ReactElement;
   style?: FlexProps;
+  minimal?: boolean;
+  blur?: boolean;
 }
 
 export const PostAttachment: React.FC<PostAttachmentProps> = ({
@@ -23,6 +25,8 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
   controls = true,
   footer,
   style,
+  minimal,
+  blur,
 }) => {
   const router = useRouter();
   const videoRef = React.useRef<HTMLVideoElement>(null);
@@ -61,10 +65,24 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           position={"relative"}
           {...style}
         >
+          {blur && (
+            <Image
+              objectFit={"cover"}
+              position="absolute"
+              filter="blur(0.5rem)"
+              w="100%"
+              h={"100%"}
+              alt={alt && alt}
+              src={src}
+              data-testid="PostAttachmentBlurImage"
+            />
+          )}
           <Image
             objectFit={"contain"}
             maxW="100%"
             maxH={"100%"}
+            position="absolute"
+            zIndex={1}
             alt={alt && alt}
             src={src}
             data-testid="PostAttachmentImage"
@@ -97,7 +115,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           onClick={handleGoToPost}
           {...style}
         >
-          {!playing && !autoPlay && (
+          {!playing && !autoPlay && !minimal && (
             <Flex
               position={"absolute"}
               top="0%"
@@ -119,6 +137,23 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
               </Box>
             </Flex>
           )}
+          {blur && (
+            <video
+              ref={videoRef}
+              onPause={handlePause}
+              onPlay={handlePlay}
+              controls={controls}
+              data-testid="PostAttachmentVideo"
+              style={{
+                height: "100%",
+                // width: "100%",
+                maxWidth: "fit-content",
+                filter: "blur(0.5rem)",
+                position: "absolute",
+              }}
+              src={src}
+            />
+          )}
           <video
             ref={videoRef}
             onPause={handlePause}
@@ -128,6 +163,8 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
             style={{
               maxHeight: "100%",
               maxWidth: "100%",
+              position: "absolute",
+              zIndex: 0,
             }}
             src={src}
           />

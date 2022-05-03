@@ -34,7 +34,7 @@ export const Root: React.FC = ({ children }) => {
       <SidebarProvider>
         <div
           className={classNames(
-            "relative flex min-h-screen w-full flex-col overflow-hidden"
+            "relative flex h-screen w-full flex-col overflow-x-hidden overflow-y-auto"
           )}
         >
           {children}

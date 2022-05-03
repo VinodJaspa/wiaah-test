@@ -1,12 +1,13 @@
-export interface ChatMessage {
+export interface ChatMessageType {
   id: string;
   username: string;
-  sendDate: string;
+  userPhoto: string;
+  sendDate: string | number;
   messageContent?: string;
-  messageAttachments?: MessageAttachment[];
+  messageAttachments?: ChatMessageAttachmentType[];
 }
 
-export interface MessageAttachment {
+export interface ChatMessageAttachmentType {
   type: MessageAttachmentTypes;
   src: string;
 }

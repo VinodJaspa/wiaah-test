@@ -17,6 +17,14 @@ export default {
     noBg: {
       backgroundColor: "transperant",
     },
+    icon: {
+      bgColor: "lightGray",
+      cursor: "pointer",
+      minW: "auto",
+      minH: "auto",
+      h: "auto",
+      w: "auto",
+    },
   },
   defaultProps: {
     variant: "solid",

@@ -34,12 +34,12 @@ export const Avatar: React.FC<AvatarProps> = ({
       showBorder={showBorder}
       name={name}
       src={photoSrc}
-      sx={{
-        img: {
-          height: "auto",
-          width: "100%",
-        },
-      }}
+      // sx={{
+      //   img: {
+      //     height: "auto",
+      //     width: "100%",
+      //   },
+      // }}
       cursor={"pointer"}
       borderColor={newStory ? "crimson" : "white"}
       bgColor="black"

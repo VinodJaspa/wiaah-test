@@ -1,11 +1,21 @@
-import { AvatarBadge, Center, Flex, HStack, Text } from "@chakra-ui/react";
+import {
+  Avatar,
+  AvatarBadge,
+  Center,
+  Flex,
+  FlexProps,
+  HStack,
+  Text,
+} from "@chakra-ui/react";
 import React from "react";
-import { Avatar, EllipsisText } from "ui";
+import { EllipsisText } from "ui";
 import { useRouter } from "next/router";
 import { ChatUserData } from "types";
 import { useTranslation } from "react-i18next";
 
-export interface ChatUserCardProps extends ChatUserData {}
+export interface ChatUserCardProps extends ChatUserData {
+  innerProps: FlexProps;
+}
 
 export const ChatUserCard: React.FC<ChatUserCardProps> = ({
   id,
@@ -16,6 +26,7 @@ export const ChatUserCard: React.FC<ChatUserCardProps> = ({
   unSeenMsgs,
   name,
   lastMsg,
+  innerProps,
 }) => {
   const router = useRouter();
   const { t } = useTranslation();
@@ -25,10 +36,11 @@ export const ChatUserCard: React.FC<ChatUserCardProps> = ({
       py="0.5rem"
       cursor={"pointer"}
       _hover={{ bgColor: "gray.100" }}
+      {...innerProps}
       w="100%"
     >
       <HStack w="100%">
-        <Avatar size={"lg"} name={name} photoSrc={profilePhoto}>
+        <Avatar size={"md"} name={name} bgColor="black" src={profilePhoto}>
           <AvatarBadge
             boxSize={"0.8em"}
             bgColor={

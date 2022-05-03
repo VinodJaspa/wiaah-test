@@ -15,6 +15,11 @@ import {
   ShopCardsListWrapper,
   AffiliationOffersCardListWrapper,
   FilterModal,
+  VerticalCarousel,
+  ListWrapper,
+  PostAttachment,
+  useResponsive,
+  GridWrapper,
 } from "ui";
 import {
   PostCommentPlaceholder,
@@ -27,11 +32,13 @@ import {
 import { randomNum } from "ui/components/helpers/randomNumber";
 import { TabType } from "types/market/misc/tabs";
 import { useRecoilValue } from "recoil";
+import { profileActionsPlaceholder } from "ui";
 import { SocialNewsfeedPostsState, SocialProfileInfoState } from "ui/state";
 import { PostComment, ShopCardInfo } from "types/market/Social";
 import { products } from "ui/placeholder";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 export const getRandomUser = () =>
   postProfilesPlaceholder[
@@ -79,47 +86,72 @@ export interface SocialViewProps {}
 const SocialView: React.FC<SocialViewProps> = () => {
   const { t } = useTranslation();
   const profileInfo = useRecoilValue(SocialProfileInfoState);
+  const { isMobile } = useResponsive();
   const posts = useRecoilValue(SocialNewsfeedPostsState);
-  const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
+  const cols = useBreakpointValue({ base: 3 });
+  const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
 
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
   const sellerTabs: TabType[] = [
     {
       name: t("news_feed", "news feed"),
-      component: <PostCardsListWrapper cols={cols} posts={posts} />,
+      component: (
+        <PostCardsListWrapper grid={isMobile} cols={cols} posts={posts} />
+      ),
     },
-    // {
-    //   name: t("shop", "shop"),
-    //   component: (
-    //     <Flex gap="1rem" direction={"column"}>
-    //       <div className="flex justify-end">
-    //         <div
-    //           onClick={() => {
-    //             setFilterOpen(true);
-    //           }}
-    //           className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs md:hidden"
-    //         >
-    //           <samp>{t("Filter", "Filter")}</samp>
-    //           <FaChevronDown className="ml-2" />
-    //         </div>
-    //       </div>
-    //       <FilterModal
-    //         isOpen={filterOpen}
-    //         onClose={() => setFilterOpen(false)}
-    //       />
-    //       <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} />
-    //     </Flex>
-    //   ),
-    // },
-    // {
-    //   name: t("affiliation offers", "affiliation offers"),
-    //   component: (
-    //     <AffiliationOffersCardListWrapper
-    //       cols={cols}
-    //       items={socialAffiliationCardPlaceholders}
-    //     />
-    //   ),
-    // },
+    {
+      name: t("shop", "shop"),
+      component: (
+        <Flex gap="1rem" direction={"column"}>
+          <div className="flex justify-end">
+            <div
+              onClick={() => {
+                setFilterOpen(true);
+              }}
+              className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs md:hidden"
+            >
+              <samp>{t("Filter", "Filter")}</samp>
+              <FaChevronDown className="ml-2" />
+            </div>
+          </div>
+          <FilterModal
+            isOpen={filterOpen}
+            onClose={() => setFilterOpen(false)}
+          />
+          <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} />
+        </Flex>
+      ),
+    },
+    {
+      name: t("affiliation offers", "affiliation offers"),
+      component: (
+        <AffiliationOffersCardListWrapper
+          cols={cols}
+          items={socialAffiliationCardPlaceholders}
+        />
+      ),
+    },
+    {
+      name: t("actions", "Actions"),
+      component: (
+        <GridWrapper
+          itemProps={{ bg: "black" }}
+          items={profileActionsPlaceholder.map((post, i) => ({
+            displayVariant: "normal",
+            component: (
+              <PostAttachment
+                key={i}
+                minimal
+                controls={false}
+                src={post.storySrc}
+                type={post.storyType}
+              />
+            ),
+          }))}
+          cols={ActionsCols}
+        />
+      ),
+    },
   ];
   const buyerTabs: TabType[] = [
     {
