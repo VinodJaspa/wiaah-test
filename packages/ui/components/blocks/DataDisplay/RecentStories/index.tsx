@@ -2,7 +2,7 @@ import { Center, Flex, FlexProps, HStack, Icon } from "@chakra-ui/react";
 import React from "react";
 import { HiPlus } from "react-icons/hi";
 import { StoryDisplay, StoryDisplayProps } from "ui";
-import { useResponsive } from "ui/hooks";
+import { useResponsive } from "ui";
 export interface RecentStoriesProps extends FlexProps {
   stories: StoryDisplayProps[];
 }

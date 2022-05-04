@@ -44,6 +44,7 @@ export interface PostInfo {
   id: string;
   content?: string;
   tags: string[];
+  views?: number;
   attachments?: PostAttachment[];
   numberOfLikes: number;
   numberOfComments: number;
@@ -80,13 +81,14 @@ export interface ShopCardInfo {
   title: string;
   price: number;
   oldPrice: number;
-  views: number;
+  views?: number;
   likes: number;
   noOfComments: number;
   comments: PostComment[];
 }
 
 export interface AffiliationOfferCardInfo {
+  views?: number;
   user: ProfileInfo;
   id: string;
   commission: number;

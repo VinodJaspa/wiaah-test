@@ -276,7 +276,6 @@ const Slider: React.FC<SliderProps> = ({
     <Flex
       position={"relative"}
       {...props}
-      // overflowX={"auto"}
       align={"center"}
       direction={"row"}
       ref={sliderRef}
@@ -287,9 +286,6 @@ const Slider: React.FC<SliderProps> = ({
         h="100%"
         transition="all"
         transitionDuration={"500ms"}
-        // w={{ base: "100%", md: `calc(100% + ${gap}px)` }}
-        // ml={{ base: 0, md: `-${gap / 2}px` }}
-        // px={`${gap / 2}px`}
         position={"relative"}
         overflow="hidden"
         _before={{
@@ -525,6 +521,7 @@ const Track: React.FC<TrackProps> = ({
           onDragEnd={handleDragEnd}
           animate={controls}
           style={{ x }}
+          align="center"
           w={`calc((100% + ${gap}px) * ${positions.length})`}
           drag={"x"}
           h="100%"

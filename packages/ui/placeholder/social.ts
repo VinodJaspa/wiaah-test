@@ -109,6 +109,7 @@ export const PostCommentPlaceholder: PostComment = {
 };
 export const PostCardPlaceHolder: PostCardInfo = {
   postInfo: {
+    views: 56300,
     id: "1",
     tags: ["mood", "new"],
     content:
@@ -209,7 +210,7 @@ export const shopCardInfoPlaceholder: ShopCardInfo = {
     unit: "%",
     value: 15,
   },
-  views: 50,
+  // views: 50,
   attachments: [
     {
       type: "video",
@@ -223,6 +224,7 @@ export const shopCardInfoPlaceholder: ShopCardInfo = {
 const imgs: string[] = [...products.map((pro) => pro.imgUrl)];
 
 export const socialAffiliationCardPlaceholder: AffiliationOfferCardInfo = {
+  views: 23500,
   user: postProfilesPlaceholder[0],
   affiliationLink: "http://localhost:3002/wiaah",
   id: "1",
@@ -288,21 +290,13 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
     commission: randomNum(20),
     price: randomNum(100),
     attachments: [
-      {
-        type: "image",
-        src: "/verticalImage.jpg",
-      },
+      // {
+      //   type: "image",
+      //   src: "/verticalImage.jpg",
+      // },
       {
         type: "image",
         src: "/shop.jpeg",
-      },
-      {
-        type: "image",
-        src: "/verticalImage.jpg",
-      },
-      {
-        type: "image",
-        src: "/verticalImage.jpg",
       },
     ],
     comments: [comments[randomNum(comments.length)]],
@@ -312,11 +306,19 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
     id: "2",
     commission: randomNum(20),
     price: randomNum(100),
-
+    views: undefined,
     attachments: [
       {
-        src: "/verticalVideo.mp4",
-        type: "video",
+        src: "/shop-2.jpeg",
+        type: "image",
+      },
+      {
+        src: "/shop-2.jpeg",
+        type: "image",
+      },
+      {
+        src: "/shop-2.jpeg",
+        type: "image",
       },
     ],
   },
@@ -327,8 +329,8 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
     price: randomNum(100),
     attachments: [
       {
-        src: "/video.mp4",
-        type: "video",
+        src: "/place-1.jpg",
+        type: "image",
       },
     ],
     comments: comments,
@@ -338,9 +340,10 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
     id: "4",
     commission: randomNum(20),
     price: randomNum(100),
+    views: undefined,
     attachments: [
       {
-        src: imgs[randomNum(imgs.length)],
+        src: "/verticalImage.jpg",
         type: "image",
       },
     ],
@@ -350,9 +353,10 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
     id: "5",
     commission: randomNum(20),
     price: randomNum(100),
+    views: undefined,
     attachments: [
       {
-        src: imgs[randomNum(imgs.length)],
+        src: "/place-2.jpg",
         type: "image",
       },
     ],
@@ -364,29 +368,33 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
     price: randomNum(100),
     attachments: [
       {
+        src: "/place-3.jpg",
+        type: "image",
+      },
+    ],
+  },
+  {
+    ...socialAffiliationCardPlaceholder,
+    commission: randomNum(20),
+    price: randomNum(100),
+    attachments: [
+      {
         src: imgs[randomNum(imgs.length)],
         type: "image",
       },
     ],
   },
-  // {
-  //   ...socialAffiliationCardPlaceholder,
-  //   commission: randomNum(20),
-  //   price: randomNum(100),
-  //   attachment: {
-  //     src: imgs[randomNum(imgs.length)],
-  //     type: "image",
-  //   },
-  // },
-  // {
-  //   ...socialAffiliationCardPlaceholder,
-  //   commission: randomNum(20),
-  //   price: randomNum(100),
-  //   attachment: {
-  //     src: imgs[randomNum(imgs.length)],
-  //     type: "image",
-  //   },
-  // },
+  {
+    ...socialAffiliationCardPlaceholder,
+    commission: randomNum(20),
+    price: randomNum(100),
+    attachments: [
+      {
+        src: imgs[randomNum(imgs.length)],
+        type: "image",
+      },
+    ],
+  },
 ];
 export const newsfeedPosts: PostCardInfo[] = [
   {
@@ -650,20 +658,12 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
     ...shopCardInfoPlaceholder,
     id: "1",
     attachments: [
-      {
-        type: "image",
-        src: "/verticalImage.jpg",
-      },
+      // {
+      //   type: "image",
+      //   src: "/verticalImage.jpg",
+      // },
       {
         src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
-        type: "video",
-      },
-      {
-        src: "/shop.jpeg",
-        type: "image",
-      },
-      {
-        src: "/verticalVideo.mp4",
         type: "video",
       },
     ],
@@ -671,7 +671,7 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
     rating: randomNum(5),
     noOfComments: randomNum(50),
     likes: randomNum(50),
-    views: randomNum(50),
+    // views: randomNum(50),
     comments: [{ ...comments[0], attachment: null }],
     type: getRandomType(),
   },
@@ -687,7 +687,7 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
     rating: randomNum(5),
     noOfComments: randomNum(50),
     likes: randomNum(50),
-    views: randomNum(50),
+    // views: randomNum(50),
     type: getRandomType(),
     comments: [
       { ...comments[0], attachment: null },
@@ -699,8 +699,8 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
     id: "2",
     attachments: [
       {
-        src: "/video.mp4",
-        type: "video",
+        src: "/shop-2.jpeg",
+        type: "image",
       },
     ],
     title: stringplaceholder.substring(0, randomNum(30)),
@@ -724,13 +724,30 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
     rating: randomNum(5),
     noOfComments: randomNum(50),
     likes: randomNum(50),
-    views: randomNum(50),
+    // views: randomNum(50),
     type: getRandomType(),
     comments: [],
   },
   {
     ...shopCardInfoPlaceholder,
     id: "3",
+    attachments: [
+      {
+        src: "/place-2.jpg",
+        type: "image",
+      },
+    ],
+    title: stringplaceholder.substring(0, randomNum(30)),
+    rating: randomNum(5),
+    noOfComments: randomNum(50),
+    likes: randomNum(50),
+    // views: randomNum(50),
+    type: getRandomType(),
+    comments: [],
+  },
+  {
+    ...shopCardInfoPlaceholder,
+    id: "4",
     attachments: [
       {
         src: images[randomNum(images.length)],
@@ -747,10 +764,10 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
   },
   {
     ...shopCardInfoPlaceholder,
-    id: "4",
+    id: "5",
     attachments: [
       {
-        src: images[randomNum(images.length)],
+        src: "/place-3.jpg",
         type: "image",
       },
     ],

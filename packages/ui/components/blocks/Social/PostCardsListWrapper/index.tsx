@@ -1,13 +1,15 @@
 import React from "react";
 import { PostCardInfo } from "types/market/Social";
-import { Flex } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 import {
   ListWrapper,
   ListWrapperProps,
   PostCard,
   GridWrapper,
   PostAttachment,
+  useNewsFeedPostPopup,
 } from "ui";
+import { NumberShortner } from "ui/components/helpers";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {
   posts: PostCardInfo[];
@@ -23,6 +25,10 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
   grid,
   ...props
 }) => {
+  const { postId, setCurrentPost } = useNewsFeedPostPopup();
+
+  console.log(postId);
+
   if (grid) {
     return (
       <GridWrapper
@@ -43,6 +49,7 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
               minimal
               controls={false}
               key={i}
+              style={{ onClick: () => setCurrentPost(post.postInfo.id) }}
               src={
                 (post.postInfo.attachments &&
                   post.postInfo.attachments[0].src) ||
@@ -52,6 +59,20 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
                 (post.postInfo.attachments &&
                   post.postInfo.attachments[0].type) ||
                 ""
+              }
+              footer={
+                post.postInfo.views ? (
+                  <Text
+                    w="100%"
+                    px="1rem"
+                    textAlign={"start"}
+                    fontSize={"lg"}
+                    fontWeight="bold"
+                    color="white"
+                  >
+                    {NumberShortner(post.postInfo.views)}
+                  </Text>
+                ) : undefined
               }
             />
           ),

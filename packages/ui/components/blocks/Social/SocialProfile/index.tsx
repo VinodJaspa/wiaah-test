@@ -165,7 +165,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
         <Text fontSize={"lg"}>
           <FlagIcon code={shopInfo.countryCode} />
         </Text>
-        <Text color={{ base: "black", md: "white" }} fontSize={"md"}>
+        <Text color={"white"} fontSize={"md"}>
           {shopInfo.location}
         </Text>
       </Flex>

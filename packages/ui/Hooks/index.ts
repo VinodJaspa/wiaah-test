@@ -18,3 +18,4 @@ export * from "./useNewPost";
 export * from "./User";
 export * from "./useLocale";
 export * from "./Chat";
+export * from "./Social";

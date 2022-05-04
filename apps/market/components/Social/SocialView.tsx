@@ -20,6 +20,8 @@ import {
   PostAttachment,
   useResponsive,
   GridWrapper,
+  NewsfeedPostDetailsPopup,
+  ShopPostViewModal,
 } from "ui";
 import {
   PostCommentPlaceholder,
@@ -118,7 +120,11 @@ const SocialView: React.FC<SocialViewProps> = () => {
             isOpen={filterOpen}
             onClose={() => setFilterOpen(false)}
           />
-          <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} />
+          <ShopCardsListWrapper
+            grid={isMobile}
+            cols={cols}
+            items={ShopCardsInfoPlaceholder}
+          />
         </Flex>
       ),
     },
@@ -126,6 +132,7 @@ const SocialView: React.FC<SocialViewProps> = () => {
       name: t("affiliation offers", "affiliation offers"),
       component: (
         <AffiliationOffersCardListWrapper
+          grid={isMobile}
           cols={cols}
           items={socialAffiliationCardPlaceholders}
         />
@@ -163,6 +170,8 @@ const SocialView: React.FC<SocialViewProps> = () => {
     <Flex direction={"column"}>
       <Flex position={{ base: "relative", md: "initial" }} maxH={"25rem"}>
         <SocialProfile shopInfo={SocialProfileInfo} />
+        <NewsfeedPostDetailsPopup />
+        <ShopPostViewModal />
         <Image
           position={{ base: "absolute", md: "unset" }}
           top="0px"
@@ -183,7 +192,7 @@ const SocialView: React.FC<SocialViewProps> = () => {
                 profileInfo.accountType === "seller" ? sellerTabs : buyerTabs
               }
             />
-            <Divider my="2rem" />
+            <Divider my="1rem" />
           </>
         ) : (
           <>

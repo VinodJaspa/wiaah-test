@@ -28,13 +28,16 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
       {attachments && !renderOne && attachments.length > 1 ? (
         <ControlledCarousel
           w={"100%"}
-          h="100%"
+          h="100%%"
+          data-testid="test"
           arrows={attachments.length > 1}
-          gap={32}
+          gap={0}
           onCurrentActiveChange={setActive}
-          trackStyle={{
-            height: "100%",
-          }}
+          trackStyle={
+            {
+              // height: "100%",
+            }
+          }
           {...carouselProps}
         >
           {attachments.map((attachment, i) => (

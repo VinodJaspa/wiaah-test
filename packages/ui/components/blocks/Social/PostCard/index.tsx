@@ -86,6 +86,8 @@ export const PostCard: React.FC<PostCardProps> = ({
         profileInfo={profileInfo}
         carouselProps={{
           bg: "black",
+          arrows: false,
+          h: "calc(100% - 14rem)",
         }}
       />
       <PostInteractions

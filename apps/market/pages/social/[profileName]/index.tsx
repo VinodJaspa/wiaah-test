@@ -184,7 +184,7 @@ const ShopSocialProfile: NextPage<SocialPageProps> = ({
       <MasterLayout social>
         <SocialView />
       </MasterLayout>
-      <div className="h-8" />
+      {/* <div className="h-8" /> */}
     </>
   );
 };

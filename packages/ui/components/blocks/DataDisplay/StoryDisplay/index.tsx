@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { FloatingContainer, FloatingContainerProps } from "ui";
-import { useResponsive } from "ui/hooks";
+import { useResponsive } from "ui";
 export type StoryUserData = {
   name: string;
   userPhotoSrc: string;

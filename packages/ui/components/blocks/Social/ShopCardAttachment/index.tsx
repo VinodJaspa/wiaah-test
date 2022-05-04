@@ -23,35 +23,37 @@ import { PostAttachment } from "ui";
 import { PostAttachmentProps } from "../PostAttachment";
 
 export interface ShopCardAttachmentProps {
-  src: string;
-  type: "image" | "video";
-  alt?: string;
   cashback?: CashBack;
+  src?: string;
+  type?: string;
+  alt?: string;
   discount?: CashBack;
   productType: "product" | "service";
   onInteraction?: (interaction: Interactions) => any;
   showbook?: boolean;
-  attachmentProps?: Partial<PostAttachmentProps>;
+  attachmentProps: PostAttachmentProps;
   innerProps?: React.PropsWithRef<BoxProps>;
+  minimal?: boolean;
 }
 
 export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
   children,
-  src,
-  type,
   productType,
   cashback,
   discount,
-  alt,
+  minimal,
   onInteraction,
   showbook,
   attachmentProps,
   innerProps,
+  alt,
+  src,
+  type,
 }) => {
   const { t } = useTranslation();
   return (
     <Box {...innerProps} maxW="100%" h="100%" position={"relative"}>
-      <PostAttachment {...attachmentProps} src={src} type={type} alt={alt} />
+      <PostAttachment src={src} type={type} alt={alt} {...attachmentProps} />
       <Flex
         w="100%"
         h="100%"
@@ -61,11 +63,12 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
         p="0.25rem"
         justify={"space-between"}
         pointerEvents="none"
+        zIndex={2}
       >
         <Center h="fit-content" bg="white" rounded={"lg"} px="0.25rem">
           <Icon
             cursor={"pointer"}
-            fontSize="x-large"
+            fontSize={{ base: "sm", md: "x-large" }}
             rounded={"lg"}
             pointerEvents="all"
             onClick={() => onInteraction && onInteraction("moreOpts")}
@@ -92,11 +95,11 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
               color="white"
               bg={"secondaryRed"}
               p="0.25rem"
-              gap="0.5rem"
+              gap={{ base: "0.25rem", md: "0.5rem" }}
               h="fit-content"
               rounded={"lg"}
               fontWeight={"semibold"}
-              fontSize={"md"}
+              fontSize={{ base: "xs", md: "md" }}
             >
               <Text>
                 {cashback.value}
@@ -141,7 +144,10 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
               p="0.25rem"
               bg="white"
             >
-              <Icon fontSize={"xl"} as={HiOutlineHeart} />
+              <Icon
+                fontSize={{ base: "sm", md: "x-large" }}
+                as={HiOutlineHeart}
+              />
             </Circle>
             <Circle
               pointerEvents="all"
@@ -151,7 +157,10 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
               p="0.25rem"
               bg="white"
             >
-              <Icon fontSize={"xl"} as={HiOutlineShoppingCart} />
+              <Icon
+                fontSize={{ base: "sm", md: "x-large" }}
+                as={HiOutlineShoppingCart}
+              />
             </Circle>
           </Flex>
           {discount ? (
@@ -163,7 +172,7 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
               gap="0.5rem"
               rounded={"lg"}
               fontWeight={"semibold"}
-              fontSize={"md"}
+              fontSize={{ base: "sm", md: "md" }}
             >
               <Text>
                 {discount.value}

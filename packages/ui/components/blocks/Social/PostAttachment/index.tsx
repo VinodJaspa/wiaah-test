@@ -1,8 +1,9 @@
-import { Box, Flex, FlexProps, Image } from "@chakra-ui/react";
+import { Box, Center, Flex, FlexProps, Icon, Image } from "@chakra-ui/react";
 import React from "react";
 import { BsPlayFill } from "react-icons/bs";
 import { PostAttachment as PostAttachmentType } from "types/market/Social";
 import { useRouter } from "next/router";
+import { HiDuplicate } from "react-icons/hi";
 export interface PostAttachmentProps extends PostAttachmentType {
   alt?: string;
   fixedSize?: boolean;
@@ -13,6 +14,7 @@ export interface PostAttachmentProps extends PostAttachmentType {
   style?: FlexProps;
   minimal?: boolean;
   blur?: boolean;
+  multiply?: boolean;
 }
 
 export const PostAttachment: React.FC<PostAttachmentProps> = ({
@@ -27,8 +29,8 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
   style,
   minimal,
   blur,
+  multiply,
 }) => {
-  const router = useRouter();
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = React.useState<boolean>(false);
 
@@ -62,14 +64,32 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           align="center"
           w="100%"
           h="100%"
+          overflow={"hidden"}
           position={"relative"}
           {...style}
         >
+          {multiply && (
+            <Center
+              position={"absolute"}
+              zIndex={2}
+              color="white"
+              fill={"white"}
+              bgColor="blackAlpha.500"
+              rounded={"xl"}
+              h="2.75rem"
+              w="2.75rem"
+              top="0.5rem"
+              left="0.5rem"
+              fontSize={"xx-large"}
+            >
+              <Icon as={HiDuplicate} />
+            </Center>
+          )}
           {blur && (
             <Image
               objectFit={"cover"}
               position="absolute"
-              filter="blur(0.5rem)"
+              filter="blur(5px)"
               w="100%"
               h={"100%"}
               alt={alt && alt}
@@ -81,7 +101,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
             objectFit={"contain"}
             maxW="100%"
             maxH={"100%"}
-            position="absolute"
+            position={blur ? "absolute" : undefined}
             zIndex={1}
             alt={alt && alt}
             src={src}
@@ -146,8 +166,8 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
               data-testid="PostAttachmentVideo"
               style={{
                 height: "100%",
-                // width: "100%",
-                maxWidth: "fit-content",
+                objectFit: "cover",
+                width: "100%",
                 filter: "blur(0.5rem)",
                 position: "absolute",
               }}
@@ -163,23 +183,23 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
             style={{
               maxHeight: "100%",
               maxWidth: "100%",
-              position: "absolute",
+              position: blur ? "absolute" : undefined,
               zIndex: 0,
             }}
             src={src}
           />
-          {/* {footer && (
+          {footer && (
             <Box
               bgColor="blackAlpha.300"
               w="100%"
-              bottom="4rem"
+              bottom="0px"
               left="0px"
               zIndex={5}
               position={"absolute"}
             >
               {footer}
             </Box>
-          )} */}
+          )}
         </Flex>
       );
   }

@@ -48,8 +48,6 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
     >
       {shopCardInfo.attachments && shopCardInfo.attachments.length > 1 ? (
         <ControlledCarousel
-          arrows={shopCardInfo.attachments.length > 1}
-          // gap={32}
           onCurrentActiveChange={setActive}
           h={
             productDetailsDimensions
