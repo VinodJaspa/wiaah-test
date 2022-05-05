@@ -7,9 +7,10 @@ import {
   SocialAffiliationCardProps,
   ListWrapperProps,
   GridWrapper,
+  useAffiliationPostViewPopup,
+  AffiliationPostViewModal,
 } from "ui";
 import { NumberShortner } from "../../../helpers";
-import { FloatingContainer } from "../../DataDisplay";
 import { PostAttachment } from "../PostAttachment";
 
 export interface AffiliationOffersCardListWrapperProps
@@ -22,46 +23,53 @@ export interface AffiliationOffersCardListWrapperProps
 
 export const AffiliationOffersCardListWrapper: React.FC<AffiliationOffersCardListWrapperProps> =
   ({ items, cols = 3, wrapperProps, grid, ...props }) => {
+    const { setCurrentPost } = useAffiliationPostViewPopup();
+
     if (grid) {
       return (
-        <GridWrapper
-          cols={cols}
-          itemProps={{ bgColor: "primary.main" }}
-          items={items.map((post, i) => ({
-            displayVariant: i === 1 ? "large" : i === 3 ? "portrait" : "normal",
-            component: (
-              <PostAttachment
-                multiply={post.attachments.length > 1}
-                blur
-                minimal
-                controls={false}
-                key={i}
-                src={(post.attachments && post.attachments[0].src) || ""}
-                type={(post.attachments && post.attachments[0].type) || ""}
-                footer={
-                  post.views ? (
-                    <Text
-                      w="100%"
-                      px="1rem"
-                      textAlign={"start"}
-                      fontSize={"lg"}
-                      fontWeight="bold"
-                      color="white"
-                    >
-                      {NumberShortner(post.views)}
-                    </Text>
-                  ) : undefined
-                }
-              />
-            ),
-          }))}
-        />
+        <>
+          <AffiliationPostViewModal />
+          <GridWrapper
+            cols={cols}
+            itemProps={{ bgColor: "primary.main" }}
+            items={items.map((post, i) => ({
+              displayVariant:
+                i === 1 ? "large" : i === 3 ? "portrait" : "normal",
+              component: (
+                <PostAttachment
+                  multiply={post.attachments.length > 1}
+                  style={{ onClick: () => setCurrentPost(post.id) }}
+                  blur
+                  minimal
+                  controls={false}
+                  key={i}
+                  src={(post.attachments && post.attachments[0].src) || ""}
+                  type={(post.attachments && post.attachments[0].type) || ""}
+                  footer={
+                    post.views ? (
+                      <Text
+                        w="100%"
+                        px="1rem"
+                        textAlign={"start"}
+                        fontSize={"lg"}
+                        fontWeight="bold"
+                        color="white"
+                      >
+                        {NumberShortner(post.views)}
+                      </Text>
+                    ) : undefined
+                  }
+                />
+              ),
+            }))}
+          />
+        </>
       );
     } else {
       return (
         <ListWrapper {...wrapperProps} cols={cols}>
           {items.map((offer, i) => (
-            <SocialAffiliationCard {...props} key={i} {...offer} />
+            <SocialAffiliationCard showComments {...props} key={i} {...offer} />
           ))}
         </ListWrapper>
       );

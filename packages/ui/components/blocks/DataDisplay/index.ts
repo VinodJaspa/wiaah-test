@@ -10,3 +10,5 @@ export * from "./UserProfile";
 export * from "./PlaceCard";
 export * from "./PostAttachmentsViewer";
 export * from "./ChatDisplays";
+export * from "./ActionViewer";
+export * from "./CommentAlt";

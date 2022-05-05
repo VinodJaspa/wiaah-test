@@ -15,12 +15,15 @@ import {
   PostsViewModalsHeader,
   SocialShopCard,
   useShopPostPopup,
+  usePostsCommentsDrawer,
 } from "ui";
+import { Interaction } from "types";
 
 export interface ShopPostViewModalProps {}
 
 export const ShopPostViewModal: React.FC<ShopPostViewModalProps> = () => {
   const { postId, removeCurrentPost } = useShopPostPopup();
+  const { setCommentsPostId } = usePostsCommentsDrawer();
   const { OpenLoginPopup } = useLoginPopup();
   const { user } = useUserData();
   console.log(postId);
@@ -43,19 +46,29 @@ export const ShopPostViewModal: React.FC<ShopPostViewModalProps> = () => {
       enabled: !!postId,
     }
   );
-  console.log(postDetails);
   if (!postId) return null;
   if (!user) {
     removeCurrentPost();
     OpenLoginPopup();
     return null;
   }
+  function handleInteraction(interaction: Interaction) {
+    if (!postId) return;
+    switch (interaction.type) {
+      case "comment":
+        setCommentsPostId(postId);
+        break;
+
+      default:
+        break;
+    }
+  }
 
   return (
     <Modal
       autoFocus={false}
       isCentered
-      isOpen={true}
+      isOpen={!!postId}
       onClose={removeCurrentPost}
     >
       <ModalOverlay />
@@ -69,12 +82,14 @@ export const ShopPostViewModal: React.FC<ShopPostViewModalProps> = () => {
         <ModalHeader py="0.5rem" px="0px">
           <PostsViewModalsHeader onBackClick={removeCurrentPost} />
         </ModalHeader>
-        <ModalBody px="0.25rem" overflow={"scroll"} h="100%">
+        <ModalBody py="0px" px="0.25rem" overflow={"scroll"} h="100%">
           {isError && <Text>something went wrong :{error}</Text>}
           {postDetails && (
             <SocialShopCard
-              // innerProps={{ h: "100%", overflowY: "scroll" }}
-              // showComments
+              interactionsProps={{
+                onInteraction: handleInteraction,
+              }}
+              showCommentInput={false}
               shopCardInfo={postDetails}
             />
           )}

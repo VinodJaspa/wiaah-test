@@ -6,10 +6,12 @@ import { MdOutlineReply, MdReply } from "react-icons/md";
 import { PostComment } from "types/market/Social";
 import { PostAttachment, Verified, EllipsisText } from "ui";
 import { useDateDiff, useLoginPopup } from "ui/Hooks";
+import { HashTags } from "../HashTags";
 
 export interface PostCommentCardProps extends PostComment {
   onReply?: (message: string) => void;
   onLike?: () => void;
+  main?: boolean;
 }
 
 export const PostCommentCard: React.FC<PostCommentCardProps> = ({
@@ -19,6 +21,8 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   replies,
   attachment,
   user,
+  hashTags,
+  main,
 }) => {
   const { t } = useTranslation();
   const { getSince } = useDateDiff({
@@ -33,14 +37,14 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
     OpenLoginPopup;
   }
   return (
-    <Flex w="100%" gap={"0.5rem"}>
+    <Flex bg="white" w="100%" gap={"0.5rem"}>
       <Avatar bgColor="black" src={user.thumbnail} name={user.name} />
       <Flex w="100%" direction={"column"}>
         <Flex
           w="100%"
           px="0.5rem"
           rounded={"xl"}
-          bg={"primary.light"}
+          bg={main ? "white" : "primary.light"}
           pb="0.5rem"
           direction={"column"}
         >
@@ -60,8 +64,20 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
             />
           </HStack>
           <Box py="0.5rem">
-            <EllipsisText content={content} maxLines={4} />
+            <EllipsisText
+              showMoreColor={main ? "white" : undefined}
+              content={content}
+              maxLines={4}
+            />
           </Box>
+
+          {hashTags && (
+            <HashTags
+              style={{ mb: "0.5rem" }}
+              color="primary.main"
+              tags={hashTags}
+            />
+          )}
           {attachment && (
             <PostAttachment
               src={attachment.src}
@@ -70,31 +86,39 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
             />
           )}
         </Flex>
-        <Flex py="0.5rem" w="100%" align={"center"} justify={"space-between"}>
+        <Flex px="0.5rem" w="100%" align={"center"} justify={"space-between"}>
           {/* like,reply, and replies count */}
-          <HStack>
-            <Text
-              onClick={handleOpenLogin}
-              textTransform={"capitalize"}
-              color="primary.main"
-            >
-              {t("like", "like")}
-            </Text>
-            <Text onClick={handleOpenLogin} textTransform={"capitalize"}>
-              {t("reply", "reply")}
-            </Text>
-            <Flex gap="0.2rem" h="100%" align={"end"}>
-              <Icon fill="primary.main" fontSize={"lg"} as={MdOutlineReply} />
-              <Text color="gray" textTransform={"capitalize"}>
-                {replies} {t("replies", "replies")}
+          {!main && (
+            <HStack>
+              <Text
+                onClick={handleOpenLogin}
+                textTransform={"capitalize"}
+                color="primary.main"
+              >
+                {t("like", "like")}
               </Text>
-            </Flex>
-          </HStack>
+              <Text onClick={handleOpenLogin} textTransform={"capitalize"}>
+                {t("reply", "reply")}
+              </Text>
+              <Flex gap="0.2rem" h="100%" align={"end"}>
+                <Icon fill="primary.main" fontSize={"lg"} as={MdOutlineReply} />
+                <Text color="gray" textTransform={"capitalize"}>
+                  {replies} {t("replies", "replies")}
+                </Text>
+              </Flex>
+            </HStack>
+          )}
           <HStack fontSize={"xs"} color="gray">
-            <Text>{likes}</Text>
-            <Text textTransform={"capitalize"}>{t("likes", "likes")}</Text>{" "}
+            {!main && (
+              <>
+                <Text>{likes}</Text>
+                <Text textTransform={"capitalize"}>
+                  {t("likes", "likes")}
+                </Text>{" "}
+              </>
+            )}
             <Text>
-              {"|"} {since.value} {since.timeUnit} {t("ago", "ago")}
+              {!main && "|"} {since.value} {since.timeUnit} {t("ago", "ago")}
             </Text>
           </HStack>
         </Flex>

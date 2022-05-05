@@ -1,2 +1,2 @@
 export * from "./useGetStorySeenBy";
-export * from "./useGetNewsFeedPostQuery";
+// export * from "./useGetNewsFeedPostQuery";

@@ -4,3 +4,5 @@ export * from "./AddNewPostModal";
 export * from "./ShopPostViewModal";
 export * from "./NewMessageModal";
 export * from "./NewsFeedReadPostModal";
+export * from "./AffiliationPostViewModal";
+export * from "./ActionViewModal";

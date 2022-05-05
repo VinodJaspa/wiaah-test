@@ -30,6 +30,14 @@ export interface PostAttachment {
   postLocation?: string;
 }
 
+export interface CommentData {
+  user: ProfileInfo;
+  createdAt: string;
+  content: string;
+  hashTags?: string[];
+  description?: string;
+}
+
 export interface PostComment {
   user: ProfileInfo;
   replies: number;
@@ -37,6 +45,7 @@ export interface PostComment {
   createdAt: string;
   content: string;
   attachment?: PostAttachment | null;
+  hashTags?: string[];
 }
 
 export interface PostInfo {

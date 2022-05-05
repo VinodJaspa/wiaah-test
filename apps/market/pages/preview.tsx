@@ -1,6 +1,7 @@
 import React from "react";
 import { NextPage } from "next";
 import {
+  CommentAlt,
   GridWrapper,
   GridWrapperDataType,
   PlaceCard,
@@ -49,7 +50,7 @@ const preview: NextPage = () => {
   return (
     <section className="w-full h-screen">
       <Box w="50%" m={"auto"}>
-        <GridWrapper cols={3} items={ph} />
+        <CommentAlt />
       </Box>
     </section>
   );

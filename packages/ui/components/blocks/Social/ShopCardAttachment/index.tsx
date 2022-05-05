@@ -52,7 +52,7 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <Box {...innerProps} maxW="100%" h="100%" position={"relative"}>
+    <Box {...innerProps} bg="black" maxW="100%" h="100%" position={"relative"}>
       <PostAttachment src={src} type={type} alt={alt} {...attachmentProps} />
       <Flex
         w="100%"

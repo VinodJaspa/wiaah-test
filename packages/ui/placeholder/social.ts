@@ -106,6 +106,7 @@ export const PostCommentPlaceholder: PostComment = {
     verifed: true,
     public: true,
   },
+  hashTags: ["gaming", "fashion", "motivation"],
 };
 export const PostCardPlaceHolder: PostCardInfo = {
   postInfo: {
@@ -685,6 +686,7 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
     ],
     title: stringplaceholder.substring(0, randomNum(30)),
     rating: randomNum(5),
+    id: "15",
     noOfComments: randomNum(50),
     likes: randomNum(50),
     // views: randomNum(50),

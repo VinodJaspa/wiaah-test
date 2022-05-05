@@ -14,6 +14,9 @@ export const PostsViewModalsHeader: React.FC<PostsViewModalsHeaderProps> = ({
     <FloatingContainer
       display={"flex"}
       justifyContent={"center"}
+      borderBottomWidth="1px"
+      borderColor={"lightgray"}
+      py="0.5rem"
       items={[
         {
           label: (

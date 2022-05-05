@@ -4,7 +4,6 @@ import {
   useBreakpointValue,
   Divider,
   Text,
-  Center,
 } from "@chakra-ui/react";
 import React from "react";
 import {
@@ -15,31 +14,28 @@ import {
   ShopCardsListWrapper,
   AffiliationOffersCardListWrapper,
   FilterModal,
-  VerticalCarousel,
-  ListWrapper,
-  PostAttachment,
   useResponsive,
-  GridWrapper,
   NewsfeedPostDetailsPopup,
   ShopPostViewModal,
+  ActionsListWrapper,
+  SocialPostsCommentsDrawer,
 } from "ui";
 import {
   PostCommentPlaceholder,
   postProfilesPlaceholder,
-  shopCardInfoPlaceholder,
   ShopCardsInfoPlaceholder,
   socialAffiliationCardPlaceholders,
   SocialProfileInfo,
-} from "ui/placeholder/social";
-import { randomNum } from "ui/components/helpers/randomNumber";
+  profileActionsPlaceholder,
+} from "ui";
 import { TabType } from "types/market/misc/tabs";
 import { useRecoilValue } from "recoil";
-import { profileActionsPlaceholder } from "ui";
 import { SocialNewsfeedPostsState, SocialProfileInfoState } from "ui/state";
-import { PostComment, ShopCardInfo } from "types/market/Social";
+import { PostComment } from "types/market/Social";
 import { products } from "ui/placeholder";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import { useRouter } from "next/router";
 
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 export const getRandomUser = () =>
@@ -141,21 +137,9 @@ const SocialView: React.FC<SocialViewProps> = () => {
     {
       name: t("actions", "Actions"),
       component: (
-        <GridWrapper
-          itemProps={{ bg: "black" }}
-          items={profileActionsPlaceholder.map((post, i) => ({
-            displayVariant: "normal",
-            component: (
-              <PostAttachment
-                key={i}
-                minimal
-                controls={false}
-                src={post.storySrc}
-                type={post.storyType}
-              />
-            ),
-          }))}
+        <ActionsListWrapper
           cols={ActionsCols}
+          actions={profileActionsPlaceholder}
         />
       ),
     },
@@ -170,8 +154,7 @@ const SocialView: React.FC<SocialViewProps> = () => {
     <Flex direction={"column"}>
       <Flex position={{ base: "relative", md: "initial" }} maxH={"25rem"}>
         <SocialProfile shopInfo={SocialProfileInfo} />
-        <NewsfeedPostDetailsPopup />
-        <ShopPostViewModal />
+        <SocialPostsCommentsDrawer />
         <Image
           position={{ base: "absolute", md: "unset" }}
           top="0px"

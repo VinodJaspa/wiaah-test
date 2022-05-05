@@ -74,21 +74,21 @@ export const actionsPlaceholders: SocialActionData[] = [
     title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
   },
 ];
-export const profileActionsPlaceholder = [...Array(20)]
-  .map(() => [
+export const profileActionsPlaceholder: SocialActionData[] = [...Array(20)]
+  .map((_, i) => [
     {
       storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
       storyType: "video",
       storyViews: 1300000,
       storySrc: "/verticalVideo.mp4",
-      id: "5",
+      id: `${i}`,
       user: SocialProfileInfo,
       comments: 45,
       dislikes: 45,
       likes: 232,
       shares: 15,
       title: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    },
+    } as SocialActionData,
     // {
     //   storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
     //   storyType: "video",

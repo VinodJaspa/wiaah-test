@@ -6,15 +6,13 @@ import {
   CommentInput,
   PostHead,
   HashTags,
-  PostAttachment,
   CommentsViewer,
-  ChakraCarousel,
   EllipsisText,
+  PostInteractionsProps,
 } from "ui";
+import { Interaction } from "types";
 import { useLoginPopup, useStory } from "ui/Hooks";
 import { useRouter } from "next/router";
-import { ControlledCarousel } from "../../ControlledCarousel";
-import { HiLocationMarker, HiUser } from "react-icons/hi";
 import { PostAttachmentsViewer } from "../../DataDisplay";
 
 export interface PostCardProps {
@@ -24,6 +22,7 @@ export interface PostCardProps {
   profileFunctional?: boolean;
   newStory?: boolean;
   innerProps?: FlexProps;
+  onInteraction?: (interaction: Interaction) => any;
 }
 
 export const PostCard: React.FC<PostCardProps> = ({
@@ -33,8 +32,8 @@ export const PostCard: React.FC<PostCardProps> = ({
   profileFunctional,
   newStory,
   innerProps,
+  onInteraction,
 }) => {
-  const [active, setActive] = React.useState(0);
   const router = useRouter();
   const { OpenLoginPopup } = useLoginPopup();
   const { removeNewStory } = useStory();
@@ -91,7 +90,7 @@ export const PostCard: React.FC<PostCardProps> = ({
         }}
       />
       <PostInteractions
-        onInteraction={handleOpenLogin}
+        onInteraction={onInteraction}
         shares={0}
         comments={postInfo.numberOfComments}
         likes={postInfo.numberOfLikes}

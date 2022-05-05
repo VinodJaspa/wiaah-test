@@ -10,6 +10,7 @@ import {
 import { ShopCardInfo } from "types/market/Social";
 import { useLoginPopup } from "ui/Hooks";
 import { ControlledCarousel } from "ui";
+import { PostInteractionsProps } from "../PostInteractions";
 
 export interface SocialShopCardProps {
   showComments?: boolean;
@@ -18,6 +19,7 @@ export interface SocialShopCardProps {
   showCommentInput?: boolean;
   showbook?: boolean;
   onCardClick?: (id: string) => any;
+  interactionsProps?: Partial<PostInteractionsProps>;
 }
 
 export const SocialShopCard: React.FC<SocialShopCardProps> = ({
@@ -27,6 +29,7 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
   showbook,
   shopCardInfo,
   onCardClick,
+  interactionsProps,
 }) => {
   const attachmentRef = React.useRef(null);
   const productDetailsRef = React.useRef(null);
@@ -45,16 +48,11 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
       h="100%"
       data-testid="ShopCardContainer"
       direction={"column"}
+      justify="space-between"
     >
+      <Box></Box>
       {shopCardInfo.attachments && shopCardInfo.attachments.length > 1 ? (
-        <ControlledCarousel
-          onCurrentActiveChange={setActive}
-          h={
-            productDetailsDimensions
-              ? `calc(100% - ${productDetailsDimensions.borderBox.height}px)`
-              : "100%"
-          }
-        >
+        <ControlledCarousel onCurrentActiveChange={setActive}>
           {shopCardInfo.attachments.map((attachment, i) => (
             <ShopCardAttachment
               key={i}
@@ -104,6 +102,7 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
           <PostInteractions
             comments={shopCardInfo.noOfComments}
             likes={shopCardInfo.likes}
+            {...interactionsProps}
           />
         )}
         {showCommentInput && <CommentInput />}

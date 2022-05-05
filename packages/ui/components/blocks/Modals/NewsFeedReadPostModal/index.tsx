@@ -1,5 +1,4 @@
 import {
-  Icon,
   Modal,
   ModalBody,
   ModalContent,
@@ -7,15 +6,17 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
-import { useQuery } from "react-query";
 import React from "react";
+import { Interaction } from "types";
 import {
   useNewsFeedPostPopup,
-  newsfeedPosts,
   PostCard,
   PostsViewModalsHeader,
   useLoginPopup,
   useUserData,
+  useGetNewsFeedPostQuery,
+  usePostsCommentsDrawer,
+  SocialPostsCommentsDrawer,
 } from "ui";
 
 export interface NewsfeedPostDetailsPopupProps {}
@@ -23,6 +24,7 @@ export interface NewsfeedPostDetailsPopupProps {}
 export const NewsfeedPostDetailsPopup: React.FC<NewsfeedPostDetailsPopupProps> =
   () => {
     const { postId, removeCurrentPost } = useNewsFeedPostPopup();
+    const { setCommentsPostId } = usePostsCommentsDrawer();
     const { OpenLoginPopup } = useLoginPopup();
     const { user } = useUserData();
     const {
@@ -30,26 +32,26 @@ export const NewsfeedPostDetailsPopup: React.FC<NewsfeedPostDetailsPopupProps> =
       isLoading,
       isError,
       error,
-    } = useQuery(
-      ["newsFeedPostDetails", { id: postId }],
-      async ({ queryKey }: any) => {
-        const id = queryKey[1].id;
-        if (!id) throw new Error("error getting postId");
-        const post = newsfeedPosts.findIndex((post) => post.postInfo.id === id);
-        if (post < 0) throw new Error("post not found");
-
-        return newsfeedPosts[post];
-      },
-      {
-        enabled: !!postId,
-      }
-    );
+    } = useGetNewsFeedPostQuery(postId || null);
 
     if (!postId) return null;
     if (!user) {
       removeCurrentPost();
       OpenLoginPopup();
       return null;
+    }
+
+    function handleInteraction(interaction: Interaction) {
+      if (!postId) return;
+      switch (interaction.type) {
+        case "comment":
+          setCommentsPostId(postId);
+          console.log("test");
+          break;
+
+        default:
+          return;
+      }
     }
 
     return (
@@ -71,11 +73,12 @@ export const NewsfeedPostDetailsPopup: React.FC<NewsfeedPostDetailsPopupProps> =
             <PostsViewModalsHeader onBackClick={removeCurrentPost} />
           </ModalHeader>
           <ModalBody px="0.25rem" overflow={"scroll"} h="100%">
+            <SocialPostsCommentsDrawer />
             {isError && <Text>something went wrong :{error}</Text>}
             {postDetails && (
               <PostCard
+                onInteraction={handleInteraction}
                 innerProps={{ h: "100%", overflowY: "scroll" }}
-                // showComments
                 {...postDetails}
               />
             )}
