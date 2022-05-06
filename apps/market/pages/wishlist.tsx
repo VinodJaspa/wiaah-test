@@ -3,9 +3,9 @@ import { NextPage, GetServerSideProps } from "next";
 import Head from "next/head";
 import MasterLayout from "../components/MasterLayout";
 import { Container, Divider, Spacer } from "ui";
-import WishlistView from "../components/Wishlist/WishlistView";
+import { WishlistView } from "../components/Wishlist/WishlistView";
 import { Collaboration } from "ui/components/blocks/Collaboration";
-import { products } from "ui/placeholder/products";
+import { products } from "ui";
 import { useSetRecoilState } from "recoil";
 import { SavedItemsState } from "ui/state";
 
@@ -20,7 +20,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
 const wishlist: NextPage = () => {
   const setSavedItems = useSetRecoilState(SavedItemsState);
   useEffect(() => {
-    console.log("initial");
     setSavedItems(products);
   }, []);
   return (

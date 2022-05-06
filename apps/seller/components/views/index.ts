@@ -8,3 +8,4 @@ export * from "./Places";
 export * from "./HashtagsView";
 export * from "./NewsFeed";
 export * from "./Messages";
+export * from "./Wishlist";

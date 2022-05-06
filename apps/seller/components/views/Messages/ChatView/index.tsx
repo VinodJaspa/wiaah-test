@@ -7,29 +7,31 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { ChatMessagesSideBar, ChatRoom, NewMessageModal } from "ui";
+import {
+  ChatMessagesSideBar,
+  ChatRoom,
+  ChatRoomDrawer,
+  NewMessageModal,
+} from "ui";
 import React from "react";
 import { ChatRoomHeaderData } from "types";
 import { useRouter } from "next/router";
-import { FiSend } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
 import { getParamFromAsPath } from "ui/components/helpers";
-
-const ChatRoomHeaderDataPlaceHolder: ChatRoomHeaderData = {
-  onlineMembers: 5,
-  roomId: "1456",
-  roomImage: "/shop.jpeg",
-  roomMembers: 12,
-  roomName: "Wiaah",
-};
+import { useResponsive } from "ui";
 
 export const ChatView: React.FC = () => {
   const router = useRouter();
   const roomId = getParamFromAsPath(router.asPath, "roomId");
-  console.log(router, roomId);
   const { t } = useTranslation();
+  const { isMobile } = useResponsive();
+
   function handleRouteChatRoom(roomId: string) {
     router.push(router.pathname, { query: { roomId } }, { shallow: true });
+  }
+
+  function handleCloseChatRoom() {
+    router.push(router.asPath.split("?")[0]);
   }
 
   return (
@@ -47,32 +49,19 @@ export const ChatView: React.FC = () => {
         style={{ maxW: "30rem" }}
       />
       {/* chatroom  */}
-      {roomId ? (
-        <ChatRoom
-          roomHeaderData={ChatRoomHeaderDataPlaceHolder}
-          style={{ w: "100%", shadow: "md" }}
-          messages={[]}
-        />
+      {isMobile ? (
+        <>
+          <ChatRoomDrawer
+            roomId={roomId}
+            isOpen={!!roomId}
+            onClose={handleCloseChatRoom}
+          />
+        </>
+      ) : roomId ? (
+        <ChatRoom roomId={roomId} innerProps={{ w: "100%", shadow: "md" }} />
       ) : (
         <Center minH={"15rem"} shadow={"md"} w="100%" h="100%">
           <VStack>
-            {/* <Flex
-              justify={"center"}
-              align="center"
-              h="7rem"
-              w="7rem"
-              position={"relative"}
-            >
-              <Box
-                position={"absolute"}
-                borderWidth="0.25em"
-                rounded={"full"}
-                w="full"
-                h="full"
-                borderColor="black"
-              />
-              <Icon fontSize={"7xl"} pr="0.5rem" as={FiSend} />
-            </Flex> */}
             <Text fontWeight={"semibold"} fontSize="1.5em">
               {t("your_messages", "Your Messages")}
             </Text>
@@ -86,6 +75,7 @@ export const ChatView: React.FC = () => {
           </VStack>
         </Center>
       )}
+
       <NewMessageModal />
     </Flex>
   );

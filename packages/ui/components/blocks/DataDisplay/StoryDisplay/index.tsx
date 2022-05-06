@@ -5,6 +5,7 @@ import {
   Text,
   VStack,
   useBreakpointValue,
+  StackProps,
 } from "@chakra-ui/react";
 import React from "react";
 import { FloatingContainer, FloatingContainerProps } from "ui";
@@ -18,16 +19,19 @@ export interface StoryDisplayProps {
   storyUserData: StoryUserData;
   seen?: boolean;
   floatingIcon?: FloatingContainerProps;
+  innerProps?: StackProps;
 }
 
 export const StoryDisplay: React.FC<StoryDisplayProps> = ({
   storyUserData,
   seen,
   floatingIcon,
+  innerProps,
 }) => {
   const { isMobile } = useResponsive();
   return (
-    <VStack spacing="0.5rem">
+    //@ts-ignore
+    <VStack {...innerProps} spacing="0.5rem">
       <FloatingContainer {...floatingIcon}>
         <Box
           // ratio={1 / 1}

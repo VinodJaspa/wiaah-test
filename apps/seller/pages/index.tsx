@@ -19,6 +19,7 @@ import {
   StoryDisplayProps,
   AddNewPostModal,
   PostAttachmentsViewer,
+  AddNewStoryModal,
 } from "ui";
 import { newsfeedPosts } from "ui/placeholder/social";
 import { useTranslation } from "react-i18next";
@@ -97,7 +98,8 @@ const seller: NextPage = () => {
           }}
         />
         <AddNewPostModal />
-        <VStack w={"100%"} py="2rem" spacing={"1rem"}>
+        <AddNewStoryModal />
+        <VStack w={"100%"} spacing={"1rem"}>
           <FloatingContainer
             w={"100%"}
             // px="1rem"

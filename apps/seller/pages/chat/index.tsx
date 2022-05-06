@@ -2,7 +2,7 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import React from "react";
 import { dehydrate, QueryClient } from "react-query";
-import { SellerLayout } from "ui";
+import { SellerLayout, useResponsive } from "ui";
 import { ChatView } from "../../components";
 
 interface MessagesPageProps {}
@@ -22,12 +22,17 @@ export const getServerSideProps: GetServerSideProps<MessagesPageProps> =
   };
 
 const messages: React.FC<MessagesPageProps> = () => {
+  const { isMobile } = useResponsive();
   return (
     <>
       <Head>
         <title>Wiaah | Messages</title>
       </Head>
-      <SellerLayout sideBar={false} containerProps={{ h: "100%" }}>
+      <SellerLayout
+        header={isMobile ? null : "main"}
+        sideBar={false}
+        containerProps={{ h: "100%" }}
+      >
         <ChatView />
       </SellerLayout>
     </>

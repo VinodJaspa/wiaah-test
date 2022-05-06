@@ -6,3 +6,4 @@ export * from "./shippingMotheds";
 export * from "./social";
 export * from "./localisations";
 export * from "./actions";
+export * from "./chat";

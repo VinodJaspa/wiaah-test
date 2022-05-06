@@ -10,3 +10,4 @@ export * from "./SocialStory";
 export * from "./StorySeenByState";
 export * from "./Seller";
 export * from "./Social/index";
+export * from "./Modals";

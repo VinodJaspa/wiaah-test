@@ -218,7 +218,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           isMobile ? "px-4" : sideBar ? "pl-24 pr-8" : "px-8"
         } h-full`}
       >
-        {header && (
+        {header && header !== null && (
           <Box
             ref={headerRef}
             bgColor={"white"}

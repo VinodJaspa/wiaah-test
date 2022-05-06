@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
-import React from "react";
 import { Button } from "@chakra-ui/react";
+import React from "react";
 import { FlexStack, Spacer } from "ui";
 
 const WishlistEmpty: React.FC = () => {

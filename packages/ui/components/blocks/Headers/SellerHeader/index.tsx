@@ -33,6 +33,7 @@ import {
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
+import { useRouter } from "next/router";
 export interface SellerHeaderProps {
   onSearchSubmit?: (searchValue: string) => any;
   props?: BoxProps;
@@ -42,6 +43,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
   onSearchSubmit,
   props,
 }) => {
+  const router = useRouter();
   const { t } = useTranslation();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
 
@@ -119,6 +121,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
         )}
 
         <FloatingContainer
+          onClick={() => router.push("/chat")}
           items={[
             {
               label: (
