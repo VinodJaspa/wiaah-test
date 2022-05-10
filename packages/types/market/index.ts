@@ -6,6 +6,6 @@ export * from "./Checkout";
 export * from "./Collaboration";
 export * from "./Product";
 export * from "./ProgressBar";
-export * from "./Social";
 export * from "./Wishlist.interface";
 export * from "./misc";
+export * from "./social";

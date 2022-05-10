@@ -9,7 +9,8 @@ import {
   SocialFooter,
   SocialHeader,
   SocialAuthFooter,
-} from "ui/components";
+  CommentReportModal,
+} from "ui";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 import {
@@ -316,6 +317,7 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({ children, social }) => {
 
   return (
     <Root>
+      <CommentReportModal />
       <AuthPopup />
       {!social && <Header categories={navLinks} />}
       {social && <SocialHeader />}

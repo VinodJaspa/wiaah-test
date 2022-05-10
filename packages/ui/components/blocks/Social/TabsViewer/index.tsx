@@ -33,7 +33,7 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
       align="center"
     >
       {showTabs && (
-        <TabList my={showPanels ? "1rem" : "0rem"}>
+        <TabList my={showPanels ? "0rem" : "0rem"}>
           {tabs.map(({ name }, i) => (
             <Tab
               key={i}

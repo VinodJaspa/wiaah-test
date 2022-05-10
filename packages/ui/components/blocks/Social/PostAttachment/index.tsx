@@ -1,8 +1,8 @@
-import { Box, Flex, FlexProps, Image } from "@chakra-ui/react";
+import { Box, Center, Flex, FlexProps, Icon, Image } from "@chakra-ui/react";
 import React from "react";
 import { BsPlayFill } from "react-icons/bs";
 import { PostAttachment as PostAttachmentType } from "types/market/Social";
-import { useRouter } from "next/router";
+import { HiDuplicate } from "react-icons/hi";
 export interface PostAttachmentProps extends PostAttachmentType {
   alt?: string;
   fixedSize?: boolean;
@@ -11,6 +11,10 @@ export interface PostAttachmentProps extends PostAttachmentType {
   autoPlay?: boolean;
   footer?: React.ReactElement;
   style?: FlexProps;
+  minimal?: boolean;
+  blur?: boolean;
+  multiply?: boolean;
+  cover?: boolean;
 }
 
 export const PostAttachment: React.FC<PostAttachmentProps> = ({
@@ -23,8 +27,11 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
   controls = true,
   footer,
   style,
+  minimal,
+  blur,
+  multiply,
+  cover,
 }) => {
-  const router = useRouter();
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = React.useState<boolean>(false);
 
@@ -53,18 +60,51 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
   switch (type) {
     case "image":
       return (
+        //@ts-ignore
         <Flex
           justify={"center"}
           align="center"
           w="100%"
           h="100%"
+          overflow={"hidden"}
           position={"relative"}
           {...style}
         >
+          {multiply && (
+            <Center
+              position={"absolute"}
+              zIndex={2}
+              color="white"
+              fill={"white"}
+              bgColor="blackAlpha.500"
+              rounded={"xl"}
+              h="2.75rem"
+              w="2.75rem"
+              top="0.5rem"
+              left="0.5rem"
+              fontSize={"xx-large"}
+            >
+              <Icon as={HiDuplicate} />
+            </Center>
+          )}
+          {blur && (
+            <Image
+              objectFit={"cover"}
+              position="absolute"
+              filter="blur(0.8rem)"
+              w="100%"
+              h={"100%"}
+              alt={alt && alt}
+              src={src}
+              data-testid="PostAttachmentBlurImage"
+            />
+          )}
           <Image
-            objectFit={"contain"}
+            objectFit={cover ? "cover" : "contain"}
             maxW="100%"
             maxH={"100%"}
+            position={blur ? "absolute" : undefined}
+            // zIndex={1}
             alt={alt && alt}
             src={src}
             data-testid="PostAttachmentImage"
@@ -87,6 +127,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
 
     case "video":
       return (
+        //@ts-ignore
         <Flex
           overflow={fixedSize ? "clip" : "auto"}
           position={"relative"}
@@ -97,7 +138,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           onClick={handleGoToPost}
           {...style}
         >
-          {!playing && !autoPlay && (
+          {!playing && !autoPlay && !minimal && (
             <Flex
               position={"absolute"}
               top="0%"
@@ -119,6 +160,23 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
               </Box>
             </Flex>
           )}
+          {blur && (
+            <video
+              ref={videoRef}
+              onPause={handlePause}
+              onPlay={handlePlay}
+              controls={controls}
+              data-testid="PostAttachmentVideo"
+              style={{
+                height: "100%",
+                objectFit: "cover",
+                width: "100%",
+                filter: "blur(0.8rem)",
+                position: "absolute",
+              }}
+              src={src}
+            />
+          )}
           <video
             ref={videoRef}
             onPause={handlePause}
@@ -128,21 +186,23 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
             style={{
               maxHeight: "100%",
               maxWidth: "100%",
+              position: blur ? "absolute" : undefined,
+              zIndex: 0,
             }}
             src={src}
           />
-          {/* {footer && (
+          {footer && (
             <Box
               bgColor="blackAlpha.300"
               w="100%"
-              bottom="4rem"
+              bottom="0px"
               left="0px"
               zIndex={5}
               position={"absolute"}
             >
               {footer}
             </Box>
-          )} */}
+          )}
         </Flex>
       );
   }

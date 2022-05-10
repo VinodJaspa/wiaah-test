@@ -15,6 +15,7 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import { useStory } from "ui/Hooks";
 import { DisplayPostedSince, Avatar } from "ui";
 import { useTranslation } from "react-i18next";
+import { TranslationText } from "types";
 export interface PostHeadProps {
   creatorName: string;
   creatorPhoto: string;
@@ -24,6 +25,29 @@ export interface PostHeadProps {
   onProfileClick?: () => any;
   onViewPostClick?: () => any;
 }
+
+const postOptions: TranslationText[] = [
+  {
+    translationKey: "save_for_later",
+    fallbackText: "Save For Later",
+  },
+  {
+    translationKey: "report",
+    fallbackText: "Report",
+  },
+  {
+    translationKey: "open_the_post",
+    fallbackText: "Open The Post",
+  },
+  {
+    translationKey: "hide",
+    fallbackText: "Hide",
+  },
+  {
+    translationKey: "copy_url",
+    fallbackText: "Copy Url",
+  },
+];
 
 export const PostHead: React.FC<PostHeadProps> = ({
   creatorName,
@@ -59,13 +83,24 @@ export const PostHead: React.FC<PostHeadProps> = ({
         </Text>
       </HStack>
       <Flex direction={"column"} align="end" pt="1.1rem">
-        <HiDotsHorizontal
-          viewBox="0 5 20 10"
-          fontSize="xx-large"
-          color={primaryColor}
-          cursor={"pointer"}
-          style={{ height: "0.5em" }}
-        />
+        <Menu>
+          <MenuButton>
+            <HiDotsHorizontal
+              viewBox="0 5 20 10"
+              fontSize="xx-large"
+              color={primaryColor}
+              cursor={"pointer"}
+              style={{ height: "0.5em" }}
+            />
+          </MenuButton>
+          <MenuList>
+            {postOptions.map(({ fallbackText, translationKey }, i) => (
+              <MenuItem>
+                <Text>{t(translationKey, fallbackText)}</Text>
+              </MenuItem>
+            ))}
+          </MenuList>
+        </Menu>
         <DisplayPostedSince since={createdAt} />
       </Flex>
     </Flex>

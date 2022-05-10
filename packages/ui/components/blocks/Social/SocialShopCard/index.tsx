@@ -6,10 +6,13 @@ import {
   PostInteractions,
   CommentInput,
   CommentsViewer,
+  useProductViewModal,
+  useHandlePostSharing,
 } from "ui";
 import { ShopCardInfo } from "types/market/Social";
 import { useLoginPopup } from "ui/Hooks";
 import { ControlledCarousel } from "ui";
+import { PostInteractionsProps } from "../PostInteractions";
 
 export interface SocialShopCardProps {
   showComments?: boolean;
@@ -18,6 +21,7 @@ export interface SocialShopCardProps {
   showCommentInput?: boolean;
   showbook?: boolean;
   onCardClick?: (id: string) => any;
+  interactionsProps?: Partial<PostInteractionsProps>;
 }
 
 export const SocialShopCard: React.FC<SocialShopCardProps> = ({
@@ -27,16 +31,28 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
   showbook,
   shopCardInfo,
   onCardClick,
+  interactionsProps,
 }) => {
   const attachmentRef = React.useRef(null);
   const productDetailsRef = React.useRef(null);
+  const { showProduct } = useProductViewModal();
 
-  const productDetailsDimensions = useDimensions(productDetailsRef);
+  const { handleShare } = useHandlePostSharing();
   const [active, setActive] = React.useState<number>(0);
   const { OpenLoginPopup } = useLoginPopup();
-  function handleAddToCart() {
-    OpenLoginPopup();
+  function handleAddToCart(productId: string) {
+    showProduct({
+      productType: "product",
+      productId,
+    });
   }
+  function handleBookService(serviceId: string) {
+    showProduct({
+      productType: "service",
+      productId: serviceId,
+    });
+  }
+
   return (
     <Flex
       onClick={() => onCardClick && onCardClick(shopCardInfo.id)}
@@ -45,18 +61,11 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
       h="100%"
       data-testid="ShopCardContainer"
       direction={"column"}
+      justify="space-between"
     >
+      <Box></Box>
       {shopCardInfo.attachments && shopCardInfo.attachments.length > 1 ? (
-        <ControlledCarousel
-          arrows={shopCardInfo.attachments.length > 1}
-          // gap={32}
-          onCurrentActiveChange={setActive}
-          h={
-            productDetailsDimensions
-              ? `calc(100% - ${productDetailsDimensions.borderBox.height}px)`
-              : "100%"
-          }
-        >
+        <ControlledCarousel onCurrentActiveChange={setActive}>
           {shopCardInfo.attachments.map((attachment, i) => (
             <ShopCardAttachment
               key={i}
@@ -87,25 +96,26 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
         )
       )}
       <Box
-        // w={
-        //   attachmentDimensions
-        //     ? `${attachmentDimensions.contentBox.width}px`
-        //     : "100%"
-        // }
+        bgColor={"white"}
         w="100%"
+        color="black"
         ref={productDetailsRef}
         alignSelf={"center"}
       >
         <ShopCardDetails
+          onBook={() => handleBookService(shopCardInfo.id)}
+          views={shopCardInfo.views || 0}
           data-testid="ShopCardDetails"
-          onAddToCart={handleAddToCart}
+          onAddToCart={() => handleAddToCart(shopCardInfo.id)}
           service={shopCardInfo.type === "service"}
           {...shopCardInfo}
         />
         {showInteraction && (
           <PostInteractions
             comments={shopCardInfo.noOfComments}
+            onShare={(mothed) => handleShare(mothed, shopCardInfo.id)}
             likes={shopCardInfo.likes}
+            {...interactionsProps}
           />
         )}
         {showCommentInput && <CommentInput />}

@@ -19,7 +19,7 @@ export const SocialStoriesCarousel: React.FC<SocialStoriesCarouselProps> = ({
         activeItem={currentStory}
         setActiveItem={goToStory}
         navigateOnClick
-        gap={32}
+        gap={0}
       >
         {stories.map((story, i) => (
           <SocialStoryContentViewer

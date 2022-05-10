@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
-import { Button, FlexStack, Spacer } from "ui";
+import { Button } from "@chakra-ui/react";
+import { FlexStack, Spacer } from "ui";
 
 const WishlistEmpty: React.FC = () => {
   const router = useRouter();
@@ -27,9 +28,7 @@ const WishlistEmpty: React.FC = () => {
         <Spacer spaceInRem={0.5} />
         <h1 className="text-2xl font-bold">Already have items saved?</h1>
         <div>
-          <Button onClick={handleLoginRedirect} paddingXInRem={1}>
-            SIGN IN / REGISTER
-          </Button>
+          <Button onClick={handleLoginRedirect}>SIGN IN / REGISTER</Button>
         </div>
       </FlexStack>
     </>

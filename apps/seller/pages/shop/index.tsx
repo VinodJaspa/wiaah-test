@@ -1,7 +1,7 @@
 import Head from "next/head";
 import React from "react";
 import { SellerLayout } from "ui";
-// import { SellerShopView } from "../../components";
+import { SellerShopView } from "../../components";
 
 interface SellerShopProps {}
 
@@ -11,7 +11,9 @@ const SellerShop: React.FC<SellerShopProps> = () => {
       <Head>
         <title>Wiaah | shop</title>
       </Head>
-      <SellerLayout>{/* <SellerShopView /> */}</SellerLayout>
+      <SellerLayout>
+        <SellerShopView />
+      </SellerLayout>
     </>
   );
 };

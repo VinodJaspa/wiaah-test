@@ -4,8 +4,10 @@ import { SidebarProvider } from "../helpers/SidebarContext";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { Language } from "ui/languages/enums/Language";
+import { useResponsive } from "ui";
 
 export const Root: React.FC = ({ children }) => {
+  const { isMobile } = useResponsive();
   const router = useRouter();
   const { locale, locales, defaultLocale } = router;
   const { i18n } = useTranslation();
@@ -34,7 +36,9 @@ export const Root: React.FC = ({ children }) => {
       <SidebarProvider>
         <div
           className={classNames(
-            "relative flex min-h-screen w-full flex-col overflow-hidden"
+            `relative flex h-screen w-full flex-col overflow-x-hidden overflow-y-auto ${
+              isMobile ? "no-scrollBar" : ""
+            }`
           )}
         >
           {children}

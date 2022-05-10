@@ -6,36 +6,25 @@ import {
   Root,
   Container,
 } from "ui";
-import {
-  HiMenu,
-  HiHome,
-  HiOutlineHome,
-  HiUserCircle,
-  HiOutlineUserCircle,
-} from "react-icons/hi";
-import { BiUserCircle } from "react-icons/bi";
+import { HiMenu, HiHome, HiOutlineHome } from "react-icons/hi";
 import { FaUserCircle, FaRegUserCircle } from "react-icons/fa";
 import { IoEarth, IoEarthOutline } from "react-icons/io5";
-import { IoVideocam } from "react-icons/io5";
 import { CgPlayButtonR } from "react-icons/cg";
 import { AiOutlineShop, AiFillShop } from "react-icons/ai";
-import { AffiliationIcon, AffiliationIconOutline, UsersProfiles } from "ui";
+import { UsersProfiles } from "ui";
 import { NavigationLinkType } from "types/sharedTypes/misc/SellerNavigationLink";
-import {
-  Box,
-  Button,
-  Divider,
-  Flex,
-  HStack,
-  Icon,
-  Text,
-} from "@chakra-ui/react";
+import { Box, BoxProps, Divider, Flex, Text } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
 import { SellerDrawerOpenState } from "ui/state";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
-import { useResponsive } from "ui";
-import { DiscoverHeader, LocationButton } from "ui";
+import {
+  useResponsive,
+  MinimalHeader,
+  DiscoverHeader,
+  LocationButton,
+} from "ui";
+
 const NavigationLinks: NavigationLinkType[] = [
   {
     name: "homepage",
@@ -75,16 +64,6 @@ const NavigationLinks: NavigationLinkType[] = [
       h: "1.2em",
     },
   },
-  // {
-  //   name: "affiliation",
-  //   icon: () => <AffiliationIconOutline />,
-  //   activeIcon: () => <AffiliationIcon />,
-  //   url: "affiliation",
-  //   size: {
-  //     w: "1.2em",
-  //     h: "1.2em",
-  //   },
-  // },
 ];
 
 export const usersProfilesPlaceHolder = [
@@ -157,17 +136,20 @@ export const placesPlaceholder: string[] = [
   "restaurant",
   "theatre museum",
 ];
-export type HeadersTypes = "main" | "discover";
+export type HeadersTypes = "main" | "discover" | "minimal";
 
 export interface SellerLayoutProps {
   header?: HeadersTypes;
+  sideBar?: boolean;
+  containerProps?: BoxProps;
 }
 
 export const SellerLayout: React.FC<SellerLayoutProps> = ({
   children,
   header = "main",
+  containerProps,
+  sideBar = true,
 }) => {
-  const [test, settest] = React.useState(false);
   const { t } = useTranslation();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
   const { isMobile } = useResponsive();
@@ -219,32 +201,47 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           />
         </Box>
       </SellerNavigationDrawer>
-      <SellerNavigationSideBar
-        headerElement={
-          <HiMenu cursor={"pointer"} onClick={() => setDrawerOpen(true)} />
-        }
-        links={NavigationLinks}
-        onLinkClick={handleLinkClick}
-        activeLink={route}
+      {sideBar && (
+        <SellerNavigationSideBar
+          headerElement={
+            <HiMenu cursor={"pointer"} onClick={() => setDrawerOpen(true)} />
+          }
+          links={NavigationLinks}
+          onLinkClick={handleLinkClick}
+          activeLink={route}
+        >
+          <UsersProfiles maxNarrowItems={5} users={usersProfilesPlaceHolder} />
+        </SellerNavigationSideBar>
+      )}
+      <Container
+        className={`${
+          isMobile ? "px-4" : sideBar ? "pl-24 pr-8" : "px-8"
+        } h-full`}
       >
-        <UsersProfiles maxNarrowItems={5} users={usersProfilesPlaceHolder} />
-      </SellerNavigationSideBar>
-      <Container className={`${isMobile ? "" : "pl-24 pr-8"}`}>
-        {header && (
+        {header && header !== null && (
           <Box
             ref={headerRef}
             bgColor={"white"}
             position="fixed"
             zIndex={10}
             w="100%"
-            px={header ? "1rem" : "0px"}
             top="0px"
             left="0px"
           >
-            <HeaderSwitcher headerType={header} />
+            <Container
+              className={`${
+                isMobile ? "px-4" : sideBar ? "pl-24 pr-8" : "px-8"
+              }`}
+            >
+              <HeaderSwitcher headerType={header} />
+            </Container>
           </Box>
         )}
-        <Box mt={`calc(${headerHeight || 0}px + 2rem)`} as={"main"}>
+        <Box
+          {...containerProps}
+          pt={`calc(${headerHeight || 0}px + 1rem)`}
+          as={"main"}
+        >
           {children}
         </Box>
       </Container>
@@ -262,7 +259,8 @@ export const HeaderSwitcher: React.FC<HeaderSwitcherProps> = ({
   switch (headerType) {
     case "discover":
       return <DiscoverHeader />;
-
+    case "minimal":
+      return <MinimalHeader />;
     default:
       return <SellerHeader />;
   }

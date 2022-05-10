@@ -6,15 +6,13 @@ import {
   CommentInput,
   PostHead,
   HashTags,
-  PostAttachment,
   CommentsViewer,
-  ChakraCarousel,
   EllipsisText,
+  useHandlePostSharing,
 } from "ui";
+import { Interaction, ShareMotheds } from "types";
 import { useLoginPopup, useStory } from "ui/Hooks";
 import { useRouter } from "next/router";
-import { ControlledCarousel } from "../../ControlledCarousel";
-import { HiLocationMarker, HiUser } from "react-icons/hi";
 import { PostAttachmentsViewer } from "../../DataDisplay";
 
 export interface PostCardProps {
@@ -24,6 +22,7 @@ export interface PostCardProps {
   profileFunctional?: boolean;
   newStory?: boolean;
   innerProps?: FlexProps;
+  onInteraction?: (interaction: Interaction) => any;
 }
 
 export const PostCard: React.FC<PostCardProps> = ({
@@ -33,11 +32,12 @@ export const PostCard: React.FC<PostCardProps> = ({
   profileFunctional,
   newStory,
   innerProps,
+  onInteraction,
 }) => {
-  const [active, setActive] = React.useState(0);
   const router = useRouter();
   const { OpenLoginPopup } = useLoginPopup();
   const { removeNewStory } = useStory();
+  const { handleShare } = useHandlePostSharing();
   function handleOpenLogin() {
     OpenLoginPopup;
   }
@@ -51,6 +51,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   function handleViewPost() {
     router.push("/", { query: { postId: postInfo.id } }, { shallow: true });
   }
+
   return (
     <Flex
       bg="white"
@@ -58,7 +59,9 @@ export const PostCard: React.FC<PostCardProps> = ({
       // p="1rem"
       rounded="lg"
       maxW="100%"
+      maxH={"100%"}
       overflow={"hidden"}
+      color="black"
       direction={"column"}
       {...innerProps}
     >
@@ -86,20 +89,24 @@ export const PostCard: React.FC<PostCardProps> = ({
         profileInfo={profileInfo}
         carouselProps={{
           bg: "black",
+          arrows: false,
+          h: "100%",
         }}
       />
       <PostInteractions
-        onInteraction={handleOpenLogin}
-        shares={0}
+        onInteraction={onInteraction}
+        onShare={(mothed) => handleShare(mothed, postInfo.id)}
         comments={postInfo.numberOfComments}
         likes={postInfo.numberOfLikes}
       />
-      <CommentInput />
       {showComments && (
-        <CommentsViewer
-          comments={postInfo.comments || []}
-          maxInitailComments={4}
-        />
+        <>
+          <CommentInput />
+          <CommentsViewer
+            comments={postInfo.comments || []}
+            maxInitailComments={4}
+          />
+        </>
       )}
     </Flex>
   );

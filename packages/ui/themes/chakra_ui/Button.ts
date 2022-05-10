@@ -8,6 +8,7 @@ export default {
     solid: {
       bgColor: "primary.main",
       color: "white",
+      cursor: "pointer",
     },
     outline: {
       color: "black",
@@ -16,6 +17,14 @@ export default {
     },
     noBg: {
       backgroundColor: "transperant",
+    },
+    icon: {
+      bgColor: "lightGray",
+      cursor: "pointer",
+      minW: "auto",
+      minH: "auto",
+      h: "auto",
+      w: "auto",
     },
   },
   defaultProps: {

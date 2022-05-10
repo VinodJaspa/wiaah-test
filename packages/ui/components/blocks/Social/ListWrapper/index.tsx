@@ -5,6 +5,8 @@ export interface ListWrapperProps {
   children?: React.ReactElement[];
   cols?: number;
   gap?: boolean;
+  listStyle?: FlexProps;
+  itemStyle?: FlexProps;
   style?: FlexProps;
 }
 
@@ -13,6 +15,8 @@ export const ListWrapper: React.FC<ListWrapperProps> = ({
   children,
   gap = true,
   style,
+  listStyle,
+  itemStyle,
 }) => {
   function sort<T>(items: T[], cols: number): { item: T; postion: number }[] {
     let postion = 0;
@@ -30,6 +34,7 @@ export const ListWrapper: React.FC<ListWrapperProps> = ({
     <Flex {...style} justify={"space-between"} gap={gap ? "1rem" : "0rem"}>
       {[...Array(cols)].map((_, index) => (
         <Flex
+          {...listStyle}
           data-testid="ListWrapperListContainer"
           w={`${100 / cols}%`}
           gap={gap ? "1rem" : "0rem"}
@@ -40,6 +45,7 @@ export const ListWrapper: React.FC<ListWrapperProps> = ({
             ({ item, postion }, i) =>
               postion == index && (
                 <Flex
+                  {...itemStyle}
                   data-testid="ListWrapperItem"
                   direction={"column"}
                   key={i}

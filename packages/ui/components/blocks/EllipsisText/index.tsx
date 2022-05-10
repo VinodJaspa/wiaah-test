@@ -7,12 +7,17 @@ export interface EllipsisTextProps {
   content: string;
   maxLines: number;
   wordBreak?: boolean;
+  ShowMore?: boolean;
+  showMoreColor?: string;
+  showMoreTextColor?: string;
 }
 
 export const EllipsisText: React.FC<EllipsisTextProps> = ({
   content,
   maxLines,
   wordBreak,
+  ShowMore = true,
+  showMoreColor,
 }) => {
   const { t } = useTranslation();
   const [MaxLines, setMaxLines] = React.useState<number>(maxLines);
@@ -79,7 +84,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
       >
         {content}
       </Text>
-      {!textEllipsising ? null : showMore === true ? (
+      {!textEllipsising || !ShowMore ? null : showMore === true ? (
         <Flex
           position={"absolute"}
           bottom="0px"
@@ -90,16 +95,14 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
           textTransform={"capitalize"}
           transform="auto"
         >
-          <Flex bg="primary.light" gap="0.5rem">
-            <Text ref={EllipsisRef} color="black" bg="primary.light">
+          <Flex
+            bg={showMoreColor ? showMoreColor : "primary.light"}
+            gap="0.5rem"
+          >
+            <Text ref={EllipsisRef} color="black">
               ...
             </Text>
-            <Text
-              cursor={"pointer"}
-              onClick={handleShowMore}
-              w="fit-content"
-              bg="primary.light"
-            >
+            <Text cursor={"pointer"} onClick={handleShowMore} w="fit-content">
               {t("show_more", "show more")}
             </Text>
           </Flex>

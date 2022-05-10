@@ -1,7 +1,8 @@
 import React from "react";
 import { Rate } from "antd";
 import { Select } from "antd";
-import { Button, FlexStack, WishListIcon } from "ui";
+import { Button } from "@chakra-ui/react";
+import { FlexStack, WishListIcon } from "ui";
 import { ShoppingCartItem } from "ui/types/shoppingCart/shoppingCartItem.interface";
 import { useShoppingCart } from "ui/Hooks/useShoppingCart";
 import { useCartSummary, useProductDescTabs } from "ui/Hooks";

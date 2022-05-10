@@ -1,16 +1,19 @@
 import React, { FC, useState } from "react";
 import Link from "next/link";
 import { IoMdMail, IoMdKey } from "react-icons/io";
-import { t } from "i18next";
 import { Button } from "@chakra-ui/react";
 import { Spacer, DividerWidthText, Input } from "../../components";
 import { LoginInputsType } from "../../../types/market/authenticating/loginInput.interface";
-import { HandleLoginRequest } from "../../../../apps/market/ApiCalls/Authenticating/Login";
 import { LoginType } from "../../../../apps/market/lib/LoignTypes";
+import { useUserData, useLoginPopup } from "ui";
+import { useTranslation } from "react-i18next";
 
 export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
   setAuthView,
 }) => {
+  const { initUserData } = useUserData();
+  const { CloseLoginPopup } = useLoginPopup();
+  const { t } = useTranslation();
   const [formInput, setFormInput] = useState<LoginInputsType>({
     email: "",
     password: "",
@@ -19,7 +22,14 @@ export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    HandleLoginRequest(formInput);
+    initUserData({
+      name: "Wiaah",
+      email: "WiaahMarket@dev.com",
+      accountType: "seller",
+      photoSrc: "/wiaah_logo.png",
+      id: "123",
+    });
+    CloseLoginPopup();
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,6 +51,7 @@ export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
           id="Email"
           name="email"
           placeholder="Email"
+          type={"email"}
           value={formInput.email}
           onChange={(e) => handleInputChange(e)}
           icon={<IoMdMail />}
@@ -50,6 +61,7 @@ export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
           id="Password"
           name="password"
           placeholder="Password"
+          type={"password"}
           onChange={(e) => handleInputChange(e)}
           value={formInput.password}
           icon={<IoMdKey />}

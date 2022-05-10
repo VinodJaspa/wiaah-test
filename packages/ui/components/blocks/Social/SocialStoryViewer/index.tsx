@@ -18,25 +18,30 @@ export const SocialStoryViewer: React.FC<SocialStoryViewerProps> = ({
   stories,
   user,
 }) => {
-  const { currentStory } = useStory();
-  if (stories.length < 1) return null;
-  const story = stories[currentStory];
-  const { storyCreationDate, storyViews } = story;
-  console.log("render");
+  try {
+    const { currentStory, CloseStories } = useStory();
+    if (stories.length < 1) return null;
+    const story = stories[currentStory];
 
-  if (!story) return null;
+    const { storyCreationDate, storyViews } = story;
 
-  return (
-    <Flex gap="1rem" w="100%" direction={"column"}>
-      <SocialStoryViewerHeader
-        // onClose={CloseStories}
-        user={user}
-        createdAt={storyCreationDate}
-        views={storyViews}
-      />
-      <StorySeenByPopup storyId={story.id} />
-      <StoiresProgressBars />
-      <SocialStoriesCarousel stories={stories} />
-    </Flex>
-  );
+    if (!story) return null;
+
+    return (
+      <Flex gap="1rem" maxH={"100%"} maxW="100%" direction={"column"}>
+        <SocialStoryViewerHeader
+          // onClose={CloseStories}
+          user={user}
+          createdAt={storyCreationDate}
+          views={storyViews}
+        />
+        <StorySeenByPopup storyId={story.id} />
+        <StoiresProgressBars />
+        <SocialStoriesCarousel stories={stories} />
+      </Flex>
+    );
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 };

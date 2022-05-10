@@ -6,22 +6,22 @@ import { GridContainerPager } from "ui/components/blocks/GridContainerPager";
 import { ProductCard } from "ui/components/blocks/ProductCard";
 import WishlistEmpty from "./WishlistEmpty";
 
-const WishlistView: React.FC = () => {
+export const WishlistView: React.FC = () => {
   const { OpenLoginPopup } = useLoginPopup();
-  const { AddNewItem, OpenShoppingCart } = useShoppingCart();
+  const { OpenShoppingCart } = useShoppingCart();
   const { DeleteItem, savedItems } = useSavedItems();
   function handleAddToCart(item: WishlistItem) {
     const id = String(Math.random() * 100);
     OpenShoppingCart();
-    AddNewItem({
-      id,
-      name: item.name,
-      price: item.price,
-      quantity: 1,
-      thumbnail: item.imgUrl,
-    });
+    // AddNewItem({
+    //   id,
+    //   name: item.name,
+    //   price: item.price,
+    //   quantity: 1,
+    //   thumbnail: item.imgUrl,
+    // });
+    handleLoginPopup();
   }
-  console.log("render", savedItems);
   function handleLoginPopup() {
     OpenLoginPopup();
   }
@@ -42,18 +42,8 @@ const WishlistView: React.FC = () => {
               postion="delete"
               forceHover={true}
               buttonText={type > 50 ? "Add to Cart" : "Book now"}
-              id={item.id}
-              cashback={item.cashback || "10"}
-              colors={item.colors}
-              currency={item.currency}
-              currencySymbol={item.currencySymbol}
-              oldPrice={item.oldPrice}
-              discount={item.discount || 15}
-              liked={item.liked}
-              rating={item.rating}
+              {...item}
               imageUrl={item.imgUrl}
-              name={item.name}
-              price={item.price}
               variant={type > 50 ? "product" : "service"}
             />
           );
@@ -76,5 +66,3 @@ const WishlistView: React.FC = () => {
     </div>
   );
 };
-
-export default WishlistView;

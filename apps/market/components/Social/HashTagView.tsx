@@ -12,6 +12,8 @@ import { SocialHashTagTopPosts } from "ui/state";
 import { TabType } from "types/market/misc/tabs";
 import { useRouter } from "next/router";
 import {
+  ActionsListWrapper,
+  actionsPlaceholders,
   HashTagPostsListWrapper,
   PostCardsListWrapper,
   ShopCardsListWrapper,
@@ -51,6 +53,16 @@ export const HashTagView: React.FC<HashTagViewProps> = () => {
           <Divider />
 
           <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} />
+        </Flex>
+      ),
+    },
+    {
+      name: t("action", "action"),
+      component: (
+        <Flex direction={"column"} gap="4rem">
+          <HashTagPostsListWrapper hashtags={topPosts} />
+          <Divider />
+          <ActionsListWrapper cols={cols} actions={actionsPlaceholders} />
         </Flex>
       ),
     },

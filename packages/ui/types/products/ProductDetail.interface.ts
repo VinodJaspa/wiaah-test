@@ -1,7 +1,7 @@
 import { ProductTypes } from "types/market/Product";
 
 export interface ProductDetails {
-  id?: string;
+  id: string;
   name: string;
   price: number;
   oldPrice?: number;

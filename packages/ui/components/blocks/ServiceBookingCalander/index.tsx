@@ -1,7 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { MdClose, MdArrowLeft, MdArrowRight } from "react-icons/md";
-import { Spacer, Button, Divider } from "ui";
+import { Button } from "@chakra-ui/react";
+import { Spacer, Divider } from "ui";
 import { getTimeInAmPm } from "ui/components/helpers/getTimeInAmPm";
 
 export interface ServiceBookingCalanderProps {
@@ -290,14 +291,9 @@ export const ServiceBookingCalander: React.FC<ServiceBookingCalanderProps> = ({
                 : "cursor-not-allowed opacity-50"
             } max-w-40`}
           >
-            <Button
-              onClick={() => handleSubmitEvent()}
-              text={t("Confirm_Booking", "Confirm Booking")}
-              fontSizeInRem={1}
-              customClasses={
-                activeEvent ? "cursor-pointer" : "cursor-not-allowed"
-              }
-            />
+            <Button onClick={() => handleSubmitEvent()}>
+              {t("Confirm_Booking", "Confirm Booking")}
+            </Button>
           </div>
         </div>
       </div>

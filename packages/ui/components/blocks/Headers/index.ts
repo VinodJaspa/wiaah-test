@@ -1,2 +1,4 @@
 export * from "./SellerHeader";
-export { DiscoverHeader } from "./DiscoverHeader";
+export * from "./DiscoverHeader";
+export * from "./MinimalHeader";
+export * from "./PostsViewModalsHeader";

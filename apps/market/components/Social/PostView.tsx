@@ -12,13 +12,13 @@ import {
   SocialNewsfeedOtherPostsState,
   SocialNewsfeedPostState,
 } from "ui/state/Recoil/Social";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 export const PostView: React.FC = () => {
   const postCardInfo = useRecoilValue(SocialNewsfeedPostState);
   const otherPosts = useRecoilValue(SocialNewsfeedOtherPostsState);
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
-
+  const { t } = useTranslation();
   return (
     <Flex py={{ base: "0.5rem", md: "4rem" }} gap="2rem" direction={"column"}>
       <Flex
@@ -45,8 +45,10 @@ export const PostView: React.FC = () => {
         textAlign={"center"}
         textTransform={"capitalize"}
       >
-        {t("view", "view")} {postCardInfo.profileInfo.name}{" "}
-        {t("other_posts", "other posts")}
+        <>
+          {t("view", "view")} {postCardInfo.profileInfo.name}{" "}
+          {t("other_posts", "other posts")}
+        </>
       </Text>
       <PostCardsListWrapper cols={cols} posts={otherPosts} />
       <Button

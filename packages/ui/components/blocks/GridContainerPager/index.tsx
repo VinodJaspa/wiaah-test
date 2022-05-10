@@ -5,12 +5,14 @@ interface GridContainerPager {
   componentsLimit: number;
   children?: React.ReactNode[];
   onPageChange?: (pageNum: number) => void;
+  showPagination?: boolean;
 }
 
 export const GridContainerPager: React.FC<GridContainerPager> = ({
   componentsLimit,
   children,
   onPageChange,
+  showPagination = true,
 }) => {
   const [components, setComponents] = React.useState<React.ReactNode[]>([]);
   const [currentPage, setCurrentPage] = React.useState<number>(1);
@@ -44,10 +46,12 @@ export const GridContainerPager: React.FC<GridContainerPager> = ({
       </div>
       <Spacer />
       <Spacer />
-      <Pagination
-        onPageChange={(pageNumber) => handlePageChange(pageNumber)}
-        maxPages={children ? Math.ceil(children.length / componentsLimit) : 1}
-      />
+      {showPagination && (
+        <Pagination
+          onPageChange={(pageNumber) => handlePageChange(pageNumber)}
+          maxPages={children ? Math.ceil(children.length / componentsLimit) : 1}
+        />
+      )}
     </div>
   );
 };

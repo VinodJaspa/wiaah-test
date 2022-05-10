@@ -19,6 +19,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   newStory,
   onClick,
   showBorder = true,
+  children,
   ...props
 }) => {
   function handleAvatarClick() {
@@ -33,17 +34,19 @@ export const Avatar: React.FC<AvatarProps> = ({
       showBorder={showBorder}
       name={name}
       src={photoSrc}
-      sx={{
-        img: {
-          height: "auto",
-          width: "100%",
-        },
-      }}
+      // sx={{
+      //   img: {
+      //     height: "auto",
+      //     width: "100%",
+      //   },
+      // }}
       cursor={"pointer"}
       borderColor={newStory ? "crimson" : "white"}
       bgColor="black"
       borderWidth={showBorder ? "0.25rem" : "0px"}
       {...props}
-    />
+    >
+      {children}
+    </ChakaraAvatar>
   );
 };

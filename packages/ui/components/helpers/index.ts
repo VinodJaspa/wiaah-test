@@ -11,3 +11,4 @@ export * from "./percentage";
 export * from "./randomNumber";
 export * from "./SidebarContext";
 export * from "./getParamFromPath";
+export * from "./getFileSrcData";

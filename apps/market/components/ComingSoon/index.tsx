@@ -13,6 +13,7 @@ import { social } from "../../lib/Links";
 import Link from "next/link";
 import { t } from "i18next";
 import Head from "next/head";
+import { useTranslation } from "react-i18next";
 
 interface SocialItem {
   name: string;
@@ -59,7 +60,7 @@ const socialData: SocialItem[] = [
 
 export const CoomingSoon: React.FC = () => {
   const [videoOpen, setVideoOpen] = React.useState<boolean>(false);
-
+  const { t } = useTranslation();
   function handleVideoClose() {
     setVideoOpen(false);
   }
