@@ -6,8 +6,8 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 export type BreadCrumbLink = { text: string; url: string };
 
 export interface BreadCrumbProps {
-  links: Array<BreadCrumbLink>;
-  onLinkClick: (link: BreadCrumbLink) => any;
+  links: BreadCrumbLink[];
+  onLinkClick?: (link: BreadCrumbLink) => any;
 }
 
 export const BreadCrumb: React.FC<BreadCrumbProps> = ({

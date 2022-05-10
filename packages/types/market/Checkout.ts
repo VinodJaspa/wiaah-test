@@ -11,7 +11,7 @@ export interface CheckoutCart {
   products: CartSummaryItem[];
 }
 
-export interface ShippingMothed {
+export interface ShippingMothedDetails {
   cost: number;
   name: string;
   description?: string;

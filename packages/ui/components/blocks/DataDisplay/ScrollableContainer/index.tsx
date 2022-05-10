@@ -73,7 +73,7 @@ export const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
           data-testid="CommentsWrapper"
         >
           {items.map((Child, i) => (
-            <>{Child}</>
+            <React.Fragment key={i}>{Child}</React.Fragment>
           ))}
         </Flex>
 
@@ -89,7 +89,9 @@ export const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         >
           {items
             .slice(0, showMore === true ? maxShowMoreItems : maxInitialItems)
-            .map((item, i) => [item])}
+            .map((item, i) => (
+              <React.Fragment key={i}>{item}</React.Fragment>
+            ))}
         </Flex>
       </Flex>
       {isShowMore && (

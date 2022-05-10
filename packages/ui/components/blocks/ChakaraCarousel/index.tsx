@@ -80,6 +80,10 @@ export const ChakraCarousel: React.FC<ChakaraCarouselProps> = ({
     SetActiveItem(activeItem);
   }, [activeItem]);
 
+  React.useEffect(() => {
+    setActiveItem && setActiveItem(ActiveItem);
+  }, [ActiveItem]);
+
   const initSliderWidth = useCallback((width) => setSliderWidth(width), []);
 
   const positions = useMemo(
@@ -579,7 +583,7 @@ const Item: React.FC<ItemProps> = ({
       onBlur={handleBlur}
       onKeyUp={handleKeyUp}
       onKeyDown={handleKeyDown}
-      // onMouseOver={(e) => console.log(e)}
+      data-testid="CarouselItem"
       w={`calc((100% / ${positions.length}) + ${gap}px )`}
       h="100%"
       justify="center"

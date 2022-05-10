@@ -14,7 +14,7 @@ import {
 import React from "react";
 import { HiDotsHorizontal, HiOutlineLink } from "react-icons/hi";
 import { AffiliationOfferCardInfo } from "types/market/Social";
-import { useDateDiff } from "ui/Hooks";
+import { useDateDiff, useHandlePostSharing } from "ui";
 import { CommentsViewer, PostInteractions } from "ui";
 import { useTranslation } from "react-i18next";
 import { PostAttachmentsViewer, PostInteractionsProps } from "ui";
@@ -46,6 +46,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
 }) => {
   const detailsRef = React.useRef(null);
   const detailsDimensions = useDimensions(detailsRef);
+  const { handleShare } = useHandlePostSharing();
   const { t } = useTranslation();
   const { getSince } = useDateDiff({
     from: new Date(createdAt),
@@ -188,6 +189,7 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
                 <PostInteractions
                   {...interactionsProps}
                   comments={noOfComments}
+                  onShare={(mothed) => handleShare(mothed, id)}
                   likes={noOfLikes}
                 />
               </Box>

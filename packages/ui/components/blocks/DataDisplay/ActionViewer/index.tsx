@@ -128,7 +128,7 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
                     <Icon
                       visibility={muteIcon ? "unset" : "hidden"}
                       fontSize={"xx-large"}
-                      p="0.25rem"
+                      // p="0.25rem"
                       rounded="full"
                       bg="blackAlpha.400"
                       color="white"
@@ -143,7 +143,7 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
                     <Icon
                       visibility={playIcon ? "unset" : "hidden"}
                       fontSize={"xx-large"}
-                      p="0.25rem"
+                      // p="0.25rem"
                       rounded="full"
                       bg="blackAlpha.400"
                       color="white"

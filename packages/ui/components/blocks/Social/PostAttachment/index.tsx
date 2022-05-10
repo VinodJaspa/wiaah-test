@@ -2,7 +2,6 @@ import { Box, Center, Flex, FlexProps, Icon, Image } from "@chakra-ui/react";
 import React from "react";
 import { BsPlayFill } from "react-icons/bs";
 import { PostAttachment as PostAttachmentType } from "types/market/Social";
-import { useRouter } from "next/router";
 import { HiDuplicate } from "react-icons/hi";
 export interface PostAttachmentProps extends PostAttachmentType {
   alt?: string;
@@ -15,6 +14,7 @@ export interface PostAttachmentProps extends PostAttachmentType {
   minimal?: boolean;
   blur?: boolean;
   multiply?: boolean;
+  cover?: boolean;
 }
 
 export const PostAttachment: React.FC<PostAttachmentProps> = ({
@@ -30,6 +30,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
   minimal,
   blur,
   multiply,
+  cover,
 }) => {
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = React.useState<boolean>(false);
@@ -59,6 +60,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
   switch (type) {
     case "image":
       return (
+        //@ts-ignore
         <Flex
           justify={"center"}
           align="center"
@@ -89,7 +91,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
             <Image
               objectFit={"cover"}
               position="absolute"
-              filter="blur(5px)"
+              filter="blur(0.8rem)"
               w="100%"
               h={"100%"}
               alt={alt && alt}
@@ -98,11 +100,11 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
             />
           )}
           <Image
-            objectFit={"contain"}
+            objectFit={cover ? "cover" : "contain"}
             maxW="100%"
             maxH={"100%"}
             position={blur ? "absolute" : undefined}
-            zIndex={1}
+            // zIndex={1}
             alt={alt && alt}
             src={src}
             data-testid="PostAttachmentImage"
@@ -125,6 +127,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
 
     case "video":
       return (
+        //@ts-ignore
         <Flex
           overflow={fixedSize ? "clip" : "auto"}
           position={"relative"}
@@ -168,7 +171,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
                 height: "100%",
                 objectFit: "cover",
                 width: "100%",
-                filter: "blur(0.5rem)",
+                filter: "blur(0.8rem)",
                 position: "absolute",
               }}
               src={src}

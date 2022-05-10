@@ -20,9 +20,15 @@ export const SocialStoriesModal: React.FC<SocialStoriesModalProps> = () => {
         motionPreset="slideInBottom"
         blockScrollOnMount={false}
       >
-        <ModalOverlay />
-        <ModalContent shadow={"none"} color="white" bg="transparent">
-          <ModalBody shadow={"none"} p={"0px"}>
+        <ModalOverlay bgColor={"black"} />
+        <ModalContent
+          maxH={"80vh"}
+          m="0px"
+          shadow={"none"}
+          color="white"
+          bg="transparent"
+        >
+          <ModalBody h={"100%"} shadow={"none"} p={"0px"}>
             {storyData && (
               <SocialStoryViewer stories={stories} user={storyData.user} />
             )}

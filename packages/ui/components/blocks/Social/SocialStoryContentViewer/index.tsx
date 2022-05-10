@@ -1,9 +1,19 @@
-import { Flex, Image, Text } from "@chakra-ui/react";
+import { Flex, Image, Text, Box } from "@chakra-ui/react";
 import React from "react";
 import { useSetRecoilState } from "recoil";
 import { SocialStoryContentData } from "types/market/Social";
-import { useStory, useTimer } from "ui/Hooks";
-import { CurrentStoryProgressState } from "ui/state";
+import {
+  useStory,
+  useTimer,
+  CurrentStoryProgressState,
+  PostAttachment,
+} from "ui";
+import {
+  ActionPostStory,
+  AffiliationPostStory,
+  NewsFeedPostStory,
+  ShopPostStory,
+} from "../../DataDisplay/StoryDisplays";
 
 export interface SocialStoryContentViewerProps extends SocialStoryContentData {
   play?: boolean;
@@ -11,7 +21,7 @@ export interface SocialStoryContentViewerProps extends SocialStoryContentData {
   onFinish?: () => any;
 }
 export const SocialStoryContentViewer: React.FC<SocialStoryContentViewerProps> =
-  ({ storyType, storySrc, storyText, play }) => {
+  ({ storyType, storySrc, storyText, play, id }) => {
     const { nextStory } = useStory();
     const setCurrentStoryProgress = useSetRecoilState(
       CurrentStoryProgressState
@@ -32,41 +42,39 @@ export const SocialStoryContentViewer: React.FC<SocialStoryContentViewerProps> =
       }
     }, [play]);
 
-    // function handleProgress(progress: number) {
-    //   console.log(progress);
-    //   onProgress && onProgress(progress);
-    // }
-
     const Content = () => {
       switch (storyType) {
         case "image":
-          return (
-            <Image
-              pointerEvents={"none"}
-              w="100%"
-              maxH="100%"
-              objectFit={"contain"}
-              src={storySrc}
-            />
-          );
+          return <PostAttachment src={storySrc} type={storyType} />;
         case "video":
           return (
-            <video
-              ref={videoRef}
-              style={{ maxHeight: "100%", objectFit: "contain" }}
-              src={storySrc}
-            />
+            <Box>
+              <video
+                ref={videoRef}
+                style={{ maxHeight: "100%", objectFit: "contain" }}
+                src={storySrc}
+              />
+            </Box>
           );
+        case "newsFeedPost":
+          return <NewsFeedPostStory postId={id} />;
+        case "shopPost":
+          return <ShopPostStory id={id} />;
+        case "affiliationPost":
+          return <AffiliationPostStory postId={id} />;
+        case "action":
+          return <ActionPostStory postId={id} />;
         default:
           return null;
       }
     };
     return (
       <Flex
-        maxW="container.md"
+        // maxW="container.md"
         direction={"column"}
         align={"center"}
-        w="100%"
+        maxW="100%"
+        maxH="100%"
         justify={"center"}
       >
         {storyText && (

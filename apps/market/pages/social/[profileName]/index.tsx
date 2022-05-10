@@ -84,11 +84,35 @@ const ShopSocialProfile: NextPage<SocialPageProps> = ({
       storyText: "video story with Text",
       id: "4",
     },
+    // {
+    //   storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
+    //   storyType: "video",
+    //   storyViews: 1300000,
+    //   storySrc: "/verticalVideo.mp4",
+    //   id: "5",
+    // },
     {
       storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
-      storyType: "video",
+      storyType: "newsFeedPost",
       storyViews: 1300000,
-      storySrc: "/verticalVideo.mp4",
+      id: "5",
+    },
+    {
+      storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
+      storyType: "shopPost",
+      storyViews: 1300000,
+      id: "5",
+    },
+    {
+      storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
+      storyType: "affiliationPost",
+      storyViews: 1300000,
+      id: "5",
+    },
+    {
+      storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
+      storyType: "action",
+      storyViews: 1300000,
       id: "5",
     },
   ]);

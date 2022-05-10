@@ -9,13 +9,7 @@ import "swiper/css/navigation";
 import { ServiceRightView } from "./ServiceRightView";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
-
-export interface ProductGalleryItem {
-  original: string;
-  thumbnail: string | "";
-  alt?: string | "";
-  type: "image" | "video";
-}
+import { ProductGalleryItem } from "types";
 
 const breadcrumb = [
   {
@@ -93,21 +87,28 @@ const productComments = [
     comment: "Really great product highly recommand it",
   },
 ];
-export const ServiceView: React.FC = () => {
+
+export interface ServiceViewProps {
+  serviceId: string;
+}
+
+export const ServiceView: React.FC<ServiceViewProps> = () => {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
   const { t } = useTranslation();
   const router = useRouter();
-  // const breadCrumbLinks = [{ text: "wiaah", url: "/" }].concat(
-  //   [...(router.query.categories || [])].map((cate, i) => ({
-  //     text: cate,
-  //     url: `/${cate}`,
-  //   }))
-  // );
+  const breadCrumbLinks = [{ text: "wiaah", url: "/" }].concat(
+    [...(router.query.categories || [])].map((cate, i) => ({
+      text: cate,
+      url: `/${cate}`,
+    }))
+  );
 
   return (
     <>
       <div className="block w-full space-y-6 p-5">
-        <div className="">{/* <BreadCrumb links={breadCrumbLinks} /> */}</div>
+        <div className="">
+          <BreadCrumb links={breadCrumbLinks} />
+        </div>
         <div>
           <div className="flex-column mb-10 flex-wrap  lg:flex lg:h-[28rem] lg:justify-between">
             <div className="h-full w-full lg:w-8/12">

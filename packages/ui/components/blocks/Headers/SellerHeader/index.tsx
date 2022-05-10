@@ -30,10 +30,13 @@ import {
   useResponsive,
   useNewPost,
   SellerDrawerOpenState,
+  ShoppingCart,
+  NotifiactionsMenu,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
+
 export interface SellerHeaderProps {
   onSearchSubmit?: (searchValue: string) => any;
   props?: BoxProps;
@@ -106,12 +109,14 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             },
           ]}
         >
-          <Icon
-            fontSize={{ base: "x-large", md: "xx-large" }}
-            w="1.2em"
-            h="1.2em"
-            as={MdOutlineNotifications}
-          />
+          <NotifiactionsMenu>
+            <Icon
+              fontSize={{ base: "x-large", md: "xx-large" }}
+              w="1.2em"
+              h="1.2em"
+              as={MdOutlineNotifications}
+            />
+          </NotifiactionsMenu>
         </FloatingContainer>
         {!isMobile && (
           <Icon
@@ -186,6 +191,31 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             </MenuList>
           </Menu>
         )}
+        <ShoppingCart
+          items={[
+            {
+              id: "1",
+              name: "product",
+              price: 15,
+              quantity: 2,
+              thumbnail: "/shop.jpeg",
+            },
+            {
+              id: "2",
+              name: "product 2",
+              price: 40,
+              quantity: 1,
+              thumbnail: "/shop-2.jpeg",
+            },
+            {
+              id: "3",
+              name: "product 3",
+              price: 48,
+              quantity: 2,
+              thumbnail: "/place-1.jpg",
+            },
+          ]}
+        />
       </Flex>
     </Flex>
   );

@@ -23,6 +23,7 @@ import { Avatar, useNewStoryModal } from "ui";
 import React from "react";
 import { MdClose } from "react-icons/md";
 import { useTranslation } from "react-i18next";
+import { useFileUploadModal, ImageUploadModal } from "ui";
 
 export interface AddNewStoryModalProps {}
 
@@ -41,26 +42,59 @@ export const AddNewStoryModal: React.FC<AddNewStoryModalProps> = () => {
   const { t } = useTranslation();
   const [SelectedColor, setSelectedColor] = React.useState<string>("");
   const { isOpen, closeNewStoryModal } = useNewStoryModal();
-  const [imageFile, setImageFile] =
-    React.useState<File | null | undefined>(null);
-  const [videoFile, setVideoFile] = React.useState<File | null>(null);
+  const { setUploadType, cancelUpload } = useFileUploadModal();
+  const [imgSrc, setImgSrc] = React.useState<string | ArrayBuffer | null>(null);
+  const [vidSrc, setVidSrc] = React.useState<string | ArrayBuffer | null>(null);
+
   const imgRef = React.useRef<HTMLImageElement>(null);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
 
   React.useEffect(() => {
-    if (FileReader && imageFile && imgRef) {
-      var fr = new FileReader();
-      fr.onload = function () {
-        imgRef.current?.src = fr.result;
-      };
-      fr.readAsDataURL(imageFile);
+    if (videoRef && videoRef.current) {
+      try {
+        console.log(vidSrc);
+        //@ts-ignore
+        videoRef.current.srcObject = vidSrc;
+      } catch (error) {
+        console.log("vid error", error);
+      }
     }
-  }, [imageFile]);
+  }, [vidSrc]);
+
+  React.useEffect(() => {
+    if (imgRef && imgRef.current) {
+      try {
+        //@ts-ignore
+        imgRef.current.src = imgSrc;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }, [imgSrc]);
+
+  function resetState() {
+    setImgSrc(null);
+    setVidSrc(null);
+  }
+
+  React.useEffect(() => {
+    cancelUpload();
+  }, [imgSrc, vidSrc]);
+
+  const fileAdded = !!imgSrc || !!vidSrc;
 
   return (
-    <Modal size={"xl"} isCentered isOpen={isOpen} onClose={closeNewStoryModal}>
+    <Modal
+      size={"xl"}
+      onCloseComplete={resetState}
+      isCentered
+      isOpen={isOpen}
+      onClose={closeNewStoryModal}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalBody>
+          <ImageUploadModal setImgSrc={setImgSrc} setVidSrc={setVidSrc} />
           <Flex gap="2rem" w="100%" direction={"column"}>
             <Center position={"relative"} w="100%">
               <Avatar name="wiaah" size="lg" photoSrc="/wiaah_logo.png" />
@@ -108,51 +142,58 @@ export const AddNewStoryModal: React.FC<AddNewStoryModalProps> = () => {
             </HStack>
             <Flex w="100%" justify={"space-between"}>
               <HStack spacing="1rem">
-                <label htmlFor="AddImageStoryInput">
-                  <Icon
-                    cursor={"pointer"}
-                    fontSize={"x-large"}
-                    fill="primary.main"
-                    data-testid="AttachPhotoBtn"
-                    as={BiImageAlt}
-                  />
-                  <Input
-                    display={"none"}
-                    id="AddImageStoryInput"
-                    type={"file"}
-                    onChange={(e) => setImageFile(e.target.files[0] || null)}
-                    accept="image/png , image/jpeg , image/jpg"
-                  />
-                </label>
-                <label htmlFor="AddVideoStoryInput">
-                  <Input
-                    display={"none"}
-                    id="AddVideoStoryInput"
-                    type={"file"}
-                    onChange={(e) => setVideoFile(e.target.files[0] || null)}
-                    accept="video/mp4 , video/gp3 , video/webm"
-                  />
-                  <Icon
-                    cursor={"pointer"}
-                    fontSize={"x-large"}
-                    color="primary.main"
-                    data-testid="AttachVideoBtn"
-                    as={IoVideocam}
-                  />
-                </label>
+                <Icon
+                  cursor={fileAdded ? "grab" : "pointer"}
+                  fontSize={"x-large"}
+                  pointerEvents={fileAdded ? "none" : "all"}
+                  fill="primary.main"
+                  data-testid="AttachPhotoBtn"
+                  as={BiImageAlt}
+                  onClick={() => setUploadType("picture")}
+                />
+                <Icon
+                  cursor={fileAdded ? "not-allowed" : "pointer"}
+                  fontSize={"x-large"}
+                  pointerEvents={fileAdded ? "none" : "all"}
+                  color="primary.main"
+                  data-testid="AttachVideoBtn"
+                  as={IoVideocam}
+                  onClick={() => setUploadType("video")}
+                />
               </HStack>
               <Button onClick={closeNewStoryModal} textTransform={"capitalize"}>
                 {t("post", "post")}
               </Button>
             </Flex>
-            <HStack maxH={"20rem"} justify={"center"} gap="2rem">
-              {imageFile && (
-                <Image
-                  maxH={"100%"}
-                  maxW="100%"
-                  objectFit={"contain"}
-                  ref={imgRef}
-                />
+            <HStack
+              overflow={"hidden"}
+              maxH={"40rem"}
+              w="100%"
+              justify={"center"}
+              gap="2rem"
+            >
+              {imgSrc && (
+                <Center w="100%" h="100%">
+                  <Image
+                    maxW="100%"
+                    maxH={"100%"}
+                    objectFit={"contain"}
+                    ref={imgRef}
+                  />
+                </Center>
+              )}
+
+              {vidSrc && (
+                <Center w="100%" h="100%">
+                  <video
+                    ref={videoRef}
+                    style={{
+                      maxHeight: "100%",
+                      maxWidth: "100%",
+                      objectFit: "contain",
+                    }}
+                  />
+                </Center>
               )}
             </HStack>
           </Flex>

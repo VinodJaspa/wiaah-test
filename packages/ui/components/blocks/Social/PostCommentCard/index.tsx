@@ -1,11 +1,23 @@
-import { Avatar, Box, Flex, HStack, Icon, Text } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Icon,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+} from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { MdOutlineReply, MdReply } from "react-icons/md";
 import { PostComment } from "types/market/Social";
 import { PostAttachment, Verified, EllipsisText } from "ui";
-import { useDateDiff, useLoginPopup } from "ui/Hooks";
+import { useCommentReportModal, useDateDiff, useLoginPopup } from "ui/Hooks";
 import { HashTags } from "../HashTags";
 
 export interface PostCommentCardProps extends PostComment {
@@ -23,7 +35,9 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
   user,
   hashTags,
   main,
+  id,
 }) => {
+  const { openModalWithId } = useCommentReportModal();
   const { t } = useTranslation();
   const { getSince } = useDateDiff({
     from: new Date(createdAt),
@@ -55,13 +69,35 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               </Text>
               {user.verifed && <Icon as={Verified} />}
             </HStack>
-            <Icon
-              cursor={"pointer"}
-              onClick={handleMoreCommentOptions}
-              fontSize={"x-large"}
-              fill={"primary.main"}
-              as={HiDotsHorizontal}
-            />
+            <HStack>
+              <Menu>
+                <MenuButton>
+                  {/* <Button
+                    onClick={() => {
+                      openModalWithId(id);
+                    }}
+                    size={"xs"}
+
+                  >
+                    {t("report", "Report")}
+                  </Button> */}
+                  <Icon
+                    cursor={"pointer"}
+                    onClick={handleMoreCommentOptions}
+                    fontSize={"x-large"}
+                    fill={"primary.main"}
+                    as={HiDotsHorizontal}
+                  />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem>
+                    <Text onClick={() => openModalWithId(id)}>
+                      {t("report_user", "Report User")}
+                    </Text>
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </HStack>
           </HStack>
           <Box py="0.5rem">
             <EllipsisText

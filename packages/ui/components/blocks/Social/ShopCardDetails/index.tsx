@@ -14,6 +14,7 @@ export interface ShopCardDetailsProps {
   views: number;
   onFollow?: () => any;
   onAddToCart?: () => any;
+  onBook?: () => any;
   service?: boolean;
 }
 
@@ -27,6 +28,7 @@ export const ShopCardDetails: React.FC<ShopCardDetailsProps> = ({
   onFollow,
   onAddToCart,
   service,
+  onBook,
 }) => {
   const { t } = useTranslation();
   function handleFollowClick() {
@@ -96,9 +98,11 @@ export const ShopCardDetails: React.FC<ShopCardDetailsProps> = ({
           bgColor="primary.main"
           textTransform={"capitalize"}
         >
-          {service
-            ? t("book_now", "book now")
-            : t("add_to_cart", "add to cart")}
+          {service ? (
+            <Text onClick={onBook}>{t("book_now", "book now")}</Text>
+          ) : (
+            <Text onClick={onAddToCart}>{t("add_to_cart", "add to cart")}</Text>
+          )}
         </Button>
       </HStack>
     </Flex>

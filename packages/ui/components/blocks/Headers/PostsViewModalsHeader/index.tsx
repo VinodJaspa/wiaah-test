@@ -1,5 +1,5 @@
 import { ChevronLeftIcon } from "@chakra-ui/icons";
-import { Icon, Text } from "@chakra-ui/react";
+import { BoxProps, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import { FloatingContainer } from "ui";
 
@@ -9,14 +9,14 @@ export interface PostsViewModalsHeaderProps {
 
 export const PostsViewModalsHeader: React.FC<PostsViewModalsHeaderProps> = ({
   onBackClick,
+  children,
 }) => {
   return (
     <FloatingContainer
       display={"flex"}
       justifyContent={"center"}
-      borderBottomWidth="1px"
-      borderColor={"lightgray"}
       py="0.5rem"
+      pl="2rem"
       items={[
         {
           label: (
@@ -30,13 +30,14 @@ export const PostsViewModalsHeader: React.FC<PostsViewModalsHeaderProps> = ({
           ),
           left: "0.25rem",
           top: "50%",
+
           floatingItemProps: {
             translateY: "-50%",
           },
         },
       ]}
     >
-      <Text>publication</Text>
+      {children}
     </FloatingContainer>
   );
 };

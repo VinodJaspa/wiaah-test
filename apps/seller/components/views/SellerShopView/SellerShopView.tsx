@@ -5,6 +5,8 @@ import {
   ShopCardsListWrapper,
   ShopFilter,
   SocialShopCard,
+  ProductViewModal,
+  useProductViewModal,
 } from "ui";
 import { ShopCardsInfoPlaceholder } from "ui/placeholder/social";
 import { useTranslation } from "react-i18next";
@@ -24,10 +26,11 @@ export const SellerShopView: React.FC = () => {
         {/* <Text textTransform={"capitalize"} fontSize={"4xl"} fontWeight="bold">
           {t("shop", "shop")}
         </Text> */}
+        <ProductViewModal />
         <PostViewPopup
           fetcher={async ({ queryKey }) => {
             const id = queryKey[1].postId;
-            console.log("idParam", queryKey);
+
             const post = ShopCardsInfoPlaceholder.find(
               (post) => post.id === id
             );
@@ -49,13 +52,11 @@ export const SellerShopView: React.FC = () => {
           <ShopFilter onlyMobile={false} />
           <ShopCardsListWrapper
             onCardClick={(id) => {
-              console.log(router);
-
-              router.push(
-                router.pathname,
-                { query: { shopPostId: id } },
-                { shallow: true }
-              );
+              // router.push(
+              //   router.pathname,
+              //   { query: { shopPostId: id } },
+              //   { shallow: true }
+              // );
             }}
             cols={cols}
             items={ShopCardsInfoPlaceholder}

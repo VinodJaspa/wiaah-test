@@ -12,80 +12,98 @@ import {
   ModalOverlay,
   Text,
   Textarea,
-  useDisclosure,
   VStack,
+  SimpleGrid,
+  Image,
+  Center,
 } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useNewPost } from "ui/Hooks";
+import { useFileUploadModal, useNewPost, MediaUploadModal } from "ui";
 import { FloatingContainer, Avatar, useUserData } from "ui";
-import { MdClose, MdPlace } from "react-icons/md";
-import { FaUserPlus } from "react-icons/fa";
-import { BsEmojiSmile } from "react-icons/bs";
-import { BsFlagFill } from "react-icons/bs";
+import { MdClose } from "react-icons/md";
+import { BsEmojiSmile, BsPlayFill } from "react-icons/bs";
 import { BiImage } from "react-icons/bi";
-import { TranslationText } from "types";
-import { IconType } from "react-icons";
 import { CgPlayButtonR } from "react-icons/cg";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { IoVideocamOutline } from "react-icons/io5";
+import { getFileSrcData, FileRes } from "ui/components/helpers";
 
 export interface AddNewPostModalProps {}
 
-// const additionalOptions: {
-//   optName: TranslationText;
-//   fillColor?: string;
-//   optIcon: IconType;
-//   size?: string;
-// }[] = [
-//   {
-//     optName: {
-//       translationKey: "add_image",
-//       fallbackText: "Add Image",
-//     },
-//     optIcon: BiImage,
-//     fillColor: "primary.main",
-//     size: "1.2em",
-//   },
-//   {
-//     optName: {
-//       fallbackText: "Mention friend",
-//       translationKey: "mention_friend",
-//     },
-//     optIcon: FaUserPlus,
-//     fillColor: "blue",
-//   },
-//   {
-//     optName: {
-//       fallbackText: "Add Emoji",
-//       translationKey: "add_emoji",
-//     },
-//     optIcon: BsEmojiSmile,
-//     fillColor: "#f5d02c",
-//   },
-//   {
-//     optName: {
-//       fallbackText: "Add Location",
-//       translationKey: "add_location",
-//     },
-//     optIcon: MdPlace,
-//     fillColor: "red",
-//     size: "1.2em",
-//   },
-//   {
-//     optName: {
-//       fallbackText: "Flag",
-//       translationKey: "flag",
-//     },
-//     optIcon: BsFlagFill,
-//     fillColor: "#0390fc",
-//   },
-// ];
+const MAX_UPLOAD_LIMIT = 5;
 
 export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
   const { isOpen, CloseModal } = useNewPost();
+  const { setUploadType } = useFileUploadModal();
+  const [uploadiLimitHit, setUploadLimitHit] = React.useState<boolean>(false);
+
+  const [uploadedImages, setUploadedImages] = React.useState<FileRes[]>([]);
+  const [uploadedVideos, setUploadedVideos] = React.useState<string[]>([]);
   const { user } = useUserData();
   const { t } = useTranslation();
+
+  React.useEffect(() => {
+    if (!isOpen) {
+      cleanUpStates();
+    }
+  }, [isOpen]);
+
+  function cleanUpStates() {
+    setUploadLimitHit(false);
+    setUploadedImages([]);
+    setUploadedVideos([]);
+  }
+
+  const ValidateLimit = React.useCallback(
+    (itemsLength: number) => {
+      if (
+        uploadedImages.length + uploadedVideos.length + itemsLength >
+        MAX_UPLOAD_LIMIT
+      ) {
+        setUploadLimitHit(true);
+        return false;
+      }
+      console.log(uploadedImages.length, uploadedVideos.length);
+      return true;
+    },
+    [uploadedImages, uploadedVideos]
+  );
+
+  function addUploadedImg(imgSrc: FileRes) {
+    const valid = ValidateLimit(1);
+    if (valid) {
+      console.log(ValidateLimit(1));
+      setUploadedImages((imgs) => [...imgs, imgSrc]);
+    }
+    // console.log("test");
+  }
+  function addUploadedVideo(vidSrc: string) {
+    const valid = ValidateLimit(1);
+    if (valid) {
+      setUploadedVideos((vids) => [...vids, vidSrc]);
+    }
+  }
+
+  function handleFilesUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    setUploadLimitHit(false);
+    const files = e.target.files;
+    if (files) {
+      const fileArray = Array.from(files);
+      ValidateLimit(fileArray.length);
+      fileArray.slice(0, MAX_UPLOAD_LIMIT).map((file) => {
+        if (file.type.includes("image")) {
+          getFileSrcData(file, (res) => {
+            addUploadedImg(res);
+          });
+        } else if (file.type.includes("video")) {
+          const test = URL.createObjectURL(file);
+          addUploadedVideo(test);
+        }
+      });
+    }
+  }
+
   return user ? (
     <Modal
       motionPreset="slideInBottom"
@@ -95,8 +113,20 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
     >
       <ModalOverlay />
       <ModalHeader></ModalHeader>
-      <ModalContent maxW="container.md">
-        <ModalBody fontSize={"normal"}>
+      <ModalContent
+        my="0px"
+        maxH={"100%"}
+        overflowY="scroll"
+        className="thinScroll"
+        maxW="container.md"
+        px="0px"
+      >
+        <ModalBody overflowY={"scroll"} className="thinScroll">
+          <MediaUploadModal
+            onVidUpload={addUploadedVideo}
+            onImgUpload={addUploadedImg}
+            multiple
+          />
           <Flex direction={"column"} py="1rem" gap="1rem">
             <FloatingContainer
               items={[
@@ -123,7 +153,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
             >
               <Text
                 justifySelf={"flex-end"}
-                fontSize="xx-large"
+                fontSize="xl"
                 fontWeight={"extrabold"}
                 textAlign="center"
               >
@@ -134,13 +164,13 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
             <HStack>
               <Avatar size={"lg"} name={user.name} photoSrc={user.photoSrc} />
               <VStack>
-                <Text fontSize={"x-large"}>{user.name}</Text>
+                <Text fontSize={"lg"}>{user.name}</Text>
               </VStack>
             </HStack>
             <Flex gap="1rem" direction={"column"} w="100%">
               <Textarea
-                fontSize={"xx-large"}
-                minH="15rem"
+                fontSize={"lg"}
+                minH="10rem"
                 w="100%"
                 resize={"none"}
                 placeholder={`${t(
@@ -159,6 +189,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                   fontSize={"1.3em"}
                   fill="crimson"
                   data-testid="AttachPhotoBtn"
+                  onClick={() => setUploadType("picture")}
                   as={BiImage}
                 />
                 <Icon
@@ -166,6 +197,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                   fontSize={"1.3em"}
                   color="yellow.300"
                   data-testid="AttachVideoBtn"
+                  onClick={() => setUploadType("video")}
                   as={IoVideocamOutline}
                 />
                 <Icon
@@ -187,35 +219,75 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                   as={CgPlayButtonR}
                 />
               </HStack>
-              {/* <HStack
-                borderWidth={"1px"}
-                borderColor={"gray.500"}
-                p="0.5rem"
-                rounded={"lg"}
-                spacing={"1rem"}
-                fontSize={"xx-large"}
-                w="100%"
-                justify={"center"}
-              >
-                {additionalOptions.map((icon, i) => (
-                  <Icon
-                    color={icon.fillColor}
-                    cursor={"pointer"}
-                    fontSize={icon.size}
-                    as={icon.optIcon}
-                    key={i}
-                  />
-                ))}
-              </HStack> */}
               <Button
                 py={"1rem"}
                 height="auto"
                 fontWeight={"bold"}
-                fontSize={{ base: "md", md: "lg", lg: "xl", xl: "xx-large" }}
+                fontSize={{ base: "md", lg: "lg", xl: "xl" }}
               >
                 {t("post", "Post")}
               </Button>
             </Flex>
+            {uploadiLimitHit && (
+              <Text
+                w="100%"
+                textAlign={"center"}
+                fontSize="xl"
+                color={"crimson"}
+              >
+                {t("you_can_only_upload", "You can only upload")}{" "}
+                {MAX_UPLOAD_LIMIT} {t("files_per_post", "files per post")}
+              </Text>
+            )}
+            <SimpleGrid autoRows={"8rem"} columns={3} gap="1rem">
+              {uploadedImages.map((img, i) => (
+                <Center
+                  w="100%"
+                  h="100%"
+                  borderWidth={"4px"}
+                  borderColor="primary.main"
+                  key={i}
+                >
+                  <Image
+                    maxW="100%"
+                    maxH="100%"
+                    objectFit={"contain"}
+                    //@ts-ignore
+                    src={img || ""}
+                    key={i}
+                  />
+                </Center>
+              ))}
+              {uploadedVideos.map((vid, i) => (
+                <Center
+                  w="100%"
+                  h="100%"
+                  borderWidth={"4px"}
+                  borderColor="primary.main"
+                  key={i}
+                  position="relative"
+                >
+                  <Icon
+                    position={"absolute"}
+                    top="0.25em"
+                    left="0.25em"
+                    pl="0.1em"
+                    bg="blackAlpha.500"
+                    color="white"
+                    rounded={"full"}
+                    fontSize={"xx-large"}
+                    as={BsPlayFill}
+                  />
+                  <video
+                    style={{
+                      maxHeight: "100%",
+                      maxWidth: "100%",
+                    }}
+                    src={vid}
+                  />
+                </Center>
+              ))}
+            </SimpleGrid>
           </Flex>
         </ModalBody>
       </ModalContent>

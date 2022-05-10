@@ -20,6 +20,9 @@ import {
   AddNewPostModal,
   PostAttachmentsViewer,
   AddNewStoryModal,
+  ImageUploadModal,
+  CommentReportModalIdState,
+  CommentReportModal,
 } from "ui";
 import { newsfeedPosts } from "ui/placeholder/social";
 import { useTranslation } from "react-i18next";
@@ -99,6 +102,7 @@ const seller: NextPage = () => {
         />
         <AddNewPostModal />
         <AddNewStoryModal />
+        <CommentReportModal />
         <VStack w={"100%"} spacing={"1rem"}>
           <FloatingContainer
             w={"100%"}
@@ -153,12 +157,13 @@ const seller: NextPage = () => {
           )}
           <Box w="100%">
             <PostCardsListWrapper
-              onPostClick={(post) =>
-                router.push(
-                  "/",
-                  { query: { newsfeedpostid: post.postInfo.id } },
-                  { shallow: true }
-                )
+              onPostClick={
+                (post) => {}
+                // router.push(
+                //   "/",
+                //   { query: { newsfeedpostid: post.postInfo.id } },
+                //   { shallow: true }
+                // )
               }
               cols={cols}
               posts={newsfeedPosts}

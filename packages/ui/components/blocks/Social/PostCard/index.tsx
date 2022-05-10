@@ -8,9 +8,9 @@ import {
   HashTags,
   CommentsViewer,
   EllipsisText,
-  PostInteractionsProps,
+  useHandlePostSharing,
 } from "ui";
-import { Interaction } from "types";
+import { Interaction, ShareMotheds } from "types";
 import { useLoginPopup, useStory } from "ui/Hooks";
 import { useRouter } from "next/router";
 import { PostAttachmentsViewer } from "../../DataDisplay";
@@ -37,6 +37,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   const router = useRouter();
   const { OpenLoginPopup } = useLoginPopup();
   const { removeNewStory } = useStory();
+  const { handleShare } = useHandlePostSharing();
   function handleOpenLogin() {
     OpenLoginPopup;
   }
@@ -50,6 +51,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   function handleViewPost() {
     router.push("/", { query: { postId: postInfo.id } }, { shallow: true });
   }
+
   return (
     <Flex
       bg="white"
@@ -57,7 +59,9 @@ export const PostCard: React.FC<PostCardProps> = ({
       // p="1rem"
       rounded="lg"
       maxW="100%"
+      maxH={"100%"}
       overflow={"hidden"}
+      color="black"
       direction={"column"}
       {...innerProps}
     >
@@ -86,21 +90,23 @@ export const PostCard: React.FC<PostCardProps> = ({
         carouselProps={{
           bg: "black",
           arrows: false,
-          h: "calc(100% - 14rem)",
+          h: "100%",
         }}
       />
       <PostInteractions
         onInteraction={onInteraction}
-        shares={0}
+        onShare={(mothed) => handleShare(mothed, postInfo.id)}
         comments={postInfo.numberOfComments}
         likes={postInfo.numberOfLikes}
       />
-      <CommentInput />
       {showComments && (
-        <CommentsViewer
-          comments={postInfo.comments || []}
-          maxInitailComments={4}
-        />
+        <>
+          <CommentInput />
+          <CommentsViewer
+            comments={postInfo.comments || []}
+            maxInitailComments={4}
+          />
+        </>
       )}
     </Flex>
   );

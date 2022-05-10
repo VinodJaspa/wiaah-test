@@ -57,11 +57,7 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
                     post.postInfo.attachments[0].src) ||
                   ""
                 }
-                type={
-                  (post.postInfo.attachments &&
-                    post.postInfo.attachments[0].type) ||
-                  ""
-                }
+                type={post.postInfo.attachments[0].type}
                 footer={
                   post.postInfo.views ? (
                     <Text

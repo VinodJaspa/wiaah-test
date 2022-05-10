@@ -9,6 +9,7 @@ export interface EllipsisTextProps {
   wordBreak?: boolean;
   ShowMore?: boolean;
   showMoreColor?: string;
+  showMoreTextColor?: string;
 }
 
 export const EllipsisText: React.FC<EllipsisTextProps> = ({

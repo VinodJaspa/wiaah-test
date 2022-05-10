@@ -8,6 +8,7 @@ export default {
     solid: {
       bgColor: "primary.main",
       color: "white",
+      cursor: "pointer",
     },
     outline: {
       color: "black",

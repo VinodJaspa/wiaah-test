@@ -1,26 +1,20 @@
 import React, { useState } from "react";
-import { BreadCrumb } from "ui/components/blocks/BreadCrumb";
+import { BreadCrumb } from "ui";
 import {
   ProductImageGallery,
   ProductViewRight,
   ProductDescription,
   SellerCard,
   Spacer,
-} from "ui/components";
-import { Product } from "../../components/blocks/products/product";
+} from "ui";
+import { Product } from "ui";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
 import { useMediaQuery } from "react-responsive";
 import "swiper/css";
 import "swiper/css/navigation";
-import { t } from "i18next";
-
-export interface ProductGalleryItem {
-  original: string;
-  thumbnail: string | "";
-  alt?: string | "";
-  type: "image" | "video";
-}
+import { useTranslation } from "react-i18next";
+import { ProductGalleryItem } from "types";
 
 const breadcrumb = [
   {
@@ -64,38 +58,6 @@ const productGalleryitems: ProductGalleryItem[] = [
     thumbnail:
       "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
   },
-  // {
-  //   original: "https://picsum.photos/id/1018/1000/600/",
-  //   thumbnail: "https://picsum.photos/id/1018/250/150/",
-  // },
-  // {
-  //   original: "https://picsum.photos/id/1015/1000/600/",
-  //   thumbnail: "https://picsum.photos/id/1015/250/150/",
-  // },
-  // {
-  //   original: "https://picsum.photos/id/1019/1000/600/",
-  //   thumbnail: "https://picsum.photos/id/1019/250/150/",
-  // },
-  // {
-  //   original: "https://picsum.photos/id/1020/1000/600/",
-  //   thumbnail: "https://picsum.photos/id/1020/250/150/",
-  // },
-  // {
-  //   original: "https://picsum.photos/id/1018/1000/600/",
-  //   thumbnail: "https://picsum.photos/id/1018/250/150/",
-  // },
-  // {
-  //   original: "https://picsum.photos/id/1015/1000/600/",
-  //   thumbnail: "https://picsum.photos/id/1015/250/150/",
-  // },
-  // {
-  //   original: "https://picsum.photos/id/1019/1000/600/",
-  //   thumbnail: "https://picsum.photos/id/1019/250/150/",
-  // },
-  // {
-  //   original: "https://picsum.photos/id/1020/1000/600/",
-  //   thumbnail: "https://picsum.photos/id/1020/250/150/",
-  // },
 ];
 
 const productComments = [
@@ -131,15 +93,19 @@ const productComments = [
   },
 ];
 
-interface ProductViewProps {}
+export interface ProductViewProps {
+  productId: string;
+}
 
-export const ProductView: React.FC<ProductViewProps> = () => {
+export const ProductView: React.FC<ProductViewProps> = ({ productId }) => {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
+  const { t } = useTranslation();
+
   return (
     <>
       <div className="block w-full space-y-6 p-5">
         <div className="">
-          <BreadCrumb breadcrumb={breadcrumb} />
+          <BreadCrumb links={breadcrumb} />
         </div>
         <div>
           <div className="flex-column h-fit flex-wrap items-stretch lg:flex lg:h-[28rem] lg:justify-between">

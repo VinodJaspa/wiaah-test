@@ -31,7 +31,7 @@ export interface ShopCardAttachmentProps {
   productType: "product" | "service";
   onInteraction?: (interaction: Interactions) => any;
   showbook?: boolean;
-  attachmentProps: PostAttachmentProps;
+  attachmentProps?: PostAttachmentProps;
   innerProps?: React.PropsWithRef<BoxProps>;
   minimal?: boolean;
 }

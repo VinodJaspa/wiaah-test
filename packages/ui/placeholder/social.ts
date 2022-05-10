@@ -23,6 +23,8 @@ export const SocialProfileInfo: ShopScoialProfileInfo = {
   verifed: true,
   location: "Switzerland, Geneva",
   public: true,
+  bio: "Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing ",
+  links: ["https://www.instagram.com"],
 };
 
 export const SubscribersUsersPlaceholder: SubscribersUserInfo[] = [
@@ -89,6 +91,7 @@ export const SubscribersUsersPlaceholder: SubscribersUserInfo[] = [
 ];
 
 export const PostCommentPlaceholder: PostComment = {
+  id: "1",
   content:
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has",
   createdAt: new Date(Date.UTC(2022, 3, 1)).toJSON(),
@@ -145,6 +148,7 @@ export const PostCardPlaceHolder: PostCardInfo = {
       { ...PostCommentPlaceholder },
       { ...PostCommentPlaceholder },
     ],
+    url: `${baseUri}/social/wiaah/newsfeed-post/15`,
   },
   profileInfo: {
     id: "1",
@@ -156,6 +160,7 @@ export const PostCardPlaceHolder: PostCardInfo = {
 };
 
 import { products } from "ui/placeholder/products";
+import { baseUri } from "uris";
 import { randomNum } from "../components/helpers/randomNumber";
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 
@@ -220,6 +225,7 @@ export const shopCardInfoPlaceholder: ShopCardInfo = {
   ],
   comments: PostCardPlaceHolder.postInfo.comments || [],
   rating: 3,
+  url: `${baseUri}/social/wiaah/socialshop-post/15`,
 };
 
 const imgs: string[] = [...products.map((pro) => pro.imgUrl)];
@@ -234,7 +240,7 @@ export const socialAffiliationCardPlaceholder: AffiliationOfferCardInfo = {
   name: "affiliation product",
   attachments: [
     {
-      src: "/verticalImage.jpg",
+      src: "/shop.jpeg",
       type: "image",
     },
   ],
@@ -243,6 +249,7 @@ export const socialAffiliationCardPlaceholder: AffiliationOfferCardInfo = {
   noOfLikes: 56,
   comments: [],
   showComments: false,
+  url: `${baseUri}/social/wiaah/affiliation-post/12`,
 };
 export const getRandomUser = () =>
   postProfilesPlaceholder[
@@ -307,7 +314,7 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
     id: "2",
     commission: randomNum(20),
     price: randomNum(100),
-    views: undefined,
+    views: 0,
     attachments: [
       {
         src: "/shop-2.jpeg",
@@ -341,7 +348,7 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
     id: "4",
     commission: randomNum(20),
     price: randomNum(100),
-    views: undefined,
+    views: 0,
     attachments: [
       {
         src: "/verticalImage.jpg",
@@ -354,7 +361,7 @@ export const socialAffiliationCardPlaceholders: AffiliationOfferCardInfo[] = [
     id: "5",
     commission: randomNum(20),
     price: randomNum(100),
-    views: undefined,
+    views: 0,
     attachments: [
       {
         src: "/place-2.jpg",

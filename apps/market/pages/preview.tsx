@@ -6,6 +6,8 @@ import {
   GridWrapperDataType,
   PlaceCard,
   PlaceCardProps,
+  PostAttachment,
+  PostCard,
 } from "ui";
 import { Box } from "@chakra-ui/react";
 import { PostCardPlaceHolder } from "ui/placeholder";
@@ -49,8 +51,8 @@ const ph: GridWrapperDataType[] = customPh.concat(
 const preview: NextPage = () => {
   return (
     <section className="w-full h-screen">
-      <Box w="50%" m={"auto"}>
-        <CommentAlt />
+      <Box w="50%" h="100%" m={"auto"}>
+        <PostCard {...PostCardPlaceHolder} />
       </Box>
     </section>
   );

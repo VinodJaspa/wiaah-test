@@ -6,6 +6,8 @@ import {
   PostInteractions,
   CommentInput,
   CommentsViewer,
+  useProductViewModal,
+  useHandlePostSharing,
 } from "ui";
 import { ShopCardInfo } from "types/market/Social";
 import { useLoginPopup } from "ui/Hooks";
@@ -33,13 +35,24 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
 }) => {
   const attachmentRef = React.useRef(null);
   const productDetailsRef = React.useRef(null);
+  const { showProduct } = useProductViewModal();
 
-  const productDetailsDimensions = useDimensions(productDetailsRef);
+  const { handleShare } = useHandlePostSharing();
   const [active, setActive] = React.useState<number>(0);
   const { OpenLoginPopup } = useLoginPopup();
-  function handleAddToCart() {
-    OpenLoginPopup();
+  function handleAddToCart(productId: string) {
+    showProduct({
+      productType: "product",
+      productId,
+    });
   }
+  function handleBookService(serviceId: string) {
+    showProduct({
+      productType: "service",
+      productId: serviceId,
+    });
+  }
+
   return (
     <Flex
       onClick={() => onCardClick && onCardClick(shopCardInfo.id)}
@@ -83,24 +96,24 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
         )
       )}
       <Box
-        // w={
-        //   attachmentDimensions
-        //     ? `${attachmentDimensions.contentBox.width}px`
-        //     : "100%"
-        // }
+        bgColor={"white"}
         w="100%"
+        color="black"
         ref={productDetailsRef}
         alignSelf={"center"}
       >
         <ShopCardDetails
+          onBook={() => handleBookService(shopCardInfo.id)}
+          views={shopCardInfo.views || 0}
           data-testid="ShopCardDetails"
-          onAddToCart={handleAddToCart}
+          onAddToCart={() => handleAddToCart(shopCardInfo.id)}
           service={shopCardInfo.type === "service"}
           {...shopCardInfo}
         />
         {showInteraction && (
           <PostInteractions
             comments={shopCardInfo.noOfComments}
+            onShare={(mothed) => handleShare(mothed, shopCardInfo.id)}
             likes={shopCardInfo.likes}
             {...interactionsProps}
           />

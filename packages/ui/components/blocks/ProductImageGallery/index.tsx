@@ -16,6 +16,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
 }) => {
   const { min: small } = useScreenWidth({ minWidth: 1280 });
   const [currentComponent, setCurrentComponent] = React.useState<number>(0);
+  console.log("current", currentComponent);
   return (
     <>
       <div className="flex h-[28rem] w-full flex-col-reverse gap-4 xl:flex-row">
@@ -56,10 +57,11 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
             </div>
           )}
           <ChakraCarousel
-            h={"100%"}
-            arrows
             activeItem={currentComponent}
             setActiveItem={setCurrentComponent}
+            h={"100%"}
+            arrows
+            swipe
           >
             {images.map(({ type, original }, i) => (
               <PostAttachment

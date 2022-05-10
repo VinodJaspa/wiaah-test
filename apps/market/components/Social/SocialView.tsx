@@ -15,10 +15,9 @@ import {
   AffiliationOffersCardListWrapper,
   FilterModal,
   useResponsive,
-  NewsfeedPostDetailsPopup,
-  ShopPostViewModal,
   ActionsListWrapper,
   SocialPostsCommentsDrawer,
+  ShareWithModal,
 } from "ui";
 import {
   PostCommentPlaceholder,
@@ -35,7 +34,6 @@ import { PostComment } from "types/market/Social";
 import { products } from "ui/placeholder";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
 
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 export const getRandomUser = () =>
@@ -152,9 +150,10 @@ const SocialView: React.FC<SocialViewProps> = () => {
   ];
   return (
     <Flex direction={"column"}>
-      <Flex position={{ base: "relative", md: "initial" }} maxH={"25rem"}>
+      <Flex position={{ base: "relative", md: "initial" }} maxH={"26rem"}>
         <SocialProfile shopInfo={SocialProfileInfo} />
         <SocialPostsCommentsDrawer />
+        <ShareWithModal />
         <Image
           position={{ base: "absolute", md: "unset" }}
           top="0px"

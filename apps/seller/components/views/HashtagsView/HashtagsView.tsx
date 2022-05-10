@@ -11,6 +11,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { TabType } from "types";
 import {
+  ActionsListWrapper,
   HashTagPostsListWrapper,
   PostCardsListWrapper,
   ShopCardsListWrapper,
@@ -20,6 +21,7 @@ import {
   newsfeedPosts,
   ShopCardsInfoPlaceholder,
   hashTagCardsInfoPlaceholder,
+  actionsPlaceholders,
 } from "ui/placeholder";
 
 export const HashtagsView: React.FC = () => {
@@ -46,6 +48,16 @@ export const HashtagsView: React.FC = () => {
           <HashTagPostsListWrapper hashtags={hashTagCardsInfoPlaceholder} />
           <Divider />
           <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} />
+        </Flex>
+      ),
+    },
+    {
+      name: t("action", "Action"),
+      component: (
+        <Flex direction={"column"} gap="4rem">
+          <HashTagPostsListWrapper hashtags={hashTagCardsInfoPlaceholder} />
+          <Divider />
+          <ActionsListWrapper cols={cols} actions={actionsPlaceholders} />
         </Flex>
       ),
     },

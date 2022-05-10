@@ -1,4 +1,4 @@
-import { CashBack } from "./CartSummary";
+import { CashBack } from "types";
 import { FlagIconCode } from "react-flag-kit";
 
 export interface ProfileInfo {
@@ -16,6 +16,8 @@ export interface ShopScoialProfileInfo extends ProfileInfo {
   subscribers: number;
   countryCode: FlagIconCode;
   location: string;
+  bio?: string;
+  links?: string[];
 }
 export interface SubscribersUserInfo {
   id: string;
@@ -39,6 +41,7 @@ export interface CommentData {
 }
 
 export interface PostComment {
+  id: string;
   user: ProfileInfo;
   replies: number;
   likes: number;
@@ -58,6 +61,7 @@ export interface PostInfo {
   numberOfLikes: number;
   numberOfComments: number;
   comments?: PostComment[];
+  url: string;
 }
 
 export interface PostCardInfo {
@@ -68,6 +72,14 @@ export interface PostCardInfo {
 export interface Interaction {
   type: Interactions;
 }
+
+export type ShareMotheds =
+  | "story"
+  | "followers"
+  | "facebook"
+  | "twitter"
+  | "whatsapp"
+  | "pinterest";
 
 export type Interactions =
   | "like"
@@ -94,6 +106,7 @@ export interface ShopCardInfo {
   likes: number;
   noOfComments: number;
   comments: PostComment[];
+  url: string;
 }
 
 export interface AffiliationOfferCardInfo {
@@ -110,6 +123,7 @@ export interface AffiliationOfferCardInfo {
   showComments?: boolean;
   noOfComments: number;
   noOfLikes: number;
+  url: string;
 }
 
 export interface HashTagCardInfo {
@@ -119,7 +133,14 @@ export interface HashTagCardInfo {
 
 export interface SocialStoryData {
   id: string;
-  storyType: "text" | "image" | "video";
+  storyType:
+    | "text"
+    | "image"
+    | "video"
+    | "newsFeedPost"
+    | "shopPost"
+    | "affiliationPost"
+    | "action";
   storySrc?: string;
   storyText?: string;
   storyCreationDate: string;
@@ -139,11 +160,4 @@ export interface SocialStoryDataWithUser extends SocialStoryData {
 export interface StorySeenByUserInfo {
   photoSrc: string;
   name: string;
-}
-export interface SocialActionData extends SocialStoryDataWithUser {
-  likes: number;
-  dislikes: number;
-  comments: number;
-  shares: number;
-  title: string;
 }

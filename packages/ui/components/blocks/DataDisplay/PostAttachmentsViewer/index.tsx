@@ -1,4 +1,4 @@
-import { HStack, Icon, Text } from "@chakra-ui/react";
+import { Box, HStack, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import { HiLocationMarker, HiUser } from "react-icons/hi";
 import { PostAttachment as PostAttachmentType, ProfileInfo } from "types";
@@ -24,7 +24,7 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
 }) => {
   const [active, setActive] = React.useState<number>();
   return (
-    <>
+    <Box h="100%">
       {attachments && !renderOne && attachments.length > 1 ? (
         <ControlledCarousel
           w={"100%"}
@@ -90,6 +90,6 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
           />
         )
       )}
-    </>
+    </Box>
   );
 };

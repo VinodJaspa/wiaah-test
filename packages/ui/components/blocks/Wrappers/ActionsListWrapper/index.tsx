@@ -23,6 +23,7 @@ export const ActionsListWrapper: React.FC<PostCardsListWrapperProps> = ({
     <>
       <ActionViewModal />
       <GridWrapper
+        portrait
         itemProps={{ bg: "black" }}
         items={actions.map((action, i) => ({
           displayVariant: "normal",
@@ -30,6 +31,8 @@ export const ActionsListWrapper: React.FC<PostCardsListWrapperProps> = ({
             <PostAttachment
               key={i}
               minimal
+              blur
+              cover
               style={{
                 onClick: () => {
                   setCurrentActionId(action.id);
