@@ -155,7 +155,7 @@ export const SocialFooter: React.FC<SocialFooterProps> = ({
   }
   return (
     <>
-      {/* <Divider my="2rem" /> */}
+      <Divider my="1rem" borderColor={"blackAlpha.500"} />
       <Flex gap="1rem" align={"center"} direction={"column"}>
         <Flex flexWrap={"wrap"} justify={"center"}>
           {links.map(({ label, link }, i) => (

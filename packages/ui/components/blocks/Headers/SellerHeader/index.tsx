@@ -22,6 +22,8 @@ import {
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineNotifications } from "react-icons/md";
 import React from "react";
+import { BsShop } from "react-icons/bs";
+import { BiWallet } from "react-icons/bi";
 import { FiPlusSquare } from "react-icons/fi";
 import {
   Avatar,
@@ -150,6 +152,31 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             as={HiOutlineMail}
           />
         </FloatingContainer>
+        <ShoppingCart
+          items={[
+            {
+              id: "1",
+              name: "product",
+              price: 15,
+              quantity: 2,
+              thumbnail: "/shop.jpeg",
+            },
+            {
+              id: "2",
+              name: "product 2",
+              price: 40,
+              quantity: 1,
+              thumbnail: "/shop-2.jpeg",
+            },
+            {
+              id: "3",
+              name: "product 3",
+              price: 48,
+              quantity: 2,
+              thumbnail: "/place-1.jpg",
+            },
+          ]}
+        />
         {!isMobile && (
           <Menu>
             <MenuButton>
@@ -180,6 +207,25 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
                   </Text>
                 </HStack>
               </MenuItem>
+              <MenuItem>
+                <HStack>
+                  <Icon fontSize={"xx-large"} as={BsShop} />
+                  <Text textTransform={"capitalize"}>
+                    {t("shop_management", "Shop Management")}
+                  </Text>
+                </HStack>
+              </MenuItem>
+              <MenuItem>
+                <HStack>
+                  <Icon fontSize={"xx-large"} as={BiWallet} />
+                  <Text textTransform={"capitalize"}>
+                    {t(
+                      "shopping_management_wallet",
+                      "Shopping Management Wallet"
+                    )}
+                  </Text>
+                </HStack>
+              </MenuItem>
               <MenuDivider />
               <MenuItem>
                 <HStack>
@@ -191,31 +237,6 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             </MenuList>
           </Menu>
         )}
-        <ShoppingCart
-          items={[
-            {
-              id: "1",
-              name: "product",
-              price: 15,
-              quantity: 2,
-              thumbnail: "/shop.jpeg",
-            },
-            {
-              id: "2",
-              name: "product 2",
-              price: 40,
-              quantity: 1,
-              thumbnail: "/shop-2.jpeg",
-            },
-            {
-              id: "3",
-              name: "product 3",
-              price: 48,
-              quantity: 2,
-              thumbnail: "/place-1.jpg",
-            },
-          ]}
-        />
       </Flex>
     </Flex>
   );

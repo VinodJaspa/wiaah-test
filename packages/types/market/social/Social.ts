@@ -10,7 +10,7 @@ export interface ProfileInfo {
   public: boolean;
 }
 
-export interface ShopScoialProfileInfo extends ProfileInfo {
+export interface ShopSocialProfileInfo extends ProfileInfo {
   publications: number;
   subscriptions: number;
   subscribers: number;
@@ -18,6 +18,7 @@ export interface ShopScoialProfileInfo extends ProfileInfo {
   location: string;
   bio?: string;
   links?: string[];
+  isFollowed: boolean;
 }
 export interface SubscribersUserInfo {
   id: string;

@@ -14,10 +14,11 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Box,
 } from "@chakra-ui/react";
 import { BiMessage, BiMessageAltDetail } from "react-icons/bi";
 import { CgMoreVertical } from "react-icons/cg";
-import { ShopScoialProfileInfo } from "types/market/Social";
+import { ShopSocialProfileInfo } from "types/market/Social";
 import { MdVerified } from "react-icons/md";
 import { FlagIcon } from "react-flag-kit";
 import {
@@ -35,7 +36,7 @@ import EllipsisText from "../../EllipsisText";
 import { BiLink } from "react-icons/bi";
 
 export interface SocialProfileProps {
-  shopInfo: ShopScoialProfileInfo;
+  shopInfo: ShopSocialProfileInfo;
   onFollow?: () => void;
 }
 
@@ -67,7 +68,6 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
 
   return (
     <Flex
-      // gap="0.5rem"
       align={"center"}
       bg={{ md: "primary.main" }}
       p="1rem"
@@ -88,7 +88,16 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
         onClose={subscriptionsOnClose}
       />
       <Flex w="100%" justify={"space-between"}>
-        <Menu>
+        <Box />
+        <CustomAvatar
+          bgColor={"black"}
+          name={shopInfo.name}
+          photoSrc={shopInfo.thumbnail}
+          newStory={newStory}
+          size={"2xl"}
+          onClick={handleOpenStory}
+        />
+        <Menu placement="bottom-end">
           <MenuButton h={"fit-content"}>
             <Icon
               onClick={handleOpenLogin}
@@ -114,20 +123,6 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
             </MenuItem>
           </MenuList>
         </Menu>
-        <CustomAvatar
-          bgColor={"black"}
-          name={shopInfo.name}
-          photoSrc={shopInfo.thumbnail}
-          newStory={newStory}
-          size={"2xl"}
-          onClick={handleOpenStory}
-        />
-        <Icon
-          onClick={handleOpenLogin}
-          cursor={"pointer"}
-          rotate={180}
-          as={BiMessageAltDetail}
-        />
       </Flex>
       <Flex
         bgColor={{ base: "primary.main", md: "transparent" }}
@@ -243,11 +238,14 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           boxShadow={"lg"}
           px="2rem"
           borderColor="black"
-          colorScheme={"primary.main"}
+          colorScheme={shopInfo.isFollowed ? "red" : "primary.main"}
           onClick={handleOpenLogin}
           textTransform="capitalize"
+          bgColor={shopInfo.isFollowed ? "crimson" : "primary.main"}
         >
-          {shopInfo.public
+          {shopInfo.isFollowed
+            ? t("unfollow", "Unfollow")
+            : shopInfo.public
             ? t("follow", "follow")
             : t("ask_for_follow", "ask for follow")}
         </Button>

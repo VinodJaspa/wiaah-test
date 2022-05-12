@@ -1,6 +1,6 @@
 import React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { CartSummaryItemData } from "types/market/CartSummary";
+import { CartSummaryItemData } from "types";
 import {
   CartSummaryItemsState,
   CartSummaryOnlyProdcutsState,

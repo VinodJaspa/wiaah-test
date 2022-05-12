@@ -156,14 +156,14 @@ export const getServerSideProps: GetServerSideProps<CheckoutPageProps> =
   };
 
 const checkout: NextPage<CheckoutPageProps> = ({ userAddresses, cart }) => {
-  // const setCheckoutAddress = useSetRecoilState(UserAddressesState);
-  // const setVoucher = useSetRecoilState(VoucherState);
-  // const setProducts = useSetRecoilState(CheckoutProductsState);
-  // useEffect(() => {
-  //   setProducts(cart.products);
-  //   setCheckoutAddress(userAddresses);
-  //   setVoucher(cart.voucher);
-  // }, []);
+  const setCheckoutAddress = useSetRecoilState(UserAddressesState);
+  const setVoucher = useSetRecoilState(VoucherState);
+  const setProducts = useSetRecoilState(CheckoutProductsState);
+  useEffect(() => {
+    setProducts(cart.products);
+    setCheckoutAddress(userAddresses);
+    setVoucher(cart.voucher);
+  }, []);
 
   return (
     <>

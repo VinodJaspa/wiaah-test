@@ -22,7 +22,7 @@ interface Component {
   value?: string;
   comp: React.ReactElement;
 }
-export const _SearchInput: React.FC<SearchInputProps> = ({
+export const SearchFilterInput: React.FC<SearchInputProps> = ({
   icon,
   iconAlign,
   fullWidth,

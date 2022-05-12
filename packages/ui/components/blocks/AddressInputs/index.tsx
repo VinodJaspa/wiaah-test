@@ -2,7 +2,6 @@ import React from "react";
 import {
   BoldText,
   Button,
-  Divider,
   FilterInput,
   FlexStack,
   Grid,
@@ -19,7 +18,8 @@ import { FlagIcon } from "react-flag-kit";
 import { Country } from "country-state-city";
 import { FaSearch } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import { SearchInput } from "ui/components/blocks";
+import { SearchFilterInput } from "ui";
+import { Flex } from "@chakra-ui/react";
 
 export interface AddressInputsProps {
   initialInputs?: AddressDetails;
@@ -70,39 +70,38 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
 
   return (
     <div className="text-lg">
-      <FlexStack direction="vertical" verticalSpacingInRem={2}>
-        <FlexStack direction="vertical">
-          <Padding X={{ value: 2 }} Y={{ value: 1 }}>
-            <FlexStack verticalSpacingInRem={1} direction="vertical">
-              <div className="text-3xl capitalize">
-                {t("delivery_country", "delivery country")}
-              </div>
-              <SearchInput
-                id="DeliverySearchInput"
-                icon={
-                  currentCountryCode ? (
-                    <FlagIcon code={currentCountryCode} />
-                  ) : undefined
-                }
-                initialValue={"Egypt"}
-                explictWidth={{ value: 20 }}
-                components={Country.getAllCountries().map((country, i) => ({
-                  name: country.name,
-                  value: country.isoCode,
-                  comp: (
-                    <Prefix Prefix={<FlagIcon code={country.isoCode} />}>
-                      {country.name}
-                    </Prefix>
-                  ),
-                }))}
-                onValueChange={(value: any) => {
-                  if (value.length < 1) setCurrentCountryCode(undefined);
-                }}
-                onSelection={(code: any) => setCurrentCountryCode(code)}
-              />
-            </FlexStack>
-          </Padding>
-          <Divider color="#F3F3F3" height={{ value: 1 }} />
+      <Flex direction={"column"}>
+        <Flex direction="column" gap="2rem">
+          <Flex px="2rem" gap="1rem" direction={"column"}>
+            <div className="text-3xl capitalize">
+              {t("delivery_country", "delivery country")}
+            </div>
+            <SearchFilterInput
+              id="DeliverySearchInput"
+              icon={
+                currentCountryCode ? (
+                  //@ts-ignore
+                  <FlagIcon code={currentCountryCode} />
+                ) : undefined
+              }
+              initialValue={"Egypt"}
+              explictWidth={{ value: 20 }}
+              components={Country.getAllCountries().map((country, i) => ({
+                name: country.name,
+                value: country.isoCode,
+                comp: (
+                  //@ts-ignore
+                  <Prefix Prefix={<FlagIcon code={country.isoCode} />}>
+                    {country.name}
+                  </Prefix>
+                ),
+              }))}
+              onValueChange={(value: any) => {
+                if (value.length < 1) setCurrentCountryCode(undefined);
+              }}
+              onSelection={(code: any) => setCurrentCountryCode(code)}
+            />
+          </Flex>
           <Padding X={{ value: 2 }}>
             <Grid cols={1}>
               <div className="text-3xl capitalize">
@@ -169,7 +168,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
               {!manual && (
                 <>
                   <BoldText>{t("address_finder", "Address finder")}</BoldText>
-                  <SearchInput
+                  <SearchFilterInput
                     id="AddressFinderInput"
                     icon={<FaSearch />}
                     placeholder="start typing the first lines of your address"
@@ -308,8 +307,8 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
               )}
             </FlexStack>
           </Padding>
-        </FlexStack>
-      </FlexStack>
+        </Flex>
+      </Flex>
     </div>
   );
 };

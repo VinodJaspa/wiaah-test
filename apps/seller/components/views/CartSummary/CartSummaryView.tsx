@@ -15,10 +15,12 @@ import {
   useScreenWidth,
 } from "ui";
 import { CartSummaryTotalPriceState } from "ui/state";
-import CartSummaryFilled from "./CartSummaryFilled";
-import EmptyCartSummary from "./EmptyCartSummary";
+import { CartSummaryFilled } from "./CartSummaryFilled";
+import { EmptyCartSummary } from "./EmptyCartSummary";
 
-const CartSummaryView: React.FC = () => {
+export interface CartSummaryViewProps {}
+
+export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { min } = useScreenWidth({ minWidth: 900 });
