@@ -7,3 +7,4 @@ export * from "./Wishlist";
 export * from "./Story";
 export * from "./Social";
 export * from "./Notifications";
+export * from "./Profile";

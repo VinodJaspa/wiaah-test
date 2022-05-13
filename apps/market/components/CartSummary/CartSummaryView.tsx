@@ -1,6 +1,6 @@
-import { t } from "i18next";
 import { useRouter } from "next/router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 import {
   BoldText,
@@ -19,6 +19,7 @@ import CartSummaryFilled from "./CartSummaryFilled";
 import EmptyCartSummary from "./EmptyCartSummary";
 
 const CartSummaryView: React.FC = () => {
+  const { t } = useTranslation();
   const router = useRouter();
   const { min } = useScreenWidth({ minWidth: 900 });
   const { cartSummaryItems } = useCartSummary();

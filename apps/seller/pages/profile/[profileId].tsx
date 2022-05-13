@@ -1,0 +1,47 @@
+import { GetServerSideProps, NextPage } from "next";
+import Head from "next/head";
+import React from "react";
+import { dehydrate, QueryClient } from "react-query";
+import { getSocialProfileData } from "api";
+import { SellerLayout, useGetSocialProfile } from "ui";
+import { SocialView } from "../../components/views/SocialProfile/SocialProfileView";
+
+interface ProfilePageProps {
+  profileId: string;
+}
+
+export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({
+  query,
+}) => {
+  const { profileId } = query;
+  const id = Array.isArray(profileId) ? profileId[0] : profileId;
+
+  const queryClient = new QueryClient();
+
+  queryClient.prefetchQuery(["SocialProfile", { profileId }], () =>
+    getSocialProfileData(id)
+  );
+
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+      profileId: id,
+    },
+  };
+};
+
+const profile: NextPage<ProfilePageProps> = ({ profileId }) => {
+  const { data } = useGetSocialProfile(profileId);
+  return (
+    <>
+      <Head>
+        <title>{data ? data.name : "Seller | profile"}</title>
+      </Head>
+      <SellerLayout>
+        <SocialView profileId={profileId} />
+      </SellerLayout>
+    </>
+  );
+};
+
+export default profile;

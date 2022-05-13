@@ -23,6 +23,7 @@ import {
   MinimalHeader,
   DiscoverHeader,
   LocationButton,
+  SocialFooter,
 } from "ui";
 
 const NavigationLinks: NavigationLinkType[] = [
@@ -215,7 +216,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
       )}
       <Container
         className={`${
-          isMobile ? "px-4" : sideBar ? "pl-24 pr-8" : "px-8"
+          isMobile ? "px-4" : sideBar ? "pl-20 pr-4" : "px-8"
         } h-full`}
       >
         {header && header !== null && (
@@ -230,20 +231,29 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           >
             <Container
               className={`${
-                isMobile ? "px-4" : sideBar ? "pl-24 pr-8" : "px-8"
+                isMobile ? "px-4" : sideBar ? "pl-20 pr-4" : "px-8"
               }`}
             >
               <HeaderSwitcher headerType={header} />
             </Container>
           </Box>
         )}
-        <Box
-          {...containerProps}
-          pt={`calc(${headerHeight || 0}px + 1rem)`}
-          as={"main"}
+        <Flex
+          h="100%"
+          w="100%"
+          gap="1rem"
+          direction={"column"}
+          justify={"space-between"}
         >
-          {children}
-        </Box>
+          <Box
+            {...containerProps}
+            pt={`calc(${headerHeight || 0}px + 1rem)`}
+            as={"main"}
+          >
+            {children}
+          </Box>
+          <SocialFooter copyRightYear={2022} />
+        </Flex>
       </Container>
     </Root>
   );

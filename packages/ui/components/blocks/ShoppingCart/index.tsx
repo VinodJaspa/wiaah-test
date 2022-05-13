@@ -1,10 +1,12 @@
 import React from "react";
-import { FaShoppingBag, FaTrash } from "react-icons/fa";
+import { FiShoppingBag } from "react-icons/fi";
 import { MdDeleteOutline, MdClose } from "react-icons/md";
-import { useOutsideClick } from "ui/Hooks/useOutsideClick";
+import { useOutsideClick } from "ui";
 import { ShoppingCartItem } from "ui/types/shoppingCart/shoppingCartItem.interface";
-import { useCartSummary } from "ui/Hooks";
-import { useShoppingCart } from "ui/Hooks/";
+import { useCartSummary } from "ui";
+import { useShoppingCart } from "ui";
+import { Icon } from "@chakra-ui/react";
+import { HiOutlineShoppingBag, HiShoppingBag } from "react-icons/hi";
 
 export interface ShoppingCartProps {
   items: ShoppingCartItem[];
@@ -72,8 +74,9 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({
         onClick={() => handleToggleOpen()}
         className="relative cursor-pointer select-none"
       >
-        <FaShoppingBag className="h-8 w-8" />
-        <div className="absolute -bottom-2 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
+        <Icon fontSize={"2.2em"} as={HiOutlineShoppingBag} />
+        {/* <FaShoppingBag className="h-8 w-8" /> */}
+        <div className="absolute bottom-0 -right-1 flex h-3 w-3 items-center justify-center rounded-full bg-red-500 p-2 text-xs text-white">
           {items.length}
         </div>
       </div>

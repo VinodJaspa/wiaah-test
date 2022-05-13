@@ -3,3 +3,4 @@ export * from "./useFileUploadModal";
 export * from "./useCommentReportModal";
 export * from "./useProductViewModal";
 export * from "./useShareWithModal";
+export * from "./useGeneralSearchModal";

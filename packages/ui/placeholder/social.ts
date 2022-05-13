@@ -7,11 +7,11 @@ import {
   PostInfo,
   ProfileInfo,
   ShopCardInfo,
-  ShopScoialProfileInfo,
+  ShopSocialProfileInfo,
   SubscribersUserInfo,
 } from "types/market/Social";
 
-export const SocialProfileInfo: ShopScoialProfileInfo = {
+export const SocialProfileInfo: ShopSocialProfileInfo = {
   id: "1",
   name: "Wiaah",
   accountType: "seller",
@@ -25,6 +25,8 @@ export const SocialProfileInfo: ShopScoialProfileInfo = {
   public: true,
   bio: "Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing ",
   links: ["https://www.instagram.com"],
+  isFollowed: false,
+  profileCoverPhoto: "/shop-2.jpeg",
 };
 
 export const SubscribersUsersPlaceholder: SubscribersUserInfo[] = [

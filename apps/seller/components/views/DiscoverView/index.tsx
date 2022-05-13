@@ -9,6 +9,8 @@ import {
   usersProfilesPlaceHolder,
   placesPlaceholder,
   LocationButton,
+  HashTagSearch,
+  DiscoverItem,
 } from "ui";
 import {
   Text,
@@ -75,7 +77,7 @@ export const DiscoverView: React.FC = ({}) => {
             {discoverPlacesPlaceHolder.map((place, i) => (
               <LocationButton
                 iconStyle={{ color: "primary.main" }}
-                locationName={place}
+                name={place}
                 key={i}
               />
             ))}
@@ -89,7 +91,7 @@ export const DiscoverView: React.FC = ({}) => {
           <ListWrapper style={{ w: "100%" }}>
             {discoverHashtagsPlaceholder.map((tag, i) => (
               <HashTagSearch
-                hashTagName={tag}
+                hashtagName={tag}
                 hashtagViews={randomNum(50000000)}
               />
             ))}
@@ -120,46 +122,5 @@ export const DiscoverView: React.FC = ({}) => {
         tabs={discoverTabs}
       />
     </VStack>
-  );
-};
-
-interface DiscoverItemProps {
-  thumbnail: string;
-}
-
-export const DiscoverItem: React.FC<DiscoverItemProps> = ({ thumbnail }) => {
-  return <Image shadow={"md"} src={thumbnail} />;
-};
-
-export interface HashTagSearchProps {
-  hashTagName: string;
-  hashtagViews: number;
-  style?: StackProps;
-}
-
-export const HashTagSearch: React.FC<HashTagSearchProps> = ({
-  hashTagName,
-  hashtagViews,
-  style,
-}) => {
-  const { t } = useTranslation();
-  return (
-    <HStack {...style} w="100%" justify={"space-between"}>
-      <HStack spacing="1.5rem">
-        <Icon
-          borderWidth={"1px"}
-          borderColor={"gray.300"}
-          rounded="full"
-          p="0.5rem"
-          fontSize={"5xl"}
-          as={HiHashtag}
-        />
-        <Text fontWeight={"bold"}>{hashTagName}</Text>
-      </HStack>
-      <HStack spacing="0.5rem">
-        <Text>{NumberShortner(hashtagViews)}</Text>
-        <Text>{t("views", "views")}</Text>
-      </HStack>
-    </HStack>
   );
 };

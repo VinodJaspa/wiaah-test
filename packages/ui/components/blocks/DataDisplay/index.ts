@@ -14,3 +14,6 @@ export * from "./ActionViewer";
 export * from "./CommentAlt";
 export * from "./Cards";
 export * from "./PopupMenus";
+export * from "./HashtagSearchItem";
+export * from "./DiscoverSearchItem";
+export * from "./Search";

@@ -154,8 +154,8 @@ export const SocialFooter: React.FC<SocialFooterProps> = ({
     onLinkClick && onLinkClick(link);
   }
   return (
-    <>
-      {/* <Divider my="2rem" /> */}
+    <div>
+      <Divider my="1rem" borderColor={"blackAlpha.500"} />
       <Flex gap="1rem" align={"center"} direction={"column"}>
         <Flex flexWrap={"wrap"} justify={"center"}>
           {links.map(({ label, link }, i) => (
@@ -195,6 +195,6 @@ export const SocialFooter: React.FC<SocialFooterProps> = ({
           </Flex>
         </Flex>
       </Flex>
-    </>
+    </div>
   );
 };

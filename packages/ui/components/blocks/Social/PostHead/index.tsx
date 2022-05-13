@@ -83,7 +83,7 @@ export const PostHead: React.FC<PostHeadProps> = ({
         </Text>
       </HStack>
       <Flex direction={"column"} align="end" pt="1.1rem">
-        <Menu>
+        <Menu placement="bottom-end">
           <MenuButton>
             <HiDotsHorizontal
               viewBox="0 5 20 10"

@@ -1,7 +1,7 @@
 import { HStack, Avatar, Flex, Text, StackProps } from "@chakra-ui/react";
 import React from "react";
 import { Verified } from "ui";
-import { UserProfileData, UsersProfilesVariant } from "../UsersProfiles";
+import { UserProfileData, UsersProfilesVariant } from "types";
 
 export interface UserProfileProps {
   user: UserProfileData;
@@ -20,7 +20,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
         <Avatar name={user.name} src={user.userPhotoSrc} />
       ) : (
         <>
-          <Avatar name={user.name} src={user.userPhotoSrc} />
+          <Avatar bgColor={"black"} name={user.name} src={user.userPhotoSrc} />
           <Flex w="100%" direction={"column"}>
             <HStack>
               <Text data-testid="UserName">{user.name}</Text>

@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 
 export const ShareWithPostIdState = atom<string | null>({
-  default: "1",
+  default: null,
   key: "ShareWithPostIdState",
 });

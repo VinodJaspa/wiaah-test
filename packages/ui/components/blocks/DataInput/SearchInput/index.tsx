@@ -12,17 +12,26 @@ import { useTranslation } from "react-i18next";
 import { HiSearch } from "react-icons/hi";
 
 export interface SearchInputProps {
-  style?: InputGroupProps;
+  innerProps?: InputGroupProps;
+  onValueChange?: (value: string) => any;
 }
 
-export const SearchInput: React.FC<SearchInputProps> = ({ style }) => {
+export const SearchInput: React.FC<SearchInputProps> = ({
+  innerProps,
+  onValueChange,
+}) => {
   const [searchInputValue, setSearchInputValue] = React.useState<string>("");
+
+  React.useEffect(() => {
+    onValueChange && onValueChange(searchInputValue);
+  }, [searchInputValue]);
+
   function handleSearchInputChange(value: string) {
     setSearchInputValue(value);
   }
   const { t } = useTranslation();
   return (
-    <Box {...style}>
+    <Box {...innerProps}>
       <InputGroup maxW={"30rem"}>
         <InputRightElement borderLeftWidth={"1px"}>
           <IconButton

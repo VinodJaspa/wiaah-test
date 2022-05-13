@@ -9,3 +9,8 @@ export * from "./HashtagsView";
 export * from "./NewsFeed";
 export * from "./Messages";
 export * from "./Wishlist";
+export * from "./CartSummary";
+export * from "./Checkout";
+export * from "./SocialProfile";
+export * from "./MyProfile";
+export * from "./AccountSettings";

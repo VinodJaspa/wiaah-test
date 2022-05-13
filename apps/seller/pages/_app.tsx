@@ -7,22 +7,24 @@ import { RecoilRoot } from "recoil";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "ui/themes/chakra_ui/theme";
 import { DataInitializationWrapper } from "ui";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ChakraProvider theme={theme}>
-        <CookiesProvider>
-          <RecoilRoot>
-            <DataInitializationWrapper>
-              <Component {...pageProps} />
-            </DataInitializationWrapper>
-          </RecoilRoot>
-        </CookiesProvider>
-      </ChakraProvider>
+      <Hydrate state={pageProps.dehydratedState}>
+        <ChakraProvider theme={theme}>
+          <CookiesProvider>
+            <RecoilRoot>
+              <DataInitializationWrapper>
+                <Component {...pageProps} />
+              </DataInitializationWrapper>
+            </RecoilRoot>
+          </CookiesProvider>
+        </ChakraProvider>
+      </Hydrate>
     </QueryClientProvider>
   );
 }

@@ -22,7 +22,10 @@ import {
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineNotifications } from "react-icons/md";
 import React from "react";
+import { BsShop } from "react-icons/bs";
+import { BiWallet } from "react-icons/bi";
 import { FiPlusSquare } from "react-icons/fi";
+import { CgShoppingBag } from "react-icons/cg";
 import {
   Avatar,
   SearchInput,
@@ -32,6 +35,8 @@ import {
   SellerDrawerOpenState,
   ShoppingCart,
   NotifiactionsMenu,
+  useGeneralSearchModal,
+  GeneralSearchModal,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
@@ -46,10 +51,11 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
   onSearchSubmit,
   props,
 }) => {
+  const { openModal: openSearchBox } = useGeneralSearchModal();
   const router = useRouter();
   const { t } = useTranslation();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
-
+  console.log("header render");
   const { isMobile } = useResponsive();
   const { OpenModal } = useNewPost();
 
@@ -76,8 +82,11 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
         )}
         <Image h="100%" objectFit={"contain"} src="/wiaah_logo.png" />
       </Flex>
-
-      {!isMobile && <SearchInput />}
+      {!isMobile && (
+        <GeneralSearchModal>
+          <SearchInput innerProps={{ onClick: openSearchBox }} />
+        </GeneralSearchModal>
+      )}
 
       <Flex
         align="center"
@@ -150,47 +159,6 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             as={HiOutlineMail}
           />
         </FloatingContainer>
-        {!isMobile && (
-          <Menu>
-            <MenuButton>
-              <VStack>
-                <Avatar
-                  h="2.5rem"
-                  w="2.5rem"
-                  showBorder={false}
-                  name="wiaah"
-                  photoSrc="/wiaah_logo.png"
-                />
-              </VStack>
-            </MenuButton>
-            <MenuList>
-              <MenuItem>
-                <HStack>
-                  <Icon fontSize={"xx-large"} as={HiOutlineUserCircle} />
-                  <Text textTransform={"capitalize"}>
-                    {t("profile", "profile")}
-                  </Text>
-                </HStack>
-              </MenuItem>
-              <MenuItem>
-                <HStack>
-                  <Icon fontSize={"xx-large"} as={IoSettingsOutline} />
-                  <Text textTransform={"capitalize"}>
-                    {t("settings", "settings")}
-                  </Text>
-                </HStack>
-              </MenuItem>
-              <MenuDivider />
-              <MenuItem>
-                <HStack>
-                  <Text textTransform={"capitalize"}>
-                    {t("log_out", "log out")}
-                  </Text>
-                </HStack>
-              </MenuItem>
-            </MenuList>
-          </Menu>
-        )}
         <ShoppingCart
           items={[
             {
@@ -216,6 +184,71 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             },
           ]}
         />
+        {!isMobile && (
+          <Menu>
+            <MenuButton>
+              <VStack>
+                <Avatar
+                  h="1.6em"
+                  w="1.6em"
+                  showBorder={false}
+                  name="wiaah"
+                  photoSrc="/wiaah_logo.png"
+                />
+              </VStack>
+            </MenuButton>
+            <MenuList>
+              <MenuItem>
+                <HStack>
+                  <Icon fontSize={"xx-large"} as={HiOutlineUserCircle} />
+                  <Text textTransform={"capitalize"}>
+                    {t("profile", "profile")}
+                  </Text>
+                </HStack>
+              </MenuItem>
+              <MenuItem>
+                <HStack>
+                  <Icon fontSize={"xx-large"} as={BsShop} />
+                  <Text textTransform={"capitalize"}>
+                    {t("shop_management", "Shop Management")}
+                  </Text>
+                </HStack>
+              </MenuItem>
+              <MenuItem>
+                <HStack>
+                  <Icon fontSize={"xx-large"} as={CgShoppingBag} />
+                  <Text textTransform={"capitalize"}>
+                    {t("shopping_management", "Shopping Management")}
+                  </Text>
+                </HStack>
+              </MenuItem>
+              <MenuItem>
+                <HStack>
+                  <Icon fontSize={"xx-large"} as={BiWallet} />
+                  <Text textTransform={"capitalize"}>
+                    {t("wallet", "Wallet")}
+                  </Text>
+                </HStack>
+              </MenuItem>
+              <MenuItem>
+                <HStack>
+                  <Icon fontSize={"xx-large"} as={IoSettingsOutline} />
+                  <Text textTransform={"capitalize"}>
+                    {t("settings", "settings")}
+                  </Text>
+                </HStack>
+              </MenuItem>
+              <MenuDivider />
+              <MenuItem>
+                <HStack>
+                  <Text textTransform={"capitalize"}>
+                    {t("log_out", "log out")}
+                  </Text>
+                </HStack>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        )}
       </Flex>
     </Flex>
   );
