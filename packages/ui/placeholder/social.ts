@@ -26,6 +26,7 @@ export const SocialProfileInfo: ShopSocialProfileInfo = {
   bio: "Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing ",
   links: ["https://www.instagram.com"],
   isFollowed: false,
+  profileCoverPhoto: "/shop-2.jpeg",
 };
 
 export const SubscribersUsersPlaceholder: SubscribersUserInfo[] = [

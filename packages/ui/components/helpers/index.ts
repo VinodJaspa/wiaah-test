@@ -12,3 +12,4 @@ export * from "./randomNumber";
 export * from "./SidebarContext";
 export * from "./getParamFromPath";
 export * from "./getFileSrcData";
+export * from "./getRouteAfter";

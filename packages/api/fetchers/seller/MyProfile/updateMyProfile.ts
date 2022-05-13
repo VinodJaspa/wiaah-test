@@ -5,11 +5,6 @@ export const updateMyProfile = async (
 ): Promise<ShopSocialProfileInfo> => {
   return {
     ...SocialProfileInfo,
-    links: input.links,
-    bio: input.bio,
-    name: input.profileName,
-    thumbnail: input.profileImageSrc,
-    location: input.location,
-    countryCode: input.countryCode,
+    ...input,
   };
 };

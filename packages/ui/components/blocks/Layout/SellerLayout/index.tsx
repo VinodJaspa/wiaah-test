@@ -216,7 +216,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
       )}
       <Container
         className={`${
-          isMobile ? "px-4" : sideBar ? "pl-16 pr-0" : "px-8"
+          isMobile ? "px-4" : sideBar ? "pl-20 pr-4" : "px-8"
         } h-full`}
       >
         {header && header !== null && (
@@ -231,7 +231,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           >
             <Container
               className={`${
-                isMobile ? "px-4" : sideBar ? "pl-16 pr-0" : "px-8"
+                isMobile ? "px-4" : sideBar ? "pl-20 pr-4" : "px-8"
               }`}
             >
               <HeaderSwitcher headerType={header} />

@@ -70,7 +70,8 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
     <Flex
       align={"center"}
       bg={{ md: "primary.main" }}
-      p="1rem"
+      px="1rem"
+      py="0.5rem"
       color={"white"}
       fontSize="1.5rem"
       justify={"space-between"}
@@ -94,7 +95,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           name={shopInfo.name}
           photoSrc={shopInfo.thumbnail}
           newStory={newStory}
-          size={"2xl"}
+          size={"xl"}
           onClick={handleOpenStory}
         />
         <Menu placement="bottom-end">

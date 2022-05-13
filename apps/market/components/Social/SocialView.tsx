@@ -153,7 +153,7 @@ const SocialView: React.FC<SocialViewProps> = () => {
       <ShareWithModal />
       <SocialPostsCommentsDrawer />
       <Flex direction={"column"}>
-        <Flex position={{ base: "relative", md: "initial" }} maxH={"26rem"}>
+        <Flex position={{ base: "relative", md: "initial" }} maxH={"24rem"}>
           <SocialProfile shopInfo={SocialProfileInfo} />
           <Image
             position={{ base: "absolute", md: "unset" }}

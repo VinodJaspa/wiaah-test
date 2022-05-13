@@ -4,7 +4,6 @@ import {
   useBreakpointValue,
   Divider,
   Text,
-  Avatar,
 } from "@chakra-ui/react";
 import React from "react";
 import {
@@ -26,14 +25,11 @@ import {
   useGetSocialProfile,
   ShopCardsInfoPlaceholder,
   socialAffiliationCardPlaceholders,
-  SocialProfileInfo,
   profileActionsPlaceholder,
 } from "ui";
 import { TabType } from "types/market/misc/tabs";
 import { useRecoilValue } from "recoil";
-import { SocialNewsfeedPostsState, SocialProfileInfoState } from "ui/state";
-import { PostComment } from "types/market/Social";
-import { products } from "ui/placeholder";
+import { SocialNewsfeedPostsState } from "ui/state";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 

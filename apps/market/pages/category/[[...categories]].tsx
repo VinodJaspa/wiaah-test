@@ -12,7 +12,7 @@ const Category: NextPage = () => {
       </Head>
       <MasterLayout>
         <main className="block w-full grow">
-          <SearchView></SearchView>
+          <SearchView />
         </main>
       </MasterLayout>
     </>

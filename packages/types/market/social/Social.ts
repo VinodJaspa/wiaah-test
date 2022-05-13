@@ -19,6 +19,7 @@ export interface ShopSocialProfileInfo extends ProfileInfo {
   bio?: string;
   links?: string[];
   isFollowed: boolean;
+  profileCoverPhoto: string;
 }
 export interface SubscribersUserInfo {
   id: string;
