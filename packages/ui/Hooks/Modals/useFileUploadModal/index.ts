@@ -13,9 +13,18 @@ export const useFileUploadModal = () => {
     setUploadType(null);
   }
 
+  function uploadImage() {
+    setUploadType("picture");
+  }
+  function uploadVideo() {
+    setUploadType("video");
+  }
+
   return {
     uploadType,
     setUploadType,
     cancelUpload,
+    uploadImage,
+    uploadVideo,
   };
 };

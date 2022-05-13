@@ -9,3 +9,5 @@ export * from "./actions";
 export * from "./chat";
 export * from "./Notifications";
 export * from "./cartSummary";
+export * from "./Localizations";
+export * from "./Search";

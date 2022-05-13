@@ -18,8 +18,9 @@ import { TakePictureModal, RecordVideoModal } from "ui";
 import { getFileSrcData, FileRes } from "ui/components/helpers";
 
 export interface MediaUploadModalProps {
-  onImgUpload?: (imgSrc: FileRes) => any;
-  onVidUpload?: (vidSrc: string) => any;
+  onImgUpload?: (converted: FileRes, raw?: File) => any;
+  onVidUpload?: (converted: string, raw?: File) => any;
+
   multiple?: boolean;
 }
 
@@ -37,12 +38,11 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
   const [videoFiles, setVideoFiles] = React.useState<File[] | Blob[]>([]);
 
   React.useEffect(() => {
-    console.log("test");
     try {
       if (imageFiles && imageFiles.length > 0) {
-        imageFiles.map((img) => {
+        imageFiles.map((img, idx) => {
           getFileSrcData(img, (res) => {
-            SendImage(res);
+            SendImage(res, idx);
           });
         });
         setImageFiles([]);
@@ -56,9 +56,9 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
     try {
       if (videoFiles.length > 0 && URL && URL.createObjectURL) {
         const vidArr = Array.from(videoFiles);
-        vidArr.map((vid) => {
+        vidArr.map((vid, idx) => {
           const vidSrc = URL.createObjectURL(vid);
-          sendVideo(vidSrc);
+          sendVideo(vidSrc, idx);
         });
 
         setVideoFiles([]);
@@ -78,14 +78,14 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
     setImageFiles((state) => [...state, ...fileArr]);
   }
 
-  function sendVideo(vidSrc: string) {
+  function sendVideo(vidSrc: string, idx: number) {
     if (!vidSrc) return;
     onVidUpload && onVidUpload(vidSrc);
   }
 
-  function SendImage(img: FileRes) {
+  function SendImage(img: FileRes, idx: number) {
     if (!img) return;
-    onImgUpload && onImgUpload(img);
+    onImgUpload && onImgUpload(img, imageFiles[idx]);
   }
 
   return (
@@ -114,9 +114,9 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
                 <TakePictureModal
                   isOpen={takePicture}
                   onClose={() => setTakePicture(false)}
-                  onImgCapture={(src) => {
+                  onImgCapture={(src, raw) => {
                     setTakePicture(false);
-                    SendImage(src);
+                    onImgUpload && onImgUpload(src, raw);
                   }}
                 />
                 <label htmlFor="AddImageInput">

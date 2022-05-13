@@ -15,7 +15,7 @@ import React from "react";
 import { HiCamera } from "react-icons/hi";
 
 export interface CameraPreviewProps extends Omit<ModalProps, "children"> {
-  onImgCapture?: (imgDataUrl: string) => any;
+  onImgCapture?: (imgDataUrl: string, fileConverted?: File) => any;
 }
 
 export const TakePictureModal: React.FC<CameraPreviewProps> = ({
@@ -88,7 +88,11 @@ export const TakePictureModal: React.FC<CameraPreviewProps> = ({
           vidRef.current.videoHeight
         );
         const imgSrc = canv.toDataURL();
-        onImgCapture && onImgCapture(imgSrc);
+        const toFile = new File(
+          [new Blob([imgSrc], { type: "image/jpeg" })],
+          `${new Date(Date.now()).toISOString()}`
+        );
+        onImgCapture && onImgCapture(imgSrc, toFile);
       }
     } catch (err) {
       console.log(err);
@@ -155,25 +159,3 @@ export const TakePictureModal: React.FC<CameraPreviewProps> = ({
     </Modal>
   );
 };
-
-// let VIDEO-null;
-// let CANVAS=null;
-// let CONTEXT=null;
-// function main (){
-//     CANVAS-document.getElementById ("myCanvas");
-//      CONTEXT-CANVAS.getContext ("2d");
-//     CANVAS.width-window.innerWidth;
-//     CANVAS.height=window.innerHeight;
-//     let promise=navigator.mediaDevices.getUserMedia ((video:true));
-//     promise. then (function (signal)(
-//         VIDEO-document.createElement ("video"):
-//         VIDEO.srcobject-signal;
-//         VIDEO.play ):
-//         VIDEO.onloadeddata=function ()(
-//             updateCanvas ();
-//     }).catch (function (err){
-//        alert ("Camera error: "terr);
-//     });
-// function updateCanvas ()(
-//      CONTEXT.drawImage (VIDEO, 0,0);
-//     window.requestAnimationFrame (updateCanvas);

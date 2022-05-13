@@ -1,15 +1,7 @@
 import { Avatar, HStack, Flex, Text, FlexProps } from "@chakra-ui/react";
 import React from "react";
+import { UserProfileData, UsersProfilesVariant } from "types";
 import { ScrollableContainer, UserProfile } from "ui";
-
-export interface UserProfileData {
-  name: string;
-  userPhotoSrc: string;
-  activityType: string;
-  verified?: boolean;
-}
-
-export type UsersProfilesVariant = "narrow" | "long";
 
 export interface UsersProfilesProps extends FlexProps {
   users: UserProfileData[];

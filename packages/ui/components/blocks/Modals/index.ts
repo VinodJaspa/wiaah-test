@@ -12,3 +12,4 @@ export * from "./CommentReportModal";
 export * from "./ProductViewModal";
 export * from "./RecordVideoModal";
 export * from "./ShareWithModal";
+export * from "./GeneralSearchModal";

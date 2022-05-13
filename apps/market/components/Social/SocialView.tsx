@@ -149,53 +149,55 @@ const SocialView: React.FC<SocialViewProps> = () => {
     },
   ];
   return (
-    <Flex direction={"column"}>
-      <Flex position={{ base: "relative", md: "initial" }} maxH={"26rem"}>
-        <SocialProfile shopInfo={SocialProfileInfo} />
-        <SocialPostsCommentsDrawer />
-        <ShareWithModal />
-        <Image
-          position={{ base: "absolute", md: "unset" }}
-          top="0px"
-          left="0px"
-          w="100%"
-          bgColor={"blackAlpha.200"}
-          zIndex={-1}
-          h={{ base: "100%", md: "unset" }}
-          src="/shop.jpeg"
-          objectFit={"cover"}
-        />
-      </Flex>
-      <Container className="flex-grow flex-col">
-        {profileInfo && profileInfo.public ? (
-          <>
-            <TabsViewer
-              tabs={
-                profileInfo.accountType === "seller" ? sellerTabs : buyerTabs
-              }
-            />
-            <Divider my="1rem" />
-          </>
-        ) : (
-          <>
-            <Flex
-              h="100%"
-              flexGrow={"inherit"}
-              align="center"
-              justify={"center"}
-            >
-              <Text
-                fontWeight={"bold"}
-                textTransform={"capitalize"}
-                fontSize={"xx-large"}
+    <>
+      <ShareWithModal />
+      <SocialPostsCommentsDrawer />
+      <Flex direction={"column"}>
+        <Flex position={{ base: "relative", md: "initial" }} maxH={"26rem"}>
+          <SocialProfile shopInfo={SocialProfileInfo} />
+          <Image
+            position={{ base: "absolute", md: "unset" }}
+            top="0px"
+            left="0px"
+            w="100%"
+            bgColor={"blackAlpha.200"}
+            zIndex={-1}
+            h={{ base: "100%", md: "unset" }}
+            src="/shop.jpeg"
+            objectFit={"cover"}
+          />
+        </Flex>
+        <Container className="flex-grow flex-col">
+          {profileInfo && profileInfo.public ? (
+            <>
+              <TabsViewer
+                tabs={
+                  profileInfo.accountType === "seller" ? sellerTabs : buyerTabs
+                }
+              />
+              <Divider my="1rem" />
+            </>
+          ) : (
+            <>
+              <Flex
+                h="100%"
+                flexGrow={"inherit"}
+                align="center"
+                justify={"center"}
               >
-                {t("this_profile_is_private", "this profile is private")}
-              </Text>
-            </Flex>
-          </>
-        )}
-      </Container>
-    </Flex>
+                <Text
+                  fontWeight={"bold"}
+                  textTransform={"capitalize"}
+                  fontSize={"xx-large"}
+                >
+                  {t("this_profile_is_private", "this profile is private")}
+                </Text>
+              </Flex>
+            </>
+          )}
+        </Container>
+      </Flex>
+    </>
   );
 };
 
