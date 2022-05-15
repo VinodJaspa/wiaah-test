@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Input, Checkbox, Select as AntSelect } from "antd";
 import Select from "react-select";
 import { Country, State, City } from "country-state-city";
-import { FormikInput } from "ui";
+import { FormikInput, TranslationText } from "ui";
 
 const { TextArea } = Input;
 const { Option } = AntSelect;
@@ -122,12 +122,42 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({}) => {
                   )}
                 />
                 <AntSelect
-                  placeholder={t("Currency", "Currency")}
+                  placeholder={t("select_currency", "Select Currency")}
                   className="mb-4 w-full border-gray-300"
                   size="large"
                 >
                   <Option value="male">USD</Option>
                   <Option value="femal">EUR</Option>
+                </AntSelect>
+                <AntSelect
+                  placeholder={t("select_language", "Select Language")}
+                  className="mb-4 w-full border-gray-300"
+                  size="large"
+                >
+                  <Option value="english">
+                    <TranslationText
+                      translationObject={{
+                        translationKey: "english",
+                        fallbackText: "English",
+                      }}
+                    />
+                  </Option>
+                  <Option value="french">
+                    <TranslationText
+                      translationObject={{
+                        translationKey: "french",
+                        fallbackText: "French",
+                      }}
+                    />
+                  </Option>
+                  <Option value="germen">
+                    <TranslationText
+                      translationObject={{
+                        translationKey: "germen",
+                        fallbackText: "Germen",
+                      }}
+                    />
+                  </Option>
                 </AntSelect>
                 <AntSelect
                   placeholder={t("Type_of_Seller", "Type of Seller")}

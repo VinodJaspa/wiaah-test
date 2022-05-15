@@ -12,7 +12,7 @@ export const PasswordSection: React.FC<PasswordSectionProps> = () => {
     <Formik initialValues={{}} onSubmit={() => {}}>
       {() => (
         <Form style={{ width: "100%" }}>
-          <Flex px="1rem" gap="1rem" direction={"column"}>
+          <Flex gap="1rem" direction={"column"}>
             <Text fontSize={"xx-large"} fontWeight="bold">
               {t("password", "Password")}
             </Text>

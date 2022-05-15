@@ -7,24 +7,21 @@ import {
   Input,
   InputGroup,
   InputLeftAddon,
-  InputLeftElement,
-  InputProps,
   Select,
   SimpleGrid,
   Text,
+  Icon,
   Textarea,
 } from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import { City, Country } from "country-state-city";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React from "react";
 import { FlagIcon } from "react-flag-kit";
 import { useTranslation } from "react-i18next";
-import {
-  TranslationText as TranslationTextType,
-  UpdateAccouuntSettingsDto,
-} from "types";
+import { TranslationTextType, UpdateAccouuntSettingsDto } from "types";
 import { useFileUploadModal, MediaUploadModal } from "ui";
-import { SearchFilterInput } from "../../../blocks";
+import { FormikInput, SearchFilterInput } from "../../../blocks";
 import { Prefix, TranslationText } from "../../../partials";
 
 export interface AccountSettingsSectionProps {}
@@ -38,7 +35,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
       uploadImage();
     }
     return (
-      <Flex w="100%" gap="1rem" direction={"column"} px="1rem">
+      <Flex w="100%" gap="1rem" direction={"column"}>
         <Text fontSize={"xx-large"} fontWeight="bold">
           {t("account", "Account")}
         </Text>
@@ -61,33 +58,34 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
             console.log(data);
           }}
         >
-          {({
-            isSubmitting,
-            handleBlur,
-            handleChange,
-            values,
-            setFieldValue,
-          }) => (
+          {({ handleChange, values, setFieldValue }) => (
             <Form>
               <Flex w="100%" direction={"column"} gap="1rem">
                 {/* first and last name */}
                 <SimpleGrid columns={2} gap="2rem" w="100%">
-                  <Flex direction={"column"}>
-                    <Text fontWeight={"semibold"}>
-                      {t("first_name", "First name")}
-                    </Text>
-                    <Field as={Input} name="firstName" />
-                    <ErrorMessage name={"firstName"} />
-                  </Flex>
-                  <Flex direction={"column"}>
-                    <Text fontWeight={"semibold"}>
-                      {t("last_name", "Lirst name")}
-                    </Text>
-                    <Field as={Input} name="lastName" />
-                    <ErrorMessage name={"lastName"} />
-                  </Flex>
+                  <FormikInput
+                    label={{
+                      fallbackText: "First name",
+                      translationKey: "first_name",
+                    }}
+                    name="firstName"
+                  />
+                  <FormikInput
+                    label={{
+                      translationKey: "last_name",
+                      fallbackText: "Last name",
+                    }}
+                    name="lastName"
+                  />
                 </SimpleGrid>
                 {/* username */}
+                <FormikInput
+                  name="companyRegisterationNum"
+                  label={{
+                    translationKey: "company_registration_number",
+                    fallbackText: "Company registration number",
+                  }}
+                />
 
                 <Flex direction={"column"}>
                   <Text>{t("username", "Username")}</Text>
@@ -101,17 +99,8 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                         wiaah.com/
                       </Text>
                     </InputLeftAddon>
-                    <Field
-                      fontWeight="semibold"
-                      // pl="8.5rem"
-                      as={Input}
-                      name="username"
-                    />
+                    <FormikInput name="username" />
                   </InputGroup>
-                  <ErrorMessage
-                    name="user
-                  name"
-                  />
                 </Flex>
 
                 {/* profile picture */}
@@ -194,6 +183,8 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                     <Field
                       as={SearchFilterInput}
                       w={"100%"}
+                      placeHolder={t("select_country", "Select Country")}
+                      rightElement={<Icon as={ChevronDownIcon} />}
                       icon={() => {
                         const county = values.country;
                         if (county) {
@@ -242,9 +233,12 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                   </Flex>
                   <Flex w="100%" direction={"column"}>
                     <Text>{t("city", "City")}</Text>
-                    <SearchFilterInput
+                    <Field
+                      as={SearchFilterInput}
                       w={"100%"}
                       name="city"
+                      placeHolder={t("select_city", "Select City")}
+                      rightElement={<Icon as={ChevronDownIcon} />}
                       components={City.getCitiesOfCountry(
                         values.countryCode || ""
                       )?.map((city, i) => ({
@@ -269,11 +263,20 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                     />
                     <ErrorMessage name="city" />
                   </Flex>
-                  <Flex direction={"column"}>
-                    <Text>{t("language", "Language")}</Text>
-                    <Field as={Input} name="language" />
-                    <ErrorMessage name="language" />
-                  </Flex>
+                  <FormikInput
+                    label={{
+                      translationKey: "shop_type",
+                      fallbackText: "Shop Type",
+                    }}
+                    as={Select}
+                    name="shopType"
+                  >
+                    {shopTypeOptions.map((opt, i) => (
+                      <option value={opt.value} key={i}>
+                        <TranslationText translationObject={opt.name} />
+                      </option>
+                    ))}
+                  </FormikInput>
                   <Flex direction={"column"}>
                     <Text>{t("client_type", "Client Type")}</Text>
                     <Field as={Select} name="clientType">
@@ -365,5 +368,18 @@ const storeForOptions: TranslationTextType[] = [
   {
     translationKey: "babies",
     fallbackText: "Babies",
+  },
+];
+
+const shopTypeOptions: {
+  value: string;
+  name: TranslationTextType;
+}[] = [
+  {
+    value: "clothes",
+    name: {
+      fallbackText: "Clothes",
+      translationKey: "clothes",
+    },
   },
 ];

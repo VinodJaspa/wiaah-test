@@ -1,8 +1,8 @@
 import { IconType } from "react-icons";
-import { TranslationText } from "types";
+import { TranslationTextType } from "types";
 
 export type AccountSettingsPanel = {
-  panelName: TranslationText;
+  panelName: TranslationTextType;
   panelIcon: IconType;
   panelUrl: string;
   panelComponent: React.ReactElement;

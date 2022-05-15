@@ -1,4 +1,4 @@
-import { Box, Button, useTheme } from "@chakra-ui/react";
+import { Box, Button, Icon, useTheme } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { AiFillCheckCircle, AiOutlineInbox } from "react-icons/ai";
@@ -10,28 +10,25 @@ const PAY_PLAN = 1;
 export const SelectPackageStep: React.FC<SelectPackageStepProps> = () => {
   const { t } = useTranslation();
   let [plan, setPlan] = React.useState(FREE_PLAN);
-  const { __cssVars } = useTheme();
-
-  const primaryColor = __cssVars["--chakra-colors-primary-main"];
 
   return (
-    <div className="">
+    <div className="w-full flex flex-col gap-4">
       <h2 className="hidden text-xl font-bold lg:block">
         {t("Select_a_plan", "Select a plan")}
       </h2>
-      <div className="lg-centered-step flex flex-col justify-center lg:flex-row">
+      <div className="flex flex-col gap-4 justify-center lg:flex-row">
         <Box
-          borderColor={primaryColor}
+          borderColor={"primary.main"}
           onClick={() => {
             setPlan(0);
           }}
           className={`${
             plan == FREE_PLAN ? "border-8" : ""
-          } w-full cursor-pointer rounded-xl bg-slate-900 p-6 lg:mx-5 lg:w-4/12`}
+          } w-full cursor-pointer rounded-xl bg-slate-900 p-6 `}
         >
           <div className="flex items-center">
             <div className="green-text mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-xl">
-              <FiBox />
+              <Icon color="primary.main" as={FiBox} />
             </div>
             <div>
               <div className="text-lg text-white">
@@ -40,7 +37,7 @@ export const SelectPackageStep: React.FC<SelectPackageStepProps> = () => {
               <div className="text-gray-400">
                 <span>$</span>
                 <span className="mx-1 text-2xl text-white">0</span>
-                <span>/ {t("mounth", "mounth")}</span>
+                <span>/ {t("month", "month")}</span>
               </div>
             </div>
           </div>
@@ -56,17 +53,17 @@ export const SelectPackageStep: React.FC<SelectPackageStepProps> = () => {
             </span>
           </div>
           <div className="mt-9 mb-6">
-            <Button w="100%">{t("Choose_a_plan", "Choose a plan")}</Button>
+            <Button w="100%">{t("choose_a_plan", "Choose a plan")}</Button>
           </div>
         </Box>
         <Box
-          borderColor={primaryColor}
+          borderColor={"primary.main"}
           onClick={() => {
             setPlan(1);
           }}
           className={`${
             plan == PAY_PLAN ? "border-8" : ""
-          } mt-6 w-full cursor-pointer rounded-xl bg-slate-900 p-6 lg:mx-5 lg:mt-0 lg:w-4/12`}
+          } w-full cursor-pointer rounded-xl bg-slate-900 p-6 `}
         >
           <div className="flex items-center">
             <div className="green-text mr-4 flex h-12 w-12 items-center justify-center rounded-full bg-white text-xl">

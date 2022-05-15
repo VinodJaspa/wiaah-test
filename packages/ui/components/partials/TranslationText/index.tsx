@@ -1,7 +1,7 @@
 import { Text, TextProps } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { TranslationText as TranslationTextType } from "types";
+import { TranslationTextType } from "types";
 
 export interface TranslationTextProps extends TextProps {
   translationObject: TranslationTextType;

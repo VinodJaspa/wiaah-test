@@ -1,0 +1,388 @@
+import { Flex, Text } from "@chakra-ui/react";
+import { Form, Formik, FormikContextType } from "formik";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { FormOptionType, TranslationTextType } from "types";
+import { FormikRadio } from "../../../blocks";
+
+export interface NotificationsSettingsSectionProps {}
+
+export const NotificationsSettingsSection: React.FC<NotificationsSettingsSectionProps> =
+  ({}) => {
+    const { t } = useTranslation();
+    return (
+      <Flex w="100%" gap="2rem" direction={"column"}>
+        <Text fontSize={"xx-large"} fontWeight={"bold"}>
+          {t("notifications", "Notifications")}
+        </Text>
+        <Formik
+          initialValues={{
+            likes: "iFollow",
+          }}
+          onSubmit={() => {}}
+        >
+          {({ values, setFieldValue }) => {
+            return (
+              <Form className="w-full">
+                <Flex w="100%" direction={"column"} gap="2rem">
+                  {notificationsOptions.map(({ label, opts, name }, i) => (
+                    <FormikRadio
+                      defaultChecked
+                      w="100%"
+                      stackProps={{ w: "100%", align: "end" }}
+                      onChange={(v) => setFieldValue(name, v)}
+                      radioProps={{
+                        colorScheme: "primary",
+                        flexDirection: "row-reverse",
+                        gap: "0.5rem",
+                      }}
+                      containerProps={{ direction: "row" }}
+                      size={"sm"}
+                      defaultValue={values[name] || opts[0].value}
+                      name={name}
+                      label={label}
+                      options={opts}
+                    />
+                  ))}
+                </Flex>
+              </Form>
+            );
+          }}
+        </Formik>
+      </Flex>
+    );
+  };
+
+const fromPeopleIFollow: TranslationTextType = {
+  translationKey: "from_people_i_follow",
+  fallbackText: "From Peolple I Follow",
+};
+const fromPeopleIFollowValue = "iFollow";
+
+const Off: TranslationTextType = {
+  translationKey: "off",
+  fallbackText: "OFF",
+};
+const OffValue = "off";
+
+const On: TranslationTextType = {
+  translationKey: "on",
+  fallbackText: "On",
+};
+const OnValue = "on";
+
+const fromEveryone: TranslationTextType = {
+  translationKey: "from_everyone",
+  fallbackText: "From Everyone",
+};
+const fromEveryoneValue = "everyone";
+
+const everyone: TranslationTextType = {
+  translationKey: "everyone",
+  fallbackText: "Everyone",
+};
+const everyoneValue = "everyone";
+
+const peopleYouFollow: TranslationTextType = {
+  translationKey: "people_you_follow",
+  fallbackText: "People You Follow",
+};
+const peopleYouFollowValue = "youFollow";
+
+const noOne: TranslationTextType = {
+  translationKey: "no_one",
+  fallbackText: "No One",
+};
+const noOneValue = "noOne";
+
+const LikesNotificationsOpts: FormOptionType[] = [
+  {
+    name: Off,
+    value: OffValue,
+  },
+  {
+    name: fromPeopleIFollow,
+    value: fromPeopleIFollowValue,
+  },
+  {
+    name: fromEveryone,
+    value: fromEveryoneValue,
+  },
+];
+
+const CommentsNotificationsOpts: FormOptionType[] = [
+  {
+    name: Off,
+    value: OffValue,
+  },
+  {
+    name: fromPeopleIFollow,
+    value: fromPeopleIFollowValue,
+  },
+  {
+    name: fromEveryone,
+    value: fromEveryoneValue,
+  },
+];
+
+const CommentLikesNotificationOpts: FormOptionType[] = [
+  {
+    name: Off,
+    value: OffValue,
+  },
+  {
+    name: fromPeopleIFollow,
+    value: fromPeopleIFollowValue,
+  },
+];
+
+const LikesAndCommentsOnPhotosOfYouNotificationOpts: FormOptionType[] = [
+  {
+    name: Off,
+    value: OffValue,
+  },
+  {
+    name: fromPeopleIFollow,
+    value: fromPeopleIFollowValue,
+  },
+  {
+    name: fromEveryone,
+    value: fromEveryoneValue,
+  },
+];
+
+const allowMentionsFromOpts: FormOptionType[] = [
+  {
+    name: everyone,
+    value: everyoneValue,
+  },
+  {
+    name: peopleYouFollow,
+    value: peopleYouFollowValue,
+  },
+  {
+    name: noOne,
+    value: noOneValue,
+  },
+];
+const allowTagsFrom: FormOptionType[] = [
+  {
+    name: everyone,
+    value: everyoneValue,
+  },
+  {
+    name: peopleYouFollow,
+    value: peopleYouFollowValue,
+  },
+  {
+    name: noOne,
+    value: noOneValue,
+  },
+];
+
+const firstPostsAndStoriesOpts: FormOptionType[] = [
+  {
+    name: Off,
+    value: OffValue,
+  },
+  {
+    name: fromPeopleIFollow,
+    value: fromPeopleIFollowValue,
+  },
+  {
+    name: fromEveryone,
+    value: fromEveryoneValue,
+  },
+];
+
+const videoViewCountsOpts: FormOptionType[] = [
+  {
+    name: Off,
+    value: OffValue,
+  },
+  {
+    name: fromEveryone,
+    value: fromEveryoneValue,
+  },
+];
+const supportRequestsOpts: FormOptionType[] = [
+  {
+    name: Off,
+    value: OffValue,
+  },
+  {
+    name: On,
+    value: OnValue,
+  },
+];
+
+const liveVideosOpts: FormOptionType[] = [
+  {
+    name: Off,
+    value: OffValue,
+  },
+  {
+    name: On,
+    value: OnValue,
+  },
+];
+
+const acceptedFollowRequests: FormOptionType[] = [
+  {
+    name: Off,
+    value: OffValue,
+  },
+  {
+    name: fromEveryone,
+    value: fromEveryoneValue,
+  },
+];
+const instagramDirectRequests: FormOptionType[] = [
+  {
+    name: Off,
+    value: OffValue,
+  },
+  {
+    name: fromEveryone,
+    value: fromEveryoneValue,
+  },
+];
+const instagramDirect: FormOptionType[] = [
+  {
+    name: Off,
+    value: OffValue,
+  },
+  {
+    name: fromEveryone,
+    value: fromEveryoneValue,
+  },
+];
+const RemindersOpts: FormOptionType[] = [
+  {
+    name: Off,
+    value: OffValue,
+  },
+  {
+    name: fromEveryone,
+    value: fromEveryoneValue,
+  },
+];
+
+const notificationsOptions: {
+  label: TranslationTextType;
+  opts: FormOptionType[];
+  name: string;
+}[] = [
+  {
+    name: "likesNotifications",
+    label: {
+      translationKey: "likes",
+      fallbackText: "Likes",
+    },
+    opts: LikesNotificationsOpts,
+  },
+  {
+    name: "comments",
+    label: {
+      translationKey: "comments",
+      fallbackText: "Comments",
+    },
+    opts: CommentsNotificationsOpts,
+  },
+  {
+    name: "commentsLikesNotifiactions",
+    label: {
+      translationKey: "comment_likes",
+      fallbackText: "Comment Likes",
+    },
+    opts: CommentLikesNotificationOpts,
+  },
+  {
+    name: "LikesAndCommentsOnPhotosOfYou",
+    label: {
+      translationKey: "likes_and_comments_on_photos_of_you",
+      fallbackText: "Likes and Comments on Photos of You",
+    },
+    opts: LikesAndCommentsOnPhotosOfYouNotificationOpts,
+  },
+  {
+    name: "allowMentionsFrom",
+    label: {
+      translationKey: "allow_@mentions_from",
+      fallbackText: "Allow @Mentions From",
+    },
+    opts: allowMentionsFromOpts,
+  },
+  {
+    name: "allowTagsFrom",
+    label: {
+      translationKey: "allow_tags_from",
+      fallbackText: "Allow Tags From",
+    },
+    opts: allowTagsFrom,
+  },
+  {
+    name: "firstPostsAndStories",
+    label: {
+      translationKey: "first_posts_and_stories",
+      fallbackText: "First Posts and Stories",
+    },
+    opts: firstPostsAndStoriesOpts,
+  },
+  {
+    name: "videoViewCounts",
+    label: {
+      translationKey: "video_view_counts",
+      fallbackText: "Video View Counts",
+    },
+    opts: videoViewCountsOpts,
+  },
+  {
+    name: "supportRequests",
+    label: {
+      translationKey: "support_requests",
+      fallbackText: "Support Requests",
+    },
+    opts: supportRequestsOpts,
+  },
+  {
+    name: "acceptedFollowRequests",
+    label: {
+      translationKey: "accepted_follow_requests",
+      fallbackText: "Accepted Follow Requests",
+    },
+    opts: acceptedFollowRequests,
+  },
+  {
+    name: "instagramDirectRequests",
+    label: {
+      translationKey: "instagram_direct_requests",
+      fallbackText: "Instagram Direct Requests",
+    },
+    opts: instagramDirectRequests,
+  },
+  {
+    name: "instagramDirect",
+    label: {
+      translationKey: "instagram_direct",
+      fallbackText: "Instagram Direct",
+    },
+    opts: instagramDirect,
+  },
+  {
+    name: "reminders",
+    label: {
+      translationKey: "reminders",
+      fallbackText: "Reminders",
+    },
+    opts: RemindersOpts,
+  },
+  {
+    name: "liveVideos",
+    label: {
+      translationKey: "live_videos",
+      fallbackText: "Live Videos",
+    },
+    opts: liveVideosOpts,
+  },
+];

@@ -41,7 +41,7 @@ const accountSettings: NextPage<AccountSettingsPageProps> = ({}) => {
       <Head>
         <title>{t("account_settings", "Account Settings")}</title>
       </Head>
-      <SellerLayout header={null}>
+      <SellerLayout noContainer header={null}>
         <AccountSettingsView />
       </SellerLayout>
     </>

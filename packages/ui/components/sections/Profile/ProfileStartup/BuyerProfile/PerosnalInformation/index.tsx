@@ -4,7 +4,8 @@ import { Input, DatePicker, Select as AntSelect } from "antd";
 import Select from "react-select";
 import { City, Country, State } from "country-state-city";
 import { FormikInput } from "ui";
-import { Field, Formik, Form, useFormik } from "formik";
+import { Field, Formik, Form } from "formik";
+import { TranslationText } from "ui";
 
 export interface PersonalInformationStepProps {
   isValid?: (data: null | Record<string, any>) => any;
@@ -148,6 +149,44 @@ export const PersonalInformationStep: React.FC<PersonalInformationStepProps> =
                       }}
                       placeholder={t("City", "City")}
                     />
+                    <AntSelect
+                      placeholder={t("select_currency", "Select Currency")}
+                      className="mb-4 w-full border-gray-300"
+                      size="large"
+                    >
+                      <Option value="male">USD</Option>
+                      <Option value="femal">EUR</Option>
+                    </AntSelect>
+                    <AntSelect
+                      placeholder={t("select_language", "Select Language")}
+                      className="mb-4 w-full border-gray-300"
+                      size="large"
+                    >
+                      <Option value="english">
+                        <TranslationText
+                          translationObject={{
+                            translationKey: "english",
+                            fallbackText: "English",
+                          }}
+                        />
+                      </Option>
+                      <Option value="french">
+                        <TranslationText
+                          translationObject={{
+                            translationKey: "french",
+                            fallbackText: "French",
+                          }}
+                        />
+                      </Option>
+                      <Option value="germen">
+                        <TranslationText
+                          translationObject={{
+                            translationKey: "germen",
+                            fallbackText: "Germen",
+                          }}
+                        />
+                      </Option>
+                    </AntSelect>
                     <FormikInput
                       as={Input}
                       name="height"

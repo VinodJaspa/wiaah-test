@@ -7,7 +7,7 @@ import translationFR from "./i18n/fr.json";
 import translationDE from "./i18n/de.json";
 import translationES from "./i18n/es.json";
 
-let defaultLanguage = Language.FR;
+let defaultLanguage = Language.EN;
 
 // the translations
 const resources = {

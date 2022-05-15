@@ -1,23 +1,22 @@
 import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { Login } from "ui/views";
-import MasterLayout from "../components/MasterLayout";
-import LoignTypes from "../lib/LoignTypes";
+import { BuyerProfileStartUpView } from "ui/views";
+import { Container } from "ui";
 
-const BuyerSignup: NextPage = () => {
+const SignUpFinalisation: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Wiaah | Buyer SignUp</title>
+        <title>Wiaah | Buyer Signup Finalisation</title>
       </Head>
-      <MasterLayout>
-        <main className="block w-full grow">
-          <Login loginType={LoignTypes.buyer_signup} />
-        </main>
-      </MasterLayout>
+      <main className="block w-full grow">
+        <Container>
+          <BuyerProfileStartUpView />
+        </Container>
+      </main>
     </>
   );
 };
 
-export default BuyerSignup;
+export default SignUpFinalisation;
