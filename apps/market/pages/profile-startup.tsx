@@ -1,7 +1,7 @@
 import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { SellerProfileStartupView } from "ui/views";
+import { SellerProfileStartupView, Container } from "ui";
 
 const SignUpFinalisation: NextPage = () => {
   return (
@@ -10,7 +10,9 @@ const SignUpFinalisation: NextPage = () => {
         <title>Wiaah | Signup Finalisation</title>
       </Head>
       <main className="block w-full grow">
-        <SellerProfileStartupView />
+        <Container>
+          <SellerProfileStartupView />
+        </Container>
       </main>
     </>
   );

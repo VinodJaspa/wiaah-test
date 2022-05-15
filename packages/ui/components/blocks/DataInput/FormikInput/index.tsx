@@ -5,7 +5,7 @@ import { TranslationTextType } from "types";
 import { TranslationText } from "ui";
 
 export interface FormikInputProps extends InputProps {
-  label: TranslationTextType;
+  label?: TranslationTextType;
   name: string;
 }
 
@@ -17,7 +17,7 @@ export const FormikInput: React.FC<FormikInputProps> = ({
   return (
     <>
       <Flex direction={"column"}>
-        <TranslationText translationObject={label} />
+        {label && <TranslationText translationObject={label} />}
         <Field {...props} as={Input} name={name} />
         <ErrorMessage name={name} />
       </Flex>
