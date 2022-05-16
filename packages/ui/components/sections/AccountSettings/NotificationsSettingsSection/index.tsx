@@ -354,18 +354,18 @@ const notificationsOptions: {
     opts: acceptedFollowRequests,
   },
   {
-    name: "instagramDirectRequests",
+    name: "wiaahDirectRequests",
     label: {
-      translationKey: "instagram_direct_requests",
-      fallbackText: "Instagram Direct Requests",
+      translationKey: "wiaah_direct_requests",
+      fallbackText: "Wiaah Direct Requests",
     },
     opts: instagramDirectRequests,
   },
   {
-    name: "instagramDirect",
+    name: "wiaahDirect",
     label: {
-      translationKey: "instagram_direct",
-      fallbackText: "Instagram Direct",
+      translationKey: "wiaah_direct",
+      fallbackText: "Wiaah Direct",
     },
     opts: instagramDirect,
   },

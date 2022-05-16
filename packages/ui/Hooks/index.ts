@@ -21,3 +21,4 @@ export * from "./Chat";
 export * from "./Social";
 export * from "./ApiHooks";
 export * from "./Modals";
+export * from "./Settings";

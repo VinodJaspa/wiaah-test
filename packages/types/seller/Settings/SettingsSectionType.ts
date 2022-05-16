@@ -1,7 +1,7 @@
 import { IconType } from "react-icons";
 import { TranslationTextType } from "types";
 
-export type AccountSettingsPanel = {
+export type SettingsSectionType = {
   panelName: TranslationTextType;
   panelIcon: IconType;
   panelUrl: string;

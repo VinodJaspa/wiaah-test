@@ -7,8 +7,8 @@ import { FiSettings } from "react-icons/fi";
 import { IoNotificationsOutline, IoNewspaperOutline } from "react-icons/io5";
 import { HiUserGroup } from "react-icons/hi";
 import { MdCardMembership } from "react-icons/md";
-import { BiLock } from "react-icons/all";
-import { AccountSettingsPanel } from "types";
+import { BiLock } from "react-icons/bi";
+import { SettingsSectionType } from "types";
 import {
   AccountSettingsSection,
   BlocklistSection,
@@ -17,11 +17,12 @@ import {
   NewsLetterSection,
   NotificationsSettingsSection,
   PasswordSection,
+  PrivacySection,
+  useResponsive,
+  SettingsSectionsSidebar,
 } from "ui";
-import { AccountSettingsLeftPanel } from "./AccountSettingsLeftPanel";
-import { AccountSettingsRightPanel } from "./AccountSettingsRightPanel";
 
-const settings: AccountSettingsPanel[] = [
+const settings: SettingsSectionType[] = [
   {
     panelName: {
       fallbackText: "Account",
@@ -89,14 +90,24 @@ const settings: AccountSettingsPanel[] = [
     panelUrl: "/blocklist",
     panelComponent: <BlocklistSection />,
   },
+  {
+    panelName: {
+      translationKey: "privacy",
+      fallbackText: "Privacy",
+    },
+    panelIcon: BiLock,
+    panelUrl: "/privacy",
+    panelComponent: <PrivacySection />,
+  },
 ];
-const minGap = 48;
 
 export const AccountSettingsView: React.FC = () => {
   const baseRoute = "settings";
   const { t } = useTranslation();
   const router = useRouter();
+  const { isTablet } = useResponsive();
   const { section } = router.query;
+  const minGap = isTablet ? 0 : 48;
 
   const leftPanelRef = React.useRef<HTMLDivElement>(null);
 
@@ -119,41 +130,40 @@ export const AccountSettingsView: React.FC = () => {
   };
 
   return (
-    <Flex w="100%" justify={"end"} gap="2rem">
-      <Flex
-        position={"fixed"}
-        w={{ base: "100%", sm: "10rem", md: "15rem", lg: "20rem" }}
-        left="5rem"
-        direction={"column"}
-        gap="1rem"
-        ref={leftPanelRef}
-      >
-        <Text px="1rem" fontSize={"xl"} fontWeight="bold">
-          {t("settings", "Settings")}
-        </Text>
-        {settings[sectionIdx] && (
-          <AccountSettingsLeftPanel
-            currentActive={settings[sectionIdx].panelUrl}
-            onPanelClick={(url) =>
-              router.replace(`/${baseRoute}${url}`, null, {
-                shallow: true,
-              })
-            }
-            panelsInfo={settings}
-            innerProps={{
-              w: "100%",
-            }}
-          />
+    <Flex h="100%" w="100%" justify={"end"} gap="2rem">
+      <div className="fixed left-[5rem]" ref={leftPanelRef}>
+        {!isTablet && (
+          <Flex
+            w={{ base: "100%", sm: "10rem", md: "15rem", lg: "20rem" }}
+            direction={"column"}
+            gap="1rem"
+          >
+            <Text px="1rem" fontSize={"xl"} fontWeight="bold">
+              {t("settings", "Settings")}
+            </Text>
+            {settings[sectionIdx] && (
+              <SettingsSectionsSidebar
+                currentActive={settings[sectionIdx].panelUrl}
+                onPanelClick={(url) =>
+                  router.replace(`/${baseRoute}${url}`, null, {
+                    shallow: true,
+                  })
+                }
+                panelsInfo={settings}
+                innerProps={{
+                  w: "100%",
+                }}
+              />
+            )}
+          </Flex>
         )}
-      </Flex>
+      </div>
       <Flex
-        // justifySelf={"center"}
         w={`calc(100% - ${leftPanelwidth + minGap}px)`}
         pr={`${minGap}px`}
+        h="full"
       >
-        <AccountSettingsRightPanel>
-          {CurrentSection()}
-        </AccountSettingsRightPanel>
+        <>{CurrentSection()}</>
       </Flex>
     </Flex>
   );

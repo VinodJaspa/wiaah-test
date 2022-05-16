@@ -17,3 +17,4 @@ export * from "./PopupMenus";
 export * from "./HashtagSearchItem";
 export * from "./DiscoverSearchItem";
 export * from "./Search";
+export * from "./ProductDetailsTable";

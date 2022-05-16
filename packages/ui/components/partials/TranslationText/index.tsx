@@ -1,9 +1,14 @@
 import { Text, TextProps } from "@chakra-ui/react";
-import React from "react";
+import React, { HtmlHTMLAttributes } from "react";
+import { DetailedHTMLProps } from "react";
 import { useTranslation } from "react-i18next";
 import { TranslationTextType } from "types";
 
-export interface TranslationTextProps extends TextProps {
+export interface TranslationTextProps
+  extends DetailedHTMLProps<
+    HtmlHTMLAttributes<HTMLParagraphElement>,
+    HTMLParagraphElement
+  > {
   translationObject: TranslationTextType;
 }
 
@@ -12,5 +17,9 @@ export const TranslationText: React.FC<TranslationTextProps> = ({
   ...props
 }) => {
   const { t } = useTranslation();
-  return <Text {...props}>{t(translationKey, fallbackText)}</Text>;
+  return (
+    <p {...props} className={`${props.className}`}>
+      {t(translationKey, fallbackText)}
+    </p>
+  );
 };

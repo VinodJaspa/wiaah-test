@@ -14,7 +14,7 @@ module.exports = {
         "custum-aspect": "5 / 4",
       },
       colors: {
-        PrimaryGreen: "#57bf9c",
+        primary: "#57bf9c",
       },
     },
   },

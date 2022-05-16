@@ -62,7 +62,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
             <Form>
               <Flex w="100%" direction={"column"} gap="1rem">
                 {/* first and last name */}
-                <SimpleGrid columns={2} gap="2rem" w="100%">
+                <SimpleGrid columns={{ base: 1, sm: 2 }} gap="2rem" w="100%">
                   <FormikInput
                     label={{
                       fallbackText: "First name",
@@ -162,7 +162,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                     )}
                   </Text>
                 </Flex>
-                <SimpleGrid columns={2} gap="2rem">
+                <SimpleGrid columns={{ base: 1, sm: 2 }} gap="2rem">
                   <Flex direction={"column"}>
                     <Text>{t("email_address", "Email address")}</Text>
                     <Field as={Input} name="email" />

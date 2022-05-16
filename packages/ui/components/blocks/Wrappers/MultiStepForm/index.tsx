@@ -3,10 +3,7 @@ import { Progress } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Container } from "ui";
-export interface MultiStepFormStepType {
-  stepName: string;
-  stepComponent: React.FC<any>;
-}
+import { StepperStepType } from "types";
 
 export type MultiStepFromHandle = {
   handleNextStep: () => any;
@@ -19,7 +16,7 @@ export type MultiStepFromHandle = {
 export type FormStepIsValidData = null | Record<string, any>;
 
 export interface MultiStepFromProps {
-  steps: MultiStepFormStepType[];
+  steps: StepperStepType[];
 }
 
 const Formcomponent: React.ForwardRefRenderFunction<
@@ -47,7 +44,6 @@ const Formcomponent: React.ForwardRefRenderFunction<
   const CanNext = stepsData[formStep] !== null;
 
   function handleNextStep() {
-    console.log("next", formStep, stepsData);
     if (CanNext) {
       setFormStep((step) => {
         if (step < steps.length - 1) {
@@ -115,18 +111,17 @@ const Formcomponent: React.ForwardRefRenderFunction<
           <div className="hidden items-stretch justify-start bg-gray-200 lg:flex">
             {steps.map((item, key) => {
               return (
-                <Box
-                  bgColor={formStep === key ? "primary.main" : "unset"}
+                <div
                   key={key}
                   className={`${
-                    formStep == key ? "text-white" : ""
+                    formStep == key ? "bg-primary text-white" : ""
                   } flex w-4/12 flex-col justify-center px-6 py-4`}
                 >
                   <div className="text-lg font-bold">
                     {t("Step", "Step")} {key + 1}
                   </div>
                   <div>{item.stepName}</div>
-                </Box>
+                </div>
               );
             })}
           </div>

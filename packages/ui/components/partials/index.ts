@@ -31,5 +31,5 @@ export * from "./DisplayPostedSince";
 export * from "./Avatar";
 export * from "./ProgressBars";
 export * from "./TranslationText";
-
+export * from "./PushSwitch";
 export * from "./icons";
