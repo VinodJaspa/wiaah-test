@@ -7,11 +7,13 @@ import {
   InputProps,
   InputGroup,
   InputLeftElement,
+  InputRightElement,
 } from "@chakra-ui/react";
 export interface SearchInputProps extends InputProps {
   value: string;
   icon?: () => JSX.Element | undefined;
   initialValue?: string;
+  rightElement?: JSX.Element;
   components?: Component[];
   onSelection?: (value: string) => void;
 }
@@ -26,6 +28,7 @@ export const SearchFilterInput: React.FC<SearchInputProps> = ({
   components = [],
   onSelection,
   value,
+  rightElement,
   ...props
 }) => {
   // const [value, setValue] = React.useState<string>(initialValue || "");
@@ -56,21 +59,18 @@ export const SearchFilterInput: React.FC<SearchInputProps> = ({
     }
     setDropdownOpen(false);
   }
+  const iconRes = icon ? icon() : undefined;
 
   return (
-    // <div
-    //   ref={containerRef}
-    //   style={ContainerStyles}
-    //   className={`relative flex w-fit items-center gap-2`}
-    // >
     <InputGroup ref={containerRef} position={"relative"}>
-      {icon && (
+      {iconRes && (
         <InputLeftElement>
           <label className={`px-2 text-lg text-gray-400`} htmlFor={props.id}>
-            {icon()}
+            {iconRes}
           </label>
         </InputLeftElement>
       )}
+      {rightElement && <InputRightElement>{rightElement}</InputRightElement>}
       {/* @ts-ignore */}
       <Input
         style={inputStyles}
@@ -92,6 +92,5 @@ export const SearchFilterInput: React.FC<SearchInputProps> = ({
         </div>
       )}
     </InputGroup>
-    // </div>
   );
 };

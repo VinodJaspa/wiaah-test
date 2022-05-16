@@ -52,7 +52,7 @@ const theme = extendTheme({
     ".thinScroll::-webkit-scrollbar-thumb:hover": {
       background: "#888",
     },
-    ".no-scrollBar::-webkit-scrollbar": {
+    ".noScroll::-webkit-scrollbar": {
       display: "none",
       width: "0px",
       height: "0px",

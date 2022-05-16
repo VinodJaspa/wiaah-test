@@ -38,7 +38,11 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
       fontSize={"xx-large"}
       direction={isMobile ? "row" : "column"}
       overflowY={"scroll"}
-      className={"thinScroll"}
+      // className={`thinScroll z-20 py-4 gap-4 border-t-gray-300 border-t-[1px] fixed overflow-y-scroll items-center bg-white text-4xl ${
+      //   isMobile
+      //     ? "bottom-0 left-0 flex-row w-full"
+      //     : "w-auto top-0 left-4 flex-col"
+      // }`}
       position={"fixed"}
       borderTopWidth="1px"
       borderTopColor={"gray.300"}

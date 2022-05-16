@@ -143,6 +143,7 @@ export interface SellerLayoutProps {
   header?: HeadersTypes;
   sideBar?: boolean;
   containerProps?: BoxProps;
+  noContainer?: boolean;
 }
 
 export const SellerLayout: React.FC<SellerLayoutProps> = ({
@@ -150,6 +151,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   header = "main",
   containerProps,
   sideBar = true,
+  noContainer = false,
 }) => {
   const { t } = useTranslation();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
@@ -171,14 +173,15 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
         onLinkClick={handleLinkClick}
         links={NavigationLinks}
       >
-        <Text
-          textTransform={"capitalize"}
-          px="2rem"
-          py="1rem"
-          fontWeight={"bold"}
+        <p
+          className="capitalize px-8 py-4 font-bold"
+          // textTransform={"capitalize"}
+          // px="2rem"
+          // py="1rem"
+          // fontWeight={"bold"}
         >
           {t("discover_your_town", "discover your town")}
-        </Text>
+        </p>
 
         <Flex direction={"column"} gap="1rem">
           {placesPlaceholder.map((place, i) => (
@@ -215,6 +218,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
         </SellerNavigationSideBar>
       )}
       <Container
+        noContainer={noContainer}
         className={`${
           isMobile ? "px-4" : sideBar ? "pl-20 pr-4" : "px-8"
         } h-full`}

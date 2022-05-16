@@ -14,3 +14,4 @@ export * from "./Checkout";
 export * from "./SocialProfile";
 export * from "./MyProfile";
 export * from "./AccountSettings";
+export * from "./ShopManagement";

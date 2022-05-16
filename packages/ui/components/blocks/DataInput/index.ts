@@ -5,3 +5,4 @@ export * from "./ChatSearchInput";
 export * from "./ChatRoomInput";
 export * from "./FileInput";
 export * from "./FormikInput";
+export * from "./FormikRadio";
