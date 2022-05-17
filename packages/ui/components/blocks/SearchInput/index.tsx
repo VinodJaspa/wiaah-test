@@ -1,15 +1,13 @@
-import React, { Children, DetailedHTMLProps, InputHTMLAttributes } from "react";
-import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
+import React from "react";
 import { useOutsideClick } from "ui/Hooks";
-import { CSSValueUnitToString } from "ui/components/helpers";
 import {
-  Input,
-  InputProps,
   InputGroup,
   InputLeftElement,
   InputRightElement,
 } from "@chakra-ui/react";
-export interface SearchInputProps extends InputProps {
+import { Input } from "ui";
+import { HtmlInputProps } from "types";
+export interface SearchFilterInputProps extends HtmlInputProps {
   value: string;
   icon?: () => JSX.Element | undefined;
   initialValue?: string;
@@ -22,7 +20,7 @@ interface Component {
   value?: string;
   comp: React.ReactElement;
 }
-export const SearchFilterInput: React.FC<SearchInputProps> = ({
+export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
   icon,
   initialValue,
   components = [],
@@ -53,6 +51,7 @@ export const SearchFilterInput: React.FC<SearchInputProps> = ({
     }
   }, [value]);
   function handleSelect(index: number) {
+    console.log("select");
     const item = Components[index];
     if (onSelection && item.value) {
       onSelection(item.value);

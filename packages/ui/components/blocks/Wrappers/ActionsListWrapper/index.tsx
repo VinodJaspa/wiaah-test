@@ -7,13 +7,13 @@ import {
   ActionViewModal,
 } from "ui";
 
-export interface PostCardsListWrapperProps {
+export interface ActionsListWrapperProps {
   actions: SocialActionData[];
   cols?: number;
   onActionClick?: (actionId: string) => any;
 }
 
-export const ActionsListWrapper: React.FC<PostCardsListWrapperProps> = ({
+export const ActionsListWrapper: React.FC<ActionsListWrapperProps> = ({
   actions,
   cols = 1,
   onActionClick,

@@ -1,18 +1,8 @@
-import {
-  Box,
-  IconButton,
-  VStack,
-  Text,
-  FlexProps,
-  Flex,
-  Divider,
-  Icon,
-} from "@chakra-ui/react";
 import React from "react";
 import { NavigationLinkType } from "types/sharedTypes/misc/SellerNavigationLink";
-import { useResponsive } from "ui";
+import { useResponsive, Divider } from "ui";
 
-export interface SellerSideBarProps extends FlexProps {
+export interface SellerSideBarProps extends HTMLDivElement {
   links: NavigationLinkType[];
   onLinkClick?: (link: NavigationLinkType) => any;
   activeLink?: string;
@@ -25,6 +15,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
   activeLink,
   headerElement,
   children,
+  className,
   ...props
 }) => {
   function handleLinkClick(link: NavigationLinkType) {
@@ -32,84 +23,57 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
   }
   const { isMobile } = useResponsive();
   return (
-    <Flex
-      align={"center"}
-      bg="white"
-      fontSize={"xx-large"}
-      direction={isMobile ? "row" : "column"}
-      overflowY={"scroll"}
-      // className={`thinScroll z-20 py-4 gap-4 border-t-gray-300 border-t-[1px] fixed overflow-y-scroll items-center bg-white text-4xl ${
-      //   isMobile
-      //     ? "bottom-0 left-0 flex-row w-full"
-      //     : "w-auto top-0 left-4 flex-col"
-      // }`}
-      position={"fixed"}
-      borderTopWidth="1px"
-      borderTopColor={"gray.300"}
-      py="1rem"
-      gap={"1rem"}
-      left={isMobile ? "0rem" : "1rem"}
-      top={!isMobile ? "0rem" : "unset"}
-      bottom={isMobile ? "0rem" : "unset"}
-      w={isMobile ? "100%" : "auto"}
-      zIndex={20}
+    <div
+      className={`${className} thinScroll overflow-y-scroll flex z-20 py-4 gap-4 border-t-gray-300 fixed border-t-[1px] ${
+        isMobile ? "flex-row left-0 bottom-0 w-full" : "flex-col left-4 top-0"
+      } items-center flex bg-white text-4xl`}
       {...props}
     >
-      <Flex
-        w={isMobile ? "100%" : "auto"}
-        align={"center"}
-        justify={isMobile ? "space-around" : "unset"}
-        direction={isMobile ? "row" : "column"}
-        gap={isMobile ? "0.5rem" : "1rem"}
-        bg="white"
-        fontSize={isMobile ? "x-large" : "xx-large"}
-        h="100%"
-        flexWrap={"wrap"}
+      <div
+        className={`w-full flex h-full flex-wrap bg-white items-center ${
+          isMobile
+            ? "justify-around flex-row gap-2 text-3xl"
+            : "flex-col gap-4 text-4xl"
+        } `}
       >
         {!isMobile && headerElement && (
-          <Box role="NavigationSideBarHeaderContainer">{headerElement}</Box>
+          <div data-testid="NavigationSideBarHeaderContainer">
+            {headerElement}
+          </div>
         )}
         {links.map((link, i) => (
-          <VStack
-            role="NavigationSideBarLink"
+          <div
+            className="flex flex-col items-center cursor-pointer"
+            data-testid="NavigationSideBarLink"
             onClick={() => handleLinkClick && handleLinkClick(link)}
             key={i}
-            spacing={"0rem"}
           >
-            <IconButton
-              fontSize={"xx-large"}
-              colorScheme="gray"
-              color="black"
-              bgColor="white"
-              py="0.5rem"
+            <div
+              className="text-4xl text-black bg-white py-2"
               aria-label={link.name}
               key={i}
-              icon={
-                <Icon
-                  {...link.size}
-                  as={activeLink === link.url ? link.activeIcon : link.icon}
-                />
-              }
-            />
+            >
+              <span className={`text-[${link.size}]`} {...link.size}>
+                {activeLink === link.url ? link.activeIcon({}) : link.icon({})}
+              </span>
+            </div>
             {!isMobile && (
-              <Text
-                textTransform={"capitalize"}
-                fontWeight={"bold"}
-                fontSize="xs"
-                role="NavigationSideBarLinkLabel"
+              <p
+                className="capitalize font-bold text-sm"
+                data-testid="NavigationSideBarLinkLabel"
               >
                 {link.name}
-              </Text>
+              </p>
             )}
-          </VStack>
+          </div>
         ))}
-      </Flex>
+      </div>
       {!isMobile && (
         <>
-          <Divider opacity="1" />
-          <Box role="NavigationSideBarChildContainer">{children}</Box>
+          <Divider />
+          <div data-testid="NavigationSideBarChildContainer">{children}</div>
         </>
       )}
-    </Flex>
+    </div>
   );
 };

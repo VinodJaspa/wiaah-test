@@ -7,3 +7,5 @@ export * from "./UploadTypes";
 export * from "./formOptions";
 export * from "./priceType";
 export * from "./StepperTypes";
+export * from "./HtmlElementsProps";
+export * from "./category";

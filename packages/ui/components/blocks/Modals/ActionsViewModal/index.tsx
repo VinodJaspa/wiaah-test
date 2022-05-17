@@ -30,11 +30,11 @@ export interface ActionsViewPopupProps {
   fetcher: (queryFn: any) => Promise<any>;
 }
 
-export const goNextPost = async ({ currentId }: { currentId: string }) => {
+const goNextPost = async ({ currentId }: { currentId: string }) => {
   return { id: String(Number(currentId) + 1) };
 };
 
-export const goPrevPost = async ({ currentId }: { currentId: string }) => {
+const goPrevPost = async ({ currentId }: { currentId: string }) => {
   return { id: String(Number(currentId) - 1) };
 };
 

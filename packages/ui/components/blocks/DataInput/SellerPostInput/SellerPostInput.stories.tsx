@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { SellerPostInput } from ".";
+import { SellerPostInput } from "./index";
 import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
 export default {
   title: "UI/blocks/Data Input/SellerPostInput",

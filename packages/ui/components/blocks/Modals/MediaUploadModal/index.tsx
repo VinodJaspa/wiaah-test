@@ -1,19 +1,14 @@
 import {
-  Center,
-  Flex,
-  Icon,
-  Input,
   Modal,
   ModalBody,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Text,
 } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiCamera, HiFolderAdd, HiVideoCamera } from "react-icons/hi";
-import { useFileUploadModal, PostsViewModalsHeader } from "ui";
+import { useFileUploadModal, PostsViewModalsHeader, Input } from "ui";
 import { TakePictureModal, RecordVideoModal } from "ui";
 import { getFileSrcData, FileRes } from "ui/components/helpers";
 
@@ -94,21 +89,17 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
       <ModalContent>
         <ModalHeader>
           <PostsViewModalsHeader onBackClick={cancelUpload}>
-            <Text>
+            <p>
               {uploadImg
                 ? t("upload_a_picture", "Upload a Picture")
                 : uploadVid
                 ? t("upload_a_video", "Upload a Video")
                 : null}
-            </Text>
+            </p>
           </PostsViewModalsHeader>
         </ModalHeader>
         <ModalBody pb="2rem">
-          <Flex
-            gap="2rem"
-            justify={"center"}
-            flexDirection={{ base: "column", sm: "row" }}
-          >
+          <div className="gap-8 justify-center flex flex-col sm:flex-row">
             {uploadImg ? (
               <>
                 <TakePictureModal
@@ -120,23 +111,11 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
                   }}
                 />
                 <label htmlFor="AddImageInput">
-                  <Center
-                    cursor={"pointer"}
-                    h="8rem"
-                    w="8rem"
-                    rounded={"xl"}
-                    borderWidth={"2px"}
-                    borderColor="primary.main"
-                  >
-                    <Icon
-                      color="primary.main"
-                      fontSize={"xx-large"}
-                      cursor="pointer"
-                      as={HiFolderAdd}
-                    />
-                  </Center>
+                  <div className="cursor-pointer flex justify-center items-center h-32 w-32 rounded-xl border-2 border-primary">
+                    <HiFolderAdd className="text-4xl cursor-pointer text-primary" />
+                  </div>
                   <Input
-                    display={"none"}
+                    className="hidden"
                     id="AddImageInput"
                     type={"file"}
                     multiple={multiple}
@@ -145,22 +124,12 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
                   />
                 </label>
                 <label htmlFor="TakePicture">
-                  <Center
+                  <div
+                    className="h-32 w-32 rounded-xl border-2 cursor-pointer flex justify-center items-center border-primary"
                     onClick={() => setTakePicture(true)}
-                    h="8rem"
-                    w="8rem"
-                    rounded={"xl"}
-                    borderWidth={"2px"}
-                    cursor="pointer"
-                    borderColor="primary.main"
                   >
-                    <Icon
-                      color="primary.main"
-                      fontSize={"xx-large"}
-                      cursor="pointer"
-                      as={HiCamera}
-                    />
-                  </Center>
+                    <HiCamera className="text-primary text-4xl cursor-pointer" />
+                  </div>
                 </label>
               </>
             ) : uploadVid ? (
@@ -174,23 +143,14 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
                   onClose={() => setRecordVideo(false)}
                 />
                 <label htmlFor="AddVideoInput">
-                  <Center
-                    cursor={"pointer"}
-                    h="8rem"
-                    w="8rem"
-                    rounded={"xl"}
-                    borderWidth={"2px"}
-                    borderColor="primary.main"
+                  <div
+                    className="h-32 w-32 rounded-xl border-2 cursor-pointer flex justify-center items-center border-primary"
+                    onClick={() => setTakePicture(true)}
                   >
-                    <Icon
-                      color="primary.main"
-                      fontSize={"xx-large"}
-                      cursor="pointer"
-                      as={HiFolderAdd}
-                    />
-                  </Center>
+                    <HiFolderAdd className="text-primary text-4xl cursor-pointer" />
+                  </div>
                   <Input
-                    display={"none"}
+                    className="hidden"
                     id="AddVideoInput"
                     type={"file"}
                     multiple={multiple}
@@ -200,26 +160,16 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
                   />
                 </label>
                 <label htmlFor="RecordVdeo">
-                  <Center
-                    h="8rem"
-                    w="8rem"
-                    rounded={"xl"}
-                    borderWidth={"2px"}
-                    cursor="pointer"
+                  <div
+                    className="h-32 w-32 rounded-xl border-2 cursor-pointer flex justify-center items-center border-primary"
                     onClick={() => setRecordVideo(true)}
-                    borderColor="primary.main"
                   >
-                    <Icon
-                      color="primary.main"
-                      fontSize={"xx-large"}
-                      cursor="pointer"
-                      as={HiVideoCamera}
-                    />
-                  </Center>
+                    <HiVideoCamera className="text-primary text-4xl cursor-pointer" />
+                  </div>
                 </label>
               </>
             ) : null}
-          </Flex>
+          </div>
         </ModalBody>
       </ModalContent>
     </Modal>

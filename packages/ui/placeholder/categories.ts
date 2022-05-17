@@ -79,4 +79,8 @@ export const categories: Category[] = [
       },
     ],
   },
+  {
+    name: "T-shirts",
+    subCategories: [],
+  },
 ];

@@ -29,6 +29,7 @@ export const SettingsSectionsSidebar: React.FC<SettingsSectionsSidebarProps> =
               _hover={{ bgColor: "primary.light" }}
               bgColor={currentActive === panelUrl ? "primary.50" : "unset"}
               p="1rem"
+              className="px-8 items-center"
               gap="1rem"
             >
               <Icon mt="0.25em" fontSize={"lg"} as={panelIcon} />

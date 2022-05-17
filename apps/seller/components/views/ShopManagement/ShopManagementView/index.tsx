@@ -2,7 +2,7 @@ import { Flex, useDimensions } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { BiBox } from "react-icons/bi";
+import { MdShoppingBasket } from "react-icons/md";
 import { SettingsSectionType } from "types";
 import {
   ProductManagementSection,
@@ -88,7 +88,7 @@ const sections: SettingsSectionType[] = [
       translationKey: "product_mangagement",
       fallbackText: "Product Management",
     },
-    panelIcon: BiBox,
+    panelIcon: MdShoppingBasket,
     panelUrl: "/product-management",
     panelComponent: <ProductManagementSection />,
   },

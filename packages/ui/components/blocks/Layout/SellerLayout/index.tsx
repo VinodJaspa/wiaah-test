@@ -19,7 +19,7 @@ import { SellerDrawerOpenState } from "ui/state";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import {
-  useResponsive,
+  // useResponsive,
   MinimalHeader,
   DiscoverHeader,
   LocationButton,
@@ -155,7 +155,8 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
 }) => {
   const { t } = useTranslation();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
-  const { isMobile } = useResponsive();
+  // const { isMobile } = useResponsive();
+  const isMobile = false;
   const headerRef = React.useRef<HTMLDivElement>(null);
   const headerHeight = headerRef?.current?.offsetHeight;
   const router = useRouter();
@@ -183,15 +184,11 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           {t("discover_your_town", "discover your town")}
         </p>
 
-        <Flex direction={"column"} gap="1rem">
+        <div className="flex flex-col gap-4">
           {placesPlaceholder.map((place, i) => (
-            <LocationButton
-              style={{ px: "2rem" }}
-              locationName={place}
-              key={i}
-            />
+            <LocationButton style={{ px: "2rem" }} name={place} key={i} />
           ))}
-        </Flex>
+        </div>
         <Divider />
         <Box textTransform={"capitalize"} px="2rem">
           <Text py="1rem" fontWeight={"bold"} textTransform={"capitalize"}>

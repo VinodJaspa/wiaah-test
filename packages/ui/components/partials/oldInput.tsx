@@ -10,7 +10,7 @@ import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
 import { useOutsideClick } from "../../Hooks";
 import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
 import { InputErrorMsg } from "types/sharedTypes/misc/ErrorMsg";
-export interface InputProps
+export interface oldInputProps
   extends DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
@@ -26,7 +26,7 @@ export interface InputProps
   onValueChange?: (value: string) => void;
 }
 
-export const Input: FC<InputProps> = ({
+export const oldInput: FC<oldInputProps> = ({
   icon = null,
   iconAlign,
   fullWidth,

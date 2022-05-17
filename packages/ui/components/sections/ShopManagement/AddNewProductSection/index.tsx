@@ -1,8 +1,12 @@
-import { Flex, Text } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { StepperStepType } from "types";
-import { useEditProductData, CheckMarkStepper } from "ui";
+import {
+  useEditProductData,
+  CheckMarkStepper,
+  ProductGeneralDetails,
+  ShippingSettings,
+} from "ui";
 
 export interface AddNewProductSectionProps {}
 
@@ -29,7 +33,11 @@ const steps: StepperStepType[] = [
       translationKey: "general",
       fallbackText: "General",
     },
-    stepComponent: () => <>General</>,
+    stepComponent: () => (
+      <>
+        <ProductGeneralDetails />
+      </>
+    ),
     key: "general",
   },
   {
@@ -37,7 +45,7 @@ const steps: StepperStepType[] = [
       translationKey: "shipping",
       fallbackText: "Shipping",
     },
-    stepComponent: () => <>Shipping</>,
+    stepComponent: () => <ShippingSettings />,
     key: "shipping",
   },
   {
