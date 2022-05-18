@@ -1,8 +1,7 @@
-import { HStack, IconButton, Select, Text } from "@chakra-ui/react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import React from "react";
 import { useTranslation } from "react-i18next";
-
+import { Select } from "ui";
 export interface ItemsPaginationProps {
   currentPage: number;
   maxItemsNum?: number;
@@ -27,49 +26,35 @@ export const ItemsPagination: React.FC<ItemsPaginationProps> = ({
     onItemsPerPageChange && onItemsPerPageChange(itemsPerPage);
   }, [itemsPerPage]);
   return (
-    <HStack
-      fontSize={{ base: "md", md: "lg", lg: "xl" }}
-      w="100%"
-      color={"gray"}
-      justify={"end"}
-    >
-      <Text>{t("items_per_page", "Items Per Page")}</Text>
+    <div className="text-md md:text-lg lg:text-xl w-full flex items-center gap-4 text-gray-500 justify-end">
+      <p>{t("items_per_page", "Items Per Page")}</p>
       <Select
         onChange={handleItemsPerPageChange}
-        variant={"outline"}
         value={itemsPerPage}
-        w="fit-content"
+        className={"w-fit min-w-[4rem]"}
       >
         {[...Array(10)].map((_, i) => (
           <option value={i + 1}>{i + 1}</option>
         ))}
       </Select>
-      <Text>
+      <p>
         {currentPage} {t("of", "of")}{" "}
         {maxItemsNum > 0 ? Math.ceil(maxItemsNum / itemsPerPage) : "Unkown"}
-      </Text>
-      <HStack>
-        <IconButton
-          aria-label={t("view_next_page", "View Next Page")}
-          as={ChevronLeftIcon}
-          colorScheme="gray"
-          fontSize={"x-large"}
-          bgColor="white"
-          color="gray"
+      </p>
+      <div className="flex gap-2 items-center">
+        <ChevronLeftIcon
           onClick={() => {
             onPrevClick && onPrevClick(currentPage);
           }}
+          className="text-gray-500 bg-white text-xl cursor-pointer"
         />
-        <IconButton
-          aria-label={t("view_next_page", "View Next Page")}
-          as={ChevronRightIcon}
-          fontSize={"x-large"}
-          colorScheme="gray"
-          bgColor="white"
-          color="gray"
-          onClick={onNextClick && onNextClick(currentPage)}
+        <ChevronRightIcon
+          onClick={() => {
+            onPrevClick && onPrevClick(currentPage);
+          }}
+          className="text-gray-500 bg-white text-xl cursor-pointer"
         />
-      </HStack>
-    </HStack>
+      </div>
+    </div>
   );
 };

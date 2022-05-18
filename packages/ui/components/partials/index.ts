@@ -35,3 +35,5 @@ export * from "./PushSwitch";
 export * from "./icons";
 export * from "./Input";
 export * from "./Select";
+export * from "./Checkbox";
+export * from "./Menu";

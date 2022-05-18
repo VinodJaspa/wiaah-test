@@ -1,7 +1,13 @@
-import { Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
-import { useGetNotifications, SpinnerFallback, NotifiactionCard } from "ui";
+import {
+  useGetNotifications,
+  SpinnerFallback,
+  NotifiactionCard,
+  Menu,
+  MenuItem,
+  MenuList,
+  MenuButton,
+} from "ui";
 import React from "react";
-const test = null;
 export interface NotifiactionsMenuProps {}
 
 export const NotifiactionsMenu: React.FC<NotifiactionsMenuProps> = ({
@@ -9,10 +15,9 @@ export const NotifiactionsMenu: React.FC<NotifiactionsMenuProps> = ({
 }) => {
   const { data, isLoading, isError } = useGetNotifications();
   return (
-    <Menu isLazy lazyBehavior="unmount">
+    <Menu>
       <MenuButton>{children}</MenuButton>
-
-      <MenuList maxH={"25rem"} overflowY="scroll" className="thinScroll">
+      <MenuList className="thinScroll max-h-[25rem] overflow-y-scroll">
         <SpinnerFallback isLoading={isLoading} isError={isError}>
           {Array.isArray(data) &&
             data.map((notifaction, i) => (

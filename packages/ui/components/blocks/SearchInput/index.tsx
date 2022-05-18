@@ -14,6 +14,7 @@ export interface SearchFilterInputProps extends HtmlInputProps {
   rightElement?: JSX.Element;
   components?: Component[];
   onSelection?: (value: string) => void;
+  onNotFound?: (found: boolean) => any;
 }
 interface Component {
   name: string;
@@ -27,6 +28,7 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
   onSelection,
   value,
   rightElement,
+  onNotFound,
   ...props
 }) => {
   // const [value, setValue] = React.useState<string>(initialValue || "");
@@ -48,10 +50,10 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
           return item.name.toLowerCase().includes(value.toLowerCase());
         })
       );
+      onNotFound && onNotFound(components.length > 0);
     }
   }, [value]);
   function handleSelect(index: number) {
-    console.log("select");
     const item = Components[index];
     if (onSelection && item.value) {
       onSelection(item.value);

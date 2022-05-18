@@ -3,6 +3,7 @@ import {
   HTMLAttributes,
   InputHTMLAttributes,
   SelectHTMLAttributes,
+  ButtonHTMLAttributes,
 } from "react";
 
 export type HtmlDivProps = DetailedHTMLProps<
@@ -18,4 +19,9 @@ export type HtmlInputProps = DetailedHTMLProps<
 export type HtmlSelectProps = DetailedHTMLProps<
   SelectHTMLAttributes<HTMLSelectElement>,
   HTMLSelectElement
+>;
+
+export type HtmlButtonElement = DetailedHTMLProps<
+  ButtonHTMLAttributes<HTMLButtonElement>,
+  HTMLButtonElement
 >;

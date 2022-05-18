@@ -2,12 +2,9 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiFolderAdd, HiVideoCamera } from "react-icons/hi";
-import { FormOptionType } from "types";
 import {
-  TranslationText,
   FormikInput,
   Textarea,
-  Select,
   MediaUploadModal,
   useFileUploadModal,
   HashTagInput,
@@ -66,14 +63,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> =
                   {t("price_&_attributes", "Price & Attributes")}
                 </span>
                 <FormikInput name="price" placeholder={t("price", "Price")} />
-                <FormikInput as={Select} name="wiaah">
-                  <option value="0">{t("wiaah", "wiaah")}</option>
-                  {wiaahOpts.map((opt, i) => (
-                    <option key={i} value={opt.value}>
-                      <TranslationText translationObject={opt.name} />
-                    </option>
-                  ))}
-                </FormikInput>
+
                 <SubCategorySelect />
 
                 <FormikInput
@@ -155,19 +145,3 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> =
       </div>
     );
   };
-
-const wiaahOpts: FormOptionType[] = [...Array(5)].map(() => ({
-  name: {
-    translationKey: "wiaah",
-    fallbackText: "Wiaah",
-  },
-  value: "wiaah",
-}));
-
-const categoryiesOpts: FormOptionType[] = [...Array(5)].map(() => ({
-  name: {
-    fallbackText: "category",
-    translationKey: "category",
-  },
-  value: "category",
-}));

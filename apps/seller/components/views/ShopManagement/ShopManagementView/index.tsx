@@ -21,7 +21,6 @@ export const ShopManagementView: React.FC<ShopManagementViewProps> = ({}) => {
   const { section } = router.query;
   const minGap = isTablet ? 0 : 48;
 
-  console.log("section", section);
   const leftPanelRef = React.useRef<HTMLDivElement>(null);
 
   const leftPanelDims = useDimensions(leftPanelRef, true);
@@ -29,6 +28,10 @@ export const ShopManagementView: React.FC<ShopManagementViewProps> = ({}) => {
   const leftPanelwidth = leftPanelDims ? leftPanelDims.borderBox.width : null;
 
   const route = Array.isArray(section) ? section[0] : section;
+
+  React.useEffect(() => {
+    if (!route) router.push(`/${baseRoute}/${sections[0].panelUrl}`);
+  }, [router, route]);
 
   const sectionIdx = sections.findIndex(
     (panel) => panel.panelUrl === `/${route}`

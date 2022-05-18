@@ -1,21 +1,9 @@
-import {
-  Button,
-  TableContainer,
-  Table,
-  Thead,
-  Tr,
-  Td,
-  Tbody,
-  HStack,
-  IconButton,
-  Image,
-} from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiEdit } from "react-icons/bi";
 import { IoTrash } from "react-icons/io5";
 import { ProductManagementDetailsDataType } from "types";
-import { ItemsPagination, useEditProductData } from "ui";
+import { ItemsPagination, useEditProductData, Button } from "ui";
 
 export interface ProductDetailsTableProps {}
 
@@ -33,62 +21,51 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
         </Button>
       </div>
       <div className="flex flex-col gap-4 shadow p-4">
-        <TableContainer className="noScroll">
-          <Table colorScheme={"primary"} size={"lg"}>
-            <Thead>
-              <Tr>
-                <Td>{t("image", "Image")}</Td>
-                <Td>{t("product", "Product")}</Td>
-                <Td>{t("price", "Price")}</Td>
-                <Td>{t("stock_status", "Stock Status")}</Td>
-                <Td>{t("earnings", "Earnings")}</Td>
-                <Td>{t("sales", "Sales")}</Td>
-                <Td>{t("status", "Status")}</Td>
-                <Td>{t("action", "Action")}</Td>
-              </Tr>
-            </Thead>
-            <Tbody>
+        <div className="noScroll">
+          <table className="w-full">
+            <thead>
+              <tr>
+                <th>{t("image", "Image")}</th>
+                <th>{t("product", "Product")}</th>
+                <th>{t("price", "Price")}</th>
+                <th>{t("stock_status", "Stock Status")}</th>
+                <th>{t("earnings", "Earnings")}</th>
+                <th>{t("sales", "Sales")}</th>
+                <th>{t("status", "Status")}</th>
+                <th>{t("action", "Action")}</th>
+              </tr>
+            </thead>
+            <thead>
               {products.map((product, i) => (
-                <Tr key={product.id + i}>
-                  <Td>
-                    <Image
-                      className="h-full w-auto"
+                <tr key={product.id + i}>
+                  <td className="w-24">
+                    <img
+                      className="h-auto w-full"
                       src={product.image}
                       alt={product.name}
                     />
-                  </Td>
-                  <Td>{product.name}</Td>
-                  <Td isNumeric>
+                  </td>
+                  <td align="center">{product.name}</td>
+                  <td align="center">
                     {product.price.amount} {product.price.currency}
-                  </Td>
-                  <Td>{product.stockStatus}</Td>
-                  <Td isNumeric>
+                  </td>
+                  <td align="center">{product.stockStatus}</td>
+                  <td align="center">
                     {product.earnings.amount} {product.earnings.currency}
-                  </Td>
-                  <Td isNumeric>{product.sales}</Td>
-                  <Td>{product.status}</Td>
-                  <Td>
-                    <HStack>
-                      <IconButton
-                        aria-label={t("delete_product", "Delete Product")}
-                        variant="icon"
-                        fontSize={"x-large"}
-                        as={BiEdit}
-                      />
-                      <IconButton
-                        aria-label={t("delete_product", "Delete Product")}
-                        variant="icon"
-                        fontSize={"x-large"}
-                        color="red"
-                        as={IoTrash}
-                      />
-                    </HStack>
-                  </Td>
-                </Tr>
+                  </td>
+                  <td align="center">{product.sales}</td>
+                  <td align="center">{product.status}</td>
+                  <td align="center">
+                    <div className="flex items-center gap-2">
+                      <BiEdit className="text-xl cursor-pointer" />
+                      <IoTrash className="text-red-700 text-xl cursor-pointer" />
+                    </div>
+                  </td>
+                </tr>
               ))}
-            </Tbody>
-          </Table>
-        </TableContainer>
+            </thead>
+          </table>
+        </div>
         <ItemsPagination currentPage={2} maxItemsNum={30} />
       </div>
     </div>

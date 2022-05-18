@@ -1,2 +1,2 @@
-export * from "./ProductManagementSection";
+export * from "./ProductManagementSections";
 export * from "./AddNewProductSection";

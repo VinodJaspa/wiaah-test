@@ -9,6 +9,7 @@ export const HashTagInput: React.FC = ({}) => {
   const { t } = useTranslation();
   const [value, setValue] = React.useState<string>("");
   const [selectedhashTags, setSelectedHashTags] = React.useState<string[]>([]);
+  const [add, setAdd] = React.useState<boolean>(true);
 
   function resetSearch() {
     setValue("");
@@ -25,7 +26,10 @@ export const HashTagInput: React.FC = ({}) => {
   return (
     <div className="border-[1px] flex gap-2 items-center px-2 border-gray-300">
       {selectedhashTags.map((tag, i) => (
-        <span className="bg-primary rounded py-1 text-white h-fit flex gap-2 px-2 items-center">
+        <span
+          key={tag + 1}
+          className="bg-primary rounded py-1 text-white h-fit flex gap-2 px-2 items-center"
+        >
           <p className="whitespace-nowrap">#{tag}</p>
           <MdClose
             onClick={() => removeHashTag(tag)}
@@ -39,6 +43,10 @@ export const HashTagInput: React.FC = ({}) => {
         onChange={(e) => setValue(e.target.value)}
         className="border-none border-l-2 "
         onSelection={addHashTag}
+        onKeyDown={(e) => {
+          console.log(e);
+          e.code === "Enter" ? addHashTag(value) : "";
+        }}
         components={hashtags.map((tag, i) => ({
           name: `#${tag}`,
           comp: <p>#{tag}</p>,

@@ -62,7 +62,7 @@ export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
               />
             )}
             <TranslationText
-              className={`absolute text-sm top-full whitespace-nowrap  ${
+              className={`absolute text-sm top-full whitespace-nowrap ${
                 steps.length === i + 1
                   ? "right-0"
                   : i === 0
