@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Select } from "ui";
+import { Select, SelectOption } from "ui";
 export interface ItemsPaginationProps {
   currentPage: number;
   maxItemsNum?: number;
@@ -19,8 +19,8 @@ export const ItemsPagination: React.FC<ItemsPaginationProps> = ({
 }) => {
   const { t } = useTranslation();
   const [itemsPerPage, setItemsPerPage] = React.useState<number>(5);
-  function handleItemsPerPageChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    setItemsPerPage(parseInt(e.target.value));
+  function handleItemsPerPageChange(value: string) {
+    setItemsPerPage(parseInt(value));
   }
   React.useEffect(() => {
     onItemsPerPageChange && onItemsPerPageChange(itemsPerPage);
@@ -29,12 +29,11 @@ export const ItemsPagination: React.FC<ItemsPaginationProps> = ({
     <div className="text-md md:text-lg lg:text-xl w-full flex items-center gap-4 text-gray-500 justify-end">
       <p>{t("items_per_page", "Items Per Page")}</p>
       <Select
-        onChange={handleItemsPerPageChange}
-        value={itemsPerPage}
+        onOptionSelect={handleItemsPerPageChange}
         className={"w-fit min-w-[4rem]"}
       >
         {[...Array(10)].map((_, i) => (
-          <option value={i + 1}>{i + 1}</option>
+          <SelectOption value={i + 1}>{i + 1}</SelectOption>
         ))}
       </Select>
       <p>

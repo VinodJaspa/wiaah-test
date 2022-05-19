@@ -10,7 +10,7 @@ const SignUpFinalisation: NextPage = () => {
       <Head>
         <title>Wiaah | Buyer Signup Finalisation</title>
       </Head>
-      <main className="block w-full grow">
+      <main className="block w-full min-h-screen">
         <Container>
           <BuyerProfileStartUpView />
         </Container>

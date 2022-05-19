@@ -37,3 +37,6 @@ export * from "./Input";
 export * from "./Select";
 export * from "./Checkbox";
 export * from "./Menu";
+export * from "./Table";
+export * from "./PriceDisplay";
+export * from "./Rate";

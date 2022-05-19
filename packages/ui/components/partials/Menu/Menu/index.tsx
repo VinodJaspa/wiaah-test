@@ -1,4 +1,5 @@
 import React from "react";
+import { HtmlDivProps } from "types";
 import { useOutsideClick } from "ui";
 export interface MenuChildProps {
   OpenMenu: () => any;
@@ -6,14 +7,17 @@ export interface MenuChildProps {
   ToggleMenu: () => any;
   isOpen: boolean;
 }
+export type ElementChilds<T = MenuChildProps> =
+  | React.ReactElement<T>
+  | React.ReactElement<T>[];
 
-export interface MenuProps {
+export interface MenuProps extends Omit<HtmlDivProps, "children"> {
   children:
     | React.ReactElement<MenuChildProps>
     | React.ReactElement<MenuChildProps>[];
 }
 
-export const Menu: React.FC<MenuProps> = ({ children }) => {
+export const Menu: React.FC<MenuProps> = ({ children, className }) => {
   const [open, setOpen] = React.useState<boolean>(false);
   const ref = React.useRef<HTMLDivElement>(null);
   useOutsideClick(ref, handleClose);
@@ -29,7 +33,7 @@ export const Menu: React.FC<MenuProps> = ({ children }) => {
     setOpen((state) => !state);
   }
   return (
-    <div ref={ref} className="relative w-fit h-fit">
+    <div ref={ref} className={`${className} relative w-fit h-fit`}>
       {Array.isArray(children) ? (
         <>
           {children.map((child, i) =>

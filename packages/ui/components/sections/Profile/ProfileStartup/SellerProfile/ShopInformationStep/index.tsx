@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { Input, Checkbox, Select as AntSelect } from "antd";
 import Select from "react-select";
 import { Country, State, City } from "country-state-city";
-import { FormikInput, TranslationText } from "ui";
+import { FormikInput, TranslationText, Select as MySelect } from "ui";
 
 const { TextArea } = Input;
 const { Option } = AntSelect;
@@ -64,7 +64,7 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({}) => {
         {t("Fill_out_shop_information", "Fill out shop information")}
       </h2>
       <div className="flex py-4">
-        <div className="w-full">
+        <div className="w-full text-gray-500">
           <Formik initialValues={{}} onSubmit={() => {}}>
             {() => (
               <Form>
@@ -76,13 +76,19 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({}) => {
                 <FormikInput
                   name="Address"
                   className="my-2"
-                  placeholder={t("Address", "Address") + " 1"}
+                  placeholder={t("address", "Address" + " 1")}
                 />
                 <FormikInput
                   name="Address2"
                   className="my-2"
-                  placeholder={t("Address", "Address") + " 2"}
+                  placeholder={t("address", "Address") + " 2"}
                 />
+                <MySelect className="w-full my-2">
+                  <option>{t("type_of_account", "Type of Account")}</option>
+                </MySelect>
+                <MySelect className="w-full my-2">
+                  <option>{t("type_of_company", "Type of Company")}</option>
+                </MySelect>
                 <Select
                   id="countryselect"
                   instanceId="countryselect"

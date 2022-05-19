@@ -1,14 +1,14 @@
 import React from "react";
 import { MdArrowBackIosNew } from "react-icons/md";
 import { useTranslation } from "react-i18next";
-import { Button } from "@chakra-ui/react";
 import {
-  MultiStepFormStepType,
   MultiStepFrom,
   PersonalInformationStep,
   FindYourFriendsStep,
   Container,
+  Button,
 } from "ui";
+import { StepperStepType } from "types";
 import { AddProfilePictureStep, MultiStepFromHandle } from "../../components";
 
 export const BuyerProfileStartUpView: React.FC = ({}) => {
@@ -16,19 +16,22 @@ export const BuyerProfileStartUpView: React.FC = ({}) => {
 
   const multiStepFormRef = React.useRef<MultiStepFromHandle>(null);
 
-  const BuyerSignupSteps: MultiStepFormStepType[] = [
+  const BuyerSignupSteps: StepperStepType[] = [
     {
       stepName: t("Personal_information", "Personal information"),
       stepComponent: PersonalInformationStep,
+      key: "1",
     },
     {
       stepName: t("Find_your_freinds", "Find your freinds"),
 
       stepComponent: FindYourFriendsStep,
+      key: "2",
     },
     {
       stepName: t("Add_Profile_Pic", "Add Profile Pic"),
       stepComponent: AddProfilePictureStep,
+      key: "3",
     },
   ];
 

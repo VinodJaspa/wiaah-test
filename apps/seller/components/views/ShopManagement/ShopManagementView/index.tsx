@@ -2,12 +2,18 @@ import { Flex, useDimensions } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { MdShoppingBasket } from "react-icons/md";
+import { MdOutlineShoppingBasket, MdOutlineReviews } from "react-icons/md";
 import { SettingsSectionType } from "types";
+import { BiHistory } from "react-icons/bi";
+import { BsBoxArrowInUp } from "react-icons/bs";
 import {
+  AffiliationIcon,
   ProductManagementSection,
   SettingsSectionsSidebar,
   useResponsive,
+  AffiliationHistorySection,
+  CanceledOrdersSection,
+  ReviewsSection,
 } from "ui";
 import { NotFoundSection } from "../../AccountSettings";
 
@@ -91,8 +97,44 @@ const sections: SettingsSectionType[] = [
       translationKey: "product_mangagement",
       fallbackText: "Product Management",
     },
-    panelIcon: MdShoppingBasket,
+    panelIcon: MdOutlineShoppingBasket,
     panelUrl: "/product-management",
     panelComponent: <ProductManagementSection />,
+  },
+  {
+    panelName: {
+      translationKey: "affiliation_management",
+      fallbackText: "Affiliation Management",
+    },
+    panelIcon: AffiliationIcon,
+    panelUrl: "/affiliation-management",
+    panelComponent: <>affiliation management</>,
+  },
+  {
+    panelName: {
+      translationKey: "affiliation_history",
+      fallbackText: "Affiliation History",
+    },
+    panelIcon: BiHistory,
+    panelUrl: "/affiliation-history",
+    panelComponent: <AffiliationHistorySection />,
+  },
+  {
+    panelName: {
+      translationKey: "canceled_orders",
+      fallbackText: "Canceled Orders",
+    },
+    panelIcon: BsBoxArrowInUp,
+    panelUrl: "/canceled-orders",
+    panelComponent: <CanceledOrdersSection />,
+  },
+  {
+    panelName: {
+      translationKey: "reviews",
+      fallbackText: "Reviews",
+    },
+    panelIcon: MdOutlineReviews,
+    panelUrl: "/reviews",
+    panelComponent: <ReviewsSection />,
   },
 ];

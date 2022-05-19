@@ -1,18 +1,44 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Input, DatePicker, Select as AntSelect } from "antd";
-import Select from "react-select";
 import { City, Country, State } from "country-state-city";
 import { FormikInput } from "ui";
 import { Field, Formik, Form } from "formik";
-import { TranslationText } from "ui";
+import {
+  Input,
+  Menu,
+  MenuButton,
+  MenuList,
+  Select,
+  TranslationText,
+  DateInput,
+} from "ui";
+import { FormOptionType } from "types";
 
 export interface PersonalInformationStepProps {
   isValid?: (data: null | Record<string, any>) => any;
 }
 
-const { Option } = AntSelect;
-let countriesArray = Array();
+const accountTypes: FormOptionType[] = [
+  {
+    name: {
+      translationKey: "individual",
+      fallbackText: "Individual",
+    },
+    value: "individual",
+  },
+  {
+    name: {
+      translationKey: "team",
+      fallbackText: "Team",
+    },
+    value: "Team",
+  },
+];
+
+let countriesArray: {
+  value: string;
+  label: string;
+}[] = [];
 const countries = Country.getAllCountries();
 countries.forEach((element) => {
   countriesArray.push({
@@ -74,10 +100,10 @@ export const PersonalInformationStep: React.FC<PersonalInformationStepProps> =
               }
               return (
                 <Form className="w-full">
-                  <div className="w-full flex-col flex gap-4 ">
+                  <div className="w-full flex-col text-gray-500 flex gap-4 ">
                     <FormikInput
                       name="firstName"
-                      w="full"
+                      className="w-full"
                       placeholder={t("First_Name", "First Name") + "*"}
                     />
                     <FormikInput
@@ -88,105 +114,126 @@ export const PersonalInformationStep: React.FC<PersonalInformationStepProps> =
                       name="email"
                       placeholder={t("Email", "Email") + "*"}
                     />
-                    <DatePicker
-                      size="large"
-                      className="w-full"
-                      onChange={(e) => {
-                        if (e && setFieldValue) {
-                          try {
-                            setFieldValue("dateOfBirth", e.toISOString());
-                          } catch (error) {}
-                        }
-                      }}
-                      placeholder={t("Date_of_Birthday", "Date of Birthday")}
-                    />
+                    <FormikInput
+                      name="typeOfAccount"
+                      as={Select}
+                      placeholder={
+                        t("type_of_account", "Type Of Account") + "*"
+                      }
+                    >
+                      <option>{t("type_of_account", "Type of Account")}</option>
+                      {accountTypes.map(({ value, name }, i) => (
+                        <option key={value + i} value={value}>
+                          {t(name.translationKey, name.fallbackText)}
+                        </option>
+                      ))}
+                    </FormikInput>
+                    <Menu className="w-[100%]">
+                      <MenuButton>
+                        <Input
+                          placeholder="BirthDay Date"
+                          value={""}
+                          className="w-full"
+                        />
+                      </MenuButton>
+                      <MenuList className="left-0 origin-top-left">
+                        <DateInput />
+                      </MenuList>
+                    </Menu>
                     <Field
-                      as={AntSelect}
+                      as={Select}
                       name="gender"
                       defaultValue="male"
                       className=" w-full "
                       size="large"
                     >
-                      <Option value="male">{t("Male", "Male")}</Option>
-                      <Option value="female">{t("Femal", "Female")}</Option>
+                      <option value="male">{t("Male", "Male")}</option>
+                      <option value="female">{t("Femal", "Female")}</option>
                     </Field>
                     <Select
                       id="countryselect"
-                      instanceId="countryselect"
                       className="react-select-container  rounded-md border-gray-300"
-                      classNamePrefix="react-select"
-                      options={countriesArray}
                       placeholder={t("Country", "Country")}
                       onChange={(value) => {
-                        setFieldValue("country", value.label);
+                        setFieldValue("country", value.target.value);
                         handleCountryChange(value);
                       }}
-                    />
+                    >
+                      {countriesArray.map(({ label, value }, i) => (
+                        <option key={value + i} value={value}>
+                          {label}
+                        </option>
+                      ))}
+                    </Select>
                     <Select
                       id="stateselect"
-                      instanceId="stateselect"
                       className="react-select-container rounded-md border-gray-300"
-                      classNamePrefix="react-select"
                       onChange={(value) => {
                         if (value) {
-                          setFieldValue("state", value.label);
+                          setFieldValue("state", value.target.value);
                         }
                         handleStateChange(value);
                       }}
-                      options={states}
                       placeholder={t("State", "State")}
-                    />
+                    >
+                      {states.map(({ value, label }, i) => (
+                        <option key={value + i} value={value}>
+                          {label}
+                        </option>
+                      ))}
+                    </Select>
                     <Select
                       id="cityselect"
-                      instanceId="cityselect"
                       className="react-select-container rounded-md border-gray-300"
-                      classNamePrefix="react-select"
-                      options={cities}
                       onChange={(e) => {
                         if (e) {
-                          setFieldValue("city", e.label);
+                          setFieldValue("city", e.target.value);
                         }
                       }}
                       placeholder={t("City", "City")}
-                    />
-                    <AntSelect
+                    >
+                      {cities.map(({ value, label }, i) => (
+                        <option key={value + i} value={value}>
+                          {label}
+                        </option>
+                      ))}
+                    </Select>
+                    <Select
                       placeholder={t("select_currency", "Select Currency")}
                       className="mb-4 w-full border-gray-300"
-                      size="large"
                     >
-                      <Option value="male">USD</Option>
-                      <Option value="femal">EUR</Option>
-                    </AntSelect>
-                    <AntSelect
+                      <option value="male">USD</option>
+                      <option value="femal">EUR</option>
+                    </Select>
+                    <Select
                       placeholder={t("select_language", "Select Language")}
                       className="mb-4 w-full border-gray-300"
-                      size="large"
                     >
-                      <Option value="english">
+                      <option value="english">
                         <TranslationText
                           translationObject={{
                             translationKey: "english",
                             fallbackText: "English",
                           }}
                         />
-                      </Option>
-                      <Option value="french">
+                      </option>
+                      <option value="french">
                         <TranslationText
                           translationObject={{
                             translationKey: "french",
                             fallbackText: "French",
                           }}
                         />
-                      </Option>
-                      <Option value="germen">
+                      </option>
+                      <option value="germen">
                         <TranslationText
                           translationObject={{
                             translationKey: "germen",
                             fallbackText: "Germen",
                           }}
                         />
-                      </Option>
-                    </AntSelect>
+                      </option>
+                    </Select>
                     <FormikInput
                       as={Input}
                       name="height"

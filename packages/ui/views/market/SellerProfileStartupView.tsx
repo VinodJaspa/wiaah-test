@@ -8,39 +8,45 @@ import {
   ShippingSettings,
   FindYourFriendsStep,
   AddProfilePictureStep,
-  MultiStepFormStepType,
   MultiStepFromHandle,
   MultiStepFrom,
   Container,
 } from "ui";
-import { Button } from "@chakra-ui/react";
+import { StepperStepType } from "types";
+import { Button } from "ui";
 
 export const SellerProfileStartupView: React.FC = ({}) => {
   const { t } = useTranslation();
-  const SellerProfileSteps: MultiStepFormStepType[] = [
+  const SellerProfileSteps: StepperStepType[] = [
     {
       stepName: t("Shop_information", "Shop information"),
       stepComponent: ShopInformationStep,
+      key: "1",
     },
     {
       stepName: t("Select_a_plan", "Select a plan"),
       stepComponent: SelectPackageStep,
+      key: "2",
     },
     {
       stepName: t("Payment_Gate", "Payment Gate"),
       stepComponent: PaymentPortal,
+      key: "3",
     },
     {
       stepName: t("Shipping Settings", "Shipping Settings"),
       stepComponent: ShippingSettings,
+      key: "4",
     },
     {
       stepName: t("Find_your_freinds", "Find your freinds"),
       stepComponent: FindYourFriendsStep,
+      key: "5",
     },
     {
       stepName: t("Add_Profile_Pic", "Add Profile Pic"),
       stepComponent: AddProfilePictureStep,
+      key: "6",
     },
   ];
   const MultiStepFormRef = React.useRef<MultiStepFromHandle>(null);
