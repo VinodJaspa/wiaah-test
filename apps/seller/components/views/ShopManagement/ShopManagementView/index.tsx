@@ -27,10 +27,12 @@ export interface ShopManagementViewProps {}
 
 export const ShopManagementView: React.FC<ShopManagementViewProps> = ({}) => {
   const baseRoute = "shop-management";
-  const { t } = useTranslation();
   const router = useRouter();
-  const { isTablet } = useResponsive();
   const { section } = router.query;
+  const route = Array.isArray(section) ? section[0] : section;
+
+  const { t } = useTranslation();
+  const { isTablet } = useResponsive();
   const minGap = isTablet ? 0 : 48;
 
   const leftPanelRef = React.useRef<HTMLDivElement>(null);
@@ -38,8 +40,6 @@ export const ShopManagementView: React.FC<ShopManagementViewProps> = ({}) => {
   const leftPanelDims = useDimensions(leftPanelRef, true);
 
   const leftPanelwidth = leftPanelDims ? leftPanelDims.borderBox.width : null;
-
-  const route = Array.isArray(section) ? section[0] : section;
 
   React.useEffect(() => {
     if (!route) router.push(`/${baseRoute}/${sections[0].panelUrl}`);
