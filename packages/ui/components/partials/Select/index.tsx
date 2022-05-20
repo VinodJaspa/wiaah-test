@@ -2,6 +2,7 @@ import { BiChevronDown } from "react-icons/bi";
 import React from "react";
 import { HtmlDivProps } from "types";
 import { ElementChilds } from "../Menu";
+import { useOutsideClick } from "../../../Hooks";
 
 type OnOptionSelect = (value: string) => any;
 export interface SelectChildProps {
@@ -24,9 +25,19 @@ export const Select: React.FC<SelectProps> = ({
   const [open, setOpen] = React.useState<boolean>(false);
   const [selectedOption, setSelectedOption] =
     React.useState<React.ReactElement>(
-      Array.isArray(children) ? children[0] : children
+      placeholder ? (
+        <SelectOption className="text-gray-500" value>
+          {placeholder}
+        </SelectOption>
+      ) : Array.isArray(children) ? (
+        children[0]
+      ) : (
+        children
+      )
     );
   const [showChild, setShowChild] = React.useState<boolean>(false);
+  const ref = React.useRef<HTMLDivElement>(null);
+  useOutsideClick(ref, handleClose);
   let timeout: NodeJS.Timer;
 
   React.useEffect(() => {
@@ -55,23 +66,25 @@ export const Select: React.FC<SelectProps> = ({
   return (
     <div
       {...props}
+      ref={ref}
       className={`${
         className || ""
-      } border-gray-300 items-center flex border-2 rounded relative`}
+      } border-gray-200 items-center flex border-2 rounded relative`}
     >
       <div className="flex w-full p-2 items-center justify-between">
         <div
           onClick={handleToggle}
-          className="cursor-pointer px-2 w-full flex items-center whitespace-nowrap "
+          className="cursor-pointer w-full flex items-center whitespace-nowrap "
         >
-          {React.cloneElement(selectedOption, { selectable: false })}
+          {selectedOption &&
+            React.cloneElement(selectedOption, { selectable: false })}
         </div>
         <BiChevronDown className="text-xl" />
       </div>
       <div
         className={`${
           open ? "scale-y-100" : "scale-y-0"
-        } transition-all origin-top overflow-hidden transform absolute left-0 flex flex-col top-full w-full`}
+        } transition-all duration-75 z-50 bg-white origin-top max-h-48 overflow-y-scroll transform absolute left-0 flex flex-col top-full w-full`}
       >
         {showChild ? (
           <>
@@ -118,6 +131,6 @@ export const SelectOption: React.FC<SelectListProps> = ({
           : ""
       }
        `}
-    ></div>
+    />
   );
 };

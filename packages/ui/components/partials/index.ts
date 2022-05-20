@@ -40,3 +40,4 @@ export * from "./Menu";
 export * from "./Table";
 export * from "./PriceDisplay";
 export * from "./Rate";
+export * from "./Switch";

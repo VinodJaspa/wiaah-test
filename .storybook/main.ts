@@ -9,7 +9,7 @@ const config: StorybookConfig = {
     // "../apps/**/*.stories.@(js|jsx|ts|tsx)",
     // "../packages/ui/**/*.stories.mdx",
     // "../packages/ui/**/*.stories.@(js|jsx|ts|tsx)",
-    "../packages/ui/components/blocks/DataInput/**/*.stories.@(js|jsx|ts|tsx)",
+    "../packages/ui/components/partials/**/*.stories.@(js|jsx|ts|tsx)",
   ],
 
   /** Expose public folder to storybook as static */

@@ -5,7 +5,7 @@ export const Divider: React.FC<DividerProps> = ({ className, ...props }) => {
   return (
     <div
       {...props}
-      className={`${className || ""} border-b-2 border-gray-300`}
+      className={`${className || "border-gray-300"} border-b-2 `}
     ></div>
   );
 };

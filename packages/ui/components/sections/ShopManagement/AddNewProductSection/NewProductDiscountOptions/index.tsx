@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiCalendarEdit } from "react-icons/bi";
 import { Menu, MenuButton, MenuList, DateInput, Select } from "ui";
+import { SelectOption } from "../../../../partials";
 
 export interface NewProductDiscountOptionsProps {}
 
@@ -16,16 +17,12 @@ export const NewProductDiscountOptions: React.FC<NewProductDiscountOptionsProps>
         <h1 className="text-xl font-bold">
           {t("create_discount_code", "Create Discount Code")}
         </h1>
-        <Select>
-          <option value="0">{t("percent off", "Percent Off")}</option>
-          {[...Array(MAX_DISCOUNT / DISCOUNT_INCREMENTAL)].map(
-            (_, i) =>
-              i > 0 && (
-                <option value={i * DISCOUNT_INCREMENTAL}>
-                  {i * DISCOUNT_INCREMENTAL}%
-                </option>
-              )
-          )}
+        <Select placeholder={t("percent_off", "Percent OFF")}>
+          {[...Array(MAX_DISCOUNT / DISCOUNT_INCREMENTAL)].map((_, i) => (
+            <SelectOption value={i * DISCOUNT_INCREMENTAL}>
+              {i * DISCOUNT_INCREMENTAL}%
+            </SelectOption>
+          ))}
         </Select>
         <div className="flex gap-4 px-1 py-1 w-full border-[1px] items-center border-gray-300">
           <Menu>

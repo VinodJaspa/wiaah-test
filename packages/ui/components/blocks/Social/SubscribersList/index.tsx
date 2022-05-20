@@ -1,8 +1,6 @@
 import React from "react";
-import { Flex, Input, Divider, VStack } from "@chakra-ui/react";
-import { MdClose } from "react-icons/md";
 import { SubscribersUserInfo } from "types/market/Social";
-import { SubscriberCard } from "ui";
+import { SubscriberCard, Input, Divider } from "ui";
 import { useTranslation } from "react-i18next";
 
 export interface SubscribersListProps {
@@ -22,36 +20,19 @@ export const SubscribersList: React.FC<SubscribersListProps> = ({
     setSearchValue(e.target.value);
   }
   return (
-    <Flex
-      direction={"column"}
-      align="end"
-      bg="white"
-      px="0.5rem"
-      maxH={"40rem"}
-      w={"100%"}
-      overflowY="scroll"
-      gap="0.5rem"
-      className="thinScroll"
-    >
+    <div className="thinScroll flex flex-col items-end bg-white px-2 max-h-[40rem] w-full overflow-y-scroll gap-2">
       <Input
-        py="1rem"
-        shadow={"md"}
+        className="shadow-md py-4"
         placeholder={t("search", "Search")}
         value={searchValue}
         onChange={handleChange}
       />
-      <VStack
-        divider={<Divider />}
-        h="100%"
-        w="100%"
-        py="0.5rem"
-        direction={"column"}
-      >
+      <div className="h-full w-full py-2 gap-2 flex flex-col">
         {users.map((user, i) => (
           <SubscriberCard key={user.id} {...user} />
         ))}
-      </VStack>
-    </Flex>
+      </div>
+    </div>
   );
 };
 

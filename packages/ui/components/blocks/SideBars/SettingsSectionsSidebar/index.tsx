@@ -1,10 +1,9 @@
-import { Divider, Flex, StackProps, Icon, Stack } from "@chakra-ui/react";
 import React from "react";
-import { SettingsSectionType } from "types";
-import { TranslationText } from "ui";
+import { HtmlDivProps, SettingsSectionType } from "types";
+import { TranslationText, Divider } from "ui";
 
 export interface SettingsSectionsSidebarProps {
-  innerProps?: StackProps;
+  innerProps?: HtmlDivProps;
   panelsInfo: Omit<SettingsSectionType, "panelComponent">[];
   onPanelClick?: (panelLink: string) => any;
   currentActive?: string | null;
@@ -13,35 +12,27 @@ export interface SettingsSectionsSidebarProps {
 export const SettingsSectionsSidebar: React.FC<SettingsSectionsSidebarProps> =
   ({ innerProps, panelsInfo, onPanelClick, currentActive }) => {
     return (
-      //@ts-ignore
-      <Stack
-        spacing={"0px"}
-        divider={<Divider borderWidth={"1px"} borderColor={"primary.100"} />}
-        borderRightWidth={"1px"}
-        borderColor="primary.100"
+      <div
+        className="flex cursor-pointer flex-col border-r-[1px] border-primary-100"
         {...innerProps}
       >
         {Array.isArray(panelsInfo) &&
-          panelsInfo.map(({ panelIcon, panelName, panelUrl }, i) => (
-            <Flex
-              cursor={"pointer"}
+          panelsInfo.map(({ panelIcon: Icon, panelName, panelUrl }, i) => (
+            <div
               onClick={() => onPanelClick && onPanelClick(panelUrl)}
-              _hover={{ bgColor: "primary.light" }}
-              bgColor={currentActive === panelUrl ? "primary.50" : "unset"}
-              p="1rem"
-              className="px-8 items-center"
-              gap="1rem"
+              className={`${
+                currentActive === panelUrl ? "bg-primary-50" : ""
+              } hover:bg-primary-light flex gap-2 py-4 px-8 items-center`}
             >
-              <Icon mt="0.25em" fontSize={"lg"} as={panelIcon} />
-              <Flex direction={"column"}>
+              <Icon className="text-2xl" />
+              <div className="flex flex-col">
                 <TranslationText
                   className="font-bold"
                   translationObject={panelName}
                 />
-                {/* <TranslationText translationObject={panelDescription} /> */}
-              </Flex>
-            </Flex>
+              </div>
+            </div>
           ))}
-      </Stack>
+      </div>
     );
   };

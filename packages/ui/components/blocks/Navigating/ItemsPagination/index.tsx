@@ -33,7 +33,9 @@ export const ItemsPagination: React.FC<ItemsPaginationProps> = ({
         className={"w-fit min-w-[4rem]"}
       >
         {[...Array(10)].map((_, i) => (
-          <SelectOption value={i + 1}>{i + 1}</SelectOption>
+          <SelectOption className="whitespace-nowrap" value={i + 1}>
+            {i + 1}
+          </SelectOption>
         ))}
       </Select>
       <p>

@@ -5,7 +5,7 @@ import {
   ShopInformationStep,
   SelectPackageStep,
   PaymentPortal,
-  ShippingSettings,
+  NewShippingSettings,
   FindYourFriendsStep,
   AddProfilePictureStep,
   MultiStepFromHandle,
@@ -35,7 +35,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
     },
     {
       stepName: t("Shipping Settings", "Shipping Settings"),
-      stepComponent: ShippingSettings,
+      stepComponent: NewShippingSettings,
       key: "4",
     },
     {

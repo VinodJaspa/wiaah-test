@@ -34,22 +34,22 @@ export type HtmlTableProps = DetailedHTMLProps<
   HTMLTableElement
 >;
 export type HtmlTableBodyProps = DetailedHTMLProps<
-  HTMLAttributes<HTMLElement>,
-  HTMLElement
+  HTMLAttributes<HTMLTableSectionElement>,
+  HTMLTableSectionElement
 >;
 export type HtmlTableHeadProps = DetailedHTMLProps<
-  HTMLAttributes<HTMLElement>,
-  HTMLElement
+  HTMLAttributes<HTMLTableSectionElement>,
+  HTMLTableSectionElement
 >;
 export type HtmlTrProps = DetailedHTMLProps<
   HTMLAttributes<HTMLTableRowElement>,
   HTMLTableRowElement
 >;
 export type HtmlTdProps = DetailedHTMLProps<
-  TdHTMLAttributes<HTMLElement>,
-  HTMLElement
+  TdHTMLAttributes<HTMLTableCellElement>,
+  HTMLTableCellElement
 >;
 export type HtmlThProps = DetailedHTMLProps<
-  ThHTMLAttributes<HTMLElement>,
-  HTMLElement
+  ThHTMLAttributes<HTMLTableCellElement>,
+  HTMLTableCellElement
 >;

@@ -11,14 +11,14 @@ export interface FormikInputProps extends HtmlInputProps {
   containerProps?: HtmlDivProps;
 }
 
-export const FormikInput: React.FC<FormikInputProps> = ({
+export function FormikInput<T>({
   label,
   name,
   children,
   as = Input,
   containerProps,
   ...props
-}) => {
+}: FormikInputProps & T) {
   return (
     <>
       <div
@@ -36,4 +36,4 @@ export const FormikInput: React.FC<FormikInputProps> = ({
       </div>
     </>
   );
-};
+}

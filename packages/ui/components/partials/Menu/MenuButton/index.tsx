@@ -1,21 +1,18 @@
 import React from "react";
 import { HtmlDivProps } from "types";
 import { MenuChildProps } from "ui";
-import { ElementChilds } from "../Menu";
+import { ElementChilds, MenuContext } from "../Menu";
 
-export interface MenuButtonProps
-  extends Partial<MenuChildProps & Omit<HtmlDivProps, "children">> {
-  children: ElementChilds;
+export interface MenuButtonProps extends Omit<HtmlDivProps, "children"> {
+  children: React.ReactElement;
 }
 
-export const MenuButton: React.FC<MenuButtonProps> = ({
-  ToggleMenu,
-  children,
-}) => {
+export const MenuButton: React.FC<MenuButtonProps> = ({ children }) => {
+  const { onToggle } = React.useContext(MenuContext);
   return (
     <>
       {!Array.isArray(children) &&
-        React.cloneElement(children, { onClick: ToggleMenu })}
+        React.cloneElement(children, { onClick: onToggle })}
     </>
   );
 };

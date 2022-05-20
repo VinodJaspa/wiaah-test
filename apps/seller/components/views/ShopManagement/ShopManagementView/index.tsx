@@ -1,10 +1,14 @@
-import { Flex, useDimensions } from "@chakra-ui/react";
+import { useDimensions } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { MdOutlineShoppingBasket, MdOutlineReviews } from "react-icons/md";
+import {
+  MdOutlineShoppingBasket,
+  MdOutlineComment,
+  MdOutlineLocalShipping,
+} from "react-icons/md";
 import { SettingsSectionType } from "types";
-import { BiHistory } from "react-icons/bi";
+import { FaHistory } from "react-icons/fa";
 import { BsBoxArrowInUp } from "react-icons/bs";
 import {
   AffiliationIcon,
@@ -14,6 +18,8 @@ import {
   AffiliationHistorySection,
   CanceledOrdersSection,
   ReviewsSection,
+  ShippingSettingsSection,
+  AffiliationManagementSection,
 } from "ui";
 import { NotFoundSection } from "../../AccountSettings";
 
@@ -52,14 +58,10 @@ export const ShopManagementView: React.FC<ShopManagementViewProps> = ({}) => {
   };
 
   return (
-    <Flex h="100%" w="100%" justify={"end"} gap="2rem">
+    <div className="h-full w-full flex justify-end gap-8">
       <div className="fixed left-[5rem]" ref={leftPanelRef}>
         {!isTablet && (
-          <Flex
-            w={{ base: "100%", sm: "10rem", md: "15rem", lg: "20rem" }}
-            direction={"column"}
-            gap="1rem"
-          >
+          <div className="gap-4 w-full sm:w-40 md:w-[15rem] xl:w-[20rem] flex flex-col px-2">
             <p className="text-xl px-4 font-bold">
               {t("shop_management", "Shop Management")}
             </p>
@@ -73,21 +75,20 @@ export const ShopManagementView: React.FC<ShopManagementViewProps> = ({}) => {
                 })
               }
               panelsInfo={sections}
-              innerProps={{
-                w: "100%",
-              }}
             />
-          </Flex>
+          </div>
         )}
       </div>
-      <Flex
-        w={`calc(100% - ${leftPanelwidth + minGap}px)`}
-        pr={`${minGap}px`}
-        h="full"
+      <div
+        style={{
+          width: `calc(100% - ${leftPanelwidth + minGap}px)`,
+          paddingRight: minGap,
+        }}
+        className={`h-full`}
       >
         <>{CurrentSection()}</>
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   );
 };
 
@@ -108,14 +109,14 @@ const sections: SettingsSectionType[] = [
     },
     panelIcon: AffiliationIcon,
     panelUrl: "/affiliation-management",
-    panelComponent: <>affiliation management</>,
+    panelComponent: <AffiliationManagementSection />,
   },
   {
     panelName: {
       translationKey: "affiliation_history",
       fallbackText: "Affiliation History",
     },
-    panelIcon: BiHistory,
+    panelIcon: FaHistory,
     panelUrl: "/affiliation-history",
     panelComponent: <AffiliationHistorySection />,
   },
@@ -130,10 +131,19 @@ const sections: SettingsSectionType[] = [
   },
   {
     panelName: {
+      translationKey: "shipping_settings",
+      fallbackText: "Shipping Settings",
+    },
+    panelIcon: MdOutlineLocalShipping,
+    panelUrl: "/shipping-settings",
+    panelComponent: <ShippingSettingsSection />,
+  },
+  {
+    panelName: {
       translationKey: "reviews",
       fallbackText: "Reviews",
     },
-    panelIcon: MdOutlineReviews,
+    panelIcon: MdOutlineComment,
     panelUrl: "/reviews",
     panelComponent: <ReviewsSection />,
   },

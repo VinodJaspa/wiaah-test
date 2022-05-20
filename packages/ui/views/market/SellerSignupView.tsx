@@ -2,9 +2,10 @@ import React, { FC } from "react";
 import { Input } from "antd";
 import { IoMdMail, IoMdKey, IoMdPerson } from "react-icons/io";
 import Link from "next/link";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 export const SellerSignupView: FC = () => {
+  const { t } = useTranslation();
   return (
     <div id="SellerSignupView">
       <h2 className="text-3xl capitalize">
