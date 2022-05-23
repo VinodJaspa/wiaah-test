@@ -1,23 +1,11 @@
 import React from "react";
-import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
-import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
-export interface DividerProps {
-  height?: CSSValueUnit;
-  marginY?: CSSValueUnit;
-  color?: string;
-}
-export const Divider: React.FC<DividerProps> = ({ height, marginY, color }) => {
-  const styles: React.CSSProperties = {
-    height: height ? CSSValueUnitToString(height) : "1px",
-    marginTop: marginY ? CSSValueUnitToString(marginY) : "1rem",
-    marginBottom: marginY ? CSSValueUnitToString(marginY) : "1rem",
-  };
-  if (color) {
-    styles.backgroundColor = color;
-  }
+import { HtmlDivProps } from "types";
+export interface DividerProps extends HtmlDivProps {}
+export const Divider: React.FC<DividerProps> = ({ className, ...props }) => {
   return (
-    <>
-      <div style={styles} className={`flex w-full bg-gray-200`}></div>
-    </>
+    <div
+      {...props}
+      className={`${className || "border-gray-300"} border-b-2 `}
+    ></div>
   );
 };

@@ -1,10 +1,10 @@
 import React from "react";
+import { HtmlDivProps } from "types";
 
-export interface DropdownPanelProps {
+export interface DropdownPanelProps extends HtmlDivProps {
   name: string;
   open?: boolean;
   subPanel?: boolean;
-
   columns?: 1 | 2 | 3;
 }
 
@@ -13,8 +13,9 @@ export const DropdownPanel: React.FC<DropdownPanelProps> = ({
   children,
   open = false,
   columns = 1,
-
   subPanel,
+  className,
+  ...props
 }) => {
   const [Opened, setOpened] = React.useState<boolean>(open);
   const [ChildrensContainerStyle, setChildrensContainerStyle] =
@@ -40,7 +41,10 @@ export const DropdownPanel: React.FC<DropdownPanelProps> = ({
   }
   return (
     <div
-      className={`bg-white ${subPanel ? "w-full pl-4" : "w-60 px-4 shadow-md"}`}
+      className={` bg-white ${
+        subPanel ? "w-full pl-4" : "w-60 px-4 pb-2 shadow-md"
+      } ${className ? className : ""} `}
+      {...props}
     >
       <div
         onClick={() => handleDropdownToggle()}

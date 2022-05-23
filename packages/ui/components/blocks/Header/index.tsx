@@ -30,10 +30,9 @@ export interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({ categories }) => {
   const items = useRecoilValue(ShoppingCartItemsState);
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const sidebar = React.useContext(SidebarContext);
   const [isopen, setisopen] = React.useState(false);
   const { t } = useTranslation();
-  const putsteps = Math.round(Math.random() * 5) > 5;
+
   const steps: Step[] = categories.map((cate, i) => ({
     label: cate.name.fallbackText,
     url: cate.destination,
@@ -87,15 +86,7 @@ export const Header: React.FC<HeaderProps> = ({ categories }) => {
       {/* Top Navbar */}
 
       <Container>
-        <Flex
-          w="100%"
-          h="fit"
-          py="1rem"
-          gap="1rem"
-          justify={"space-between"}
-          direction={{ base: "column", lg: "row" }}
-          align="center"
-        >
+        <div className="w-full h-fit yp-4 gap-4 items-center justify-between flex-col lg:flex-row">
           <div className="h-20 cursor-pointer">
             <Link href="/">
               <img
@@ -106,15 +97,7 @@ export const Header: React.FC<HeaderProps> = ({ categories }) => {
             </Link>
           </div>
 
-          <Flex
-            borderColor="primary.main"
-            rounded={"lg"}
-            borderWidth={"1px"}
-            gap={{ base: "1rem", sm: "0rem" }}
-            direction={{ base: "column", sm: "row" }}
-            maxW="40rem"
-            justifySelf={"stretch"}
-          >
+          <div className="border-primary rounded-lg border-[1px] flex-col sm:flex-row max-w-[40rem] justify-items-stretch">
             <input
               className="w-60 appearance-none rounded-l-lg border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none"
               placeholder={t("Search", "Search")}
@@ -145,7 +128,7 @@ export const Header: React.FC<HeaderProps> = ({ categories }) => {
             >
               <FaSearch className="h-5 w-5 text-white" />
             </Button>
-          </Flex>
+          </div>
 
           <div className="flex text-white">
             <ul className="inline-flex items-center gap-8">
@@ -166,7 +149,7 @@ export const Header: React.FC<HeaderProps> = ({ categories }) => {
               />
             </ul>
           </div>
-        </Flex>
+        </div>
       </Container>
       <div className="flex w-full bg-gray-800 px-6 py-4 text-white">
         <Container>

@@ -1,4 +1,3 @@
-import { Flex, HStack, Text, IconButton, Box } from "@chakra-ui/react";
 import React, { AudioHTMLAttributes } from "react";
 import { DetailedHTMLProps } from "react";
 import { useTranslation } from "react-i18next";
@@ -31,7 +30,7 @@ export const AudioMessageAttachment: React.FC<AudioMessageProps> = ({
       }
     }
   }, [play]);
-  // const { hours, minutes, seconds } =
+
   function handlePlay() {
     setPlay(true);
   }
@@ -52,8 +51,8 @@ export const AudioMessageAttachment: React.FC<AudioMessageProps> = ({
     setPlay((play) => !play);
   }
   return (
-    <Box position={"relative"}>
-      <Box position={"absolute"} visibility="hidden">
+    <div className="relative">
+      <div className="absolute hidden">
         <audio
           onTimeUpdate={handleChangeCurrentTime}
           onPlay={handlePlay}
@@ -61,36 +60,38 @@ export const AudioMessageAttachment: React.FC<AudioMessageProps> = ({
           ref={audioRef}
           {...rest}
         />
-      </Box>
-      <Flex gap="0.5rem" align={"center"}>
-        <IconButton
-          colorScheme={"gray"}
-          variant="icon"
-          p="0.25em"
-          color={"primary.700"}
-          bgColor="primary.300"
-          rounded={"full"}
-          aria-label={t("start_audio", "start audio")}
-          as={play ? BsPauseFill : BsPlayFill}
+      </div>
+      <div className="gap-2 items-center">
+        <div
+          className="p-1 text-primary-700 bg-primary-300"
           onClick={handleTogglePlaying}
-        />
-        <HStack spacing={"0.1rem"}>
+        >
+          {play ? (
+            <BsPauseFill className="rounded-full" />
+          ) : (
+            <BsPlayFill className="rounded-full" />
+          )}
+        </div>
+        <div className="flex items-center gap-[0.1rem]">
           {audioTicks.map((h, i) => (
-            <Box
+            <div
               key={i}
-              w="0.3em"
-              h={h}
-              bgColor={i < currentAudioTick ? "primary.main" : "lightgray"}
-            ></Box>
+              style={{
+                height: h,
+              }}
+              className={`${
+                i < currentAudioTick ? "primary.main" : "lightgray"
+              } w-[0.3em]`}
+            />
           ))}
-        </HStack>
+        </div>
         {audioRef.current && audioRef.current.duration !== NaN && (
-          <Text color="lightgray">
+          <p className="text-gray-300">
             <DisplayDuration duration={audioRef.current.duration} />
-          </Text>
+          </p>
         )}
-      </Flex>
-    </Box>
+      </div>
+    </div>
   );
 };
 

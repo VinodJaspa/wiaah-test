@@ -1,21 +1,19 @@
-import {
-  Button,
-  TableContainer,
-  Table,
-  Thead,
-  Tr,
-  Td,
-  Tbody,
-  HStack,
-  IconButton,
-  Image,
-} from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiEdit } from "react-icons/bi";
 import { IoTrash } from "react-icons/io5";
 import { ProductManagementDetailsDataType } from "types";
-import { ItemsPagination, useEditProductData } from "ui";
+import {
+  ItemsPagination,
+  useEditProductData,
+  Button,
+  Table,
+  Th,
+  TBody,
+  Tr,
+  Td,
+} from "ui";
+import { THead } from "../../../partials";
 
 export interface ProductDetailsTableProps {}
 
@@ -33,62 +31,51 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
         </Button>
       </div>
       <div className="flex flex-col gap-4 shadow p-4">
-        <TableContainer className="noScroll">
-          <Table colorScheme={"primary"} size={"lg"}>
-            <Thead>
+        <div className="noScroll">
+          <Table className="w-full">
+            <THead>
               <Tr>
-                <Td>{t("image", "Image")}</Td>
-                <Td>{t("product", "Product")}</Td>
-                <Td>{t("price", "Price")}</Td>
-                <Td>{t("stock_status", "Stock Status")}</Td>
-                <Td>{t("earnings", "Earnings")}</Td>
-                <Td>{t("sales", "Sales")}</Td>
-                <Td>{t("status", "Status")}</Td>
-                <Td>{t("action", "Action")}</Td>
+                <Th>{t("image", "Image")}</Th>
+                <Th>{t("product", "Product")}</Th>
+                <Th>{t("price", "Price")}</Th>
+                <Th>{t("stock_status", "Stock Status")}</Th>
+                <Th>{t("earnings", "Earnings")}</Th>
+                <Th>{t("sales", "Sales")}</Th>
+                <Th>{t("status", "Status")}</Th>
+                <Th>{t("action", "Action")}</Th>
               </Tr>
-            </Thead>
-            <Tbody>
+            </THead>
+            <TBody>
               {products.map((product, i) => (
                 <Tr key={product.id + i}>
-                  <Td>
-                    <Image
-                      className="h-full w-auto"
+                  <Td align="center" className="w-24">
+                    <img
+                      className="h-auto w-full"
                       src={product.image}
                       alt={product.name}
                     />
                   </Td>
-                  <Td>{product.name}</Td>
-                  <Td isNumeric>
+                  <Td align="center">{product.name}</Td>
+                  <Td align="center">
                     {product.price.amount} {product.price.currency}
                   </Td>
-                  <Td>{product.stockStatus}</Td>
-                  <Td isNumeric>
+                  <Td align="center">{product.stockStatus}</Td>
+                  <Td align="center">
                     {product.earnings.amount} {product.earnings.currency}
                   </Td>
-                  <Td isNumeric>{product.sales}</Td>
-                  <Td>{product.status}</Td>
-                  <Td>
-                    <HStack>
-                      <IconButton
-                        aria-label={t("delete_product", "Delete Product")}
-                        variant="icon"
-                        fontSize={"x-large"}
-                        as={BiEdit}
-                      />
-                      <IconButton
-                        aria-label={t("delete_product", "Delete Product")}
-                        variant="icon"
-                        fontSize={"x-large"}
-                        color="red"
-                        as={IoTrash}
-                      />
-                    </HStack>
+                  <Td align="center">{product.sales}</Td>
+                  <Td align="center">{product.status}</Td>
+                  <Td align="center">
+                    <div className="flex items-center gap-2">
+                      <BiEdit className="text-xl cursor-pointer" />
+                      <IoTrash className="text-red-700 text-xl cursor-pointer" />
+                    </div>
                   </Td>
                 </Tr>
               ))}
-            </Tbody>
+            </TBody>
           </Table>
-        </TableContainer>
+        </div>
         <ItemsPagination currentPage={2} maxItemsNum={30} />
       </div>
     </div>

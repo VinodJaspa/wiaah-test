@@ -1,34 +1,34 @@
-import React, { Children, DetailedHTMLProps, InputHTMLAttributes } from "react";
-import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
+import React from "react";
 import { useOutsideClick } from "ui/Hooks";
-import { CSSValueUnitToString } from "ui/components/helpers";
 import {
-  Input,
-  InputProps,
   InputGroup,
   InputLeftElement,
   InputRightElement,
 } from "@chakra-ui/react";
-export interface SearchInputProps extends InputProps {
+import { Input } from "ui";
+import { HtmlInputProps } from "types";
+export interface SearchFilterInputProps extends HtmlInputProps {
   value: string;
   icon?: () => JSX.Element | undefined;
   initialValue?: string;
   rightElement?: JSX.Element;
   components?: Component[];
   onSelection?: (value: string) => void;
+  onNotFound?: (found: boolean) => any;
 }
 interface Component {
   name: string;
   value?: string;
   comp: React.ReactElement;
 }
-export const SearchFilterInput: React.FC<SearchInputProps> = ({
+export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
   icon,
   initialValue,
   components = [],
   onSelection,
   value,
   rightElement,
+  onNotFound,
   ...props
 }) => {
   // const [value, setValue] = React.useState<string>(initialValue || "");
@@ -50,6 +50,7 @@ export const SearchFilterInput: React.FC<SearchInputProps> = ({
           return item.name.toLowerCase().includes(value.toLowerCase());
         })
       );
+      onNotFound && onNotFound(components.length > 0);
     }
   }, [value]);
   function handleSelect(index: number) {
@@ -71,7 +72,6 @@ export const SearchFilterInput: React.FC<SearchInputProps> = ({
         </InputLeftElement>
       )}
       {rightElement && <InputRightElement>{rightElement}</InputRightElement>}
-      {/* @ts-ignore */}
       <Input
         style={inputStyles}
         onFocus={() => setDropdownOpen(true)}

@@ -1,41 +1,39 @@
-import { Flex, FlexProps, Input, InputProps, Text } from "@chakra-ui/react";
+// import {  } from "@chakra-ui/react";
 import { ErrorMessage, Field } from "formik";
 import React from "react";
-import { TranslationTextType } from "types";
-import { TranslationText } from "ui";
+import { HtmlDivProps, TranslationTextType, HtmlInputProps } from "types";
+import { TranslationText, Input } from "ui";
 
-export interface FormikInputProps extends InputProps {
+export interface FormikInputProps extends HtmlInputProps {
   label?: TranslationTextType;
   name: string;
-  containerProps?: FlexProps;
+  as?: React.ReactNode;
+  containerProps?: HtmlDivProps;
 }
 
-export const FormikInput: React.FC<FormikInputProps> = ({
+export function FormikInput<T>({
   label,
   name,
   children,
   as = Input,
   containerProps,
   ...props
-}) => {
+}: FormikInputProps & T) {
   return (
     <>
-      <Flex
-        {...containerProps}
-        direction={containerProps?.direction || "column"}
+      <div
+        className={`${
+          containerProps ? containerProps.className : ""
+        } flex flex-col`}
       >
         {label && (
-          <TranslationText
-            whiteSpace={"nowrap"}
-            fontWeight={"Bold"}
-            translationObject={label}
-          />
+          <TranslationText className="font-bold" translationObject={label} />
         )}
         <Field {...props} as={as} name={name}>
           {children}
         </Field>
         <ErrorMessage name={name} />
-      </Flex>
+      </div>
     </>
   );
-};
+}

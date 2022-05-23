@@ -4,6 +4,8 @@ import { Rate } from "antd";
 import { Select } from "antd";
 import { Button, DropdownPanel, FilterInput, FlexStack, Spacer } from "ui";
 import { Country, City } from "country-state-city";
+import { Category } from "types";
+import { useTranslation } from "react-i18next";
 
 export interface ShopProductFilterProps {
   priceRange?: { min: number; max: number };
@@ -18,11 +20,6 @@ export interface ShopProductFilterProps {
   categories?: Category[];
   brands?: string[];
   open?: boolean;
-}
-
-export interface Category {
-  name: string;
-  subCategories: Category[];
 }
 
 const { Option } = Select;
@@ -48,6 +45,7 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
   brands,
   open,
 }) => {
+  const { t } = useTranslation();
   const [countryCode, setCountryCode] = useState("");
   const [cities, setCities] = useState<any | []>();
   function handleCountryChange(value: any) {

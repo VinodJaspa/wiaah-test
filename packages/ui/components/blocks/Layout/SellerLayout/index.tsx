@@ -13,18 +13,19 @@ import { CgPlayButtonR } from "react-icons/cg";
 import { AiOutlineShop, AiFillShop } from "react-icons/ai";
 import { UsersProfiles } from "ui";
 import { NavigationLinkType } from "types/sharedTypes/misc/SellerNavigationLink";
-import { Box, BoxProps, Divider, Flex, Text } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
 import { SellerDrawerOpenState } from "ui/state";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import {
-  useResponsive,
+  // useResponsive,
   MinimalHeader,
   DiscoverHeader,
   LocationButton,
   SocialFooter,
 } from "ui";
+import { HtmlDivProps } from "types";
+import { Divider } from "../../../partials";
 
 const NavigationLinks: NavigationLinkType[] = [
   {
@@ -142,7 +143,7 @@ export type HeadersTypes = "main" | "discover" | "minimal";
 export interface SellerLayoutProps {
   header?: HeadersTypes;
   sideBar?: boolean;
-  containerProps?: BoxProps;
+  containerProps?: HtmlDivProps;
   noContainer?: boolean;
 }
 
@@ -155,11 +156,15 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
 }) => {
   const { t } = useTranslation();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
-  const { isMobile } = useResponsive();
+  // const { isMobile } = useResponsive();
+  const isMobile = false;
   const headerRef = React.useRef<HTMLDivElement>(null);
   const headerHeight = headerRef?.current?.offsetHeight;
   const router = useRouter();
-  const route = router.pathname.split("/")[1];
+  const route =
+    router && typeof router.pathname === "string"
+      ? router.pathname.split("/")[1]
+      : "";
 
   const handleLinkClick = (link: NavigationLinkType) => {
     const Link = link.url.length < 1 ? "/" : link.url;
@@ -173,37 +178,27 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
         onLinkClick={handleLinkClick}
         links={NavigationLinks}
       >
-        <p
-          className="capitalize px-8 py-4 font-bold"
-          // textTransform={"capitalize"}
-          // px="2rem"
-          // py="1rem"
-          // fontWeight={"bold"}
-        >
+        <p className="capitalize px-8 py-4 font-bold">
           {t("discover_your_town", "discover your town")}
         </p>
 
-        <Flex direction={"column"} gap="1rem">
+        <div className="flex flex-col gap-4">
           {placesPlaceholder.map((place, i) => (
-            <LocationButton
-              style={{ px: "2rem" }}
-              locationName={place}
-              key={i}
-            />
+            <LocationButton style={{ px: "2rem" }} name={place} key={i} />
           ))}
-        </Flex>
+        </div>
         <Divider />
-        <Box textTransform={"capitalize"} px="2rem">
-          <Text py="1rem" fontWeight={"bold"} textTransform={"capitalize"}>
+        <div className="capitalize px-8">
+          <span className="py-4 font-bold capitalize">
             {t("suggestions", "suggestions")}
-          </Text>
+          </span>
           <UsersProfiles
             maxShowMoreItems={8}
             maxLongItems={5}
             variant="long"
             users={usersProfilesPlaceHolder}
           />
-        </Box>
+        </div>
       </SellerNavigationDrawer>
       {sideBar && (
         <SellerNavigationSideBar
@@ -224,14 +219,9 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
         } h-full`}
       >
         {header && header !== null && (
-          <Box
+          <div
+            className="bg-white fixed z-10 w-full top-0 left-0"
             ref={headerRef}
-            bgColor={"white"}
-            position="fixed"
-            zIndex={10}
-            w="100%"
-            top="0px"
-            left="0px"
           >
             <Container
               className={`${
@@ -240,24 +230,19 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
             >
               <HeaderSwitcher headerType={header} />
             </Container>
-          </Box>
+          </div>
         )}
-        <Flex
-          h="100%"
-          w="100%"
-          gap="1rem"
-          direction={"column"}
-          justify={"space-between"}
-        >
-          <Box
+        <div className="w-full h-full gap-4 flex flex-col justify-between">
+          <main
+            style={{
+              paddingTop: `calc(${headerHeight || 0}px + 1rem)`,
+            }}
             {...containerProps}
-            pt={`calc(${headerHeight || 0}px + 1rem)`}
-            as={"main"}
           >
             {children}
-          </Box>
+          </main>
           <SocialFooter copyRightYear={2022} />
-        </Flex>
+        </div>
       </Container>
     </Root>
   );

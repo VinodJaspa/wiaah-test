@@ -1,42 +1,46 @@
-import { HStack, Avatar, Flex, Text, StackProps } from "@chakra-ui/react";
 import React from "react";
-import { Verified } from "ui";
-import { UserProfileData, UsersProfilesVariant } from "types";
+import { Verified, Avatar } from "ui";
+import { HtmlDivProps, UserProfileData, UsersProfilesVariant } from "types";
 
-export interface UserProfileProps {
+export interface UserProfileProps extends HtmlDivProps {
   user: UserProfileData;
   variant?: UsersProfilesVariant;
-  style?: StackProps;
 }
 
 export const UserProfile: React.FC<UserProfileProps> = ({
   user,
   variant,
-  style,
+  ...props
 }) => {
   return (
-    <HStack {...style} data-testid="UserProfile" spacing="1rem">
+    <div
+      {...props}
+      data-testid="UserProfile"
+      className="flex gap-4 items-center"
+    >
       {variant === "narrow" ? (
-        <Avatar name={user.name} src={user.userPhotoSrc} />
+        <Avatar name={user.name} photoSrc={user.userPhotoSrc} />
       ) : (
         <>
-          <Avatar bgColor={"black"} name={user.name} src={user.userPhotoSrc} />
-          <Flex w="100%" direction={"column"}>
-            <HStack>
-              <Text data-testid="UserName">{user.name}</Text>
+          <Avatar
+            bgColor={"black"}
+            name={user.name}
+            photoSrc={user.userPhotoSrc}
+          />
+          <div className="flex w-full flex-col">
+            <div className="flex items-center gap-2">
+              <span data-testid="UserName">{user.name}</span>
               {user.verified && <Verified data-testid="UserVerified" />}
-            </HStack>
-            <Text
-              fontSize={"0.8em"}
-              fontWeight="normal"
-              textAlign={"start"}
+            </div>
+            <span
+              className="text-[0.8em] font-normal text-left"
               data-testid="UserActivity"
             >
               {user.activityType}
-            </Text>
-          </Flex>
+            </span>
+          </div>
         </>
       )}
-    </HStack>
+    </div>
   );
 };

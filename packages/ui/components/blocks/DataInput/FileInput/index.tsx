@@ -1,10 +1,11 @@
-import { Input, InputProps } from "@chakra-ui/react";
 import React from "react";
+import { HtmlInputProps } from "types";
+import { Input } from "ui";
 
 export interface FileInputProps {
   id: string;
   accept?: "video" | "picture" | "both" | "all";
-  innerProps?: InputProps;
+  innerProps?: HtmlInputProps;
   multiple?: boolean;
 }
 
@@ -26,7 +27,7 @@ export const FileInput: React.FC<FileInputProps> = ({
       <Input
         id={id}
         type="file"
-        display={"none"}
+        className="hidden"
         multiple={multiple}
         accept={
           accept === "both"

@@ -47,34 +47,34 @@ export const Pagination: React.FC<PaginationProps> = ({
           <li
             onClick={() => handlePrevPage(true)}
             id="FirstPageBtn"
-            className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-500 p-3"
+            className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-primary p-3"
           >
             <FaAngleDoubleLeft className="h-5 w-5" />
           </li>
           <li
             onClick={() => handlePrevPage()}
             id="PrevPageBtn"
-            className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-500 p-3"
+            className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-primary p-3"
           >
             <FaAngleLeft className="h-5 w-5" />
           </li>
           <li
             id="CurrentPage"
-            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-green-500 p-3"
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-primary p-3"
           >
             {currentPage}
           </li>
           <li
             onClick={() => handleNextPage()}
             id="NextPageBtn"
-            className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-500 p-3"
+            className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-primary p-3"
           >
             <FaAngleRight className="h-5 w-5" />
           </li>
           <li
             onClick={() => handleNextPage(true)}
             id="LastPageBtn"
-            className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-green-500 p-3"
+            className="flex h-10 w-10 cursor-pointer items-center rounded-full bg-primary p-3"
           >
             <FaAngleDoubleRight className="h-5 w-5" />
           </li>
