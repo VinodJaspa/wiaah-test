@@ -4,3 +4,4 @@ export * from "./useCommentReportModal";
 export * from "./useProductViewModal";
 export * from "./useShareWithModal";
 export * from "./useGeneralSearchModal";
+export * from "./useNewWithdrawal";

@@ -2,16 +2,24 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { MdPayment } from "react-icons/md";
-import { SectionHeader } from "ui";
-import { FormikInput } from "../../../../blocks";
-import { Button, Checkbox, Select, SelectOption } from "../../../../partials";
+import {
+  FormikInput,
+  Button,
+  Checkbox,
+  Select,
+  SelectOption,
+  SectionHeader,
+} from "ui";
 import * as yup from "yup";
+import { randomNum } from "../../../../helpers";
+import { SelectProps } from "../../../../partials";
 
 const paymentValidationSchema = yup.object().shape({});
 
 export const PaymentMethodsSection: React.FC = () => {
   const { t } = useTranslation();
   const [addNew, setAddNew] = React.useState<boolean>(true);
+  const [addNewInitial, setAddNewInitial] = React.useState({});
   return (
     <div className="flex flex-col w-full gap-6">
       <SectionHeader
@@ -29,15 +37,22 @@ export const PaymentMethodsSection: React.FC = () => {
           <img className="h-14 w-auto" src={provider} />
         ))}
       </div>
-      <div className="flex w-full justify-end">
-        <Button onClick={() => setAddNew(true)}>
-          {t("add_new", "Add New")}
-        </Button>
+      <div className="flex flex-wrap gap-4">
+        {PaymentCardDetials.map((info, i) => (
+          <PaymentCard key={i} cardInfo={info} />
+        ))}
       </div>
+      {!addNew && (
+        <div className="flex w-full justify-end">
+          <Button onClick={() => setAddNew(true)}>
+            {t("add_new", "Add New")}
+          </Button>
+        </div>
+      )}
       {addNew && (
         <Formik
           validationSchema={paymentValidationSchema}
-          initialValues={{}}
+          initialValues={addNewInitial}
           onSubmit={() => setAddNew(false)}
         >
           {({ setFieldValue }) => {
@@ -51,7 +66,10 @@ export const PaymentMethodsSection: React.FC = () => {
                   placeholder={t("card_holder_name", "Card Holder Name")}
                   name="cardHolderName"
                 />
-                <FormikInput
+                <FormikInput<SelectProps>
+                  onOptionSelect={(value) =>
+                    setFieldValue("expiryMonth", value)
+                  }
                   as={Select}
                   placeholder={t("expiry_month", "Expiry Month")}
                   name="expiryMonth"
@@ -91,3 +109,87 @@ const paymentProdviders: string[] = [
   "/mastercard.svg",
   "/american_express.svg",
 ];
+
+interface PaymentCardDetials {
+  cardId: string;
+  cardLastNumbers: number;
+  expirationDate: {
+    month: number;
+    year: number;
+  };
+}
+
+const PaymentCardDetials: PaymentCardDetials[] = [
+  {
+    cardId: `${randomNum(1561324355)}`,
+    cardLastNumbers: 1232,
+    expirationDate: {
+      year: 2021,
+      month: randomNum(12),
+    },
+  },
+  {
+    cardId: `${randomNum(1561324355)}`,
+    cardLastNumbers: 1232,
+    expirationDate: {
+      year: 2021,
+      month: randomNum(12),
+    },
+  },
+  {
+    cardId: `${randomNum(1561324355)}`,
+    cardLastNumbers: 1232,
+    expirationDate: {
+      year: 2021,
+      month: randomNum(12),
+    },
+  },
+];
+
+interface PaymentCardProps {
+  cardInfo: PaymentCardDetials;
+  onEdit?: (cardInfo: PaymentCardDetials) => any;
+}
+
+const PaymentCard: React.FC<PaymentCardProps> = ({ cardInfo, onEdit }) => {
+  const { t } = useTranslation();
+  return (
+    <div className="gap-2 p-1 text-xl rounded flex flex-col w-[min(100%,30rem)] bg-gray-200">
+      <div className="h-[3em] px-2 flex gap-4">
+        {paymentCardProviders.map((src, i) => (
+          <img className="h-full w-auto" src={src} />
+        ))}
+      </div>
+      <div className="p-2 bg-white rounded">
+        <div className="grid grid-cols-2 gap-2 w-fit">
+          <div className="flex flex-col text-gray-500">
+            {t("card_number", "Card Number")}
+            <span className="font-bold text-black">
+              {CardNumber({ lastNumbers: cardInfo.cardLastNumbers })}
+            </span>
+          </div>
+          <span
+            onClick={() => onEdit && onEdit(cardInfo)}
+            className="h-fit w-fit text-primary cursor-pointer"
+          >
+            {t("edit", "Edit")}
+          </span>
+          <div className="flex flex-col text-gray-500">
+            {t("expiration_date", "Expiration Date")}
+            <span className="font-bold text-black">
+              {cardInfo.expirationDate.month} {cardInfo.expirationDate.year}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CardNumber = ({ lastNumbers }: { lastNumbers: number }) => {
+  return `***********${lastNumbers}`;
+};
+
+const paymentCardProviders: string[] = paymentProdviders.concat([
+  "/discover.svg",
+]);

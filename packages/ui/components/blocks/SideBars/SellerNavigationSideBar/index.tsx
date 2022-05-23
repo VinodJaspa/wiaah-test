@@ -1,8 +1,9 @@
 import React from "react";
+import { HtmlDivProps } from "types";
 import { NavigationLinkType } from "types/sharedTypes/misc/SellerNavigationLink";
 import { useResponsive, Divider } from "ui";
 
-export interface SellerSideBarProps extends HTMLDivElement {
+export interface SellerSideBarProps extends HtmlDivProps {
   links: NavigationLinkType[];
   onLinkClick?: (link: NavigationLinkType) => any;
   activeLink?: string;

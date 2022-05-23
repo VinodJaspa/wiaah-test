@@ -72,7 +72,6 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
         </InputLeftElement>
       )}
       {rightElement && <InputRightElement>{rightElement}</InputRightElement>}
-      {/* @ts-ignore */}
       <Input
         style={inputStyles}
         onFocus={() => setDropdownOpen(true)}

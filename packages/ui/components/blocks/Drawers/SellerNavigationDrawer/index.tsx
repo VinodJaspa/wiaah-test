@@ -2,23 +2,16 @@ import {
   Drawer,
   DrawerOverlay,
   DrawerContent,
-  DrawerCloseButton,
   DrawerHeader,
   DrawerBody,
-  Flex,
-  HStack,
-  Icon,
-  Text,
-  Image,
   DrawerProps,
-  Button,
 } from "@chakra-ui/react";
 import React from "react";
 import { SellerDrawerOpenState } from "ui/state";
 import { HiMenu } from "react-icons/hi";
 import { useRecoilState } from "recoil";
 import { NavigationLinkType } from "types/sharedTypes/misc/SellerNavigationLink";
-import { useResponsive } from "ui";
+import { useResponsive, Button } from "ui";
 
 export interface SellerNavigationDrawerProps
   extends Omit<DrawerProps, "children" | "isOpen" | "onClose"> {
@@ -47,52 +40,32 @@ export const SellerNavigationDrawer: React.FC<SellerNavigationDrawerProps> = ({
       <DrawerOverlay />
       <DrawerContent>
         <DrawerHeader px="2rem" h="5rem" borderBottomWidth={"1px"}>
-          <HStack spacing="2rem" minW={"fit-content"} h="100%">
-            <Icon
-              onClick={() => setOpen(false)}
-              cursor={"pointer"}
-              fontSize={"xx-large"}
-              as={HiMenu}
-            />
-            <Image h="100%" objectFit={"contain"} src="/wiaah_logo.png" />
-          </HStack>
+          <div className="flex gap-8 items-center min-w-fit h-full">
+            <HiMenu className="cursor-pointer text-4xl" />
+            <img className="h-full object-contain" src="/wiaah_logo.png" />
+          </div>
         </DrawerHeader>
         <DrawerBody overflowY={"scroll"} className="thinScroll" px="0px">
-          <Flex gap="1rem" direction={"column"}>
+          <div className="flex gap-4 flex-col">
             {links.map((link, i) => (
-              <Button
-                px="0"
-                justifyContent={"start"}
-                color="black"
-                bgColor={"white"}
-                colorScheme={"gray"}
-              >
-                <HStack
+              <Button className="px-0 justify-start text-black bg-white hover:bg-gray-200 active:bg-gray-300">
+                <div
+                  className="px-8 flex gap-8 items-center py-2 w-full"
                   key={i}
-                  px="2rem"
-                  spacing="2rem"
-                  py="0.5rem"
-                  w="100%"
                   onClick={() => onLinkClick && onLinkClick(link)}
                 >
-                  <Icon
-                    w={"2rem"}
-                    h={"2rem"}
-                    fontSize={"xx-large"}
-                    as={activeLink === link.url ? link.activeIcon : link.icon}
-                  />
-                  <Text
-                    textTransform={"capitalize"}
-                    fontWeight={"semibold"}
-                    fontSize="lg"
-                  >
+                  <span className="w-8 h-8 text-4xl">
+                    {activeLink === link.url ? link.activeIcon : link.icon}
+                  </span>
+
+                  <span className="capitalize font-semibold text-xl">
                     {link.name}
-                  </Text>
-                </HStack>
+                  </span>
+                </div>
               </Button>
             ))}
             {children}
-          </Flex>
+          </div>
         </DrawerBody>
       </DrawerContent>
     </Drawer>

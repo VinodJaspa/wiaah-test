@@ -42,3 +42,4 @@ export * from "./PriceDisplay";
 export * from "./Rate";
 export * from "./Switch";
 export * from "./Accordion";
+export * from "./Modal";

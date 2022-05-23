@@ -9,8 +9,8 @@ import { useResponsive } from "ui";
 export const Root: React.FC = ({ children }) => {
   const { isMobile } = useResponsive();
   const router = useRouter();
-  const { locale, locales, defaultLocale } = router;
   const { i18n } = useTranslation();
+  const { locale, locales, defaultLocale } = router;
   React.useEffect(() => {
     console.log("Starting...");
     switch (locale) {

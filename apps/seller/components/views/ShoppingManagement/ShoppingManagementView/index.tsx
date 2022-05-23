@@ -3,6 +3,7 @@ import React from "react";
 import { MdList } from "react-icons/md";
 import { SettingsSectionType } from "types";
 import {
+  AddressBookSection,
   MyReturnsSection,
   MyWishListSection,
   OrdersSection,
@@ -12,6 +13,7 @@ import {
 import { MdPayment } from "react-icons/md";
 import { BsBoxArrowInUp } from "react-icons/bs";
 import { IoReturnUpBackSharp } from "react-icons/io5";
+import { GiPostStamp } from "react-icons/gi";
 
 export const ShoppingManagementView: React.FC = () => {
   const baseRoute = "shopping-management";
@@ -72,5 +74,14 @@ const sections: SettingsSectionType[] = [
     panelIcon: MdPayment,
     panelUrl: "/payment-motheds",
     panelComponent: <PaymentMethodsSection />,
+  },
+  {
+    panelName: {
+      translationKey: "address_book",
+      fallbackText: "Address Book",
+    },
+    panelIcon: GiPostStamp,
+    panelUrl: "/address-book",
+    panelComponent: <AddressBookSection />,
   },
 ];

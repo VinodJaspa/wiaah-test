@@ -23,12 +23,7 @@ export const MyReturnsSection: React.FC<MyReturnsSectionProps> = () => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4">
-      <SectionHeader
-        sectionTitle={{
-          translationKey: "my_returns",
-          fallbackText: "My Returns",
-        }}
-      />
+      <SectionHeader sectionTitle={t("my_returns", "My Returns")} />
       <Select
         className="text-2xl w-96"
         placeholder={t("filter_returns", "Filter Returns")}
@@ -125,7 +120,7 @@ const returnedProducts: ReturnedProductDetails[] = [...Array(5)].map(
 );
 
 export interface SectionHeaderProps extends HtmlDivProps {
-  sectionTitle: TranslationTextType;
+  sectionTitle: string;
 }
 
 export const SectionHeader: React.FC<SectionHeaderProps> = ({
@@ -136,10 +131,8 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
 }) => {
   return (
     <div {...props} className={`${className || ""} flex flex-col gap-2`}>
-      <div className="w-full justify-between items-center">
-        <span className="text-4xl font-semibold">
-          <TranslationText translationObject={sectionTitle} />
-        </span>
+      <div className="w-full flex justify-between items-center">
+        <span className="text-4xl font-semibold">{sectionTitle}</span>
         {children}
       </div>
       <Divider className="border-primary" />

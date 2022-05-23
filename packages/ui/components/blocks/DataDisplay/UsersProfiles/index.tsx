@@ -1,9 +1,8 @@
-import { Avatar, HStack, Flex, Text, FlexProps } from "@chakra-ui/react";
 import React from "react";
-import { UserProfileData, UsersProfilesVariant } from "types";
+import { HtmlDivProps, UserProfileData, UsersProfilesVariant } from "types";
 import { ScrollableContainer, UserProfile } from "ui";
 
-export interface UsersProfilesProps extends FlexProps {
+export interface UsersProfilesProps extends HtmlDivProps {
   users: UserProfileData[];
   variant?: UsersProfilesVariant;
   maxNarrowItems?: number;
@@ -20,7 +19,7 @@ export const UsersProfiles: React.FC<UsersProfilesProps> = ({
   ...props
 }) => {
   return (
-    <Flex {...props} direction={"column"} gap="1rem">
+    <div {...props} className="flex flex-col gap-4">
       <ScrollableContainer
         maxShowMoreItems={maxShowMoreItems}
         doesShowMore={variant === "narrow" ? false : true}
@@ -34,6 +33,6 @@ export const UsersProfiles: React.FC<UsersProfilesProps> = ({
               <UserProfile user={user} key={i} variant={variant} />
             ))}
       </ScrollableContainer>
-    </Flex>
+    </div>
   );
 };

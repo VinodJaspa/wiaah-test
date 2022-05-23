@@ -1,6 +1,5 @@
-import React, { DetailedHTMLProps, SelectHTMLAttributes } from "react";
-import { Select, SelectProps } from "@chakra-ui/react";
-
+import React from "react";
+import { Select, SelectOption, SelectProps } from "ui";
 export interface SelectDropdownProps extends SelectProps {
   name?: string;
   onSelection?: (value: string, index: number | undefined) => void;
@@ -23,28 +22,22 @@ export const SelectDropdown: React.FC<SelectDropdownProps> = ({
   ...props
 }) => {
   const [value, setValue] = React.useState<string | undefined>(initialValue);
-  function handleOptionSelection(e: React.ChangeEvent<HTMLSelectElement>) {
-    setValue(e.target.value);
+  function handleOptionSelection(value: string) {
+    setValue(value);
     if (onSelection) {
-      const i = options.findIndex((opt) => opt.value === e.target.value);
-      onSelection(e.target.value, i >= 0 ? i : undefined);
+      const i = options.findIndex((opt) => opt.value === value);
+      onSelection(value, i >= 0 ? i : undefined);
     }
   }
 
   return (
     <Select
       data-test="SelectDropdown"
-      value={value}
-      onChange={handleOptionSelection}
+      onOptionSelect={handleOptionSelection}
       {...props}
     >
-      {name && (
-        <option data-test="SelectHeader" className="text-gray-500 " selected>
-          {name}
-        </option>
-      )}
       {options.map((opt, i) => (
-        <option
+        <SelectOption
           key={i}
           data-test="SelectOption"
           className="flex gap-2 text-gray-500"
@@ -52,7 +45,7 @@ export const SelectDropdown: React.FC<SelectDropdownProps> = ({
         >
           {opt.prefix && <opt.prefix />}
           {opt.name}
-        </option>
+        </SelectOption>
       ))}
     </Select>
   );

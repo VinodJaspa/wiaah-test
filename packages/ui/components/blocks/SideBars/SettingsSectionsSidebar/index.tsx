@@ -19,6 +19,7 @@ export const SettingsSectionsSidebar: React.FC<SettingsSectionsSidebarProps> =
         {Array.isArray(panelsInfo) &&
           panelsInfo.map(({ panelIcon: Icon, panelName, panelUrl }, i) => (
             <div
+              key={panelUrl + i}
               onClick={() => onPanelClick && onPanelClick(panelUrl)}
               className={`${
                 currentActive === panelUrl ? "bg-primary-50" : ""
