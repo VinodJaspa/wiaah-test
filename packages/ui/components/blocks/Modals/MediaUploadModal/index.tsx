@@ -1,14 +1,14 @@
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-} from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiCamera, HiFolderAdd, HiVideoCamera } from "react-icons/hi";
-import { useFileUploadModal, PostsViewModalsHeader, Input } from "ui";
+import {
+  useFileUploadModal,
+  PostsViewModalsHeader,
+  Input,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+} from "ui";
 import { TakePictureModal, RecordVideoModal } from "ui";
 import { getFileSrcData, FileRes } from "ui/components/helpers";
 
@@ -43,7 +43,7 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
         setImageFiles([]);
       }
     } catch (err) {
-      console.error("img Convertion", err);
+      console.error(err);
     }
   }, [imageFiles]);
 
@@ -82,95 +82,92 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
     if (!img) return;
     onImgUpload && onImgUpload(img, imageFiles[idx]);
   }
+  function handleOpen() {}
 
   return (
-    <Modal isCentered isOpen={!!uploadType} onClose={cancelUpload}>
+    <Modal isOpen={!!uploadType} onClose={cancelUpload}>
       <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>
-          <PostsViewModalsHeader onBackClick={cancelUpload}>
-            <p>
-              {uploadImg
-                ? t("upload_a_picture", "Upload a Picture")
-                : uploadVid
-                ? t("upload_a_video", "Upload a Video")
-                : null}
-            </p>
-          </PostsViewModalsHeader>
-        </ModalHeader>
-        <ModalBody pb="2rem">
-          <div className="gap-8 justify-center flex flex-col sm:flex-row">
-            {uploadImg ? (
-              <>
-                <TakePictureModal
-                  isOpen={takePicture}
-                  onClose={() => setTakePicture(false)}
-                  onImgCapture={(src, raw) => {
-                    setTakePicture(false);
-                    onImgUpload && onImgUpload(src, raw);
-                  }}
+      <ModalContent className="w-[min(100%, 40rem)] rounded-xl py-4 px-8 flex flex-col gap-4">
+        <PostsViewModalsHeader onBackClick={cancelUpload}>
+          <p>
+            {uploadImg
+              ? t("upload_a_picture", "Upload a Picture")
+              : uploadVid
+              ? t("upload_a_video", "Upload a Video")
+              : null}
+          </p>
+        </PostsViewModalsHeader>
+        <div className="gap-8 justify-center flex flex-col sm:flex-row">
+          {uploadImg ? (
+            <>
+              <TakePictureModal
+                isOpen={takePicture}
+                onClose={() => setTakePicture(false)}
+                onImgCapture={(src, raw) => {
+                  setTakePicture(false);
+                  onImgUpload && onImgUpload(src, raw);
+                }}
+              />
+              <label htmlFor="AddImageInput">
+                <div className="cursor-pointer flex justify-center items-center h-32 w-32 rounded-xl border-2 border-primary">
+                  <HiFolderAdd className="text-4xl cursor-pointer text-primary" />
+                </div>
+                <Input
+                  className="hidden"
+                  id="AddImageInput"
+                  type={"file"}
+                  multiple={multiple}
+                  onChange={(e) => addImageFiles(e.target.files)}
+                  accept="image/*"
                 />
-                <label htmlFor="AddImageInput">
-                  <div className="cursor-pointer flex justify-center items-center h-32 w-32 rounded-xl border-2 border-primary">
-                    <HiFolderAdd className="text-4xl cursor-pointer text-primary" />
-                  </div>
-                  <Input
-                    className="hidden"
-                    id="AddImageInput"
-                    type={"file"}
-                    multiple={multiple}
-                    onChange={(e) => addImageFiles(e.target.files)}
-                    accept="image/*"
-                  />
-                </label>
-                <label htmlFor="TakePicture">
-                  <div
-                    className="h-32 w-32 rounded-xl border-2 cursor-pointer flex justify-center items-center border-primary"
-                    onClick={() => setTakePicture(true)}
-                  >
-                    <HiCamera className="text-primary text-4xl cursor-pointer" />
-                  </div>
-                </label>
-              </>
-            ) : uploadVid ? (
-              <>
-                <RecordVideoModal
-                  isOpen={recordVideo}
-                  onVideoRecored={(vid) => {
-                    console.log("recorded", vid);
-                    setVideoFiles([vid]);
-                  }}
-                  onClose={() => setRecordVideo(false)}
+              </label>
+              <label htmlFor="TakePicture">
+                <div
+                  className="h-32 w-32 rounded-xl border-2 cursor-pointer flex justify-center items-center border-primary"
+                  onClick={() => setTakePicture(true)}
+                >
+                  <HiCamera className="text-primary text-4xl cursor-pointer" />
+                </div>
+              </label>
+            </>
+          ) : uploadVid ? (
+            <>
+              <RecordVideoModal
+                isOpen={recordVideo}
+                onVideoRecored={(vid) => {
+                  console.log("recorded", vid);
+                  setVideoFiles([vid]);
+                }}
+                onClose={() => setRecordVideo(false)}
+              />
+              <label htmlFor="AddVideoInput">
+                <div
+                  className="h-32 w-32 rounded-xl border-2 cursor-pointer flex justify-center items-center border-primary"
+                  onClick={() => setTakePicture(true)}
+                >
+                  <HiFolderAdd className="text-primary text-4xl cursor-pointer" />
+                </div>
+                <Input
+                  className="hidden"
+                  id="AddVideoInput"
+                  type={"file"}
+                  multiple={multiple}
+                  //@ts-ignore
+                  onChange={(e) => setVideoFiles(e.target.files || null)}
+                  accept="video/*"
                 />
-                <label htmlFor="AddVideoInput">
-                  <div
-                    className="h-32 w-32 rounded-xl border-2 cursor-pointer flex justify-center items-center border-primary"
-                    onClick={() => setTakePicture(true)}
-                  >
-                    <HiFolderAdd className="text-primary text-4xl cursor-pointer" />
-                  </div>
-                  <Input
-                    className="hidden"
-                    id="AddVideoInput"
-                    type={"file"}
-                    multiple={multiple}
-                    //@ts-ignore
-                    onChange={(e) => setVideoFiles(e.target.files || null)}
-                    accept="video/*"
-                  />
-                </label>
-                <label htmlFor="RecordVdeo">
-                  <div
-                    className="h-32 w-32 rounded-xl border-2 cursor-pointer flex justify-center items-center border-primary"
-                    onClick={() => setRecordVideo(true)}
-                  >
-                    <HiVideoCamera className="text-primary text-4xl cursor-pointer" />
-                  </div>
-                </label>
-              </>
-            ) : null}
-          </div>
-        </ModalBody>
+              </label>
+              <label htmlFor="RecordVdeo">
+                <div
+                  className="h-32 w-32 rounded-xl border-2 cursor-pointer flex justify-center items-center border-primary"
+                  onClick={() => setRecordVideo(true)}
+                >
+                  <HiVideoCamera className="text-primary text-4xl cursor-pointer" />
+                </div>
+              </label>
+            </>
+          ) : null}
+        </div>
       </ModalContent>
     </Modal>
   );

@@ -80,11 +80,11 @@ export const Select: React.FC<SelectProps> = ({
         flushed ? "border-b-2" : "border-2"
       } border-gray-200 items-center flex  rounded relative`}
     >
-      <div className="flex w-full p-2 items-center justify-between">
-        <div
-          onClick={handleToggle}
-          className="cursor-pointer w-full flex items-center whitespace-nowrap "
-        >
+      <div
+        onClick={handleToggle}
+        className="flex w-full p-2 items-center justify-between"
+      >
+        <div className="cursor-pointer w-full flex items-center whitespace-nowrap ">
           {selectedOption &&
             React.cloneElement(selectedOption, { selectable: false })}
         </div>

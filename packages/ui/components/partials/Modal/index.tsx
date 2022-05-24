@@ -12,12 +12,14 @@ interface ModalExtendedContextValues {
   isOpen: (key?: string) => any;
   onOpen: (key?: string) => any;
   onClose: (key?: string) => any;
+  closeAll: () => any;
 }
 
 const ModalExtendedContext = React.createContext<ModalExtendedContextValues>({
   isOpen: () => {},
   onOpen: () => {},
   onClose: () => {},
+  closeAll: () => {},
 });
 
 const ModalContext = React.createContext<ModalContextValues>({
@@ -67,13 +69,13 @@ export const ModalContent: React.FC<ModalContentProps> = ({
   const [show, setShow] = React.useState<boolean>(false);
   const contentWrapperRef = React.useRef<HTMLDivElement>(null);
 
-  useOutsideClick(contentWrapperRef, onClose);
+  // useOutsideClick(contentWrapperRef, onClose);
 
   React.useEffect(() => {
     if (isOpen) {
       setShow(true);
     } else {
-      useCallbackAfter(100, () => setShow(false));
+      useCallbackAfter(1000, () => setShow(false));
     }
   }, [isOpen]);
 
@@ -131,6 +133,7 @@ export const ModalFooter: React.FC<ModalFooterProps> = ({
 
 export interface ModalButtonProps extends Partial<ExtendedModalPassedProps> {
   close?: boolean;
+  closeAll?: boolean;
   key?: string;
 }
 
@@ -139,10 +142,18 @@ export const ModalButton: React.FC<ModalButtonProps> = ({
   OpenModal,
   CloseModal,
   close,
+  closeAll,
   key,
 }) => {
-  const { onClose, onOpen } = React.useContext(ModalExtendedContext);
+  const {
+    onClose,
+    onOpen,
+    closeAll: onCloseAll,
+  } = React.useContext(ModalExtendedContext);
   function handleClick() {
+    if (closeAll) {
+      onCloseAll();
+    }
     if (close) {
       CloseModal && CloseModal();
       key && onClose(key);
@@ -206,10 +217,14 @@ export const ModalExtendedWrapper: React.FC<ModalExtendedWrapperProps> = ({
     setKeys((state) => state.filter((k) => k !== key));
   }
 
+  function closeAll() {
+    setKeys([]);
+  }
+
   return (
     <ModalExtendedContext.Provider
       {...props}
-      value={{ isOpen, onOpen, onClose }}
+      value={{ isOpen, onOpen, onClose, closeAll }}
     >
       {PassPropsToChild<ExtendedModalPassedProps>(children, {
         OpenModal: onOpen,

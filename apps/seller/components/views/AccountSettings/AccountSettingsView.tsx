@@ -10,6 +10,7 @@ import {
 import { HiUserGroup } from "react-icons/hi";
 import { MdCardMembership } from "react-icons/md";
 import { BiLock } from "react-icons/bi";
+import { MdVerified } from "react-icons/md";
 import { SettingsSectionType } from "types";
 import {
   AccountSettingsSection,
@@ -22,8 +23,39 @@ import {
   PrivacySection,
   SectionsLayout,
   AccountDeletionSection,
+  AccountVerification,
 } from "ui";
 import { ImBlocked } from "react-icons/im";
+
+export const AccountSettingsView: React.FC = () => {
+  const baseRoute = "settings";
+  const router = useRouter();
+  const { section } = router.query;
+  const route = Array.isArray(section) ? section[0] : section;
+
+  React.useEffect(() => {
+    if (!route) router.push(`/${baseRoute}/${sections[0].panelUrl}`);
+  }, [router, route]);
+
+  function handleSectionChange(url: string) {
+    router.replace(`/${baseRoute}/${url}`);
+  }
+  return (
+    <SectionsLayout
+      name={{
+        translationKey: "account_settings",
+        fallbackText: "Account Settings",
+      }}
+      currentSectionName={route}
+      sections={sections}
+      handleSectionChange={handleSectionChange}
+    />
+  );
+};
+
+export const NotFoundSection = () => {
+  return <div>not found</div>;
+};
 
 const sections: SettingsSectionType[] = [
   {
@@ -111,34 +143,13 @@ const sections: SettingsSectionType[] = [
     panelUrl: "/account_deletion",
     panelComponent: <AccountDeletionSection />,
   },
+  {
+    panelName: {
+      translationKey: "account_verification",
+      fallbackText: "Account Verification",
+    },
+    panelIcon: MdVerified,
+    panelUrl: "/account_verification",
+    panelComponent: <AccountVerification />,
+  },
 ];
-
-export const AccountSettingsView: React.FC = () => {
-  const baseRoute = "settings";
-  const router = useRouter();
-  const { section } = router.query;
-  const route = Array.isArray(section) ? section[0] : section;
-
-  React.useEffect(() => {
-    if (!route) router.push(`/${baseRoute}/${sections[0].panelUrl}`);
-  }, [router, route]);
-
-  function handleSectionChange(url: string) {
-    router.replace(`/${baseRoute}/${url}`);
-  }
-  return (
-    <SectionsLayout
-      name={{
-        translationKey: "account_settings",
-        fallbackText: "Account Settings",
-      }}
-      currentSectionName={route}
-      sections={sections}
-      handleSectionChange={handleSectionChange}
-    />
-  );
-};
-
-export const NotFoundSection = () => {
-  return <div>not found</div>;
-};

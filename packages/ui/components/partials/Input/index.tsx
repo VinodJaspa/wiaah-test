@@ -13,7 +13,7 @@ export const Input: React.FC<InputProps> = ({
     <input
       {...props}
       className={`${className || ""} ${
-        flushed ? "border-b-2" : "border-[1px]"
+        flushed ? "border-b-2" : "border-2"
       } border-gray-200 p-2 rounded`}
     />
   );
