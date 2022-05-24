@@ -1,10 +1,12 @@
-import { Flex, Text, useDimensions } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { BiKey } from "react-icons/bi";
 import { FiSettings } from "react-icons/fi";
-import { IoNotificationsOutline, IoNewspaperOutline } from "react-icons/io5";
+import {
+  IoNotificationsOutline,
+  IoNewspaperOutline,
+  IoTrash,
+} from "react-icons/io5";
 import { HiUserGroup } from "react-icons/hi";
 import { MdCardMembership } from "react-icons/md";
 import { BiLock } from "react-icons/bi";
@@ -18,11 +20,12 @@ import {
   NotificationsSettingsSection,
   PasswordSection,
   PrivacySection,
-  useResponsive,
-  SettingsSectionsSidebar,
+  SectionsLayout,
+  AccountDeletionSection,
 } from "ui";
+import { ImBlocked } from "react-icons/im";
 
-const settings: SettingsSectionType[] = [
+const sections: SettingsSectionType[] = [
   {
     panelName: {
       fallbackText: "Account",
@@ -86,7 +89,7 @@ const settings: SettingsSectionType[] = [
       translationKey: "blocklist",
       fallbackText: "Blocklist",
     },
-    panelIcon: BiLock,
+    panelIcon: ImBlocked,
     panelUrl: "/blocklist",
     panelComponent: <BlocklistSection />,
   },
@@ -99,73 +102,40 @@ const settings: SettingsSectionType[] = [
     panelUrl: "/privacy",
     panelComponent: <PrivacySection />,
   },
+  {
+    panelName: {
+      translationKey: "account_deletion",
+      fallbackText: "Account Deletion",
+    },
+    panelIcon: IoTrash,
+    panelUrl: "/account_deletion",
+    panelComponent: <AccountDeletionSection />,
+  },
 ];
 
 export const AccountSettingsView: React.FC = () => {
   const baseRoute = "settings";
-  const { t } = useTranslation();
   const router = useRouter();
-  const { isTablet } = useResponsive();
   const { section } = router.query;
-  const minGap = isTablet ? 0 : 48;
-
-  const leftPanelRef = React.useRef<HTMLDivElement>(null);
-
-  const leftPanelDims = useDimensions(leftPanelRef, true);
-
-  const leftPanelwidth = leftPanelDims ? leftPanelDims.borderBox.width : null;
-
   const route = Array.isArray(section) ? section[0] : section;
 
-  const sectionIdx = settings.findIndex(
-    (panel) => panel.panelUrl === `/${route}`
-  );
+  React.useEffect(() => {
+    if (!route) router.push(`/${baseRoute}/${sections[0].panelUrl}`);
+  }, [router, route]);
 
-  const CurrentSection = (): React.ReactElement => {
-    if (sectionIdx > -1) {
-      return settings[sectionIdx].panelComponent;
-    } else {
-      return NotFoundSection();
-    }
-  };
-
+  function handleSectionChange(url: string) {
+    router.replace(`/${baseRoute}/${url}`);
+  }
   return (
-    <Flex h="100%" w="100%" justify={"end"} gap="2rem">
-      <div className="fixed left-[5rem]" ref={leftPanelRef}>
-        {!isTablet && (
-          <Flex
-            w={{ base: "100%", sm: "10rem", md: "15rem", lg: "20rem" }}
-            direction={"column"}
-            gap="1rem"
-          >
-            <Text px="1rem" fontSize={"xl"} fontWeight="bold">
-              {t("settings", "Settings")}
-            </Text>
-            {settings[sectionIdx] && (
-              <SettingsSectionsSidebar
-                currentActive={settings[sectionIdx].panelUrl}
-                onPanelClick={(url) =>
-                  router.replace(`/${baseRoute}${url}`, null, {
-                    shallow: true,
-                  })
-                }
-                panelsInfo={settings}
-                innerProps={{
-                  w: "100%",
-                }}
-              />
-            )}
-          </Flex>
-        )}
-      </div>
-      <Flex
-        w={`calc(100% - ${leftPanelwidth + minGap}px)`}
-        pr={`${minGap}px`}
-        h="full"
-      >
-        <>{CurrentSection()}</>
-      </Flex>
-    </Flex>
+    <SectionsLayout
+      name={{
+        translationKey: "account_settings",
+        fallbackText: "Account Settings",
+      }}
+      currentSectionName={route}
+      sections={sections}
+      handleSectionChange={handleSectionChange}
+    />
   );
 };
 

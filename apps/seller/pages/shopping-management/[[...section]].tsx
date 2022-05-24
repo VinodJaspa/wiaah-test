@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { SellerLayout } from "ui";
-import { ShoppingManagementView } from "../../components/views/ShoppingManagement/ShoppingManagementView/index";
+import { ShoppingManagementView } from "../../components";
 
 const ShoppingManagement: NextPage = () => {
   return (

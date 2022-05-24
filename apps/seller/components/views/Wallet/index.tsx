@@ -1,8 +1,13 @@
 import { useRouter } from "next/router";
 import React from "react";
 import { SettingsSectionType } from "types";
-import { WithdrawalSection, SectionsLayout } from "ui";
-import { FaMoneyBill } from "react-icons/fa";
+import {
+  WithdrawalSection,
+  SectionsLayout,
+  TransactionsHistorySection,
+  VouchersSection,
+} from "ui";
+import { FaMoneyBill, FaPercent } from "react-icons/fa";
 import { AiOutlineTransaction } from "react-icons/ai";
 
 export const WalletView: React.FC = () => {
@@ -46,6 +51,15 @@ const sections: SettingsSectionType[] = [
     },
     panelIcon: AiOutlineTransaction,
     panelUrl: "/transactions",
-    panelComponent: <>Transactions</>,
+    panelComponent: <TransactionsHistorySection />,
+  },
+  {
+    panelName: {
+      translationKey: "vouchers",
+      fallbackText: "Vouchers",
+    },
+    panelIcon: FaPercent,
+    panelUrl: "/vouchers",
+    panelComponent: <VouchersSection />,
   },
 ];

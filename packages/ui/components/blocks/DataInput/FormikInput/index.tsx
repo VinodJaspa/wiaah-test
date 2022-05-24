@@ -2,7 +2,7 @@
 import { ErrorMessage, Field } from "formik";
 import React from "react";
 import { HtmlDivProps, TranslationTextType, HtmlInputProps } from "types";
-import { TranslationText, Input } from "ui";
+import { TranslationText, Input, InputProps } from "ui";
 
 export interface FormikInputProps extends HtmlInputProps {
   label?: TranslationTextType;
@@ -11,7 +11,7 @@ export interface FormikInputProps extends HtmlInputProps {
   containerProps?: HtmlDivProps;
 }
 
-export function FormikInput<T>({
+export function FormikInput<T = InputProps>({
   label,
   name,
   children,

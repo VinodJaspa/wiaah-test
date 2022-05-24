@@ -60,8 +60,9 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
       </div>
       <div
         style={{
-          width: `calc(100% - ${leftPanelwidth || 0 + minGap}px)`,
+          width: `calc(100% - ${leftPanelwidth || 0}px)`,
           paddingRight: minGap,
+          paddingLeft: minGap,
         }}
         className={`h-full`}
       >

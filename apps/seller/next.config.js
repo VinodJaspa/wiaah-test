@@ -13,5 +13,8 @@ module.exports = withTM(
       register: true,
       skipWaiting: true,
     },
+    experimental: {
+      esmExternals: false,
+    },
   })
 );

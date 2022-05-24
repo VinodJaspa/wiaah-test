@@ -9,13 +9,15 @@ interface ModalContextValues {
 }
 
 interface ModalExtendedContextValues {
-  isOpen: boolean;
-  onOpen: () => any;
+  isOpen: (key?: string) => any;
+  onOpen: (key?: string) => any;
+  onClose: (key?: string) => any;
 }
 
 const ModalExtendedContext = React.createContext<ModalExtendedContextValues>({
-  isOpen: false,
+  isOpen: () => {},
   onOpen: () => {},
+  onClose: () => {},
 });
 
 const ModalContext = React.createContext<ModalContextValues>({
@@ -32,18 +34,26 @@ export const Modal: React.FC<ModalProps> = ({
   onOpen,
   ...props
 }) => {
-  const { isOpen: ExtendedIsOpen } = React.useContext(ModalExtendedContext);
+  const { isOpen: ExtendedIsOpen, onClose: ExtendedOnClose } =
+    React.useContext(ModalExtendedContext);
   React.useEffect(() => {
-    if (ExtendedIsOpen) {
+    if (ExtendedIsOpen()) {
       onOpen && onOpen();
     }
   }, [ExtendedIsOpen]);
+  function handleClose() {
+    onClose && onClose();
+    ExtendedOnClose();
+  }
   return (
-    <ModalContext.Provider {...props} value={{ isOpen, onClose, onOpen }} />
+    <ModalContext.Provider
+      {...props}
+      value={{ isOpen, onClose: handleClose, onOpen }}
+    />
   );
 };
 
-export interface ModalContentProps extends HtmlDivProps {
+export interface ModalContentProps extends Omit<HtmlDivProps, "children"> {
   isLazy?: boolean;
 }
 
@@ -72,10 +82,10 @@ export const ModalContent: React.FC<ModalContentProps> = ({
       {...props}
       ref={contentWrapperRef}
       className={`${className || ""} ${
-        show
+        isOpen
           ? "-translate-y-1/2"
-          : "-translate-y-[calc(50% - 5rem)] pointer-events-none"
-      } fixed top-1/2 left-1/2 p-4 z-[60] flex flex-col transition-all rounded bg-white -translate-x-1/2`}
+          : "-translate-y-[calc(50% - 5rem)] opacity-0 pointer-events-none"
+      } fixed top-1/2 max-w-[40rem] min-w-[15rem] opacity-100 left-1/2 p-4 z-[60] flex flex-col transition-all rounded bg-white -translate-x-1/2`}
     >
       {show ? children : null}
     </div>
@@ -119,17 +129,30 @@ export const ModalFooter: React.FC<ModalFooterProps> = ({
   );
 };
 
-export interface ModalButtonProps {}
+export interface ModalButtonProps extends Partial<ExtendedModalPassedProps> {
+  close?: boolean;
+  key?: string;
+}
 
-export const ModalButton: React.FC<ModalButtonProps> = ({ children }) => {
-  const { onOpen } = React.useContext(ModalExtendedContext);
-
-  function handleOpen() {
-    onOpen();
-    console.log("open");
+export const ModalButton: React.FC<ModalButtonProps> = ({
+  children,
+  OpenModal,
+  CloseModal,
+  close,
+  key,
+}) => {
+  const { onClose, onOpen } = React.useContext(ModalExtendedContext);
+  function handleClick() {
+    if (close) {
+      CloseModal && CloseModal();
+      key && onClose(key);
+    } else {
+      OpenModal && OpenModal();
+      key && onOpen(key);
+    }
   }
 
-  return <>{PassPropsToChild(children, { onClick: handleOpen })}</>;
+  return <>{PassPropsToChild(children, { onClick: handleClick })}</>;
 };
 
 export function PassPropsToChild<T = HtmlDivProps>(
@@ -149,21 +172,72 @@ export function PassPropsToChild<T = HtmlDivProps>(
     : clone(children);
 }
 
-export interface ModalExtendedWrapperProps {}
+export interface ModalExtendedWrapperProps {
+  modalKey: string;
+}
+
+type ExtendedModalPassedProps = {
+  OpenModal: () => any;
+  CloseModal: () => any;
+};
 
 export const ModalExtendedWrapper: React.FC<ModalExtendedWrapperProps> = ({
+  children,
+  modalKey = "0",
   ...props
 }) => {
-  const [open, setOpen] = React.useState<boolean>(false);
+  const [keys, setKeys] = React.useState<string[]>([]);
 
-  function onOpen() {
-    setOpen(true);
+  function isOpen(Key?: string): boolean {
+    const key = Key ? Key : modalKey;
+    const idx = keys.findIndex((k) => k === key);
+    return idx > -1;
+  }
+
+  function onOpen(Key?: string) {
+    const key = Key ? Key : modalKey;
+    setKeys((state) => {
+      const newKeys = state.filter((k) => k !== key);
+      return [...newKeys, modalKey];
+    });
+  }
+  function onClose(Key?: string) {
+    const key = Key ? Key : modalKey;
+    setKeys((state) => state.filter((k) => k !== key));
   }
 
   return (
     <ModalExtendedContext.Provider
       {...props}
-      value={{ isOpen: open, onOpen }}
-    />
+      value={{ isOpen, onOpen, onClose }}
+    >
+      {PassPropsToChild<ExtendedModalPassedProps>(children, {
+        OpenModal: onOpen,
+        CloseModal: onClose,
+      })}
+    </ModalExtendedContext.Provider>
+  );
+};
+
+interface ControlledModalProps {
+  overlay?: boolean;
+  contentProps?: ModalContentProps;
+}
+
+export const ControlledModal: React.FC<ControlledModalProps> = ({
+  overlay = true,
+  children,
+  contentProps,
+}) => {
+  const [isOpen, setIsOpen] = React.useState<boolean>(false);
+  return (
+    <Modal
+      isOpen={isOpen}
+      onClose={() => setIsOpen(false)}
+      onOpen={() => setIsOpen(true)}
+    >
+      {overlay && <ModalOverlay />}
+      <ModalContent {...contentProps}>{children}</ModalContent>
+    </Modal>
   );
 };
