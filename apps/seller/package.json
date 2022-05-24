@@ -29,7 +29,8 @@
     "types": "*",
     "ui": "*",
     "api": "*",
-    "uris": "*"
+    "uris": "*",
+    "validation": "*"
   },
   "devDependencies": {
     "@types/react": "17.0.37",

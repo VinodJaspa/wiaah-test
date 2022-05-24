@@ -32,7 +32,9 @@ export function FormikInput<T = InputProps>({
         <Field {...props} as={as} name={name}>
           {children}
         </Field>
-        <ErrorMessage name={name} />
+        <span className="text-red-500">
+          <ErrorMessage name={name} />
+        </span>
       </div>
     </>
   );

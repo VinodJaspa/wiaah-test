@@ -18,15 +18,15 @@ export const Button: FC<ButtonProps> = ({
   const colors = (scheme: ColorScheme): string => {
     switch (scheme) {
       case "primary":
-        return "scheme-primary";
+        return "bg-primary border-primary text-white hover:bg-primary-600 active:bg-primary-700";
       case "danger":
-        return "scheme-danger";
+        return "bg-red-500 border-red-500 text-white hover:bg-red-600 active:bg-red-700";
       case "info":
-        return "scheme-info";
+        return "bg-cyan-500 border-cyan-400 text-white hover:bg-cyan-600 active:bg-cyan-700";
       case "success":
         return "scheme-success";
       case "gray":
-        return "scheme-gray";
+        return "bg-gray-500 border-gray-400 text-white hover:bg-gray-600 active:bg-gray-700";
       default:
         return "scheme-primary";
     }

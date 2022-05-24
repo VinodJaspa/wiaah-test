@@ -48,7 +48,10 @@ export const SellerNavigationDrawer: React.FC<SellerNavigationDrawerProps> = ({
         <DrawerBody overflowY={"scroll"} className="thinScroll" px="0px">
           <div className="flex gap-4 flex-col">
             {links.map((link, i) => (
-              <Button className="px-0 justify-start text-black bg-white hover:bg-gray-200 active:bg-gray-300">
+              <Button
+                key={i}
+                className="px-0 justify-start text-black bg-white hover:bg-gray-200 active:bg-gray-300"
+              >
                 <div
                   className="px-8 flex gap-8 items-center py-2 w-full"
                   key={i}

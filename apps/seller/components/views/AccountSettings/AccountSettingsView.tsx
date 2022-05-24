@@ -11,6 +11,7 @@ import { HiUserGroup } from "react-icons/hi";
 import { MdCardMembership } from "react-icons/md";
 import { BiLock } from "react-icons/bi";
 import { MdVerified } from "react-icons/md";
+import { BiData } from "react-icons/bi";
 import { SettingsSectionType } from "types";
 import {
   AccountSettingsSection,
@@ -24,6 +25,7 @@ import {
   SectionsLayout,
   AccountDeletionSection,
   AccountVerification,
+  PersonalizationAndDataSection,
 } from "ui";
 import { ImBlocked } from "react-icons/im";
 
@@ -151,5 +153,14 @@ const sections: SettingsSectionType[] = [
     panelIcon: MdVerified,
     panelUrl: "/account_verification",
     panelComponent: <AccountVerification />,
+  },
+  {
+    panelName: {
+      translationKey: "personalizarion_and_data",
+      fallbackText: "Personalization and data",
+    },
+    panelIcon: BiData,
+    panelUrl: "/personalizarion_and_data",
+    panelComponent: <PersonalizationAndDataSection />,
   },
 ];

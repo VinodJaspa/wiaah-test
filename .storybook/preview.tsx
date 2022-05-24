@@ -8,15 +8,18 @@ import { RecoilRoot } from "recoil";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "ui/themes/chakra_ui/theme";
 import { Root } from "ui";
+import { Suspense } from "react";
 
 addDecorator((story) => (
   <ChakraProvider theme={theme}>
     <CookiesProvider>
-      <RecoilRoot>
-        <section className="flex min-h-screen w-full items-center justify-center bg-slate-200 p-8">
-          {story()}
-        </section>
-      </RecoilRoot>
+      <Suspense fallback={"Loading"}>
+        <RecoilRoot>
+          <section className="flex min-h-screen w-full items-center justify-center bg-slate-200 p-8">
+            {story()}
+          </section>
+        </RecoilRoot>
+      </Suspense>
     </CookiesProvider>
   </ChakraProvider>
 ));

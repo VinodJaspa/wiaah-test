@@ -7,3 +7,4 @@ export * from "./BlocklistSection";
 export * from "./PrivacySection";
 export * from "./AccountDeletion";
 export * from "./AccountVerification";
+export * from "./PersonalizationAndData";

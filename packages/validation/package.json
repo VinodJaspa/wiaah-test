@@ -1,5 +1,5 @@
 {
-  "name": "ui",
+  "name": "validation",
   "version": "0.0.0",
   "main": "./index.ts",
   "types": "./index.ts",
@@ -9,17 +9,9 @@
     "@types/react-dom": "^17.0.11",
     "config": "*",
     "tsconfig": "*",
-    "types": "*",
-    "api": "*",
-    "validation": "*",
     "typescript": "^4.5.3"
   },
   "dependencies": {
-    "classnames": "^2.3.1",
-    "react-icons": "^4.3.1",
-    "react-responsive": "^9.0.0-beta.6",
-    "react-simple-image-slider": "^2.3.0",
-    "recoil": "^0.6.1",
-    "swiper": "^8.0.5"
+    "yup": "^0.32.11"
   }
 }

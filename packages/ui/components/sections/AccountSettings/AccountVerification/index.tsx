@@ -1,4 +1,4 @@
-import { Form, Formik } from "formik";
+import { Form, Formik, ErrorMessage } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormOptionType } from "types";
@@ -11,7 +11,9 @@ import {
   TranslationText,
   useFileUploadModal,
   Button,
+  SelectProps,
 } from "ui";
+import { AccountVerificationRequestScheme } from "validation";
 
 export interface AccountVerificationProps {}
 
@@ -44,8 +46,18 @@ export const AccountVerification: React.FC<AccountVerificationProps> = () => {
           "Submittung a request for verification does not guarantee that your account will be verified."
         )}
       </p>
-      <Formik initialValues={{}} onSubmit={() => {}}>
-        {() => {
+      <Formik
+        validationSchema={AccountVerificationRequestScheme}
+        initialValues={{
+          username: "",
+          fullName: "",
+          knownAs: "",
+          category: "",
+          IdPhoto: null,
+        }}
+        onSubmit={() => {}}
+      >
+        {({ setFieldValue }) => {
           return (
             <Form className="flex flex-col gap-8">
               <FormikInput
@@ -72,13 +84,14 @@ export const AccountVerification: React.FC<AccountVerificationProps> = () => {
                 name="knownAs"
                 flushed
               />
-              <FormikInput
+              <FormikInput<SelectProps>
                 label={{
                   translationKey: "category",
                   fallbackText: "Category",
                 }}
                 flushed
-                name="Category"
+                onOptionSelect={(v) => setFieldValue("category", v)}
+                name="category"
                 placeholder={t(
                   "select_a_category_for_your_account",
                   "Select a category for your account"
@@ -98,13 +111,20 @@ export const AccountVerification: React.FC<AccountVerificationProps> = () => {
                     "Please attach a photo of your ID"
                   )}
                 </span>
-                <span
-                  onClick={() => uploadImage()}
-                  className="cursor-pointer text-primary"
-                >
-                  {t("choose_file", "Choose File")}
-                </span>
-                <MediaUploadModal />
+                <div className="flex flex-col gap-2">
+                  <span
+                    onClick={() => uploadImage()}
+                    className="cursor-pointer text-primary"
+                  >
+                    {t("choose_file", "Choose File")}
+                  </span>
+                  <span className="text-red-400">
+                    <ErrorMessage name="IdPhoto" />
+                  </span>
+                </div>
+                <MediaUploadModal
+                  onImgUpload={(_, file) => setFieldValue("IdPhoto", file)}
+                />
               </div>
               <p>
                 {t(

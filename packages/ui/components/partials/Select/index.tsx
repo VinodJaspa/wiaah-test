@@ -78,7 +78,7 @@ export const Select: React.FC<SelectProps> = ({
       ref={ref}
       className={`${className || ""} ${
         flushed ? "border-b-2" : "border-2"
-      } border-gray-200 items-center flex  rounded relative`}
+      } bg-white border-gray-200 items-center flex  rounded relative`}
     >
       <div
         onClick={handleToggle}

@@ -4,24 +4,18 @@ import { MdClose } from "react-icons/md";
 import { HtmlDivProps } from "types";
 
 export interface SwitchProps extends Omit<HtmlDivProps, "onChange"> {
-  onChange?: (checked: boolean) => void;
+  onChange: (checked: boolean) => void;
+  checked: boolean;
 }
 
 export const Switch: React.FC<SwitchProps> = ({
   className,
   onChange,
+  checked,
   ...props
 }) => {
-  const [checked, setChecked] = React.useState<boolean>(false);
-
-  React.useEffect(() => {
-    if (typeof checked === "boolean" && onChange) {
-      onChange(checked);
-    }
-  }, [checked]);
-
   function handleToggle() {
-    setChecked((state) => !state);
+    onChange && onChange(!checked);
   }
   return (
     <div
