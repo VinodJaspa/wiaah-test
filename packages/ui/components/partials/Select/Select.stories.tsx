@@ -15,15 +15,15 @@ export const Default = ({ ...args }) => {
           <span className="font-bold text-xl">implementaion</span>
           <pre>
             {`
-        import {Select,SelectOption} from "ui"
+import {Select,SelectOption} from "ui"
 
-        
-        <Select onOptionSelect={(value)=> {}}>
-          <SelectOption value={"1"}>  option  </SelectOption>
-          <SelectOption value={"2"}>  option  </SelectOption>
-          <SelectOption value={"3"}>  option  </SelectOption>
-          <SelectOption value={"4"}>  option  </SelectOption>
-        </Select>
+
+<Select onOptionSelect={(value)=> {}}>
+  <SelectOption value={"1"}>  option  </SelectOption>
+  <SelectOption value={"2"}>  option  </SelectOption>
+  <SelectOption value={"3"}>  option  </SelectOption>
+  <SelectOption value={"4"}>  option  </SelectOption>
+</Select>
         `}
           </pre>
         </div>
@@ -46,15 +46,15 @@ export const WithPlaceholder = ({ ...args }) => {
           <span className="font-bold text-xl">implementaion</span>
           <pre>
             {`
-        import {Select,SelectOption} from "ui"
+import {Select,SelectOption} from "ui"
 
-        
-        <Select placeholder={"test placeholder"} onOptionSelect={(value)=> {}}>
-          <SelectOption value={"1"}>  option  </SelectOption>
-          <SelectOption value={"2"}>  option  </SelectOption>
-          <SelectOption value={"3"}>  option  </SelectOption>
-          <SelectOption value={"4"}>  option  </SelectOption>
-        </Select>
+
+<Select placeholder={"test placeholder"} onOptionSelect={(value)=> {}}>
+  <SelectOption value={"1"}>  option  </SelectOption>
+  <SelectOption value={"2"}>  option  </SelectOption>
+  <SelectOption value={"3"}>  option  </SelectOption>
+  <SelectOption value={"4"}>  option  </SelectOption>
+</Select>
         `}
           </pre>
         </div>

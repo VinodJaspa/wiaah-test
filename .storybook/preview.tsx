@@ -15,7 +15,7 @@ addDecorator((story) => (
     <CookiesProvider>
       <Suspense fallback={"Loading"}>
         <RecoilRoot>
-          <section className="flex min-h-screen w-full items-center justify-center bg-slate-200 p-8">
+          <section className="flex min-h-screen w-full items-center justify-center bg-white p-8">
             {story()}
           </section>
         </RecoilRoot>

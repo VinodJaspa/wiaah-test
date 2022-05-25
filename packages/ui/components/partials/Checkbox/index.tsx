@@ -1,7 +1,9 @@
 import React from "react";
 import { HtmlInputProps } from "types";
 
-export interface CheckboxProps extends HtmlInputProps {}
+export interface CheckboxProps extends HtmlInputProps {
+  checked: boolean;
+}
 
 export const Checkbox: React.FC<CheckboxProps> = ({ className, ...props }) => {
   return (

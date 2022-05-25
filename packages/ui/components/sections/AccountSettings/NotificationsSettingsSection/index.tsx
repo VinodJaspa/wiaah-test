@@ -1,9 +1,8 @@
-import { Flex, Text } from "@chakra-ui/react";
-import { Form, Formik, FormikContextType } from "formik";
+import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormOptionType, TranslationTextType } from "types";
-import { FormikRadio } from "../../../blocks";
+import { FormikRadio } from "ui";
 
 export interface NotificationsSettingsSectionProps {}
 
@@ -11,10 +10,10 @@ export const NotificationsSettingsSection: React.FC<NotificationsSettingsSection
   ({}) => {
     const { t } = useTranslation();
     return (
-      <Flex w="100%" gap="2rem" direction={"column"}>
-        <Text fontSize={"xx-large"} fontWeight={"bold"}>
+      <div className="w-full gap-8 flex flex-col">
+        <span className="text-4xl font-bold">
           {t("notifications", "Notifications")}
-        </Text>
+        </span>
         <Formik
           initialValues={{
             likes: "iFollow",
@@ -24,7 +23,7 @@ export const NotificationsSettingsSection: React.FC<NotificationsSettingsSection
           {({ values, setFieldValue }) => {
             return (
               <Form className="w-full">
-                <Flex w="100%" direction={"column"} gap="2rem">
+                <div className="w-full flex flex-col gap-8">
                   {notificationsOptions.map(({ label, opts, name }, i) => (
                     <FormikRadio
                       defaultChecked
@@ -44,12 +43,12 @@ export const NotificationsSettingsSection: React.FC<NotificationsSettingsSection
                       options={opts}
                     />
                   ))}
-                </Flex>
+                </div>
               </Form>
             );
           }}
         </Formik>
-      </Flex>
+      </div>
     );
   };
 

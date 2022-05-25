@@ -13,16 +13,16 @@ export const Default: React.FC<SwitchProps> = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-    import {Switch} from "ui"
+import {Switch} from "ui"
 
-    const Example = ()=>{
-      const [checked,setChecked] = React.useState(false)
+const Example = ()=>{
+  const [checked,setChecked] = React.useState(false)
 
 
-      return (
-        <Switch checked={checked} onChange={(isChecked)=> setChecked(isChecked)} />
-      )
-    }
+  return (
+    <Switch checked={checked} onChange={(isChecked)=> setChecked(isChecked)} />
+  )
+}
     `}
     >
       <Switch

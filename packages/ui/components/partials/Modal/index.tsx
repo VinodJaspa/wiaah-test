@@ -5,7 +5,7 @@ import { useCallbackAfter, useOutsideClick } from "../../../Hooks";
 interface ModalContextValues {
   isOpen: boolean;
   onClose: () => any;
-  onOpen?: () => any;
+  onOpen: () => any;
 }
 
 interface ModalExtendedContextValues {
@@ -55,6 +55,15 @@ export const Modal: React.FC<ModalProps> = ({
   );
 };
 
+export interface ModalCloseButtonProps {}
+
+export const ModalCloseButton: React.FC<ModalCloseButtonProps> = ({
+  children,
+}) => {
+  const { onClose } = React.useContext(ModalContext);
+  return <>{PassPropsToChild(children, { onClick: onClose })}</>;
+};
+
 export interface ModalContentProps extends Omit<HtmlDivProps, "children"> {
   isLazy?: boolean;
 }
@@ -65,17 +74,18 @@ export const ModalContent: React.FC<ModalContentProps> = ({
   isLazy,
   ...props
 }) => {
-  const { isOpen, onClose } = React.useContext(ModalContext);
+  const { isOpen } = React.useContext(ModalContext);
   const [show, setShow] = React.useState<boolean>(false);
   const contentWrapperRef = React.useRef<HTMLDivElement>(null);
-
-  // useOutsideClick(contentWrapperRef, onClose);
 
   React.useEffect(() => {
     if (isOpen) {
       setShow(true);
+      // empty callback to clear timeout function from the previous close
+      useCallbackAfter(0, () => {});
     } else {
-      useCallbackAfter(1000, () => setShow(false));
+      if (!isLazy) return;
+      useCallbackAfter(200, () => setShow(false));
     }
   }, [isOpen]);
 

@@ -45,10 +45,10 @@ export const WithHalf: React.FC<RateProps> = (props) => {
     <>
       <StorybookImplemntationLayout
         implmentation={`
-      import {Rate} from "ui"
-      
-      
-      <Rate allowHalf rating={7.7} outOf={10} />
+import {Rate} from "ui"
+
+
+<Rate allowHalf rating={7.7} outOf={10} />
       `}
       >
         <Rate allowHalf rating={7.7} outOf={10} />

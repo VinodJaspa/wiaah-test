@@ -6,7 +6,7 @@ import {
 import React from "react";
 
 export interface AvatarProps extends ChakraAvatarProps {
-  name: string;
+  name?: string;
   photoSrc: string;
   newStory?: boolean;
   onClick?: () => any;

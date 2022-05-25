@@ -1,5 +1,6 @@
 import React from "react";
 import { HtmlDivProps } from "types";
+import { Divider } from "ui";
 
 export interface storybookImplemntationLayoutProps extends HtmlDivProps {
   implmentation: string;
@@ -14,13 +15,16 @@ export function StorybookImplemntationLayout<T>({
   return (
     <div
       {...props}
-      className={`${className || ""} w-full flex justify-between items-center`}
+      className={`${
+        className || ""
+      } w-full flex flex-col justify-between items-start`}
     >
-      <div className="max-w-[50%]">
-        <h1>implementation</h1>
+      {children}
+      <Divider className="my-4" />
+      <div className="">
+        <h1 className="font-bold text-xl">implementation</h1>
         <pre>{implmentation}</pre>
       </div>
-      {children}
     </div>
   );
 }
