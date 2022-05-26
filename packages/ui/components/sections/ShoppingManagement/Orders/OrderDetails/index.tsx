@@ -13,8 +13,8 @@ import {
   SelectOption,
   TranslationText,
 } from "ui";
-import { getRandomImage } from "../../../../../placeholder";
-import { randomNum } from "../../../../helpers";
+import { getRandomImage } from "ui/placeholder";
+import { randomNum } from "ui/components/helpers";
 import {
   Accordion,
   AccordionButton,
@@ -27,8 +27,8 @@ import {
   Td,
   Th,
   Tr,
-} from "../../../../partials";
-import { statusOptions } from "../OrdersList";
+} from "ui";
+import { statusOptions } from "ui";
 
 export const OrderDetailsSection: React.FC = () => {
   const { orderId, cancelViewOrder } = React.useContext(OrderContext);

@@ -1,6 +1,5 @@
 import React from "react";
-import { AddNewShippingMothed } from "../AddShippingMothed";
-import { ShippingSettings } from "../ShippingSettings";
+import { AddNewShippingMothed, ShippingSettings } from "ui";
 export interface ShippingSettingsSectionProps {}
 
 export const ShippingSettingsContext = React.createContext({

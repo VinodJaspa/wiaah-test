@@ -1,17 +1,17 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useModalDisclouser } from "ui";
 import {
-  Input,
+  SectionContainer,
+  AccountDeletionModal,
   Modal,
   ModalContent,
   ModalOverlay,
-  SectionHeader,
-  SectionContainer,
-  Button,
-  ModalExtendedWrapper,
   ModalButton,
-  AccountDeletionModal,
-  useModalDisclouser,
+  ModalExtendedWrapper,
+  Button,
+  Input,
+  SectionHeader,
 } from "ui";
 
 export const AccountDeletionSection: React.FC = () => {
@@ -25,7 +25,7 @@ export const AccountDeletionSection: React.FC = () => {
       }
     >
       <div className="flex flex-col gap-4">
-        <div className="hstack justify-between">
+        <div className="flex items-center gap-2 justify-between">
           <div className="flex flex-col gap-2">
             <span className="font-semibold text-lg">
               {t("delete_account", "Delete Account")}
@@ -46,7 +46,7 @@ export const AccountDeletionSection: React.FC = () => {
             <AccountDeletionModal />
           </ModalExtendedWrapper>
         </div>
-        <div className="hstack justify-between">
+        <div className="flex items-center gap-2 justify-between">
           <div className="flex flex-col gap-2">
             <span className="font-semibold text-lg">
               {t("suspend", "Suspend")}

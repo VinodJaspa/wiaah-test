@@ -1,23 +1,22 @@
-import { Flex, Switch, Text } from "@chakra-ui/react";
 import { Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormOptionType } from "types";
-import { FormikInput } from "../../../blocks";
+import { FormikInput, Switch } from "ui";
 
 export interface NewsLetterSectionProps {}
 
 export const NewsLetterSection: React.FC<NewsLetterSectionProps> = ({}) => {
   const { t } = useTranslation();
   return (
-    <Flex w="100%" gap="2rem" direction={"column"}>
-      <Text fontSize={"xx-large"} fontWeight="bold">
+    <div className="w-full flex gap-8 flex-col">
+      <span className="text-4xl font-bold">
         {t("newsletter", "Newsletter")}
-      </Text>
+      </span>
       <Formik initialValues={{}} onSubmit={() => {}}>
-        {() => {
+        {({ values, setFieldValue }) => {
           return (
-            <Flex w="100%" direction={"column"} gap="1rem">
+            <div className="w-full flex flex-col gap-4">
               {newsLetterOptions.map((opt, i) => (
                 <FormikInput
                   label={opt.name}
@@ -30,18 +29,24 @@ export const NewsLetterSection: React.FC<NewsLetterSectionProps> = ({}) => {
                   key={i}
                   name={opt.value}
                   as={() => (
-                    <Flex gap="0.5rem">
-                      <Switch colorScheme={"primary"} />
-                      <Text>{t("push", "Push")}</Text>
-                    </Flex>
+                    <div className="flex gap-2">
+                      <Switch
+                        //@ts-ignore
+                        checked={!!values[opt.value]}
+                        onChange={(checked) =>
+                          setFieldValue(opt.value, checked)
+                        }
+                      />
+                      <span>{t("push", "Push")}</span>
+                    </div>
                   )}
                 />
               ))}
-            </Flex>
+            </div>
           );
         }}
       </Formik>
-    </Flex>
+    </div>
   );
 };
 

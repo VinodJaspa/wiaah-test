@@ -1,3 +1,5 @@
+import { getRandomImage } from "ui/placeholder";
+import { randomNum } from "ui/components/helpers";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiEdit } from "react-icons/bi";
@@ -13,8 +15,6 @@ import {
   Tr,
   Th,
 } from "ui";
-import { getRandomImage } from "../../../../../placeholder";
-import { randomNum } from "../../../../helpers";
 
 export interface AffiliationListSectionProps {}
 

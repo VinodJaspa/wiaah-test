@@ -104,7 +104,7 @@ export const AccountVerification: React.FC<AccountVerificationProps> = () => {
                   </SelectOption>
                 ))}
               </FormikInput>
-              <div className="hstack gap-4 justify-between">
+              <div className="flex items-center gap-4 justify-between">
                 <span className="text-black font-bold">
                   {t(
                     "please_attach_a_photo_of_your_id",

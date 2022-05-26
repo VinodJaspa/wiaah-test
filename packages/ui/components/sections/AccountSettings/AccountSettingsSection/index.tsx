@@ -379,7 +379,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
     );
   };
 
-const storeForOptions: FormOptionType[] = [
+export const storeForOptions: FormOptionType[] = [
   {
     name: {
       translationKey: "men",

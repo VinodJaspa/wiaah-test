@@ -11,6 +11,7 @@ import {
   Select,
   TranslationText,
   DateInput,
+  SelectOption,
 } from "ui";
 import { FormOptionType } from "types";
 
@@ -121,11 +122,10 @@ export const PersonalInformationStep: React.FC<PersonalInformationStepProps> =
                         t("type_of_account", "Type Of Account") + "*"
                       }
                     >
-                      <option>{t("type_of_account", "Type of Account")}</option>
                       {accountTypes.map(({ value, name }, i) => (
-                        <option key={value + i} value={value}>
+                        <SelectOption key={value + i} value={value}>
                           {t(name.translationKey, name.fallbackText)}
-                        </option>
+                        </SelectOption>
                       ))}
                     </FormikInput>
                     <Menu className="w-[100%]">
@@ -147,92 +147,96 @@ export const PersonalInformationStep: React.FC<PersonalInformationStepProps> =
                       className=" w-full "
                       size="large"
                     >
-                      <option value="male">{t("Male", "Male")}</option>
-                      <option value="female">{t("Femal", "Female")}</option>
+                      <SelectOption value="male">
+                        {t("Male", "Male")}
+                      </SelectOption>
+                      <SelectOption value="female">
+                        {t("Femal", "Female")}
+                      </SelectOption>
                     </Field>
                     <Select
                       id="countryselect"
                       className="react-select-container  rounded-md border-gray-300"
                       placeholder={t("Country", "Country")}
-                      onChange={(value) => {
-                        setFieldValue("country", value.target.value);
+                      onOptionSelect={(value) => {
+                        setFieldValue("country", value);
                         handleCountryChange(value);
                       }}
                     >
                       {countriesArray.map(({ label, value }, i) => (
-                        <option key={value + i} value={value}>
+                        <SelectOption key={value + i} value={value}>
                           {label}
-                        </option>
+                        </SelectOption>
                       ))}
                     </Select>
                     <Select
                       id="stateselect"
                       className="react-select-container rounded-md border-gray-300"
-                      onChange={(value) => {
+                      onOptionSelect={(value) => {
                         if (value) {
-                          setFieldValue("state", value.target.value);
+                          setFieldValue("state", value);
                         }
                         handleStateChange(value);
                       }}
                       placeholder={t("State", "State")}
                     >
                       {states.map(({ value, label }, i) => (
-                        <option key={value + i} value={value}>
+                        <SelectOption key={value + i} value={value}>
                           {label}
-                        </option>
+                        </SelectOption>
                       ))}
                     </Select>
                     <Select
                       id="cityselect"
                       className="react-select-container rounded-md border-gray-300"
-                      onChange={(e) => {
-                        if (e) {
-                          setFieldValue("city", e.target.value);
+                      onOptionSelect={(value) => {
+                        if (value) {
+                          setFieldValue("city", value);
                         }
                       }}
                       placeholder={t("City", "City")}
                     >
                       {cities.map(({ value, label }, i) => (
-                        <option key={value + i} value={value}>
+                        <SelectOption key={value + i} value={value}>
                           {label}
-                        </option>
+                        </SelectOption>
                       ))}
                     </Select>
                     <Select
                       placeholder={t("select_currency", "Select Currency")}
                       className="mb-4 w-full border-gray-300"
                     >
-                      <option value="male">USD</option>
-                      <option value="femal">EUR</option>
+                      <SelectOption value="male">USD</SelectOption>
+                      <SelectOption value="femal">EUR</SelectOption>
                     </Select>
                     <Select
                       placeholder={t("select_language", "Select Language")}
                       className="mb-4 w-full border-gray-300"
                     >
-                      <option value="english">
+                      <SelectOption value="english">
                         <TranslationText
                           translationObject={{
                             translationKey: "english",
                             fallbackText: "English",
                           }}
                         />
-                      </option>
-                      <option value="french">
+                      </SelectOption>
+                      <SelectOption value="french">
                         <TranslationText
                           translationObject={{
                             translationKey: "french",
                             fallbackText: "French",
                           }}
                         />
-                      </option>
-                      <option value="germen">
+                      </SelectOption>
+                      <SelectOption value="germen">
                         <TranslationText
                           translationObject={{
                             translationKey: "germen",
                             fallbackText: "Germen",
                           }}
                         />
-                      </option>
+                      </SelectOption>
                     </Select>
                     <FormikInput
                       as={Input}

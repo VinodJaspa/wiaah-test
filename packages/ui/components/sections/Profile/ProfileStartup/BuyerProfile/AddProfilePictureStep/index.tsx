@@ -1,4 +1,4 @@
-import { Button, Divider, Input } from "@chakra-ui/react";
+import { Divider, Button, Input } from "ui";
 import { blobToDataURL } from "blob-util";
 import { Field, Form, Formik } from "formik";
 import React from "react";
@@ -98,8 +98,7 @@ export const AddProfilePictureStep: React.FC<AddProfilePictureProps> = () => {
               <div className="w-full justify-center px-4 lg:w-fit">
                 <div className="flex flex-col items-center cursor-pointer justify-center">
                   <Button
-                    w="min(100%,15rem)"
-                    rounded={"full"}
+                    className={`w-[min(100%,15rem)] rounded-full`}
                     onClick={() => {
                       imageFileRef.current.click();
                       setWebcamOn(false);
@@ -111,11 +110,10 @@ export const AddProfilePictureStep: React.FC<AddProfilePictureProps> = () => {
                     {t("From_your_computer", "From your computer")}
                   </div>
                 </div>
-                <Divider my="1rem" />
+                <Divider className="my-4" />
                 <div className="w-full flex flex-col items-center cursor-pointer justify-center">
                   <Button
-                    w="min(100%,15rem)"
-                    rounded={"full"}
+                    className={`w-[min(100%,15rem)] rounded-full`}
                     onClick={() => {
                       setWebcamOn(true);
                     }}
