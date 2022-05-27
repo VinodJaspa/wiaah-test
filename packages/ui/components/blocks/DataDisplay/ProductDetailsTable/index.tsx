@@ -12,8 +12,8 @@ import {
   TBody,
   Tr,
   Td,
+  THead,
 } from "ui";
-import { THead } from "../../../partials";
 
 export interface ProductDetailsTableProps {}
 

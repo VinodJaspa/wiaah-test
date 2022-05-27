@@ -1,9 +1,9 @@
-import { Center, Flex, FlexProps, HStack, Icon } from "@chakra-ui/react";
 import React from "react";
 import { HiPlus } from "react-icons/hi";
+import { HtmlDivProps } from "types";
 import { StoryDisplay, StoryDisplayProps } from "ui";
 import { useResponsive, useNewStoryModal } from "ui";
-export interface RecentStoriesProps extends FlexProps {
+export interface RecentStoriesProps extends HtmlDivProps {
   stories: StoryDisplayProps[];
   onNewStoryClick?: () => any;
 }
@@ -17,16 +17,9 @@ const InitialStory: StoryDisplayProps[] = [
       items: [
         {
           label: (
-            <Center
-              h="1.5rem"
-              w="1.5rem"
-              fontSize={"x-large"}
-              rounded="full"
-              color="white"
-              bg="primary.main"
-            >
-              <Icon as={HiPlus} />
-            </Center>
+            <div className="flex items-center justify-center h-6 w-6 text-2xl rounded-full text-white bg-primary">
+              <HiPlus />
+            </div>
           ),
           right: true,
           bottom: true,
@@ -38,24 +31,19 @@ const InitialStory: StoryDisplayProps[] = [
 
 export const RecentStories: React.FC<RecentStoriesProps> = ({
   stories,
-  w = "100%",
-  gap = "1rem",
-  overflowX = "scroll",
-  align = "center",
   onNewStoryClick,
+  className,
   ...props
 }) => {
   const { isMobile } = useResponsive();
   const { openNewStoryModal } = useNewStoryModal();
   return (
     //@ts-ignore
-    <Flex
+    <div
       {...props}
-      w={w}
-      gap={isMobile ? "1rem" : "0.25rem"}
-      overflowX={overflowX}
-      align={align}
-      className={`${props.className && props.className} no-scrollBar`}
+      className={`${className && className} ${
+        isMobile ? "gap-4" : "gap-1"
+      } flex no-scrollBar`}
     >
       {InitialStory.concat(stories).map((story, i) => (
         <StoryDisplay
@@ -68,6 +56,6 @@ export const RecentStories: React.FC<RecentStoriesProps> = ({
           {...story}
         />
       ))}
-    </Flex>
+    </div>
   );
 };

@@ -1,21 +1,9 @@
-import {
-  Avatar,
-  AvatarBadge,
-  Center,
-  Flex,
-  FlexProps,
-  HStack,
-  Text,
-} from "@chakra-ui/react";
 import React from "react";
-import { EllipsisText } from "ui";
-import { useRouter } from "next/router";
+import { EllipsisText, useLocale, Avatar, AvatarBadge } from "ui";
 import { ChatUserData } from "types";
 import { useTranslation } from "react-i18next";
 
-export interface ChatUserCardProps extends ChatUserData {
-  innerProps: FlexProps;
-}
+export interface ChatUserCardProps extends ChatUserData {}
 
 export const ChatUserCard: React.FC<ChatUserCardProps> = ({
   id,
@@ -26,64 +14,48 @@ export const ChatUserCard: React.FC<ChatUserCardProps> = ({
   unSeenMsgs,
   name,
   lastMsg,
-  innerProps,
 }) => {
-  const router = useRouter();
+  const { locale } = useLocale();
   const { t } = useTranslation();
   return (
-    <Flex
-      px="1rem"
-      py="0.5rem"
-      cursor={"pointer"}
-      _hover={{ bgColor: "gray.100" }}
-      {...innerProps}
-      w="100%"
-    >
-      <HStack w="100%">
-        <Avatar size={"md"} name={name} bgColor="black" src={profilePhoto}>
+    <div className="flex w-full px-4 py-2 cursor-pointer hover:bg-gray-100">
+      <div className="flex gap-2 items-center w-full">
+        <Avatar name={name} src={profilePhoto}>
           <AvatarBadge
-            boxSize={"0.8em"}
-            bgColor={
+            className={`${
               status === "online"
-                ? "primary.main"
+                ? "bg-primary"
                 : status === "idle"
-                ? "yellow.400"
-                : "gray"
-            }
+                ? "bg-yellow-400"
+                : "bg-gray-500"
+            }`}
           />
         </Avatar>
-        <Flex w="100%" direction={"column"}>
-          <Text fontWeight={"bold"}>{name}</Text>
+        <div className="flex w-full flex-col">
+          <span className="font-bold">{name}</span>
           {typing ? (
-            <Text color="primary.main">{t("typing", "Typing")}</Text>
+            <span className="text-primary">{t("typing", "Typing")}</span>
           ) : lastMsg ? (
             <EllipsisText ShowMore={false} content={lastMsg} maxLines={1} />
           ) : null}
-        </Flex>
-      </HStack>
-      <Flex gap="0.5rem" fontSize={"xs"} align={"end"} direction={"column"}>
+        </div>
+      </div>
+      <div className="flex gap-2 text-sm items-end flex-col">
         {lastMsgSentTime && (
-          <Text fontWeight="semibold" color="gray" whiteSpace={"nowrap"}>
-            {new Date(lastMsgSentTime).toLocaleString(router.locale, {
+          <span className="font-semibold text-gray-500 whitespace-nowrap">
+            {new Date(lastMsgSentTime).toLocaleString(locale || "en-us", {
               hour: "numeric",
               minute: "numeric",
               hour12: true,
             })}
-          </Text>
+          </span>
         )}
         {unSeenMsgs > 0 && (
-          <Center
-            w="1.5em"
-            h="1.5em"
-            color="white"
-            rounded={"full"}
-            p="0.25em"
-            bg="red.600"
-          >
-            <Text>{unSeenMsgs}</Text>
-          </Center>
+          <div className="flex justify-center rounded-full p-1 bg-red-600 items-center w-[1.5em] h-[1.5em] text-white">
+            <span>{unSeenMsgs}</span>
+          </div>
         )}
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   );
 };

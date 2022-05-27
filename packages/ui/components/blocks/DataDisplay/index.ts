@@ -18,3 +18,5 @@ export * from "./HashtagSearchItem";
 export * from "./DiscoverSearchItem";
 export * from "./Search";
 export * from "./ProductDetailsTable";
+export * from "./DurationDisplay";
+export * from "./StoryDisplays";

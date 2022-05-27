@@ -1,7 +1,6 @@
 import React from "react";
 import { SocialAffiliationCard, socialAffiliationCardPlaceholder } from "ui";
 import { useRouter } from "next/router";
-import { Box } from "@chakra-ui/react";
 import { useStory } from "ui";
 export interface AffiliationPostStoryProps {
   postId: string;
@@ -20,10 +19,10 @@ export const AffiliationPostStory: React.FC<AffiliationPostStoryProps> = ({
     }
   }
   return (
-    <Box cursor={"pointer"} onClick={handleRoute}>
-      <Box pointerEvents={"none"}>
+    <div className="cursor-pointer" onClick={handleRoute}>
+      <div className="pointer-events-none">
         <SocialAffiliationCard {...socialAffiliationCardPlaceholder} />;
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };

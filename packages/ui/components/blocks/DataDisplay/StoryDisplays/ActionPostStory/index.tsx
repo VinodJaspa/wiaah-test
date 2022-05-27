@@ -1,7 +1,6 @@
 import React from "react";
 import { ActionViewer, actionsPlaceholders } from "ui";
 import { useRouter } from "next/router";
-import { Box } from "@chakra-ui/react";
 import { useStory } from "ui";
 
 export interface ActionPostStoryProps {
@@ -18,15 +17,15 @@ export const ActionPostStory: React.FC<ActionPostStoryProps> = ({ postId }) => {
     }
   }
   return (
-    <Box cursor={"pointer"} onClick={handleRoute}>
-      <Box pointerEvents={"none"}>
+    <div className="cursor-pointer" onClick={handleRoute}>
+      <div className="pointer-events-none">
         <ActionViewer
           playIcon
           dark={true}
           interactionPos="in"
           action={actionsPlaceholders[0]}
         />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };

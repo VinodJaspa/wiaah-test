@@ -1,4 +1,3 @@
-import { Box, HStack, Icon, Text } from "@chakra-ui/react";
 import React from "react";
 import { HiLocationMarker, HiUser } from "react-icons/hi";
 import { PostAttachment as PostAttachmentType, ProfileInfo } from "types";
@@ -24,7 +23,7 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
 }) => {
   const [active, setActive] = React.useState<number>();
   return (
-    <Box h="100%">
+    <div className="h-full">
       {attachments && !renderOne && attachments.length > 1 ? (
         <ControlledCarousel
           w={"100%"}
@@ -44,20 +43,22 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
               alt={attachment.postLocation}
               footer={
                 showFooter ? (
-                  <HStack color="white" fontSize={"x-large"}>
+                  <div className="flex items-center gap-2 text-white text-2xl">
                     {attachment.postLocation && (
-                      <HStack>
-                        <Icon as={HiLocationMarker} />
-                        <Text fontSize={"md"}>{attachment.postLocation}</Text>
-                      </HStack>
+                      <div className="flex items-center gap-2">
+                        <HiLocationMarker />
+                        <span className="text-lg">
+                          {attachment.postLocation}
+                        </span>
+                      </div>
                     )}
                     {profileInfo && profileInfo.name && (
-                      <HStack>
-                        <Icon as={HiUser} />
-                        <Text fontSize={"md"}>{profileInfo.name}</Text>
-                      </HStack>
+                      <div className="flex items-center gap-2">
+                        <HiUser />
+                        <span className="text-lg">{profileInfo.name}</span>
+                      </div>
                     )}
-                  </HStack>
+                  </div>
                 ) : undefined
               }
             />
@@ -70,26 +71,28 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
             {...attachments[0]}
             alt={profileInfo && profileInfo.name}
             footer={
-              <HStack p="0.5rem" color="white" fontSize={"xx-large"}>
+              <div className="flex items center gap-2 p-2 text-white font-4xl">
                 {attachments[0].postLocation && (
-                  <HStack>
-                    <Icon as={HiLocationMarker} />
-                    <Text fontSize={"md"}>{attachments[0].postLocation}</Text>
-                  </HStack>
+                  <div className="flex items-center gap-2">
+                    <HiLocationMarker />
+                    <span className="text-lg">
+                      {attachments[0].postLocation}
+                    </span>
+                  </div>
                 )}
                 {profileInfo && profileInfo.name && (
-                  <HStack>
-                    <Icon as={HiUser} />
-                    <Text fontSize={"md"}>
+                  <div className="flex items-center gap-2">
+                    <HiUser />
+                    <span className="text-lg">
                       {profileInfo && profileInfo.name}
-                    </Text>
-                  </HStack>
+                    </span>
+                  </div>
                 )}
-              </HStack>
+              </div>
             }
           />
         )
       )}
-    </Box>
+    </div>
   );
 };

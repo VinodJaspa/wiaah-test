@@ -1,7 +1,7 @@
-import React, { useImperativeHandle } from "react";
-import { Event } from "../ServiceBookingCalander";
-import { ServiceBookingCalander } from "ui";
-import { useOutsideClick } from "ui/Hooks/useOutsideClick";
+import React from "react";
+import { Event } from "ui";
+import { ServiceBookingCalander, Modal, ModalContent, ModalOverlay } from "ui";
+import { useOutsideClick } from "ui";
 
 export interface BookingEventProps {
   ref?: any;
@@ -16,12 +16,7 @@ export const BookingEventPopup: React.FC<BookingEventProps> = React.forwardRef<
   BookingEventRefProps,
   BookingEventProps
 >(({ onSuccess }, ref) => {
-  const [show, setShow] = React.useState<boolean>(false);
-  const BookCalenderRef = React.useRef<HTMLDivElement>(null);
-
-  useOutsideClick(BookCalenderRef, () => {
-    handleCloseBooking();
-  });
+  const [open, setOpen] = React.useState<boolean>(false);
 
   React.useImperativeHandle(ref, () => ({
     openServiceBooking() {
@@ -34,11 +29,11 @@ export const BookingEventPopup: React.FC<BookingEventProps> = React.forwardRef<
   }));
 
   function handleCloseBooking() {
-    setShow(false);
+    setOpen(false);
   }
 
   function handleOpenBooking() {
-    setShow(true);
+    setOpen(true);
   }
 
   function handleSuccess(event: Event) {
@@ -47,17 +42,13 @@ export const BookingEventPopup: React.FC<BookingEventProps> = React.forwardRef<
   }
 
   return (
-    <section
-      className={`${
-        show ? "opacity-100" : "pointer-events-none opacity-0"
-      } fixed  top-0 left-0 z-50 flex h-screen w-screen items-center justify-center bg-black bg-opacity-50 transition-all`}
+    <Modal
+      isOpen={open}
+      onClose={handleCloseBooking}
+      onOpen={handleOpenBooking}
     >
-      <div
-        ref={BookCalenderRef}
-        className={`${
-          show ? "translate-y-0" : "translate-y-1/2"
-        } transition-all`}
-      >
+      <ModalOverlay />
+      <ModalContent>
         <ServiceBookingCalander
           month={{
             name: "October",
@@ -96,7 +87,7 @@ export const BookingEventPopup: React.FC<BookingEventProps> = React.forwardRef<
           onClose={() => handleCloseBooking()}
           onSuccess={(event: Event) => handleSuccess(event)}
         />
-      </div>
-    </section>
+      </ModalContent>
+    </Modal>
   );
 });

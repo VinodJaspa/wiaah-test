@@ -1,4 +1,3 @@
-import { Box, Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ChatMessageType } from "types";
@@ -25,58 +24,51 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageData }) => {
   } = messageData;
   const isUser = user && user.id === id;
 
-  const justifyPos = isUser ? "end" : "start";
+  const justifyPos = isUser ? "justify-end" : "justify-start";
 
-  const alignPos = isUser ? "end" : "start";
+  const alignPos = isUser ? "items-end" : "items-start";
 
-  const justifyDir = isUser ? "row" : "row-reverse";
+  const flexDir = isUser ? "flex-row" : "flex-row-reverse";
 
   const name = isUser ? t("you", "You") : username;
 
-  const msgBgColor = isUser ? "primary.main" : "lightGray";
-  const msgTextColor = isUser ? "white" : "black";
-  const msgRadius = isUser ? "0.5em 0em 0.5em 0.5em" : "0em 0.5em 0.5em 0.5em";
+  const msgBgColor = isUser ? "bg-primary" : "bg-gray-200";
+  const msgTextColor = isUser ? "text-white" : "text-black";
+  const msgRadius = isUser
+    ? "rounded-tr-none rounded-xl"
+    : "rounded-tl-none rounded-xl";
   return (
-    <Flex w="100%" justify={justifyPos}>
-      <Flex gap="0.5rem" flexDirection={justifyDir} justify={justifyPos}>
-        <VStack align={alignPos}>
-          <Flex align={"end"} gap={"0.5rem"} flexDirection={justifyDir}>
+    <div className={`${justifyPos} w-full flex`}>
+      <div className={`${flexDir} ${justifyPos} flex gap-2`}>
+        <div className={`${alignPos} flex flex-col gap-2 justify-center`}>
+          <div className={`${flexDir} flex items-end gap-2`}>
             <DisplayDate
               innerProps={{ fontSize: "xs", color: "gray" }}
               date={sendDate}
               hours12
               locale={locale}
             />
-            <Text fontWeight={"bold"}>{name}</Text>
-          </Flex>
+            <span className="font-bold">{name}</span>
+          </div>
           {messageContent && (
-            <Text
-              w="fit-content"
-              py="0.25rem"
-              px="0.5rem"
-              color={msgTextColor}
-              bgColor={msgBgColor}
-              borderRadius={msgRadius}
+            <span
+              className={`w-fit py-1 px-2 ${msgTextColor}] ${msgBgColor} ${msgRadius}`}
             >
               {messageContent}
-            </Text>
+            </span>
           )}
           {Array.isArray(messageAttachments) &&
             messageAttachments.map((attachment, i) => (
-              <Box
-                py="0.25rem"
-                px="0.5rem"
-                maxW={"min(100%,20rem)"}
-                bgColor={msgBgColor}
-                borderRadius={msgRadius}
+              <div
+                className={`py-1 px-2 max-w-[min(100%,20rem)]  ${msgBgColor} ${msgRadius}`}
                 key={i}
               >
                 <ChatMessageAttachment attachment={attachment} />
-              </Box>
+              </div>
             ))}
-        </VStack>
+        </div>
         <Avatar name={username} size={"md"} photoSrc={userPhoto} />
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   );
 };

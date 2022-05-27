@@ -1,12 +1,10 @@
 import React from "react";
-import { StoryDisplay } from ".";
+import { StoryDisplay, storybookStoriesTitle } from "ui";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
 
 export default {
-  title: "UI/blocks/Data Display/StoryDisplay",
+  title: storybookStoriesTitle + "StoryDisplay",
   component: StoryDisplay,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof StoryDisplay>;
 
 const Templete: ComponentStory<typeof StoryDisplay> = (args) => (

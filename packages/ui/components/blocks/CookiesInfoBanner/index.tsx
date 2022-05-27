@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, FlexStack } from "ui/components/partials";
+import { Button, FlexStack } from "ui";
 import { useScreenWidth } from "ui";
 export interface CookiesInfoBannerProps {
   onAcceptAll?: () => void;
@@ -43,7 +43,7 @@ export const CookiesInfoBanner: React.FC<CookiesInfoBannerProps> = ({
           <Button onClick={() => handleAcceptAll()}>
             <p className="w-48">ACCEPT ALL</p>
           </Button>
-          <Button onClick={() => handleLetMeChoose()} outlined={true}>
+          <Button onClick={() => handleLetMeChoose()} outline>
             <p className="w-48 text-black">LET ME CHOOSE</p>
           </Button>
         </FlexStack>

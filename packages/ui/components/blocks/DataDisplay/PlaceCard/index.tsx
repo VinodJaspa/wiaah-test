@@ -1,8 +1,7 @@
 import React from "react";
 import { PostAttachment, ProfileInfo } from "types";
-import { Box, Flex, HStack, Text } from "@chakra-ui/react";
 import { ActionHeader, ActionHeaderProps } from "ui";
-import { PostAttachmentsViewer } from "../PostAttachmentsViewer";
+import { PostAttachmentsViewer } from "ui";
 import { useRouter } from "next/router";
 
 export interface PlaceCardProps {
@@ -40,53 +39,30 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
 }) => {
   const router = useRouter();
   return (
-    <Box
-      bg="black"
-      w="100%"
-      maxW="30rem"
-      h={fixedHeight ? fixedHeight : "auto"}
-      position={"relative"}
-      overflow="hidden"
-      rounded="xl"
+    <div
+      className={`relative overflow-hidden rounded-xl bg-black w-full max-w-[30rem]`}
     >
       <PostAttachmentsViewer attachments={placeAttachments} />
       {openFrom && openTo && (
-        <Flex
-          position={"absolute"}
-          direction="column"
-          align={"center"}
-          top="50%"
-          left="0px"
-          justify={"center"}
-          color={"white"}
-          transform="auto"
-          translateY={"-50%"}
-          w="100%"
-          bg="blackAlpha.600"
-          fontSize={"x-large"}
-          fontWeight="bold"
-          gap="0.25rem"
-        >
-          <HStack>
-            <HStack>
-              <Text>{openFrom}</Text>
-            </HStack>
-            <Text>-</Text>
-            <HStack>
-              <Text>{openTo}</Text>
-            </HStack>
-          </HStack>
+        <div className="absolute bg-black bg-opacity-60 text-2xl font-bold gap-1 flex flex-col items-center top-1/2 left-0 just-ce text-white transform -translate-y-1/2 w-full">
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2">
+              <span>{openFrom}</span>
+            </div>
+            <span>-</span>
+            <div className="flex items-center gap-2">
+              <span>{openTo}</span>
+            </div>
+          </div>
           {openDays && (
-            <HStack fontWeight={"normal"}>
-              <HStack>
-                <Text fontWeight={"bold"} color="primary.main">
-                  Open
-                </Text>
+            <div className="flex gap-2 items-center text-base">
+              <div className="flex items-center gap-2">
+                <span className="fontbold text-primary">Open</span>
                 {/* <Text color="#f53858">Closed</Text>
                 <Text textTransform={"capitalize"}>
                   opens on friday 10:00 AM
                 </Text> */}
-              </HStack>
+              </div>
               {/* {weekdays.map((day,i)=>{
 
              const dayFound = openDays.findIndex((openDay:string)=> openDay.toLocaleLowerCase() === day.toLocaleLowerCase())
@@ -97,21 +73,15 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
             )
           }
             )} */}
-            </HStack>
+            </div>
           )}
-        </Flex>
+        </div>
       )}
       {user && (
         <ActionHeader
           {...headerProps}
-          position={"absolute"}
-          left="0px"
-          bottom="0px"
-          w="100%"
-          p="0.5rem"
-          bgGradient="linear(to-t, blackAlpha.500 80%,transparent)"
+          className="absolute text-white min-h-max  left-0 bottom-0 w-full p-2 bg-gradient-to-t bg-opacity-50 from-black to-transparent"
           color="white"
-          minH={"max-content"}
           subName={placeType}
           actionHashtags={[]}
           userName={user.name || ""}
@@ -124,6 +94,6 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
           }
         />
       )}
-    </Box>
+    </div>
   );
 };

@@ -2,6 +2,15 @@ import { ChatMessageType, ChatRoomHeaderData } from "types";
 
 export const ChatMessagesPH: ChatMessageType[] = [
   {
+    id: "13654",
+    sendDate: Date.now(),
+    userPhoto: "/place-2.jpg",
+    username: "user",
+    messageAttachments: [],
+    messageContent:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+  },
+  {
     id: "159",
     sendDate: Date.now(),
     username: "Wiaah",
@@ -43,7 +52,7 @@ export const ChatMessagesPH: ChatMessageType[] = [
     messageAttachments: [
       {
         src: "/video.mp4",
-        type: "audio",
+        type: "video",
       },
     ],
     messageContent: "fine, how about you",

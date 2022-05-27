@@ -1,11 +1,11 @@
-import { Flex, HStack, Button, Text, FlexProps, Icon } from "@chakra-ui/react";
 import React from "react";
-import { Avatar, EllipsisText, HashTags } from "ui";
+import { Avatar, EllipsisText, HashTags, Button } from "ui";
 import { useTranslation } from "react-i18next";
 import { HiLocationMarker } from "react-icons/hi";
 import { HiUser } from "react-icons/hi";
+import { HtmlDivProps } from "types";
 
-export interface ActionHeaderProps extends FlexProps {
+export interface ActionHeaderProps extends HtmlDivProps {
   userName: string;
   subName?: string;
   userThumbnail: string;
@@ -27,60 +27,57 @@ export const ActionHeader: React.FC<ActionHeaderProps> = ({
   onLocationClick,
   onTitleClick,
   onProfileClick,
+  className,
   ...props
 }) => {
   const { t } = useTranslation();
 
   return (
-    <Flex {...props} gap="0.25rem" w="100%" direction={"column"}>
-      <HStack w="100%" justify={"space-between"}>
-        <HStack>
+    <div className={`${className || ""} w-full flex gap-1 flex-col`} {...props}>
+      <div className="w-full flex items-center gap-2 justify-between">
+        <div className="flex items-center gap-2">
           <Avatar
-            cursor={"pointer"}
             onClick={() => onProfileClick && onProfileClick(userName)}
-            size="md"
             name={userName}
             photoSrc={userThumbnail}
           />
-          <Flex direction={"column"}>
-            <Text>{userName}</Text>
+          <div className="flex flex-col">
+            <span>{userName}</span>
 
             {subName && (
-              <Text
-                cursor={"pointer"}
+              <span
+                className="cursor-pointer"
                 onClick={() => onTitleClick && onTitleClick(subName)}
               >
                 {subName}
-              </Text>
+              </span>
             )}
-          </Flex>
-        </HStack>
-        <Button size={"sm"} textTransform={"capitalize"}>
-          {t("follow", "follow")}
-        </Button>
-      </HStack>
+          </div>
+        </div>
+        <Button className="capitalize">{t("follow", "follow")}</Button>
+      </div>
       {actionTitle && <EllipsisText maxLines={2} content={actionTitle} />}
       <HashTags tags={actionHashtags || []} />
-      <HStack fontSize={"x-large"}>
+      <div className="text-2xl flex items-center gap-2">
         {actionLocation && (
-          <HStack
-            cursor={"pointer"}
+          <div
+            className="cursor-pointer flex items-center gap-2"
             onClick={() => onLocationClick && onLocationClick(actionLocation)}
           >
-            <Icon as={HiLocationMarker} />
-            <Text fontSize={"md"}>{actionLocation}</Text>
-          </HStack>
+            <HiLocationMarker />
+            <span className="text-lg">{actionLocation}</span>
+          </div>
         )}
         {userName && (
-          <HStack
-            cursor={"pointer"}
+          <div
+            className="cursor-pointer flex items-center gap-2"
             onClick={() => onProfileClick && onProfileClick(userName)}
           >
-            <Icon as={HiUser} />
-            <Text fontSize={"md"}>{userName}</Text>
-          </HStack>
+            <HiUser />
+            <span className="text-lg">{userName}</span>
+          </div>
         )}
-      </HStack>
-    </Flex>
+      </div>
+    </div>
   );
 };

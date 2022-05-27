@@ -1,13 +1,12 @@
-import { Avatar, Flex, HStack, Icon, IconButton, Text } from "@chakra-ui/react";
-
-import { ChevronLeftIcon } from "@chakra-ui/icons";
+import { BiChevronLeft } from "react-icons/bi";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiPhone, BiVideo } from "react-icons/bi";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { ChatRoomHeaderData, IconList } from "types";
-import { useResponsive } from "ui";
+import { useResponsive, Avatar } from "ui";
 import { useRouter } from "next/router";
+import { Icon, IconButton } from "@chakra-ui/react";
 export interface ChatRoomHeaderProps {
   roomData: ChatRoomHeaderData;
   onCloseRoom?: () => any;
@@ -48,60 +47,50 @@ export const ChatRoomHeader: React.FC<ChatRoomHeaderProps> = ({
     router.push(router.asPath.split("?")[0]);
   }
   return (
-    <HStack
-      px="0.5rem"
-      py="0.5rem"
-      borderTopWidth={"1px"}
-      borderColor="lightGray"
-      justify={"space-between"}
-    >
-      <HStack>
+    <div className="flex items-center gap-2 p-2 border-t-2 border-gray-200 justify-between">
+      <div className="flex items-center gap-2">
         {isMobile && (
-          <Icon
-            cursor={"pointer"}
+          <BiChevronLeft
+            className="cursor-pointer text-6xl text-black"
             onClick={handleCloseRoom}
-            fontSize={"xxx-large"}
-            color={"black"}
-            as={ChevronLeftIcon}
           />
         )}
         {!isMobile && (
-          <Avatar size="md" name={roomData.roomName} src={roomData.roomImage} />
+          <Avatar name={roomData.roomName} src={roomData.roomImage} />
         )}
-        <Flex direction={"column"} justify={"space-between"}>
-          <Text fontSize={"lg"} fontWeight="bold">
-            {roomData.roomName}
-          </Text>
+        <div className="flex flex-col justify-between">
+          <span className="text-xl font-bold">{roomData.roomName}</span>
           {!isMobile && (
-            <HStack fontSize={"sm"} color="gray">
-              <Text>
+            <div className="flex items-center gap-2 text-base text-gray-500">
+              <span>
                 {roomData.roomMembers} {t("member", "member")},
-              </Text>
+              </span>
 
-              <Text>
+              <span>
                 {roomData.onlineMembers} {t("online", "online")}
-              </Text>
-            </HStack>
+              </span>
+            </div>
           )}
-        </Flex>
-      </HStack>
-      <HStack>
-        {rightIcons.map((icon, i) => (
-          <IconButton
-            key={i}
-            aria-label={t(
-              icon.iconLabel.translationKey,
-              icon.iconLabel.fallbackText
-            )}
-            icon={<Icon as={icon.icon} />}
-            colorScheme={"gray"}
-            h="1.5em"
-            w="1.5em"
-            variant="icon"
-            color="gray"
-          />
-        ))}
-      </HStack>
-    </HStack>
+        </div>
+      </div>
+      <div className="flex items-center gap-2">
+        {rightIcons.map(
+          (icon, i) => icon.icon({})
+          // <IconButton
+          //   key={i}
+          //   aria-label={t(
+          //     icon.iconLabel.translationKey,
+          //     icon.iconLabel.fallbackText
+          //   )}
+          //   icon={<Icon as={icon.icon} />}
+          //   colorScheme={"gray"}
+          //   h="1.5em"
+          //   w="1.5em"
+          //   variant="icon"
+          //   color="gray"
+          // />
+        )}
+      </div>
+    </div>
   );
 };

@@ -1,11 +1,9 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { RecentStories } from "ui";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import { RecentStories, storybookDataDisplayBlocksTitle } from "ui";
 export default {
-  title: "UI/blocks/Data Display/RecentStories",
+  title: storybookDataDisplayBlocksTitle + "RecentStories",
   component: RecentStories,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof RecentStories>;
 
 const Template: ComponentStory<typeof RecentStories> = (args) => (

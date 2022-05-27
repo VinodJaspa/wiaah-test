@@ -1,8 +1,8 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Countdown } from "../";
+import { Countdown, storybookBlocksTitle } from "ui";
 export default {
-  title: "UI/blocks/Countdown",
+  title: storybookBlocksTitle + "Countdown",
   component: Countdown,
 } as ComponentMeta<typeof Countdown>;
 

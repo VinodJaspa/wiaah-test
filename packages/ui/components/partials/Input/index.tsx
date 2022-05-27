@@ -2,6 +2,7 @@ import React from "react";
 import { HtmlInputProps } from "types";
 export interface InputProps extends HtmlInputProps {
   flushed?: boolean;
+  icon?: any;
 }
 
 export const Input: React.FC<InputProps> = ({

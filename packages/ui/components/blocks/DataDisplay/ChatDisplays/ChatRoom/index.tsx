@@ -1,4 +1,3 @@
-import { Flex, FlexProps } from "@chakra-ui/react";
 import React from "react";
 import {
   ChatRoomHeader,
@@ -9,14 +8,12 @@ import {
 } from "ui";
 export interface ChatRoomProps {
   roomId: string;
-  innerProps?: FlexProps;
 }
 
-export const ChatRoom: React.FC<ChatRoomProps> = ({ innerProps, roomId }) => {
+export const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
   const { data, isLoading, isError } = useGetChatRoomData(roomId);
   return (
-    //@ts-ignore
-    <Flex {...innerProps} justify="space-between" h="100%" direction={"column"}>
+    <div className="flex justify-between h-full flex-col">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         {data && (
           <>
@@ -26,6 +23,6 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({ innerProps, roomId }) => {
           </>
         )}
       </SpinnerFallback>
-    </Flex>
+    </div>
   );
 };

@@ -7,6 +7,7 @@ import {
   TableHTMLAttributes,
   ThHTMLAttributes,
   TdHTMLAttributes,
+  AudioHTMLAttributes,
 } from "react";
 
 export type HtmlDivProps = DetailedHTMLProps<
@@ -52,4 +53,8 @@ export type HtmlTdProps = DetailedHTMLProps<
 export type HtmlThProps = DetailedHTMLProps<
   ThHTMLAttributes<HTMLTableCellElement>,
   HTMLTableCellElement
+>;
+export type HtmlAudioProps = DetailedHTMLProps<
+  AudioHTMLAttributes<HTMLAudioElement>,
+  HTMLElement
 >;

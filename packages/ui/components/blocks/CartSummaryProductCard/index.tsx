@@ -1,4 +1,3 @@
-import { t } from "i18next";
 import React from "react";
 import { BsTrash } from "react-icons/bs";
 import { IoMdClock } from "react-icons/io";
@@ -24,9 +23,11 @@ import {
   Prefix,
   Releative,
   Rounded,
-  SelectDropdown,
   Text,
-} from "ui/components/partials";
+  Select,
+  SelectOption,
+} from "ui";
+import { useTranslation } from "react-i18next";
 
 export interface CartSummaryProdcutCardProps {
   profile?: ShopContactDetails;
@@ -49,6 +50,7 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
   onContactClick,
   onProfileClick,
 }) => {
+  const { t } = useTranslation();
   const { min } = useScreenWidth({ minWidth: 900 });
   function handleItemQtyChange(qty: number, id: string) {
     if (onQtyChange) onQtyChange(id, qty);
@@ -271,18 +273,16 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
           >
             {!minimal && (
               <div className="w-28 rounded-md">
-                <SelectDropdown
+                <Select
                   id="ProductQty"
-                  onSelection={(value) =>
+                  onOptionSelect={(value) =>
                     handleItemQtyChange(Number(value), product.id)
                   }
-                  initialValue={String(product.qty)}
-                  fullWidth={true}
-                  options={[...Array(50)].map((_, i) => ({
-                    name: String(i + 1),
-                    value: String(i + 1),
-                  }))}
-                />
+                >
+                  {[...Array(50)].map((_, i) => (
+                    <SelectOption value={i + 1}>{i + 1}</SelectOption>
+                  ))}
+                </Select>
               </div>
             )}
             <FlexStack alignItems={min ? "start" : "end"} direction="vertical">

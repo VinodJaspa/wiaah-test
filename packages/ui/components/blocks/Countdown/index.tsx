@@ -1,4 +1,3 @@
-import { Flex, VStack, Text, SimpleGrid } from "@chakra-ui/react";
 import { useDateDiff } from "ui/Hooks";
 import React, { useEffect, useState } from "react";
 
@@ -35,53 +34,31 @@ export const Countdown: React.FC<CountdownProps> = ({
   }, [interval]);
 
   return (
-    <SimpleGrid
-      // flexWrap={"wrap"}
-      gap="1rem"
-      color="#fff"
-      w="100%"
-      columns={{ base: 2, md: 4 }}
-    >
+    <div className="grid grid-cols-2 gap-4 text-white w-full md:grid-cols-4">
       {(All || days) && (
-        <Flex direction={"column"} alignItems="center" fontSize={"1.5rem"}>
-          <Text fontWeight={"bold"} fontSize="3xl">
-            {d}
-          </Text>
-          <Text fontWeight={"semibold"} textTransform={"uppercase"}>
-            days
-          </Text>
-        </Flex>
+        <div className="flex flex-col items-center text-[1.5rem]">
+          <span className="font-bold text-5xl">{d}</span>
+          <span className="font-semibold uppercase">days</span>
+        </div>
       )}
       {(All || hours) && (
-        <Flex direction={"column"} alignItems="center" fontSize={"1.5rem"}>
-          <Text fontWeight={"bold"} fontSize="3xl">
-            {h}
-          </Text>
-          <Text fontWeight={"semibold"} textTransform={"uppercase"}>
-            hours
-          </Text>
-        </Flex>
+        <div className="flex flex-col items-center text-[1.5rem]">
+          <span className="font-bold text-5xl">{h}</span>
+          <span className="font-semibold uppercase">hours</span>
+        </div>
       )}
       {(All || days) && (
-        <Flex direction={"column"} alignItems="center" fontSize={"1.5rem"}>
-          <Text fontWeight={"bold"} fontSize="3xl">
-            {m}
-          </Text>
-          <Text fontWeight={"semibold"} textTransform={"uppercase"}>
-            minutes
-          </Text>
-        </Flex>
+        <div className="flex flex-col items-center text-[1.5rem]">
+          <span className="font-bold text-5xl">{m}</span>
+          <span className="font-semibold uppercase">minutes</span>
+        </div>
       )}
       {(All || days) && (
-        <Flex direction={"column"} alignItems="center" fontSize={"1.5rem"}>
-          <Text fontWeight={"bold"} fontSize="3xl">
-            {s}
-          </Text>
-          <Text fontWeight={"semibold"} textTransform={"uppercase"}>
-            seconds
-          </Text>
-        </Flex>
+        <div className="flex flex-col items-center text-[1.5rem]">
+          <span className="font-bold text-5xl">{s}</span>
+          <span className="font-semibold uppercase">seconds</span>
+        </div>
       )}
-    </SimpleGrid>
+    </div>
   );
 };

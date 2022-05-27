@@ -1,8 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { MdClose, MdArrowLeft, MdArrowRight } from "react-icons/md";
-import { Button } from "@chakra-ui/react";
-import { Spacer, Divider } from "ui";
+import { Spacer, Divider, Button } from "ui";
 import { getTimeInAmPm } from "ui/components/helpers/getTimeInAmPm";
 
 export interface ServiceBookingCalanderProps {
@@ -212,7 +211,7 @@ export const ServiceBookingCalander: React.FC<ServiceBookingCalanderProps> = ({
                           : "cursor-not-allowed text-gray-400"
                       } ${
                         activeDay === dayNum && currentMonth
-                          ? "bg-blue-600 text-white"
+                          ? "bg-primary text-white"
                           : ""
                       } flex w-full items-center justify-center`}
                     >
@@ -243,7 +242,7 @@ export const ServiceBookingCalander: React.FC<ServiceBookingCalanderProps> = ({
                       key={i}
                       className={`${
                         activeEvent && activeEvent.id === event.id
-                          ? "bg-gray-200"
+                          ? "bg-primary-100"
                           : "bg-white"
                       } flex w-full cursor-pointer justify-between rounded p-4 shadow`}
                     >

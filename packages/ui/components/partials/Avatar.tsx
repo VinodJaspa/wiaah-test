@@ -4,10 +4,12 @@ import {
   AvatarProps as ChakraAvatarProps,
 } from "@chakra-ui/react";
 import React from "react";
+import { HtmlDivProps } from "types";
 
 export interface AvatarProps extends ChakraAvatarProps {
   name?: string;
-  photoSrc: string;
+  photoSrc?: string;
+  src?: string;
   newStory?: boolean;
   onClick?: () => any;
   showBorder?: boolean;
@@ -20,6 +22,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   onClick,
   showBorder = true,
   children,
+  src,
   ...props
 }) => {
   function handleAvatarClick() {
@@ -33,7 +36,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       onClick={handleAvatarClick}
       showBorder={showBorder}
       name={name}
-      src={photoSrc}
+      src={photoSrc || src}
       // sx={{
       //   img: {
       //     height: "auto",
@@ -48,5 +51,19 @@ export const Avatar: React.FC<AvatarProps> = ({
     >
       {children}
     </ChakaraAvatar>
+  );
+};
+
+export interface AvatarBadgeProps extends HtmlDivProps {}
+
+export const AvatarBadge: React.FC<AvatarBadgeProps> = ({
+  children,
+  className,
+  ...props
+}) => {
+  return (
+    <div {...props} className={`${className || ""} `}>
+      {children}
+    </div>
   );
 };

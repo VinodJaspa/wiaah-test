@@ -1,8 +1,8 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { CookiesInfoBanner } from "../CookiesInfoBanner";
+import { CookiesInfoBanner, storybookBlocksTitle } from "ui";
 export default {
-  title: "UI/blocks/CookiesInfoBanner",
+  title: storybookBlocksTitle + "CookiesInfoBanner",
   component: CookiesInfoBanner,
 } as ComponentMeta<typeof CookiesInfoBanner>;
 

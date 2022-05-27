@@ -4,13 +4,22 @@ import { IoCalendar, IoHome, IoLocation } from "react-icons/io5";
 import {
   Clickable,
   FlexStack,
-  SelectDropdown,
+  Select,
+  SelectOption,
+  Table,
+  Tr,
+  Td,
+  Th,
+  TBody,
+  THead,
   Spacer,
-} from "ui/components/partials";
-import { CartSummaryItem } from "types/market/CartSummary";
+  SelectProps,
+  FormikInput,
+} from "ui";
+import { CartSummaryItem } from "types";
 import { IoMdClock } from "react-icons/io";
 import { getTimeInAmPm } from "ui/components/helpers";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 export interface CartSummaryTableProps {
   items: CartSummaryItem[];
@@ -56,30 +65,27 @@ export const CartSummaryTable: React.FC<CartSummaryTableProps> = ({
   function getTime(date: number, eventDurationInMinutes: number) {
     const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const toTimestamp = date + eventDurationInMinutes * 60 * 1000;
-    console.log(timeZone);
     return `${getTimeInAmPm(new Date(date), timeZone)} - ${getTimeInAmPm(
       new Date(toTimestamp),
       timeZone
     )}`;
   }
-
+  const { t } = useTranslation();
   return (
-    <table className="w-full">
-      <thead className="h-12 border-[1px] border-gray-400 border-opacity-30 bg-gray-200">
-        <tr className="-bold">
+    <Table className="w-full">
+      <THead>
+        <Tr>
           {headers.map((header, i) => (
-            <td className={`px-4 text-center first:w-full first:text-left`}>
-              {t(header, header.replace("_", " ").toUpperCase())}
-            </td>
+            <Th>{t(header, header.replace("_", " ").toUpperCase())}</Th>
           ))}
-        </tr>
-      </thead>
-      <tbody className="">
+        </Tr>
+      </THead>
+      <TBody>
         {items.map((item, i) => (
           <>
             <Spacer />
-            <tr style={{ verticalAlign: "top" }} className="bg-white" key={i}>
-              <td className="flex gap-4">
+            <Tr>
+              <Td className="flex gap-4">
                 <img
                   className="h-36 w-28 object-cover"
                   src={item.imageUrl}
@@ -93,50 +99,55 @@ export const CartSummaryTable: React.FC<CartSummaryTableProps> = ({
                     {item.sizes && (
                       <div className="w-20">
                         {/* size select */}
-                        <SelectDropdown
-                          fullWidth={true}
-                          name="Size"
-                          options={item.sizes.map((item) => ({
-                            name: item.size,
-                            value: item.size,
-                          }))}
-                        />
+                        <Select
+                        // name="size"
+                        >
+                          {item.sizes.map((item, i) => (
+                            <SelectOption key={item + i} value={item}>
+                              {item}
+                            </SelectOption>
+                          ))}
+                        </Select>
                       </div>
                     )}
                     {item.colors && (
                       <div className="w-20">
                         {/* colors select */}
-                        <SelectDropdown
-                          fullWidth={true}
-                          name="Color"
-                          options={item.colors.map((color) => ({
-                            name: color.name,
-                            value: color.hexCode,
-                          }))}
-                        />
+                        <Select
+                        // name="color"
+                        >
+                          {item.colors.map((color, i) => (
+                            <SelectOption key={color + i} value={color}>
+                              {color}
+                            </SelectOption>
+                          ))}
+                        </Select>
                       </div>
                     )}
                   </div>
                 </div>
-              </td>
+              </Td>
               <td>
                 {item.type === "product" ? (
                   <>
-                    <SelectDropdown
-                      name={t(
-                        "choose_shipping_mothed",
-                        "Choose your Shipping mothed"
-                      )}
-                      options={
-                        item.shippingMotheds
-                          ? item.shippingMotheds.map((mothed) => ({
-                              name: mothed.name,
-                              value: mothed.value,
-                            }))
-                          : []
+                    <Select
+                      // name={"shippingMethod"}
+                      onOptionSelect={(v) =>
+                        setCurrentMothed(
+                          item.shippingMotheds?.findIndex((m) => m.value === v)
+                        )
                       }
-                      onSelection={(_, i) => setCurrentMothed(i)}
-                    />
+                    >
+                      {item.shippingMotheds ? (
+                        item.shippingMotheds.map((method, i) => (
+                          <SelectOption key={i} value={method.value}>
+                            {method.name}
+                          </SelectOption>
+                        ))
+                      ) : (
+                        <></>
+                      )}
+                    </Select>
                     <Spacer spaceInRem={0.5} />
                     {item.shippingMotheds && currentMothed !== undefined && (
                       <span>
@@ -193,17 +204,15 @@ export const CartSummaryTable: React.FC<CartSummaryTableProps> = ({
               </td>
               <td align="center">
                 <div className="mx-2 w-14 rounded-md">
-                  <SelectDropdown
-                    onSelection={(value) =>
+                  <Select
+                    onOptionSelect={(value) =>
                       handleItemQtyChange(Number(value), item.id)
                     }
-                    initialValue={String(item.qty)}
-                    fullWidth={true}
-                    options={[...Array(50)].map((_, i) => ({
-                      name: String(i + 1),
-                      value: String(i + 1),
-                    }))}
-                  />
+                  >
+                    {[...Array(50)].map((_, i) => (
+                      <SelectOption value={i + 1}>{i + 1}</SelectOption>
+                    ))}
+                  </Select>
                 </div>
               </td>
               <td align="center">${item.price}</td>
@@ -215,10 +224,10 @@ export const CartSummaryTable: React.FC<CartSummaryTableProps> = ({
                   <FaTrash className="text-2xl text-white " />
                 </div>
               </td>
-            </tr>
+            </Tr>
           </>
         ))}
-      </tbody>
-    </table>
+      </TBody>
+    </Table>
   );
 };

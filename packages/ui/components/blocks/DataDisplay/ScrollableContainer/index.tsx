@@ -1,9 +1,8 @@
-import { Flex, Box, Text, FlexProps } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { PostCommentCard } from "ui";
 
-export interface ScrollableContainerProps extends FlexProps {
+export interface ScrollableContainerProps {
   children: React.ReactElement[];
   maxShowMoreItems?: number;
   maxInitialItems?: number;
@@ -60,61 +59,48 @@ export const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
   }
 
   return (
-    <Flex direction={"column"}>
-      <Flex {...props} onLoad={handleLoaded} position={"relative"}>
-        <Flex
+    <div className="flex flex-col">
+      <div className="flex relative" onLoad={handleLoaded}>
+        <div
           ref={commentsContainerRef}
-          overflowY={showMore ? "scroll" : "hidden"}
-          direction={"column"}
-          className="thinScroll"
-          w="100%"
-          height={containerHeight}
-          gap="0.5rem"
+          className={`${
+            showMore ? "overflow-y-scroll" : "overflow-y-hidden"
+          } w-full gap-2 flex flex-col thinScroll`}
+          style={{
+            height: containerHeight,
+          }}
           data-testid="CommentsWrapper"
         >
           {items.map((Child, i) => (
             <React.Fragment key={i}>{Child}</React.Fragment>
           ))}
-        </Flex>
+        </div>
 
-        <Flex
+        <div
+          className="absolute w-full flex flex-col opacity-0 pointer-events-none gap-2"
           onLoad={handleLoaded}
           ref={MockCommentsContainerRef}
-          position="absolute"
-          pointerEvents={"none"}
-          w="100%"
-          visibility="hidden"
-          direction={"column"}
-          gap="0.5rem"
         >
           {items
             .slice(0, showMore === true ? maxShowMoreItems : maxInitialItems)
             .map((item, i) => (
               <React.Fragment key={i}>{item}</React.Fragment>
             ))}
-        </Flex>
-      </Flex>
+        </div>
+      </div>
       {isShowMore && (
-        <Box
-          fontWeight={"semibold"}
-          cursor="pointer"
-          fontSize="lg"
-          w="100%"
-          py="0.5rem"
-          textAlign={"center"}
-          textTransform={"capitalize"}
-        >
+        <div className="font-semibold cursor-pointer text-xl w-full py-2 text-center capitalize">
           {showMore === false ? (
-            <Text data-testid="ShowMoreBtn" onClick={handleShowMoreComments}>
+            <span data-testid="ShowMoreBtn" onClick={handleShowMoreComments}>
               {t("show_more", "show more")}
-            </Text>
+            </span>
           ) : (
-            <Text data-testid="ShowLessBtn" onClick={handleShowLessComments}>
+            <span data-testid="ShowLessBtn" onClick={handleShowLessComments}>
               {t("show_less", "show less")}
-            </Text>
+            </span>
           )}
-        </Box>
+        </div>
       )}
-    </Flex>
+    </div>
   );
 };

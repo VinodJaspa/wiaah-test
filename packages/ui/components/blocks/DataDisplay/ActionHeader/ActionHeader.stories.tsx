@@ -1,11 +1,9 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ActionHeader } from "ui";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import { ActionHeader, storybookDataDisplayBlocksTitle } from "ui";
 export default {
-  title: "UI/blocks/Data Display/ActionHeader",
+  title: storybookDataDisplayBlocksTitle + "ActionHeader",
   component: ActionHeader,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof ActionHeader>;
 
 const Template: ComponentStory<typeof ActionHeader> = (args) => (

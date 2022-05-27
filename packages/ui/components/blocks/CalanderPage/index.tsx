@@ -1,6 +1,4 @@
 import React from "react";
-import { Flex, Spacer, Text, Box, VStack } from "@chakra-ui/react";
-
 export interface CalanderPageProps {
   date: number;
 }
@@ -24,16 +22,16 @@ export const CalanderPage: React.FC<CalanderPageProps> = ({ date }) => {
     setMonth(month);
   }, []);
   return (
-    <Flex direction={"column"} borderWidth={"1px"} borderColor="#4A4A4A">
-      <Box px={"3rem"} py="0.5rem" bg="#4A4A4A">
-        <Text color="white">{day.toUpperCase()}</Text>
-      </Box>
-      <Text fontSize={"xl"} fontWeight={"bold"} color="#4A4A4A">
-        <Flex direction={"column"} alignItems="center" gap="0.5rem" py="0.5rem">
-          <Text>{numericDay}</Text>
-          <Text>{month}</Text>
-        </Flex>
-      </Text>
-    </Flex>
+    <div className="flex flex-col border-[1px] border-[#4A4A4A]">
+      <div className="px-12 py-1 bg-[#4A4A4A]">
+        <span className="text-white">{day.toUpperCase()}</span>
+      </div>
+      <span className="text-2xl font-bold text-[#4A4A4A]">
+        <div className="flex flex-col items-center gap-2 py-2">
+          <span>{numericDay}</span>
+          <span>{month}</span>
+        </div>
+      </span>
+    </div>
   );
 };

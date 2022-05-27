@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, Spacer, Rate } from "ui/components/partials";
+import { Divider, Rate } from "ui";
 export interface BuyerCommentProps {
   name: string;
   date: Date;
