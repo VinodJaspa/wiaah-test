@@ -1,4 +1,3 @@
-import { Image } from "@chakra-ui/react";
 import React from "react";
 import { ChatMessageAttachmentType } from "types";
 import { AudioMessageAttachment } from "ui";
@@ -15,7 +14,7 @@ export const ChatMessageAttachment: React.FC<ChatMessageAttachmentProps> = ({
 
   switch (type) {
     case "image":
-      return <Image rounded={"xl"} src={src} />;
+      return <img className="rounded-xl" src={src} />;
 
     case "video":
       return <video controls src={src} />;

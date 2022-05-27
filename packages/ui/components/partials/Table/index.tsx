@@ -8,17 +8,34 @@ import {
   HtmlTableHeadProps,
 } from "types";
 
-export interface TableProps extends HtmlTableProps {}
+interface TableContextValue {
+  TdProps?: HtmlTdProps;
+  ThProps?: HtmlThProps;
+  TrProps?: HtmlTrProps;
+}
+
+const TableContext = React.createContext<TableContextValue>({
+  TdProps: {},
+  ThProps: {},
+  TrProps: {},
+});
+
+export type TableProps = HtmlTableProps & TableContextValue & {};
 
 export const Table: React.FC<TableProps> = ({
   className,
   children,
+  TdProps,
+  ThProps,
+  TrProps,
   ...props
 }) => {
   return (
-    <table {...props} className={`${className || ""}`}>
-      {children}
-    </table>
+    <TableContext.Provider value={{ TdProps, ThProps, TrProps }}>
+      <table {...props} className={`${className || ""}`}>
+        {children}
+      </table>
+    </TableContext.Provider>
   );
 };
 
@@ -41,8 +58,16 @@ export const THead: React.FC<TBody> = ({ className, children, ...props }) => {
 export interface TrProps extends HtmlTrProps {}
 
 export const Tr: React.FC<TrProps> = ({ className, children, ...props }) => {
+  const { TrProps } = React.useContext(TableContext);
   return (
-    <tr {...props} className={`${className || ""}`}>
+    <tr
+      {...props}
+      className={`${className || ""} ${
+        TrProps && typeof TrProps.className === "string"
+          ? TrProps.className
+          : ""
+      }`}
+    >
       {children}
     </tr>
   );
@@ -50,8 +75,16 @@ export const Tr: React.FC<TrProps> = ({ className, children, ...props }) => {
 
 export interface ThProps extends HtmlThProps {}
 export const Th: React.FC<ThProps> = ({ className, children, ...props }) => {
+  const { ThProps } = React.useContext(TableContext);
   return (
-    <th {...props} className={`${className || ""} p-4`}>
+    <th
+      {...props}
+      className={`${className || ""} ${
+        ThProps && typeof ThProps.className === "string"
+          ? ThProps.className
+          : ""
+      } p-4`}
+    >
       {children}
     </th>
   );
@@ -59,8 +92,16 @@ export const Th: React.FC<ThProps> = ({ className, children, ...props }) => {
 
 export interface TdProps extends HtmlTdProps {}
 export const Td: React.FC<TdProps> = ({ className, children, ...props }) => {
+  const { TdProps } = React.useContext(TableContext);
   return (
-    <td {...props} className={`${className || ""} p-4`}>
+    <td
+      {...props}
+      className={`${className || ""} ${
+        TdProps && typeof TdProps.className === "string"
+          ? TdProps.className
+          : ""
+      } p-4`}
+    >
       {children}
     </td>
   );

@@ -5,6 +5,15 @@
 @import "~react-image-gallery/styles/css/image-gallery.css";
 @import "~antd/dist/antd.css";
 
+@layer components {
+  .hstack {
+    @apply flex items-center gap-2;
+  }
+  .vstack {
+    @apply flex flex-col gap-2 items-center;
+  }
+}
+
 * {
   scroll-behavior: smooth;
 }

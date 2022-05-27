@@ -1,4 +1,3 @@
-import { Flex, VStack, Icon, Text } from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
 import { BiVolumeFull } from "react-icons/bi";
 import { BsPlayFill } from "react-icons/bs";
@@ -50,33 +49,30 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
           items={[
             {
               label: (
-                <Flex
-                  justify={"center"}
-                  px="0.25"
-                  textAlign={"center"}
-                  gap="0.5rem"
-                  direction={"column"}
-                  color={dark ? "white" : "black"}
-                  bg={dark ? "blackAlpha.300" : undefined}
-                  rounded="full"
-                  fontSize={{ base: "6xl", md: "7xl" }}
+                <div
+                  className={`${
+                    dark ? "text-white bg-black bg-opacity-30" : "text-black "
+                  } flex justify-center px-1 text-center gap-2 flex-col rounded-full text-7xl`}
                 >
-                  <VStack spacing="0rem">
-                    <Icon as={HiHeart} />
-                    <Text fontSize={"lg"}>1.5k</Text>
-                  </VStack>
-                  <VStack onClick={ToggleComments} spacing="0rem">
-                    <Icon as={HiOutlineChat} />
-                    <Text fontSize={"lg"}>500</Text>
-                  </VStack>
-                  <VStack spacing="0rem">
-                    <Icon as={HiShare} />
-                    <Text fontSize="lg">{t("share", "share")}</Text>
-                  </VStack>
-                  <VStack spacing="0rem">
-                    <Icon as={HiDotsHorizontal} />
-                  </VStack>
-                </Flex>
+                  <div className="flex flex-col justify-center">
+                    <HiHeart />
+                    <span className="text-xl">1.5k</span>
+                  </div>
+                  <div
+                    className="flex flex-col justify-center"
+                    onClick={ToggleComments}
+                  >
+                    <HiOutlineChat />
+                    <span className="text-xl">500</span>
+                  </div>
+                  <div className="flex flex-col justify-center gap-0">
+                    <HiShare />
+                    <span className="text-xl">{t("share", "share")}</span>
+                  </div>
+                  <div className="flex flex-col justify-center">
+                    <HiDotsHorizontal />
+                  </div>
+                </div>
               ),
               right: "0.5rem",
               top: "center",
@@ -86,12 +82,8 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
             },
           ]}
         >
-          <Flex
-            gap="0.5rem"
-            // py={i !== 0 && "3rem"}
-            alignSelf={"flex-start"}
-            h={"100%"}
-            direction={"column"}
+          <div
+            className="flex gap-2 self-start h-full flex-col"
             onClick={() => onActionClick && onActionClick(action.id)}
           >
             <FloatingContainer
@@ -104,12 +96,7 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
                 {
                   label: (
                     <ActionHeader
-                      // bgColor={""}
-                      w="100%"
-                      p="0.5rem"
-                      bgGradient="linear(to-t, blackAlpha.500 80%,transparent)"
-                      color="white"
-                      minH={"max-content"}
+                      className="w-full p-2 text-white min-h-max bg-gradient-to-t from-black to-transparent bg-opacity-80"
                       actionHashtags={[]}
                       actionTitle={action.title}
                       userName={action.user.name}
@@ -125,14 +112,10 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
                 },
                 {
                   label: (
-                    <Icon
-                      visibility={muteIcon ? "unset" : "hidden"}
-                      fontSize={"xx-large"}
-                      // p="0.25rem"
-                      rounded="full"
-                      bg="blackAlpha.400"
-                      color="white"
-                      as={BiVolumeFull}
+                    <BiVolumeFull
+                      className={`${
+                        muteIcon ? "hidden" : ""
+                      } rounded-full bg-black bg-opacity-40 text-white text-5xl`}
                     />
                   ),
                   top: "1rem",
@@ -140,27 +123,17 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
                 },
                 {
                   label: (
-                    <Icon
-                      visibility={playIcon ? "unset" : "hidden"}
-                      fontSize={"xx-large"}
-                      // p="0.25rem"
-                      rounded="full"
-                      bg="blackAlpha.400"
-                      color="white"
-                      as={BsPlayFill}
+                    <BsPlayFill
+                      className={`${
+                        playIcon ? "hidden" : ""
+                      } rounded-full bg-black bg-opacity-40 text-white text-5xl`}
                     />
                   ),
                   top: "1rem",
                   left: "1rem",
                 },
                 {
-                  label: (
-                    <Icon
-                      fontSize={"xx-large"}
-                      color="white"
-                      as={CgPlayButtonR}
-                    />
-                  ),
+                  label: <CgPlayButtonR className="text-5xl text-white" />,
                   top: muteIcon ? "3.5rem" : "1rem",
                   right: "1rem",
                 },
@@ -175,7 +148,7 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
                 {...action}
               />
             </FloatingContainer>
-          </Flex>
+          </div>
         </FloatingContainer>
       )}
     </>

@@ -1,6 +1,6 @@
 import { BiChevronDown } from "react-icons/bi";
 import React from "react";
-import { HtmlDivProps } from "types";
+import { HtmlDivProps, HtmlSelectProps } from "types";
 import { ElementChilds } from "../Menu";
 import { useOutsideClick } from "../../../Hooks";
 
@@ -14,27 +14,30 @@ export interface SelectProps
   children: ElementChilds<SelectChildProps>;
   onOptionSelect?: OnOptionSelect;
   placeholder?: string;
+  value?: string;
+  flushed?: boolean;
 }
 
 export const Select: React.FC<SelectProps> = ({
   placeholder,
   className,
   children,
+  value,
+  flushed,
   ...props
 }) => {
+  const ph = placeholder ? (
+    <SelectOption className="text-gray-500" value>
+      {placeholder}
+    </SelectOption>
+  ) : Array.isArray(children) ? (
+    children[0]
+  ) : (
+    children
+  );
   const [open, setOpen] = React.useState<boolean>(false);
   const [selectedOption, setSelectedOption] =
-    React.useState<React.ReactElement>(
-      placeholder ? (
-        <SelectOption className="text-gray-500" value>
-          {placeholder}
-        </SelectOption>
-      ) : Array.isArray(children) ? (
-        children[0]
-      ) : (
-        children
-      )
-    );
+    React.useState<React.ReactElement>(ph);
   const [showChild, setShowChild] = React.useState<boolean>(false);
   const ref = React.useRef<HTMLDivElement>(null);
   useOutsideClick(ref, handleClose);
@@ -50,6 +53,12 @@ export const Select: React.FC<SelectProps> = ({
       }, 200);
     }
   }, [open]);
+
+  React.useEffect(() => {
+    if (value === "") {
+      setSelectedOption(ph);
+    }
+  }, [value]);
 
   function handleSelect(value: string, child: React.ReactElement) {
     props.onOptionSelect && props.onOptionSelect(value);
@@ -67,15 +76,15 @@ export const Select: React.FC<SelectProps> = ({
     <div
       {...props}
       ref={ref}
-      className={`${
-        className || ""
-      } border-gray-200 items-center flex border-2 rounded relative`}
+      className={`${className || ""} ${
+        flushed ? "border-b-2" : "border-2"
+      } bg-white border-gray-200 items-center flex  rounded relative`}
     >
-      <div className="flex w-full p-2 items-center justify-between">
-        <div
-          onClick={handleToggle}
-          className="cursor-pointer w-full flex items-center whitespace-nowrap "
-        >
+      <div
+        onClick={handleToggle}
+        className="flex w-full p-2 items-center justify-between"
+      >
+        <div className="cursor-pointer w-full flex items-center whitespace-nowrap ">
           {selectedOption &&
             React.cloneElement(selectedOption, { selectable: false })}
         </div>

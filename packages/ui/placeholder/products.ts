@@ -1,5 +1,5 @@
 import { CartSummaryItemData } from "types/market/CartSummary";
-import { ProductDetails } from "../types/products/ProductDetail.interface";
+import { ProductDetails } from "../uiTypes/products/ProductDetail.interface";
 
 export const ProductsWithProfile: CartSummaryItemData[] = [
   {

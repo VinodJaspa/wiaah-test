@@ -22,7 +22,7 @@ export const SocialProfileInfo: ShopSocialProfileInfo = {
   countryCode: "CH",
   verifed: true,
   location: "Switzerland, Geneva",
-  public: true,
+  public: false,
   bio: "Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing ",
   links: ["https://www.instagram.com"],
   isFollowed: false,

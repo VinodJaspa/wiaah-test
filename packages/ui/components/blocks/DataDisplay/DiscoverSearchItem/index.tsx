@@ -1,10 +1,9 @@
 import React from "react";
-import { Image } from "@chakra-ui/react";
 
-interface DiscoverItemProps {
+export interface DiscoverItemProps {
   thumbnail: string;
 }
 
 export const DiscoverItem: React.FC<DiscoverItemProps> = ({ thumbnail }) => {
-  return <Image shadow={"md"} src={thumbnail} />;
+  return <img className="shadow-md" src={thumbnail} />;
 };

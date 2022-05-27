@@ -18,7 +18,7 @@ import { SellerDrawerOpenState } from "ui/state";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import {
-  // useResponsive,
+  useResponsive,
   MinimalHeader,
   DiscoverHeader,
   LocationButton,
@@ -156,8 +156,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
 }) => {
   const { t } = useTranslation();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
-  // const { isMobile } = useResponsive();
-  const isMobile = false;
+  const { isMobile } = useResponsive();
   const headerRef = React.useRef<HTMLDivElement>(null);
   const headerHeight = headerRef?.current?.offsetHeight;
   const router = useRouter();
@@ -215,7 +214,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
       <Container
         noContainer={noContainer}
         className={`${
-          isMobile ? "px-4" : sideBar ? "pl-20 pr-4" : "px-8"
+          isMobile ? "px-4" : sideBar ? "pl-24 pr-4" : "px-8"
         } h-full`}
       >
         {header && header !== null && (
@@ -225,7 +224,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           >
             <Container
               className={`${
-                isMobile ? "px-4" : sideBar ? "pl-20 pr-4" : "px-8"
+                isMobile ? "px-4" : sideBar ? "pl-24 pr-4" : "px-8"
               }`}
             >
               <HeaderSwitcher headerType={header} />

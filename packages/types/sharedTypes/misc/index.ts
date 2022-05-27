@@ -9,3 +9,4 @@ export * from "./priceType";
 export * from "./StepperTypes";
 export * from "./HtmlElementsProps";
 export * from "./category";
+export * from "./LoginTypes";

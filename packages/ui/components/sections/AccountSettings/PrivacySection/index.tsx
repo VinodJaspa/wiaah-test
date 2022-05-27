@@ -1,8 +1,8 @@
-import { Switch } from "@chakra-ui/react";
+import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormOptionType } from "types";
-import { TranslationText } from "ui";
+import { TranslationText, Switch } from "ui";
 
 export interface PrivacySectionProps {}
 
@@ -12,17 +12,27 @@ export const PrivacySection: React.FC<PrivacySectionProps> = () => {
   return (
     <div className="flex flex-col w-full gap-8">
       <h1 className="text-4xl w-full font-bold">{t("privacy", "Privacy")}</h1>
-      <div className="flex w-full flex-col gap-4">
-        {privacySectionOpts.map((opt, i) => (
-          <div className="w-full flex justify-between">
-            <TranslationText className="" translationObject={opt.name} />
-            <div className="flex gap-2 items-center">
-              <Switch colorScheme={"primary"} />
-              <p>{t("push", "Push")}</p>
+      <Formik initialValues={{}} onSubmit={() => {}}>
+        {({ values, setFieldValue }) => (
+          <Form>
+            <div className="flex w-full flex-col gap-4">
+              {privacySectionOpts.map((opt, i) => (
+                <div className="w-full flex justify-between">
+                  <TranslationText className="" translationObject={opt.name} />
+                  <div className="flex gap-2 items-center">
+                    <Switch
+                      //@ts-ignore
+                      checked={!!values[opt.value]}
+                      onChange={(checked) => setFieldValue(opt.value, checked)}
+                    />
+                    <p>{t("push", "Push")}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
-        ))}
-      </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

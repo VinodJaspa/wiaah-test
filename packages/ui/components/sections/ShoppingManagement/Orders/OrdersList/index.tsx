@@ -3,8 +3,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiCalendarEdit } from "react-icons/bi";
 import { FormOptionType, PriceType } from "types";
-import { DateInput, FormikInput } from "../../../../blocks";
-import { randomNum } from "../../../../helpers";
+import { DateInput, FormikInput } from "ui";
+import { randomNum } from "ui/components/helpers";
 import {
   Divider,
   Menu,
@@ -20,8 +20,8 @@ import {
   PriceDisplay,
   Button,
   OrderContext,
+  Pagination,
 } from "ui";
-import { Pagination } from "../../../../partials";
 
 export interface OrdersListProps {}
 

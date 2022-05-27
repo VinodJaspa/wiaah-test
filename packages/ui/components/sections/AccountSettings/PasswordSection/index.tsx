@@ -1,8 +1,7 @@
-import { Button, Flex, HStack, Input, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FormikInput } from "ui";
+import { FormikInput, Button } from "ui";
 
 export interface PasswordSectionProps {}
 
@@ -12,10 +11,10 @@ export const PasswordSection: React.FC<PasswordSectionProps> = () => {
     <Formik initialValues={{}} onSubmit={() => {}}>
       {() => (
         <Form style={{ width: "100%" }}>
-          <Flex gap="1rem" direction={"column"}>
-            <Text fontSize={"xx-large"} fontWeight="bold">
+          <div className="flex flex-col gap-4">
+            <span className="text-4xl font-bold">
               {t("password", "Password")}
-            </Text>
+            </span>
             <FormikInput
               label={{
                 translationKey: "current_password",
@@ -37,19 +36,13 @@ export const PasswordSection: React.FC<PasswordSectionProps> = () => {
               }}
               name="confirmPassword"
             />
-          </Flex>
-          <HStack
-            justifyContent={"space-between"}
-            my="1rem"
-            w="100%"
-            justify={"end"}
-            px="1rem"
-          >
-            <Text color={"primary.main"}>
+          </div>
+          <div className="flex items-center gap-2 justify-between my-4 w-full px-4">
+            <span className="text-primary cursor-pointer">
               {t("forgot_password", "Forgot Password")}
-            </Text>
+            </span>
             <Button>{t("change_password", "Change Password")}</Button>
-          </HStack>
+          </div>
         </Form>
       )}
     </Formik>

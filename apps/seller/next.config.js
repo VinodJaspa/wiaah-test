@@ -1,4 +1,9 @@
-const withTM = require("next-transpile-modules")(["ui", "api", "uris"]);
+const withTM = require("next-transpile-modules")([
+  "ui",
+  "api",
+  "uris",
+  "validation",
+]);
 const withPWA = require("next-pwa");
 
 module.exports = withTM(
@@ -12,6 +17,9 @@ module.exports = withTM(
       dest: "public",
       register: true,
       skipWaiting: true,
+    },
+    experimental: {
+      esmExternals: false,
     },
   })
 );

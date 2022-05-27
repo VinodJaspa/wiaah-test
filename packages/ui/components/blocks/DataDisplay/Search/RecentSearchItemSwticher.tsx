@@ -1,9 +1,12 @@
-import { HStack, Icon } from "@chakra-ui/react";
 import React from "react";
 import { MdClose } from "react-icons/md";
 import { RecentSearchItem } from "types";
-import { HashTagSearch, UserProfile, LocalizationSearchItem } from "ui";
-import { LocationButton } from "../../Buttons";
+import {
+  HashTagSearchItem,
+  UserProfile,
+  LocalizationSearchItem,
+  LocationButton,
+} from "ui";
 
 export interface RecentSearchItemSwticherProps {
   itemData: RecentSearchItem;
@@ -14,7 +17,7 @@ export const RecentSearchItemSwticher: React.FC<RecentSearchItemSwticherProps> =
     const content = () => {
       switch (itemData.itemType) {
         case "Hashtag":
-          return <HashTagSearch {...itemData.data}></HashTagSearch>;
+          return <HashTagSearchItem {...itemData.data}></HashTagSearchItem>;
         case "user":
           return <UserProfile user={itemData.data} />;
 
@@ -23,7 +26,7 @@ export const RecentSearchItemSwticher: React.FC<RecentSearchItemSwticherProps> =
         case "Place":
           return (
             <LocationButton
-              iconStyle={{ color: "primary.main" }}
+              iconProps={{ className: "text-primary" }}
               {...itemData.data}
             />
           );
@@ -32,9 +35,9 @@ export const RecentSearchItemSwticher: React.FC<RecentSearchItemSwticherProps> =
       }
     };
     return (
-      <HStack justify={"space-between"} w="100%">
+      <div className="flex items-center gap-2 justify-between w-full">
         {content()}
-        <Icon as={MdClose} />
-      </HStack>
+        <MdClose className="cursor-pointer" />
+      </div>
     );
   };

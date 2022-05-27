@@ -1,14 +1,6 @@
-import {
-  Flex,
-  HStack,
-  Text,
-  Avatar,
-  Select,
-  Button,
-  Divider,
-} from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
 import React from "react";
+import { Button, Avatar } from "ui";
 import { useTranslation } from "react-i18next";
 import { BlocklistUserInfo } from "types";
 
@@ -18,39 +10,43 @@ export const BlocklistSection: React.FC<BlocklistSectionProps> = ({}) => {
   const { t } = useTranslation();
 
   return (
-    <Flex h="full" w="100%" gap="2rem" direction={"column"}>
-      <Text fontWeight={"bold"} fontSize={"xx-large"}>
+    <div className="h-full w-full flex gap-8 flex-col">
+      <span className="text-4xl font-bold">
         {t("block_list", "Block List")}
-      </Text>
+      </span>
       <Formik initialValues={{}} onSubmit={() => {}}>
         {() => (
           <Form className="h-full">
-            <Flex h="100%" direction={"column"} justify={"space-between"}>
-              <Flex gap="1rem" direction={"column"}>
-                <Flex fontWeight={"bold"} w="100%" justify={"space-between"}>
-                  <Text>{t("name", "Name")}</Text>
-                  <Text>{t("status", "Status")}</Text>
-                </Flex>
+            <div className="h-full flex flex-col justify-between">
+              <div className="flex gap-4 flex-col">
+                <div className="font-bold w-full justify-between">
+                  <span>{t("name", "Name")}</span>
+                  <span>{t("status", "Status")}</span>
+                </div>
                 {blockList.map((user, i) => (
-                  <HStack justify={"space-between"}>
-                    <HStack>
-                      <Avatar bgColor={"black"} src={user.photo} />
-                      <Text>{user.name}</Text>
-                    </HStack>
-                    <Button bgColor={"crimson"} colorScheme={"red"}>
+                  <div className="flex items-center gap-2 justify-between">
+                    <div className="flex items-center gap-2">
+                      <Avatar
+                        name={user.name}
+                        bgColor={"black"}
+                        photoSrc={user.photo}
+                      />
+                      <span>{user.name}</span>
+                    </div>
+                    <Button colorScheme={"danger"}>
                       {t("unfollow", "Unfollow")}
                     </Button>
-                  </HStack>
+                  </div>
                 ))}
-              </Flex>
-              <HStack justify={"end"} w="100%">
-                <Button px="2rem">{t("save", "Save")}</Button>
-              </HStack>
-            </Flex>
+              </div>
+              <div className="flex items-center justify-end w-full">
+                <Button className="px-8">{t("save", "Save")}</Button>
+              </div>
+            </div>
           </Form>
         )}
       </Formik>
-    </Flex>
+    </div>
   );
 };
 

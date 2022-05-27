@@ -1,6 +1,6 @@
-import { Input } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { Input, Button } from "ui";
 
 export interface PaymentPortalProps {}
 
@@ -83,9 +83,7 @@ export const PaymentPortal: React.FC<PaymentPortalProps> = () => {
           </div>
         </div>
         <div className="flex justify-end">
-          <button className="green-background rounded-md py-2 px-4 text-white">
-            {t("Pay_Now", "Pay Now")}
-          </button>
+          <Button>{t("Pay_Now", "Pay Now")}</Button>
         </div>
       </div>
     </div>

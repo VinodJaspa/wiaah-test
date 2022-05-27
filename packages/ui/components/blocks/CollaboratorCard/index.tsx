@@ -1,5 +1,5 @@
 import React from "react";
-import { FlexStack, Spacer } from "ui/components/partials";
+import { Spacer } from "ui";
 
 export interface CollaboratorCardProps {
   name: string;

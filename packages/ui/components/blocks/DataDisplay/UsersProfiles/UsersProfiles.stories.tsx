@@ -1,16 +1,13 @@
 import React from "react";
-import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { UsersProfiles } from "ui";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import { ComponentMeta } from "@storybook/react";
+import {
+  UsersProfiles,
+  storybookDataDisplayBlocksTitle,
+  usersProfilesPlaceHolder,
+} from "ui";
 export default {
-  title: "UI/blocks/Data Display/UsersProfiles",
+  title: storybookDataDisplayBlocksTitle + "UsersProfiles",
   component: UsersProfiles,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof UsersProfiles>;
 
-const Template: ComponentStory<typeof UsersProfiles> = (args) => (
-  <UsersProfiles {...args} />
-);
-
-export const Default = Template.bind({});
-Default.args = {};
+export const Default = () => <UsersProfiles users={usersProfilesPlaceHolder} />;

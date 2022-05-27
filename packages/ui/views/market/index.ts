@@ -9,3 +9,6 @@ export * from "./PrivacyPolicyView";
 export * from "./TermsAndConditionsView";
 export * from "./ContactUsView";
 export * from "./Services";
+export * from "./SellerSignupView";
+export * from "./BuyerSignupView";
+export * from "./LoginView";

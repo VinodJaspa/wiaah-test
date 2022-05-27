@@ -1,23 +1,27 @@
-// import { Checkbox } from "@chakra-ui/react";
-import { Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Input, Checkbox, Select as AntSelect } from "antd";
-import Select from "react-select";
 import { Country, State, City } from "country-state-city";
-import { FormikInput, TranslationText, Select as MySelect } from "ui";
+import {
+  FormikInput,
+  TranslationText,
+  Textarea,
+  Input,
+  SelectOption,
+  Checkbox,
+  Select,
+} from "ui";
+import {
+  AvailableInArray,
+  isAllAvailableInArray,
+  storeForOptions,
+  ToggleInArray,
+} from "ui";
 
-const { TextArea } = Input;
-const { Option } = AntSelect;
-
-let countriesArray = Array();
-const countries = Country.getAllCountries();
-countries.forEach((element) => {
-  countriesArray.push({
-    value: element.isoCode,
-    label: element.name,
-  });
-});
+let countriesArray = Country.getAllCountries().map((element) => ({
+  value: element.isoCode,
+  label: element.name,
+}));
 
 export interface ShopInformationStepProps {}
 
@@ -65,8 +69,13 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({}) => {
       </h2>
       <div className="flex py-4">
         <div className="w-full text-gray-500">
-          <Formik initialValues={{}} onSubmit={() => {}}>
-            {() => (
+          <Formik
+            initialValues={{
+              storeFor: [],
+            }}
+            onSubmit={() => {}}
+          >
+            {({ values, setFieldValue }) => (
               <Form>
                 <FormikInput
                   name="companyName"
@@ -83,118 +92,141 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({}) => {
                   className="my-2"
                   placeholder={t("address", "Address") + " 2"}
                 />
-                <MySelect className="w-full my-2">
-                  <option>{t("type_of_account", "Type of Account")}</option>
-                </MySelect>
-                <MySelect className="w-full my-2">
-                  <option>{t("type_of_company", "Type of Company")}</option>
-                </MySelect>
+                <Select
+                  placeholder={t("type_of_account", "Type of Account")}
+                  className="w-full my-2"
+                >
+                  <SelectOption value={"0"}>not implemented</SelectOption>
+                </Select>
+                <Select
+                  placeholder={t("type_of_company", "Type of Company")}
+                  className="w-full my-2"
+                >
+                  <SelectOption value={"0"}>not implemented</SelectOption>
+                </Select>
                 <Select
                   id="countryselect"
-                  instanceId="countryselect"
-                  className="react-select-container mb-4 rounded-md border-gray-300"
-                  classNamePrefix="react-select"
-                  options={countriesArray}
                   placeholder={t("Country", "Country")}
                   onChange={(value) => {
                     handleCountryChange(value);
                   }}
-                />
+                >
+                  {countriesArray.map((country, i) => (
+                    <SelectOption value={country.value} key={i}>
+                      {country.label}
+                    </SelectOption>
+                  ))}
+                </Select>
                 <Select
                   id="stateselect"
-                  instanceId="stateselect"
-                  className="react-select-container mb-4 rounded-md border-gray-300"
-                  classNamePrefix="react-select"
-                  onChange={(value) => {
+                  onOptionSelect={(value) => {
                     handleStateChange(value);
                   }}
-                  options={states}
                   placeholder={t("State", "State")}
-                />
-                <Select
-                  id="cityselect"
-                  instanceId="cityselect"
-                  className="react-select-container mb-4 rounded-md border-gray-300"
-                  classNamePrefix="react-select"
-                  options={cities}
-                  placeholder={t("City", "City")}
-                />
+                >
+                  {states.map((state, i) => (
+                    <SelectOption key={i} value={state.value}>
+                      {state.label}
+                    </SelectOption>
+                  ))}
+                </Select>
+                <Select id="cityselect" placeholder={t("City", "City")}>
+                  {cities.map((city, i) => (
+                    <SelectOption value={city.value} key={i}>
+                      {city.label}
+                    </SelectOption>
+                  ))}
+                </Select>
                 <Input
                   className="mb-4 rounded-md border-gray-300"
-                  size="large"
                   placeholder={t(
                     "company_CRN",
                     "Company Registered Number (CRN)"
                   )}
                 />
-                <AntSelect
+                <Select
                   placeholder={t("select_currency", "Select Currency")}
                   className="mb-4 w-full border-gray-300"
-                  size="large"
                 >
-                  <Option value="male">USD</Option>
-                  <Option value="femal">EUR</Option>
-                </AntSelect>
-                <AntSelect
+                  <SelectOption value="male">USD</SelectOption>
+                  <SelectOption value="femal">EUR</SelectOption>
+                </Select>
+                <Select
                   placeholder={t("select_language", "Select Language")}
                   className="mb-4 w-full border-gray-300"
-                  size="large"
                 >
-                  <Option value="english">
+                  <SelectOption value="english">
                     <TranslationText
                       translationObject={{
                         translationKey: "english",
                         fallbackText: "English",
                       }}
                     />
-                  </Option>
-                  <Option value="french">
+                  </SelectOption>
+                  <SelectOption value="french">
                     <TranslationText
                       translationObject={{
                         translationKey: "french",
                         fallbackText: "French",
                       }}
                     />
-                  </Option>
-                  <Option value="germen">
+                  </SelectOption>
+                  <SelectOption value="germen">
                     <TranslationText
                       translationObject={{
                         translationKey: "germen",
                         fallbackText: "Germen",
                       }}
                     />
-                  </Option>
-                </AntSelect>
-                <AntSelect
+                  </SelectOption>
+                </Select>
+                <Select
                   placeholder={t("Type_of_Seller", "Type of Seller")}
                   className="mb-4 w-full border-gray-300"
-                  size="large"
                 >
-                  <Option value="male">{t("ONE", "ONE")}</Option>
-                  <Option value="femal">{t("TOW", "TOW")}</Option>
-                </AntSelect>
-                <AntSelect
+                  <SelectOption value="male">{t("ONE", "ONE")}</SelectOption>
+                  <SelectOption value="femal">{t("TOW", "TOW")}</SelectOption>
+                </Select>
+                <Select
                   placeholder={t("Type_of_Shop", "Type of Shop")}
                   className="mb-4 w-full border-gray-300"
-                  size="large"
                 >
-                  <Option value="male">{t("ONE", "ONE")}</Option>
-                  <Option value="femal">{t("TOW", "TOW")}</Option>
-                </AntSelect>
-                <TextArea
-                  rows={4}
+                  <SelectOption value="male">{t("ONE", "ONE")}</SelectOption>
+                  <SelectOption value="femal">{t("TOW", "TOW")}</SelectOption>
+                </Select>
+                <Textarea
                   placeholder={t("Brand_presentation", "Brand presentation")}
                   className="mb-4 w-full border-gray-300"
-                  maxLength={6}
                 />
                 <div className="">
                   <label htmlFor="">{t("Store_for", "Store for")}</label>
                   <div className="mt-2">
-                    <Checkbox>{t("All", "All")}</Checkbox>
-                    <Checkbox>{t("Men", "Men")}</Checkbox>
-                    <Checkbox>{t("Women", "Women")}</Checkbox>
-                    <Checkbox>{t("Children", "Children")}</Checkbox>
-                    <Checkbox>{t("Babies", "Babies")}</Checkbox>
+                    <Checkbox
+                      checked={isAllAvailableInArray(
+                        storeForOptions.map((opt) => opt.value),
+                        values.storeFor
+                      )}
+                    >
+                      {t("All", "All")}
+                    </Checkbox>
+                    {storeForOptions.map((opt, i) => (
+                      <Checkbox
+                        checked={AvailableInArray(opt.value, values.storeFor)}
+                        onChange={(e) =>
+                          setFieldValue(
+                            "storeFor",
+                            ToggleInArray(
+                              values.storeFor,
+                              e.target.checked,
+                              opt.value
+                            )
+                          )
+                        }
+                        key={i}
+                      >
+                        <TranslationText translationObject={opt.name} />
+                      </Checkbox>
+                    ))}
                   </div>
                 </div>
               </Form>

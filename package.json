@@ -13,7 +13,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "prepare": "husky install",
     "sonar": "sonar-scanner -Dsonar.login=admin",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "set NODE_OPTIONS=--max_old_space_size=4096 && start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "test": "jest",
     "test:watch": "jest --watch",

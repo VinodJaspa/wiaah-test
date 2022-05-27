@@ -1,10 +1,15 @@
-import { t } from "i18next";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { IoMdCheckmark } from "react-icons/io";
 import { MdClose } from "react-icons/md";
 import { FormOptWithCompType } from "types";
-import { Select, DropdownPanel, TranslationText, Checkbox } from "ui";
+import {
+  Select,
+  DropdownPanel,
+  TranslationText,
+  Checkbox,
+  SelectOption,
+} from "ui";
 
 export interface ProductOptionsProps {}
 
@@ -41,13 +46,13 @@ export const ProductOptions: React.FC<ProductOptionsProps> = () => {
       ))}
       <Select
         className="w-full min-w-32"
-        onChange={(e) => addOption(parseInt(e.target.value))}
+        placeholder={"+" + t("add_option", "Add Option")}
+        onOptionSelect={(v) => addOption(parseInt(v))}
       >
-        <option value={undefined}>+{t("add_option", "Add Option")}</option>
         {options.map((opt, i) => (
-          <option value={i} key={opt.value + i}>
+          <SelectOption value={i} key={opt.value + i}>
             {t(opt.name.translationKey, opt.name.fallbackText)}
-          </option>
+          </SelectOption>
         ))}
       </Select>
     </div>
@@ -62,11 +67,16 @@ const options: FormOptWithCompType<string[]>[] = [
     },
     value: "colors",
     component: () => {
+      const { t } = useTranslation();
+      const [checked, setChecked] = React.useState<boolean>(false);
       return (
         <DropdownPanel className="w-[100%]" name={t("colors", "Colors")}>
           {colors.map((color, i) => (
             <div key={color + i} className="flex gap-4">
-              <Checkbox />
+              <Checkbox
+                checked={checked}
+                onChange={(e) => setChecked(e.target.checked)}
+              />
               <span
                 style={{ backgroundColor: color }}
                 className={`w-8 h-8]`}
@@ -83,16 +93,23 @@ const options: FormOptWithCompType<string[]>[] = [
       fallbackText: "Sizes",
     },
     value: "sizes",
-    component: () => (
-      <DropdownPanel className="w-[100%]" name={t("sizes", "sizes")}>
-        {sizes.map((size, i) => (
-          <div key={size + i} className="flex gap-4">
-            <Checkbox />
-            <span>{size}</span>
-          </div>
-        ))}
-      </DropdownPanel>
-    ),
+    component: () => {
+      const [checked, setChecked] = React.useState<boolean>(false);
+      const { t } = useTranslation();
+      return (
+        <DropdownPanel className="w-[100%]" name={t("sizes", "sizes")}>
+          {sizes.map((size, i) => (
+            <div key={size + i} className="flex gap-4">
+              <Checkbox
+                checked={checked}
+                onChange={(e) => setChecked(e.target.checked)}
+              />
+              <span>{size}</span>
+            </div>
+          ))}
+        </DropdownPanel>
+      );
+    },
   },
 ];
 

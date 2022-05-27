@@ -1,14 +1,13 @@
 import React from "react";
 import { SocialShopCard, shopCardInfoPlaceholder } from "ui";
 import { useRouter } from "next/router";
-import { Box } from "@chakra-ui/react";
 import { useStory } from "ui";
 
 export interface ShopPostStoryProps {
-  id: string;
+  postId: string;
 }
 
-export const ShopPostStory: React.FC<ShopPostStoryProps> = ({ id }) => {
+export const ShopPostStory: React.FC<ShopPostStoryProps> = ({ postId }) => {
   const router = useRouter();
 
   const { CloseStories } = useStory();
@@ -20,10 +19,10 @@ export const ShopPostStory: React.FC<ShopPostStoryProps> = ({ id }) => {
   }
 
   return (
-    <Box cursor={"pointer"} onClick={handleRoute}>
-      <Box pointerEvents={"none"}>
+    <div className="cursor-pointer" onClick={handleRoute}>
+      <div className="pointer-events-none">
         <SocialShopCard shopCardInfo={shopCardInfoPlaceholder} />
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };

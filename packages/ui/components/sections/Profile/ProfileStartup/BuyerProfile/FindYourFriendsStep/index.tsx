@@ -1,16 +1,9 @@
-import { Button, Divider, Stack } from "@chakra-ui/react";
 import React from "react";
-import { Input } from "antd";
+import { Button, Divider, Input } from "ui";
 import { useTranslation } from "react-i18next";
-import { IoMdMail } from "react-icons/io";
 import { Field, Form, Formik } from "formik";
 
 export interface FindYourFriendsStepProps {}
-const GMAIL_MAIL_SERVICE = 1;
-const YAHOO_MAIL_SERVICE = 2;
-const OUTLOOK_MAIL_SERVICE = 3;
-const WHATSAPP_MAIL_SERVICE = 4;
-const OTHER_MAIL_SERVICE = 5;
 
 const MAIL_SERVICES: { name: string; image: string }[] = [
   {
@@ -50,7 +43,7 @@ export const FindYourFriendsStep: React.FC<FindYourFriendsStepProps> = ({}) => {
         <Formik initialValues={{}} onSubmit={() => {}}>
           {() => (
             <Form>
-              <Stack divider={<Divider />} direction={"column"} spacing="1rem">
+              <div className="flex flex-col gap-4">
                 {MAIL_SERVICES.map((service, i) => (
                   <div className="flex flex-col gap-4">
                     <div className="flex justify-between">
@@ -83,14 +76,14 @@ export const FindYourFriendsStep: React.FC<FindYourFriendsStepProps> = ({}) => {
                           type="email"
                           placeholder={t("Email", "Email")}
                         />
-                        <Button w="fit-content">
+                        <Button className="w-fit">
                           {t("Find_Friends", "Find Friends")}
                         </Button>
                       </>
                     )}
                   </div>
                 ))}
-              </Stack>
+              </div>
             </Form>
           )}
         </Formik>

@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiCalendarEdit } from "react-icons/bi";
 import { Menu, MenuButton, MenuList, DateInput, Select } from "ui";
-import { SelectOption } from "../../../../partials";
+import { SelectOption } from "ui";
 
 export interface NewProductDiscountOptionsProps {}
 

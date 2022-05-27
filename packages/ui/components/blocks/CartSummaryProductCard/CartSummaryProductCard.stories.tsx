@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { CartSummaryProductCard } from "../";
+import { CartSummaryProductCard } from "ui";
 
 export default {
   title: "UI/blocks/CartSummaryProdcutCard",
@@ -15,8 +15,8 @@ export const Default = Template.bind({});
 Default.args = {
   profile: {
     name: "Wiaah",
-    thumbnailUrl: "/shop-2.jpeg",
-    profileId: "15",
+    imageUrl: "/shop-2.jpeg",
+    id: "15",
   },
   product: {
     id: "1",
@@ -80,8 +80,8 @@ export const ServiceVariant = Template.bind({});
 ServiceVariant.args = {
   profile: {
     name: "Wiaah",
-    thumbnailUrl: "/shop-2.jpeg",
-    profileId: "15",
+    imageUrl: "/shop-2.jpeg",
+    id: "15",
   },
   product: {
     id: "2",
@@ -148,8 +148,8 @@ MinimalVariant.args = {
   minimal: true,
   profile: {
     name: "Wiaah",
-    thumbnailUrl: "/shop-2.jpeg",
-    profileId: "15",
+    imageUrl: "/shop-2.jpeg",
+    id: "15",
   },
   product: {
     id: "3",

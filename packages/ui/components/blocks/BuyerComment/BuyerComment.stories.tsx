@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { BuyerComment } from "../BuyerComment";
+import { BuyerComment } from "ui";
 export default {
   title: "UI/blocks/BuyerComment",
   component: BuyerComment,
@@ -13,7 +13,7 @@ const Template: ComponentStory<typeof BuyerComment> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   name: "John",
-  date: "08-Oct-2020",
+  date: new Date("08-Oct-2020"),
   rating: 4,
   comment: "Really great product highly recommand it",
   product: {

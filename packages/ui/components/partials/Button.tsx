@@ -1,24 +1,43 @@
 import React, { ButtonHTMLAttributes, DetailedHTMLProps, FC } from "react";
 import { HtmlButtonProps } from "types";
 
+type ColorScheme = "primary" | "danger" | "success" | "info" | "gray";
+
 export interface ButtonProps extends HtmlButtonProps {
   outline?: boolean;
+  colorScheme?: ColorScheme;
 }
 
 export const Button: FC<ButtonProps> = ({
   outline,
   className,
   children,
+  colorScheme = "primary",
   ...props
 }) => {
+  const colors = (scheme: ColorScheme): string => {
+    switch (scheme) {
+      case "primary":
+        return "bg-primary border-primary text-white hover:bg-primary-600 active:bg-primary-700";
+      case "danger":
+        return "bg-red-500 border-red-500 text-white hover:bg-red-600 active:bg-red-700";
+      case "info":
+        return "bg-cyan-500 border-cyan-400 text-white hover:bg-cyan-600 active:bg-cyan-700";
+      case "success":
+        return "scheme-success";
+      case "gray":
+        return "bg-gray-500 border-gray-400 text-white hover:bg-gray-600 active:bg-gray-700";
+      default:
+        return "scheme-primary";
+    }
+  };
+
   return (
     <button
       {...props}
       className={` ${className ? className : ""} ${
-        outline
-          ? "border-2 text-primary hover:bg-primary-100 active:bg-primary-200"
-          : "bg-primary text-white hover:bg-primary-600 active:bg-primary-700"
-      } px-4 py-2 border-primary  transition-all rounded-md`}
+        outline ? "border-2 text-black hover:text-white bg-transparent" : ""
+      } ${colors(colorScheme)} px-4 py-2  transition-all rounded-md`}
     >
       {children}
     </button>

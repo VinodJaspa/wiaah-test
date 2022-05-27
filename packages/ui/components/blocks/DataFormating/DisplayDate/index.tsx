@@ -1,11 +1,11 @@
-import { Text, TextProps } from "@chakra-ui/react";
 import React from "react";
+import { HtmlDivProps } from "types";
 
 export interface DisplayDateProps {
   date: string | number;
   hours12?: boolean;
   locale?: string;
-  innerProps?: TextProps;
+  innerProps?: HtmlDivProps;
 }
 
 export const DisplayDate: React.FC<DisplayDateProps> = ({
@@ -23,5 +23,5 @@ export const DisplayDate: React.FC<DisplayDateProps> = ({
         })
       : undefined;
   if (formatedDate === "Invalid Date") return null;
-  return <Text {...innerProps}>{formatedDate}</Text>;
+  return <div {...innerProps}>{formatedDate}</div>;
 };

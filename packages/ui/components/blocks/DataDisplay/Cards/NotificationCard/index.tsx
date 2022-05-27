@@ -1,16 +1,7 @@
-import {
-  AspectRatio,
-  Avatar,
-  Box,
-  Button,
-  HStack,
-  Image,
-  Text,
-} from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { NotificationData } from "types";
-import { useDateDiff } from "ui";
+import { useDateDiff, Button, Avatar } from "ui";
 export interface NotifiactionCardProps {
   notificationDetails: NotificationData;
 }
@@ -31,11 +22,9 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
       switch (type) {
         case "info":
           return attachment ? (
-            <Box>
-              <AspectRatio w="3rem" ratio={1 / 1}>
-                <Image src={attachment.src} />
-              </AspectRatio>
-            </Box>
+            <div className="w-12 h-12">
+              <img className="w-12 h-12 object-cover" src={attachment.src} />
+            </div>
           ) : null;
 
         case "follow-request":
@@ -49,23 +38,23 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
     };
 
     return (
-      <HStack justify={"space-between"} w={"25rem"}>
-        <HStack>
-          <Avatar bgColor={"black"} src={by.thumbnail} name={by.name} />
-          <Text>
+      <div className="flex items-center gap-2 justify-between w-full">
+        <div className="flex items-center gap-2">
+          <Avatar bgColor={"black"} photoSrc={by.thumbnail} name={by.name} />
+          <p>
             <span className="font-bold">{by.name} </span>
             {message}{" "}
-            <span className="text-gray">
+            <span className="text-gray-500">
               {since.value}
               {since.timeUnit.substring(0, 1)}
             </span>
-          </Text>
-        </HStack>
-        {TypeSpecificContent()}
-      </HStack>
+          </p>
+        </div>
+        <div className="min-w-[3rem]">{TypeSpecificContent()}</div>
+      </div>
     );
   } catch (err) {
     console.error(err);
-    return <Text>Error loading this notification</Text>;
+    return <span>Error loading this notification</span>;
   }
 };

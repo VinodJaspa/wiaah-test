@@ -3,6 +3,7 @@ import { render, RenderOptions } from "@testing-library/react";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "ui/themes/chakra_ui/theme";
 import { RecoilRoot } from "recoil";
+import { act } from "react-dom/test-utils";
 
 const AllTheProviders: FC = ({ children }) => {
   return (
@@ -26,3 +27,31 @@ export function getTestId(id: string): string {
 export function getRoleId(id: string): string {
   return `[role='${id}']`;
 }
+
+export const waitFor = (
+  callback: () => any,
+  { interval = 50, timeout = 1000 } = {}
+) =>
+  act(
+    () =>
+      new Promise((resolve, reject) => {
+        const startTime = Date.now();
+
+        const nextInterval = () => {
+          setTimeout(() => {
+            try {
+              callback();
+              resolve();
+            } catch (err) {
+              if (Date.now() - startTime > timeout) {
+                reject(new Error(`Timed out. ${err}`));
+              } else {
+                nextInterval();
+              }
+            }
+          }, interval);
+        };
+
+        nextInterval();
+      })
+  );

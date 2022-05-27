@@ -43,58 +43,45 @@ export const AffiliationHistorySection: React.FC<AffiliationHistorySection> =
           <Divider className="border-primary" />
         </div>
         <div className="w-full">
-          <Table>
+          <Table
+            ThProps={{
+              className: "border-[1px] border-gray-300",
+            }}
+            TdProps={{
+              className: "border-[1px] border-gray-300",
+            }}
+            TrProps={{
+              className: "border-collapse",
+            }}
+          >
             <THead>
               <Tr>
-                <Th className="border-[1px] border-gray-300">
-                  {t("product_image", "Product Image")}
-                </Th>
-                <Th className="border-[1px] border-gray-300">
-                  {t("product_name", "Product Name")}
-                </Th>
-                <Th className="border-[1px] border-gray-300">
-                  {t("product_price", "Product Price")}
-                </Th>
-                <Th className="border-[1px] border-gray-300">
-                  {t("affilator", "Affilator")}
-                </Th>
-                <Th className="border-[1px] border-gray-300">
-                  {t("purchaser", "Purchaser")}
-                </Th>
-                <Th className="border-[1px] border-gray-300">
-                  {t("commission", "Commission")}
-                </Th>
-                <Th className="border-[1px] border-gray-300">
-                  {t("commission_amount", "Commission Amount")}
-                </Th>
+                <Th>{t("product_image", "Product Image")}</Th>
+                <Th>{t("product_name", "Product Name")}</Th>
+                <Th>{t("product_price", "Product Price")}</Th>
+                <Th>{t("affilator", "Affilator")}</Th>
+                <Th>{t("purchaser", "Purchaser")}</Th>
+                <Th>{t("commission", "Commission")}</Th>
+                <Th>{t("commission_amount", "Commission Amount")}</Th>
               </Tr>
             </THead>
             <TBody>
               {AffiliationHistoryCards.map((card, i) => (
                 <Tr key={i}>
-                  <Td className="border-[1px] border-gray-300">
+                  <Td>
                     <img className="w-full h-auto" src={card.productImage} />
                   </Td>
-                  <Td className="border-[1px] border-gray-300">
-                    {card.productName}
-                  </Td>
-                  <Td className="border-[1px] border-gray-300">
+                  <Td>{card.productName}</Td>
+                  <Td>
                     {card.productPrice.amount} {card.productPrice.currency}
                   </Td>
-                  <Td className="border-[1px] border-gray-300">
-                    {card.affilator}
-                  </Td>
-                  <Td className="border-[1px] border-gray-300">
-                    {card.purchaser}
-                  </Td>
-                  <Td className="border-[1px] border-gray-300">
-                    {card.commission}%
-                  </Td>
-                  <Td className="border-[1px] border-gray-300">
+                  <Td>{card.affilator}</Td>
+                  <Td>{card.purchaser}</Td>
+                  <Td>{card.commission}%</Td>
+                  <Td>
                     {card.commissionAmount.amount}{" "}
                     {card.commissionAmount.currency}
                   </Td>
-                  {/* <Td>{card.}</Td> */}
                 </Tr>
               ))}
               <Tr>

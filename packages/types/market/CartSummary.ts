@@ -21,8 +21,8 @@ export interface CartSummaryItem {
   date?: number;
   eventDuration?: number;
   eventAdresses?: string;
-  size?: string;
-  color?: string;
+  sizes?: string[];
+  colors?: string[];
   discount?: {
     value: number;
     unit: DiscountUnit;

@@ -2,16 +2,16 @@
 import { ErrorMessage, Field } from "formik";
 import React from "react";
 import { HtmlDivProps, TranslationTextType, HtmlInputProps } from "types";
-import { TranslationText, Input } from "ui";
+import { TranslationText, Input, InputProps } from "ui";
 
 export interface FormikInputProps extends HtmlInputProps {
-  label?: TranslationTextType;
+  label?: TranslationTextType | string;
   name: string;
   as?: React.ReactNode;
   containerProps?: HtmlDivProps;
 }
 
-export function FormikInput<T>({
+export function FormikInput<T = InputProps>({
   label,
   name,
   children,
@@ -26,13 +26,17 @@ export function FormikInput<T>({
           containerProps ? containerProps.className : ""
         } flex flex-col`}
       >
-        {label && (
+        {typeof label === "string" ? (
+          label
+        ) : typeof label === "object" ? (
           <TranslationText className="font-bold" translationObject={label} />
-        )}
+        ) : null}
         <Field {...props} as={as} name={name}>
           {children}
         </Field>
-        <ErrorMessage name={name} />
+        <span className="text-red-500">
+          <ErrorMessage name={name} />
+        </span>
       </div>
     </>
   );

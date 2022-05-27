@@ -1,15 +1,15 @@
-import React, { AudioHTMLAttributes } from "react";
-import { DetailedHTMLProps } from "react";
+import React from "react";
+import { DurationDisplay } from "ui";
 import { useTranslation } from "react-i18next";
 import { BsPlayFill, BsPauseFill } from "react-icons/bs";
+import { HtmlAudioProps } from "types";
 
-export interface AudioMessageProps
-  extends DetailedHTMLProps<
-    AudioHTMLAttributes<HTMLAudioElement>,
-    HTMLElement
-  > {}
+export interface AudioMessageProps extends HtmlAudioProps {
+  src: string;
+}
 
 export const AudioMessageAttachment: React.FC<AudioMessageProps> = ({
+  src,
   ...rest
 }) => {
   const [play, setPlay] = React.useState<boolean>(false);
@@ -50,20 +50,23 @@ export const AudioMessageAttachment: React.FC<AudioMessageProps> = ({
   function handleTogglePlaying() {
     setPlay((play) => !play);
   }
+  console.log(currentAudioTick);
   return (
-    <div className="relative">
+    <div className="relative p-2 rounded-xl">
       <div className="absolute hidden">
         <audio
           onTimeUpdate={handleChangeCurrentTime}
           onPlay={handlePlay}
           onPause={handlePause}
+          //@ts-ignore
           ref={audioRef}
+          src={src}
           {...rest}
         />
       </div>
-      <div className="gap-2 items-center">
+      <div className="gap-2 flex items-center">
         <div
-          className="p-1 text-primary-700 bg-primary-300"
+          className="p-1 text-primary-700 rounded-full bg-primary-300"
           onClick={handleTogglePlaying}
         >
           {play ? (
@@ -80,49 +83,17 @@ export const AudioMessageAttachment: React.FC<AudioMessageProps> = ({
                 height: h,
               }}
               className={`${
-                i < currentAudioTick ? "primary.main" : "lightgray"
-              } w-[0.3em]`}
+                i < currentAudioTick ? "bg-primary" : "bg-gray-400"
+              } w-[0.2em]`}
             />
           ))}
         </div>
         {audioRef.current && audioRef.current.duration !== NaN && (
           <p className="text-gray-300">
-            <DisplayDuration duration={audioRef.current.duration} />
+            <DurationDisplay duration={audioRef.current.duration} />
           </p>
         )}
       </div>
     </div>
   );
-};
-
-export interface DisplayDurationProps {
-  duration: number;
-}
-
-export const DisplayDuration: React.FC<DisplayDurationProps> = ({
-  duration,
-}) => {
-  const { hours: h, minutes: m, seconds: s } = useTime(Math.floor(duration));
-
-  const hours = h < 10 ? `0${h}` : h;
-  const minutes = m < 10 ? `0${m}` : m;
-  const seconds = s < 10 ? `0${s}` : s;
-  return <>{`${minutes}:${seconds}`}</>;
-};
-
-const useTime = (timeInSec: number) => {
-  const second = 1,
-    minute = second * 60,
-    hour = minute * 60,
-    day = hour * 24;
-
-  let hours = Math.floor(timeInSec / hour);
-  let minutes = Math.floor(timeInSec / minute);
-  let seconds = Math.floor(timeInSec % minute);
-
-  return {
-    hours,
-    minutes,
-    seconds,
-  };
 };

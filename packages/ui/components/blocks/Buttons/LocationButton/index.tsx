@@ -1,43 +1,33 @@
-import {
-  Button,
-  Flex,
-  FlexProps,
-  Icon,
-  IconProps,
-  Text,
-} from "@chakra-ui/react";
 import React from "react";
+import { IconBaseProps } from "react-icons";
 import { HiLocationMarker } from "react-icons/hi";
-import { SearchPlaceItem } from "types";
-
+import { HtmlDivProps, SearchPlaceItem } from "types";
+import { Button } from "ui";
 export interface LocationButtonProps extends SearchPlaceItem {
   onLocationClick?: (locationName: string) => any;
-  style?: FlexProps;
-  iconStyle?: IconProps;
+  props?: HtmlDivProps;
+  iconProps?: IconBaseProps;
 }
 
 export const LocationButton: React.FC<LocationButtonProps> = ({
   name,
   onLocationClick,
-  style,
-  iconStyle,
+  iconProps,
+  props,
 }) => {
   return (
     <Button
-      px="0"
-      w="100%"
-      justifyContent={"start"}
-      color="black"
-      bgColor={"white"}
-      colorScheme={"gray"}
-      onClick={() => onLocationClick && onLocationClick(locationName)}
+      className="px-0 w-full justify-start hover:bg-gray-200 text-black bg-white"
+      colorScheme="gray"
+      onClick={() => onLocationClick && onLocationClick(name)}
     >
-      <Flex gap="1rem" align="center" {...style} spacing="2rem">
-        <Icon {...iconStyle} fontSize={"xxx-large"} as={HiLocationMarker} />
-        <Text textTransform={"capitalize"} fontWeight={"semibold"}>
-          {name}
-        </Text>
-      </Flex>
+      <div className="flex items-center gap-4" {...props}>
+        <HiLocationMarker
+          {...iconProps}
+          className={`${iconProps?.className || ""} text-5xl`}
+        />
+        <span className="capitalize font-semibold">{name}</span>
+      </div>
     </Button>
   );
 };

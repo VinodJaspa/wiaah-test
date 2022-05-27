@@ -26,7 +26,9 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
   return (
     <div
       className={`${className} thinScroll overflow-y-scroll flex z-20 py-4 gap-4 border-t-gray-300 fixed border-t-[1px] ${
-        isMobile ? "flex-row left-0 bottom-0 w-full" : "flex-col left-4 top-0"
+        isMobile
+          ? "flex-row left-0 bottom-0 w-full"
+          : "flex-col left-0 px-2 top-0"
       } items-center flex bg-white text-4xl`}
       {...props}
     >
@@ -50,7 +52,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
             key={i}
           >
             <div
-              className="text-4xl text-black bg-white py-2"
+              className="text-3xl text-black bg-white py-2"
               aria-label={link.name}
               key={i}
             >
@@ -60,7 +62,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
             </div>
             {!isMobile && (
               <p
-                className="capitalize font-bold text-sm"
+                className="capitalize font-bold text-xs"
                 data-testid="NavigationSideBarLinkLabel"
               >
                 {link.name}

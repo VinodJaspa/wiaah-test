@@ -13,3 +13,4 @@ export * from "./ProductViewModal";
 export * from "./RecordVideoModal";
 export * from "./ShareWithModal";
 export * from "./GeneralSearchModal";
+export * from "./AccountDeletionModal";

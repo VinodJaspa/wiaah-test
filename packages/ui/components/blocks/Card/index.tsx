@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { colorShades } from "ui/components/helpers/colorShades";
 
-interface CardProps {
+export interface CardProps {
   imgUrl: string;
   id: string;
   name: string;

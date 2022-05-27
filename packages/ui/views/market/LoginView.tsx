@@ -1,12 +1,12 @@
 import React, { FC, useState } from "react";
 import Link from "next/link";
 import { IoMdMail, IoMdKey } from "react-icons/io";
-import { Button } from "@chakra-ui/react";
-import { Spacer, DividerWidthText, Input } from "../../components";
+import { Spacer, DividerWidthText, Input } from "ui";
 import { LoginInputsType } from "../../../types/market/authenticating/loginInput.interface";
-import { LoginType } from "../../../../apps/market/lib/LoignTypes";
-import { useUserData, useLoginPopup } from "ui";
+import { LoginType } from "types";
+import { useUserData, useLoginPopup, Button, FormikInput } from "ui";
 import { useTranslation } from "react-i18next";
+import { Form, Formik } from "formik";
 
 export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
   setAuthView,
@@ -46,53 +46,59 @@ export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
         {t("Login_to_Wiaah", "Login to Wiaah account")}
       </h2>
       <Spacer spaceInRem={2} />
-      <form className=" flex flex-col" onSubmit={handleSubmit}>
-        <Input
-          id="Email"
-          name="email"
-          placeholder="Email"
-          type={"email"}
-          value={formInput.email}
-          onChange={(e) => handleInputChange(e)}
-          icon={<IoMdMail />}
-        />
-        <Spacer />
-        <Input
-          id="Password"
-          name="password"
-          placeholder="Password"
-          type={"password"}
-          onChange={(e) => handleInputChange(e)}
-          value={formInput.password}
-          icon={<IoMdKey />}
-        />
-        <Spacer />
-        <div className="flex items-center justify-between font-light">
-          <div className="flex items-center justify-between pl-1">
-            <input
-              checked={formInput.remember_me}
-              onChange={handleCheckBoxChange}
-              name="remember_me"
-              type="checkbox"
-            />
-            <span className="ml-2">{t("Remember_me", "Remember me")}</span>
-          </div>
-          <Link href="/forgot-password">
-            <a className="text-blue-400">
-              {t("Forgot_Password?", "Forgot Password?")}
-            </a>
-          </Link>
-        </div>
-        <Spacer />
-        <Button type="submit">{t("log_in", "log in")}</Button>
-      </form>
-      <Spacer />
+      <Formik initialValues={{}} onSubmit={() => {}}>
+        {() => {
+          return (
+            <Form>
+              <form className=" flex flex-col" onSubmit={handleSubmit}>
+                <FormikInput
+                  id="Email"
+                  name="email"
+                  placeholder="Email"
+                  type={"email"}
+                  icon={<IoMdMail />}
+                />
+                <Spacer />
+                <FormikInput
+                  id="Password"
+                  name="password"
+                  placeholder="Password"
+                  type={"password"}
+                  icon={<IoMdKey />}
+                />
+                <Spacer />
+                <div className="flex items-center justify-between font-light">
+                  <div className="flex items-center justify-between pl-1">
+                    <input
+                      checked={formInput.remember_me}
+                      onChange={handleCheckBoxChange}
+                      name="remember_me"
+                      type="checkbox"
+                    />
+                    <span className="ml-2">
+                      {t("Remember_me", "Remember me")}
+                    </span>
+                  </div>
+                  <Link href="/forgot-password">
+                    <a className="text-blue-400">
+                      {t("Forgot_Password?", "Forgot Password?")}
+                    </a>
+                  </Link>
+                </div>
+                <Spacer />
+                <Button type="submit">{t("log_in", "log in")}</Button>
+              </form>
+              <Spacer />
+            </Form>
+          );
+        }}
+      </Formik>
       <DividerWidthText text={t("new_to_wiaah?", "new to Wiaah ?")} />
       <div className="align flex w-full flex-col">
         <Button
           onClick={() => setAuthView("buyer-signup")}
           id="CreateNewAccountBtn"
-          variant={"outline"}
+          outline
         >
           {t("create_your_wiaah_account", "create your Wiaah Account now")}
         </Button>

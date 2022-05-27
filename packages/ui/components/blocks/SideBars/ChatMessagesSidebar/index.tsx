@@ -82,7 +82,7 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
   );
 };
 
-const userCards: ChatUserData[] = [
+export const userCards: ChatUserData[] = [
   {
     id: "1",
     name: "wiaah",

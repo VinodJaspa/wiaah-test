@@ -6,10 +6,9 @@ import {
   FlexStack,
   Grid,
   Input,
-  Padding,
   Prefix,
   Spacer,
-} from "ui/components/partials";
+} from "ui";
 import {
   AddressDetails,
   AddressInputsFields,

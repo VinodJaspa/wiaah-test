@@ -1,10 +1,4 @@
-import {
-  Flex,
-  Image,
-  useBreakpointValue,
-  Divider,
-  Text,
-} from "@chakra-ui/react";
+import { useBreakpointValue } from "@chakra-ui/react";
 import React from "react";
 import {
   Container,
@@ -20,6 +14,7 @@ import {
   ShareWithModal,
   SpinnerFallback,
   newsfeedPosts,
+  Divider,
 } from "ui";
 import {
   useGetSocialProfile,
@@ -86,7 +81,6 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
     isLoading,
     isError,
   } = useGetSocialProfile(profileId);
-  console.log("profile", profileInfo);
   const { isMobile } = useResponsive();
   const posts = useRecoilValue(SocialNewsfeedPostsState);
   const cols = useBreakpointValue({ base: 3 });
@@ -107,7 +101,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
     {
       name: t("shop", "shop"),
       component: (
-        <Flex gap="1rem" direction={"column"}>
+        <div className="flex flex-cl gap-4">
           <div className="flex justify-end">
             <div
               onClick={() => {
@@ -128,7 +122,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
             cols={cols}
             items={ShopCardsInfoPlaceholder}
           />
-        </Flex>
+        </div>
       ),
     },
     {
@@ -158,30 +152,18 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
     },
   ];
   return (
-    <Flex direction={"column"}>
+    <div className="flex flex-col h-full">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         <Container className="flex-grow flex-col">
-          <Flex
-            w={"100%"}
-            overflow="hidden"
-            position={{ base: "relative", md: "initial" }}
-            maxH={"26rem"}
-          >
+          <div className="w-full flex overflow-hidden relative max-h-[26rem]">
             <SocialProfile shopInfo={profileInfo} />
             <SocialPostsCommentsDrawer />
             <ShareWithModal />
-            <Image
-              position={{ base: "absolute", md: "unset" }}
-              top="0px"
-              left="0px"
-              w="100%"
-              bgColor={"blackAlpha.200"}
-              zIndex={-1}
-              h={{ base: "100%", md: "unset" }}
+            <img
               src="/shop.jpeg"
-              objectFit={"cover"}
+              className=" top-0 left-0 w-full bg-black bg-opacity-20 -z-10 h-full md:h-auto object-cover"
             />
-          </Flex>
+          </div>
           {profileInfo && (
             <>
               {profileInfo.public ? (
@@ -193,30 +175,21 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
                         : buyerTabs
                     }
                   />
-                  <Divider my="1rem" />
+                  <Divider className="my-4" />
                 </>
               ) : (
                 <>
-                  <Flex
-                    h="100%"
-                    flexGrow={"inherit"}
-                    align="center"
-                    justify={"center"}
-                  >
-                    <Text
-                      fontWeight={"bold"}
-                      textTransform={"capitalize"}
-                      fontSize={"xx-large"}
-                    >
+                  <div className="h-full flex items-center justify-center">
+                    <p className="font-bold capitalize w-fit text-4xl">
                       {t("this_profile_is_private", "this profile is private")}
-                    </Text>
-                  </Flex>
+                    </p>
+                  </div>
                 </>
               )}
             </>
           )}
         </Container>
       </SpinnerFallback>
-    </Flex>
+    </div>
   );
 };

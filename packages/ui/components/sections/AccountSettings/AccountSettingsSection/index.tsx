@@ -1,28 +1,30 @@
-import {
-  Avatar,
-  Button,
-  Checkbox,
-  Divider,
-  Flex,
-  Input,
-  InputGroup,
-  InputLeftAddon,
-  Select,
-  SimpleGrid,
-  Text,
-  Icon,
-  Textarea,
-} from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { HiChevronDown } from "react-icons/hi";
 import { City, Country } from "country-state-city";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React from "react";
 import { FlagIcon } from "react-flag-kit";
 import { useTranslation } from "react-i18next";
-import { TranslationTextType, UpdateAccouuntSettingsDto } from "types";
-import { useFileUploadModal, MediaUploadModal } from "ui";
-import { FormikInput, SearchFilterInput } from "../../../blocks";
-import { Prefix, TranslationText } from "../../../partials";
+import {
+  FormOptionType,
+  TranslationTextType,
+  UpdateAccouuntSettingsDto,
+} from "types";
+import {
+  FormikInput,
+  Button,
+  SearchFilterInput,
+  Prefix,
+  TranslationText,
+  useFileUploadModal,
+  MediaUploadModal,
+  Select,
+  SelectOption,
+  Checkbox,
+  Textarea,
+  Divider,
+  Avatar,
+} from "ui";
+import { SelectProps } from "../../../partials";
 
 export interface AccountSettingsSectionProps {}
 
@@ -35,34 +37,31 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
       uploadImage();
     }
     return (
-      <Flex w="100%" gap="1rem" direction={"column"}>
-        <Text fontSize={"xx-large"} fontWeight="bold">
-          {t("account", "Account")}
-        </Text>
-        <Flex direction={"column"}>
-          <Text fontSize={"lg"} fontWeight="semibold">
+      <div className="w-full gap-4 flex flex-col">
+        <span className="font-bold text-4xl">{t("account", "Account")}</span>
+        <div className="flex flex-col">
+          <span className="text-xl font-semibold">
             {t("profile", "Profile")}
-          </Text>
-          <Text color="slategray">
+          </span>
+          <span className="text-slate-500">
             {t(
               "info_public_warn",
               "This inforomation will be displayed publicly so be careful what you share."
             )}
-          </Text>
-        </Flex>
+          </span>
+        </div>
         <Formik<Partial<UpdateAccouuntSettingsDto>>
           initialValues={{
             country: "Egypt",
+            storeFor: [],
           }}
-          onSubmit={(data) => {
-            console.log(data);
-          }}
+          onSubmit={(data) => {}}
         >
           {({ handleChange, values, setFieldValue }) => (
             <Form>
-              <Flex w="100%" direction={"column"} gap="1rem">
+              <div className="w-full flex flex-col gap-4">
                 {/* first and last name */}
-                <SimpleGrid columns={{ base: 1, sm: 2 }} gap="2rem" w="100%">
+                <div className="grid w-full gap-8 grid-cols-1 sm:grid-cols-2">
                   <FormikInput
                     label={{
                       fallbackText: "First name",
@@ -77,7 +76,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                     }}
                     name="lastName"
                   />
-                </SimpleGrid>
+                </div>
                 {/* username */}
                 <FormikInput
                   name="companyRegisterationNum"
@@ -87,104 +86,82 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                   }}
                 />
 
-                <Flex direction={"column"}>
-                  <Text>{t("username", "Username")}</Text>
-                  <InputGroup>
-                    <InputLeftAddon
-                      borderRightWidth={"1px"}
-                      px="0.5rem"
-                      w="fit-content"
-                    >
-                      <Text fontSize={"sm"} color="slategray">
-                        wiaah.com/
-                      </Text>
-                    </InputLeftAddon>
-                    <FormikInput name="username" />
-                  </InputGroup>
-                </Flex>
+                <div className="flex flex-col">
+                  <span>{t("username", "Username")}</span>
+                  <div className="flex rounded-lg items-center border-2 w-fit border-gray-300">
+                    <span className="bg-slate-100 border-r-[1px] border-r-slate-300 px-2 w-fit">
+                      <span className="text-sm text-slate-500">wiaah.com/</span>
+                    </span>
+                    <FormikInput className="border-0" name="username" />
+                  </div>
+                </div>
 
                 {/* profile picture */}
 
-                <Flex gap="0.25em" direction={"column"}>
-                  <Text>{t("photo", "Photo")}</Text>
-                  <Flex gap="0.5rem">
+                <div className="gap-1 flex flex-col">
+                  <span>{t("photo", "Photo")}</span>
+                  <div className="flex gap-2">
                     <MediaUploadModal />
-                    <Avatar size={"sm"} bgColor="black" src="/wiaah_logo.png" />
+                    <Avatar photoSrc="/wiaah_logo.png" />
                     <Button
-                      bgColor={"white"}
-                      borderColor="gray.200"
-                      size={"sm"}
+                      className="bg-white border-gray-200 text-sm"
                       colorScheme="gray"
-                      variant={"outline"}
+                      outline
                       onClick={handleProfilePhotoChange}
                     >
                       {t("change", "change")}
                     </Button>
                     <Button
-                      bgColor={"white"}
-                      borderColor="gray.50"
-                      size={"sm"}
+                      className="bg-white border-gray-50 text-sm"
                       colorScheme="gray"
-                      variant={"outline"}
+                      outline
                     >
                       {t("remove", "remove")}
                     </Button>
-                  </Flex>
-                </Flex>
+                  </div>
+                </div>
 
                 {/* bio  */}
-                <Flex direction={"column"}>
-                  <Text>{t("bio", "Bio")}</Text>
-                  <Field
-                    resize="none"
+                <div className="flex flex-col">
+                  <FormikInput
+                    label={t("bio", "Bio")}
                     className="thinScroll"
                     as={Textarea}
                     name="bio"
                   />
-                  <ErrorMessage name="bio" />
-                  <Text color={"slategray"}>
+                  <span className="text-slate-500" color={"slategray"}>
                     {t(
                       "brief_descrption",
                       "Brief Description for your profile, URLs are hyperlinked"
                     )}
-                  </Text>
-                </Flex>
+                  </span>
+                </div>
 
                 {/* personal inforomation */}
-                <Flex direction={"column"}>
-                  <Text fontSize={"lg"} fontWeight="semibold">
+                <div className="flex flex-col">
+                  <span className="text-xl font-semibold">
                     {t("personal_information", "Personal Information")}
-                  </Text>
-                  <Text color="slategray">
+                  </span>
+                  <span className="text-slate-500" color="slategray">
                     {t(
                       "info_public_warn",
                       "This inforomation will be displayed publicly so be careful what you share."
                     )}
-                  </Text>
-                </Flex>
-                <SimpleGrid columns={{ base: 1, sm: 2 }} gap="2rem">
-                  <Flex direction={"column"}>
-                    <Text>{t("email_address", "Email address")}</Text>
-                    <Field as={Input} name="email" />
-                    <ErrorMessage name="email" />
-                  </Flex>
-                  <Flex direction={"column"}>
-                    <Text>{t("address", "Address")}</Text>
-                    <Field as={Input} name="address" />
-                    <ErrorMessage name="address" />
-                  </Flex>
-                  <Flex direction={"column"}>
-                    <Text>{t("address2", "Address2")}</Text>
-                    <Field as={Input} name="address2" />
-                    <ErrorMessage name="address2" />
-                  </Flex>
-                  <Flex w="100%" direction={"column"}>
-                    <Text>{t("country", "Country")}</Text>
+                  </span>
+                </div>
+                <div className="grid gap-8 grid-cols-1 sm:grid-cols-2">
+                  <FormikInput label={t("address", "Address")} name="email" />
+                  <FormikInput
+                    label={t("address2", "Address2")}
+                    name="address"
+                  />
+                  <div className="w-full flex flex-col">
+                    <span>{t("country", "Country")}</span>
                     <Field
                       as={SearchFilterInput}
                       w={"100%"}
                       placeHolder={t("select_country", "Select Country")}
-                      rightElement={<Icon as={ChevronDownIcon} />}
+                      rightElement={<HiChevronDown />}
                       icon={() => {
                         const county = values.country;
                         if (county) {
@@ -223,22 +200,21 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                         }
                       }}
                     />
-                    {/* <Field as={Input} name="country" /> */}
                     <ErrorMessage name="country" />
-                  </Flex>
-                  <Flex direction={"column"}>
-                    <Text>{t("phone_number", "Phone number")}</Text>
-                    <Field as={Input} name="phoneNumber" />
-                    <ErrorMessage name="phoneNumber" />
-                  </Flex>
-                  <Flex w="100%" direction={"column"}>
-                    <Text>{t("city", "City")}</Text>
+                  </div>
+                  <FormikInput
+                    label={t("phone_number", "Phone Number")}
+                    name="phoneNumber"
+                  />
+
+                  <div className="flex flex-col w-full">
+                    <span>{t("city", "City")}</span>
                     <Field
                       as={SearchFilterInput}
                       w={"100%"}
                       name="city"
                       placeHolder={t("select_city", "Select City")}
-                      rightElement={<Icon as={ChevronDownIcon} />}
+                      rightElement={<HiChevronDown />}
                       components={City.getCitiesOfCountry(
                         values.countryCode || ""
                       )?.map((city, i) => ({
@@ -247,7 +223,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                         comp: (
                           <Prefix
                             //@ts-ignore
-                            prefix={<Text>{city.stateCode}</Text>}
+                            prefix={<span>{city.stateCode}</span>}
                           >
                             {city.name}
                           </Prefix>
@@ -262,65 +238,116 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                       }}
                     />
                     <ErrorMessage name="city" />
-                  </Flex>
-                  <FormikInput
-                    label={{
-                      translationKey: "shop_type",
-                      fallbackText: "Shop Type",
-                    }}
+                  </div>
+                  <FormikInput<SelectProps>
+                    label={t("shop_type", "Shop Type")}
                     as={Select}
+                    onOptionSelect={(v) => setFieldValue("shopType", v)}
                     name="shopType"
                   >
                     {shopTypeOptions.map((opt, i) => (
-                      <option value={opt.value} key={i}>
+                      <SelectOption value={opt.value} key={i}>
                         <TranslationText translationObject={opt.name} />
-                      </option>
+                      </SelectOption>
                     ))}
                   </FormikInput>
-                  <Flex direction={"column"}>
-                    <Text>{t("client_type", "Client Type")}</Text>
-                    <Field as={Select} name="clientType">
-                      <option value="professional">
-                        {t("professional", "Professional")}
-                      </option>
-                      <option value="individual">
-                        {t("individual", "Individual")}
-                      </option>
-                    </Field>
-                    <ErrorMessage name="clientType" />
-                  </Flex>
-                </SimpleGrid>
+                  <FormikInput<SelectProps>
+                    onOptionSelect={(v) => setFieldValue("clientType", v)}
+                    label={t("client_type", "Client Type")}
+                    as={Select}
+                    name="clientType"
+                  >
+                    <SelectOption value="professional">
+                      {t("professional", "Professional")}
+                    </SelectOption>
+                    <SelectOption value="individual">
+                      {t("individual", "Individual")}
+                    </SelectOption>
+                  </FormikInput>
+                </div>
 
-                <Flex gap="1rem">
-                  <Text>{t("store_for", "Store For")}</Text>
-                  <SimpleGrid columnGap="0.5rem" columns={4}>
-                    <Checkbox colorScheme={"primary"}>
-                      {t("all", "All")}
-                    </Checkbox>
+                <div className="flex gap-4">
+                  <span>{t("store_for", "Store For")}</span>
+                  <div className="grid grid-cols-4 gap-x-2">
+                    <div className="flex gap-2 items-center">
+                      <Checkbox
+                        checked={(() => {
+                          if (values.storeFor) {
+                            return storeForOptions.every((opt) => {
+                              if (!values.storeFor) return false;
+                              const idx = values.storeFor.findIndex(
+                                (value) => value === opt.value
+                              );
+                              return idx > -1;
+                            });
+                          } else {
+                            return false;
+                          }
+                        })()}
+                        onChange={(e) =>
+                          e.target.checked
+                            ? setFieldValue("storeFor", [
+                                ...storeForOptions.map((opt) => opt.value),
+                              ])
+                            : setFieldValue("storeFor", [])
+                        }
+                      />
+                      <span>{t("all", "All")}</span>
+                    </div>
                     {storeForOptions.map((opt, i) => (
-                      <Checkbox colorScheme={"primary"}>
-                        <TranslationText translationObject={opt} />
-                      </Checkbox>
+                      <div className="flex gap-2 items-center">
+                        <Checkbox
+                          checked={(() => {
+                            if (values.storeFor) {
+                              const idx = values.storeFor.findIndex(
+                                (v) => v === opt.value
+                              );
+                              if (idx > -1) {
+                                return true;
+                              } else {
+                                return false;
+                              }
+                            } else {
+                              return false;
+                            }
+                          })()}
+                          onChange={(e) => {
+                            if (e.target.checked && values.storeFor) {
+                              setFieldValue("storeFor", [
+                                ...values.storeFor,
+                                opt.value,
+                              ]);
+                            } else {
+                              if (values.storeFor) {
+                                setFieldValue(
+                                  "storeFor",
+                                  values.storeFor.filter((v) => v !== opt.value)
+                                );
+                              }
+                            }
+                          }}
+                        />
+                        <TranslationText translationObject={opt.name} />
+                      </div>
                     ))}
-                  </SimpleGrid>
-                </Flex>
-                <Flex direction={"column"}>
-                  <Text>{t("brand_desciption", "Brand Description")}</Text>
-                  <Field
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <FormikInput
                     resize="none"
                     className="thinScroll"
                     as={Textarea}
+                    label={t("brand_description", "Brand Description")}
                     name="brandDescription"
                   />
-                  <ErrorMessage name="brandDescription" />
-                  <Text color={"slategray"}>
+                  <span className="text-slate-500" color={"slategray"}>
                     {t(
                       "brief_brand_descrption",
                       "Brief Description for your brand, URLs are hyperlinked"
                     )}
-                  </Text>
-                </Flex>
-                <Text color="slategray">
+                  </span>
+                </div>
+                <span className="text-slate-500" color="slategray">
                   {t(
                     "this_account_was_created_on",
                     "This account was created on"
@@ -334,40 +361,52 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                     minute: "numeric",
                     second: "numeric",
                   })}
-                </Text>
-                <Divider />
-                <Flex gap="1rem" w="100%" align={"center"} justify={"end"}>
-                  <Button borderWidth={"1px"} size={"sm"} variant={"outline"}>
+                </span>
+                <Divider className="my-2" />
+                <div className="flex gap-4 w-full items-center justify-end">
+                  <Button colorScheme="gray" outline>
                     {t("cancel", "Cancel")}
                   </Button>
-                  <Button type="submit" size={"sm"}>
+                  <Button colorScheme="gray" type="submit">
                     {t("save", "Save")}
                   </Button>
-                </Flex>
-              </Flex>
+                </div>
+              </div>
             </Form>
           )}
         </Formik>
-      </Flex>
+      </div>
     );
   };
 
-const storeForOptions: TranslationTextType[] = [
+export const storeForOptions: FormOptionType[] = [
   {
-    translationKey: "men",
-    fallbackText: "Men",
+    name: {
+      translationKey: "men",
+      fallbackText: "Men",
+    },
+    value: "men",
   },
   {
-    translationKey: "women",
-    fallbackText: "Women",
+    name: {
+      translationKey: "women",
+      fallbackText: "Women",
+    },
+    value: "women",
   },
   {
-    translationKey: "children",
-    fallbackText: "Children",
+    name: {
+      translationKey: "children",
+      fallbackText: "Children",
+    },
+    value: "children",
   },
   {
-    translationKey: "babies",
-    fallbackText: "Babies",
+    name: {
+      translationKey: "babies",
+      fallbackText: "Babies",
+    },
+    value: "babies",
   },
 ];
 

@@ -9,10 +9,10 @@ import {
   Select,
   SelectOption,
   SectionHeader,
+  SelectProps,
 } from "ui";
 import * as yup from "yup";
 import { randomNum } from "../../../../helpers";
-import { SelectProps } from "../../../../partials";
 
 const paymentValidationSchema = yup.object().shape({});
 
@@ -22,12 +22,7 @@ export const PaymentMethodsSection: React.FC = () => {
   const [addNewInitial, setAddNewInitial] = React.useState({});
   return (
     <div className="flex flex-col w-full gap-6">
-      <SectionHeader
-        sectionTitle={{
-          translationKey: "payment_methods",
-          fallbackText: "Payment Methods",
-        }}
-      />
+      <SectionHeader sectionTitle={t("payment_methods", "Payment Methods")} />
       <div className="flex gap-2 items-start">
         <span className="items-end flex gap-2 text-4xl font-semibold">
           <MdPayment />

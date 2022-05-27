@@ -1,11 +1,9 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ScrollableContainer } from "ui";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import { ScrollableContainer, storybookBlocksTitle } from "ui";
 export default {
-  title: "UI/blocks/Data Display/ScrollableContainer",
+  title: storybookBlocksTitle + "ScrollableContainer",
   component: ScrollableContainer,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof ScrollableContainer>;
 
 const Template: ComponentStory<typeof ScrollableContainer> = (args) => (

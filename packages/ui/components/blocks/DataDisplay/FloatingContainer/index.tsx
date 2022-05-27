@@ -1,9 +1,9 @@
-import { BoxProps, Box } from "@chakra-ui/react";
+import { HtmlDivProps } from "types";
 
 export type FloatingPosition = boolean | "center" | string;
 
 export interface FloatingItemProps
-  extends Omit<BoxProps, "top" | "left" | "bottom" | "right"> {
+  extends Omit<HtmlDivProps, "top" | "left" | "bottom" | "right"> {
   label?: React.ReactElement;
   top?: FloatingPosition;
   bottom?: FloatingPosition;
@@ -11,10 +11,10 @@ export interface FloatingItemProps
   right?: FloatingPosition;
   centerX?: boolean;
   centerY?: boolean;
-  floatingItemProps?: BoxProps;
+  floatingItemProps?: HtmlDivProps;
 }
 
-export interface FloatingContainerProps extends BoxProps {
+export interface FloatingContainerProps extends HtmlDivProps {
   items?: FloatingItemProps[];
 }
 export const FloatingContainer: React.FC<FloatingContainerProps> = ({
@@ -32,7 +32,7 @@ export const FloatingContainer: React.FC<FloatingContainerProps> = ({
       : undefined;
 
   return (
-    <Box {...props} position={"relative"}>
+    <div className="relative" {...props}>
       {items &&
         items.map(
           (
@@ -48,21 +48,21 @@ export const FloatingContainer: React.FC<FloatingContainerProps> = ({
             },
             i
           ) => (
-            <Box
+            <div
+              className="absolute transform z-[5]"
               {...floatingItemProps}
-              zIndex={5}
-              position={"absolute"}
-              top={setPosition(top)}
-              left={setPosition(left)}
-              right={setPosition(right)}
-              bottom={setPosition(bottom)}
-              transform="auto"
+              style={{
+                top: setPosition(top),
+                left: setPosition(left),
+                right: setPosition(right),
+                bottom: setPosition(bottom),
+              }}
             >
               {label}
-            </Box>
+            </div>
           )
         )}
       {children}
-    </Box>
+    </div>
   );
 };

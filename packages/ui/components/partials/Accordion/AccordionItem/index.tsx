@@ -16,7 +16,9 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
     <AccordionItemContext.Provider value={{ key: itemkey }}>
       <div
         {...props}
-        className={`${className || ""} flex flex-col gap-1 bg-white`}
+        className={`${
+          className || ""
+        } flex flex-col gap-1 p-2 rounded bg-white`}
       />
     </AccordionItemContext.Provider>
   );

@@ -67,16 +67,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
   } = useDisclosure();
 
   return (
-    <Flex
-      align={"center"}
-      bg={{ md: "primary.main" }}
-      px="1rem"
-      py="0.5rem"
-      color={"white"}
-      fontSize="1.5rem"
-      justify={"space-between"}
-      direction={"column"}
-    >
+    <div className="vstack bg-transparent justify-between md:bg-primary px-4 py-2 text-white text-[1.5rem]">
       {storyData && <SocialStoriesModal />}
       <SubscribersPopup
         title={t("subscribers", "subscribers")}
@@ -278,6 +269,6 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           {shopInfo.location}
         </Text>
       </Flex>
-    </Flex>
+    </div>
   );
 };

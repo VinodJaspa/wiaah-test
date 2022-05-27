@@ -8,8 +8,8 @@ import {
   MyWishListSection,
   OrdersSection,
   PaymentMethodsSection,
-  SectionsLayout,
 } from "ui";
+import { SectionsLayout } from "ui/components/blocks/Layout";
 import { MdPayment } from "react-icons/md";
 import { BsBoxArrowInUp } from "react-icons/bs";
 import { IoReturnUpBackSharp } from "react-icons/io5";
@@ -25,6 +25,10 @@ export const ShoppingManagementView: React.FC = () => {
     if (!route) router.push(`/${baseRoute}/${sections[0].panelUrl}`);
   }, [router, route]);
 
+  function handleSectionChange(url: string) {
+    router.replace(`/${baseRoute}/${url}`);
+  }
+
   return (
     <SectionsLayout
       currentSectionName={route}
@@ -33,7 +37,7 @@ export const ShoppingManagementView: React.FC = () => {
         fallbackText: "Shopping Management",
       }}
       sections={sections}
-      handleSectionChange={(url) => router.replace(`/${baseRoute}/${url}`)}
+      handleSectionChange={handleSectionChange}
     />
   );
 };

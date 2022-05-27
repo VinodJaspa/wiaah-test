@@ -1,10 +1,10 @@
 import React from "react";
-import { FloatingContainer } from ".";
+import { FloatingContainer, storybookDataDisplayBlocksTitle } from "ui";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
 
 export default {
-  title: "UI/blocks/Data Display/FloatingContainer",
+  title: storybookDataDisplayBlocksTitle + "FloatingContainer",
   component: FloatingContainer,
   decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof FloatingContainer>;

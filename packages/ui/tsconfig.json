@@ -1,5 +1,20 @@
 {
   "extends": "tsconfig/react-library.json",
   "include": ["."],
-  "exclude": ["dist", "build", "node_modules"]
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@sections": ["components/sections"],
+      "@partials": ["components/partials"],
+      "@blocks": ["components/blocks"],
+      "@views": ["views"],
+      "@components": ["components"],
+      "@utils": ["utils"],
+      "@hooks": ["Hooks"],
+      "@placeholder": ["placeholder"],
+      "@state": ["state"],
+      "@ui": [""]
+    }
+  }
 }

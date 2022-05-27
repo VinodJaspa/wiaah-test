@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  ChakraCarousel,
-  ChakaraCarouselProps,
-} from "ui/components/blocks/ChakaraCarousel";
+import { ChakraCarousel, ChakaraCarouselProps } from "ui";
 
 export interface ControlledCarouselProps
   extends Omit<ChakaraCarouselProps, "activeItem" | "setActiveItem"> {}
