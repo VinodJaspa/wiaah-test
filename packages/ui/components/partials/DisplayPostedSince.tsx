@@ -1,7 +1,6 @@
-import { Text } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useDateDiff } from "../../Hooks";
+import { useDateDiff } from "ui";
 
 export interface DisplayPostedSinceProps {
   since: string;
@@ -19,8 +18,8 @@ export const DisplayPostedSince: React.FC<DisplayPostedSinceProps> = ({
   });
   const Since = getSince();
   return (
-    <Text data-testid="PostCreatedSince" px="1">
+    <span className="px-1" data-testid="PostCreatedSince">
       {Since.value} {Since.timeUnit} {ago && t("ago", "ago")}
-    </Text>
+    </span>
   );
 };

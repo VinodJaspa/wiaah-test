@@ -62,6 +62,7 @@ export const Tr: React.FC<TrProps> = ({ className, children, ...props }) => {
   return (
     <tr
       {...props}
+      {...TrProps}
       className={`${className || ""} ${
         TrProps && typeof TrProps.className === "string"
           ? TrProps.className
@@ -78,6 +79,7 @@ export const Th: React.FC<ThProps> = ({ className, children, ...props }) => {
   const { ThProps } = React.useContext(TableContext);
   return (
     <th
+      {...ThProps}
       {...props}
       className={`${className || ""} ${
         ThProps && typeof ThProps.className === "string"
@@ -95,6 +97,7 @@ export const Td: React.FC<TdProps> = ({ className, children, ...props }) => {
   const { TdProps } = React.useContext(TableContext);
   return (
     <td
+      {...TdProps}
       {...props}
       className={`${className || ""} ${
         TdProps && typeof TdProps.className === "string"

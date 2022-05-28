@@ -3,6 +3,8 @@ const withTM = require("next-transpile-modules")([
   "api",
   "uris",
   "validation",
+  "hooks",
+  "utils",
 ]);
 const withPWA = require("next-pwa");
 

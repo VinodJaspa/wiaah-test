@@ -1,8 +1,8 @@
 import { BiChevronDown } from "react-icons/bi";
 import React from "react";
-import { HtmlDivProps, HtmlSelectProps } from "types";
-import { ElementChilds } from "../Menu";
-import { useOutsideClick } from "../../../Hooks";
+import { HtmlDivProps } from "types";
+import { ElementChilds } from "types";
+import { useCallbackAfter, useOutsideClick } from "hooks";
 
 type OnOptionSelect = (value: string) => any;
 export interface SelectChildProps {
@@ -48,9 +48,9 @@ export const Select: React.FC<SelectProps> = ({
       clearTimeout(timeout);
       setShowChild(true);
     } else {
-      setTimeout(() => {
+      useCallbackAfter(200, () => {
         setShowChild(false);
-      }, 200);
+      });
     }
   }, [open]);
 
@@ -82,15 +82,20 @@ export const Select: React.FC<SelectProps> = ({
     >
       <div
         onClick={handleToggle}
+        data-testid="SelectBar"
         className="flex w-full p-2 items-center justify-between"
       >
-        <div className="cursor-pointer w-full flex items-center whitespace-nowrap ">
+        <div
+          data-testid="SelectedOption"
+          className="cursor-pointer w-full flex items-center whitespace-nowrap "
+        >
           {selectedOption &&
             React.cloneElement(selectedOption, { selectable: false })}
         </div>
         <BiChevronDown className="text-xl" />
       </div>
       <div
+        data-testid="SelectOptionsContainer"
         className={`${
           open ? "scale-y-100" : "scale-y-0"
         } transition-all duration-75 z-50 bg-white origin-top max-h-48 overflow-y-scroll transform absolute left-0 flex flex-col top-full w-full`}
@@ -99,13 +104,13 @@ export const Select: React.FC<SelectProps> = ({
           <>
             {Array.isArray(children)
               ? children.map((child, i) => (
-                  <>
+                  <React.Fragment key={i}>
                     {React.cloneElement<SelectChildProps>(child, {
                       onOptionSelect: (value) =>
                         handleSelect(value, children[i]),
                       key: i,
                     })}
-                  </>
+                  </React.Fragment>
                 ))
               : React.cloneElement<SelectChildProps>(children, {
                   onOptionSelect: (value) => handleSelect(value, children),

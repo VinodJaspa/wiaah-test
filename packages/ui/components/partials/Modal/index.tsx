@@ -1,6 +1,7 @@
 import React from "react";
 import { HtmlDivProps } from "types";
-import { useCallbackAfter, useOutsideClick } from "../../../Hooks";
+import { PassPropsToChild } from "utils";
+import { useCallbackAfter } from "ui";
 
 interface ModalContextValues {
   isOpen: boolean;
@@ -175,23 +176,6 @@ export const ModalButton: React.FC<ModalButtonProps> = ({
 
   return <>{PassPropsToChild(children, { onClick: handleClick })}</>;
 };
-
-export function PassPropsToChild<T = HtmlDivProps>(
-  children: React.ReactNode,
-  props: T
-): React.ReactNode {
-  function clone(children: React.ReactNode) {
-    if (React.isValidElement(children)) {
-      return React.cloneElement(children, props);
-    } else {
-      return <></>;
-    }
-  }
-
-  return Array.isArray(children)
-    ? children.map((child) => clone(child))
-    : clone(children);
-}
 
 export interface ModalExtendedWrapperProps {
   modalKey: string;

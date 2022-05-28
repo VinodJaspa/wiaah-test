@@ -1,0 +1,11 @@
+export const storybookPartailsTitle = "UI / partials / ";
+export const storybookBlocksTitle = "UI / blocks / ";
+export const storybookSectionsTitle = "UI / sections / ";
+export const storybookViewsTitle = "UI / views / ";
+export const storybookDataInputBlocksTitle = "UI / blocks / Data Input /";
+export const storybookDataDisplayBlocksTitle = "UI / blocks / Data Display /";
+export const storybookCardsTitle = "UI / blocks / cards /";
+export const storybookMenusTitle = "UI / blocks / menus /";
+export const storybookChatDisplay = "UI / blocks / Chat Display /";
+export const storybookStoriesTitle = "UI / blocks / stories /";
+export const storybookDataFormatingTitle = "UI / blocks / Data Formating /";
