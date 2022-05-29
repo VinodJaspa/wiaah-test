@@ -14,6 +14,7 @@ import {
   TBody,
   Switch,
   PriceDisplay,
+  TableContainer,
 } from "ui";
 import { ShippingSettingsContext } from "../ShippingSettingsSection";
 
@@ -46,43 +47,45 @@ export const ShippingSettings: React.FC = () => {
         {({}) => {
           return (
             <Form>
-              <Table className="w-full">
-                <Tr>
-                  <Th></Th>
-                  <Th>{t("shipping_type", "Shipping Type")}</Th>
-                  <Th>{t("shipping_calculation", "Shipping Calculation")}</Th>
-                  <Th></Th>
-                  <Th></Th>
-                </Tr>
-                <TBody>
-                  {ShippingMothedsData.map((mothed, i) => (
-                    <Tr>
-                      <Td className="pl-0">
-                        <FlagIcon size={48} code={mothed.targetCountryCode} />
-                      </Td>
-                      <Td>{mothed.shippingName}</Td>
-                      <Td>
-                        {mothed.shippingCost.amount > 1 ? (
-                          <PriceDisplay priceObject={mothed.shippingCost} />
-                        ) : (
-                          t("free_shipping", "Free Shipping")
-                        )}
-                      </Td>
-                      <Td className="text-primary">
-                        <div className="flex gap-2 items-center">
-                          <BiEdit className="text-lg" />{" "}
-                          {t("edit_shipping_rule", "Edit Shipping Rule")}
-                        </div>
-                      </Td>
-                      <Td className="pr-0">
-                        <div className="flex justify-end w-full">
-                          <Switch />
-                        </div>
-                      </Td>
-                    </Tr>
-                  ))}
-                </TBody>
-              </Table>
+              <TableContainer>
+                <Table className="w-full">
+                  <Tr>
+                    <Th></Th>
+                    <Th>{t("shipping_type", "Shipping Type")}</Th>
+                    <Th>{t("shipping_calculation", "Shipping Calculation")}</Th>
+                    <Th></Th>
+                    <Th></Th>
+                  </Tr>
+                  <TBody>
+                    {ShippingMothedsData.map((mothed, i) => (
+                      <Tr>
+                        <Td className="pl-0">
+                          <FlagIcon size={48} code={mothed.targetCountryCode} />
+                        </Td>
+                        <Td>{mothed.shippingName}</Td>
+                        <Td>
+                          {mothed.shippingCost.amount > 1 ? (
+                            <PriceDisplay priceObject={mothed.shippingCost} />
+                          ) : (
+                            t("free_shipping", "Free Shipping")
+                          )}
+                        </Td>
+                        <Td className="text-primary">
+                          <div className="flex gap-2 items-center">
+                            <BiEdit className="text-lg" />{" "}
+                            {t("edit_shipping_rule", "Edit Shipping Rule")}
+                          </div>
+                        </Td>
+                        <Td className="pr-0">
+                          <div className="flex justify-end w-full">
+                            <Switch />
+                          </div>
+                        </Td>
+                      </Tr>
+                    ))}
+                  </TBody>
+                </Table>
+              </TableContainer>
             </Form>
           );
         }}

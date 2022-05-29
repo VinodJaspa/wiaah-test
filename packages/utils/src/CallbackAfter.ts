@@ -1,9 +1,6 @@
 let callbackTimeout: NodeJS.Timer;
 
-export const useCallbackAfter = (
-  timeInMs: number = 1000,
-  callback: Function
-) => {
+export const CallbackAfter = (timeInMs: number = 1000, callback: Function) => {
   if (callbackTimeout) {
     clearTimeout(callbackTimeout);
     callAfter(timeInMs, callback);

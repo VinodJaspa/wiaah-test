@@ -5,6 +5,7 @@ const withTM = require("next-transpile-modules")([
   "validation",
   "hooks",
   "utils",
+  "state",
 ]);
 const withPWA = require("next-pwa");
 

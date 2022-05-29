@@ -12,6 +12,7 @@ import {
   TBody,
   Th,
   THead,
+  TableContainer,
 } from "ui";
 
 export interface AffiliationHistorySection {}
@@ -42,7 +43,7 @@ export const AffiliationHistorySection: React.FC<AffiliationHistorySection> =
           </div>
           <Divider className="border-primary" />
         </div>
-        <div className="w-full">
+        <TableContainer className="w-full">
           <Table
             ThProps={{
               className: "border-[1px] border-gray-300",
@@ -102,7 +103,7 @@ export const AffiliationHistorySection: React.FC<AffiliationHistorySection> =
               </Tr>
             </TBody>
           </Table>
-        </div>
+        </TableContainer>
         <ItemsPagination currentPage={1} maxItemsNum={5} />
       </div>
     );

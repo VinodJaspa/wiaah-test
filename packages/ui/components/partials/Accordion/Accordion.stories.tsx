@@ -1,14 +1,10 @@
-import { ComponentMeta, ComponentStory } from "@storybook/react";
+import { ComponentMeta } from "@storybook/react";
 import React from "react";
-import { StorybookImplemntationLayout } from "ui/utils";
-import { Button } from "../Button";
-import { Accordion } from "./";
-import { AccordionButton } from "./AccordionButton";
-import { AccordionItem } from "./AccordionItem";
-import { AccordionPanel } from "./AccordionPanel";
+import { StorybookImplemntationLayout, storybookPartailsTitle } from "utils";
+import { AccordionButton, AccordionItem, AccordionPanel, Accordion } from "ui";
 
 export default {
-  title: "UI / partials / Accordion",
+  title: storybookPartailsTitle + "Accordion",
   component: Accordion,
 } as ComponentMeta<typeof Accordion>;
 

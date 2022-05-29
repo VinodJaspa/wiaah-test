@@ -1,19 +1,11 @@
-import { HStack, Icon } from "@chakra-ui/react";
 import React from "react";
-import { ChevronLeftIcon } from "@chakra-ui/icons";
 import { HiShare } from "react-icons/hi";
-
+import { BiChevronLeft } from "react-icons/bi";
 export const MinimalHeader: React.FC = () => {
   return (
-    <HStack
-      shadow={"md"}
-      p="0.5rem"
-      fontSize={"xx-large"}
-      w="100%"
-      justify={"space-between"}
-    >
-      <Icon fontSize={"1.3em"} as={ChevronLeftIcon} />
-      <Icon as={HiShare} />
-    </HStack>
+    <div className="flex items-center gap-2 shadow-md p-2 text-4xl w-full justify-between">
+      <BiChevronLeft className="text-[1.3em]" />
+      <HiShare />
+    </div>
   );
 };

@@ -1,7 +1,8 @@
+import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { HtmlDivProps, PriceType, TranslationTextType } from "types";
-import { getRandomImage, products } from "../../../../../placeholder";
+import { HtmlDivProps, PriceType } from "types";
+import { getRandomImage } from "ui/placeholder";
 import { randomNum } from "../../../../helpers";
 import {
   Divider,
@@ -14,8 +15,9 @@ import {
   Td,
   Th,
   Tr,
-  TranslationText,
-} from "../../../../partials";
+} from "ui";
+
+import { BiChevronLeft } from "react-icons/bi";
 
 export interface MyReturnsSectionProps {}
 
@@ -129,7 +131,14 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   className,
   ...props
 }) => {
-  return (
+  const { isMobile } = useResponsive();
+  return isMobile ? (
+    <div className="w-full text-2xl items-center p-2 flex justify-between">
+      <BiChevronLeft className="text-3xl" />
+      <span>{sectionTitle}</span>
+      <span></span>
+    </div>
+  ) : (
     <div {...props} className={`${className || ""} flex flex-col gap-2`}>
       <div className="w-full flex justify-between items-center">
         <span className="text-4xl font-semibold">{sectionTitle}</span>

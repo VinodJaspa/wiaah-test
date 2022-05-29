@@ -1,8 +1,8 @@
 import { useDimensions } from "@chakra-ui/react";
 import React from "react";
-import { Translation, useTranslation } from "react-i18next";
+import { useResponsive } from "hooks";
 import { SettingsSectionType, TranslationTextType } from "types";
-import { SettingsSectionsSidebar, TranslationText, useResponsive } from "ui";
+import { SettingsSectionsSidebar, TranslationText } from "ui";
 
 export interface SettingsLayoutProps {
   sections: SettingsSectionType[];

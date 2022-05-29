@@ -6,6 +6,7 @@ import {
   Root,
   Container,
 } from "ui";
+import { useResponsive } from "hooks";
 import { HiMenu, HiHome, HiOutlineHome } from "react-icons/hi";
 import { FaUserCircle, FaRegUserCircle } from "react-icons/fa";
 import { IoEarth, IoEarthOutline } from "react-icons/io5";
@@ -18,14 +19,13 @@ import { SellerDrawerOpenState } from "ui/state";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import {
-  useResponsive,
   MinimalHeader,
   DiscoverHeader,
   LocationButton,
   SocialFooter,
+  Divider,
 } from "ui";
 import { HtmlDivProps } from "types";
-import { Divider } from "../../../partials";
 
 const NavigationLinks: NavigationLinkType[] = [
   {
@@ -183,7 +183,11 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
 
         <div className="flex flex-col gap-4">
           {placesPlaceholder.map((place, i) => (
-            <LocationButton style={{ px: "2rem" }} name={place} key={i} />
+            <LocationButton
+              iconProps={{ className: "px-8" }}
+              name={place}
+              key={i}
+            />
           ))}
         </div>
         <Divider />
@@ -240,7 +244,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           >
             {children}
           </main>
-          <SocialFooter copyRightYear={2022} />
+          {!isMobile && <SocialFooter copyRightYear={2022} />}
         </div>
       </Container>
     </Root>

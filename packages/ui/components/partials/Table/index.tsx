@@ -6,6 +6,7 @@ import {
   HtmlThProps,
   HtmlTableBodyProps,
   HtmlTableHeadProps,
+  HtmlDivProps,
 } from "types";
 
 interface TableContextValue {
@@ -37,6 +38,15 @@ export const Table: React.FC<TableProps> = ({
       </table>
     </TableContext.Provider>
   );
+};
+
+export interface TableContainer extends HtmlDivProps {}
+
+export const TableContainer: React.FC<TableContainer> = ({
+  className,
+  ...props
+}) => {
+  return <div className={`${className || ""} overflow-x-scroll`} {...props} />;
 };
 
 export interface TBody extends HtmlTableBodyProps {}

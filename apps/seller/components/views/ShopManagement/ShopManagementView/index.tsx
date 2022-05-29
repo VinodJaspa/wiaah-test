@@ -1,4 +1,3 @@
-import { useDimensions } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -13,15 +12,13 @@ import { BsBoxArrowInUp } from "react-icons/bs";
 import {
   AffiliationIcon,
   ProductManagementSection,
-  SettingsSectionsSidebar,
-  useResponsive,
   AffiliationHistorySection,
   CanceledOrdersSection,
   ReviewsSection,
   ShippingSettingsSection,
   AffiliationManagementSection,
+  SectionsLayout,
 } from "ui";
-import { NotFoundSection } from "../../AccountSettings";
 
 export interface ShopManagementViewProps {}
 
@@ -32,63 +29,22 @@ export const ShopManagementView: React.FC<ShopManagementViewProps> = ({}) => {
   const route = Array.isArray(section) ? section[0] : section;
 
   const { t } = useTranslation();
-  const { isTablet } = useResponsive();
-  const minGap = isTablet ? 0 : 48;
-
-  const leftPanelRef = React.useRef<HTMLDivElement>(null);
-
-  const leftPanelDims = useDimensions(leftPanelRef, true);
-
-  const leftPanelwidth = leftPanelDims ? leftPanelDims.borderBox.width : null;
 
   React.useEffect(() => {
     if (!route) router.push(`/${baseRoute}/${sections[0].panelUrl}`);
   }, [router, route]);
 
-  const sectionIdx = sections.findIndex(
-    (panel) => panel.panelUrl === `/${route}`
-  );
-
-  const CurrentSection = (): React.ReactElement => {
-    if (sectionIdx > -1) {
-      return sections[sectionIdx].panelComponent;
-    } else {
-      return NotFoundSection();
-    }
-  };
+  function handleSectionChange(url: string) {
+    router.replace(`/${baseRoute}/${url}`);
+  }
 
   return (
-    <div className="h-full w-full flex justify-end gap-8">
-      <div className="fixed left-[5rem]" ref={leftPanelRef}>
-        {!isTablet && (
-          <div className="gap-4 w-full sm:w-40 md:w-[15rem] xl:w-[20rem] flex flex-col px-2">
-            <p className="text-xl px-4 font-bold">
-              {t("shop_management", "Shop Management")}
-            </p>
-            <SettingsSectionsSidebar
-              currentActive={
-                sections[sectionIdx] ? sections[sectionIdx].panelUrl : null
-              }
-              onPanelClick={(url) =>
-                router.replace(`/${baseRoute}${url}`, null, {
-                  shallow: true,
-                })
-              }
-              panelsInfo={sections}
-            />
-          </div>
-        )}
-      </div>
-      <div
-        style={{
-          width: `calc(100% - ${leftPanelwidth + minGap}px)`,
-          paddingRight: minGap,
-        }}
-        className={`h-full`}
-      >
-        <>{CurrentSection()}</>
-      </div>
-    </div>
+    <SectionsLayout
+      handleSectionChange={handleSectionChange}
+      currentSectionName={route}
+      sections={sections}
+      name={t("shop_management", "Shop Management")}
+    />
   );
 };
 

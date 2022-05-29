@@ -1,10 +1,10 @@
 import React from "react";
 import { HtmlDivProps } from "types";
-import { PassPropsToChild } from "utils";
-import { useCallbackAfter } from "ui";
+import { PassPropsToChild, CallbackAfter } from "utils";
 
 interface ModalContextValues {
   isOpen: boolean;
+  isLazy: boolean;
   onClose: () => any;
   onOpen: () => any;
 }
@@ -27,14 +27,18 @@ const ModalContext = React.createContext<ModalContextValues>({
   isOpen: false,
   onClose: () => {},
   onOpen: () => {},
+  isLazy: false,
 });
 
-export interface ModalProps extends ModalContextValues {}
+export interface ModalProps extends Omit<ModalContextValues, "isLazy"> {
+  isLazy?: boolean;
+}
 
 export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
   onOpen,
+  isLazy,
   ...props
 }) => {
   const { isOpen: ExtendedIsOpen, onClose: ExtendedOnClose } =
@@ -51,7 +55,7 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <ModalContext.Provider
       {...props}
-      value={{ isOpen, onClose: handleClose, onOpen }}
+      value={{ isOpen, onClose: handleClose, onOpen, isLazy: !!isLazy }}
     />
   );
 };
@@ -65,17 +69,14 @@ export const ModalCloseButton: React.FC<ModalCloseButtonProps> = ({
   return <>{PassPropsToChild(children, { onClick: onClose })}</>;
 };
 
-export interface ModalContentProps extends Omit<HtmlDivProps, "children"> {
-  isLazy?: boolean;
-}
+export interface ModalContentProps extends Omit<HtmlDivProps, "children"> {}
 
 export const ModalContent: React.FC<ModalContentProps> = ({
   className,
   children,
-  isLazy,
   ...props
 }) => {
-  const { isOpen } = React.useContext(ModalContext);
+  const { isOpen, isLazy } = React.useContext(ModalContext);
   const [show, setShow] = React.useState<boolean>(false);
   const contentWrapperRef = React.useRef<HTMLDivElement>(null);
 
@@ -83,10 +84,10 @@ export const ModalContent: React.FC<ModalContentProps> = ({
     if (isOpen) {
       setShow(true);
       // empty callback to clear timeout function from the previous close
-      useCallbackAfter(0, () => {});
+      CallbackAfter(0, () => {});
     } else {
       if (!isLazy) return;
-      useCallbackAfter(200, () => setShow(false));
+      CallbackAfter(200, () => setShow(false));
     }
   }, [isOpen]);
 

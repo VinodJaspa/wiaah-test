@@ -1,12 +1,14 @@
 import React from "react";
-import { AccordionContext, AccordionKeyType } from "ui";
+import { AccordionContext, AccordionKeyType } from "ui/state";
 
 export interface AccordionProps {
   controled?: boolean;
+  isLazy?: boolean;
 }
 
 export const Accordion: React.FC<AccordionProps> = ({
   controled,
+  isLazy,
   ...props
 }) => {
   const [itemsOpen, setItemsOpen] = React.useState<AccordionKeyType[]>([]);
@@ -45,6 +47,7 @@ export const Accordion: React.FC<AccordionProps> = ({
     <AccordionContext.Provider
       value={{
         itemsOpen,
+        isLazy: !!isLazy,
         closeAll,
         closeItem,
         isItemOpen,

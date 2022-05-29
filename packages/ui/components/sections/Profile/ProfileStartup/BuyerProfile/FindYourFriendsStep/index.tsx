@@ -30,7 +30,7 @@ export const FindYourFriendsStep: React.FC<FindYourFriendsStepProps> = ({}) => {
   let [mailService, setMailService] = React.useState(0);
   return (
     <div className="w-full">
-      <h2 className="hidden text-xl font-bold md:block">
+      <h2 className=" text-xl font-bold">
         {t("Find_friends_on_Wiaah", "Find friends on Wiaah")}
       </h2>
       <p className="pb-6 text-gray-400 md:pb-0">

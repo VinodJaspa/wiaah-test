@@ -11,6 +11,7 @@ import {
   Divider,
   ItemsPagination,
   PriceDisplay,
+  TableContainer,
 } from "ui";
 import { BsFilePdfFill } from "react-icons/bs";
 import { PriceType } from "types";
@@ -44,7 +45,7 @@ export const CanceledOrdersSection: React.FC<CanceledOrdersSectionProps> =
           </div>
           <Divider className="border-primary" />
         </div>
-        <div className="w-full flex-col flex border-[1px] border-gray-300">
+        <TableContainer className="w-full flex-col flex border-[1px] border-gray-300">
           <Table>
             <THead>
               <Tr>
@@ -127,7 +128,7 @@ export const CanceledOrdersSection: React.FC<CanceledOrdersSectionProps> =
               {t("no_records_found", "No records found!")}
             </p>
           )}
-        </div>
+        </TableContainer>
         <ItemsPagination currentPage={1} maxItemsNum={5} />
       </div>
     );

@@ -44,3 +44,4 @@ export * from "./Switch";
 export * from "./Accordion";
 export * from "./Modal";
 export * from "./Stepper";
+export * from "./Tabs";

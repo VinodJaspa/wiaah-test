@@ -13,6 +13,7 @@ import {
   Tr,
   Td,
   THead,
+  TableContainer,
 } from "ui";
 
 export interface ProductDetailsTableProps {}
@@ -31,7 +32,7 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
         </Button>
       </div>
       <div className="flex flex-col gap-4 shadow p-4">
-        <div className="noScroll">
+        <TableContainer>
           <Table className="w-full">
             <THead>
               <Tr>
@@ -75,7 +76,7 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
               ))}
             </TBody>
           </Table>
-        </div>
+        </TableContainer>
         <ItemsPagination currentPage={2} maxItemsNum={30} />
       </div>
     </div>
