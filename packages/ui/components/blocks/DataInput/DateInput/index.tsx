@@ -1,6 +1,5 @@
 import React from "react";
 import { MdArrowLeft, MdArrowRight } from "react-icons/md";
-import { Spacer, Divider } from "ui";
 import { getTimeInAmPm } from "ui/components/helpers/getTimeInAmPm";
 
 export interface DateInputProps {
