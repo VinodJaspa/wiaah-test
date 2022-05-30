@@ -30,10 +30,6 @@ export const ShopManagementView: React.FC<ShopManagementViewProps> = ({}) => {
 
   const { t } = useTranslation();
 
-  React.useEffect(() => {
-    if (!route) router.push(`/${baseRoute}/${sections[0].panelUrl}`);
-  }, [router, route]);
-
   function handleSectionChange(url: string) {
     router.replace(`/${baseRoute}/${url}`);
   }
@@ -43,6 +39,9 @@ export const ShopManagementView: React.FC<ShopManagementViewProps> = ({}) => {
       handleSectionChange={handleSectionChange}
       currentSectionName={route}
       sections={sections}
+      handleRetrun={() => {
+        router.replace(`/${baseRoute}`);
+      }}
       name={t("shop_management", "Shop Management")}
     />
   );

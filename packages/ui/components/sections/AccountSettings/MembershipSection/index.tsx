@@ -14,7 +14,6 @@ import {
   TabTitle,
   TabsHeader,
   TabList,
-  TabItem,
   SubscriptionPlanCard,
   PriceDisplay,
 } from "ui";

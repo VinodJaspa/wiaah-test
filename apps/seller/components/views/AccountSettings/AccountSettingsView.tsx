@@ -36,7 +36,9 @@ export const AccountSettingsView: React.FC = () => {
   const route = Array.isArray(section) ? section[0] : section;
 
   React.useEffect(() => {
-    if (!route) router.push(`/${baseRoute}/${sections[0].panelUrl}`);
+    if (!route) {
+      // router.push(`/${baseRoute}/${sections[0].panelUrl}`);
+    }
   }, [router, route]);
 
   function handleSectionChange(url: string) {
@@ -47,6 +49,9 @@ export const AccountSettingsView: React.FC = () => {
       name={{
         translationKey: "account_settings",
         fallbackText: "Account Settings",
+      }}
+      handleRetrun={() => {
+        router.push(`/${baseRoute}`, null, { shallow: true });
       }}
       currentSectionName={route}
       sections={sections}

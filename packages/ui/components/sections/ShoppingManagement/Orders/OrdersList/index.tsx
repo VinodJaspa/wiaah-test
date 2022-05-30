@@ -6,7 +6,6 @@ import { FormOptionType, PriceType } from "types";
 import { DateInput, FormikInput } from "ui";
 import { randomNum } from "ui/components/helpers";
 import {
-  Divider,
   Menu,
   MenuButton,
   Select,
@@ -21,6 +20,7 @@ import {
   Button,
   OrderContext,
   Pagination,
+  SectionHeader,
 } from "ui";
 
 export interface OrdersListProps {}
@@ -30,10 +30,7 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
-        <p className="text-4xl font-bold">{t("orders", "Orders")}</p>
-        <Divider className="border-primary" />
-      </div>
+      <SectionHeader sectionTitle={t("orders", "Orders")} />
       <div>
         <Formik initialValues={{}} onSubmit={() => {}}>
           {({}) => {

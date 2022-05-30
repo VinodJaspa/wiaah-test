@@ -14,6 +14,7 @@ import {
   Td,
   THead,
   TableContainer,
+  SectionHeader,
 } from "ui";
 
 export interface ProductDetailsTableProps {}
@@ -23,14 +24,11 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
-      <div className="border-b-2 pb-2 border-primary flex items-center justify-between w-full">
-        <h1 className="font-bold text-4xl">
-          {t("your_products", "Your Products")}
-        </h1>
+      <SectionHeader sectionTitle={t("your_products", "Your Products")}>
         <Button onClick={AddNewProduct}>
           {t("add_new_product", "Add New Product")}
         </Button>
-      </div>
+      </SectionHeader>
       <div className="flex flex-col gap-4 shadow p-4">
         <TableContainer>
           <Table className="w-full">

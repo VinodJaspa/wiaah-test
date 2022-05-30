@@ -16,16 +16,15 @@ export const WalletView: React.FC = () => {
   const { section } = router.query;
   const route = Array.isArray(section) ? section[0] : section;
 
-  React.useEffect(() => {
-    if (!route) router.push(`/${baseRoute}/${sections[0].panelUrl}`);
-  }, [router, route]);
-
   return (
     <SectionsLayout
       currentSectionName={route}
       name={{
         translationKey: "wallet",
         fallbackText: "Wallet",
+      }}
+      handleRetrun={() => {
+        router.replace(`/${baseRoute}`);
       }}
       sections={sections}
       handleSectionChange={(url) => router.replace(`/${baseRoute}/${url}`)}

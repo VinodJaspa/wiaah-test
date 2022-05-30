@@ -3,10 +3,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { HtmlDivProps, PriceType } from "types";
 import { getRandomImage } from "ui/placeholder";
+import { SectionContext } from "state";
 import { randomNum } from "../../../../helpers";
 import {
   Divider,
-  Input,
   PriceDisplay,
   Select,
   SelectOption,
@@ -17,7 +17,7 @@ import {
   Tr,
 } from "ui";
 
-import { BiChevronLeft } from "react-icons/bi";
+import { BsChevronLeft } from "react-icons/bs";
 
 export interface MyReturnsSectionProps {}
 
@@ -131,12 +131,16 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   className,
   ...props
 }) => {
+  const { onReturn } = React.useContext(SectionContext);
   const { isMobile } = useResponsive();
   return isMobile ? (
-    <div className="w-full text-2xl items-center p-2 flex justify-between">
-      <BiChevronLeft className="text-3xl" />
-      <span>{sectionTitle}</span>
-      <span></span>
+    <div {...props} className={`${className || ""} flex flex-col gap-2`}>
+      <div className="w-full text-2xl items-center py-2 flex justify-between">
+        <BsChevronLeft onClick={onReturn} />
+        <span>{sectionTitle}</span>
+        <span className="text-base">{children}</span>
+      </div>
+      <Divider />
     </div>
   ) : (
     <div {...props} className={`${className || ""} flex flex-col gap-2`}>

@@ -26,22 +26,13 @@ export const getServerSideProps: GetServerSideProps<AccountSettingsPageProps> =
 const accountSettings: NextPage<AccountSettingsPageProps> = ({}) => {
   const router = useRouter();
   const { t } = useTranslation();
-  const [currentRoute, setCurrentRoute] = React.useState("");
-
-  React.useEffect(() => {
-    const { section } = router.query;
-    const route = Array.isArray(section) ? section[0] : section;
-    if (!route || route.length < 2) {
-      router.push(`${router.asPath}/account`, null, { shallow: true });
-    }
-  }, [router]);
 
   return (
     <>
       <Head>
         <title>{t("account_settings", "Account Settings")}</title>
       </Head>
-      <SellerLayout containerProps={{ h: "100%" }} noContainer header={null}>
+      <SellerLayout noContainer header={null}>
         <AccountSettingsView />
       </SellerLayout>
     </>

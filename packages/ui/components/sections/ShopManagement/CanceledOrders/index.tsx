@@ -8,10 +8,10 @@ import {
   Tr,
   Td,
   Th,
-  Divider,
   ItemsPagination,
   PriceDisplay,
   TableContainer,
+  SectionHeader,
 } from "ui";
 import { BsFilePdfFill } from "react-icons/bs";
 import { PriceType } from "types";
@@ -36,15 +36,11 @@ export const CanceledOrdersSection: React.FC<CanceledOrdersSectionProps> =
     const { t } = useTranslation();
     return (
       <div className="flex flex-col gap-4 w-full">
-        <div className="flex flex-col gap-1 w-full">
-          <div className="flex items-center justify-between w-full">
-            <p className="text-xl ">{t("cancel_order", "Cancel Orders")}</p>
-            <Button className="flex py-1 items-center gap-2">
-              <BsFilePdfFill /> {t("pdf", "pdf")}
-            </Button>
-          </div>
-          <Divider className="border-primary" />
-        </div>
+        <SectionHeader sectionTitle={t("canceled_orders", "Canceled Orders")}>
+          <Button className="flex py-1 items-center gap-2">
+            <BsFilePdfFill /> {t("pdf", "pdf")}
+          </Button>
+        </SectionHeader>
         <TableContainer className="w-full flex-col flex border-[1px] border-gray-300">
           <Table>
             <THead>

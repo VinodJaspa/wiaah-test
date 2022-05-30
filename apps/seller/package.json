@@ -32,6 +32,7 @@
     "uris": "*",
     "hooks": "*",
     "utils": "*",
+    "state": "*",
     "validation": "*"
   },
   "devDependencies": {

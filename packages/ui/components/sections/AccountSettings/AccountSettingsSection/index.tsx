@@ -23,8 +23,9 @@ import {
   Textarea,
   Divider,
   Avatar,
+  SelectProps,
+  SectionHeader,
 } from "ui";
-import { SelectProps } from "../../../partials";
 
 export interface AccountSettingsSectionProps {}
 
@@ -38,7 +39,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
     }
     return (
       <div className="w-full gap-4 flex flex-col">
-        <span className="font-bold text-4xl">{t("account", "Account")}</span>
+        <SectionHeader sectionTitle={t("account", "Account")} />
         <div className="flex flex-col">
           <span className="text-xl font-semibold">
             {t("profile", "Profile")}

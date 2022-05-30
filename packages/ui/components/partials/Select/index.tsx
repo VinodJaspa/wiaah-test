@@ -2,7 +2,8 @@ import { BiChevronDown } from "react-icons/bi";
 import React from "react";
 import { HtmlDivProps } from "types";
 import { ElementChilds } from "types";
-import { useCallbackAfter, useOutsideClick } from "hooks";
+import { useOutsideClick } from "hooks";
+import { CallbackAfter } from "utils";
 
 type OnOptionSelect = (value: string) => any;
 export interface SelectChildProps {
@@ -48,7 +49,7 @@ export const Select: React.FC<SelectProps> = ({
       clearTimeout(timeout);
       setShowChild(true);
     } else {
-      useCallbackAfter(200, () => {
+      CallbackAfter(200, () => {
         setShowChild(false);
       });
     }

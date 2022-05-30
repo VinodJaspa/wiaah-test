@@ -21,10 +21,6 @@ export const ShoppingManagementView: React.FC = () => {
   const { section } = router.query;
   const route = Array.isArray(section) ? section[0] : section;
 
-  React.useEffect(() => {
-    if (!route) router.push(`/${baseRoute}/${sections[0].panelUrl}`);
-  }, [router, route]);
-
   function handleSectionChange(url: string) {
     router.replace(`/${baseRoute}/${url}`);
   }
@@ -35,6 +31,9 @@ export const ShoppingManagementView: React.FC = () => {
       name={{
         translationKey: "shopping_management",
         fallbackText: "Shopping Management",
+      }}
+      handleRetrun={() => {
+        router.replace(`/${baseRoute}`);
       }}
       sections={sections}
       handleSectionChange={handleSectionChange}

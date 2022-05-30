@@ -1,10 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { IoRemoveCircleSharp } from "react-icons/io5";
-import { BuyerComment, Divider } from "ui";
+import { BuyerComment, Divider, Rate, SectionHeader } from "ui";
 import { products } from "../../../../placeholder";
 import { randomNum } from "../../../helpers";
-import { Rate } from "../../../partials";
 
 export type ReviewData = {
   username: string;
@@ -24,10 +22,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({}) => {
   const average = ((reviews.length * 5) / totalReviewsScore).toFixed(1);
   return (
     <div className="flex flex-col gap-4 w-full">
-      <div className="flex flex-col gap-1 w-full">
-        <p className="text-xl ">{t("reviews", "Reviews")}</p>
-        <Divider className="border-primary" />
-      </div>
+      <SectionHeader sectionTitle={t("reviews", "Reviews")} />
       <div className="shadow flex flex-col gap-4">
         <div className="flex gap-2 items-center">
           <span className="text-gray-500">

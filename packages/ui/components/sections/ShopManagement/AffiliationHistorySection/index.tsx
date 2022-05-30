@@ -13,6 +13,7 @@ import {
   Th,
   THead,
   TableContainer,
+  SectionHeader,
 } from "ui";
 
 export interface AffiliationHistorySection {}
@@ -32,17 +33,13 @@ export const AffiliationHistorySection: React.FC<AffiliationHistorySection> =
     const { t } = useTranslation();
     return (
       <div className="flex flex-col gap-4 w-full">
-        <div className="flex flex-col gap-1 w-full">
-          <div className="flex items-center justify-between w-full">
-            <p className="text-xl ">
-              {t("affiliation_history", "Affiliation History")}
-            </p>
-            <Button className="flex py-1 items-center gap-2">
-              <BsFilePdfFill /> {t("pdf", "pdf")}
-            </Button>
-          </div>
-          <Divider className="border-primary" />
-        </div>
+        <SectionHeader
+          sectionTitle={t("affiliation_history", "Affiliation History")}
+        >
+          <Button className="flex py-1 items-center gap-2">
+            <BsFilePdfFill /> {t("pdf", "pdf")}
+          </Button>
+        </SectionHeader>
         <TableContainer className="w-full">
           <Table
             ThProps={{

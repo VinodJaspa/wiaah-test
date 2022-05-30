@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Divider, Input } from "ui";
+import { Button, SectionHeader, Input } from "ui";
 import { useTranslation } from "react-i18next";
 import { Field, Form, Formik } from "formik";
 
@@ -30,9 +30,9 @@ export const FindYourFriendsStep: React.FC<FindYourFriendsStepProps> = ({}) => {
   let [mailService, setMailService] = React.useState(0);
   return (
     <div className="w-full">
-      <h2 className=" text-xl font-bold">
-        {t("Find_friends_on_Wiaah", "Find friends on Wiaah")}
-      </h2>
+      <SectionHeader
+        sectionTitle={t("Find_friends_on_Wiaah", "Find friends on Wiaah")}
+      />
       <p className="pb-6 text-gray-400 md:pb-0">
         {t(
           "This_information_will_help",

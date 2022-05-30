@@ -14,6 +14,7 @@
     "validation": "*",
     "utils": "*",
     "hooks": "*",
+    "state": "*",
     "typescript": "^4.5.3"
   },
   "dependencies": {

@@ -10,6 +10,7 @@ import {
   TBody,
   Th,
   PriceDisplay,
+  SectionHeader,
 } from "ui";
 import { getRandomImage } from "ui/placeholder";
 import { HiShoppingCart } from "react-icons/hi";
@@ -28,10 +29,7 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-col gap-3 w-full">
-        <p className="text-4xl ">{t("my_wish_list", "My Wish List")}</p>
-        <Divider className="border-primary" />
-      </div>
+      <SectionHeader sectionTitle={t("my_wish_list", "My Wish List")} />
       <Table>
         <Tr>
           <Th className="pl-0 text-left">{t("image", "Image")}</Th>

@@ -15,6 +15,7 @@ import {
   Switch,
   PriceDisplay,
   TableContainer,
+  SectionHeader,
 } from "ui";
 import { ShippingSettingsContext } from "../ShippingSettingsSection";
 
@@ -23,17 +24,11 @@ export const ShippingSettings: React.FC = () => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4 w-full">
-      <div className="flex flex-col gap-3 w-full">
-        <div className="flex justify-between items-center w-full">
-          <p className="text-4xl ">
-            {t("shipping_settings", "Shipping Settings")}
-          </p>
-          <Button onClick={addNew} outline>
-            {t("add_shipping", "Add Shipping")}
-          </Button>
-        </div>
-        <Divider className="border-primary" />
-      </div>
+      <SectionHeader sectionTitle={t("shipping_settings", "Shipping Settings")}>
+        <Button onClick={addNew} outline>
+          {t("add_shipping", "Add Shipping")}
+        </Button>
+      </SectionHeader>
       <p className="lg:text-xl ">
         {t(
           "define_your_shipping",
