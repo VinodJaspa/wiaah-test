@@ -20,7 +20,7 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
   handleSectionChange,
   handleRetrun,
 }) => {
-  const { isTablet } = useResponsive();
+  const { isMobile, isTablet } = useResponsive();
 
   const minGap = isTablet ? 0 : 48;
 
@@ -38,7 +38,7 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
     if (sectionIdx > -1) {
       return sections[sectionIdx].panelComponent;
     } else {
-      if (isTablet)
+      if (isMobile)
         return (
           <SettingsSectionsSidebar
             currentActive={
@@ -62,7 +62,7 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
     <SectionContext.Provider value={{ onReturn: HandleReturn }}>
       <div className="h-full w-full flex justify-end gap-8">
         <div className="fixed left-[5rem]" ref={leftPanelRef}>
-          {!isTablet && (
+          {!isMobile && (
             <div className="gap-4 w-full sm:w-40 md:w-[15rem] xl:w-[20rem] flex flex-col px-2">
               <p className="text-xl px-4 font-bold">
                 <TranslationText translationObject={name} />

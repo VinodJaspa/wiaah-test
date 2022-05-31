@@ -4,7 +4,7 @@ import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
 
 export interface PrefixProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-  Prefix: React.ReactNode;
+  Prefix: React.TrackableComponent;
   spacing?: CSSValueUnit;
 }
 export const Prefix: React.FC<PrefixProps> = ({

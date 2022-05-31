@@ -4,11 +4,11 @@ import { runIfFn } from "utils";
 
 interface InputContextValue {
   isInputGroup: boolean;
-  inputLeftElement: React.ReactNode;
-  inputRightElement: React.ReactNode;
+  inputLeftElement: React.TrackableComponent;
+  inputRightElement: React.TrackableComponent;
 
-  setInputLeftElement: (element: React.ReactNode) => any;
-  setInputRightElement: (element: React.ReactNode) => any;
+  setInputLeftElement: (element: React.TrackableComponent) => any;
+  setInputRightElement: (element: React.TrackableComponent) => any;
 }
 
 const InputContext = React.createContext<InputContextValue>({
@@ -49,8 +49,10 @@ export const InputGroup: React.FC<InputGroupProps> = ({
   className,
   ...props
 }) => {
-  const [leftElement, setLeftElement] = React.useState<React.ReactNode>(null);
-  const [rightElement, setRightElement] = React.useState<React.ReactNode>(null);
+  const [leftElement, setLeftElement] =
+    React.useState<React.TrackableComponent>(null);
+  const [rightElement, setRightElement] =
+    React.useState<React.TrackableComponent>(null);
   const isGroup = !!leftElement || !!rightElement;
   return (
     <InputContext.Provider

@@ -15,6 +15,7 @@ import {
   Td,
   Th,
   Tr,
+  TableContainer,
 } from "ui";
 
 import { BsChevronLeft } from "react-icons/bs";
@@ -40,46 +41,48 @@ export const MyReturnsSection: React.FC<MyReturnsSectionProps> = () => {
           {t("return", "Return")} {t("rejected", "rejceted")}
         </SelectOption>
       </Select>
-      <Table className="w-full">
-        <Tr>
-          <Th>{t("product_image", "Product Image")}</Th>
-          <Th>{t("product_name", "Product Name")}</Th>
-          <Th>{t("quantity", "Quantity")}</Th>
-          <Th>{t("paid_price", "Paid price")}</Th>
-          <Th>{t("shipping_amount", "Shipping Amount")}</Th>
-          <Th>{t("return_reason", "Return Reason")}</Th>
-          <Th>{t("other_reason", "Other Reason")}</Th>
-          <Th>{t("admin_status", "Admin Status")}</Th>
-          <Th>{t("seller_status", "Seller Status")}</Th>
-        </Tr>
-        <TBody>
-          {returnedProducts &&
-            returnedProducts.length > 0 &&
-            returnedProducts.map((prod, i) => (
-              <Tr key={i}>
-                <Td>
-                  <img
-                    className="w-16 h-auto"
-                    src={prod.productImage}
-                    alt={prod.productName}
-                  />
-                </Td>
-                <Td>{prod.productName}</Td>
-                <Td>{prod.quantity}</Td>
-                <Td>
-                  <PriceDisplay priceObject={prod.paidPrice} />
-                </Td>
-                <Td>
-                  <PriceDisplay priceObject={prod.shippingAmount} />
-                </Td>
-                <Td>{prod.returnReason}</Td>
-                <Td>{prod.otherReason}</Td>
-                <Td>{prod.adminStatus}</Td>
-                <Td>{prod.sellerStatus}</Td>
-              </Tr>
-            ))}
-        </TBody>
-      </Table>
+      <TableContainer>
+        <Table className="w-full">
+          <Tr>
+            <Th>{t("product_image", "Product Image")}</Th>
+            <Th>{t("product_name", "Product Name")}</Th>
+            <Th>{t("quantity", "Quantity")}</Th>
+            <Th>{t("paid_price", "Paid price")}</Th>
+            <Th>{t("shipping_amount", "Shipping Amount")}</Th>
+            <Th>{t("return_reason", "Return Reason")}</Th>
+            <Th>{t("other_reason", "Other Reason")}</Th>
+            <Th>{t("admin_status", "Admin Status")}</Th>
+            <Th>{t("seller_status", "Seller Status")}</Th>
+          </Tr>
+          <TBody>
+            {returnedProducts &&
+              returnedProducts.length > 0 &&
+              returnedProducts.map((prod, i) => (
+                <Tr key={i}>
+                  <Td>
+                    <img
+                      className="w-16 h-auto"
+                      src={prod.productImage}
+                      alt={prod.productName}
+                    />
+                  </Td>
+                  <Td>{prod.productName}</Td>
+                  <Td>{prod.quantity}</Td>
+                  <Td>
+                    <PriceDisplay priceObject={prod.paidPrice} />
+                  </Td>
+                  <Td>
+                    <PriceDisplay priceObject={prod.shippingAmount} />
+                  </Td>
+                  <Td>{prod.returnReason}</Td>
+                  <Td>{prod.otherReason}</Td>
+                  <Td>{prod.adminStatus}</Td>
+                  <Td>{prod.sellerStatus}</Td>
+                </Tr>
+              ))}
+          </TBody>
+        </Table>
+      </TableContainer>
       {!returnedProducts || returnedProducts.length < 1 ? (
         <span className="text-xl">
           {t("no_records_found", "No Records Found")}

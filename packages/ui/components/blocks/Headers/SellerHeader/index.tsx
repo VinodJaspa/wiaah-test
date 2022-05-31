@@ -30,7 +30,6 @@ import {
   Avatar,
   SearchInput,
   FloatingContainer,
-  useResponsive,
   useNewPost,
   SellerDrawerOpenState,
   ShoppingCart,
@@ -41,6 +40,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
+import { useResponsive } from "hooks";
 
 export interface SellerHeaderProps {
   onSearchSubmit?: (searchValue: string) => any;
@@ -55,7 +55,6 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
   const router = useRouter();
   const { t } = useTranslation();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
-  console.log("header render");
   const { isMobile } = useResponsive();
   const { OpenModal } = useNewPost();
 

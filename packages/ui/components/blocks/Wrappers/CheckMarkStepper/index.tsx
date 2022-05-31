@@ -2,8 +2,7 @@ import React from "react";
 import { StepperStepType } from "types";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { BiCircle } from "react-icons/bi";
-import { TranslationText } from "../../../partials";
-import { FormStepIsValidData } from "../MultiStepForm";
+import { TranslationText, FormStepIsValidData } from "ui";
 
 export interface CheckMarkStepperProps {
   steps: StepperStepType[];
@@ -62,7 +61,7 @@ export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
               />
             )}
             <TranslationText
-              className={`absolute text-sm top-full whitespace-nowrap ${
+              className={`absolute text-xs sm:text-sm  top-full whitespace-nowrap ${
                 steps.length === i + 1
                   ? "right-0"
                   : i === 0

@@ -10,6 +10,7 @@ import {
   TabTitle,
   SubscriptionPlanCard,
 } from "ui";
+import { useDimensions } from "hooks";
 
 export default {
   title: storybookPartailsTitle + "Tabs",
@@ -25,53 +26,92 @@ import { Tabs, TabsHeader, TabList, TabItem, TabTitle } from "ui";
 ...
 return (
 <Tabs>
-    {({ setCurrentTabIdx }) => {
-    return (
-            <>
-          <TabsHeader>
-            <TabTitle onClick={() => setCurrentTabIdx(0)}>title 1</TabTitle>
-            <TabTitle onClick={() => setCurrentTabIdx(1)}>title 2</TabTitle>
-            <TabTitle onClick={() => setCurrentTabIdx(2)}>title 3</TabTitle>
-            <TabTitle onClick={() => setCurrentTabIdx(3)}>title 4</TabTitle>
-          </TabsHeader>
-          <TabList>
-            <TabItem>tab 1</TabItem>
-            <TabItem>tab 2</TabItem>
-            <TabItem>tab 3</TabItem>
-            <TabItem>tab 4</TabItem>
-          </TabList>
-        </>
-        );
-    }}
+    <TabsHeader>
+        <TabTitle>title 1</TabTitle>
+        <TabTitle>title 2</TabTitle>
+        <TabTitle>title 3</TabTitle>
+        <TabTitle>title 4</TabTitle>
+    </TabsHeader>
+    <TabList>
+        <TabItem>tab 1</TabItem>
+        <TabItem>tab 2</TabItem>
+        <TabItem>tab 3</TabItem>
+        <TabItem>tab 4</TabItem>
+    </TabList>
 </Tabs>
 )
     `}
     >
       <Tabs>
-        {({ setCurrentTabIdx }) => {
-          return (
-            <>
-              <TabsHeader>
-                <TabTitle onClick={() => setCurrentTabIdx(0)}>title 1</TabTitle>
-                <TabTitle onClick={() => setCurrentTabIdx(1)}>title 2</TabTitle>
-                <TabTitle onClick={() => setCurrentTabIdx(2)}>title 3</TabTitle>
-                <TabTitle onClick={() => setCurrentTabIdx(3)}>title 4</TabTitle>
-              </TabsHeader>
-              <TabList>
-                <TabItem>tab 1</TabItem>
-                <TabItem>tab 2</TabItem>
-                <TabItem>tab 3</TabItem>
-                <TabItem>tab 4</TabItem>
-              </TabList>
-            </>
-          );
-        }}
+        <TabsHeader>
+          <TabTitle>title 1</TabTitle>
+          <TabTitle>title 2</TabTitle>
+          <TabTitle>title 3</TabTitle>
+          <TabTitle>title 4</TabTitle>
+        </TabsHeader>
+        <TabList>
+          <TabItem>tab 1</TabItem>
+          <TabItem>tab 2</TabItem>
+          <TabItem>tab 3</TabItem>
+          <TabItem>tab 4</TabItem>
+        </TabList>
       </Tabs>
     </StorybookImplemntationLayout>
   );
 };
 
-export const planCardsExample: React.FC<TabsProps> = () => {
+export const CustomItemsOrdering: React.FC<TabsProps> = () => {
+  return (
+    <StorybookImplemntationLayout
+      implmentation={`
+import { Tabs, TabsHeader, TabList, TabItem, TabTitle } from "ui";
+
+
+Tip: <TabsHeader /> and <TabsList /> has to be insde the Tabs component
+...
+return (
+<Tabs>
+  <TabsHeader />
+
+  <TabTitle>title 1</TabTitle>
+  <TabItem>tab 1</TabItem>
+
+  <TabTitle>title 2</TabTitle>
+  <TabItem>tab 2</TabItem>
+
+  <TabTitle>title 3</TabTitle>
+  <TabItem>tab 3</TabItem>
+
+  <TabTitle>title 4</TabTitle>
+  <TabItem>tab 4</TabItem>
+
+  <TabList />
+</Tabs>
+)
+    `}
+    >
+      <Tabs>
+        <TabsHeader />
+
+        <TabTitle>title 1</TabTitle>
+        <TabItem>tab 1</TabItem>
+
+        <TabTitle>title 2</TabTitle>
+        <TabItem>tab 2</TabItem>
+
+        <TabTitle>title 3</TabTitle>
+        <TabItem>tab 3</TabItem>
+
+        <TabTitle>title 4</TabTitle>
+        <TabItem>tab 4</TabItem>
+
+        <TabList />
+      </Tabs>
+    </StorybookImplemntationLayout>
+  );
+};
+
+export const accessInnerState: React.FC<TabsProps> = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
@@ -80,59 +120,84 @@ import { Tabs, TabsHeader, TabList, TabItem, TabTitle } from "ui";
 ...
 return (
 <Tabs>
-    {({ setCurrentTabIdx }) => {
-    return (
-            <>
+    {({ setCurrentTabIdx,addTab,addTitle,currentTabIdx,setTabsComponents,setTabsTitlesComponents,tabsComponents,tabsTitles }) => {
+      return (
+        <>
           <TabsHeader>
-            <TabTitle onClick={() => setCurrentTabIdx(0)}>title 1</TabTitle>
-            <TabTitle onClick={() => setCurrentTabIdx(1)}>title 2</TabTitle>
-            <TabTitle onClick={() => setCurrentTabIdx(2)}>title 3</TabTitle>
-            <TabTitle onClick={() => setCurrentTabIdx(3)}>title 4</TabTitle>
-          </TabsHeader>
-          <TabList>
-            <TabItem>tab 1</TabItem>
-            <TabItem>tab 2</TabItem>
-            <TabItem>tab 3</TabItem>
-            <TabItem>tab 4</TabItem>
-          </TabList>
-        </>
-        );
-    }}
+          {plans.map((title, i) => (
+            <TabTitle onClick={() => setCurrentTabIdx(i)} key={i}>
+              {title.planTitle}
+            </TabTitle>
+          ))}
+        </TabsHeader>
+        <TabList className="w-full mb-8">
+          {plans.map((_, i) => (
+            <TabItem>
+              <SubscriptionPlanCard
+                price={{
+                  amount: i,
+                  currency: "CHF",
+                }}
+                trialDays={30}
+                benifits={[
+                  "All kits included",
+                  "unlimited downloads",
+                  "ios support",
+                ]}
+                onUpgradeRequest={() => {}}
+              />
+            </TabItem>
+          ))}
+        </TabList>
+      </>
+    );
+  }}
 </Tabs>
 )
     `}
     >
       <Tabs>
-        {({ setCurrentTabIdx }) => {
-          return (
+        <>
+          <TabsHeader />
+          {plans.map((title, i) => (
             <>
-              <TabsHeader>
-                {plans.map((title, i) => (
-                  <TabTitle onClick={() => setCurrentTabIdx(i)} key={i}>
-                    {title.planTitle}
-                  </TabTitle>
-                ))}
-              </TabsHeader>
-              <TabList className="w-full mb-8">
-                {plans.map(() => (
-                  <SubscriptionPlanCard
-                    price={{
-                      amount: 15,
-                      currency: "CHF",
-                    }}
-                    trialDays={30}
-                    benifits={[
-                      "All kits included",
-                      "unlimited downloads",
-                      "ios support",
-                    ]}
-                    onUpgradeRequest={() => {}}
-                  />
-                ))}
-              </TabList>
+              <TabTitle>
+                {({ currentTabIdx }) => {
+                  console.log("current", currentTabIdx);
+                  return (
+                    <span
+                      className={`${
+                        currentTabIdx === i ? "text-black" : "text-gray-600"
+                      }`}
+                    >
+                      {title.planTitle} {currentTabIdx}
+                    </span>
+                  );
+                }}
+              </TabTitle>
+
+              <TabItem>
+                {() => {
+                  return;
+                }}
+                <SubscriptionPlanCard
+                  price={{
+                    amount: i,
+                    currency: "CHF",
+                  }}
+                  trialDays={30}
+                  benifits={[
+                    "All kits included",
+                    "unlimited downloads",
+                    "ios support",
+                  ]}
+                  onUpgradeRequest={() => {}}
+                />
+              </TabItem>
             </>
-          );
-        }}
+          ))}
+          <TabList />
+        </>
       </Tabs>
     </StorybookImplemntationLayout>
   );

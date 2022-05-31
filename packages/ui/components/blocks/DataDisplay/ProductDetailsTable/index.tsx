@@ -1,6 +1,8 @@
+import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiEdit } from "react-icons/bi";
+import { FiPlusSquare } from "react-icons/fi";
 import { IoTrash } from "react-icons/io5";
 import { ProductManagementDetailsDataType } from "types";
 import {
@@ -21,13 +23,18 @@ export interface ProductDetailsTableProps {}
 
 export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
   const { AddNewProduct } = useEditProductData();
+  const { isMobile } = useResponsive();
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
       <SectionHeader sectionTitle={t("your_products", "Your Products")}>
-        <Button onClick={AddNewProduct}>
-          {t("add_new_product", "Add New Product")}
-        </Button>
+        {isMobile ? (
+          <FiPlusSquare className="text-2xl" onClick={AddNewProduct} />
+        ) : (
+          <Button onClick={AddNewProduct}>
+            {t("add_new_product", "Add New Product")}
+          </Button>
+        )}
       </SectionHeader>
       <div className="flex flex-col gap-4 shadow p-4">
         <TableContainer>

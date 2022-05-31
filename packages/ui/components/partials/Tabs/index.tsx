@@ -1,15 +1,22 @@
 import React from "react";
 import { HtmlDivProps } from "types";
-import { MaybeFn, runIfFn } from "utils";
+import { MaybeFn, runIfFn, PassPropsToFnOrElem } from "utils";
+import { randomNum } from "../../helpers";
+
+type TrackableComponent = {
+  id: string;
+  component: React.TrackableComponent;
+};
 
 interface TabsContextValue {
   currentTabIdx: number;
-  tabsComponents: React.ReactNode[];
-  tabsTitles: React.ReactNode[];
+  tabsComponents: TrackableComponent[];
+  tabsTitles: TrackableComponent[];
   setCurrentTabIdx: (idx: number) => any;
-  setTabsComponents: (comps: React.ReactNode[]) => any;
-  setTabsTitlesComponents: (comps: React.ReactNode[]) => any;
-  addTab: (component: React.ReactNode) => any;
+  setTabsComponents: (comps: TrackableComponent[]) => any;
+  setTabsTitlesComponents: (comps: TrackableComponent[]) => any;
+  addTitle: (component: TrackableComponent) => any;
+  addTab: (component: TrackableComponent) => any;
 }
 
 const TabsContext = React.createContext<TabsContextValue>({
@@ -20,6 +27,7 @@ const TabsContext = React.createContext<TabsContextValue>({
   setTabsComponents: () => {},
   setTabsTitlesComponents: () => {},
   addTab: () => {},
+  addTitle: () => {},
 });
 
 export interface TabsProps {
@@ -28,22 +36,33 @@ export interface TabsProps {
 
 export const Tabs: React.FC<TabsProps> = ({ children, ...props }) => {
   const [currentTab, setCurrentTab] = React.useState<number>(0);
-  const [tabsTitles, setTabsTitle] = React.useState<React.ReactNode[]>([]);
-  const [tabsComponents, setTabsComponents] = React.useState<React.ReactNode[]>(
-    []
-  );
+  const [tabsTitles, setTabsTitle] = React.useState<TrackableComponent[]>([]);
+  const [tabsComponents, setTabsComponents] = React.useState<
+    TrackableComponent[]
+  >([]);
+  console.log("innerstate", currentTab);
 
-  function setTabs(components: React.ReactNode[]) {
+  function setTabs(components: TrackableComponent[]) {
     setTabsComponents(components);
   }
-  function addTab(component: React.ReactNode) {
-    setTabsComponents((state) => [...state, component]);
+  function addTitle(component: TrackableComponent) {
+    setTabsTitle((state) => {
+      const filteredState = state.filter((comp) => comp.id !== component.id);
+      return [...filteredState, component];
+    });
   }
-  function setTitles(components: React.ReactNode[]) {
+  function addTab(component: TrackableComponent) {
+    setTabsComponents((state) => {
+      const filteredState = state.filter((comp) => comp.id !== component.id);
+      return [...filteredState, component];
+    });
+  }
+  function setTitles(components: TrackableComponent[]) {
     setTabsTitle(components);
   }
 
   function setCurrentTabIdx(tabIdx: number) {
+    console.log(tabIdx);
     setCurrentTab(tabIdx);
   }
 
@@ -57,18 +76,11 @@ export const Tabs: React.FC<TabsProps> = ({ children, ...props }) => {
         setTabsComponents: setTabs,
         setTabsTitlesComponents: setTitles,
         addTab,
+        addTitle,
       }}
       {...props}
     >
-      {runIfFn<MaybeFn<TabsContextValue>, TabsContextValue>(children, {
-        currentTabIdx: currentTab,
-        tabsComponents,
-        tabsTitles,
-        setTabsComponents: setTabs,
-        setTabsTitlesComponents: setTitles,
-        setCurrentTabIdx,
-        addTab,
-      })}
+      {children}
     </TabsContext.Provider>
   );
 };
@@ -80,12 +92,56 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({
   children,
   ...props
 }) => {
+  const { tabsTitles, setCurrentTabIdx, currentTabIdx, ...rest } =
+    React.useContext(TabsContext);
   return (
-    <div className={`${className || ""} flex gap-2 justify-center w-full py-2`}>
-      {Array.isArray(children) &&
-        children.map((tab, i) => <>{runIfFn(tab, {})}</>)}
+    <div {...props} className={`${className || ""} flex gap-2 w-full py-2`}>
+      {Array.isArray(tabsTitles) &&
+        tabsTitles.map((tab, i) => (
+          <React.Fragment key={i}>
+            <div
+              onClick={() => {
+                setCurrentTabIdx(i);
+              }}
+              className={`${
+                className || ""
+              } px-2 py-1 cursor-pointer text-lg font-bold`}
+            >
+              {PassPropsToFnOrElem<TabTitleChildrenPropsType>(tab.component, {
+                currentTabIdx,
+                setCurrentTabIdx,
+                tabsTitles,
+                ...rest,
+              })}
+            </div>
+          </React.Fragment>
+        ))}
+      {children}
     </div>
   );
+};
+
+type TabTitleChildrenPropsType = TabsContextValue;
+type TabTitleChildrenType = MaybeFn<TabTitleChildrenPropsType>;
+export interface TabTitleProps extends Omit<HtmlDivProps, "children"> {
+  TabKey: string | number;
+  children: TabTitleChildrenType;
+}
+export const TabTitle: React.FC<TabTitleProps> = ({
+  children,
+  TabKey = randomNum(13465433),
+}) => {
+  const { addTitle } = React.useContext(TabsContext);
+
+  React.useEffect(() => {
+    console.log("Test title");
+    addTitle({
+      id: `${TabKey}`,
+      component: typeof children === "function" ? children : <>{children}</>,
+    });
+  }, [children]);
+
+  return null;
 };
 
 export interface TabListProps extends HtmlDivProps {}
@@ -95,35 +151,39 @@ export const TabList: React.FC<TabListProps> = ({
   className,
   ...props
 }) => {
-  const { currentTabIdx } = React.useContext(TabsContext);
+  const { currentTabIdx, tabsComponents, ...rest } =
+    React.useContext(TabsContext);
   return (
-    <div className={`${className || ""} flex justify-center w-full`}>
-      {Array.isArray(children) ? children[currentTabIdx] : children}
-    </div>
-  );
-};
-
-export interface TabTitleProps extends HtmlDivProps {}
-export const TabTitle: React.FC<TabTitleProps> = ({
-  className,
-  children,
-  ...props
-}) => {
-  return (
-    <div
-      {...props}
-      className={`${
-        className || ""
-      } px-2 py-1 cursor-pointer text-lg font-bold`}
-    >
+    <div {...props} className={`${className || ""} flex  w-full`}>
+      {tabsComponents[currentTabIdx]
+        ? PassPropsToFnOrElem<TabsContextValue>(
+            tabsComponents[currentTabIdx].component,
+            {
+              currentTabIdx,
+              tabsComponents,
+              ...rest,
+            }
+          )
+        : null}
       {children}
     </div>
   );
 };
 
-export interface TabItemProps {}
-export const TabItem: React.FC<TabItemProps> = ({ children }) => {
-  const {} = React.useContext(TabsContext);
-  React.useEffect(() => {}, []);
-  return <>{children}</>;
+export interface TabItemProps {
+  key?: string | number;
+  children: MaybeFn<TabsContextValue>;
+}
+export const TabItem: React.FC<TabItemProps> = ({
+  children,
+  key = randomNum(24643786),
+}) => {
+  const { addTab } = React.useContext(TabsContext);
+  React.useEffect(() => {
+    addTab({
+      id: `${key}`,
+      component: typeof children === "function" ? children : <>{children}</>,
+    });
+  }, []);
+  return null;
 };

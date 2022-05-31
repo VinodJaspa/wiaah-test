@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { t } from "i18next";
 import { Rate } from "antd";
 import { Select } from "antd";
 import { Button, DropdownPanel, FilterInput, FlexStack, Spacer } from "ui";
@@ -206,7 +205,7 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
           </div>
         </div>
       )}
-      <Button text={t("Clear", "Clear")} />
+      <Button>{t("clear", "Clear")}</Button>
     </div>
   );
 };

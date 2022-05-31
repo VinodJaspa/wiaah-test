@@ -15,6 +15,7 @@ import {
   Tr,
   Td,
   Th,
+  TableContainer,
   ItemsPagination,
 } from "ui";
 import { randomNum } from "../../../../helpers";
@@ -79,35 +80,37 @@ export const VouchersSection: React.FC = () => {
           );
         }}
       </Formik>
-      <Table
-        className="shadow border-collapse"
-        TrProps={{ className: "border-collapse" }}
-        ThProps={{
-          className: "text-left border-[1px] border-b-gray-400",
-        }}
-        TdProps={{ className: "border-[1px] border-gray-300" }}
-      >
-        <THead>
-          <Tr>
-            <Th>{t("voucher_code", "Voucher Code")}</Th>
-            <Th>{t("date", "Date")}</Th>
-            <Th>{t("amount", "Amount")}</Th>
-            <Th>{t("currency", "Currency")}</Th>
-            <Th>{t("status", "Status")}</Th>
-          </Tr>
-        </THead>
-        <TBody>
-          {vouchers.map((voucher, i) => (
-            <Tr key={i}>
-              <Td>{voucher.code}</Td>
-              <Td>{voucher.date}</Td>
-              <Td>{voucher.amount}</Td>
-              <Td>{voucher.currency}</Td>
-              <Td>{voucher.status}</Td>
+      <TableContainer>
+        <Table
+          className="shadow border-collapse"
+          TrProps={{ className: "border-collapse" }}
+          ThProps={{
+            className: "text-left border-[1px] border-b-gray-400",
+          }}
+          TdProps={{ className: "border-[1px] border-gray-300" }}
+        >
+          <THead>
+            <Tr>
+              <Th>{t("voucher_code", "Voucher Code")}</Th>
+              <Th>{t("date", "Date")}</Th>
+              <Th>{t("amount", "Amount")}</Th>
+              <Th>{t("currency", "Currency")}</Th>
+              <Th>{t("status", "Status")}</Th>
             </Tr>
-          ))}
-        </TBody>
-      </Table>
+          </THead>
+          <TBody>
+            {vouchers.map((voucher, i) => (
+              <Tr key={i}>
+                <Td>{voucher.code}</Td>
+                <Td>{voucher.date}</Td>
+                <Td>{voucher.amount}</Td>
+                <Td>{voucher.currency}</Td>
+                <Td>{voucher.status}</Td>
+              </Tr>
+            ))}
+          </TBody>
+        </Table>
+      </TableContainer>
       <ItemsPagination currentPage={1} maxItemsNum={vouchers.length} />
     </div>
   );

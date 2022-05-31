@@ -12,6 +12,7 @@ import {
   Th,
   TBody,
   THead,
+  TableContainer,
   PriceDisplay,
   ItemsPagination,
 } from "ui";
@@ -38,7 +39,7 @@ export const TransactionsHistorySection: React.FC<TransactionsHistorySectionProp
             {t("pdf", "PDF")}
           </Button>
         </SectionHeader>
-        <div className="flex gap-8 items-center">
+        <div className="flex flex-wrap sm:flex-nowrap gap-8 items-center">
           <FinancialCard
             className="w-full"
             title={t("your_current_balance", "Your Current Balance")}
@@ -53,73 +54,77 @@ export const TransactionsHistorySection: React.FC<TransactionsHistorySectionProp
         <span className="text-2xl font-bold">
           {t("balance_records", "Balance Records")}
         </span>
-        <Table
-          TdProps={{
-            className:
-              "first:w-[99%]  whitespace-nowrap border-[1px] border-gray-400 min-w-[10rem]",
-          }}
-          TrProps={{ className: "border-collapse" }}
-          ThProps={{ className: "text-left border-[1px] border-gray-400" }}
-          className="text-xl border-collapse"
-        >
-          <THead>
-            <Tr>
-              <Th>{t("order_id", "Order ID")}</Th>
-              <Th>{t("amount", "amount")}</Th>
-              <Th>{t("quantity", "quantity")}</Th>
-              <Th>{t("date_added", "Date Added")}</Th>
-            </Tr>
-          </THead>
-          <TBody>
-            {balanceRecords.map((record, idx) => (
-              <Tr className="border-collapse" key={idx}>
-                <Td>{record.orderId}</Td>
-                <Td>
-                  <PriceDisplay priceObject={record.amount} />
-                </Td>
-                <Td>{record.quantity}</Td>
-                <Td>{record.dateAdded}</Td>
+        <TableContainer>
+          <Table
+            TdProps={{
+              className:
+                "first:w-[99%]  whitespace-nowrap border-[1px] border-gray-400 min-w-[10rem]",
+            }}
+            TrProps={{ className: "border-collapse" }}
+            ThProps={{ className: "text-left border-[1px] border-gray-400" }}
+            className="text-xl border-collapse"
+          >
+            <THead>
+              <Tr>
+                <Th>{t("order_id", "Order ID")}</Th>
+                <Th>{t("amount", "amount")}</Th>
+                <Th>{t("quantity", "quantity")}</Th>
+                <Th>{t("date_added", "Date Added")}</Th>
               </Tr>
-            ))}
-          </TBody>
-        </Table>
+            </THead>
+            <TBody>
+              {balanceRecords.map((record, idx) => (
+                <Tr className="border-collapse" key={idx}>
+                  <Td>{record.orderId}</Td>
+                  <Td>
+                    <PriceDisplay priceObject={record.amount} />
+                  </Td>
+                  <Td>{record.quantity}</Td>
+                  <Td>{record.dateAdded}</Td>
+                </Tr>
+              ))}
+            </TBody>
+          </Table>
+        </TableContainer>
         <ItemsPagination currentPage={1} maxItemsNum={balanceRecords.length} />
-        <Table
-          ThProps={{ className: "border-[1px] border-gray-400 text-left" }}
-          TdProps={{ className: "border-[1px] border-gray-400" }}
-          className="text-xl"
-        >
-          <THead>
-            <Tr>
-              <Th>{t("order_id", "Order ID")}</Th>
-              <Th>{t("refund_amount", "Refund Amount")}</Th>
-              <Th>{t("date_added", "Date Added")}</Th>
-            </Tr>
-          </THead>
-          <TBody>
-            {balanceRecords.slice(0, 2).map((record, idx) => (
-              <Tr className="border-collapse" key={idx}>
-                <Td>{record.orderId}</Td>
-                <Td>
-                  <PriceDisplay priceObject={record.amount} />
-                </Td>
-                <Td>{record.dateAdded}</Td>
+        <TableContainer>
+          <Table
+            ThProps={{ className: "border-[1px] border-gray-400 text-left" }}
+            TdProps={{ className: "border-[1px] border-gray-400" }}
+            className="text-xl"
+          >
+            <THead>
+              <Tr>
+                <Th>{t("order_id", "Order ID")}</Th>
+                <Th>{t("refund_amount", "Refund Amount")}</Th>
+                <Th>{t("date_added", "Date Added")}</Th>
               </Tr>
-            ))}
-            <Tr>
-              <Td>{t("total_refunded_amount", "Total Refunded Amount")}</Td>
-              <Td></Td>
-              <Td>
-                <PriceDisplay
-                  priceObject={{
-                    amount: 0,
-                    currency: "CHF",
-                  }}
-                />
-              </Td>
-            </Tr>
-          </TBody>
-        </Table>
+            </THead>
+            <TBody>
+              {balanceRecords.slice(0, 2).map((record, idx) => (
+                <Tr className="border-collapse" key={idx}>
+                  <Td>{record.orderId}</Td>
+                  <Td>
+                    <PriceDisplay priceObject={record.amount} />
+                  </Td>
+                  <Td>{record.dateAdded}</Td>
+                </Tr>
+              ))}
+              <Tr>
+                <Td>{t("total_refunded_amount", "Total Refunded Amount")}</Td>
+                <Td></Td>
+                <Td>
+                  <PriceDisplay
+                    priceObject={{
+                      amount: 0,
+                      currency: "CHF",
+                    }}
+                  />
+                </Td>
+              </Tr>
+            </TBody>
+          </Table>
+        </TableContainer>
       </div>
     );
   };

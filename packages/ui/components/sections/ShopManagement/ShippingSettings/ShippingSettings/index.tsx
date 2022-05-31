@@ -1,8 +1,10 @@
 import { Form, Formik } from "formik";
+import { useResponsive } from "hooks";
 import React from "react";
 import { FlagIcon, FlagIconCode } from "react-flag-kit";
 import { useTranslation } from "react-i18next";
 import { BiEdit } from "react-icons/bi";
+import { FiPlusSquare } from "react-icons/fi";
 import { PriceType } from "types";
 import {
   Divider,
@@ -21,13 +23,18 @@ import { ShippingSettingsContext } from "../ShippingSettingsSection";
 
 export const ShippingSettings: React.FC = () => {
   const { addNew } = React.useContext(ShippingSettingsContext);
+  const { isMobile } = useResponsive();
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4 w-full">
       <SectionHeader sectionTitle={t("shipping_settings", "Shipping Settings")}>
-        <Button onClick={addNew} outline>
-          {t("add_shipping", "Add Shipping")}
-        </Button>
+        {isMobile ? (
+          <FiPlusSquare className="text-2xl" onClick={addNew} />
+        ) : (
+          <Button onClick={addNew} outline>
+            {t("add_shipping", "Add Shipping")}
+          </Button>
+        )}
       </SectionHeader>
       <p className="lg:text-xl ">
         {t(

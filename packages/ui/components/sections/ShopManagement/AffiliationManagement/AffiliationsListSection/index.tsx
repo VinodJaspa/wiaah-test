@@ -8,7 +8,6 @@ import {
   AffiliationManagementContext,
   ItemsPagination,
   Button,
-  Divider,
   Table,
   TBody,
   Td,
@@ -17,18 +16,27 @@ import {
   TableContainer,
   SectionHeader,
 } from "ui";
+import { useResponsive } from "hooks";
+import { FiPlusSquare } from "react-icons/fi";
 
 export interface AffiliationListSectionProps {}
 
 export const AffiliationListSection: React.FC<AffiliationListSectionProps> =
   () => {
     const { addNew } = React.useContext(AffiliationManagementContext);
+    const { isMobile } = useResponsive();
     const [maxItems, setMaxItems] = React.useState<number>(5);
     const { t } = useTranslation();
     return (
       <div className="flex flex-col">
         <SectionHeader sectionTitle={t("affiliation_list", "Affiliation List")}>
-          <Button>{t("add_new_affiliation", "Add New Affiliation")}</Button>
+          {isMobile ? (
+            <FiPlusSquare className="text-2xl" onClick={addNew} />
+          ) : (
+            <Button onClick={addNew}>
+              {t("add_new_affiliation", "Add New Affiliation")}
+            </Button>
+          )}
         </SectionHeader>
         <TableContainer>
           <Table className="w-full overflow-scroll">
