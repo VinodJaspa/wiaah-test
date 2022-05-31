@@ -45,3 +45,4 @@ export * from "./Accordion";
 export * from "./Modal";
 export * from "./Stepper";
 export * from "./Tabs";
+export * from "./Stack";

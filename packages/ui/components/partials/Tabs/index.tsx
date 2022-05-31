@@ -5,7 +5,7 @@ import { randomNum } from "../../helpers";
 
 type TrackableComponent = {
   id: string;
-  component: React.TrackableComponent;
+  component: React.ReactNode;
 };
 
 interface TabsContextValue {
@@ -32,15 +32,26 @@ const TabsContext = React.createContext<TabsContextValue>({
 
 export interface TabsProps {
   children: MaybeFn<TabsContextValue>;
+  onTabChange?: (tabIdx: number) => any;
+  currentTabIdx?: number;
 }
 
-export const Tabs: React.FC<TabsProps> = ({ children, ...props }) => {
-  const [currentTab, setCurrentTab] = React.useState<number>(0);
+export const Tabs: React.FC<TabsProps> = ({
+  children,
+  currentTabIdx = 0,
+  onTabChange,
+  ...props
+}) => {
+  const [currentTab, setCurrentTab] = React.useState<number>(currentTabIdx);
   const [tabsTitles, setTabsTitle] = React.useState<TrackableComponent[]>([]);
   const [tabsComponents, setTabsComponents] = React.useState<
     TrackableComponent[]
   >([]);
-  console.log("innerstate", currentTab);
+
+  React.useEffect(() => {
+    console.log("test");
+    onTabChange && onTabChange(currentTab);
+  }, [currentTab]);
 
   function setTabs(components: TrackableComponent[]) {
     setTabsComponents(components);
@@ -62,7 +73,6 @@ export const Tabs: React.FC<TabsProps> = ({ children, ...props }) => {
   }
 
   function setCurrentTabIdx(tabIdx: number) {
-    console.log(tabIdx);
     setCurrentTab(tabIdx);
   }
 
@@ -134,7 +144,6 @@ export const TabTitle: React.FC<TabTitleProps> = ({
   const { addTitle } = React.useContext(TabsContext);
 
   React.useEffect(() => {
-    console.log("Test title");
     addTitle({
       id: `${TabKey}`,
       component: typeof children === "function" ? children : <>{children}</>,

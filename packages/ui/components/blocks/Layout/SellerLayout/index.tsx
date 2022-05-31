@@ -264,6 +264,6 @@ export const HeaderSwitcher: React.FC<HeaderSwitcherProps> = ({
     case "minimal":
       return <MinimalHeader />;
     default:
-      return <SellerHeader />;
+      return <SellerHeader headerNavLinks={[]} />;
   }
 };

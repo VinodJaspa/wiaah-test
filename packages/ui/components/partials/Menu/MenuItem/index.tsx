@@ -17,7 +17,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({
       data-testid="MenuItem"
       className={`${
         className || ""
-      } px-4 py-1 cursor-pointer hover:bg-gray-200 active:bg-gray-300 transition-all`}
+      } px-4 py-1 cursor-pointer whitespace-nowrap hover:bg-gray-200 active:bg-gray-300 transition-all`}
     >
       {children}
     </div>

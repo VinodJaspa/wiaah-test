@@ -1,24 +1,14 @@
-import {
-  Box,
-  InputGroup,
-  InputLeftElement,
-  IconButton,
-  Icon,
-  Input,
-  Flex,
-  Button,
-  BoxProps,
-} from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiSearch } from "react-icons/hi";
+import { HtmlDivProps } from "types";
 import { UserProfile } from "ui";
 import { usersProfilesPlaceHolder } from "ui";
-import { TabsViewer } from "ui";
+import { TabsViewer, Input, InputGroup, InputLeftElement, Button } from "ui";
 import { useDiscoverTabs } from "ui/Hooks";
 
 export interface DiscoverHeaderProps {
-  containerProps?: BoxProps;
+  containerProps?: HtmlDivProps;
 }
 
 export const DiscoverHeader: React.FC<DiscoverHeaderProps> = ({
@@ -37,12 +27,6 @@ export const DiscoverHeader: React.FC<DiscoverHeaderProps> = ({
     setSearchFilter(filter);
   }
 
-  // const {
-  //   data: Profiles,
-  //   isLoading,
-  //   isError,
-  // } = useQuery("DiscoverPageItems", () => usersProfilesPlaceHolder);
-
   const Profiles = usersProfilesPlaceHolder;
   React.useEffect(() => {
     if (Profiles) {
@@ -55,57 +39,31 @@ export const DiscoverHeader: React.FC<DiscoverHeaderProps> = ({
   }, [searchFilter, Profiles]);
 
   return (
-    <Flex
-      {...containerProps}
-      direction={"column"}
-      gap="0.5rem"
-      w="100%"
-      position={"relative"}
-    >
+    <div className="flex flex-col gap-2 w-full relative" {...containerProps}>
       <InputGroup>
         <InputLeftElement>
-          <IconButton
-            roundedLeft={"2xl"}
-            colorScheme="gray"
-            variant={"ghost"}
+          <Button
+            className="text-black rounded-l-2xl"
+            colorScheme="white"
             aria-label="discover filter search"
             color="black"
-            icon={<Icon as={HiSearch} />}
-          />
+          >
+            <HiSearch />
+          </Button>
         </InputLeftElement>
         <Input
           onFocus={() => setSearchFocus(true)}
           onBlur={() => setSearchFocus(false)}
-          bg="gray.100"
-          rounded={"2xl"}
+          className="rounded-2xl bg-gray-100"
           value={searchFilter}
           placeholder={`${t("search", "search")}`}
           onChange={(e) => handleSearchFilter(e.target.value)}
         />
       </InputGroup>
       {searchFocus && (
-        <Flex
-          w="100%"
-          p="0.5rem"
-          rounded={"lg"}
-          shadow="md"
-          position={"absolute"}
-          top="100%"
-          maxH={"70vh"}
-          bg="white"
-          overflowY="scroll"
-          className="thinScroll"
-          direction={"column"}
-          gap="0.5rem"
-        >
+        <div className="flex w-full top-full flex-col gap-2 max-h-[70vh] bg-white overflow-y-scroll p-2 rounded-lg shadow-md absolute thinScroll">
           {searchItems.map((user, i) => (
-            <Button
-              py="2rem"
-              justifyContent={"start"}
-              bgColor={"white"}
-              px="2rem"
-              colorScheme={"gray"}
-            >
+            <Button className="p-8 bg-white justify-start" colorScheme={"gray"}>
               <UserProfile
                 style={{ color: "black" }}
                 variant="long"
@@ -114,16 +72,16 @@ export const DiscoverHeader: React.FC<DiscoverHeaderProps> = ({
               />
             </Button>
           ))}
-        </Flex>
+        </div>
       )}
       <TabsViewer
-        tabsProps={{
-          index: currentTab,
-          onChange: (index) => changeDiscoverTab(discoverTabs[index].link),
+        onTabChange={(idx) => {
+          changeDiscoverTab(discoverTabs[idx].link);
         }}
+        currentTabIdx={currentTab}
         showPanels={false}
         tabs={discoverTabs}
       />
-    </Flex>
+    </div>
   );
 };
