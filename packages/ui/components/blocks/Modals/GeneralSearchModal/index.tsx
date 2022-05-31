@@ -1,18 +1,13 @@
 import {
-  Box,
-  HStack,
-  Icon,
   Popover,
   PopoverArrow,
   PopoverBody,
   PopoverContent,
   PopoverHeader,
   PopoverTrigger,
-  Text,
 } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { MdClose } from "react-icons/md";
 import { TabType } from "types";
 import {
   useGeneralSearchModal,
@@ -21,17 +16,21 @@ import {
   LocationButton,
   UserProfile,
   usersProfilesPlaceHolder,
-  HashTagSearch,
+  HashTagSearchItem,
   placesPlaceholder,
   LocalizationsPH,
   LocalizationSearchItem,
   RecentSearchItemsPH,
   RecentSearchItemSwticher,
+  Menu,
+  MenuList,
+  MenuItem,
+  MenuButton,
 } from "ui";
 import { randomNum } from "../../../helpers";
 
 const LocalizationPh: any[] = [...Array(5)].reduce((acc: any[]) => {
-  return acc.concat(LocalizationsPH);
+  // return acc.concat(LocalizationsPH);
 }, []);
 
 const discoverPlacesPlaceHolder: string[] = [...Array(5)].reduce(
@@ -80,11 +79,8 @@ export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
         <ListWrapper>
           {discoverPlacesPlaceHolder.map((place, i) => (
             <LocationButton
-              iconStyle={{ color: "primary.main" }}
+              iconProps={{ className: "text-primary" }}
               name={place}
-              style={{
-                color: "black",
-              }}
               key={i}
             />
           ))}
@@ -96,7 +92,7 @@ export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
       component: (
         <ListWrapper style={{ w: "100%" }}>
           {discoverHashtagsPlaceholder.map((tag, i) => (
-            <HashTagSearch
+            <HashTagSearchItem
               hashtagName={tag}
               hashtagViews={randomNum(50000000)}
             />
@@ -117,17 +113,16 @@ export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
   ];
 
   return (
-    <Popover isLazy lazyBehavior="unmount" isOpen={isOpen} onClose={closeModal}>
-      <PopoverTrigger>
-        <Box>{children}</Box>
-      </PopoverTrigger>
-      <PopoverContent _focus={{ outline: "0px" }} w={"auto"}>
-        <PopoverArrow />
-        <PopoverHeader>{t("search", "Search")}</PopoverHeader>
-        <PopoverBody className="thinScroll" overflowY={"scroll"} maxH={"25rem"}>
+    <Menu isLazy>
+      <MenuButton>
+        <div>{children}</div>
+      </MenuButton>
+      <MenuList className="-right-1/2 p-2 origin-top">
+        <h1 className="font-semibold text-xl">{t("search", "Search")}</h1>
+        <div className="thinScroll max-h-[25rem] overflow-y-scroll">
           <TabsViewer tabs={tabs} />
-        </PopoverBody>
-      </PopoverContent>
-    </Popover>
+        </div>
+      </MenuList>
+    </Menu>
   );
 };

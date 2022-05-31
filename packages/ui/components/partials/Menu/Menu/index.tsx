@@ -1,15 +1,12 @@
 import React, { createContext } from "react";
 import { HtmlDivProps } from "types";
-import { useOutsideClick } from "ui";
+import { useOutsideClick } from "hooks";
 export interface MenuChildProps {
   OpenMenu: () => any;
   CloseMenu: () => any;
   ToggleMenu: () => any;
   isOpen: boolean;
 }
-export type ElementChilds<T = MenuChildProps> =
-  | React.ReactElement<T>
-  | React.ReactElement<T>[];
 
 export interface MenuProps extends HtmlDivProps {
   isLazy?: boolean;
@@ -41,7 +38,6 @@ export const Menu: React.FC<MenuProps> = ({
     setOpen(false);
   }
   function handleToggle() {
-    console.log("works");
     setOpen((state) => !state);
   }
 
@@ -57,26 +53,6 @@ export const Menu: React.FC<MenuProps> = ({
     >
       <div {...props} ref={ref} className={`${className} relative w-fit h-fit`}>
         {children}
-        {/* {Array.isArray(children) ? (
-        <>
-        {children.map((child, i) =>
-            React.cloneElement<MenuChildProps>(child, {
-              OpenMenu: handleOpen,
-              CloseMenu: handleClose,
-              ToggleMenu: handleToggle,
-              isOpen: open,
-              key: i,
-            })
-            )}
-            </>
-            ) : (
-              React.cloneElement<MenuChildProps>(children, {
-                OpenMenu: handleOpen,
-                CloseMenu: handleClose,
-                ToggleMenu: handleToggle,
-                isOpen: open,
-        })
-      )} */}
       </div>
     </MenuContext.Provider>
   );

@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormOptionType, TranslationTextType } from "types";
-import { FormikRadio } from "ui";
+import { FormikRadio, SectionHeader } from "ui";
 
 export interface NotificationsSettingsSectionProps {}
 
@@ -11,9 +11,7 @@ export const NotificationsSettingsSection: React.FC<NotificationsSettingsSection
     const { t } = useTranslation();
     return (
       <div className="w-full gap-8 flex flex-col">
-        <span className="text-4xl font-bold">
-          {t("notifications", "Notifications")}
-        </span>
+        <SectionHeader sectionTitle={t("notifications", "Notifications")} />
         <Formik
           initialValues={{
             likes: "iFollow",
@@ -27,7 +25,6 @@ export const NotificationsSettingsSection: React.FC<NotificationsSettingsSection
                   {notificationsOptions.map(({ label, opts, name }, i) => (
                     <FormikRadio
                       defaultChecked
-                      w="100%"
                       stackProps={{ w: "100%", align: "end" }}
                       onChange={(v) => setFieldValue(name, v)}
                       radioProps={{
@@ -35,9 +32,6 @@ export const NotificationsSettingsSection: React.FC<NotificationsSettingsSection
                         flexDirection: "row-reverse",
                         gap: "0.5rem",
                       }}
-                      containerProps={{ direction: "row" }}
-                      size={"sm"}
-                      defaultValue={values[name] || opts[0].value}
                       name={name}
                       label={label}
                       options={opts}

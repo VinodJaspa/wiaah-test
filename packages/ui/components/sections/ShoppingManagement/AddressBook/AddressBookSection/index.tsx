@@ -5,7 +5,7 @@ import { IoCheckmark, IoTrash } from "react-icons/io5";
 import { HtmlDivProps } from "types";
 import { SectionHeader, AddressInputs } from "ui/components/";
 import { BsMailbox2 } from "react-icons/bs";
-import { Modal, ModalContent, ModalOverlay } from "../../../../partials";
+import { Modal, ModalContent, ModalOverlay } from "ui";
 
 export interface AddressBookSectionProps {}
 
@@ -19,10 +19,13 @@ export const AddressBookSection: React.FC<AddressBookSectionProps> = ({}) => {
   function handleAddNew() {
     setAddNewAddress(true);
   }
+  function handleOpen() {
+    setAddNewAddress(true);
+  }
   return (
     <div className="flex flex-col gap-4">
       <SectionHeader sectionTitle={t("address_book", "Address Book")} />
-      <div className="flex gap-4">
+      <div className="flex flex-wrap gap-4">
         <div
           onClick={handleAddNew}
           className="text-7xl flex-col gap-8 w-[min(100%,15rem)] flex justify-center items-center hover:bg-gray-200 cursor-pointer active:bg-gray-300"
@@ -45,7 +48,11 @@ export const AddressBookSection: React.FC<AddressBookSectionProps> = ({}) => {
           />
         ))}
       </div>
-      <Modal isOpen={addNewAddress} onClose={handleAddNewSuccess}>
+      <Modal
+        isOpen={addNewAddress}
+        onClose={handleAddNewSuccess}
+        onOpen={handleOpen}
+      >
         <ModalOverlay />
         <ModalContent className="w-[min(100%,50rem)] px-8">
           <AddressInputs onSuccess={handleAddNewSuccess} />

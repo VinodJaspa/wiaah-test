@@ -1,7 +1,8 @@
 import { ComponentMeta } from "@storybook/react";
 import { storybookPartailsTitle, StorybookImplemntationLayout } from "ui/utils";
-import { Input } from "./";
+import { Input, InputGroup, InputLeftElement, InputRightElement } from "ui";
 import React from "react";
+import { HiOutlineSearch, HiOutlineSortAscending } from "react-icons/hi";
 
 export default {
   title: storybookPartailsTitle + "Input",
@@ -46,6 +47,44 @@ return (
     >
       <Input value={value} onChange={(e) => setValue(e.target.value)} />
       <p className="font-bold text-xl">{value}</p>
+    </StorybookImplemntationLayout>
+  );
+};
+
+export const WithInputGroup: React.FC = () => {
+  return (
+    <StorybookImplemntationLayout
+      implmentation={`
+import {
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+} from "ui";
+
+...
+return (
+<InputGroup>
+  <InputLeftElement>
+    <HiOutlineSearch />
+  </InputLeftElement>
+  <InputRightElement>
+    <HiOutlineSortAscending />
+  </InputRightElement>
+  <Input placeholder="something...." />
+</InputGroup>
+)
+`}
+    >
+      <InputGroup>
+        <InputLeftElement>
+          <HiOutlineSearch />
+        </InputLeftElement>
+        <InputRightElement>
+          <HiOutlineSortAscending />
+        </InputRightElement>
+        <Input placeholder="something...." />
+      </InputGroup>
     </StorybookImplemntationLayout>
   );
 };

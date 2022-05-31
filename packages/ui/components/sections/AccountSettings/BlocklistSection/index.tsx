@@ -1,6 +1,6 @@
 import { Field, Form, Formik } from "formik";
 import React from "react";
-import { Button, Avatar } from "ui";
+import { Button, Avatar, SectionHeader } from "ui";
 import { useTranslation } from "react-i18next";
 import { BlocklistUserInfo } from "types";
 
@@ -11,9 +11,7 @@ export const BlocklistSection: React.FC<BlocklistSectionProps> = ({}) => {
 
   return (
     <div className="h-full w-full flex gap-8 flex-col">
-      <span className="text-4xl font-bold">
-        {t("block_list", "Block List")}
-      </span>
+      <SectionHeader sectionTitle={t("block_list", "Block List")} />
       <Formik initialValues={{}} onSubmit={() => {}}>
         {() => (
           <Form className="h-full">

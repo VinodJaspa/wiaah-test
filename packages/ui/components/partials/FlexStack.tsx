@@ -7,7 +7,7 @@ import React, {
 import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
 import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
 
-export interface StackProps
+export interface FlexStackProps
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   direction?: "vertical" | "horizontal";
   alignItems?: "center" | "start" | "end";
@@ -53,7 +53,7 @@ export interface StackProps
   height?: CSSValueUnit;
 }
 
-export const FlexStack: FC<StackProps> = ({
+export const FlexStack: FC<FlexStackProps> = ({
   children,
   reverse,
   direction = "horizontal",

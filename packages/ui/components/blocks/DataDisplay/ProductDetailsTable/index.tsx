@@ -1,6 +1,8 @@
+import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiEdit } from "react-icons/bi";
+import { FiPlusSquare } from "react-icons/fi";
 import { IoTrash } from "react-icons/io5";
 import { ProductManagementDetailsDataType } from "types";
 import {
@@ -13,25 +15,29 @@ import {
   Tr,
   Td,
   THead,
+  TableContainer,
+  SectionHeader,
 } from "ui";
 
 export interface ProductDetailsTableProps {}
 
 export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
   const { AddNewProduct } = useEditProductData();
+  const { isMobile } = useResponsive();
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
-      <div className="border-b-2 pb-2 border-primary flex items-center justify-between w-full">
-        <h1 className="font-bold text-4xl">
-          {t("your_products", "Your Products")}
-        </h1>
-        <Button onClick={AddNewProduct}>
-          {t("add_new_product", "Add New Product")}
-        </Button>
-      </div>
+      <SectionHeader sectionTitle={t("your_products", "Your Products")}>
+        {isMobile ? (
+          <FiPlusSquare className="text-2xl" onClick={AddNewProduct} />
+        ) : (
+          <Button onClick={AddNewProduct}>
+            {t("add_new_product", "Add New Product")}
+          </Button>
+        )}
+      </SectionHeader>
       <div className="flex flex-col gap-4 shadow p-4">
-        <div className="noScroll">
+        <TableContainer>
           <Table className="w-full">
             <THead>
               <Tr>
@@ -75,7 +81,7 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
               ))}
             </TBody>
           </Table>
-        </div>
+        </TableContainer>
         <ItemsPagination currentPage={2} maxItemsNum={30} />
       </div>
     </div>

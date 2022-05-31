@@ -1,11 +1,12 @@
+import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { HtmlDivProps, PriceType, TranslationTextType } from "types";
-import { getRandomImage, products } from "../../../../../placeholder";
+import { HtmlDivProps, PriceType } from "types";
+import { getRandomImage } from "ui/placeholder";
+import { SectionContext } from "state";
 import { randomNum } from "../../../../helpers";
 import {
   Divider,
-  Input,
   PriceDisplay,
   Select,
   SelectOption,
@@ -14,8 +15,10 @@ import {
   Td,
   Th,
   Tr,
-  TranslationText,
-} from "../../../../partials";
+  TableContainer,
+} from "ui";
+
+import { BsChevronLeft } from "react-icons/bs";
 
 export interface MyReturnsSectionProps {}
 
@@ -38,46 +41,48 @@ export const MyReturnsSection: React.FC<MyReturnsSectionProps> = () => {
           {t("return", "Return")} {t("rejected", "rejceted")}
         </SelectOption>
       </Select>
-      <Table className="w-full">
-        <Tr>
-          <Th>{t("product_image", "Product Image")}</Th>
-          <Th>{t("product_name", "Product Name")}</Th>
-          <Th>{t("quantity", "Quantity")}</Th>
-          <Th>{t("paid_price", "Paid price")}</Th>
-          <Th>{t("shipping_amount", "Shipping Amount")}</Th>
-          <Th>{t("return_reason", "Return Reason")}</Th>
-          <Th>{t("other_reason", "Other Reason")}</Th>
-          <Th>{t("admin_status", "Admin Status")}</Th>
-          <Th>{t("seller_status", "Seller Status")}</Th>
-        </Tr>
-        <TBody>
-          {returnedProducts &&
-            returnedProducts.length > 0 &&
-            returnedProducts.map((prod, i) => (
-              <Tr key={i}>
-                <Td>
-                  <img
-                    className="w-16 h-auto"
-                    src={prod.productImage}
-                    alt={prod.productName}
-                  />
-                </Td>
-                <Td>{prod.productName}</Td>
-                <Td>{prod.quantity}</Td>
-                <Td>
-                  <PriceDisplay priceObject={prod.paidPrice} />
-                </Td>
-                <Td>
-                  <PriceDisplay priceObject={prod.shippingAmount} />
-                </Td>
-                <Td>{prod.returnReason}</Td>
-                <Td>{prod.otherReason}</Td>
-                <Td>{prod.adminStatus}</Td>
-                <Td>{prod.sellerStatus}</Td>
-              </Tr>
-            ))}
-        </TBody>
-      </Table>
+      <TableContainer>
+        <Table className="w-full">
+          <Tr>
+            <Th>{t("product_image", "Product Image")}</Th>
+            <Th>{t("product_name", "Product Name")}</Th>
+            <Th>{t("quantity", "Quantity")}</Th>
+            <Th>{t("paid_price", "Paid price")}</Th>
+            <Th>{t("shipping_amount", "Shipping Amount")}</Th>
+            <Th>{t("return_reason", "Return Reason")}</Th>
+            <Th>{t("other_reason", "Other Reason")}</Th>
+            <Th>{t("admin_status", "Admin Status")}</Th>
+            <Th>{t("seller_status", "Seller Status")}</Th>
+          </Tr>
+          <TBody>
+            {returnedProducts &&
+              returnedProducts.length > 0 &&
+              returnedProducts.map((prod, i) => (
+                <Tr key={i}>
+                  <Td>
+                    <img
+                      className="w-16 h-auto"
+                      src={prod.productImage}
+                      alt={prod.productName}
+                    />
+                  </Td>
+                  <Td>{prod.productName}</Td>
+                  <Td>{prod.quantity}</Td>
+                  <Td>
+                    <PriceDisplay priceObject={prod.paidPrice} />
+                  </Td>
+                  <Td>
+                    <PriceDisplay priceObject={prod.shippingAmount} />
+                  </Td>
+                  <Td>{prod.returnReason}</Td>
+                  <Td>{prod.otherReason}</Td>
+                  <Td>{prod.adminStatus}</Td>
+                  <Td>{prod.sellerStatus}</Td>
+                </Tr>
+              ))}
+          </TBody>
+        </Table>
+      </TableContainer>
       {!returnedProducts || returnedProducts.length < 1 ? (
         <span className="text-xl">
           {t("no_records_found", "No Records Found")}
@@ -129,7 +134,18 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   className,
   ...props
 }) => {
-  return (
+  const { onReturn } = React.useContext(SectionContext);
+  const { isMobile } = useResponsive();
+  return isMobile ? (
+    <div {...props} className={`${className || ""} flex flex-col gap-2`}>
+      <div className="w-full text-2xl items-center py-2 flex justify-between">
+        <BsChevronLeft onClick={onReturn} />
+        <span>{sectionTitle}</span>
+        <span className="text-base">{children}</span>
+      </div>
+      <Divider />
+    </div>
+  ) : (
     <div {...props} className={`${className || ""} flex flex-col gap-2`}>
       <div className="w-full flex justify-between items-center">
         <span className="text-4xl font-semibold">{sectionTitle}</span>

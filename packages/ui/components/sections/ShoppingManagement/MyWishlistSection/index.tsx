@@ -3,13 +3,14 @@ import { useTranslation } from "react-i18next";
 import { PriceType } from "types";
 import {
   ItemsPagination,
-  Divider,
   Table,
   Td,
   Tr,
   TBody,
   Th,
   PriceDisplay,
+  SectionHeader,
+  TableContainer,
 } from "ui";
 import { getRandomImage } from "ui/placeholder";
 import { HiShoppingCart } from "react-icons/hi";
@@ -28,51 +29,50 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex flex-col gap-3 w-full">
-        <p className="text-4xl ">{t("my_wish_list", "My Wish List")}</p>
-        <Divider className="border-primary" />
-      </div>
-      <Table>
-        <Tr>
-          <Th className="pl-0 text-left">{t("image", "Image")}</Th>
-          <Th>{t("product_name", "Product Name")}</Th>
-          <Th>{t("info", "Info")}</Th>
-          <Th>{t("stock", "Stock")}</Th>
-          <Th>{t("unit_price", "Unit Price")}</Th>
-          <Th className="pr-0 text-right">{t("action", "Action")}</Th>
-        </Tr>
-        <TBody>
-          {wishlistItems.slice(0, itemsLimit).map((item, i) => (
-            <Tr>
-              <Td className="pl-0">
-                <img
-                  className="w-16 md:w-20 lg:w-24 xl:w-32 h-auto"
-                  src={item.productImage}
-                  alt={item.productName}
-                />
-              </Td>
-              <Td>{item.productName}</Td>
-              <Td>{item.info}</Td>
-              <Td>{item.stock}</Td>
-              <Td>
-                <PriceDisplay priceObject={item.unitPrice} />
-              </Td>
-              <Td className="pr-0">
-                <div className="w-full text-4xl gap-2  items-center flex justify-end">
-                  <HiShoppingCart
-                    onClick={() => handleAddItemToCart(item.id)}
-                    className="text-white p-2 rounded cursor-pointer bg-primary"
+      <SectionHeader sectionTitle={t("my_wish_list", "My Wish List")} />
+      <TableContainer>
+        <Table>
+          <Tr>
+            <Th className="pl-0 text-left">{t("image", "Image")}</Th>
+            <Th>{t("product_name", "Product Name")}</Th>
+            <Th>{t("info", "Info")}</Th>
+            <Th>{t("stock", "Stock")}</Th>
+            <Th>{t("unit_price", "Unit Price")}</Th>
+            <Th className="pr-0 text-right">{t("action", "Action")}</Th>
+          </Tr>
+          <TBody>
+            {wishlistItems.slice(0, itemsLimit).map((item, i) => (
+              <Tr>
+                <Td className="pl-0">
+                  <img
+                    className="w-16 md:w-20 lg:w-24 xl:w-32 h-auto"
+                    src={item.productImage}
+                    alt={item.productName}
                   />
-                  <IoTrash
-                    onClick={() => handleItemDelete(item.id)}
-                    className="text-white bg-red-600 rounded cursor-pointer p-2"
-                  />
-                </div>
-              </Td>
-            </Tr>
-          ))}
-        </TBody>
-      </Table>
+                </Td>
+                <Td>{item.productName}</Td>
+                <Td>{item.info}</Td>
+                <Td>{item.stock}</Td>
+                <Td>
+                  <PriceDisplay priceObject={item.unitPrice} />
+                </Td>
+                <Td className="pr-0">
+                  <div className="w-full text-4xl gap-2  items-center flex justify-end">
+                    <HiShoppingCart
+                      onClick={() => handleAddItemToCart(item.id)}
+                      className="text-white p-2 rounded cursor-pointer bg-primary"
+                    />
+                    <IoTrash
+                      onClick={() => handleItemDelete(item.id)}
+                      className="text-white bg-red-600 rounded cursor-pointer p-2"
+                    />
+                  </div>
+                </Td>
+              </Tr>
+            ))}
+          </TBody>
+        </Table>
+      </TableContainer>
       <ItemsPagination
         currentPage={1}
         onItemsPerPageChange={setItemsLimit}

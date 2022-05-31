@@ -18,7 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ChakraProvider theme={theme}>
           <CookiesProvider>
             <RecoilRoot>
-              <DataInitializationWrapper>
+              <DataInitializationWrapper accountType="seller">
                 <Component {...pageProps} />
               </DataInitializationWrapper>
             </RecoilRoot>

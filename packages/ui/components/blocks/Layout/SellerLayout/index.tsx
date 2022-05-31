@@ -1,31 +1,37 @@
 import React from "react";
 import {
+  HiMenu,
+  HiHome,
+  HiOutlineHome,
+  HiOutlineUserCircle,
+} from "react-icons/hi";
+import { FaUserCircle, FaRegUserCircle } from "react-icons/fa";
+import { IoEarth, IoEarthOutline, IoSettingsOutline } from "react-icons/io5";
+import { CgPlayButtonR, CgShoppingBag } from "react-icons/cg";
+import { AiOutlineShop, AiFillShop } from "react-icons/ai";
+import { useRouter } from "next/router";
+import { useSetRecoilState } from "recoil";
+import { useTranslation } from "react-i18next";
+import { SellerDrawerOpenState } from "state";
+import { NavigationLinkType } from "types";
+import {
+  MinimalHeader,
+  DiscoverHeader,
+  LocationButton,
+  SocialFooter,
+  Divider,
+  HeaderNavLink,
   SellerNavigationSideBar,
   SellerNavigationDrawer,
   SellerHeader,
   Root,
   Container,
+  UsersProfiles,
 } from "ui";
-import { HiMenu, HiHome, HiOutlineHome } from "react-icons/hi";
-import { FaUserCircle, FaRegUserCircle } from "react-icons/fa";
-import { IoEarth, IoEarthOutline } from "react-icons/io5";
-import { CgPlayButtonR } from "react-icons/cg";
-import { AiOutlineShop, AiFillShop } from "react-icons/ai";
-import { UsersProfiles } from "ui";
-import { NavigationLinkType } from "types/sharedTypes/misc/SellerNavigationLink";
-import { useSetRecoilState } from "recoil";
-import { SellerDrawerOpenState } from "ui/state";
-import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
-import {
-  useResponsive,
-  MinimalHeader,
-  DiscoverHeader,
-  LocationButton,
-  SocialFooter,
-} from "ui";
+import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
-import { Divider } from "../../../partials";
+import { BsShop } from "react-icons/bs";
+import { BiWallet } from "react-icons/bi";
 
 const NavigationLinks: NavigationLinkType[] = [
   {
@@ -154,6 +160,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   sideBar = true,
   noContainer = false,
 }) => {
+  const { accountType } = useAccountType();
   const { t } = useTranslation();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
   const { isMobile } = useResponsive();
@@ -170,6 +177,11 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
     router.replace(Link);
     setDrawerOpen(false);
   };
+  React.useEffect(() => {
+    setInterval(() => {
+      console.log("account type", accountType);
+    }, 1000);
+  }, [accountType]);
   return (
     <Root>
       <SellerNavigationDrawer
@@ -183,7 +195,11 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
 
         <div className="flex flex-col gap-4">
           {placesPlaceholder.map((place, i) => (
-            <LocationButton style={{ px: "2rem" }} name={place} key={i} />
+            <LocationButton
+              iconProps={{ className: "px-8" }}
+              name={place}
+              key={i}
+            />
           ))}
         </div>
         <Divider />
@@ -227,7 +243,10 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
                 isMobile ? "px-4" : sideBar ? "pl-24 pr-4" : "px-8"
               }`}
             >
-              <HeaderSwitcher headerType={header} />
+              <HeaderSwitcher
+                links={accountType === "buyer" ? BuyerNavLinks : SellerNavLinks}
+                headerType={header}
+              />
             </Container>
           </div>
         )}
@@ -240,7 +259,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           >
             {children}
           </main>
-          <SocialFooter copyRightYear={2022} />
+          {!isMobile && <SocialFooter copyRightYear={2022} />}
         </div>
       </Container>
     </Root>
@@ -249,17 +268,140 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
 
 export interface HeaderSwitcherProps {
   headerType: HeadersTypes;
+  links: HeaderNavLink[];
 }
 
 export const HeaderSwitcher: React.FC<HeaderSwitcherProps> = ({
   headerType,
+  links = [],
 }) => {
+  React.useEffect(() => {
+    setInterval(() => {
+      console.log(links);
+    }, 1000);
+  }, []);
   switch (headerType) {
     case "discover":
       return <DiscoverHeader />;
     case "minimal":
       return <MinimalHeader />;
     default:
-      return <SellerHeader />;
+      return <SellerHeader headerNavLinks={links} />;
   }
 };
+
+const BuyerNavLinks: HeaderNavLink[] = [
+  {
+    link: {
+      name: {
+        translationKey: "profile",
+        fallbackText: "Profile",
+      },
+      href: "/profile",
+    },
+    icon: HiOutlineUserCircle,
+  },
+  {
+    link: {
+      name: {
+        translationKey: "settings",
+        fallbackText: "Settings",
+      },
+      href: "/settings",
+    },
+    icon: IoSettingsOutline,
+  },
+  {
+    link: {
+      name: {
+        translationKey: "shopping_management",
+        fallbackText: "Shopping Management",
+      },
+      href: "/shopping-management",
+    },
+    icon: CgShoppingBag,
+  },
+  {
+    link: {
+      name: {
+        translationKey: "wallet",
+        fallbackText: "Wallet",
+      },
+      href: "/wallet",
+    },
+    icon: BiWallet,
+  },
+  {
+    link: {
+      name: {
+        translationKey: "log_out",
+        fallbackText: "Log out",
+      },
+      href: "logout",
+    },
+    icon: null,
+  },
+];
+
+const SellerNavLinks: HeaderNavLink[] = [
+  {
+    link: {
+      name: {
+        translationKey: "profile",
+        fallbackText: "Profile",
+      },
+      href: "/profile",
+    },
+    icon: HiOutlineUserCircle,
+  },
+  {
+    link: {
+      name: {
+        translationKey: "settings",
+        fallbackText: "Settings",
+      },
+      href: "/settings",
+    },
+    icon: IoSettingsOutline,
+  },
+  {
+    link: {
+      name: {
+        translationKey: "shop_management",
+        fallbackText: "Shop Management",
+      },
+      href: "/shop-management",
+    },
+    icon: BsShop,
+  },
+  {
+    link: {
+      name: {
+        translationKey: "shopping_management",
+        fallbackText: "Shopping Management",
+      },
+      href: "/shopping-management",
+    },
+    icon: CgShoppingBag,
+  },
+  {
+    link: {
+      name: {
+        translationKey: "wallet",
+        fallbackText: "Wallet",
+      },
+      href: "/wallet",
+    },
+    icon: BiWallet,
+  },
+  {
+    link: {
+      name: {
+        translationKey: "log_out",
+        fallbackText: "Log out",
+      },
+      href: "logout",
+    },
+    icon: null,
+  },
+];

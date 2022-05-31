@@ -1,34 +1,31 @@
 import React from "react";
-import { StepperStepType } from "types";
-import { PassPropsToChild } from "../Modal";
+import { PassPropsToChild, runIfFn, MaybeFn } from "utils";
 
 export interface StepperContextValues {
   currentStepIdx: number;
+  stepsLength: number;
+  setStepsLength: (length: number) => any;
   nextStep: () => any;
   previousStep: () => any;
 }
 
 export const StepperContext = React.createContext<StepperContextValues>({
   currentStepIdx: 0,
+  stepsLength: 0,
   nextStep: () => {},
   previousStep: () => {},
+  setStepsLength: () => {},
 });
-type MaybeFn<T> = React.ReactNode | ((props: T) => React.ReactNode);
 
 type StepperPassedProps = StepperContextValues & {};
 
 export interface StepperProps {
   children: MaybeFn<StepperPassedProps>;
-  stepsLength: number;
 }
 
-function runIfFn<T, P>(valueOrFn: T, props: P): T {
-  const isFn = typeof valueOrFn === "function";
-  return isFn ? valueOrFn(props) : valueOrFn;
-}
-
-export const Stepper: React.FC<StepperProps> = ({ stepsLength, children }) => {
+export const Stepper: React.FC<StepperProps> = ({ children }) => {
   const [currentStepIdx, setCurrentStep] = React.useState<number>(0);
+  const [stepsLength, setStepsLength] = React.useState<number>(0);
 
   function handleNextStep() {
     setCurrentStep((current) => {
@@ -46,12 +43,16 @@ export const Stepper: React.FC<StepperProps> = ({ stepsLength, children }) => {
         currentStepIdx,
         nextStep: handleNextStep,
         previousStep: handlePreviousStep,
+        setStepsLength,
+        stepsLength,
       }}
     >
       {runIfFn<MaybeFn<StepperPassedProps>, StepperPassedProps>(children, {
         nextStep: handleNextStep,
         previousStep: handlePreviousStep,
         currentStepIdx,
+        setStepsLength,
+        stepsLength,
       })}
     </StepperContext.Provider>
   );
@@ -60,7 +61,13 @@ export const Stepper: React.FC<StepperProps> = ({ stepsLength, children }) => {
 export interface StepperContentProps {}
 
 export const StepperContent: React.FC<StepperContentProps> = ({ children }) => {
-  const { currentStepIdx } = React.useContext(StepperContext);
+  const { currentStepIdx, setStepsLength } = React.useContext(StepperContext);
+
+  React.useEffect(() => {
+    Array.isArray(children)
+      ? setStepsLength(children.length)
+      : setStepsLength(1);
+  }, [children]);
 
   const Comp = Array.isArray(children) ? children[currentStepIdx] : children;
   return <>{Comp ? runIfFn(Comp, {}) : Comp}</>;

@@ -1,20 +1,11 @@
-import {
-  TabList,
-  Tabs,
-  Tab,
-  TabPanels,
-  TabPanel,
-  TabsProps,
-} from "@chakra-ui/react";
 import React from "react";
-import { useTranslation } from "react-i18next";
+import { Tabs, TabList, TabItem, TabTitle, TabsHeader, TabsProps } from "ui";
 import { TabType } from "types/market/misc/tabs";
 
-export interface TabsViewerProps {
+export interface TabsViewerProps extends Omit<TabsProps, "children"> {
   tabs: TabType[];
   reverseOrder?: boolean;
   showPanels?: boolean;
-  tabsProps?: Omit<TabsProps, "children">;
   showTabs?: boolean;
 }
 
@@ -23,39 +14,36 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
   reverseOrder,
   showPanels = true,
   showTabs = true,
-  tabsProps,
+  ...props
 }) => {
-  const { t } = useTranslation();
   return tabs.length > 0 ? (
-    <Tabs
-      {...tabsProps}
-      flexDirection={reverseOrder ? "column-reverse" : "column"}
-      align="center"
-    >
+    <Tabs {...props}>
       {showTabs && (
-        <TabList my={showPanels ? "0rem" : "0rem"}>
+        <TabsHeader className="justify-center">
           {tabs.map(({ name }, i) => (
-            <Tab
-              key={i}
-              textTransform={"capitalize"}
-              color="gray"
-              _focus={{ ring: "0px" }}
-              _selected={{ borderColor: "primary.main" }}
-            >
-              {name}
-            </Tab>
+            <TabTitle key={i} TabKey={i}>
+              {({ currentTabIdx }) => {
+                return (
+                  <span
+                    className={`${
+                      currentTabIdx === i ? "border-primary" : "border-gray-600"
+                    } border-b-2 capitalize text-gray-500`}
+                  >
+                    {name}
+                  </span>
+                );
+              }}
+            </TabTitle>
           ))}
-        </TabList>
+        </TabsHeader>
       )}
 
       {showPanels && (
-        <TabPanels>
+        <TabList>
           {tabs.map(({ component }, i) => (
-            <TabPanel px={"0px"} key={i}>
-              {component}
-            </TabPanel>
+            <TabItem key={i}>{component}</TabItem>
           ))}
-        </TabPanels>
+        </TabList>
       )}
     </Tabs>
   ) : null;

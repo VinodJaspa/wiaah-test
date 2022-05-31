@@ -30,7 +30,7 @@ export const Default: React.FC<StepperProps> = () => {
         ...
         return (
         <div className="flex flex-col gap-4 justify-center items-center w-full">
-          <Stepper stepsLength={3}>
+          <Stepper>
             <StepperContent>
               <div className="w-1/2 h-48 bg-green-200">step 1</div>
               <div className="w-1/2 h-48 bg-green-200">step 2</div>
@@ -50,7 +50,7 @@ export const Default: React.FC<StepperProps> = () => {
         `}
     >
       <div className="flex flex-col gap-4 justify-center items-center w-full">
-        <Stepper stepsLength={3}>
+        <Stepper>
           <StepperContent>
             <div className="w-1/2 h-48 bg-green-200">step 1</div>
             <div className="w-1/2 h-48 bg-green-200">step 2</div>
@@ -112,7 +112,7 @@ return (
         `}
     >
       <div className="flex flex-col gap-4 justify-center items-center w-full">
-        <Stepper stepsLength={3}>
+        <Stepper>
           {({ currentStepIdx, nextStep, previousStep }) => {
             return (
               <>

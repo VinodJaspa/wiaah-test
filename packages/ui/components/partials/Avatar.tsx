@@ -6,7 +6,7 @@ import {
 import React from "react";
 import { HtmlDivProps } from "types";
 
-export interface AvatarProps extends ChakraAvatarProps {
+export interface AvatarProps extends HtmlDivProps {
   name?: string;
   photoSrc?: string;
   src?: string;
@@ -23,6 +23,7 @@ export const Avatar: React.FC<AvatarProps> = ({
   showBorder = true,
   children,
   src,
+  className,
   ...props
 }) => {
   function handleAvatarClick() {
@@ -37,16 +38,11 @@ export const Avatar: React.FC<AvatarProps> = ({
       showBorder={showBorder}
       name={name}
       src={photoSrc || src}
-      // sx={{
-      //   img: {
-      //     height: "auto",
-      //     width: "100%",
-      //   },
-      // }}
       cursor={"pointer"}
       borderColor={newStory ? "crimson" : "white"}
       bgColor="black"
       borderWidth={showBorder ? "0.25rem" : "0px"}
+      className={`${className || ""} `}
       {...props}
     >
       {children}

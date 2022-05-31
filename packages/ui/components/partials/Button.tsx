@@ -1,7 +1,7 @@
 import React, { ButtonHTMLAttributes, DetailedHTMLProps, FC } from "react";
 import { HtmlButtonProps } from "types";
 
-type ColorScheme = "primary" | "danger" | "success" | "info" | "gray";
+type ColorScheme = "primary" | "danger" | "success" | "info" | "gray" | "white";
 
 export interface ButtonProps extends HtmlButtonProps {
   outline?: boolean;
@@ -27,6 +27,8 @@ export const Button: FC<ButtonProps> = ({
         return "scheme-success";
       case "gray":
         return "bg-gray-500 border-gray-400 text-white hover:bg-gray-600 active:bg-gray-700";
+      case "white":
+        return "";
       default:
         return "scheme-primary";
     }

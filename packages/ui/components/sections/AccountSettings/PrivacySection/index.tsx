@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormOptionType } from "types";
-import { TranslationText, Switch } from "ui";
+import { TranslationText, Switch, SectionHeader } from "ui";
 
 export interface PrivacySectionProps {}
 
@@ -11,7 +11,7 @@ export const PrivacySection: React.FC<PrivacySectionProps> = () => {
 
   return (
     <div className="flex flex-col w-full gap-8">
-      <h1 className="text-4xl w-full font-bold">{t("privacy", "Privacy")}</h1>
+      <SectionHeader sectionTitle={t("privacy", "Privacy")} />
       <Formik initialValues={{}} onSubmit={() => {}}>
         {({ values, setFieldValue }) => (
           <Form>

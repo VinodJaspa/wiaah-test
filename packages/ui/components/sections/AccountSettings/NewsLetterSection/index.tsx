@@ -2,7 +2,7 @@ import { Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormOptionType } from "types";
-import { FormikInput, Switch } from "ui";
+import { FormikInput, Switch, SectionHeader } from "ui";
 
 export interface NewsLetterSectionProps {}
 
@@ -10,9 +10,7 @@ export const NewsLetterSection: React.FC<NewsLetterSectionProps> = ({}) => {
   const { t } = useTranslation();
   return (
     <div className="w-full flex gap-8 flex-col">
-      <span className="text-4xl font-bold">
-        {t("newsletter", "Newsletter")}
-      </span>
+      <SectionHeader sectionTitle={t("newsletter", "Newsletter")} />
       <Formik initialValues={{}} onSubmit={() => {}}>
         {({ values, setFieldValue }) => {
           return (
