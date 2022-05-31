@@ -2,17 +2,10 @@ import React from "react";
 
 export const useResponsive = () => {
   const [screenWidth, setScreenWidth] = React.useState<number>(0);
-  const [refresher, setRefresher] = React.useState<boolean>(false);
-
-  React.useEffect(() => {
-    console.log("screenWidth", screenWidth);
-  }, [screenWidth]);
 
   function HandleScreenSize() {
     if (window) {
-      console.log("test");
       setScreenWidth(window.innerWidth);
-      setRefresher((state) => !state);
     }
   }
 

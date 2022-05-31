@@ -9,3 +9,4 @@ export const storybookMenusTitle = "UI / blocks / menus /";
 export const storybookChatDisplay = "UI / blocks / Chat Display /";
 export const storybookStoriesTitle = "UI / blocks / stories /";
 export const storybookDataFormatingTitle = "UI / blocks / Data Formating /";
+export const storybookLayoutTitle = "UI / blocks / layout /";

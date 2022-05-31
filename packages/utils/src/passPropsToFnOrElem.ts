@@ -1,7 +1,7 @@
 import React from "react";
 import { PassPropsToChild } from "utils";
 export function PassPropsToFnOrElem<Props>(
-  valueOrFn: React.TrackableComponent,
+  valueOrFn: React.ReactNode,
   props: Props
 ) {
   const isFn = typeof valueOrFn === "function";

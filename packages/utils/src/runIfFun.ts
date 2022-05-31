@@ -1,6 +1,4 @@
-export type MaybeFn<T> =
-  | React.TrackableComponent
-  | ((props: T) => React.TrackableComponent);
+export type MaybeFn<T> = React.ReactNode | ((props: T) => React.ReactNode);
 
 export function runIfFn<T, P>(valueOrFn: T, props: P): T {
   const isFn = typeof valueOrFn === "function";

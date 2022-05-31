@@ -10,7 +10,6 @@ import {
   TabTitle,
   SubscriptionPlanCard,
 } from "ui";
-import { useDimensions } from "hooks";
 
 export default {
   title: storybookPartailsTitle + "Tabs",

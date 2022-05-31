@@ -8,8 +8,11 @@
     "config": "*",
     "tsconfig": "*",
     "types": "*",
-    "utils": "*",
     "typescript": "^4.5.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "recoil": "^0.6.1",
+    "utils": "*",
+    "state": "*"
+  }
 }

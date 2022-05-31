@@ -7,7 +7,7 @@ import { TranslationText, Input, InputProps } from "ui";
 export interface FormikInputProps extends HtmlInputProps {
   label?: TranslationTextType | string;
   name: string;
-  as?: React.TrackableComponent;
+  as?: React.ReactNode;
   containerProps?: HtmlDivProps;
 }
 

@@ -1,7 +1,7 @@
 import { HtmlDivProps } from "types";
 
 export interface SectionContainerProps extends HtmlDivProps {
-  header?: React.TrackableComponent;
+  header?: React.ReactNode;
 }
 
 export const SectionContainer: React.FC<SectionContainerProps> = ({

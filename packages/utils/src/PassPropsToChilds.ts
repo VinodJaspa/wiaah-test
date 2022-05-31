@@ -2,10 +2,10 @@ import { HtmlDivProps } from "types";
 import React from "react";
 
 export function PassPropsToChild<T = HtmlDivProps>(
-  children: React.TrackableComponent,
+  children: React.ReactNode,
   props: T
-): React.TrackableComponent {
-  function clone(children: React.TrackableComponent) {
+): React.ReactNode {
+  function clone(children: React.ReactNode) {
     if (React.isValidElement(children)) {
       return React.cloneElement(children, props);
     } else {

@@ -22,8 +22,16 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
         <TabsHeader className="justify-center">
           {tabs.map(({ name }, i) => (
             <TabTitle key={i} TabKey={i}>
-              {() => {
-                return <span className="capitalize text-gray-500">{name}</span>;
+              {({ currentTabIdx }) => {
+                return (
+                  <span
+                    className={`${
+                      currentTabIdx === i ? "border-primary" : "border-gray-600"
+                    } border-b-2 capitalize text-gray-500`}
+                  >
+                    {name}
+                  </span>
+                );
               }}
             </TabTitle>
           ))}
@@ -31,7 +39,7 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
       )}
 
       {showPanels && (
-        <TabList className="justify-center">
+        <TabList>
           {tabs.map(({ component }, i) => (
             <TabItem key={i}>{component}</TabItem>
           ))}

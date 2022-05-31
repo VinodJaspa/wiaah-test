@@ -1,12 +1,11 @@
 import React from "react";
-import { SellerLayout } from ".";
+import { SellerLayout } from "ui";
+import { storybookLayoutTitle } from "utils";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
 
 export default {
-  title: "UI/blocks/layouts/SellerLayout",
+  title: storybookLayoutTitle + "SellerLayout",
   component: SellerLayout,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof SellerLayout>;
 
 const Templete: ComponentStory<typeof SellerLayout> = (args) => (

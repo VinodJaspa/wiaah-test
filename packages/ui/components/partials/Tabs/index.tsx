@@ -42,17 +42,18 @@ export const Tabs: React.FC<TabsProps> = ({
   onTabChange,
   ...props
 }) => {
-  const [currentTab, setCurrentTab] = React.useState<number>(currentTabIdx);
+  const [currentTab, setCurrentTab] = React.useState<number>(0);
   const [tabsTitles, setTabsTitle] = React.useState<TrackableComponent[]>([]);
   const [tabsComponents, setTabsComponents] = React.useState<
     TrackableComponent[]
   >([]);
 
   React.useEffect(() => {
-    console.log("test");
     onTabChange && onTabChange(currentTab);
   }, [currentTab]);
-
+  React.useEffect(() => {
+    setCurrentTab(currentTabIdx);
+  }, [currentTabIdx]);
   function setTabs(components: TrackableComponent[]) {
     setTabsComponents(components);
   }
@@ -134,7 +135,7 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({
 type TabTitleChildrenPropsType = TabsContextValue;
 type TabTitleChildrenType = MaybeFn<TabTitleChildrenPropsType>;
 export interface TabTitleProps extends Omit<HtmlDivProps, "children"> {
-  TabKey: string | number;
+  TabKey?: string | number;
   children: TabTitleChildrenType;
 }
 export const TabTitle: React.FC<TabTitleProps> = ({

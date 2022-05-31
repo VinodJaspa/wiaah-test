@@ -3,7 +3,7 @@ import { Pagination, Spacer } from "ui/components";
 
 interface GridContainerPager {
   componentsLimit: number;
-  children?: React.TrackableComponent[];
+  children?: React.ReactNode[];
   onPageChange?: (pageNum: number) => void;
   showPagination?: boolean;
 }
@@ -14,9 +14,7 @@ export const GridContainerPager: React.FC<GridContainerPager> = ({
   onPageChange,
   showPagination = true,
 }) => {
-  const [components, setComponents] = React.useState<
-    React.TrackableComponent[]
-  >([]);
+  const [components, setComponents] = React.useState<React.ReactNode[]>([]);
   const [currentPage, setCurrentPage] = React.useState<number>(1);
 
   React.useEffect(() => {

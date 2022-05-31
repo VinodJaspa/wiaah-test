@@ -1,16 +1,7 @@
-import {
-  HiOutlineMail,
-  HiOutlineUserCircle,
-  HiOutlineUsers,
-  HiMenu,
-} from "react-icons/hi";
-import { IoSettingsOutline } from "react-icons/io5";
+import { HiOutlineMail, HiOutlineUsers, HiMenu } from "react-icons/hi";
 import { MdOutlineNotifications } from "react-icons/md";
 import React from "react";
-import { BsShop } from "react-icons/bs";
-import { BiWallet } from "react-icons/bi";
 import { FiPlusSquare } from "react-icons/fi";
-import { CgShoppingBag } from "react-icons/cg";
 import {
   Avatar,
   SearchInput,
@@ -25,14 +16,12 @@ import {
   MenuItem,
   MenuList,
   MenuButton,
-  Divider,
   HStack,
   TranslationText,
 } from "ui";
-import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
-import { useResponsive } from "hooks";
+import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps, TranslationTextType } from "types";
 import { runIfFn } from "utils";
 export interface HeaderNavLink {
@@ -45,22 +34,22 @@ export interface HeaderNavLink {
 export interface SellerHeaderProps {
   onSearchSubmit?: (searchValue: string) => any;
   props?: HtmlDivProps;
-  variant?: "buyer" | "seller";
   headerNavLinks: HeaderNavLink[];
 }
 
 export const SellerHeader: React.FC<SellerHeaderProps> = ({
   onSearchSubmit,
   props,
-  variant = "seller",
   headerNavLinks = [],
 }) => {
+  const { accountType } = useAccountType();
   const { openModal: openSearchBox } = useGeneralSearchModal();
   const router = useRouter();
-  const { t } = useTranslation();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
   const { isMobile } = useResponsive();
   const { OpenModal } = useNewPost();
+
+  console.log(accountType);
 
   return (
     <div
@@ -110,9 +99,9 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
           items={[
             {
               label: (
-                <div className="h-4 w-4 rounded-full flex justify-center items-center text-white bg-primary">
+                <span className="h-4 w-4 rounded-full flex justify-center items-center text-white bg-primary">
                   4
-                </div>
+                </span>
               ),
               bottom: true,
               right: true,

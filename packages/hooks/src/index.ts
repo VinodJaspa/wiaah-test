@@ -7,3 +7,5 @@ export * from "./useScreenWidth";
 export * from "./useTimer";
 export * from "./useResponsive";
 export * from "./useDimensions";
+export * from "./useAccountType";
+export * from "./User";
