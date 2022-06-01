@@ -7,13 +7,17 @@ export interface MenuItemProps extends HtmlDivProps {}
 export const MenuItem: React.FC<MenuItemProps> = ({
   children,
   className,
+  onClick,
   ...props
 }) => {
   const { onClose } = React.useContext(MenuContext);
   return (
     <div
       {...props}
-      onClick={onClose}
+      onClick={(e) => {
+        onClick && onClick(e);
+        onClose();
+      }}
       data-testid="MenuItem"
       className={`${
         className || ""

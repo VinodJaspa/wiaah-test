@@ -8,8 +8,6 @@ import {
   GridWrapper,
   PostAttachment,
   useNewsFeedPostPopup,
-  SocialPostsCommentsDrawer,
-  usePostsCommentsDrawer,
   NewsfeedPostDetailsPopup,
 } from "ui";
 import { NumberShortner } from "ui/components/helpers";

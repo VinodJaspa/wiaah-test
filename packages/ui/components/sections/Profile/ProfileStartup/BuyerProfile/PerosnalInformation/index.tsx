@@ -12,29 +12,12 @@ import {
   TranslationText,
   DateInput,
   SelectOption,
+  accountTypes,
 } from "ui";
-import { FormOptionType } from "types";
 
 export interface PersonalInformationStepProps {
   isValid?: (data: null | Record<string, any>) => any;
 }
-
-const accountTypes: FormOptionType[] = [
-  {
-    name: {
-      translationKey: "individual",
-      fallbackText: "Individual",
-    },
-    value: "individual",
-  },
-  {
-    name: {
-      translationKey: "team",
-      fallbackText: "Team",
-    },
-    value: "Team",
-  },
-];
 
 let countriesArray: {
   value: string;

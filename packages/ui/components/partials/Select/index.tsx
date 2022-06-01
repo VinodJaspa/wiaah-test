@@ -12,7 +12,7 @@ export interface SelectChildProps {
 
 export interface SelectProps
   extends Omit<HtmlDivProps, "children" | "onSelect"> {
-  children: ElementChilds<SelectChildProps>;
+  children?: ElementChilds<SelectChildProps>;
   onOptionSelect?: OnOptionSelect;
   placeholder?: string;
   value?: string;
@@ -31,16 +31,19 @@ export const Select: React.FC<SelectProps> = ({
     <SelectOption className="text-gray-500" value>
       {placeholder}
     </SelectOption>
-  ) : Array.isArray(children) ? (
-    children[0]
-  ) : (
-    children
-  );
+  ) : children ? (
+    Array.isArray(children) ? (
+      children[0]
+    ) : (
+      children
+    )
+  ) : null;
   const [open, setOpen] = React.useState<boolean>(false);
   const [selectedOption, setSelectedOption] =
-    React.useState<React.ReactElement>(ph);
+    React.useState<React.ReactElement | null>(ph);
   const [showChild, setShowChild] = React.useState<boolean>(false);
   const ref = React.useRef<HTMLDivElement>(null);
+
   useOutsideClick(ref, handleClose);
   let timeout: NodeJS.Timer;
 
@@ -79,7 +82,7 @@ export const Select: React.FC<SelectProps> = ({
       ref={ref}
       className={`${className || ""} ${
         flushed ? "border-b-2" : "border-2"
-      } bg-white border-gray-200 items-center flex  rounded relative`}
+      } bg-white border-gray-200 items-center flex rounded relative`}
     >
       <div
         onClick={handleToggle}
@@ -101,7 +104,7 @@ export const Select: React.FC<SelectProps> = ({
           open ? "scale-y-100" : "scale-y-0"
         } transition-all duration-75 z-50 bg-white origin-top max-h-48 overflow-y-scroll transform absolute left-0 flex flex-col top-full w-full`}
       >
-        {showChild ? (
+        {children && showChild ? (
           <>
             {Array.isArray(children)
               ? children.map((child, i) => (

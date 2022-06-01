@@ -2,7 +2,7 @@ import { Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormOptionType } from "types";
-import { FormikInput, Switch, SectionHeader } from "ui";
+import { FormikInput, Switch, SectionHeader, TranslationText } from "ui";
 
 export interface NewsLetterSectionProps {}
 
@@ -16,29 +16,36 @@ export const NewsLetterSection: React.FC<NewsLetterSectionProps> = ({}) => {
           return (
             <div className="w-full flex flex-col gap-4">
               {newsLetterOptions.map((opt, i) => (
-                <FormikInput
-                  label={opt.name}
-                  containerProps={{
-                    direction: "row",
-                    w: "100%",
-                    justify: "space-between",
-                  }}
-                  colorScheme={"primary"}
+                <div
+                  className="flex justify-between w-full items-center"
                   key={i}
-                  name={opt.value}
-                  as={() => (
-                    <div className="flex gap-2">
-                      <Switch
-                        //@ts-ignore
-                        checked={!!values[opt.value]}
-                        onChange={(checked) =>
-                          setFieldValue(opt.value, checked)
-                        }
-                      />
-                      <span>{t("push", "Push")}</span>
-                    </div>
-                  )}
-                />
+                >
+                  <span className="font-semibold text-xl">
+                    <TranslationText translationObject={opt.name} />
+                  </span>
+                  <FormikInput
+                    containerProps={{
+                      direction: "row",
+                      w: "100%",
+                      justify: "space-between",
+                    }}
+                    colorScheme={"primary"}
+                    key={i}
+                    name={opt.value}
+                    as={() => (
+                      <div className="flex gap-2">
+                        <Switch
+                          //@ts-ignore
+                          checked={!!values[opt.value]}
+                          onChange={(checked) =>
+                            setFieldValue(opt.value, checked)
+                          }
+                        />
+                        <span>{t("push", "Push")}</span>
+                      </div>
+                    )}
+                  />
+                </div>
               ))}
             </div>
           );

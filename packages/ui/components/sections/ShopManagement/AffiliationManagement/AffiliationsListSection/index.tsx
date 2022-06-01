@@ -79,12 +79,6 @@ export const AffiliationListSection: React.FC<AffiliationListSectionProps> =
             </TBody>
           </Table>
         </TableContainer>
-
-        <ItemsPagination
-          currentPage={1}
-          onItemsPerPageChange={setMaxItems}
-          maxItemsNum={AffiliationLinksPH.length}
-        />
       </div>
     );
   };

@@ -1,10 +1,10 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
-import { StorybookImplemntationLayout } from "ui/utils";
-import { Switch, SwitchProps } from "./";
+import { StorybookImplemntationLayout, storybookPartailsTitle } from "utils";
+import { Switch, SwitchProps } from "ui";
 
 export default {
-  title: "UI / partials / Switch",
+  title: storybookPartailsTitle + "Switch",
   component: Switch,
 } as ComponentMeta<typeof Switch>;
 

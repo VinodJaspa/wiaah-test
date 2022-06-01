@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { BsFilePdf, BsFilePdfFill } from "react-icons/bs";
-import { PriceType } from "types";
+import { BsFilePdfFill } from "react-icons/bs";
+import { BalanceRecordData, PriceType, TransactionStatusEnum } from "types";
 import {
   SectionHeader,
   Button,
@@ -15,8 +15,10 @@ import {
   TableContainer,
   PriceDisplay,
   ItemsPagination,
+  Status,
 } from "ui";
-import { randomNum } from "../../../helpers";
+import { randomNum, randomNumWithNegative } from "../../../helpers";
+import { HStack } from "../../../partials";
 
 export interface TransactionsHistorySectionProps {}
 
@@ -52,41 +54,72 @@ export const TransactionsHistorySection: React.FC<TransactionsHistorySectionProp
           />
         </div>
         <span className="text-2xl font-bold">
-          {t("balance_records", "Balance Records")}
+          {t("transaction_history", "Transaction History")}
         </span>
         <TableContainer>
           <Table
-            TdProps={{
-              className:
-                "first:w-[99%]  whitespace-nowrap border-[1px] border-gray-400 min-w-[10rem]",
-            }}
-            TrProps={{ className: "border-collapse" }}
-            ThProps={{ className: "text-left border-[1px] border-gray-400" }}
+            TdProps={{ className: "whitespace-nowrap" }}
             className="text-xl border-collapse"
           >
             <THead>
               <Tr>
-                <Th>{t("order_id", "Order ID")}</Th>
-                <Th>{t("amount", "amount")}</Th>
-                <Th>{t("quantity", "quantity")}</Th>
-                <Th>{t("date_added", "Date Added")}</Th>
+                <Th>{t("date", "Date")}</Th>
+                <Th>{t("status_and_id", "Status and ID")}</Th>
+                <Th>{t("transaction_type", "Transaction type")}</Th>
+                <Th>{t("recipient", "Recipient")}</Th>
+                <Th>{t("amount", "Amount")}</Th>
+                <Th>{t("currency", "Currency")}</Th>
               </Tr>
             </THead>
             <TBody>
-              {balanceRecords.map((record, idx) => (
-                <Tr className="border-collapse" key={idx}>
-                  <Td>{record.orderId}</Td>
-                  <Td>
-                    <PriceDisplay priceObject={record.amount} />
-                  </Td>
-                  <Td>{record.quantity}</Td>
-                  <Td>{record.dateAdded}</Td>
-                </Tr>
-              ))}
+              {balanceRecords.map(
+                (
+                  {
+                    dateAdded,
+                    transactionStatus,
+                    type,
+                    recipient,
+                    amount,
+                    orderId,
+                    currency,
+                  },
+                  idx
+                ) => (
+                  <Tr key={idx}>
+                    <Td>
+                      {new Date(dateAdded).toLocaleDateString("en-us", {
+                        dateStyle: "medium",
+                      })}
+                    </Td>
+                    <Td>
+                      <HStack>
+                        <Status status={transactionStatus} />
+                        {orderId}
+                      </HStack>
+                    </Td>
+                    <Td>{type}</Td>
+                    <Td>
+                      {recipient.slice(0, 4)}...
+                      {recipient.slice(recipient.length - 4, recipient.length)}
+                    </Td>
+                    <Td>
+                      <span
+                        className={`${
+                          amount > 0 ? "text-primary" : "text-red-500"
+                        }`}
+                      >
+                        {amount > 0 ? "+" : "-"}
+                        {amount}
+                      </span>
+                    </Td>
+                    <Td>{currency}</Td>
+                  </Tr>
+                )
+              )}
             </TBody>
           </Table>
         </TableContainer>
-        <ItemsPagination currentPage={1} maxItemsNum={balanceRecords.length} />
+        {/* <ItemsPagination currentPage={1} maxItemsNum={balanceRecords.length} />
         <TableContainer>
           <Table
             ThProps={{ className: "border-[1px] border-gray-400 text-left" }}
@@ -104,9 +137,7 @@ export const TransactionsHistorySection: React.FC<TransactionsHistorySectionProp
               {balanceRecords.slice(0, 2).map((record, idx) => (
                 <Tr className="border-collapse" key={idx}>
                   <Td>{record.orderId}</Td>
-                  <Td>
-                    <PriceDisplay priceObject={record.amount} />
-                  </Td>
+                  <Td></Td>
                   <Td>{record.dateAdded}</Td>
                 </Tr>
               ))}
@@ -123,25 +154,31 @@ export const TransactionsHistorySection: React.FC<TransactionsHistorySectionProp
                 </Td>
               </Tr>
             </TBody>
-          </Table>
-        </TableContainer>
+          </Table> */}
+        {/* </TableContainer> */}
       </div>
     );
   };
 
-export interface BalanceRecordData {
-  orderId: string;
-  amount: PriceType;
-  quantity: number;
-  dateAdded: string;
-}
-
+const transactionStatus: TransactionStatusEnum[] = [
+  "completed",
+  "failed",
+  "pending",
+];
+const recipientType: string[] = [
+  "Receipt from external wallet",
+  "Receipt from a citizen",
+  "Sending to citizen",
+  "Sending to external wallet",
+];
+const Currncies: string[] = ["CHF", "USD", "GP", "EGP"];
 const balanceRecords: BalanceRecordData[] = [...Array(8)].map(() => ({
   orderId: `${randomNum(143642)}`,
-  amount: {
-    amount: randomNum(15),
-    currency: "CHF",
-  },
+  amount: randomNumWithNegative(13543),
   quantity: randomNum(10),
   dateAdded: new Date(Date.now()).toDateString(),
+  currency: Currncies[randomNum(Currncies.length)],
+  type: recipientType[randomNum(recipientType.length)],
+  recipient: "wkhadkjh2k1jh3124k21hkeh2kjhe",
+  transactionStatus: transactionStatus[randomNum(transactionStatus.length)],
 }));

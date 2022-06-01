@@ -34,7 +34,7 @@ export const AccountDeletionModal: React.FC = () => {
     <Modal isOpen={isOpen} onClose={handleCancel} onOpen={handleOpen}>
       <ModalOverlay />
       <ModalContent className="w-[min(100%,40rem)]">
-        <Stepper stepsLength={4}>
+        <Stepper>
           {({ nextStep, currentStepIdx }) => {
             return (
               <div className="flex flex-col gap-8">

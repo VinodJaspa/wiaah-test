@@ -1,4 +1,12 @@
-const withTM = require("next-transpile-modules")(["ui", "api", "uris"]);
+const withTM = require("next-transpile-modules")([
+  "ui",
+  "api",
+  "uris",
+  "validation",
+  "hooks",
+  "utils",
+  "state",
+]);
 const withPWA = require("next-pwa");
 
 module.exports = withTM(

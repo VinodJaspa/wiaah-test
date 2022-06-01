@@ -28,48 +28,6 @@ import { SocialNewsfeedPostsState } from "ui/state";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 
-// const images: string[] = [...products.map((pro) => pro.imgUrl)];
-// export const getRandomUser = () =>
-//   postProfilesPlaceholder[
-//     Math.floor(Math.random() * postProfilesPlaceholder.length)
-//   ];
-// const comments: PostComment[] = [
-//   {
-//     ...PostCommentPlaceholder,
-//     user: getRandomUser(),
-//     content: "nice video",
-//     attachment: {
-//       src: "/shop.jpeg",
-//       type: "image",
-//     },
-//   },
-//   {
-//     ...PostCommentPlaceholder,
-//     user: getRandomUser(),
-//     content: "nice video",
-//     attachment: null,
-//   },
-//   {
-//     ...PostCommentPlaceholder,
-//     user: getRandomUser(),
-//     content: "nice video",
-//     attachment: null,
-//   },
-//   {
-//     ...PostCommentPlaceholder,
-//     user: getRandomUser(),
-//     content: "nice video",
-//     attachment: null,
-//   },
-
-//   {
-//     ...PostCommentPlaceholder,
-//     user: getRandomUser(),
-//     content: "nice video",
-//     attachment: null,
-//   },
-// ];
-
 export interface SocialViewProps {
   profileId: string;
 }
@@ -149,6 +107,15 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
     {
       name: t("news_feed", "news feed"),
       component: <PostCardsListWrapper cols={cols} posts={posts} />,
+    },
+    {
+      name: t("actions", "Actions"),
+      component: (
+        <ActionsListWrapper
+          cols={ActionsCols}
+          actions={profileActionsPlaceholder}
+        />
+      ),
     },
   ];
   return (

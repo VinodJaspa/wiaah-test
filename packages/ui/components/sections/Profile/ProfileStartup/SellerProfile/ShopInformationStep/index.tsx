@@ -10,12 +10,11 @@ import {
   SelectOption,
   Checkbox,
   Select,
-} from "ui";
-import {
   AvailableInArray,
   isAllAvailableInArray,
   storeForOptions,
   ToggleInArray,
+  accountTypes,
 } from "ui";
 
 let countriesArray = Country.getAllCountries().map((element) => ({
@@ -76,31 +75,28 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({}) => {
             onSubmit={() => {}}
           >
             {({ values, setFieldValue }) => (
-              <Form>
+              <Form className="flex flex-col gap-4">
                 <FormikInput
                   name="companyName"
-                  className="my-2"
                   placeholder={t("Company", "Company")}
                 />
                 <FormikInput
                   name="Address"
-                  className="my-2"
                   placeholder={t("address", "Address" + " 1")}
                 />
                 <FormikInput
                   name="Address2"
-                  className="my-2"
                   placeholder={t("address", "Address") + " 2"}
                 />
                 <Select
                   placeholder={t("type_of_account", "Type of Account")}
-                  className="w-full my-2"
+                  className="w-full "
                 >
                   <SelectOption value={"0"}>not implemented</SelectOption>
                 </Select>
                 <Select
                   placeholder={t("type_of_company", "Type of Company")}
-                  className="w-full my-2"
+                  className="w-full "
                 >
                   <SelectOption value={"0"}>not implemented</SelectOption>
                 </Select>
@@ -138,7 +134,7 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({}) => {
                   ))}
                 </Select>
                 <Input
-                  className="mb-4 rounded-md border-gray-300"
+                  className=" rounded-md border-gray-300"
                   placeholder={t(
                     "company_CRN",
                     "Company Registered Number (CRN)"
@@ -146,14 +142,14 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({}) => {
                 />
                 <Select
                   placeholder={t("select_currency", "Select Currency")}
-                  className="mb-4 w-full border-gray-300"
+                  className=" w-full border-gray-300"
                 >
-                  <SelectOption value="male">USD</SelectOption>
-                  <SelectOption value="femal">EUR</SelectOption>
+                  <SelectOption value="USD">USD</SelectOption>
+                  <SelectOption value="EUR">EUR</SelectOption>
                 </Select>
                 <Select
                   placeholder={t("select_language", "Select Language")}
-                  className="mb-4 w-full border-gray-300"
+                  className=" w-full border-gray-300"
                 >
                   <SelectOption value="english">
                     <TranslationText
@@ -182,30 +178,33 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({}) => {
                 </Select>
                 <Select
                   placeholder={t("Type_of_Seller", "Type of Seller")}
-                  className="mb-4 w-full border-gray-300"
+                  className=" w-full border-gray-300"
                 >
-                  <SelectOption value="male">{t("ONE", "ONE")}</SelectOption>
-                  <SelectOption value="femal">{t("TOW", "TOW")}</SelectOption>
+                  <SelectOption value="one">{t("ONE", "ONE")}</SelectOption>
+                  <SelectOption value="two">{t("TOW", "TOW")}</SelectOption>
                 </Select>
                 <Select
                   placeholder={t("Type_of_Shop", "Type of Shop")}
-                  className="mb-4 w-full border-gray-300"
+                  className=" w-full border-gray-300"
                 >
-                  <SelectOption value="male">{t("ONE", "ONE")}</SelectOption>
-                  <SelectOption value="femal">{t("TOW", "TOW")}</SelectOption>
+                  <SelectOption value="one">{t("ONE", "ONE")}</SelectOption>
+                  <SelectOption value="two">{t("TOW", "TOW")}</SelectOption>
                 </Select>
                 <Textarea
                   placeholder={t("Brand_presentation", "Brand presentation")}
-                  className="mb-4 w-full border-gray-300"
+                  className=" w-full border-gray-300"
                 />
-                <div className="">
-                  <label htmlFor="">{t("Store_for", "Store for")}</label>
-                  <div className="mt-2">
+                <div className="flex gap-2 items-end">
+                  <span className="font-semibold text-lg">
+                    {t("Store_for", "Store for")}:
+                  </span>
+                  <div className="mt-2 flex gap-2">
                     <Checkbox
                       checked={isAllAvailableInArray(
                         storeForOptions.map((opt) => opt.value),
                         values.storeFor
                       )}
+                      readOnly
                     >
                       {t("All", "All")}
                     </Checkbox>

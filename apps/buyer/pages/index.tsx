@@ -1,14 +1,7 @@
 import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import {
-  Divider,
-  useBreakpointValue,
-  VStack,
-  Box,
-  Button,
-  Text,
-} from "@chakra-ui/react";
+import { useBreakpointValue } from "@chakra-ui/react";
 import {
   FloatingContainer,
   PostCardsListWrapper,
@@ -20,11 +13,11 @@ import {
   AddNewPostModal,
   PostAttachmentsViewer,
   AddNewStoryModal,
-  ImageUploadModal,
-  CommentReportModalIdState,
   CommentReportModal,
+  VStack,
+  Button,
 } from "ui";
-import { newsfeedPosts } from "ui/placeholder/social";
+import { newsfeedPosts } from "ui";
 import { useTranslation } from "react-i18next";
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
@@ -76,13 +69,12 @@ const seller: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Wiaah | seller</title>
+        <title>Wiaah | Buyer</title>
       </Head>
       <SellerLayout header="main">
         <PostViewPopup
           fetcher={async ({ queryKey }) => {
             const id = queryKey[1].postId;
-            console.log("idParam", queryKey);
             const post = newsfeedPosts.find((post) => post.postInfo.id === id);
             return post ? post : null;
           }}
@@ -103,9 +95,9 @@ const seller: NextPage = () => {
         <AddNewPostModal />
         <AddNewStoryModal />
         <CommentReportModal />
-        <VStack w={"100%"} spacing={"1rem"}>
+        <VStack className="w-full gap-4">
           <FloatingContainer
-            w={"100%"}
+            className="w-full"
             // px="1rem"
             items={
               isMobile
@@ -113,14 +105,7 @@ const seller: NextPage = () => {
                 : [
                     {
                       label: (
-                        <Button
-                          colorScheme={"primary"}
-                          variant="link"
-                          rounded={"full"}
-                          bgColor="whiteAlpha.600"
-                          minW={0}
-                          boxShadow={"md"}
-                        >
+                        <Button className="rounded-full bg-white bg-opacity-60 shadow-md">
                           <ChevronRightIcon boxSize={9} />
                         </Button>
                       ),
@@ -129,14 +114,7 @@ const seller: NextPage = () => {
                     },
                     {
                       label: (
-                        <Button
-                          colorScheme={"primary"}
-                          variant="link"
-                          rounded={"full"}
-                          bgColor="whiteAlpha.600"
-                          boxShadow={"md"}
-                          minW={0}
-                        >
+                        <Button className="rounded-full bg-white bg-opacity-60 shadow-md">
                           <ChevronLeftIcon boxSize={9} />
                         </Button>
                       ),
@@ -147,15 +125,14 @@ const seller: NextPage = () => {
             }
           >
             <RecentStories
-              justify={"space-between"}
-              mx="auto"
+              className="justify-between mx-auto"
               stories={RecentStoriesPlaceHolder}
             />
           </FloatingContainer>
           {!isMobile && (
             <SellerPostInput userName="wiaah" userPhotoSrc="/wiaah_logo.png" />
           )}
-          <Box w="100%">
+          <div className="w-full">
             <PostCardsListWrapper
               onPostClick={
                 (post) => {}
@@ -168,7 +145,7 @@ const seller: NextPage = () => {
               cols={cols}
               posts={newsfeedPosts}
             />
-          </Box>
+          </div>
         </VStack>
       </SellerLayout>
     </>

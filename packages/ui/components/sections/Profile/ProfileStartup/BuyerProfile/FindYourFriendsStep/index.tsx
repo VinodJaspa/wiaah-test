@@ -29,7 +29,7 @@ export const FindYourFriendsStep: React.FC<FindYourFriendsStepProps> = ({}) => {
 
   let [mailService, setMailService] = React.useState(0);
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col gap-2">
       <SectionHeader
         sectionTitle={t("Find_friends_on_Wiaah", "Find friends on Wiaah")}
       />

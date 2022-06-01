@@ -22,6 +22,7 @@ import {
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { useResponsive, useAccountType } from "hooks";
+import Link from "next/link";
 import { HtmlDivProps, TranslationTextType } from "types";
 import { runIfFn } from "utils";
 export interface HeaderNavLink {
@@ -48,8 +49,6 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
   const { isMobile } = useResponsive();
   const { OpenModal } = useNewPost();
-
-  console.log(accountType);
 
   return (
     <div
@@ -149,14 +148,12 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             </MenuButton>
             <MenuList>
               {headerNavLinks.length > 0
-                ? headerNavLinks.map((link, i) => (
-                    <MenuItem>
+                ? headerNavLinks.map(({ icon, link }, i) => (
+                    <MenuItem onClick={() => router.replace(link.href)}>
                       <HStack>
-                        <span className="text-4xl">
-                          {runIfFn(link.icon, {})}
-                        </span>
+                        <span className="text-4xl">{runIfFn(icon, {})}</span>
                         <span className="capitalize">
-                          <TranslationText translationObject={link.link.name} />
+                          <TranslationText translationObject={link.name} />
                         </span>
                       </HStack>
                     </MenuItem>

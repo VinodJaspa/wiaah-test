@@ -17,7 +17,7 @@ const ProductDetailPage: NextPage = () => {
       </Head>
       <MasterLayout>
         <Container>
-          <ProductView />
+          <ProductView productId={Array.isArray(id) ? id[0] : id} />
         </Container>
       </MasterLayout>
     </>

@@ -1,5 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { BsFilePdfFill } from "react-icons/bs";
+import { BiEdit } from "react-icons/bi";
+import { IoTrash } from "react-icons/io5";
+import { PriceType } from "types";
 import {
   Button,
   Table,
@@ -13,10 +17,6 @@ import {
   TableContainer,
   SectionHeader,
 } from "ui";
-import { BsFilePdfFill } from "react-icons/bs";
-import { PriceType } from "types";
-import { BiEdit } from "react-icons/bi";
-import { IoTrash } from "react-icons/io5";
 
 type CanceledOrderData = {
   productImage: string;
@@ -125,7 +125,6 @@ export const CanceledOrdersSection: React.FC<CanceledOrdersSectionProps> =
             </p>
           )}
         </TableContainer>
-        <ItemsPagination currentPage={1} maxItemsNum={5} />
       </div>
     );
   };
