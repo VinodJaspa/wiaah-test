@@ -13,12 +13,10 @@ import {
   TBody,
   THead,
   TableContainer,
-  PriceDisplay,
-  ItemsPagination,
   Status,
+  HStack,
 } from "ui";
-import { randomNum, randomNumWithNegative } from "../../../helpers";
-import { HStack } from "../../../partials";
+import { randomNum, randomNumWithNegative } from "utils";
 
 export interface TransactionsHistorySectionProps {}
 
@@ -58,8 +56,16 @@ export const TransactionsHistorySection: React.FC<TransactionsHistorySectionProp
         </span>
         <TableContainer>
           <Table
-            TdProps={{ className: "whitespace-nowrap" }}
-            className="text-xl border-collapse"
+            TdProps={{
+              className:
+                "whitespace-nowrap border-collapse border-[1px] border-gray-300 first:text-left last:text-right first:pl-0 last:pr-0",
+            }}
+            ThProps={{
+              className:
+                "whitespace-nowrap border-collapse border-[1px] border-gray-300 first:text-left first:pl-0 last:text-right last:pr-0",
+            }}
+            className="text-xl border-collapse w-full"
+            TrProps={{ className: "border-collapse" }}
           >
             <THead>
               <Tr>
@@ -119,43 +125,6 @@ export const TransactionsHistorySection: React.FC<TransactionsHistorySectionProp
             </TBody>
           </Table>
         </TableContainer>
-        {/* <ItemsPagination currentPage={1} maxItemsNum={balanceRecords.length} />
-        <TableContainer>
-          <Table
-            ThProps={{ className: "border-[1px] border-gray-400 text-left" }}
-            TdProps={{ className: "border-[1px] border-gray-400" }}
-            className="text-xl"
-          >
-            <THead>
-              <Tr>
-                <Th>{t("order_id", "Order ID")}</Th>
-                <Th>{t("refund_amount", "Refund Amount")}</Th>
-                <Th>{t("date_added", "Date Added")}</Th>
-              </Tr>
-            </THead>
-            <TBody>
-              {balanceRecords.slice(0, 2).map((record, idx) => (
-                <Tr className="border-collapse" key={idx}>
-                  <Td>{record.orderId}</Td>
-                  <Td></Td>
-                  <Td>{record.dateAdded}</Td>
-                </Tr>
-              ))}
-              <Tr>
-                <Td>{t("total_refunded_amount", "Total Refunded Amount")}</Td>
-                <Td></Td>
-                <Td>
-                  <PriceDisplay
-                    priceObject={{
-                      amount: 0,
-                      currency: "CHF",
-                    }}
-                  />
-                </Td>
-              </Tr>
-            </TBody>
-          </Table> */}
-        {/* </TableContainer> */}
       </div>
     );
   };

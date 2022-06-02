@@ -9,3 +9,4 @@ export * from "./CallbackAfter";
 export * from "./test";
 export * from "./passPropsToFnOrElem";
 export * from "./Throttle";
+export * from "./helpers";

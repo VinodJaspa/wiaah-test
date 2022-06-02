@@ -32,7 +32,7 @@ export const FloatingContainer: React.FC<FloatingContainerProps> = ({
       : undefined;
 
   return (
-    <div className="relative" {...props}>
+    <div className="relative flex" {...props}>
       {items &&
         items.map(
           (

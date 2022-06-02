@@ -73,7 +73,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
       )}
 
       <div className="flex items-center gap-4 md:8 mt-3 p-2">
-        <FiPlusSquare className="text-2xl md:text-4xl" onClick={OpenModal} />
+        <FiPlusSquare className="text-xl md:text-4xl" onClick={OpenModal} />
         <FloatingContainer
           items={[
             {
@@ -88,10 +88,10 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
           ]}
         >
           <NotifiactionsMenu>
-            <MdOutlineNotifications className="text-2xl md:text-4xl h-[1.2em] w-[1.2em]" />
+            <MdOutlineNotifications className="text-xl md:text-4xl h-[1.2em] w-[1.2em]" />
           </NotifiactionsMenu>
         </FloatingContainer>
-        {!isMobile && <HiOutlineUsers className="text-2xl md:text-4xl" />}
+        {!isMobile && <HiOutlineUsers className="text-xl md:text-4xl" />}
 
         <FloatingContainer
           onClick={() => router.push("/chat")}
@@ -107,7 +107,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             },
           ]}
         >
-          <HiOutlineMail className="text-2xl md:text-4xl" />
+          <HiOutlineMail className="text-xl md:text-4xl" />
         </FloatingContainer>
         <ShoppingCart
           items={[
