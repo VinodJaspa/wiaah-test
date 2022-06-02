@@ -1,3 +1,4 @@
+import { useAccountType } from "hooks";
 import React from "react";
 import { OrderDetailsSection } from "../OrderDetails";
 import { OrdersList } from "../OrdersList";
@@ -14,6 +15,7 @@ export const OrderContext = React.createContext<{
 
 export const OrdersSection: React.FC = () => {
   const [orderId, setOrderId] = React.useState<string>();
+  const { accountType } = useAccountType();
 
   function handleViewOrder(orderId: string) {
     setOrderId(orderId);

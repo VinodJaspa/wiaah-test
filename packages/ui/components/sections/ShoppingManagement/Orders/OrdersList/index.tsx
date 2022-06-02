@@ -50,7 +50,7 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
                   name="status"
                 >
                   {statusOptions.map((opt, i) => (
-                    <SelectOption value={opt.value}>
+                    <SelectOption key={i} value={opt.value}>
                       <TranslationText translationObject={opt.name} />
                     </SelectOption>
                   ))}
@@ -78,8 +78,8 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
         {orders.map((order, i) => (
           <Accordion controled key={i}>
             <AccordionItem itemkey={i + 1}>
-              <AccordionButton>
-                <div className="p-2 cursor-pointer bg-primary text-white flex w-full justify-between">
+              <AccordionButton className="text-white text-lg">
+                <div className="p-2 cursor-pointer pr-8 bg-primary text-white flex w-full justify-between">
                   <span>
                     {t("order_id", "Order ID")}: {order.orderId}
                   </span>

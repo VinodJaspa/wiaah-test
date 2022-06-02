@@ -5,3 +5,8 @@ export * from "./NewsFeedIcon";
 export * from "./FailedIcon";
 export * from "./PendingIcon";
 export * from "./SuccessIcon";
+export * from "./EditIcon";
+export * from "./CloseIcon";
+export * from "./ArrowDownIcon";
+export * from "./ArrowUpIcon";
+export * from "./CancelIcon";

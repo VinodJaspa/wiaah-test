@@ -1,18 +1,21 @@
-import React, { ButtonHTMLAttributes, DetailedHTMLProps, FC } from "react";
+import React from "react";
 import { HtmlButtonProps } from "types";
+import { CgSpinner } from "react-icons/cg";
 
 type ColorScheme = "primary" | "danger" | "success" | "info" | "gray" | "white";
 
 export interface ButtonProps extends HtmlButtonProps {
   outline?: boolean;
   colorScheme?: ColorScheme;
+  loading?: boolean;
 }
 
-export const Button: FC<ButtonProps> = ({
+export const Button: React.FunctionComponent<ButtonProps> = ({
   outline,
   className,
   children,
   colorScheme = "primary",
+  loading,
   ...props
 }) => {
   const colors = (scheme: ColorScheme): string => {
@@ -41,7 +44,7 @@ export const Button: FC<ButtonProps> = ({
         outline ? "border-2 text-black hover:text-white bg-transparent" : ""
       } ${colors(colorScheme)} px-4 py-2  transition-all rounded-md`}
     >
-      {children}
+      {loading ? <CgSpinner className="animate-spin" /> : children}
     </button>
   );
 };

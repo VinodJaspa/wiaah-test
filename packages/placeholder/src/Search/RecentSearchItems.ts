@@ -1,5 +1,5 @@
 import { RecentSearchItem } from "types";
-import { randomNum } from "../../components/helpers";
+import { randomNum } from "utils";
 
 export const RecentSearchItemsPH: RecentSearchItem[] = [
   {

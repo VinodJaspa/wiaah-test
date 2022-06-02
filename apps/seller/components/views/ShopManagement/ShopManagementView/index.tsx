@@ -13,11 +13,11 @@ import {
   AffiliationIcon,
   ProductManagementSection,
   AffiliationHistorySection,
-  CanceledOrdersSection,
   ReviewsSection,
   ShippingSettingsSection,
   AffiliationManagementSection,
   SectionsLayout,
+  ReturnedOrders,
 } from "ui";
 
 export interface ShopManagementViewProps {}
@@ -77,12 +77,12 @@ const sections: SettingsSectionType[] = [
   },
   {
     panelName: {
-      translationKey: "canceled_orders",
-      fallbackText: "Canceled Orders",
+      translationKey: "returned_orders",
+      fallbackText: "Returned Orders",
     },
     panelIcon: BsBoxArrowInUp,
-    panelUrl: "/canceled-orders",
-    panelComponent: <CanceledOrdersSection />,
+    panelUrl: "/returned-orders",
+    panelComponent: <ReturnedOrders />,
   },
   {
     panelName: {

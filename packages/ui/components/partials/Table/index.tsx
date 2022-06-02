@@ -51,7 +51,7 @@ export const TableContainer: React.FC<TableContainer> = ({
   return (
     <div
       className={`${className || ""} overflow-x-scroll ${
-        isMobile ? "" : "thinScroll"
+        isMobile ? "" : "noscroll"
       }`}
       {...props}
     />

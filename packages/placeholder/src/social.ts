@@ -4,7 +4,6 @@ import {
   HashTagCardInfo,
   PostCardInfo,
   PostComment,
-  PostInfo,
   ProfileInfo,
   ShopCardInfo,
   ShopSocialProfileInfo,
@@ -161,9 +160,9 @@ export const PostCardPlaceHolder: PostCardInfo = {
   },
 };
 
-import { products } from "ui/placeholder/products";
+import { products } from "./index";
 import { baseUri } from "uris";
-import { randomNum } from "../components/helpers/randomNumber";
+import { randomNum } from "utils";
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 
 export const getRandomImage = (): string =>
