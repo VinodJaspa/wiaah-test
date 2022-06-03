@@ -177,11 +177,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
     router.replace(Link);
     setDrawerOpen(false);
   };
-  React.useEffect(() => {
-    setInterval(() => {
-      console.log("account type", accountType);
-    }, 1000);
-  }, [accountType]);
+
   return (
     <Root>
       <SellerNavigationDrawer
@@ -275,11 +271,6 @@ export const HeaderSwitcher: React.FC<HeaderSwitcherProps> = ({
   headerType,
   links = [],
 }) => {
-  React.useEffect(() => {
-    setInterval(() => {
-      console.log(links);
-    }, 1000);
-  }, []);
   switch (headerType) {
     case "discover":
       return <DiscoverHeader />;

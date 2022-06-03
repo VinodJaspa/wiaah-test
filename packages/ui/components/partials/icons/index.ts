@@ -10,3 +10,5 @@ export * from "./CloseIcon";
 export * from "./ArrowDownIcon";
 export * from "./ArrowUpIcon";
 export * from "./CancelIcon";
+export * from "./AddIcon";
+export * from "./ArrowLeftIcon";

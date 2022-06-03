@@ -1,9 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BsFilePdfFill } from "react-icons/bs";
-import { BiEdit } from "react-icons/bi";
-import { IoTrash } from "react-icons/io5";
-import { PriceType } from "types";
+import { OrderedProductStatus, PriceType } from "types";
 import {
   Button,
   Table,
@@ -12,13 +10,28 @@ import {
   Tr,
   Td,
   Th,
-  ItemsPagination,
   PriceDisplay,
   TableContainer,
   SectionHeader,
+  ControlledModal,
+  ModalButton,
+  ModalExtendedWrapper,
+  FormikInput,
+  Textarea,
+  ModalCloseButton,
+  ModalFooter,
 } from "ui";
+import {
+  useDeclineReturnRequestMutation,
+  useAcceptReturnRequestMutation,
+} from "ui/Hooks";
+import { declineReturnRequestDto } from "dto";
+import { Form, Formik } from "formik";
+import { ReturnDeclineRequestValidationSchema } from "validation";
+type ReturnRequestStatusEnum = "declined" | "accepted" | "pending";
 
 type CanceledOrderData = {
+  id: string;
   productImage: string;
   productName: string;
   quantity: number;
@@ -26,13 +39,17 @@ type CanceledOrderData = {
   shippingAmount: number;
   returnReason: string;
   otherReason: string;
-  adminStatus: string;
+  status: ReturnRequestStatusEnum;
 };
 
 export interface CanceledOrdersSectionProps {}
 
 export const ReturnedOrders: React.FC<CanceledOrdersSectionProps> = ({}) => {
   const { t } = useTranslation();
+  const { mutate: declineRequest, isLoading: declineIsLoading } =
+    useDeclineReturnRequestMutation();
+  const { mutate: acceptRequest, isLoading: acceptIsloading } =
+    useAcceptReturnRequestMutation();
   return (
     <div className="flex flex-col gap-4 w-full">
       <SectionHeader sectionTitle={t("returned_orders", "Returned Orders")}>
@@ -41,73 +58,110 @@ export const ReturnedOrders: React.FC<CanceledOrdersSectionProps> = ({}) => {
         </Button>
       </SectionHeader>
       <TableContainer className="w-full flex-col flex border-[1px] border-gray-300">
-        <Table ThProps={{ className: "whitespace-nowrap" }}>
+        <Table
+          TdProps={{
+            className: "border-[1px] whitespace-nowrap border-gray-300",
+          }}
+          ThProps={{
+            className: "whitespace-nowrap border-[1px] border-gray-300",
+          }}
+        >
           <THead>
             <Tr>
-              <Th className="border-[1px] border-gray-300">
-                {t("product_image", "Product Image")}
-              </Th>
-              <Th className="border-[1px] border-gray-300">
-                {t("product_name", "Product Name")}
-              </Th>
-              <Th className="border-[1px] border-gray-300">
-                {t("quantity", "Quantity")}
-              </Th>
-              <Th className="border-[1px] border-gray-300">
-                {t("paid_price", "Paid Price")}
-              </Th>
-              <Th className="border-[1px] border-gray-300">
-                {t("shipping_amount", "Shipping Amount")}
-              </Th>
-              <Th className="border-[1px] border-gray-300">
-                {t("return_reason", "Return Reason")}
-              </Th>
-              <Th className="border-[1px] border-gray-300">
-                {t("other_reason", "Other Reason")}
-              </Th>
-              <Th className="border-[1px] border-gray-300">
-                {t("admin_status", "Admin Status")}
-              </Th>
-              <Th className="border-[1px] border-gray-300">
-                {t("action", "Action")}
-              </Th>
+              <Th>{t("product_image", "Product Image")}</Th>
+              <Th>{t("product_name", "Product Name")}</Th>
+              <Th>{t("quantity", "Quantity")}</Th>
+              <Th>{t("paid_price", "Paid Price")}</Th>
+              <Th>{t("shipping_amount", "Shipping Amount")}</Th>
+              <Th>{t("return_reason", "Return Reason")}</Th>
+              <Th>{t("other_reason", "Other Reason")}</Th>
+              <Th>{t("status", "Status")}</Th>
+              <Th>{t("action", "Action")}</Th>
             </Tr>
           </THead>
           <TBody>
             {canceledOrders && canceledOrders.length > 0
               ? canceledOrders.map((card, i) => (
                   <Tr key={i}>
-                    <Td className="border-[1px] border-gray-300 h-12 w-auto">
+                    <Td>
                       <img className="w-auto h-16" src={card.productImage} />
                     </Td>
-                    <Td className="border-[1px] whitespace-nowrap border-gray-300">
-                      {card.productName}
-                    </Td>
-                    <Td className="border-[1px] border-gray-300">
-                      {card.quantity}
-                    </Td>
-                    <Td className="border-[1px] border-gray-300">
+                    <Td>{card.productName}</Td>
+                    <Td>{card.quantity}</Td>
+                    <Td>
                       <PriceDisplay
                         className="whitespace-nowrap"
                         priceObject={card.paidPrice}
                       />
                     </Td>
-                    <Td className="border-[1px] border-gray-300">
-                      {card.shippingAmount}
+                    <Td>{card.shippingAmount}</Td>
+                    <Td>{card.returnReason}</Td>
+                    <Td>{card.otherReason}</Td>
+                    <Td>
+                      <Button
+                        colorScheme={
+                          card.status === "pending"
+                            ? "info"
+                            : card.status === "declined"
+                            ? "danger"
+                            : "primary"
+                        }
+                        className="w-full"
+                      >
+                        {card.status}
+                      </Button>
                     </Td>
-                    <Td className="border-[1px] border-gray-300">
-                      {card.returnReason}
-                    </Td>
-                    <Td className="border-[1px] border-gray-300">
-                      {card.otherReason}
-                    </Td>
-                    <Td className="border-[1px] border-gray-300">
-                      {card.adminStatus}
-                    </Td>
-                    <Td className="border-[1px] border-gray-300">
-                      <div className="flex items-center gap-2 text-xl">
-                        <BiEdit className="text-xl cursor-pointer" />
-                        <IoTrash className="text-red-700 text-xl cursor-pointer" />
+                    <Td>
+                      <div className="text-sm flex items-center gap-2">
+                        <ModalExtendedWrapper>
+                          <ModalButton>
+                            <Button colorScheme="danger">
+                              {t("decline", "Decline")}
+                            </Button>
+                          </ModalButton>
+                          <ControlledModal>
+                            <Formik<declineReturnRequestDto>
+                              onSubmit={(data) => {
+                                declineRequest(data);
+                              }}
+                              initialValues={{
+                                requestId: card.id,
+                                declineReason: "",
+                              }}
+                              validationSchema={
+                                ReturnDeclineRequestValidationSchema
+                              }
+                            >
+                              <Form className="flex flex-col gap-4">
+                                <FormikInput
+                                  label={t("decline_reason", "Decline Reason")}
+                                  as={Textarea}
+                                  className="min-h-[10rem]"
+                                  name="declineReason"
+                                />
+                                <ModalFooter>
+                                  <ModalCloseButton>
+                                    <Button colorScheme="white">
+                                      {t("close", "Close")}
+                                    </Button>
+                                  </ModalCloseButton>
+                                  <Button
+                                    loading={declineIsLoading}
+                                    type="submit"
+                                  >
+                                    {t("submit", "Submit")}
+                                  </Button>
+                                </ModalFooter>
+                              </Form>
+                            </Formik>
+                          </ControlledModal>
+                        </ModalExtendedWrapper>
+                        <Button
+                          loading={acceptIsloading}
+                          onClick={() => acceptRequest({ requestId: card.id })}
+                        >
+                          {t("accpet", "Accept")}
+                        </Button>
                       </div>
                     </Td>
                   </Tr>
@@ -127,8 +181,9 @@ export const ReturnedOrders: React.FC<CanceledOrdersSectionProps> = ({}) => {
 
 const canceledOrders: CanceledOrderData[] = [
   {
+    id: "1",
     productName: "product 1",
-    adminStatus: "active",
+    status: "pending",
     productImage: "/shop-2.jpeg",
     otherReason: "other reason",
     paidPrice: {
@@ -140,8 +195,9 @@ const canceledOrders: CanceledOrderData[] = [
     shippingAmount: 1,
   },
   {
+    id: "2",
     productName: "product 1",
-    adminStatus: "active",
+    status: "accepted",
     productImage: "/shop-2.jpeg",
     otherReason: "other reason",
     paidPrice: {
@@ -153,8 +209,9 @@ const canceledOrders: CanceledOrderData[] = [
     shippingAmount: 1,
   },
   {
+    id: "3",
     productName: "product 1",
-    adminStatus: "active",
+    status: "declined",
     productImage: "/shop-2.jpeg",
     otherReason: "other reason",
     paidPrice: {

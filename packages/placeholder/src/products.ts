@@ -1,5 +1,5 @@
-import { CartSummaryItemData } from "types/market/CartSummary";
-import { ProductDetails } from "../uiTypes/products/ProductDetail.interface";
+import { CartSummaryItemData } from "types";
+import { ProductDetails } from "types";
 
 export const ProductsWithProfile: CartSummaryItemData[] = [
   {
@@ -42,8 +42,8 @@ export const ProductsWithProfile: CartSummaryItemData[] = [
         },
       ],
 
-      color: "relay blue/yellow",
-      size: "One Size",
+      colors: [],
+      sizes: ["One Size"],
       type: "product",
       cashback: {
         unit: "%",
@@ -97,8 +97,8 @@ export const ProductsWithProfile: CartSummaryItemData[] = [
         },
       ],
 
-      color: "relay blue/yellow",
-      size: "One Size",
+      colors: ["relay blue/yellow"],
+      sizes: ["One Size"],
       type: "product",
       cashback: {
         unit: "%",

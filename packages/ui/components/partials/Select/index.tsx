@@ -4,6 +4,7 @@ import { HtmlDivProps } from "types";
 import { ElementChilds } from "types";
 import { useOutsideClick } from "hooks";
 import { CallbackAfter } from "utils";
+import { ArrowDownIcon } from "ui";
 
 type OnOptionSelect = (value: string) => any;
 export interface SelectChildProps {
@@ -96,7 +97,7 @@ export const Select: React.FC<SelectProps> = ({
           {selectedOption &&
             React.cloneElement(selectedOption, { selectable: false })}
         </div>
-        <BiChevronDown className="text-xl" />
+        <ArrowDownIcon className="text-xl" />
       </div>
       <div
         data-testid="SelectOptionsContainer"

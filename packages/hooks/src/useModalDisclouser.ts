@@ -12,7 +12,10 @@ interface useModalDisclouserReturn {
 }
 
 export const useModalDisclouser = (
-  props: useModalDisclouserProps
+  props: useModalDisclouserProps = {
+    onClose: () => {},
+    onOpen: () => {},
+  }
 ): useModalDisclouserReturn => {
   const { onClose, onOpen } = props;
   const [isOpen, setIsOpen] = React.useState<boolean>(false);

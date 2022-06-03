@@ -14,3 +14,4 @@ export * from "./RecordVideoModal";
 export * from "./ShareWithModal";
 export * from "./GeneralSearchModal";
 export * from "./AccountDeletionModal";
+export * from "./AskForReturnModal";

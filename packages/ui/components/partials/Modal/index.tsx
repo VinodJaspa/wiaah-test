@@ -1,6 +1,7 @@
 import React from "react";
 import { HtmlDivProps } from "types";
 import { PassPropsToChild, CallbackAfter } from "utils";
+import { CloseIcon } from "../icons";
 
 interface ModalContextValues {
   isOpen: boolean;
@@ -99,7 +100,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
         isOpen
           ? "-translate-y-1/2"
           : "-translate-y-[calc(50% - 5rem)] opacity-0 pointer-events-none"
-      } fixed top-1/2 max-w-[40rem] min-w-[15rem] opacity-100 left-1/2 p-4 z-[60] flex flex-col transition-all rounded bg-white -translate-x-1/2`}
+      } fixed top-1/2 w-[min(100%,40rem)] opacity-100 left-1/2 p-4 z-[60] flex flex-col transition-all rounded bg-white -translate-x-1/2`}
     >
       {show ? children : null}
     </div>
@@ -142,7 +143,28 @@ export const ModalFooter: React.FC<ModalFooterProps> = ({
     />
   );
 };
+export interface ModalHeaderProps extends HtmlDivProps {
+  title: string;
+}
 
+export const ModalHeader: React.FC<ModalHeaderProps> = ({
+  className,
+  children,
+  title,
+  ...props
+}) => {
+  return (
+    <div
+      {...props}
+      className={`${className || ""} flex items-center gap-2 justify-between`}
+    >
+      <span>{title}</span>
+      <ModalCloseButton>
+        <CloseIcon className="text-2xl" />
+      </ModalCloseButton>
+    </div>
+  );
+};
 export interface ModalButtonProps extends Partial<ExtendedModalPassedProps> {
   close?: boolean;
   closeAll?: boolean;
@@ -179,7 +201,7 @@ export const ModalButton: React.FC<ModalButtonProps> = ({
 };
 
 export interface ModalExtendedWrapperProps {
-  modalKey: string;
+  modalKey?: string;
 }
 
 type ExtendedModalPassedProps = {
