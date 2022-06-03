@@ -16,6 +16,7 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
   children,
   colorScheme = "primary",
   loading,
+  onClick,
   ...props
 }) => {
   const colors = (scheme: ColorScheme): string => {
@@ -40,6 +41,9 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
   return (
     <button
       {...props}
+      onClick={(e) => {
+        loading ? undefined : onClick && onClick(e);
+      }}
       className={` ${className ? className : ""} ${
         outline ? "border-2 text-black hover:text-white bg-transparent" : ""
       } ${colors(colorScheme)} px-4 py-2  transition-all rounded-md`}

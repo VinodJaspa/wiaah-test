@@ -9,7 +9,7 @@ import {
   OrdersSection,
   PaymentMethodsSection,
 } from "ui";
-import { SectionsLayout } from "ui/components/blocks/Layout";
+import { SectionsLayout } from "ui";
 import { MdPayment } from "react-icons/md";
 import { BsBoxArrowInUp } from "react-icons/bs";
 import { IoReturnUpBackSharp } from "react-icons/io5";

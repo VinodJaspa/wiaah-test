@@ -205,7 +205,10 @@ export const OrderDetailsSection: React.FC = () => {
             <Th>{t("quantity", "Quantity")}</Th>
             <Th>{t("price", "Price")}</Th>
             <Th>{t("total", "Total")}</Th>
-            <Th>{t("Status", "Status")}</Th>
+            <Th>{isBuyer ? t("track", "Track") : t("Status", "Status")}</Th>
+            <Th>
+              {isBuyer ? t("cancelation", "Cancelation") : t("edit", "Edit")}
+            </Th>
           </Tr>
           <TBody>
             {order.products.map((prod, i) => (
@@ -226,35 +229,27 @@ export const OrderDetailsSection: React.FC = () => {
                   <PriceDisplay priceObject={prod.total} />
                 </Td>
                 <Td className="pr-0">
-                  <ModalExtendedWrapper modalKey="1">
-                    <ModalButton>
-                      <Button>
-                        {/* <div className="px-4 py-2 w-fit rounded bg-primary text-white"> */}
-                        {isBuyer ? t("track", "Track") : prod.status}
-                        {/* </div> */}
-                      </Button>
-                    </ModalButton>
-                    {isBuyer ? (
-                      <OrderTrackingLinkModal productId={prod.id} />
-                    ) : null}
-                  </ModalExtendedWrapper>
+                  {isBuyer ? t("track", "Track") : prod.status}
                 </Td>
                 <Td>
-                  {isBuyer ? (
-                    <>
-                      <CancelIcon className="text-xl cursor-pointer" />
-                    </>
-                  ) : (
-                    <ModalExtendedWrapper modalKey="34">
-                      <ModalButton>
-                        <EditIcon className="text-xl cursor-pointer" />
-                      </ModalButton>
-                      <UpdateProductStatusModal
-                        status={prod.status}
-                        productId={prod.id}
-                      />
-                    </ModalExtendedWrapper>
-                  )}
+                  <div className="w-full flex justify-center items-center">
+                    {isBuyer ? (
+                      <>
+                        <CancelIcon className="text-xl cursor-pointer" />
+                      </>
+                    ) : (
+                      <ModalExtendedWrapper modalKey="34">
+                        <ModalButton>
+                          <EditIcon className="text-xl cursor-pointer" />
+                        </ModalButton>
+                        <UpdateProductStatusModal
+                          status={prod.status}
+                          productId={prod.id}
+                          trackingLink={prod.trackingLink}
+                        />
+                      </ModalExtendedWrapper>
+                    )}
+                  </div>
                 </Td>
               </Tr>
             ))}
@@ -264,70 +259,14 @@ export const OrderDetailsSection: React.FC = () => {
     </div>
   );
 };
-export const OrderTrackingLinkModal: React.FC<{
-  productId: string;
-}> = ({ productId }) => {
-  const { isOpen, handleClose, handleOpen } = useModalDisclouser({});
-  const { mutate, isLoading } = useAddProductTrackingLink({
-    onSuccess: handleClose,
-  });
-  const { t } = useTranslation();
-  return (
-    <Modal isOpen={isOpen} onClose={handleClose} onOpen={handleOpen}>
-      <ModalOverlay />
-      <ModalContent className="flex flex-col gap-12 min-w-[min(100%,40rem)]">
-        <HStack className="justify-between">
-          <span className="text-2xl font-semibold">
-            {t("add_tracking_link", "Add Tracking Link")}
-          </span>
-          <ModalCloseButton>
-            <span>
-              <CloseIcon className="text-2xl cursor-pointer" />
-            </span>
-          </ModalCloseButton>
-        </HStack>
-        <Formik<AddProductTrackingLinkDto>
-          initialValues={{
-            productId,
-            trackingLink: "",
-          }}
-          onSubmit={(data) => {
-            mutate(data);
-          }}
-        >
-          {({ setFieldValue }) => {
-            return (
-              <Form className="flex flex-col gap-12">
-                <FormikInput
-                  name="trackingLink"
-                  placeholder={t("paste_link_here", "Paste Link Here")}
-                  label={t("order_tracking_link", "Order Tracking Link")}
-                />
-
-                <HStack className="justify-end">
-                  <ModalCloseButton>
-                    <Button disabled={isLoading} colorScheme="white">
-                      {t("close", "Close")}
-                    </Button>
-                  </ModalCloseButton>
-                  <Button loading={isLoading} type="submit">
-                    {t("add_link", "Add Link")}
-                  </Button>
-                </HStack>
-              </Form>
-            );
-          }}
-        </Formik>
-      </ModalContent>
-    </Modal>
-  );
-};
 
 export const UpdateProductStatusModal: React.FC<UpdateProductStatusDto> = ({
   productId,
+  status,
+  trackingLink,
 }) => {
   const { isOpen, handleClose, handleOpen } = useModalDisclouser({});
-  const { mutate } = useUpdateProductStatus({
+  const { mutate, isLoading } = useUpdateProductStatus({
     onSuccess: handleClose,
   });
   const { t } = useTranslation();
@@ -345,11 +284,11 @@ export const UpdateProductStatusModal: React.FC<UpdateProductStatusDto> = ({
             </span>
           </ModalCloseButton>
         </HStack>
-        <Formik<{ productId: string; status: OrderedProductStatus }>
+        <Formik<UpdateProductStatusDto>
           initialValues={{
             productId,
-            //@ts-ignore
             status,
+            trackingLink,
           }}
           onSubmit={(data) => {
             mutate(data);
@@ -378,11 +317,20 @@ export const UpdateProductStatusModal: React.FC<UpdateProductStatusDto> = ({
                   </Select>
                 </div>
 
+                <FormikInput
+                  label={t("order_tracking_link", "Order Tracking Link")}
+                  name="trackingLink"
+                  placeholder={t(
+                    "add_a_tracking_link_for_this_order",
+                    "add a tracking link for this order"
+                  )}
+                />
+
                 <HStack className="justify-end">
                   <ModalCloseButton>
                     <Button colorScheme="white">{t("close", "Close")}</Button>
                   </ModalCloseButton>
-                  <Button type="submit">
+                  <Button loading={isLoading} type="submit">
                     {t("update_status", "Update Status")}
                   </Button>
                 </HStack>
@@ -403,6 +351,7 @@ type ProductType = {
   price: PriceType;
   total: PriceType;
   status: OrderedProductStatus;
+  trackingLink: string;
 };
 
 const products: ProductType[] = [...Array(15)].map((_, i) => ({
@@ -419,4 +368,5 @@ const products: ProductType[] = [...Array(15)].map((_, i) => ({
     currency: "USD",
   },
   status: "confirmed",
+  trackingLink: "link",
 }));
