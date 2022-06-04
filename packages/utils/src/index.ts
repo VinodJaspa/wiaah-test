@@ -11,3 +11,4 @@ export * from "./passPropsToFnOrElem";
 export * from "./Throttle";
 export * from "./helpers";
 export * from "./FetchingMock";
+export * from "./Date";

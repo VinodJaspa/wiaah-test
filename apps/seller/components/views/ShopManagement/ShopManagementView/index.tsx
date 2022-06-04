@@ -18,6 +18,7 @@ import {
   AffiliationManagementSection,
   SectionsLayout,
   ReturnedOrders,
+  OrdersSection,
 } from "ui";
 
 export interface ShopManagementViewProps {}
@@ -56,6 +57,15 @@ const sections: SettingsSectionType[] = [
     panelIcon: MdOutlineShoppingBasket,
     panelUrl: "/product-management",
     panelComponent: <ProductManagementSection />,
+  },
+  {
+    panelName: {
+      translationKey: "orders",
+      fallbackText: "Orders",
+    },
+    panelIcon: BsBoxArrowInUp,
+    panelUrl: "/orders",
+    panelComponent: <OrdersSection />,
   },
   {
     panelName: {

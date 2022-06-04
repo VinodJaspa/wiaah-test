@@ -34,20 +34,19 @@ import {
   HStack,
   ModalOverlay,
   CloseIcon,
-  FailedIcon,
   CancelIcon,
 } from "ui";
 import { getRandomImage } from "placeholder";
 import { randomNum } from "utils";
 import { useModalDisclouser, useAccountType } from "hooks";
 import { OrderedProductStatus, PriceType } from "types";
-import { useUpdateProductStatus, useAddProductTrackingLink } from "ui";
-import { AddProductTrackingLinkDto, UpdateProductStatusDto } from "api";
+import { useUpdateProductStatus } from "ui";
+import { UpdateProductStatusDto } from "dto";
 
 export const OrderDetailsSection: React.FC = () => {
-  const { orderId, cancelViewOrder } = React.useContext(OrderContext);
+  const { orderId, cancelViewOrder, shopping } = React.useContext(OrderContext);
   const { t } = useTranslation();
-  const { isBuyer } = useAccountType();
+
   const order = {
     customer: "customer",
     dateAdded: new Date(Date.now()).toDateString(),
@@ -135,7 +134,7 @@ export const OrderDetailsSection: React.FC = () => {
                 </div>
               </AccordionButton>
               <AccordionPanel>
-                <div className="font-bold shadow-lg grid grid-cols-2 gap-2 p-2">
+                <div className="font-bold shadow-lg grid grid-cols-2 gap-2 py-2">
                   <span>
                     {t("order_id", "Order ID")}:{" "}
                     <span className="font-normal">{order.orderId}</span>
@@ -205,9 +204,9 @@ export const OrderDetailsSection: React.FC = () => {
             <Th>{t("quantity", "Quantity")}</Th>
             <Th>{t("price", "Price")}</Th>
             <Th>{t("total", "Total")}</Th>
-            <Th>{isBuyer ? t("track", "Track") : t("Status", "Status")}</Th>
+            <Th>{shopping ? t("track", "Track") : t("Status", "Status")}</Th>
             <Th>
-              {isBuyer ? t("cancelation", "Cancelation") : t("edit", "Edit")}
+              {shopping ? t("cancelation", "Cancelation") : t("edit", "Edit")}
             </Th>
           </Tr>
           <TBody>
@@ -229,11 +228,15 @@ export const OrderDetailsSection: React.FC = () => {
                   <PriceDisplay priceObject={prod.total} />
                 </Td>
                 <Td className="pr-0">
-                  {isBuyer ? t("track", "Track") : prod.status}
+                  <div className="w-full flex justify-center">
+                    <Button>
+                      {shopping ? <>{t("track", "Track")}</> : <>prod.status</>}
+                    </Button>
+                  </div>
                 </Td>
                 <Td>
                   <div className="w-full flex justify-center items-center">
-                    {isBuyer ? (
+                    {shopping ? (
                       <>
                         <CancelIcon className="text-xl cursor-pointer" />
                       </>

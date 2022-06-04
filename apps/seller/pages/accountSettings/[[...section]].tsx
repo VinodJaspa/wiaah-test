@@ -24,7 +24,6 @@ export const getServerSideProps: GetServerSideProps<AccountSettingsPageProps> =
   };
 
 const accountSettings: NextPage<AccountSettingsPageProps> = ({}) => {
-  const router = useRouter();
   const { t } = useTranslation();
 
   return (

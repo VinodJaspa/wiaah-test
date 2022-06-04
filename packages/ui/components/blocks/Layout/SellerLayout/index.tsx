@@ -368,6 +368,16 @@ const SellerNavLinks: HeaderNavLink[] = [
   {
     link: {
       name: {
+        translationKey: "service_management",
+        fallbackText: "Service Management",
+      },
+      href: "/service-management",
+    },
+    icon: BsShop,
+  },
+  {
+    link: {
+      name: {
         translationKey: "shopping_management",
         fallbackText: "Shopping Management",
       },

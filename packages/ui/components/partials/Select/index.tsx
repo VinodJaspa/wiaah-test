@@ -6,28 +6,29 @@ import { useOutsideClick } from "hooks";
 import { CallbackAfter } from "utils";
 import { ArrowDownIcon } from "ui";
 
-type OnOptionSelect = (value: string) => any;
-export interface SelectChildProps {
-  onOptionSelect: OnOptionSelect;
+type OnOptionSelect<T> = (value: T) => any;
+export interface SelectChildProps<T> {
+  onOptionSelect: OnOptionSelect<T>;
 }
 
-export interface SelectProps
+export interface SelectProps<SelectOptionType>
   extends Omit<HtmlDivProps, "children" | "onSelect"> {
-  children?: ElementChilds<SelectChildProps>;
-  onOptionSelect?: OnOptionSelect;
+  children?: ElementChilds<SelectChildProps<SelectOptionType>>;
+  onOptionSelect?: OnOptionSelect<SelectOptionType>;
   placeholder?: string;
   value?: string;
   flushed?: boolean;
 }
 
-export const Select: React.FC<SelectProps> = ({
+export function Select<ValueType>({
   placeholder,
   className,
   children,
   value,
   flushed,
+  onOptionSelect,
   ...props
-}) => {
+}: SelectProps<ValueType>) {
   const ph = placeholder ? (
     <SelectOption className="text-gray-500" value>
       {placeholder}
@@ -65,8 +66,8 @@ export const Select: React.FC<SelectProps> = ({
     }
   }, [value]);
 
-  function handleSelect(value: string, child: React.ReactElement) {
-    props.onOptionSelect && props.onOptionSelect(value);
+  function handleSelect(value: ValueType, child: React.ReactElement) {
+    onOptionSelect && onOptionSelect(value);
     setSelectedOption(child);
     handleClose();
   }
@@ -92,7 +93,7 @@ export const Select: React.FC<SelectProps> = ({
       >
         <div
           data-testid="SelectedOption"
-          className="cursor-pointer w-full flex items-center whitespace-nowrap "
+          className="cursor-pointer w-full flex items-center gap-2 whitespace-nowrap "
         >
           {selectedOption &&
             React.cloneElement(selectedOption, { selectable: false })}
@@ -110,14 +111,14 @@ export const Select: React.FC<SelectProps> = ({
             {Array.isArray(children)
               ? children.map((child, i) => (
                   <React.Fragment key={i}>
-                    {React.cloneElement<SelectChildProps>(child, {
+                    {React.cloneElement<SelectChildProps<ValueType>>(child, {
                       onOptionSelect: (value) =>
                         handleSelect(value, children[i]),
                       key: i,
                     })}
                   </React.Fragment>
                 ))
-              : React.cloneElement<SelectChildProps>(children, {
+              : React.cloneElement<SelectChildProps<ValueType>>(children, {
                   onOptionSelect: (value) => handleSelect(value, children),
                 })}
           </>
@@ -125,10 +126,10 @@ export const Select: React.FC<SelectProps> = ({
       </div>
     </div>
   );
-};
+}
 
 export interface SelectListProps
-  extends Partial<Omit<HtmlDivProps, "onSelect"> & SelectChildProps> {
+  extends Partial<Omit<HtmlDivProps, "onSelect"> & SelectChildProps<any>> {
   value: any;
   selectable?: boolean;
 }

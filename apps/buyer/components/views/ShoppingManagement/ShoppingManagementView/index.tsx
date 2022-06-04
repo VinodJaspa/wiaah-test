@@ -14,7 +14,8 @@ import { MdPayment } from "react-icons/md";
 import { BsBoxArrowInUp } from "react-icons/bs";
 import { IoReturnUpBackSharp } from "react-icons/io5";
 import { GiPostStamp } from "react-icons/gi";
-
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { CurrentPageState } from "state";
 export const ShoppingManagementView: React.FC = () => {
   const baseRoute = "shopping-management";
   const router = useRouter();
@@ -58,7 +59,7 @@ const sections: SettingsSectionType[] = [
     },
     panelIcon: BsBoxArrowInUp,
     panelUrl: "/orders",
-    panelComponent: <OrdersSection />,
+    panelComponent: <OrdersSection shopping />,
   },
   {
     panelName: {

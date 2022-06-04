@@ -50,7 +50,7 @@ export const TableContainer: React.FC<TableContainer> = ({
   const { isMobile } = useResponsive();
   return (
     <div
-      className={`${className || ""} overflow-x-scroll ${
+      className={`${className || ""} overflow-x-hidden ${
         isMobile ? "" : "noscroll"
       }`}
       {...props}
