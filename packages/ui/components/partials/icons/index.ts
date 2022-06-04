@@ -12,3 +12,4 @@ export * from "./ArrowUpIcon";
 export * from "./CancelIcon";
 export * from "./AddIcon";
 export * from "./ArrowLeftIcon";
+export * from "./SearchIcon";

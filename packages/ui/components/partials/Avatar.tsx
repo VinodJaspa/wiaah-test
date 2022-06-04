@@ -1,12 +1,7 @@
-import {
-  Avatar as ChakaraAvatar,
-  ThemingProps,
-  AvatarProps as ChakraAvatarProps,
-} from "@chakra-ui/react";
 import React from "react";
-import { HtmlDivProps } from "types";
+import { HtmlDivProps, HtmlImgProps } from "types";
 
-export interface AvatarProps extends HtmlDivProps {
+export interface AvatarProps extends HtmlImgProps {
   name?: string;
   photoSrc?: string;
   src?: string;
@@ -33,20 +28,19 @@ export const Avatar: React.FC<AvatarProps> = ({
   }
 
   return (
-    <ChakaraAvatar
+    <img
       onClick={handleAvatarClick}
-      showBorder={showBorder}
-      name={name}
+      // showBorder={showBorder}
+      // name={name}
       src={photoSrc || src}
-      cursor={"pointer"}
-      borderColor={newStory ? "crimson" : "white"}
-      bgColor="black"
-      borderWidth={showBorder ? "0.25rem" : "0px"}
-      className={`${className || ""} `}
+      // borderColor={newStory ? "crimson" : "white"}
+      // bgColor="black"
+      // borderWidth={showBorder ? "0.25rem" : "0px"}
+      className={`${className || ""} w-12 h-12 rounded-full cursor-pointer`}
       {...props}
     >
       {children}
-    </ChakaraAvatar>
+    </img>
   );
 };
 

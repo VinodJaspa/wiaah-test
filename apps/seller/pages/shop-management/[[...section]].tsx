@@ -19,7 +19,7 @@ const shopManagement: NextPage = () => {
       <Head>
         <title>wiaah | shop management</title>
       </Head>
-      <SellerLayout header={null}>
+      <SellerLayout>
         <ShopManagementView />
       </SellerLayout>
     </>
