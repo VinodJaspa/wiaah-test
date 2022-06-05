@@ -30,13 +30,10 @@ export const Avatar: React.FC<AvatarProps> = ({
   return (
     <img
       onClick={handleAvatarClick}
-      // showBorder={showBorder}
-      // name={name}
       src={photoSrc || src}
-      // borderColor={newStory ? "crimson" : "white"}
-      // bgColor="black"
-      // borderWidth={showBorder ? "0.25rem" : "0px"}
-      className={`${className || ""} w-12 h-12 rounded-full cursor-pointer`}
+      className={`${
+        className || ""
+      } w-12 h-12 rounded-full cursor-pointer object-cover`}
       {...props}
     >
       {children}

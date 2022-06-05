@@ -46,3 +46,4 @@ export * from "./Tabs";
 export * from "./Stack";
 export * from "./Status";
 export * from "./OrderStatusDisplay";
+export * from "./QrcodeDisplay";

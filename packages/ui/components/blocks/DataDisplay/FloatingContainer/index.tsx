@@ -49,6 +49,7 @@ export const FloatingContainer: React.FC<FloatingContainerProps> = ({
             i
           ) => (
             <div
+              key={i}
               className="absolute transform z-[5]"
               {...floatingItemProps}
               style={{

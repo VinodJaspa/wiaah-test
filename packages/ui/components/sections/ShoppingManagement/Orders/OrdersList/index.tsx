@@ -60,7 +60,7 @@ export interface OrdersListProps {}
 export const OrdersList: React.FC<OrdersListProps> = () => {
   const { viewOrder, shopping } = React.useContext(OrderContext);
   const { t } = useTranslation();
-  console.log(shopping);
+
   return (
     <div className="flex flex-col gap-4">
       <SectionHeader sectionTitle={t("orders", "Orders")} />

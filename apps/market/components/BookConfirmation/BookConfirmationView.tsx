@@ -1,26 +1,11 @@
 import React from "react";
-import {
-  Box,
-  Flex,
-  Text,
-  Spacer,
-  Button,
-  Table,
-  Tr,
-  Td,
-  VStack,
-  Thead,
-  Tbody,
-  Image,
-  AspectRatio,
-  HStack,
-} from "@chakra-ui/react";
-import { CalanderPage, ChecklistIcon } from "ui";
-import { t } from "i18next";
-import { Service } from "types/market/Booking";
+import { CalanderPage, ChecklistIcon, PriceDisplay, TableContainer } from "ui";
+import { PriceType, Service } from "types";
 import { IoCall, IoLocation } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
 import { QRCodeSVG } from "qrcode.react";
+import { Table, Tr, Td, Th, TBody, THead, Button, Divider, HStack } from "ui";
+import { useTranslation } from "react-i18next";
 
 export interface BookConfirmationViewProps {
   service: Service;
@@ -36,159 +21,162 @@ export const BookConfirmationView: React.FC<BookConfirmationViewProps> = ({
     rooms,
   },
 }) => {
+  const total: PriceType = {
+    amount: 150,
+    currency: "CHF",
+  };
   const bookId = "45DG9QY";
-
+  const { t } = useTranslation();
   return (
-    <Flex py="4rem" gap="2rem" direction={"column"}>
-      <Box boxShadow="md" width={"100%"} p={"5rem"} bg="#F2f9F6">
-        <Flex gap="1rem" alignItems={"center"}>
-          <Box w={"5rem"} color="#77CF92">
-            <ChecklistIcon fill="#77CF92" />
-          </Box>
-          <Flex direction="column">
-            <Text fontWeight={"bold"}>
+    <div className="flex flex-col gap-8 py-16">
+      <div className="w-full shadow-md bg-primary-50 p-20 ">
+        <div className="flex items-center gap-4">
+          <ChecklistIcon className="w-20 fill-primary" />
+          <div className="flex flex-col">
+            <span className="font-bold">
               {t("booking_confirmed", "Booking Confirmed")}
-            </Text>
-            <Text>
+            </span>
+            <span>
               {t(
                 "we_have_booked",
                 "We have booked your spot for the selected date at the selected facility. Please arrive at the facility in due date and show the below QR code or Book Number at the counter"
               )}
-            </Text>
-          </Flex>
-        </Flex>
-      </Box>
-      <Flex
-        alignItems={"center"}
-        direction={{ sm: "column", lg: "row" }}
-        gap="10rem"
-      >
-        <Flex w="100%" gap={"2rem"} direction="column">
-          <Text fontSize={"3xl"} fontWeight={"bold"}>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div className="flex items-center flex-col lg:flex-row gap-40">
+        <div className="w-full flex gap-8 flex-col">
+          <span className="text-4xl font-bold">
             {t("checkin_details", "Checkin Details")}
-          </Text>
-          <Flex px="1.5rem">
-            <Flex gap="1rem">
+          </span>
+          <div className="flex justify-between">
+            <div className="flex gap-4">
               {/* book qr and number  */}
-              <Box w="10rem">
+              <div className="w-40">
                 <QRCodeSVG size={"100%"} value={bookId} />
-              </Box>
-              <Flex direction="column">
-                <Flex direction="column">
+              </div>
+              <div className="flex flex-col">
+                <div className="flex flex-col">
                   {t("booking_number", "Booking Number")}
-                  <Text data-testid="BookNumber" fontWeight={"bold"}>
+                  <span className="font-bold" data-testid="BookNumber">
                     #{bookId}
-                  </Text>
-                </Flex>
-                <Spacer />
-                <Button colorScheme={"cyan"} variant="outline">
-                  {t("save_the_qr", "Save the QR")}
-                </Button>
-              </Flex>
-            </Flex>
-            <Spacer />
-            <Flex gap="4rem">
-              <Box>
-                <Text py="5px" fontSize={"lg"}>
-                  {t("checkin", "Checkin")}
-                </Text>
+                  </span>
+                </div>
+                <Divider />
+                <Button outline>{t("save_the_qr", "Save the QR")}</Button>
+              </div>
+            </div>
+            <Divider />
+            <div className="flex gap-16">
+              <div>
+                <span className="text-xl py-1">{t("checkin", "Checkin")}</span>
                 <CalanderPage date={Date.now()} />
-              </Box>
-              <Box>
-                <Text py="5px" fontSize={"lg"}>
+              </div>
+              <div>
+                <span className="py-1 text-xl">
                   {t("checkout", "Checkout")}
-                </Text>
+                </span>
                 <CalanderPage date={Date.now()} />
-              </Box>
-            </Flex>
-          </Flex>
-          <Flex color={"#4A4A4A"} gap="3rem" direction={"column"}>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col gap-12 text-gray-500">
             {/* checkin details */}
-            <Box>
-              <Text fontSize={"2xl"} fontWeight={"bold"}>
+            <div>
+              <span className="text-3xl font-bold">
                 {t("room_fare_breakup", "Room Fare Breakup")}
-              </Text>
-              <Table>
-                <Thead>
-                  <Tr>
-                    <Td>Room Type</Td>
-                    <Td textAlign={"end"}>Room Price</Td>
-                    <Td textAlign={"end"}>Total</Td>
-                  </Tr>
-                </Thead>
-                <Tbody data-testid="RoomsTable">
-                  {rooms.map((room, i) => (
-                    <Tr key={i} data-testid="Room">
-                      <Td data-testid="RoomType">
-                        <Text>Room Type {room.type}</Text>
-                      </Td>
-                      <Td textAlign={"end"}>
-                        <Text data-testid="RoomNightPrice">
-                          {room.nightPrice}
-                        </Text>
-                        *<Text data-testid="RoomNights">{room.nights}</Text>
-                      </Td>
-                      <Td data-testid="RoomTotalPrice" textAlign={"end"}>
-                        {room.nightPrice * room.nights}
-                      </Td>
+              </span>
+              <TableContainer>
+                <Table
+                  ThProps={{ className: "last:text-right" }}
+                  TdProps={{ className: "last:text-right" }}
+                  className="w-full"
+                >
+                  <THead>
+                    <Tr>
+                      <Td>Room Type</Td>
+                      <Td>Room Price</Td>
+                      <Td>Total</Td>
                     </Tr>
-                  ))}
-                </Tbody>
-              </Table>
-            </Box>
-          </Flex>
-        </Flex>
-        <Flex fontSize={"xl"} w="40rem" gap="0.5rem" direction={"column"}>
+                  </THead>
+                  <TBody data-testid="RoomsTable">
+                    {rooms.map((room, i) => (
+                      <Tr key={i} data-testid="Room">
+                        <Td data-testid="RoomType">
+                          <span>Room Type {room.type}</span>
+                        </Td>
+                        <Td className="flex items-center">
+                          <span data-testid="RoomNightPrice">
+                            {room.nightPrice}
+                          </span>
+                          *<span data-testid="RoomNights">{room.nights}</span>
+                        </Td>
+                        <Td data-testid="RoomTotalPrice">
+                          {room.nightPrice * room.nights}
+                        </Td>
+                      </Tr>
+                    ))}
+                  </TBody>
+                </Table>
+              </TableContainer>
+            </div>
+          </div>
+          <div className="w-full flex justify-end items-center">
+            <span className="text-xl font-bold flex items-center gap-2">
+              {t("total", "Total")}: <PriceDisplay priceObject={total} />
+            </span>
+          </div>
+        </div>
+        <div className="text-xl w-[40rem] gap-2 flex-col">
           {/* hotel details */}
-          <AspectRatio w={"100%"} ratio={9 / 10}>
-            <Image
+          {/* <AspectRatio w={"100%"} ratio={9 / 10}> */}
+          <div className="w-full h-[30rem]">
+            <img
               data-testid="ServicePhoto"
               src={serviceThumbnail}
-              objectFit="cover"
+              className="w-full h-[100%] object-cover"
             />
-          </AspectRatio>
-          <Text
+          </div>
+          {/* </AspectRatio> */}
+          <span
+            className="font-bold text-3xl text-gray-500"
             data-testid="ServiceName"
-            fontWeight={"bold"}
-            color="4A4A4A"
-            fontSize={"2xl"}
           >
             {serviceName}
-          </Text>
-          <Flex data-testid="ServiceOwner" gap="0.5rem">
-            Owner:{" "}
-            <Text color="4A4A4A" fontWeight={"bold"}>
-              {serviceOwner}
-            </Text>
-          </Flex>
-          <HStack>
+          </span>
+          <div className="flex gap-2" data-testid="ServiceOwner">
+            {t("owner", "Owner")}:{" "}
+            <span className="text-gray-500 font-bold">{serviceOwner}</span>
+          </div>
+          <div className="flex gap-2">
             <IoLocation />
-            <Flex direction={"column"}>
-              <Text data-testid="StreetName">{location.streetName}</Text>
-              <Text>
-                <Text data-testid="LocationCity">{location.city}</Text>-
-                <Text data-testid="StreetNumber">{location.streetNumber}</Text>
-              </Text>
-            </Flex>
-          </HStack>
+            <div className="flex flex-col">
+              <span data-testid="StreetName">{location.streetName}</span>
+              <span>
+                <span data-testid="LocationCity">{location.city}</span>-
+                <span data-testid="StreetNumber">{location.streetNumber}</span>
+              </span>
+            </div>
+          </div>
           {contacts && (
             <>
               {contacts.phone && (
                 <HStack>
                   <IoCall />
-                  <Text data-testid="ContactPhone">{contacts.phone}</Text>
+                  <span data-testid="ContactPhone">{contacts.phone}</span>
                 </HStack>
               )}
               {contacts.email && (
                 <HStack>
                   <MdEmail />
-                  <Text data-testid="ContactEmail">{contacts.email}</Text>
+                  <span data-testid="ContactEmail">{contacts.email}</span>
                 </HStack>
               )}
             </>
           )}
-        </Flex>
-      </Flex>
-    </Flex>
+        </div>
+      </div>
+    </div>
   );
 };

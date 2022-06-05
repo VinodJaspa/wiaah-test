@@ -13,3 +13,6 @@ export * from "./CancelIcon";
 export * from "./AddIcon";
 export * from "./ArrowLeftIcon";
 export * from "./SearchIcon";
+export * from "./CalenderIcon";
+export * from "./TimeIcon";
+export * from "./NoteIcon";

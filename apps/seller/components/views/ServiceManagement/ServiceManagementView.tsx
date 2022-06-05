@@ -2,13 +2,14 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiTicket } from "react-icons/hi";
+import { MdPending } from "react-icons/md";
+import { RiBookLine } from "react-icons/ri";
 import { SettingsSectionType } from "types";
 import {
-  AffiliationIcon,
-  AffiliationManagementSection,
-  ProductManagementSection,
   SectionsLayout,
   BookingsSection,
+  BookingsHistory,
+  PendingAppointmentsSection,
 } from "ui";
 
 export const ServiceManagementView = () => {
@@ -39,11 +40,29 @@ export const ServiceManagementView = () => {
 const sections: SettingsSectionType[] = [
   {
     panelName: {
-      translationKey: "bookings",
-      fallbackText: "bookings",
+      translationKey: "my_rendez_vous",
+      fallbackText: "My rendez-vous",
     },
     panelIcon: HiTicket,
-    panelUrl: "/bookings",
+    panelUrl: "/my-rendez-vous",
     panelComponent: <BookingsSection />,
+  },
+  {
+    panelName: {
+      translationKey: "bookings",
+      fallbackText: "Bookings",
+    },
+    panelIcon: RiBookLine,
+    panelUrl: "/bookings",
+    panelComponent: <BookingsHistory />,
+  },
+  {
+    panelName: {
+      translationKey: "pending_appointments",
+      fallbackText: "Pending Appointments",
+    },
+    panelIcon: MdPending,
+    panelUrl: "/pending-appointments",
+    panelComponent: <PendingAppointmentsSection />,
   },
 ];

@@ -1,4 +1,4 @@
-import { products } from "placeholder";
+import { currencices, orderStatus, payments, products } from "placeholder";
 import { FormOptionType, OrdersFilter, OrdersStatus, PriceType } from "types";
 import { randomNum } from "utils";
 
@@ -11,16 +11,6 @@ type OrderInfoData = {
   orderName: string;
   payment: string;
 };
-const currencices: string[] = ["USD", "CHF", "EUR"];
-
-const payments: string[] = ["paypal", "credit card", "bank transfer"];
-
-const orderStatus: OrdersStatus[] = [
-  "canceled",
-  "completed",
-  "continuing",
-  "restitue",
-];
 
 const orders: OrderInfoData[] = [...Array(10)].map(() => ({
   customer: "customer",

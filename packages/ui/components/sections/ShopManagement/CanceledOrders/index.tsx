@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BsFilePdfFill } from "react-icons/bs";
-import { OrderedProductStatus, PriceType } from "types";
+import { PriceType } from "types";
 import {
   Button,
   Table,

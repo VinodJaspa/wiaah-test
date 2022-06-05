@@ -12,3 +12,4 @@ export * from "./cartSummary";
 export * from "./Localizations";
 export * from "./Search";
 export * from "./TypeOfAccount";
+export * from "./staticData";

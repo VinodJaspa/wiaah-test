@@ -7,20 +7,21 @@
   "devDependencies": {
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
+    "api": "*",
     "config": "*",
+    "dto": "*",
+    "hooks": "*",
+    "placeholder": "*",
+    "state": "*",
     "tsconfig": "*",
     "types": "*",
-    "api": "*",
-    "validation": "*",
+    "typescript": "^4.5.3",
     "utils": "*",
-    "hooks": "*",
-    "state": "*",
-    "placeholder": "*",
-    "dto": "*",
-    "typescript": "^4.5.3"
+    "validation": "*"
   },
   "dependencies": {
     "classnames": "^2.3.1",
+    "qrcode.react": "^3.0.2",
     "react-icons": "^4.3.1",
     "react-responsive": "^9.0.0-beta.6",
     "react-simple-image-slider": "^2.3.0",
