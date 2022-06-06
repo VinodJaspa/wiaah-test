@@ -1,4 +1,4 @@
-import { Field, Form, Formik } from "formik";
+import { Form, Formik } from "formik";
 import React from "react";
 import { Button, Avatar, SectionHeader } from "ui";
 import { useTranslation } from "react-i18next";
@@ -15,30 +15,29 @@ export const BlocklistSection: React.FC<BlocklistSectionProps> = ({}) => {
       <Formik initialValues={{}} onSubmit={() => {}}>
         {() => (
           <Form className="h-full">
-            <div className="h-full flex flex-col justify-between">
+            <div className="h-full flex flex-col gap-4 justify-between">
               <div className="flex gap-4 flex-col">
-                <div className="font-bold w-full justify-between">
+                <div className="font-bold w-full flex justify-between">
                   <span>{t("name", "Name")}</span>
                   <span>{t("status", "Status")}</span>
                 </div>
                 {blockList.map((user, i) => (
-                  <div className="flex items-center gap-2 justify-between">
+                  <div
+                    key={i}
+                    className="flex items-center gap-2 justify-between"
+                  >
                     <div className="flex items-center gap-2">
-                      <Avatar
-                        name={user.name}
-                        bgColor={"black"}
-                        photoSrc={user.photo}
-                      />
+                      <Avatar name={user.name} photoSrc={user.photo} />
                       <span>{user.name}</span>
                     </div>
-                    <Button colorScheme={"danger"}>
+                    <Button className="w-24" colorScheme={"danger"}>
                       {t("unfollow", "Unfollow")}
                     </Button>
                   </div>
                 ))}
               </div>
               <div className="flex items-center justify-end w-full">
-                <Button className="px-8">{t("save", "Save")}</Button>
+                <Button className="w-24">{t("save", "Save")}</Button>
               </div>
             </div>
           </Form>

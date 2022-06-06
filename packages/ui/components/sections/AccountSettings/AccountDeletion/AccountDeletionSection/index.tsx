@@ -39,7 +39,7 @@ export const AccountDeletionSection: React.FC = () => {
           </div>
           <ModalExtendedWrapper modalKey="5">
             <ModalButton>
-              <Button className="w-24" colorScheme="danger">
+              <Button className="px-7" colorScheme="danger">
                 {t("delete", "Delete")}
               </Button>
             </ModalButton>

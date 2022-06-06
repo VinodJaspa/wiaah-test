@@ -2,9 +2,10 @@ import { Formik, Form } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiCalendarEdit } from "react-icons/bi";
-import { PriceType } from "types";
-import { DateInput, FormikInput, OrderContext } from "ui";
 import {
+  DateInput,
+  FormikInput,
+  OrderContext,
   Divider,
   Menu,
   MenuButton,
@@ -12,10 +13,6 @@ import {
   Select,
   SelectOption,
   TranslationText,
-} from "ui";
-import { getRandomImage } from "ui/placeholder";
-import { randomNum } from "ui/components/helpers";
-import {
   Accordion,
   AccordionButton,
   AccordionItem,
@@ -27,11 +24,27 @@ import {
   Td,
   Th,
   Tr,
+  EditIcon,
+  ModalExtendedWrapper,
+  Modal,
+  ModalContent,
+  ModalButton,
+  ModalCloseButton,
+  statusOptions,
+  HStack,
+  ModalOverlay,
+  CloseIcon,
+  CancelIcon,
 } from "ui";
-import { statusOptions } from "ui";
+import { getRandomImage } from "placeholder";
+import { randomNum } from "utils";
+import { useModalDisclouser, useAccountType } from "hooks";
+import { OrderedProductStatus, PriceType } from "types";
+import { useUpdateProductStatus } from "ui";
+import { UpdateProductStatusDto } from "dto";
 
 export const OrderDetailsSection: React.FC = () => {
-  const { orderId, cancelViewOrder } = React.useContext(OrderContext);
+  const { orderId, cancelViewOrder, shopping } = React.useContext(OrderContext);
   const { t } = useTranslation();
 
   const order = {
@@ -60,7 +73,6 @@ export const OrderDetailsSection: React.FC = () => {
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
           <span className="text-4xl font-bold">{t("orders", "Orders")}</span>
-
           <div className="flex gap-2 items-center">
             <Button onClick={cancelViewOrder}>{t("go_back", "Go Back")}</Button>
             <Button>{t("download_pdf", "Download PDF")}</Button>
@@ -116,13 +128,13 @@ export const OrderDetailsSection: React.FC = () => {
         <Accordion>
           <div className="flex flex-col gap-4">
             <AccordionItem itemkey={"1"}>
-              <AccordionButton>
-                <div className="p-2 cursor-pointer bg-primary text-white flex w-full justify-between">
+              <AccordionButton className="text-lg text-white">
+                <div className="p-2 cursor-pointer pr-8 bg-primary text-white flex w-full justify-between">
                   <span>{t("order_id", "Order ID")}</span>
                 </div>
               </AccordionButton>
               <AccordionPanel>
-                <div className="font-bold shadow-lg grid grid-cols-2 gap-2 p-2">
+                <div className="font-bold shadow-lg grid grid-cols-2 gap-2 py-2">
                   <span>
                     {t("order_id", "Order ID")}:{" "}
                     <span className="font-normal">{order.orderId}</span>
@@ -139,8 +151,8 @@ export const OrderDetailsSection: React.FC = () => {
               </AccordionPanel>
             </AccordionItem>
             <AccordionItem itemkey={"2"}>
-              <AccordionButton>
-                <div className="p-2 cursor-pointer bg-primary text-white flex w-full justify-between">
+              <AccordionButton className="text-white text-lg">
+                <div className="p-2 cursor-pointer pr-8 bg-primary text-white flex w-full justify-between">
                   <span>{t("shipping_details", "Shipping Details")}</span>
                 </div>
               </AccordionButton>
@@ -192,7 +204,10 @@ export const OrderDetailsSection: React.FC = () => {
             <Th>{t("quantity", "Quantity")}</Th>
             <Th>{t("price", "Price")}</Th>
             <Th>{t("total", "Total")}</Th>
-            <Th className="pr-0 text-right">{t("Status", "Status")}</Th>
+            <Th>{shopping ? t("track", "Track") : t("Status", "Status")}</Th>
+            <Th>
+              {shopping ? t("cancelation", "Cancelation") : t("edit", "Edit")}
+            </Th>
           </Tr>
           <TBody>
             {order.products.map((prod, i) => (
@@ -213,10 +228,30 @@ export const OrderDetailsSection: React.FC = () => {
                   <PriceDisplay priceObject={prod.total} />
                 </Td>
                 <Td className="pr-0">
-                  <div className="w-full flex justify-end">
-                    <div className="px-4 py-2 w-fit rounded bg-primary text-white">
-                      {prod.status}
-                    </div>
+                  <div className="w-full flex justify-center">
+                    <Button>
+                      {shopping ? <>{t("track", "Track")}</> : <>prod.status</>}
+                    </Button>
+                  </div>
+                </Td>
+                <Td>
+                  <div className="w-full flex justify-center items-center">
+                    {shopping ? (
+                      <>
+                        <CancelIcon className="text-xl cursor-pointer" />
+                      </>
+                    ) : (
+                      <ModalExtendedWrapper modalKey="34">
+                        <ModalButton>
+                          <EditIcon className="text-xl cursor-pointer" />
+                        </ModalButton>
+                        <UpdateProductStatusModal
+                          status={prod.status}
+                          productId={prod.id}
+                          trackingLink={prod.trackingLink}
+                        />
+                      </ModalExtendedWrapper>
+                    )}
                   </div>
                 </Td>
               </Tr>
@@ -228,16 +263,102 @@ export const OrderDetailsSection: React.FC = () => {
   );
 };
 
+export const UpdateProductStatusModal: React.FC<UpdateProductStatusDto> = ({
+  productId,
+  status,
+  trackingLink,
+}) => {
+  const { isOpen, handleClose, handleOpen } = useModalDisclouser({});
+  const { mutate, isLoading } = useUpdateProductStatus({
+    onSuccess: handleClose,
+  });
+  const { t } = useTranslation();
+  return (
+    <Modal isOpen={isOpen} onClose={handleClose} onOpen={handleOpen}>
+      <ModalOverlay />
+      <ModalContent className="flex flex-col gap-12 min-w-[min(100%,40rem)]">
+        <HStack className="justify-between">
+          <span className="text-2xl font-semibold">
+            {t("update_product_status", "Update Product Status")}
+          </span>
+          <ModalCloseButton>
+            <span>
+              <CloseIcon className="text-2xl cursor-pointer" />
+            </span>
+          </ModalCloseButton>
+        </HStack>
+        <Formik<UpdateProductStatusDto>
+          initialValues={{
+            productId,
+            status,
+            trackingLink,
+          }}
+          onSubmit={(data) => {
+            mutate(data);
+          }}
+        >
+          {({ setFieldValue }) => {
+            return (
+              <Form className="flex flex-col gap-12">
+                <div>
+                  <span className="px-2 text-sm text-gray-500">
+                    {t("select_status", "Select Status")}
+                  </span>
+                  <Select
+                    flushed
+                    onOptionSelect={(opt) => setFieldValue("status", opt)}
+                  >
+                    <SelectOption value={"confirmed"}>
+                      {t("confirmed", "Confirmed")}
+                    </SelectOption>
+                    <SelectOption value={"canceled"}>
+                      {t("canceled", "Canceled")}
+                    </SelectOption>
+                    <SelectOption value={"pending"}>
+                      {t("pending", "Pending")}
+                    </SelectOption>
+                  </Select>
+                </div>
+
+                <FormikInput
+                  label={t("order_tracking_link", "Order Tracking Link")}
+                  name="trackingLink"
+                  placeholder={t(
+                    "add_a_tracking_link_for_this_order",
+                    "add a tracking link for this order"
+                  )}
+                />
+
+                <HStack className="justify-end">
+                  <ModalCloseButton>
+                    <Button colorScheme="white">{t("close", "Close")}</Button>
+                  </ModalCloseButton>
+                  <Button loading={isLoading} type="submit">
+                    {t("update_status", "Update Status")}
+                  </Button>
+                </HStack>
+              </Form>
+            );
+          }}
+        </Formik>
+      </ModalContent>
+    </Modal>
+  );
+};
+
 type ProductType = {
+  id: string;
   productImage: string;
   productName: string;
   quantity: number;
   price: PriceType;
   total: PriceType;
-  status: string;
+  status: OrderedProductStatus;
+  trackingLink: string;
 };
 
 const products: ProductType[] = [...Array(15)].map((_, i) => ({
+  id: String(i),
   productImage: getRandomImage(),
   productName: `product ${i}`,
   quantity: randomNum(10),
@@ -250,4 +371,5 @@ const products: ProductType[] = [...Array(15)].map((_, i) => ({
     currency: "USD",
   },
   status: "confirmed",
+  trackingLink: "link",
 }));

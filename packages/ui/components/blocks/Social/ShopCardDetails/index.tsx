@@ -3,7 +3,7 @@ import { Rate } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ProfileInfo } from "types/market/Social";
-import { NumberShortner } from "ui/components/helpers/numberShortener";
+import { NumberShortner } from "utils";
 
 export interface ShopCardDetailsProps {
   user: ProfileInfo;
@@ -52,7 +52,6 @@ export const ShopCardDetails: React.FC<ShopCardDetailsProps> = ({
           bgColor={"primary.main"}
           colorScheme={"primary"}
           onClick={handleFollowClick}
-          // pr="0px"
           textTransform={"capitalize"}
         >
           {t("follow", "follow")}

@@ -18,7 +18,7 @@ import {
   FaTimes,
   FaUserAlt,
 } from "react-icons/fa";
-import { BreadCrumbLink } from "../../BreadCrumb";
+import { BreadCrumbLink } from "ui";
 import { useRouter } from "next/router";
 import { shopRouting } from "uris";
 export interface Step {

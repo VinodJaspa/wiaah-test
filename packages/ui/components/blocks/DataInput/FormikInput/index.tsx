@@ -1,4 +1,3 @@
-// import {  } from "@chakra-ui/react";
 import { ErrorMessage, Field } from "formik";
 import React from "react";
 import { HtmlDivProps, TranslationTextType, HtmlInputProps } from "types";

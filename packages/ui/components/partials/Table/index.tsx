@@ -1,3 +1,4 @@
+import { useResponsive } from "hooks";
 import React from "react";
 import {
   HtmlTableProps,
@@ -46,7 +47,15 @@ export const TableContainer: React.FC<TableContainer> = ({
   className,
   ...props
 }) => {
-  return <div className={`${className || ""} overflow-x-scroll`} {...props} />;
+  const { isMobile } = useResponsive();
+  return (
+    <div
+      className={`${className || ""} overflow-x-scroll ${
+        isMobile ? "" : "noscroll"
+      }`}
+      {...props}
+    />
+  );
 };
 
 export interface TBody extends HtmlTableBodyProps {}

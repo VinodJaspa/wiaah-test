@@ -14,7 +14,7 @@ import {
 export const SocialProfileInfo: ShopSocialProfileInfo = {
   id: "1",
   name: "Wiaah",
-  accountType: "seller",
+  accountType: "buyer",
   publications: 100,
   subscribers: 40,
   subscriptions: 23,
@@ -22,7 +22,7 @@ export const SocialProfileInfo: ShopSocialProfileInfo = {
   countryCode: "CH",
   verifed: true,
   location: "Switzerland, Geneva",
-  public: false,
+  public: true,
   bio: "Lorem Ipsum is simply dummy text of the printing Lorem Ipsum is simply dummy text of the printing ",
   links: ["https://www.instagram.com"],
   isFollowed: false,

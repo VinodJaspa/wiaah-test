@@ -9,6 +9,9 @@
     "babel-preset-es2015": "^6.24.1",
     "config": "*",
     "tsconfig": "*",
+    "dto": "*",
+    "utils": "*",
+    "placeholder": "*",
     "typescript": "^4.5.3"
   },
   "dependencies": {

@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { HtmlDivProps, PriceType } from "types";
 import { getRandomImage } from "ui/placeholder";
 import { SectionContext } from "state";
-import { randomNum } from "../../../../helpers";
+import { randomNum } from "utils";
 import {
   Divider,
   PriceDisplay,
@@ -16,9 +16,13 @@ import {
   Th,
   Tr,
   TableContainer,
+  HStack,
+  ArrowLeftIcon,
+  AddIcon,
+  ModalExtendedWrapper,
+  ModalButton,
+  AskForReturnModal,
 } from "ui";
-
-import { BsChevronLeft } from "react-icons/bs";
 
 export interface MyReturnsSectionProps {}
 
@@ -27,22 +31,30 @@ export const MyReturnsSection: React.FC<MyReturnsSectionProps> = () => {
   return (
     <div className="flex flex-col gap-4">
       <SectionHeader sectionTitle={t("my_returns", "My Returns")} />
-      <Select
-        className="text-2xl w-96"
-        placeholder={t("filter_returns", "Filter Returns")}
-      >
-        <SelectOption value={"returnPending"}>
-          {t("return", "Return")} {t("pending", "Pending")}
-        </SelectOption>
-        <SelectOption value={"returnAccepted"}>
-          {t("return", "Return")} {t("accepted", "Accepted")}
-        </SelectOption>
-        <SelectOption value={"returnRejected"}>
-          {t("return", "Return")} {t("rejected", "rejceted")}
-        </SelectOption>
-      </Select>
+      <HStack className="justify-between">
+        <Select
+          className="text-2xl w-96"
+          placeholder={t("filter_returns", "Filter Returns")}
+        >
+          <SelectOption value={"returnPending"}>
+            {t("return", "Return")} {t("pending", "Pending")}
+          </SelectOption>
+          <SelectOption value={"returnAccepted"}>
+            {t("return", "Return")} {t("accepted", "Accepted")}
+          </SelectOption>
+          <SelectOption value={"returnRejected"}>
+            {t("return", "Return")} {t("rejected", "rejceted")}
+          </SelectOption>
+        </Select>
+        <ModalExtendedWrapper>
+          <ModalButton>
+            <AddIcon className="text-xl cursor-pointer" />
+          </ModalButton>
+          <AskForReturnModal />
+        </ModalExtendedWrapper>
+      </HStack>
       <TableContainer>
-        <Table className="w-full">
+        <Table ThProps={{ className: "whitespace-nowrap" }} className="w-full">
           <Tr>
             <Th>{t("product_image", "Product Image")}</Th>
             <Th>{t("product_name", "Product Name")}</Th>
@@ -139,7 +151,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   return isMobile ? (
     <div {...props} className={`${className || ""} flex flex-col gap-2`}>
       <div className="w-full text-2xl items-center py-2 flex justify-between">
-        <BsChevronLeft onClick={onReturn} />
+        <ArrowLeftIcon onClick={onReturn} />
         <span>{sectionTitle}</span>
         <span className="text-base">{children}</span>
       </div>

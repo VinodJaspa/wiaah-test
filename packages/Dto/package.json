@@ -1,0 +1,14 @@
+{
+  "name": "dto",
+  "version": "0.0.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "license": "MIT",
+  "devDependencies": {
+    "config": "*",
+    "tsconfig": "*",
+    "types": "*",
+    "typescript": "^4.5.3"
+  },
+  "dependencies": {}
+}

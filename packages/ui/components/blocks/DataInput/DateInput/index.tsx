@@ -1,6 +1,6 @@
 import React from "react";
 import { MdArrowLeft, MdArrowRight } from "react-icons/md";
-import { getTimeInAmPm } from "ui/components/helpers/getTimeInAmPm";
+import { getTimeInAmPm } from "utils";
 
 export interface DateInputProps {
   onDaySelect?: (UTCDateString: string) => any;

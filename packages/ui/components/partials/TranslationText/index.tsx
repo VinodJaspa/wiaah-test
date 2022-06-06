@@ -9,17 +9,19 @@ export interface TranslationTextProps
     HtmlHTMLAttributes<HTMLParagraphElement>,
     HTMLParagraphElement
   > {
-  translationObject: TranslationTextType;
+  translationObject: TranslationTextType | string;
 }
 
 export const TranslationText: React.FC<TranslationTextProps> = ({
-  translationObject: { fallbackText, translationKey },
+  translationObject,
   ...props
 }) => {
   const { t } = useTranslation();
   return (
     <span {...props} className={`${props.className}`}>
-      {t(translationKey, fallbackText)}
+      {typeof translationObject === "object"
+        ? t(translationObject.translationKey, translationObject.fallbackText)
+        : translationObject}
     </span>
   );
 };

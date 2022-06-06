@@ -17,7 +17,7 @@ export const FinancialCard: React.FC<FinancalCardProps> = ({
       {...props}
       className={`${
         className || ""
-      } text-white bg-gradient-to-r p-4 from-cyan-400 to-primary flex flex-col gap-4`}
+      } text-white bg-primary p-4 flex flex-col gap-4`}
     >
       <span>{title}</span>
       <span className="font-bold">

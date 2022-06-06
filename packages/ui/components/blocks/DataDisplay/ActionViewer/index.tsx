@@ -43,9 +43,9 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
     <>
       {action && (
         <FloatingContainer
-          h="100%"
-          maxW="35rem"
-          pr={interactionPos === "in" ? "0rem" : "6rem"}
+          className={`${
+            interactionPos === "in" ? "pr-0" : "pr-24"
+          } h-full max-w-[35rem]`}
           items={[
             {
               label: (
@@ -77,7 +77,7 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
               right: "0.5rem",
               top: "center",
               floatingItemProps: {
-                translateY: "-50%",
+                className: "-translate-y-1/2",
               },
             },
           ]}
@@ -107,7 +107,7 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
                   bottom: true,
                   left: true,
                   floatingItemProps: {
-                    w: "100%",
+                    className: "w-full",
                   },
                 },
                 {

@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { MdClose, MdArrowLeft, MdArrowRight } from "react-icons/md";
 import { Spacer, Divider, Button } from "ui";
-import { getTimeInAmPm } from "ui/components/helpers/getTimeInAmPm";
+import { getTimeInAmPm } from "utils";
 
 export interface ServiceBookingCalanderProps {
   month: Month;

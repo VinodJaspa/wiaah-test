@@ -22,6 +22,7 @@ import {
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { useResponsive, useAccountType } from "hooks";
+import Link from "next/link";
 import { HtmlDivProps, TranslationTextType } from "types";
 import { runIfFn } from "utils";
 export interface HeaderNavLink {
@@ -49,8 +50,6 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
   const { isMobile } = useResponsive();
   const { OpenModal } = useNewPost();
 
-  console.log(accountType);
-
   return (
     <div
       {...props}
@@ -74,7 +73,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
       )}
 
       <div className="flex items-center gap-4 md:8 mt-3 p-2">
-        <FiPlusSquare className="text-2xl md:text-4xl" onClick={OpenModal} />
+        <FiPlusSquare className="text-xl md:text-4xl" onClick={OpenModal} />
         <FloatingContainer
           items={[
             {
@@ -89,10 +88,10 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
           ]}
         >
           <NotifiactionsMenu>
-            <MdOutlineNotifications className="text-2xl md:text-4xl h-[1.2em] w-[1.2em]" />
+            <MdOutlineNotifications className="text-xl md:text-4xl h-[1.2em] w-[1.2em]" />
           </NotifiactionsMenu>
         </FloatingContainer>
-        {!isMobile && <HiOutlineUsers className="text-2xl md:text-4xl" />}
+        {!isMobile && <HiOutlineUsers className="text-xl md:text-4xl" />}
 
         <FloatingContainer
           onClick={() => router.push("/chat")}
@@ -108,7 +107,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             },
           ]}
         >
-          <HiOutlineMail className="text-2xl md:text-4xl" />
+          <HiOutlineMail className="text-xl md:text-4xl" />
         </FloatingContainer>
         <ShoppingCart
           items={[
@@ -140,7 +139,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             <MenuButton>
               <div className="flex flex-col justify-center">
                 <Avatar
-                  className="h-[1.6em] w-[1.6em]"
+                  className="h-[2.5em] w-[2.5em] bg-black"
                   showBorder={false}
                   name="wiaah"
                   photoSrc="/wiaah_logo.png"
@@ -149,14 +148,12 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             </MenuButton>
             <MenuList>
               {headerNavLinks.length > 0
-                ? headerNavLinks.map((link, i) => (
-                    <MenuItem>
+                ? headerNavLinks.map(({ icon, link }, i) => (
+                    <MenuItem onClick={() => router.replace(link.href)}>
                       <HStack>
-                        <span className="text-4xl">
-                          {runIfFn(link.icon, {})}
-                        </span>
+                        <span className="text-4xl">{runIfFn(icon, {})}</span>
                         <span className="capitalize">
-                          <TranslationText translationObject={link.link.name} />
+                          <TranslationText translationObject={link.name} />
                         </span>
                       </HStack>
                     </MenuItem>

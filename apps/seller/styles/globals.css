@@ -18,7 +18,7 @@
   scroll-behavior: smooth;
 }
 .thinScroll::-webkit-scrollbar {
-  width: 5px;
+  width: 1px;
   border-radius: 2rem;
 }
 

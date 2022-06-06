@@ -3,7 +3,7 @@ import { HtmlInputProps } from "types";
 import { Input } from "ui";
 
 export interface FileInputProps {
-  id: string;
+  id?: string;
   accept?: "video" | "picture" | "both" | "all";
   innerProps?: HtmlInputProps;
   multiple?: boolean;
@@ -18,7 +18,7 @@ export const FileInput: React.FC<FileInputProps> = ({
 }) => {
   let props = innerProps;
   if (innerProps) {
-    const { id, ...rest } = innerProps;
+    const { id: _, ...rest } = innerProps;
     props = rest;
   }
   return (

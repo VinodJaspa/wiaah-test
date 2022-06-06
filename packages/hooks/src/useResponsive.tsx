@@ -4,7 +4,10 @@ export const useResponsive = () => {
   const [screenWidth, setScreenWidth] = React.useState<number>(0);
 
   function HandleScreenSize() {
-    if (window) {
+    if (
+      typeof window !== "undefined" &&
+      typeof window.innerWidth !== "undefined"
+    ) {
       setScreenWidth(window.innerWidth);
     }
   }

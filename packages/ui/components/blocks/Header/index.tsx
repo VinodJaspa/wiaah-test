@@ -1,6 +1,6 @@
 import React from "react";
-import { t } from "i18next";
-import { SidebarContext } from "ui/components/helpers";
+// import { useBreakpointValue } from "hooks";
+
 import {
   FaSearch,
   FaUser,
@@ -8,20 +8,21 @@ import {
   FaAlignJustify,
   FaChevronDown,
 } from "react-icons/fa";
-import { MultiStepDrawer, ShoppingCart, SelectDropdown, Container } from "ui";
+import {
+  MultiStepDrawer,
+  ShoppingCart,
+  SelectDropdown,
+  Container,
+  Step,
+  Button,
+} from "ui";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
-import { ShoppingCartItem } from "ui/types/shoppingCart/shoppingCartItem.interface";
-import { ShoppingCartItemsState } from "ui/state";
+import { ShoppingCartItem } from "types";
+import { ShoppingCartItemsState } from "state";
 import { useTranslation } from "react-i18next";
-import {
-  Flex,
-  Link as ChakraLink,
-  useBreakpointValue,
-  Button,
-} from "@chakra-ui/react";
-import { NavLink } from "types/sharedTypes/misc/NavLink";
-import { Step } from "../Drawers";
+import { NavLink } from "types";
+import { useBreakpointValue } from "@chakra-ui/react";
 
 export interface HeaderProps {
   categories: NavLink[];
@@ -86,7 +87,7 @@ export const Header: React.FC<HeaderProps> = ({ categories }) => {
       {/* Top Navbar */}
 
       <Container>
-        <div className="w-full h-fit yp-4 gap-4 items-center justify-between flex-col lg:flex-row">
+        <div className="w-full h-fit flex py-4 gap-4 items-center justify-between flex-col lg:flex-row">
           <div className="h-20 cursor-pointer">
             <Link href="/">
               <img
@@ -97,21 +98,14 @@ export const Header: React.FC<HeaderProps> = ({ categories }) => {
             </Link>
           </div>
 
-          <div className="border-primary rounded-lg border-[1px] flex-col sm:flex-row max-w-[40rem] justify-items-stretch">
+          <div className="border-primary rounded-lg border-[1px] flex-col sm:flex-row max-w-[40rem] justify-items-stretch flex">
             <input
               className="w-60 appearance-none rounded-l-lg border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none"
               placeholder={t("Search", "Search")}
             />
 
             <SelectDropdown
-              rounded={"none"}
-              // color="white"
-              borderColor="primary.main"
-              borderLeftWidth={"1px"}
-              maxW={"max-content"}
-              className="appearance-none border-none border-gray-600 bg-gray-700  px-2.5 text-white outline-none focus:outline-none"
-              // className="w-60 border-gray-600"
-              textTransform={"capitalize"}
+              className="appearance-none  border-l-[1px] border-l-primary border-none border-gray-600 bg-gray-700  px-2.5 text-white outline-none focus:outline-none"
               options={categories.map((cate, i) => ({
                 name: t(cate.name.translationKey, cate.name.translationKey),
                 value: cate.name.fallbackText,
@@ -120,12 +114,7 @@ export const Header: React.FC<HeaderProps> = ({ categories }) => {
             <label htmlFor="Category" className="relative flex">
               <FaChevronDown className="pointer-events-none absolute inset-y-1/3 right-3 h-4 w-4 text-green-400" />
             </label>
-            <Button
-              roundedLeft={"0px"}
-              bgColor={"primary"}
-              fontSize="lg"
-              p="0.5rem"
-            >
+            <Button className="rounded-none text-xl">
               <FaSearch className="h-5 w-5 text-white" />
             </Button>
           </div>
@@ -167,16 +156,10 @@ export const Header: React.FC<HeaderProps> = ({ categories }) => {
             {!isMobile &&
               categories.length > 0 &&
               categories.map((cate, i) => (
-                <li key={i}>
-                  <ChakraLink
-                    textTransform={"capitalize"}
-                    colorScheme={"primary"}
-                    _hover={{ color: "primary.main" }}
-                    as={Link}
-                    href={cate.destination}
-                  >
+                <li className="capitalize hover:text-primary" key={i}>
+                  <Link href={cate.destination}>
                     {t(cate.name.translationKey, cate.name.fallbackText)}
-                  </ChakraLink>
+                  </Link>
                 </li>
               ))}
           </ul>

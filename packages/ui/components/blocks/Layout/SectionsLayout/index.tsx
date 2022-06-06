@@ -36,6 +36,7 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
 
   const CurrentSection = (): React.ReactElement => {
     if (sectionIdx > -1) {
+      console.log(sections[sectionIdx]);
       return sections[sectionIdx].panelComponent;
     } else {
       if (isMobile)

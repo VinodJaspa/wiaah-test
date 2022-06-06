@@ -1,6 +1,5 @@
 import React from "react";
 import { PostCardInfo } from "types/market/Social";
-import { Flex, Text } from "@chakra-ui/react";
 import {
   ListWrapper,
   ListWrapperProps,
@@ -8,8 +7,6 @@ import {
   GridWrapper,
   PostAttachment,
   useNewsFeedPostPopup,
-  SocialPostsCommentsDrawer,
-  usePostsCommentsDrawer,
   NewsfeedPostDetailsPopup,
 } from "ui";
 import { NumberShortner } from "ui/components/helpers";
@@ -60,16 +57,9 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
                 type={post.postInfo.attachments[0].type}
                 footer={
                   post.postInfo.views ? (
-                    <Text
-                      w="100%"
-                      px="1rem"
-                      textAlign={"start"}
-                      fontSize={"lg"}
-                      fontWeight="bold"
-                      color="white"
-                    >
+                    <span className="w-full px-4 text-left text-xl font-bold text-white">
                       {NumberShortner(post.postInfo.views)}
-                    </Text>
+                    </span>
                   ) : undefined
                 }
               />

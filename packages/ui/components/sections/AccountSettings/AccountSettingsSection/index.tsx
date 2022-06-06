@@ -25,12 +25,20 @@ import {
   Avatar,
   SelectProps,
   SectionHeader,
+  InputGroup,
+  InputLeftElement,
+  DateFormInput,
 } from "ui";
+import { useAccountType } from "hooks";
+import { accountTypes } from "ui";
 
 export interface AccountSettingsSectionProps {}
 
 export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
   ({}) => {
+    const { accountType } = useAccountType();
+    const isSeller = accountType === "seller";
+    const isBuyer = accountType === "buyer";
     const { t } = useTranslation();
     const { uploadImage } = useFileUploadModal();
 
@@ -79,22 +87,41 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                   />
                 </div>
                 {/* username */}
-                <FormikInput
-                  name="companyRegisterationNum"
-                  label={{
-                    translationKey: "company_registration_number",
-                    fallbackText: "Company registration number",
-                  }}
-                />
+                {isBuyer && (
+                  <FormikInput
+                    name="typeOfAccount"
+                    as={Select}
+                    placeholder={t("type_of_account", "Type Of Account") + "*"}
+                  >
+                    {accountTypes.map(({ value, name }, i) => (
+                      <SelectOption key={value + i} value={value}>
+                        {t(name.translationKey, name.fallbackText)}
+                      </SelectOption>
+                    ))}
+                  </FormikInput>
+                )}
+                {isSeller && (
+                  <FormikInput
+                    name="companyRegisterationNum"
+                    label={{
+                      translationKey: "company_registration_number",
+                      fallbackText: "Company registration number",
+                    }}
+                  />
+                )}
 
                 <div className="flex flex-col">
                   <span>{t("username", "Username")}</span>
-                  <div className="flex rounded-lg items-center border-2 w-fit border-gray-300">
-                    <span className="bg-slate-100 border-r-[1px] border-r-slate-300 px-2 w-fit">
-                      <span className="text-sm text-slate-500">wiaah.com/</span>
-                    </span>
+                  <InputGroup className="flex rounded-lg items-center border-2 w-fit border-gray-300">
+                    <InputLeftElement>
+                      <span className="bg-slate-100 border-r-[1px] border-r-slate-300 w-fit">
+                        <span className="text-sm text-slate-500">
+                          wiaah.com/
+                        </span>
+                      </span>
+                    </InputLeftElement>
                     <FormikInput className="border-0" name="username" />
-                  </div>
+                  </InputGroup>
                 </div>
 
                 {/* profile picture */}
@@ -123,20 +150,22 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                 </div>
 
                 {/* bio  */}
-                <div className="flex flex-col">
-                  <FormikInput
-                    label={t("bio", "Bio")}
-                    className="thinScroll"
-                    as={Textarea}
-                    name="bio"
-                  />
-                  <span className="text-slate-500" color={"slategray"}>
-                    {t(
-                      "brief_descrption",
-                      "Brief Description for your profile, URLs are hyperlinked"
-                    )}
-                  </span>
-                </div>
+                {isSeller && (
+                  <div className="flex flex-col">
+                    <FormikInput
+                      label={t("bio", "Bio")}
+                      className="thinScroll"
+                      as={Textarea}
+                      name="bio"
+                    />
+                    <span className="text-slate-500" color={"slategray"}>
+                      {t(
+                        "brief_descrption",
+                        "Brief Description for your profile, URLs are hyperlinked"
+                      )}
+                    </span>
+                  </div>
+                )}
 
                 {/* personal inforomation */}
                 <div className="flex flex-col">
@@ -176,14 +205,13 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                         }
                       }}
                       name="country"
-                      // initialValue={"Egypt"}
                       components={Country.getAllCountries().map(
                         (country, i) => ({
                           name: country.name,
                           value: country.isoCode,
                           comp: (
                             <Prefix
-                              //@ts-ignore
+                              // @ts-ignore
                               Prefix={<FlagIcon code={country.isoCode} />}
                             >
                               {country.name}
@@ -240,114 +268,155 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                     />
                     <ErrorMessage name="city" />
                   </div>
-                  <FormikInput<SelectProps>
-                    label={t("shop_type", "Shop Type")}
-                    as={Select}
-                    onOptionSelect={(v) => setFieldValue("shopType", v)}
-                    name="shopType"
-                  >
-                    {shopTypeOptions.map((opt, i) => (
-                      <SelectOption value={opt.value} key={i}>
-                        <TranslationText translationObject={opt.name} />
-                      </SelectOption>
-                    ))}
-                  </FormikInput>
-                  <FormikInput<SelectProps>
-                    onOptionSelect={(v) => setFieldValue("clientType", v)}
-                    label={t("client_type", "Client Type")}
-                    as={Select}
-                    name="clientType"
-                  >
-                    <SelectOption value="professional">
-                      {t("professional", "Professional")}
-                    </SelectOption>
-                    <SelectOption value="individual">
-                      {t("individual", "Individual")}
-                    </SelectOption>
-                  </FormikInput>
-                </div>
-
-                <div className="flex gap-4">
-                  <span>{t("store_for", "Store For")}</span>
-                  <div className="grid grid-cols-4 gap-x-2">
-                    <div className="flex gap-2 items-center">
-                      <Checkbox
-                        checked={(() => {
-                          if (values.storeFor) {
-                            return storeForOptions.every((opt) => {
-                              if (!values.storeFor) return false;
-                              const idx = values.storeFor.findIndex(
-                                (value) => value === opt.value
-                              );
-                              return idx > -1;
-                            });
-                          } else {
-                            return false;
-                          }
-                        })()}
-                        onChange={(e) =>
-                          e.target.checked
-                            ? setFieldValue("storeFor", [
-                                ...storeForOptions.map((opt) => opt.value),
-                              ])
-                            : setFieldValue("storeFor", [])
-                        }
+                  {isBuyer && (
+                    <>
+                      <FormikInput
+                        label={t("height", "Height")}
+                        name="height"
+                        placeholder={t("height", "Height") + "*"}
                       />
-                      <span>{t("all", "All")}</span>
-                    </div>
-                    {storeForOptions.map((opt, i) => (
-                      <div className="flex gap-2 items-center">
-                        <Checkbox
-                          checked={(() => {
-                            if (values.storeFor) {
-                              const idx = values.storeFor.findIndex(
-                                (v) => v === opt.value
-                              );
-                              if (idx > -1) {
-                                return true;
+                      <FormikInput
+                        label={t("weight", "Weight")}
+                        name="weight"
+                        placeholder={t("Weight", "Weight") + "*"}
+                      />
+                      <FormikInput
+                        as={Select}
+                        name="gender"
+                        label={t("gender", "Gender")}
+                        placeHolder={t("select_gender", "Select Gender")}
+                      >
+                        <SelectOption value="male">
+                          {t("Male", "Male")}
+                        </SelectOption>
+                        <SelectOption value="female">
+                          {t("Femal", "Female")}
+                        </SelectOption>
+                      </FormikInput>
+                      <FormikInput
+                        placeholder={t("date_of_birth", "Date Of Birth")}
+                        name="DateOfBirth"
+                        as={DateFormInput}
+                      />
+                    </>
+                  )}
+                  {isSeller && (
+                    <>
+                      <FormikInput<SelectProps>
+                        label={t("shop_type", "Shop Type")}
+                        as={Select}
+                        onOptionSelect={(v) => setFieldValue("shopType", v)}
+                        name="shopType"
+                      >
+                        {shopTypeOptions.map((opt, i) => (
+                          <SelectOption value={opt.value} key={i}>
+                            <TranslationText translationObject={opt.name} />
+                          </SelectOption>
+                        ))}
+                      </FormikInput>
+                      <FormikInput<SelectProps>
+                        onOptionSelect={(v) => setFieldValue("clientType", v)}
+                        label={t("client_type", "Client Type")}
+                        as={Select}
+                        name="clientType"
+                      >
+                        <SelectOption value="professional">
+                          {t("professional", "Professional")}
+                        </SelectOption>
+                        <SelectOption value="individual">
+                          {t("individual", "Individual")}
+                        </SelectOption>
+                      </FormikInput>
+                    </>
+                  )}
+                </div>
+                {isSeller && (
+                  <>
+                    <div className="flex gap-4">
+                      <span>{t("store_for", "Store For")}</span>
+                      <div className="grid grid-cols-4 gap-x-2">
+                        <div className="flex gap-2 items-center">
+                          <Checkbox
+                            checked={(() => {
+                              if (values.storeFor) {
+                                return storeForOptions.every((opt) => {
+                                  if (!values.storeFor) return false;
+                                  const idx = values.storeFor.findIndex(
+                                    (value) => value === opt.value
+                                  );
+                                  return idx > -1;
+                                });
                               } else {
                                 return false;
                               }
-                            } else {
-                              return false;
+                            })()}
+                            onChange={(e) =>
+                              e.target.checked
+                                ? setFieldValue("storeFor", [
+                                    ...storeForOptions.map((opt) => opt.value),
+                                  ])
+                                : setFieldValue("storeFor", [])
                             }
-                          })()}
-                          onChange={(e) => {
-                            if (e.target.checked && values.storeFor) {
-                              setFieldValue("storeFor", [
-                                ...values.storeFor,
-                                opt.value,
-                              ]);
-                            } else {
-                              if (values.storeFor) {
-                                setFieldValue(
-                                  "storeFor",
-                                  values.storeFor.filter((v) => v !== opt.value)
-                                );
-                              }
-                            }
-                          }}
-                        />
-                        <TranslationText translationObject={opt.name} />
+                          />
+                          <span>{t("all", "All")}</span>
+                        </div>
+                        {storeForOptions.map((opt, i) => (
+                          <div className="flex gap-2 items-center">
+                            <Checkbox
+                              checked={(() => {
+                                if (values.storeFor) {
+                                  const idx = values.storeFor.findIndex(
+                                    (v) => v === opt.value
+                                  );
+                                  if (idx > -1) {
+                                    return true;
+                                  } else {
+                                    return false;
+                                  }
+                                } else {
+                                  return false;
+                                }
+                              })()}
+                              onChange={(e) => {
+                                if (e.target.checked && values.storeFor) {
+                                  setFieldValue("storeFor", [
+                                    ...values.storeFor,
+                                    opt.value,
+                                  ]);
+                                } else {
+                                  if (values.storeFor) {
+                                    setFieldValue(
+                                      "storeFor",
+                                      values.storeFor.filter(
+                                        (v) => v !== opt.value
+                                      )
+                                    );
+                                  }
+                                }
+                              }}
+                            />
+                            <TranslationText translationObject={opt.name} />
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <FormikInput
-                    resize="none"
-                    className="thinScroll"
-                    as={Textarea}
-                    label={t("brand_description", "Brand Description")}
-                    name="brandDescription"
-                  />
-                  <span className="text-slate-500" color={"slategray"}>
-                    {t(
-                      "brief_brand_descrption",
-                      "Brief Description for your brand, URLs are hyperlinked"
-                    )}
-                  </span>
-                </div>
+                    </div>
+                    <div className="flex flex-col">
+                      <FormikInput
+                        resize="none"
+                        className="thinScroll"
+                        as={Textarea}
+                        label={t("brand_description", "Brand Description")}
+                        name="brandDescription"
+                      />
+                      <span className="text-slate-500" color={"slategray"}>
+                        {t(
+                          "brief_brand_descrption",
+                          "Brief Description for your brand, URLs are hyperlinked"
+                        )}
+                      </span>
+                    </div>
+                  </>
+                )}
                 <span className="text-slate-500" color="slategray">
                   {t(
                     "this_account_was_created_on",

@@ -53,3 +53,26 @@ return (
     </StorybookImplemntationLayout>
   );
 };
+export const loadingState = () => {
+  return (
+    <StorybookImplemntationLayout
+      implmentation={`
+import { Button } from "ui"
+
+...
+return (
+
+    <Button loading={true} colorScheme="primary">Test</Button>
+
+)
+      
+      `}
+    >
+      <div className="flex gap-4 flex-wrap">
+        <Button loading colorScheme="primary">
+          primary
+        </Button>
+      </div>
+    </StorybookImplemntationLayout>
+  );
+};

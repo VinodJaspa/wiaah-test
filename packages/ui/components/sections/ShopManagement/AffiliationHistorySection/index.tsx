@@ -101,7 +101,6 @@ export const AffiliationHistorySection: React.FC<AffiliationHistorySection> =
             </TBody>
           </Table>
         </TableContainer>
-        <ItemsPagination currentPage={1} maxItemsNum={5} />
       </div>
     );
   };

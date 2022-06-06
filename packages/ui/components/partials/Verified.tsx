@@ -1,12 +1,10 @@
 import React from "react";
-
-export const Verified: React.FC = ({ ...props }) => {
+import { MdVerified } from "react-icons/md";
+import { HtmlDivProps } from "types";
+export const Verified: React.FC<HtmlDivProps> = ({ ...props }) => {
   return (
-    <img
-      {...props}
-      src="/verified.png"
-      className="h-4 w-4 "
-      alt="shop verified"
-    />
+    <div {...props}>
+      <MdVerified />
+    </div>
   );
 };

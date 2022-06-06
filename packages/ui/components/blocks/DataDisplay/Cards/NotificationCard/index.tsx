@@ -38,10 +38,10 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
     };
 
     return (
-      <div className="flex items-center gap-2 justify-between w-full">
+      <div className="flex items-center gap-2 justify-between max-w-full">
         <div className="flex items-center gap-2">
-          <Avatar bgColor={"black"} photoSrc={by.thumbnail} name={by.name} />
-          <p>
+          <Avatar photoSrc={by.thumbnail} name={by.name} />
+          <p className="whitespace-pre-wrap">
             <span className="font-bold">{by.name} </span>
             {message}{" "}
             <span className="text-gray-500">

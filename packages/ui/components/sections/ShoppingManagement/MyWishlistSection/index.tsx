@@ -19,7 +19,7 @@ import { IoTrash } from "react-icons/io5";
 
 export interface MyWishListSectionProps {}
 
-export const MyWishListSection: React.FC<MyWishListSectionProps> = () => {
+export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
   const { t } = useTranslation();
   const [itemsLimit, setItemsLimit] = React.useState<number>(0);
 

@@ -39,7 +39,7 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
       )}
 
       {showPanels && (
-        <TabList>
+        <TabList className="">
           {tabs.map(({ component }, i) => (
             <TabItem key={i}>{component}</TabItem>
           ))}

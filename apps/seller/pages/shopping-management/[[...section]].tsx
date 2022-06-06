@@ -10,7 +10,7 @@ const ShoppingManagement: NextPage = () => {
       <Head>
         <title>Wiaah | Shopping management</title>
       </Head>
-      <SellerLayout header={null}>
+      <SellerLayout>
         <ShoppingManagementView />
       </SellerLayout>
     </>

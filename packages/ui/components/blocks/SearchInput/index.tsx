@@ -76,7 +76,9 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
         style={inputStyles}
         onFocus={() => setDropdownOpen(true)}
         value={value}
-        className={`${props.className || ""} w-full`}
+        className={`${props.className || ""} ${
+          iconRes ? "pl-10" : "pl-0"
+        } w-full`}
         {...props}
       />
       {Components && dropdownOpen && (

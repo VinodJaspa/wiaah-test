@@ -8,6 +8,7 @@ import {
   ThHTMLAttributes,
   TdHTMLAttributes,
   AudioHTMLAttributes,
+  ImgHTMLAttributes,
 } from "react";
 
 export type HtmlDivProps = DetailedHTMLProps<
@@ -57,4 +58,9 @@ export type HtmlThProps = DetailedHTMLProps<
 export type HtmlAudioProps = DetailedHTMLProps<
   AudioHTMLAttributes<HTMLAudioElement>,
   HTMLElement
+>;
+
+export type HtmlImgProps = DetailedHTMLProps<
+  ImgHTMLAttributes<HTMLImageElement>,
+  HTMLImageElement
 >;

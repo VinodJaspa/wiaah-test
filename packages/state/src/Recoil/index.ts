@@ -12,3 +12,4 @@ export * from "./Seller";
 export * from "./Social/index";
 export * from "./Modals";
 export * from "./User";
+export * from "./CurrentPage";

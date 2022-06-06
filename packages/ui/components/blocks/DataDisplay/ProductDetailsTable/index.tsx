@@ -82,7 +82,6 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
             </TBody>
           </Table>
         </TableContainer>
-        <ItemsPagination currentPage={2} maxItemsNum={30} />
       </div>
     </div>
   );
