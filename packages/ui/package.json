@@ -15,9 +15,9 @@
     "state": "*",
     "tsconfig": "*",
     "types": "*",
-    "typescript": "^4.5.3",
     "utils": "*",
-    "validation": "*"
+    "validation": "*",
+    "typescript": "^4.5.3"
   },
   "dependencies": {
     "classnames": "^2.3.1",

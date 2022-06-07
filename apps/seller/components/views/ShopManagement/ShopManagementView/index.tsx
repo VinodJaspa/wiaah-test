@@ -65,7 +65,7 @@ const sections: SettingsSectionType[] = [
     },
     panelIcon: BsBoxArrowInUp,
     panelUrl: "/orders",
-    panelComponent: <OrdersSection />,
+    panelComponent: <OrdersSection shopping={false} />,
   },
   {
     panelName: {

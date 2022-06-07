@@ -18,10 +18,10 @@ export const TranslationText: React.FC<TranslationTextProps> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <span {...props} className={`${props.className}`}>
+    <p {...props} className={`${props.className}`}>
       {typeof translationObject === "object"
         ? t(translationObject.translationKey, translationObject.fallbackText)
         : translationObject}
-    </span>
+    </p>
   );
 };

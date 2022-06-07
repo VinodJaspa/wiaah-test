@@ -90,12 +90,13 @@ return (
         open modal
     </Button>
     <Modal
+        isLazy
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         onOpen={() => setIsOpen(true)}
     >
         <ModalOverlay />
-        <ModalContent isLazy>
+        <ModalContent>
           <Counter />
           <ModalCloseButton>
             <Button>{t("close", "Close")}</Button>
@@ -110,12 +111,13 @@ return (
         {t("open_modal", "open modal")}
       </Button>
       <Modal
+        isLazy
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}
         onOpen={() => setIsOpen(true)}
       >
         <ModalOverlay />
-        <ModalContent isLazy>
+        <ModalContent>
           <Counter />
           <ModalCloseButton>
             <Button>{t("close", "Close")}</Button>
@@ -145,12 +147,13 @@ return (
           <Button className="w-fit">{t("open_modal", "open modal")}</Button>
         </ModalButton>
         <Modal
+          isLazy
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           onOpen={() => setIsOpen(true)}
         >
           <ModalOverlay />
-          <ModalContent isLazy>
+          <ModalContent>
             <Counter />
             <ModalCloseButton>
               <Button>{t("close", "Close")}</Button>
@@ -171,12 +174,13 @@ return (
           <Button className="w-fit">{t("open_modal", "open modal")}</Button>
         </ModalButton>
         <Modal
+          isLazy
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
           onOpen={() => setIsOpen(true)}
         >
           <ModalOverlay />
-          <ModalContent isLazy>
+          <ModalContent>
             <Counter />
             <ModalCloseButton>
               <Button>{t("close", "Close")}</Button>

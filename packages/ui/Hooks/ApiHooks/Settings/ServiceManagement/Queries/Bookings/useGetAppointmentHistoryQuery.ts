@@ -1,6 +1,16 @@
-import { getBookingsHistoryFetcher } from "api";
+import {
+  BookingHistoryAppointmentType,
+  FetchDataArrayResults,
+  getBookingsHistoryFetcher,
+  GetBookingsHistoryFetcherProps,
+} from "api";
 import { useQuery } from "react-query";
 
-export const useGetBookingsHistoryQuery = () => {
-  return useQuery("appointmentsHistory", getBookingsHistoryFetcher);
+export const useGetBookingsHistoryQuery = (
+  props: GetBookingsHistoryFetcherProps
+) => {
+  return useQuery<FetchDataArrayResults<BookingHistoryAppointmentType>>(
+    "appointmentsHistory",
+    () => getBookingsHistoryFetcher(props)
+  );
 };

@@ -2,35 +2,26 @@ import React from "react";
 import { StepperStepType } from "types";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { BiCircle } from "react-icons/bi";
-import { TranslationText, FormStepIsValidData } from "ui";
+import { TranslationText } from "ui";
+import { runIfFn } from "utils";
 
 export interface CheckMarkStepperProps {
   steps: StepperStepType[];
-  currentStep: string;
-  onStepChange?: (stepKey: string) => any;
+  currentStepIdx: number;
+  onStepChange?: (stepIdx: number) => any;
 }
 
 export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
   steps,
-  currentStep,
+  currentStepIdx,
+  onStepChange,
 }) => {
-  const [step, setStep] = React.useState<string>(currentStep);
+  const CurrentComp = steps[currentStepIdx]
+    ? steps[currentStepIdx].stepComponent
+    : null;
 
-  const stepIdx = steps.findIndex((Step) => Step.key === step);
-
-  const CurrentComp = steps[stepIdx] ? steps[stepIdx].stepComponent : null;
-
-  function handleFormStepValid(data: FormStepIsValidData, i: number) {
-    // const existingData = JSON.stringify(stepsData[i]);
-    // const newData = JSON.stringify(data);
-    // if (existingData === newData) return;
-    // const newStepsData = [...stepsData];
-    // newStepsData[i] = data;
-    // setStepsData(newStepsData);
-  }
-
-  function handleGoToStep(step: string) {
-    setStep(step);
+  function handleGoToStep(step: number) {
+    onStepChange && onStepChange(step);
   }
 
   return (
@@ -41,22 +32,22 @@ export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
         />
         <span
           style={{
-            width: `${(stepIdx / (steps.length - 1)) * 100}%`,
+            width: `${(currentStepIdx / (steps.length - 1)) * 100}%`,
           }}
           className={`border-b-primary absolute top-1/2 left-0 transition-all -translate-y-1/2 border-b-4`}
         />
         {steps.map((step, i) => (
           <div
             key={step.key + i}
-            onClick={() => handleGoToStep(step.key)}
+            onClick={() => handleGoToStep(i)}
             className="cursor-pointer text-xl relative flex flex-col"
           >
-            {stepIdx > i ? (
+            {currentStepIdx > i ? (
               <IoCheckmarkCircle className="bg-white text-primary" />
             ) : (
               <BiCircle
                 className={`bg-white ${
-                  stepIdx === i ? "text-primary" : "text-gray-300"
+                  currentStepIdx === i ? "text-primary" : "text-gray-300"
                 } `}
               />
             )}
@@ -73,13 +64,7 @@ export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
           </div>
         ))}
       </div>
-      {CurrentComp && (
-        <CurrentComp
-          isValid={(data: FormStepIsValidData) => {
-            handleFormStepValid(data, stepIdx);
-          }}
-        />
-      )}
+      {runIfFn(CurrentComp, {})}
     </div>
   );
 };

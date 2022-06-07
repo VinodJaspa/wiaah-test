@@ -1,4 +1,4 @@
-import { CancelAppointmentDto, CancelOrderDto } from "dto";
+import { CancelAppointmentDto } from "dto";
 import { Formik, Form } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -80,7 +80,11 @@ export const BookingsHistorySection: React.FC = () => {
             </TabTitle>
             <TabItem>
               {() => {
-                const { data: appointments } = useGetBookingsHistoryQuery();
+                const [page, setPage] = React.useState(0);
+                const { data } = useGetBookingsHistoryQuery({
+                  page,
+                  limit: 10,
+                });
 
                 const {
                   mutate: cancelAppointment,
@@ -112,8 +116,9 @@ export const BookingsHistorySection: React.FC = () => {
                         <Th>{t("action", "Action")}</Th>
                       </Tr>
                       <TBody>
-                        {appointments &&
-                          appointments.map(
+                        {data &&
+                          data.data &&
+                          data.data.map(
                             (
                               {
                                 customer,
@@ -293,7 +298,7 @@ const appointmentsTabs: {
   },
 ];
 
-export const statusOptions: FormOptionType[] = [
+const statusOptions: FormOptionType[] = [
   {
     name: {
       translationKey: "active",
