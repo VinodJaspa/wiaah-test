@@ -1,3 +1,4 @@
+import { useOutsideClick } from "hooks";
 import React, { useMemo } from "react";
 import { BiMinus } from "react-icons/bi";
 import { BsLayoutSplit } from "react-icons/bs";
@@ -10,17 +11,18 @@ export type Boundings = {
   from: TimeMappedType;
   to: TimeMappedType;
 };
-
+export type PosBoundings = {
+  from: number;
+  to: number;
+};
 export interface TimeSliderProps {
   onTimeChange: (time: TimeData) => any;
   timeRange: string[];
-  initialPos: {
-    from: number;
-    to: number;
-  };
+  initialPos: PosBoundings;
   boundings: Boundings;
   onRemove?: () => any;
   onSplit?: (timeRange: Boundings) => any;
+  onActive?: (borders: PosBoundings) => any;
 }
 
 export const TimeSlider: React.FC<TimeSliderProps> = ({
@@ -30,7 +32,12 @@ export const TimeSlider: React.FC<TimeSliderProps> = ({
   initialPos,
   onRemove,
   onSplit,
+  onActive,
 }) => {
+  const ref = React.useRef<HTMLDivElement>(null);
+  const [active, setActive] = React.useState<boolean>();
+  const [initilized, setInitilized] = React.useState<boolean>(false);
+  useOutsideClick(ref, () => setActive(false));
   let min = 0,
     max = 100;
   const mappedTime = mapTimeRange(timeRange, max, () => {});
@@ -69,6 +76,8 @@ export const TimeSlider: React.FC<TimeSliderProps> = ({
     );
     if (minClosest < boundings.from.pos) return setMinRange(boundings.from.pos);
     if (minClosest === maxRange) return;
+    if (minClosest === minRange) return;
+    if (maxRange === minRange) return;
     setMinRange(minClosest);
   }
 
@@ -81,13 +90,16 @@ export const TimeSlider: React.FC<TimeSliderProps> = ({
     );
     if (maxClosest > boundings.to.pos) return setMaxRange(boundings.to.pos);
     if (maxClosest === minRange) return;
+    if (maxClosest === maxRange) return;
     setMaxRange(maxClosest);
   }
 
   React.useEffect(() => {
+    if (initilized) return;
     if (initialPos && initialPos.from && initialPos.to) {
       setMinRange(initialPos.from);
       setMaxRange(initialPos.to);
+      setInitilized(true);
     }
   }, [initialPos]);
 
@@ -115,8 +127,7 @@ export const TimeSlider: React.FC<TimeSliderProps> = ({
       if (timeIdx < 0) return;
       setTo(mappedTime[timeIdx].time);
     }
-
-    if (maxRange === minRange) return;
+    if (!active) return;
     onTimeChange({
       from: mappedTime[mappedTime.findIndex((time) => time.pos === minRange)]
         .time,
@@ -126,13 +137,15 @@ export const TimeSlider: React.FC<TimeSliderProps> = ({
   }, [minRange, maxRange, initialPos]);
 
   return (
-    <div className="w-full">
+    <div ref={ref} onFocus={() => setActive(true)} className="w-full">
       <div className="w-full relative mt-2">
         <span
           style={{
             left: `${minPercent}%`,
           }}
-          className="font-bold text-sm whitespace-nowrap absolute bottom-full -translate-x-1/2 mb-8 p-2 shadow-lg bg-slate-50 rounded"
+          className={`${
+            active ? "text-primary" : "text-black"
+          } font-bold text-sm whitespace-nowrap absolute bottom-full -translate-x-1/2 mb-8 p-2 shadow-lg bg-slate-50 rounded`}
         >
           {from}
         </span>
@@ -140,7 +153,9 @@ export const TimeSlider: React.FC<TimeSliderProps> = ({
           style={{
             left: `${maxPercent}%`,
           }}
-          className="font-bold text-sm whitespace-nowrap absolute bottom-full -translate-x-1/2 mb-8 p-2 shadow-lg bg-slate-50 rounded"
+          className={`${
+            active ? "text-primary" : "text-black"
+          } font-bold text-sm whitespace-nowrap absolute bottom-full -translate-x-1/2 mb-8 p-2 shadow-lg bg-slate-50 rounded`}
         >
           {to}
         </span>
@@ -177,6 +192,88 @@ export const TimeSlider: React.FC<TimeSliderProps> = ({
           type="range"
         />
       </div>
+    </div>
+  );
+};
+interface TimeSliderControllerProps {
+  timeRange: string[];
+  onTimeChange: (timeRanges: string[][]) => any;
+  openRanges: TimeData[];
+  activeRange?: number;
+  onActiveRange?: (bordersIdx: number[]) => any;
+}
+
+export const TimeSliderController: React.FC<TimeSliderControllerProps> = ({
+  timeRange = [],
+  openRanges,
+  onTimeChange,
+  onActiveRange,
+}) => {
+  const [ranges, setRanges] = React.useState<Boundings[]>([]);
+  const [mappedTime, setMappedTime] = React.useState<TimeMappedType[]>([]);
+  const [slidersCurrentBoundings, setSlidersCurrentBoundings] = React.useState<
+    Boundings[]
+  >([]);
+
+  React.useEffect(() => {
+    let boundings: Boundings[] = [];
+    openRanges.map((range, i) => {
+      const fromRangeIdx = timeRange.findIndex((time) => time === range.from);
+      const toRangeIdx = timeRange.findIndex((time) => time === range.to);
+      boundings.push({
+        from: mappedTime[fromRangeIdx],
+        to: mappedTime[toRangeIdx],
+      });
+    });
+    setRanges(boundings);
+  }, [openRanges, mappedTime]);
+
+  React.useEffect(() => {
+    mapTimeRange(timeRange, undefined, (res) => setMappedTime(res));
+  }, [timeRange]);
+  return (
+    <div className="w-full relative">
+      {ranges.map((range, i) => {
+        const initialFrom = range?.from?.pos;
+        const initialTo = range?.to?.pos;
+
+        return (
+          <div
+            key={i}
+            className="absolute pointer-events-none top-0 left-0 w-full -translate-y-1/2"
+          >
+            <TimeSlider
+              onTimeChange={(Time) => {
+                const fromRangeIdx = timeRange.findIndex(
+                  (time) => time === Time.from
+                );
+                const toRangeIdx = timeRange.findIndex(
+                  (time) => time === Time.to
+                );
+                setSlidersCurrentBoundings((state) => {
+                  const _state = state;
+                  _state[i] = {
+                    from: mappedTime[fromRangeIdx],
+                    to: mappedTime[toRangeIdx],
+                  };
+                  return _state;
+                });
+                onActiveRange && onActiveRange([fromRangeIdx, toRangeIdx]);
+              }}
+              timeRange={timeRange}
+              initialPos={{
+                from: initialFrom,
+                to: initialTo,
+              }}
+              boundings={{
+                from: mappedTime[0],
+                to: mappedTime[mappedTime.length - 1],
+              }}
+              onSplit={(range) => {}}
+            />
+          </div>
+        );
+      })}
     </div>
   );
 };
