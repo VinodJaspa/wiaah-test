@@ -11,3 +11,4 @@ export * from "./SubCategorySelect";
 export * from "./HashTagInput";
 export * from "./DateInput";
 export * from "./DateFormInput";
+export * from "./TimeSlider";

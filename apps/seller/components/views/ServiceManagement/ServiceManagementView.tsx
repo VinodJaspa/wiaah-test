@@ -1,8 +1,7 @@
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FaServicestack } from "react-icons/fa";
-import { FcServices } from "react-icons/fc";
+import { BiTime } from "react-icons/bi";
 import { HiTicket } from "react-icons/hi";
 import { MdPending } from "react-icons/md";
 import { RiBookLine, RiServiceFill } from "react-icons/ri";
@@ -13,6 +12,7 @@ import {
   BookingsHistory,
   PendingAppointmentsSection,
   MyServicesSection,
+  TimeManagementSection,
 } from "ui";
 
 export const ServiceManagementView = () => {
@@ -76,5 +76,14 @@ const sections: SettingsSectionType[] = [
     panelIcon: RiServiceFill,
     panelUrl: "/my-service",
     panelComponent: <MyServicesSection />,
+  },
+  {
+    panelName: {
+      translationKey: "openning_time_management",
+      fallbackText: "Opening time management",
+    },
+    panelIcon: BiTime,
+    panelUrl: "/opening-time-management",
+    panelComponent: <TimeManagementSection />,
   },
 ];

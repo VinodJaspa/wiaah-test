@@ -158,7 +158,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
       <Divider />
     </div>
   ) : (
-    <div {...props} className={`${className || ""} flex flex-col gap-2`}>
+    <div {...props} className={`${className || ""} flex flex-col gap-3`}>
       <div className="w-full flex justify-between items-center">
         <span className="text-4xl font-semibold">{sectionTitle}</span>
         {children}
