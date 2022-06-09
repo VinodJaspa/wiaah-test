@@ -1,4 +1,6 @@
-export type TranslationTextType = {
-  translationKey: string;
-  fallbackText: string;
-};
+export type TranslationTextType =
+  | {
+      translationKey: string;
+      fallbackText?: string;
+    }
+  | string;

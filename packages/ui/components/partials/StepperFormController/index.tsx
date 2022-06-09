@@ -44,13 +44,14 @@ export const StepperFormController: React.FC<StepperFormControllerProps> = ({
   const [currentStepIdx, setCurrentStepIdx] = React.useState<number>(0);
 
   function goToStep(stepIdx: number) {
-    const handler = handlers[stepIdx];
-    if (typeof handler !== "string") return;
-    const obj = stepsValidation[handler];
-    if (typeof obj === "undefined") return;
+    // const handler = handlers[stepIdx];
+    // if (typeof handler !== "string") return;
+    // const obj = stepsValidation[handler];
+    // if (typeof obj === "undefined") return;
     setCurrentStepIdx(stepIdx);
   }
   function validate(data: Data, handlerKey: string) {
+    console.log("validation", data);
     setStepsValidation((state) => {
       const _state = state;
       _state[handlerKey] = data;
@@ -162,6 +163,8 @@ export const StepperFormHandler: React.FC<StepperFormHandlerProps> = ({
     if (!validationSchema) return;
 
     const valid = await validationSchema.isValid(data);
+    const res = await validationSchema.validate(data);
+    console.log(data, res);
     if (valid) {
       validate(data, handlerKey);
     } else {

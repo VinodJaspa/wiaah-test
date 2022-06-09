@@ -1,7 +1,7 @@
 import { TranslationTextType } from "./TranslationText";
 
-export type FormOptionType = {
-  value: string;
+export type FormOptionType<T = string> = {
+  value: T;
   name: TranslationTextType;
 };
 export type FormOptWithCompType<TData = void> = FormOptionType & {

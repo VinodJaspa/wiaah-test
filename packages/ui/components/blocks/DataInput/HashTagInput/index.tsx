@@ -1,4 +1,4 @@
-import { Input, SearchFilterInput } from "ui";
+import { SearchFilterInput } from "ui";
 import React from "react";
 import { MdClose } from "react-icons/md";
 import { useTranslation } from "react-i18next";
@@ -9,7 +9,6 @@ export const HashTagInput: React.FC = ({}) => {
   const { t } = useTranslation();
   const [value, setValue] = React.useState<string>("");
   const [selectedhashTags, setSelectedHashTags] = React.useState<string[]>([]);
-  const [add, setAdd] = React.useState<boolean>(true);
 
   function resetSearch() {
     setValue("");
@@ -44,7 +43,6 @@ export const HashTagInput: React.FC = ({}) => {
         className="border-none border-l-2 "
         onSelection={addHashTag}
         onKeyDown={(e) => {
-          console.log(e);
           e.code === "Enter" ? addHashTag(value) : "";
         }}
         components={hashtags.map((tag, i) => ({
