@@ -1,15 +1,7 @@
-import {
-  InputGroup,
-  InputRightElement,
-  IconButton,
-  Input,
-  BoxProps,
-  InputGroupProps,
-  Box,
-} from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiSearch } from "react-icons/hi";
+import { Input, InputGroup, InputRightElement, InputGroupProps } from "ui";
 
 export interface SearchInputProps {
   innerProps?: InputGroupProps;
@@ -31,25 +23,16 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   }
   const { t } = useTranslation();
   return (
-    <Box {...innerProps}>
-      <InputGroup maxW={"30rem"}>
-        <InputRightElement borderLeftWidth={"1px"}>
-          <IconButton
-            aria-label="Search Input Submit button"
-            fill="gray"
-            fontSize={"xl"}
-            variant="noBg"
-            icon={<HiSearch />}
-          />
-        </InputRightElement>
-        <Input
-          value={searchInputValue}
-          onChange={(e) => handleSearchInputChange(e.target.value)}
-          rounded="full"
-          pr="5rem"
-          placeholder={t("search_on_wiaah", "search on wiaah")}
-        />
-      </InputGroup>
-    </Box>
+    <InputGroup {...innerProps} className="max-w-[30rem]">
+      <InputRightElement className="w-10 border-l-[1px] flex h-full justify-center border-gray-300">
+        <HiSearch className="text-gray-500 text-xl" />
+      </InputRightElement>
+      <Input
+        value={searchInputValue}
+        onChange={(e) => handleSearchInputChange(e.target.value)}
+        className="rounded-full w-full"
+        placeholder={t("search_on_wiaah", "search on wiaah")}
+      />
+    </InputGroup>
   );
 };

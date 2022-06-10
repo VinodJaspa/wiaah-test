@@ -20,6 +20,7 @@ import { Form, Formik } from "formik";
 import { HiFolderAdd, HiVideoCamera } from "react-icons/hi";
 import { FormOptionType } from "types";
 import { ParkingAvailablity } from "dto";
+import { NewServiceSchemas } from "validation";
 
 export interface ServiceGeneralDetailsProps {
   onChange?: (data: Record<string, any>) => any;
@@ -36,7 +37,11 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
-      <Formik initialValues={{}} onSubmit={() => {}}>
+      <Formik
+        validationSchema={NewServiceSchemas.serviceGeneralDetailsSchema}
+        initialValues={{}}
+        onSubmit={() => {}}
+      >
         {({ values, setFieldValue }) => {
           onChange && onChange(values);
           return (

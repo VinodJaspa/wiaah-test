@@ -11,11 +11,13 @@ import {
   ServiceSelectingInfo,
   ServiceTypeCard,
   Button,
+  NewProductDiscountOptions,
 } from "ui";
 import { NewServiceSchemas } from "validation";
 import { CallbackAfter } from "utils";
 import { ServiceGeneralDetails } from "./ServiceGeneralDetails";
 import { IncludedServices } from "./IncludedServices";
+import { ExtraServiceOptions } from "./ExtraServiceOptions";
 
 export interface AddNewServiceProps {}
 
@@ -77,10 +79,45 @@ export const AddNewService: React.FC<AddNewServiceProps> = () => {
                 },
                 {
                   key: "includedServices",
-                  stepComponent: <IncludedServices />,
+                  stepComponent: (
+                    <StepperFormHandler
+                      handlerKey="includedServices"
+                      validationSchema={NewServiceSchemas.includedServices}
+                    >
+                      <IncludedServices onChange={() => {}} />
+                    </StepperFormHandler>
+                  ),
                   stepName: {
                     translationKey: "Included Service",
                     fallbackText: "Included Service",
+                  },
+                },
+                {
+                  key: "extraServiceOptions",
+                  stepComponent: (
+                    <StepperFormHandler
+                      handlerKey="extraServiceOptions"
+                      validationSchema={NewServiceSchemas.extraSreivce}
+                    >
+                      <ExtraServiceOptions onChange={() => {}} />
+                    </StepperFormHandler>
+                  ),
+                  stepName: {
+                    translationKey: "Extra Service",
+                  },
+                },
+                {
+                  key: "discount",
+                  stepComponent: (
+                    <StepperFormHandler
+                      handlerKey="discount"
+                      validationSchema={NewServiceSchemas.discount}
+                    >
+                      <NewProductDiscountOptions />
+                    </StepperFormHandler>
+                  ),
+                  stepName: {
+                    translationKey: "Discount",
                   },
                 },
               ]}
@@ -153,7 +190,7 @@ export const ChooseServiceType: React.FC<ChooseServiceTypeProps> = ({
         {t("select_your_type_of_service", "Select your type of service")}
       </h1>
 
-      <div className="grid grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {ServicesInfo.map((service, i) => (
           <ServiceTypeCard
             onServiceChoosen={onServiceChoosen}

@@ -163,8 +163,6 @@ export const StepperFormHandler: React.FC<StepperFormHandlerProps> = ({
     if (!validationSchema) return;
 
     const valid = await validationSchema.isValid(data);
-    const res = await validationSchema.validate(data);
-    console.log(data, res);
     if (valid) {
       validate(data, handlerKey);
     } else {

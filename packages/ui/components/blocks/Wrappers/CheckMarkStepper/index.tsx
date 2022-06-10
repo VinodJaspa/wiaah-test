@@ -52,7 +52,9 @@ export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
               />
             )}
             <TranslationText
-              className={`absolute text-xs sm:text-sm  top-full whitespace-nowrap ${
+              className={`${
+                currentStepIdx === i ? "" : "hidden sm:block"
+              } absolute text-xs sm:text-sm  top-full whitespace-nowrap ${
                 steps.length === i + 1
                   ? "right-0"
                   : i === 0

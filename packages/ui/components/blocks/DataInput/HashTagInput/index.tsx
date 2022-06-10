@@ -3,12 +3,18 @@ import React from "react";
 import { MdClose } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 
-export interface HashTagInputProps {}
+export interface HashTagInputProps {
+  onChange?: (HashTags: string[]) => any;
+}
 
-export const HashTagInput: React.FC = ({}) => {
+export const HashTagInput: React.FC<HashTagInputProps> = ({ onChange }) => {
   const { t } = useTranslation();
   const [value, setValue] = React.useState<string>("");
   const [selectedhashTags, setSelectedHashTags] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    onChange && onChange(selectedhashTags);
+  }, [selectedhashTags]);
 
   function resetSearch() {
     setValue("");

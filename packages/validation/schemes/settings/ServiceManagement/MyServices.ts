@@ -7,6 +7,7 @@ import {
   ServiceType,
 } from "dto";
 import * as yup from "yup";
+import { TypeOf } from "yup";
 
 export const NewServiceSchemas = {
   serviceTypeSchema: yup.object().shape({
@@ -46,5 +47,20 @@ export const NewServiceSchemas = {
     serviceTag: yup.string().required(),
     videos: yup.mixed(),
   }),
-  includedServices: yup.array().of(yup.string()).required(),
+  includedServices: yup.object().shape({
+    services: yup.array().of(yup.string()).required(),
+  }),
+  extraSreivce: yup.object().shape({
+    extraBeds: yup.boolean().required(),
+    numOfBedsCanBeAdded: yup.number(),
+    extraBedsAccommodate: yup
+      .array()
+      .of(yup.string().oneOf(["adults", "children", "children-2years"])),
+    pricePerNight: yup.number(),
+  }),
+  discount: yup.object().shape({
+    percentOff: yup.number().required(),
+    startDate: yup.string().required(),
+    expireDate: yup.string().required(),
+  }),
 };
