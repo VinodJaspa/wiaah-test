@@ -1,12 +1,8 @@
-import { useModalDisclouser } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilState } from "recoil";
-import { SpecialDaysOpenTimeModalState } from "state";
 import {
   Modal,
   ModalContent,
-  ModalCloseButton,
   Switch,
   TimeData,
   ModalFooter,

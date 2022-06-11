@@ -1,17 +1,13 @@
-import { ChevronLeftIcon } from "@chakra-ui/icons/src/ChevronLeft";
-import {
-  Box,
-  Button,
-  Flex,
-  Icon,
-  IconButton,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
-  ModalProps,
-} from "@chakra-ui/react";
 import React from "react";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalProps,
+  ArrowLeftIcon,
+  Button,
+} from "ui";
 import { HiCamera } from "react-icons/hi";
 
 export interface RecordVideoModalProps extends Omit<ModalProps, "children"> {
@@ -32,7 +28,6 @@ export const RecordVideoModal: React.FC<RecordVideoModalProps> = ({
     React.useState<MediaRecorder | null>(null);
 
   async function getUserCameraStrem() {
-    console.log("fun open");
     if (
       navigator &&
       navigator.mediaDevices &&
@@ -79,7 +74,6 @@ export const RecordVideoModal: React.FC<RecordVideoModalProps> = ({
   const handleStartRecording = () => {
     try {
       if (!stream || !mediaRecorder) return;
-      console.log("recording started");
       setRecording(true);
 
       mediaRecorder.ondataavailable = (event) => {
@@ -110,68 +104,43 @@ export const RecordVideoModal: React.FC<RecordVideoModalProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} {...props}>
       <ModalOverlay />
-      <ModalContent bg="transparent" maxW={"80%"} p="0px">
-        <ModalBody
-          display={"flex"}
-          justifyContent="center"
-          alignItems={"center"}
-          p="0px"
-        >
-          <Flex
-            justify={"center"}
-            align="center"
-            position={"relative"}
-            direction={"column"}
-          >
-            <IconButton
+      <ModalContent className="bg-transparent max-w-[80%] p-0">
+        <div className="flex justify-center items-center p-0">
+          <div className="flex justify-center items-center relative flex-col">
+            <ArrowLeftIcon
+              className="w-12 bg-black bg-opacity-30 text-white absolute top-4 left-4"
               aria-label="Cancel Taking Picture"
-              variant={"icon"}
-              w="3rem"
-              bg="blackAlpha.300"
-              color="white"
-              position={"absolute"}
-              top="1rem"
-              left="1rem"
               onClick={onClose}
-              as={ChevronLeftIcon}
             />
-            <Box position={"relative"} h={"100%"}>
+            <div className="relative w-full">
               <video
                 style={{ height: "80vh", maxWidth: "auto" }}
                 ref={vidRef}
               />
-              <Box
-                borderWidth={"5px"}
-                borderColor="white"
-                rounded={"full"}
-                p="0.25rem"
-                position={"absolute"}
-                bottom="2rem"
-                left="50%"
-                transform={"auto"}
-                translateX="-50%"
-              >
+              <div className="border-[5px] border-white rounded-full p-1 absolute bottom-4 left-1/2 -translate-x-1/2 transform">
                 <Button
                   onClick={
                     recording ? handleStopRecording : handleStartRecording
                   }
-                  rounded={"full"}
-                  colorScheme="whiteAlpha"
-                  bgColor={recording ? "red" : "white"}
-                  h="4rem"
-                  w="4rem"
+                  className="rounded-full w-16 h-16"
+                  style={{
+                    backgroundColor: recording ? "red" : "white",
+                  }}
+                  colorScheme="white"
                 >
-                  <Icon
+                  <HiCamera
+                    style={{
+                      color: recording ? "white" : "black",
+                    }}
+                    className="text-4xl"
                     aria-label="take photo"
                     color={recording ? "white" : "black"}
-                    as={HiCamera}
-                    fontSize="xx-large"
                   />
                 </Button>
-              </Box>
-            </Box>
-          </Flex>
-        </ModalBody>
+              </div>
+            </div>
+          </div>
+        </div>
       </ModalContent>
     </Modal>
   );

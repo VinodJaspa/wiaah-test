@@ -22,7 +22,7 @@ import {
 import {
   useGetReceivedProductsQuery,
   useAskForProductReturnMutation,
-} from "ui/Hooks";
+} from "ui";
 import { AskForReturnDto } from "dto";
 import { FormOptionType } from "types";
 import { AskForReturnValidationSchema } from "validation";

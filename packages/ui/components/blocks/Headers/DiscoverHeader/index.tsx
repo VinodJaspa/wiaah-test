@@ -5,7 +5,7 @@ import { HtmlDivProps } from "types";
 import { UserProfile } from "ui";
 import { usersProfilesPlaceHolder } from "ui";
 import { TabsViewer, Input, InputGroup, InputLeftElement, Button } from "ui";
-import { useDiscoverTabs } from "ui/Hooks";
+import { useDiscoverTabs } from "ui";
 
 export interface DiscoverHeaderProps {
   containerProps?: HtmlDivProps;

@@ -30,26 +30,31 @@ const NavigationLinks: NavigationLinkType[] = [
     name: "homepage",
     icon: HiOutlineHome,
     activeIcon: HiHome,
+    url: "/home",
   },
   {
     name: "discover",
     icon: HiOutlineUserGroup,
     activeIcon: HiUserGroup,
+    url: "/discover",
   },
   {
     name: "action",
     icon: CgPlayButtonR,
     activeIcon: IoVideocam,
+    url: "/action",
   },
   {
     name: "shop",
     icon: AiOutlineShop,
     activeIcon: AiFillShop,
+    url: "/shop",
   },
   {
     name: "affiliation",
     icon: () => <AffiliationIconOutline />,
     activeIcon: () => <AffiliationIcon />,
+    url: "/affiliation",
   },
 ];
 
@@ -122,13 +127,13 @@ const Templete: ComponentStory<typeof SellerNavigationDrawer> = ({
   ...args
 }) => {
   const setOpen = useSetRecoilState(SellerDrawerOpenState);
-  const [active, setActive] = React.useState<number>(0);
+  const [active, setActive] = React.useState<string>();
   return (
     <>
       <Button onClick={() => setOpen(true)}>open</Button>
       <SellerNavigationDrawer
         activeLink={active}
-        onLinkClick={(_, i) => setActive(i)}
+        onLinkClick={(v) => setActive(v.url)}
         {...args}
       />
     </>
@@ -140,13 +145,13 @@ const TempleteWithChildren: ComponentStory<typeof SellerNavigationDrawer> = ({
   ...args
 }) => {
   const setOpen = useSetRecoilState(SellerDrawerOpenState);
-  const [active, setActive] = React.useState<number>(0);
+  const [active, setActive] = React.useState<string>();
   return (
     <>
       <Button onClick={() => setOpen(true)}>open</Button>
       <SellerNavigationDrawer
         activeLink={active}
-        onLinkClick={(_, i) => setActive(i)}
+        onLinkClick={(v) => setActive(v.url)}
         {...args}
       >
         <Box textTransform={"capitalize"} px="2rem">

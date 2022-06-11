@@ -1,29 +1,23 @@
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
-  ModalCloseButton,
-  ModalHeader,
-  Flex,
-  Textarea,
-  HStack,
-  Box,
-  IconButton,
-  Icon,
-  Button,
-  Input,
-  Center,
-  useDisclosure,
-  Image,
-} from "@chakra-ui/react";
 import { BiImageAlt } from "react-icons/bi";
 import { IoVideocam } from "react-icons/io5";
-import { Avatar, useNewStoryModal } from "ui";
+import {
+  Avatar,
+  useNewStoryModal,
+  CloseIcon,
+  Textarea,
+  HStack,
+  Button,
+} from "ui";
 import React from "react";
-import { MdClose } from "react-icons/md";
 import { useTranslation } from "react-i18next";
-import { useFileUploadModal, ImageUploadModal } from "ui";
+import {
+  useFileUploadModal,
+  MediaUploadModal,
+  Modal,
+  ModalContent,
+  ModalCloseButton,
+  ModalOverlay,
+} from "ui";
 
 export interface AddNewStoryModalProps {}
 
@@ -85,119 +79,96 @@ export const AddNewStoryModal: React.FC<AddNewStoryModalProps> = () => {
 
   return (
     <Modal
-      size={"xl"}
-      onCloseComplete={resetState}
-      isCentered
+      onOpen={() => {}}
       isOpen={isOpen}
-      onClose={closeNewStoryModal}
+      onClose={() => {
+        closeNewStoryModal();
+        resetState();
+      }}
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalBody>
-          <ImageUploadModal setImgSrc={setImgSrc} setVidSrc={setVidSrc} />
-          <Flex gap="2rem" w="100%" direction={"column"}>
-            <Center position={"relative"} w="100%">
-              <Avatar name="wiaah" size="lg" photoSrc="/wiaah_logo.png" />
-              <IconButton
-                onClick={closeNewStoryModal}
-                p="0rem"
-                position={"absolute"}
-                right="0px"
-                top="50%"
-                transform={"auto"}
-                translateY={"-50%"}
-                variant="icon"
-                fontSize={"xx-large"}
-                colorScheme={"blackAlpha"}
-                color="black"
-                bgColor="transparent"
-                aria-label="Close new post modal"
-                icon={<Icon as={MdClose} />}
-              />
-            </Center>
-            <Textarea
-              h="15rem"
-              w="100%"
-              bgColor={SelectedColor}
-              placeholder="type something cool to share"
+        <MediaUploadModal
+          onImgUpload={(converted, raw) => setImgSrc(converted)}
+          onVidUpload={(converted, raw) => setVidSrc(converted)}
+        />
+        <div className="flex gap-8 w-full flex-col">
+          <div className="flex justify-center items-center relative w-full">
+            <Avatar name="wiaah" src="/wiaah_logo.png" />
+            <CloseIcon
+              className="p-0 absolute right-0 top-1/2 transform-cpu -translate-y-1/2 text-2xl text-black"
+              onClick={closeNewStoryModal}
             />
+          </div>
+          <Textarea
+            className="h-60 w-full"
+            style={{
+              backgroundColor: SelectedColor,
+            }}
+            placeholder="type something cool to share"
+          />
 
-            <HStack
-              w="100%"
-              overflowX={"scroll"}
-              className="no-scrollBar"
-              spacing="1rem"
-              justify={"space-between"}
-            >
-              {colors.map((color, i) => (
-                <Box
-                  onClick={() => setSelectedColor(color)}
-                  cursor={"pointer"}
-                  key={i}
-                  p="1rem"
-                  rounded="full"
-                  bgColor={color}
-                ></Box>
-              ))}
+          <HStack className="no-scrollBar w-full overflow-x-scroll gap-4 justify-between">
+            {colors.map((color, i) => (
+              <div
+                onClick={() => setSelectedColor(color)}
+                className="cursor-pointer p-4 rounded-full"
+                key={i}
+                style={{
+                  background: color,
+                }}
+              />
+            ))}
+          </HStack>
+          <div className="flex w-full justify-between">
+            <HStack className="gap-4">
+              <BiImageAlt
+                className={`${
+                  fileAdded
+                    ? "cursor-grab pointer-events-none"
+                    : "cursor-pointer pointer-events-auto"
+                } text-xl fill-primary`}
+                data-testid="AttachPhotoBtn"
+                onClick={() => setUploadType("picture")}
+              />
+              <IoVideocam
+                className={`${
+                  fileAdded
+                    ? "cursor-not-allowed pointer-events-none"
+                    : "cursor-pointer pointer-events-auto"
+                } text-xl text-primary`}
+                data-testid="AttachVideoBtn"
+                onClick={() => setUploadType("video")}
+              />
             </HStack>
-            <Flex w="100%" justify={"space-between"}>
-              <HStack spacing="1rem">
-                <Icon
-                  cursor={fileAdded ? "grab" : "pointer"}
-                  fontSize={"x-large"}
-                  pointerEvents={fileAdded ? "none" : "all"}
-                  fill="primary.main"
-                  data-testid="AttachPhotoBtn"
-                  as={BiImageAlt}
-                  onClick={() => setUploadType("picture")}
+            <Button onClick={closeNewStoryModal} className="capitalize">
+              {t("post", "post")}
+            </Button>
+          </div>
+          <HStack className="overflow-hidden max-h-[40rem] justify-center gap-8">
+            {imgSrc && (
+              <div className="w-full h-full justify-center items-center flex">
+                <img
+                  className="max-w-full max-h-full object-contain"
+                  ref={imgRef}
                 />
-                <Icon
-                  cursor={fileAdded ? "not-allowed" : "pointer"}
-                  fontSize={"x-large"}
-                  pointerEvents={fileAdded ? "none" : "all"}
-                  color="primary.main"
-                  data-testid="AttachVideoBtn"
-                  as={IoVideocam}
-                  onClick={() => setUploadType("video")}
-                />
-              </HStack>
-              <Button onClick={closeNewStoryModal} textTransform={"capitalize"}>
-                {t("post", "post")}
-              </Button>
-            </Flex>
-            <HStack
-              overflow={"hidden"}
-              maxH={"40rem"}
-              w="100%"
-              justify={"center"}
-              gap="2rem"
-            >
-              {imgSrc && (
-                <Center w="100%" h="100%">
-                  <Image
-                    maxW="100%"
-                    maxH={"100%"}
-                    objectFit={"contain"}
-                    ref={imgRef}
-                  />
-                </Center>
-              )}
+              </div>
+            )}
 
-              {vidSrc && (
-                <Center w="100%" h="100%">
-                  <video
-                    ref={videoRef}
-                    style={{
-                      maxHeight: "100%",
-                      maxWidth: "100%",
-                      objectFit: "contain",
-                    }}
-                  />
-                </Center>
-              )}
-            </HStack>
-          </Flex>
-        </ModalBody>
+            {vidSrc && (
+              <div className="w-full h-full justify-center items-center flex">
+                <video
+                  ref={videoRef}
+                  style={{
+                    maxHeight: "100%",
+                    maxWidth: "100%",
+                    objectFit: "contain",
+                  }}
+                />
+              </div>
+            )}
+          </HStack>
+        </div>
       </ModalContent>
     </Modal>
   );

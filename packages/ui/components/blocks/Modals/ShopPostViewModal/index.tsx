@@ -1,11 +1,3 @@
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-} from "@chakra-ui/react";
 import { useQuery } from "react-query";
 import React from "react";
 import {
@@ -16,6 +8,10 @@ import {
   SocialShopCard,
   useShopPostPopup,
   usePostsCommentsDrawer,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
 } from "ui";
 import { Interaction } from "types";
 
@@ -65,25 +61,15 @@ export const ShopPostViewModal: React.FC<ShopPostViewModalProps> = () => {
   }
 
   return (
-    <Modal
-      autoFocus={false}
-      isCentered
-      isOpen={!!postId}
-      onClose={removeCurrentPost}
-    >
+    <Modal onOpen={() => {}} isOpen={!!postId} onClose={removeCurrentPost}>
       <ModalOverlay />
 
-      <ModalContent
-        p="0px"
-        rounded="none"
-        maxW={"min(100%,35rem)"}
-        h={{ base: "100%", sm: "90%" }}
-      >
-        <ModalHeader py="0.5rem" px="0px">
+      <ModalContent className="max-w-[min(100%,35rem)] h-full sm:h-[90%]">
+        <ModalHeader title="" className="py-2 px-0">
           <PostsViewModalsHeader onBackClick={removeCurrentPost} />
         </ModalHeader>
-        <ModalBody py="0px" px="0.25rem" overflow={"scroll"} h="100%">
-          {isError && <Text>something went wrong :{error}</Text>}
+        <div className="px-1 overflow-scroll h-full">
+          {isError && <p>something went wrong :{error}</p>}
           {postDetails && (
             <SocialShopCard
               interactionsProps={{
@@ -93,7 +79,7 @@ export const ShopPostViewModal: React.FC<ShopPostViewModalProps> = () => {
               shopCardInfo={postDetails}
             />
           )}
-        </ModalBody>
+        </div>
       </ModalContent>
     </Modal>
   );

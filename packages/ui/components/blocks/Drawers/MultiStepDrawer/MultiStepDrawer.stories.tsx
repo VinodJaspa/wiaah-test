@@ -1,15 +1,12 @@
 import React from "react";
-import { MultiStepDrawer } from ".";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import { storybookDrawersTitle } from "utils";
+import { MultiStepDrawer, Button } from "ui";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { SidebarContext } from "../../../helpers";
-import { Button } from "@chakra-ui/react";
 import { t } from "i18next";
 
 export default {
-  title: "UI/blocks/drawers/MultiStepDrawer",
+  title: storybookDrawersTitle + "MultiStepDrawer",
   component: MultiStepDrawer,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof MultiStepDrawer>;
 
 const Templete: ComponentStory<typeof MultiStepDrawer> = ({

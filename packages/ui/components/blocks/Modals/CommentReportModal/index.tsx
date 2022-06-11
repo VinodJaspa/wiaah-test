@@ -1,27 +1,23 @@
 import {
-  Button,
-  Flex,
+  useCommentReportModal,
   Modal,
-  ModalBody,
-  ModalCloseButton,
   ModalContent,
-  ModalFooter,
-  ModalHeader,
   ModalOverlay,
   Radio,
-  RadioGroup,
-  Text,
+  ModalHeader,
+  ModalCloseButton,
+  CloseIcon,
+  Button,
   Textarea,
-} from "@chakra-ui/react";
-import { useCommentReportModal } from "ui";
+} from "ui";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { TranslationText } from "types";
+import { TranslationTextType } from "types";
 
 export interface CommentReportModalProps {}
 
 const reportReasons: {
-  reason: TranslationText;
+  reason: TranslationTextType;
   reasonId: string;
 }[] = [
   {
@@ -74,63 +70,51 @@ export const CommentReportModal: React.FC<CommentReportModalProps> = () => {
 
   const { t } = useTranslation();
   return (
-    <Modal
-      autoFocus={false}
-      isCentered
-      isOpen={!!commentId}
-      onClose={closeModal}
-    >
+    <Modal isOpen={!!commentId} onOpen={() => {}} onClose={closeModal}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>
-          <Text>{t("report_user", "Report User")}</Text>
-          <ModalCloseButton />
+        <ModalHeader title="">
+          <p>{t("report_user", "Report User")}</p>
+          <ModalCloseButton>
+            <CloseIcon />
+          </ModalCloseButton>
         </ModalHeader>
-        <ModalBody>
-          <Flex w="100%" gap="1rem" direction={"column"}>
-            <Textarea
-              w="100%"
-              resize={"vertical"}
-              h="15rem"
-              borderBottomWidth={"1px"}
-              borderBottomColor="gray"
-              placeholder={t("enter_reason", "Enter Reason")}
-            />
-            <Flex direction={"column"}>
-              <Text>
-                {t(
-                  "i_want_to_report",
-                  "I want to report this link because i think its a"
-                )}
-                :
-              </Text>
-              <RadioGroup onChange={setReasonsValue} value={reasonsValue}>
-                <Flex gap="1rem" direction={"column"}>
-                  {reportReasons.map(
-                    (
-                      { reason: { translationKey, fallbackText }, reasonId },
-                      i
-                    ) => (
-                      <Radio value={reasonId} key={i}>
-                        {t(translationKey, fallbackText)}
-                      </Radio>
-                    )
-                  )}
-                </Flex>
-              </RadioGroup>
-            </Flex>
-          </Flex>
-        </ModalBody>
-        <ModalFooter gap="0.5rem">
-          <Button
-            onClick={closeModal}
-            colorScheme={"blackAlpha"}
-            bgColor="gray"
-          >
+        <div className="flex w-full gap-4 flex-col">
+          <Textarea
+            className="w-full resize-y h-60 border-b-gray-500 border-b-[1px]"
+            placeholder={t("enter_reason", "Enter Reason")}
+          />
+          <div className="flex flex-col">
+            <p>
+              {t(
+                "i_want_to_report",
+                "I want to report this link because i think its a"
+              )}
+              :
+            </p>
+            {/* <RadioGroup onChange={setReasonsValue} value={reasonsValue}> */}
+            <div className="flex flex-col gap-4">
+              {reportReasons.map(({ reason, reasonId }, i) => (
+                <Radio
+                  value={reasonId}
+                  name="reason"
+                  onChange={() => setReasonsValue(reasonId)}
+                  key={i}
+                >
+                  {typeof reason === "object" &&
+                    t(reason.translationKey, reason.fallbackText)}
+                </Radio>
+              ))}
+            </div>
+            {/* </RadioGroup> */}
+          </div>
+        </div>
+        <div className="flex items-center">
+          <Button onClick={closeModal} className="bg-gray-500">
             {t("close", "Close")}
           </Button>
           <Button>{t("report_user", "Report User")}</Button>
-        </ModalFooter>
+        </div>
       </ModalContent>
     </Modal>
   );

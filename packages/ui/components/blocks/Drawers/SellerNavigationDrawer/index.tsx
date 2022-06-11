@@ -1,17 +1,16 @@
+import React from "react";
+import { SellerDrawerOpenState } from "state";
+import { HiMenu } from "react-icons/hi";
+import { useRecoilState } from "recoil";
+import { NavigationLinkType } from "types";
 import {
+  Button,
   Drawer,
+  DrawerProps,
   DrawerOverlay,
   DrawerContent,
   DrawerHeader,
-  DrawerBody,
-  DrawerProps,
-} from "@chakra-ui/react";
-import React from "react";
-import { SellerDrawerOpenState } from "ui/state";
-import { HiMenu } from "react-icons/hi";
-import { useRecoilState } from "recoil";
-import { NavigationLinkType } from "types/sharedTypes/misc/SellerNavigationLink";
-import { useResponsive, Button } from "ui";
+} from "ui";
 
 export interface SellerNavigationDrawerProps
   extends Omit<DrawerProps, "children" | "isOpen" | "onClose"> {
@@ -27,49 +26,48 @@ export const SellerNavigationDrawer: React.FC<SellerNavigationDrawerProps> = ({
   children,
   ...props
 }) => {
-  const { isMobile } = useResponsive();
   const [isOpen, setOpen] = useRecoilState(SellerDrawerOpenState);
   return (
     <Drawer
       {...props}
       isOpen={isOpen}
-      placement="left"
-      size={isMobile ? "full" : "xs"}
+      position="left"
       onClose={() => setOpen(false)}
     >
       <DrawerOverlay />
       <DrawerContent>
-        <DrawerHeader px="2rem" h="5rem" borderBottomWidth={"1px"}>
-          <div className="flex gap-8 items-center min-w-fit h-full">
-            <HiMenu className="cursor-pointer text-4xl" />
-            <img className="h-full object-contain" src="/wiaah_logo.png" />
+        <DrawerHeader
+          closeButton={false}
+          className="h-20 px-8 border-b-[1px] flex"
+        >
+          <div className="w-8 h-8">
+            <HiMenu className="w-8 h-8 cursor-pointer text-4xl" />
           </div>
+          <img className="w-full h-full object-contain" src="/wiaah_logo.png" />
         </DrawerHeader>
-        <DrawerBody overflowY={"scroll"} className="thinScroll" px="0px">
-          <div className="flex gap-4 flex-col">
-            {links.map((link, i) => (
-              <Button
+        <div className="flex gap-4 overflow-y-scroll h-full flex-col">
+          {links.map((link, i) => (
+            <Button
+              key={i}
+              className="px-0 justify-start text-black bg-white hover:bg-gray-200 active:bg-gray-300"
+            >
+              <div
+                className="px-8 flex gap-8 items-center py-2 w-full"
                 key={i}
-                className="px-0 justify-start text-black bg-white hover:bg-gray-200 active:bg-gray-300"
+                onClick={() => onLinkClick && onLinkClick(link)}
               >
-                <div
-                  className="px-8 flex gap-8 items-center py-2 w-full"
-                  key={i}
-                  onClick={() => onLinkClick && onLinkClick(link)}
-                >
-                  <span className="w-8 h-8 text-4xl">
-                    {activeLink === link.url ? link.activeIcon : link.icon}
-                  </span>
+                <span className="w-8 h-8 text-4xl">
+                  {activeLink === link.url ? link.activeIcon : link.icon}
+                </span>
 
-                  <span className="capitalize font-semibold text-xl">
-                    {link.name}
-                  </span>
-                </div>
-              </Button>
-            ))}
-            {children}
-          </div>
-        </DrawerBody>
+                <span className="capitalize font-semibold text-xl">
+                  {link.name}
+                </span>
+              </div>
+            </Button>
+          ))}
+          {children}
+        </div>
       </DrawerContent>
     </Drawer>
   );

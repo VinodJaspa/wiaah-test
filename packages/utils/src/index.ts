@@ -13,3 +13,4 @@ export * from "./helpers";
 export * from "./FetchingMock";
 export * from "./Date";
 export * from "./getClosest";
+export * from "./data";

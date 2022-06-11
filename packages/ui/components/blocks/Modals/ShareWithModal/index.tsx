@@ -1,29 +1,23 @@
-import {
-  AspectRatio,
-  Avatar,
-  Button,
-  Checkbox,
-  Flex,
-  HStack,
-  Icon,
-  Image,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-} from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiSearch } from "react-icons/hi";
-import { useShareWithModal, useGetShareWithFriends } from "ui";
-import { SpinnerFallback } from "../../FallbackDisplays";
+import {
+  useShareWithModal,
+  useGetShareWithFriends,
+  SpinnerFallback,
+  Modal,
+  ModalContent,
+  ModalOverlay,
+  ModalHeader,
+  Checkbox,
+  ModalCloseButton,
+  CloseIcon,
+  InputGroup,
+  InputLeftElement,
+  Input,
+  HStack,
+  Button,
+} from "ui";
 
 export interface ShareWithModalProps {}
 
@@ -52,49 +46,36 @@ export const ShareWithModal: React.FC<ShareWithModalProps> = ({}) => {
   }
 
   return (
-    <Modal
-      size={"xl"}
-      autoFocus={false}
-      isOpen={!!postId}
-      onClose={cancelShare}
-      isCentered
-    >
+    <Modal isOpen={!!postId} onClose={cancelShare} onOpen={() => {}}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>
-          <Text>{t("share_with", "Share with")}</Text>
-          <ModalCloseButton />
+        <ModalHeader title="">
+          <p>{t("share_with", "Share with")}</p>
+
+          <ModalCloseButton>
+            <CloseIcon />
+          </ModalCloseButton>
         </ModalHeader>
-        <ModalBody>
-          <Flex direction={"column"} gap="1rem">
+        <div>
+          <div className="flex flex-col gap-4">
             <Input
-              variant={"flushed"}
-              borderBottomWidth="0.1em"
-              borderColor={"lightgray"}
+              flushed
               value={messageValue}
               onChange={(e) => setMessageValue(e.target.value)}
               placeholder={`${t("write_a_message", "Write a message")}...`}
             />
             <InputGroup>
-              <InputLeftElement w="auto">
-                <Icon as={HiSearch} />
+              <InputLeftElement>
+                <HiSearch />
               </InputLeftElement>
               <Input
-                variant={"flushed"}
+                flushed
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                borderBottomWidth="0.1em"
-                borderColor={"lightgray"}
                 placeholder={t("search", "Search")}
               />
             </InputGroup>
-            <Flex
-              gap="1rem"
-              maxH={"20rem"}
-              overflowY="scroll"
-              className="thinScroll"
-              direction={"column"}
-            >
+            <div className="thinScroll flex max-h-[20rem] overflow-scroll flex-col gap-4">
               <SpinnerFallback isLoading={isLoading} isError={isError}>
                 {filtered &&
                   filtered.map((user, idx) => (
@@ -105,28 +86,24 @@ export const ShareWithModal: React.FC<ShareWithModalProps> = ({}) => {
                             ? handleAddToShareList(user.id)
                             : handleRemoveFromShareList(user.id);
                         }}
-                        borderColor={"black"}
+                        className="border-black"
                       />
-                      <AspectRatio w="3rem" ratio={1 / 1}>
-                        <Image
-                          bgColor={"black"}
-                          objectFit="contain"
-                          w="100%"
-                          h="100%"
-                          rounded={"lg"}
+                      <div className="w-12 h-12">
+                        <img
+                          className="bg-black object-contain w-full h-full rounded-lg"
                           src={user.photo}
                         />
-                      </AspectRatio>
-                      <Text>{user.name}</Text>
+                      </div>
+                      <p>{user.name}</p>
                     </HStack>
                   ))}
               </SpinnerFallback>
-            </Flex>
-          </Flex>
-        </ModalBody>
-        <ModalFooter gap={"0.5rem"}>
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-2">
           <Button>{t("share", "Share")}</Button>
-        </ModalFooter>
+        </div>
       </ModalContent>
     </Modal>
   );

@@ -1,11 +1,3 @@
-import {
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverContent,
-  PopoverHeader,
-  PopoverTrigger,
-} from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { TabType } from "types";
@@ -24,10 +16,9 @@ import {
   RecentSearchItemSwticher,
   Menu,
   MenuList,
-  MenuItem,
   MenuButton,
 } from "ui";
-import { randomNum } from "../../../helpers";
+import { randomNum } from "utils";
 
 const LocalizationPh: any[] = [...Array(5)].reduce((acc: any[]) => {
   // return acc.concat(LocalizationsPH);

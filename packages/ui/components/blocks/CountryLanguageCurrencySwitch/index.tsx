@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Language } from "ui/languages/enums/Language";
-import { Modal } from "antd";
-import { Select } from "antd";
-import { Divider } from "ui/components";
-import { Country } from "country-state-city";
+import { Divider, Select, SelectOption, Modal, ModalContent } from "ui";
 import { useRouter } from "next/router";
 import { FaGlobeEurope } from "react-icons/fa";
 import { useCookies } from "react-cookie";
-import { Box } from "@chakra-ui/react";
-
-const countries = Country.getAllCountries();
-const { Option } = Select;
+import { countries, getCountryByCode } from "utils";
 
 export const CountryLanguageCurrencySwitch: React.FC = () => {
   const router = useRouter();
-  const { locale } = router;
+  const locale = router ? router.locale : Language.EN;
   const [cookie, setCookie] = useCookies(["country", "currency"]);
   const { t, i18n } = useTranslation();
   const [langCode, setLang] = useState<Language>(locale as Language);
@@ -57,7 +51,7 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
 
   useEffect(() => {
     if (cookie.country) {
-      setCountryName(Country.getCountryByCode(cookie.country)?.name as string);
+      setCountryName(getCountryByCode(cookie.country)?.name as string);
       setCountryCode(cookie.country);
     }
     if (cookie.currency) {
@@ -124,10 +118,7 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
 
   return (
     <>
-      <Box
-        color="primary.main"
-        className="mt-8 flex w-full justify-center md:justify-end"
-      >
+      <div className="text-primary mt-8 flex w-full justify-center md:justify-end">
         <div
           onClick={() => showInternationalModal()}
           className="flex cursor-pointer border border-gray-400"
@@ -142,116 +133,103 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
           <div className="flex p-4 uppercase ">({currency})</div>
         </div>
         <Modal
-          className=""
-          centered={true}
-          title={null}
-          footer={null}
-          onCancel={() => setIsModalVisible(false)}
-          closeIcon=" "
-          visible={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
+          isOpen={isModalVisible}
+          onOpen={() => {}}
         >
-          <div className="px-4 text-3xl font-light">
-            {t("Update_Language", "Update Language")}
-          </div>
-          <div className="py-1">
-            <Divider />
-          </div>
-          <div className="mb-5 text-lg">
-            {t(
-              "Set_Languages_Country_Currency",
-              "Set your Languages, Country and Currency"
-            )}
-          </div>
-          <div className="mb-8">
-            <div className="text-lg">{t("Language", "Language")}</div>
-            <div className="mt-2 text-gray-400">
-              {t("Language_you_prefer", "Language you prefer")}
+          <ModalContent className="text-black">
+            <div className="px-4 text-3xl font-light">
+              {t("Update_Language", "Update Language")}
             </div>
-            <div className="int-motal-input-container">
-              <Select
-                defaultValue={langCode}
-                onChange={onLanguageChange}
-                className="w-full text-lg"
-                bordered={false}
+            <div className="py-1">
+              <Divider />
+            </div>
+            <div className="mb-5 text-lg">
+              {t(
+                "Set_Languages_Country_Currency",
+                "Set your Languages, Country and Currency"
+              )}
+            </div>
+            <div className="mb-8">
+              <div className="text-lg">{t("Language", "Language")}</div>
+              <div className="mt-2 text-gray-400">
+                {t("Language_you_prefer", "Language you prefer")}
+              </div>
+              <div className="int-motal-input-container">
+                <Select
+                  onOptionSelect={(v) => onLanguageChange(v)}
+                  className="w-full text-lg"
+                >
+                  <SelectOption value="en">English</SelectOption>
+                  <SelectOption value="fr">Français</SelectOption>
+                  <SelectOption value="es">Española</SelectOption>
+                  <SelectOption value="de">Deutsch</SelectOption>
+                </Select>
+              </div>
+            </div>
+            <div className="mb-8">
+              <div className="text-lg">{t("Country", "Country")}</div>
+              <div className="mt-2 text-gray-400">
+                {t("Country_you_live_in", "Country you live in")}
+              </div>
+              <div className="int-motal-input-container">
+                <Select onOptionSelect={(v) => onCountryChange(v)}>
+                  {countries.map((item, key: number) => {
+                    return (
+                      <SelectOption key={key} value={item.isoCode}>
+                        {item.name}
+                      </SelectOption>
+                    );
+                  })}
+                </Select>
+              </div>
+            </div>
+            <div className="mb-8">
+              <div className="text-lg">{t("Currency", "Currency")}</div>
+              <div className="mt-2 text-gray-400">
+                {t("Currency_you_use", "Currency you use")}
+              </div>
+              <div className="int-motal-input-container">
+                <Select
+                  defaultValue="usd"
+                  onOptionSelect={(v) => onCurrencyChange(v)}
+                  className="w-full text-lg"
+                >
+                  <SelectOption value="usd">
+                    $ {t("United_State_Dollar", "United State Dollar")} (USD)
+                  </SelectOption>
+                  <SelectOption value="chf">
+                    {t("Swiss_Franc", "Swiss Franc")} (CHF)
+                  </SelectOption>
+                  <SelectOption value="gbp">
+                    £ {t("The_pound_sterling", "The pound sterling")} (GBP)
+                  </SelectOption>
+                  <SelectOption value="eur">€ Euro (EUR)</SelectOption>
+                </Select>
+              </div>
+            </div>
+            <div className="pt-4 pb-1">
+              <Divider />
+            </div>
+            <div className="flex justify-end">
+              <button
+                className="mr-4 rounded-md bg-gray-600 py-2 px-6 text-white"
+                onClick={() => {
+                  setIsModalVisible(false);
+                }}
               >
-                <Option value="en">English</Option>
-                <Option value="fr">Français</Option>
-                <Option value="es">Española</Option>
-                <Option value="de">Deutsch</Option>
-              </Select>
-            </div>
-          </div>
-          <div className="mb-8">
-            <div className="text-lg">{t("Country", "Country")}</div>
-            <div className="mt-2 text-gray-400">
-              {t("Country_you_live_in", "Country you live in")}
-            </div>
-            <div className="int-motal-input-container">
-              <Select
-                showSearch
-                defaultValue={countryCode}
-                className="w-full text-lg"
-                bordered={false}
-                optionFilterProp="children"
-                onChange={onCountryChange}
+                {t("Close", "Close")}
+              </button>
+              <button
+                className="green-background rounded-md py-2 px-6 text-white"
+                onClick={saveInternationalSettings}
               >
-                {countries.map((item, key: number) => {
-                  return (
-                    <Option key={key} value={item.isoCode}>
-                      {item.name}
-                    </Option>
-                  );
-                })}
-              </Select>
+                {t("Save", "Save")}
+              </button>
             </div>
-          </div>
-          <div className="mb-8">
-            <div className="text-lg">{t("Currency", "Currency")}</div>
-            <div className="mt-2 text-gray-400">
-              {t("Currency_you_use", "Currency you use")}
-            </div>
-            <div className="int-motal-input-container">
-              <Select
-                defaultValue="usd"
-                onChange={onCurrencyChange}
-                className="w-full text-lg"
-                bordered={false}
-                style={{}}
-              >
-                <Option value="usd">
-                  $ {t("United_State_Dollar", "United State Dollar")} (USD)
-                </Option>
-                <Option value="chf">
-                  {t("Swiss_Franc", "Swiss Franc")} (CHF)
-                </Option>
-                <Option value="gbp">
-                  £ {t("The_pound_sterling", "The pound sterling")} (GBP)
-                </Option>
-                <Option value="eur">€ Euro (EUR)</Option>
-              </Select>
-            </div>
-          </div>
-          <div className="pt-4 pb-1">
-            <Divider />
-          </div>
-          <div className="flex justify-end">
-            <button
-              className="mr-4 rounded-md bg-gray-600 py-2 px-6 text-white"
-              onClick={() => {
-                setIsModalVisible(false);
-              }}
-            >
-              {t("Close", "Close")}
-            </button>
-            <button
-              className="green-background rounded-md py-2 px-6 text-white"
-              onClick={saveInternationalSettings}
-            >
-              {t("Save", "Save")}
-            </button>
-          </div>
+          </ModalContent>
         </Modal>
-      </Box>
+      </div>
     </>
   );
 };

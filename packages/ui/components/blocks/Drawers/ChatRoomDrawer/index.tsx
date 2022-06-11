@@ -1,30 +1,29 @@
+import React from "react";
 import {
+  ChatRoom,
   Drawer,
-  DrawerBody,
-  DrawerCloseButton,
+  DrawerProps,
   DrawerContent,
   DrawerHeader,
-  DrawerProps,
-} from "@chakra-ui/react";
-import React from "react";
-import { ChatRoom } from "ui";
-import { PostsViewModalsHeader } from "../../Headers";
+  DrawerOverlay,
+} from "ui";
 
-export interface ChatRoomDrawerProps extends Omit<DrawerProps, "children"> {
+export interface ChatRoomDrawerProps extends DrawerProps {
   roomId: string;
 }
 
 export const ChatRoomDrawer: React.FC<ChatRoomDrawerProps> = ({
   roomId,
   onClose,
+  onOpen,
   ...rest
 }) => {
   return (
-    <Drawer onClose={onClose} placement="bottom" size={"full"} {...rest}>
-      <DrawerContent p="0px">
-        <DrawerBody px="0px">
-          <ChatRoom roomId={roomId} />
-        </DrawerBody>
+    <Drawer onOpen={onOpen} {...rest} onClose={onClose} position="bottom">
+      <DrawerOverlay />
+      <DrawerContent>
+        <DrawerHeader></DrawerHeader>
+        <ChatRoom roomId={roomId} />
       </DrawerContent>
     </Drawer>
   );
