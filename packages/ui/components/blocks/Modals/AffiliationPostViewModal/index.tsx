@@ -1,19 +1,14 @@
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-} from "@chakra-ui/react";
 import React from "react";
 import { Interaction } from "types";
 import {
   useAffiliationPostViewPopup,
-  PostCard,
   PostsViewModalsHeader,
   useLoginPopup,
   useUserData,
+  Modal,
+  ModalContent,
+  ModalOverlay,
+  ModalHeader,
 } from "ui";
 import {
   SocialAffiliationCard,
@@ -56,25 +51,15 @@ export const AffiliationPostViewModal: React.FC<AffiliationPostViewModalProps> =
     }
 
     return (
-      <Modal
-        autoFocus={false}
-        isCentered
-        isOpen={!!postId}
-        onClose={removeCurrentPost}
-      >
+      <Modal isOpen={!!postId} onClose={removeCurrentPost} onOpen={() => {}}>
         <ModalOverlay />
 
-        <ModalContent
-          p="0px"
-          rounded="none"
-          maxW={"min(100%,35rem)"}
-          h={{ base: "100%", sm: "90%" }}
-        >
-          <ModalHeader py="0.5rem" px="0px">
+        <ModalContent className="h-full sm:h-[90%] max-w-[min(100%,35rem)]">
+          <ModalHeader title="" className="py-2 px-0">
             <PostsViewModalsHeader onBackClick={removeCurrentPost} />
           </ModalHeader>
-          <ModalBody px="0.25rem" overflow={"scroll"} h="100%">
-            {isError && <Text>something went wrong :{error}</Text>}
+          <div className="px-1 overflow-scroll h-full">
+            {isError && <p>something went wrong :{error}</p>}
             {postDetails && (
               <SocialAffiliationCard
                 innerProps={{ h: "100%", justify: "space-between" }}
@@ -85,7 +70,7 @@ export const AffiliationPostViewModal: React.FC<AffiliationPostViewModalProps> =
                 {...postDetails}
               />
             )}
-          </ModalBody>
+          </div>
         </ModalContent>
       </Modal>
     );

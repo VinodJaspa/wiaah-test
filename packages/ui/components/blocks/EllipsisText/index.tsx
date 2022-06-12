@@ -4,7 +4,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 export interface EllipsisTextProps {
-  content: string;
+  content?: string;
   maxLines: number;
   wordBreak?: boolean;
   ShowMore?: boolean;
@@ -18,6 +18,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   wordBreak,
   ShowMore = true,
   showMoreColor,
+  children,
 }) => {
   const { t } = useTranslation();
   const [MaxLines, setMaxLines] = React.useState<number>(maxLines);
@@ -29,7 +30,9 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   function getLineHeight(element: HTMLElement | null, text: string) {
     if (!element) return;
     const copy = element.cloneNode();
+    //@ts-ignore
     copy.style.visibility = "hidden";
+    //@ts-ignore
     copy.style.position = "absolute";
 
     copy.textContent = "a";
@@ -37,8 +40,10 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
       element.parentNode.appendChild(copy);
     }
 
+    //@ts-ignore
     const lineHeight = copy.offsetHeight;
 
+    //@ts-ignore
     copy.remove();
 
     if (helperTextRef.current) {
@@ -50,7 +55,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
     return (textHeight || 1 / lineHeight) > lineHeight * maxLines;
   }
 
-  const textEllipsising = getLineHeight(postTextRef.current, content);
+  const textEllipsising = getLineHeight(postTextRef.current, content || "");
 
   function handleShowMore() {
     setMaxLines(10000);
@@ -66,14 +71,11 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
     }
   }, [MaxLines]);
   return (
-    <Flex position={"relative"} fontWeight={"semibold"} direction={"column"}>
-      <Text
-        position={"absolute"}
-        w="100%"
-        pointerEvents="none"
-        visibility={"hidden"}
+    <div className="relative font-semibold flex flex-col">
+      <p
+        className="absolute w-full pointer-events-none hidden"
         ref={helperTextRef}
-      ></Text>
+      ></p>
       <Text
         wordBreak={wordBreak ? "break-all" : "break-word"}
         ref={postTextRef}
@@ -82,48 +84,34 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         overflow="clip"
         textOverflow="clip"
       >
+        {children}
         {content}
       </Text>
       {!textEllipsising || !ShowMore ? null : showMore === true ? (
-        <Flex
-          position={"absolute"}
-          bottom="0px"
-          right="0px"
-          justify={"end"}
-          w="100%"
-          color="primary.main"
-          textTransform={"capitalize"}
-          transform="auto"
-        >
-          <Flex
-            bg={showMoreColor ? showMoreColor : "primary.light"}
-            gap="0.5rem"
+        <div className="absolute bottom-0 right-0 justify-end flex w-full text-primary capitalize transform-cpu">
+          <div
+            className={`${
+              showMoreColor ? showMoreColor : "bg-primary-50"
+            } flex gap-2`}
           >
-            <Text ref={EllipsisRef} color="black">
+            <p className="text-black" ref={EllipsisRef}>
               ...
-            </Text>
-            <Text cursor={"pointer"} onClick={handleShowMore} w="fit-content">
+            </p>
+            <p className="cursor-pointer w-fit" onClick={handleShowMore}>
               {t("show_more", "show more")}
-            </Text>
-          </Flex>
-        </Flex>
+            </p>
+          </div>
+        </div>
       ) : (
-        <Flex
-          justify={"end"}
-          position={"absolute"}
-          bottom="0px"
-          right="0px"
-          cursor={"pointer"}
-          color="primary.main"
-          textTransform={"capitalize"}
+        <div
+          className="
+        flex justify-end absolute bottom-0 right-0 cursor-pointer text-primary capitalize"
           onClick={handleShowLess}
         >
-          <Text w="fit-content" pl="0.5rem" bg="primary.light">
-            {t("show_less", "show less")}
-          </Text>
-        </Flex>
+          <p className="w-fit pl-2 bg-primary">{t("show_less", "show less")}</p>
+        </div>
       )}
-    </Flex>
+    </div>
   );
 };
 

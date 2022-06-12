@@ -1,17 +1,14 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import {
+  BreadCrumb,
   Drawer,
   DrawerOverlay,
   DrawerContent,
   DrawerHeader,
-  DrawerBody,
-  VStack,
-  Flex,
-  Link as ChakraLink,
-} from "@chakra-ui/react";
-import { BreadCrumb } from "ui";
+  DrawerProps,
+} from "ui";
 import {
   FaChevronLeft,
   FaChevronRight,
@@ -27,7 +24,7 @@ export interface Step {
   url: string;
 }
 
-export interface MultiStepDrawerProps {
+export interface MultiStepDrawerProps extends DrawerProps {
   steps: Step[];
   onClose: () => any;
   isOpen: boolean;
@@ -38,7 +35,7 @@ const LinksStack: React.FC<{
   onClick?: (cate: string) => any;
 }> = ({ onStepSelect, steps, onClick }) => {
   return (
-    <VStack spacing={"0.5rem"}>
+    <div className="flex flex-col justify-center gap-2">
       {steps &&
         steps.map((step, i) => {
           if (step.steps && step.steps.length > 0) {
@@ -57,14 +54,14 @@ const LinksStack: React.FC<{
                 onClick={() => onClick && onClick(step.label)}
                 className="nasted-menu-children group flex w-full cursor-pointer items-center justify-between rounded-full p-2 hover:bg-green-100"
               >
-                <ChakraLink>
-                  <p className="group-hover:text-green-400">{step.label}</p>
-                </ChakraLink>
+                <Link href={step.url}>
+                  <a className="group-hover:text-green-400">{step.label}</a>
+                </Link>
               </li>
             );
           }
         })}
-    </VStack>
+    </div>
   );
 };
 
@@ -72,6 +69,7 @@ export const MultiStepDrawer: React.FC<MultiStepDrawerProps> = ({
   steps,
   isOpen,
   onClose,
+  ...rest
 }) => {
   const { t } = useTranslation();
   const [currentStep, setCurrentStep] = React.useState<Step>();
@@ -97,11 +95,9 @@ export const MultiStepDrawer: React.FC<MultiStepDrawerProps> = ({
       path.findIndex(
         (step) => step.label.toLowerCase() == link.text.toLowerCase()
       ) + 1;
-    console.log("stepIndex", stepIndex);
 
     if (stepIndex > -1) {
       setPath((path) => path.slice(0, stepIndex));
-      console.log(path);
     } else {
       resetInitalStep();
     }
@@ -121,7 +117,6 @@ export const MultiStepDrawer: React.FC<MultiStepDrawerProps> = ({
     setPath((path) => [...path, step]);
   }
   function handleNavToCate(step: string) {
-    console.log("test");
     const cateLink = path.map((path) => path.label);
     const concated = cateLink.join("/").concat(`/${step}`);
     router.push(`${shopRouting.searchRefaults}/${concated}`);
@@ -129,10 +124,10 @@ export const MultiStepDrawer: React.FC<MultiStepDrawerProps> = ({
 
   return (
     <>
-      <Drawer placement={"left"} onClose={handleClose} isOpen={isOpen}>
+      <Drawer {...rest} onClose={handleClose} isOpen={isOpen}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerHeader p="0px" borderBottomWidth="1px">
+          <DrawerHeader closeButton={false}>
             <div className="flex w-full items-center justify-between bg-gray-800 p-4 text-white">
               <span className="inline-flex items-center">
                 <Link href="/login">
@@ -153,32 +148,28 @@ export const MultiStepDrawer: React.FC<MultiStepDrawerProps> = ({
               </div>
             </div>
           </DrawerHeader>
-          <DrawerBody>
-            {/* <ChakraCarousel activeItem={0} setActiveItem={setActive}> */}
-            <Flex direction={"column"} gap="1rem">
-              {path.length > 0 && (
-                <li
-                  className="group flex w-full cursor-pointer items-center justify-between rounded py-2 hover:bg-green-100"
-                  onClick={() => resetInitalStep()}
-                >
-                  <FaChevronLeft className="h-4 w-4" />
-                  <p className="uppercase group-hover:text-green-400">
-                    {t("Main_Menu", "Main Menu")}
-                  </p>
-                </li>
-              )}
-              <BreadCrumb
-                onLinkClick={(link) => updateCurrentStep(link)}
-                links={breadcrumbPath}
-              />
-              <LinksStack
-                onClick={handleNavToCate}
-                onStepSelect={handleStepSelection}
-                steps={(currentStep && currentStep.steps) || []}
-              />
-            </Flex>
-            {/* </ChakraCarousel> */}
-          </DrawerBody>
+          <div className="flex flex-col gap-4">
+            {path.length > 0 && (
+              <li
+                className="group flex w-full cursor-pointer items-center justify-between rounded py-2 hover:bg-green-100"
+                onClick={() => resetInitalStep()}
+              >
+                <FaChevronLeft className="h-4 w-4" />
+                <p className="uppercase group-hover:text-green-400">
+                  {t("Main_Menu", "Main Menu")}
+                </p>
+              </li>
+            )}
+            <BreadCrumb
+              onLinkClick={(link) => updateCurrentStep(link)}
+              links={breadcrumbPath}
+            />
+            <LinksStack
+              onClick={handleNavToCate}
+              onStepSelect={handleStepSelection}
+              steps={(currentStep && currentStep.steps) || []}
+            />
+          </div>
         </DrawerContent>
       </Drawer>
     </>

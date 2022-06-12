@@ -11,7 +11,7 @@ export interface SelectChildProps<T> {
   onOptionSelect: OnOptionSelect<T>;
 }
 
-export interface SelectProps<SelectOptionType>
+export interface SelectProps<SelectOptionType = string>
   extends Omit<HtmlDivProps, "children" | "onSelect"> {
   children?: ElementChilds<SelectChildProps<SelectOptionType>>;
   onOptionSelect?: OnOptionSelect<SelectOptionType>;
@@ -20,7 +20,7 @@ export interface SelectProps<SelectOptionType>
   flushed?: boolean;
 }
 
-export function Select<ValueType>({
+export function Select<ValueType = string>({
   placeholder,
   className,
   children,
@@ -148,9 +148,9 @@ export const SelectOption: React.FC<SelectListProps> = ({
       className={`${className || ""} ${
         selectable
           ? "px-4 py-2 cursor-pointer hover:bg-gray-200 active:bg-gray-300 w-full"
-          : ""
+          : "px-2"
       }
-       `}
+       select-none `}
     />
   );
 };

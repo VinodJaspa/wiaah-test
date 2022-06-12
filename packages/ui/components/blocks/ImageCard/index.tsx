@@ -1,6 +1,6 @@
 import React from "react";
 
-interface ImageCardProps {
+export interface ImageCardProps {
   imgUrl?: string;
   name?: string;
 }

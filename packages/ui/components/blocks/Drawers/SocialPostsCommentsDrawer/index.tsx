@@ -1,24 +1,17 @@
 import {
-  Drawer,
-  DrawerOverlay,
-  DrawerContent,
-  DrawerHeader,
-  DrawerBody,
-  HStack,
-  Avatar,
-  InputGroup,
-  InputRightElement,
-  Text,
-  Input,
-  Flex,
-  Box,
-  VStack,
-  Divider,
-} from "@chakra-ui/react";
-import {
   usePostsCommentsDrawer,
   PostsViewModalsHeader,
   PostCommentCard,
+  HStack,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  InputGroup,
+  Input,
+  InputRightElement,
+  Divider,
+  Avatar,
+  DrawerHeader,
 } from "ui";
 import React from "react";
 import { useUserData, useGetPostCommentsQuery, SpinnerFallback } from "ui";
@@ -49,57 +42,41 @@ export const SocialPostsCommentsDrawer: React.FC<SocialPostsCommentsDrawerProps>
 
     function handleSendComment() {}
     return (
-      <Drawer
-        placement={"bottom"}
-        onClose={handleClose}
-        isOpen={!!postId}
-        size="full"
-      >
+      <Drawer position={"bottom"} onClose={handleClose} isOpen={!!postId}>
         <DrawerOverlay />
-        <DrawerContent p="0px">
-          <DrawerHeader p="0px">
+        <DrawerContent>
+          <DrawerHeader>
             <PostsViewModalsHeader onBackClick={handleClose} />
           </DrawerHeader>
-          <DrawerBody p="0px">
-            <Flex direction={"column"}>
-              <HStack
-                spacing={"1rem"}
-                px="1.5rem"
-                py="1rem"
-                bgColor={"lightGray"}
-              >
-                <Avatar
-                  bgColor={"black"}
-                  src={user?.photoSrc}
-                  name={user?.name}
-                />
-                <InputGroup>
-                  <InputRightElement pr="2rem">
-                    <Text onClick={handleSendComment} color="primary.main">
-                      {t("send", "Send")}
-                    </Text>
-                  </InputRightElement>
-                  <Input
-                    border="none"
-                    bgColor={"white"}
-                    _focus={{ outlineColor: "primary.main" }}
-                    rounded="full"
-                    placeholder={t("type something", "type something")}
-                  />
-                </InputGroup>
-              </HStack>
-              <SpinnerFallback isError={isError} isLoading={loadingMock}>
-                <VStack divider={<Divider />}>
-                  {Array.isArray(data) &&
-                    data.map(({ attachment, ...rest }, i) => (
-                      <Box key={i} py="1rem" px="1.5rem">
+          <div className="flex flex-col">
+            <HStack className="gap-4 px-6 py-4 bg-gray-300">
+              <Avatar src={user?.photoSrc} name={user?.name} />
+              <InputGroup className="bg-white">
+                <InputRightElement className=" px-2">
+                  <p
+                    onClick={handleSendComment}
+                    className="cursor-pointer text-primary"
+                  >
+                    {t("send", "Send")}
+                  </p>
+                </InputRightElement>
+                <Input placeholder={t("type something", "type something")} />
+              </InputGroup>
+            </HStack>
+            <SpinnerFallback isError={isError} isLoading={loadingMock}>
+              <div className="flex flex-col gap-2">
+                {Array.isArray(data) &&
+                  data.map(({ attachment, ...rest }, i) => (
+                    <>
+                      <div className="py-4 px-6" key={i}>
                         <PostCommentCard main={i === 0} {...rest} />
-                      </Box>
-                    ))}
-                </VStack>
-              </SpinnerFallback>
-            </Flex>
-          </DrawerBody>
+                      </div>
+                      <Divider />
+                    </>
+                  ))}
+              </div>
+            </SpinnerFallback>
+          </div>
         </DrawerContent>
       </Drawer>
     );

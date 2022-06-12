@@ -4,8 +4,9 @@ import {
   orderStatus,
   payments,
 } from "placeholder";
-import { OrdersStatus, PriceType } from "types";
+import { OrdersFilter, OrdersStatus, PriceType } from "types";
 import { randomNum } from "utils";
+import { FetchDataArrayResults } from "@Utils";
 
 export interface BookingHistoryAppointmentType {
   appointmentId: string;
@@ -25,28 +26,53 @@ export interface BookingHistoryAppointmentType {
   servicePrice: PriceType;
   payment: string;
 }
+export type GetBookingsHistoryFetcherResults =
+  FetchDataArrayResults<BookingHistoryAppointmentType>;
 
-export const getBookingsHistoryFetcher =
-  (): BookingHistoryAppointmentType[] => {
-    return [...Array(30)].map((_, i) => ({
-      appointmentId: `${randomNum(214343465)}`,
-      customer: {
-        id: `${i * 2}`,
-        name: {
-          first: "first",
-          last: "last",
-          fullName: "Wiaah Corp",
-        },
-        photo: getRandomImage(),
+export type GetBookingsHistoryFetcherProps = {
+  limit: number;
+  page: number;
+  filter: OrdersFilter;
+};
+
+export const getBookingsHistoryFetcher = ({
+  limit,
+  page,
+  filter,
+}: GetBookingsHistoryFetcherProps): GetBookingsHistoryFetcherResults => {
+  const data = [...Array(30)].map((_, i) => ({
+    appointmentId: `${randomNum(214343465)}`,
+    customer: {
+      id: `${i * 2}`,
+      name: {
+        first: "first",
+        last: "last",
+        fullName: "Wiaah Corp",
       },
-      from: new Date(Date.now()).toString(),
-      payment: payments[randomNum(payments.length)],
-      service: "back pain treatment",
-      servicePrice: {
-        amount: randomNum(500),
-        currency: currencices[randomNum(currencices.length)],
-      },
-      serviceStatus: orderStatus[randomNum(orderStatus.length)],
-      to: new Date(Date.now()).toString(),
-    }));
+      photo: getRandomImage(),
+    },
+    from: new Date(Date.now()).toString(),
+    payment: payments[randomNum(payments.length)],
+    service: "back pain treatment",
+    servicePrice: {
+      amount: randomNum(500),
+      currency: currencices[randomNum(currencices.length)],
+    },
+    serviceStatus: orderStatus[randomNum(orderStatus.length)],
+    to: new Date(Date.now()).toString(),
+  }));
+  const filteredData = filter
+    ? filter === "all"
+      ? data
+      : data.filter((item) => item.serviceStatus === filter)
+    : data;
+  const appointmnets =
+    page === 0
+      ? filteredData.slice(0, limit)
+      : filteredData.slice(page * limit, page + 1 * limit);
+  return {
+    total: data.length,
+    data: appointmnets,
+    hasMore: page * limit > data.length,
   };
+};

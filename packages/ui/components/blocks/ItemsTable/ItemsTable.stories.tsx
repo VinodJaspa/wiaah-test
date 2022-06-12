@@ -1,9 +1,10 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ItemsTable } from "../";
+import { ItemsTable } from "ui";
+import { storybookBlocksTitle } from "utils";
 
 export default {
-  title: "UI/blocks/ItemsTable",
+  title: storybookBlocksTitle + "ItemsTable",
   component: ItemsTable,
 } as ComponentMeta<typeof ItemsTable>;
 

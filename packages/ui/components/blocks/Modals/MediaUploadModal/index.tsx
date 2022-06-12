@@ -10,7 +10,7 @@ import {
   ModalContent,
 } from "ui";
 import { TakePictureModal, RecordVideoModal } from "ui";
-import { getFileSrcData, FileRes } from "ui/components/helpers";
+import { getFileSrcData, FileRes } from "utils";
 
 export interface MediaUploadModalProps {
   onImgUpload?: (converted: FileRes, raw?: File) => any;
@@ -85,7 +85,7 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
   function handleOpen() {}
 
   return (
-    <Modal isOpen={!!uploadType} onClose={cancelUpload}>
+    <Modal onOpen={() => {}} isOpen={!!uploadType} onClose={cancelUpload}>
       <ModalOverlay />
       <ModalContent className="w-[min(100%, 40rem)] rounded-xl py-4 px-8 flex flex-col gap-4">
         <PostsViewModalsHeader onBackClick={cancelUpload}>
@@ -101,6 +101,7 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
           {uploadImg ? (
             <>
               <TakePictureModal
+                onOpen={() => setTakePicture(true)}
                 isOpen={takePicture}
                 onClose={() => setTakePicture(false)}
                 onImgCapture={(src, raw) => {
@@ -133,9 +134,9 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
           ) : uploadVid ? (
             <>
               <RecordVideoModal
+                onOpen={() => setRecordVideo(true)}
                 isOpen={recordVideo}
                 onVideoRecored={(vid) => {
-                  console.log("recorded", vid);
                   setVideoFiles([vid]);
                 }}
                 onClose={() => setRecordVideo(false)}

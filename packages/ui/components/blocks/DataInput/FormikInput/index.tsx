@@ -5,6 +5,7 @@ import { TranslationText, Input, InputProps } from "ui";
 
 export interface FormikInputProps extends HtmlInputProps {
   label?: TranslationTextType | string;
+  labelProps?: HtmlDivProps;
   name: string;
   as?: React.ReactNode;
   containerProps?: HtmlDivProps;
@@ -16,6 +17,7 @@ export function FormikInput<T = InputProps>({
   children,
   as = Input,
   containerProps,
+  labelProps,
   ...props
 }: FormikInputProps & T) {
   return (
@@ -28,7 +30,11 @@ export function FormikInput<T = InputProps>({
         {typeof label === "string" ? (
           label
         ) : typeof label === "object" ? (
-          <TranslationText className="font-bold" translationObject={label} />
+          <TranslationText
+            {...labelProps}
+            className={labelProps?.className || "font-bold"}
+            translationObject={label}
+          />
         ) : null}
         <Field {...props} as={as} name={name}>
           {children}

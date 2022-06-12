@@ -1,18 +1,14 @@
-import { ChevronLeftIcon } from "@chakra-ui/icons/src/ChevronLeft";
-import {
-  Box,
-  Button,
-  Flex,
-  Icon,
-  IconButton,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalOverlay,
-  ModalProps,
-} from "@chakra-ui/react";
 import React from "react";
 import { HiCamera } from "react-icons/hi";
+import {
+  Modal,
+  ModalOverlay,
+  ModalProps,
+  ModalContent,
+  ModalHeader,
+  ArrowLeftIcon,
+  Button,
+} from "ui";
 
 export interface CameraPreviewProps extends Omit<ModalProps, "children"> {
   onImgCapture?: (imgDataUrl: string, fileConverted?: File) => any;
@@ -102,59 +98,29 @@ export const TakePictureModal: React.FC<CameraPreviewProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose} {...props}>
       <ModalOverlay />
-      <ModalContent bg="transparent" maxW={"80%"} p="0px">
-        <ModalBody
-          display={"flex"}
-          justifyContent="center"
-          alignItems={"center"}
-          p="0px"
-        >
-          <Flex
-            justify={"center"}
-            align="center"
-            position={"relative"}
-            direction={"column"}
-          >
-            <IconButton
+      <ModalContent className="bg-transparent max-w-[80%] p-0">
+        <div className="flex justify-center items-center">
+          <div className="flex justify-center items-center relative flex-col">
+            <ArrowLeftIcon
               aria-label="Cancel Taking Picture"
-              variant={"icon"}
-              w="3rem"
-              bg="blackAlpha.300"
-              color="white"
-              position={"absolute"}
-              top="1rem"
-              left="1rem"
-              // fontSize="xx-large"
+              className="w-12 bg-black bg-opacity-30 text-white absolute top-4 left-4"
               onClick={onClose}
-              as={ChevronLeftIcon}
             />
-            <Box position={"relative"} h={"100%"}>
+            <div className="relative h-full">
               <video
                 style={{ height: "80vh", maxWidth: "auto" }}
                 ref={vidRef}
               />
               <Button
-                position={"absolute"}
-                bottom="2rem"
-                left="50%"
+                className="absolute bottom-8 left-1/2 transform -translate-x-1/2 rounded-full bg-primary h-16 w-16"
                 onClick={handleTakePicture}
-                transform={"auto"}
-                translateX="-50%"
-                rounded={"full"}
-                bg="primary.main"
-                h="4rem"
-                w="4rem"
               >
-                <Icon
-                  aria-label="take photo"
-                  as={HiCamera}
-                  fontSize="xx-large"
-                />
+                <HiCamera aria-label="take photo" className="text-4xl" />
               </Button>
-            </Box>
+            </div>
             <canvas style={{ display: "none" }} ref={canvRef} />
-          </Flex>
-        </ModalBody>
+          </div>
+        </div>
       </ModalContent>
     </Modal>
   );

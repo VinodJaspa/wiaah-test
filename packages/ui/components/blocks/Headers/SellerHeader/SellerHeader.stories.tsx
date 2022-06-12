@@ -1,12 +1,11 @@
 import React from "react";
-import { SellerHeader } from ".";
+import { storybookHeadersTitle } from "utils";
+import { SellerHeader } from "ui";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
 
 export default {
-  title: "UI/blocks/Headers/SellerHeader",
+  title: storybookHeadersTitle + "SellerHeader",
   component: SellerHeader,
-  decorators: [ChakraUiDecorator],
 } as ComponentMeta<typeof SellerHeader>;
 
 const Templete: ComponentStory<typeof SellerHeader> = (args) => (

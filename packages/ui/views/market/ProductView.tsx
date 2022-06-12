@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { BreadCrumb } from "ui";
 import {
   ProductImageGallery,
@@ -8,11 +8,6 @@ import {
   Spacer,
 } from "ui";
 import { Product } from "ui";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper";
-import { useMediaQuery } from "react-responsive";
-import "swiper/css";
-import "swiper/css/navigation";
 import { useTranslation } from "react-i18next";
 import { ProductGalleryItem } from "types";
 
@@ -98,7 +93,6 @@ export interface ProductViewProps {
 }
 
 export const ProductView: React.FC<ProductViewProps> = ({ productId }) => {
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
   const { t } = useTranslation();
 
   return (
@@ -145,7 +139,7 @@ export const ProductView: React.FC<ProductViewProps> = ({ productId }) => {
               {t("Related_Products", "Related Products")}
             </p>
             <div className="relative mb-10 md:px-20">
-              <Swiper
+              {/* <Swiper
                 spaceBetween={30}
                 slidesPerView={isTabletOrMobile ? 2 : 4}
                 navigation={true}
@@ -164,7 +158,7 @@ export const ProductView: React.FC<ProductViewProps> = ({ productId }) => {
                     ></Product>
                   </SwiperSlide>
                 ))}
-              </Swiper>
+              </Swiper> */}
             </div>
           </div>
         </div>

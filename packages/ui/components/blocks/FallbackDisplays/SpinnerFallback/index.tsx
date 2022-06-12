@@ -1,5 +1,5 @@
-import { HStack, Icon, Spinner, Text } from "@chakra-ui/react";
 import React from "react";
+import { HStack, Spinner } from "ui";
 import { MdError } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 
@@ -18,15 +18,15 @@ export const SpinnerFallback: React.FC<SpinnerFallbackProps> = ({
   if (isError)
     return (
       <HStack>
-        <Icon as={MdError} />
-        <Text>{t("something_went_wrong", "something went wrong")}</Text>
+        <MdError />
+        <p>{t("something_went_wrong", "something went wrong")}</p>
       </HStack>
     );
 
   if (isLoading)
     return (
-      <HStack fontSize={"xx-large"} w="100%" justify={"center"}>
-        <Text>{t("loading", "Loading")}</Text>
+      <HStack className="text-xl w-full justify-center">
+        <p>{t("loading", "Loading")}</p>
         <Spinner color="primary.main" />
       </HStack>
     );

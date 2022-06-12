@@ -1,4 +1,5 @@
 import { HtmlDivProps } from "types";
+import React from "react";
 
 export interface SectionContainerProps extends HtmlDivProps {
   header?: React.ReactNode;

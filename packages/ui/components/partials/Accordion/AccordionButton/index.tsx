@@ -1,6 +1,6 @@
 import React from "react";
 import { HtmlDivProps } from "types";
-import { AccordionContext, AccordionItemContext } from "ui/state";
+import { AccordionContext, AccordionItemContext } from "state";
 import { ArrowDownIcon, ArrowUpIcon } from "ui";
 
 export interface AccordionButtonProps extends HtmlDivProps {}

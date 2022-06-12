@@ -22,7 +22,6 @@ import {
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { useResponsive, useAccountType } from "hooks";
-import Link from "next/link";
 import { HtmlDivProps, TranslationTextType } from "types";
 import { runIfFn } from "utils";
 export interface HeaderNavLink {

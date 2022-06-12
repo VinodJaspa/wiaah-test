@@ -1,6 +1,6 @@
 import React from "react";
 import { HtmlDivProps, HtmlInputProps } from "types";
-import { runIfFn } from "utils";
+import { PassPropsToChild, runIfFn } from "utils";
 
 interface InputContextValue {
   isInputGroup: boolean;
@@ -68,34 +68,48 @@ export const InputGroup: React.FC<InputGroupProps> = ({
           isGroup ? "border-2 border-gray-200 rounded-lg" : ""
         } flex gap-1 items-center`}
       >
-        {leftElement && (
-          <span className="px-1">{runIfFn(leftElement, {})}</span>
-        )}
+        {leftElement && <>{runIfFn(leftElement, {})}</>}
         {children}
-        {rightElement && (
-          <span className="px-1">{runIfFn(rightElement, {})}</span>
-        )}
+        {rightElement && <>{runIfFn(rightElement, {})}</>}
       </div>
     </InputContext.Provider>
   );
 };
 
-export interface InputLeftElementProps {}
+export interface InputLeftElementProps extends HtmlDivProps {}
 
 export const InputLeftElement: React.FC<InputLeftElementProps> = ({
   children,
+  className,
+  ...props
 }) => {
   const { setInputLeftElement } = React.useContext(InputContext);
-  setInputLeftElement(children);
+  React.useEffect(
+    () =>
+      setInputLeftElement(
+        <div {...props} className={`${className || ""}`}>
+          {children}
+        </div>
+      ),
+    [children]
+  );
   return null;
 };
 
-export interface InputRightElementProps {}
+export interface InputRightElementProps extends HtmlDivProps {}
 
 export const InputRightElement: React.FC<InputRightElementProps> = ({
   children,
+  className,
+  ...props
 }) => {
   const { setInputRightElement } = React.useContext(InputContext);
-  setInputRightElement(children);
+  React.useEffect(() => {
+    setInputRightElement(
+      <div {...props} className={`${className || ""}`}>
+        {children}
+      </div>
+    );
+  }, [children]);
   return null;
 };

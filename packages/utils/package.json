@@ -12,5 +12,7 @@
     "types": "*",
     "typescript": "^4.5.3"
   },
-  "dependencies": {}
+  "dependencies": {
+    "country-state-city": "^3.0.1"
+  }
 }

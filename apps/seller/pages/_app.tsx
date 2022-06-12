@@ -18,9 +18,11 @@ function MyApp({ Component, pageProps }: AppProps) {
         <ChakraProvider theme={theme}>
           <CookiesProvider>
             <RecoilRoot>
-              <DataInitializationWrapper accountType="seller">
-                <Component {...pageProps} />
-              </DataInitializationWrapper>
+              <React.Profiler id="MAin" onRender={() => {}}>
+                <DataInitializationWrapper accountType="seller">
+                  <Component {...pageProps} />
+                </DataInitializationWrapper>
+              </React.Profiler>
             </RecoilRoot>
           </CookiesProvider>
         </ChakraProvider>

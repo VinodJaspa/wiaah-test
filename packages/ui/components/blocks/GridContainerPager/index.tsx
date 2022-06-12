@@ -1,7 +1,7 @@
 import React from "react";
 import { Pagination, Spacer } from "ui/components";
 
-interface GridContainerPager {
+export interface GridContainerPager {
   componentsLimit: number;
   children?: React.ReactNode[];
   onPageChange?: (pageNum: number) => void;

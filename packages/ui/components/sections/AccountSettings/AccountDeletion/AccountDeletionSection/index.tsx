@@ -12,10 +12,13 @@ import {
   Button,
   Input,
   SectionHeader,
+  useSuspendAccountMutation,
 } from "ui";
 
 export const AccountDeletionSection: React.FC = () => {
   const { t } = useTranslation();
+  const { mutate, data } = useSuspendAccountMutation();
+
   return (
     <SectionContainer
       header={
@@ -55,7 +58,13 @@ export const AccountDeletionSection: React.FC = () => {
               {t("suspend_account_info", "You can suspend your account.")}
             </span>
           </div>
-          <Button className="w-24" outline colorScheme="danger">
+          <Button
+            data-testid="SuspendAccountBtn"
+            onClick={() => mutate()}
+            className="w-24"
+            outline
+            colorScheme="danger"
+          >
             {t("suspend", "Suspend")}
           </Button>
         </div>

@@ -1,7 +1,5 @@
-import { ChevronLeftIcon } from "@chakra-ui/icons";
-import { BoxProps, Icon, Text } from "@chakra-ui/react";
 import React from "react";
-import { FloatingContainer } from "ui";
+import { FloatingContainer, ArrowLeftIcon } from "ui";
 
 export interface PostsViewModalsHeaderProps {
   onBackClick?: () => any;
@@ -13,26 +11,20 @@ export const PostsViewModalsHeader: React.FC<PostsViewModalsHeaderProps> = ({
 }) => {
   return (
     <FloatingContainer
-      display={"flex"}
-      justifyContent={"center"}
-      py="0.5rem"
-      pl="2rem"
+      className="flex justify-center py-2 px-8"
       items={[
         {
           label: (
-            <Icon
-              cursor={"pointer"}
+            <ArrowLeftIcon
+              className="cursor-pointer text-2xl text-black"
               onClick={() => onBackClick && onBackClick()}
-              fontSize={"xx-large"}
-              color={"black"}
-              as={ChevronLeftIcon}
             />
           ),
           left: "0.25rem",
           top: "50%",
 
           floatingItemProps: {
-            translateY: "-50%",
+            className: "top-1/2 -translate-y-1/2",
           },
         },
       ]}

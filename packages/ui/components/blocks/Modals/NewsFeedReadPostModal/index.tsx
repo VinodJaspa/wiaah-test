@@ -1,11 +1,3 @@
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-  Text,
-} from "@chakra-ui/react";
 import React from "react";
 import { Interaction } from "types";
 import {
@@ -17,6 +9,10 @@ import {
   useGetNewsFeedPostQuery,
   usePostsCommentsDrawer,
   SocialPostsCommentsDrawer,
+  Modal,
+  ModalContent,
+  ModalOverlay,
+  ModalHeader,
 } from "ui";
 
 export interface NewsfeedPostDetailsPopupProps {}
@@ -46,7 +42,6 @@ export const NewsfeedPostDetailsPopup: React.FC<NewsfeedPostDetailsPopupProps> =
       switch (interaction.type) {
         case "comment":
           setCommentsPostId(postId);
-          console.log("test");
           break;
 
         default:
@@ -55,26 +50,16 @@ export const NewsfeedPostDetailsPopup: React.FC<NewsfeedPostDetailsPopupProps> =
     }
 
     return (
-      <Modal
-        autoFocus={false}
-        isCentered
-        isOpen={!!postId}
-        onClose={removeCurrentPost}
-      >
+      <Modal onOpen={() => {}} isOpen={!!postId} onClose={removeCurrentPost}>
         <ModalOverlay />
 
-        <ModalContent
-          p="0px"
-          rounded="none"
-          maxW={"min(100%,35rem)"}
-          h={{ base: "100%", sm: "90%" }}
-        >
-          <ModalHeader py="0.5rem" px="0px">
+        <ModalContent className="w-[min(100%,35rem)] h-full sm:h-[90%]">
+          <ModalHeader title="" className="py-2 px-0">
             <PostsViewModalsHeader onBackClick={removeCurrentPost} />
           </ModalHeader>
-          <ModalBody px="0.25rem" overflow={"scroll"} h="100%">
+          <div className="px-1 h-full overflow-scroll">
             <SocialPostsCommentsDrawer />
-            {isError && <Text>something went wrong :{error}</Text>}
+            {isError && <p>something went wrong :{error}</p>}
             {postDetails && (
               <PostCard
                 onInteraction={handleInteraction}
@@ -82,7 +67,7 @@ export const NewsfeedPostDetailsPopup: React.FC<NewsfeedPostDetailsPopupProps> =
                 {...postDetails}
               />
             )}
-          </ModalBody>
+          </div>
         </ModalContent>
       </Modal>
     );

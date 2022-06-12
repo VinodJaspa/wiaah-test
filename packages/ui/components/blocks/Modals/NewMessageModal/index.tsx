@@ -1,26 +1,21 @@
+import React from "react";
+import { useTranslation } from "react-i18next";
 import {
-  Flex,
-  HStack,
-  IconButton,
-  Input,
+  useNewMessage,
+  useUserData,
+  Avatar,
   Modal,
-  ModalBody,
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  CloseIcon,
+  HStack,
+  Input,
   Radio,
-  RadioGroup,
   Spinner,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
-import React from "react";
-import { useTranslation } from "react-i18next";
-import { MdClose } from "react-icons/md";
-import { useNewMessage, useUserData, Avatar } from "ui";
+} from "ui";
 import { useQuery } from "react-query";
 import { ChatNewMessageUserInfo } from "types";
-import { Form } from "formik";
 
 const suggestedUsersPH: ChatNewMessageUserInfo[] = [
   {
@@ -106,91 +101,64 @@ export const NewMessageModal: React.FC = () => {
   if (!user) return null;
 
   return (
-    <Modal
-      motionPreset="slideInBottom"
-      isCentered
-      isOpen={isOpen}
-      onClose={closeModal}
-    >
+    <Modal onOpen={() => {}} isOpen={isOpen} onClose={closeModal}>
       <ModalOverlay />
-      <ModalContent rounded={"xl"} h={"80%"}>
-        <ModalHeader
-          display={"flex"}
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <IconButton
-            variant={"icon"}
-            fontSize="xx-large"
+      <ModalContent className="h-full rounded-xl">
+        <ModalHeader title="" className="flex items-center justify-between">
+          <CloseIcon
+            className="text-4xl"
             aria-label={t("close_new_message_modal", "close new message modal")}
-            as={MdClose}
             onClick={closeModal}
           />
-          <Text fontSize={"1.2em"} fontWeight={"bold"}>
+          <p className="text-[1.2em] font-bold">
             {t("new_message", "New Message")}
-          </Text>
-          <Text color="primary.main">{t("next", "Next")}</Text>
+          </p>
+          <p className="text-primary">{t("next", "Next")}</p>
         </ModalHeader>
-        <ModalBody
-          h="100%"
-          overflow="scroll"
-          className="thinScroll"
-          fontSize={"x-large"}
-          px="0px"
-        >
-          <HStack pl="2rem" h="5rem" borderWidth={"1px"} borderColor="gray.400">
-            <Text fontWeight="bold">{t("to", "To")}:</Text>
+        <div className="thinScroll h-full overflow-scroll text-xl">
+          <HStack className="pl-8 h-20 border-[1px] border-gray-400">
+            <p className="font-bold">{t("to", "To")}:</p>
             <Input
-              h="100%"
-              fontSize={"x-large"}
+              className="h-full text-xl border-none"
               placeholder={`${t("search", "Search")}...`}
-              border={"none"}
             />
           </HStack>
-          <RadioGroup
+          {/* <RadioGroup
             onChange={setSuggestedUserSelect}
             value={suggestedUserSelect}
-          >
-            <Flex py="0.5rem" gap="1rem" px="2rem" direction={"column"}>
-              <Text my="0.5rem" fontWeight={"bold"}>
-                {t("suggested", "Suggested")}
-              </Text>
-              <Flex gap="1rem" direction={"column"}>
-                {isLoading ? (
-                  <Spinner />
-                ) : (
-                  suggestedUsers &&
-                  suggestedUsers.map((user, i) => (
-                    <HStack w="100%" justify={"space-between"}>
-                      <HStack>
-                        <Avatar
-                          size={"lg"}
-                          name={user.username}
-                          photoSrc={user.userPhoto}
-                          key={i}
-                        />
-                        <VStack
-                          spacing={"0px"}
-                          align={"start"}
-                          justify={"space-between"}
-                          h="100%"
-                        >
-                          <Text fontWeight={"bold"}>{user.username}</Text>
-                        </VStack>
-                      </HStack>
-                      <Radio
-                        type="radio"
-                        value={user.id}
-                        colorScheme={"primary"}
-                        size={"lg"}
+          > */}
+          <div className="flex py-2 gap-4 px-8 flex-col">
+            <p className="my-2 font-bold">{t("suggested", "Suggested")}</p>
+            <div className="flex gap-4 flex-col">
+              {isLoading ? (
+                <Spinner />
+              ) : (
+                suggestedUsers &&
+                suggestedUsers.map((user, i) => (
+                  <HStack className="w-full justify-between">
+                    <HStack>
+                      <Avatar
+                        name={user.username}
+                        src={user.userPhoto}
+                        key={i}
                       />
+                      <div className="flex flex-col justify-between gap-0 items-start h-full">
+                        <p className="font-bold">{user.username}</p>
+                      </div>
                     </HStack>
-                  ))
-                )}
-              </Flex>
-            </Flex>
-          </RadioGroup>
-        </ModalBody>
+                    <Radio
+                      type="radio"
+                      value={user.id}
+                      name="suggesetUsers"
+                      onChange={() => setSuggestedUserSelect(user.id)}
+                    />
+                  </HStack>
+                ))
+              )}
+            </div>
+          </div>
+          {/* </RadioGroup> */}
+        </div>
       </ModalContent>
     </Modal>
   );

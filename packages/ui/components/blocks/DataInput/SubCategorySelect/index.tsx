@@ -2,15 +2,24 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { HtmlSelectProps } from "types";
 import { Category } from "types";
-import { categories as categoriesPH, Select } from "ui";
+import { categories as categoriesPH, Select, SelectOption } from "ui";
 
-export interface SubCategorySelectProps extends HtmlSelectProps {}
+export interface SubCategorySelectProps extends HtmlSelectProps {
+  onCateSelection: (cate: string[]) => any;
+}
 
-export const SubCategorySelect: React.FC<SubCategorySelectProps> = ({}) => {
+export const SubCategorySelect: React.FC<SubCategorySelectProps> = ({
+  onCateSelection,
+}) => {
   const [categories, setCategories] = React.useState<Category[]>(categoriesPH);
   const [selectedCategories, setSelectedCategories] = React.useState<
     Category[]
   >([]);
+
+  React.useEffect(() => {
+    onCateSelection &&
+      onCateSelection(selectedCategories.map((cate) => cate.name));
+  }, [selectedCategories]);
 
   const { t } = useTranslation();
 
@@ -78,18 +87,15 @@ const SelectOptions: React.FC<SelectOptionsProps> = ({
   const { t } = useTranslation();
   return (
     <Select
-      value={value}
-      onChange={(e) => {
-        setValue(e.target.value);
-        onSelection && onSelection(categories[parseInt(e.target.value)]);
+      placeholder={placeholder}
+      onOptionSelect={(opt) => {
+        setValue(opt);
+        onSelection && onSelection(categories[parseInt(opt)]);
       }}
-      {...props}
+      // {...props}
     >
-      <option value={undefined}>
-        {placeholder ? placeholder : t("select", "Select")}
-      </option>
       {categories.map((cate, i) => (
-        <option value={i}>{cate.name}</option>
+        <SelectOption value={i}>{cate.name}</SelectOption>
       ))}
     </Select>
   );

@@ -1,12 +1,13 @@
 import {
+  useProductViewModal,
+  ProductView,
+  ServiceView,
   Modal,
-  ModalBody,
   ModalCloseButton,
   ModalContent,
-  ModalHeader,
   ModalOverlay,
-} from "@chakra-ui/react";
-import { useProductViewModal, ProductView, ServiceView } from "ui";
+  ModalHeader,
+} from "ui";
 import React from "react";
 
 export interface ProductViewModalProps {}
@@ -15,20 +16,20 @@ export const ProductViewModal: React.FC<ProductViewModalProps> = () => {
   const { product, closeProduct } = useProductViewModal();
 
   return (
-    <Modal autoFocus={false} isCentered isOpen={!!product} onClose={closeProduct}>
+    <Modal onOpen={() => {}} isOpen={!!product} onClose={closeProduct}>
       <ModalOverlay />
-      <ModalContent maxH={"80%"} maxW={"80%"}>
-        <ModalHeader>
+      <ModalContent className="max-h-full max-w-[80%]">
+        <ModalHeader title="">
           <ModalCloseButton />
         </ModalHeader>
-        <ModalBody h="100%" overflowY="scroll" className="thinScroll">
+        <div className="thinScroll h-full overflow-y-scroll">
           {product && product.productType === "product" && (
             <ProductView productId={product.productId} />
           )}
           {product && product.productType === "service" && (
             <ServiceView serviceId={product.productId} />
           )}
-        </ModalBody>
+        </div>
       </ModalContent>
     </Modal>
   );

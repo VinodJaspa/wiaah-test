@@ -6,7 +6,8 @@
     "baseUrl": ".",
     "paths": {
       "@Dto": ["Dto"],
-      "@Fetchers": ["fetchers"]
+      "@Fetchers": ["fetchers"],
+      "@Utils": ["src/utils"]
     }
   }
 }

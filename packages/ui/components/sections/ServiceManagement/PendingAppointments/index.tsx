@@ -12,9 +12,20 @@ import {
   TimeIcon,
   NoteIcon,
   HStack,
+  CancelIcon,
+  ControlledModal,
+  FormikInput,
+  ModalButton,
+  ModalCloseButton,
+  ModalExtendedWrapper,
+  ModalFooter,
+  Textarea,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { PendingAppointmentData } from "api";
+import { CancelOrderDto, DeclinePendingAppointmentDto } from "dto";
+import { Formik, Form } from "formik";
+import { ReturnDeclineRequestValidationSchema } from "validation";
 
 export interface PendingAppointmentsSectionProps {}
 
@@ -104,15 +115,43 @@ export const PendingAppointmentCard: React.FC<{
         </HStack>
       </div>
       <div className="flex items-center gap-2">
-        <Button
-          colorScheme="danger"
-          loading={declineIsLoading}
-          onClick={() =>
-            declineAppointment({ appointmentId, declineReason: "" })
-          }
-        >
-          {t("delete", "Delete")}
-        </Button>
+        <ModalExtendedWrapper>
+          <ModalButton>
+            <Button colorScheme="danger" loading={declineIsLoading}>
+              {t("refuse", "Refuse")}
+            </Button>
+          </ModalButton>
+          <ControlledModal>
+            <Formik<DeclinePendingAppointmentDto>
+              onSubmit={(data) => {
+                declineAppointment(data);
+              }}
+              initialValues={{
+                appointmentId,
+                declineReason: "",
+              }}
+              validationSchema={ReturnDeclineRequestValidationSchema}
+            >
+              <Form className="flex flex-col gap-4">
+                <FormikInput
+                  label={t("refuse_reason", "Refuse Reason")}
+                  as={Textarea}
+                  className="min-h-[10rem]"
+                  name="cancelationReason"
+                />
+                <ModalFooter>
+                  <ModalCloseButton>
+                    <Button colorScheme="white">{t("close", "Close")}</Button>
+                  </ModalCloseButton>
+                  <Button loading={declineIsLoading} type="submit">
+                    {t("submit", "Submit")}
+                  </Button>
+                </ModalFooter>
+              </Form>
+            </Formik>
+          </ControlledModal>
+        </ModalExtendedWrapper>
+
         <Button
           loading={acceptIsLoading}
           onClick={() => acceptAppointment({ appointmentId })}

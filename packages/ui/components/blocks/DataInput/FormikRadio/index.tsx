@@ -1,19 +1,19 @@
 import React from "react";
 import {
+  FormikInput,
+  HStack,
+  HStackProps,
+  FormikInputProps,
+  TranslationText,
   Radio,
-  RadioGroup,
   RadioProps,
-  Stack,
-  StackProps,
-} from "@chakra-ui/react";
-import { FormikInput, FormikInputProps } from "ui";
+} from "ui";
 import { FormOptionType } from "types";
-import { TranslationText } from "../../../partials";
 
 export interface FormikRadioProps extends FormikInputProps {
   options: FormOptionType[];
   radioProps?: RadioProps;
-  stackProps?: StackProps;
+  stackProps?: HStackProps;
   align?: "end" | "start";
 }
 
@@ -24,14 +24,14 @@ export const FormikRadio: React.FC<FormikRadioProps> = ({
   ...props
 }) => {
   return (
-    <FormikInput {...props} as={RadioGroup}>
-      <Stack {...stackProps}>
+    <FormikInput {...props} as={Radio}>
+      <HStack {...stackProps}>
         {options.map((opt, i) => (
           <Radio value={opt.value} key={i} {...radioProps}>
             <TranslationText translationObject={opt.name} />
           </Radio>
         ))}
-      </Stack>
+      </HStack>
     </FormikInput>
   );
 };
