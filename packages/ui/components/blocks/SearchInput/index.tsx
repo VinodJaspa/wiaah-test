@@ -1,10 +1,6 @@
 import React from "react";
 import { useOutsideClick } from "ui/Hooks";
-import {
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-} from "@chakra-ui/react";
+import { InputGroup, InputLeftElement, InputRightElement } from "ui";
 import { Input } from "ui";
 import { HtmlInputProps } from "types";
 export interface SearchFilterInputProps extends HtmlInputProps {
@@ -31,7 +27,6 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
   onNotFound,
   ...props
 }) => {
-  // const [value, setValue] = React.useState<string>(initialValue || "");
   const [dropdownOpen, setDropdownOpen] = React.useState<boolean>(false);
   const [Components, setComponents] = React.useState<Component[]>(
     components || []
@@ -63,7 +58,7 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
   const iconRes = icon ? icon() : undefined;
 
   return (
-    <InputGroup ref={containerRef} position={"relative"}>
+    <InputGroup ref={containerRef} className="relative">
       {iconRes && (
         <InputLeftElement>
           <label className={`px-2 text-lg text-gray-400`} htmlFor={props.id}>

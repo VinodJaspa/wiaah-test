@@ -1,15 +1,13 @@
 import React from "react";
 import { BreadCrumb, ProductCard, ProductImageGallery } from "ui";
-import { ProductDescription, SellerCard } from "ui/components";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper";
-import { useMediaQuery } from "react-responsive";
-import "swiper/css";
-import "swiper/css/navigation";
+import { ProductDescription, SellerCard } from "ui";
+// import { Swiper, SwiperSlide } from "swiper/react";
+// import { Navigation } from "swiper";
 import { ServiceRightView } from "./ServiceRightView";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import { ProductGalleryItem } from "types";
+import { useResponsive } from "hooks";
 
 const breadcrumb = [
   {
@@ -93,7 +91,7 @@ export interface ServiceViewProps {
 }
 
 export const ServiceView: React.FC<ServiceViewProps> = () => {
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
+  const { isTablet } = useResponsive();
   const { t } = useTranslation();
   const router = useRouter();
   const breadCrumbLinks = [{ text: "wiaah", url: "/" }].concat(
@@ -150,7 +148,7 @@ export const ServiceView: React.FC<ServiceViewProps> = () => {
               {t("Related_Products", "Related Products")}
             </p>
             <div className="relative mb-10 md:px-20">
-              <Swiper
+              {/* <Swiper
                 spaceBetween={30}
                 slidesPerView={isTabletOrMobile ? 2 : 4}
                 navigation={true}
@@ -171,7 +169,7 @@ export const ServiceView: React.FC<ServiceViewProps> = () => {
                     />
                   </SwiperSlide>
                 ))}
-              </Swiper>
+              </Swiper> */}
             </div>
           </div>
         </div>

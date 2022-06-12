@@ -1,5 +1,5 @@
 import { HiChevronDown } from "react-icons/hi";
-import { City, Country } from "country-state-city";
+import { countries, getCountryByCode, getCitiesOfCountry } from "utils";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import React from "react";
 import { FlagIcon } from "react-flag-kit";
@@ -28,6 +28,8 @@ import {
   InputGroup,
   InputLeftElement,
   DateFormInput,
+  useGetAccountSettingsQuery,
+  useUpdateAccountSettingsMutation,
 } from "ui";
 import { useAccountType } from "hooks";
 import { accountTypes } from "ui";
@@ -36,11 +38,11 @@ export interface AccountSettingsSectionProps {}
 
 export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
   ({}) => {
-    const { accountType } = useAccountType();
-    const isSeller = accountType === "seller";
-    const isBuyer = accountType === "buyer";
+    const { isBuyer, isSeller } = useAccountType();
     const { t } = useTranslation();
     const { uploadImage } = useFileUploadModal();
+    const { data } = useGetAccountSettingsQuery();
+    const { mutate } = useUpdateAccountSettingsMutation();
 
     function handleProfilePhotoChange() {
       uploadImage();
@@ -59,12 +61,31 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
             )}
           </span>
         </div>
-        <Formik<Partial<UpdateAccouuntSettingsDto>>
-          initialValues={{
-            country: "Egypt",
-            storeFor: [],
+        <Formik<UpdateAccouuntSettingsDto>
+          initialValues={
+            data || {
+              address: "",
+              address2: "",
+              bio: "",
+              brandDescription: "",
+              city: "",
+              clientType: "individual",
+              country: "",
+              countryCode: "",
+              email: "",
+              firstName: "",
+              language: "",
+              lastName: "",
+              phoneNumber: "",
+              photoSrc: "",
+              storeFor: [],
+              username: "",
+              shopType: "",
+            }
+          }
+          onSubmit={(data) => {
+            mutate(data);
           }}
-          onSubmit={(data) => {}}
         >
           {({ handleChange, values, setFieldValue }) => (
             <Form>
@@ -77,6 +98,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                       translationKey: "first_name",
                     }}
                     name="firstName"
+                    data-testid="FirstnameInput"
                   />
                   <FormikInput
                     label={{
@@ -84,6 +106,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                       fallbackText: "Last name",
                     }}
                     name="lastName"
+                    data-testid="LastnameInput"
                   />
                 </div>
                 {/* username */}
@@ -91,11 +114,13 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                   <FormikInput
                     name="typeOfAccount"
                     as={Select}
+                    data-testid="ClientTypeInput"
                     placeholder={t("type_of_account", "Type Of Account") + "*"}
                   >
                     {accountTypes.map(({ value, name }, i) => (
                       <SelectOption key={value + i} value={value}>
-                        {t(name.translationKey, name.fallbackText)}
+                        {typeof name === "object" &&
+                          t(name.translationKey, name.fallbackText)}
                       </SelectOption>
                     ))}
                   </FormikInput>
@@ -103,6 +128,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                 {isSeller && (
                   <FormikInput
                     name="companyRegisterationNum"
+                    data-testid="CompanyRegisterationNumber"
                     label={{
                       translationKey: "company_registration_number",
                       fallbackText: "Company registration number",
@@ -120,7 +146,11 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                         </span>
                       </span>
                     </InputLeftElement>
-                    <FormikInput className="border-0" name="username" />
+                    <FormikInput
+                      data-testid="username"
+                      className="border-0"
+                      name="username"
+                    />
                   </InputGroup>
                 </div>
 
@@ -129,7 +159,11 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                 <div className="gap-1 flex flex-col">
                   <span>{t("photo", "Photo")}</span>
                   <div className="flex gap-2">
-                    <MediaUploadModal />
+                    <MediaUploadModal
+                      onImgUpload={(_, raw) =>
+                        raw ? setFieldValue("profilePhoto", raw) : null
+                      }
+                    />
                     <Avatar photoSrc="/wiaah_logo.png" />
                     <Button
                       className="bg-white border-gray-200 text-sm"
@@ -153,6 +187,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                 {isSeller && (
                   <div className="flex flex-col">
                     <FormikInput
+                      data-test="BioInput"
                       label={t("bio", "Bio")}
                       className="thinScroll"
                       as={Textarea}
@@ -180,8 +215,13 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                   </span>
                 </div>
                 <div className="grid gap-8 grid-cols-1 sm:grid-cols-2">
-                  <FormikInput label={t("address", "Address")} name="email" />
                   <FormikInput
+                    data-testid="address1Input"
+                    label={t("address", "Address")}
+                    name="email"
+                  />
+                  <FormikInput
+                    data-testid="address2Input"
                     label={t("address2", "Address2")}
                     name="address"
                   />
@@ -195,7 +235,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                       icon={() => {
                         const county = values.country;
                         if (county) {
-                          const country = Country.getAllCountries().find(
+                          const country = countries.find(
                             (ctry) => ctry.name === county
                           );
                           if (country) {
@@ -205,33 +245,33 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                         }
                       }}
                       name="country"
-                      components={Country.getAllCountries().map(
-                        (country, i) => ({
-                          name: country.name,
-                          value: country.isoCode,
-                          comp: (
-                            <Prefix
-                              // @ts-ignore
-                              Prefix={<FlagIcon code={country.isoCode} />}
-                            >
-                              {country.name}
-                            </Prefix>
-                          ),
-                        })
-                      )}
+                      components={countries.map((country, i) => ({
+                        name: country.name,
+                        value: country.isoCode,
+                        comp: (
+                          <Prefix
+                            // @ts-ignore
+                            Prefix={<FlagIcon code={country.isoCode} />}
+                          >
+                            {country.name}
+                          </Prefix>
+                        ),
+                      }))}
                       onChange={handleChange}
                       value={values.country || ""}
                       onSelection={(value: string) => {
-                        const name = Country.getCountryByCode(value)?.name;
+                        const name = getCountryByCode(value)?.name;
                         if (name) {
                           setFieldValue("country", name);
                           setFieldValue("countryCode", value);
                         }
                       }}
                     />
+                    {/* @ts-ignore */}
                     <ErrorMessage name="country" />
                   </div>
                   <FormikInput
+                    data-testid="PhoneNumberInput"
                     label={t("phone_number", "Phone Number")}
                     name="phoneNumber"
                   />
@@ -244,7 +284,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                       name="city"
                       placeHolder={t("select_city", "Select City")}
                       rightElement={<HiChevronDown />}
-                      components={City.getCitiesOfCountry(
+                      components={getCitiesOfCountry(
                         values.countryCode || ""
                       )?.map((city, i) => ({
                         name: city.name,
@@ -266,6 +306,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                         }
                       }}
                     />
+                    {/* @ts-ignore */}
                     <ErrorMessage name="city" />
                   </div>
                   {isBuyer && (
@@ -304,6 +345,7 @@ export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> =
                     <>
                       <FormikInput<SelectProps>
                         label={t("shop_type", "Shop Type")}
+                        data-testid="ShopTypeInput"
                         as={Select}
                         onOptionSelect={(v) => setFieldValue("shopType", v)}
                         name="shopType"

@@ -43,7 +43,7 @@ export const waitFor = (
               resolve();
             } catch (err) {
               if (Date.now() - startTime > timeout) {
-                reject(new Error(`Timed out. ${err}`));
+                reject(`Timed out. ${err}`);
               } else {
                 nextInterval();
               }

@@ -49,12 +49,33 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
 }) => {
   const { isOpen, position } = React.useContext(DrawerCtx);
 
+  const setPositionClasses = (): string => {
+    switch (position) {
+      case "bottom":
+        return `${
+          isOpen ? "" : "translate-y-full"
+        } bottom-0 h-[min(100%,20rem)] w-full left-0`;
+      case "top":
+        return `${
+          isOpen ? "" : "-translate-y-full"
+        } top-0 h-[min(100%,20rem)] w-full left-0`;
+      case "right":
+        return `${
+          isOpen ? "" : "translate-x-full"
+        } right-0 w-[min(100%,20rem)] h-full top-0`;
+      default:
+        return `${
+          isOpen ? "" : "-translate-x-full"
+        } left-0 w-[min(100%,20rem)] h-full top-0`;
+    }
+  };
+
   return (
     <div
       {...props}
-      className={`${className || ""} ${
-        isOpen ? "" : "-translate-x-full"
-      }  w-[min(100%,20rem)] transform transition-all fixed left-0 top-0 h-full bg-white`}
+      className={`${
+        className || ""
+      } ${setPositionClasses()} transform transition-all fixed bg-white`}
     >
       {children}
     </div>

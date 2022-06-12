@@ -15,9 +15,9 @@
     "state": "*",
     "tsconfig": "*",
     "types": "*",
+    "typescript": "^4.5.3",
     "utils": "*",
-    "validation": "*",
-    "typescript": "^4.5.3"
+    "validation": "*"
   },
   "dependencies": {
     "classnames": "^2.3.1",
@@ -26,6 +26,6 @@
     "react-responsive": "^9.0.0-beta.6",
     "react-simple-image-slider": "^2.3.0",
     "recoil": "^0.6.1",
-    "swiper": "^8.0.5"
+    "swiper": "8.0.5"
   }
 }

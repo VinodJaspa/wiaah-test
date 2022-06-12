@@ -23,7 +23,10 @@ export const OrderStatusDisplay: React.FC<OrderStatusDisplay> = ({
     }
   };
   return (
-    <div {...props} className={`${getStyles()} ${className || ""} p-2`}>
+    <div
+      {...props}
+      className={`${getStyles()} ${className || ""} p-2 capitalize`}
+    >
       {status}
     </div>
   );

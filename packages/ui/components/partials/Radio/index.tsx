@@ -1,10 +1,9 @@
 import React from "react";
 import { HtmlInputProps } from "types";
 import { HStack } from "ui";
-export interface RadioProps extends HtmlInputProps {}
+export interface RadioProps extends Omit<HtmlInputProps, "type"> {}
 
 export const Radio: React.FC<RadioProps> = ({
-  type = "radio",
   className,
   children,
   id,
@@ -17,7 +16,7 @@ export const Radio: React.FC<RadioProps> = ({
         className={`${
           className || ""
         } checked:bg-primary focus:ring-0 checked:focus:bg-primary checked:active:bg-primary checked:hover:bg-primary`}
-        type={type}
+        type={"radio"}
         {...props}
       />
       {children}
