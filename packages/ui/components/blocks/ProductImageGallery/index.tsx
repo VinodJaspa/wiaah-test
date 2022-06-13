@@ -1,9 +1,8 @@
-import React, { useRef } from "react";
+import React from "react";
 import { ChakraCarousel, CarouselPreviewer } from "ui";
-import { ProductGalleryItem } from "ui/views/market/ProductView";
+import { ProductGalleryItem } from "types";
 import { useScreenWidth } from "ui/Hooks";
-import { PostAttachment } from "../Social";
-import { Box } from "@chakra-ui/react";
+import { PostAttachment } from "ui";
 
 export interface ProductImageGalleryProps {
   images?: ProductGalleryItem[];

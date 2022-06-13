@@ -1,10 +1,7 @@
 import React from "react";
 import { MdArrowLeft, MdArrowRight } from "react-icons/md";
+import { DateRange, HtmlDivProps } from "types";
 import { getTimeInAmPm } from "utils";
-
-export interface DateInputProps {
-  onDaySelect?: (UTCDateString: string) => any;
-}
 
 export interface Month {
   name: string;
@@ -18,6 +15,7 @@ export interface Month {
 interface FormatedDays {
   dayNum: number;
   currentMonth: boolean;
+  date: string;
 }
 
 interface DateSources {
@@ -95,8 +93,19 @@ const getMonthData = (dateTimeStamp: Date): Month => {
   return month;
 };
 
-export const DateInput: React.FC<DateInputProps> = ({ onDaySelect }) => {
-  const [activeDay, setActiveDay] = React.useState<number>();
+export interface DateInputProps extends HtmlDivProps {
+  onDaySelect?: (UTCDateString: string) => any;
+  range?: boolean;
+  onRangeSelect?: (range: DateRange) => any;
+}
+export const DateInput: React.FC<DateInputProps> = ({
+  onDaySelect,
+  range,
+  onRangeSelect,
+  className,
+  ...rest
+}) => {
+  const [activeDates, setActiveDates] = React.useState<string[]>([]);
   const [DividedWeeks, setDividedWeeks] = React.useState<FormatedDays[][]>([]);
   const [month, setMonth] = React.useState<Month>(
     getMonthData(new Date(Date.now()))
@@ -112,10 +121,19 @@ export const DateInput: React.FC<DateInputProps> = ({ onDaySelect }) => {
   }, [month]);
 
   React.useEffect(() => {
-    if (activeDay) {
-      handleDaySelection(activeDay);
+    if (activeDates) {
+      if (range) {
+        if (activeDates.length < 2) return;
+        onRangeSelect &&
+          onRangeSelect({
+            from: new Date(activeDates[0]).toUTCString(),
+            to: new Date(activeDates[1]).toUTCString(),
+          });
+      } else {
+        onDaySelect && onDaySelect(new Date(activeDates[0]).toUTCString());
+      }
     }
-  }, [activeDay]);
+  }, [activeDates]);
 
   function getDays(): FormatedDays[] {
     const firstDayOffset = weekDays.findIndex(
@@ -123,6 +141,11 @@ export const DateInput: React.FC<DateInputProps> = ({ onDaySelect }) => {
     );
     const lastMonthDays: FormatedDays[] = [...Array(firstDayOffset)]
       .map((_, i) => ({
+        date: new Date(
+          month.year,
+          month.number - 1,
+          month.lastMonthDaysNum - i
+        ).toISOString(),
         currentMonth: false,
         dayNum: month.lastMonthDaysNum - i,
       }))
@@ -130,6 +153,7 @@ export const DateInput: React.FC<DateInputProps> = ({ onDaySelect }) => {
 
     const currentMonthDays: FormatedDays[] = [...Array(month.daysNum)].map(
       (_, i) => ({
+        date: new Date(month.year, month.number, i).toISOString(),
         currentMonth: true,
         dayNum: i + 1,
       })
@@ -144,6 +168,7 @@ export const DateInput: React.FC<DateInputProps> = ({ onDaySelect }) => {
 
     const nextMonthDays: FormatedDays[] = [...Array(NextMonthDaysNum)].map(
       (_, i) => ({
+        date: new Date(month.year, month.number, i).toISOString(),
         currentMonth: false,
         dayNum: i + 1,
       })
@@ -180,23 +205,17 @@ export const DateInput: React.FC<DateInputProps> = ({ onDaySelect }) => {
 
   function handlePrevMonth() {
     setMonth((currentMonth) => {
-      console.log("test");
       const { month, year } = getPrevMonth({
         month: currentMonth.number,
         year: currentMonth.year,
       });
-      const m = getMonthData(new Date(year, month));
-      return m;
+      const Month = getMonthData(new Date(year, month));
+      return Month;
     });
   }
 
-  function handleDaySelection(day: number) {
-    const UTCDate = new Date(month.year, month.number, day + 1).toUTCString();
-    onDaySelect && onDaySelect(UTCDate);
-  }
-
   return (
-    <section className="h-fit w-96 bg-white p-4">
+    <section {...rest} className={`${className || ""} h-fit w-96 bg-white p-4`}>
       {/* calander */}
       <div className="flex items-center justify-between px-1">
         <div onClick={handlePrevMonth} className="cursor-pointer text-3xl">
@@ -231,22 +250,28 @@ export const DateInput: React.FC<DateInputProps> = ({ onDaySelect }) => {
             </tr>
           </thead>
           <tbody className="">
-            {/* </tbody> */}
             {DividedWeeks.map((week, weekIndex) => (
               <tr key={weekIndex} className="flex items-center justify-between">
-                {week.map(({ currentMonth, dayNum }, dayIndex) => (
+                {week.map(({ currentMonth, dayNum, date }, dayIndex) => (
                   <td
                     key={dayIndex}
                     onClick={() => {
                       if (!currentMonth) return;
-                      setActiveDay(dayNum);
+                      setActiveDates((state) => {
+                        if (range) {
+                          if (state.length >= 2) return state;
+                          return [...state, date];
+                        } else {
+                          return [date];
+                        }
+                      });
                     }}
                     className={`${
                       currentMonth
                         ? "cursor-pointer"
                         : "cursor-not-allowed text-gray-400"
                     } ${
-                      activeDay === dayNum && currentMonth
+                      activeDates.includes(date) && currentMonth
                         ? "bg-primary text-white"
                         : ""
                     } flex w-full items-center justify-center`}

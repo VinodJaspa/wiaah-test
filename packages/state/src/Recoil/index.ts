@@ -13,3 +13,5 @@ export * from "./Social/index";
 export * from "./Modals";
 export * from "./User";
 export * from "./CurrentPage";
+export * from "./Service";
+export * from "./hooks";

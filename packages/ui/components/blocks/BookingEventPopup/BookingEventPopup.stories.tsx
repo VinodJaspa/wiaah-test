@@ -12,13 +12,24 @@ export default {
   component: BookingEventPopup,
 } as ComponentMeta<typeof BookingEventPopup>;
 
-export const Default = () => {
+export const EventVariant = () => {
   return (
     <ModalExtendedWrapper modalKey="15">
       <ModalButton>
         <Button>open</Button>
       </ModalButton>
       <BookingEventPopup />
+    </ModalExtendedWrapper>
+  );
+};
+
+export const RentVariant = () => {
+  return (
+    <ModalExtendedWrapper modalKey="15">
+      <ModalButton>
+        <Button>open</Button>
+      </ModalButton>
+      <BookingEventPopup varaint="rent" />
     </ModalExtendedWrapper>
   );
 };

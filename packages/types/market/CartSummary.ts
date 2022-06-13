@@ -1,3 +1,5 @@
+import { DiscountType } from "@this";
+
 export interface CartSummaryItemData {
   shop: ShopContactDetails;
   item: CartSummaryItem;
@@ -23,10 +25,7 @@ export interface CartSummaryItem {
   eventAdresses?: string;
   sizes?: string[];
   colors?: string[];
-  discount?: {
-    value: number;
-    unit: DiscountUnit;
-  };
+  discount?: DiscountType;
   oldPrice?: number;
   cashback?: CashBack;
   description?: string;

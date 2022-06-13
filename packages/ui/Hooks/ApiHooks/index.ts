@@ -1,7 +1,5 @@
 export * from "./useGetAffiliationPost";
-export * from "./useGetNewsFeedPostQuery";
-export * from "./useGetActionDataQuery";
-export * from "./useGetPostCommentsQuery";
+export * from "./Social/useGetActionDataQuery";
 export * from "./Chat";
 export * from "./Wishlist";
 export * from "./Story";
@@ -11,3 +9,4 @@ export * from "./Profile";
 export * from "./useGetMyUserData";
 export * from "./Settings";
 export * from "./utils";
+export * from "./Service";
