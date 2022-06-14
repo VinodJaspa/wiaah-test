@@ -6,11 +6,17 @@ import {
   ModalContent,
   ModalOverlay,
   DateInput,
+  StepperFormController,
+  StepperFormHandler,
+  DateInputProps,
+  Button,
 } from "ui";
-import { useServiceBookedRange } from "state";
+import { useServiceBookedRange, useServiceBookingModal } from "state";
+import * as yup from "yup";
+import { DateRange } from "types";
+import { useTranslation } from "react-i18next";
 
 export interface BookingEventProps {
-  varaint?: "event" | "rent";
   onSuccess?: (event: Event) => void;
 }
 export interface BookingEventRefProps {
@@ -20,18 +26,15 @@ export interface BookingEventRefProps {
 
 export const BookingEventPopup: React.FC<BookingEventProps> = ({
   onSuccess,
-  varaint = "event",
 }) => {
-  const { SetRange, range } = useServiceBookedRange();
-  const [open, setOpen] = React.useState<boolean>(false);
+  const { modalState, closeBooking } = useServiceBookingModal();
+  const { SetRange } = useServiceBookedRange();
 
   function handleCloseBooking() {
-    setOpen(false);
+    closeBooking();
   }
 
-  function handleOpenBooking() {
-    setOpen(true);
-  }
+  function handleOpenBooking() {}
 
   function handleSuccess(event: Event) {
     if (!onSuccess) return;
@@ -41,13 +44,13 @@ export const BookingEventPopup: React.FC<BookingEventProps> = ({
   return (
     <Modal
       isLazy
-      isOpen={open}
+      isOpen={!!modalState}
       onClose={handleCloseBooking}
       onOpen={handleOpenBooking}
     >
       <ModalOverlay />
-      <ModalContent className="items-center">
-        {varaint === "event" ? (
+      <ModalContent className="w-[fit-content]">
+        {modalState === "event" ? (
           <ServiceBookingCalander
             month={{
               name: "October",
@@ -86,11 +89,9 @@ export const BookingEventPopup: React.FC<BookingEventProps> = ({
             onClose={() => handleCloseBooking()}
             onSuccess={(event: Event) => handleSuccess(event)}
           />
-        ) : varaint === "rent" ? (
-          <DateInput
-            range
-            className="w-[100%]"
-            onRangeSelect={(range) => {
+        ) : modalState === "rent" ? (
+          <BookingServiceDateRangeStepper
+            onSuccess={(range) => {
               SetRange(range);
               handleCloseBooking();
             }}
@@ -99,4 +100,91 @@ export const BookingEventPopup: React.FC<BookingEventProps> = ({
       </ModalContent>
     </Modal>
   );
+};
+
+export interface BookingServiceDateRangeStepperProps {
+  onSuccess?(date: DateRange): any;
+}
+
+const checkinValidationSchema = yup.object().shape({
+  from: yup.date().required(),
+});
+const checkoutValidationSchema = yup.object().shape({
+  to: yup.date().required(),
+});
+
+export const BookingServiceDateRangeStepper: React.FC<BookingServiceDateRangeStepperProps> =
+  ({ onSuccess }) => {
+    const { t } = useTranslation();
+    return (
+      <StepperFormController<DateRange>
+        stepsNum={2}
+        onFormComplete={(data) => {
+          onSuccess && onSuccess(data);
+        }}
+      >
+        {({
+          currentStepIdx,
+          goToStep,
+          nextStep,
+          prevoiusStep,
+          isFirstStep,
+          isLastStep,
+        }) => {
+          return (
+            <div className="w-full flex flex-col gap-2  justify-center">
+              {currentStepIdx === 0 ? (
+                <StepperFormHandler
+                  handlerKey="check-in"
+                  validationSchema={checkinValidationSchema}
+                >
+                  {({ validate }) => (
+                    <div className="flex flex-col gap-2 w-full items-center">
+                      <p className="font-bold">{t("Check-in")}</p>
+                      <CheckinDateInput
+                        className="w-[100%]"
+                        onDaySelect={(date) =>
+                          validate({ from: new Date(date) })
+                        }
+                      />
+                    </div>
+                  )}
+                </StepperFormHandler>
+              ) : currentStepIdx === 1 ? (
+                <StepperFormHandler
+                  handlerKey="check-out"
+                  validationSchema={checkoutValidationSchema}
+                >
+                  {({ validate }) => (
+                    <div className="flex flex-col gap-2 w-full items-center">
+                      <p className="font-bold">{t("Check-out")}</p>
+                      <CheckoutDateInput
+                        className="w-[100%]"
+                        style={{ widows: "100%" }}
+                        onDaySelect={(date) => validate({ to: new Date(date) })}
+                      />
+                    </div>
+                  )}
+                </StepperFormHandler>
+              ) : null}
+              <div className="flex items-center gap-2 justify-between">
+                <Button onClick={prevoiusStep} disabled={isFirstStep}>
+                  {t("previous")}
+                </Button>
+                <Button onClick={nextStep}>
+                  {isLastStep ? t("Finish") : t("Next")}
+                </Button>
+              </div>
+            </div>
+          );
+        }}
+      </StepperFormController>
+    );
+  };
+
+export const CheckinDateInput: React.FC<DateInputProps> = (props) => {
+  return <DateInput {...props} />;
+};
+export const CheckoutDateInput: React.FC<DateInputProps> = (props) => {
+  return <DateInput {...props} />;
 };

@@ -47,7 +47,7 @@ export const Stepper: React.FC<StepperProps> = ({ children }) => {
         stepsLength,
       }}
     >
-      {runIfFn<MaybeFn<StepperPassedProps>, StepperPassedProps>(children, {
+      {runIfFn<StepperPassedProps>(children, {
         nextStep: handleNextStep,
         previousStep: handlePreviousStep,
         currentStepIdx,

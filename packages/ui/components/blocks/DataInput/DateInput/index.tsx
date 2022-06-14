@@ -153,7 +153,7 @@ export const DateInput: React.FC<DateInputProps> = ({
 
     const currentMonthDays: FormatedDays[] = [...Array(month.daysNum)].map(
       (_, i) => ({
-        date: new Date(month.year, month.number, i).toISOString(),
+        date: new Date(month.year, month.number, i + 1).toISOString(),
         currentMonth: true,
         dayNum: i + 1,
       })
@@ -198,7 +198,6 @@ export const DateInput: React.FC<DateInputProps> = ({
         year: currentMonth.year,
       });
       const m = getMonthData(new Date(year, month));
-      console.log(m);
       return m;
     });
   }

@@ -8,17 +8,17 @@ import {
   Button,
   Rate,
   SpinnerFallback,
-  ModalExtendedWrapper,
-  ModalButton,
   ServiceRulesDisplay,
   ServiceTransportDisplay,
   ServicePropertyDetailsDisplay,
+  VideoCameraIcon,
+  HStack,
 } from "ui";
 import { Event } from "ui";
 import { useGetServiceDataQuery } from "ui";
 import { getTimeInAmPm } from "utils";
 import { useTranslation } from "react-i18next";
-import { useServiceBookedRange } from "state";
+import { useServiceBookedRange, useServiceBookingModal } from "state";
 
 export interface ServiceRightViewProps {
   serviceId: string;
@@ -28,6 +28,7 @@ export const ServiceRightView: React.FC<ServiceRightViewProps> = ({
   serviceId,
 }) => {
   const { range } = useServiceBookedRange();
+  const { openBookEvent, openBookRange } = useServiceBookingModal();
   const { data, isLoading, isError } = useGetServiceDataQuery(serviceId);
 
   const { t } = useTranslation();
@@ -48,26 +49,24 @@ export const ServiceRightView: React.FC<ServiceRightViewProps> = ({
   return (
     <SpinnerFallback isLoading={isLoading} isError={isError}>
       {data ? (
-        <div className="flex h-full flex-col justify-between">
-          <div className="flex h-full flex-col items-start">
-            <samp className="green-text">{data.category}</samp>
-            <h1 className="m-0 text-2xl font-bold text-gray-800 ">
-              {data.name}
-            </h1>
+        <div className="flex h-full flex-col justify-between gap-2">
+          <div className="flex h-full flex-col gap-2 items-start">
+            <div>
+              <samp className="green-text">{data.category}</samp>
+              <h1 className="m-0 text-2xl font-bold text-gray-800 ">
+                {data.name}
+              </h1>
+            </div>
             <div className="flex items-center">
               <div className="inline-flex items-center">
-                <Rate
-                  allowHalf
-                  rating={data.rating}
-                  className="text-orange-500"
-                />
+                <Rate allowHalf rating={data.rating} />
               </div>
               <div className="mx-3 h-5 w-px bg-gray-300"></div>
               <span className="text-gray-500">
                 {data.reviews} {t("Reviews", "Reviews")}
               </span>
             </div>
-            <div className="mt-2 flex items-center font-bold">
+            <div className="flex gap-4 items-center font-bold">
               <span className="product-price text-3xl">
                 ${data.price.value}
                 100
@@ -75,13 +74,13 @@ export const ServiceRightView: React.FC<ServiceRightViewProps> = ({
               {/* {!data?.price?.value ? (
                 ""
               ) : ( */}
-              <span className="product-old-price ml-5 text-2xl text-slate-400 line-through">
+              <span className="text-2xl text-slate-400 line-through">
                 ${data?.price.value}
                 110
               </span>
               {/* )} */}
             </div>
-            <div className="my-2 inline-block rounded-md bg-red-400 px-4 py-1 font-bold text-white">
+            <div className="inline-block rounded-md bg-red-400 px-4 py-1 font-bold text-white">
               <span>{data?.discount?.discount?.value}% </span>
               <span>{t("OFF", "OFF")}</span>
             </div>
@@ -93,21 +92,22 @@ export const ServiceRightView: React.FC<ServiceRightViewProps> = ({
                 </div>
               )}
             </div>
-            <div className="mb-2 text-lg">
-              <div>
-                <span className="font-bold">
-                  {data?.available
-                    ? t("Service Available") + ":" + data.available
-                    : t("Service Not Available")}{" "}
-                </span>
-              </div>
-              <div className=" text-red-500">
-                {data?.shippedToYourCountry
-                  ? t("Service available for international customers")
-                  : ""}
-              </div>
+            <div>
+              <span className="font-bold">
+                {data?.available
+                  ? t("Service Available") + ":" + data.available
+                  : t("Service Not Available")}{" "}
+              </span>
             </div>
-            <div className="text-lg flex flex-col gap-2 my-2">
+            <div className="text-lg">
+              {data?.videoConsulition ? (
+                <HStack>
+                  <VideoCameraIcon />
+                  {t("Video consultations available")}
+                </HStack>
+              ) : null}
+            </div>
+            <div className="text-lg flex flex-col gap-2">
               {data?.serviceRules ? (
                 <ServiceRulesDisplay {...data.serviceRules} />
               ) : null}
@@ -165,26 +165,23 @@ export const ServiceRightView: React.FC<ServiceRightViewProps> = ({
               </div>
             ) : null}
           </div>
-          <Spacer />
           <div className="flex w-full cursor-pointer">
             <div className="flex w-full gap-2">
-              <ModalExtendedWrapper>
-                <BookingEventPopup
-                  varaint={
-                    data.type === "event"
-                      ? "event"
-                      : data.type === "rent"
-                      ? "rent"
-                      : undefined
-                  }
-                  onSuccess={(event) => handleOnSuccess(event)}
-                />
-                <ModalButton>
-                  <Button className="w-full">
-                    {event ? t("Update Booking") : t("Book Now")}
-                  </Button>
-                </ModalButton>
-              </ModalExtendedWrapper>
+              <BookingEventPopup
+                onSuccess={(event) => handleOnSuccess(event)}
+              />
+              <Button
+                onClick={() =>
+                  data.type === "event"
+                    ? openBookEvent()
+                    : data.type === "rent"
+                    ? openBookRange()
+                    : undefined
+                }
+                className="w-full"
+              >
+                {event ? t("Update Booking") : t("Book Now")}
+              </Button>
               <WishListIcon onClick={handleAddToWishList} />
             </div>
             {/* <WishListIcon /> */}
