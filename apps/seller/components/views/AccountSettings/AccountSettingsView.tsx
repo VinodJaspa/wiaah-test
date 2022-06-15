@@ -28,16 +28,18 @@ import {
   PersonalizationAndDataSection,
 } from "ui";
 import { ImBlocked } from "react-icons/im";
+import { useResponsive } from "hooks";
 
 export const AccountSettingsView: React.FC = () => {
-  const baseRoute = "settings";
+  const baseRoute = "account-settings";
   const router = useRouter();
   const { section } = router.query;
+  const { isMobile } = useResponsive();
   const route = Array.isArray(section) ? section[0] : section;
 
   React.useEffect(() => {
-    if (!route) {
-      // router.push(`/${baseRoute}/${sections[0].panelUrl}`);
+    if (!route && !isMobile) {
+      router.push(`/${baseRoute}/${sections[0].panelUrl}`);
     }
   }, [router, route]);
 
