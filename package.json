@@ -4,7 +4,10 @@
   "private": true,
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/*",
+    "apps/back-end/*",
+    "apps/back-end/services/*",
+    "apps/back-end/packages/*"
   ],
   "scripts": {
     "build": "turbo run build",

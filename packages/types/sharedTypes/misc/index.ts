@@ -11,3 +11,4 @@ export * from "./HtmlElementsProps";
 export * from "./category";
 export * from "./LoginTypes";
 export * from "./ElementsChild";
+export * from "./DateRange";

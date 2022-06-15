@@ -137,7 +137,7 @@ describe("AccountSettingsSection functionallity tests", () => {
       expect(address1.length).toBe(1);
       expect(address2.length).toBe(1);
       expect(bio.length).toBe(1);
-      expect(brandDescription.length).toBe(1);
+      expect(brandDescription.length).toBe(0);
       expect(city.length).toBe(1);
       expect(clientType.length).toBe(1);
       expect(country.length).toBe(1);

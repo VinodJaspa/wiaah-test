@@ -1,5 +1,5 @@
 import React from "react";
-import { StepperStepType } from "types";
+import { HtmlDivProps, StepperStepType } from "types";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { BiCircle } from "react-icons/bi";
 import { TranslationText } from "ui";
@@ -9,12 +9,14 @@ export interface CheckMarkStepperProps {
   steps: StepperStepType[];
   currentStepIdx: number;
   onStepChange?: (stepIdx: number) => any;
+  className?: string;
 }
 
 export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
   steps,
   currentStepIdx,
   onStepChange,
+  className,
 }) => {
   const CurrentComp = steps[currentStepIdx]
     ? steps[currentStepIdx].stepComponent
@@ -25,7 +27,7 @@ export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
   }
 
   return (
-    <div className="w-full flex flex-col gap-8">
+    <div className={`${className || ""} w-full flex flex-col gap-8`}>
       <div className="w-full relative flex justify-between">
         <span
           className={`w-full border-b-gray-300 absolute top-1/2 left-0 transition-all -translate-y-1/2 border-b-4`}

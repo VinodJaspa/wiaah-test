@@ -7,6 +7,8 @@ type Data = Record<string, any>;
 interface StepperFormCtxValues {
   currentStepIdx: number;
   handlerKeys: string[];
+  isLastStep: boolean;
+  isFirstStep: boolean;
   validate: (data: Data, handlerKey: string) => any;
   unvalidate: (handlerKey: string) => any;
   prevoiusStep: () => any;
@@ -18,6 +20,8 @@ interface StepperFormCtxValues {
 const StepperFormCtx = React.createContext<StepperFormCtxValues>({
   currentStepIdx: 0,
   handlerKeys: [],
+  isFirstStep: true,
+  isLastStep: false,
   goToStep: () => {},
   prevoiusStep: () => {},
   validate: () => {},
@@ -26,32 +30,34 @@ const StepperFormCtx = React.createContext<StepperFormCtxValues>({
   setHandler: () => {},
 });
 
-export interface StepperFormControllerProps {
-  onFormComplete: (data: Data) => any;
+export interface StepperFormControllerProps<DataType> {
+  onFormComplete: (data: DataType) => any;
   children: MaybeFn<StepperFormCtxValues>;
   stepsNum: number;
 }
 
-export const StepperFormController: React.FC<StepperFormControllerProps> = ({
+export function StepperFormController<FinaleDataType>({
   onFormComplete,
   stepsNum,
   children,
-}) => {
+}: StepperFormControllerProps<FinaleDataType>) {
   const [handlers, setHandlers] = React.useState<string[]>([]);
   const [stepsValidation, setStepsValidation] = React.useState<
     Record<string, Data>
   >({});
   const [currentStepIdx, setCurrentStepIdx] = React.useState<number>(0);
 
+  const isLastStep = currentStepIdx + 1 === stepsNum;
+  const isFirstStep = currentStepIdx === 0;
+
   function goToStep(stepIdx: number) {
-    // const handler = handlers[stepIdx];
-    // if (typeof handler !== "string") return;
-    // const obj = stepsValidation[handler];
-    // if (typeof obj === "undefined") return;
+    const handler = handlers[stepIdx];
+    if (typeof handler !== "string") return;
+    const obj = stepsValidation[handler];
+    if (typeof obj === "undefined") return;
     setCurrentStepIdx(stepIdx);
   }
   function validate(data: Data, handlerKey: string) {
-    console.log("validation", data);
     setStepsValidation((state) => {
       const _state = state;
       _state[handlerKey] = data;
@@ -74,13 +80,13 @@ export const StepperFormController: React.FC<StepperFormControllerProps> = ({
       const lastStep = state > stepsNum - 2;
 
       if (lastStep) {
-        const MergedData = Object.entries(stepsValidation).reduce(
-          (acc, curr) => {
-            const [key, value] = curr;
-            return { ...acc, ...value };
-          },
-          {} as Data
-        );
+        //@ts-ignore
+        const MergedData: FinaleDataType = Object.entries(
+          stepsValidation
+        ).reduce((acc, curr) => {
+          const [key, value] = curr;
+          return { ...acc, ...value };
+        }, {} as Data);
 
         onFormComplete(MergedData);
         return state;
@@ -122,11 +128,11 @@ export const StepperFormController: React.FC<StepperFormControllerProps> = ({
         setHandler,
         handlerKeys: handlers,
         unvalidate,
+        isFirstStep,
+        isLastStep,
       }}
     >
-      {runIfFn<
-        StepperFormCtxValues & { islastStep: boolean; isFirstStep: boolean }
-      >(children, {
+      {runIfFn<StepperFormCtxValues>(children, {
         currentStepIdx,
         goToStep,
         prevoiusStep,
@@ -135,15 +141,16 @@ export const StepperFormController: React.FC<StepperFormControllerProps> = ({
         setHandler,
         handlerKeys: handlers,
         unvalidate,
-        islastStep: currentStepIdx === stepsNum,
-        isFirstStep: currentStepIdx === 0,
+        isFirstStep,
+        isLastStep,
       })}
     </StepperFormCtx.Provider>
   );
-};
+}
 
 type StepperFormHandlerChildrenProps = {
   validate: (data: Data) => any;
+  // errors?: string[];
 };
 
 export interface StepperFormHandlerProps {
@@ -177,6 +184,7 @@ export const StepperFormHandler: React.FC<StepperFormHandlerProps> = ({
     <>
       {runIfFn<StepperFormHandlerChildrenProps>(children, {
         validate: handleValidate,
+        // errors:[]
       })}
     </>
   );

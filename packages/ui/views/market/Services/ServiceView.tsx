@@ -1,13 +1,10 @@
 import React from "react";
-import { BreadCrumb, ProductCard, ProductImageGallery } from "ui";
-import { ProductDescription, SellerCard } from "ui";
-// import { Swiper, SwiperSlide } from "swiper/react";
-// import { Navigation } from "swiper";
-import { ServiceRightView } from "./ServiceRightView";
+import { BreadCrumb, ProductImageGallery, SpinnerFallback } from "ui";
+import { ProductDescription, SellerCard, useGetServiceDataQuery } from "ui";
+import { ServiceRightView } from "ui";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import { ProductGalleryItem } from "types";
-import { useResponsive } from "hooks";
 
 const breadcrumb = [
   {
@@ -90,8 +87,9 @@ export interface ServiceViewProps {
   serviceId: string;
 }
 
-export const ServiceView: React.FC<ServiceViewProps> = () => {
-  const { isTablet } = useResponsive();
+export const ServiceView: React.FC<ServiceViewProps> = ({ serviceId }) => {
+  const { data, isLoading, isError } = useGetServiceDataQuery(serviceId);
+
   const { t } = useTranslation();
   const router = useRouter();
   const breadCrumbLinks = [{ text: "wiaah", url: "/" }].concat(
@@ -100,7 +98,6 @@ export const ServiceView: React.FC<ServiceViewProps> = () => {
       url: `/${cate}`,
     }))
   );
-
   return (
     <>
       <div className="block w-full space-y-6 p-5">
@@ -108,23 +105,16 @@ export const ServiceView: React.FC<ServiceViewProps> = () => {
           <BreadCrumb links={breadCrumbLinks} />
         </div>
         <div>
-          <div className="flex-column mb-10 flex-wrap  lg:flex lg:h-[28rem] lg:justify-between">
+          <div className="flex-column mb-10 flex-wrap  lg:flex  lg:justify-between">
             <div className="h-full w-full lg:w-8/12">
-              <ProductImageGallery images={productGalleryitems} />
+              <SpinnerFallback isLoading={isLoading} isError={isError}>
+                {data ? (
+                  <ProductImageGallery images={data.servicePresentation} />
+                ) : null}
+              </SpinnerFallback>
             </div>
             <div className="mt-4 h-full w-full lg:mt-0  lg:w-4/12 lg:pl-5 ">
-              <ServiceRightView
-                price={1000}
-                oldPrice={1500}
-                name="Camera Digital with extra lenses"
-                reviews={5}
-                off={10}
-                rating={4}
-                category="Horology"
-                available={15}
-                discontUnits={5}
-                included={["breakfast", "food"]}
-              />
+              <ServiceRightView serviceId={serviceId} />
             </div>
           </div>
           <div className="flex-column flex-wrap lg:flex lg:justify-between">

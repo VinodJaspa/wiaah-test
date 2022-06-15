@@ -45,7 +45,7 @@ export const Modal: React.FC<ModalProps> = ({
   const { isOpen: ExtendedIsOpen, onClose: ExtendedOnClose } =
     React.useContext(ModalExtendedContext);
   React.useEffect(() => {
-    if (ExtendedIsOpen()) {
+    if (ExtendedIsOpen() && !isOpen) {
       onOpen && onOpen();
     }
   }, [ExtendedIsOpen]);
@@ -88,7 +88,9 @@ export const ModalContent: React.FC<ModalContentProps> = ({
       CallbackAfter(0, () => {});
     } else {
       if (!isLazy) return;
-      CallbackAfter(200, () => setShow(false));
+      CallbackAfter(5000, () => {
+        setShow(false);
+      });
     }
   }, [isOpen]);
 

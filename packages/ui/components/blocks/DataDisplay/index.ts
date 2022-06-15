@@ -20,3 +20,6 @@ export * from "./Search";
 export * from "./ProductDetailsTable";
 export * from "./DurationDisplay";
 export * from "./StoryDisplays";
+export * from "./ServiceRulesDisplay";
+export * from "./ServiceTransportDisplay";
+export * from "./ServicePropertyDetailsDisplay";
