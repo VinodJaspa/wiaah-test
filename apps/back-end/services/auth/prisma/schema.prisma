@@ -11,10 +11,17 @@ datasource db {
 }
 
 model Registeration {
-  id                         String                   @id @default(auto()) @map("_id") @db.ObjectId
-  verificationUrl            String                   @unique
-  firstName                  String
-  lastName                   String
-  email                      String                   @unique
-  password                   String
+  id                String             @id @default(auto()) @map("_id") @db.ObjectId
+  verificationToken String             @unique
+  accountInputData  AccountInputsData?
+}
+
+model AccountInputsData {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  registeration   Registeration @relation(fields: [registerationId], references: [id])
+  registerationId String        @db.ObjectId @unique
+  firstName       String
+  lastName        String
+  email           String        @unique
+  password        String
 }

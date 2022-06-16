@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { AccountInputData } from './accountInputData.entity';
 
 @ObjectType()
 export class Registeration {
@@ -6,5 +7,8 @@ export class Registeration {
   id: string;
 
   @Field((type) => String)
-  url: string;
+  verificationToken: string;
+
+  @Field((type) => AccountInputData)
+  accountInputData: AccountInputData;
 }

@@ -7,6 +7,7 @@ import {
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
+import { AccountsController } from './accounts.controller';
 
 @Module({
   imports: [
@@ -16,5 +17,6 @@ import {
     }),
   ],
   providers: [AccountsResolver, AccountsService, PrismaService],
+  controllers: [AccountsController],
 })
 export class AccountsModule {}

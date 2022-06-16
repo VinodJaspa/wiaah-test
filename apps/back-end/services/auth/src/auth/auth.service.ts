@@ -1,26 +1,87 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuthInput } from './dto/create-auth.input';
-import { UpdateAuthInput } from './dto/update-auth.input';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotAcceptableException,
+} from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
+import { Registeration } from '@prisma/client';
+import { KAFKA_EVENTS } from 'src/KafkaEvents';
+import { PrismaService } from 'src/prisma.service';
+import { ACCOUNTS_SERVICE } from 'src/ServicesTokens';
+import { CreateRegisterationDto } from './dto';
 
 @Injectable()
 export class AuthService {
-  create(createAuthInput: CreateAuthInput) {
-    return 'This action adds a new auth';
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(ACCOUNTS_SERVICE.token)
+    private readonly accountsClient: ClientKafka,
+  ) {}
+
+  async register(createAuthInput: CreateRegisterationDto) {
+    try {
+      return await new Promise((res, rej) => {
+        const { confirmPassword, email, firstName, lastName, password } =
+          createAuthInput;
+        // communicate with accounts service and check if account with this email already exists
+        this.accountsClient
+          .send(KAFKA_EVENTS.emailExists, {
+            email,
+          })
+          .subscribe(async (emailExists) => {
+            if (emailExists === 'true') {
+              return rej(
+                new NotAcceptableException('this email is already taken'),
+              );
+            }
+
+            if (confirmPassword !== password)
+              throw new BadRequestException(
+                'confirm password and password fields must match',
+              );
+
+            await this.prisma.registeration.create({
+              data: {
+                verificationToken: 'test token',
+                accountInputData: {
+                  create: {
+                    email,
+                    firstName,
+                    lastName,
+                    password,
+                  },
+                },
+              },
+              select: {
+                accountInputData: {
+                  select: {
+                    email: true,
+                  },
+                },
+              },
+            });
+
+            res(true);
+          });
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
-  findAll() {
-    return `This action returns all auth`;
+  async getAll(): Promise<Registeration[]> {
+    const registartions = await this.prisma.registeration.findMany({
+      include: {
+        accountInputData: true,
+      },
+    });
+    return registartions;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} auth`;
-  }
-
-  update(id: number, updateAuthInput: UpdateAuthInput) {
-    return `This action updates a #${id} auth`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} auth`;
+  async removeAll() {
+    await this.prisma.accountInputsData.deleteMany();
+    await this.prisma.registeration.deleteMany();
+    return true;
   }
 }

@@ -46,6 +46,24 @@ export class AccountsService {
     }
   }
 
+  async emailExists(email: string): Promise<boolean> {
+    try {
+      if (typeof email !== 'string')
+        throw new BadRequestException('invalid email field');
+
+      const account = await this.prisma.account.findFirst({
+        where: {
+          email,
+        },
+      });
+      if (!account) return false;
+
+      return true;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   findAll() {
     return this.prisma.account.findMany();
   }
