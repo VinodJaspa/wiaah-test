@@ -22,7 +22,6 @@ import { AppService } from './app.service';
                   const cookies = parseCookies(rawCookies);
                   cookies.forEach(({ cookieName, cookieValue, options }) => {
                     if (context.req && context.req.res) {
-                      console.log('set cookies');
                       context.req.res.cookie(cookieName, cookieValue, {
                         ...options,
                       });

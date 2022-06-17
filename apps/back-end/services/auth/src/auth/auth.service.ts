@@ -173,7 +173,7 @@ export class AuthService {
         .send(KAFKA_EVENTS.getAccountByEmail, { email })
         .subscribe(async (account: Account) => {
           if (!account) {
-            rej(new NotFoundException('no account was this email was found'));
+            rej(new NotFoundException('no account with this email was found'));
             return;
           }
 

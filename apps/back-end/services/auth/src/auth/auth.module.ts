@@ -8,6 +8,7 @@ import { AuthResolver } from './auth.resolver';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaService } from 'src/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ACCOUNTS_SERVICE, MAILING_SERVICE } from 'src/ServicesTokens';
 
@@ -53,6 +54,9 @@ import { ACCOUNTS_SERVICE, MAILING_SERVICE } from 'src/ServicesTokens';
       signOptions: {
         expiresIn: '1d',
       },
+    }),
+    ConfigModule.forRoot({
+      envFilePath: ['.env'],
     }),
   ],
   providers: [AuthResolver, AuthService, PrismaService],
