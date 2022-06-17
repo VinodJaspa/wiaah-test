@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaService } from 'src/prisma.service';
+import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ACCOUNTS_SERVICE, MAILING_SERVICE } from 'src/ServicesTokens';
 
@@ -43,6 +44,15 @@ import { ACCOUNTS_SERVICE, MAILING_SERVICE } from 'src/ServicesTokens';
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: true,
+      context: ({ req, res }) => {
+        return { req, res };
+      },
+    }),
+    JwtModule.register({
+      secret: 'secret',
+      signOptions: {
+        expiresIn: '1d',
+      },
     }),
   ],
   providers: [AuthResolver, AuthService, PrismaService],

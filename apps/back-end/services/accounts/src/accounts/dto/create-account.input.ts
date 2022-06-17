@@ -13,10 +13,4 @@ export class CreateAccountInput {
 
   @Field((type) => String)
   password: string;
-
-  @Field((type) => String)
-  confirmPassword: string;
-
-  @Field((type) => Boolean)
-  termsOfServiceAccepted: boolean;
 }

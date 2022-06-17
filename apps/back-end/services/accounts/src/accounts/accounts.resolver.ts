@@ -14,13 +14,6 @@ import { CreateAccountInput, UpdateAccountInput } from './dto';
 export class AccountsResolver {
   constructor(private readonly accountsService: AccountsService) {}
 
-  @Mutation(() => Account)
-  createAccount(
-    @Args('createAccountInput') createAccountInput: CreateAccountInput,
-  ) {
-    return this.accountsService.create(createAccountInput);
-  }
-
   @Query(() => [Account])
   findAll() {
     return this.accountsService.findAll();
@@ -29,21 +22,6 @@ export class AccountsResolver {
   @Query(() => Account)
   findOne(@Args('id', { type: () => String }) id: string) {
     return this.accountsService.findOne(id);
-  }
-
-  @Mutation(() => Account)
-  updateAccount(
-    @Args('updateAccountInput') updateAccountInput: UpdateAccountInput,
-  ) {
-    return this.accountsService.update(
-      updateAccountInput.id,
-      updateAccountInput,
-    );
-  }
-
-  @Mutation(() => Account)
-  removeAccount(@Args('id', { type: () => String }) id: string) {
-    return this.accountsService.remove(id);
   }
 
   @ResolveReference()

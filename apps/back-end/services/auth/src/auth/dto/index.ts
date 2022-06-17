@@ -1,2 +1,3 @@
-export * from './create-registartion.dto';
-export * from './update-registeration.dto';
+export * from './register.dto';
+export * from './login.dto';
+export * from './verify-email.dto';

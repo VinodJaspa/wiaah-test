@@ -12,25 +12,11 @@ import { PrismaService } from 'src/prisma.service';
 export class AccountsService {
   constructor(private prisma: PrismaService) {}
 
-  create(createAccountInput: CreateAccountInput) {
+  async createAccountRecord(createAccountInput: CreateAccountInput) {
     try {
-      const {
-        confirmPassword,
-        email,
-        firstName,
-        lastName,
-        password,
-        termsOfServiceAccepted,
-      } = createAccountInput;
-      if (password !== confirmPassword)
-        throw new NotAcceptableException(
-          'password and confirm password fields must match',
-        );
-      if (!termsOfServiceAccepted)
-        throw new NotAcceptableException(
-          'must accpet terms of service to create an account on wiaah',
-        );
-      const createdUser = this.prisma.account.create({
+      const { email, firstName, lastName, password } = createAccountInput;
+
+      const createdUser = await this.prisma.account.create({
         data: {
           email,
           firstName,
@@ -38,6 +24,7 @@ export class AccountsService {
           password,
         },
       });
+
       return createdUser;
     } catch (error) {
       console.log('account creation error' + error);
@@ -61,6 +48,25 @@ export class AccountsService {
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  async getByEmail(email: string) {
+    try {
+      if (typeof email !== 'string')
+        throw new BadRequestException('invalid email type');
+      const account = await this.prisma.account.findUnique({
+        where: {
+          email,
+        },
+        rejectOnNotFound(error) {
+          throw new NotAcceptableException(
+            'account with this email was not found',
+          );
+        },
+      });
+
+      return account;
+    } catch (error) {}
   }
 
   findAll() {

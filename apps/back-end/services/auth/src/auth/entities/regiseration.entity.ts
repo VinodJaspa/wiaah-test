@@ -9,6 +9,9 @@ export class Registeration {
   @Field((type) => String)
   verificationToken: string;
 
+  @Field((type) => String)
+  email: string;
+
   @Field((type) => AccountInputData)
   accountInputData: AccountInputData;
 }
