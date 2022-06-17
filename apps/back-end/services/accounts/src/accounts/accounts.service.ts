@@ -3,7 +3,6 @@ import {
   Injectable,
   NotAcceptableException,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { CreateAccountInput, UpdateAccountInput } from './dto';
 import { Account } from './entities';
 

@@ -8,12 +8,13 @@ import { AuthResolver } from './auth.resolver';
 import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaService } from 'src/prisma.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ACCOUNTS_SERVICE, MAILING_SERVICE } from 'src/ServicesTokens';
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: 'ACCOUNTS_SERVICE',
+        name: ACCOUNTS_SERVICE.token,
         transport: Transport.KAFKA,
         options: {
           client: {
@@ -21,12 +22,12 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
             brokers: ['localhost:9092'],
           },
           consumer: {
-            groupId: 'account-consumer',
+            groupId: ACCOUNTS_SERVICE.groupId,
           },
         },
       },
       {
-        name: 'MAILING_SERVICE',
+        name: MAILING_SERVICE.token,
         transport: Transport.KAFKA,
         options: {
           client: {
@@ -34,7 +35,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
             brokers: ['localhost:9092'],
           },
           consumer: {
-            groupId: 'mailing-consumer',
+            groupId: MAILING_SERVICE.groupId,
           },
         },
       },

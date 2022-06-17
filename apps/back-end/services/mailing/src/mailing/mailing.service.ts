@@ -4,7 +4,5 @@ import { UpdateMailingDto } from './dto/update-mailing.dto';
 
 @Injectable()
 export class MailingService {
-  sendRegisterationMail(input: SendRegisterationMailDto) {
-    console.log(input);
-  }
+  sendRegisterationMail(input: SendRegisterationMailDto) {}
 }

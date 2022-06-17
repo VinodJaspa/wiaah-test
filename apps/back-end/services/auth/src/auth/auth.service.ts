@@ -1,3 +1,4 @@
+import { generateVerificationToken } from '@lib';
 import {
   BadRequestException,
   Inject,
@@ -8,7 +9,7 @@ import { ClientKafka } from '@nestjs/microservices';
 import { Registeration } from '@prisma/client';
 import { KAFKA_EVENTS } from 'src/KafkaEvents';
 import { PrismaService } from 'src/prisma.service';
-import { ACCOUNTS_SERVICE } from 'src/ServicesTokens';
+import { ACCOUNTS_SERVICE, MAILING_SERVICE } from 'src/ServicesTokens';
 import { CreateRegisterationDto } from './dto';
 
 @Injectable()
@@ -17,6 +18,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     @Inject(ACCOUNTS_SERVICE.token)
     private readonly accountsClient: ClientKafka,
+    @Inject(MAILING_SERVICE.token) private readonly mailingClient: ClientKafka,
   ) {}
 
   async register(createAuthInput: CreateRegisterationDto) {
@@ -36,14 +38,21 @@ export class AuthService {
               );
             }
 
-            if (confirmPassword !== password)
-              throw new BadRequestException(
-                'confirm password and password fields must match',
+            if (confirmPassword !== password) {
+              return rej(
+                new NotAcceptableException(
+                  'confirm password and password fields must match',
+                ),
               );
+            }
 
+            // generate random verification code
+            const verificationToken = `${generateVerificationToken()}`;
+
+            // create registeration enitity to track verification email proccess
             await this.prisma.registeration.create({
               data: {
-                verificationToken: 'test token',
+                verificationToken,
                 accountInputData: {
                   create: {
                     email,
@@ -60,6 +69,13 @@ export class AuthService {
                   },
                 },
               },
+            });
+
+            // when success, communicate with mailing to send a new verification email
+
+            this.mailingClient.emit('send_email_verification_mail', {
+              verificationToken,
+              email,
             });
 
             res(true);
