@@ -11,6 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ACCOUNTS_SERVICE, MAILING_SERVICE } from 'src/ServicesTokens';
+import { getUserFromRequest } from 'nest-utils';
 
 @Module({
   imports: [
@@ -46,7 +47,8 @@ import { ACCOUNTS_SERVICE, MAILING_SERVICE } from 'src/ServicesTokens';
       driver: ApolloFederationDriver,
       autoSchemaFile: true,
       context: ({ req, res }) => {
-        return { req, res };
+        const user = getUserFromRequest(req);
+        return { req, res, user };
       },
     }),
     JwtModule.register({

@@ -8,15 +8,15 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { Registeration } from '@prisma/client';
+import { Registeration } from '@prisma-client';
 import { KAFKA_EVENTS } from 'src/KafkaEvents';
 import { PrismaService } from 'src/prisma.service';
 import { ACCOUNTS_SERVICE, MAILING_SERVICE } from 'src/ServicesTokens';
 import { LoginDto, RegisterDto, VerifyEmailDto } from './dto';
 import * as bcrypt from 'bcrypt';
-import { LoginResponse } from './responses/LoginResponse';
 import { Account } from './types';
 import { JwtService } from '@nestjs/jwt';
+import { ResponseObj } from 'nest-utils';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +28,7 @@ export class AuthService {
     private readonly JWTService: JwtService,
   ) {}
 
-  async register(createAuthInput: RegisterDto) {
+  async register(createAuthInput: RegisterDto): Promise<ResponseObj<null>> {
     try {
       const { confirmPassword, email, firstName, lastName, password } =
         createAuthInput;
@@ -94,7 +94,7 @@ export class AuthService {
           });
 
           // everything went right, resolve the promise
-          res(true);
+          res(null);
           // make sure to clear the timeout
           clearTimeout(timeout);
           // make sure to unsubscribe to the kafka listener
@@ -102,11 +102,14 @@ export class AuthService {
         });
       });
     } catch (error) {
-      return new Error(error);
+      return {
+        success: false,
+        error,
+      };
     }
   }
 
-  async verifyEmail(inputs: VerifyEmailDto) {
+  async verifyEmail(inputs: VerifyEmailDto): Promise<ResponseObj<null>> {
     try {
       const { email, verificationCode } = inputs;
       console.log(email, verificationCode);
@@ -136,27 +139,39 @@ export class AuthService {
         password: hashedPassword,
       });
 
-      return registeration;
+      return {
+        success: true,
+        data: null,
+      };
     } catch (error) {
-      return new Error(error);
+      return {
+        success: false,
+        error,
+      };
     }
   }
 
-  async login(input: LoginDto): Promise<LoginResponse> {
+  async login(input: LoginDto): Promise<ResponseObj<{ access_token: string }>> {
     try {
       const { email, firstName, lastName } = await this.validateCredentials(
         input.email,
         input.password,
       );
       return {
-        access_token: this.JWTService.sign({
-          email,
-          firstName,
-          lastName,
-        }),
+        success: true,
+        data: {
+          access_token: this.JWTService.sign({
+            email,
+            firstName,
+            lastName,
+          }),
+        },
       };
     } catch (error) {
-      throw new Error(error);
+      return {
+        success: false,
+        error,
+      };
     }
   }
 

@@ -19,7 +19,8 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@dto": ["src/accounts/dto"],
-      "@entities": ["src/accounts/entities"]
+      "@entities": ["src/accounts/entities"],
+      "@prisma-client": ["prisma/generated/client"]
     }
   }
 }

@@ -1,4 +1,4 @@
-export type ResponseObj<TData, TError = string> =
+export type ResponseObj<TData = any, TError = string> =
   | {
       success: false;
       error: TError;

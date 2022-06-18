@@ -1,7 +1,7 @@
 {
   "name": "nest-utils",
   "version": "0.0.0",
-  "main": "./index.ts",
+  "main": "./dist/index.js",
   "types": "./index.ts",
   "license": "MIT",
   "devDependencies": {
@@ -10,5 +10,7 @@
     "types": "*",
     "typescript": "^4.3.5"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@nestjs/common": "^8.4.7"
+  }
 }

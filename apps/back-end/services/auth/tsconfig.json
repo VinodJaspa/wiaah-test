@@ -19,7 +19,8 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@models": ["models"],
-      "@lib": ["lib"]
+      "@lib": ["lib"],
+      "@prisma-client": ["prisma/generated/client"]
     }
   }
 }

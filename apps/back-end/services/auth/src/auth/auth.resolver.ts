@@ -9,13 +9,19 @@ import {
 import { AuthService } from './auth.service';
 import { Registeration } from './entities/regiseration.entity';
 import { RegisterDto } from './dto/register.dto';
-import { ExecutionContext, Inject, OnModuleInit } from '@nestjs/common';
+import {
+  ExecutionContext,
+  Inject,
+  InternalServerErrorException,
+  OnModuleInit,
+} from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { ACCOUNTS_SERVICE } from 'src/ServicesTokens';
 import { KAFKA_EVENTS } from 'src/KafkaEvents';
 import { LoginDto, VerifyEmailDto } from './dto';
 import { LoginResponse } from './responses/LoginResponse';
 import { ConfigService } from '@nestjs/config';
+import { ResponseObj } from 'nest-utils';
 
 @Resolver((of) => Registeration)
 export class AuthResolver implements OnModuleInit {
@@ -34,15 +40,18 @@ export class AuthResolver implements OnModuleInit {
   @Mutation(() => Boolean)
   async login(
     @Args('LoginInput') loginInput: LoginDto,
-    @Context() ctx: GraphQLExecutionContext,
+    @Context() ctx: any,
   ): Promise<boolean> {
     const cookiesKey = this.config.get('COOKIES_KEY');
     if (typeof cookiesKey !== 'string') return false;
 
-    const { access_token } = await this.authService.login(loginInput);
+    const data = await this.authService.login(loginInput);
+    if (!data) return false;
+    if (data.success === false) return false;
 
-    //@ts-ignore
-    ctx.res.cookie(cookiesKey, access_token, { httpOnly: true });
+    if (ctx && ctx.res && ctx.res.cookie) {
+      ctx.res.cookie(cookiesKey, data.data?.access_token, { httpOnly: true });
+    }
 
     return true;
   }
