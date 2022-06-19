@@ -18,7 +18,9 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@models": ["models"]
+      "@models": ["models"],
+      "@lib": ["lib"],
+      "@prisma-client": ["prisma/generated"]
     }
   }
 }

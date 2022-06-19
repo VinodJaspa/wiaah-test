@@ -1,28 +1,25 @@
+import { UseGuards } from '@nestjs/common';
 import {
   Resolver,
   Query,
-  Mutation,
   Args,
-  Int,
   ResolveReference,
+  Mutation,
 } from '@nestjs/graphql';
+import {
+  AuthorizationDecodedUser,
+  GqlAuthorizationGuard,
+  GqlCurrentUser,
+} from 'nest-utils';
 import { AccountsService } from './accounts.service';
 import { Account } from './entities';
-import { CreateAccountInput, UpdateAccountInput } from './dto';
 
 @Resolver(() => Account)
 export class AccountsResolver {
   constructor(private readonly accountsService: AccountsService) {}
 
-  @Mutation(() => Account)
-  createAccount(
-    @Args('createAccountInput') createAccountInput: CreateAccountInput,
-  ) {
-    return this.accountsService.create(createAccountInput);
-  }
-
   @Query(() => [Account])
-  findAll() {
+  getAccounts() {
     return this.accountsService.findAll();
   }
 
@@ -31,19 +28,15 @@ export class AccountsResolver {
     return this.accountsService.findOne(id);
   }
 
-  @Mutation(() => Account)
-  updateAccount(
-    @Args('updateAccountInput') updateAccountInput: UpdateAccountInput,
-  ) {
-    return this.accountsService.update(
-      updateAccountInput.id,
-      updateAccountInput,
-    );
+  @Mutation((type) => Boolean)
+  DeleteAllAccounts() {
+    return this.accountsService.deleteAll();
   }
 
-  @Mutation(() => Account)
-  removeAccount(@Args('id', { type: () => String }) id: string) {
-    return this.accountsService.remove(id);
+  @UseGuards(GqlAuthorizationGuard)
+  @Mutation((type) => Boolean)
+  switchToSeller(@GqlCurrentUser() user: AuthorizationDecodedUser) {
+    return this.accountsService.switchToSeller(user.id);
   }
 
   @ResolveReference()

@@ -7,14 +7,21 @@ import {
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
+import { AccountsController } from './accounts.controller';
+import { getUserFromRequest } from 'nest-utils';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: true,
+      context({ req, res }) {
+        const user = getUserFromRequest(req);
+        return { req, res, user };
+      },
     }),
   ],
   providers: [AccountsResolver, AccountsService, PrismaService],
+  controllers: [AccountsController],
 })
 export class AccountsModule {}

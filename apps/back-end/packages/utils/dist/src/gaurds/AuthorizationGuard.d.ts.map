@@ -1,0 +1,1 @@
+{"version":3,"file":"AuthorizationGuard.d.ts","sourceRoot":"","sources":["../../../src/gaurds/AuthorizationGuard.ts"],"names":[],"mappings":"AAAA,OAAO,EAEL,WAAW,EACX,gBAAgB,EAEjB,MAAM,gBAAgB,CAAC;AAExB,OAAO,EAAE,UAAU,EAAE,MAAM,MAAM,CAAC;AAElC,qBACa,qBAAsB,YAAW,WAAW;IACvD,WAAW,CACT,OAAO,EAAE,gBAAgB,GACxB,OAAO,GAAG,OAAO,CAAC,OAAO,CAAC,GAAG,UAAU,CAAC,OAAO,CAAC;CAQpD"}

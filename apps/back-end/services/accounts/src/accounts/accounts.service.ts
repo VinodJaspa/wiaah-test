@@ -1,48 +1,69 @@
 import {
   BadRequestException,
   Injectable,
-  NotAcceptableException,
+  NotFoundException,
 } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { CreateAccountInput, UpdateAccountInput } from './dto';
 import { Account } from './entities';
-
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class AccountsService {
   constructor(private prisma: PrismaService) {}
 
-  create(createAccountInput: CreateAccountInput) {
+  async createAccountRecord(createAccountInput: CreateAccountInput) {
     try {
-      const {
-        confirmPassword,
-        email,
-        firstName,
-        lastName,
-        password,
-        termsOfServiceAccepted,
-      } = createAccountInput;
-      if (password !== confirmPassword)
-        throw new NotAcceptableException(
-          'password and confirm password fields must match',
-        );
-      if (!termsOfServiceAccepted)
-        throw new NotAcceptableException(
-          'must accpet terms of service to create an account on wiaah',
-        );
-      const createdUser = this.prisma.account.create({
+      const { email, firstName, lastName, password } = createAccountInput;
+
+      const createdUser = await this.prisma.account.create({
         data: {
           email,
           firstName,
           lastName,
           password,
+          type: 'buyer',
         },
       });
+
       return createdUser;
     } catch (error) {
       console.log('account creation error' + error);
       return null;
+    }
+  }
+
+  async emailExists(email: string): Promise<boolean> {
+    try {
+      if (typeof email !== 'string')
+        throw new BadRequestException('invalid email field');
+
+      const account = await this.prisma.account.findFirst({
+        where: {
+          email,
+        },
+      });
+      if (!account) return false;
+
+      return true;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async getByEmail(email: string) {
+    try {
+      if (typeof email !== 'string')
+        throw new BadRequestException('invalid email type');
+
+      const account = await this.prisma.account.findUnique({
+        where: {
+          email,
+        },
+      });
+
+      return account;
+    } catch (error) {
+      throw new Error(error);
     }
   }
 
@@ -78,11 +99,42 @@ export class AccountsService {
     }
   }
 
-  remove(id: string) {
-    return this.prisma.account.delete({
+  async deleteAll() {
+    try {
+      await this.prisma.account.deleteMany();
+
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  async isSellerAccount(accountId: string): Promise<boolean> {
+    const account = await this.prisma.account.findUnique({
       where: {
-        id,
+        id: accountId,
+      },
+      rejectOnNotFound(error) {
+        throw new NotFoundException('account with the given id was not found');
       },
     });
+
+    return account.type === 'seller';
+  }
+
+  async switchToSeller(userId: string) {
+    try {
+      await this.prisma.account.update({
+        data: {
+          type: 'seller',
+        },
+        where: {
+          id: userId,
+        },
+      });
+      return true;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }

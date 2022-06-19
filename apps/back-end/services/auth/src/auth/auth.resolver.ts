@@ -1,35 +1,64 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
-import { Auth } from './entities/auth.entity';
-import { CreateAuthInput } from './dto/create-auth.input';
-import { UpdateAuthInput } from './dto/update-auth.input';
+import { Registeration } from './entities/regiseration.entity';
+import { RegisterDto } from './dto/register.dto';
+import { Inject, OnModuleInit } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
+import { ACCOUNTS_SERVICE } from 'src/ServicesTokens';
+import { LoginDto, VerifyEmailDto } from './dto';
+import { ConfigService } from '@nestjs/config';
+import { KAFKA_MESSAGES } from 'nest-utils';
 
-@Resolver(() => Auth)
-export class AuthResolver {
-  constructor(private readonly authService: AuthService) {}
+@Resolver((of) => Registeration)
+export class AuthResolver implements OnModuleInit {
+  constructor(
+    private readonly authService: AuthService,
+    @Inject(ACCOUNTS_SERVICE.token)
+    private readonly accountsClient: ClientKafka,
+    private readonly config: ConfigService,
+  ) {}
 
-  @Mutation(() => Auth)
-  createAuth(@Args('createAuthInput') createAuthInput: CreateAuthInput) {
-    return this.authService.create(createAuthInput);
+  @Mutation(() => String)
+  register(@Args('RegisterInput') registerInput: RegisterDto) {
+    return this.authService.register(registerInput);
   }
 
-  @Query(() => [Auth], { name: 'auth' })
-  findAll() {
-    return this.authService.findAll();
+  @Mutation(() => Boolean)
+  async login(
+    @Args('LoginInput') loginInput: LoginDto,
+    @Context() ctx: any,
+  ): Promise<boolean> {
+    const cookiesKey = this.config.get('COOKIES_KEY');
+    if (typeof cookiesKey !== 'string') return false;
+
+    const data = await this.authService.login(loginInput);
+
+    if (ctx && ctx.res && ctx.res.cookie) {
+      ctx.res.cookie(cookiesKey, data.access_token, { httpOnly: true });
+    }
+
+    return true;
   }
 
-  @Query(() => Auth, { name: 'auth' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.authService.findOne(id);
+  @Mutation(() => Boolean)
+  verifyEmail(
+    @Args('EmailVerificationInput') verififactionInput: VerifyEmailDto,
+  ) {
+    return this.authService.verifyEmail(verififactionInput);
+  }
+  @Mutation(() => Boolean)
+  removeAll() {
+    return this.authService.removeAll();
   }
 
-  @Mutation(() => Auth)
-  updateAuth(@Args('updateAuthInput') updateAuthInput: UpdateAuthInput) {
-    return this.authService.update(updateAuthInput.id, updateAuthInput);
+  @Query((type) => [Registeration])
+  getRegistrations() {
+    return this.authService.getAll();
   }
 
-  @Mutation(() => Auth)
-  removeAuth(@Args('id', { type: () => Int }) id: number) {
-    return this.authService.remove(id);
+  async onModuleInit() {
+    this.accountsClient.subscribeToResponseOf(KAFKA_MESSAGES.emailExists);
+    this.accountsClient.subscribeToResponseOf(KAFKA_MESSAGES.getAccountByEmail);
+    await this.accountsClient.connect();
   }
 }

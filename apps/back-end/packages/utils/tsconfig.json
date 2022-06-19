@@ -3,7 +3,10 @@
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
-    "target": "ES5",
-    "outDir": "dist/"
+    "module": "CommonJS",
+    "target": "ES2017",
+    "outDir": "dist/",
+    "isolatedModules": false,
+    "experimentalDecorators": true
   }
 }
