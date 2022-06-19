@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
+import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -8,10 +9,11 @@ async function bootstrap() {
     transport: Transport.KAFKA,
     options: {
       client: {
-        brokers: ['localhost:9092'],
+        clientId: SERVICES.ACCOUNTS_SERVICE.clientId,
+        brokers: KAFKA_BROKERS,
       },
       consumer: {
-        groupId: 'accounts-consumer',
+        groupId: SERVICES.ACCOUNTS_SERVICE.groupId,
       },
     },
   });

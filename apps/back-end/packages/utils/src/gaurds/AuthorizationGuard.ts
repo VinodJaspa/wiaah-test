@@ -1,13 +1,22 @@
-import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
+import {
+  Injectable,
+  CanActivate,
+  ExecutionContext,
+  UnauthorizedException,
+} from "@nestjs/common";
+import { GqlExecutionContext } from "@nestjs/graphql";
 import { Observable } from "rxjs";
 
 @Injectable()
-export class AuthorizationGuard implements CanActivate {
+export class GqlAuthorizationGuard implements CanActivate {
   canActivate(
     context: ExecutionContext
   ): boolean | Promise<boolean> | Observable<boolean> {
-    console.log(context);
+    const ctx = GqlExecutionContext.create(context);
+    const user = ctx.getContext().user;
+    console.log("guard", ctx);
+    if (!user) throw new UnauthorizedException();
 
-    return true;
+    return !!user;
   }
 }

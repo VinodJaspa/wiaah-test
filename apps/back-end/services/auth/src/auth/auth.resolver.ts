@@ -1,27 +1,13 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Context,
-  GraphQLExecutionContext,
-} from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { Registeration } from './entities/regiseration.entity';
 import { RegisterDto } from './dto/register.dto';
-import {
-  ExecutionContext,
-  Inject,
-  InternalServerErrorException,
-  OnModuleInit,
-} from '@nestjs/common';
+import { Inject, OnModuleInit } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { ACCOUNTS_SERVICE } from 'src/ServicesTokens';
-import { KAFKA_EVENTS } from 'src/KafkaEvents';
 import { LoginDto, VerifyEmailDto } from './dto';
-import { LoginResponse } from './responses/LoginResponse';
 import { ConfigService } from '@nestjs/config';
-import { ResponseObj } from 'nest-utils';
+import { KAFKA_MESSAGES } from 'nest-utils';
 
 @Resolver((of) => Registeration)
 export class AuthResolver implements OnModuleInit {
@@ -46,17 +32,15 @@ export class AuthResolver implements OnModuleInit {
     if (typeof cookiesKey !== 'string') return false;
 
     const data = await this.authService.login(loginInput);
-    if (!data) return false;
-    if (data.success === false) return false;
 
     if (ctx && ctx.res && ctx.res.cookie) {
-      ctx.res.cookie(cookiesKey, data.data?.access_token, { httpOnly: true });
+      ctx.res.cookie(cookiesKey, data.access_token, { httpOnly: true });
     }
 
     return true;
   }
 
-  @Mutation(() => Registeration)
+  @Mutation(() => Boolean)
   verifyEmail(
     @Args('EmailVerificationInput') verififactionInput: VerifyEmailDto,
   ) {
@@ -73,8 +57,8 @@ export class AuthResolver implements OnModuleInit {
   }
 
   async onModuleInit() {
-    this.accountsClient.subscribeToResponseOf(KAFKA_EVENTS.emailExists);
-    this.accountsClient.subscribeToResponseOf(KAFKA_EVENTS.getAccountByEmail);
+    this.accountsClient.subscribeToResponseOf(KAFKA_MESSAGES.emailExists);
+    this.accountsClient.subscribeToResponseOf(KAFKA_MESSAGES.getAccountByEmail);
     await this.accountsClient.connect();
   }
 }

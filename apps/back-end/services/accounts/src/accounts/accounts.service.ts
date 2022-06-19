@@ -1,11 +1,10 @@
 import {
   BadRequestException,
   Injectable,
-  NotAcceptableException,
+  NotFoundException,
 } from '@nestjs/common';
 import { CreateAccountInput, UpdateAccountInput } from './dto';
 import { Account } from './entities';
-
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -22,6 +21,7 @@ export class AccountsService {
           firstName,
           lastName,
           password,
+          type: 'buyer',
         },
       });
 
@@ -54,19 +54,17 @@ export class AccountsService {
     try {
       if (typeof email !== 'string')
         throw new BadRequestException('invalid email type');
+
       const account = await this.prisma.account.findUnique({
         where: {
           email,
         },
-        rejectOnNotFound(error) {
-          throw new NotAcceptableException(
-            'account with this email was not found',
-          );
-        },
       });
 
       return account;
-    } catch (error) {}
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   findAll() {
@@ -101,11 +99,42 @@ export class AccountsService {
     }
   }
 
-  remove(id: string) {
-    return this.prisma.account.delete({
+  async deleteAll() {
+    try {
+      await this.prisma.account.deleteMany();
+
+      return true;
+    } catch (err) {
+      return false;
+    }
+  }
+
+  async isSellerAccount(accountId: string): Promise<boolean> {
+    const account = await this.prisma.account.findUnique({
       where: {
-        id,
+        id: accountId,
+      },
+      rejectOnNotFound(error) {
+        throw new NotFoundException('account with the given id was not found');
       },
     });
+
+    return account.type === 'seller';
+  }
+
+  async switchToSeller(userId: string) {
+    try {
+      await this.prisma.account.update({
+        data: {
+          type: 'seller',
+        },
+        where: {
+          id: userId,
+        },
+      });
+      return true;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 }

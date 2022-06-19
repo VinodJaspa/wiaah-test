@@ -1,2 +1,2 @@
-export * from "./Prisma.service";
+export * from "./";
 //# sourceMappingURL=index.d.ts.map

@@ -1,4 +1,11 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveReference,
+} from '@nestjs/graphql';
 import { ProdutctsService } from './produtcts.service';
 import { Produtct } from './entities/produtct.entity';
 import { CreateProdutctInput } from './dto/create-produtct.input';
@@ -28,5 +35,10 @@ export class ProdutctsResolver {
   @Mutation(() => Boolean)
   deleteAll() {
     return this.produtctsService.deleteAll();
+  }
+
+  @ResolveReference()
+  resolveReference(ref: { __typename: string; id: string }) {
+    return this.produtctsService.getProductById(ref.id);
   }
 }

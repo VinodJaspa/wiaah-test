@@ -1,6 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.KAFKA_EVENTS = void 0;
+exports.KAFKA_MESSAGES = exports.KAFKA_EVENTS = void 0;
 exports.KAFKA_EVENTS = {
-  getUser: "get_user",
+  createAccount: "create.account",
+};
+exports.KAFKA_MESSAGES = {
+  emailExists: "email.exists",
+  getAccountByEmail: "get.account.by.email",
+  isSellerAccount: "is.seller.account",
 };

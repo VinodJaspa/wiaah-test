@@ -1,5 +1,6 @@
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
+import { ObjectType, Field, Int, ID, Directive } from '@nestjs/graphql';
 import { CashbackType, PresentationType } from '@prisma-client';
+import { Shop } from './shop.entity';
 
 @ObjectType()
 export class ProductPresentation {
@@ -32,6 +33,7 @@ export class Discount {
 }
 
 @ObjectType()
+@Directive('@key(fields: "id")')
 export class Produtct {
   @Field((type) => ID)
   id: string;
@@ -41,6 +43,9 @@ export class Produtct {
 
   @Field((type) => String)
   description: string;
+
+  @Field((type) => Shop)
+  store?: Shop;
 
   @Field((type) => String)
   storeId: string;

@@ -19,16 +19,20 @@ var __decorate =
     return c > 3 && r && Object.defineProperty(target, key, r), r;
   };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthorizationGuard = void 0;
+exports.GqlAuthorizationGuard = void 0;
 const common_1 = require("@nestjs/common");
-let AuthorizationGuard = class AuthorizationGuard {
+const graphql_1 = require("@nestjs/graphql");
+let GqlAuthorizationGuard = class GqlAuthorizationGuard {
   canActivate(context) {
-    console.log(context);
-    return true;
+    const ctx = graphql_1.GqlExecutionContext.create(context);
+    const user = ctx.getContext().user;
+    console.log("guard", ctx);
+    if (!user) throw new common_1.UnauthorizedException();
+    return !!user;
   }
 };
-AuthorizationGuard = __decorate(
+GqlAuthorizationGuard = __decorate(
   [(0, common_1.Injectable)()],
-  AuthorizationGuard
+  GqlAuthorizationGuard
 );
-exports.AuthorizationGuard = AuthorizationGuard;
+exports.GqlAuthorizationGuard = GqlAuthorizationGuard;

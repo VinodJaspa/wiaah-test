@@ -8,27 +8,27 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { Registeration } from '@prisma-client';
-import { KAFKA_EVENTS } from 'src/KafkaEvents';
+import { Registeration } from '../../prisma/generated';
 import { PrismaService } from 'src/prisma.service';
-import { ACCOUNTS_SERVICE, MAILING_SERVICE } from 'src/ServicesTokens';
+import { KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
 import { LoginDto, RegisterDto, VerifyEmailDto } from './dto';
 import * as bcrypt from 'bcrypt';
 import { Account } from './types';
 import { JwtService } from '@nestjs/jwt';
-import { ResponseObj } from 'nest-utils';
+import { ResponseObj, SERVICES } from 'nest-utils';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(ACCOUNTS_SERVICE.token)
+    @Inject(SERVICES.ACCOUNTS_SERVICE.token)
     private readonly accountsClient: ClientKafka,
-    @Inject(MAILING_SERVICE.token) private readonly mailingClient: ClientKafka,
+    @Inject(SERVICES.MAILING_SERVICE.token)
+    private readonly mailingClient: ClientKafka,
     private readonly JWTService: JwtService,
   ) {}
 
-  async register(createAuthInput: RegisterDto): Promise<ResponseObj<null>> {
+  async register(createAuthInput: RegisterDto): Promise<boolean> {
     try {
       const { confirmPassword, email, firstName, lastName, password } =
         createAuthInput;
@@ -44,7 +44,7 @@ export class AuthService {
           );
         }, 3000);
 
-        const request = this.accountsClient.send(KAFKA_EVENTS.emailExists, {
+        const request = this.accountsClient.send(KAFKA_MESSAGES.emailExists, {
           email,
         });
 
@@ -94,7 +94,7 @@ export class AuthService {
           });
 
           // everything went right, resolve the promise
-          res(null);
+          res(true);
           // make sure to clear the timeout
           clearTimeout(timeout);
           // make sure to unsubscribe to the kafka listener
@@ -102,14 +102,11 @@ export class AuthService {
         });
       });
     } catch (error) {
-      return {
-        success: false,
-        error,
-      };
+      throw new Error(error);
     }
   }
 
-  async verifyEmail(inputs: VerifyEmailDto): Promise<ResponseObj<null>> {
+  async verifyEmail(inputs: VerifyEmailDto) {
     try {
       const { email, verificationCode } = inputs;
       console.log(email, verificationCode);
@@ -125,53 +122,42 @@ export class AuthService {
       if (registeration.verificationToken !== verificationCode)
         throw new BadRequestException('invalid verification code');
 
-      this.removeRegisterationsByEmail(email);
+      await this.removeRegisterationsByEmail(email);
 
       const {
         accountInputData: { firstName, lastName, password },
       } = registeration;
 
       const hashedPassword = await bcrypt.hash(password, 10);
-      this.accountsClient.emit('create_account', {
+      this.accountsClient.emit(KAFKA_EVENTS.createAccount, {
         email,
         firstName,
         lastName,
         password: hashedPassword,
       });
 
-      return {
-        success: true,
-        data: null,
-      };
+      return true;
     } catch (error) {
-      return {
-        success: false,
-        error,
-      };
+      throw new Error(error);
     }
   }
 
-  async login(input: LoginDto): Promise<ResponseObj<{ access_token: string }>> {
+  async login(input: LoginDto): Promise<{ access_token: string }> {
     try {
-      const { email, firstName, lastName } = await this.validateCredentials(
+      const { email, firstName, lastName, id } = await this.validateCredentials(
         input.email,
         input.password,
       );
       return {
-        success: true,
-        data: {
-          access_token: this.JWTService.sign({
-            email,
-            firstName,
-            lastName,
-          }),
-        },
+        access_token: this.JWTService.sign({
+          id,
+          email,
+          firstName,
+          lastName,
+        }),
       };
     } catch (error) {
-      return {
-        success: false,
-        error,
-      };
+      throw new Error(error);
     }
   }
 
@@ -185,7 +171,7 @@ export class AuthService {
         request.unsubscribe();
       }, 5000);
       const request = this.accountsClient
-        .send(KAFKA_EVENTS.getAccountByEmail, { email })
+        .send(KAFKA_MESSAGES.getAccountByEmail, { email })
         .subscribe(async (account: Account) => {
           if (!account) {
             rej(new NotFoundException('no account with this email was found'));

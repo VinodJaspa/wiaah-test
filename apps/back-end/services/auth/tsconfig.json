@@ -20,7 +20,7 @@
     "paths": {
       "@models": ["models"],
       "@lib": ["lib"],
-      "@prisma-client": ["prisma/generated/client"]
+      "@prisma-client": ["prisma/generated"]
     }
   }
 }

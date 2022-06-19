@@ -8,6 +8,7 @@ import { ProdutctsResolver } from './produtcts.resolver';
 import { GraphQLModule } from '@nestjs/graphql';
 import { getUserFromRequest } from 'nest-utils';
 import { PrismaService } from 'src/Prisma.service';
+import { ShopResolver } from './shop.resolver';
 
 @Module({
   imports: [
@@ -20,6 +21,6 @@ import { PrismaService } from 'src/Prisma.service';
       },
     }),
   ],
-  providers: [ProdutctsResolver, ProdutctsService, PrismaService],
+  providers: [ProdutctsResolver, ProdutctsService, PrismaService, ShopResolver],
 })
 export class ProdutctsModule {}

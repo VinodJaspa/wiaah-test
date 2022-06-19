@@ -37,4 +37,12 @@ export class ProdutctsService {
       throw new Error(error);
     }
   }
+
+  getAllByShopId(shopId: string) {
+    return this.prisma.product.findMany({
+      where: {
+        storeId: shopId,
+      },
+    });
+  }
 }
