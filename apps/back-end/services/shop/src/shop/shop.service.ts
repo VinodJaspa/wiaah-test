@@ -7,6 +7,7 @@ import { ClientKafka } from '@nestjs/microservices';
 import { Shop, Prisma } from '@prisma-client';
 import {
   AuthorizationDecodedUser,
+  createNewCoords,
   getCoordinatesAfterDistance,
   getDistanceFromLatLonInKm,
   KAFKA_EVENTS,
@@ -45,7 +46,6 @@ export class ShopService {
       this.accountsService
         .send(KAFKA_MESSAGES.isSellerAccount, new IsSellerAccountEvent(user.id))
         .subscribe(async (data) => {
-          console.log('new data', data);
           if (data !== 'true') {
             rej(
               'only seller accounts can open a shop, register for a seller account to stat Selling!',
@@ -73,9 +73,11 @@ export class ShopService {
     return !!shop;
   }
 
-  findAll() {
+  async findAll() {
     try {
-      return this.prisma.shop.findMany();
+      const shops = await this.prisma.shop.findMany();
+
+      return shops;
     } catch (error) {
       throw new Error(error);
     }
@@ -111,38 +113,35 @@ export class ShopService {
   }
 
   async getNearShops(input: GetNearShopsInput) {
-    const [lat1] = getCoordinatesAfterDistance(
-      [input.lat, input.lon],
-      270,
+    const { lat: lat1, lon: lon1 } = createNewCoords(
+      input.lat,
+      input.lon,
       input.distance,
     );
-    const [lat2] = getCoordinatesAfterDistance(
-      [input.lat, input.lon],
-      90,
-      input.distance,
-    );
-    const [_, lon1] = getCoordinatesAfterDistance(
-      [input.lat, input.lon],
-      0,
-      input.distance,
-    );
-    const [__, lon2] = getCoordinatesAfterDistance(
-      [input.lat, input.lon],
-      180,
-      input.distance,
+    const { lat: lat2, lon: lon2 } = createNewCoords(
+      input.lat,
+      input.lon,
+      -input.distance,
     );
 
-    console.log('new cords', lat1, lat2, lon1, lon2);
     const shops = await this.prisma.shop.findMany({
       where: {
         location: {
           is: {
-            // lat: {
-            //   in: [lat1, lat2],
-            // },
-            long: {
-              in: [lon1, lon2],
-            },
+            AND: [
+              {
+                long: {
+                  lte: lon1,
+                  gte: lon2,
+                },
+              },
+              {
+                lat: {
+                  lte: lat1,
+                  gte: lat2,
+                },
+              },
+            ],
           },
         },
       },
@@ -155,7 +154,11 @@ const shopsPh: Prisma.ShopCreateInput[] = [
   {
     name: 'test',
     ownerId: 'id',
-    location: { lat: 30, long: 20, address: 'address' },
+    location: {
+      lat: 32.00063711672341,
+      long: 20.000751274280667,
+      address: 'address',
+    },
   },
   {
     name: 'test',

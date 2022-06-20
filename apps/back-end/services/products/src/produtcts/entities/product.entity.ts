@@ -34,7 +34,7 @@ export class Discount {
 
 @ObjectType()
 @Directive('@key(fields: "id")')
-export class Produtct {
+export class Product {
   @Field((type) => ID)
   id: string;
 

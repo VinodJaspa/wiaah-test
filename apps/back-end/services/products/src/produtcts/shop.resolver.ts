@@ -1,5 +1,5 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
-import { Produtct } from './entities/produtct.entity';
+import { Product } from './entities/product.entity';
 import { Shop } from './entities/shop.entity';
 import { ProdutctsService } from './produtcts.service';
 
@@ -7,8 +7,8 @@ import { ProdutctsService } from './produtcts.service';
 export class ShopResolver {
   constructor(private readonly productsService: ProdutctsService) {}
 
-  @ResolveField((of) => [Produtct])
-  public products(@Parent() shop: Shop) {
+  @ResolveField((of) => [Product])
+  public products(@Parent() shop: any) {
     return this.productsService.getAllByShopId(shop.id);
   }
 }

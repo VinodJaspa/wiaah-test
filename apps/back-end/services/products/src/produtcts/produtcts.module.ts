@@ -4,23 +4,27 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { ProdutctsService } from './produtcts.service';
-import { ProdutctsResolver } from './produtcts.resolver';
+import { ProductsResolver } from './produtcts.resolver';
 import { GraphQLModule } from '@nestjs/graphql';
 import { getUserFromRequest } from 'nest-utils';
 import { PrismaService } from 'src/Prisma.service';
 import { ShopResolver } from './shop.resolver';
+import { Shop } from './entities/shop.entity';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
-      autoSchemaFile: true,
+      autoSchemaFile: './schema.graphql',
       context({ req, res }) {
         const user = getUserFromRequest(req);
         return { req, res, user };
       },
+      buildSchemaOptions: {
+        orphanedTypes: [Shop],
+      },
     }),
   ],
-  providers: [ProdutctsResolver, ProdutctsService, PrismaService, ShopResolver],
+  providers: [ProductsResolver, ProdutctsService, PrismaService, ShopResolver],
 })
 export class ProdutctsModule {}

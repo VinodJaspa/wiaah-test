@@ -1,5 +1,5 @@
 import { Directive, Field, ID, ObjectType } from '@nestjs/graphql';
-import { Produtct } from './produtct.entity';
+import { Product } from './product.entity';
 
 @ObjectType()
 @Directive('@extends')
@@ -9,6 +9,6 @@ export class Shop {
   @Directive('@external')
   id: string;
 
-  @Field((type) => [Produtct])
-  products?: Produtct[];
+  @Field((type) => [Product])
+  products?: Product[];
 }

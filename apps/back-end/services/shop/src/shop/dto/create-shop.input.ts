@@ -1,11 +1,11 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Int, Field, Float } from '@nestjs/graphql';
 
 @InputType()
 export class LocationInput {
-  @Field((type) => Int)
+  @Field((type) => Float)
   lat: number;
 
-  @Field((type) => Int)
+  @Field((type) => Float)
   long: number;
 
   @Field((type) => String)

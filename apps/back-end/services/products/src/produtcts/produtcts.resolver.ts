@@ -7,25 +7,25 @@ import {
   ResolveReference,
 } from '@nestjs/graphql';
 import { ProdutctsService } from './produtcts.service';
-import { Produtct } from './entities/produtct.entity';
+import { Product } from './entities/product.entity';
 import { CreateProdutctInput } from './dto/create-produtct.input';
 import { UpdateProdutctInput } from './dto/update-produtct.input';
 
-@Resolver(() => Produtct)
-export class ProdutctsResolver {
+@Resolver(() => Product)
+export class ProductsResolver {
   constructor(private readonly produtctsService: ProdutctsService) {}
 
-  @Query(() => Produtct, { name: 'getProductById' })
+  @Query(() => Product, { name: 'getProductById' })
   getProductById(@Args('id') id: string) {
     return this.produtctsService.getProductById(id);
   }
 
-  @Query(() => [Produtct])
+  @Query(() => [Product])
   getProducts() {
     return this.produtctsService.getAll();
   }
 
-  @Mutation(() => Produtct)
+  @Mutation(() => Product)
   createNewProduct(
     @Args('createNewProductInput') createProductInput: CreateProdutctInput,
   ) {
