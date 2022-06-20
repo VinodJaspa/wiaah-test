@@ -271,17 +271,17 @@
     deep-equal "^2.0.5"
     pretty-format "^27.0.0"
 
-"@apollo/subgraph@0.1.5", "@apollo/subgraph@^0.1.5":
+"@apollo/subgraph@0.4.2", "@apollo/subgraph@^0.4.1":
+  version "0.4.2"
+  resolved "https://registry.npmjs.org/@apollo/subgraph/-/subgraph-0.4.2.tgz"
+  integrity sha512-sIGzqfUryW6tS5RPWp1awtO+5CehjPV6xbDrWS4I2Hsj8rug8Y9oiMpcnNk8GaQ1TF3UEf99ZL16mNa4J++IIQ==
+
+"@apollo/subgraph@^0.1.5":
   version "0.1.5"
   resolved "https://registry.yarnpkg.com/@apollo/subgraph/-/subgraph-0.1.5.tgz#ae5a1c686c97b7a2c3f7575d570f5c004578e2fd"
   integrity sha512-i1uU9llldGMV7GcBOUQRqnbGfgOpc6nrOVw93oKlugZq5R00q8y/RX8KgvMfdXZyr4MJ2/gO6Kw7LzbjCKU+Kw==
   dependencies:
     apollo-graphql "^0.9.5"
-
-"@apollo/subgraph@^0.4.1":
-  version "0.4.2"
-  resolved "https://registry.npmjs.org/@apollo/subgraph/-/subgraph-0.4.2.tgz"
-  integrity sha512-sIGzqfUryW6tS5RPWp1awtO+5CehjPV6xbDrWS4I2Hsj8rug8Y9oiMpcnNk8GaQ1TF3UEf99ZL16mNa4J++IIQ==
 
 "@apollo/subgraph@^2.0.5":
   version "2.0.5"
@@ -11363,10 +11363,10 @@ graphql-ws@5.5.5:
   resolved "https://registry.npmjs.org/graphql-ws/-/graphql-ws-5.5.5.tgz"
   integrity sha512-hvyIS71vs4Tu/yUYHPvGXsTgo0t3arU820+lT5VjZS2go0ewp2LqyCgxEN56CzOG7Iys52eRhHBiD1gGRdiQtw==
 
-graphql@15.7.2:
-  version "15.7.2"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.7.2.tgz#85ab0eeb83722977151b3feb4d631b5f2ab287ef"
-  integrity sha512-AnnKk7hFQFmU/2I9YSQf3xw44ctnSFCfp3zE0N6W174gqe9fWG/2rKaKxROK7CcI3XtERpjEKFqts8o319Kf7A==
+graphql@15.8.0:
+  version "15.8.0"
+  resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.8.0.tgz#33410e96b012fa3bdb1091cc99a94769db212b38"
+  integrity sha512-5gghUc24tP9HRznNpV2+FIoq3xKkj5dTQqf4v0CpdPbFVwFkWoxOM+o+2OC9ZSvjEMTjfmG9QT+gcvggTwW1zw==
 
 gulp-sort@^2.0.0:
   version "2.0.0"
