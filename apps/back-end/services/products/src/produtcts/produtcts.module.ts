@@ -10,6 +10,7 @@ import { getUserFromRequest } from 'nest-utils';
 import { PrismaService } from 'src/Prisma.service';
 import { ShopResolver } from './shop.resolver';
 import { Shop } from './entities/shop.entity';
+import { SearchResolver } from './search.resolver';
 
 @Module({
   imports: [
@@ -25,6 +26,12 @@ import { Shop } from './entities/shop.entity';
       },
     }),
   ],
-  providers: [ProductsResolver, ProdutctsService, PrismaService, ShopResolver],
+  providers: [
+    ProductsResolver,
+    ProdutctsService,
+    PrismaService,
+    ShopResolver,
+    SearchResolver,
+  ],
 })
 export class ProdutctsModule {}

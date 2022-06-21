@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma, Product } from '@prisma-client';
 import { PrismaService } from 'src/Prisma.service';
 import { CreateProdutctInput } from './dto/create-produtct.input';
 
@@ -45,4 +46,58 @@ export class ProdutctsService {
       },
     });
   }
+
+  async createPh() {
+    try {
+      await this.prisma.product.createMany({
+        data: ProductsPh,
+      });
+      return true;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
 }
+
+const ProductsPh: Prisma.ProductCreateInput[] = [
+  {
+    category: 'test',
+    description: 'test product description',
+    rate: 5,
+    stock: 13,
+    storeId: '1234',
+    title: 'a',
+  },
+  {
+    category: 'test',
+    description: 'test product description',
+    rate: 5,
+    stock: 13,
+    storeId: '1234',
+    title: 'b',
+  },
+  {
+    category: 'test',
+    description: 'test product description',
+    rate: 5,
+    stock: 13,
+    storeId: '1234',
+    title: 'c',
+  },
+  {
+    category: 'test',
+    description: 'test product description',
+    rate: 5,
+    stock: 13,
+    storeId: '1234',
+    title: 'd',
+  },
+  {
+    category: 'test',
+    description: 'test product description',
+    rate: 5,
+    stock: 13,
+    storeId: '1234',
+    title: 'e',
+  },
+];

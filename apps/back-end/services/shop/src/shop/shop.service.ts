@@ -16,6 +16,7 @@ import {
 } from 'nest-utils';
 import { PrismaService } from 'src/prisma.service';
 import { CreateShopInput } from './dto/create-shop.input';
+import { FilterShopsInput } from './dto/filter-shops.input';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
 import { IsSellerAccountEvent } from './events/isSellerAccount.event';
 
@@ -96,7 +97,8 @@ export class ShopService {
   }
 
   getShopById(id: string) {
-    return this.prisma.shop.findUnique({
+    return this.prisma.shop.findFirst();
+    this.prisma.shop.findUnique({
       where: {
         id,
       },
@@ -148,36 +150,134 @@ export class ShopService {
     });
     return shops;
   }
+
+  async getFilteredShops(input: FilterShopsInput): Promise<Shop[]> {
+    const searchQueries = [];
+
+    if (input.storeType) {
+      searchQueries.push({
+        storeType: {
+          has: input.storeType,
+        },
+      });
+    }
+    if (input.targetGender) {
+      searchQueries.push({
+        targetGenders: {
+          has: input.targetGender,
+        },
+      });
+    }
+    if (input.vendorType) {
+      searchQueries.push({
+        vendorType: {
+          has: input.vendorType,
+        },
+      });
+    }
+    if (input.country) {
+      searchQueries.push({
+        location: {
+          is: {
+            country: input.country,
+          },
+        },
+      });
+    }
+    if (input.city) {
+      searchQueries.push({
+        location: {
+          is: {
+            city: input.city,
+          },
+        },
+      });
+    }
+
+    console.log('queries', searchQueries);
+    const shops = this.prisma.shop.findMany({
+      where: {
+        AND: searchQueries,
+      },
+    });
+    return shops;
+  }
 }
 
 const shopsPh: Prisma.ShopCreateInput[] = [
   {
     name: 'test',
     ownerId: 'id',
+    storeType: ['type1', 'type2'],
+    targetGenders: ['male'],
+    vendorType: ['vendor3'],
     location: {
       lat: 32.00063711672341,
       long: 20.000751274280667,
       address: 'address',
+      city: 'idk',
+      country: 'idk',
+      state: 'test',
     },
   },
   {
     name: 'test',
     ownerId: 'id',
-    location: { lat: 55, long: 53, address: 'address' },
+    storeType: ['type3'],
+    targetGenders: ['female'],
+    vendorType: ['vendor1'],
+    location: {
+      lat: 55,
+      long: 53,
+      address: 'address',
+      city: 'idk',
+      country: 'idk',
+      state: 'test',
+    },
   },
   {
     name: 'test',
     ownerId: 'id',
-    location: { lat: 90, long: 93, address: 'address' },
+    storeType: ['type2'],
+    targetGenders: ['male', 'female'],
+    vendorType: ['vendor2'],
+    location: {
+      lat: 90,
+      long: 93,
+      address: 'address',
+      city: 'idk',
+      country: 'idk',
+      state: 'test',
+    },
   },
   {
     name: 'test',
     ownerId: 'id',
-    location: { lat: 64, long: 65, address: 'address' },
+    storeType: ['type1', 'type2'],
+    targetGenders: ['male'],
+    vendorType: ['vendor3'],
+    location: {
+      lat: 64,
+      long: 65,
+      address: 'address',
+      city: 'idk',
+      country: 'idk',
+      state: 'test',
+    },
   },
   {
     name: 'test',
     ownerId: 'id',
-    location: { lat: 5, long: 7, address: 'address' },
+    storeType: ['type1', 'type2'],
+    targetGenders: ['male'],
+    vendorType: ['vendor3'],
+    location: {
+      lat: 5,
+      long: 7,
+      address: 'address',
+      city: 'idk',
+      country: 'idk',
+      state: 'test',
+    },
   },
 ];

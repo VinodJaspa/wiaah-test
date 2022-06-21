@@ -12,11 +12,6 @@ directive @requires(fields: String!) on FIELD_DEFINITION
 
 directive @provides(fields: String!) on FIELD_DEFINITION
 
-type Shop {
-  id: ID!
-  products: [Product!]!
-}
-
 type ProductPresentation {
   type: PresentationType!
   src: String!
@@ -47,7 +42,6 @@ type Product {
   id: ID!
   title: String!
   description: String!
-  store: Shop!
   storeId: String!
   category: String!
   colors: [String!]!
@@ -57,6 +51,12 @@ type Product {
   cashback: CashBack!
   presentations: [ProductPresentation!]!
   rate: Int!
+  shop: Shop!
+}
+
+type Shop {
+  name: String!
+  products: [Product!]!
 }
 
 type Query {
@@ -66,7 +66,8 @@ type Query {
 
 type Mutation {
   createNewProduct(createNewProductInput: CreateProdutctInput!): Product!
-  deleteAll: Boolean!
+  deleteAllProducts: Boolean!
+  createProductsPh: Boolean!
 }
 
 input CreateProdutctInput {

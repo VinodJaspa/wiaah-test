@@ -1,15 +1,15 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { Product } from './entities/product.entity';
-import { Shop } from './entities/shop.entity';
+import { Search } from './entities/search.entity';
 import { ProdutctsService } from './produtcts.service';
 
-@Resolver((of) => Shop)
-export class ShopResolver {
+@Resolver((of) => Search)
+export class SearchResolver {
   constructor(private readonly productsService: ProdutctsService) {}
 
   @ResolveField((of) => [Product])
-  public products(@Parent() shop: Shop) {
-    console.log('resolving products for shop', shop);
-    return this.productsService.getAllByShopId(shop.name);
+  public products(@Parent() search: Search) {
+    console.log('search resolver', search);
+    return [];
   }
 }

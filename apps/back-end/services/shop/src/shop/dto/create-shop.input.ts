@@ -1,4 +1,5 @@
 import { InputType, Int, Field, Float } from '@nestjs/graphql';
+import { Prisma, StoreType, TargetGenders, VendorType } from '@prisma-client';
 
 @InputType()
 export class LocationInput {
@@ -10,6 +11,15 @@ export class LocationInput {
 
   @Field((type) => String)
   address: string;
+
+  @Field((type) => String)
+  country: string;
+
+  @Field((typpe) => String)
+  city: string;
+
+  @Field((type) => String)
+  state: string;
 }
 
 @InputType()
@@ -19,4 +29,13 @@ export class CreateShopInput {
 
   @Field((type) => LocationInput)
   location: LocationInput;
+
+  @Field((type) => [StoreType])
+  storeType: StoreType[];
+
+  @Field((type) => [VendorType])
+  vendorType: VendorType[];
+
+  @Field((type) => [TargetGenders])
+  targetGenders: TargetGenders[];
 }
