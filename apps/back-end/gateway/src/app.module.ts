@@ -16,22 +16,29 @@ import { AppService } from './app.service';
           return new RemoteGraphQLDataSource({
             url,
             willSendRequest({ context, kind, request }) {
-              if (context?.req?.headers && context?.req?.headers['cookie']) {
-                const rawCookies = context.req.headers['cookie'];
-                const parsedCookies = parseCookies(rawCookies);
-                const cookiesKey = process.env.COOKIES_KEY || 'Auth_cookie';
-                const jwtSecret = process.env.JWT_SERCERT || 'secret';
-                if (typeof cookiesKey === 'string') {
-                  const authToken = parsedCookies.find(
-                    (cookie) => cookie.cookieName === cookiesKey,
-                  ).cookieValue;
-                  if (authToken) {
-                    try {
-                      const user = jwt.verify(authToken, jwtSecret);
-                      if (typeof user === 'object') {
-                        request.http.headers.set('user', JSON.stringify(user));
-                      }
-                    } catch (error) {}
+              if (typeof context['req'] !== 'undefined') {
+                // @ts-ignore
+                if (context?.req?.headers && context?.req?.headers['cookie']) {
+                  // @ts-ignore
+                  const rawCookies = context.req.headers['cookie'];
+                  const parsedCookies = parseCookies(rawCookies);
+                  const cookiesKey = process.env.COOKIES_KEY || 'Auth_cookie';
+                  const jwtSecret = process.env.JWT_SERCERT || 'secret';
+                  if (typeof cookiesKey === 'string') {
+                    const authToken = parsedCookies.find(
+                      (cookie) => cookie.cookieName === cookiesKey,
+                    ).cookieValue;
+                    if (authToken) {
+                      try {
+                        const user = jwt.verify(authToken, jwtSecret);
+                        if (typeof user === 'object') {
+                          request.http.headers.set(
+                            'user',
+                            JSON.stringify(user),
+                          );
+                        }
+                      } catch (error) {}
+                    }
                   }
                 }
               }

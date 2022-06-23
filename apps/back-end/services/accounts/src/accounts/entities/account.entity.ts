@@ -1,12 +1,19 @@
-import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
+import {
+  ObjectType,
+  Field,
+  ID,
+  registerEnumType,
+  Directive,
+} from '@nestjs/graphql';
 import { AccountType } from '@prisma-client';
 
 registerEnumType(AccountType, { name: 'AccountType' });
 
 @ObjectType()
-// @Directive('@key(fields: "id")')
+// @Directive('@extends')
 export class Account {
   @Field((type) => ID)
+  // @Directive('@external')
   id: string;
 
   @Field((type) => String)

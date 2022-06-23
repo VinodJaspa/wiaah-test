@@ -15,11 +15,13 @@ model Product {
   id          String @id() @default(auto()) @map("_id") @db.ObjectId()
   title       String
   description String
+  price       Int
   category    String
   colors      String[]
   sizes       String[]
   stock       Int
   rate        Int
+  brand       String
   discount    Discount? 
   storeId     String
   cashback    CashBack?

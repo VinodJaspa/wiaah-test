@@ -38,3 +38,26 @@ function toDeg(v: number) {
 function toRad(v: number) {
   return (v * Math.PI) / 180;
 }
+
+export function createNewCoords(
+  lat: number,
+  lon: number,
+  distanceInKm: number
+) {
+  const dis = distanceInKm / 1.41;
+
+  const disInMeter = dis / 1000;
+
+  const pi = Math.PI;
+  const r_earth = 6378;
+  const cos = Math.cos;
+
+  const new_latitude = lat + (disInMeter / r_earth) * (180 / pi);
+  const new_longitude =
+    lon + ((disInMeter / r_earth) * (180 / pi)) / cos((lat * pi) / 180);
+
+  return {
+    lat: new_latitude,
+    lon: new_longitude,
+  };
+}

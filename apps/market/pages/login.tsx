@@ -3,7 +3,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { Login as LoginView } from "ui/views";
 import MasterLayout from "../components/MasterLayout";
-import LoignTypes from "../lib/LoignTypes";
 
 const Login: NextPage = () => {
   return (
@@ -13,7 +12,7 @@ const Login: NextPage = () => {
       </Head>
       <MasterLayout>
         <main className="block w-full grow">
-          <LoginView loginType={LoignTypes.login} />
+          <LoginView loginType={"login"} />
         </main>
       </MasterLayout>
     </>

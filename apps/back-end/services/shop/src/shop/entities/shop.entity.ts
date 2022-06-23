@@ -1,18 +1,41 @@
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
-import { Product } from './product.entity';
+import {
+  ObjectType,
+  Field,
+  Int,
+  ID,
+  Float,
+  registerEnumType,
+  Directive,
+} from '@nestjs/graphql';
+import { StoreType, TargetGenders, VendorType } from '@prisma-client';
+
+registerEnumType(StoreType, { name: 'StoreType' });
+registerEnumType(VendorType, { name: 'VendorType' });
+registerEnumType(TargetGenders, { name: 'TargetGenders' });
+
 @ObjectType()
 export class Location {
-  @Field((type) => Int)
+  @Field((type) => Float)
   lat: number;
 
-  @Field((type) => Int)
+  @Field((type) => Float)
   long: number;
 
   @Field((type) => String)
   address: string;
+
+  @Field((type) => String)
+  country: string;
+
+  @Field((type) => String)
+  city: string;
+
+  @Field((type) => String)
+  state: string;
 }
 
 @ObjectType()
+@Directive('@key(fields: "name")')
 export class Shop {
   @Field((type) => ID)
   id: string;
@@ -26,6 +49,18 @@ export class Shop {
   @Field((type) => String)
   ownerId: string;
 
-  @Field((type) => [Product])
-  products: Product[];
+  @Field((type) => [StoreType])
+  storeType: StoreType[];
+
+  @Field((type) => [VendorType])
+  vendorType: VendorType[];
+
+  @Field((type) => [TargetGenders])
+  targetGenders: TargetGenders[];
+
+  @Field((type) => String)
+  createdAt: string;
+
+  @Field((type) => String)
+  updatedAt: string;
 }

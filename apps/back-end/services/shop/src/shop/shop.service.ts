@@ -7,6 +7,7 @@ import { ClientKafka } from '@nestjs/microservices';
 import { Shop, Prisma } from '@prisma-client';
 import {
   AuthorizationDecodedUser,
+  createNewCoords,
   getCoordinatesAfterDistance,
   getDistanceFromLatLonInKm,
   KAFKA_EVENTS,
@@ -15,6 +16,7 @@ import {
 } from 'nest-utils';
 import { PrismaService } from 'src/prisma.service';
 import { CreateShopInput } from './dto/create-shop.input';
+import { FilterShopsInput } from './dto/filter-shops.input';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
 import { IsSellerAccountEvent } from './events/isSellerAccount.event';
 
@@ -45,7 +47,6 @@ export class ShopService {
       this.accountsService
         .send(KAFKA_MESSAGES.isSellerAccount, new IsSellerAccountEvent(user.id))
         .subscribe(async (data) => {
-          console.log('new data', data);
           if (data !== 'true') {
             rej(
               'only seller accounts can open a shop, register for a seller account to stat Selling!',
@@ -73,9 +74,11 @@ export class ShopService {
     return !!shop;
   }
 
-  findAll() {
+  async findAll() {
     try {
-      return this.prisma.shop.findMany();
+      const shops = await this.prisma.shop.findMany();
+
+      return shops;
     } catch (error) {
       throw new Error(error);
     }
@@ -94,7 +97,8 @@ export class ShopService {
   }
 
   getShopById(id: string) {
-    return this.prisma.shop.findUnique({
+    return this.prisma.shop.findFirst();
+    this.prisma.shop.findUnique({
       where: {
         id,
       },
@@ -111,40 +115,89 @@ export class ShopService {
   }
 
   async getNearShops(input: GetNearShopsInput) {
-    const [lat1] = getCoordinatesAfterDistance(
-      [input.lat, input.lon],
-      270,
+    const { lat: lat1, lon: lon1 } = createNewCoords(
+      input.lat,
+      input.lon,
       input.distance,
     );
-    const [lat2] = getCoordinatesAfterDistance(
-      [input.lat, input.lon],
-      90,
-      input.distance,
-    );
-    const [_, lon1] = getCoordinatesAfterDistance(
-      [input.lat, input.lon],
-      0,
-      input.distance,
-    );
-    const [__, lon2] = getCoordinatesAfterDistance(
-      [input.lat, input.lon],
-      180,
-      input.distance,
+    const { lat: lat2, lon: lon2 } = createNewCoords(
+      input.lat,
+      input.lon,
+      -input.distance,
     );
 
-    console.log('new cords', lat1, lat2, lon1, lon2);
     const shops = await this.prisma.shop.findMany({
       where: {
         location: {
           is: {
-            // lat: {
-            //   in: [lat1, lat2],
-            // },
-            long: {
-              in: [lon1, lon2],
-            },
+            AND: [
+              {
+                long: {
+                  lte: lon1,
+                  gte: lon2,
+                },
+              },
+              {
+                lat: {
+                  lte: lat1,
+                  gte: lat2,
+                },
+              },
+            ],
           },
         },
+      },
+    });
+    return shops;
+  }
+
+  async getFilteredShops(input: FilterShopsInput): Promise<Shop[]> {
+    const searchQueries = [];
+
+    if (input.storeType) {
+      searchQueries.push({
+        storeType: {
+          has: input.storeType,
+        },
+      });
+    }
+    if (input.targetGender) {
+      searchQueries.push({
+        targetGenders: {
+          has: input.targetGender,
+        },
+      });
+    }
+    if (input.vendorType) {
+      searchQueries.push({
+        vendorType: {
+          has: input.vendorType,
+        },
+      });
+    }
+    if (input.country) {
+      searchQueries.push({
+        location: {
+          is: {
+            country: input.country,
+          },
+        },
+      });
+    }
+    if (input.city) {
+      searchQueries.push({
+        location: {
+          is: {
+            city: input.city,
+          },
+        },
+      });
+    }
+
+    console.log('queries', searchQueries);
+    const shops = this.prisma.shop.findMany({
+      where: {
+        AND: searchQueries,
       },
     });
     return shops;
@@ -155,26 +208,76 @@ const shopsPh: Prisma.ShopCreateInput[] = [
   {
     name: 'test',
     ownerId: 'id',
-    location: { lat: 30, long: 20, address: 'address' },
+    storeType: ['type1', 'type2'],
+    targetGenders: ['male'],
+    vendorType: ['vendor3'],
+    location: {
+      lat: 32.00063711672341,
+      long: 20.000751274280667,
+      address: 'address',
+      city: 'idk',
+      country: 'idk',
+      state: 'test',
+    },
   },
   {
     name: 'test',
     ownerId: 'id',
-    location: { lat: 55, long: 53, address: 'address' },
+    storeType: ['type3'],
+    targetGenders: ['female'],
+    vendorType: ['vendor1'],
+    location: {
+      lat: 55,
+      long: 53,
+      address: 'address',
+      city: 'idk',
+      country: 'idk',
+      state: 'test',
+    },
   },
   {
     name: 'test',
     ownerId: 'id',
-    location: { lat: 90, long: 93, address: 'address' },
+    storeType: ['type2'],
+    targetGenders: ['male', 'female'],
+    vendorType: ['vendor2'],
+    location: {
+      lat: 90,
+      long: 93,
+      address: 'address',
+      city: 'idk',
+      country: 'idk',
+      state: 'test',
+    },
   },
   {
     name: 'test',
     ownerId: 'id',
-    location: { lat: 64, long: 65, address: 'address' },
+    storeType: ['type1', 'type2'],
+    targetGenders: ['male'],
+    vendorType: ['vendor3'],
+    location: {
+      lat: 64,
+      long: 65,
+      address: 'address',
+      city: 'idk',
+      country: 'idk',
+      state: 'test',
+    },
   },
   {
     name: 'test',
     ownerId: 'id',
-    location: { lat: 5, long: 7, address: 'address' },
+    storeType: ['type1', 'type2'],
+    targetGenders: ['male'],
+    vendorType: ['vendor3'],
+    location: {
+      lat: 5,
+      long: 7,
+      address: 'address',
+      city: 'idk',
+      country: 'idk',
+      state: 'test',
+    },
   },
 ];

@@ -1,4 +1,4 @@
-import { Category } from "../components/blocks/products/ShopProductFilter";
+import { Category } from "types";
 
 export const categories: Category[] = [
   {
@@ -78,9 +78,5 @@ export const categories: Category[] = [
         ],
       },
     ],
-  },
-  {
-    name: "T-shirts",
-    subCategories: [],
   },
 ];

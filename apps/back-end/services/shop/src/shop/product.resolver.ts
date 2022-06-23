@@ -10,6 +10,7 @@ export class ProductsResolver {
 
   @ResolveField((of) => Shop)
   public shop(@Param() product: Product) {
-    // return this.shopService.getShopById(product.id)
+    console.log('product', product);
+    return this.shopService.getShopById(product.storeId);
   }
 }

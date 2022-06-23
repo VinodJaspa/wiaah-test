@@ -12,9 +12,7 @@ const Search: NextPage = () => {
         <title>Wiaah | Search results</title>
       </Head>
       <MasterLayout>
-        <Container>
-          <SearchView></SearchView>
-        </Container>
+        <SearchView></SearchView>
       </MasterLayout>
     </>
   );

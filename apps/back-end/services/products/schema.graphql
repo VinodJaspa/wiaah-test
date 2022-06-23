@@ -1,0 +1,106 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @key(fields: String!) on OBJECT | INTERFACE
+
+directive @extends on OBJECT | INTERFACE
+
+directive @external on OBJECT | FIELD_DEFINITION
+
+directive @requires(fields: String!) on FIELD_DEFINITION
+
+directive @provides(fields: String!) on FIELD_DEFINITION
+
+type ProductPresentation {
+  type: PresentationType!
+  src: String!
+}
+
+enum PresentationType {
+  video
+  image
+}
+
+type CashBack {
+  units: Int!
+  amount: Int!
+  type: CashbackType!
+}
+
+enum CashbackType {
+  percent
+  cash
+}
+
+type Discount {
+  units: Int!
+  amount: Int!
+}
+
+type Product {
+  id: ID!
+  title: String!
+  description: String!
+  storeId: String!
+  category: String!
+  colors: [String!]!
+  sizes: [String!]!
+  stock: Int!
+  discount: Discount!
+  cashback: CashBack!
+  presentations: [ProductPresentation!]!
+  rate: Int!
+  brand: String!
+  price: Float!
+  shop: Shop!
+}
+
+type Shop {
+  name: String!
+  products: [Product!]!
+}
+
+type Search {
+  filter: String!
+  products: [Product!]!
+}
+
+type Query {
+  getProductById(id: String!): Product!
+  getProducts: [Product!]!
+}
+
+type Mutation {
+  createNewProduct(createNewProductInput: CreateProdutctInput!): Product!
+  deleteAllProducts: Boolean!
+  createProductsPh: Boolean!
+}
+
+input CreateProdutctInput {
+  title: String!
+  description: String!
+  category: String!
+  colors: [String!]!
+  sizes: [String!]!
+  stock: Int!
+  discount: DiscountInput!
+  cashback: CashBackInput!
+  presentations: [ProductPresentationInput!]!
+}
+
+input DiscountInput {
+  units: Int!
+  amount: Int!
+}
+
+input CashBackInput {
+  units: Int!
+  amount: Int!
+  type: CashbackType!
+}
+
+input ProductPresentationInput {
+  type: PresentationType!
+  src: String!
+}

@@ -1,6 +1,5 @@
-import { ObjectType, Field, Int, ID, Directive } from '@nestjs/graphql';
+import { ObjectType, Field, Int, ID, Directive, Float } from '@nestjs/graphql';
 import { CashbackType, PresentationType } from '@prisma-client';
-import { Shop } from './shop.entity';
 
 @ObjectType()
 export class ProductPresentation {
@@ -34,7 +33,9 @@ export class Discount {
 
 @ObjectType()
 @Directive('@key(fields: "id")')
-export class Produtct {
+@Directive('@key(fields: "title")')
+@Directive('@key(fields: "storeId")')
+export class Product {
   @Field((type) => ID)
   id: string;
 
@@ -43,9 +44,6 @@ export class Produtct {
 
   @Field((type) => String)
   description: string;
-
-  @Field((type) => Shop)
-  store?: Shop;
 
   @Field((type) => String)
   storeId: string;
@@ -73,4 +71,10 @@ export class Produtct {
 
   @Field((type) => Int)
   rate: number;
+
+  @Field((type) => String)
+  brand: string;
+
+  @Field((type) => Float)
+  price: number;
 }

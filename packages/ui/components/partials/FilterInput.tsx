@@ -1,4 +1,5 @@
 import React, { DetailedHTMLProps, InputHTMLAttributes } from "react";
+import { Checkbox } from "ui";
 
 export interface FilterCheckBoxProps
   extends DetailedHTMLProps<
@@ -144,7 +145,7 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
     default:
       return (
         <div className="flex w-fit items-center gap-2 outline-none ">
-          <input {...props} className="focus:ring-0" type="checkbox" />
+          <Checkbox {...props} className="focus:ring-0" type="checkbox" />
           {label && <span data-test="FilterInputLabel">{label}</span>}
         </div>
       );

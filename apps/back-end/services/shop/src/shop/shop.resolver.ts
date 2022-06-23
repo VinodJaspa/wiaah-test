@@ -6,6 +6,7 @@ import {
   Args,
   Int,
   ResolveField,
+  ResolveReference,
 } from '@nestjs/graphql';
 import { ShopService } from './shop.service';
 import { Shop } from './entities/shop.entity';
@@ -20,7 +21,7 @@ import {
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
-import { Product } from './entities/product.entity';
+import { FilterShopsInput } from './dto/filter-shops.input';
 
 @Resolver(() => Shop)
 export class ShopResolver implements OnModuleInit {
@@ -29,6 +30,29 @@ export class ShopResolver implements OnModuleInit {
     @Inject(SERVICES.ACCOUNTS_SERVICE.token)
     private readonly accountsClient: ClientKafka,
   ) {}
+  @Query((type) => [Shop])
+  getNearShops(
+    @Args('GetNearShopsInput') getNearShopsInput: GetNearShopsInput,
+  ) {
+    return this.shopService.getNearShops(getNearShopsInput);
+  }
+
+  @Query(() => [Shop])
+  getAllShops() {
+    return [{ id: '132', tesT: 'test', name: 'namee' }];
+  }
+
+  @Query(() => Shop)
+  getShopById(@Args('id') id: string) {
+    return this.shopService.getShopById(id);
+  }
+
+  @Query(() => [Shop])
+  getFilteredShops(
+    @Args('filteredShopsArgs') filteredShopsInput: FilterShopsInput,
+  ) {
+    return this.shopService.getFilteredShops(filteredShopsInput);
+  }
 
   @UseGuards(GqlAuthorizationGuard)
   @Mutation(() => Shop)
@@ -49,26 +73,10 @@ export class ShopResolver implements OnModuleInit {
     return this.shopService.removeAllShops();
   }
 
-  @Query((type) => [Shop])
-  getNearShops(
-    @Args('GetNearShopsInput') getNearShopsInput: GetNearShopsInput,
-  ) {
-    return this.shopService.getNearShops(getNearShopsInput);
-  }
-
-  @Query(() => [Shop])
-  getAllShops() {
-    return this.shopService.findAll();
-  }
-
-  @Query(() => Shop)
-  getShopById(@Args('id') id: string) {
-    return this.shopService.getShopById(id);
-  }
-
-  @ResolveField((of) => [Product])
-  products(@Parent() shop: Shop) {
-    return { __typename: 'Product', id: shop.id };
+  @ResolveReference()
+  shop(ref: { __typename: string; id: string }) {
+    console.log('test shops', ref);
+    return this.shopService.getShopById(ref.id);
   }
 
   async onModuleInit() {

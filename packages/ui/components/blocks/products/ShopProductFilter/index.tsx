@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { Rate } from "antd";
 import { Select } from "antd";
-import { Button, DropdownPanel, FilterInput, FlexStack, Spacer } from "ui";
+import {
+  Button,
+  DropdownPanel,
+  FilterInput,
+  FlexStack,
+  Spacer,
+  HStack,
+} from "ui";
 import { Country, City } from "country-state-city";
 import { Category } from "types";
 import { useTranslation } from "react-i18next";
@@ -111,10 +118,10 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
       {rating && (
         <DropdownPanel open={open} name={t("Rating", "Rating")}>
           {[...Array(5)].map((_, i) => (
-            <FlexStack key={i}>
+            <HStack key={i}>
               <FilterInput variant="box" />
               <Rate className="text-sm" disabled value={5 - i} />
-            </FlexStack>
+            </HStack>
           ))}
           <Spacer />
         </DropdownPanel>
@@ -122,13 +129,13 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
       {colors && (
         <DropdownPanel open={open} name={t("Color", "Color")}>
           {colors.map((color, i) => (
-            <FlexStack key={i}>
+            <HStack key={i}>
               <FilterInput variant="box" />
               <span
                 style={{ backgroundColor: color }}
                 className={`h-4 w-4 rounded-sm`}
               ></span>
-            </FlexStack>
+            </HStack>
           ))}
           <Spacer />
         </DropdownPanel>
