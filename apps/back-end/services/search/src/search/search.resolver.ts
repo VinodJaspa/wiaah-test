@@ -1,31 +1,18 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Int,
-  ResolveField,
-  Context,
-  Parent,
-} from '@nestjs/graphql';
+import { Resolver, Query, Args } from '@nestjs/graphql';
 import { SearchService } from './search.service';
 import { Search } from './entities/search.entity';
-import { SearchInput } from './dto/search.input';
-import { Product } from './entities/product.entity';
+import { SearchInput } from 'nest-dto';
 
 @Resolver(() => Search)
 export class SearchResolver {
   constructor(private readonly searchService: SearchService) {}
 
   @Query(() => Search)
-  searchWiaah(@Args('searchInputs') inputs: SearchInput) {
-    return [inputs, inputs];
-  }
-
-  @ResolveField(() => [Product])
-  products(@Parent() pro: Product) {
-    console.log('parant', pro);
-
-    return { __typename: 'Product', id: 'test filter' };
+  searchWiaah(@Args('searchInputs') inputs: SearchInput): { filter: string } {
+    const formatedInputs: Record<string, any>[] = Object.entries(inputs).map(
+      ([key, value]) => ({ [key]: value }),
+    );
+    console.log('formatedInputs', formatedInputs);
+    return { filter: JSON.stringify(formatedInputs) };
   }
 }

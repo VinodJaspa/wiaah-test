@@ -39,7 +39,7 @@ export class ShopResolver implements OnModuleInit {
 
   @Query(() => [Shop])
   getAllShops() {
-    return this.shopService.findAll();
+    return [{ id: '132', tesT: 'test', name: 'namee' }];
   }
 
   @Query(() => Shop)
@@ -74,8 +74,8 @@ export class ShopResolver implements OnModuleInit {
   }
 
   @ResolveReference()
-  products(ref: { __typename: string; id: string }) {
-    console.log('test products', ref);
+  shop(ref: { __typename: string; id: string }) {
+    console.log('test shops', ref);
     return this.shopService.getShopById(ref.id);
   }
 

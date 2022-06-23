@@ -1,6 +1,14 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, Int, Directive } from '@nestjs/graphql';
 
 @ObjectType()
+export class Filter {
+  @Field((type) => String)
+  title: string;
+}
+
+@ObjectType()
+@Directive('@key(fields: "filter")')
 export class Search {
-  filter: String;
+  @Field((type) => String)
+  filter: string;
 }

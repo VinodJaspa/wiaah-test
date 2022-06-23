@@ -6,15 +6,18 @@ import {
   ProductCard,
   Collaboration,
   GridContainerPager,
-} from "ui/components";
-import { BreadCrumb } from "ui/components/blocks/BreadCrumb";
+} from "ui";
+import { BreadCrumb } from "ui";
 import { BsArrowLeft } from "react-icons/bs";
 import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
-import { t } from "i18next";
-import { products } from "ui/placeholder/products";
-import { categories } from "ui/placeholder/categories";
+import { products } from "placeholder";
+import { categories } from "placeholder";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
+import { useDimensions, useResponsive } from "hooks";
+
 export const SearchView: React.FC = () => {
+  const { t } = useTranslation();
   let [isGrid, setGrid] = useState(false);
   let [filterVisibleOnMobile, setFilterVisibleOnMobile] = useState(false);
   const router = useRouter();
@@ -24,12 +27,20 @@ export const SearchView: React.FC = () => {
       url: `/${cate}`,
     }))
   );
+
+  const { isTablet, isMobile } = useResponsive();
+
+  const minGap = isTablet ? 0 : 48;
+
+  const leftPanelRef = React.useRef<HTMLDivElement>(null);
+
+  const { width } = useDimensions(leftPanelRef);
+
+  const leftPanelwidth = width || null;
+
   return (
     <>
-      <div className="block w-full space-y-6 p-5">
-        <div className="">
-          <BreadCrumb links={breadCrumbLinks} />
-        </div>
+      <div className=" w-full py-4 relative">
         <div className="flex justify-end">
           <div
             onClick={() => {
@@ -85,39 +96,56 @@ export const SearchView: React.FC = () => {
             </div>
           </div>
           <div className="flex w-full justify-center gap-4">
-            <div className="hidden md:block">
-              <ShopProductFilter
-                open={true}
-                priceRange={{ max: 1000, min: 10 }}
-                shipping={["Click and Collect", "Free", "International"]}
-                colors={["#920", "#059", "#229"]}
-                size={["S", "M", "L", "XL", "XXL", "XXXL"]}
-                stockStatus={true}
-                rating={true}
-                brands={["nike", "or", "zake"]}
-                categories={categories}
-                countryFilter={true}
-                cityFilter={true}
-              />
-            </div>
-            <div className="flex w-full flex-col items-center">
-              <GridContainerPager componentsLimit={40}>
-                {/* shop items */}
-                {products.map((product, i) => (
-                  <ProductCard
-                    buttonText="Add to Cart"
-                    id={product.id || ""}
-                    name={product.name || ""}
-                    imageUrl={product.imgUrl || ""}
-                    price={product.price}
-                    rating={product.rating}
-                    cashback={product.cashBack}
-                    discount={product.off}
-                    oldPrice={product.oldPrice}
-                    key={i}
-                  />
-                ))}
-              </GridContainerPager>
+            <div className="h-full w-full flex justify-end gap-8">
+              <div className="absolute top-4 left-[5rem]" ref={leftPanelRef}>
+                {!isMobile && (
+                  <div className="flex flex-col gap-2">
+                    <div className="px-4">
+                      <BreadCrumb links={breadCrumbLinks} />
+                    </div>
+
+                    <ShopProductFilter
+                      open={true}
+                      priceRange={{ max: 1000, min: 10 }}
+                      shipping={["Click and Collect", "Free", "International"]}
+                      colors={["#920", "#059", "#229"]}
+                      size={["S", "M", "L", "XL", "XXL", "XXXL"]}
+                      stockStatus={true}
+                      rating={true}
+                      brands={["nike", "or", "zake"]}
+                      categories={categories}
+                      countryFilter={true}
+                      cityFilter={true}
+                    />
+                  </div>
+                )}
+              </div>
+              <div
+                style={{
+                  width: `calc(100% - (${leftPanelwidth || 0}px + 5rem))`,
+                  paddingRight: minGap,
+                  paddingLeft: minGap,
+                }}
+                className={`h-full`}
+              >
+                <GridContainerPager componentsLimit={40}>
+                  {/* shop items */}
+                  {products.map((product, i) => (
+                    <ProductCard
+                      buttonText="Add to Cart"
+                      id={product.id || ""}
+                      name={product.name || ""}
+                      imageUrl={product.imgUrl || ""}
+                      price={product.price}
+                      rating={product.rating}
+                      cashback={product.cashBack}
+                      discount={product.off}
+                      oldPrice={product.oldPrice}
+                      key={i}
+                    />
+                  ))}
+                </GridContainerPager>
+              </div>
             </div>
           </div>
         </div>

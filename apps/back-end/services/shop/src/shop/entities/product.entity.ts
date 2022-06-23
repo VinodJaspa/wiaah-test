@@ -5,10 +5,10 @@ import { Shop } from './shop.entity';
 @Directive('@extends')
 @Directive('@key(fields: "storeId")')
 export class Product {
-  @Field((type) => ID)
+  @Field((type) => String)
   @Directive('@external')
   storeId: string;
 
-  @Field((type) => Shop)
-  shop?: Shop;
+  // @Field((type) => Shop)
+  // shop: Shop;
 }

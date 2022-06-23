@@ -51,11 +51,18 @@ type Product {
   cashback: CashBack!
   presentations: [ProductPresentation!]!
   rate: Int!
+  brand: String!
+  price: Float!
   shop: Shop!
 }
 
 type Shop {
   name: String!
+  products: [Product!]!
+}
+
+type Search {
+  filter: String!
   products: [Product!]!
 }
 

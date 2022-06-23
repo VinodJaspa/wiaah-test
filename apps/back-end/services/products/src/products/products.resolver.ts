@@ -3,24 +3,18 @@ import {
   Query,
   Mutation,
   Args,
-  Int,
   ResolveReference,
   ResolveField,
   Parent,
-  Context,
-  GraphQLExecutionContext,
 } from '@nestjs/graphql';
-import { ProdutctsService } from './produtcts.service';
+import { ProductsService } from './products.service';
 import { Product } from './entities/product.entity';
 import { CreateProdutctInput } from './dto/create-produtct.input';
-import { UpdateProdutctInput } from './dto/update-produtct.input';
 import { Shop } from './entities/shop.entity';
-import { Body, ExecutionContext } from '@nestjs/common';
-import { Search } from './entities/search.entity';
 
 @Resolver(() => Product)
 export class ProductsResolver {
-  constructor(private readonly produtctsService: ProdutctsService) {}
+  constructor(private readonly produtctsService: ProductsService) {}
 
   @Query(() => Product, { name: 'getProductById' })
   getProductById(@Args('id') id: string) {
@@ -49,12 +43,6 @@ export class ProductsResolver {
     return this.produtctsService.createPh();
   }
 
-  // @ResolveField(of => Search)
-  // products(@Parent() product:Product){
-  //   console.log("resolving search product",product)
-  //   return
-  // }
-
   @ResolveField((of) => Shop)
   shop(@Parent() product: Product) {
     console.log('resolving shop', product);
@@ -67,8 +55,8 @@ export class ProductsResolver {
   }
 
   @ResolveReference()
-  resolveReference(ref: { __typename: string; id: string }) {
+  resolveReference(ref: { __typename: string; title: string; id: string }) {
     console.log('resolving referance', ref);
-    return this.produtctsService.getProductById(ref.id);
+    return [];
   }
 }

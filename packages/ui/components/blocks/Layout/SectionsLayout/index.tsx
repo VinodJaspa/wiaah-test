@@ -1,6 +1,5 @@
-import { useDimensions } from "@chakra-ui/react";
 import React from "react";
-import { useResponsive } from "hooks";
+import { useResponsive, useDimensions } from "hooks";
 import { SectionContext } from "state";
 import { SettingsSectionType, TranslationTextType } from "types";
 import { SettingsSectionsSidebar, TranslationText } from "ui";
@@ -26,9 +25,9 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
 
   const leftPanelRef = React.useRef<HTMLDivElement>(null);
 
-  const leftPanelDims = useDimensions(leftPanelRef, true);
+  const { width } = useDimensions(leftPanelRef);
 
-  const leftPanelwidth = leftPanelDims ? leftPanelDims.borderBox.width : null;
+  const leftPanelwidth = width || null;
 
   const sectionIdx = sections.findIndex(
     (panel) => panel.panelUrl === `/${section}`

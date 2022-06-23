@@ -10,6 +10,7 @@ import { PrismaService } from 'src/prisma.service';
 import { getUserFromRequest, KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ProductsResolver } from './product.resolver';
+import { Product } from './entities/product.entity';
 
 @Module({
   imports: [
@@ -19,6 +20,9 @@ import { ProductsResolver } from './product.resolver';
       context({ req, res }) {
         const user = getUserFromRequest(req);
         return { req, res, user };
+      },
+      buildSchemaOptions: {
+        orphanedTypes: [],
       },
     }),
     ClientsModule.register([
