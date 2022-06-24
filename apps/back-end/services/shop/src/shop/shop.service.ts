@@ -74,6 +74,14 @@ export class ShopService {
     return !!shop;
   }
 
+  async getShopByOwnerId(ownerId: string): Promise<Shop> {
+    return this.prisma.shop.findUnique({
+      where: {
+        ownerId,
+      },
+    });
+  }
+
   async findAll() {
     try {
       const shops = await this.prisma.shop.findMany();

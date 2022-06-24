@@ -4,6 +4,7 @@ import {
   Field,
   ObjectType,
   registerEnumType,
+  Float,
 } from '@nestjs/graphql';
 import { CashbackType, PresentationType } from '@prisma-client';
 
@@ -68,4 +69,7 @@ export class CreateProdutctInput {
 
   @Field((type) => [ProductPresentationInput])
   presentations: ProductPresentationInput[];
+
+  @Field((type) => Float)
+  price: number;
 }

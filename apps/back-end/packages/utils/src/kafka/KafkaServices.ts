@@ -8,7 +8,8 @@ type Services =
   | "ACCOUNTS_SERVICE"
   | "AUTH_SERVICE"
   | "MAILING_SERVICE"
-  | "SHOP_SERVICE";
+  | "SHOP_SERVICE"
+  | "WISHLIST_SERVICE";
 
 export const SERVICES: Record<Services, ServiceInfo> = {
   ACCOUNTS_SERVICE: {
@@ -30,5 +31,10 @@ export const SERVICES: Record<Services, ServiceInfo> = {
     token: "SHOP_SERVICE",
     clientId: "shop",
     groupId: "shop-consumer",
+  },
+  WISHLIST_SERVICE: {
+    token: "WISHLIST_SERVICE",
+    clientId: "wishlist",
+    groupId: "wishlist-consumer",
   },
 };

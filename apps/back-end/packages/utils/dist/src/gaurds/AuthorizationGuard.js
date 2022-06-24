@@ -26,7 +26,6 @@ let GqlAuthorizationGuard = class GqlAuthorizationGuard {
   canActivate(context) {
     const ctx = graphql_1.GqlExecutionContext.create(context);
     const user = ctx.getContext().user;
-    console.log("guard", ctx);
     if (!user) throw new common_1.UnauthorizedException();
     return !!user;
   }

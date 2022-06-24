@@ -1,15 +1,54 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Prisma, Product } from '@prisma-client';
 import { PrismaService } from 'src/Prisma.service';
 import { CreateProdutctInput } from './dto/create-produtct.input';
-import { SearchInput } from 'nest-dto';
+import {
+  SearchInput,
+  CreatWisherListPayload,
+  GetUserShopDataEvent,
+} from 'nest-dto';
+import {
+  AuthorizationDecodedUser,
+  KAFKA_EVENTS,
+  KAFKA_MESSAGES,
+  SERVICES,
+} from 'nest-utils';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
 export class ProductsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(SERVICES.WISHLIST_SERVICE.token)
+    private readonly wishlistClient: ClientKafka,
+    @Inject(SERVICES.SHOP_SERVICE.token)
+    private readonly shopclient: ClientKafka,
+  ) {}
 
-  createNewProduct(createProductInput: CreateProdutctInput) {
-    return this.prisma.product.create({
+  async createNewProduct(
+    createProductInput: CreateProdutctInput,
+    user: AuthorizationDecodedUser,
+  ) {
+    const userShop: string = await new Promise((res, rej) => {
+      console.log('sent');
+      this.shopclient
+        .send<string, GetUserShopDataEvent>(KAFKA_MESSAGES.getUserStoreData, {
+          ownerId: user.id,
+        })
+        .subscribe((shopId: string) => {
+          console.log('shop response', shopId, typeof shopId);
+          if (typeof shopId === 'string') {
+            res(shopId);
+          } else {
+            rej(new InternalServerErrorException());
+          }
+        });
+    });
+    const product = await this.prisma.product.create({
       data: {
         ...createProductInput,
         rate: 0,
@@ -19,6 +58,11 @@ export class ProductsService {
         price: 34,
       },
     });
+    this.wishlistClient.emit<string, CreatWisherListPayload>(
+      KAFKA_EVENTS.createWishersList,
+      { itemId: product.id },
+    );
+    return product;
   }
 
   getProductById(productId: string) {

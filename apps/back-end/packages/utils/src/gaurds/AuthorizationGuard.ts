@@ -14,7 +14,7 @@ export class GqlAuthorizationGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const ctx = GqlExecutionContext.create(context);
     const user = ctx.getContext().user;
-    console.log("guard", ctx);
+
     if (!user) throw new UnauthorizedException();
 
     return !!user;

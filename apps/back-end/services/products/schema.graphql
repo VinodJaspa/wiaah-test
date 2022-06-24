@@ -87,6 +87,7 @@ input CreateProdutctInput {
   discount: DiscountInput!
   cashback: CashBackInput!
   presentations: [ProductPresentationInput!]!
+  price: Float!
 }
 
 input DiscountInput {

@@ -11,6 +11,7 @@ import { getUserFromRequest, KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ProductsResolver } from './product.resolver';
 import { Product } from './entities/product.entity';
+import { ShopController } from './shop.controller';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { Product } from './entities/product.entity';
       },
     ]),
   ],
+  controllers: [ShopController],
   providers: [ShopResolver, ShopService, PrismaService, ProductsResolver],
 })
 export class ShopModule {}

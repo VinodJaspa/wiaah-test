@@ -1,5 +1,10 @@
-import { Controller } from '@nestjs/common';
-import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
+import { Controller, Inject, OnModuleInit } from '@nestjs/common';
+import {
+  ClientKafka,
+  EventPattern,
+  MessagePattern,
+  Payload,
+} from '@nestjs/microservices';
 import { AccountsService } from './accounts.service';
 import { CreateAccountInput } from './dto/create-account.input';
 import { GetAccountByEmailDto } from './dto/get-account-by-email.dto';

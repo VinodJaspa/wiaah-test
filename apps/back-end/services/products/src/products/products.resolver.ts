@@ -11,36 +11,51 @@ import { ProductsService } from './products.service';
 import { Product } from './entities/product.entity';
 import { CreateProdutctInput } from './dto/create-produtct.input';
 import { Shop } from './entities/shop.entity';
+import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
+import {
+  AuthorizationDecodedUser,
+  GqlAuthorizationGuard,
+  GqlCurrentUser,
+  KAFKA_MESSAGES,
+  SERVICES,
+} from 'nest-utils';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Resolver(() => Product)
-export class ProductsResolver {
-  constructor(private readonly produtctsService: ProductsService) {}
+export class ProductsResolver implements OnModuleInit {
+  constructor(
+    private readonly productsService: ProductsService,
+    @Inject(SERVICES.SHOP_SERVICE.token)
+    private readonly shopClient: ClientKafka,
+  ) {}
 
-  @Query(() => Product, { name: 'getProductById' })
+  @Query(() => Product)
   getProductById(@Args('id') id: string) {
-    return this.produtctsService.getProductById(id);
+    return this.productsService.getProductById(id);
   }
 
   @Query(() => [Product])
   getProducts() {
-    return this.produtctsService.getAll();
+    return this.productsService.getAll();
   }
 
   @Mutation(() => Product)
+  @UseGuards(GqlAuthorizationGuard)
   createNewProduct(
     @Args('createNewProductInput') createProductInput: CreateProdutctInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    return this.produtctsService.createNewProduct(createProductInput);
+    return this.productsService.createNewProduct(createProductInput, user);
   }
 
   @Mutation(() => Boolean)
   deleteAllProducts() {
-    return this.produtctsService.deleteAll();
+    return this.productsService.deleteAll();
   }
 
   @Mutation(() => Boolean)
   createProductsPh() {
-    return this.produtctsService.createPh();
+    return this.productsService.createPh();
   }
 
   @ResolveField((of) => Shop)
@@ -58,5 +73,10 @@ export class ProductsResolver {
   resolveReference(ref: { __typename: string; title: string; id: string }) {
     console.log('resolving referance', ref);
     return [];
+  }
+
+  async onModuleInit() {
+    this.shopClient.subscribeToResponseOf(KAFKA_MESSAGES.getUserStoreData);
+    await this.shopClient.connect();
   }
 }
