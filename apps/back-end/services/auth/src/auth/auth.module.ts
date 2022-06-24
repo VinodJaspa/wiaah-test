@@ -11,21 +11,21 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ACCOUNTS_SERVICE, MAILING_SERVICE } from 'src/ServicesTokens';
-import { getUserFromRequest } from 'nest-utils';
+import { getUserFromRequest, KAFKA_BROKERS, SERVICES } from 'nest-utils';
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: ACCOUNTS_SERVICE.token,
+        name: SERVICES.ACCOUNTS_SERVICE.token,
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: 'account',
-            brokers: ['localhost:9092'],
+            clientId: SERVICES.ACCOUNTS_SERVICE.clientId,
+            brokers: KAFKA_BROKERS,
           },
           consumer: {
-            groupId: ACCOUNTS_SERVICE.groupId,
+            groupId: SERVICES.ACCOUNTS_SERVICE.groupId,
           },
         },
       },

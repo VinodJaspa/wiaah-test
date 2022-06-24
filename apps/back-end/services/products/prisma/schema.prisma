@@ -20,7 +20,7 @@ model Product {
   colors      String[]
   sizes       String[]
   stock       Int
-  rate        Int
+  rate        Int @default(0)
   brand       String
   discount    Discount? 
   storeId     String

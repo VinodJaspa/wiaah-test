@@ -77,4 +77,7 @@ export class Product {
 
   @Field((type) => Float)
   price: number;
+
+  @Field((type) => String)
+  visibility: string;
 }

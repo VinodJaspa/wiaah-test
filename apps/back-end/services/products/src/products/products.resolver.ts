@@ -20,6 +20,7 @@ import {
   SERVICES,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
+import { UpdateProdutctInput } from './dto/update-produtct.input';
 
 @Resolver(() => Product)
 export class ProductsResolver implements OnModuleInit {
@@ -49,6 +50,15 @@ export class ProductsResolver implements OnModuleInit {
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(GqlAuthorizationGuard)
+  updateProduct(
+    @Args('updateProductArgs') input: UpdateProdutctInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<boolean> {
+    return this.productsService.updateProduct(user.id, input);
+  }
+
+  @Mutation(() => Boolean)
   deleteAllProducts() {
     return this.productsService.deleteAll();
   }
@@ -60,23 +70,20 @@ export class ProductsResolver implements OnModuleInit {
 
   @ResolveField((of) => Shop)
   shop(@Parent() product: Product) {
-    console.log('resolving shop', product);
     return {
       __typename: 'Shop',
-      id: 'product.storeId',
-      test: 'test',
-      name: 'name',
+      id: product.storeId,
     };
   }
 
   @ResolveReference()
-  resolveReference(ref: { __typename: string; title: string; id: string }) {
-    console.log('resolving referance', ref);
-    return [];
+  resolveReference(ref: { __typename: string; id: string }) {
+    return this.productsService.getProductById(ref.id);
   }
 
   async onModuleInit() {
-    this.shopClient.subscribeToResponseOf(KAFKA_MESSAGES.getUserStoreData);
+    this.shopClient.subscribeToResponseOf(KAFKA_MESSAGES.isOwnerOfShop);
+    this.shopClient.subscribeToResponseOf(KAFKA_MESSAGES.getUserShopId);
     await this.shopClient.connect();
   }
 }

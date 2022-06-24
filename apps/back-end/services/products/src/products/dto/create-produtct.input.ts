@@ -72,4 +72,7 @@ export class CreateProdutctInput {
 
   @Field((type) => Float)
   price: number;
+
+  @Field((type) => String)
+  brand: string;
 }

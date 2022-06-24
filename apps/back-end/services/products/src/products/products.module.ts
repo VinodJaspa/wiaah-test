@@ -13,6 +13,7 @@ import { SearchResolver } from './search.resolver';
 import { Search } from './entities/search.entity';
 import { ProductsResolver } from './products.resolver';
 import { ProductsService } from './products.service';
+import { ProductsController } from './products.controller';
 
 @Module({
   imports: [
@@ -63,5 +64,6 @@ import { ProductsService } from './products.service';
     ShopResolver,
     SearchResolver,
   ],
+  controllers: [ProductsController],
 })
 export class ProdutctsModule {}

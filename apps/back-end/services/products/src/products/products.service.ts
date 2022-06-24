@@ -2,6 +2,7 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { Prisma, Product } from '@prisma-client';
 import { PrismaService } from 'src/Prisma.service';
@@ -9,15 +10,20 @@ import { CreateProdutctInput } from './dto/create-produtct.input';
 import {
   SearchInput,
   CreatWisherListPayload,
-  GetUserShopDataEvent,
+  IsOwnerOfShopMessage,
+  IsOwnerOfShopMessageReply,
+  GetUserShopIdMessageReply,
+  GetUserShopIdMessage,
 } from 'nest-dto';
 import {
   AuthorizationDecodedUser,
+  KafkaMessageHandler,
   KAFKA_EVENTS,
   KAFKA_MESSAGES,
   SERVICES,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
+import { UpdateProdutctInput } from './dto/update-produtct.input';
 
 @Injectable()
 export class ProductsService {
@@ -33,29 +39,16 @@ export class ProductsService {
     createProductInput: CreateProdutctInput,
     user: AuthorizationDecodedUser,
   ) {
-    const userShop: string = await new Promise((res, rej) => {
-      console.log('sent');
-      this.shopclient
-        .send<string, GetUserShopDataEvent>(KAFKA_MESSAGES.getUserStoreData, {
-          ownerId: user.id,
-        })
-        .subscribe((shopId: string) => {
-          console.log('shop response', shopId, typeof shopId);
-          if (typeof shopId === 'string') {
-            res(shopId);
-          } else {
-            rej(new InternalServerErrorException());
-          }
-        });
-    });
+    const { shopId } = await KafkaMessageHandler<
+      string,
+      GetUserShopIdMessage,
+      GetUserShopIdMessageReply
+    >(this.shopclient, KAFKA_MESSAGES.getUserShopId, { ownerId: user.id });
+
     const product = await this.prisma.product.create({
       data: {
         ...createProductInput,
-        rate: 0,
-        storeId: '132',
-        presentations: [],
-        brand: 'brand',
-        price: 34,
+        storeId: shopId,
       },
     });
     this.wishlistClient.emit<string, CreatWisherListPayload>(
@@ -64,6 +57,44 @@ export class ProductsService {
     );
     return product;
   }
+
+  async updateProduct(userId: string, input: UpdateProdutctInput) {
+    try {
+      const { id, ...rest } = input;
+      const product = await this.prisma.product.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      const { isOwner } = await KafkaMessageHandler<
+        string,
+        IsOwnerOfShopMessage,
+        IsOwnerOfShopMessageReply
+      >(this.shopclient, KAFKA_MESSAGES.isOwnerOfShop, {
+        ownerId: userId,
+        shopId: product.storeId,
+      });
+      console.log('isowner', isOwner);
+      if (!isOwner)
+        throw new UnauthorizedException(
+          'you can only update products in your shop',
+        );
+
+      await this.prisma.product.update({
+        where: {
+          id,
+        },
+        data: rest,
+      });
+
+      return true;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  isOwnerOfProduct() {}
 
   getProductById(productId: string) {
     return this.prisma.product.findUnique({
@@ -192,13 +223,24 @@ export class ProductsService {
       });
     } catch (error) {}
   }
+
+  async isProductReviewable(productId: string, reviewerId: string) {
+    const product = await this.prisma.product.findUnique({
+      where: {
+        id: productId,
+      },
+    });
+    if (product.visibility !== 'public')
+      throw new Error('this product is private');
+    if (!product) throw new Error('product not found');
+    return true;
+  }
 }
 
 const ProductsPh: Prisma.ProductCreateInput[] = [
   {
     category: 'test',
     description: 'test product description',
-    rate: 5,
     stock: 13,
     storeId: '1234',
     title: 'cutting board',
@@ -209,7 +251,6 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
   {
     category: 'test',
     description: 'test product description',
-    rate: 5,
     stock: 0,
     storeId: '1234',
     title: 'cup',
@@ -220,7 +261,6 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
   {
     category: 'test',
     description: 'test product description',
-    rate: 5,
     stock: 13,
     storeId: '1234',
     title: 'sofa',
@@ -231,7 +271,6 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
   {
     category: 'test',
     description: 'test product description',
-    rate: 5,
     stock: 13,
     storeId: '1234',
     title: 'mouse',
@@ -242,7 +281,6 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
   {
     category: 'test',
     description: 'test product description',
-    rate: 5,
     stock: 13,
     storeId: '1234',
     title: 'vase',

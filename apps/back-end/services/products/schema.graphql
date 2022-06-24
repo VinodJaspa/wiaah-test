@@ -53,6 +53,7 @@ type Product {
   rate: Int!
   brand: String!
   price: Float!
+  visibility: String!
   shop: Shop!
 }
 
@@ -73,6 +74,7 @@ type Query {
 
 type Mutation {
   createNewProduct(createNewProductInput: CreateProdutctInput!): Product!
+  updateProduct(updateProductArgs: UpdateProdutctInput!): Boolean!
   deleteAllProducts: Boolean!
   createProductsPh: Boolean!
 }
@@ -88,6 +90,7 @@ input CreateProdutctInput {
   cashback: CashBackInput!
   presentations: [ProductPresentationInput!]!
   price: Float!
+  brand: String!
 }
 
 input DiscountInput {
@@ -104,4 +107,19 @@ input CashBackInput {
 input ProductPresentationInput {
   type: PresentationType!
   src: String!
+}
+
+input UpdateProdutctInput {
+  title: String
+  description: String
+  category: String
+  colors: [String!]
+  sizes: [String!]
+  stock: Int
+  discount: DiscountInput
+  cashback: CashBackInput
+  presentations: [ProductPresentationInput!]
+  price: Float
+  brand: String
+  id: ID!
 }
