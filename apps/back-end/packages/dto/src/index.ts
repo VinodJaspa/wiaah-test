@@ -3,3 +3,7 @@ export * from "./Wishlist";
 export * from "./Shop";
 export * from "./Reviews";
 export * from "./Accounts";
+export * from "./Base";
+export * from "./ShoppingCart";
+export * from "./Product";
+export * from "./Service";

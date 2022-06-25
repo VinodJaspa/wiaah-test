@@ -25,23 +25,33 @@ export class ReviewsService {
     return this.prisma.review.findMany();
   }
 
+  deleteAll() {
+    return this.prisma.review.deleteMany();
+  }
+
   async reviewProduct(
     reviewerId: string,
     reviewInput: CreateReviewInput,
   ): Promise<Review> {
     const { itemId, reviewData } = reviewInput;
-    const { isReviewable } = await KafkaMessageHandler<
+    const {
+      results: { data: isReviewable, error, success },
+    } = await KafkaMessageHandler<
       string,
       IsProductReviewableMessage,
       IsProductReviewableMessageReply
-    >(this.productsClient, KAFKA_MESSAGES.productReviewable, {
-      productId: reviewInput.itemId,
-      reviewerId,
-    });
+    >(
+      this.productsClient,
+      KAFKA_MESSAGES.productReviewable,
+      new IsProductReviewableMessage({ productId: itemId, reviewerId }),
+      'product reviewable check timed out',
+    );
+
+    if (!success) throw new UnprocessableEntityException(error);
 
     if (!isReviewable)
       throw new UnprocessableEntityException(
-        'product not found or this product is not legal for review',
+        'this item is not legal for review',
       );
 
     return await this.prisma.review.create({
@@ -55,6 +65,8 @@ export class ReviewsService {
         reviewData: true,
         reviewedItemId: true,
         reviewerId: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
   }

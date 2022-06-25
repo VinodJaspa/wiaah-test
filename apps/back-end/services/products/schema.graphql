@@ -53,8 +53,13 @@ type Product {
   rate: Int!
   brand: String!
   price: Float!
-  visibility: String!
+  visibility: VisibilityEnum!
   shop: Shop!
+}
+
+enum VisibilityEnum {
+  hidden
+  public
 }
 
 type Shop {
@@ -91,6 +96,7 @@ input CreateProdutctInput {
   presentations: [ProductPresentationInput!]!
   price: Float!
   brand: String!
+  visibility: VisibilityEnum!
 }
 
 input DiscountInput {
@@ -121,5 +127,6 @@ input UpdateProdutctInput {
   presentations: [ProductPresentationInput!]
   price: Float
   brand: String
+  visibility: VisibilityEnum
   id: ID!
 }

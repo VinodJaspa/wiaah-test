@@ -1,7 +1,9 @@
 import {
+  BadRequestException,
   Inject,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Prisma, Product } from '@prisma-client';
@@ -39,16 +41,26 @@ export class ProductsService {
     createProductInput: CreateProdutctInput,
     user: AuthorizationDecodedUser,
   ) {
-    const { shopId } = await KafkaMessageHandler<
+    const {
+      results: { success, data, error },
+    } = await KafkaMessageHandler<
       string,
       GetUserShopIdMessage,
       GetUserShopIdMessageReply
-    >(this.shopclient, KAFKA_MESSAGES.getUserShopId, { ownerId: user.id });
+    >(
+      this.shopclient,
+      KAFKA_MESSAGES.getUserShopId,
+      new GetUserShopIdMessage(user.id),
+    );
+
+    if (!success) {
+      throw new Error(error);
+    }
 
     const product = await this.prisma.product.create({
       data: {
         ...createProductInput,
-        storeId: shopId,
+        storeId: data,
       },
     });
     this.wishlistClient.emit<string, CreatWisherListPayload>(
@@ -67,15 +79,11 @@ export class ProductsService {
         },
       });
 
-      const { isOwner } = await KafkaMessageHandler<
-        string,
-        IsOwnerOfShopMessage,
-        IsOwnerOfShopMessageReply
-      >(this.shopclient, KAFKA_MESSAGES.isOwnerOfShop, {
-        ownerId: userId,
-        shopId: product.storeId,
-      });
-      console.log('isowner', isOwner);
+      if (!product)
+        throw new BadRequestException('no product with the given id was found');
+
+      const isOwner = await this.isOwnerOfShop(userId, id);
+
       if (!isOwner)
         throw new UnauthorizedException(
           'you can only update products in your shop',
@@ -94,7 +102,23 @@ export class ProductsService {
     }
   }
 
-  isOwnerOfProduct() {}
+  async isOwnerOfShop(userId: string, shopId: string): Promise<boolean> {
+    const {
+      results: { data, error, success },
+    } = await KafkaMessageHandler<
+      string,
+      IsOwnerOfShopMessage,
+      IsOwnerOfShopMessageReply
+    >(
+      this.shopclient,
+      KAFKA_MESSAGES.isOwnerOfShop,
+      new IsOwnerOfShopMessage({ ownerId: userId, shopId }),
+      'shop validation timed out',
+    );
+    console.log('errorwda', error);
+    if (!success) throw new Error(error);
+    return data;
+  }
 
   getProductById(productId: string) {
     return this.prisma.product.findUnique({
@@ -230,9 +254,16 @@ export class ProductsService {
         id: productId,
       },
     });
+    if (!product) throw new NotFoundException('product not found');
     if (product.visibility !== 'public')
-      throw new Error('this product is private');
-    if (!product) throw new Error('product not found');
+      throw new UnauthorizedException('this product is private');
+
+    const isShopOwner = await this.isOwnerOfShop(reviewerId, product.storeId);
+    console.log('isshopowner', isShopOwner);
+
+    if (isShopOwner)
+      throw new UnauthorizedException('you cant review you own products');
+
     return true;
   }
 }

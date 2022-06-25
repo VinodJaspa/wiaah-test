@@ -32,6 +32,11 @@ export class ReviewsResolver implements OnModuleInit {
     return this.reviewsService.getAll();
   }
 
+  @Mutation((type) => Boolean)
+  deleteAllReviews() {
+    return this.reviewsService.deleteAll();
+  }
+
   @Mutation((type) => Review)
   @UseGuards(GqlAuthorizationGuard)
   ReviewProduct(

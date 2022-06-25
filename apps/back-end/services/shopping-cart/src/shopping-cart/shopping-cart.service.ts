@@ -1,0 +1,186 @@
+import {
+  Inject,
+  Injectable,
+  UnprocessableEntityException,
+} from '@nestjs/common';
+import { CartItem } from '@prisma-client';
+import { PrismaService } from 'src/prisma.service';
+import { ShoppingCart } from './entities/shopping-cart.entity';
+import {
+  AuthorizationDecodedUser,
+  KafkaMessageHandler,
+  KAFKA_MESSAGES,
+  SERVICES,
+} from 'nest-utils';
+import { ClientKafka } from '@nestjs/microservices';
+import {
+  GetProductMetaDataMessage,
+  GetProductMetaDataMessageReply,
+  GetServiceMetaDataMessage,
+  GetServiceMetaDataMessageReply,
+} from 'nest-dto';
+import { RemoveShoppingCartItemInput } from './dto/removeItem.input';
+import { AddShoppingCartItemInput } from './dto/addItem.input';
+
+@Injectable()
+export class ShoppingCartService {
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(SERVICES.PRODUCTS_SERVICE.token)
+    private readonly productsClient: ClientKafka,
+    @Inject(SERVICES.SERVICES_SERIVCE.token)
+    private readonly ServicesClient: ClientKafka,
+  ) {}
+
+  async createShoppingCart(ownerId: string): Promise<boolean> {
+    const cartExists = await this.ownerCartExists(ownerId);
+    if (cartExists)
+      throw new UnprocessableEntityException(
+        'this account id already own a shopping cart, each account can own only one cart',
+      );
+
+    await this.prisma.cart.create({
+      data: {
+        ownerId,
+      },
+    });
+
+    return true;
+  }
+
+  async ownerCartExists(ownerId: string): Promise<boolean> {
+    const cart = await this.prisma.cart.findUnique({
+      where: {
+        ownerId,
+      },
+    });
+    return !!cart;
+  }
+
+  getShoppingCarts() {
+    return this.prisma.cart.findMany();
+  }
+
+  async getShoppingCartByOwnerId(ownerId: string): Promise<ShoppingCart> {
+    return this.prisma.cart.findUnique({
+      where: {
+        ownerId,
+      },
+    });
+  }
+
+  async addProduct(
+    user: AuthorizationDecodedUser,
+    product: AddShoppingCartItemInput,
+  ): Promise<CartItem> {
+    const {
+      results: {
+        data: { name, price, thumbnail },
+        error,
+        success,
+      },
+    } = await KafkaMessageHandler<
+      string,
+      GetProductMetaDataMessage,
+      GetProductMetaDataMessageReply
+    >(
+      this.productsClient,
+      KAFKA_MESSAGES.isProductAddable,
+      new GetProductMetaDataMessage({
+        productId: product.itemId,
+        userId: user.id,
+      }),
+    );
+    if (!success) throw new Error(error);
+
+    const newCartItem: CartItem = {
+      itemId: product.itemId,
+      quantity: product.quantity,
+      itemType: product.itemType,
+      name,
+      price,
+      thumbnail,
+    };
+
+    await this.prisma.cart.update({
+      where: {
+        ownerId: user.id,
+      },
+      data: {
+        cartItems: {
+          push: newCartItem,
+        },
+      },
+    });
+
+    return newCartItem;
+  }
+  async addService(
+    user: AuthorizationDecodedUser,
+    service: AddShoppingCartItemInput,
+  ): Promise<CartItem> {
+    const {
+      results: {
+        data: { name, price, thumbnail },
+        error,
+        success,
+      },
+    } = await KafkaMessageHandler<
+      string,
+      GetServiceMetaDataMessage,
+      GetServiceMetaDataMessageReply
+    >(
+      this.productsClient,
+      KAFKA_MESSAGES.isProductAddable,
+      new GetServiceMetaDataMessage({
+        serviceId: service.itemId,
+        userId: user.id,
+      }),
+    );
+    if (!success) throw new Error(error);
+
+    const newCartItem: CartItem = {
+      itemId: service.itemId,
+      itemType: service.itemType,
+      quantity: service.quantity,
+      name,
+      price,
+      thumbnail,
+    };
+
+    await this.prisma.cart.update({
+      where: {
+        ownerId: user.id,
+      },
+      data: {
+        cartItems: {
+          push: newCartItem,
+        },
+      },
+    });
+
+    return newCartItem;
+  }
+
+  async removeItem(
+    user: AuthorizationDecodedUser,
+    input: RemoveShoppingCartItemInput,
+  ) {
+    await this.prisma.cart.update({
+      where: {
+        ownerId: user.id,
+      },
+      data: {
+        cartItems: {
+          deleteMany: {
+            where: {
+              itemId: input.itemId,
+            },
+          },
+        },
+      },
+    });
+
+    return true;
+  }
+}

@@ -3230,7 +3230,7 @@
     multer "1.4.3"
     tslib "2.3.1"
 
-"@nestjs/platform-express@^8.0.0", "@nestjs/platform-express@^8.4.7":
+"@nestjs/platform-express@8.4.7", "@nestjs/platform-express@^8.0.0", "@nestjs/platform-express@^8.4.7":
   version "8.4.7"
   resolved "https://registry.npmjs.org/@nestjs/platform-express/-/platform-express-8.4.7.tgz"
   integrity sha512-lPE5Ltg2NbQGRQIwXWY+4cNrXhJdycbxFDQ8mNxSIuv+LbrJBIdEB/NONk+LLn9N/8d2+I2LsIETGQrPvsejBg==

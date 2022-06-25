@@ -1,18 +1,4 @@
-export class GetUserShopIdMessage {
-  constructor(public readonly ownerId: string) {}
+import { KafkaMessage, KafkaMessageReply } from "../../Base";
 
-  toString() {
-    return JSON.stringify({
-      ownerId: this.ownerId,
-    });
-  }
-}
-export class GetUserShopIdMessageReply {
-  constructor(public readonly shopId: string) {}
-
-  toString() {
-    return JSON.stringify({
-      shopId: this.shopId,
-    });
-  }
-}
+export class GetUserShopIdMessage extends KafkaMessage<string> {}
+export class GetUserShopIdMessageReply extends KafkaMessageReply<string> {}

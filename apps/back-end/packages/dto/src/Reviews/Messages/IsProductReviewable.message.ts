@@ -1,20 +1,8 @@
-export class IsProductReviewableMessage {
-  constructor(public productId: string, public reviewerId: string) {}
+import { KafkaMessage, KafkaMessageReply } from "../../Base";
 
-  toString() {
-    return JSON.stringify({
-      productId: this.productId,
-      reviewerId: this.reviewerId,
-    });
-  }
-}
+export class IsProductReviewableMessage extends KafkaMessage<{
+  productId: string;
+  reviewerId: string;
+}> {}
 
-export class IsProductReviewableMessageReply {
-  constructor(public isReviewable: boolean) {}
-
-  toString() {
-    return JSON.stringify({
-      isReviewable: this.isReviewable,
-    });
-  }
-}
+export class IsProductReviewableMessageReply extends KafkaMessageReply<boolean> {}

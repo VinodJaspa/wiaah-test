@@ -54,7 +54,7 @@ export class ShopResolver implements OnModuleInit {
     return this.shopService.getFilteredShops(filteredShopsInput);
   }
 
-  @UseGuards(GqlAuthorizationGuard)
+  @UseGuards(new GqlAuthorizationGuard(['seller']))
   @Mutation(() => Shop)
   createShop(
     @Args('createShopInput') createShopInput: CreateShopInput,

@@ -6,7 +6,7 @@ import {
   registerEnumType,
   Float,
 } from '@nestjs/graphql';
-import { CashbackType, PresentationType } from '@prisma-client';
+import { CashbackType, PresentationType, VisibilityEnum } from '@prisma-client';
 
 registerEnumType(PresentationType, { name: 'PresentationType' });
 registerEnumType(CashbackType, { name: 'CashbackType' });
@@ -75,4 +75,7 @@ export class CreateProdutctInput {
 
   @Field((type) => String)
   brand: string;
+
+  @Field((type) => VisibilityEnum)
+  visibility: VisibilityEnum;
 }

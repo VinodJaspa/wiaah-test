@@ -2,6 +2,7 @@ export const KAFKA_EVENTS = {
   createAccount: "create.account",
   createWishlist: "create.wishlist",
   createWishersList: "create.wisherlist",
+  createShoppingCart: "create.shopping.cart",
 };
 
 export const KAFKA_MESSAGES = {
@@ -11,4 +12,6 @@ export const KAFKA_MESSAGES = {
   getUserShopId: "get.user.store.id",
   productReviewable: "is.product.reviewable",
   isOwnerOfShop: "is.owner.of.shop",
+  isProductAddable: "is.product.addable",
+  isServiceAddable: "is.service.addable",
 };

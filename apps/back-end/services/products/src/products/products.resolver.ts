@@ -41,7 +41,7 @@ export class ProductsResolver implements OnModuleInit {
   }
 
   @Mutation(() => Product)
-  @UseGuards(GqlAuthorizationGuard)
+  @UseGuards(new GqlAuthorizationGuard(['seller']))
   createNewProduct(
     @Args('createNewProductInput') createProductInput: CreateProdutctInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
@@ -50,7 +50,7 @@ export class ProductsResolver implements OnModuleInit {
   }
 
   @Mutation(() => Boolean)
-  @UseGuards(GqlAuthorizationGuard)
+  @UseGuards(new GqlAuthorizationGuard(['seller']))
   updateProduct(
     @Args('updateProductArgs') input: UpdateProdutctInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
