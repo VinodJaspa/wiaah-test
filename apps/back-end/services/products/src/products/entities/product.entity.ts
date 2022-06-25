@@ -1,5 +1,15 @@
-import { ObjectType, Field, Int, ID, Directive, Float } from '@nestjs/graphql';
-import { CashbackType, PresentationType } from '@prisma-client';
+import {
+  ObjectType,
+  Field,
+  Int,
+  ID,
+  Directive,
+  Float,
+  registerEnumType,
+} from '@nestjs/graphql';
+import { CashbackType, PresentationType, VisibilityEnum } from '@prisma-client';
+
+registerEnumType(VisibilityEnum, { name: 'VisibilityEnum' });
 
 @ObjectType()
 export class ProductPresentation {
@@ -77,4 +87,7 @@ export class Product {
 
   @Field((type) => Float)
   price: number;
+
+  @Field((type) => VisibilityEnum)
+  visibility: VisibilityEnum;
 }

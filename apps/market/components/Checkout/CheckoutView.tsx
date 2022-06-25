@@ -1,6 +1,6 @@
 import { t } from "i18next";
 import React from "react";
-import { useScreenWidth } from "ui/Hooks/useScreenWidth";
+import { useScreenWidth } from "hooks";
 import {
   BoxShadow,
   FlexStack,
@@ -148,21 +148,13 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                               addressDetails={address}
                               active={activeAddress === i}
                             />
-                            <Divider marginY={{ value: 0 }} />
+                            <Divider />
                           </Clickable>
                         ))}
                     </FlexStack>
                     <Spacer />
                     <Padding X={{ value: 1 }}>
-                      <Button
-                        onClick={() => handleAddress()}
-                        fitWidth
-                        outlined
-                        paddingX={{ value: 1 }}
-                        hexTextColor={"#000"}
-                        borderWidthInPx={1}
-                        borderColor="#000"
-                      >
+                      <Button onClick={() => handleAddress()}>
                         {t("add_new_address", "ADD NEW ADDRESS")}
                       </Button>
                     </Padding>
@@ -195,7 +187,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                     </Clickable>
                   </Text>
                 </FlexStack>
-                <Divider marginY={{ value: 0.5 }} />
+                <Divider />
                 <FlexStack width={{ value: 30 }} direction="vertical">
                   {products.map((item, i) => (
                     <>

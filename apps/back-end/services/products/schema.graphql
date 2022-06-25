@@ -53,7 +53,13 @@ type Product {
   rate: Int!
   brand: String!
   price: Float!
+  visibility: VisibilityEnum!
   shop: Shop!
+}
+
+enum VisibilityEnum {
+  hidden
+  public
 }
 
 type Shop {
@@ -73,6 +79,7 @@ type Query {
 
 type Mutation {
   createNewProduct(createNewProductInput: CreateProdutctInput!): Product!
+  updateProduct(updateProductArgs: UpdateProdutctInput!): Boolean!
   deleteAllProducts: Boolean!
   createProductsPh: Boolean!
 }
@@ -87,6 +94,9 @@ input CreateProdutctInput {
   discount: DiscountInput!
   cashback: CashBackInput!
   presentations: [ProductPresentationInput!]!
+  price: Float!
+  brand: String!
+  visibility: VisibilityEnum!
 }
 
 input DiscountInput {
@@ -103,4 +113,20 @@ input CashBackInput {
 input ProductPresentationInput {
   type: PresentationType!
   src: String!
+}
+
+input UpdateProdutctInput {
+  title: String
+  description: String
+  category: String
+  colors: [String!]
+  sizes: [String!]
+  stock: Int
+  discount: DiscountInput
+  cashback: CashBackInput
+  presentations: [ProductPresentationInput!]
+  price: Float
+  brand: String
+  visibility: VisibilityEnum
+  id: ID!
 }

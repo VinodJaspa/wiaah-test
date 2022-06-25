@@ -10,12 +10,13 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { Registeration } from '../../prisma/generated';
 import { PrismaService } from 'src/prisma.service';
-import { KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
+import { KafkaMessageHandler, KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
 import { LoginDto, RegisterDto, VerifyEmailDto } from './dto';
 import * as bcrypt from 'bcrypt';
 import { Account } from './types';
 import { JwtService } from '@nestjs/jwt';
 import { ResponseObj, SERVICES } from 'nest-utils';
+import { EmailExistsMessage, EmailExistsMessageReply } from 'nest-dto';
 
 @Injectable()
 export class AuthService {
@@ -33,74 +34,48 @@ export class AuthService {
       const { confirmPassword, email, firstName, lastName, password } =
         createAuthInput;
 
-      return new Promise((res, rej) => {
-        // timeout function to prevent request hanging
-        let timeout = setTimeout(() => {
-          subscription.unsubscribe();
-          return rej(
-            new InternalServerErrorException(
-              'email existing validation timed out',
-            ),
-          );
-        }, 3000);
+      const emailExists = await this.emailExists(email);
 
-        const request = this.accountsClient.send(KAFKA_MESSAGES.emailExists, {
+      if (emailExists === true) {
+        throw new NotAcceptableException('this email is already taken');
+      }
+
+      if (confirmPassword !== password) {
+        throw new NotAcceptableException(
+          'confirm password and password fields must match',
+        );
+      }
+
+      const registerations = await this.getRegisterationsByEmail(email);
+      if (registerations.length > 0)
+        await this.removeRegisterationsByEmail(email);
+
+      // generate random verification code
+      const verificationToken = `${generateVerificationToken()}`;
+
+      // create registeration enitity to track verification email proccess
+      await this.prisma.registeration.create({
+        data: {
           email,
-        });
-
-        // communicate with accounts service and check if account with this email already exists
-        const subscription = request.subscribe(async (emailExists) => {
-          if (emailExists === 'true') {
-            return rej(
-              new NotAcceptableException('this email is already taken'),
-            );
-          }
-
-          if (confirmPassword !== password) {
-            return rej(
-              new NotAcceptableException(
-                'confirm password and password fields must match',
-              ),
-            );
-          }
-
-          const registerations = await this.getRegisterationsByEmail(email);
-          if (registerations.length > 0)
-            await this.removeRegisterationsByEmail(email);
-
-          // generate random verification code
-          const verificationToken = `${generateVerificationToken()}`;
-
-          // create registeration enitity to track verification email proccess
-          await this.prisma.registeration.create({
-            data: {
-              email,
-              verificationToken,
-              accountInputData: {
-                firstName,
-                lastName,
-                password,
-              },
-            },
-            select: {
-              email: true,
-            },
-          });
-
-          // when success, communicate with mailing to send a new verification email
-          this.mailingClient.emit('send_email_verification_mail', {
-            verificationToken,
-            email,
-          });
-
-          // everything went right, resolve the promise
-          res(true);
-          // make sure to clear the timeout
-          clearTimeout(timeout);
-          // make sure to unsubscribe to the kafka listener
-          subscription.unsubscribe();
-        });
+          verificationToken,
+          accountInputData: {
+            firstName,
+            lastName,
+            password,
+          },
+        },
+        select: {
+          email: true,
+        },
       });
+
+      // when success, communicate with mailing to send a new verification email
+      this.mailingClient.emit('send_email_verification_mail', {
+        verificationToken,
+        email,
+      });
+
+      return true;
     } catch (error) {
       throw new Error(error);
     }
@@ -144,16 +119,15 @@ export class AuthService {
 
   async login(input: LoginDto): Promise<{ access_token: string }> {
     try {
-      const { email, firstName, lastName, id } = await this.validateCredentials(
-        input.email,
-        input.password,
-      );
+      const { email, firstName, lastName, id, accountType } =
+        await this.validateCredentials(input.email, input.password);
       return {
         access_token: this.JWTService.sign({
           id,
           email,
           firstName,
           lastName,
+          accountType,
         }),
       };
     } catch (error) {
@@ -161,7 +135,7 @@ export class AuthService {
     }
   }
 
-  async validateCredentials(
+  private async validateCredentials(
     email: string,
     password: string,
   ): Promise<Omit<Account, 'password'>> {
@@ -200,7 +174,7 @@ export class AuthService {
     return true;
   }
 
-  async getRegisterationsByEmail(email: string) {
+  private async getRegisterationsByEmail(email: string) {
     return this.prisma.registeration.findMany({
       where: {
         email,
@@ -208,11 +182,26 @@ export class AuthService {
     });
   }
 
-  async removeRegisterationsByEmail(email: string) {
+  private async removeRegisterationsByEmail(email: string) {
     return this.prisma.registeration.deleteMany({
       where: {
         email,
       },
     });
+  }
+
+  async emailExists(email: string): Promise<boolean> {
+    const {
+      emailExistsMsgReply: { emailExists },
+    } = await KafkaMessageHandler<
+      string,
+      EmailExistsMessage,
+      EmailExistsMessageReply
+    >(
+      this.accountsClient,
+      KAFKA_MESSAGES.emailExists,
+      new EmailExistsMessage({ email }),
+    );
+    return emailExists;
   }
 }

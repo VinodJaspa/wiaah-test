@@ -97,7 +97,7 @@ export const SearchView: React.FC = () => {
           </div>
           <div className="flex w-full justify-center gap-4">
             <div className="h-full w-full flex justify-end gap-8">
-              <div className="absolute top-4 left-[5rem]" ref={leftPanelRef}>
+              <div className="absolute top-4 left-[3rem]" ref={leftPanelRef}>
                 {!isMobile && (
                   <div className="flex flex-col gap-2">
                     <div className="px-4">
@@ -122,7 +122,7 @@ export const SearchView: React.FC = () => {
               </div>
               <div
                 style={{
-                  width: `calc(100% - (${leftPanelwidth || 0}px + 5rem))`,
+                  width: `calc(100% - (${leftPanelwidth || 0}px + 3rem))`,
                   paddingRight: minGap,
                   paddingLeft: minGap,
                 }}

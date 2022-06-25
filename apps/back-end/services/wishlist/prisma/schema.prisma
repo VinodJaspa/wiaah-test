@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output = "./generated/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+
+model Wishlist {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId String @unique
+  wishedItems WishlistItem[]
+}
+
+model WishersList {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  itemId String @unique
+  wishers Wisher[] 
+}
+
+type Wisher {
+  wisherId String
+}
+
+type WishlistItem {
+  itemId String
+}

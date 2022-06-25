@@ -12,4 +12,6 @@ export class Account {
   createdAt: Date;
 
   updatedAt: Date;
+
+  accountType: 'buyer' | 'seller';
 }

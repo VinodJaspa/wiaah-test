@@ -20,12 +20,13 @@ model Product {
   colors      String[]
   sizes       String[]
   stock       Int
-  rate        Int
+  rate        Int @default(0)
   brand       String
   discount    Discount? 
   storeId     String
   cashback    CashBack?
   presentations ProductPresentation[]
+  visibility VisibilityEnum @default(hidden)
 }
 
 type Discount {
@@ -41,6 +42,11 @@ type CashBack {
 enum CashbackType {
   percent
   cash
+}
+
+enum VisibilityEnum {
+  hidden
+  public
 }
 
 type ProductPresentation {

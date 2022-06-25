@@ -39,3 +39,4 @@ __exportStar(require("./decorators"), exports);
 __exportStar(require("./types"), exports);
 __exportStar(require("./kafka"), exports);
 __exportStar(require("./calculations"), exports);
+__exportStar(require("./handlers"), exports);

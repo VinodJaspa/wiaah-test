@@ -1,16 +1,27 @@
-import { Controller } from '@nestjs/common';
-import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
+import { Controller, Inject, OnModuleInit } from '@nestjs/common';
+import {
+  ClientKafka,
+  EventPattern,
+  MessagePattern,
+  Payload,
+} from '@nestjs/microservices';
 import { AccountsService } from './accounts.service';
 import { CreateAccountInput } from './dto/create-account.input';
 import { GetAccountByEmailDto } from './dto/get-account-by-email.dto';
 import { KAFKA_MESSAGES, KAFKA_EVENTS } from 'nest-utils';
+import { EmailExistsMessage, EmailExistsMessageReply } from 'nest-dto';
 @Controller('accounts')
 export class AccountsController {
   constructor(private readonly accountService: AccountsService) {}
 
   @MessagePattern(KAFKA_MESSAGES.emailExists)
-  emailExists(@Payload() payload: { value: GetAccountByEmailDto }) {
-    return this.accountService.emailExists(payload.value.email);
+  async emailExists(
+    @Payload() payload: { value: EmailExistsMessage },
+  ): Promise<EmailExistsMessageReply> {
+    const exists = await this.accountService.emailExists(
+      payload.value.emailExistsMsgInput.email,
+    );
+    return new EmailExistsMessageReply({ emailExists: exists });
   }
 
   @MessagePattern(KAFKA_MESSAGES.getAccountByEmail)

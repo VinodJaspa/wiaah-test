@@ -1,15 +1,22 @@
 import {
   BadRequestException,
+  Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
 import { CreateAccountInput, UpdateAccountInput } from './dto';
 import { Account } from './entities';
 import { PrismaService } from 'src/prisma.service';
+import { KAFKA_EVENTS, SERVICES } from 'nest-utils';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
 export class AccountsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    @Inject(SERVICES.WISHLIST_SERVICE.token)
+    private readonly wishlistClient: ClientKafka,
+  ) {}
 
   async createAccountRecord(createAccountInput: CreateAccountInput) {
     try {
@@ -24,10 +31,11 @@ export class AccountsService {
           type: 'buyer',
         },
       });
-
+      this.wishlistClient.emit(KAFKA_EVENTS.createWishlist, {
+        ownerId: createdUser.id,
+      });
       return createdUser;
     } catch (error) {
-      console.log('account creation error' + error);
       return null;
     }
   }

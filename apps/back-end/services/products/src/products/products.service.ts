@@ -1,24 +1,123 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Prisma, Product } from '@prisma-client';
 import { PrismaService } from 'src/Prisma.service';
 import { CreateProdutctInput } from './dto/create-produtct.input';
-import { SearchInput } from 'nest-dto';
+import {
+  SearchInput,
+  CreatWisherListPayload,
+  IsOwnerOfShopMessage,
+  IsOwnerOfShopMessageReply,
+  GetUserShopIdMessageReply,
+  GetUserShopIdMessage,
+} from 'nest-dto';
+import {
+  AuthorizationDecodedUser,
+  KafkaMessageHandler,
+  KAFKA_EVENTS,
+  KAFKA_MESSAGES,
+  SERVICES,
+} from 'nest-utils';
+import { ClientKafka } from '@nestjs/microservices';
+import { UpdateProdutctInput } from './dto/update-produtct.input';
 
 @Injectable()
 export class ProductsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(SERVICES.WISHLIST_SERVICE.token)
+    private readonly wishlistClient: ClientKafka,
+    @Inject(SERVICES.SHOP_SERVICE.token)
+    private readonly shopclient: ClientKafka,
+  ) {}
 
-  createNewProduct(createProductInput: CreateProdutctInput) {
-    return this.prisma.product.create({
+  async createNewProduct(
+    createProductInput: CreateProdutctInput,
+    user: AuthorizationDecodedUser,
+  ) {
+    const {
+      results: { success, data, error },
+    } = await KafkaMessageHandler<
+      string,
+      GetUserShopIdMessage,
+      GetUserShopIdMessageReply
+    >(
+      this.shopclient,
+      KAFKA_MESSAGES.getUserShopId,
+      new GetUserShopIdMessage(user.id),
+    );
+
+    if (!success) {
+      throw new Error(error);
+    }
+
+    const product = await this.prisma.product.create({
       data: {
         ...createProductInput,
-        rate: 0,
-        storeId: '132',
-        presentations: [],
-        brand: 'brand',
-        price: 34,
+        storeId: data,
       },
     });
+    this.wishlistClient.emit<string, CreatWisherListPayload>(
+      KAFKA_EVENTS.createWishersList,
+      { itemId: product.id },
+    );
+    return product;
+  }
+
+  async updateProduct(userId: string, input: UpdateProdutctInput) {
+    try {
+      const { id, ...rest } = input;
+      const product = await this.prisma.product.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (!product)
+        throw new BadRequestException('no product with the given id was found');
+
+      const isOwner = await this.isOwnerOfShop(userId, id);
+
+      if (!isOwner)
+        throw new UnauthorizedException(
+          'you can only update products in your shop',
+        );
+
+      await this.prisma.product.update({
+        where: {
+          id,
+        },
+        data: rest,
+      });
+
+      return true;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  async isOwnerOfShop(userId: string, shopId: string): Promise<boolean> {
+    const {
+      results: { data, error, success },
+    } = await KafkaMessageHandler<
+      string,
+      IsOwnerOfShopMessage,
+      IsOwnerOfShopMessageReply
+    >(
+      this.shopclient,
+      KAFKA_MESSAGES.isOwnerOfShop,
+      new IsOwnerOfShopMessage({ ownerId: userId, shopId }),
+      'shop validation timed out',
+    );
+    console.log('errorwda', error);
+    if (!success) throw new Error(error);
+    return data;
   }
 
   getProductById(productId: string) {
@@ -148,13 +247,31 @@ export class ProductsService {
       });
     } catch (error) {}
   }
+
+  async isProductReviewable(productId: string, reviewerId: string) {
+    const product = await this.prisma.product.findUnique({
+      where: {
+        id: productId,
+      },
+    });
+    if (!product) throw new NotFoundException('product not found');
+    if (product.visibility !== 'public')
+      throw new UnauthorizedException('this product is private');
+
+    const isShopOwner = await this.isOwnerOfShop(reviewerId, product.storeId);
+    console.log('isshopowner', isShopOwner);
+
+    if (isShopOwner)
+      throw new UnauthorizedException('you cant review you own products');
+
+    return true;
+  }
 }
 
 const ProductsPh: Prisma.ProductCreateInput[] = [
   {
     category: 'test',
     description: 'test product description',
-    rate: 5,
     stock: 13,
     storeId: '1234',
     title: 'cutting board',
@@ -165,7 +282,6 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
   {
     category: 'test',
     description: 'test product description',
-    rate: 5,
     stock: 0,
     storeId: '1234',
     title: 'cup',
@@ -176,7 +292,6 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
   {
     category: 'test',
     description: 'test product description',
-    rate: 5,
     stock: 13,
     storeId: '1234',
     title: 'sofa',
@@ -187,7 +302,6 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
   {
     category: 'test',
     description: 'test product description',
-    rate: 5,
     stock: 13,
     storeId: '1234',
     title: 'mouse',
@@ -198,7 +312,6 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
   {
     category: 'test',
     description: 'test product description',
-    rate: 5,
     stock: 13,
     storeId: '1234',
     title: 'vase',

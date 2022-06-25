@@ -5,11 +5,13 @@ import {
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { Shop, Prisma } from '@prisma-client';
+import { IsSellerAccountMessage, IsSellerAccountMessageReply } from 'nest-dto';
 import {
   AuthorizationDecodedUser,
   createNewCoords,
   getCoordinatesAfterDistance,
   getDistanceFromLatLonInKm,
+  KafkaMessageHandler,
   KAFKA_EVENTS,
   KAFKA_MESSAGES,
   SERVICES,
@@ -25,43 +27,33 @@ export class ShopService {
   constructor(
     private readonly prisma: PrismaService,
     @Inject(SERVICES.ACCOUNTS_SERVICE.token)
-    private readonly accountsService: ClientKafka,
+    private readonly accountsClient: ClientKafka,
   ) {}
 
   async CreateShop(
     createShopInput: CreateShopInput,
     user: AuthorizationDecodedUser,
   ): Promise<Shop> {
-    const userHasShop = await this.hasShop(user.id);
+    try {
+      const { accountType } = user;
+      const isSellerAccount = accountType === 'seller';
+      const userHasShop = await this.hasShop(user.id);
 
-    if (userHasShop)
-      throw new UnprocessableEntityException(
-        'this account already has an shop, seller account can only have 1 shop',
-      );
+      if (userHasShop)
+        throw new UnprocessableEntityException(
+          'this account already has an shop, seller account can only have 1 shop',
+        );
 
-    return await new Promise((res, rej) => {
-      const timeout = setTimeout(() => {
-        rej('internal server error: Timeout');
-      }, 3000);
+      if (!isSellerAccount)
+        throw new Error('only seller accounts can open a shop');
+      const createdShop = await this.prisma.shop.create({
+        data: { ...createShopInput, ownerId: user.id },
+      });
 
-      this.accountsService
-        .send(KAFKA_MESSAGES.isSellerAccount, new IsSellerAccountEvent(user.id))
-        .subscribe(async (data) => {
-          if (data !== 'true') {
-            rej(
-              'only seller accounts can open a shop, register for a seller account to stat Selling!',
-            );
-            return;
-          }
-
-          const createdShop = await this.prisma.shop.create({
-            data: { ...createShopInput, ownerId: user.id },
-          });
-
-          res(createdShop);
-          clearTimeout(timeout);
-        });
-    });
+      return createdShop;
+    } catch (error) {
+      throw new Error(error);
+    }
   }
 
   async hasShop(userId: string): Promise<boolean> {
@@ -72,6 +64,14 @@ export class ShopService {
     });
 
     return !!shop;
+  }
+
+  async getShopByOwnerId(ownerId: string): Promise<Shop> {
+    return this.prisma.shop.findUnique({
+      where: {
+        ownerId,
+      },
+    });
   }
 
   async findAll() {
@@ -97,8 +97,7 @@ export class ShopService {
   }
 
   getShopById(id: string) {
-    return this.prisma.shop.findFirst();
-    this.prisma.shop.findUnique({
+    return this.prisma.shop.findUnique({
       where: {
         id,
       },

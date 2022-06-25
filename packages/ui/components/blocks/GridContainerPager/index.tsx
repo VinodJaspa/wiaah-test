@@ -37,7 +37,7 @@ export const GridContainerPager: React.FC<GridContainerPager> = ({
 
   return (
     <div className="flex w-full flex-col items-center justify-center">
-      <div className="grid  grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {components.map((comp, i) => {
           if (i < componentsLimit) {
             return <div key={i}>{comp}</div>;

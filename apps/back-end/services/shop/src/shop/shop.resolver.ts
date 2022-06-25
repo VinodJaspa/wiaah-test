@@ -39,7 +39,7 @@ export class ShopResolver implements OnModuleInit {
 
   @Query(() => [Shop])
   getAllShops() {
-    return [{ id: '132', tesT: 'test', name: 'namee' }];
+    return this.shopService.findAll();
   }
 
   @Query(() => Shop)
@@ -54,7 +54,7 @@ export class ShopResolver implements OnModuleInit {
     return this.shopService.getFilteredShops(filteredShopsInput);
   }
 
-  @UseGuards(GqlAuthorizationGuard)
+  @UseGuards(new GqlAuthorizationGuard(['seller']))
   @Mutation(() => Shop)
   createShop(
     @Args('createShopInput') createShopInput: CreateShopInput,
@@ -80,7 +80,8 @@ export class ShopResolver implements OnModuleInit {
   }
 
   async onModuleInit() {
-    this.accountsClient.subscribeToResponseOf(KAFKA_MESSAGES.isSellerAccount);
+    this.accountsClient.subscribeToResponseOf(KAFKA_MESSAGES.emailExists);
+    this.accountsClient.subscribeToResponseOf(KAFKA_MESSAGES.getAccountByEmail);
     await this.accountsClient.connect();
   }
 }
