@@ -1,4 +1,15 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Inject, OnModuleInit } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
+import { KAFKA_MESSAGES, SERVICES } from 'nest-utils';
 
-@Controller('reviews')
-export class ReviewsController {}
+@Controller()
+export class ReviewsController implements OnModuleInit {
+  constructor(
+    @Inject(SERVICES.PRODUCTS_SERVICE.token)
+    private readonly productsClient: ClientKafka,
+  ) {}
+  async onModuleInit() {
+    this.productsClient.subscribeToResponseOf(KAFKA_MESSAGES.productReviewable);
+    await this.productsClient.connect();
+  }
+}

@@ -1,14 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { SendVerificationMailDto } from './dto/send-registeration-mail.dto';
 import Mailjet from 'node-mailjet';
+import { SendVerificationEmailEvent } from 'nest-dto';
 
 @Injectable()
 export class MailingService {
   constructor(@Inject('MAIL_JET') private readonly mailJet: Mailjet) {}
 
-  async sendVerificationMail(input: SendVerificationMailDto) {
+  async sendVerificationMail(payload: SendVerificationEmailEvent) {
     try {
-      const { email, verificationToken } = input;
+      const {
+        input: { email, verificationToken },
+      } = payload;
       console.log(
         `sending confirmation email to ${email} with the code ${verificationToken}`,
       );

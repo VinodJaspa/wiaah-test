@@ -1,14 +1,18 @@
-import { Controller, Inject } from '@nestjs/common';
-import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
+import { Controller } from '@nestjs/common';
+import { EventPattern, Payload } from '@nestjs/microservices';
 import { MailingService } from './mailing.service';
-import { SendVerificationMailDto } from './dto/send-registeration-mail.dto';
+import { KafkaPayload, SendVerificationEmailEvent } from 'nest-dto';
+import { KAFKA_EVENTS } from 'nest-utils';
 
 @Controller()
 export class MailingController {
   constructor(private readonly mailingService: MailingService) {}
 
-  @EventPattern('send_email_verification_mail')
-  sendVerificationMail(@Payload() payload: { value: SendVerificationMailDto }) {
+  @EventPattern(KAFKA_EVENTS.MAILING_EVENTS.sendVerificationEmail)
+  sendVerificationMail(
+    @Payload() payload: KafkaPayload<SendVerificationEmailEvent>,
+  ) {
+    console.log('mailing...');
     return this.mailingService.sendVerificationMail(payload.value);
   }
 }

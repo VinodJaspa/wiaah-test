@@ -97,6 +97,7 @@ input CreateProdutctInput {
   price: Float!
   brand: String!
   visibility: VisibilityEnum!
+  thumbnail: String!
 }
 
 input DiscountInput {
@@ -128,5 +129,6 @@ input UpdateProdutctInput {
   price: Float
   brand: String
   visibility: VisibilityEnum
+  thumbnail: String
   id: ID!
 }

@@ -13,7 +13,7 @@ function getUserFromRequest(req) {
     ? JSON.parse(req.headers.user)
     : null;
   const mockedUser = {
-    id: "62b4b5e7e69a975ad6095389",
+    id: "62b8bae86f604a137f311608",
     email: "barco01014@gmail.com",
     accountType: "seller",
   };

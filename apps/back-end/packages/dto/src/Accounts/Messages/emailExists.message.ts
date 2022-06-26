@@ -1,23 +1,7 @@
-export class EmailExistsMessage {
-  constructor(
-    public emailExistsMsgInput: {
-      email: string;
-    }
-  ) {}
+import { KafkaMessage, KafkaMessageReply } from "../../Base";
 
-  toString() {
-    return JSON.stringify(this.emailExistsMsgInput);
-  }
-}
+export class EmailExistsMessage extends KafkaMessage<{ email: string }> {}
 
-export class EmailExistsMessageReply {
-  constructor(
-    public emailExistsMsgReply: {
-      emailExists: boolean;
-    }
-  ) {}
-
-  toString() {
-    return JSON.stringify(this.emailExistsMsgReply);
-  }
-}
+export class EmailExistsMessageReply extends KafkaMessageReply<{
+  emailExists: boolean;
+}> {}

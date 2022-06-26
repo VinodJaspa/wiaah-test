@@ -9,6 +9,7 @@ import { Account } from './entities';
 import { PrismaService } from 'src/prisma.service';
 import { KAFKA_EVENTS, SERVICES } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
+import { CreateShoppingCartEvent } from 'nest-dto';
 
 @Injectable()
 export class AccountsService {
@@ -16,6 +17,8 @@ export class AccountsService {
     private prisma: PrismaService,
     @Inject(SERVICES.WISHLIST_SERVICE.token)
     private readonly wishlistClient: ClientKafka,
+    @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
+    private readonly shoppingCartclient: ClientKafka,
   ) {}
 
   async createAccountRecord(createAccountInput: CreateAccountInput) {
@@ -31,11 +34,16 @@ export class AccountsService {
           type: 'buyer',
         },
       });
-      this.wishlistClient.emit(KAFKA_EVENTS.createWishlist, {
+      this.wishlistClient.emit(KAFKA_EVENTS.WISHLIST_EVENTS.createWishlist, {
         ownerId: createdUser.id,
       });
+      this.shoppingCartclient.emit(
+        KAFKA_EVENTS.SHOPPING_CART_EVENTS.createShoppingCart,
+        new CreateShoppingCartEvent({ ownerId: createdUser.id }),
+      );
       return createdUser;
     } catch (error) {
+      console.log('err', error);
       return null;
     }
   }
@@ -45,7 +53,7 @@ export class AccountsService {
       if (typeof email !== 'string')
         throw new BadRequestException('invalid email field');
 
-      const account = await this.prisma.account.findFirst({
+      const account = await this.prisma.account.findUnique({
         where: {
           email,
         },

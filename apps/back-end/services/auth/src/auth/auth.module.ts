@@ -30,15 +30,15 @@ import { getUserFromRequest, KAFKA_BROKERS, SERVICES } from 'nest-utils';
         },
       },
       {
-        name: MAILING_SERVICE.token,
+        name: SERVICES.MAILING_SERVICE.token,
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: 'mailing',
-            brokers: ['localhost:9092'],
+            clientId: SERVICES.MAILING_SERVICE.clientId,
+            brokers: KAFKA_BROKERS,
           },
           consumer: {
-            groupId: MAILING_SERVICE.groupId,
+            groupId: SERVICES.MAILING_SERVICE.groupId,
           },
         },
       },

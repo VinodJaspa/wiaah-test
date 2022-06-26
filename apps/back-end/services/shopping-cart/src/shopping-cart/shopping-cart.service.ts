@@ -1,6 +1,7 @@
 import {
   Inject,
   Injectable,
+  NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { CartItem } from '@prisma-client';
@@ -21,6 +22,7 @@ import {
 } from 'nest-dto';
 import { RemoveShoppingCartItemInput } from './dto/removeItem.input';
 import { AddShoppingCartItemInput } from './dto/addItem.input';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class ShoppingCartService {
@@ -66,6 +68,11 @@ export class ShoppingCartService {
       where: {
         ownerId,
       },
+      rejectOnNotFound(error) {
+        throw new NotFoundException(
+          'could not find a shopping cart for this account',
+        );
+      },
     });
   }
 
@@ -74,25 +81,22 @@ export class ShoppingCartService {
     product: AddShoppingCartItemInput,
   ): Promise<CartItem> {
     const {
-      results: {
-        data: { name, price, thumbnail },
-        error,
-        success,
-      },
+      results: { data, error, success },
     } = await KafkaMessageHandler<
       string,
       GetProductMetaDataMessage,
       GetProductMetaDataMessageReply
     >(
       this.productsClient,
-      KAFKA_MESSAGES.isProductAddable,
+      KAFKA_MESSAGES.PRODUCTS_MESSAGES.getProductMetaData,
       new GetProductMetaDataMessage({
         productId: product.itemId,
         userId: user.id,
       }),
+      'fetch product metadata timed out',
     );
     if (!success) throw new Error(error);
-
+    const { name, price, thumbnail } = data;
     const newCartItem: CartItem = {
       itemId: product.itemId,
       quantity: product.quantity,
@@ -101,6 +105,14 @@ export class ShoppingCartService {
       price,
       thumbnail,
     };
+
+    const hasitem = await this.alreadyHasItem(user.id, product.itemId);
+
+    if (hasitem) {
+      await this.incressShoppingCartItem(user.id, product.itemId);
+
+      return newCartItem;
+    }
 
     await this.prisma.cart.update({
       where: {
@@ -115,6 +127,52 @@ export class ShoppingCartService {
 
     return newCartItem;
   }
+
+  async alreadyHasItem(userId: string, itemId: string): Promise<boolean> {
+    const item = await this.prisma.cart.findUnique({
+      where: {
+        ownerId: userId,
+      },
+      select: {
+        cartItems: {
+          select: {
+            itemId: true,
+          },
+        },
+      },
+    });
+    const { cartItems } = item;
+    const hasItem = cartItems.findIndex((item) => item.itemId === itemId) > -1;
+
+    return hasItem;
+  }
+
+  async incressShoppingCartItem(
+    ownerId: string,
+    itemId: string,
+    amount: number = 1,
+  ) {
+    return this.prisma.cart.update({
+      where: {
+        ownerId,
+      },
+      data: {
+        cartItems: {
+          updateMany: {
+            where: {
+              itemId,
+            },
+            data: {
+              quantity: {
+                increment: amount,
+              },
+            },
+          },
+        },
+      },
+    });
+  }
+
   async addService(
     user: AuthorizationDecodedUser,
     service: AddShoppingCartItemInput,
@@ -131,7 +189,7 @@ export class ShoppingCartService {
       GetServiceMetaDataMessageReply
     >(
       this.productsClient,
-      KAFKA_MESSAGES.isProductAddable,
+      KAFKA_MESSAGES.SERVICES_MESSAGES.getServiceMetaData,
       new GetServiceMetaDataMessage({
         serviceId: service.itemId,
         userId: user.id,
@@ -182,5 +240,16 @@ export class ShoppingCartService {
     });
 
     return true;
+  }
+
+  clearShoppingCart(ownerId: string): Promise<ShoppingCart> {
+    return this.prisma.cart.update({
+      where: {
+        ownerId,
+      },
+      data: {
+        cartItems: [],
+      },
+    });
   }
 }

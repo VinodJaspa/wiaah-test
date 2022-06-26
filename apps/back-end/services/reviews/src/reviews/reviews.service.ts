@@ -46,7 +46,6 @@ export class ReviewsService {
       new IsProductReviewableMessage({ productId: itemId, reviewerId }),
       'product reviewable check timed out',
     );
-
     if (!success) throw new UnprocessableEntityException(error);
 
     if (!isReviewable)

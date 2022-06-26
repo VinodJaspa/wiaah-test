@@ -61,6 +61,7 @@ export class ProductsService {
       data: {
         ...createProductInput,
         storeId: data,
+        sellerId: user.id,
       },
     });
     this.wishlistClient.emit<string, CreatWisherListPayload>(
@@ -278,6 +279,8 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     brand: 'nike',
     price: 16,
     colors: ['red', 'blue'],
+    sellerId: 'sellerid',
+    thumbnail: '',
   },
   {
     category: 'test',
@@ -288,6 +291,8 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     brand: 'or',
     price: 18,
     colors: ['yellow', 'green'],
+    sellerId: 'sellerid',
+    thumbnail: '',
   },
   {
     category: 'test',
@@ -298,6 +303,8 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     brand: 'zara',
     price: 30,
     colors: ['red', 'gray', 'white'],
+    sellerId: 'sellerid',
+    thumbnail: '',
   },
   {
     category: 'test',
@@ -308,6 +315,8 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     brand: 'zake',
     price: 5,
     colors: ['purple', 'lime', 'yellow'],
+    sellerId: 'sellerid',
+    thumbnail: '',
   },
   {
     category: 'test',
@@ -318,5 +327,7 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     brand: 'dior',
     price: 98,
     colors: ['cyan', 'lime', 'black', 'crimson'],
+    sellerId: 'sellerid',
+    thumbnail: '',
   },
 ];

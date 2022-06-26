@@ -15,8 +15,12 @@ import { LoginDto, RegisterDto, VerifyEmailDto } from './dto';
 import * as bcrypt from 'bcrypt';
 import { Account } from './types';
 import { JwtService } from '@nestjs/jwt';
-import { ResponseObj, SERVICES } from 'nest-utils';
-import { EmailExistsMessage, EmailExistsMessageReply } from 'nest-dto';
+import { SERVICES } from 'nest-utils';
+import {
+  EmailExistsMessage,
+  EmailExistsMessageReply,
+  SendVerificationEmailEvent,
+} from 'nest-dto';
 
 @Injectable()
 export class AuthService {
@@ -70,10 +74,10 @@ export class AuthService {
       });
 
       // when success, communicate with mailing to send a new verification email
-      this.mailingClient.emit('send_email_verification_mail', {
-        verificationToken,
-        email,
-      });
+      this.mailingClient.emit<any, SendVerificationEmailEvent>(
+        KAFKA_EVENTS.MAILING_EVENTS.sendVerificationEmail,
+        new SendVerificationEmailEvent({ email, verificationToken }),
+      );
 
       return true;
     } catch (error) {
@@ -84,7 +88,7 @@ export class AuthService {
   async verifyEmail(inputs: VerifyEmailDto) {
     try {
       const { email, verificationCode } = inputs;
-      console.log(email, verificationCode);
+
       const registeration = await this.prisma.registeration.findUnique({
         where: {
           email,
@@ -192,16 +196,22 @@ export class AuthService {
 
   async emailExists(email: string): Promise<boolean> {
     const {
-      emailExistsMsgReply: { emailExists },
+      results: {
+        data: { emailExists },
+        error,
+        success,
+      },
     } = await KafkaMessageHandler<
       string,
       EmailExistsMessage,
       EmailExistsMessageReply
     >(
       this.accountsClient,
-      KAFKA_MESSAGES.emailExists,
+      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.emailExists,
       new EmailExistsMessage({ email }),
+      'email validation timed out',
     );
+    if (!success) throw new Error('error validating email');
     return emailExists;
   }
 }
