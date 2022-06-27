@@ -15,4 +15,9 @@ export class MailingController {
     console.log('mailing...');
     return this.mailingService.sendVerificationMail(payload.value);
   }
+
+  @EventPattern('testEvent')
+  test(@Payload() payload) {
+    console.log('mailing test', payload);
+  }
 }

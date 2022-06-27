@@ -1,9 +1,8 @@
 import { CreateCurrencyInput } from './create-currency.input';
 import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
-import { CurrencyName } from '@prisma-client';
 
 @InputType()
 export class UpdateCurrencyInput extends PartialType(CreateCurrencyInput) {
-  @Field(() => CurrencyName)
-  name: CurrencyName;
+  @Field(() => String)
+  code: string;
 }

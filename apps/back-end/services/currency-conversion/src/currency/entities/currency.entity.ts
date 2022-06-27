@@ -1,15 +1,24 @@
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
-import { CurrencyName } from '@prisma-client';
+import {
+  ObjectType,
+  Field,
+  Int,
+  ID,
+  registerEnumType,
+  Float,
+} from '@nestjs/graphql';
 
 @ObjectType()
 export class Currency {
   @Field((type) => ID)
   id: string;
 
-  @Field((type) => CurrencyName)
-  name: CurrencyName;
+  @Field((type) => String)
+  name: string;
 
-  @Field((type) => Int)
+  @Field((type) => String)
+  code: string;
+
+  @Field((type) => Float)
   exchangeRate: number;
 
   @Field((type) => Date)

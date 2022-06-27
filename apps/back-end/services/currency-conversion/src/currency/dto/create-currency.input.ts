@@ -1,11 +1,10 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
-import { CurrencyName } from '@prisma-client';
+import { InputType, Int, Field, Float } from '@nestjs/graphql';
 
 @InputType()
 export class CreateCurrencyInput {
-  @Field((type) => CurrencyName)
-  name: CurrencyName;
+  @Field((type) => String)
+  code: string;
 
-  @Field((type) => Int)
+  @Field((type) => Float)
   exchangeRate: number;
 }
