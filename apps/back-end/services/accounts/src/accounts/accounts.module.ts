@@ -48,6 +48,15 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           },
         },
       },
+      {
+        name: 'test',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            brokers: KAFKA_BROKERS,
+          },
+        },
+      },
     ]),
   ],
   providers: [AccountsResolver, AccountsService, PrismaService],

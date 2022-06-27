@@ -4,7 +4,7 @@ interface ServiceInfo {
   clientId: string;
 }
 
-type Services =
+export type Services =
   | "ACCOUNTS_SERVICE"
   | "AUTH_SERVICE"
   | "MAILING_SERVICE"

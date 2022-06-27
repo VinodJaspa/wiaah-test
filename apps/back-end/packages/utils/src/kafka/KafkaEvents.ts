@@ -1,6 +1,7 @@
 export const KAFKA_EVENTS = {
   ACCOUNTS_EVENT: {
     createAccount: "create.account",
+    accountCreated: "account.created",
   },
   WISHLIST_EVENTS: {
     createWishersList: "create.wisherlist",
@@ -11,6 +12,9 @@ export const KAFKA_EVENTS = {
   },
   MAILING_EVENTS: {
     sendVerificationEmail: "send.verification.email",
+  },
+  PRODUCTS_EVENTS: {
+    productCreated: "product.created",
   },
   createAccount: "create.account",
   createWishlist: "create.wishlist",
@@ -36,6 +40,9 @@ export const KAFKA_MESSAGES = {
   SERVICES_MESSAGES: {
     isServiceAddable: "is.service.addable",
     getServiceMetaData: "get.service.metadata",
+  },
+  CURRENCY_MESSAGES: {
+    getCurrencyExchangeRate: "get.currency.exchange.rate",
   },
   emailExists: "email.exists",
   getAccountByEmail: "get.account.by.email",

@@ -1,7 +1,7 @@
 import React from "react";
 import { t } from "i18next";
 import { useRouter } from "next/router";
-import { LoginType } from "../../../../apps/market/lib/LoignTypes";
+import { LoginType } from "types";
 
 import { AuthSwitcher, FormContainer } from "../../components/blocks";
 

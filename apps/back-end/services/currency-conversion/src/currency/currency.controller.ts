@@ -1,12 +1,37 @@
 import { Controller } from '@nestjs/common';
-import { EventPattern, Payload } from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
+import { formatCaughtError, KAFKA_MESSAGES } from 'nest-utils';
+import {
+  KafkaPayload,
+  GetCurrencyExchangeRateMessage,
+  GetCurrencyExchangeRateMessageReply,
+} from 'nest-dto';
+import { CurrencyService } from './currency.service';
 
 @Controller()
 export class CurrencyController {
-  constructor() {}
+  constructor(private readonly currencyService: CurrencyService) {}
 
-  @EventPattern('testEvent')
-  test(@Payload() payload) {
-    console.log('currency test event', payload);
+  @MessagePattern(KAFKA_MESSAGES.CURRENCY_MESSAGES.getCurrencyExchangeRate)
+  async getCurrencyExchange(
+    @Payload() payload: KafkaPayload<GetCurrencyExchangeRateMessage>,
+  ): Promise<GetCurrencyExchangeRateMessageReply> {
+    try {
+      const currency = await this.currencyService.getCurrencyDataByCode(
+        payload.value.input.targetCurrencyCode,
+      );
+
+      return new GetCurrencyExchangeRateMessageReply({
+        data: { rate: currency.exchangeRate },
+        error: null,
+        success: true,
+      });
+    } catch (error) {
+      return new GetCurrencyExchangeRateMessageReply({
+        data: null,
+        error: formatCaughtError(error),
+        success: false,
+      });
+    }
   }
 }

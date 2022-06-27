@@ -9,7 +9,7 @@ import { Account } from './entities';
 import { PrismaService } from 'src/prisma.service';
 import { KAFKA_EVENTS, SERVICES } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
-import { CreateShoppingCartEvent } from 'nest-dto';
+import { CreateShoppingCartEvent, NewAccountCreatedEvent } from 'nest-dto';
 
 @Injectable()
 export class AccountsService {
@@ -19,6 +19,8 @@ export class AccountsService {
     private readonly wishlistClient: ClientKafka,
     @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
     private readonly shoppingCartclient: ClientKafka,
+    @Inject('test')
+    private readonly kafkaClient: ClientKafka,
   ) {}
 
   async createAccountRecord(createAccountInput: CreateAccountInput) {
@@ -34,12 +36,15 @@ export class AccountsService {
           type: 'buyer',
         },
       });
-      this.wishlistClient.emit(KAFKA_EVENTS.WISHLIST_EVENTS.createWishlist, {
-        ownerId: createdUser.id,
-      });
-      this.shoppingCartclient.emit(
-        KAFKA_EVENTS.SHOPPING_CART_EVENTS.createShoppingCart,
-        new CreateShoppingCartEvent({ ownerId: createdUser.id }),
+      this.kafkaClient.emit<string, NewAccountCreatedEvent>(
+        KAFKA_EVENTS.ACCOUNTS_EVENT.accountCreated,
+        new NewAccountCreatedEvent({
+          email: createdUser.email,
+          id: createdUser.id,
+          accountType: createdUser.type,
+          firstName: createdUser.firstName,
+          lastName: createdUser.lastName,
+        }),
       );
       return createdUser;
     } catch (error) {

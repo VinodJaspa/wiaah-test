@@ -16,12 +16,14 @@ import {
   IsOwnerOfShopMessageReply,
   GetUserShopIdMessageReply,
   GetUserShopIdMessage,
+  NewProductCreatedEvent,
 } from 'nest-dto';
 import {
   AuthorizationDecodedUser,
   KafkaMessageHandler,
   KAFKA_EVENTS,
   KAFKA_MESSAGES,
+  KAFKA_SERVICE_TOKEN,
   SERVICES,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
@@ -35,6 +37,7 @@ export class ProductsService {
     private readonly wishlistClient: ClientKafka,
     @Inject(SERVICES.SHOP_SERVICE.token)
     private readonly shopclient: ClientKafka,
+    @Inject(KAFKA_SERVICE_TOKEN) private readonly kafkaClient: ClientKafka,
   ) {}
 
   async createNewProduct(
@@ -42,7 +45,7 @@ export class ProductsService {
     user: AuthorizationDecodedUser,
   ) {
     const {
-      results: { success, data, error },
+      results: { success, data: shopId, error },
     } = await KafkaMessageHandler<
       string,
       GetUserShopIdMessage,
@@ -60,14 +63,16 @@ export class ProductsService {
     const product = await this.prisma.product.create({
       data: {
         ...createProductInput,
-        storeId: data,
+        storeId: shopId,
         sellerId: user.id,
       },
     });
-    this.wishlistClient.emit<string, CreatWisherListPayload>(
-      KAFKA_EVENTS.createWishersList,
-      { itemId: product.id },
+
+    this.kafkaClient.emit<string, NewProductCreatedEvent>(
+      KAFKA_EVENTS.PRODUCTS_EVENTS.productCreated,
+      new NewProductCreatedEvent({ id: product.id, ownerId: user.id, shopId }),
     );
+
     return product;
   }
 

@@ -6,7 +6,11 @@ import {
   KAFKA_MESSAGES,
   SERVICES,
 } from 'nest-utils';
-import { CreateShoppingCartEvent, KafkaPayload } from 'nest-dto';
+import {
+  CreateShoppingCartEvent,
+  KafkaPayload,
+  NewAccountCreatedEvent,
+} from 'nest-dto';
 import { ShoppingCartService } from './shopping-cart.service';
 
 @Controller()
@@ -17,15 +21,13 @@ export class ShoppingCartController implements OnModuleInit {
     private readonly productsClient: ClientKafka,
   ) {}
 
-  @EventPattern(KAFKA_EVENTS.SHOPPING_CART_EVENTS.createShoppingCart)
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENT.accountCreated)
   async createShoppingCart(
-    @Payload() payload: KafkaPayload<CreateShoppingCartEvent>,
+    @Payload() payload: KafkaPayload<NewAccountCreatedEvent>,
   ) {
     console.log('creating shopping cart', payload);
     try {
-      await this.shoppingCartService.createShoppingCart(
-        payload.value.input.ownerId,
-      );
+      await this.shoppingCartService.createShoppingCart(payload.value.input.id);
     } catch (err) {
       console.log('error creating shoppingcart', formatCaughtError(err));
     }

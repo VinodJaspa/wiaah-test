@@ -19,7 +19,7 @@ import { CurrencyController } from './currency.controller';
       autoSchemaFile: true,
       context: ({ req }) => ({ req, user: getUserFromRequest(req) }),
     }),
-    FixerModule.forRoot({ apiKey: 'y8AQOHGl6XN5VOOW2JltU9O9IRrJFgWD' }),
+    FixerModule.forRoot({ apiKey: process.env.APILAYERAPIKEY }),
   ],
   providers: [CurrencyResolver, CurrencyService, PrismaService],
   controllers: [CurrencyController],

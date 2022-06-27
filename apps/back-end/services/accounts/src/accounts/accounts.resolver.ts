@@ -24,12 +24,6 @@ export class AccountsResolver {
     private readonly cartclient: ClientKafka,
   ) {}
 
-  @Query((type) => Boolean)
-  test() {
-    this.cartclient.emit('testEvent', { data: 'test' });
-    return true;
-  }
-
   @Query(() => [Account])
   getAccounts() {
     return this.accountsService.findAll();
