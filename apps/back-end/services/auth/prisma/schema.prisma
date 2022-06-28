@@ -12,16 +12,18 @@ datasource db {
 }
 
 model Registeration {
-  id                String            @id @default(auto()) @map("_id") @db.ObjectId
-  verificationToken String            @unique
-  accountInputData  AccountInputsData
-  email             String            @unique
+  id                String            @id() @default(auto()) @map("_id") @db.ObjectId()
+  verificationCode  String            
+  email             String            @unique()
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt()
 }
 
-type AccountInputsData {
-  firstName String
-  lastName  String
-  password  String
+model ChangePasswordRequest {
+  id String @id @default(auto()) @map("_id") @db.ObjectId()
+  verificationCode String
+  email String @unique()
+  accountId String @unique()
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }

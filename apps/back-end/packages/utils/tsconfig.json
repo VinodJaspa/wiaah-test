@@ -6,7 +6,12 @@
     "module": "CommonJS",
     "target": "ES2017",
     "outDir": "dist/",
+    "sourceMap": true,
     "isolatedModules": false,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "@generators": ["src/generators"]
+    }
   }
 }

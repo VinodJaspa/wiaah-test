@@ -1,4 +1,4 @@
-import { generateVerificationToken } from '@lib';
+import { generateVerificationToken } from '@utils';
 import {
   BadRequestException,
   Inject,
@@ -10,17 +10,30 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { Registeration } from '../../prisma/generated';
 import { PrismaService } from 'src/prisma.service';
-import { KafkaMessageHandler, KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
+import {
+  KafkaMessageHandler,
+  KAFKA_EVENTS,
+  KAFKA_MESSAGES,
+  KAFKA_SERVICE_TOKEN,
+} from 'nest-utils';
 import { LoginDto, RegisterDto, VerifyEmailDto } from './dto';
 import * as bcrypt from 'bcrypt';
 import { Account } from './types';
 import { JwtService } from '@nestjs/jwt';
 import { SERVICES } from 'nest-utils';
 import {
+  AccountRegisteredEvent,
+  AccountVerifiedEvent,
+  ChangePasswordEvent,
   EmailExistsMessage,
   EmailExistsMessageReply,
+  GetAccountMetaDataByEmailMessage,
+  GetAccountMetaDataByEmailMessageReply,
+  PasswordChangedEvent,
   SendVerificationEmailEvent,
 } from 'nest-dto';
+import { ForgotPasswordEmailInput } from './dto/forgotPasswordEmail.input';
+import { ConfirmPasswordChangeInput } from './dto/confirmPasswordChange.input';
 
 @Injectable()
 export class AuthService {
@@ -30,18 +43,25 @@ export class AuthService {
     private readonly accountsClient: ClientKafka,
     @Inject(SERVICES.MAILING_SERVICE.token)
     private readonly mailingClient: ClientKafka,
+    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
     private readonly JWTService: JwtService,
   ) {}
 
   async register(createAuthInput: RegisterDto): Promise<boolean> {
     try {
-      const { confirmPassword, email, firstName, lastName, password } =
-        createAuthInput;
+      const {
+        confirmPassword,
+        email,
+        firstName,
+        lastName,
+        password,
+        accountType,
+      } = createAuthInput;
 
       const emailExists = await this.emailExists(email);
 
       if (emailExists === true) {
-        throw new NotAcceptableException('this email is already taken');
+        throw new NotAcceptableException('this email is already used');
       }
 
       if (confirmPassword !== password) {
@@ -55,28 +75,28 @@ export class AuthService {
         await this.removeRegisterationsByEmail(email);
 
       // generate random verification code
-      const verificationToken = `${generateVerificationToken()}`;
+      const verificationCode = `${generateVerificationToken()}`;
 
       // create registeration enitity to track verification email proccess
       await this.prisma.registeration.create({
         data: {
           email,
-          verificationToken,
-          accountInputData: {
-            firstName,
-            lastName,
-            password,
-          },
-        },
-        select: {
-          email: true,
+          verificationCode,
         },
       });
 
-      // when success, communicate with mailing to send a new verification email
-      this.mailingClient.emit<any, SendVerificationEmailEvent>(
-        KAFKA_EVENTS.MAILING_EVENTS.sendVerificationEmail,
-        new SendVerificationEmailEvent({ email, verificationToken }),
+      const hashedPassword = await this.hashPassword(password);
+
+      this.eventsClient.emit<any, AccountRegisteredEvent>(
+        KAFKA_EVENTS.AUTH_EVENTS.accountRegistered,
+        new AccountRegisteredEvent({
+          firstName,
+          lastName,
+          email,
+          password: hashedPassword,
+          accountType,
+          verificationCode,
+        }),
       );
 
       return true;
@@ -98,22 +118,15 @@ export class AuthService {
         },
       });
 
-      if (registeration.verificationToken !== verificationCode)
+      if (registeration.verificationCode !== verificationCode)
         throw new BadRequestException('invalid verification code');
 
       await this.removeRegisterationsByEmail(email);
 
-      const {
-        accountInputData: { firstName, lastName, password },
-      } = registeration;
-
-      const hashedPassword = await bcrypt.hash(password, 10);
-      this.accountsClient.emit(KAFKA_EVENTS.createAccount, {
-        email,
-        firstName,
-        lastName,
-        password: hashedPassword,
-      });
+      this.eventsClient.emit<any, AccountVerifiedEvent>(
+        KAFKA_EVENTS.AUTH_EVENTS.accountVerified,
+        new AccountVerifiedEvent({ email }),
+      );
 
       return true;
     } catch (error) {
@@ -123,14 +136,15 @@ export class AuthService {
 
   async login(input: LoginDto): Promise<{ access_token: string }> {
     try {
-      const { email, firstName, lastName, id, accountType } =
-        await this.validateCredentials(input.email, input.password);
+      const { email, id, accountType } = await this.validateCredentials(
+        input.email,
+        input.password,
+      );
       return {
         access_token: this.JWTService.sign({
           id,
           email,
-          firstName,
-          lastName,
+
           accountType,
         }),
       };
@@ -139,33 +153,125 @@ export class AuthService {
     }
   }
 
+  async requestPasswordChange({ email }: ForgotPasswordEmailInput) {
+    const {
+      results: { data, error, success },
+    } = await this.getAccountMetaDataByEmail(email);
+    if (!success) throw new Error(error);
+    const { firstName, username, id: accountId } = data;
+    const verificationCode = generateVerificationToken();
+
+    const createdPasswordChangeRequest =
+      await this.prisma.changePasswordRequest.upsert({
+        create: {
+          email,
+          verificationCode,
+          accountId,
+        },
+        update: {
+          verificationCode,
+          accountId,
+        },
+        where: {
+          email,
+        },
+        select: { email: true, verificationCode: true },
+      });
+
+    this.eventsClient.emit(
+      KAFKA_EVENTS.AUTH_EVENTS.passwordChangeRequest,
+      new ChangePasswordEvent({
+        email: createdPasswordChangeRequest.email,
+        name: firstName || username || 'Customer',
+        verificationCode: createdPasswordChangeRequest.verificationCode,
+      }),
+    );
+  }
+
+  async confirmPasswordChange({
+    confirmNewPassword,
+    newPassword,
+    verificationCode,
+    email,
+  }: ConfirmPasswordChangeInput) {
+    const changeRequest = await this.prisma.changePasswordRequest.findUnique({
+      where: {
+        email,
+      },
+      rejectOnNotFound(error) {
+        throw new NotFoundException(
+          'there is no password change request for this email, consider asking for a password change first',
+        );
+      },
+    });
+
+    if (changeRequest.verificationCode !== verificationCode)
+      throw new BadRequestException('wrong verification code');
+    if (confirmNewPassword !== newPassword)
+      throw new BadRequestException('confirm Password and password must match');
+
+    const hashedNewPassword = await this.hashPassword(newPassword);
+
+    // everything went right, emit an password changed event
+    this.eventsClient.emit(
+      KAFKA_EVENTS.AUTH_EVENTS.passwordChanged,
+      new PasswordChangedEvent({
+        email,
+        newPassword: hashedNewPassword,
+        id: changeRequest.accountId,
+      }),
+    );
+  }
+
+  hashPassword(password: string) {
+    return bcrypt.hash(password, 12);
+  }
+
   private async validateCredentials(
     email: string,
     password: string,
-  ): Promise<Omit<Account, 'password'>> {
-    return await new Promise((res, rej) => {
-      const timeout = setTimeout(() => {
-        rej(new InternalServerErrorException('password validation timed out'));
-        request.unsubscribe();
-      }, 5000);
-      const request = this.accountsClient
-        .send(KAFKA_MESSAGES.getAccountByEmail, { email })
-        .subscribe(async (account: Account) => {
-          if (!account) {
-            rej(new NotFoundException('no account with this email was found'));
-            return;
-          }
+  ): Promise<{ email: string; id: string; accountType: string }> {
+    const {
+      results: { data, error, success },
+    } = await KafkaMessageHandler<
+      any,
+      GetAccountMetaDataByEmailMessage,
+      GetAccountMetaDataByEmailMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountByEmail,
+      new GetAccountMetaDataByEmailMessage({
+        email,
+      }),
+    );
 
-          const compere = await bcrypt.compare(password, account.password);
+    if (!success) {
+      throw new InternalServerErrorException('error validating account email');
+    }
 
-          if (!compere) rej(new BadRequestException('wrong password'));
+    if (!data)
+      throw new NotFoundException('account with this email was not found');
 
-          const { password: _, ...rest } = account;
+    const { password: hashedPassword, ...rest } = data;
+    console.log(password, hashedPassword);
 
-          res(rest);
-          clearTimeout(timeout);
-        });
-    });
+    const compere = await bcrypt.compare(password, hashedPassword);
+
+    if (!compere) throw new BadRequestException('wrong password');
+
+    return rest;
+  }
+
+  async getAccountMetaDataByEmail(email: string) {
+    return await KafkaMessageHandler<
+      any,
+      GetAccountMetaDataByEmailMessage,
+      GetAccountMetaDataByEmailMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountByEmail,
+      new GetAccountMetaDataByEmailMessage({ email }),
+    );
   }
 
   async getAll(): Promise<Registeration[]> {

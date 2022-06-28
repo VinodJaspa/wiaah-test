@@ -33,4 +33,7 @@ export class Account {
 
   @Field((type) => AccountType)
   type: AccountType;
+
+  @Field((type) => Boolean)
+  verified: boolean;
 }

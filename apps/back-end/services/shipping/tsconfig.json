@@ -16,11 +16,6 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false,
-    "paths": {
-      "@models": ["models"],
-      "@utils": ["src/utils"],
-      "@prisma-client": ["prisma/generated"]
-    }
+    "noFallthroughCasesInSwitch": false
   }
 }

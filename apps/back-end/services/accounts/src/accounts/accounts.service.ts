@@ -10,6 +10,7 @@ import { PrismaService } from 'src/prisma.service';
 import { KAFKA_EVENTS, SERVICES } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 import { CreateShoppingCartEvent, NewAccountCreatedEvent } from 'nest-dto';
+import { AccountType, Prisma } from '@prisma-client';
 
 @Injectable()
 export class AccountsService {
@@ -23,9 +24,9 @@ export class AccountsService {
     private readonly kafkaClient: ClientKafka,
   ) {}
 
-  async createAccountRecord(createAccountInput: CreateAccountInput) {
+  async createAccountRecord(createAccountInput: Prisma.AccountCreateInput) {
     try {
-      const { email, firstName, lastName, password } = createAccountInput;
+      const { email, firstName, lastName, password, type } = createAccountInput;
 
       const createdUser = await this.prisma.account.create({
         data: {
@@ -33,7 +34,7 @@ export class AccountsService {
           firstName,
           lastName,
           password,
-          type: 'buyer',
+          type,
         },
       });
       this.kafkaClient.emit<string, NewAccountCreatedEvent>(
@@ -80,6 +81,11 @@ export class AccountsService {
         where: {
           email,
         },
+        rejectOnNotFound(error) {
+          throw new NotFoundException(
+            'could not find an account with this email, consider regisering a new account',
+          );
+        },
       });
 
       return account;
@@ -104,19 +110,20 @@ export class AccountsService {
 
   async update(
     id: string,
-    updateAccountInput: UpdateAccountInput,
+    updateAccountInput: Prisma.AccountUpdateInput,
   ): Promise<Partial<Account>> {
     try {
-      const { id, ...rest } = updateAccountInput;
+      console.log(id);
       const res = await this.prisma.account.update({
         where: {
           id,
         },
-        data: rest,
+        data: updateAccountInput,
       });
       return res;
     } catch (err) {
-      throw new BadRequestException('account was not found');
+      console.log(err);
+      // throw new BadRequestException('account was not found');
     }
   }
 
@@ -157,5 +164,15 @@ export class AccountsService {
     } catch (error) {
       throw new Error(error);
     }
+  }
+  async handleVerifiedAccount(email: string) {
+    const res = await this.prisma.account.update({
+      where: {
+        email,
+      },
+      data: {
+        verified: true,
+      },
+    });
   }
 }

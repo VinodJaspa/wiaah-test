@@ -16,6 +16,12 @@ export const KAFKA_EVENTS = {
   PRODUCTS_EVENTS: {
     productCreated: "product.created",
   },
+  AUTH_EVENTS: {
+    accountRegistered: "account.registered",
+    accountVerified: "account.verified",
+    passwordChangeRequest: "password.change.request",
+    passwordChanged: "password.changed",
+  },
   createAccount: "create.account",
   createWishlist: "create.wishlist",
   createWishersList: "create.wisherlist",

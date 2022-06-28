@@ -21,3 +21,4 @@ function getUserFromRequest(req) {
   return user;
 }
 exports.getUserFromRequest = getUserFromRequest;
+//# sourceMappingURL=getUserFromRequest.js.map

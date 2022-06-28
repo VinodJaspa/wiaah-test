@@ -7,7 +7,10 @@ import { ClientKafka } from '@nestjs/microservices';
 import { ACCOUNTS_SERVICE } from 'src/ServicesTokens';
 import { LoginDto, VerifyEmailDto } from './dto';
 import { ConfigService } from '@nestjs/config';
-import { KAFKA_MESSAGES } from 'nest-utils';
+import { KAFKA_EVENTS, KAFKA_MESSAGES, KAFKA_SERVICE_TOKEN } from 'nest-utils';
+import { ForgotPasswordEmailInput } from './dto/forgotPasswordEmail.input';
+import { ConfirmPasswordChangeInput } from './dto/confirmPasswordChange.input';
+import { NoSchemaIntrospectionCustomRule } from 'graphql';
 
 @Resolver((of) => Registeration)
 export class AuthResolver implements OnModuleInit {
@@ -15,6 +18,7 @@ export class AuthResolver implements OnModuleInit {
     private readonly authService: AuthService,
     @Inject(ACCOUNTS_SERVICE.token)
     private readonly accountsClient: ClientKafka,
+    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
     private readonly config: ConfigService,
   ) {}
 
@@ -51,6 +55,30 @@ export class AuthResolver implements OnModuleInit {
     return this.authService.removeAll();
   }
 
+  @Mutation((type) => Boolean)
+  async resetPassword(
+    @Args('ResetPasswordArgs') inputs: ForgotPasswordEmailInput,
+  ): Promise<boolean> {
+    try {
+      await this.authService.requestPasswordChange(inputs);
+      return true;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
+  @Mutation((type) => Boolean)
+  async verifyNewPassword(
+    @Args('verifyNewPassword') inputs: ConfirmPasswordChangeInput,
+  ): Promise<boolean> {
+    try {
+      await this.authService.confirmPasswordChange(inputs);
+      return true;
+    } catch (error) {
+      throw new Error(error);
+    }
+  }
+
   @Query((type) => [Registeration])
   getRegistrations() {
     return this.authService.getAll();
@@ -59,6 +87,10 @@ export class AuthResolver implements OnModuleInit {
   async onModuleInit() {
     this.accountsClient.subscribeToResponseOf(KAFKA_MESSAGES.emailExists);
     this.accountsClient.subscribeToResponseOf(KAFKA_MESSAGES.getAccountByEmail);
+    this.eventsClient.subscribeToResponseOf(
+      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountByEmail,
+    );
     await this.accountsClient.connect();
+    await this.eventsClient.connect();
   }
 }

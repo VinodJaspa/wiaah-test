@@ -1,4 +1,4 @@
-import { Controller, Inject, OnModuleInit } from '@nestjs/common';
+import { Controller, Inject, Logger, OnModuleInit } from '@nestjs/common';
 import {
   ClientKafka,
   EventPattern,
@@ -14,9 +14,19 @@ import {
   formatCaughtError,
   SERVICES,
 } from 'nest-utils';
-import { EmailExistsMessage, EmailExistsMessageReply } from 'nest-dto';
-@Controller('accounts')
+import {
+  AccountRegisteredEvent,
+  AccountVerifiedEvent,
+  EmailExistsMessage,
+  EmailExistsMessageReply,
+  GetAccountMetaDataByEmailMessage,
+  GetAccountMetaDataByEmailMessageReply,
+  KafkaPayload,
+  PasswordChangedEvent,
+} from 'nest-dto';
+@Controller()
 export class AccountsController implements OnModuleInit {
+  private logger = new Logger(AccountsController.name);
   constructor(
     private readonly accountService: AccountsService,
     @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
@@ -29,21 +39,17 @@ export class AccountsController implements OnModuleInit {
   async emailExists(
     @Payload() payload: { value: EmailExistsMessage },
   ): Promise<EmailExistsMessageReply> {
-    const date = Date.now();
     try {
-      console.log(payload);
       const exists = await this.accountService.emailExists(
         payload.value.input.email,
       );
 
-      console.log('success', date - Date.now());
       return new EmailExistsMessageReply({
         success: true,
         data: { emailExists: exists },
         error: null,
       });
     } catch (err) {
-      console.log('err', err, date - Date.now());
       return new EmailExistsMessageReply({
         success: false,
         data: null,
@@ -53,13 +59,62 @@ export class AccountsController implements OnModuleInit {
   }
 
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountByEmail)
-  getAccountByEmail(@Payload() payload: { value: GetAccountByEmailDto }) {
-    return this.accountService.getByEmail(payload.value.email);
+  async getAccountByEmail(
+    @Payload() payload: KafkaPayload<GetAccountMetaDataByEmailMessage>,
+  ): Promise<GetAccountMetaDataByEmailMessageReply> {
+    try {
+      const {
+        value: {
+          input: { email },
+        },
+      } = payload;
+      const account = await this.accountService.getByEmail(email);
+      const { firstName, password, type, id } = account;
+      return new GetAccountMetaDataByEmailMessageReply({
+        success: true,
+        data: { accountType: type, email, password, firstName, id },
+        error: null,
+      });
+    } catch (error) {
+      return new GetAccountMetaDataByEmailMessageReply({
+        success: false,
+        data: null,
+        error: formatCaughtError(error),
+      });
+    }
   }
 
-  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENT.createAccount)
-  createAccount(@Payload() payload: { value: CreateAccountInput }) {
-    this.accountService.createAccountRecord(payload.value);
+  @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.accountRegistered)
+  createAccount(@Payload() payload: KafkaPayload<AccountRegisteredEvent>) {
+    this.accountService.createAccountRecord({
+      ...payload.value.input,
+      type: payload.value.input.accountType,
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.accountVerified)
+  handleAccountVerified(
+    @Payload()
+    { value }: KafkaPayload<AccountVerifiedEvent>,
+  ) {
+    console.log('account,verfifed', value);
+    const {
+      input: { email },
+    } = value;
+    this.accountService.handleVerifiedAccount(email);
+  }
+
+  @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.passwordChanged)
+  changePassword(@Payload() { value }: KafkaPayload<PasswordChangedEvent>) {
+    try {
+      const {
+        input: { email, newPassword, id },
+      } = value;
+      console.log(value);
+      this.accountService.update(id, { password: newPassword });
+    } catch (error) {
+      this.logger.error(error);
+    }
   }
 
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.isSellerAccount)
