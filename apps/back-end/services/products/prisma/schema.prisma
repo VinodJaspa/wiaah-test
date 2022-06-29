@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./generated/client"
+  output   = "./generated/client"
 }
 
 datasource db {
@@ -12,31 +12,35 @@ datasource db {
 }
 
 model Product {
-  id          String @id() @default(auto()) @map("_id") @db.ObjectId()
-  title       String
-  description String
-  price       Int
-  category    String
-  colors      String[]
-  sizes       String[]
-  stock       Int
-  rate        Int @default(0)
-  brand       String
-  discount    Discount? 
-  storeId     String
-  cashback    CashBack?
-  presentations ProductPresentation[]
-  visibility VisibilityEnum @default(hidden)
+  id             String                @id() @default(auto()) @map("_id") @db.ObjectId()
+  sellerId       String
+  title          String
+  description    String
+  price          Int
+  category       String
+  colors         String[]
+  sizes          String[]
+  stock          Int
+  rate           Int                   @default(0)
+  brand          String
+  discount       Discount?
+  storeId        String
+  cashback       CashBack?
+  thumbnail      String
+  shippingRuleId String                @db.ObjectId
+  presentations  ProductPresentation[]
+  visibility     VisibilityEnum        @default(hidden)
 }
 
 type Discount {
-  units Int
+  units  Int
   amount Int
 }
+
 type CashBack {
-  units Int
+  units  Int
   amount Int
-  type CashbackType
+  type   CashbackType
 }
 
 enum CashbackType {
@@ -51,7 +55,7 @@ enum VisibilityEnum {
 
 type ProductPresentation {
   type PresentationType
-  src String 
+  src  String
 }
 
 enum PresentationType {

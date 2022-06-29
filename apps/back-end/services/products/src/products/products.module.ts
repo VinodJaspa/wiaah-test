@@ -5,7 +5,14 @@ import {
 } from '@nestjs/apollo';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GraphQLModule } from '@nestjs/graphql';
-import { getUserFromRequest, KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import {
+  getUserFromRequest,
+  KAFKA_BROKERS,
+  KAFKA_SERVICE_CLIENTID,
+  KAFKA_SERVICE_GROUPID,
+  KAFKA_SERVICE_TOKEN,
+  SERVICES,
+} from 'nest-utils';
 import { PrismaService } from 'src/Prisma.service';
 import { ShopResolver } from './shop.resolver';
 import { Shop } from './entities/shop.entity';
@@ -52,6 +59,19 @@ import { ProductsController } from './products.controller';
           },
           consumer: {
             groupId: SERVICES.SHOP_SERVICE.groupId,
+          },
+        },
+      },
+      {
+        name: KAFKA_SERVICE_TOKEN,
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            brokers: KAFKA_BROKERS,
+            clientId: KAFKA_SERVICE_CLIENTID,
+          },
+          consumer: {
+            groupId: KAFKA_SERVICE_GROUPID,
           },
         },
       },

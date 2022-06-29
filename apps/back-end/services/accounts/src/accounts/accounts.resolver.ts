@@ -1,4 +1,4 @@
-import { UseGuards } from '@nestjs/common';
+import { Inject, UseGuards } from '@nestjs/common';
 import {
   Resolver,
   Query,
@@ -6,17 +6,23 @@ import {
   ResolveReference,
   Mutation,
 } from '@nestjs/graphql';
+import { ClientKafka } from '@nestjs/microservices';
 import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  SERVICES,
 } from 'nest-utils';
 import { AccountsService } from './accounts.service';
 import { Account } from './entities';
 
 @Resolver(() => Account)
 export class AccountsResolver {
-  constructor(private readonly accountsService: AccountsService) {}
+  constructor(
+    private readonly accountsService: AccountsService,
+    @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
+    private readonly cartclient: ClientKafka,
+  ) {}
 
   @Query(() => [Account])
   getAccounts() {

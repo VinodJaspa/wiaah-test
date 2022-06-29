@@ -4,7 +4,7 @@ interface ServiceInfo {
   clientId: string;
 }
 
-type Services =
+export type Services =
   | "ACCOUNTS_SERVICE"
   | "AUTH_SERVICE"
   | "MAILING_SERVICE"
@@ -12,7 +12,8 @@ type Services =
   | "WISHLIST_SERVICE"
   | "PRODUCTS_SERVICE"
   | "SHOPPING_CART_SERVICE"
-  | "SERVICES_SERIVCE";
+  | "SERVICES_SERIVCE"
+  | "CURRENCY_SERVICE";
 
 export const SERVICES: Record<Services, ServiceInfo> = {
   ACCOUNTS_SERVICE: {
@@ -54,5 +55,10 @@ export const SERVICES: Record<Services, ServiceInfo> = {
     token: "SERVICES_SERVICE",
     clientId: "services",
     groupId: "services-consumer",
+  },
+  CURRENCY_SERVICE: {
+    token: "CURRENCY_SERVICE",
+    clientId: "currency",
+    groupId: "currency-consumer",
   },
 };

@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model ShippingSettings {
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  shopId        String         @db.ObjectId @unique
+  ownerId       String         @db.ObjectId @unique
+  shippingRules ShippingRule[]
+}
+
+model ShippingRule {
+  id                 String            @id @default(auto()) @map("_id") @db.ObjectId
+  countries          ShippingCountry[]
+  cost               Float
+  shippingTypes       ShippingType[]
+  ShippingSettings   ShippingSettings? @relation(fields: [shippingSettingsId], references: [id])
+  shippingSettingsId String?           @db.ObjectId
+}
+
+type ShippingCountry {
+  name String
+  code String
+}
+
+enum ShippingType {
+  free
+  paid
+  click_and_collect
+}

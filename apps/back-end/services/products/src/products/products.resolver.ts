@@ -6,12 +6,16 @@ import {
   ResolveReference,
   ResolveField,
   Parent,
+  Context,
+  GraphQLExecutionContext,
+  GqlExecutionContext,
+  GqlContextType,
 } from '@nestjs/graphql';
 import { ProductsService } from './products.service';
 import { Product } from './entities/product.entity';
 import { CreateProdutctInput } from './dto/create-produtct.input';
 import { Shop } from './entities/shop.entity';
-import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
+import { Inject, OnModuleInit, Req, UseGuards } from '@nestjs/common';
 import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
@@ -74,6 +78,15 @@ export class ProductsResolver implements OnModuleInit {
       __typename: 'Shop',
       id: product.storeId,
     };
+  }
+
+  @ResolveField((of) => String)
+  shipping(
+    @Parent() product: Product,
+    @Context() context: GraphQLExecutionContext,
+  ) {
+    console.log(context);
+    return '';
   }
 
   @ResolveReference()

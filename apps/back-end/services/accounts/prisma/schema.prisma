@@ -18,6 +18,7 @@ model Account {
   email         String @unique
   password      String
   type          AccountType
+  verified      Boolean @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt()
 }

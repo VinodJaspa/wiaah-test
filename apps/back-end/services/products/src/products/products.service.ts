@@ -14,14 +14,16 @@ import {
   CreatWisherListPayload,
   IsOwnerOfShopMessage,
   IsOwnerOfShopMessageReply,
-  GetUserShopIdMessageReply,
-  GetUserShopIdMessage,
+  NewProductCreatedEvent,
+  GetUserShopMetaDataMessage,
+  GetUserShopMetaDataMessageReply,
 } from 'nest-dto';
 import {
   AuthorizationDecodedUser,
   KafkaMessageHandler,
   KAFKA_EVENTS,
   KAFKA_MESSAGES,
+  KAFKA_SERVICE_TOKEN,
   SERVICES,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
@@ -35,6 +37,7 @@ export class ProductsService {
     private readonly wishlistClient: ClientKafka,
     @Inject(SERVICES.SHOP_SERVICE.token)
     private readonly shopclient: ClientKafka,
+    @Inject(KAFKA_SERVICE_TOKEN) private readonly kafkaClient: ClientKafka,
   ) {}
 
   async createNewProduct(
@@ -45,28 +48,33 @@ export class ProductsService {
       results: { success, data, error },
     } = await KafkaMessageHandler<
       string,
-      GetUserShopIdMessage,
-      GetUserShopIdMessageReply
+      GetUserShopMetaDataMessage,
+      GetUserShopMetaDataMessageReply
     >(
       this.shopclient,
       KAFKA_MESSAGES.getUserShopId,
-      new GetUserShopIdMessage(user.id),
+      new GetUserShopMetaDataMessage({ accountId: user.id }),
     );
 
     if (!success) {
       throw new Error(error);
     }
 
+    const { shopId } = data;
+
     const product = await this.prisma.product.create({
       data: {
         ...createProductInput,
-        storeId: data,
+        storeId: shopId,
+        sellerId: user.id,
       },
     });
-    this.wishlistClient.emit<string, CreatWisherListPayload>(
-      KAFKA_EVENTS.createWishersList,
-      { itemId: product.id },
+
+    this.kafkaClient.emit<string, NewProductCreatedEvent>(
+      KAFKA_EVENTS.PRODUCTS_EVENTS.productCreated,
+      new NewProductCreatedEvent({ id: product.id, ownerId: user.id, shopId }),
     );
+
     return product;
   }
 
@@ -115,7 +123,6 @@ export class ProductsService {
       new IsOwnerOfShopMessage({ ownerId: userId, shopId }),
       'shop validation timed out',
     );
-    console.log('errorwda', error);
     if (!success) throw new Error(error);
     return data;
   }
@@ -278,6 +285,8 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     brand: 'nike',
     price: 16,
     colors: ['red', 'blue'],
+    sellerId: 'sellerid',
+    thumbnail: '',
   },
   {
     category: 'test',
@@ -288,6 +297,8 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     brand: 'or',
     price: 18,
     colors: ['yellow', 'green'],
+    sellerId: 'sellerid',
+    thumbnail: '',
   },
   {
     category: 'test',
@@ -298,6 +309,8 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     brand: 'zara',
     price: 30,
     colors: ['red', 'gray', 'white'],
+    sellerId: 'sellerid',
+    thumbnail: '',
   },
   {
     category: 'test',
@@ -308,6 +321,8 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     brand: 'zake',
     price: 5,
     colors: ['purple', 'lime', 'yellow'],
+    sellerId: 'sellerid',
+    thumbnail: '',
   },
   {
     category: 'test',
@@ -318,5 +333,7 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     brand: 'dior',
     price: 98,
     colors: ['cyan', 'lime', 'black', 'crimson'],
+    sellerId: 'sellerid',
+    thumbnail: '',
   },
 ];

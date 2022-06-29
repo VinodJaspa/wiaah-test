@@ -78,4 +78,7 @@ export class CreateProdutctInput {
 
   @Field((type) => VisibilityEnum)
   visibility: VisibilityEnum;
+
+  @Field((type) => String)
+  thumbnail: string;
 }

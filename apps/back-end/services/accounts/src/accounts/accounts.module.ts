@@ -35,6 +35,28 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
           },
         },
       },
+      {
+        name: SERVICES.SHOPPING_CART_SERVICE.token,
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: SERVICES.SHOPPING_CART_SERVICE.clientId,
+            brokers: KAFKA_BROKERS,
+          },
+          consumer: {
+            groupId: SERVICES.SHOPPING_CART_SERVICE.groupId,
+          },
+        },
+      },
+      {
+        name: 'test',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            brokers: KAFKA_BROKERS,
+          },
+        },
+      },
     ]),
   ],
   providers: [AccountsResolver, AccountsService, PrismaService],

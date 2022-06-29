@@ -1,14 +1,14 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { IsEmail, IsString } from 'class-validator';
+import { Field, InputType, registerEnumType } from '@nestjs/graphql';
+import { IsEmail } from 'class-validator';
+import { AccountType } from 'nest-dto';
 
+// registerEnumType(AccountType, { name: 'AccountType' });
 @InputType()
 export class RegisterDto {
   @Field((type) => String)
-  @IsString()
   firstName: string;
 
   @Field((type) => String)
-  @IsString()
   lastName: string;
 
   @Field((type) => String)
@@ -16,10 +16,11 @@ export class RegisterDto {
   email: string;
 
   @Field((type) => String)
-  @IsString()
   password: string;
 
   @Field((type) => String)
-  @IsString()
   confirmPassword: string;
+
+  @Field((type) => String)
+  accountType: AccountType;
 }

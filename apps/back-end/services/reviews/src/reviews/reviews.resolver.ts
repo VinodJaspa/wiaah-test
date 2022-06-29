@@ -20,12 +20,8 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 
 @Resolver(() => Review)
-export class ReviewsResolver implements OnModuleInit {
-  constructor(
-    private readonly reviewsService: ReviewsService,
-    @Inject(SERVICES.PRODUCTS_SERVICE.token)
-    private readonly productsClient: ClientKafka,
-  ) {}
+export class ReviewsResolver {
+  constructor(private readonly reviewsService: ReviewsService) {}
 
   @Query((type) => [Review])
   getAllReviews() {
@@ -44,10 +40,5 @@ export class ReviewsResolver implements OnModuleInit {
     @Args('ReviewProductArgs') input: CreateReviewInput,
   ) {
     return this.reviewsService.reviewProduct(user.id, input);
-  }
-
-  async onModuleInit() {
-    this.productsClient.subscribeToResponseOf(KAFKA_MESSAGES.productReviewable);
-    await this.productsClient.connect();
   }
 }

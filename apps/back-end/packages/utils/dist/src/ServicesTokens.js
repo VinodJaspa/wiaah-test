@@ -7,3 +7,4 @@ exports.ServicesTokens = {
     groupId: "accounts-consumer",
   },
 };
+//# sourceMappingURL=ServicesTokens.js.map
