@@ -10,10 +10,11 @@ import { Shop } from '@prisma-client';
 import { formatCaughtError, KAFKA_MESSAGES, SERVICES } from 'nest-utils';
 import { ShopService } from './shop.service';
 import {
-  GetUserShopIdMessage,
-  GetUserShopIdMessageReply,
+  GetUserShopMetaDataMessage,
+  GetUserShopMetaDataMessageReply,
   IsOwnerOfShopMessage,
   IsOwnerOfShopMessageReply,
+  KafkaPayload,
 } from 'nest-dto';
 
 @Controller()
@@ -22,21 +23,25 @@ export class ShopController {
 
   @MessagePattern(KAFKA_MESSAGES.getUserShopId)
   async getUserStoreData(
-    @Payload() payload: { value: GetUserShopIdMessage },
-  ): Promise<GetUserShopIdMessageReply> {
+    @Payload() payload: KafkaPayload<GetUserShopMetaDataMessage>,
+  ): Promise<GetUserShopMetaDataMessageReply> {
     try {
-      const shop = await this.shopService.getShopByOwnerId(payload.value.input);
+      const shop = await this.shopService.getShopByOwnerId(
+        payload.value.input.accountId,
+      );
       if (!shop) {
         throw new NotFoundException('no shop with the given id was found');
       }
 
-      return new GetUserShopIdMessageReply({
+      return new GetUserShopMetaDataMessageReply({
         success: true,
-        data: shop.id,
+        data: {
+          shopId: shop.id,
+        },
         error: null,
       });
     } catch (error) {
-      return new GetUserShopIdMessageReply({
+      return new GetUserShopMetaDataMessageReply({
         success: false,
         data: null,
         error: formatCaughtError(error),

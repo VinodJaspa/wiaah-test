@@ -14,9 +14,9 @@ import {
   CreatWisherListPayload,
   IsOwnerOfShopMessage,
   IsOwnerOfShopMessageReply,
-  GetUserShopIdMessageReply,
-  GetUserShopIdMessage,
   NewProductCreatedEvent,
+  GetUserShopMetaDataMessage,
+  GetUserShopMetaDataMessageReply,
 } from 'nest-dto';
 import {
   AuthorizationDecodedUser,
@@ -45,20 +45,22 @@ export class ProductsService {
     user: AuthorizationDecodedUser,
   ) {
     const {
-      results: { success, data: shopId, error },
+      results: { success, data, error },
     } = await KafkaMessageHandler<
       string,
-      GetUserShopIdMessage,
-      GetUserShopIdMessageReply
+      GetUserShopMetaDataMessage,
+      GetUserShopMetaDataMessageReply
     >(
       this.shopclient,
       KAFKA_MESSAGES.getUserShopId,
-      new GetUserShopIdMessage(user.id),
+      new GetUserShopMetaDataMessage({ accountId: user.id }),
     );
 
     if (!success) {
       throw new Error(error);
     }
+
+    const { shopId } = data;
 
     const product = await this.prisma.product.create({
       data: {
@@ -121,7 +123,6 @@ export class ProductsService {
       new IsOwnerOfShopMessage({ ownerId: userId, shopId }),
       'shop validation timed out',
     );
-    console.log('errorwda', error);
     if (!success) throw new Error(error);
     return data;
   }

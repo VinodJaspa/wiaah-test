@@ -1,4 +1,8 @@
 import { KafkaMessage, KafkaMessageReply } from "../../Base";
 
-export class GetUserShopIdMessage extends KafkaMessage<string> {}
-export class GetUserShopIdMessageReply extends KafkaMessageReply<string> {}
+export class GetUserShopMetaDataMessage extends KafkaMessage<{
+  accountId: string;
+}> {}
+export class GetUserShopMetaDataMessageReply extends KafkaMessageReply<{
+  shopId: string;
+}> {}

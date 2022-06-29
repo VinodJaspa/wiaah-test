@@ -55,6 +55,7 @@ type Product {
   price: Float!
   visibility: VisibilityEnum!
   shop: Shop!
+  shipping: String!
 }
 
 enum VisibilityEnum {

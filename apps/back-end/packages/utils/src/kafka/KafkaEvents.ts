@@ -42,6 +42,7 @@ export const KAFKA_MESSAGES = {
   },
   SHOP_MESSAGES: {
     isOwnerOfShop: "is.owner.of.shop",
+    getShopMetaData: "get.shop.metadata",
   },
   SERVICES_MESSAGES: {
     isServiceAddable: "is.service.addable",
