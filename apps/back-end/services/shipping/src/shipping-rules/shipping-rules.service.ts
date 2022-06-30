@@ -27,6 +27,32 @@ export class ShippingRulesService {
     @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
   ) {}
 
+  getShippingRuleById(id: string): Promise<ShippingRule> {
+    return this.prisma.shippingRule.findUnique({
+      where: {
+        id,
+      },
+      rejectOnNotFound: () => {
+        throw new ShippingRuleNotFoundException('id');
+      },
+    });
+  }
+
+  getShippingRulesByIds(ids: string[] = []): Promise<ShippingRule[]> {
+    return this.prisma.shippingRule.findMany({
+      where: {
+        AND: [
+          {
+            id: {
+              in: ids,
+            },
+          },
+        ],
+      },
+      take: ids.length,
+    });
+  }
+
   async addShippingRule(
     userId: string,
     rule: CreateShippingRuleInput,

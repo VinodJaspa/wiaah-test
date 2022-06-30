@@ -42,9 +42,7 @@ export class Discount {
 }
 
 @ObjectType()
-@Directive('@key(fields: "id")')
-@Directive('@key(fields: "title")')
-@Directive('@key(fields: "storeId")')
+@Directive('@key(fields: "id,title,storeId,shippingRulesIds")')
 export class Product {
   @Field((type) => ID)
   id: string;
@@ -90,4 +88,9 @@ export class Product {
 
   @Field((type) => VisibilityEnum)
   visibility: VisibilityEnum;
+
+  @Field((type) => [ID])
+  shippingRulesIds: string[];
+
+  country: string;
 }

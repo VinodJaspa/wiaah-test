@@ -16,15 +16,25 @@ model ShippingSettings {
   shopId        String         @db.ObjectId @unique
   ownerId       String         @db.ObjectId @unique
   shippingRules ShippingRule[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }
 
 model ShippingRule {
   id                 String            @id @default(auto()) @map("_id") @db.ObjectId
   countries          ShippingCountry[]
   cost               Float
+  deliveryTimeRange  DeliveryTimeRange   
   shippingTypes       ShippingType[]
   ShippingSettings   ShippingSettings? @relation(fields: [shippingSettingsId], references: [id])
-  shippingSettingsId String?           @db.ObjectId
+  shippingSettingsId String           @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+type DeliveryTimeRange {
+  from Int
+  to Int
 }
 
 type ShippingCountry {

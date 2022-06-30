@@ -55,7 +55,7 @@ type Product {
   price: Float!
   visibility: VisibilityEnum!
   shop: Shop!
-  shipping: String!
+  shippingDetails: ShippingDetails
 }
 
 enum VisibilityEnum {
@@ -71,6 +71,10 @@ type Shop {
 type Search {
   filter: String!
   products: [Product!]!
+}
+
+type ShippingDetails {
+  country: String!
 }
 
 type Query {
