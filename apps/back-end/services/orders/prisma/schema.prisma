@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model OrdersCluster {
+  id String @db.ObjectId @id @default(auto()) @map("_id")
+  shopId String @db.ObjectId @unique
+  sellerId String @db.ObjectId @unique
+  orders Order[]
+}
+
+
+
+
+type Order {
+  id         String     
+  items      OrderItem[]
+  status     OrderStatus
+  sellerInfo SellerInfo
+  buyerInfo  BuyerInfo
+}
+
+type OrderItem {
+  itemId   String
+  quantity Int
+}
+
+type SellerInfo {
+  id     String
+  shopId String
+}
+
+type BuyerInfo {
+  id         String
+  address    String
+  address2   String
+  country    String
+  city       String
+  state      String
+  phone      String
+  postalCode String
+}
+
+
+type OrderStatus {
+  of OrderStatusEnum
+  rejectReason String?
+}
+
+enum OrderStatusEnum {
+  pending
+  rejectedBySeller
+  rejectedByBuyer
+  shipping
+  compeleted
+}

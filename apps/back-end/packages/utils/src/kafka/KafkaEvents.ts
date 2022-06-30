@@ -34,11 +34,13 @@ export const KAFKA_MESSAGES = {
     getAccountByEmail: "get.account.by.email",
     isSellerAccount: "is.seller.account",
     getUserShopId: "get.user.store.id",
+    getAccountById: "get.account.by.id",
   },
   PRODUCTS_MESSAGES: {
     productReviewable: "is.product.reviewable",
     isProductAddable: "is.product.addable",
     getProductMetaData: "get.product.metadata",
+    getProductsMetaData: "get.products.metadata",
   },
   SHOP_MESSAGES: {
     isOwnerOfShop: "is.owner.of.shop",
