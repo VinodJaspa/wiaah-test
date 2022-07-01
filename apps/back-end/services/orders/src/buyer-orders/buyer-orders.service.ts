@@ -1,26 +1,291 @@
-import { Injectable } from '@nestjs/common';
-import { CreateBuyerOrderInput } from './dto/create-buyer-order.input';
-import { UpdateBuyerOrderInput } from './dto/update-buyer-order.input';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
+import { OrdersCluster } from '@prisma-client';
+import {
+  hasFilters,
+  generateFiltersOfArgs,
+  KAFKA_SERVICE_TOKEN,
+  KafkaMessageHandler,
+  KAFKA_MESSAGES,
+} from 'nest-utils';
+import { Order } from '@entities';
+import { OrdersService } from 'src/orders/orders.service';
+import { PrismaService } from 'src/prisma.service';
+import {
+  AcceptReceivedOrderInput,
+  placeOrderInput,
+  GetBuyerOrdersInput,
+  RejectRecievedOrderInput,
+} from '@dto';
+import {
+  UnauthorizedOrderAccessExecption,
+  OrderNotFoundException,
+  OrdersClusterNotFoundException,
+} from '@exceptions';
+import { randomUUID } from 'crypto';
+import {
+  GetProductsMetaDataMessage,
+  GetProductsMetaDataMessageReply,
+  GetAccountByIdMessage,
+  GetAccountByIdMessageReply,
+} from 'nest-dto';
 
 @Injectable()
 export class BuyerOrdersService {
-  create(createBuyerOrderInput: CreateBuyerOrderInput) {
-    return 'This action adds a new buyerOrder';
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly ordersService: OrdersService,
+    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
+  ) {}
+
+  async getMyOrders(
+    buyerId: string,
+    input: GetBuyerOrdersInput,
+  ): Promise<Order[]> {
+    let filters = generateFiltersOfArgs(input, ['status']);
+
+    const buyerOrdersCluster = await this.prisma.buyerOrdersCluster.findUnique({
+      where: {
+        buyerId,
+      },
+    });
+    if (filters.length < 1) return buyerOrdersCluster.orders;
+    const filteredOrders = buyerOrdersCluster.orders.filter((order) =>
+      hasFilters(order, filters),
+    );
+    return filteredOrders;
   }
 
-  findAll() {
-    return `This action returns all buyerOrders`;
+  async acceptRecievedOrder(
+    buyerId: string,
+    { orderId, shopId }: AcceptReceivedOrderInput,
+  ): Promise<Order> {
+    const [{ id: clusterId }, order] = await this.validateOrderOwnership(
+      buyerId,
+      orderId,
+      shopId,
+    );
+
+    await this.prisma.ordersCluster.update({
+      where: {
+        id: clusterId,
+      },
+      data: {
+        orders: {
+          updateMany: {
+            where: {
+              id: orderId,
+            },
+            data: {
+              status: {
+                of: 'compeleted',
+                rejectReason: null,
+              },
+            },
+          },
+        },
+      },
+    });
+    await this.prisma.buyerOrdersCluster.update({
+      where: {
+        buyerId,
+      },
+      data: {
+        orders: {
+          updateMany: {
+            where: {
+              id: orderId,
+            },
+            data: {
+              status: {
+                of: 'compeleted',
+                rejectReason: null,
+              },
+            },
+          },
+        },
+      },
+    });
+    return order;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} buyerOrder`;
+  async rejectRecievedOrder(
+    buyerId: string,
+    { orderId, rejectReason, shopId }: RejectRecievedOrderInput,
+  ): Promise<Order> {
+    const [{ id }, order] = await this.validateOrderOwnership(
+      buyerId,
+      orderId,
+      shopId,
+    );
+
+    await this.prisma.ordersCluster.update({
+      where: {
+        id,
+      },
+      data: {
+        orders: {
+          updateMany: {
+            where: {
+              id: order.id,
+            },
+            data: {
+              status: {
+                of: 'rejectedByBuyer',
+                rejectReason,
+              },
+            },
+          },
+        },
+      },
+    });
+    await this.prisma.buyerOrdersCluster.update({
+      where: {
+        buyerId,
+      },
+      data: {
+        orders: {
+          updateMany: {
+            where: {
+              id: order.id,
+            },
+            data: {
+              status: {
+                of: 'rejectedByBuyer',
+                rejectReason,
+              },
+            },
+          },
+        },
+      },
+    });
+    return order;
   }
 
-  update(id: number, updateBuyerOrderInput: UpdateBuyerOrderInput) {
-    return `This action updates a #${id} buyerOrder`;
+  async validateOrderOwnership(
+    ownerId: string,
+    orderId: string,
+    shopId: string,
+  ): Promise<[OrdersCluster, Order]> {
+    const cluster = await this.prisma.ordersCluster.findUnique({
+      where: {
+        shopId,
+      },
+
+      rejectOnNotFound: (error) => {
+        throw new OrdersClusterNotFoundException('id');
+      },
+    });
+    const { orders, id: clusterId } = cluster;
+    const order = orders.find((order) => order.id === orderId);
+    if (!order) throw new OrderNotFoundException('id');
+    const { buyerInfo, id, items, sellerInfo, status } = order;
+
+    if (buyerInfo.id !== ownerId) throw new UnauthorizedOrderAccessExecption();
+    return [cluster, order];
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} buyerOrder`;
+  async createOrder(buyerId: string, input: placeOrderInput): Promise<Order> {
+    const {
+      results: { data, error, success },
+    } = await KafkaMessageHandler<
+      any,
+      GetProductsMetaDataMessage,
+      GetProductsMetaDataMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.PRODUCTS_MESSAGES.getProductsMetaData,
+      new GetProductsMetaDataMessage({
+        productsIds: input.items.map((item) => item.itemId),
+      }),
+    );
+
+    if (!success) throw new Error(error);
+    const { ownerId: sellerId, productId, shopId } = data[0];
+
+    const productsOfSameShop = data.every(
+      (product) => product.shopId === shopId,
+    );
+
+    if (!productsOfSameShop)
+      throw new BadRequestException(
+        'failed to create order: order contains products from diffrent shops',
+      );
+
+    const { address, address2, city, country, state, postalCode, phone } =
+      await this.getBuyerInfo(buyerId);
+
+    const orderData: Order = {
+      id: randomUUID(),
+      status: {
+        of: 'pending',
+      },
+      sellerInfo: {
+        id: sellerId,
+        shopId,
+      },
+      buyerInfo: {
+        address,
+        address2,
+        city,
+        country,
+        phone,
+        postalCode,
+        state,
+        id: buyerId,
+      },
+      items: input.items,
+    };
+
+    await this.prisma.ordersCluster.upsert({
+      where: {
+        shopId,
+      },
+      create: {
+        sellerId,
+        shopId,
+        orders: [orderData],
+      },
+      update: {
+        orders: {
+          push: orderData,
+        },
+      },
+    });
+
+    await this.prisma.buyerOrdersCluster.upsert({
+      where: {
+        buyerId,
+      },
+      create: {
+        buyerId,
+        orders: [orderData],
+      },
+      update: {
+        orders: {
+          push: orderData,
+        },
+      },
+    });
+
+    return orderData;
+  }
+
+  async getBuyerInfo(buyerId: string) {
+    const {
+      results: { data, error, success },
+    } = await KafkaMessageHandler<
+      any,
+      GetAccountByIdMessage,
+      GetAccountByIdMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountById,
+      new GetAccountByIdMessage({ accountId: buyerId }),
+    );
+
+    if (!success) throw new Error(error);
+
+    return data;
   }
 }

@@ -1,42 +1,50 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { BuyerOrdersService } from './buyer-orders.service';
-import { BuyerOrder } from './entities/buyer-order.entity';
-import { CreateBuyerOrderInput } from './dto/create-buyer-order.input';
-import { UpdateBuyerOrderInput } from './dto/update-buyer-order.input';
+import { Order } from '@entities';
+import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
+import {
+  AuthorizationDecodedUser,
+  GqlAuthorizationGuard,
+  GqlCurrentUser,
+  KAFKA_MESSAGES,
+  KAFKA_SERVICE_TOKEN,
+} from 'nest-utils';
+import {
+  AcceptReceivedOrderInput,
+  placeOrderInput,
+  RejectRecievedOrderInput,
+} from '@dto';
+import { ClientKafka } from '@nestjs/microservices';
 
-@Resolver(() => BuyerOrder)
+@Resolver(() => Order)
+@UseGuards(new GqlAuthorizationGuard(['buyer', 'seller']))
 export class BuyerOrdersResolver {
-  constructor(private readonly buyerOrdersService: BuyerOrdersService) {}
+  constructor(
+    private readonly buyerOrdersService: BuyerOrdersService,
+    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
+  ) {}
 
-  @Mutation(() => BuyerOrder)
-  createBuyerOrder(
-    @Args('createBuyerOrderInput') createBuyerOrderInput: CreateBuyerOrderInput,
-  ) {
-    return this.buyerOrdersService.create(createBuyerOrderInput);
+  @Mutation(() => Order)
+  acceptRecievedOrder(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('acceptRecievedOrder') input: AcceptReceivedOrderInput,
+  ): Promise<Order> {
+    return this.buyerOrdersService.acceptRecievedOrder(user.id, input);
   }
 
-  @Query(() => [BuyerOrder], { name: 'buyerOrders' })
-  findAll() {
-    return this.buyerOrdersService.findAll();
+  @Mutation(() => Order)
+  rejectRecievedOrder(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('rejectRecievedOrder') input: RejectRecievedOrderInput,
+  ): Promise<Order> {
+    return this.buyerOrdersService.rejectRecievedOrder(user.id, input);
   }
 
-  @Query(() => BuyerOrder, { name: 'buyerOrder' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
-    return this.buyerOrdersService.findOne(id);
-  }
-
-  @Mutation(() => BuyerOrder)
-  updateBuyerOrder(
-    @Args('updateBuyerOrderInput') updateBuyerOrderInput: UpdateBuyerOrderInput,
-  ) {
-    return this.buyerOrdersService.update(
-      updateBuyerOrderInput.id,
-      updateBuyerOrderInput,
-    );
-  }
-
-  @Mutation(() => BuyerOrder)
-  removeBuyerOrder(@Args('id', { type: () => Int }) id: number) {
-    return this.buyerOrdersService.remove(id);
+  @Mutation(() => Order)
+  placeOrder(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('placeOrderArgs') input: placeOrderInput,
+  ): Promise<Order> {
+    return this.buyerOrdersService.createOrder(user.id, input);
   }
 }

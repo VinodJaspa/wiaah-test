@@ -10,7 +10,7 @@ class OrderItemInput {
 }
 
 @InputType()
-export class CreateOrderInput {
+export class placeOrderInput {
   @Field((type) => [OrderItemInput])
   items: OrderItemInput[];
 }

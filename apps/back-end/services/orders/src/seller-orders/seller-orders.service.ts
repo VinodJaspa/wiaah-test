@@ -1,14 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { OrdersCluster } from '@prisma-client';
-import { Filter, KAFKA_SERVICE_TOKEN } from 'nest-utils';
-import { Order } from 'src/orders/entities/order.entity';
+import {
+  generateFiltersOfArgs,
+  hasFilters,
+  KAFKA_SERVICE_TOKEN,
+} from 'nest-utils';
+import { Order } from '@entities';
 import { OrdersService } from 'src/orders/orders.service';
 import { PrismaService } from 'src/prisma.service';
-import { GetMyOrdersInput } from './dto/get-orders.input';
-import { RejectOrderInput } from './dto/reject-order.input';
-import { OrdersClusterNotFoundException } from './exceptions';
-import { OrdersNotFoundException } from './exceptions/OrderNotFoundExceptio';
+import { GetMyOrdersInput, RejectOrderRequestInput } from '@dto';
+import {
+  OrdersClusterNotFoundException,
+  OrderNotFoundException,
+} from '@exceptions';
 
 @Injectable()
 export class SellerOrdersService {
@@ -18,13 +23,11 @@ export class SellerOrdersService {
     private readonly prisma: PrismaService,
   ) {}
 
-  async getFilteredOrders(
+  async getMyOrders(
     sellerId: string,
     args: GetMyOrdersInput,
   ): Promise<Order[]> {
-    const filters: Filter<Order>[] = [];
-
-    if ('status' in args) filters.push(['status', args.status]);
+    const filters = generateFiltersOfArgs(args, ['status']);
 
     const ordersCluster = await this.prisma.ordersCluster.findUnique({
       where: {
@@ -36,18 +39,12 @@ export class SellerOrdersService {
     });
 
     if (filters.length < 1) return ordersCluster.orders;
-    return ordersCluster.orders.filter((order) =>
-      this.matchOrderFilters(order, filters),
-    );
-  }
-
-  matchOrderFilters(order: Order, filters: Filter<Order>[]): boolean {
-    return filters.every(([key, value]) => order[key] === value);
+    return ordersCluster.orders.filter((order) => hasFilters(order, filters));
   }
 
   async rejectOrder(
     sellerId: string,
-    { orderId, rejectReason }: RejectOrderInput,
+    { orderId, rejectReason }: RejectOrderRequestInput,
   ): Promise<Order> {
     const [order, orderCluster] = await this.getOrder(sellerId, orderId);
 
@@ -92,17 +89,36 @@ export class SellerOrdersService {
       (order) => order.id === orderId,
     );
 
-    if (orderIdx < 0) throw new OrdersNotFoundException('id');
+    if (orderIdx < 0) throw new OrderNotFoundException('id');
 
     const order = orderCluster.orders[orderIdx];
     return [order, orderCluster];
   }
 
-  async acceptOrder(sellerId: string, orderId: string): Promise<Order> {
+  async acceptOrderRequest(sellerId: string, orderId: string): Promise<Order> {
     const [order, orderCluster] = await this.getOrder(sellerId, orderId);
-    this.prisma.ordersCluster.update({
+    await this.prisma.ordersCluster.update({
       where: {
         id: orderCluster.id,
+      },
+      data: {
+        orders: {
+          updateMany: {
+            where: {
+              id: orderId,
+            },
+            data: {
+              status: {
+                of: 'shipping',
+              },
+            },
+          },
+        },
+      },
+    });
+    await this.prisma.buyerOrdersCluster.update({
+      where: {
+        buyerId: order.buyerInfo.id,
       },
       data: {
         orders: {

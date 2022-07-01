@@ -53,8 +53,8 @@ export class Product {
   @Field((type) => String)
   description: string;
 
-  @Field((type) => String)
-  storeId: string;
+  @Field((type) => ID)
+  shopId: string;
 
   @Field((type) => String)
   category: string;

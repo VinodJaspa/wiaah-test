@@ -12,17 +12,24 @@ datasource db {
 }
 
 model OrdersCluster {
-  id String @db.ObjectId @id @default(auto()) @map("_id")
-  shopId String @db.ObjectId @unique
-  sellerId String @db.ObjectId @unique
-  orders Order[]
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  shopId    String   @unique @db.ObjectId
+  sellerId  String   @unique @db.ObjectId
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-
-
+model BuyerOrdersCluster {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  buyerId   String   @unique @db.ObjectId
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 
 type Order {
-  id         String     
+  id         String
   items      OrderItem[]
   status     OrderStatus
   sellerInfo SellerInfo
@@ -50,9 +57,8 @@ type BuyerInfo {
   postalCode String
 }
 
-
 type OrderStatus {
-  of OrderStatusEnum
+  of           OrderStatusEnum
   rejectReason String?
 }
 

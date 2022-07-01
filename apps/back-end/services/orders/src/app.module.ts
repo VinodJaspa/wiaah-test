@@ -8,6 +8,7 @@ import {
 } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { getUserFromRequest } from 'nest-utils';
+import { OrdersClusterModule } from './orders-cluster/orders-cluster.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { getUserFromRequest } from 'nest-utils';
     OrdersModule,
     SellerOrdersModule,
     BuyerOrdersModule,
+    OrdersClusterModule,
   ],
   controllers: [],
   providers: [],

@@ -24,7 +24,7 @@ model Product {
   rate             Int                   @default(0)
   brand            String
   discount         Discount?
-  storeId          String
+  shopId           String
   cashback         CashBack?
   thumbnail        String
   shippingRulesIds String[]              @db.ObjectId

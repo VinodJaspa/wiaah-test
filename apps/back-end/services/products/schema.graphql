@@ -42,7 +42,7 @@ type Product {
   id: ID!
   title: String!
   description: String!
-  storeId: String!
+  shopId: ID!
   category: String!
   colors: [String!]!
   sizes: [String!]!
@@ -54,6 +54,7 @@ type Product {
   brand: String!
   price: Float!
   visibility: VisibilityEnum!
+  shippingRulesIds: [ID!]!
   shop: Shop!
   shippingDetails: ShippingDetails
 }
@@ -75,6 +76,7 @@ type Search {
 
 type ShippingDetails {
   country: String!
+  shippingRulesIds: [String!]!
 }
 
 type Query {

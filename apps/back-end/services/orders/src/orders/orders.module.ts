@@ -10,6 +10,8 @@ import {
 import { OrdersController } from './orders.controller';
 import { PrismaService } from 'src/prisma.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { SellerOrdersService } from 'src/seller-orders/seller-orders.service';
+import { BuyerOrdersService } from 'src/buyer-orders/buyer-orders.service';
 
 @Module({
   imports: [
@@ -29,7 +31,13 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       },
     ]),
   ],
-  providers: [OrdersResolver, OrdersService, PrismaService],
+  providers: [
+    OrdersResolver,
+    OrdersService,
+    PrismaService,
+    SellerOrdersService,
+    BuyerOrdersService,
+  ],
   controllers: [OrdersController],
   exports: [ClientsModule, OrdersService, PrismaService],
 })

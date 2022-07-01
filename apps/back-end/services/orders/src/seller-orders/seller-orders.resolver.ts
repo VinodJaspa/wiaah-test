@@ -1,30 +1,32 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { SellerOrdersService } from './seller-orders.service';
-import { SellerOrder } from './entities/seller-order.entity';
+import { Order } from '@entities';
 import { UseGuards } from '@nestjs/common';
 import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
 } from 'nest-utils';
-import { Order } from 'src/orders/entities/order.entity';
-import { GetMyOrdersInput } from './dto/get-orders.input';
+import { RejectOrderRequestInput, AcceptOrderRequestInput } from '@dto';
 
-@Resolver(() => SellerOrder)
+@Resolver(() => Order)
+@UseGuards(new GqlAuthorizationGuard(['seller']))
 export class SellerOrdersResolver {
   constructor(private readonly sellerOrdersService: SellerOrdersService) {}
 
-  @Query((type) => [Order])
-  @UseGuards(new GqlAuthorizationGuard(['seller']))
-  getOrders(
-    @Args('GetMyOrdersArgs') args: GetMyOrdersInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    return this.sellerOrdersService.getFilteredOrders(user.id, args);
+  @Mutation(() => Order)
+  acceptOrderRequest(
+    @GqlCurrentUser() { id }: AuthorizationDecodedUser,
+    @Args('acceptOrderRequestArgs') { orderId }: AcceptOrderRequestInput,
+  ): Promise<Order> {
+    return this.sellerOrdersService.acceptOrderRequest(id, orderId);
   }
 
-  // @Mutation(()=> Boolean)
-  // createPlaceholderOrders(){
-  //   return this.sellerOrdersService.createPlaceholderOrders()
-  // }
+  @Mutation(() => Order)
+  rejectOrderRequest(
+    @GqlCurrentUser() { id }: AuthorizationDecodedUser,
+    @Args('rejectOrderRequestArgs') input: RejectOrderRequestInput,
+  ): Promise<Order> {
+    return this.sellerOrdersService.rejectOrder(id, input);
+  }
 }

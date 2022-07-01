@@ -78,7 +78,7 @@ export class ProductsResolver implements OnModuleInit {
   shop(@Parent() product: Product) {
     return {
       __typename: 'Shop',
-      id: product.storeId,
+      id: product.shopId,
     };
   }
 

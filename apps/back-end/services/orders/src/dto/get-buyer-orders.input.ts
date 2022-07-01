@@ -1,8 +1,8 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { OrderStatus, OrderStatusEnum } from '@prisma-client';
+import { OrderStatusEnum } from '@prisma-client';
 
 @InputType()
-export class GetMyOrdersInput {
+export class GetBuyerOrdersInput {
   @Field((type) => OrderStatusEnum, { nullable: true })
-  status?: OrderStatus;
+  status?: OrderStatusEnum;
 }

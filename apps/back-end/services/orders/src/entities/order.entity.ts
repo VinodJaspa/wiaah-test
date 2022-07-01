@@ -1,8 +1,5 @@
-import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
-import { BuyerInfo } from './buyer-info.entity';
-import { OrderItem } from './orderItem.entity';
-import { OrderStatus } from './orderStauts.entity';
-import { SellerInfo } from './seller-info.entity';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { OrderStatus, BuyerInfo, OrderItem, SellerInfo } from '@entities';
 
 @ObjectType()
 export class Order {
