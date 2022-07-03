@@ -52,6 +52,8 @@ export class BillingAddressService {
           billingAddresses: true,
           id: true,
           ownerId: true,
+          createdAt: true,
+          updatedAt: true,
         },
       },
     );

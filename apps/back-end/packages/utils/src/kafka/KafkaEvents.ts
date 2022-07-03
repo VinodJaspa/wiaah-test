@@ -53,6 +53,13 @@ export const KAFKA_MESSAGES = {
   CURRENCY_MESSAGES: {
     getCurrencyExchangeRate: "get.currency.exchange.rate",
   },
+  SHOPPING_CART_MESSAGES: {
+    getShoppingCartItems: "get.shopping.cart.items",
+  },
+  BILLING_MESSAGES: {
+    balanceCreated: "balance.created",
+    transactionCreated: "transaction.created",
+  },
   emailExists: "email.exists",
   getAccountByEmail: "get.account.by.email",
   isSellerAccount: "is.seller.account",

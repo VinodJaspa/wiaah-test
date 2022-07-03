@@ -11,4 +11,7 @@ export class BillingAddressCollection {
 
   @Field((type) => [BillingAddress])
   billingAddresses: BillingAddress[];
+
+  createdAt: Date;
+  updatedAt: Date;
 }

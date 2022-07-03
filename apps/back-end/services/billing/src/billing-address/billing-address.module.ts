@@ -5,5 +5,6 @@ import { PrismaService } from 'src/prisma.service';
 
 @Module({
   providers: [BillingAddressResolver, BillingAddressService, PrismaService],
+  exports: [BillingAddressService],
 })
 export class BillingAddressModule {}

@@ -45,3 +45,12 @@ type BillingAddress {
   postalCode String
   phone      String
 }
+
+model Balance {
+  id String @db.ObjectId @id @default(auto()) @map("_id")
+  ownerId String @db.ObjectId @unique
+  withdrawableBalance Float
+  pendingBalance Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
