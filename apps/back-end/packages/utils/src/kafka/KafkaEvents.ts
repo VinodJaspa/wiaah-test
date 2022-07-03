@@ -34,11 +34,13 @@ export const KAFKA_MESSAGES = {
     getAccountByEmail: "get.account.by.email",
     isSellerAccount: "is.seller.account",
     getUserShopId: "get.user.store.id",
+    getAccountById: "get.account.by.id",
   },
   PRODUCTS_MESSAGES: {
     productReviewable: "is.product.reviewable",
     isProductAddable: "is.product.addable",
     getProductMetaData: "get.product.metadata",
+    getProductsMetaData: "get.products.metadata",
   },
   SHOP_MESSAGES: {
     isOwnerOfShop: "is.owner.of.shop",
@@ -50,6 +52,13 @@ export const KAFKA_MESSAGES = {
   },
   CURRENCY_MESSAGES: {
     getCurrencyExchangeRate: "get.currency.exchange.rate",
+  },
+  SHOPPING_CART_MESSAGES: {
+    getShoppingCartItems: "get.shopping.cart.items",
+  },
+  BILLING_MESSAGES: {
+    balanceCreated: "balance.created",
+    transactionCreated: "transaction.created",
   },
   emailExists: "email.exists",
   getAccountByEmail: "get.account.by.email",

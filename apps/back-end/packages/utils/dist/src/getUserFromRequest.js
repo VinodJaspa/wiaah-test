@@ -16,6 +16,7 @@ function getUserFromRequest(req) {
     id: "62b8bae86f604a137f311608",
     email: "barco01014@gmail.com",
     accountType: "seller",
+    shopId: "62b8c8cb69e68f34eb948b3f",
   };
   if (mockAuthorzation && !user) return mockedUser;
   return user;

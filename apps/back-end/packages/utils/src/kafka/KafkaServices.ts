@@ -13,7 +13,9 @@ export type Services =
   | "PRODUCTS_SERVICE"
   | "SHOPPING_CART_SERVICE"
   | "SERVICES_SERIVCE"
-  | "CURRENCY_SERVICE";
+  | "CURRENCY_SERVICE"
+  | "SHIPPING_SERVICE"
+  | "ORDERS_SERVICE";
 
 export const SERVICES: Record<Services, ServiceInfo> = {
   ACCOUNTS_SERVICE: {
@@ -60,5 +62,15 @@ export const SERVICES: Record<Services, ServiceInfo> = {
     token: "CURRENCY_SERVICE",
     clientId: "currency",
     groupId: "currency-consumer",
+  },
+  SHIPPING_SERVICE: {
+    token: "SHIPPING_SERVICE",
+    clientId: "shipping",
+    groupId: "shipping-consumer",
+  },
+  ORDERS_SERVICE: {
+    token: "ORDERS_SERVICE",
+    clientId: "orders",
+    groupId: "orders",
   },
 };

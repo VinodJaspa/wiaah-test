@@ -5,6 +5,10 @@ import { formatCaughtError, KAFKA_MESSAGES } from 'nest-utils';
 import {
   GetProductMetaDataMessage,
   GetProductMetaDataMessageReply,
+  GetProductsMetaDataMessage,
+  GetProductsMetaDataMessageReply,
+  IsProductAddableMessage,
+  IsProductAddableMessageReply,
   IsProductReviewableMessage,
   IsProductReviewableMessageReply,
   KafkaPayload,
@@ -67,5 +71,49 @@ export class ProductsController {
         success: false,
       });
     }
+  }
+
+  @MessagePattern(KAFKA_MESSAGES.PRODUCTS_MESSAGES.getProductsMetaData)
+  async getProductsMetaData(
+    @Payload() payload: KafkaPayload<GetProductsMetaDataMessage>,
+  ): Promise<GetProductsMetaDataMessageReply> {
+    try {
+      const { productsIds } = payload.value.input;
+      const products = await this.productsService.getPublicProductsByIds(
+        productsIds,
+      );
+      return new GetProductsMetaDataMessageReply({
+        success: true,
+        error: null,
+        data: products.map((prod) => ({
+          productId: prod.id,
+          ownerId: prod.sellerId,
+          shopId: prod.shopId,
+        })),
+      });
+    } catch (error) {
+      return new GetProductsMetaDataMessageReply({
+        success: false,
+        error: formatCaughtError(error),
+        data: null,
+      });
+    }
+  }
+
+  @MessagePattern(KAFKA_MESSAGES.PRODUCTS_MESSAGES.isProductAddable)
+  async isProductAddable(
+    @Payload() payload: KafkaPayload<IsProductAddableMessage>,
+  ): Promise<IsProductAddableMessageReply> {
+    try {
+      const { productId } = payload.value.input;
+      const product = await this.productsService.getProductById(productId);
+      if (!product) throw new NotFoundException('product not found');
+      const { visibility } = product;
+      return new IsProductAddableMessageReply({
+        success: true,
+        error: null,
+        data: { isAddable: visibility === 'public' },
+      });
+    } catch (error) {}
   }
 }

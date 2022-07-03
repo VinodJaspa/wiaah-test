@@ -65,7 +65,7 @@ export class ProductsService {
     const product = await this.prisma.product.create({
       data: {
         ...createProductInput,
-        storeId: shopId,
+        shopId,
         sellerId: user.id,
       },
     });
@@ -151,7 +151,7 @@ export class ProductsService {
   getAllByShopId(shopId: string) {
     return this.prisma.product.findMany({
       where: {
-        storeId: shopId,
+        shopId,
       },
     });
   }
@@ -265,13 +265,24 @@ export class ProductsService {
     if (product.visibility !== 'public')
       throw new UnauthorizedException('this product is private');
 
-    const isShopOwner = await this.isOwnerOfShop(reviewerId, product.storeId);
+    const isShopOwner = await this.isOwnerOfShop(reviewerId, product.shopId);
     console.log('isshopowner', isShopOwner);
 
     if (isShopOwner)
       throw new UnauthorizedException('you cant review you own products');
 
     return true;
+  }
+
+  async getPublicProductsByIds(ids: string[]): Promise<Product[]> {
+    return this.prisma.product.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+        visibility: 'public',
+      },
+    });
   }
 }
 
@@ -280,7 +291,7 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     category: 'test',
     description: 'test product description',
     stock: 13,
-    storeId: '1234',
+    shopId: '1234',
     title: 'cutting board',
     brand: 'nike',
     price: 16,
@@ -292,7 +303,7 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     category: 'test',
     description: 'test product description',
     stock: 0,
-    storeId: '1234',
+    shopId: '1234',
     title: 'cup',
     brand: 'or',
     price: 18,
@@ -304,7 +315,7 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     category: 'test',
     description: 'test product description',
     stock: 13,
-    storeId: '1234',
+    shopId: '1234',
     title: 'sofa',
     brand: 'zara',
     price: 30,
@@ -316,7 +327,7 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     category: 'test',
     description: 'test product description',
     stock: 13,
-    storeId: '1234',
+    shopId: '1234',
     title: 'mouse',
     brand: 'zake',
     price: 5,
@@ -328,7 +339,7 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     category: 'test',
     description: 'test product description',
     stock: 13,
-    storeId: '1234',
+    shopId: '1234',
     title: 'vase',
     brand: 'dior',
     price: 98,

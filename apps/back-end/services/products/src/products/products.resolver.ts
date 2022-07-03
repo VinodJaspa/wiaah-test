@@ -25,6 +25,7 @@ import {
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 import { UpdateProdutctInput } from './dto/update-produtct.input';
+import { ShippingDetails } from './entities/shippingDetails.entity';
 
 @Resolver(() => Product)
 export class ProductsResolver implements OnModuleInit {
@@ -35,8 +36,9 @@ export class ProductsResolver implements OnModuleInit {
   ) {}
 
   @Query(() => Product)
-  getProductById(@Args('id') id: string) {
-    return this.productsService.getProductById(id);
+  async getProductById(@Args('id') id: string): Promise<Product> {
+    const product = await this.productsService.getProductById(id);
+    return { ...product, country: 'usa' };
   }
 
   @Query(() => [Product])
@@ -76,17 +78,18 @@ export class ProductsResolver implements OnModuleInit {
   shop(@Parent() product: Product) {
     return {
       __typename: 'Shop',
-      id: product.storeId,
+      id: product.shopId,
     };
   }
 
-  @ResolveField((of) => String)
-  shipping(
-    @Parent() product: Product,
-    @Context() context: GraphQLExecutionContext,
-  ) {
-    console.log(context);
-    return '';
+  @ResolveField((of) => ShippingDetails, { nullable: true })
+  shippingDetails(@Parent() product: Product) {
+    if (!product.country) return null;
+    return {
+      __typename: 'ShippingDetails',
+      country: product.country,
+      shippingRulesIds: product.shippingRulesIds,
+    };
   }
 
   @ResolveReference()

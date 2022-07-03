@@ -10,3 +10,4 @@ export * from "./Service";
 export * from "./Mailing";
 export * from "./Currency";
 export * from "./Auth";
+export * from "./Billing";

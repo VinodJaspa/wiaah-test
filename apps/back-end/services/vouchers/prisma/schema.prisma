@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model VoucherCluster {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId      String    @unique @db.ObjectId
+  shopId       String    @unique @db.ObjectId
+  vouchersList Voucher[]
+}
+
+type Voucher {
+  amount   Float
+  type     VoucherType
+  currency String
+}
+
+enum VoucherType {
+  percent
+  cash
+}
