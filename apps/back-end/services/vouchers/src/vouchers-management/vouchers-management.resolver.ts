@@ -11,6 +11,8 @@ import {
   ActivateVoucherInput,
   CreateVoucherInput,
   DeactivateVoucherInput,
+  DeleteVoucherInput,
+  GetVouchersByShopIdInput,
   GetVouchersInput,
 } from '@dto';
 @Resolver(() => VoucherCluster)
@@ -37,14 +39,16 @@ export class VouchersManagementResolver {
   }
 
   @Mutation(() => Voucher)
-  deActivateVoucher(
+  async deActivateVoucher(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @Args('deActivateVoucherArgs') input: DeactivateVoucherInput,
   ): Promise<Voucher> {
-    return this.vouchersManagementService.deactivateVoucher(
+    const voucher = await this.vouchersManagementService.deactivateVoucher(
       user.id,
       input.code,
     );
+    console.log(voucher);
+    return voucher;
   }
 
   @Mutation(() => Voucher)
@@ -53,5 +57,22 @@ export class VouchersManagementResolver {
     @Args('activateVoucherArgs') input: ActivateVoucherInput,
   ): Promise<Voucher> {
     return this.vouchersManagementService.activateVoucher(user.id, input.code);
+  }
+
+  @Query(() => [Voucher])
+  @UseGuards(GqlAuthorizationGuard)
+  getVouchersByShopId(
+    @Args('getVouchersByShopIdArgs')
+    { shopId, ...rest }: GetVouchersByShopIdInput,
+  ): Promise<Voucher[]> {
+    return this.vouchersManagementService.getVouchersByShopId(shopId, rest);
+  }
+
+  @Mutation(() => Boolean)
+  deleteVoucher(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('deleteVoucherArgs') input: DeleteVoucherInput,
+  ): Promise<boolean> {
+    return this.vouchersManagementService.deleteVoucher(user.id, input);
   }
 }

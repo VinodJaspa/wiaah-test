@@ -1,4 +1,4 @@
-import { CreateVoucherInput, GetVouchersInput } from '@dto';
+import { CreateVoucherInput, DeleteVoucherInput, GetVouchersInput } from '@dto';
 import { Voucher, VoucherCluster } from '@entities';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { VoucherStatus } from '@prisma-client';
@@ -48,7 +48,7 @@ export class VouchersManagementService {
       const cluster = await this.createVoucherCluster(id, shopId);
       return [];
     }
-    return ApplyFiltersOnArray(cluster.vouchersList, genfilters);
+    return ApplyFiltersOnArray<Voucher>(cluster.vouchersList, genfilters);
   }
 
   async getVouchersByOwnerId(
@@ -65,12 +65,12 @@ export class VouchersManagementService {
       },
     });
 
-    return ApplyFiltersOnArray(cluster.vouchersList, genFilters);
+    return ApplyFiltersOnArray<Voucher>(cluster.vouchersList, genFilters);
   }
 
   async getVouchersByShopId(
     shopId: string,
-    filters: GetVouchersInput,
+    filters?: GetVouchersInput,
   ): Promise<Voucher[]> {
     const genFilters = generateFiltersOfArgs(filters, ['status']);
     const cluster = await this.prisma.voucherCluster.findUnique({
@@ -81,39 +81,39 @@ export class VouchersManagementService {
         throw new VoucherNotFoundException('shop id');
       },
     });
-    return ApplyFiltersOnArray(cluster.vouchersList, genFilters);
+    return ApplyFiltersOnArray<Voucher>(cluster.vouchersList, genFilters);
   }
 
   async createVoucher(
     sellerId: string,
     input: CreateVoucherInput,
   ): Promise<Voucher> {
-    try {
-      const { code, ...rest } = input;
-      const [exists, voucherIdx] = await this.VoucherExists(sellerId, code);
+    const { code, type, amount, currency } = input;
+    const [exists, voucherIdx] = await this.VoucherExists(sellerId, code);
 
-      if (exists) throw new VoucherAlreadyExistsException('code');
+    if (exists) throw new VoucherAlreadyExistsException('code');
 
-      const newVoucher: Voucher = {
-        code,
-        status: 'active',
-        ...rest,
-      };
-      await this.prisma.voucherCluster.update({
-        where: {
-          ownerId: sellerId,
+    const newVoucher: Voucher =
+      type === 'percent'
+        ? {
+            code,
+            status: 'active',
+            amount,
+            type,
+          }
+        : { ...input, status: 'active' };
+    await this.prisma.voucherCluster.update({
+      where: {
+        ownerId: sellerId,
+      },
+      data: {
+        vouchersList: {
+          push: newVoucher,
         },
-        data: {
-          vouchersList: {
-            push: newVoucher,
-          },
-        },
-      });
+      },
+    });
 
-      return newVoucher;
-    } catch {
-      throw new VoucherNotFoundException('seller id');
-    }
+    return newVoucher;
   }
 
   async VoucherExists(
@@ -163,9 +163,36 @@ export class VouchersManagementService {
           },
         },
       });
-      return vouchersList.find((v) => v.code === voucherCode);
+      const voucher = vouchersList.find((v) => v.code === voucherCode);
+      if (!voucher) throw new VoucherNotFoundException('code');
+      return voucher;
     } catch {
-      throw new VoucherNotFoundException('seller Id');
+      throw new VoucherNotFoundException();
+    }
+  }
+
+  async deleteVoucher(
+    ownerId: string,
+    input: DeleteVoucherInput,
+  ): Promise<boolean> {
+    try {
+      const voucherCluster = await this.prisma.voucherCluster.update({
+        where: {
+          ownerId,
+        },
+        data: {
+          vouchersList: {
+            deleteMany: {
+              where: {
+                code: input.voucherCode,
+              },
+            },
+          },
+        },
+      });
+      return true;
+    } catch {
+      throw new VoucherNotFoundException();
     }
   }
 }

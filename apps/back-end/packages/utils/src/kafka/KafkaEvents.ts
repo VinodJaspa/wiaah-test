@@ -60,6 +60,9 @@ export const KAFKA_MESSAGES = {
     balanceCreated: "balance.created",
     transactionCreated: "transaction.created",
   },
+  VOUCHERS_MESSAGES: {
+    getShopActiveVouchers: "get.shop.active.vouchers",
+  },
   emailExists: "email.exists",
   getAccountByEmail: "get.account.by.email",
   isSellerAccount: "is.seller.account",

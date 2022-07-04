@@ -19,8 +19,8 @@ model VoucherCluster {
 }
 
 type Voucher {
-  code String
-  status VoucherStatus
+  code     String
+  status   VoucherStatus
   amount   Float
   type     VoucherType
   currency String?
