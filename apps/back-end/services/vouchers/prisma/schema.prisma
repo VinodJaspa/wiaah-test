@@ -19,12 +19,19 @@ model VoucherCluster {
 }
 
 type Voucher {
+  code String
+  status VoucherStatus
   amount   Float
   type     VoucherType
-  currency String
+  currency String?
 }
 
 enum VoucherType {
   percent
   cash
+}
+
+enum VoucherStatus {
+  active
+  inActive
 }

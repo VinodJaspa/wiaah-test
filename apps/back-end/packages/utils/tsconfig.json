@@ -9,6 +9,7 @@
     "sourceMap": true,
     "isolatedModules": false,
     "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
     "baseUrl": ".",
     "paths": {
       "@generators": ["src/generators"]
