@@ -6,9 +6,9 @@ export class GetShoppingCartItemsMessage extends KafkaMessage<{
 
 export class GetShoppingCartItemsMessageReply extends KafkaMessageReply<
   {
-    Id: string;
+    id: string;
     shopId: string;
-    Name: string;
-    Price: number;
+    name: string;
+    price: number;
   }[]
 > {}

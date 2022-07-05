@@ -302,22 +302,20 @@ export class AuthService {
 
   async emailExists(email: string): Promise<boolean> {
     const {
-      results: {
-        data: { emailExists },
-        error,
-        success,
-      },
+      results: { data, error, success },
     } = await KafkaMessageHandler<
       string,
       EmailExistsMessage,
       EmailExistsMessageReply
     >(
-      this.accountsClient,
+      this.eventsClient,
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.emailExists,
       new EmailExistsMessage({ email }),
       'email validation timed out',
+      10000,
     );
     if (!success) throw new Error('error validating email');
+    const { emailExists } = data;
     return emailExists;
   }
 }

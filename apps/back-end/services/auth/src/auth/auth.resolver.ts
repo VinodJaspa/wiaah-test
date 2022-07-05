@@ -85,10 +85,15 @@ export class AuthResolver implements OnModuleInit {
   }
 
   async onModuleInit() {
-    this.accountsClient.subscribeToResponseOf(KAFKA_MESSAGES.emailExists);
+    this.accountsClient.subscribeToResponseOf(
+      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.emailExists,
+    );
     this.accountsClient.subscribeToResponseOf(KAFKA_MESSAGES.getAccountByEmail);
     this.eventsClient.subscribeToResponseOf(
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountByEmail,
+    );
+    this.eventsClient.subscribeToResponseOf(
+      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.emailExists,
     );
     await this.accountsClient.connect();
     await this.eventsClient.connect();

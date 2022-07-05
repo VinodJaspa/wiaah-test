@@ -22,6 +22,9 @@ export class CartItem {
 
   @Field((type) => Int)
   quantity: number;
+
+  @Field((type) => ID)
+  providerId: string;
 }
 
 @ObjectType()

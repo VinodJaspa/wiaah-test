@@ -21,6 +21,7 @@ model Cart {
 
 type CartItem {
   itemId String
+  providerId String?
   itemType CartItemType
   thumbnail String
   name String

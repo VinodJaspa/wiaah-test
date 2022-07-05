@@ -48,13 +48,6 @@ export class BillingAddressService {
         data: {
           ownerId: userId,
         },
-        select: {
-          billingAddresses: true,
-          id: true,
-          ownerId: true,
-          createdAt: true,
-          updatedAt: true,
-        },
       },
     );
     return this.formatAddressCollection(addressCollection, userId);

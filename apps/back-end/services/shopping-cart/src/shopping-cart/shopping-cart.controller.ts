@@ -1,5 +1,10 @@
 import { Controller, Inject, OnModuleInit } from '@nestjs/common';
-import { ClientKafka, EventPattern, Payload } from '@nestjs/microservices';
+import {
+  ClientKafka,
+  EventPattern,
+  MessagePattern,
+  Payload,
+} from '@nestjs/microservices';
 import {
   formatCaughtError,
   KAFKA_EVENTS,
@@ -8,6 +13,8 @@ import {
 } from 'nest-utils';
 import {
   CreateShoppingCartEvent,
+  GetShoppingCartItemsMessage,
+  GetShoppingCartItemsMessageReply,
   KafkaPayload,
   NewAccountCreatedEvent,
 } from 'nest-dto';
@@ -32,6 +39,37 @@ export class ShoppingCartController implements OnModuleInit {
       console.log('error creating shoppingcart', formatCaughtError(err));
     }
   }
+
+  @MessagePattern(KAFKA_MESSAGES.SHOPPING_CART_MESSAGES.getShoppingCartItems)
+  async getShoppingCartItems(
+    @Payload() payload: KafkaPayload<GetShoppingCartItemsMessage>,
+  ): Promise<GetShoppingCartItemsMessageReply> {
+    try {
+      const { cartItems } =
+        await this.shoppingCartService.getShoppingCartByOwnerId(
+          payload.value.input.ownerId,
+        );
+
+      return new GetShoppingCartItemsMessageReply({
+        success: true,
+        error: null,
+        data: cartItems.map(({ itemId, name, price, providerId }) => ({
+          id: itemId,
+          name,
+          price,
+          shopId: providerId,
+        })),
+      });
+    } catch (err) {
+      console.log(err);
+      return new GetShoppingCartItemsMessageReply({
+        success: false,
+        error: 'something went wrong',
+        data: null,
+      });
+    }
+  }
+
   async onModuleInit() {
     this.productsClient.subscribeToResponseOf(
       KAFKA_MESSAGES.PRODUCTS_MESSAGES.getProductMetaData,

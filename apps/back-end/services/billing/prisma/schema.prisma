@@ -30,9 +30,10 @@ enum TransactionStatus {
 model BillingAddressCollection {
   id               String           @id @default(auto()) @map("_id") @db.ObjectId
   ownerId          String           @unique @db.ObjectId
+  lastUsedId       String?          @db.ObjectId
   billingAddresses BillingAddress[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
 }
 
 type BillingAddress {
@@ -47,10 +48,10 @@ type BillingAddress {
 }
 
 model Balance {
-  id String @db.ObjectId @id @default(auto()) @map("_id")
-  ownerId String @db.ObjectId @unique
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId             String   @unique @db.ObjectId
   withdrawableBalance Float
-  pendingBalance Float
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  pendingBalance      Float
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 }

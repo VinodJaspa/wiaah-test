@@ -1,5 +1,10 @@
 import { CheckoutInput } from '@dto';
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  OnModuleInit,
+} from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
   KafkaMessageHandler,
@@ -11,7 +16,13 @@ import { StripeService } from 'src/stripe/stripe.service';
 import {
   GetShoppingCartItemsMessage,
   GetShoppingCartItemsMessageReply,
+  GetShopVouchersMessageReply,
 } from 'nest-dto';
+
+interface FormatedData<TData> {
+  shopId: string;
+  products: TData;
+}
 
 @Injectable()
 export class StripeBillingService {
@@ -25,16 +36,15 @@ export class StripeBillingService {
     return this.StripeService.createdConnectedAccount();
   }
   getStripeConnectedAccounts() {
-    // this.StripeService.createPaymentIntent(12323);
     return this.StripeService.getConnectedAccounts();
   }
 
   async checkout(userId: string, input: CheckoutInput) {
-    const { billingAddressId } = input;
-    const {} = await this.billingAddressService.getBillingAddressById(
-      userId,
-      billingAddressId,
-    );
+    // const { billingAddressId } = input;
+    // const {} = await this.billingAddressService.getBillingAddressById(
+    //   userId,
+    //   billingAddressId,
+    // );
     const {
       results: { data, error, success },
     } = await KafkaMessageHandler<
@@ -51,6 +61,22 @@ export class StripeBillingService {
 
     if (!success) throw new Error(error);
     if (data.length < 1) throw new BadRequestException('empty shopping cart');
+
+    const formatedData: FormatedData<typeof data>[] = data.reduce(
+      (acc, curr) => {
+        const shopIdx = acc.findIndex((shop) => shop.shopId === curr.shopId);
+        const shopExists = shopIdx > -1;
+        if (shopExists) {
+          acc[shopIdx].products.push(curr);
+          return acc;
+        } else {
+          return [{ shopId: curr.shopId, products: [curr] }, ...acc];
+        }
+      },
+      [] as FormatedData<typeof data>[],
+    );
+
+    console.log('formated data', formatedData);
   }
 
   async setupStripeConnectedAccount() {

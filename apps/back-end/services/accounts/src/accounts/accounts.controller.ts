@@ -39,11 +39,13 @@ export class AccountsController implements OnModuleInit {
   async emailExists(
     @Payload() payload: { value: EmailExistsMessage },
   ): Promise<EmailExistsMessageReply> {
+    console.log('called');
     try {
       const exists = await this.accountService.emailExists(
         payload.value.input.email,
       );
 
+      console.log('done');
       return new EmailExistsMessageReply({
         success: true,
         data: { emailExists: exists },

@@ -63,7 +63,7 @@ export class ShoppingCartService {
     return this.prisma.cart.findMany();
   }
 
-  async getShoppingCartByOwnerId(ownerId: string): Promise<ShoppingCart> {
+  getShoppingCartByOwnerId(ownerId: string): Promise<ShoppingCart> {
     return this.prisma.cart.findUnique({
       where: {
         ownerId,
@@ -96,11 +96,12 @@ export class ShoppingCartService {
       'fetch product metadata timed out',
     );
     if (!success) throw new Error(error);
-    const { name, price, thumbnail } = data;
+    const { name, price, thumbnail, shopId } = data;
     const newCartItem: CartItem = {
       itemId: product.itemId,
       quantity: product.quantity,
       itemType: product.itemType,
+      providerId: shopId,
       name,
       price,
       thumbnail,
@@ -201,6 +202,7 @@ export class ShoppingCartService {
       itemId: service.itemId,
       itemType: service.itemType,
       quantity: service.quantity,
+      providerId: null,
       name,
       price,
       thumbnail,
