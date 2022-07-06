@@ -4,6 +4,7 @@ import {
   KAFKA_BROKERS,
   KAFKA_SERVICE_CLIENTID,
   KAFKA_SERVICE_GROUPID,
+  SERVICES,
 } from 'nest-utils';
 import { AppModule } from './app.module';
 
@@ -14,10 +15,10 @@ async function bootstrap() {
     options: {
       client: {
         brokers: KAFKA_BROKERS,
-        clientId: KAFKA_SERVICE_CLIENTID,
+        clientId: SERVICES.AUTH_SERVICE.clientId,
       },
       consumer: {
-        groupId: KAFKA_SERVICE_GROUPID,
+        groupId: SERVICES.AUTH_SERVICE.groupId,
       },
     },
   });

@@ -16,8 +16,7 @@ import { NoSchemaIntrospectionCustomRule } from 'graphql';
 export class AuthResolver implements OnModuleInit {
   constructor(
     private readonly authService: AuthService,
-    @Inject(ACCOUNTS_SERVICE.token)
-    private readonly accountsClient: ClientKafka,
+
     @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
     private readonly config: ConfigService,
   ) {}
@@ -85,17 +84,12 @@ export class AuthResolver implements OnModuleInit {
   }
 
   async onModuleInit() {
-    this.accountsClient.subscribeToResponseOf(
-      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.emailExists,
-    );
-    this.accountsClient.subscribeToResponseOf(KAFKA_MESSAGES.getAccountByEmail);
     this.eventsClient.subscribeToResponseOf(
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountByEmail,
     );
     this.eventsClient.subscribeToResponseOf(
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.emailExists,
     );
-    await this.accountsClient.connect();
     await this.eventsClient.connect();
   }
 }

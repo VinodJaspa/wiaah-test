@@ -13,4 +13,7 @@ export class Balance {
 
   @Field((type) => Float)
   pendingBalance: number;
+
+  @Field((type) => Float)
+  cashbackBalance: number;
 }

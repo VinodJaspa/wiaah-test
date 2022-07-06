@@ -14,7 +14,6 @@ datasource db {
 model VoucherCluster {
   id           String    @id @default(auto()) @map("_id") @db.ObjectId
   ownerId      String    @unique @db.ObjectId
-  shopId       String    @unique @db.ObjectId
   vouchersList Voucher[]
 }
 
@@ -22,8 +21,8 @@ type Voucher {
   code     String
   status   VoucherStatus
   amount   Float
-  type     VoucherType
-  currency String?
+  // type     VoucherType
+  currency String
 }
 
 enum VoucherType {

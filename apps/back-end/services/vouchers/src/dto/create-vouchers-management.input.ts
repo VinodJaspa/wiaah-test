@@ -1,5 +1,5 @@
 import { InputType, Int, Field, Float } from '@nestjs/graphql';
-import { VoucherType } from '@prisma-client';
+// import { VoucherType } from '@prisma-client';
 
 @InputType()
 export class CreateVoucherInput {
@@ -9,9 +9,9 @@ export class CreateVoucherInput {
   @Field((type) => Float)
   amount: number;
 
-  @Field((type) => VoucherType)
-  type: VoucherType;
+  // @Field((type) => VoucherType)
+  // type: VoucherType;
 
-  @Field((type) => String, { nullable: true })
-  currency?: string;
+  @Field((type) => String)
+  currency: string;
 }

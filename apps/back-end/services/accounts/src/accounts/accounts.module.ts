@@ -8,7 +8,14 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { AccountsController } from './accounts.controller';
-import { getUserFromRequest, KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import {
+  getUserFromRequest,
+  KAFKA_BROKERS,
+  KAFKA_SERVICE_CLIENTID,
+  KAFKA_SERVICE_GROUPID,
+  KAFKA_SERVICE_TOKEN,
+  SERVICES,
+} from 'nest-utils';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
@@ -49,11 +56,15 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
       {
-        name: 'test',
+        name: KAFKA_SERVICE_TOKEN,
         transport: Transport.KAFKA,
         options: {
           client: {
             brokers: KAFKA_BROKERS,
+            clientId: KAFKA_SERVICE_CLIENTID,
+          },
+          consumer: {
+            groupId: KAFKA_SERVICE_GROUPID,
           },
         },
       },

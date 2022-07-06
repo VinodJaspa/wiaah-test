@@ -10,6 +10,7 @@ import {
   KAFKA_SERVICE_GROUPID,
   KAFKA_SERVICE_TOKEN,
 } from 'nest-utils';
+import { BalanceController } from './balance.controller';
 
 @Module({
   imports: [
@@ -31,5 +32,6 @@ import {
   ],
   providers: [BalanceResolver, BalanceService, PrismaService],
   exports: [BalanceService],
+  controllers: [BalanceController],
 })
 export class BalanceModule {}

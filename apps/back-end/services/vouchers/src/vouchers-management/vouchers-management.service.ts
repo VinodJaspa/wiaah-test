@@ -1,8 +1,14 @@
 import { CreateVoucherInput, DeleteVoucherInput, GetVouchersInput } from '@dto';
 import { Voucher, VoucherCluster } from '@entities';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { VoucherStatus } from '@prisma-client';
 import {
+  NotEnoughBalanceException,
   VoucherAlreadyExistsException,
   VoucherNotFoundException,
 } from 'src/exceptions';
@@ -11,12 +17,24 @@ import {
   ApplyFiltersOnArray,
   AuthorizationDecodedUser,
   generateFiltersOfArgs,
-  hasFilters,
+  KafkaMessageHandler,
+  KAFKA_MESSAGES,
+  KAFKA_SERVICE_TOKEN,
 } from 'nest-utils';
+import { ClientKafka } from '@nestjs/microservices';
+import {
+  GetCurrencyExchangeRateMessage,
+  GetCurrencyExchangeRateMessageReply,
+  GetUserCashbackBalanceMessage,
+  GetUserCashbackBalanceMessageReply,
+} from 'nest-dto';
 
 @Injectable()
 export class VouchersManagementService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
+  ) {}
 
   async createVoucherCluster(
     ownerId: string,
@@ -29,7 +47,6 @@ export class VouchersManagementService {
     return this.prisma.voucherCluster.create({
       data: {
         ownerId,
-        shopId,
       },
     });
   }
@@ -68,43 +85,87 @@ export class VouchersManagementService {
     return ApplyFiltersOnArray<Voucher>(cluster.vouchersList, genFilters);
   }
 
-  async getVouchersByShopId(
-    shopId: string,
-    filters?: GetVouchersInput,
-  ): Promise<Voucher[]> {
-    const genFilters = generateFiltersOfArgs(filters, ['status']);
-    const cluster = await this.prisma.voucherCluster.findUnique({
-      where: {
-        shopId,
-      },
-      rejectOnNotFound(error) {
-        throw new VoucherNotFoundException('shop id');
-      },
-    });
-    return ApplyFiltersOnArray<Voucher>(cluster.vouchersList, genFilters);
-  }
+  // async getVouchersByShopId(
+  //   shopId: string,
+  //   filters?: GetVouchersInput,
+  // ): Promise<Voucher[]> {
+  //   const genFilters = generateFiltersOfArgs(filters, ['status']);
+  //   const cluster = await this.prisma.voucherCluster.findUnique({
+  //     where: {
+  //       shopId,
+  //     },
+  //     rejectOnNotFound(error) {
+  //       throw new VoucherNotFoundException('shop id');
+  //     },
+  //   });
+  //   return ApplyFiltersOnArray<Voucher>(cluster.vouchersList, genFilters);
+  // }
 
   async createVoucher(
-    sellerId: string,
+    userId: string,
     input: CreateVoucherInput,
   ): Promise<Voucher> {
-    const { code, type, amount, currency } = input;
-    const [exists, voucherIdx] = await this.VoucherExists(sellerId, code);
+    const { code, amount, currency } = input;
+    const [exists, voucherIdx] = await this.VoucherExists(userId, code);
 
     if (exists) throw new VoucherAlreadyExistsException('code');
 
-    const newVoucher: Voucher =
-      type === 'percent'
-        ? {
-            code,
-            status: 'active',
-            amount,
-            type,
-          }
-        : { ...input, status: 'active' };
+    const {
+      results: { data, error, success },
+    } = await KafkaMessageHandler<
+      any,
+      GetUserCashbackBalanceMessage,
+      GetUserCashbackBalanceMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.BILLING_MESSAGES.getUserCashbackBalance,
+      new GetUserCashbackBalanceMessage({ userId }),
+    );
+
+    if (!success)
+      throw new InternalServerErrorException(
+        'something went worng durning balance check, please try again later',
+      );
+
+    const { cashbackBalance } = data;
+
+    const {
+      results: {
+        data: currencyData,
+        error: currencyError,
+        success: currencySuccess,
+      },
+    } = await KafkaMessageHandler<
+      any,
+      GetCurrencyExchangeRateMessage,
+      GetCurrencyExchangeRateMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.CURRENCY_MESSAGES.getCurrencyExchangeRate,
+      new GetCurrencyExchangeRateMessage({
+        baseCurrencyCode: 'usd',
+        targetCurrencyCode: currency,
+      }),
+    );
+
+    if (!currencySuccess)
+      throw new InternalServerErrorException(
+        'something went worng during currency converting process, please try again later',
+      );
+
+    const { rate } = currencyData;
+
+    const convertedAmount = amount * rate;
+    console.log('convertedAmount', convertedAmount);
+
+    if (convertedAmount > cashbackBalance)
+      throw new NotEnoughBalanceException();
+
+    const newVoucher: Voucher = { ...input, status: 'active' };
+
     await this.prisma.voucherCluster.update({
       where: {
-        ownerId: sellerId,
+        ownerId: userId,
       },
       data: {
         vouchersList: {

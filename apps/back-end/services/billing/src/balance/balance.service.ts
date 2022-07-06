@@ -2,7 +2,7 @@ import { Balance } from '@entities';
 import { BalanceNotFoundException } from '@exception';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { KAFKA_MESSAGES, KAFKA_SERVICE_TOKEN } from 'nest-utils';
+import { KAFKA_EVENTS, KAFKA_MESSAGES, KAFKA_SERVICE_TOKEN } from 'nest-utils';
 import { PrismaService } from 'src/prisma.service';
 import { BalanceCreatedEvent } from 'nest-dto';
 
@@ -18,10 +18,9 @@ export class BalanceService {
       where: {
         ownerId,
       },
-      rejectOnNotFound: () => {
-        throw new BalanceNotFoundException('user id');
-      },
     });
+
+    if (!balance) return this.createBalance(ownerId);
 
     return balance;
   }
@@ -32,11 +31,12 @@ export class BalanceService {
         ownerId,
         pendingBalance: 0,
         withdrawableBalance: 0,
+        cashbackBalance: 0,
       },
     });
 
     this.eventsClient.emit<any, BalanceCreatedEvent>(
-      KAFKA_MESSAGES.BILLING_MESSAGES.balanceCreated,
+      KAFKA_EVENTS.BILLING_EVNETS.balanceCreated,
       new BalanceCreatedEvent({
         id: createdBalance.id,
         ownerId: createdBalance.ownerId,

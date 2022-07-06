@@ -52,6 +52,7 @@ model Balance {
   ownerId             String   @unique @db.ObjectId
   withdrawableBalance Float
   pendingBalance      Float
+  cashbackBalance     Float
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
 }

@@ -51,22 +51,22 @@ export class VouchersManagementResolver {
     return voucher;
   }
 
-  @Mutation(() => Voucher)
-  activateVoucher(
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-    @Args('activateVoucherArgs') input: ActivateVoucherInput,
-  ): Promise<Voucher> {
-    return this.vouchersManagementService.activateVoucher(user.id, input.code);
-  }
+  // @Mutation(() => Voucher)
+  // activateVoucher(
+  //   @GqlCurrentUser() user: AuthorizationDecodedUser,
+  //   @Args('activateVoucherArgs') input: ActivateVoucherInput,
+  // ): Promise<Voucher> {
+  //   return this.vouchersManagementService.activateVoucher(user.id, input.code);
+  // }
 
-  @Query(() => [Voucher])
-  @UseGuards(GqlAuthorizationGuard)
-  getVouchersByShopId(
-    @Args('getVouchersByShopIdArgs')
-    { shopId, ...rest }: GetVouchersByShopIdInput,
-  ): Promise<Voucher[]> {
-    return this.vouchersManagementService.getVouchersByShopId(shopId, rest);
-  }
+  // @Query(() => [Voucher])
+  // @UseGuards(GqlAuthorizationGuard)
+  // getVouchersByShopId(
+  //   @Args('getVouchersByShopIdArgs')
+  //   { shopId, ...rest }: GetVouchersByShopIdInput,
+  // ): Promise<Voucher[]> {
+  //   return this.vouchersManagementService.getVouchersByShopId(shopId, rest);
+  // }
 
   @Mutation(() => Boolean)
   deleteVoucher(
