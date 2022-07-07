@@ -15,9 +15,18 @@ datasource db {
 model Cart {
   id String @id @default(auto()) @map("_id") @db.ObjectId
   ownerId String @unique
-  cartItems CartItem[] 
+  cartItems CartItem[]
+  appliedVoucher AppliedVoucher?
 }
 
+type AppliedVoucher {
+  code String
+  amount Int
+  currency String
+  convertedAmount Float
+  convertedToCurrency String
+
+}
 
 type CartItem {
   itemId String

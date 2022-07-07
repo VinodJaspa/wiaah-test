@@ -61,7 +61,6 @@ export class ShoppingCartController implements OnModuleInit {
         })),
       });
     } catch (err) {
-      console.log(err);
       return new GetShoppingCartItemsMessageReply({
         success: false,
         error: 'something went wrong',

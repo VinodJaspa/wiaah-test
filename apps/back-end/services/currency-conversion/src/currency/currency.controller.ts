@@ -22,7 +22,11 @@ export class CurrencyController {
       );
 
       return new GetCurrencyExchangeRateMessageReply({
-        data: { rate: currency.exchangeRate },
+        data: {
+          rate: currency.exchangeRate,
+          convertedFromCurrency: 'usd',
+          convertedToCurrency: payload.value.input.targetCurrencyCode,
+        },
         error: null,
         success: true,
       });

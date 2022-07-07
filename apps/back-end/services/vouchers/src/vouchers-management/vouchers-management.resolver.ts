@@ -51,6 +51,16 @@ export class VouchersManagementResolver {
     return voucher;
   }
 
+  @Mutation((type) => Boolean)
+  async clearVouchers() {
+    try {
+      await this.vouchersManagementService.clear();
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
   // @Mutation(() => Voucher)
   // activateVoucher(
   //   @GqlCurrentUser() user: AuthorizationDecodedUser,

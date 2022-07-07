@@ -10,6 +10,7 @@ import { VoucherStatus } from '@prisma-client';
 import {
   NotEnoughBalanceException,
   VoucherAlreadyExistsException,
+  VoucherNotActiveException,
   VoucherNotFoundException,
 } from 'src/exceptions';
 import { PrismaService } from 'src/prisma.service';
@@ -18,8 +19,10 @@ import {
   AuthorizationDecodedUser,
   generateFiltersOfArgs,
   KafkaMessageHandler,
+  KAFKA_EVENTS,
   KAFKA_MESSAGES,
   KAFKA_SERVICE_TOKEN,
+  SERVICES,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 import {
@@ -27,14 +30,20 @@ import {
   GetCurrencyExchangeRateMessageReply,
   GetUserCashbackBalanceMessage,
   GetUserCashbackBalanceMessageReply,
+  VoucherAppliedEvent,
 } from 'nest-dto';
 
 @Injectable()
 export class VouchersManagementService {
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
+    @Inject(SERVICES.VOUCHERS_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
+
+  clear() {
+    return this.prisma.voucherCluster.deleteMany();
+  }
 
   async createVoucherCluster(
     ownerId: string,
@@ -110,57 +119,6 @@ export class VouchersManagementService {
 
     if (exists) throw new VoucherAlreadyExistsException('code');
 
-    const {
-      results: { data, error, success },
-    } = await KafkaMessageHandler<
-      any,
-      GetUserCashbackBalanceMessage,
-      GetUserCashbackBalanceMessageReply
-    >(
-      this.eventsClient,
-      KAFKA_MESSAGES.BILLING_MESSAGES.getUserCashbackBalance,
-      new GetUserCashbackBalanceMessage({ userId }),
-    );
-
-    if (!success)
-      throw new InternalServerErrorException(
-        'something went worng durning balance check, please try again later',
-      );
-
-    const { cashbackBalance } = data;
-
-    const {
-      results: {
-        data: currencyData,
-        error: currencyError,
-        success: currencySuccess,
-      },
-    } = await KafkaMessageHandler<
-      any,
-      GetCurrencyExchangeRateMessage,
-      GetCurrencyExchangeRateMessageReply
-    >(
-      this.eventsClient,
-      KAFKA_MESSAGES.CURRENCY_MESSAGES.getCurrencyExchangeRate,
-      new GetCurrencyExchangeRateMessage({
-        baseCurrencyCode: 'usd',
-        targetCurrencyCode: currency,
-      }),
-    );
-
-    if (!currencySuccess)
-      throw new InternalServerErrorException(
-        'something went worng during currency converting process, please try again later',
-      );
-
-    const { rate } = currencyData;
-
-    const convertedAmount = amount * rate;
-    console.log('convertedAmount', convertedAmount);
-
-    if (convertedAmount > cashbackBalance)
-      throw new NotEnoughBalanceException();
-
     const newVoucher: Voucher = { ...input, status: 'active' };
 
     await this.prisma.voucherCluster.update({
@@ -180,13 +138,13 @@ export class VouchersManagementService {
   async VoucherExists(
     sellerId: string,
     voucherCode: string,
-  ): Promise<[boolean, number]> {
+  ): Promise<[boolean, number, Voucher]> {
     const vouchers = await this.getVouchersByOwnerId(sellerId);
 
     const voucherIdx = vouchers.findIndex((v) => v.code === voucherCode);
 
     const voucherExists = voucherIdx > -1;
-    return [voucherExists, voucherIdx];
+    return [voucherExists, voucherIdx, vouchers[voucherIdx]];
   }
 
   async deactivateVoucher(
@@ -255,5 +213,82 @@ export class VouchersManagementService {
     } catch {
       throw new VoucherNotFoundException();
     }
+  }
+
+  async isVoucherApplyable(
+    userId: string,
+    voucherCode: string,
+  ): Promise<
+    [
+      boolean,
+      Voucher & { convertedAmount: number; convertedToCurrency: string },
+    ]
+  > {
+    const [exists, idx, voucher] = await this.VoucherExists(
+      userId,
+      voucherCode,
+    );
+    const { amount, code, currency, status } = voucher;
+
+    if (status !== 'active') throw new VoucherNotActiveException();
+
+    if (!exists) throw new VoucherNotFoundException();
+
+    const {
+      results: { data, error, success },
+    } = await KafkaMessageHandler<
+      any,
+      GetUserCashbackBalanceMessage,
+      GetUserCashbackBalanceMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.BILLING_MESSAGES.getUserCashbackBalance,
+      new GetUserCashbackBalanceMessage({ userId }),
+    );
+
+    if (!success) throw new Error(error);
+
+    const { cashbackBalance } = data;
+
+    const {
+      results: {
+        data: currencyData,
+        error: currencyError,
+        success: currencySuccess,
+      },
+    } = await KafkaMessageHandler<
+      any,
+      GetCurrencyExchangeRateMessage,
+      GetCurrencyExchangeRateMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.CURRENCY_MESSAGES.getCurrencyExchangeRate,
+      new GetCurrencyExchangeRateMessage({
+        targetCurrencyCode: currency,
+      }),
+      'checking cashback balance process timedout, try again later',
+    );
+
+    if (!currencySuccess) throw new Error(currencyError);
+
+    const { rate, convertedToCurrency, convertedFromCurrency } = currencyData;
+
+    const convertedAmount = amount / rate;
+    console.log('convertedAmount', convertedAmount);
+
+    if (convertedAmount > cashbackBalance)
+      throw new NotEnoughBalanceException();
+
+    return [
+      true,
+      {
+        amount,
+        code,
+        convertedAmount,
+        currency,
+        status,
+        convertedToCurrency: convertedFromCurrency,
+      },
+    ];
   }
 }

@@ -26,6 +26,16 @@ export const KAFKA_EVENTS = {
     balanceCreated: "balance.created",
     transactionCreated: "transaction.created",
   },
+  VOUCHER_EVENTS: {
+    voucherCreated: "voucher.created",
+    voucherApplied: "voucher.applied",
+  },
+  PARTNERS_EVENTS: {
+    partnerCreated: "partner.created",
+    partnerRemoved: "partner.removed",
+    partnerDeActivated: "partner.deactivated",
+    partnerActivated: "partner.activated",
+  },
   createAccount: "create.account",
   createWishlist: "create.wishlist",
   createWishersList: "create.wisherlist",
@@ -65,6 +75,8 @@ export const KAFKA_MESSAGES = {
   },
   VOUCHERS_MESSAGES: {
     getShopActiveVouchers: "get.shop.active.vouchers",
+    isApplyableVoucher: "is.applyable.voucher",
+    getVoucherData: "get.voucher.data",
   },
   emailExists: "email.exists",
   getAccountByEmail: "get.account.by.email",

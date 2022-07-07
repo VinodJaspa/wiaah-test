@@ -1,14 +1,15 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import {
   GetUserCashbackBalanceMessage,
   GetUserCashbackBalanceMessageReply,
   KafkaPayload,
+  VoucherAppliedEvent,
 } from 'nest-dto';
-import { KAFKA_MESSAGES } from 'nest-utils';
+import { formatCaughtError, KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
 import { BalanceService } from './balance.service';
 
-@Controller('balance')
+@Controller()
 export class BalanceController {
   constructor(private readonly balacneService: BalanceService) {}
 
@@ -28,12 +29,28 @@ export class BalanceController {
           cashbackBalance,
         },
       });
-    } catch {
+    } catch (err) {
       return new GetUserCashbackBalanceMessageReply({
         success: false,
         data: null,
-        error: 'error getting user balance',
+        error: formatCaughtError(err),
       });
+    }
+  }
+
+  @EventPattern(KAFKA_EVENTS.VOUCHER_EVENTS.voucherApplied)
+  async handleVoucherCreatedEvent(
+    @Payload() payload: KafkaPayload<VoucherAppliedEvent>,
+  ) {
+    try {
+      console.log('applied voucher');
+      const { userId, convertedAmount } = payload.value.input;
+      const data = await this.balacneService.removeCashbackBalance(
+        userId,
+        convertedAmount,
+      );
+    } catch (err) {
+      console.log(err);
     }
   }
 }

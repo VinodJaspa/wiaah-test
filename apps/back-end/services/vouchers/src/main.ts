@@ -1,10 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import {
-  KAFKA_BROKERS,
-  KAFKA_SERVICE_CLIENTID,
-  KAFKA_SERVICE_GROUPID,
-} from 'nest-utils';
+import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -14,15 +10,15 @@ async function bootstrap() {
     options: {
       client: {
         brokers: KAFKA_BROKERS,
-        clientId: KAFKA_SERVICE_CLIENTID,
+        clientId: SERVICES.VOUCHERS_SERVICE.clientId,
       },
       consumer: {
-        groupId: KAFKA_SERVICE_GROUPID,
+        groupId: SERVICES.VOUCHERS_SERVICE.groupId,
       },
     },
   });
 
-  app.startAllMicroservices();
+  await app.startAllMicroservices();
   await app.listen(3016);
 }
 bootstrap();

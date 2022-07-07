@@ -15,7 +15,7 @@ async function bootstrap() {
       consumer: { groupId: SERVICES.SHOPPING_CART_SERVICE.groupId },
     },
   });
-  app.startAllMicroservices();
+  await app.startAllMicroservices();
   await app.listen(3011);
 }
 bootstrap();

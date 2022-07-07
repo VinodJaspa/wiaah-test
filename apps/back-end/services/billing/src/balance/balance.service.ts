@@ -2,16 +2,44 @@ import { Balance } from '@entities';
 import { BalanceNotFoundException } from '@exception';
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { KAFKA_EVENTS, KAFKA_MESSAGES, KAFKA_SERVICE_TOKEN } from 'nest-utils';
+import {
+  KafkaMessageHandler,
+  KAFKA_EVENTS,
+  KAFKA_MESSAGES,
+  KAFKA_SERVICE_TOKEN,
+  SERVICES,
+} from 'nest-utils';
 import { PrismaService } from 'src/prisma.service';
-import { BalanceCreatedEvent } from 'nest-dto';
+import {
+  BalanceCreatedEvent,
+  GetCurrencyExchangeRateMessage,
+  GetCurrencyExchangeRateMessageReply,
+  GetVoucherDataMessage,
+  GetVoucherDataMessageReply,
+} from 'nest-dto';
 
 @Injectable()
 export class BalanceService {
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
+    @Inject(SERVICES.BILLING_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
+
+  async clear() {
+    return this.prisma.balance.deleteMany();
+  }
+
+  async addCashbackBalance(userId: string): Promise<Balance> {
+    return this.prisma.balance.update({
+      where: {
+        ownerId: userId,
+      },
+      data: {
+        cashbackBalance: 50,
+      },
+    });
+  }
 
   async getUserBalance(ownerId: string): Promise<Balance> {
     const balance = await this.prisma.balance.findUnique({
@@ -145,5 +173,58 @@ export class BalanceService {
     } catch {
       throw new BalanceNotFoundException('owner id');
     }
+  }
+
+  removeCashbackBalance(userId: string, amount: number) {
+    return this.prisma.balance.update({
+      where: {
+        ownerId: userId,
+      },
+      data: {
+        cashbackBalance: {
+          decrement: amount,
+        },
+      },
+    });
+  }
+
+  async handleAppliedVoucher(userId: string, voucherCode: string) {
+    const {
+      results: { data, error, success },
+    } = await KafkaMessageHandler<
+      any,
+      GetVoucherDataMessage,
+      GetVoucherDataMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.VOUCHERS_MESSAGES.getVoucherData,
+      new GetVoucherDataMessage({ userId, voucherCode }),
+    );
+
+    if (!success) throw new Error(error);
+
+    const { amount, code, currency } = data;
+
+    const {
+      results: { data: cData, error: cError, success: cSuccess },
+    } = await KafkaMessageHandler<
+      any,
+      GetCurrencyExchangeRateMessage,
+      GetCurrencyExchangeRateMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.CURRENCY_MESSAGES.getCurrencyExchangeRate,
+      new GetCurrencyExchangeRateMessage({
+        targetCurrencyCode: currency,
+      }),
+    );
+
+    if (!cSuccess) throw new Error(cError);
+
+    const { rate } = cData;
+
+    const convertedAmount = amount / rate;
+
+    this.removeCashbackBalance(userId, convertedAmount);
   }
 }
