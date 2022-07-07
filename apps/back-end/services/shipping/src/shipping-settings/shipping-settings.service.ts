@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { KAFKA_SERVICE_TOKEN } from 'nest-utils';
+import { KAFKA_SERVICE_TOKEN, SERVICES } from 'nest-utils';
 import { PrismaService } from 'src/prisma.service';
 import { CreateShippingSettingInput } from './dto/create-shipping-setting.input';
 import { ShippingSetting } from './entities/shipping-setting.entity';
@@ -10,7 +10,8 @@ import { ShippingSettingsNotFoundException } from './exceptions/ShippingSettings
 export class ShippingSettingsService {
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
+    @Inject(SERVICES.SHIPPING_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
 
   getAll(): Promise<ShippingSetting[]> {

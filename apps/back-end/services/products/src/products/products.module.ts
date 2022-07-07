@@ -37,41 +37,15 @@ import { ProductsController } from './products.controller';
     }),
     ClientsModule.register([
       {
-        name: SERVICES.WISHLIST_SERVICE.token,
+        name: SERVICES.PRODUCTS_SERVICE.token,
         transport: Transport.KAFKA,
         options: {
           client: {
             brokers: KAFKA_BROKERS,
-            clientId: SERVICES.WISHLIST_SERVICE.clientId,
+            clientId: SERVICES.PRODUCTS_SERVICE.clientId,
           },
           consumer: {
-            groupId: SERVICES.WISHLIST_SERVICE.groupId,
-          },
-        },
-      },
-      {
-        name: SERVICES.SHOP_SERVICE.token,
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            brokers: KAFKA_BROKERS,
-            clientId: SERVICES.SHOP_SERVICE.clientId,
-          },
-          consumer: {
-            groupId: SERVICES.SHOP_SERVICE.groupId,
-          },
-        },
-      },
-      {
-        name: KAFKA_SERVICE_TOKEN,
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            brokers: KAFKA_BROKERS,
-            clientId: KAFKA_SERVICE_CLIENTID,
-          },
-          consumer: {
-            groupId: KAFKA_SERVICE_GROUPID,
+            groupId: SERVICES.PRODUCTS_SERVICE.groupId,
           },
         },
       },

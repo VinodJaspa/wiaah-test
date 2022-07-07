@@ -37,11 +37,7 @@ import {
 export class ShoppingCartService {
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(SERVICES.PRODUCTS_SERVICE.token)
-    private readonly productsClient: ClientKafka,
-    @Inject(SERVICES.SERVICES_SERIVCE.token)
-    private readonly ServicesClient: ClientKafka,
-    @Inject(SERVICES.VOUCHERS_SERVICE.token)
+    @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
     private readonly eventsClient: ClientKafka,
   ) {}
 
@@ -98,7 +94,7 @@ export class ShoppingCartService {
       GetProductMetaDataMessage,
       GetProductMetaDataMessageReply
     >(
-      this.productsClient,
+      this.eventsClient,
       KAFKA_MESSAGES.PRODUCTS_MESSAGES.getProductMetaData,
       new GetProductMetaDataMessage({
         productId: product.itemId,
@@ -200,7 +196,7 @@ export class ShoppingCartService {
       GetServiceMetaDataMessage,
       GetServiceMetaDataMessageReply
     >(
-      this.productsClient,
+      this.eventsClient,
       KAFKA_MESSAGES.SERVICES_MESSAGES.getServiceMetaData,
       new GetServiceMetaDataMessage({
         serviceId: service.itemId,

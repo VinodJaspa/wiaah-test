@@ -28,15 +28,15 @@ import {
     }),
     ClientsModule.register([
       {
-        name: SERVICES.PRODUCTS_SERVICE.token,
+        name: SERVICES.REVIEWS_SERVICE.token,
         transport: Transport.KAFKA,
         options: {
           client: {
             brokers: KAFKA_BROKERS,
-            clientId: SERVICES.PRODUCTS_SERVICE.clientId,
+            clientId: SERVICES.REVIEWS_SERVICE.clientId,
           },
           consumer: {
-            groupId: SERVICES.PRODUCTS_SERVICE.groupId,
+            groupId: SERVICES.REVIEWS_SERVICE.groupId,
           },
         },
       },

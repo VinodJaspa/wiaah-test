@@ -10,7 +10,6 @@ import { PrismaService } from 'src/prisma.service';
 import { getUserFromRequest, KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ProductsResolver } from './product.resolver';
-import { Product } from './entities/product.entity';
 import { ShopController } from './shop.controller';
 
 @Module({
@@ -28,15 +27,15 @@ import { ShopController } from './shop.controller';
     }),
     ClientsModule.register([
       {
-        name: SERVICES.ACCOUNTS_SERVICE.token,
+        name: SERVICES.SHOP_SERVICE.token,
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: SERVICES.ACCOUNTS_SERVICE.clientId,
+            clientId: SERVICES.SHOP_SERVICE.clientId,
             brokers: KAFKA_BROKERS,
           },
           consumer: {
-            groupId: SERVICES.ACCOUNTS_SERVICE.groupId,
+            groupId: SERVICES.SHOP_SERVICE.groupId,
           },
         },
       },

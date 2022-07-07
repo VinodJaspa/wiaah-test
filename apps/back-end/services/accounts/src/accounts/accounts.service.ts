@@ -16,11 +16,7 @@ import { AccountType, Prisma } from '@prisma-client';
 export class AccountsService {
   constructor(
     private prisma: PrismaService,
-    @Inject(SERVICES.WISHLIST_SERVICE.token)
-    private readonly wishlistClient: ClientKafka,
-    @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
-    private readonly shoppingCartclient: ClientKafka,
-    @Inject(KAFKA_SERVICE_TOKEN)
+    @Inject(SERVICES.ACCOUNTS_SERVICE.token)
     private readonly eventsClient: ClientKafka,
   ) {}
 

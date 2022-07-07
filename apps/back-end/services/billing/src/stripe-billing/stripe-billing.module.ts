@@ -9,6 +9,7 @@ import {
   KAFKA_BROKERS,
   KAFKA_SERVICE_CLIENTID,
   KAFKA_SERVICE_GROUPID,
+  SERVICES,
 } from 'nest-utils';
 
 @Module({
@@ -17,15 +18,15 @@ import {
     StripeModule.forRoot({ apiKey: process.env.STRIPE_API_KEY }),
     ClientsModule.register([
       {
-        name: KAFKA_SERVICE_TOKEN,
+        name: SERVICES.BILLING_SERVICE.token,
         transport: Transport.KAFKA,
         options: {
           client: {
             brokers: KAFKA_BROKERS,
-            clientId: KAFKA_SERVICE_CLIENTID,
+            clientId: SERVICES.BILLING_SERVICE.clientId,
           },
           consumer: {
-            groupId: KAFKA_SERVICE_GROUPID,
+            groupId: SERVICES.BILLING_SERVICE.groupId,
           },
         },
       },

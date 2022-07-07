@@ -1,13 +1,6 @@
-import {
-  Controller,
-  Inject,
-  NotFoundException,
-  OnModuleInit,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { ClientKafka, MessagePattern, Payload } from '@nestjs/microservices';
-import { Shop } from '@prisma-client';
-import { formatCaughtError, KAFKA_MESSAGES, SERVICES } from 'nest-utils';
+import { Controller, NotFoundException } from '@nestjs/common';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { formatCaughtError, KAFKA_MESSAGES } from 'nest-utils';
 import { ShopService } from './shop.service';
 import {
   GetUserShopMetaDataMessage,

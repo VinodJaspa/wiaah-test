@@ -24,8 +24,8 @@ import { ShoppingCartService } from './shopping-cart.service';
 export class ShoppingCartController implements OnModuleInit {
   constructor(
     private readonly shoppingCartService: ShoppingCartService,
-    @Inject(SERVICES.PRODUCTS_SERVICE.token)
-    private readonly productsClient: ClientKafka,
+    @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
 
   @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENT.accountCreated)
@@ -70,9 +70,9 @@ export class ShoppingCartController implements OnModuleInit {
   }
 
   async onModuleInit() {
-    this.productsClient.subscribeToResponseOf(
+    this.eventsClient.subscribeToResponseOf(
       KAFKA_MESSAGES.PRODUCTS_MESSAGES.getProductMetaData,
     );
-    await this.productsClient.connect();
+    await this.eventsClient.connect();
   }
 }

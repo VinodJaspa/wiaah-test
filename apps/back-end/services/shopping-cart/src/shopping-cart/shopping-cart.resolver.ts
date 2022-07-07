@@ -30,12 +30,8 @@ type Hooks = OnModuleInit & OnModuleDestroy;
 export class ShoppingCartResolver implements Hooks {
   constructor(
     private readonly shoppingCartService: ShoppingCartService,
-    @Inject(SERVICES.PRODUCTS_SERVICE.token)
-    private readonly productsClient: ClientKafka,
-    @Inject(SERVICES.SERVICES_SERIVCE.token)
-    private readonly serviceClient: ClientKafka,
-    @Inject(SERVICES.VOUCHERS_SERVICE.token)
-    private readonly vouchersClient: ClientKafka,
+    @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
 
   @Query((type) => ShoppingCart)
@@ -87,18 +83,18 @@ export class ShoppingCartResolver implements Hooks {
   }
 
   async onModuleInit() {
-    this.productsClient.subscribeToResponseOf(KAFKA_MESSAGES.isProductAddable);
-    this.serviceClient.subscribeToResponseOf(KAFKA_MESSAGES.isServiceAddable);
-    this.vouchersClient.subscribeToResponseOf(
+    this.eventsClient.subscribeToResponseOf(KAFKA_MESSAGES.isProductAddable);
+    this.eventsClient.subscribeToResponseOf(KAFKA_MESSAGES.isServiceAddable);
+    this.eventsClient.subscribeToResponseOf(
       KAFKA_MESSAGES.VOUCHERS_MESSAGES.isApplyableVoucher,
     );
-    await this.vouchersClient.connect();
-    await this.serviceClient.connect();
-    await this.productsClient.connect();
+    await this.eventsClient.connect();
+    await this.eventsClient.connect();
+    await this.eventsClient.connect();
   }
   async onModuleDestroy() {
-    await this.productsClient.close();
-    await this.serviceClient.close();
-    await this.productsClient.close();
+    await this.eventsClient.close();
+    await this.eventsClient.close();
+    await this.eventsClient.close();
   }
 }

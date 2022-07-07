@@ -4,13 +4,7 @@ import { VouchersManagementResolver } from './vouchers-management.resolver';
 import { PrismaService } from 'src/prisma.service';
 import { VouchersManagementController } from './vouchers-management.controller';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import {
-  KAFKA_BROKERS,
-  KAFKA_SERVICE_CLIENTID,
-  KAFKA_SERVICE_GROUPID,
-  KAFKA_SERVICE_TOKEN,
-  SERVICES,
-} from 'nest-utils';
+import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 
 @Module({
   imports: [

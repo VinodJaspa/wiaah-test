@@ -15,8 +15,6 @@ import { VouchersManagementService } from './vouchers-management.service';
 import {
   ApplyableVoucherMessage,
   ApplyableVoucherMessageReply,
-  GetShopVouchersMessage,
-  GetShopVouchersMessageReply,
   KafkaPayload,
 } from 'nest-dto';
 
@@ -104,11 +102,6 @@ export class VouchersManagementController implements OnModuleInit {
         data: null,
       });
     }
-  }
-
-  @EventPattern('test')
-  test() {
-    console.log('test');
   }
 
   async onModuleInit() {

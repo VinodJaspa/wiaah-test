@@ -18,7 +18,8 @@ export type Services =
   | "ORDERS_SERVICE"
   | "VOUCHERS_SERVICE"
   | "BILLING_SERVICE"
-  | "PARTNERS_SERVICE";
+  | "PARTNERS_SERVICE"
+  | "REVIEWS_SERVICE";
 
 export const SERVICES: Record<Services, ServiceInfo> = {
   ACCOUNTS_SERVICE: {
@@ -90,5 +91,10 @@ export const SERVICES: Record<Services, ServiceInfo> = {
     clientId: "partners",
     groupId: "partners",
     token: "PARTNERS_SERVICE",
+  },
+  REVIEWS_SERVICE: {
+    token: "REVIEWS_SERVICE",
+    clientId: "reviews",
+    groupId: "reviews",
   },
 };
