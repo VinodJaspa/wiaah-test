@@ -39,7 +39,8 @@ import { ConfirmPasswordChangeInput } from './dto/confirmPasswordChange.input';
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
+    @Inject(SERVICES.AUTH_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
     private readonly JWTService: JwtService,
   ) {}
 

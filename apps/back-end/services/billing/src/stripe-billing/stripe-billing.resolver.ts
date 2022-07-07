@@ -7,7 +7,7 @@ import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
   KAFKA_MESSAGES,
-  KAFKA_SERVICE_TOKEN,
+  SERVICES,
 } from 'nest-utils';
 import { StripeBillingService } from './stripe-billing.service';
 
@@ -16,7 +16,8 @@ import { StripeBillingService } from './stripe-billing.service';
 export class StripeBillingResolver implements OnModuleInit {
   constructor(
     private readonly stripeBillingService: StripeBillingService,
-    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsCLient: ClientKafka,
+    @Inject(SERVICES.BILLING_SERVICE.token)
+    private readonly eventsCLient: ClientKafka,
   ) {}
 
   @Mutation(() => Boolean)

@@ -10,6 +10,7 @@ import {
   KafkaMessageHandler,
   KAFKA_MESSAGES,
   KAFKA_SERVICE_TOKEN,
+  SERVICES,
 } from 'nest-utils';
 import { BillingAddressService } from 'src/billing-address/billing-address.service';
 import { StripeService } from 'src/stripe/stripe.service';
@@ -22,6 +23,7 @@ import {
 interface FormatedData<TData> {
   shopId: string;
   products: TData;
+  totalPrice: number;
 }
 
 @Injectable()
@@ -29,7 +31,8 @@ export class StripeBillingService {
   constructor(
     private readonly StripeService: StripeService,
     private readonly billingAddressService: BillingAddressService,
-    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
+    @Inject(SERVICES.BILLING_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
 
   createdStripeConnectedAccount() {
@@ -60,23 +63,31 @@ export class StripeBillingService {
     );
 
     if (!success) throw new Error(error);
-    if (data.length < 1) throw new BadRequestException('empty shopping cart');
+    const { items, voucher } = data;
+    if (items.length < 1) throw new BadRequestException('empty shopping cart');
 
-    const formatedData: FormatedData<typeof data>[] = data.reduce(
+    const formatedData: FormatedData<typeof items>[] = items.reduce(
       (acc, curr) => {
         const shopIdx = acc.findIndex((shop) => shop.shopId === curr.shopId);
         const shopExists = shopIdx > -1;
         if (shopExists) {
           acc[shopIdx].products.push(curr);
+          acc[shopIdx].totalPrice += curr.price;
           return acc;
         } else {
-          return [{ shopId: curr.shopId, products: [curr] }, ...acc];
+          return [
+            { shopId: curr.shopId, products: [curr], totalPrice: curr.price },
+            ...acc,
+          ];
         }
       },
-      [] as FormatedData<typeof data>[],
+      [] as FormatedData<typeof items>[],
     );
+    const totalPrice = formatedData.reduce((acc, curr) => {
+      return acc + curr.totalPrice;
+    }, 0);
 
-    console.log('formated data', formatedData);
+    console.log('formated data', formatedData, voucher, totalPrice);
   }
 
   async setupStripeConnectedAccount() {

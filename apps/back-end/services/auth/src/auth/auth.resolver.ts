@@ -7,7 +7,12 @@ import { ClientKafka } from '@nestjs/microservices';
 import { ACCOUNTS_SERVICE } from 'src/ServicesTokens';
 import { LoginDto, VerifyEmailDto } from './dto';
 import { ConfigService } from '@nestjs/config';
-import { KAFKA_EVENTS, KAFKA_MESSAGES, KAFKA_SERVICE_TOKEN } from 'nest-utils';
+import {
+  KAFKA_EVENTS,
+  KAFKA_MESSAGES,
+  KAFKA_SERVICE_TOKEN,
+  SERVICES,
+} from 'nest-utils';
 import { ForgotPasswordEmailInput } from './dto/forgotPasswordEmail.input';
 import { ConfirmPasswordChangeInput } from './dto/confirmPasswordChange.input';
 import { NoSchemaIntrospectionCustomRule } from 'graphql';
@@ -17,7 +22,8 @@ export class AuthResolver implements OnModuleInit {
   constructor(
     private readonly authService: AuthService,
 
-    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
+    @Inject(SERVICES.AUTH_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
     private readonly config: ConfigService,
   ) {}
 
