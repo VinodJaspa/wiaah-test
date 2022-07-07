@@ -29,12 +29,12 @@ export const Card: React.FC<CardProps> = ({
   return (
     <>
       <div onClick={() => handleShopClick()} className="w-70 relative block">
-        <div className="flex w-full justify-center bg-black p-4 text-white">
+        <div className="flex w-full justify-center bg-black items-center h-12 text-white">
           <p className="uppercase">{name}</p>
         </div>
         <img src={imgUrl} alt="shop_img" className="h-56 w-full object-cover" />
         <div
-          className={`flex h-20 w-full ${shadeColor} absolute bottom-0 opacity-75`}
+          className={`flex h-12 w-full ${shadeColor} absolute bottom-0 opacity-75`}
         ></div>
       </div>
     </>

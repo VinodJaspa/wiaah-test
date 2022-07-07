@@ -9,21 +9,23 @@ import {
   KAFKA_SERVICE_CLIENTID,
   KAFKA_SERVICE_GROUPID,
   KAFKA_SERVICE_TOKEN,
+  SERVICES,
 } from 'nest-utils';
+import { BalanceController } from './balance.controller';
 
 @Module({
   imports: [
     ClientsModule.register([
       {
-        name: KAFKA_SERVICE_TOKEN,
+        name: SERVICES.BILLING_SERVICE.token,
         transport: Transport.KAFKA,
         options: {
           client: {
             brokers: KAFKA_BROKERS,
-            clientId: KAFKA_SERVICE_CLIENTID,
+            clientId: SERVICES.BILLING_SERVICE.clientId,
           },
           consumer: {
-            groupId: KAFKA_SERVICE_GROUPID,
+            groupId: SERVICES.BILLING_SERVICE.groupId,
           },
         },
       },
@@ -31,5 +33,6 @@ import {
   ],
   providers: [BalanceResolver, BalanceService, PrismaService],
   exports: [BalanceService],
+  controllers: [BalanceController],
 })
 export class BalanceModule {}

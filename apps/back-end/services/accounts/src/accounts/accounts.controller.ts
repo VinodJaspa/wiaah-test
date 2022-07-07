@@ -13,6 +13,7 @@ import {
   KAFKA_EVENTS,
   formatCaughtError,
   SERVICES,
+  KAFKA_SERVICE_TOKEN,
 } from 'nest-utils';
 import {
   AccountRegisteredEvent,
@@ -29,21 +30,21 @@ export class AccountsController implements OnModuleInit {
   private logger = new Logger(AccountsController.name);
   constructor(
     private readonly accountService: AccountsService,
-    @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
-    private readonly shoppingCartClient: ClientKafka,
-    @Inject(SERVICES.WISHLIST_SERVICE.token)
-    private readonly wishlistClient: ClientKafka,
+    @Inject(SERVICES.ACCOUNTS_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
 
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.emailExists)
   async emailExists(
-    @Payload() payload: { value: EmailExistsMessage },
+    @Payload() payload: KafkaPayload<EmailExistsMessage>,
   ): Promise<EmailExistsMessageReply> {
+    console.log('called');
     try {
       const exists = await this.accountService.emailExists(
         payload.value.input.email,
       );
 
+      console.log('done');
       return new EmailExistsMessageReply({
         success: true,
         data: { emailExists: exists },
@@ -128,7 +129,8 @@ export class AccountsController implements OnModuleInit {
     }
   }
   async onModuleInit() {
-    await this.wishlistClient.connect();
-    await this.shoppingCartClient.connect();
+    await this.eventsClient.connect();
+    await this.eventsClient.connect();
+    await this.eventsClient.connect();
   }
 }

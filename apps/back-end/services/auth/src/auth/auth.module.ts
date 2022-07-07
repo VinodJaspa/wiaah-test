@@ -10,7 +10,6 @@ import { PrismaService } from 'src/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { ACCOUNTS_SERVICE, MAILING_SERVICE } from 'src/ServicesTokens';
 import {
   getUserFromRequest,
   KAFKA_BROKERS,
@@ -24,41 +23,15 @@ import {
   imports: [
     ClientsModule.register([
       {
-        name: SERVICES.ACCOUNTS_SERVICE.token,
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: SERVICES.ACCOUNTS_SERVICE.clientId,
-            brokers: KAFKA_BROKERS,
-          },
-          consumer: {
-            groupId: SERVICES.ACCOUNTS_SERVICE.groupId,
-          },
-        },
-      },
-      {
-        name: SERVICES.MAILING_SERVICE.token,
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: SERVICES.MAILING_SERVICE.clientId,
-            brokers: KAFKA_BROKERS,
-          },
-          consumer: {
-            groupId: SERVICES.MAILING_SERVICE.groupId,
-          },
-        },
-      },
-      {
-        name: KAFKA_SERVICE_TOKEN,
+        name: SERVICES.AUTH_SERVICE.token,
         transport: Transport.KAFKA,
         options: {
           client: {
             brokers: KAFKA_BROKERS,
-            clientId: KAFKA_SERVICE_CLIENTID,
+            clientId: SERVICES.AUTH_SERVICE.clientId,
           },
           consumer: {
-            groupId: KAFKA_SERVICE_GROUPID,
+            groupId: SERVICES.AUTH_SERVICE.groupId,
           },
         },
       },

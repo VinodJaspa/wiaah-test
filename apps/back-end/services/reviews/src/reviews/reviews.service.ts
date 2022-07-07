@@ -17,8 +17,8 @@ import { Review } from './entities/review.entity';
 export class ReviewsService {
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(SERVICES.PRODUCTS_SERVICE.token)
-    private readonly productsClient: ClientKafka,
+    @Inject(SERVICES.REVIEWS_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
 
   getAll() {
@@ -41,7 +41,7 @@ export class ReviewsService {
       IsProductReviewableMessage,
       IsProductReviewableMessageReply
     >(
-      this.productsClient,
+      this.eventsClient,
       KAFKA_MESSAGES.productReviewable,
       new IsProductReviewableMessage({ productId: itemId, reviewerId }),
       'product reviewable check timed out',

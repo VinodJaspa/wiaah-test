@@ -20,8 +20,8 @@ import { Account } from './entities';
 export class AccountsResolver {
   constructor(
     private readonly accountsService: AccountsService,
-    @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
-    private readonly cartclient: ClientKafka,
+    @Inject(SERVICES.ACCOUNTS_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
 
   @Query(() => [Account])

@@ -1,10 +1,10 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { ShoppingCartService } from './shopping-cart.service';
-import { CartItem, ShoppingCart } from './entities/shopping-cart.entity';
-import { CreateShoppingCartInput } from './dto/create-shopping-cart.input';
+import { CartItem, ShoppingCart } from '@entities';
 import {
   BadRequestException,
   Inject,
+  OnModuleDestroy,
   OnModuleInit,
   UseGuards,
 } from '@nestjs/common';
@@ -13,24 +13,28 @@ import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
   KAFKA_MESSAGES,
+  KAFKA_SERVICE_TOKEN,
   SERVICES,
 } from 'nest-utils';
-import { AddShoppingCartItemInput } from './dto/addItem.input';
-import { RemoveShoppingCartItemInput } from './dto/removeItem.input';
+import {
+  AddShoppingCartItemInput,
+  ApplyVoucherInput,
+  RemoveShoppingCartItemInput,
+} from '@dto';
 import { ClientKafka } from '@nestjs/microservices';
 
+type Hooks = OnModuleInit & OnModuleDestroy;
+
 @Resolver(() => ShoppingCart)
-export class ShoppingCartResolver implements OnModuleInit {
+@UseGuards(GqlAuthorizationGuard)
+export class ShoppingCartResolver implements Hooks {
   constructor(
     private readonly shoppingCartService: ShoppingCartService,
-    @Inject(SERVICES.PRODUCTS_SERVICE.token)
-    private readonly productsClient: ClientKafka,
-    @Inject(SERVICES.SERVICES_SERIVCE.token)
-    private readonly serviceClient: ClientKafka,
+    @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
 
   @Query((type) => ShoppingCart)
-  @UseGuards(GqlAuthorizationGuard)
   MyShoppingCart(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<ShoppingCart> {
@@ -43,13 +47,11 @@ export class ShoppingCartResolver implements OnModuleInit {
   }
 
   @Mutation((type) => ShoppingCart)
-  @UseGuards(GqlAuthorizationGuard)
   clearShoppingCart(@GqlCurrentUser() user: AuthorizationDecodedUser) {
     return this.shoppingCartService.clearShoppingCart(user.id);
   }
 
   @Mutation((type) => CartItem)
-  @UseGuards(GqlAuthorizationGuard)
   addItemToCart(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @Args('addItemToCartArgs') input: AddShoppingCartItemInput,
@@ -65,7 +67,6 @@ export class ShoppingCartResolver implements OnModuleInit {
   }
 
   @Mutation((type) => Boolean)
-  @UseGuards(GqlAuthorizationGuard)
   removeItemFromCart(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @Args('removeItemFromCartArgs') input: RemoveShoppingCartItemInput,
@@ -73,10 +74,27 @@ export class ShoppingCartResolver implements OnModuleInit {
     return this.shoppingCartService.removeItem(user, input);
   }
 
+  @Mutation((type) => ShoppingCart)
+  applyVoucher(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('applyVoucherCode') input: ApplyVoucherInput,
+  ): Promise<ShoppingCart> {
+    return this.shoppingCartService.applyVoucher(user.id, input);
+  }
+
   async onModuleInit() {
-    this.productsClient.subscribeToResponseOf(KAFKA_MESSAGES.isProductAddable);
-    this.serviceClient.subscribeToResponseOf(KAFKA_MESSAGES.isServiceAddable);
-    await this.serviceClient.connect();
-    await this.productsClient.connect();
+    this.eventsClient.subscribeToResponseOf(KAFKA_MESSAGES.isProductAddable);
+    this.eventsClient.subscribeToResponseOf(KAFKA_MESSAGES.isServiceAddable);
+    this.eventsClient.subscribeToResponseOf(
+      KAFKA_MESSAGES.VOUCHERS_MESSAGES.isApplyableVoucher,
+    );
+    await this.eventsClient.connect();
+    await this.eventsClient.connect();
+    await this.eventsClient.connect();
+  }
+  async onModuleDestroy() {
+    await this.eventsClient.close();
+    await this.eventsClient.close();
+    await this.eventsClient.close();
   }
 }

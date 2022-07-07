@@ -1,5 +1,6 @@
 import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
 import { CartItemType } from '@prisma-client';
+import { AppliedVoucher } from '@entities';
 
 registerEnumType(CartItemType, { name: 'CartItemType' });
 
@@ -22,6 +23,9 @@ export class CartItem {
 
   @Field((type) => Int)
   quantity: number;
+
+  @Field((type) => ID)
+  providerId: string;
 }
 
 @ObjectType()
@@ -34,4 +38,7 @@ export class ShoppingCart {
 
   @Field((type) => [CartItem])
   cartItems: CartItem[];
+
+  @Field((type) => AppliedVoucher, { nullable: true })
+  appliedVoucher?: AppliedVoucher;
 }

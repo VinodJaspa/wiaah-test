@@ -14,6 +14,7 @@ import {
   KAFKA_SERVICE_CLIENTID,
   KAFKA_SERVICE_GROUPID,
   KAFKA_SERVICE_TOKEN,
+  SERVICES,
 } from 'nest-utils';
 import { ClientKafka, ClientsModule, Transport } from '@nestjs/microservices';
 
@@ -26,15 +27,15 @@ import { ClientKafka, ClientsModule, Transport } from '@nestjs/microservices';
     }),
     ClientsModule.register([
       {
-        name: KAFKA_SERVICE_TOKEN,
+        name: SERVICES.SHIPPING_SERVICE.token,
         transport: Transport.KAFKA,
         options: {
           client: {
             brokers: KAFKA_BROKERS,
-            clientId: KAFKA_SERVICE_CLIENTID,
+            clientId: SERVICES.SHIPPING_SERVICE.clientId,
           },
           consumer: {
-            groupId: KAFKA_SERVICE_GROUPID,
+            groupId: SERVICES.SHIPPING_SERVICE.groupId,
           },
         },
       },

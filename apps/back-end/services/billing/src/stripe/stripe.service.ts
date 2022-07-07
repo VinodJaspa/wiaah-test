@@ -1,11 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { StripeForRootOptions } from './types';
 import { Stripe } from 'stripe';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class StripeService {
   private stripe: Stripe;
-  constructor(@Inject('options') opts: StripeForRootOptions) {
+  constructor(
+    @Inject('options') opts: StripeForRootOptions,
+    private readonly configService: ConfigService,
+  ) {
     this.stripe = new Stripe(opts.apiKey, {
       apiVersion: '2020-08-27',
       typescript: true,
@@ -20,18 +24,16 @@ export class StripeService {
     return data;
   }
 
-  async createdStripeAccountLink(
+  createdStripeAccountLink(
     stripeAccountId: string,
-  ): Promise<{ url: string }> {
-    // const data = await this.stripe.accountLinks.create({
-    //   account: stripeAccountId,
-    //   type: 'account_onboarding',
-    //   return_url: 'https://www.goolge.com',
-    //   refresh_url: 'https://www.google.com',
-    // });
-    const test = await this.stripe.paymentIntents.list();
-    console.log(test);
-    return { url: '' };
+  ): Promise<Stripe.AccountLink> {
+    const data = this.stripe.accountLinks.create({
+      account: stripeAccountId,
+      type: 'account_onboarding',
+      return_url: this.configService.get('stripe_return_url'),
+      refresh_url: this.configService.get('stripe_refresh_url'),
+    });
+    return data;
   }
 
   async getConnectedAccounts(): Promise<Stripe.Account[]> {
@@ -46,14 +48,17 @@ export class StripeService {
     return data;
   }
 
-  async createPaymentIntent(amount: number) {
+  async createPaymentIntent(
+    amount: number,
+    currency: string = 'usd',
+  ): Promise<Stripe.PaymentIntent> {
     const data = await this.stripe.paymentIntents.create({
-      amount: 156,
-      currency: 'usd',
+      amount,
+      currency,
       automatic_payment_methods: {
         enabled: true,
       },
     });
-    console.log(data.client_secret);
+    return data;
   }
 }

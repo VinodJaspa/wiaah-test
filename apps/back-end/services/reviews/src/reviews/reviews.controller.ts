@@ -5,11 +5,11 @@ import { KAFKA_MESSAGES, SERVICES } from 'nest-utils';
 @Controller()
 export class ReviewsController implements OnModuleInit {
   constructor(
-    @Inject(SERVICES.PRODUCTS_SERVICE.token)
-    private readonly productsClient: ClientKafka,
+    @Inject(SERVICES.REVIEWS_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
   async onModuleInit() {
-    this.productsClient.subscribeToResponseOf(KAFKA_MESSAGES.productReviewable);
-    await this.productsClient.connect();
+    this.eventsClient.subscribeToResponseOf(KAFKA_MESSAGES.productReviewable);
+    await this.eventsClient.connect();
   }
 }

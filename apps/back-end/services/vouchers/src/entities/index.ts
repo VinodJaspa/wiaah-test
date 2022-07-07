@@ -1,2 +1,2 @@
-export * from './vouchers-management.entity';
+export * from './vouchers-cluster.entity';
 export * from './voucher.entity';

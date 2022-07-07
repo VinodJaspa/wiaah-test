@@ -9,9 +9,6 @@ export class VoucherCluster {
   @Field((type) => ID)
   ownerId: string;
 
-  @Field((type) => ID)
-  shopId: string;
-
   @Field((type) => [Voucher])
   vouchersList: Voucher[];
 }

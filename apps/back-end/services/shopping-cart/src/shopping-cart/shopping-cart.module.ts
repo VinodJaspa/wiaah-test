@@ -20,28 +20,15 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     }),
     ClientsModule.register([
       {
-        name: SERVICES.PRODUCTS_SERVICE.token,
+        name: SERVICES.SHOPPING_CART_SERVICE.token,
         transport: Transport.KAFKA,
         options: {
           client: {
             brokers: KAFKA_BROKERS,
-            clientId: SERVICES.PRODUCTS_SERVICE.clientId,
+            clientId: SERVICES.SHOPPING_CART_SERVICE.clientId,
           },
           consumer: {
-            groupId: SERVICES.PRODUCTS_SERVICE.groupId,
-          },
-        },
-      },
-      {
-        name: SERVICES.SERVICES_SERIVCE.token,
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            brokers: KAFKA_BROKERS,
-            clientId: SERVICES.SERVICES_SERIVCE.clientId,
-          },
-          consumer: {
-            groupId: SERVICES.SERVICES_SERIVCE.groupId,
+            groupId: SERVICES.SHOPPING_CART_SERVICE.groupId,
           },
         },
       },

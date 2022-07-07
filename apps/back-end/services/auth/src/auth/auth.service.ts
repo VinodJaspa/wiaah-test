@@ -39,11 +39,8 @@ import { ConfirmPasswordChangeInput } from './dto/confirmPasswordChange.input';
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(SERVICES.ACCOUNTS_SERVICE.token)
-    private readonly accountsClient: ClientKafka,
-    @Inject(SERVICES.MAILING_SERVICE.token)
-    private readonly mailingClient: ClientKafka,
-    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
+    @Inject(SERVICES.AUTH_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
     private readonly JWTService: JwtService,
   ) {}
 
@@ -302,22 +299,20 @@ export class AuthService {
 
   async emailExists(email: string): Promise<boolean> {
     const {
-      results: {
-        data: { emailExists },
-        error,
-        success,
-      },
+      results: { data, error, success },
     } = await KafkaMessageHandler<
       string,
       EmailExistsMessage,
       EmailExistsMessageReply
     >(
-      this.accountsClient,
+      this.eventsClient,
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.emailExists,
       new EmailExistsMessage({ email }),
       'email validation timed out',
+      10000,
     );
     if (!success) throw new Error('error validating email');
+    const { emailExists } = data;
     return emailExists;
   }
 }

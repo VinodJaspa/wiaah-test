@@ -4,11 +4,17 @@ export class GetShoppingCartItemsMessage extends KafkaMessage<{
   ownerId: string;
 }> {}
 
-export class GetShoppingCartItemsMessageReply extends KafkaMessageReply<
-  {
-    Id: string;
+export class GetShoppingCartItemsMessageReply extends KafkaMessageReply<{
+  items: {
+    id: string;
     shopId: string;
-    Name: string;
-    Price: number;
-  }[]
-> {}
+    name: string;
+    price: number;
+  }[];
+  voucher: {
+    code: string;
+    amount: number;
+    currency: string;
+    convertedAmount: number;
+  };
+}> {}

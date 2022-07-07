@@ -7,7 +7,7 @@ import {
 import { CreateAccountInput, UpdateAccountInput } from './dto';
 import { Account } from './entities';
 import { PrismaService } from 'src/prisma.service';
-import { KAFKA_EVENTS, SERVICES } from 'nest-utils';
+import { KAFKA_EVENTS, KAFKA_SERVICE_TOKEN, SERVICES } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 import { CreateShoppingCartEvent, NewAccountCreatedEvent } from 'nest-dto';
 import { AccountType, Prisma } from '@prisma-client';
@@ -16,12 +16,8 @@ import { AccountType, Prisma } from '@prisma-client';
 export class AccountsService {
   constructor(
     private prisma: PrismaService,
-    @Inject(SERVICES.WISHLIST_SERVICE.token)
-    private readonly wishlistClient: ClientKafka,
-    @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
-    private readonly shoppingCartclient: ClientKafka,
-    @Inject('test')
-    private readonly kafkaClient: ClientKafka,
+    @Inject(SERVICES.ACCOUNTS_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
 
   async createAccountRecord(createAccountInput: Prisma.AccountCreateInput) {
@@ -37,7 +33,7 @@ export class AccountsService {
           type,
         },
       });
-      this.kafkaClient.emit<string, NewAccountCreatedEvent>(
+      this.eventsClient.emit<string, NewAccountCreatedEvent>(
         KAFKA_EVENTS.ACCOUNTS_EVENT.accountCreated,
         new NewAccountCreatedEvent({
           email: createdUser.email,

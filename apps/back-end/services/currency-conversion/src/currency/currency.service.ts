@@ -24,13 +24,10 @@ export class CurrencyService {
       where: {
         code: code.toUpperCase(),
       },
-      rejectOnNotFound(error) {
-        throw new NotFoundException(
-          'currency with the give code was not found',
-        );
-      },
     });
-
+    if (!currency) {
+      throw new NotFoundException('currency with the give code was not found');
+    }
     return currency;
   }
 

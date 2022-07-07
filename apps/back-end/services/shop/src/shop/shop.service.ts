@@ -9,11 +9,6 @@ import { IsSellerAccountMessage, IsSellerAccountMessageReply } from 'nest-dto';
 import {
   AuthorizationDecodedUser,
   createNewCoords,
-  getCoordinatesAfterDistance,
-  getDistanceFromLatLonInKm,
-  KafkaMessageHandler,
-  KAFKA_EVENTS,
-  KAFKA_MESSAGES,
   SERVICES,
 } from 'nest-utils';
 import { PrismaService } from 'src/prisma.service';
@@ -24,11 +19,7 @@ import { IsSellerAccountEvent } from './events/isSellerAccount.event';
 
 @Injectable()
 export class ShopService {
-  constructor(
-    private readonly prisma: PrismaService,
-    @Inject(SERVICES.ACCOUNTS_SERVICE.token)
-    private readonly accountsClient: ClientKafka,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async CreateShop(
     createShopInput: CreateShopInput,

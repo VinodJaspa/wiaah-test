@@ -8,7 +8,14 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { AccountsController } from './accounts.controller';
-import { getUserFromRequest, KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import {
+  getUserFromRequest,
+  KAFKA_BROKERS,
+  KAFKA_SERVICE_CLIENTID,
+  KAFKA_SERVICE_GROUPID,
+  KAFKA_SERVICE_TOKEN,
+  SERVICES,
+} from 'nest-utils';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
@@ -23,37 +30,15 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     }),
     ClientsModule.register([
       {
-        name: SERVICES.WISHLIST_SERVICE.token,
+        name: SERVICES.ACCOUNTS_SERVICE.token,
         transport: Transport.KAFKA,
         options: {
           client: {
-            clientId: SERVICES.WISHLIST_SERVICE.clientId,
             brokers: KAFKA_BROKERS,
+            clientId: SERVICES.ACCOUNTS_SERVICE.clientId,
           },
           consumer: {
-            groupId: SERVICES.WISHLIST_SERVICE.groupId,
-          },
-        },
-      },
-      {
-        name: SERVICES.SHOPPING_CART_SERVICE.token,
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            clientId: SERVICES.SHOPPING_CART_SERVICE.clientId,
-            brokers: KAFKA_BROKERS,
-          },
-          consumer: {
-            groupId: SERVICES.SHOPPING_CART_SERVICE.groupId,
-          },
-        },
-      },
-      {
-        name: 'test',
-        transport: Transport.KAFKA,
-        options: {
-          client: {
-            brokers: KAFKA_BROKERS,
+            groupId: SERVICES.ACCOUNTS_SERVICE.groupId,
           },
         },
       },

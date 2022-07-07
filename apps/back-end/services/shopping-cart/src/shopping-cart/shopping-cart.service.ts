@@ -1,37 +1,44 @@
 import {
+  BadRequestException,
   Inject,
   Injectable,
+  InternalServerErrorException,
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { CartItem } from '@prisma-client';
 import { PrismaService } from 'src/prisma.service';
-import { ShoppingCart } from './entities/shopping-cart.entity';
+import { ShoppingCart } from '@entities';
 import {
   AuthorizationDecodedUser,
   KafkaMessageHandler,
+  KAFKA_EVENTS,
   KAFKA_MESSAGES,
+  KAFKA_SERVICE_TOKEN,
   SERVICES,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 import {
+  ApplyableVoucherMessage,
+  ApplyableVoucherMessageReply,
   GetProductMetaDataMessage,
   GetProductMetaDataMessageReply,
   GetServiceMetaDataMessage,
   GetServiceMetaDataMessageReply,
+  VoucherAppliedEvent,
 } from 'nest-dto';
-import { RemoveShoppingCartItemInput } from './dto/removeItem.input';
-import { AddShoppingCartItemInput } from './dto/addItem.input';
-import { NotFoundError } from 'rxjs';
+import {
+  AddShoppingCartItemInput,
+  ApplyVoucherInput,
+  RemoveShoppingCartItemInput,
+} from '@dto';
 
 @Injectable()
 export class ShoppingCartService {
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(SERVICES.PRODUCTS_SERVICE.token)
-    private readonly productsClient: ClientKafka,
-    @Inject(SERVICES.SERVICES_SERIVCE.token)
-    private readonly ServicesClient: ClientKafka,
+    @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
 
   async createShoppingCart(ownerId: string): Promise<boolean> {
@@ -63,7 +70,7 @@ export class ShoppingCartService {
     return this.prisma.cart.findMany();
   }
 
-  async getShoppingCartByOwnerId(ownerId: string): Promise<ShoppingCart> {
+  getShoppingCartByOwnerId(ownerId: string): Promise<ShoppingCart> {
     return this.prisma.cart.findUnique({
       where: {
         ownerId,
@@ -87,7 +94,7 @@ export class ShoppingCartService {
       GetProductMetaDataMessage,
       GetProductMetaDataMessageReply
     >(
-      this.productsClient,
+      this.eventsClient,
       KAFKA_MESSAGES.PRODUCTS_MESSAGES.getProductMetaData,
       new GetProductMetaDataMessage({
         productId: product.itemId,
@@ -96,11 +103,12 @@ export class ShoppingCartService {
       'fetch product metadata timed out',
     );
     if (!success) throw new Error(error);
-    const { name, price, thumbnail } = data;
+    const { name, price, thumbnail, shopId } = data;
     const newCartItem: CartItem = {
       itemId: product.itemId,
       quantity: product.quantity,
       itemType: product.itemType,
+      providerId: shopId,
       name,
       price,
       thumbnail,
@@ -188,7 +196,7 @@ export class ShoppingCartService {
       GetServiceMetaDataMessage,
       GetServiceMetaDataMessageReply
     >(
-      this.productsClient,
+      this.eventsClient,
       KAFKA_MESSAGES.SERVICES_MESSAGES.getServiceMetaData,
       new GetServiceMetaDataMessage({
         serviceId: service.itemId,
@@ -201,6 +209,7 @@ export class ShoppingCartService {
       itemId: service.itemId,
       itemType: service.itemType,
       quantity: service.quantity,
+      providerId: null,
       name,
       price,
       thumbnail,
@@ -249,6 +258,64 @@ export class ShoppingCartService {
       },
       data: {
         cartItems: [],
+      },
+    });
+  }
+
+  async applyVoucher(
+    userId: string,
+    input: ApplyVoucherInput,
+  ): Promise<ShoppingCart> {
+    const {
+      results: { data, error, success },
+    } = await KafkaMessageHandler<
+      any,
+      ApplyableVoucherMessage,
+      ApplyableVoucherMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.VOUCHERS_MESSAGES.isApplyableVoucher,
+      new ApplyableVoucherMessage({ userId, voucherCode: input.voucherCode }),
+      'failed to validate voucher code, please try again later',
+    );
+
+    if (!success) throw new Error(error);
+
+    const {
+      applyable,
+      amount,
+      code,
+      convertedAmount,
+      currency,
+      convertedToCurrency,
+    } = data;
+
+    if (!applyable)
+      throw new BadRequestException(
+        'this voucher is not applyable to your cart, please try another valid code',
+      );
+    this.eventsClient.emit<any, VoucherAppliedEvent>(
+      KAFKA_EVENTS.VOUCHER_EVENTS.voucherApplied,
+      new VoucherAppliedEvent({
+        code,
+        userId,
+        amount,
+        convertedAmount,
+        currency,
+      }),
+    );
+    return this.prisma.cart.update({
+      where: {
+        ownerId: userId,
+      },
+      data: {
+        appliedVoucher: {
+          amount,
+          code,
+          currency,
+          convertedAmount,
+          convertedToCurrency,
+        },
       },
     });
   }

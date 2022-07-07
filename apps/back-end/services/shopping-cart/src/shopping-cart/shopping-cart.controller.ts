@@ -1,5 +1,10 @@
 import { Controller, Inject, OnModuleInit } from '@nestjs/common';
-import { ClientKafka, EventPattern, Payload } from '@nestjs/microservices';
+import {
+  ClientKafka,
+  EventPattern,
+  MessagePattern,
+  Payload,
+} from '@nestjs/microservices';
 import {
   formatCaughtError,
   KAFKA_EVENTS,
@@ -8,6 +13,8 @@ import {
 } from 'nest-utils';
 import {
   CreateShoppingCartEvent,
+  GetShoppingCartItemsMessage,
+  GetShoppingCartItemsMessageReply,
   KafkaPayload,
   NewAccountCreatedEvent,
 } from 'nest-dto';
@@ -17,8 +24,8 @@ import { ShoppingCartService } from './shopping-cart.service';
 export class ShoppingCartController implements OnModuleInit {
   constructor(
     private readonly shoppingCartService: ShoppingCartService,
-    @Inject(SERVICES.PRODUCTS_SERVICE.token)
-    private readonly productsClient: ClientKafka,
+    @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
 
   @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENT.accountCreated)
@@ -32,10 +39,43 @@ export class ShoppingCartController implements OnModuleInit {
       console.log('error creating shoppingcart', formatCaughtError(err));
     }
   }
+
+  @MessagePattern(KAFKA_MESSAGES.SHOPPING_CART_MESSAGES.getShoppingCartItems)
+  async getShoppingCartItems(
+    @Payload() payload: KafkaPayload<GetShoppingCartItemsMessage>,
+  ): Promise<GetShoppingCartItemsMessageReply> {
+    try {
+      const { cartItems, appliedVoucher } =
+        await this.shoppingCartService.getShoppingCartByOwnerId(
+          payload.value.input.ownerId,
+        );
+
+      return new GetShoppingCartItemsMessageReply({
+        success: true,
+        error: null,
+        data: {
+          items: cartItems.map(({ itemId, name, price, providerId }) => ({
+            id: itemId,
+            name,
+            price,
+            shopId: providerId,
+          })),
+          voucher: appliedVoucher,
+        },
+      });
+    } catch (err) {
+      return new GetShoppingCartItemsMessageReply({
+        success: false,
+        error: 'something went wrong',
+        data: null,
+      });
+    }
+  }
+
   async onModuleInit() {
-    this.productsClient.subscribeToResponseOf(
+    this.eventsClient.subscribeToResponseOf(
       KAFKA_MESSAGES.PRODUCTS_MESSAGES.getProductMetaData,
     );
-    await this.productsClient.connect();
+    await this.eventsClient.connect();
   }
 }

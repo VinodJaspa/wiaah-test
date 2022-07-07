@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { StripeService } from './stripe.service';
 import { DynamicModule } from '@nestjs/common';
 import { StripeForRootOptions } from './types';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({})
 export class StripeModule {
@@ -15,6 +16,7 @@ export class StripeModule {
           useValue: options,
         },
       ],
+      imports: [ConfigModule.forRoot()],
       exports: [StripeService],
     };
   }

@@ -7,6 +7,7 @@ import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
   KAFKA_SERVICE_TOKEN,
+  SERVICES,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 
@@ -14,7 +15,8 @@ import { ClientKafka } from '@nestjs/microservices';
 export class ShippingSettingsResolver implements OnModuleInit {
   constructor(
     private readonly shippingSettingsService: ShippingSettingsService,
-    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
+    @Inject(SERVICES.SHIPPING_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
 
   @Query(() => [ShippingSetting])

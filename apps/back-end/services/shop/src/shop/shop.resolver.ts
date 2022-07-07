@@ -27,8 +27,8 @@ import { FilterShopsInput } from './dto/filter-shops.input';
 export class ShopResolver implements OnModuleInit {
   constructor(
     private readonly shopService: ShopService,
-    @Inject(SERVICES.ACCOUNTS_SERVICE.token)
-    private readonly accountsClient: ClientKafka,
+    @Inject(SERVICES.SHOP_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
   @Query((type) => [Shop])
   getNearShops(
@@ -80,8 +80,8 @@ export class ShopResolver implements OnModuleInit {
   }
 
   async onModuleInit() {
-    this.accountsClient.subscribeToResponseOf(KAFKA_MESSAGES.emailExists);
-    this.accountsClient.subscribeToResponseOf(KAFKA_MESSAGES.getAccountByEmail);
-    await this.accountsClient.connect();
+    this.eventsClient.subscribeToResponseOf(KAFKA_MESSAGES.emailExists);
+    this.eventsClient.subscribeToResponseOf(KAFKA_MESSAGES.getAccountByEmail);
+    await this.eventsClient.connect();
   }
 }

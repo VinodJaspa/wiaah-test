@@ -1,6 +1,6 @@
 import { Balance } from '@entities';
 import { UseGuards } from '@nestjs/common';
-import { Query, Resolver } from '@nestjs/graphql';
+import { Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
@@ -16,5 +16,20 @@ export class BalanceResolver {
   @Query(() => Balance)
   getMyBalance(@GqlCurrentUser() user: AuthorizationDecodedUser) {
     return this.balanceService.getUserBalance(user.id);
+  }
+
+  @Mutation((type) => Boolean)
+  clearBalance() {
+    return this.balanceService.clear();
+  }
+
+  @Mutation((type) => Boolean)
+  async getCashbackBalance(@GqlCurrentUser() user: AuthorizationDecodedUser) {
+    try {
+      await this.balanceService.addCashbackBalance(user.id);
+      return true;
+    } catch {
+      return false;
+    }
   }
 }

@@ -9,7 +9,7 @@ export function KafkaMessageHandler<TPattern, TInput, TData>(
 ): Promise<TData> {
   return new Promise<TData>((res, rej) => {
     const date = Date.now();
-    console.log("send");
+    console.log("send", messagePattern);
     const timer = setTimeout(() => {
       rej(timeoutErrMessage || "service timed out");
     }, timeout);

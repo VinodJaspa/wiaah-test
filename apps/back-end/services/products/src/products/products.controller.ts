@@ -61,6 +61,7 @@ export class ProductsController {
           name: product.title,
           price: product.price,
           thumbnail: product.thumbnail,
+          shopId: product.shopId,
         },
         error: null,
       });

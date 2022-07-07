@@ -1,9 +1,9 @@
-import { CreateVouchersManagementInput } from './create-vouchers-management.input';
+import { CreateVoucherInput } from '@dto';
 import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 
 @InputType()
 export class UpdateVouchersManagementInput extends PartialType(
-  CreateVouchersManagementInput,
+  CreateVoucherInput,
 ) {
   @Field(() => Int)
   id: number;
