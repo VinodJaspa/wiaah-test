@@ -3,6 +3,8 @@
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
+    "outDir": "./dist",
+    "module": "CommonJS",
     "baseUrl": ".",
     "paths": {
       "@Dto": ["Dto"],

@@ -28,3 +28,4 @@ export * from "./ConnectorsIcon";
 export * from "./PersonIcon";
 export * from "./PropertyDimensionsIcon";
 export * from "./VideoCameraIcon";
+export * from "./HeartIcon";

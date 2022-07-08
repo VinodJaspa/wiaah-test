@@ -1,4 +1,4 @@
 export type PriceType = {
   amount: number;
-  currency: string;
+  currency?: string;
 };

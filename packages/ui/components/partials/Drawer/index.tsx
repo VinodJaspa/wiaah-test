@@ -75,7 +75,7 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
       {...props}
       className={`${
         className || ""
-      } ${setPositionClasses()} transform transition-all fixed bg-white`}
+      } ${setPositionClasses()} z-50 transform transition-all fixed bg-white`}
     >
       {children}
     </div>
@@ -97,7 +97,7 @@ export const DrawerOverlay: React.FC<DrawerOverlayProps> = ({
         isOpen
           ? "bg-opacity-30 pointer-events-auto"
           : "bg-opacity-0 pointer-events-none"
-      } bg-black fixed transition-all left-0 top-0 w-full h-full`}
+      } z-50 bg-black fixed transition-all left-0 top-0 w-full h-full`}
     />
   );
 };

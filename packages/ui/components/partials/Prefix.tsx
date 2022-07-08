@@ -1,23 +1,21 @@
 import React, { DetailedHTMLProps, HTMLAttributes } from "react";
 import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
 import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
-
-export interface PrefixProps
-  extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+import { runIfFn } from "utils";
+import { HtmlDivProps } from "types";
+export interface PrefixProps extends HtmlDivProps {
   Prefix: React.ReactNode;
-  spacing?: CSSValueUnit;
+  PrefixClassName?: string;
 }
 export const Prefix: React.FC<PrefixProps> = ({
   children,
   Prefix,
-  spacing,
+  className,
+  PrefixClassName,
 }) => {
-  const styles: React.CSSProperties = {
-    gap: CSSValueUnitToString(spacing ? spacing : { value: 0.5 }),
-  };
   return (
-    <div className="flex items-center" style={styles}>
-      {Prefix}
+    <div className={`${className || ""} flex items-center gap-2`}>
+      {runIfFn<HtmlDivProps>(Prefix, { className: PrefixClassName })}
       {children}
     </div>
   );

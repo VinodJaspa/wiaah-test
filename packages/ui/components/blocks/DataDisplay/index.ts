@@ -12,7 +12,6 @@ export * from "./PostAttachmentsViewer";
 export * from "./ChatDisplays";
 export * from "./ActionViewer";
 export * from "./CommentAlt";
-export * from "./Cards";
 export * from "./PopupMenus";
 export * from "./HashtagSearchItem";
 export * from "./DiscoverSearchItem";

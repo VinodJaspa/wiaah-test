@@ -13,3 +13,4 @@ export * from "./DateInput";
 export * from "./DateFormInput";
 export * from "./TimeSlider";
 export * from "./ChooseWithInput";
+export * from "./LocationSearchInput";

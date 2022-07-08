@@ -37,16 +37,19 @@ export const Input: React.FC<InputProps> = ({
       {...props}
       className={`${className || ""} ${
         isInputGroup ? "" : flushed ? "border-b-2" : "border-2"
-      } border-gray-200 p-2 rounded`}
+      } border-gray-200 rounded`}
     />
   );
 };
 
-export interface InputGroupProps extends HtmlDivProps {}
+export interface InputGroupProps extends HtmlDivProps {
+  flushed?: boolean;
+}
 
 export const InputGroup: React.FC<InputGroupProps> = ({
   children,
   className,
+  flushed = false,
   ...props
 }) => {
   const [leftElement, setLeftElement] = React.useState<React.ReactNode>(null);
@@ -65,7 +68,11 @@ export const InputGroup: React.FC<InputGroupProps> = ({
       <div
         {...props}
         className={`${className ?? ""} ${
-          isGroup ? "border-2 border-gray-200 rounded-lg" : ""
+          isGroup
+            ? flushed
+              ? "border-b-2 border-gray-200"
+              : "border-2 border-gray-200"
+            : ""
         } flex gap-1 items-center`}
       >
         {leftElement && <>{runIfFn(leftElement, {})}</>}

@@ -61,8 +61,8 @@ const products: CartSummaryItem[] = [
       },
     ],
 
-    color: "relay blue/yellow",
-    size: "One Size",
+    colors: ["relay blue/yellow"],
+    sizes: ["One Size"],
     type: "product",
     cashback: {
       unit: "%",
@@ -319,7 +319,7 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({ children, social }) => {
     <Root>
       <CommentReportModal />
       <AuthPopup />
-      {!social && <Header categories={navLinks} />}
+      {!social && <Header />}
       {social && <SocialHeader />}
       <main className="flex w-full flex-col">{children}</main>
       {!social && <Footer />}
