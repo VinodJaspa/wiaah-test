@@ -16,3 +16,4 @@ export const storybookModalsTitle = "UI / Blocks / Modals /";
 export const storybookFootersTitle = "UI / Blocks / Footers /";
 export const storybookHeadersTitle = "UI / Blocks / Headers /";
 export const storybookLayoutsTitle = "UI / Blocks / Layouts /";
+export const storybookSidebarsTitle = "UI / Blocks / SideBars /";

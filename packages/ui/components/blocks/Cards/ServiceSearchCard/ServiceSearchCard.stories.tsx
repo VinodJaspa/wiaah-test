@@ -3,7 +3,7 @@ import { storybookCardsTitle } from "utils";
 import { ServiceSearchCard } from "./ServiceSearchCard";
 
 export default {
-  title: storybookCardsTitle + "ServiceSeachCard",
+  title: storybookCardsTitle + "ServiceSearchCard",
 } as ComponentMeta<typeof ServiceSearchCard>;
 
 const template: ComponentStory<typeof ServiceSearchCard> = (args) => {
@@ -19,4 +19,10 @@ Default.args = {
   location: "paris,france",
   onLiked: (id) => console.log(id),
   description: "some random description of a hotel service",
+  date: {
+    from: Date.now(),
+    to: Date.now(),
+  },
+  id: "123",
+  price: 324.456,
 };

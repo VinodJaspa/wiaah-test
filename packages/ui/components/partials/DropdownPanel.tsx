@@ -42,7 +42,7 @@ export const DropdownPanel: React.FC<DropdownPanelProps> = ({
   return (
     <div
       className={` bg-white ${
-        subPanel ? "w-full pl-4" : "w-60 px-4 pb-2 shadow-md"
+        subPanel ? "w-full pl-4" : "w-full px-4 pb-2 shadow-md"
       } ${className ? className : ""} `}
       {...props}
     >

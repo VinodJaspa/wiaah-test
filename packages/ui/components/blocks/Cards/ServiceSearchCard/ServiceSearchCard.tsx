@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { HStack, Rate, HeartIcon, PriceDisplay } from "ui";
+import { HStack, Rate, HeartIcon, PriceDisplay, AspectRatio } from "ui";
 
 export interface ServiceSearchCardProps {
   id: string;
@@ -31,22 +31,24 @@ export const ServiceSearchCard: React.FC<ServiceSearchCardProps> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col w-60 p-2 gap-2">
-      <div className="relative h-60 rounded-xl overflow-hidden">
-        <img
-          className="w-full h-full object-cover"
-          src={thumbnail}
-          alt={providerName}
-        />
+    <div className="flex flex-col w-full p-2 gap-2">
+      <div className="relative rounded-xl overflow-hidden">
+        <AspectRatio ratio={1}>
+          <img
+            className="w-full h-full object-cover"
+            src={thumbnail}
+            alt={providerName}
+          />
+        </AspectRatio>
         <HeartIcon
           className="absolute top-2 right-2 z-[5] bg-black bg-opacity-50 rounded-full text-white p-1 text-2xl cursor-pointer"
           onClick={() => onLiked(id)}
         />
       </div>
-      <div className="flex flex-col gap-1 w-full">
+      <div className="flex flex-col gap-1 text-xs sm:text-sm md:text-md lg:text-lg w-full">
         <div className="flex items-center justify-between">
-          <span className="font-bold text-xs">{location}</span>
-          <HStack className="text-[0.6rem]">
+          <span className="font-bold">{location}</span>
+          <HStack className="">
             <Rate className="gap-1" rating={rate} allowHalf />
             <span>{rate}</span>
           </HStack>

@@ -1,12 +1,10 @@
 import React, { DetailedHTMLProps, InputHTMLAttributes } from "react";
+import { HtmlInputProps } from "types";
 import { Checkbox } from "ui";
+import { runIfFn } from "utils";
 
-export interface FilterCheckBoxProps
-  extends DetailedHTMLProps<
-    InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  > {
-  label?: string;
+export interface FilterCheckBoxProps extends HtmlInputProps {
+  label?: React.ReactNode;
   currency?: string;
   currencySymbol?: string;
   min?: number;
@@ -85,13 +83,15 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
         <div className="flex w-fit items-center gap-2 ">
           {children && <label htmlFor={props.id}>{children}</label>}
           <input {...props} type="radio" />
-          {label && <span data-test="FilterInputLabel">{label}</span>}
+          {label && (
+            <span data-test="FilterInputLabel">{runIfFn(label, {})}</span>
+          )}
         </div>
       );
     case "range":
       return (
         <div className="flex w-full flex-col  gap-2 ">
-          <span className="font-bold">{label}</span>
+          <span className="font-bold">{label && runIfFn(label, {})}</span>
           <div className="relative mt-2">
             <span
               style={trackStyles}
@@ -146,7 +146,9 @@ export const FilterInput: React.FC<FilterCheckBoxProps> = ({
       return (
         <div className="flex w-fit items-center gap-2 outline-none ">
           <Checkbox {...props} className="focus:ring-0" type="checkbox" />
-          {label && <span data-test="FilterInputLabel">{label}</span>}
+          {label && (
+            <span data-test="FilterInputLabel">{runIfFn(label, {})}</span>
+          )}
         </div>
       );
   }

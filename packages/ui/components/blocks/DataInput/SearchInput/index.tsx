@@ -23,8 +23,11 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   }
   const { t } = useTranslation();
   return (
-    <InputGroup {...innerProps} className="max-w-[30rem]">
-      <InputRightElement className="w-10 border-l-[1px] flex h-full justify-center border-gray-300">
+    <InputGroup
+      {...innerProps}
+      className={`${innerProps?.className || ""} max-w-[30rem]`}
+    >
+      <InputRightElement className="w-10 border-l-[1px] flex h-full justify-center items-center border-gray-300">
         <HiSearch className="text-gray-500 text-xl" />
       </InputRightElement>
       <Input

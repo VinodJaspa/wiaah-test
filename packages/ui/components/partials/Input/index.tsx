@@ -37,7 +37,7 @@ export const Input: React.FC<InputProps> = ({
       {...props}
       className={`${className || ""} ${
         isInputGroup ? "" : flushed ? "border-b-2" : "border-2"
-      } border-gray-200 rounded`}
+      } border-gray-200 rounded px-3`}
     />
   );
 };

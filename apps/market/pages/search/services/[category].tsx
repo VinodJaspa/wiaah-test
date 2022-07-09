@@ -6,7 +6,11 @@ import MasterLayout from "../../../components/MasterLayout";
 
 const ServiceCategory: NextPage = () => {
   return (
-    <MasterLayout>
+    <MasterLayout
+      rootProps={{
+        scrollable: false,
+      }}
+    >
       <Container>
         <ServiceSearchView />
       </Container>

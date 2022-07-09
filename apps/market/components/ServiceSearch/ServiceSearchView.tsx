@@ -21,7 +21,7 @@ export const ServiceSearchView: React.FC = () => {
         className=""
       />
       <SpinnerFallback isError={isError} isLoading={isLoading}>
-        <div className="w-full mx-auto justify-between gap-4 grid grid-cols-[repeat(auto-fit,minmax(5rem,23%))]">
+        <div className="w-full mx-auto justify-between gap-4 grid grid-cols-[repeat(auto-fit,minmax(10rem,23%))]">
           {Array.isArray(services)
             ? services.map(({ ...serviceData }) => (
                 <ServiceSearchCard
