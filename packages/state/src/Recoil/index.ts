@@ -16,3 +16,4 @@ export * from "./CurrentPage";
 export * from "./Service";
 export * from "./hooks";
 export * from "./preferedCurrencyState";
+export * from "./Search";

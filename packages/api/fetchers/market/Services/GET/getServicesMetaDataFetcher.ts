@@ -1,3 +1,5 @@
+import { DateRange } from "types";
+
 export interface ServiceMetaData {
   serviceName: string;
   serviceId: string;
@@ -8,10 +10,7 @@ export interface ServiceMetaData {
   rate: number;
   description: string;
   price: number;
-  date: {
-    from: number;
-    to: number;
-  };
+  date: DateRange;
 }
 
 export const getServicesMetaDataFetcher = async (

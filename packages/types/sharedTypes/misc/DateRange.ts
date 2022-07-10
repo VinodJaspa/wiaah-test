@@ -1,4 +1,4 @@
 export type DateRange = {
-  from: string;
-  to: string;
+  from: string | number;
+  to: string | number;
 };

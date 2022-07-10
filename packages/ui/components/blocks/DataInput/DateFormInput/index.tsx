@@ -17,6 +17,8 @@ import { MdClose } from "react-icons/md";
 
 export interface DateFormInputProps {
   placeholder?: string;
+  onDateChange?: (date: string) => any;
+  dateValue?: string | number;
   menuProps?: {
     menuListProps?: MenuListProps;
     menuProps?: MenuProps;
@@ -27,9 +29,18 @@ export interface DateFormInputProps {
 export const DateFormInput: React.FC<DateFormInputProps> = ({
   placeholder,
   menuProps,
+  dateValue,
+  onDateChange,
   ...props
 }) => {
   const [date, setDate] = React.useState<string>("");
+
+  React.useEffect(() => {
+    if (dateValue) {
+      setDate(new Date(dateValue).toUTCString());
+    }
+  }, [dateValue]);
+
   return (
     <InputGroup {...props}>
       <Input
@@ -48,7 +59,12 @@ export const DateFormInput: React.FC<DateFormInputProps> = ({
               <BiCalendarEdit className="text-xl" />
             </MenuButton>
             <MenuList {...menuProps?.menuListProps}>
-              <DateInput onDaySelect={(date) => setDate(date)} />
+              <DateInput
+                onDaySelect={(date) => {
+                  setDate(date);
+                  onDateChange && onDateChange(date);
+                }}
+              />
             </MenuList>
           </Menu>
         </HStack>

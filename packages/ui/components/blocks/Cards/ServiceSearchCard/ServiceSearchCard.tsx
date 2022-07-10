@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { DateRange } from "types";
 import { HStack, Rate, HeartIcon, PriceDisplay, AspectRatio } from "ui";
 
 export interface ServiceSearchCardProps {
@@ -11,10 +12,7 @@ export interface ServiceSearchCardProps {
   type: string;
   providerName: string;
   description: string;
-  date: {
-    from: number;
-    to: number;
-  };
+  date: DateRange;
   price: number;
 }
 

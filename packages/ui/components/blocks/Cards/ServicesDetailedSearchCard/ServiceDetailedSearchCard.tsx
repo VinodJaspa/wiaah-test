@@ -1,17 +1,18 @@
+import { FilteredServiceMetaDataType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { AspectRatio, Button, HeartIcon, Rate } from "../../../partials";
+import { DateRange } from "types";
+import {
+  AspectRatio,
+  Button,
+  HeartIcon,
+  PriceDisplay,
+  Rate,
+} from "../../../partials";
+import EllipsisText from "../../EllipsisText";
 
-export interface ServiceDetailedSearchCardProps {
-  title: string;
-  thumbnail: string;
-  provider: string;
-  rate: number;
-  serviceClass: number;
-  description: string;
-  reviews: number;
-  id: string;
-}
+export interface ServiceDetailedSearchCardProps
+  extends FilteredServiceMetaDataType {}
 
 export const ServiceDetailedSearchCard: React.FC<ServiceDetailedSearchCardProps> =
   ({
@@ -22,6 +23,11 @@ export const ServiceDetailedSearchCard: React.FC<ServiceDetailedSearchCardProps>
     title,
     serviceClass,
     reviews = 0,
+    date,
+    id,
+    pricePerNight,
+    taxesAndFeesIncluded,
+    totalPrice,
   }) => {
     const { t } = useTranslation();
 
@@ -31,10 +37,10 @@ export const ServiceDetailedSearchCard: React.FC<ServiceDetailedSearchCardProps>
 
     return (
       <div className="flex gap-4 border-2 border-gray-300 p-2 rounded-lg">
-        <div className="relative w-64">
-          <AspectRatio ratio={1}>
+        <div className="relative w-[min(100%,40rem)]">
+          <AspectRatio ratio={4 / 6}>
             <img
-              className="w-full h-full rounded-lg"
+              className="w-full h-full object-cover "
               src={thumbnail}
               alt={provider}
             />
@@ -42,22 +48,22 @@ export const ServiceDetailedSearchCard: React.FC<ServiceDetailedSearchCardProps>
           <HeartIcon className="absolute top-2 right-2 z-[5] bg-black bg-opacity-50 rounded-full text-white p-1 text-2xl cursor-pointer" />
         </div>
         <div className="flex flex-col gap-2 w-full">
-          <span className="text-primary-500 text-sm md:text-lg lg:text-xl xl:text-2xl">
-            {title}
+          <span className="text-primary-500  underline cursor-pointer">
+            {provider}
           </span>
-          <Rate allowHalf rating={serviceClass} />
-          <div className="flex gap-2">
-            <span className="text-primary-500  underline cursor-pointer">
-              {provider}
-            </span>
-            <span className="text-primary-500 underline cursor-pointer">
-              {t("Show on map")}
-            </span>
-          </div>
-          <p>{description}</p>
+          <span className="text-black text-sm md:text-lg lg:text-xl">
+            <EllipsisText maxLines={2}>{title}</EllipsisText>
+          </span>
+          {/* <Rate allowHalf rating={serviceClass} />
+        <div className="flex gap-2">
+        </div> */}
+
+          <p>
+            <EllipsisText maxLines={2}>{description}</EllipsisText>
+          </p>
         </div>
-        <div className="flex flex-col gap-2">
-          <div className="flex gap-2 items-center">
+        <div className="flex flex-col items-end gap-2">
+          <div className="flex gap-2 items-end">
             <div className="flex flex-col">
               <span className="font-bold ">
                 {rate < 3
@@ -70,7 +76,7 @@ export const ServiceDetailedSearchCard: React.FC<ServiceDetailedSearchCardProps>
                   ? t("Excellent")
                   : t("Bad")}
               </span>
-              <span className="">
+              <span className="whitespace-nowrap">
                 {reviews} {t("reviews")}
               </span>
             </div>
@@ -78,9 +84,38 @@ export const ServiceDetailedSearchCard: React.FC<ServiceDetailedSearchCardProps>
               {rate}
             </span>
           </div>
-          <Button className="whitespace-nowrap" onClick={handleShowPrices}>
-            {t("Show prices")}
-          </Button>
+          {/* <Button className="whitespace-nowrap" onClick={handleShowPrices}>
+          {t("Show prices")}
+        </Button> */}
+          <div className="flex gap-1 items-end flex-col h-full">
+            <span className="text-primary-500 underline cursor-pointer">
+              {t("Show on map")}
+            </span>
+            <PriceDisplay
+              className="text-lg font-bold"
+              priceObject={{ amount: totalPrice }}
+            />
+            <span className="whitespace-nowrap flex gap-1">
+              <PriceDisplay priceObject={{ amount: pricePerNight }} />{" "}
+              {t("per night")}
+            </span>
+            {taxesAndFeesIncluded ? (
+              <span className="whitespace-nowrap">
+                {t("includes taxes & fees")}
+              </span>
+            ) : null}
+            <span className="whitespace-nowrap font-semibold">
+              {new Date(date.from).toLocaleDateString("en-us", {
+                month: "short",
+                day: "numeric",
+              })}{" "}
+              {"-"}{" "}
+              {new Date(date.to).toLocaleDateString("en-us", {
+                month: "short",
+                day: "numeric",
+              })}
+            </span>
+          </div>
         </div>
       </div>
     );

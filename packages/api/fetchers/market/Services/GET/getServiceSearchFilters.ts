@@ -22,6 +22,14 @@ export type SearchFilterType =
 
 const filters: SearchFilterType[] = [
   {
+    filterTitle: "Price range",
+    filterSlug: "price_range",
+    filterType: "range",
+    maxRange: 10000,
+    minRange: 10,
+  },
+
+  {
     filterTitle: "Property type",
     filterSlug: "property_type",
     filterType: "check",
@@ -182,20 +190,18 @@ const filters: SearchFilterType[] = [
     ],
   },
   {
-    filterTitle: "includes",
-    filterSlug: "inlucdes",
+    filterTitle: "Service included",
+    filterSlug: "service_included",
     filterType: "check",
     filterDisplay: "text",
-    filterOptions: [
-      {
-        optName: "Service included",
-        optSlug: "service_included",
-      },
-      {
-        optName: "Extra service",
-        optSlug: "extra_service",
-      },
-    ],
+    filterOptions: [],
+  },
+  {
+    filterTitle: "Extra service",
+    filterSlug: "extra_service",
+    filterType: "check",
+    filterDisplay: "text",
+    filterOptions: [],
   },
 ];
 

@@ -1,5 +1,7 @@
 import { SearchFilterType } from "api";
+import { debounce, throttle } from "lodash";
 import React from "react";
+import { FilterAndAddToArray } from "utils";
 import {
   DropdownPanel,
   FilterInput,
@@ -29,6 +31,22 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
   return (
     <>
       {filters.map((filter, i) => {
+        const [checkBoxs, setCheckBoxs] = React.useState<[string, string[]]>([
+          filter.filterSlug,
+          [],
+        ]);
+
+        React.useEffect(() => {
+          if (onOptionsSelect && filter.filterType === "check") {
+            onOptionsSelect(checkBoxs[0], checkBoxs[1]);
+          }
+        }, [checkBoxs]);
+
+        const handleRangeChange = debounce(
+          (args) => onRangeChange && onRangeChange(filter.filterSlug, args),
+          1000
+        );
+
         switch (filter.filterType) {
           case "range":
             return (
@@ -37,9 +55,7 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
                   variant="range"
                   min={filter.minRange}
                   max={filter.maxRange}
-                  onRangeChange={(range) =>
-                    onRangeChange && onRangeChange(filter.filterSlug, range)
-                  }
+                  onRangeChange={handleRangeChange}
                 />
               </DropdownPanel>
             );
@@ -96,22 +112,37 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
               <DropdownPanel open={defaultOpen} name={filter.filterTitle}>
                 <div className="flex flex-col gap-2">
                   {Array.isArray(filter.filterOptions)
-                    ? filter.filterOptions.map(({ optName, optSlug }, i) => (
-                        <FilterInput
-                          onChange={(e) =>
-                            console.log(e.target.checked, optSlug)
-                          }
-                          name={filter.filterSlug}
-                          label={
-                            <FilterDisplaySwitcher
-                              type={filter.filterDisplay}
-                              value={optSlug}
-                              label={optName}
-                            />
-                          }
-                          variant="box"
-                        />
-                      ))
+                    ? filter.filterOptions.map(({ optName, optSlug }, i) => {
+                        return (
+                          <FilterInput
+                            onChange={(e) =>
+                              e.target.checked
+                                ? setCheckBoxs((state) => {
+                                    const values = FilterAndAddToArray<string>(
+                                      state[1],
+                                      optSlug,
+                                      "exclude"
+                                    );
+                                    console.log("filtered and added", values);
+                                    return [filter.filterSlug, values];
+                                  })
+                                : setCheckBoxs((state) => [
+                                    filter.filterSlug,
+                                    state[1].filter((f) => f !== optSlug),
+                                  ])
+                            }
+                            name={filter.filterSlug}
+                            label={
+                              <FilterDisplaySwitcher
+                                type={filter.filterDisplay}
+                                value={optSlug}
+                                label={optName}
+                              />
+                            }
+                            variant="box"
+                          />
+                        );
+                      })
                     : null}
                 </div>
               </DropdownPanel>

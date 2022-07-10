@@ -1,12 +1,13 @@
 import {
   FilteredServiceMetaDataType,
+  FormatedSearchableFilter,
   getFilteredServicesMetaData,
   SearchFilterType,
 } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
 export const useGetFilteredServicesMetaDataQuery = (
-  filters: SearchFilterType[],
+  filters: FormatedSearchableFilter,
   options?: UseQueryOptions<
     unknown,
     unknown,

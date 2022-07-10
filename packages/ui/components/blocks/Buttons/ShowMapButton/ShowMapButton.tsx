@@ -14,7 +14,10 @@ export const ShowMapButton: React.FC<ShowMapButtonProps> = ({ onClick }) => {
       <AspectRatio ratio={7 / 20}>
         <img className="w-full h-full object-cover" src="/map.png" alt="map" />
       </AspectRatio>
-      <Button className="whitespace-nowrap absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <Button
+        onClick={onClick}
+        className="whitespace-nowrap absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+      >
         {t("Show on map")}
       </Button>
     </div>

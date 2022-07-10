@@ -6,11 +6,13 @@ import { Input, InputGroup, InputRightElement, InputGroupProps } from "ui";
 export interface SearchInputProps {
   innerProps?: InputGroupProps;
   onValueChange?: (value: string) => any;
+  value?: string;
 }
 
 export const SearchInput: React.FC<SearchInputProps> = ({
   innerProps,
   onValueChange,
+  value,
 }) => {
   const [searchInputValue, setSearchInputValue] = React.useState<string>("");
 
@@ -18,6 +20,11 @@ export const SearchInput: React.FC<SearchInputProps> = ({
     onValueChange && onValueChange(searchInputValue);
   }, [searchInputValue]);
 
+  React.useEffect(() => {
+    if (value) {
+      setSearchInputValue(value);
+    }
+  }, [value]);
   function handleSearchInputChange(value: string) {
     setSearchInputValue(value);
   }

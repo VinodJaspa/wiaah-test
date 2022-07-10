@@ -6,7 +6,11 @@ export interface PreferedCurrency {
   currencySymbol: string;
 }
 
-export const PreferedCurrencyState = atom<PreferedCurrency | null>({
-  default: null,
+export const PreferedCurrencyState = atom<PreferedCurrency>({
+  default: {
+    currencyCode: "usd",
+    currencyRateToUsd: 1,
+    currencySymbol: "$",
+  },
   key: "PreferedCurrencyState",
 });

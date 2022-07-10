@@ -11,17 +11,28 @@ export interface PriceDisplayProps extends HtmlDivProps {
 export const PriceDisplay: React.FC<PriceDisplayProps> = ({
   priceObject,
   className,
-  symbol,
+  symbol = true,
   ...props
 }) => {
-  const currency = useRecoilValue(PreferedCurrencyState);
   return (
     <div {...props} className={`${className || ""}`}>
-      {currency
-        ? `${priceObject.amount * currency.currencyRateToUsd} ${
-            symbol ? currency.currencySymbol : currency.currencyCode
-          }`
-        : `${symbol ? "$" : ""}${priceObject.amount} ${symbol ? "" : "usd"}`}
+      {PriceConverter({ amount: priceObject.amount, symbol })}
     </div>
   );
+};
+
+export const PriceConverter = ({
+  amount,
+  symbol,
+}: {
+  amount: number;
+  symbol: boolean;
+}): string | null => {
+  const currency = useRecoilValue(PreferedCurrencyState);
+  if (typeof amount !== "number") return null;
+  return currency
+    ? `${amount * currency.currencyRateToUsd} ${
+        symbol ? currency.currencySymbol : currency.currencyCode
+      }`
+    : `${symbol ? "$" : ""}${amount} ${symbol ? "" : "usd"}`;
 };

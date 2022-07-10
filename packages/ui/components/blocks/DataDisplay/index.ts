@@ -22,3 +22,4 @@ export * from "./StoryDisplays";
 export * from "./ServiceRulesDisplay";
 export * from "./ServiceTransportDisplay";
 export * from "./ServicePropertyDetailsDisplay";
+export * from "./GoogleMaps";

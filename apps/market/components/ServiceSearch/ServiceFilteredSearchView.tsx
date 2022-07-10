@@ -1,5 +1,7 @@
-import { FilteredServiceMetaDataType } from "api";
+import { FilteredServiceMetaDataType, FormatedSearchableFilter } from "api";
 import { Form, Formik } from "formik";
+import { useRouter } from "next/router";
+import { debounce } from "utils";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -14,33 +16,65 @@ import {
   SelectProps,
   ServiceDetailedSearchCard,
   ServiceSearchFilter,
+  ServicesSearchList,
   ShowMapButton,
   SpinnerFallback,
   useGetFilteredServicesMetaDataQuery,
+  useSearchFilters,
 } from "ui";
 
 export const ServiceFilteredSearchView: React.FC = () => {
+  const { setFilters, filters } = useSearchFilters();
   const { t } = useTranslation();
+  const router = useRouter();
+  React.useEffect(() => {
+    console.log(router);
+    if (typeof router.query.location === "string") {
+      console.log(router.query.location);
+      setFilters((fs) => ({ ...fs, search_query: router.query.location }));
+    }
+  }, [router]);
   const [services, setServices] = React.useState<FilteredServiceMetaDataType[]>(
     []
   );
-  const { isLoading, isError } = useGetFilteredServicesMetaDataQuery([], {
+  const { isLoading, isError } = useGetFilteredServicesMetaDataQuery(filters, {
     onSuccess: (data) => {
-      console.log(data);
       setServices(data);
     },
   });
+  const handleFiltersUpdate = debounce(
+    (filters: FormatedSearchableFilter) => setFilters(filters),
+    1000
+  );
   return (
     <div className="relative flex gap-12 p-4">
       <div className="">
-        <ShowMapButton onClick={() => {}} />
-        <Formik initialValues={{}} onSubmit={() => {}}>
-          {({}) => {
+        <ShowMapButton
+          onClick={() => {
+            router.replace("/search/services/onmap");
+          }}
+        />
+        <Formik<FormatedSearchableFilter>
+          validateOnBlur={false}
+          initialValues={{}}
+          onSubmit={() => {}}
+        >
+          {({ setFieldValue, values }) => {
+            handleFiltersUpdate(values);
             return (
               <Form>
                 <div className="p-4 w-64 bg-primary-200 text-black flex flex-col gap-2">
                   <FormikInput<SearchInputProps>
                     as={SearchInput}
+                    onValueChange={(v) => setFieldValue("search_query", v)}
+                    value={
+                      typeof values["search_query"] === "string" &&
+                      values["search_query"].length > 0
+                        ? values["search_query"]
+                        : typeof router.query.location === "string"
+                        ? router.query.location
+                        : ""
+                    }
                     innerProps={{ className: "bg-white text-black h-12" }}
                     label={t("Destination") + "/" + t("property name") + ":"}
                     name="search_query"
@@ -55,6 +89,10 @@ export const ServiceFilteredSearchView: React.FC = () => {
                     }}
                     placeholder={t("Check-in") + " " + t("date")}
                     label={t("Check-in") + " " + t("date") + ":"}
+                    onDateChange={(date) =>
+                      setFieldValue("check-in_date", date)
+                    }
+                    dateValue={values["check-in_date"] as string}
                     name="check-in_date"
                   />
                   <FormikInput<DateFormInputProps>
@@ -64,6 +102,10 @@ export const ServiceFilteredSearchView: React.FC = () => {
                         className: "translate-x-full origin-top-left",
                       },
                     }}
+                    onDateChange={(date) =>
+                      setFieldValue("check-out_date", date)
+                    }
+                    dateValue={values["check-out_date"] as string}
                     placeholder={t("Check-out") + " " + t("date")}
                     className={"bg-white h-12 "}
                     label={t("Check-out") + " " + t("date") + ":"}
@@ -78,25 +120,19 @@ export const ServiceFilteredSearchView: React.FC = () => {
                   <Button>{t("Search")}</Button>
                 </div>
 
-                <ServiceSearchFilter />
+                <ServiceSearchFilter
+                  onChange={{
+                    onOptionSelect: setFieldValue,
+                    onOptionsSelect: setFieldValue,
+                    onRangeChange: setFieldValue,
+                  }}
+                />
               </Form>
             );
           }}
         </Formik>
       </div>
-      <div className="w-full flex flex-col gap-4 justify-center">
-        <SpinnerFallback isLoading={isLoading} isError={isError}>
-          {services.length < 1 ? (
-            <div className="w-fit h-48 flex just-center items-center text-2xl">
-              <span>{t("no services found")}</span>
-            </div>
-          ) : (
-            services.map((service, i) => (
-              <ServiceDetailedSearchCard key={i} {...service} />
-            ))
-          )}
-        </SpinnerFallback>
-      </div>
+      <ServicesSearchList />
     </div>
   );
 };
