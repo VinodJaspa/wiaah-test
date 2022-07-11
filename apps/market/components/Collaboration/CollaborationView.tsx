@@ -7,7 +7,7 @@ import {
   Clickable,
   CollaboratorCard,
 } from "ui";
-import { useScreenWidth } from "ui/Hooks/useScreenWidth";
+import { useScreenWidth } from "hooks";
 import { Shop, ShopProfile } from "../Shop/ShopProfile";
 import {
   CollaboratorCategory,

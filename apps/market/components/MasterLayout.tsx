@@ -372,3 +372,5 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
 };
 
 export default MasterLayout;
+
+export { MasterLayout };

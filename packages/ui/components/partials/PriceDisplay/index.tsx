@@ -15,7 +15,7 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
   ...props
 }) => {
   return (
-    <div {...props} className={`${className || ""}`}>
+    <div {...props} className={`${className || ""} whitespace-nowrap`}>
       {PriceConverter({ amount: priceObject.amount, symbol })}
     </div>
   );

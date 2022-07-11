@@ -9,3 +9,4 @@ export * from "./ProgressBar";
 export * from "./Wishlist.interface";
 export * from "./misc";
 export * from "./social";
+export * from "./Services";

@@ -4,3 +4,4 @@ export * from "./ShopManagement";
 export * from "./ShoppingManagement";
 export * from "./Wallet";
 export * from "./ServiceManagement";
+export * from "./404";

@@ -33,7 +33,7 @@ export const ServiceSearchFilter: React.FC<ServiceSidebarFilterProps> = ({
       <p className="px-4">{t("Filter")}</p>
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         {Array.isArray(filters) ? (
-          <SearchFilter {...onChange} defaultOpen filters={filters} />
+          <SearchFilter {...onChange} defaultOpen collapse filters={filters} />
         ) : null}
       </SpinnerFallback>
     </div>
