@@ -5,3 +5,4 @@ export * from "./useGetServicesQuery";
 export * from "./useGetServiceSearchFilterQuery";
 export * from "./useGetFilteredServicesMetaDataQuery";
 export * from "./useGetServicesSortingFiltersQuery";
+export * from "./resturant";

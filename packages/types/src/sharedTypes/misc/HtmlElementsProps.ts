@@ -15,6 +15,10 @@ export type HtmlDivProps = DetailedHTMLProps<
   HTMLAttributes<HTMLDivElement>,
   HTMLDivElement
 >;
+export type HtmlSvgProps = DetailedHTMLProps<
+  HTMLAttributes<SVGSVGElement>,
+  SVGSVGElement
+>;
 
 export type HtmlInputProps = DetailedHTMLProps<
   InputHTMLAttributes<HTMLInputElement>,

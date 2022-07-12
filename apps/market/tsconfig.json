@@ -8,7 +8,8 @@
     "baseUrl": ".",
     "paths": {
       "@components": ["components"],
-      "@pages/*": ["pages/*"]
+      "@pages/*": ["pages/*"],
+      "@lib": ["lib"]
     }
   }
 }

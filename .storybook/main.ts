@@ -12,7 +12,11 @@ const config: StorybookConfig = {
   ],
 
   /** Expose public folder to storybook as static */
-  staticDirs: ["../apps/market/public", "../apps/seller/public"],
+  staticDirs: [
+    "../apps/market/public",
+    "../apps/seller/public",
+    "../apps/buyer/public",
+  ],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",

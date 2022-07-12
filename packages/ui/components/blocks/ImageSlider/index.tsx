@@ -10,7 +10,7 @@ const images = [
   { url: "/shop-3.jpeg" },
 ];
 
-export const ImageSlider: React.FC = () => {
+export const oldImageSlider: React.FC = () => {
   const router = useRouter();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
   const isLargeScreen = useMediaQuery({ query: "(min-width: 1980px)" });

@@ -1,3 +1,5 @@
+import { FormatedSearchableFilter } from "src";
+
 export type FilterType = "select" | "radio" | "check";
 export type FilterDisplayType = "text" | "rate";
 
@@ -205,8 +207,8 @@ const filters: SearchFilterType[] = [
   },
 ];
 
-export const getServiceSearchFiltersFetcher = async (): Promise<
-  SearchFilterType[]
-> => {
+export const getServiceSearchFiltersFetcher = async (
+  filter?: FormatedSearchableFilter
+): Promise<SearchFilterType[]> => {
   return filters;
 };

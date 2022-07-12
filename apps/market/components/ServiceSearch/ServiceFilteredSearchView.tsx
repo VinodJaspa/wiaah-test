@@ -1,4 +1,4 @@
-import { FilteredServiceMetaDataType, FormatedSearchableFilter } from "api";
+import { FormatedSearchableFilter } from "api";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/router";
 import { debounce } from "utils";
@@ -14,34 +14,21 @@ import {
   Select,
   SelectOption,
   SelectProps,
-  ServiceDetailedSearchCard,
   ServiceSearchFilter,
   ServicesSearchList,
   ShowMapButton,
-  SpinnerFallback,
-  useGetFilteredServicesMetaDataQuery,
   useSearchFilters,
 } from "ui";
 
-export const ServiceFilteredSearchView: React.FC = () => {
+export const HotelsSearchResaultsView: React.FC = () => {
   const { setFilters, filters } = useSearchFilters();
   const { t } = useTranslation();
   const router = useRouter();
   React.useEffect(() => {
-    console.log(router);
     if (typeof router.query.location === "string") {
-      console.log(router.query.location);
       setFilters((fs) => ({ ...fs, search_query: router.query.location }));
     }
   }, [router]);
-  const [services, setServices] = React.useState<FilteredServiceMetaDataType[]>(
-    []
-  );
-  const { isLoading, isError } = useGetFilteredServicesMetaDataQuery(filters, {
-    onSuccess: (data) => {
-      setServices(data);
-    },
-  });
   const handleFiltersUpdate = debounce(
     (filters: FormatedSearchableFilter) => setFilters(filters),
     1000

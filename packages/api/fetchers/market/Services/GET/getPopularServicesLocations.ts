@@ -1,4 +1,6 @@
-export interface Location {
+import { FormatedSearchableFilter } from "src";
+
+interface Location {
   name: string;
   location: string;
 }
@@ -6,7 +8,8 @@ export interface Location {
 export const getPopularServiceLocations = async (
   take: number,
   page: number,
-  searchQuery: string
+  searchQuery: string,
+  filters?: FormatedSearchableFilter
 ): Promise<Location[]> => {
   const data = [
     {

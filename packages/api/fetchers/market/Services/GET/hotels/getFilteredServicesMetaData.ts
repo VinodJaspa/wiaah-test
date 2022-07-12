@@ -1,8 +1,7 @@
 import { getRandomImage } from "placeholder";
-import { FormatedSearchableFilter } from "../../../../index";
+import { FormatedSearchableFilter } from "src";
 import { DateRange } from "types";
 import { randomNum } from "utils";
-import { FilterType, SearchFilterType } from "./getServiceSearchFilters";
 
 export type LocationCords = {
   lat: number;
