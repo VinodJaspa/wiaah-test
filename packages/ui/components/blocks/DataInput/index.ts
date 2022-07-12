@@ -1,6 +1,5 @@
 export * from "./SellerPostInput";
 export * from "./ShopFilter";
-export * from "./SearchInput";
 export * from "./ChatSearchInput";
 export * from "./ChatRoomInput";
 export * from "./FileInput";
@@ -13,3 +12,5 @@ export * from "./DateInput";
 export * from "./DateFormInput";
 export * from "./TimeSlider";
 export * from "./ChooseWithInput";
+export * from "./Search";
+export * from "./SearchFilters";

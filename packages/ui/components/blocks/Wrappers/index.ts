@@ -7,3 +7,4 @@ export * from "./MultiStepForm";
 export * from "./CheckMarkStepper";
 export * from "./SectionContainer";
 export * from "./SectionWrapper";
+export * from "./ScrollingWrapper";

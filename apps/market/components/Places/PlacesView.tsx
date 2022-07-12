@@ -16,7 +16,7 @@ import { useTranslation } from "react-i18next";
 import { useQuery } from "react-query";
 import { MdPlace } from "react-icons/md";
 import { ListWrapper, PlaceCard, PlaceCardProps, placesPlaceholder } from "ui";
-import { placeCardPlaceholder } from "../../pages/preview";
+import { placeCardPlaceholder } from "placeholder";
 import { AiOutlineShop, AiFillShop } from "react-icons/ai";
 
 const costumPH: PlaceCardProps[] = [

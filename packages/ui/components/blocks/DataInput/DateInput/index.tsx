@@ -1,7 +1,7 @@
 import React from "react";
 import { MdArrowLeft, MdArrowRight } from "react-icons/md";
 import { DateRange, HtmlDivProps } from "types";
-import { getTimeInAmPm } from "utils";
+import { getTimeInAmPm, PassPropsToFnOrElem } from "utils";
 
 export interface Month {
   name: string;
@@ -93,16 +93,42 @@ const getMonthData = (dateTimeStamp: Date): Month => {
   return month;
 };
 
+export interface DateDayComponentProps {
+  dayNum: number;
+  active: boolean;
+  currentMonth: boolean;
+}
+
+const DefaultDaycomponent: React.FC<DateDayComponentProps> = ({
+  dayNum,
+  currentMonth,
+  active,
+}) => {
+  return (
+    <span
+      className={`${
+        currentMonth ? "cursor-pointer" : "cursor-not-allowed text-gray-400"
+      } ${
+        active ? "bg-primary text-white" : ""
+      } h-8 w-8 flex items-center justify-center`}
+    >
+      {dayNum}
+    </span>
+  );
+};
+
 export interface DateInputProps extends HtmlDivProps {
   onDaySelect?: (UTCDateString: string) => any;
   range?: boolean;
   onRangeSelect?: (range: DateRange) => any;
+  dayComponent?: React.ReactNode;
 }
 export const DateInput: React.FC<DateInputProps> = ({
   onDaySelect,
   range,
   onRangeSelect,
   className,
+  dayComponent = DefaultDaycomponent,
   ...rest
 }) => {
   const [activeDates, setActiveDates] = React.useState<string[]>([]);
@@ -265,17 +291,12 @@ export const DateInput: React.FC<DateInputProps> = ({
                         }
                       });
                     }}
-                    className={`${
-                      currentMonth
-                        ? "cursor-pointer"
-                        : "cursor-not-allowed text-gray-400"
-                    } ${
-                      activeDates.includes(date) && currentMonth
-                        ? "bg-primary text-white"
-                        : ""
-                    } flex w-full items-center justify-center`}
                   >
-                    <span>{dayNum}</span>
+                    {PassPropsToFnOrElem(dayComponent, {
+                      dayNum,
+                      currentMonth,
+                      active: activeDates.includes(date) && currentMonth,
+                    })}
                   </td>
                 ))}
               </tr>

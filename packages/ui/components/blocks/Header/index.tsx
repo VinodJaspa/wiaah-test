@@ -23,62 +23,71 @@ import { ShoppingCartItemsState } from "state";
 import { useTranslation } from "react-i18next";
 import { NavLink } from "types";
 import { useBreakpointValue } from "@chakra-ui/react";
+import { useGetServicesCategoriesQuery } from "ui";
 
-export interface HeaderProps {
-  categories: NavLink[];
-}
+export interface HeaderProps {}
 
-export const Header: React.FC<HeaderProps> = ({ categories }) => {
+export const Header: React.FC<HeaderProps> = () => {
   const items = useRecoilValue(ShoppingCartItemsState);
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [isopen, setisopen] = React.useState(false);
   const { t } = useTranslation();
 
-  const steps: Step[] = categories.map((cate, i) => ({
-    label: cate.name.fallbackText,
-    url: cate.destination,
-    steps: [
-      {
-        label: t("Clothing", "Clothing"),
-        url: "/clothing",
+  const {
+    data: categories,
+    isLoading,
+    isSuccess,
+  } = useGetServicesCategoriesQuery(15, 0);
+
+  console.log("categories", categories);
+
+  const steps: Step[] = Array.isArray(categories)
+    ? categories.map((cate, i) => ({
+        label: cate.name,
+        url: cate.slug,
         steps: [
           {
-            label: t("Women_s", "Womsen's"),
-            url: "womens",
+            label: t("Clothing", "Clothing"),
+            url: "/clothing",
             steps: [
               {
-                label: t("Dresses", "Dreasses"),
-                url: "/dresses",
+                label: t("Women_s", "Womsen's"),
+                url: "womens",
                 steps: [
                   {
-                    label: t("Dresses", "Dresses"),
+                    label: t("Dresses", "Dreasses"),
                     url: "/dresses",
-                    steps: [],
+                    steps: [
+                      {
+                        label: t("Dresses", "Dresses"),
+                        url: "/dresses",
+                        steps: [],
+                      },
+                      {
+                        label: t("Shirts", "Shirts"),
+                        url: "/shirts",
+                      },
+                    ],
                   },
                   {
-                    label: t("Shirts", "Shirts"),
+                    label: t("Shirts", "Shidrts"),
                     url: "/shirts",
                   },
                 ],
               },
               {
-                label: t("Shirts", "Shidrts"),
-                url: "/shirts",
+                label: t("Men_s", "Men's"),
+                url: "/mens",
               },
             ],
           },
           {
-            label: t("Men_s", "Men's"),
-            url: "/mens",
+            label: t("Home_&_Living", "Home & Living"),
+            url: "/home-and-living",
           },
         ],
-      },
-      {
-        label: t("Home_&_Living", "Home & Living"),
-        url: "/home-and-living",
-      },
-    ],
-  }));
+      }))
+    : [];
 
   const handleItemDeletion = (item: ShoppingCartItem) => {};
 
@@ -106,10 +115,14 @@ export const Header: React.FC<HeaderProps> = ({ categories }) => {
 
             <SelectDropdown
               className="appearance-none  border-l-[1px] border-l-primary border-none border-gray-600 bg-gray-700  px-2.5 text-white outline-none focus:outline-none"
-              options={categories.map((cate, i) => ({
-                name: t(cate.name.translationKey, cate.name.translationKey),
-                value: cate.name.fallbackText,
-              }))}
+              options={
+                Array.isArray(categories)
+                  ? categories.map((cate, i) => ({
+                      name: t(cate.name),
+                      value: cate.slug,
+                    }))
+                  : []
+              }
             />
             <label htmlFor="Category" className="relative flex">
               <FaChevronDown className="pointer-events-none absolute inset-y-1/3 right-3 h-4 w-4 text-green-400" />
@@ -154,12 +167,11 @@ export const Header: React.FC<HeaderProps> = ({ categories }) => {
               <span className="inline-flex">{t("All", "All")}</span>
             </li>
             {!isMobile &&
+              Array.isArray(categories) &&
               categories.length > 0 &&
               categories.map((cate, i) => (
                 <li className="capitalize hover:text-primary" key={i}>
-                  <Link href={cate.destination}>
-                    {t(cate.name.translationKey, cate.name.fallbackText)}
-                  </Link>
+                  <Link href={cate.slug}>{t(cate.name)}</Link>
                 </li>
               ))}
           </ul>

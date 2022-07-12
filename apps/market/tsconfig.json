@@ -4,6 +4,12 @@
   "exclude": ["node_modules"],
   "compilerOptions": {
     "esModuleInterop": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "@components": ["components"],
+      "@pages/*": ["pages/*"],
+      "@lib": ["lib"]
+    }
   }
 }

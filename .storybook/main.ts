@@ -12,7 +12,11 @@ const config: StorybookConfig = {
   ],
 
   /** Expose public folder to storybook as static */
-  staticDirs: ["../apps/market/public", "../apps/seller/public"],
+  staticDirs: [
+    "../apps/market/public",
+    "../apps/seller/public",
+    "../apps/buyer/public",
+  ],
   addons: [
     "@storybook/addon-links",
     "@storybook/addon-essentials",
@@ -39,26 +43,27 @@ const config: StorybookConfig = {
      * Add support for alias-imports
      * @see https://github.com/storybookjs/storybook/issues/11989#issuecomment-715524391
      */
-    config.resolve.alias = {
-      ...config.resolve?.alias,
-      "@": [
-        // path.resolve(__dirname, "../apps/market/pages/"),
-        path.resolve(__dirname, "../apps/market/*"),
-        path.resolve(__dirname, "../apps/seller/*"),
-        path.resolve(__dirname, "../packages/*"),
-        // path.resolve(__dirname, "../packages/ui/components/*"),
-        // path.resolve(__dirname, "../packages/ui/components/blocks/*"),
-      ],
-    };
+    if (config.resolve) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        "@": [
+          path.resolve(__dirname, "../apps/market/*"),
+          path.resolve(__dirname, "../apps/seller/*"),
+          path.resolve(__dirname, "../packages/*"),
+        ],
+      };
+    }
 
     /**
      * Fixes font import with /
      * @see https://github.com/storybookjs/storybook/issues/12844#issuecomment-867544160
      */
-    config.resolve.roots = [
-      path.resolve(__dirname, "../public"),
-      "node_modules",
-    ];
+    if (config.resolve) {
+      config.resolve.roots = [
+        path.resolve(__dirname, "../public"),
+        "node_modules",
+      ];
+    }
 
     return config;
   },

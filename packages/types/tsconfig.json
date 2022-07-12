@@ -6,7 +6,7 @@
     "baseUrl": ".",
     "paths": {
       "@entity": ["entity"],
-      "@this": ["."]
+      "@this": ["src"]
     }
   }
 }

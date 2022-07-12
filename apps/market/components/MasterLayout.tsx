@@ -10,6 +10,7 @@ import {
   SocialHeader,
   SocialAuthFooter,
   CommentReportModal,
+  RootProps,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
@@ -61,8 +62,8 @@ const products: CartSummaryItem[] = [
       },
     ],
 
-    color: "relay blue/yellow",
-    size: "One Size",
+    colors: ["relay blue/yellow"],
+    sizes: ["One Size"],
     type: "product",
     cashback: {
       unit: "%",
@@ -296,9 +297,14 @@ const navLinks: NavLink[] = [
 
 export interface MasterLayoutProps {
   social?: boolean;
+  rootProps?: RootProps;
 }
 
-const MasterLayout: React.FC<MasterLayoutProps> = ({ children, social }) => {
+const MasterLayout: React.FC<MasterLayoutProps> = ({
+  children,
+  social,
+  rootProps,
+}) => {
   let voucher;
   const { t, i18n } = useTranslation();
   const setCheckoutAddress = useSetRecoilState(UserAddressesState);
@@ -316,10 +322,10 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({ children, social }) => {
   }
 
   return (
-    <Root>
+    <Root {...rootProps}>
       <CommentReportModal />
       <AuthPopup />
-      {!social && <Header categories={navLinks} />}
+      {!social && <Header />}
       {social && <SocialHeader />}
       <main className="flex w-full flex-col">{children}</main>
       {!social && <Footer />}
@@ -366,3 +372,5 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({ children, social }) => {
 };
 
 export default MasterLayout;
+
+export { MasterLayout };

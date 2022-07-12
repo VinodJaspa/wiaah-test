@@ -13,7 +13,7 @@ export interface SelectChildProps<T> {
 
 export interface SelectProps<SelectOptionType = string>
   extends Omit<HtmlDivProps, "children" | "onSelect"> {
-  children?: ElementChilds<SelectChildProps<SelectOptionType>>;
+  children?: ElementChilds<SelectChildProps<SelectOptionType>> | null;
   onOptionSelect?: OnOptionSelect<SelectOptionType>;
   placeholder?: string;
   value?: string;

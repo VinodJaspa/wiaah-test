@@ -6,7 +6,11 @@ import { useTranslation } from "react-i18next";
 import { Language } from "ui/languages/enums/Language";
 import { useResponsive } from "ui";
 
-export const Root: React.FC = ({ children }) => {
+export interface RootProps {
+  scrollable?: boolean;
+}
+
+export const Root: React.FC<RootProps> = ({ children, scrollable = true }) => {
   const { isMobile } = useResponsive();
   const router = useRouter();
   const { i18n } = useTranslation();
@@ -37,7 +41,7 @@ export const Root: React.FC = ({ children }) => {
         <div
           className={classNames(
             `relative flex h-screen w-full flex-col overflow-x-hidden overflow-y-auto ${
-              isMobile ? "no-scrollBar" : ""
+              isMobile || !scrollable ? "no-scrollBar" : ""
             }`
           )}
         >
