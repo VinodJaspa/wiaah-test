@@ -3,14 +3,14 @@ import React from "react";
 import { Container, NotFound } from "ui";
 import Head from "next/head";
 import { useTranslation } from "react-i18next";
-import { MasterLayout } from "@components";
+import { MasterLayout } from "../../../../components/MasterLayout";
 import { useRouter } from "next/router";
 import {
   ExtractServiceTypeFromQuery,
   getServiceView,
   ServicesTypeSwitcher,
 } from "utils";
-import { ServicesViewsList } from "lib";
+import { ServicesViewsList } from "@data";
 
 const ServiceCategory: NextPage = () => {
   const { t } = useTranslation();

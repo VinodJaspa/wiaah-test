@@ -4,8 +4,8 @@ import {
   PersonIcon,
   ArrowRightIcon,
   TriangleRightIcon,
+  ClockIcon,
 } from "ui";
-import { FaChevronRight } from "react-icons/fa";
 import { runIfFn } from "utils";
 
 export interface ResturantFindTableFilterStepperHeaderProps {
@@ -18,7 +18,7 @@ const steps: { icon: React.ReactNode; name: string }[] = [
     name: "Date",
   },
   {
-    icon: CalenderIcon,
+    icon: ClockIcon,
     name: "Time",
   },
   {
@@ -29,7 +29,7 @@ const steps: { icon: React.ReactNode; name: string }[] = [
 
 export const ResturantFindTableFilterStepperHeader: React.FC<
   ResturantFindTableFilterStepperHeaderProps
-> = ({ currentStepIdx }) => {
+> = ({ currentStepIdx = 0 }) => {
   return (
     <div className="relative overflow-hidden h-8 flex items-center w-full">
       <div className="absolute z-[1] items-center justify-evenly w-full flex ">
@@ -42,7 +42,7 @@ export const ResturantFindTableFilterStepperHeader: React.FC<
                   } flex items-center gap-2`}
                 >
                   <span className="text-xl">
-                    {currentStepIdx <= i ? runIfFn(icon) : null}
+                    {currentStepIdx <= i ? runIfFn(icon, {}) : null}
                   </span>
                   {currentStepIdx >= i ? <p>{name}</p> : null}
                 </div>
@@ -63,7 +63,7 @@ export const ResturantFindTableFilterStepperHeader: React.FC<
         }}
         className="relative -z-0 text-primary bg-primary top-0 left-0 h-full"
       >
-        <TriangleRightIcon className="absolute top-0 right-0 translate-x-full bg-primary h-[calc(100%)] w-8" />
+        <TriangleRightIcon className="absolute top-0 right-0 translate-x-[95%] bg-primary h-[calc(100%)] w-8" />
       </div>
     </div>
   );

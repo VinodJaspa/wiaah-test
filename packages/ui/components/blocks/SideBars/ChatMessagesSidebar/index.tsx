@@ -62,15 +62,13 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
           onClick={openModal}
         />
       </HStack>
-      <ChatSearchInput innerProps={{ px: "1rem" }} />
+      <ChatSearchInput className="px-4" />
       {/* <SearchInput style={{ px: "1rem" }} /> */}
       <Flex overflow={"scroll"} className="no-scrollBar" direction={"column"}>
         {userCards.map((cardData, i) => (
           <>
             <ChatUserCard
-              innerProps={{
-                onClick: () => onCardClick && onCardClick(cardData.id),
-              }}
+              //  onClick={() => onCardClick && onCardClick(cardData.id)}
               {...cardData}
               key={cardData.id}
             />

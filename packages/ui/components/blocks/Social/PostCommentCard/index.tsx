@@ -15,9 +15,9 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { MdOutlineReply, MdReply } from "react-icons/md";
-import { PostComment } from "types/market/Social";
+import { PostComment } from "types";
 import { PostAttachment, Verified, EllipsisText } from "ui";
-import { useCommentReportModal, useDateDiff, useLoginPopup } from "ui/Hooks";
+import { useCommentReportModal, useDateDiff, useLoginPopup } from "ui";
 import { HashTags } from "../HashTags";
 
 export interface PostCommentCardProps extends PostComment {

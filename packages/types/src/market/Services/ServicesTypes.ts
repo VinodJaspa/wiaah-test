@@ -1,1 +1,1 @@
-export type ServicesType = "hotel" | "resturant";
+export type ServicesType = "hotel" | "resturant" | "holidays_rentals";

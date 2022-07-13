@@ -143,13 +143,7 @@ export const PostViewPopup: React.FC<PostViewPopupProps> = ({
             />
             <FloatingContainer
               // key={i}
-              display={"flex"}
-              justifyContent="center"
-              alignItems={"center"}
-              w="100%"
-              h="100%"
-              overflow={"hidden"}
-              bg="black"
+              className="flex justify-center items-center w-full h-full overflow-hidden bg-black"
               items={[
                 {
                   label: (
@@ -180,7 +174,7 @@ export const PostViewPopup: React.FC<PostViewPopupProps> = ({
                   ),
                   top: "2rem",
                   right: "0rem",
-                  zIndex: 10,
+                  // zIndex: 10,
                 },
               ]}
             >

@@ -1,31 +1,33 @@
 {
   "name": "ui",
   "version": "0.0.0",
-  "main": "./index.ts",
+  "main": "./dist/index.js",
   "types": "./index.ts",
   "license": "MIT",
   "devDependencies": {
+    "@types/google.maps": "^3.49.2",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
-    "api": "*",
-    "config": "*",
-    "dto": "*",
-    "hooks": "*",
-    "placeholder": "*",
-    "state": "*",
     "tsconfig": "*",
-    "types": "*",
     "typescript": "^4.5.3",
-    "utils": "*",
-    "validation": "*"
+    "config": "*"
   },
   "dependencies": {
+    "@googlemaps/react-wrapper": "1.1.35",
     "classnames": "^2.3.1",
     "qrcode.react": "^3.0.2",
     "react-icons": "^4.3.1",
     "react-responsive": "^9.0.0-beta.6",
     "react-simple-image-slider": "^2.3.0",
     "recoil": "^0.6.1",
-    "swiper": "8.0.5"
+    "swiper": "8.0.5",
+    "api": "*",
+    "dto": "*",
+    "hooks": "*",
+    "placeholder": "*",
+    "state": "*",
+    "types": "*",
+    "utils": "*",
+    "validation": "*"
   }
 }

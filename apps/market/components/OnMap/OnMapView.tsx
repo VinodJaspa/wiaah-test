@@ -1,186 +1,26 @@
-import React, { CSSProperties } from "react";
-import { Wrapper } from "@googlemaps/react-wrapper";
+import { ServicesViewsList } from "@data";
+import { useRouter } from "next/router";
+import React from "react";
+import { RenderMap, ScrollingWrapper } from "ui";
 import {
-  Map,
-  Marker,
-  ScrollingWrapper,
-  ServicesSearchList,
-  useGetFilteredServicesMetaDataQuery,
-  useSearchFilters,
-} from "ui";
-import { useRecoilValue } from "recoil";
-import {
-  PreferedCurrencyState,
-  useGetFocusedMapItemId,
-  useMutateFocusedMapItemId,
-} from "state";
-import { FilteredServiceMetaDataType, LocationCords } from "api";
+  ExtractServiceTypeFromQuery,
+  getServiceView,
+  ServicesTypeSwitcher,
+} from "utils";
 
 export const OnMapView: React.FC = () => {
-  const { filters, setFilters } = useSearchFilters();
-  const { itemId } = useGetFocusedMapItemId();
-  const [services, setServices] = React.useState<FilteredServiceMetaDataType[]>(
-    []
-  );
-  const {} = useGetFilteredServicesMetaDataQuery(filters, {
-    onSuccess: (data) => {
-      setServices(data);
-      console.log("refetched");
-    },
-    enabled: services.length < 1,
-  });
-  const currency = useRecoilValue(PreferedCurrencyState);
-  const [center, setCenter] = React.useState<LocationCords>({ lat: 0, lng: 0 });
-  const [zoom, setZoom] = React.useState<number>(5);
-  const [map, setMap] = React.useState<HTMLElement>();
-
-  const handleFocusService = (serviceData: FilteredServiceMetaDataType) => {
-    try {
-      console.log(serviceData);
-      console.log("focus handled");
-      const {
-        location: { lat, lng },
-      } = serviceData;
-      setCenter({ lat, lng });
-      setZoom(12);
-      setServices([serviceData]);
-      setFilters((state) => ({ ...state, id: serviceData.id }));
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  React.useEffect(() => {
-    if (itemId) {
-      const service = services.find((s) => s.id === itemId);
-      if (service) {
-        handleFocusService(service);
-      }
-    }
-  }, [itemId]);
-
-  React.useEffect(() => {
-    console.log("effect");
-    if (document) {
-      if (map) {
-        const markers = map.querySelectorAll("[role='img']");
-        markers.forEach((marker, i) => {
-          // @ts-ignore
-          marker.style.overflow = "";
-          const spanStyles: CSSProperties = {
-            backgroundColor: "white",
-            position: "absolute",
-            zIndex: 10000,
-            color: "black",
-            fontSize: "1rem",
-            borderRadius: "2rem",
-            whiteSpace: "nowrap",
-            border: "2px solid black",
-            paddingTop: "0.25rem",
-            top: 0,
-            left: 0,
-            paddingBottom: "0.25rem",
-            paddingLeft: "0.5rem",
-            paddingRight: "0.5rem",
-            fontWeight: "bolder",
-          };
-          const ExistsSpan = marker.querySelectorAll("span");
-          const spanText = `${currency.currencySymbol}${
-            currency.currencyRateToUsd * services[i].pricePerNight
-          }`;
-          let span: HTMLElement;
-          if (ExistsSpan.length > 0) {
-            span = ExistsSpan[0];
-            span.innerText = spanText;
-            span.onclick = () => handleFocusService(services[i]);
-            Object.entries(spanStyles).forEach(([key, value]) => {
-              span.style[key] = value;
-            });
-          } else {
-            span = document.createElement("span");
-            span.innerText = spanText;
-            console.log(services[i]);
-            span.onclick = () => handleFocusService(services[i]);
-            Object.entries(spanStyles).forEach(([key, value]) => {
-              span.style[key] = value;
-            });
-            marker.appendChild(span);
-          }
-        });
-      }
-    }
-  }, [map, services]);
-
-  React.useEffect(() => {
-    if (document) {
-      if (!map) {
-        const map = document.getElementById("serviceSearchMap");
-        setMap(map);
-      }
-    }
-  });
-
+  const router = useRouter();
+  const serviceType = ExtractServiceTypeFromQuery(router.query);
   return (
     <div className="w-screen h-[75vh] flex p-4 gap-4 justify-between">
       <ScrollingWrapper>
-        <ServicesSearchList sorting />
+        <ServicesTypeSwitcher
+          servicesList={ServicesViewsList}
+          get={getServiceView.LIST}
+          serviceType={serviceType}
+        />
       </ScrollingWrapper>
-      <Wrapper apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
-        <Map
-          id="serviceSearchMap"
-          mapId={process.env.NEXT_PUBLIC_GOOGLE_MAPID}
-          center={center}
-          zoom={zoom}
-          className="w-full h-full"
-          styles={[
-            {
-              featureType: "all",
-              elementType: "all",
-              stylers: [
-                {
-                  visibility: "off",
-                },
-              ],
-            },
-
-            {
-              featureType: "landscape.man_made",
-              elementType: "geometry.fill",
-              stylers: [
-                {
-                  color: "#e9edf7",
-                },
-              ],
-            },
-            {
-              featureType: "landscape.natural.landcover",
-              elementType: "geometry.fill",
-              stylers: [
-                {
-                  color: "#e9edf7",
-                },
-              ],
-            },
-          ]}
-        >
-          {Array.isArray(services)
-            ? services.map((service, i) => (
-                <Marker
-                  title={`${service.title}`}
-                  icon={{
-                    path: "M88.289,181.749c-9.013,0-17.557,7.539-23.078,14.664c-8.295,10.71-15.8,18.384-56.441,21.163 c-8.991,0.615-11.172-4.716-6.065-12.14c9.181-13.347,10.345-31.198,10.345-61.554v-33.053c0-9.013,0.517-23.682,3.106-32.308 c5.2-17.361,18.944-42.648,54.88-42.648H174.59c9.013,0,23.682-0.359,32.564,1.164c18.531,3.187,46.286,14.479,46.286,53.548 v22.023c0,0,3.024,69.152-63.409,69.152C146.084,181.749,108.62,181.749,88.289,181.749z",
-                    fillColor: "#fff",
-                    fillOpacity: 0,
-                    scale: 0.5,
-                    strokeOpacity: 0,
-                  }}
-                  key={i}
-                  position={service.location}
-                />
-              ))
-            : null}
-        </Map>
-      </Wrapper>
+      <RenderMap />
     </div>
   );
 };

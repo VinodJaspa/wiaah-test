@@ -130,6 +130,7 @@ export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
           dragConstraints={TrackContainerRef}
           direction={"column"}
           onDragStart={handleDragStart}
+          // @ts-ignore
           onDragEnd={handleDragEnd}
           animate={controls}
           style={{ y }}

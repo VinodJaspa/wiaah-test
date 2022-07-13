@@ -27,9 +27,10 @@ export interface SubscribersUserInfo {
   avatar: string;
   profileUrl: string;
 }
+export type PostAttachmentTypes = "image" | "video";
 
 export interface PostAttachment {
-  type: "image" | "video";
+  type: PostAttachmentTypes;
   src: string;
   postLocation?: string;
 }

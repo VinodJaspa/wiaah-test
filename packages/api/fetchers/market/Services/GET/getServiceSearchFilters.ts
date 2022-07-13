@@ -1,4 +1,4 @@
-import { FormatedSearchableFilter } from "src";
+import { FormatedSearchableFilter } from "../../../../";
 
 export type FilterType = "select" | "radio" | "check";
 export type FilterDisplayType = "text" | "rate";

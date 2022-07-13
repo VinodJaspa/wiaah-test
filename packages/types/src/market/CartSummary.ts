@@ -1,4 +1,4 @@
-import { DiscountType } from "@this";
+import { DiscountType } from "../";
 
 export interface CartSummaryItemData {
   shop: ShopContactDetails;
@@ -48,4 +48,7 @@ export interface ShippingMothed {
     from: number;
     to: number;
   };
+  id: string;
+  cost: number;
+  description: string;
 }

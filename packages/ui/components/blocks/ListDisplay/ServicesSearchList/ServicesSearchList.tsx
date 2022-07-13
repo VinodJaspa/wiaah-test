@@ -1,7 +1,7 @@
 import { FilteredServiceMetaDataType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useMutateFocusedMapItemId } from "state";
+import { useMutateFocusedMapItemId } from "ui";
 import {
   useGetFilteredServicesMetaDataQuery,
   useSearchFilters,
@@ -11,7 +11,11 @@ import {
   SearchFilter,
 } from "ui";
 
-export const ServicesSearchList: React.FC<{ sorting?: boolean }> = ({
+export interface ServicesSearchListProps {
+  sorting?: boolean;
+}
+
+export const ServicesSearchList: React.FC<ServicesSearchListProps> = ({
   sorting,
 }) => {
   const { focusMapItem } = useMutateFocusedMapItemId();

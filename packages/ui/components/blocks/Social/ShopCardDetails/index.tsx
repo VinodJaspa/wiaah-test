@@ -1,9 +1,9 @@
 import { Avatar, Button, Flex, HStack, Text } from "@chakra-ui/react";
-import { Rate } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ProfileInfo } from "types/market/Social";
+import { ProfileInfo } from "types";
 import { NumberShortner } from "utils";
+import { Rate } from "ui";
 
 export interface ShopCardDetailsProps {
   user: ProfileInfo;
@@ -82,7 +82,7 @@ export const ShopCardDetails: React.FC<ShopCardDetailsProps> = ({
           </Text>
         )}
       </Flex>
-      <Rate disabled allowHalf value={rating} className="" />
+      <Rate allowHalf rating={rating} className="" />
       <HStack w="100%" justify={"space-between"}>
         <Text
           color="white"

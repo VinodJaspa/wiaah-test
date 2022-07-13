@@ -5,12 +5,12 @@ import {
   StepperContent,
   ResturantFindTableFilterDateDayComponent,
   DateInput,
+  ResturantFindTableFilterStepperHeader,
+  TimeInput,
+  ResturantReplacableTimeComponent,
 } from "ui";
 import { FilterAndAddToArray } from "utils";
-import { ResturantFindTableFilterStepperHeader } from "../Headers";
 export interface ResturantFindTableFilterStepper {}
-
-const ResturantFindTableFilterSteps = [];
 
 export const ResturantFindTableFilterStepper: React.FC<
   ResturantFindTableFilterStepper
@@ -27,7 +27,7 @@ export const ResturantFindTableFilterStepper: React.FC<
         stepsLength,
       }) => {
         return (
-          <div className="flex flex-col">
+          <div className="flex flex-col w-full">
             <ResturantFindTableFilterStepperHeader
               currentStepIdx={currentStepIdx}
             />
@@ -47,25 +47,27 @@ export const ResturantFindTableFilterStepper: React.FC<
                     return filteredState;
                   });
                   nextStep();
-                  console.log("day selected", date, currentStepIdx);
                 }}
               />
-              <DateInput
-                dayComponent={ResturantFindTableFilterDateDayComponent}
-                onDaySelect={(date) => {
+              <TimeInput
+                timeRange={{
+                  from: { hour: 8, minutes: 30 },
+                  to: { hour: 16, minutes: 30 },
+                }}
+                timeComponent={ResturantReplacableTimeComponent}
+                onTimeSelect={(time) => {
                   setFilters((state) => {
                     const filteredState = FilterAndAddToArray(
                       state,
                       {
-                        reservationDate: date,
+                        reservationTime: `${time.hour}:${time.minutes}`,
                       },
                       "exclude",
-                      "reservationDate"
+                      "reservationTime"
                     );
                     return filteredState;
+                    nextStep();
                   });
-                  nextStep();
-                  console.log("day selected", date, currentStepIdx);
                 }}
               />
               <DateInput

@@ -1,0 +1,35 @@
+import { ServiceViewListItem } from "types";
+import {
+  ServiceSearchView,
+  ResturantSearchView,
+  HolidaysRentalSearchView,
+  HolidaysRentalSearchResaultsView,
+  HotelsSearchResaultsView,
+  ResturantSearchResultsView,
+} from "../components/ServiceSearch";
+import {
+  HolidaysRentalSearchList,
+  ResturantSearchList,
+} from "ui/components/features/Services";
+import { ServicesSearchList } from "ui/components/blocks/ListDisplay";
+
+export const ServicesViewsList: ServiceViewListItem[] = [
+  {
+    slug: "hotel",
+    search: ServiceSearchView,
+    searchResaults: HotelsSearchResaultsView,
+    searchList: ServicesSearchList,
+  },
+  {
+    slug: "resturant",
+    search: ResturantSearchView,
+    searchResaults: ResturantSearchResultsView,
+    searchList: ResturantSearchList,
+  },
+  {
+    slug: "holidays_rentals",
+    search: HolidaysRentalSearchView,
+    searchResaults: HolidaysRentalSearchResaultsView,
+    searchList: HolidaysRentalSearchList,
+  },
+];

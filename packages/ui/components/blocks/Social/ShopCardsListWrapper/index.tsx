@@ -1,6 +1,6 @@
 import { Flex, Text } from "@chakra-ui/react";
 import React from "react";
-import { ShopCardInfo } from "types/market/Social";
+import { ShopCardInfo } from "types";
 import {
   ListWrapper,
   SocialShopCard,
@@ -57,19 +57,15 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
                   src: item.attachments[0].src,
                   type: item.attachments[0].type,
                   footer: item.views ? (
-                    <Text
-                      w="100%"
-                      px="1rem"
-                      textAlign={"start"}
-                      fontSize={"lg"}
-                      fontWeight="bold"
-                      color="white"
+                    <p
+                    className="w-full px-4 text-left text-xl font-bold text-white"
                     >
                       {NumberShortner(item.views)}
-                    </Text>
+                    </p>
                   ) : undefined,
                 }}
-                productType={item.type}
+                
+                productType={item.}
                 {...item}
               />
             ),

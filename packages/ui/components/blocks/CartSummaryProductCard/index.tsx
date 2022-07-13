@@ -7,7 +7,7 @@ import {
   IoHome,
   IoLocation,
 } from "react-icons/io5";
-import { CartSummaryItem, ShopContactDetails } from "types/market/CartSummary";
+import { CartSummaryItem, ShopContactDetails } from "types";
 import { useScreenWidth } from "ui/Hooks";
 import { colorPalette } from "ui/components/helpers";
 import { getDate, getTime } from "ui/components/helpers";
@@ -175,14 +175,14 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                   {product.description}
                 </Text>
                 <div>
-                  {product.color && (
+                  {product.colors && (
                     <Text id="ProductColor">
-                      {t("color", "Color")}: {product.color}
+                      {t("color", "Color")}: {product.colors[0]}
                     </Text>
                   )}
-                  {product.size && (
+                  {product.sizes && (
                     <Text id="ProductSize">
-                      {t("size", "Size")}: {product.size}
+                      {t("size", "Size")}: {product.sizes[0]}
                     </Text>
                   )}
                 </div>

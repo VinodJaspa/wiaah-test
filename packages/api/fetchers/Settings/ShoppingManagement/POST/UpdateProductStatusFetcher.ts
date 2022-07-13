@@ -1,4 +1,4 @@
-import { UpdateProductStatusDto } from "@Dto";
+import { UpdateProductStatusDto } from "dto";
 
 export const UpdateProductStatusFetcher =
   async ({}: UpdateProductStatusDto) => {

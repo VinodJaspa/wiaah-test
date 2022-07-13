@@ -129,13 +129,7 @@ export const ActionViewModal: React.FC<ActionViewPopupProps> = ({}) => {
                 {[...Array(1)].map((_, i) => (
                   <FloatingContainer
                     // key={i}
-                    display={"flex"}
-                    justifyContent="center"
-                    alignItems={"center"}
-                    w="100%"
-                    h="100%"
-                    overflow={"hidden"}
-                    bg="black"
+                    className="flex justify-center items-center w-full h-full overflow-hidden bg-black"
                     items={
                       [
                         // {

@@ -1,7 +1,7 @@
 import { useResponsive } from "hooks";
 import React from "react";
 import { HtmlDivProps } from "types";
-import { NavigationLinkType } from "types/sharedTypes/misc/SellerNavigationLink";
+import { NavigationLinkType } from "types";
 import { Divider } from "ui";
 
 export interface SellerSideBarProps extends HtmlDivProps {

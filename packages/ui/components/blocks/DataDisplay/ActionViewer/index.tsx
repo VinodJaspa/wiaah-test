@@ -87,11 +87,11 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
             onClick={() => onActionClick && onActionClick(action.id)}
           >
             <FloatingContainer
-              pointerEvents={"none"}
-              h="100%"
-              w="100%"
-              display={"flex"}
-              alignItems="center"
+              // pointerEvents={"none"}
+              // h="100%"
+              // w="100%"
+              // display={"flex"}
+              // alignItems="center"
               items={[
                 {
                   label: (

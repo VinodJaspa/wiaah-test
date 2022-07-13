@@ -1,8 +1,16 @@
 import React from "react";
 import { Form, Formik } from "formik";
-import { BoxShadow, Padding, FlexStack, Input, Button, Grid } from "ui";
+import {
+  BoxShadow,
+  Padding,
+  FlexStack,
+  Input,
+  Button,
+  Grid,
+  FormikInput,
+} from "ui";
 import * as yup from "yup";
-import { CardDetails } from "types/market/Checkout";
+import { CardDetails } from "types";
 import { useTranslation } from "react-i18next";
 
 const schema = yup.object().shape({
@@ -70,18 +78,9 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
                       direction="vertical"
                     >
                       <span>{t("card_number", "Card Number")}</span>
-                      <Input
-                        formik
+                      <FormikInput
                         placeholder="1234...14"
                         id="CardNumberInput"
-                        message={
-                          errors.cardNumber && touched.cardNumber
-                            ? {
-                                error: true,
-                                msg: errors.cardNumber,
-                              }
-                            : undefined
-                        }
                         name="cardNumber"
                       />
                     </FlexStack>
@@ -92,19 +91,9 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
                         direction="vertical"
                       >
                         <span>{t("expiry_date", "Expiry Date")}</span>
-                        <Input
+                        <FormikInput
                           id="CardExpiryDateInput"
                           placeholder="MM/YY"
-                          formik
-                          message={
-                            errors.expiryDate
-                              ? {
-                                  error: true,
-                                  msg: errors.expiryDate,
-                                }
-                              : undefined
-                          }
-                          fullWidth
                           name="expiryDate"
                         />
                       </FlexStack>
@@ -114,18 +103,9 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
                         direction="vertical"
                       >
                         <span>{t("cvc/cvv", "CVC/CVV")}</span>
-                        <Input
+                        <FormikInput
                           id="CardCvvInput"
-                          formik
                           placeholder="1234"
-                          message={
-                            errors.cvv
-                              ? {
-                                  error: true,
-                                  msg: errors.cvv,
-                                }
-                              : undefined
-                          }
                           name="cvv"
                           fullWidth
                         />
@@ -133,10 +113,7 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
                     </Grid>
                     <Button
                       id="PayNowButton"
-                      hexBackgroundColor="#000"
-                      fitWidth
-                      paddingX={{ value: 2 }}
-                      paddingY={{ value: 0.5 }}
+                      className="bg-black w-full px-8 py-2"
                       type="submit"
                     >
                       {t("pay_now", "Pay now")}

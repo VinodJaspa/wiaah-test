@@ -522,6 +522,7 @@ const Track: React.FC<TrackProps> = ({
         <MotionFlex
           dragConstraints={node}
           onDragStart={handleDragStart}
+          // @ts-ignore
           onDragEnd={handleDragEnd}
           animate={controls}
           style={{ x }}

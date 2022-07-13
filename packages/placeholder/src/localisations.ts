@@ -1,7 +1,8 @@
 import { PostCardInfo } from "types";
-import { PlaceCardProps } from "../components";
+import { PlaceCardProps } from "ui";
 const PostCardPlaceHolder: PostCardInfo = {
   postInfo: {
+    url: "",
     id: "1",
     tags: ["mood", "new"],
     content:

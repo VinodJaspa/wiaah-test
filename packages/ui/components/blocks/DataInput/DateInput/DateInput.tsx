@@ -3,7 +3,7 @@ import { MdArrowLeft, MdArrowRight } from "react-icons/md";
 import { DateRange, HtmlDivProps } from "types";
 import { getTimeInAmPm, PassPropsToFnOrElem } from "utils";
 
-export interface Month {
+export interface DateMonth {
   name: string;
   firstDayName: string;
   year: number;
@@ -59,7 +59,7 @@ type WeekDays = "Sun" | "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat";
 
 const weekDays: WeekDays[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-const getMonthData = (dateTimeStamp: Date): Month => {
+const getMonthData = (dateTimeStamp: Date): DateMonth => {
   const yearNum: number = parseInt(
     new Date(dateTimeStamp).toLocaleDateString("en", {
       year: "numeric",
@@ -80,7 +80,7 @@ const getMonthData = (dateTimeStamp: Date): Month => {
 
   const lastMonthDays: number = daysInMonth(yearNum, monthNum - 1);
 
-  const month: Month = {
+  const month: DateMonth = {
     name: new Date(dateTimeStamp).toLocaleDateString("en", {
       month: "long",
     }),
@@ -133,7 +133,7 @@ export const DateInput: React.FC<DateInputProps> = ({
 }) => {
   const [activeDates, setActiveDates] = React.useState<string[]>([]);
   const [DividedWeeks, setDividedWeeks] = React.useState<FormatedDays[][]>([]);
-  const [month, setMonth] = React.useState<Month>(
+  const [month, setMonth] = React.useState<DateMonth>(
     getMonthData(new Date(Date.now()))
   );
 

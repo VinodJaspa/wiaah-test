@@ -1,9 +1,6 @@
 import { mount, ReactWrapper, render, shallow } from "enzyme";
 import React from "react";
-import {
-  AddressDetails,
-  AddressInputsFields,
-} from "types/market/AddressDetails.interface";
+import { AddressDetails, AddressInputsFields } from "types";
 import { AddressInputs } from "../AddressInputs";
 import { getMountedComponent } from "ui/components/helpers/test/getMountedComponent";
 const selectors = {

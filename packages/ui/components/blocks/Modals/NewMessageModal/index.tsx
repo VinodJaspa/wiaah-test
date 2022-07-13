@@ -147,7 +147,7 @@ export const NewMessageModal: React.FC = () => {
                       </div>
                     </HStack>
                     <Radio
-                      type="radio"
+                      // type="radio"
                       value={user.id}
                       name="suggesetUsers"
                       onChange={() => setSuggestedUserSelect(user.id)}

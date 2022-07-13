@@ -1,7 +1,5 @@
 import React from "react";
-import { AddressCardDetails } from "types/market/AddressDetails.interface";
-import { Border, Grid, Padding, Text, BoldText, FlexStack } from "ui";
-import { Clickable } from "ui";
+import { AddressCardDetails } from "types";
 import { useTranslation } from "react-i18next";
 export interface AddressCardProps {
   addressDetails: AddressCardDetails;

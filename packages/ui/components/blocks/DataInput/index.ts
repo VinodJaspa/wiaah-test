@@ -14,3 +14,4 @@ export * from "./TimeSlider";
 export * from "./ChooseWithInput";
 export * from "./Search";
 export * from "./SearchFilters";
+export * from "./FilterDisplaySwitcher";

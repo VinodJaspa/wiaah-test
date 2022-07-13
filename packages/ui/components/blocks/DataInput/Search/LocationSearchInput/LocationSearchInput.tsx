@@ -83,10 +83,10 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
         </p>
         <SpinnerFallback isLoading={isLoading} isError={isError}>
           {Array.isArray(locations)
-            ? locations.map(({ location, name }, i) => (
+            ? locations.map((location, i) => (
                 <Prefix
                   key={i}
-                  onClick={() => onLocationSelect(location)}
+                  onClick={() => onLocationSelect(location.address)}
                   className="hover:bg-gray-100 active:bg-gray-200 border-b-2 border-gray-200 py-2 cursor-pointer"
                   Prefix={() => (
                     <span className="border-2 border-gray-200 p-2 rounded-full">
@@ -95,7 +95,7 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
                   )}
                 >
                   <div className="flex flex-col">
-                    <span className="font-bold">{name}</span>
+                    <span className="font-bold">{location.address}</span>
                     <span>{location}</span>
                   </div>
                 </Prefix>

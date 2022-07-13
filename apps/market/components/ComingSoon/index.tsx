@@ -9,9 +9,8 @@ import {
 } from "react-icons/fa";
 import { BsPlayFill } from "react-icons/bs";
 import { Clickable, Container, Countdown, VideoPopup } from "ui";
-import { social } from "../../lib/Links";
+import { social } from "../../data/Links";
 import Link from "next/link";
-import { t } from "i18next";
 import Head from "next/head";
 import { useTranslation } from "react-i18next";
 

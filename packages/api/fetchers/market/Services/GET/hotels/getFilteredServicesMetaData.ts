@@ -1,5 +1,5 @@
 import { getRandomImage } from "placeholder";
-import { FormatedSearchableFilter } from "src";
+import { FormatedSearchableFilter } from "../../../../../";
 import { DateRange } from "types";
 import { randomNum } from "utils";
 
@@ -24,11 +24,11 @@ export interface FilteredServiceMetaDataType {
   location: LocationCords;
 }
 
-const lats = [
+export const lats = [
   45.464664, 45.45, 45.433334, 45.449998, 45.416669, 45.499999, 45.466667,
   45.583334, 45.400001, 45.586668, 45.318611,
 ];
-const lngs = [
+export const lngs = [
   9.18854, 9.166667, 9.133333, 9.166667, 9.166667, 9.15, 9.1, 9.183333, 9.1,
   9.1775, 9.130556,
 ];

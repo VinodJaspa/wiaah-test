@@ -1,6 +1,6 @@
-import { TranslationText } from "../../sharedTypes/misc/TranslationText";
+import { TranslationTextType } from "types";
 
 export type NavLink = {
-  name: TranslationText;
+  name: TranslationTextType;
   destination: string;
 };

@@ -4,7 +4,7 @@ import { getPostCommentsData } from "api";
 export const useGetPostCommentsQuery = (id: string | null) => {
   return useQuery(
     ["PostComments", { id }],
-    ({ queryKey }) => {
+    ({ queryKey }: any) => {
       const id = queryKey[1].id;
       return getPostCommentsData(id);
     },

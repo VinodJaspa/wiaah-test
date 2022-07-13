@@ -1,7 +1,4 @@
-import {
-  CollaboratorCategory,
-  CollaboratorShop,
-} from "types/market/Collaboration";
+import { CollaboratorCategory, CollaboratorShop } from "types";
 import { products } from "ui/placeholder/products";
 
 const cates = ["Dress", "Home", "Jewelry", "Clothing"];

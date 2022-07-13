@@ -41,8 +41,8 @@ export const CartSummaryProductsPH: CartSummaryItemData[] = [
         },
       ],
 
-      color: "relay blue/yellow",
-      size: "One Size",
+      colors: ["relay blue/yellow"],
+      sizes: ["One Size"],
       type: "product",
       cashback: {
         unit: "%",

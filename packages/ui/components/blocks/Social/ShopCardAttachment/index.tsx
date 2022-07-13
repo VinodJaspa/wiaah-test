@@ -17,15 +17,15 @@ import {
   HiOutlineHeart,
   HiOutlineShoppingCart,
 } from "react-icons/hi";
-import { CashBack } from "types/market/CartSummary";
-import { Interactions } from "types/market/Social";
+import { CashBack, PostAttachmentTypes } from "types";
+import { Interactions } from "types";
 import { PostAttachment } from "ui";
 import { PostAttachmentProps } from "../PostAttachment";
 
 export interface ShopCardAttachmentProps {
   cashback?: CashBack;
   src?: string;
-  type?: string;
+  type?: PostAttachmentTypes;
   alt?: string;
   discount?: CashBack;
   productType: "product" | "service";
@@ -53,7 +53,12 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
   const { t } = useTranslation();
   return (
     <Box {...innerProps} bg="black" maxW="100%" h="100%" position={"relative"}>
-      <PostAttachment src={src} type={type} alt={alt} {...attachmentProps} />
+      <PostAttachment
+        src={src || ""}
+        type={type || "image"}
+        alt={alt}
+        {...attachmentProps}
+      />
       <Flex
         w="100%"
         h="100%"

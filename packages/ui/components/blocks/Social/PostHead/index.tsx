@@ -15,7 +15,7 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import { useStory } from "ui/Hooks";
 import { DisplayPostedSince, Avatar } from "ui";
 import { useTranslation } from "react-i18next";
-import { TranslationText } from "types";
+import { TranslationTextType } from "types";
 export interface PostHeadProps {
   creatorName: string;
   creatorPhoto: string;
@@ -26,7 +26,7 @@ export interface PostHeadProps {
   onViewPostClick?: () => any;
 }
 
-const postOptions: TranslationText[] = [
+const postOptions: TranslationTextType[] = [
   {
     translationKey: "save_for_later",
     fallbackText: "Save For Later",
@@ -94,9 +94,11 @@ export const PostHead: React.FC<PostHeadProps> = ({
             />
           </MenuButton>
           <MenuList>
-            {postOptions.map(({ fallbackText, translationKey }, i) => (
+            {postOptions.map((text, i) => (
               <MenuItem>
-                <Text>{t(translationKey, fallbackText)}</Text>
+                <Text>
+                  {t(typeof text === "string" ? text : text.fallbackText || "")}
+                </Text>
               </MenuItem>
             ))}
           </MenuList>

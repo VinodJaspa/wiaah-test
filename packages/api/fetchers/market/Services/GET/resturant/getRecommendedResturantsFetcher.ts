@@ -1,6 +1,6 @@
 import { getRandomImage } from "placeholder";
 import { randomNum } from "utils";
-import { LocationCords } from "../hotels";
+import { lats, lngs, LocationCords } from "../hotels";
 
 export type Location = {
   address: string;
@@ -10,7 +10,8 @@ export type Location = {
   cords: LocationCords;
 };
 
-export interface RecommendedResturantData {
+export interface ResturantMetaDataType {
+  id: string;
   name: string;
   rate: number;
   reviewsCount: number;
@@ -27,18 +28,19 @@ export interface RecommendedResturantData {
 export const getRecommendedResturantsFetcher = async (
   take: number,
   page: number
-): Promise<RecommendedResturantData[]> => {
-  return [...Array(8)].map((_, i) => ({
+): Promise<ResturantMetaDataType[]> => {
+  return [...Array(16)].map((_, i) => ({
+    id: `${i}`,
     averagePrice: randomNum(100),
     name: "Le bruit qui court",
     isGoodDeal: true,
     rate: parseInt(`${randomNum(9)}.${randomNum(9)}`),
     reviewsCount: randomNum(600),
     thumbnails: [
-      getRandomImage(),
-      getRandomImage(),
-      getRandomImage(),
-      getRandomImage(),
+      "/place-2.jpg",
+      "/place-2.jpg",
+      "/place-2.jpg",
+      "/place-2.jpg",
     ],
     location: {
       address: "69ter rue damremont",
@@ -46,8 +48,8 @@ export const getRecommendedResturantsFetcher = async (
       city: "paris",
       country: "France",
       cords: {
-        lat: 43.546,
-        lng: 65.424,
+        lat: lats[randomNum(lats.length)],
+        lng: lngs[randomNum(lngs.length)],
       },
     },
     discount: {

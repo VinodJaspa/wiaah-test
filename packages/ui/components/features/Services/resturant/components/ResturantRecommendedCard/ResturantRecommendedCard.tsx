@@ -1,4 +1,4 @@
-import { RecommendedResturantData } from "api";
+import { ResturantMetaDataType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -10,8 +10,7 @@ import {
   InfoText,
 } from "ui";
 
-export interface ResturantRecommendedCardProps
-  extends RecommendedResturantData {}
+export interface ResturantRecommendedCardProps extends ResturantMetaDataType {}
 
 export const ResturantRecommendedCard: React.FC<
   ResturantRecommendedCardProps

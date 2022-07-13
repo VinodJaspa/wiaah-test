@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { AddressCardDetails } from "types/market/AddressDetails.interface";
+import { AddressCardDetails } from "types";
 
 export const UserAddressesState = atom<AddressCardDetails[]>({
   key: "UserAddressesState",

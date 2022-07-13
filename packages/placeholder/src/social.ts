@@ -8,7 +8,7 @@ import {
   ShopCardInfo,
   ShopSocialProfileInfo,
   SubscribersUserInfo,
-} from "types/market/Social";
+} from "types";
 
 export const SocialProfileInfo: ShopSocialProfileInfo = {
   id: "1",
