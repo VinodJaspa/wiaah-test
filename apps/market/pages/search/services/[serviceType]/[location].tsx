@@ -9,7 +9,7 @@ import {
   getServiceView,
   ServicesTypeSwitcher,
 } from "utils";
-import { ServicesViewsList } from "@data";
+import { ServicesViewsList } from "../../../../data/ServicesViewsList";
 import { NotFound } from "ui/components/sections/404/404Content";
 const filtered: NextPage = () => {
   const { t } = useTranslation();

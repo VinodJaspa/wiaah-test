@@ -19,7 +19,7 @@ export const ServicesTypeSwitcher: React.FC<{
 }> = ({ get, serviceType, servicesList, fallbackComponent }) => {
   const serviceIdx = servicesList.findIndex((s) => s.slug === serviceType);
   const serviceFound = serviceIdx > -1;
-
+  console.log("servicesSwitcher", serviceType, servicesList);
   return serviceFound
     ? runIfFn(
         get === "search"

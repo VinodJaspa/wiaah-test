@@ -7,7 +7,7 @@ import {
 } from "react-icons/fa";
 
 export interface PaginationProps {
-  maxPages: number;
+  maxPages?: number;
   onPageChange?: (pageNum: number) => void;
   morePages?: boolean;
 }
@@ -15,7 +15,7 @@ export interface PaginationProps {
 export const Pagination: React.FC<PaginationProps> = ({
   morePages,
   onPageChange,
-  maxPages,
+  maxPages = 100000,
 }) => {
   const [currentPage, setCurrentPage] = React.useState<number>(1);
 

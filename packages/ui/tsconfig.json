@@ -13,7 +13,7 @@
     "module": "CommonJS",
     "target": "ES5",
     "jsx": "preserve",
-    "rootDir": ".",
+    // "rootDir": ".",
     // "baseUrl": ".",
     "paths": {
       // "@ui": ["/"]

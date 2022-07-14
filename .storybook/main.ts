@@ -47,9 +47,9 @@ const config: StorybookConfig = {
       config.resolve.alias = {
         ...config.resolve.alias,
         "@": [
-          path.resolve(__dirname, "../apps/market/*"),
-          path.resolve(__dirname, "../apps/seller/*"),
-          path.resolve(__dirname, "../packages/*"),
+          path.resolve(__dirname, "../apps/market/**"),
+          path.resolve(__dirname, "../apps/seller/**"),
+          path.resolve(__dirname, "../packages/**"),
         ],
       };
     }

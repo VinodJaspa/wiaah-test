@@ -47,8 +47,9 @@ export const getHealthCenterSearchData = async (
       postalCode: 1234,
     },
     name: specialtiesPh[randomNum(specialtiesPh.length)],
-    photo: getRandomImage(),
-    specialty: "nutural",
+    photo:
+      "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
+    specialty: "Dentist",
   }));
   const searchQuery = filters["search_query"] || "";
   return {

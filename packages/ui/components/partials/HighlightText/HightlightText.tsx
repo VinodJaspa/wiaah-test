@@ -1,16 +1,19 @@
 import React from "react";
 
 export interface HighlightTextProps {
-  text: string;
+  text?: string;
   toHighlight: string;
 }
 
 export const HighlightText: React.FC<HighlightTextProps> = ({
-  text,
+  text: altText = "",
   toHighlight,
+  children,
 }) => {
   const [beforeQuery, setBeforeQuery] = React.useState<string>("");
   const [afterQuery, setAfterQuery] = React.useState<string>("");
+
+  const text = typeof children === "string" ? children : altText;
 
   React.useEffect(() => {
     const queryInStringIdx = text.search(toHighlight);

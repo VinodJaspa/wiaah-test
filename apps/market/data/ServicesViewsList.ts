@@ -8,10 +8,15 @@ import {
   ResturantSearchResultsView,
 } from "../components/ServiceSearch";
 import {
+  HealthCenterServiceSearchResultsList,
   HolidaysRentalSearchList,
   ResturantSearchList,
 } from "ui/components/features/Services";
 import { ServicesSearchList } from "ui/components/blocks/ListDisplay";
+import {
+  HealthCenterSearchResultsView,
+  HealthCenterSearchView,
+} from "components/ServiceSearch/HealthCenter";
 
 export const ServicesViewsList: ServiceViewListItem[] = [
   {
@@ -31,5 +36,11 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     search: HolidaysRentalSearchView,
     searchResaults: HolidaysRentalSearchResaultsView,
     searchList: HolidaysRentalSearchList,
+  },
+  {
+    slug: "health_center",
+    searchResaults: HealthCenterSearchResultsView,
+    search: HealthCenterSearchView,
+    searchList: HealthCenterServiceSearchResultsList,
   },
 ];

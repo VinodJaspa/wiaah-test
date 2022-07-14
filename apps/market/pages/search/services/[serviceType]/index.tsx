@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import React from "react";
-import { Container, NotFound } from "ui";
+import { Container, NotFound, useSearchFilters } from "ui";
 import Head from "next/head";
 import { useTranslation } from "react-i18next";
 import { MasterLayout } from "../../../../components/MasterLayout";
@@ -11,17 +11,19 @@ import {
   ServicesTypeSwitcher,
 } from "utils";
 import { ServicesViewsList } from "@data";
+import { SERVICESTYPE_INDEXKEY } from "ui";
 
 const ServiceCategory: NextPage = () => {
   const { t } = useTranslation();
+  const { addFilter } = useSearchFilters();
   const router = useRouter();
-  const [loaded, setLoaded] = React.useState<boolean>(false);
   const serviceType = ExtractServiceTypeFromQuery(router.query);
+
   React.useEffect(() => {
-    router.events.on("routeChangeComplete", () => {
-      setLoaded(true);
-    });
-  }, []);
+    if (typeof serviceType === "string") {
+      addFilter([SERVICESTYPE_INDEXKEY, serviceType]);
+    }
+  }, [serviceType]);
   return (
     <>
       <Head>
