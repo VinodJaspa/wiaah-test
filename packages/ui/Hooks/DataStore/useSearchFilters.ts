@@ -1,3 +1,4 @@
+import { SearchFilterValue } from "api";
 import { useRecoilState } from "recoil";
 import { ServicesSearchFiltersState } from "state";
 
@@ -9,9 +10,16 @@ export const useSearchFilters = () => {
       ? filters["search_query"]
       : null;
 
+  const addFilter = (filter: [string, SearchFilterValue]) => {
+    setFilters((state) => {
+      return { ...state, [filter[0]]: filter[1] };
+    });
+  };
+
   return {
     filters,
     setFilters,
+    addFilter,
     getFiltersSearchQuery,
   };
 };

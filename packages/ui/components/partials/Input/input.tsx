@@ -1,9 +1,11 @@
 import React from "react";
+import { useContext } from "react";
 import { HtmlDivProps, HtmlInputProps } from "types";
-import { PassPropsToChild, runIfFn } from "utils";
+import { CallbackAfter, runIfFn } from "utils";
 
 interface InputContextValue {
   isInputGroup: boolean;
+  isFocused: boolean;
   inputLeftElement: React.ReactNode;
   inputRightElement: React.ReactNode;
 
@@ -15,6 +17,7 @@ const InputContext = React.createContext<InputContextValue>({
   isInputGroup: false,
   inputLeftElement: null,
   inputRightElement: null,
+  isFocused: false,
 
   setInputLeftElement: () => {},
   setInputRightElement: () => {},
@@ -37,7 +40,7 @@ export const Input: React.FC<InputProps> = ({
       {...props}
       className={`${className || ""} ${
         isInputGroup ? "" : flushed ? "border-b-2" : "border-2"
-      } border-gray-200 rounded px-3`}
+      } border-gray-200 rounded px-3 w-full`}
     />
   );
 };
@@ -52,12 +55,14 @@ export const InputGroup: React.FC<InputGroupProps> = ({
   flushed = false,
   ...props
 }) => {
+  const [focused, setFocused] = React.useState<boolean>(false);
   const [leftElement, setLeftElement] = React.useState<React.ReactNode>(null);
   const [rightElement, setRightElement] = React.useState<React.ReactNode>(null);
   const isGroup = !!leftElement || !!rightElement;
   return (
     <InputContext.Provider
       value={{
+        isFocused: focused,
         isInputGroup: isGroup,
         inputLeftElement: leftElement,
         inputRightElement: rightElement,
@@ -67,13 +72,15 @@ export const InputGroup: React.FC<InputGroupProps> = ({
     >
       <div
         {...props}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         className={`${className ?? ""} ${
           isGroup
             ? flushed
               ? "border-b-2 border-gray-200"
               : "border-2 border-gray-200"
             : ""
-        } flex gap-1 items-center`}
+        } flex gap-1 items-center relative`}
       >
         {leftElement && <>{runIfFn(leftElement, {})}</>}
         {children}
@@ -94,7 +101,7 @@ export const InputLeftElement: React.FC<InputLeftElementProps> = ({
   React.useEffect(
     () =>
       setInputLeftElement(
-        <div {...props} className={`${className || ""}`}>
+        <div {...props} className={`${className || ""} px-2`}>
           {children}
         </div>
       ),
@@ -119,4 +126,35 @@ export const InputRightElement: React.FC<InputRightElementProps> = ({
     );
   }, [children]);
   return null;
+};
+
+export interface InputSuggestionsProps extends HtmlDivProps {}
+export const InputSuggestions: React.FC<InputSuggestionsProps> = ({
+  children,
+  className,
+  ...props
+}) => {
+  const { isFocused } = useContext(InputContext);
+  const [display, setDisplay] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    if (isFocused) {
+      setDisplay(true);
+    } else {
+      CallbackAfter(300, () => {
+        setDisplay(false);
+      });
+    }
+  }, [isFocused]);
+
+  return (
+    <div
+      {...props}
+      className={`${className || ""} ${
+        isFocused ? "" : "scale-0"
+      } origin-top transition-transform max-h-96 overflow-scroll absolute top-full left-0 w-full`}
+    >
+      {display ? children : null}
+    </div>
+  );
 };

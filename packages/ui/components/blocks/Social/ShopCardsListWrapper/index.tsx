@@ -57,15 +57,12 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
                   src: item.attachments[0].src,
                   type: item.attachments[0].type,
                   footer: item.views ? (
-                    <p
-                    className="w-full px-4 text-left text-xl font-bold text-white"
-                    >
+                    <p className="w-full px-4 text-left text-xl font-bold text-white">
                       {NumberShortner(item.views)}
                     </p>
                   ) : undefined,
                 }}
-                
-                productType={item.}
+                productType={item.type || "product"}
                 {...item}
               />
             ),

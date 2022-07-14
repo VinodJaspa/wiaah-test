@@ -57,3 +57,4 @@ export * from "./MathDisplays";
 export * from "./AspectRatio";
 export * from "./InfoText";
 export * from "./Replacables";
+export * from "./HighlightText";
