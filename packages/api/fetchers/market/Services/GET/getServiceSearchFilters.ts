@@ -1,5 +1,5 @@
 import { FormatedSearchableFilter } from "../../../../";
-
+import { SERVICESTYPE_INDEXKEY } from "ui";
 export type FilterType = "select" | "radio" | "check";
 export type FilterDisplayType = "text" | "rate";
 
@@ -207,8 +207,87 @@ const filters: SearchFilterType[] = [
   },
 ];
 
+const HealthCenterFilters: SearchFilterType[] = [
+  {
+    filterTitle: "Specialist type",
+    filterSlug: "specialist_type",
+    filterDisplay: "text",
+    filterType: "check",
+    filterOptions: [
+      {
+        optName: "Ophtalmo",
+        optSlug: "ophtalmo",
+      },
+      {
+        optName: "Dentist",
+        optSlug: "dentist",
+      },
+      {
+        optName: "Ophtalmo",
+        optSlug: "ophtalmo",
+      },
+      {
+        optName: "Dentist",
+        optSlug: "dentist",
+      },
+    ],
+  },
+  {
+    filterTitle: "Speaking language",
+    filterSlug: "speaking_language",
+    filterDisplay: "text",
+    filterType: "radio",
+    filterOptions: [
+      {
+        optName: "Arabian",
+        optSlug: "arabian",
+      },
+      {
+        optName: "English",
+        optSlug: "english",
+      },
+      {
+        optName: "French",
+        optSlug: "french",
+      },
+    ],
+  },
+  {
+    filterTitle: "Rating",
+    filterSlug: "rating",
+    filterDisplay: "rate",
+    filterType: "check",
+    filterOptions: [...Array(5)].map((_, i) => ({
+      optName: `${i + 1}`,
+      optSlug: `${i + 1}`,
+    })),
+  },
+  {
+    filterTitle: "Cancellation option",
+    filterSlug: "cancellation_option",
+    filterDisplay: "text",
+    filterType: "check",
+    filterOptions: [
+      {
+        optName: "Free cancellation",
+        optSlug: "free_cancellation",
+      },
+      {
+        optName: "Paid cancellation",
+        optSlug: "paid_cancellation",
+      },
+    ],
+  },
+];
+
 export const getServiceSearchFiltersFetcher = async (
-  filter?: FormatedSearchableFilter
+  filter: FormatedSearchableFilter
 ): Promise<SearchFilterType[]> => {
-  return filters;
+  switch (filter[SERVICESTYPE_INDEXKEY]) {
+    case "health_center":
+      return HealthCenterFilters;
+
+    default:
+      return filters;
+  }
 };

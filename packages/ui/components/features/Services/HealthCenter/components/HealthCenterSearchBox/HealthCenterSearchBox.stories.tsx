@@ -1,10 +1,10 @@
-import { storybookSearchInputs } from "utils";
+import { storybookHealthCenterInputsTitle } from "utils";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { HealthCenterSearchBox } from "./HealthCenterSearchBox";
 import React from "react";
 
 export default {
-  title: storybookSearchInputs + "HealthCenterSearchBox",
+  title: storybookHealthCenterInputsTitle + "HealthCenterSearchBox",
   component: HealthCenterSearchBox,
 } as ComponentMeta<typeof HealthCenterSearchBox>;
 

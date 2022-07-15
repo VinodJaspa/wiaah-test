@@ -2,9 +2,11 @@ import { Form, Formik } from "formik";
 import { usePagination } from "hooks";
 import React from "react";
 import {
+  DateInput,
   HealthCenterServiceSearchResultsList,
   SearchFilter,
   useGetHealthCenterFiltersQuery,
+  ResturantFindTableFilterDateDayComponent,
 } from "ui";
 
 export const HealthCenterSearchResultsView: React.FC = () => {
@@ -15,6 +17,10 @@ export const HealthCenterSearchResultsView: React.FC = () => {
         {({ setFieldValue, values }) => {
           return (
             <Form className="flex flex-col min-w-[20rem]">
+              <DateInput
+                dayComponent={ResturantFindTableFilterDateDayComponent}
+              />
+
               <SearchFilter
                 collapse
                 defaultOpen

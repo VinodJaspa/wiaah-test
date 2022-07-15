@@ -1,25 +1,25 @@
 import { randomNum, storybookHealthCenterCardsTitle } from "utils";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import {
-  HealthCenterSearchResultsCard,
-  HealthCenterSearchResultsCardProps,
-} from "./HealthCenterSearchResultsCard";
+  PractitionerSearchResultsCard,
+  PractitionerSearchResultsCardProps,
+} from "./PractitionerSearchResultsCard";
 import React from "react";
 
 export default {
-  title: storybookHealthCenterCardsTitle + "HealthCenterSearchResultsCard",
-  component: HealthCenterSearchResultsCard,
-} as ComponentMeta<typeof HealthCenterSearchResultsCard>;
+  title: storybookHealthCenterCardsTitle + "PractitionerSearchResultsCard",
+  component: PractitionerSearchResultsCard,
+} as ComponentMeta<typeof PractitionerSearchResultsCard>;
 
-const template: ComponentStory<typeof HealthCenterSearchResultsCard> = (
+const template: ComponentStory<typeof PractitionerSearchResultsCard> = (
   args
 ) => (
   <div className="w-64">
-    <HealthCenterSearchResultsCard {...args} />
+    <PractitionerSearchResultsCard {...args} />
   </div>
 );
 
-export const Default: { args: HealthCenterSearchResultsCardProps } =
+export const Default: { args: PractitionerSearchResultsCardProps } =
   template.bind({});
 Default.args = {
   practitioner: {

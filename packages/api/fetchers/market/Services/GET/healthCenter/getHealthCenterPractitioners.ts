@@ -1,4 +1,3 @@
-import { getRandomImage } from "placeholder";
 import {
   FormatedSearchableFilter,
   PaginationFetchedData,
@@ -6,30 +5,15 @@ import {
 } from "src";
 import { randomNum } from "utils";
 import { Location } from "../resturant";
+import { HealthCenterPractitioner } from "./getHealthCenterSearchData";
 
-export interface HealthCenterFilteredData {
-  name: string;
-  photo: string;
-  location: Location;
-  specialty: string;
-}
-
-// export interface HealthCenterSpecialty {
-//   title: string;
-//   photo?: string;
-// }
-
-// export interface HealthCenterPractitioner {
+// export interface HealthCenterFilteredData {
 //   name: string;
 //   photo: string;
 //   location: Location;
 //   specialty: string;
 // }
 
-// export interface HealthCenterSearchSuggistionsData {
-//   specialties: HealthCenterSpecialty[];
-//   practitioners: HealthCenterPractitioner[];
-// }
 const specialtiesPh: string[] = [
   "Lorem Ipsum is simply dummy text of the printing and",
   "typesetting industry",
@@ -37,7 +21,7 @@ const specialtiesPh: string[] = [
   "standard dummy text ever since",
   "the 1500s, when an",
 ];
-const practitioners: HealthCenterFilteredData[] = [...Array(50)].map(() => ({
+const practitioners: HealthCenterPractitioner[] = [...Array(50)].map(() => ({
   location: {
     address: "address",
     city: "city",
@@ -57,7 +41,7 @@ const practitioners: HealthCenterFilteredData[] = [...Array(50)].map(() => ({
 export const getHealthCenterPractitionersFilteredDataFetcher = async (
   pagination: QueryPaginationInputs,
   filters: FormatedSearchableFilter
-): Promise<PaginationFetchedData<HealthCenterFilteredData[]>> => {
+): Promise<PaginationFetchedData<HealthCenterPractitioner[]>> => {
   return {
     data: practitioners.slice(0, pagination.take),
     hasMore: false,

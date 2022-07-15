@@ -6,11 +6,10 @@ import {
   PractitionerSearchResultsCard,
   Pagination,
   useSetResturantsDataState,
-  HealthCenterCard,
 } from "ui";
 import { useGetHealthCenterDataQuery } from "../../../services";
 
-export const HealthCenterServiceSearchResultsList: React.FC = () => {
+export const PractitionersSearchResultsList: React.FC = () => {
   const { take, page, nextPage, previousPage, goToPage } = usePagination(8);
   const { filters } = useSearchFilters();
   const {
@@ -21,13 +20,16 @@ export const HealthCenterServiceSearchResultsList: React.FC = () => {
   return (
     <div className="w-full flex flex-col gap-8">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
-        <div className="flex flex-col gap-4">
+        <div
+          style={{
+            gridTemplateColumns:
+              "repeat(auto-fit,minmax(15rem,calc(25% - 0.8rem)))",
+          }}
+          className="w-full grid gap-4"
+        >
           {Array.isArray(res?.data)
             ? res?.data.map((s) => (
-                <HealthCenterCard
-                  centerData={s.centerData}
-                  workingDates={s.workingDates}
-                />
+                <PractitionerSearchResultsCard practitioner={s} />
               ))
             : null}
         </div>

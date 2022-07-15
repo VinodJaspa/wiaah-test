@@ -16,7 +16,7 @@ import { ServicesSearchList } from "ui/components/blocks/ListDisplay";
 import {
   HealthCenterSearchResultsView,
   HealthCenterSearchView,
-} from "components/ServiceSearch/HealthCenter";
+} from "../components/ServiceSearch/HealthCenter";
 
 export const ServicesViewsList: ServiceViewListItem[] = [
   {

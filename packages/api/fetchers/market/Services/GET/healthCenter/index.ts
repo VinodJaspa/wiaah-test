@@ -1,2 +1,3 @@
 export * from "./getHealthCenterSearchData";
-export * from "./getHealthCenterPractitionersFilteredDataFetcher";
+export * from "./getHealthCenterFilteredDataFetcher";
+export * from "./getHealthCenterPractitioners";

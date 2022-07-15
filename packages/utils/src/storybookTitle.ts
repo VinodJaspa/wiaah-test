@@ -25,3 +25,5 @@ export const storybookSearchInputs = storybookDataInputBlocksTitle + "Search /";
 
 export const storybookHealthCenterCardsTitle =
   "UI / Features / Health Center / Cards /";
+export const storybookHealthCenterInputsTitle =
+  "UI / Features / Health Center / Inputs /";

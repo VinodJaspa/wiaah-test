@@ -27,10 +27,10 @@ export const HighlightText: React.FC<HighlightTextProps> = ({
   }, [toHighlight, text]);
 
   return (
-    <>
+    <span>
       <p className="inline">{beforeQuery}</p>
       <p className="text-primary inline">{toHighlight}</p>
       <p className="inline">{afterQuery}</p>
-    </>
+    </span>
   );
 };

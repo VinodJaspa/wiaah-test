@@ -240,7 +240,7 @@ export const DateInput: React.FC<DateInputProps> = ({
   }
 
   return (
-    <section {...rest} className={`${className || ""} h-fit w-96 bg-white p-4`}>
+    <section {...rest} className={`${className || ""} h-fit w-fit bg-white`}>
       {/* calander */}
       <div className="flex items-center justify-between px-1">
         <div onClick={handlePrevMonth} className="cursor-pointer text-3xl">

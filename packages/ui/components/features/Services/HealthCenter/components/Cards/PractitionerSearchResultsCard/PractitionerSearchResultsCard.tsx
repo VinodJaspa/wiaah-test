@@ -2,13 +2,13 @@ import { HealthCenterFilteredData, HealthCenterPractitioner } from "api";
 import React from "react";
 import { AspectRatio, HighlightText } from "ui";
 
-export interface HealthCenterSearchResultsCardProps {
+export interface PractitionerSearchResultsCardProps {
   practitioner: HealthCenterFilteredData;
   children?: string;
 }
 
-export const HealthCenterSearchResultsCard: React.FC<
-  HealthCenterSearchResultsCardProps
+export const PractitionerSearchResultsCard: React.FC<
+  PractitionerSearchResultsCardProps
 > = ({ practitioner }) => {
   return (
     <div className="flex w-full flex-col gap-2 rounded overflow-hidden">

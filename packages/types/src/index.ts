@@ -3,3 +3,4 @@ export * from "./sharedTypes";
 export * from "./seller";
 export * from "./ApiDto";
 export * from "./entity";
+export * from "./Date";

@@ -12,17 +12,20 @@ import {
   LocationOutlineIcon,
   useSearchFilters,
   SpinnerFallback,
+  filtersTokens,
 } from "ui";
 import { debounce } from "utils";
 import { useGetHealthCenterSearchSuggestionsQuery } from "ui";
 import { SearchHealthSpecialtiesCardsList } from "../Lists";
 import { SearchHealthPractitionersCardsList } from "../Lists/SearchHealthPractitionersCardsList";
+import { usePagination } from "hooks";
 
 export interface HealthCenterSearchBoxProps {}
 
 export const HealthCenterSearchBox: React.FC<
   HealthCenterSearchBoxProps
 > = () => {
+  const { page, take } = usePagination();
   const { filters, addFilter, getFiltersSearchQuery } = useSearchFilters();
   const [specialites, setSepcialties] = React.useState<HealthCenterSpecialty[]>(
     []
@@ -32,11 +35,10 @@ export const HealthCenterSearchBox: React.FC<
   >([]);
 
   const { isLoading, isError, refetch } =
-    useGetHealthCenterSearchSuggestionsQuery(filters, {
-      onSuccess: (data) => {
+    useGetHealthCenterSearchSuggestionsQuery({ page, take }, filters, {
+      onSuccess: (res) => {
         try {
-          console.log("test");
-          const { practitioners, specialties } = data;
+          const { practitioners, specialties } = res.data;
           if (Array.isArray(specialites)) setSepcialties(specialties);
           if (Array.isArray(practitioners)) setPractitioners(practitioners);
         } catch {}
@@ -58,13 +60,18 @@ export const HealthCenterSearchBox: React.FC<
       <InputLeftElement>
         <SearchIcon className="text-primary" />
       </InputLeftElement>
-      <Input onChange={(e) => addFilter(["search_query", e.target.value])} />
+      <Input
+        onChange={(e) => addFilter([filtersTokens.searchQuery, e.target.value])}
+      />
       <InputRightElement className="w-full">
         <InputGroup className="border-y-0 border-r-0">
           <InputLeftElement className="flex justify-center items-center">
             <LocationOutlineIcon />
           </InputLeftElement>
-          <Input placeholder={t("where") + "?"} />
+          <Input
+            onChange={(e) => addFilter([filtersTokens.where, e.target.value])}
+            placeholder={t("where") + "?"}
+          />
           <InputRightElement>
             <Button className="uppercase rounded-none px-12">
               {t("find")}

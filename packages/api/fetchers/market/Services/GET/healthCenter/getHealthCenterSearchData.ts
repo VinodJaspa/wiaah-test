@@ -1,11 +1,14 @@
 import { getRandomImage } from "placeholder";
-import { FormatedSearchableFilter } from "src";
+import {
+  FormatedSearchableFilter,
+  PaginationFetchedData,
+  QueryPaginationInputs,
+} from "src";
 import { randomNum } from "utils";
 import { Location } from "../resturant";
 
 export interface HealthCenterSpecialty {
   title: string;
-  photo?: string;
 }
 
 export interface HealthCenterPractitioner {
@@ -29,8 +32,9 @@ const specialtiesPh: string[] = [
 ];
 
 export const getHealthCenterSearchData = async (
+  pagination: QueryPaginationInputs,
   filters: FormatedSearchableFilter
-): Promise<HealthCenterSearchSuggistionsData> => {
+): Promise<PaginationFetchedData<HealthCenterSearchSuggistionsData>> => {
   const specialties: HealthCenterSpecialty[] = [...Array(50)].map(() => ({
     title: specialtiesPh[randomNum(specialtiesPh.length)],
     photo: randomNum(10) > 5 ? getRandomImage() : undefined,
@@ -53,11 +57,24 @@ export const getHealthCenterSearchData = async (
   }));
   const searchQuery = filters["search_query"] || "";
   return {
-    specialties: specialties.filter((s) =>
-      s.title.includes(typeof searchQuery === "string" ? searchQuery : "")
-    ),
-    practitioners: practitioners.filter((p) =>
-      p.name.includes(typeof searchQuery === "string" ? searchQuery : "")
-    ),
+    hasMore: true,
+    data: {
+      specialties: specialties
+        .filter((s) =>
+          s.title.includes(typeof searchQuery === "string" ? searchQuery : "")
+        )
+        .slice(
+          pagination.page * pagination.take,
+          (pagination.page + 1) * pagination.take
+        ),
+      practitioners: practitioners
+        .filter((p) =>
+          p.name.includes(typeof searchQuery === "string" ? searchQuery : "")
+        )
+        .slice(
+          pagination.page * pagination.take,
+          (pagination.page + 1) * pagination.take
+        ),
+    },
   };
 };

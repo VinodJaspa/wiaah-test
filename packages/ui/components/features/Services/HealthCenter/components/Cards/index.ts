@@ -1,3 +1,4 @@
 export * from "./SearchSpecialtiesCard";
 export * from "./SearchHealthPractitionerCard";
-export * from "./HealthCenterSearchResultsCard";
+export * from "./PractitionerSearchResultsCard";
+export * from "./HealthCenterCard";

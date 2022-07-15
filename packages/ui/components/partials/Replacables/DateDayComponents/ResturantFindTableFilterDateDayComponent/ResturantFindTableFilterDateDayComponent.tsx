@@ -13,7 +13,7 @@ export const ResturantFindTableFilterDateDayComponent: React.FC<
         currentMonth ? "cursor-pointer" : "cursor-not-allowed text-gray-400"
       } ${
         active ? "bg-primary text-white" : "text-black bg-gray-200"
-      } h-12 w-12 rounded-lg flex justify-center items-center `}
+      } h-8 w-8 rounded-lg flex justify-center items-center `}
     >
       {dayNum}
     </span>
