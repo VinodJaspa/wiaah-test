@@ -4,7 +4,6 @@ import {
   QueryPaginationInputs,
 } from "src";
 import { randomNum } from "utils";
-import { Location } from "../resturant";
 import { HealthCenterPractitioner } from "./getHealthCenterSearchData";
 
 // export interface HealthCenterFilteredData {

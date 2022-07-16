@@ -1,9 +1,15 @@
 import { getRandomImage } from "placeholder";
 import {
   FormatedSearchableFilter,
+  InValidDataSchemaError,
   PaginationFetchedData,
   QueryPaginationInputs,
 } from "src";
+import { AsyncReturnType } from "types";
+import {
+  HealthCenterSuggestionsApiDataValidationSchema,
+  CheckValidation,
+} from "validation";
 import { randomNum } from "utils";
 import { Location } from "../resturant";
 
@@ -56,7 +62,7 @@ export const getHealthCenterSearchData = async (
     specialty: "Dentist",
   }));
   const searchQuery = filters["search_query"] || "";
-  return {
+  const data: AsyncReturnType<typeof getHealthCenterSearchData> = {
     hasMore: true,
     data: {
       specialties: specialties
@@ -77,4 +83,12 @@ export const getHealthCenterSearchData = async (
         ),
     },
   };
+
+  CheckValidation(
+    HealthCenterSuggestionsApiDataValidationSchema,
+    data,
+    InValidDataSchemaError
+  );
+
+  return data;
 };

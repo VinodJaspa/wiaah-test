@@ -3,7 +3,9 @@ import {
   PaginationFetchedData,
   QueryPaginationInputs,
 } from "src";
-import { Location } from "api";
+import { generalServicesApiValidationSchema } from "validation";
+import { Location, InValidDataSchemaError } from "api";
+import { AsyncReturnType } from "types";
 
 export interface ServiceData {
   thumbnail: string;
@@ -18,7 +20,7 @@ export const getServicesData = async (
   pagination: QueryPaginationInputs,
   filters: FormatedSearchableFilter
 ): Promise<PaginationFetchedData<ServiceData[]>> => {
-  return {
+  const data: AsyncReturnType<typeof getServicesData> = {
     hasMore: false,
     data: [...Array(8)].map((_, i) => ({
       description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
@@ -42,4 +44,9 @@ export const getServicesData = async (
       ],
     })),
   };
+
+  const isValid = await generalServicesApiValidationSchema.isValid(data);
+  if (!isValid) throw new InValidDataSchemaError();
+
+  return data;
 };
