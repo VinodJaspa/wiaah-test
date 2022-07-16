@@ -11,6 +11,7 @@ import {
 } from "utils";
 import { ServicesViewsList } from "../../../../data/ServicesViewsList";
 import { NotFound } from "ui/components/sections/404/404Content";
+import { Container } from "ui";
 const filtered: NextPage = () => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -24,12 +25,14 @@ const filtered: NextPage = () => {
         </title>
       </Head>
       <MasterLayout>
-        <ServicesTypeSwitcher
-          serviceType={serviceType}
-          get={getServiceView.RESAULTS}
-          fallbackComponent={NotFound}
-          servicesList={ServicesViewsList}
-        />
+        <Container>
+          <ServicesTypeSwitcher
+            serviceType={serviceType}
+            get={getServiceView.RESAULTS}
+            fallbackComponent={NotFound}
+            servicesList={ServicesViewsList}
+          />
+        </Container>
       </MasterLayout>
     </>
   );

@@ -1,3 +1,14 @@
+// @ts-check
+
+/**
+ * @type {import('next').NextConfig}
+ **/
+const nextConfig = {
+  experimental: {
+    esmExternals: false,
+  },
+};
+
 const withTM = require("next-transpile-modules")(
   [
     "ui",
@@ -28,5 +39,6 @@ module.exports = withTM(
       register: true,
       skipWaiting: true,
     },
+    ...nextConfig,
   })
 );
