@@ -1,29 +1,29 @@
 import { ServiceViewListItem } from "types";
 import {
-  ServiceSearchView,
+  ServicesSearchView,
   ResturantSearchView,
   HolidaysRentalSearchView,
-  HolidaysRentalSearchResaultsView,
-  HotelsSearchResaultsView,
+  HolidaysRentalSearchResultsView,
+  HotelsSearchResultsView,
   ResturantSearchResultsView,
-} from "../components/ServiceSearch";
+  HealthCenterSearchResultsView,
+  HealthCenterSearchView,
+  ServicesSearchResultsView,
+} from "@components";
 import {
   HealthCenterServiceSearchResultsList,
   HolidaysRentalSearchList,
   ResturantSearchList,
-} from "ui/components/features/Services";
-import { ServicesSearchList } from "ui/components/blocks/ListDisplay";
-import {
-  HealthCenterSearchResultsView,
-  HealthCenterSearchView,
-} from "../components/ServiceSearch/HealthCenter";
+  HotelsSearchList,
+  ServicesSearchResultsList,
+} from "ui";
 
 export const ServicesViewsList: ServiceViewListItem[] = [
   {
     slug: "hotel",
-    search: ServiceSearchView,
-    searchResaults: HotelsSearchResaultsView,
-    searchList: ServicesSearchList,
+    search: ServicesSearchView,
+    searchResaults: HotelsSearchResultsView,
+    searchList: HotelsSearchList,
   },
   {
     slug: "resturant",
@@ -34,7 +34,7 @@ export const ServicesViewsList: ServiceViewListItem[] = [
   {
     slug: "holidays_rentals",
     search: HolidaysRentalSearchView,
-    searchResaults: HolidaysRentalSearchResaultsView,
+    searchResaults: HolidaysRentalSearchResultsView,
     searchList: HolidaysRentalSearchList,
   },
   {
@@ -42,5 +42,11 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     searchResaults: HealthCenterSearchResultsView,
     search: HealthCenterSearchView,
     searchList: HealthCenterServiceSearchResultsList,
+  },
+  {
+    slug: "general",
+    search: ServicesSearchView,
+    searchResaults: ServicesSearchResultsView,
+    searchList: ServicesSearchResultsList,
   },
 ];

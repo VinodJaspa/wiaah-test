@@ -1,6 +1,6 @@
 import React from "react";
-import { ServiceSearchCard, ServiceSearchCardProps } from "../../../../blocks";
+import { HotelSearchCard, HotelSearchCardProps } from "ui";
 
-export const HolidaysRentalCard: React.FC<ServiceSearchCardProps> = (props) => {
-  return <ServiceSearchCard {...props} />;
+export const HolidaysRentalCard: React.FC<HotelSearchCardProps> = (props) => {
+  return <HotelSearchCard {...props} />;
 };

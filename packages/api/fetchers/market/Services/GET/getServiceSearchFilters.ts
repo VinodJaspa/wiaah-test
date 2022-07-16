@@ -205,6 +205,22 @@ const filters: SearchFilterType[] = [
     filterDisplay: "text",
     filterOptions: [],
   },
+  {
+    filterTitle: "Cancellation option",
+    filterSlug: "cancellation_option",
+    filterDisplay: "text",
+    filterType: "check",
+    filterOptions: [
+      {
+        optName: "Free cancellation",
+        optSlug: "free_cancellation",
+      },
+      {
+        optName: "Paid cancellation",
+        optSlug: "paid_cancellation",
+      },
+    ],
+  },
 ];
 
 const HealthCenterFilters: SearchFilterType[] = [
@@ -280,6 +296,72 @@ const HealthCenterFilters: SearchFilterType[] = [
   },
 ];
 
+const generalFilters: SearchFilterType[] = [
+  {
+    filterTitle: "Service type",
+    filterSlug: "service_type",
+    filterDisplay: "text",
+    filterType: "check",
+    filterOptions: [
+      {
+        optName: "Hair salon",
+        optSlug: "hair_salon",
+      },
+      {
+        optName: "Sauna",
+        optSlug: "sauna",
+      },
+      {
+        optName: "Spa",
+        optSlug: "spa",
+      },
+      {
+        optName: "Manicure",
+        optSlug: "manicure",
+      },
+      {
+        optName: "Beauty salon",
+        optSlug: "beauty salon",
+      },
+    ],
+  },
+  {
+    filterTitle: "Price range",
+    filterSlug: "price_range",
+    filterType: "range",
+    maxRange: 15000,
+    minRange: 15,
+  },
+  {
+    filterTitle: "Rating",
+    filterSlug: "rating",
+    filterDisplay: "rate",
+    filterType: "check",
+    filterOptions: [
+      {
+        optName: "1",
+        optSlug: "1",
+      },
+      {
+        optName: "2",
+        optSlug: "2",
+      },
+      {
+        optName: "3",
+        optSlug: "3",
+      },
+      {
+        optName: "4",
+        optSlug: "4",
+      },
+      {
+        optName: "5",
+        optSlug: "5",
+      },
+    ],
+  },
+];
+
 export const getServiceSearchFiltersFetcher = async (
   filter: FormatedSearchableFilter
 ): Promise<SearchFilterType[]> => {
@@ -287,6 +369,8 @@ export const getServiceSearchFiltersFetcher = async (
     case "health_center":
       return HealthCenterFilters;
 
+    case "general":
+      return generalFilters;
     default:
       return filters;
   }

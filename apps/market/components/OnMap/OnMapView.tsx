@@ -22,18 +22,22 @@ export const OnMapView: React.FC = () => {
     isError: sortingFiltersError,
   } = useGetServicesSortingFiltersQuery();
   return (
-    <div className="w-screen h-[75vh] flex p-4 gap-4 justify-between">
-      <div>
+    <div className="flex p-4 flex-col gap-2">
+      <span className="w-1/2">
         <SearchFilter filters={sortingFilters || []} />
-        <ScrollingWrapper>
-          <ServicesTypeSwitcher
-            servicesList={ServicesViewsList}
-            get={getServiceView.LIST}
-            serviceType={serviceType}
-          />
-        </ScrollingWrapper>
+      </span>
+      <div className="w-screen h-[75vh] flex gap-4 justify-between">
+        <div className="w-full">
+          <ScrollingWrapper>
+            <ServicesTypeSwitcher
+              servicesList={ServicesViewsList}
+              get={getServiceView.LIST}
+              serviceType={serviceType}
+            />
+          </ScrollingWrapper>
+        </div>
+        <RenderMap />
       </div>
-      <RenderMap />
     </div>
   );
 };

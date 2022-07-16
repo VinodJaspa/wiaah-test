@@ -1,15 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useGetServiceSearchFiltersQuery } from "../../../../Hooks";
-import {
-  FilterInput,
-  Select,
-  SelectDropdown,
-  SelectOption,
-  SpinnerFallback,
-  SearchFilter,
-  SearchFilterProps,
-} from "ui";
+import { useGetServiceSearchFiltersQuery } from "ui";
+import { SpinnerFallback, SearchFilter, SearchFilterProps } from "ui";
+import { SERVICESTYPE_INDEXKEY, ServicesRequestKeys } from "ui";
 
 export interface ServiceSidebarFilterProps {
   onChange: Pick<
@@ -27,7 +20,9 @@ export const ServiceSearchFilter: React.FC<ServiceSidebarFilterProps> = ({
     data: filters,
     isLoading,
     isError,
-  } = useGetServiceSearchFiltersQuery();
+  } = useGetServiceSearchFiltersQuery({
+    [SERVICESTYPE_INDEXKEY]: ServicesRequestKeys.hotels,
+  });
   return (
     <div className="flex flex-col w-full shadow pt-4 py-2 px-1">
       <p className="px-4">{t("Filter")}</p>

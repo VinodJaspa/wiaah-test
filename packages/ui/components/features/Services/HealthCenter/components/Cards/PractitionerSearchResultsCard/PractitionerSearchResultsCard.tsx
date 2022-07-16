@@ -1,9 +1,9 @@
-import { HealthCenterFilteredData, HealthCenterPractitioner } from "api";
+import { HealthCenterPractitioner } from "api";
 import React from "react";
 import { AspectRatio, HighlightText } from "ui";
 
 export interface PractitionerSearchResultsCardProps {
-  practitioner: HealthCenterFilteredData;
+  practitioner: HealthCenterPractitioner;
   children?: string;
 }
 

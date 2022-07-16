@@ -1,8 +1,8 @@
 import React from "react";
-import { ServicesSearchList, ServicesSearchListProps } from "ui";
+import { HotelsSearchList, HotelsSearchListProps } from "ui";
 
-export const HolidaysRentalSearchList: React.FC<ServicesSearchListProps> = (
+export const HolidaysRentalSearchList: React.FC<HotelsSearchListProps> = (
   props
 ) => {
-  return <ServicesSearchList {...props} />;
+  return <HotelsSearchList {...props} />;
 };

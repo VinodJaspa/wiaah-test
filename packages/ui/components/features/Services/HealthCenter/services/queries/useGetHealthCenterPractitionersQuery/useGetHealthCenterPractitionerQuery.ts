@@ -1,9 +1,30 @@
-import { FormatedSearchableFilter, QueryPaginationInputs } from "api";
-import { useQuery } from "react-query";
+import {
+  FormatedSearchableFilter,
+  getHealthCenterPractitionersFilteredDataFetcher,
+  HealthCenterPractitioner,
+  PaginationFetchedData,
+  QueryPaginationInputs,
+} from "api";
+import { useQuery, UseQueryOptions } from "react-query";
 
 export const useGetHealthCenterPractitionersQuery = (
   pagination: QueryPaginationInputs,
-  filters: FormatedSearchableFilter
+  filters: FormatedSearchableFilter,
+  options?: UseQueryOptions<
+    unknown,
+    unknown,
+    PaginationFetchedData<HealthCenterPractitioner[]>,
+    any
+  >
 ) => {
-  return useQuery([""]);
+  return useQuery(
+    ["healthCenterPractitinoersList", { pagination, filters }],
+    () => {
+      return getHealthCenterPractitionersFilteredDataFetcher(
+        pagination,
+        filters
+      );
+    },
+    options
+  );
 };

@@ -3,7 +3,7 @@ import React from "react";
 import { Container, NotFound, useSearchFilters } from "ui";
 import Head from "next/head";
 import { useTranslation } from "react-i18next";
-import { MasterLayout } from "../../../../components/MasterLayout";
+import { MasterLayout } from "@components";
 import { useRouter } from "next/router";
 import {
   ExtractServiceTypeFromQuery,

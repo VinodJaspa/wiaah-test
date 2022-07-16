@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { DateRange } from "types";
 import { HStack, Rate, HeartIcon, PriceDisplay, AspectRatio } from "ui";
 
-export interface ServiceSearchCardProps {
+export interface HotelSearchCardProps {
   id: string;
   thumbnail: string;
   onLiked: (id: string) => any;
@@ -16,7 +16,7 @@ export interface ServiceSearchCardProps {
   price: number;
 }
 
-export const ServiceSearchCard: React.FC<ServiceSearchCardProps> = ({
+export const HotelSearchCard: React.FC<HotelSearchCardProps> = ({
   location,
   onLiked,
   rate,

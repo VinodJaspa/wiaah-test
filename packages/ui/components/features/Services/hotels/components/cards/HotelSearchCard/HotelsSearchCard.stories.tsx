@@ -1,13 +1,13 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { storybookCardsTitle } from "utils";
-import { ServiceSearchCard } from "./ServiceSearchCard";
-
+import { HotelSearchCard } from "./HotelsSearchCard";
+import React from "react";
 export default {
-  title: storybookCardsTitle + "ServiceSearchCard",
-} as ComponentMeta<typeof ServiceSearchCard>;
+  title: storybookCardsTitle + "HotelSearchCard",
+} as ComponentMeta<typeof HotelSearchCard>;
 
-const template: ComponentStory<typeof ServiceSearchCard> = (args) => {
-  return <ServiceSearchCard {...args} />;
+const template: ComponentStory<typeof HotelSearchCard> = (args) => {
+  return <HotelSearchCard {...args} />;
 };
 
 export const Default = template.bind({});

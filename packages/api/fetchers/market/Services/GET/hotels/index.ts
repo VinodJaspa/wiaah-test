@@ -1,3 +1,3 @@
-export * from "./getFilteredServicesMetaData";
+export * from "./getFilteredHotelsMetaData";
 export * from "./getServiceDataFetcher";
-export * from "./getServicesMetaDataFetcher";
+export * from "./getHotelsMetaDataFetcher";

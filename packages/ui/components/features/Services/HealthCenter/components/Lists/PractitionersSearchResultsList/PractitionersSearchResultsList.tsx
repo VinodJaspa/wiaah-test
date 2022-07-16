@@ -6,8 +6,8 @@ import {
   PractitionerSearchResultsCard,
   Pagination,
   useSetResturantsDataState,
+  useGetHealthCenterPractitionersQuery,
 } from "ui";
-import { useGetHealthCenterDataQuery } from "../../../services";
 
 export const PractitionersSearchResultsList: React.FC = () => {
   const { take, page, nextPage, previousPage, goToPage } = usePagination(8);
@@ -16,7 +16,7 @@ export const PractitionersSearchResultsList: React.FC = () => {
     data: res,
     isLoading,
     isError,
-  } = useGetHealthCenterDataQuery({ page, take }, filters);
+  } = useGetHealthCenterPractitionersQuery({ page, take }, filters);
   return (
     <div className="w-full flex flex-col gap-8">
       <SpinnerFallback isLoading={isLoading} isError={isError}>

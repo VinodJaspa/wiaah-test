@@ -96,7 +96,7 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
                 >
                   <div className="flex flex-col">
                     <span className="font-bold">{location.address}</span>
-                    <span>{location}</span>
+                    <span>{location.city}</span>
                   </div>
                 </Prefix>
               ))

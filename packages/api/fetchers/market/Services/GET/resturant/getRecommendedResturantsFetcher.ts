@@ -5,6 +5,7 @@ import { lats, lngs, LocationCords } from "../hotels";
 export type Location = {
   address: string;
   postalCode: number;
+  state?: string;
   country: string;
   city: string;
   cords: LocationCords;

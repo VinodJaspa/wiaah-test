@@ -1,6 +1,7 @@
+import { QueryPaginationInputs } from "src";
 import { DateRange } from "types";
 
-export interface ServiceMetaData {
+export interface HotelsMetaData {
   serviceName: string;
   serviceId: string;
   serviceProvider: string;
@@ -13,12 +14,11 @@ export interface ServiceMetaData {
   date: DateRange;
 }
 
-export const getServicesMetaDataFetcher = async (
-  take: number,
-  page: number,
+export const getHotelsMetaDataFetcher = async (
+  pagination: QueryPaginationInputs,
   location: string
-): Promise<ServiceMetaData[]> => {
-  const data: ServiceMetaData[] = [
+): Promise<HotelsMetaData[]> => {
+  const data: HotelsMetaData[] = [
     {
       serviceId: "123",
       serviceName: "test",

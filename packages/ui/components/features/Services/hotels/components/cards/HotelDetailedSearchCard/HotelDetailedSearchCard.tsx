@@ -1,23 +1,15 @@
-import { FilteredServiceMetaDataType, LocationCords } from "api";
+import { FilteredHotelsMetaDataType, LocationCords } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { DateRange } from "types";
-import {
-  AspectRatio,
-  Button,
-  HeartIcon,
-  PriceDisplay,
-  Rate,
-} from "../../../partials";
-import EllipsisText from "../../EllipsisText";
+import { AspectRatio, HeartIcon, PriceDisplay, EllipsisText } from "ui";
 
-export interface ServiceDetailedSearchCardProps
-  extends FilteredServiceMetaDataType {
+export interface HotelDetailedSearchCardProps
+  extends FilteredHotelsMetaDataType {
   onShowOnMap?: (id: string, cords?: LocationCords) => any;
 }
 
-export const ServiceDetailedSearchCard: React.FC<
-  ServiceDetailedSearchCardProps
+export const HotelDetailedSearchCard: React.FC<
+  HotelDetailedSearchCardProps
 > = ({
   description,
   provider,

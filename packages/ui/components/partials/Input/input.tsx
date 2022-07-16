@@ -152,7 +152,7 @@ export const InputSuggestions: React.FC<InputSuggestionsProps> = ({
       {...props}
       className={`${className || ""} ${
         isFocused ? "" : "scale-y-0"
-      } origin-top transition-transform max-h-96 overflow-scroll absolute top-full left-0 w-full`}
+      } origin-top transition-transform max-h-96 overflow-scroll absolute z-10 top-full left-0 w-full`}
     >
       {display ? children : null}
     </div>

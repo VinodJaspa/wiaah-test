@@ -1,15 +1,15 @@
 import { storybookCardsTitle } from "utils";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-
-import { ServiceDetailedSearchCard } from "./ServiceDetailedSearchCard";
+import React from "react";
+import { HotelDetailedSearchCard } from "./HotelDetailedSearchCard";
 
 export default {
-  title: storybookCardsTitle + "ServiceDetailedSearchCard",
-  component: ServiceDetailedSearchCard,
-} as ComponentMeta<typeof ServiceDetailedSearchCard>;
+  title: storybookCardsTitle + "HotelSearchCard",
+  component: HotelDetailedSearchCard,
+} as ComponentMeta<typeof HotelDetailedSearchCard>;
 
-const template: ComponentStory<typeof ServiceDetailedSearchCard> = (args) => (
-  <ServiceDetailedSearchCard {...args} />
+const template: ComponentStory<typeof HotelDetailedSearchCard> = (args) => (
+  <HotelDetailedSearchCard {...args} />
 );
 
 export const Default = template.bind({});

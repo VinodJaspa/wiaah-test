@@ -16,7 +16,7 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
   const [hoursLimit, setHoursLimit] = React.useState<number>(2);
   const { t } = useTranslation();
   return (
-    <div className="flex gap-8 shadow p-4 justify-between rounded w-full">
+    <div className="flex gap-8 shadow p-4 justify-between rounded w-full min-w-[50rem]">
       <div className="flex flex-col justify-between gap-4">
         <div className="flex gap-4">
           <div className="w-32">

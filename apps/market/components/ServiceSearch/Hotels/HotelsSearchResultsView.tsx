@@ -15,12 +15,12 @@ import {
   SelectOption,
   SelectProps,
   ServiceSearchFilter,
-  ServicesSearchList,
+  HotelsSearchList,
   ShowMapButton,
   useSearchFilters,
 } from "ui";
 
-export const HotelsSearchResaultsView: React.FC = () => {
+export const HotelsSearchResultsView: React.FC = () => {
   const { setFilters, filters } = useSearchFilters();
   const { t } = useTranslation();
   const router = useRouter();
@@ -119,7 +119,7 @@ export const HotelsSearchResaultsView: React.FC = () => {
           }}
         </Formik>
       </div>
-      <ServicesSearchList />
+      <HotelsSearchList />
     </div>
   );
 };
