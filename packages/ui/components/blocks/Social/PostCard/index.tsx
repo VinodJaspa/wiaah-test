@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Flex, HStack, Icon, Text, FlexProps } from "@chakra-ui/react";
-import { ProfileInfo, PostInfo } from "types/market/Social";
+import { ProfileInfo, PostInfo } from "types";
 import {
   PostInteractions,
   CommentInput,

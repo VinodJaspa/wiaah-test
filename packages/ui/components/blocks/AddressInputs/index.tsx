@@ -9,10 +9,7 @@ import {
   Prefix,
   Spacer,
 } from "ui";
-import {
-  AddressDetails,
-  AddressInputsFields,
-} from "types/market/AddressDetails.interface";
+import { AddressDetails, AddressInputsFields } from "types";
 import { FlagIcon, FlagIconCode } from "react-flag-kit";
 import { Country } from "country-state-city";
 import { FaSearch } from "react-icons/fa";
@@ -53,8 +50,9 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
         }
   );
 
-  const [currentCountryCode, setCurrentCountryCode] =
-    React.useState<FlagIconCode | undefined>("EG");
+  const [currentCountryCode, setCurrentCountryCode] = React.useState<
+    FlagIconCode | undefined
+  >("EG");
   const [manual, setManual] = React.useState<boolean>(edit ? true : false);
   function handleCancel() {
     if (onCancel) {

@@ -1,3 +1,8 @@
+const cardsTitle = "Cards /";
+const inputsTitle = "Inputs /";
+const listTitle = "Lists /";
+const miscTitle = "Misc /";
+
 export const storybookPartailsTitle = "UI / partials / ";
 export const storybookBlocksTitle = "UI / blocks / ";
 export const storybookSectionsTitle = "UI / sections / ";
@@ -20,3 +25,19 @@ export const storybookSidebarsTitle = "UI / Blocks / SideBars /";
 export const storybookSteppersTitle = "UI / Blocks / Steppers /";
 export const storybookSteppersHeadersTitle = "UI / Blocks / SteppersHeaders /";
 export const storybookSearchInputs = storybookDataInputBlocksTitle + "Search /";
+
+// feature specific titles
+export const storybookFeaturesTitle = "UI / Features /";
+
+// health center service
+export const storybookHealthCenterTitle =
+  storybookFeaturesTitle + "Health Center /";
+export const storybookHealthCenterCardsTitle =
+  storybookHealthCenterTitle + cardsTitle;
+export const storybookHealthCenterInputsTitle =
+  storybookHealthCenterTitle + inputsTitle;
+
+// other services
+export const storybookServicesTitle = storybookFeaturesTitle + "Services /";
+export const storybookOtherServicesCardsTitle =
+  storybookServicesTitle + cardsTitle;

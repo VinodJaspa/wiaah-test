@@ -14,27 +14,29 @@ export const Root: React.FC<RootProps> = ({ children, scrollable = true }) => {
   const { isMobile } = useResponsive();
   const router = useRouter();
   const { i18n } = useTranslation();
-  const { locale, locales, defaultLocale } = router;
-  React.useEffect(() => {
-    console.log("Starting...");
-    switch (locale) {
-      case Language.EN:
-        i18n.changeLanguage(Language.EN);
-        break;
-      case Language.FR:
-        i18n.changeLanguage(Language.FR);
-        break;
-      case Language.DE:
-        i18n.changeLanguage(Language.DE);
-        break;
-      case Language.ES:
-        i18n.changeLanguage(Language.ES);
-        break;
-      default:
-        i18n.changeLanguage(Language.EN);
-        break;
-    }
-  }, [locale]);
+  if (router) {
+    const { locale, locales, defaultLocale } = router;
+    React.useEffect(() => {
+      console.log("Starting...");
+      switch (locale) {
+        case Language.EN:
+          i18n.changeLanguage(Language.EN);
+          break;
+        case Language.FR:
+          i18n.changeLanguage(Language.FR);
+          break;
+        case Language.DE:
+          i18n.changeLanguage(Language.DE);
+          break;
+        case Language.ES:
+          i18n.changeLanguage(Language.ES);
+          break;
+        default:
+          i18n.changeLanguage(Language.EN);
+          break;
+      }
+    }, [locale]);
+  }
   return (
     <>
       <SidebarProvider>

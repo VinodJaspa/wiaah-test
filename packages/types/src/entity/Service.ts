@@ -1,4 +1,4 @@
-import { DiscountUnit, PriceType } from "@this";
+import { DiscountUnit, PriceType } from "../";
 
 export type ServicePresentation = {
   original: string;

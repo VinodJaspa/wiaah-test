@@ -1,7 +1,7 @@
 import { Table, Tbody, Td, Tr } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ShippingMothed } from "types/market/Checkout";
+import { ShippingMothed } from "types";
 import { BoxShadow, Padding, FilterInput, Spacer } from "ui";
 export interface ShippingMothedsProps {
   motheds: ShippingMothed[];

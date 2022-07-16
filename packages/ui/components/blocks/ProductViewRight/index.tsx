@@ -3,10 +3,10 @@ import { Rate } from "antd";
 import { Select } from "antd";
 import { Button } from "@chakra-ui/react";
 import { FlexStack, WishListIcon } from "ui";
-import { ShoppingCartItem } from "ui/types/shoppingCart/shoppingCartItem.interface";
+import { ShoppingCartItem } from "types";
 import { useShoppingCart } from "ui/Hooks/useShoppingCart";
 import { useCartSummary, useProductDescTabs } from "ui/Hooks";
-import { CartSummaryItem } from "types/market/CartSummary";
+import { CartSummaryItem } from "types";
 import { useTranslation } from "react-i18next";
 
 const { Option } = Select;

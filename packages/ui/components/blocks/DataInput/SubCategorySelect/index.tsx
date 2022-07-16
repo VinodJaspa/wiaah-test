@@ -5,7 +5,7 @@ import { Category } from "types";
 import { categories as categoriesPH, Select, SelectOption } from "ui";
 
 export interface SubCategorySelectProps extends HtmlSelectProps {
-  onCateSelection: (cate: string[]) => any;
+  onCateSelection?: (cate: string[]) => any;
 }
 
 export const SubCategorySelect: React.FC<SubCategorySelectProps> = ({

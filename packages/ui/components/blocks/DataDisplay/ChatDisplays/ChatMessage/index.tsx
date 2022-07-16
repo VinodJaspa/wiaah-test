@@ -43,7 +43,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageData }) => {
         <div className={`${alignPos} flex flex-col gap-2 justify-center`}>
           <div className={`${flexDir} flex items-end gap-2`}>
             <DisplayDate
-              innerProps={{ fontSize: "xs", color: "gray" }}
+              innerProps={{ style: { fontSize: "xs", color: "gray" } }}
               date={sendDate}
               hours12
               locale={locale}
@@ -67,7 +67,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageData }) => {
               </div>
             ))}
         </div>
-        <Avatar name={username} size={"md"} photoSrc={userPhoto} />
+        <Avatar name={username} photoSrc={userPhoto} />
       </div>
     </div>
   );

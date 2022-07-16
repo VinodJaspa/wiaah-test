@@ -8,7 +8,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import React from "react";
-import { SocialStoryDataWithUser } from "types/market/Social";
+import { SocialStoryDataWithUser } from "types";
 import { useTranslation } from "react-i18next";
 import {
   ActionHeader,
@@ -112,9 +112,9 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
     <>
       {action && (
         <FloatingContainer
-          h="100%"
-          maxW="35rem"
-          pr="6rem"
+          // h="100%"
+          // maxW="35rem"
+          // pr="6rem"
           items={[
             {
               label: (
@@ -148,9 +148,6 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
               ),
               right: "0.5rem",
               top: "center",
-              floatingItemProps: {
-                translateY: "-50%",
-              },
             },
           ]}
         >
@@ -163,21 +160,21 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
             onClick={() => onActionClick && onActionClick(action.id)}
           >
             <FloatingContainer
-              pointerEvents={"none"}
-              h="100%"
-              w="100%"
-              display={"flex"}
-              alignItems="center"
+              // pointerEvents={"none"}
+              // h="100%"
+              // w="100%"
+              // display={"flex"}
+              // alignItems="center"
               items={[
                 {
                   label: (
                     <ActionHeader
                       // bgColor={""}
-                      w="100%"
-                      p="0.5rem"
-                      bgGradient="linear(to-t, blackAlpha.500 80%,transparent)"
-                      color="white"
-                      minH={"max-content"}
+                      // w="100%"
+                      // p="0.5rem"
+                      // bgGradient="linear(to-t, blackAlpha.500 80%,transparent)"
+                      // color="white"
+                      // minH={"max-content"}
                       actionHashtags={[]}
                       actionTitle={action.title}
                       userName={action.user.name}
@@ -187,9 +184,6 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
                   ),
                   bottom: true,
                   left: true,
-                  floatingItemProps: {
-                    w: "100%",
-                  },
                 },
                 {
                   label: (
@@ -236,8 +230,8 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
                 controls={false}
                 autoPlay
                 play={play}
-                type={action.storyType !== "text" ? action.storyType : "image"}
-                src={action.storySrc}
+                // type={action.storyType !== "text" ? action.storyType : "image"}
+                // src={action.storySrc}
                 {...action}
               />
             </FloatingContainer>

@@ -36,3 +36,4 @@ export * from "./ArrowRightIcon";
 export * from "./PercentIcon";
 export * from "./CommentIcon";
 export * from "./TriangleRightIcon";
+export * from "./ClockIcon";

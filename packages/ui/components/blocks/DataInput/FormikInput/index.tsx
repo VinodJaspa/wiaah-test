@@ -40,6 +40,7 @@ export function FormikInput<T = InputProps>({
           {children}
         </Field>
         <span className="text-red-500">
+          {/* @ts-ignore */}
           <ErrorMessage name={name} />
         </span>
       </div>

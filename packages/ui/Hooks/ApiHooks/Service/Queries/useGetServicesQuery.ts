@@ -1,16 +1,25 @@
-import { getServicesMetaDataFetcher, ServiceMetaData } from "api";
+import {
+  getHotelsMetaDataFetcher,
+  HotelsMetaData,
+  PaginationFetchedData,
+  QueryPaginationInputs,
+} from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
-export const useGetServicesMetaDataQuery = (
-  take: number,
-  page: number,
+export const useGetHotelsMetaDataQuery = (
+  pagination: QueryPaginationInputs,
   location: string,
-  options?: UseQueryOptions<unknown, unknown, ServiceMetaData[], any>
+  options?: UseQueryOptions<
+    unknown,
+    unknown,
+    PaginationFetchedData<HotelsMetaData[]>,
+    any
+  >
 ) => {
   return useQuery(
-    ["services", { take, page, location }],
+    ["services", { pagination, location }],
     () => {
-      return getServicesMetaDataFetcher(take, page, location);
+      return getHotelsMetaDataFetcher(pagination, location);
     },
     options
   );

@@ -6,7 +6,7 @@ import {
 } from "placeholder";
 import { OrdersFilter, OrdersStatus, PriceType } from "types";
 import { randomNum } from "utils";
-import { FetchDataArrayResults } from "@Utils";
+import { FetchDataArrayResults } from "../../../../../";
 
 export interface BookingHistoryAppointmentType {
   appointmentId: string;

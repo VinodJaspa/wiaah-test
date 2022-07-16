@@ -7,8 +7,10 @@ import {
   FilterInput,
   Select,
   SelectOption,
-} from "../../../partials";
-import { FilterDisplaySwitcher } from "../FilterDisplaySwitcher";
+  SpinnerFallback,
+  FilterDisplaySwitcher,
+  SpinnerFallbackProps,
+} from "ui";
 
 export interface SearchFilterProps {
   filters: SearchFilterType[];
@@ -22,16 +24,19 @@ export interface SearchFilterProps {
   collapse?: boolean;
 }
 
-export const SearchFilter: React.FC<SearchFilterProps> = ({
+export const SearchFilter: React.FC<
+  SearchFilterProps & { fallbackProps?: SpinnerFallbackProps }
+> = ({
   filters,
   onRangeChange,
   onOptionSelect,
   onOptionsSelect,
   defaultOpen = false,
   collapse,
+  fallbackProps,
 }) => {
   return (
-    <>
+    <SpinnerFallback {...fallbackProps}>
       {filters.map((filter, i) => {
         const [checkBoxs, setCheckBoxs] = React.useState<[string, string[]]>([
           filter.filterSlug,
@@ -199,6 +204,6 @@ export const SearchFilter: React.FC<SearchFilterProps> = ({
             break;
         }
       })}
-    </>
+    </SpinnerFallback>
   );
 };

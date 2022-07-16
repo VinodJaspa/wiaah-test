@@ -1,5 +1,5 @@
 import { atom, selector } from "recoil";
-import { CartSummaryItemData } from "types/market/CartSummary";
+import { CartSummaryItemData } from "types";
 import { VoucherState } from "./Checkout";
 
 export const CartSummaryItemsState = atom<CartSummaryItemData[]>({

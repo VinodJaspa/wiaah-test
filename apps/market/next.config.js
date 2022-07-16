@@ -1,13 +1,30 @@
-const withTM = require("next-transpile-modules")([
-  "ui",
-  "api",
-  "uris",
-  "validation",
-  "hooks",
-  "utils",
-  "state",
-  "placeholder",
-]);
+// @ts-check
+
+/**
+ * @type {import('next').NextConfig}
+ **/
+const nextConfig = {
+  experimental: {
+    esmExternals: false,
+  },
+};
+
+const withTM = require("next-transpile-modules")(
+  [
+    "ui",
+    "api",
+    "uris",
+    "validation",
+    "hooks",
+    "utils",
+    "state",
+    "placeholder",
+    "types",
+  ],
+  {
+    debug: true,
+  }
+);
 const withPWA = require("next-pwa");
 
 module.exports = withTM(
@@ -22,5 +39,6 @@ module.exports = withTM(
       register: true,
       skipWaiting: true,
     },
+    ...nextConfig,
   })
 );

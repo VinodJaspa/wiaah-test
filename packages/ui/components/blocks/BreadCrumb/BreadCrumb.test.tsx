@@ -3,14 +3,14 @@ import { BreadCrumb } from "../BreadCrumb";
 import { shallow } from "enzyme";
 
 it("renders default correctly", () => {
-  const wrapper = shallow(<BreadCrumb />);
+  const wrapper = shallow(<BreadCrumb links={[]} />);
   expect(wrapper).toMatchSnapshot();
 });
 
 it("renders with parameters correctly", () => {
   const wrapper = shallow(
     <BreadCrumb
-      breadcrumb={[
+      links={[
         { text: "Shop", url: "/shop" },
         { text: "", url: "/categorie" },
         { text: "Clothing", url: "clothing" },

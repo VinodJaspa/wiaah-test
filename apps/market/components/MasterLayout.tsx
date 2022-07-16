@@ -19,9 +19,9 @@ import {
   VoucherState,
   CheckoutProductsState,
 } from "ui/state";
-import { CartSummaryItem } from "types/market/CartSummary";
-import { AddressCardDetails } from "types/market/AddressDetails.interface";
-import { NavLink } from "types/sharedTypes/misc/NavLink";
+import { CartSummaryItem } from "types";
+import { AddressCardDetails } from "types";
+import { NavLink } from "types";
 import { Box } from "@chakra-ui/react";
 import { Container, useLoginPopup } from "ui";
 import { category } from "uris";

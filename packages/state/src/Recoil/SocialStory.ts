@@ -1,10 +1,10 @@
 import { atom, selector } from "recoil";
-import { ProgressBar } from "types/market/ProgressBar";
+import { ProgressBar } from "types";
 import {
   SocialStoryData,
   SocialStoryDataWithUser,
   StorySeenByUserInfo,
-} from "types/market/Social";
+} from "types";
 
 export const SocialStoryOpenState = atom<boolean>({
   key: "SocialStoryOpenState",

@@ -1,8 +1,6 @@
 import React from "react";
-import { PostComment } from "types/market/Social";
-import { Flex, Text, Box } from "@chakra-ui/react";
+import { PostComment } from "types";
 import { PostCommentCard } from "ui";
-import { useTranslation } from "react-i18next";
 import { ScrollableContainer } from "../../DataDisplay";
 export interface CommentsViewerProps {
   comments: PostComment[];

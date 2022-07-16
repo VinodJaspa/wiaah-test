@@ -22,11 +22,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
         <Avatar name={user.name} photoSrc={user.userPhotoSrc} />
       ) : (
         <>
-          <Avatar
-            bgColor={"black"}
-            name={user.name}
-            photoSrc={user.userPhotoSrc}
-          />
+          <Avatar name={user.name} src={user.userPhotoSrc} />
           <div className="flex w-full flex-col">
             <div className="flex items-center gap-2">
               <span data-testid="UserName">{user.name}</span>

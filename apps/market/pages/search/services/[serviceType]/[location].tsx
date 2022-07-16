@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import React from "react";
 import Head from "next/head";
-import { HotelsSearchResaultsView, MasterLayout } from "@components";
+import { MasterLayout } from "@components";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import {
@@ -9,8 +9,9 @@ import {
   getServiceView,
   ServicesTypeSwitcher,
 } from "utils";
-import { ServicesViewsList } from "lib";
-import { NotFound } from "ui";
+import { ServicesViewsList } from "@data";
+import { NotFound, Container } from "ui";
+
 const filtered: NextPage = () => {
   const { t } = useTranslation();
   const router = useRouter();
@@ -24,12 +25,14 @@ const filtered: NextPage = () => {
         </title>
       </Head>
       <MasterLayout>
-        <ServicesTypeSwitcher
-          serviceType={serviceType}
-          get={getServiceView.RESAULTS}
-          fallbackComponent={NotFound}
-          servicesList={ServicesViewsList}
-        />
+        <Container>
+          <ServicesTypeSwitcher
+            serviceType={serviceType}
+            get={getServiceView.RESAULTS}
+            fallbackComponent={NotFound}
+            servicesList={ServicesViewsList}
+          />
+        </Container>
       </MasterLayout>
     </>
   );

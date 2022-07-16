@@ -1,15 +1,14 @@
 import React, { FC } from "react";
 import Link from "next/link";
-import { information } from "../../../../../apps/market/lib/Links";
+import { information } from "ui";
 import { useTranslation } from "react-i18next";
-import { Text } from "@chakra-ui/react";
 export const Information: FC = () => {
   const { t, i18n } = useTranslation();
   return (
     <div className="block w-full space-y-4">
-      <Text color="primary.main" className="font-bold uppercase">
+      <div className="text-primary font-bold uppercase">
         {t("Information", "Information")}
-      </Text>
+      </div>
       <ul className="block space-y-4 text-sm text-gray-400">
         <li>
           <Link href={information.about_wiaah}>

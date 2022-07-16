@@ -59,7 +59,7 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
                     <div className="mt-3" key={key}>
                       <BuyerComment
                         name={item.name}
-                        date={item.date}
+                        date={new Date(item.date)}
                         rating={item.rating}
                         comment={item.comment}
                       />
@@ -107,7 +107,7 @@ export const ProductDescription: React.FC<ProductDescriptionProps> = ({
                 <div className="mt-3" key={key}>
                   <BuyerComment
                     name={item.name}
-                    date={item.date}
+                    date={new Date(item.date)}
                     rating={item.rating}
                     comment={item.comment}
                   />

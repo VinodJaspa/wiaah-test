@@ -21,5 +21,7 @@ export const getAccountSettingsFetcher =
       photoSrc: "/shop-1.jpeg",
       storeFor: [],
       username: "username",
+      shopType: "",
+      profilePhoto: new File([], ""),
     };
   };

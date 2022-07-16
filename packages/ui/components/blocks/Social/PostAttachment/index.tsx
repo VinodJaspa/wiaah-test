@@ -1,7 +1,7 @@
 import { Box, Center, Flex, FlexProps, Icon, Image } from "@chakra-ui/react";
 import React from "react";
 import { BsPlayFill } from "react-icons/bs";
-import { PostAttachment as PostAttachmentType } from "types/market/Social";
+import { PostAttachment as PostAttachmentType } from "types";
 import { HiDuplicate } from "react-icons/hi";
 export interface PostAttachmentProps extends PostAttachmentType {
   alt?: string;
@@ -15,6 +15,8 @@ export interface PostAttachmentProps extends PostAttachmentType {
   blur?: boolean;
   multiply?: boolean;
   cover?: boolean;
+  // src: string;
+  // type?: string;
 }
 
 export const PostAttachment: React.FC<PostAttachmentProps> = ({
@@ -205,5 +207,7 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           )}
         </Flex>
       );
+    default:
+      return null;
   }
 };

@@ -1,4 +1,4 @@
-import { FormatedSearchableFilter } from "src";
+import { FormatedSearchableFilter } from "../../../../index";
 
 interface Location {
   name: string;

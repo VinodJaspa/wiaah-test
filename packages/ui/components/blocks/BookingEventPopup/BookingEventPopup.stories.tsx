@@ -29,7 +29,7 @@ export const RentVariant = () => {
       <ModalButton>
         <Button>open</Button>
       </ModalButton>
-      <BookingEventPopup varaint="rent" />
+      <BookingEventPopup />
     </ModalExtendedWrapper>
   );
 };

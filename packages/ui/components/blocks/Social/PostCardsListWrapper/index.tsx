@@ -1,5 +1,5 @@
 import React from "react";
-import { PostCardInfo } from "types/market/Social";
+import { PostCardInfo } from "types";
 import {
   ListWrapper,
   ListWrapperProps,
@@ -54,7 +54,12 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
                     post.postInfo.attachments[0].src) ||
                   ""
                 }
-                type={post.postInfo.attachments[0].type}
+                //@ts-ignore
+                type={
+                  typeof post.postInfo.attachments[0] === "object"
+                    ? post?.postInfo?.attachments[0]?.type
+                    : "image"
+                }
                 footer={
                   post.postInfo.views ? (
                     <span className="w-full px-4 text-left text-xl font-bold text-white">

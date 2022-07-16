@@ -1,7 +1,7 @@
 import React from "react";
 import { Rate } from "antd";
 import { IoHeartOutline, IoHeart, IoTrash } from "react-icons/io5";
-import { ProductTypes } from "types/market/Product";
+import { ProductTypes } from "types";
 
 export interface ProductCardProps {
   id: string;

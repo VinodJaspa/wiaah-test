@@ -1,23 +1,26 @@
 import {
-  FilteredServiceMetaDataType,
+  FilteredHotelsMetaDataType,
   FormatedSearchableFilter,
-  getFilteredServicesMetaData,
+  getFilteredHotelsMetaData,
+  PaginationFetchedData,
+  QueryPaginationInputs,
   SearchFilterType,
 } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
 export const useGetFilteredServicesMetaDataQuery = (
+  pagination: QueryPaginationInputs,
   filters: FormatedSearchableFilter,
   options?: UseQueryOptions<
     unknown,
     unknown,
-    FilteredServiceMetaDataType[],
+    PaginationFetchedData<FilteredHotelsMetaDataType[]>,
     any
   >
 ) => {
   return useQuery(
     ["filteredServicesMetaData", filters],
-    () => getFilteredServicesMetaData(filters),
+    () => getFilteredHotelsMetaData(pagination, filters),
     options
   );
 };

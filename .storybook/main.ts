@@ -1,12 +1,13 @@
 // .storybook/main.js
 import type { StorybookConfig } from "@storybook/core-common";
+const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
 
-const path = require("path");
+import path from "path";
 
 const config: StorybookConfig = {
   stories: [
-    "../apps/**/*.stories.mdx",
-    "../apps/**/*.stories.@(js|jsx|ts|tsx)",
+    // "../apps/**/*.stories.mdx",
+    // "../apps/**/*.stories.@(js|jsx|ts|tsx)",
     "../packages/ui/**/*.stories.mdx",
     "../packages/ui/**/*.stories.@(js|jsx|ts|tsx)",
   ],
@@ -47,11 +48,17 @@ const config: StorybookConfig = {
       config.resolve.alias = {
         ...config.resolve.alias,
         "@": [
-          path.resolve(__dirname, "../apps/market/*"),
-          path.resolve(__dirname, "../apps/seller/*"),
-          path.resolve(__dirname, "../packages/*"),
+          path.resolve(__dirname, "../apps/market/**"),
+          path.resolve(__dirname, "../apps/seller/**"),
+          path.resolve(__dirname, "../packages/**"),
         ],
       };
+      config.resolve.plugins = [
+        ...(config.resolve.plugins || []),
+        new TsconfigPathsPlugin({
+          configFile: path.resolve(__dirname, "../apps/market/tsconfig.json"),
+        }),
+      ];
     }
 
     /**

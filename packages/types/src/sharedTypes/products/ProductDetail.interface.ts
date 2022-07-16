@@ -1,4 +1,4 @@
-import { ProductTypes } from "types/market/Product";
+import { ProductTypes } from "types";
 
 export interface ProductDetails {
   id: string;

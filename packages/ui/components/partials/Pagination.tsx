@@ -5,17 +5,20 @@ import {
   FaAngleRight,
   FaAngleDoubleRight,
 } from "react-icons/fa";
+import { HtmlDivProps } from "types";
 
 export interface PaginationProps {
-  maxPages: number;
+  maxPages?: number;
   onPageChange?: (pageNum: number) => void;
   morePages?: boolean;
+  htmlProps?: HtmlDivProps;
 }
 
 export const Pagination: React.FC<PaginationProps> = ({
   morePages,
   onPageChange,
-  maxPages,
+  maxPages = 100000,
+  htmlProps,
 }) => {
   const [currentPage, setCurrentPage] = React.useState<number>(1);
 
@@ -42,7 +45,10 @@ export const Pagination: React.FC<PaginationProps> = ({
   }
   return (
     <>
-      <div className="flex w-full justify-center">
+      <div
+        {...htmlProps}
+        className={`${htmlProps?.className || ""} flex w-full justify-center`}
+      >
         <ul className="inline-flex items-center space-x-4 p-2 text-white">
           <li
             onClick={() => handlePrevPage(true)}
