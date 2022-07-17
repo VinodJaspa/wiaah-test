@@ -9,6 +9,8 @@ import {
   HealthCenterSearchResultsView,
   HealthCenterSearchView,
   ServicesSearchResultsView,
+  VehicleSearchResultsView,
+  VehicleSearchView,
 } from "@components";
 import {
   HealthCenterServiceSearchResultsList,
@@ -16,6 +18,7 @@ import {
   ResturantSearchList,
   HotelsSearchList,
   ServicesSearchResultsList,
+  VehicleSearchList,
 } from "ui";
 
 export const ServicesViewsList: ServiceViewListItem[] = [
@@ -48,5 +51,11 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     search: ServicesSearchView,
     searchResaults: ServicesSearchResultsView,
     searchList: ServicesSearchResultsList,
+  },
+  {
+    slug: "vehicle",
+    search: VehicleSearchView,
+    searchResaults: VehicleSearchResultsView,
+    searchList: VehicleSearchList,
   },
 ];

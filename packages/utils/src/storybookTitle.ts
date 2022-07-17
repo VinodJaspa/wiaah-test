@@ -41,3 +41,9 @@ export const storybookHealthCenterInputsTitle =
 export const storybookServicesTitle = storybookFeaturesTitle + "Services /";
 export const storybookOtherServicesCardsTitle =
   storybookServicesTitle + cardsTitle;
+
+// Vehicle service
+
+export const storybookVehicleTitle = storybookFeaturesTitle + "Vehicle /";
+export const storybookVehicleInputstitle = storybookVehicleTitle + inputsTitle;
+export const storybookVehicleCardsTitle = storybookVehicleTitle + cardsTitle;

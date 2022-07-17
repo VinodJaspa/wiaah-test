@@ -3,7 +3,7 @@ import { Formik } from "formik";
 import React from "react";
 import {
   DateInput,
-  ServicesSearchResultsList,
+  ServicesSearchList,
   ResturantFindTableFilterDateDayComponent,
   SearchFilter,
   ServicesRequestKeys,
@@ -39,7 +39,7 @@ export const ServicesSearchResultsView: React.FC = () => {
           );
         }}
       </Formik>
-      <ServicesSearchResultsList />
+      <ServicesSearchList />
     </div>
   );
 };

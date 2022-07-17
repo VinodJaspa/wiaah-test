@@ -4,14 +4,14 @@ import {
   InValidDataSchemaError,
   PaginationFetchedData,
   QueryPaginationInputs,
-} from "src";
+  Location,
+} from "api";
 import { AsyncReturnType } from "types";
 import {
   HealthCenterSuggestionsApiDataValidationSchema,
   CheckValidation,
 } from "validation";
 import { randomNum } from "utils";
-import { Location } from "../resturant";
 
 export interface HealthCenterSpecialty {
   title: string;

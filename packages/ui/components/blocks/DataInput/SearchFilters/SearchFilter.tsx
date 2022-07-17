@@ -73,6 +73,7 @@ export const SearchFilter: React.FC<
             );
             return collapse ? (
               <DropdownPanel
+                className="min-w-[15rem]"
                 open={defaultOpen}
                 name={filter.filterTitle}
                 children={input}

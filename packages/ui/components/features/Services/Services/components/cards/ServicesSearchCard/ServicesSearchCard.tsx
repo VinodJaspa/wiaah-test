@@ -7,6 +7,7 @@ import { AspectRatio } from "ui";
 export interface ServicesSearchCardProps {
   serviceData: ServiceData;
   vertical?: boolean;
+  minimal?: boolean;
 }
 
 export const ServicesSearchCard: React.FC<ServicesSearchCardProps> = ({
@@ -19,9 +20,11 @@ export const ServicesSearchCard: React.FC<ServicesSearchCardProps> = ({
   return (
     <div
       style={{ flexDirection: vertical ? "column" : "row" }}
-      className="flex gap-6 rounded w-full"
+      className={`${
+        vertical ? "flex-col" : "flex-row justify-between"
+      } flex gap-6 rounded w-full`}
     >
-      <div className={`${vertical ? "w-full" :  "w-96"}`}>
+      <div className={`${vertical ? "w-full" : "w-64"}`}>
         <AspectRatio ratio={4 / 6}>
           <img
             className="rounded w-full h-full object-cover"
@@ -35,7 +38,7 @@ export const ServicesSearchCard: React.FC<ServicesSearchCardProps> = ({
           ) : null}
         </AspectRatio>
       </div>
-      <div className="flex flex-col gap-2 justify-between">
+      <div className="flex flex-col gap-2 justify-between" dir="rtl">
         <div className="flex flex-col">
           <p className="font-semibold text-xl">{name}</p>
           <p>

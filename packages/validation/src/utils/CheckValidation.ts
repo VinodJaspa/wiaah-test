@@ -5,6 +5,5 @@ export async function CheckValidation<TData = any>(
   data: TData,
   ThrowableError: any = Error
 ) {
-  const isValid = await schema.isValid(data);
-  if (!isValid) throw new ThrowableError();
+  await schema.validate(data);
 }

@@ -28,7 +28,7 @@ export const OnMapView: React.FC = () => {
       </span>
       <div className="w-screen h-[75vh] flex gap-4 justify-between">
         <div className="w-full">
-          <ScrollingWrapper>
+          <ScrollingWrapper className="pr-4">
             <ServicesTypeSwitcher
               servicesList={ServicesViewsList}
               get={getServiceView.LIST}

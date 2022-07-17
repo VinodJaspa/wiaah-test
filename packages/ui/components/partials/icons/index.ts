@@ -37,3 +37,5 @@ export * from "./PercentIcon";
 export * from "./CommentIcon";
 export * from "./TriangleRightIcon";
 export * from "./ClockIcon";
+export * from "./CarWindowIcon";
+export * from "./GPSIcon";
