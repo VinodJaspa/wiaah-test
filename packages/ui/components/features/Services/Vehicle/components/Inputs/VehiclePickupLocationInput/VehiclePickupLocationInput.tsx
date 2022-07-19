@@ -41,7 +41,7 @@ export const VehiclePickupLocationInput: React.FC<
     }
   );
   return (
-    <InputGroup className="text-black h-full w-full rounded bg-white">
+    <InputGroup className="text-black h-12 w-full rounded bg-white">
       <InputLeftElement>
         <SearchIcon />
       </InputLeftElement>

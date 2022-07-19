@@ -11,6 +11,11 @@ export const useSearchFilters = () => {
       ? (filters[filtersTokens.searchQuery] as string)
       : null;
 
+  const getServiceType: string | null =
+    typeof filters[filtersTokens.serviceType] === "string"
+      ? (filters[filtersTokens.serviceType] as string)
+      : null;
+
   const addFilter = (filter: [string, SearchFilterValue]) => {
     setFilters((state) => {
       return { ...state, [filter[0]]: filter[1] };
@@ -22,6 +27,7 @@ export const useSearchFilters = () => {
     setFilters,
     addFilter,
     getFiltersSearchQuery,
+    getServiceType,
   };
 };
 

@@ -6,6 +6,7 @@ import { AspectRatio, HeartIcon, PriceDisplay, EllipsisText } from "ui";
 export interface HotelDetailedSearchCardProps
   extends FilteredHotelsMetaDataType {
   onShowOnMap?: (id: string, cords?: LocationCords) => any;
+  vertical?: boolean;
 }
 
 export const HotelDetailedSearchCard: React.FC<
@@ -25,11 +26,16 @@ export const HotelDetailedSearchCard: React.FC<
   totalPrice,
   location,
   onShowOnMap,
+  vertical,
 }) => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex gap-4 border-2 border-gray-300 p-2 rounded-lg">
+    <div
+      className={`${
+        vertical ? "flex-col" : "flex-row"
+      } flex gap-4 border-2 border-gray-300 p-2 rounded-lg`}
+    >
       <div className="relative w-[min(100%,30rem)]">
         <AspectRatio ratio={4 / 5}>
           <img
@@ -51,8 +57,12 @@ export const HotelDetailedSearchCard: React.FC<
           <EllipsisText maxLines={3}>{description}</EllipsisText>
         </p>
       </div>
-      <div className="flex flex-col justify-between h-auto items-end gap-2">
-        <div className="flex gap-2 items-end">
+      <div
+        className={`${
+          vertical ? "flex-row-reverse" : "flex-col items-end"
+        } flex justify-between h-auto gap-2`}
+      >
+        <div className={`${vertical ? "" : "items-end"} flex gap-2`}>
           <div className="flex flex-col">
             <span className="font-bold ">
               {rate < 3
@@ -69,14 +79,18 @@ export const HotelDetailedSearchCard: React.FC<
               {reviews} {t("reviews")}
             </span>
           </div>
-          <span className="bg-primary p-1 text-xl rounded-lg text-white">
+          <span className="bg-primary h-fit p-1 text-xl rounded-lg text-white">
             {rate}
           </span>
         </div>
         {/* <Button className="whitespace-nowrap" onClick={handleShowPrices}>
           {t("Show prices")}
         </Button> */}
-        <div className="flex gap-1 items-end flex-col">
+        <div
+          className={`${
+            vertical ? "items-start" : "items-end"
+          } flex gap-1 flex-col`}
+        >
           <span
             onClick={() => onShowOnMap && onShowOnMap(id, location)}
             className="text-primary-500 underline cursor-pointer"

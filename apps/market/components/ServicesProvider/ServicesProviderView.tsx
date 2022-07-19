@@ -15,6 +15,9 @@ import {
   TabTitle,
   TabsHeader,
   ServicesProviderLocationWorkDetailsSection,
+  ServiceRightView,
+  ServicesProviderDescriptionSection,
+  ServiceReservastion,
 } from "ui";
 
 export const ServicesProviderView: React.FC = () => {
@@ -53,7 +56,17 @@ export const ServicesProviderView: React.FC = () => {
       <div className="flex flex-col gap-4">
         <Tabs>
           <TabsHeader className="justify-center" />
-          <TabList className="flex justify-center" />
+          <div className="flex gap-4">
+            <TabList className="flex justify-center" />
+            <div className="w-full gap-4 flex">
+              <div className="w-full">
+                <ServiceRightView serviceId="123" />
+              </div>
+              <div className="w-full">
+                <ServiceReservastion />
+              </div>
+            </div>
+          </div>
           {ServicesProviderTabs.map(({ component, name }, i) => (
             <React.Fragment key={i}>
               <TabTitle TabKey={i}>
@@ -79,7 +92,7 @@ export const ServicesProviderView: React.FC = () => {
 
 const ServicesProviderTabs: TabType[] = [
   {
-    component: <div></div>,
+    component: <ServicesProviderDescriptionSection />,
     name: "Description",
   },
   {

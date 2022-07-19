@@ -33,7 +33,7 @@ const filtered: NextPage = () => {
         </title>
       </Head>
       <MasterLayout>
-        <Container>
+        <Container className="px-4 py-8">
           <ServicesTypeSwitcher
             serviceType={serviceType}
             get={getServiceView.RESAULTS}

@@ -109,27 +109,28 @@ export const Header: React.FC<HeaderProps> = () => {
 
           <div className="border-primary rounded-lg border-[1px] flex-col sm:flex-row max-w-[40rem] justify-items-stretch flex">
             <input
-              className="w-60 appearance-none rounded-l-lg border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none"
+              className="w-60 appearance-none  border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none"
               placeholder={t("Search", "Search")}
             />
-
-            <SelectDropdown
-              className="appearance-none  border-l-[1px] border-l-primary border-none border-gray-600 bg-gray-700  px-2.5 text-white outline-none focus:outline-none"
-              options={
-                Array.isArray(categories)
-                  ? categories.map((cate, i) => ({
-                      name: t(cate.name),
-                      value: cate.slug,
-                    }))
-                  : []
-              }
-            />
-            <label htmlFor="Category" className="relative flex">
-              <FaChevronDown className="pointer-events-none absolute inset-y-1/3 right-3 h-4 w-4 text-green-400" />
-            </label>
-            <Button className="rounded-none text-xl">
-              <FaSearch className="h-5 w-5 text-white" />
-            </Button>
+            <div className="flex">
+              <SelectDropdown
+                className="appearance-none w-full border-l-[1px] border-l-primary border-none border-gray-600 bg-gray-700  px-2.5 text-white outline-none focus:outline-none"
+                options={
+                  Array.isArray(categories)
+                    ? categories.map((cate, i) => ({
+                        name: t(cate.name),
+                        value: cate.slug,
+                      }))
+                    : []
+                }
+              />
+              <label htmlFor="Category" className="relative flex">
+                {/* <FaChevronDown className="pointer-events-none absolute inset-y-1/3 right-3 h-4 w-4 text-green-400" /> */}
+              </label>
+              <Button className="rounded-none text-xl">
+                <FaSearch className="h-5 w-5 text-white" />
+              </Button>
+            </div>
           </div>
 
           <div className="flex text-white">

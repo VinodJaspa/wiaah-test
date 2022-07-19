@@ -1,12 +1,15 @@
 import { HotelsMetaData } from "api";
 import { usePagination } from "hooks";
 import React from "react";
+import { ArrElement } from "types";
 import {
   LocationSearchInput,
   useGetHotelsMetaDataQuery,
   SpinnerFallback,
   HotelSearchCard,
   PaginationWrapper,
+  ServicesSearchGrid,
+  HotelSearchCardProps,
 } from "ui";
 
 export const HotelsSearchView: React.FC = () => {
@@ -29,19 +32,11 @@ export const HotelsSearchView: React.FC = () => {
       />
       <PaginationWrapper>
         <SpinnerFallback isError={isError} isLoading={isLoading}>
-          <div className="w-full mx-auto justify-center gap-4 grid grid-cols-[repeat(auto-fit,minmax(10rem,23%))]">
-            {Array.isArray(services)
-              ? services.map(({ ...serviceData }) => (
-                  <HotelSearchCard
-                    {...serviceData}
-                    onLiked={(id) => {}}
-                    providerName={serviceData.serviceProvider}
-                    thumbnail={serviceData.serviceThumbnail}
-                    id={serviceData.serviceId}
-                  />
-                ))
-              : null}
-          </div>
+          <ServicesSearchGrid<ArrElement<typeof services>, HotelSearchCardProps>
+            component={HotelSearchCard}
+            data={services}
+            handlePassData={(data) => ({ ...data, onLiked: () => {} })}
+          />
         </SpinnerFallback>
       </PaginationWrapper>
     </section>

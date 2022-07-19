@@ -1,6 +1,7 @@
 import { ServiceViewListItem } from "types";
 import {
   ServicesSearchView,
+  HotelsSearchView,
   ResturantSearchView,
   HolidaysRentalSearchView,
   HolidaysRentalSearchResultsView,
@@ -24,7 +25,7 @@ import {
 export const ServicesViewsList: ServiceViewListItem[] = [
   {
     slug: "hotel",
-    search: ServicesSearchView,
+    search: HotelsSearchView,
     searchResaults: HotelsSearchResultsView,
     searchList: HotelsSearchList,
   },

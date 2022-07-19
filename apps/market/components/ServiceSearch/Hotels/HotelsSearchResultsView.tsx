@@ -16,14 +16,16 @@ import {
   SelectProps,
   ServiceSearchFilter,
   HotelsSearchList,
-  ShowMapButton,
   useSearchFilters,
+  ServicesSearchResultsFiltersSidebar,
 } from "ui";
+import { useResponsive } from "hooks";
 
 export const HotelsSearchResultsView: React.FC = () => {
-  const { setFilters, filters } = useSearchFilters();
+  const { setFilters, filters, getServiceType } = useSearchFilters();
   const { t } = useTranslation();
   const router = useRouter();
+  const { isTablet } = useResponsive();
   React.useEffect(() => {
     if (typeof router.query.location === "string") {
       setFilters((fs) => ({ ...fs, search_query: router.query.location }));
@@ -34,13 +36,12 @@ export const HotelsSearchResultsView: React.FC = () => {
     1000
   );
   return (
-    <div className="relative flex gap-12 p-4">
-      <div className="">
-        <ShowMapButton
-          onClick={() => {
-            router.replace("/search/services/onmap");
-          }}
-        />
+    <div
+      className={`${
+        isTablet ? "flex-col gap-4" : "flex-row gap-12"
+      } relative flex  p-4`}
+    >
+      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
         <Formik<FormatedSearchableFilter>
           validateOnBlur={false}
           initialValues={{}}
@@ -50,7 +51,7 @@ export const HotelsSearchResultsView: React.FC = () => {
             handleFiltersUpdate(values);
             return (
               <Form>
-                <div className="p-4 w-64 bg-primary-200 text-black flex flex-col gap-2">
+                <div className="p-4 w-full bg-primary-200 text-black flex flex-col gap-2">
                   <FormikInput<SearchInputProps>
                     as={SearchInput}
                     onValueChange={(v) => setFieldValue("search_query", v)}
@@ -118,7 +119,8 @@ export const HotelsSearchResultsView: React.FC = () => {
             );
           }}
         </Formik>
-      </div>
+      </ServicesSearchResultsFiltersSidebar>
+
       <HotelsSearchList />
     </div>
   );

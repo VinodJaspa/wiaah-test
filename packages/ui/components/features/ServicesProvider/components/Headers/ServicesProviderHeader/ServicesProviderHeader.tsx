@@ -18,7 +18,7 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
       <div className="w-24">
         <AspectRatio ratio={3 / 4}>
           <img
-            className="w-full h-ful object-cover"
+            className="w-full h-full object-cover"
             src={thumbnail}
             alt={name}
           />

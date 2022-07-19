@@ -1,2 +1,1 @@
-export * from "./LocationWorkDetailsSection";
 export * from "./ServicesProviderDescriptionSection";

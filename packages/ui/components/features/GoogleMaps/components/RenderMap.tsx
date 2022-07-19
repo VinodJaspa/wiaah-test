@@ -3,6 +3,7 @@ import { LocationCords } from "api";
 import React, { CSSProperties } from "react";
 import { useRecoilValue } from "recoil";
 import { PreferedCurrencyState } from "state";
+import { AspectRatio } from "ui";
 import {
   onMapLocation,
   useGetFocusedMapItemId,
@@ -17,8 +18,11 @@ export const RenderMap: React.FC = () => {
   const { itemId } = useGetFocusedMapItemId();
   const currency = useRecoilValue(PreferedCurrencyState);
   const [map, setMap] = React.useState<HTMLElement>();
-  const [center, setCenter] = React.useState<LocationCords>({ lat: 0, lng: 0 });
-  const [zoom, setZoom] = React.useState<number>(5);
+  const [center, setCenter] = React.useState<LocationCords>({
+    lat: 45.464664,
+    lng: 9.18854,
+  });
+  const [zoom, setZoom] = React.useState<number>(12);
   const { locations: services } = useGetMapLocationsState();
   const { setLocations } = useSetMapLocationsState();
 

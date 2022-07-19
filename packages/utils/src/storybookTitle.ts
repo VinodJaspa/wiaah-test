@@ -29,6 +29,11 @@ export const storybookSearchInputs = storybookDataInputBlocksTitle + "Search /";
 // feature specific titles
 export const storybookFeaturesTitle = "UI / Features /";
 
+// google maps service
+
+export const storybookGoogleMapsTitle =
+  storybookFeaturesTitle + "Google maps /";
+
 // health center service
 export const storybookHealthCenterTitle =
   storybookFeaturesTitle + "Health Center /";

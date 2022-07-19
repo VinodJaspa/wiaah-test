@@ -1,4 +1,5 @@
 import { HealthCenterData, HealthCenterPractitioner } from "api";
+import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { WorkingDate } from "types";
@@ -7,16 +8,22 @@ import { Button, AspectRatio, WorkingDaysCalander } from "ui";
 export interface HealthCenterCardProps {
   centerData: HealthCenterPractitioner;
   workingDates: WorkingDate[];
+  vertical?: boolean;
 }
 
 export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
   centerData,
   workingDates,
+  vertical = false,
 }) => {
   const [hoursLimit, setHoursLimit] = React.useState<number>(2);
   const { t } = useTranslation();
   return (
-    <div className="flex gap-8 shadow p-4 justify-between rounded w-full min-w-[50rem]">
+    <div
+      className={`${
+        vertical ? "flex-col" : "flex-row min-w-[50rem]"
+      } flex gap-8 shadow justify-between rounded w-full `}
+    >
       <div className="flex flex-col justify-between gap-4">
         <div className="flex gap-4">
           <div className="w-32">

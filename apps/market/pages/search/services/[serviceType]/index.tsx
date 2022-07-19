@@ -36,7 +36,7 @@ const ServiceCategory: NextPage = () => {
           scrollable: false,
         }}
       >
-        <Container>
+        <Container className="px-4 py-8">
           <ServicesTypeSwitcher
             serviceType={serviceType}
             get={getServiceView.SEARCH}

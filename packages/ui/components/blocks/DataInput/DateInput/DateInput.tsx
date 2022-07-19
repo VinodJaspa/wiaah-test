@@ -276,9 +276,13 @@ export const DateInput: React.FC<DateInputProps> = ({
           </thead>
           <tbody className="">
             {DividedWeeks.map((week, weekIndex) => (
-              <tr key={weekIndex} className="flex items-center justify-between">
+              <tr
+                key={weekIndex}
+                className="flex items-center justify-between w-full"
+              >
                 {week.map(({ currentMonth, dayNum, date }, dayIndex) => (
                   <td
+                    className="w-full"
                     key={dayIndex}
                     onClick={() => {
                       if (!currentMonth) return;

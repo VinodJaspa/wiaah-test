@@ -9,6 +9,7 @@ import {
   ServicesRequestKeys,
   SERVICESTYPE_INDEXKEY,
   useGetServiceSearchFiltersQuery,
+  ServicesSearchResultsFiltersSidebar,
 } from "ui";
 
 export const ServicesSearchResultsView: React.FC = () => {
@@ -21,24 +22,27 @@ export const ServicesSearchResultsView: React.FC = () => {
   });
 
   return (
-    <div className="flex gap-8 p-4 w-full">
-      <Formik initialValues={{}} onSubmit={() => {}}>
-        {({ setFieldValue, values }) => {
-          return (
-            <Form className="flex flex-col w-64">
-              <DateInput
-                dayComponent={ResturantFindTableFilterDateDayComponent}
-              />
-              <SearchFilter
-                collapse
-                defaultOpen
-                fallbackProps={{ isLoading, isError }}
-                filters={Array.isArray(res) ? res : []}
-              />
-            </Form>
-          );
-        }}
-      </Formik>
+    <div className="flex flex-col md:flex-row gap-8 w-full">
+      <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
+        <Formik initialValues={{}} onSubmit={() => {}}>
+          {({ setFieldValue, values }) => {
+            return (
+              <Form className="flex flex-col w-full">
+                <DateInput
+                  className="w-[100%]"
+                  dayComponent={ResturantFindTableFilterDateDayComponent}
+                />
+                <SearchFilter
+                  collapse
+                  defaultOpen
+                  fallbackProps={{ isLoading, isError }}
+                  filters={Array.isArray(res) ? res : []}
+                />
+              </Form>
+            );
+          }}
+        </Formik>
+      </ServicesSearchResultsFiltersSidebar>
       <ServicesSearchList />
     </div>
   );
