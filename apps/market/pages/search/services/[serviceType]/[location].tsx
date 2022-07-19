@@ -10,13 +10,21 @@ import {
   ServicesTypeSwitcher,
 } from "utils";
 import { ServicesViewsList } from "@data";
-import { NotFound, Container } from "ui";
+import {
+  NotFound,
+  Container,
+  SERVICESTYPE_INDEXKEY,
+  useMutateSearchFilters,
+} from "ui";
 
 const filtered: NextPage = () => {
   const { t } = useTranslation();
   const router = useRouter();
+  const { addFilter } = useMutateSearchFilters();
   const serviceType = ExtractServiceTypeFromQuery(router.query);
-
+  if (ServicesViewsList.findIndex((list) => list.slug === serviceType) > -1) {
+    addFilter([SERVICESTYPE_INDEXKEY, serviceType]);
+  }
   return (
     <>
       <Head>

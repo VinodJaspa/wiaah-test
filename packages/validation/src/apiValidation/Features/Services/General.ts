@@ -2,7 +2,7 @@ import * as yup from "yup";
 import {
   PaginationReturnDataValidationSchema,
   locationValidationSchema,
-} from "validation";
+} from "../../../";
 
 export const generalServicesDataValidationSchema = yup.object().shape({
   description: yup.string().required(),

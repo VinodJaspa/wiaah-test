@@ -1,7 +1,7 @@
 import React from "react";
 import { HtmlDivProps } from "types";
 import { CallbackAfter } from "utils";
-import { AccordionContext, AccordionItemContext } from "ui/state";
+import { AccordionContext, AccordionItemContext } from "state";
 
 export interface AccordionPanelProps extends HtmlDivProps {}
 

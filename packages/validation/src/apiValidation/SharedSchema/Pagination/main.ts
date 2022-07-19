@@ -6,13 +6,12 @@ export const PaginationReturnDataValidationSchema = {
 };
 
 export function CreatePaginationValidationSchemaOf<
-  TSchema extends yup.AnyObjectSchema
->(schema: TSchema, isArray: boolean) {
+  TSchema extends yup.AnySchema
+>(schema: TSchema) {
   return yup
-    .object()
-    .required()
-    .shape({
+    .object({
       ...PaginationReturnDataValidationSchema,
-      data: isArray ? yup.array().of(schema) : schema,
-    });
+      data: schema,
+    })
+    .required();
 }

@@ -20,7 +20,7 @@ export const AccordionButton: React.FC<AccordionButtonProps> = ({
   return (
     <div
       {...props}
-      className={`${className || ""} relative`}
+      className={`${className || ""} relative cursor-pointer`}
       onClick={handleClick}
     >
       {children}

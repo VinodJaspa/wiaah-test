@@ -1,6 +1,6 @@
 import React, { CSSProperties } from "react";
 
-interface MapProps extends google.maps.MapOptions {
+export interface MapProps extends google.maps.MapOptions {
   style?: CSSProperties;
   className?: string;
   onClick?: (e: google.maps.MapMouseEvent) => void;

@@ -1,17 +1,15 @@
-import {
-  PaginationReturnDataValidationSchema,
-  PaginationDataIndexKey,
-} from "validation";
-import { object, string, number, array, ArraySchema } from "yup";
-import { PaginationConstants } from "../../../index";
+import { CreatePaginationValidationSchemaOf } from "../../../SharedSchema";
+import { object, string, array } from "yup";
 
-console.log("index key 2 ", typeof PaginationReturnDataValidationSchema);
 export const VehiclePickupLocationValidationSchema = object({
   address: string().required(),
   city: string().required(),
 }).required();
 
-export const VehiclePickupLocationsApiResponseValidationSchema = object({
-  ...PaginationReturnDataValidationSchema,
-  ["data"]: array().of(VehiclePickupLocationValidationSchema).min(0).required(),
-}).required();
+const arraySchema = array()
+  .of(VehiclePickupLocationValidationSchema)
+  .min(0)
+  .required();
+
+export const VehiclePickupLocationsApiResponseValidationSchema =
+  CreatePaginationValidationSchemaOf(arraySchema);

@@ -6,6 +6,8 @@ import {
   VehicleSearchList,
   useGetServiceSearchFiltersQuery,
   useSearchFilters,
+  DateInput,
+  ResturantFindTableFilterDateDayComponent,
 } from "ui";
 
 export const VehicleSearchResultsView: React.FC = () => {
@@ -17,6 +19,9 @@ export const VehicleSearchResultsView: React.FC = () => {
         {({ setFieldValue, values }) => {
           return (
             <Form className="flex flex-col">
+              <DateInput
+                dayComponent={ResturantFindTableFilterDateDayComponent}
+              />
               <SearchFilter
                 collapse
                 defaultOpen

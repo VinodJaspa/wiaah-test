@@ -1,3 +1,3 @@
 export * from "./Features";
-export * from "./Shared";
-export * from "./constants"
+export * from "./SharedSchema";
+export * from "./constants";

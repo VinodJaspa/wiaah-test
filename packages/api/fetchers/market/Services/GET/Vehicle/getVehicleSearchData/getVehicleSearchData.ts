@@ -6,7 +6,6 @@ import {
 import { AsyncReturnType } from "types";
 import {
   CheckValidation,
-  TypeOf,
   InferType,
   VehicleSearchDataValidationSchema,
   VehicleSearchApiResponseValidationSchema,
@@ -64,10 +63,9 @@ export const getVehicleSearchDataFetcher = async (
     })),
   };
 
-  CheckValidation(
+  return await CheckValidation(
     VehicleSearchApiResponseValidationSchema,
     data,
     InValidDataSchemaError
   );
-  return data;
 };

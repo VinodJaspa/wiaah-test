@@ -51,7 +51,7 @@ export const CarouselPreviewer: FC<CarouselPreviewerProps> = ({
       return (
         <div
           style={containerStyles}
-          className={`no-scroll m-2 mx-2 flex h-fit w-full overflow-x-scroll px-2`}
+          className={`no-scroll noScrollBar m-2 mx-2 flex h-fit w-full overflow-x-scroll px-2`}
         >
           <div style={subContainerStyles} className="flex h-full w-fit gap-4">
             {components.map(({ Component }, i) => (
@@ -73,7 +73,7 @@ export const CarouselPreviewer: FC<CarouselPreviewerProps> = ({
       return (
         <div
           style={containerStyles}
-          className={`no-scroll flex h-full w-24 overflow-y-scroll`}
+          className={`no-scroll noScrollbar flex h-full w-24 overflow-y-hidden`}
         >
           <div
             style={subContainerStyles}

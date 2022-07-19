@@ -1,4 +1,4 @@
-import { PaginationReturnDataValidationSchema } from "validation";
+import { PaginationReturnDataValidationSchema } from "../../../SharedSchema";
 import { object, string, number, boolean, array, mixed, InferType } from "yup";
 
 export const PaginationDataIndexKey = "data";
@@ -32,8 +32,6 @@ export const VehicleSearchDataValidationSchema = object({
     .min(0)
     .required(),
 }).required();
-
-console.log("index key", PaginationDataIndexKey);
 
 export const VehicleSearchApiResponseValidationSchema = object({
   ...PaginationReturnDataValidationSchema,

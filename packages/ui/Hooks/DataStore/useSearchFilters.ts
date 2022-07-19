@@ -1,5 +1,5 @@
 import { SearchFilterValue } from "api";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { ServicesSearchFiltersState } from "state";
 import { filtersTokens } from "../../constants";
 
@@ -23,4 +23,16 @@ export const useSearchFilters = () => {
     addFilter,
     getFiltersSearchQuery,
   };
+};
+
+export const useMutateSearchFilters = () => {
+  const setFilters = useSetRecoilState(ServicesSearchFiltersState);
+
+  const addFilter = (filter: [string, SearchFilterValue]) => {
+    setFilters((state) => {
+      return { ...state, [filter[0]]: filter[1] };
+    });
+  };
+
+  return { addFilter };
 };

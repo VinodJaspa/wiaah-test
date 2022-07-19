@@ -1,5 +1,5 @@
 import React from "react";
-import { AccordionContext, AccordionKeyType } from "ui/state";
+import { AccordionContext, AccordionKeyType } from "state";
 
 export interface AccordionProps {
   controled?: boolean;

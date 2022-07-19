@@ -1,5 +1,5 @@
 import { object, array } from "yup";
-import { CreatePaginationValidationSchemaOf } from "../../../Shared";
+import { CreatePaginationValidationSchemaOf } from "../../../SharedSchema";
 import { HealthCenterSpecialtySearchValidationSchema } from "./HealthCenterSpecialty.schema";
 import { HealthCenterPractitionerSearchDataValidationSchema } from "./HealthCenterPractitionerData.schema";
 

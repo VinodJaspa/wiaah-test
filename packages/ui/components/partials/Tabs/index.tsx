@@ -31,7 +31,7 @@ const TabsContext = React.createContext<TabsContextValue>({
 });
 
 export interface TabsProps {
-  children: MaybeFn<TabsContextValue>;
+  // children: MaybeFn<TabsContextValue>;
   onTabChange?: (tabIdx: number) => any;
   currentTabIdx?: number;
 }
@@ -138,10 +138,7 @@ export interface TabTitleProps extends Omit<HtmlDivProps, "children"> {
   TabKey?: string | number;
   children: TabTitleChildrenType;
 }
-export const TabTitle: React.FC<TabTitleProps> = ({
-  children,
-  TabKey = randomNum(13465433),
-}) => {
+export const TabTitle: React.FC<TabTitleProps> = ({ children, TabKey }) => {
   const { addTitle } = React.useContext(TabsContext);
 
   React.useEffect(() => {

@@ -1,15 +1,10 @@
 import React from "react";
-import { Rate } from "antd";
-import { Select } from "antd";
 import { Button } from "@chakra-ui/react";
-import { FlexStack, WishListIcon } from "ui";
-import { ShoppingCartItem } from "types";
+import { FlexStack, WishListIcon, Rate, Select, SelectOption } from "ui";
 import { useShoppingCart } from "ui/Hooks/useShoppingCart";
 import { useCartSummary, useProductDescTabs } from "ui/Hooks";
 import { CartSummaryItem } from "types";
 import { useTranslation } from "react-i18next";
-
-const { Option } = Select;
 
 export interface ProductProps {
   id: string;
@@ -73,7 +68,7 @@ export const ProductViewRight: React.FC<ProductProps> = ({
             onClick={() => ChangeTab("reviews")}
             className="inline-flex cursor-pointer items-center"
           >
-            <Rate disabled allowHalf value={rating} />
+            <Rate allowHalf rating={rating} />
           </a>
           <div className="mx-3 h-5 w-px bg-gray-300"></div>
           <span className="text-gray-500">
@@ -125,12 +120,11 @@ export const ProductViewRight: React.FC<ProductProps> = ({
         <div className="mb-4 w-full">
           <div className="mb-1 font-light">{t("Size", "Size")}</div>
           <Select
-            size="large"
             id="cityselect"
             className="w-full"
             placeholder={t("Size", "Size")}
           >
-            <Option value="small">{t("Small", "Small")}</Option>
+            <SelectOption value="small">{t("Small", "Small")}</SelectOption>
           </Select>
         </div>
         <FlexStack fullWidth={true} horizontalSpacingInRem={0.5}>

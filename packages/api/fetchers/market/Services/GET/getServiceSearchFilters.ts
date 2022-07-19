@@ -1,5 +1,6 @@
 import { FormatedSearchableFilter } from "../../../../";
 import { SERVICESTYPE_INDEXKEY } from "ui";
+import { ServicesType } from "types";
 export type FilterType = "select" | "radio" | "check";
 export type FilterDisplayType = "text" | "rate";
 
@@ -362,15 +363,208 @@ const generalFilters: SearchFilterType[] = [
   },
 ];
 
+const VehicleFilters: SearchFilterType[] = [
+  {
+    filterTitle: "Vehilce type",
+    filterDisplay: "text",
+    filterSlug: "vehicle_type",
+    filterType: "check",
+    filterOptions: [
+      {
+        optName: "Boat",
+        optSlug: "boat",
+      },
+      {
+        optName: "Car",
+        optSlug: "car",
+      },
+      {
+        optName: "Bike",
+        optSlug: "bike",
+      },
+    ],
+  },
+  {
+    filterTitle: "Security deposit",
+    filterSlug: "security_deposit",
+    filterDisplay: "text",
+    filterType: "check",
+    filterOptions: [
+      {
+        optName: "No",
+        optSlug: "0",
+      },
+      {
+        optName: "$100",
+        optSlug: "100",
+      },
+      {
+        optName: "$200",
+        optSlug: "200",
+      },
+    ],
+  },
+  {
+    filterTitle: "Passenger number",
+    filterSlug: "passenger_number",
+    filterType: "radio",
+    filterDisplay: "text",
+    filterOptions: [
+      {
+        optName: "0",
+        optSlug: "0",
+      },
+      {
+        optName: "1",
+        optSlug: "1",
+      },
+      {
+        optName: "2",
+        optSlug: "2",
+      },
+      {
+        optName: "3",
+        optSlug: "3",
+      },
+      {
+        optName: "4",
+        optSlug: "4",
+      },
+      {
+        optName: "5",
+        optSlug: "5",
+      },
+    ],
+  },
+  {
+    filterTitle: "Number of seat",
+    filterSlug: "number_of_seat",
+    filterType: "radio",
+    filterDisplay: "text",
+    filterOptions: [
+      {
+        optName: "0",
+        optSlug: "0",
+      },
+      {
+        optName: "1",
+        optSlug: "1",
+      },
+      {
+        optName: "2",
+        optSlug: "2",
+      },
+      {
+        optName: "3",
+        optSlug: "3",
+      },
+      {
+        optName: "4",
+        optSlug: "4",
+      },
+      {
+        optName: "5",
+        optSlug: "5",
+      },
+    ],
+  },
+  {
+    filterTitle: "Vehicle options",
+    filterSlug: "vehicle_options",
+    filterType: "check",
+    filterDisplay: "text",
+    filterOptions: [
+      {
+        optName: "Aircon",
+        optSlug: "aircon",
+      },
+      {
+        optName: "Automatic",
+        optSlug: "automatic",
+      },
+      {
+        optName: "Estate car",
+        optSlug: "estate_car",
+      },
+      {
+        optName: "Manual transmission",
+        optSlug: "manual_transmission",
+      },
+      {
+        optName: "Air conditioning",
+        optSlug: "air_conditioning",
+      },
+      {
+        optName: "Petrol",
+        optSlug: "petrol",
+      },
+    ],
+  },
+  {
+    filterTitle: "Price range",
+    filterSlug: "price_range",
+    filterType: "range",
+    maxRange: 15000,
+    minRange: 15,
+  },
+  {
+    filterTitle: "Rating",
+    filterSlug: "rating",
+    filterDisplay: "rate",
+    filterType: "check",
+    filterOptions: [
+      {
+        optName: "1",
+        optSlug: "1",
+      },
+      {
+        optName: "2",
+        optSlug: "2",
+      },
+      {
+        optName: "3",
+        optSlug: "3",
+      },
+      {
+        optName: "4",
+        optSlug: "4",
+      },
+      {
+        optName: "5",
+        optSlug: "5",
+      },
+    ],
+  },
+  {
+    filterTitle: "Cancellation option",
+    filterSlug: "cancellation_option",
+    filterDisplay: "text",
+    filterType: "check",
+    filterOptions: [
+      {
+        optName: "Free cancellation",
+        optSlug: "free_cancellation",
+      },
+      {
+        optName: "Paid cancellation",
+        optSlug: "paid_cancellation",
+      },
+    ],
+  },
+];
+
 export const getServiceSearchFiltersFetcher = async (
   filter: FormatedSearchableFilter
 ): Promise<SearchFilterType[]> => {
-  switch (filter[SERVICESTYPE_INDEXKEY]) {
+  switch (filter[SERVICESTYPE_INDEXKEY] as ServicesType) {
     case "health_center":
       return HealthCenterFilters;
 
     case "general":
       return generalFilters;
+
+    case "vehicle":
+      return VehicleFilters;
     default:
       return filters;
   }
