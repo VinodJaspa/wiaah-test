@@ -40,3 +40,5 @@ export * from "./ClockIcon";
 export * from "./CarWindowIcon";
 export * from "./GPSIcon";
 export * from "./OpenFilterIcon";
+export * from "./TelephoneIcon";
+export * from "./EmailIcon";

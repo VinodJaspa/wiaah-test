@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { ServicesProviderLocationWorkData } from "api";
 import {
   Accordion,
@@ -8,16 +8,22 @@ import {
   WrappedMap,
   Marker,
   AspectRatio,
+  EmailIcon,
+  TelephoneIcon,
+  LocationIcon,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { ArrElement } from "types";
 
 export interface ServicesProviderLocationWorkDetailsSectionProps
-  extends ServicesProviderLocationWorkData {}
+  extends ServicesProviderLocationWorkData {
+  ref?: React.RefObject<HTMLDivElement>;
+  mapRef?: React.RefObject<HTMLDivElement>;
+}
 
 export const ServicesProviderLocationWorkDetailsSection: React.FC<
   ServicesProviderLocationWorkDetailsSectionProps
-> = ({ location, telephone, workingDays }) => {
+> = ({ location, telephone, workingDays, email, ref, mapRef }) => {
   const { t } = useTranslation();
 
   const checkIsWorkingDay = React.useCallback(
@@ -34,15 +40,17 @@ export const ServicesProviderLocationWorkDetailsSection: React.FC<
     []
   );
   return (
-    <div className="flex flex-col gap-8 w-[min(100%,60rem)]">
-      <Accordion>
+    <div className="flex flex-col gap-8 w-full">
+      <Accordion defaultOpenItems={[...Array(5)].map((_, i) => `${i + 1}`)}>
         <AccordionItem itemkey={"1"}>
           <AccordionButton>
-            <p>{t("address")}</p>
+            <p>{t("Address")}</p>
           </AccordionButton>
-          <AccordionPanel className="pl-8 p-4">
+          <AccordionPanel className="py-4 flex gap-2 items-center">
+            <LocationIcon />
             <p className="underline font-bold">
-              {location.address} {location.postalCode} {location.city}
+              {location.address} / {location.postalCode} {location.city} /{" "}
+              {location.country}
             </p>
           </AccordionPanel>
         </AccordionItem>
@@ -50,15 +58,25 @@ export const ServicesProviderLocationWorkDetailsSection: React.FC<
           <AccordionButton>
             <p>{t("Telephone")}</p>
           </AccordionButton>
-          <AccordionPanel className="pl-8 p-4">
+          <AccordionPanel className="py-4 flex gap-2 items-center">
+            <TelephoneIcon />
             <p className="underline font-bold">{telephone}</p>
           </AccordionPanel>
         </AccordionItem>
         <AccordionItem itemkey={"3"}>
           <AccordionButton>
+            <p>{t("Email")}</p>
+          </AccordionButton>
+          <AccordionPanel className="py-4 flex gap-2 items-center">
+            <EmailIcon />
+            <p className="underline font-bold">{email}</p>
+          </AccordionPanel>
+        </AccordionItem>
+        <AccordionItem itemkey={"4"}>
+          <AccordionButton>
             <p>{t("Working hours")}</p>
           </AccordionButton>
-          <AccordionPanel className="pl-8 p-4">
+          <AccordionPanel className="py-4">
             {workingDays.map((day, i) => (
               <div
                 key={i}
@@ -74,11 +92,11 @@ export const ServicesProviderLocationWorkDetailsSection: React.FC<
             ))}
           </AccordionPanel>
         </AccordionItem>
-        <AccordionItem itemkey={"4"}>
+        <AccordionItem ref={mapRef ?? undefined} itemkey={"5"}>
           <AccordionButton>
             <p>{t("Show on map")}</p>
           </AccordionButton>
-          <AccordionPanel className="pl-8 p-4 w-full">
+          <AccordionPanel className="py-4 w-full">
             <AspectRatio ratio={3 / 6}>
               <WrappedMap
                 className="w-full h-full"

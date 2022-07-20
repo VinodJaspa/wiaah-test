@@ -16,6 +16,7 @@ export const PresntationMediaValidationSchema = object({
 });
 
 export const ServicesProviderDataValidationSchema = object({
+  id: string().required(),
   thumbnail: string().required(),
   name: string().required(),
   rating: number().min(0).max(5).required(),
@@ -23,6 +24,7 @@ export const ServicesProviderDataValidationSchema = object({
   reviewsCount: number().min(0).required(),
   heroImages: array().of(PresntationMediaValidationSchema).required(),
   location: locationValidationSchema,
+  email: string().email().required(),
   telephone: Phone().required(),
   proprtyType: string().required(),
   pricePerNight: number().required(),

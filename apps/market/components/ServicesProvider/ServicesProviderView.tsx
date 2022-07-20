@@ -11,14 +11,17 @@ import {
   Divider,
   Tabs,
   TabItem,
-  TabList,
   TabTitle,
   TabsHeader,
   ServicesProviderLocationWorkDetailsSection,
   ServiceRightView,
   ServicesProviderDescriptionSection,
   ServiceReservastion,
+  Button,
+  Reviews,
 } from "ui";
+import { useElementScrolling, useScrollTo } from "utils";
+import { reviews } from "placeholder";
 
 export const ServicesProviderView: React.FC = () => {
   const { filters } = useSearchFilters();
@@ -27,6 +30,16 @@ export const ServicesProviderView: React.FC = () => {
     isError,
     isLoading,
   } = useGetServicesProviderQuery(filters);
+  const reservationRef = React.useRef<HTMLDivElement>(null);
+  const mapRef = React.useRef<HTMLDivElement>(null);
+  const LocationSectionRef = React.useRef<HTMLDivElement>(null);
+
+  const { ScrollTo } = useScrollTo([
+    { key: "map", ref: mapRef },
+    { key: "locationSection", ref: LocationSectionRef },
+  ]);
+
+  const { passed, y } = useElementScrolling(reservationRef);
   const { t } = useTranslation();
 
   return (
@@ -35,7 +48,7 @@ export const ServicesProviderView: React.FC = () => {
         {res ? <ServicesProviderHeader {...res.data} /> : null}
       </SpinnerFallback>
       <Divider />
-      <div className="w-full">
+      <div className="w-full relative">
         <AspectRatio ratio={5 / 11.12}>
           <ProductImageGallery
             images={
@@ -52,21 +65,17 @@ export const ServicesProviderView: React.FC = () => {
             }
           />
         </AspectRatio>
+        <Button
+          onClick={() => ScrollTo("map")}
+          colorScheme="white"
+          className="absolute left-36 bg-white text-black  px-4 py-2 rounded-xl bottom-8"
+        >
+          {t("Show on map")}
+        </Button>
       </div>
       <div className="flex flex-col gap-4">
         <Tabs>
           <TabsHeader className="justify-center" />
-          <div className="flex gap-4">
-            <TabList className="flex justify-center" />
-            <div className="w-full gap-4 flex">
-              <div className="w-full">
-                <ServiceRightView serviceId="123" />
-              </div>
-              <div className="w-full">
-                <ServiceReservastion />
-              </div>
-            </div>
-          </div>
           {ServicesProviderTabs.map(({ component, name }, i) => (
             <React.Fragment key={i}>
               <TabTitle TabKey={i}>
@@ -80,11 +89,36 @@ export const ServicesProviderView: React.FC = () => {
             </React.Fragment>
           ))}
         </Tabs>
-        <span className="w-full flex justify-center">
-          {res ? (
-            <ServicesProviderLocationWorkDetailsSection {...res.data} />
-          ) : null}
-        </span>
+        <div className="flex gap-4">
+          <div className="flex flex-col w-full gap-4">
+            <div className="w-full gap-4 flex">
+              <ServicesProviderDescriptionSection />
+            </div>
+            {res ? (
+              <div ref={LocationSectionRef} className="w-full">
+                <ServicesProviderLocationWorkDetailsSection {...res.data} />
+              </div>
+            ) : null}
+            <div>
+              <Reviews id={res?.data.id || ""} reviews={reviews} />
+            </div>
+          </div>
+          <div
+            ref={reservationRef}
+            className={`w-[min(30rem,100%)] relative h-full`}
+          >
+            <div
+              style={{
+                top: `${Math.abs(0) + 16 || 0}px`,
+              }}
+              className={`${
+                passed ? `absolute left-0` : ""
+              } w-full h-fit transition-all`}
+            >
+              <ServiceReservastion />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -92,7 +126,7 @@ export const ServicesProviderView: React.FC = () => {
 
 const ServicesProviderTabs: TabType[] = [
   {
-    component: <ServicesProviderDescriptionSection />,
+    component: <div />,
     name: "Description",
   },
   {

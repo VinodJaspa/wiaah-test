@@ -18,6 +18,7 @@ export interface SelectProps<SelectOptionType = string>
   placeholder?: string;
   value?: string;
   flushed?: boolean;
+  label?: string;
 }
 
 export function Select<ValueType = string>({
@@ -27,6 +28,7 @@ export function Select<ValueType = string>({
   value,
   flushed,
   onOptionSelect,
+  label,
   ...props
 }: SelectProps<ValueType>) {
   const ph = placeholder ? (
@@ -91,12 +93,15 @@ export function Select<ValueType = string>({
         data-testid="SelectBar"
         className="flex w-full p-2 items-center justify-between"
       >
-        <div
-          data-testid="SelectedOption"
-          className="cursor-pointer w-full flex items-center gap-2 whitespace-nowrap "
-        >
-          {selectedOption &&
-            React.cloneElement(selectedOption, { selectable: false })}
+        <div className="flex flex-col gap-1">
+          {label ? <p className="font-bold px-2">{label}</p> : null}
+          <div
+            data-testid="SelectedOption"
+            className="cursor-pointer w-full flex items-center gap-2 whitespace-nowrap "
+          >
+            {selectedOption &&
+              React.cloneElement(selectedOption, { selectable: false })}
+          </div>
         </div>
         <ArrowDownIcon className="text-xl" />
       </div>

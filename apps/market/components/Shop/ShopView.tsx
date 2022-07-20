@@ -4,12 +4,12 @@ import { GridContainerPager } from "ui/components/blocks/GridContainerPager";
 import { Reviews } from "ui/components/blocks/Reviews";
 import { ShopProductFilter } from "ui/components/blocks/products/ShopProductFilter";
 import { ProductCard } from "ui/components/blocks/ProductCard";
-import { ProductDetails } from "ui/types/products/ProductDetail.interface";
+import { ProductDetails } from "types";
 import { categories } from "ui/placeholder/categories";
 import { Shop, ShopProfile } from "./ShopProfile";
 import { BuyerCommentProps } from "ui/components/blocks/BuyerComment";
 import { useRouter } from "next/router";
-import { ProductTypes } from "types/market/Product";
+import { ProductTypes } from "types";
 import { shopRouting } from "uris";
 import { useTranslation } from "react-i18next";
 

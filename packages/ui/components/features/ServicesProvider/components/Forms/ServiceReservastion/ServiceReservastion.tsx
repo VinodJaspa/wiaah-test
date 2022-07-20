@@ -36,13 +36,13 @@ export const ServiceReservastion: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="p-4 rounded-lg shadow h-full justify-between border-[1px] flex flex-col border-gray-300">
+    <div className="p-4 bg-white rounded-lg gap-16 shadow h-full justify-between border-[1px] flex flex-col border-gray-300">
       <div className="flex flex-col gap-4">
         <div className="flex flex-col rounded-lg border-2 border-gray-300">
           <div className="flex ">
             <Menu className="w-full">
               <MenuButton>
-                <div className="flex w-full flex-col p-4 border-b-gray-300 border-r-gray-300 border-b-2 border-r-2">
+                <div className="flex w-full flex-col px-4 py-2 border-b-gray-300 border-r-gray-300 border-b-2 border-r-2">
                   <p className="flex flex-col uppercase font-bold">
                     {t("check-in")}
                   </p>
@@ -64,7 +64,7 @@ export const ServiceReservastion: React.FC = () => {
             </Menu>
             <Menu className="w-full">
               <MenuButton>
-                <div className="flex flex-col w-full border-b-2 border-b-gray-300 p-4">
+                <div className="flex flex-col w-full border-b-2 border-b-gray-300 px-4 py-2">
                   <p className="flex flex-col uppercase font-bold">
                     {t("check-out")}
                   </p>
@@ -85,9 +85,8 @@ export const ServiceReservastion: React.FC = () => {
               </MenuList>
             </Menu>
           </div>
-          <div className="flex flex-col py-2">
-            <p className="font-bold px-4">{t("guests")}</p>
-            <Select className="border-[0px]">
+          <div className="flex flex-col">
+            <Select label={t("GUESTS")} className="border-[0px]">
               {[...Array(10)].map((_, i) => (
                 <SelectOption value={i + 1}>
                   <p>
@@ -98,7 +97,7 @@ export const ServiceReservastion: React.FC = () => {
             </Select>
           </div>
         </div>
-        <Button>{t("Reserve")}</Button>
+        <Button className="py-4">{t("Book now")}</Button>
       </div>
       <div className="flex flex-col">
         <SpinnerFallback isLoading={isLoading} isError={isError}>

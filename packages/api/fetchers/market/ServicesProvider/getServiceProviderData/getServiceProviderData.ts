@@ -19,7 +19,7 @@ export type ServicesProviderHeaderData = Pick<
 
 export type ServicesProviderLocationWorkData = Pick<
   ServicesProviderData,
-  "location" | "workingDays" | "telephone"
+  "location" | "workingDays" | "telephone" | "email"
 >;
 
 export type ServicesProviderApiResponse = InferType<
@@ -35,6 +35,7 @@ export const getServicesProviderDataFetcher = async (
 ): Promise<ServicesProviderApiResponse> => {
   const data: getServicesProviderDataFetcherResponse = {
     data: {
+      id: "testid",
       name: "ibis Paris Maine Montparnasse 14th",
       rating: 4.1,
       reviewsCount: 1115,
@@ -93,10 +94,11 @@ export const getServicesProviderDataFetcher = async (
           type: "image",
         },
       ],
+      email: "Example@email.com",
       location: {
         address: "Rue du marche 34",
         city: "Geneve",
-        county: "switzerland",
+        country: "switzerland",
         cords: {
           lat: 45.464664,
           lng: 9.18854,
