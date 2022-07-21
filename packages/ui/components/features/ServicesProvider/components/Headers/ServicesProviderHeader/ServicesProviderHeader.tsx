@@ -42,10 +42,16 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
             <p>{`12:00`} Departure</p>
           </div>
         </div>
-        <Button className="h-fit">{t("Contact")}</Button>
+        <div className="flex flex-col justify-between gap-1">
+          <p
+            onClick={() => {}}
+            className="text-primary flex justify-center items-center w-full h-8 "
+          >
+            {t("Follow")}
+          </p>
+          <Button className="h-fit">{t("Contact")}</Button>
+        </div>
       </div>
-
-      <Button className="h-fit">{t("Follow")}</Button>
     </div>
   );
 };
