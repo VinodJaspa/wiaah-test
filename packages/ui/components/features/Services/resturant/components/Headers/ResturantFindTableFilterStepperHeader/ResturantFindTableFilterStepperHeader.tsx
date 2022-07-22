@@ -12,24 +12,24 @@ export interface ResturantFindTableFilterStepperHeaderProps {
   currentStepIdx: number;
 }
 
-const steps: { icon: React.ReactNode; name: string }[] = [
-  {
-    icon: CalenderIcon,
-    name: "Date",
-  },
-  {
-    icon: ClockIcon,
-    name: "Time",
-  },
-  {
-    icon: PersonIcon,
-    name: "Guests",
-  },
-];
-
 export const ResturantFindTableFilterStepperHeader: React.FC<
   ResturantFindTableFilterStepperHeaderProps
 > = ({ currentStepIdx = 0 }) => {
+  const steps: { icon: React.ReactNode; name: string }[] = [
+    {
+      icon: CalenderIcon,
+      name: "Date",
+    },
+    {
+      icon: ClockIcon,
+      name: "Time",
+    },
+    {
+      icon: PersonIcon,
+      name: "Guests",
+    },
+  ];
+
   return (
     <div className="relative overflow-hidden h-8 flex items-center w-full">
       <div className="absolute z-[1] items-center justify-evenly w-full flex ">

@@ -2,13 +2,14 @@ import React from "react";
 import { ServicesType, ServiceViewListItem } from "types";
 import { runIfFn } from "../runIfFun";
 
-export type getServiceViewType = "search" | "resaults" | "list";
-type GetServiceViewKeyType = "SEARCH" | "RESAULTS" | "LIST";
+export type getServiceViewType = "search" | "resaults" | "list" | "details";
+type GetServiceViewKeyType = "SEARCH" | "RESAULTS" | "LIST" | "DETAILS";
 export const getServiceView: Record<GetServiceViewKeyType, getServiceViewType> =
   {
     SEARCH: "search",
     RESAULTS: "resaults",
     LIST: "list",
+    DETAILS: "details",
   };
 
 export const ServicesTypeSwitcher: React.FC<{
@@ -28,8 +29,9 @@ export const ServicesTypeSwitcher: React.FC<{
           ? servicesList[serviceIdx].searchResaults
           : get === "list"
           ? servicesList[serviceIdx].searchList
-          : null,
-        {}
+          : get === "details"
+          ? servicesList[serviceIdx].details
+          : null
       )
     : fallbackComponent
     ? runIfFn(fallbackComponent, {})

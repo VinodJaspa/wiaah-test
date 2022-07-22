@@ -1,8 +1,7 @@
+import { useBoundedCountState } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Select,
-  SelectOption,
   DateInput,
   Menu,
   MenuList,
@@ -14,6 +13,12 @@ import {
   useSearchFilters,
   SpinnerFallback,
   PriceDisplay,
+  MinusIcon,
+  PlusIcon,
+  InputGroup,
+  InputSuggestions,
+  Input,
+  ArrowDownIcon,
 } from "ui";
 import { getDaysDiff } from "utils";
 
@@ -42,7 +47,7 @@ export const ServiceReservastion: React.FC = () => {
           <div className="flex ">
             <Menu className="w-full">
               <MenuButton>
-                <div className="flex w-full flex-col px-4 py-2 border-b-gray-300 border-r-gray-300 border-b-2 border-r-2">
+                <div className="cursor-pointer flex w-full flex-col px-4 py-2 border-b-gray-300 border-r-gray-300 border-b-2 border-r-2">
                   <p className="flex flex-col uppercase font-bold">
                     {t("check-in")}
                   </p>
@@ -64,7 +69,7 @@ export const ServiceReservastion: React.FC = () => {
             </Menu>
             <Menu className="w-full">
               <MenuButton>
-                <div className="flex flex-col w-full border-b-2 border-b-gray-300 px-4 py-2">
+                <div className="cursor-pointer flex flex-col w-full border-b-2 border-b-gray-300 px-4 py-2">
                   <p className="flex flex-col uppercase font-bold">
                     {t("check-out")}
                   </p>
@@ -86,18 +91,43 @@ export const ServiceReservastion: React.FC = () => {
             </Menu>
           </div>
           <div className="flex flex-col">
-            <Select label={t("GUESTS")} className="border-[0px]">
-              {[...Array(10)].map((_, i) => (
-                <SelectOption value={i + 1}>
-                  <p>
-                    {i + 1} {t("guest")}
-                  </p>
-                </SelectOption>
-              ))}
-            </Select>
+            {(() => {
+              const [guests, setGuests] = React.useState<number>(0);
+              return (
+                <InputGroup>
+                  {({ setFocused }) => (
+                    <p
+                      onClick={() => setFocused(true)}
+                      className="relative cursor-pointer w-full font-bold text-lg uppercase p-4"
+                    >
+                      {guests} {t("guests")}
+                      <ArrowDownIcon className="absolute top-1/2 right-4 text-lg -translate-y-1/2" />
+                    </p>
+                  )}
+                  <InputSuggestions className="shadow border border-gray-200 overflow-x-hidden thinScroll">
+                    <CountInput
+                      name={t("Adults")}
+                      description={`${t("Age")} 13+`}
+                      max={4}
+                      onCountChange={() => {}}
+                    />
+                    <CountInput
+                      name={t("Children")}
+                      description={`${t("Ages")} 2-12`}
+                      onCountChange={() => {}}
+                    />
+                    <CountInput
+                      name={t("Infants")}
+                      description={`${t("Under")} 2`}
+                      onCountChange={() => {}}
+                    />
+                  </InputSuggestions>
+                </InputGroup>
+              );
+            })()}
           </div>
         </div>
-        <Button className="py-4">{t("Book now")}</Button>
+        <Button className="py-4 mx-1">{t("Book now")}</Button>
       </div>
       <div className="flex flex-col">
         <SpinnerFallback isLoading={isLoading} isError={isError}>
@@ -127,6 +157,45 @@ export const ServiceReservastion: React.FC = () => {
             <PriceDisplay priceObject={{ amount: total }} />
           </HStack>
         </SpinnerFallback>
+      </div>
+    </div>
+  );
+};
+
+export interface CountInputProps {
+  name: string;
+  description: string;
+  onCountChange: () => any;
+  min?: number;
+  max?: number;
+}
+
+export const CountInput: React.FC<CountInputProps> = ({
+  description,
+  name,
+  onCountChange,
+  max = 10,
+  min = 0,
+}) => {
+  const { count, decrement, increment } = useBoundedCountState(min, max);
+  return (
+    <div className="text-xl p-4 flex items-center w-full bg-white justify-between">
+      <div className="flex flex-col gap-1">
+        <p className="font-bold">{name || ""}</p>
+        <p>{description || ""}</p>
+      </div>
+      <div className="text-4xl flex items-center gap-2">
+        <MinusIcon
+          className={`${count === min ? "opacity-50" : ""}`}
+          onClick={() => decrement()}
+        />
+        <p className="w-10 select-none text-center whitespace-nowrap">
+          {count}
+        </p>
+        <PlusIcon
+          className={`${count === max ? "opacity-50" : ""}`}
+          onClick={() => increment()}
+        />
       </div>
     </div>
   );

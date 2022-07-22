@@ -4,6 +4,7 @@ import { AccordionContext, AccordionKeyType } from "state";
 export interface AccordionProps {
   controled?: boolean;
   isLazy?: boolean;
+  defaultOpen?: boolean;
   defaultOpenItems?: AccordionKeyType[];
 }
 
@@ -11,6 +12,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   controled,
   isLazy,
   defaultOpenItems,
+  defaultOpen = false,
   ...props
 }) => {
   const [itemsOpen, setItemsOpen] = React.useState<AccordionKeyType[]>(
@@ -57,6 +59,7 @@ export const Accordion: React.FC<AccordionProps> = ({
         isItemOpen,
         openItem,
         toggleItem,
+        defaultOpen,
       }}
       {...props}
     />

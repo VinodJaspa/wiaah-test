@@ -1,20 +1,23 @@
 import { FormatedSearchableFilter } from "src";
 import { AsyncReturnType } from "types";
-import { PopularAmenitiesSectionProps } from "ui";
 import {
   InferType,
   CheckValidation,
-  ServicesProviderDataValidationSchema,
-  ServicesProviderApiResponseValidationSchema,
-  PaginationConstants,
+  HotelServiceDetailsValidationSchema,
+  HotelServiceDetailsApiResponseValidationSchema,
   PopularAmenitiesValidationSchema,
   HotelServiceProviderRoomValidationSchema,
+  PresntationMediaValidationSchema,
 } from "validation";
 
 export type AmenitieType = InferType<typeof PopularAmenitiesValidationSchema>;
 
 export type ServicesProviderData = InferType<
-  typeof ServicesProviderDataValidationSchema
+  typeof HotelServiceDetailsValidationSchema
+>;
+
+export type PresntationMediaType = InferType<
+  typeof PresntationMediaValidationSchema
 >;
 
 export type ServicesProviderHeaderData = Pick<
@@ -22,17 +25,25 @@ export type ServicesProviderHeaderData = Pick<
   "name" | "rating" | "reviewsCount" | "thumbnail" | "travelPeriod"
 >;
 
-export type ServicesProviderLocationWorkData = Pick<
+export type ServiceWorkingDays = Pick<ServicesProviderData, "workingDays">;
+
+export type ServiceReachOutType = Pick<
   ServicesProviderData,
-  "location" | "workingDays" | "telephone" | "email" | "policies" | "rooms"
+  "email" | "telephone" | "location"
 >;
+
+export type ServiceLocation = Pick<ServicesProviderData, "location">;
+
+export type ServicePoliciesType = Pick<ServicesProviderData, "policies">;
+
+export type HotelRoomsType = Pick<ServicesProviderData, "rooms">;
 
 export type HotelRoomDataType = InferType<
   typeof HotelServiceProviderRoomValidationSchema
 >;
 
 export type ServicesProviderApiResponse = InferType<
-  typeof ServicesProviderApiResponseValidationSchema
+  typeof HotelServiceDetailsApiResponseValidationSchema
 >;
 
 export type getServicesProviderDataFetcherResponse = AsyncReturnType<
@@ -49,11 +60,10 @@ export const getServicesProviderDataFetcher = async (
       rating: 4.1,
       reviewsCount: 1115,
       thumbnail: "/shop-2.jpeg",
-      proprtyType: "Appartement",
       description:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting",
-
-      heroImages: [
+      proprtyType: "hotel",
+      presintations: [
         {
           src: "https://www.swissotel.com/assets/0/92/3686/3768/3770/6442451433/ae87da19-9f23-450a-8927-6f4c700aa104.jpg",
           thumbnail:
@@ -330,5 +340,5 @@ export const getServicesProviderDataFetcher = async (
     },
   };
 
-  return CheckValidation(ServicesProviderApiResponseValidationSchema, data);
+  return CheckValidation(HotelServiceDetailsApiResponseValidationSchema, data);
 };

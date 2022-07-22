@@ -14,8 +14,8 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
   thumbnail,
   travelPeriod,
 }) => {
-  const departure = DateDetails(travelPeriod.departure);
-  const arrival = DateDetails(travelPeriod.arrival);
+  const departure = travelPeriod ? DateDetails(travelPeriod.departure) : null;
+  const arrival = travelPeriod ? DateDetails(travelPeriod.arrival) : null;
 
   const { t } = useTranslation();
   return (
@@ -41,15 +41,18 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
               {reviewsCount} {t("reviews")}
             </p>
           </div>
-          <div className="flex gap-2">
-            <p>
-              {`${arrival.hour}:${arrival.twoDigitMinute}`} {t("Arrival")}
-            </p>
-            <p>-</p>
-            <p>
-              {`${departure.hour}:${departure.twoDigitMinute}`} {t("Departure")}
-            </p>
-          </div>
+          {travelPeriod && arrival && departure ? (
+            <div className="flex gap-2">
+              <p>
+                {`${arrival.hour}:${arrival.twoDigitMinute}`} {t("Arrival")}
+              </p>
+              <p>-</p>
+              <p>
+                {`${departure.hour}:${departure.twoDigitMinute}`}{" "}
+                {t("Departure")}
+              </p>
+            </div>
+          ) : null}
         </div>
         <div className="flex flex-col justify-between gap-1">
           <p

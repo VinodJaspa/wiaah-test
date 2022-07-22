@@ -1,1 +1,2 @@
-export * from "./ServicesProviderView";
+export * from "./HotelDetailsView";
+export * from "./ResturantDetailsView";
