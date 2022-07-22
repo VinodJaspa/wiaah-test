@@ -104,19 +104,18 @@ export const ServiceReservastion: React.FC = () => {
                       <ArrowDownIcon className="absolute top-1/2 right-4 text-lg -translate-y-1/2" />
                     </p>
                   )}
-                  <InputSuggestions className="shadow border border-gray-200 overflow-x-hidden thinScroll">
-                    <CountInput
+                  <InputSuggestions className="shadow border text-4xl border-gray-200 overflow-x-hidden thinScroll">
+                    <HotelGuestsInput
                       name={t("Adults")}
                       description={`${t("Age")} 13+`}
-                      max={4}
                       onCountChange={() => {}}
                     />
-                    <CountInput
+                    <HotelGuestsInput
                       name={t("Children")}
                       description={`${t("Ages")} 2-12`}
                       onCountChange={() => {}}
                     />
-                    <CountInput
+                    <HotelGuestsInput
                       name={t("Infants")}
                       description={`${t("Under")} 2`}
                       onCountChange={() => {}}
@@ -162,41 +161,54 @@ export const ServiceReservastion: React.FC = () => {
   );
 };
 
-export interface CountInputProps {
+export interface HotelGuestsInputProps {
   name: string;
   description: string;
   onCountChange: () => any;
-  min?: number;
-  max?: number;
 }
-
-export const CountInput: React.FC<CountInputProps> = ({
+export const HotelGuestsInput: React.FC<HotelGuestsInputProps> = ({
   description,
   name,
   onCountChange,
-  max = 10,
-  min = 0,
 }) => {
-  const { count, decrement, increment } = useBoundedCountState(min, max);
   return (
     <div className="text-xl p-4 flex items-center w-full bg-white justify-between">
       <div className="flex flex-col gap-1">
         <p className="font-bold">{name || ""}</p>
         <p>{description || ""}</p>
       </div>
-      <div className="text-4xl flex items-center gap-2">
-        <MinusIcon
-          className={`${count === min ? "opacity-50" : ""}`}
-          onClick={() => decrement()}
-        />
-        <p className="w-10 select-none text-center whitespace-nowrap">
-          {count}
-        </p>
-        <PlusIcon
-          className={`${count === max ? "opacity-50" : ""}`}
-          onClick={() => increment()}
-        />
-      </div>
+      <CountInput onCountChange={onCountChange} max={5} min={0} />
+    </div>
+  );
+};
+
+export interface CountInputProps {
+  onCountChange: (count: number) => any;
+  min?: number;
+  max?: number;
+}
+export const CountInput: React.FC<CountInputProps> = ({
+  onCountChange,
+  max,
+  min,
+}) => {
+  const { count, decrement, increment } = useBoundedCountState(min, max);
+
+  React.useEffect(() => {
+    onCountChange && onCountChange(count);
+  }, [count]);
+
+  return (
+    <div className="whitespace-nowrap flex items-center gap-1">
+      <MinusIcon
+        className={`${count === min ? "opacity-50" : ""}`}
+        onClick={() => decrement()}
+      />
+      <p className="w-10 select-none text-center whitespace-nowrap">{count}</p>
+      <PlusIcon
+        className={`${count === max ? "opacity-50" : ""}`}
+        onClick={() => increment()}
+      />
     </div>
   );
 };
