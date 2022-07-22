@@ -3,3 +3,4 @@ export * from "./dayHours";
 export * from "./mapTimeRange";
 export * from "./getAllMonthsOfCurrentYear";
 export * from "./getDaysDiff";
+export * from "./dateDetails";

@@ -1,12 +1,17 @@
 import { FormatedSearchableFilter } from "src";
 import { AsyncReturnType } from "types";
+import { PopularAmenitiesSectionProps } from "ui";
 import {
   InferType,
   CheckValidation,
   ServicesProviderDataValidationSchema,
   ServicesProviderApiResponseValidationSchema,
   PaginationConstants,
+  PopularAmenitiesValidationSchema,
+  HotelServiceProviderRoomValidationSchema,
 } from "validation";
+
+export type AmenitieType = InferType<typeof PopularAmenitiesValidationSchema>;
 
 export type ServicesProviderData = InferType<
   typeof ServicesProviderDataValidationSchema
@@ -14,12 +19,16 @@ export type ServicesProviderData = InferType<
 
 export type ServicesProviderHeaderData = Pick<
   ServicesProviderData,
-  "name" | "rating" | "reviewsCount" | "thumbnail"
+  "name" | "rating" | "reviewsCount" | "thumbnail" | "travelPeriod"
 >;
 
 export type ServicesProviderLocationWorkData = Pick<
   ServicesProviderData,
-  "location" | "workingDays" | "telephone" | "email"
+  "location" | "workingDays" | "telephone" | "email" | "policies" | "rooms"
+>;
+
+export type HotelRoomDataType = InferType<
+  typeof HotelServiceProviderRoomValidationSchema
 >;
 
 export type ServicesProviderApiResponse = InferType<
@@ -188,6 +197,136 @@ export const getServicesProviderDataFetcher = async (
       pricePerNight: 721,
       serviceFee: 850,
       taxes: 10,
+      PopularAmenities: [
+        {
+          name: "Pool",
+          slug: "pool",
+        },
+        {
+          name: "Pet-friendly",
+          slug: "pet-friendly",
+        },
+        {
+          name: "Resturant",
+          slug: "resturant",
+        },
+        {
+          name: "Breakfast available",
+          slug: "breakfast",
+        },
+        {
+          name: "Parking available",
+          slug: "parking",
+        },
+        {
+          name: "Laundry",
+          slug: "laundry",
+        },
+        {
+          name: "Housekeeping",
+          slug: "housekeeping",
+        },
+        {
+          name: "Free Wifi",
+          slug: "free_wifi",
+        },
+        {
+          name: "Air conditioning",
+          slug: "a/c",
+        },
+        {
+          name: "Gym",
+          slug: "gym",
+        },
+        {
+          name: "Business services",
+          slug: "business_services",
+        },
+        {
+          name: "Bar",
+          slug: "bar",
+        },
+        {
+          name: "Room service",
+          slug: "room_service",
+        },
+        {
+          name: "24/7 front desk",
+          slug: "24/7_front_desk",
+        },
+      ],
+      policies: {
+        checkin_checkout_terms: [
+          "Lorem Ipsum is simply dummy text of the printing and typesetting",
+          "industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley",
+          "survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+          "Ipsum passages, and more recently with desktop publishing",
+          "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of",
+          "packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+        ],
+        messageForClients:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in",
+      },
+      travelPeriod: {
+        departure: new Date(Date.now()).toUTCString(),
+        arrival: new Date(Date.now()).toUTCString(),
+      },
+      rooms: [...Array(9)].map(() => ({
+        title: "Executive Double Room, 1 double bed",
+        thumbnails: ["/place-2.jpg", "/place-1.jpg"],
+        amenities: [
+          {
+            name: "Laundry",
+            slug: "laundry",
+          },
+          {
+            name: "Housekeeping",
+            slug: "housekeeping",
+          },
+          {
+            name: "Free Wifi",
+            slug: "free_wifi",
+          },
+          {
+            name: "Air conditioning",
+            slug: "a/c",
+          },
+          {
+            name: "Laundry",
+            slug: "laundry",
+          },
+          {
+            name: "Housekeeping",
+            slug: "housekeeping",
+          },
+          {
+            name: "Free Wifi",
+            slug: "free_wifi",
+          },
+          {
+            name: "Air conditioning",
+            slug: "a/c",
+          },
+          {
+            name: "Laundry",
+            slug: "laundry",
+          },
+          {
+            name: "Housekeeping",
+            slug: "housekeeping",
+          },
+          {
+            name: "Free Wifi",
+            slug: "free_wifi",
+          },
+          {
+            name: "Air conditioning",
+            slug: "a/c",
+          },
+        ],
+        with_fees_and_taxes: true,
+        price: 225,
+      })),
     },
   };
 

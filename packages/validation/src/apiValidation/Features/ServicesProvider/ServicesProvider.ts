@@ -4,16 +4,34 @@ import {
   dayWorkingPeriodValidationSchema,
   createApiResponseValidationSchema,
 } from "../../SharedSchema";
-import { object, string, number, array, mixed } from "yup";
+import { object, string, number, array, mixed, boolean } from "yup";
 
 export type PresntationMediaType = "video" | "image";
 const PresntationMediaTypes: PresntationMediaType[] = ["video", "image"];
+
+export const PopularAmenitiesValidationSchema = object({
+  name: string().required(),
+  slug: string().required(),
+}).required();
 
 export const PresntationMediaValidationSchema = object({
   src: string().required(),
   type: mixed<PresntationMediaType>().oneOf(PresntationMediaTypes).required(),
   thumbnail: string().required(),
 });
+
+export const HotelServiceProviderPolicicesValidationSchema = object({
+  messageForClients: string().required(),
+  checkin_checkout_terms: array().of(string()).min(0).required(),
+}).required();
+
+export const HotelServiceProviderRoomValidationSchema = object({
+  thumbnails: array().of(string()).min(0).required(),
+  title: string().required(),
+  amenities: array().of(PopularAmenitiesValidationSchema).min(0).required(),
+  price: number().required(),
+  with_fees_and_taxes: boolean().required(),
+}).required();
 
 export const ServicesProviderDataValidationSchema = object({
   id: string().required(),
@@ -30,6 +48,16 @@ export const ServicesProviderDataValidationSchema = object({
   pricePerNight: number().required(),
   serviceFee: number().required(),
   taxes: number().required(),
+  rooms: array().of(HotelServiceProviderRoomValidationSchema).min(0).required(),
+  policies: HotelServiceProviderPolicicesValidationSchema,
+  travelPeriod: object({
+    arrival: string().required(),
+    departure: string().required(),
+  }).required(),
+  PopularAmenities: array()
+    .of(PopularAmenitiesValidationSchema)
+    .min(0)
+    .required(),
   workingDays: array()
     .of(dayWorkingPeriodValidationSchema)
     .length(7)

@@ -6,3 +6,4 @@ export * from "./constants";
 export * from "./Services";
 export * from "./components";
 export * from "./Vehicle";
+export * from "./ServicesProvider";

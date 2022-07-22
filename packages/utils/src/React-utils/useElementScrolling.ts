@@ -15,11 +15,8 @@ export function useElementScrolling(elementRef: React.RefObject<HTMLElement>) {
           if (passed) return;
           setY(currentY);
           setPassed(true);
-          console.log("passed");
         } else {
-          console.log("not passed");
           if (!passed) return;
-          console.log("not passed 2");
           setPassed(false);
           setY(currentY);
         }

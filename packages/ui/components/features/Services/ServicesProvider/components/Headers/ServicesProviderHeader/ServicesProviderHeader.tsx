@@ -2,6 +2,7 @@ import { ServicesProviderHeaderData } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { AspectRatio, Rate, Button } from "ui";
+import { DateDetails } from "utils";
 
 export interface ServicesProviderHeaderProps
   extends ServicesProviderHeaderData {}
@@ -11,7 +12,11 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
   rating,
   reviewsCount,
   thumbnail,
+  travelPeriod,
 }) => {
+  const departure = DateDetails(travelPeriod.departure);
+  const arrival = DateDetails(travelPeriod.arrival);
+
   const { t } = useTranslation();
   return (
     <div className="flex w-full justify-between gap-4">
@@ -37,9 +42,13 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
             </p>
           </div>
           <div className="flex gap-2">
-            <p>{`15:00`} Arrival</p>
+            <p>
+              {`${arrival.hour}:${arrival.twoDigitMinute}`} {t("Arrival")}
+            </p>
             <p>-</p>
-            <p>{`12:00`} Departure</p>
+            <p>
+              {`${departure.hour}:${departure.twoDigitMinute}`} {t("Departure")}
+            </p>
           </div>
         </div>
         <div className="flex flex-col justify-between gap-1">
@@ -49,7 +58,7 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
           >
             {t("Follow")}
           </p>
-          <Button className="h-fit">{t("Contact")}</Button>
+          <Button className="h-fit">{t("Contact host")}</Button>
         </div>
       </div>
     </div>

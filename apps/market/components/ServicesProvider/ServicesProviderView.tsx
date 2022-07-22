@@ -1,8 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { TabType } from "types";
 import {
-  ProductImageGallery,
   ServicesProviderHeader,
   SpinnerFallback,
   useGetServicesProviderQuery,
@@ -10,17 +8,20 @@ import {
   AspectRatio,
   Divider,
   Tabs,
-  TabItem,
   TabTitle,
   TabsHeader,
   ServicesProviderLocationWorkDetailsSection,
-  ServiceRightView,
+  PopularAmenitiesSection,
   ServicesProviderDescriptionSection,
   ServiceReservastion,
   Button,
   Reviews,
+  Slider,
+  ArrowLeftIcon,
+  ArrowRightIcon,
 } from "ui";
-import { useElementScrolling, useScrollTo } from "utils";
+import { useElementScrolling } from "utils";
+import { useScrollTo, usePublishRef } from "state";
 import { reviews } from "placeholder";
 
 export const ServicesProviderView: React.FC = () => {
@@ -30,16 +31,12 @@ export const ServicesProviderView: React.FC = () => {
     isError,
     isLoading,
   } = useGetServicesProviderQuery(filters);
-  const reservationRef = React.useRef<HTMLDivElement>(null);
-  const mapRef = React.useRef<HTMLDivElement>(null);
-  const LocationSectionRef = React.useRef<HTMLDivElement>(null);
 
-  const { ScrollTo } = useScrollTo([
-    { key: "map", ref: mapRef },
-    { key: "locationSection", ref: LocationSectionRef },
-  ]);
+  const descriptionRef = usePublishRef("description");
+  const reviewsRef = usePublishRef("reviews");
 
-  const { passed, y } = useElementScrolling(reservationRef);
+  const { ScrollTo } = useScrollTo();
+
   const { t } = useTranslation();
 
   return (
@@ -50,20 +47,43 @@ export const ServicesProviderView: React.FC = () => {
       <Divider />
       <div className="w-full relative">
         <AspectRatio ratio={5 / 11.12}>
-          <ProductImageGallery
-            images={
-              res
-                ? Array.isArray(res.data.heroImages)
-                  ? res.data.heroImages.map((img, i) => ({
-                      original: img.src,
-                      thumbnail: img.thumbnail,
-                      type: img.type,
-                      alt: String(i),
-                    }))
-                  : []
-                : []
-            }
-          />
+          {res && Array.isArray(res.data.heroImages) ? (
+            <div className="w-full gap-4 flex h-full flex-col md:flex-row">
+              <div className="w-32">
+                <Slider itemsCount={8} variant="vertical">
+                  {res.data.heroImages.map((img, i) => (
+                    <img
+                      className={`${
+                        i === 0 ? "" : "pt-2"
+                      } rounded w-full h-full object-cover`}
+                      key={i}
+                      src={img.src}
+                    />
+                  ))}
+                </Slider>
+              </div>
+              <Slider
+                leftArrowComponent={() => (
+                  <div className="bg-black mx-4  bg-opacity-50 text-primary p-1  rounded-full text-3xl">
+                    <ArrowLeftIcon />
+                  </div>
+                )}
+                rightArrowComponent={() => (
+                  <div className="bg-black  mx-4 bg-opacity-50 text-primary p-1  rounded-full text-3xl">
+                    <ArrowRightIcon />
+                  </div>
+                )}
+              >
+                {res.data.heroImages.map((img, i) => (
+                  <img
+                    className="w-full h-full object-cover"
+                    key={i}
+                    src={img.src}
+                  />
+                ))}
+              </Slider>
+            </div>
+          ) : null}
         </AspectRatio>
         <Button
           onClick={() => ScrollTo("map")}
@@ -76,47 +96,50 @@ export const ServicesProviderView: React.FC = () => {
       <div className="flex flex-col gap-4">
         <Tabs>
           <TabsHeader className="justify-center" />
-          {ServicesProviderTabs.map(({ component, name }, i) => (
+          {ServicesProviderTabs.map(({ slug, name }, i) => (
             <React.Fragment key={i}>
               <TabTitle TabKey={i}>
                 {({ currentTabIdx }) => (
-                  <p className={`${currentTabIdx === i ? "text-primary" : ""}`}>
+                  <p
+                    onClick={() => ScrollTo(slug)}
+                    className={`${currentTabIdx === i ? "text-primary" : ""}`}
+                  >
                     {t(name)}
                   </p>
                 )}
               </TabTitle>
-              <TabItem>{component}</TabItem>
             </React.Fragment>
           ))}
         </Tabs>
-        <div className="flex gap-4">
-          <div className="flex flex-col w-full gap-4">
-            <div className="w-full gap-4 flex">
+        <div className="flex gap-4 ">
+          <div
+            style={{
+              width: `calc(100% - min(30rem , 100%))`,
+            }}
+            className="flex flex-col w-full gap-4"
+          >
+            <div ref={descriptionRef} className="w-full ">
               <ServicesProviderDescriptionSection />
             </div>
+            <Divider />
             {res ? (
-              <div ref={LocationSectionRef} className="w-full">
-                <ServicesProviderLocationWorkDetailsSection {...res.data} />
-              </div>
+              <>
+                <PopularAmenitiesSection
+                  cols={2}
+                  amenities={res.data.PopularAmenities || []}
+                />
+                <Divider />
+                <div className="w-full">
+                  <ServicesProviderLocationWorkDetailsSection {...res.data} />
+                </div>
+              </>
             ) : null}
-            <div>
+            <div ref={reviewsRef}>
               <Reviews id={res?.data.id || ""} reviews={reviews} />
             </div>
           </div>
-          <div
-            ref={reservationRef}
-            className={`w-[min(30rem,100%)] relative h-full`}
-          >
-            <div
-              style={{
-                top: `${Math.abs(0) + 16 || 0}px`,
-              }}
-              className={`${
-                passed ? `absolute left-0` : ""
-              } w-full h-fit transition-all`}
-            >
-              <ServiceReservastion />
-            </div>
+          <div className="w-[min(30rem,100%)]">
+            <ServiceReservationSideBar />
           </div>
         </div>
       </div>
@@ -124,25 +147,49 @@ export const ServicesProviderView: React.FC = () => {
   );
 };
 
-const ServicesProviderTabs: TabType[] = [
+const ServicesProviderTabs: { name: string; slug: string }[] = [
   {
-    component: <div />,
+    slug: "description",
     name: "Description",
   },
   {
-    name: "Location",
-    component: <div />,
+    name: "Contact",
+    slug: "contact",
   },
   {
-    component: <div></div>,
-    name: "Hotel services",
+    slug: "policies",
+    name: "Policies",
   },
   {
-    component: <div></div>,
+    name: "Working hours",
+    slug: "workingHours",
+  },
+  {
+    slug: "rooms",
     name: "Rooms",
   },
   {
-    component: <div></div>,
+    slug: "reviews",
     name: "Customer reviews",
   },
 ];
+
+export const ServiceReservationSideBar = () => {
+  const reservationRef = React.useRef<HTMLDivElement>(null);
+  const { passed, y } = useElementScrolling(reservationRef);
+
+  return (
+    <div ref={reservationRef} className={`w-full relative h-full`}>
+      <div
+        style={{
+          top: `${Math.abs(y) + 16 || 0}px`,
+        }}
+        className={`${
+          passed ? `absolute left-0` : ""
+        } w-full h-fit transition-all`}
+      >
+        <ServiceReservastion />
+      </div>
+    </div>
+  );
+};
