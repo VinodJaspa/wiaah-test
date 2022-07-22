@@ -1,6 +1,11 @@
 import { NextPage } from "next";
 import React from "react";
-import { Container, NotFound, useSearchFilters } from "ui";
+import {
+  Container,
+  NotFound,
+  useMutateSearchFilters,
+  useSearchFilters,
+} from "ui";
 import Head from "next/head";
 import { useTranslation } from "react-i18next";
 import { MasterLayout } from "@components";
@@ -15,15 +20,12 @@ import { SERVICESTYPE_INDEXKEY } from "ui";
 
 const ServiceCategory: NextPage = () => {
   const { t } = useTranslation();
-  const { addFilter } = useSearchFilters();
   const router = useRouter();
+  const { addFilter } = useMutateSearchFilters();
   const serviceType = ExtractServiceTypeFromQuery(router.query);
-
-  React.useEffect(() => {
-    if (typeof serviceType === "string") {
-      addFilter([SERVICESTYPE_INDEXKEY, serviceType]);
-    }
-  }, [serviceType]);
+  if (ServicesViewsList.findIndex((list) => list.slug === serviceType) > -1) {
+    addFilter([SERVICESTYPE_INDEXKEY, serviceType]);
+  }
   return (
     <>
       <Head>
@@ -34,7 +36,7 @@ const ServiceCategory: NextPage = () => {
           scrollable: false,
         }}
       >
-        <Container>
+        <Container className="px-4 py-8">
           <ServicesTypeSwitcher
             serviceType={serviceType}
             get={getServiceView.SEARCH}

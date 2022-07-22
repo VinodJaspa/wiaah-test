@@ -19,7 +19,7 @@ export interface TimeInputProps {
   onTimeSelect?: (time: TimeType) => any;
 }
 
-type TimeType = {
+export type TimeType = {
   hour: number;
   minutes: number;
   id?: string;

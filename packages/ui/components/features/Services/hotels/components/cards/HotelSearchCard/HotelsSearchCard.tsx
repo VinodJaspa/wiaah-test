@@ -1,19 +1,11 @@
+import { HotelsMetaData } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { DateRange } from "types";
 import { HStack, Rate, HeartIcon, PriceDisplay, AspectRatio } from "ui";
 
-export interface HotelSearchCardProps {
-  id: string;
-  thumbnail: string;
+export interface HotelSearchCardProps extends HotelsMetaData {
   onLiked: (id: string) => any;
-  rate: number;
-  location: string;
-  type: string;
-  providerName: string;
-  description: string;
-  date: DateRange;
-  price: number;
 }
 
 export const HotelSearchCard: React.FC<HotelSearchCardProps> = ({
@@ -21,7 +13,7 @@ export const HotelSearchCard: React.FC<HotelSearchCardProps> = ({
   onLiked,
   rate,
   thumbnail,
-  providerName,
+  name,
   description,
   id,
   date,
@@ -35,7 +27,7 @@ export const HotelSearchCard: React.FC<HotelSearchCardProps> = ({
           <img
             className="w-full h-full object-cover"
             src={thumbnail}
-            alt={providerName}
+            alt={name}
           />
         </AspectRatio>
         <HeartIcon
@@ -45,7 +37,7 @@ export const HotelSearchCard: React.FC<HotelSearchCardProps> = ({
       </div>
       <div className="flex flex-col gap-1 text-xs sm:text-sm md:text-md lg:text-lg w-full">
         <div className="flex items-center justify-between">
-          <span className="font-bold">{location}</span>
+          <span className="font-bold">{location.address}</span>
           <HStack className="">
             <Rate className="gap-1" rating={rate} allowHalf />
             <span>{rate}</span>

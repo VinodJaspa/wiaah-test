@@ -51,7 +51,7 @@ export const Menu: React.FC<MenuProps> = ({
         onToggle: handleToggle,
       }}
     >
-      <div {...props} ref={ref} className={`${className} relative w-fit h-fit`}>
+      <div {...props} ref={ref} className={`${className} relative `}>
         {children}
       </div>
     </MenuContext.Provider>

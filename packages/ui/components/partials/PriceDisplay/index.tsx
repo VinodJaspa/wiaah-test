@@ -15,9 +15,9 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
   ...props
 }) => {
   return (
-    <div {...props} className={`${className || ""} whitespace-nowrap`}>
+    <p {...props} className={`${className || ""} whitespace-nowrap`}>
       {PriceConverter({ amount: priceObject.amount, symbol })}
-    </div>
+    </p>
   );
 };
 
@@ -31,8 +31,8 @@ export const PriceConverter = ({
   const currency = useRecoilValue(PreferedCurrencyState);
   if (typeof amount !== "number") return null;
   return currency
-    ? `${amount * currency.currencyRateToUsd} ${
-        symbol ? currency.currencySymbol : currency.currencyCode
-      }`
+    ? `${symbol ? currency.currencySymbol : currency.currencyCode}${
+        amount * currency.currencyRateToUsd
+      } `
     : `${symbol ? "$" : ""}${amount} ${symbol ? "" : "usd"}`;
 };

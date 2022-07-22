@@ -4,7 +4,12 @@ export async function CheckValidation<TData = any>(
   schema: AnySchema,
   data: TData,
   ThrowableError: any = Error
-) {
-  const isValid = await schema.isValid(data);
-  if (!isValid) throw new ThrowableError();
+): Promise<TData> {
+  try {
+    const res = await schema.validate(data);
+    return res;
+  } catch (error) {
+    console.error(error);
+    throw new ThrowableError("recieved invalid data ");
+  }
 }

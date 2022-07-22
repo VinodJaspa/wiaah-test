@@ -3,4 +3,5 @@ export type ServicesType =
   | "resturant"
   | "holidays_rentals"
   | "health_center"
-  | "general";
+  | "general"
+  | "vehicle";

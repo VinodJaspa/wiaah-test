@@ -22,6 +22,7 @@ export interface SearchFilterProps {
   onOptionsSelect?: (filterSlug: string, optionsSlugs: string[]) => any;
   defaultOpen?: boolean;
   collapse?: boolean;
+  boldTitle?: boolean;
 }
 
 export const SearchFilter: React.FC<
@@ -34,6 +35,7 @@ export const SearchFilter: React.FC<
   defaultOpen = false,
   collapse,
   fallbackProps,
+  boldTitle,
 }) => {
   return (
     <SpinnerFallback {...fallbackProps}>
@@ -73,6 +75,7 @@ export const SearchFilter: React.FC<
             );
             return collapse ? (
               <DropdownPanel
+                className="min-w-[15rem]"
                 open={defaultOpen}
                 name={filter.filterTitle}
                 children={input}
@@ -116,7 +119,11 @@ export const SearchFilter: React.FC<
             const radio = (
               <div className="flex flex-col gap-2">
                 {!collapse ? (
-                  <span className="py-1 font-semibold">
+                  <span
+                    className={`${
+                      boldTitle ? "font-bold" : "font-semibold"
+                    } py-1`}
+                  >
                     {filter.filterTitle}
                   </span>
                 ) : null}

@@ -1,17 +1,21 @@
 import React from "react";
-import { AccordionContext, AccordionKeyType } from "ui/state";
+import { AccordionContext, AccordionKeyType } from "state";
 
 export interface AccordionProps {
   controled?: boolean;
   isLazy?: boolean;
+  defaultOpenItems?: AccordionKeyType[];
 }
 
 export const Accordion: React.FC<AccordionProps> = ({
   controled,
   isLazy,
+  defaultOpenItems,
   ...props
 }) => {
-  const [itemsOpen, setItemsOpen] = React.useState<AccordionKeyType[]>([]);
+  const [itemsOpen, setItemsOpen] = React.useState<AccordionKeyType[]>(
+    defaultOpenItems || []
+  );
 
   function toggleItem(key: AccordionKeyType) {
     const isOpen = isItemOpen(key);

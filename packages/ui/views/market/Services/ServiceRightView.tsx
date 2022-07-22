@@ -49,7 +49,7 @@ export const ServiceRightView: React.FC<ServiceRightViewProps> = ({
   return (
     <SpinnerFallback isLoading={isLoading} isError={isError}>
       {data ? (
-        <div className="flex h-full flex-col justify-between gap-2">
+        <div className="flex w-full h-full flex-col justify-between gap-2">
           <div className="flex h-full flex-col gap-2 items-start">
             <div>
               <samp className="green-text">{data.category}</samp>
@@ -79,6 +79,7 @@ export const ServiceRightView: React.FC<ServiceRightViewProps> = ({
                 110
               </span>
               {/* )} */}
+              <p className="inline text-xl">/{t("night")}</p>
             </div>
             <div className="inline-block rounded-md bg-red-400 px-4 py-1 font-bold text-white">
               <span>{data?.discount?.discount?.value}% </span>

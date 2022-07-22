@@ -4,9 +4,10 @@ import {
   fullNameValidation,
   knownAsValidation,
   singlePhotoValidation,
-} from "../../../index";
-
-export const AccountVerificationRequestScheme = yup.object().shape({
+  PaginationConstants,
+} from "../../../";
+console.log("account ", firstNameValidation, PaginationConstants);
+export const AccountVerificationRequestScheme = yup.object({
   username: firstNameValidation.required(),
   fullName: fullNameValidation.required(),
   knownAs: knownAsValidation.required(),

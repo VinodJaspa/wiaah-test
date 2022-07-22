@@ -1,6 +1,6 @@
 import React from "react";
 import { HtmlDivProps } from "types";
-import { AccordionKeyType, AccordionItemContext } from "ui/state";
+import { AccordionKeyType, AccordionItemContext } from "state";
 
 export interface AccordionItemProps extends HtmlDivProps {
   itemkey: AccordionKeyType;

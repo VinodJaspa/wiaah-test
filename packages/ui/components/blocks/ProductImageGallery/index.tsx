@@ -1,7 +1,7 @@
 import React from "react";
 import { ChakraCarousel, CarouselPreviewer } from "ui";
 import { ProductGalleryItem } from "types";
-import { useScreenWidth } from "ui/Hooks";
+import { useResponsive } from "hooks";
 import { PostAttachment } from "ui";
 
 export interface ProductImageGalleryProps {
@@ -13,17 +13,17 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
   images = [],
   cashback,
 }) => {
-  const { min: small } = useScreenWidth({ minWidth: 1280 });
+  const { isMobile, isTablet } = useResponsive();
   const [currentComponent, setCurrentComponent] = React.useState<number>(0);
   console.log("current", currentComponent);
   return (
     <>
-      <div className="flex h-[28rem] w-full flex-col-reverse gap-4 xl:flex-row">
+      <div className="flex h-full w-full flex-col-reverse gap-4 xl:flex-row">
         <div className="h-fit w-full xl:h-full xl:w-fit">
           <CarouselPreviewer
             setCurrentComponentNum={currentComponent}
             borderColor="#57bf9c"
-            direction={small ? "horizontal" : "vertical"}
+            direction={isTablet ? "horizontal" : "vertical"}
             getCurrentComponent={(component) => setCurrentComponent(component)}
             components={images.map(({ original, thumbnail, alt, type }, i) => {
               if (type === "image") {

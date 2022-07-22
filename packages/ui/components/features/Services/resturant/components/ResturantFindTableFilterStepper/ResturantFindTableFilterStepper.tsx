@@ -33,6 +33,7 @@ export const ResturantFindTableFilterStepper: React.FC<
             />
             <StepperContent>
               <DateInput
+                className="w-[100%]"
                 dayComponent={ResturantFindTableFilterDateDayComponent}
                 onDaySelect={(date) => {
                   setFilters((state) => {

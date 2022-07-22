@@ -1,30 +1,38 @@
-import { QueryPaginationInputs } from "src";
-import { DateRange } from "types";
+import { QueryPaginationInputs } from "api";
+import { AsyncReturnType, DateRange } from "types";
+import {
+  InferType,
+  HotelMetaDataValidationSchema,
+  HotelsMetaDataApiResponseValidationSchema,
+} from "validation";
 
-export interface HotelsMetaData {
-  serviceName: string;
-  serviceId: string;
-  serviceProvider: string;
-  serviceThumbnail: string;
-  location: string;
-  type: string;
-  rate: number;
-  description: string;
-  price: number;
-  date: DateRange;
-}
+export type HotelsMetaData = InferType<typeof HotelMetaDataValidationSchema>;
+
+export type HotelsMetaDataApiResponseType = InferType<
+  typeof HotelsMetaDataApiResponseValidationSchema
+>;
 
 export const getHotelsMetaDataFetcher = async (
   pagination: QueryPaginationInputs,
   location: string
-): Promise<HotelsMetaData[]> => {
-  const data: HotelsMetaData[] = [
-    {
-      serviceId: "123",
-      serviceName: "test",
-      serviceProvider: "provider",
-      serviceThumbnail: "/place-2.jpg",
-      location,
+): Promise<HotelsMetaDataApiResponseType> => {
+  const data: AsyncReturnType<typeof getHotelsMetaDataFetcher> = {
+    hasMore: false,
+    data: [...Array(pagination.take || 10)].map(() => ({
+      id: "123",
+      name: "test",
+      provider: "provider",
+      thumbnail: "/place-2.jpg",
+      location: {
+        address: "test address",
+        city: "city",
+        cords: {
+          lat: 40,
+          lng: 45,
+        },
+        county: "country",
+        postalCode: 13532,
+      },
       type: "professional host",
       description: "random description",
       rate: 3.75,
@@ -33,67 +41,7 @@ export const getHotelsMetaDataFetcher = async (
         to: Date.now(),
       },
       price: 45,
-    },
-    {
-      serviceId: "123",
-      serviceName: "test",
-      serviceProvider: "provider",
-      serviceThumbnail: "/place-2.jpg",
-      location,
-      type: "professional host",
-      description: "random description",
-      rate: 3.75,
-      price: 45,
-      date: {
-        from: Date.now(),
-        to: Date.now(),
-      },
-    },
-    {
-      serviceId: "123",
-      serviceName: "test",
-      serviceProvider: "provider",
-      serviceThumbnail: "/place-2.jpg",
-      location,
-      type: "professional host",
-      description: "random description",
-      rate: 3.75,
-      price: 45,
-      date: {
-        from: Date.now(),
-        to: Date.now(),
-      },
-    },
-    {
-      serviceId: "123",
-      serviceName: "test",
-      serviceProvider: "provider",
-      serviceThumbnail: "/place-2.jpg",
-      location,
-      type: "professional host",
-      description: "random description",
-      rate: 3.75,
-      price: 45,
-      date: {
-        from: Date.now(),
-        to: Date.now(),
-      },
-    },
-    {
-      serviceId: "123",
-      serviceName: "test",
-      serviceProvider: "provider",
-      serviceThumbnail: "/place-2.jpg",
-      location,
-      type: "professional host",
-      description: "random description",
-      rate: 3.75,
-      price: 45,
-      date: {
-        from: Date.now(),
-        to: Date.now(),
-      },
-    },
-  ];
-  return [...data, ...data];
+    })),
+  };
+  return data;
 };

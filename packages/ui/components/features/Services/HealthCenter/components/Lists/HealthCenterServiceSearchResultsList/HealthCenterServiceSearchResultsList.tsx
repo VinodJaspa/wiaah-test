@@ -1,4 +1,4 @@
-import { usePagination } from "hooks";
+import { usePagination, useResponsive } from "hooks";
 import React from "react";
 import {
   useSearchFilters,
@@ -13,6 +13,7 @@ import { useGetHealthCenterDataQuery } from "../../../services";
 export const HealthCenterServiceSearchResultsList: React.FC = () => {
   const { take, page, nextPage, previousPage, goToPage } = usePagination(8);
   const { filters } = useSearchFilters();
+  const { isTablet } = useResponsive();
   const {
     data: res,
     isLoading,
@@ -25,6 +26,7 @@ export const HealthCenterServiceSearchResultsList: React.FC = () => {
           {Array.isArray(res?.data)
             ? res?.data.map((s) => (
                 <HealthCenterCard
+                  vertical={isTablet}
                   centerData={s.centerData}
                   workingDates={s.workingDates}
                 />

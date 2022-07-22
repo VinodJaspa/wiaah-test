@@ -8,6 +8,8 @@ type DrawerPositions = "left" | "right" | "top" | "bottom";
 interface DrawerCtxValues {
   position: DrawerPositions;
   isOpen: boolean;
+  active?: boolean;
+  full?: boolean;
   onClose: () => any;
   onOpen: () => any;
 }
@@ -15,6 +17,8 @@ interface DrawerCtxValues {
 const DrawerCtx = React.createContext<DrawerCtxValues>({
   isOpen: false,
   position: "left",
+  active: true,
+  full: false,
   onClose: () => {},
   onOpen: () => {},
 });
@@ -22,6 +26,7 @@ const DrawerCtx = React.createContext<DrawerCtxValues>({
 export interface DrawerProps
   extends Omit<DrawerCtxValues, "position" | "onOpen"> {
   position?: DrawerPositions;
+  active?: boolean;
   onOpen?: () => any;
 }
 
@@ -30,12 +35,14 @@ export const Drawer: React.FC<DrawerProps> = ({
   onClose,
   onOpen = () => {},
   position = "left",
+  active = true,
+  full,
   ...props
 }) => {
   return (
     <DrawerCtx.Provider
       {...props}
-      value={{ isOpen, onClose, onOpen, position }}
+      value={{ isOpen, onClose, onOpen, position, active, full }}
     />
   );
 };
@@ -47,30 +54,30 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
   className,
   ...props
 }) => {
-  const { isOpen, position } = React.useContext(DrawerCtx);
+  const { isOpen, position, active, full } = React.useContext(DrawerCtx);
 
   const setPositionClasses = (): string => {
     switch (position) {
       case "bottom":
-        return `${
-          isOpen ? "" : "translate-y-full"
-        } bottom-0 h-[min(100%,20rem)] w-full left-0`;
+        return `${isOpen ? "" : "translate-y-full"} bottom-0 ${
+          full ? "h-full" : "h-[min(100%,20rem)]"
+        } w-full left-0`;
       case "top":
-        return `${
-          isOpen ? "" : "-translate-y-full"
-        } top-0 h-[min(100%,20rem)] w-full left-0`;
+        return `${isOpen ? "" : "-translate-y-full"} top-0 ${
+          full ? "h-full" : "h-[min(100%,20rem)]"
+        } w-full left-0`;
       case "right":
-        return `${
-          isOpen ? "" : "translate-x-full"
-        } right-0 w-[min(100%,20rem)] h-full top-0`;
+        return `${isOpen ? "" : "translate-x-full"} right-0 ${
+          full ? "w-full" : "w-[min(100%,20rem)]"
+        } h-full top-0`;
       default:
-        return `${
-          isOpen ? "" : "-translate-x-full"
-        } left-0 w-[min(100%,20rem)] h-full top-0`;
+        return `${isOpen ? "" : "-translate-x-full"} left-0 ${
+          full ? "w-full" : "w-[min(100%,20rem)]"
+        } h-full top-0`;
     }
   };
 
-  return (
+  return active ? (
     <div
       {...props}
       className={`${
@@ -79,6 +86,8 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
     >
       {children}
     </div>
+  ) : (
+    <>{children}</>
   );
 };
 
@@ -88,8 +97,8 @@ export const DrawerOverlay: React.FC<DrawerOverlayProps> = ({
   className,
   ...props
 }) => {
-  const { onClose, isOpen } = React.useContext(DrawerCtx);
-  return (
+  const { onClose, isOpen, active } = React.useContext(DrawerCtx);
+  return active ? (
     <div
       onClick={() => onClose()}
       {...props}
@@ -99,7 +108,7 @@ export const DrawerOverlay: React.FC<DrawerOverlayProps> = ({
           : "bg-opacity-0 pointer-events-none"
       } z-50 bg-black fixed transition-all left-0 top-0 w-full h-full`}
     />
-  );
+  ) : null;
 };
 
 export interface DrawerCloseButton {}
@@ -120,7 +129,8 @@ export const DrawerHeader: React.FC<DrawerHeaderProps> = ({
   closeButton = false,
   ...props
 }) => {
-  return (
+  const { active } = React.useContext(DrawerCtx);
+  return active ? (
     <div
       className={`${className || ""} flex justify-between items-center`}
       {...props}
@@ -132,5 +142,5 @@ export const DrawerHeader: React.FC<DrawerHeaderProps> = ({
         </DrawerCloseButton>
       ) : null}
     </div>
-  );
+  ) : null;
 };

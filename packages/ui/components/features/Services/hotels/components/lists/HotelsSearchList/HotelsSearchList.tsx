@@ -1,5 +1,5 @@
 import { FilteredHotelsMetaDataType } from "api";
-import { usePagination } from "hooks";
+import { usePagination, useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useMutateFocusedMapItemId } from "ui";
@@ -25,6 +25,7 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({
   const [services, setServices] = React.useState<FilteredHotelsMetaDataType[]>(
     []
   );
+  const { isTablet } = useResponsive();
 
   const { isLoading, isError } = useGetFilteredServicesMetaDataQuery(
     { page, take },
@@ -50,6 +51,7 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({
           ) : (
             services.map((service, i) => (
               <HotelDetailedSearchCard
+                vertical={isTablet}
                 onShowOnMap={(id) => focusMapItem(id)}
                 key={i}
                 {...service}

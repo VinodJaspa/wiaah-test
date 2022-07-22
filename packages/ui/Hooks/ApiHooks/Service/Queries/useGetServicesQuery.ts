@@ -17,7 +17,7 @@ export const useGetHotelsMetaDataQuery = (
   >
 ) => {
   return useQuery(
-    ["services", { pagination, location }],
+    ["hotelsSearch", { pagination, location }],
     () => {
       return getHotelsMetaDataFetcher(pagination, location);
     },

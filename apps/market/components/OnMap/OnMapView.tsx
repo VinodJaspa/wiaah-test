@@ -23,12 +23,12 @@ export const OnMapView: React.FC = () => {
   } = useGetServicesSortingFiltersQuery();
   return (
     <div className="flex p-4 flex-col gap-2">
-      <span className="w-1/2">
+      <span className="w-full md:w-1/2">
         <SearchFilter filters={sortingFilters || []} />
       </span>
-      <div className="w-screen h-[75vh] flex gap-4 justify-between">
-        <div className="w-full">
-          <ScrollingWrapper>
+      <div className="w-full flex-col-reverse md:flex-row h-auto md:h-[75vh] flex gap-8 md:gap-4 justify-between">
+        <div className="w-full h-[75vh] md:h-full">
+          <ScrollingWrapper className="">
             <ServicesTypeSwitcher
               servicesList={ServicesViewsList}
               get={getServiceView.LIST}
@@ -36,7 +36,9 @@ export const OnMapView: React.FC = () => {
             />
           </ScrollingWrapper>
         </div>
-        <RenderMap />
+        <div className="h-[50vh] w-full md:h-auto">
+          <RenderMap />
+        </div>
       </div>
     </div>
   );

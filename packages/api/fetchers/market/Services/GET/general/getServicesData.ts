@@ -22,7 +22,7 @@ export const getServicesData = async (
 ): Promise<PaginationFetchedData<ServiceData[]>> => {
   const data: AsyncReturnType<typeof getServicesData> = {
     hasMore: false,
-    data: [...Array(8)].map((_, i) => ({
+    data: [...Array(pagination.take)].map((_, i) => ({
       description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
       name: "D'Luxe Nails",
       location: {

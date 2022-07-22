@@ -1,6 +1,7 @@
 import { ServiceViewListItem } from "types";
 import {
   ServicesSearchView,
+  HotelsSearchView,
   ResturantSearchView,
   HolidaysRentalSearchView,
   HolidaysRentalSearchResultsView,
@@ -9,6 +10,8 @@ import {
   HealthCenterSearchResultsView,
   HealthCenterSearchView,
   ServicesSearchResultsView,
+  VehicleSearchResultsView,
+  VehicleSearchView,
 } from "@components";
 import {
   HealthCenterServiceSearchResultsList,
@@ -16,12 +19,13 @@ import {
   ResturantSearchList,
   HotelsSearchList,
   ServicesSearchResultsList,
+  VehicleSearchList,
 } from "ui";
 
 export const ServicesViewsList: ServiceViewListItem[] = [
   {
     slug: "hotel",
-    search: ServicesSearchView,
+    search: HotelsSearchView,
     searchResaults: HotelsSearchResultsView,
     searchList: HotelsSearchList,
   },
@@ -48,5 +52,11 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     search: ServicesSearchView,
     searchResaults: ServicesSearchResultsView,
     searchList: ServicesSearchResultsList,
+  },
+  {
+    slug: "vehicle",
+    search: VehicleSearchView,
+    searchResaults: VehicleSearchResultsView,
+    searchList: VehicleSearchList,
   },
 ];

@@ -11,7 +11,7 @@ import {
 } from "ui";
 
 export const ServicesSearchList: React.FC = () => {
-  const { take, page } = usePagination();
+  const { take, page } = usePagination(8);
   const { filters } = useSearchFilters();
   const [services, setServices] = React.useState<ServiceData[]>([]);
   const { data } = useGetServicesData({ page, take }, filters, {

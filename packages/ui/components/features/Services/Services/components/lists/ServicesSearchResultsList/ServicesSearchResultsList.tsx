@@ -30,7 +30,7 @@ export const ServicesSearchResultsList: React.FC = () => {
             serviceData: service,
           };
         }}
-        gridRule={"repeat(auto-fit,minmax(30rem,calc(50% - 2rem)))"}
+        gridRule={"repeat(auto-fit,minmax(30rem,calc(100%)))"}
       />
     </PaginationWrapper>
   );
