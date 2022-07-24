@@ -3,6 +3,7 @@ import { array, number, object, string } from "yup";
 const MenuItemValidationSchema = object({
   title: string().required(),
   price: number().required(),
+  id: string().required(),
 });
 
 export const ResturantMenuListValidationSchema = object({

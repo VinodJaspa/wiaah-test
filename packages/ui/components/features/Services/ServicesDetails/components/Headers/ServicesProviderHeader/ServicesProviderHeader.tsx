@@ -21,7 +21,7 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
   return (
     <div className="flex w-full justify-between gap-4">
       <div className="flex gap-4">
-        <div className="w-24">
+        <div className="w-28">
           <AspectRatio ratio={3 / 4}>
             <img
               className="w-full h-full object-cover"
@@ -31,15 +31,26 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
           </AspectRatio>
         </div>
         <div className="flex flex-col gap-1">
-          <p className="font-bold text-lg">{name}</p>
-          <div className="flex gap-2">
-            <p>
-              {rating}/{t("5")}
-            </p>
-            <Rate rating={rating} />
-            <p className="underline text-primary">
-              {reviewsCount} {t("reviews")}
-            </p>
+          <p className="font-bold text-lg text-center">{name}</p>
+          <div className="flex gap-2 h-full">
+            <div className="flex flex-col justify-between">
+              <div className="flex gap-2">
+                <p>
+                  {rating}/{t("5")}
+                </p>
+                <Rate rating={rating} />
+                <p className="underline text-primary">
+                  {reviewsCount} {t("reviews")}
+                </p>
+              </div>
+              <p
+                onClick={() => {}}
+                className="text-primary flex justify-center items-center w-fit "
+              >
+                {t("Follow")}
+              </p>
+            </div>
+            <Button className="h-fit">{t("Contact host")}</Button>
           </div>
           {travelPeriod && arrival && departure ? (
             <div className="flex gap-2">
@@ -54,15 +65,7 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
             </div>
           ) : null}
         </div>
-        <div className="flex flex-col justify-between gap-1">
-          <p
-            onClick={() => {}}
-            className="text-primary flex justify-center items-center w-full h-8 "
-          >
-            {t("Follow")}
-          </p>
-          <Button className="h-fit">{t("Contact host")}</Button>
-        </div>
+        <div className="flex flex-col justify-between gap-1"></div>
       </div>
     </div>
   );

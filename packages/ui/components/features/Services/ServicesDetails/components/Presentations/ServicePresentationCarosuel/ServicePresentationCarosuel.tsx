@@ -1,15 +1,16 @@
 import { PresntationMediaType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useScrollTo } from "state";
+import { usePublishRef, useScrollTo } from "state";
 import { AspectRatio, Slider, ArrowLeftIcon, ArrowRightIcon, Button } from "ui";
 export const ServicePresentationCarosuel: React.FC<{
   data: PresntationMediaType[];
 }> = ({ data }) => {
   const { ScrollTo } = useScrollTo();
+  const ref = usePublishRef("presentation");
   const { t } = useTranslation();
   return (
-    <div className="w-full relative">
+    <div ref={ref} className="w-full relative">
       <AspectRatio ratio={5 / 11.12}>
         {Array.isArray(data) ? (
           <div className="w-full gap-4 flex h-full flex-col md:flex-row">

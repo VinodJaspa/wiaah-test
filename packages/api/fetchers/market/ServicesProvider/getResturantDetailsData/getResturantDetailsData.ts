@@ -5,7 +5,6 @@ import {
   InferType,
   CheckValidation,
   ResturantServiceApiDataResponseValidationSchema,
-  HotelServiceDetailsApiResponseValidationSchema,
   ResturantMenuListValidationSchema,
   ResturantServiceDetailsValidationSchema,
 } from "validation";
@@ -32,6 +31,7 @@ export const getResturantServiceDetialsData = async (
 ): Promise<ResturantDetailsApiResponse> => {
   const data: getResturantServiceApiResponseFetcher = {
     data: {
+      vatPercent: 7,
       id: "testid",
       name: "ibis Paris Maine Montparnasse 14th",
       rating: 4.1,
@@ -202,26 +202,31 @@ export const getResturantServiceDetialsData = async (
           listTitle: "Starter",
           menuItems: [
             {
+              id: `${randomNum(1553534321)}`,
               price: randomNum(50),
               title:
                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been ",
             },
             {
+              id: `${randomNum(1553534321)}`,
               price: randomNum(50),
               title:
                 "survived not only five centuries, but also the leap into electronic",
             },
             {
+              id: `${randomNum(1553534321)}`,
               price: randomNum(50),
               title:
                 "readable content of a page when looking at its layout. The point of using Lorem",
             },
             {
+              id: `${randomNum(1553534321)}`,
               price: randomNum(50),
               title:
                 "many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose",
             },
             {
+              id: `${randomNum(1553534321)}`,
               price: randomNum(50),
               title: "Lorem Ipsum is simply dummy text of",
             },
@@ -231,27 +236,32 @@ export const getResturantServiceDetialsData = async (
           listTitle: "Main Course",
           menuItems: [
             {
+              id: `${randomNum(1553534321)}`,
               price: randomNum(50),
               title:
                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been ",
             },
             {
               price: randomNum(50),
+              id: `${randomNum(1553534321)}`,
               title:
                 "survived not only five centuries, but also the leap into electronic",
             },
             {
               price: randomNum(50),
+              id: `${randomNum(1553534321)}`,
               title:
                 "readable content of a page when looking at its layout. The point of using Lorem",
             },
             {
+              id: `${randomNum(1553534321)}`,
               price: randomNum(50),
               title:
                 "many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose",
             },
             {
               price: randomNum(50),
+              id: `${randomNum(1553534321)}`,
               title: "Lorem Ipsum is simply dummy text of",
             },
           ],
@@ -261,26 +271,31 @@ export const getResturantServiceDetialsData = async (
           menuItems: [
             {
               price: randomNum(50),
+              id: `${randomNum(1553534321)}`,
               title:
                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been ",
             },
             {
               price: randomNum(50),
+              id: `${randomNum(1553534321)}`,
               title:
                 "survived not only five centuries, but also the leap into electronic",
             },
             {
               price: randomNum(50),
+              id: `${randomNum(1553534321)}`,
               title:
                 "readable content of a page when looking at its layout. The point of using Lorem",
             },
             {
               price: randomNum(50),
+              id: `${randomNum(1553534321)}`,
               title:
                 "many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose",
             },
             {
               price: randomNum(50),
+              id: `${randomNum(1553534321)}`,
               title: "Lorem Ipsum is simply dummy text of",
             },
           ],
@@ -290,26 +305,31 @@ export const getResturantServiceDetialsData = async (
           menuItems: [
             {
               price: randomNum(50),
+              id: `${randomNum(1553534321)}`,
               title:
                 "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been ",
             },
             {
               price: randomNum(50),
+              id: `${randomNum(1553534321)}`,
               title:
                 "survived not only five centuries, but also the leap into electronic",
             },
             {
               price: randomNum(50),
+              id: `${randomNum(1553534321)}`,
               title:
                 "readable content of a page when looking at its layout. The point of using Lorem",
             },
             {
               price: randomNum(50),
+              id: `${randomNum(1553534321)}`,
               title:
                 "many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose",
             },
             {
               price: randomNum(50),
+              id: `${randomNum(1553534321)}`,
               title: "Lorem Ipsum is simply dummy text of",
             },
           ],

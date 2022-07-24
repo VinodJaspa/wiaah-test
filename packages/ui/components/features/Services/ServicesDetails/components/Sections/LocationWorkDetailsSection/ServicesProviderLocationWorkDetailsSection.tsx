@@ -7,7 +7,7 @@ import {
   ServiceWorkingDays,
 } from "api";
 import {
-  Accordion,
+  HStack,
   AccordionButton,
   AccordionItem,
   AccordionPanel,
@@ -71,11 +71,10 @@ export const ServiceOnMapLocationSection: React.FC<
   const { t } = useTranslation();
   const mapRef = usePublishRef("map");
   return (
-    <AccordionItem itemkey={"5"}>
-      <AccordionButton>
-        <p ref={mapRef ?? undefined}>{t("Show on map")}</p>
-      </AccordionButton>
-      <AccordionPanel className="py-4 w-full">
+    <div className="flex flex-col gap-4">
+      <p className="font-bold text-lg">{t("Localization")}</p>
+      <p ref={mapRef ?? undefined}>{t("Show on map")}</p>
+      <HStack>
         <AspectRatio ratio={3 / 6}>
           <WrappedMap
             className="w-full h-full"
@@ -85,8 +84,8 @@ export const ServiceOnMapLocationSection: React.FC<
             <Marker position={location.cords} />
           </WrappedMap>
         </AspectRatio>
-      </AccordionPanel>
-    </AccordionItem>
+      </HStack>
+    </div>
   );
 };
 
@@ -112,11 +111,9 @@ export const ServiceWorkingHoursSection: React.FC<
 
   const workingHoursRef = usePublishRef("workingHours");
   return (
-    <AccordionItem itemkey={"4"}>
-      <AccordionButton>
-        <p ref={workingHoursRef ?? undefined}>{t("Working hours")}</p>
-      </AccordionButton>
-      <AccordionPanel className="py-4">
+    <>
+      <p ref={workingHoursRef ?? undefined}>{t("Working hours")}</p>
+      <div>
         {workingDays.map((day, i) => (
           <div
             key={i}
@@ -130,8 +127,8 @@ export const ServiceWorkingHoursSection: React.FC<
             </p>
           </div>
         ))}
-      </AccordionPanel>
-    </AccordionItem>
+      </div>
+    </>
   );
 };
 
@@ -143,11 +140,9 @@ export const ServicePoliciesSection: React.FC<ServicePoliciesSectionProps> = ({
   const { t } = useTranslation();
   const policiesRef = usePublishRef("policies");
   return (
-    <AccordionItem itemkey={"6"}>
-      <AccordionButton>
-        <p ref={policiesRef ?? undefined}>{t("Policies")}</p>
-      </AccordionButton>
-      <AccordionPanel className="py-4 flex flex-col gap-8">
+    <>
+      <p ref={policiesRef ?? undefined}>{t("Policies")}</p>
+      <HStack className="flex-col">
         <ul className="font-bold">
           <p>{t("Message for clients")}</p>
           <li>
@@ -164,8 +159,8 @@ export const ServicePoliciesSection: React.FC<ServicePoliciesSectionProps> = ({
               ))
             : null}
         </ul>
-      </AccordionPanel>
-    </AccordionItem>
+      </HStack>
+    </>
   );
 };
 
@@ -178,40 +173,29 @@ export const ServiceReachOutSection: React.FC<ServiceReachOutSectionProps> = ({
   const { t } = useTranslation();
   const contactRef = usePublishRef("contact");
   return (
-    <>
-      <AccordionItem itemkey={"1"}>
-        <AccordionButton>
-          <p ref={contactRef ?? undefined}>{t("Address")}</p>
-        </AccordionButton>
-        <AccordionPanel className="py-4 flex gap-2 items-center">
-          <LocationIcon />
-          <div className="underline font-bold">
-            <p>{location.address}</p>
-            <p>
-              {location.postalCode} {location.city}
-            </p>
-            <p>{location.country}</p>
-          </div>
-        </AccordionPanel>
-      </AccordionItem>
-      <AccordionItem itemkey={"2"}>
-        <AccordionButton>
-          <p>{t("Telephone")}</p>
-        </AccordionButton>
-        <AccordionPanel className="py-4 flex gap-2 items-center">
-          <TelephoneIcon />
-          <p className="underline font-bold">{telephone}</p>
-        </AccordionPanel>
-      </AccordionItem>
-      <AccordionItem itemkey={"3"}>
-        <AccordionButton>
-          <p>{t("Email")}</p>
-        </AccordionButton>
-        <AccordionPanel className="py-4 flex gap-2 items-center">
-          <EmailIcon />
-          <p className="underline font-bold">{email}</p>
-        </AccordionPanel>
-      </AccordionItem>
-    </>
+    <div className="flex flex-col gap-4">
+      <p className="font-bold text-lg">{t("Contact")}</p>
+      <p ref={contactRef ?? undefined}>{t("Address")}</p>
+      <HStack>
+        <LocationIcon />
+        <div className="underline font-bold">
+          <p>{location.address}</p>
+          <p>
+            {location.postalCode} {location.city}
+          </p>
+          <p>{location.country}</p>
+        </div>
+      </HStack>
+      <p>{t("Telephone")}</p>
+      <HStack>
+        <TelephoneIcon />
+        <p className="underline font-bold">{telephone}</p>
+      </HStack>
+      <p>{t("Email")}</p>
+      <HStack>
+        <EmailIcon />
+        <p className="underline font-bold">{email}</p>
+      </HStack>
+    </div>
   );
 };

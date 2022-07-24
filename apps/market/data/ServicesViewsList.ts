@@ -14,6 +14,7 @@ import {
   VehicleSearchView,
   HotelDetailsView,
   ResturantDetailsView,
+  HealthCenterDetailsView,
 } from "@components";
 import {
   HealthCenterServiceSearchResultsList,
@@ -51,7 +52,7 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     searchResaults: HealthCenterSearchResultsView,
     search: HealthCenterSearchView,
     searchList: HealthCenterServiceSearchResultsList,
-    details: null,
+    details: HealthCenterDetailsView,
   },
   {
     slug: "general",
