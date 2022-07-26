@@ -54,6 +54,7 @@ export const getRecommendedResturantsFetcher = async (
           lat: lats[randomNum(lats.length)],
           lng: lngs[randomNum(lngs.length)],
         },
+        countryCode: "CHF",
       },
       discount: {
         amount: 50,

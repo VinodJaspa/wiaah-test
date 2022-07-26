@@ -19,7 +19,7 @@ export const SectionsScrollTabList: React.FC<SectionsScrollTabListProps> = ({
   const { ScrollTo } = useScrollTo();
   return (
     <Tabs>
-      <TabsHeader className="justify-center" />
+      <TabsHeader className="justify-center flex-wrap" />
       {tabs.map(({ slug, name }, i) => (
         <React.Fragment key={i}>
           <TabTitle TabKey={i}>

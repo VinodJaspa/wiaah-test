@@ -53,7 +53,7 @@ export const ServicePresentationCarosuel: React.FC<{
       <Button
         onClick={() => ScrollTo("map")}
         colorScheme="white"
-        className="absolute left-36 bg-white text-black  px-4 py-2 rounded-xl bottom-8"
+        className="absolute md:left-36 left-4 bg-white text-black  px-4 py-2 rounded-xl md:bottom-8 bottom-2"
       >
         {t("Show on map")}
       </Button>

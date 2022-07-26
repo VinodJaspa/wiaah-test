@@ -16,12 +16,12 @@ export const ResturantMenuList: React.FC<ResturantMenuListProps> = ({
       <p className="font-bold">{listTitle}</p>
       {menuItems.map((item, i) => (
         <div className="font-semibold flex items-center pr-2">
-          <p className="whitespace-nowrap" key={i}>
+          <p className="w-fit" key={i}>
             {item.title}
           </p>
 
-          <Divider className="w-full my-0 border-b border-dotted mx-2 border-b-gray-300" />
-          <div className="flex gap-4 w-fit whitespace-nowrap">
+          <Divider className="md:w-full my-0 border-b border-dotted mx-2 border-b-gray-300" />
+          <div className="flex gap-4 w-fit md:whitespace-nowrap">
             <PriceDisplay priceObject={{ amount: item.price }} />
             <span className="text-xl">
               <CountInput

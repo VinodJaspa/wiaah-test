@@ -103,6 +103,8 @@ export const getResturantServiceDetialsData = async (
           lng: 9.18854,
         },
         postalCode: 1204,
+        countryCode: "USA",
+        state: "state",
       },
       telephone: "101227879123",
       workingDays: [

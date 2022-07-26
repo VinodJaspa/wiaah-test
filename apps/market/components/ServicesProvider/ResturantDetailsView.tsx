@@ -36,7 +36,7 @@ export const ResturantDetailsView: React.FC = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col gap-8 py-8">
+    <div className="flex flex-col gap-8 px-2 py-8">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         {res ? <ServicesProviderHeader {...res.data} /> : null}
       </SpinnerFallback>

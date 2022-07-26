@@ -1,23 +1,11 @@
 import React from "react";
-import { Rate } from "antd";
 import { IoHeartOutline, IoHeart, IoTrash } from "react-icons/io5";
-import { ProductTypes } from "types";
+import { ProductType } from "api";
+import { usePreferedCurrency } from "state";
+import { PriceDisplay, Rate } from "ui";
 
-export interface ProductCardProps {
-  id: string;
-  variant?: ProductTypes;
-  name: string;
-  price: number;
-  imageUrl: string;
-  currency?: string;
-  currencySymbol?: string;
-  colors?: string[];
-  liked?: boolean;
+export interface ProductCardProps extends ProductType {
   buttonText?: string;
-  cashback?: string;
-  discount?: number;
-  oldPrice?: number;
-  rating?: number;
   forceHover?: boolean | undefined;
   postion?: "save" | "delete";
   full?: boolean;
@@ -30,24 +18,22 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   id,
   name,
   price,
+  thumbnail,
+  shopId,
   colors = [],
-  currency = "USD",
-  currencySymbol = "$",
-  variant = "product",
   postion = "save",
-  imageUrl,
   liked,
   forceHover,
   buttonText,
   cashback,
   discount,
-  oldPrice,
   rating,
   onButtonClick,
   onDelete,
   onLike,
   full,
 }) => {
+  const { preferedCurrency } = usePreferedCurrency();
   const [selectedColor, setSelectedColor] = React.useState<number>(0);
   const [hovered, setHovered] = React.useState<boolean>(forceHover || false);
 
@@ -93,10 +79,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           {cashback && (
             <div
               data-test="productCashback"
-              className="bg-red-400 bg-opacity-70 px-4 text-white"
+              className="bg-red-400 bg-opacity-70 px-4 text-white flex gap-2"
             >
               {/* cash ack */}
-              {cashback} Cashback
+              {cashback.type === "cash" ? (
+                <PriceDisplay priceObject={{ amount: cashback.amount }} />
+              ) : (
+                `${cashback.amount}%`
+              )}{" "}
+              Cashback
             </div>
           )}
           <span
@@ -130,15 +121,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             )}
           </span>
         </div>
-        {variant === "service" && (
-          <div
-            data-test="bookingText"
-            className="absolute bottom-2 right-0 z-10 bg-[#57bf9c] bg-opacity-70 px-4  text-white"
-          >
-            {/* service */}
-            Booking
-          </div>
-        )}
         <div
           className={`${
             hovered
@@ -155,7 +137,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {buttonText && buttonText}
           </span>
         </div>
-        <img className="h-full w-full object-cover" src={imageUrl} alt={name} />
+        <img
+          className="h-full w-full object-cover"
+          src={thumbnail}
+          alt={name}
+        />
       </div>
       <div className="p-2">
         {/* name */}
@@ -168,19 +154,21 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               data-test="productPriceContainer"
               className="text-lg  font-bold"
             >
-              <span data-test="productCurrencySymbol">{currencySymbol}</span>
+              <span data-test="productCurrencySymbol">
+                {preferedCurrency.currencySymbol}
+              </span>
               <span data-test="productPrice">{price}</span>
             </span>{" "}
-            {oldPrice && (
+            {discount ? (
               <span
                 data-test="productOldPrice"
                 className="font-bold text-gray-400 line-through"
               >
                 {/* old price */}
-                {currencySymbol}
-                {oldPrice}
+                {preferedCurrency.currencySymbol}
+                {(price / ((discount - 100) / 100)).toFixed(2)}
               </span>
-            )}
+            ) : null}
           </div>
           {discount && (
             <span
@@ -213,7 +201,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               </div>
             ))}
           </div>
-          <Rate className="text-sm" allowHalf disabled value={rating} />
+          <Rate className="text-sm" allowHalf rating={rating} />
         </div>
       </div>
     </div>
