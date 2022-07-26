@@ -1,6 +1,7 @@
 import React from "react";
 import { FormatedWorkingDaysType, WorkingDate } from "types";
 import { WorkingDayColumn } from "./WorkingDayColumn";
+import { Slider, ArrowLeftIcon, ArrowRightIcon } from "ui";
 
 export interface WorkingDaysCalanderProps {
   workingDates: WorkingDate[];
@@ -50,12 +51,31 @@ export const WorkingDaysCalander: React.FC<WorkingDaysCalanderProps> = ({
   }, [workingDates]);
 
   return (
-    <div className="grid grid-cols-5 gap-4 min-w-fit bg-white">
+    <Slider
+      rightArrowComponent={ArrowRightIcon}
+      leftArrowComponent={ArrowLeftIcon}
+      itemsCount={5}
+      gap={8}
+      containerProps={{ style: { overflow: "visible" } }}
+      childsWrapperProps={{
+        className: "max-h-48 overflow-y-scroll thinScroll",
+      }}
+      arrowLeftProps={{
+        className: "top-[1rem] text-4xl -translate-x-[100%] text-primary",
+      }}
+      arrowRightProps={{
+        className: "top-[1rem] text-4xl translate-x-[calc(70%)] text-primary",
+      }}
+    >
       {Array.isArray(formatedWorkingDays)
         ? formatedWorkingDays.map((day, i) => (
-            <WorkingDayColumn hoursLimit={hoursLimit} key={i} {...day} />
+            <WorkingDayColumn
+              hoursLimit={formatedWorkingDays.length}
+              key={i}
+              {...day}
+            />
           ))
         : null}
-    </div>
+    </Slider>
   );
 };

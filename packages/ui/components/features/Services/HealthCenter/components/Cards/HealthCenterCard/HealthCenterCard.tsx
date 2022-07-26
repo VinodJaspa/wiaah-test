@@ -1,5 +1,4 @@
-import { HealthCenterData, HealthCenterPractitioner } from "api";
-import { useResponsive } from "hooks";
+import { HealthCenterPractitioner } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { WorkingDate } from "types";
@@ -52,14 +51,14 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
         </div>
         <Button className="w-1/2">{t("Book now")}</Button>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 thinScroll py-4">
         <WorkingDaysCalander
           hoursLimit={hoursLimit}
           workingDates={workingDates}
         />
-        <p className="font-bold text-lg uppercase w-full flex justify-center text-primary cursor-pointer">
+        {/* <p className="font-bold text-lg uppercase w-full flex justify-center text-primary cursor-pointer">
           {t("see more hours")}
-        </p>
+        </p> */}
       </div>
     </div>
   );

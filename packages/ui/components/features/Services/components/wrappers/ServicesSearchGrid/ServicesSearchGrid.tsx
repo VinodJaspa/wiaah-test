@@ -19,9 +19,9 @@ export function ServicesSearchGrid<TData, TProps>({
       style={{
         gridTemplateColumns: gridRule
           ? gridRule
-          : "repeat(auto-fill,minmax(10rem,23rem))",
+          : "repeat(auto-fill,minmax(10rem,21rem))",
       }}
-      className="w-full justify-center gap-y-8 gap-x-4 grid"
+      className="w-full justify-between gap-y-8 gap-x-4 grid"
     >
       {Array.isArray(data)
         ? data.map((d, i) => (

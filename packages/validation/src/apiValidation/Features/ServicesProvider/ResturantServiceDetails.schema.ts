@@ -10,7 +10,6 @@ export const ResturantServiceDetailsValidationSchema =
   CommonServiceDataSchema.concat(
     object({
       menus: array().of(ResturantMenuListValidationSchema).min(0).required(),
-      policies: HotelServiceProviderPolicicesValidationSchema,
       tablePrice: number().required(),
       vatPercent: number().required(),
     })

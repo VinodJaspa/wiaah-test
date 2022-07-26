@@ -30,7 +30,6 @@ export const HotelServiceDetailsValidationSchema =
         .of(HotelServiceProviderRoomValidationSchema)
         .min(0)
         .required(),
-      policies: HotelServiceProviderPolicicesValidationSchema,
       travelPeriod: object({
         arrival: string().required(),
         departure: string().required(),

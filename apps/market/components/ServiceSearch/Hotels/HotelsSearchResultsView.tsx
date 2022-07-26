@@ -32,7 +32,7 @@ export const HotelsSearchResultsView: React.FC = () => {
     }
   }, [router]);
   const handleFiltersUpdate = debounce(
-    (filters: FormatedSearchableFilter) => setFilters(filters),
+    (filters: FormatedSearchableFilter) => setFilters(state => ({...state,...filters})),
     1000
   );
   return (

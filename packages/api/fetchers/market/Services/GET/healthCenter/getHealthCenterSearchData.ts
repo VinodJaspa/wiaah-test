@@ -64,6 +64,7 @@ export const getHealthCenterSearchData = async (
   const searchQuery = filters["search_query"] || "";
   const data: AsyncReturnType<typeof getHealthCenterSearchData> = {
     hasMore: true,
+    total: randomNum(5000),
     data: {
       specialties: specialties
         .filter((s) =>

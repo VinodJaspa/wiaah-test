@@ -15,6 +15,7 @@ import {
   HotelDetailsView,
   ResturantDetailsView,
   HealthCenterDetailsView,
+  VehicleServiceDetailsView,
 } from "@components";
 import {
   HealthCenterServiceSearchResultsList,
@@ -66,6 +67,6 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     search: VehicleSearchView,
     searchResaults: VehicleSearchResultsView,
     searchList: VehicleSearchList,
-    details: null,
+    details: VehicleServiceDetailsView,
   },
 ];

@@ -82,7 +82,7 @@ export const TimeInput: React.FC<TimeInputProps> = ({
   }, [timeRange]);
 
   return (
-    <div className="grid grid-cols-4  gap-x-2 gap-y-4 h-fit w-full">
+    <div className="grid grid-cols-5  gap-2 h-fit w-full">
       {Array.isArray(times)
         ? times.map((time, i) => {
             return PassPropsToFnOrElem<TimeCustomComponentProps>(

@@ -19,7 +19,7 @@ export const VehicleSearchResultsView: React.FC = () => {
         <Formik initialValues={{}} onSubmit={() => {}}>
           {({ setFieldValue, values }) => {
             return (
-              <Form className="flex flex-col">
+              <Form className="flex flex-col w-[25rem]">
                 <DateInput
                   className="w-[100%]"
                   dayComponent={ResturantFindTableFilterDateDayComponent}

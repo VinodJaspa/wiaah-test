@@ -1,16 +1,21 @@
 import React from "react";
+import { HtmlDivProps } from "types";
 import { runIfFn } from "utils";
 
 export type SliderVariants = "vertical" | "horizontal";
 
 export interface SliderProps {
   itemsCount?: number;
+  childsWrapperProps?: HtmlDivProps;
   leftArrowComponent?: React.ReactNode;
   rightArrowComponent?: React.ReactNode;
   downArrowComponent?: React.ReactNode;
   upArrowComponent?: React.ReactNode;
   variant?: SliderVariants;
   gap?: number;
+  arrowLeftProps?: HtmlDivProps;
+  arrowRightProps?: HtmlDivProps;
+  containerProps?: HtmlDivProps;
 }
 
 export const Slider: React.FC<SliderProps> = ({
@@ -22,6 +27,10 @@ export const Slider: React.FC<SliderProps> = ({
   variant,
   gap = 0,
   children,
+  arrowLeftProps,
+  arrowRightProps,
+  childsWrapperProps,
+  containerProps,
 }) => {
   const [currComponent, setCurrComponent] = React.useState<number>(0);
   const childrenCount = React.Children.count(children);
@@ -87,7 +96,12 @@ export const Slider: React.FC<SliderProps> = ({
 
     default:
       return (
-        <div className="relative w-full h-full overflow-hidden">
+        <div
+          {...containerProps}
+          className={`${
+            containerProps?.className || ""
+          } relative w-full h-full overflow-hidden`}
+        >
           <div
             style={{
               width: `calc(${sliderWidth}%)`,
@@ -95,8 +109,11 @@ export const Slider: React.FC<SliderProps> = ({
               transform: `translateX(-${
                 currComponent * (100 / childrenCount)
               }% )`,
+              ...childsWrapperProps?.style,
             }}
-            className="transition-transform top-0 left-0 h-full flex"
+            className={`${
+              childsWrapperProps?.className || ""
+            } transition-transform top-0 left-0 h-full flex`}
           >
             {React.Children.map(children, (child) => {
               return (
@@ -111,13 +128,19 @@ export const Slider: React.FC<SliderProps> = ({
           </div>
           <div
             onClick={() => handlePrev()}
-            className="absolute left-0 top-1/2 -translate-y-1/2"
+            {...arrowLeftProps}
+            className={`${
+              arrowLeftProps?.className || ""
+            } absolute left-0 top-1/2 -translate-y-1/2`}
           >
             {runIfFn(leftArrowComponent)}
           </div>
           <div
             onClick={() => handleNext()}
-            className="absolute right-0 top-1/2 -translate-y-1/2"
+            {...arrowRightProps}
+            className={`${
+              arrowRightProps?.className || ""
+            } absolute right-0 top-1/2 -translate-y-1/2`}
           >
             {runIfFn(rightArrowComponent)}
           </div>

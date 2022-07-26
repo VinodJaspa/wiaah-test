@@ -2,13 +2,16 @@ import React from "react";
 import { AspectRatio, PriceDisplay, VehicleProprtiesList } from "ui";
 import { VehicleSearchData } from "api";
 import { useTranslation } from "react-i18next";
-export interface VehicleSearchCardProps extends VehicleSearchData {}
+export interface VehicleSearchCardProps extends VehicleSearchData {
+  showTotal: boolean;
+}
 
 export const VehicleSearchCard: React.FC<VehicleSearchCardProps> = ({
   name,
   pricePerDay,
   thumbnail,
   vehicleProps,
+  showTotal,
 }) => {
   const { t } = useTranslation();
   return (
@@ -35,14 +38,16 @@ export const VehicleSearchCard: React.FC<VehicleSearchCardProps> = ({
               />{" "}
               | {t("day")}
             </span>
-            <span className="flex gap-2">
-              <PriceDisplay
-                priceObject={{
-                  amount: pricePerDay * 3,
-                }}
-              />
-              {t("total")}
-            </span>
+            {showTotal ? (
+              <span className="flex gap-2">
+                <PriceDisplay
+                  priceObject={{
+                    amount: pricePerDay * 3,
+                  }}
+                />
+                {t("total")}
+              </span>
+            ) : null}
           </div>
         ) : null}
         <span className="text-lg">

@@ -1,108 +1,31 @@
 import { FormatedSearchableFilter } from "src";
 import { AsyncReturnType } from "types";
-import { randomNum } from "utils";
 import {
-  HealthCenterDetailtsApiResponseValidationSchema,
-  HealthCenterDetailsValidationSchema,
   InferType,
-  HealthCenterDoctorMetaDataValidationSchema,
+  vehicleServiceProviderDetailsApiResponseValidationSchema,
 } from "validation";
 
-export type HealthCenterDetailsType = InferType<
-  typeof HealthCenterDetailsValidationSchema
+export type GetVehicleServiceProviderDetailsApiResponse = InferType<
+  typeof vehicleServiceProviderDetailsApiResponseValidationSchema
 >;
 
-export type HealthCenterServicePrviderHeaderData = Pick<
-  HealthCenterDetailsType,
-  "name" | "id" | "rating" | "reviewsCount" | "thumbnail"
+type getVehicleServiceProviderDetailsReturnType = AsyncReturnType<
+  typeof getVehicleServiceProviderDetailsFetcher
 >;
 
-export type HealthCenterDetailsValidationSchema = InferType<
-  typeof HealthCenterDetailtsApiResponseValidationSchema
->;
-
-export type HealthCenterDoctorMetaDataType = InferType<
-  typeof HealthCenterDoctorMetaDataValidationSchema
->;
-
-export type GetHealthCenterDetailsApiResponse = AsyncReturnType<
-  typeof getHealthCenterDetailsFetcher
->;
-
-export const getHealthCenterDetailsFetcher = async (
+export const getVehicleServiceProviderDetailsFetcher = async (
   filters: FormatedSearchableFilter
-): Promise<HealthCenterDetailsValidationSchema> => {
-  const data: GetHealthCenterDetailsApiResponse = {
+): Promise<GetVehicleServiceProviderDetailsApiResponse> => {
+  const data: getVehicleServiceProviderDetailsReturnType = {
     data: {
-      workingDates: [
-        {
-          date: Date.now(),
-          workingHoursRanges: [...Array(2)].map(() => ({
-            from: Date.now(),
-            to: Date.now(),
-          })),
-        },
-        {
-          date: Date.now(),
-          workingHoursRanges: [...Array(1)].map(() => ({
-            from: Date.now(),
-            to: Date.now(),
-          })),
-        },
-        {
-          date: Date.now(),
-          workingHoursRanges: [...Array(2)].map(() => ({
-            from: Date.now(),
-            to: Date.now(),
-          })),
-        },
-        {
-          date: Date.now(),
-          workingHoursRanges: [...Array(1)].map(() => ({
-            from: Date.now(),
-            to: Date.now(),
-          })),
-        },
-        {
-          date: Date.now(),
-          workingHoursRanges: [...Array(2)].map(() => ({
-            from: Date.now(),
-            to: Date.now(),
-          })),
-        },
-      ],
-      policies: [
-        {
-          policyTerms: [
-            "Lorem Ipsum is simply dummy text of the printing and typesetting",
-            "industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley",
-            "survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
-            "Ipsum passages, and more recently with desktop publishing",
-            "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of",
-            "packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-          ],
-          policyTitle: "checkin - checkout terms",
-        },
-      ],
-
       id: "testid",
-      doctors: [...Array(5)].map(() => ({
-        id: `${randomNum(15136)}`,
-        name: "Dr. med. Norbert Boos",
-        specialty: "Spine surgeon",
-        photo:
-          "https://t3.ftcdn.net/jpg/02/60/04/08/360_F_260040863_fYxB1SnrzgJ9AOkcT0hoe7IEFtsPiHAD.jpg",
-      })),
-
-      name: "Union Family Health Center.",
+      name: "ibis Paris Maine Montparnasse 14th",
       rating: 4.1,
       reviewsCount: 1115,
-      thumbnail:
-        "https://t3.ftcdn.net/jpg/02/60/04/08/360_F_260040863_fYxB1SnrzgJ9AOkcT0hoe7IEFtsPiHAD.jpg",
-      proprtyType: "Health Center",
+      thumbnail: "/shop-2.jpeg",
       description:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting",
-
+      proprtyType: "vehicle",
       presintations: [
         {
           src: "https://www.swissotel.com/assets/0/92/3686/3768/3770/6442451433/ae87da19-9f23-450a-8927-6f4c700aa104.jpg",
@@ -153,7 +76,6 @@ export const getHealthCenterDetailsFetcher = async (
           type: "image",
         },
       ],
-      serviceFee: 15,
       email: "Example@email.com",
       location: {
         address: "Rue du marche 34",
@@ -165,6 +87,19 @@ export const getHealthCenterDetailsFetcher = async (
         },
         postalCode: 1204,
       },
+      policies: [
+        {
+          policyTerms: [
+            "Lorem Ipsum is simply dummy text of the printing and typesetting",
+            "industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley",
+            "survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+            "Ipsum passages, and more recently with desktop publishing",
+            "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of",
+            "packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+          ],
+          policyTitle: "checkin - checkout terms",
+        },
+      ],
       telephone: "101227879123",
       workingDays: [
         {
@@ -245,6 +180,48 @@ export const getHealthCenterDetailsFetcher = async (
           },
         },
       ],
+      serviceFee: 850,
+      // policies: {
+      //   checkin_checkout_terms: [
+      //     "Lorem Ipsum is simply dummy text of the printing and typesetting",
+      //     "industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley",
+      //     "survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
+      //     "Ipsum passages, and more recently with desktop publishing",
+      //     "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of",
+      //     "packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+      //   ],
+      //   messageForClients:
+      //     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in",
+      // },
+      vehicles: [...Array(10)].map((_, i) => ({
+        name: "Lucky Dip Car",
+        pricePerDay: 111,
+        thumbnail:
+          "https://www.autocar.co.uk/sites/autocar.co.uk/files/images/car-reviews/first-drives/legacy/1_rangerover_tracking.jpg",
+
+        vehicleProps: [
+          {
+            type: "a/c",
+            value: true,
+          },
+          {
+            type: "gps",
+            value: true,
+          },
+          {
+            type: "passengers",
+            value: 5,
+          },
+          {
+            type: "windows",
+            value: 4,
+          },
+          {
+            type: "bags",
+            value: 3,
+          },
+        ],
+      })),
     },
   };
   return data;

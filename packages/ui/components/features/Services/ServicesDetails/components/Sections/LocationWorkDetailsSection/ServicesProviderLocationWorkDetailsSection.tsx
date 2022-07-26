@@ -35,33 +35,33 @@ export const HotelServiceRoomsSection: React.FC<
   const { t } = useTranslation();
   const roomsRef = usePublishRef("rooms");
   return (
-    <AccordionItem itemkey={"7"}>
-      <AccordionButton>
-        <p ref={roomsRef ?? undefined}>{t("Rooms")}</p>
-      </AccordionButton>
-      <AccordionPanel className="py-4 flex gap-2 w-full items-center">
-        <Slider
-          gap={16}
-          leftArrowComponent={() => (
-            <div className="bg-black bg-opacity-50 text-primary p-1  rounded-full text-3xl">
-              <ArrowLeftIcon />
-            </div>
-          )}
-          rightArrowComponent={() => (
-            <div className="bg-black bg-opacity-50 text-primary p-1  rounded-full text-3xl">
-              <ArrowRightIcon />
-            </div>
-          )}
-          itemsCount={3}
-        >
-          {Array.isArray(rooms)
-            ? rooms.map((room) => <HotelRoomDetailsCard {...room} />)
-            : null}
-        </Slider>
-      </AccordionPanel>
-    </AccordionItem>
+    <div className=" flex gap-2 flex-col">
+      <p ref={roomsRef ?? undefined}>{t("Rooms")}</p>
+      <Slider
+        gap={16}
+        leftArrowComponent={CaruoselLeftArrow}
+        rightArrowComponent={CaruoselRightArrow}
+        itemsCount={3}
+      >
+        {Array.isArray(rooms)
+          ? rooms.map((room) => <HotelRoomDetailsCard {...room} />)
+          : null}
+      </Slider>
+    </div>
   );
 };
+
+export const CaruoselLeftArrow = () => (
+  <div className="bg-black bg-opacity-50 text-primary p-1  rounded-full text-3xl">
+    <ArrowLeftIcon />
+  </div>
+);
+
+export const CaruoselRightArrow = () => (
+  <div className="bg-black bg-opacity-50 text-primary p-1  rounded-full text-3xl">
+    <ArrowRightIcon />
+  </div>
+);
 
 export interface ServiceOnMapLocationSectionProps extends ServiceLocation {}
 
@@ -70,8 +70,9 @@ export const ServiceOnMapLocationSection: React.FC<
 > = ({ location }) => {
   const { t } = useTranslation();
   const mapRef = usePublishRef("map");
+  const localizationRef = usePublishRef("localization");
   return (
-    <div className="flex flex-col gap-4">
+    <div ref={localizationRef} className="flex flex-col gap-4">
       <p className="font-bold text-lg">{t("Localization")}</p>
       <p ref={mapRef ?? undefined}>{t("Show on map")}</p>
       <HStack>
@@ -141,9 +142,29 @@ export const ServicePoliciesSection: React.FC<ServicePoliciesSectionProps> = ({
   const policiesRef = usePublishRef("policies");
   return (
     <>
-      <p ref={policiesRef ?? undefined}>{t("Policies")}</p>
-      <HStack className="flex-col">
-        <ul className="font-bold">
+      <p className="text-lg font-bold" ref={policiesRef ?? undefined}>
+        {t("Policies")}
+      </p>
+      <div className="flex gap-2 flex-col">
+        {Array.isArray(policies)
+          ? policies.map((policy, i) => (
+              <div key={i} className="flex flex-col gap-2">
+                <p className="font-bold">{t(policy.policyTitle)}</p>
+
+                <div className="flex flex-col">
+                  {Array.isArray(policy.policyTerms)
+                    ? policy.policyTerms.map((term, i) => (
+                        <p className="font-semibold" key={i}>
+                          - {term}
+                        </p>
+                      ))
+                    : null}
+                </div>
+              </div>
+            ))
+          : null}
+
+        {/* <ul className="font-bold">
           <p>{t("Message for clients")}</p>
           <li>
             <p className="font-normal">{policies.messageForClients || ""}</p>
@@ -158,8 +179,8 @@ export const ServicePoliciesSection: React.FC<ServicePoliciesSectionProps> = ({
                 </li>
               ))
             : null}
-        </ul>
-      </HStack>
+        </ul> */}
+      </div>
     </>
   );
 };

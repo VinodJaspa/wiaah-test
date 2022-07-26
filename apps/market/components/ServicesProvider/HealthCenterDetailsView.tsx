@@ -17,6 +17,7 @@ import {
   useGetHealthCenterDetailsQuery,
   ResturantFindTableFilterStepper,
   ServicesProviderHeader,
+  WorkingDaysCalander,
   HealthCenterDoctorsList,
 } from "ui";
 import { reviews } from "placeholder";
@@ -39,7 +40,13 @@ export const HealthCenterDetailsView: React.FC = () => {
         data={res ? res.data.presintations || [] : []}
       />
       <SectionsScrollTabList tabs={ServicesProviderTabs} />
-      <StaticSideBarWrapper sidebar={ResturantFindTableFilterStepper}>
+      <StaticSideBarWrapper
+        sidebar={
+          <WorkingDaysCalander
+            workingDates={res ? res.data.workingDates : []}
+          />
+        }
+      >
         {res ? (
           <>
             <Accordion>
@@ -87,6 +94,10 @@ const ServicesProviderTabs: SectionTabType[] = [
   {
     slug: "doctors",
     name: "Doctors",
+  },
+  {
+    slug: "localization",
+    name: "Localization",
   },
   {
     slug: "reviews",

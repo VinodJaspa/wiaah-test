@@ -10,11 +10,12 @@ import { runIfFn } from "utils";
 
 export interface ResturantFindTableFilterStepperHeaderProps {
   currentStepIdx: number;
+  stepsLen?: number;
 }
 
 export const ResturantFindTableFilterStepperHeader: React.FC<
   ResturantFindTableFilterStepperHeaderProps
-> = ({ currentStepIdx = 0 }) => {
+> = ({ currentStepIdx = 0, stepsLen = 3 }) => {
   const steps: { icon: React.ReactNode; name: string }[] = [
     {
       icon: CalenderIcon,
@@ -34,7 +35,7 @@ export const ResturantFindTableFilterStepperHeader: React.FC<
     <div className="relative overflow-hidden h-8 flex items-center w-full">
       <div className="absolute z-[1] items-center justify-evenly w-full flex ">
         {Array.isArray(steps)
-          ? steps.map(({ icon, name }, i) => (
+          ? steps.slice(0, stepsLen).map(({ icon, name }, i) => (
               <React.Fragment key={i}>
                 <div
                   className={`${
@@ -46,7 +47,7 @@ export const ResturantFindTableFilterStepperHeader: React.FC<
                   </span>
                   {currentStepIdx >= i ? <p>{name}</p> : null}
                 </div>
-                {i < steps.length - 1 ? (
+                {i < stepsLen - 1 ? (
                   <ArrowRightIcon
                     className={`${currentStepIdx === i ? "opacity-0" : ""} ${
                       currentStepIdx >= i ? "text-white" : ""
@@ -59,7 +60,7 @@ export const ResturantFindTableFilterStepperHeader: React.FC<
       </div>
       <div
         style={{
-          width: `${(100 / steps.length) * (currentStepIdx + 1)}%`,
+          width: `${(100 / stepsLen) * (currentStepIdx + 1)}%`,
         }}
         className="relative -z-0 text-primary bg-primary top-0 left-0 h-full"
       >

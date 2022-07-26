@@ -1,7 +1,7 @@
 import { createApiResponseValidationSchema } from "../../SharedSchema";
 import { array, object, string } from "yup";
 import { CommonServiceDataSchema } from "../Services/common";
-import { HotelServiceProviderPolicicesValidationSchema } from "./ServicesProvider";
+import { WorkingDateValidationSchema } from "../Services/HealthCenter";
 
 export const HealthCenterDoctorMetaDataValidationSchema = object({
   id: string().required(),
@@ -13,11 +13,11 @@ export const HealthCenterDoctorMetaDataValidationSchema = object({
 export const HealthCenterDetailsValidationSchema =
   CommonServiceDataSchema.concat(
     object({
-      policies: HotelServiceProviderPolicicesValidationSchema,
       doctors: array()
         .of(HealthCenterDoctorMetaDataValidationSchema)
         .min(0)
         .required(),
+      workingDates: array().of(WorkingDateValidationSchema).min(0).required(),
     }).required()
   );
 

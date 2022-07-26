@@ -6,7 +6,7 @@ export interface WorkingHoursRange {
 }
 
 export interface WorkingDate {
-  date: string | number;
+  date: DateType;
   workingHoursRanges: WorkingHoursRange[];
 }
 

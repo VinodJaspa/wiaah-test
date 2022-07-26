@@ -5,6 +5,7 @@ import { MasterLayout } from "@components";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import {
+  ExtractParamFromQuery,
   ExtractServiceTypeFromQuery,
   getServiceView,
   ServicesTypeSwitcher,
@@ -15,6 +16,7 @@ import {
   Container,
   SERVICESTYPE_INDEXKEY,
   useMutateSearchFilters,
+  filtersTokens,
 } from "ui";
 
 const filtered: NextPage = () => {
@@ -22,8 +24,12 @@ const filtered: NextPage = () => {
   const router = useRouter();
   const { addFilter } = useMutateSearchFilters();
   const serviceType = ExtractServiceTypeFromQuery(router.query);
+  const searchLocation = ExtractParamFromQuery(router.query, "location");
   if (ServicesViewsList.findIndex((list) => list.slug === serviceType) > -1) {
     addFilter([SERVICESTYPE_INDEXKEY, serviceType]);
+  }
+  if (typeof searchLocation === "string") {
+    addFilter([filtersTokens.locationSearchQuery, searchLocation]);
   }
   return (
     <>

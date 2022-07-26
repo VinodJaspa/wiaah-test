@@ -33,8 +33,18 @@ export const ServiceWorkingDaysValidationSchema = object({
     .required(),
 }).required();
 
+export const ServicePoliciesValidationSchema = object({
+  policies: array().of(
+    object({
+      policyTitle: string().required(),
+      policyTerms: array().of(string()).min(0).required(),
+    })
+  ),
+});
+
 export const CommonServiceDataSchema = ServiceProviderMetaData.concat(
   ServiceHeroImagesValidationSchema
 )
   .concat(ServiceWorkingDaysValidationSchema)
-  .concat(ServiceReachOutDataValidationSchema);
+  .concat(ServiceReachOutDataValidationSchema)
+  .concat(ServicePoliciesValidationSchema);

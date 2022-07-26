@@ -73,5 +73,6 @@ export const getHealthCenterFilteredDataFetcher = async (
       ],
     })),
     hasMore: true,
+    total: randomNum(5000),
   };
 };

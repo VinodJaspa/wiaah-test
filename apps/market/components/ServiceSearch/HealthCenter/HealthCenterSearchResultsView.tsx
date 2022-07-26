@@ -9,6 +9,12 @@ import {
   ResturantFindTableFilterDateDayComponent,
   HealthCenterSearchBox,
   ServicesSearchResultsFiltersSidebar,
+  Stepper,
+  TimeInput,
+  ResturantReplacableTimeComponent,
+  ResturantFindTableFilterStepperHeader,
+  StepperHeader,
+  StepperContent,
 } from "ui";
 
 export const HealthCenterSearchResultsView: React.FC = () => {
@@ -23,10 +29,36 @@ export const HealthCenterSearchResultsView: React.FC = () => {
             {({ setFieldValue, values }) => {
               return (
                 <Form className="flex flex-col ">
-                  <DateInput
-                    className="w-[100%]"
-                    dayComponent={ResturantFindTableFilterDateDayComponent}
-                  />
+                  <Stepper>
+                    {({ currentStepIdx, nextStep }) => (
+                      <>
+                        <StepperHeader>
+                          <ResturantFindTableFilterStepperHeader
+                            currentStepIdx={currentStepIdx}
+                            stepsLen={2}
+                          />
+                        </StepperHeader>
+                        <StepperContent>
+                          <DateInput
+                            className="w-[100%]"
+                            dayComponent={
+                              ResturantFindTableFilterDateDayComponent
+                            }
+                            onDaySelect={() => {
+                              nextStep();
+                            }}
+                          />
+                          <TimeInput
+                            timeRange={{
+                              from: { hour: 0, minutes: 0 },
+                              to: { hour: 24, minutes: 0 },
+                            }}
+                            timeComponent={ResturantReplacableTimeComponent}
+                          />
+                        </StepperContent>
+                      </>
+                    )}
+                  </Stepper>
                   <SearchFilter
                     collapse
                     defaultOpen

@@ -1,4 +1,4 @@
-import { PaginationReturnDataValidationSchema } from "../../../SharedSchema";
+import { CreatePaginationValidationSchemaOf } from "../../../SharedSchema";
 import { object, string, number, boolean, array, mixed, InferType } from "yup";
 
 export const PaginationDataIndexKey = "data";
@@ -33,11 +33,7 @@ export const VehicleSearchDataValidationSchema = object({
     .required(),
 }).required();
 
-export const VehicleSearchApiResponseValidationSchema = object({
-  ...PaginationReturnDataValidationSchema,
-  [PaginationDataIndexKey]: array()
-    .required()
-    .of(VehicleSearchDataValidationSchema)
-    .min(0)
-    .required(),
-}).required();
+export const VehicleSearchApiResponseValidationSchema =
+  CreatePaginationValidationSchemaOf(
+    array().of(VehicleSearchDataValidationSchema).min(0).required()
+  );

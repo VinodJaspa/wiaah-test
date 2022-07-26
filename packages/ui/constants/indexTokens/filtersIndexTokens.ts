@@ -3,4 +3,5 @@ export const filtersTokens = {
   where: "where",
   location: "location",
   serviceType: "serviceType",
+  locationSearchQuery: "locationSearchQuery",
 };

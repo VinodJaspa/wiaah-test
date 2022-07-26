@@ -96,6 +96,10 @@ const ServicesProviderTabs: SectionTabType[] = [
     name: "Rooms",
   },
   {
+    slug: "localization",
+    name: "Localization",
+  },
+  {
     slug: "reviews",
     name: "Customer reviews",
   },
