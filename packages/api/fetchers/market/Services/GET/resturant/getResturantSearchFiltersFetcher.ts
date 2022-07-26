@@ -5,6 +5,59 @@ export const getResturantSearchFiltersFetcher = async (): Promise<
 > => {
   const filters: SearchFilterType[] = [
     {
+      filterTitle: "COVID-19",
+      filterSlug: "covid-19",
+      filterDisplay: "text",
+      filterType: "check",
+      filterOptions: [
+        {
+          optName: "Resturants taking safety measures",
+          optSlug: "safe_resturants",
+        },
+      ],
+    },
+    {
+      filterTitle: "Establishment Type",
+      filterSlug: "establishment_type",
+      filterDisplay: "text",
+      filterType: "check",
+      filterOptions: [
+        { optName: "Restaurants", optSlug: "restaurants" },
+        {
+          optName: "Quick Bites",
+          optSlug: "quick_bites",
+        },
+        {
+          optName: "Dessert",
+          optSlug: "dessert",
+        },
+        {
+          optName: "Coffee & Tea",
+          optSlug: "coffee_and_tea",
+        },
+        {
+          optName: "Bakeries",
+          optSlug: "bakeries",
+        },
+        {
+          optName: "Bars & Pubs",
+          optSlug: "bars_and_pubs",
+        },
+        {
+          optName: "Dine With a Local Chef",
+          optSlug: "dine_with_local_chef",
+        },
+        {
+          optName: "Speciality Food Market",
+          optSlug: "speciality_food_market",
+        },
+        {
+          optName: "Delivery Only",
+          optSlug: "delivery_only",
+        },
+      ],
+    },
+    {
       filterTitle: "Cuisines type",
       filterSlug: "cuisines_type",
       filterDisplay: "text",
@@ -33,6 +86,34 @@ export const getResturantSearchFiltersFetcher = async (): Promise<
         {
           optName: "Egyptian",
           optSlug: "egyptian",
+        },
+      ],
+    },
+    {
+      filterTitle: "MICHELIN Guide",
+      filterDisplay: "text",
+      filterSlug: "michelin_guide",
+      filterType: "check",
+      filterOptions: [
+        {
+          optName: "MICHELIN Guide",
+          optSlug: "michelin_guide",
+        },
+        {
+          optName: "MICHELIN 1 Star",
+          optSlug: "michelin_1star",
+        },
+        {
+          optName: "MICHELIN 2 Stars",
+          optSlug: "michelin_2stars",
+        },
+        {
+          optName: "MICHELIN 3 Stars",
+          optSlug: "michelin_3stars",
+        },
+        {
+          optName: "MICHELIN Bib Gourmand",
+          optSlug: "michelin_bib_gourmand",
         },
       ],
     },

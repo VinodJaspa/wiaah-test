@@ -14,7 +14,7 @@ type TimeRange = {
 };
 
 export interface TimeInputProps {
-  timeRange: TimeRange;
+  timeRange?: TimeRange;
   timeComponent?: React.ReactNode;
   onTimeSelect?: (time: TimeType) => any;
 }
@@ -35,7 +35,7 @@ const DefaultTimeComponent: React.FC<TimeCustomComponentProps> = ({
       <div
         className={`${
           selected ? "text-white bg-primary" : ""
-        } w-full flex justify-center items-center h-full`}
+        } w-full min-w-[2rem] flex justify-center items-center h-full`}
       >
         <p>
           {`${time.hour}:${
@@ -48,7 +48,7 @@ const DefaultTimeComponent: React.FC<TimeCustomComponentProps> = ({
 };
 
 export const TimeInput: React.FC<TimeInputProps> = ({
-  timeRange,
+  timeRange = { from: { hour: 0, minutes: 0 }, to: { hour: 23, minutes: 59 } },
   timeComponent = DefaultTimeComponent,
   onTimeSelect,
 }) => {
@@ -82,7 +82,7 @@ export const TimeInput: React.FC<TimeInputProps> = ({
   }, [timeRange]);
 
   return (
-    <div className="grid grid-cols-5  gap-2 h-fit w-full">
+    <div className="grid grid-cols-5 min-w-[20rem]  gap-2 h-fit w-full">
       {Array.isArray(times)
         ? times.map((time, i) => {
             return PassPropsToFnOrElem<TimeCustomComponentProps>(

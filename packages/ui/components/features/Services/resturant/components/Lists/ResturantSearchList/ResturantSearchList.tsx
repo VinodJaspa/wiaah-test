@@ -1,4 +1,5 @@
 import { ResturantMetaDataType } from "api";
+import { usePagination } from "hooks";
 import React from "react";
 import {
   useGetResturantsQuery,
@@ -13,11 +14,17 @@ import {
 
 export const ResturantSearchList: React.FC = () => {
   const { filters } = useSearchFilters();
+  const { page, take } = usePagination();
   const { resturants } = useResturantsDataState();
+
   const { setResturants } = useSetResturantsDataState();
-  const { isLoading, isError } = useGetResturantsQuery(filters, 10, 0, {
-    onSuccess: (data) => setResturants(data),
-  });
+  const { isLoading, isError } = useGetResturantsQuery(
+    { page, take },
+    filters,
+    {
+      onSuccess: (res) => setResturants(res.data),
+    }
+  );
 
   return (
     <div className="flex flex-col gap-4 w-full">

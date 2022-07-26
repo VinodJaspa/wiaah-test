@@ -26,6 +26,7 @@ import {
   CaruoselRightArrow,
   SearchFilter,
   Button,
+  DateAndTimeInput,
 } from "ui";
 import { reviews } from "placeholder";
 import { usePublishRef } from "state";
@@ -55,11 +56,16 @@ export const VehicleServiceDetailsView: React.FC = () => {
       <SectionsScrollTabList tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={
-          <DateInput
-            range
-            className="w-[100%]"
-            dayComponent={ResturantFindTableFilterDateDayComponent}
-          />
+          <div className="flex flex-col gap-2 text-xl">
+            <DateAndTimeInput
+              onDateChange={() => {}}
+              dateLabel={t("Pick-up Date")}
+            />
+            <DateAndTimeInput
+              onDateChange={() => {}}
+              dateLabel={t("Return Date")}
+            />
+          </div>
         }
       >
         {res ? (

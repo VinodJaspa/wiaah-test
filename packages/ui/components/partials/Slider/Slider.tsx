@@ -16,6 +16,7 @@ export interface SliderProps {
   arrowLeftProps?: HtmlDivProps;
   arrowRightProps?: HtmlDivProps;
   containerProps?: HtmlDivProps;
+  currentImgIdx?: number;
 }
 
 export const Slider: React.FC<SliderProps> = ({
@@ -31,10 +32,17 @@ export const Slider: React.FC<SliderProps> = ({
   arrowRightProps,
   childsWrapperProps,
   containerProps,
+  currentImgIdx,
 }) => {
   const [currComponent, setCurrComponent] = React.useState<number>(0);
   const childrenCount = React.Children.count(children);
   const sliderWidth = (100 * childrenCount) / itemsCount;
+
+  React.useEffect(() => {
+    if (typeof currentImgIdx === "number") {
+      setCurrComponent(currentImgIdx);
+    }
+  }, [currentImgIdx]);
 
   function handlePrev() {
     setCurrComponent((state) => {

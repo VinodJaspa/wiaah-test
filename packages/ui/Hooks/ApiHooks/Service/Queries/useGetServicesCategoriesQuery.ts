@@ -1,8 +1,10 @@
-import { getServicesCategoriesFetcher } from "api";
+import { getServicesCategoriesFetcher, QueryPaginationInputs } from "api";
 import { useQuery } from "react-query";
 
-export const useGetServicesCategoriesQuery = (take: number, page: number) => {
-  return useQuery(["service_categories", { take, page }], () => {
-    return getServicesCategoriesFetcher(take, page);
+export const useGetServicesCategoriesQuery = (
+  pagination: QueryPaginationInputs
+) => {
+  return useQuery(["service_categories", { pagination }], () => {
+    return getServicesCategoriesFetcher(pagination);
   });
 };

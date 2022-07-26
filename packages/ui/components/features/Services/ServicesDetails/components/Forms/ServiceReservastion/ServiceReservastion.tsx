@@ -128,7 +128,7 @@ export const ServiceReservastion: React.FC = () => {
         </div>
         <Button className="py-4 mx-1">{t("Book now")}</Button>
       </div>
-      <div className="flex flex-col">
+      {/* <div className="flex flex-col">
         <SpinnerFallback isLoading={isLoading} isError={isError}>
           <div className="flex flex-col gap-2 text-lg font-semibold">
             <HStack className={"justify-between underline"}>
@@ -156,7 +156,7 @@ export const ServiceReservastion: React.FC = () => {
             <PriceDisplay priceObject={{ amount: total }} />
           </HStack>
         </SpinnerFallback>
-      </div>
+      </div> */}
     </div>
   );
 };

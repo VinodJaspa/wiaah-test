@@ -9,7 +9,7 @@ class MyDocument extends Document {
           <link rel="apple-touch-icon" href="/icon.png"></link>
           <meta name="theme-color" content="#fff" />
         </Head>
-        <body className="noScroll">
+        <body className="thinScroll">
           <Main />
           <NextScript />
         </body>

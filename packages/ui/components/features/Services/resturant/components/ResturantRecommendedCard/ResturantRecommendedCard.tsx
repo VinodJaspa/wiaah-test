@@ -8,6 +8,7 @@ import {
   PercentIcon,
   CommentIcon,
   InfoText,
+  PriceLevelDisplay,
 } from "ui";
 
 export interface ResturantRecommendedCardProps extends ResturantMetaDataType {}
@@ -23,6 +24,8 @@ export const ResturantRecommendedCard: React.FC<
   reviewsCount,
   location,
   discount,
+  tags,
+  id,
 }) => {
   const { t } = useTranslation();
   return (
@@ -57,6 +60,18 @@ export const ResturantRecommendedCard: React.FC<
               <p>{reviewsCount}</p>
             </div>
           </div>
+        </div>
+        <div className="flex gap-2 sm:font-lg flex-wrap font-semibold">
+          {Array.isArray(tags)
+            ? tags.map((tag, i) => (
+                <p key={i}>
+                  {tag}
+                  {i + 1 < tags.length ? "," : ""}
+                </p>
+              ))
+            : null}
+          {"-"}
+          <PriceLevelDisplay amount={averagePrice} levels={[20, 40, 60]} />
         </div>
       </div>
     </div>
