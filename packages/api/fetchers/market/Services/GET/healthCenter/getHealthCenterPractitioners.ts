@@ -44,5 +44,6 @@ export const getHealthCenterPractitionersFilteredDataFetcher = async (
   return {
     data: practitioners.slice(0, pagination.take),
     hasMore: false,
+    total: randomNum(5000),
   };
 };

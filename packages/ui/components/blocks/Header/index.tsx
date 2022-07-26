@@ -24,6 +24,8 @@ import { useTranslation } from "react-i18next";
 import { NavLink } from "types";
 import { useBreakpointValue } from "@chakra-ui/react";
 import { useGetServicesCategoriesQuery } from "ui";
+import { usePagination } from "hooks";
+import { ServiceCategoryType } from "api";
 
 export interface HeaderProps {}
 
@@ -32,14 +34,13 @@ export const Header: React.FC<HeaderProps> = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [isopen, setisopen] = React.useState(false);
   const { t } = useTranslation();
+  const { page, take } = usePagination();
 
   const {
     data: categories,
     isLoading,
     isSuccess,
-  } = useGetServicesCategoriesQuery(15, 0);
-
-  console.log("categories", categories);
+  } = useGetServicesCategoriesQuery({ page, take });
 
   const steps: Step[] = Array.isArray(categories)
     ? categories.map((cate, i) => ({
@@ -96,8 +97,8 @@ export const Header: React.FC<HeaderProps> = () => {
       {/* Top Navbar */}
 
       <Container>
-        <div className="w-full h-fit flex py-4 gap-4 items-center justify-between flex-col lg:flex-row">
-          <div className="h-20 cursor-pointer">
+        <div className="w-full h-fit flex p-4 gap-4 items-center justify-between">
+          <div className="h-12 sm:h-20 cursor-pointer">
             <Link href="/">
               <img
                 alt="wiaah_logo"
@@ -107,30 +108,8 @@ export const Header: React.FC<HeaderProps> = () => {
             </Link>
           </div>
 
-          <div className="border-primary rounded-lg border-[1px] flex-col sm:flex-row max-w-[40rem] justify-items-stretch flex">
-            <input
-              className="w-60 appearance-none  border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none"
-              placeholder={t("Search", "Search")}
-            />
-            <div className="flex">
-              <SelectDropdown
-                className="appearance-none w-full border-l-[1px] border-l-primary border-none border-gray-600 bg-gray-700  px-2.5 text-white outline-none focus:outline-none"
-                options={
-                  Array.isArray(categories)
-                    ? categories.map((cate, i) => ({
-                        name: t(cate.name),
-                        value: cate.slug,
-                      }))
-                    : []
-                }
-              />
-              <label htmlFor="Category" className="relative flex">
-                {/* <FaChevronDown className="pointer-events-none absolute inset-y-1/3 right-3 h-4 w-4 text-green-400" /> */}
-              </label>
-              <Button className="rounded-none text-xl">
-                <FaSearch className="h-5 w-5 text-white" />
-              </Button>
-            </div>
+          <div className="hidden md:block">
+            <MainHeaderSearchBar categories={categories || []} />
           </div>
 
           <div className="flex text-white">
@@ -154,8 +133,9 @@ export const Header: React.FC<HeaderProps> = () => {
           </div>
         </div>
       </Container>
-      <div className="flex w-full bg-gray-800 px-6 py-4 text-white">
-        <Container>
+
+      <div className="flex w-full bg-gray-800 p-4 text-white">
+        <Container className="flex">
           <ul className="no-scrollBar inline-flex w-full items-center space-x-10 overflow-x-scroll">
             <li
               id="burger-menu-toggle"
@@ -176,6 +156,9 @@ export const Header: React.FC<HeaderProps> = () => {
                 </li>
               ))}
           </ul>
+          <div className="block md:hidden">
+            <MainHeaderSearchBar categories={categories || []} />
+          </div>
         </Container>
       </div>
       <MultiStepDrawer
@@ -184,5 +167,36 @@ export const Header: React.FC<HeaderProps> = () => {
         steps={steps}
       />
     </nav>
+  );
+};
+
+export const MainHeaderSearchBar: React.FC<{
+  categories: ServiceCategoryType[];
+}> = ({ categories }) => {
+  const { t } = useTranslation();
+
+  return (
+    <div className="rounded-lg overflow-hidden max-w-[40rem] justify-items-stretch flex">
+      <input
+        className="w-60 appearance-none  border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none"
+        placeholder={t("Search", "Search")}
+      />
+      <div className="flex">
+        <SelectDropdown
+          className="appearance-none hidden sm:block w-full border-l-[1px] border-l-primary border-none border-gray-600 bg-gray-700  px-2.5 text-white outline-none focus:outline-none"
+          options={
+            Array.isArray(categories)
+              ? categories.map((cate, i) => ({
+                  name: t(cate.name),
+                  value: cate.slug,
+                }))
+              : []
+          }
+        />
+        <Button className="rounded-none text-xl">
+          <FaSearch className="h-5 w-5 text-white" />
+        </Button>
+      </div>
+    </div>
   );
 };

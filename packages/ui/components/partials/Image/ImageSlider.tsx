@@ -1,6 +1,6 @@
 import React from "react";
 import { BsDot } from "react-icons/bs";
-import { ArrowLeftIcon, ArrowRightIcon } from "ui";
+import { ArrowLeftIcon, ArrowRightIcon, Slider } from "ui";
 
 export interface ImageSliderProps {
   images: string[];
@@ -25,10 +25,7 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
   }
   return (
     <div className="w-full h-full overflow-hidden relative">
-      <div
-        style={{ transform: `translateX(-${100 * currentImgIdx}%)` }}
-        className={`transition-all flex h-full w-[calc(100% * ${images.length})]`}
-      >
+      <Slider currentImgIdx={currentImgIdx}>
         {Array.isArray(images)
           ? images.map((src, i) => (
               <img
@@ -39,7 +36,7 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
               />
             ))
           : null}
-      </div>
+      </Slider>
       <div className="w-full h-full bg-gradient-to-t from-[rgba(0,0,0,0.3)] absolute top-0 left-0"></div>
       <div className="absolute bottom-0 left-1/2 flex items-center -translate-x-1/2">
         {[...Array(images.length)].map((_, i) => (

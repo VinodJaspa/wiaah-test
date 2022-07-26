@@ -10,6 +10,7 @@ interface AccordionContextValueType {
   toggleItem: (key: AccordionKeyType) => unknown;
   closeAll: () => unknown;
   isLazy: boolean;
+  defaultOpen: boolean;
 }
 
 export const AccordionContext = React.createContext<AccordionContextValueType>({
@@ -20,6 +21,7 @@ export const AccordionContext = React.createContext<AccordionContextValueType>({
   toggleItem: () => {},
   isItemOpen: () => false,
   isLazy: false,
+  defaultOpen: false,
 });
 
 interface AccordionItemContextValueType {

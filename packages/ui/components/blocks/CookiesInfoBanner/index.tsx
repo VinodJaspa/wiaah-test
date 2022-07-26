@@ -10,8 +10,6 @@ export const CookiesInfoBanner: React.FC<CookiesInfoBannerProps> = ({
   onAcceptAll,
   onLetMeChoose,
 }) => {
-  const { min } = useScreenWidth({ minWidth: 1000 });
-
   function handleLetMeChoose() {
     onLetMeChoose && onLetMeChoose();
   }
@@ -21,33 +19,29 @@ export const CookiesInfoBanner: React.FC<CookiesInfoBannerProps> = ({
   }
   return (
     <>
-      <FlexStack
-        horizontalSpacingInRem={1}
-        verticalSpacingInRem={min ? 0 : 1}
-        direction={min ? "vertical" : "horizontal"}
-        alignItems={min ? "start" : "center"}
-        fullWidth={true}
-        justify={"between"}
-        customClassName="w-full bg-white p-4 rounded-md"
-      >
-        <FlexStack direction="vertical">
+      <div className="flex gap-4 flex-col md:flex-row items-start md:items-center w-full justify-between bg-white p-4 rounded-md">
+        <div className="flex flex-col">
           {/* // text */}
           <h1 className="text-xl font-bold">HOW WIAAH USES COOKIES</h1>
           <p>
             We use cookies that help us provide you with the best possible
             shopping experience with us
           </p>
-        </FlexStack>
-        <FlexStack horizontalSpacingInRem={1}>
+        </div>
+        <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-fit">
           {/* buttons */}
-          <Button onClick={() => handleAcceptAll()}>
-            <p className="w-48">ACCEPT ALL</p>
+          <Button className="w-full sm:w-fit" onClick={() => handleAcceptAll()}>
+            ACCEPT ALL
           </Button>
-          <Button onClick={() => handleLetMeChoose()} outline>
-            <p className="w-48 text-black">LET ME CHOOSE</p>
+          <Button
+            className="w-full sm:w-fit"
+            onClick={() => handleLetMeChoose()}
+            outline
+          >
+            LET ME CHOOSE
           </Button>
-        </FlexStack>
-      </FlexStack>
+        </div>
+      </div>
     </>
   );
 };

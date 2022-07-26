@@ -1,6 +1,26 @@
-import * as yup from "yup";
-import { PaginationReturnDataValidationSchema } from "../../../../";
+import { array, mixed, number, object, string } from "yup";
+import { CreatePaginationValidationSchemaOf } from "../../../SharedSchema";
+import { HealthCenterPractitionerData } from "../../";
 
-export const HealthCentersApiDataValidationSchema = yup.object().shape({
-  ...PaginationReturnDataValidationSchema,
+export const DateTypeValidationSchema = mixed<string | number>().required();
+
+export const WorkingHoursRangeValidationSchema = object({
+  from: DateTypeValidationSchema,
+  to: DateTypeValidationSchema,
 });
+
+export const WorkingDateValidationSchema = object({
+  date: DateTypeValidationSchema,
+  workingHoursRanges: array()
+    .of(WorkingHoursRangeValidationSchema)
+    .min(0)
+    .required(),
+});
+
+export const HealthCentersValidationSchema = object({
+  centerData: HealthCenterPractitionerData,
+  workingDates: array().of(WorkingDateValidationSchema).min(0).required(),
+});
+
+export const HealthCentersApiDataValidationSchema =
+  CreatePaginationValidationSchemaOf(array().of(HealthCentersValidationSchema));

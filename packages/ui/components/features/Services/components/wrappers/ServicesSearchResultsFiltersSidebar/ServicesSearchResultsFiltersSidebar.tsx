@@ -46,7 +46,7 @@ export const ServicesSearchResultsFiltersSidebar: React.FC<
               <CloseIcon className="text-xl" />
             </DrawerCloseButton>
           </DrawerHeader>
-          <div className="flex flex-col min-w-[min(15rem,100%)] h-full overflow-y-scroll">
+          <div className="flex flex-col gap-4 min-w-[min(15rem,100%)] h-full overflow-hidden">
             <ShowMapButton onClick={onShowOnMap} />
             {children}
           </div>

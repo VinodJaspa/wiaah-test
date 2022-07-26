@@ -8,6 +8,7 @@ import {
   ResturantFindTableFilterStepperHeader,
   TimeInput,
   ResturantReplacableTimeComponent,
+  AspectRatio,
 } from "ui";
 import { FilterAndAddToArray } from "utils";
 export interface ResturantFindTableFilterStepper {}
@@ -26,8 +27,9 @@ export const ResturantFindTableFilterStepper: React.FC<
         setStepsLength,
         stepsLength,
       }) => {
+        React.useEffect(() => {}, []);
         return (
-          <div className="flex flex-col w-full">
+          <div className="flex flex-col gap-4 w-full">
             <ResturantFindTableFilterStepperHeader
               currentStepIdx={currentStepIdx}
             />
@@ -48,12 +50,13 @@ export const ResturantFindTableFilterStepper: React.FC<
                     return filteredState;
                   });
                   nextStep();
+                  nextStep();
                 }}
               />
               <TimeInput
                 timeRange={{
-                  from: { hour: 8, minutes: 30 },
-                  to: { hour: 16, minutes: 30 },
+                  from: { hour: 8, minutes: 0 },
+                  to: { hour: 17, minutes: 30 },
                 }}
                 timeComponent={ResturantReplacableTimeComponent}
                 onTimeSelect={(time) => {
@@ -66,29 +69,24 @@ export const ResturantFindTableFilterStepper: React.FC<
                       "exclude",
                       "reservationTime"
                     );
-                    return filteredState;
                     nextStep();
-                  });
-                }}
-              />
-              <DateInput
-                dayComponent={ResturantFindTableFilterDateDayComponent}
-                onDaySelect={(date) => {
-                  setFilters((state) => {
-                    const filteredState = FilterAndAddToArray(
-                      state,
-                      {
-                        reservationDate: date,
-                      },
-                      "exclude",
-                      "reservationDate"
-                    );
                     return filteredState;
                   });
-                  nextStep();
-                  console.log("day selected", date, currentStepIdx);
                 }}
               />
+              <div className="grid grid-cols-5  gap-2 h-fit w-full">
+                {[...Array(20)].map((_, i) => {
+                  return (
+                    <div className="w-full">
+                      <AspectRatio ratio={1}>
+                        <div className="flex h-full justify-center items-center bg-gray-200 rounded">
+                          {i + 1}
+                        </div>
+                      </AspectRatio>
+                    </div>
+                  );
+                })}
+              </div>
             </StepperContent>
           </div>
         );

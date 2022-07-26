@@ -31,8 +31,8 @@ export const PriceConverter = ({
   const currency = useRecoilValue(PreferedCurrencyState);
   if (typeof amount !== "number") return null;
   return currency
-    ? `${symbol ? currency.currencySymbol : currency.currencyCode}${
+    ? `${symbol ? currency.currencySymbol : currency.currencyCode}${(
         amount * currency.currencyRateToUsd
-      } `
-    : `${symbol ? "$" : ""}${amount} ${symbol ? "" : "usd"}`;
+      ).toFixed(2)} `
+    : `${symbol ? "$" : ""}${amount.toFixed(2)} ${symbol ? "" : "usd"}`;
 };

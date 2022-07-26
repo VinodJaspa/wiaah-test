@@ -6,4 +6,5 @@ export type QueryPaginationInputs = {
 export type PaginationFetchedData<TData> = {
   hasMore: boolean;
   data: TData;
+  total: number;
 };

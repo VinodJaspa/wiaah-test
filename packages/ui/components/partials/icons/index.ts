@@ -54,3 +54,5 @@ export * from "./WifiIcon";
 export * from "./DumbbellIcon";
 export * from "./BarGlassIcon";
 export * from "./DeskIcon";
+export * from "./MinusIcon";
+export * from "./PlusIcon";

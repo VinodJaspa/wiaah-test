@@ -19,7 +19,7 @@ export function ServicesSearchGrid<TData, TProps>({
       style={{
         gridTemplateColumns: gridRule
           ? gridRule
-          : "repeat(auto-fill,minmax(10rem,23rem))",
+          : "repeat(auto-fill,minmax(10rem,18rem))",
       }}
       className="w-full justify-center gap-y-8 gap-x-4 grid"
     >

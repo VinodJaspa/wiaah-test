@@ -22,7 +22,7 @@ export const WorkingDayColumn: React.FC<WorkingDayColumnProps> = ({
           {dayNum} {t(monthName)}
         </p>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col gap-2 w-full">
         {[...Array(hoursLimit)].map((_, i) => {
           const time = times[i];
           return (
@@ -30,7 +30,7 @@ export const WorkingDayColumn: React.FC<WorkingDayColumnProps> = ({
               <div
                 className={`${
                   time ? "bg-primary-100" : ""
-                } w-16 h-8 flex justify-center items-center rounded font-bold`}
+                } w-full h-8 flex justify-center items-center rounded font-bold`}
               >
                 {time ? (
                   <>
@@ -44,7 +44,7 @@ export const WorkingDayColumn: React.FC<WorkingDayColumnProps> = ({
               <div
                 className={`${
                   time ? "bg-primary-100" : ""
-                } w-16 h-8 flex justify-center items-center rounded font-bold`}
+                } w-full h-8 flex justify-center items-center rounded font-bold`}
               >
                 {time ? (
                   <>

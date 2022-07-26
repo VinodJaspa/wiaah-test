@@ -13,7 +13,8 @@ export const AccordionPanel: React.FC<AccordionPanelProps> = ({
 }) => {
   const [show, setShow] = React.useState<boolean>(false);
 
-  const { isItemOpen, isLazy } = React.useContext(AccordionContext);
+  const { isItemOpen, isLazy, defaultOpen } =
+    React.useContext(AccordionContext);
   const { key } = React.useContext(AccordionItemContext);
   const open = isItemOpen(key);
 

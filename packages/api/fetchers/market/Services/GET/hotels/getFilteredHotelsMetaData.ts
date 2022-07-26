@@ -45,6 +45,7 @@ export const getFilteredHotelsMetaData = async (
 
   const data: PaginationFetchedData<FilteredHotelsMetaDataType[]> = {
     hasMore: false,
+    total: 516,
     data: [...Array(15)].map((_, i) => ({
       title:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
@@ -71,9 +72,11 @@ export const getFilteredHotelsMetaData = async (
   };
 
   if ("id" in filters) {
+    const idFilteredData = data.data.filter((d) => d.id === filters.id);
     return {
-      data: data.data.filter((d) => d.id === filters.id),
+      data: idFilteredData,
       hasMore: false,
+      total: idFilteredData.length,
     };
   }
   return data;

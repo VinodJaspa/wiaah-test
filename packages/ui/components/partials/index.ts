@@ -59,3 +59,4 @@ export * from "./InfoText";
 export * from "./Replacables";
 export * from "./HighlightText";
 export * from "./Slider";
+export * from "./PriceLevelDisplay";

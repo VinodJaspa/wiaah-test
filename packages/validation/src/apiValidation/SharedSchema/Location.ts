@@ -8,7 +8,10 @@ export const locationValidationSchema = yup
       lat: yup.number().required(),
       lng: yup.number().required(),
     }),
+    state: yup.string().optional(),
     country: yup.string().required(),
     postalCode: yup.number().required(),
   })
   .required();
+
+export const Location = () => locationValidationSchema;

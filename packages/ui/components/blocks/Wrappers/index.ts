@@ -9,3 +9,4 @@ export * from "./SectionContainer";
 export * from "./SectionWrapper";
 export * from "./ScrollingWrapper";
 export * from "./PaginationWrapper";
+export * from "./StaticSideBarWrapper";

@@ -1,7 +1,12 @@
 import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { ImageSlider, Container, CookiesInfoBanner } from "ui/components";
+import {
+  ImageSlider,
+  Container,
+  CookiesInfoBanner,
+  AspectRatio,
+} from "ui/components";
 import { HomeView } from "ui/views";
 import MasterLayout from "../components/MasterLayout";
 
@@ -12,7 +17,11 @@ const Market: NextPage = () => {
         <title>Wiaah | Market</title>
       </Head>
       <MasterLayout>
-        <ImageSlider />
+        <AspectRatio ratio={6 / 16}>
+          <ImageSlider
+            images={["/shop.jpeg", "/shop-2.jpeg", "/shop-3.jpeg"]}
+          />
+        </AspectRatio>
         <Container>
           <HomeView />
         </Container>

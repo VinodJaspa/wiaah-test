@@ -32,6 +32,7 @@ export const getVehicleSearchDataFetcher = async (
 ): Promise<VehicleSearchDataApiResponse> => {
   const data: AsyncReturnType<typeof getVehicleSearchDataFetcher> = {
     hasMore: false,
+    total: 50,
     data: [...Array(pagination.take)].map(() => ({
       name: "Lucky Dip Car",
       pricePerDay: 111,

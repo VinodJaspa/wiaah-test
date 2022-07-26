@@ -1,14 +1,15 @@
+import { useOutsideClick } from "hooks";
 import React from "react";
 import { useContext } from "react";
 import { HtmlDivProps, HtmlInputProps } from "types";
-import { CallbackAfter, runIfFn } from "utils";
+import { CallbackAfter, MapChildren, MaybeFn, runIfFn } from "utils";
 
 interface InputContextValue {
   isInputGroup: boolean;
   isFocused: boolean;
   inputLeftElement: React.ReactNode;
   inputRightElement: React.ReactNode;
-
+  setFocused: (focused: boolean) => any;
   setInputLeftElement: (element: React.ReactNode) => any;
   setInputRightElement: (element: React.ReactNode) => any;
 }
@@ -18,7 +19,7 @@ const InputContext = React.createContext<InputContextValue>({
   inputLeftElement: null,
   inputRightElement: null,
   isFocused: false,
-
+  setFocused: () => {},
   setInputLeftElement: () => {},
   setInputRightElement: () => {},
 });
@@ -47,6 +48,7 @@ export const Input: React.FC<InputProps> = ({
 
 export interface InputGroupProps extends HtmlDivProps {
   flushed?: boolean;
+  children?: MaybeFn<InputContextValue>;
 }
 
 export const InputGroup: React.FC<InputGroupProps> = ({
@@ -59,6 +61,14 @@ export const InputGroup: React.FC<InputGroupProps> = ({
   const [leftElement, setLeftElement] = React.useState<React.ReactNode>(null);
   const [rightElement, setRightElement] = React.useState<React.ReactNode>(null);
   const isGroup = !!leftElement || !!rightElement;
+
+  const groupRef = React.useRef<HTMLDivElement>(null);
+
+  useOutsideClick(groupRef, () => {
+    setFocused(false);
+  });
+
+  console.log("is focused", focused, children);
   return (
     <InputContext.Provider
       value={{
@@ -66,6 +76,7 @@ export const InputGroup: React.FC<InputGroupProps> = ({
         isInputGroup: isGroup,
         inputLeftElement: leftElement,
         inputRightElement: rightElement,
+        setFocused: (focused) => setFocused(focused),
         setInputLeftElement: (element) => setLeftElement(element),
         setInputRightElement: (element) => setRightElement(element),
       }}
@@ -73,7 +84,7 @@ export const InputGroup: React.FC<InputGroupProps> = ({
       <div
         {...props}
         onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
+        ref={groupRef}
         className={`${className ?? ""} ${
           isGroup
             ? flushed
@@ -83,7 +94,15 @@ export const InputGroup: React.FC<InputGroupProps> = ({
         } flex gap-1 items-center relative`}
       >
         {leftElement && <>{runIfFn(leftElement, {})}</>}
-        {children}
+        {MapChildren<InputContextValue>(children, {
+          isFocused: focused,
+          isInputGroup: isGroup,
+          inputLeftElement: leftElement,
+          inputRightElement: rightElement,
+          setFocused: (focused) => setFocused(focused),
+          setInputLeftElement: (element) => setLeftElement(element),
+          setInputRightElement: (element) => setRightElement(element),
+        })}
         {rightElement && <>{runIfFn(rightElement, {})}</>}
       </div>
     </InputContext.Provider>

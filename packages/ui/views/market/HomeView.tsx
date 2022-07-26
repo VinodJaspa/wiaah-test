@@ -15,7 +15,7 @@ export const HomeView: React.FC = () => {
 
   return (
     <>
-      <div className="block w-full space-y-6 p-6">
+      <div className="block w-full space-y-6 p-4">
         <div className="grid w-full grid-cols-1 gap-4 rounded-lg bg-green-400 p-4 md:grid-cols-3 lg:grid-cols-6">
           <label htmlFor="Category" className="relative flex">
             <FaChevronDown className="pointer-events-none absolute inset-y-1/3 right-3 h-4 w-4 text-green-400" />

@@ -3,6 +3,7 @@ import { hasMoreValidationSchema } from "./units";
 
 export const PaginationReturnDataValidationSchema = {
   hasMore: hasMoreValidationSchema,
+  total: yup.number().required(),
 };
 
 export function CreatePaginationValidationSchemaOf<

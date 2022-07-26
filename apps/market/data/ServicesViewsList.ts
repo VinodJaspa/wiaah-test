@@ -12,6 +12,10 @@ import {
   ServicesSearchResultsView,
   VehicleSearchResultsView,
   VehicleSearchView,
+  HotelDetailsView,
+  ResturantDetailsView,
+  HealthCenterDetailsView,
+  VehicleServiceDetailsView,
 } from "@components";
 import {
   HealthCenterServiceSearchResultsList,
@@ -28,35 +32,41 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     search: HotelsSearchView,
     searchResaults: HotelsSearchResultsView,
     searchList: HotelsSearchList,
+    details: HotelDetailsView,
   },
   {
     slug: "resturant",
     search: ResturantSearchView,
     searchResaults: ResturantSearchResultsView,
     searchList: ResturantSearchList,
+    details: ResturantDetailsView,
   },
   {
     slug: "holidays_rentals",
     search: HolidaysRentalSearchView,
     searchResaults: HolidaysRentalSearchResultsView,
     searchList: HolidaysRentalSearchList,
+    details: null,
   },
   {
     slug: "health_center",
     searchResaults: HealthCenterSearchResultsView,
     search: HealthCenterSearchView,
     searchList: HealthCenterServiceSearchResultsList,
+    details: HealthCenterDetailsView,
   },
   {
     slug: "general",
     search: ServicesSearchView,
     searchResaults: ServicesSearchResultsView,
     searchList: ServicesSearchResultsList,
+    details: null,
   },
   {
     slug: "vehicle",
     search: VehicleSearchView,
     searchResaults: VehicleSearchResultsView,
     searchList: VehicleSearchList,
+    details: VehicleServiceDetailsView,
   },
 ];

@@ -21,28 +21,28 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({
   const { focusMapItem } = useMutateFocusedMapItemId();
   const { page, take } = usePagination();
   const { t } = useTranslation();
-  const { filters, getFiltersSearchQuery } = useSearchFilters();
+  const { filters, getFiltersSearchQuery, getLocationFilterQuery } =
+    useSearchFilters();
   const [services, setServices] = React.useState<FilteredHotelsMetaDataType[]>(
     []
   );
   const { isTablet } = useResponsive();
 
-  const { isLoading, isError } = useGetFilteredServicesMetaDataQuery(
-    { page, take },
-    filters,
-    {
-      onSuccess: (res) => setServices(res.data),
-    }
-  );
+  const {
+    data: res,
+    isLoading,
+    isError,
+  } = useGetFilteredServicesMetaDataQuery({ page, take }, filters, {
+    onSuccess: (res) => setServices(res.data),
+  });
+
   return (
     <PaginationWrapper>
       <div className="w-full flex flex-col gap-4 justify-center">
-        {typeof getFiltersSearchQuery === "string" ? (
-          <p className="text-2xl font-bold">
-            {Array.isArray(services) ? services.length : ""}{" "}
-            {t("Services were found in")} {getFiltersSearchQuery || ""}
-          </p>
-        ) : null}
+        <DisplayFoundServices
+          location={getLocationFilterQuery || ""}
+          servicesNum={res?.total || 0}
+        />
         <SpinnerFallback isLoading={isLoading} isError={isError}>
           {services.length < 1 ? (
             <div className="w-fit h-48 flex just-center items-center text-2xl">
@@ -61,5 +61,24 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({
         </SpinnerFallback>
       </div>
     </PaginationWrapper>
+  );
+};
+
+export const DisplayFoundServices: React.FC<{
+  location: string;
+  servicesNum: number;
+}> = ({ location, servicesNum }) => {
+  const { t } = useTranslation();
+  return (
+    <>
+      {typeof location === "string" ? (
+        <p className="text-2xl font-bold">
+          {t("We found for you in")} {location} {servicesNum || 0}{" "}
+          {t(
+            "booking services that are available just for you. Do not hesitate to book."
+          )}
+        </p>
+      ) : null}
+    </>
   );
 };

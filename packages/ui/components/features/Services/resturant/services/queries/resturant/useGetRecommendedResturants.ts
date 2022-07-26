@@ -1,20 +1,26 @@
 import {
   FormatedSearchableFilter,
   getRecommendedResturantsFetcher,
+  getRecommendedResturantsFetcherResponseType,
+  QueryPaginationInputs,
   ResturantMetaDataType,
 } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
 export const useGetResturantsQuery = (
+  pagination: QueryPaginationInputs,
   filters: FormatedSearchableFilter,
-  take: number,
-  page: number,
-  options: UseQueryOptions<unknown, unknown, ResturantMetaDataType[], any>
+  options: UseQueryOptions<
+    unknown,
+    unknown,
+    getRecommendedResturantsFetcherResponseType,
+    any
+  >
 ) => {
   return useQuery(
-    ["recommendedResturants", { take, page }],
+    ["recommendedResturants", { pagination, filters }],
     () => {
-      return getRecommendedResturantsFetcher(take, page);
+      return getRecommendedResturantsFetcher(pagination, filters);
     },
     options
   );
