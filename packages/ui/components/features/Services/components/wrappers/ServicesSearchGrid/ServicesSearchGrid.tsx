@@ -1,5 +1,5 @@
 import React from "react";
-import { PassPropsToFnOrElem } from "utils";
+import { PassPropsToFnOrElem, randomNum } from "utils";
 
 export interface ServicesSearchGridProps<TData, TProps> {
   data: TData[];
@@ -19,13 +19,18 @@ export function ServicesSearchGrid<TData, TProps>({
       style={{
         gridTemplateColumns: gridRule
           ? gridRule
-          : "repeat(auto-fill,minmax(10rem,18rem))",
+          : "repeat(auto-fill,minmax(10rem,17rem))",
       }}
       className="w-full justify-center gap-y-8 gap-x-4 grid"
     >
       {Array.isArray(data)
         ? data.map((d, i) => (
-            <>{PassPropsToFnOrElem(component, { ...handlePassData(d, i) })}</>
+            <>
+              {PassPropsToFnOrElem(component, {
+                ...handlePassData(d, i),
+                key: `${randomNum(5000)}-${i}`,
+              })}
+            </>
           ))
         : null}
     </div>

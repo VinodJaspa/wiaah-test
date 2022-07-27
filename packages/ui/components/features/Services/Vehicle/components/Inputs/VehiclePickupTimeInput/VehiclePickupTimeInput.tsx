@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { HtmlDivProps } from "types";
 import {
   TimeIcon,
   TimeType,
@@ -10,16 +11,23 @@ import {
   ResturantReplacableTimeComponent,
 } from "ui";
 
-export interface VehiclePickupTimeInputProps {}
+export interface VehiclePickupTimeInputProps extends HtmlDivProps {}
 
-export const VehiclePickupTimeInput: React.FC<
-  VehiclePickupTimeInputProps
-> = ({}) => {
+export const VehiclePickupTimeInput: React.FC<VehiclePickupTimeInputProps> = ({
+  children,
+  className,
+  ...props
+}) => {
   const [time, setTime] = React.useState<TimeType>();
   const { t } = useTranslation();
 
   return (
-    <div className="bg-white rounded text-black p-2 flex gap-2 h-full items-center">
+    <div
+      {...props}
+      className={`${
+        className || ""
+      } bg-white rounded text-black p-2 flex gap-2 h-full items-center`}
+    >
       <Menu>
         <MenuButton>
           <div className="flex gap-2 cursor-pointer items-center">

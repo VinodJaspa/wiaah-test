@@ -17,7 +17,7 @@ export const WorkingDayColumn: React.FC<WorkingDayColumnProps> = ({
   return (
     <div className="flex flex-col items-center gap-4">
       <div className="flex items-center w-full flex-col">
-        <p className="font-bold">{t(weekday)}</p>
+        <p className="font-bold text-xs">{t(weekday)}</p>
         <p className="whitespace-nowrap">
           {dayNum} {t(monthName)}
         </p>

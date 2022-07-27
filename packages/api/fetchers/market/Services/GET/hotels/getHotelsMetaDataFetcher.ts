@@ -41,8 +41,8 @@ export const getHotelsMetaDataFetcher = async (
       description: "random description",
       rate: 3.75,
       date: {
-        from: Date.now(),
-        to: Date.now(),
+        from: new Date(Date.now()).toString(),
+        to: new Date(Date.now()).toString(),
       },
       price: 45,
     })),

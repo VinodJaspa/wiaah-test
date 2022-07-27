@@ -20,6 +20,8 @@ import {
   HealthCenterDoctorsList,
 } from "ui";
 import { reviews } from "placeholder";
+import { useTranslation } from "react-i18next";
+import { useResponsive } from "hooks";
 
 export const HealthCenterDetailsView: React.FC = () => {
   const { filters } = useSearchFilters();
@@ -28,6 +30,8 @@ export const HealthCenterDetailsView: React.FC = () => {
     isError,
     isLoading,
   } = useGetHealthCenterDetailsQuery(filters);
+
+  const { isMobile } = useResponsive();
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
@@ -38,7 +42,7 @@ export const HealthCenterDetailsView: React.FC = () => {
       <ServicePresentationCarosuel
         data={res ? res.data.presintations || [] : []}
       />
-      <SectionsScrollTabList tabs={ServicesProviderTabs} />
+      <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={
           <WorkingDaysCalander

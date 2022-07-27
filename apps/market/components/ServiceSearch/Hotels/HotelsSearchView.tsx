@@ -15,7 +15,7 @@ import {
 export const HotelsSearchView: React.FC = () => {
   const [location, setLocation] = React.useState<string>("Paris, France");
   const [services, setServices] = React.useState<HotelsMetaData[]>([]);
-  const { take, page } = usePagination();
+  const { take, page } = usePagination(8);
   const { isLoading, isError } = useGetHotelsMetaDataQuery(
     { page, take },
     location,

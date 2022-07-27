@@ -47,7 +47,7 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
               </div>
               <Button className="">{t("Contact host")}</Button>
             </div>
-            <HStack className="">
+            <HStack className="justify-center sm:justify-start">
               <p
                 onClick={() => {}}
                 className="text-primary flex cursor-pointer justify-center items-center w-fit "

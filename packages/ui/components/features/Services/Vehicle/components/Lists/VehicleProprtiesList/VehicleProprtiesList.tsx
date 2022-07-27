@@ -9,6 +9,7 @@ import {
   GPSIcon,
 } from "ui";
 import { useTranslation } from "react-i18next";
+import { randomNum } from "utils";
 
 export interface VehicleProprtiesListProps {
   VehicleProps: VehiclePropertie[];
@@ -21,7 +22,10 @@ export const VehicleProprtiesList: React.FC<VehicleProprtiesListProps> = ({
     <HStack className="flex-wrap">
       {Array.isArray(VehicleProps)
         ? VehicleProps.map((prop, i) => (
-            <VehicleProprtiesSwticher vehicleProp={prop} />
+            <VehicleProprtiesSwticher
+              key={`${randomNum(5000)}--${i}`}
+              vehicleProp={prop}
+            />
           ))
         : null}
     </HStack>

@@ -1,5 +1,5 @@
 import { HealthCenterDoctorMetaDataType } from "api";
-import { Avatar, Checkbox, HStack, Radio } from "ui";
+import { Avatar, Button, HStack, Radio } from "ui";
 import React from "react";
 import { usePublishRef } from "state";
 import { useTranslation } from "react-i18next";
@@ -26,6 +26,7 @@ export const HealthCenterDoctorsList: React.FC<
               </label>
             ))
           : null}
+        <Button className="sm:hidden w-fit self-end">{t("Book now")}</Button>
       </div>
     </div>
   );

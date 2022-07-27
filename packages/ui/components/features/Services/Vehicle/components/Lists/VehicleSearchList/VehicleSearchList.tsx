@@ -9,11 +9,12 @@ import {
   SpinnerFallback,
   VehicleSearchCard,
   VehicleSearchCardProps,
+  DisplayFoundServices,
 } from "ui";
 
 export const VehicleSearchList: React.FC = () => {
   const { take, page } = usePagination(12);
-  const { filters } = useSearchFilters();
+  const { filters, getLocationFilterQuery } = useSearchFilters();
   const {
     data: res,
     isError,
@@ -21,13 +22,16 @@ export const VehicleSearchList: React.FC = () => {
   } = useGetVehicleSearchDataQuery({ page, take }, filters);
   return (
     <PaginationWrapper>
+      <DisplayFoundServices
+        location={getLocationFilterQuery || ""}
+        servicesNum={res?.total || 0}
+      />
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         <ServicesSearchGrid<VehicleSearchData, VehicleSearchCardProps>
           data={res?.data || []}
           component={VehicleSearchCard}
-          handlePassData={(props) => props}
+          handlePassData={(props) => ({ ...props, showTotal: false })}
         />
-        ;
       </SpinnerFallback>
     </PaginationWrapper>
   );

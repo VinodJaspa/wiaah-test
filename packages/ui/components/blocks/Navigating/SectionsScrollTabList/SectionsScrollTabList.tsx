@@ -10,14 +10,16 @@ export type SectionTabType = {
 
 export interface SectionsScrollTabListProps {
   tabs: SectionTabType[];
+  visible?: boolean;
 }
 
 export const SectionsScrollTabList: React.FC<SectionsScrollTabListProps> = ({
   tabs,
+  visible = true,
 }) => {
   const { t } = useTranslation();
   const { ScrollTo } = useScrollTo();
-  return (
+  return visible ? (
     <Tabs>
       <TabsHeader className="justify-center flex-wrap" />
       {tabs.map(({ slug, name }, i) => (
@@ -35,5 +37,5 @@ export const SectionsScrollTabList: React.FC<SectionsScrollTabListProps> = ({
         </React.Fragment>
       ))}
     </Tabs>
-  );
+  ) : null;
 };
