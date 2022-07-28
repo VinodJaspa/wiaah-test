@@ -7,3 +7,4 @@ export * from "./Services";
 export * from "./components";
 export * from "./Vehicle";
 export * from "./ServicesDetails";
+export * from "./beautyCenter";

@@ -26,13 +26,15 @@ export const VehicleSearchBox: React.FC<VehicleSearchBoxProps> = () => {
       />
       <div className="flex flex-col md:flex-row gap-2 items-center">
         <VehiclePickupLocationInput />
-        <div className="w-full flex-wrap md:flex-nowrap flex gap-2">
-          <VehiclePickupDateInput />
-          <VehiclePickupTimeInput />
-          {/* </div> */}
-          {/* <div className="w-full h-12 flex gap-2"> */}
-          <VehicleDropOffDateInput />
-          <VehiclePickupTimeInput />
+        <div className="flex w-full gap-2 items-stretch">
+          <VehiclePickupDateInput className="w-full" />
+          <VehiclePickupTimeInput className="w-full" />
+        </div>
+        {/* </div> */}
+        {/* <div className="w-full h-12 flex gap-2"> */}
+        <div className="flex w-full gap-2">
+          <VehicleDropOffDateInput className="w-full" />
+          <VehiclePickupTimeInput className="w-full" />
         </div>
         <Button className="h-12 w-full">{t("Search")}</Button>
       </div>

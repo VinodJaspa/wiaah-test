@@ -13,10 +13,12 @@ import {
 
 export interface HotelsSearchListProps {
   sorting?: boolean;
+  horizontal?: boolean;
 }
 
 export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({
   sorting,
+  horizontal,
 }) => {
   const { focusMapItem } = useMutateFocusedMapItemId();
   const { page, take } = usePagination();
@@ -36,7 +38,31 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({
     onSuccess: (res) => setServices(res.data),
   });
 
-  return (
+  console.log("hotel horizontal", horizontal);
+
+  return horizontal ? (
+    <div className="w-fit flex gap-4 justify-center">
+      <SpinnerFallback isLoading={isLoading} isError={isError}>
+        {services.length < 1 ? (
+          <div className="w-fit h-48 flex just-center items-center text-2xl">
+            <span>{t("no services found")}</span>
+          </div>
+        ) : (
+          services.map((service, i) => (
+            <div className="w-56">
+              <HotelDetailedSearchCard
+                vertical
+                minimal
+                onShowOnMap={(id) => focusMapItem(id)}
+                key={i}
+                {...service}
+              />
+            </div>
+          ))
+        )}
+      </SpinnerFallback>
+    </div>
+  ) : (
     <PaginationWrapper>
       <div className="w-full flex flex-col gap-4 justify-center">
         <DisplayFoundServices

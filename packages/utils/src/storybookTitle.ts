@@ -56,3 +56,10 @@ export const storybookVehicleCardsTitle = storybookVehicleTitle + cardsTitle;
 // hotel service
 export const storybookHotelTitle = storybookFeaturesTitle + "Hotel /";
 export const storybookHotelCardsTitle = storybookHotelTitle + "Cards /";
+
+// beauty center service
+
+export const storybookBeautyCenterTitle =
+  storybookFeaturesTitle + "Beauty Center /";
+export const storybookBeautyCenterCardsTitle =
+  storybookBeautyCenterTitle + "Cards /";

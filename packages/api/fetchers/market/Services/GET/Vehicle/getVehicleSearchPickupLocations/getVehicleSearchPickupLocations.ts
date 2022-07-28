@@ -5,6 +5,7 @@ import {
   InValidDataSchemaError,
 } from "api";
 import { AsyncReturnType } from "types";
+import { randomNum } from "utils";
 import {
   CheckValidation,
   InferType,
@@ -28,13 +29,10 @@ export const getVehicleSearchPickupLocationsFetcher = async (
   const data: AsyncReturnType<typeof getVehicleSearchPickupLocationsFetcher> = {
     hasMore: false,
     data: [...Array(10)].map(() => ({ address: "address", city: "city" })),
+    total: randomNum(500),
   };
 
-  CheckValidation(
-    VehiclePickupLocationsApiResponseValidationSchema,
-    data,
-    InValidDataSchemaError
-  );
+  CheckValidation(VehiclePickupLocationsApiResponseValidationSchema, data);
 
   return data;
 };

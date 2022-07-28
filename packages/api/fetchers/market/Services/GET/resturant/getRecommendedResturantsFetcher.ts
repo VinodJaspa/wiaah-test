@@ -5,18 +5,21 @@ import {
   InferType,
   ResturantMetaDataValidationSchema,
   ResturantsMetaDataApiResponseValidationSchema,
+  locationValidationSchema,
 } from "validation";
 import { AsyncReturnType } from "types";
 import { FormatedSearchableFilter, QueryPaginationInputs } from "src";
 
-export type Location = {
-  address: string;
-  postalCode: number;
-  state?: string;
-  country: string;
-  city: string;
-  cords: LocationCords;
-};
+export type Location = InferType<typeof locationValidationSchema>;
+
+// {
+//   address: string;
+//   postalCode: number;
+//   state?: string;
+//   country: string;
+//   city: string;
+//   cords: LocationCords;
+// };
 
 export type ResturantMetaDataType = InferType<
   typeof ResturantMetaDataValidationSchema
@@ -31,7 +34,7 @@ export const getRecommendedResturantsFetcher = async (
   filters: FormatedSearchableFilter
 ): Promise<getRecommendedResturantsFetcherResponseType> => {
   const res: AsyncReturnType<typeof getRecommendedResturantsFetcher> = {
-    data: [...Array(16)].map((_, i) => ({
+    data: [...Array(15)].map((_, i) => ({
       id: `${i}`,
       averagePrice: randomNum(100),
       name: "Le bruit qui court",
@@ -54,6 +57,7 @@ export const getRecommendedResturantsFetcher = async (
           lat: lats[randomNum(lats.length)],
           lng: lngs[randomNum(lngs.length)],
         },
+        countryCode: "CHF",
       },
       discount: {
         amount: 50,

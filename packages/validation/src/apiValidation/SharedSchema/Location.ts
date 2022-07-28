@@ -11,6 +11,7 @@ export const locationValidationSchema = yup
     state: yup.string().optional(),
     country: yup.string().required(),
     postalCode: yup.number().required(),
+    countryCode: yup.string().required(),
   })
   .required();
 

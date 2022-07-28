@@ -114,6 +114,7 @@ export const RenderMap: React.FC = () => {
         center={center}
         zoom={zoom}
         className="w-full h-full"
+        fullscreenControl={false}
         styles={[
           {
             featureType: "all",

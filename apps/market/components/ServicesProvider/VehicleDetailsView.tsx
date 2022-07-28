@@ -31,6 +31,7 @@ import {
 import { reviews } from "placeholder";
 import { usePublishRef } from "state";
 import { useTranslation } from "react-i18next";
+import { useResponsive } from "hooks";
 
 export const VehicleServiceDetailsView: React.FC = () => {
   const { filters } = useSearchFilters();
@@ -41,11 +42,12 @@ export const VehicleServiceDetailsView: React.FC = () => {
   } = useGetVehicleProviderDetailsQuery(filters);
 
   const { t } = useTranslation();
+  const { isMobile, isTablet } = useResponsive();
 
   const VehiclesRef = usePublishRef("vehicles");
 
   return (
-    <div className="flex flex-col gap-8 py-8">
+    <div className="flex flex-col gap-8 px-2 py-8">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         {res ? <ServicesProviderHeader {...res.data} /> : null}
       </SpinnerFallback>
@@ -84,7 +86,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
             <div ref={VehiclesRef}>
               <Slider
                 gap={8}
-                itemsCount={3}
+                itemsCount={isMobile ? 1 : isTablet ? 2 : 3}
                 leftArrowComponent={CaruoselLeftArrow}
                 rightArrowComponent={CaruoselRightArrow}
               >

@@ -20,19 +20,23 @@ import {
   ServiceReservastion,
   SectionsScrollTabList,
   Accordion,
+  Button,
 } from "ui";
 import { reviews } from "placeholder";
+import { useResponsive } from "hooks";
+import { useTranslation } from "react-i18next";
 
 export const HotelDetailsView: React.FC = () => {
   const { filters } = useSearchFilters();
+  const { isMobile } = useResponsive();
   const {
     data: res,
     isError,
     isLoading,
   } = useGetServicesProviderQuery(filters);
-
+  const { t } = useTranslation();
   return (
-    <div className="flex flex-col gap-8 py-8">
+    <div className="flex flex-col gap-8 px-2 py-8">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         {res ? <ServicesProviderHeader {...res.data} /> : null}
       </SpinnerFallback>
@@ -40,7 +44,7 @@ export const HotelDetailsView: React.FC = () => {
       <ServicePresentationCarosuel
         data={res ? res.data.presintations || [] : []}
       />
-      <SectionsScrollTabList tabs={ServicesProviderTabs} />
+      <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper sidebar={ServiceReservastion}>
         {res ? (
           <>
@@ -69,6 +73,7 @@ export const HotelDetailsView: React.FC = () => {
           </>
         ) : null}
         <Reviews id={res?.data.id || ""} reviews={reviews} />
+        <Button>{t("Book now")}</Button>
       </StaticSideBarWrapper>
     </div>
   );

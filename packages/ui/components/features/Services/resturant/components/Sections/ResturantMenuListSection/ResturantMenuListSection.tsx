@@ -1,7 +1,8 @@
 import { ResturantMenuData } from "api";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useSetUserInput } from "state";
-import { ResturantMenuList } from "ui";
+import { ResturantMenuList, Button } from "ui";
 import { FilterAndAddToArray } from "utils";
 
 export interface ResturantMenuListSectionProps extends ResturantMenuData {}
@@ -9,6 +10,7 @@ export interface ResturantMenuListSectionProps extends ResturantMenuData {}
 export const ResturantMenuListSection: React.FC<
   ResturantMenuListSectionProps
 > = ({ menus }) => {
+  const { t } = useTranslation();
   const [orders, setOrders] = React.useState<
     { itemId: string; qty: number; price: number }[]
   >([]);
@@ -43,6 +45,7 @@ export const ResturantMenuListSection: React.FC<
             />
           ))
         : null}
+      <Button className="sm:hidden w-fit self-end">{t("Book now")}</Button>
     </div>
   );
 };

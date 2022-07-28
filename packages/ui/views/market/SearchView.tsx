@@ -6,15 +6,17 @@ import {
   ProductCard,
   Collaboration,
   GridContainerPager,
+  useGetProductsQuery,
+  useSearchFilters,
+  SpinnerFallback,
 } from "ui";
 import { BreadCrumb } from "ui";
 import { BsArrowLeft } from "react-icons/bs";
 import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
-import { products } from "placeholder";
 import { categories } from "placeholder";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { useDimensions, useResponsive } from "hooks";
+import { useDimensions, usePagination, useResponsive } from "hooks";
 
 export const SearchView: React.FC = () => {
   const { t } = useTranslation();
@@ -27,6 +29,13 @@ export const SearchView: React.FC = () => {
       url: `/${cate}`,
     }))
   );
+  const { filters } = useSearchFilters();
+  const { take, page } = usePagination();
+  const {
+    data: res,
+    isLoading,
+    isError,
+  } = useGetProductsQuery({ take, page }, filters);
 
   const { isTablet, isMobile } = useResponsive();
 
@@ -130,20 +139,15 @@ export const SearchView: React.FC = () => {
               >
                 <GridContainerPager componentsLimit={40}>
                   {/* shop items */}
-                  {products.map((product, i) => (
-                    <ProductCard
-                      buttonText="Add to Cart"
-                      id={product.id || ""}
-                      name={product.name || ""}
-                      imageUrl={product.imgUrl || ""}
-                      price={product.price}
-                      rating={product.rating}
-                      cashback={product.cashBack}
-                      discount={product.off}
-                      oldPrice={product.oldPrice}
-                      key={i}
-                    />
-                  ))}
+                  {res
+                    ? res.data.map((product, i) => (
+                        <ProductCard
+                          {...product}
+                          buttonText="Add to Cart"
+                          key={i}
+                        />
+                      ))
+                    : ["", ""]}
                 </GridContainerPager>
               </div>
             </div>

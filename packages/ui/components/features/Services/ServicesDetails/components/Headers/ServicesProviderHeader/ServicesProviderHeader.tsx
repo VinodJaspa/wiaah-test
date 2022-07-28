@@ -20,7 +20,7 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
   const { t } = useTranslation();
   return (
     <div className="flex w-full justify-between gap-4">
-      <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row items-center sm:w-auto sm:items-start w-full gap-4">
         <div className="w-28">
           <AspectRatio ratio={3 / 4}>
             <img
@@ -31,8 +31,8 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
           </AspectRatio>
         </div>
         <div className="flex flex-col gap-1">
-          <div className="flex flex-col h-full justify-between">
-            <div className="flex gap-2">
+          <div className="flex flex-col h-full gap-4 md:gap-0 justify-between">
+            <div className="flex flex-col sm:flex-row gap-2">
               <div className="flex flex-col">
                 <p className="font-bold text-lg">{name}</p>
                 <div className="flex gap-2">
@@ -47,7 +47,7 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
               </div>
               <Button className="">{t("Contact host")}</Button>
             </div>
-            <HStack>
+            <HStack className="justify-center sm:justify-start">
               <p
                 onClick={() => {}}
                 className="text-primary flex cursor-pointer justify-center items-center w-fit "
@@ -70,7 +70,6 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
             </HStack>
           </div>
         </div>
-        <div className="flex flex-col justify-between gap-1"></div>
       </div>
     </div>
   );

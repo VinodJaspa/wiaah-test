@@ -10,7 +10,6 @@ import {
   DrawerOverlay,
   OpenFilterIcon,
   CloseIcon,
-  HStack,
 } from "ui";
 
 export interface ServicesSearchResultsFiltersSidebarProps {
@@ -26,7 +25,7 @@ export const ServicesSearchResultsFiltersSidebar: React.FC<
   return (
     <>
       {isTablet ? (
-        <div className="flex gap-2">
+        <div dir="rtl" className="flex gap-2">
           <p>{t("filters")}</p>
           <OpenFilterIcon className="text-xl" onClick={() => setOpen(true)} />
         </div>
@@ -46,8 +45,11 @@ export const ServicesSearchResultsFiltersSidebar: React.FC<
               <CloseIcon className="text-xl" />
             </DrawerCloseButton>
           </DrawerHeader>
-          <div className="flex flex-col gap-4 min-w-[min(15rem,100%)] h-full overflow-hidden">
-            <ShowMapButton onClick={onShowOnMap} />
+          <div className="flex flex-col gap-4 min-w-[min(15rem,100%)] h-full overflow-scroll md:overflow-hidden">
+            <ShowMapButton
+              data-testid="FiltersSideBarShowMapButton"
+              onClick={() => onShowOnMap && onShowOnMap()}
+            />
             {children}
           </div>
         </DrawerContent>

@@ -1,48 +1,47 @@
 import React from "react";
-import { Container, Padding, ShopFilter, Spacer, useScreenWidth } from "ui";
-import { GridContainerPager } from "ui/components/blocks/GridContainerPager";
-import { Reviews } from "ui/components/blocks/Reviews";
-import { ShopProductFilter } from "ui/components/blocks/products/ShopProductFilter";
-import { ProductCard } from "ui/components/blocks/ProductCard";
+import {
+  Container,
+  Padding,
+  ShopFilter,
+  Spacer,
+  SpinnerFallback,
+  useGetProductsQuery,
+  useScreenWidth,
+  useSearchFilters,
+} from "ui";
+import { GridContainerPager } from "ui";
+import { Reviews } from "ui";
+import { ShopProductFilter } from "ui";
+import { ProductCard } from "ui";
 import { ProductDetails } from "types";
-import { categories } from "ui/placeholder/categories";
-import { Shop, ShopProfile } from "./ShopProfile";
-import { BuyerCommentProps } from "ui/components/blocks/BuyerComment";
+import { categories } from "placeholder";
+import { ShopProfile } from "./ShopProfile";
+import { BuyerCommentProps } from "ui";
 import { useRouter } from "next/router";
-import { ProductTypes } from "types";
-import { shopRouting } from "uris";
 import { useTranslation } from "react-i18next";
+import { usePagination } from "hooks";
 
 interface ShopViewProps {
-  shop: Shop;
   products: ProductDetails[];
   reviews: BuyerCommentProps[];
 }
 
-export const ShopView: React.FC<ShopViewProps> = ({
-  shop,
-  products,
-  reviews,
-}) => {
+export const ShopView: React.FC<ShopViewProps> = ({ products, reviews }) => {
   const { t } = useTranslation();
   const router = useRouter();
   const { min } = useScreenWidth({ minWidth: 640 });
-
-  function handleNavToProduct(id: string, type: ProductTypes) {
-    switch (type) {
-      case "product":
-        router.push(`${shopRouting.productPage}/${id}`);
-        break;
-      case "service":
-        router.push(`${shopRouting.servicePage}/${id}`);
-        break;
-    }
-  }
+  const { filters } = useSearchFilters();
+  const { page, take } = usePagination();
+  const {
+    data: res,
+    isLoading,
+    isError,
+  } = useGetProductsQuery({ page, take }, filters);
 
   return (
     <section className="flex flex-col items-center justify-center">
       {/* shop info */}
-      <ShopProfile shop={shop} fullWidth={min} />
+      <ShopProfile shopId={"123"} fullWidth={min} />
       <Spacer />
       <Container>
         <ShopFilter />
@@ -66,25 +65,20 @@ export const ShopView: React.FC<ShopViewProps> = ({
             <div className="flex w-full flex-col items-center px-8">
               <GridContainerPager componentsLimit={20}>
                 {/* shop items */}
-                {products.map((product, i) => (
-                  <ProductCard
-                    onButtonClick={() =>
-                      handleNavToProduct(product.id, product.type)
-                    }
-                    buttonText="Add to Cart"
-                    id={product.id || ""}
-                    name={product.name || ""}
-                    imageUrl={product.imgUrl || ""}
-                    price={product.price}
-                    rating={product.rating}
-                    variant={product.type}
-                    cashback={product.cashBack}
-                    discount={product.off}
-                    oldPrice={product.oldPrice}
-                    key={i}
-                    full={min}
-                  />
-                ))}
+                {res
+                  ? res.data.map((product, i) => (
+                      <SpinnerFallback isLoading={isLoading} isError={isError}>
+                        {res ? (
+                          <ProductCard
+                            buttonText="Add to Cart"
+                            {...product}
+                            key={i}
+                            full={min}
+                          />
+                        ) : null}
+                      </SpinnerFallback>
+                    ))
+                  : null}
               </GridContainerPager>
 
               <Spacer />

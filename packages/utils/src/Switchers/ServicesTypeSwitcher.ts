@@ -17,10 +17,11 @@ export const ServicesTypeSwitcher: React.FC<{
   servicesList: ServiceViewListItem[];
   get: getServiceViewType;
   fallbackComponent?: React.ReactNode;
-}> = ({ get, serviceType, servicesList, fallbackComponent }) => {
+  props?: object;
+}> = ({ get, serviceType, servicesList, fallbackComponent, props = {} }) => {
   const serviceIdx = servicesList.findIndex((s) => s.slug === serviceType);
   const serviceFound = serviceIdx > -1;
-  console.log("servicesSwitcher", serviceType, servicesList);
+
   return serviceFound
     ? runIfFn(
         get === "search"
@@ -31,7 +32,8 @@ export const ServicesTypeSwitcher: React.FC<{
           ? servicesList[serviceIdx].searchList
           : get === "details"
           ? servicesList[serviceIdx].details
-          : null
+          : null,
+        props
       )
     : fallbackComponent
     ? runIfFn(fallbackComponent, {})

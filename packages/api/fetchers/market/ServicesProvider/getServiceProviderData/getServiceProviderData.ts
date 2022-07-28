@@ -125,6 +125,8 @@ export const getServicesProviderDataFetcher = async (
           lat: 45.464664,
           lng: 9.18854,
         },
+        countryCode: "USA",
+        state: "state",
         postalCode: 1204,
       },
       telephone: "101227879123",

@@ -1,40 +1,27 @@
 import { Rate } from "antd";
+import { ShopDetailsData } from "api";
 import { t } from "i18next";
 import { useRouter } from "next/router";
 import React from "react";
 
-import { Spacer, Button, Verified } from "ui";
+import {
+  Spacer,
+  Button,
+  Verified,
+  useGetShopDetailsQuery,
+  useSearchFilters,
+  SpinnerFallback,
+} from "ui";
 
 export interface ShopProfileProps {
-  shop: Shop;
+  shopId: string;
   fullWidth?: boolean;
 }
 
-export interface Shop {
-  shopName: string;
-  shopDetails: string;
-  shopRating: number;
-  shopSince: string;
-  shopThumbnailUrl: string;
-  verified?: boolean;
-  shopLocation: {
-    location: string;
-    flag: string;
-  };
-}
+export const ShopProfile: React.FC<ShopProfileProps> = ({ fullWidth }) => {
+  const { filters } = useSearchFilters();
+  const { data: res, isError, isLoading } = useGetShopDetailsQuery(filters);
 
-export const ShopProfile: React.FC<ShopProfileProps> = ({
-  shop: {
-    shopDetails,
-    shopLocation,
-    verified = false,
-    shopName,
-    shopRating,
-    shopSince,
-    shopThumbnailUrl,
-  },
-  fullWidth,
-}) => {
   const router = useRouter();
 
   return (
@@ -52,80 +39,93 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({
           <div className="relative flex h-3/4 w-full flex-col items-center justify-between">
             <div className="absolute top-0 left-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border-2 border-white ">
               {/* shop thumbnail */}
-              <img
-                className="h-full w-full object-cover"
-                src={shopThumbnailUrl}
-                alt={shopName}
-              />
+              <SpinnerFallback isLoading={isLoading} isError={isError}>
+                {res ? (
+                  <img
+                    className="h-full w-full object-cover"
+                    src={res.data.thumbnail}
+                    alt={res.data.name}
+                  />
+                ) : null}
+              </SpinnerFallback>
             </div>
             <Spacer spaceInRem={5} />
             <div className="flex w-full flex-col items-center gap-2">
               {/* shop name, rating and creatation date */}
-              <div className="flex items-center gap-2 text-lg font-bold">
-                {/* shop name */}
-                {shopName}
-                {verified && <Verified />}
-              </div>
-              <a href="#reviews" className="cursor-pointer">
-                {/* shop ratting */}
-                <Rate
-                  className="cursor-pointer"
-                  disabled
-                  allowHalf
-                  value={shopRating}
-                />
-              </a>
-              <div>
-                {/* shop creation date */}
-                {shopSince}
-              </div>
+              <SpinnerFallback isLoading={isLoading} isError={isError}>
+                {res ? (
+                  <>
+                    <div className="flex items-center gap-2 text-lg font-bold">
+                      {/* shop name */}
+                      {res.data.name}
+                      {res.data.verified && (
+                        <Verified className="text-primary" />
+                      )}
+                    </div>
+                    <a href="#reviews" className="cursor-pointer">
+                      {/* shop ratting */}
+                      <Rate
+                        className="cursor-pointer"
+                        disabled
+                        allowHalf
+                        value={res.data.rating}
+                      />
+                    </a>
+                    <div>
+                      {/* shop creation date */}
+                      {new Date(res.data.createdAt).toDateString()}
+                    </div>
+                  </>
+                ) : null}
+              </SpinnerFallback>
             </div>
             <Spacer spaceInRem={1} />
             <div className="flex gap-4">
               {/* buttons */}
               <div>
                 {/* message button */}
-                <Button
-                  paddingY={{ value: 0.25 }}
-                  paddingX={{ value: 1 }}
-                  hexBackgroundColor="#5FE9D4"
-                  text={t("Message", "Message")}
-                />
+                <Button>{t("Message", "Message")}</Button>
               </div>
               <div>
                 {/* follow button */}
-                <Button
-                  paddingY={{ value: 0.25 }}
-                  paddingX={{ value: 1 }}
-                  hexBackgroundColor="#5FE9D4"
-                  text={t("Follow", "Follow")}
-                />
+                <Button>{t("Follow", "Follow")}</Button>
               </div>
             </div>
             <Spacer />
-            <div className="flex w-full items-center justify-end gap-2">
-              {/* shop location */}
-              {shopLocation.flag && (
-                <img
-                  className="h-4 w-4 object-cover"
-                  src={shopLocation.flag}
-                  alt={shopLocation.location}
-                />
-              )}
-              {shopLocation.location}
-            </div>
+            <SpinnerFallback isLoading={isLoading} isError={isError}>
+              {res ? (
+                <div className="flex w-full items-center justify-end gap-2">
+                  {/* shop location */}
+                  {/* {location && (
+                // <img
+                //   className="h-4 w-4 object-cover"
+                //   src={location.}
+                //   alt={shopLocation.location}
+                // />
+              )} */}
+                  {location
+                    ? `${res.data.location.city}, ${res.data.location.country}`
+                    : null}
+                </div>
+              ) : null}
+            </SpinnerFallback>
             <Spacer />
           </div>
         </div>
         <div className="flex h-auto w-full flex-col gap-4 md:w-96 lg:w-[30rem]">
           {/* shop destails */}
+
           <div className="flex h-16 items-center justify-center rounded-md bg-white p-4 text-lg font-bold">
             {/* shop name */}
-            {shopName}
+            <SpinnerFallback isLoading={isLoading} isError={isError}>
+              {res ? res.data.name : null}
+            </SpinnerFallback>
           </div>
           <div className="h-full bg-white p-4">
             {/* shop Desc */}
-            {shopDetails}
+            <SpinnerFallback isLoading={isLoading} isError={isError}>
+              {res ? res.data.description : null}
+            </SpinnerFallback>
           </div>
         </div>
       </div>

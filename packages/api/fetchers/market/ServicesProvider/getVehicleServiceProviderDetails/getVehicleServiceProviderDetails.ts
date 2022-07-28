@@ -85,6 +85,8 @@ export const getVehicleServiceProviderDetailsFetcher = async (
           lat: 45.464664,
           lng: 9.18854,
         },
+        countryCode: "CHF",
+        state: "Geneve",
         postalCode: 1204,
       },
       policies: [

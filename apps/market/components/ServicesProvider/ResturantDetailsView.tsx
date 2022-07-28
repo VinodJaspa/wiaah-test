@@ -24,6 +24,7 @@ import {
 import { reviews } from "placeholder";
 import { useTranslation } from "react-i18next";
 import { useGetUserInput } from "state";
+import { useResponsive } from "hooks";
 
 export const ResturantDetailsView: React.FC = () => {
   const { filters } = useSearchFilters();
@@ -32,11 +33,11 @@ export const ResturantDetailsView: React.FC = () => {
     isError,
     isLoading,
   } = useGetResturantServiceDetaislDataQuery(filters);
-
+  const { isMobile } = useResponsive();
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col gap-8 py-8">
+    <div className="flex flex-col gap-8 px-2 py-8">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         {res ? <ServicesProviderHeader {...res.data} /> : null}
       </SpinnerFallback>
@@ -44,7 +45,7 @@ export const ResturantDetailsView: React.FC = () => {
       <ServicePresentationCarosuel
         data={res ? res.data.presintations || [] : []}
       />
-      <SectionsScrollTabList tabs={ServicesProviderTabs} />
+      <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={() => {
           const { input } = useGetUserInput();

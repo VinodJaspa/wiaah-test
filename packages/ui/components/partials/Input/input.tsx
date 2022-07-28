@@ -68,7 +68,6 @@ export const InputGroup: React.FC<InputGroupProps> = ({
     setFocused(false);
   });
 
-  console.log("is focused", focused, children);
   return (
     <InputContext.Provider
       value={{

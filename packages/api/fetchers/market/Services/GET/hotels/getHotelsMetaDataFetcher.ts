@@ -1,9 +1,11 @@
 import { QueryPaginationInputs } from "api";
 import { AsyncReturnType, DateRange } from "types";
+import { randomNum } from "utils";
 import {
   InferType,
   HotelMetaDataValidationSchema,
   HotelsMetaDataApiResponseValidationSchema,
+  CheckValidation,
 } from "validation";
 
 export type HotelsMetaData = InferType<typeof HotelMetaDataValidationSchema>;
@@ -30,18 +32,21 @@ export const getHotelsMetaDataFetcher = async (
           lat: 40,
           lng: 45,
         },
-        county: "country",
         postalCode: 13532,
+        country: "country",
+        countryCode: "USA",
+        state: "state",
       },
       type: "professional host",
       description: "random description",
       rate: 3.75,
       date: {
-        from: Date.now(),
-        to: Date.now(),
+        from: new Date(Date.now()).toString(),
+        to: new Date(Date.now()).toString(),
       },
       price: 45,
     })),
+    total: randomNum(165),
   };
-  return data;
+  return CheckValidation(HotelsMetaDataApiResponseValidationSchema, data);
 };

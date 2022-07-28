@@ -17,11 +17,11 @@ import { act } from "react-dom/test-utils";
 // export * from "@testing-library/react";
 // export { customRender as render };
 export function setTestid(id: string) {
-  return `data-testid='${id}'`;
+  return `data-testid="${id}"`;
 }
 
 export function getTestId(id: string): string {
-  return `[data-testid='${id}']`;
+  return `[data-testid="${id}"]`;
 }
 export function getRoleId(id: string): string {
   return `[role='${id}']`;

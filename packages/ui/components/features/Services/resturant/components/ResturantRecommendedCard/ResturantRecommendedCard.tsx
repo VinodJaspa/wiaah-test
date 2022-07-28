@@ -46,7 +46,7 @@ export const ResturantRecommendedCard: React.FC<
             <p className="text-xl font-bold">{name}</p>
             <p>{location?.address}</p>
             <p>
-              {t("Averate price")}{" "}
+              {t("Average price")}{" "}
               {PriceConverter({ amount: averagePrice, symbol: true })}
             </p>
             <InfoText variant="danger">

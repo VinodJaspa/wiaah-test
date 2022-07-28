@@ -7,3 +7,4 @@ export * from "./resturant";
 export * from "./healthCenter";
 export * from "./general";
 export * from "./Vehicle";
+export * from "./BeautyCenter";

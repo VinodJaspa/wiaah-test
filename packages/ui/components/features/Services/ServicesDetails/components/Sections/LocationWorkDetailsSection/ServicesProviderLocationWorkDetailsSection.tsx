@@ -1,4 +1,4 @@
-import React, { LegacyRef } from "react";
+import React from "react";
 import {
   HotelRoomDataType,
   ServiceLocation,
@@ -8,9 +8,6 @@ import {
 } from "api";
 import {
   HStack,
-  AccordionButton,
-  AccordionItem,
-  AccordionPanel,
   WrappedMap,
   Marker,
   AspectRatio,
@@ -23,8 +20,9 @@ import {
   ArrowRightIcon,
 } from "ui";
 import { useTranslation } from "react-i18next";
-import { ArrElement, HtmlDivProps } from "types";
-import { useSetSectionRef, usePublishRef } from "state";
+import { ArrElement } from "types";
+import { usePublishRef } from "state";
+import { useResponsive } from "hooks";
 
 export interface HotelServiceRoomsSectionProps {
   rooms: HotelRoomDataType[];
@@ -32,6 +30,7 @@ export interface HotelServiceRoomsSectionProps {
 export const HotelServiceRoomsSection: React.FC<
   HotelServiceRoomsSectionProps
 > = ({ rooms }) => {
+  const { isMobile, isTablet } = useResponsive();
   const { t } = useTranslation();
   const roomsRef = usePublishRef("rooms");
   return (
@@ -41,7 +40,7 @@ export const HotelServiceRoomsSection: React.FC<
         gap={16}
         leftArrowComponent={CaruoselLeftArrow}
         rightArrowComponent={CaruoselRightArrow}
-        itemsCount={3}
+        itemsCount={isMobile ? 1 : isTablet ? 2 : 3}
       >
         {Array.isArray(rooms)
           ? rooms.map((room) => <HotelRoomDetailsCard {...room} />)
@@ -51,13 +50,13 @@ export const HotelServiceRoomsSection: React.FC<
   );
 };
 
-export const CaruoselLeftArrow = () => (
+export const CaruoselLeftArrow: React.FC = () => (
   <div className="bg-black bg-opacity-50 text-primary p-1  rounded-full text-3xl">
     <ArrowLeftIcon />
   </div>
 );
 
-export const CaruoselRightArrow = () => (
+export const CaruoselRightArrow: React.FC = () => (
   <div className="bg-black bg-opacity-50 text-primary p-1  rounded-full text-3xl">
     <ArrowRightIcon />
   </div>

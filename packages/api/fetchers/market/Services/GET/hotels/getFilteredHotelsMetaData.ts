@@ -3,6 +3,7 @@ import {
   FormatedSearchableFilter,
   QueryPaginationInputs,
   PaginationFetchedData,
+  Location,
 } from "../../../../../";
 import { DateRange } from "types";
 import { randomNum } from "utils";
@@ -25,7 +26,7 @@ export interface FilteredHotelsMetaDataType {
   pricePerNight: number;
   taxesAndFeesIncluded: boolean;
   date: DateRange;
-  location: LocationCords;
+  location: Location;
 }
 
 export const lats = [
@@ -41,8 +42,6 @@ export const getFilteredHotelsMetaData = async (
   pagination: QueryPaginationInputs,
   filters: FormatedSearchableFilter
 ): Promise<PaginationFetchedData<FilteredHotelsMetaDataType[]>> => {
-  console.log("filters", filters);
-
   const data: PaginationFetchedData<FilteredHotelsMetaDataType[]> = {
     hasMore: false,
     total: 516,
@@ -65,8 +64,16 @@ export const getFilteredHotelsMetaData = async (
       taxesAndFeesIncluded: true,
       totalPrice: 5000,
       location: {
-        lng: lngs[randomNum(lngs.length)],
-        lat: lats[randomNum(lats.length)],
+        address: "address",
+        city: "switzerland",
+        country: "france",
+        countryCode: "CHF",
+        state: "Geneve",
+        postalCode: 1234,
+        cords: {
+          lng: lngs[randomNum(lngs.length)],
+          lat: lats[randomNum(lats.length)],
+        },
       },
     })),
   };

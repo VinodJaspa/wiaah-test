@@ -16,9 +16,9 @@ export const HomeView: React.FC = () => {
   return (
     <>
       <div className="block w-full space-y-6 p-4">
-        <div className="grid w-full grid-cols-1 gap-4 rounded-lg bg-green-400 p-4 md:grid-cols-3 lg:grid-cols-6">
+        <div className="grid w-full grid-cols-1 gap-4 rounded-lg bg-primary p-4 md:grid-cols-3 lg:grid-cols-6">
           <label htmlFor="Category" className="relative flex">
-            <FaChevronDown className="pointer-events-none absolute inset-y-1/3 right-3 h-4 w-4 text-green-400" />
+            <FaChevronDown className="pointer-events-none absolute inset-y-1/3 right-3 h-4 w-4 text-primary" />
             <select
               className="w-full appearance-none rounded px-2.5 py-2 focus:outline-none"
               placeholder={t("Category", "Category")}

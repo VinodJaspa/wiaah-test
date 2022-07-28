@@ -1,12 +1,15 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { HtmlDivProps } from "types";
 import { DateInput, Menu, MenuList, CalenderIcon, MenuButton } from "ui";
 
-export interface VehiclePickupDateInputProps {}
+export interface VehiclePickupDateInputProps extends HtmlDivProps {}
 
-export const VehiclePickupDateInput: React.FC<
-  VehiclePickupDateInputProps
-> = ({}) => {
+export const VehiclePickupDateInput: React.FC<VehiclePickupDateInputProps> = ({
+  children,
+  className,
+  ...props
+}) => {
   const [date, setDate] = React.useState<string>();
   const [FormatedDate, setFormatedDate] = React.useState<string>("");
   const { t } = useTranslation();
@@ -28,7 +31,12 @@ export const VehiclePickupDateInput: React.FC<
   }, [date]);
 
   return (
-    <div className="text-black flex gap-2 items-center h-full p-2 rounded bg-white">
+    <div
+      {...props}
+      className={`${
+        className || ""
+      } text-black flex gap-2 items-center h-full p-2 rounded bg-white`}
+    >
       <Menu>
         <MenuButton>
           <div className="flex gap-2 cursor-pointer items-center">
