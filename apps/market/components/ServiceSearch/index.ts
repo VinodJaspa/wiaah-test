@@ -4,3 +4,4 @@ export * from "./HealthCenter";
 export * from "./Hotels";
 export * from "./Services";
 export * from "./Vehicle";
+export * from "./BeautyCenter";

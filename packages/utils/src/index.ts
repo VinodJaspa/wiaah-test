@@ -17,3 +17,4 @@ export * from "./data";
 export * from "./extractors";
 export * from "./Switchers";
 export * from "./React-utils";
+export * from "./formaters";

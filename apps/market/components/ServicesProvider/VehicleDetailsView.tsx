@@ -85,7 +85,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
             />
             <div ref={VehiclesRef}>
               <Slider
-                gap={0}
+                gap={8}
                 itemsCount={isMobile ? 1 : isTablet ? 2 : 3}
                 leftArrowComponent={CaruoselLeftArrow}
                 rightArrowComponent={CaruoselRightArrow}

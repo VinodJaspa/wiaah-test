@@ -553,6 +553,163 @@ const VehicleFilters: SearchFilterType[] = [
   },
 ];
 
+const BeautyCenterFilters: SearchFilterType[] = [
+  {
+    filterTitle: "Type of seller",
+    filterSlug: "type_of_seller",
+    filterType: "check",
+    filterDisplay: "text",
+    filterOptions: [
+      {
+        optName: "Individual",
+        optSlug: "individual",
+      },
+      {
+        optName: "Professional",
+        optSlug: "professional",
+      },
+    ],
+  },
+  {
+    filterTitle: "Beauty center type",
+    filterSlug: "beauty_center_type",
+    filterDisplay: "text",
+    filterType: "check",
+    filterOptions: [
+      {
+        optName: "Hair salon",
+        optSlug: "hair_salon",
+      },
+      {
+        optName: "Body care",
+        optSlug: "body_care",
+      },
+      {
+        optName: "Spa",
+        optSlug: "spa",
+      },
+      {
+        optName: "Sauna",
+        optSlug: "sauna",
+      },
+      {
+        optName: "Manicure",
+        optSlug: "manicure",
+      },
+      {
+        optName: "Massage & relaxation",
+        optSlug: "massage_and_relaxation",
+      },
+    ],
+  },
+  {
+    filterTitle: "Beauty salon",
+    filterSlug: "Beauty_salon",
+    filterType: "check",
+    filterDisplay: "text",
+    filterOptions: [
+      {
+        optName: "Facial care & Makeup",
+        optSlug: "facial_care_and_makeup",
+      },
+      {
+        optName: "Skin care",
+        optSlug: "skin_care",
+      },
+      {
+        optName: "Tattoo shop",
+        optSlug: "tattoo_shop",
+      },
+      {
+        optName: "Aesthetic medicine",
+        optSlug: "aesthetic_medicine",
+      },
+    ],
+  },
+  {
+    filterTitle: "Treatment type",
+    filterSlug: "treatment_type",
+    filterDisplay: "text",
+    filterType: "check",
+    filterOptions: [
+      {
+        optName: "Body",
+        optSlug: "body",
+      },
+      {
+        optName: "Exfoliation",
+        optSlug: "exfoliation",
+      },
+      {
+        optName: "Micro-peeling",
+        optSlug: "micro_peeling",
+      },
+      {
+        optName: "Body polish",
+        optSlug: "body_polish",
+      },
+      {
+        optName: "Foot scrub",
+        optSlug: "foot_scrub",
+      },
+      {
+        optName: "Bridal",
+        optSlug: "bridal",
+      },
+      {
+        optName: "Hair and Makeup",
+        optSlug: "hair_and_makeup",
+      },
+      {
+        optName: "Eyelash extensions",
+        optSlug: "eyelash_extensions",
+      },
+    ],
+  },
+  {
+    filterTitle: "Price Range",
+    filterSlug: "price_range",
+    filterType: "range",
+    minRange: 10,
+    maxRange: 10000,
+  },
+  {
+    filterTitle: "Sepcial offer",
+    filterSlug: "special_offer",
+    filterDisplay: "text",
+    filterType: "radio",
+    filterOptions: [],
+  },
+  {
+    filterTitle: "Rating",
+    filterSlug: "rating",
+    filterDisplay: "rate",
+    filterType: "check",
+    filterOptions: [
+      {
+        optName: "1",
+        optSlug: "1",
+      },
+      {
+        optName: "2",
+        optSlug: "2",
+      },
+      {
+        optName: "3",
+        optSlug: "3",
+      },
+      {
+        optName: "4",
+        optSlug: "4",
+      },
+      {
+        optName: "5",
+        optSlug: "5",
+      },
+    ],
+  },
+];
+
 export const getServiceSearchFiltersFetcher = async (
   filter: FormatedSearchableFilter
 ): Promise<SearchFilterType[]> => {
@@ -565,6 +722,8 @@ export const getServiceSearchFiltersFetcher = async (
 
     case "vehicle":
       return VehicleFilters;
+    case "beauty_center":
+      return BeautyCenterFilters;
     default:
       return filters;
   }

@@ -60,3 +60,5 @@ export * from "./Replacables";
 export * from "./HighlightText";
 export * from "./Slider";
 export * from "./PriceLevelDisplay";
+export * from "./AspectRatioImage";
+export * from "./UnDiscountedPriceDisplay";

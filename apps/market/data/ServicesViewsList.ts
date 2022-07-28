@@ -16,6 +16,9 @@ import {
   ResturantDetailsView,
   HealthCenterDetailsView,
   VehicleServiceDetailsView,
+  BeautyCenterSearchView,
+  BeautyCenterSearchResultsView,
+  BeautyCenterServiceDetailsView,
 } from "@components";
 import {
   HealthCenterServiceSearchResultsList,
@@ -24,6 +27,7 @@ import {
   HotelsSearchList,
   ServicesSearchResultsList,
   VehicleSearchList,
+  RecommendedBeautyCenterSearchList,
 } from "ui";
 
 export const ServicesViewsList: ServiceViewListItem[] = [
@@ -68,5 +72,12 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     searchResaults: VehicleSearchResultsView,
     searchList: VehicleSearchList,
     details: VehicleServiceDetailsView,
+  },
+  {
+    slug: "beauty_center",
+    search: BeautyCenterSearchView,
+    searchResaults: BeautyCenterSearchResultsView,
+    searchList: RecommendedBeautyCenterSearchList,
+    details: BeautyCenterServiceDetailsView,
   },
 ];
