@@ -46,3 +46,31 @@ export const ResturantSearchList: React.FC = () => {
     </div>
   );
 };
+
+export const ResturantHorizontalList: React.FC = () => {
+  const { filters, getLocationFilterQuery } = useSearchFilters();
+  const { page, take } = usePagination();
+  const { resturants } = useResturantsDataState();
+
+  const { setResturants } = useSetResturantsDataState();
+  const {
+    data: res,
+    isLoading,
+    isError,
+  } = useGetResturantsQuery({ page, take }, filters, {
+    onSuccess: (res) => setResturants(res.data),
+  });
+
+  return (
+    <div className="flex gap-4 w-full">
+      <SpinnerFallback isLoading={isLoading} isError={isError}>
+        {res
+          ? res.data.map((restaurant, i) => (
+              <ResturantRecommendedCard minimal {...restaurant} key={i} />
+            ))
+          : null}
+      </SpinnerFallback>
+      <Pagination maxPages={3} />
+    </div>
+  );
+};

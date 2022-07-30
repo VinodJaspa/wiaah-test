@@ -81,7 +81,7 @@ export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
                       <BoldText>${deliveryFee}</BoldText>
                     </FlexStack>
                   </Text>
-                  <Divider marginY={{ value: 0.9 }} />
+                  <Divider />
                   <Text size="xl">
                     <FlexStack justify="between">
                       <BoldText>
@@ -90,7 +90,7 @@ export const CartSummaryView: React.FC<CartSummaryViewProps> = () => {
                       <BoldText>${totalPrice}</BoldText>
                     </FlexStack>
                   </Text>
-                  <Button paddingY={{ value: 0.5 }} onClick={handleCheckout}>
+                  <Button onClick={handleCheckout}>
                     {t("go_to_checkout", "GO TO CHECKOUT")}
                   </Button>
                 </FlexStack>

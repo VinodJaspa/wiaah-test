@@ -46,64 +46,7 @@ export const ResturantDetailsView: React.FC = () => {
         data={res ? res.data.presintations || [] : []}
       />
       <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
-      <StaticSideBarWrapper
-        sidebar={() => {
-          const { input } = useGetUserInput();
-          const orders = input["orders"];
-
-          const totalOrdersCost = orders
-            ? Array.isArray(orders)
-              ? orders.reduce((acc, curr) => acc + curr.qty * curr.price, 0)
-              : 0
-            : 0;
-
-          const vatPercent = res ? res.data.vatPercent : 0;
-
-          const vatCost = (vatPercent / 100) * totalOrdersCost;
-
-          return (
-            <div className="flex flex-col">
-              <ResturantFindTableFilterStepper />
-              <Divider className="my-4 border-gray-300" />
-              <div className="flex flex-col gap-4">
-                <HStack className="text-xl font-bold justify-between">
-                  <p>{t("Total")}</p>
-                  <PriceDisplay
-                    priceObject={{
-                      amount: totalOrdersCost,
-                    }}
-                  />
-                </HStack>
-                <HStack className="font-semibold text-lg justify-between">
-                  <span className="flex whitespace-nowrap gap-2">
-                    <p>
-                      {t("VAT")} {vatPercent}%
-                    </p>
-                    <span className="flex whitespace-nowrap">
-                      {`(`} <PriceDisplay priceObject={{ amount: vatCost }} />{" "}
-                      {`)`}
-                    </span>
-                  </span>
-                  <PriceDisplay
-                    priceObject={{
-                      amount: vatCost,
-                    }}
-                  />
-                </HStack>
-                <Divider />
-                <HStack className="text-2xl font-bold justify-between">
-                  <p>{t("Finale total")}</p>
-                  <PriceDisplay
-                    priceObject={{
-                      amount: totalOrdersCost + vatCost,
-                    }}
-                  />
-                </HStack>
-              </div>
-            </div>
-          );
-        }}
-      >
+      <StaticSideBarWrapper sidebar={ResturantFindTableFilterStepper}>
         <SpinnerFallback isError={isError} isLoading={isLoading}>
           {res ? (
             <ServicesProviderDescriptionSection
@@ -125,7 +68,12 @@ export const ResturantDetailsView: React.FC = () => {
             ) : null}
           </SpinnerFallback>
           <SpinnerFallback isLoading={isLoading} isError={isError}>
-            {res ? <ResturantMenuListSection menus={res.data.menus} /> : null}
+            {res ? (
+              <ResturantMenuListSection
+                cancelation={res.data.cancelationPolicies || []}
+                menus={res.data.menus}
+              />
+            ) : null}
           </SpinnerFallback>
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             {res ? (

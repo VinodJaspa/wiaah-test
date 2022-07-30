@@ -1,6 +1,7 @@
 import { dayWorkingPeriodValidationSchema } from "../../../SharedSchema";
 import { array, mixed, number, object, string } from "yup";
 import { ServiceReachOutDataValidationSchema } from "./ServiceReachOutData";
+import { ServiceCancelationPolicy } from "./ServiceCancelationPolicy";
 
 type PresntationMediaType = "video" | "image";
 const PresntationMediaTypes: PresntationMediaType[] = ["video", "image"];
@@ -32,6 +33,10 @@ export const ServiceWorkingDaysValidationSchema = object({
     .length(7)
     .required(),
 }).required();
+
+export const ServiceCancelationPolicies = object({
+  cancelationPolicies: array().of(ServiceCancelationPolicy).min(0).required(),
+});
 
 export const ServicePoliciesValidationSchema = object({
   policies: array().of(

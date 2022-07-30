@@ -1,6 +1,9 @@
-import { CommonServiceDataSchema } from "../";
+import {
+  CommonServiceDataSchema,
+  ServiceCancelationPolicies,
+} from "../../Features";
 import { createApiResponseValidationSchema } from "../../SharedSchema";
-import { object, string, number, array, mixed, boolean } from "yup";
+import { object, string, number, array, boolean } from "yup";
 
 export const PopularAmenitiesValidationSchema = object({
   name: string().required(),
@@ -12,13 +15,16 @@ export const HotelServiceProviderPolicicesValidationSchema = object({
   checkin_checkout_terms: array().of(string()).min(0).required(),
 }).required();
 
-export const HotelServiceProviderRoomValidationSchema = object({
-  thumbnails: array().of(string()).min(0).required(),
-  title: string().required(),
-  amenities: array().of(PopularAmenitiesValidationSchema).min(0).required(),
-  price: number().required(),
-  with_fees_and_taxes: boolean().required(),
-}).required();
+export const HotelServiceProviderRoomValidationSchema =
+  ServiceCancelationPolicies.concat(
+    object({
+      thumbnails: array().of(string()).min(0).required(),
+      title: string().required(),
+      amenities: array().of(PopularAmenitiesValidationSchema).min(0).required(),
+      price: number().required(),
+      with_fees_and_taxes: boolean().required(),
+    }).required()
+  );
 
 export const HotelServiceDetailsValidationSchema =
   CommonServiceDataSchema.concat(

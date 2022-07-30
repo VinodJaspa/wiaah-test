@@ -43,7 +43,7 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
     <div
       className={`${
         className || ""
-      } rounded-lg relative w-[min(100%,40rem)] border-[1px] border-gray-200 border-b-0 p-2`}
+      } rounded-lg relative w-full border-[1px] border-gray-200 border-b-0 p-2`}
     >
       <InputGroup
         onBlur={() => setFocused(false)}

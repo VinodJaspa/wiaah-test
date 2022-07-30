@@ -9,18 +9,19 @@ import { CartSummaryView } from "../components";
 
 interface CartSummaryPageProps {}
 
-export const getServerSideProps: GetServerSideProps<CartSummaryPageProps> =
-  async () => {
-    const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps<
+  CartSummaryPageProps
+> = async () => {
+  const queryClient = new QueryClient();
 
-    queryClient.prefetchQuery("CartSummaryData", getCartSummaryData);
+  queryClient.prefetchQuery("CartSummaryData", getCartSummaryData);
 
-    return {
-      props: {
-        dehydratedState: dehydrate(queryClient),
-      },
-    };
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
   };
+};
 
 const cartSummary: NextPage<CartSummaryPageProps> = () => {
   const { data, isLoading, isError } = useQuery(

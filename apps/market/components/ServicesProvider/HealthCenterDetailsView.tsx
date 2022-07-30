@@ -18,6 +18,7 @@ import {
   ServicesProviderHeader,
   WorkingDaysCalander,
   HealthCenterDoctorsList,
+  Button,
 } from "ui";
 import { reviews } from "placeholder";
 import { useTranslation } from "react-i18next";
@@ -59,7 +60,10 @@ export const HealthCenterDetailsView: React.FC = () => {
                 proprtyType={res.data.proprtyType}
               />
               <Divider />
-              <HealthCenterDoctorsList doctors={res.data.doctors || []} />
+              <HealthCenterDoctorsList
+                cancelation={res.data.cancelationPolicies || []}
+                doctors={res.data.doctors || []}
+              />
               <ServiceReachOutSection
                 email={res.data.email}
                 location={res.data.location}

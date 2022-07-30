@@ -32,14 +32,15 @@ export const HotelsSearchResultsView: React.FC = () => {
     }
   }, [router]);
   const handleFiltersUpdate = debounce(
-    (filters: FormatedSearchableFilter) => setFilters(state => ({...state,...filters})),
+    (filters: FormatedSearchableFilter) =>
+      setFilters((state) => ({ ...state, ...filters })),
     1000
   );
   return (
     <div
       className={`${
         isTablet ? "flex-col gap-4" : "flex-row gap-12"
-      } relative flex  p-4`}
+      } relative flex  py-4`}
     >
       <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
         <Formik<FormatedSearchableFilter>

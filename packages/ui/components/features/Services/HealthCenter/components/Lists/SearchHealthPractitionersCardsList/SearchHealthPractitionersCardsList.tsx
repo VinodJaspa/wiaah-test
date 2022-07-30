@@ -14,7 +14,7 @@ export const SearchHealthPractitionersCardsList: React.FC<
   const { t } = useTranslation();
   return (
     <div className="flex flex-col w-full">
-      <p className="uppercase font-bold text-lg p-2">{t("practitioners")}</p>
+      <p className="font-bold text-lg p-2">{t("PRACTITONERS")}</p>
       <div className="flex flex-col gap-2">
         {Array.isArray(practitioners)
           ? practitioners.map((prac, i) => (

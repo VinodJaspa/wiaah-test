@@ -44,15 +44,6 @@ export const HealthCenterSearchBox: React.FC<
         } catch {}
       },
     });
-  // const deboundedRefetch = debounce(() => {
-  //   console.log("refetching");
-  //   refetch();
-  // }, 1000);
-
-  // React.useEffect(() => {
-  //   console.log(filters, "filters");
-  //   deboundedRefetch();
-  // }, [filters]);
 
   const { t } = useTranslation();
   return (
@@ -61,6 +52,7 @@ export const HealthCenterSearchBox: React.FC<
         <SearchIcon className="text-primary" />
       </InputLeftElement>
       <Input
+        placeholder={t("health center")}
         onChange={(e) => addFilter([filtersTokens.searchQuery, e.target.value])}
       />
       <InputRightElement className="w-full">

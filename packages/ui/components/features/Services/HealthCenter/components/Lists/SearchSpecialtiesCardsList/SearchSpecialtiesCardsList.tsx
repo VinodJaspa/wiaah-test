@@ -10,7 +10,7 @@ export const SearchHealthSpecialtiesCardsList: React.FC<{
   const { t } = useTranslation();
   return (
     <div className="flex flex-col w-full">
-      <p className="uppercase font-bold text-lg p-2">{t("specialties")}</p>
+      <p className="font-bold text-lg p-2">{t("HEALTH CENTER")}</p>
       {Array.isArray(specialites)
         ? specialites.map((speciality, i) => (
             <SearchHealthSpecialtyCard

@@ -11,6 +11,7 @@ import {
   AspectRatio,
   Button,
   HStack,
+  ServiceCancelationPolicyInput,
 } from "ui";
 import { ImImages } from "react-icons/im";
 
@@ -22,6 +23,7 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
   title,
   with_fees_and_taxes,
   price,
+  cancelationPolicies,
 }) => {
   const { t } = useTranslation();
   return (
@@ -58,25 +60,20 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
       <div className="flex p-4 flex-col gap-4">
         <p>{title}</p>
         <PopularAmenitiesSection amenities={amenities} />
+        <div className="flex flex-col gap-1">
+          <p className="font-bold">{t("Cancelation policy")}</p>
+          {cancelationPolicies.map((policy, i) => (
+            <ServiceCancelationPolicyInput
+              {...policy}
+              name="cancelationPolicy"
+              onSelected={() => {}}
+              key={`${i}-${policy.id}`}
+            />
+          ))}
+        </div>
         <SearchFilter
           boldTitle
           filters={[
-            {
-              filterTitle: "Cancellation policy",
-              filterDisplay: "text",
-              filterSlug: "cancellation_policy",
-              filterType: "radio",
-              filterOptions: [
-                {
-                  optName: "Fully refundable before 28 Jul",
-                  optSlug: "fully_refundable_28jul",
-                },
-                {
-                  optName: "Fully refundable before 4 Aug",
-                  optSlug: "fully_refundable_4aug",
-                },
-              ],
-            },
             {
               filterTitle: "Extras",
               filterSlug: "extras",

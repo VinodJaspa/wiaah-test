@@ -16,3 +16,15 @@ export function CreatePaginationValidationSchemaOf<
     })
     .required();
 }
+
+// improved, migrating...
+export function CreatePaginationApiResponseValidationSchemaOf<
+  TSchema extends yup.AnySchema
+>(schema: TSchema) {
+  return yup
+    .object({
+      ...PaginationReturnDataValidationSchema,
+      data: yup.array().of<TSchema>(schema.required()).min(0).required(),
+    })
+    .required();
+}

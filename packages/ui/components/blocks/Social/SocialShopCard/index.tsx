@@ -1,5 +1,4 @@
 import React from "react";
-import { Box, Flex, useDimensions } from "@chakra-ui/react";
 import {
   ShopCardAttachment,
   ShopCardDetails,
@@ -9,8 +8,8 @@ import {
   useProductViewModal,
   useHandlePostSharing,
 } from "ui";
-import { ShopCardInfo } from "types/market/Social";
-import { useLoginPopup } from "ui/Hooks";
+import { ShopCardInfo } from "types";
+import { useLoginPopup } from "ui";
 import { ControlledCarousel } from "ui";
 import { PostInteractionsProps } from "../PostInteractions";
 
@@ -54,16 +53,12 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
   }
 
   return (
-    <Flex
+    <div
+      className="flex w-full h-full flex-col justify-between rounded-lg"
       onClick={() => onCardClick && onCardClick(shopCardInfo.id)}
-      rounded="lg"
-      w="100%"
-      h="100%"
       data-testid="ShopCardContainer"
-      direction={"column"}
-      justify="space-between"
     >
-      <Box></Box>
+      <div></div>
       {shopCardInfo.attachments && shopCardInfo.attachments.length > 1 ? (
         <ControlledCarousel onCurrentActiveChange={setActive}>
           {shopCardInfo.attachments.map((attachment, i) => (
@@ -95,12 +90,9 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
           />
         )
       )}
-      <Box
-        bgColor={"white"}
-        w="100%"
-        color="black"
+      <div
+        className="bg-white w-full text-black self-center"
         ref={productDetailsRef}
-        alignSelf={"center"}
       >
         <ShopCardDetails
           onBook={() => handleBookService(shopCardInfo.id)}
@@ -119,15 +111,15 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
           />
         )}
         {showCommentInput && <CommentInput />}
-      </Box>
+      </div>
       {showComments && (
-        <Box py="0.5rem">
+        <div className="py-2">
           <CommentsViewer
             comments={shopCardInfo.comments}
             maxInitailComments={4}
           />
-        </Box>
+        </div>
       )}
-    </Flex>
+    </div>
   );
 };

@@ -1,16 +1,26 @@
-import { HealthCenterDoctorMetaDataType } from "api";
-import { Avatar, Button, HStack, Radio } from "ui";
+import {
+  HealthCenterDoctorMetaDataType,
+  ServiceCancelationPolicyType,
+} from "api";
+import {
+  Avatar,
+  Button,
+  HStack,
+  Radio,
+  ServiceCancelationPolicyInput,
+} from "ui";
 import React from "react";
 import { usePublishRef } from "state";
 import { useTranslation } from "react-i18next";
 
 export interface HealthCenterDoctorsListProps {
   doctors: HealthCenterDoctorMetaDataType[];
+  cancelation: ServiceCancelationPolicyType[];
 }
 
 export const HealthCenterDoctorsList: React.FC<
   HealthCenterDoctorsListProps
-> = ({ doctors }) => {
+> = ({ doctors, cancelation }) => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4 py-4 px-2">
@@ -26,7 +36,19 @@ export const HealthCenterDoctorsList: React.FC<
               </label>
             ))
           : null}
-        <Button className="sm:hidden w-fit self-end">{t("Book now")}</Button>
+
+        <div className="flex flex-col gap-1">
+          <p className="font-bold">{t("Cancelation policy")}</p>
+          {cancelation.map((policy, i) => (
+            <ServiceCancelationPolicyInput
+              {...policy}
+              name="cancelationPolicy"
+              onSelected={() => {}}
+              key={`${i}-${policy.id}`}
+            />
+          ))}
+        </div>
+        <Button className="w-fit self-end">{t("Book now")}</Button>
       </div>
     </div>
   );

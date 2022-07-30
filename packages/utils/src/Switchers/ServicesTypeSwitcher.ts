@@ -2,14 +2,25 @@ import React from "react";
 import { ServicesType, ServiceViewListItem } from "types";
 import { runIfFn } from "../runIfFun";
 
-export type getServiceViewType = "search" | "resaults" | "list" | "details";
-type GetServiceViewKeyType = "SEARCH" | "RESAULTS" | "LIST" | "DETAILS";
+export type getServiceViewType =
+  | "search"
+  | "resaults"
+  | "list"
+  | "horizontalList"
+  | "details";
+type GetServiceViewKeyType =
+  | "SEARCH"
+  | "RESAULTS"
+  | "LIST"
+  | "DETAILS"
+  | "HORIZONTAL_LIST";
 export const getServiceView: Record<GetServiceViewKeyType, getServiceViewType> =
   {
     SEARCH: "search",
     RESAULTS: "resaults",
     LIST: "list",
     DETAILS: "details",
+    HORIZONTAL_LIST: "horizontalList",
   };
 
 export const ServicesTypeSwitcher: React.FC<{
@@ -32,6 +43,8 @@ export const ServicesTypeSwitcher: React.FC<{
           ? servicesList[serviceIdx].searchList
           : get === "details"
           ? servicesList[serviceIdx].details
+          : get === "horizontalList"
+          ? servicesList[serviceIdx].searchHorizontalList
           : null,
         props
       )

@@ -9,7 +9,12 @@ import {
   HotelServiceProviderRoomValidationSchema,
   PresntationMediaValidationSchema,
   ServicePoliciesValidationSchema,
+  ServiceCancelationPolicy,
 } from "validation";
+
+export type ServiceCancelationPolicyType = InferType<
+  typeof ServiceCancelationPolicy
+>;
 
 export type AmenitieType = InferType<typeof PopularAmenitiesValidationSchema>;
 
@@ -290,6 +295,23 @@ export const getServicesProviderDataFetcher = async (
       rooms: [...Array(9)].map(() => ({
         title: "Executive Double Room, 1 double bed",
         thumbnails: ["/place-2.jpg", "/place-1.jpg"],
+        cancelationPolicies: [
+          {
+            duration: 6,
+            cost: 0,
+            id: "1",
+          },
+          {
+            duration: 10,
+            cost: 10,
+            id: "2",
+          },
+          {
+            cost: 50,
+            duration: 0,
+            id: "3",
+          },
+        ],
         amenities: [
           {
             name: "Laundry",

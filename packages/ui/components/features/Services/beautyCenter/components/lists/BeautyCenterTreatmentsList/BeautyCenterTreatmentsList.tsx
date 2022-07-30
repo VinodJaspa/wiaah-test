@@ -1,17 +1,25 @@
-import { BeautyCenterTreatmentDataType } from "api";
+import {
+  BeautyCenterTreatmentDataType,
+  ServiceCancelationPolicyType,
+} from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
-import { Button, BeautyCenterTreatmentCard } from "ui";
+import {
+  Button,
+  BeautyCenterTreatmentCard,
+  ServiceCancelationPolicyInput,
+} from "ui";
 import { randomNum } from "utils";
 
 export interface BeautyCenterTreatmentsListProps {
   treatments: BeautyCenterTreatmentDataType[];
+  cancelation: ServiceCancelationPolicyType[];
 }
 
 export const BeautyCenterTreatmentsList: React.FC<
   BeautyCenterTreatmentsListProps
-> = ({ treatments }) => {
+> = ({ treatments, cancelation }) => {
   const treatmentsRef = usePublishRef("treatments");
   const { t } = useTranslation();
   return (
@@ -27,6 +35,19 @@ export const BeautyCenterTreatmentsList: React.FC<
           />
         ))}
       </div>
+
+      <div className="flex flex-col gap-1">
+        <p className="font-bold">{t("Cancelation policy")}</p>
+        {cancelation.map((policy, i) => (
+          <ServiceCancelationPolicyInput
+            {...policy}
+            name="cancelationPolicy"
+            onSelected={() => {}}
+            key={`${i}-${policy.id}`}
+          />
+        ))}
+      </div>
+
       <Button className="self-end mr-4">{t("Book now")}</Button>
     </div>
   );

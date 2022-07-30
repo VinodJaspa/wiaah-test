@@ -11,7 +11,9 @@ import {
   PriceLevelDisplay,
 } from "ui";
 
-export interface ResturantRecommendedCardProps extends ResturantMetaDataType {}
+export interface ResturantRecommendedCardProps extends ResturantMetaDataType {
+  minimal: boolean;
+}
 
 export const ResturantRecommendedCard: React.FC<
   ResturantRecommendedCardProps
@@ -26,6 +28,7 @@ export const ResturantRecommendedCard: React.FC<
   discount,
   tags,
   id,
+  minimal,
 }) => {
   const { t } = useTranslation();
   return (

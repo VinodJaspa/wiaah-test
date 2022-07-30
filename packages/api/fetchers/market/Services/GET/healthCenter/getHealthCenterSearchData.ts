@@ -10,6 +10,8 @@ import { AsyncReturnType } from "types";
 import {
   HealthCenterSuggestionsApiDataValidationSchema,
   CheckValidation,
+  HealthCenterPractitionerDataValidationSchema,
+  InferType,
 } from "validation";
 import { randomNum } from "utils";
 
@@ -17,12 +19,9 @@ export interface HealthCenterSpecialty {
   title: string;
 }
 
-export interface HealthCenterPractitioner {
-  name: string;
-  photo: string;
-  location: Location;
-  specialty: string;
-}
+export type HealthCenterPractitioner = InferType<
+  typeof HealthCenterPractitionerDataValidationSchema
+>;
 
 export interface HealthCenterSearchSuggistionsData {
   specialties: HealthCenterSpecialty[];
@@ -53,9 +52,12 @@ export const getHealthCenterSearchData = async (
         lat: 15,
         lng: 15,
       },
-      country: "country",
-      postalCode: 1234,
+      country: "france",
+      countryCode: "FR",
+      postalCode: 1322,
+      state: "Geneve",
     },
+    rate: randomNum(15),
     name: specialtiesPh[randomNum(specialtiesPh.length)],
     photo:
       "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",

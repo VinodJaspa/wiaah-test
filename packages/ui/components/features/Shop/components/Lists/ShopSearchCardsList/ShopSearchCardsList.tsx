@@ -1,0 +1,29 @@
+import { usePagination } from "hooks";
+import React from "react";
+import {
+  useSearchFilters,
+  uesGetShopsOnmapSearchQuery,
+  PaginationWrapper,
+  ServicesSearchGrid,
+  ShopMapSearchCard,
+} from "ui";
+
+export const ShopsSearchCardsList: React.FC = () => {
+  const { page, take } = usePagination(16);
+  const { filters } = useSearchFilters();
+  const {
+    data: res,
+    isLoading,
+    isError,
+  } = uesGetShopsOnmapSearchQuery({ page, take }, filters);
+
+  return (
+    <PaginationWrapper>
+      <ServicesSearchGrid
+        data={res?.data || []}
+        handlePassData={(data) => data}
+        component={ShopMapSearchCard}
+      />
+    </PaginationWrapper>
+  );
+};

@@ -12,12 +12,12 @@ export interface HealthCenterData {
   workingDates: WorkingDate[];
 }
 
-export const getHealthCenterFilteredDataFetcher = async (
+export const getHealthCentersFilteredDataFetcher = async (
   pagination: QueryPaginationInputs,
   filters: FormatedSearchableFilter
 ): Promise<PaginationFetchedData<HealthCenterData[]>> => {
   return {
-    data: [...Array(5)].map(() => ({
+    data: [...Array(pagination.take)].map(() => ({
       centerData: {
         location: {
           address: "Boulvard James-Fazy 4",
@@ -27,8 +27,11 @@ export const getHealthCenterFilteredDataFetcher = async (
             lng: randomNum(100),
           },
           country: "france",
+          countryCode: "CHF",
+          state: "Geneve",
           postalCode: 1201,
         },
+        rate: randomNum(15),
         name: "Dr Charlene Kasaven",
         photo:
           "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",

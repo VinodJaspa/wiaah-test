@@ -1,13 +1,13 @@
 import {
   FormatedSearchableFilter,
-  getHealthCenterFilteredDataFetcher,
+  getHealthCentersFilteredDataFetcher,
   HealthCenterData,
   PaginationFetchedData,
   QueryPaginationInputs,
 } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
-export const useGetHealthCenterDataQuery = (
+export const useGetHealthCentersDataQuery = (
   pagination: QueryPaginationInputs,
   filters: FormatedSearchableFilter,
   options?: UseQueryOptions<
@@ -19,7 +19,7 @@ export const useGetHealthCenterDataQuery = (
 ) => {
   return useQuery(
     ["HealthCenterPractitionersData", { filters, pagination }],
-    () => getHealthCenterFilteredDataFetcher(pagination, filters),
+    () => getHealthCentersFilteredDataFetcher(pagination, filters),
     options
   );
 };

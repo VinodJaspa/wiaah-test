@@ -8,18 +8,13 @@ import {
   ServiceOnMapLocationSection,
   ServicePoliciesSection,
   ServiceWorkingHoursSection,
-  HotelServiceRoomsSection,
-  PopularAmenitiesSection,
   ServicesProviderDescriptionSection,
   Reviews,
   SectionTabType,
   ServicePresentationCarosuel,
   StaticSideBarWrapper,
-  ServiceReservastion,
   SectionsScrollTabList,
   useGetVehicleProviderDetailsQuery,
-  DateInput,
-  ResturantFindTableFilterDateDayComponent,
   Slider,
   VehicleSearchCard,
   CaruoselLeftArrow,
@@ -27,6 +22,7 @@ import {
   SearchFilter,
   Button,
   DateAndTimeInput,
+  ServiceCancelationPolicyInput,
 } from "ui";
 import { reviews } from "placeholder";
 import { usePublishRef } from "state";
@@ -85,7 +81,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
             />
             <div ref={VehiclesRef}>
               <Slider
-                gap={8}
+                gap={16}
                 itemsCount={isMobile ? 1 : isTablet ? 2 : 3}
                 leftArrowComponent={CaruoselLeftArrow}
                 rightArrowComponent={CaruoselRightArrow}
@@ -99,28 +95,22 @@ export const VehicleServiceDetailsView: React.FC = () => {
                             key={i}
                             {...vehicle}
                           />
-                          <SearchFilter
-                            boldTitle
-                            filters={[
-                              {
-                                filterTitle: "Cancellation policy",
-                                filterDisplay: "text",
-                                filterSlug: "cancellation_policy",
-                                filterType: "radio",
-                                filterOptions: [
-                                  {
-                                    optName: "Fully refundable before 28 Jul",
-                                    optSlug: "fully_refundable_28jul",
-                                  },
-                                  {
-                                    optName: "Fully refundable before 4 Aug",
-                                    optSlug: "fully_refundable_4aug",
-                                  },
-                                ],
-                              },
-                            ]}
-                          />
-                          <Button className="w-fit">{t("Book now")}</Button>
+                          <div className="flex flex-col gap-1">
+                            <p className="font-bold">
+                              {t("Cancelation policy")}
+                            </p>
+                            {vehicle.cancelationPolicies.map((policy, i) => (
+                              <ServiceCancelationPolicyInput
+                                {...policy}
+                                name="cancelationPolicy"
+                                onSelected={() => {}}
+                                key={`${i}-${policy.id}`}
+                              />
+                            ))}
+                          </div>
+                          <Button className="self-end w-fit">
+                            {t("Book now")}
+                          </Button>
                         </div>
                       ))
                     : null

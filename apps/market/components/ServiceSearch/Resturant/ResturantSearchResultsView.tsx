@@ -12,7 +12,7 @@ export const ResturantSearchResultsView: React.FC = () => {
   const { data, isLoading, isError } = useGetResturantSearchFiltersQuery();
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 p-4">
+    <div className="flex flex-col md:flex-row gap-4 py-4">
       <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
         <Formik initialValues={{}} onSubmit={() => {}}>
           {({ setFieldValue, values }) => {

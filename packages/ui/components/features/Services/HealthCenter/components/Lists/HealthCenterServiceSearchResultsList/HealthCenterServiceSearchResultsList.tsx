@@ -7,17 +7,17 @@ import {
   HealthCenterCard,
   DisplayFoundServices,
 } from "ui";
-import { useGetHealthCenterDataQuery } from "../../../services";
+import { useGetHealthCentersDataQuery } from "ui";
 
 export const HealthCenterServiceSearchResultsList: React.FC = () => {
-  const { take, page, nextPage, previousPage, goToPage } = usePagination(8);
+  const { take, page, goToPage } = usePagination(8);
   const { filters, getLocationFilterQuery } = useSearchFilters();
   const { isTablet } = useResponsive();
   const {
     data: res,
     isLoading,
     isError,
-  } = useGetHealthCenterDataQuery({ page, take }, filters);
+  } = useGetHealthCentersDataQuery({ page, take }, filters);
   return (
     <div className="w-full flex flex-col gap-8">
       <DisplayFoundServices

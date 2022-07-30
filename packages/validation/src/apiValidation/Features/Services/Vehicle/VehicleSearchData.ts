@@ -1,5 +1,6 @@
 import { CreatePaginationValidationSchemaOf } from "../../../SharedSchema";
 import { object, string, number, boolean, array, mixed, InferType } from "yup";
+import { ServiceCancelationPolicies } from "../common";
 
 export const PaginationDataIndexKey = "data";
 
@@ -22,16 +23,19 @@ export const VehicleProprtieValidationSchema = object({
   }),
 }).required();
 
-export const VehicleSearchDataValidationSchema = object({
-  thumbnail: string().required(),
-  pricePerDay: number().required(),
-  name: string().required(),
-  vehicleProps: array<InferType<typeof VehicleProprtieValidationSchema>>()
-    .required()
-    .of(VehicleProprtieValidationSchema)
-    .min(0)
-    .required(),
-}).required();
+export const VehicleSearchDataValidationSchema =
+  ServiceCancelationPolicies.concat(
+    object({
+      thumbnail: string().required(),
+      pricePerDay: number().required(),
+      name: string().required(),
+      vehicleProps: array<InferType<typeof VehicleProprtieValidationSchema>>()
+        .required()
+        .of(VehicleProprtieValidationSchema)
+        .min(0)
+        .required(),
+    }).required()
+  );
 
 export const VehicleSearchApiResponseValidationSchema =
   CreatePaginationValidationSchemaOf(
