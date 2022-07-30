@@ -20,6 +20,7 @@ const withTM = require("next-transpile-modules")(
     "state",
     "placeholder",
     "types",
+    "routing",
   ],
   {
     debug: true,

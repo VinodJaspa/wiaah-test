@@ -33,9 +33,11 @@ export const getVehicleSearchDataFetcher = async (
 ): Promise<VehicleSearchDataApiResponse> => {
   const data: AsyncReturnType<typeof getVehicleSearchDataFetcher> = {
     hasMore: false,
-    data: [...Array(pagination.take)].map(() => ({
+    data: [...Array(pagination.take)].map((_, i) => ({
+      id: `${i}`,
       name: "Lucky Dip Car",
       pricePerDay: 111,
+      cancelationPolicies: [],
       thumbnail:
         "https://www.autocar.co.uk/sites/autocar.co.uk/files/images/car-reviews/first-drives/legacy/1_rangerover_tracking.jpg",
 

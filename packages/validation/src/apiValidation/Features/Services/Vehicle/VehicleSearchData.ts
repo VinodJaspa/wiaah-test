@@ -26,6 +26,7 @@ export const VehicleProprtieValidationSchema = object({
 export const VehicleSearchDataValidationSchema =
   ServiceCancelationPolicies.concat(
     object({
+      id: string().required(),
       thumbnail: string().required(),
       pricePerDay: number().required(),
       name: string().required(),

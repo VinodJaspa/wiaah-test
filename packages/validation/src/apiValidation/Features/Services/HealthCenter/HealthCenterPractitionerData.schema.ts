@@ -8,6 +8,7 @@ export const HealthCenterPractitionerSearchDataValidationSchema = object({
 });
 
 export const HealthCenterPractitionerDataValidationSchema = object({
+  id: string().required(),
   name: string().required(),
   photo: string().required(),
   specialty: string().required(),

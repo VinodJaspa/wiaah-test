@@ -1,19 +1,20 @@
 import * as yup from "yup";
 import {
-  PaginationReturnDataValidationSchema,
   locationValidationSchema,
-} from "../../../";
+  CreatePaginationApiResponseValidationSchemaOf,
+} from "../../SharedSchema";
 
-export const generalServicesDataValidationSchema = yup.object().shape({
+export const generalServicesDataValidationSchema = yup.object({
+  id: yup.string().required(),
   description: yup.string().required(),
   name: yup.string().required(),
   location: locationValidationSchema,
   isNew: yup.boolean().required(),
   thumbnail: yup.string().required(),
-  services: yup.array(yup.string()),
+  services: yup.array(yup.string().required()).min(0).required(),
 });
 
-export const generalServicesApiValidationSchema = yup.object().shape({
-  ...PaginationReturnDataValidationSchema,
-  data: yup.array(generalServicesDataValidationSchema),
-});
+export const generalServicesApiValidationSchema =
+  CreatePaginationApiResponseValidationSchemaOf(
+    generalServicesDataValidationSchema
+  );

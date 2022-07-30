@@ -10,9 +10,11 @@ import {
   AddIcon,
   useGetPopularServiceLocationsQuery,
   SpinnerFallback,
+  useSearchFilters,
 } from "ui";
 import { BiSend } from "react-icons/bi";
 import { Location } from "api";
+import { useOutsideClick, usePagination } from "hooks";
 
 export interface LocationSearchInputProps {
   className?: string;
@@ -27,29 +29,29 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
   const [search, setSearch] = React.useState<string>("");
   const [locations, setLocations] = React.useState<Location[]>();
   const { t } = useTranslation();
-
-  const { data, isLoading, isError, refetch } =
-    useGetPopularServiceLocationsQuery(10, 1, search, {
+  const { filters } = useSearchFilters();
+  const { take, page } = usePagination();
+  const ref = React.useRef<HTMLDivElement>(null);
+  const { data, isLoading, isError } = useGetPopularServiceLocationsQuery(
+    { page, take },
+    filters,
+    search,
+    {
       onSuccess: (data) => {
         setLocations(data);
       },
-    });
-
-  React.useEffect(() => {
-    // refetch()
-  }, [search]);
+    }
+  );
+  useOutsideClick(ref, () => setFocused(false));
 
   return (
     <div
+      ref={ref}
       className={`${
         className || ""
       } rounded-lg relative w-full border-[1px] border-gray-200 border-b-0 p-2`}
     >
-      <InputGroup
-        onBlur={() => setFocused(false)}
-        flushed
-        className="border-b-black "
-      >
+      <InputGroup flushed className="border-b-black ">
         <InputLeftElement className="flex px-2 justify-center items-center">
           <SearchIcon />
         </InputLeftElement>
@@ -86,7 +88,10 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
             ? locations.map((location, i) => (
                 <Prefix
                   key={i}
-                  onClick={() => onLocationSelect(location.address)}
+                  onClick={() => {
+                    onLocationSelect(location.address);
+                    setFocused(false);
+                  }}
                   className="hover:bg-gray-100 active:bg-gray-200 border-b-2 border-gray-200 py-2 cursor-pointer"
                   Prefix={() => (
                     <span className="border-2 border-gray-200 p-2 rounded-full">
@@ -94,7 +99,7 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
                     </span>
                   )}
                 >
-                  <div className="flex flex-col">
+                  <div className="flex flex-col text-black">
                     <span className="font-bold">{location.address}</span>
                     <span>{location.city}</span>
                   </div>

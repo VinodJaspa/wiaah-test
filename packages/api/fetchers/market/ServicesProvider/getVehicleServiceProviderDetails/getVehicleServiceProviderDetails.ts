@@ -186,6 +186,7 @@ export const getVehicleServiceProviderDetailsFetcher = async (
       serviceFee: 850,
 
       vehicles: [...Array(10)].map((_, i) => ({
+        id: `${i}`,
         name: "Lucky Dip Car",
         pricePerDay: 111,
         thumbnail:

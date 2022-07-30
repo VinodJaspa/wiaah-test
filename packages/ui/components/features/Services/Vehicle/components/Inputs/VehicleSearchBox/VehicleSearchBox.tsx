@@ -1,6 +1,7 @@
 import { FormatedSearchableFilter } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
 import {
   FilterInput,
   VehiclePickupLocationInput,
@@ -8,6 +9,7 @@ import {
   VehiclePickupTimeInput,
   VehicleDropOffDateInput,
   Button,
+  ServicesRequestKeys,
 } from "ui";
 
 export interface VehicleSearchBoxProps {
@@ -16,7 +18,7 @@ export interface VehicleSearchBoxProps {
 
 export const VehicleSearchBox: React.FC<VehicleSearchBoxProps> = () => {
   const { t } = useTranslation();
-
+  const { visit } = useRouting();
   return (
     <div className="flex flex-col gap-2 rounded p-2 text-black bg-primary-200">
       {/* <p>{t("Find the right car for you")}</p> */}
@@ -36,7 +38,19 @@ export const VehicleSearchBox: React.FC<VehicleSearchBoxProps> = () => {
           <VehicleDropOffDateInput className="w-full" />
           <VehiclePickupTimeInput className="w-full" />
         </div>
-        <Button className="h-12 w-full">{t("Search")}</Button>
+        <Button
+          onClick={() =>
+            visit((routes) =>
+              routes.visitServiceLocationSearchResults(
+                ServicesRequestKeys.vehicle,
+                "milano"
+              )
+            )
+          }
+          className="h-12 w-full"
+        >
+          {t("Search")}
+        </Button>
       </div>
       <div className="flex gap-4">
         {/* <FilterInput label={t("Driver aged 30-65?")} variant="box" /> */}

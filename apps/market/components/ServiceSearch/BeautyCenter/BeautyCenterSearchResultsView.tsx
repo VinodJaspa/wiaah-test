@@ -1,29 +1,20 @@
-import { FormatedSearchableFilter } from "api";
 import { Formik, Form } from "formik";
 import React from "react";
 import {
-  AspectRatio,
-  DateInput,
   RecommendedBeautyCenterSearchList,
-  ResturantFindTableFilterDateDayComponent,
   ResturantFindTableFilterStepper,
-  ResturantFindTableFilterStepperHeader,
-  ResturantReplacableTimeComponent,
-  ResturantSearchList,
   SearchFilter,
   ServicesSearchResultsFiltersSidebar,
-  Stepper,
-  StepperContent,
-  TimeInput,
   useGetServiceSearchFiltersQuery,
   useSearchFilters,
+  DisplayFoundServices,
 } from "ui";
-import { FilterAndAddToArray } from "utils";
+import { randomNum } from "utils";
 
 export const BeautyCenterSearchResultsView: React.FC = () => {
-  const { filters } = useSearchFilters();
+  const { filters, getLocationFilterQuery } = useSearchFilters();
   const { data, isLoading, isError } = useGetServiceSearchFiltersQuery(filters);
-  const [_, setFilters] = React.useState<FormatedSearchableFilter[]>([]);
+
   return (
     <div className="flex flex-col md:flex-row gap-4 p-4">
       <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
@@ -44,7 +35,13 @@ export const BeautyCenterSearchResultsView: React.FC = () => {
           }}
         </Formik>
       </ServicesSearchResultsFiltersSidebar>
-      <RecommendedBeautyCenterSearchList />
+      <div className="flex flex-col gap-2">
+        <DisplayFoundServices
+          location={getLocationFilterQuery}
+          servicesNum={randomNum(500)}
+        />
+        <RecommendedBeautyCenterSearchList />
+      </div>
     </div>
   );
 };

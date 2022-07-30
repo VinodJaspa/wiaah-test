@@ -1,16 +1,26 @@
-import { getPopularServiceLocations, Location } from "api";
+import {
+  FormatedSearchableFilter,
+  getPopularServiceLocations,
+  QueryPaginationInputs,
+} from "api";
 import { useQuery, UseQueryOptions } from "react-query";
+import { AsyncReturnType } from "types";
 
 export const useGetPopularServiceLocationsQuery = (
-  take: number,
-  page: number,
+  pagination: QueryPaginationInputs,
+  filters: FormatedSearchableFilter,
   searchQuery: string,
-  options: UseQueryOptions<unknown, unknown, Location[], any>
+  options: UseQueryOptions<
+    unknown,
+    unknown,
+    AsyncReturnType<typeof getPopularServiceLocations>,
+    any
+  >
 ) => {
   return useQuery(
-    ["popular_locations", { take, page }],
+    ["popular_locations", { pagination }],
     () => {
-      return getPopularServiceLocations(take, page, searchQuery);
+      return getPopularServiceLocations(pagination, filters, searchQuery);
     },
     options
   );

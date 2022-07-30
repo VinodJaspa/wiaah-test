@@ -17,7 +17,7 @@ export const getHealthCentersFilteredDataFetcher = async (
   filters: FormatedSearchableFilter
 ): Promise<PaginationFetchedData<HealthCenterData[]>> => {
   return {
-    data: [...Array(pagination.take)].map(() => ({
+    data: [...Array(pagination.take)].map((_, i) => ({
       centerData: {
         location: {
           address: "Boulvard James-Fazy 4",
@@ -31,6 +31,7 @@ export const getHealthCentersFilteredDataFetcher = async (
           state: "Geneve",
           postalCode: 1201,
         },
+        id: `${i}`,
         rate: randomNum(15),
         name: "Dr Charlene Kasaven",
         photo:

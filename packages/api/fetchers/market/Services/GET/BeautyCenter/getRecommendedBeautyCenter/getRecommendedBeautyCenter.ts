@@ -20,7 +20,8 @@ export const getRecommendedBeautyCenterFetcher = async (
   pagination: QueryPaginationInputs
 ): Promise<getRecommendedBeautyCentersApiResponse> => {
   const res: AsyncReturnType<typeof getRecommendedBeautyCenterFetcher> = {
-    data: [...Array(pagination.take)].map(() => ({
+    data: [...Array(pagination.take)].map((_, i) => ({
+      id: `${i}`,
       name: "Green Leaf Treatments",
       rate: randomNum(5),
       reviews: randomNum(1565),

@@ -6,6 +6,7 @@ import {
   QueryPaginationInputs,
 } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
+import { AsyncReturnType } from "types";
 
 export const useGetHealthCentersDataQuery = (
   pagination: QueryPaginationInputs,
@@ -13,7 +14,7 @@ export const useGetHealthCentersDataQuery = (
   options?: UseQueryOptions<
     unknown,
     unknown,
-    PaginationFetchedData<HealthCenterData[]>,
+    AsyncReturnType<typeof getHealthCentersFilteredDataFetcher>,
     any
   >
 ) => {

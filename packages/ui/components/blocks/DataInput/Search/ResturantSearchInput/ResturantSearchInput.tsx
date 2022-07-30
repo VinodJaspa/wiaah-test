@@ -54,7 +54,7 @@ export const ResturantSearchInput: React.FC<ResturantSearchInputProps> = ({
           </InputGroup>
         </InputRightElement>
       </InputGroup>
-      <Button>{t("Search")}</Button>
+      <Button onClick={() => onSubmit()}>{t("Search")}</Button>
     </div>
   );
 };

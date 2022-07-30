@@ -9,11 +9,13 @@ export interface AspectRatioImageProps extends AspectRatioProps {
 export const AspectRatioImage: React.FC<AspectRatioImageProps> = ({
   alt,
   src,
+  children,
   ...props
 }) => {
   return (
     <AspectRatio {...props}>
       <img className="w-full h-full object-cover" src={src} alt={alt} />
+      {children}
     </AspectRatio>
   );
 };

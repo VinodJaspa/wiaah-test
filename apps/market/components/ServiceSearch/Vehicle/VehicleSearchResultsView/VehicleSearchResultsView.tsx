@@ -10,12 +10,15 @@ import {
   ResturantFindTableFilterDateDayComponent,
   ServicesSearchResultsFiltersSidebar,
   DateAndTimeInput,
+  DisplayFoundServices,
 } from "ui";
+import { randomNum } from "utils";
 
 export const VehicleSearchResultsView: React.FC = () => {
   const { t } = useTranslation();
   const { filters } = useSearchFilters();
   const { isLoading, isError, data } = useGetServiceSearchFiltersQuery(filters);
+  const { getLocationFilterQuery } = useSearchFilters();
   return (
     <div className="flex gap-4 flex-col md:flex-row px-2">
       <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
@@ -44,7 +47,13 @@ export const VehicleSearchResultsView: React.FC = () => {
           }}
         </Formik>
       </ServicesSearchResultsFiltersSidebar>
-      <VehicleSearchList />
+      <div className="flex flex-col gap-2">
+        <DisplayFoundServices
+          location={getLocationFilterQuery || ""}
+          servicesNum={randomNum(5000)}
+        />
+        <VehicleSearchList />
+      </div>
     </div>
   );
 };

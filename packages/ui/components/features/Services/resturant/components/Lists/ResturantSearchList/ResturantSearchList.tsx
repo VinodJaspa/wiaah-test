@@ -29,10 +29,6 @@ export const ResturantSearchList: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4 w-full">
-      <DisplayFoundServices
-        location={getLocationFilterQuery || ""}
-        servicesNum={res?.total || 0}
-      />
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         <ServicesSearchGrid
           component={ResturantRecommendedCard}

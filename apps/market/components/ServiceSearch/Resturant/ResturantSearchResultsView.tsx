@@ -6,11 +6,14 @@ import {
   SearchFilter,
   useGetResturantSearchFiltersQuery,
   ServicesSearchResultsFiltersSidebar,
+  DisplayFoundServices,
+  useSearchFilters,
 } from "ui";
+import { randomNum } from "utils";
 
 export const ResturantSearchResultsView: React.FC = () => {
   const { data, isLoading, isError } = useGetResturantSearchFiltersQuery();
-
+  const { getLocationFilterQuery } = useSearchFilters();
   return (
     <div className="flex flex-col md:flex-row gap-4 py-4">
       <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
@@ -31,7 +34,13 @@ export const ResturantSearchResultsView: React.FC = () => {
           }}
         </Formik>
       </ServicesSearchResultsFiltersSidebar>
-      <ResturantSearchList />
+      <div className="flex flex-col gap-2">
+        <DisplayFoundServices
+          location={getLocationFilterQuery || ""}
+          servicesNum={randomNum(500)}
+        />
+        <ResturantSearchList />
+      </div>
     </div>
   );
 };

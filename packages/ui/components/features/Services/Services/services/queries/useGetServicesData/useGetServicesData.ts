@@ -1,11 +1,12 @@
 import {
   FormatedSearchableFilter,
-  getServicesData,
+  getGeneralServicesData,
   PaginationFetchedData,
   QueryPaginationInputs,
   ServiceData,
 } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
+import { AsyncReturnType } from "types";
 
 export const useGetServicesData = (
   pagination: QueryPaginationInputs,
@@ -13,14 +14,14 @@ export const useGetServicesData = (
   options?: UseQueryOptions<
     unknown,
     unknown,
-    PaginationFetchedData<ServiceData[]>,
+    AsyncReturnType<typeof getGeneralServicesData>,
     any
   >
 ) => {
   return useQuery(
     ["servicesData", { pagination, filters }],
     () => {
-      return getServicesData(pagination, filters);
+      return getGeneralServicesData(pagination, filters);
     },
     options
   );

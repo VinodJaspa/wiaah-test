@@ -1,6 +1,4 @@
-import React, { DetailedHTMLProps, HTMLAttributes } from "react";
-import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
-import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
+import React from "react";
 import { runIfFn } from "utils";
 import { HtmlDivProps } from "types";
 export interface PrefixProps extends HtmlDivProps {
@@ -12,9 +10,10 @@ export const Prefix: React.FC<PrefixProps> = ({
   Prefix,
   className,
   PrefixClassName,
+  ...props
 }) => {
   return (
-    <div className={`${className || ""} flex items-center gap-2`}>
+    <div {...props} className={`${className || ""} flex items-center gap-2`}>
       {runIfFn<HtmlDivProps>(Prefix, { className: PrefixClassName })}
       {children}
     </div>

@@ -18,12 +18,9 @@ import {
   Accordion,
   ResturantMenuListSection,
   useGetResturantServiceDetaislDataQuery,
-  HStack,
-  PriceDisplay,
 } from "ui";
 import { reviews } from "placeholder";
 import { useTranslation } from "react-i18next";
-import { useGetUserInput } from "state";
 import { useResponsive } from "hooks";
 
 export const ResturantDetailsView: React.FC = () => {
