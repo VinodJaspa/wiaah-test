@@ -1,28 +1,27 @@
+import { FormatedSearchableFilter, QueryPaginationInputs } from "src";
 import {
-  FormatedSearchableFilter,
-  PaginationFetchedData,
-  QueryPaginationInputs,
-} from "src";
-import { generalServicesApiValidationSchema } from "validation";
-import { Location, InValidDataSchemaError } from "api";
+  CheckValidation,
+  generalServicesApiValidationSchema,
+  generalServicesDataValidationSchema,
+  InferType,
+} from "validation";
 import { AsyncReturnType } from "types";
+import { randomNum } from "utils";
 
-export interface ServiceData {
-  thumbnail: string;
-  name: string;
-  location: Location;
-  services: string[];
-  description: string;
-  isNew: boolean;
-}
+export type ServiceData = InferType<typeof generalServicesDataValidationSchema>;
 
-export const getServicesData = async (
+export type GeneralServicesApisResponse = InferType<
+  typeof generalServicesApiValidationSchema
+>;
+
+export const getGeneralServicesData = async (
   pagination: QueryPaginationInputs,
   filters: FormatedSearchableFilter
-): Promise<PaginationFetchedData<ServiceData[]>> => {
-  const data: AsyncReturnType<typeof getServicesData> = {
+): Promise<GeneralServicesApisResponse> => {
+  const res: AsyncReturnType<typeof getGeneralServicesData> = {
     hasMore: false,
     data: [...Array(pagination.take)].map((_, i) => ({
+      id: `${i}`,
       description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
       name: "D'Luxe Nails",
       location: {
@@ -34,6 +33,8 @@ export const getServicesData = async (
         },
         country: "switzerland",
         postalCode: 1201,
+        countryCode: "CH",
+        state: "Geneve",
       },
       isNew: true,
       thumbnail: "/place-3.jpg",
@@ -43,10 +44,7 @@ export const getServicesData = async (
         "Shellac sans Manucure",
       ],
     })),
+    total: randomNum(5000),
   };
-
-  const isValid = await generalServicesApiValidationSchema.isValid(data);
-  if (!isValid) throw new InValidDataSchemaError();
-
-  return data;
+  return CheckValidation(generalServicesApiValidationSchema, res);
 };

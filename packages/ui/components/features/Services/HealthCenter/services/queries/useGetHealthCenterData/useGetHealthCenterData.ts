@@ -1,25 +1,26 @@
 import {
   FormatedSearchableFilter,
-  getHealthCenterFilteredDataFetcher,
+  getHealthCentersFilteredDataFetcher,
   HealthCenterData,
   PaginationFetchedData,
   QueryPaginationInputs,
 } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
+import { AsyncReturnType } from "types";
 
-export const useGetHealthCenterDataQuery = (
+export const useGetHealthCentersDataQuery = (
   pagination: QueryPaginationInputs,
   filters: FormatedSearchableFilter,
   options?: UseQueryOptions<
     unknown,
     unknown,
-    PaginationFetchedData<HealthCenterData[]>,
+    AsyncReturnType<typeof getHealthCentersFilteredDataFetcher>,
     any
   >
 ) => {
   return useQuery(
     ["HealthCenterPractitionersData", { filters, pagination }],
-    () => getHealthCenterFilteredDataFetcher(pagination, filters),
+    () => getHealthCentersFilteredDataFetcher(pagination, filters),
     options
   );
 };

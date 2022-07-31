@@ -1,7 +1,15 @@
 import { FilteredHotelsMetaDataType, LocationCords } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { AspectRatio, HeartIcon, PriceDisplay, EllipsisText, Rate } from "ui";
+import {
+  AspectRatio,
+  HeartIcon,
+  PriceDisplay,
+  EllipsisText,
+  Rate,
+  AspectRatioImage,
+  Button,
+} from "ui";
 
 export interface HotelDetailedSearchCardProps
   extends FilteredHotelsMetaDataType {
@@ -10,26 +18,27 @@ export interface HotelDetailedSearchCardProps
   minimal?: boolean;
 }
 
-export const HotelDetailedSearchCard: React.FC<
-  HotelDetailedSearchCardProps
-> = ({
-  description,
-  provider,
-  rate,
-  thumbnail,
-  title,
-  serviceClass,
-  reviews = 0,
-  date,
-  id,
-  pricePerNight,
-  taxesAndFeesIncluded,
-  totalPrice,
-  location,
-  onShowOnMap,
-  vertical,
-  minimal,
-}) => {
+export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
+  props
+) => {
+  const {
+    description,
+    provider,
+    rate,
+    thumbnail,
+    title,
+    serviceClass,
+    reviews = 0,
+    date,
+    id,
+    pricePerNight,
+    taxesAndFeesIncluded,
+    totalPrice,
+    location,
+    onShowOnMap,
+    vertical,
+    minimal,
+  } = props;
   const { t } = useTranslation();
 
   return (
@@ -39,13 +48,7 @@ export const HotelDetailedSearchCard: React.FC<
       } flex gap-4 border-2 bg-white border-gray-300 p-2 rounded-lg`}
     >
       <div className="relative w-[min(100%,30rem)]">
-        <AspectRatio ratio={4 / 5}>
-          <img
-            className="w-full h-full object-cover "
-            src={thumbnail}
-            alt={provider}
-          />
-        </AspectRatio>
+        <AspectRatioImage src={thumbnail} alt={title} ratio={1} />
         {minimal ? null : (
           <HeartIcon className="absolute top-2 right-2 z-[5] bg-black bg-opacity-50 rounded-full text-white p-1 text-2xl cursor-pointer" />
         )}

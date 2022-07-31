@@ -2,13 +2,14 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { useSetRecoilState } from "recoil";
-import { CartSummaryItemData } from "types/market/CartSummary";
+import { CartSummaryItemData } from "types";
 import {
   CartSummaryProductsPH,
   Collaboration,
   Container,
   Divider,
   Spacer,
+  useCartSummary,
 } from "ui";
 import { CartSummaryItemsState } from "ui/state";
 import CartSummaryView from "../components/CartSummary/CartSummaryView";
@@ -18,13 +19,14 @@ interface CartSummaryPageProps {
   Products: CartSummaryItemData[];
 }
 
-export const getServerSideProps: GetServerSideProps<CartSummaryPageProps> =
-  async () => {
-    const Products: CartSummaryItemData[] = CartSummaryProductsPH;
-    return {
-      props: { Products },
-    };
+export const getServerSideProps: GetServerSideProps<
+  CartSummaryPageProps
+> = async () => {
+  const Products: CartSummaryItemData[] = CartSummaryProductsPH;
+  return {
+    props: { Products },
   };
+};
 const cartSummary: NextPage<CartSummaryPageProps> = ({ Products }) => {
   return (
     <>

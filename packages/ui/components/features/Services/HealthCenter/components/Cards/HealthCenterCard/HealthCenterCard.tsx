@@ -1,8 +1,14 @@
 import { HealthCenterPractitioner } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
 import { WorkingDate } from "types";
-import { Button, AspectRatio, WorkingDaysCalander } from "ui";
+import {
+  Button,
+  AspectRatio,
+  WorkingDaysCalander,
+  ServicesRequestKeys,
+} from "ui";
 
 export interface HealthCenterCardProps {
   centerData: HealthCenterPractitioner;
@@ -15,6 +21,7 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
   workingDates,
   vertical = false,
 }) => {
+  const { visit } = useRouting();
   const [hoursLimit, setHoursLimit] = React.useState<number>(2);
   const { t } = useTranslation();
   return (
@@ -26,12 +33,30 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
       <div className="flex flex-col justify-between gap-4">
         <div className="flex gap-4">
           <div className="w-32">
-            <AspectRatio ratio={3 / 4}>
+            <AspectRatio className="group" ratio={3 / 4}>
               <img
                 className="w-full h-full object-cover"
                 src={centerData.photo}
                 alt={centerData.name}
               />
+              <div
+                className={
+                  "bg-black bg-opacity-0 transition-all opacity-0 pointer-events-none group-hover:opacity-100 group-hover:bg-opacity-25 group-hover:pointer-events-auto top-0 left-0 w-full h-full absolute flex justify-center items-center"
+                }
+              >
+                <Button
+                  onClick={() =>
+                    visit((routes) =>
+                      routes.visitService(
+                        centerData,
+                        ServicesRequestKeys.healthCenter
+                      )
+                    )
+                  }
+                >
+                  {t("Details")}
+                </Button>
+              </div>
             </AspectRatio>
           </div>
           <div className="flex flex-col gap-4">

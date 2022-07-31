@@ -1,6 +1,9 @@
 import { createApiResponseValidationSchema } from "../../SharedSchema";
 import { array, number, object, string } from "yup";
-import { CommonServiceDataSchema } from "../Services";
+import {
+  CommonServiceDataSchema,
+  ServiceCancelationPolicies,
+} from "../Services";
 
 export const beautyCenterTreatmentValidationSchema = object({
   category: string().required(),
@@ -11,7 +14,7 @@ export const beautyCenterTreatmentValidationSchema = object({
 });
 
 export const BeautyCenterDetailsValidationSchema =
-  CommonServiceDataSchema.concat(
+  CommonServiceDataSchema.concat(ServiceCancelationPolicies).concat(
     object({
       treatments: array()
         .of(beautyCenterTreatmentValidationSchema)

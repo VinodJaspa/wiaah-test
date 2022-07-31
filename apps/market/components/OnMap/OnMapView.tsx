@@ -2,13 +2,7 @@ import { ServicesViewsList } from "@data";
 import { useResponsive } from "hooks";
 import { useRouter } from "next/router";
 import React from "react";
-import {
-  RenderMap,
-  ScrollingWrapper,
-  SearchFilter,
-  useGetServicesSortingFiltersQuery,
-  LocationSearchInput,
-} from "ui";
+import { RenderMap, ScrollingWrapper, LocationSearchInput } from "ui";
 import {
   ExtractServiceTypeFromQuery,
   getServiceView,
@@ -19,11 +13,6 @@ export const OnMapView: React.FC = () => {
   const router = useRouter();
   const serviceType = ExtractServiceTypeFromQuery(router.query);
   const { isTablet } = useResponsive();
-  const {
-    data: sortingFilters,
-    isLoading: sortingFiltersLoading,
-    isError: sortingFiltersError,
-  } = useGetServicesSortingFiltersQuery();
   return (
     <div className="flex p-4 flex-col gap-2">
       <span className="w-full md:w-1/2">
@@ -34,7 +23,9 @@ export const OnMapView: React.FC = () => {
           <ScrollingWrapper horizonatal={isTablet}>
             <ServicesTypeSwitcher
               servicesList={ServicesViewsList}
-              get={getServiceView.LIST}
+              get={
+                isTablet ? getServiceView.HORIZONTAL_LIST : getServiceView.LIST
+              }
               serviceType={serviceType}
               props={{ horizontal: isTablet }}
             />

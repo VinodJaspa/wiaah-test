@@ -13,18 +13,20 @@ import {
   useSearchFilters,
   SpinnerFallback,
   filtersTokens,
+  ServicesRequestKeys,
 } from "ui";
-import { debounce } from "utils";
 import { useGetHealthCenterSearchSuggestionsQuery } from "ui";
 import { SearchHealthSpecialtiesCardsList } from "../Lists";
 import { SearchHealthPractitionersCardsList } from "../Lists/SearchHealthPractitionersCardsList";
 import { usePagination } from "hooks";
+import { useRouting } from "routing";
 
 export interface HealthCenterSearchBoxProps {}
 
 export const HealthCenterSearchBox: React.FC<
   HealthCenterSearchBoxProps
 > = () => {
+  const { visit } = useRouting();
   const { page, take } = usePagination();
   const { filters, addFilter, getFiltersSearchQuery } = useSearchFilters();
   const [specialites, setSepcialties] = React.useState<HealthCenterSpecialty[]>(
@@ -34,8 +36,10 @@ export const HealthCenterSearchBox: React.FC<
     HealthCenterPractitioner[]
   >([]);
 
-  const { isLoading, isError, refetch } =
-    useGetHealthCenterSearchSuggestionsQuery({ page, take }, filters, {
+  const { isLoading, isError } = useGetHealthCenterSearchSuggestionsQuery(
+    { page, take },
+    filters,
+    {
       onSuccess: (res) => {
         try {
           const { practitioners, specialties } = res.data;
@@ -43,16 +47,8 @@ export const HealthCenterSearchBox: React.FC<
           if (Array.isArray(practitioners)) setPractitioners(practitioners);
         } catch {}
       },
-    });
-  // const deboundedRefetch = debounce(() => {
-  //   console.log("refetching");
-  //   refetch();
-  // }, 1000);
-
-  // React.useEffect(() => {
-  //   console.log(filters, "filters");
-  //   deboundedRefetch();
-  // }, [filters]);
+    }
+  );
 
   const { t } = useTranslation();
   return (
@@ -61,6 +57,7 @@ export const HealthCenterSearchBox: React.FC<
         <SearchIcon className="text-primary" />
       </InputLeftElement>
       <Input
+        placeholder={t("health center")}
         onChange={(e) => addFilter([filtersTokens.searchQuery, e.target.value])}
       />
       <InputRightElement className="w-full">
@@ -73,7 +70,17 @@ export const HealthCenterSearchBox: React.FC<
             placeholder={t("where") + "?"}
           />
           <InputRightElement>
-            <Button className="uppercase rounded-none px-12">
+            <Button
+              onClick={() =>
+                visit((routes) =>
+                  routes.visitServiceLocationSearchResults(
+                    ServicesRequestKeys.healthCenter,
+                    "milano"
+                  )
+                )
+              }
+              className="uppercase rounded-none px-12"
+            >
               {t("find")}
             </Button>
           </InputRightElement>

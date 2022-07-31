@@ -1,9 +1,7 @@
-import { Rate } from "antd";
-import { ShopDetailsData } from "api";
-import { t } from "i18next";
 import { useRouter } from "next/router";
 import React from "react";
-
+import { useTranslation } from "react-i18next";
+import { FlagIcon, Rate } from "ui";
 import {
   Spacer,
   Button,
@@ -21,7 +19,7 @@ export interface ShopProfileProps {
 export const ShopProfile: React.FC<ShopProfileProps> = ({ fullWidth }) => {
   const { filters } = useSearchFilters();
   const { data: res, isError, isLoading } = useGetShopDetailsQuery(filters);
-
+  const { t } = useTranslation();
   const router = useRouter();
 
   return (
@@ -62,19 +60,21 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({ fullWidth }) => {
                         <Verified className="text-primary" />
                       )}
                     </div>
+                    <p className="font-semibold cursor-pointer text-primary">
+                      {t("Show on map")}
+                    </p>
                     <a href="#reviews" className="cursor-pointer">
                       {/* shop ratting */}
                       <Rate
                         className="cursor-pointer"
-                        disabled
                         allowHalf
-                        value={res.data.rating}
+                        rating={res.data.rating}
                       />
                     </a>
-                    <div>
+                    <p>
                       {/* shop creation date */}
                       {new Date(res.data.createdAt).toDateString()}
-                    </div>
+                    </p>
                   </>
                 ) : null}
               </SpinnerFallback>
@@ -96,15 +96,9 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({ fullWidth }) => {
               {res ? (
                 <div className="flex w-full items-center justify-end gap-2">
                   {/* shop location */}
-                  {/* {location && (
-                // <img
-                //   className="h-4 w-4 object-cover"
-                //   src={location.}
-                //   alt={shopLocation.location}
-                // />
-              )} */}
+                  <FlagIcon code={res.data.location.countryCode} />
                   {location
-                    ? `${res.data.location.city}, ${res.data.location.country}`
+                    ? ` ${res.data.location.state}, ${res.data.location.city}, ${res.data.location.country}`
                     : null}
                 </div>
               ) : null}

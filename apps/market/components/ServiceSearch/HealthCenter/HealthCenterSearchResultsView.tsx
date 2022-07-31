@@ -15,10 +15,14 @@ import {
   ResturantFindTableFilterStepperHeader,
   StepperHeader,
   StepperContent,
+  DisplayFoundServices,
+  useSearchFilters,
 } from "ui";
+import { randomNum } from "utils";
 
 export const HealthCenterSearchResultsView: React.FC = () => {
   const { data: res, isLoading, isError } = useGetHealthCenterFiltersQuery();
+  const { getLocationFilterQuery } = useSearchFilters();
   const { isTablet } = useResponsive();
   return (
     <div className="flex flex-col gap-4">
@@ -70,7 +74,13 @@ export const HealthCenterSearchResultsView: React.FC = () => {
             }}
           </Formik>
         </ServicesSearchResultsFiltersSidebar>
-        <HealthCenterServiceSearchResultsList />
+        <div className="flex flex-col">
+          <DisplayFoundServices
+            location={getLocationFilterQuery || ""}
+            servicesNum={randomNum(500)}
+          />
+          <HealthCenterServiceSearchResultsList />
+        </div>
       </div>
     </div>
   );

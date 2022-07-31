@@ -1,4 +1,3 @@
-import { RecommendedBeautyCenterDataType } from "api";
 import { usePagination } from "hooks";
 import React from "react";
 import {

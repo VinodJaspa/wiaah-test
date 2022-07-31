@@ -1,15 +1,17 @@
-import { ResturantMenuData } from "api";
+import { ResturantMenuData, ServiceCancelationPolicyType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSetUserInput } from "state";
-import { ResturantMenuList, Button } from "ui";
+import { ResturantMenuList, Button, ServiceCancelationPolicyInput } from "ui";
 import { FilterAndAddToArray } from "utils";
 
-export interface ResturantMenuListSectionProps extends ResturantMenuData {}
+export interface ResturantMenuListSectionProps extends ResturantMenuData {
+  cancelation: ServiceCancelationPolicyType[];
+}
 
 export const ResturantMenuListSection: React.FC<
   ResturantMenuListSectionProps
-> = ({ menus }) => {
+> = ({ menus, cancelation }) => {
   const { t } = useTranslation();
   const [orders, setOrders] = React.useState<
     { itemId: string; qty: number; price: number }[]
@@ -45,7 +47,19 @@ export const ResturantMenuListSection: React.FC<
             />
           ))
         : null}
-      <Button className="sm:hidden w-fit self-end">{t("Book now")}</Button>
+      <div className="flex flex-col gap-1">
+        <p className="font-bold">{t("Cancelation policy")}</p>
+        {cancelation.map((policy, i) => (
+          <ServiceCancelationPolicyInput
+            {...policy}
+            name="cancelationPolicy"
+            onSelected={() => {}}
+            key={`${i}-${policy.id}`}
+          />
+        ))}
+      </div>
+
+      <Button className=" w-fit self-end">{t("Book now")}</Button>
     </div>
   );
 };

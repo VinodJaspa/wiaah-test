@@ -108,7 +108,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({}) => {
       >
         <FlexStack direction="vertical" fullWidth verticalSpacingInRem={1}>
           <BoxShadow>
-            <div className="bg-white">
+            <div className="bg-white p-4">
               {/* <Padding Y={{ value: 1 }}> */}
               <div className="flex w-full justify-center text-3xl">
                 <BoldText>{t("checkout", "Checkout")}</BoldText>
@@ -137,7 +137,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({}) => {
                             addressDetails={address}
                             active={activeAddress === i}
                           />
-                          <Divider marginY={{ value: 0 }} />
+                          <Divider />
                         </Clickable>
                       ))}
                   </FlexStack>
@@ -145,12 +145,8 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({}) => {
                   <Padding X={{ value: 1 }}>
                     <Button
                       onClick={() => handleAddress()}
-                      fitWidth
-                      outlined
-                      paddingX={{ value: 1 }}
-                      hexTextColor={"#000"}
-                      borderWidthInPx={1}
-                      borderColor="#000"
+                      className="bg-black border-black px-4"
+                      outline
                     >
                       {t("add_new_address", "ADD NEW ADDRESS")}
                     </Button>
@@ -184,7 +180,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({}) => {
                     </Clickable>
                   </Text>
                 </FlexStack>
-                <Divider marginY={{ value: 0.5 }} />
+                <Divider />
                 <FlexStack width={{ value: 30 }} direction="vertical">
                   {products.map((item, i) => (
                     <>

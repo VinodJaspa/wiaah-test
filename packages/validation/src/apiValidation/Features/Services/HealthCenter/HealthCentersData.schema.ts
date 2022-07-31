@@ -1,6 +1,6 @@
 import { array, mixed, number, object, string } from "yup";
 import { CreatePaginationValidationSchemaOf } from "../../../SharedSchema";
-import { HealthCenterPractitionerData } from "../../";
+import { HealthCenterPractitionerDataValidationSchema } from "../../";
 
 export const DateTypeValidationSchema = mixed<string | number>().required();
 
@@ -18,7 +18,7 @@ export const WorkingDateValidationSchema = object({
 });
 
 export const HealthCentersValidationSchema = object({
-  centerData: HealthCenterPractitionerData,
+  centerData: HealthCenterPractitionerDataValidationSchema,
   workingDates: array().of(WorkingDateValidationSchema).min(0).required(),
 });
 

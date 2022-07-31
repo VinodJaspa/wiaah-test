@@ -5,5 +5,6 @@ export interface ServiceViewListItem {
   details: React.ReactNode;
   searchResaults: React.ReactNode;
   searchList: React.ReactNode;
+  searchHorizontalList:React.ReactNode
   slug: ServicesType;
 }

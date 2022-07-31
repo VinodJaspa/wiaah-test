@@ -4,3 +4,5 @@ export * from "./Cards";
 export * from "./Sidebars";
 export * from "./Steppers";
 export * from "./Headers";
+export * from "./Inputs";
+export * from "./DataDisplay";

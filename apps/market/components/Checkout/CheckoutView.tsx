@@ -24,10 +24,7 @@ import {
   TotalCost,
 } from "ui";
 import { useRouter } from "next/router";
-import {
-  AddressCardDetails,
-  AddressDetails,
-} from "types/market/AddressDetails.interface";
+import { AddressCardDetails, AddressDetails } from "types";
 import {
   CheckoutProductsState,
   CheckoutProductsTotalPriceState,
@@ -116,7 +113,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
       >
         <FlexStack direction="vertical" fullWidth verticalSpacingInRem={1}>
           <BoxShadow>
-            <div className="bg-white">
+            <div className="bg-white p-4">
               <Padding Y={{ value: 1 }}>
                 <div className="flex w-full justify-center text-3xl">
                   <BoldText>{t("checkout", "Checkout")}</BoldText>

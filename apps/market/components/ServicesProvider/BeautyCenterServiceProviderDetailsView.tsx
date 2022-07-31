@@ -50,7 +50,10 @@ export const BeautyCenterServiceDetailsView: React.FC = () => {
               proprtyType={res.data.proprtyType}
             />
             <Divider />
-            <BeautyCenterTreatmentsList treatments={res.data.treatments} />
+            <BeautyCenterTreatmentsList
+              cancelation={res.data.cancelationPolicies || []}
+              treatments={res.data.treatments}
+            />
             <ServiceReachOutSection
               email={res.data.email}
               location={res.data.location}

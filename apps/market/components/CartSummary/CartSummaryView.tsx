@@ -13,6 +13,7 @@ import {
   Text,
   useCartSummary,
   useScreenWidth,
+  CartSummaryProductsPH,
 } from "ui";
 import { CartSummaryTotalPriceState } from "ui/state";
 import CartSummaryFilled from "./CartSummaryFilled";
@@ -22,7 +23,7 @@ const CartSummaryView: React.FC = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { min } = useScreenWidth({ minWidth: 900 });
-  const { cartSummaryItems } = useCartSummary();
+  const cartSummaryItems = CartSummaryProductsPH;
   const totalPrice = useRecoilValue(CartSummaryTotalPriceState);
   const deliveryFee = 0;
 
@@ -79,7 +80,7 @@ const CartSummaryView: React.FC = () => {
                       <BoldText>${deliveryFee}</BoldText>
                     </FlexStack>
                   </Text>
-                  <Divider marginY={{ value: 0.9 }} />
+                  <Divider className="my-2 border-gray-300" />
                   <Text size="xl">
                     <FlexStack justify="between">
                       <BoldText>
@@ -88,7 +89,7 @@ const CartSummaryView: React.FC = () => {
                       <BoldText>${totalPrice}</BoldText>
                     </FlexStack>
                   </Text>
-                  <Button paddingY={{ value: 0.5 }} onClick={handleCheckout}>
+                  <Button onClick={handleCheckout}>
                     {t("go_to_checkout", "GO TO CHECKOUT")}
                   </Button>
                 </FlexStack>

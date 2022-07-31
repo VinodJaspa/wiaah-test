@@ -8,18 +8,13 @@ import {
   ServiceOnMapLocationSection,
   ServicePoliciesSection,
   ServiceWorkingHoursSection,
-  HotelServiceRoomsSection,
-  PopularAmenitiesSection,
   ServicesProviderDescriptionSection,
   Reviews,
   SectionTabType,
   ServicePresentationCarosuel,
   StaticSideBarWrapper,
-  ServiceReservastion,
   SectionsScrollTabList,
   useGetVehicleProviderDetailsQuery,
-  DateInput,
-  ResturantFindTableFilterDateDayComponent,
   Slider,
   VehicleSearchCard,
   CaruoselLeftArrow,
@@ -27,11 +22,13 @@ import {
   SearchFilter,
   Button,
   DateAndTimeInput,
+  ServiceCancelationPolicyInput,
 } from "ui";
 import { reviews } from "placeholder";
 import { usePublishRef } from "state";
 import { useTranslation } from "react-i18next";
 import { useResponsive } from "hooks";
+import { VehicleSearchData } from "api";
 
 export const VehicleServiceDetailsView: React.FC = () => {
   const { filters } = useSearchFilters();
@@ -83,50 +80,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
               location={res.data.location}
               telephone={res.data.telephone}
             />
-            <div ref={VehiclesRef}>
-              <Slider
-                gap={8}
-                itemsCount={isMobile ? 1 : isTablet ? 2 : 3}
-                leftArrowComponent={CaruoselLeftArrow}
-                rightArrowComponent={CaruoselRightArrow}
-              >
-                {res
-                  ? Array.isArray(res.data.vehicles)
-                    ? res.data.vehicles.map((vehicle, i) => (
-                        <div className="flex flex-col gap-2">
-                          <VehicleSearchCard
-                            showTotal={false}
-                            key={i}
-                            {...vehicle}
-                          />
-                          <SearchFilter
-                            boldTitle
-                            filters={[
-                              {
-                                filterTitle: "Cancellation policy",
-                                filterDisplay: "text",
-                                filterSlug: "cancellation_policy",
-                                filterType: "radio",
-                                filterOptions: [
-                                  {
-                                    optName: "Fully refundable before 28 Jul",
-                                    optSlug: "fully_refundable_28jul",
-                                  },
-                                  {
-                                    optName: "Fully refundable before 4 Aug",
-                                    optSlug: "fully_refundable_4aug",
-                                  },
-                                ],
-                              },
-                            ]}
-                          />
-                          <Button className="w-fit">{t("Book now")}</Button>
-                        </div>
-                      ))
-                    : null
-                  : null}
-              </Slider>
-            </div>
+            <VehiclesSelectableList vehicles={res.data.vehicles || []} />
             <ServiceWorkingHoursSection workingDays={res.data.workingDays} />
             <ServicePoliciesSection policies={res.data.policies} />
             <ServiceOnMapLocationSection location={res.data.location} />
@@ -134,6 +88,76 @@ export const VehicleServiceDetailsView: React.FC = () => {
         ) : null}
         <Reviews id={res?.data.id || ""} reviews={reviews} />
       </StaticSideBarWrapper>
+    </div>
+  );
+};
+
+const VehiclesSelectableList: React.FC<{ vehicles: VehicleSearchData[] }> = ({
+  vehicles,
+}) => {
+  const { t } = useTranslation();
+  const { isMobile, isTablet } = useResponsive();
+  const VehiclesRef = usePublishRef((keys) => keys.vehicle);
+  const [selectedVehicles, setSelectedVehicles] = React.useState<string[]>([]);
+
+  return (
+    <div ref={VehiclesRef}>
+      <Slider
+        gap={16}
+        itemsCount={isMobile ? 1 : isTablet ? 2 : 3}
+        leftArrowComponent={CaruoselLeftArrow}
+        rightArrowComponent={CaruoselRightArrow}
+      >
+        {vehicles
+          ? Array.isArray(vehicles)
+            ? vehicles.map((vehicle, i) => {
+                const selected = selectedVehicles.includes(vehicle.id);
+                function handleSelect(id: string) {
+                  if (selected) {
+                  } else {
+                    setSelectedVehicles((state) => [...state, id]);
+                  }
+                }
+
+                function handleUnSelect(id: string) {
+                  if (selected) {
+                    setSelectedVehicles((state) =>
+                      state.filter((vehicleId) => vehicleId !== id)
+                    );
+                  }
+                }
+
+                return (
+                  <div className="flex flex-col gap-2">
+                    <VehicleSearchCard showTotal={false} key={i} {...vehicle} />
+                    <div className="flex flex-col gap-1">
+                      <p className="font-bold">{t("Cancelation policy")}</p>
+                      {vehicle.cancelationPolicies.map((policy, i) => (
+                        <ServiceCancelationPolicyInput
+                          {...policy}
+                          name="cancelationPolicy"
+                          onSelected={() => {}}
+                          key={`${i}-${policy.id}`}
+                        />
+                      ))}
+                    </div>
+                    <Button
+                      onClick={() =>
+                        selected
+                          ? handleUnSelect(vehicle.id)
+                          : handleSelect(vehicle.id)
+                      }
+                      outline={selected}
+                      className="self-end w-fit"
+                    >
+                      {selected ? t("Selected") : t("Select")}
+                    </Button>
+                  </div>
+                );
+              })
+            : null
+          : null}
+      </Slider>
     </div>
   );
 };

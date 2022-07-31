@@ -1,13 +1,5 @@
 import React from "react";
-// import { useBreakpointValue } from "hooks";
-
-import {
-  FaSearch,
-  FaUser,
-  FaHeart,
-  FaAlignJustify,
-  FaChevronDown,
-} from "react-icons/fa";
+import { FaSearch, FaUser, FaHeart, FaAlignJustify } from "react-icons/fa";
 import {
   MultiStepDrawer,
   ShoppingCart,
@@ -21,11 +13,11 @@ import { useRecoilValue } from "recoil";
 import { ShoppingCartItem } from "types";
 import { ShoppingCartItemsState } from "state";
 import { useTranslation } from "react-i18next";
-import { NavLink } from "types";
 import { useBreakpointValue } from "@chakra-ui/react";
 import { useGetServicesCategoriesQuery } from "ui";
 import { usePagination } from "hooks";
 import { ServiceCategoryType } from "api";
+import { useRouting } from "routing";
 
 export interface HeaderProps {}
 
@@ -35,6 +27,7 @@ export const Header: React.FC<HeaderProps> = () => {
   const [isopen, setisopen] = React.useState(false);
   const { t } = useTranslation();
   const { page, take } = usePagination();
+  const { visit } = useRouting();
 
   const {
     data: categories,
@@ -151,8 +144,14 @@ export const Header: React.FC<HeaderProps> = () => {
               Array.isArray(categories) &&
               categories.length > 0 &&
               categories.map((cate, i) => (
-                <li className="capitalize hover:text-primary" key={i}>
-                  <Link href={cate.slug}>{t(cate.name)}</Link>
+                <li
+                  onClick={() =>
+                    visit((routes) => routes.visitServiceSearch(cate))
+                  }
+                  className="hover:text-primary text-white hover:underline cursor-pointer"
+                  key={i}
+                >
+                  <p>{t(cate.name)}</p>
                 </li>
               ))}
           </ul>

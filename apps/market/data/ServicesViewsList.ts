@@ -28,6 +28,8 @@ import {
   ServicesSearchResultsList,
   VehicleSearchList,
   RecommendedBeautyCenterSearchList,
+  ResturantHorizontalList,
+  HealthCenterHorizontalCardsList,
 } from "ui";
 
 export const ServicesViewsList: ServiceViewListItem[] = [
@@ -37,6 +39,7 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     searchResaults: HotelsSearchResultsView,
     searchList: HotelsSearchList,
     details: HotelDetailsView,
+    searchHorizontalList: null,
   },
   {
     slug: "resturant",
@@ -44,6 +47,7 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     searchResaults: ResturantSearchResultsView,
     searchList: ResturantSearchList,
     details: ResturantDetailsView,
+    searchHorizontalList: ResturantHorizontalList,
   },
   {
     slug: "holidays_rentals",
@@ -51,6 +55,7 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     searchResaults: HolidaysRentalSearchResultsView,
     searchList: HolidaysRentalSearchList,
     details: null,
+    searchHorizontalList: null,
   },
   {
     slug: "health_center",
@@ -58,6 +63,7 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     search: HealthCenterSearchView,
     searchList: HealthCenterServiceSearchResultsList,
     details: HealthCenterDetailsView,
+    searchHorizontalList: HealthCenterHorizontalCardsList,
   },
   {
     slug: "general",
@@ -65,6 +71,7 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     searchResaults: ServicesSearchResultsView,
     searchList: ServicesSearchResultsList,
     details: null,
+    searchHorizontalList: null,
   },
   {
     slug: "vehicle",
@@ -72,6 +79,7 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     searchResaults: VehicleSearchResultsView,
     searchList: VehicleSearchList,
     details: VehicleServiceDetailsView,
+    searchHorizontalList: null,
   },
   {
     slug: "beauty_center",
@@ -79,5 +87,6 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     searchResaults: BeautyCenterSearchResultsView,
     searchList: RecommendedBeautyCenterSearchList,
     details: BeautyCenterServiceDetailsView,
+    searchHorizontalList: null,
   },
 ];

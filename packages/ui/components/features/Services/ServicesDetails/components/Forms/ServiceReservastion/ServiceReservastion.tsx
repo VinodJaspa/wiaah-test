@@ -7,18 +7,14 @@ import {
   MenuList,
   MenuButton,
   Button,
-  Divider,
-  HStack,
   useGetServicesProviderQuery,
   useSearchFilters,
-  SpinnerFallback,
-  PriceDisplay,
   MinusIcon,
   PlusIcon,
   InputGroup,
   InputSuggestions,
-  Input,
   ArrowDownIcon,
+  BookedServicesCostDetails,
 } from "ui";
 import { getDaysDiff } from "utils";
 
@@ -33,10 +29,6 @@ export const ServiceReservastion: React.FC = () => {
   } = useGetServicesProviderQuery(filters);
 
   const daysDiff: number = getDaysDiff(checkin, checkout) || 0;
-
-  const total = res
-    ? res.data.pricePerNight * daysDiff + res.data.serviceFee + res.data.taxes
-    : 0;
 
   const { t } = useTranslation();
 
@@ -128,35 +120,7 @@ export const ServiceReservastion: React.FC = () => {
         </div>
         <Button className="py-4 mx-1">{t("Book now")}</Button>
       </div>
-      {/* <div className="flex flex-col">
-        <SpinnerFallback isLoading={isLoading} isError={isError}>
-          <div className="flex flex-col gap-2 text-lg font-semibold">
-            <HStack className={"justify-between underline"}>
-              <span className="flex whitespace-nowrap">
-                <PriceDisplay
-                  priceObject={{ amount: res?.data.pricePerNight || 0 }}
-                />{" "}
-                x {daysDiff || 0} {t("nights")}
-              </span>
-            </HStack>
-            <HStack className={"justify-between"}>
-              <p>{t("Service fee")}</p>
-              <PriceDisplay
-                priceObject={{ amount: res?.data.serviceFee || 0 }}
-              />
-            </HStack>
-            <HStack className={"justify-between"}>
-              <p>{t("Occupancy taxes and fees")}</p>
-              <PriceDisplay priceObject={{ amount: res?.data.taxes || 0 }} />
-            </HStack>
-          </div>
-          <Divider className="my-4 border-[1px] border-gray-300" />
-          <HStack className="justify-between font-bold text-lg">
-            <p>{t("Total")}</p>
-            <PriceDisplay priceObject={{ amount: total }} />
-          </HStack>
-        </SpinnerFallback>
-      </div> */}
+      <BookedServicesCostDetails title="Rooms" vat={res?.data.vat || 0} />
     </div>
   );
 };

@@ -23,8 +23,10 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({
   const { focusMapItem } = useMutateFocusedMapItemId();
   const { page, take } = usePagination();
   const { t } = useTranslation();
-  const { filters, getFiltersSearchQuery, getLocationFilterQuery } =
-    useSearchFilters();
+  // const { filters, getFiltersSearchQuery, getLocationFilterQuery } =
+  //   useSearchFilters();
+  let filters = {};
+  let getLocationFilterQuery = "";
   const [services, setServices] = React.useState<FilteredHotelsMetaDataType[]>(
     []
   );

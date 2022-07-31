@@ -6,6 +6,7 @@ import {
   HealthCenterDetailsValidationSchema,
   InferType,
   HealthCenterDoctorMetaDataValidationSchema,
+  CheckValidation,
 } from "validation";
 
 export type HealthCenterDetailsType = InferType<
@@ -153,6 +154,23 @@ export const getHealthCenterDetailsFetcher = async (
           type: "image",
         },
       ],
+      cancelationPolicies: [
+        {
+          duration: 6,
+          cost: 0,
+          id: "1",
+        },
+        {
+          duration: 10,
+          cost: 10,
+          id: "2",
+        },
+        {
+          cost: 50,
+          duration: 0,
+          id: "3",
+        },
+      ],
       serviceFee: 15,
       email: "Example@email.com",
       location: {
@@ -164,6 +182,8 @@ export const getHealthCenterDetailsFetcher = async (
           lng: 9.18854,
         },
         postalCode: 1204,
+        countryCode: "CHF",
+        state: "Geneve",
       },
       telephone: "101227879123",
       workingDays: [
@@ -247,5 +267,5 @@ export const getHealthCenterDetailsFetcher = async (
       ],
     },
   };
-  return data;
+  return CheckValidation(HealthCenterDetailtsApiResponseValidationSchema, data);
 };

@@ -1,39 +1,59 @@
 import { HotelsMetaData } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { DateRange } from "types";
-import { HStack, Rate, HeartIcon, PriceDisplay, AspectRatio } from "ui";
+import { useRouting } from "routing";
+import {
+  HStack,
+  Rate,
+  HeartIcon,
+  PriceDisplay,
+  AspectRatioImage,
+  Button,
+  ServicesRequestKeys,
+} from "ui";
 
 export interface HotelSearchCardProps extends HotelsMetaData {
   onLiked: (id: string) => any;
 }
 
-export const HotelSearchCard: React.FC<HotelSearchCardProps> = ({
-  location,
-  onLiked,
-  rate,
-  thumbnail,
-  name,
-  description,
-  id,
-  date,
-  price,
-}) => {
+export const HotelSearchCard: React.FC<HotelSearchCardProps> = (props) => {
+  const {
+    location,
+    onLiked,
+    rate,
+    thumbnail,
+    name,
+    description,
+    id,
+    date,
+    price,
+  } = props;
+  const { visit } = useRouting();
   const { t } = useTranslation();
   return (
     <div className="flex flex-col w-full p-2 gap-2">
-      <div className="relative rounded-xl overflow-hidden">
-        <AspectRatio ratio={1}>
-          <img
-            className="w-full h-full object-cover"
-            src={thumbnail}
-            alt={name}
-          />
-        </AspectRatio>
+      <div className="relative group rounded-xl overflow-hidden">
+        <AspectRatioImage src={thumbnail} alt={name} ratio={1} />
+
         <HeartIcon
           className="absolute top-2 right-2 z-[5] bg-black bg-opacity-50 rounded-full text-white p-1 text-2xl cursor-pointer"
           onClick={() => onLiked(id)}
         />
+        <div
+          className={
+            "bg-black bg-opacity-0 transition-all opacity-0 pointer-events-none group-hover:opacity-100 group-hover:bg-opacity-25 group-hover:pointer-events-auto top-0 left-0 w-full h-full absolute flex justify-center items-center"
+          }
+        >
+          <Button
+            onClick={() =>
+              visit((routes) =>
+                routes.visitService(props, ServicesRequestKeys.hotels)
+              )
+            }
+          >
+            {t("Details")}
+          </Button>
+        </div>
       </div>
       <div className="flex flex-col gap-1 text-xs sm:text-sm md:text-md lg:text-lg w-full">
         <div className="flex items-center justify-between">

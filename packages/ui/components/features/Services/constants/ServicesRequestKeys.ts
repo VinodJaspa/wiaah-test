@@ -12,6 +12,8 @@ export const ServicesRequestKeys = createServiceRequestKeys({
   holidaysRentals: "holidays_rentals",
   healthCenter: "health_center",
   general: "general",
+  vehicle: "vehicle",
+  beauty_center: "beauty_center",
 });
 
 export const SERVICESTYPE_INDEXKEY = "service_type";

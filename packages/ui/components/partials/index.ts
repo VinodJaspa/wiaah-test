@@ -62,3 +62,4 @@ export * from "./Slider";
 export * from "./PriceLevelDisplay";
 export * from "./AspectRatioImage";
 export * from "./UnDiscountedPriceDisplay";
+export * from "./FlagIcon";

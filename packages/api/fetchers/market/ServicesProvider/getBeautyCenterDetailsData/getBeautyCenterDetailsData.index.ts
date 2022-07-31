@@ -186,6 +186,23 @@ export const getBeautyCenterDetailsDataFetcher =
             },
           },
         ],
+        cancelationPolicies: [
+          {
+            duration: 6,
+            cost: 0,
+            id: "1",
+          },
+          {
+            duration: 10,
+            cost: 10,
+            id: "2",
+          },
+          {
+            cost: 50,
+            duration: 0,
+            id: "3",
+          },
+        ],
         serviceFee: 850,
         treatments: [
           {

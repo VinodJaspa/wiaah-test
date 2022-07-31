@@ -17,6 +17,7 @@ import {
   SERVICESTYPE_INDEXKEY,
   useMutateSearchFilters,
   filtersTokens,
+  BreadCrumb,
 } from "ui";
 
 const filtered: NextPage = () => {
@@ -31,6 +32,7 @@ const filtered: NextPage = () => {
   if (typeof searchLocation === "string") {
     addFilter([filtersTokens.locationSearchQuery, searchLocation]);
   }
+
   return (
     <>
       <Head>
@@ -40,6 +42,12 @@ const filtered: NextPage = () => {
       </Head>
       <MasterLayout>
         <Container className="px-4 py-8">
+          <BreadCrumb
+            links={router.asPath
+              .split("/")
+              .filter((link) => link.length > 0)
+              .map((link, i) => ({ text: link, url: link }))}
+          />
           <ServicesTypeSwitcher
             serviceType={serviceType}
             get={getServiceView.RESAULTS}

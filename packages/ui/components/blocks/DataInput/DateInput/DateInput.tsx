@@ -308,9 +308,6 @@ export const DateInput: React.FC<DateInputProps> = ({
           </tbody>
         </table>
       </div>
-      <div className="flex items-center justify-center font-semibold">
-        {getTimeInAmPm(new Date())}
-      </div>
     </section>
   );
 };

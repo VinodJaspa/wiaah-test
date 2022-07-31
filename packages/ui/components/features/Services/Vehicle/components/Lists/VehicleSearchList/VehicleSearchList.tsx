@@ -22,10 +22,7 @@ export const VehicleSearchList: React.FC = () => {
   } = useGetVehicleSearchDataQuery({ page, take }, filters);
   return (
     <PaginationWrapper>
-      <DisplayFoundServices
-        location={getLocationFilterQuery || ""}
-        servicesNum={res?.total || 0}
-      />
+
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         <ServicesSearchGrid<VehicleSearchData, VehicleSearchCardProps>
           data={res?.data || []}
