@@ -1,5 +1,6 @@
 import { FormatedSearchableFilter } from "src";
 import { AsyncReturnType } from "types";
+import { randomNum } from "utils";
 import {
   InferType,
   CheckValidation,
@@ -292,9 +293,41 @@ export const getServicesProviderDataFetcher = async (
         departure: new Date(Date.now()).toUTCString(),
         arrival: new Date(Date.now()).toUTCString(),
       },
-      rooms: [...Array(9)].map(() => ({
+      vat: randomNum(10),
+      rooms: [...Array(9)].map((_, i) => ({
+        includes: ["breakfast", "park"],
+        discount: {
+          amount: randomNum(50),
+          units: randomNum(10),
+        },
+        size: {
+          inFeet: 30,
+          inMeter: 13,
+        },
+        id: `${i}`,
         title: "Executive Double Room, 1 double bed",
         thumbnails: ["/place-2.jpg", "/place-1.jpg"],
+        extras: [
+          "Free toiletries",
+          "Shower",
+          "Toilet",
+          "Towels",
+          "Private entrance",
+          "Hairdryer",
+          "Wardrobe or closet",
+          "Upper floors accessible by elevator",
+          "Toilet paper",
+          "Free toiletries",
+          "Shower",
+          "Toilet",
+          "Towels",
+          "Private entrance",
+          "Hairdryer",
+          "Wardrobe or closet",
+          "Upper floors accessible by elevator",
+          "Toilet paper",
+        ],
+
         cancelationPolicies: [
           {
             duration: 6,
@@ -310,6 +343,11 @@ export const getServicesProviderDataFetcher = async (
             cost: 50,
             duration: 0,
             id: "3",
+          },
+          {
+            id: "4",
+            cost: 0,
+            duration: 0,
           },
         ],
         amenities: [

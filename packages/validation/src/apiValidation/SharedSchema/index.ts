@@ -5,3 +5,4 @@ export * from "./services";
 export * from "./Rate";
 export * from "./Date";
 export * from "./createApiResponseValidationSchema";
+export * from "./Discount";

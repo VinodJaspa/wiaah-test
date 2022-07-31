@@ -18,3 +18,4 @@ export * from "./extractors";
 export * from "./Switchers";
 export * from "./React-utils";
 export * from "./formaters";
+export * from "./calculations";

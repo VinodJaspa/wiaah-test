@@ -36,8 +36,33 @@ export const useSetSectionRef = () => {
   };
 };
 
-export const usePublishRef = (key: string) => {
+type PublishableRefs = {
+  vehicle: string;
+  map: string;
+  description: string;
+  contact: string;
+  rooms: string;
+  resturants: string;
+  polices: string;
+  reviews: string;
+};
+
+const publishableRefs: Record<keyof PublishableRefs, keyof PublishableRefs> = {
+  vehicle: "vehicle",
+  contact: "contact",
+  description: "description",
+  map: "map",
+  polices: "polices",
+  resturants: "resturants",
+  reviews: "reviews",
+  rooms: "rooms",
+};
+
+export const usePublishRef = (
+  param: string | ((refs: typeof publishableRefs) => string)
+) => {
   const { addRef, removeRef } = useSetSectionRef();
+  const key = typeof param === "function" ? param(publishableRefs) : param;
   const cb = React.useCallback((node: any) => {
     if (node === null) {
       removeRef(key);

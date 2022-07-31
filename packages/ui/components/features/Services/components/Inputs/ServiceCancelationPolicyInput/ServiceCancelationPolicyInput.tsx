@@ -33,16 +33,18 @@ export const ServiceCancelationPolicyInput: React.FC<
           <p>
             {t("Fully refundable before")} {month_short} {day}
           </p>
-        ) : (
+        ) : cost > 0 ? (
           <p>{t("Refundable before booked date")}</p>
+        ) : (
+          <p>{t("Non-refundable")}</p>
         )}
       </label>
       <span className="font-bold">
         {cost > 0 ? (
           <PriceDisplay priceObject={{ amount: cost }} />
-        ) : (
+        ) : duration > 0 ? (
           <p>{t("FREE")}</p>
-        )}
+        ) : null}
       </span>
     </div>
   );

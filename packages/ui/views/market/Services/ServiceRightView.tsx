@@ -2,7 +2,6 @@ import React from "react";
 import {
   BookingEventPopup,
   CloseIcon,
-  Spacer,
   WishListIcon,
   useCartSummary,
   Button,
@@ -68,14 +67,14 @@ export const ServiceRightView: React.FC<ServiceRightViewProps> = ({
             </div>
             <div className="flex gap-4 items-center font-bold">
               <span className="product-price text-3xl">
-                ${data.price.value}
+                ${data.price.amount}
                 100
               </span>
               {/* {!data?.price?.value ? (
                 ""
               ) : ( */}
               <span className="text-2xl text-slate-400 line-through">
-                ${data?.price.value}
+                ${data?.price.amount}
                 110
               </span>
               {/* )} */}
@@ -87,10 +86,10 @@ export const ServiceRightView: React.FC<ServiceRightViewProps> = ({
             </div>
             <div>
               {data?.discount?.discountedUnits && (
-                <div className="text-lg font-bold text-red-500">
+                <p className="text-lg font-bold text-red-500">
                   {t("Only", "Only")} {data.discount.discountedUnits}{" "}
                   {t("Tickets left at this price on our site")}
-                </div>
+                </p>
               )}
             </div>
             <div>

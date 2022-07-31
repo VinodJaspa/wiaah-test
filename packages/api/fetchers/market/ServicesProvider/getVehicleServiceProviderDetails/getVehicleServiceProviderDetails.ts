@@ -208,6 +208,11 @@ export const getVehicleServiceProviderDetailsFetcher = async (
             duration: 0,
             id: "3",
           },
+          {
+            id: "4",
+            cost: 0,
+            duration: 0,
+          },
         ],
         vehicleProps: [
           {

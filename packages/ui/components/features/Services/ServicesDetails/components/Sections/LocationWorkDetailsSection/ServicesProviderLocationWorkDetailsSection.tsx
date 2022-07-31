@@ -21,7 +21,7 @@ import {
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { ArrElement } from "types";
-import { usePublishRef } from "state";
+import { usePublishRef, useSetBookedServicesState } from "state";
 import { useResponsive } from "hooks";
 
 export interface HotelServiceRoomsSectionProps {
@@ -30,9 +30,21 @@ export interface HotelServiceRoomsSectionProps {
 export const HotelServiceRoomsSection: React.FC<
   HotelServiceRoomsSectionProps
 > = ({ rooms }) => {
+  const { addService } = useSetBookedServicesState();
   const { isMobile, isTablet } = useResponsive();
   const { t } = useTranslation();
-  const roomsRef = usePublishRef("rooms");
+  const roomsRef = usePublishRef((refs) => refs.rooms);
+
+  function handleBook(id: string) {
+    const room = rooms.find((room) => room.id === id);
+    if (!room) return;
+    addService({
+      id: room.id,
+      name: room.title,
+      price: room.price,
+      qty: 1,
+    });
+  }
   return (
     <div className=" flex gap-2 flex-col">
       <p ref={roomsRef ?? undefined}>{t("Rooms")}</p>
@@ -43,7 +55,9 @@ export const HotelServiceRoomsSection: React.FC<
         itemsCount={isMobile ? 1 : isTablet ? 2 : 3}
       >
         {Array.isArray(rooms)
-          ? rooms.map((room) => <HotelRoomDetailsCard {...room} />)
+          ? rooms.map((room) => (
+              <HotelRoomDetailsCard onBook={handleBook} {...room} />
+            ))
           : null}
       </Slider>
     </div>

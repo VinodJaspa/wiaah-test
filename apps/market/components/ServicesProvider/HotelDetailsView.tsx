@@ -16,7 +16,6 @@ import {
   SectionTabType,
   ServicePresentationCarosuel,
   StaticSideBarWrapper,
-  FixedScrollingWrapper,
   ServiceReservastion,
   SectionsScrollTabList,
   Accordion,
@@ -73,7 +72,6 @@ export const HotelDetailsView: React.FC = () => {
           </>
         ) : null}
         <Reviews id={res?.data.id || ""} reviews={reviews} />
-        <Button>{t("Book now")}</Button>
       </StaticSideBarWrapper>
     </div>
   );

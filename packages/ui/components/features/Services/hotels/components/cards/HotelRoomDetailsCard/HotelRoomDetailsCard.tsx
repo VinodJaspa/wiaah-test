@@ -1,4 +1,4 @@
-import { AmenitieType, HotelRoomDataType } from "api";
+import { HotelRoomDataType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -12,10 +12,17 @@ import {
   Button,
   HStack,
   ServiceCancelationPolicyInput,
+  SuccessIcon,
+  MathPowerDisplay,
+  UnDiscountedPriceDisplay,
+  PropertyDimensionsIcon,
 } from "ui";
 import { ImImages } from "react-icons/im";
+import { useSetBookedServicesState } from "state";
 
-export interface HotelRoomDetailsCardProps extends HotelRoomDataType {}
+export interface HotelRoomDetailsCardProps extends HotelRoomDataType {
+  onBook?: (roomId: string) => any;
+}
 
 export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
   amenities,
@@ -24,6 +31,12 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
   with_fees_and_taxes,
   price,
   cancelationPolicies,
+  extras,
+  id,
+  includes,
+  size,
+  discount,
+  onBook,
 }) => {
   const { t } = useTranslation();
   return (
@@ -57,9 +70,40 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
           {thumbnails.length}
         </div>
       </AspectRatio>
-      <div className="flex p-4 flex-col gap-4">
-        <p>{title}</p>
+      <div className="flex p-2 flex-col gap-4">
+        <p className="font-bold text-xl">{title}</p>
+
+        {size ? (
+          <HStack>
+            <PropertyDimensionsIcon /> {size.inMeter}
+            <MathPowerDisplay power={2}>{t("m")}</MathPowerDisplay>/{" "}
+            {size.inFeet}
+            <MathPowerDisplay power={2}>{t("ft")}</MathPowerDisplay>
+          </HStack>
+        ) : null}
+
+        <div className="flex flex-wrap gap-2">
+          {Array.isArray(includes)
+            ? includes.map((item, i) => (
+                <span
+                  key={i}
+                  className="rounded-lg border-2 border-green-500 px-2 py-1 text-green-500 "
+                >
+                  {t(item)} {t("included")}
+                </span>
+              ))
+            : null}
+        </div>
+
         <PopularAmenitiesSection amenities={amenities} />
+        <div className="max-h-[10rem] overflow-y-scroll thinScroll gap-2 flex flex-wrap">
+          {extras.map((extra, i) => (
+            <div key={i} className="flex items-center gap-1">
+              <SuccessIcon />
+              {extra}
+            </div>
+          ))}
+        </div>
         <div className="flex flex-col gap-1">
           <p className="font-bold">{t("Cancelation policy")}</p>
           {cancelationPolicies.map((policy, i) => (
@@ -100,19 +144,27 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
             },
           ]}
         />
-        <div className="flex w-full justify-between items-end">
+        <div className="flex flex-col w-full justify-between items-end">
           <div className="flex flex-col gap-2">
             <HStack className="font-bold">
               <PriceDisplay
                 className="text-2xl"
                 priceObject={{ amount: price }}
+              />
+              <UnDiscountedPriceDisplay
+                className="text-gray-400"
+                amount={price}
+                discount={discount.amount}
               />{" "}
               / {t("night")}
             </HStack>
-            <p>{t("for 1 night")}</p>
+            <p className="text-lg font-bold text-red-500">
+              {t("Only", "Only")} {discount.units}{" "}
+              {t("Tickets left at this price on our site")}
+            </p>
             {with_fees_and_taxes ? <p>{t("Includes taxes & fees")}</p> : null}
           </div>
-          <Button>{t("Book now")}</Button>
+          <Button onClick={() => onBook && onBook(id)}>{t("Book now")}</Button>
         </div>
       </div>
     </div>
