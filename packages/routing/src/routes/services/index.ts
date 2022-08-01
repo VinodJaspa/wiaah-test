@@ -15,6 +15,7 @@ export type ServicesRoutesType = {
     location: string
   ) => RoutesType;
   visitServiceSearch: (props: Record<string, any>) => RoutesType;
+  visitServiceCheckout: () => RoutesType;
 };
 
 export const ServicesRoutes: RoutesType = {
@@ -55,5 +56,9 @@ export const ServicesRoutes: RoutesType = {
     const serviceSlug = props["slug"];
     if (!serviceSlug) return this;
     return this.search().services().serviceType(serviceSlug);
+  },
+
+  visitServiceCheckout() {
+    return this.checkout().service();
   },
 } as RoutesType;

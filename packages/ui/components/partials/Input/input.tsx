@@ -39,6 +39,10 @@ export const Input: React.FC<InputProps> = ({
   return (
     <input
       {...props}
+      style={{
+        ...props.style,
+        height:"3rem"
+      }}
       className={`${className || ""} ${
         isInputGroup ? "" : flushed ? "border-b-2" : "border-2"
       } border-gray-200 rounded px-3 w-full`}

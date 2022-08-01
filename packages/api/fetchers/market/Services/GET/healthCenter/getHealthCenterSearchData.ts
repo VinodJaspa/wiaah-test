@@ -4,7 +4,6 @@ import {
   InValidDataSchemaError,
   PaginationFetchedData,
   QueryPaginationInputs,
-  Location,
 } from "api";
 import { AsyncReturnType } from "types";
 import {
@@ -28,7 +27,7 @@ export interface HealthCenterSearchSuggistionsData {
   practitioners: HealthCenterPractitioner[];
 }
 
-const specialtiesPh: string[] = [
+export const specialtiesPh: string[] = [
   "Lorem Ipsum is simply dummy text of the printing and",
   "typesetting industry",
   "Lorem Ipsum has been the industry's",
@@ -44,25 +43,28 @@ export const getHealthCenterSearchData = async (
     title: specialtiesPh[randomNum(specialtiesPh.length)],
     photo: randomNum(10) > 5 ? getRandomImage() : undefined,
   }));
-  const practitioners: HealthCenterPractitioner[] = [...Array(50)].map(() => ({
-    location: {
-      address: "address",
-      city: "city",
-      cords: {
-        lat: 15,
-        lng: 15,
+  const practitioners: HealthCenterPractitioner[] = [...Array(50)].map(
+    (_, i) => ({
+      location: {
+        address: "address",
+        city: "city",
+        cords: {
+          lat: 15,
+          lng: 15,
+        },
+        country: "france",
+        countryCode: "FR",
+        postalCode: 1322,
+        state: "Geneve",
       },
-      country: "france",
-      countryCode: "FR",
-      postalCode: 1322,
-      state: "Geneve",
-    },
-    rate: randomNum(15),
-    name: specialtiesPh[randomNum(specialtiesPh.length)],
-    photo:
-      "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
-    specialty: "Dentist",
-  }));
+      id: `${i}`,
+      rate: randomNum(15),
+      name: specialtiesPh[randomNum(specialtiesPh.length)],
+      photo:
+        "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
+      specialty: "Dentist",
+    })
+  );
   const searchQuery = filters["search_query"] || "";
   const data: AsyncReturnType<typeof getHealthCenterSearchData> = {
     hasMore: true,

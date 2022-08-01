@@ -6,7 +6,6 @@ export async function CheckValidation<TData = any>(
   ThrowableError: any = Error
 ): Promise<TData> {
   try {
-    console.log("validation res", data);
     const res = await schema.validate(data);
 
     return res;

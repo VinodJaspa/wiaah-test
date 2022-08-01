@@ -31,9 +31,9 @@ export const HotelSearchCard: React.FC<HotelSearchCardProps> = (props) => {
   const { visit } = useRouting();
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col w-full p-2 gap-2">
-      <div className="relative group rounded-xl overflow-hidden">
-        <AspectRatioImage src={thumbnail} alt={name} ratio={1} />
+    <div className="flex flex-col w-full gap-2">
+      <div className="relative group overflow-hidden">
+        <AspectRatioImage src={thumbnail} alt={name} ratio={3 / 4} />
 
         <HeartIcon
           className="absolute top-2 right-2 z-[5] bg-black bg-opacity-50 rounded-full text-white p-1 text-2xl cursor-pointer"

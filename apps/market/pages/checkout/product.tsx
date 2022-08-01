@@ -10,8 +10,8 @@ import {
   UserAddressesState,
   VoucherState,
 } from "ui/state";
-import { CheckoutView } from "../components/Checkout/CheckoutView";
-import MasterLayout from "../components/MasterLayout";
+import { CheckoutView } from "@components";
+import { MasterLayout } from "@components";
 import { CheckoutCart, VoucherType } from "types";
 
 interface CheckoutPageProps {

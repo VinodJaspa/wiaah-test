@@ -1,4 +1,3 @@
-import { t } from "i18next";
 import React from "react";
 import { useScreenWidth } from "hooks";
 import {
@@ -15,36 +14,30 @@ import {
   Button,
   AddressInputs,
   useUserAddresses,
-  Input,
   VoucherInput,
-  Grid,
-  FilterInput,
   ShippingMotheds,
   PaymentGateway,
   TotalCost,
 } from "ui";
-import { useRouter } from "next/router";
 import { AddressCardDetails, AddressDetails } from "types";
-import {
-  CheckoutProductsState,
-  CheckoutProductsTotalPriceState,
-  VoucherState,
-} from "ui/state";
+import { CheckoutProductsState, VoucherState } from "ui/state";
 
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { shippingMotheds } from "ui/placeholder";
+import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
 
 export interface CheckoutViewProps {}
 
 export const CheckoutView: React.FC<CheckoutViewProps> = () => {
-  const router = useRouter();
+  const { t } = useTranslation();
+  const { visit } = useRouting();
   const [editAddress, setEditAddress] = React.useState<AddressCardDetails>();
   const [edit, setEdit] = React.useState<boolean>(false);
 
   const { min } = useScreenWidth({ minWidth: 1024 });
   const { addresses, AddAddress, DeleteAddress, UpdateAddress } =
     useUserAddresses();
-  const totalPrice = useRecoilValue(CheckoutProductsTotalPriceState);
   const products = useRecoilValue(CheckoutProductsState);
   const setVoucher = useSetRecoilState(VoucherState);
 
@@ -118,7 +111,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                 <div className="flex w-full justify-center text-3xl">
                   <BoldText>{t("checkout", "Checkout")}</BoldText>
                 </div>
-                <Spacer />
+                <p className="font-bold text-lg">{"Address"}</p>
                 {edit ? (
                   <AddressInputs
                     initialInputs={editAddress}
@@ -179,7 +172,11 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                     </BoldText>
                   </Text>
                   <Text size="lg">
-                    <Clickable onClick={() => router.push("cart-summary")}>
+                    <Clickable
+                      onClick={() =>
+                        visit((routes) => routes.visitCarySummary())
+                      }
+                    >
                       Change
                     </Clickable>
                   </Text>

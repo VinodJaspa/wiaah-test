@@ -1,5 +1,5 @@
 import { randomNum } from "utils";
-import { lats, lngs, LocationCords } from "../hotels";
+import { lats, lngs } from "api";
 import {
   CheckValidation,
   InferType,
@@ -8,7 +8,7 @@ import {
   locationValidationSchema,
 } from "validation";
 import { AsyncReturnType } from "types";
-import { FormatedSearchableFilter, QueryPaginationInputs } from "src";
+import { FormatedSearchableFilter, QueryPaginationInputs } from "api";
 
 export type Location = InferType<typeof locationValidationSchema>;
 

@@ -22,7 +22,7 @@ export const BeautyCenterRecommendedSearchCard: React.FC<
         className="group"
         src={thumbnail}
         alt={name}
-        ratio={3 / 5}
+        ratio={3 / 4}
       >
         <div
           className={

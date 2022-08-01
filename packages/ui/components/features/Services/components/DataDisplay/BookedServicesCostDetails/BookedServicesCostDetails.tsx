@@ -1,7 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
 import { useGetBookedServicesState } from "state";
-import { Divider, PriceDisplay } from "ui";
+import { Divider, PriceDisplay, Button } from "ui";
 import { CalculateVat } from "utils";
 
 export interface BookedServicesCostDetailsProps {
@@ -12,10 +13,16 @@ export interface BookedServicesCostDetailsProps {
 export const BookedServicesCostDetails: React.FC<
   BookedServicesCostDetailsProps
 > = ({ title, vat }) => {
+  const { visit } = useRouting();
   const { bookedServices } = useGetBookedServicesState();
   const { t } = useTranslation();
   const Subtotal = bookedServices.reduce((acc, curr) => acc + curr.price, 0);
   const vatCost = CalculateVat(Subtotal, vat);
+
+  const handleCheckout = React.useCallback(() => {
+    visit((routes) => routes.visitServiceCheckout());
+  }, []);
+
   return (
     <div className="flex flex-col gap-2">
       <p className="font-bold">{title}</p>
@@ -56,6 +63,10 @@ export const BookedServicesCostDetails: React.FC<
         <p>{t("Total")}</p>
         <PriceDisplay priceObject={{ amount: Subtotal + vatCost }} />
       </div>
+      <span></span>
+      <Button onClick={handleCheckout} className="py-4">
+        {t("Checkout")}
+      </Button>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { useBoundedCountState } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
 import {
   DateInput,
   Menu,
@@ -19,6 +20,7 @@ import {
 import { getDaysDiff } from "utils";
 
 export const ServiceReservastion: React.FC = () => {
+  const { visit } = useRouting();
   const [checkin, SetCheckin] = React.useState<string>("");
   const [checkout, SetCheckout] = React.useState<string>("");
   const { filters } = useSearchFilters();
@@ -118,7 +120,7 @@ export const ServiceReservastion: React.FC = () => {
             })()}
           </div>
         </div>
-        <Button className="py-4 mx-1">{t("Book now")}</Button>
+        <Button className="py-4 ">{t("Book now")}</Button>
       </div>
       <BookedServicesCostDetails title="Rooms" vat={res?.data.vat || 0} />
     </div>

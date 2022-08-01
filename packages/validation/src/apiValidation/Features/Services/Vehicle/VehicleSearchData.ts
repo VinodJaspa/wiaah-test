@@ -23,20 +23,20 @@ export const VehicleProprtieValidationSchema = object({
   }),
 }).required();
 
+export const VehicleDataValidationSchema = object({
+  id: string().required(),
+  thumbnail: string().required(),
+  pricePerDay: number().required(),
+  name: string().required(),
+  vehicleProps: array<InferType<typeof VehicleProprtieValidationSchema>>()
+    .required()
+    .of(VehicleProprtieValidationSchema)
+    .min(0)
+    .required(),
+}).required();
+
 export const VehicleSearchDataValidationSchema =
-  ServiceCancelationPolicies.concat(
-    object({
-      id: string().required(),
-      thumbnail: string().required(),
-      pricePerDay: number().required(),
-      name: string().required(),
-      vehicleProps: array<InferType<typeof VehicleProprtieValidationSchema>>()
-        .required()
-        .of(VehicleProprtieValidationSchema)
-        .min(0)
-        .required(),
-    }).required()
-  );
+  ServiceCancelationPolicies.concat(VehicleDataValidationSchema);
 
 export const VehicleSearchApiResponseValidationSchema =
   CreatePaginationValidationSchemaOf(

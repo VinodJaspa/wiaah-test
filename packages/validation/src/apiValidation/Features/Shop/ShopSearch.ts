@@ -10,6 +10,7 @@ export const CategoryValidationSchema = object({
 });
 
 export const ShopMapSearchDataValidationSchema = object({
+  id: string().required(),
   thumbnail: string().required(),
   name: string().required(),
   rate: number().required(),
