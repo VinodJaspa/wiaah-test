@@ -1,5 +1,4 @@
 import React from "react";
-import { useScreenWidth } from "hooks";
 import {
   BoxShadow,
   FlexStack,
@@ -10,32 +9,44 @@ import {
   Text,
   Divider,
   Spacer,
-  CartSummaryProductCard,
   Button,
   AddressInputs,
   useUserAddresses,
   VoucherInput,
-  ShippingMotheds,
   PaymentGateway,
   TotalCost,
+  ServiceCheckoutCard,
+  GuestsInput,
+  Modal,
+  ModalContent,
+  ModalOverlay,
+  DateInput,
+  useGetServiceCheckoutDataQuery,
+  useSearchFilters,
+  SpinnerFallback,
 } from "ui";
 import { AddressCardDetails, AddressDetails } from "types";
 import { CheckoutProductsState, VoucherState } from "ui/state";
 
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { shippingMotheds } from "placeholder";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
+import { DateDetails, runIfFn } from "utils";
 
 export interface ServiceCheckoutViewProps {}
 
 export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
   const { t } = useTranslation();
   const { visit } = useRouting();
+  const { filters } = useSearchFilters();
+  const {
+    data: res,
+    isLoading,
+    isError,
+  } = useGetServiceCheckoutDataQuery(filters);
   const [editAddress, setEditAddress] = React.useState<AddressCardDetails>();
   const [edit, setEdit] = React.useState<boolean>(false);
 
-  const { min } = useScreenWidth({ minWidth: 1024 });
   const { addresses, AddAddress, DeleteAddress, UpdateAddress } =
     useUserAddresses();
   const products = useRecoilValue(CheckoutProductsState);
@@ -100,9 +111,103 @@ export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
     <div className="flex flex-col md:flex-row gap-4 w-full py-2">
       <div className="flex flex-col w-full gap-4">
         <BoxShadow>
-          <div className="bg-white p-4 py-8">
+          <div className="bg-white flex flex-col gap-4 p-4 py-8">
             <div className="flex w-full justify-center text-3xl">
               <p className="font-bold">{t("Checkout")}</p>
+            </div>
+            <div className="flex flex-col gap-6">
+              <p className="font-bold">{t("Trip date")}</p>
+              <div className="flex justify-between">
+                {(() => {
+                  const [edit, setEdit] = React.useState<boolean>(false);
+                  const [dates, setDates] = React.useState<{
+                    from: Date;
+                    to: Date;
+                  }>();
+
+                  const datesDisplay = dates
+                    ? () => {
+                        const checkin = DateDetails(dates.from);
+                        const checkout = DateDetails(dates.to);
+
+                        const sameMonth =
+                          checkin.month_short === checkout.month_short;
+
+                        return (
+                          <p>
+                            {checkin.day}{" "}
+                            {sameMonth ? null : `${checkin.month_short} `}-
+                            {checkout.day} {checkout.month_short}
+                          </p>
+                        );
+                      }
+                    : null;
+
+                  return (
+                    <>
+                      <div className="flex flex-col gap-1">
+                        <p className="font-bold">{t("Dates")}</p>
+                        {runIfFn(datesDisplay)}
+                      </div>
+                      <Modal
+                        isOpen={edit}
+                        onClose={() => setEdit(false)}
+                        onOpen={() => setEdit(true)}
+                      >
+                        <ModalOverlay />
+                        <ModalContent>
+                          <div className="flex gap-4 justify-around">
+                            <div className="flex flex-col">
+                              <p className="font-bold">{t("Check-in")}</p>
+                              <DateInput />
+                            </div>
+                            <div className="flex flex-col">
+                              <p className="font-bold">{t("Check-out")}</p>
+                              <DateInput />
+                            </div>
+                          </div>
+                        </ModalContent>
+                      </Modal>
+                      <p
+                        onClick={() => setEdit(true)}
+                        className="cursor-pointer underline font-bold"
+                      >
+                        {t("Edit")}
+                      </p>
+                    </>
+                  );
+                })()}
+              </div>
+              <div className="flex justify-between">
+                {(() => {
+                  const [edit, setEdit] = React.useState<boolean>(false);
+                  return (
+                    <>
+                      <div className="flex flex-col gap-1">
+                        <p className="font-bold">{t("Guests")}</p>
+                        <p>1 {t("guest")}</p>
+                      </div>
+                      <Modal
+                        isOpen={edit}
+                        onClose={() => setEdit(false)}
+                        onOpen={() => setEdit(true)}
+                      >
+                        <ModalOverlay />
+                        <ModalContent>
+                          <GuestsInput />
+                        </ModalContent>
+                      </Modal>
+
+                      <p
+                        onClick={() => setEdit(true)}
+                        className="cursor-pointer underline font-bold"
+                      >
+                        {t("Edit")}
+                      </p>
+                    </>
+                  );
+                })()}
+              </div>
             </div>
             <p className="text-3xl">{"Address"}</p>
             {edit ? (
@@ -143,7 +248,6 @@ export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
           </div>
         </BoxShadow>
         <VoucherInput onSuccess={handleVoucherValidation} />
-        {/* <ShippingMotheds motheds={shippingMotheds} /> */}
         <PaymentGateway />
       </div>
       <BoxShadow fitHeight fitWidth>
@@ -170,12 +274,16 @@ export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
               </FlexStack>
               <Divider />
               <FlexStack width={{ value: 30 }} direction="vertical">
-                {products.map((item, i) => (
-                  <>
-                    <CartSummaryProductCard minimal key={i} product={item} />
-                    <Divider />
-                  </>
-                ))}
+                <SpinnerFallback isError={isError} isLoading={isLoading}>
+                  {res
+                    ? res.data.bookedServices.map((item, i) => (
+                        <>
+                          <ServiceCheckoutCard {...item} key={i} />
+                          <Divider />
+                        </>
+                      ))
+                    : null}
+                </SpinnerFallback>
               </FlexStack>
               <TotalCost voucherRemoveable />
             </FlexStack>

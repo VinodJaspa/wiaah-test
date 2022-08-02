@@ -1,9 +1,9 @@
-import { createApiResponseValidationSchema } from "../../SharedSchema";
+import { createApiResponseValidationSchema } from "../../../SharedSchema";
 import { array, number, object, string } from "yup";
 import {
   CommonServiceDataSchema,
   ServiceCancelationPolicies,
-} from "../Services";
+} from "../../Services";
 
 export const beautyCenterTreatmentValidationSchema = object({
   category: string().required(),

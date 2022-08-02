@@ -18,7 +18,6 @@ import {
   PropertyDimensionsIcon,
 } from "ui";
 import { ImImages } from "react-icons/im";
-import { useSetBookedServicesState } from "state";
 
 export interface HotelRoomDetailsCardProps extends HotelRoomDataType {
   onBook?: (roomId: string) => any;

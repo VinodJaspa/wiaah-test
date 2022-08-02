@@ -16,26 +16,29 @@ import {
   SelectProps,
   ServiceSearchFilter,
   HotelsSearchList,
-  useSearchFilters,
   ServicesSearchResultsFiltersSidebar,
+  useMutateSearchFilters,
 } from "ui";
 import { useResponsive } from "hooks";
 
 export const HotelsSearchResultsView: React.FC = () => {
-  const { setFilters, filters, getServiceType } = useSearchFilters();
+  const { addFilter, setFilters, filtersKeys } = useMutateSearchFilters();
   const { t } = useTranslation();
   const router = useRouter();
   const { isTablet } = useResponsive();
+
   React.useEffect(() => {
     if (typeof router.query.location === "string") {
-      setFilters((fs) => ({ ...fs, search_query: router.query.location }));
+      addFilter((keys) => [keys.location, router.query.location]);
     }
   }, [router]);
+
   const handleFiltersUpdate = debounce(
     (filters: FormatedSearchableFilter) =>
       setFilters((state) => ({ ...state, ...filters })),
     1000
   );
+
   return (
     <div
       className={`${
@@ -50,6 +53,7 @@ export const HotelsSearchResultsView: React.FC = () => {
         >
           {({ setFieldValue, values }) => {
             handleFiltersUpdate(values);
+            const searchQueryKey = filtersKeys.searchQuery;
             return (
               <Form>
                 <div className="p-4 w-full bg-primary-200 text-black flex flex-col gap-2">
@@ -57,11 +61,12 @@ export const HotelsSearchResultsView: React.FC = () => {
                     as={SearchInput}
                     onValueChange={(v) => setFieldValue("search_query", v)}
                     value={
-                      typeof values["search_query"] === "string" &&
-                      values["search_query"].length > 0
-                        ? values["search_query"]
-                        : typeof router.query.location === "string"
-                        ? router.query.location
+                      typeof values[searchQueryKey] === "string"
+                        ? values[searchQueryKey].length > 0
+                          ? values[searchQueryKey]
+                          : typeof router.query.location === "string"
+                          ? router.query.location
+                          : ""
                         : ""
                     }
                     innerProps={{ className: "bg-white text-black h-12" }}

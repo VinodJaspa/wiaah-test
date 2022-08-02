@@ -2,13 +2,12 @@ import { FilteredHotelsMetaDataType, LocationCords } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
-  AspectRatio,
   HeartIcon,
   PriceDisplay,
   EllipsisText,
   Rate,
   AspectRatioImage,
-  Button,
+  RateTextPresentation,
 } from "ui";
 
 export interface HotelDetailedSearchCardProps
@@ -85,17 +84,7 @@ export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
         >
           <div className={`${vertical ? "" : "items-end"} flex gap-2`}>
             <div className="flex flex-col">
-              <span className="font-bold ">
-                {rate < 3
-                  ? t("Considerable")
-                  : rate < 4
-                  ? t("Good")
-                  : rate < 5
-                  ? t("Fabulous")
-                  : rate === 5
-                  ? t("Excellent")
-                  : t("Bad")}
-              </span>
+              <RateTextPresentation rate={rate} />
               <span className="whitespace-nowrap">
                 {reviews} {t("reviews")}
               </span>

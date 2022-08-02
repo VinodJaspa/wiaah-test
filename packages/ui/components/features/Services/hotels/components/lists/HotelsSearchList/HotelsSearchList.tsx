@@ -23,8 +23,7 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({
   const { focusMapItem } = useMutateFocusedMapItemId();
   const { page, take } = usePagination();
   const { t } = useTranslation();
-  // const { filters, getFiltersSearchQuery, getLocationFilterQuery } =
-  //   useSearchFilters();
+
   let filters = {};
   let getLocationFilterQuery = "";
   const [services, setServices] = React.useState<FilteredHotelsMetaDataType[]>(
@@ -39,8 +38,6 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({
   } = useGetFilteredServicesMetaDataQuery({ page, take }, filters, {
     onSuccess: (res) => setServices(res.data),
   });
-
-  console.log("hotel horizontal", horizontal);
 
   return horizontal ? (
     <div className="w-fit flex gap-4 justify-center">

@@ -190,7 +190,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                     </>
                   ))}
                 </FlexStack>
-                <TotalCost voucherRemoveable />
+                <TotalCost shippingFee voucherRemoveable />
               </FlexStack>
             </Padding>
           </div>

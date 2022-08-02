@@ -1,4 +1,7 @@
-import { CreatePaginationValidationSchemaOf, Rating } from "../../SharedSchema";
+import {
+  CreatePaginationValidationSchemaOf,
+  Rating,
+} from "../../../SharedSchema";
 import { array, number, object, string } from "yup";
 
 export const RecommendedBeautyCenterData = object({

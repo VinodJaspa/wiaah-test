@@ -15,10 +15,6 @@ export const ServiceCancelationPolicyInput: React.FC<
   ServiceCancelationPolicyInputProps
 > = ({ cost, duration, id, children, name, onSelected }) => {
   const { t } = useTranslation();
-  const { addDays } = useDateManipulation(new Date(Date.now()).toString());
-
-  const maxDate = addDays(duration);
-  const { month_short, day } = DateDetails(maxDate || new Date());
 
   return (
     <div className="flex items-center w-full justify-between">
@@ -29,15 +25,11 @@ export const ServiceCancelationPolicyInput: React.FC<
           }
           name={name}
         />
-        {duration > 0 ? (
-          <p>
-            {t("Fully refundable before")} {month_short} {day}
-          </p>
-        ) : cost > 0 ? (
-          <p>{t("Refundable before booked date")}</p>
-        ) : (
-          <p>{t("Non-refundable")}</p>
-        )}
+        <ServiceRefundableTypeDescription
+          cost={cost}
+          duration={duration}
+          bookedDate={new Date()}
+        />
       </label>
       <span className="font-bold">
         {cost > 0 ? (
@@ -47,5 +39,34 @@ export const ServiceCancelationPolicyInput: React.FC<
         ) : null}
       </span>
     </div>
+  );
+};
+
+export interface ServiceRefundableTypeDescription {
+  cost: number;
+  duration: number;
+  bookedDate: Date;
+}
+
+export const ServiceRefundableTypeDescription: React.FC<
+  ServiceRefundableTypeDescription
+> = ({ cost, duration, bookedDate }) => {
+  const { t } = useTranslation();
+  const { addDays } = useDateManipulation(new Date(bookedDate).toString());
+  const maxDate = addDays(duration);
+
+  const { month_short, day } = DateDetails(maxDate || new Date());
+  return (
+    <>
+      {duration > 0 ? (
+        <p>
+          {t("Fully refundable before")} {month_short} {day}
+        </p>
+      ) : cost > 0 ? (
+        <p>{t("Refundable before booked date")}</p>
+      ) : (
+        <p>{t("Non-refundable")}</p>
+      )}
+    </>
   );
 };
