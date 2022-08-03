@@ -1,26 +1,33 @@
 import React from "react";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { VoucherState, CheckoutProductsTotalPriceState } from "ui/state";
-import { FlexStack, BoldText, Text, PriceDisplay } from "ui";
+import { useRecoilState } from "recoil";
+import { VoucherState } from "ui/state";
+import { FlexStack, BoldText, Text, PriceDisplay, Divider } from "ui";
 import { useTranslation } from "react-i18next";
+import { CalculateVat } from "utils";
 
 export interface TotalCostProps {
   voucherRemoveable?: boolean;
-  shippingFee?: boolean;
+  subTotal: number;
+  vat: number;
+  shippingFee?: number;
+  saved?: number;
 }
 
 export const TotalCost: React.FC<TotalCostProps> = ({
   voucherRemoveable,
-  shippingFee: showShippingFee,
+  shippingFee = 0,
+  subTotal,
+  vat,
+  saved = 0,
 }) => {
   const { t } = useTranslation();
 
   const [Voucher, setVoucher] = useRecoilState(VoucherState);
-  const totalPrice = useRecoilValue(CheckoutProductsTotalPriceState);
+  const totalPrice = subTotal;
 
-  const shippingFee = 5;
   const TotalWithFee = totalPrice + shippingFee;
-  const finaleTotal = TotalWithFee + TotalWithFee * (7 / 100);
+  const finaleTotal = TotalWithFee + CalculateVat(TotalWithFee, vat);
+
   function handleRemoveVoucher() {
     // call backend endpoint to remove voucher
     // ok is true if the server removes the voucher successfully
@@ -61,7 +68,7 @@ export const TotalCost: React.FC<TotalCostProps> = ({
             </Text>
           </FlexStack>
         )}
-        {showShippingFee ? (
+        {shippingFee > 0 ? (
           <FlexStack justify="between">
             <BoldText>{t("shipping_fee", "Shipping Fee")}</BoldText>
             <BoldText>
@@ -70,12 +77,19 @@ export const TotalCost: React.FC<TotalCostProps> = ({
           </FlexStack>
         ) : null}
         <div className="flex justify-between">
-          <p className="font-bold">{`${t("VAT", "VAT")} (${7}%)`}</p>
+          <p className="font-bold">{`${t("VAT", "VAT")} (${vat}%)`}</p>
           <PriceDisplay
             className="font-bold"
-            priceObject={{ amount: TotalWithFee * (7 / 100) }}
+            priceObject={{ amount: CalculateVat(TotalWithFee, vat) }}
           />
         </div>
+        {saved > 0 ? (
+          <span className="w-full flex justify-end font-bold text-primary uppercase gap-2">
+            {`${t("you have saved")}`}
+            <PriceDisplay priceObject={{ amount: saved }} />
+          </span>
+        ) : null}
+        <Divider />
         <FlexStack justify="between">
           <BoldText>{t("total_to_pay", "Total to Pay")}</BoldText>
           <BoldText>

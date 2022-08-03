@@ -1,1 +1,1 @@
-export * from "./ServiceCheckoutCard";
+export * from "./ServicesCheckoutCards";

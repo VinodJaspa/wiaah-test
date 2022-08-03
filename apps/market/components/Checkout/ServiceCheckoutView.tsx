@@ -15,7 +15,10 @@ import {
   VoucherInput,
   PaymentGateway,
   TotalCost,
-  ServiceCheckoutCard,
+  HotelCheckoutCard,
+  ResturantCheckoutCard,
+  HealthCenterCheckoutCard,
+  BeautyCenterCheckoutCard,
   GuestsInput,
   Modal,
   ModalContent,
@@ -24,6 +27,8 @@ import {
   useGetServiceCheckoutDataQuery,
   useSearchFilters,
   SpinnerFallback,
+  CheckInOutInput,
+  AspectRatio,
 } from "ui";
 import { AddressCardDetails, AddressDetails } from "types";
 import { CheckoutProductsState, VoucherState } from "ui/state";
@@ -32,6 +37,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { DateDetails, runIfFn } from "utils";
+import { useDateDiff } from "hooks";
 
 export interface ServiceCheckoutViewProps {}
 
@@ -124,6 +130,12 @@ export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
                     from: Date;
                     to: Date;
                   }>();
+                  const days = dates
+                    ? useDateDiff({
+                        from: dates.from,
+                        to: dates.to,
+                      }).days
+                    : 0;
 
                   const datesDisplay = dates
                     ? () => {
@@ -143,6 +155,10 @@ export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
                       }
                     : null;
 
+                  const handleClearDates = () => {
+                    setDates(undefined);
+                  };
+
                   return (
                     <>
                       <div className="flex flex-col gap-1">
@@ -155,16 +171,90 @@ export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
                         onOpen={() => setEdit(true)}
                       >
                         <ModalOverlay />
-                        <ModalContent>
-                          <div className="flex gap-4 justify-around">
-                            <div className="flex flex-col">
+                        <ModalContent className="w-[min(50rem,100%)] flex flex-col gap-8">
+                          <div className="flex flex-col gap-2 w-full items-center">
+                            <CheckInOutInput
+                              onDatesChange={() => {}}
+                              active={false}
+                              checkin={dates ? dates.from : undefined}
+                              checkout={dates ? dates.to : undefined}
+                            />
+                            <p className="font-bold">
+                              {days} {t("nights")}
+                            </p>
+                          </div>
+                          <div className="flex gap-8 justify-between">
+                            <div className="w-full flex flex-col items-center">
                               <p className="font-bold">{t("Check-in")}</p>
-                              <DateInput />
+                              <DateInput
+                                className="w-[100%]"
+                                dayComponent={({
+                                  active,
+                                  currentMonth,
+                                  dayNum,
+                                }) => (
+                                  <AspectRatio ratio={1}>
+                                    <div
+                                      className={`${
+                                        active
+                                          ? "text-white bg-primary"
+                                          : currentMonth
+                                          ? "text-black bg-white"
+                                          : "text-gray-500"
+                                      } w-full cursor-pointer rounded h-full flex justify-center items-center`}
+                                    >
+                                      {dayNum}
+                                    </div>
+                                  </AspectRatio>
+                                )}
+                                onDaySelect={(date) =>
+                                  setDates((state) => ({
+                                    ...state,
+                                    from: new Date(date),
+                                  }))
+                                }
+                              />
                             </div>
-                            <div className="flex flex-col">
+                            <div className="w-full flex flex-col items-center">
                               <p className="font-bold">{t("Check-out")}</p>
-                              <DateInput />
+                              <DateInput
+                                className="w-[100%]"
+                                dayComponent={({
+                                  active,
+                                  currentMonth,
+                                  dayNum,
+                                }) => (
+                                  <AspectRatio ratio={1}>
+                                    <div
+                                      className={`${
+                                        active
+                                          ? "text-white bg-primary"
+                                          : currentMonth
+                                          ? "text-black bg-white"
+                                          : "text-gray-500"
+                                      } w-full cursor-pointer rounded h-full flex justify-center items-center`}
+                                    >
+                                      {dayNum}
+                                    </div>
+                                  </AspectRatio>
+                                )}
+                                onDaySelect={(date) =>
+                                  setDates((state) => ({
+                                    ...state,
+                                    to: new Date(date),
+                                  }))
+                                }
+                              />
                             </div>
+                          </div>
+                          <div className="w-full flex justify-between items-center">
+                            <p
+                              className="font-semibold text-primary underline cursor-pointer"
+                              onClick={handleClearDates}
+                            >
+                              {t("Clear dates")}
+                            </p>
+                            <Button>{t("Save")}</Button>
                           </div>
                         </ModalContent>
                       </Modal>
@@ -252,42 +342,52 @@ export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
       </div>
       <BoxShadow fitHeight fitWidth>
         <div className="bg-white">
-          <Padding X={{ value: 1 }} Y={{ value: 1 }}>
-            <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
-              <FlexStack
-                width={{ value: 100, unit: "%" }}
-                justify="between"
-                alignItems="center"
+          <div className="flex flex-col p-4 gap-2">
+            <div className="w-full flex justify-between items-center">
+              <p className="text-3xl font-bold">
+                {products.length} {t("items", "items")}
+              </p>
+              <p
+                className="text-lg cursor-pointer"
+                onClick={() => visit((routes) => routes.visitCarySummary())}
               >
-                <Text size="3xl">
-                  <BoldText>
-                    {products.length} {t("items", "items")}
-                  </BoldText>
-                </Text>
-                <Text size="lg">
-                  <Clickable
-                    onClick={() => visit((routes) => routes.visitCarySummary())}
-                  >
-                    Change
-                  </Clickable>
-                </Text>
-              </FlexStack>
-              <Divider />
-              <FlexStack width={{ value: 30 }} direction="vertical">
-                <SpinnerFallback isError={isError} isLoading={isLoading}>
-                  {res
-                    ? res.data.bookedServices.map((item, i) => (
-                        <>
-                          <ServiceCheckoutCard {...item} key={i} />
-                          <Divider />
-                        </>
-                      ))
-                    : null}
-                </SpinnerFallback>
-              </FlexStack>
-              <TotalCost voucherRemoveable />
-            </FlexStack>
-          </Padding>
+                Change
+              </p>
+            </div>
+            <Divider />
+            <div className="flex flex-col gap-4 w-[min(30rem,100vw)]">
+              <SpinnerFallback isError={isError} isLoading={isLoading}>
+                {res
+                  ? res.data.bookedServices.map((item, i) => {
+                      switch (item.type) {
+                        case "hotel":
+                          return <HotelCheckoutCard {...item.data} />;
+                        case "resturant":
+                          return <ResturantCheckoutCard {...item.data} />;
+                        case "health_center":
+                          return <HealthCenterCheckoutCard {...item.data} />;
+                        case "beauty_center":
+                          return <BeautyCenterCheckoutCard {...item.data} />;
+                        default:
+                          return null;
+                      }
+                    })
+                  : null}
+              </SpinnerFallback>
+            </div>
+            <SpinnerFallback isLoading={isLoading} isError={isError}>
+              {res ? (
+                <TotalCost
+                  subTotal={res.data.bookedServices.reduce((acc, curr) => {
+                    return acc + curr.data.price;
+                  }, 0)}
+                  vat={res.data.vat}
+                  saved={res.data.saved}
+                  voucherRemoveable
+                />
+              ) : null}
+            </SpinnerFallback>
+          </div>
         </div>
       </BoxShadow>
     </div>

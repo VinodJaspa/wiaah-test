@@ -5,15 +5,31 @@ import { getDaysDiff } from "utils";
 
 export interface CheckInOutInputProps {
   onDatesChange?: (checkIn: Date, checkout: Date, daysdiff: number) => any;
+  active?: boolean;
+  checkin?: Date;
+  checkout?: Date;
 }
 
 export const CheckInOutInput: React.FC<CheckInOutInputProps> = ({
   onDatesChange,
+  active,
+  checkin: Checkin,
+  checkout: Checkout,
 }) => {
   const [checkin, SetCheckin] = React.useState<string>("");
   const [checkout, SetCheckout] = React.useState<string>("");
   const { t } = useTranslation();
 
+  React.useEffect(() => {
+    if (!isNaN(Date.parse(new Date(Checkin || "").toString()))) {
+      SetCheckin(new Date(Checkin || "").toString());
+    }
+  }, [Checkin]);
+  React.useEffect(() => {
+    if (!isNaN(Date.parse(new Date(Checkout || "").toString()))) {
+      SetCheckout(new Date(Checkout || "").toString());
+    }
+  }, [Checkout]);
   React.useEffect(() => {
     const validCheckin = !isNaN(Date.parse(checkin));
     const validCheckout = !isNaN(Date.parse(checkout));
@@ -29,7 +45,7 @@ export const CheckInOutInput: React.FC<CheckInOutInputProps> = ({
     <div className="flex ">
       <Menu className="w-full">
         <MenuButton>
-          <div className="cursor-pointer flex w-full flex-col px-4 py-2 border-b-gray-300 border-r-gray-300 border-b-2 border-r-2">
+          <div className="whitespace-nowrap cursor-pointer flex w-full flex-col px-4 py-2 border-b-gray-300 border-r-gray-300 border-b-2 border-r-2">
             <p className="flex flex-col uppercase font-bold">{t("check-in")}</p>
 
             <p>
@@ -43,13 +59,15 @@ export const CheckInOutInput: React.FC<CheckInOutInputProps> = ({
             </p>
           </div>
         </MenuButton>
-        <MenuList>
-          <DateInput onDaySelect={(date) => SetCheckin(date)} />
-        </MenuList>
+        {active ? (
+          <MenuList>
+            <DateInput onDaySelect={(date) => SetCheckin(date)} />
+          </MenuList>
+        ) : null}
       </Menu>
       <Menu className="w-full">
         <MenuButton>
-          <div className="cursor-pointer flex flex-col w-full border-b-2 border-b-gray-300 px-4 py-2">
+          <div className="whitespace-nowrap cursor-pointer flex flex-col w-full border-b-2 border-b-gray-300 px-4 py-2">
             <p className="flex flex-col uppercase font-bold">
               {t("check-out")}
             </p>
@@ -65,9 +83,11 @@ export const CheckInOutInput: React.FC<CheckInOutInputProps> = ({
             </p>
           </div>
         </MenuButton>
-        <MenuList>
-          <DateInput onDaySelect={(date) => SetCheckout(date)} />
-        </MenuList>
+        {active ? (
+          <MenuList>
+            <DateInput onDaySelect={(date) => SetCheckout(date)} />
+          </MenuList>
+        ) : null}
       </Menu>
     </div>
   );

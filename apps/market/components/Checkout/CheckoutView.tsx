@@ -26,6 +26,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { shippingMotheds } from "ui/placeholder";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
+import { randomNum } from "utils";
 
 export interface CheckoutViewProps {}
 
@@ -190,7 +191,12 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                     </>
                   ))}
                 </FlexStack>
-                <TotalCost shippingFee voucherRemoveable />
+                <TotalCost
+                  shippingFee={randomNum(30)}
+                  subTotal={randomNum(500)}
+                  vat={randomNum(20)}
+                  voucherRemoveable
+                />
               </FlexStack>
             </Padding>
           </div>

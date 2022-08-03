@@ -55,11 +55,15 @@ export const storybookVehicleCardsTitle = storybookVehicleTitle + cardsTitle;
 
 // hotel service
 export const storybookHotelTitle = storybookFeaturesTitle + "Hotel /";
-export const storybookHotelCardsTitle = storybookHotelTitle + "Cards /";
+export const storybookHotelCardsTitle = storybookHotelTitle + cardsTitle;
+
+// hotel service
+export const storybookRestaurantTitle = storybookFeaturesTitle + "Restaurant /";
+export const storybookRestaurantCardsTitle = storybookHotelTitle + cardsTitle;
 
 // beauty center service
 
 export const storybookBeautyCenterTitle =
   storybookFeaturesTitle + "Beauty Center /";
 export const storybookBeautyCenterCardsTitle =
-  storybookBeautyCenterTitle + "Cards /";
+  storybookBeautyCenterTitle + cardsTitle;

@@ -1,42 +1,52 @@
-import { ServiceCheckoutBookedPropertyData } from "api";
+import { CommonServiceCheckoutData } from "api";
 import { useDateDiff } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { DateDetails } from "utils";
 import {
   AspectRatioImage,
+  CashbackBadge,
   RateTextPresentation,
   ServiceRefundableTypeDescription,
-  ExclamationCircle,
+  ExclamationCircleIcon,
+  Divider,
 } from "ui";
-import { DateDetails } from "utils";
 
-export interface ServiceCheckoutCardProps
-  extends ServiceCheckoutBookedPropertyData {}
+export interface ServiceCheckoutCommonCardWrapperProps
+  extends CommonServiceCheckoutData {}
 
-export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
+export const ServiceCheckoutCommonCardWrapper: React.FC<
+  ServiceCheckoutCommonCardWrapperProps
+> = ({
   bookedDates,
+  cashback,
+  id,
+  price,
   rate,
+  rateReason,
   refundingRule,
   reviews,
+  serviceType,
   thumbnail,
-  id,
   title,
-  rateReason,
-  extras,
+  children,
 }) => {
   const { t } = useTranslation();
-  const checkinDate = DateDetails(bookedDates.checkin);
-  const checkoutDate = DateDetails(bookedDates.checkout);
+  const fromDate = DateDetails(bookedDates.from);
+  const toDate = DateDetails(bookedDates.to);
   const { days } = useDateDiff({
-    from: new Date(bookedDates.checkin),
-    to: new Date(bookedDates.checkout),
+    from: new Date(bookedDates.from),
+    to: new Date(bookedDates.to),
   });
 
   return (
     <div className="flex flex-col">
       <AspectRatioImage src={thumbnail} alt={title} ratio={1 / 2}>
         <div className="bg-black bg-opacity-20 absolute top-0 left-0 right-0 bottom-0 pointer-events-none"></div>
-        <p className="absolute bottom-4 left-4 font-bold text-white">{title}</p>
+        <span className="absolute w-full flex justify-between items-end bottom-4 px-4">
+          <p className="font-bold text-white">{title}</p>
+          <CashbackBadge props={{ className: "h-fit" }} {...cashback} />
+        </span>
       </AspectRatioImage>
       <div className="flex flex-col gap-4 p-2">
         <div className="flex flex-col">
@@ -54,34 +64,27 @@ export const ServiceCheckoutCard: React.FC<ServiceCheckoutCardProps> = ({
             {...refundingRule}
             bookedDate={new Date()}
           />
-          <ExclamationCircle />
+          <ExclamationCircleIcon />
         </span>
 
-        <div className="flex flex-wrap gap-2">
-          <p className="font-semibold">{t("Extras")}:</p>
-          {extras.map((extra, i) => (
-            <p key={i}>{extra}</p>
-          ))}
-        </div>
+        {children}
 
+        <Divider />
         <div className="flex flex-col gap-1">
           <span className="flex gap-2">
-            <span className="font-semibold">{t("Check-in")}: </span>
+            <span className="font-semibold">{t("From")}: </span>
             <p>
-              {checkinDate.weekDay_short}, {checkinDate.day}{" "}
-              {checkinDate.month_short}
+              {fromDate.am_pm_hour_minute} {fromDate.weekDay_short},{" "}
+              {fromDate.day} {fromDate.month_short}
             </p>
           </span>
           <span className="flex gap-2">
-            <span className="font-semibold">{t("Check-out")}: </span>
+            <span className="font-semibold">{t("To")}: </span>
             <p>
-              {checkoutDate.weekDay_short}, {checkoutDate.day}{" "}
-              {checkoutDate.month_short}
+              {toDate.am_pm_hour_minute} {toDate.weekDay_short}, {toDate.day}{" "}
+              {toDate.month_short}
             </p>
           </span>
-          <p>
-            {days}-{t("night stay")}
-          </p>
         </div>
       </div>
     </div>
