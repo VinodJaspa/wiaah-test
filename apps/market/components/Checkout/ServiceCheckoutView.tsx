@@ -29,6 +29,7 @@ import {
   SpinnerFallback,
   CheckInOutInput,
   AspectRatio,
+  ServiceCheckoutCardSwitcher,
 } from "ui";
 import { AddressCardDetails, AddressDetails } from "types";
 import { CheckoutProductsState, VoucherState } from "ui/state";
@@ -38,6 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { DateDetails, runIfFn } from "utils";
 import { useDateDiff } from "hooks";
+import { ServiceCheckoutDataType } from "api";
 
 export interface ServiceCheckoutViewProps {}
 
@@ -358,20 +360,9 @@ export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
             <div className="flex flex-col gap-4 w-[min(30rem,100vw)]">
               <SpinnerFallback isError={isError} isLoading={isLoading}>
                 {res
-                  ? res.data.bookedServices.map((item, i) => {
-                      switch (item.type) {
-                        case "hotel":
-                          return <HotelCheckoutCard {...item.data} />;
-                        case "resturant":
-                          return <ResturantCheckoutCard {...item.data} />;
-                        case "health_center":
-                          return <HealthCenterCheckoutCard {...item.data} />;
-                        case "beauty_center":
-                          return <BeautyCenterCheckoutCard {...item.data} />;
-                        default:
-                          return null;
-                      }
-                    })
+                  ? res.data.bookedServices.map((service, i) => (
+                      <ServiceCheckoutCardSwitcher key={i} service={service} />
+                    ))
                   : null}
               </SpinnerFallback>
             </div>

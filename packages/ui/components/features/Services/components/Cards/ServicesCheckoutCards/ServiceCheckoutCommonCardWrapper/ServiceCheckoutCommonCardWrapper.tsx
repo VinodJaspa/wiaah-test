@@ -10,6 +10,7 @@ import {
   ServiceRefundableTypeDescription,
   ExclamationCircleIcon,
   Divider,
+  TimeRangeDisplay,
 } from "ui";
 
 export interface ServiceCheckoutCommonCardWrapperProps
@@ -30,6 +31,7 @@ export const ServiceCheckoutCommonCardWrapper: React.FC<
   thumbnail,
   title,
   children,
+  duration,
 }) => {
   const { t } = useTranslation();
   const fromDate = DateDetails(bookedDates.from);
@@ -51,11 +53,13 @@ export const ServiceCheckoutCommonCardWrapper: React.FC<
       <div className="flex flex-col gap-4 p-2">
         <div className="flex flex-col">
           <span className="flex gap-1">
+            {`${reviews} ${t("reviews")}`}
             <p className="font-bold">
+              {"("}
               {rate}/{5}
+              {")"}
             </p>{" "}
-            <RateTextPresentation rate={rate} />
-            {`(${reviews} ${t("reviews")})`}
+            {/* <RateTextPresentation rate={rate} /> */}
           </span>
           <p>{`Guests rated this property ${rate}/${5} for ${rateReason}`}</p>
         </div>
@@ -69,23 +73,25 @@ export const ServiceCheckoutCommonCardWrapper: React.FC<
 
         {children}
 
-        <Divider />
         <div className="flex flex-col gap-1">
           <span className="flex gap-2">
-            <span className="font-semibold">{t("From")}: </span>
+            <span className="font-semibold">{t("At")}: </span>
             <p>
-              {fromDate.am_pm_hour_minute} {fromDate.weekDay_short},{" "}
-              {fromDate.day} {fromDate.month_short}
+              {fromDate.month_short}, {fromDate.day}{" "}
+              {fromDate.am_pm_hour_minute}
             </p>
           </span>
-          <span className="flex gap-2">
-            <span className="font-semibold">{t("To")}: </span>
-            <p>
-              {toDate.am_pm_hour_minute} {toDate.weekDay_short}, {toDate.day}{" "}
-              {toDate.month_short}
-            </p>
-          </span>
+
+          {duration ? (
+            <span className="flex gap-2">
+              <span className="font-semibold">{t("Duration")}: </span>
+              <p>
+                <TimeRangeDisplay rangeInMinutes={duration} />
+              </p>
+            </span>
+          ) : null}
         </div>
+        <Divider />
       </div>
     </div>
   );

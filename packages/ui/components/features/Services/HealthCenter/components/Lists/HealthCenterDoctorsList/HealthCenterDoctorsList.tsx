@@ -7,11 +7,12 @@ import {
   Button,
   HStack,
   Radio,
+  PriceDisplay,
   ServiceCancelationPolicyInput,
 } from "ui";
 import React from "react";
-import { usePublishRef } from "state";
 import { useTranslation } from "react-i18next";
+import { usePublishRef } from "state";
 
 export interface HealthCenterDoctorsListProps {
   doctors: HealthCenterDoctorMetaDataType[];
@@ -22,8 +23,9 @@ export const HealthCenterDoctorsList: React.FC<
   HealthCenterDoctorsListProps
 > = ({ doctors, cancelation }) => {
   const { t } = useTranslation();
+  const ref = usePublishRef((keys) => keys.doctors);
   return (
-    <div className="flex flex-col gap-4 py-4 px-2">
+    <div ref={ref} className="flex flex-col gap-4 py-4 px-2">
       <p className="text-lg font-bold">{t("Doctors")}</p>
       <div className="flex flex-col gap-4">
         {Array.isArray(doctors)
@@ -62,15 +64,18 @@ export const HealthCenterDoctorCard: React.FC<HealthCenterDoctorCardProps> = ({
   name,
   photo,
   specialty,
+  price,
 }) => {
-  const ref = usePublishRef("doctors");
   return (
-    <div ref={ref} className="flex gap-2">
-      <Avatar src={photo} alt={name} />
-      <div className="flex flex-col justify-between">
-        <p className="font-semibold">{name}</p>
-        <p>{specialty}</p>
+    <div className="w-full flex justify-between items-center">
+      <div className="flex gap-2">
+        <Avatar src={photo} alt={name} />
+        <div className="flex flex-col ">
+          <p className="font-semibold">{name}</p>
+          <p>{specialty}</p>
+        </div>
       </div>
+      <PriceDisplay priceObject={{ amount: price }} />
     </div>
   );
 };

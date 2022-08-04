@@ -12,11 +12,16 @@ import {
   HealthCenterServiceCheckoutDataValidationSchema,
   ServiceCheckoutCommonDataValidationSchema,
   BeautyCenterServiceCheckoutDataValidationSchema,
+  ServiceCheckoutDataValidationTester,
 } from "validation";
 const senctence =
   "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Minima libero perferendis fugit error unde, adipisci possimus totam mollitia? Inventore odio soluta nisi magnam vitae id voluptatum cum atque maiores nihil";
 
 export type CashbackData = InferType<typeof CashbackValidationSchema>;
+
+export type ServiceCheckoutDataType = InferType<
+  typeof ServiceCheckoutDataValidationTester
+>;
 
 export type ServiceCheckoutApiResponse = InferType<
   typeof ServiceCheckoutDataApiResponseValidationSchema
@@ -68,7 +73,13 @@ export const getServiceCheckoutDataFetcher = async (
             id: "123",
             rateReason: "cleanliness",
             title: "Citadines Montmartre Paris",
-            extras: ["Breakfast + book now, pay later"],
+            duration: [30, 60],
+            extras: [
+              {
+                name: "Breakfast + book now, pay later",
+                price: randomNum(100),
+              },
+            ],
             guests: randomNum(5),
             cashback: {
               amount: randomNum(20),
@@ -98,6 +109,7 @@ export const getServiceCheckoutDataFetcher = async (
             id: "123",
             rateReason: "cleanliness",
             title: "Citadines Montmartre Paris",
+            duration: [30, 60],
             bookedMenus: [
               {
                 price: randomNum(100),
@@ -146,6 +158,7 @@ export const getServiceCheckoutDataFetcher = async (
             rateReason: "cleanliness",
             title: "Citadines Montmartre Paris",
 
+            duration: [30, 60],
             guests: randomNum(5),
             cashback: {
               amount: randomNum(20),
@@ -156,6 +169,7 @@ export const getServiceCheckoutDataFetcher = async (
               id: "123",
               name: "Doctor 1",
               specialty: "spine",
+              price: randomNum(50),
               photo:
                 "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
             },
@@ -175,6 +189,7 @@ export const getServiceCheckoutDataFetcher = async (
               duration: 4,
               id: "12",
             },
+            duration: [30, 60],
             reviews: randomNum(153),
             thumbnail:
               "https://www.ariostea-high-tech.com/img/progetti/hotel-spa-wellness/U714/big/Tacha+Beauty+Center-01.jpg",

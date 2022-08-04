@@ -2,7 +2,7 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { useSetRecoilState } from "recoil";
-import { CartSummaryItemData } from "types/market/CartSummary";
+import { CartSummaryItemData } from "types";
 import { Container, Spacer, Collaboration } from "ui";
 import { ProductsWithProfile } from "ui/placeholder";
 import { CartSummaryItemsState, VoucherState } from "ui/state";
@@ -12,14 +12,15 @@ interface OrderConfirmationPageProps {
   Products: CartSummaryItemData[];
 }
 
-export const getServerSideProps: GetServerSideProps<OrderConfirmationPageProps> =
-  async () => {
-    const Products: CartSummaryItemData[] = ProductsWithProfile;
+export const getServerSideProps: GetServerSideProps<
+  OrderConfirmationPageProps
+> = async () => {
+  const Products: CartSummaryItemData[] = ProductsWithProfile;
 
-    return {
-      props: { Products },
-    };
+  return {
+    props: { Products },
   };
+};
 
 const orderConfirmation: NextPage<OrderConfirmationPageProps> = ({
   Products,

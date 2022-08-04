@@ -49,12 +49,21 @@ export const ServiceCheckoutCommonDataValidationSchema = object({
   }),
   cashback: CashbackValidationSchema.required(),
   price: number().required(),
+  duration: array().of(number().required()).min(1).max(2).optional(),
 });
 
 export const HotelCheckoutServiceDataValidationSchema =
   ServiceCheckoutCommonDataValidationSchema.concat(
     object({
-      extras: array().of(string().required()).min(0).required(),
+      extras: array()
+        .of(
+          object({
+            name: string().required(),
+            price: number().required(),
+          })
+        )
+        .min(0)
+        .required(),
       guests: number().required(),
     })
   );

@@ -11,6 +11,7 @@ import {
   ExclamationCircleIcon,
   PriceDisplay,
   Divider,
+  TimeRangeDisplay,
 } from "ui";
 
 export interface ResturantCheckoutCardProps
@@ -30,6 +31,7 @@ export const ResturantCheckoutCard: React.FC<ResturantCheckoutCardProps> = ({
   serviceType,
   thumbnail,
   title,
+  duration,
 }) => {
   const { t } = useTranslation();
   const fromDate = DateDetails(bookedDates.from);
@@ -47,11 +49,12 @@ export const ResturantCheckoutCard: React.FC<ResturantCheckoutCardProps> = ({
       <div className="flex flex-col gap-4 p-2">
         <div className="flex flex-col">
           <span className="flex gap-1">
+            {`${reviews} ${t("reviews")}`}
             <p className="font-bold">
+              {"("}
               {rate}/{5}
+              {")"}
             </p>{" "}
-            <RateTextPresentation rate={rate} />
-            {`(${reviews} ${t("reviews")})`}
           </span>
           <p>{`Guests rated this property ${rate}/${5} for ${rateReason}`}</p>
         </div>
@@ -70,44 +73,50 @@ export const ResturantCheckoutCard: React.FC<ResturantCheckoutCardProps> = ({
 
         <div className="flex flex-col gap-2">
           <p className="font-semibold">{t("Booked menus")}:</p>
-          <ul className="list-inside list-disc flex flex-col gap-2">
+          <ul className="flex flex-col gap-2">
             {Array.isArray(bookedMenus)
               ? bookedMenus.map((menu, i) => (
-                  <div className="flex gap-2">
-                    <p className="list-item">
-                      {menu.title}{" "}
-                      <span className="font-semibold whitespace-nowrap">
-                        x {menu.qty}
+                  <li
+                    className={`flex justify-between gap-2 items-center py-4 ${
+                      i < bookedMenus.length - 1
+                        ? "border-b border-b-gray-200"
+                        : ""
+                    }`}
+                  >
+                    <div className="flex items-center gap-4">
+                      <span className="text-primary font-bold">
+                        {menu.qty}x
                       </span>
-                    </p>
-                    <span className="flex gap-1 whitespace-nowrap items-start font-bold">
-                      <PriceDisplay priceObject={{ amount: menu.price }} /> x{" "}
-                      {menu.qty}
-                    </span>
-                  </div>
+                      <p className="font-semibold">{menu.title}</p>
+                    </div>
+                    <PriceDisplay
+                      className="font-bold"
+                      priceObject={{ amount: menu.price }}
+                    />
+                  </li>
                 ))
               : null}
           </ul>
         </div>
 
-        <Divider />
-
         <div className="flex flex-col gap-1">
           <span className="flex gap-2">
-            <span className="font-semibold">{t("From")}: </span>
+            <span className="font-semibold">{t("At")}: </span>
             <p>
-              {fromDate.am_pm_hour_minute} {fromDate.weekDay_short},{" "}
-              {fromDate.day} {fromDate.month_short}
+              {fromDate.month_short}, {fromDate.day}{" "}
+              {fromDate.am_pm_hour_minute}
             </p>
           </span>
-          <span className="flex gap-2">
-            <span className="font-semibold">{t("To")}: </span>
-            <p>
-              {toDate.am_pm_hour_minute} {toDate.weekDay_short}, {toDate.day}{" "}
-              {toDate.month_short}
-            </p>
-          </span>
+          {/* {duration ? (
+            <span className="flex gap-2">
+              <span className="font-semibold">{t("Duration")}: </span>
+              <p>
+                <TimeRangeDisplay rangeInMinutes={duration} />
+              </p>
+            </span>
+          ) : null} */}
         </div>
+        <Divider />
       </div>
     </div>
   );

@@ -91,6 +91,7 @@ export const getHealthCenterDetailsFetcher = async (
         id: `${randomNum(15136)}`,
         name: "Dr. med. Norbert Boos",
         specialty: "Spine surgeon",
+        price: randomNum(100),
         photo:
           "https://t3.ftcdn.net/jpg/02/60/04/08/360_F_260040863_fYxB1SnrzgJ9AOkcT0hoe7IEFtsPiHAD.jpg",
       })),

@@ -9,3 +9,4 @@ export * from "./Vehicle";
 export * from "./ServicesDetails";
 export * from "./beautyCenter";
 export * from "./services";
+export * from "./BookConfirmation";

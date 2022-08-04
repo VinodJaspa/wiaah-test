@@ -22,6 +22,7 @@ import {
 } from "ui";
 import { DividerProps } from "ui/components/partials/Divider";
 import { CartSummaryItemsState, CheckoutProductsState } from "ui/state";
+import { randomNum } from "utils";
 
 export interface OrderConfirmationViewProps {}
 
@@ -50,7 +51,7 @@ const OrderConfirmationView: React.FC<OrderConfirmationViewProps> = () => {
                 onRemove={handleRemoveProduct}
               />
               <div className="w-96">
-                <TotalCost />
+                <TotalCost subTotal={randomNum(500)} vat={randomNum(20)} />
               </div>
             </div>
           </FlexStack>

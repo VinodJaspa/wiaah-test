@@ -1,32 +1,36 @@
 import React from "react";
-import { CalanderPage, ChecklistIcon, PriceDisplay, TableContainer } from "ui";
-import { PriceType, Service } from "types";
-import { IoCall, IoLocation } from "react-icons/io5";
-import { MdEmail } from "react-icons/md";
-import { QRCodeSVG } from "qrcode.react";
-import { Table, Tr, Td, Th, TBody, THead, Button, Divider, HStack } from "ui";
+import { ChecklistIcon } from "ui";
+import { PriceType } from "types";
+import {
+  QrcodeDisplay,
+  ServiceReachOutSection,
+  ServiceWorkingHoursSection,
+  useGetBookedServiceConfirmationDataQuery,
+  SpinnerFallback,
+  ServiceCheckoutCardSwitcher,
+  Divider,
+  Button,
+} from "ui";
 import { useTranslation } from "react-i18next";
 
 export interface BookConfirmationViewProps {
-  service: Service;
+  id: string;
 }
 
 export const BookConfirmationView: React.FC<BookConfirmationViewProps> = ({
-  service: {
-    location,
-    serviceName,
-    serviceOwner,
-    serviceThumbnail,
-    contacts,
-    rooms,
-  },
+  id,
 }) => {
+  const { t } = useTranslation();
+  const {
+    data: res,
+    isLoading,
+    isError,
+  } = useGetBookedServiceConfirmationDataQuery(id);
   const total: PriceType = {
     amount: 150,
     currency: "CHF",
   };
-  const bookId = "45DG9QY";
-  const { t } = useTranslation();
+
   return (
     <div className="flex flex-col gap-8 py-16">
       <div className="w-full shadow-md bg-primary-50 p-20 ">
@@ -45,100 +49,144 @@ export const BookConfirmationView: React.FC<BookConfirmationViewProps> = ({
           </div>
         </div>
       </div>
-      <div className="flex items-center flex-col lg:flex-row gap-40">
-        <div className="w-full flex gap-8 flex-col">
-          <span className="text-4xl font-bold">
-            {t("checkin_details", "Checkin Details")}
-          </span>
-          <div className="flex justify-between">
-            <div className="flex gap-4">
-              {/* book qr and number  */}
-              <div className="w-40">
-                <QRCodeSVG size={"100%"} value={bookId} />
-              </div>
+      <div className="flex flex-col lg:flex-row gap-32">
+        <div className="w-full">
+          <div className="flex gap-4">
+            {/* book qr and number  */}
+            <div className="w-40">
+              <SpinnerFallback isError={isError} isLoading={isLoading}>
+                {res ? <QrcodeDisplay value={res.data.bookedId} /> : null}
+              </SpinnerFallback>
+            </div>
+            <div className="flex flex-col">
               <div className="flex flex-col">
-                <div className="flex flex-col">
-                  {t("booking_number", "Booking Number")}
-                  <span className="font-bold" data-testid="BookNumber">
-                    #{bookId}
-                  </span>
-                </div>
-                <Divider />
-                <Button outline>{t("save_the_qr", "Save the QR")}</Button>
-              </div>
-            </div>
-            <Divider />
-            <div className="flex gap-16">
-              <div>
-                <span className="text-xl py-1">{t("checkin", "Checkin")}</span>
-                <CalanderPage date={Date.now()} />
-              </div>
-              <div>
-                <span className="py-1 text-xl">
-                  {t("checkout", "Checkout")}
+                {t("booking_number", "Booking Number")}
+                <span className="font-bold" data-testid="BookNumber">
+                  #{res ? res.data.bookedId : null}
                 </span>
-                <CalanderPage date={Date.now()} />
               </div>
+              <Divider />
+              <Button outline>{t("save_the_qr", "Save the QR")}</Button>
             </div>
           </div>
-          <div className="flex flex-col gap-12 text-gray-500">
-            {/* checkin details */}
-            <div>
-              <span className="text-3xl font-bold">
-                {t("room_fare_breakup", "Room Fare Breakup")}
-              </span>
-              <TableContainer>
-                <Table
-                  ThProps={{ className: "last:text-right" }}
-                  TdProps={{ className: "last:text-right" }}
-                  className="w-full"
-                >
-                  <THead>
-                    <Tr>
-                      <Td>Room Type</Td>
-                      <Td>Room Price</Td>
-                      <Td>Total</Td>
-                    </Tr>
-                  </THead>
-                  <TBody data-testid="RoomsTable">
-                    {rooms.map((room, i) => (
-                      <Tr key={i} data-testid="Room">
-                        <Td data-testid="RoomType">
-                          <span>Room Type {room.type}</span>
-                        </Td>
-                        <Td className="flex items-center">
-                          <span data-testid="RoomNightPrice">
-                            {room.nightPrice}
-                          </span>
-                          *<span data-testid="RoomNights">{room.nights}</span>
-                        </Td>
-                        <Td data-testid="RoomTotalPrice">
-                          {room.nightPrice * room.nights}
-                        </Td>
-                      </Tr>
-                    ))}
-                  </TBody>
-                </Table>
-              </TableContainer>
-            </div>
-          </div>
-          <div className="w-full flex justify-end items-center">
-            <span className="text-xl font-bold flex items-center gap-2">
-              {t("total", "Total")}: <PriceDisplay priceObject={total} />
-            </span>
+          <Divider />
+          <div className="flex gap-4 w-full justify-between">
+            <SpinnerFallback isLoading={isLoading} isError={isError}>
+              {res ? <ServiceReachOutSection {...res.data.reactOut} /> : null}
+            </SpinnerFallback>
+            <SpinnerFallback isError={isError} isLoading={isLoading}>
+              {res ? (
+                <ServiceWorkingHoursSection
+                  workingDays={res.data.workingDays}
+                />
+              ) : null}
+            </SpinnerFallback>
           </div>
         </div>
-        <div className="text-xl w-[40rem] gap-2 flex-col">
-          {/* hotel details */}
-          {/* <AspectRatio w={"100%"} ratio={9 / 10}> */}
-          <div className="w-full h-[30rem]">
-            <img
-              data-testid="ServicePhoto"
-              src={serviceThumbnail}
-              className="w-full h-[100%] object-cover"
-            />
-          </div>
-          {/* </AspectRatio> */}
+        <div className="text-xl w-[min(40rem,100%)] gap-2 flex flex-col">
+          <SpinnerFallback isLoading={isLoading} isError={isError}>
+            {res ? (
+              <ServiceCheckoutCardSwitcher service={res.data.propertyData} />
+            ) : null}
+          </SpinnerFallback>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// <div className="w-full flex gap-8 flex-col">
+//           <span className="text-4xl font-bold">
+//             {t("checkin_details", "Checkin Details")}
+//           </span>
+//           <div className="flex justify-between">
+//             <div className="flex gap-4">
+//               {/* book qr and number  */}
+//               <div className="w-40">
+//                 <SpinnerFallback isError={isError} isLoading={isLoading}>
+//                   {res ? <QrcodeDisplay value={res.data.BookedId} /> : null}
+//                 </SpinnerFallback>
+//               </div>
+//               <div className="flex flex-col">
+//                 <div className="flex flex-col">
+//                   {t("booking_number", "Booking Number")}
+//                   <span className="font-bold" data-testid="BookNumber">
+//                     #{res ? res.data.BookedId : null}
+//                   </span>
+//                 </div>
+//                 <Divider />
+//                 <Button outline>{t("save_the_qr", "Save the QR")}</Button>
+//               </div>
+//             </div>
+//             <Divider />
+//             <div className="flex gap-16">
+//               <div>
+//                 <span className="text-xl py-1">{t("checkin", "Checkin")}</span>
+//                 <CalanderPage date={Date.now()} />
+//               </div>
+//               <div>
+//                 <span className="py-1 text-xl">
+//                   {t("checkout", "Checkout")}
+//                 </span>
+//                 <CalanderPage date={Date.now()} />
+//               </div>
+//             </div>
+//           </div>
+//           <div className="flex flex-col gap-12 text-gray-500">
+//             {/* checkin details */}
+//             <div>
+//               <span className="text-3xl font-bold">
+//                 {t("room_fare_breakup", "Room Fare Breakup")}
+//               </span>
+//               <TableContainer>
+//                 <Table
+//                   ThProps={{ className: "last:text-right" }}
+//                   TdProps={{ className: "last:text-right" }}
+//                   className="w-full"
+//                 >
+//                   <THead>
+//                     <Tr>
+//                       <Td>{t("Room Type")}</Td>
+//                       <Td>{t("Room Price")}</Td>
+//                       <Td>{t("Total")}</Td>
+//                     </Tr>
+//                   </THead>
+//                   <TBody data-testid="RoomsTable">
+//                     {rooms.map((room, i) => (
+//                       <Tr key={i} data-testid="Room">
+//                         <Td data-testid="RoomType">
+//                           <span>Room Type {room.type}</span>
+//                         </Td>
+//                         <Td className="flex items-center">
+//                           <span data-testid="RoomNightPrice">
+//                             {room.nightPrice}
+//                           </span>
+//                           *<span data-testid="RoomNights">{room.nights}</span>
+//                         </Td>
+//                         <Td data-testid="RoomTotalPrice">
+//                           {room.nightPrice * room.nights}
+//                         </Td>
+//                       </Tr>
+//                     ))}
+//                   </TBody>
+//                 </Table>
+//               </TableContainer>
+//             </div>
+//           </div>
+//           <div className="w-full flex justify-end items-center">
+//             <span className="text-xl font-bold flex items-center gap-2">
+//               {t("total", "Total")}: <PriceDisplay priceObject={total} />
+//             </span>
+//           </div>
+//         </div>
+
+{
+  /* <AspectRatioImage
+            ratio={7 / 6}
+            alt={serviceName}
+            data-testid="ServicePhoto"
+            src={serviceThumbnail}
+          />
           <span
             className="font-bold text-3xl text-gray-500"
             data-testid="ServiceName"
@@ -174,9 +222,5 @@ export const BookConfirmationView: React.FC<BookConfirmationViewProps> = ({
                 </HStack>
               )}
             </>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
+          )} */
+}

@@ -9,6 +9,7 @@ import {
   ExclamationCircleIcon,
   CashbackBadge,
   Divider,
+  PriceDisplay,
 } from "ui";
 import { DateDetails } from "utils";
 
@@ -49,11 +50,12 @@ export const HotelCheckoutCard: React.FC<HotelCheckoutCardProps> = ({
       <div className="flex flex-col gap-4 p-2">
         <div className="flex flex-col">
           <span className="flex gap-1">
+            {`${reviews} ${t("reviews")}`}
             <p className="font-bold">
+              {"("}
               {rate}/{5}
+              {")"}
             </p>{" "}
-            <RateTextPresentation rate={rate} />
-            {`(${reviews} ${t("reviews")})`}
           </span>
           <p>{`Guests rated this property ${rate}/${5} for ${rateReason}`}</p>
         </div>
@@ -70,13 +72,20 @@ export const HotelCheckoutCard: React.FC<HotelCheckoutCardProps> = ({
           <p>{guests}</p>
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-col gap-2">
           <p className="font-semibold">{t("Extras")}:</p>
           {Array.isArray(extras)
-            ? extras.map((extra, i) => <p key={i}>{extra}</p>)
+            ? extras.map((extra, i) => (
+                <div className="flex w-full justify-between">
+                  <p>{extra.name}</p>
+                  <PriceDisplay
+                    className="font-bold"
+                    priceObject={{ amount: extra.price }}
+                  />
+                </div>
+              ))
             : null}
         </div>
-        <Divider />
         <div className="flex flex-col gap-1">
           <span className="flex gap-2">
             <span className="font-semibold">{t("Check-in")}: </span>
@@ -96,6 +105,7 @@ export const HotelCheckoutCard: React.FC<HotelCheckoutCardProps> = ({
             {days}-{t("night stay")}
           </p>
         </div>
+        <Divider />
       </div>
     </div>
   );

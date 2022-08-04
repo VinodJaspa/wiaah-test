@@ -16,8 +16,8 @@ export interface TotalCostProps {
 export const TotalCost: React.FC<TotalCostProps> = ({
   voucherRemoveable,
   shippingFee = 0,
-  subTotal,
-  vat,
+  subTotal = 0,
+  vat = 0,
   saved = 0,
 }) => {
   const { t } = useTranslation();
