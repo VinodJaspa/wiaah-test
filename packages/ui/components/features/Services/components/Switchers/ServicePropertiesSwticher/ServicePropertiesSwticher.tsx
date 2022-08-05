@@ -19,46 +19,51 @@ import {
   DeskIcon,
   ParkingIcon,
 } from "ui";
-
+import { runIfFn } from "utils";
+export const ServiceProperties = {
+  "a/c": AirConditionIcon,
+  gps: GPSIcon,
+  passengers: TransportGuestsIcon,
+  windows: CarWindowIcon,
+  bags: TransportLuggageIcon,
+  pool: PoolIcon,
+  restaurant: SpoonCrossKnifeIcon,
+  parking: ParkingIcon,
+  business_services: BusinessServiceIcon,
+  room_service: DiningBellIcon,
+  "pet-friendly": PetPawIcon,
+  breakfast: CupIcon,
+  laundry: LaundryIcon,
+  free_wifi: WifiIcon,
+  gym: DumbbellIcon,
+  bar: BarGlassIcon,
+  "24/7_front_desk": DeskIcon,
+};
 export const ServicePropertiesSwticher: React.FC<{ slug: string }> = ({
   slug,
 }) => {
-  switch (slug) {
-    case "a/c":
-      return <AirConditionIcon />;
-    case "gps":
-      return <GPSIcon />;
-    case "passengers":
-      return <TransportGuestsIcon />;
-    case "windows":
-      return <CarWindowIcon />;
-    case "bags":
-      return <TransportLuggageIcon />;
-    case "pool":
-      return <PoolIcon />;
-    case "resturant":
-      return <SpoonCrossKnifeIcon />;
-    case "parking":
-      return <ParkingIcon />;
-    case "business_services":
-      return <BusinessServiceIcon />;
-    case "room_service":
-      return <DiningBellIcon />;
-    case "pet-friendly":
-      return <PetPawIcon />;
-    case "breakfast":
-      return <CupIcon />;
-    case "laundry":
-      return <LaundryIcon />;
-    case "free_wifi":
-      return <WifiIcon />;
-    case "gym":
-      return <DumbbellIcon />;
-    case "bar":
-      return <BarGlassIcon />;
-    case "24/7_front_desk":
-      return <DeskIcon />;
-    default:
-      return <SuccessIcon className="bg-black" />;
-  }
+  const ServiceProperties = {
+    "a/c": AirConditionIcon,
+    gps: GPSIcon,
+    passengers: TransportGuestsIcon,
+    windows: CarWindowIcon,
+    bags: TransportLuggageIcon,
+    pool: PoolIcon,
+    restaurant: SpoonCrossKnifeIcon,
+    parking: ParkingIcon,
+    business_services: BusinessServiceIcon,
+    room_service: DiningBellIcon,
+    "pet-friendly": PetPawIcon,
+    breakfast: CupIcon,
+    laundry: LaundryIcon,
+    free_wifi: WifiIcon,
+    gym: DumbbellIcon,
+    bar: BarGlassIcon,
+    "24/7_front_desk": DeskIcon,
+  };
+
+  const Slug = slug as keyof typeof ServiceProperties;
+  const icon = ServiceProperties[Slug];
+  console.log(slug, AirConditionIcon);
+  return <>{icon ? runIfFn(icon) : runIfFn(SuccessIcon)}</>;
 };

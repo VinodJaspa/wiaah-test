@@ -1,1 +1,1 @@
-export * from "./HealthCenterHeader";
+export * from "./";

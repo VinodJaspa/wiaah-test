@@ -3,12 +3,11 @@ import {
   ServiceCancelationPolicyType,
 } from "api";
 import {
-  Avatar,
   Button,
   HStack,
   Radio,
-  PriceDisplay,
   ServiceCancelationPolicyInput,
+  HealthCenterDoctorCard,
 } from "ui";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -52,30 +51,6 @@ export const HealthCenterDoctorsList: React.FC<
         </div>
         <Button className="w-fit self-end">{t("Book now")}</Button>
       </div>
-    </div>
-  );
-};
-
-export interface HealthCenterDoctorCardProps
-  extends HealthCenterDoctorMetaDataType {}
-
-export const HealthCenterDoctorCard: React.FC<HealthCenterDoctorCardProps> = ({
-  id,
-  name,
-  photo,
-  specialty,
-  price,
-}) => {
-  return (
-    <div className="w-full flex justify-between items-center">
-      <div className="flex gap-2">
-        <Avatar src={photo} alt={name} />
-        <div className="flex flex-col ">
-          <p className="font-semibold">{name}</p>
-          <p>{specialty}</p>
-        </div>
-      </div>
-      <PriceDisplay priceObject={{ amount: price }} />
     </div>
   );
 };

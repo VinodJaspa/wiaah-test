@@ -1,15 +1,15 @@
 import { randomNum, storybookOtherServicesCardsTitle } from "utils";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { HotelCheckoutCard } from "./HotelCheckoutCard";
+import { ServiceCheckoutCommonCardWrapper } from "./ServiceCheckoutCommonCardWrapper";
 
 export default {
-  title: storybookOtherServicesCardsTitle + "ServiceCheckoutCard",
-  component: HotelCheckoutCard,
-} as ComponentMeta<typeof HotelCheckoutCard>;
+  title: storybookOtherServicesCardsTitle + "ServiceCheckoutCommonCardWrapper",
+  component: ServiceCheckoutCommonCardWrapper,
+} as ComponentMeta<typeof ServiceCheckoutCommonCardWrapper>;
 
-const template: ComponentStory<typeof HotelCheckoutCard> = (args) => (
-  <HotelCheckoutCard {...args} />
-);
+const template: ComponentStory<typeof ServiceCheckoutCommonCardWrapper> = (
+  args
+) => <ServiceCheckoutCommonCardWrapper {...args} />;
 
 export const Default = template.bind({});
 Default.args = {
@@ -28,17 +28,12 @@ Default.args = {
   id: "123",
   rateReason: "cleanliness",
   title: "Citadines Montmartre Paris",
-  extras: [
-    {
-      name: "Breakfast + book now, pay later",
-      price: randomNum(100),
-    },
-  ],
-  guests: randomNum(5),
   cashback: {
     amount: randomNum(20),
     type: "percent",
   },
   price: randomNum(500),
   serviceType: "hotel",
+  duration: [30, 60],
+  children: <div>children</div>,
 };

@@ -19,10 +19,11 @@ const template: ComponentStory<typeof PractitionerSearchResultsCard> = (
   </div>
 );
 
-export const Default: { args: PractitionerSearchResultsCardProps } =
-  template.bind({});
+export const Default = template.bind({});
 Default.args = {
   practitioner: {
+    id: "123",
+    rate: randomNum(15),
     location: {
       address: "Boulvard James-Fazy 4",
       city: "Geneve",
@@ -32,6 +33,8 @@ Default.args = {
       },
       country: "france",
       postalCode: 1201,
+      countryCode: "CHF",
+      state: "Geneve",
     },
     name: "Dr Charlene Kasaven",
     photo:

@@ -23,7 +23,7 @@ export const VehicleProprtiesList: React.FC<VehicleProprtiesListProps> = ({
       {Array.isArray(VehicleProps)
         ? VehicleProps.map((prop, i) => (
             <VehicleProprtiesSwticher
-              key={`${randomNum(5000)}--${i}`}
+              key={`${randomNum(50)}--${i}`}
               vehicleProp={prop}
             />
           ))

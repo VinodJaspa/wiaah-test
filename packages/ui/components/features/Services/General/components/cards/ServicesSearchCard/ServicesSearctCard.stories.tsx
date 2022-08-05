@@ -15,7 +15,7 @@ const template: ComponentStory<typeof ServicesSearchCard> = (args) => (
   <ServicesSearchCard {...args} />
 );
 
-export const Default: { args: ServicesSearchCardProps } = template.bind({});
+export const Default = template.bind({});
 Default.args = {
   serviceData: {
     description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
@@ -29,7 +29,10 @@ Default.args = {
       },
       country: "switzerland",
       postalCode: 1201,
+      countryCode: "CHF",
+      state: "Geneve",
     },
+    id: "123",
     isNew: true,
     thumbnail: "/place-3.jpg",
     services: [
@@ -39,7 +42,7 @@ Default.args = {
     ],
   },
 };
-export const Vertical: { args: ServicesSearchCardProps } = template.bind({});
+export const Vertical = template.bind({});
 Vertical.args = {
   vertical: true,
   serviceData: {
@@ -54,7 +57,10 @@ Vertical.args = {
       },
       country: "switzerland",
       postalCode: 1201,
+      countryCode: "CHF",
+      state: "Geneve",
     },
+    id: "123",
     isNew: true,
     thumbnail: "/place-3.jpg",
     services: [

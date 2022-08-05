@@ -66,3 +66,4 @@ export * from "./FlagIcon";
 export * from "./RateTextPresentation";
 export * from "./CashbackBadge";
 export * from "./TimeRangeDisplay";
+export * from "./CountInput";

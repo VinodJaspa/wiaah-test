@@ -1,7 +1,7 @@
 import React from "react";
 
 export const useBoundedCountState = (
-  min: number = Infinity,
+  min: number = -Infinity,
   max: number = Infinity
 ) => {
   const [count, setCount] = React.useState<number>(0);

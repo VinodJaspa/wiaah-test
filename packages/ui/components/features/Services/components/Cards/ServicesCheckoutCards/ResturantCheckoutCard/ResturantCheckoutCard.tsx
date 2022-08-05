@@ -1,17 +1,14 @@
 import { RestaurantCheckoutBookedPropertyData } from "api";
-import { useDateDiff } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { DateDetails } from "utils";
 import {
   AspectRatioImage,
   CashbackBadge,
-  RateTextPresentation,
   ServiceRefundableTypeDescription,
   ExclamationCircleIcon,
   PriceDisplay,
   Divider,
-  TimeRangeDisplay,
 } from "ui";
 
 export interface ResturantCheckoutCardProps
@@ -22,20 +19,15 @@ export const ResturantCheckoutCard: React.FC<ResturantCheckoutCardProps> = ({
   bookedMenus,
   cashback,
   guests,
-  id,
-  price,
   rate,
   rateReason,
   refundingRule,
   reviews,
-  serviceType,
   thumbnail,
   title,
-  duration,
 }) => {
   const { t } = useTranslation();
   const fromDate = DateDetails(bookedDates.from);
-  const toDate = DateDetails(bookedDates.to);
 
   return (
     <div className="flex flex-col">

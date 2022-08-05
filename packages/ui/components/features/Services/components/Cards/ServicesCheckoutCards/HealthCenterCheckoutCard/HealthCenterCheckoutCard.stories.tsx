@@ -42,5 +42,6 @@ Default.args = {
     specialty: "spine",
     photo:
       "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
+    price: randomNum(100),
   },
 };
