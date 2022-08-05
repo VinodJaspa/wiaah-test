@@ -1,5 +1,5 @@
 import { createApiResponseValidationSchema } from "../../SharedSchema";
-import { array, object, string } from "yup";
+import { array, number, object, string } from "yup";
 import {
   CommonServiceDataSchema,
   ServiceCancelationPolicies,
@@ -11,6 +11,7 @@ export const HealthCenterDoctorMetaDataValidationSchema = object({
   name: string().required(),
   specialty: string().required(),
   photo: string().required(),
+  price: number().required(),
 });
 
 export const HealthCenterDetailsValidationSchema =

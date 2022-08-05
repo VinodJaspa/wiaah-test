@@ -1,5 +1,7 @@
 import { ArrElement } from "types";
 import { ServicesRoutes, ServicesRoutesType } from "./services";
+import { UserRelatedRoutesType, UserRelatedRoutes } from "./userRelated";
+import { ShopRoutes, ShopRoutesType } from "./Shop";
 
 export type RoutesType = MainRouterInterface;
 
@@ -15,10 +17,16 @@ export type MainRouterInterface = {
   location: (location: string) => RoutesType;
   onMap: () => RoutesType;
   search: () => RoutesType;
-} & ServicesRoutesType;
+  checkout: () => RoutesType;
+  visitRecommendedServiceOrShop: (props: Record<string, any>) => RoutesType;
+} & ServicesRoutesType &
+  UserRelatedRoutesType &
+  ShopRoutesType;
 
 export const MainRoutes: MainRouterInterface = {
   ...ServicesRoutes,
+  ...UserRelatedRoutes,
+  ...ShopRoutes,
   route: "",
 
   dataKeys: {},
@@ -51,5 +59,16 @@ export const MainRoutes: MainRouterInterface = {
   search() {
     this.addPath("search");
     return this;
+  },
+  checkout() {
+    this.addPath("checkout");
+    return this;
+  },
+  visitRecommendedServiceOrShop(props) {
+    const type = props["type"];
+    const id = props["id"];
+    if (!type || !id) return this;
+    if (type === "shop") return this.visitShop(props);
+    return this.visitService(props, type);
   },
 };

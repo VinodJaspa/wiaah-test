@@ -1,17 +1,18 @@
 import React from "react";
-import { useRouter } from "next/router";
 import { FaChevronDown } from "react-icons/fa";
-import { Collaboration, Pagination, Card, Divider } from "ui";
+import {
+  Collaboration,
+  Divider,
+  useSearchFilters,
+  PaginationWrapper,
+  ShopsAndServicesRecommendationsList,
+} from "ui";
 import { useTranslation } from "react-i18next";
-import { shopRouting } from "uris";
+import { useRouting } from "routing";
+import { usePagination } from "hooks";
 
 export const HomeView: React.FC = () => {
   const { t } = useTranslation();
-  const router = useRouter();
-
-  function handleNavToShop(shopId: number) {
-    router.push(shopRouting.shopPage + `/${shopId}`);
-  }
 
   return (
     <>
@@ -82,19 +83,7 @@ export const HomeView: React.FC = () => {
           </button>
         </div>
 
-        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {[...Array(12)].map((_, i: number) => (
-            <Card
-              onShopClick={() => handleNavToShop(i)}
-              id={String(i)}
-              key={i}
-              name="Shop Name"
-              imgUrl="/shop.jpeg"
-            />
-          ))}
-        </div>
-
-        <Pagination maxPages={1} />
+        <ShopsAndServicesRecommendationsList />
 
         <Divider />
 

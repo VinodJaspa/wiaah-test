@@ -10,17 +10,23 @@ import { VehicleSearchData } from "api";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 export interface VehicleSearchCardProps extends VehicleSearchData {
-  showTotal: boolean;
+  showTotal?: boolean;
 }
 
 export const VehicleSearchCard: React.FC<VehicleSearchCardProps> = (props) => {
-  const { name, pricePerDay, thumbnail, vehicleProps, showTotal } = props;
+  const {
+    name,
+    pricePerDay,
+    thumbnail,
+    vehicleProps,
+    showTotal = false,
+  } = props;
   const { visit } = useRouting();
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4 w-full">
       <div className="w-full">
-        <AspectRatio className="group" ratio={1}>
+        <AspectRatio className="group" ratio={3 / 4}>
           <img
             className="w-full h-full rounded object-cover"
             src={thumbnail}

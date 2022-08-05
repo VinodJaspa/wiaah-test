@@ -12,9 +12,11 @@ const template: ComponentStory<typeof HealthCenterCard> = (args) => (
   <HealthCenterCard {...args} />
 );
 
-export const Default: { args: HealthCenterCardProps } = template.bind({});
+export const Default = template.bind({});
 Default.args = {
   centerData: {
+    id: "123",
+    rate: randomNum(15),
     location: {
       address: "Boulvard James-Fazy 4",
       city: "Geneve",
@@ -24,6 +26,8 @@ Default.args = {
       },
       country: "france",
       postalCode: 1201,
+      countryCode: "CHF",
+      state: "Geneve",
     },
     name: "Dr Charlene Kasaven",
     photo:

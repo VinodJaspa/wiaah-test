@@ -4,3 +4,6 @@ export * from "./Vehicle";
 export * from "./Hotels";
 export * from "./Resturant";
 export * from "./common";
+export * from "./BeautyCenter";
+export * from "./Checkout";
+export * from "./BookConfirmation";

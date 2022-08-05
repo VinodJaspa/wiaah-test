@@ -10,11 +10,13 @@ export type ServicesRoutesType = {
     props: Record<string, any>,
     serviceType: string
   ) => RoutesType;
+  visitServiceTypeOnMap: (serviceType: string) => RoutesType;
   visitServiceLocationSearchResults: (
     serviceType: string,
     location: string
   ) => RoutesType;
   visitServiceSearch: (props: Record<string, any>) => RoutesType;
+  visitServiceCheckout: () => RoutesType;
 };
 
 export const ServicesRoutes: RoutesType = {
@@ -43,6 +45,14 @@ export const ServicesRoutes: RoutesType = {
     const serviceId = this.extractServiceId(props);
     if (!serviceId) return this;
 
+    return this.search()
+      .services()
+      .serviceType(serviceType)
+      .onMap()
+      .id(serviceId);
+  },
+
+  visitServiceTypeOnMap(serviceType) {
     return this.search().services().serviceType(serviceType).onMap();
   },
   visitServiceLocationSearchResults(serviceType, location) {
@@ -55,5 +65,9 @@ export const ServicesRoutes: RoutesType = {
     const serviceSlug = props["slug"];
     if (!serviceSlug) return this;
     return this.search().services().serviceType(serviceSlug);
+  },
+
+  visitServiceCheckout() {
+    return this.checkout().service();
   },
 } as RoutesType;

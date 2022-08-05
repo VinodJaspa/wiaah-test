@@ -15,7 +15,7 @@ import {
 import { useRouting } from "routing";
 
 export interface ResturantRecommendedCardProps extends ResturantMetaDataType {
-  minimal: boolean;
+  minimal?: boolean;
 }
 
 export const ResturantRecommendedCard: React.FC<
@@ -32,14 +32,14 @@ export const ResturantRecommendedCard: React.FC<
     discount,
     tags,
     id,
-    minimal,
+    minimal = false,
   } = props;
 
   const { visit } = useRouting();
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-2 w-full">
-      <AspectRatio className="w-full group" ratio={1}>
+      <AspectRatio className="w-full group" ratio={3 / 4}>
         <ImageSlider images={thumbnails} />
         {isGoodDeal ? (
           <span className="px-2 flex gap-1 items-center bg-slate-200 absolute top-4 left-4">

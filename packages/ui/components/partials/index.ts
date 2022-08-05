@@ -63,3 +63,7 @@ export * from "./PriceLevelDisplay";
 export * from "./AspectRatioImage";
 export * from "./UnDiscountedPriceDisplay";
 export * from "./FlagIcon";
+export * from "./RateTextPresentation";
+export * from "./CashbackBadge";
+export * from "./TimeRangeDisplay";
+export * from "./CountInput";

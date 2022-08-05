@@ -37,93 +37,70 @@ export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
   return (
     <BoxShadow>
       <div className="bg-white">
-        <Padding X={{ value: 2 }} Y={{ value: 1 }}>
-          <FlexStack
-            alignItems="start"
-            direction="vertical"
-            verticalSpacingInRem={1}
-          >
-            <div className="flex w-full items-center justify-between">
-              <span id="PaymentTitle" className="text-3xl leading-loose">
-                {t("payment", "Payment")}
-              </span>
-              <div className="flex h-12 items-center gap-2">
-                <img className="h-full" src="/visa.svg" />
-                <img className="h-full" src="/mastercard.svg" />
-                <img className="h-full" src="/amex.svg" />
-                <img className="h-full" src="/discover.png" />
-                <img className="h-full" src="/american_express.png" />
-              </div>
+        <div className="flex flex-col items-start gap-4 p-4">
+          <div className="flex w-full items-center justify-between">
+            <span id="PaymentTitle" className="text-3xl leading-loose">
+              {t("payment", "Payment")}
+            </span>
+            <div className="flex h-12 items-center gap-2">
+              <img className="h-full" src="/visa.svg" />
+              <img className="h-full" src="/mastercard.svg" />
+              <img className="h-full" src="/amex.svg" />
+              <img className="h-full" src="/discover.png" />
+              <img className="h-full" src="/american_express.png" />
             </div>
-            <Formik
-              validationSchema={schema}
-              initialValues={{
-                cardNumber: "",
-                expiryDate: "",
-                cvv: "",
-              }}
-              onSubmit={(res) => onSuccess && onSuccess(res)}
-            >
-              {({ errors, touched }) => (
-                <Form className="w-full">
-                  <FlexStack
-                    fullWidth
-                    alignItems="end"
-                    verticalSpacingInRem={1}
-                    direction="vertical"
-                  >
-                    <FlexStack
-                      fullWidth
-                      verticalSpacingInRem={0.5}
-                      direction="vertical"
-                    >
-                      <span>{t("card_number", "Card Number")}</span>
+          </div>
+          <Formik
+            validationSchema={schema}
+            initialValues={{
+              cardNumber: "",
+              expiryDate: "",
+              cvv: "",
+            }}
+            onSubmit={(res) => onSuccess && onSuccess(res)}
+          >
+            {({ errors, touched }) => (
+              <Form className="w-full">
+                <div className="w-full items-end gap-4 flex flex-col">
+                  <div className="w-full flex flex-col gap-2">
+                    <span>{t("card_number", "Card Number")}</span>
+                    <FormikInput
+                      placeholder="1234...14"
+                      id="CardNumberInput"
+                      name="cardNumber"
+                    />
+                  </div>
+                  <div className="w-full grid grid-cols-2 gap-4">
+                    <div className="w-full flex flex-col gap-2">
+                      <span>{t("expiry_date", "Expiry Date")}</span>
                       <FormikInput
-                        placeholder="1234...14"
-                        id="CardNumberInput"
-                        name="cardNumber"
+                        id="CardExpiryDateInput"
+                        placeholder="MM/YY"
+                        name="expiryDate"
                       />
-                    </FlexStack>
-                    <Grid fullWidth cols={2} colsGap={{ value: 1 }}>
-                      <FlexStack
+                    </div>
+                    <div className="w-full gap-2 flex flex-col">
+                      <span>{t("cvc/cvv", "CVC/CVV")}</span>
+                      <FormikInput
+                        id="CardCvvInput"
+                        placeholder="1234"
+                        name="cvv"
                         fullWidth
-                        verticalSpacingInRem={0.5}
-                        direction="vertical"
-                      >
-                        <span>{t("expiry_date", "Expiry Date")}</span>
-                        <FormikInput
-                          id="CardExpiryDateInput"
-                          placeholder="MM/YY"
-                          name="expiryDate"
-                        />
-                      </FlexStack>
-                      <FlexStack
-                        fullWidth
-                        verticalSpacingInRem={0.5}
-                        direction="vertical"
-                      >
-                        <span>{t("cvc/cvv", "CVC/CVV")}</span>
-                        <FormikInput
-                          id="CardCvvInput"
-                          placeholder="1234"
-                          name="cvv"
-                          fullWidth
-                        />
-                      </FlexStack>
-                    </Grid>
-                    <Button
-                      id="PayNowButton"
-                      className="bg-black w-full px-8 py-2"
-                      type="submit"
-                    >
-                      {t("pay_now", "Pay now")}
-                    </Button>
-                  </FlexStack>
-                </Form>
-              )}
-            </Formik>
-          </FlexStack>
-        </Padding>
+                      />
+                    </div>
+                  </div>
+                  <Button
+                    id="PayNowButton"
+                    className="bg-black w-full px-8 py-2"
+                    type="submit"
+                  >
+                    {t("pay_now", "Pay now")}
+                  </Button>
+                </div>
+              </Form>
+            )}
+          </Formik>
+        </div>
       </div>
     </BoxShadow>
   );

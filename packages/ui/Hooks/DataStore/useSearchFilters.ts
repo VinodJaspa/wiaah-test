@@ -1,10 +1,17 @@
-import { SearchFilterValue } from "api";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { FormatedSearchableFilter, SearchFilterValue } from "api";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ServicesSearchFiltersState } from "state";
 import { filtersTokens } from "../../constants";
 
+const filtersKeys = {
+  propertyName: "propertyName",
+  searchQuery: "searchQuery",
+  location: "location",
+  serviceType: "serviceType",
+} as const;
+
 export const useSearchFilters = () => {
-  const [filters, setFilters] = useRecoilState(ServicesSearchFiltersState);
+  const filters = useRecoilValue(ServicesSearchFiltersState);
 
   const getFiltersSearchQuery: string | null =
     typeof filters[filtersTokens.searchQuery] === "string"
@@ -21,30 +28,42 @@ export const useSearchFilters = () => {
       ? (filters[filtersTokens.serviceType] as string)
       : null;
 
-  const addFilter = (filter: [string, SearchFilterValue]) => {
-    setFilters((state) => {
-      return { ...state, [filter[0]]: filter[1] };
-    });
-  };
+  function getFilter(
+    filter: (key: typeof filtersKeys) => keyof typeof filtersKeys
+  ): SearchFilterValue | null {
+    const key = filter(filtersKeys);
+    return filters[key] ?? null;
+  }
 
   return {
     filters,
-    setFilters,
-    addFilter,
+    getFilter,
     getFiltersSearchQuery,
     getServiceType,
     getLocationFilterQuery,
+    filtersKeys,
   };
 };
 
 export const useMutateSearchFilters = () => {
   const setFilters = useSetRecoilState(ServicesSearchFiltersState);
 
-  const addFilter = (filter: [string, SearchFilterValue]) => {
-    setFilters((state) => {
-      return { ...state, [filter[0]]: filter[1] };
-    });
+  const addFilter = (
+    filter:
+      | [string, SearchFilterValue]
+      | ((keys: typeof filtersKeys) => [keyof typeof filtersKeys, any])
+  ) => {
+    if (typeof filter === "function") {
+      const [key, value] = filter(filtersKeys);
+      setFilters((state) => {
+        return { ...state, [key]: value };
+      });
+    } else {
+      setFilters((state) => {
+        return { ...state, [filter[0]]: filter[1] };
+      });
+    }
   };
 
-  return { addFilter };
+  return { addFilter, setFilters, filtersKeys };
 };

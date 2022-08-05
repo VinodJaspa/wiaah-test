@@ -23,15 +23,15 @@ export const Rate: React.FC<RateProps> = ({
       className={`${className} flex text-primary items-center gap-2`}
     >
       {[...Array(outOf)].map((_, i) => (
-        <>
+        <React.Fragment key={i}>
           {i < Math.floor(rating) ? (
             <BsStarFill key={i} />
           ) : half && allowHalf && Math.floor(rating) === i ? (
-            <BsStarHalf />
+            <BsStarHalf key={i} />
           ) : (
             <BsStar key={i} />
           )}
-        </>
+        </React.Fragment>
       ))}
     </div>
   );

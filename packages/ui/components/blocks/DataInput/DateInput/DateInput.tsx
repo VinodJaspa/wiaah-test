@@ -1,7 +1,7 @@
 import React from "react";
 import { MdArrowLeft, MdArrowRight } from "react-icons/md";
 import { DateRange, HtmlDivProps } from "types";
-import { getTimeInAmPm, PassPropsToFnOrElem } from "utils";
+import { getTimeInAmPm, MaybeFn, PassPropsToFnOrElem } from "utils";
 
 export interface DateMonth {
   name: string;
@@ -121,7 +121,7 @@ export interface DateInputProps extends HtmlDivProps {
   onDaySelect?: (UTCDateString: string) => any;
   range?: boolean;
   onRangeSelect?: (range: DateRange) => any;
-  dayComponent?: React.ReactNode;
+  dayComponent?: MaybeFn<DateDayComponentProps>;
 }
 export const DateInput: React.FC<DateInputProps> = ({
   onDaySelect,

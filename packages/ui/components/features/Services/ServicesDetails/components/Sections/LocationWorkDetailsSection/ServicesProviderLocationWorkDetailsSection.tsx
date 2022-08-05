@@ -125,13 +125,15 @@ export const ServiceWorkingHoursSection: React.FC<
 
   const workingHoursRef = usePublishRef("workingHours");
   return (
-    <>
-      <p ref={workingHoursRef ?? undefined}>{t("Working hours")}</p>
-      <div>
+    <div className="w-full">
+      <p className="text-lg font-bold" ref={workingHoursRef ?? undefined}>
+        {t("Working hours")}
+      </p>
+      <div className="flex flex-col">
         {workingDays.map((day, i) => (
           <div
             key={i}
-            className={`flex justify-between rounded border-t-[1px] border-x-[1px] py-2`}
+            className={`flex justify-between w-full rounded border-t-[1px] border-x-[1px] py-2`}
           >
             <p className="font-bold">{t(day.weekDay)}</p>
             <p className="whitespace-nowrap">
@@ -142,7 +144,7 @@ export const ServiceWorkingHoursSection: React.FC<
           </div>
         ))}
       </div>
-    </>
+    </div>
   );
 };
 
@@ -207,7 +209,7 @@ export const ServiceReachOutSection: React.FC<ServiceReachOutSectionProps> = ({
   const { t } = useTranslation();
   const contactRef = usePublishRef("contact");
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 w-full">
       <p className="font-bold text-lg">{t("Contact")}</p>
       <p ref={contactRef ?? undefined}>{t("Address")}</p>
       <HStack>

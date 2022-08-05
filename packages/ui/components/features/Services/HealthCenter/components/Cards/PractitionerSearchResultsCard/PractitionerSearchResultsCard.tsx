@@ -16,7 +16,7 @@ export const PractitionerSearchResultsCard: React.FC<
   const { t } = useTranslation();
   return (
     <div className="flex w-full flex-col gap-2 rounded overflow-hidden">
-      <AspectRatio className="group" ratio={1}>
+      <AspectRatio className="group" ratio={3 / 4}>
         <img
           className="w-full h-full object-cover"
           src={practitioner.photo}

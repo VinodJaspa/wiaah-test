@@ -1,6 +1,7 @@
 import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
 import {
   ShowMapButton,
   Drawer,
@@ -10,6 +11,12 @@ import {
   DrawerOverlay,
   OpenFilterIcon,
   CloseIcon,
+  SearchIcon,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  useMutateSearchFilters,
+  useSearchFilters,
 } from "ui";
 
 export interface ServicesSearchResultsFiltersSidebarProps {
@@ -19,9 +26,22 @@ export interface ServicesSearchResultsFiltersSidebarProps {
 export const ServicesSearchResultsFiltersSidebar: React.FC<
   ServicesSearchResultsFiltersSidebarProps
 > = ({ onShowOnMap, children }) => {
+  const { getServiceType } = useSearchFilters();
+  const { addFilter } = useMutateSearchFilters();
+  const { visit } = useRouting();
   const [open, setOpen] = React.useState<boolean>(false);
   const { isTablet } = useResponsive();
   const { t } = useTranslation();
+
+  const handleOnMapClick = () => {
+    if (onShowOnMap) {
+      onShowOnMap();
+    }
+    if (getServiceType) {
+      visit((routes) => routes.visitServiceTypeOnMap(getServiceType));
+    }
+  };
+
   return (
     <>
       {isTablet ? (
@@ -48,8 +68,25 @@ export const ServicesSearchResultsFiltersSidebar: React.FC<
           <div className="flex flex-col gap-4 min-w-[min(15rem,100%)] h-full overflow-scroll md:overflow-hidden">
             <ShowMapButton
               data-testid="FiltersSideBarShowMapButton"
-              onClick={() => onShowOnMap && onShowOnMap()}
+              onClick={handleOnMapClick}
             />
+            <div className="flex flex-col ">
+              <p className="font-bold text-lg">
+                {t("Search by property name")}
+              </p>
+              <InputGroup>
+                <InputLeftElement>
+                  <SearchIcon />
+                </InputLeftElement>
+                <Input
+                  onChange={(e) =>
+                    addFilter((keys) => [keys.propertyName, e.target.value])
+                  }
+                  placeholder="e.g. Best Western"
+                />
+              </InputGroup>
+            </div>
+
             {children}
           </div>
         </DrawerContent>

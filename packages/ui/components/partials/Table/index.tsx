@@ -50,9 +50,10 @@ export const TableContainer: React.FC<TableContainer> = ({
   const { isMobile } = useResponsive();
   return (
     <div
-      className={`${className || ""} overflow-x-scroll ${
-        isMobile ? "" : "noscroll"
-      }`}
+      style={{
+        overflowX: "scroll",
+      }}
+      className={`${className || ""} ${isMobile ? "" : "thinScroll"}`}
       {...props}
     />
   );

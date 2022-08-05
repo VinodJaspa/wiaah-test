@@ -8,3 +8,5 @@ export * from "./healthCenter";
 export * from "./general";
 export * from "./Vehicle";
 export * from "./BeautyCenter";
+export * from "./checkout";
+export * from "./BookConfirmation";

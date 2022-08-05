@@ -27,10 +27,10 @@ const filtered: NextPage = () => {
   const serviceType = ExtractServiceTypeFromQuery(router.query);
   const searchLocation = ExtractParamFromQuery(router.query, "location");
   if (ServicesViewsList.findIndex((list) => list.slug === serviceType) > -1) {
-    addFilter([SERVICESTYPE_INDEXKEY, serviceType]);
+    addFilter((keys) => [keys.serviceType, serviceType]);
   }
   if (typeof searchLocation === "string") {
-    addFilter([filtersTokens.locationSearchQuery, searchLocation]);
+    addFilter((keys) => [keys.location, searchLocation]);
   }
 
   return (

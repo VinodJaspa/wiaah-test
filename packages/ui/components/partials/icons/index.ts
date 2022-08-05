@@ -56,3 +56,4 @@ export * from "./BarGlassIcon";
 export * from "./DeskIcon";
 export * from "./MinusIcon";
 export * from "./PlusIcon";
+export * from "./ExclamationCircle";

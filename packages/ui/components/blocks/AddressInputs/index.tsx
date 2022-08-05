@@ -76,9 +76,9 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
             {({ values, setFieldValue }) => {
               return (
                 <Form>
-                  <div className="gap-1 flex flex-col">
-                    <div className="text-3xl capitalize">
-                      {t("delivery_country", "delivery country")}
+                  <div className="gap-4 flex flex-col">
+                    <div className="text-xl capitalize">
+                      {t("Delivery country")}
                     </div>
                     <SearchFilterInput
                       id="DeliverySearchInput"
@@ -113,12 +113,12 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                     />
                   </div>
                   <Grid cols={1}>
-                    <div className="text-3xl capitalize">
-                      {t("delivery_address", "delivery address")}
+                    <div className="text-xl capitalize">
+                      {t("Delivery address")}
                     </div>
                     <Spacer />
                     <FlexStack direction="vertical">
-                      <BoldText>{t("first_name", "First Name")}</BoldText>
+                      <BoldText>{t("First Name")}</BoldText>
                       <Input
                         id="FirstNameInput"
                         onChange={(e) =>
@@ -132,7 +132,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                       />
                     </FlexStack>
                     <FlexStack direction="vertical">
-                      <BoldText>{t("last_name", "Last Name")}</BoldText>
+                      <BoldText>{t("Last Name")}</BoldText>
                       <Input
                         id="LastNameInput"
                         onChange={(e) =>
@@ -146,7 +146,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                       />
                     </FlexStack>
                     <FlexStack direction="vertical">
-                      <BoldText>{t("zip_code", "Zip Code")}</BoldText>
+                      <BoldText>{t("Zip Code")}</BoldText>
                       <Input
                         id="ZipCodeInput"
                         onChange={(e) =>
@@ -160,7 +160,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                       />
                     </FlexStack>
                     <FlexStack direction="vertical">
-                      <BoldText>{t("contact", "Contact")}</BoldText>
+                      <BoldText>{t("Contact")}</BoldText>
                       <Input
                         id="ContactInput"
                         onChange={(e) =>
@@ -176,9 +176,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                     <Spacer />
                     {!manual && (
                       <>
-                        <BoldText>
-                          {t("address_finder", "Address finder")}
-                        </BoldText>
+                        <BoldText>{t("Address finder")}</BoldText>
                         <SearchFilterInput
                           id="AddressFinderInput"
                           icon={() => <FaSearch />}
@@ -194,7 +192,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                     {manual && (
                       <>
                         <FlexStack direction="vertical">
-                          <BoldText>{t("address", "Address")}</BoldText>
+                          <BoldText>{t("Address")}</BoldText>
                           <Input
                             id="AddressInput"
                             onChange={(e) =>
@@ -208,7 +206,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                           />
                         </FlexStack>
                         <FlexStack direction="vertical">
-                          <BoldText>{t("address_2", "Address 2")}</BoldText>
+                          <BoldText>{t("Address 2")}</BoldText>
                           <Input
                             id="Address2Input"
                             onChange={(e) =>
@@ -236,7 +234,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                           />
                         </FlexStack>
                         <FlexStack direction="vertical">
-                          <BoldText>{t("country", "Country")}</BoldText>
+                          <BoldText>{t("Country")}</BoldText>
                           <Input
                             id="CountryInput"
                             onChange={(e) =>
@@ -258,10 +256,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                       onChange={(e) => setManual(e.target.checked)}
                       checked={manual}
                       variant="box"
-                      label={`${t(
-                        "add_address_manually",
-                        "Add address manually"
-                      )}?`}
+                      label={`${t("Add address manually")}?`}
                     />
                   </Grid>
                   <Spacer />
@@ -276,10 +271,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                       checked={input.defaultDeliveryAddress}
                       id="SetDefaultDeliveryAddressInput"
                       variant="box"
-                      label={t(
-                        "set_default_delivery_address",
-                        "Set as default delivery address"
-                      )}
+                      label={t("Set as default delivery address")}
                     />
                     <FilterInput
                       id="SetDefaultBillingAddressInput"
@@ -291,17 +283,14 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                           defaultBillingAddress: e.target.checked,
                         }))
                       }
-                      label={t(
-                        "set_default_billing_address",
-                        "Set as default billing address"
-                      )}
+                      label={t("Set as default billing address")}
                     />
                   </FlexStack>
                   <FlexStack horizontalSpacingInRem={1} justify="end" fullWidth>
                     <Button id="AddAddressButton" onClick={handleSave}>
                       {edit
-                        ? t("save_address", "save address".toUpperCase())
-                        : t("add_address", "add address".toUpperCase())}
+                        ? t("save address".toUpperCase())
+                        : t("add address".toUpperCase())}
                     </Button>
                     {edit && (
                       <Button
@@ -309,7 +298,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                         id="CancelAddAddressButton"
                         onClick={handleCancel}
                       >
-                        {t("cancel", "cancel".toUpperCase())}
+                        {t("cancel".toUpperCase())}
                       </Button>
                     )}
                   </FlexStack>

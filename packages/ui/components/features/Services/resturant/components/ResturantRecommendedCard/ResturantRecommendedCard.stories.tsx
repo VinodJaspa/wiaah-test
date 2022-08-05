@@ -1,9 +1,9 @@
-import { randomNum, storybookCardsTitle } from "utils";
+import { randomNum, storybookRestaurantCardsTitle } from "utils";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { ResturantRecommendedCard } from "./ResturantRecommendedCard";
 
 export default {
-  title: storybookCardsTitle + "ResturantRecommendedCard",
+  title: storybookRestaurantCardsTitle + "ResturantRecommendedCard",
   component: ResturantRecommendedCard,
 } as ComponentMeta<typeof ResturantRecommendedCard>;
 
@@ -29,6 +29,8 @@ Default.args = {
       lat: 43.546,
       lng: 65.424,
     },
+    countryCode: "CH",
+    state: "Geneve",
   },
   discount: {
     amount: 50,

@@ -2,6 +2,9 @@ const cardsTitle = "Cards /";
 const inputsTitle = "Inputs /";
 const listTitle = "Lists /";
 const miscTitle = "Misc /";
+const dataDisplayTitle = "Data Display /";
+const headersTitle = "Headers /";
+const sectionsTitle = "Sections /";
 
 export const storybookPartailsTitle = "UI / partials / ";
 export const storybookBlocksTitle = "UI / blocks / ";
@@ -41,25 +44,44 @@ export const storybookHealthCenterCardsTitle =
   storybookHealthCenterTitle + cardsTitle;
 export const storybookHealthCenterInputsTitle =
   storybookHealthCenterTitle + inputsTitle;
+export const storybookHealthCenterHeaders =
+  storybookHeadersTitle + headersTitle;
 
 // other services
 export const storybookServicesTitle = storybookFeaturesTitle + "Services /";
 export const storybookOtherServicesCardsTitle =
   storybookServicesTitle + cardsTitle;
+export const storybookOtherServicesDataDisplayTitle =
+  storybookServicesTitle + dataDisplayTitle;
+export const storybookOtherServicesInputTitle =
+  storybookServicesTitle + inputsTitle;
 
 // Vehicle service
 
 export const storybookVehicleTitle = storybookFeaturesTitle + "Vehicle /";
-export const storybookVehicleInputstitle = storybookVehicleTitle + inputsTitle;
+export const storybookVehicleInputsTitle = storybookVehicleTitle + inputsTitle;
 export const storybookVehicleCardsTitle = storybookVehicleTitle + cardsTitle;
+export const storybookVehicleListsTitle = storybookVehicleTitle + listTitle;
 
 // hotel service
 export const storybookHotelTitle = storybookFeaturesTitle + "Hotel /";
-export const storybookHotelCardsTitle = storybookHotelTitle + "Cards /";
+export const storybookHotelCardsTitle = storybookHotelTitle + cardsTitle;
+export const storybookHotelInputTitle = storybookHotelTitle + inputsTitle;
+
+// Restaurant service
+export const storybookRestaurantTitle = storybookFeaturesTitle + "Restaurant /";
+export const storybookRestaurantCardsTitle =
+  storybookRestaurantTitle + cardsTitle;
+export const storybookRestaurantListsTitle =
+  storybookRestaurantTitle + listTitle;
+export const storybookRestaurantSectionsTitle =
+  storybookRestaurantTitle + sectionsTitle;
 
 // beauty center service
 
 export const storybookBeautyCenterTitle =
   storybookFeaturesTitle + "Beauty Center /";
 export const storybookBeautyCenterCardsTitle =
-  storybookBeautyCenterTitle + "Cards /";
+  storybookBeautyCenterTitle + cardsTitle;
+export const storybookBeautyCenterListsTitle =
+  storybookBeautyCenterTitle + listTitle;
