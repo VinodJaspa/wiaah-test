@@ -33,6 +33,6 @@ export const PriceConverter = ({
   return currency
     ? `${symbol ? currency.currencySymbol : ""}${(
         amount * currency.currencyRateToUsd
-      ).toFixed(2)} ${!symbol ? currency.currencyCode : ""}`
-    : `${symbol ? "$" : ""}${amount.toFixed(2)} ${symbol ? "" : "usd"}`;
+      ).toFixed(2)}${!symbol ? ` ${currency.currencyCode}` : ""}`
+    : `${symbol ? "$" : ""}${amount.toFixed(2)}${symbol ? "" : " usd"}`;
 };

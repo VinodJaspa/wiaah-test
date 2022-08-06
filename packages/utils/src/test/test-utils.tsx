@@ -1,21 +1,5 @@
-import React, { FC, ReactElement } from "react";
 import { act } from "react-dom/test-utils";
 
-// const AllTheProviders: FC = ({ children }) => {
-//   return (
-//     <RecoilRoot>
-//       <ChakraProvider theme={theme}>{children}</ChakraProvider>
-//     </RecoilRoot>
-//   );
-// };
-
-// const customRender = (
-//   ui: ReactElement,
-//   options?: Omit<RenderOptions, "wrapper">
-// ) => render(ui, { wrapper: AllTheProviders, ...options });
-
-// export * from "@testing-library/react";
-// export { customRender as render };
 export function setTestid(id: string) {
   return `data-testid="${id}"`;
 }
@@ -25,6 +9,22 @@ export function getTestId(id: string): string {
 }
 export function getRoleId(id: string): string {
   return `[role='${id}']`;
+}
+
+export function containsClassName(
+  className: string,
+  findClassName: string
+): boolean {
+  const findIdx = className.indexOf(findClassName);
+  const findLeng = findClassName.length;
+  const letterBefore = findIdx < 1 ? undefined : className.at(findIdx - 1);
+  const letterAfter = className.at(findIdx + findLeng);
+
+  const beforeCheck =
+    typeof letterBefore === "undefined" || letterBefore === " ";
+  const afterCheck = typeof letterAfter === "undefined" || letterAfter === " ";
+
+  return beforeCheck && afterCheck;
 }
 
 export const waitFor = (

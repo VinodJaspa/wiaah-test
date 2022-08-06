@@ -1,3 +1,5 @@
+import { products } from "./index";
+import { baseUri } from "uris";
 import { t } from "i18next";
 import {
   AffiliationOfferCardInfo,
@@ -9,6 +11,7 @@ import {
   ShopSocialProfileInfo,
   SubscribersUserInfo,
 } from "types";
+import { randomNum } from "utils";
 
 export const SocialProfileInfo: ShopSocialProfileInfo = {
   id: "1",
@@ -159,10 +162,6 @@ export const PostCardPlaceHolder: PostCardInfo = {
     public: true,
   },
 };
-
-import { products } from "./index";
-import { baseUri } from "uris";
-import { randomNum } from "utils";
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 
 export const getRandomImage = (): string =>
