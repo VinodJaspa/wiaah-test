@@ -22,6 +22,7 @@ export const getShopsMapSearchDataFetcher = async (
 ): Promise<ShopsMapSearchDataApiResponse> => {
   const res: AsyncReturnType<typeof getShopsMapSearchDataFetcher> = {
     data: [...Array(pagination.take)].map(() => ({
+      id: "123",
       name: "shop name",
       rate: randomNum(5),
       categories: [{ icon: "/", name: "electronics" }],

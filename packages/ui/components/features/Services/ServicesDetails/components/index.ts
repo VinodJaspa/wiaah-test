@@ -1,5 +1,5 @@
 export * from "./Headers";
 export * from "./Sections";
 export * from "./Forms";
-export * from "./Presentations";
+export * from "./DataDisplay";
 export * from "./Inputs";

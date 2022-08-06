@@ -42,7 +42,7 @@ export const ServicesRoutes: RoutesType = {
   },
 
   visitServiceOnMap(props, serviceType) {
-    const serviceId = this.extractServiceId(props);
+    const serviceId = props["id"];
     if (!serviceId) return this;
 
     return this.search()

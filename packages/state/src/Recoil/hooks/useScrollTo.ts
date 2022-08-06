@@ -46,6 +46,8 @@ type PublishableRefs = {
   polices: string;
   reviews: string;
   doctors: string;
+  workingHours: string;
+  localization: string;
 };
 
 const publishableRefs: Record<keyof PublishableRefs, keyof PublishableRefs> = {
@@ -58,6 +60,8 @@ const publishableRefs: Record<keyof PublishableRefs, keyof PublishableRefs> = {
   reviews: "reviews",
   rooms: "rooms",
   doctors: "doctors",
+  workingHours: "workingHours",
+  localization: "localization",
 };
 
 export const usePublishRef = (

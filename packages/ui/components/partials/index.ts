@@ -67,3 +67,5 @@ export * from "./RateTextPresentation";
 export * from "./CashbackBadge";
 export * from "./TimeRangeDisplay";
 export * from "./CountInput";
+export * from "./CaruoselLeftArrow";
+export * from "./CaruoselRightArrow";
