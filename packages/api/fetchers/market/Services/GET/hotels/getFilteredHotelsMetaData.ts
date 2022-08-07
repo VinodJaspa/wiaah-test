@@ -1,4 +1,3 @@
-import { getRandomImage } from "placeholder";
 import {
   FormatedSearchableFilter,
   QueryPaginationInputs,
@@ -51,7 +50,7 @@ export const getFilteredHotelsMetaData = async (
       provider: "Crowne Plaza",
       rate: 4.8,
       serviceClass: 3.5,
-      thumbnail: getRandomImage(),
+      thumbnail: "/place-1.jpg",
       description:
         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, deserunt odio quisquam qui sit corrupti ab est voluptas sunt quis nesciunt facilis a debitis eius mollitia quasi eum beatae autem.",
       reviews: randomNum(500),

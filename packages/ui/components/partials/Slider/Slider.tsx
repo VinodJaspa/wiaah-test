@@ -1,6 +1,7 @@
 import React from "react";
 import { HtmlDivProps } from "types";
-import { runIfFn } from "utils";
+import * as utils from "utils";
+import { setTestid } from "utils";
 
 export type SliderVariants = "vertical" | "horizontal";
 
@@ -16,7 +17,8 @@ export interface SliderProps {
   arrowLeftProps?: HtmlDivProps;
   arrowRightProps?: HtmlDivProps;
   containerProps?: HtmlDivProps;
-  currentImgIdx?: number;
+  currentItemIdx?: number;
+  onSliderChange?: (currentIdx: number, visibleItemsIdx: number[]) => any;
 }
 
 export const Slider: React.FC<SliderProps> = ({
@@ -32,17 +34,27 @@ export const Slider: React.FC<SliderProps> = ({
   arrowRightProps,
   childsWrapperProps,
   containerProps,
-  currentImgIdx,
+  currentItemIdx,
+  onSliderChange,
 }) => {
   const [currComponent, setCurrComponent] = React.useState<number>(0);
   const childrenCount = React.Children.count(children);
   const sliderWidth = (100 * childrenCount) / itemsCount;
 
   React.useEffect(() => {
-    if (typeof currentImgIdx === "number") {
-      setCurrComponent(currentImgIdx);
+    if (onSliderChange) {
+      onSliderChange(
+        currComponent,
+        [...Array(itemsCount)].map((_, i) => currComponent + i)
+      );
     }
-  }, [currentImgIdx]);
+  }, [currComponent]);
+
+  React.useEffect(() => {
+    if (typeof currentItemIdx === "number") {
+      setCurrComponent(currentItemIdx);
+    }
+  }, [currentItemIdx]);
 
   function handlePrev() {
     setCurrComponent((state) => {
@@ -91,13 +103,13 @@ export const Slider: React.FC<SliderProps> = ({
             onClick={() => handlePrev()}
             className="absolute left-1/2 top-0 -translate-x-1/2"
           >
-            {runIfFn(upArrowComponent)}
+            {utils.runIfFn(upArrowComponent)}
           </div>
           <div
             onClick={() => handleNext()}
             className="absolute left-1/2 bottom-0 -translate-x-1/2"
           >
-            {runIfFn(downArrowComponent)}
+            {utils.runIfFn(downArrowComponent)}
           </div>
         </div>
       );
@@ -136,21 +148,23 @@ export const Slider: React.FC<SliderProps> = ({
           </div>
           <div
             onClick={() => handlePrev()}
+            {...setTestid("SliderPreviousItemBtn")}
             {...arrowLeftProps}
             className={`${
               arrowLeftProps?.className || ""
             } absolute left-0 top-1/2 -translate-y-1/2`}
           >
-            {runIfFn(leftArrowComponent)}
+            {utils.runIfFn(leftArrowComponent)}
           </div>
           <div
             onClick={() => handleNext()}
+            {...setTestid("SliderNextItemBtn")}
             {...arrowRightProps}
             className={`${
               arrowRightProps?.className || ""
             } absolute right-0 top-1/2 -translate-y-1/2`}
           >
-            {runIfFn(rightArrowComponent)}
+            {utils.runIfFn(rightArrowComponent)}
           </div>
         </div>
       );

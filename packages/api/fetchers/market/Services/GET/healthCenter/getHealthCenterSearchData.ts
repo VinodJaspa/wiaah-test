@@ -1,4 +1,3 @@
-import { getRandomImage } from "placeholder";
 import {
   FormatedSearchableFilter,
   InValidDataSchemaError,
@@ -41,7 +40,7 @@ export const getHealthCenterSearchData = async (
 ): Promise<PaginationFetchedData<HealthCenterSearchSuggistionsData>> => {
   const specialties: HealthCenterSpecialty[] = [...Array(50)].map(() => ({
     title: specialtiesPh[randomNum(specialtiesPh.length)],
-    photo: randomNum(10) > 5 ? getRandomImage() : undefined,
+    photo: undefined,
   }));
   const practitioners: HealthCenterPractitioner[] = [...Array(50)].map(
     (_, i) => ({

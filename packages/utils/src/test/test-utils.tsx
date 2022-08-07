@@ -1,7 +1,7 @@
 import { act } from "react-dom/test-utils";
 
-export function setTestid(id: string) {
-  return `data-testid="${id}"`;
+export function setTestid(id: string): object {
+  return { "data-testid": id };
 }
 
 export function getTestId(id: string): string {

@@ -1,4 +1,3 @@
-import React, { FC, ReactElement } from "react";
 import { act } from "react-dom/test-utils";
 
 // const AllTheProviders: FC = ({ children }) => {
@@ -16,8 +15,8 @@ import { act } from "react-dom/test-utils";
 
 // export * from "@testing-library/react";
 // export { customRender as render };
-export function setTestid(id: string) {
-  return `data-testid='${id}'`;
+export function setTestid(id: string): object {
+  return { "data-testid": id };
 }
 
 export function getTestId(id: string): string {

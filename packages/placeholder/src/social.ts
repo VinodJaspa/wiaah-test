@@ -11,7 +11,7 @@ import {
   ShopSocialProfileInfo,
   SubscribersUserInfo,
 } from "types";
-import { randomNum } from "utils";
+const randomNum = (num: number) => num;
 
 export const SocialProfileInfo: ShopSocialProfileInfo = {
   id: "1",
