@@ -5,6 +5,7 @@ import {
   TimeRangeDisplay,
   PriceDisplay,
 } from "ui";
+import { setTestid } from "utils";
 
 export interface BeautyCenterCheckoutCardProps
   extends BeautyCenterCheckoutBookedPropertyData {}
@@ -18,17 +19,17 @@ export const BeautyCenterCheckoutCard: React.FC<
       <ul className="list-disc list-inside">
         {Array.isArray(bookedTreatments)
           ? bookedTreatments.map((treatment, i) => (
-              <li className="flex justify-between w-full">
+              <li
+                {...setTestid("BookedTreatmentItem")}
+                className="flex justify-between w-full"
+              >
                 <div>
                   <p className="list-item">{treatment.title}</p>
                   <TimeRangeDisplay
                     rangeInMinutes={treatment.durationInMinutes}
                   />
                 </div>
-                <PriceDisplay
-                  className="font-bold"
-                  priceObject={{ amount: treatment.price }}
-                />
+                <PriceDisplay className="font-bold" price={treatment.price} />
               </li>
             ))
           : null}

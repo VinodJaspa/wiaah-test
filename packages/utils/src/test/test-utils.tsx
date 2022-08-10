@@ -29,7 +29,7 @@ export function containsClassName(
 
 export const waitFor = (
   callback: () => any,
-  { interval = 50, timeout = 1000 } = {}
+  { interval = 50, timeout = 3000 } = {}
 ) =>
   act(
     () =>

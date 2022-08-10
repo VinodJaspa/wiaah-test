@@ -1,9 +1,9 @@
-import { randomNum, storybookOtherServicesCardsTitle } from "utils";
+import { randomNum, storybookHotelCardsTitle } from "utils";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { HotelCheckoutCard } from "./HotelCheckoutCard";
 
 export default {
-  title: storybookOtherServicesCardsTitle + "ServiceCheckoutCard",
+  title: storybookHotelCardsTitle + "HotelCheckoutCard",
   component: HotelCheckoutCard,
 } as ComponentMeta<typeof HotelCheckoutCard>;
 

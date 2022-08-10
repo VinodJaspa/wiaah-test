@@ -18,7 +18,7 @@ export const Default = template.bind({});
 Default.args = {
   bookedDates: {
     from: new Date(Date.now()).toString(),
-    to: new Date(Date.now()).toString(),
+    to: null,
   },
   rate: randomNum(5),
   refundingRule: {

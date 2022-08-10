@@ -15,7 +15,7 @@ export const Default = template.bind({});
 Default.args = {
   bookedDates: {
     from: new Date(Date.now()).toString(),
-    to: new Date(Date.now()).toString(),
+    to: null,
   },
   rate: randomNum(5),
   refundingRule: {
@@ -36,6 +36,7 @@ Default.args = {
   serviceType: "hotel",
   bookedTreatments: [
     {
+      id: "123",
       category: "Facial",
       title: "Hydro facial with chemical peel",
       durationInMinutes: [30, 60],

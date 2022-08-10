@@ -16,6 +16,7 @@ export const BeautyCenterRecommendedSearchCard: React.FC<
   const { visit } = useRouting();
 
   const { t } = useTranslation();
+
   return (
     <div className="flex flex-col shadow gap-2">
       <AspectRatioImage
@@ -45,7 +46,7 @@ export const BeautyCenterRecommendedSearchCard: React.FC<
         <div className="flex gap-4">
           <Rate rating={rate} />
           <p>
-            {reviews} {t("reviews")}
+            {reviews} {t("review")}
           </p>
         </div>
         <div className="flex gap-4">

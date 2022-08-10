@@ -45,11 +45,12 @@ export const ServiceCheckoutCommonDataValidationSchema = object({
   rateReason: string().required(),
   bookedDates: object({
     from: string().required(),
-    to: string().required(),
+    to: string().nullable(),
   }),
   cashback: CashbackValidationSchema.required(),
   price: number().required(),
   duration: array().of(number().required()).min(1).max(2).optional(),
+  guests: number().nullable(),
 });
 
 export const HotelCheckoutServiceDataValidationSchema =
@@ -71,13 +72,16 @@ export const HotelCheckoutServiceDataValidationSchema =
 export const RestaurantServiceCheckoutDataValidationSchema =
   ServiceCheckoutCommonDataValidationSchema.concat(
     object({
-      bookedMenus: array().of(
-        object({
-          title: string().required(),
-          qty: number().required(),
-          price: number().required(),
-        })
-      ),
+      bookedMenus: array()
+        .of(
+          object({
+            title: string().required(),
+            qty: number().required(),
+            price: number().required(),
+          }).required()
+        )
+        .min(0)
+        .required(),
       guests: number().required(),
     })
   );

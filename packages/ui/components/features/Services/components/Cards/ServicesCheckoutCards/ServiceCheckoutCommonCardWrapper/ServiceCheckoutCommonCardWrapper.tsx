@@ -6,7 +6,6 @@ import { DateDetails } from "utils";
 import {
   AspectRatioImage,
   CashbackBadge,
-  RateTextPresentation,
   ServiceRefundableTypeDescription,
   ExclamationCircleIcon,
   Divider,
@@ -21,24 +20,22 @@ export const ServiceCheckoutCommonCardWrapper: React.FC<
 > = ({
   bookedDates,
   cashback,
-  id,
-  price,
   rate,
   rateReason,
   refundingRule,
   reviews,
-  serviceType,
   thumbnail,
   title,
   children,
   duration,
+  guests,
 }) => {
   const { t } = useTranslation();
   const fromDate = DateDetails(bookedDates.from);
-  const toDate = DateDetails(bookedDates.to);
+  const toDate = DateDetails(bookedDates.to || "");
   const { days } = useDateDiff({
     from: new Date(bookedDates.from),
-    to: new Date(bookedDates.to),
+    to: new Date(bookedDates.to || ""),
   });
 
   return (
@@ -53,7 +50,7 @@ export const ServiceCheckoutCommonCardWrapper: React.FC<
       <div className="flex flex-col gap-4 p-2">
         <div className="flex flex-col">
           <span className="flex gap-1">
-            {`${reviews} ${t("reviews")}`}
+            <p>{`${reviews} ${t("reviews")}`}</p>
             <p className="font-bold">
               {"("}
               {rate}/{5}
@@ -61,7 +58,9 @@ export const ServiceCheckoutCommonCardWrapper: React.FC<
             </p>{" "}
             {/* <RateTextPresentation rate={rate} /> */}
           </span>
-          <p>{`Guests rated this property ${rate}/${5} for ${rateReason}`}</p>
+          <p>{`${t("Guests rated this property")} ${rate}/${5} ${t(
+            "for"
+          )} ${rateReason}`}</p>
         </div>
         <span className="text-red-500 font-semibold flex gap-2 items-center">
           <ServiceRefundableTypeDescription
@@ -70,27 +69,59 @@ export const ServiceCheckoutCommonCardWrapper: React.FC<
           />
           <ExclamationCircleIcon />
         </span>
-
+        {guests ? (
+          <div className="flex items-center gap-2">
+            <p className="font-semibold">{t("Guests")}:</p>
+            <p>{guests}</p>
+          </div>
+        ) : null}
         {children}
 
-        <div className="flex flex-col gap-1">
-          <span className="flex gap-2">
-            <span className="font-semibold">{t("At")}: </span>
-            <p>
-              {fromDate.month_short}, {fromDate.day}{" "}
-              {fromDate.am_pm_hour_minute}
-            </p>
-          </span>
-
-          {duration ? (
+        {fromDate && !toDate ? (
+          <div className="flex flex-col gap-1">
             <span className="flex gap-2">
-              <span className="font-semibold">{t("Duration")}: </span>
-              <p>
-                <TimeRangeDisplay rangeInMinutes={duration} />
-              </p>
+              <span className="font-semibold">{t("At")}: </span>
+              {fromDate ? (
+                <p>
+                  {fromDate.month_short}, {fromDate.day}{" "}
+                  {fromDate.am_pm_hour_minute}
+                </p>
+              ) : null}
             </span>
-          ) : null}
-        </div>
+            {duration ? (
+              <span className="flex gap-2">
+                <span className="font-semibold">{t("Duration")}: </span>
+                <p>
+                  <TimeRangeDisplay rangeInMinutes={duration} />
+                </p>
+              </span>
+            ) : null}
+          </div>
+        ) : fromDate && toDate ? (
+          <div className="flex flex-col gap-1">
+            <span className="flex gap-2">
+              <span className="font-semibold">{t("Check-in")}: </span>
+              {fromDate ? (
+                <p>
+                  {fromDate.weekDay_short}, {fromDate.day}{" "}
+                  {fromDate.month_short}
+                </p>
+              ) : null}
+            </span>
+            <span className="flex gap-2">
+              <span className="font-semibold">{t("Check-out")}: </span>
+
+              {toDate ? (
+                <p>
+                  {toDate.weekDay_short}, {toDate.day} {toDate.month_short}
+                </p>
+              ) : null}
+            </span>
+            <p>
+              {days}-{t("night stay")}
+            </p>
+          </div>
+        ) : null}
         <Divider />
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { PassPropsToFnOrElem, randomNum } from "utils";
+import { PassPropsToChild, randomNum } from "utils";
 
 export interface ServicesSearchGridProps<TData, TProps> {
   data: TData[];
@@ -26,7 +26,7 @@ export function ServicesSearchGrid<TData, TProps>({
       {Array.isArray(data)
         ? data.map((d, i) => (
             <>
-              {PassPropsToFnOrElem(component, {
+              {PassPropsToChild(component, {
                 ...handlePassData(d, i),
                 key: `${randomNum(5000)}-${i}`,
               })}

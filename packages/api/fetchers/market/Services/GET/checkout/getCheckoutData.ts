@@ -94,7 +94,7 @@ export const getServiceCheckoutDataFetcher = async (
             serviceType: "resturant",
             bookedDates: {
               from: new Date(Date.now()).toString(),
-              to: new Date(Date.now()).toString(),
+              to: null,
             },
 
             rate: randomNum(5),
@@ -200,9 +200,11 @@ export const getServiceCheckoutDataFetcher = async (
               amount: randomNum(20),
               type: "percent",
             },
+            guests: null,
             price: randomNum(500),
             bookedTreatments: [
               {
+                id: "123",
                 category: "Facial",
                 title: "Hydro facial with chemical peel",
                 durationInMinutes: [30, 60],

@@ -11,6 +11,7 @@ import {
 export interface BeautyCenterTreatmentCardProps
   extends BeautyCenterTreatmentDataType {
   onSelect: (treatmentId: string) => any;
+  onUnSelect: (treatmentId: string) => any;
   selected?: boolean;
 }
 
@@ -22,8 +23,10 @@ export const BeautyCenterTreatmentCard: React.FC<
   durationInMinutes,
   price,
   title,
+  id,
   selected,
   onSelect,
+  onUnSelect,
 }) => {
   const { t } = useTranslation();
 
@@ -49,7 +52,17 @@ export const BeautyCenterTreatmentCard: React.FC<
             discount={discount}
           />
         </div>
-        <Button className="h-fit w-24" outline={!selected}>
+        <Button
+          onClick={() => {
+            if (selected) {
+              onUnSelect && onUnSelect(id);
+            } else {
+              onSelect && onSelect(id);
+            }
+          }}
+          className="h-fit w-24"
+          outline={!selected}
+        >
           {selected ? t("Selected") : t("Select")}
         </Button>
       </div>

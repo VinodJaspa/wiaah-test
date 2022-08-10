@@ -6,6 +6,7 @@ import {
 } from "../../Services";
 
 export const beautyCenterTreatmentValidationSchema = object({
+  id: string().required(),
   category: string().required(),
   title: string().required(),
   price: number().required(),
