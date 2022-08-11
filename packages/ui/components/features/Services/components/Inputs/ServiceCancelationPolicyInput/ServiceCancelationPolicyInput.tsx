@@ -1,9 +1,8 @@
 import { ServiceCancelationPolicyType } from "api";
-import { useDateManipulation } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Radio, PriceDisplay } from "ui";
-import { DateDetails } from "utils";
+import { Radio, PriceDisplay, ServiceRefundableTypeDescription } from "ui";
+import { setTestid } from "utils";
 
 export interface ServiceCancelationPolicyInputProps
   extends ServiceCancelationPolicyType {
@@ -18,7 +17,7 @@ export const ServiceCancelationPolicyInput: React.FC<
 
   return (
     <div className="flex items-center w-full justify-between">
-      <label className="flex gap-1 items-center">
+      <label {...setTestid("InputLabel")} className="flex gap-1 items-center">
         <Radio
           onChange={(e) =>
             e.target.checked ? onSelected && onSelected(id) : null
@@ -31,42 +30,13 @@ export const ServiceCancelationPolicyInput: React.FC<
           bookedDate={new Date()}
         />
       </label>
-      <span className="font-bold">
+      <span {...setTestid("PriceIndicator")} className="font-bold">
         {cost > 0 ? (
-          <PriceDisplay priceObject={{ amount: cost }} />
+          <PriceDisplay price={cost} />
         ) : duration > 0 ? (
           <p>{t("FREE")}</p>
         ) : null}
       </span>
     </div>
-  );
-};
-
-export interface ServiceRefundableTypeDescription {
-  cost: number;
-  duration: number;
-  bookedDate: Date;
-}
-
-export const ServiceRefundableTypeDescription: React.FC<
-  ServiceRefundableTypeDescription
-> = ({ cost, duration, bookedDate }) => {
-  const { t } = useTranslation();
-  const { addDays } = useDateManipulation(new Date(bookedDate).toString());
-  const maxDate = addDays(duration);
-
-  const date = DateDetails(maxDate || new Date());
-  return (
-    <>
-      {duration > 0 ? (
-        <p>
-          {t("Fully refundable before")} {date?.month_short} {date?.day}
-        </p>
-      ) : cost > 0 ? (
-        <p>{t("Refundable before booked date")}</p>
-      ) : (
-        <p>{t("Non-refundable")}</p>
-      )}
-    </>
   );
 };

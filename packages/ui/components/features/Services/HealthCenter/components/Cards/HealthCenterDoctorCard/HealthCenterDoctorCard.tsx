@@ -1,5 +1,6 @@
 import { HealthCenterDoctorMetaDataType } from "api";
 import { Avatar, PriceDisplay } from "ui";
+import React from "react";
 export interface HealthCenterDoctorCardProps
   extends HealthCenterDoctorMetaDataType {}
 
@@ -19,7 +20,7 @@ export const HealthCenterDoctorCard: React.FC<HealthCenterDoctorCardProps> = ({
           <p>{specialty}</p>
         </div>
       </div>
-      <PriceDisplay priceObject={{ amount: price }} />
+      <PriceDisplay price={price} />
     </div>
   );
 };

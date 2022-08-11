@@ -8,5 +8,5 @@ export * from "./components";
 export * from "./Vehicle";
 export * from "./ServicesDetails";
 export * from "./beautyCenter";
-export * from "./services";
+export * from "./Services";
 export * from "./BookConfirmation";

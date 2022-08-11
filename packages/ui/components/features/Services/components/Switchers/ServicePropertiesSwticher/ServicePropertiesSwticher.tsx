@@ -64,7 +64,6 @@ export const ServicePropertiesSwticher: React.FC<{ slug: string }> = ({
 
   const Slug = slug as keyof typeof ServiceProperties;
   const icon = ServiceProperties[Slug];
-  console.log(slug, AirConditionIcon);
   return (
     <>
       {icon

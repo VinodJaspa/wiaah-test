@@ -1,4 +1,3 @@
-import { Location } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ServiceData } from "api";

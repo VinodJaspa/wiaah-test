@@ -5,10 +5,11 @@ import { useRouting } from "routing";
 import { WorkingDate } from "types";
 import {
   Button,
-  AspectRatio,
-  WorkingDaysCalander,
+  AspectRatioImage,
+  WorkingDaysCalender,
   ServicesRequestKeys,
 } from "ui";
+import { setTestid } from "utils";
 
 export interface HealthCenterCardProps {
   centerData: HealthCenterPractitioner;
@@ -32,13 +33,13 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
     >
       <div className="flex flex-col justify-between gap-4">
         <div className="flex gap-4">
-          <div className="w-32">
-            <AspectRatio className="group" ratio={3 / 4}>
-              <img
-                className="w-full h-full object-cover"
-                src={centerData.photo}
-                alt={centerData.name}
-              />
+          <div {...setTestid("ServicePresentation")} className="w-32">
+            <AspectRatioImage
+              className="group"
+              src={centerData.photo}
+              alt={centerData.name}
+              ratio={3 / 4}
+            >
               <div
                 className={
                   "bg-black bg-opacity-0 transition-all opacity-0 pointer-events-none group-hover:opacity-100 group-hover:bg-opacity-25 group-hover:pointer-events-auto top-0 left-0 w-full h-full absolute flex justify-center items-center"
@@ -57,9 +58,9 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
                   {t("Details")}
                 </Button>
               </div>
-            </AspectRatio>
+            </AspectRatioImage>
           </div>
-          <div className="flex flex-col gap-4">
+          <div {...setTestid("ServiceInfo")} className="flex flex-col gap-4">
             <div className="flex flex-col font-bold text-lg gap-2">
               <p className="text-primary">{centerData.name}</p>
               <p className="">{centerData.specialty}</p>
@@ -77,13 +78,10 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
         <Button className="w-1/2">{t("Book now")}</Button>
       </div>
       <div className="flex flex-col gap-2 thinScroll py-4">
-        <WorkingDaysCalander
+        <WorkingDaysCalender
           hoursLimit={hoursLimit}
           workingDates={workingDates}
         />
-        {/* <p className="font-bold text-lg uppercase w-full flex justify-center text-primary cursor-pointer">
-          {t("see more hours")}
-        </p> */}
       </div>
     </div>
   );

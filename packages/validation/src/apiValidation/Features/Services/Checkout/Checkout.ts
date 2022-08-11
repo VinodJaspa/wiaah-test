@@ -146,7 +146,7 @@ export const ServiceCheckoutDataApiResponseValidationSchema =
   createApiResponseValidationSchema(
     object({
       bookedServices: array()
-        .of(ServiceCheckoutDataValidationTester)
+        .of(ServiceCheckoutDataValidationTester.required())
         .min(0)
         .required(),
       vat: number().required(),

@@ -3,12 +3,12 @@ import { FormatedWorkingDaysType, WorkingDate } from "types";
 import { WorkingDayColumn } from "./WorkingDayColumn";
 import { Slider, ArrowLeftIcon, ArrowRightIcon } from "ui";
 
-export interface WorkingDaysCalanderProps {
+export interface WorkingDaysCalenderProps {
   workingDates: WorkingDate[];
   hoursLimit?: number;
 }
 
-export const WorkingDaysCalander: React.FC<WorkingDaysCalanderProps> = ({
+export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
   workingDates,
   hoursLimit = 5,
 }) => {

@@ -36,7 +36,7 @@ export const DateDetails = (
     hour12: false,
   });
   const day = newDate.toLocaleDateString(locale, {
-    day: "2-digit",
+    day: "numeric",
   });
 
   const concatTimeFirstZero = (timeunit: string) =>
