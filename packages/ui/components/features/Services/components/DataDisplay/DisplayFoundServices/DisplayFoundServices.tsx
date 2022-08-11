@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-
+import React from "react";
 export const DisplayFoundServices: React.FC<{
   location: string;
   servicesNum: number;

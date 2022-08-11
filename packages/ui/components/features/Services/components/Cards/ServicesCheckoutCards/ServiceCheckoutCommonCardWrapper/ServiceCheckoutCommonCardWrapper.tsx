@@ -2,7 +2,7 @@ import { CommonServiceCheckoutData } from "api";
 import { useDateDiff } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { DateDetails } from "utils";
+import { DateDetails, setTestid } from "utils";
 import {
   AspectRatioImage,
   CashbackBadge,
@@ -80,7 +80,7 @@ export const ServiceCheckoutCommonCardWrapper: React.FC<
         {fromDate && !toDate ? (
           <div className="flex flex-col gap-1">
             <span className="flex gap-2">
-              <span className="font-semibold">{t("At")}: </span>
+              <span className="font-semibold">{t("At")}:</span>
               {fromDate ? (
                 <p>
                   {fromDate.month_short}, {fromDate.day}{" "}
@@ -89,8 +89,8 @@ export const ServiceCheckoutCommonCardWrapper: React.FC<
               ) : null}
             </span>
             {duration ? (
-              <span className="flex gap-2">
-                <span className="font-semibold">{t("Duration")}: </span>
+              <span {...setTestid("ServiceDuration")} className="flex gap-2">
+                <span className="font-semibold">{t("Duration")}:</span>
                 <p>
                   <TimeRangeDisplay rangeInMinutes={duration} />
                 </p>
@@ -100,7 +100,7 @@ export const ServiceCheckoutCommonCardWrapper: React.FC<
         ) : fromDate && toDate ? (
           <div className="flex flex-col gap-1">
             <span className="flex gap-2">
-              <span className="font-semibold">{t("Check-in")}: </span>
+              <span className="font-semibold">{t("Check-in")}:</span>
               {fromDate ? (
                 <p>
                   {fromDate.weekDay_short}, {fromDate.day}{" "}
@@ -109,7 +109,7 @@ export const ServiceCheckoutCommonCardWrapper: React.FC<
               ) : null}
             </span>
             <span className="flex gap-2">
-              <span className="font-semibold">{t("Check-out")}: </span>
+              <span className="font-semibold">{t("Check-out")}:</span>
 
               {toDate ? (
                 <p>

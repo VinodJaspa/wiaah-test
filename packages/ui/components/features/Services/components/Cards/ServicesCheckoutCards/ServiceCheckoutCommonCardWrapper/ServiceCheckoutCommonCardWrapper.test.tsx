@@ -4,7 +4,11 @@ import {
   ServiceCheckoutCommonCardWrapper,
   ServiceCheckoutCommonCardWrapperProps,
 } from "./ServiceCheckoutCommonCardWrapper";
-import { randomNum } from "utils";
+import { getTestId, randomNum, setTestid } from "utils";
+
+const testids = {
+  serviceDuration: "ServiceDuration",
+};
 
 describe("ServiceCheckoutCommonCardWrapper tests", () => {
   let wrapper: ShallowWrapper;
@@ -82,11 +86,13 @@ describe("ServiceCheckoutCommonCardWrapper tests", () => {
     expect(wrapper.find("ExclamationCircleIcon").length).toBe(1);
   });
   it("should display the guests if the guests probs is provided otherwise unmount it", () => {
+    // console.log(wrapper.debug());
     expect(
       wrapper.findWhere((node) => node.text() === `Guests:${props.guests}`)
         .length
     ).toBe(1);
     const { guests: _, ...rest } = props;
+
     wrapper = shallow(
       <ServiceCheckoutCommonCardWrapper guests={null} {...rest} />
     );
@@ -95,5 +101,53 @@ describe("ServiceCheckoutCommonCardWrapper tests", () => {
       wrapper.findWhere((node) => node.text() === `Guests:${props.guests}`)
         .length
     ).toBe(0);
+  });
+  it("should render children properly", () => {
+    wrapper = shallow(
+      <ServiceCheckoutCommonCardWrapper {...props}>
+        <div {...setTestid("child")}></div>
+        <div {...setTestid("child")}></div>
+      </ServiceCheckoutCommonCardWrapper>
+    );
+
+    expect(wrapper.find(getTestId("child")).length).toBe(2);
+  });
+  it("should display checkout / checkin if it recieved from and to dates", () => {
+    expect(
+      wrapper.findWhere((node) => node.text() === `Check-in:`).length
+    ).toBe(1);
+    expect(
+      wrapper.findWhere((node) => node.text() === `Check-out:`).length
+    ).toBe(1);
+  });
+  it("should display 'At:' and the duration of the service if it only recieved from date and the duration", () => {
+    const {
+      bookedDates: { from },
+      duration,
+      ...rest
+    } = props;
+    wrapper = shallow(
+      <ServiceCheckoutCommonCardWrapper
+        {...rest}
+        bookedDates={{ from, to: null }}
+        duration={60}
+      />
+    );
+    expect(
+      wrapper.findWhere((node) => node.text() === `Check-in:`).length
+    ).toBe(0);
+    expect(
+      wrapper.findWhere((node) => node.text() === `Check-out:`).length
+    ).toBe(0);
+    expect(wrapper.findWhere((node) => node.text() === "At:").length).toBe(1);
+    expect(
+      wrapper.findWhere((node) => node.text() === "Duration:").length
+    ).toBe(1);
+    expect(
+      wrapper.findWhere(
+        (node) => node.text() === `Duration:<TimeRangeDisplay />`
+      ).length
+    ).toBe(1);
+    expect(wrapper.find("TimeRangeDisplay").prop("rangeInMinutes")).toBe(60);
   });
 });

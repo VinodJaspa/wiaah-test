@@ -55,12 +55,12 @@ export const ServiceRefundableTypeDescription: React.FC<
   const { addDays } = useDateManipulation(new Date(bookedDate).toString());
   const maxDate = addDays(duration);
 
-  const { month_short, day } = DateDetails(maxDate || new Date());
+  const date = DateDetails(maxDate || new Date());
   return (
     <>
       {duration > 0 ? (
         <p>
-          {t("Fully refundable before")} {month_short} {day}
+          {t("Fully refundable before")} {date?.month_short} {date?.day}
         </p>
       ) : cost > 0 ? (
         <p>{t("Refundable before booked date")}</p>
