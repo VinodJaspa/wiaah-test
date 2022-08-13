@@ -18,7 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { BiMessage, BiMessageAltDetail } from "react-icons/bi";
 import { CgMoreVertical } from "react-icons/cg";
-import { ShopSocialProfileInfo } from "types/market/Social";
+import { ShopSocialProfileInfo } from "types";
 import { MdVerified } from "react-icons/md";
 import { FlagIcon } from "react-flag-kit";
 import {
@@ -67,7 +67,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
   } = useDisclosure();
 
   return (
-    <div className="vstack bg-transparent justify-between md:bg-primary px-4 py-2 text-white text-[1.5rem]">
+    <div className="flex flex-col items-center bg-transparent justify-between md:bg-primary px-4 py-2 text-white text-[1.5rem]">
       {storyData && <SocialStoriesModal />}
       <SubscribersPopup
         title={t("subscribers", "subscribers")}
@@ -82,11 +82,10 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
       <Flex w="100%" justify={"space-between"}>
         <Box />
         <CustomAvatar
-          bgColor={"black"}
+          className="bg-black h-[5rem] w-[5rem]"
           name={shopInfo.name}
           photoSrc={shopInfo.thumbnail}
           newStory={newStory}
-          size={"xl"}
           onClick={handleOpenStory}
         />
         <Menu placement="bottom-end">

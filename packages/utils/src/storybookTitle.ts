@@ -95,3 +95,6 @@ export const storybookBeautyCenterListsTitle =
 export const storybookShopFeatureTitle = storybookFeaturesTitle + "Shop /";
 export const storybookShopFeatureCardsTitle =
   storybookShopFeatureTitle + cardsTitle;
+
+// storybook misc
+export const storybookPlaygourndTitle = "Playground /";

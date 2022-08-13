@@ -9,7 +9,7 @@ import {
   ShopCardInfo,
   ShopSocialProfileInfo,
   SubscribersUserInfo,
-} from "types/market/Social";
+} from "types";
 
 export const SocialProfileInfo: ShopSocialProfileInfo = {
   id: "1",
@@ -699,7 +699,7 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
     noOfComments: randomNum(50),
     likes: randomNum(50),
     // views: randomNum(50),
-    type: getRandomType(),
+    type: "service",
     comments: [
       { ...comments[0], attachment: null },
       { ...comments[1], attachment: null },

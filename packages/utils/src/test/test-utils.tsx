@@ -1,3 +1,4 @@
+import { ReactWrapper, ShallowWrapper } from "enzyme";
 import { act } from "react-dom/test-utils";
 
 export function setTestid(id: string): object {
@@ -9,6 +10,17 @@ export function getTestId(id: string): string {
 }
 export function getRoleId(id: string): string {
   return `[role='${id}']`;
+}
+import React from "react";
+import { runIfFn } from "../runIfFun";
+
+export function MapChildren<TProps>(
+  children: React.ReactNode,
+  props: TProps
+): React.ReactNode {
+  return Array.isArray(children)
+    ? children.map((child) => runIfFn(child, props))
+    : runIfFn(children, props);
 }
 
 export function containsClassName(
@@ -26,6 +38,11 @@ export function containsClassName(
 
   return beforeCheck && afterCheck;
 }
+
+export const FilterNodeByText = (text: string) => {
+  return (node: ShallowWrapper | ReactWrapper) =>
+    node.name() !== null && node.text() === text;
+};
 
 export const waitFor = (
   callback: () => any,

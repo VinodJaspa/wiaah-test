@@ -115,24 +115,6 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
               </Text>
             </Box>
           )}
-          {productType === "service" && showbook ? (
-            <Button
-              colorScheme={"white"}
-              px="0.5rem"
-              bgColor="white"
-              color="black"
-              fontWeight={"semibold"}
-              w="fit-content"
-              p="0.5rem"
-              rounded={"lg"}
-              textTransform={"capitalize"}
-              pointerEvents="all"
-              cursor={"pointer"}
-              onClick={() => onInteraction && onInteraction("book")}
-            >
-              {t("book_service", "book service")}
-            </Button>
-          ) : null}
         </Flex>
         <Flex
           align={"end"}

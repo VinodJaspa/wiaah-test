@@ -10,16 +10,15 @@ import {
   SearchIcon,
   Button,
   LocationOutlineIcon,
-  useSearchFilters,
   SpinnerFallback,
-  filtersTokens,
   ServicesRequestKeys,
 } from "ui";
 import { useGetHealthCenterSearchSuggestionsQuery } from "ui";
-import { SearchHealthSpecialtiesCardsList } from "../Lists";
-import { SearchHealthPractitionersCardsList } from "../Lists/SearchHealthPractitionersCardsList";
+import { SearchHealthSpecialtiesCardsList } from "ui";
+import { SearchHealthPractitionersCardsList } from "ui";
 import { usePagination } from "hooks";
 import { useRouting } from "routing";
+import { setTestid } from "utils";
 
 export interface HealthCenterSearchBoxProps {}
 
@@ -28,7 +27,13 @@ export const HealthCenterSearchBox: React.FC<
 > = () => {
   const { visit } = useRouting();
   const { page, take } = usePagination();
-  const { filters, addFilter, getFiltersSearchQuery } = useSearchFilters();
+  const [search, setSearch] = React.useState<{
+    q: string;
+    location: string;
+  }>({
+    location: "",
+    q: "",
+  });
   const [specialites, setSepcialties] = React.useState<HealthCenterSpecialty[]>(
     []
   );
@@ -36,19 +41,20 @@ export const HealthCenterSearchBox: React.FC<
     HealthCenterPractitioner[]
   >([]);
 
-  const { isLoading, isError } = useGetHealthCenterSearchSuggestionsQuery(
-    { page, take },
-    filters,
-    {
-      onSuccess: (res) => {
-        try {
-          const { practitioners, specialties } = res.data;
-          if (Array.isArray(specialites)) setSepcialties(specialties);
-          if (Array.isArray(practitioners)) setPractitioners(practitioners);
-        } catch {}
-      },
-    }
-  );
+  const {
+    data: res,
+    isLoading,
+    isError,
+  } = useGetHealthCenterSearchSuggestionsQuery({ page, take }, search);
+
+  React.useEffect(() => {
+    if (res)
+      try {
+        const { practitioners, specialties } = res.data;
+        if (Array.isArray(specialites)) setSepcialties(specialties);
+        if (Array.isArray(practitioners)) setPractitioners(practitioners);
+      } catch {}
+  }, [res]);
 
   const { t } = useTranslation();
   return (
@@ -57,8 +63,11 @@ export const HealthCenterSearchBox: React.FC<
         <SearchIcon className="text-primary" />
       </InputLeftElement>
       <Input
+        {...setTestid("SearchQueryInput")}
         placeholder={t("health center")}
-        onChange={(e) => addFilter([filtersTokens.searchQuery, e.target.value])}
+        onChange={(e) =>
+          setSearch((state) => ({ ...state, q: e.target.value }))
+        }
       />
       <InputRightElement className="w-full">
         <InputGroup className="border-y-0 border-r-0">
@@ -66,17 +75,22 @@ export const HealthCenterSearchBox: React.FC<
             <LocationOutlineIcon />
           </InputLeftElement>
           <Input
-            onChange={(e) => addFilter([filtersTokens.where, e.target.value])}
+            {...setTestid("SearchLocationInput")}
+            onChange={(e) =>
+              setSearch((state) => ({ ...state, location: e.target.value }))
+            }
             placeholder={t("where") + "?"}
           />
           <InputRightElement>
             <Button
               onClick={() =>
                 visit((routes) =>
-                  routes.visitServiceLocationSearchResults(
-                    ServicesRequestKeys.healthCenter,
-                    "milano"
-                  )
+                  routes
+                    .visitServiceLocationSearchResults(
+                      ServicesRequestKeys.healthCenter,
+                      "milano"
+                    )
+                    .addQuery(search)
                 )
               }
               className="uppercase rounded-none px-12"
@@ -90,12 +104,12 @@ export const HealthCenterSearchBox: React.FC<
         <div className="flex bg-white rounded mt-2">
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             <SearchHealthSpecialtiesCardsList
-              searchQuery={getFiltersSearchQuery || ""}
+              searchQuery={search.q || ""}
               specialites={specialites}
             />
             <SearchHealthPractitionersCardsList
               practitioners={practitioners}
-              searchQuery={getFiltersSearchQuery || ""}
+              searchQuery={search.q || ""}
             />
           </SpinnerFallback>
         </div>

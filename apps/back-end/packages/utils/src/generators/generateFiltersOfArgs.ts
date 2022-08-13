@@ -8,7 +8,7 @@ export function generateFiltersOfArgs<TArgs>(
 ): Filter<TArgs>[] {
   if (typeof args !== "object") return [];
   let filtersList: Filter<TArgs>[] = [];
-  filters.map((filter) => {
+  filters.forEach((filter) => {
     if (filter in args) filtersList.push([filter, args[filter]]);
   });
   return filtersList;

@@ -16,7 +16,7 @@ const randomNum = (num: number) => num;
 export const SocialProfileInfo: ShopSocialProfileInfo = {
   id: "1",
   name: "Wiaah",
-  accountType: "buyer",
+  accountType: "seller",
   publications: 100,
   subscribers: 40,
   subscriptions: 23,

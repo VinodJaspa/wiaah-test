@@ -99,7 +99,6 @@ export const SocialShopCard: React.FC<SocialShopCardProps> = ({
           views={shopCardInfo.views || 0}
           data-testid="ShopCardDetails"
           onAddToCart={() => handleAddToCart(shopCardInfo.id)}
-          service={shopCardInfo.type === "service"}
           {...shopCardInfo}
         />
         {showInteraction && (

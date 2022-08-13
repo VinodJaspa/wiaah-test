@@ -4,10 +4,12 @@ import { UserRelatedRoutesType, UserRelatedRoutes } from "./userRelated";
 import { ShopRoutes, ShopRoutesType } from "./Shop";
 
 export type RoutesType = MainRouterInterface;
-
+export type RoutingQueryType = Record<string, string>;
 export type MainRouterInterface = {
   route: string;
+  query: RoutingQueryType;
   dataKeys: Record<string, any>;
+  addQuery: (query: RoutingQueryType) => RoutesType;
   mapProps: (
     keys: readonly string[],
     data: Record<string, any>
@@ -28,11 +30,10 @@ export const MainRoutes: MainRouterInterface = {
   ...UserRelatedRoutes,
   ...ShopRoutes,
   route: "",
-
+  query: {},
   dataKeys: {},
   addPath(path: string) {
     this.route = `${this.route}/${path}`;
-    this;
     return this;
   },
   id(id: string) {
@@ -70,5 +71,9 @@ export const MainRoutes: MainRouterInterface = {
     if (!type || !id) return this;
     if (type === "shop") return this.visitShop(props);
     return this.visitService(props, type);
+  },
+  addQuery(query: RoutingQueryType) {
+    this.query = { ...this.query, ...query };
+    return this;
   },
 };

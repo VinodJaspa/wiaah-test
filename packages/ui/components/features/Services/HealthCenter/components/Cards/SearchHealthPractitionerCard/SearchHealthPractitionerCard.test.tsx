@@ -4,7 +4,7 @@ import {
   SearchHealthPractitionerCardProps,
 } from "./SearchHealthPractitionerCard";
 import { ShallowWrapper, shallow } from "enzyme";
-import { randomNum } from "utils";
+import { FilterNodeByText, randomNum } from "utils";
 
 describe("SearchHealthPractitionerCard tests", () => {
   let wrapper: ShallowWrapper;
@@ -34,5 +34,24 @@ describe("SearchHealthPractitionerCard tests", () => {
       searchQuery: "char",
     };
     wrapper = shallow(<SearchHealthPractitionerCard {...props} />);
+  });
+  it("should have Avatar component with the right props", () => {
+    expect(wrapper.find("Avatar").length).toBe(1);
+    expect(wrapper.find("Avatar").props().src).toBe(props.practitioner.photo);
+  });
+  it("should display the practitioner specialty and city", () => {
+    expect(
+      wrapper.findWhere(
+        FilterNodeByText(
+          `${props.practitioner.specialty}, ${props.practitioner.location.city}`
+        )
+      ).length
+    ).toBe(1);
+  });
+  it("should have HighlightText components with the right props", () => {
+    const highlight = wrapper.find("HighlightText");
+    expect(highlight.length).toBe(1);
+    expect(highlight.prop("text")).toBe(props.practitioner.name);
+    expect(highlight.prop("toHighlight")).toBe(props.searchQuery);
   });
 });

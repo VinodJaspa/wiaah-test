@@ -23,7 +23,6 @@ import {
 
 import { ChevronRightIcon, ChevronLeftIcon } from "@chakra-ui/icons";
 import { motion, PanInfo, useAnimation, useMotionValue } from "framer-motion";
-import { useBoundingRect } from "ui/Hooks";
 
 const MotionFlex = motion<FlexProps>(Flex);
 

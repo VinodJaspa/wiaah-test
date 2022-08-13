@@ -27,10 +27,10 @@ import {
   SocialProfileInfo,
   profileActionsPlaceholder,
 } from "ui";
-import { TabType } from "types/market/misc/tabs";
+import { TabType } from "types";
 import { useRecoilValue } from "recoil";
-import { SocialNewsfeedPostsState, SocialProfileInfoState } from "ui/state";
-import { PostComment } from "types/market/Social";
+import { SocialNewsfeedPostsState, SocialProfileInfoState } from "state";
+import { PostComment } from "types";
 import { products } from "ui/placeholder";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
@@ -79,7 +79,7 @@ const comments: PostComment[] = [
 
 export interface SocialViewProps {}
 
-const SocialView: React.FC<SocialViewProps> = () => {
+export const SocialView: React.FC<SocialViewProps> = () => {
   const { t } = useTranslation();
   const profileInfo = useRecoilValue(SocialProfileInfoState);
   const { isMobile } = useResponsive();
@@ -91,9 +91,7 @@ const SocialView: React.FC<SocialViewProps> = () => {
   const sellerTabs: TabType[] = [
     {
       name: t("news_feed", "news feed"),
-      component: (
-        <PostCardsListWrapper grid={isMobile} cols={cols} posts={posts} />
-      ),
+      component: <PostCardsListWrapper cols={cols} posts={posts} />,
     },
     {
       name: t("shop", "shop"),
@@ -115,7 +113,7 @@ const SocialView: React.FC<SocialViewProps> = () => {
             onClose={() => setFilterOpen(false)}
           />
           <ShopCardsListWrapper
-            grid={isMobile}
+            // grid={isMobile}
             cols={cols}
             items={ShopCardsInfoPlaceholder}
           />
@@ -123,10 +121,14 @@ const SocialView: React.FC<SocialViewProps> = () => {
       ),
     },
     {
+      name: t("Services"),
+      component: <div></div>,
+    },
+    {
       name: t("affiliation offers", "affiliation offers"),
       component: (
         <AffiliationOffersCardListWrapper
-          grid={isMobile}
+          // grid={isMobile}
           cols={cols}
           items={socialAffiliationCardPlaceholders}
         />
@@ -200,5 +202,3 @@ const SocialView: React.FC<SocialViewProps> = () => {
     </>
   );
 };
-
-export default SocialView;

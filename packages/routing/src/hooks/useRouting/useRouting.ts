@@ -8,8 +8,15 @@ export const useRouting = () => {
   function visit(fn: (routes: RoutesType) => RoutesType) {
     const routes = fn({ ...MainRoutes });
     const route = routes.route;
+    const query = routes.query;
+    const queries = Object.entries(query);
+    const combinedQueries = queries.reduce((acc, curr, idx) => {
+      return `${acc}${idx >= queries.length - 1 ? "" : idx === 0 ? "" : "&"}${
+        curr[0]
+      }=${curr[1]}`;
+    }, "");
     if (route.length < 1) return;
-    VisitRoute(routes.route);
+    VisitRoute(`${route}?${combinedQueries}`);
   }
 
   return {
