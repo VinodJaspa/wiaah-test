@@ -2,24 +2,25 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { useSetRecoilState } from "recoil";
-import { PostCardInfo, ProfileInfo } from "types/market/Social";
-import { Container, Collaboration, useStorySeenBy } from "ui";
+import { PostCardInfo, ProfileInfo } from "types";
+import { useStorySeenBy } from "ui";
 import {
   SocialProfileInfo,
   PostCardPlaceHolder,
   postProfilesPlaceholder,
-} from "ui/placeholder/social";
+} from "placeholder";
 import {
   SocialNewsfeedPostsState,
   SocialProfileInfoState,
   SocialNewStoryState,
   SocialStoriesState,
-} from "ui/state";
-import MasterLayout from "../../../components/MasterLayout";
-import SocialView from "../../../components/Social/SocialView";
-import { products } from "ui/placeholder/products";
-import { newsfeedPosts as NewsFeedPostsPlaceholder } from "ui/placeholder/social";
-import { SocialStoryState } from "ui/state/Recoil";
+} from "state";
+import { MasterLayout, SocialView } from "@components";
+import {
+  products,
+  newsfeedPosts as NewsFeedPostsPlaceholder,
+} from "placeholder";
+import { SocialStoryState } from "state";
 
 interface SocialPageProps {
   profile: ProfileInfo;
@@ -31,17 +32,18 @@ const getRandomUser = () =>
   postProfilesPlaceholder[
     Math.floor(Math.random() * postProfilesPlaceholder.length)
   ];
-export const getServerSideProps: GetServerSideProps<SocialPageProps> =
-  async () => {
-    // get user/shop profle info
+export const getServerSideProps: GetServerSideProps<
+  SocialPageProps
+> = async () => {
+  // get user/shop profle info
 
-    return {
-      props: {
-        profile: SocialProfileInfo,
-        newsfeedPosts: NewsFeedPostsPlaceholder,
-      },
-    };
+  return {
+    props: {
+      profile: SocialProfileInfo,
+      newsfeedPosts: NewsFeedPostsPlaceholder,
+    },
   };
+};
 
 const ShopSocialProfile: NextPage<SocialPageProps> = ({
   newsfeedPosts,

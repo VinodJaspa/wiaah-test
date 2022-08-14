@@ -37,120 +37,76 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
   interactionPos = "out",
 }) => {
   const { ToggleComments } = useActionComments();
-  const { isMobile } = useResponsive();
   const { t } = useTranslation();
   return (
-    <>
+    <div className="relative w-[min(35rem,100%)]">
       {action && (
-        <FloatingContainer
-          className={`${
-            interactionPos === "in" ? "pr-0" : "pr-24"
-          } h-full max-w-[35rem]`}
-          items={[
-            {
-              label: (
-                <div
-                  className={`${
-                    dark ? "text-white bg-black bg-opacity-30" : "text-black "
-                  } flex justify-center px-1 text-center gap-2 flex-col rounded-full text-7xl`}
-                >
-                  <div className="flex flex-col justify-center">
-                    <HiHeart />
-                    <span className="text-xl">1.5k</span>
-                  </div>
-                  <div
-                    className="flex flex-col justify-center"
-                    onClick={ToggleComments}
-                  >
-                    <HiOutlineChat />
-                    <span className="text-xl">500</span>
-                  </div>
-                  <div className="flex flex-col justify-center gap-0">
-                    <HiShare />
-                    <span className="text-xl">{t("share", "share")}</span>
-                  </div>
-                  <div className="flex flex-col justify-center">
-                    <HiDotsHorizontal />
-                  </div>
-                </div>
-              ),
-              right: "0.5rem",
-              top: "center",
-              floatingItemProps: {
-                className: "-translate-y-1/2",
-              },
-            },
-          ]}
-        >
+        <>
+          <div
+            className={`${dark ? "text-white bg-black bg-opacity-30" : " "} ${
+              interactionPos === "in" ? "right-0 text-white" : "left-full"
+            } z-10 bottom-0 absolute flex justify-center px-1 text-center gap-2 flex-col rounded-full text-7xl`}
+          >
+            <div className="flex flex-col justify-center">
+              <HiHeart />
+              <span className="text-xl">1.5k</span>
+            </div>
+            <div
+              className="flex flex-col justify-center"
+              onClick={ToggleComments}
+            >
+              <HiOutlineChat />
+              <span className="text-xl">500</span>
+            </div>
+            <div className="flex flex-col justify-center gap-0">
+              <HiShare />
+              <span className="text-xl">{t("share", "share")}</span>
+            </div>
+            <div className="flex flex-col justify-center">
+              <HiDotsHorizontal />
+            </div>
+          </div>
+          <ActionHeader
+            className="absolute bottom-0 left-0 z-10 w-full p-2 text-white min-h-max bg-gradient-to-t from-black to-transparent bg-opacity-80"
+            actionHashtags={[]}
+            actionTitle={action.title}
+            userName={action.user.name}
+            userThumbnail={action.user.thumbnail}
+            actionLocation={"Los Angeles"}
+          />
+          {muteIcon ? (
+            <BiVolumeFull
+              className={`${
+                muteIcon ? "hidden" : ""
+              } absolute z-10 top-4 right-4 rounded-full bg-black bg-opacity-40 text-white text-5xl`}
+            />
+          ) : null}
+          <BsPlayFill
+            className={`${
+              playIcon ? "hidden" : ""
+            } absolute z-10 top-4 left-4 rounded-full bg-black bg-opacity-40 text-white text-5xl`}
+          />
+          <CgPlayButtonR
+            className={`absolute ${
+              muteIcon ? "top-14" : "top-4"
+            } right-4 z-10 text-5xl text-white`}
+          />
+          ,
           <div
             className="flex gap-2 self-start h-full flex-col"
             onClick={() => onActionClick && onActionClick(action.id)}
           >
-            <FloatingContainer
-              // pointerEvents={"none"}
-              // h="100%"
-              // w="100%"
-              // display={"flex"}
-              // alignItems="center"
-              items={[
-                {
-                  label: (
-                    <ActionHeader
-                      className="w-full p-2 text-white min-h-max bg-gradient-to-t from-black to-transparent bg-opacity-80"
-                      actionHashtags={[]}
-                      actionTitle={action.title}
-                      userName={action.user.name}
-                      userThumbnail={action.user.thumbnail}
-                      actionLocation={"Los Angeles"}
-                    />
-                  ),
-                  bottom: true,
-                  left: true,
-                  floatingItemProps: {
-                    className: "w-full",
-                  },
-                },
-                {
-                  label: (
-                    <BiVolumeFull
-                      className={`${
-                        muteIcon ? "hidden" : ""
-                      } rounded-full bg-black bg-opacity-40 text-white text-5xl`}
-                    />
-                  ),
-                  top: "1rem",
-                  right: "1rem",
-                },
-                {
-                  label: (
-                    <BsPlayFill
-                      className={`${
-                        playIcon ? "hidden" : ""
-                      } rounded-full bg-black bg-opacity-40 text-white text-5xl`}
-                    />
-                  ),
-                  top: "1rem",
-                  left: "1rem",
-                },
-                {
-                  label: <CgPlayButtonR className="text-5xl text-white" />,
-                  top: muteIcon ? "3.5rem" : "1rem",
-                  right: "1rem",
-                },
-              ]}
-            >
-              <PostAttachment
-                controls={false}
-                autoPlay
-                play={play}
-                type={action.storyType !== "text" ? action.storyType : "image"}
-                src={action.storySrc || ""}
-                {...action}
-              />
-            </FloatingContainer>
+            <PostAttachment
+              controls={false}
+              autoPlay
+              play={play}
+              type={action.storyType !== "text" ? action.storyType : "image"}
+              src={action.storySrc || ""}
+              {...action}
+            />
           </div>
-        </FloatingContainer>
+        </>
       )}
-    </>
+    </div>
   );
 };

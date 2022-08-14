@@ -6,7 +6,7 @@ import {
   singlePhotoValidation,
   PaginationConstants,
 } from "../../../";
-console.log("account ", firstNameValidation, PaginationConstants);
+
 export const AccountVerificationRequestScheme = yup.object({
   username: firstNameValidation.required(),
   fullName: fullNameValidation.required(),

@@ -96,7 +96,7 @@ const seller: NextPage = () => {
         <AddNewPostModal />
         <AddNewStoryModal />
         <CommentReportModal />
-        <VStack className="w-full gap-4">
+        <div className="flex flex-col items-center w-full gap-4">
           <FloatingContainer
             className="w-full"
             // px="1rem"
@@ -135,19 +135,18 @@ const seller: NextPage = () => {
           )}
           <div className="w-full">
             <PostCardsListWrapper
-              onPostClick={
-                (post) => {}
-                // router.push(
-                //   "/",
-                //   { query: { newsfeedpostid: post.postInfo.id } },
-                //   { shallow: true }
-                // )
-              }
+              onPostClick={(post) => {
+                router.push(
+                  "/",
+                  { query: { newsfeedpostid: post.postInfo.id } },
+                  { shallow: true }
+                );
+              }}
               cols={cols}
               posts={newsfeedPosts}
             />
           </div>
-        </VStack>
+        </div>
       </SellerLayout>
     </>
   );

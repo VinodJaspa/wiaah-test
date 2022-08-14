@@ -1,12 +1,12 @@
 import React from "react";
 import { usePreferedCurrency } from "state";
 
-export interface PriceLevelDisplay {
+export interface PriceLevelDisplayProps {
   amount: number;
   levels?: number[];
 }
 
-export const PriceLevelDisplay: React.FC<PriceLevelDisplay> = ({
+export const PriceLevelDisplay: React.FC<PriceLevelDisplayProps> = ({
   amount,
   levels = [20, 50, 100],
 }) => {

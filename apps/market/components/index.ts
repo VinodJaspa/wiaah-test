@@ -4,3 +4,5 @@ export * from "./MasterLayout";
 export * from "./ServicesProvider";
 export * from "./Shop";
 export * from "./Checkout";
+export * from "./Social";
+export * from "./Actions";

@@ -2,34 +2,16 @@ import { Flex } from "@chakra-ui/react";
 import React from "react";
 import { SocialActionData } from "types";
 import { useTranslation } from "react-i18next";
-import { actionsPlaceholders, ActionViewer, PostViewPopup } from "ui";
+import { actionsPlaceholders, ActionViewer, PostViewPopup, Slider } from "ui";
 
 import { VerticalCarousel } from "ui";
 import { useResponsive } from "ui";
 import { useRouter } from "next/router";
-// export type ActionPostInteractionsType = {
-//   icon:IconType
-//   interactionLabel:string
-// }
-
-// export const ActionPostInteractions:ActionPostInteractionsType[] = [
-//   {
-//     icon: HiThumbUp,
-//     interactionLabel:"likes"
-//   }
-// ]
 
 export const ActionsView: React.FC = () => {
   const router = useRouter();
   return (
-    <Flex
-      bgColor={"white"}
-      w="100%"
-      h="100vh"
-      overflow={"hidden"}
-      direction="column"
-      align="center"
-    >
+    <div className="bg-white h-screen w-full overflow-hidden flex flex-col items-center">
       {/* <Text textTransform={"capitalize"} fontSize={"4xl"} fontWeight="bold">
         {t("action", "action")}
       </Text> */}
@@ -46,13 +28,9 @@ export const ActionsView: React.FC = () => {
         }}
       /> */}
 
-      <Flex
-        h="100%"
-        // w={{ base: "100%", sm: "container.sm", md: "25rem" }}
-        overflow="hidden"
-      >
+      <div className="bg-white h-full w-[min(35rem,100%)] overflow-hidden flex flex-col items-center">
         {/* actions View */}
-        <VerticalCarousel>
+        <Slider variant="vertical">
           {actionsPlaceholders.map((action, i) => (
             <ActionViewer
               onActionClick={(id) => {
@@ -66,9 +44,9 @@ export const ActionsView: React.FC = () => {
               key={i}
             />
           ))}
-        </VerticalCarousel>
-      </Flex>
+        </Slider>
+      </div>
       {/* </FloatingContainer> */}
-    </Flex>
+    </div>
   );
 };

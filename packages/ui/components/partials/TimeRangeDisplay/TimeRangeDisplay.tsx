@@ -13,8 +13,8 @@ export const TimeRangeDisplay: React.FC<TimeRangeDispalyProps> = ({
       const hrs = Math.floor(minutes / 60);
       const reminingMins = minutes % 60;
       const reminingPercent = (reminingMins / 60) * 100;
-      return `${hrs}:${
-        reminingMins
+      return `${hrs}${
+        reminingMins > 0 ? `:${reminingMins}` : ""
         // reminingPercent > 10 ? `.${reminingPercent.toFixed()}` : ""
       } hrs`;
     }

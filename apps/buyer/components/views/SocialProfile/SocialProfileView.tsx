@@ -22,9 +22,9 @@ import {
   socialAffiliationCardPlaceholders,
   profileActionsPlaceholder,
 } from "ui";
-import { TabType } from "types/market/misc/tabs";
+import { TabType } from "types";
 import { useRecoilValue } from "recoil";
-import { SocialNewsfeedPostsState } from "ui/state";
+import { SocialNewsfeedPostsState } from "state";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 
@@ -34,17 +34,16 @@ export interface SocialViewProps {
 
 export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   const { t } = useTranslation();
-  const {
-    data: profileInfo,
-    isLoading,
-    isError,
-  } = useGetSocialProfile(profileId);
+  const { data: res, isLoading, isError } = useGetSocialProfile(profileId);
   const { isMobile } = useResponsive();
   const posts = useRecoilValue(SocialNewsfeedPostsState);
   const cols = useBreakpointValue({ base: 3 });
   const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
 
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
+
+  const { data: profileInfo } = res;
+
   const sellerTabs: TabType[] = [
     {
       name: t("news_feed", "news feed"),

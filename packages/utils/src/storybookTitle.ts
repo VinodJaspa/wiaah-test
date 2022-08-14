@@ -55,6 +55,10 @@ export const storybookOtherServicesDataDisplayTitle =
   storybookServicesTitle + dataDisplayTitle;
 export const storybookOtherServicesInputTitle =
   storybookServicesTitle + inputsTitle;
+export const storybookOtherServicesHeadersTitle =
+  storybookServicesTitle + headersTitle;
+export const storybookOtherServicesSectionsTitle =
+  storybookServicesTitle + sectionsTitle;
 
 // Vehicle service
 
@@ -67,6 +71,7 @@ export const storybookVehicleListsTitle = storybookVehicleTitle + listTitle;
 export const storybookHotelTitle = storybookFeaturesTitle + "Hotel /";
 export const storybookHotelCardsTitle = storybookHotelTitle + cardsTitle;
 export const storybookHotelInputTitle = storybookHotelTitle + inputsTitle;
+export const storybookHotelSectionTitle = storybookHotelTitle + sectionsTitle;
 
 // Restaurant service
 export const storybookRestaurantTitle = storybookFeaturesTitle + "Restaurant /";
@@ -85,3 +90,15 @@ export const storybookBeautyCenterCardsTitle =
   storybookBeautyCenterTitle + cardsTitle;
 export const storybookBeautyCenterListsTitle =
   storybookBeautyCenterTitle + listTitle;
+
+// shop
+export const storybookShopFeatureTitle = storybookFeaturesTitle + "Shop /";
+export const storybookShopFeatureCardsTitle =
+  storybookShopFeatureTitle + cardsTitle;
+
+// social
+export const storybookSocialTitle = storybookFeaturesTitle + "Social /";
+export const storybookSocialCardsTitle = storybookSocialTitle + cardsTitle;
+
+// storybook misc
+export const storybookPlaygourndTitle = "Playground /";

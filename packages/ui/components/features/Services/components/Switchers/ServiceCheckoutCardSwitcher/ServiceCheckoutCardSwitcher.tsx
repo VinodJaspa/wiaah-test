@@ -5,10 +5,15 @@ import {
   HealthCenterCheckoutCard,
   BeautyCenterCheckoutCard,
 } from "ui";
+import React from "react";
 
-export const ServiceCheckoutCardSwitcher: React.FC<{
+export interface ServiceCheckoutCardSwitcherProps {
   service: ServiceCheckoutDataType;
-}> = ({ service: item }) => {
+}
+
+export const ServiceCheckoutCardSwitcher: React.FC<
+  ServiceCheckoutCardSwitcherProps
+> = ({ service: item }) => {
   if (!item) return null;
   switch (item.type) {
     case "hotel":

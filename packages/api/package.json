@@ -10,11 +10,11 @@
     "config": "*",
     "tsconfig": "*",
     "dto": "*",
-    "utils": "*",
     "placeholder": "*",
     "typescript": "^4.5.3"
   },
   "dependencies": {
+    "utils": "*",
     "validation": "*",
     "axios": "^0.27.2",
     "react-query": "^3.38.1"

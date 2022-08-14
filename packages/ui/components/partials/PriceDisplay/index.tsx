@@ -4,19 +4,24 @@ import { PreferedCurrencyState } from "state";
 import { HtmlDivProps, PriceType } from "types";
 
 export interface PriceDisplayProps extends HtmlDivProps {
-  priceObject: PriceType;
+  priceObject?: PriceType;
+  price?: number;
   symbol?: boolean;
 }
 
 export const PriceDisplay: React.FC<PriceDisplayProps> = ({
   priceObject,
   className,
+  price = 0,
   symbol = true,
   ...props
 }) => {
   return (
     <p {...props} className={`${className || ""} whitespace-nowrap`}>
-      {PriceConverter({ amount: priceObject.amount, symbol })}
+      {PriceConverter({
+        amount: priceObject ? priceObject.amount || price : price,
+        symbol,
+      })}
     </p>
   );
 };
@@ -33,6 +38,6 @@ export const PriceConverter = ({
   return currency
     ? `${symbol ? currency.currencySymbol : ""}${(
         amount * currency.currencyRateToUsd
-      ).toFixed(2)} ${!symbol ? currency.currencyCode : ""}`
-    : `${symbol ? "$" : ""}${amount.toFixed(2)} ${symbol ? "" : "usd"}`;
+      ).toFixed(2)}${!symbol ? ` ${currency.currencyCode}` : ""}`
+    : `${symbol ? "$" : ""}${amount.toFixed(2)}${symbol ? "" : " usd"}`;
 };

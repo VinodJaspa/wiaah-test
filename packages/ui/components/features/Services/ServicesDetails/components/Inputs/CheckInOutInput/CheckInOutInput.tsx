@@ -12,7 +12,7 @@ export interface CheckInOutInputProps {
 
 export const CheckInOutInput: React.FC<CheckInOutInputProps> = ({
   onDatesChange,
-  active,
+  active = true,
   checkin: Checkin,
   checkout: Checkout,
 }) => {

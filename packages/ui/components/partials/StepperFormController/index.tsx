@@ -12,6 +12,7 @@ interface StepperFormCtxValues {
   validate: (data: Data, handlerKey: string) => any;
   unvalidate: (handlerKey: string) => any;
   prevoiusStep: () => any;
+  previousStep: () => any;
   nextStep: () => any;
   goToStep: (stepIdx: number) => any;
   setHandler: (handlerKey: string) => any;
@@ -28,6 +29,7 @@ const StepperFormCtx = React.createContext<StepperFormCtxValues>({
   unvalidate: () => {},
   nextStep: () => {},
   setHandler: () => {},
+  previousStep: () => {},
 });
 
 export interface StepperFormControllerProps<DataType> {
@@ -124,6 +126,7 @@ export function StepperFormController<FinaleDataType>({
         nextStep,
         goToStep,
         prevoiusStep,
+        previousStep: prevoiusStep,
         currentStepIdx,
         setHandler,
         handlerKeys: handlers,
@@ -136,6 +139,7 @@ export function StepperFormController<FinaleDataType>({
         currentStepIdx,
         goToStep,
         prevoiusStep,
+        previousStep: prevoiusStep,
         validate,
         nextStep,
         setHandler,
@@ -155,7 +159,7 @@ type StepperFormHandlerChildrenProps = {
 
 export interface StepperFormHandlerProps {
   children: MaybeFn<StepperFormHandlerChildrenProps>;
-  validationSchema: yup.ObjectSchema<any>;
+  validationSchema: yup.AnyObjectSchema;
   handlerKey: string;
 }
 
@@ -166,10 +170,11 @@ export const StepperFormHandler: React.FC<StepperFormHandlerProps> = ({
 }) => {
   const { validate, unvalidate, setHandler } = React.useContext(StepperFormCtx);
 
-  async function handleValidate(data: Data) {
+  function handleValidate(data: Data) {
     if (!validationSchema) return;
 
-    const valid = await validationSchema.isValid(data);
+    const valid = validationSchema.isValidSync(data);
+
     if (valid) {
       validate(data, handlerKey);
     } else {

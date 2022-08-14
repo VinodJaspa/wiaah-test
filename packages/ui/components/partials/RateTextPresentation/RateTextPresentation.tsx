@@ -11,7 +11,9 @@ export const RateTextPresentation: React.FC<RateTextPresentationProps> = ({
   const { t } = useTranslation();
   return (
     <span className="font-bold ">
-      {rate < 3
+      {rate < 2
+        ? t("Bad")
+        : rate < 3
         ? t("Considerable")
         : rate < 4
         ? t("Good")
@@ -19,7 +21,7 @@ export const RateTextPresentation: React.FC<RateTextPresentationProps> = ({
         ? t("Fabulous")
         : rate === 5
         ? t("Excellent")
-        : t("Bad")}
+        : ""}
     </span>
   );
 };

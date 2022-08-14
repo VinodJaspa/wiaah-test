@@ -15,7 +15,6 @@ export interface ShopCardDetailsProps {
   onFollow?: () => any;
   onAddToCart?: () => any;
   onBook?: () => any;
-  service?: boolean;
 }
 
 export const ShopCardDetails: React.FC<ShopCardDetailsProps> = ({
@@ -27,7 +26,6 @@ export const ShopCardDetails: React.FC<ShopCardDetailsProps> = ({
   views,
   onFollow,
   onAddToCart,
-  service,
   onBook,
 }) => {
   const { t } = useTranslation();
@@ -97,11 +95,7 @@ export const ShopCardDetails: React.FC<ShopCardDetailsProps> = ({
           bgColor="primary.main"
           textTransform={"capitalize"}
         >
-          {service ? (
-            <Text onClick={onBook}>{t("book_now", "book now")}</Text>
-          ) : (
-            <Text onClick={onAddToCart}>{t("add_to_cart", "add to cart")}</Text>
-          )}
+          <Text onClick={onAddToCart}>{t("add_to_cart", "add to cart")}</Text>
         </Button>
       </HStack>
     </Flex>

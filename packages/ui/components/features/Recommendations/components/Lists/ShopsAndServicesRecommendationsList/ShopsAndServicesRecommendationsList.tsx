@@ -5,12 +5,7 @@ import {
   useGetRecommendedShopsQuery,
   useSearchFilters,
   SpinnerFallback,
-  HotelSearchCard,
-  ResturantRecommendedCard,
-  PractitionerSearchResultsCard,
-  VehicleSearchCard,
   PaginationWrapper,
-  BeautyCenterRecommendedSearchCard,
   RecommendedShopCard,
 } from "ui";
 

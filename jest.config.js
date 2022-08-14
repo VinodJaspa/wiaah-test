@@ -1,6 +1,8 @@
 module.exports = {
   collectCoverageFrom: [
     "!**/*.{ts,tsx}",
+    "**/seller/**/*.{ts,tsx}",
+    "**/buyer/**/*.{ts,tsx}",
     "**/market/**/*.{ts,tsx}",
     "**/ui/**/*.{ts,tsx}",
     "!**/market/pages/stories/*.{ts,tsx}",

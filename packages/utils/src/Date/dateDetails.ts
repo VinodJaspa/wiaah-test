@@ -2,6 +2,10 @@ export const DateDetails = (
   date: Date | string | number,
   locale: string = "en-us"
 ) => {
+  if (isNaN(Date.parse(new Date(date).toString()))) {
+    return null;
+  }
+
   const newDate = new Date(date);
 
   const am_pm_hour = newDate.toLocaleTimeString(locale, {
@@ -32,7 +36,7 @@ export const DateDetails = (
     hour12: false,
   });
   const day = newDate.toLocaleDateString(locale, {
-    day: "2-digit",
+    day: "numeric",
   });
 
   const concatTimeFirstZero = (timeunit: string) =>

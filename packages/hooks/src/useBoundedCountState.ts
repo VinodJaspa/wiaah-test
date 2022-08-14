@@ -22,5 +22,6 @@ export const useBoundedCountState = (
     increment,
     decrement,
     count,
+    setCount,
   };
 };

@@ -20,7 +20,7 @@ export interface BeautyCenterTreatmentsListProps {
 export const BeautyCenterTreatmentsList: React.FC<
   BeautyCenterTreatmentsListProps
 > = ({ treatments, cancelation }) => {
-  const treatmentsRef = usePublishRef("treatments");
+  const treatmentsRef = usePublishRef((keys) => keys.treatments);
   const { t } = useTranslation();
   return (
     <div ref={treatmentsRef} className="flex flex-col gap-8">
@@ -28,9 +28,10 @@ export const BeautyCenterTreatmentsList: React.FC<
       <div className="flex flex-col gap-8 max-h-[40rem] thinScroll pr-2 overflow-y-scroll">
         {treatments.map((treatment, i) => (
           <BeautyCenterTreatmentCard
-            selected={randomNum(10) > 7}
-            onSelect={() => {}}
             {...treatment}
+            selected={randomNum(10) > 7}
+            onUnSelect={() => {}}
+            onSelect={() => {}}
             key={i}
           />
         ))}

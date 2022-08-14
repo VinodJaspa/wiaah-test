@@ -1,22 +1,22 @@
-import { Flex, FlexProps } from "@chakra-ui/react";
 import React from "react";
+import { HtmlDivProps } from "types";
 
 export interface ListWrapperProps {
   children?: React.ReactElement[];
   cols?: number;
   gap?: boolean;
-  listStyle?: FlexProps;
-  itemStyle?: FlexProps;
-  style?: FlexProps;
+  listProps?: HtmlDivProps;
+  itemProps?: HtmlDivProps;
+  props?: HtmlDivProps;
 }
 
 export const ListWrapper: React.FC<ListWrapperProps> = ({
   cols = 1,
   children,
   gap = true,
-  style,
-  listStyle,
-  itemStyle,
+  props,
+  listProps,
+  itemProps,
 }) => {
   function sort<T>(items: T[], cols: number): { item: T; postion: number }[] {
     let postion = 0;
@@ -31,31 +31,33 @@ export const ListWrapper: React.FC<ListWrapperProps> = ({
     return newItems;
   }
   return (
-    <Flex {...style} justify={"space-between"} gap={gap ? "1rem" : "0rem"}>
+    <div
+      className={`flex justify-between w-full ${gap ? "gap-4" : ""}`}
+      {...props}
+    >
       {[...Array(cols)].map((_, index) => (
-        <Flex
-          {...listStyle}
+        <div
+          {...listProps}
           data-testid="ListWrapperListContainer"
-          w={`${100 / cols}%`}
-          gap={gap ? "1rem" : "0rem"}
-          direction={"column"}
+          style={{ width: `${100 / cols}%` }}
+          className={`${gap ? "gap-4" : ""} flex flex-col`}
           key={index}
         >
           {sort(children || [], cols).map(
             ({ item, postion }, i) =>
               postion == index && (
-                <Flex
-                  {...itemStyle}
+                <div
+                  className="flex flex-col gap-4"
+                  {...itemProps}
                   data-testid="ListWrapperItem"
-                  direction={"column"}
                   key={i}
                 >
                   {item}
-                </Flex>
+                </div>
               )
           )}
-        </Flex>
+        </div>
       ))}
-    </Flex>
+    </div>
   );
 };

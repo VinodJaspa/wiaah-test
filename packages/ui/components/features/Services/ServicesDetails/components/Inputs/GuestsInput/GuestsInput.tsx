@@ -14,13 +14,15 @@ export const GuestsInput: React.FC<GuestsInputProps> = () => {
   return (
     <InputGroup>
       {({ setFocused }) => (
-        <p
-          onClick={() => setFocused(true)}
-          className="relative cursor-pointer w-full font-bold text-lg uppercase p-4"
-        >
-          {guests} {t("guests")}
-          <ArrowDownIcon className="absolute top-1/2 right-4 text-lg -translate-y-1/2" />
-        </p>
+        <div className="flex items-center justify-between gap-2">
+          <p
+            onClick={() => setFocused(true)}
+            className="cursor-pointer w-full font-bold text-lg uppercase p-4"
+          >
+            {guests} {t("guests")}
+          </p>
+          <ArrowDownIcon className="text-lg" />
+        </div>
       )}
       <InputSuggestions className="shadow border text-4xl border-gray-200 overflow-x-hidden thinScroll">
         <HotelGuestsInput

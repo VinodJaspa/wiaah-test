@@ -102,7 +102,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
         isOpen
           ? "-translate-y-1/2"
           : "-translate-y-[calc(50% - 5rem)] opacity-0 pointer-events-none"
-      } fixed top-1/2 w-[min(100%,40rem)] opacity-100 left-1/2 p-4 z-[60] flex flex-col transition-all rounded bg-white -translate-x-1/2`}
+      } fixed top-1/2 w-[min(100%,40rem)] opacity-100 left-1/2 p-4 z-[60] transition-all rounded bg-white -translate-x-1/2`}
     >
       {show ? children : null}
     </div>
