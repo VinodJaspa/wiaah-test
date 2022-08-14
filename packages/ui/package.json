@@ -29,6 +29,7 @@
     "types": "*",
     "utils": "*",
     "validation": "*",
-    "routing": "*"
+    "routing": "*",
+    "react-pubsub": "*"
   }
 }

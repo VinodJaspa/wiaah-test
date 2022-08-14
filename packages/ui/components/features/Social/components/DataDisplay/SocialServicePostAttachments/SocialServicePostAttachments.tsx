@@ -1,16 +1,21 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import {
-  HiDotsHorizontal,
-  HiOutlineHeart,
-  HiOutlineShoppingCart,
-} from "react-icons/hi";
+import { HiDotsHorizontal, HiOutlineHeart } from "react-icons/hi";
 import { CashBack, HtmlDivProps, PostAttachmentTypes } from "types";
+import { useReactPubsub } from "react-pubsub";
 import { Interactions } from "types";
-import { PostAttachment, CashbackBadge } from "ui";
-import { PostAttachmentProps } from "../PostAttachment";
+import {
+  PostAttachment,
+  CashbackBadge,
+  PostAttachmentProps,
+  CalenderIcon,
+  ExclamationCircleIcon,
+  SocialServiceDetailsModal,
+  ModalExtendedWrapper,
+  ModalButton,
+} from "ui";
 
-export interface ShopCardAttachmentProps {
+export interface SocialServicePostAttachmentsProps {
   cashback?: CashBack;
   src?: string;
   type?: PostAttachmentTypes;
@@ -24,16 +29,19 @@ export interface ShopCardAttachmentProps {
   minimal?: boolean;
 }
 
-export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
+export const SocialServicePostAttachments: React.FC<
+  SocialServicePostAttachmentsProps
+> = ({
+  alt,
+  attachmentProps,
   cashback,
   discount,
-  onInteraction,
-  attachmentProps,
   innerProps,
-  alt,
+  onInteraction,
   src,
   type,
 }) => {
+  const { emit } = useReactPubsub((keys) => keys.serviceModal);
   const { t } = useTranslation();
   return (
     <div className="max-w-full h-full relative bg-black" {...innerProps}>
@@ -63,11 +71,18 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
             >
               <HiOutlineHeart className="text-sm md:text-xl" />
             </div>
+
             <div
               className="flex items-center max-w-fit p-1 bg-white justify-center rounded-full pointer-events-auto cursor-pointer"
               onClick={() => onInteraction && onInteraction("addToCart")}
             >
-              <HiOutlineShoppingCart className="text-sm md:text-xl" />
+              <CalenderIcon className="text-sm md:text-xl" />
+            </div>
+            <div
+              className="flex items-center max-w-fit p-1 bg-white justify-center rounded-full pointer-events-auto cursor-pointer"
+              onClick={() => emit({ id: "test" })}
+            >
+              <ExclamationCircleIcon className="text-sm md:text-xl" />
             </div>
           </div>
           {discount ? (

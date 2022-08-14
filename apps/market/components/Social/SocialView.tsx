@@ -35,6 +35,7 @@ import { PostComment } from "types";
 import { products } from "placeholder";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
 
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 export const getRandomUser = () =>
@@ -83,7 +84,7 @@ export interface SocialViewProps {}
 export const SocialView: React.FC<SocialViewProps> = () => {
   const { t } = useTranslation();
   const profileInfo = useRecoilValue(SocialProfileInfoState);
-  const { isMobile } = useResponsive();
+  const { visit, getParam } = useRouting();
   const posts = useRecoilValue(SocialNewsfeedPostsState);
   const cols = useBreakpointValue({ base: 3 });
   const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
@@ -151,6 +152,10 @@ export const SocialView: React.FC<SocialViewProps> = () => {
       component: <PostCardsListWrapper cols={cols} posts={posts} />,
     },
   ];
+
+  const tabsSet = profileInfo.accountType === "seller" ? sellerTabs : buyerTabs;
+  const tabParam = getParam("tab");
+
   return (
     <>
       <ShareWithModal />
@@ -173,11 +178,7 @@ export const SocialView: React.FC<SocialViewProps> = () => {
         <Container className="flex-grow flex-col">
           {profileInfo && profileInfo.public ? (
             <>
-              <TabsViewer
-                tabs={
-                  profileInfo.accountType === "seller" ? sellerTabs : buyerTabs
-                }
-              />
+              <TabsViewer tabs={tabsSet} />
               <Divider my="1rem" />
             </>
           ) : (

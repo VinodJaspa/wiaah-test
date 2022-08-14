@@ -3,7 +3,14 @@ import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { usePublishRef, useScrollTo } from "state";
-import { AspectRatio, Slider, ArrowLeftIcon, ArrowRightIcon, Button } from "ui";
+import {
+  AspectRatio,
+  Slider,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  Button,
+  AspectRatioImage,
+} from "ui";
 export const ServicePresentationCarosuel: React.FC<{
   data: PresntationMediaType[];
 }> = ({ data }) => {
@@ -16,39 +23,39 @@ export const ServicePresentationCarosuel: React.FC<{
       <AspectRatio ratio={isMobile ? 5 / 7 : 5 / 11.12}>
         {Array.isArray(data) ? (
           <div className="w-full gap-4 flex h-full flex-col md:flex-row">
-            <div className="w-32">
-              <Slider itemsCount={8} variant="vertical">
+            <div className="w-32 flex flex-col gap-2 overflow-scroll noScroll">
+              {data.map((img, i) => (
+                <AspectRatioImage
+                  ratio={7 / 9}
+                  className={`${i === 0 ? "" : "pt-2"} rounded`}
+                  key={i}
+                  src={img.src}
+                  alt={""}
+                />
+              ))}
+            </div>
+            <div style={{ width: "calc(100% - 9rem)" }}>
+              <Slider
+                leftArrowComponent={() => (
+                  <div className="bg-black mx-4  bg-opacity-50 text-primary p-1  rounded-full text-3xl">
+                    <ArrowLeftIcon />
+                  </div>
+                )}
+                rightArrowComponent={() => (
+                  <div className="bg-black  mx-4 bg-opacity-50 text-primary p-1  rounded-full text-3xl">
+                    <ArrowRightIcon />
+                  </div>
+                )}
+              >
                 {data.map((img, i) => (
                   <img
-                    className={`${
-                      i === 0 ? "" : "pt-2"
-                    } rounded w-full h-full object-cover`}
+                    className="w-full h-full object-cover"
                     key={i}
                     src={img.src}
                   />
                 ))}
               </Slider>
             </div>
-            <Slider
-              leftArrowComponent={() => (
-                <div className="bg-black mx-4  bg-opacity-50 text-primary p-1  rounded-full text-3xl">
-                  <ArrowLeftIcon />
-                </div>
-              )}
-              rightArrowComponent={() => (
-                <div className="bg-black  mx-4 bg-opacity-50 text-primary p-1  rounded-full text-3xl">
-                  <ArrowRightIcon />
-                </div>
-              )}
-            >
-              {data.map((img, i) => (
-                <img
-                  className="w-full h-full object-cover"
-                  key={i}
-                  src={img.src}
-                />
-              ))}
-            </Slider>
           </div>
         ) : null}
       </AspectRatio>

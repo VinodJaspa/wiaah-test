@@ -6,7 +6,7 @@ import {
   useSearchFilters,
   Divider,
   ServiceReachOutSection,
-  ServiceOnMapLocationSection,
+  ServiceOnMapLocalizationSection,
   ServicePoliciesSection,
   ServiceWorkingHoursSection,
   HotelServiceRoomsSection,
@@ -67,7 +67,7 @@ export const HotelDetailsView: React.FC = () => {
               <HotelServiceRoomsSection rooms={res.data.rooms} />
               <ServiceWorkingHoursSection workingDays={res.data.workingDays} />
               <ServicePoliciesSection policies={res.data.policies} />
-              <ServiceOnMapLocationSection location={res.data.location} />
+              <ServiceOnMapLocalizationSection location={res.data.location} />
             </Accordion>
           </>
         ) : null}

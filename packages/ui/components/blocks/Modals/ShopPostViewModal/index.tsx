@@ -29,7 +29,7 @@ export const ShopPostViewModal: React.FC<ShopPostViewModalProps> = () => {
     isError,
     error,
   } = useQuery(
-    ["newsFeedPostDetails", { id: postId }],
+    ["shopPostDetails", { id: postId }],
     async ({ queryKey }: any) => {
       const id = queryKey[1].id;
       if (!id) throw new Error("error getting postId");

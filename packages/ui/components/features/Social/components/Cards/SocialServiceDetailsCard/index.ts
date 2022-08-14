@@ -1,2 +1,1 @@
-export * from "./SocialServiceCard";
 export * from "./SocialServiceDetailsCard";

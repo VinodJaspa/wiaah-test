@@ -264,7 +264,7 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
           ? children.map((child, index) => {
               return (
                 <div
-                  key={child.key}
+                  key={`${child.key || ""}-${index}`}
                   onTouchStart={touchStart(index)}
                   onMouseDown={touchStart(index)}
                   onTouchMove={touchMove}

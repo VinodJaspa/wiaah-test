@@ -21,6 +21,7 @@ const withTM = require("next-transpile-modules")(
     "placeholder",
     "types",
     "routing",
+    "react-pubsub",
   ],
   {
     debug: true,

@@ -1,5 +1,6 @@
-import { Flex, Text } from "@chakra-ui/react";
+import { ShopCardsInfoPlaceholder } from "placeholder";
 import React from "react";
+import { useRouting } from "routing";
 import { ShopCardInfo } from "types";
 import {
   ListWrapper,
@@ -10,9 +11,9 @@ import {
   ShopCardAttachment,
   useShopPostPopup,
   ShopPostViewModal,
-  usePostsCommentsDrawer,
+  PostViewPopup,
 } from "ui";
-import { NumberShortner } from "../../../helpers";
+import { NumberShortner } from "utils";
 
 export interface ShopCardsListWrapperProps
   extends Omit<SocialShopCardProps, "shopCardInfo"> {
@@ -29,6 +30,7 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
   grid,
   ...props
 }) => {
+  const { visit } = useRouting();
   const { setCurrentPostId } = useShopPostPopup();
   if (grid) {
     return (
@@ -74,9 +76,36 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
 
   return (
     <>
+      <PostViewPopup
+        fetcher={async ({ queryKey }: any) => {
+          const id = queryKey[1].postId;
+
+          const post = ShopCardsInfoPlaceholder.find((post) => post.id === id);
+          return post ? post : null;
+        }}
+        queryName="shopPost"
+        idParam="shopPostId"
+        renderChild={(props: ShopCardInfo) => {
+          return (
+            <SocialShopCard
+              showCommentInput={false}
+              showInteraction={false}
+              shopCardInfo={props}
+            />
+          );
+        }}
+      />
       <ListWrapper {...wrapperProps} cols={cols}>
         {items.map((shop, i) => (
-          <SocialShopCard showComments key={i} {...props} shopCardInfo={shop} />
+          <SocialShopCard
+            onCardClick={() =>
+              visit((routes) => routes.addQuery({ shopPostId: shop.id }))
+            }
+            showComments
+            key={i}
+            {...props}
+            shopCardInfo={shop}
+          />
         ))}
       </ListWrapper>
     </>
