@@ -5,6 +5,7 @@ export const useNewsFeedPostPopup = () => {
   const [postId, setPostId] = useRecoilState(newsFeedPostIdState);
 
   function setCurrentPost(id: string) {
+    console.log("set");
     setPostId(id);
   }
 

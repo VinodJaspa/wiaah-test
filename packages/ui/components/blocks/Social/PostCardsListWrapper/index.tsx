@@ -1,4 +1,6 @@
+import { newsfeedPosts } from "placeholder";
 import React from "react";
+import { useRouting } from "routing";
 import { PostCardInfo } from "types";
 import {
   ListWrapper,
@@ -8,8 +10,10 @@ import {
   PostAttachment,
   useNewsFeedPostPopup,
   NewsfeedPostDetailsPopup,
+  PostViewPopup,
+  PostAttachmentsViewer,
 } from "ui";
-import { NumberShortner } from "ui/components/helpers";
+import { NumberShortner } from "utils";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {
   posts: PostCardInfo[];
@@ -25,6 +29,7 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
   grid,
   ...props
 }) => {
+  const { visit } = useRouting();
   const { setCurrentPost } = useNewsFeedPostPopup();
   if (grid) {
     return (
@@ -54,10 +59,11 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
                     post.postInfo.attachments[0].src) ||
                   ""
                 }
-                //@ts-ignore
                 type={
+                  //@ts-ignore
                   typeof post.postInfo.attachments[0] === "object"
-                    ? post?.postInfo?.attachments[0]?.type
+                    ? //@ts-ignore
+                      post?.postInfo?.attachments[0]?.type
                     : "image"
                 }
                 footer={
@@ -75,17 +81,46 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
     );
   } else {
     return (
-      <ListWrapper {...props} cols={cols}>
-        {posts &&
-          posts.map((post) => (
-            <PostCard
-              showComments
-              innerProps={{ onClick: () => onPostClick && onPostClick(post) }}
-              {...post}
-              key={post.postInfo.id}
-            />
-          ))}
-      </ListWrapper>
+      <>
+        <PostViewPopup
+          fetcher={async ({ queryKey }) => {
+            const id = queryKey[1].postId;
+            console.log("idParam", queryKey);
+            const post = newsfeedPosts.find((post) => post.postInfo.id === id);
+            return post ? post : null;
+          }}
+          queryName="newFeedPost"
+          idParam="newsfeedpostid"
+          renderChild={(props: PostCardInfo) => {
+            return (
+              <PostAttachmentsViewer
+                attachments={props.postInfo.attachments || []}
+                profileInfo={props.profileInfo}
+                carouselProps={{
+                  arrows: true,
+                }}
+              />
+            );
+          }}
+        />
+        <ListWrapper {...props} cols={cols}>
+          {posts &&
+            posts.map((post) => (
+              <PostCard
+                showComments
+                innerProps={{
+                  onClick: () => {
+                    visit((routes) =>
+                      routes.addQuery({ newsfeedpostid: post.postInfo.id })
+                    );
+                  },
+                }}
+                {...post}
+                key={post.postInfo.id}
+              />
+            ))}
+        </ListWrapper>
+      </>
     );
   }
 };

@@ -1,67 +1,14 @@
-import {
-  Button,
-  Flex,
-  HStack,
-  Icon,
-  Text,
-  VStack,
-  Box,
-} from "@chakra-ui/react";
 import React from "react";
-import { SocialStoryDataWithUser } from "types";
+import { SocialActionData, SocialStoryDataWithUser } from "types";
 import { useTranslation } from "react-i18next";
-import {
-  ActionHeader,
-  Avatar,
-  FloatingContainer,
-  PostViewPopup,
-  useActionComments,
-} from "ui";
-import { SocialProfileInfo } from "ui/placeholder/social";
-import {
-  HiHeart,
-  HiThumbDown,
-  HiOutlineChat,
-  HiShare,
-  HiDotsHorizontal,
-} from "react-icons/hi";
-import { BiVolumeFull } from "react-icons/bi";
-import { BsPlayFill } from "react-icons/bs";
-import { VerticalCarousel, PostAttachment } from "ui";
-import { useResponsive } from "ui";
-import { CgPlayButtonR } from "react-icons/cg";
-import { useRouter } from "next/router";
-// export type ActionPostInteractionsType = {
-//   icon:IconType
-//   interactionLabel:string
-// }
-
-// export const ActionPostInteractions:ActionPostInteractionsType[] = [
-//   {
-//     icon: HiThumbUp,
-//     interactionLabel:"likes"
-//   }
-// ]
-
-const ActionsPlaceholder = [];
-
+import { Slider, AspectRatio } from "ui";
+import { SocialProfileInfo } from "placeholder";
+import { ActionViewer } from "ui";
 export const ActionsView: React.FC = () => {
-  const [active, setActive] = React.useState<number>();
-  const { isMobile } = useResponsive();
   const { t } = useTranslation();
-  const router = useRouter();
   return (
-    <Flex
-      bgColor={"white"}
-      w="100%"
-      h="40rem"
-      overflow={"hidden"}
-      direction="column"
-      align="center"
-    >
-      {/* <Text textTransform={"capitalize"} fontSize={"4xl"} fontWeight="bold">
-        {t("action", "action")}
-      </Text> */}
+    <div className="bg-white w-full h-[40rem] overflow-hidden flex-col flex items-center">
+      <p className="text-4xl font-bold">{t("Action")}</p>
       {/* <PostViewPopup
         fetcher={async ({ queryKey }) => {
           const id = queryKey[1].postId;
@@ -74,181 +21,17 @@ export const ActionsView: React.FC = () => {
           return <ActionViewer action={props} />;
         }}
       /> */}
-
-      {/* <Flex
-        h="90%"
-        // w={{ base: "100%", sm: "container.sm", md: "25rem" }}
-        overflow="hidden"
-      > */}
       {/* actions View */}
-      <VerticalCarousel h="90%" gap={16}>
-        {actionsPlaceholders.map((action, i) => (
-          <ActionViewer action={action} key={i} />
-        ))}
-      </VerticalCarousel>
-      {/* </Flex> */}
-      {/* </FloatingContainer> */}
-    </Flex>
+      <AspectRatio ratio={16 / 5}>
+        <Slider variant="vertical">
+          {actionsPlaceholders.map((action, i) => (
+            <ActionViewer action={action} key={i} />
+          ))}
+        </Slider>
+      </AspectRatio>
+    </div>
   );
 };
-
-export interface ActionsViewerProps {
-  action: SocialActionData;
-  play?: boolean;
-  onActionClick?: (actionId: string) => any;
-  dark?: boolean;
-}
-
-export const ActionViewer: React.FC<ActionsViewerProps> = ({
-  action,
-  play,
-  onActionClick,
-  dark,
-}) => {
-  const { ToggleComments } = useActionComments();
-  const { isMobile } = useResponsive();
-  const { t } = useTranslation();
-  return (
-    <>
-      {action && (
-        <FloatingContainer
-          // h="100%"
-          // maxW="35rem"
-          // pr="6rem"
-          items={[
-            {
-              label: (
-                <Flex
-                  justify={"center"}
-                  px="0.25"
-                  textAlign={"center"}
-                  gap="0.5rem"
-                  direction={"column"}
-                  color={dark ? "white" : "black"}
-                  bg={dark && "blackAlpha.300"}
-                  rounded="full"
-                  fontSize={{ base: "6xl", md: "7xl" }}
-                >
-                  <VStack spacing="0rem">
-                    <Icon as={HiHeart} />
-                    <Text fontSize={"lg"}>1.5k</Text>
-                  </VStack>
-                  <VStack onClick={ToggleComments} spacing="0rem">
-                    <Icon as={HiOutlineChat} />
-                    <Text fontSize={"lg"}>500</Text>
-                  </VStack>
-                  <VStack spacing="0rem">
-                    <Icon as={HiShare} />
-                    <Text fontSize="lg">{t("share", "share")}</Text>
-                  </VStack>
-                  <VStack spacing="0rem">
-                    <Icon as={HiDotsHorizontal} />
-                  </VStack>
-                </Flex>
-              ),
-              right: "0.5rem",
-              top: "center",
-            },
-          ]}
-        >
-          <Flex
-            gap="0.5rem"
-            // py={i !== 0 && "3rem"}
-            alignSelf={"flex-start"}
-            h={"100%"}
-            direction={"column"}
-            onClick={() => onActionClick && onActionClick(action.id)}
-          >
-            <FloatingContainer
-              // pointerEvents={"none"}
-              // h="100%"
-              // w="100%"
-              // display={"flex"}
-              // alignItems="center"
-              items={[
-                {
-                  label: (
-                    <ActionHeader
-                      // bgColor={""}
-                      // w="100%"
-                      // p="0.5rem"
-                      // bgGradient="linear(to-t, blackAlpha.500 80%,transparent)"
-                      // color="white"
-                      // minH={"max-content"}
-                      actionHashtags={[]}
-                      actionTitle={action.title}
-                      userName={action.user.name}
-                      userThumbnail={action.user.thumbnail}
-                      actionLocation={"Los Angeles"}
-                    />
-                  ),
-                  bottom: true,
-                  left: true,
-                },
-                {
-                  label: (
-                    <Icon
-                      fontSize={"xx-large"}
-                      p="0.25rem"
-                      rounded="full"
-                      bg="blackAlpha.400"
-                      color="white"
-                      as={BiVolumeFull}
-                    />
-                  ),
-                  top: "1rem",
-                  right: "1rem",
-                },
-                {
-                  label: (
-                    <Icon
-                      fontSize={"xx-large"}
-                      p="0.25rem"
-                      rounded="full"
-                      bg="blackAlpha.400"
-                      color="white"
-                      as={BsPlayFill}
-                    />
-                  ),
-                  top: "1rem",
-                  left: "1rem",
-                },
-                {
-                  label: (
-                    <Icon
-                      fontSize={"xx-large"}
-                      color="white"
-                      as={CgPlayButtonR}
-                    />
-                  ),
-                  top: "3.5rem",
-                  right: "1rem",
-                },
-              ]}
-            >
-              <PostAttachment
-                controls={false}
-                autoPlay
-                play={play}
-                // type={action.storyType !== "text" ? action.storyType : "image"}
-                // src={action.storySrc}
-                {...action}
-              />
-            </FloatingContainer>
-          </Flex>
-        </FloatingContainer>
-      )}
-    </>
-  );
-};
-
-export interface SocialActionData extends SocialStoryDataWithUser {
-  likes: number;
-  dislikes: number;
-  comments: number;
-  shares: number;
-  title: string;
-}
 
 const actionsPlaceholders: SocialActionData[] = [
   {

@@ -1,7 +1,7 @@
 import {
   FormatedSearchableFilter,
-  GetRecommendedShopsFetcher,
   QueryPaginationInputs,
+  GetRecommendedShopsFetcher,
 } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 import { AsyncReturnType } from "types";

@@ -1,28 +1,20 @@
 import React from "react";
-import { useRouter, NextRouter } from "next/router";
-import { useMutation, useQuery, QueryFunction, QueryKey } from "react-query";
+import { useMutation, useQuery } from "react-query";
+import { useDisclosure, IconButton, Icon, Text } from "@chakra-ui/react";
+import { MdClose } from "react-icons/md";
 import {
   Modal,
-  ModalOverlay,
   ModalContent,
-  ModalBody,
-  useDisclosure,
-  Box,
-  Flex,
-  Center,
-  IconButton,
-  Icon,
-  Text,
-  BoxProps,
-} from "@chakra-ui/react";
-import { MdClose } from "react-icons/md";
-import { PostAttachmentsViewer, PostCommentCard } from "ui";
+  ModalOverlay,
+  ArrowUpIcon,
+  ArrowDownIcon,
+} from "ui";
 import { useTranslation } from "react-i18next";
-import { FloatingContainer, VerticalCarousel } from "ui";
-import { getParamFromAsPath } from "ui/components/helpers";
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
-import { PostCardPlaceHolder } from "ui/placeholder";
+import { FloatingContainer, VerticalCarousel, PostCommentCard } from "ui";
+import { getParamFromAsPath } from "utils";
+import { PostCardPlaceHolder } from "placeholder";
 import { useActionComments } from "ui/Hooks";
+import { useRouting } from "routing";
 
 export interface PostViewPopupProps {
   renderChild: (props: any) => React.ReactElement;
@@ -45,11 +37,11 @@ export const PostViewPopup: React.FC<PostViewPopupProps> = ({
   queryName = "post",
   fetcher,
 }) => {
+  const { visit, getCurrentPath } = useRouting();
   const { CloseComments, OpenComments, ToggleComments, open } =
     useActionComments();
   const { t } = useTranslation();
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const router = useRouter();
 
   const { mutate: mutateNext } = useMutation<
     { id: string },
@@ -57,11 +49,8 @@ export const PostViewPopup: React.FC<PostViewPopupProps> = ({
     { currentId: string }
   >(goNextPost, {
     onSuccess: (data) => {
-      router.push(
-        router.pathname,
-        { query: { [idParam]: data.id } },
-        { shallow: true }
-      );
+      visit((routes) => routes.addQuery({ [idParam]: data.id }));
+      OpenComments();
     },
   });
   const { mutate: mutatePrev } = useMutation<
@@ -70,14 +59,10 @@ export const PostViewPopup: React.FC<PostViewPopupProps> = ({
     { currentId: string }
   >(goPrevPost, {
     onSuccess: (data) => {
-      router.push(
-        router.pathname,
-        { query: { [idParam]: data.id } },
-        { shallow: true }
-      );
+      visit((routes) => routes.addQuery({ [idParam]: data.id }));
     },
   });
-  const postId = getParamFromAsPath(router.asPath, idParam);
+  const postId = getParamFromAsPath(getCurrentPath(), idParam);
 
   const {
     data: post,
@@ -86,8 +71,7 @@ export const PostViewPopup: React.FC<PostViewPopupProps> = ({
   } = useQuery([queryName, { postId }], fetcher, { enabled: !!postId });
 
   const reloadPath = () => {
-    console.log(router);
-    router.push(router.asPath.split("?")[0], undefined, { shallow: true });
+    visit((routes) => routes.addPath(""));
   };
 
   React.useEffect(() => {
@@ -96,7 +80,7 @@ export const PostViewPopup: React.FC<PostViewPopupProps> = ({
     } else if (!postId && isOpen) {
       handlePostViewClose();
     }
-  }, [router]);
+  }, []);
 
   function handlePostViewClose() {
     onClose();
@@ -115,119 +99,98 @@ export const PostViewPopup: React.FC<PostViewPopupProps> = ({
   }
   return (
     <>
-      <Modal
-        isCentered
-        onClose={handlePostViewClose}
-        isOpen={isOpen}
-        motionPreset="slideInBottom"
-        blockScrollOnMount={true}
-        // css={{ "&& .chakra-modal__content-container": { overflow: "hidden" } }}
-      >
-        <ModalOverlay bg="black" />
-        <ModalContent
-          overflow={"hidden"}
-          p="0px"
-          bgColor={"transparent"}
-          h="100vh"
-          maxW={"100%"}
-        >
-          <ModalBody p="0px" gap="2rem" display="flex" h="100%" w="100%">
-            <IconButton
-              onClick={handlePostViewClose}
-              p="0rem"
-              fontSize={"xx-large"}
-              colorScheme={"blackAlpha"}
-              bgColor="transparent"
-              aria-label="Close Post"
-              icon={<Icon as={MdClose} />}
-            />
-            <FloatingContainer
-              // key={i}
-              className="flex justify-center items-center w-full h-full overflow-hidden bg-black"
-              items={[
-                {
-                  label: (
-                    <IconButton
-                      onClick={handleNextPost}
-                      p="0rem"
-                      fontSize={"xxx-large"}
-                      colorScheme={"blackAlpha"}
-                      bgColor="blackAlpha.300"
-                      aria-label="Close Post"
-                      icon={<Icon as={ChevronDownIcon} />}
-                    />
-                  ),
-                  bottom: "2rem",
-                  right: "0rem",
-                },
-                {
-                  label: (
-                    <IconButton
-                      onClick={handlePrevPost}
-                      p="0rem"
-                      fontSize={"xxx-large"}
-                      colorScheme={"blackAlpha"}
-                      bgColor="blackAlpha.300"
-                      aria-label="Close Post"
-                      icon={<Icon as={ChevronUpIcon} />}
-                    />
-                  ),
-                  top: "2rem",
-                  right: "0rem",
-                  // zIndex: 10,
-                },
-              ]}
+      <Modal onOpen={() => {}} onClose={handlePostViewClose} isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent className="h-screen flex w-screen">
+          <IconButton
+            onClick={handlePostViewClose}
+            p="0rem"
+            fontSize={"xx-large"}
+            colorScheme={"blackAlpha"}
+            bgColor="transparent"
+            aria-label="Close Post"
+            icon={<Icon as={MdClose} />}
+          />
+          <FloatingContainer
+            // key={i}
+            className="flex justify-center items-center w-full h-full overflow-hidden bg-black"
+            items={[
+              {
+                label: (
+                  <IconButton
+                    onClick={handleNextPost}
+                    p="0rem"
+                    fontSize={"xxx-large"}
+                    colorScheme={"blackAlpha"}
+                    bgColor="blackAlpha.300"
+                    aria-label="Close Post"
+                    icon={<Icon as={ArrowDownIcon} />}
+                  />
+                ),
+                bottom: "2rem",
+                right: "0rem",
+              },
+              {
+                label: (
+                  <IconButton
+                    onClick={handlePrevPost}
+                    p="0rem"
+                    fontSize={"xxx-large"}
+                    colorScheme={"blackAlpha"}
+                    bgColor="blackAlpha.300"
+                    aria-label="Close Post"
+                    icon={<Icon as={ArrowUpIcon} />}
+                  />
+                ),
+                top: "2rem",
+                right: "0rem",
+              },
+            ]}
+          >
+            <VerticalCarousel
+              w="100%"
+              h="100%"
+              overflow="hidden"
+              data-testid="VerticalCarouselContainer"
+              onPassMaxLimit={handleNextPost}
+              onPassMinLimit={handlePrevPost}
             >
-              <VerticalCarousel
-                w="100%"
-                h="100%"
-                overflow="hidden"
-                data-testid="VerticalCarouselContainer"
-                onPassMaxLimit={handleNextPost}
-                onPassMinLimit={handlePrevPost}
-              >
-                {[...Array(1)].map(
-                  (_, i) => renderChild && post && renderChild(post)
-                )}
-                {/* {renderChild && post && renderChild(post)} */}
-              </VerticalCarousel>
-            </FloatingContainer>
-            <Flex
-              overflowY={"scroll"}
-              className="thinScroll"
-              opacity={open ? 1 : 0}
-              pointerEvents={open ? "all" : "none"}
-              w={open ? "min(100%,35rem)" : "0px"}
-              transition={"all"}
-              transform="auto"
-              bg="white"
-              flexDirection={"column"}
-              p="0.5rem"
-              gap="0.5rem"
-            >
-              {PostCardPlaceHolder.postInfo.comments && (
-                <>
-                  {PostCardPlaceHolder.postInfo.comments.length > 0 ? (
-                    PostCardPlaceHolder.postInfo.comments.map(
-                      (comment: any, i: any) => (
-                        <PostCommentCard key={i} {...comment} />
-                      )
-                    )
-                  ) : (
-                    <Center h="100%">
-                      <Text
-                        textTransform={"capitalize"}
-                        fontWeight="bold"
-                        fontSize="lg"
-                      >
-                        {t("no_comments", "no comments in this post")}
-                      </Text>
-                    </Center>
-                  )}
-                </>
+              {[...Array(1)].map(
+                (_, i) => renderChild && post && renderChild(post)
               )}
-            </Flex>
-          </ModalBody>
+              {/* {renderChild && post && renderChild(post)} */}
+            </VerticalCarousel>
+          </FloatingContainer>
+          <div
+            style={{
+              opacity: open ? 1 : 0,
+              pointerEvents: open ? "all" : "none",
+              width: open ? "min(100%,35rem)" : "0px",
+            }}
+            className={`thinScroll transition-all transform bg-white flex-col p-2 gap-2 flex overflow-x-scroll`}
+          >
+            {PostCardPlaceHolder.postInfo.comments && (
+              <>
+                {PostCardPlaceHolder.postInfo.comments.length > 0 ? (
+                  PostCardPlaceHolder.postInfo.comments.map(
+                    (comment: any, i: any) => (
+                      <PostCommentCard key={i} {...comment} />
+                    )
+                  )
+                ) : (
+                  <div className="flex justify-center items-center h-full">
+                    <Text
+                      textTransform={"capitalize"}
+                      fontWeight="bold"
+                      fontSize="lg"
+                    >
+                      {t("no comments in this post")}
+                    </Text>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </ModalContent>
       </Modal>
     </>

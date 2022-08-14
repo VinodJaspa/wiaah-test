@@ -18,7 +18,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <RoutingProvider visit={(url) => (router ? router.push(url) : null)}>
+      <RoutingProvider
+        getCurrentPath={() => router.asPath}
+        visit={(url) => (router ? router.push(url) : null)}
+      >
         <ChakraProvider theme={theme}>
           <CookiesProvider>
             <RecoilRoot>

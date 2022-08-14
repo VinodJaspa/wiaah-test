@@ -9,7 +9,7 @@ import {
   Divider,
 } from "@chakra-ui/react";
 import { SocialHashTagTopPosts } from "ui/state";
-import { TabType } from "types/market/misc/tabs";
+import { TabType } from "types";
 import { useRouter } from "next/router";
 import {
   ActionsListWrapper,
@@ -19,7 +19,7 @@ import {
   ShopCardsListWrapper,
   TabsViewer,
 } from "ui";
-import { newsfeedPosts, ShopCardsInfoPlaceholder } from "ui/placeholder/social";
+import { newsfeedPosts, ShopCardsInfoPlaceholder } from "placeholder";
 import { useTranslation } from "react-i18next";
 
 export interface HashTagViewProps {}

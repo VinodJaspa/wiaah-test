@@ -1,17 +1,18 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
-import MasterLayout from "../../../../components/MasterLayout";
-import { ActionsView } from "../../../../components/Actions";
+import { MasterLayout } from "@components";
+import { ActionsView } from "@components";
 
 interface ActionsPageProps {}
 
-export const getServerSideProps: GetServerSideProps<ActionsPageProps> =
-  async () => {
-    return {
-      props: {},
-    };
+export const getServerSideProps: GetServerSideProps<
+  ActionsPageProps
+> = async () => {
+  return {
+    props: {},
   };
+};
 
 const actions: NextPage<ActionsPageProps> = () => {
   return (

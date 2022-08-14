@@ -96,5 +96,9 @@ export const storybookShopFeatureTitle = storybookFeaturesTitle + "Shop /";
 export const storybookShopFeatureCardsTitle =
   storybookShopFeatureTitle + cardsTitle;
 
+// social
+export const storybookSocialTitle = storybookFeaturesTitle + "Social /";
+export const storybookSocialCardsTitle = storybookSocialTitle + cardsTitle;
+
 // storybook misc
 export const storybookPlaygourndTitle = "Playground /";

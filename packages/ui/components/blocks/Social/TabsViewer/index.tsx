@@ -1,6 +1,6 @@
 import React from "react";
 import { Tabs, TabList, TabItem, TabTitle, TabsHeader, TabsProps } from "ui";
-import { TabType } from "types/market/misc/tabs";
+import { TabType } from "types";
 
 export interface TabsViewerProps extends Omit<TabsProps, "children"> {
   tabs: TabType[];
@@ -19,7 +19,7 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
   return tabs.length > 0 ? (
     <Tabs {...props}>
       {showTabs && (
-        <TabsHeader className="justify-center">
+        <TabsHeader className="justify-center py-[1rem]">
           {tabs.map(({ name }, i) => (
             <TabTitle key={i} TabKey={i}>
               {({ currentTabIdx }) => {

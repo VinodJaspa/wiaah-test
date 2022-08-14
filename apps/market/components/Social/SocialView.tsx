@@ -18,6 +18,7 @@ import {
   ActionsListWrapper,
   SocialPostsCommentsDrawer,
   ShareWithModal,
+  SocialServicePostsList,
 } from "ui";
 import {
   PostCommentPlaceholder,
@@ -26,12 +27,12 @@ import {
   socialAffiliationCardPlaceholders,
   SocialProfileInfo,
   profileActionsPlaceholder,
-} from "ui";
+} from "placeholder";
 import { TabType } from "types";
 import { useRecoilValue } from "recoil";
 import { SocialNewsfeedPostsState, SocialProfileInfoState } from "state";
 import { PostComment } from "types";
-import { products } from "ui/placeholder";
+import { products } from "placeholder";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 
@@ -122,7 +123,7 @@ export const SocialView: React.FC<SocialViewProps> = () => {
     },
     {
       name: t("Services"),
-      component: <div></div>,
+      component: <SocialServicePostsList />,
     },
     {
       name: t("affiliation offers", "affiliation offers"),
@@ -154,8 +155,8 @@ export const SocialView: React.FC<SocialViewProps> = () => {
     <>
       <ShareWithModal />
       <SocialPostsCommentsDrawer />
-      <Flex direction={"column"}>
-        <Flex position={{ base: "relative", md: "initial" }} maxH={"24rem"}>
+      <div className="flex flex-col">
+        <div className="flex relative md:static max-h-[24rem]">
           <SocialProfile shopInfo={SocialProfileInfo} />
           <Image
             position={{ base: "absolute", md: "unset" }}
@@ -168,7 +169,7 @@ export const SocialView: React.FC<SocialViewProps> = () => {
             src="/shop.jpeg"
             objectFit={"cover"}
           />
-        </Flex>
+        </div>
         <Container className="flex-grow flex-col">
           {profileInfo && profileInfo.public ? (
             <>
@@ -198,7 +199,7 @@ export const SocialView: React.FC<SocialViewProps> = () => {
             </>
           )}
         </Container>
-      </Flex>
+      </div>
     </>
   );
 };

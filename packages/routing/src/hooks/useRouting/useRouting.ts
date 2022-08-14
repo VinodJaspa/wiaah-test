@@ -3,11 +3,13 @@ import React from "react";
 import { routingContext } from "../../Providers";
 
 export const useRouting = () => {
-  const { visit: VisitRoute } = React.useContext(routingContext);
+  const { visit: VisitRoute, getCurrentPath: getPath } =
+    React.useContext(routingContext);
 
   function visit(fn: (routes: RoutesType) => RoutesType) {
     const routes = fn({ ...MainRoutes });
-    const route = routes.route;
+    const route =
+      routes.route.length < 1 ? getCurrentPath().split("?")[0] : routes.route;
     const query = routes.query;
     const queries = Object.entries(query);
     const combinedQueries = queries.reduce((acc, curr, idx) => {
@@ -15,11 +17,16 @@ export const useRouting = () => {
         curr[0]
       }=${curr[1]}`;
     }, "");
-    if (route.length < 1) return;
+
     VisitRoute(`${route}?${combinedQueries}`);
+  }
+
+  function getCurrentPath(): string {
+    return getPath();
   }
 
   return {
     visit,
+    getCurrentPath,
   };
 };
