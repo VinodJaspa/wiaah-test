@@ -2,51 +2,49 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { useSetRecoilState } from "recoil";
-import { AffiliationOfferCardInfo } from "types/market/Social";
+import { ShopCardInfo } from "types";
 import { Container, useStory, useStorySeenBy } from "ui";
-import { socialAffiliationCardPlaceholders } from "ui/placeholder/social";
+import { shopCardInfoPlaceholder, ShopCardsInfoPlaceholder } from "placeholder";
 import {
-  SocialAffiliationOffersState,
-  SocialAffiliationOfferState,
+  SocialShopPostState,
+  SocialShopOtherPostsState,
   SocialStoriesState,
   SocialStoryState,
 } from "ui/state";
-import { PostCardPlaceHolder } from "ui/placeholder";
-import MasterLayout from "../../../../components/MasterLayout";
-import { AffiliationPostView } from "../../../../components/Social/AffiliationPostView";
+import { PostCardPlaceHolder } from "placeholder";
+import { MasterLayout } from "@components";
+import { ShopProductView } from "@components";
 
-interface AffiliationPostPageProps {
-  affiliationPost: AffiliationOfferCardInfo;
-  otherPosts: AffiliationOfferCardInfo[];
+interface SocialShopPostPageProps {
+  shopProductPost: ShopCardInfo;
+  otherPosts: ShopCardInfo[];
 }
 
-export const getServerSideProps: GetServerSideProps<AffiliationPostPageProps> =
-  async () => {
-    // get post info
-    const affiliationPost: AffiliationOfferCardInfo =
-      socialAffiliationCardPlaceholders[2];
-    const otherPosts: AffiliationOfferCardInfo[] =
-      socialAffiliationCardPlaceholders;
-    return {
-      props: {
-        affiliationPost,
-        otherPosts,
-      },
-    };
+export const getServerSideProps: GetServerSideProps<
+  SocialShopPostPageProps
+> = async () => {
+  // get post info
+  const shopProductPost: ShopCardInfo = ShopCardsInfoPlaceholder[2];
+  const otherPosts: ShopCardInfo[] = ShopCardsInfoPlaceholder;
+  return {
+    props: {
+      shopProductPost,
+      otherPosts,
+    },
   };
+};
 
-const socialShopPost: NextPage<AffiliationPostPageProps> = ({
-  affiliationPost,
+const socialShopPost: NextPage<SocialShopPostPageProps> = ({
+  shopProductPost,
   otherPosts,
 }) => {
-  const setPost = useSetRecoilState(SocialAffiliationOfferState);
-  const setOtherPosts = useSetRecoilState(SocialAffiliationOffersState);
-  const setStories = useSetRecoilState(SocialStoriesState);
-  const { setStorySeenBy } = useStorySeenBy();
+  const setPost = useSetRecoilState(SocialShopPostState);
+  const setOtherPosts = useSetRecoilState(SocialShopOtherPostsState);
 
   const setStory = useSetRecoilState(SocialStoryState);
+  const { setStorySeenBy } = useStorySeenBy();
   const { isNewStory } = useStory();
-
+  const setStories = useSetRecoilState(SocialStoriesState);
   React.useEffect(() => {
     setStories([
       {
@@ -118,16 +116,16 @@ const socialShopPost: NextPage<AffiliationPostPageProps> = ({
     id: "15",
   });
   // console.log("post", newsfeedPost.profileInfo);
-  setPost(affiliationPost);
-  setOtherPosts(otherPosts);
+  setPost(shopProductPost);
 
+  setOtherPosts(otherPosts);
   return (
     <>
       <Head>
-        <title>Wiaah | social affiliation post</title>
+        <title>Wiaah | social shop post</title>
       </Head>
       <MasterLayout social>
-        <Container>{affiliationPost && <AffiliationPostView />}</Container>
+        <Container>{shopProductPost && <ShopProductView />}</Container>
       </MasterLayout>
     </>
   );

@@ -22,7 +22,6 @@ import {
   SectionsScrollTabList,
   Accordion,
   ModalCloseButton,
-  ModalHeader,
   CloseIcon,
   ModalOverlay,
 } from "ui";
@@ -37,14 +36,11 @@ export const SocialServiceDetailsModal: React.FC<
 > = ({}) => {
   const { Listen } = useReactPubsub((keys) => keys.serviceModal);
   const { isOpen, handleClose, handleOpen } = useModalDisclouser();
-  React.useEffect(() => {
-    console.log("listening");
-    Listen((props) => {
-      if ("id" in props) {
-        handleOpen();
-      }
-    });
-  }, []);
+  Listen((props) => {
+    if ("id" in props) {
+      handleOpen();
+    }
+  });
   const { filters } = useSearchFilters();
   const { isMobile } = useResponsive();
   const {

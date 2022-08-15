@@ -2,9 +2,9 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import { useSetRecoilState } from "recoil";
-import { PostCardInfo } from "types/market/Social";
+import { PostCardInfo } from "types";
 import { Container, Collaboration, useStorySeenBy } from "ui";
-import { newsfeedPosts, PostCardPlaceHolder } from "ui/placeholder/social";
+import { newsfeedPosts, PostCardPlaceHolder } from "placeholder";
 import {
   SocialNewsfeedPostsState,
   SocialNewsfeedPostState,
@@ -13,51 +13,52 @@ import {
   SocialNewStoryState,
   SocialStoriesState,
 } from "ui/state";
-import MasterLayout from "../../../../components/MasterLayout";
-import { PostView } from "../../../../components/Social/PostView";
+import { MasterLayout } from "@components";
+import { PostView } from "@components";
 
 interface SocialPageProps {
   newsfeedPost: PostCardInfo;
   otherPosts: PostCardInfo[];
 }
 
-export const getServerSideProps: GetServerSideProps<SocialPageProps> =
-  async () => {
-    // get post info
-    const newsfeedPost: PostCardInfo = {
-      ...newsfeedPosts[2],
-      postInfo: {
-        ...newsfeedPosts[2].postInfo,
-        attachments: [
-          {
-            type: "image",
-            src: "/verticalImage.jpg",
-          },
-          {
-            src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
-            type: "video",
-          },
-          {
-            src: "/shop.jpeg",
-            type: "image",
-          },
-          {
-            src: "/verticalVideo.mp4",
-            type: "video",
-          },
-        ],
-      },
-    };
-    const otherPosts: PostCardInfo[] = [...Array(3)].map(
-      () => PostCardPlaceHolder
-    );
-    return {
-      props: {
-        newsfeedPost,
-        otherPosts,
-      },
-    };
+export const getServerSideProps: GetServerSideProps<
+  SocialPageProps
+> = async () => {
+  // get post info
+  const newsfeedPost: PostCardInfo = {
+    ...newsfeedPosts[2],
+    postInfo: {
+      ...newsfeedPosts[2].postInfo,
+      attachments: [
+        {
+          type: "image",
+          src: "/verticalImage.jpg",
+        },
+        {
+          src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
+          type: "video",
+        },
+        {
+          src: "/shop.jpeg",
+          type: "image",
+        },
+        {
+          src: "/verticalVideo.mp4",
+          type: "video",
+        },
+      ],
+    },
   };
+  const otherPosts: PostCardInfo[] = [...Array(3)].map(
+    () => PostCardPlaceHolder
+  );
+  return {
+    props: {
+      newsfeedPost,
+      otherPosts,
+    },
+  };
+};
 
 const NewsfeedPost: NextPage<SocialPageProps> = ({
   newsfeedPost,

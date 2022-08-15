@@ -1,11 +1,11 @@
 import React from "react";
-import { Box, Button, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
+import { useBreakpointValue } from "@chakra-ui/react";
 import {
   PostCard,
   PostCardsListWrapper,
   SocialStoriesModal,
-  useStory,
   SocialPostHeader,
+  Button,
 } from "ui";
 import { useRecoilValue } from "recoil";
 import {
@@ -20,13 +20,8 @@ export const PostView: React.FC = () => {
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const { t } = useTranslation();
   return (
-    <Flex py={{ base: "0.5rem", md: "4rem" }} gap="2rem" direction={"column"}>
-      <Flex
-        direction={{ base: "column", md: "row" }}
-        gap="2rem"
-        mb="6rem"
-        align={"start"}
-      >
+    <div className="py-2 md:py-16 gap-8 flex flex-col">
+      <div className="flex items-center flex-col gap-8 mb-24 md:flex-row">
         <SocialStoriesModal />
         <SocialPostHeader
           name={postCardInfo.profileInfo.name}
@@ -37,33 +32,15 @@ export const PostView: React.FC = () => {
           postInfo={postCardInfo.postInfo}
           profileInfo={postCardInfo.profileInfo}
         />
-      </Flex>
-      <Text
-        fontSize={"xx-large"}
-        fontWeight="bold"
-        w="100%"
-        textAlign={"center"}
-        textTransform={"capitalize"}
-      >
+      </div>
+      <p className="text-3xl font-bold w-full text-center">
         <>
           {t("view", "view")} {postCardInfo.profileInfo.name}{" "}
           {t("other_posts", "other posts")}
         </>
-      </Text>
+      </p>
       <PostCardsListWrapper cols={cols} posts={otherPosts} />
-      <Button
-        _focus={{ ringColor: "primary.main" }}
-        bgColor="white"
-        borderWidth={"0.25rem"}
-        borderColor="gray"
-        mt="2rem"
-        fontSize={"xl"}
-        color="black"
-        py="0.5rem"
-        textTransform={"capitalize"}
-      >
-        {t("view_more", "view more")}
-      </Button>
-    </Flex>
+      <Button outline>{t("view_more", "view more")}</Button>
+    </div>
   );
 };

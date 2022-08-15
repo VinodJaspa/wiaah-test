@@ -74,15 +74,9 @@ export const SocialServicePostAttachments: React.FC<
 
             <div
               className="flex items-center max-w-fit p-1 bg-white justify-center rounded-full pointer-events-auto cursor-pointer"
-              onClick={() => onInteraction && onInteraction("addToCart")}
-            >
-              <CalenderIcon className="text-sm md:text-xl" />
-            </div>
-            <div
-              className="flex items-center max-w-fit p-1 bg-white justify-center rounded-full pointer-events-auto cursor-pointer"
               onClick={() => emit({ id: "test" })}
             >
-              <ExclamationCircleIcon className="text-sm md:text-xl" />
+              <CalenderIcon className="text-sm md:text-xl" />
             </div>
           </div>
           {discount ? (

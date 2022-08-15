@@ -1,11 +1,9 @@
 import { array, number, object, string } from "yup";
-import {
-  PostAttachment,
-  PostCommentValidationSchema,
-} from "../../Shared/PostRelated.schema";
+import { PostAttachment } from "../../Shared/PostRelated.schema";
 import { SocialProfileInfoValidationSchema } from "../../../Social";
 import { Cashback } from "../../../Products";
 import { DiscountUnits } from "../../../../SharedSchema";
+import { PostCommentValidationSchema } from "../../Comments/PostComment.schema";
 export const ShopPostValidationSchema = object({
   id: string().required(),
   attachments: array().of(PostAttachment().required()).min(0).required(),

@@ -25,9 +25,11 @@ export const ReactPubsubProvider: React.FC<ReactPubsubProviderProps> = ({
     <ReactPubsubContext.Provider
       value={{
         publish(key, props) {
+          console.log("published");
           client.Publish(key, props);
         },
         subscribe(key, cb) {
+          console.log("subscribed");
           client.Subscribe(key, cb);
         },
         unSbscribe(key) {

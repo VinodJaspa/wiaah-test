@@ -1,9 +1,6 @@
 import { array, number, object, string } from "yup";
-import {
-  HashTag,
-  PostAttachment,
-  PostComment,
-} from "../../Shared/PostRelated.schema";
+import { PostComment } from "../../Comments";
+import { HashTag, PostAttachment } from "../../Shared/PostRelated.schema";
 
 export const NewsFeedPostDataValidationSchema = object({
   createdAt: string().required(),

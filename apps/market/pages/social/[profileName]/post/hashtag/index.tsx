@@ -1,5 +1,5 @@
 import React from "react";
-import { GetServerSideProps, NextPage } from "next";
+import { NextPage } from "next";
 import Head from "next/head";
 import { Container } from "ui";
 import { MasterLayout } from "@components";

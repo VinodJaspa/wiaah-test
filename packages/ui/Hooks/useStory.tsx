@@ -1,6 +1,6 @@
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
-import { ProgressBar } from "types/market/ProgressBar";
-import { SocialStoryData } from "types/market/Social";
+import { ProgressBar } from "types";
+import { SocialStoryData } from "types";
 import {
   SocialStoryOpenState,
   SocialNewStoryState,

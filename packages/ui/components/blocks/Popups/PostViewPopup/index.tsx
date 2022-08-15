@@ -109,28 +109,30 @@ export const PostViewPopup: React.FC<PostViewPopupProps> = ({
     <>
       <Modal onOpen={() => {}} onClose={handlePostViewClose} isOpen={isOpen}>
         <ModalOverlay />
-        <ModalContent className="h-screen bg-black bg-opacity-30 flex w-screen">
-          <MdClose
-            onClick={handlePostViewClose}
-            className={`text-3xl w-12  cursor-pointer text-white`}
-            aria-label="Close Post"
-          />
-          <div className="flex w-full h-full bg-black">
-            <VerticalCarousel
-              w="100%"
-              h="100%"
-              overflow="hidden"
-              data-testid="VerticalCarouselContainer"
-              onPassMaxLimit={handleNextPost}
-              onPassMinLimit={handlePrevPost}
-            >
-              {[...Array(1)].map(
-                (_, i) => renderChild && post && renderChild(post)
-              )}
-              {/* {renderChild && post && renderChild(post)} */}
-            </VerticalCarousel>
+        <ModalContent className="h-screen px-[2.5rem] bg-black flex w-screen">
+          <div className="flex flex-col gap-2 w-full">
+            <MdClose
+              onClick={handlePostViewClose}
+              className={`text-3xl w-8  cursor-pointer text-white`}
+              aria-label="Close Post"
+            />
+            <div className="flex w-full h-full bg-black">
+              <VerticalCarousel
+                w="100%"
+                h="100%"
+                overflow="hidden"
+                data-testid="VerticalCarouselContainer"
+                onPassMaxLimit={handleNextPost}
+                onPassMinLimit={handlePrevPost}
+              >
+                {[...Array(1)].map(
+                  (_, i) => renderChild && post && renderChild(post)
+                )}
+                {/* {renderChild && post && renderChild(post)} */}
+              </VerticalCarousel>
+            </div>
           </div>
-          <div className="flex flex-col text-white justify-between">
+          <div className="flex flex-col w-10 text-white justify-between">
             <ArrowUpIcon
               onClick={handlePrevPost}
               className="text-4xl"

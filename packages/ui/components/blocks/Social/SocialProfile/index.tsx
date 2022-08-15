@@ -1,23 +1,4 @@
 import React from "react";
-import {
-  Flex,
-  Icon,
-  Text,
-  Button,
-  useDisclosure,
-  HStack,
-  IconButton,
-  AvatarGroup,
-  Avatar,
-  Link,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  Box,
-} from "@chakra-ui/react";
-import { BiMessage, BiMessageAltDetail } from "react-icons/bi";
-import { CgMoreVertical } from "react-icons/cg";
 import { ShopSocialProfileInfo } from "types";
 import { MdVerified } from "react-icons/md";
 import { FlagIcon } from "react-flag-kit";
@@ -25,6 +6,12 @@ import {
   SubscribersPopup,
   Avatar as CustomAvatar,
   SocialStoriesModal,
+  Menu,
+  MenuList,
+  MenuItem,
+  MenuButton,
+  Button,
+  CalenderIcon,
 } from "ui";
 import { useLoginPopup, useStory } from "ui/Hooks";
 import { NumberShortner } from "ui/components/helpers/numberShortener";
@@ -34,6 +21,8 @@ import { SocialStoryState } from "ui/state";
 import { HiPaperClip, HiOutlineMail, HiDotsVertical } from "react-icons/hi";
 import EllipsisText from "../../EllipsisText";
 import { BiLink } from "react-icons/bi";
+import { useReactPubsub } from "react-pubsub";
+import { AvatarGroup, useDisclosure, Avatar } from "@chakra-ui/react";
 
 export interface SocialProfileProps {
   shopInfo: ShopSocialProfileInfo;
@@ -45,6 +34,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
   shopInfo,
 }) => {
   const { t } = useTranslation();
+  const { emit } = useReactPubsub((keys) => keys.serviceModal);
   const { newStory, OpenStories, removeNewStory } = useStory();
   const storyData = useRecoilValue(SocialStoryState);
   const { OpenLoginPopup } = useLoginPopup();
@@ -79,70 +69,45 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
         isOpen={subscriptionsIsOpen}
         onClose={subscriptionsOnClose}
       />
-      <Flex w="100%" justify={"space-between"}>
-        <Box />
+      <div className="flex w-full justify-between">
+        <div />
         <CustomAvatar
           className="bg-black h-[5rem] w-[5rem]"
           name={shopInfo.name}
-          photoSrc={shopInfo.thumbnail}
+          src={shopInfo.thumbnail}
           newStory={newStory}
           onClick={handleOpenStory}
         />
-        <Menu placement="bottom-end">
-          <MenuButton h={"fit-content"}>
-            <Icon
-              onClick={handleOpenLogin}
-              cursor={"pointer"}
-              as={HiDotsVertical}
-            />
+        <Menu>
+          <MenuButton>
+            <HiDotsVertical onClick={handleOpenLogin} cursor={"pointer"} />
           </MenuButton>
-          <MenuList fontSize={"initial"} color="black">
-            <MenuItem textTransform={"uppercase"}>
-              {t("report", "Report")}
-            </MenuItem>
-            <MenuItem textTransform={"uppercase"}>
-              {t("share", "Share")}
-            </MenuItem>
-            <MenuItem textTransform={"uppercase"}>
-              {t("block", "Block")}
-            </MenuItem>
-            <MenuItem textTransform={"uppercase"}>
-              {t("copy_url", "Copy Url")}
-            </MenuItem>
-            <MenuItem textTransform={"uppercase"}>
-              {t("hide_all_posts", "Hide All Posts")}
-            </MenuItem>
+          <MenuList className="text-black">
+            <MenuItem>{t("Report")}</MenuItem>
+            <MenuItem>{t("Share")}</MenuItem>
+            <MenuItem>{t("Block")}</MenuItem>
+            <MenuItem>{t("Copy Url")}</MenuItem>
+            <MenuItem>{t("Hide All Posts")}</MenuItem>
           </MenuList>
         </Menu>
-      </Flex>
-      <Flex
-        bgColor={{ base: "primary.main", md: "transparent" }}
-        align={"center"}
-        mb="0.5rem"
-        px="0.25rem"
-        rounded={"lg"}
-        gap="0.5rem"
-      >
-        <Text>{shopInfo.name}</Text>
-        {shopInfo.verifed && <Icon fontSize={"x-large"} as={MdVerified} />}
-      </Flex>
-      <Flex lineHeight={"1.8rem"} gap="1rem">
-        <Flex
+      </div>
+      <div className="bg-primary md:bg-transparent items-center flex mb-2 px-1 rounded-lg gap-2">
+        <p>{shopInfo.name}</p>
+        {shopInfo.verifed && <MdVerified className="text-xl" />}
+      </div>
+      <div className="flex gap-4 leading-7">
+        <div
+          className="flex items-center cursor-pointer gap-2"
           onClick={handleOpenLogin}
-          direction={"row"}
-          align={"center"}
-          cursor={"pointer"}
-          gap="0.5em"
         >
-          <Text fontWeight={"bold"}>
-            {NumberShortner(shopInfo.publications)}
-          </Text>
-          <Text fontSize={"md"} textTransform={"capitalize"}>
-            {t("publications", "publications")}
-          </Text>
-        </Flex>
-        <Flex align="center" onClick={subscriptionsOnOpen} cursor={"pointer"}>
-          <HStack mx="0.5rem">
+          <p className="font-bold">{NumberShortner(shopInfo.publications)}</p>
+          <p className="text-lg">{t("publications")}</p>
+        </div>
+        <div
+          className="flex items-center cursor-pointer"
+          onClick={subscriptionsOnOpen}
+        >
+          <div className="flex gap-2 items-center mx-2">
             <AvatarGroup mr="0.7rem" max={3} spacing="-2.8em">
               {[...Array(3)].map((_, i) => (
                 <Avatar
@@ -159,16 +124,14 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                 />
               ))}
             </AvatarGroup>
-            <Text fontWeight={"bold"}>
+            <p className="font-bold">
               {NumberShortner(shopInfo.subscriptions)}
-            </Text>
-          </HStack>
-          <Text fontSize={"md"} textTransform={"capitalize"}>
-            {t("subscriptions", "subscriptions")}
-          </Text>
-        </Flex>
-        <Flex align="center" onClick={onOpen} cursor={"pointer"}>
-          <HStack mx="0.5rem">
+            </p>
+          </div>
+          <p className="text-lg">{t("Subscriptions")}</p>
+        </div>
+        <div className="flex items-center cursor-pointer" onClick={onOpen}>
+          <div className="flex gap-2 items-center mx-2">
             <AvatarGroup mr="0.7rem" max={3} spacing="-2.8em">
               {[...Array(3)].map((_, i) => (
                 <Avatar
@@ -185,23 +148,13 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                 />
               ))}
             </AvatarGroup>
-            <Text fontWeight={"bold"}>
-              {NumberShortner(shopInfo.subscribers)}
-            </Text>
-          </HStack>
+            <p className="font-bold">{NumberShortner(shopInfo.subscribers)}</p>
+          </div>
 
-          <Text fontSize={"md"} textTransform={"capitalize"}>
-            {t("subscribers", "Subscribers")}
-          </Text>
-        </Flex>
-      </Flex>
-      <Flex
-        gap="0.5rem"
-        direction={"column"}
-        py="1rem"
-        fontSize={"md"}
-        w="100%"
-      >
+          <p className="text-lg">{t("Subscribers")}</p>
+        </div>
+      </div>
+      <div className="flex gap-2 flex-col py-4 w-full text-lg">
         {shopInfo.bio && (
           <EllipsisText
             showMoreColor="primary.main"
@@ -210,64 +163,47 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           />
         )}
         {shopInfo.links && (
-          <Flex direction={"column"}>
+          <div className="flex flex-col">
             {shopInfo.links.map((link, i) => (
-              <HStack key={i}>
-                <Icon color={"white"} fontSize="xl" as={BiLink} />
-                <Link color="blue" href={link}>
-                  {link}
-                </Link>
-              </HStack>
+              <div className="flex items-center gap-1" key={i}>
+                <BiLink className="text-white text-xl" />
+                <a>{link}</a>
+              </div>
             ))}
-          </Flex>
+          </div>
         )}
-      </Flex>
+      </div>
 
-      <HStack spacing={"1rem"}>
+      <div className="flex items-center gap-4">
         <Button
-          borderWidth={"1px"}
-          boxShadow={"lg"}
-          px="2rem"
-          borderColor="black"
-          colorScheme={shopInfo.isFollowed ? "red" : "primary.main"}
+          className={`${
+            shopInfo.isFollowed ? "bg-secondaryRed" : "bg-primary"
+          } border shadow-lg px-8 border-black`}
+          colorScheme={shopInfo.isFollowed ? "danger" : "primary"}
           onClick={handleOpenLogin}
-          textTransform="capitalize"
-          bgColor={shopInfo.isFollowed ? "crimson" : "primary.main"}
         >
           {shopInfo.isFollowed
-            ? t("unfollow", "Unfollow")
+            ? t("Unfollow")
             : shopInfo.public
-            ? t("follow", "follow")
-            : t("ask_for_follow", "ask for follow")}
+            ? t("follow")
+            : t("ask for follow")}
         </Button>
-        <IconButton
-          aria-label={t("message_seller", "Message Seller")}
-          as={HiOutlineMail}
-          rounded="full"
-          p="0.5rem"
-          h="3rem"
-          w="3rem"
-          bgColor={"green.400"}
-          size="sm"
-          colorScheme={"whiteAlpha"}
-          color="white"
+        <HiOutlineMail
+          aria-label={t("Message Seller")}
+          className="rounded-full p-2 h-12 w-12 bg-primary text-sm text-white"
         />
-      </HStack>
-      <Flex
-        bg={{ base: "whiteAlpha.200", md: "transparent" }}
-        gap="0.5rem"
-        w="100%"
-        align={"center"}
-        justify={"end"}
-        pt="0.75rem"
-      >
-        <Text fontSize={"lg"}>
+
+        <CalenderIcon
+          onClick={() => emit({ id: "123" })}
+          className="text-sm md:text-3xl cursor-pointer"
+        />
+      </div>
+      <div className="bg-white flex bg-opacity-20 md:bg-transparent gap-2 w-full items-center justify-end pt-3">
+        <p className="text-lg">
           <FlagIcon code={shopInfo.countryCode} />
-        </Text>
-        <Text color={"white"} fontSize={"md"}>
-          {shopInfo.location}
-        </Text>
-      </Flex>
+        </p>
+        <p className="tex-white text-lg">{shopInfo.location}</p>
+      </div>
     </div>
   );
 };

@@ -93,7 +93,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                         setFieldValue("country", e.target.value)
                       }
                       initialValue={"Egypt"}
-                      className="pl-10 w-[20rem]"
+                      className="pl-10 "
                       components={Country.getAllCountries().map(
                         (country, i) => ({
                           name: country.name,
@@ -128,7 +128,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                           }))
                         }
                         value={input.firstName}
-                        className="w-[20rem]"
+                        className=""
                       />
                     </FlexStack>
                     <FlexStack direction="vertical">
@@ -142,7 +142,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                           }))
                         }
                         value={input.lastName}
-                        className="w-[20rem]"
+                        className=""
                       />
                     </FlexStack>
                     <FlexStack direction="vertical">
@@ -156,7 +156,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                           }))
                         }
                         value={input.zipCode}
-                        className="w-[20rem]"
+                        className=""
                       />
                     </FlexStack>
                     <FlexStack direction="vertical">
@@ -170,7 +170,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                           }))
                         }
                         value={input.contact}
-                        className="w-[20rem]"
+                        className=""
                       />
                     </FlexStack>
                     <Spacer />
@@ -185,7 +185,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                           }
                           value={values.address}
                           placeholder="start typing the first lines of your address"
-                          className="pl-10 w-[20rem]"
+                          className="pl-10 "
                         />
                       </>
                     )}
@@ -202,7 +202,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                               }))
                             }
                             value={input.address}
-                            className="w-[20rem]"
+                            className=""
                           />
                         </FlexStack>
                         <FlexStack direction="vertical">
@@ -216,7 +216,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                               }))
                             }
                             value={input.address2}
-                            className="w-[20rem]"
+                            className=""
                           />
                         </FlexStack>
                         <FlexStack direction="vertical">
@@ -230,7 +230,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                               }))
                             }
                             value={input.city}
-                            className="w-[20rem]"
+                            className=""
                           />
                         </FlexStack>
                         <FlexStack direction="vertical">
@@ -244,7 +244,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                               }))
                             }
                             value={input.country}
-                            className="w-[20rem]"
+                            className=""
                           />
                         </FlexStack>
                         <Spacer />
@@ -288,9 +288,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                   </FlexStack>
                   <FlexStack horizontalSpacingInRem={1} justify="end" fullWidth>
                     <Button id="AddAddressButton" onClick={handleSave}>
-                      {edit
-                        ? t("save address".toUpperCase())
-                        : t("add address".toUpperCase())}
+                      {edit ? t("SAVE ADDRESS") : t("ADD ADDRESS")}
                     </Button>
                     {edit && (
                       <Button
@@ -298,7 +296,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                         id="CancelAddAddressButton"
                         onClick={handleCancel}
                       >
-                        {t("cancel".toUpperCase())}
+                        {t("Cancel")}
                       </Button>
                     )}
                   </FlexStack>

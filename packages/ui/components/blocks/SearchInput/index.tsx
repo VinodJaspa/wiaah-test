@@ -58,7 +58,7 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
   const iconRes = icon ? icon() : undefined;
 
   return (
-    <InputGroup ref={containerRef} className="relative">
+    <InputGroup ref={containerRef} className="relative h-12">
       {iconRes && (
         <InputLeftElement>
           <label className={`px-2 text-lg text-gray-400`} htmlFor={props.id}>
@@ -77,7 +77,7 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
         {...props}
       />
       {Components && dropdownOpen && (
-        <div className="thinScroll absolute left-0 top-[110%] z-10 flex max-h-36 w-full flex-col gap-0.5 overflow-scroll bg-white">
+        <div className="thinScroll absolute left-0 top-[110%] z-10 flex max-h-16 w-full flex-col gap-0.5 overflow-scroll bg-white">
           {Components.map((comp, i) => (
             <div
               className="cursor-pointer bg-white p-2 hover:bg-gray-100"

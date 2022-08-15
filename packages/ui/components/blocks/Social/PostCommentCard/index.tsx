@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Flex,
   HStack,
   Icon,
@@ -11,16 +10,16 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
+import { PostCommentType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiDotsHorizontal } from "react-icons/hi";
-import { MdOutlineReply, MdReply } from "react-icons/md";
-import { PostComment } from "types";
+import { MdOutlineReply } from "react-icons/md";
 import { PostAttachment, Verified, EllipsisText } from "ui";
 import { useCommentReportModal, useDateDiff, useLoginPopup } from "ui";
-import { HashTags } from "../HashTags";
+import { HashTags } from "ui";
 
-export interface PostCommentCardProps extends PostComment {
+export interface PostCommentCardProps extends PostCommentType {
   onReply?: (message: string) => void;
   onLike?: () => void;
   main?: boolean;
@@ -67,7 +66,7 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               <Text fontSize={"lg"} fontWeight={"bold"}>
                 {user.name}
               </Text>
-              {user.verifed && <Icon as={Verified} />}
+              {user.verified && <Icon as={Verified} />}
             </HStack>
             <HStack>
               <Menu>

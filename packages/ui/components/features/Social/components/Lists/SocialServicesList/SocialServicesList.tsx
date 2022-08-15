@@ -6,11 +6,9 @@ import { ShopCardInfo } from "types";
 import {
   useGetServicesPostsQuery,
   ListWrapper,
-  PaginationWrapper,
   SocialServicePostCard,
   SpinnerFallback,
   PostViewPopup,
-  SocialShopCard,
   SocialServiceDetailsCard,
   SocialServiceDetailsModal,
 } from "ui";
@@ -23,6 +21,7 @@ export const SocialServicePostsList: React.FC<SocialServicesListProps> = () => {
     isLoading,
     isError,
   } = useGetServicesPostsQuery({ take, page });
+
   const { isMobile, isTablet } = useResponsive();
   const { visit } = useRouting();
   return (
@@ -46,7 +45,6 @@ export const SocialServicePostsList: React.FC<SocialServicesListProps> = () => {
           );
         }}
       />
-      <SocialServiceDetailsModal />
       {Array.isArray(res?.data) ? (
         <ListWrapper cols={isTablet ? 2 : isMobile ? 1 : 4}>
           {res?.data.map((post) => (
@@ -59,6 +57,7 @@ export const SocialServicePostsList: React.FC<SocialServicesListProps> = () => {
           ))}
         </ListWrapper>
       ) : null}
+      <SocialServiceDetailsModal />
     </SpinnerFallback>
   );
 };

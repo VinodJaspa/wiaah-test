@@ -8,6 +8,8 @@ import {
   InferType,
 } from "validation";
 
+export type ServicePostType = InferType<typeof ServicesPostsValidationSchema>;
+
 const shopTypes: ServicesType[] = [
   "hotel",
   "resturant",
@@ -44,6 +46,19 @@ export const getServicesPostsFetcher = async (
       name: "service name" + i,
       thumbnail: "/place-1.jpg",
       type: shopTypes[randomNum(shopTypes.length)],
+      hashtags: ["fashion", "gaming", "shopping"],
+      user: {
+        accountType: "seller",
+        id: "132",
+        name: "seller name",
+        public: true,
+        thumbnail: "/shop-2.jpeg",
+        verified: true,
+      },
+      postInteraction: {
+        comments: randomNum(50),
+        likes: randomNum(300),
+      },
     })),
   };
 
