@@ -21,7 +21,9 @@ export const PostCommentsList: React.FC<PostCommentsListProps> = ({
   } = useGetPostCommentsQuery({ id: postId }, { page, take });
   return (
     <SpinnerFallback isLoading={isLoading} isError={isError}>
-      {res ? <CommentsViewer comments={res?.data} /> : null}
+      {res ? (
+        <CommentsViewer maxInitailComments={4} comments={res?.data} />
+      ) : null}
     </SpinnerFallback>
   );
 };

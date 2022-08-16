@@ -99,6 +99,12 @@ export const storybookShopFeatureCardsTitle =
 // social
 export const storybookSocialTitle = storybookFeaturesTitle + "Social /";
 export const storybookSocialCardsTitle = storybookSocialTitle + cardsTitle;
+export const storybookSocialDataDisplayTitle =
+  storybookSocialTitle + dataDisplayTitle;
+export const storybookSocialServiceCardsTitle =
+  storybookSocialCardsTitle + "services /";
+export const storybookSocialServiceDataDisplayTitle =
+  storybookSocialDataDisplayTitle + "services /";
 
 // storybook misc
 export const storybookPlaygourndTitle = "Playground /";

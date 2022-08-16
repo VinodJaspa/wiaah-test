@@ -10,6 +10,7 @@ import {
   Button,
   SpinnerFallback,
   ShowMapButton,
+  SocialServicePostDetailsCard,
 } from "ui";
 
 export const ServicePostView: React.FC = () => {
@@ -37,7 +38,10 @@ export const ServicePostView: React.FC = () => {
         </div>
         <SpinnerFallback isError={isError} isLoading={isLoading}>
           {res ? (
-            <SocialServicePostCard user={res.data.profileInfo} {...res.data} />
+            <SocialServicePostDetailsCard
+              user={res.data.profileInfo}
+              {...res.data}
+            />
           ) : null}
         </SpinnerFallback>
       </div>

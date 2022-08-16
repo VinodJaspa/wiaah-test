@@ -1,9 +1,9 @@
 import { SocialServicePostCard } from "./SocialServiceCard";
-import { storybookSocialCardsTitle } from "utils";
+import { storybookSocialServiceCardsTitle } from "utils";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 
 export default {
-  title: storybookSocialCardsTitle + "SocialServiceCard",
+  title: storybookSocialServiceCardsTitle + "SocialServiceCard",
   component: SocialServicePostCard,
 } as ComponentMeta<typeof SocialServicePostCard>;
 
@@ -17,4 +17,18 @@ Default.args = {
   label: "Restaurant",
   name: "Service name",
   thumbnail: "/place-2.jpg",
+  content: "test content",
+  hashtags: ["fashion", "gaming"],
+  postInteraction: {
+    comments: 13,
+    likes: 135,
+  },
+  user: {
+    accountType: "seller",
+    id: "123",
+    name: "post publisher name",
+    public: true,
+    thumbnail: "/shop-2.jpeg",
+    verified: true,
+  },
 };

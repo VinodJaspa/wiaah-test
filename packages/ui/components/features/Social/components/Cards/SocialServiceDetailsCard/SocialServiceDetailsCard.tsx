@@ -1,25 +1,23 @@
+import { ServicePostDetails } from "api";
 import React from "react";
-import { ShopCardInfo } from "types";
 import {
   useProductViewModal,
   useHandlePostSharing,
   useLoginPopup,
-  ShopCardAttachment,
   SocialServicePostAttachments,
   PostInteractionsProps,
   SocialServiceCardDetails,
   CommentsViewer,
   CommentInput,
-  ControlledCarousel,
   PostInteractions,
+  Slider,
+  AspectRatio,
 } from "ui";
 
-export interface SocialServiceDetailsCardProps {
+export interface SocialServiceDetailsCardProps extends ServicePostDetails {
   showComments?: boolean;
   showInteraction?: boolean;
-  shopCardInfo: ShopCardInfo;
   showCommentInput?: boolean;
-  showbook?: boolean;
   onCardClick?: (id: string) => any;
   interactionsProps?: Partial<PostInteractionsProps>;
 }
@@ -27,12 +25,25 @@ export interface SocialServiceDetailsCardProps {
 export const SocialServiceDetailsCard: React.FC<
   SocialServiceDetailsCardProps
 > = ({
-  shopCardInfo,
   interactionsProps,
   onCardClick,
   showCommentInput,
   showComments,
   showInteraction,
+  attachments,
+  content,
+  hashtags,
+  id,
+  label,
+  name,
+  postInteraction,
+  profileInfo,
+  cashback,
+  discount,
+  type,
+  price,
+  rate,
+  views,
 }) => {
   const attachmentRef = React.useRef(null);
   const productDetailsRef = React.useRef(null);
@@ -57,67 +68,61 @@ export const SocialServiceDetailsCard: React.FC<
   return (
     <div
       className="flex w-full h-full flex-col justify-between rounded-lg"
-      onClick={() => onCardClick && onCardClick(shopCardInfo.id)}
+      onClick={() => onCardClick && onCardClick(id)}
       data-testid="ShopCardContainer"
     >
-      <div></div>
-      {shopCardInfo.attachments && shopCardInfo.attachments.length > 1 ? (
-        <ControlledCarousel onCurrentActiveChange={setActive}>
-          {shopCardInfo.attachments.map((attachment, i) => (
+      <AspectRatio ratio={4 / 3}>
+        {attachments && attachments.length > 1 ? (
+          <Slider>
+            {attachments.map((attachment, i) => (
+              <SocialServicePostAttachments
+                key={i}
+                onInteraction={OpenLoginPopup}
+                cashback={cashback}
+                discount={discount}
+                innerProps={{
+                  // ["data-testid"]: "test attachment",
+                  // @ts-ignore
+                  ref: attachmentRef,
+                }}
+                {...attachment}
+              />
+            ))}
+          </Slider>
+        ) : (
+          attachments &&
+          attachments.length === 1 && (
             <SocialServicePostAttachments
-              key={i}
               onInteraction={OpenLoginPopup}
-              productType={shopCardInfo.type}
-              cashback={shopCardInfo.cashback}
-              discount={shopCardInfo.discount}
-              innerProps={{
-                // ["data-testid"]: "test attachment",
-                // @ts-ignore
-                ref: attachmentRef,
-              }}
-              {...attachment}
+              cashback={cashback}
+              discount={discount}
+              {...attachments[0]}
             />
-          ))}
-        </ControlledCarousel>
-      ) : (
-        shopCardInfo.attachments &&
-        shopCardInfo.attachments.length === 1 && (
-          <SocialServicePostAttachments
-            onInteraction={OpenLoginPopup}
-            productType={shopCardInfo.type}
-            cashback={shopCardInfo.cashback}
-            discount={shopCardInfo.discount}
-            {...shopCardInfo.attachments[0]}
-          />
-        )
-      )}
+          )
+        )}
+      </AspectRatio>
       <div
         className="bg-white w-full text-black self-center"
         ref={productDetailsRef}
       >
         <SocialServiceCardDetails
-          views={shopCardInfo.views || 0}
-          data-testid="ShopCardDetails"
-          {...shopCardInfo}
+          views={views || 0}
+          data-testid="ServiceCardDetails"
+          price={price}
+          rating={rate}
+          title={name}
+          user={profileInfo}
         />
         {showInteraction && (
           <PostInteractions
-            comments={shopCardInfo.noOfComments}
-            onShare={(mothed) => handleShare(mothed, shopCardInfo.id)}
-            likes={shopCardInfo.likes}
+            comments={postInteraction.comments}
+            onShare={(mothed) => handleShare(mothed, id)}
+            likes={postInteraction.likes}
             {...interactionsProps}
           />
         )}
         {showCommentInput && <CommentInput />}
       </div>
-      {showComments && (
-        <div className="py-2">
-          <CommentsViewer
-            comments={shopCardInfo.comments}
-            maxInitailComments={4}
-          />
-        </div>
-      )}
     </div>
   );
 };

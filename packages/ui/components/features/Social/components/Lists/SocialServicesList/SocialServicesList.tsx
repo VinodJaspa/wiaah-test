@@ -40,7 +40,7 @@ export const SocialServicePostsList: React.FC<SocialServicesListProps> = () => {
             <SocialServiceDetailsCard
               showCommentInput={false}
               showInteraction={false}
-              shopCardInfo={props}
+              {...props}
             />
           );
         }}

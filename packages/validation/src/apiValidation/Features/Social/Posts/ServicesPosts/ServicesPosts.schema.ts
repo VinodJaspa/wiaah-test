@@ -13,6 +13,7 @@ export const ServicesPostsValidationSchema = object({
   label: string().required(),
   type: string().required(),
   hashtags: HashTags(),
+  content: string().required(),
   user: SocialProfileInfoValidationSchema.required(),
   postInteraction: PostInteractionsValidationSchema.required(),
 });

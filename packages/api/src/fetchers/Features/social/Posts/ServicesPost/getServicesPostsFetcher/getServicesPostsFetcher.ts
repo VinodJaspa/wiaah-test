@@ -30,6 +30,9 @@ const shopLabels = [
   "Video Game",
 ];
 
+const sentence =
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley";
+
 export type getServicesPostsResponse = InferType<
   typeof ServicesPostsApiResponseValidationSchema
 >;
@@ -47,6 +50,7 @@ export const getServicesPostsFetcher = async (
       thumbnail: "/place-1.jpg",
       type: shopTypes[randomNum(shopTypes.length)],
       hashtags: ["fashion", "gaming", "shopping"],
+      content: sentence.substring(0, randomNum(sentence.length)),
       user: {
         accountType: "seller",
         id: "132",

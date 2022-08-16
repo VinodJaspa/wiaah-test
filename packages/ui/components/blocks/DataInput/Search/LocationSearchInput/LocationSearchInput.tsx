@@ -67,7 +67,7 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
       <div
         className={`${
           focused ? "" : " scale-y-0 opacity-0 pointer-events-none"
-        } origin-top transition-all bg-white left-0 w-full border-[1px] border-t-0 border-gray-200 absolute flex flex-col gap-4 p-4 z-10`}
+        } origin-top transition-all bg-white left-0 w-full border-[1px] border-t-0 border-gray-200 absolute flex flex-col gap-4 p-4 z-20`}
       >
         <Prefix
           PrefixClassName="text-2xl"

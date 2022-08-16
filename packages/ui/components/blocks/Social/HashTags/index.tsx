@@ -8,31 +8,22 @@ export interface HashTagsProps {
   style?: WrapProps;
 }
 
-export const HashTags: React.FC<HashTagsProps> = ({
-  tags,
-  color = "lightblue",
-  onTagClick,
-  style,
-}) => {
+export const HashTags: React.FC<HashTagsProps> = ({ tags, onTagClick }) => {
   function handleHashtagClick(tag: string) {
     onTagClick && onTagClick(tag);
   }
 
   return (
-    <Wrap {...style} data-testid="TagsContainer">
+    <div className="flex flex-wrap gap-2" data-testid="TagsContainer">
       {tags.map((tag, i) => (
-        <WrapItem key={i}>
-          <Text
-            data-testid="Tag"
-            onClick={() => handleHashtagClick(tag)}
-            cursor={"pointer"}
-            fontWeight={"semibold"}
-            color={color}
-          >
-            #{tag}
-          </Text>
-        </WrapItem>
+        <p
+          data-testid="Tag"
+          onClick={() => handleHashtagClick(tag)}
+          className={"cursor-pointer font-semibold text-primary"}
+        >
+          #{tag}
+        </p>
       ))}
-    </Wrap>
+    </div>
   );
 };

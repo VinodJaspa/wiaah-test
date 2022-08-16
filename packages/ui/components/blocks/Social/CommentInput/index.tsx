@@ -1,15 +1,8 @@
-import {
-  InputGroup,
-  InputLeftElement,
-  Icon,
-  Input,
-  InputRightElement,
-} from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FaCamera } from "react-icons/fa";
 import { MdSend } from "react-icons/md";
-
+import { InputGroup, InputLeftElement, InputRightElement, Input } from "ui";
 export interface CommentInputProps {
   onCameraClick?: () => void;
   onCommentSubmit?: (comment: string) => void;
@@ -28,27 +21,27 @@ export const CommentInput: React.FC<CommentInputProps> = ({
     onCommentSubmit && onCommentSubmit(input);
   }
   return (
-    <InputGroup size={"lg"} alignItems={"center"}>
+    <InputGroup className="rounded-full px-1">
       <InputLeftElement
         data-testid="CommentCameraBtn"
         onClick={handleCameraClick}
-        cursor={"pointer"}
+        className={"cursor-pointer"}
       >
-        <Icon fontSize={"x-large"} as={FaCamera} />
+        <FaCamera className="text-2xl" />
       </InputLeftElement>
       <Input
+        className="rounded-full"
         data-testid="CommentInput"
-        rounded={"full"}
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        placeholder={t("enter_comment", "Enter comment")}
+        placeholder={t("Enter comment")}
       />
       <InputRightElement
         data-testid="CommentSubmitBtn"
         onClick={handleCommentSubmit}
-        cursor={"pointer"}
+        className={"cursor-pointer"}
       >
-        <Icon fontSize={"x-large"} as={MdSend} />
+        <MdSend className="text-2xl" />
       </InputRightElement>
     </InputGroup>
   );

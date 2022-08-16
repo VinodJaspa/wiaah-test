@@ -8,7 +8,6 @@ import {
   Button,
   PriceDisplay,
   UnDiscountedPriceDisplay,
-  SocialServiceDetailsModal,
 } from "ui";
 
 export interface SocialServiceCardDetailsProps {
@@ -16,7 +15,6 @@ export interface SocialServiceCardDetailsProps {
   title: string;
   rating: number;
   price: number;
-  oldPrice: number;
   views: number;
   onFollow?: () => any;
   onBook?: () => any;
@@ -24,7 +22,7 @@ export interface SocialServiceCardDetailsProps {
 
 export const SocialServiceCardDetails: React.FC<
   SocialServiceCardDetailsProps
-> = ({ oldPrice, price, rating, title, user, views, onFollow, onBook }) => {
+> = ({ price, rating, title, user, views, onFollow }) => {
   const { t } = useTranslation();
   function handleFollowClick() {
     onFollow && onFollow();
@@ -46,9 +44,7 @@ export const SocialServiceCardDetails: React.FC<
         <p className="text-left text-white text-xl font-semibold">{title}</p>
         <div className="flex items-center gap-1 font-semibold text-white">
           <PriceDisplay price={price} />
-          {oldPrice && (
-            <UnDiscountedPriceDisplay amount={price} discount={10} />
-          )}
+          <UnDiscountedPriceDisplay amount={price} discount={10} />
         </div>
         <Rate allowHalf rating={rating} className="" />
         <div className="flex w-full justify-between items-start gap-2">

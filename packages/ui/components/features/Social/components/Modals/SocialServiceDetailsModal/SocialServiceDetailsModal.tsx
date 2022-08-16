@@ -1,11 +1,9 @@
-import { useModalDisclouser } from "hooks";
 import React from "react";
 import { Modal, ModalContent } from "ui";
 import {
   ServicesProviderHeader,
   SpinnerFallback,
   useGetServicesProviderQuery,
-  useSearchFilters,
   Divider,
   ServiceReachOutSection,
   ServiceOnMapLocalizationSection,
@@ -27,7 +25,6 @@ import {
 } from "ui";
 import { reviews } from "placeholder";
 import { useResponsive } from "hooks";
-import { useTranslation } from "react-i18next";
 import { useReactPubsub } from "react-pubsub";
 export interface SocialServiceDetailsModalProps {}
 
@@ -35,22 +32,20 @@ export const SocialServiceDetailsModal: React.FC<
   SocialServiceDetailsModalProps
 > = ({}) => {
   const { Listen } = useReactPubsub((keys) => keys.serviceModal);
-  const { isOpen, handleClose, handleOpen } = useModalDisclouser();
+  const [id, setId] = React.useState<number>();
   Listen((props) => {
     if ("id" in props) {
-      handleOpen();
+      setId(props.id);
     }
   });
-  const { filters } = useSearchFilters();
   const { isMobile } = useResponsive();
   const {
     data: res,
     isError,
     isLoading,
-  } = useGetServicesProviderQuery(filters);
-  const { t } = useTranslation();
+  } = useGetServicesProviderQuery({ id: `${id || 0}` }, { enabled: !!id });
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} onOpen={handleOpen}>
+    <Modal onOpen={() => {}} isOpen={!!id} onClose={() => setId(undefined)}>
       <ModalOverlay />
       <ModalContent
         style={{

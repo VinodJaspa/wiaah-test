@@ -14,6 +14,8 @@ export type ServicePostDetails = InferType<
 export type ServicePostApiResponseData = InferType<
   typeof ServicePostDataApiResponseValidationSchema
 >;
+const sentence =
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley";
 
 export const getServicePostDataFetcher = async (
   filters: FormatedSearchableFilter
@@ -23,8 +25,12 @@ export const getServicePostDataFetcher = async (
       id: "123",
       label: "label",
       name: "service post",
-      thumbnail: "/place-2.jpg",
+      attachments: [
+        { src: "/shop-2.jpeg", type: "image" },
+        { src: "/video.mp4", type: "video" },
+      ],
       type: "hotel",
+      content: sentence.substring(0, randomNum(sentence.length)),
       profileInfo: {
         accountType: "seller",
         id: "1263",
@@ -33,7 +39,12 @@ export const getServicePostDataFetcher = async (
         thumbnail: "/shop-2.jpeg",
         verified: true,
       },
+      price: randomNum(123),
+      rate: randomNum(159),
+      views: randomNum(153),
       hashtags: ["fashion", "gaming"],
+      cashback: { amount: 15, type: "cash" },
+      discount: randomNum(20),
       postInteraction: {
         likes: randomNum(300),
         comments: randomNum(100),

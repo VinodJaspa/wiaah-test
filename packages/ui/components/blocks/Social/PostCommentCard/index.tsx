@@ -1,15 +1,3 @@
-import {
-  Avatar,
-  Box,
-  Flex,
-  HStack,
-  Icon,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  Text,
-} from "@chakra-ui/react";
 import { PostCommentType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -17,7 +5,16 @@ import { HiDotsHorizontal } from "react-icons/hi";
 import { MdOutlineReply } from "react-icons/md";
 import { PostAttachment, Verified, EllipsisText } from "ui";
 import { useCommentReportModal, useDateDiff, useLoginPopup } from "ui";
-import { HashTags } from "ui";
+import {
+  HashTags,
+  Menu,
+  MenuItem,
+  MenuList,
+  MenuButton,
+  Divider,
+  Avatar,
+  HStack,
+} from "ui";
 
 export interface PostCommentCardProps extends PostCommentType {
   onReply?: (message: string) => void;
@@ -50,23 +47,18 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
     OpenLoginPopup;
   }
   return (
-    <Flex bg="white" w="100%" gap={"0.5rem"}>
-      <Avatar bgColor="black" src={user.thumbnail} name={user.name} />
-      <Flex w="100%" direction={"column"}>
-        <Flex
-          w="100%"
-          px="0.5rem"
-          rounded={"xl"}
-          bg={main ? "white" : "primary.light"}
-          pb="0.5rem"
-          direction={"column"}
+    <div className="flex bg-white w-full gap-2">
+      <Avatar src={user.thumbnail} name={user.name} />
+      <div className="w-full flex flex-col">
+        <div
+          className={`w-full flex pb-2 px-2 flex-col rounded-xl ${
+            main ? "bg-white" : "bg-primary-light"
+          }`}
         >
-          <HStack justify={"space-between"}>
+          <div className="flex items-center gap-2 justify-between">
             <HStack>
-              <Text fontSize={"lg"} fontWeight={"bold"}>
-                {user.name}
-              </Text>
-              {user.verified && <Icon as={Verified} />}
+              <p className="text-lg font-bold">{user.name}</p>
+              {user.verified && <Verified className="text-primary" />}
             </HStack>
             <HStack>
               <Menu>
@@ -80,31 +72,25 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
                   >
                     {t("report", "Report")}
                   </Button> */}
-                  <Icon
-                    cursor={"pointer"}
-                    onClick={handleMoreCommentOptions}
-                    fontSize={"x-large"}
-                    fill={"primary.main"}
-                    as={HiDotsHorizontal}
-                  />
+                  <HiDotsHorizontal className="cursor-pointer text-2xl fill-primary" />
                 </MenuButton>
                 <MenuList>
                   <MenuItem>
-                    <Text onClick={() => openModalWithId(id)}>
+                    <p onClick={() => openModalWithId(id)}>
                       {t("report_user", "Report User")}
-                    </Text>
+                    </p>
                   </MenuItem>
                 </MenuList>
               </Menu>
             </HStack>
-          </HStack>
-          <Box py="0.5rem">
+          </div>
+          <div className="py-2">
             <EllipsisText
               showMoreColor={main ? "white" : undefined}
               content={content}
               maxLines={4}
             />
-          </Box>
+          </div>
 
           {hashTags && (
             <HashTags
@@ -120,44 +106,36 @@ export const PostCommentCard: React.FC<PostCommentCardProps> = ({
               alt={user.name}
             />
           )}
-        </Flex>
-        <Flex px="0.5rem" w="100%" align={"center"} justify={"space-between"}>
+        </div>
+        <div className="flex px-2 w-full items-center justify-between">
           {/* like,reply, and replies count */}
           {!main && (
             <HStack>
-              <Text
-                onClick={handleOpenLogin}
-                textTransform={"capitalize"}
-                color="primary.main"
-              >
-                {t("like", "like")}
-              </Text>
-              <Text onClick={handleOpenLogin} textTransform={"capitalize"}>
-                {t("reply", "reply")}
-              </Text>
-              <Flex gap="0.2rem" h="100%" align={"end"}>
-                <Icon fill="primary.main" fontSize={"lg"} as={MdOutlineReply} />
-                <Text color="gray" textTransform={"capitalize"}>
-                  {replies} {t("replies", "replies")}
-                </Text>
-              </Flex>
+              <p onClick={handleOpenLogin} className="text-primary">
+                {t("Like")}
+              </p>
+              <p onClick={handleOpenLogin}>{t("Reply")}</p>
+              <div className="flex whitespace-nowrap gap-1 h-full items-end">
+                <MdOutlineReply className="text-lg fill-primary" />
+                <p className="text-gray-500">
+                  {replies} {t("Replies")}
+                </p>
+              </div>
             </HStack>
           )}
-          <HStack fontSize={"xs"} color="gray">
+          <HStack className="whitespace-nowrap text-xs text-gray-500">
             {!main && (
               <>
-                <Text>{likes}</Text>
-                <Text textTransform={"capitalize"}>
-                  {t("likes", "likes")}
-                </Text>{" "}
+                <p>{likes}</p>
+                <p>{t("Likes")}</p>
               </>
             )}
-            <Text>
+            <p>
               {!main && "|"} {since.value} {since.timeUnit} {t("ago", "ago")}
-            </Text>
+            </p>
           </HStack>
-        </Flex>
-      </Flex>
-    </Flex>
+        </div>
+      </div>
+    </div>
   );
 };

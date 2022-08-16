@@ -8,18 +8,24 @@ import {
   HashTags,
   PostHead,
   EllipsisText,
-  SocialServicePostMetaDataCard,
 } from "ui";
 
-export interface SocialServicePostCardProps extends ServicePostType {
+export interface SocialServicePostDetailsCardProps extends ServicePostType {
   onServiceClick?: (id: string) => any;
 }
 
-export const SocialServicePostCard: React.FC<SocialServicePostCardProps> = (
-  props
-) => {
-  const { id, postInteraction, user, hashtags, content, onServiceClick } =
-    props;
+export const SocialServicePostDetailsCard: React.FC<
+  SocialServicePostDetailsCardProps
+> = ({
+  id,
+  label,
+  name,
+  postInteraction,
+  thumbnail,
+  hashtags,
+  content,
+  onServiceClick,
+}) => {
   function handleServiceClick() {
     if (onServiceClick) {
       onServiceClick(id);
@@ -30,23 +36,13 @@ export const SocialServicePostCard: React.FC<SocialServicePostCardProps> = (
       onClick={() => handleServiceClick()}
       className="w-full flex flex-col gap-2 cursor-pointer"
     >
-      {user && (
-        <PostHead
-          createdAt={new Date().toString()}
-          creatorName={user.name}
-          creatorPhoto={user.thumbnail}
-          // onProfileClick={handleProfileClick}
-          // onViewPostClick={handleViewPost}
-        />
-      )}
       {content && <EllipsisText wordBreak content={content} maxLines={3} />}
       <HashTags
         style={{ pb: "0.5" }}
         color="primary.main"
         tags={hashtags || []}
       />
-      <SocialServicePostMetaDataCard {...props} />
-
+      <AspectRatioImage ratio={3 / 4} alt={name} src={thumbnail} />
       <PostInteractions {...postInteraction} />
       <CommentInput />
       <PostCommentsList postId={id} />
