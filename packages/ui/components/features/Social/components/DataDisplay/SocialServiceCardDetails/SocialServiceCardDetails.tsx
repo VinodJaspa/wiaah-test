@@ -17,7 +17,6 @@ export interface SocialServiceCardDetailsProps {
   price: number;
   views: number;
   onFollow?: () => any;
-  onBook?: () => any;
 }
 
 export const SocialServiceCardDetails: React.FC<
@@ -39,7 +38,7 @@ export const SocialServiceCardDetails: React.FC<
             />
             <p>{user.name}</p>
           </div>
-          <Button onClick={handleFollowClick}>{t("follow")}</Button>
+          <Button onClick={handleFollowClick}>{t("Follow")}</Button>
         </div>
         <p className="text-left text-white text-xl font-semibold">{title}</p>
         <div className="flex items-center gap-1 font-semibold text-white">

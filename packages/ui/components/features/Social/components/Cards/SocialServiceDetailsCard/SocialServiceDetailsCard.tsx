@@ -1,13 +1,10 @@
 import { ServicePostDetails } from "api";
 import React from "react";
+import { useReactPubsub } from "react-pubsub";
 import {
-  useProductViewModal,
-  useHandlePostSharing,
-  useLoginPopup,
   SocialServicePostAttachments,
   PostInteractionsProps,
   SocialServiceCardDetails,
-  CommentsViewer,
   CommentInput,
   PostInteractions,
   Slider,
@@ -24,67 +21,46 @@ export interface SocialServiceDetailsCardProps extends ServicePostDetails {
 
 export const SocialServiceDetailsCard: React.FC<
   SocialServiceDetailsCardProps
-> = ({
-  interactionsProps,
-  onCardClick,
-  showCommentInput,
-  showComments,
-  showInteraction,
-  attachments,
-  content,
-  hashtags,
-  id,
-  label,
-  name,
-  postInteraction,
-  profileInfo,
-  cashback,
-  discount,
-  type,
-  price,
-  rate,
-  views,
-}) => {
-  const attachmentRef = React.useRef(null);
+> = (props) => {
+  const {
+    interactionsProps,
+    onCardClick,
+    showCommentInput,
+    showInteraction,
+    attachments,
+    id,
+    name,
+    postInteraction,
+    profileInfo,
+    cashback,
+    discount,
+    price,
+    rate,
+    views,
+  } = props;
   const productDetailsRef = React.useRef(null);
-  const { showProduct } = useProductViewModal();
 
-  const { handleShare } = useHandlePostSharing();
-  const [active, setActive] = React.useState<number>(0);
-  const { OpenLoginPopup } = useLoginPopup();
-  function handleAddToCart(productId: string) {
-    showProduct({
-      productType: "product",
-      productId,
-    });
-  }
-  function handleBookService(serviceId: string) {
-    showProduct({
-      productType: "service",
-      productId: serviceId,
-    });
-  }
+  const { emit: handleShare } = useReactPubsub(
+    (keys) => keys.sharePostWithModal
+  );
+  const { emit: OpenLoginPopup } = useReactPubsub(
+    (keys) => keys.openLoginPopup
+  );
 
   return (
     <div
       className="flex w-full h-full flex-col justify-between rounded-lg"
-      onClick={() => onCardClick && onCardClick(id)}
       data-testid="ShopCardContainer"
     >
-      <AspectRatio ratio={4 / 3}>
+      <AspectRatio onClick={() => onCardClick && onCardClick(id)} ratio={4 / 3}>
         {attachments && attachments.length > 1 ? (
           <Slider>
             {attachments.map((attachment, i) => (
               <SocialServicePostAttachments
                 key={i}
-                onInteraction={OpenLoginPopup}
+                onInteraction={(interaction) => OpenLoginPopup}
                 cashback={cashback}
                 discount={discount}
-                innerProps={{
-                  // ["data-testid"]: "test attachment",
-                  // @ts-ignore
-                  ref: attachmentRef,
-                }}
                 {...attachment}
               />
             ))}
@@ -93,7 +69,7 @@ export const SocialServiceDetailsCard: React.FC<
           attachments &&
           attachments.length === 1 && (
             <SocialServicePostAttachments
-              onInteraction={OpenLoginPopup}
+              onInteraction={(interaction) => OpenLoginPopup()}
               cashback={cashback}
               discount={discount}
               {...attachments[0]}
@@ -107,7 +83,6 @@ export const SocialServiceDetailsCard: React.FC<
       >
         <SocialServiceCardDetails
           views={views || 0}
-          data-testid="ServiceCardDetails"
           price={price}
           rating={rate}
           title={name}
@@ -116,7 +91,7 @@ export const SocialServiceDetailsCard: React.FC<
         {showInteraction && (
           <PostInteractions
             comments={postInteraction.comments}
-            onShare={(mothed) => handleShare(mothed, id)}
+            onShare={(method) => handleShare({ method, id })}
             likes={postInteraction.likes}
             {...interactionsProps}
           />

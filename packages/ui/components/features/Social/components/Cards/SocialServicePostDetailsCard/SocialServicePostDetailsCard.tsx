@@ -6,7 +6,6 @@ import {
   PostCommentsList,
   CommentInput,
   HashTags,
-  PostHead,
   EllipsisText,
 } from "ui";
 
@@ -32,17 +31,15 @@ export const SocialServicePostDetailsCard: React.FC<
     }
   }
   return (
-    <div
-      onClick={() => handleServiceClick()}
-      className="w-full flex flex-col gap-2 cursor-pointer"
-    >
+    <div className="w-full flex flex-col gap-2 cursor-pointer">
       {content && <EllipsisText wordBreak content={content} maxLines={3} />}
-      <HashTags
-        style={{ pb: "0.5" }}
-        color="primary.main"
-        tags={hashtags || []}
+      <HashTags tags={hashtags || []} />
+      <AspectRatioImage
+        onClick={() => handleServiceClick()}
+        ratio={3 / 4}
+        alt={name}
+        src={thumbnail}
       />
-      <AspectRatioImage ratio={3 / 4} alt={name} src={thumbnail} />
       <PostInteractions {...postInteraction} />
       <CommentInput />
       <PostCommentsList postId={id} />

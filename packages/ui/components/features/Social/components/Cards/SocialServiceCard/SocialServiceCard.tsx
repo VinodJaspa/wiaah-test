@@ -1,7 +1,6 @@
 import { ServicePostType } from "api";
 import React from "react";
 import {
-  AspectRatioImage,
   PostInteractions,
   PostCommentsList,
   CommentInput,
@@ -18,35 +17,35 @@ export interface SocialServicePostCardProps extends ServicePostType {
 export const SocialServicePostCard: React.FC<SocialServicePostCardProps> = (
   props
 ) => {
-  const { id, postInteraction, user, hashtags, content, onServiceClick } =
-    props;
+  const {
+    id,
+    postInteraction,
+    user,
+    hashtags,
+    content,
+    createdAt,
+    onServiceClick,
+  } = props;
   function handleServiceClick() {
     if (onServiceClick) {
       onServiceClick(id);
     }
   }
   return (
-    <div
-      onClick={() => handleServiceClick()}
-      className="w-full flex flex-col gap-2 cursor-pointer"
-    >
+    <div className="w-full flex flex-col gap-2 cursor-pointer">
       {user && (
         <PostHead
-          createdAt={new Date().toString()}
+          createdAt={createdAt}
           creatorName={user.name}
           creatorPhoto={user.thumbnail}
-          // onProfileClick={handleProfileClick}
-          // onViewPostClick={handleViewPost}
         />
       )}
       {content && <EllipsisText wordBreak content={content} maxLines={3} />}
-      <HashTags
-        style={{ pb: "0.5" }}
-        color="primary.main"
-        tags={hashtags || []}
+      <HashTags tags={hashtags || []} />
+      <SocialServicePostMetaDataCard
+        onClick={() => handleServiceClick()}
+        {...props}
       />
-      <SocialServicePostMetaDataCard {...props} />
-
       <PostInteractions {...postInteraction} />
       <CommentInput />
       <PostCommentsList postId={id} />

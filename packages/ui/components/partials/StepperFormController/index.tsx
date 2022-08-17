@@ -36,12 +36,14 @@ export interface StepperFormControllerProps<DataType> {
   onFormComplete: (data: DataType) => any;
   children: MaybeFn<StepperFormCtxValues>;
   stepsNum: number;
+  lock?: boolean;
 }
 
 export function StepperFormController<FinaleDataType>({
   onFormComplete,
   stepsNum,
   children,
+  lock = true,
 }: StepperFormControllerProps<FinaleDataType>) {
   const [handlers, setHandlers] = React.useState<string[]>([]);
   const [stepsValidation, setStepsValidation] = React.useState<
@@ -72,30 +74,51 @@ export function StepperFormController<FinaleDataType>({
   }
 
   function nextStep() {
-    const currentStepKey = handlers[currentStepIdx];
-    if (typeof currentStepKey !== "string") return;
+    if (lock) {
+      const currentStepKey = handlers[currentStepIdx];
+      if (typeof currentStepKey !== "string") return;
 
-    const currentStepValid = stepsValidation[currentStepKey];
-    if (typeof currentStepValid === "undefined") return;
+      const currentStepValid = stepsValidation[currentStepKey];
+      if (typeof currentStepValid === "undefined") return;
 
-    setCurrentStepIdx((state) => {
-      const lastStep = state > stepsNum - 2;
+      setCurrentStepIdx((state) => {
+        const lastStep = state > stepsNum - 2;
 
-      if (lastStep) {
-        //@ts-ignore
-        const MergedData: FinaleDataType = Object.entries(
-          stepsValidation
-        ).reduce((acc, curr) => {
-          const [key, value] = curr;
-          return { ...acc, ...value };
-        }, {} as Data);
+        if (lastStep) {
+          //@ts-ignore
+          const MergedData: FinaleDataType = Object.entries(
+            stepsValidation
+          ).reduce((acc, curr) => {
+            const [key, value] = curr;
+            return { ...acc, ...value };
+          }, {} as Data);
 
-        onFormComplete(MergedData);
-        return state;
-      } else {
-        return state + 1;
-      }
-    });
+          onFormComplete(MergedData);
+          return state;
+        } else {
+          return state + 1;
+        }
+      });
+    } else {
+      setCurrentStepIdx((state) => {
+        const lastStep = state > stepsNum - 2;
+
+        if (lastStep) {
+          //@ts-ignore
+          const MergedData: FinaleDataType = Object.entries(
+            stepsValidation
+          ).reduce((acc, curr) => {
+            const [key, value] = curr;
+            return { ...acc, ...value };
+          }, {} as Data);
+
+          onFormComplete(MergedData);
+          return state;
+        } else {
+          return state + 1;
+        }
+      });
+    }
   }
 
   function prevoiusStep() {

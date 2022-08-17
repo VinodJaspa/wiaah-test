@@ -45,6 +45,7 @@ export const getServicesPostsFetcher = async (
     total: 156,
     data: [...Array(pagination.take)].map((_, i) => ({
       id: `${i}`,
+      createdAt: new Date().toString(),
       label: shopLabels[randomNum(shopLabels.length)],
       name: "service name" + i,
       thumbnail: "/place-1.jpg",

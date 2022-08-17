@@ -1,19 +1,21 @@
 import { ReactPubsubContext } from "../ReactProvider";
 import React from "react";
 
-const PubSubEventKeys = {
+export const ReactPubSubEventKeys = {
   serviceModal: "openServiceModal",
+  sharePostWithModal: "openSharePostWithModal",
+  openLoginPopup: "openLoginPopup",
 };
 
 export const useReactPubsub = (
-  getKey: (keys: typeof PubSubEventKeys) => string
+  getKey: (keys: typeof ReactPubSubEventKeys) => string
 ) => {
-  const { publish, subscribe, unSbscribe } =
+  const { publish, subscribe, unSubscribe } =
     React.useContext(ReactPubsubContext);
 
-  const key = getKey(PubSubEventKeys);
+  const key = getKey(ReactPubSubEventKeys);
 
-  function emit(props?: any) {
+  function emit(props?: object) {
     publish(key, props);
   }
 
@@ -22,7 +24,7 @@ export const useReactPubsub = (
   }
 
   function removeListner() {
-    unSbscribe(key);
+    unSubscribe(key);
   }
 
   return {

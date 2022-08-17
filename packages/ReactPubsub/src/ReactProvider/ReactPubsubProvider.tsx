@@ -4,13 +4,13 @@ import { ReactPubsubClient } from "../Client";
 interface ReactPubsubContextType {
   publish: (key: string, props: any) => any;
   subscribe: (key: string, cb: (props?: any) => any) => any;
-  unSbscribe: (key: string) => any;
+  unSubscribe: (key: string) => any;
 }
 
 export const ReactPubsubContext = React.createContext<ReactPubsubContextType>({
   publish(key, props) {},
   subscribe(key, cb) {},
-  unSbscribe(key) {},
+  unSubscribe(key) {},
 });
 
 interface ReactPubsubProviderProps {
@@ -32,7 +32,7 @@ export const ReactPubsubProvider: React.FC<ReactPubsubProviderProps> = ({
           console.log("subscribed");
           client.Subscribe(key, cb);
         },
-        unSbscribe(key) {
+        unSubscribe(key) {
           client.unSubscribe(key);
         },
       }}

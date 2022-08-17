@@ -12,16 +12,17 @@ import {
   SocialServiceDetailsCard,
   SocialServiceDetailsModal,
 } from "ui";
-export interface SocialServicesListProps {}
+export interface SocialServicesPostsListProps {}
 
-export const SocialServicePostsList: React.FC<SocialServicesListProps> = () => {
+export const SocialServicePostsList: React.FC<
+  SocialServicesPostsListProps
+> = () => {
   const { take, page } = usePagination(16);
   const {
     data: res,
     isLoading,
     isError,
   } = useGetServicesPostsQuery({ take, page });
-
   const { isMobile, isTablet } = useResponsive();
   const { visit } = useRouting();
   return (
@@ -37,6 +38,7 @@ export const SocialServicePostsList: React.FC<SocialServicesListProps> = () => {
         idParam="servicepostid"
         renderChild={(props: ShopCardInfo) => {
           return (
+            //@ts-ignore
             <SocialServiceDetailsCard
               showCommentInput={false}
               showInteraction={false}

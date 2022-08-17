@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiSearch } from "react-icons/hi";
+import { useReactPubsub } from "react-pubsub";
 import {
   useShareWithModal,
   useGetShareWithFriends,
@@ -22,7 +23,8 @@ import {
 export interface ShareWithModalProps {}
 
 export const ShareWithModal: React.FC<ShareWithModalProps> = ({}) => {
-  const { postId, cancelShare } = useShareWithModal();
+  const { Listen } = useReactPubsub((keys) => keys.sharePostWithModal);
+  const [postId, setPostId] = React.useState<string>();
   const { t } = useTranslation();
 
   const [messageValue, setMessageValue] = React.useState<string>("");
@@ -32,6 +34,13 @@ export const ShareWithModal: React.FC<ShareWithModalProps> = ({}) => {
 
   const [shareWith, setShareWith] = React.useState<string[]>([]);
 
+  React.useEffect(() => {
+    Listen((props) => {
+      if ("id" in props && typeof props.id === "string") {
+        setPostId(props.id);
+      }
+    });
+  }, []);
   React.useEffect(() => {
     if (data) {
       setFiltered(data.filter(({ name }) => name.includes(search)));
@@ -46,7 +55,11 @@ export const ShareWithModal: React.FC<ShareWithModalProps> = ({}) => {
   }
 
   return (
-    <Modal isOpen={!!postId} onClose={cancelShare} onOpen={() => {}}>
+    <Modal
+      isOpen={!!postId}
+      onClose={() => setPostId(undefined)}
+      onOpen={() => {}}
+    >
       <ModalOverlay />
       <ModalContent>
         <ModalHeader title="">

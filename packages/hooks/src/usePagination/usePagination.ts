@@ -1,7 +1,7 @@
 import React from "react";
 
 export const usePagination = (take: number = 10) => {
-  const [page, setPage] = React.useState<number>(0);
+  const [page, setPage] = React.useState<number>(1);
 
   function nextPage() {
     setPage((page) => page + 1);

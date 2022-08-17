@@ -11,18 +11,18 @@ import {
   CalenderIcon,
 } from "ui";
 import { CashbackData } from "api";
+import { setTestid } from "utils";
 
 export interface SocialServicePostAttachmentsProps {
+  id: string;
   cashback?: CashbackData;
-  src?: string;
-  type?: PostAttachmentTypes;
-  alt?: string;
+  src: string;
+  type: PostAttachmentTypes;
+  alt: string;
   discount?: number;
   onInteraction?: (interaction: Interactions) => any;
-  showbook?: boolean;
-  attachmentProps?: PostAttachmentProps;
+  attachmentProps?: Partial<PostAttachmentProps>;
   innerProps?: HtmlDivProps;
-  minimal?: boolean;
 }
 
 export const SocialServicePostAttachments: React.FC<
@@ -36,6 +36,7 @@ export const SocialServicePostAttachments: React.FC<
   onInteraction,
   src,
   type,
+  id,
 }) => {
   const { emit } = useReactPubsub((keys) => keys.serviceModal);
   const { t } = useTranslation();
@@ -65,8 +66,9 @@ export const SocialServicePostAttachments: React.FC<
             </div>
 
             <div
+              {...setTestid("openServiceDetailsModalBtn")}
               className="flex items-center max-w-fit p-1 bg-white justify-center rounded-full pointer-events-auto cursor-pointer"
-              onClick={() => emit({ id: "test" })}
+              onClick={() => emit({ id })}
             >
               <CalenderIcon className="text-sm md:text-xl" />
             </div>
