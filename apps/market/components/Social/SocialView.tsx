@@ -1,10 +1,3 @@
-import {
-  Flex,
-  Image,
-  useBreakpointValue,
-  Divider,
-  Text,
-} from "@chakra-ui/react";
 import React from "react";
 import {
   Container,
@@ -19,6 +12,8 @@ import {
   SocialPostsCommentsDrawer,
   ShareWithModal,
   SocialServicePostsList,
+  Divider,
+  SocialServiceDetailsModal,
 } from "ui";
 import {
   PostCommentPlaceholder,
@@ -35,6 +30,8 @@ import { PostComment } from "types";
 import { products } from "placeholder";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
+import { useBreakpointValue } from "@chakra-ui/react";
 
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 export const getRandomUser = () =>
@@ -83,7 +80,7 @@ export interface SocialViewProps {}
 export const SocialView: React.FC<SocialViewProps> = () => {
   const { t } = useTranslation();
   const profileInfo = useRecoilValue(SocialProfileInfoState);
-  const { isMobile } = useResponsive();
+  const { visit, getParam } = useRouting();
   const posts = useRecoilValue(SocialNewsfeedPostsState);
   const cols = useBreakpointValue({ base: 3 });
   const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
@@ -97,7 +94,7 @@ export const SocialView: React.FC<SocialViewProps> = () => {
     {
       name: t("shop", "shop"),
       component: (
-        <Flex gap="1rem" direction={"column"}>
+        <div className="flex flex-col gap-4">
           <div className="flex justify-end">
             <div
               onClick={() => {
@@ -118,7 +115,7 @@ export const SocialView: React.FC<SocialViewProps> = () => {
             cols={cols}
             items={ShopCardsInfoPlaceholder}
           />
-        </Flex>
+        </div>
       ),
     },
     {
@@ -151,6 +148,10 @@ export const SocialView: React.FC<SocialViewProps> = () => {
       component: <PostCardsListWrapper cols={cols} posts={posts} />,
     },
   ];
+
+  const tabsSet = profileInfo.accountType === "seller" ? sellerTabs : buyerTabs;
+  const tabParam = getParam("tab");
+
   return (
     <>
       <ShareWithModal />
@@ -158,48 +159,29 @@ export const SocialView: React.FC<SocialViewProps> = () => {
       <div className="flex flex-col">
         <div className="flex relative md:static max-h-[24rem]">
           <SocialProfile shopInfo={SocialProfileInfo} />
-          <Image
-            position={{ base: "absolute", md: "unset" }}
-            top="0px"
-            left="0px"
-            w="100%"
-            bgColor={"blackAlpha.200"}
-            zIndex={-1}
-            h={{ base: "100%", md: "unset" }}
+          <img
+            className="absolute md:static top-0 left-0 w-full bg-black bg-opacity-20 -z-[1] h-full md:h-auto object-cover"
             src="/shop.jpeg"
-            objectFit={"cover"}
           />
         </div>
         <Container className="flex-grow flex-col">
           {profileInfo && profileInfo.public ? (
             <>
-              <TabsViewer
-                tabs={
-                  profileInfo.accountType === "seller" ? sellerTabs : buyerTabs
-                }
-              />
-              <Divider my="1rem" />
+              <TabsViewer tabs={tabsSet} />
+              <Divider />
             </>
           ) : (
             <>
-              <Flex
-                h="100%"
-                flexGrow={"inherit"}
-                align="center"
-                justify={"center"}
-              >
-                <Text
-                  fontWeight={"bold"}
-                  textTransform={"capitalize"}
-                  fontSize={"xx-large"}
-                >
-                  {t("this_profile_is_private", "this profile is private")}
-                </Text>
-              </Flex>
+              <div className="flex h-full items-center justify-center flex-grow-[inherit]">
+                <p className="font-bold text-3xl">
+                  {t("this profile is private")}
+                </p>
+              </div>
             </>
           )}
         </Container>
       </div>
+      <SocialServiceDetailsModal />
     </>
   );
 };

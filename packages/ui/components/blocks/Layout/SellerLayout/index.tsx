@@ -186,7 +186,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
         links={NavigationLinks}
       >
         <p className="capitalize px-8 py-4 font-bold">
-          {t("discover_your_town", "discover your town")}
+          {t("discover your town")}
         </p>
 
         <div className="flex flex-col gap-4">

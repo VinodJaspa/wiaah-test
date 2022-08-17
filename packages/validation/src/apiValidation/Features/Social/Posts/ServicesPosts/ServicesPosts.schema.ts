@@ -1,8 +1,10 @@
-import {
-  createApiResponseValidationSchema,
-  CreatePaginationApiResponseValidationSchemaOf,
-} from "../../../../SharedSchema";
+import { CreatePaginationApiResponseValidationSchemaOf } from "../../../../SharedSchema";
 import { object, string } from "yup";
+import {
+  HashTags,
+  PostInteractionsValidationSchema,
+} from "../../Shared/PostRelated.schema";
+import { SocialProfileInfoValidationSchema } from "../../Shop";
 
 export const ServicesPostsValidationSchema = object({
   id: string().required(),
@@ -10,6 +12,11 @@ export const ServicesPostsValidationSchema = object({
   thumbnail: string().required(),
   label: string().required(),
   type: string().required(),
+  hashtags: HashTags(),
+  createdAt: string().required(),
+  content: string().required(),
+  user: SocialProfileInfoValidationSchema.required(),
+  postInteraction: PostInteractionsValidationSchema.required(),
 });
 
 export const ServicesPostsApiResponseValidationSchema =

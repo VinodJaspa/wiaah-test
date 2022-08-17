@@ -1,45 +1,44 @@
-import { useRouter } from "next/router";
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { AddressCardDetails, AddressDetails } from "types";
+import { useScreenWidth } from "hooks";
 import {
-  useScreenWidth,
-  useUserAddresses,
-  CheckoutProductsTotalPriceState,
-  CheckoutProductsState,
-  VoucherState,
-  Padding,
-  Spacer,
-  FlexStack,
   BoxShadow,
-  BoldText,
-  AddressInputs,
-  Clickable,
+  FlexStack,
+  Padding,
   AddressCard,
+  Clickable,
+  BoldText,
+  Text,
   Divider,
+  Spacer,
+  CartSummaryProductCard,
   Button,
+  AddressInputs,
+  useUserAddresses,
   VoucherInput,
   ShippingMotheds,
-  shippingMotheds,
   PaymentGateway,
-  CartSummaryProductCard,
   TotalCost,
-  Text,
 } from "ui";
+import { AddressCardDetails, AddressDetails } from "types";
+import { CheckoutProductsState, VoucherState } from "ui/state";
+
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { shippingMotheds } from "ui/placeholder";
+import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
+import { randomNum } from "utils";
 
 export interface CheckoutViewProps {}
 
-export const CheckoutView: React.FC<CheckoutViewProps> = ({}) => {
+export const CheckoutView: React.FC<CheckoutViewProps> = () => {
   const { t } = useTranslation();
-  const router = useRouter();
+  const { visit } = useRouting();
   const [editAddress, setEditAddress] = React.useState<AddressCardDetails>();
   const [edit, setEdit] = React.useState<boolean>(false);
 
   const { min } = useScreenWidth({ minWidth: 1024 });
   const { addresses, AddAddress, DeleteAddress, UpdateAddress } =
     useUserAddresses();
-  const totalPrice = useRecoilValue(CheckoutProductsTotalPriceState);
   const products = useRecoilValue(CheckoutProductsState);
   const setVoucher = useSetRecoilState(VoucherState);
 
@@ -101,63 +100,54 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({}) => {
   return (
     <Padding Y={{ value: 0.5 }}>
       <Spacer spaceInRem={2} />
-      <FlexStack
-        direction={min ? "vertical" : "horizontal"}
-        horizontalSpacingInRem={1}
-        fullWidth
-      >
+      <div className={`flex gap-4 w-full ${min ? "flex-col" : "flex-row"}`}>
         <FlexStack direction="vertical" fullWidth verticalSpacingInRem={1}>
           <BoxShadow>
-            <div className="bg-white">
-              {/* <Padding Y={{ value: 1 }}> */}
-              <div className="flex w-full justify-center text-3xl">
-                <BoldText>{t("checkout", "Checkout")}</BoldText>
-              </div>
-              <Spacer />
-              {edit ? (
-                <AddressInputs
-                  initialInputs={editAddress}
-                  onCancel={handleCancelEdit}
-                  onSuccess={handleSaveAddress}
-                />
-              ) : (
-                <>
-                  <FlexStack
-                    fullWidth
-                    direction="vertical"
-                    verticalSpacingInRem={1}
-                  >
-                    {addresses.length > 0 &&
-                      addresses.map((address, i) => (
-                        <Clickable key={i} onClick={() => setActiveAddress(i)}>
-                          <AddressCard
-                            borderColor="#000"
-                            onDelete={(id) => handleDelete(id)}
-                            onEdit={(address) => handleAddress(address)}
-                            addressDetails={address}
-                            active={activeAddress === i}
-                          />
-                          <Divider marginY={{ value: 0 }} />
-                        </Clickable>
-                      ))}
-                  </FlexStack>
-                  <Spacer />
-                  <Padding X={{ value: 1 }}>
-                    <Button
-                      onClick={() => handleAddress()}
-                      fitWidth
-                      outlined
-                      paddingX={{ value: 1 }}
-                      hexTextColor={"#000"}
-                      borderWidthInPx={1}
-                      borderColor="#000"
+            <div className="bg-white p-4">
+              <Padding Y={{ value: 1 }}>
+                <div className="flex w-full justify-center text-3xl">
+                  <BoldText>{t("checkout", "Checkout")}</BoldText>
+                </div>
+                <p className="font-bold text-lg">{"Address"}</p>
+                {edit ? (
+                  <AddressInputs
+                    initialInputs={editAddress}
+                    onCancel={handleCancelEdit}
+                    onSuccess={handleSaveAddress}
+                  />
+                ) : (
+                  <>
+                    <FlexStack
+                      fullWidth
+                      direction="vertical"
+                      verticalSpacingInRem={1}
                     >
-                      {t("add_new_address", "ADD NEW ADDRESS")}
-                    </Button>
-                  </Padding>
-                </>
-              )}
-              {/* </Padding> */}
+                      {addresses.length > 0 &&
+                        addresses.map((address, i) => (
+                          <Clickable
+                            key={i}
+                            onClick={() => setActiveAddress(i)}
+                          >
+                            <AddressCard
+                              borderColor="#000"
+                              onDelete={(id) => handleDelete(id)}
+                              onEdit={(address) => handleAddress(address)}
+                              addressDetails={address}
+                              active={activeAddress === i}
+                            />
+                            <Divider />
+                          </Clickable>
+                        ))}
+                    </FlexStack>
+                    <Spacer />
+                    <Padding X={{ value: 1 }}>
+                      <Button onClick={() => handleAddress()}>
+                        {t("add_new_address", "ADD NEW ADDRESS")}
+                      </Button>
+                    </Padding>
+                  </>
+                )}
+              </Padding>
             </div>
           </BoxShadow>
           <VoucherInput onSuccess={handleVoucherValidation} />
@@ -179,12 +169,16 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({}) => {
                     </BoldText>
                   </Text>
                   <Text size="lg">
-                    <Clickable onClick={() => router.push("cart-summary")}>
-                      Change
+                    <Clickable
+                      onClick={() =>
+                        visit((routes) => routes.visitCarySummary())
+                      }
+                    >
+                      {t("Change")}
                     </Clickable>
                   </Text>
                 </FlexStack>
-                <Divider marginY={{ value: 0.5 }} />
+                <Divider />
                 <FlexStack width={{ value: 30 }} direction="vertical">
                   {products.map((item, i) => (
                     <>
@@ -193,12 +187,17 @@ export const CheckoutView: React.FC<CheckoutViewProps> = ({}) => {
                     </>
                   ))}
                 </FlexStack>
-                <TotalCost voucherRemoveable />
+                <TotalCost
+                  shippingFee={randomNum(30)}
+                  subTotal={randomNum(500)}
+                  vat={randomNum(20)}
+                  voucherRemoveable
+                />
               </FlexStack>
             </Padding>
           </div>
         </BoxShadow>
-      </FlexStack>
+      </div>
     </Padding>
   );
 };

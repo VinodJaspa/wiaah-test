@@ -25,8 +25,12 @@ export const AddNewService: React.FC<AddNewServiceProps> = () => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4">
-      <SectionHeader sectionTitle={t("add_new_service", "Add New Service")} />
-      <StepperFormController stepsNum={3} onFormComplete={() => {}}>
+      <SectionHeader sectionTitle={t("Add New Service")} />
+      <StepperFormController
+        lock={false}
+        stepsNum={5}
+        onFormComplete={() => {}}
+      >
         {({ nextStep, currentStepIdx, goToStep }) => (
           <>
             <CheckMarkStepper

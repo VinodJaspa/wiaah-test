@@ -33,7 +33,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       src={photoSrc || src}
       className={`${
         className || ""
-      } w-12 h-12 rounded-full cursor-pointer object-cover`}
+      } w-12 h-12 rounded-full bg-black cursor-pointer object-cover`}
       {...props}
     >
       {children}

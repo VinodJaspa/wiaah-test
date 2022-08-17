@@ -7,3 +7,4 @@ export * from "./story";
 export * from "./share";
 export * from "./socialProfile";
 export * from "./Posts";
+export * from "./Comments";

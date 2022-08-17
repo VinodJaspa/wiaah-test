@@ -5,7 +5,7 @@ import {
   PostCardInfo,
   ProfileInfo,
   ShopCardInfo,
-} from "types/market/Social";
+} from "types";
 
 export const SocialProfileInfoState = atom<ProfileInfo | null>({
   key: "SocialProfileInfoState",

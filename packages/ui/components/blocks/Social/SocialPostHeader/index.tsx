@@ -29,9 +29,9 @@ export const SocialPostHeader: React.FC<SocialPostHeaderProps> = ({
       <Avatar
         onClick={OpenStories}
         newStory={newStory}
-        size={"xl"}
         photoSrc={thumbnail}
         name={name}
+        className="w-[3rem] h-[3rem]"
       />
       <Text fontSize={"lg"}>{name}</Text>
       <Button

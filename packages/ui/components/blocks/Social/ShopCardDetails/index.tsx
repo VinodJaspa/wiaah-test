@@ -1,9 +1,14 @@
-import { Avatar, Button, Flex, HStack, Text } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ProfileInfo } from "types";
 import { NumberShortner } from "utils";
-import { Rate } from "ui";
+import {
+  Rate,
+  Avatar,
+  Button,
+  PriceDisplay,
+  UnDiscountedPriceDisplay,
+} from "ui";
 
 export interface ShopCardDetailsProps {
   user: ProfileInfo;
@@ -33,71 +38,28 @@ export const ShopCardDetails: React.FC<ShopCardDetailsProps> = ({
     onFollow && onFollow();
   }
   return (
-    <Flex
-      p="1rem"
-      align={"start"}
-      bg="primary.main"
-      w="100%"
-      direction={"column"}
-    >
-      <HStack justify={"space-between"} w="100%">
-        <HStack color="white">
-          <Avatar bgColor={"black"} src={user.thumbnail} name={user.name} />
-          <Text>{user.name}</Text>
-        </HStack>
-        <Button
-          _focus={{ ring: "0px" }}
-          bgColor={"primary.main"}
-          colorScheme={"primary"}
-          onClick={handleFollowClick}
-          textTransform={"capitalize"}
-        >
-          {t("follow", "follow")}
-        </Button>
-      </HStack>
-      <Text
-        textAlign={"start"}
-        color="white"
-        fontSize={"x-large"}
-        fontWeight="semibold"
-      >
-        {title}
-      </Text>
-      <Flex
-        align={"center"}
-        gap="0.25rem"
-        fontWeight={"semibold"}
-        color="white"
-      >
-        <Text fontSize={"x-large"}>${price}</Text>
-        {oldPrice && (
-          <Text
-            textDecoration={"line-through"}
-            color="gray.100"
-            fontSize={"xl"}
-          >
-            ${oldPrice}
-          </Text>
-        )}
-      </Flex>
+    <div className="p-4 items-start flex bg-primary w-full flex-col">
+      <div className="flex items-center gap-2 justify-between w-full">
+        <div className="text-white flex items-center gap-2" color="white">
+          <Avatar className="bg-black" src={user.thumbnail} name={user.name} />
+          <p>{user.name}</p>
+        </div>
+        <Button onClick={handleFollowClick}>{t("follow")}</Button>
+      </div>
+      <p className="text-left text-white text-xl font-semibold">{title}</p>
+      <div className="flex items-center gap-1 font-semibold text-white">
+        <PriceDisplay price={price} />
+        {oldPrice && <UnDiscountedPriceDisplay amount={price} discount={10} />}
+      </div>
       <Rate allowHalf rating={rating} className="" />
-      <HStack w="100%" justify={"space-between"}>
-        <Text
-          color="white"
-          fontWeight={"semibold"}
-          fontSize="xl"
-          textTransform={"capitalize"}
-        >
-          {NumberShortner(views)} {t("views", "views")}
-        </Text>
-        <Button
-          colorScheme={"primary"}
-          bgColor="primary.main"
-          textTransform={"capitalize"}
-        >
-          <Text onClick={onAddToCart}>{t("add_to_cart", "add to cart")}</Text>
+      <div className="flex w-full justify-between items-center gap-2">
+        <p className="text-white font-semibold text-xl">
+          {NumberShortner(views)} {t("Views")}
+        </p>
+        <Button className="bg-primary">
+          <p onClick={onAddToCart}>{t("add to cart")}</p>
         </Button>
-      </HStack>
-    </Flex>
+      </div>
+    </div>
   );
 };

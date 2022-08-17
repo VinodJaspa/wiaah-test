@@ -32,7 +32,9 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   return (
     <InputGroup
       {...innerProps}
-      className={`${innerProps?.className || ""} max-w-[30rem]`}
+      className={`${
+        innerProps?.className || ""
+      } rounded-xl p-0 w-[min(20rem,100%)]`}
     >
       <InputRightElement className="w-10 border-l-[1px] flex h-full justify-center items-center border-gray-300">
         <HiSearch className="text-gray-500 text-xl" />
@@ -40,8 +42,8 @@ export const SearchInput: React.FC<SearchInputProps> = ({
       <Input
         value={searchInputValue}
         onChange={(e) => handleSearchInputChange(e.target.value)}
-        className="rounded-full w-full"
-        placeholder={t("search_on_wiaah", "search on wiaah")}
+        className="rounded-xl py-0 w-full"
+        placeholder={t("search on wiaah")}
       />
     </InputGroup>
   );

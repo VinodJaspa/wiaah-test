@@ -1,13 +1,6 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import {
-  Flex,
-  HStack,
-  Text,
-  Button,
-  useBreakpointValue,
-  Divider,
-} from "@chakra-ui/react";
+import { useBreakpointValue } from "@chakra-ui/react";
 import { SocialHashTagTopPosts } from "ui/state";
 import { TabType } from "types";
 import { useRouter } from "next/router";
@@ -18,6 +11,9 @@ import {
   PostCardsListWrapper,
   ShopCardsListWrapper,
   TabsViewer,
+  Button,
+  Divider,
+  SocialServicePostsList,
 } from "ui";
 import { newsfeedPosts, ShopCardsInfoPlaceholder } from "placeholder";
 import { useTranslation } from "react-i18next";
@@ -35,50 +31,56 @@ export const HashTagView: React.FC<HashTagViewProps> = () => {
 
   const tabs: TabType[] = [
     {
-      name: t("news_feed", "news feed"),
+      name: t("News Feed"),
       component: (
-        <Flex direction={"column"} gap="4rem">
+        <div className="flex flex-col gap-16">
           <HashTagPostsListWrapper hashtags={topPosts} />
           <Divider />
-          <PostCardsListWrapper cols={cols} posts={newsfeedPosts} />
-        </Flex>
+          <PostCardsListWrapper cols={3} posts={newsfeedPosts} />
+        </div>
       ),
     },
     {
-      name: t("shop", "shop"),
+      name: t("Services"),
       component: (
-        <Flex direction={"column"} gap="4rem">
+        <div className="flex flex-col w-full gap-16">
+          <HashTagPostsListWrapper hashtags={topPosts} />
+          <Divider />
+          <SocialServicePostsList />
+        </div>
+      ),
+    },
+    {
+      name: t("Shop"),
+      component: (
+        <div className="flex flex-col gap-16">
           <HashTagPostsListWrapper hashtags={topPosts} />
 
           <Divider />
 
           <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} />
-        </Flex>
+        </div>
       ),
     },
     {
-      name: t("action", "action"),
+      name: t("Action"),
       component: (
-        <Flex direction={"column"} gap="4rem">
+        <div className="flex flex-col gap-16">
           <HashTagPostsListWrapper hashtags={topPosts} />
           <Divider />
           <ActionsListWrapper cols={cols} actions={actionsPlaceholders} />
-        </Flex>
+        </div>
       ),
     },
   ];
   return (
-    <Flex direction={"column"} my="2rem">
-      <HStack px="0.5rem" justify={"space-between"} w="100%">
-        <Button visibility={"hidden"} textTransform={"capitalize"}>
-          {t("follow", "follow")}
-        </Button>
-        <Text fontWeight={"bold"} fontSize="x-large">
-          #{tag}
-        </Text>
-        <Button textTransform={"capitalize"}>{t("follow", "follow")}</Button>
-      </HStack>
+    <div className="flex flex-col my-8">
+      <div className="flex w-full px-2 justify-between">
+        <div></div>
+        <p className="font-bold text-2xl">#{tag}</p>
+        <Button>{t("Follow")}</Button>
+      </div>
       <TabsViewer tabs={tabs} />
-    </Flex>
+    </div>
   );
 };

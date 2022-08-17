@@ -19,7 +19,7 @@ export function MapChildren<TProps>(
   props: TProps
 ): React.ReactNode {
   return Array.isArray(children)
-    ? children.map((child) => runIfFn(child, props))
+    ? children.map((child, i) => runIfFn(child, { key: i, ...props }))
     : runIfFn(children, props);
 }
 

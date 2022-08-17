@@ -1,6 +1,5 @@
 import React from "react";
 import { useMutation, useQuery } from "react-query";
-import { useDisclosure, IconButton, Icon, Text } from "@chakra-ui/react";
 import { MdClose } from "react-icons/md";
 import {
   Modal,
@@ -10,11 +9,17 @@ import {
   ArrowDownIcon,
 } from "ui";
 import { useTranslation } from "react-i18next";
-import { FloatingContainer, VerticalCarousel, PostCommentCard } from "ui";
+import {
+  FloatingContainer,
+  VerticalCarousel,
+  PostCommentCard,
+  Slider,
+} from "ui";
 import { getParamFromAsPath } from "utils";
 import { PostCardPlaceHolder } from "placeholder";
 import { useActionComments } from "ui/Hooks";
 import { useRouting } from "routing";
+import { useModalDisclouser } from "hooks";
 
 export interface PostViewPopupProps {
   renderChild: (props: any) => React.ReactElement;
@@ -41,7 +46,11 @@ export const PostViewPopup: React.FC<PostViewPopupProps> = ({
   const { CloseComments, OpenComments, ToggleComments, open } =
     useActionComments();
   const { t } = useTranslation();
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { isOpen, handleClose, handleOpen } = useModalDisclouser();
+
+  React.useEffect(() => {
+    OpenComments();
+  }, []);
 
   const { mutate: mutateNext } = useMutation<
     { id: string },
@@ -50,7 +59,6 @@ export const PostViewPopup: React.FC<PostViewPopupProps> = ({
   >(goNextPost, {
     onSuccess: (data) => {
       visit((routes) => routes.addQuery({ [idParam]: data.id }));
-      OpenComments();
     },
   });
   const { mutate: mutatePrev } = useMutation<
@@ -76,14 +84,14 @@ export const PostViewPopup: React.FC<PostViewPopupProps> = ({
 
   React.useEffect(() => {
     if (postId && !isOpen) {
-      onOpen();
+      handleOpen();
     } else if (!postId && isOpen) {
       handlePostViewClose();
     }
-  }, []);
+  }, [postId]);
 
   function handlePostViewClose() {
-    onClose();
+    handleClose();
     reloadPath();
   }
 
@@ -101,66 +109,41 @@ export const PostViewPopup: React.FC<PostViewPopupProps> = ({
     <>
       <Modal onOpen={() => {}} onClose={handlePostViewClose} isOpen={isOpen}>
         <ModalOverlay />
-        <ModalContent className="h-screen flex w-screen">
-          <IconButton
-            onClick={handlePostViewClose}
-            p="0rem"
-            fontSize={"xx-large"}
-            colorScheme={"blackAlpha"}
-            bgColor="transparent"
-            aria-label="Close Post"
-            icon={<Icon as={MdClose} />}
-          />
-          <FloatingContainer
-            // key={i}
-            className="flex justify-center items-center w-full h-full overflow-hidden bg-black"
-            items={[
-              {
-                label: (
-                  <IconButton
-                    onClick={handleNextPost}
-                    p="0rem"
-                    fontSize={"xxx-large"}
-                    colorScheme={"blackAlpha"}
-                    bgColor="blackAlpha.300"
-                    aria-label="Close Post"
-                    icon={<Icon as={ArrowDownIcon} />}
-                  />
-                ),
-                bottom: "2rem",
-                right: "0rem",
-              },
-              {
-                label: (
-                  <IconButton
-                    onClick={handlePrevPost}
-                    p="0rem"
-                    fontSize={"xxx-large"}
-                    colorScheme={"blackAlpha"}
-                    bgColor="blackAlpha.300"
-                    aria-label="Close Post"
-                    icon={<Icon as={ArrowUpIcon} />}
-                  />
-                ),
-                top: "2rem",
-                right: "0rem",
-              },
-            ]}
-          >
-            <VerticalCarousel
-              w="100%"
-              h="100%"
-              overflow="hidden"
-              data-testid="VerticalCarouselContainer"
-              onPassMaxLimit={handleNextPost}
-              onPassMinLimit={handlePrevPost}
-            >
-              {[...Array(1)].map(
-                (_, i) => renderChild && post && renderChild(post)
-              )}
-              {/* {renderChild && post && renderChild(post)} */}
-            </VerticalCarousel>
-          </FloatingContainer>
+        <ModalContent className="h-screen px-[2.5rem] bg-black flex w-screen">
+          <div className="flex flex-col gap-2 w-full">
+            <MdClose
+              onClick={handlePostViewClose}
+              className={`text-3xl w-8  cursor-pointer text-white`}
+              aria-label="Close Post"
+            />
+            <div className="flex w-full h-full bg-black">
+              <VerticalCarousel
+                w="100%"
+                h="100%"
+                overflow="hidden"
+                data-testid="VerticalCarouselContainer"
+                onPassMaxLimit={handleNextPost}
+                onPassMinLimit={handlePrevPost}
+              >
+                {[...Array(1)].map(
+                  (_, i) => renderChild && post && renderChild(post)
+                )}
+                {/* {renderChild && post && renderChild(post)} */}
+              </VerticalCarousel>
+            </div>
+          </div>
+          <div className="flex flex-col w-10 text-white justify-between">
+            <ArrowUpIcon
+              onClick={handlePrevPost}
+              className="text-4xl"
+              aria-label="prev Post"
+            />
+            <ArrowDownIcon
+              className="text-4xl"
+              onClick={handleNextPost}
+              aria-label="next Post"
+            />
+          </div>
           <div
             style={{
               opacity: open ? 1 : 0,
@@ -179,13 +162,9 @@ export const PostViewPopup: React.FC<PostViewPopupProps> = ({
                   )
                 ) : (
                   <div className="flex justify-center items-center h-full">
-                    <Text
-                      textTransform={"capitalize"}
-                      fontWeight="bold"
-                      fontSize="lg"
-                    >
+                    <p className="text-xl font-bold">
                       {t("no comments in this post")}
-                    </Text>
+                    </p>
                   </div>
                 )}
               </>

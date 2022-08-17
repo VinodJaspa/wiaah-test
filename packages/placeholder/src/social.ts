@@ -808,7 +808,7 @@ export const hashTagCardsInfoPlaceholder: HashTagCardInfo[] = [
   },
   {
     attachment: {
-      src: images[randomNum(images.length)],
+      src: "/shop-2.jpeg",
       type: "image",
     },
     title: t("most_commented_post", "most commented post"),

@@ -1,15 +1,3 @@
-import {
-  Badge,
-  Box,
-  BoxProps,
-  Button,
-  Center,
-  Circle,
-  Flex,
-  Icon,
-  IconButton,
-  Text,
-} from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -17,9 +5,9 @@ import {
   HiOutlineHeart,
   HiOutlineShoppingCart,
 } from "react-icons/hi";
-import { CashBack, PostAttachmentTypes } from "types";
+import { CashBack, HtmlDivProps, PostAttachmentTypes } from "types";
 import { Interactions } from "types";
-import { PostAttachment } from "ui";
+import { PostAttachment, CashbackBadge } from "ui";
 import { PostAttachmentProps } from "../PostAttachment";
 
 export interface ShopCardAttachmentProps {
@@ -32,18 +20,14 @@ export interface ShopCardAttachmentProps {
   onInteraction?: (interaction: Interactions) => any;
   showbook?: boolean;
   attachmentProps?: PostAttachmentProps;
-  innerProps?: React.PropsWithRef<BoxProps>;
+  innerProps?: HtmlDivProps;
   minimal?: boolean;
 }
 
 export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
-  children,
-  productType,
   cashback,
   discount,
-  minimal,
   onInteraction,
-  showbook,
   attachmentProps,
   innerProps,
   alt,
@@ -52,128 +36,53 @@ export const ShopCardAttachment: React.FC<ShopCardAttachmentProps> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <Box {...innerProps} bg="black" maxW="100%" h="100%" position={"relative"}>
+    <div className="max-w-full h-full relative bg-black" {...innerProps}>
       <PostAttachment
         src={src || ""}
         type={type || "image"}
         alt={alt}
         {...attachmentProps}
       />
-      <Flex
-        w="100%"
-        h="100%"
-        position={"absolute"}
-        top="0px"
-        left="0px"
-        p="0.25rem"
-        justify={"space-between"}
-        pointerEvents="none"
-        zIndex={2}
-      >
-        <Center h="fit-content" bg="white" rounded={"lg"} px="0.25rem">
-          <Icon
-            cursor={"pointer"}
-            fontSize={{ base: "sm", md: "x-large" }}
-            rounded={"lg"}
-            pointerEvents="all"
-            onClick={() => onInteraction && onInteraction("moreOpts")}
-            as={HiDotsHorizontal}
-          />
-        </Center>
-        <Flex
-          justifySelf={"center"}
-          align="center"
-          direction={"column"}
-          py="0.25rem"
-          position={"absolute"}
-          top="0px"
-          left="50%"
-          h="100%"
-          transform={"auto"}
-          translateX={"-50%"}
-          justify={"space-between"}
-        >
+      <div className="w-full h-full absolute top-0 left-0 p-1 flex justify-between pointer-events-none z-10">
+        <div className="h-fit bg-white rounded-lg px-1 flex items-center justify-center">
+          <HiDotsHorizontal className="cursor-pointer text-sm md:text-xl rounded-lg pointer-events-auto" />
+        </div>
+        <div className="flex transform -translate-x-1/2 justify-between self-center items-center flex-col py-1 absolute top0 left-1/2 h-full">
           {cashback && (
-            <Box
-              alignItems={"center"}
-              display={"flex"}
-              color="white"
-              bg={"secondaryRed"}
-              p="0.25rem"
-              gap={{ base: "0.25rem", md: "0.5rem" }}
-              h="fit-content"
-              rounded={"lg"}
-              fontWeight={"semibold"}
-              fontSize={{ base: "xs", md: "md" }}
-            >
-              <Text>
-                {cashback.value}
-                {cashback.unit}
-              </Text>
-              <Text textTransform={"capitalize"}>
-                {t("cashback", "cashback")}
-              </Text>
-            </Box>
+            <CashbackBadge
+              amount={cashback.value}
+              type={cashback.unit === "$" ? "cash" : "percent"}
+            />
           )}
-        </Flex>
-        <Flex
-          align={"end"}
-          h="100%"
-          justify={"space-between"}
-          direction={"column"}
-        >
-          <Flex color="gray.700" gap="0.5rem" direction={"column"}>
-            <Circle
-              pointerEvents="all"
-              cursor={"pointer"}
+        </div>
+        <div className="flex items-end h-full justify-between flex-col">
+          <div className="flex text-gray-700 gap-2 flex-col">
+            <div
+              className="flex items-center max-w-fit p-1 bg-white justify-center rounded-full pointer-events-auto cursor-pointer"
               onClick={() => onInteraction && onInteraction("saveToWL")}
-              maxWidth={"fit-content"}
-              p="0.25rem"
-              bg="white"
             >
-              <Icon
-                fontSize={{ base: "sm", md: "x-large" }}
-                as={HiOutlineHeart}
-              />
-            </Circle>
-            <Circle
-              pointerEvents="all"
-              cursor={"pointer"}
+              <HiOutlineHeart className="text-sm md:text-xl" />
+            </div>
+            <div
+              className="flex items-center max-w-fit p-1 bg-white justify-center rounded-full pointer-events-auto cursor-pointer"
               onClick={() => onInteraction && onInteraction("addToCart")}
-              maxWidth={"fit-content"}
-              p="0.25rem"
-              bg="white"
             >
-              <Icon
-                fontSize={{ base: "sm", md: "x-large" }}
-                as={HiOutlineShoppingCart}
-              />
-            </Circle>
-          </Flex>
+              <HiOutlineShoppingCart className="text-sm md:text-xl" />
+            </div>
+          </div>
           {discount ? (
-            <Flex
-              alignItems={"center"}
-              color="white"
-              bg={"secondaryRed"}
-              px="0.5rem"
-              gap="0.5rem"
-              rounded={"lg"}
-              fontWeight={"semibold"}
-              fontSize={{ base: "sm", md: "md" }}
-            >
-              <Text>
+            <div className="flex px-2 gap-2 bg-red-500 text-white rounded-lg font-semibold text-sm md:text-lg items-center">
+              <p>
                 {discount.value}
                 {discount.unit}
-              </Text>
-              <Text py="0.25rem" textTransform={"uppercase"}>
-                {t("off", "off")}
-              </Text>
-            </Flex>
+              </p>
+              <p className="py-1">{t("OFF")}</p>
+            </div>
           ) : (
-            <Text visibility={"hidden"}>.</Text>
+            <p className="hidden">.</p>
           )}
-        </Flex>
-      </Flex>
-    </Box>
+        </div>
+      </div>
+    </div>
   );
 };

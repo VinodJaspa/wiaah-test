@@ -1,40 +1,54 @@
+import { ServicePostType } from "api";
 import React from "react";
-import { AspectRatioImage } from "ui";
+import {
+  PostInteractions,
+  PostCommentsList,
+  CommentInput,
+  HashTags,
+  PostHead,
+  EllipsisText,
+  SocialServicePostMetaDataCard,
+} from "ui";
 
-export interface SocialServicePostCardProps {
-  label: string;
-  name: string;
-  thumbnail: string;
-  id: string;
+export interface SocialServicePostCardProps extends ServicePostType {
   onServiceClick?: (id: string) => any;
 }
 
-export const SocialServicePostCard: React.FC<SocialServicePostCardProps> = ({
-  label,
-  name,
-  thumbnail,
-  id,
-  onServiceClick,
-}) => {
+export const SocialServicePostCard: React.FC<SocialServicePostCardProps> = (
+  props
+) => {
+  const {
+    id,
+    postInteraction,
+    user,
+    hashtags,
+    content,
+    createdAt,
+    onServiceClick,
+  } = props;
   function handleServiceClick() {
     if (onServiceClick) {
       onServiceClick(id);
     }
   }
   return (
-    <div
-      onClick={() => handleServiceClick()}
-      className="w-full cursor-pointer relative block"
-    >
-      <AspectRatioImage ratio={3 / 4} alt={name} src={thumbnail} >
-      <div className=" absolute top-0 left-0 flex flex-col w-full text-lg bg-gray-500 bg-opacity-50 p-2 text-white">
-        <p className="font-semibold  lg:text-2xl ">{name}</p>
-        <p className="w-full text-lg font-bold text-right text-primary">
-          {">>"} {label} {"<<"}
-        </p>
-      </div>
-
-      </AspectRatioImage>
+    <div className="w-full flex flex-col gap-2 cursor-pointer">
+      {user && (
+        <PostHead
+          createdAt={createdAt}
+          creatorName={user.name}
+          creatorPhoto={user.thumbnail}
+        />
+      )}
+      {content && <EllipsisText wordBreak content={content} maxLines={3} />}
+      <HashTags tags={hashtags || []} />
+      <SocialServicePostMetaDataCard
+        onClick={() => handleServiceClick()}
+        {...props}
+      />
+      <PostInteractions {...postInteraction} />
+      <CommentInput />
+      <PostCommentsList postId={id} />
     </div>
   );
 };

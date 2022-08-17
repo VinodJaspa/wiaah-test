@@ -1,5 +1,6 @@
 import { array, number, object, string } from "yup";
-import { PostAttachment, PostComment } from "../../Shared/PostRelated.schema";
+import { PostComment } from "../../Comments";
+import { PostAttachment } from "../../Shared/PostRelated.schema";
 import { SocialProfileInfoValidationSchema } from "../../Shop";
 
 export const AffiliationPostValidationSchema = object({

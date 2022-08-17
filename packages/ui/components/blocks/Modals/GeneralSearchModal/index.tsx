@@ -81,7 +81,7 @@ export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
     {
       name: t("hashtags", "hashtags"),
       component: (
-        <ListWrapper style={{ w: "100%" }}>
+        <ListWrapper props={{ style: { width: "full" } }}>
           {discoverHashtagsPlaceholder.map((tag, i) => (
             <HashTagSearchItem
               hashtagName={tag}
@@ -94,7 +94,7 @@ export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
     {
       name: t("localization", "Localization"),
       component: (
-        <ListWrapper style={{ w: "100%" }}>
+        <ListWrapper props={{ style: { width: "full" } }}>
           {LocalizationsPH.map((city, i) => (
             <LocalizationSearchItem key={i} location={city} />
           ))}
@@ -106,9 +106,9 @@ export const GeneralSearchModal: React.FC<GeneralSearchModalProps> = ({
   return (
     <Menu isLazy>
       <MenuButton>
-        <div>{children}</div>
+        <div className="w-full">{children}</div>
       </MenuButton>
-      <MenuList className="-right-1/2 p-2 origin-top">
+      <MenuList origin="top" className="-right-1/2 p-2">
         <h1 className="font-semibold text-xl">{t("search", "Search")}</h1>
         <div className="thinScroll max-h-[25rem] overflow-y-scroll">
           <TabsViewer tabs={tabs} />
