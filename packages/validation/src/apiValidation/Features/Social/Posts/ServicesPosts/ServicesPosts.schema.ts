@@ -2,14 +2,16 @@ import { CreatePaginationApiResponseValidationSchemaOf } from "../../../../Share
 import { object, string } from "yup";
 import {
   HashTags,
+  PostAttachment,
   PostInteractionsValidationSchema,
+  PostAttachments,
 } from "../../Shared/PostRelated.schema";
 import { SocialProfileInfoValidationSchema } from "../../Shop";
 
 export const ServicesPostsValidationSchema = object({
   id: string().required(),
   name: string().required(),
-  thumbnail: string().required(),
+  attachements: PostAttachments().required(),
   label: string().required(),
   type: string().required(),
   hashtags: HashTags(),

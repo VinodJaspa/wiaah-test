@@ -12,6 +12,9 @@ export const PostAttachment = () =>
     src: string().required(),
   });
 
+export const PostAttachments = () =>
+  array().of(PostAttachment().required()).min(0).required();
+
 export const PostInteractionsValidationSchema = object({
   likes: number().min(0).required(),
   comments: number().min(0).required(),

@@ -68,3 +68,8 @@ export type HtmlImgProps = DetailedHTMLProps<
   ImgHTMLAttributes<HTMLImageElement>,
   HTMLImageElement
 >;
+
+export type HtmlMetaProps = DetailedHTMLProps<
+  React.MetaHTMLAttributes<HTMLMetaElement>,
+  HTMLMetaElement
+>;

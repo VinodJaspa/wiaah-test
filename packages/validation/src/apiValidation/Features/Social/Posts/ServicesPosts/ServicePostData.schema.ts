@@ -11,7 +11,7 @@ import { Cashback } from "../../../Products";
 export const ServicePostDataValidationSchema = object({
   id: string().required(),
   name: string().required(),
-  attachments: array().of(PostAttachment().required()).min(0).required(),
+  attachements: array().of(PostAttachment().required()).min(0).required(),
   label: string().required(),
   type: string().required(),
   content: string().required(),
@@ -21,6 +21,7 @@ export const ServicePostDataValidationSchema = object({
   views: number().required(),
   price: number().required(),
   rate: number().required(),
+  createdAt: string(),
   profileInfo: SocialProfileInfoValidationSchema.required(),
   postInteraction: PostInteractionsValidationSchema.required(),
 });

@@ -3,7 +3,7 @@ import React from "react";
 import { ReactPubSubEventKeys as mockReactPubsubEventKeys } from "react-pubsub";
 import { getTestId } from "utils";
 import {
-  SocialServicePostAttachments,
+  SocialServicePostAttachment,
   SocialServicePostAttachmentsProps,
 } from "./SocialServicePostAttachments";
 
@@ -26,7 +26,7 @@ jest.mock("react-pubsub", () => ({
   },
 }));
 
-describe("SocialServicePostAttachments tests", () => {
+describe("SocialServicePostAttachment tests", () => {
   let wrapper: ShallowWrapper;
   let props: SocialServicePostAttachmentsProps;
 
@@ -37,14 +37,14 @@ describe("SocialServicePostAttachments tests", () => {
       src: "/shop-2.jpeg",
       type: "image",
     };
-    wrapper = shallow(<SocialServicePostAttachments {...props} />);
+    wrapper = shallow(<SocialServicePostAttachment {...props} />);
   });
   it("should match snapshot with required props", () => {
     expect(wrapper).toMatchSnapshot();
   });
   it("should match snapshot with optional props", () => {
     wrapper = shallow(
-      <SocialServicePostAttachments
+      <SocialServicePostAttachment
         {...props}
         attachmentProps={{ blur: true }}
         innerProps={{ onClick: () => {} }}
