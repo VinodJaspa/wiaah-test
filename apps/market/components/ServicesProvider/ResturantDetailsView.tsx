@@ -4,7 +4,7 @@ import {
   SpinnerFallback,
   useSearchFilters,
   Divider,
-  ServiceOnMapLocationSection,
+  ServiceOnMapLocalizationSection,
   ServiceReachOutSection,
   ServiceWorkingHoursSection,
   ServicePoliciesSection,
@@ -17,7 +17,7 @@ import {
   ResturantFindTableFilterStepper,
   Accordion,
   ResturantMenuListSection,
-  useGetResturantServiceDetaislDataQuery,
+  useGetRestaurantServiceDetailsDataQuery,
 } from "ui";
 import { reviews } from "placeholder";
 import { useTranslation } from "react-i18next";
@@ -29,7 +29,7 @@ export const ResturantDetailsView: React.FC = () => {
     data: res,
     isError,
     isLoading,
-  } = useGetResturantServiceDetaislDataQuery(filters);
+  } = useGetRestaurantServiceDetailsDataQuery(filters);
   const { isMobile } = useResponsive();
   const { t } = useTranslation();
 
@@ -84,7 +84,7 @@ export const ResturantDetailsView: React.FC = () => {
           </SpinnerFallback>
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             {res ? (
-              <ServiceOnMapLocationSection location={res.data.location} />
+              <ServiceOnMapLocalizationSection location={res.data.location} />
             ) : null}
           </SpinnerFallback>
         </Accordion>

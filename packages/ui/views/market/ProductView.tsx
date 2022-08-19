@@ -138,28 +138,6 @@ export const ProductView: React.FC<ProductViewProps> = ({ productId }) => {
             <p className="my-10 flex justify-center text-2xl font-bold uppercase">
               {t("Related_Products", "Related Products")}
             </p>
-            <div className="relative mb-10 md:px-20">
-              {/* <Swiper
-                spaceBetween={30}
-                slidesPerView={isTabletOrMobile ? 2 : 4}
-                navigation={true}
-                modules={[Navigation]}
-              >
-                {[...Array(12)].map((_, i: number) => (
-                  <SwiperSlide className="flex justify-center" key={i}>
-                    <Product
-                      name={t("Camera Digital with extra lenses")}
-                      imgUrl="/shop-2.jpeg"
-                      price={518.68}
-                      rating={4}
-                      cashback={10}
-                      off={10}
-                      oldPrice={600}
-                    ></Product>
-                  </SwiperSlide>
-                ))}
-              </Swiper> */}
-            </div>
           </div>
         </div>
       </div>

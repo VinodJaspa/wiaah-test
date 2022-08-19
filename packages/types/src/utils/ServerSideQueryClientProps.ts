@@ -1,3 +1,3 @@
-export type ServerSideQueryClientProps<TProps = any> = {
+export type ServerSideQueryClientProps<TProps = object> = {
   dehydratedProps: any;
 } & TProps;

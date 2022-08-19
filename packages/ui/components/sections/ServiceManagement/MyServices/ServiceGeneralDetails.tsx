@@ -138,7 +138,7 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
                   },
                 ]}
               />
-              <ToggleVisable>
+              {/* <ToggleVisable>
                 {({ changeState, state }) => {
                   return (
                     <div className="flex gap-4 flex-wrap w-full">
@@ -212,7 +212,7 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
                 <SelectOption value={"yes-optional"}>
                   {t("Yes, it's optional")}
                 </SelectOption>
-              </FormikInput>
+              </FormikInput> */}
               <p className="text-2xl font-semibold">{t("file", "File")}</p>
               <div className="flex flex-col gap-4">
                 <p className="text-xl font-semibold">

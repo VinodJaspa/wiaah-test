@@ -22,6 +22,7 @@ const withTM = require("next-transpile-modules")(
     "types",
     "routing",
     "react-pubsub",
+    "react-seo",
   ],
   {
     debug: true,

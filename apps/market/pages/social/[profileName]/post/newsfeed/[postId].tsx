@@ -3,10 +3,9 @@ import Head from "next/head";
 import React from "react";
 import { useSetRecoilState } from "recoil";
 import { PostCardInfo } from "types";
-import { Container, Collaboration, useStorySeenBy } from "ui";
+import { Container, useStorySeenBy } from "ui";
 import { newsfeedPosts, PostCardPlaceHolder } from "placeholder";
 import {
-  SocialNewsfeedPostsState,
   SocialNewsfeedPostState,
   SocialNewsfeedOtherPostsState,
   SocialStoryState,

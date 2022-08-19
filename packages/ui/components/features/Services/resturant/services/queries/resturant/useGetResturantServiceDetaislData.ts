@@ -5,7 +5,7 @@ import {
 } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
-export const useGetResturantServiceDetaislDataQuery = (
+export const useGetRestaurantServiceDetailsDataQuery = (
   filters: FormatedSearchableFilter,
   options?: UseQueryOptions<
     unknown,

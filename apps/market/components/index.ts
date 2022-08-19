@@ -7,3 +7,4 @@ export * from "./Checkout";
 export * from "./Social";
 export * from "./Actions";
 export * from "./ComingSoon";
+export * from "./Seo";

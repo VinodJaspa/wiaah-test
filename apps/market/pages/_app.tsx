@@ -4,13 +4,15 @@ import "ui/languages/i18n";
 import { CookiesProvider } from "react-cookie";
 import { RecoilRoot } from "recoil";
 import { ChakraProvider } from "@chakra-ui/react";
-import { CoomingSoon } from "@components";
+import { CoomingSoon, SeoWrapper } from "@components";
 import theme from "ui/themes/chakra_ui/theme";
 import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
 import { RoutingProvider } from "routing";
 import { useRouter } from "next/router";
 import React from "react";
+import NextHead from "next/head";
 import { ReactPubsubClient, ReactPubsubProvider } from "react-pubsub";
+import { ReactSeoProvider } from "react-seo";
 const coomingSoon = false;
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -31,13 +33,22 @@ function MyApp({ Component, pageProps }: AppProps) {
           }}
         >
           <ReactPubsubProvider client={new ReactPubsubClient()}>
-            <ChakraProvider theme={theme}>
-              <CookiesProvider>
-                <RecoilRoot>
-                  {coomingSoon ? <CoomingSoon /> : <Component {...pageProps} />}
-                </RecoilRoot>
-              </CookiesProvider>
-            </ChakraProvider>
+            <ReactSeoProvider TagWrapper={NextHead}>
+              <SeoWrapper>
+                <ChakraProvider theme={theme}>
+                  <CookiesProvider>
+                    <RecoilRoot>
+                      {coomingSoon ? (
+                        <CoomingSoon />
+                      ) : (
+                        //  @ts-ignore
+                        <Component {...pageProps} />
+                      )}
+                    </RecoilRoot>
+                  </CookiesProvider>
+                </ChakraProvider>
+              </SeoWrapper>
+            </ReactSeoProvider>
           </ReactPubsubProvider>
         </RoutingProvider>
       </Hydrate>

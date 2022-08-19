@@ -145,7 +145,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
                 />
               </div>
             </MenuButton>
-            <MenuList>
+            <MenuList origin="top right">
               {headerNavLinks.length > 0
                 ? headerNavLinks.map(({ icon, link }, i) => (
                     <MenuItem onClick={() => router.replace(link.href)}>
