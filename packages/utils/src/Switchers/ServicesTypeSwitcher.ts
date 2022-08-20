@@ -57,6 +57,6 @@ export const ServicesTypeSwitcher: React.FC<{
     : null;
 
   return serviceFound
-    ? runIfFn(comp ? comp : null, props)
+    ? runIfFn(comp ? comp : fallbackComponent, props)
     : runIfFn(fallbackComponent, {});
 };

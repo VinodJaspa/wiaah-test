@@ -109,7 +109,7 @@ export function Select<ValueType = string>({
         data-testid="SelectOptionsContainer"
         className={`${
           open ? "scale-y-100" : "scale-y-0"
-        } transition-all duration-75 z-50 bg-white origin-top max-h-48 overflow-y-scroll transform absolute left-0 flex flex-col top-full w-full`}
+        } transition-all duration-75 z-50 bg-white origin-top max-h-48 overflow-y-scroll thinScroll transform absolute left-0 flex flex-col top-full w-full`}
       >
         {children && showChild ? (
           <>

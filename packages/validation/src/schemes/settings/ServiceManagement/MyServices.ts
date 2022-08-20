@@ -10,13 +10,22 @@ import * as yup from "yup";
 import { TypeOf } from "yup";
 
 export const NewServiceSchemas = {
-  serviceTypeSchema: yup.object().shape({
+  serviceTypeSchema: yup.object({
     type: yup
       .string()
-      .oneOf<ServiceType>(["placeBooking", "rendez-vous", "thingsRenting"])
+      .oneOf<ServiceType>([
+        "placeBooking",
+        "rendez-vous",
+        "thingsRenting",
+        "Vehicle",
+        "beautyCenter",
+        "healthCenter",
+        "holidayRentals",
+        "restaurant",
+      ])
       .required(),
   }),
-  serviceGeneralDetailsSchema: yup.object().shape<Partial<AddNewServiceDto>>({
+  serviceGeneralDetailsSchema: yup.object<Partial<AddNewServiceDto>>({
     address: yup.string().required(),
     breakfastAvailablity: yup
       .string()
@@ -34,23 +43,23 @@ export const NewServiceSchemas = {
     metaTagKeyword: yup.string().required(),
     name: yup.string().required(),
     numOfStars: yup.number().required(),
-    parkingAvailability: yup
-      .string()
-      .oneOf<ParkingAvailablity>(["no", "yes-free", "yes-paid"])
-      .required(),
-    parkingPublic: yup.boolean(),
+    // parkingAvailability: yup
+    //   .string()
+    //   .oneOf<ParkingAvailablity>(["no", "yes-free", "yes-paid"])
+    //   .required(),
+    // parkingPublic: yup.boolean(),
     priceByNight: yup.number().required(),
-    quantity: yup.number(),
-    reservationNeeded: yup
-      .string()
-      .oneOf<ReservationOptions>(["needed", "not-needed"]),
+    // quantity: yup.number(),
+    // reservationNeeded: yup
+    //   .string()
+    //   .oneOf<ReservationOptions>(["needed", "not-needed"]),
     serviceTag: yup.string().required(),
     videos: yup.mixed(),
   }),
-  includedServices: yup.object().shape({
+  includedServices: yup.object({
     services: yup.array().of(yup.string()).required(),
   }),
-  extraSreivce: yup.object().shape({
+  extraSreivce: yup.object({
     extraBeds: yup.boolean().required(),
     numOfBedsCanBeAdded: yup.number(),
     extraBedsAccommodate: yup
@@ -58,9 +67,10 @@ export const NewServiceSchemas = {
       .of(yup.string().oneOf(["adults", "children", "children-2years"])),
     pricePerNight: yup.number(),
   }),
-  discount: yup.object().shape({
+  discount: yup.object({
     percentOff: yup.number().required(),
     startDate: yup.string().required(),
     expireDate: yup.string().required(),
   }),
+  restaurantDetailsSchema: yup.object({}),
 };

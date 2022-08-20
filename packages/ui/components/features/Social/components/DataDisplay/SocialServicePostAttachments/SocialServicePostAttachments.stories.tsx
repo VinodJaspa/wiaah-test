@@ -1,16 +1,16 @@
-import { SocialServicePostAttachments } from "./SocialServicePostAttachments";
+import { SocialServicePostAttachment } from "./SocialServicePostAttachments";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { randomNum, storybookSocialServiceDataDisplayTitle } from "utils";
 
 export default {
   title:
     storybookSocialServiceDataDisplayTitle + "SocialServicePostAttachments",
-  component: SocialServicePostAttachments,
-} as ComponentMeta<typeof SocialServicePostAttachments>;
+  component: SocialServicePostAttachment,
+} as ComponentMeta<typeof SocialServicePostAttachment>;
 
-const template: ComponentStory<typeof SocialServicePostAttachments> = (
-  args
-) => <SocialServicePostAttachments {...args} />;
+const template: ComponentStory<typeof SocialServicePostAttachment> = (args) => (
+  <SocialServicePostAttachment {...args} />
+);
 
 export const Default = template.bind({});
 Default.args = {

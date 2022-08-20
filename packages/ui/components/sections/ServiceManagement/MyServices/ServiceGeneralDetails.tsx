@@ -5,15 +5,11 @@ import React from "react";
 import {
   FormikInput,
   Textarea,
-  SubCategorySelect,
   HashTagInput,
   ChooseWithInput,
-  ToggleVisable,
-  ToggleVisableItem,
   Select,
   SelectProps,
   SelectOption,
-  TranslationText,
   MediaUploadModal,
 } from "ui";
 import { Form, Formik } from "formik";
@@ -47,7 +43,7 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
           return (
             <Form className="w-full flex flex-col gap-4">
               <span className="text-2xl font-semibold">
-                {t("name_&_description", "Name & Description")}
+                {t("Name & Description")}
               </span>
               <FormikInput
                 name="name"
@@ -57,55 +53,93 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
               <FormikInput
                 name="description"
                 as={Textarea}
-                placeholder={t(
-                  "the_description_of_service",
-                  "The Description of the serivce"
-                )}
+                placeholder={t("The Description of the serivce")}
               />
               <FormikInput
                 name={"numOfStars"}
-                placeholder={t("number_of_stars", "Number of stars")}
+                placeholder={t("Number of stars")}
               />
               <FormikInput
                 name="metaTagDescription"
                 className="bg-white"
                 as={Textarea}
-                placeholder={t("meta_tag_description", "Meta Tag Description")}
+                placeholder={t("Meta Tag Description")}
               />
               <FormikInput
                 name="metaTagKeyword"
                 className="bg-white"
                 as={Textarea}
-                placeholder={t("meta_tag_Keyword", "Meta Tag Keyword")}
+                placeholder={t("Meta Tag Keyword")}
               />
               <FormikInput
                 name="serviceTag"
                 className="bg-white"
                 as={Textarea}
-                placeholder={t("service_tag", "Service Tag")}
+                placeholder={t("Service Tag")}
               />
 
               <span className="text-2xl font-semibold">
-                {t("price_&_attributes", "Price & Attributes")}
+                {t("Price & Attributes")}
               </span>
-              <FormikInput name="address" placeholder={t("Service Address")} />
+              {/* <FormikInput name="address" placeholder={t("Service Address")} /> */}
+              <FormikInput<SelectProps>
+                placeholder={t("Choose property type")}
+                as={Select}
+                name="property_type"
+              >
+                <SelectOption value={"hotel"}>{t("Hotel")}</SelectOption>
+                <SelectOption value={"house"}>{t("House")}</SelectOption>
+                <SelectOption value={"flat"}>{t("Flatt")}</SelectOption>
+                <SelectOption value={"guest_house"}>
+                  {t("Guest house")}
+                </SelectOption>
+                <SelectOption value={"hostel"}>{t("Hostel")}</SelectOption>
+              </FormikInput>
+              <FormikInput<SelectProps>
+                placeholder={t("Choose type of place")}
+                as={Select}
+                name="type_of_place"
+              >
+                <SelectOption value={"private_appartement"}>
+                  {t("Private appartement")}
+                </SelectOption>
+                <SelectOption value={"private_room"}>
+                  {t("Private room")}
+                </SelectOption>
+                <SelectOption value={"shared_room"}>
+                  {t("Shared room")}
+                </SelectOption>
+              </FormikInput>
+              <FormikInput<SelectProps>
+                placeholder={t("Choose number of rooms")}
+                as={Select}
+                name="number_of_rooms"
+              >
+                {[...Array(5)].map((_, i) => (
+                  <SelectOption value={i + 1}>
+                    {`${i + 1} ${i === 0 ? "room" : "rooms"}`}
+                  </SelectOption>
+                ))}
+              </FormikInput>
+              <FormikInput<SelectProps>
+                placeholder={t("Choose number of beds")}
+                as={Select}
+                name="number_of_beds"
+              >
+                {[...Array(5)].map((_, i) => (
+                  <SelectOption value={i + 1}>
+                    {`${i + 1} ${i === 0 ? "bed" : "beds"}`}
+                  </SelectOption>
+                ))}
+              </FormikInput>
               <FormikInput
                 name="priceByNight"
-                placeholder={t("price_by_night", "Price by night")}
+                placeholder={t("Price by night")}
               />
 
-              <SubCategorySelect
-                onCateSelection={(e) => setFieldValue("category", e)}
-              />
-
-              <FormikInput
-                name="quantity"
-                type={"number"}
-                placeholder={t("quantity", "Quantity")}
-              />
               <HashTagInput />
               <ChooseWithInput
-                title={t("deposit", "Deposit")}
+                title={t("Deposit")}
                 name="deposit"
                 onOptionChange={(opt) => setFieldValue("deposit", opt)}
                 options={[
@@ -122,102 +156,26 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
                 ]}
               />
               <ChooseWithInput
-                title={t("cancel_fees", "Cancel fees")}
+                title={t("Cancel fees")}
                 name="cancelFees"
                 onOptionChange={(opt) => setFieldValue("cancelFees", opt)}
                 options={[
                   {
-                    title: t("free", "Free"),
+                    title: t("Free"),
                     key: "free",
                     input: null,
                   },
                   {
-                    title: t("paid", "Paid"),
+                    title: t("Paid"),
                     key: "paid",
                     input: { placeholder: "$" },
                   },
                 ]}
               />
-              <ToggleVisable>
-                {({ changeState, state }) => {
-                  return (
-                    <div className="flex gap-4 flex-wrap w-full">
-                      <FormikInput<SelectProps<ParkingAvailablity>>
-                        as={Select}
-                        name="parkingAvailability"
-                        onOptionSelect={(opt) => {
-                          console.log("parking", opt);
-                          setFieldValue("parkingAvailability", opt);
-                          changeState(opt);
-                        }}
-                        className="w-96"
-                        label={
-                          t(
-                            "is_parking_available_to_guests",
-                            "Is parking available to guests"
-                          ) + "?"
-                        }
-                      >
-                        {parkingAvaiableOpts.map(({ name, value }, i) => (
-                          <SelectOption key={i} value={value}>
-                            <TranslationText translationObject={name} />
-                          </SelectOption>
-                        ))}
-                      </FormikInput>
-                      <ToggleVisableItem
-                        visableOnState={["yes-free", "yes-paid"]}
-                      >
-                        <FormikInput<SelectProps<string>>
-                          as={Select}
-                          name="public"
-                          className="w-48"
-                          label={t("avaiablity", "Availability")}
-                        >
-                          <SelectOption value={"private"}>
-                            {t("private", "Private")}
-                          </SelectOption>
-                          <SelectOption value={"public"}>
-                            {t("public", "Public")}
-                          </SelectOption>
-                        </FormikInput>
-                      </ToggleVisableItem>
-                    </div>
-                  );
-                }}
-              </ToggleVisable>
-              <FormikInput<SelectProps>
-                label={t("Do guests need to reserve a parking space?")}
-                as={Select}
-                name="parkingReservation"
-              >
-                <SelectOption value={"no"}>
-                  {t("reservation_needed", "Reservation Needed")}
-                </SelectOption>
-                <SelectOption value={"yes"}>
-                  {t("reservation_not_needed", "Reservation Not Needed")}
-                </SelectOption>
-              </FormikInput>
-              <FormikInput<SelectProps>
-                label={t("Is breakfast avaiable to guests?")}
-                as={Select}
-                onOptionSelect={(opt) =>
-                  setFieldValue("breakfastAvailablity", opt)
-                }
-                name="breakfast"
-              >
-                <SelectOption value={"no"}>{t("No")}</SelectOption>
-                <SelectOption value={"yes-included"}>
-                  {t("Yes, it's included in the price")}
-                </SelectOption>
-                <SelectOption value={"yes-optional"}>
-                  {t("Yes, it's optional")}
-                </SelectOption>
-              </FormikInput>
+
               <p className="text-2xl font-semibold">{t("file", "File")}</p>
               <div className="flex flex-col gap-4">
-                <p className="text-xl font-semibold">
-                  {t("upload_video", "Upload Video")}
-                </p>
+                <p className="text-xl font-semibold">{t("Upload Video")}</p>
                 <div className="grid gap-4 grid-cols-[repeat(5,min(100%,8rem))]">
                   <div
                     onClick={() => {
@@ -240,9 +198,7 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
                 </div>
               </div>
               <div className="flex flex-col gap-4">
-                <p className="text-xl font-semibold">
-                  {t("upload_images", "Upload Images")}
-                </p>
+                <p className="text-xl font-semibold">{t("Upload Images")}</p>
                 <div className="grid gap-4 grid-cols-[repeat(5,min(100%,8rem))]">
                   {[...Array(MAX_PRODUCTS_IMAGE)].map((_, i) => (
                     <div

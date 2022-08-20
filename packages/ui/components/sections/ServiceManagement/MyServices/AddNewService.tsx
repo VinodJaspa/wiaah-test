@@ -12,17 +12,88 @@ import {
   ServiceTypeCard,
   Button,
   NewProductDiscountOptions,
+  ForkAndSpoonIcon,
+  CarWheelIcon,
+  HealthIcon,
+  BeautyCenterIcon,
 } from "ui";
 import { NewServiceSchemas } from "validation";
-import { CallbackAfter } from "utils";
+import { CallbackAfter, runIfFn } from "utils";
 import { ServiceGeneralDetails } from "./ServiceGeneralDetails";
 import { IncludedServices } from "./IncludedServices";
 import { ExtraServiceOptions } from "./ExtraServiceOptions";
+import { RestaurantServiceDetailsForm } from "./RestaurantServiceDetailsForm";
+import { AnySchema } from "yup";
 
 export interface AddNewServiceProps {}
 
 export const AddNewService: React.FC<AddNewServiceProps> = () => {
   const { t } = useTranslation();
+  const [serviceType, setServiceType] = React.useState<ServiceType>();
+
+  const serviceTypes: ServiceSelectingInfo[] = [
+    {
+      serviceIcon: GiHouse,
+      serviceKey: "placeBooking",
+      serviceDescription: "put some place up for rent",
+      serviceName: "Place Book",
+    },
+    {
+      serviceIcon: GiTalk,
+      serviceKey: "rendez-vous",
+      serviceDescription:
+        "offer your experince as an appointment to talk and discuss",
+      serviceName: "rendez-vous",
+    },
+    {
+      serviceIcon: FaMotorcycle,
+      serviceKey: "thingsRenting",
+      serviceDescription: "put some of your unused things or tools for rent",
+      serviceName: "Things renting",
+    },
+    {
+      serviceIcon: ForkAndSpoonIcon,
+      serviceKey: "restaurant",
+      serviceDescription:
+        "offer your special dishes for food lovers all over the world!",
+      serviceName: "Restaruant",
+    },
+    {
+      serviceIcon: HealthIcon,
+      serviceKey: "healthCenter",
+      serviceDescription: "offer your experts experience in health medical!",
+      serviceName: "Health Center",
+    },
+    {
+      serviceIcon: CarWheelIcon,
+      serviceKey: "Vehicle",
+      serviceDescription: "offer your vehicle for rent to whoever needs!",
+      serviceName: "Vehicle renting",
+    },
+    {
+      serviceIcon: BeautyCenterIcon,
+      serviceKey: "beautyCenter",
+      serviceDescription: "offer beauty methods that you only know!",
+      serviceName: "Beauty Center",
+    },
+  ];
+
+  const ServicesDetailsSections: {
+    key: ServiceType;
+    component: React.FC<any>;
+    schema: AnySchema;
+  }[] = [
+    {
+      key: "restaurant",
+      component: RestaurantServiceDetailsForm,
+      schema: NewServiceSchemas.serviceGeneralDetailsSchema,
+    },
+  ];
+
+  const detailsSection = ServicesDetailsSections.find(
+    (section) => section.key === serviceType
+  );
+
   return (
     <div className="flex flex-col gap-4">
       <SectionHeader sectionTitle={t("Add New Service")} />
@@ -49,6 +120,7 @@ export const AddNewService: React.FC<AddNewServiceProps> = () => {
                           ServicesInfo={serviceTypes}
                           onServiceChoosen={(key) => {
                             validate({ type: key });
+                            setServiceType(key);
                             CallbackAfter(50, () => {
                               nextStep();
                             });
@@ -57,22 +129,23 @@ export const AddNewService: React.FC<AddNewServiceProps> = () => {
                       )}
                     </StepperFormHandler>
                   ),
-                  stepName: {
-                    translationKey: "Service Type",
-                    fallbackText: "Service Type",
-                  },
+                  stepName: "Service Type",
                 },
                 {
                   key: "generalDetails",
                   stepComponent: (
                     <StepperFormHandler
                       validationSchema={
-                        NewServiceSchemas.serviceGeneralDetailsSchema
+                        detailsSection ? detailsSection.schema : undefined
                       }
                       handlerKey="generalDetails"
                     >
                       {({ validate }) => (
-                        <ServiceGeneralDetails onChange={validate} />
+                        <>
+                          {detailsSection ? (
+                            <detailsSection.component onChange={validate} />
+                          ) : null}
+                        </>
                       )}
                     </StepperFormHandler>
                   ),
@@ -138,46 +211,6 @@ export const AddNewService: React.FC<AddNewServiceProps> = () => {
   );
 };
 
-const serviceTypes: ServiceSelectingInfo[] = [
-  {
-    serviceIcon: GiHouse,
-    serviceKey: "placeBooking",
-    serviceDescription: {
-      translationKey: "place_booking_service_selecting_description",
-      fallbackText: "put some place up for rent",
-    },
-    serviceName: {
-      translationKey: "place_book",
-      fallbackText: "Place Book",
-    },
-  },
-  {
-    serviceIcon: GiTalk,
-    serviceKey: "rendez-vous",
-    serviceDescription: {
-      translationKey: "book_appointment_service_selecting_description",
-      fallbackText:
-        "offer your experince as an appointment to talk and discuss",
-    },
-    serviceName: {
-      translationKey: "rendez-vous",
-      fallbackText: "rendez-vous",
-    },
-  },
-  {
-    serviceIcon: FaMotorcycle,
-    serviceKey: "thingsRenting",
-    serviceDescription: {
-      translationKey: "things_renting_service_selecting_description",
-      fallbackText: "put some of your unused things or tools for rent",
-    },
-    serviceName: {
-      translationKey: "things_renting",
-      fallbackText: "Things renting",
-    },
-  },
-];
-
 export interface ChooseServiceTypeProps {
   ServicesInfo: ServiceSelectingInfo[];
   onServiceChoosen: (serviceKey: ServiceType) => any;
@@ -190,11 +223,9 @@ export const ChooseServiceType: React.FC<ChooseServiceTypeProps> = ({
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col items-center gap-8">
-      <h1 className="text-xl font-bold">
-        {t("select_your_type_of_service", "Select your type of service")}
-      </h1>
+      <h1 className="text-xl font-bold">{t("Select your type of service")}</h1>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="flex flex-wrap gap-4 justify-center">
         {ServicesInfo.map((service, i) => (
           <ServiceTypeCard
             onServiceChoosen={onServiceChoosen}

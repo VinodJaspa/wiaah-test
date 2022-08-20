@@ -25,8 +25,12 @@ export const getServicePostDataFetcher = async (
       id: "123",
       label: "label",
       name: "service post",
-      attachments: [
-        { src: "/shop-2.jpeg", type: "image" },
+      createdAt: new Date().toString(),
+      attachements: [
+        {
+          src: "https://images.unsplash.com/photo-1625602812206-5ec545ca1231?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YW1lcmljYW4lMjBob3VzZXN8ZW58MHx8MHx8&w=1000&q=80",
+          type: "image",
+        },
         { src: "/video.mp4", type: "video" },
       ],
       type: "hotel",

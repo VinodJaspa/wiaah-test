@@ -25,7 +25,7 @@ export interface SocialServicePostAttachmentsProps {
   innerProps?: HtmlDivProps;
 }
 
-export const SocialServicePostAttachments: React.FC<
+export const SocialServicePostAttachment: React.FC<
   SocialServicePostAttachmentsProps
 > = ({
   alt,

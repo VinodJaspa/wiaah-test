@@ -6,11 +6,21 @@ import {
 } from "api";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { dehydrate, QueryClient } from "react-query";
+import {
+  MetaDescription,
+  MetaImage,
+  MetaTitle,
+  RequiredSocialMediaTags,
+} from "react-seo";
 import { ServerSideQueryClientProps } from "types";
-import { getServicesPostsOnMapQueryKey } from "ui";
+import {
+  getServicesPostsOnMapQueryKey,
+  useGetServicesPostsOnMapDataQuery,
+} from "ui";
 
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps
@@ -35,11 +45,28 @@ export const getServerSideProps: GetServerSideProps<
 
 const ServicePostOnMapPage: NextPage = () => {
   const { t } = useTranslation();
+  const router = useRouter();
+  const id = router.query["id"];
+  const profileName = router.query["profileName"];
+  const { data } = useGetServicesPostsOnMapDataQuery(id ? { id } : {}, {
+    page: 1,
+    take: 10,
+  });
   return (
     <>
-      <Head>
-        <title>{t("Wiaah | service on map")}</title>
-      </Head>
+      <MetaTitle
+        content={`Wiaah | ${data ? data.total : ""} service posts by ${
+          profileName ?? ""
+        }`}
+      />
+      <MetaImage content={data ? data.data.at(0).thumbnail : ""} />
+      <MetaDescription
+        content={`serivces posts search by ${
+          profileName ?? ""
+        } in wiaah marketplace`}
+      />
+      <RequiredSocialMediaTags />
+
       <MasterLayout social>
         <ServicePostOnMapView />
       </MasterLayout>

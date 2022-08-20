@@ -1,14 +1,13 @@
 import { ServiceType } from "dto";
 import { useTranslation } from "react-i18next";
-import { TranslationTextType } from "types";
 import { runIfFn } from "utils";
 import { Button, TranslationText } from "ui";
 
 export type ServiceSelectingInfo = {
   serviceIcon: React.ReactNode;
   serviceKey: ServiceType;
-  serviceName: TranslationTextType;
-  serviceDescription: TranslationTextType;
+  serviceName: string;
+  serviceDescription: string;
 };
 
 export interface ServiceTypeCardProps {
@@ -23,7 +22,7 @@ export const ServiceTypeCard: React.FC<ServiceTypeCardProps> = ({
   const { t } = useTranslation();
   return (
     <div className="flex w-48 min-h-[15rem] justify-between flex-col items-center gap-4">
-      <div className="text-8xl text-primary">
+      <div className="text-8xl text-primary fill-primary">
         {runIfFn(serviceInfo.serviceIcon, {})}
       </div>
       <div className="flex flex-col gap-4">
@@ -40,9 +39,9 @@ export const ServiceTypeCard: React.FC<ServiceTypeCardProps> = ({
         onClick={() =>
           onServiceChoosen && onServiceChoosen(serviceInfo.serviceKey)
         }
-        className="whitespace-nowrap"
+        className="whitespace-nowrap w-full"
       >
-        {t("list_your_property", "List your property")}
+        {t("List your property")}
       </Button>
     </div>
   );

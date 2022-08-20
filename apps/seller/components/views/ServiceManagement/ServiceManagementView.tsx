@@ -35,7 +35,7 @@ export const ServiceManagementView = () => {
       handleRetrun={() => {
         router.replace(`/${baseRoute}`);
       }}
-      name={t("service_management", "Service Management")}
+      name={t("Service Management")}
     />
   );
 };

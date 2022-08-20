@@ -2,7 +2,7 @@ import { ServicePostDetails } from "api";
 import React from "react";
 import { useReactPubsub } from "react-pubsub";
 import {
-  SocialServicePostAttachments,
+  SocialServicePostAttachment,
   PostInteractionsProps,
   SocialServiceCardDetails,
   CommentInput,
@@ -27,7 +27,7 @@ export const SocialServiceDetailsCard: React.FC<
     onCardClick,
     showCommentInput,
     showInteraction,
-    attachments,
+    attachements,
     id,
     name,
     postInteraction,
@@ -53,26 +53,30 @@ export const SocialServiceDetailsCard: React.FC<
       data-testid="ShopCardContainer"
     >
       <AspectRatio onClick={() => onCardClick && onCardClick(id)} ratio={4 / 3}>
-        {attachments && attachments.length > 1 ? (
+        {attachements && attachements.length > 1 ? (
           <Slider>
-            {attachments.map((attachment, i) => (
-              <SocialServicePostAttachments
+            {attachements.map((attachement, i) => (
+              <SocialServicePostAttachment
+                id={id}
+                alt={name}
                 key={i}
                 onInteraction={(interaction) => OpenLoginPopup}
                 cashback={cashback}
                 discount={discount}
-                {...attachment}
+                {...attachement}
               />
             ))}
           </Slider>
         ) : (
-          attachments &&
-          attachments.length === 1 && (
-            <SocialServicePostAttachments
+          attachements &&
+          attachements.length === 1 && (
+            <SocialServicePostAttachment
+              id={id}
+              alt={name}
               onInteraction={(interaction) => OpenLoginPopup()}
               cashback={cashback}
               discount={discount}
-              {...attachments[0]}
+              {...attachements[0]}
             />
           )
         )}
