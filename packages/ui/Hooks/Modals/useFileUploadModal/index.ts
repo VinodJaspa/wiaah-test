@@ -1,9 +1,29 @@
+import React from "react";
+import { useReactPubsub } from "react-pubsub";
 import { useRecoilState } from "recoil";
 import { FileUploadTypes } from "types";
 import { UploadModalState } from "ui";
 
 export const useFileUploadModal = () => {
   const [uploadType, SetUploadType] = useRecoilState(UploadModalState);
+
+  const { Listen, removeListner } = useReactPubsub(
+    (keys) => keys.openFileUploadModal
+  );
+
+  React.useEffect(() => {
+    Listen((props) => {
+      if ("uploadType" in props) {
+        if (props.uploadType === "img") {
+          uploadImage();
+        }
+        if (props.uploadType === "vid") {
+          uploadVideo;
+        }
+      }
+    });
+    return () => removeListner();
+  });
 
   function setUploadType(type: FileUploadTypes) {
     SetUploadType(type);

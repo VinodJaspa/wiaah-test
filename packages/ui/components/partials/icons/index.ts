@@ -57,3 +57,6 @@ export * from "./DeskIcon";
 export * from "./MinusIcon";
 export * from "./PlusIcon";
 export * from "./ExclamationCircle";
+export * from "./CarWheelIcon";
+export * from "./HealthIcon";
+export * from "./BeautyCenter";

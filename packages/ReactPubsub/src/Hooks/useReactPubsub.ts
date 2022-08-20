@@ -5,6 +5,7 @@ export const ReactPubSubEventKeys = {
   serviceModal: "openServiceModal",
   sharePostWithModal: "openSharePostWithModal",
   openLoginPopup: "openLoginPopup",
+  openFileUploadModal: "openFileUploadModla",
 };
 
 export const useReactPubsub = (

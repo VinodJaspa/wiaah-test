@@ -1,4 +1,12 @@
-export type ServiceType = "placeBooking" | "rendez-vous" | "thingsRenting";
+export type ServiceType =
+  | "placeBooking"
+  | "rendez-vous"
+  | "thingsRenting"
+  | "restaurant"
+  | "healthCenter"
+  | "beautyCenter"
+  | "holidayRentals"
+  | "Vehicle";
 export type CancelFees = "free" | "paid";
 export type ParkingAvailablity = "no" | "yes-free" | "yes-paid";
 export type ReservationOptions = "needed" | "not-needed";
@@ -23,8 +31,8 @@ export interface AddNewServiceDto {
   depositAmount?: number;
   cancelFees: CancelFees;
   cancelFeesAmount?: number;
-  parkingAvailbality: ParkingAvailablity;
-  parkingPublic?: boolean;
-  reservationNeeded: ReservationOptions;
-  breakfastAvailablity: BreakFastAvailablity;
+  // parkingAvailbality: ParkingAvailablity;
+  // parkingPublic?: boolean;
+  // reservationNeeded: ReservationOptions;
+  // breakfastAvailablity: BreakFastAvailablity;
 }

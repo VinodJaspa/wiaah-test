@@ -30,6 +30,7 @@
     "utils": "*",
     "validation": "*",
     "routing": "*",
-    "react-pubsub": "*"
+    "react-pubsub": "*",
+    "lib": "*"
   }
 }

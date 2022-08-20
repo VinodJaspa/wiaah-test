@@ -4,3 +4,4 @@ export * from "./Shop";
 export * from "./Products";
 export * from "./Recommendation";
 export * from "./Social";
+export * from "./CurrencyConversion";

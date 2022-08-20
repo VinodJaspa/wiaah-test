@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiCamera, HiFolderAdd, HiVideoCamera } from "react-icons/hi";
+import { useReactPubsub } from "react-pubsub";
 import {
   useFileUploadModal,
   PostsViewModalsHeader,

@@ -34,7 +34,9 @@
     "utils": "*",
     "state": "*",
     "validation": "*",
-    "placeholder": "*"
+    "placeholder": "*",
+    "react-pubsub": "*",
+    "react-seo": "*"
   },
   "devDependencies": {
     "@types/react": "17.0.37",

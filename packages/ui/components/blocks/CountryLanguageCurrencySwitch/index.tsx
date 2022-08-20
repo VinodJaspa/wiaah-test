@@ -1,13 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Language } from "ui/languages/enums/Language";
-import { Divider, Select, SelectOption, Modal, ModalContent } from "ui";
+import {
+  Divider,
+  Select,
+  SelectOption,
+  Modal,
+  ModalContent,
+  ModalOverlay,
+} from "ui";
 import { useRouter } from "next/router";
 import { FaGlobeEurope } from "react-icons/fa";
 import { useCookies } from "react-cookie";
 import { countries, getCountryByCode } from "utils";
+import { useChangeCurrency } from "lib";
 
 export const CountryLanguageCurrencySwitch: React.FC = () => {
+  const { handleChangeCurrency } = useChangeCurrency();
   const router = useRouter();
   const locale = router ? router.locale : Language.EN;
   const [cookie, setCookie] = useCookies(["country", "currency"]);
@@ -67,6 +76,7 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
     setCountryCode(newCountry);
   }
   function onCurrencyChange(newCurrency: string) {
+    handleChangeCurrency(newCurrency);
     setCurrency(newCurrency);
   }
 
@@ -137,9 +147,10 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
           isOpen={isModalVisible}
           onOpen={() => {}}
         >
+          <ModalOverlay />
           <ModalContent className="text-black">
             <div className="px-4 text-3xl font-light">
-              {t("Update_Language", "Update Language")}
+              {t("Update Language")}
             </div>
             <div className="py-1">
               <Divider />
@@ -153,7 +164,7 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
             <div className="mb-8">
               <div className="text-lg">{t("Language", "Language")}</div>
               <div className="mt-2 text-gray-400">
-                {t("Language_you_prefer", "Language you prefer")}
+                {t("Language you prefer")}
               </div>
               <div className="int-motal-input-container">
                 <Select
@@ -170,7 +181,7 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
             <div className="mb-8">
               <div className="text-lg">{t("Country", "Country")}</div>
               <div className="mt-2 text-gray-400">
-                {t("Country_you_live_in", "Country you live in")}
+                {t("Country you live in")}
               </div>
               <div className="int-motal-input-container">
                 <Select onOptionSelect={(v) => onCountryChange(v)}>
@@ -186,9 +197,7 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
             </div>
             <div className="mb-8">
               <div className="text-lg">{t("Currency", "Currency")}</div>
-              <div className="mt-2 text-gray-400">
-                {t("Currency_you_use", "Currency you use")}
-              </div>
+              <div className="mt-2 text-gray-400">{t("Currency you use")}</div>
               <div className="int-motal-input-container">
                 <Select
                   defaultValue="usd"
@@ -196,13 +205,13 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
                   className="w-full text-lg"
                 >
                   <SelectOption value="usd">
-                    $ {t("United_State_Dollar", "United State Dollar")} (USD)
+                    $ {t("United State Dollar")} (USD)
                   </SelectOption>
                   <SelectOption value="chf">
-                    {t("Swiss_Franc", "Swiss Franc")} (CHF)
+                    ₣ {t("Swiss Franc")} (CHF)
                   </SelectOption>
                   <SelectOption value="gbp">
-                    £ {t("The_pound_sterling", "The pound sterling")} (GBP)
+                    £ {t("The pound sterling")} (GBP)
                   </SelectOption>
                   <SelectOption value="eur">€ Euro (EUR)</SelectOption>
                 </Select>
@@ -218,13 +227,13 @@ export const CountryLanguageCurrencySwitch: React.FC = () => {
                   setIsModalVisible(false);
                 }}
               >
-                {t("Close", "Close")}
+                {t("Close")}
               </button>
               <button
                 className="green-background rounded-md py-2 px-6 text-white"
                 onClick={saveInternationalSettings}
               >
-                {t("Save", "Save")}
+                {t("Save")}
               </button>
             </div>
           </ModalContent>

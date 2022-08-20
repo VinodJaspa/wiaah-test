@@ -182,7 +182,7 @@ type StepperFormHandlerChildrenProps = {
 
 export interface StepperFormHandlerProps {
   children: MaybeFn<StepperFormHandlerChildrenProps>;
-  validationSchema: yup.AnyObjectSchema;
+  validationSchema?: yup.AnySchema;
   handlerKey: string;
 }
 
