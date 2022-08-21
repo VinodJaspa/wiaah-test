@@ -58,9 +58,14 @@ export const AddNewProductSection: React.FC<AddNewProductSectionProps> = () => {
 };
 export const NewProductInputsSection: React.FC = () => {
   const { t } = useTranslation();
+  const [step, setStep] = React.useState<number>(0);
   return (
     <div className="flex gap-4 h-full w-full flex-col justify-between">
-      <CheckMarkStepper currentStep="general" steps={steps} />
+      <CheckMarkStepper
+        currentStepIdx={step}
+        onStepChange={(step) => setStep(step)}
+        steps={steps}
+      />
       <div className="w-full flex justify-end gap-4">
         <Button className="bg-gray-100 hover:bg-gray-300 active:bg-gray-400 text-black">
           {t("preview", "preview")}

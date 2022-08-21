@@ -15,3 +15,4 @@ export * from "./ChooseWithInput";
 export * from "./Search";
 export * from "./SearchFilters";
 export * from "./FilterDisplaySwitcher";
+export * from "./MultiChooseInput";

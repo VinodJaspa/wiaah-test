@@ -20,7 +20,7 @@ export const WeekdaysSchedule = () => {
           "Configure your week settings here, must move the sliders and add/remove breaktimes to set up working hours."
         )}
       </p>
-      <div className="overflow-scroll w-full">
+      <div className="overflow-x-scroll thinScroll w-full">
         <div
           style={{ width: `${hoursAday.length * 7}rem` }}
           className="relative py-4 flex flex-col "

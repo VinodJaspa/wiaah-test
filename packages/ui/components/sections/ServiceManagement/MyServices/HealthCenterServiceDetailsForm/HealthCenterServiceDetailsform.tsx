@@ -1,33 +1,33 @@
 import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { HiFolderAdd, HiVideoCamera } from "react-icons/hi";
 import { useReactPubsub } from "react-pubsub";
+import { FileRes } from "utils";
+import { NewServiceSchemas } from "validation";
 import {
-  MultiChooseInput,
-  MultiChooseInputProps,
   FormikInput,
   Textarea,
   Select,
-  SelectProps,
   SelectOption,
-  ChooseWithInput,
-  MediaUploadModal,
+  SelectProps,
   Stack,
+  MultiChooseInput,
+  MultiChooseInputProps,
+  MediaUploadModal,
+  ChooseWithInput,
   Divider,
   InputProps,
 } from "ui";
-import { FileRes } from "utils";
-import { NewServiceSchemas } from "validation";
+import { HiFolderAdd, HiVideoCamera } from "react-icons/hi";
 
 const MAX_PRODUCTS_IMAGE = 4;
 
-export interface RestaurantServiceDetailsFormProps {
+export interface HealthCenterServiceDetailsFormProps {
   onChange?: (data: Record<string, any>) => any;
 }
 
-export const RestaurantServiceDetailsForm: React.FC<
-  RestaurantServiceDetailsFormProps
+export const HealthCenterServiceDetailsForm: React.FC<
+  HealthCenterServiceDetailsFormProps
 > = ({ onChange }) => {
   const { emit } = useReactPubsub((keys) => keys.openFileUploadModal);
   const [images, setImages] = React.useState<FileRes[]>([]);
@@ -91,131 +91,27 @@ export const RestaurantServiceDetailsForm: React.FC<
               />
               <Stack col divider={Divider}>
                 <FormikInput<MultiChooseInputProps>
-                  placeholder={t("Choose establishment type")}
+                  placeholder={t("Choose Speciality types")}
                   as={MultiChooseInput}
-                  label={t("Establishment Type")}
+                  label={t("Speciality types")}
                   labelProps={{ className: "text-lg" }}
-                  onChange={(v) => setFieldValue("establishment_type", v)}
-                  value={values["establishment_type"]}
-                  suggestions={[
-                    "Restaurant",
-                    "Quick Bites",
-                    "Coffe & tea",
-                    "Bars & Pubs",
-                    "Dine With a Local Chef",
-                    "Speciality Food market",
-                    "Delivery only",
-                  ]}
-                  name="establishment_type"
+                  onChange={(v) => setFieldValue("speciality_types", v)}
+                  value={values["speciality_types"]}
+                  suggestions={["Ophtalmo", "Dentist"]}
+                  name="speicality_types"
                 />
 
                 <FormikInput<MultiChooseInputProps>
-                  placeholder={t("Choose cuisines type")}
-                  label={t("Cuisines type")}
-                  labelProps={{ className: "text-lg" }}
+                  placeholder={t("Choose Speciality types")}
                   as={MultiChooseInput}
-                  onChange={(v) => setFieldValue("cuisines_type", v)}
-                  value={values["cuisines_type"]}
-                  suggestions={[
-                    "Asian",
-                    "French",
-                    "Italian",
-                    "Indian",
-                    "Traditional",
-                    "Egyption",
-                  ]}
-                  name="cuisines_type"
-                />
-
-                <FormikInput<MultiChooseInputProps>
-                  placeholder={t("Choose Setting and ambiance type")}
-                  as={MultiChooseInput}
-                  label={t("Setting and ambiance")}
+                  label={t("Speciality types")}
                   labelProps={{ className: "text-lg" }}
-                  onChange={(v) => setFieldValue("setting_&_ambiance", v)}
-                  value={values["setting_&_ambiance"]}
-                  suggestions={[
-                    "For Business",
-                    "For Friends",
-                    "For Family",
-                    "For Lovers",
-                  ]}
-                  name="setting_&_ambinace"
-                />
-
-                <FormikInput<MultiChooseInputProps>
-                  placeholder={t("Choose your dishes")}
-                  label={t("Dishes")}
-                  labelProps={{ className: "text-lg" }}
-                  as={MultiChooseInput}
-                  onChange={(v) => setFieldValue("dishes", v)}
-                  value={values["dishes"]}
-                  suggestions={[
-                    "Tapes",
-                    "Pizza",
-                    "Crepes",
-                    "Burger",
-                    "Seafood",
-                    "Wok",
-                    "Sushi",
-                  ]}
-                  name="dishes"
-                />
-
-                <FormikInput<MultiChooseInputProps>
-                  placeholder={t("Choose your payment methods")}
-                  label={t("Payment methods")}
-                  labelProps={{ className: "text-lg" }}
-                  as={MultiChooseInput}
-                  onChange={(v) => setFieldValue("payment_methods", v)}
-                  value={values["payment_methods"]}
-                  suggestions={[
-                    "Credit Card",
-                    "Visa",
-                    "Mastercard",
-                    "Check",
-                    "Cash",
-                  ]}
-                  name="payment_methods"
+                  onChange={(v) => setFieldValue("speaking_language", v)}
+                  value={values["speaking_language"]}
+                  suggestions={["Arabian", "English", "French"]}
+                  name="speicality_types"
                 />
               </Stack>
-              <FormikInput<SelectProps>
-                placeholder={t("Choose Michelin Guide")}
-                label={t("Michelin Guide")}
-                labelProps={{ className: "text-lg" }}
-                as={Select}
-                name="michelin_guide"
-              >
-                <SelectOption value={"guide"}>
-                  {t("Michelin guide")}
-                </SelectOption>
-                <SelectOption value={"1star"}>
-                  {t("Michelin 1 star")}
-                </SelectOption>
-                <SelectOption value={"2star"}>
-                  {t("Michelin 2 stars")}
-                </SelectOption>
-                <SelectOption value={"3star"}>
-                  {t("Michelin 3 stars")}
-                </SelectOption>
-                <SelectOption value={"bib_gourmand"}>
-                  {t("Michelin Bib Gourmand")}
-                </SelectOption>
-              </FormikInput>
-
-              <FormikInput<SelectProps>
-                placeholder={t("Choose your special offer")}
-                label={t("Special offer")}
-                labelProps={{ className: "text-lg" }}
-                as={Select}
-                name="special_offer"
-              >
-                {[...Array(7)].map((_, i) => (
-                  <SelectOption value={i * 10}>
-                    `-{i * 10}% {t("on the menu")}`
-                  </SelectOption>
-                ))}
-              </FormikInput>
 
               <ChooseWithInput
                 title={t("Cancel fees")}

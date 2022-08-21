@@ -39,13 +39,9 @@ export const Input: React.FC<InputProps> = ({
   return (
     <input
       {...props}
-      style={{
-        ...props.style,
-        height: "2.5rem",
-      }}
       className={`${className || ""} ${
         isInputGroup ? "" : flushed ? "border-b-2" : "border-2"
-      } border-gray-200 rounded px-3 w-full`}
+      } border-gray-200 rounded px-3 w-full h-10`}
     />
   );
 };
@@ -174,7 +170,7 @@ export const InputSuggestions: React.FC<InputSuggestionsProps> = ({
       {...props}
       className={`${className || ""} ${
         isFocused ? "" : "scale-y-0"
-      } origin-top transition-transform max-h-96 overflow-scroll absolute z-10 top-full left-0 w-full`}
+      } origin-top transition-transform max-h-96 overflow-scroll thinScroll absolute z-10 top-full left-0 w-full`}
     >
       {display ? children : null}
     </div>

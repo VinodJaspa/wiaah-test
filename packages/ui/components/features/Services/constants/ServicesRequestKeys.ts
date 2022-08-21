@@ -16,4 +16,4 @@ export const ServicesRequestKeys = createServiceRequestKeys({
   beauty_center: "beauty_center",
 });
 
-export const SERVICESTYPE_INDEXKEY = "service_type";
+export const SERVICESTYPE_INDEXKEY = "serviceType";

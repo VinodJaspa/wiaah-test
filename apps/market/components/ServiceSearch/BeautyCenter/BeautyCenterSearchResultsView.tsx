@@ -13,10 +13,11 @@ import { randomNum } from "utils";
 
 export const BeautyCenterSearchResultsView: React.FC = () => {
   const { filters, getLocationFilterQuery } = useSearchFilters();
+  console.log("filters", filters);
   const { data, isLoading, isError } = useGetServiceSearchFiltersQuery(filters);
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 p-4">
+    <div className="flex flex-col  md:flex-row gap-4 p-4">
       <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
         <Formik initialValues={{}} onSubmit={() => {}}>
           {({ setFieldValue, values }) => {
@@ -35,7 +36,7 @@ export const BeautyCenterSearchResultsView: React.FC = () => {
           }}
         </Formik>
       </ServicesSearchResultsFiltersSidebar>
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col w-full gap-2">
         <DisplayFoundServices
           location={getLocationFilterQuery}
           servicesNum={randomNum(500)}

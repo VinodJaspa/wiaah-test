@@ -7,6 +7,7 @@ import {
   Container,
   Step,
   Button,
+  LocationIcon,
 } from "ui";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
@@ -101,8 +102,9 @@ export const Header: React.FC<HeaderProps> = () => {
             </Link>
           </div>
 
-          <div className="hidden md:block">
+          <div className="hidden md:flex gap-2 items-center">
             <MainHeaderSearchBar categories={categories || []} />
+            <LocationIcon className="text-white text-4xl" />
           </div>
 
           <div className="flex text-white">
@@ -110,7 +112,7 @@ export const Header: React.FC<HeaderProps> = () => {
               <li className="flex cursor-pointer items-center text-sm">
                 <Link href="/login">
                   <div className="flex items-center gap-4">
-                    {t("Sign_In", "Sign In")}{" "}
+                    {t("Sign In")}{" "}
                     <FaUser className="ml-0 inline-flex h-8 w-8" />
                   </div>
                 </Link>
@@ -138,7 +140,7 @@ export const Header: React.FC<HeaderProps> = () => {
               }}
             >
               <FaAlignJustify className="h-4 w-4" />
-              <span className="inline-flex">{t("All", "All")}</span>
+              <span className="inline-flex">{t("All")}</span>
             </li>
             {!isMobile &&
               Array.isArray(categories) &&
@@ -178,7 +180,7 @@ export const MainHeaderSearchBar: React.FC<{
     <div className="rounded-lg overflow-hidden max-w-[40rem] justify-items-stretch flex">
       <input
         className="w-60 appearance-none  border-r border-gray-600 bg-gray-700 px-2.5 py-1.5 text-white focus:outline-none"
-        placeholder={t("Search", "Search")}
+        placeholder={t("Search")}
       />
       <div className="flex">
         <SelectDropdown

@@ -1,10 +1,29 @@
 import React from "react";
 import { HtmlDivProps } from "types";
+import { MapChildren, runIfFn } from "utils";
 
-export interface StackProps {}
+export interface StackProps {
+  col: boolean;
+  divider: React.ReactNode;
+}
 
-export const Stack: React.FC<StackProps> = ({ children }) => {
-  return <div className="flex gap-2">{children}</div>;
+export const Stack: React.FC<StackProps> = ({ children, divider, col }) => {
+  return (
+    <div className={`${col ? "flex-col" : "flex-row"} flex gap-2`}>
+      {Array.isArray(children)
+        ? children.map((child, i) => (
+            <>
+              {child}
+              {divider
+                ? i === children.length - 1
+                  ? null
+                  : runIfFn(divider)
+                : null}
+            </>
+          ))
+        : children}
+    </div>
+  );
 };
 
 export interface HStackProps extends HtmlDivProps {}

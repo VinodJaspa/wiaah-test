@@ -11,6 +11,7 @@ import {
   SelectProps,
   SelectOption,
   MediaUploadModal,
+  InputProps,
 } from "ui";
 import { Form, Formik } from "formik";
 import { HiFolderAdd, HiVideoCamera } from "react-icons/hi";
@@ -81,7 +82,12 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
               <span className="text-2xl font-semibold">
                 {t("Price & Attributes")}
               </span>
-              {/* <FormikInput name="address" placeholder={t("Service Address")} /> */}
+              <FormikInput<InputProps>
+                type={"number"}
+                min={1}
+                name="vat"
+                placeholder={t("VAT %")}
+              />
               <FormikInput<SelectProps>
                 placeholder={t("Choose property type")}
                 as={Select}

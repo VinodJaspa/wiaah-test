@@ -43,7 +43,7 @@ export const HashTagInput: React.FC<HashTagInputProps> = ({ onChange }) => {
         </span>
       ))}
       <SearchFilterInput
-        placeholder={t("add_hashtag", "Add Hashtag")}
+        placeholder={t("Add Hashtag")}
         value={value}
         onChange={(e) => setValue(e.target.value)}
         className="border-none border-l-2 "
