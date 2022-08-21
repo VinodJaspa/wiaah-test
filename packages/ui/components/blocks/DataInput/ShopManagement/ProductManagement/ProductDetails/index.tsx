@@ -8,19 +8,18 @@ import {
   MediaUploadModal,
   useFileUploadModal,
   HashTagInput,
+  InputProps,
   SubCategorySelect,
 } from "ui";
 import { FileRes } from "utils";
 
-export interface ProductGeneralDetailsProps {
-  service: boolean;
-}
+export interface ProductGeneralDetailsProps {}
 
 const MAX_PRODUCTS_IMAGE = 4;
 
-export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
-  service,
-}) => {
+export const ProductGeneralDetails: React.FC<
+  ProductGeneralDetailsProps
+> = () => {
   const { uploadImage, uploadVideo } = useFileUploadModal();
   const [images, setImages] = React.useState<FileRes[]>([]);
   const [videos, setVideos] = React.useState<string[]>([]);
@@ -44,39 +43,48 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                 name="metaTagDescription"
                 className="bg-white"
                 as={Textarea}
-                placeholder={t("meta_tag_description", "Meta Tag Description")}
+                placeholder={t("Meta Tag Description")}
               />
               <FormikInput
                 name="metaTagKeyword"
                 className="bg-white"
                 as={Textarea}
-                placeholder={t("meta_tag_Keyword", "Meta Tag Keyword")}
+                placeholder={t("Meta Tag Keyword")}
               />
               <FormikInput
                 name="productTag"
                 className="bg-white"
                 as={Textarea}
-                placeholder={t("product_tag", "Product Tag")}
+                placeholder={t("Product Tag")}
               />
 
               <span className="text-2xl font-semibold">
-                {t("price_&_attributes", "Price & Attributes")}
+                {t("Price & Attributes")}
               </span>
-              <FormikInput name="price" placeholder={t("price", "Price")} />
+              <FormikInput<InputProps>
+                type={"number"}
+                min={1}
+                name="price"
+                placeholder={t("Price")}
+              />
+              <FormikInput<InputProps>
+                type={"number"}
+                min={1}
+                name="vat"
+                placeholder={t("VAT %")}
+              />
 
               <SubCategorySelect />
 
               <FormikInput
                 name="quantity"
                 type={"number"}
-                placeholder={t("quantity", "Quantity")}
+                placeholder={t("Quantity")}
               />
               <HashTagInput />
-              <p className="text-2xl font-semibold">{t("file", "File")}</p>
+              <p className="text-2xl font-semibold">{t("File")}</p>
               <div className="flex flex-col gap-4">
-                <p className="text-xl font-semibold">
-                  {t("upload_video", "Upload Video")}
-                </p>
+                <p className="text-xl font-semibold">{t("Upload Video")}</p>
                 <div className="grid gap-4 grid-cols-[repeat(5,min(100%,8rem))]">
                   <div
                     onClick={() => {
@@ -99,9 +107,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                 </div>
               </div>
               <div className="flex flex-col gap-4">
-                <p className="text-xl font-semibold">
-                  {t("upload_images", "Upload Images")}
-                </p>
+                <p className="text-xl font-semibold">{t("Upload Images")}</p>
                 <div className="grid gap-4 grid-cols-[repeat(5,min(100%,8rem))]">
                   {[...Array(MAX_PRODUCTS_IMAGE)].map((_, i) => (
                     <div

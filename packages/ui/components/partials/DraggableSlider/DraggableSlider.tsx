@@ -139,7 +139,7 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
         ? getElementDimensions(sliderRef).height
         : getElementDimensions(sliderRef).width
     );
-  }, [setPositionByIndex]);
+  }, [vertical]);
 
   // add event listeners
   React.useEffect(() => {

@@ -28,11 +28,16 @@ export function FormikInput<T = InputProps>({
         } flex flex-col`}
       >
         {typeof label === "string" ? (
-          label
+          <p
+            {...labelProps}
+            className={`${labelProps?.className || ""} font-semibold`}
+          >
+            {label}
+          </p>
         ) : typeof label === "object" ? (
           <TranslationText
             {...labelProps}
-            className={labelProps?.className || "font-bold"}
+            className={labelProps?.className || "font-semibold"}
             translationObject={label}
           />
         ) : null}

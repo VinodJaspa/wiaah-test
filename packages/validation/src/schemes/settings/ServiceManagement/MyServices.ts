@@ -73,4 +73,7 @@ export const NewServiceSchemas = {
     expireDate: yup.string().required(),
   }),
   restaurantDetailsSchema: yup.object({}),
+  healthCenterDetailsSchema: yup.object({}),
+  vehicleDetailsSchema: yup.object({}),
+  beautyCenterDetailsSchema: yup.object({}),
 };

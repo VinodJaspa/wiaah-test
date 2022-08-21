@@ -39,26 +39,7 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
               src={centerData.photo}
               alt={centerData.name}
               ratio={3 / 4}
-            >
-              <div
-                className={
-                  "bg-black bg-opacity-0 transition-all opacity-0 pointer-events-none group-hover:opacity-100 group-hover:bg-opacity-25 group-hover:pointer-events-auto top-0 left-0 w-full h-full absolute flex justify-center items-center"
-                }
-              >
-                <Button
-                  onClick={() =>
-                    visit((routes) =>
-                      routes.visitService(
-                        centerData,
-                        ServicesRequestKeys.healthCenter
-                      )
-                    )
-                  }
-                >
-                  {t("Details")}
-                </Button>
-              </div>
-            </AspectRatioImage>
+            />
           </div>
           <div {...setTestid("ServiceInfo")} className="flex flex-col gap-4">
             <div className="flex flex-col font-bold text-lg gap-2">
@@ -75,7 +56,16 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
             </div>
           </div>
         </div>
-        <Button className="w-1/2">{t("Book now")}</Button>
+        <Button
+          onClick={() =>
+            visit((routes) =>
+              routes.visitService(centerData, ServicesRequestKeys.healthCenter)
+            )
+          }
+          className="w-1/2"
+        >
+          {t("Book now")}
+        </Button>
       </div>
       <div className="flex flex-col gap-2 thinScroll py-4">
         <WorkingDaysCalender

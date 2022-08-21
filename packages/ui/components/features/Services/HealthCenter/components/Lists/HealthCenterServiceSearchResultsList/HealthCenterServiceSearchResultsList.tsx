@@ -5,13 +5,12 @@ import {
   SpinnerFallback,
   Pagination,
   HealthCenterCard,
-  DisplayFoundServices,
 } from "ui";
 import { useGetHealthCentersDataQuery } from "ui";
 
 export const HealthCenterServiceSearchResultsList: React.FC = () => {
   const { take, page, goToPage } = usePagination(8);
-  const { filters, getLocationFilterQuery } = useSearchFilters();
+  const { filters } = useSearchFilters();
   const { isTablet } = useResponsive();
   const {
     data: res,
@@ -20,10 +19,6 @@ export const HealthCenterServiceSearchResultsList: React.FC = () => {
   } = useGetHealthCentersDataQuery({ page, take }, filters);
   return (
     <div className="w-full flex flex-col gap-8">
-      <DisplayFoundServices
-        location={getLocationFilterQuery || ""}
-        servicesNum={res?.total || 0}
-      />
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         <div className="flex flex-col gap-4">
           {Array.isArray(res?.data)

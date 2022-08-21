@@ -18,6 +18,7 @@ import {
   MenuButton,
   HStack,
   TranslationText,
+  LocationIcon,
 } from "ui";
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
@@ -66,9 +67,12 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
         <img className="h-full object-contain" src="/wiaah_logo.png" />
       </div>
       {!isMobile && (
-        <GeneralSearchModal>
-          <SearchInput innerProps={{ onClick: openSearchBox }} />
-        </GeneralSearchModal>
+        <div className="flex items-center gap-2">
+          <GeneralSearchModal>
+            <SearchInput innerProps={{ onClick: openSearchBox }} />
+          </GeneralSearchModal>
+          <LocationIcon className="text-3xl" />
+        </div>
       )}
 
       <div className="flex items-center gap-4 md:8 mt-3 p-2">
