@@ -1,7 +1,5 @@
 export type ServiceType =
   | "placeBooking"
-  | "rendez-vous"
-  | "thingsRenting"
   | "restaurant"
   | "healthCenter"
   | "beautyCenter"

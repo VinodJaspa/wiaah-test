@@ -3,8 +3,8 @@ import { HtmlDivProps } from "types";
 import { MapChildren, runIfFn } from "utils";
 
 export interface StackProps {
-  col: boolean;
-  divider: React.ReactNode;
+  col?: boolean;
+  divider?: React.ReactNode;
 }
 
 export const Stack: React.FC<StackProps> = ({ children, divider, col }) => {

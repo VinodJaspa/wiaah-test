@@ -18,15 +18,15 @@ export function MultiChooseInput({
 }: MultiChooseInputProps) {
   const { t } = useTranslation();
   const [inputValue, setInputInputValue] = React.useState<string>("");
-  const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
+  // const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
 
-  React.useEffect(() => {
-    if (Array.isArray(value)) {
-      setSelectedItems(value);
-    }
-  }, [value]);
+  // React.useEffect(() => {
+  //   if (Array.isArray(value)) {
+  //     setSelectedItems(value);
+  //   }
+  // }, [value]);
 
-  React.useEffect(() => {}, [selectedItems]);
+  // React.useEffect(() => {}, [selectedItems]);
 
   function resetSearch() {
     setInputInputValue("");
@@ -34,17 +34,17 @@ export function MultiChooseInput({
 
   function addItem(item: string) {
     if (item.length < 1) return;
-    onChange && onChange(FilterAndAddToArray(selectedItems, item, "exclude"));
+    onChange && onChange(FilterAndAddToArray(value, item, "exclude"));
     resetSearch();
   }
 
   function removeItem(item: string) {
-    setSelectedItems((state) => state.filter((i) => i !== item));
+    onChange && onChange(value.filter((i) => i !== item));
   }
   return (
     <InputGroup>
       <div className="flex flex-wrap gap-2">
-        {selectedItems.map((item, i) => (
+        {value.map((item, i) => (
           <span
             key={i + 1}
             className="bg-primary rounded py-1 h-8 text-white flex gap-2 px-2 items-center"

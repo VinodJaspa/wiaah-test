@@ -2,12 +2,9 @@ import {
   AddNewServiceDto,
   BreakFastAvailablity,
   CancelFees,
-  ParkingAvailablity,
-  ReservationOptions,
   ServiceType,
 } from "dto";
 import * as yup from "yup";
-import { TypeOf } from "yup";
 
 export const NewServiceSchemas = {
   serviceTypeSchema: yup.object({
@@ -15,8 +12,6 @@ export const NewServiceSchemas = {
       .string()
       .oneOf<ServiceType>([
         "placeBooking",
-        "rendez-vous",
-        "thingsRenting",
         "Vehicle",
         "beautyCenter",
         "healthCenter",
@@ -76,4 +71,5 @@ export const NewServiceSchemas = {
   healthCenterDetailsSchema: yup.object({}),
   vehicleDetailsSchema: yup.object({}),
   beautyCenterDetailsSchema: yup.object({}),
+  hotelIncludedServicesSchema: yup.object({}),
 };

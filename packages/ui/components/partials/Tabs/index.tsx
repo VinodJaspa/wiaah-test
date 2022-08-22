@@ -161,7 +161,7 @@ export const TabList: React.FC<TabListProps> = ({
   const { currentTabIdx, tabsComponents, ...rest } =
     React.useContext(TabsContext);
   return (
-    <div {...props} className={`${className || ""} flex  w-full`}>
+    <div {...props} className={`${className || ""} w-full`}>
       {tabsComponents[currentTabIdx]
         ? PassPropsToFnOrElem<TabsContextValue>(
             tabsComponents[currentTabIdx].component,
@@ -189,7 +189,8 @@ export const TabItem: React.FC<TabItemProps> = ({
   React.useEffect(() => {
     addTab({
       id: `${key}`,
-      component: typeof children === "function" ? children : <>{children}</>,
+      component:
+        typeof children === "function" ? children : () => <>{children}</>,
     });
   }, []);
   return null;
