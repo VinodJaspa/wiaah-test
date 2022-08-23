@@ -10,6 +10,7 @@ export type MainRouterInterface = {
   query: RoutingQueryType;
   dataKeys: Record<string, any>;
   addQuery: (query: RoutingQueryType) => RoutesType;
+  removeQuery: (query: string) => RoutesType;
   mapProps: (
     keys: readonly string[],
     data: Record<string, any>
@@ -74,6 +75,10 @@ export const MainRoutes: MainRouterInterface = {
   },
   addQuery(query: RoutingQueryType) {
     this.query = { ...this.query, ...query };
+    return this;
+  },
+  removeQuery(query) {
+    delete this.query[query];
     return this;
   },
 };

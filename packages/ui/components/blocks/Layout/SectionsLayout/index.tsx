@@ -2,7 +2,15 @@ import React from "react";
 import { useResponsive, useDimensions } from "hooks";
 import { SectionContext } from "state";
 import { SettingsSectionType, TranslationTextType } from "types";
-import { SettingsSectionsSidebar, TranslationText } from "ui";
+import {
+  SettingsSectionsSidebar,
+  TranslationText,
+  Slider,
+  HStack,
+  ArrowLeftIcon,
+} from "ui";
+import { useRouting } from "routing";
+import { useTranslation } from "react-i18next";
 
 export interface SettingsLayoutProps {
   sections: SettingsSectionType[];
@@ -19,6 +27,33 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
   handleSectionChange,
   handleRetrun,
 }) => {
+  const { getParam } = useRouting();
+
+  const sectionIdx = sections.findIndex(
+    (panel) => panel.panelUrl === `/${section}`
+  );
+  const mainSection = sections[sectionIdx];
+
+  const serviceSection = getParam("s_section");
+  const serviceType = getParam("s_type");
+
+  const subSectionCluster = mainSection?.subSections?.find(
+    (cluster) => cluster.key === serviceType
+  );
+
+  const subSectionIdx =
+    serviceSection === "auto"
+      ? 0
+      : subSectionCluster
+      ? subSectionCluster.sections?.findIndex(
+          (panel) => panel.panelUrl === `/${serviceSection}`
+        )
+      : 0;
+
+  const subSection = subSectionCluster
+    ? subSectionCluster.sections[subSectionIdx] ?? null
+    : null;
+
   const { isMobile, isTablet } = useResponsive();
 
   const minGap = isTablet ? 0 : 48;
@@ -29,13 +64,11 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
 
   const leftPanelwidth = width || null;
 
-  const sectionIdx = sections.findIndex(
-    (panel) => panel.panelUrl === `/${section}`
-  );
-
   const CurrentSection = (): React.ReactElement => {
     if (sectionIdx > -1) {
-      return sections[sectionIdx].panelComponent;
+      return subSection
+        ? subSection.panelComponent
+        : mainSection.panelComponent;
     } else {
       if (isMobile)
         return (
@@ -60,20 +93,16 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
   return (
     <SectionContext.Provider value={{ onReturn: HandleReturn }}>
       <div className="h-full w-full flex justify-end gap-8">
-        <div className="fixed left-[5rem]" ref={leftPanelRef}>
+        <div className="fixed h-full left-[5rem]" ref={leftPanelRef}>
           {!isMobile && (
-            <div className="gap-4 w-full sm:w-40 md:w-[15rem] xl:w-[20rem] flex flex-col px-2">
+            <div className="gap-4 w-full sm:w-40 md:w-[15rem] h-full xl:w-[20rem] flex flex-col px-2">
               <p className="text-xl px-4 font-bold">
                 <TranslationText translationObject={name} />
               </p>
-              <SettingsSectionsSidebar
-                currentActive={
-                  sections[sectionIdx] ? sections[sectionIdx].panelUrl : null
-                }
-                onPanelClick={(url) =>
-                  handleSectionChange && handleSectionChange(url)
-                }
-                panelsInfo={sections}
+              <NestedSettingsSectionsSidebar
+                sections={sections}
+                activePanel={section}
+                onChange={handleSectionChange}
               />
             </div>
           )}
@@ -90,5 +119,72 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
         </div>
       </div>
     </SectionContext.Provider>
+  );
+};
+
+export interface NestedSettingsSectionsSidebarProps {
+  sections: SettingsSectionType[];
+  activePanel: string;
+  onChange?: (url: string) => any;
+}
+
+export const NestedSettingsSectionsSidebar: React.FC<
+  NestedSettingsSectionsSidebarProps
+> = ({ sections, activePanel, onChange }) => {
+  const { t } = useTranslation();
+  const { getParam, visit, removeParam } = useRouting();
+  const sectionIdx = sections.findIndex(
+    (panel) => panel.panelUrl === `/${activePanel}`
+  );
+  const mainSection = sections[sectionIdx];
+
+  const serviceSection = getParam("s_section");
+  const serviceType = getParam("s_type");
+
+  const subSectionCluster = mainSection?.subSections?.find(
+    (cluster) => cluster.key === serviceType
+  );
+
+  const subSectionIdx =
+    serviceSection === "auto"
+      ? 0
+      : subSectionCluster
+      ? subSectionCluster.sections?.findIndex(
+          (panel) => panel.panelUrl === `/${serviceSection}`
+        )
+      : 0;
+
+  const subSection = subSectionCluster
+    ? subSectionCluster.sections[subSectionIdx] ?? null
+    : null;
+
+  return (
+    <Slider currentItemIdx={subSection ? 1 : 0}>
+      <SettingsSectionsSidebar
+        currentActive={mainSection ? mainSection.panelUrl : null}
+        onPanelClick={(url) => onChange && onChange(url)}
+        panelsInfo={sections}
+      />
+      {subSection && (
+        <>
+          <HStack
+            onClick={() => removeParam("s_section")}
+            className="my-2 text-xl cursor-pointer"
+          >
+            <ArrowLeftIcon />
+            <p>{t("Return")}</p>
+          </HStack>
+          <SettingsSectionsSidebar
+            currentActive={subSection ? subSection.panelUrl : null}
+            onPanelClick={(url, name) =>
+              visit((routes) =>
+                routes.addQuery({ s_section: url.split("/")[1] })
+              )
+            }
+            panelsInfo={subSectionCluster?.sections || []}
+          />
+        </>
+      )}
+    </Slider>
   );
 };

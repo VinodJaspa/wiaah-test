@@ -70,3 +70,4 @@ export * from "./CountInput";
 export * from "./CaruoselLeftArrow";
 export * from "./CaruoselRightArrow";
 export * from "./DraggableSlider";
+export * from "./Badge";

@@ -21,6 +21,7 @@ import {
   TabItem,
   TabTitle,
   FlagIcon,
+  MyServicesCtx,
 } from "ui";
 import { NewServiceSchemas } from "validation";
 import { CallbackAfter } from "utils";
@@ -40,10 +41,14 @@ export interface AddNewServiceProps {}
 
 export const AddNewService: React.FC<AddNewServiceProps> = () => {
   const { t } = useTranslation();
+  const { CancelAddingNewService } = React.useContext(MyServicesCtx);
 
   return (
     <div className="flex flex-col">
       <SectionHeader sectionTitle={t("Add New Service")} />
+      <div className="w-full justify-end flex">
+        <Button onClick={() => CancelAddingNewService()}>{t("Cancel")}</Button>
+      </div>
       <Tabs>
         <>
           <TabsHeader className="flex-wrap justify-center sm:justify-start" />

@@ -76,6 +76,7 @@ export interface DraggableSliderProps {
   scaleOnDrag?: boolean;
   itemsCount?: number;
   gap?: number;
+  draggingActive?: boolean;
 }
 
 export const DraggableSlider: React.FC<DraggableSliderProps> = ({
@@ -89,6 +90,7 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
   itemsCount = 2,
   vertical,
   gap = 0,
+  draggingActive = true,
 }) => {
   const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
 
@@ -121,10 +123,14 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
   React.useEffect(() => {
     if (activeIndex !== currentIndex.current) {
       transitionOn();
-      currentIndex.current && activeIndex
-        ? (currentIndex.current = activeIndex)
-        : undefined;
+      if (
+        typeof currentIndex.current === "number" &&
+        typeof activeIndex === "number"
+      ) {
+        currentIndex.current = activeIndex;
+      }
       setPositionByIndex();
+      setSliderPosition();
     }
   }, [activeIndex, setPositionByIndex]);
 
@@ -192,14 +198,16 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
 
       animationRef.current = requestAnimationFrame(animation);
 
-      sliderRef.current ? (sliderRef.current.style.cursor = "grabbing") : null;
+      sliderRef.current && draggingActive
+        ? (sliderRef.current.style.cursor = "grabbing")
+        : null;
       // if onSlideStart prop - call it
       if (onSlideStart) onSlideStart(currentIndex.current);
     };
   }
 
   function touchMove(event: React.MouseEvent | React.TouchEvent) {
-    if (dragging.current) {
+    if (dragging.current && draggingActive) {
       const currentPosition = vertical
         ? getPositionY(event)
         : getPositionX(event);
@@ -228,7 +236,9 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
     transitionOn();
 
     setPositionByIndex();
-    sliderRef.current ? (sliderRef.current.style.cursor = "grab") : null;
+    sliderRef.current && draggingActive
+      ? (sliderRef.current.style.cursor = "grab")
+      : null;
     // if onSlideComplete prop - call it
     if (onSlideComplete) onSlideComplete(currentIndex.current);
   }
@@ -258,38 +268,40 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
           gap: `${gap}px`,
         }}
         ref={sliderRef}
-        className="w-full h-full inline-flex cursor-grab"
+        className={`w-full h-full inline-flex ${
+          draggingActive ? "cursor-pointer" : ""
+        }`}
       >
-        {Array.isArray(children)
-          ? children.map((child, index) => {
-              return (
-                <div
-                  key={`${child.key || ""}-${index}`}
-                  onTouchStart={touchStart(index)}
-                  onMouseDown={touchStart(index)}
-                  onTouchMove={touchMove}
-                  onMouseMove={touchMove}
-                  onTouchEnd={touchEnd}
-                  onMouseUp={touchEnd}
-                  onMouseLeave={() => {
-                    if (dragging.current) touchEnd();
-                  }}
-                  onContextMenu={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                  }}
-                  className=""
-                >
-                  <Slide
-                    child={child}
-                    sliderWidth={dimensions.width}
-                    sliderHeight={dimensions.height}
-                    scaleOnDrag={scaleOnDrag}
-                  />
-                </div>
-              );
-            })
-          : null}
+        {React.Children.map(children, (child, index) => {
+          if (child) {
+            return (
+              <div
+                key={`${index}`}
+                onTouchStart={touchStart(index)}
+                onMouseDown={touchStart(index)}
+                onTouchMove={touchMove}
+                onMouseMove={touchMove}
+                onTouchEnd={touchEnd}
+                onMouseUp={touchEnd}
+                onMouseLeave={() => {
+                  if (dragging.current) touchEnd();
+                }}
+                onContextMenu={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                className=""
+              >
+                <Slide
+                  child={child}
+                  sliderWidth={dimensions.width}
+                  sliderHeight={dimensions.height}
+                  scaleOnDrag={scaleOnDrag}
+                />
+              </div>
+            );
+          }
+        })}
       </div>
     </div>
   );

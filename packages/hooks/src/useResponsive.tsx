@@ -15,12 +15,16 @@ export const useResponsive = () => {
   React.useEffect(() => {
     if (typeof window !== "undefined") {
       window.addEventListener("resize", HandleScreenSize);
+      window.addEventListener("load", HandleScreenSize);
+      window.addEventListener("DOMContentLoaded", HandleScreenSize);
     }
     HandleScreenSize();
     return () => {
       window.removeEventListener("resize", HandleScreenSize);
+      window.removeEventListener("load", HandleScreenSize);
+      window.removeEventListener("DOMContentLoaded", HandleScreenSize);
     };
-  }, []);
+  }, [typeof window]);
 
   const isMobile = screenWidth < 640;
   const isTablet = screenWidth < 1024;
