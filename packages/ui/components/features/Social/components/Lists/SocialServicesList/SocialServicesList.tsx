@@ -48,7 +48,7 @@ export const SocialServicePostsList: React.FC<
         }}
       />
       {Array.isArray(res?.data) ? (
-        <ListWrapper cols={isTablet ? 2 : isMobile ? 1 : 4}>
+        <ListWrapper cols={isTablet ? 2 : isMobile ? 1 : 3}>
           {res?.data.map((post) => (
             <SocialServicePostCard
               onServiceClick={(id) =>

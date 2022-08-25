@@ -1,7 +1,5 @@
 import React from "react";
-import { ShopSocialProfileInfo } from "types";
 import { MdVerified } from "react-icons/md";
-import { FlagIcon } from "react-flag-kit";
 import {
   SubscribersPopup,
   Avatar as CustomAvatar,
@@ -12,20 +10,22 @@ import {
   MenuButton,
   Button,
   CalenderIcon,
+  FlagIcon,
 } from "ui";
 import { useLoginPopup, useStory } from "ui/Hooks";
-import { NumberShortner } from "ui/components/helpers/numberShortener";
+import { NumberShortner } from "utils";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 import { SocialStoryState } from "ui/state";
-import { HiPaperClip, HiOutlineMail, HiDotsVertical } from "react-icons/hi";
-import EllipsisText from "../../EllipsisText";
+import { HiOutlineMail, HiDotsVertical } from "react-icons/hi";
+import { EllipsisText } from "ui";
 import { BiLink } from "react-icons/bi";
 import { useReactPubsub } from "react-pubsub";
 import { AvatarGroup, useDisclosure, Avatar } from "@chakra-ui/react";
+import { SocialShopProfileData } from "api";
 
 export interface SocialProfileProps {
-  shopInfo: ShopSocialProfileInfo;
+  shopInfo: SocialShopProfileData;
   onFollow?: () => void;
 }
 
@@ -93,7 +93,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
       </div>
       <div className="bg-primary md:bg-transparent items-center flex mb-2 px-1 rounded-lg gap-2">
         <p>{shopInfo.name}</p>
-        {shopInfo.verifed && <MdVerified className="text-xl" />}
+        {shopInfo.verified && <MdVerified className="text-xl" />}
       </div>
       <div className="flex gap-4 leading-7">
         <div
@@ -200,9 +200,12 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
       </div>
       <div className="bg-white flex bg-opacity-20 md:bg-transparent gap-2 w-full items-center justify-end pt-3">
         <p className="text-lg">
-          <FlagIcon code={shopInfo.countryCode} />
+          <FlagIcon code={shopInfo.location.countryCode} />
         </p>
-        <p className="tex-white text-lg">{shopInfo.location}</p>
+        <p className="tex-white text-lg">
+          {shopInfo.location.address}, {shopInfo.location.state},{" "}
+          {shopInfo.location.city} {shopInfo.location.address}
+        </p>
       </div>
     </div>
   );

@@ -33,7 +33,7 @@ export const HotelAddRoomDetailsForm: React.FC<
   const [videos, setVideos] = React.useState<string[]>([]);
 
   return (
-    <Formik initialValues={{}} onSubmit={() => {}}>
+    <Formik initialValues={{} as Record<string, any>} onSubmit={() => {}}>
       {({ setFieldValue, values }) => {
         return (
           <Form className="w-full flex flex-col">

@@ -5,6 +5,7 @@ import {
   HiOutlineHome,
   HiOutlineUserCircle,
 } from "react-icons/hi";
+import { MdRoomService } from "react-icons/md";
 import { FaUserCircle, FaRegUserCircle } from "react-icons/fa";
 import { IoEarth, IoEarthOutline, IoSettingsOutline } from "react-icons/io5";
 import { CgPlayButtonR, CgShoppingBag } from "react-icons/cg";
@@ -57,6 +58,16 @@ const NavigationLinks: NavigationLinkType[] = [
     icon: AiOutlineShop,
     activeIcon: AiFillShop,
     url: "shop",
+    size: {
+      w: "1.2em",
+      h: "1.2em",
+    },
+  },
+  {
+    name: "service",
+    icon: MdRoomService,
+    activeIcon: MdRoomService,
+    url: "service",
     size: {
       w: "1.2em",
       h: "1.2em",

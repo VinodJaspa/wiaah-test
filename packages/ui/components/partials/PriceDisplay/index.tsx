@@ -27,12 +27,13 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
 };
 
 export const PriceConverter = ({
-  amount,
+  amount: inAmount,
   symbol,
 }: {
   amount: number;
   symbol: boolean;
 }): string | null => {
+  const amount = parseInt(inAmount);
   const currency = useRecoilValue(PreferedCurrencyState);
   if (typeof amount !== "number") return null;
   return currency

@@ -15,7 +15,7 @@ export const MyServicesCtx = React.createContext<MyServicesCtxValues>({
 });
 
 export const MyServicesSection: React.FC = () => {
-  const [AddingNew, setAddingNew] = React.useState<boolean>(false);
+  const [AddingNew, setAddingNew] = React.useState<boolean>(true);
 
   function handleAddNewService() {
     setAddingNew(true);

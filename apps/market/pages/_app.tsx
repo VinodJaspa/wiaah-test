@@ -23,6 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedProps}>
         <RoutingProvider
+          getQuery={() => router.query}
           getCurrentPath={() => {
             return router.asPath;
           }}

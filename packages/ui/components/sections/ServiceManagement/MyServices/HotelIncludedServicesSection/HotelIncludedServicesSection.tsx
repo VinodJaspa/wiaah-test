@@ -1,6 +1,7 @@
 import { Form, Formik } from "formik";
 import React from "react";
 import { NewServiceSchemas } from "validation";
+import { HotelAddRoomDetailsForm } from "ui";
 
 export const HotelIncludedServicesSection: React.FC<{
   onChange?: (props: Record<string, any>) => any;
@@ -13,7 +14,11 @@ export const HotelIncludedServicesSection: React.FC<{
     >
       {({ setFieldValue, values }) => {
         onChange && onChange(values);
-        return <Form></Form>;
+        return (
+          <Form>
+            <HotelAddRoomDetailsForm />
+          </Form>
+        );
       }}
     </Formik>
   );

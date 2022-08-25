@@ -19,7 +19,7 @@ export const Badge: React.FC<BadgeProps> = ({
   value,
   children,
   className,
-  variant,
+  variant = "success",
   ...props
 }) => {
   const styleCases: Record<keyof BadgeCases, string> = {

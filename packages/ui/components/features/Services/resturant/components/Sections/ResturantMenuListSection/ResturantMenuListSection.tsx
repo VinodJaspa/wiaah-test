@@ -58,8 +58,6 @@ export const ResturantMenuListSection: React.FC<
           />
         ))}
       </div>
-
-      <Button className=" w-fit self-end">{t("Book now")}</Button>
     </div>
   );
 };

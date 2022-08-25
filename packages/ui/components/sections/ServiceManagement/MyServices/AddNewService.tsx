@@ -36,19 +36,17 @@ import { BeautyCenterServiceDetailsForm } from "./BeautyCenterServiceDetailsForm
 import { ServicePoliciesSection } from "./ServicePoliciesSection";
 import { HotelIncludedServicesSection } from "./HotelIncludedServicesSection";
 import { FlagIconCode } from "react-flag-kit";
+import { RestaurantIncludedServicesSection } from "./RestaruantIncludedServicesSection";
 
 export interface AddNewServiceProps {}
 
 export const AddNewService: React.FC<AddNewServiceProps> = () => {
   const { t } = useTranslation();
-  const { CancelAddingNewService } = React.useContext(MyServicesCtx);
 
   return (
     <div className="flex flex-col">
       <SectionHeader sectionTitle={t("Add New Service")} />
-      <div className="w-full justify-end flex">
-        <Button onClick={() => CancelAddingNewService()}>{t("Cancel")}</Button>
-      </div>
+
       <Tabs>
         <>
           <TabsHeader className="flex-wrap justify-center sm:justify-start" />
@@ -88,6 +86,7 @@ type ServiceSectionWithSchemaType = {
 export const NewServiceStepper: React.FC = () => {
   const { t } = useTranslation();
   const [serviceType, setServiceType] = React.useState<ServiceType>();
+  const { CancelAddingNewService } = React.useContext(MyServicesCtx);
 
   const serviceTypes: ServiceSelectingInfo[] = [
     {
@@ -157,6 +156,11 @@ export const NewServiceStepper: React.FC = () => {
       component: HotelIncludedServicesSection,
       schema: NewServiceSchemas.hotelIncludedServicesSchema,
     },
+    {
+      key: "restaurant",
+      component: RestaurantIncludedServicesSection,
+      schema: NewServiceSchemas.RestaurantIncludedServicesSchema,
+    },
   ];
 
   const includedServiceSection = includedServiceSections.find(
@@ -168,7 +172,7 @@ export const NewServiceStepper: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col gap-4">
       <StepperFormController
         lock={false}
         stepsNum={5}
@@ -290,11 +294,17 @@ export const NewServiceStepper: React.FC = () => {
                 },
               ]}
             />
-            {currentStepIdx !== 0 && (
-              <Button className="w-fit self-end" onClick={() => nextStep()}>
-                {t("Next")}
+            <div className="w-full justify-between flex">
+              <Button onClick={() => CancelAddingNewService()}>
+                {t("Cancel")}
               </Button>
-            )}
+
+              {currentStepIdx !== 0 && (
+                <Button className="w-fit self-end" onClick={() => nextStep()}>
+                  {t("Next")}
+                </Button>
+              )}
+            </div>
           </>
         )}
       </StepperFormController>

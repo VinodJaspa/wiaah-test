@@ -11,9 +11,6 @@ export const RoundedPlusIcon: React.FC<IconBaseProps> = ({
   ...props
 }) => {
   return (
-    <BiPlus
-      className={`${className ?? ""} border-gray-500 border rounded-full`}
-      {...props}
-    />
+    <BiPlus className={`${className ?? ""} border rounded-full`} {...props} />
   );
 };

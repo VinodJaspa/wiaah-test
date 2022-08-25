@@ -20,7 +20,7 @@ export const NewServiceSchemas = {
       ])
       .required(),
   }),
-  serviceGeneralDetailsSchema: yup.object<Partial<AddNewServiceDto>>({
+  serviceGeneralDetailsSchema: yup.object({
     address: yup.string().required(),
     breakfastAvailablity: yup
       .string()
@@ -72,4 +72,5 @@ export const NewServiceSchemas = {
   vehicleDetailsSchema: yup.object({}),
   beautyCenterDetailsSchema: yup.object({}),
   hotelIncludedServicesSchema: yup.object({}),
+  RestaurantIncludedServicesSchema: yup.object({}),
 };
