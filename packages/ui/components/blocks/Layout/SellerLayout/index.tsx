@@ -262,7 +262,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
             style={{
               paddingTop: `calc(${headerHeight || 0}px + 1rem)`,
             }}
-            className="pb-24 sm:pb-0"
+            className="pb-24 sm:pb-0 h-[max(fit,100%)]"
             {...containerProps}
           >
             {children}

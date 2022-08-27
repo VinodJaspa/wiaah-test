@@ -1,24 +1,36 @@
 import { useTranslation } from "react-i18next";
-import { useFileUploadModal } from "ui/Hooks";
 import { FileRes } from "utils";
 import React from "react";
 import {
-  FormikInput,
   Textarea,
   HashTagInput,
   ChooseWithInput,
   Select,
   SelectProps,
   SelectOption,
-  MediaUploadModal,
   InputProps,
+  FormikInput,
+  useGetHotelAmenitesQuery,
+  MultiChooseInput,
+  MultiChooseInputProps,
+  Stack,
+  Divider,
+  CancelationPoliciesListInput,
+  CancelationPoliciesListInputProps,
+  ServiceExtrasInputList,
+  ServiceExtrasInputListProps,
+  Switch,
+  MediaUploadModal,
+  CountInput,
+  HotelBedsInput,
+  DailyPriceInput,
 } from "ui";
 import { Form, Formik } from "formik";
 import { HiFolderAdd, HiVideoCamera } from "react-icons/hi";
 import { FormOptionType } from "types";
 import { ParkingAvailablity } from "dto";
 import { NewServiceSchemas } from "validation";
-
+import { useReactPubsub } from "react-pubsub";
 export interface ServiceGeneralDetailsProps {
   onChange?: (data: Record<string, any>) => any;
 }
@@ -28,15 +40,17 @@ const MAX_PRODUCTS_IMAGE = 4;
 export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
   onChange,
 }) => {
-  const { uploadImage, uploadVideo } = useFileUploadModal();
   const [images, setImages] = React.useState<FileRes[]>([]);
   const [videos, setVideos] = React.useState<string[]>([]);
   const { t } = useTranslation();
+  const { data: res } = useGetHotelAmenitesQuery();
+  const { emit } = useReactPubsub((keys) => keys.openLoginPopup);
+
   return (
     <div className="w-full flex flex-col gap-4">
       <Formik
         validationSchema={NewServiceSchemas.serviceGeneralDetailsSchema}
-        initialValues={{}}
+        initialValues={{} as Record<string, any>}
         onSubmit={() => {}}
       >
         {({ values, setFieldValue }) => {
@@ -78,6 +92,7 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
                 as={Textarea}
                 placeholder={t("Service Tag")}
               />
+              <HashTagInput />
 
               <span className="text-2xl font-semibold">
                 {t("Price & Attributes")}
@@ -143,7 +158,6 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
                 placeholder={t("Price by night")}
               />
 
-              <HashTagInput />
               <ChooseWithInput
                 title={t("Deposit")}
                 name="deposit"
@@ -179,13 +193,86 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
                 ]}
               />
 
+              <Stack col divider={Divider}>
+                <FormikInput
+                  name="roomTitle"
+                  placeholder={t("Enter a room title")}
+                  label={t("Room title")}
+                />
+                <div className="flex gap-2">
+                  <p>{t("Enable Daily Price")}</p>
+                  <Switch
+                    checked={values["isDailyPrice"]}
+                    onChange={(checked) =>
+                      setFieldValue("isDailyPrice", checked)
+                    }
+                  />
+                </div>
+                {values["isDailyPrice"] === true ? (
+                  <DailyPriceInput
+                    value={values["daily_price"]}
+                    onChange={(data) => setFieldValue("daily_price", data)}
+                  />
+                ) : (
+                  <FormikInput
+                    name="price"
+                    type={"number"}
+                    placeholder={t("Price by night")}
+                    label={t("Room price by night")}
+                  />
+                )}
+
+                <div className="flex gap-4">
+                  <HotelBedsInput
+                    value={values["beds"]}
+                    onChange={(beds) => setFieldValue("beds", beds)}
+                  />
+                  <div className="flex flex-col gap-4 w-full">
+                    <p className="text-gray-400">{t("Bathrooms")}</p>
+                    <div className="flex text-xl items-center gap-2">
+                      <p className="font-semibold">{t("Bathrooms")}</p>
+                      <CountInput
+                        count={values["bathrooms"]}
+                        onCountChange={(c) => setFieldValue("bathrooms", c)}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <FormikInput<MultiChooseInputProps>
+                  as={MultiChooseInput}
+                  placeholder={t("choose amenites")}
+                  onChange={(amis) => setFieldValue("common_amenites", amis)}
+                  value={values["common_amenites"]}
+                  name="common_amenites"
+                  suggestions={res?.data.amenites}
+                  label={t("Room common amenites")}
+                />
+
+                <FormikInput<CancelationPoliciesListInputProps>
+                  as={CancelationPoliciesListInput}
+                  onChange={(v) => setFieldValue("cancelation_policies", v)}
+                  value={values["cancelation_policies"]}
+                  label={t("Cancelation Policies")}
+                  name="cancelation_policies"
+                />
+
+                <FormikInput<ServiceExtrasInputListProps>
+                  name="extras"
+                  label={t("Extras")}
+                  as={ServiceExtrasInputList}
+                  onChange={(v) => setFieldValue("extras", v)}
+                  value={values["extras"]}
+                />
+              </Stack>
+
               <p className="text-2xl font-semibold">{t("file", "File")}</p>
               <div className="flex flex-col gap-4">
                 <p className="text-xl font-semibold">{t("Upload Video")}</p>
                 <div className="grid gap-4 grid-cols-[repeat(5,min(100%,8rem))]">
                   <div
                     onClick={() => {
-                      uploadVideo();
+                      emit({ uploadType: "video" });
                     }}
                     className="cursor-pointer justify-center items-center h-32 w-32 bg-gray-100 border-gray-300 border-[1px] flex"
                   >
@@ -209,7 +296,7 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
                   {[...Array(MAX_PRODUCTS_IMAGE)].map((_, i) => (
                     <div
                       onClick={() => {
-                        uploadImage();
+                        emit({});
                       }}
                       className="cursor-pointer justify-center items-center h-32 w-32 bg-gray-100 border-gray-300 border-[1px] flex"
                     >

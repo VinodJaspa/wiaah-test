@@ -117,11 +117,14 @@ const DefaultDaycomponent: React.FC<DateDayComponentProps> = ({
   );
 };
 
-export interface DateInputProps extends HtmlDivProps {
+export interface DateInputProps extends Omit<HtmlDivProps, "value"> {
   onDaySelect?: (UTCDateString: string) => any;
   range?: boolean;
+  multi?: boolean;
   onRangeSelect?: (range: DateRange) => any;
+  onMultiChange?: (selectedDatesUtc: string[]) => any;
   dayComponent?: MaybeFn<DateDayComponentProps>;
+  value?: string[];
 }
 export const DateInput: React.FC<DateInputProps> = ({
   onDaySelect,
@@ -129,15 +132,23 @@ export const DateInput: React.FC<DateInputProps> = ({
   onRangeSelect,
   className,
   dayComponent = DefaultDaycomponent,
+  multi,
+  onMultiChange,
+  value = [],
   ...rest
 }) => {
-  const [activeDates, setActiveDates] = React.useState<string[]>([]);
+  const [activeDates, setActiveDates] = React.useState<string[]>(value);
   const [DividedWeeks, setDividedWeeks] = React.useState<FormatedDays[][]>([]);
   const [month, setMonth] = React.useState<DateMonth>(
     getMonthData(new Date(Date.now()))
   );
 
   const [allDays, setAllDays] = React.useState<FormatedDays[]>(getDays());
+
+  React.useEffect(() => {
+    if (Array.isArray(value)) setActiveDates(value);
+  }, [value]);
+
   React.useEffect(() => {
     getDividedWeeks();
   }, [allDays]);
@@ -155,6 +166,8 @@ export const DateInput: React.FC<DateInputProps> = ({
             from: new Date(activeDates[0]).toUTCString(),
             to: new Date(activeDates[1]).toUTCString(),
           });
+      } else if (multi) {
+        onMultiChange && onMultiChange(activeDates);
       } else {
         onDaySelect && onDaySelect(new Date(activeDates[0]).toUTCString());
       }
@@ -289,6 +302,11 @@ export const DateInput: React.FC<DateInputProps> = ({
                       setActiveDates((state) => {
                         if (range) {
                           if (state.length >= 2) return state;
+                          return [...state, date];
+                        } else if (multi) {
+                          if (state.includes(date)) {
+                            return state.filter((d) => d !== date);
+                          }
                           return [...state, date];
                         } else {
                           return [date];

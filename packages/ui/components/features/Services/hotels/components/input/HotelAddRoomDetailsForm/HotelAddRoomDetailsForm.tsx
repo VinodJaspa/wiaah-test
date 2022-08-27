@@ -16,6 +16,9 @@ import {
   ServiceExtrasInputListProps,
   Switch,
   MediaUploadModal,
+  CountInput,
+  HotelBedsInput,
+  DailyPriceInput,
 } from "ui";
 import { FileRes } from "utils";
 
@@ -33,21 +36,85 @@ export const HotelAddRoomDetailsForm: React.FC<
   const [videos, setVideos] = React.useState<string[]>([]);
 
   return (
-    <Formik initialValues={{} as Record<string, any>} onSubmit={() => {}}>
+    <Formik
+      initialValues={
+        {
+          beds: [
+            {
+              amount: 0,
+              name: "Double",
+              required: true,
+            },
+            {
+              amount: 0,
+              name: "Queen",
+              required: true,
+            },
+            {
+              amount: 0,
+              name: "Single",
+              required: true,
+            },
+            {
+              amount: 0,
+              name: "Sofa bed",
+              required: true,
+            },
+          ],
+        } as Record<string, any>
+      }
+      onSubmit={() => {}}
+    >
       {({ setFieldValue, values }) => {
         return (
           <Form className="w-full flex flex-col">
             <Stack col divider={Divider}>
-              <FormikInput name="roomTitle" label={t("Room title")} />
               <FormikInput
-                name="price"
-                type={"number"}
-                placeholder={t("Price by night")}
-                label={t("Room price by night")}
+                name="roomTitle"
+                placeholder={t("Enter a room title")}
+                label={t("Room title")}
               />
+              <div className="flex gap-2">
+                <p>{t("Enable Daily Price")}</p>
+                <Switch
+                  checked={values["isDailyPrice"]}
+                  onChange={(checked) => setFieldValue("isDailyPrice", checked)}
+                />
+              </div>
+              {values["isDailyPrice"] === true ? (
+                <DailyPriceInput
+                  value={values["daily_price"]}
+                  onChange={(data) => setFieldValue("daily_price", data)}
+                />
+              ) : (
+                <FormikInput
+                  name="price"
+                  type={"number"}
+                  placeholder={t("Price by night")}
+                  label={t("Room price by night")}
+                />
+              )}
+
+              <div className="flex gap-4">
+                <HotelBedsInput
+                  value={values["beds"]}
+                  onChange={(beds) => setFieldValue("beds", beds)}
+                />
+                <div className="flex flex-col gap-4 w-full">
+                  <p className="text-gray-400">{t("Bathrooms")}</p>
+                  <div className="flex text-xl items-center gap-2">
+                    <p className="font-semibold">{t("Bathrooms")}</p>
+                    <CountInput
+                      count={values["bathrooms"]}
+                      onCountChange={(c) => setFieldValue("bathrooms", c)}
+                    />
+                  </div>
+                </div>
+              </div>
 
               <FormikInput<MultiChooseInputProps>
                 as={MultiChooseInput}
+                placeholder={t("choose amenites")}
                 onChange={(amis) => setFieldValue("common_amenites", amis)}
                 value={values["common_amenites"]}
                 name="common_amenites"

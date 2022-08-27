@@ -13,7 +13,9 @@ import {
 } from "ui";
 
 export interface ServiceCheckoutCommonCardWrapperProps
-  extends CommonServiceCheckoutData {}
+  extends Omit<CommonServiceCheckoutData, "guests"> {
+  guests?: number;
+}
 
 export const ServiceCheckoutCommonCardWrapper: React.FC<
   ServiceCheckoutCommonCardWrapperProps

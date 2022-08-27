@@ -5,7 +5,7 @@ import {
   useSearchFilters,
   Divider,
   ServiceReachOutSection,
-  ServiceOnMapLocationSection,
+  ServiceOnMapLocalizationSection,
   ServicePoliciesSection,
   ServiceWorkingHoursSection,
   ServicesProviderDescriptionSection,
@@ -62,7 +62,7 @@ export const BeautyCenterServiceDetailsView: React.FC = () => {
 
             <ServiceWorkingHoursSection workingDays={res.data.workingDays} />
             <ServicePoliciesSection policies={res.data.policies} />
-            <ServiceOnMapLocationSection location={res.data.location} />
+            <ServiceOnMapLocalizationSection location={res.data.location} />
           </>
         ) : null}
         <Reviews id={res?.data.id || ""} reviews={reviews} />

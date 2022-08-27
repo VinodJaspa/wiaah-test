@@ -159,7 +159,7 @@ export const NestedSettingsSectionsSidebar: React.FC<
     : null;
 
   return (
-    <Slider currentItemIdx={subSection ? 1 : 0}>
+    <Slider draggingActive={false} currentItemIdx={subSection ? 1 : 0}>
       <SettingsSectionsSidebar
         currentActive={mainSection ? mainSection.panelUrl : null}
         onPanelClick={(url) => onChange && onChange(url)}

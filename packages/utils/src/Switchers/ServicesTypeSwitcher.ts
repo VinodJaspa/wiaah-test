@@ -27,20 +27,25 @@ export const getServiceView: Record<GetServiceViewKeyType, getServiceViewType> =
 export const ServicesTypeSwitcher: React.FC<{
   serviceType: ServicesType;
   servicesList: ServiceViewListItem[];
-  get: getServiceViewType;
+  get:
+    | getServiceViewType
+    | ((keys: typeof getServiceView) => keyof typeof getServiceView);
   fallbackComponent?: React.ReactNode;
   props?: object;
 }> = ({
-  get,
+  get: Get,
   serviceType,
   servicesList,
   fallbackComponent = NotFound,
   props = {},
 }) => {
+  const get = typeof Get === "function" ? Get(getServiceView) : Get;
   const serviceIdx = servicesList.findIndex((s) => s.slug === serviceType);
   const serviceFound = serviceIdx > -1;
 
   // if (!serviceFound) return runIfFn(fallbackComponent, {});
+
+  console.log({ serviceIdx, serviceFound });
 
   const comp = serviceFound
     ? get === "search"

@@ -25,7 +25,7 @@ import {
 } from "ui";
 import { TabType } from "types";
 import { useRecoilValue } from "recoil";
-import { SocialNewsfeedPostsState } from "ui/state";
+import { SocialNewsfeedPostsState } from "ui";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 

@@ -53,7 +53,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
 
   return (
     <>
-      <div className="py-28 lg:py-20">
+      <div className="py-28 lg:py-20 h-full">
         <MultiStepFrom ref={MultiStepFormRef} steps={SellerProfileSteps} />
 
         <div className="fixed bottom-0 left-0 z-10 flex w-full justify-between bg-white p-4 pt-10 lg:px-8">

@@ -18,15 +18,6 @@ export function MultiChooseInput({
 }: MultiChooseInputProps) {
   const { t } = useTranslation();
   const [inputValue, setInputInputValue] = React.useState<string>("");
-  // const [selectedItems, setSelectedItems] = React.useState<string[]>([]);
-
-  // React.useEffect(() => {
-  //   if (Array.isArray(value)) {
-  //     setSelectedItems(value);
-  //   }
-  // }, [value]);
-
-  // React.useEffect(() => {}, [selectedItems]);
 
   function resetSearch() {
     setInputInputValue("");
@@ -42,8 +33,8 @@ export function MultiChooseInput({
     onChange && onChange(value.filter((i) => i !== item));
   }
   return (
-    <InputGroup>
-      <div className="flex flex-wrap gap-2">
+    <InputGroup className="border rounded p-1 border-gray-300">
+      <label className="flex flex-wrap gap-2 w-full">
         {value.map((item, i) => (
           <span
             key={i + 1}
@@ -57,18 +48,16 @@ export function MultiChooseInput({
           </span>
         ))}
 
-        <HStack>
-          <Input
-            placeholder={placeholder}
-            className="h-[2rem]"
-            onKeyDown={(e) => {
-              e.code === "Enter" ? addItem(inputValue) : null;
-            }}
-            onChange={(e) => setInputInputValue(e.target.value)}
-            value={inputValue}
-          />
-        </HStack>
-      </div>
+        <Input
+          placeholder={placeholder}
+          className="h-[2rem] border-none w-[fit-content]"
+          onKeyDown={(e) => {
+            e.code === "Enter" ? addItem(inputValue) : null;
+          }}
+          onChange={(e) => setInputInputValue(e.target.value)}
+          value={inputValue}
+        />
+      </label>
       <InputSuggestions>
         <div className="flex flex-col">
           {Array.isArray(suggestions) ? (

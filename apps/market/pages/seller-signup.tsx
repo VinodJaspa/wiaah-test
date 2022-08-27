@@ -9,7 +9,7 @@ const SignUpFinalisation: NextPage = () => {
       <Head>
         <title>Wiaah | Signup Finalisation</title>
       </Head>
-      <main className="block w-full grow">
+      <main className="block w-full grow h-screen">
         <Container>
           <SellerProfileStartupView />
         </Container>

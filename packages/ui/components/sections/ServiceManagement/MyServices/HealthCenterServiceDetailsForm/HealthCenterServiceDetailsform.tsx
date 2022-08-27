@@ -7,16 +7,14 @@ import { NewServiceSchemas } from "validation";
 import {
   FormikInput,
   Textarea,
-  Select,
-  SelectOption,
-  SelectProps,
-  Stack,
   MultiChooseInput,
   MultiChooseInputProps,
   MediaUploadModal,
   ChooseWithInput,
   Divider,
   InputProps,
+  Stack,
+  HashTagInput,
 } from "ui";
 import { HiFolderAdd, HiVideoCamera } from "react-icons/hi";
 
@@ -37,7 +35,7 @@ export const HealthCenterServiceDetailsForm: React.FC<
     <div className="w-full flex flex-col gap-4">
       <Formik
         validationSchema={NewServiceSchemas.restaurantDetailsSchema}
-        initialValues={{}}
+        initialValues={{} as Record<string, any>}
         onSubmit={() => {}}
       >
         {({ values, setFieldValue }) => {
@@ -79,7 +77,7 @@ export const HealthCenterServiceDetailsForm: React.FC<
                 as={Textarea}
                 placeholder={t("Service Tag")}
               />
-
+              <HashTagInput />
               <span className="text-2xl font-semibold">
                 {t("Price & Attributes")}
               </span>

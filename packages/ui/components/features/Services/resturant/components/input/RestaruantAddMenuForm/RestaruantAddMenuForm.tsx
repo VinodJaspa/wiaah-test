@@ -1,7 +1,7 @@
 import { Formik } from "formik";
 import React from "react";
 import { object, string } from "yup";
-import { FormikInput, Button, Badge, RoundedPlusIcon } from "ui";
+import { FormikInput, Button, AddBadgeButton } from "ui";
 import { useTranslation } from "react-i18next";
 
 export interface RestaruantAddMenuFormProps {
@@ -39,13 +39,8 @@ export const RestaruantAddMenuForm: React.FC<RestaruantAddMenuFormProps> = ({
       }}
     </Formik>
   ) : (
-    <Badge
-      variant="success"
-      onClick={() => setAdd(true)}
-      className="text-primary cursor-pointer flex gap-2 items-center"
-    >
-      <RoundedPlusIcon className="border-primary" />
-      <p>{t("Add new menu")}</p>
-    </Badge>
+    <AddBadgeButton onClick={() => setAdd(true)}>
+      {t("Add new menu")}
+    </AddBadgeButton>
   );
 };

@@ -2,7 +2,7 @@ import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { ServicesViewsList } from "@data";
-import { MasterLayout } from "@components";
+import { BeautyCenterServiceDetailsView, MasterLayout } from "@components";
 import { Container, GetServiceDetailsQueryKey } from "ui";
 import {
   ExtractParamFromQuery,

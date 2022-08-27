@@ -2,6 +2,7 @@ import { ServiceType } from "dto";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { GiHouse } from "react-icons/gi";
+import { FaHotel } from "react-icons/fa";
 import {
   SectionHeader,
   CheckMarkStepper,
@@ -34,9 +35,9 @@ import { HealthCenterServiceDetailsForm } from "./HealthCenterServiceDetailsForm
 import { VehicleServiceDetailsForm } from "./VehicleServiceDetailsForm";
 import { BeautyCenterServiceDetailsForm } from "./BeautyCenterServiceDetailsForm";
 import { ServicePoliciesSection } from "./ServicePoliciesSection";
-import { HotelIncludedServicesSection } from "./HotelIncludedServicesSection";
-import { FlagIconCode } from "react-flag-kit";
 import { RestaurantIncludedServicesSection } from "./RestaruantIncludedServicesSection";
+import { HolidayRentalsGeneralDetailsForm } from "./HolidayRentalsGeneralDetailsForm";
+import { HealthCenterIncludedServices } from "./HealthCenterIncludedServices";
 
 export interface AddNewServiceProps {}
 
@@ -44,7 +45,7 @@ export const AddNewService: React.FC<AddNewServiceProps> = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col h-full">
       <SectionHeader sectionTitle={t("Add New Service")} />
 
       <Tabs>
@@ -90,10 +91,16 @@ export const NewServiceStepper: React.FC = () => {
 
   const serviceTypes: ServiceSelectingInfo[] = [
     {
+      serviceIcon: FaHotel,
+      serviceKey: "hotel",
+      serviceDescription: "Put up your hotel for booking",
+      serviceName: "Hotel booking",
+    },
+    {
       serviceIcon: GiHouse,
-      serviceKey: "placeBooking",
+      serviceKey: "holidayRentals",
       serviceDescription: "put some place up for rent",
-      serviceName: "Place Book",
+      serviceName: "Holiday rentals",
     },
     {
       serviceIcon: ForkAndSpoonIcon,
@@ -129,7 +136,7 @@ export const NewServiceStepper: React.FC = () => {
       schema: NewServiceSchemas.restaurantDetailsSchema,
     },
     {
-      key: "placeBooking",
+      key: "hotel",
       component: ServiceGeneralDetails,
       schema: NewServiceSchemas.serviceGeneralDetailsSchema,
     },
@@ -148,18 +155,33 @@ export const NewServiceStepper: React.FC = () => {
       component: BeautyCenterServiceDetailsForm,
       schema: NewServiceSchemas.beautyCenterDetailsSchema,
     },
+    {
+      key: "holidayRentals",
+      component: HolidayRentalsGeneralDetailsForm,
+      schema: NewServiceSchemas.beautyCenterDetailsSchema,
+    },
   ];
 
   const includedServiceSections: ServiceSectionWithSchemaType[] = [
     {
       key: "placeBooking",
-      component: HotelIncludedServicesSection,
+      component: IncludedServices,
       schema: NewServiceSchemas.hotelIncludedServicesSchema,
     },
     {
       key: "restaurant",
       component: RestaurantIncludedServicesSection,
       schema: NewServiceSchemas.RestaurantIncludedServicesSchema,
+    },
+    {
+      key: "holidayRentals",
+      component: IncludedServices,
+      schema: NewServiceSchemas.RestaurantIncludedServicesSchema,
+    },
+    {
+      key: "healthCenter",
+      component: HealthCenterIncludedServices,
+      schema: NewServiceSchemas.healthCenterIncludedServicesSchema,
     },
   ];
 
@@ -172,7 +194,7 @@ export const NewServiceStepper: React.FC = () => {
   );
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 h-full justify-between">
       <StepperFormController
         lock={false}
         stepsNum={5}
@@ -196,7 +218,7 @@ export const NewServiceStepper: React.FC = () => {
                           ServicesInfo={serviceTypes}
                           onServiceChoosen={(key) => {
                             validate({ type: key });
-                            console.log("choosen", key);
+
                             setServiceType(key);
                             CallbackAfter(50, () => {
                               nextStep();
@@ -342,7 +364,7 @@ export const ChooseServiceType: React.FC<ChooseServiceTypeProps> = ({
 const addProductLanguagesSection: {
   language: {
     name: string;
-    countryCode: FlagIconCode;
+    countryCode: string;
   };
   section: React.FunctionComponent;
 }[] = [

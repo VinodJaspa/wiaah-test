@@ -6,13 +6,7 @@ import {
 } from "ui/Hooks";
 import {
   SectionHeader,
-  Avatar,
-  CalenderIcon,
   Button,
-  TimeIcon,
-  NoteIcon,
-  HStack,
-  CancelIcon,
   ControlledModal,
   FormikInput,
   ModalButton,
@@ -20,105 +14,59 @@ import {
   ModalExtendedWrapper,
   ModalFooter,
   Textarea,
+  ServiceCheckoutCardSwitcher,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { PendingAppointmentData } from "api";
-import { CancelOrderDto, DeclinePendingAppointmentDto } from "dto";
+import { DeclinePendingAppointmentDto } from "dto";
 import { Formik, Form } from "formik";
 import { ReturnDeclineRequestValidationSchema } from "validation";
 
 export interface PendingAppointmentsSectionProps {}
 
-export const PendingAppointmentsSection: React.FC<PendingAppointmentsSectionProps> =
-  () => {
-    const { data: appointments } = useGetPendingAppointmentsQuery();
-    const { t } = useTranslation();
+export const PendingAppointmentsSection: React.FC<
+  PendingAppointmentsSectionProps
+> = () => {
+  const { data: res } = useGetPendingAppointmentsQuery();
+  const { t } = useTranslation();
 
-    return (
-      <div className="flex flex-col gap-4">
-        <SectionHeader
-          sectionTitle={t("pending_appointments", "Pending Appointments")}
-        />
-        <div className="flex flex-col gap-8">
-          {appointments
-            ? appointments.map((appointment, i) => (
-                <PendingAppointmentCard
-                  key={i}
-                  appointmentRequestData={appointment}
-                />
-              ))
-            : null}
-        </div>
+  return (
+    <div className="flex flex-col gap-4">
+      <SectionHeader
+        sectionTitle={t("pending_appointments", "Pending Appointments")}
+      />
+      <div className="flex flex-col gap-8">
+        {res
+          ? res.data.map((appointment, i) => (
+              <PendingAppointmentCard
+                key={i}
+                appointmentRequestData={appointment}
+              />
+            ))
+          : null}
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 export const PendingAppointmentCard: React.FC<{
   appointmentRequestData: PendingAppointmentData;
-}> = ({
-  appointmentRequestData: {
-    appointmentId,
-    customer,
-    date,
-    from,
-    specialRequest,
-    to,
-  },
-}) => {
+}> = ({ appointmentRequestData }) => {
   const { t } = useTranslation();
   const { mutate: acceptAppointment, isLoading: acceptIsLoading } =
     useAcceptPendingAppointmentMutation();
   const { mutate: declineAppointment, isLoading: declineIsLoading } =
     useDeclinePendingAppointmentMutation();
   return (
-    <div className="flex items-center justify-between gap-2">
-      <div className="flex flex-col gap-2">
-        <HStack className="flex gap-2">
-          <Avatar
-            className="w-[2em] h-[2em]"
-            src={customer.photo}
-            alt={customer.name}
-            name={customer.name}
-          />
-          <span className="text-primary font-bold">{customer.name}</span>
-        </HStack>
-        <HStack className="flex gap-2">
-          <CalenderIcon />
-          {new Date(date).toLocaleDateString("en-us", {
-            year: "numeric",
-            month: "long",
-            weekday: "long",
-            day: "2-digit",
-          })}
-        </HStack>
-        <HStack className="flex gap-2">
-          <TimeIcon />
-          <span>
-            {new Date(from).toLocaleTimeString("en-us", {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-            })}
-          </span>
-          -
-          <span>
-            {new Date(to).toLocaleTimeString("en-us", {
-              hour: "2-digit",
-              minute: "2-digit",
-              hour12: true,
-            })}
-          </span>
-        </HStack>
-        <HStack>
-          <NoteIcon />
-          <span>{specialRequest}</span>
-        </HStack>
+    <div className="flex justify-between gap-2">
+      <div className="w-[min(100%,20rem)]">
+        <ServiceCheckoutCardSwitcher service={appointmentRequestData} />
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex gap-2 items-start">
         <ModalExtendedWrapper>
           <ModalButton>
             <Button colorScheme="danger" loading={declineIsLoading}>
-              {t("refuse", "Refuse")}
+              {t("Refuse")}
             </Button>
           </ModalButton>
           <ControlledModal>
@@ -127,24 +75,24 @@ export const PendingAppointmentCard: React.FC<{
                 declineAppointment(data);
               }}
               initialValues={{
-                appointmentId,
+                appointmentId: appointmentRequestData.data.id,
                 declineReason: "",
               }}
               validationSchema={ReturnDeclineRequestValidationSchema}
             >
               <Form className="flex flex-col gap-4">
                 <FormikInput
-                  label={t("refuse_reason", "Refuse Reason")}
+                  label={t("Refuse Reason")}
                   as={Textarea}
                   className="min-h-[10rem]"
                   name="cancelationReason"
                 />
                 <ModalFooter>
                   <ModalCloseButton>
-                    <Button colorScheme="white">{t("close", "Close")}</Button>
+                    <Button colorScheme="white">{t("Close")}</Button>
                   </ModalCloseButton>
                   <Button loading={declineIsLoading} type="submit">
-                    {t("submit", "Submit")}
+                    {t("Submit")}
                   </Button>
                 </ModalFooter>
               </Form>
@@ -154,9 +102,11 @@ export const PendingAppointmentCard: React.FC<{
 
         <Button
           loading={acceptIsLoading}
-          onClick={() => acceptAppointment({ appointmentId })}
+          onClick={() =>
+            acceptAppointment({ appointmentId: appointmentRequestData.data.id })
+          }
         >
-          {t("approve", "Approve")}
+          {t("Approve")}
         </Button>
       </div>
     </div>

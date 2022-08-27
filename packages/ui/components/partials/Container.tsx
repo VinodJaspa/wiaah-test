@@ -14,7 +14,7 @@ export const Container: FC<ContainerProps> = ({
     <div
       {...props}
       className={`${props.className || ""} ${
-        noContainer ? "" : "container mx-auto"
+        noContainer ? "" : "container mx-auto h-full"
       }`}
     >
       {children}
