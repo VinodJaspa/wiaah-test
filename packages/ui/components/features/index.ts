@@ -6,3 +6,4 @@ export * from "./Social";
 export * from "./Recommendations";
 export * from "./CurrencyConversion";
 export * from "./Checkout";
+export * from "./Cart";

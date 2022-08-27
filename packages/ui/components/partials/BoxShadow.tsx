@@ -1,6 +1,7 @@
 import React from "react";
+import { HtmlDivProps } from "types";
 
-export interface BoxShadowProps {
+export interface BoxShadowProps extends HtmlDivProps {
   color?: string;
   fitWidth?: boolean;
   fitHeight?: boolean;
@@ -11,6 +12,8 @@ export const BoxShadow: React.FC<BoxShadowProps> = ({
   color = "#000",
   fitHeight,
   fitWidth,
+  style,
+  ...props
 }) => {
   return (
     <div
@@ -18,9 +21,11 @@ export const BoxShadow: React.FC<BoxShadowProps> = ({
         boxShadow: `0px 3px 15px -15px ${color}`,
         WebkitBoxShadow: `0px 3px 15px -15px ${color}`,
         MozBoxShadow: `0px 3px 15px -15px ${color}`,
-        width: fitWidth ? "fit-content" : "inherit",
-        height: fitHeight ? "fit-content" : "inherit",
+        // width: fitWidth ? "fit-content" : "inherit",
+        // height: fitHeight ? "fit-content" : "inherit",
+        ...style,
       }}
+      {...props}
     >
       {children}
     </div>

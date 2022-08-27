@@ -10,23 +10,24 @@ import React from "react";
 
 export interface ServiceCheckoutCardSwitcherProps {
   service: ServiceCheckoutDataType;
+  passingProps?: any;
 }
 
 export const ServiceCheckoutCardSwitcher: React.FC<
   ServiceCheckoutCardSwitcherProps
-> = ({ service: item }) => {
+> = ({ service: item, passingProps }) => {
   if (!item) return null;
   switch (item.type) {
     case "hotel":
-      return <HotelCheckoutCard {...item.data} />;
+      return <HotelCheckoutCard {...passingProps} {...item.data} />;
     case "resturant":
-      return <ResturantCheckoutCard {...item.data} />;
+      return <ResturantCheckoutCard {...passingProps} {...item.data} />;
     case "health_center":
-      return <HealthCenterCheckoutCard {...item.data} />;
+      return <HealthCenterCheckoutCard {...passingProps} {...item.data} />;
     case "beauty_center":
-      return <BeautyCenterCheckoutCard {...item.data} />;
+      return <BeautyCenterCheckoutCard {...passingProps} {...item.data} />;
     case "product":
-      return <ProductCheckoutCard {...item.data} />;
+      return <ProductCheckoutCard {...passingProps} {...item.data} />;
     default:
       return null;
   }

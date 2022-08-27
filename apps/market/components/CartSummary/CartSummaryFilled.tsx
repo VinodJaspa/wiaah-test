@@ -1,19 +1,22 @@
 import React from "react";
-import { CartSummaryItem } from "types/market/CartSummary";
-import { BoxShadow, CartSummaryProductCard, Divider, FlexStack } from "ui";
+import { useTranslation } from "react-i18next";
+import {
+  BoxShadow,
+  Stack,
+  Divider,
+  useGetMyCartSummaryDataQuery,
+  ServiceCheckoutCardSwitcher,
+  AspectRatioImage,
+  Avatar,
+  Button,
+} from "ui";
 
-export interface CartSummaryFilledProps {
-  items: {
-    shop: {
-      name: string;
-      id: string;
-      imageUrl: string;
-    };
-    item: CartSummaryItem;
-  }[];
-}
+export interface CartSummaryFilledProps {}
 
-const CartSummaryFilled: React.FC<CartSummaryFilledProps> = ({ items }) => {
+const CartSummaryFilled: React.FC<CartSummaryFilledProps> = () => {
+  const { data: res, isLoading, isError } = useGetMyCartSummaryDataQuery();
+  const items = res ? res.data : [];
+  const { t } = useTranslation();
   function handleContactClick(shopId: string) {}
 
   function handleMoveToWishlist(productId: string) {}
@@ -26,27 +29,27 @@ const CartSummaryFilled: React.FC<CartSummaryFilledProps> = ({ items }) => {
 
   return (
     <BoxShadow>
-      <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
-        {items.map(({ item, shop }, i) => (
-          <>
-            <CartSummaryProductCard
-              key={i}
-              profile={{
-                name: shop.name,
-                id: shop.id,
-                imageUrl: shop.imageUrl,
-              }}
-              onContactClick={(id) => handleContactClick(id)}
-              onMoveToWishList={handleMoveToWishlist}
-              onProfileClick={handleProfileClick}
-              onQtyChange={handleQtyChange}
-              onRemove={handleRemove}
-              product={item}
+      <Stack divider={Divider} col>
+        {items.map(({ itemData, providerData }, i) => (
+          <div key={providerData.id + i} className="flex flex-col gap-1">
+            <div className="flex w-full justify-between">
+              <div className="flex items-center gap-2">
+                <Avatar src={providerData.thumbnail} alt={providerData.name} />
+                <p>{providerData.name}</p>
+              </div>
+              <Button outline>
+                {itemData.type === "product"
+                  ? t("Contact seller")
+                  : t("Contact service")}
+              </Button>
+            </div>
+            <ServiceCheckoutCardSwitcher
+              passingProps={{ horizontal: true }}
+              service={itemData}
             />
-            {i + 1 < items.length && <Divider marginY={{ value: 0.25 }} />}
-          </>
+          </div>
         ))}
-      </FlexStack>
+      </Stack>
     </BoxShadow>
   );
 };

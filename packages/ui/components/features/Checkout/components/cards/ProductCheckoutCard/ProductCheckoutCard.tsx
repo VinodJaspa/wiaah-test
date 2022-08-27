@@ -131,7 +131,12 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
                     ? shippingMethods.map((method) => (
                         <Tr>
                           <Td>
-                            <Radio value={method.value}>{method.name}</Radio>
+                            <Radio
+                              name={`shippingMethod-${id}`}
+                              value={method.value}
+                            >
+                              {method.name}
+                            </Radio>
                           </Td>
                           <Td>
                             <PriceDisplay price={method.cost} />

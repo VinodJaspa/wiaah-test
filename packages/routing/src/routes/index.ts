@@ -21,6 +21,7 @@ export type MainRouterInterface = {
   onMap: () => RoutesType;
   search: () => RoutesType;
   checkout: () => RoutesType;
+  visitCheckout: () => RoutesType;
   visitRecommendedServiceOrShop: (props: Record<string, any>) => RoutesType;
 } & ServicesRoutesType &
   UserRelatedRoutesType &
@@ -80,5 +81,8 @@ export const MainRoutes: MainRouterInterface = {
   removeQuery(query) {
     delete this.query[query];
     return this;
+  },
+  visitCheckout() {
+    return this.checkout();
   },
 };
