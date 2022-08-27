@@ -4,6 +4,7 @@ import {
   ResturantCheckoutCard,
   HealthCenterCheckoutCard,
   BeautyCenterCheckoutCard,
+  ProductCheckoutCard,
 } from "ui";
 import React from "react";
 
@@ -24,6 +25,8 @@ export const ServiceCheckoutCardSwitcher: React.FC<
       return <HealthCenterCheckoutCard {...item.data} />;
     case "beauty_center":
       return <BeautyCenterCheckoutCard {...item.data} />;
+    case "product":
+      return <ProductCheckoutCard {...item.data} />;
     default:
       return null;
   }

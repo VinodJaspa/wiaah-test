@@ -1,23 +1,14 @@
 import React from "react";
 import { BsTrash } from "react-icons/bs";
-import { IoMdClock } from "react-icons/io";
-import {
-  IoCalendar,
-  IoHeartOutline,
-  IoHome,
-  IoLocation,
-} from "react-icons/io5";
+import { IoHeartOutline } from "react-icons/io5";
 import { CartSummaryItem, ShopContactDetails } from "types";
 import { useScreenWidth } from "ui/Hooks";
-import { colorPalette } from "ui/components/helpers";
-import { getDate, getTime } from "ui/components/helpers";
 import {
   Absolute,
   BoldText,
   BoxShadow,
   Clickable,
   FlexStack,
-  Grid,
   Image,
   Padding,
   Prefix,
@@ -104,7 +95,7 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                 </Prefix>
               </Clickable>
               <Clickable onClick={handleContactClick}>
-                <BoldText>{t("contact_shop", "Contact Shop")}</BoldText>
+                <BoldText>{t("Contact Shop")}</BoldText>
               </Clickable>
             </FlexStack>
             <Padding Y={{ value: 0.2 }} />
@@ -138,25 +129,12 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                   >
                     <div className="bg-red-500 bg-opacity-70">
                       <Padding X={{ value: 1 }}>
-                        <Text color={colorPalette.whiteText}>
+                        <p className="text-white">
                           {product.cashback.unit === "$" && "$"}
                           {product.cashback.value}
                           {product.cashback.unit === "%" && "%"}
                           {t("cashback", "Cashback")}
-                        </Text>
-                      </Padding>
-                    </div>
-                  </Absolute>
-                )}
-                {product.type === "service" && !minimal && (
-                  <Absolute
-                    position={{ bottom: { value: 0 }, right: { value: 0 } }}
-                  >
-                    <div className="bg-[#57bf9c] bg-opacity-70">
-                      <Padding X={{ value: 1 }}>
-                        <Text color={colorPalette.whiteText}>
-                          {t("booking", "Booking")}
-                        </Text>
+                        </p>
                       </Padding>
                     </div>
                   </Absolute>
@@ -177,12 +155,12 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                 <div>
                   {product.colors && (
                     <Text id="ProductColor">
-                      {t("color", "Color")}: {product.colors[0]}
+                      {t("Color")}: {product.colors[0]}
                     </Text>
                   )}
                   {product.sizes && (
                     <Text id="ProductSize">
-                      {t("size", "Size")}: {product.sizes[0]}
+                      {t("Size")}: {product.sizes[0]}
                     </Text>
                   )}
                 </div>
@@ -191,51 +169,6 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                 verticalSpacingInRem={minimal ? 0 : 0.5}
                 direction="vertical"
               >
-                {product.type === "service" && (
-                  <div className="text-xs">
-                    <Grid fitWidth colsGap={{ value: 0.5 }} cols={min ? 1 : 2}>
-                      {product.date && (
-                        <FlexStack
-                          direction="vertical"
-                          horizontalSpacingInRem={0.5}
-                        >
-                          <Prefix Prefix={<IoCalendar />}>
-                            {getDate(product.date)}
-                          </Prefix>
-
-                          {product.eventDuration && (
-                            <Prefix id="" Prefix={<IoMdClock />}>
-                              {getTime(product.date, product.eventDuration)}
-                            </Prefix>
-                          )}
-                        </FlexStack>
-                      )}
-                      {product.eventAdresses && product.location && (
-                        <FlexStack
-                          direction="vertical"
-                          horizontalSpacingInRem={0.5}
-                        >
-                          {product.eventAdresses && (
-                            <Prefix id="ProductAddress" Prefix={<IoHome />}>
-                              {product.eventAdresses}
-                            </Prefix>
-                          )}
-                          {product.location && (
-                            <Clickable onClick={handleLocationClick}>
-                              <Prefix
-                                id="ProductLocation"
-                                Prefix={<IoLocation />}
-                              >
-                                {product.location}
-                              </Prefix>
-                            </Clickable>
-                          )}
-                        </FlexStack>
-                      )}
-                    </Grid>
-                  </div>
-                )}
-
                 {/* {!minimal && ( */}
                 <Text size={minimal ? "xs" : "md"}>
                   <FlexStack
@@ -325,15 +258,12 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                   <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
                     <div className="bg-red-500 bg-opacity-70 text-xs">
                       <Padding X={{ value: 0.5 }}>
-                        <Text
-                          id="ProductCashBack"
-                          color={colorPalette.whiteText}
-                        >
+                        <p id="ProductCashBack" className="text-white">
                           {product.cashback.unit === "$" && "$"}
                           {product.cashback.value}
                           {product.cashback.unit === "%" && "%"}
-                          {t("cashback", "Cashback")}
-                        </Text>
+                          {t("Cashback")}
+                        </p>
                       </Padding>
                     </div>
                   </FlexStack>
@@ -341,12 +271,9 @@ export const CartSummaryProductCard: React.FC<CartSummaryProdcutCardProps> = ({
                 {product.type === "service" && (
                   <div className="w-fit bg-[#57bf9c] bg-opacity-70 text-xs">
                     <Padding X={{ value: 0.5 }}>
-                      <Text
-                        id="ProductBookingIndicator"
-                        color={colorPalette.whiteText}
-                      >
-                        {t("booking", "Booking")}
-                      </Text>
+                      <p id="ProductBookingIndicator" className="text-white">
+                        {t("Booking")}
+                      </p>
                     </Padding>
                   </div>
                 )}

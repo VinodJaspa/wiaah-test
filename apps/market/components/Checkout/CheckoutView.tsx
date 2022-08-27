@@ -146,7 +146,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                     <Spacer />
                     <Padding X={{ value: 1 }}>
                       <Button onClick={() => handleAddress()}>
-                        {t("add_new_address", "ADD NEW ADDRESS")}
+                        {t("ADD NEW ADDRESS")}
                       </Button>
                     </Padding>
                   </>
@@ -169,7 +169,7 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                 >
                   <Text size="3xl">
                     <BoldText>
-                      {products.length} {t("items", "items")}
+                      {products.length} {t("items")}
                     </BoldText>
                   </Text>
                   <Text size="lg">

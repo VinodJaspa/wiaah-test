@@ -1,12 +1,7 @@
 import React from "react";
 import {
   BoxShadow,
-  FlexStack,
-  Padding,
   AddressCard,
-  Clickable,
-  BoldText,
-  Text,
   Divider,
   Spacer,
   Button,
@@ -15,16 +10,12 @@ import {
   VoucherInput,
   PaymentGateway,
   TotalCost,
-  HotelCheckoutCard,
-  ResturantCheckoutCard,
-  HealthCenterCheckoutCard,
-  BeautyCenterCheckoutCard,
   GuestsInput,
   Modal,
   ModalContent,
   ModalOverlay,
   DateInput,
-  useGetServiceCheckoutDataQuery,
+  useGetCheckoutDataQuery,
   useSearchFilters,
   SpinnerFallback,
   CheckInOutInput,
@@ -33,13 +24,11 @@ import {
 } from "ui";
 import { AddressCardDetails, AddressDetails } from "types";
 import { CheckoutProductsState, VoucherState } from "ui/state";
-
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { DateDetails, runIfFn } from "utils";
 import { useDateDiff } from "hooks";
-import { ServiceCheckoutDataType } from "api";
 
 export interface ServiceCheckoutViewProps {}
 
@@ -47,17 +36,12 @@ export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
   const { t } = useTranslation();
   const { visit } = useRouting();
   const { filters } = useSearchFilters();
-  const {
-    data: res,
-    isLoading,
-    isError,
-  } = useGetServiceCheckoutDataQuery(filters);
+  const { data: res, isLoading, isError } = useGetCheckoutDataQuery(filters);
   const [editAddress, setEditAddress] = React.useState<AddressCardDetails>();
   const [edit, setEdit] = React.useState<boolean>(false);
 
   const { addresses, AddAddress, DeleteAddress, UpdateAddress } =
     useUserAddresses();
-  const products = useRecoilValue(CheckoutProductsState);
   const setVoucher = useSetRecoilState(VoucherState);
 
   const [activeAddress, setActiveAddress] = React.useState<number>();
@@ -124,7 +108,7 @@ export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
               <p className="font-bold">{t("Checkout")}</p>
             </div>
             <div className="flex flex-col gap-6">
-              <p className="font-bold">{t("Trip date")}</p>
+              <p className="text-3xl">{t("Trip date")}</p>
               <div className="flex justify-between">
                 {(() => {
                   const [edit, setEdit] = React.useState<boolean>(false);
@@ -347,17 +331,17 @@ export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
           <div className="flex flex-col p-4 gap-2">
             <div className="w-full flex justify-between items-center">
               <p className="text-3xl font-bold">
-                {products.length} {t("items", "items")}
+                {res ? res.data.bookedServices.length : 0} {t("items", "items")}
               </p>
               <p
                 className="text-lg cursor-pointer"
                 onClick={() => visit((routes) => routes.visitCarySummary())}
               >
-                Change
+                {t("Change")}
               </p>
             </div>
             <Divider />
-            <div className="flex flex-col gap-4 w-[min(30rem,100vw)]">
+            <div className="flex flex-col gap-4  w-[min(30rem,100vw)]">
               <SpinnerFallback isError={isError} isLoading={isLoading}>
                 {res
                   ? res.data.bookedServices.map((service, i) => (
@@ -366,6 +350,7 @@ export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
                   : null}
               </SpinnerFallback>
             </div>
+            <Divider />
             <SpinnerFallback isLoading={isLoading} isError={isError}>
               {res ? (
                 <TotalCost
