@@ -16,7 +16,16 @@ Default.args = {
   id: "123",
   label: "Restaurant",
   name: "Service name",
-  thumbnail: "/place-2.jpg",
+  attachements: [
+    {
+      src: "/shop-2.jpeg",
+      type: "image",
+    },
+    {
+      src: "/video.mp4",
+      type: "video",
+    },
+  ],
   content: "test content",
   hashtags: ["fashion", "gaming"],
   postInteraction: {

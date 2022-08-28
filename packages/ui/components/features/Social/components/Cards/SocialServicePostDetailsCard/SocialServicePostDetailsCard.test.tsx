@@ -16,7 +16,12 @@ describe("SocialServicePostDetails tests", () => {
       hashtags: ["fashion", "gaming"],
       label: "restaurant",
       name: "service name",
-      thumbnail: "/shop-2.jpeg",
+      attachements: [
+        {
+          type: "image",
+          src: "/shop-2.jpeg",
+        },
+      ],
       postInteraction: {
         comments: 50,
         likes: 100,

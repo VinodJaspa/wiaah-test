@@ -35,29 +35,31 @@ export const ShoppingCartServiceItemDataValidationSchema = object({
   serviceType: string().required(),
 });
 
-export const ShoppingCartItemData = mixed<CartSummaryItem>().test({
-  name: "Cart Summary Item",
-  message: "Cart Summary Item type and data doesnt match",
-  test: (v) => {
-    try {
-      console.log(v);
-      if (!v) return false;
-      switch (v?.type) {
-        case "product":
-          ShoppingCartProductItemDataValidationSchema.validateSync(v.data);
-          break;
-        case "service":
-          ShoppingCartServiceItemDataValidationSchema.validateSync(v.data);
-          break;
-        default:
-          return false;
+export const ShoppingCartItemData = mixed<CartSummaryItem>()
+  .test({
+    name: "Cart Summary Item",
+    message: "Cart Summary Item type and data doesnt match",
+    test: (v) => {
+      try {
+        console.log(v);
+        if (!v) return false;
+        switch (v?.type) {
+          case "product":
+            ShoppingCartProductItemDataValidationSchema.validateSync(v.data);
+            break;
+          case "service":
+            ShoppingCartServiceItemDataValidationSchema.validateSync(v.data);
+            break;
+          default:
+            return false;
+        }
+        return true;
+      } catch {
+        return false;
       }
-      return true;
-    } catch {
-      return false;
-    }
-  },
-});
+    },
+  })
+  .required();
 
 export const ShoppingCartApiResponseValidationSchema =
   createApiResponseValidationSchema(

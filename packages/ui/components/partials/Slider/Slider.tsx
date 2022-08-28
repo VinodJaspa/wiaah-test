@@ -93,6 +93,7 @@ export const Slider: React.FC<SliderProps> = ({
       className={`${containerProps?.className || ""} relative w-full h-full `}
     >
       <DraggableSlider
+        itemsCount={itemsCount}
         draggingActive={draggingActive}
         gap={gap}
         vertical={variant === "vertical"}

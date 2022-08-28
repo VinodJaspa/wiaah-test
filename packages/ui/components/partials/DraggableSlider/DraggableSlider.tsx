@@ -87,7 +87,7 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
   threshHold = 200,
   transition = 0.3,
   scaleOnDrag = false,
-  itemsCount = 2,
+  itemsCount = 1,
   vertical,
   gap = 0,
   draggingActive = true,
@@ -121,6 +121,7 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
 
   // watch for a change in activeIndex prop
   React.useEffect(() => {
+    console.log(activeIndex);
     if (activeIndex !== currentIndex.current) {
       transitionOn();
       if (
@@ -225,12 +226,15 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
     // if moved enough negative then snap to next slide if there is one
     if (
       movedBy < -threshHold &&
-      currentIndex.current < (Array.isArray(children) ? children.length - 1 : 0)
+      currentIndex.current <
+        (Array.isArray(children)
+          ? children.length - ((itemsCount > 1 ? itemsCount : 0) + 1)
+          : 0)
     )
       currentIndex.current += 1;
 
     // if moved enough positive then snap to previous slide if there is one
-    if (movedBy > threshHold && currentIndex.current > 0)
+    if (movedBy > threshHold / 4 && currentIndex.current > 0)
       currentIndex.current -= 1;
 
     transitionOn();
@@ -253,7 +257,7 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
       ? (sliderRef.current.style.transform = `translate${
           vertical ? "Y" : "X"
         }(${
-          currentTranslate.current +
+          currentTranslate.current / (itemsCount || 1) +
           -(currentIndex.current === 0 ? 0 : gap * currentIndex.current)
         }px)`)
       : null;
@@ -294,8 +298,14 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
               >
                 <Slide
                   child={child}
-                  sliderWidth={dimensions.width}
-                  sliderHeight={dimensions.height}
+                  sliderWidth={
+                    vertical ? dimensions.width : dimensions.width / itemsCount
+                  }
+                  sliderHeight={
+                    vertical
+                      ? dimensions.height / itemsCount
+                      : dimensions.height
+                  }
                   scaleOnDrag={scaleOnDrag}
                 />
               </div>

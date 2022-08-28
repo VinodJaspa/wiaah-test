@@ -11,9 +11,7 @@ export const ReactPubSubEventKeys = {
 type helperType<T, P, D, E> = T extends P ? D : E;
 
 export const useReactPubsub = (
-  getKey: (
-    keys: typeof ReactPubSubEventKeys
-  ) => keyof typeof ReactPubSubEventKeys
+  getKey: (keys: typeof ReactPubSubEventKeys) => string
 ) => {
   const { publish, subscribe, unSubscribe } =
     React.useContext(ReactPubsubContext);

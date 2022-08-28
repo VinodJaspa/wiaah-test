@@ -50,9 +50,10 @@ import {
   SelectOption,
   AccordionPanel,
   DateInput,
+  Radio,
 } from "ui";
 import { useGetOrdersHistoryQuery, useCancelOrderMutation } from "ui/Hooks";
-import { randomNum } from "utils";
+import { DateDetails, randomNum } from "utils";
 import { ReturnDeclineRequestValidationSchema } from "validation";
 
 export interface OrdersListProps {}
@@ -141,94 +142,204 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
                                   orderDeliveryStatus,
                                   orderName,
                                   payment,
+                                  price,
                                 },
                                 i
-                              ) => (
-                                <Tr className="cursor-pointer" key={i}>
-                                  <Td onClick={() => viewOrder(orderId)}>
-                                    {orderId}
-                                  </Td>
-                                  <Td onClick={() => viewOrder(orderId)}>
-                                    {customer}
-                                  </Td>
-                                  <Td onClick={() => viewOrder(orderId)}>
-                                    {orderName}
-                                  </Td>
-                                  <Td onClick={() => viewOrder(orderId)}>
-                                    {new Date(
-                                      orderDeliveryDate
-                                    ).toLocaleDateString("en", {
-                                      day: "2-digit",
-                                      month: "2-digit",
-                                      year: "numeric",
-                                    })}
-                                  </Td>
-                                  <Td onClick={() => viewOrder(orderId)}>
-                                    <PriceDisplay
-                                      priceObject={orderDeliveryPricing}
-                                    />
-                                  </Td>
-                                  <Td onClick={() => viewOrder(orderId)}>
-                                    <OrderStatusDisplay
-                                      className="w-fit capitalize mx-auto"
-                                      status={orderDeliveryStatus}
-                                    />
-                                  </Td>
-                                  <Td onClick={() => viewOrder(orderId)}>
-                                    {payment}
-                                  </Td>
-                                  <Td>
-                                    <ModalExtendedWrapper>
-                                      <ModalButton>
-                                        <div className="w-full flex justify-center">
-                                          <CancelIcon className="mx-auto" />
-                                        </div>
-                                      </ModalButton>
-                                      <ControlledModal>
-                                        <Formik<CancelOrderDto>
-                                          onSubmit={(data) => {
-                                            CancelOrder(data);
-                                          }}
-                                          initialValues={{
-                                            orderId,
-                                            cancelationReason: "",
-                                          }}
-                                          validationSchema={
-                                            ReturnDeclineRequestValidationSchema
-                                          }
-                                        >
-                                          <Form className="flex flex-col gap-4">
-                                            <FormikInput
-                                              label={t(
-                                                "cancelation_reason",
-                                                "Cancelation Reason"
-                                              )}
-                                              as={Textarea}
-                                              className="min-h-[10rem]"
-                                              name="cancelationReason"
-                                            />
-                                            <ModalFooter>
-                                              <ModalCloseButton>
-                                                <Button colorScheme="white">
-                                                  {t("close", "Close")}
-                                                </Button>
-                                              </ModalCloseButton>
-                                              <Button
-                                                loading={
-                                                  orderCancelationLoading
-                                                }
-                                                type="submit"
-                                              >
-                                                {t("submit", "Submit")}
-                                              </Button>
-                                            </ModalFooter>
-                                          </Form>
-                                        </Formik>
-                                      </ControlledModal>
-                                    </ModalExtendedWrapper>
-                                  </Td>
-                                </Tr>
-                              )
+                              ) => {
+                                const orderDate =
+                                  DateDetails(orderDeliveryDate);
+                                return (
+                                  <Tr className="cursor-pointer" key={i}>
+                                    <Td onClick={() => viewOrder(orderId)}>
+                                      {orderId}
+                                    </Td>
+                                    <Td onClick={() => viewOrder(orderId)}>
+                                      {customer}
+                                    </Td>
+                                    <Td onClick={() => viewOrder(orderId)}>
+                                      {orderName}
+                                    </Td>
+                                    <Td onClick={() => viewOrder(orderId)}>
+                                      {new Date(
+                                        orderDeliveryDate
+                                      ).toLocaleDateString("en", {
+                                        day: "2-digit",
+                                        month: "2-digit",
+                                        year: "numeric",
+                                      })}
+                                    </Td>
+                                    <Td onClick={() => viewOrder(orderId)}>
+                                      <PriceDisplay
+                                        price={orderDeliveryPricing}
+                                      />
+                                    </Td>
+                                    <Td onClick={() => viewOrder(orderId)}>
+                                      <OrderStatusDisplay
+                                        className="w-fit capitalize mx-auto"
+                                        status={orderDeliveryStatus}
+                                      />
+                                    </Td>
+                                    <Td onClick={() => viewOrder(orderId)}>
+                                      {payment}
+                                    </Td>
+                                    <Td>
+                                      <ModalExtendedWrapper>
+                                        <ModalButton>
+                                          <div className="w-full flex justify-center">
+                                            <CancelIcon className="mx-auto" />
+                                          </div>
+                                        </ModalButton>
+                                        <ControlledModal>
+                                          <Formik<CancelOrderDto>
+                                            onSubmit={(data) => {
+                                              CancelOrder(data);
+                                            }}
+                                            initialValues={{
+                                              orderId,
+                                              cancelationReason: "",
+                                              get: "money",
+                                              for: "full",
+                                            }}
+                                            validationSchema={
+                                              ReturnDeclineRequestValidationSchema
+                                            }
+                                          >
+                                            {({ setFieldValue, values }) => (
+                                              <Form className="flex w-full items-center flex-col gap-4">
+                                                <p className="font-bold text-xl">
+                                                  {t(
+                                                    "Refund Request For Order"
+                                                  )}{" "}
+                                                  #{orderId}
+                                                </p>
+                                                <div className="flex gap-2 whitespace-nowrap">
+                                                  {t("Paid")}{" "}
+                                                  <PriceDisplay price={price} />{" "}
+                                                  {t("on")}{" "}
+                                                  {orderDate
+                                                    ? `${orderDate.month_long} ${orderDate.day}, ${orderDate.year_num}`
+                                                    : null}
+                                                </div>
+                                                <div className="grid grid-cols-3 gap-4 w-full">
+                                                  <p>
+                                                    {t("I would like to get")}
+                                                  </p>
+                                                  <div className="flex col-span-2 flex-col gap-2">
+                                                    <Radio
+                                                      checked={
+                                                        values.get === "money"
+                                                      }
+                                                      onChange={(e) =>
+                                                        e.target.checked
+                                                          ? setFieldValue(
+                                                              "get",
+                                                              "money"
+                                                            )
+                                                          : null
+                                                      }
+                                                    >
+                                                      {t("My money back")}
+                                                    </Radio>
+
+                                                    <Radio
+                                                      checked={
+                                                        values.get === "credit"
+                                                      }
+                                                      onChange={(e) =>
+                                                        e.target.checked
+                                                          ? setFieldValue(
+                                                              "get",
+                                                              "credit"
+                                                            )
+                                                          : null
+                                                      }
+                                                    >
+                                                      {t(
+                                                        "Credit note for future purchase"
+                                                      )}
+                                                    </Radio>
+                                                  </div>
+                                                  <p>{t("For")}</p>
+                                                  <div className="flex flex-col col-span-2 gap-2">
+                                                    <Radio
+                                                      checked={
+                                                        values.for === "full"
+                                                      }
+                                                      onChange={(e) =>
+                                                        e.target.checked
+                                                          ? setFieldValue(
+                                                              "for",
+                                                              "full"
+                                                            )
+                                                          : null
+                                                      }
+                                                    >
+                                                      {t("Full amount")}
+                                                    </Radio>
+                                                    <Radio
+                                                      checked={
+                                                        values.for === "partial"
+                                                      }
+                                                      onChange={(e) =>
+                                                        e.target.checked
+                                                          ? setFieldValue(
+                                                              "for",
+                                                              "partial"
+                                                            )
+                                                          : null
+                                                      }
+                                                      className="whitespace-nowrap"
+                                                    >
+                                                      <p className="whitespace-nowrap">
+                                                        {t("Partial amount of")}{" "}
+                                                      </p>
+                                                      {values.for ===
+                                                      "partial" ? (
+                                                        <Input
+                                                          value={values.amount}
+                                                          type={"number"}
+                                                          onChange={(e) =>
+                                                            setFieldValue(
+                                                              "amount",
+                                                              e.target.value
+                                                            )
+                                                          }
+                                                        />
+                                                      ) : null}
+                                                    </Radio>
+                                                  </div>
+                                                  <p>{t("Because")}</p>
+                                                  <FormikInput
+                                                    containerProps={{
+                                                      className: "col-span-2",
+                                                    }}
+                                                    name="cancelationReason"
+                                                    as={Textarea}
+                                                  />
+                                                </div>
+                                                <ModalFooter>
+                                                  <ModalCloseButton>
+                                                    <Button
+                                                      loading={
+                                                        orderCancelationLoading
+                                                      }
+                                                    >
+                                                      {t("Send my request")}
+                                                    </Button>
+                                                  </ModalCloseButton>
+                                                  <Button colorScheme="white">
+                                                    {t("Cancel")}
+                                                  </Button>
+                                                </ModalFooter>
+                                              </Form>
+                                            )}
+                                          </Formik>
+                                        </ControlledModal>
+                                      </ModalExtendedWrapper>
+                                    </Td>
+                                  </Tr>
+                                );
+                              }
                             )}
                         </TBody>
                       </Table>

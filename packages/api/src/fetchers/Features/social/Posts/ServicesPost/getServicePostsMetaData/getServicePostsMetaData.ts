@@ -1,4 +1,3 @@
-import { UseQueryOptions } from "react-query";
 import { FormatedSearchableFilter, QueryPaginationInputs } from "src/types";
 import { AsyncReturnType } from "types";
 import { randomNum } from "utils";
@@ -26,7 +25,10 @@ export const getServicePostsMetaDataFetcher = (
     total: randomNum(163),
     data: [...Array(15)].map((_, i) => ({
       id: "123" + i,
-      thumbnail: "/shop-2.jpeg",
+      attachments: [
+        { src: "/shop-2.jpeg", type: "image" },
+        { src: "/video.mp4", type: "video" },
+      ],
       label: "service label",
       name: "service name",
       type: "seller",

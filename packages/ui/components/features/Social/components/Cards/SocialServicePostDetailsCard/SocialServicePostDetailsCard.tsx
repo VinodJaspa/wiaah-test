@@ -1,7 +1,7 @@
 import { ServicePostType } from "api";
 import React from "react";
 import {
-  AspectRatioImage,
+  AspectRatio,
   PostInteractions,
   PostCommentsList,
   CommentInput,
@@ -37,11 +37,19 @@ export const SocialServicePostDetailsCard: React.FC<
     <div className="w-full flex flex-col gap-2 cursor-pointer">
       {content && <EllipsisText wordBreak content={content} maxLines={3} />}
       <HashTags tags={hashtags || []} />
-      <Slider>
-        {attachements.map((att) => (
-          <SocialServicePostAttachment id={id} alt={name} {...att} />
-        ))}
-      </Slider>
+      <AspectRatio ratio={3 / 4}>
+        <Slider>
+          {Array.isArray(attachements)
+            ? attachements.map((att) => (
+                <SocialServicePostAttachment
+                  id={id}
+                  alt={name}
+                  attachment={att}
+                />
+              ))
+            : null}
+        </Slider>
+      </AspectRatio>
       <PostInteractions {...postInteraction} />
       <CommentInput />
       <PostCommentsList postId={id} />

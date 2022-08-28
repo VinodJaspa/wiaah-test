@@ -1,7 +1,6 @@
 import React from "react";
-import { Button } from "@chakra-ui/react";
 import { FlexStack, WishListIcon, Rate, Select, SelectOption } from "ui";
-import { useShoppingCart } from "ui/Hooks/useShoppingCart";
+import { useMutateShoppingCart, Button } from "ui";
 import { useCartSummary, useProductDescTabs } from "ui/Hooks";
 import { CartSummaryItem } from "types";
 import { useTranslation } from "react-i18next";
@@ -35,10 +34,9 @@ export const ProductViewRight: React.FC<ProductProps> = ({
   reviews = 0,
   imgUrl,
   id,
-  saved,
 }) => {
   const { t } = useTranslation();
-  const { OpenShoppingCart } = useShoppingCart();
+  const { OpenShoppingCart } = useMutateShoppingCart();
   const { AddNewItem } = useCartSummary();
   const { ChangeTab } = useProductDescTabs();
   function handleNewItem(item: CartSummaryItem) {
