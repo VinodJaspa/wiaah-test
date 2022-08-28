@@ -17,6 +17,7 @@ import {
   Select,
   SelectOption,
   InputProps,
+  HashTagInput,
 } from "ui";
 import { HiFolderAdd, HiVideoCamera } from "react-icons/hi";
 
@@ -36,7 +37,7 @@ export const VehicleServiceDetailsForm: React.FC<
     <div className="w-full flex flex-col gap-4">
       <Formik
         validationSchema={NewServiceSchemas.restaurantDetailsSchema}
-        initialValues={{}}
+        initialValues={{} as Record<string, any>}
         onSubmit={() => {}}
       >
         {({ values, setFieldValue }) => {
@@ -78,7 +79,7 @@ export const VehicleServiceDetailsForm: React.FC<
                 as={Textarea}
                 placeholder={t("Service Tag")}
               />
-
+              <HashTagInput />
               <span className="text-2xl font-semibold">
                 {t("Price & Attributes")}
               </span>

@@ -12,12 +12,7 @@ export const HotelCheckoutCard: React.FC<HotelCheckoutCardProps> = (props) => {
   const { t } = useTranslation();
 
   return (
-    <ServiceCheckoutCommonCardWrapper {...rest}>
-      <div className="flex items-center gap-2">
-        <p className="font-semibold">{t("Guests")}:</p>
-        <p>{guests}</p>
-      </div>
-
+    <ServiceCheckoutCommonCardWrapper {...props}>
       <div {...setTestid("extrasContainer")} className="flex flex-col gap-2">
         <p className="font-semibold">{t("Extras")}:</p>
         {Array.isArray(extras)

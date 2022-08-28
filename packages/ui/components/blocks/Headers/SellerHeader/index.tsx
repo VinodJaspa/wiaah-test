@@ -18,7 +18,7 @@ import {
   MenuButton,
   HStack,
   TranslationText,
-  LocationIcon,
+  LocationIconButton,
 } from "ui";
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
@@ -71,7 +71,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
           <GeneralSearchModal>
             <SearchInput innerProps={{ onClick: openSearchBox }} />
           </GeneralSearchModal>
-          <LocationIcon className="text-3xl" />
+          <LocationIconButton className="text-2xl text-white" />
         </div>
       )}
 

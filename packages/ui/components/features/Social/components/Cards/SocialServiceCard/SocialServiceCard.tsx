@@ -44,6 +44,7 @@ export const SocialServicePostCard: React.FC<SocialServicePostCardProps> = (
       <HashTags tags={hashtags || []} />
       <SocialServicePostMetaDataCard
         onClick={() => handleServiceClick()}
+        attachments={props.attachements}
         {...props}
       />
       <PostInteractions {...postInteraction} />

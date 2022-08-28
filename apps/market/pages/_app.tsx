@@ -23,12 +23,16 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedProps}>
         <RoutingProvider
-          getCurrentPath={() => router.asPath}
+          getQuery={() => router.query}
+          getCurrentPath={() => {
+            return router.asPath;
+          }}
           visit={(url) => (router ? router.push(url) : null)}
           getParam={(paramName) => {
             const params = router.query[paramName];
             const param =
               Array.isArray(params) && params.length > 0 ? params[0] : params;
+
             return typeof param === "string" ? param : null;
           }}
         >

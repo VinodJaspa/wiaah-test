@@ -1,34 +1,29 @@
-import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useRecoilValue } from "recoil";
+import { useRouting } from "routing";
 import {
-  BoldText,
   BoxShadow,
   Button,
-  Divider,
+  TotalCost,
+  SpinnerFallback,
   FlexStack,
   Padding,
   Spacer,
-  Text,
-  useCartSummary,
   useScreenWidth,
-  CartSummaryProductsPH,
+  useGetMyCartSummaryDataQuery,
 } from "ui";
-import { CartSummaryTotalPriceState } from "ui/state";
 import CartSummaryFilled from "./CartSummaryFilled";
 import EmptyCartSummary from "./EmptyCartSummary";
 
-const CartSummaryView: React.FC = () => {
+export const CartSummaryView: React.FC = () => {
   const { t } = useTranslation();
-  const router = useRouter();
+  const { visit } = useRouting();
   const { min } = useScreenWidth({ minWidth: 900 });
-  const cartSummaryItems = CartSummaryProductsPH;
-  const totalPrice = useRecoilValue(CartSummaryTotalPriceState);
-  const deliveryFee = 0;
+  const { data: res, isLoading, isError } = useGetMyCartSummaryDataQuery();
+  const cartSummaryItems = res ? res.data : [];
 
   function handleCheckout() {
-    router.push("/checkout");
+    visit((routes) => routes.visitCheckout());
   }
 
   return (
@@ -43,14 +38,14 @@ const CartSummaryView: React.FC = () => {
       >
         <div className="flex flex-grow flex-col bg-white p-4">
           <div className="w-full text-3xl font-bold">
-            {t("shopping_cart", "SHOPPING CART")}{" "}
+            {t("SHOPPING CART")}{" "}
             {cartSummaryItems.length > 0
-              ? `(${cartSummaryItems.length} ${t("items", "items")})`
+              ? `(${cartSummaryItems.length} ${t("items")})`
               : null}
           </div>
           <Spacer />
           {cartSummaryItems.length > 0 ? (
-            <CartSummaryFilled items={cartSummaryItems} />
+            <CartSummaryFilled />
           ) : (
             <EmptyCartSummary />
           )}
@@ -65,30 +60,17 @@ const CartSummaryView: React.FC = () => {
                   verticalSpacingInRem={2}
                 >
                   {/* checkout */}
-                  <BoldText>
-                    <Text size="3xl">Total</Text>
-                  </BoldText>
-                  <Text size="lg">
-                    <FlexStack justify="between" fullWidth>
-                      {t("sub_total", "SubTotal")}
-                      <BoldText>${totalPrice}</BoldText>
-                    </FlexStack>
-                  </Text>
-                  <Text size="lg">
-                    <FlexStack justify="between" fullWidth>
-                      {t("delivery", "Delivery")}
-                      <BoldText>${deliveryFee}</BoldText>
-                    </FlexStack>
-                  </Text>
-                  <Divider className="my-2 border-gray-300" />
-                  <Text size="xl">
-                    <FlexStack justify="between">
-                      <BoldText>
-                        {t("total_vat", "Total (VAT included)")}
-                      </BoldText>
-                      <BoldText>${totalPrice}</BoldText>
-                    </FlexStack>
-                  </Text>
+                  <SpinnerFallback isLoading={isLoading} isError={isError}>
+                    {res ? (
+                      <TotalCost
+                        subTotal={res.data.reduce((acc, curr) => {
+                          return acc + curr.itemData.data.price;
+                        }, 0)}
+                        vat={10}
+                        voucherRemoveable
+                      />
+                    ) : null}
+                  </SpinnerFallback>
                   <Button onClick={handleCheckout}>
                     {t("go_to_checkout", "GO TO CHECKOUT")}
                   </Button>
@@ -101,5 +83,3 @@ const CartSummaryView: React.FC = () => {
     </FlexStack>
   );
 };
-
-export default CartSummaryView;

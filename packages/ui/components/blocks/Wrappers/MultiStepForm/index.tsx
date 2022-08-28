@@ -127,7 +127,7 @@ const Formcomponent: React.ForwardRefRenderFunction<
           </div>
         </Container>
       </div>
-      <div className="overflow-scroll thinScroll  pl-4 py-4 md:pl-8 md:py-8">
+      <div className="overflow-scroll thinScroll h-full pl-4 py-4 md:pl-8 md:py-8">
         {steps.map((step, i) => {
           if (formStep !== i) return null;
           const Comp = step.stepComponent;

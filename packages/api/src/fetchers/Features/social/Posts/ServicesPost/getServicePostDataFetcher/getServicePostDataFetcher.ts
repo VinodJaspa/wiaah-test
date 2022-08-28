@@ -6,10 +6,15 @@ import {
   ServicePostDataApiResponseValidationSchema,
   InferType,
   CheckValidation,
+  PostAttachmentValidationSchema,
 } from "validation";
 
 export type ServicePostDetails = InferType<
   typeof ServicePostDataValidationSchema
+>;
+
+export type SocialPostAttachment = InferType<
+  typeof PostAttachmentValidationSchema
 >;
 export type ServicePostApiResponseData = InferType<
   typeof ServicePostDataApiResponseValidationSchema

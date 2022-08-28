@@ -1,8 +1,8 @@
 import { ServiceType } from "dto";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { GiHouse, GiTalk } from "react-icons/gi";
-import { FaMotorcycle } from "react-icons/fa";
+import { GiHouse } from "react-icons/gi";
+import { FaHotel } from "react-icons/fa";
 import {
   SectionHeader,
   CheckMarkStepper,
@@ -22,6 +22,7 @@ import {
   TabItem,
   TabTitle,
   FlagIcon,
+  MyServicesCtx,
 } from "ui";
 import { NewServiceSchemas } from "validation";
 import { CallbackAfter } from "utils";
@@ -34,7 +35,9 @@ import { HealthCenterServiceDetailsForm } from "./HealthCenterServiceDetailsForm
 import { VehicleServiceDetailsForm } from "./VehicleServiceDetailsForm";
 import { BeautyCenterServiceDetailsForm } from "./BeautyCenterServiceDetailsForm";
 import { ServicePoliciesSection } from "./ServicePoliciesSection";
-import { FlagIconCode } from "react-flag-kit";
+import { RestaurantIncludedServicesSection } from "./RestaruantIncludedServicesSection";
+import { HolidayRentalsGeneralDetailsForm } from "./HolidayRentalsGeneralDetailsForm";
+import { HealthCenterIncludedServices } from "./HealthCenterIncludedServices";
 
 export interface AddNewServiceProps {}
 
@@ -42,7 +45,7 @@ export const AddNewService: React.FC<AddNewServiceProps> = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col h-full">
       <SectionHeader sectionTitle={t("Add New Service")} />
 
       <Tabs>
@@ -64,39 +67,40 @@ export const AddNewService: React.FC<AddNewServiceProps> = () => {
                   </div>
                 )}
               </TabTitle>
-              <TabItem key={i}>{section.section({})}</TabItem>
+              <TabItem key={i}>{null}</TabItem>
             </React.Fragment>
           ))}
           <TabList />
         </>
       </Tabs>
+      {addProductLanguagesSection[0].section({})}
     </div>
   );
+};
+
+type ServiceSectionWithSchemaType = {
+  key: ServiceType;
+  component: React.FC<any>;
+  schema: AnySchema;
 };
 
 export const NewServiceStepper: React.FC = () => {
   const { t } = useTranslation();
   const [serviceType, setServiceType] = React.useState<ServiceType>();
+  const { CancelAddingNewService } = React.useContext(MyServicesCtx);
 
   const serviceTypes: ServiceSelectingInfo[] = [
     {
+      serviceIcon: FaHotel,
+      serviceKey: "hotel",
+      serviceDescription: "Put up your hotel for booking",
+      serviceName: "Hotel booking",
+    },
+    {
       serviceIcon: GiHouse,
-      serviceKey: "placeBooking",
+      serviceKey: "holidayRentals",
       serviceDescription: "put some place up for rent",
-      serviceName: "Place Book",
-    },
-    {
-      serviceIcon: GiTalk,
-      serviceKey: "rendez-vous",
-      serviceDescription:
-        "offer your experince as an appointment to talk and discuss",
-      serviceName: "rendez-vous",
-    },
-    {
-      serviceIcon: FaMotorcycle,
-      serviceKey: "thingsRenting",
-      serviceDescription: "put some of your unused things or tools for rent",
-      serviceName: "Things renting",
+      serviceName: "Holiday rentals",
     },
     {
       serviceIcon: ForkAndSpoonIcon,
@@ -125,18 +129,14 @@ export const NewServiceStepper: React.FC = () => {
     },
   ];
 
-  const ServicesDetailsSections: {
-    key: ServiceType;
-    component: React.FC<any>;
-    schema: AnySchema;
-  }[] = [
+  const ServicesDetailsSections: ServiceSectionWithSchemaType[] = [
     {
       key: "restaurant",
       component: RestaurantServiceDetailsForm,
       schema: NewServiceSchemas.restaurantDetailsSchema,
     },
     {
-      key: "placeBooking",
+      key: "hotel",
       component: ServiceGeneralDetails,
       schema: NewServiceSchemas.serviceGeneralDetailsSchema,
     },
@@ -155,141 +155,182 @@ export const NewServiceStepper: React.FC = () => {
       component: BeautyCenterServiceDetailsForm,
       schema: NewServiceSchemas.beautyCenterDetailsSchema,
     },
+    {
+      key: "holidayRentals",
+      component: HolidayRentalsGeneralDetailsForm,
+      schema: NewServiceSchemas.beautyCenterDetailsSchema,
+    },
   ];
+
+  const includedServiceSections: ServiceSectionWithSchemaType[] = [
+    {
+      key: "placeBooking",
+      component: IncludedServices,
+      schema: NewServiceSchemas.hotelIncludedServicesSchema,
+    },
+    {
+      key: "restaurant",
+      component: RestaurantIncludedServicesSection,
+      schema: NewServiceSchemas.RestaurantIncludedServicesSchema,
+    },
+    {
+      key: "holidayRentals",
+      component: IncludedServices,
+      schema: NewServiceSchemas.RestaurantIncludedServicesSchema,
+    },
+    {
+      key: "healthCenter",
+      component: HealthCenterIncludedServices,
+      schema: NewServiceSchemas.healthCenterIncludedServicesSchema,
+    },
+  ];
+
+  const includedServiceSection = includedServiceSections.find(
+    (s) => s.key === serviceType
+  );
 
   const detailsSection = ServicesDetailsSections.find(
     (section) => section.key === serviceType
   );
 
-  console.log({ detailsSection, serviceType });
   return (
-    <StepperFormController lock={false} stepsNum={5} onFormComplete={() => {}}>
-      {({ nextStep, currentStepIdx, goToStep }) => (
-        <>
-          <CheckMarkStepper
-            currentStepIdx={currentStepIdx}
-            onStepChange={(step) => goToStep(step)}
-            steps={[
-              {
-                key: "selectServiceType",
-                stepComponent: (
-                  <StepperFormHandler
-                    validationSchema={NewServiceSchemas.serviceTypeSchema}
-                    handlerKey="serviceType"
-                  >
-                    {({ validate }) => (
-                      <ChooseServiceType
-                        ServicesInfo={serviceTypes}
-                        onServiceChoosen={(key) => {
-                          validate({ type: key });
-                          setServiceType(key);
-                          CallbackAfter(50, () => {
-                            nextStep();
-                          });
-                        }}
-                      />
-                    )}
-                  </StepperFormHandler>
-                ),
-                stepName: "Service Type",
-              },
-              {
-                key: "generalDetails",
-                stepComponent: (
-                  <StepperFormHandler
-                    validationSchema={
-                      detailsSection ? detailsSection.schema : undefined
-                    }
-                    handlerKey="generalDetails"
-                  >
-                    {({ validate }) => (
-                      <>
-                        {detailsSection ? (
-                          <detailsSection.component onChange={validate} />
-                        ) : null}
-                      </>
-                    )}
-                  </StepperFormHandler>
-                ),
-                stepName: {
-                  translationKey: "Service general details",
-                  fallbackText: "Service general details",
+    <div className="flex flex-col gap-4 h-full justify-between">
+      <StepperFormController
+        lock={false}
+        stepsNum={5}
+        onFormComplete={() => {}}
+      >
+        {({ nextStep, currentStepIdx, goToStep }) => (
+          <>
+            <CheckMarkStepper
+              currentStepIdx={currentStepIdx}
+              onStepChange={(step) => goToStep(step)}
+              steps={[
+                {
+                  key: "selectServiceType",
+                  stepComponent: (
+                    <StepperFormHandler
+                      validationSchema={NewServiceSchemas.serviceTypeSchema}
+                      handlerKey="serviceType"
+                    >
+                      {({ validate }) => (
+                        <ChooseServiceType
+                          ServicesInfo={serviceTypes}
+                          onServiceChoosen={(key) => {
+                            validate({ type: key });
+
+                            setServiceType(key);
+                            CallbackAfter(50, () => {
+                              nextStep();
+                            });
+                          }}
+                        />
+                      )}
+                    </StepperFormHandler>
+                  ),
+                  stepName: "Service Type",
                 },
-              },
-              {
-                key: "servicePolicies",
-                stepComponent: (
-                  <StepperFormHandler
-                    validationSchema={
-                      detailsSection ? detailsSection.schema : undefined
-                    }
-                    handlerKey="servicePolicies"
-                  >
-                    {({ validate }) => (
-                      <>
-                        <ServicePoliciesSection onChange={validate} />
-                      </>
-                    )}
-                  </StepperFormHandler>
-                ),
-                stepName: {
-                  translationKey: "Service Policy Details",
-                  fallbackText: "Service Policy Details",
+                {
+                  key: "generalDetails",
+                  stepComponent: (
+                    <StepperFormHandler
+                      validationSchema={detailsSection?.schema}
+                      handlerKey="generalDetails"
+                    >
+                      {({ validate }) => {
+                        return (
+                          <>
+                            {detailsSection ? (
+                              <detailsSection.component onChange={validate} />
+                            ) : null}
+                          </>
+                        );
+                      }}
+                    </StepperFormHandler>
+                  ),
+                  stepName: {
+                    translationKey: "Service general details",
+                    fallbackText: "Service general details",
+                  },
                 },
-              },
-              {
-                key: "includedServices",
-                stepComponent: (
-                  <StepperFormHandler
-                    handlerKey="includedServices"
-                    validationSchema={NewServiceSchemas.includedServices}
-                  >
-                    <IncludedServices onChange={() => {}} />
-                  </StepperFormHandler>
-                ),
-                stepName: {
-                  translationKey: "Included Service",
-                  fallbackText: "Included Service",
+                {
+                  key: "servicePolicies",
+                  stepComponent: (
+                    <StepperFormHandler handlerKey="servicePolicies">
+                      {({ validate }) => (
+                        <>
+                          <ServicePoliciesSection onChange={validate} />
+                        </>
+                      )}
+                    </StepperFormHandler>
+                  ),
+                  stepName: {
+                    translationKey: "Service Policy Details",
+                    fallbackText: "Service Policy Details",
+                  },
                 },
-              },
-              {
-                key: "extraServiceOptions",
-                stepComponent: (
-                  <StepperFormHandler
-                    handlerKey="extraServiceOptions"
-                    validationSchema={NewServiceSchemas.extraSreivce}
-                  >
-                    <ExtraServiceOptions onChange={() => {}} />
-                  </StepperFormHandler>
-                ),
-                stepName: {
-                  translationKey: "Extra Service",
+                {
+                  key: "includedServices",
+                  stepComponent: (
+                    <StepperFormHandler
+                      handlerKey="includedServices"
+                      validationSchema={includedServiceSection?.schema}
+                    >
+                      {includedServiceSection ? (
+                        <includedServiceSection.component />
+                      ) : null}
+                    </StepperFormHandler>
+                  ),
+                  stepName: {
+                    translationKey: "Included Service",
+                    fallbackText: "Included Service",
+                  },
                 },
-              },
-              {
-                key: "discount",
-                stepComponent: (
-                  <StepperFormHandler
-                    handlerKey="discount"
-                    validationSchema={NewServiceSchemas.discount}
-                  >
-                    <NewProductDiscountOptions />
-                  </StepperFormHandler>
-                ),
-                stepName: {
-                  translationKey: "Discount",
+                {
+                  key: "extraServiceOptions",
+                  stepComponent: (
+                    <StepperFormHandler
+                      handlerKey="extraServiceOptions"
+                      validationSchema={NewServiceSchemas.extraSreivce}
+                    >
+                      <ExtraServiceOptions onChange={() => {}} />
+                    </StepperFormHandler>
+                  ),
+                  stepName: {
+                    translationKey: "Extra Service",
+                  },
                 },
-              },
-            ]}
-          />
-          {currentStepIdx !== 0 && (
-            <Button className="w-fit self-end" onClick={() => nextStep()}>
-              {t("Next")}
-            </Button>
-          )}
-        </>
-      )}
-    </StepperFormController>
+                {
+                  key: "discount",
+                  stepComponent: (
+                    <StepperFormHandler
+                      handlerKey="discount"
+                      validationSchema={NewServiceSchemas.discount}
+                    >
+                      <NewProductDiscountOptions />
+                    </StepperFormHandler>
+                  ),
+                  stepName: {
+                    translationKey: "Discount",
+                  },
+                },
+              ]}
+            />
+            <div className="w-full justify-between flex">
+              <Button onClick={() => CancelAddingNewService()}>
+                {t("Cancel")}
+              </Button>
+
+              {currentStepIdx !== 0 && (
+                <Button className="w-fit self-end" onClick={() => nextStep()}>
+                  {t("Next")}
+                </Button>
+              )}
+            </div>
+          </>
+        )}
+      </StepperFormController>
+    </div>
   );
 };
 
@@ -323,7 +364,7 @@ export const ChooseServiceType: React.FC<ChooseServiceTypeProps> = ({
 const addProductLanguagesSection: {
   language: {
     name: string;
-    countryCode: FlagIconCode;
+    countryCode: string;
   };
   section: React.FunctionComponent;
 }[] = [

@@ -16,6 +16,7 @@ import {
   Stack,
   Divider,
   InputProps,
+  HashTagInput,
 } from "ui";
 import { FileRes } from "utils";
 import { NewServiceSchemas } from "validation";
@@ -37,7 +38,7 @@ export const RestaurantServiceDetailsForm: React.FC<
     <div className="w-full flex flex-col gap-4">
       <Formik
         validationSchema={NewServiceSchemas.restaurantDetailsSchema}
-        initialValues={{}}
+        initialValues={{} as Record<string, any>}
         onSubmit={() => {}}
       >
         {({ values, setFieldValue }) => {
@@ -79,7 +80,7 @@ export const RestaurantServiceDetailsForm: React.FC<
                 as={Textarea}
                 placeholder={t("Service Tag")}
               />
-
+              <HashTagInput />
               <span className="text-2xl font-semibold">
                 {t("Price & Attributes")}
               </span>

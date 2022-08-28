@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiTime } from "react-icons/bi";
+import { FaBed } from "react-icons/fa";
 import { HiTicket } from "react-icons/hi";
 import { MdPending } from "react-icons/md";
 import { RiBookLine, RiServiceFill } from "react-icons/ri";
@@ -42,48 +43,75 @@ export const ServiceManagementView = () => {
 
 const sections: SettingsSectionType[] = [
   {
-    panelName: {
-      translationKey: "my_rendez_vous",
-      fallbackText: "My rendez-vous",
-    },
+    panelName: "My rendez-vous",
     panelIcon: HiTicket,
     panelUrl: "/my-rendez-vous",
     panelComponent: <BookingsSection />,
+    subSections: [],
   },
   {
-    panelName: {
-      translationKey: "bookings",
-      fallbackText: "Bookings",
-    },
+    panelName: "Bookings",
     panelIcon: RiBookLine,
     panelUrl: "/bookings",
     panelComponent: <BookingsHistory />,
+    subSections: [],
   },
   {
-    panelName: {
-      translationKey: "pending_appointments",
-      fallbackText: "Pending Appointments",
-    },
+    panelName: "Pending Appointments",
     panelIcon: MdPending,
     panelUrl: "/pending-appointments",
     panelComponent: <PendingAppointmentsSection />,
+    subSections: [],
   },
   {
-    panelName: {
-      translationKey: "my_services",
-      fallbackText: "My Service",
-    },
+    panelName: "My Service",
     panelIcon: RiServiceFill,
     panelUrl: "/my-service",
     panelComponent: <MyServicesSection />,
+    subSections: [
+      {
+        key: "hotel",
+        sections: [
+          {
+            panelName: "Rooms Management",
+            panelComponent: (
+              <div className="font-bold text-4xl">Rooms to be implemented</div>
+            ),
+            panelIcon: FaBed,
+            panelUrl: "/rooms-management",
+            subSections: [],
+          },
+          {
+            panelName: "Bookings",
+            panelComponent: (
+              <div className="font-bold text-4xl">
+                Bookings to be implemented
+              </div>
+            ),
+            panelIcon: FaBed,
+            panelUrl: "/Bookings",
+            subSections: [],
+          },
+          {
+            panelName: "Contact Settings",
+            panelComponent: (
+              <div className="font-bold text-4xl">
+                Contact to be implemented
+              </div>
+            ),
+            panelIcon: FaBed,
+            panelUrl: "/contact-settings",
+            subSections: [],
+          },
+        ],
+      },
+    ],
   },
   {
-    panelName: {
-      translationKey: "openning_time_management",
-      fallbackText: "Opening time management",
-    },
+    panelName: "Opening time management",
     panelIcon: BiTime,
     panelUrl: "/opening-time-management",
     panelComponent: <TimeManagementSection />,
+    subSections: [],
   },
 ];

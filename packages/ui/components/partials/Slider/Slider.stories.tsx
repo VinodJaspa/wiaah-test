@@ -40,3 +40,9 @@ withGap.args = {
   leftArrowComponent: <div> {"<"} </div>,
   rightArrowComponent: <div> {">"} </div>,
 };
+export const multiplyItems = template.bind({});
+multiplyItems.args = {
+  itemsCount: 3,
+  leftArrowComponent: <div> {"<"} </div>,
+  rightArrowComponent: <div> {">"} </div>,
+};

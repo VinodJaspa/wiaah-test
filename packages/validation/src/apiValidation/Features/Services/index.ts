@@ -7,3 +7,4 @@ export * from "./common";
 export * from "./BeautyCenter";
 export * from "./Checkout";
 export * from "./BookConfirmation";
+export * from "./misc";

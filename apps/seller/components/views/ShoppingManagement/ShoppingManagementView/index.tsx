@@ -8,8 +8,9 @@ import {
   MyWishListSection,
   OrdersSection,
   PaymentMethodsSection,
+  SectionsLayout,
 } from "ui";
-import { SectionsLayout } from "ui/components/blocks/Layout";
+
 import { MdPayment } from "react-icons/md";
 import { BsBoxArrowInUp } from "react-icons/bs";
 import { IoReturnUpBackSharp } from "react-icons/io5";
@@ -43,46 +44,31 @@ export const ShoppingManagementView: React.FC = () => {
 
 const sections: SettingsSectionType[] = [
   {
-    panelName: {
-      translationKey: "my-wishlist",
-      fallbackText: "My Wishlist",
-    },
+    panelName: "My Wishlist",
     panelIcon: MdList,
     panelUrl: "/my-wishlist",
     panelComponent: <MyWishListSection />,
   },
   {
-    panelName: {
-      translationKey: "orders",
-      fallbackText: "Orders",
-    },
+    panelName: "Orders",
     panelIcon: BsBoxArrowInUp,
     panelUrl: "/orders",
     panelComponent: <OrdersSection shopping />,
   },
   {
-    panelName: {
-      translationKey: "my_returns",
-      fallbackText: "My Returns",
-    },
+    panelName: "My Returns",
     panelIcon: IoReturnUpBackSharp,
     panelUrl: "/my-returns",
     panelComponent: <MyReturnsSection />,
   },
   {
-    panelName: {
-      translationKey: "payment_methods",
-      fallbackText: "Payment Meothds",
-    },
+    panelName: "Payment Meothds",
     panelIcon: MdPayment,
     panelUrl: "/payment-motheds",
     panelComponent: <PaymentMethodsSection />,
   },
   {
-    panelName: {
-      translationKey: "address_book",
-      fallbackText: "Address Book",
-    },
+    panelName: "Address Book",
     panelIcon: GiPostStamp,
     panelUrl: "/address-book",
     panelComponent: <AddressBookSection />,

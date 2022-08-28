@@ -10,6 +10,7 @@ export type MainRouterInterface = {
   query: RoutingQueryType;
   dataKeys: Record<string, any>;
   addQuery: (query: RoutingQueryType) => RoutesType;
+  removeQuery: (query: string) => RoutesType;
   mapProps: (
     keys: readonly string[],
     data: Record<string, any>
@@ -20,6 +21,7 @@ export type MainRouterInterface = {
   onMap: () => RoutesType;
   search: () => RoutesType;
   checkout: () => RoutesType;
+  visitCheckout: () => RoutesType;
   visitRecommendedServiceOrShop: (props: Record<string, any>) => RoutesType;
 } & ServicesRoutesType &
   UserRelatedRoutesType &
@@ -75,5 +77,12 @@ export const MainRoutes: MainRouterInterface = {
   addQuery(query: RoutingQueryType) {
     this.query = { ...this.query, ...query };
     return this;
+  },
+  removeQuery(query) {
+    delete this.query[query];
+    return this;
+  },
+  visitCheckout() {
+    return this.checkout();
   },
 };

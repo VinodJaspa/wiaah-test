@@ -15,6 +15,7 @@ import {
   SpinnerFallback,
   newsfeedPosts,
   Divider,
+  SocialServicePostsList,
 } from "ui";
 import {
   useGetSocialProfile,
@@ -22,53 +23,11 @@ import {
   socialAffiliationCardPlaceholders,
   profileActionsPlaceholder,
 } from "ui";
-import { TabType } from "types/market/misc/tabs";
+import { TabType } from "types";
 import { useRecoilValue } from "recoil";
-import { SocialNewsfeedPostsState } from "ui/state";
+import { SocialNewsfeedPostsState } from "ui";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-
-// const images: string[] = [...products.map((pro) => pro.imgUrl)];
-// export const getRandomUser = () =>
-//   postProfilesPlaceholder[
-//     Math.floor(Math.random() * postProfilesPlaceholder.length)
-//   ];
-// const comments: PostComment[] = [
-//   {
-//     ...PostCommentPlaceholder,
-//     user: getRandomUser(),
-//     content: "nice video",
-//     attachment: {
-//       src: "/shop.jpeg",
-//       type: "image",
-//     },
-//   },
-//   {
-//     ...PostCommentPlaceholder,
-//     user: getRandomUser(),
-//     content: "nice video",
-//     attachment: null,
-//   },
-//   {
-//     ...PostCommentPlaceholder,
-//     user: getRandomUser(),
-//     content: "nice video",
-//     attachment: null,
-//   },
-//   {
-//     ...PostCommentPlaceholder,
-//     user: getRandomUser(),
-//     content: "nice video",
-//     attachment: null,
-//   },
-
-//   {
-//     ...PostCommentPlaceholder,
-//     user: getRandomUser(),
-//     content: "nice video",
-//     attachment: null,
-//   },
-// ];
 
 export interface SocialViewProps {
   profileId: string;
@@ -89,7 +48,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
   const sellerTabs: TabType[] = [
     {
-      name: t("news_feed", "news feed"),
+      name: t("Newsfeed"),
       component: (
         <PostCardsListWrapper
           grid={isMobile}
@@ -99,7 +58,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       ),
     },
     {
-      name: t("shop", "shop"),
+      name: t("Shop"),
       component: (
         <div className="flex flex-cl gap-4">
           <div className="flex justify-end">
@@ -126,7 +85,11 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       ),
     },
     {
-      name: t("affiliation offers", "affiliation offers"),
+      name: t("Service"),
+      component: <SocialServicePostsList />,
+    },
+    {
+      name: t("Affiliation offers"),
       component: (
         <AffiliationOffersCardListWrapper
           grid={isMobile}
@@ -136,7 +99,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       ),
     },
     {
-      name: t("actions", "Actions"),
+      name: t("Actions"),
       component: (
         <ActionsListWrapper
           cols={ActionsCols}
@@ -156,21 +119,23 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         <Container className="flex-grow flex-col">
           <div className="w-full flex overflow-hidden relative max-h-[26rem]">
-            <SocialProfile shopInfo={profileInfo} />
+            {profileInfo ? (
+              <SocialProfile shopInfo={{ ...profileInfo.data }} />
+            ) : null}
             <SocialPostsCommentsDrawer />
             <ShareWithModal />
             <img
-              src="/shop.jpeg"
+              src={profileInfo ? profileInfo.data.profileCoverPhoto : ""}
               className=" top-0 left-0 w-full bg-black bg-opacity-20 -z-10 h-full md:h-auto object-cover"
             />
           </div>
           {profileInfo && (
             <>
-              {profileInfo.public ? (
+              {profileInfo.data.public ? (
                 <>
                   <TabsViewer
                     tabs={
-                      profileInfo.accountType === "seller"
+                      profileInfo.data.accountType === "seller"
                         ? sellerTabs
                         : buyerTabs
                     }

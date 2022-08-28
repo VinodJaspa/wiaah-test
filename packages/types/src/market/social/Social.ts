@@ -14,7 +14,7 @@ export interface ShopSocialProfileInfo extends ProfileInfo {
   publications: number;
   subscriptions: number;
   subscribers: number;
-  countryCode: FlagIconCode;
+  countryCode: string;
   location: string;
   bio?: string;
   links?: string[];

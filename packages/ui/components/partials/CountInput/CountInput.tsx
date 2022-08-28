@@ -1,6 +1,6 @@
 import React from "react";
 import { useBoundedCountState } from "hooks";
-import { MinusIcon, PlusIcon } from "ui";
+import { MinusIcon, RoundedPlusIcon } from "ui";
 import { setTestid } from "utils";
 
 export interface CountInputProps {
@@ -12,7 +12,7 @@ export interface CountInputProps {
 export const CountInput: React.FC<CountInputProps> = ({
   onCountChange,
   max,
-  min,
+  min = 0,
   count: controlledCount,
 }) => {
   const { count, decrement, increment, setCount } = useBoundedCountState(
@@ -34,13 +34,15 @@ export const CountInput: React.FC<CountInputProps> = ({
     <div className="whitespace-nowrap flex items-center gap-1">
       <MinusIcon
         {...setTestid("DecrementCountBtn")}
-        className={`${count === min ? "opacity-50" : ""}`}
+        className={`${count === min ? "opacity-50" : ""} cursor-pointer`}
         onClick={() => decrement()}
       />
       <p className="w-10 select-none text-center whitespace-nowrap">{count}</p>
-      <PlusIcon
+      <RoundedPlusIcon
         {...setTestid("IncrementCountBtn")}
-        className={`${count === max ? "opacity-50" : ""}`}
+        className={`${
+          count === max ? "opacity-50" : "border-black"
+        } cursor-pointer`}
         onClick={() => increment()}
       />
     </div>

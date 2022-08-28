@@ -1,4 +1,4 @@
-import { MasterLayout, ServiceCheckoutView } from "@components";
+import { MasterLayout, CheckoutView } from "@components";
 import { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
@@ -13,7 +13,7 @@ const ServiceCheckout: NextPage = () => {
       <MasterLayout>
         <div className="bg-[#F3F3F3]">
           <Container>
-            <ServiceCheckoutView />
+            <CheckoutView />
           </Container>
         </div>
         <Container>

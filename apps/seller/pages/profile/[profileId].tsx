@@ -35,7 +35,7 @@ const profile: NextPage<ProfilePageProps> = ({ profileId }) => {
   return (
     <>
       <Head>
-        <title>{data ? data.name : "Seller | profile"}</title>
+        <title>{data ? data.data.name : "Seller | profile"}</title>
       </Head>
       <SellerLayout>
         <SocialView profileId={profileId} />

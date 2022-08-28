@@ -9,15 +9,16 @@ import {
   CashbackBadge,
   PostAttachmentProps,
   CalenderIcon,
+  AspectRatio,
+  Slider,
 } from "ui";
-import { CashbackData } from "api";
+import { CashbackData, SocialPostAttachment } from "api";
 import { setTestid } from "utils";
 
 export interface SocialServicePostAttachmentsProps {
   id: string;
   cashback?: CashbackData;
-  src: string;
-  type: PostAttachmentTypes;
+  attachment: SocialPostAttachment;
   alt: string;
   discount?: number;
   onInteraction?: (interaction: Interactions) => any;
@@ -34,21 +35,15 @@ export const SocialServicePostAttachment: React.FC<
   discount,
   innerProps,
   onInteraction,
-  src,
-  type,
+  attachment,
   id,
 }) => {
   const { emit } = useReactPubsub((keys) => keys.serviceModal);
   const { t } = useTranslation();
   return (
     <div className="max-w-full h-full relative bg-black" {...innerProps}>
-      <PostAttachment
-        src={src || ""}
-        type={type || "image"}
-        alt={alt}
-        data-testid="post attachments"
-        {...attachmentProps}
-      />
+      <PostAttachment {...attachment} />
+
       <div className="w-full h-full absolute top-0 left-0 p-1 flex justify-between pointer-events-none z-10">
         <div className="h-fit bg-white rounded-lg px-1 flex items-center justify-center">
           <HiDotsHorizontal className="cursor-pointer text-sm md:text-xl rounded-lg pointer-events-auto" />

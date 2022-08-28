@@ -5,8 +5,10 @@ export const ReactPubSubEventKeys = {
   serviceModal: "openServiceModal",
   sharePostWithModal: "openSharePostWithModal",
   openLoginPopup: "openLoginPopup",
-  openFileUploadModal: "openFileUploadModla",
-};
+  openFileUploadModal: "openFileUploadModal",
+} as const;
+
+type helperType<T, P, D, E> = T extends P ? D : E;
 
 export const useReactPubsub = (
   getKey: (keys: typeof ReactPubSubEventKeys) => string

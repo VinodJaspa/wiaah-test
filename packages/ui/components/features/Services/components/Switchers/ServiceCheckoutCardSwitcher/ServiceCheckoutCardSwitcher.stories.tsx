@@ -152,6 +152,7 @@ BeautyCenter.args = {
   service: {
     type: "beauty_center",
     data: {
+      guests: null,
       serviceType: "beauty_center",
       bookedDates: {
         from: new Date(Date.now()).toString(),
@@ -178,6 +179,8 @@ BeautyCenter.args = {
       bookedTreatments: [
         {
           category: "Facial",
+
+          id: "1",
           title: "Hydro facial with chemical peel",
           durationInMinutes: [30, 60],
           price: randomNum(50),

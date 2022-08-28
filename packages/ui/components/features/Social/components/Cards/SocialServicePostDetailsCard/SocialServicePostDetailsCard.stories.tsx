@@ -22,7 +22,16 @@ Default.args = {
     comments: 15,
     likes: 30,
   },
-  thumbnail: "/place-2.jpg",
+  attachements: [
+    {
+      src: "/shop.jpeg",
+      type: "image",
+    },
+    {
+      src: "/video.mp4",
+      type: "video",
+    },
+  ],
   type: "image",
   user: {
     accountType: "buyer",

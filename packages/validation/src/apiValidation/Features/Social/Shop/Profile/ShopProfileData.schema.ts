@@ -33,4 +33,4 @@ export const SocialShopProfileInfoValidationSchema =
   );
 
 export const SocialShopProfileInfoApiResponseValidationSchema =
-  createApiResponseValidationSchema(SocialProfileInfoValidationSchema);
+  createApiResponseValidationSchema(SocialShopProfileInfoValidationSchema);

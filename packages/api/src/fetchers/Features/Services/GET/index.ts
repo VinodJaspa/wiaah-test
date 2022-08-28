@@ -10,3 +10,4 @@ export * from "./Vehicle";
 export * from "./BeautyCenter";
 export * from "./checkout";
 export * from "./BookConfirmation";
+export * from "./misc";

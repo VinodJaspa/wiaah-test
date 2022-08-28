@@ -18,6 +18,8 @@ export interface SliderProps {
   arrowRightProps?: HtmlDivProps;
   containerProps?: HtmlDivProps;
   currentItemIdx?: number;
+  draggingActive?: boolean;
+  keepLast?: boolean;
   onSliderChange?: (currentIdx: number, visibleItemsIdx: number[]) => any;
 }
 
@@ -35,10 +37,16 @@ export const Slider: React.FC<SliderProps> = ({
   containerProps,
   currentItemIdx,
   onSliderChange,
+  draggingActive,
+  keepLast,
 }) => {
+  const childrenCount = Array.isArray(children)
+    ? children.filter((c) => !!c).length
+    : 0;
+
   const [currComponent, setCurrComponent] = React.useState<number>(0);
-  const childrenCount = React.Children.count(children);
-  const sliderWidth = (100 * childrenCount) / itemsCount;
+
+  // const sliderWidth = (100 * childrenCount) / itemsCount;
 
   React.useEffect(() => {
     if (onSliderChange) {
@@ -55,6 +63,12 @@ export const Slider: React.FC<SliderProps> = ({
     }
   }, [currentItemIdx]);
 
+  React.useEffect(() => {
+    if (keepLast) {
+      setCurrComponent(childrenCount - 1);
+    }
+  }, [children]);
+
   function handlePrev() {
     setCurrComponent((state) => {
       const nextRunState = state - 1;
@@ -63,7 +77,6 @@ export const Slider: React.FC<SliderProps> = ({
   }
 
   function handleNext() {
-    console.log("next");
     setCurrComponent((state) => {
       const nextRunState = state + 1;
       return nextRunState > childrenCount - itemsCount
@@ -72,7 +85,7 @@ export const Slider: React.FC<SliderProps> = ({
     });
   }
 
-  const itemWidth = sliderWidth / itemsCount;
+  // const itemWidth = sliderWidth / itemsCount;
 
   return (
     <div
@@ -80,12 +93,14 @@ export const Slider: React.FC<SliderProps> = ({
       className={`${containerProps?.className || ""} relative w-full h-full `}
     >
       <DraggableSlider
+        itemsCount={itemsCount}
+        draggingActive={draggingActive}
         gap={gap}
         vertical={variant === "vertical"}
         activeIndex={currComponent}
         onSlideComplete={(idx) => setCurrComponent(idx)}
       >
-        {children}
+        {Array.isArray(children) ? children.filter((c) => !!c) : children}
       </DraggableSlider>
       <div
         onClick={() => handlePrev()}

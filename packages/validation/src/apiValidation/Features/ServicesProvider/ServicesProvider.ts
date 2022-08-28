@@ -11,7 +11,7 @@ import { object, string, number, array, boolean } from "yup";
 export const PopularAmenitiesValidationSchema = object({
   name: string().required(),
   slug: string().required(),
-}).required();
+});
 
 export const HotelServiceProviderPolicicesValidationSchema = object({
   messageForClients: string().required(),

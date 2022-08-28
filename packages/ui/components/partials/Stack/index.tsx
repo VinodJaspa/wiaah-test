@@ -3,13 +3,13 @@ import { HtmlDivProps } from "types";
 import { MapChildren, runIfFn } from "utils";
 
 export interface StackProps {
-  col: boolean;
-  divider: React.ReactNode;
+  col?: boolean;
+  divider?: React.ReactNode;
 }
 
 export const Stack: React.FC<StackProps> = ({ children, divider, col }) => {
   return (
-    <div className={`${col ? "flex-col" : "flex-row"} flex gap-2`}>
+    <div className={`${col ? "flex-col" : "flex-row"} w-full flex gap-2`}>
       {Array.isArray(children)
         ? children.map((child, i) => (
             <>

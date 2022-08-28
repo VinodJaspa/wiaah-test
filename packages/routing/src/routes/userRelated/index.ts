@@ -3,6 +3,7 @@ import { RoutesType } from "..";
 export type UserRelatedRoutesType = {
   cartSummary: () => RoutesType;
   visitCarySummary: () => RoutesType;
+  visitCartSummary: () => RoutesType;
 };
 
 export const UserRelatedRoutes: RoutesType = {
@@ -11,6 +12,9 @@ export const UserRelatedRoutes: RoutesType = {
     return this;
   },
   visitCarySummary() {
+    return this.cartSummary();
+  },
+  visitCartSummary() {
     return this.cartSummary();
   },
 } as RoutesType;

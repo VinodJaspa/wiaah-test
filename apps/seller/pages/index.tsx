@@ -13,13 +13,13 @@ import {
   AddNewPostModal,
   PostAttachmentsViewer,
   AddNewStoryModal,
-  VStack,
   Button,
   CommentReportModal,
+  ArrowLeftIcon,
+  ArrowRightIcon,
 } from "ui";
-import { newsfeedPosts } from "ui/placeholder/social";
+import { newsfeedPosts } from "ui";
 import { useTranslation } from "react-i18next";
-import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useRouter } from "next/router";
 import { PostCardInfo } from "types";
 
@@ -75,7 +75,6 @@ const seller: NextPage = () => {
         <PostViewPopup
           fetcher={async ({ queryKey }) => {
             const id = queryKey[1].postId;
-            console.log("idParam", queryKey);
             const post = newsfeedPosts.find((post) => post.postInfo.id === id);
             return post ? post : null;
           }}
@@ -97,39 +96,22 @@ const seller: NextPage = () => {
         <AddNewStoryModal />
         <CommentReportModal />
         <div className="flex flex-col items-center w-full gap-4">
-          <FloatingContainer
-            className="w-full"
-            // px="1rem"
-            items={
-              isMobile
-                ? []
-                : [
-                    {
-                      label: (
-                        <Button className="rounded-full bg-black bg-opacity-60 shadow-md">
-                          <ChevronRightIcon boxSize={9} />
-                        </Button>
-                      ),
-                      right: "1rem",
-                      top: "center",
-                    },
-                    {
-                      label: (
-                        <Button className="rounded-full bg-black bg-opacity-60 shadow-md">
-                          <ChevronLeftIcon boxSize={9} />
-                        </Button>
-                      ),
-                      left: "1rem",
-                      top: "center",
-                    },
-                  ]
-            }
-          >
+          <div className="w-full relative">
+            {!isMobile ? (
+              <>
+                <Button className="rounded-full z-10 right-0 translate-x-1/2 absolute top-1/2 -translate-y-1/2  bg-opacity-70 shadow-md">
+                  <ArrowRightIcon className="text-2xl" />
+                </Button>
+                <Button className="rounded-full z-10 left-0 -translate-x-1/2 absolute top-1/2 -translate-y-1/2 bg-opacity-70 shadow-md">
+                  <ArrowLeftIcon className="text-2xl" />
+                </Button>
+              </>
+            ) : null}
             <RecentStories
               className="justify-between mx-auto"
               stories={RecentStoriesPlaceHolder}
             />
-          </FloatingContainer>
+          </div>
           {!isMobile && (
             <SellerPostInput userName="wiaah" userPhotoSrc="/wiaah_logo.png" />
           )}

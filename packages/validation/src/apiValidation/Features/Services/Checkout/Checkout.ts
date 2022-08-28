@@ -1,5 +1,8 @@
-import { createApiResponseValidationSchema } from "../../../SharedSchema";
-import { CashbackValidationSchema } from "../../Products";
+import {
+  createApiResponseValidationSchema,
+  Location,
+} from "../../../SharedSchema";
+import { Cashback, CashbackValidationSchema } from "../../Products";
 import { array, InferType, mixed, number, object, string } from "yup";
 import { ServiceCancelationPolicy } from "../common";
 import { ServicesType } from "types";
@@ -32,7 +35,41 @@ type ServicesCheckoutData =
   | {
       type: "beauty_center";
       data: InferType<typeof BeautyCenterServiceCheckoutDataValidationSchema>;
+    }
+  | {
+      type: "product";
+      data: InferType<typeof ProductCheckoutDataValidationSchema>;
     };
+
+export const ShippingMothedValidationSchema = object({
+  name: string().required(),
+  value: string().required(),
+  deliveryTime: object({
+    from: number().required(),
+    to: number().required(),
+  }).required(),
+  id: string().required(),
+  cost: number().required(),
+  description: string().required(),
+});
+
+export const ProductCheckoutDataValidationSchema = object({
+  id: string().required(),
+  name: string().required(),
+  thumbnail: string().required(),
+  qty: number().required(),
+  shippingMethods: array()
+    .of(ShippingMothedValidationSchema.required())
+    .min(0)
+    .required(),
+  price: number().required(),
+  location: Location().required(),
+  size: string().required(),
+  color: string().required(),
+  discount: number().min(1).max(99).required(),
+  cashback: Cashback().required(),
+  description: string().required(),
+});
 
 export const ServiceCheckoutCommonDataValidationSchema = object({
   serviceType: mixed<ServicesType>().oneOf(services),
@@ -104,49 +141,49 @@ export const BeautyCenterServiceCheckoutDataValidationSchema =
     })
   );
 
-export const ServiceCheckoutDataValidationTester =
-  mixed<ServicesCheckoutData>().test(
-    "ServiceCheckoutData",
-    "service type and data doesnt match",
-    (value) => {
-      console.log("value", value);
-      if (!value) return false;
-      try {
-        switch (value.type) {
-          case "hotel":
-            HotelCheckoutServiceDataValidationSchema.validateSync(value.data);
-            break;
-          case "resturant":
-            RestaurantServiceCheckoutDataValidationSchema.validateSync(
-              value.data
-            );
-            break;
-          case "health_center":
-            HealthCenterServiceCheckoutDataValidationSchema.validateSync(
-              value.data
-            );
-            break;
-          case "beauty_center":
-            BeautyCenterServiceCheckoutDataValidationSchema.validateSync(
-              value.data
-            );
-            break;
-          default:
-            return false;
-        }
-        return true;
-      } catch (err) {
-        console.error(err);
-        return false;
+export const CheckoutDataValidationTester = mixed<ServicesCheckoutData>().test(
+  "ServiceCheckoutData",
+  "service type and data doesnt match",
+  (value) => {
+    if (!value) return false;
+    try {
+      switch (value.type) {
+        case "hotel":
+          HotelCheckoutServiceDataValidationSchema.validateSync(value.data);
+          break;
+        case "resturant":
+          RestaurantServiceCheckoutDataValidationSchema.validateSync(
+            value.data
+          );
+          break;
+        case "health_center":
+          HealthCenterServiceCheckoutDataValidationSchema.validateSync(
+            value.data
+          );
+          break;
+        case "beauty_center":
+          BeautyCenterServiceCheckoutDataValidationSchema.validateSync(
+            value.data
+          );
+          break;
+        case "product":
+          break;
+        default:
+          return false;
       }
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
     }
-  );
+  }
+);
 
 export const ServiceCheckoutDataApiResponseValidationSchema =
   createApiResponseValidationSchema(
     object({
       bookedServices: array()
-        .of(ServiceCheckoutDataValidationTester.required())
+        .of(CheckoutDataValidationTester.required())
         .min(0)
         .required(),
       vat: number().required(),

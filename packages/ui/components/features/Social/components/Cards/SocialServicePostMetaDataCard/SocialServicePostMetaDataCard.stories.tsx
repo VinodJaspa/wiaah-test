@@ -16,6 +16,14 @@ Default.args = {
   id: "123",
   label: "health center",
   name: "health center service name",
-  thumbnail: "/place-2.jpg",
-  type: "image",
+  attachments: [
+    {
+      src: "/shop-2.jpeg",
+      type: "image",
+    },
+    {
+      src: "/video.mp4",
+      type: "video",
+    },
+  ],
 };

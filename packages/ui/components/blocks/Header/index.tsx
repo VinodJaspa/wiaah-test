@@ -90,7 +90,7 @@ export const Header: React.FC<HeaderProps> = () => {
     <nav className="w-full bg-black">
       {/* Top Navbar */}
 
-      <Container>
+      <Container className="h-[auto]">
         <div className="w-full h-fit flex p-4 gap-4 items-center justify-between">
           <div className="h-12 sm:h-20 cursor-pointer">
             <Link href="/">
