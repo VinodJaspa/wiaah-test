@@ -75,8 +75,8 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({
             initialValues={
               {
                 storeFor: [],
-                type_of_shop: "products",
-                type_of_service: "hotel",
+                type_of_shop: "",
+                type_of_service: "",
               } as Record<string, any>
             }
             onSubmit={() => {}}
