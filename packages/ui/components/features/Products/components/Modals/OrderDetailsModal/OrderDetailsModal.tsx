@@ -1,7 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FaCcVisa } from "react-icons/fa";
-import { GrVisa } from "react-icons/gr";
 import { useReactPubsub } from "react-pubsub";
 import {
   Modal,
@@ -13,7 +11,10 @@ import {
   Divider,
   Button,
   PriceDisplay,
-  AspectRatioImage,
+  PdfIcon,
+  TargetCursorIcon,
+  ProductCheckoutCard,
+  CreditCardIcon,
 } from "ui";
 import { DateDetails } from "utils";
 
@@ -27,7 +28,6 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
     isLoading,
     isError,
   } = useGetOrderDetailsQuery(id || "", { enabled: !!id });
-  console.log({ id });
   Listen((props) => {
     if ("id" in props) {
       setId(props.id);
@@ -50,7 +50,7 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
   return (
     <Modal isOpen={!!id} onClose={() => setId(undefined)} onOpen={() => {}}>
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent className="w-[min(100%,50rem)]">
         <SpinnerFallback isLoading={isLoading} isError={isError}>
           {res ? (
             <Stack col divider={Divider}>
@@ -60,8 +60,15 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
                     {t("Order ID")}: {res.data.orderId}
                   </p>
                   <div className="flex items-center gap-2">
-                    <Button colorScheme="white">{t("Invoice")}</Button>
-                    <Button>{t("Track order")}</Button>
+                    <Button
+                      className="flex gap-1 items-center"
+                      colorScheme="white"
+                    >
+                      <PdfIcon /> {t("Invoice")}
+                    </Button>
+                    <Button className="flex gap-1 items-center">
+                      <TargetCursorIcon /> {t("Track order")}
+                    </Button>
                   </div>
                 </div>
                 <div className="flex gap-2 items-center">
@@ -85,36 +92,14 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
               </div>
               <div className="flex flex-col gap-4">
                 {res.data.products.map((prod, i) => (
-                  <div key={i} className="flex items-center justify-between">
-                    <div className="flex gap-4">
-                      <div className="w-20 rounded overflow-hidden">
-                        <AspectRatioImage
-                          src={prod.thumbnail}
-                          alt={prod.name}
-                          ratio={3 / 5}
-                        />
-                      </div>
-                      <div className="flex flex-col">
-                        <p className="text-lg font-semibold">{prod.name}</p>
-                        <p className="flex gap-8 text-gray-400">
-                          {prod.props.map((prop) => prop)}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex flex-col gap-1 items-end">
-                      <PriceDisplay className="font-bold" price={prod.price} />
-                      <p>
-                        {t("Qty")}: {prod.qty}
-                      </p>
-                    </div>
-                  </div>
+                  <ProductCheckoutCard key={i} {...prod} />
                 ))}
               </div>
               <div className="grid grid-cols-2 gap-8">
                 <div className="flex flex-col w-full gap-2">
                   <p className="text-xl font-bold">{t("Payment")}</p>
-                  <div className="flex gap-2 items-center">
-                    Visa **56 <FaCcVisa />{" "}
+                  <div className="flex gap-2 items-center text-lg">
+                    Visa **56 <CreditCardIcon />
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 w-full">

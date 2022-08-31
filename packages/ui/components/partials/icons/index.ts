@@ -61,3 +61,6 @@ export * from "./CarWheelIcon";
 export * from "./HealthIcon";
 export * from "./BeautyCenter";
 export * from "./EyeIcon";
+export * from "./PdfIcon";
+export * from "./TargetCursor";
+export * from "./LinkIcon";

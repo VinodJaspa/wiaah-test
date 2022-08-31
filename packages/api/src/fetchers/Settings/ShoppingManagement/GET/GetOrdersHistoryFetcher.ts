@@ -14,6 +14,7 @@ type OrderInfoData = {
   buyerId?: string;
   orderName: string;
   payment: string;
+  trackingLink: string;
 };
 
 const orders: OrderInfoData[] = [...Array(10)].map(() => ({
@@ -28,6 +29,7 @@ const orders: OrderInfoData[] = [...Array(10)].map(() => ({
   price: randomNum(500),
   buyer: "buyer name",
   buyerId: "1596",
+  trackingLink: "test tracking link",
 }));
 
 export const GetOrdersHistoryFetcher = (filter: OrdersFilter) => {

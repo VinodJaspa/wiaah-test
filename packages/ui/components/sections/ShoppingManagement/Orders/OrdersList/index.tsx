@@ -1,6 +1,5 @@
 import { CancelOrderDto } from "dto";
 import { Formik, Form } from "formik";
-import { useModalDisclouser } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useReactPubsub } from "react-pubsub";
@@ -44,6 +43,8 @@ import {
   Radio,
   EyeIcon,
   OrderDetailsModal,
+  LinkIcon,
+  UpdateProductStatusModal,
 } from "ui";
 import { useGetOrdersHistoryQuery, useCancelOrderMutation } from "ui/Hooks";
 import { DateDetails, randomNum } from "utils";
@@ -121,8 +122,9 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
                         <Th>{t("Delivery Pricing")}</Th>
                         <Th>{t("Delivery Status")}</Th>
                         <Th>{t("Payment")}</Th>
-                        {shopping ? <Th>{t("View")}</Th> : null}
-                        <Th>{t("Action")}</Th>
+                        <Th>{t("View")}</Th>
+                        <Th>{t("Tracking")}</Th>
+                        {shopping ? <Th>{t("Action")}</Th> : null}
                       </Tr>
                       <TBody>
                         {orders &&
@@ -137,8 +139,10 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
                               payment,
                               price,
                               buyer,
+                              trackingLink,
                             } = props;
                             const orderDate = DateDetails(orderDeliveryDate);
+                            function handleGoToTrackingLink(link: string) {}
                             return (
                               <Tr className="cursor-pointer" key={i}>
                                 <Td>{orderId}</Td>
@@ -187,22 +191,42 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
                                   />
                                 </Td>
                                 <Td>{payment}</Td>
-                                {shopping ? (
-                                  <Td>
-                                    <div className="flex w-full justify-center">
-                                      <EyeIcon
+                                <Td>
+                                  <div className="flex w-full justify-center">
+                                    <EyeIcon
+                                      onClick={() =>
+                                        openOrderDetailsModal({
+                                          id: orderId,
+                                        })
+                                      }
+                                    />
+                                  </div>
+                                </Td>
+                                <Td>
+                                  <ModalExtendedWrapper>
+                                    <ModalButton>
+                                      <LinkIcon
                                         onClick={() =>
-                                          openOrderDetailsModal({
-                                            id: orderId,
-                                          })
+                                          shopping
+                                            ? handleGoToTrackingLink(
+                                                trackingLink
+                                              )
+                                            : null
                                         }
                                       />
-                                    </div>
-                                  </Td>
-                                ) : null}
-                                <Td>
-                                  <div className="w-full flex justify-center">
-                                    {shopping ? (
+                                    </ModalButton>
+                                    {shopping ? null : (
+                                      <UpdateProductStatusModal
+                                        productId={orderId}
+                                        status="confirmed"
+                                        trackingLink="test"
+                                      />
+                                    )}
+                                  </ModalExtendedWrapper>
+                                </Td>
+                                {shopping ? (
+                                  <Td>
+                                    <div className="w-full flex justify-center">
                                       <ModalExtendedWrapper>
                                         <ModalButton>
                                           <CancelIcon className="mx-auto" />
@@ -354,19 +378,9 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
                                           </Formik>
                                         </ControlledModal>
                                       </ModalExtendedWrapper>
-                                    ) : (
-                                      <>
-                                        <EyeIcon
-                                          onClick={() =>
-                                            openOrderDetailsModal({
-                                              id: orderId,
-                                            })
-                                          }
-                                        />
-                                      </>
-                                    )}
-                                  </div>
-                                </Td>
+                                    </div>
+                                  </Td>
+                                ) : null}
                               </Tr>
                             );
                           })}

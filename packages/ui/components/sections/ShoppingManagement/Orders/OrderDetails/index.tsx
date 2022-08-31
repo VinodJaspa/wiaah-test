@@ -274,7 +274,7 @@ export const UpdateProductStatusModal: React.FC<UpdateProductStatusDto> = ({
       <ModalContent className="flex flex-col gap-12 min-w-[min(100%,40rem)]">
         <HStack className="justify-between">
           <span className="text-2xl font-semibold">
-            {t("Update Product Status")}
+            {t("Update Order Status")}
           </span>
           <ModalCloseButton>
             <span>
@@ -294,7 +294,7 @@ export const UpdateProductStatusModal: React.FC<UpdateProductStatusDto> = ({
         >
           {({ setFieldValue }) => {
             return (
-              <Form className="flex flex-col gap-12">
+              <Form className="flex text-left flex-col gap-12">
                 <div>
                   <span className="px-2 text-sm text-gray-500">
                     {t("Select Status")}
@@ -318,10 +318,7 @@ export const UpdateProductStatusModal: React.FC<UpdateProductStatusDto> = ({
                 <FormikInput
                   label={t("order_tracking_link", "Order Tracking Link")}
                   name="trackingLink"
-                  placeholder={t(
-                    "add_a_tracking_link_for_this_order",
-                    "add a tracking link for this order"
-                  )}
+                  placeholder={t("add a tracking link for this order")}
                 />
 
                 <HStack className="justify-end">

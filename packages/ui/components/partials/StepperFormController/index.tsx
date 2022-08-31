@@ -5,6 +5,7 @@ import * as yup from "yup";
 type Data = Record<string, any>;
 
 interface StepperFormCtxValues {
+  values: Record<string, any>;
   currentStepIdx: number;
   handlerKeys: string[];
   isLastStep: boolean;
@@ -20,6 +21,7 @@ interface StepperFormCtxValues {
 
 const StepperFormCtx = React.createContext<StepperFormCtxValues>({
   currentStepIdx: 0,
+  values: {},
   handlerKeys: [],
   isFirstStep: true,
   isLastStep: false,
@@ -39,7 +41,7 @@ export interface StepperFormControllerProps<DataType> {
   lock?: boolean;
 }
 
-export function StepperFormController<FinaleDataType>({
+export function StepperFormController<FinaleDataType extends Data>({
   onFormComplete,
   stepsNum,
   children,
@@ -50,6 +52,16 @@ export function StepperFormController<FinaleDataType>({
     Record<string, Data>
   >({});
   const [currentStepIdx, setCurrentStepIdx] = React.useState<number>(0);
+
+  //@ts-ignore
+  const MergedData: FinaleDataType = React.useMemo(
+    () =>
+      Object.entries(stepsValidation).reduce((acc, curr) => {
+        const [key, value] = curr;
+        return { ...acc, ...value };
+      }, {} as Data),
+    [stepsValidation]
+  );
 
   const isLastStep = currentStepIdx + 1 === stepsNum;
   const isFirstStep = currentStepIdx === 0;
@@ -63,10 +75,13 @@ export function StepperFormController<FinaleDataType>({
   }
   function validate(data: Data, handlerKey: string) {
     setStepsValidation((state) => {
-      const _state = state;
+      if (JSON.stringify(state[handlerKey]) === JSON.stringify(data))
+        return state;
+      const _state = { ...state };
       _state[handlerKey] = data;
       return _state;
     });
+    return MergedData;
   }
 
   function unvalidate(handlerKey: string) {
@@ -85,14 +100,6 @@ export function StepperFormController<FinaleDataType>({
         const lastStep = state > stepsNum - 2;
 
         if (lastStep) {
-          //@ts-ignore
-          const MergedData: FinaleDataType = Object.entries(
-            stepsValidation
-          ).reduce((acc, curr) => {
-            const [key, value] = curr;
-            return { ...acc, ...value };
-          }, {} as Data);
-
           onFormComplete(MergedData);
           return state;
         } else {
@@ -104,14 +111,6 @@ export function StepperFormController<FinaleDataType>({
         const lastStep = state > stepsNum - 2;
 
         if (lastStep) {
-          //@ts-ignore
-          const MergedData: FinaleDataType = Object.entries(
-            stepsValidation
-          ).reduce((acc, curr) => {
-            const [key, value] = curr;
-            return { ...acc, ...value };
-          }, {} as Data);
-
           onFormComplete(MergedData);
           return state;
         } else {
@@ -145,6 +144,7 @@ export function StepperFormController<FinaleDataType>({
   return (
     <StepperFormCtx.Provider
       value={{
+        values: MergedData,
         validate,
         nextStep,
         goToStep,
@@ -170,6 +170,7 @@ export function StepperFormController<FinaleDataType>({
         unvalidate,
         isFirstStep,
         isLastStep,
+        values: MergedData,
       })}
     </StepperFormCtx.Provider>
   );
@@ -177,6 +178,7 @@ export function StepperFormController<FinaleDataType>({
 
 type StepperFormHandlerChildrenProps = {
   validate: (data: Data) => any;
+  values: Data;
   // errors?: string[];
 };
 
@@ -191,7 +193,8 @@ export const StepperFormHandler: React.FC<StepperFormHandlerProps> = ({
   validationSchema,
   handlerKey,
 }) => {
-  const { validate, unvalidate, setHandler } = React.useContext(StepperFormCtx);
+  const { validate, unvalidate, setHandler, values } =
+    React.useContext(StepperFormCtx);
 
   function handleValidate(data: Data) {
     if (!validationSchema) return;
@@ -212,6 +215,7 @@ export const StepperFormHandler: React.FC<StepperFormHandlerProps> = ({
     <>
       {runIfFn<StepperFormHandlerChildrenProps>(children, {
         validate: handleValidate,
+        values,
         // errors:[]
       })}
     </>

@@ -26,18 +26,18 @@ import {
 } from "ui";
 import { NewServiceSchemas } from "validation";
 import { CallbackAfter } from "utils";
-import { ServiceGeneralDetails } from "./ServiceGeneralDetails";
-import { IncludedServices } from "./IncludedServices";
-import { ExtraServiceOptions } from "./ExtraServiceOptions";
-import { RestaurantServiceDetailsForm } from "./RestaurantServiceDetailsForm";
+import { ServiceGeneralDetails } from "ui";
+import { IncludedServices } from "ui";
+import { ExtraServiceOptions } from "ui";
+import { RestaurantServiceDetailsForm } from "ui";
+import { HealthCenterServiceDetailsForm } from "ui";
+import { VehicleServiceDetailsForm } from "ui";
+import { BeautyCenterServiceDetailsForm } from "ui";
+import { ServicePoliciesSection } from "ui";
+import { RestaurantIncludedServicesSection } from "ui";
+import { HolidayRentalsGeneralDetailsForm } from "ui";
+import { HealthCenterIncludedServices } from "ui";
 import { AnySchema } from "yup";
-import { HealthCenterServiceDetailsForm } from "./HealthCenterServiceDetailsForm";
-import { VehicleServiceDetailsForm } from "./VehicleServiceDetailsForm";
-import { BeautyCenterServiceDetailsForm } from "./BeautyCenterServiceDetailsForm";
-import { ServicePoliciesSection } from "./ServicePoliciesSection";
-import { RestaurantIncludedServicesSection } from "./RestaruantIncludedServicesSection";
-import { HolidayRentalsGeneralDetailsForm } from "./HolidayRentalsGeneralDetailsForm";
-import { HealthCenterIncludedServices } from "./HealthCenterIncludedServices";
 
 export interface AddNewServiceProps {}
 
@@ -78,7 +78,7 @@ export const AddNewService: React.FC<AddNewServiceProps> = () => {
   );
 };
 
-type ServiceSectionWithSchemaType = {
+export type ServiceSectionWithSchemaType = {
   key: ServiceType;
   component: React.FC<any>;
   schema: AnySchema;
@@ -181,7 +181,7 @@ export const NewServiceStepper: React.FC = () => {
     {
       key: "healthCenter",
       component: HealthCenterIncludedServices,
-      schema: NewServiceSchemas.healthCenterIncludedServicesSchema,
+      schema: NewServiceSchemas.HealthcenterIncludedServicesSchema,
     },
   ];
 
