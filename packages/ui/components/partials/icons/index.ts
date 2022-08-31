@@ -60,3 +60,4 @@ export * from "./ExclamationCircle";
 export * from "./CarWheelIcon";
 export * from "./HealthIcon";
 export * from "./BeautyCenter";
+export * from "./EyeIcon";

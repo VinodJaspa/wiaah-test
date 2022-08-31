@@ -68,44 +68,7 @@ const sections: SettingsSectionType[] = [
     panelIcon: RiServiceFill,
     panelUrl: "/my-service",
     panelComponent: <MyServicesSection />,
-    subSections: [
-      {
-        key: "hotel",
-        sections: [
-          {
-            panelName: "Rooms Management",
-            panelComponent: (
-              <div className="font-bold text-4xl">Rooms to be implemented</div>
-            ),
-            panelIcon: FaBed,
-            panelUrl: "/rooms-management",
-            subSections: [],
-          },
-          {
-            panelName: "Bookings",
-            panelComponent: (
-              <div className="font-bold text-4xl">
-                Bookings to be implemented
-              </div>
-            ),
-            panelIcon: FaBed,
-            panelUrl: "/Bookings",
-            subSections: [],
-          },
-          {
-            panelName: "Contact Settings",
-            panelComponent: (
-              <div className="font-bold text-4xl">
-                Contact to be implemented
-              </div>
-            ),
-            panelIcon: FaBed,
-            panelUrl: "/contact-settings",
-            subSections: [],
-          },
-        ],
-      },
-    ],
+    subSections: [],
   },
   {
     panelName: "Opening time management",

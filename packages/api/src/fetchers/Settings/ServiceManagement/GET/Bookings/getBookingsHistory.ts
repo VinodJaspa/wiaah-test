@@ -6,7 +6,7 @@ import {
 } from "placeholder";
 import { OrdersFilter, OrdersStatus, PriceType } from "types";
 import { randomNum } from "utils";
-import { FetchDataArrayResults } from "../../../../../";
+import { FetchDataArrayResults } from "api";
 
 export interface BookingHistoryAppointmentType {
   appointmentId: string;
@@ -66,13 +66,10 @@ export const getBookingsHistoryFetcher = ({
       ? data
       : data.filter((item) => item.serviceStatus === filter)
     : data;
-  const appointmnets =
-    page === 0
-      ? filteredData.slice(0, limit)
-      : filteredData.slice(page * limit, page + 1 * limit);
+
   return {
     total: data.length,
-    data: appointmnets,
+    data: data,
     hasMore: page * limit > data.length,
   };
 };

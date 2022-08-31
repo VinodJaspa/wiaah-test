@@ -1,4 +1,5 @@
 import React from "react";
+import { CallbackAfter } from "utils";
 
 export const useResponsive = () => {
   const [screenWidth, setScreenWidth] = React.useState<number>(0);
@@ -9,17 +10,25 @@ export const useResponsive = () => {
       typeof window.innerWidth !== "undefined"
     ) {
       setScreenWidth(window.innerWidth);
+    } else {
+      CallbackAfter(100, HandleScreenSize);
     }
   }
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     if (typeof window !== "undefined") {
       window.addEventListener("resize", HandleScreenSize);
       window.addEventListener("load", HandleScreenSize);
       window.addEventListener("DOMContentLoaded", HandleScreenSize);
     }
+    if (typeof document !== "undefined") {
+      document.addEventListener("DOMContentLoaded", HandleScreenSize);
+      document.addEventListener("load", HandleScreenSize);
+    }
     HandleScreenSize();
     return () => {
+      document.removeEventListener("DOMContentLoaded", HandleScreenSize);
+      document.removeEventListener("load", HandleScreenSize);
       window.removeEventListener("resize", HandleScreenSize);
       window.removeEventListener("load", HandleScreenSize);
       window.removeEventListener("DOMContentLoaded", HandleScreenSize);

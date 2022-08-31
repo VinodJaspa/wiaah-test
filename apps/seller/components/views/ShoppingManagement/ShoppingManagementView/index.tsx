@@ -4,6 +4,7 @@ import { MdList } from "react-icons/md";
 import { SettingsSectionType } from "types";
 import {
   AddressBookSection,
+  BookingsHistory,
   MyReturnsSection,
   MyWishListSection,
   OrdersSection,
@@ -15,6 +16,7 @@ import { MdPayment } from "react-icons/md";
 import { BsBoxArrowInUp } from "react-icons/bs";
 import { IoReturnUpBackSharp } from "react-icons/io5";
 import { GiPostStamp } from "react-icons/gi";
+import { RiBookLine } from "react-icons/ri";
 
 export const ShoppingManagementView: React.FC = () => {
   const baseRoute = "shopping-management";
@@ -54,6 +56,12 @@ const sections: SettingsSectionType[] = [
     panelIcon: BsBoxArrowInUp,
     panelUrl: "/orders",
     panelComponent: <OrdersSection shopping />,
+  },
+  {
+    panelName: "Bookings",
+    panelIcon: RiBookLine,
+    panelUrl: "/bookings",
+    panelComponent: <BookingsHistory shopping />,
   },
   {
     panelName: "My Returns",

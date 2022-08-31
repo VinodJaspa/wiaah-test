@@ -79,7 +79,10 @@ export const ResturantDetailsView: React.FC = () => {
           </SpinnerFallback>
           <SpinnerFallback isLoading={isLoading} isError={isError}>
             {res ? (
-              <ServicePoliciesSection policies={res.data.policies} />
+              <ServicePoliciesSection
+                deposit={res.data.deposit}
+                policies={res.data.policies}
+              />
             ) : null}
           </SpinnerFallback>
           <SpinnerFallback isLoading={isLoading} isError={isError}>

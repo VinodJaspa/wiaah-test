@@ -95,7 +95,7 @@ export const OrderDetailsSection: React.FC = () => {
                 />
                 <FormikInput
                   as={Select}
-                  placeholder={t("status,Status")}
+                  placeholder={t("Status")}
                   name="status"
                 >
                   {statusOptions.map((opt, i) => (
@@ -105,10 +105,7 @@ export const OrderDetailsSection: React.FC = () => {
                   ))}
                 </FormikInput>
                 <div className="flex items-center gap-2">
-                  <FormikInput
-                    placeholder={t("order_id", "Order ID")}
-                    name="DateAdded"
-                  />
+                  <FormikInput placeholder={t("Order ID")} name="DateAdded" />
                   <Menu>
                     <MenuButton>
                       <BiCalendarEdit />
@@ -136,15 +133,15 @@ export const OrderDetailsSection: React.FC = () => {
               <AccordionPanel>
                 <div className="font-bold shadow-lg grid grid-cols-2 gap-2 py-2">
                   <span>
-                    {t("order_id", "Order ID")}:{" "}
+                    {t("Order ID")}:{" "}
                     <span className="font-normal">{order.orderId}</span>
                   </span>
                   <span>
-                    {t("payment_mothed", "Payment Mothed")}:{" "}
+                    {t("Payment Mothed")}:{" "}
                     <span className="font-normal">{order.paymentMoted}</span>
                   </span>
                   <span>
-                    {t("date_added", "Date Added")}:{" "}
+                    {t("Date Added")}:{" "}
                     <span className="font-normal">{order.dateAdded}</span>
                   </span>
                 </div>
@@ -159,31 +156,31 @@ export const OrderDetailsSection: React.FC = () => {
               <AccordionPanel>
                 <div className="font-bold shadow-lg flex flex-col gap-2 p-2">
                   <span>
-                    {t("name", "Name")}:{" "}
+                    {t("Name")}:{" "}
                     <span className="font-normal">
                       {order.shippingDetails.name}
                     </span>
                   </span>
                   <span>
-                    {t("address", "Address")}:{" "}
+                    {t("Address")}:{" "}
                     <span className="font-normal">
                       {order.shippingDetails.address}
                     </span>
                   </span>
                   <span>
-                    {t("zip_code", "Zip Code")}:{" "}
+                    {t("Zip Code")}:{" "}
                     <span className="font-normal">
                       {order.shippingDetails.zipCode}
                     </span>
                   </span>
                   <span className="flex gap-1">
-                    {t("city", "City")}:{" "}
+                    {t("City")}:{" "}
                     <span className="font-normal">
                       {order.shippingDetails.city}
                     </span>
                   </span>
                   <span className="flex gap-1">
-                    {t("country", "Country")}:{" "}
+                    {t("Country")}:{" "}
                     <span className="font-normal">
                       {order.shippingDetails.country}
                     </span>
@@ -200,14 +197,12 @@ export const OrderDetailsSection: React.FC = () => {
             <Th className="pl-0 text-left">
               {t("product_image", "Product Image")}
             </Th>
-            <Th>{t("product_name", "Product Name")}</Th>
-            <Th>{t("quantity", "Quantity")}</Th>
-            <Th>{t("price", "Price")}</Th>
-            <Th>{t("total", "Total")}</Th>
-            <Th>{shopping ? t("track", "Track") : t("Status", "Status")}</Th>
-            <Th>
-              {shopping ? t("cancelation", "Cancelation") : t("edit", "Edit")}
-            </Th>
+            <Th>{t("Product Name")}</Th>
+            <Th>{t("Quantity")}</Th>
+            <Th>{t("Price")}</Th>
+            <Th>{t("Total")}</Th>
+            <Th>{shopping ? t("Track") : t("Status", "Status")}</Th>
+            <Th>{shopping ? t("Cancelation") : t("Edit")}</Th>
           </Tr>
           <TBody>
             {order.products.map((prod, i) => (
@@ -230,7 +225,7 @@ export const OrderDetailsSection: React.FC = () => {
                 <Td className="pr-0">
                   <div className="w-full flex justify-center">
                     <Button>
-                      {shopping ? <>{t("track", "Track")}</> : <>prod.status</>}
+                      {shopping ? <>{t("Track")}</> : <>prod.status</>}
                     </Button>
                   </div>
                 </Td>
@@ -279,7 +274,7 @@ export const UpdateProductStatusModal: React.FC<UpdateProductStatusDto> = ({
       <ModalContent className="flex flex-col gap-12 min-w-[min(100%,40rem)]">
         <HStack className="justify-between">
           <span className="text-2xl font-semibold">
-            {t("update_product_status", "Update Product Status")}
+            {t("Update Product Status")}
           </span>
           <ModalCloseButton>
             <span>
@@ -302,20 +297,20 @@ export const UpdateProductStatusModal: React.FC<UpdateProductStatusDto> = ({
               <Form className="flex flex-col gap-12">
                 <div>
                   <span className="px-2 text-sm text-gray-500">
-                    {t("select_status", "Select Status")}
+                    {t("Select Status")}
                   </span>
                   <Select
                     flushed
                     onOptionSelect={(opt) => setFieldValue("status", opt)}
                   >
                     <SelectOption value={"confirmed"}>
-                      {t("confirmed", "Confirmed")}
+                      {t("Confirmed")}
                     </SelectOption>
                     <SelectOption value={"canceled"}>
-                      {t("canceled", "Canceled")}
+                      {t("Canceled")}
                     </SelectOption>
                     <SelectOption value={"pending"}>
-                      {t("pending", "Pending")}
+                      {t("Pending")}
                     </SelectOption>
                   </Select>
                 </div>
@@ -334,7 +329,7 @@ export const UpdateProductStatusModal: React.FC<UpdateProductStatusDto> = ({
                     <Button colorScheme="white">{t("close", "Close")}</Button>
                   </ModalCloseButton>
                   <Button loading={isLoading} type="submit">
-                    {t("update_status", "Update Status")}
+                    {t("Update Status")}
                   </Button>
                 </HStack>
               </Form>

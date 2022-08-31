@@ -186,7 +186,7 @@ export const getResturantServiceDetialsData = async (
           },
         },
       ],
-
+      deposit: randomNum(50),
       policies: [
         {
           policyTerms: [
