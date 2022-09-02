@@ -8,6 +8,11 @@ import {
   useGetServiceSearchFiltersQuery,
   useSearchFilters,
   DisplayFoundServices,
+  ServiceBookingStepper,
+  CalenderIcon,
+  DateInput,
+  ClockIcon,
+  TimeInput,
 } from "ui";
 import { randomNum } from "utils";
 
@@ -23,7 +28,12 @@ export const BeautyCenterSearchResultsView: React.FC = () => {
           {({ setFieldValue, values }) => {
             return (
               <Form className="flex flex-col">
-                <ResturantFindTableFilterStepper />
+                <ServiceBookingStepper
+                  steps={[
+                    { name: "Date", icon: CalenderIcon, component: DateInput },
+                    { name: "time", icon: ClockIcon, component: TimeInput },
+                  ]}
+                />
 
                 <SearchFilter
                   collapse
@@ -38,7 +48,7 @@ export const BeautyCenterSearchResultsView: React.FC = () => {
       </ServicesSearchResultsFiltersSidebar>
       <div className="flex flex-col w-full gap-2">
         <DisplayFoundServices
-          location={getLocationFilterQuery}
+          location={"milano"}
           servicesNum={randomNum(500)}
         />
         <RecommendedBeautyCenterSearchList />

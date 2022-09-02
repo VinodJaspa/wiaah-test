@@ -54,7 +54,7 @@ export const WorkingDaysCalender: React.FC<WorkingDaysCalenderProps> = ({
     <Slider
       rightArrowComponent={ArrowRightIcon}
       leftArrowComponent={ArrowLeftIcon}
-      // itemsCount={5}
+      itemsCount={5}
       gap={8}
       containerProps={{ style: { overflow: "visible" } }}
       childsWrapperProps={{

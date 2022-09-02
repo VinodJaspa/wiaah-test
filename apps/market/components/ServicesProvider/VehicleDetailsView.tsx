@@ -5,7 +5,7 @@ import {
   useSearchFilters,
   Divider,
   ServiceReachOutSection,
-  ServiceOnMapLocationSection,
+  ServiceOnMapLocalizationSection,
   ServicePoliciesSection,
   ServiceWorkingHoursSection,
   ServicesProviderDescriptionSection,
@@ -19,7 +19,6 @@ import {
   VehicleSearchCard,
   CaruoselLeftArrow,
   CaruoselRightArrow,
-  SearchFilter,
   Button,
   DateAndTimeInput,
   ServiceCancelationPolicyInput,
@@ -39,7 +38,6 @@ export const VehicleServiceDetailsView: React.FC = () => {
   } = useGetVehicleProviderDetailsQuery(filters);
 
   const { t } = useTranslation();
-  const { isMobile, isTablet } = useResponsive();
 
   const VehiclesRef = usePublishRef("vehicles");
 
@@ -83,7 +81,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
             <VehiclesSelectableList vehicles={res.data.vehicles || []} />
             <ServiceWorkingHoursSection workingDays={res.data.workingDays} />
             <ServicePoliciesSection policies={res.data.policies} />
-            <ServiceOnMapLocationSection location={res.data.location} />
+            <ServiceOnMapLocalizationSection location={res.data.location} />
           </>
         ) : null}
         <Reviews id={res?.data.id || ""} reviews={reviews} />
@@ -103,7 +101,7 @@ const VehiclesSelectableList: React.FC<{ vehicles: VehicleSearchData[] }> = ({
   return (
     <div ref={VehiclesRef}>
       <Slider
-        gap={16}
+        gap={0}
         itemsCount={isMobile ? 1 : isTablet ? 2 : 3}
         leftArrowComponent={CaruoselLeftArrow}
         rightArrowComponent={CaruoselRightArrow}
@@ -128,7 +126,7 @@ const VehiclesSelectableList: React.FC<{ vehicles: VehicleSearchData[] }> = ({
                 }
 
                 return (
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2 mx-4">
                     <VehicleSearchCard showTotal={false} key={i} {...vehicle} />
                     <div className="flex flex-col gap-1">
                       <p className="font-bold">{t("Cancelation policy")}</p>

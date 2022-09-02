@@ -36,9 +36,9 @@ export const HealthCenterMyServiceCard: React.FC<
     },
     id: `${1}`,
     rate: randomNum(15),
-    name: "Dr Charlene Kasaven",
+    name: "Wiaah medical center",
     photo:
-      "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
+      "https://www.guthrie.org/sites/default/files/2021-11/cortland-medical-center.jpg",
     specialty: "Dentist",
   };
   const workingDates = [
@@ -82,7 +82,7 @@ export const HealthCenterMyServiceCard: React.FC<
   return (
     <div className="border border-gray-400 rounded p-2 flex justify-between gap-8">
       <div
-        className={`flex-row min-w-[50rem] flex gap-8 shadow justify-between rounded w-full `}
+        className={`flex-row  flex gap-8 shadow justify-between rounded w-full `}
       >
         <div className="flex flex-col justify-between gap-4">
           <div className="flex gap-4">
@@ -91,12 +91,12 @@ export const HealthCenterMyServiceCard: React.FC<
                 className="group"
                 src={centerData.photo}
                 alt={centerData.name}
-                ratio={3 / 4}
+                ratio={6 / 5}
               />
             </div>
             <div className="flex flex-col gap-4">
               <div className="flex flex-col font-bold text-lg gap-2">
-                <p className="text-primary">{centerData.name}</p>
+                <p className="">{centerData.name}</p>
                 <p className="">{centerData.specialty}</p>
               </div>
               <div className="font-semibold flex flex-col gap-2">
@@ -110,8 +110,8 @@ export const HealthCenterMyServiceCard: React.FC<
             </div>
           </div>
         </div>
-        <div className="flex flex-col w-fit gap-2 thinScroll py-4">
-          <WorkingDaysCalender hoursLimit={2} workingDates={workingDates} />
+        <div className="flex max-w-md flex-col w-full gap-2 thinScroll py-4">
+          <WorkingDaysCalender hoursLimit={1} workingDates={workingDates} />
         </div>
       </div>
 

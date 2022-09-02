@@ -19,6 +19,7 @@ export const getVehicleServiceProviderDetailsFetcher = async (
 ): Promise<GetVehicleServiceProviderDetailsApiResponse> => {
   const data: getVehicleServiceProviderDetailsReturnType = {
     data: {
+      deposit: 100,
       id: "testid",
       name: "ibis Paris Maine Montparnasse 14th",
       rating: 4.1,

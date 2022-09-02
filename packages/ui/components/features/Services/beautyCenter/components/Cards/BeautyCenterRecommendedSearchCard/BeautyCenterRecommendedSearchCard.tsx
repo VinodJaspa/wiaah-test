@@ -11,14 +11,14 @@ export interface BeautyCenterRecommendedSearchCardProps
 export const BeautyCenterRecommendedSearchCard: React.FC<
   BeautyCenterRecommendedSearchCardProps
 > = (props) => {
-  const { name, owners, rate, reviews, thumbnail } = props;
+  const { name, owners, rate, reviews, thumbnail, type } = props;
 
   const { visit } = useRouting();
 
   const { t } = useTranslation();
 
   return (
-    <div className="flex flex-col shadow gap-2">
+    <div className="flex flex-col shadow">
       <AspectRatioImage
         className="group"
         src={thumbnail}
@@ -41,8 +41,9 @@ export const BeautyCenterRecommendedSearchCard: React.FC<
           </Button>
         </div>
       </AspectRatioImage>
-      <div className="p-2 flex flex-col gap-2">
+      <div className="px-2 py-4 flex flex-col gap-2">
         <p className="font-bold">{name}</p>
+        <p className="">{t(type)}</p>
         <div className="flex gap-4">
           <Rate rating={rate} />
           <p>

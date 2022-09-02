@@ -57,32 +57,23 @@ export const HotelSearchCard: React.FC<HotelSearchCardProps> = (props) => {
       </div>
       <div className="flex flex-col gap-1 text-xs sm:text-sm md:text-md lg:text-lg w-full">
         <div className="flex items-center justify-between">
-          <span className="font-bold">{location.address}</span>
-          <HStack className="">
-            <Rate className="gap-1" rating={rate} allowHalf />
-            <span>{rate}</span>
-          </HStack>
+          <span className="font-bold">
+            {location.city}, {location.country}
+          </span>
         </div>
         <div className="text-gray-500 flex flex-col w-full">
-          <p>
-            {new Date(date.from).toLocaleDateString("en-us", {
-              month: "short",
-              day: "numeric",
-            })}{" "}
-            -{" "}
-            {new Date(date.to).toLocaleDateString("en-us", {
-              month: "short",
-              day: "numeric",
-            })}
-          </p>
-          <p>{description}</p>
+          <p>{name}</p>
           {price ? (
             <HStack className="font-bold  text-black">
               <PriceDisplay symbol priceObject={{ amount: price }} />
-              <span>{t("total")}</span>
+              <span>/{t("night")}</span>
             </HStack>
           ) : null}
         </div>
+        <HStack className="">
+          <Rate className="gap-1" rating={rate} allowHalf />
+          <span>{rate}</span>
+        </HStack>
       </div>
     </div>
   );

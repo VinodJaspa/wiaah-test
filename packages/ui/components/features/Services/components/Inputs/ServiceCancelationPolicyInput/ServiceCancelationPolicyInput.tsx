@@ -16,7 +16,7 @@ export const ServiceCancelationPolicyInput: React.FC<
   const { t } = useTranslation();
 
   return (
-    <div className="flex items-center w-full justify-between">
+    <div className="flex items-center w-full gap-2 justify-between">
       <label {...setTestid("InputLabel")} className="flex gap-1 items-center">
         <Radio
           onChange={(e) =>

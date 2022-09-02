@@ -13,5 +13,6 @@ export const HealthCenterPractitionerDataValidationSchema = object({
   photo: string().required(),
   specialty: string().required(),
   rate: number().required(),
+  reviews: number().required(),
   location: locationValidationSchema,
 });

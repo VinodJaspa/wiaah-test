@@ -11,6 +11,7 @@ import {
   PresntationMediaValidationSchema,
   ServicePoliciesValidationSchema,
   ServiceCancelationPolicy,
+  locationValidationSchema,
 } from "validation";
 
 export type ServiceCancelationPolicyType = InferType<
@@ -38,6 +39,8 @@ export type ServiceReachOutType = Pick<
   ServicesProviderData,
   "email" | "telephone" | "location"
 >;
+
+export type ServiceLocationType = InferType<typeof locationValidationSchema>;
 
 export type ServiceLocation = Pick<ServicesProviderData, "location">;
 

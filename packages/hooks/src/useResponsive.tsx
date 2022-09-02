@@ -1,7 +1,7 @@
 import React from "react";
 import { CallbackAfter } from "utils";
 
-export const useResponsive = () => {
+export const useResponsive = (cb?: () => any) => {
   const [screenWidth, setScreenWidth] = React.useState<number>(0);
 
   function HandleScreenSize() {
@@ -9,6 +9,7 @@ export const useResponsive = () => {
       typeof window !== "undefined" &&
       typeof window.innerWidth !== "undefined"
     ) {
+      cb && cb();
       setScreenWidth(window.innerWidth);
     } else {
       CallbackAfter(100, HandleScreenSize);

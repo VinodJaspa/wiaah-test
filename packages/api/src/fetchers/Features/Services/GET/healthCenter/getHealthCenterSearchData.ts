@@ -44,6 +44,7 @@ export const getHealthCenterSearchData = async (
   }));
   const practitioners: HealthCenterPractitioner[] = [...Array(50)].map(
     (_, i) => ({
+      reviews: 150,
       location: {
         address: "address",
         city: "city",

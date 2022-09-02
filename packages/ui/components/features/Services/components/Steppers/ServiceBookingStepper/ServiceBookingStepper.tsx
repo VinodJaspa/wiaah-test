@@ -52,8 +52,6 @@ export const ServiceBookingStepper: React.FC<ServiceBookingStepper> = ({
                     );
                     return filteredState;
                   });
-                  nextStep();
-                  nextStep();
                 }}
               />
               <TimeInput
@@ -77,7 +75,7 @@ export const ServiceBookingStepper: React.FC<ServiceBookingStepper> = ({
                   });
                 }}
               />
-              <div className="grid grid-cols-5  gap-2 h-fit w-full">
+              {/* <div className="grid grid-cols-5  gap-2 h-fit w-full">
                 {[...Array(20)].map((_, i) => {
                   return (
                     <div className="w-full">
@@ -89,7 +87,7 @@ export const ServiceBookingStepper: React.FC<ServiceBookingStepper> = ({
                     </div>
                   );
                 })}
-              </div>
+              </div> */}
             </StepperContent>
           </div>
         );
