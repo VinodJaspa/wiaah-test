@@ -50,64 +50,43 @@ export const ShopManagementView: React.FC<ShopManagementViewProps> = ({}) => {
 
 const sections: SettingsSectionType[] = [
   {
-    panelName: {
-      translationKey: "product_mangagement",
-      fallbackText: "Product Management",
-    },
+    panelName: "Product Management",
     panelIcon: MdOutlineShoppingBasket,
     panelUrl: "/product-management",
     panelComponent: <ProductManagementSection />,
   },
   {
-    panelName: {
-      translationKey: "orders",
-      fallbackText: "Orders",
-    },
+    panelName: "Orders",
     panelIcon: BsBoxArrowInUp,
     panelUrl: "/orders",
     panelComponent: <OrdersSection shopping={false} />,
   },
   {
-    panelName: {
-      translationKey: "affiliation_management",
-      fallbackText: "Affiliation Management",
-    },
+    panelName: "Affiliation Management",
     panelIcon: AffiliationIcon,
     panelUrl: "/affiliation-management",
     panelComponent: <AffiliationManagementSection />,
   },
   {
-    panelName: {
-      translationKey: "affiliation_history",
-      fallbackText: "Affiliation History",
-    },
+    panelName: "Affiliation History",
     panelIcon: FaHistory,
     panelUrl: "/affiliation-history",
     panelComponent: <AffiliationHistorySection />,
   },
   {
-    panelName: {
-      translationKey: "returned_orders",
-      fallbackText: "Returned Orders",
-    },
+    panelName: "Returned Orders",
     panelIcon: BsBoxArrowInUp,
     panelUrl: "/returned-orders",
     panelComponent: <ReturnedOrders />,
   },
   {
-    panelName: {
-      translationKey: "shipping_settings",
-      fallbackText: "Shipping Settings",
-    },
+    panelName: "Shipping Settings",
     panelIcon: MdOutlineLocalShipping,
     panelUrl: "/shipping-settings",
     panelComponent: <ShippingSettingsSection />,
   },
   {
-    panelName: {
-      translationKey: "reviews",
-      fallbackText: "Reviews",
-    },
+    panelName: "Reviews",
     panelIcon: MdOutlineComment,
     panelUrl: "/reviews",
     panelComponent: <ReviewsSection />,

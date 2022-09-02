@@ -5,7 +5,32 @@ import {
   MyServiceValidationSchema,
   MyServicesApiResponseValidationSchema,
   CheckValidation,
+  HotelMyServiceValidationSchema,
+  RestaurantMyServiceValidationSchema,
+  HealthCenterMyServiceValidationSchema,
+  HolidayRentalsMyServiceValidationSchema,
+  BeautyCenterMyServiceValidationSchema,
+  VehicleMyServiceValidationSchema,
 } from "validation";
+
+export type HotelMyServiceDataType = InferType<
+  typeof HotelMyServiceValidationSchema
+>;
+export type RestaurantMyServiceDataType = InferType<
+  typeof RestaurantMyServiceValidationSchema
+>;
+export type HealthCenterMyServiceDataType = InferType<
+  typeof HealthCenterMyServiceValidationSchema
+>;
+export type BeautyCenterMyServiceDataType = InferType<
+  typeof BeautyCenterMyServiceValidationSchema
+>;
+export type VehicleMyServiceDataType = InferType<
+  typeof VehicleMyServiceValidationSchema
+>;
+export type HolidayRentalsMyServiceDataType = InferType<
+  typeof HolidayRentalsMyServiceValidationSchema
+>;
 
 export type MyServiceData = InferType<typeof MyServiceValidationSchema>;
 
@@ -17,46 +42,54 @@ export const getMyServicesFetcher = async (
     total: 150,
     data: [
       {
-        id: "1354",
-        status: "active",
-        title: "hotel service title",
-        type: "hotel",
+        id: "1",
+        title: "hotel service",
+        description: "hotel service description",
+        pricePerNight: 150,
         thumbnail: "/shop-2.jpeg",
+        provider: "hotel service provider",
+        type: "hotel",
       },
       {
-        id: "1354",
-        status: "inActive",
-        title: "resaturant service title",
-        type: "resturant",
-        thumbnail: "/shop-3.jpeg",
+        id: "2",
+        title: "restaurant service",
+        description: "restaruant service description",
+        type: "restaurant",
+        provider: "restaurant provider name",
+        thumbnail: "/place-2.jpeg",
       },
       {
-        id: "1354",
-        status: "banned",
-        title: "hotel service title",
-        type: "vehicle",
-        thumbnail: "/place-1.jpg",
-      },
-      {
-        id: "1354",
-        status: "pending",
-        title: "hotel service title",
+        id: "3",
+        title: "health center service",
+        description: "health center service description",
         type: "health_center",
-        thumbnail: "/place-2.jpg",
+        provider: "health center provider name",
+        thumbnail: "/doctor.jpg",
       },
       {
-        id: "1354",
-        status: "active",
-        title: "hotel service title",
+        id: "4",
+        title: "beauty center service",
+        description: "beauty center service description",
         type: "beauty_center",
-        thumbnail: "/place-3.jpg",
+        provider: "beauty center provider name",
+        thumbnail: "/place-2.jpeg",
       },
       {
-        id: "1354",
-        status: "active",
-        title: "hotel service title",
-        type: "holidays_rentals",
-        thumbnail: "/shop.jpeg",
+        id: "5",
+        title: "Holiday rentals service",
+        description: "holiday rentals service description",
+        type: "holiday_rentals",
+        provider: "provider name",
+        thumbnail: "/shop-3.jpeg",
+        pricePerNight: 150,
+      },
+      {
+        id: "6",
+        title: "vehicle service",
+        description: "vehicle service description",
+        type: "vehicle",
+        provider: "provider name",
+        thumbnail: "/shop-3.jpeg",
       },
     ],
   };

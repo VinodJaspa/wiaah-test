@@ -25,7 +25,6 @@ export const AddProfilePictureStep: React.FC<AddProfilePictureProps> = () => {
 
   const imageFileRef = React.useRef<any>();
   function handleProfilImageChange(files: any) {
-    console.log(files.files[0]);
     blobToDataURL(files.files[0]).then((dataUrl) => {
       setProfilePicSrc(dataUrl);
     });
@@ -121,7 +120,7 @@ export const AddProfilePictureStep: React.FC<AddProfilePictureProps> = () => {
                     {t("Take_a_Photo", "Take a Photo")}
                   </Button>
                   <div className="hidden text-center text-gray-500 lg:block">
-                    {t("with_your_webcam", "with your webcam")}
+                    {t("with your webcam")}
                   </div>
                 </div>
               </div>

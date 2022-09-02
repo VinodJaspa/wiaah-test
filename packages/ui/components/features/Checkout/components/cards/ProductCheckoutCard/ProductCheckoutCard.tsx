@@ -28,7 +28,6 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
   description,
   discount,
   id,
-  location,
   name,
   price,
   qty,
@@ -119,7 +118,7 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
                       className="text-[#ff0000] whitespace-nowrap"
                       id="ProductDiscount"
                     >
-                      {t("you_save", "You Save")} %{discount}
+                      {t("You Save")} %{discount}
                     </p>
                   )}
                 </div>
@@ -169,7 +168,7 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
                       onClick={handleMoveToWishList}
                     >
                       <Prefix Prefix={<IoHeartOutline />}>
-                        {t("move_to_wishlist", "Move to wish list")}
+                        {t("Move to wish list")}
                       </Prefix>
                     </div>
                   </div>
@@ -188,10 +187,3 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
     </div>
   );
 };
-{
-  /* <div
-  className={`${min ? "flex-row" : "flex-col"} flex items-end justify-between`}
->
-  
-</div>; */
-}

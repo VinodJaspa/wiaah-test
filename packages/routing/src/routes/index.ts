@@ -2,6 +2,7 @@ import { ArrElement } from "types";
 import { ServicesRoutes, ServicesRoutesType } from "./services";
 import { UserRelatedRoutesType, UserRelatedRoutes } from "./userRelated";
 import { ShopRoutes, ShopRoutesType } from "./Shop";
+import { SocialRoutes, SocialRoutesType } from "./social";
 
 export type RoutesType = MainRouterInterface;
 export type RoutingQueryType = Record<string, string>;
@@ -25,12 +26,14 @@ export type MainRouterInterface = {
   visitRecommendedServiceOrShop: (props: Record<string, any>) => RoutesType;
 } & ServicesRoutesType &
   UserRelatedRoutesType &
-  ShopRoutesType;
+  ShopRoutesType &
+  SocialRoutesType;
 
 export const MainRoutes: MainRouterInterface = {
   ...ServicesRoutes,
   ...UserRelatedRoutes,
   ...ShopRoutes,
+  ...SocialRoutes,
   route: "",
   query: {},
   dataKeys: {},

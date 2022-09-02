@@ -1,6 +1,19 @@
 import React from "react";
 import { AddNewService } from "./AddNewService";
 import { MyServicesList } from "./MyServicesList";
+export * from "./ServiceGeneralDetails";
+export * from "./IncludedServices";
+export * from "./ExtraServiceOptions";
+export * from "./RestaurantServiceDetailsForm";
+export * from "./HealthCenterServiceDetailsForm";
+export * from "./VehicleServiceDetailsForm";
+export * from "./BeautyCenterServiceDetailsForm";
+export * from "./ServicePoliciesSection";
+export * from "./RestaruantIncludedServicesSection";
+export * from "./HolidayRentalsGeneralDetailsForm";
+export * from "./HealthCenterIncludedServices";
+export * from "./AddNewService";
+export * from "./MyServicesList";
 
 interface MyServicesCtxValues {
   AddingNew: boolean;
@@ -15,7 +28,7 @@ export const MyServicesCtx = React.createContext<MyServicesCtxValues>({
 });
 
 export const MyServicesSection: React.FC = () => {
-  const [AddingNew, setAddingNew] = React.useState<boolean>(true);
+  const [AddingNew, setAddingNew] = React.useState<boolean>(false);
 
   function handleAddNewService() {
     setAddingNew(true);

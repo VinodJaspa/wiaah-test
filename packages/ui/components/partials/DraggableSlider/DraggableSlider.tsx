@@ -1,3 +1,4 @@
+import { useResponsive } from "hooks";
 import React from "react";
 
 function getPositionX(event: any) {
@@ -92,6 +93,9 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
   gap = 0,
   draggingActive = true,
 }) => {
+  useResponsive(() => {
+    RefreshSize();
+  });
   const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
 
   const dragging = React.useRef(false);
@@ -101,6 +105,17 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
   const currentIndex = React.useRef(activeIndex || 0);
   const sliderRef = React.useRef<HTMLDivElement>(null);
   const animationRef = React.useRef<number>();
+
+  function RefreshSize() {
+    console.log(dimensions, itemsCount, sliderRef.current?.clientWidth);
+    setDimensions(getElementDimensions(sliderRef));
+
+    setPositionByIndex(
+      vertical
+        ? getElementDimensions(sliderRef).height
+        : getElementDimensions(sliderRef).width
+    );
+  }
 
   const setPositionByIndex = React.useCallback(
     (w = vertical ? dimensions.height : dimensions.width) => {
@@ -139,13 +154,7 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
   // set position by startIndex
   // no animation on startIndex
   React.useLayoutEffect(() => {
-    setDimensions(getElementDimensions(sliderRef));
-
-    setPositionByIndex(
-      vertical
-        ? getElementDimensions(sliderRef).height
-        : getElementDimensions(sliderRef).width
-    );
+    RefreshSize();
   }, [vertical]);
 
   // add event listeners

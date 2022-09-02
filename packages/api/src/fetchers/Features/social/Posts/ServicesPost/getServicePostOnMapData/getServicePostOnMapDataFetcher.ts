@@ -1,5 +1,6 @@
 import { FormatedSearchableFilter, QueryPaginationInputs } from "src/types";
 import { AsyncReturnType } from "types";
+import { randomNum } from "utils";
 import {
   CheckValidation,
   InferType,
@@ -13,6 +14,14 @@ export type ServicePostOnMapType = InferType<
 export type ServicePostsOnMapApiResponseType = InferType<
   typeof ServicePostsOnMapApiResponseValidationSchema
 >;
+const serviceslabels = [
+  "Hotel",
+  "Holiday Rentals",
+  "Restaurant",
+  "Health Center",
+  "Beauty Center",
+  "Vehicle",
+];
 
 export const getServicePostsOnMapDataFetcher = async (
   filters: FormatedSearchableFilter,
@@ -21,10 +30,14 @@ export const getServicePostsOnMapDataFetcher = async (
   const res: AsyncReturnType<typeof getServicePostsOnMapDataFetcher> = {
     hasMore: false,
     total: 150,
-    data: [...Array(15)].map((_, i) => ({
+    data: [...Array(16)].map((_, i) => ({
+      attachments: [
+        { src: `/place-${randomNum(4) || 1}.jpg`, type: "image" },
+        { src: "/video.mp4", type: "video" },
+      ],
       id: "123" + i,
       thumbnail: "/shop-2.jpeg",
-      label: "service label",
+      label: serviceslabels[randomNum(serviceslabels.length)],
       name: "service name",
       type: "seller",
       location: {

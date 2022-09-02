@@ -22,6 +22,7 @@ const specialtiesPh: string[] = [
 ];
 const practitioners: HealthCenterPractitioner[] = [...Array(50)].map(
   (_, i) => ({
+    reviews: 150,
     id: `${i}`,
     rate: randomNum(5),
     location: {
@@ -36,10 +37,10 @@ const practitioners: HealthCenterPractitioner[] = [...Array(50)].map(
       countryCode: "CH",
       state: "Geneve",
     },
-    name: specialtiesPh[randomNum(specialtiesPh.length)],
+    name: "Pharaoh medical center",
     photo:
-      "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
-    specialty: "Dentist",
+      "https://www.guthrie.org/sites/default/files/2021-11/cortland-medical-center.jpg",
+    specialty: "ophthalmology",
   })
 );
 

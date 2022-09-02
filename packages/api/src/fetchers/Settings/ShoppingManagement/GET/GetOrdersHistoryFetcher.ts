@@ -8,13 +8,18 @@ type OrderInfoData = {
   orderDeliveryPricing: number;
   orderDeliveryDate: string;
   price: number;
-  customer: string;
+  seller?: string;
+  sellerId?: string;
+  buyer?: string;
+  buyerId?: string;
   orderName: string;
   payment: string;
+  trackingLink: string;
 };
 
 const orders: OrderInfoData[] = [...Array(10)].map(() => ({
-  customer: "customer",
+  seller: "seller name",
+  sellerId: "132",
   orderDeliveryDate: new Date(Date.now()).toDateString(),
   orderId: `${randomNum(100000)}`,
   orderDeliveryStatus: orderStatus[randomNum(orderStatus.length)],
@@ -22,6 +27,9 @@ const orders: OrderInfoData[] = [...Array(10)].map(() => ({
   orderName: products[randomNum(products.length)].name,
   payment: payments[randomNum(payments.length)],
   price: randomNum(500),
+  buyer: "buyer name",
+  buyerId: "1596",
+  trackingLink: "test tracking link",
 }));
 
 export const GetOrdersHistoryFetcher = (filter: OrdersFilter) => {

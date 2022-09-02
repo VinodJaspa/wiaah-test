@@ -37,6 +37,7 @@ export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
     onShowOnMap,
     vertical,
     minimal,
+    children,
   } = props;
   const { t } = useTranslation();
 
@@ -93,7 +94,7 @@ export const HotelDetailedSearchCard: React.FC<HotelDetailedSearchCardProps> = (
               {rate}
             </span>
           </div>
-
+          {children}
           <div
             className={`${
               vertical ? "items-start" : "items-end"

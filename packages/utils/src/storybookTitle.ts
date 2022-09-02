@@ -106,5 +106,11 @@ export const storybookSocialServiceCardsTitle =
 export const storybookSocialServiceDataDisplayTitle =
   storybookSocialDataDisplayTitle + "services /";
 
+// serviceManagement
+export const storybookServiceManagementTitle =
+  storybookFeaturesTitle + "Service Management /";
+export const storybookServiceManagementInputTitle =
+  storybookServiceManagementTitle + inputsTitle;
+
 // storybook misc
 export const storybookPlaygourndTitle = "Playground /";

@@ -39,7 +39,7 @@ export const getRecommendedResturantsFetcher = async (
       averagePrice: randomNum(100),
       name: "Le bruit qui court",
       isGoodDeal: true,
-      rate: parseInt(`${randomNum(9)}.${randomNum(9)}`),
+      rate: randomNum(5),
       reviewsCount: randomNum(600),
       thumbnails: [
         "/place-2.jpg",

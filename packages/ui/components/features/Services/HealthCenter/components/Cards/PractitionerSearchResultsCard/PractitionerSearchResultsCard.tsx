@@ -1,9 +1,10 @@
 import { HealthCenterPractitioner } from "api";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
-  HighlightText,
   ServiceCardPresentation,
   ServicesRequestKeys,
+  LocationAddressDisplay,
 } from "ui";
 import { setTestid } from "utils";
 
@@ -15,6 +16,7 @@ export interface PractitionerSearchResultsCardProps {
 export const PractitionerSearchResultsCard: React.FC<
   PractitionerSearchResultsCardProps
 > = ({ practitioner }) => {
+  const { t } = useTranslation();
   return (
     <div className="flex w-full flex-col gap-2 rounded overflow-hidden">
       <ServiceCardPresentation
@@ -23,17 +25,17 @@ export const PractitionerSearchResultsCard: React.FC<
         data={practitioner}
         serviceKey={ServicesRequestKeys.healthCenter}
       />
-      <div {...setTestid("ServiceInfoSection")} className="flex flex-col gap-4">
+      <div {...setTestid("ServiceInfoSection")} className="flex flex-col gap-2">
         <div className="flex flex-col font-semibold">
-          <div className="text-primary">{practitioner.name}</div>
+          <p className="font-semibold text-lg">{practitioner.name}</p>
           <span>{practitioner.specialty}</span>
         </div>
-        <div className="flex flex-col gap-1">
-          <span>{practitioner.location.address}</span>
-          <span>
-            {practitioner.location.postalCode} {practitioner.location.city}
-          </span>
+        <div className="flex font-semibold flex-col gap-1">
+          <LocationAddressDisplay {...practitioner.location} />
         </div>
+        <p className="font-bold">
+          {t("Reviews")}: {practitioner.reviews}
+        </p>
       </div>
     </div>
   );

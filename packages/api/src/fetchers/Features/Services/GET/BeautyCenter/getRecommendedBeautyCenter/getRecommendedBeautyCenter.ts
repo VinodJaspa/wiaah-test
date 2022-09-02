@@ -21,8 +21,9 @@ export const getRecommendedBeautyCenterFetcher = async (
 ): Promise<getRecommendedBeautyCentersApiResponse> => {
   const res: AsyncReturnType<typeof getRecommendedBeautyCenterFetcher> = {
     data: [...Array(pagination.take)].map((_, i) => ({
+      type: "Hair Salon",
       id: `${i}`,
-      name: "Green Leaf Treatments",
+      name: "Wiaah Beauty",
       rate: randomNum(5),
       reviews: randomNum(1565),
       owners: ["Perry", "Birmingham"],

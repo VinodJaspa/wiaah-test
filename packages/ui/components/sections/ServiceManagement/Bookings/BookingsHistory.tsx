@@ -1,18 +1,14 @@
 import { CancelAppointmentDto } from "dto";
 import { Formik, Form } from "formik";
+import { usePagination } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import {
-  FormOptionType,
-  OrdersFilter,
-  OrdersStatus,
-  TranslationTextType,
-} from "types";
+import { GiPayMoney } from "react-icons/gi";
+import { useReactPubsub } from "react-pubsub";
+import { FormOptionType, OrdersFilter, TranslationTextType } from "types";
 import {
   Tabs,
-  TabItem,
   TabTitle,
-  TabList,
   TabsHeader,
   TranslationText,
   Table,
@@ -38,6 +34,9 @@ import {
   CancelIcon,
   Avatar,
   SectionHeader,
+  EyeIcon,
+  BookConfirmationDataDisplayModal,
+  CashPaymentIcon,
 } from "ui";
 import {
   useGetBookingsHistoryQuery,
@@ -47,15 +46,19 @@ import { ReturnDeclineRequestValidationSchema } from "validation";
 import { bookingsHistoryCtx } from ".";
 
 export const BookingsHistorySection: React.FC = () => {
-  const { viewAppointment } = React.useContext(bookingsHistoryCtx);
+  const { viewAppointment, shopping } = React.useContext(bookingsHistoryCtx);
+  const { emit: openConfirmationModal } = useReactPubsub(
+    (keys) => keys.openBookConfirmationModal
+  );
   const [Filter, setFilter] = React.useState<OrdersFilter>("all");
   const { t } = useTranslation();
-  const [page, setPage] = React.useState(0);
+  const { page, take } = usePagination(10);
   const { data, refetch } = useGetBookingsHistoryQuery({
     page,
     limit: 10,
     filter: Filter,
   });
+  console.log(data);
 
   React.useEffect(() => {
     refetch();
@@ -75,13 +78,9 @@ export const BookingsHistorySection: React.FC = () => {
             <SearchIcon />
           </InputLeftElement>
           <Input
-            placeholder={`${t(
-              "search_for_order_id",
-              "Search for order ID"
-            )}, ${t("customer", "customer")}, ${t(
-              "order_status",
+            placeholder={`${t("Search for order ID")}, ${t("customer")}, ${t(
               "Order Status"
-            )}, ${t("or", "Or")} ${t("something", "something")}`}
+            )}, ${t("Or")} ${t("something")}`}
           />
         </InputGroup>
         {appointmentsTabs.map(({ tabName, filter }, i) => (
@@ -118,15 +117,16 @@ export const BookingsHistorySection: React.FC = () => {
           className="w-full"
         >
           <Tr>
-            <Th>{t("appointment_id", "Appointment ID")}</Th>
-            <Th>{t("customer", "Customer")}</Th>
-            <Th>{t("service", "Service")}</Th>
-            <Th>{t("from", "From")}</Th>
-            <Th>{t("to", "To")}</Th>
-            <Th>{t("service_price", "Service Price")}</Th>
-            <Th>{t("service_status", "Service Status")}</Th>
-            <Th>{t("payment", "Payment")}</Th>
-            <Th>{t("action", "Action")}</Th>
+            <Th>{t("Appointment ID")}</Th>
+            <Th>{shopping ? t("seller") : t("Customer")}</Th>
+            <Th>{t("Service")}</Th>
+            <Th>{t("From")}</Th>
+            <Th>{t("To")}</Th>
+            <Th>{t("Service Price")}</Th>
+            <Th>{t("Service Status")}</Th>
+            <Th>{t("Payment")}</Th>
+            <Th>{t("View")}</Th>
+            {shopping ? <Th>{t("Action")}</Th> : <Th>{t("Payback")}</Th>}
           </Tr>
           <TBody>
             {data &&
@@ -190,56 +190,77 @@ export const BookingsHistorySection: React.FC = () => {
                       {payment}
                     </Td>
                     <Td>
-                      <ModalExtendedWrapper>
-                        <ModalButton>
-                          <div className="w-full flex justify-center">
-                            <CancelIcon className="mx-auto" />
-                          </div>
-                        </ModalButton>
-                        <ControlledModal>
-                          <Formik<CancelAppointmentDto>
-                            onSubmit={(data) => {
-                              cancelAppointment(data);
-                            }}
-                            initialValues={{
-                              appointmentId,
-                              cancelationReason: "",
-                            }}
-                            validationSchema={
-                              ReturnDeclineRequestValidationSchema
-                            }
-                          >
-                            <Form className="flex flex-col gap-4">
-                              <FormikInput
-                                label={t(
-                                  "cancelation_reason",
-                                  "Cancelation Reason"
-                                )}
-                                as={Textarea}
-                                className="min-h-[10rem]"
-                                name="cancelationReason"
-                              />
-                              <ModalFooter>
-                                <ModalCloseButton>
-                                  <Button colorScheme="white">
-                                    {t("close", "Close")}
-                                  </Button>
-                                </ModalCloseButton>
-                                <Button
-                                  loading={appointmentCancelationLoading}
-                                  type="submit"
-                                >
-                                  {t("submit", "Submit")}
-                                </Button>
-                              </ModalFooter>
-                            </Form>
-                          </Formik>
-                        </ControlledModal>
-                      </ModalExtendedWrapper>
+                      <div className="flex w-full justify-center">
+                        <EyeIcon
+                          onClick={() =>
+                            openConfirmationModal({
+                              id: appointmentId,
+                            })
+                          }
+                        />
+                      </div>
                     </Td>
+                    {shopping ? (
+                      <Td>
+                        <ModalExtendedWrapper>
+                          <ModalButton>
+                            <div className="w-full flex justify-center">
+                              <CancelIcon className="mx-auto" />
+                            </div>
+                          </ModalButton>
+                          <ControlledModal>
+                            <Formik<CancelAppointmentDto>
+                              onSubmit={(data) => {
+                                cancelAppointment(data);
+                              }}
+                              initialValues={{
+                                appointmentId,
+                                cancelationReason: "",
+                              }}
+                              validationSchema={
+                                ReturnDeclineRequestValidationSchema
+                              }
+                            >
+                              <Form className="flex flex-col gap-4">
+                                <FormikInput
+                                  label={t(
+                                    "cancelation_reason",
+                                    "Cancelation Reason"
+                                  )}
+                                  as={Textarea}
+                                  className="min-h-[10rem]"
+                                  name="cancelationReason"
+                                />
+                                <ModalFooter>
+                                  <ModalCloseButton>
+                                    <Button colorScheme="white">
+                                      {t("close", "Close")}
+                                    </Button>
+                                  </ModalCloseButton>
+                                  <Button
+                                    loading={appointmentCancelationLoading}
+                                    type="submit"
+                                  >
+                                    {t("submit", "Submit")}
+                                  </Button>
+                                </ModalFooter>
+                              </Form>
+                            </Formik>
+                          </ControlledModal>
+                        </ModalExtendedWrapper>
+                      </Td>
+                    ) : (
+                      <Td>
+                        <div className="flex w-full justify-center">
+                          <CashPaymentIcon />
+                        </div>
+                      </Td>
+                    )}
                   </Tr>
                 )
               )}
+
+            <BookConfirmationDataDisplayModal />
           </TBody>
         </Table>
       </TableContainer>

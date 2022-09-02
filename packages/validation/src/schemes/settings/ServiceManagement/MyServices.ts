@@ -73,4 +73,5 @@ export const NewServiceSchemas = {
   beautyCenterDetailsSchema: yup.object({}),
   hotelIncludedServicesSchema: yup.object({}),
   RestaurantIncludedServicesSchema: yup.object({}),
+  HealthcenterIncludedServicesSchema: yup.object({}),
 };

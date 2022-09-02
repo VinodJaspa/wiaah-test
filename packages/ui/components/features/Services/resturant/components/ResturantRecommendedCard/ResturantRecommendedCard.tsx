@@ -12,6 +12,7 @@ import {
   Button,
   ServicesRequestKeys,
 } from "ui";
+import { BiStar } from "react-icons/bi";
 import { useRouting } from "routing";
 
 export interface ResturantRecommendedCardProps extends ResturantMetaDataType {
@@ -61,7 +62,9 @@ export const ResturantRecommendedCard: React.FC<
         </Button>
       </AspectRatio>
       <div className="flex flex-col gap-2 w-full">
-        <p className="font-semibold uppercase">{location?.country}</p>
+        <p className="font-semibold uppercase">
+          {location?.city}, {location?.country}
+        </p>
         <div className="flex justify-between w-full">
           <div className="flex flex-col gap-2 text-lg text-gray-600">
             <p className="text-xl font-bold">{name}</p>
@@ -75,7 +78,9 @@ export const ResturantRecommendedCard: React.FC<
             </InfoText>
           </div>
           <div className="flex flex-col items-center gap-2">
-            <p className="text-2xl font-bold">{rate}</p>
+            <p className="text-2xl flex gap-1 items-center font-bold">
+              <BiStar /> {rate}
+            </p>
             <div className="flex gap-1 items-center">
               <CommentIcon />
               <p>{reviewsCount}</p>

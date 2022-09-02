@@ -22,18 +22,18 @@ export const getHotelsMetaDataFetcher = async (
     hasMore: false,
     data: [...Array(pagination.take || 10)].map(() => ({
       id: "123",
-      name: "test",
+      name: "Luxury Paris Hotel",
       provider: "provider",
       thumbnail: "/place-2.jpg",
       location: {
         address: "test address",
-        city: "city",
+        city: "paris",
         cords: {
           lat: 40,
           lng: 45,
         },
         postalCode: 13532,
-        country: "country",
+        country: "france",
         countryCode: "USA",
         state: "state",
       },

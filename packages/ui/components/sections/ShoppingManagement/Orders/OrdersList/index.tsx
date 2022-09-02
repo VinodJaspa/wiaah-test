@@ -2,7 +2,8 @@ import { CancelOrderDto } from "dto";
 import { Formik, Form } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { BiCalendarEdit } from "react-icons/bi";
+import { useReactPubsub } from "react-pubsub";
+import { useRouting } from "routing";
 import {
   FormOptionType,
   OrdersFilter,
@@ -39,18 +40,11 @@ import {
   ModalFooter,
   Textarea,
   CancelIcon,
-  Accordion,
-  AccordionButton,
-  AccordionItem,
-  Pagination,
-  Menu,
-  MenuButton,
-  MenuList,
-  Select,
-  SelectOption,
-  AccordionPanel,
-  DateInput,
   Radio,
+  EyeIcon,
+  OrderDetailsModal,
+  LinkIcon,
+  UpdateProductStatusModal,
 } from "ui";
 import { useGetOrdersHistoryQuery, useCancelOrderMutation } from "ui/Hooks";
 import { DateDetails, randomNum } from "utils";
@@ -59,135 +53,183 @@ import { ReturnDeclineRequestValidationSchema } from "validation";
 export interface OrdersListProps {}
 
 export const OrdersList: React.FC<OrdersListProps> = () => {
-  const { viewOrder, shopping } = React.useContext(OrderContext);
+  const { emit: openOrderDetailsModal } = useReactPubsub(
+    (keys) => keys.openOrderDetailsModal
+  );
+  const { visit } = useRouting();
+  const { shopping } = React.useContext(OrderContext);
   const { t } = useTranslation();
 
   return (
     <div className="flex flex-col gap-4">
       <SectionHeader sectionTitle={t("orders", "Orders")} />
-      {shopping ? (
-        <Tabs>
-          <TabsHeader />
-          <InputGroup>
-            <InputLeftElement>
-              <SearchIcon />
-            </InputLeftElement>
-            <Input
-              placeholder={`${t(
-                "search_for_order_id",
-                "Search for order ID"
-              )}, ${t("customer", "customer")}, ${t(
-                "order_status",
-                "Order Status"
-              )}, ${t("or", "Or")} ${t("something", "something")}`}
-            />
-          </InputGroup>
-          <TabList />
-          {OrdersTabs.map(({ tabName, filter }, i) => (
-            <>
-              <TabTitle>
-                {({ currentTabIdx }) => (
-                  <TranslationText
-                    className={`${
-                      OrdersTabs[currentTabIdx].filter === filter
-                        ? "text-primary border-b-2 border-primary"
-                        : ""
-                    }`}
-                    translationObject={tabName}
-                  />
-                )}
-              </TabTitle>
-              <TabItem>
-                {() => {
-                  const { data: orders } = useGetOrdersHistoryQuery(filter);
-                  const [selectedOrder, setSelectedOrder] =
-                    React.useState<string>();
-                  const {
-                    mutate: CancelOrder,
-                    isLoading: orderCancelationLoading,
-                  } = useCancelOrderMutation();
-                  return (
-                    <TableContainer className="w-full">
-                      <Table
-                        ThProps={{
-                          className:
-                            "first:text-left first:pl-2 border-gray-300 border-[1px] border-collapse",
-                        }}
-                        TrProps={{ className: "border-collapse" }}
-                        TdProps={{
-                          className:
-                            "first:text-left first:pl-2 border-gray-300 border-[1px] border-collapse",
-                        }}
-                        className="w-full"
-                      >
-                        <Tr>
-                          <Th>{t("order_id", "Order ID")}</Th>
-                          <Th>{t("customer", "Customer")}</Th>
-                          <Th>{t("order", "Order")}</Th>
-                          <Th>{t("delivery_date", "Delivery Date")}</Th>
-                          <Th>{t("delivery_pricing", "Delivery Pricing")}</Th>
-                          <Th>{t("delivery_status", "Delivery Status")}</Th>
-                          <Th>{t("payment", "Payment")}</Th>
-                          <Th>{t("action", "Action")}</Th>
-                        </Tr>
-                        <TBody>
-                          {orders &&
-                            orders.map(
-                              (
-                                {
-                                  customer,
-                                  orderId,
-                                  orderDeliveryDate,
-                                  orderDeliveryPricing,
-                                  orderDeliveryStatus,
-                                  orderName,
-                                  payment,
-                                  price,
-                                },
-                                i
-                              ) => {
-                                const orderDate =
-                                  DateDetails(orderDeliveryDate);
-                                return (
-                                  <Tr className="cursor-pointer" key={i}>
-                                    <Td onClick={() => viewOrder(orderId)}>
-                                      {orderId}
-                                    </Td>
-                                    <Td onClick={() => viewOrder(orderId)}>
-                                      {customer}
-                                    </Td>
-                                    <Td onClick={() => viewOrder(orderId)}>
-                                      {orderName}
-                                    </Td>
-                                    <Td onClick={() => viewOrder(orderId)}>
-                                      {new Date(
-                                        orderDeliveryDate
-                                      ).toLocaleDateString("en", {
-                                        day: "2-digit",
-                                        month: "2-digit",
-                                        year: "numeric",
-                                      })}
-                                    </Td>
-                                    <Td onClick={() => viewOrder(orderId)}>
-                                      <PriceDisplay
-                                        price={orderDeliveryPricing}
+      <Tabs>
+        <TabsHeader />
+        <InputGroup>
+          <InputLeftElement>
+            <SearchIcon />
+          </InputLeftElement>
+          <Input
+            placeholder={`${t("Search for order ID")}, ${t(
+              "customer",
+              "customer"
+            )}, ${t("Order Status")}, ${t("Or")} ${t("something")}`}
+          />
+        </InputGroup>
+        <TabList />
+        {OrdersTabs.map(({ tabName, filter }, i) => (
+          <>
+            <TabTitle>
+              {({ currentTabIdx }) => (
+                <TranslationText
+                  className={`${
+                    OrdersTabs[currentTabIdx].filter === filter
+                      ? "text-primary border-b-2 border-primary"
+                      : ""
+                  }`}
+                  translationObject={tabName}
+                />
+              )}
+            </TabTitle>
+            <TabItem>
+              {() => {
+                const { data: orders } = useGetOrdersHistoryQuery(filter);
+
+                const {
+                  mutate: CancelOrder,
+                  isLoading: orderCancelationLoading,
+                } = useCancelOrderMutation();
+                return (
+                  <TableContainer className="w-full">
+                    <Table
+                      ThProps={{
+                        className:
+                          "first:text-left first:pl-2 border-gray-300 border-[1px] border-collapse",
+                      }}
+                      TrProps={{ className: "border-collapse" }}
+                      TdProps={{
+                        align: "center",
+                        className:
+                          "first:text-left first:pl-2 border-gray-300 border border-collapse",
+                      }}
+                      className="w-full"
+                    >
+                      <Tr>
+                        <Th>{t("Order ID")}</Th>
+                        <Th>{shopping ? t("Seller") : t("Buyer")}</Th>
+                        <Th>{t("Order")}</Th>
+                        <Th>{t("Delivery Date")}</Th>
+                        <Th>{t("Delivery Pricing")}</Th>
+                        <Th>{t("Delivery Status")}</Th>
+                        <Th>{t("Payment")}</Th>
+                        <Th>{t("View")}</Th>
+                        <Th>{t("Tracking")}</Th>
+                        {shopping ? <Th>{t("Action")}</Th> : null}
+                      </Tr>
+                      <TBody>
+                        {orders &&
+                          orders.map((props, i) => {
+                            const {
+                              seller,
+                              orderId,
+                              orderDeliveryDate,
+                              orderDeliveryPricing,
+                              orderDeliveryStatus,
+                              orderName,
+                              payment,
+                              price,
+                              buyer,
+                              trackingLink,
+                            } = props;
+                            const orderDate = DateDetails(orderDeliveryDate);
+                            function handleGoToTrackingLink(link: string) {}
+                            return (
+                              <Tr className="cursor-pointer" key={i}>
+                                <Td>{orderId}</Td>
+                                <Td>
+                                  {shopping ? (
+                                    <p
+                                      onClick={() =>
+                                        visit((routes) =>
+                                          routes.visitSellerSocialProfile(props)
+                                        )
+                                      }
+                                      className="cursor-pointer hover:underline text-primary"
+                                    >
+                                      {seller}
+                                    </p>
+                                  ) : (
+                                    <p
+                                      onClick={() =>
+                                        visit((routes) =>
+                                          routes.visitBuyerSocialProfile(props)
+                                        )
+                                      }
+                                      className="cursor-pointer hover:underline text-primary"
+                                    >
+                                      {buyer}
+                                    </p>
+                                  )}
+                                </Td>
+                                <Td>{orderName}</Td>
+                                <Td>
+                                  {new Date(
+                                    orderDeliveryDate
+                                  ).toLocaleDateString("en", {
+                                    day: "2-digit",
+                                    month: "2-digit",
+                                    year: "numeric",
+                                  })}
+                                </Td>
+                                <Td>
+                                  <PriceDisplay price={orderDeliveryPricing} />
+                                </Td>
+                                <Td>
+                                  <OrderStatusDisplay
+                                    className="w-fit capitalize mx-auto"
+                                    status={orderDeliveryStatus}
+                                  />
+                                </Td>
+                                <Td>{payment}</Td>
+                                <Td>
+                                  <div className="flex w-full justify-center">
+                                    <EyeIcon
+                                      onClick={() =>
+                                        openOrderDetailsModal({
+                                          id: orderId,
+                                        })
+                                      }
+                                    />
+                                  </div>
+                                </Td>
+                                <Td>
+                                  <ModalExtendedWrapper>
+                                    <ModalButton>
+                                      <LinkIcon
+                                        onClick={() =>
+                                          shopping
+                                            ? handleGoToTrackingLink(
+                                                trackingLink
+                                              )
+                                            : null
+                                        }
                                       />
-                                    </Td>
-                                    <Td onClick={() => viewOrder(orderId)}>
-                                      <OrderStatusDisplay
-                                        className="w-fit capitalize mx-auto"
-                                        status={orderDeliveryStatus}
+                                    </ModalButton>
+                                    {shopping ? null : (
+                                      <UpdateProductStatusModal
+                                        productId={orderId}
+                                        status="confirmed"
+                                        trackingLink="test"
                                       />
-                                    </Td>
-                                    <Td onClick={() => viewOrder(orderId)}>
-                                      {payment}
-                                    </Td>
-                                    <Td>
+                                    )}
+                                  </ModalExtendedWrapper>
+                                </Td>
+                                {shopping ? (
+                                  <Td>
+                                    <div className="w-full flex justify-center">
                                       <ModalExtendedWrapper>
                                         <ModalButton>
-                                          <div className="w-full flex justify-center">
-                                            <CancelIcon className="mx-auto" />
-                                          </div>
+                                          <CancelIcon className="mx-auto" />
                                         </ModalButton>
                                         <ControlledModal>
                                           <Formik<CancelOrderDto>
@@ -336,120 +378,22 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
                                           </Formik>
                                         </ControlledModal>
                                       </ModalExtendedWrapper>
-                                    </Td>
-                                  </Tr>
-                                );
-                              }
-                            )}
-                        </TBody>
-                      </Table>
-                    </TableContainer>
-                  );
-                }}
-              </TabItem>
-            </>
-          ))}
-        </Tabs>
-      ) : (
-        <>
-          <div>
-            <Formik initialValues={{}} onSubmit={() => {}}>
-              {({}) => {
-                return (
-                  <Form className="grid grid-cols-3 gap-4">
-                    <FormikInput
-                      placeholder={t("order_id", "Order ID")}
-                      name="orderId"
-                    />
-                    <FormikInput
-                      placeholder={t("payment_mothed", "Payment Mothed")}
-                      name="paymentMothed"
-                    />
-                    <FormikInput
-                      as={Select}
-                      placeholder={t("status", "Status")}
-                      name="status"
-                    >
-                      {statusOptions.map((opt, i) => (
-                        <SelectOption value={opt.value}>
-                          <TranslationText translationObject={opt.name} />
-                        </SelectOption>
-                      ))}
-                    </FormikInput>
-                    <div className="flex items-center gap-2">
-                      <FormikInput
-                        placeholder={t("added_date", "Added Date")}
-                        name="DateAdded"
-                      />
-                      <Menu>
-                        <MenuButton>
-                          <BiCalendarEdit />
-                        </MenuButton>
-                        <MenuList className="origin-top-left left-0">
-                          <DateInput />
-                        </MenuList>
-                      </Menu>
-                    </div>
-                  </Form>
+                                    </div>
+                                  </Td>
+                                ) : null}
+                              </Tr>
+                            );
+                          })}
+                      </TBody>
+                      <OrderDetailsModal />
+                    </Table>
+                  </TableContainer>
                 );
               }}
-            </Formik>
-          </div>
-          <div className="flex flex-col gap-4">
-            {orders.map((order, i) => (
-              <Accordion controled key={i}>
-                <AccordionItem itemkey={i + 1}>
-                  <AccordionButton>
-                    <div className="p-2 cursor-pointer bg-primary text-white flex w-full justify-between">
-                      <span>
-                        {t("order_id", "Order ID")}: {order.orderId}
-                      </span>
-                      <span>
-                        {t("status", "Status")}: {order.orderStatus}
-                      </span>
-                    </div>
-                  </AccordionButton>
-                  <AccordionPanel>
-                    <div className="flex items-center justify-between w-full">
-                      <div className="font-bold w-3/4 grid grid-cols-2 gap-2 py-2">
-                        <span>
-                          {t("date_added", "Date Added")}:{" "}
-                          <span className="font-normal">{order.dateAdded}</span>
-                        </span>
-                        <span>
-                          {t("customer", "Customer")}:{" "}
-                          <span className="font-normal">{order.customer}</span>
-                        </span>
-                        <span>
-                          {t("products", "Products")}:{" "}
-                          <span className="font-normal">
-                            {order.productsNum}
-                          </span>
-                        </span>
-                        <span className="flex gap-1">
-                          {t("total", "Total")}:{" "}
-                          <span className="font-normal">
-                            <PriceDisplay priceObject={order.total} />
-                          </span>
-                        </span>
-                      </div>
-                      <Button
-                        onClick={() => {
-                          viewOrder(order.orderId);
-                        }}
-                        className="h-fit"
-                      >
-                        {t("view_more", "View More")}
-                      </Button>
-                    </div>
-                  </AccordionPanel>
-                </AccordionItem>
-              </Accordion>
-            ))}
-          </div>
-          <Pagination maxPages={15} />
-        </>
-      )}
+            </TabItem>
+          </>
+        ))}
+      </Tabs>
     </div>
   );
 };

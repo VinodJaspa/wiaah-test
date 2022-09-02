@@ -17,7 +17,7 @@ export const PopularAmenitiesSection: React.FC<
 > = ({ amenities, cols = 1 }) => {
   const { t } = useTranslation();
   return (
-    <section className="flex flex-col gap-4">
+    <section className="flex flex-col w-full gap-4">
       <p className="text-lg md:text2xl font-bold leading-none">
         {t("Common amenities")}
       </p>

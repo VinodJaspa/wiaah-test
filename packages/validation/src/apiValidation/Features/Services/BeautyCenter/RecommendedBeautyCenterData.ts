@@ -7,6 +7,7 @@ import { array, number, object, string } from "yup";
 export const RecommendedBeautyCenterData = object({
   id: string().required(),
   name: string().required(),
+  type: string().required(),
   rate: Rating().required(),
   reviews: number().required(),
   owners: array().of(string().required()).min(0).required(),

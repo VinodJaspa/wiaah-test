@@ -6,6 +6,10 @@ import { ServiceCancelationPolicy } from "./ServiceCancelationPolicy";
 type PresntationMediaType = "video" | "image";
 const PresntationMediaTypes: PresntationMediaType[] = ["video", "image"];
 
+const depositValidationSchema = number();
+
+const deposit = () => depositValidationSchema;
+
 export const PresntationMediaValidationSchema = object({
   src: string().required(),
   type: mixed<PresntationMediaType>().oneOf(PresntationMediaTypes).required(),
@@ -39,6 +43,7 @@ export const ServiceCancelationPolicies = object({
 });
 
 export const ServicePoliciesValidationSchema = object({
+  deposit: deposit().required(),
   policies: array().of(
     object({
       policyTitle: string().required(),

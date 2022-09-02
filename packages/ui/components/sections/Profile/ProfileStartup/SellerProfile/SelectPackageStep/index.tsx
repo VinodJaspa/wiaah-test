@@ -4,13 +4,19 @@ import { AiFillCheckCircle, AiOutlineInbox } from "react-icons/ai";
 import { FiBox } from "react-icons/fi";
 import { Button } from "ui";
 
-export interface SelectPackageStepProps {}
+export interface SelectPackageStepProps {
+  shopType: string;
+}
 const FREE_PLAN = 0;
 const PAY_PLAN = 1;
-export const SelectPackageStep: React.FC<SelectPackageStepProps> = () => {
+const SECEND_PAY_PLAN = 2;
+export const SelectPackageStep: React.FC<SelectPackageStepProps> = ({
+  shopType,
+}) => {
+  const isProductsShop = shopType === "products";
   const { t } = useTranslation();
-  let [plan, setPlan] = React.useState(FREE_PLAN);
-
+  let [plan, setPlan] = React.useState(isProductsShop ? FREE_PLAN : PAY_PLAN);
+  console.log({ isProductsShop });
   return (
     <div className="w-full flex flex-col h-full justify-center gap-4">
       <h2 className="hidden text-xl font-bold lg:block">
@@ -19,7 +25,10 @@ export const SelectPackageStep: React.FC<SelectPackageStepProps> = () => {
       <div className="flex flex-col h-[30rem] gap-4 justify-between lg:flex-row">
         <div
           onClick={() => {
-            setPlan(0);
+            console.log(isProductsShop);
+            if (isProductsShop) {
+              setPlan(FREE_PLAN);
+            }
           }}
           className={`${
             plan == FREE_PLAN ? "border-8" : ""
@@ -54,14 +63,17 @@ export const SelectPackageStep: React.FC<SelectPackageStepProps> = () => {
             </div>
           </div>
           <div className="mt-9 mb-6">
-            <Button className="w-full">
+            <Button
+              colorScheme={isProductsShop ? "primary" : "gray"}
+              className={`${isProductsShop ? "" : "cursor-not-allowed"} w-full`}
+            >
               {t("choose_a_plan", "Choose a plan")}
             </Button>
           </div>
         </div>
         <div
           onClick={() => {
-            setPlan(1);
+            setPlan(PAY_PLAN);
           }}
           className={`${
             plan == PAY_PLAN ? "border-8" : ""
@@ -101,10 +113,10 @@ export const SelectPackageStep: React.FC<SelectPackageStepProps> = () => {
         </div>
         <div
           onClick={() => {
-            setPlan(2);
+            setPlan(SECEND_PAY_PLAN);
           }}
           className={`${
-            plan == PAY_PLAN ? "border-8" : ""
+            plan == SECEND_PAY_PLAN ? "border-8" : ""
           } w-full flex flex-col justify-between border-primary cursor-pointer rounded-xl bg-slate-900 p-6 `}
         >
           <div>
