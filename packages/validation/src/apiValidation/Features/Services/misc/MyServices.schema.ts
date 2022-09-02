@@ -1,28 +1,115 @@
 import { CreatePaginationApiResponseValidationSchemaOf } from "../../../SharedSchema";
 import { ServicesType } from "types";
-import { mixed, object, string } from "yup";
+import { InferType, mixed, number, object, string } from "yup";
 
 export type SerivceStatus = "active" | "inActive" | "pending" | "banned";
+export const ServicesTypeValidationSchema = mixed<ServicesType>().oneOf([
+  "beauty_center",
+  "general",
+  "health_center",
+  "holidays_rentals",
+  "hotel",
+  "resturant",
+  "vehicle",
+]);
 
-export const MyServiceValidationSchema = object({
+type MyServicesValidationSchemaTypes =
+  | InferType<typeof HotelMyServiceValidationSchema>
+  | InferType<typeof RestaurantMyServiceValidationSchema>
+  | InferType<typeof HealthCenterMyServiceValidationSchema>
+  | InferType<typeof BeautyCenterMyServiceValidationSchema>
+  | InferType<typeof VehicleMyServiceValidationSchema>
+  | InferType<typeof HolidayRentalsMyServiceValidationSchema>;
+
+export const ServicesTypes = () => ServicesTypeValidationSchema;
+
+export const commonMyServiceValidationSchema = object({
   id: string().required(),
   title: string().required(),
-  type: mixed<ServicesType>()
-    .oneOf([
-      "beauty_center",
-      "general",
-      "health_center",
-      "holidays_rentals",
-      "hotel",
-      "resturant",
-      "vehicle",
-    ])
-    .required(),
-  status: mixed<SerivceStatus>()
-    .oneOf(["active", "banned", "pending", "inActive"])
-    .required(),
   thumbnail: string().required(),
+  provider: string().required(),
+  description: string().required(),
 });
+
+export const HotelMyServiceValidationSchema =
+  commonMyServiceValidationSchema.concat(
+    object({
+      type: mixed<"hotel">().oneOf(["hotel"]).required(),
+      pricePerNight: number().required(),
+    })
+  );
+export const RestaurantMyServiceValidationSchema =
+  commonMyServiceValidationSchema.concat(
+    object({
+      type: mixed<"restaurant">().oneOf(["restaurant"]).required(),
+    })
+  );
+
+export const HealthCenterMyServiceValidationSchema =
+  commonMyServiceValidationSchema.concat(
+    object({
+      type: mixed<"health_center">().oneOf(["health_center"]).required(),
+    })
+  );
+
+export const BeautyCenterMyServiceValidationSchema =
+  commonMyServiceValidationSchema.concat(
+    object({
+      type: mixed<"beauty_center">().oneOf(["beauty_center"]).required(),
+    })
+  );
+
+export const VehicleMyServiceValidationSchema =
+  commonMyServiceValidationSchema.concat(
+    object({
+      type: mixed<"vehicle">().oneOf(["vehicle"]).required(),
+    })
+  );
+
+export const HolidayRentalsMyServiceValidationSchema =
+  commonMyServiceValidationSchema.concat(
+    object({
+      pricePerNight: number().required(),
+      type: mixed<"holiday_rentals">().oneOf(["holiday_rentals"]).required(),
+    })
+  );
+
+export const MyServiceValidationSchema =
+  mixed<MyServicesValidationSchemaTypes>()
+    .test({
+      name: "Service Data",
+      message() {
+        return `service type and data doesnt match`;
+      },
+      test: (data) => {
+        if (!data) return false;
+        const { type } = data;
+        switch (type) {
+          case "hotel":
+            HotelMyServiceValidationSchema.validateSync(data);
+            break;
+          case "restaurant":
+            RestaurantMyServiceValidationSchema.validateSync(data);
+            break;
+          case "health_center":
+            HealthCenterMyServiceValidationSchema.validateSync(data);
+            break;
+          case "beauty_center":
+            BeautyCenterMyServiceValidationSchema.validateSync(data);
+            break;
+          case "holiday_rentals":
+            HolidayRentalsMyServiceValidationSchema.validateSync(data);
+            break;
+          case "vehicle":
+            VehicleMyServiceValidationSchema.validateSync(data);
+            break;
+          default:
+            return false;
+        }
+        return true;
+      },
+    })
+    .required();
 
 export const MyServicesApiResponseValidationSchema =
   CreatePaginationApiResponseValidationSchemaOf(MyServiceValidationSchema);

@@ -64,3 +64,4 @@ export * from "./EyeIcon";
 export * from "./PdfIcon";
 export * from "./TargetCursor";
 export * from "./LinkIcon";
+export * from "./TrashIcon";

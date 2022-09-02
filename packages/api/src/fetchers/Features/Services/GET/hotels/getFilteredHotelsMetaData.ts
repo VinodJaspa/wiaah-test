@@ -44,7 +44,7 @@ export const getFilteredHotelsMetaData = async (
   const data: PaginationFetchedData<FilteredHotelsMetaDataType[]> = {
     hasMore: false,
     total: 516,
-    data: [...Array(15)].map((_, i) => ({
+    data: [...Array(pagination.page * pagination.take)].map((_, i) => ({
       title:
         "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
       provider: "Crowne Plaza",

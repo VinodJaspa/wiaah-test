@@ -26,7 +26,6 @@ import {
   HolidayRentalsGeneralDetailsForm,
   HealthCenterIncludedServices,
   ServiceSectionWithSchemaType,
-  AddCompanyLogoForm,
 } from "ui";
 
 import { StepperStepType } from "types";
@@ -95,9 +94,9 @@ export const SellerProfileStartupView: React.FC = ({}) => {
   ];
   const formSteps: StepperStepType[] = [
     {
-      key: "10",
-      stepComponent: AddCompanyLogoForm,
-      stepName: t("Add company logo"),
+      stepName: t("Add_Profile_Pic", "Add Profile Pic"),
+      stepComponent: AddProfilePictureStep,
+      key: "7",
     },
     {
       stepName: t("Shop information"),
@@ -121,7 +120,11 @@ export const SellerProfileStartupView: React.FC = ({}) => {
       }) => {
         const includedServiceSection = includedServiceSections.find(
           (s) => s.key === serviceType
-        );
+        ) || {
+          key: "Vehicle",
+          component: IncludedServices,
+          schema: NewServiceSchemas.hotelIncludedServicesSchema,
+        };
 
         const detailsSection = ServicesDetailsSections.find(
           (section) => section.key === serviceType
@@ -181,9 +184,11 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                 handlerKey="includedServices"
                 validationSchema={includedServiceSection?.schema}
               >
-                {includedServiceSection ? (
-                  <includedServiceSection.component />
-                ) : null}
+                {({ validate }) => {
+                  return includedServiceSection ? (
+                    <includedServiceSection.component onChange={validate} />
+                  ) : null;
+                }}
               </StepperFormHandler>
             ),
             stepName: {
@@ -264,11 +269,6 @@ export const SellerProfileStartupView: React.FC = ({}) => {
       stepName: t("Find_your_freinds", "Find your freinds"),
       stepComponent: FindYourFriendsStep,
       key: "6",
-    },
-    {
-      stepName: t("Add_Profile_Pic", "Add Profile Pic"),
-      stepComponent: AddProfilePictureStep,
-      key: "7",
     },
   ];
 

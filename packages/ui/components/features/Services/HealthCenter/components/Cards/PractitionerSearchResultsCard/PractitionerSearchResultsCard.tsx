@@ -1,10 +1,6 @@
 import { HealthCenterPractitioner } from "api";
 import React from "react";
-import {
-  HighlightText,
-  ServiceCardPresentation,
-  ServicesRequestKeys,
-} from "ui";
+import { ServiceCardPresentation, ServicesRequestKeys } from "ui";
 import { setTestid } from "utils";
 
 export interface PractitionerSearchResultsCardProps {
