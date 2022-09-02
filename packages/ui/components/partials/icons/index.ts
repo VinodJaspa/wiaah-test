@@ -66,3 +66,5 @@ export * from "./TargetCursor";
 export * from "./LinkIcon";
 export * from "./TrashIcon";
 export * from "./DotIcon";
+export * from "./HotelIcon";
+export * from "./HouseIcon";

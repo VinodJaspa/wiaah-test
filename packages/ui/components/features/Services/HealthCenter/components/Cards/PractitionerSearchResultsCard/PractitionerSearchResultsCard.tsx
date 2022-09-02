@@ -25,7 +25,7 @@ export const PractitionerSearchResultsCard: React.FC<
         data={practitioner}
         serviceKey={ServicesRequestKeys.healthCenter}
       />
-      <div {...setTestid("ServiceInfoSection")} className="flex flex-col gap-4">
+      <div {...setTestid("ServiceInfoSection")} className="flex flex-col gap-2">
         <div className="flex flex-col font-semibold">
           <p className="font-semibold text-lg">{practitioner.name}</p>
           <span>{practitioner.specialty}</span>

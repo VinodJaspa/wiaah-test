@@ -14,13 +14,15 @@ export const SocialServicesPostsMetaDataList: React.FC = () => {
     isLoading,
     isError,
   } = useGetServicesPostsOnMapDataQuery({}, { page, take });
-  return res ? (
+  return (
     <SpinnerFallback isLoading={isLoading} isError={isError}>
-      <ServicesSearchGrid
-        component={SocialServicePostMetaDataCard}
-        data={res?.data}
-        handlePassData={(props) => props}
-      />
+      {res ? (
+        <ServicesSearchGrid
+          component={SocialServicePostMetaDataCard}
+          data={res?.data}
+          handlePassData={(props) => props}
+        />
+      ) : null}
     </SpinnerFallback>
-  ) : null;
+  );
 };
