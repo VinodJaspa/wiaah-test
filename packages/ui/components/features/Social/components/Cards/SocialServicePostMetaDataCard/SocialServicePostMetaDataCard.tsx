@@ -10,10 +10,14 @@ export interface SocialServicePostMetaDataCardProps
 
 export const SocialServicePostMetaDataCard: React.FC<
   SocialServicePostMetaDataCardProps
-> = ({ id, label, name, attachments, onClick }) => {
+> = ({ id, label, name, attachments, onClick, ...props }) => {
   const { t } = useTranslation();
   return (
-    <div className="relative w-full bg-black">
+    <div
+      {...props}
+      onClick={onClick}
+      className="relative w-full bg-transparent"
+    >
       <AspectRatio ratio={3 / 4}>
         <Slider>
           {Array.isArray(attachments)
@@ -21,7 +25,7 @@ export const SocialServicePostMetaDataCard: React.FC<
             : null}
         </Slider>
       </AspectRatio>
-      <div className="cursor-pointer absolute top-0 left-0 flex flex-col w-full text-lg bg-gray-500 bg-opacity-50 p-2 text-white">
+      <div className="cursor-pointer absolute top-4 left-0 flex flex-col w-full text-lg bg-gray-500 bg-opacity-50 p-2 text-white">
         <p className="font-semibold  lg:text-2xl ">{name}</p>
         <p className="w-full text-lg font-bold text-right text-primary">
           {">>"} {t(label)} {"<<"}

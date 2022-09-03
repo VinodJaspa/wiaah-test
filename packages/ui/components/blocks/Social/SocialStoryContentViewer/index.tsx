@@ -1,7 +1,6 @@
-import { Flex, Image, Text, Box } from "@chakra-ui/react";
 import React from "react";
 import { useSetRecoilState } from "recoil";
-import { SocialStoryContentData } from "types/market/Social";
+import { SocialStoryContentData } from "types";
 import {
   useStory,
   useTimer,
@@ -13,88 +12,78 @@ import {
   AffiliationPostStory,
   NewsFeedPostStory,
   ShopPostStory,
-} from "../../DataDisplay/StoryDisplays";
+  ServicePostStory,
+} from "ui";
 
 export interface SocialStoryContentViewerProps extends SocialStoryContentData {
   play?: boolean;
   onProgress?: (progress: number) => any;
   onFinish?: () => any;
 }
-export const SocialStoryContentViewer: React.FC<SocialStoryContentViewerProps> =
-  ({ storyType, storySrc, storyText, play, id }) => {
-    const { nextStory } = useStory();
-    const setCurrentStoryProgress = useSetRecoilState(
-      CurrentStoryProgressState
-    );
-    const videoRef = React.useRef<HTMLVideoElement>(null);
+export const SocialStoryContentViewer: React.FC<
+  SocialStoryContentViewerProps
+> = ({ storyType, storySrc, storyText, play, id }) => {
+  const { nextStory } = useStory();
+  const setCurrentStoryProgress = useSetRecoilState(CurrentStoryProgressState);
+  const videoRef = React.useRef<HTMLVideoElement>(null);
 
-    React.useEffect(() => {
-      if (videoRef.current) {
-        if (play) {
-          videoRef.current.play();
-        } else {
-          videoRef.current.currentTime = 0;
-          videoRef.current.pause();
-        }
-      }
+  React.useEffect(() => {
+    if (videoRef.current) {
       if (play) {
-        useTimer(7, setCurrentStoryProgress, 200, nextStory);
+        videoRef.current.play();
+      } else {
+        videoRef.current.currentTime = 0;
+        videoRef.current.pause();
       }
-    }, [play]);
+    }
+    if (play) {
+      useTimer(7, setCurrentStoryProgress, 200, nextStory);
+    }
+  }, [play]);
 
-    const Content = () => {
-      switch (storyType) {
-        case "image":
-          return <PostAttachment src={storySrc} type={storyType} />;
-        case "video":
-          return (
-            <Box>
-              <video
-                ref={videoRef}
-                style={{ maxHeight: "100%", objectFit: "contain" }}
-                src={storySrc}
-              />
-            </Box>
-          );
-        case "newsFeedPost":
-          return <NewsFeedPostStory postId={id} />;
-        case "shopPost":
-          return <ShopPostStory id={id} />;
-        case "affiliationPost":
-          return <AffiliationPostStory postId={id} />;
-        case "action":
-          return <ActionPostStory postId={id} />;
-        default:
-          return null;
-      }
-    };
-    return (
-      <Flex
-        // maxW="container.md"
-        direction={"column"}
-        align={"center"}
-        maxW="100%"
-        maxH="100%"
-        justify={"center"}
-      >
-        {storyText && (
-          // <Flex
-          //   w="100%"
-          //   justify={"center"}
-          //   align="center"
-          // >
-          <Text
-            w="100%"
-            textAlign={"center"}
-            fontWeight={"bold"}
-            py="1rem"
-            fontSize={storyType === "text" ? "xx-large" : "lg"}
-          >
-            {storyText}
-          </Text>
-          // </Flex>
-        )}
-        {Content()}
-      </Flex>
-    );
+  const Content = () => {
+    switch (storyType) {
+      case "image":
+        return <PostAttachment src={storySrc || ""} type={storyType} />;
+      case "video":
+        return (
+          <div>
+            <video
+              ref={videoRef}
+              style={{ maxHeight: "100%", objectFit: "contain" }}
+              src={storySrc}
+            />
+          </div>
+        );
+      case "newsFeedPost":
+        return <NewsFeedPostStory postId={id} />;
+      case "shopPost":
+        return <ShopPostStory postId={id} />;
+      case "affiliationPost":
+        return <AffiliationPostStory postId={id} />;
+      case "action":
+        return <ActionPostStory postId={id} />;
+      case "servicePost":
+        return <ServicePostStory postId={id} />;
+      default:
+        return null;
+    }
   };
+  return (
+    <div
+      className="flex flex-col items-center h-full w-full justify-center"
+      // maxW="container.md"
+    >
+      {storyText && (
+        <p
+          className={`w-full text-center font-bold py-4 ${
+            storyType === "text" ? "text-3xl" : "text-lg"
+          }`}
+        >
+          {storyText}
+        </p>
+      )}
+      {Content()}
+    </div>
+  );
+};

@@ -17,7 +17,10 @@ export const NotifiactionsMenu: React.FC<NotifiactionsMenuProps> = ({
   return (
     <Menu>
       <MenuButton>{children}</MenuButton>
-      <MenuList className="max-h-[25rem] w-[min(100vw,25rem)] overflow-y-scroll">
+      <MenuList
+        origin="top right"
+        className="max-h-[25rem] w-[min(100vw,25rem)] thinScroll overflow-x-hidden overflow-y-scroll"
+      >
         <SpinnerFallback isLoading={isLoading} isError={isError}>
           {Array.isArray(data) &&
             data.map((notifaction, i) => (

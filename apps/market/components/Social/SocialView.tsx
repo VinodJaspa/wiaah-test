@@ -7,13 +7,16 @@ import {
   ShopCardsListWrapper,
   AffiliationOffersCardListWrapper,
   FilterModal,
-  useResponsive,
   ActionsListWrapper,
   SocialPostsCommentsDrawer,
   ShareWithModal,
   SocialServicePostsList,
   Divider,
   SocialServiceDetailsModal,
+  Menu,
+  MenuList,
+  MenuButton,
+  MenuItem,
 } from "ui";
 import {
   PostCommentPlaceholder,
@@ -31,7 +34,8 @@ import { products } from "placeholder";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { useBreakpointValue } from "@chakra-ui/react";
+import { useBreakpointValue } from "utils";
+import { useReactPubsub } from "react-pubsub";
 
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 export const getRandomUser = () =>
@@ -84,32 +88,45 @@ export const SocialView: React.FC<SocialViewProps> = () => {
   const posts = useRecoilValue(SocialNewsfeedPostsState);
   const cols = useBreakpointValue({ base: 3 });
   const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
+  const { emit } = useReactPubsub(
+    (events) => events.openSocialShopPostsFilterDrawer
+  );
 
-  const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
   const sellerTabs: TabType[] = [
     {
-      name: t("news_feed", "news feed"),
+      name: t("news feed"),
       component: <PostCardsListWrapper cols={cols} posts={posts} />,
     },
     {
-      name: t("shop", "shop"),
+      name: t("shop"),
       component: (
         <div className="flex flex-col gap-4">
-          <div className="flex justify-end">
+          <div className="flex justify-between">
+            <Menu>
+              <MenuButton>
+                <div
+                  onClick={() => emit()}
+                  className="mr-2 cursor-pointer flex items-center justify-between rounded-lg border p-2 text-xs"
+                >
+                  <samp>{t("Sort")}</samp>
+                  <FaChevronDown className="ml-2" />
+                </div>
+              </MenuButton>
+              <MenuList className="translate-x-full" origin="top right">
+                <MenuItem>{t("Newest in")}</MenuItem>
+                <MenuItem>{t("Price (Low to High)")}</MenuItem>
+                <MenuItem>{t("Price (High to Low)")}</MenuItem>
+              </MenuList>
+            </Menu>
             <div
-              onClick={() => {
-                setFilterOpen(true);
-              }}
-              className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs md:hidden"
+              onClick={() => emit()}
+              className="mr-2 cursor-pointer flex items-center justify-between rounded-lg border p-2 text-xs"
             >
-              <samp>{t("Filter", "Filter")}</samp>
+              <samp>{t("Filter")}</samp>
               <FaChevronDown className="ml-2" />
             </div>
           </div>
-          <FilterModal
-            isOpen={filterOpen}
-            onClose={() => setFilterOpen(false)}
-          />
+          <FilterModal />
           <ShopCardsListWrapper
             // grid={isMobile}
             cols={cols}

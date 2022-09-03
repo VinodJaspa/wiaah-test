@@ -117,6 +117,12 @@ const ShopSocialProfile: NextPage<SocialPageProps> = ({
       storyViews: 1300000,
       id: "5",
     },
+    {
+      storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
+      storyType: "servicePost",
+      storyViews: 1300000,
+      id: "5",
+    },
   ]);
 
   setStory({

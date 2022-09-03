@@ -63,7 +63,7 @@ export const SocialServiceDetailsCard: React.FC<
                 onInteraction={(interaction) => OpenLoginPopup}
                 cashback={cashback}
                 discount={discount}
-                {...attachement}
+                attachment={attachement}
               />
             ))}
           </Slider>
@@ -76,7 +76,7 @@ export const SocialServiceDetailsCard: React.FC<
               onInteraction={(interaction) => OpenLoginPopup()}
               cashback={cashback}
               discount={discount}
-              {...attachements[0]}
+              attachment={attachements[0]}
             />
           )
         )}

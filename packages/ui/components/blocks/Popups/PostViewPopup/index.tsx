@@ -21,11 +21,11 @@ import { useActionComments } from "ui/Hooks";
 import { useRouting } from "routing";
 import { useModalDisclouser } from "hooks";
 
-export interface PostViewPopupProps {
-  renderChild: (props: any) => React.ReactElement;
+export interface PostViewPopupProps<TData> {
+  renderChild: (props: TData) => React.ReactElement;
   idParam?: string;
   queryName: string;
-  fetcher: (queryFn: any) => Promise<any>;
+  fetcher: (queryFn: any) => Promise<TData>;
 }
 
 export const goNextPost = async ({ currentId }: { currentId: string }) => {
@@ -36,12 +36,12 @@ export const goPrevPost = async ({ currentId }: { currentId: string }) => {
   return { id: String(Number(currentId) - 1) };
 };
 
-export const PostViewPopup: React.FC<PostViewPopupProps> = ({
+export function PostViewPopup<TData extends {}>({
   renderChild,
   idParam = "postId",
   queryName = "post",
   fetcher,
-}) => {
+}: PostViewPopupProps<TData>) {
   const { visit, getCurrentPath } = useRouting();
   const { CloseComments, OpenComments, ToggleComments, open } =
     useActionComments();
@@ -174,4 +174,4 @@ export const PostViewPopup: React.FC<PostViewPopupProps> = ({
       </Modal>
     </>
   );
-};
+}
