@@ -2,11 +2,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   ShopProductFilter,
-  ModalOverlay,
+  DrawerHeader,
+  DrawerCloseButton,
   Drawer,
   DrawerContent,
   DrawerOverlay,
   Button,
+  CloseIcon,
 } from "ui";
 import { categories } from "placeholder";
 import { useModalDisclouser } from "hooks";
@@ -25,10 +27,21 @@ export const FilterModal: React.FC<FilterModalProps> = () => {
   Listen(() => handleOpen());
 
   return (
-    <Drawer isOpen={isOpen} onClose={handleClose} onOpen={handleOpen}>
+    <Drawer
+      position="right"
+      isOpen={isOpen}
+      onClose={handleClose}
+      onOpen={handleOpen}
+    >
       <DrawerOverlay />
       <DrawerContent>
         <div className="flex h-full w-full flex-col justify-between gap-4">
+          <DrawerHeader className="p-4">
+            <div></div>
+            <DrawerCloseButton>
+              <CloseIcon className="text-4xl cursor-pointer" />
+            </DrawerCloseButton>
+          </DrawerHeader>
           <div className="h-full w-full overflow-y-scroll thinScroll">
             <ShopProductFilter
               open={true}

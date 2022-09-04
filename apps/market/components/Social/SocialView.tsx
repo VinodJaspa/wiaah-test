@@ -112,7 +112,7 @@ export const SocialView: React.FC<SocialViewProps> = () => {
                   <FaChevronDown className="ml-2" />
                 </div>
               </MenuButton>
-              <MenuList className="translate-x-full" origin="top right">
+              <MenuList className="left-[0px]" origin="top left">
                 <MenuItem>{t("Newest in")}</MenuItem>
                 <MenuItem>{t("Price (Low to High)")}</MenuItem>
                 <MenuItem>{t("Price (High to Low)")}</MenuItem>
