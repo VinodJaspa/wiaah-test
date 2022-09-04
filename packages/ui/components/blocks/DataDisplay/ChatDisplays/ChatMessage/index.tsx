@@ -52,7 +52,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageData }) => {
           </div>
           {messageContent && (
             <span
-              className={`w-fit py-1 px-2 ${msgTextColor}] ${msgBgColor} ${msgRadius}`}
+              className={`w-fit py-1 px-2 ${msgTextColor} ${msgBgColor} ${msgRadius}`}
             >
               {messageContent}
             </span>

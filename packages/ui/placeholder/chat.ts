@@ -62,9 +62,27 @@ export const ChatMessagesPH: ChatMessageType[] = [
     id: "123",
     sendDate: Date.now(),
     username: "Wiaah",
-    messageAttachments: [],
+    messageAttachments: [
+      {
+        src: "1",
+        type: "story",
+      },
+    ],
     messageContent: "all good",
     userPhoto: "/shop.jpeg",
+  },
+  {
+    id: "465",
+    sendDate: Date.now(),
+    username: "Wiaah",
+    messageAttachments: [
+      {
+        src: "2",
+        type: "story",
+      },
+    ],
+    messageContent: "fine, how about you",
+    userPhoto: "/wiaah_logo.png",
   },
 ];
 

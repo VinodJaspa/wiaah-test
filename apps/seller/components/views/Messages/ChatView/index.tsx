@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Icon,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Button, Center, Flex, Text, VStack } from "@chakra-ui/react";
 import {
   ChatMessagesSideBar,
   ChatRoom,
@@ -14,20 +6,21 @@ import {
   NewMessageModal,
 } from "ui";
 import React from "react";
-import { ChatRoomHeaderData } from "types";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { getParamFromAsPath } from "ui/components/helpers";
 import { useResponsive } from "ui";
+import { getParamFromAsPath } from "utils";
+import { useRouting } from "routing";
 
 export const ChatView: React.FC = () => {
+  const { visit } = useRouting();
   const router = useRouter();
   const roomId = getParamFromAsPath(router.asPath, "roomId");
   const { t } = useTranslation();
   const { isMobile } = useResponsive();
 
   function handleRouteChatRoom(roomId: string) {
-    router.push(router.pathname, { query: { roomId } }, { shallow: true });
+    visit((r) => r.addQuery({ roomId }));
   }
 
   function handleCloseChatRoom() {
@@ -46,7 +39,7 @@ export const ChatView: React.FC = () => {
       {/* messages sidebar  */}
       <ChatMessagesSideBar
         onCardClick={handleRouteChatRoom}
-        style={{ maxW: "30rem" }}
+        props={{ className: "max-w-[30rem]" }}
       />
       {/* chatroom  */}
       {isMobile ? (
@@ -58,7 +51,7 @@ export const ChatView: React.FC = () => {
           />
         </>
       ) : roomId ? (
-        <ChatRoom roomId={roomId} innerProps={{ w: "100%", shadow: "md" }} />
+        <ChatRoom roomId={roomId} />
       ) : (
         <Center minH={"15rem"} shadow={"md"} w="100%" h="100%">
           <VStack>

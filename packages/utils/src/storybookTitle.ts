@@ -73,6 +73,12 @@ export const storybookHotelCardsTitle = storybookHotelTitle + cardsTitle;
 export const storybookHotelInputTitle = storybookHotelTitle + inputsTitle;
 export const storybookHotelSectionTitle = storybookHotelTitle + sectionsTitle;
 
+// holiday rentals
+export const storybookHolidayRentalsTitle =
+  storybookFeaturesTitle + "Holiday Rentals /";
+export const storybookHolidayRentalsInputTitle =
+  storybookHolidayRentalsTitle + inputsTitle;
+
 // Restaurant service
 export const storybookRestaurantTitle = storybookFeaturesTitle + "Restaurant /";
 export const storybookRestaurantCardsTitle =
@@ -81,6 +87,9 @@ export const storybookRestaurantListsTitle =
   storybookRestaurantTitle + listTitle;
 export const storybookRestaurantSectionsTitle =
   storybookRestaurantTitle + sectionsTitle;
+
+export const storybookRestaurantInputTitle =
+  storybookRestaurantTitle + inputsTitle;
 
 // beauty center service
 
@@ -111,6 +120,12 @@ export const storybookServiceManagementTitle =
   storybookFeaturesTitle + "Service Management /";
 export const storybookServiceManagementInputTitle =
   storybookServiceManagementTitle + inputsTitle;
+export const storybookServiceManagementCardsTitle =
+  storybookServiceManagementTitle + cardsTitle;
+
+// checkout
+export const storybookCheckoutTitle = storybookFeaturesTitle + "checkout /";
+export const storybookCheckoutCardsTitle = storybookCheckoutTitle + cardsTitle;
 
 // storybook misc
 export const storybookPlaygourndTitle = "Playground /";

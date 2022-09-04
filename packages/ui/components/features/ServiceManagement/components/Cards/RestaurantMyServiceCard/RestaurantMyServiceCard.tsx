@@ -64,8 +64,8 @@ export const RestaurantMyServiceCard: React.FC<
   } = props;
 
   return (
-    <div className="flex border p-2 rounded border-gray-400 w-full justify-between">
-      <div className="flex gap-2 w-full">
+    <div className="flex flex-col sm:flex-row border p-2 rounded border-gray-400 w-full gap-2 justify-between">
+      <div className="flex flex-col sm:flex-row gap-2 w-full">
         <div className="min-w-[13rem]">
           <AspectRatio className="w-full group" ratio={1}>
             <ImageSlider images={thumbnails} />
@@ -87,7 +87,7 @@ export const RestaurantMyServiceCard: React.FC<
               </div>
               <LocationAddressDisplay {...location} />
 
-              <InfoText variant="danger">
+              <InfoText variant="fail">
                 {discount.amount}% {discount.rule}
               </InfoText>
             </div>

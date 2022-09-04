@@ -80,12 +80,12 @@ export const HealthCenterMyServiceCard: React.FC<
   ];
 
   return (
-    <div className="border border-gray-400 rounded p-2 flex justify-between gap-8">
+    <div className="border border-gray-400 rounded p-2 flex flex-col sm:flex-row justify-between gap-8">
       <div
-        className={`flex-row  flex gap-8 shadow justify-between rounded w-full `}
+        className={`sm:flex-row flex-col flex gap-8 shadow justify-between rounded w-full `}
       >
         <div className="flex flex-col justify-between gap-4">
-          <div className="flex gap-4">
+          <div className="flex flex-col sm:flex-row gap-4">
             <div className="min-w-[13rem]">
               <AspectRatioImage
                 className="group"

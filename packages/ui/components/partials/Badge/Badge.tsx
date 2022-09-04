@@ -29,12 +29,13 @@ export const Badge: React.FC<BadgeProps> = ({
     warning: `bg-yellow-50 border border-yellow-500`,
   };
   const styleSwitcher = () => {
+    if (cases) {
+      if (value === cases.success) return styleCases.success;
+      if (value === cases.info) return styleCases.info;
+      if (value === cases.fail) return styleCases.fail;
+      if (value === cases.warning) return styleCases.warning;
+    }
     if (variant) return styleCases[variant];
-    if (!cases) return;
-    if (value === cases.success) return styleCases.success;
-    if (value === cases.info) return styleCases.info;
-    if (value === cases.fail) return styleCases.fail;
-    if (value === cases.warning) return styleCases.warning;
   };
 
   return (

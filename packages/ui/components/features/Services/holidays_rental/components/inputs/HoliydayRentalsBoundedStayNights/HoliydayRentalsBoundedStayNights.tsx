@@ -13,14 +13,16 @@ export const HoliydayRentalsBoundedStayNightsInput: React.FC<
 > = ({ onChange, value = { min: 0, max: 0 } }) => {
   const { t } = useTranslation();
   return (
-    <div className="flex gap-4 items-center">
+    <div className="whitespace-nowrap flex flex-col sm:flex-row gap-4 items-center">
       <div className="border px-2 py-4 w-full rounded gap-4 flex justify-between">
         <p>
           {value.min} {t("nights min")}
         </p>
         <CountInput
           count={value.min}
-          onCountChange={(count) => onChange({ ...value, min: count })}
+          onCountChange={(count) =>
+            onChange && onChange({ ...value, min: count })
+          }
         />
       </div>
       <div className="border px-2 py-4 w-full rounded gap-4 flex justify-between">
@@ -29,7 +31,9 @@ export const HoliydayRentalsBoundedStayNightsInput: React.FC<
         </p>
         <CountInput
           count={value.max}
-          onCountChange={(count) => onChange({ ...value, max: count })}
+          onCountChange={(count) =>
+            onChange && onChange({ ...value, max: count })
+          }
         />
       </div>
     </div>

@@ -37,17 +37,17 @@ export const AddMenuDishInput: React.FC<AddMenuDishInputProps> = ({
       {({ handleSubmit, values, setFieldValue }) => {
         return (
           <div className="flex flex-col gap-2 w-full">
-            <div className="flex gap-2 items-end">
+            <div className="flex flex-col sm:flex-row gap-2 items-end">
               <FormikInput
                 label={t("Dish title")}
                 name="title"
                 className="w-full"
               />
               <FormikInput
-                containerProps={{ className: "w-[fit-content]" }}
                 label={t("Dish price")}
                 name="price"
-                className="w-fit"
+                type={"number"}
+                className="w-full"
               />
             </div>
             <FormikInput<MultiChooseInputProps>

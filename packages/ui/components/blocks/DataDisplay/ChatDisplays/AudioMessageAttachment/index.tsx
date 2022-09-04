@@ -50,7 +50,6 @@ export const AudioMessageAttachment: React.FC<AudioMessageProps> = ({
   function handleTogglePlaying() {
     setPlay((play) => !play);
   }
-  console.log(currentAudioTick);
   return (
     <div className="relative p-2 rounded-xl">
       <div className="absolute hidden">

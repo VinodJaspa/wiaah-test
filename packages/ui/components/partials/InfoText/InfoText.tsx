@@ -1,24 +1,40 @@
 import React from "react";
 
-export type InfoTextVariantsType = "info" | "danger" | "success";
-
+type InfoTextCases = {
+  success?: string;
+  fail?: string;
+  info?: string;
+  warning?: string;
+};
 export interface InfoTextProps {
-  variant?: InfoTextVariantsType;
+  value?: string | number | boolean;
+  cases?: InfoTextCases;
+  variant?: keyof InfoTextCases;
 }
 
 export const InfoText: React.FC<InfoTextProps> = ({
   children,
-  variant = "info",
+  cases,
+  value,
+  variant = "success",
 }) => {
-  const color =
-    variant === "danger"
-      ? "red-500"
-      : variant === "info"
-      ? "blue-400"
-      : "primary";
+  const styleCases: Record<keyof InfoTextCases, string> = {
+    success: `text-primary`,
+    fail: `text-red-500`,
+    info: `text-blue-500`,
+    warning: `text-yellow-500`,
+  };
+  const styleSwitcher = () => {
+    if (variant) return styleCases[variant];
+    if (!cases) return;
+    if (value === cases.success) return styleCases.success;
+    if (value === cases.info) return styleCases.info;
+    if (value === cases.fail) return styleCases.fail;
+    if (value === cases.warning) return styleCases.warning;
+  };
   return (
-    <div className={`text-${color} flex relative`}>
-      <span className={`bg-${color} w-1 absolute lef-0 top-0 h-full`} />
+    <div className={`${styleSwitcher()} flex relative`}>
+      <span className={`${styleSwitcher()} w-1 absolute lef-0 top-0 h-full`} />
       <span className="pl-4">{children}</span>
     </div>
   );

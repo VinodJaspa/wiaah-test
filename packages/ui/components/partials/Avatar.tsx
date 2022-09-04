@@ -28,16 +28,18 @@ export const Avatar: React.FC<AvatarProps> = ({
   }
 
   return (
-    <img
-      onClick={handleAvatarClick}
-      src={photoSrc || src}
-      className={`${
-        className || ""
-      } w-12 h-12 rounded-full bg-black cursor-pointer object-cover`}
-      {...props}
-    >
+    <div className="relative min-w-fit">
+      <img
+        onClick={handleAvatarClick}
+        src={photoSrc || src}
+        className={`${
+          className || ""
+        } w-12 h-12 rounded-full bg-black cursor-pointer object-cover`}
+        {...props}
+      />
+
       {children}
-    </img>
+    </div>
   );
 };
 
@@ -49,7 +51,7 @@ export const AvatarBadge: React.FC<AvatarBadgeProps> = ({
   ...props
 }) => {
   return (
-    <div {...props} className={`${className || ""} `}>
+    <div {...props} className={`${className || ""} absolute bottom-0 right-0`}>
       {children}
     </div>
   );

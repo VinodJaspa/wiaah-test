@@ -32,13 +32,7 @@ export const CancelationPoliciesListInput: React.FC<
               <CloseIcon
                 className="cursor-pointer"
                 onClick={() =>
-                  onChange &&
-                  onChange(
-                    value.filter(
-                      (value) =>
-                        value.cost !== v.cost && value.duration !== v.duration
-                    )
-                  )
+                  onChange && onChange(value.filter((value, idx) => idx !== i))
                 }
               />
               <ServiceRefundableTypeDescription

@@ -97,8 +97,8 @@ export const VehicleMyServiceCard: React.FC<VehicleMyServiceCardProps> = () => {
   };
 
   return (
-    <div className="border border-gray-400 rounded p-2 flex justify-between gap-4">
-      <div className="flex gap-4 w-full">
+    <div className="border flex-col sm:flex-row border-gray-400 rounded p-2 flex justify-between gap-4">
+      <div className="flex flex-col sm:flex-row gap-4 w-full">
         <div className="min-w-[13rem]">
           <AspectRatioImage alt={name} ratio={3 / 4} src={thumbnail} />
         </div>

@@ -14,8 +14,7 @@ import {
 } from "ui";
 
 export interface ServiceCheckoutCommonCardWrapperProps
-  extends Omit<CommonServiceCheckoutData, "guests"> {
-  guests?: number;
+  extends CommonServiceCheckoutData {
   horizontal?: boolean;
 }
 

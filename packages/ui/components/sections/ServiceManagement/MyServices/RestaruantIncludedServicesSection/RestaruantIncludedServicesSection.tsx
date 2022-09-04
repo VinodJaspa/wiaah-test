@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   RestaurantMenuDishsList,
-  RestaruantAddMenuForm,
+  RestaurantAddMenuForm,
   Stack,
   Divider,
   CloseIcon,
@@ -136,7 +136,7 @@ export const RestaurantIncludedServicesSection: React.FC<{
                 : null}
             </Stack>
             <Divider />
-            <RestaruantAddMenuForm
+            <RestaurantAddMenuForm
               onSubmit={(data) => {
                 setFieldValue("menus", [
                   ...values.additionalMenus,
