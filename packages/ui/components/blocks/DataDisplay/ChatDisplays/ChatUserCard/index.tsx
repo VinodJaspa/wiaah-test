@@ -3,7 +3,9 @@ import { EllipsisText, useLocale, Avatar, AvatarBadge } from "ui";
 import { ChatUserData } from "types";
 import { useTranslation } from "react-i18next";
 
-export interface ChatUserCardProps extends ChatUserData {}
+export interface ChatUserCardProps extends ChatUserData {
+  onClick: () => any;
+}
 
 export const ChatUserCard: React.FC<ChatUserCardProps> = ({
   id,
@@ -14,11 +16,15 @@ export const ChatUserCard: React.FC<ChatUserCardProps> = ({
   unSeenMsgs,
   name,
   lastMsg,
+  onClick,
 }) => {
   const { locale } = useLocale();
   const { t } = useTranslation();
   return (
-    <div className="flex w-full px-4 py-2 cursor-pointer hover:bg-gray-100">
+    <div
+      onClick={onClick}
+      className="flex w-full px-4 py-2 cursor-pointer hover:bg-gray-100"
+    >
       <div className="flex gap-2 items-center w-full">
         <Avatar name={name} src={profilePhoto}>
           <AvatarBadge

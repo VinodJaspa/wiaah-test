@@ -4,11 +4,11 @@ import { object, string } from "yup";
 import { FormikInput, Button, AddBadgeButton } from "ui";
 import { useTranslation } from "react-i18next";
 
-export interface RestaruantAddMenuFormProps {
+export interface RestaurantAddMenuFormProps {
   onSubmit: ({}: { title: string }) => any;
 }
 
-export const RestaruantAddMenuForm: React.FC<RestaruantAddMenuFormProps> = ({
+export const RestaurantAddMenuForm: React.FC<RestaurantAddMenuFormProps> = ({
   onSubmit,
 }) => {
   const [add, setAdd] = React.useState<boolean>(false);

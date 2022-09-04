@@ -1,6 +1,5 @@
-import { Flex } from "@chakra-ui/react";
 import React from "react";
-import { SocialStoryContentData } from "types/market/Social";
+import { SocialStoryContentData } from "types";
 import { ChakraCarousel, SocialStoryContentViewer } from "ui";
 import { useStory } from "ui/Hooks";
 export interface SocialStoriesCarouselProps {
@@ -13,7 +12,7 @@ export const SocialStoriesCarousel: React.FC<SocialStoriesCarouselProps> = ({
   const { currentStory, goToStory } = useStory();
 
   return (
-    <Flex gap="1rem" w="100%" direction={"column"}>
+    <div className="flex flex-col gap-4 w-full">
       <ChakraCarousel
         trackBgColor="blackAlpha.800"
         activeItem={currentStory}
@@ -29,6 +28,6 @@ export const SocialStoriesCarousel: React.FC<SocialStoriesCarouselProps> = ({
           />
         ))}
       </ChakraCarousel>
-    </Flex>
+    </div>
   );
 };

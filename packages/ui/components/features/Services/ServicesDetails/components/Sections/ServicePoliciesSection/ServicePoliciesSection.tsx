@@ -11,7 +11,6 @@ export const ServicePoliciesSection: React.FC<ServicePoliciesSectionProps> = ({
 }) => {
   const { t } = useTranslation();
   const policiesRef = usePublishRef((keys) => keys.polices);
-  console.log(deposit);
   return (
     <div className="flex flex-col gap-4">
       <p className="text-lg font-bold" ref={policiesRef ?? undefined}>

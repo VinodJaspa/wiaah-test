@@ -143,7 +143,7 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
                           <Td>
                             <p>
                               {t("Available in")} {method.deliveryTime.from} -{" "}
-                              {method.deliveryTime.to}
+                              {method.deliveryTime.to} {t("Days")}
                             </p>
                           </Td>
                         </Tr>

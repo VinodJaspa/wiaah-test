@@ -1,82 +1,63 @@
-import {
-  Divider,
-  Flex,
-  FlexProps,
-  HStack,
-  Icon,
-  Text,
-  IconButton,
-} from "@chakra-ui/react";
 import React from "react";
 import { BiEdit } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
-import { ChatSearchInput, ChatUserCard, useNewMessage } from "ui";
-import { ChatUserData } from "types";
+import {
+  ChatSearchInput,
+  ChatUserCard,
+  useNewMessage,
+  ArrowLeftIcon,
+  Button,
+  EditIcon,
+  Divider,
+} from "ui";
+import { ChatUserData, HtmlDivProps } from "types";
 import { useResponsive } from "ui";
-import { ChevronLeftIcon } from "@chakra-ui/icons";
-import { useRouter } from "next/router";
+import { useRouting } from "routing";
 
 export interface ChatMessagesSideBarProps {
-  style?: FlexProps;
+  props: HtmlDivProps;
   onCardClick?: (cardId: string) => any;
 }
 
 export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
-  style,
+  props,
   onCardClick,
 }) => {
-  const router = useRouter();
   const { t } = useTranslation();
+  const { visit } = useRouting();
   const { openModal } = useNewMessage();
   const { isMobile } = useResponsive();
   function handleSendHome() {
-    router.replace("/");
+    visit((r) => r.addPath("/"));
   }
   return (
-    //@ts-ignore
-    <Flex direction={"column"} gap="1rem" shadow="md" w="100%" {...style}>
-      <HStack
-        fontWeight={"bold"}
-        fontSize={"xx-large"}
-        w="100%"
-        justify={"space-between"}
-        px="0.5rem"
-      >
-        <HStack>
-          <Icon
-            cursor={"pointer"}
+    <div className="flex flex-col gap-4 shadow w-full" {...props}>
+      <div className="flex items-center gap-2 font-bold text-3xl w-full justify-between px-2">
+        <div className="flex items-center gap-2">
+          <ArrowLeftIcon
+            className="cursor-pointer text-3xl text-black"
             onClick={handleSendHome}
-            fontSize={"xxx-large"}
-            color={"black"}
-            as={ChevronLeftIcon}
           />
-          <Text>{t("Messages", "Messages")}</Text>
-        </HStack>
-        <IconButton
-          aria-label={t("new_message", "new message")}
-          color="primary.main"
-          fontSize={"0.8em"}
-          cursor="pointer"
-          variant={"icon"}
-          as={BiEdit}
-          onClick={openModal}
-        />
-      </HStack>
+          <p>{t("Messages")}</p>
+        </div>
+        <Button aria-label={t("new message")} onClick={openModal}>
+          <EditIcon className="text-[0.8em] text-white " />
+        </Button>
+      </div>
       <ChatSearchInput className="px-4" />
-      {/* <SearchInput style={{ px: "1rem" }} /> */}
-      <Flex overflow={"scroll"} className="no-scrollBar" direction={"column"}>
+      <div className="noScroll flex flex-col overflow-scroll">
         {userCards.map((cardData, i) => (
           <>
             <ChatUserCard
-              //  onClick={() => onCardClick && onCardClick(cardData.id)}
+              onClick={() => onCardClick && onCardClick(cardData.id)}
               {...cardData}
               key={cardData.id}
             />
-            {i !== userCards.length - 1 && <Divider my="0px" />}
+            {i !== userCards.length - 1 && <Divider />}
           </>
         ))}
-      </Flex>
-    </Flex>
+      </div>
+    </div>
   );
 };
 
@@ -87,7 +68,7 @@ export const userCards: ChatUserData[] = [
     lastMsg:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, cupiditate placeat. Perferendis minus suscipit odit?",
     typing: true,
-    profilePhoto: "/wiaah_logo.pngs",
+    profilePhoto: "/wiaah_logo.png",
     status: "online",
     lastMsgSentTime: new Date().toLocaleString(),
     unSeenMsgs: 0,
@@ -134,7 +115,7 @@ export const userCards: ChatUserData[] = [
     lastMsg:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, cupiditate placeat. Perferendis minus suscipit odit?",
     typing: true,
-    profilePhoto: "/wiaah_logo.pngs",
+    profilePhoto: "/wiaah_logo.png",
     status: "online",
     lastMsgSentTime: new Date().toLocaleString(),
     unSeenMsgs: 0,
@@ -181,7 +162,7 @@ export const userCards: ChatUserData[] = [
     lastMsg:
       "Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, cupiditate placeat. Perferendis minus suscipit odit?",
     typing: true,
-    profilePhoto: "/wiaah_logo.pngs",
+    profilePhoto: "/wiaah_logo.png",
     status: "online",
     lastMsgSentTime: new Date().toLocaleString(),
     unSeenMsgs: 0,

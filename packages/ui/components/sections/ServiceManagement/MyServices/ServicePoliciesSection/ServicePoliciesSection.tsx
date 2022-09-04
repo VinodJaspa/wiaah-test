@@ -2,38 +2,24 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useReactPubsub } from "react-pubsub";
-import { FileRes } from "utils";
 import { NewServiceSchemas } from "validation";
-import {
-  ChooseWithInput,
-  MultiChooseInput,
-  FormikInput,
-  Textarea,
-  Stack,
-  Divider,
-  MultiChooseInputProps,
-  MediaUploadModal,
-  Select,
-  SelectOption,
-} from "ui";
-import { HiFolderAdd, HiVideoCamera } from "react-icons/hi";
+import { FormikInput, Textarea } from "ui";
 
-export interface ServicePoliciesSectionProps {
+export interface ServicePoliciesInputSectionProps {
   onChange?: (data: Record<string, any>) => any;
+  value?: Record<string, any>;
 }
 
-export const ServicePoliciesSection: React.FC<ServicePoliciesSectionProps> = ({
-  onChange,
-}) => {
+export const ServicePoliciesInputSection: React.FC<
+  ServicePoliciesInputSectionProps
+> = ({ onChange, value = {} }) => {
   const { emit } = useReactPubsub((keys) => keys.openFileUploadModal);
-  const [images, setImages] = React.useState<FileRes[]>([]);
-  const [videos, setVideos] = React.useState<string[]>([]);
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
       <Formik
         validationSchema={NewServiceSchemas.restaurantDetailsSchema}
-        initialValues={{}}
+        initialValues={value}
         onSubmit={() => {}}
       >
         {({ values, setFieldValue }) => {

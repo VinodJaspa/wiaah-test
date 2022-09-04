@@ -31,13 +31,24 @@ const template: ComponentStory<typeof HotelBedsInput> = (args) => {
       required: true,
     },
   ]);
+  console.log("should update", value);
+
   return (
-    <HotelBedsInput
-      onChange={(data) => {
-        setValue(data);
-      }}
-      value={value}
-    />
+    <>
+      <p>{JSON.stringify(value)}</p>
+      <HotelBedsInput
+        onChange={(data) => {
+          console.log(
+            "did change",
+            data,
+            value,
+            JSON.stringify(value) === JSON.stringify(data)
+          );
+          setValue(data);
+        }}
+        value={[...value]}
+      />
+    </>
   );
 };
 

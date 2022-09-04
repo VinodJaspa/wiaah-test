@@ -1,6 +1,6 @@
 import React from "react";
 import { ChatMessageAttachmentType } from "types";
-import { AudioMessageAttachment } from "ui";
+import { AudioMessageAttachment, SocialStoryContentViewer } from "ui";
 
 export interface ChatMessageAttachmentProps {
   attachment: ChatMessageAttachmentType;
@@ -21,7 +21,24 @@ export const ChatMessageAttachment: React.FC<ChatMessageAttachmentProps> = ({
 
     case "audio":
       return <AudioMessageAttachment src={src} />;
+    case "story":
+      return <UserStoryDisplay id={src} />;
     default:
       return null;
   }
+};
+
+export interface UserStoryDisplayProps {
+  id: string;
+}
+
+export const UserStoryDisplay: React.FC<UserStoryDisplayProps> = ({ id }) => {
+  return (
+    <SocialStoryContentViewer
+      id={id}
+      storyType={id == "1" ? "image" : "video"}
+      storySrc={id == "1" ? "/verticalImage.jpg" : "video.mp4"}
+      storyText="story content"
+    />
+  );
 };

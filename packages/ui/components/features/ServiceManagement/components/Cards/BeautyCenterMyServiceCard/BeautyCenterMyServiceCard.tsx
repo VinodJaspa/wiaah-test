@@ -45,8 +45,8 @@ export const BeautyCenterMyServiceCard: React.FC<
   };
 
   return (
-    <div className="border border-gray-400 p-2 flex gap-4 justify-between">
-      <div className="flex shadow gap-2">
+    <div className="border border-gray-400 p-2 flex flex-col sm:flex-row gap-4 justify-between">
+      <div className="flex flex-col sm:flex-row shadow gap-2">
         <div className="min-w-[13rem]">
           <AspectRatioImage
             className="group"

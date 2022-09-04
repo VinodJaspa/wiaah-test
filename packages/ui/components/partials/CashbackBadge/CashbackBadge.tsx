@@ -9,7 +9,7 @@ export interface CashbackBadgeProps extends CashbackData {
 }
 
 export const CashbackBadge: React.FC<CashbackBadgeProps> = ({
-  amount,
+  amount = 0,
   type,
   props,
 }) => {

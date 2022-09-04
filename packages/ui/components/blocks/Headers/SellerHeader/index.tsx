@@ -112,31 +112,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
         >
           <HiOutlineMail className="text-xl md:text-4xl" />
         </FloatingContainer>
-        <ShoppingCart
-          items={[
-            {
-              id: "1",
-              name: "product",
-              price: 15,
-              quantity: 2,
-              thumbnail: "/shop.jpeg",
-            },
-            {
-              id: "2",
-              name: "product 2",
-              price: 40,
-              quantity: 1,
-              thumbnail: "/shop-2.jpeg",
-            },
-            {
-              id: "3",
-              name: "product 3",
-              price: 48,
-              quantity: 2,
-              thumbnail: "/place-1.jpg",
-            },
-          ]}
-        />
+        <ShoppingCart />
         {!isMobile && (
           <Menu>
             <MenuButton>

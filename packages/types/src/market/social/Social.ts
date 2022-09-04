@@ -143,7 +143,8 @@ export interface SocialStoryData {
     | "newsFeedPost"
     | "shopPost"
     | "affiliationPost"
-    | "action";
+    | "action"
+    | "servicePost";
   storySrc?: string;
   storyText?: string;
   storyCreationDate: string;

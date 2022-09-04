@@ -47,7 +47,7 @@ export const HotelBedsInput: React.FC<HotelBedsInputProps> = ({
                 count={v.amount}
                 onCountChange={(count) => {
                   if (value[idx] && value[idx].amount !== count) {
-                    const newValue = value;
+                    const newValue = [...value];
                     newValue.splice(idx, 1, { ...v, amount: count });
                     // onChange && onChange(newValue);
                   }

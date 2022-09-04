@@ -21,7 +21,7 @@ export const CountInput: React.FC<CountInputProps> = ({
   );
 
   React.useEffect(() => {
-    if (typeof controlledCount === "number") {
+    if (typeof controlledCount === "number" && controlledCount !== count) {
       setCount(controlledCount);
     }
   }, [controlledCount]);

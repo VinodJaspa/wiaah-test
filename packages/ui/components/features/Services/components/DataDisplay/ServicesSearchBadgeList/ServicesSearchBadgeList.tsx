@@ -46,7 +46,7 @@ export const ServicesSearchBadgeList: React.FC<
     },
   ];
   return (
-    <div className="flex gap-4 ">
+    <div className="w-full overflow-x-scroll noScroll gap-4 justify-center flex">
       {Array.isArray(services)
         ? services.map(({ icon, name }, i) => (
             <Badge
@@ -57,10 +57,10 @@ export const ServicesSearchBadgeList: React.FC<
                   })
                 )
               }
-              className="cursor-pointer flex gap-2 items-center"
+              className="cursor-pointer w-40 justify-between flex gap-2 items-center"
               key={i}
             >
-              <p>{t(name)}</p>
+              <p className="whitespace-nowrap">{t(name)}</p>
               <span className="fill-primary text-lg text-primary">
                 {runIfFn(icon)}
               </span>

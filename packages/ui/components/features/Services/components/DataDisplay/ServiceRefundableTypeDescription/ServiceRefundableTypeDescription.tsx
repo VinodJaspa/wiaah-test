@@ -19,7 +19,7 @@ export const ServiceRefundableTypeDescription: React.FC<
 
   const date = DateDetails(maxDate || new Date());
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center gap-4 justify-between">
       {duration > 0 ? (
         <p>
           {t("Fully refundable before")} {date?.month_short} {date?.day}

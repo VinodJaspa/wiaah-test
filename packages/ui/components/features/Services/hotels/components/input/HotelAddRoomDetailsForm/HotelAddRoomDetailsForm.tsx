@@ -95,7 +95,7 @@ export const HotelAddRoomDetailsForm: React.FC<
                 />
               )}
 
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <HotelBedsInput
                   value={values["beds"]}
                   onChange={(beds) => setFieldValue("beds", beds)}
@@ -174,7 +174,7 @@ export const HotelAddRoomDetailsForm: React.FC<
               </div>
               <div className="flex flex-col gap-4">
                 <p className="text-xl font-semibold">{t("Upload Images")}</p>
-                <div className="grid gap-4 grid-cols-[repeat(5,min(100%,8rem))]">
+                <div className="flex flex-wrap gap-4">
                   {[...Array(MAX_PRODUCTS_IMAGE)].map((_, i) => (
                     <div
                       onClick={() => {

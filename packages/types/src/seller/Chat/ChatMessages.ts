@@ -12,4 +12,4 @@ export interface ChatMessageAttachmentType {
   src: string;
 }
 
-export type MessageAttachmentTypes = "image" | "video" | "audio";
+export type MessageAttachmentTypes = "image" | "video" | "audio" | "story";

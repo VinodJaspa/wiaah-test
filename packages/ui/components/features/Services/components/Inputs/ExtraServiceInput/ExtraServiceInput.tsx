@@ -20,7 +20,7 @@ export const ExtraServiceInput: React.FC<ExtraServiceInputProps> = ({
     name: "",
   });
   return (
-    <div className="flex gap-4 items-end">
+    <div className="flex flex-col sm:flex-row gap-4 sm:items-end">
       <div className="flex flex-col gap-1 w-full">
         <p>{t("Extra name")}</p>
         <Input

@@ -1,6 +1,5 @@
-import { Flex } from "@chakra-ui/react";
 import React from "react";
-import { ProfileInfo, SocialStoryData } from "types/market/Social";
+import { ProfileInfo, SocialStoryData } from "types";
 import {
   SocialStoryViewerHeader,
   StorySeenByPopup,
@@ -28,7 +27,7 @@ export const SocialStoryViewer: React.FC<SocialStoryViewerProps> = ({
     if (!story) return null;
 
     return (
-      <Flex gap="1rem" maxH={"100%"} maxW="100%" direction={"column"}>
+      <div className="flex flex-col gap-4 max-h-[100%] max-w-[100%]">
         <SocialStoryViewerHeader
           // onClose={CloseStories}
           user={user}
@@ -38,7 +37,7 @@ export const SocialStoryViewer: React.FC<SocialStoryViewerProps> = ({
         <StorySeenByPopup storyId={story.id} />
         <StoiresProgressBars />
         <SocialStoriesCarousel stories={stories} />
-      </Flex>
+      </div>
     );
   } catch (error) {
     console.error(error);

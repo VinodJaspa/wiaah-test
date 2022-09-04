@@ -28,18 +28,27 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
           ) : null;
 
         case "follow-request":
-          return <Button>{t("accept", "accept")}</Button>;
+          return (
+            <div className="flex w-full gap-4 items-end">
+              <Button>{t("Accept")}</Button>
+              <Button colorScheme="gray">{t("Decline")}</Button>;
+            </div>
+          );
 
         case "follow-notify":
-          return <Button>{t("follow", "Follow")}</Button>;
+          return <Button>{t("Follow")}</Button>;
         default:
           return null;
       }
     };
 
     return (
-      <div className="flex items-center gap-2 justify-between max-w-full">
-        <div className="flex items-center gap-2">
+      <div
+        className={`${
+          type === "follow-request" ? "flex-col" : ""
+        } flex items-center gap-2 justify-between max-w-full`}
+      >
+        <div className="flex w-full items-center gap-2">
           <Avatar photoSrc={by.thumbnail} name={by.name} />
           <p className="whitespace-pre-wrap">
             <span className="font-bold">{by.name} </span>

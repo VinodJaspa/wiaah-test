@@ -139,7 +139,7 @@ export const HotelMyServiceCard: React.FC<HotelMyServiceCardProps> = (
 
   return (
     <div
-      className={`flex gap-4 border-2 bg-white border-gray-300 p-2 rounded-lg`}
+      className={`flex flex-col lg:flex-row gap-4 border-2 bg-white border-gray-300 p-2 rounded-lg`}
     >
       <div className="relative min-w-[13rem]">
         <AspectRatioImage src={thumbnail} alt={title} ratio={1} />

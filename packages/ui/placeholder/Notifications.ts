@@ -48,7 +48,7 @@ export const NotificationsPH: NotificationData[] = [
     by: {
       id: "5",
       name: "wiaah",
-      thumbnail: "/shop-3.jpeg.png",
+      thumbnail: "/shop-3.jpeg",
     },
     message: "want to start following you.",
     attachment: {

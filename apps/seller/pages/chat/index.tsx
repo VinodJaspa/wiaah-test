@@ -2,24 +2,26 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import React from "react";
 import { dehydrate, QueryClient } from "react-query";
+import { ServerSideQueryClientProps } from "types";
 import { SellerLayout, useResponsive } from "ui";
 import { ChatView } from "../../components";
 
 interface MessagesPageProps {}
 
-export const getServerSideProps: GetServerSideProps<MessagesPageProps> =
-  async () => {
-    const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps<
+  ServerSideQueryClientProps
+> = async () => {
+  const queryClient = new QueryClient();
 
-    // get messages page data with
-    // queryClient.prefetchQuery
+  // get messages page data with
+  // queryClient.prefetchQuery
 
-    return {
-      props: {
-        dehydratedProps: dehydrate(queryClient),
-      },
-    };
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
   };
+};
 
 const messages: React.FC<MessagesPageProps> = () => {
   const { isMobile } = useResponsive();
@@ -31,7 +33,7 @@ const messages: React.FC<MessagesPageProps> = () => {
       <SellerLayout
         header={isMobile ? null : "main"}
         sideBar={false}
-        containerProps={{ h: "100%" }}
+        containerProps={{ className: "h-[100%]" }}
       >
         <ChatView />
       </SellerLayout>

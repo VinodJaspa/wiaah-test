@@ -20,7 +20,7 @@ export const CancelationPolicyInput: React.FC<CancelationPolicyInputProps> = ({
     duration: 0,
   });
   return (
-    <div className="flex gap-4 items-end">
+    <div className="flex gap-4 flex-col sm:flex-row sm:items-end">
       <div className="flex flex-col gap-1 w-full">
         <p>{t("Policy duration")}</p>
         <Input
