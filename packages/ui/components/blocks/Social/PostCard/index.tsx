@@ -1,19 +1,9 @@
 import React from "react";
-import { Box, Flex, HStack, Icon, Text, FlexProps } from "@chakra-ui/react";
 import { ProfileInfo, PostInfo } from "types";
-import {
-  PostInteractions,
-  CommentInput,
-  PostHead,
-  HashTags,
-  CommentsViewer,
-  EllipsisText,
-  useHandlePostSharing,
-} from "ui";
-import { Interaction, ShareMotheds } from "types";
-import { useLoginPopup, useStory } from "ui/Hooks";
-import { useRouter } from "next/router";
-import { PostAttachmentsViewer } from "../../DataDisplay";
+import { StoryDisplay, CommentIcon, HeartIcon, ShareIcon, HashTags } from "ui";
+import { Interaction } from "types";
+import { useDateDiff } from "hooks";
+import { useTranslation } from "react-i18next";
 
 export interface PostCardProps {
   profileInfo: ProfileInfo;
@@ -21,7 +11,6 @@ export interface PostCardProps {
   showComments?: boolean;
   profileFunctional?: boolean;
   newStory?: boolean;
-  innerProps?: FlexProps;
   onInteraction?: (interaction: Interaction) => any;
 }
 
@@ -31,83 +20,79 @@ export const PostCard: React.FC<PostCardProps> = ({
   showComments,
   profileFunctional,
   newStory,
-  innerProps,
   onInteraction,
 }) => {
-  const router = useRouter();
-  const { OpenLoginPopup } = useLoginPopup();
-  const { removeNewStory } = useStory();
-  const { handleShare } = useHandlePostSharing();
-  function handleOpenLogin() {
-    OpenLoginPopup;
-  }
-  function handleProfileClick() {
-    if (profileFunctional) {
-      removeNewStory();
-    } else {
-      router.push("localhost:3002/social/wiaah/newsfeed-post/15");
-    }
-  }
-  function handleViewPost() {
-    router.push("/", { query: { postId: postInfo.id } }, { shallow: true });
-  }
+  const { t } = useTranslation();
+  const { getSince } = useDateDiff({
+    from: new Date(postInfo.createdAt),
+    to: new Date(),
+  });
 
+  const date = getSince();
   return (
-    <Flex
-      bg="white"
-      gap="0.25rem"
-      // p="1rem"
-      rounded="lg"
-      maxW="100%"
-      maxH={"100%"}
-      overflow={"hidden"}
-      color="black"
-      direction={"column"}
-      {...innerProps}
-    >
-      {profileInfo && (
-        <PostHead
-          createdAt={postInfo.createdAt}
-          creatorName={profileInfo.name}
-          creatorPhoto={profileInfo.thumbnail}
-          newStory={newStory}
-          functional={profileFunctional}
-          onProfileClick={handleProfileClick}
-          onViewPostClick={handleViewPost}
-        />
-      )}
-      {postInfo.content && (
-        <EllipsisText wordBreak content={postInfo.content} maxLines={3} />
-      )}
-      <HashTags
-        style={{ pb: "0.5" }}
-        color="primary.main"
-        tags={postInfo.tags}
+    <div className="relative group rounded-[1.25rem] overflow-hidden w-full h-full">
+      <img
+        className="w-full h-full object-cover"
+        src={
+          postInfo?.attachments && postInfo.attachments.length > 0
+            ? postInfo.attachments[0].src
+            : ""
+        }
+        alt={postInfo.content}
       />
-      <PostAttachmentsViewer
-        attachments={postInfo.attachments || []}
-        profileInfo={profileInfo}
-        carouselProps={{
-          bg: "black",
-          arrows: false,
-          h: "100%",
-        }}
-      />
-      <PostInteractions
-        onInteraction={onInteraction}
-        onShare={(mothed) => handleShare(mothed, postInfo.id)}
-        comments={postInfo.numberOfComments}
-        likes={postInfo.numberOfLikes}
-      />
-      {showComments && (
-        <>
-          <CommentInput />
-          <CommentsViewer
-            comments={postInfo.comments || []}
-            maxInitailComments={4}
-          />
-        </>
-      )}
-    </Flex>
+
+      <div className="absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 px-8 py-6 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between">
+        <div className="flex flex-col w-full gap-2">
+          <div className="flex gap-4 items-center">
+            <div className="min-w-[2.5rem] ">
+              <StoryDisplay
+                storyUserData={{
+                  name: profileInfo.name,
+                  userPhotoSrc: profileInfo.thumbnail,
+                }}
+              />
+            </div>
+            <div className="flex w-full justify-between">
+              <div className="flex flex-col gap-1">
+                <p className="font-bold">{profileInfo.name}</p>
+                <p>{profileInfo.profession}</p>
+              </div>
+              <p className="font-semibold">
+                {date ? `${date.value} ${date.timeUnit} ${t("ago")}` : ""}
+              </p>
+            </div>
+          </div>
+          <div className="flex noScroll gap-3 font-medium text-white overflow-x-scroll">
+            {postInfo.tags.map((tag, i) => (
+              <p key={i}>#{tag}</p>
+            ))}
+          </div>
+        </div>
+        <div className="flex justify-between w-full">
+          <div className="flex gap-7">
+            <div className="flex gap-2 items-center">
+              <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
+                <HeartIcon />
+              </span>
+              <p className="font-bold text-base">{postInfo.numberOfLikes}</p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
+                <CommentIcon />
+              </span>
+              <p className="font-bold text-base">{postInfo.numberOfComments}</p>
+            </div>
+          </div>
+
+          <div className="flex gap-2 items-center">
+            <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
+              <ShareIcon />
+            </span>
+            <p className="font-bold text-base">{postInfo.numberOfShares}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };

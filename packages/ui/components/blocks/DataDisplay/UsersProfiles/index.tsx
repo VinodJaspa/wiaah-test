@@ -28,7 +28,7 @@ export const UsersProfiles: React.FC<UsersProfilesProps> = ({
           .slice(0, variant === "narrow" ? maxNarrowItems : users.length)
           .map((user, i) => (
             <div key={i} className="flex items-center gap-3">
-              <div className="w-14">
+              <div className="w-11">
                 <StoryDisplay
                   storyUserData={{
                     name: user.name,

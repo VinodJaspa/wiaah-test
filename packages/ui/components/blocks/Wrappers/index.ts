@@ -10,3 +10,4 @@ export * from "./SectionWrapper";
 export * from "./ScrollingWrapper";
 export * from "./PaginationWrapper";
 export * from "./StaticSideBarWrapper";
+export * from "./GridListOrganiser";

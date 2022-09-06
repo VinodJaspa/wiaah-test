@@ -12,6 +12,7 @@ import {
   NewsfeedPostDetailsPopup,
   PostViewPopup,
   PostAttachmentsViewer,
+  GridListOrganiser,
 } from "ui";
 import { NumberShortner } from "utils";
 
@@ -83,6 +84,7 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
     return (
       <>
         <PostViewPopup
+          // @ts-ignore
           fetcher={async ({ queryKey }) => {
             const id = queryKey[1].postId;
             console.log("idParam", queryKey);
@@ -103,23 +105,124 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
             );
           }}
         />
-        <ListWrapper {...props} cols={cols}>
+        <GridListOrganiser
+          rowSize="14.5rem"
+          presets={[
+            {
+              length: 6,
+              cols: 5,
+              points: [
+                {
+                  c: 2,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+              ],
+            },
+            {
+              cols: 5,
+              length: 8,
+              points: [
+                { c: 1, r: 1 },
+                { c: 1, r: 1 },
+                { c: 1, r: 1 },
+                { c: 1, r: 1 },
+                { c: 1, r: 2 },
+                { c: 2, r: 1 },
+                { c: 1, r: 1 },
+                { c: 1, r: 1 },
+              ],
+            },
+            {
+              length: 4,
+              cols: 3,
+              points: [
+                {
+                  c: 2,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+              ],
+            },
+            {
+              length: 9,
+              cols: 4,
+              points: [
+                {
+                  c: 2,
+                  r: 1,
+                },
+                {
+                  c: 2,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 2,
+                  r: 1,
+                },
+              ],
+            },
+          ]}
+        >
           {posts &&
-            posts.map((post) => (
-              <PostCard
-                showComments
-                innerProps={{
-                  onClick: () => {
-                    visit((routes) =>
-                      routes.addQuery({ newsfeedpostid: post.postInfo.id })
-                    );
-                  },
-                }}
-                {...post}
-                key={post.postInfo.id}
-              />
+            posts.map((post, idx) => (
+              <PostCard showComments {...post} key={idx} />
             ))}
-        </ListWrapper>
+        </GridListOrganiser>
       </>
     );
   }

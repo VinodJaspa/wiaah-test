@@ -84,3 +84,5 @@ export * from "./VideosPlayIcon";
 export * from "./SmilingFaceEmoji";
 export * from "./VideoCameraIcon";
 export * from "./LocationOnPointIcon";
+export * from "./ShareIcon";
+export * from "./PlayButtonIcon";

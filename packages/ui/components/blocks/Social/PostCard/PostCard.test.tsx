@@ -1,23 +1,28 @@
 import { shallow } from "enzyme";
 import React from "react";
 import { PostCard } from "../PostCard";
-import { PostCardInfo } from "types/market/Social";
+import { PostCardInfo } from "types";
 
 const postCardPlaceholder: PostCardInfo = {
   postInfo: {
+    url: "test",
+    views: 159,
     createdAt: new Date(Date.UTC(2022, 3)).toString(),
     id: "1",
     numberOfComments: 2,
     numberOfLikes: 4,
     tags: ["mood", "fun", "gaming"],
-    attachment: {
-      src: "/shop.jpeg",
-      type: "image",
-    },
+    attachments: [
+      {
+        src: "/shop.jpeg",
+        type: "image",
+      },
+    ],
     comments: [],
     content: "test post content",
   },
   profileInfo: {
+    public: true,
     accountType: "buyer",
     id: "2",
     name: "buyer name",

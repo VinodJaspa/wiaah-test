@@ -24,6 +24,12 @@ export const getServicePostsMetaDataFetcher = (
     hasMore: false,
     total: randomNum(163),
     data: [...Array(15)].map((_, i) => ({
+      price: 15,
+      rate: 4,
+      location: {
+        country: "France",
+      },
+      reviews: 150,
       id: "123" + i,
       attachments: [
         { src: "/shop-2.jpeg", type: "image" },

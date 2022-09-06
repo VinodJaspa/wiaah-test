@@ -116,6 +116,7 @@ export const PostCommentPlaceholder: PostComment = {
 export const PostCardPlaceHolder: PostCardInfo = {
   postInfo: {
     views: 56300,
+    numberOfShares: 13,
     id: "1",
     tags: ["mood", "new"],
     content:
@@ -153,6 +154,8 @@ export const PostCardPlaceHolder: PostCardInfo = {
     url: `${baseUri}/social/wiaah/newsfeed-post/15`,
   },
   profileInfo: {
+    profession: "Profession",
+    verifed: true,
     id: "1",
     name: "Wiaah",
     thumbnail: "/wiaah_logo.png",
@@ -415,7 +418,7 @@ export const newsfeedPosts: PostCardInfo[] = [
       attachments: [
         {
           type: "image",
-          src: "/verticalImage.jpg",
+          src: "/post (1).jfif",
           postLocation: "New York",
         },
         // {
@@ -485,8 +488,8 @@ export const newsfeedPosts: PostCardInfo[] = [
       id: "2",
       attachments: [
         {
-          src: "/verticalVideo.mp4",
-          type: "video",
+          src: "/post (2).jfif",
+          type: "image",
           postLocation: "New York",
         },
         {
@@ -517,7 +520,7 @@ export const newsfeedPosts: PostCardInfo[] = [
       id: "4",
       attachments: [
         {
-          src: images[Math.floor(Math.random() * images.length)],
+          src: "/post (3).jfif",
           type: "image",
           postLocation: "New York",
         },
@@ -533,7 +536,7 @@ export const newsfeedPosts: PostCardInfo[] = [
       id: "5",
       attachments: [
         {
-          src: images[Math.floor(Math.random() * images.length)],
+          src: "/post (4).jfif",
           type: "image",
           postLocation: "New York",
         },
@@ -549,8 +552,8 @@ export const newsfeedPosts: PostCardInfo[] = [
       id: "3",
       attachments: [
         {
-          src: "/video.mp4",
-          type: "video",
+          src: "/post (5).jfif",
+          type: "image",
           postLocation: "New York",
         },
       ],
@@ -601,7 +604,7 @@ export const newsfeedPosts: PostCardInfo[] = [
       id: "6",
       attachments: [
         {
-          src: images[Math.floor(Math.random() * images.length)],
+          src: "/post (6).jfif",
           type: "image",
           postLocation: "New York",
         },
@@ -616,8 +619,7 @@ export const newsfeedPosts: PostCardInfo[] = [
       ...PostCardPlaceHolder.postInfo,
       attachments: [
         {
-          src: "/shop.jpeg",
-          // images[Math.floor(Math.random() * images.length)],
+          src: "/post (7).jfif",
           type: "image",
           postLocation: "New York",
         },
@@ -633,7 +635,7 @@ export const newsfeedPosts: PostCardInfo[] = [
       id: "7",
       attachments: [
         {
-          src: images[Math.floor(Math.random() * images.length)],
+          src: "/post (8).jfif",
           type: "image",
           postLocation: "New York",
         },

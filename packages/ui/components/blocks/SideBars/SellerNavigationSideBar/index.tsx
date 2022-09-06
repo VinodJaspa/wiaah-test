@@ -28,7 +28,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
   const { isMobile } = useResponsive();
   return (
     <div
-      className={`${className} thinScroll w-52 h-full bg-primary overflow-y-scroll flex z-20 fixed ${
+      className={`${className} thinScroll w-52 h-screen bg-primary flex z-20 fixed ${
         isMobile ? "flex-row left-0 bottom-0 w-full" : "flex-col left-0  top-0"
       } items-center flex py-11`}
       {...props}
@@ -82,11 +82,16 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
       {!isMobile && (
         <div className="flex flex-col h-full justify-between w-full px-6">
           <div>
-            <Divider className="my-11" />
-            <div data-testid="NavigationSideBarChildContainer">{children}</div>
+            <Divider className="my-10" />
+            <div
+              className="h-full overflow-y-scroll noScroll"
+              data-testid="NavigationSideBarChildContainer"
+            >
+              {children}
+            </div>
           </div>
           <div>
-            <Divider className="my-11" />
+            <Divider className="my-10" />
             <Button
               colorScheme="white"
               className="flex items-center gap-3 w-full"

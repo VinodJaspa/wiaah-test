@@ -37,7 +37,12 @@ export const SellerPostInput: React.FC<SellerPostInputProps> = ({
   };
 
   return (
-    <div className="shadow flex w-full py-6 gap-4 flex-col">
+    <div
+      style={{
+        boxShadow: "0px 10px 50px rgba(0, 0, 0, 0.1)",
+      }}
+      className="flex w-full py-6 gap-4 flex-col"
+    >
       <div className="flex w-full gap-4 px-12">
         <Avatar
           data-testid="UserImage"

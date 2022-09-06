@@ -73,7 +73,11 @@ const seller: NextPage = () => {
                 </div>
               </AspectRatio>
             </div>
-            <RecentStories stories={RecentStoriesPlaceHolder} />
+            <RecentStories
+              stories={RecentStoriesPlaceHolder.concat(
+                RecentStoriesPlaceHolder
+              )}
+            />
           </div>
           {!isMobile && (
             <SellerPostInput userName="wiaah" userPhotoSrc="/wiaah_logo.png" />
@@ -88,7 +92,11 @@ const seller: NextPage = () => {
                 );
               }}
               cols={cols}
-              posts={newsfeedPosts}
+              posts={[
+                ...[...Array(4)].reduce((acc) => {
+                  return [...acc, ...newsfeedPosts.slice(0, 8)];
+                }, []),
+              ]}
             />
           </div>
         </div>

@@ -68,7 +68,12 @@ export const NewsFeedPostView: React.FC<NewsFeedPostViewProps> = () => {
         {t("view", "view")} {post.profileInfo.name}{" "}
         {t("other_posts", "other posts")}
       </Text>
-      <PostCardsListWrapper cols={cols} posts={otherPosts} />
+      <PostCardsListWrapper
+        cols={cols}
+        posts={[...Array(5)].reduce((acc) => {
+          return [...acc, ...otherPosts];
+        }, [])}
+      />
       <Button
         _focus={{ ringColor: "primary.main" }}
         bgColor="white"

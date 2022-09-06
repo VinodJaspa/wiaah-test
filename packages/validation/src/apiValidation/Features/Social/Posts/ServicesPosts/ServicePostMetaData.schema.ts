@@ -1,5 +1,8 @@
-import { CreatePaginationApiResponseValidationSchemaOf } from "../../../../SharedSchema";
-import { object, string } from "yup";
+import {
+  CreatePaginationApiResponseValidationSchemaOf,
+  Location,
+} from "../../../../SharedSchema";
+import { number, object, string } from "yup";
 import { PostAttachments } from "../../Shared/PostRelated.schema";
 
 export const ServicePostMetaDataValidationSchema = object({
@@ -8,6 +11,10 @@ export const ServicePostMetaDataValidationSchema = object({
   attachments: PostAttachments().required(),
   label: string().required(),
   type: string().required(),
+  rate: number().required(),
+  price: number().required(),
+  location: Location().required(),
+  reviews: number().required(),
 });
 
 export const ServicePostsMetaDataApiResponseValidationSchema =

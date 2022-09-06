@@ -1,7 +1,7 @@
 import React from "react";
 import { HiMenu, HiOutlineUserCircle } from "react-icons/hi";
 import { IoSettingsOutline } from "react-icons/io5";
-import { CgPlayButtonR, CgShoppingBag } from "react-icons/cg";
+import { CgShoppingBag } from "react-icons/cg";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
@@ -10,12 +10,9 @@ import { NavigationLinkType } from "types";
 import {
   MinimalHeader,
   DiscoverHeader,
-  LocationButton,
   SocialFooter,
-  Divider,
   HeaderNavLink,
   SellerNavigationSideBar,
-  SellerNavigationDrawer,
   SellerHeader,
   Root,
   Container,
@@ -25,6 +22,7 @@ import {
   AffiliationIcon,
   ShoppingCartIcon,
   ServicesIcon,
+  PlayButtonFillIcon,
 } from "ui";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
@@ -128,7 +126,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
     },
     {
       name: "action",
-      icon: () => <CgPlayButtonR className="text-white" />,
+      icon: PlayButtonFillIcon,
       url: "action",
     },
     {
@@ -237,7 +235,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
         <div className="w-full h-full gap-4 flex flex-col justify-between">
           <main
             style={{
-              paddingTop: `calc(${headerHeight || 0}px + 1rem)`,
+              paddingTop: `calc(${headerHeight || 0}px + 2rem)`,
             }}
             className="pb-24 sm:pb-0 h-[max(fit,100%)]"
             {...containerProps}

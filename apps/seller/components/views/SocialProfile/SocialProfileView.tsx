@@ -53,7 +53,9 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
         <PostCardsListWrapper
           grid={isMobile}
           cols={cols}
-          posts={newsfeedPosts}
+          posts={[...Array(9)].reduce((acc) => {
+            return [...acc, ...newsfeedPosts.slice(0, 8)];
+          }, [])}
         />
       ),
     },
@@ -72,10 +74,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
               <FaChevronDown className="ml-2" />
             </div>
           </div>
-          <FilterModal
-            isOpen={filterOpen}
-            onClose={() => setFilterOpen(false)}
-          />
+          <FilterModal />
           <ShopCardsListWrapper
             grid={isMobile}
             cols={cols}

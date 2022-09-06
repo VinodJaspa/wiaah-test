@@ -24,7 +24,7 @@ export const StoryDisplay: React.FC<StoryDisplayProps> = ({
     <FloatingContainer className="w-full" {...floatingIcon}>
       <div
         className={`${
-          seen ? "p-[0.0625rem]" : "p-[0.25rem]"
+          seen ? "p-[0.0625rem]" : "p-[0.20rem]"
         } rounded-[20%] bg-gradient-to-b from-primary to-blue-400`}
       >
         <div className="w-full h-full overflow-hidden rounded-[20%] bg-white p-[0.125rem]">
