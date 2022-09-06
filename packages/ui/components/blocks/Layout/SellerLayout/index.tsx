@@ -1,15 +1,7 @@
 import React from "react";
-import {
-  HiMenu,
-  HiHome,
-  HiOutlineHome,
-  HiOutlineUserCircle,
-} from "react-icons/hi";
-import { MdRoomService } from "react-icons/md";
-import { FaUserCircle, FaRegUserCircle } from "react-icons/fa";
-import { IoEarth, IoEarthOutline, IoSettingsOutline } from "react-icons/io5";
+import { HiMenu, HiOutlineUserCircle } from "react-icons/hi";
+import { IoSettingsOutline } from "react-icons/io5";
 import { CgPlayButtonR, CgShoppingBag } from "react-icons/cg";
-import { AiOutlineShop, AiFillShop } from "react-icons/ai";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
@@ -28,63 +20,16 @@ import {
   Root,
   Container,
   UsersProfiles,
+  HomeIcon,
+  DiscoverIcon,
+  AffiliationIcon,
+  ShoppingCartIcon,
+  ServicesIcon,
 } from "ui";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
 import { BsShop } from "react-icons/bs";
 import { BiWallet } from "react-icons/bi";
-
-const NavigationLinks: NavigationLinkType[] = [
-  {
-    name: "homepage",
-    icon: HiOutlineHome,
-    activeIcon: HiHome,
-    url: "",
-  },
-  {
-    name: "discover",
-    icon: IoEarthOutline,
-    activeIcon: IoEarth,
-    url: "discover",
-  },
-  {
-    name: "action",
-    icon: CgPlayButtonR,
-    activeIcon: CgPlayButtonR,
-    url: "action",
-  },
-  {
-    name: "shop",
-    icon: AiOutlineShop,
-    activeIcon: AiFillShop,
-    url: "shop",
-    size: {
-      w: "1.2em",
-      h: "1.2em",
-    },
-  },
-  {
-    name: "service",
-    icon: MdRoomService,
-    activeIcon: MdRoomService,
-    url: "service",
-    size: {
-      w: "1.2em",
-      h: "1.2em",
-    },
-  },
-  {
-    name: "affiliation",
-    icon: FaRegUserCircle,
-    activeIcon: FaUserCircle,
-    url: "affiliation",
-    size: {
-      w: "1.2em",
-      h: "1.2em",
-    },
-  },
-];
-
 export const usersProfilesPlaceHolder = [
   {
     name: "Wiaah",
@@ -147,7 +92,6 @@ export const usersProfilesPlaceHolder = [
     verified: false,
   },
 ];
-
 export const placesPlaceholder: string[] = [
   "shop",
   "hotel",
@@ -171,6 +115,39 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   sideBar = true,
   noContainer = false,
 }) => {
+  const NavigationLinks: NavigationLinkType[] = [
+    {
+      name: "Home",
+      icon: HomeIcon,
+      url: "",
+    },
+    {
+      name: "discover",
+      icon: DiscoverIcon,
+      url: "discover",
+    },
+    {
+      name: "action",
+      icon: () => <CgPlayButtonR className="text-white" />,
+      url: "action",
+    },
+    {
+      name: "shop",
+      icon: ShoppingCartIcon,
+      url: "shop",
+    },
+    {
+      name: "service",
+      icon: ServicesIcon,
+      url: "services",
+    },
+    {
+      name: "affiliation",
+      icon: AffiliationIcon,
+      url: "affiliation",
+    },
+  ];
+
   const { accountType } = useAccountType();
   const { t } = useTranslation();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
@@ -191,7 +168,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
 
   return (
     <Root>
-      <SellerNavigationDrawer
+      {/* <SellerNavigationDrawer
         activeLink={route}
         onLinkClick={handleLinkClick}
         links={NavigationLinks}
@@ -221,7 +198,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
             users={usersProfilesPlaceHolder}
           />
         </div>
-      </SellerNavigationDrawer>
+      </SellerNavigationDrawer> */}
       {sideBar && (
         <SellerNavigationSideBar
           headerElement={
@@ -237,7 +214,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
       <Container
         noContainer={noContainer}
         className={`${
-          isMobile ? "px-4" : sideBar ? "pl-24 pr-4" : "px-8"
+          isMobile ? "px-4" : sideBar ? "pl-52 pr-4" : "px-8"
         } h-full`}
       >
         {header && header !== null && (
@@ -247,7 +224,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           >
             <Container
               className={`${
-                isMobile ? "px-4" : sideBar ? "pl-24 pr-4" : "px-8"
+                isMobile ? "px-4" : sideBar ? "pl-52 pr-4" : "px-8"
               }`}
             >
               <HeaderSwitcher

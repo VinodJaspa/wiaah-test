@@ -13,53 +13,22 @@ import {
   AddNewPostModal,
   PostAttachmentsViewer,
   AddNewStoryModal,
-  Button,
   CommentReportModal,
-  ArrowLeftIcon,
-  ArrowRightIcon,
+  AspectRatio,
+  SquarePlusOutlineIcon,
 } from "ui";
 import { newsfeedPosts } from "ui";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import { PostCardInfo } from "types";
+import { randomNum } from "utils";
 
-const RecentStoriesPlaceHolder: StoryDisplayProps[] = [
-  {
-    storyUserData: {
-      name: "Wiaah",
-      userPhotoSrc: "/shop-3.jpeg",
-    },
-    seen: true,
-  },
-  {
-    storyUserData: {
-      name: "Jack",
-      userPhotoSrc: "/shop.jpeg",
-    },
-    seen: false,
-  },
-  {
-    storyUserData: {
-      name: "sam",
-      userPhotoSrc: "/shop-2.jpeg",
-    },
-    seen: true,
-  },
-  {
-    storyUserData: {
-      name: "Wiaah",
-      userPhotoSrc: "/shop-3.jpeg",
-    },
-    seen: true,
-  },
-  {
-    storyUserData: {
-      name: "Jack",
-      userPhotoSrc: "/shop.jpeg",
-    },
-    seen: false,
-  },
-];
+const RecentStoriesPlaceHolder: StoryDisplayProps[] = [...Array(11)].map(
+  (_, i) => ({
+    seen: randomNum(10) > 7,
+    storyUserData: { name: "wiaah", userPhotoSrc: `profile (${i + 1}).jfif` },
+  })
+);
 
 const seller: NextPage = () => {
   const router = useRouter();
@@ -96,21 +65,15 @@ const seller: NextPage = () => {
         <AddNewStoryModal />
         <CommentReportModal />
         <div className="flex flex-col items-center w-full gap-4">
-          <div className="w-full relative">
-            {!isMobile ? (
-              <>
-                <Button className="rounded-full z-10 right-0 translate-x-1/2 absolute top-1/2 -translate-y-1/2  bg-opacity-70 shadow-md">
-                  <ArrowRightIcon className="text-2xl" />
-                </Button>
-                <Button className="rounded-full z-10 left-0 -translate-x-1/2 absolute top-1/2 -translate-y-1/2 bg-opacity-70 shadow-md">
-                  <ArrowLeftIcon className="text-2xl" />
-                </Button>
-              </>
-            ) : null}
-            <RecentStories
-              className="justify-between mx-auto"
-              stories={RecentStoriesPlaceHolder}
-            />
+          <div className="flex w-full items-center overflow-x-scroll gap-6 noScroll">
+            <div className="min-w-[4.75rem]">
+              <AspectRatio ratio={1}>
+                <div className="flex justify-center bg-gray-200 rounded-[20%] w-full h-full items-center">
+                  <SquarePlusOutlineIcon className="text-icon text-lightBlack " />
+                </div>
+              </AspectRatio>
+            </div>
+            <RecentStories stories={RecentStoriesPlaceHolder} />
           </div>
           {!isMobile && (
             <SellerPostInput userName="wiaah" userPhotoSrc="/wiaah_logo.png" />

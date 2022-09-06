@@ -14,6 +14,10 @@ module.exports = {
         "custum-aspect": "5 / 4",
       },
       colors: {
+        PHText: "#626262",
+        lightGray: "#F5F5F5",
+        lightBlack: "#00000099",
+        secondaryBlue: "#42ADE2",
         primary: {
           DEFAULT: "#3AD398",
           hover: "#1d9266",
@@ -34,6 +38,9 @@ module.exports = {
         transparentBlue: "rgba(40,119,197,0.7)",
         lightGray: "#F6F6F6",
         darkerGray: "#E8E8E8",
+      },
+      fontSize: {
+        icon: "1.375rem",
       },
     },
   },

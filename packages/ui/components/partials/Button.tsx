@@ -2,7 +2,14 @@ import React from "react";
 import { HtmlButtonProps } from "types";
 import { CgSpinner } from "react-icons/cg";
 
-type ColorScheme = "primary" | "danger" | "success" | "info" | "gray" | "white";
+type ColorScheme =
+  | "primary"
+  | "danger"
+  | "success"
+  | "info"
+  | "gray"
+  | "white"
+  | "lightGray";
 
 export interface ButtonProps extends HtmlButtonProps {
   outline?: boolean;
@@ -32,7 +39,9 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
       case "gray":
         return "bg-gray-500 border-gray-400 text-white hover:bg-gray-600 active:bg-gray-700";
       case "white":
-        return "";
+        return "bg-white border-gray-200 text-black hover:bg-gray-100 active:bg-gray-200";
+      case "lightGray":
+        return "bg-lightGray border-gray-400 text-white hover:bg-gray-600 active:bg-gray-700";
       default:
         return "scheme-primary";
     }

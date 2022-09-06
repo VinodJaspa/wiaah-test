@@ -1,8 +1,9 @@
 import { useResponsive } from "hooks";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { HtmlDivProps } from "types";
 import { NavigationLinkType } from "types";
-import { Divider } from "ui";
+import { Divider, LogoutIcon, Button } from "ui";
 
 export interface SellerSideBarProps extends HtmlDivProps {
   links: NavigationLinkType[];
@@ -20,63 +21,81 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
   className,
   ...props
 }) => {
+  const { t } = useTranslation();
   function handleLinkClick(link: NavigationLinkType) {
     onLinkClick && onLinkClick(link);
   }
   const { isMobile } = useResponsive();
   return (
     <div
-      className={`${className} thinScroll overflow-y-scroll flex z-20 py-4 gap-4 border-t-gray-300 fixed border-t-[1px] ${
-        isMobile
-          ? "flex-row left-0 bottom-0 w-full"
-          : "flex-col left-0 px-2 top-0"
-      } items-center flex bg-white text-4xl`}
+      className={`${className} thinScroll w-52 h-full bg-primary overflow-y-scroll flex z-20 fixed ${
+        isMobile ? "flex-row left-0 bottom-0 w-full" : "flex-col left-0  top-0"
+      } items-center flex py-11`}
       {...props}
     >
       <div
-        className={`w-full flex h-full flex-wrap bg-white items-center ${
+        className={`w-full flex flex-wrap bg-primary ${
           isMobile
             ? "justify-around flex-row gap-2 text-3xl"
-            : "flex-col gap-4 text-4xl"
-        } `}
+            : "flex-col gap-12"
+        }`}
       >
-        {!isMobile && headerElement && (
-          <div data-testid="NavigationSideBarHeaderContainer">
-            {headerElement}
-          </div>
-        )}
-        {links.map((link, i) => (
-          <div
-            className="flex flex-col items-center cursor-pointer"
-            data-testid="NavigationSideBarLink"
-            onClick={() => handleLinkClick && handleLinkClick(link)}
-            key={i}
-          >
+        {!isMobile && <img src="/wiaah_logo.png" className="w-full px-8" />}
+        {links.map((link, i) => {
+          const active = link.url === activeLink;
+          return (
             <div
-              className="text-3xl text-black bg-white py-2"
-              aria-label={link.name}
+              className="flex gap-4 items-center cursor-pointer relative pl-8"
+              data-testid="NavigationSideBarLink"
+              onClick={() => handleLinkClick && handleLinkClick(link)}
               key={i}
             >
-              <span className={`text-[${link.size}]`} {...link.size}>
-                {activeLink === link.url ? link.activeIcon({}) : link.icon({})}
-              </span>
-            </div>
-            {!isMobile && (
-              <p
-                className="capitalize font-bold text-xs"
-                data-testid="NavigationSideBarLinkLabel"
+              <span
+                className={`${
+                  active ? "text-black fill-black" : "text-white fill-white"
+                } text-black text-icon`}
               >
-                {link.name}
-              </p>
-            )}
-          </div>
-        ))}
+                {typeof link.icon === "function" ? link.icon() : null}
+              </span>
+              {!isMobile && (
+                <>
+                  <p
+                    className={`${
+                      active ? "text-black" : "text-white"
+                    } capitalize font-bold text-sm`}
+                    data-testid="NavigationSideBarLinkLabel"
+                  >
+                    {link.name}
+                  </p>
+
+                  <span
+                    className={`absolute top-0 right-0 bottom-0 w-2 ${
+                      active ? "" : "opacity-0"
+                    } bg-black rounded`}
+                  ></span>
+                </>
+              )}
+            </div>
+          );
+        })}
       </div>
       {!isMobile && (
-        <>
-          <Divider />
-          <div data-testid="NavigationSideBarChildContainer">{children}</div>
-        </>
+        <div className="flex flex-col h-full justify-between w-full px-6">
+          <div>
+            <Divider className="my-11" />
+            <div data-testid="NavigationSideBarChildContainer">{children}</div>
+          </div>
+          <div>
+            <Divider className="my-11" />
+            <Button
+              colorScheme="white"
+              className="flex items-center gap-3 w-full"
+            >
+              <LogoutIcon className="text-icon text-black" />
+              <p className="font-bold text-black text-base">{t("Logout")}</p>
+            </Button>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -8,7 +8,9 @@ export default {
 } as ComponentMeta<typeof StoryDisplay>;
 
 const Templete: ComponentStory<typeof StoryDisplay> = (args) => (
-  <StoryDisplay {...args} />
+  <div className="w-32">
+    <StoryDisplay {...args} />
+  </div>
 );
 
 export const unSeen = Templete.bind({});

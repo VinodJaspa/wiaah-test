@@ -17,13 +17,12 @@ export const SocialFooter: React.FC<SocialFooterProps> = ({
 }) => {
   const { t } = useTranslation();
   const router = useRouter();
-  const { locale } = router;
   const [cookie, setCookie] = useCookies(["country", "currency"]);
   const { i18n } = useTranslation();
-  const [langCode, setLang] = React.useState<Language>(locale as Language);
+  const [langCode, setLang] = React.useState<Language>("" as Language);
   const [countryCode, setCountryCode] = React.useState("US");
   const [currency, setCurrency] = React.useState("usd");
-  const [langCaption, setLanguageCaption] = React.useState(locale);
+  const [langCaption, setLanguageCaption] = React.useState("");
   const [countryName, setCountryName] = React.useState("United States");
   const [isModalVisible, setIsModalVisible] = React.useState(false);
 
@@ -53,36 +52,38 @@ export const SocialFooter: React.FC<SocialFooterProps> = ({
     },
   ];
 
-  React.useEffect(() => {
-    switch (locale) {
-      case Language.EN:
-        setLang(Language.EN);
-        i18n.changeLanguage(Language.EN);
-        setLanguageCaption("English");
-        break;
-      case Language.FR:
-        setLang(Language.FR);
-        i18n.changeLanguage(Language.FR);
-        setLanguageCaption("Français");
-        break;
-      case Language.DE:
-        setLang(Language.DE);
-        i18n.changeLanguage(Language.DE);
-        setLanguageCaption("Deutsch");
-        break;
-      case Language.ES:
-        setLang(Language.ES);
-        i18n.changeLanguage(Language.ES);
-        setLanguageCaption("Española");
-        break;
-      default:
-        setLang(Language.EN);
-        i18n.changeLanguage(Language.EN);
-        setLanguageCaption("English");
-        break;
-    }
-  }, [locale]);
-
+  if ("locale" in router) {
+    const { locale } = router;
+    React.useEffect(() => {
+      switch (locale) {
+        case Language.EN:
+          setLang(Language.EN);
+          i18n.changeLanguage(Language.EN);
+          setLanguageCaption("English");
+          break;
+        case Language.FR:
+          setLang(Language.FR);
+          i18n.changeLanguage(Language.FR);
+          setLanguageCaption("Français");
+          break;
+        case Language.DE:
+          setLang(Language.DE);
+          i18n.changeLanguage(Language.DE);
+          setLanguageCaption("Deutsch");
+          break;
+        case Language.ES:
+          setLang(Language.ES);
+          i18n.changeLanguage(Language.ES);
+          setLanguageCaption("Española");
+          break;
+        default:
+          setLang(Language.EN);
+          i18n.changeLanguage(Language.EN);
+          setLanguageCaption("English");
+          break;
+      }
+    }, [locale]);
+  }
   React.useEffect(() => {
     if (cookie.country) {
       setCountryName(Country.getCountryByCode(cookie.country)?.name as string);
