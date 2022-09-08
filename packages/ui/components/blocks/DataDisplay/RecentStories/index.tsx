@@ -1,7 +1,7 @@
 import React from "react";
 import { HiPlus } from "react-icons/hi";
 import { HtmlDivProps } from "types";
-import { StoryDisplay, StoryDisplayProps } from "ui";
+import { UserProfileDisplay, StoryDisplayProps } from "ui";
 import { useResponsive, useNewStoryModal } from "ui";
 export interface RecentStoriesProps extends HtmlDivProps {
   stories: StoryDisplayProps[];
@@ -15,7 +15,6 @@ export const RecentStories: React.FC<RecentStoriesProps> = ({
   ...props
 }) => {
   const { isMobile } = useResponsive();
-  const { openNewStoryModal } = useNewStoryModal();
   return (
     <div
       {...props}
@@ -25,7 +24,7 @@ export const RecentStories: React.FC<RecentStoriesProps> = ({
     >
       {stories.map((story, i) => (
         <div className="w-[4.75rem]">
-          <StoryDisplay {...story} />
+          <UserProfileDisplay {...story} />
         </div>
       ))}
     </div>

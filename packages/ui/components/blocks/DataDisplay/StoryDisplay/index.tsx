@@ -14,7 +14,7 @@ export interface StoryDisplayProps {
   innerProps?: HtmlDivProps;
 }
 
-export const StoryDisplay: React.FC<StoryDisplayProps> = ({
+export const UserProfileDisplay: React.FC<StoryDisplayProps> = ({
   storyUserData,
   seen,
   floatingIcon,

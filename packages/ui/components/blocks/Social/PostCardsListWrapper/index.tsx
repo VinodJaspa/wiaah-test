@@ -152,28 +152,7 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
                 { c: 1, r: 1 },
               ],
             },
-            {
-              length: 4,
-              cols: 3,
-              points: [
-                {
-                  c: 2,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-              ],
-            },
+
             {
               length: 9,
               cols: 4,
@@ -218,10 +197,7 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
             },
           ]}
         >
-          {posts &&
-            posts.map((post, idx) => (
-              <PostCard showComments {...post} key={idx} />
-            ))}
+          {posts && posts.map((post, idx) => <PostCard {...post} key={idx} />)}
         </GridListOrganiser>
       </>
     );

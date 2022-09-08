@@ -133,7 +133,8 @@ export interface AffiliationOfferCardInfo {
 
 export interface HashTagCardInfo {
   title: string;
-  attachment: PostAttachment;
+  postInfo: PostInfo;
+  profileInfo: ProfileInfo;
 }
 
 export interface SocialStoryData {

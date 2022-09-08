@@ -33,4 +33,13 @@ Default.args = {
       type: "video",
     },
   ],
+  user: {
+    accountType: "seller",
+    id: "1322",
+    name: "seller name",
+    profession: "Profession",
+    public: true,
+    thumbnail: "/shop-2.jpeg",
+    verified: true,
+  },
 };

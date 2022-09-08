@@ -9,6 +9,7 @@ import {
   Button,
   Rate,
   LocationOutlineIcon,
+  UserProfile,
 } from "ui";
 
 export interface SocialServicePostMetaDataCardProps
@@ -29,6 +30,7 @@ export const SocialServicePostMetaDataCard: React.FC<
   rate,
   type,
   reviews,
+  user,
   ...props
 }) => {
   const { t } = useTranslation();
@@ -46,6 +48,18 @@ export const SocialServicePostMetaDataCard: React.FC<
               : null}
           </Slider>
         </AspectRatio>
+        {user ? (
+          <div className="absolute bottom-0 left-0 w-full p-2 text-white bg-gradient-to-t from-black  to-transparent">
+            <UserProfile
+              user={{
+                name: user.name,
+                activityType: user.profession,
+                userPhotoSrc: user.thumbnail,
+                verified: user.verified,
+              }}
+            />
+          </div>
+        ) : null}
         <div className="cursor-pointer absolute top-4 left-0 flex flex-col w-full text-lg bg-gray-500 bg-opacity-50 p-2 text-white">
           {/* <p className="font-semibold  lg:text-2xl ">{name}</p> */}
           <p className="w-full text-lg font-bold text-right text-primary">

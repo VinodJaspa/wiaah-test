@@ -1,6 +1,6 @@
 import React from "react";
 import { HtmlDivProps, UserProfileData, UsersProfilesVariant } from "types";
-import { ScrollableContainer, UserProfile, StoryDisplay } from "ui";
+import { ScrollableContainer, UserProfile, UserProfileDisplay } from "ui";
 
 export interface UsersProfilesProps extends HtmlDivProps {
   users: UserProfileData[];
@@ -29,7 +29,7 @@ export const UsersProfiles: React.FC<UsersProfilesProps> = ({
           .map((user, i) => (
             <div key={i} className="flex items-center gap-3">
               <div className="w-11">
-                <StoryDisplay
+                <UserProfileDisplay
                   storyUserData={{
                     name: user.name,
                     userPhotoSrc: user.userPhotoSrc,

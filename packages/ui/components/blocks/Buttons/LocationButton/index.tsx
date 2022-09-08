@@ -1,12 +1,10 @@
 import React from "react";
-import { IconBaseProps } from "react-icons";
-import { HiLocationMarker, HiOutlineLocationMarker } from "react-icons/hi";
-import { HtmlDivProps, SearchPlaceItem } from "types";
-import { Button } from "ui";
+import { HtmlDivProps, HtmlSvgProps, SearchPlaceItem } from "types";
+import { Button, LocationOnPointFillIcon } from "ui";
 export interface LocationButtonProps extends SearchPlaceItem {
   onLocationClick?: (locationName: string) => any;
   props?: HtmlDivProps;
-  iconProps?: IconBaseProps;
+  iconProps?: HtmlSvgProps;
 }
 
 export const LocationButton: React.FC<LocationButtonProps> = ({
@@ -16,20 +14,18 @@ export const LocationButton: React.FC<LocationButtonProps> = ({
   props,
 }) => {
   return (
-    <Button
-      className="px-0 w-full justify-start hover:bg-gray-100 text-black bg-white"
-      colorScheme="gray"
+    <div
       onClick={() => onLocationClick && onLocationClick(name)}
+      className="flex items-center gap-4"
+      {...props}
     >
-      <div className="flex items-center gap-4" {...props}>
-        <span className="border-2 border-gray-200 rounded-full p-2">
-          <HiOutlineLocationMarker
-            {...iconProps}
-            className={`${iconProps?.className || ""} text-2xl`}
-          />
-        </span>
-        <span className="capitalize font-semibold">{name}</span>
+      <div className="border-2 p-2 bg-white rounded-full">
+        <LocationOnPointFillIcon
+          {...iconProps}
+          className={`${iconProps?.className || ""} `}
+        />
       </div>
-    </Button>
+      <span className="capitalize font-semibold">{name}</span>
+    </div>
   );
 };

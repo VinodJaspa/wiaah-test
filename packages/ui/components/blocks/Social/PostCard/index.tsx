@@ -1,6 +1,12 @@
 import React from "react";
 import { ProfileInfo, PostInfo } from "types";
-import { StoryDisplay, CommentIcon, HeartIcon, ShareIcon, HashTags } from "ui";
+import {
+  UserProfileDisplay,
+  CommentIcon,
+  HeartIcon,
+  ShareIcon,
+  HashTags,
+} from "ui";
 import { Interaction } from "types";
 import { useDateDiff } from "hooks";
 import { useTranslation } from "react-i18next";
@@ -8,18 +14,12 @@ import { useTranslation } from "react-i18next";
 export interface PostCardProps {
   profileInfo: ProfileInfo;
   postInfo: PostInfo;
-  showComments?: boolean;
-  profileFunctional?: boolean;
-  newStory?: boolean;
   onInteraction?: (interaction: Interaction) => any;
 }
 
 export const PostCard: React.FC<PostCardProps> = ({
   postInfo,
   profileInfo,
-  showComments,
-  profileFunctional,
-  newStory,
   onInteraction,
 }) => {
   const { t } = useTranslation();
@@ -45,7 +45,7 @@ export const PostCard: React.FC<PostCardProps> = ({
         <div className="flex flex-col w-full gap-2">
           <div className="flex gap-4 items-center">
             <div className="min-w-[2.5rem] ">
-              <StoryDisplay
+              <UserProfileDisplay
                 storyUserData={{
                   name: profileInfo.name,
                   userPhotoSrc: profileInfo.thumbnail,

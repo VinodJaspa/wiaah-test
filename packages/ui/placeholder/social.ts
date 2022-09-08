@@ -126,7 +126,7 @@ export const PostCardPlaceHolder: PostCardInfo = {
     attachments: [
       {
         type: "image",
-        src: "/verticalImage.jpg",
+        src: "/place-2.jpg",
       },
       {
         src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",

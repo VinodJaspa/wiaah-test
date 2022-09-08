@@ -1,15 +1,15 @@
 import React from "react";
-import { StoryDisplay, storybookStoriesTitle } from "ui";
+import { UserProfileDisplay, storybookStoriesTitle } from "ui";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 
 export default {
   title: storybookStoriesTitle + "StoryDisplay",
-  component: StoryDisplay,
-} as ComponentMeta<typeof StoryDisplay>;
+  component: UserProfileDisplay,
+} as ComponentMeta<typeof UserProfileDisplay>;
 
-const Templete: ComponentStory<typeof StoryDisplay> = (args) => (
+const Templete: ComponentStory<typeof UserProfileDisplay> = (args) => (
   <div className="w-32">
-    <StoryDisplay {...args} />
+    <UserProfileDisplay {...args} />
   </div>
 );
 

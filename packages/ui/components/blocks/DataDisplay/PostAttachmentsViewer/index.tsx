@@ -2,9 +2,11 @@ import React from "react";
 import { HiLocationMarker, HiUser } from "react-icons/hi";
 import { PostAttachment as PostAttachmentType, ProfileInfo } from "types";
 import {
-  ControlledCarousel,
+  Slider,
   PostAttachment,
   ControlledCarouselProps,
+  ArrowLeftIcon,
+  ArrowRightIcon,
 } from "ui";
 export interface PostAttachmentsViewerProps {
   attachments: PostAttachmentType[];
@@ -25,14 +27,14 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
   return (
     <div className="h-full">
       {attachments && !renderOne && attachments.length > 1 ? (
-        <ControlledCarousel
-          w={"100%"}
-          h="100%%"
+        <Slider
+          leftArrowComponent={() => (
+            <ArrowLeftIcon className="text-primary text-4xl text-center bg-gray-200 bg-opacity-50 rounded-full" />
+          )}
+          rightArrowComponent={() => (
+            <ArrowRightIcon className="text-primary text-4xl text-center bg-gray-200 bg-opacity-50  rounded-full" />
+          )}
           data-testid="test"
-          arrows={attachments.length > 1}
-          gap={0}
-          onCurrentActiveChange={setActive}
-          {...carouselProps}
         >
           {attachments.map((attachment, i) => (
             <PostAttachment
@@ -63,7 +65,7 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
               }
             />
           ))}
-        </ControlledCarousel>
+        </Slider>
       ) : (
         attachments &&
         attachments.length > 0 && (

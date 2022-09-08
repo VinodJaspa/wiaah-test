@@ -55,6 +55,15 @@ export const getServicePostsOnMapDataFetcher = async (
         postalCode: 12345,
         state: "State",
       },
+      user: {
+        accountType: "seller",
+        id: "132",
+        name: "seller name",
+        profession: "profession",
+        public: true,
+        thumbnail: "/shop-2.jpeg",
+        verified: true,
+      },
     })),
   };
 

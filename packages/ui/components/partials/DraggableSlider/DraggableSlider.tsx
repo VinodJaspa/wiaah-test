@@ -41,8 +41,8 @@ export const Slide: React.FC<SlideProps> = ({
     <div
       ref={slideRef}
       style={{
-        width: `${sliderWidth}px`,
-        height: `${sliderHeight}px`,
+        width: sliderWidth < 1 ? "100%" : `${sliderWidth}px`,
+        height: sliderHeight < 1 ? "100%" : `${sliderHeight}px`,
       }}
       className={"flex items-center justify-center select-none h-full"}
     >

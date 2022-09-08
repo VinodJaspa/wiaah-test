@@ -49,6 +49,7 @@ export const getSocialProfileData = async (
       publications: 156,
       subscribers: 135,
       subscriptions: 14,
+      profession:"profession"
     },
   };
   return CheckValidation(SocialShopProfileInfoApiResponseValidationSchema, res);

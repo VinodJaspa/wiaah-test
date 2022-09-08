@@ -14,9 +14,15 @@ import {
   Button,
   Divider,
   SocialServicePostsList,
+  HomeIcon,
+  HStack,
+  PlayButtonFillIcon,
+  ServicesIcon,
+  ShoppingCartIcon,
 } from "ui";
 import { newsfeedPosts, ShopCardsInfoPlaceholder } from "placeholder";
 import { useTranslation } from "react-i18next";
+import { randomNum } from "utils";
 
 export interface HashTagViewProps {}
 
@@ -31,17 +37,30 @@ export const HashTagView: React.FC<HashTagViewProps> = () => {
 
   const tabs: TabType[] = [
     {
-      name: t("News Feed"),
+      name: (
+        <HStack>
+          <p>{t("Newsfeed")}</p>
+          <HomeIcon />
+        </HStack>
+      ),
       component: (
         <div className="flex flex-col gap-16">
           <HashTagPostsListWrapper hashtags={topPosts} />
           <Divider />
-          <PostCardsListWrapper cols={3} posts={newsfeedPosts} />
+          <PostCardsListWrapper
+            cols={3}
+            posts={newsfeedPosts.concat(newsfeedPosts)}
+          />
         </div>
       ),
     },
     {
-      name: t("Services"),
+      name: (
+        <HStack>
+          <p>{t("Service")}</p>
+          <ServicesIcon />
+        </HStack>
+      ),
       component: (
         <div className="flex flex-col w-full gap-16">
           <HashTagPostsListWrapper hashtags={topPosts} />
@@ -51,7 +70,12 @@ export const HashTagView: React.FC<HashTagViewProps> = () => {
       ),
     },
     {
-      name: t("Shop"),
+      name: (
+        <HStack>
+          <p>{t("Shop")}</p>
+          <ShoppingCartIcon />
+        </HStack>
+      ),
       component: (
         <div className="flex flex-col gap-16">
           <HashTagPostsListWrapper hashtags={topPosts} />
@@ -63,7 +87,12 @@ export const HashTagView: React.FC<HashTagViewProps> = () => {
       ),
     },
     {
-      name: t("Action"),
+      name: (
+        <HStack>
+          <p>{t("Actions")}</p>
+          <PlayButtonFillIcon />
+        </HStack>
+      ),
       component: (
         <div className="flex flex-col gap-16">
           <HashTagPostsListWrapper hashtags={topPosts} />
@@ -77,7 +106,12 @@ export const HashTagView: React.FC<HashTagViewProps> = () => {
     <div className="flex flex-col my-8">
       <div className="flex w-full px-2 justify-between">
         <div></div>
-        <p className="font-bold text-2xl">#{tag}</p>
+        <div className="flex flex-col w-full gap-2 items-center">
+          <p className="font-bold text-2xl">#{tag}</p>
+          <p className="font-bold text-xl">{`${randomNum(500)}M ${t(
+            "Views"
+          )}`}</p>
+        </div>
         <Button>{t("Follow")}</Button>
       </div>
       <TabsViewer tabs={tabs} />

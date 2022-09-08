@@ -17,36 +17,9 @@ import { useQuery } from "react-query";
 import { MdPlace } from "react-icons/md";
 import { ListWrapper, PlaceCard, PlaceCardProps, placesPlaceholder } from "ui";
 import { placeCardPlaceholder } from "placeholder";
+import { randomNum } from "utils";
 
-const costumPH: PlaceCardProps[] = [
-  {
-    ...placeCardPlaceholder,
-    placeAttachments: [
-      {
-        src: "/video.mp4",
-        type: "video",
-      },
-    ],
-  },
-  {
-    ...placeCardPlaceholder,
-    placeAttachments: [
-      {
-        src: "/verticalImage.jpg",
-        type: "image",
-      },
-    ],
-  },
-  {
-    ...placeCardPlaceholder,
-    placeAttachments: [
-      {
-        src: "/verticalVideo.mp4",
-        type: "video",
-      },
-    ],
-  },
-];
+const costumPH: PlaceCardProps[] = [];
 
 const placesPH = costumPH.concat(
   [...Array(9)].map(() => ({
@@ -62,7 +35,7 @@ export const LocalisationView: React.FC<LocalisationViewProps> = ({}) => {
 
   const router = useRouter();
   const { tag } = router.query;
-  console.log(placesPH);
+
   const { data: places, isLoading } = useQuery<PlaceCardProps[]>(
     ["places", tag],
     async () => placesPH,
@@ -77,19 +50,24 @@ export const LocalisationView: React.FC<LocalisationViewProps> = ({}) => {
         <Button visibility={"hidden"} textTransform={"capitalize"}>
           {t("follow", "follow")}
         </Button>
-        <HStack>
-          <Image
-            rounded="xl"
-            h="3rem"
-            w="auto"
-            objectFit="cover"
-            src="/place-1.jpg"
-          />
-          <Icon fontSize={"xx-large"} as={MdPlace} />
-          <Text fontWeight={"bold"} fontSize="x-large">
-            {tag}
-          </Text>
-        </HStack>
+        <div className="flex flex-col gap-2">
+          <HStack>
+            <Image
+              rounded="xl"
+              h="3rem"
+              w="auto"
+              objectFit="cover"
+              src="/place-1.jpg"
+            />
+            <Icon fontSize={"xx-large"} as={MdPlace} />
+            <Text fontWeight={"bold"} fontSize="x-large">
+              {tag}
+            </Text>
+          </HStack>
+          <p className="font-bold text-xl">{`${randomNum(500)}M ${t(
+            "Views"
+          )}`}</p>
+        </div>
         <Button textTransform={"capitalize"}>{t("follow", "follow")}</Button>
       </HStack>
       <Divider borderColor={"black"} my="1rem" />

@@ -279,6 +279,7 @@ export const getServicesProviderDataFetcher = async (
           slug: "24/7_front_desk",
         },
       ],
+      deposit: 15,
       policies: [
         {
           policyTerms: [

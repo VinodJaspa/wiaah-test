@@ -4,6 +4,7 @@ import {
 } from "../../../../SharedSchema";
 import { number, object, string } from "yup";
 import { PostAttachments } from "../../Shared/PostRelated.schema";
+import { SocialProfileInfoValidationSchema } from "../../Shop";
 
 export const ServicePostMetaDataValidationSchema = object({
   id: string().required(),
@@ -15,6 +16,7 @@ export const ServicePostMetaDataValidationSchema = object({
   price: number().required(),
   location: Location().required(),
   reviews: number().required(),
+  user: SocialProfileInfoValidationSchema,
 });
 
 export const ServicePostsMetaDataApiResponseValidationSchema =

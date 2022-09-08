@@ -9,12 +9,7 @@ import {
   ArrowDownIcon,
 } from "ui";
 import { useTranslation } from "react-i18next";
-import {
-  FloatingContainer,
-  VerticalCarousel,
-  PostCommentCard,
-  Slider,
-} from "ui";
+import { VerticalCarousel, PostCommentCard, Slider } from "ui";
 import { getParamFromAsPath } from "utils";
 import { PostCardPlaceHolder } from "placeholder";
 import { useActionComments } from "ui/Hooks";
@@ -108,7 +103,7 @@ export function PostViewPopup<TData extends {}>({
   return (
     <>
       <Modal onOpen={() => {}} onClose={handlePostViewClose} isOpen={isOpen}>
-        <ModalOverlay />
+        {/* <ModalOverlay className="bg-opacity-[100%]" /> */}
         <ModalContent className="h-screen px-[2.5rem] bg-black flex w-screen">
           <div className="flex flex-col gap-2 w-full">
             <MdClose
@@ -117,19 +112,12 @@ export function PostViewPopup<TData extends {}>({
               aria-label="Close Post"
             />
             <div className="flex w-full h-full bg-black">
-              <VerticalCarousel
-                w="100%"
-                h="100%"
-                overflow="hidden"
+              <Slider
+                variant="vertical"
                 data-testid="VerticalCarouselContainer"
-                onPassMaxLimit={handleNextPost}
-                onPassMinLimit={handlePrevPost}
               >
-                {[...Array(1)].map(
-                  (_, i) => renderChild && post && renderChild(post)
-                )}
-                {/* {renderChild && post && renderChild(post)} */}
-              </VerticalCarousel>
+                {renderChild && post && renderChild(post)}
+              </Slider>
             </div>
           </div>
           <div className="flex flex-col w-10 text-white justify-between">

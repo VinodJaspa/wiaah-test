@@ -17,6 +17,12 @@ import {
   MenuList,
   MenuButton,
   MenuItem,
+  AffiliationIcon,
+  HomeIcon,
+  HStack,
+  PlayButtonFillIcon,
+  ServicesIcon,
+  ShoppingCartIcon,
 } from "ui";
 import {
   PostCommentPlaceholder,
@@ -25,6 +31,7 @@ import {
   socialAffiliationCardPlaceholders,
   SocialProfileInfo,
   profileActionsPlaceholder,
+  newsfeedPosts,
 } from "placeholder";
 import { TabType } from "types";
 import { useRecoilValue } from "recoil";
@@ -94,11 +101,26 @@ export const SocialView: React.FC<SocialViewProps> = () => {
 
   const sellerTabs: TabType[] = [
     {
-      name: t("news feed"),
-      component: <PostCardsListWrapper cols={cols} posts={posts} />,
+      name: (
+        <HStack>
+          <p>{t("Newsfeed")}</p>
+          <HomeIcon />
+        </HStack>
+      ),
+      component: (
+        <PostCardsListWrapper
+          cols={cols}
+          posts={newsfeedPosts.concat(newsfeedPosts)}
+        />
+      ),
     },
     {
-      name: t("shop"),
+      name: (
+        <HStack>
+          <p>{t("Shop")}</p>
+          <ShoppingCartIcon />
+        </HStack>
+      ),
       component: (
         <div className="flex flex-col gap-4">
           <div className="flex justify-between">
@@ -136,11 +158,21 @@ export const SocialView: React.FC<SocialViewProps> = () => {
       ),
     },
     {
-      name: t("Services"),
+      name: (
+        <HStack>
+          <p>{t("Service")}</p>
+          <ServicesIcon />
+        </HStack>
+      ),
       component: <SocialServicePostsList />,
     },
     {
-      name: t("affiliation offers", "affiliation offers"),
+      name: (
+        <HStack>
+          <p>{t("Affilation Offers")}</p>
+          <AffiliationIcon />
+        </HStack>
+      ),
       component: (
         <AffiliationOffersCardListWrapper
           // grid={isMobile}
@@ -150,7 +182,12 @@ export const SocialView: React.FC<SocialViewProps> = () => {
       ),
     },
     {
-      name: t("actions", "Actions"),
+      name: (
+        <HStack>
+          <p>{t("Actions")}</p>
+          <PlayButtonFillIcon />
+        </HStack>
+      ),
       component: (
         <ActionsListWrapper
           cols={ActionsCols}
