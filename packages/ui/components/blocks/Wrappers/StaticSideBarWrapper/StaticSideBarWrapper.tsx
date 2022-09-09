@@ -13,7 +13,7 @@ export const StaticSideBarWrapper: React.FC<StaticSideBarWrapperProps> = ({
 }) => {
   const { isTablet } = useResponsive();
   return (
-    <div className="flex gap-4 ">
+    <div className="flex gap-[3.75rem]">
       <div
         style={{
           width: `calc(100% - min(${isTablet ? "0rem" : "30rem"} , 100%))`,

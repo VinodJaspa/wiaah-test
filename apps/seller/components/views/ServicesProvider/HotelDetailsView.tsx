@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Tabs,
-  TabItem,
   TabList,
   TabTitle,
   TabsHeader,
@@ -20,15 +19,11 @@ import {
   ServicePresentationCarosuel,
   StaticSideBarWrapper,
   ServiceReservastion,
-  SectionsScrollTabList,
-  Accordion,
-  Button,
   SpinnerFallback,
 } from "ui";
 import { reviews } from "placeholder";
 import { useResponsive } from "hooks";
 import { useTranslation } from "react-i18next";
-import { runIfFn } from "utils";
 
 export const HotelDetailsView: React.FC = () => {
   const { filters } = useSearchFilters();
@@ -50,18 +45,20 @@ export const HotelDetailsView: React.FC = () => {
           component: (
             <SpinnerFallback isLoading={isLoading} isError={isError}>
               {res ? (
-                <>
+                <div className="flex flex-col gap-[3.75rem]">
                   <ServicesProviderDescriptionSection
                     description={res.data.description}
-                    name={res.data.name}
-                    proprtyType={res.data.proprtyType}
+                    bathrooms={2}
+                    bedrooms={3}
+                    bikes={3}
+                    cars={2}
+                    pets={1}
                   />
-                  <Divider />
                   <PopularAmenitiesSection
-                    cols={2}
+                    cols={3}
                     amenities={res.data.PopularAmenities || []}
                   />
-                </>
+                </div>
               ) : null}
             </SpinnerFallback>
           ),

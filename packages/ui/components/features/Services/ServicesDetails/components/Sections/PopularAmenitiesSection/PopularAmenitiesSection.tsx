@@ -17,18 +17,20 @@ export const PopularAmenitiesSection: React.FC<
 > = ({ amenities, cols = 1 }) => {
   const { t } = useTranslation();
   return (
-    <section className="flex flex-col w-full gap-4">
-      <p className="text-lg md:text2xl font-bold leading-none">
-        {t("Common amenities")}
+    <section className="flex flex-col w-full gap-7">
+      <p className="text-lg text-darkBrown md:text2xl font-bold leading-none">
+        {t("Offered Amenities")}
       </p>
       <div
         style={{ gridTemplateColumns: `repeat(${cols},1fr)` }}
-        className={`w-full grid gap-4 thinScroll max-h-[16rem] overflow-y-scroll`}
+        className={`w-full grid gap-4 text-primary text-2xl thinScroll overflow-y-scroll`}
       >
         {amenities.map((amenite, i) => (
           <HStack key={i}>
             <ServicePropertiesSwticher slug={amenite.slug} />
-            <p>{t(amenite.name)}</p>
+            <p className="font-medium text-darkBrown text-base">
+              {t(amenite.name)}
+            </p>
           </HStack>
         ))}
       </div>

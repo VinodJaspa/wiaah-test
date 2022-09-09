@@ -17,5 +17,6 @@ export * from "./Switchers";
 export * from "./ReactUtils";
 export * from "./formaters";
 export * from "./calculations";
+export * from "./compare";
 
 export * from "./passPropsToFnOrElem";

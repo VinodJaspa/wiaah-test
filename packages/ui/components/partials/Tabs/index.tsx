@@ -122,6 +122,7 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({
                 currentTabIdx,
                 setCurrentTabIdx,
                 tabsTitles,
+                currentActive: currentTabIdx === i,
                 ...rest,
               })}
             </div>
@@ -132,8 +133,10 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({
   );
 };
 
-type TabTitleChildrenPropsType = TabsContextValue;
+type TabTitleChildrenPropsType = TabsContextValue & { currentActive?: boolean };
+
 type TabTitleChildrenType = MaybeFn<TabTitleChildrenPropsType>;
+
 export interface TabTitleProps extends Omit<HtmlDivProps, "children"> {
   TabKey?: string | number;
   children: TabTitleChildrenType;

@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { useGetBookedServicesState } from "state";
-import { Divider, PriceDisplay, Button } from "ui";
+import { Divider, PriceDisplay, Button, Stack } from "ui";
 import { CalculateVat, setTestid } from "utils";
 
 export interface BookedServicesCostDetailsProps {
@@ -12,7 +12,7 @@ export interface BookedServicesCostDetailsProps {
 
 export const BookedServicesCostDetails: React.FC<
   BookedServicesCostDetailsProps
-> = ({ title, vat }) => {
+> = ({ vat, children }) => {
   const { visit } = useRouting();
   const { bookedServices } = useGetBookedServicesState();
   const { t } = useTranslation();
@@ -22,68 +22,40 @@ export const BookedServicesCostDetails: React.FC<
   );
   const vatCost = CalculateVat(Subtotal, vat);
 
-  const handleCheckout = React.useCallback(() => {
-    visit((routes) => routes.visitServiceCheckout());
-  }, []);
-
   return (
-    <div className="flex flex-col gap-2">
-      <p className="font-bold">{title}</p>
-      <Divider />
-      <div className="flex flex-col gap-2">
-        {Array.isArray(bookedServices) ? (
-          bookedServices.length > 0 ? (
-            bookedServices.map((service, i) => (
-              <div
-                key={i}
-                {...setTestid("BookedServiceItem")}
-                className="flex font-semibold justify-between items-center"
-              >
-                <p>
-                  {service.qty}x {service.name}
-                </p>
-                <PriceDisplay price={service.price} />
-              </div>
-            ))
-          ) : (
-            <p className="font-semibold">{`${t("No")} ${title} ${t(
-              "were booked yet"
-            )}`}</p>
-          )
-        ) : null}
-      </div>
-      <Divider />
+    <Stack col divider={<Divider />}>
+      {children}
+
       <div
         {...setTestid("Subtotal")}
-        className="font-bold flex justify-between items-center"
+        className="text-sm font-medium flex justify-between items-center"
       >
-        <p>{t("Subtotal")}</p>
-        <PriceDisplay price={Subtotal} />
+        <p className="text-black font-medium text-sm">{t("Subtotal")}</p>
+        <PriceDisplay
+          className="text-black text-sm text-opacity-50 font-medium"
+          price={Subtotal}
+        />
       </div>
-      <Divider />
       <div
         {...setTestid("Vat")}
-        className="font-bold flex justify-between items-center"
+        className="font-medium text-black text-sm flex justify-between items-center"
       >
-        <p>{`${t("Vat")}(${vat}%)`}</p>
-        <PriceDisplay price={vatCost} />
+        <p className="">{`${t("Vat")}(${vat}%)`}</p>
+        <PriceDisplay
+          className="text-black text-sm text-opacity-50 font-medium"
+          price={vatCost}
+        />
       </div>
-      <Divider />
       <div
         {...setTestid("Total")}
-        className="font-bold flex justify-between items-center"
+        className="font-medium text-sm flex justify-between items-center"
       >
         <p>{t("Total")}</p>
-        <PriceDisplay price={Subtotal + vatCost} />
+        <PriceDisplay
+          className="text-black text-sm text-opacity-50 font-medium"
+          price={Subtotal + vatCost}
+        />
       </div>
-      <span></span>
-      <Button
-        {...setTestid("CheckoutBtn")}
-        onClick={handleCheckout}
-        className="py-4"
-      >
-        {t("Checkout")}
-      </Button>
-    </div>
+    </Stack>
   );
 };

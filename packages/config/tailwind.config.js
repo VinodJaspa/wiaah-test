@@ -33,6 +33,7 @@ module.exports = {
           800: "#02402b",
           900: "#00170c",
         },
+        darkBrown: "#484848",
         lightBlue: "#729FE5",
         secondaryRed: "#F67171",
         transparentBlue: "rgba(40,119,197,0.7)",
