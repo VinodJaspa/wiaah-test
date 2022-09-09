@@ -26,6 +26,8 @@ import {
   AccountDeletionSection,
   AccountVerification,
   PersonalizationAndDataSection,
+  Verified,
+  MyVerificationSection,
 } from "ui";
 import { ImBlocked } from "react-icons/im";
 import { useResponsive } from "hooks";
@@ -80,6 +82,13 @@ const sections: SettingsSectionType[] = [
     panelUrl: "/password",
 
     panelComponent: <PasswordSection />,
+  },
+  {
+    panelName: "My Verification",
+    panelIcon: Verified,
+    panelUrl: "/my-verification",
+
+    panelComponent: <MyVerificationSection />,
   },
   {
     panelName: "Notification",

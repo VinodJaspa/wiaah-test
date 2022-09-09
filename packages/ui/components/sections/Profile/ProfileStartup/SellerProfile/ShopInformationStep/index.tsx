@@ -15,7 +15,11 @@ import {
   storeForOptions,
   ToggleInArray,
   PhoneNumberInput,
+  Button,
+  PlusIcon,
+  MediaUploadModal,
 } from "ui";
+import { useReactPubsub } from "react-pubsub";
 
 let countriesArray = Country.getAllCountries().map((element) => ({
   value: element.isoCode,
@@ -30,7 +34,7 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({
   onChange,
 }) => {
   const { t } = useTranslation();
-
+  const { emit } = useReactPubsub((events) => events.openFileUploadModal);
   let [states, setState] = React.useState([
     { value: "", label: t("Select_country_first!", "Select country first!") },
   ]);
@@ -144,6 +148,21 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({
                       </SelectOption>
                     ))}
                   </Select>
+                  <div className="flex flex-col gap-2">
+                    <p className="font-semibold text-lg">
+                      {t("Upload commercial register extract")}
+                    </p>
+                    <Button
+                      outline
+                      onClick={() => emit({ uploadType: "img" })}
+                      className="w-48 h-48 justify-center items-center flex flex-col gap-1"
+                    >
+                      <p>{t("Back Side")}</p>
+                      <PlusIcon className="text-4xl" />
+                    </Button>
+                    <MediaUploadModal />
+                  </div>
+
                   <Input
                     className=" rounded-md"
                     placeholder={t(

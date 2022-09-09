@@ -13,6 +13,7 @@ export const useFileUploadModal = () => {
 
   React.useEffect(() => {
     Listen((props) => {
+      if(!props) return
       if ("uploadType" in props) {
         if (props.uploadType === "img") {
           uploadImage();
