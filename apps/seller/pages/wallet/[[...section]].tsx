@@ -10,7 +10,7 @@ const Wallet: NextPage = () => {
       <Head>
         <title>Wiaah | wallet</title>
       </Head>
-      <SellerLayout header={null}>
+      <SellerLayout header={"main"}>
         <WalletView />
       </SellerLayout>
     </>

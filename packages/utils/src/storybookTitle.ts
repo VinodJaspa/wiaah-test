@@ -30,6 +30,8 @@ export const storybookSteppersHeadersTitle = "UI / Blocks / SteppersHeaders /";
 export const storybookSearchInputs = storybookDataInputBlocksTitle + "Search /";
 export const storybookListWrappersTitle = blocksTitle + "ListWrappers /";
 
+export const storybookBlocksInputTitle = storybookBlocksTitle + inputsTitle;
+
 // feature specific titles
 export const storybookFeaturesTitle = "UI / Features /";
 

@@ -5,7 +5,11 @@ import {
   CommentIcon,
   HeartIcon,
   ShareIcon,
-  HashTags,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  HorizontalDotsIcon,
 } from "ui";
 import { Interaction } from "types";
 import { useDateDiff } from "hooks";
@@ -57,9 +61,21 @@ export const PostCard: React.FC<PostCardProps> = ({
                 <p className="font-bold">{profileInfo.name}</p>
                 <p>{profileInfo.profession}</p>
               </div>
-              <p className="font-semibold">
-                {date ? `${date.value} ${date.timeUnit} ${t("ago")}` : ""}
-              </p>
+              <div className="flex items-end flex-col">
+                <Menu>
+                  <MenuButton>
+                    <HorizontalDotsIcon className="text-2xl text-white fill-white cursor-pointer" />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>
+                      <p className="text-black">{t("Report")}</p>
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
+                <p className="font-semibold">
+                  {date ? `${date.value} ${date.timeUnit} ${t("ago")}` : ""}
+                </p>
+              </div>
             </div>
           </div>
           <div className="flex noScroll gap-3 font-medium text-white overflow-x-scroll">

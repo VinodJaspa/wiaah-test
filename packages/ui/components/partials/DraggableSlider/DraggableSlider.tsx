@@ -107,7 +107,6 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
   const animationRef = React.useRef<number>();
 
   function RefreshSize() {
-    console.log(dimensions, itemsCount, sliderRef.current?.clientWidth);
     setDimensions(getElementDimensions(sliderRef));
 
     setPositionByIndex(
@@ -136,7 +135,6 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
 
   // watch for a change in activeIndex prop
   React.useEffect(() => {
-    console.log(activeIndex);
     if (activeIndex !== currentIndex.current) {
       transitionOn();
       if (

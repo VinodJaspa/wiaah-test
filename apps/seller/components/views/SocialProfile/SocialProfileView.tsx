@@ -55,7 +55,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   const posts = useRecoilValue(SocialNewsfeedPostsState);
   const cols = useBreakpointValue({ base: 3 });
   const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
-  const { emit  = useReactPubsub(
+  const { emit } = useReactPubsub(
     (events) => events.openSocialShopPostsFilterDrawer
   );
 

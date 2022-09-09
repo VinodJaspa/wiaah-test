@@ -336,10 +336,10 @@ const SellerNavLinks: HeaderNavLink[] = [
   {
     link: {
       name: {
-        translationKey: "settings",
-        fallbackText: "Settings",
+        translationKey: "account_settings",
+        fallbackText: "Account Settings",
       },
-      href: "/settings",
+      href: "/account-settings",
     },
     icon: IoSettingsOutline,
   },

@@ -1,5 +1,6 @@
-import { storybookSectionsTitle, ShopInformationStep } from "ui";
 import { ComponentMeta } from "@storybook/react";
+import { storybookSectionsTitle } from "utils";
+import { ShopInformationStep } from "./index";
 
 export default {
   title: storybookSectionsTitle + "ShopInformationSection",

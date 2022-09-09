@@ -54,7 +54,7 @@ export const AddressBookSection: React.FC<AddressBookSectionProps> = ({}) => {
         onOpen={handleOpen}
       >
         <ModalOverlay />
-        <ModalContent className="w-[min(100%,50rem)] px-8">
+        <ModalContent className="w-[min(100%,50rem)] px-8 bg-white">
           <AddressInputs onSuccess={handleAddNewSuccess} />
         </ModalContent>
       </Modal>

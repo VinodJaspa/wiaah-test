@@ -87,3 +87,4 @@ export * from "./LocationOnPointIcon";
 export * from "./ShareIcon";
 export * from "./PlayButtonIcon";
 export * from "./HashtagIcon";
+export * from "./HorizontalDotsIcon";

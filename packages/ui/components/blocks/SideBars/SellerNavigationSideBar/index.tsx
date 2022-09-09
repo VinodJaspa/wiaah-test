@@ -33,7 +33,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
       } items-center flex py-11`}
       {...props}
     >
-      <div className="overflow-y-scroll thinScroll">
+      <div className="overflow-y-scroll noScroll">
         <div
           className={`w-full flex flex-wrap bg-primary ${
             isMobile

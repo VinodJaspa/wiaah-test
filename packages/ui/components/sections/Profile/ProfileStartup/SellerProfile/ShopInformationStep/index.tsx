@@ -14,6 +14,7 @@ import {
   isAllAvailableInArray,
   storeForOptions,
   ToggleInArray,
+  PhoneNumberInput,
 } from "ui";
 
 let countriesArray = Country.getAllCountries().map((element) => ({
@@ -22,7 +23,7 @@ let countriesArray = Country.getAllCountries().map((element) => ({
 }));
 
 export interface ShopInformationStepProps {
-  onChange: (props: Record<string, any>) => any;
+  onChange?: (props: Record<string, any>) => any;
 }
 
 export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({
@@ -94,6 +95,10 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({
                     name="Address2"
                     placeholder={t("Address") + " 2"}
                   />
+                  <PhoneNumberInput
+                    value={values["phoneNumber"]}
+                    onChange={(v) => setFieldValue("phoneNumber", v)}
+                  />
                   <Select
                     placeholder={t("Type of Account")}
                     className="w-full "
@@ -140,7 +145,7 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({
                     ))}
                   </Select>
                   <Input
-                    className=" rounded-md border-gray-300"
+                    className=" rounded-md"
                     placeholder={t(
                       "company_CRN",
                       "Company Registered Number (CRN)"
@@ -148,14 +153,14 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({
                   />
                   <Select
                     placeholder={t("select_currency", "Select Currency")}
-                    className=" w-full border-gray-300"
+                    className=" w-full "
                   >
                     <SelectOption value="USD">USD</SelectOption>
                     <SelectOption value="EUR">EUR</SelectOption>
                   </Select>
                   <Select
                     placeholder={t("select_language", "Select Language")}
-                    className=" w-full border-gray-300"
+                    className=" w-full "
                   >
                     <SelectOption value="english">
                       <TranslationText
@@ -184,7 +189,7 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({
                   </Select>
                   <Select
                     placeholder={t("Type of Seller")}
-                    className=" w-full border-gray-300"
+                    className=" w-full "
                   >
                     <SelectOption value="one">{t("Professional")}</SelectOption>
                     <SelectOption value="two">{t("Individual")}</SelectOption>
@@ -192,7 +197,7 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({
                   <Select
                     placeholder={t("Type of Shop")}
                     onOptionSelect={(v) => setFieldValue("type_of_shop", v)}
-                    className=" w-full border-gray-300"
+                    className=" w-full "
                   >
                     <SelectOption value="prodcuts">
                       {t("Products Shop")}
@@ -228,7 +233,7 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({
                   ) : null}
                   <Textarea
                     placeholder={t("Brand presentation")}
-                    className=" w-full border-gray-300"
+                    className=" w-full "
                   />
                   <div className="flex gap-2 items-end">
                     <span className="font-semibold text-lg">
