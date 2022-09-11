@@ -267,6 +267,24 @@ export const getServicesProviderDataFetcher = async (
       },
       vat: randomNum(10),
       rooms: [...Array(9)].map((_, i) => ({
+        extraServices: [
+          {
+            cost: 0,
+            name: "No extras",
+          },
+          {
+            cost: 10,
+            name: "Book now, pay later",
+          },
+          {
+            cost: 50,
+            name: "Breakfast",
+          },
+          {
+            cost: 60,
+            name: "Breakfast + Book now pay later",
+          },
+        ],
         includes: ["breakfast", "park"],
         discount: {
           amount: randomNum(50),

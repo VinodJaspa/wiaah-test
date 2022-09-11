@@ -15,9 +15,16 @@ import {
   SuccessIcon,
   MathPowerDisplay,
   UnDiscountedPriceDisplay,
+  ServicePropertiesSwticher,
   PropertyDimensionsIcon,
+  Stack,
+  Divider,
+  Badge,
+  Checkbox,
 } from "ui";
 import { ImImages } from "react-icons/im";
+import { mapArray } from "utils";
+import { Form, Formik } from "formik";
 
 export interface HotelRoomDetailsCardProps extends HotelRoomDataType {
   onBook?: (roomId: string) => any;
@@ -35,137 +42,150 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
   includes,
   size,
   discount,
+  extraServices,
   onBook,
 }) => {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col w-full h-fit ">
-      <AspectRatio ratio={4 / 6}>
-        <Slider
-          leftArrowComponent={() => (
-            <div className="bg-white mx-4 text-primary p-2 bg-opacity-60 rounded-full text-xl">
-              <ArrowLeftIcon />
-            </div>
-          )}
-          rightArrowComponent={() => (
-            <div className="bg-white mx-4 text-primary p-2 bg-opacity-60 rounded-full text-xl">
-              <ArrowRightIcon />
-            </div>
-          )}
-        >
-          {Array.isArray(thumbnails)
-            ? thumbnails.map((thumbnail, i) => (
-                <img
-                  className="w-full h-full object-cover"
-                  src={thumbnail}
-                  key={i}
-                  alt={title}
-                />
-              ))
-            : null}
-        </Slider>
-        <div className="absolute flex px-2  rounded items-center gap-2 text-xl right-4 bottom-4 bg-black bg-opacity-30 text-white">
-          <ImImages />
-          {thumbnails.length}
-        </div>
-      </AspectRatio>
-      <div className="flex p-2 flex-col gap-4">
-        <p className="font-bold text-xl">{title}</p>
+    <Formik initialValues={{}} onSubmit={() => {}}>
+      {({ values, setFieldValue }) => (
+        <Form>
+          <Stack col divider={<Divider className="my-5" />}>
+            <div className="flex gap-4">
+              <div className="min-w-[11.25rem] h-fit overflow-hidden rounded-xl">
+                <AspectRatio ratio={1}>
+                  <Slider>
+                    {mapArray(thumbnails, (src, i) => (
+                      <img
+                        src={src}
+                        key={i}
+                        className="w-full h-full object-cover"
+                      />
+                    ))}
+                  </Slider>
+                </AspectRatio>
+              </div>
+              <div className="flex flex-col w-full gap-5">
+                <div className="flex gap-4 justify-between">
+                  <p className="font-bold text-base text-title">{title}</p>
+                  {size ? (
+                    <div className="flex items-center gap-2 text-lightBlack">
+                      <PropertyDimensionsIcon className="text-sm" />
+                      <div className="flex items-center">
+                        {size.inMeter}
+                        <MathPowerDisplay power={2}>m</MathPowerDisplay>
+                      </div>
+                      /
+                      <div className="flex items-center">
+                        {size.inFeet}
+                        <MathPowerDisplay power={2}>ft</MathPowerDisplay>
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
 
-        {size ? (
-          <HStack>
-            <PropertyDimensionsIcon /> {size.inMeter}
-            <MathPowerDisplay power={2}>{t("m")}</MathPowerDisplay>/{" "}
-            {size.inFeet}
-            <MathPowerDisplay power={2}>{t("ft")}</MathPowerDisplay>
-          </HStack>
-        ) : null}
-
-        <div className="flex flex-wrap gap-2">
-          {Array.isArray(includes)
-            ? includes.map((item, i) => (
-                <span
-                  key={i}
-                  className="rounded-lg border-2 border-green-500 px-2 py-1 text-green-500 "
+                <div className="flex flex-wrap gap-2">
+                  {mapArray(includes, (data, i) => (
+                    <div
+                      key={i}
+                      className="bg-primary-100 rounded-full px-2 py-1 text-primary-400"
+                    >
+                      {data} {t("included")}
+                    </div>
+                  ))}
+                </div>
+                <div
+                  style={{ gridTemplateColumns: `repeat(${3},1fr)` }}
+                  className={`w-full grid gap-4 text-primary text-xl thinScroll overflow-y-scroll`}
                 >
-                  {t(item)} {t("included")}
-                </span>
-              ))
-            : null}
-        </div>
-
-        <PopularAmenitiesSection amenities={amenities} />
-        <div className="max-h-[10rem] overflow-y-scroll thinScroll gap-2 flex flex-wrap">
-          {extras.map((extra, i) => (
-            <div key={i} className="flex items-center gap-1">
-              <SuccessIcon />
-              {extra}
+                  {mapArray(amenities, (ame, i) => (
+                    <HStack key={i}>
+                      <ServicePropertiesSwticher slug={ame.slug} />
+                      <p className="font-medium text-darkBrown text-xs">
+                        {t(ame.name)}
+                      </p>
+                    </HStack>
+                  ))}
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
-        <div className="flex flex-col gap-1">
-          <p className="font-bold">{t("Cancelation policy")}</p>
-          {cancelationPolicies.map((policy, i) => (
-            <ServiceCancelationPolicyInput
-              {...policy}
-              name="cancelationPolicy"
-              onSelected={() => {}}
-              key={`${i}-${policy.id}`}
-            />
-          ))}
-        </div>
-        <SearchFilter
-          boldTitle
-          filters={[
-            {
-              filterTitle: "Extras",
-              filterSlug: "extras",
-              filterDisplay: "text",
-              filterType: "radio",
-              filterOptions: [
-                {
-                  optName: "No extras",
-                  optSlug: "no_extras",
-                },
-                {
-                  optName: "Book now, pay later",
-                  optSlug: "book_pay_later",
-                },
-                {
-                  optName: "Breakfast",
-                  optSlug: "breakfast",
-                },
-                {
-                  optName: "Breakfast + book now, pay later",
-                  optSlug: "breakfast_book_now_pay_later",
-                },
-              ],
-            },
-          ]}
-        />
-        <div className="flex flex-col w-full justify-between items-end">
-          <div className="flex flex-col gap-2">
-            <HStack className="font-bold">
-              <PriceDisplay
-                className="text-2xl"
-                priceObject={{ amount: price }}
-              />
-              <UnDiscountedPriceDisplay
-                className="text-gray-400"
-                amount={price}
-                discount={discount.amount}
-              />{" "}
-              / {t("night")}
-            </HStack>
-            <p className="text-lg font-bold text-red-500">
-              {t("Only", "Only")} {discount.units}{" "}
-              {t("Tickets left at this price on our site")}
-            </p>
-            {with_fees_and_taxes ? <p>{t("Includes taxes & fees")}</p> : null}
-          </div>
-          <Button onClick={() => onBook && onBook(id)}>{t("Book now")}</Button>
-        </div>
-      </div>
-    </div>
+            <div className="flex flex-col w-full gap-6">
+              <div className="flex gap-x-10 gap-y-2 flex-wrap">
+                {mapArray(extras, (extra, i) => (
+                  <p className="text-lightBlack text-xs font-semibold" key={i}>
+                    {extra}
+                  </p>
+                ))}
+              </div>
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                <div className="flex flex-col gap-4">
+                  <p className="text-base font-bold text-title">
+                    {t("Cancelation Policy")}
+                  </p>
+                  <div className="flex flex-col gap-4">
+                    {mapArray(cancelationPolicies, (data, i) => (
+                      <ServiceCancelationPolicyInput
+                        onSelected={() => {}}
+                        name={"hotelCancelationPolicy"}
+                        {...data}
+                        key={i}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <p className="text-base font-bold text-title">
+                    {t("Extras")}
+                  </p>
+                  <div className="flex flex-col gap-4">
+                    {mapArray(extraServices, (data, i) => (
+                      <div className="flex items-center text-xs font-normal text-lightBlack justify-between gap-4">
+                        <Checkbox className="">{data.name}</Checkbox>
+                        {data.cost > 0 ? (
+                          <PriceDisplay
+                            className="text-primary font-bold"
+                            price={data.cost}
+                          />
+                        ) : (
+                          t("FREE")
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-col gap-5 w-full">
+              <div className="flex items-center flex-wrap gap-5">
+                <div className="text-lg items-center flex gap-2 font-bold text-black">
+                  <PriceDisplay price={price} />
+
+                  <div className="text-sm flex gap-1 text-lightBlack items-center font-normal">
+                    <UnDiscountedPriceDisplay
+                      amount={price}
+                      discount={discount.amount}
+                    />
+                    /<p className="text-black">{t("night")}</p>
+                  </div>
+                </div>
+                <p className="text-secondaryRed text-sm font-medium">
+                  {t("Only") +
+                    ` ${discount.units} ` +
+                    t("Tickets left at this price on our site")}
+                </p>
+                {with_fees_and_taxes ? (
+                  <p className="text-lightBlack">{t("Include tax & fees")}</p>
+                ) : (
+                  ""
+                )}
+              </div>
+              <Button className="text-[1.375rem] text-white font-bold">
+                {t("Book Now")}
+              </Button>
+            </div>
+          </Stack>
+        </Form>
+      )}
+    </Formik>
   );
 };

@@ -29,6 +29,8 @@ module.exports = {
           800: "#02402b",
           900: "#00170c",
         },
+        grayText: "#9A9A9A",
+        title: "#000000cc",
         darkBrown: "#484848",
         PHText: "#626262",
         lightGray: "#F5F5F5",

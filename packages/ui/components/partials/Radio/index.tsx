@@ -15,7 +15,7 @@ export const Radio: React.FC<RadioProps> = ({
         id={id}
         className={`${
           className || ""
-        } checked:bg-primary focus:ring-0 checked:focus:bg-primary checked:active:bg-primary checked:hover:bg-primary`}
+        } checked:bg-primary border-primary  focus:ring-0 checked:focus:bg-primary checked:active:bg-primary checked:hover:bg-primary`}
         type={"radio"}
         {...props}
       />

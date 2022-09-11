@@ -1,3 +1,5 @@
+const defaultTheme = require("tailwindcss/defaultTheme");
+
 module.exports = {
   content: [
     "../../packages/ui/**/*.{js,ts,jsx,tsx}",
@@ -6,6 +8,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Inter", ...defaultTheme.fontFamily.sans],
+      },
       transitionProperty: {
         height: "height",
       },
@@ -18,6 +23,8 @@ module.exports = {
         lightGray: "#F5F5F5",
         lightBlack: "#00000099",
         secondaryBlue: "#42ADE2",
+        title: "#000000cc",
+        grayText: "#9A9A9A",
         primary: {
           DEFAULT: "#3AD398",
           hover: "#1d9266",

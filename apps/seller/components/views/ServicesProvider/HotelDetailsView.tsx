@@ -45,7 +45,7 @@ export const HotelDetailsView: React.FC = () => {
           component: (
             <SpinnerFallback isLoading={isLoading} isError={isError}>
               {res ? (
-                <div className="flex flex-col gap-[3.75rem]">
+                <div className="flex flex-col gap-8">
                   <ServicesProviderDescriptionSection
                     description={res.data.description}
                     bathrooms={2}
@@ -86,6 +86,7 @@ export const HotelDetailsView: React.FC = () => {
               {res ? (
                 <>
                   <ServicePoliciesSection
+                    title={"Check-in Checkout Terms"}
                     deposit={15}
                     policies={res.data.policies}
                   />
@@ -176,6 +177,12 @@ export const HotelDetailsView: React.FC = () => {
           ))}
         </Tabs>
         {ServicesProviderTabs[0].component}
+        {ServicesProviderTabs[1].component}
+        {ServicesProviderTabs[2].component}
+        {ServicesProviderTabs[3].component}
+        {ServicesProviderTabs[4].component}
+        {ServicesProviderTabs[5].component}
+        {ServicesProviderTabs[6].component}
       </StaticSideBarWrapper>
     </div>
   );

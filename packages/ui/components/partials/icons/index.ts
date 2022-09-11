@@ -96,3 +96,4 @@ export * from "./BalconyIcon";
 export * from "./ForkAndKnifeIcon";
 export * from "./TelevisionIcon";
 export * from "./SnowFlakeIcon";
+export * from "./StarIcon";

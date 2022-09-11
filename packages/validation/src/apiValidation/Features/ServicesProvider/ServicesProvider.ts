@@ -36,6 +36,15 @@ export const HotelServiceProviderRoomValidationSchema =
         inMeter: number().required(),
         inFeet: number().required(),
       }).required(),
+      extraServices: array()
+        .of(
+          object({
+            name: string().required(),
+            cost: number().required(),
+          }).required()
+        )
+        .min(0)
+        .required(),
     }).required()
   );
 
