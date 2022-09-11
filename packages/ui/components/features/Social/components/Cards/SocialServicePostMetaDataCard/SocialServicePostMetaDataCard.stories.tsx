@@ -13,6 +13,13 @@ const template: ComponentStory<typeof SocialServicePostMetaDataCard> = (
 
 export const Default = template.bind({});
 Default.args = {
+  location: {
+    country: "France",
+  },
+  price: 15,
+  rate: 4,
+  reviews: 150,
+  type: "Hotel",
   id: "123",
   label: "health center",
   name: "health center service name",
@@ -26,4 +33,13 @@ Default.args = {
       type: "video",
     },
   ],
+  user: {
+    accountType: "seller",
+    id: "1322",
+    name: "seller name",
+    profession: "Profession",
+    public: true,
+    thumbnail: "/shop-2.jpeg",
+    verified: true,
+  },
 };

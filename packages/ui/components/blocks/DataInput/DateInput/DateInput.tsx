@@ -128,11 +128,11 @@ export interface DateInputProps extends Omit<HtmlDivProps, "value"> {
 }
 export const DateInput: React.FC<DateInputProps> = ({
   onDaySelect,
-  range,
+  range = false,
   onRangeSelect,
   className,
   dayComponent = DefaultDaycomponent,
-  multi,
+  multi = false,
   onMultiChange,
   value = [],
   ...rest

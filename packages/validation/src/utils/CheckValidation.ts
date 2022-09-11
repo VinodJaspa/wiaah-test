@@ -11,6 +11,6 @@ export async function CheckValidation<TData = any>(
     return res;
   } catch (error) {
     console.error(error);
-    throw new ThrowableError("recieved invalid data ");
+    throw new ThrowableError(error);
   }
 }

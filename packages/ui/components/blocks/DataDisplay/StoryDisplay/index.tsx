@@ -1,7 +1,7 @@
 import React from "react";
 import { HtmlDivProps } from "types";
 import { FloatingContainer, FloatingContainerProps } from "ui";
-import { useResponsive } from "ui";
+import { useResponsive, AspectRatio } from "ui";
 export type StoryUserData = {
   name: string;
   userPhotoSrc: string;
@@ -14,30 +14,28 @@ export interface StoryDisplayProps {
   innerProps?: HtmlDivProps;
 }
 
-export const StoryDisplay: React.FC<StoryDisplayProps> = ({
+export const UserProfileDisplay: React.FC<StoryDisplayProps> = ({
   storyUserData,
   seen,
   floatingIcon,
   innerProps,
 }) => {
-  const { isMobile } = useResponsive();
   return (
-    <div className="flex flex-col items-center gap-2" {...innerProps}>
-      <FloatingContainer {...floatingIcon}>
-        <div
-          className={`${isMobile ? "w-14 h-14" : "w-40 h-40"} ${
-            seen ? "p-[0.0625rem]" : "p-[0.125rem]"
-          } rounded-xl bg-gradient-to-r from-primary-200 to-primary-700`}
-        >
-          <div className="w-full h-full rounded-xl bg-white p-[0.125rem]">
+    <FloatingContainer className="w-full" {...floatingIcon}>
+      <div
+        className={`${
+          seen ? "p-[0.0625rem]" : "p-[0.20rem]"
+        } rounded-[20%] bg-gradient-to-b from-primary to-blue-400`}
+      >
+        <div className="w-full h-full overflow-hidden rounded-[20%] bg-white p-[0.125rem]">
+          <AspectRatio ratio={1}>
             <img
-              className="w-full h-full rounded-xl object-cover"
+              className="w-full h-full rounded-[20%] object-cover"
               src={storyUserData.userPhotoSrc}
             />
-          </div>
+          </AspectRatio>
         </div>
-      </FloatingContainer>
-      <span className="text-base md:text-2xl">{storyUserData.name}</span>
-    </div>
+      </div>
+    </FloatingContainer>
   );
 };

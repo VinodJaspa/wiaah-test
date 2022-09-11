@@ -34,13 +34,21 @@ export const Input: React.FC<InputProps> = ({
   flushed,
   ...props
 }) => {
-  const { isInputGroup } = React.useContext(InputContext);
+  const { isInputGroup, setFocused } = React.useContext(InputContext);
 
   return (
     <input
+      onFocus={(e) => {
+        props.onFocus && props.onFocus(e);
+        setFocused && setFocused(true);
+      }}
       {...props}
       className={`${className || ""} ${
-        isInputGroup ? "" : flushed ? "border-b-2" : "border-2"
+        isInputGroup
+          ? "border-none focus:ring-0 focus:border-none focus-visible:border-none focus-within:border-none active:border-none"
+          : flushed
+          ? "border-b-2"
+          : "border-2"
       } border-gray-200 rounded px-3 w-full h-10`}
     />
   );
@@ -85,11 +93,9 @@ export const InputGroup: React.FC<InputGroupProps> = ({
         onFocus={() => setFocused(true)}
         ref={groupRef}
         className={`${className ?? ""} ${
-          isGroup
-            ? flushed
-              ? "border-b-2 border-gray-200"
-              : "border-2 border-gray-200"
-            : ""
+          isGroup ? (flushed ? "border-b-2" : "border-2") : ""
+        } ${
+          focused ? "border-primary-200" : "border-gray-200"
         } flex gap-1 items-center relative`}
       >
         {leftElement && <>{runIfFn(leftElement, {})}</>}

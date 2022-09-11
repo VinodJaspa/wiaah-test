@@ -26,6 +26,8 @@ import {
   AccountDeletionSection,
   AccountVerification,
   PersonalizationAndDataSection,
+  Verified,
+  MyVerificationSection,
 } from "ui";
 import { ImBlocked } from "react-icons/im";
 import { useResponsive } from "hooks";
@@ -68,104 +70,78 @@ export const NotFoundSection = () => {
 
 const sections: SettingsSectionType[] = [
   {
-    panelName: {
-      fallbackText: "Account",
-      translationKey: "account",
-    },
+    panelName: "Account",
     panelIcon: FiSettings,
     panelUrl: "/account",
 
     panelComponent: <AccountSettingsSection />,
   },
   {
-    panelName: {
-      fallbackText: "Password",
-      translationKey: "password",
-    },
+    panelName: "Password",
     panelIcon: BiKey,
     panelUrl: "/password",
 
     panelComponent: <PasswordSection />,
   },
   {
-    panelName: {
-      fallbackText: "Notification",
-      translationKey: "notification",
-    },
+    panelName: "My Verification",
+    panelIcon: Verified,
+    panelUrl: "/my-verification",
+
+    panelComponent: <MyVerificationSection />,
+  },
+  {
+    panelName: "Notification",
     panelIcon: IoNotificationsOutline,
     panelUrl: "/notifications",
 
     panelComponent: <NotificationsSettingsSection />,
   },
   {
-    panelName: {
-      fallbackText: "Newsletter",
-      translationKey: "newsletter",
-    },
+    panelName: "Newsletter",
     panelIcon: IoNewspaperOutline,
     panelUrl: "/newsletter",
 
     panelComponent: <NewsLetterSection />,
   },
   {
-    panelName: {
-      fallbackText: "Invite Friends",
-      translationKey: "invite_friends",
-    },
+    panelName: "Invite Friends",
     panelIcon: HiUserGroup,
     panelUrl: "/invitefriends",
     panelComponent: <FindYourFriendsStep />,
   },
   {
-    panelName: {
-      fallbackText: "Your Membership",
-      translationKey: "your_membership",
-    },
+    panelName: "Your Membership",
     panelIcon: MdCardMembership,
     panelUrl: "/membership",
     panelComponent: <MembershipSection />,
   },
   {
-    panelName: {
-      translationKey: "blocklist",
-      fallbackText: "Blocklist",
-    },
+    panelName: "Blocklist",
     panelIcon: ImBlocked,
     panelUrl: "/blocklist",
     panelComponent: <BlocklistSection />,
   },
   {
-    panelName: {
-      translationKey: "privacy",
-      fallbackText: "Privacy",
-    },
+    panelName: "Privacy",
     panelIcon: BiLock,
     panelUrl: "/privacy",
     panelComponent: <PrivacySection />,
   },
   {
-    panelName: {
-      translationKey: "account_deletion",
-      fallbackText: "Account Deletion",
-    },
+    panelName: "Account Deletion",
     panelIcon: IoTrash,
     panelUrl: "/account_deletion",
     panelComponent: <AccountDeletionSection />,
   },
   {
-    panelName: {
-      translationKey: "account_verification",
-      fallbackText: "Account Verification",
-    },
+    panelName: "Account Verification",
     panelIcon: MdVerified,
     panelUrl: "/account_verification",
     panelComponent: <AccountVerification />,
   },
   {
-    panelName: {
-      translationKey: "personalizarion_and_data",
-      fallbackText: "Personalization and data",
-    },
+    panelName: "Personalization and data",
     panelIcon: BiData,
     panelUrl: "/personalizarion_and_data",
     panelComponent: <PersonalizationAndDataSection />,

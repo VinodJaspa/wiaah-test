@@ -8,6 +8,7 @@ export interface ProfileInfo {
   thumbnail: string;
   accountType: "seller" | "buyer";
   public: boolean;
+  profession: string;
 }
 
 export interface ShopSocialProfileInfo extends ProfileInfo {
@@ -63,6 +64,7 @@ export interface PostInfo {
   attachments?: PostAttachment[];
   numberOfLikes: number;
   numberOfComments: number;
+  numberOfShares: number;
   comments?: PostComment[];
   url: string;
 }
@@ -131,7 +133,8 @@ export interface AffiliationOfferCardInfo {
 
 export interface HashTagCardInfo {
   title: string;
-  attachment: PostAttachment;
+  postInfo: PostInfo;
+  profileInfo: ProfileInfo;
 }
 
 export interface SocialStoryData {

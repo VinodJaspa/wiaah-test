@@ -2,7 +2,7 @@ import { Button, Flex, Text, Box } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HashTagCardInfo } from "types";
-import { PostAttachment } from "ui";
+import { PostAttachment, PostCard } from "ui";
 
 export interface HashTagCardProps extends HashTagCardInfo {
   onViewPost?: () => void;
@@ -10,7 +10,8 @@ export interface HashTagCardProps extends HashTagCardInfo {
 
 export const HashTagCard: React.FC<HashTagCardProps> = ({
   title,
-  attachment,
+  postInfo,
+  profileInfo,
   onViewPost,
 }) => {
   const { t } = useTranslation();
@@ -40,26 +41,11 @@ export const HashTagCard: React.FC<HashTagCardProps> = ({
         display={"flex"}
         justifyContent="center"
         alignItems={"center"}
-        bg="black"
         w="100%"
         h="25rem"
-        overflow={"hidden"}
       >
-        <PostAttachment
-          data-testid="PostAttachment"
-          fixedSize
-          {...attachment}
-          alt={title}
-        />
+        <PostCard postInfo={postInfo} profileInfo={profileInfo} />
       </Box>
-      <Button
-        data-testid="ViewPostBtn"
-        onClick={handleViewPostClick}
-        w="100%"
-        textTransform={"capitalize"}
-      >
-        {t("view_post", "view post")}
-      </Button>
     </Flex>
   );
 };

@@ -8,7 +8,7 @@ const transitionProps = {
   mass: 3,
 };
 export interface VerticalCarouselProps extends FlexProps {
-  children: React.ReactElement[];
+  children: React.ReactNode;
   gap?: number;
   explicitActiveItem?: number;
   onCurrentActiveChange?: (index: number) => any;
@@ -56,7 +56,10 @@ export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
   const y = useMotionValue(0);
   console.log("height", itemHeight);
   const positions = React.useMemo(
-    () => children && children.map((_, index) => -Math.abs(itemHeight * index)),
+    () =>
+      React.Children.toArray(children).map(
+        (_, index) => -Math.abs(itemHeight * index)
+      ),
     [children, itemHeight, gap]
   );
 
@@ -143,35 +146,21 @@ export const VerticalCarousel: React.FC<VerticalCarouselProps> = ({
           gap={gap}
         >
           {/* {children && */}
-          {children && children.length > 1 ? (
-            children.map((child, i) => (
-              <Flex
-                mt={`${gap}px`}
-                align="center"
-                justify={"center"}
-                key={i}
-                data-testid="Item"
-                w={"auto"}
-                h={`calc((100% / ${positions.length}) + ${gap}px )`}
-                overflow="hidden"
-                {...itemProps}
-              >
-                {child}
-              </Flex>
-            ))
-          ) : (
+          {React.Children.toArray(children).map((child, i) => (
             <Flex
+              mt={`${gap}px`}
               align="center"
               justify={"center"}
+              key={i}
               data-testid="Item"
               w={"auto"}
               h={`calc((100% / ${positions.length}) + ${gap}px )`}
               overflow="hidden"
               {...itemProps}
             >
-              {children}
+              {child}
             </Flex>
-          )}
+          ))}
         </MotionFlex>
       </Box>
     </Flex>

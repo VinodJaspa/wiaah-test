@@ -60,6 +60,7 @@ export const DateFormInput: React.FC<DateFormInputProps> = ({
             </MenuButton>
             <MenuList {...menuProps?.menuListProps}>
               <DateInput
+                value={[date]}
                 onDaySelect={(date) => {
                   setDate(date);
                   onDateChange && onDateChange(date);

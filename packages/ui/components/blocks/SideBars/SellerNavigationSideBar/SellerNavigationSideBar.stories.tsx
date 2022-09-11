@@ -3,14 +3,13 @@ import { SellerNavigationSideBar } from ".";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
 import {
-  HiNewspaper,
-  HiOutlineNewspaper,
-  HiPaperClip,
-  HiOutlinePaperClip,
-  HiSearch,
-  HiOutlineSearch,
-} from "react-icons/hi";
-import { AiOutlineShop, AiFillShop } from "react-icons/ai";
+  HomeIcon,
+  AffiliationIcon,
+  DiscoverIcon,
+  ShoppingCartIcon,
+  ServicesIcon,
+} from "ui";
+import { CgPlayButtonR } from "react-icons/cg";
 export default {
   title: "UI/blocks/SideBars/SellerNavigationSideBar",
   component: SellerNavigationSideBar,
@@ -21,11 +20,11 @@ const Templete: ComponentStory<typeof SellerNavigationSideBar> = ({
   activeLink,
   ...args
 }) => {
-  const [active, setActive] = React.useState<number>(0);
+  const [active, setActive] = React.useState<string>("discover");
   return (
     <SellerNavigationSideBar
       activeLink={active}
-      onItemClick={(_, i) => setActive(i)}
+      onLinkClick={(link) => setActive(link.url)}
       {...args}
     />
   );
@@ -35,24 +34,34 @@ export const Default = Templete.bind({});
 Default.args = {
   links: [
     {
-      name: "newsfeed",
-      icon: HiOutlineNewspaper,
-      activeIcon: HiNewspaper,
+      name: "Home",
+      icon: HomeIcon,
+      url: "",
     },
     {
       name: "discover",
-      icon: HiOutlineSearch,
-      activeIcon: HiSearch,
+      icon: DiscoverIcon,
+      url: "discover",
+    },
+    {
+      name: "action",
+      icon: CgPlayButtonR,
+      url: "action",
     },
     {
       name: "shop",
-      icon: AiOutlineShop,
-      activeIcon: AiFillShop,
+      icon: ShoppingCartIcon,
+      url: "shop",
+    },
+    {
+      name: "service",
+      icon: ServicesIcon,
+      url: "services",
     },
     {
       name: "affiliation",
-      icon: HiOutlinePaperClip,
-      activeIcon: HiPaperClip,
+      icon: AffiliationIcon,
+      url: "affiliation",
     },
   ],
 };

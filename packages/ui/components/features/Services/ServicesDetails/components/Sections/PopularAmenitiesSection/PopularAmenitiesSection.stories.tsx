@@ -15,60 +15,28 @@ export const Default = template.bind({});
 Default.args = {
   amenities: [
     {
-      name: "Pool",
-      slug: "pool",
+      name: "Kitchen",
+      slug: "kitchen",
     },
     {
-      name: "Pet-friendly",
-      slug: "pet-friendly",
+      name: "Televistion with Netflix",
+      slug: "tv",
     },
     {
-      name: "Resturant",
-      slug: "resturant",
-    },
-    {
-      name: "Breakfast available",
-      slug: "breakfast",
-    },
-    {
-      name: "Parking available",
-      slug: "parking",
-    },
-    {
-      name: "Laundry",
+      name: "Washer",
       slug: "laundry",
     },
     {
-      name: "Housekeeping",
-      slug: "housekeeping",
+      name: "Air conditioner",
+      slug: "a/c",
     },
     {
       name: "Free Wifi",
       slug: "free_wifi",
     },
     {
-      name: "Air conditioning",
-      slug: "a/c",
-    },
-    {
-      name: "Gym",
-      slug: "gym",
-    },
-    {
-      name: "Business services",
-      slug: "business_services",
-    },
-    {
-      name: "Bar",
-      slug: "bar",
-    },
-    {
-      name: "Room service",
-      slug: "room_service",
-    },
-    {
-      name: "24/7 front desk",
-      slug: "24/7_front_desk",
+      name: "Balcony or Patio",
+      slug: "balcony",
     },
   ],
 };
@@ -77,60 +45,28 @@ export const moreCols = template.bind({});
 moreCols.args = {
   amenities: [
     {
-      name: "Pool",
-      slug: "pool",
+      name: "Kitchen",
+      slug: "kitchen",
     },
     {
-      name: "Pet-friendly",
-      slug: "pet-friendly",
+      name: "Televistion with Netflix",
+      slug: "tv",
     },
     {
-      name: "Resturant",
-      slug: "resturant",
-    },
-    {
-      name: "Breakfast available",
-      slug: "breakfast",
-    },
-    {
-      name: "Parking available",
-      slug: "parking",
-    },
-    {
-      name: "Laundry",
+      name: "Washer",
       slug: "laundry",
     },
     {
-      name: "Housekeeping",
-      slug: "housekeeping",
+      name: "Air conditioner",
+      slug: "a/c",
     },
     {
       name: "Free Wifi",
       slug: "free_wifi",
     },
     {
-      name: "Air conditioning",
-      slug: "a/c",
-    },
-    {
-      name: "Gym",
-      slug: "gym",
-    },
-    {
-      name: "Business services",
-      slug: "business_services",
-    },
-    {
-      name: "Bar",
-      slug: "bar",
-    },
-    {
-      name: "Room service",
-      slug: "room_service",
-    },
-    {
-      name: "24/7 front desk",
-      slug: "24/7_front_desk",
+      name: "Balcony or Patio",
+      slug: "balcony",
     },
   ],
   cols: 3,

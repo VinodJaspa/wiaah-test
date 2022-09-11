@@ -1,8 +1,4 @@
-import {
-  randomNum,
-  storybookOtherServicesDataDisplayTitle,
-  storybookOtherServicesHeadersTitle,
-} from "utils";
+import { randomNum, storybookOtherServicesHeadersTitle } from "utils";
 import { ServicesProviderHeader } from "./ServicesProviderHeader";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 
@@ -17,16 +13,16 @@ const template: ComponentStory<typeof ServicesProviderHeader> = (args) => (
 
 export const Default = template.bind({});
 Default.args = {
-  name: "service provider",
-  rating: randomNum(15),
+  name: "Ibis Paris Main Montparnase 14th",
+  rating: randomNum(5),
   reviewsCount: randomNum(200),
-  thumbnail: "/place-2.jpeg",
+  thumbnail: "/place-2.jpg",
 };
 
 export const WithTravelPeriod = template.bind({});
 WithTravelPeriod.args = {
-  name: "service provider",
-  rating: randomNum(15),
+  name: "Ibis Paris Main Montparnase 14th",
+  rating: randomNum(5),
   reviewsCount: randomNum(200),
   thumbnail: "/place-2.jpg",
   travelPeriod: {

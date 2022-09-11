@@ -18,7 +18,7 @@ export interface MenuListProps extends HtmlDivProps {
 export const MenuList: React.FC<MenuListProps> = ({
   children,
   className,
-  origin,
+  origin = "top right",
   ...props
 }) => {
   const { isOpen, isLazy } = React.useContext(MenuContext);

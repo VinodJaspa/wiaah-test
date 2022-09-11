@@ -1,11 +1,9 @@
-import { HiOutlineMail, HiOutlineUsers, HiMenu } from "react-icons/hi";
-import { MdOutlineNotifications } from "react-icons/md";
+import { HiMenu } from "react-icons/hi";
 import React from "react";
-import { FiPlusSquare } from "react-icons/fi";
 import {
   Avatar,
   SearchInput,
-  FloatingContainer,
+  WavingHand,
   useNewPost,
   SellerDrawerOpenState,
   ShoppingCart,
@@ -19,12 +17,17 @@ import {
   HStack,
   TranslationText,
   LocationIconButton,
+  BellOutlineIcon,
+  MessageOutlineIcon,
+  SquarePlusOutlineIcon,
+  useUserData,
 } from "ui";
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps, TranslationTextType } from "types";
 import { runIfFn } from "utils";
+import { useTranslation } from "react-i18next";
 export interface HeaderNavLink {
   link: {
     name: TranslationTextType;
@@ -43,18 +46,19 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
   props,
   headerNavLinks = [],
 }) => {
-  const { accountType } = useAccountType();
+  const { user } = useUserData();
   const { openModal: openSearchBox } = useGeneralSearchModal();
   const router = useRouter();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
   const { isMobile } = useResponsive();
   const { OpenModal } = useNewPost();
+  const { t } = useTranslation();
 
   return (
     <div
       {...props}
       className={
-        "border-b-[1px] border-gray-200 flex justify-between items-center bg-white w-full h-[3.75rem]"
+        "flex justify-between items-center bg-white w-full h-[3.75rem]"
       }
     >
       <div className="flex items-center gap-2 h-full">
@@ -64,61 +68,57 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             onClick={() => setDrawerOpen(true)}
           />
         )}
-        <img className="h-full object-contain" src="/wiaah_logo.png" />
+        <div className="flex items-center gap-4">
+          <WavingHand className="text-[2rem]" />
+          <div className="flex flex-col">
+            <p>
+              {t("Hello")} {user?.name}
+            </p>
+            <p className="font-bold text-lg">{t("Welcome Back")}</p>
+          </div>
+        </div>
       </div>
       {!isMobile && (
         <div className="flex items-center gap-2">
           <GeneralSearchModal>
             <SearchInput innerProps={{ onClick: openSearchBox }} />
           </GeneralSearchModal>
-          <LocationIconButton className="text-2xl text-white" />
+          <LocationIconButton
+            colorScheme="lightGray"
+            outline
+            className="text-icon text-lightBlack"
+          />
         </div>
       )}
 
-      <div className="flex items-center gap-4 md:8 mt-3 p-2">
-        <FiPlusSquare className="text-xl md:text-4xl" onClick={OpenModal} />
-        <FloatingContainer
-          items={[
-            {
-              label: (
-                <div className="h-4 w-4 rounded-full flex items-center justify-center text-white bg-primary">
-                  4
-                </div>
-              ),
-              bottom: "0.2em",
-              right: true,
-            },
-          ]}
-        >
+      <div className="flex items-center gap-8 p-2">
+        <SquarePlusOutlineIcon
+          className="text-icon text-lightBlack"
+          onClick={OpenModal}
+        />
+        <div className="relative">
           <NotifiactionsMenu>
-            <MdOutlineNotifications className="text-xl md:text-4xl h-[1.2em] w-[1.2em]" />
+            <BellOutlineIcon className="text-icon text-lightBlack" />
           </NotifiactionsMenu>
-        </FloatingContainer>
-        {!isMobile && <HiOutlineUsers className="text-xl md:text-4xl" />}
+          <div className="h-4 w-4 text-[0.5rem] border-2 border-white absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 rounded-full flex items-center justify-center text-white bg-primary">
+            4
+          </div>
+        </div>
+        {/* {!isMobile && <HiOutlineUsers className="text-xl md:text-4xl" />} */}
 
-        <FloatingContainer
-          onClick={() => router.push("/chat")}
-          items={[
-            {
-              label: (
-                <span className="h-4 w-4 rounded-full flex justify-center items-center text-white bg-primary">
-                  4
-                </span>
-              ),
-              bottom: true,
-              right: true,
-            },
-          ]}
-        >
-          <HiOutlineMail className="text-xl md:text-4xl" />
-        </FloatingContainer>
+        <div className="relative" onClick={() => router.push("/chat")}>
+          <span className="h-4 w-4 text-[0.5rem]  border-2 border-white rounded-full absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center items-center text-white bg-primary">
+            4
+          </span>
+          <MessageOutlineIcon className="text-lightBlack text-icon" />
+        </div>
         <ShoppingCart />
         {!isMobile && (
           <Menu>
             <MenuButton>
               <div className="flex flex-col justify-center">
                 <Avatar
-                  className="h-[2.5em] w-[2.5em] bg-black"
+                  className="h-10 w-10 bg-black"
                   showBorder={false}
                   name="wiaah"
                   photoSrc="/wiaah_logo.png"

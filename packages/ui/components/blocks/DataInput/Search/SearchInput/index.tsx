@@ -1,7 +1,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { HiSearch } from "react-icons/hi";
-import { Input, InputGroup, InputRightElement, InputGroupProps } from "ui";
+import {
+  Input,
+  InputGroup,
+  InputRightElement,
+  InputGroupProps,
+  SearchIcon,
+} from "ui";
 
 export interface SearchInputProps {
   innerProps?: InputGroupProps;
@@ -34,16 +39,16 @@ export const SearchInput: React.FC<SearchInputProps> = ({
       {...innerProps}
       className={`${
         innerProps?.className || ""
-      } rounded-xl p-0 w-[min(20rem,100%)]`}
+      } rounded-xl border-[0px] bg-lightGray p-0 w-[min(20rem,100%)]`}
     >
-      <InputRightElement className="w-10 border-l-[1px] flex h-full justify-center items-center border-gray-300">
-        <HiSearch className="text-gray-500 text-xl" />
+      <InputRightElement className="w-10 flex h-full justify-center items-center">
+        <SearchIcon className="text-lightBlack text-icon" />
       </InputRightElement>
       <Input
         value={searchInputValue}
         onChange={(e) => handleSearchInputChange(e.target.value)}
-        className="rounded-xl py-0 w-full"
-        placeholder={t("search on wiaah")}
+        className="rounded-xl bg-transparent py-0 w-full"
+        placeholder={t("Type to search") + "..."}
       />
     </InputGroup>
   );

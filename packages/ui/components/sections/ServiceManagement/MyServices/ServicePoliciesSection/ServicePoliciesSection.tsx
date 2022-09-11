@@ -13,7 +13,6 @@ export interface ServicePoliciesInputSectionProps {
 export const ServicePoliciesInputSection: React.FC<
   ServicePoliciesInputSectionProps
 > = ({ onChange, value = {} }) => {
-  const { emit } = useReactPubsub((keys) => keys.openFileUploadModal);
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">

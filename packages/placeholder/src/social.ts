@@ -413,7 +413,7 @@ export const newsfeedPosts: PostCardInfo[] = [
       attachments: [
         {
           type: "image",
-          src: "/verticalImage.jpg",
+          src: "/post (1).jfif",
           postLocation: "New York",
         },
         // {
@@ -483,8 +483,8 @@ export const newsfeedPosts: PostCardInfo[] = [
       id: "2",
       attachments: [
         {
-          src: "/verticalVideo.mp4",
-          type: "video",
+          src: "/post (2).jfif",
+          type: "image",
           postLocation: "New York",
         },
         {
@@ -515,7 +515,7 @@ export const newsfeedPosts: PostCardInfo[] = [
       id: "4",
       attachments: [
         {
-          src: images[Math.floor(Math.random() * images.length)],
+          src: "/post (3).jfif",
           type: "image",
           postLocation: "New York",
         },
@@ -531,7 +531,7 @@ export const newsfeedPosts: PostCardInfo[] = [
       id: "5",
       attachments: [
         {
-          src: images[Math.floor(Math.random() * images.length)],
+          src: "/post (4).jfif",
           type: "image",
           postLocation: "New York",
         },
@@ -547,8 +547,8 @@ export const newsfeedPosts: PostCardInfo[] = [
       id: "3",
       attachments: [
         {
-          src: "/video.mp4",
-          type: "video",
+          src: "/post (5).jfif",
+          type: "image",
           postLocation: "New York",
         },
       ],
@@ -599,7 +599,7 @@ export const newsfeedPosts: PostCardInfo[] = [
       id: "6",
       attachments: [
         {
-          src: images[Math.floor(Math.random() * images.length)],
+          src: "/post (6).jfif",
           type: "image",
           postLocation: "New York",
         },
@@ -614,8 +614,7 @@ export const newsfeedPosts: PostCardInfo[] = [
       ...PostCardPlaceHolder.postInfo,
       attachments: [
         {
-          src: "/shop.jpeg",
-          // images[Math.floor(Math.random() * images.length)],
+          src: "/post (7).jfif",
           type: "image",
           postLocation: "New York",
         },
@@ -631,23 +630,7 @@ export const newsfeedPosts: PostCardInfo[] = [
       id: "7",
       attachments: [
         {
-          src: images[Math.floor(Math.random() * images.length)],
-          type: "image",
-          postLocation: "New York",
-        },
-      ],
-      content: "",
-      comments: [],
-    },
-  },
-  {
-    profileInfo: PostCardPlaceHolder.profileInfo,
-    postInfo: {
-      ...PostCardPlaceHolder.postInfo,
-      id: "8",
-      attachments: [
-        {
-          src: images[Math.floor(Math.random() * images.length)],
+          src: "/post (8).jfif",
           type: "image",
           postLocation: "New York",
         },
@@ -791,40 +774,64 @@ export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
 ];
 
 export const hashtagCardInfoPlaceholder: HashTagCardInfo = {
-  attachment: {
-    src: "/video.mp4",
-    type: "video",
-  },
   title: t("most_liked_post", "most liked post"),
+  ...PostCardPlaceHolder,
 };
 
 export const hashTagCardsInfoPlaceholder: HashTagCardInfo[] = [
   {
-    attachment: {
-      src: "/verticalImage.jpg",
-      type: "image",
-    },
     title: t("most_liked_post", "most liked post"),
+    ...PostCardPlaceHolder,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      attachments: [
+        {
+          src: "/post (1).jfif",
+          type: "image",
+        },
+      ],
+    },
   },
   {
-    attachment: {
-      src: "/shop-2.jpeg",
-      type: "image",
+    ...PostCardPlaceHolder,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      attachments: [
+        {
+          src: "/post (2).jfif",
+          type: "image",
+        },
+      ],
     },
+
     title: t("most_commented_post", "most commented post"),
   },
   {
-    attachment: {
-      src: "/verticalVideo.mp4",
-      type: "video",
+    ...PostCardPlaceHolder,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      attachments: [
+        {
+          src: "/post (3).jfif",
+          type: "image",
+        },
+      ],
     },
+
     title: t("most_viewed_video", "most viewed video"),
   },
   {
-    attachment: {
-      src: "/video.mp4",
-      type: "video",
+    ...PostCardPlaceHolder,
+    postInfo: {
+      ...PostCardPlaceHolder.postInfo,
+      attachments: [
+        {
+          src: "/post (4).jfif",
+          type: "image",
+        },
+      ],
     },
+
     title: t("most_liked_video", "most liked video"),
   },
 ];

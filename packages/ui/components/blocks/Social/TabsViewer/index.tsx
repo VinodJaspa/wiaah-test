@@ -1,6 +1,7 @@
 import React from "react";
 import { Tabs, TabList, TabItem, TabTitle, TabsHeader, TabsProps } from "ui";
 import { TabType } from "types";
+import { runIfFn } from "utils";
 
 export interface TabsViewerProps extends Omit<TabsProps, "children"> {
   tabs: TabType[];
@@ -24,13 +25,13 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
             <TabTitle key={i} TabKey={i}>
               {({ currentTabIdx }) => {
                 return (
-                  <span
+                  <div
                     className={`${
                       currentTabIdx === i ? "border-primary" : "border-gray-600"
                     } border-b-2 capitalize text-gray-500`}
                   >
-                    {name}
-                  </span>
+                    {runIfFn(name)}
+                  </div>
                 );
               }}
             </TabTitle>

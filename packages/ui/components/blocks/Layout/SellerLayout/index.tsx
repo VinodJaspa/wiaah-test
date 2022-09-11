@@ -1,90 +1,36 @@
 import React from "react";
-import {
-  HiMenu,
-  HiHome,
-  HiOutlineHome,
-  HiOutlineUserCircle,
-} from "react-icons/hi";
-import { MdRoomService } from "react-icons/md";
-import { FaUserCircle, FaRegUserCircle } from "react-icons/fa";
-import { IoEarth, IoEarthOutline, IoSettingsOutline } from "react-icons/io5";
-import { CgPlayButtonR, CgShoppingBag } from "react-icons/cg";
-import { AiOutlineShop, AiFillShop } from "react-icons/ai";
+import { HiMenu, HiOutlineUserCircle } from "react-icons/hi";
+import { IoSettingsOutline } from "react-icons/io5";
+import { CgShoppingBag } from "react-icons/cg";
 import { useRouter } from "next/router";
 import { useSetRecoilState } from "recoil";
-import { useTranslation } from "react-i18next";
 import { SellerDrawerOpenState } from "state";
 import { NavigationLinkType } from "types";
 import {
   MinimalHeader,
   DiscoverHeader,
-  LocationButton,
   SocialFooter,
-  Divider,
   HeaderNavLink,
   SellerNavigationSideBar,
-  SellerNavigationDrawer,
   SellerHeader,
   Root,
   Container,
   UsersProfiles,
+  HomeIcon,
+  DiscoverIcon,
+  AffiliationIcon,
+  ShoppingCartIcon,
+  ServicesIcon,
+  PlayButtonFillIcon,
+  HStack,
+  HashtagIcon,
+  LocationButton,
+  Divider,
 } from "ui";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
 import { BsShop } from "react-icons/bs";
 import { BiWallet } from "react-icons/bi";
-
-const NavigationLinks: NavigationLinkType[] = [
-  {
-    name: "homepage",
-    icon: HiOutlineHome,
-    activeIcon: HiHome,
-    url: "",
-  },
-  {
-    name: "discover",
-    icon: IoEarthOutline,
-    activeIcon: IoEarth,
-    url: "discover",
-  },
-  {
-    name: "action",
-    icon: CgPlayButtonR,
-    activeIcon: CgPlayButtonR,
-    url: "action",
-  },
-  {
-    name: "shop",
-    icon: AiOutlineShop,
-    activeIcon: AiFillShop,
-    url: "shop",
-    size: {
-      w: "1.2em",
-      h: "1.2em",
-    },
-  },
-  {
-    name: "service",
-    icon: MdRoomService,
-    activeIcon: MdRoomService,
-    url: "service",
-    size: {
-      w: "1.2em",
-      h: "1.2em",
-    },
-  },
-  {
-    name: "affiliation",
-    icon: FaRegUserCircle,
-    activeIcon: FaUserCircle,
-    url: "affiliation",
-    size: {
-      w: "1.2em",
-      h: "1.2em",
-    },
-  },
-];
-
 export const usersProfilesPlaceHolder = [
   {
     name: "Wiaah",
@@ -147,13 +93,20 @@ export const usersProfilesPlaceHolder = [
     verified: false,
   },
 ];
-
 export const placesPlaceholder: string[] = [
   "shop",
   "hotel",
-  "babershop",
   "restaurant",
-  "theatre museum",
+  "health center",
+  "vehicle",
+];
+
+export const hashtagsPlaceholder: string[] = [
+  "Fashion",
+  "Gaming",
+  "Food",
+  "Sports",
+  "Relaxing",
 ];
 export type HeadersTypes = "main" | "discover" | "minimal";
 
@@ -171,8 +124,40 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   sideBar = true,
   noContainer = false,
 }) => {
+  const NavigationLinks: NavigationLinkType[] = [
+    {
+      name: "Home",
+      icon: HomeIcon,
+      url: "",
+    },
+    {
+      name: "discover",
+      icon: DiscoverIcon,
+      url: "discover",
+    },
+    {
+      name: "action",
+      icon: PlayButtonFillIcon,
+      url: "action",
+    },
+    {
+      name: "shop",
+      icon: ShoppingCartIcon,
+      url: "shop",
+    },
+    {
+      name: "service",
+      icon: ServicesIcon,
+      url: "services",
+    },
+    {
+      name: "affiliation",
+      icon: AffiliationIcon,
+      url: "affiliation",
+    },
+  ];
+
   const { accountType } = useAccountType();
-  const { t } = useTranslation();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
   const { isMobile } = useResponsive();
   const headerRef = React.useRef<HTMLDivElement>(null);
@@ -191,37 +176,6 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
 
   return (
     <Root>
-      <SellerNavigationDrawer
-        activeLink={route}
-        onLinkClick={handleLinkClick}
-        links={NavigationLinks}
-      >
-        <p className="capitalize px-8 py-4 font-bold">
-          {t("discover your town")}
-        </p>
-
-        <div className="flex flex-col gap-4">
-          {placesPlaceholder.map((place, i) => (
-            <LocationButton
-              iconProps={{ className: "px-8" }}
-              name={place}
-              key={i}
-            />
-          ))}
-        </div>
-        <Divider />
-        <div className="capitalize px-8">
-          <span className="py-4 font-bold capitalize">
-            {t("suggestions", "suggestions")}
-          </span>
-          <UsersProfiles
-            maxShowMoreItems={8}
-            maxLongItems={5}
-            variant="long"
-            users={usersProfilesPlaceHolder}
-          />
-        </div>
-      </SellerNavigationDrawer>
       {sideBar && (
         <SellerNavigationSideBar
           headerElement={
@@ -231,13 +185,35 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           onLinkClick={handleLinkClick}
           activeLink={route}
         >
-          <UsersProfiles maxNarrowItems={5} users={usersProfilesPlaceHolder} />
+          <div className="flex flex-col gap-4">
+            <UsersProfiles
+              maxNarrowItems={5}
+              users={usersProfilesPlaceHolder}
+            />
+            <Divider />
+            <div className="text-white flex flex-col gap-4">
+              {placesPlaceholder.map((place, i) => (
+                <LocationButton
+                  iconProps={{ className: "" }}
+                  name={place}
+                  key={i}
+                />
+              ))}
+            </div>
+            <Divider />
+            {hashtagsPlaceholder.map((tag, i) => (
+              <HStack className="text-white gap-[1rem]" key={i}>
+                <HashtagIcon className="p-2 text-3xl rounded-full bg-white" />
+                <p>{tag}</p>
+              </HStack>
+            ))}
+          </div>
         </SellerNavigationSideBar>
       )}
       <Container
         noContainer={noContainer}
         className={`${
-          isMobile ? "px-4" : sideBar ? "pl-24 pr-4" : "px-8"
+          isMobile ? "px-4" : sideBar ? "pl-52 pr-4" : "px-8"
         } h-full`}
       >
         {header && header !== null && (
@@ -247,7 +223,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           >
             <Container
               className={`${
-                isMobile ? "px-4" : sideBar ? "pl-24 pr-4" : "px-8"
+                isMobile ? "px-4" : sideBar ? "pl-52 pr-4" : "px-8"
               }`}
             >
               <HeaderSwitcher
@@ -260,7 +236,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
         <div className="w-full h-full gap-4 flex flex-col justify-between">
           <main
             style={{
-              paddingTop: `calc(${headerHeight || 0}px + 1rem)`,
+              paddingTop: `calc(${headerHeight || 0}px + 2rem)`,
             }}
             className="pb-24 sm:pb-0 h-[max(fit,100%)]"
             {...containerProps}
@@ -360,10 +336,10 @@ const SellerNavLinks: HeaderNavLink[] = [
   {
     link: {
       name: {
-        translationKey: "settings",
-        fallbackText: "Settings",
+        translationKey: "account_settings",
+        fallbackText: "Account Settings",
       },
-      href: "/settings",
+      href: "/account-settings",
     },
     icon: IoSettingsOutline,
   },

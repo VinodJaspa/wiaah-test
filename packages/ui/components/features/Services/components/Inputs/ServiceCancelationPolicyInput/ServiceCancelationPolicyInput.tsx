@@ -17,20 +17,24 @@ export const ServiceCancelationPolicyInput: React.FC<
 
   return (
     <div className="flex items-center w-full gap-2 justify-between">
-      <label {...setTestid("InputLabel")} className="flex gap-1 items-center">
+      <label
+        {...setTestid("InputLabel")}
+        className="flex gap-2 text-lightBlack items-center"
+      >
         <Radio
           onChange={(e) =>
             e.target.checked ? onSelected && onSelected(id) : null
           }
           name={name}
         />
+
         <ServiceRefundableTypeDescription
           cost={cost}
           duration={duration}
           bookedDate={new Date()}
         />
       </label>
-      <span {...setTestid("PriceIndicator")} className="font-bold">
+      <span {...setTestid("PriceIndicator")} className="text-primary font-bold">
         {cost > 0 ? (
           <PriceDisplay price={cost} />
         ) : duration > 0 ? (

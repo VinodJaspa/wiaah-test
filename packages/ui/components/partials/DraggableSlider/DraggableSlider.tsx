@@ -41,8 +41,8 @@ export const Slide: React.FC<SlideProps> = ({
     <div
       ref={slideRef}
       style={{
-        width: `${sliderWidth}px`,
-        height: `${sliderHeight}px`,
+        width: sliderWidth < 1 ? "100%" : `${sliderWidth}px`,
+        height: sliderHeight < 1 ? "100%" : `${sliderHeight}px`,
       }}
       className={"flex items-center justify-center select-none h-full"}
     >
@@ -107,7 +107,6 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
   const animationRef = React.useRef<number>();
 
   function RefreshSize() {
-    console.log(dimensions, itemsCount, sliderRef.current?.clientWidth);
     setDimensions(getElementDimensions(sliderRef));
 
     setPositionByIndex(
@@ -136,7 +135,6 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
 
   // watch for a change in activeIndex prop
   React.useEffect(() => {
-    console.log(activeIndex);
     if (activeIndex !== currentIndex.current) {
       transitionOn();
       if (

@@ -1,16 +1,11 @@
-import { useBreakpointValue, Flex, Button, Text } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import React from "react";
 import { PostCardInfo } from "types";
 import { PostCardPlaceHolder, newsfeedPosts } from "ui/placeholder";
 import { useTranslation } from "react-i18next";
-import {
-  SocialStoriesModal,
-  SocialPostHeader,
-  PostCard,
-  PostCardsListWrapper,
-} from "ui";
+import { Button, PostCard, PostCardsListWrapper, PostCommentCard } from "ui";
+import { useBreakpointValue } from "utils";
 
 export interface NewsFeedPostViewProps {}
 
@@ -40,48 +35,31 @@ export const NewsFeedPostView: React.FC<NewsFeedPostViewProps> = () => {
   ]);
 
   return (
-    <Flex pb={{ base: "0.5rem", md: "4rem" }} gap="2rem" direction={"column"}>
-      <Flex
-        direction={{ base: "column", md: "row" }}
-        gap="2rem"
-        mb="6rem"
-        align={"start"}
-      >
-        <SocialStoriesModal />
-        <SocialPostHeader
-          name={post.profileInfo.name}
-          thumbnail={post.profileInfo.thumbnail}
-        />
+    <div className="flex flex-col gap-8 pt-8">
+      <div className="flex overflow-hidden flex-col h-[50rem] md:flex-row gap-8 items-start">
         <PostCard
           showComments
           postInfo={post.postInfo}
           profileInfo={post.profileInfo}
         />
-      </Flex>
-      <Text
-        fontSize={"xx-large"}
-        fontWeight="bold"
-        w="100%"
-        textAlign={"center"}
-        textTransform={"capitalize"}
-      >
-        {t("view", "view")} {post.profileInfo.name}{" "}
-        {t("other_posts", "other posts")}
-      </Text>
-      <PostCardsListWrapper cols={cols} posts={otherPosts} />
-      <Button
-        _focus={{ ringColor: "primary.main" }}
-        bgColor="white"
-        borderWidth={"0.25rem"}
-        borderColor="gray"
-        mt="2rem"
-        fontSize={"xl"}
-        color="black"
-        py="0.5rem"
-        textTransform={"capitalize"}
-      >
-        {t("view_more", "view more")}
-      </Button>
-    </Flex>
+        <div className="flex flex-col h-full overflow-scroll thinScroll gap-4 w-[min(35rem,100%)]">
+          {post
+            ? post.postInfo.comments.map((post, i) => (
+                <PostCommentCard key={i} {...post} />
+              ))
+            : null}
+        </div>
+      </div>
+      <p className="text-3xl font-bold w-full text-center">
+        {t("View")} {post.profileInfo.name} {t("Other posts")}
+      </p>
+      <PostCardsListWrapper
+        cols={cols}
+        posts={[...Array(5)].reduce((acc) => {
+          return [...acc, ...otherPosts];
+        }, [])}
+      />
+      <Button>{t("View More")}</Button>
+    </div>
   );
 };

@@ -93,7 +93,7 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
   return (
     <SectionContext.Provider value={{ onReturn: HandleReturn }}>
       <div className="h-full w-full flex justify-end gap-8">
-        <div className="fixed h-full left-[5rem]" ref={leftPanelRef}>
+        <div className="fixed h-full left-[13rem]" ref={leftPanelRef}>
           {!isMobile && (
             <div className="gap-4 w-full sm:w-40 md:w-[15rem] h-full xl:w-[20rem] flex flex-col px-2">
               <p className="text-xl px-4 font-bold">

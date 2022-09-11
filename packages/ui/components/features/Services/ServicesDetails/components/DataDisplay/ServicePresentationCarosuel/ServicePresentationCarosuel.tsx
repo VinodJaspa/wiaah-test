@@ -20,52 +20,36 @@ export const ServicePresentationCarosuel: React.FC<{
   const { t } = useTranslation();
   return (
     <div ref={ref} className="w-full relative">
-      <AspectRatio ratio={isMobile ? 5 / 7 : 5 / 11.12}>
-        {Array.isArray(data) ? (
-          <div className="w-full gap-4 flex h-full flex-col md:flex-row">
-            <div className="w-32 flex flex-col gap-2 overflow-scroll noScroll">
+      {/* <AspectRatio ratio={isMobile ? 5 / 7 : 5 / 11.12}> */}
+      {Array.isArray(data) ? (
+        <div className="w-full gap-[1.875rem] flex h-full flex-col md:flex-row">
+          <div className="min-w-[8.75rem] flex flex-col gap-[1.875rem] overflow-scroll noScroll">
+            {data.slice(0, 4).map((img, i) => (
+              <AspectRatioImage
+                ratio={1}
+                className={`${
+                  i === 0 ? "" : "pt-2"
+                } rounded-2xl overflow-hidden`}
+                key={i}
+                src={img.src}
+                alt={""}
+              />
+            ))}
+          </div>
+          <div style={{ height: "654px", width: "calc(100% - 10rem)" }}>
+            <Slider gap={16}>
               {data.map((img, i) => (
-                <AspectRatioImage
-                  ratio={7 / 9}
-                  className={`${i === 0 ? "" : "pt-2"} rounded`}
+                <img
+                  className="w-full h-full object-cover rounded-[1.25rem]"
                   key={i}
                   src={img.src}
-                  alt={""}
                 />
               ))}
-            </div>
-            <div style={{ width: "calc(100% - 9rem)" }}>
-              <Slider
-                leftArrowComponent={() => (
-                  <div className="bg-black mx-4  bg-opacity-50 text-primary p-1  rounded-full text-3xl">
-                    <ArrowLeftIcon />
-                  </div>
-                )}
-                rightArrowComponent={() => (
-                  <div className="bg-black  mx-4 bg-opacity-50 text-primary p-1  rounded-full text-3xl">
-                    <ArrowRightIcon />
-                  </div>
-                )}
-              >
-                {data.map((img, i) => (
-                  <img
-                    className="w-full h-full object-cover"
-                    key={i}
-                    src={img.src}
-                  />
-                ))}
-              </Slider>
-            </div>
+            </Slider>
           </div>
-        ) : null}
-      </AspectRatio>
-      <Button
-        onClick={() => ScrollTo("map")}
-        colorScheme="white"
-        className="absolute md:left-36 left-4 bg-white text-black  px-4 py-2 rounded-xl md:bottom-8 bottom-2"
-      >
-        {t("Show on map")}
-      </Button>
+        </div>
+      ) : null}
+      {/* </AspectRatio> */}
     </div>
   );
 };

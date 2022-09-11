@@ -1,4 +1,3 @@
-import { useBreakpointValue } from "@chakra-ui/react";
 import React from "react";
 import {
   Container,
@@ -16,6 +15,16 @@ import {
   newsfeedPosts,
   Divider,
   SocialServicePostsList,
+  HomeIcon,
+  ShoppingCartIcon,
+  ServicesIcon,
+  AffiliationIcon,
+  PlayButtonFillIcon,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
 } from "ui";
 import {
   useGetSocialProfile,
@@ -28,6 +37,8 @@ import { useRecoilValue } from "recoil";
 import { SocialNewsfeedPostsState } from "ui";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import { useReactPubsub } from "react-pubsub";
+import { useBreakpointValue } from "utils";
 
 export interface SocialViewProps {
   profileId: string;
@@ -44,40 +55,65 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   const posts = useRecoilValue(SocialNewsfeedPostsState);
   const cols = useBreakpointValue({ base: 3 });
   const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
+  const { emit } = useReactPubsub(
+    (events) => events.openSocialShopPostsFilterDrawer
+  );
 
-  const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
   const sellerTabs: TabType[] = [
     {
-      name: t("Newsfeed"),
+      name: (
+        <HStack>
+          <p>{t("Newsfeed")}</p>
+          <HomeIcon />
+        </HStack>
+      ),
       component: (
         <PostCardsListWrapper
           grid={isMobile}
           cols={cols}
-          posts={newsfeedPosts}
+          posts={[...Array(9)].reduce((acc) => {
+            return [...acc, ...newsfeedPosts.slice(0, 8)];
+          }, [])}
         />
       ),
     },
     {
-      name: t("Shop"),
+      name: (
+        <HStack>
+          <p>{t("Shop")}</p>
+          <ShoppingCartIcon />
+        </HStack>
+      ),
       component: (
-        <div className="flex flex-cl gap-4">
-          <div className="flex justify-end">
+        <div className="flex flex-col gap-4">
+          <div className="flex justify-between">
+            <Menu>
+              <MenuButton>
+                <div
+                  onClick={() => emit()}
+                  className="mr-2 cursor-pointer flex items-center justify-between rounded-lg border p-2 text-xs"
+                >
+                  <samp>{t("Sort")}</samp>
+                  <FaChevronDown className="ml-2" />
+                </div>
+              </MenuButton>
+              <MenuList className="left-[0px]" origin="top left">
+                <MenuItem>{t("Newest in")}</MenuItem>
+                <MenuItem>{t("Price (Low to High)")}</MenuItem>
+                <MenuItem>{t("Price (High to Low)")}</MenuItem>
+              </MenuList>
+            </Menu>
             <div
-              onClick={() => {
-                setFilterOpen(true);
-              }}
-              className="filter-button mr-2 flex items-center justify-between rounded-lg border p-2 text-xs md:hidden"
+              onClick={() => emit()}
+              className="mr-2 cursor-pointer flex items-center justify-between rounded-lg border p-2 text-xs"
             >
-              <samp>{t("Filter", "Filter")}</samp>
+              <samp>{t("Filter")}</samp>
               <FaChevronDown className="ml-2" />
             </div>
           </div>
-          <FilterModal
-            isOpen={filterOpen}
-            onClose={() => setFilterOpen(false)}
-          />
+          <FilterModal />
           <ShopCardsListWrapper
-            grid={isMobile}
+            // grid={isMobile}
             cols={cols}
             items={ShopCardsInfoPlaceholder}
           />
@@ -85,11 +121,21 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       ),
     },
     {
-      name: t("Service"),
+      name: (
+        <HStack>
+          <p>{t("Service")}</p>
+          <ServicesIcon />
+        </HStack>
+      ),
       component: <SocialServicePostsList />,
     },
     {
-      name: t("Affiliation offers"),
+      name: (
+        <HStack>
+          <p>{t("Affilation Offers")}</p>
+          <AffiliationIcon />
+        </HStack>
+      ),
       component: (
         <AffiliationOffersCardListWrapper
           grid={isMobile}
@@ -99,7 +145,12 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       ),
     },
     {
-      name: t("Actions"),
+      name: (
+        <HStack>
+          <p>{t("Actions")}</p>
+          <PlayButtonFillIcon />
+        </HStack>
+      ),
       component: (
         <ActionsListWrapper
           cols={ActionsCols}
@@ -110,7 +161,12 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   ];
   const buyerTabs: TabType[] = [
     {
-      name: t("news_feed", "news feed"),
+      name: (
+        <HStack>
+          <p>{t("Newsfeed")}</p>
+          <HomeIcon />
+        </HStack>
+      ),
       component: <PostCardsListWrapper cols={cols} posts={posts} />,
     },
   ];
@@ -118,16 +174,12 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
     <div className="flex flex-col h-full">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         <Container className="flex-grow flex-col">
-          <div className="w-full flex overflow-hidden relative max-h-[26rem]">
+          <div className="w-full flex justify-center overflow-hidden relative h-[26rem]">
             {profileInfo ? (
               <SocialProfile shopInfo={{ ...profileInfo.data }} />
             ) : null}
             <SocialPostsCommentsDrawer />
             <ShareWithModal />
-            <img
-              src={profileInfo ? profileInfo.data.profileCoverPhoto : ""}
-              className=" top-0 left-0 w-full bg-black bg-opacity-20 -z-10 h-full md:h-auto object-cover"
-            />
           </div>
           {profileInfo && (
             <>
@@ -145,8 +197,8 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
               ) : (
                 <>
                   <div className="h-full flex items-center justify-center">
-                    <p className="font-bold capitalize w-fit text-4xl">
-                      {t("this_profile_is_private", "this profile is private")}
+                    <p className="font-bold w-fit text-4xl">
+                      {t("This Profile is Private")}
                     </p>
                   </div>
                 </>

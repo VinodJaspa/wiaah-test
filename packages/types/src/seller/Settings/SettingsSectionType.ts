@@ -1,9 +1,8 @@
-import { IconType } from "react-icons";
 import { TranslationTextType } from "types";
 
 export type SettingsSectionType = {
   panelName: string;
-  panelIcon: IconType;
+  panelIcon: React.ReactNode;
   panelUrl: string;
   panelComponent: React.ReactElement;
   subSections?: {

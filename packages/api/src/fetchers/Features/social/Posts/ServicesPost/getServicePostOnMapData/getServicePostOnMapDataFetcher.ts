@@ -31,6 +31,9 @@ export const getServicePostsOnMapDataFetcher = async (
     hasMore: false,
     total: 150,
     data: [...Array(16)].map((_, i) => ({
+      price: 16,
+      rate: 4,
+      reviews: 150,
       attachments: [
         { src: `/place-${randomNum(4) || 1}.jpg`, type: "image" },
         { src: "/video.mp4", type: "video" },
@@ -51,6 +54,15 @@ export const getServicePostsOnMapDataFetcher = async (
         countryCode: "CH",
         postalCode: 12345,
         state: "State",
+      },
+      user: {
+        accountType: "seller",
+        id: "132",
+        name: "seller name",
+        profession: "profession",
+        public: true,
+        thumbnail: "/shop-2.jpeg",
+        verified: true,
       },
     })),
   };

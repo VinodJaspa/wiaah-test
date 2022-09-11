@@ -8,6 +8,7 @@ import {
   Input,
   Prefix,
   Spacer,
+  PhoneNumberInput,
 } from "ui";
 import { AddressDetails, AddressInputsFields } from "types";
 import { FlagIcon, FlagIconCode } from "react-flag-kit";
@@ -161,17 +162,7 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                     </FlexStack>
                     <FlexStack direction="vertical">
                       <BoldText>{t("Contact")}</BoldText>
-                      <Input
-                        id="ContactInput"
-                        onChange={(e) =>
-                          setInputs((state) => ({
-                            ...state,
-                            contact: e.target.value,
-                          }))
-                        }
-                        value={input.contact}
-                        className=""
-                      />
+                      <PhoneNumberInput />
                     </FlexStack>
                     <Spacer />
                     {!manual && (

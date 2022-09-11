@@ -16,3 +16,4 @@ export * from "./Search";
 export * from "./SearchFilters";
 export * from "./FilterDisplaySwitcher";
 export * from "./MultiChooseInput";
+export * from "./PhoneNumberInput";

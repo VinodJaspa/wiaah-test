@@ -10,7 +10,9 @@ export default {
 } as ComponentMeta<typeof PostCard>;
 
 const Template: ComponentStory<typeof PostCard> = (args) => (
-  <PostCard {...args} />
+  <div className="w-96 h-96">
+    <PostCard {...args} />
+  </div>
 );
 
 export const Default = Template.bind({});

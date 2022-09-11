@@ -31,7 +31,7 @@ export const HotelServiceRoomsSection: React.FC<
     });
   }
   return (
-    <div className="w-full flex gap-2 flex-col">
+    <div className="w-full flex gap-2 flex-col h-[90rem]">
       <p ref={roomsRef ?? undefined}>{t("Rooms")}</p>
       <Slider
         gap={16}

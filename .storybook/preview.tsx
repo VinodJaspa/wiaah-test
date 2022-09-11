@@ -7,25 +7,30 @@ import { CookiesProvider } from "react-cookie";
 import { RecoilRoot } from "recoil";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "ui/themes/chakra_ui/theme";
-import { Root } from "ui";
+import { DataInitializationWrapper, useUserData } from "ui";
 import { Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
+import React from "react";
 
-addDecorator((story) => (
-  <QueryClientProvider client={new QueryClient()}>
-    <ChakraProvider theme={theme}>
-      <CookiesProvider>
-        <Suspense fallback={"Loading"}>
-          <RecoilRoot>
-            <section className="flex min-h-screen w-full items-center justify-center bg-white p-8">
-              {story()}
-            </section>
-          </RecoilRoot>
-        </Suspense>
-      </CookiesProvider>
-    </ChakraProvider>
-  </QueryClientProvider>
-));
+addDecorator((story) => {
+  return (
+    <QueryClientProvider client={new QueryClient()}>
+      <ChakraProvider theme={theme}>
+        <CookiesProvider>
+          <Suspense fallback={"Loading"}>
+            <RecoilRoot>
+              <DataInitializationWrapper accountType="seller">
+                <section className="flex min-h-screen w-full items-center justify-center bg-white p-8">
+                  {story()}
+                </section>
+              </DataInitializationWrapper>
+            </RecoilRoot>
+          </Suspense>
+        </CookiesProvider>
+      </ChakraProvider>
+    </QueryClientProvider>
+  );
+});
 
 export const parameters = {
   i18n,

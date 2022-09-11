@@ -16,6 +16,7 @@ export const SocialProfileInfoValidationSchema = object({
     .oneOf(SocialAccountTypeEnum)
     .required(),
   public: boolean().required(),
+  profession: string().required(),
 });
 
 export const SocialShopProfileInfoValidationSchema =

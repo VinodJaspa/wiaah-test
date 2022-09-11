@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  AirConditionIcon,
   CarWindowIcon,
   GPSIcon,
   TransportGuestsIcon,
@@ -18,32 +17,18 @@ import {
   BarGlassIcon,
   DeskIcon,
   ParkingIcon,
+  ForkAndKnifeIcon,
+  TelevisionIcon,
+  SnowFlakeIcon,
+  BalconyIcon,
 } from "ui";
 import { runIfFn } from "utils";
-export const ServiceProperties = {
-  "a/c": AirConditionIcon,
-  gps: GPSIcon,
-  passengers: TransportGuestsIcon,
-  windows: CarWindowIcon,
-  bags: TransportLuggageIcon,
-  pool: PoolIcon,
-  restaurant: SpoonCrossKnifeIcon,
-  parking: ParkingIcon,
-  business_services: BusinessServiceIcon,
-  room_service: DiningBellIcon,
-  "pet-friendly": PetPawIcon,
-  breakfast: CupIcon,
-  laundry: LaundryIcon,
-  free_wifi: WifiIcon,
-  gym: DumbbellIcon,
-  bar: BarGlassIcon,
-  "24/7_front_desk": DeskIcon,
-};
+
 export const ServicePropertiesSwticher: React.FC<{ slug: string }> = ({
   slug,
 }) => {
   const ServiceProperties = {
-    "a/c": AirConditionIcon,
+    "a/c": SnowFlakeIcon,
     gps: GPSIcon,
     passengers: TransportGuestsIcon,
     windows: CarWindowIcon,
@@ -60,6 +45,9 @@ export const ServicePropertiesSwticher: React.FC<{ slug: string }> = ({
     gym: DumbbellIcon,
     bar: BarGlassIcon,
     "24/7_front_desk": DeskIcon,
+    kitchen: ForkAndKnifeIcon,
+    balcony: BalconyIcon,
+    tv: TelevisionIcon,
   };
 
   const Slug = slug as keyof typeof ServiceProperties;

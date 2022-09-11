@@ -5,7 +5,7 @@ const miscTitle = "Misc /";
 const dataDisplayTitle = "Data Display /";
 const headersTitle = "Headers /";
 const sectionsTitle = "Sections /";
-
+const blocksTitle = "UI / Blocks /";
 export const storybookPartailsTitle = "UI / partials / ";
 export const storybookBlocksTitle = "UI / blocks / ";
 export const storybookSectionsTitle = "UI / sections / ";
@@ -28,6 +28,9 @@ export const storybookSidebarsTitle = "UI / Blocks / SideBars /";
 export const storybookSteppersTitle = "UI / Blocks / Steppers /";
 export const storybookSteppersHeadersTitle = "UI / Blocks / SteppersHeaders /";
 export const storybookSearchInputs = storybookDataInputBlocksTitle + "Search /";
+export const storybookListWrappersTitle = blocksTitle + "ListWrappers /";
+
+export const storybookBlocksInputTitle = storybookBlocksTitle + inputsTitle;
 
 // feature specific titles
 export const storybookFeaturesTitle = "UI / Features /";
