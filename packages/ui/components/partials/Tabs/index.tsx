@@ -123,9 +123,7 @@ export const TabsHeader: React.FC<TabsHeaderProps> = ({
               onClick={() => {
                 setCurrentTabIdx(i);
               }}
-              className={`${
-                className || ""
-              } px-2 py-1 cursor-pointer text-lg font-bold`}
+              className={`px-2 py-1 cursor-pointer text-lg font-bold`}
             >
               {PassPropsToFnOrElem<TabTitleChildrenPropsType>(tab.component, {
                 currentTabIdx,

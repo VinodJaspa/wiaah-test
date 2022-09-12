@@ -126,6 +126,11 @@ export const storybookServiceManagementInputTitle =
 export const storybookServiceManagementCardsTitle =
   storybookServiceManagementTitle + cardsTitle;
 
+// search
+export const storybookSearchFeatureTitle = storybookFeaturesTitle + "Search /";
+export const storybookSearchCardsTitle =
+  storybookSearchFeatureTitle + cardsTitle;
+
 // checkout
 export const storybookCheckoutTitle = storybookFeaturesTitle + "checkout /";
 export const storybookCheckoutCardsTitle = storybookCheckoutTitle + cardsTitle;

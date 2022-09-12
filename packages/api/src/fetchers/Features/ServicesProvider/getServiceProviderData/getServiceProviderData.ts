@@ -267,14 +267,8 @@ export const getServicesProviderDataFetcher = async (
           "Upper floors accessible by elevator",
           "Toilet paper",
           "Free toiletries",
-          "Shower",
-          "Toilet",
-          "Towels",
-          "Private entrance",
-          "Hairdryer",
-          "Wardrobe or closet",
-          "Upper floors accessible by elevator",
           "Toilet paper",
+          "Towels",
         ],
 
         cancelationPolicies: [

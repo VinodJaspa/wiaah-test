@@ -6,11 +6,12 @@ import { HtmlDivProps } from "types";
 export interface UnDiscountedPriceDisplayProps extends HtmlDivProps {
   amount: number;
   discount: number;
+  decimel?: boolean;
 }
 
 export const UnDiscountedPriceDisplay: React.FC<
   UnDiscountedPriceDisplayProps
-> = ({ amount, discount, ...props }) => {
+> = ({ amount, discount, decimel, ...props }) => {
   const { currencyCode, currencyRateToUsd, currencySymbol } = useRecoilValue(
     PreferedCurrencyState
   );
@@ -22,7 +23,7 @@ export const UnDiscountedPriceDisplay: React.FC<
       className={`${props.className || ""} line-through whitespace-nowrap`}
     >
       {currencySymbol}
-      {Math.abs(unDiscountedPrice).toFixed(2)}
+      {Math.abs(unDiscountedPrice).toFixed(decimel ? 2 : 0)}
     </p>
   );
 };

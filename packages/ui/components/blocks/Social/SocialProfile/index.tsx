@@ -71,14 +71,16 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
 
   return (
     <div className="flex flex-col w-full bg-primary h-80 relative rounded-2xl ">
-      <div className="flex flex-col w-fit self-end items-center justify-self-end pt-6 px-8 gap-3 text-white">
-        <QrcodeDisplay
-          value={id}
-          color="#ffffff"
-          transparentBg
-          className={"w-16 fill-white"}
-        />
-        <p>{t("Show on map")}</p>
+      <div className="flex flex-col h-[11rem] w-full  items-end justify-center pt-6 px-8 gap-3 text-white">
+        <div className="flex flex-col gap-3 items-center">
+          <QrcodeDisplay
+            value={id}
+            color="#ffffff"
+            transparentBg
+            className={"w-16 fill-white"}
+          />
+          <p>{t("Show on map")}</p>
+        </div>
       </div>
       {storyData && <SocialStoriesModal />}
       <SubscribersPopup
