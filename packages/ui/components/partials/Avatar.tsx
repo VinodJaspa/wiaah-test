@@ -28,17 +28,19 @@ export const Avatar: React.FC<AvatarProps> = ({
   }
 
   return (
-    <div className="relative min-w-fit">
-      <img
-        onClick={handleAvatarClick}
-        src={photoSrc || src}
-        className={`${
-          className || ""
-        } w-12 h-12 rounded-full bg-black cursor-pointer object-cover`}
-        {...props}
-      />
+    <div
+      className={`${className || ""} relative 12 rounded-full overflow-hidden`}
+    >
+      <AspectRatio ratio={1}>
+        <img
+          onClick={handleAvatarClick}
+          src={photoSrc || src}
+          className={`w-full h-full bg-black cursor-pointer object-cover`}
+          {...props}
+        />
 
-      {children}
+        {children}
+      </AspectRatio>
     </div>
   );
 };

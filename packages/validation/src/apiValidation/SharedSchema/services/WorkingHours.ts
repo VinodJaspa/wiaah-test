@@ -33,6 +33,6 @@ const workingHourTimeValidationSchema = object({
 
 export const dayWorkingPeriodValidationSchema = object({
   weekDay: mixed<WeekDays>().oneOf(weekDays).required(),
-  from: workingHourTimeValidationSchema,
-  to: workingHourTimeValidationSchema,
+  from: string().required(),
+  to: string().required(),
 });

@@ -8,11 +8,13 @@ export default {
 } as ComponentMeta<typeof TimeClockDisplay>;
 
 const template: ComponentStory<typeof TimeClockDisplay> = (args) => (
-  <TimeClockDisplay {...args} />
+  <div className="w-11 h-11 text-primary">
+    <TimeClockDisplay {...args} />
+  </div>
 );
 
 export const Default = template.bind({});
 Default.args = {
-  from: new Date(2022, 8, 11, 2),
-  to: new Date(2022, 8, 11, 10),
+  from: new Date(2022, 8, 11, 15),
+  to: new Date(2022, 8, 11, 19),
 };

@@ -6,3 +6,4 @@ export * from "./Steppers";
 export * from "./Headers";
 export * from "./Inputs";
 export * from "./DataDisplay";
+export * from "./Sections";

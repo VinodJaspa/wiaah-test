@@ -1,28 +1,24 @@
 import React from "react";
-import { MdVerified } from "react-icons/md";
 import {
   SubscribersPopup,
-  Avatar as CustomAvatar,
+  Avatar,
   SocialStoriesModal,
-  Menu,
-  MenuList,
-  MenuItem,
-  MenuButton,
   Button,
-  CalenderIcon,
-  FlagIcon,
+  HStack,
+  Stack,
+  Divider,
+  LinkIcon,
+  VerifiedIcon,
+  QrcodeDisplay,
 } from "ui";
 import { useLoginPopup, useStory } from "ui/Hooks";
-import { NumberShortner } from "utils";
+import { mapArray, NumberShortner } from "utils";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 import { SocialStoryState } from "ui/state";
-import { HiOutlineMail, HiDotsVertical } from "react-icons/hi";
-import { EllipsisText } from "ui";
-import { BiLink } from "react-icons/bi";
 import { useReactPubsub } from "react-pubsub";
-import { AvatarGroup, useDisclosure, Avatar } from "@chakra-ui/react";
 import { SocialShopProfileData } from "api";
+import { useDisclouser } from "hooks";
 
 export interface SocialProfileProps {
   shopInfo: SocialShopProfileData;
@@ -48,164 +44,122 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
     OpenLoginPopup();
     onFollow && onFollow();
   }
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, handleClose, handleOpen } = useDisclouser();
 
   const {
     isOpen: subscriptionsIsOpen,
-    onOpen: subscriptionsOnOpen,
-    onClose: subscriptionsOnClose,
-  } = useDisclosure();
+    handleOpen: subscriptionsOnOpen,
+    handleClose: subscriptionsOnClose,
+  } = useDisclouser();
+
+  if (!shopInfo) return null;
+
+  const {
+    publications,
+    subscribers,
+    subscriptions,
+    name,
+    profession,
+    thumbnail,
+    verified,
+    bio,
+    links,
+    isFollowed,
+    public: PublicProfile,
+    id,
+  } = shopInfo;
 
   return (
-    <div className="flex flex-col items-center bg-transparent justify-between md:bg-primary px-4 py-2 text-white text-[1.5rem]">
+    <div className="flex flex-col w-full bg-primary h-80 relative rounded-2xl ">
+      <div className="flex flex-col w-fit self-end items-center justify-self-end pt-6 px-8 gap-3 text-white">
+        <QrcodeDisplay
+          value={id}
+          color="#ffffff"
+          transparentBg
+          className={"w-16 fill-white"}
+        />
+        <p>{t("Show on map")}</p>
+      </div>
       {storyData && <SocialStoriesModal />}
       <SubscribersPopup
         title={t("subscribers", "subscribers")}
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={handleClose}
       />
       <SubscribersPopup
         title={t("subscriptions", "subscriptions")}
         isOpen={subscriptionsIsOpen}
         onClose={subscriptionsOnClose}
       />
-      <div className="flex w-full justify-between">
-        <div />
-        <CustomAvatar
-          className="bg-black h-[5rem] w-[5rem]"
-          name={shopInfo.name}
-          src={shopInfo.thumbnail}
-          newStory={newStory}
-          onClick={handleOpenStory}
-        />
-        <Menu>
-          <MenuButton>
-            <HiDotsVertical onClick={handleOpenLogin} cursor={"pointer"} />
-          </MenuButton>
-          <MenuList className="text-black">
-            <MenuItem>{t("Report")}</MenuItem>
-            <MenuItem>{t("Share")}</MenuItem>
-            <MenuItem>{t("Block")}</MenuItem>
-            <MenuItem>{t("Copy Url")}</MenuItem>
-            <MenuItem>{t("Hide All Posts")}</MenuItem>
-          </MenuList>
-        </Menu>
-      </div>
-      <div className="bg-primary md:bg-transparent items-center flex mb-2 px-1 rounded-lg gap-2">
-        <p>{shopInfo.name}</p>
-        {shopInfo.verified && <MdVerified className="text-xl" />}
-      </div>
-      <div className="flex gap-4 leading-7">
-        <div
-          className="flex items-center cursor-pointer gap-2"
-          onClick={handleOpenLogin}
-        >
-          <p className="font-bold">{NumberShortner(shopInfo.publications)}</p>
-          <p className="text-lg">{t("publications")}</p>
-        </div>
-        <div
-          className="flex items-center cursor-pointer"
-          onClick={subscriptionsOnOpen}
-        >
-          <div className="flex gap-2 items-center mx-2">
-            <AvatarGroup mr="0.7rem" max={3} spacing="-2.8em">
-              {[...Array(3)].map((_, i) => (
-                <Avatar
-                  borderWidth={"1px"}
-                  borderColor="white"
-                  rounded={"lg"}
-                  size={"xs"}
-                  h="2em"
-                  w="2em"
-                  key={i}
-                  bgColor={"black"}
-                  src="/shop.jpeg"
-                  name="test"
-                />
-              ))}
-            </AvatarGroup>
-            <p className="font-bold">
-              {NumberShortner(shopInfo.subscriptions)}
-            </p>
-          </div>
-          <p className="text-lg">{t("Subscriptions")}</p>
-        </div>
-        <div className="flex items-center cursor-pointer" onClick={onOpen}>
-          <div className="flex gap-2 items-center mx-2">
-            <AvatarGroup mr="0.7rem" max={3} spacing="-2.8em">
-              {[...Array(3)].map((_, i) => (
-                <Avatar
-                  borderWidth={"1px"}
-                  borderColor="white"
-                  rounded={"md"}
-                  size={"xs"}
-                  h="2em"
-                  w="2em"
-                  key={i}
-                  bgColor={"black"}
-                  src="/shop-2.jpeg"
-                  name="test"
-                />
-              ))}
-            </AvatarGroup>
-            <p className="font-bold">{NumberShortner(shopInfo.subscribers)}</p>
-          </div>
+      <div
+        style={{
+          boxShadow: "0px 4px 30px rgba(0, 0, 0, 0.08)",
+        }}
+        className="absolute w-full bg-white border-2 border-white bottom-0 left-0 h-36 pl-14 pr-8 py-6 flex gap-12"
+      >
+        <div className="flex flex-col gap-2">
+          <div className="flex gap-4">
+            <div className="absolute left-14 top-0 -translate-y-1/2">
+              <Avatar className="w-[6.75rem]" src={thumbnail} name={name} />
+            </div>
+            <div className="w-24 h-full"></div>
 
-          <p className="text-lg">{t("Subscribers")}</p>
+            <HStack>
+              <p className="text-xl whitespace-nowrap font-bold">{name}</p>
+              <p className="text-sm font-light text-grayText">{profession}</p>
+              {verified ? (
+                <VerifiedIcon className="text-lg text-primary" />
+              ) : null}
+            </HStack>
+          </div>
+          <Stack divider={<Divider variant="vert" className="mx-[1.25rem]" />}>
+            <HStack>
+              <p className="font-bold text-lg">
+                {NumberShortner(publications)}
+              </p>
+              <p>{t("Posts")}</p>
+            </HStack>
+
+            <HStack className="cursor-pointer" onClick={() => handleOpen()}>
+              <p className="font-bold text-lg">{NumberShortner(subscribers)}</p>
+              <p>{t("Followers")}</p>
+            </HStack>
+
+            <HStack
+              className="cursor-pointer"
+              onClick={() => subscriptionsOnOpen()}
+            >
+              <p className="font-bold text-lg">
+                {NumberShortner(subscriptions)}
+              </p>
+              <p>{t("Following")}</p>
+            </HStack>
+          </Stack>
         </div>
-      </div>
-      <div className="flex gap-2 flex-col py-4 w-full text-lg">
-        {shopInfo.bio && (
-          <EllipsisText
-            showMoreColor="primary.main"
-            maxLines={4}
-            content={shopInfo.bio}
-          />
-        )}
-        {shopInfo.links && (
-          <div className="flex flex-col">
-            {shopInfo.links.map((link, i) => (
-              <div className="flex items-center gap-1" key={i}>
-                <BiLink className="text-white text-xl" />
-                <a>{link}</a>
-              </div>
+
+        <div className="flex flex-col w-full gap-1">
+          <p className="font-semibold text-lg">{t("Bio")}</p>
+          <p className="font-light text-base text-lightBlack">{bio}</p>
+          <div className="flex flex-wrap gap-2">
+            {mapArray(links, (link, i) => (
+              <HStack key={i} className="flex gap-2">
+                <LinkIcon className="text-base text-primary" />
+                <p className="text-base text-black font-light underline underline-offset-4">
+                  {link}
+                </p>
+              </HStack>
             ))}
           </div>
-        )}
-      </div>
-
-      <div className="flex items-center gap-4">
-        <Button
-          className={`${
-            shopInfo.isFollowed ? "bg-secondaryRed" : "bg-primary"
-          } border shadow-lg px-8 border-black`}
-          colorScheme={shopInfo.isFollowed ? "danger" : "primary"}
-          onClick={handleOpenLogin}
-        >
-          {shopInfo.isFollowed
-            ? t("Unfollow")
-            : shopInfo.public
-            ? t("follow")
-            : t("ask for follow")}
-        </Button>
-        <HiOutlineMail
-          aria-label={t("Message Seller")}
-          className="rounded-full p-2 h-12 w-12 bg-primary text-sm text-white"
-        />
-
-        <CalenderIcon
-          onClick={() => emit({ id: "123" })}
-          className="text-sm md:text-3xl cursor-pointer"
-        />
-      </div>
-      <div className="bg-white flex bg-opacity-20 md:bg-transparent gap-2 w-full items-center justify-end pt-3">
-        <p className="text-lg">
-          <FlagIcon code={shopInfo.location.countryCode} />
-        </p>
-        <p className="tex-white text-lg">
-          {shopInfo.location.address}, {shopInfo.location.state},{" "}
-          {shopInfo.location.city} {shopInfo.location.address}
-        </p>
+        </div>
+        <div className="flex flex-col gap-4 items-center">
+          <Button className="whitespace-nowrap">
+            {isFollowed
+              ? t("Unfollow")
+              : PublicProfile
+              ? t("Ask To Follow")
+              : t("Follow")}
+          </Button>
+        </div>
       </div>
     </div>
   );

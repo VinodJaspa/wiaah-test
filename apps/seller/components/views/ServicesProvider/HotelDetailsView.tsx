@@ -20,6 +20,8 @@ import {
   StaticSideBarWrapper,
   ServiceReservastion,
   SpinnerFallback,
+  ServiceDetailsReviewsSection,
+  SellerServiceWorkingHoursSection,
 } from "ui";
 import { reviews } from "placeholder";
 import { useResponsive } from "hooks";
@@ -101,7 +103,7 @@ export const HotelDetailsView: React.FC = () => {
             <SpinnerFallback isLoading={isLoading} isError={isError}>
               {res ? (
                 <>
-                  <ServiceWorkingHoursSection
+                  <SellerServiceWorkingHoursSection
                     workingDays={res.data.workingDays}
                   />
                 </>
@@ -141,7 +143,38 @@ export const HotelDetailsView: React.FC = () => {
             <SpinnerFallback isLoading={isLoading} isError={isError}>
               {res ? (
                 <>
-                  <Reviews id={res?.data.id || ""} reviews={reviews} />
+                  <ServiceDetailsReviewsSection
+                    overAllRating={5}
+                    ratingLevels={[
+                      {
+                        rate: 4.9,
+                        name: "Amenities",
+                      },
+                      {
+                        name: "Communication",
+                        rate: 5,
+                      },
+                      {
+                        name: "Value for Money",
+                        rate: 5,
+                      },
+                      {
+                        name: "Hygiene",
+                        rate: 5,
+                      },
+                      {
+                        name: "Location of Property",
+                        rate: 5,
+                      },
+                    ]}
+                    reviews={[...Array(6)].map((_, i) => ({
+                      name: "John Doberman",
+                      content:
+                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                      thumbnail: `/profile (${i + 1}).jfif`,
+                      date: new Date().toString(),
+                    }))}
+                  />
                 </>
               ) : null}
             </SpinnerFallback>
@@ -176,13 +209,15 @@ export const HotelDetailsView: React.FC = () => {
             </>
           ))}
         </Tabs>
-        {ServicesProviderTabs[0].component}
-        {ServicesProviderTabs[1].component}
-        {ServicesProviderTabs[2].component}
-        {ServicesProviderTabs[3].component}
-        {ServicesProviderTabs[4].component}
-        {ServicesProviderTabs[5].component}
-        {ServicesProviderTabs[6].component}
+        <div className="flex flex-col gap-12 w-full">
+          {ServicesProviderTabs[0].component}
+          {/* {ServicesProviderTabs[1].component} */}
+          {/* {ServicesProviderTabs[2].component} */}
+          {/* {ServicesProviderTabs[3].component} */}
+          {/* {ServicesProviderTabs[4].component} */}
+          {/* {ServicesProviderTabs[5].component} */}
+          {/* {ServicesProviderTabs[6].component} */}
+        </div>
       </StaticSideBarWrapper>
     </div>
   );

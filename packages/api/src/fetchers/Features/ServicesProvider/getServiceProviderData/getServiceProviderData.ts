@@ -142,80 +142,39 @@ export const getServicesProviderDataFetcher = async (
       workingDays: [
         {
           weekDay: "Friday",
-          from: {
-            hour: 0,
-            minutes: 0,
-          },
-          to: {
-            hour: 0,
-            minutes: 0,
-          },
+
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Monday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Saturday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Sunday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Thursday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Tuesday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Wednesday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
       ],
       pricePerNight: 721,
@@ -266,7 +225,7 @@ export const getServicesProviderDataFetcher = async (
         arrival: new Date(Date.now()).toUTCString(),
       },
       vat: randomNum(10),
-      rooms: [...Array(9)].map((_, i) => ({
+      rooms: [...Array(2)].map((_, i) => ({
         extraServices: [
           {
             cost: 0,
@@ -342,52 +301,28 @@ export const getServicesProviderDataFetcher = async (
         ],
         amenities: [
           {
-            name: "Laundry",
+            name: "Kitchen",
+            slug: "kitchen",
+          },
+          {
+            name: "Televistion with Netflix",
+            slug: "tv",
+          },
+          {
+            name: "Washer",
             slug: "laundry",
           },
           {
-            name: "Housekeeping",
-            slug: "housekeeping",
+            name: "Air conditioner",
+            slug: "a/c",
           },
           {
             name: "Free Wifi",
             slug: "free_wifi",
           },
           {
-            name: "Air conditioning",
-            slug: "a/c",
-          },
-          {
-            name: "Laundry",
-            slug: "laundry",
-          },
-          {
-            name: "Housekeeping",
-            slug: "housekeeping",
-          },
-          {
-            name: "Free Wifi",
-            slug: "free_wifi",
-          },
-          {
-            name: "Air conditioning",
-            slug: "a/c",
-          },
-          {
-            name: "Laundry",
-            slug: "laundry",
-          },
-          {
-            name: "Housekeeping",
-            slug: "housekeeping",
-          },
-          {
-            name: "Free Wifi",
-            slug: "free_wifi",
-          },
-          {
-            name: "Air conditioning",
-            slug: "a/c",
+            name: "Balcony or Patio",
+            slug: "balcony",
           },
         ],
         with_fees_and_taxes: true,
