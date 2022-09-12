@@ -185,14 +185,13 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
             <>
               {profileInfo.data.public ? (
                 <>
-                  {/* <TabsViewer
+                  <TabsViewer
                     tabs={
                       profileInfo.data.accountType === "seller"
                         ? sellerTabs
                         : buyerTabs
                     }
-                  /> */}
-                  {sellerTabs.at(0).component}
+                  />
                   <Divider className="my-4" />
                 </>
               ) : (

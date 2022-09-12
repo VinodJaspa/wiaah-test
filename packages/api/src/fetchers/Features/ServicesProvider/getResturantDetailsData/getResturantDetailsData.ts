@@ -110,80 +110,39 @@ export const getResturantServiceDetialsData = async (
       workingDays: [
         {
           weekDay: "Friday",
-          from: {
-            hour: 0,
-            minutes: 0,
-          },
-          to: {
-            hour: 0,
-            minutes: 0,
-          },
+
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Monday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Saturday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Sunday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Thursday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Tuesday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Wednesday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
       ],
       deposit: randomNum(50),
@@ -197,7 +156,7 @@ export const getResturantServiceDetialsData = async (
             "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of",
             "packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
           ],
-          policyTitle: "checkin - checkout terms",
+          policyTitle: "Reservation terms",
         },
       ],
       cancelationPolicies: [

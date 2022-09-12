@@ -2,27 +2,20 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
 import { HtmlSvgProps } from "types";
-import { BedIcon, BathTubeIcon, CarIcon, PetPawIcon } from "ui";
+import { CarWheelIcon, GPSIcon, TransportSeatIcon, AirConditionIcon } from "ui";
 import { runIfFn } from "utils";
-export interface ServicesProviderDescriptionSectionProps {
+
+export interface VehicleServiceDescriptionSectionProps {
   description: string;
-  bedrooms: number;
-  bathrooms: number;
-  cars: number;
-  bikes: number;
-  pets: number;
+  maxSpeed: number;
+  seats: number;
+  GPS: boolean;
+  airCondition: boolean;
 }
 
-export const ServicesProviderDescriptionSection: React.FC<
-  ServicesProviderDescriptionSectionProps
-> = ({
-  description,
-  bathrooms = 0,
-  bedrooms = 0,
-  bikes = 0,
-  cars = 0,
-  pets = 0,
-}) => {
+export const VehicleServiceDescriptionSection: React.FC<
+  VehicleServiceDescriptionSectionProps
+> = ({ GPS, airCondition, description, maxSpeed, seats }) => {
   const descriptionRef = usePublishRef((keys) => keys.description);
   const { t } = useTranslation();
   const items: {
@@ -30,20 +23,20 @@ export const ServicesProviderDescriptionSection: React.FC<
     icon: React.ReactNode;
   }[] = [
     {
-      text: `${bedrooms} ${t("BedRooms")}`,
-      icon: BedIcon,
+      text: `${maxSpeed}Km/s ${t("Max Speed")}`,
+      icon: CarWheelIcon,
     },
     {
-      text: `${bathrooms} ${t("Bathrooms")}`,
-      icon: BathTubeIcon,
+      text: `${GPS ? t("GPS Availiable") : ""}`,
+      icon: GPSIcon,
     },
     {
-      text: `${cars} ${t("Cards")}/${bikes} ${t("Bikes")}`,
-      icon: CarIcon,
+      text: `${seats} ${t("Seats")}`,
+      icon: TransportSeatIcon,
     },
     {
-      text: `${pets} ${t("Pets Allowed")}`,
-      icon: PetPawIcon,
+      text: `${airCondition ? t("Air Condition") : ""}`,
+      icon: AirConditionIcon,
     },
   ];
 

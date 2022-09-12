@@ -39,7 +39,7 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
           <ShareIcon className="text-lg text-lightBlack" />
         </div>
       </div>
-      <div className="flex justify-between flex-col">
+      <div className="flex justify-between items-end flex-col">
         <div className="flex flex-wrap gap-4">
           {travelPeriod && arrival && departure ? (
             <>
@@ -72,15 +72,3 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
     </div>
   );
 };
-//  {travelPeriod && arrival && departure ? (
-//                 <div className="flex gap-2">
-//                   <p>
-//                     {`${arrival.hour}:${arrival.twoDigitMinute}`} {t("Arrival")}
-//                   </p>
-//                   <p>-</p>
-//                   <p>
-//                     {`${departure.hour}:${departure.twoDigitMinute}`}{" "}
-//                     {t("Departure")}
-//                   </p>
-//                 </div>
-//               ) : null}

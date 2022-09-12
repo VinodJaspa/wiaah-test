@@ -27,7 +27,6 @@ export const ResturantFindTableFilterStepper: React.FC<
         setStepsLength,
         stepsLength,
       }) => {
-        React.useEffect(() => {}, []);
         return (
           <div className="flex flex-col gap-4 w-full">
             <ResturantFindTableFilterStepperHeader
@@ -36,8 +35,10 @@ export const ResturantFindTableFilterStepper: React.FC<
             <StepperContent>
               <DateInput
                 className="w-[100%]"
+                value={[]}
                 dayComponent={ResturantFindTableFilterDateDayComponent}
                 onDaySelect={(date) => {
+                  if (!date) return;
                   setFilters((state) => {
                     const filteredState = FilterAndAddToArray(
                       state,
@@ -49,8 +50,8 @@ export const ResturantFindTableFilterStepper: React.FC<
                     );
                     return filteredState;
                   });
-                  nextStep();
-                  nextStep();
+                  // nextStep();
+                  // nextStep();
                 }}
               />
               <TimeInput
@@ -69,7 +70,7 @@ export const ResturantFindTableFilterStepper: React.FC<
                       "exclude",
                       "reservationTime"
                     );
-                    nextStep();
+                    // nextStep();
                     return filteredState;
                   });
                 }}

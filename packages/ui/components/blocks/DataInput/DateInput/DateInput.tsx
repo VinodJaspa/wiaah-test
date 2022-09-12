@@ -158,7 +158,7 @@ export const DateInput: React.FC<DateInputProps> = ({
   }, [month]);
 
   React.useEffect(() => {
-    if (activeDates) {
+    if (activeDates && activeDates.length > 0) {
       if (range) {
         if (activeDates.length < 2) return;
         onRangeSelect &&

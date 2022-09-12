@@ -31,7 +31,7 @@ const TabsContext = React.createContext<TabsContextValue>({
 });
 
 export interface TabsProps {
-  // children: MaybeFn<TabsContextValue>;
+  children: MaybeFn<TabsContextValue>;
   onTabChange?: (tabIdx: number) => any;
   currentTabIdx?: number;
 }
@@ -91,7 +91,16 @@ export const Tabs: React.FC<TabsProps> = ({
       }}
       {...props}
     >
-      {children}
+      {runIfFn(children, {
+        currentTabIdx: currentTab,
+        setCurrentTabIdx,
+        tabsComponents,
+        tabsTitles,
+        setTabsComponents: setTabs,
+        setTabsTitlesComponents: setTitles,
+        addTab,
+        addTitle,
+      })}
     </TabsContext.Provider>
   );
 };
@@ -149,7 +158,7 @@ export const TabTitle: React.FC<TabTitleProps> = ({ children, TabKey }) => {
       id: `${TabKey}`,
       component: typeof children === "function" ? children : <>{children}</>,
     });
-  }, [children]);
+  }, []);
 
   return null;
 };

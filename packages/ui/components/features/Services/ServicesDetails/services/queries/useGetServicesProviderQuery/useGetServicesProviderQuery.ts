@@ -5,6 +5,9 @@ import {
 } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
+export const getServiceProviderQueryKey = (
+  filters: FormatedSearchableFilter
+) => ["servicesProvider", { filters }];
 export const useGetServicesProviderQuery = (
   filters: FormatedSearchableFilter,
   options?: UseQueryOptions<
@@ -15,7 +18,7 @@ export const useGetServicesProviderQuery = (
   >
 ) => {
   return useQuery(
-    ["servicesProvider", { filters }],
+    getServiceProviderQueryKey(filters),
     () => {
       return getServicesProviderDataFetcher(filters);
     },

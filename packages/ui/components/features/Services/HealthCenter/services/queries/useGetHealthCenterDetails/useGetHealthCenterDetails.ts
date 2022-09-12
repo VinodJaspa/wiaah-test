@@ -5,6 +5,10 @@ import {
 } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
+export const getHealthCenterDetailsQueryKey = (
+  filters: FormatedSearchableFilter
+) => ["healthCenterDetails", { filters }];
+
 export const useGetHealthCenterDetailsQuery = (
   filters: FormatedSearchableFilter,
   options?: UseQueryOptions<
@@ -15,7 +19,7 @@ export const useGetHealthCenterDetailsQuery = (
   >
 ) => {
   return useQuery(
-    ["healthCenterDetails", { filters }],
+    getHealthCenterDetailsQueryKey(filters),
     () => {
       return getHealthCenterDetailsFetcher(filters);
     },
