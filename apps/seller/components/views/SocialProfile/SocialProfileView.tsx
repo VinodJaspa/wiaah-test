@@ -173,25 +173,26 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   return (
     <div className="flex flex-col h-full">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
-        <Container className="flex-grow flex-col">
-          <div className="w-full flex justify-center overflow-hidden relative h-[26rem]">
-            {profileInfo ? (
-              <SocialProfile shopInfo={{ ...profileInfo.data }} />
-            ) : null}
-            <SocialPostsCommentsDrawer />
-            <ShareWithModal />
-          </div>
+        <Container className="flex-grow flex-col flex gap-10">
+          {/* <div className="w-full flex justify-center overflow-hidden relative h-[26rem]"> */}
+          {profileInfo ? (
+            <SocialProfile shopInfo={{ ...profileInfo.data }} />
+          ) : null}
+          <SocialPostsCommentsDrawer />
+          <ShareWithModal />
+          {/* </div> */}
           {profileInfo && (
             <>
               {profileInfo.data.public ? (
                 <>
-                  <TabsViewer
+                  {/* <TabsViewer
                     tabs={
                       profileInfo.data.accountType === "seller"
                         ? sellerTabs
                         : buyerTabs
                     }
-                  />
+                  /> */}
+                  {sellerTabs.at(0).component}
                   <Divider className="my-4" />
                 </>
               ) : (

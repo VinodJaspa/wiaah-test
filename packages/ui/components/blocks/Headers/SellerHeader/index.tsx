@@ -24,7 +24,7 @@ import {
 } from "ui";
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
-import { useResponsive, useAccountType } from "hooks";
+import { useResponsive } from "hooks";
 import { HtmlDivProps, TranslationTextType } from "types";
 import { runIfFn } from "utils";
 import { useTranslation } from "react-i18next";
@@ -86,7 +86,10 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
           <LocationIconButton
             colorScheme="lightGray"
             outline
-            className="text-icon text-lightBlack"
+            iconProps={{
+              className: "fill-transparent",
+            }}
+            className="text-icon fill-transparent text-lightBlack"
           />
         </div>
       )}
@@ -104,7 +107,6 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             4
           </div>
         </div>
-        {/* {!isMobile && <HiOutlineUsers className="text-xl md:text-4xl" />} */}
 
         <div className="relative" onClick={() => router.push("/chat")}>
           <span className="h-4 w-4 text-[0.5rem]  border-2 border-white rounded-full absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center items-center text-white bg-primary">

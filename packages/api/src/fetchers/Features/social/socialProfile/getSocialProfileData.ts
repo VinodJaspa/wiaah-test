@@ -26,13 +26,13 @@ export const getSocialProfileData = async (
     data: {
       accountType: "seller",
       id: "1230",
-      name: "test name",
+      name: "Jane Daniel",
       public: true,
       thumbnail: "/shop-2.jpeg",
       verified: true,
-      bio: "123 bio",
+      bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eleifend diam cras eu felis egestas aliquam. Amet ornare",
       isFollowed: false,
-      links: ["test"],
+      links: ["this is a test link"],
       location: {
         address: "address",
         city: "city",
@@ -49,7 +49,7 @@ export const getSocialProfileData = async (
       publications: 156,
       subscribers: 135,
       subscriptions: 14,
-      profession:"profession"
+      profession: "Agent",
     },
   };
   return CheckValidation(SocialShopProfileInfoApiResponseValidationSchema, res);

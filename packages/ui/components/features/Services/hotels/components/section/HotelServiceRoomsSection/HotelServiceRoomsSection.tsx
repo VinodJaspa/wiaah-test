@@ -31,20 +31,17 @@ export const HotelServiceRoomsSection: React.FC<
     });
   }
   return (
-    <div className="w-full flex gap-2 flex-col h-[90rem]">
-      <p ref={roomsRef ?? undefined}>{t("Rooms")}</p>
-      <Slider
-        gap={16}
-        leftArrowComponent={CaruoselLeftArrow}
-        rightArrowComponent={CaruoselRightArrow}
-        itemsCount={isMobile ? 1 : isTablet ? 2 : 3}
-      >
+    <div className="w-full flex gap-4 flex-col ">
+      <p className="font-bold text-3xl" ref={roomsRef ?? undefined}>
+        {t("Rooms")}
+      </p>
+      <div className="flex flex-col gap-8">
         {Array.isArray(rooms)
           ? rooms.map((room) => (
               <HotelRoomDetailsCard onBook={handleBook} {...room} />
             ))
           : null}
-      </Slider>
+      </div>
     </div>
   );
 };

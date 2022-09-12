@@ -14,10 +14,11 @@ export const ServiceOnMapLocalizationSection: React.FC<
   const localizationRef = usePublishRef((keys) => keys.localization);
   return (
     <div ref={localizationRef} className="flex flex-col gap-4">
-      <p className="font-bold text-lg">{t("Localization")}</p>
-      <p ref={mapRef ?? undefined}>{t("Show on map")}</p>
-      <HStack>
-        <AspectRatio ratio={3 / 6}>
+      <p className="text-3xl font-bold" ref={mapRef ?? undefined}>
+        {t("Show on map")}
+      </p>
+      <HStack className="rounded-3xl overflow-hidden">
+        <AspectRatio ratio={3 / 5}>
           <WrappedMap
             className="w-full h-full"
             center={location.cords}

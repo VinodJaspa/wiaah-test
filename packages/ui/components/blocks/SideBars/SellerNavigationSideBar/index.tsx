@@ -41,7 +41,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
               : "flex-col gap-12"
           }`}
         >
-          {!isMobile && <img src="/wiaah_logo.png" className="w-full px-8" />}
+          {!isMobile && <img src="/logo.svg" className="w-full px-8" />}
           {links.map((link, i) => {
             const active = link.url === activeLink;
             return (
