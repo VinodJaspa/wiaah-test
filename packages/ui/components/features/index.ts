@@ -8,3 +8,4 @@ export * from "./CurrencyConversion";
 export * from "./Checkout";
 export * from "./Cart";
 export * from "./ServiceManagement";
+export * from "./Search";

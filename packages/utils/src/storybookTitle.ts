@@ -131,6 +131,8 @@ export const storybookSearchFeatureTitle = storybookFeaturesTitle + "Search /";
 export const storybookSearchCardsTitle =
   storybookSearchFeatureTitle + cardsTitle;
 
+export const storybookSearchInputsTitle =
+  storybookSearchFeatureTitle + inputsTitle;
 // checkout
 export const storybookCheckoutTitle = storybookFeaturesTitle + "checkout /";
 export const storybookCheckoutCardsTitle = storybookCheckoutTitle + cardsTitle;

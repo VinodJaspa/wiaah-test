@@ -1,12 +1,14 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { PostCommentCard } from "ui";
+import { HtmlDivProps } from "types";
 
 export interface ScrollableContainerProps {
   children: React.ReactElement[];
   maxShowMoreItems?: number;
   maxInitialItems?: number;
   doesShowMore?: boolean;
+  autoShowAll?:boolean
+  containerProps?:HtmlDivProps
 }
 
 export const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
@@ -14,7 +16,9 @@ export const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
   maxInitialItems = children.length,
   doesShowMore = true,
   maxShowMoreItems = maxInitialItems,
-  ...props
+  autoShowAll,
+  containerProps,
+  
 }) => {
   const { t } = useTranslation();
   const [items, setItems] = React.useState<React.ReactElement[]>(
@@ -25,6 +29,14 @@ export const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
   const MockCommentsContainerRef = React.useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = React.useState<boolean>(false);
   const isShowMore = (children.length || 1) > maxInitialItems && doesShowMore;
+
+React.useEffect(()=>{
+  if(autoShowAll){
+    setShowMore(true)
+  }else{
+    setShowMore(false)
+  }
+},[autoShowAll])
 
   function setHeight() {
     const maxH = MockCommentsContainerRef.current?.offsetHeight;
@@ -62,10 +74,11 @@ export const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
     <div className="flex flex-col">
       <div className="flex relative" onLoad={handleLoaded}>
         <div
+        {...containerProps}
           ref={commentsContainerRef}
           className={`${
             showMore ? "overflow-y-scroll" : "overflow-y-hidden"
-          } w-full gap-2 flex flex-col thinScroll`}
+          } ${containerProps ? containerProps.className || "" : ""} w-full flex flex-col thinScroll`}
           style={{
             height: containerHeight,
           }}
@@ -77,7 +90,8 @@ export const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
         </div>
 
         <div
-          className="absolute w-full flex flex-col opacity-0 pointer-events-none gap-2"
+        {...containerProps}
+          className={`${containerProps ? containerProps.className || "" : ""} absolute w-full flex flex-col opacity-0 pointer-events-none`}
           onLoad={handleLoaded}
           ref={MockCommentsContainerRef}
         >
@@ -88,7 +102,7 @@ export const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
             ))}
         </div>
       </div>
-      {isShowMore && (
+      {isShowMore && !autoShowAll ? (
         <div className="font-semibold cursor-pointer text-xl w-full py-2 text-center capitalize">
           {showMore === false ? (
             <span data-testid="ShowMoreBtn" onClick={handleShowMoreComments}>
@@ -100,7 +114,7 @@ export const ScrollableContainer: React.FC<ScrollableContainerProps> = ({
             </span>
           )}
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

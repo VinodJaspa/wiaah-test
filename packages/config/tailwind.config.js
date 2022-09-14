@@ -19,6 +19,7 @@ module.exports = {
         "custum-aspect": "5 / 4",
       },
       colors: {
+        iconGray:"#999999",
         PHText: "#626262",
         lightGray: "#F5F5F5",
         lightBlack: "#00000099",

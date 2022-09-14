@@ -26,6 +26,7 @@ import {
   HashtagIcon,
   LocationButton,
   Divider,
+  ScrollableContainer
 } from "ui";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
@@ -98,11 +99,19 @@ export const placesPlaceholder: string[] = [
   "hotel",
   "restaurant",
   "health center",
+  "vehicle", "shop",
+  "hotel",
+  "restaurant",
+  "health center",
   "vehicle",
 ];
 
 export const hashtagsPlaceholder: string[] = [
   "Fashion",
+  "Gaming",
+  "Food",
+  "Sports",
+  "Relaxing",  "Fashion",
   "Gaming",
   "Food",
   "Sports",
@@ -192,21 +201,25 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
             />
             <Divider />
             <div className="text-white flex flex-col gap-4">
+              <ScrollableContainer containerProps={{className:"gap-4"}} autoShowAll maxInitialItems={5} >
               {placesPlaceholder.map((place, i) => (
                 <LocationButton
-                  iconProps={{ className: "" }}
-                  name={place}
-                  key={i}
+                iconProps={{ className: "" }}
+                name={place}
+                key={i}
                 />
-              ))}
+                ))}
+                </ScrollableContainer>
             </div>
             <Divider />
+            <ScrollableContainer containerProps={{className:"gap-4"}} autoShowAll maxInitialItems={5}>
             {hashtagsPlaceholder.map((tag, i) => (
               <HStack className="text-white gap-[1rem]" key={i}>
                 <HashtagIcon className="p-2 text-3xl rounded-full bg-white" />
                 <p>{tag}</p>
               </HStack>
             ))}
+            </ScrollableContainer>
           </div>
         </SellerNavigationSideBar>
       )}
