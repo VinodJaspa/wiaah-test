@@ -126,10 +126,10 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             <MenuButton>
               <div className="flex flex-col justify-center">
                 <Avatar
-                  className="h-10 w-10 bg-black"
+                  className=""
                   showBorder={false}
                   name="wiaah"
-                  photoSrc="/wiaah_logo.png"
+                  src="/wiaah_logo.png"
                 />
               </div>
             </MenuButton>

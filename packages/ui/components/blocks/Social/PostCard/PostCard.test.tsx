@@ -6,6 +6,7 @@ import { PostCardInfo } from "types";
 const postCardPlaceholder: PostCardInfo = {
   postInfo: {
     url: "test",
+    numberOfShares: 4,
     views: 159,
     createdAt: new Date(Date.UTC(2022, 3)).toString(),
     id: "1",
@@ -28,6 +29,7 @@ const postCardPlaceholder: PostCardInfo = {
     name: "buyer name",
     thumbnail: "/shop-2.jpeg",
     verifed: true,
+    profession: "Profession",
   },
 };
 

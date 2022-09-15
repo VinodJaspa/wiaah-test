@@ -41,6 +41,7 @@ export const getServicePostDataFetcher = async (
       type: "hotel",
       content: sentence.substring(0, randomNum(sentence.length)),
       profileInfo: {
+        profession: "profession",
         accountType: "seller",
         id: "1263",
         name: "seller name",

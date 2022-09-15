@@ -41,7 +41,7 @@ import {
   StepperHeader,
   TimeInput,
 } from "ui";
-import { randomNum } from "utils";
+import { mapArray, randomNum } from "utils";
 
 type ServiceInputData = {
   label: string;
@@ -320,18 +320,18 @@ export const ServicesSearchView: React.FC = () => {
               t("Traditional", t("Egyptian")),
             ],
           },
-          {
-            label: t("Michelin Guide"),
-            valueKey: "guide",
-            placeholder: t("Select Michelin Guide"),
-            options: [
-              t("Michelin Guide"),
-              t("Michelin 1 star"),
-              t("Michelin 2 stars"),
-              t("Michelin 3 stars"),
-              t("Michelin Bib Gourmand"),
-            ],
-          },
+          // {
+          //   label: t("Michelin Guide"),
+          //   valueKey: "guide",
+          //   placeholder: t("Select Michelin Guide"),
+          //   options: [
+          //     t("Michelin Guide"),
+          //     t("Michelin 1 star"),
+          //     t("Michelin 2 stars"),
+          //     t("Michelin 3 stars"),
+          //     t("Michelin Bib Gourmand"),
+          //   ],
+          // },
           {
             label: t("Setting and ambiance"),
             valueKey: "setting_&_ambiance",
@@ -398,6 +398,18 @@ export const ServicesSearchView: React.FC = () => {
             valueKey: "cancellation",
             placeholder: t("Select Cancellation Option"),
             options: [t("Free Cancellation"), t("Paid Cancellation")],
+          },
+          {
+            label: t("Payment Methods"),
+            placeholder: t("Select Payment Methods"),
+            valueKey: "payment",
+            options: [
+              t("Credit Card"),
+              t("Visa"),
+              t("Mastercard"),
+              t("Check"),
+              t("Cash"),
+            ],
           },
         ];
       case "vehicle":
@@ -501,6 +513,12 @@ export const ServicesSearchView: React.FC = () => {
               (_, i) => `${(i + 1) * 10} ${t("on the menu")}`
             ),
           },
+          {
+            label: t("Cancellation Option"),
+            valueKey: "cancellation",
+            placeholder: t("Select Cancellation Option"),
+            options: [t("Free Cancellation"), t("Paid Cancellation")],
+          },
         ];
       default:
         return [];
@@ -510,64 +528,99 @@ export const ServicesSearchView: React.FC = () => {
   return (
     <div className="flex flex-col gap-10 w-full">
       <Formik
-        initialValues={{ serviceType: "general" } as any}
+        initialValues={{ serviceType: "hotel" } as any}
         onSubmit={() => {}}
       >
         {({ values, setFieldValue }) => {
-          console.log({ values });
+          const filters = getFilters(values["serviceType"]);
+          const filtersLen = filters.length + 4;
+          const maxFiltersPerLine = 6;
+
+          const getFiltersPerLine = (filtersLen: number): number => {
+            let foundFiltersPerLine = false;
+            let currentCycle = 1;
+            let filtersPerLine = 0;
+
+            while (foundFiltersPerLine !== true && currentCycle < 10) {
+              const remaining = filtersLen / currentCycle;
+
+              console.log(
+                { filtersLen, filtersPerLine: currentCycle, remaining },
+                remaining
+              );
+
+              if (
+                Number.isInteger(remaining) &&
+                remaining < maxFiltersPerLine
+              ) {
+                filtersPerLine = remaining;
+                foundFiltersPerLine = true;
+              } else {
+                currentCycle += 1;
+              }
+            }
+
+            return filtersPerLine;
+          };
+
+          const filtersPerLine = getFiltersPerLine(filtersLen);
+
           return (
             <Form className="flex flex-col gap-7">
               <ServicesSearchBadgeList
                 activeKey={values["serviceType"]}
-                additionalLinks={[
-                  { name: "All", key: "general", icon: ServicesIcon },
-                ]}
                 onClick={(serviceType) => {
-                  console.log("badge clicked", serviceType);
                   setFieldValue("serviceType", serviceType);
                 }}
               />
-              <div className="flex gap-8">
+              {/* <div className="flex gap-8">
                 <Stack divider={<Divider variant="vert" />}>
-                  <FormikInput<ProductSearchLocationInputProps>
-                    as={ProductSearchLocationInput}
-                    name={"ProductSearchLocationInput"}
-                  />
-                  <Menu className="w-full">
-                    <MenuButton>
-                      <InputGroup
-                        className="border-[0px] rounded-xl"
-                        style={{
-                          boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.03",
-                        }}
-                      >
-                        <InputLeftElement>
-                          <CalenderIcon className="text-primary text-xl" />
-                        </InputLeftElement>
-                        <Input
-                          placeholder={
-                            getCalenderFilter(values["serviceType"])
-                              ?.placeholder ||
-                            t("Select Service to Choose a date")
-                          }
-                          readOnly
-                        />
-                      </InputGroup>
-                    </MenuButton>
-                    <MenuList origin="top left" className="p-4 left-0 ">
-                      {getCalenderFilter(values["serviceType"])?.component(
-                        console.log
-                      )}
-                    </MenuList>
-                  </Menu>
+                  
                 </Stack>
                 <Button className="flex gap-2 text-white items-center">
                   <SearchIcon />
                   <p>{t("Submit")}</p>
                 </Button>
-              </div>
-              <div className="grid grid-cols-6 gap-5">
-                {getFilters(values["serviceType"]).map((filter, i) => (
+              </div> */}
+              <div
+                style={{
+                  gridTemplateColumns: `repeat(${filtersPerLine},1fr)`,
+                }}
+                className="grid gap-5"
+              >
+                <FormikInput<ProductSearchLocationInputProps>
+                  as={ProductSearchLocationInput}
+                  name={"ProductSearchLocationInput"}
+                />
+                <Menu className="w-full">
+                  <MenuButton>
+                    <InputGroup
+                      className="border-[0px] rounded-xl"
+                      style={{
+                        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.03",
+                      }}
+                    >
+                      <InputLeftElement>
+                        <CalenderIcon className="text-primary text-xl" />
+                      </InputLeftElement>
+                      <Input
+                        className="h-12"
+                        placeholder={
+                          getCalenderFilter(values["serviceType"])
+                            ?.placeholder ||
+                          t("Select Service to Choose a date")
+                        }
+                        readOnly
+                      />
+                    </InputGroup>
+                  </MenuButton>
+                  <MenuList origin="top left" className="p-4 left-0 ">
+                    {getCalenderFilter(values["serviceType"])?.component(
+                      console.log
+                    )}
+                  </MenuList>
+                </Menu>
+                {mapArray(filters, (filter, i) => (
                   <FormikInput<FilterSelectInputProps>
                     key={i}
                     label={filter.label}

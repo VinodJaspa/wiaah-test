@@ -112,11 +112,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
             </div>
           </div>
           <FilterModal />
-          <ShopCardsListWrapper
-            // grid={isMobile}
-            cols={cols}
-            items={ShopCardsInfoPlaceholder}
-          />
+          <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} />
         </div>
       ),
     },

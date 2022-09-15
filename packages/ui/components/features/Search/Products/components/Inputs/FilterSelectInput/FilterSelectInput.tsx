@@ -22,7 +22,7 @@ export const FilterSelectInput: React.FC<FilterSelectInputProps> = (props) => {
       style={{
         border: "0.3px solid rgba(0, 0, 0, 0.2)",
       }}
-      className="border-[0px] rounded-md w-full"
+      className="border-[0px] h-12 rounded-md w-full"
     >
       <Select
         placeholder={props.placeholder}

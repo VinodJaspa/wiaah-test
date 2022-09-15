@@ -23,7 +23,7 @@ export const ProductSearchLocationInput: React.FC<
       <Input
         {...props}
         placeholder={props ? props.placeholder || ph : ph}
-        className="rounded-xl text-sm font-normal text-black placeholder:text-black placeholder:text-opacity-40"
+        className="rounded-xl h-12 text-sm font-normal text-black placeholder:text-black placeholder:text-opacity-40"
       />
     </InputGroup>
   );

@@ -28,16 +28,12 @@ export const Avatar: React.FC<AvatarProps> = ({
   }
 
   return (
-    <div
-      className={`${
-        className || ""
-      } relative w-12 rounded-full overflow-hidden`}
-    >
+    <div className={`${className || ""} relative w-12`}>
       <AspectRatio ratio={1}>
         <img
           onClick={handleAvatarClick}
           src={photoSrc || src}
-          className={`w-full h-full bg-black cursor-pointer object-cover`}
+          className={`w-full h-full overflow-hidden rounded-full bg-black cursor-pointer object-cover`}
           {...props}
         />
 

@@ -14,6 +14,7 @@ export const Stack: React.FC<StackProps> = ({
   className,
   ...props
 }) => {
+  console.log({ children });
   return (
     <div
       {...props}
@@ -21,18 +22,16 @@ export const Stack: React.FC<StackProps> = ({
         className || ""
       } w-full flex`}
     >
-      {Array.isArray(children)
-        ? children.map((child, i) => (
-            <>
-              {child}
-              {divider
-                ? i === children.length - 1
-                  ? null
-                  : runIfFn(divider)
-                : null}
-            </>
-          ))
-        : children}
+      {React.Children.map(children, (child, i) => (
+        <>
+          {child}
+          {divider && Array.isArray(children)
+            ? i === children.length - 1
+              ? null
+              : runIfFn(divider)
+            : null}
+        </>
+      ))}
     </div>
   );
 };

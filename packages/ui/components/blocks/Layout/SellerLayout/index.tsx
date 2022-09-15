@@ -27,6 +27,8 @@ import {
   LocationButton,
   Divider,
   ScrollableContainer,
+  SocialReportModal,
+  SocialPostSettingsPopup,
 } from "ui";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
@@ -187,6 +189,8 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
 
   return (
     <Root>
+      <SocialReportModal />
+      <SocialPostSettingsPopup />
       {sideBar && (
         <SellerNavigationSideBar
           headerElement={

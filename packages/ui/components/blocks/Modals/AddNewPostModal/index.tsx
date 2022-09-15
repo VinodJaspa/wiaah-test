@@ -7,7 +7,12 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-  ModalCloseButton,
+  ImageIcon,
+  VideoCameraIcon,
+  SmilingFaceEmoji,
+  PlayButtonFillIcon,
+  PersonIcon,
+  LocationOnPointIcon,
   Button,
   Divider,
   HStack,
@@ -17,12 +22,8 @@ import {
 import { FloatingContainer, Avatar } from "ui";
 import { useUserData } from "hooks";
 import { MdClose } from "react-icons/md";
-import { BsEmojiSmile, BsPlayFill } from "react-icons/bs";
-import { BiImage } from "react-icons/bi";
-import { CgPlayButtonR } from "react-icons/cg";
-import { HiOutlineLocationMarker } from "react-icons/hi";
-import { IoVideocamOutline } from "react-icons/io5";
-import { getFileSrcData, FileRes } from "ui/components/helpers";
+import { BsPlayFill } from "react-icons/bs";
+import { getFileSrcData, FileRes, runIfFn } from "utils";
 
 export interface AddNewPostModalProps {}
 
@@ -43,6 +44,57 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
       cleanUpStates();
     }
   }, [isOpen]);
+
+  const buttons: {
+    icon: React.ReactNode;
+    name: string;
+    enabled: boolean;
+    note: string;
+    className: string;
+  }[] = [
+    {
+      icon: ImageIcon,
+      name: t("Picture"),
+      enabled: true,
+      note: "",
+      className: "bg-red-100 fill-red-500 text-red-500",
+    },
+    {
+      icon: SmilingFaceEmoji,
+      name: t("Feeling"),
+      enabled: true,
+      note: "",
+      className: "bg-yellow-100 fill-yellow-500 text-yellow-500",
+    },
+    {
+      icon: VideoCameraIcon,
+      name: t("Live"),
+      enabled: false,
+      note: t("Cooming Soon"),
+      className: "bg-blue-100 fill-blue-500 text-blue-500",
+    },
+    {
+      icon: LocationOnPointIcon,
+      name: t("Location"),
+      enabled: true,
+      note: "",
+      className: "bg-primary-100 fill-primary-500 text-primary-500",
+    },
+    {
+      icon: PlayButtonFillIcon,
+      name: t("Action"),
+      note: "",
+      className: "bg-purple-100 fill-purple-500 text-purple-500",
+      enabled: true,
+    },
+    {
+      icon: PersonIcon,
+      name: t("Idenity"),
+      enabled: true,
+      note: "",
+      className: "bg-indigo-100 fill-indigo-500 text-indigo-500",
+    },
+  ];
 
   function cleanUpStates() {
     setUploadLimitHit(false);
@@ -100,7 +152,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
   return user ? (
     <Modal isOpen={isOpen} onClose={CloseModal} onOpen={OpenModal}>
       <ModalOverlay />
-      <ModalContent className="min-w-[min(100%,40rem)]">
+      <ModalContent className="min-w-[min(100%,70rem)]">
         <MediaUploadModal
           onVidUpload={addUploadedVideo}
           onImgUpload={addUploadedImg}
@@ -112,12 +164,8 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
               {
                 label: (
                   <Button
-                    // fontSize={"xx-large"}
                     colorScheme={"gray"}
                     className="px-1 py-1 -translate-y-1/2"
-                    // color="gray.900"
-                    // rounded={"full"}
-                    // bgColor="gray.200"
                     aria-label="close new post modal"
                     onClick={CloseModal}
                   >
@@ -134,7 +182,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
               {t("create_post", "Create Post")}
             </span>
           </FloatingContainer>
-          <Divider className="border-gray-500" />
+          <Divider className="" />
           <HStack>
             <Avatar name={user.name} photoSrc={user.photoSrc} />
             <VStack>
@@ -149,33 +197,27 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                 "What's on your mind"
               )}, ${user.name}?`}
             />
-            <HStack className="w-full justify-center gap-8 text-4xl">
-              <BiImage
-                className="cursor-pointer text[1.3em] fill-red-500"
-                data-testid="AttachPhotoBtn"
-                onClick={() => setUploadType("picture")}
-              />
-              <IoVideocamOutline
-                className="cursor-pointer text[1.3em] text-yellow-300 "
-                data-testid="AttachVideoBtn"
-                onClick={() => setUploadType("video")}
-              />
-              <HiOutlineLocationMarker
-                className="cursor-pointer text[1.3em] text-blue-500"
-                data-testid="AddPostLocationBtn"
-              />
-              <BsEmojiSmile
-                className="cursor-pointer text[1.3em] fill-purple-600"
-                data-testid="AddStatusBtn"
-                fill="purple.600"
-              />
-              <CgPlayButtonR
-                className="cursor-pointer text[1.3em] text-primary"
-                data-testid="AttachActionBtn"
-              />
-            </HStack>
-            <Button className="font-bold text-md lg:text-lg xl:text-xl">
-              {t("post", "Post")}
+            <div className="flex w-full gap-8 px-[4.5rem]">
+              {buttons.map(({ className, enabled, icon, name }, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col w-full items-center gap-1"
+                >
+                  <div
+                    className={`${className || ""} ${
+                      enabled
+                        ? "cursor-pointer"
+                        : "opacity-75 cursor-not-allowed"
+                    } flex py-2 items-center justify-center gap-2 w-full rounded-xl`}
+                  >
+                    <div className="text-xl">{runIfFn(icon)}</div>
+                    <p>{enabled ? name : t("Cooming Soon")}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <Button className="font-bold self-end text-md lg:text-lg xl:text-xl">
+              {t("Post")}
             </Button>
           </div>
           {uploadiLimitHit && (

@@ -5,10 +5,7 @@ import {
   CommentIcon,
   HeartIcon,
   ShareIcon,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
+  useSocialPostSettingsPopup,
   HorizontalDotsIcon,
 } from "ui";
 import { Interaction } from "types";
@@ -26,6 +23,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   profileInfo,
   onInteraction,
 }) => {
+  const { OpenModal } = useSocialPostSettingsPopup();
   const { t } = useTranslation();
   const { getSince } = useDateDiff({
     from: new Date(postInfo.createdAt),
@@ -62,16 +60,10 @@ export const PostCard: React.FC<PostCardProps> = ({
                 <p>{profileInfo.profession}</p>
               </div>
               <div className="flex items-end flex-col">
-                <Menu>
-                  <MenuButton>
-                    <HorizontalDotsIcon className="text-2xl text-white fill-white cursor-pointer" />
-                  </MenuButton>
-                  <MenuList>
-                    <MenuItem>
-                      <p className="text-black">{t("Report")}</p>
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
+                <HorizontalDotsIcon
+                  onClick={() => OpenModal(postInfo?.id)}
+                  className="text-2xl text-white fill-white cursor-pointer"
+                />
                 <p className="font-semibold">
                   {date ? `${date.value} ${date.timeUnit} ${t("ago")}` : ""}
                 </p>

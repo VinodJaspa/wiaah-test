@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { NotificationData } from "types";
-import { useDateDiff, Button, Avatar } from "ui";
+import { useDateDiff, Button, Avatar, EllipsisText } from "ui";
 export interface NotifiactionCardProps {
   notificationDetails: NotificationData;
 }
@@ -22,8 +22,11 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
       switch (type) {
         case "info":
           return attachment ? (
-            <div className="w-12 h-12">
-              <img className="w-12 h-12 object-cover" src={attachment.src} />
+            <div className="w-full h-16">
+              <img
+                className="w-full h-full object-cover"
+                src={attachment.src}
+              />
             </div>
           ) : null;
 
@@ -46,20 +49,24 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
       <div
         className={`${
           type === "follow-request" ? "flex-col" : ""
-        } flex items-center gap-2 justify-between max-w-full`}
+        } flex items-center gap-4 justify-between max-w-full`}
       >
         <div className="flex w-full items-center gap-2">
-          <Avatar photoSrc={by.thumbnail} name={by.name} />
-          <p className="whitespace-pre-wrap">
-            <span className="font-bold">{by.name} </span>
-            {message}{" "}
-            <span className="text-gray-500">
-              {since.value}
-              {since.timeUnit.substring(0, 1)}
-            </span>
-          </p>
+          <Avatar className="min-w-[3rem]" src={by.thumbnail} name={by.name} />
+          <div className="flex flex-col gap-1 w-full whitespace-pre-wrap">
+            <div className="flex justify-between">
+              <span className="font-bold">{by.name} </span>
+              <span className="text-gray-500 text-right font-bold">
+                {since.value}
+                {since.timeUnit.substring(0, 1)}
+              </span>
+            </div>
+            <EllipsisText maxLines={2}>{message}</EllipsisText>
+          </div>
         </div>
-        <div className="min-w-[3rem]">{TypeSpecificContent()}</div>
+        <div className="min-w-[5.1rem] flex justify-end">
+          {TypeSpecificContent()}
+        </div>
       </div>
     );
   } catch (err) {

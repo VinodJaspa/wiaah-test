@@ -10,6 +10,7 @@ import {
   LinkIcon,
   VerifiedIcon,
   QrcodeDisplay,
+  SocialProfileOptionsDropdown,
 } from "ui";
 import { useLoginPopup, useStory } from "ui/Hooks";
 import { mapArray, NumberShortner } from "utils";
@@ -71,6 +72,10 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
 
   return (
     <div className="flex flex-col w-full bg-primary h-80 relative rounded-2xl ">
+      <div className="absolute right-10 text-white text-xl top-2">
+        <SocialProfileOptionsDropdown profileId={id} />
+      </div>
+
       <div className="flex flex-col h-[11rem] w-full  items-end justify-center pt-6 px-8 gap-3 text-white">
         <div className="flex flex-col gap-3 items-center">
           <QrcodeDisplay
