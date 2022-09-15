@@ -59,7 +59,6 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
         setUploadLimitHit(true);
         return false;
       }
-      console.log(uploadedImages.length, uploadedVideos.length);
       return true;
     },
     [uploadedImages, uploadedVideos]
@@ -71,7 +70,6 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
       console.log(ValidateLimit(1));
       setUploadedImages((imgs) => [...imgs, imgSrc]);
     }
-    // console.log("test");
   }
   function addUploadedVideo(vidSrc: string) {
     const valid = ValidateLimit(1);

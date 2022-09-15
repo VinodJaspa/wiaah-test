@@ -7,7 +7,9 @@ import {
   AddBadgeButton,
   MultiChooseInput,
   MultiChooseInputProps,
+  PlusIcon,
 } from "ui";
+import { singleFileValidation, singlePhotoValidation } from "validation";
 import { object, string, number, array, InferType } from "yup";
 
 export interface AddMenuDishInputProps {
@@ -18,6 +20,7 @@ const formValidSchema = object({
   title: string().required(),
   price: number().required().min(1),
   ingredients: array().of(string().required()).min(0).required(),
+  thumbnail: singlePhotoValidation.required(),
 });
 
 export const AddMenuDishInput: React.FC<AddMenuDishInputProps> = ({
@@ -28,7 +31,7 @@ export const AddMenuDishInput: React.FC<AddMenuDishInputProps> = ({
   return add ? (
     <Formik<InferType<typeof formValidSchema>>
       validationSchema={formValidSchema}
-      initialValues={{ price: 0, title: "", ingredients: [] }}
+      initialValues={{ price: 0, title: "", ingredients: [], thumbnail: null }}
       onSubmit={(data) => {
         onAdd && onAdd(data);
         setAdd(false);
@@ -67,6 +70,10 @@ export const AddMenuDishInput: React.FC<AddMenuDishInputProps> = ({
                 t("meat"),
               ]}
             />
+            <div className="flex flex-col gap-2 cursor-pointer justify-center items-center w-32 h-24 border-primary border-2 rounded-2xl">
+              <PlusIcon className="text-primary text-2xl" />
+              <p>{t("Add Photo")}</p>
+            </div>
             <div className="flex items-center gap-2 justify-end">
               <Button onClick={() => setAdd(false)} className="h-fit self-end">
                 {t("Cancel")}

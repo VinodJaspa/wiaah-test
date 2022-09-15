@@ -20,7 +20,9 @@ export const UnDiscountedPriceDisplay: React.FC<
   return (
     <p
       {...props}
-      className={`${props.className || ""} line-through whitespace-nowrap`}
+      className={`${
+        props.className || ""
+      } line-through  decoration-2 whitespace-nowrap`}
     >
       {currencySymbol}
       {Math.abs(unDiscountedPrice).toFixed(decimel ? 2 : 0)}

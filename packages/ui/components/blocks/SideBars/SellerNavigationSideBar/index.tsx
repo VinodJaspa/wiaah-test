@@ -54,7 +54,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
                 <span
                   className={`${
                     active ? "text-black fill-black" : "text-white fill-white"
-                  } text-black text-icon`}
+                  } text-icon`}
                 >
                   {typeof link.icon === "function" ? link.icon() : null}
                 </span>
