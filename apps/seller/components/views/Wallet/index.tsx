@@ -35,28 +35,19 @@ export const WalletView: React.FC = () => {
 
 const sections: SettingsSectionType[] = [
   {
-    panelName: {
-      translationKey: "withdrawal",
-      fallbackText: "Withdrawal",
-    },
+    panelName: "Withdrawal",
     panelIcon: FaMoneyBill,
     panelUrl: "/withdrwal",
     panelComponent: <WithdrawalSection />,
   },
   {
-    panelName: {
-      translationKey: "transactions",
-      fallbackText: "Transactions",
-    },
+    panelName: "Transactions",
     panelIcon: AiOutlineTransaction,
     panelUrl: "/transactions",
     panelComponent: <TransactionsHistorySection />,
   },
   {
-    panelName: {
-      translationKey: "vouchers",
-      fallbackText: "Vouchers",
-    },
+    panelName: "Vouchers",
     panelIcon: FaPercent,
     panelUrl: "/vouchers",
     panelComponent: <VouchersSection />,

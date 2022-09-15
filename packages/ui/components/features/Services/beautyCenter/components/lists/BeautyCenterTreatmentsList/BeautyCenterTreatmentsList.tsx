@@ -25,7 +25,7 @@ export const BeautyCenterTreatmentsList: React.FC<
   return (
     <div ref={treatmentsRef} className="flex flex-col gap-8">
       <p className="font-bold text-lg md:text-xl">{t("Treatments")}</p>
-      <div className="flex flex-col gap-8 max-h-[40rem] thinScroll pr-2 overflow-y-scroll">
+      <div className="flex flex-col gap-8 pr-2 ">
         {treatments.map((treatment, i) => (
           <BeautyCenterTreatmentCard
             {...treatment}

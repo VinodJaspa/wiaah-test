@@ -7,6 +7,7 @@ export interface PriceDisplayProps extends HtmlDivProps {
   priceObject?: PriceType;
   price?: number;
   symbol?: boolean;
+  decimel?: boolean;
 }
 
 export const PriceDisplay: React.FC<PriceDisplayProps> = ({
@@ -14,6 +15,7 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
   className,
   price = 0,
   symbol = true,
+  decimel,
   ...props
 }) => {
   return (
@@ -21,24 +23,28 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
       {PriceConverter({
         amount: priceObject ? priceObject.amount || price : price,
         symbol,
+        decimel,
       })}
     </p>
   );
 };
 
 export const PriceConverter = ({
-  amount: inAmount,
+  amount,
   symbol,
+  decimel = false,
 }: {
   amount: number;
   symbol: boolean;
+  decimel?: boolean;
 }): string | null => {
-  const amount = parseInt(inAmount);
   const currency = useRecoilValue(PreferedCurrencyState);
   if (typeof amount !== "number") return null;
   return currency
     ? `${symbol ? currency.currencySymbol : ""}${(
         amount * currency.currencyRateToUsd
-      ).toFixed(2)}${!symbol ? ` ${currency.currencyCode}` : ""}`
-    : `${symbol ? "$" : ""}${amount.toFixed(2)}${symbol ? "" : " usd"}`;
+      ).toFixed(decimel ? 2 : 0)}${!symbol ? ` ${currency.currencyCode}` : ""}`
+    : `${symbol ? "$" : ""}${amount.toFixed(decimel ? 2 : 0)}${
+        symbol ? "" : " usd"
+      }`;
 };

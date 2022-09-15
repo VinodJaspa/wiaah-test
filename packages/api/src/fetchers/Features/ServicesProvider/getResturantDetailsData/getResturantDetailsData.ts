@@ -26,6 +26,15 @@ export type getResturantServiceApiResponseFetcher = AsyncReturnType<
   typeof getResturantServiceDetialsData
 >;
 
+const ingredients = ["tomatos", "sunflower oil", "sugar", "salt", "garlic"];
+
+const dishs = [
+  "https://robbreport.com/wp-content/uploads/2020/12/grilled-dorade-vernick-fish.jpg?w=1000",
+  "https://blog.opentable.com/wp-content/uploads/sites/108/2017/07/Blog-Waypoint-credit-Andrea-Merrill-copy.jpeg",
+  "https://thumbor.thedailymeal.com/UfjGIn_apOS7Tmc2QdSrHG6mws0=/870x565/https://www.thedailymeal.com/sites/default/files/slideshows/1923542/2199703/9_Burger_Father_s_Office_slide_edit.jpg",
+  "https://assets.simpleviewinc.com/simpleview/image/upload/c_limit,h_1200,q_75,w_1200/v1/clients/laramiewy/burger_dining_laramie_wy_d0a8ece4-eb2d-4525-84f6-d0c64c71c851.jpg",
+];
+
 export const getResturantServiceDetialsData = async (
   filters: FormatedSearchableFilter
 ): Promise<ResturantDetailsApiResponse> => {
@@ -110,80 +119,39 @@ export const getResturantServiceDetialsData = async (
       workingDays: [
         {
           weekDay: "Friday",
-          from: {
-            hour: 0,
-            minutes: 0,
-          },
-          to: {
-            hour: 0,
-            minutes: 0,
-          },
+
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Monday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Saturday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Sunday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Thursday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Tuesday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Wednesday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
       ],
       deposit: randomNum(50),
@@ -197,7 +165,7 @@ export const getResturantServiceDetialsData = async (
             "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of",
             "packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
           ],
-          policyTitle: "checkin - checkout terms",
+          policyTitle: "Reservation terms",
         },
       ],
       cancelationPolicies: [
@@ -222,33 +190,39 @@ export const getResturantServiceDetialsData = async (
           listTitle: "Starter",
           menuItems: [
             {
-              id: `${randomNum(1553534321)}`,
               price: randomNum(50),
-              title:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been ",
+              id: `${randomNum(1553534321)}`,
+              title: "Lorem Ipsum is simply dummy text of the printing",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
-              id: `${randomNum(1553534321)}`,
               price: randomNum(50),
-              title:
-                "survived not only five centuries, but also the leap into electronic",
+              id: `${randomNum(1553534321)}`,
+              title: "survived not only five centuries, ",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
-              id: `${randomNum(1553534321)}`,
               price: randomNum(50),
-              title:
-                "readable content of a page when looking at its layout. The point of using Lorem",
+              id: `${randomNum(1553534321)}`,
+              title: "readable content of a page when looking at ",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
-              id: `${randomNum(1553534321)}`,
               price: randomNum(50),
-              title:
-                "many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose",
+              id: `${randomNum(1553534321)}`,
+              title: "many web sites still in their infancy.",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
-              id: `${randomNum(1553534321)}`,
               price: randomNum(50),
+              id: `${randomNum(1553534321)}`,
               title: "Lorem Ipsum is simply dummy text of",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
           ],
         },
@@ -256,33 +230,39 @@ export const getResturantServiceDetialsData = async (
           listTitle: "Main Course",
           menuItems: [
             {
-              id: `${randomNum(1553534321)}`,
               price: randomNum(50),
-              title:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been ",
+              id: `${randomNum(1553534321)}`,
+              title: "Lorem Ipsum is simply dummy text of the printing",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
               price: randomNum(50),
               id: `${randomNum(1553534321)}`,
-              title:
-                "survived not only five centuries, but also the leap into electronic",
+              title: "survived not only five centuries, ",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
               price: randomNum(50),
               id: `${randomNum(1553534321)}`,
-              title:
-                "readable content of a page when looking at its layout. The point of using Lorem",
+              title: "readable content of a page when looking at ",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
-              id: `${randomNum(1553534321)}`,
               price: randomNum(50),
-              title:
-                "many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose",
+              id: `${randomNum(1553534321)}`,
+              title: "many web sites still in their infancy.",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
               price: randomNum(50),
               id: `${randomNum(1553534321)}`,
               title: "Lorem Ipsum is simply dummy text of",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
           ],
         },
@@ -292,31 +272,37 @@ export const getResturantServiceDetialsData = async (
             {
               price: randomNum(50),
               id: `${randomNum(1553534321)}`,
-              title:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been ",
+              title: "Lorem Ipsum is simply dummy text of the printing",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
               price: randomNum(50),
               id: `${randomNum(1553534321)}`,
-              title:
-                "survived not only five centuries, but also the leap into electronic",
+              title: "survived not only five centuries, ",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
               price: randomNum(50),
               id: `${randomNum(1553534321)}`,
-              title:
-                "readable content of a page when looking at its layout. The point of using Lorem",
+              title: "readable content of a page when looking at ",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
               price: randomNum(50),
               id: `${randomNum(1553534321)}`,
-              title:
-                "many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose",
+              title: "many web sites still in their infancy.",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
               price: randomNum(50),
               id: `${randomNum(1553534321)}`,
               title: "Lorem Ipsum is simply dummy text of",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
           ],
         },
@@ -326,31 +312,37 @@ export const getResturantServiceDetialsData = async (
             {
               price: randomNum(50),
               id: `${randomNum(1553534321)}`,
-              title:
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been ",
+              title: "Lorem Ipsum is simply dummy text of the printing",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
               price: randomNum(50),
               id: `${randomNum(1553534321)}`,
-              title:
-                "survived not only five centuries, but also the leap into electronic",
+              title: "survived not only five centuries, ",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
               price: randomNum(50),
               id: `${randomNum(1553534321)}`,
-              title:
-                "readable content of a page when looking at its layout. The point of using Lorem",
+              title: "readable content of a page when looking at ",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
               price: randomNum(50),
               id: `${randomNum(1553534321)}`,
-              title:
-                "many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose",
+              title: "many web sites still in their infancy.",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
             {
               price: randomNum(50),
               id: `${randomNum(1553534321)}`,
               title: "Lorem Ipsum is simply dummy text of",
+              thumbnail: dishs[randomNum(dishs.length)],
+              ingredients,
             },
           ],
         },

@@ -22,6 +22,7 @@ import {
   SpinnerFallback,
   ServiceDetailsReviewsSection,
   SellerServiceWorkingHoursSection,
+  ServicesProviderHeader,
 } from "ui";
 import { reviews } from "placeholder";
 import { useResponsive } from "hooks";
@@ -36,8 +37,6 @@ export const HotelDetailsView: React.FC = () => {
     isLoading,
   } = useGetServicesProviderQuery(filters);
   const { t } = useTranslation();
-
-  console.log({ isLoading, isError, res });
 
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
     React.useMemo(
@@ -189,67 +188,37 @@ export const HotelDetailsView: React.FC = () => {
       <ServicePresentationCarosuel
         data={res ? res.data.presintations || [] : []}
       />
+      <SpinnerFallback isLoading={isLoading} isError={isError}>
+        {res ? <ServicesProviderHeader {...res.data} /> : null}
+      </SpinnerFallback>
       <StaticSideBarWrapper sidebar={ServiceReservastion}>
         <Tabs>
-          <TabsHeader />
-          <TabList />
-          {ServicesProviderTabs.map((tab, i) => (
-            <>
-              <TabTitle TabKey={i}>
-                {({ currentActive }) => (
-                  <p
-                    className={`${
-                      currentActive ? "text-primary" : "text-lightBlack"
-                    } font-bold text-sm`}
-                  >
-                    {t(tab.name)}
-                  </p>
-                )}
-              </TabTitle>
-            </>
-          ))}
+          {({ currentTabIdx }) => {
+            return (
+              <>
+                <TabsHeader />
+                <TabList />
+                {ServicesProviderTabs.map((tab, i) => (
+                  <>
+                    <TabTitle TabKey={i}>
+                      {({ currentActive }) => (
+                        <p
+                          className={`${
+                            currentActive ? "text-primary" : "text-lightBlack"
+                          } font-bold text-sm`}
+                        >
+                          {t(tab.name)}
+                        </p>
+                      )}
+                    </TabTitle>
+                  </>
+                ))}
+                {ServicesProviderTabs.at(currentTabIdx).component}
+              </>
+            );
+          }}
         </Tabs>
-        <div className="flex flex-col gap-12 w-full">
-          {ServicesProviderTabs[0].component}
-          {/* {ServicesProviderTabs[1].component} */}
-          {/* {ServicesProviderTabs[2].component} */}
-          {/* {ServicesProviderTabs[3].component} */}
-          {/* {ServicesProviderTabs[4].component} */}
-          {/* {ServicesProviderTabs[5].component} */}
-          {/* {ServicesProviderTabs[6].component} */}
-        </div>
       </StaticSideBarWrapper>
     </div>
   );
 };
-
-const ServicesProviderTabs: SectionTabType[] = [
-  {
-    slug: "description",
-    name: "Description",
-  },
-  {
-    name: "Contact",
-    slug: "contact",
-  },
-  {
-    slug: "policies",
-    name: "Policies",
-  },
-  {
-    name: "Working hours",
-    slug: "workingHours",
-  },
-  {
-    slug: "rooms",
-    name: "Rooms",
-  },
-  {
-    slug: "localization",
-    name: "Localization",
-  },
-  {
-    slug: "reviews",
-    name: "Customer reviews",
-  },
-];

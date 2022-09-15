@@ -23,7 +23,7 @@ export const ServicesProviderDescriptionSection: React.FC<
   cars = 0,
   pets = 0,
 }) => {
-  const descriptionRef = usePublishRef("description");
+  const descriptionRef = usePublishRef((keys) => keys.description);
   const { t } = useTranslation();
   const items: {
     text: string;
@@ -49,7 +49,7 @@ export const ServicesProviderDescriptionSection: React.FC<
 
   return (
     <div ref={descriptionRef} className="flex flex-col gap-[1.875rem]">
-      <p className="md:text-l g">{description}</p>
+      <p className="md:text-lg">{description}</p>
       <div
         style={{
           gridTemplateColumns:

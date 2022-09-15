@@ -5,6 +5,10 @@ import {
 } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
+export const getVehicleProviderDetailsQueryKey = (
+  filters: FormatedSearchableFilter
+) => ["vehicleServiceProviderDetails", { filters }];
+
 export const useGetVehicleProviderDetailsQuery = (
   filters: FormatedSearchableFilter,
   options?: UseQueryOptions<
@@ -15,7 +19,7 @@ export const useGetVehicleProviderDetailsQuery = (
   >
 ) => {
   return useQuery(
-    ["vehicleServiceProviderDetails", { filters }],
+    getVehicleProviderDetailsQueryKey(filters),
     () => getVehicleServiceProviderDetailsFetcher(filters),
     options
   );

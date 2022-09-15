@@ -21,6 +21,7 @@ import {
   Button,
   BookedServicesCostDetails,
 } from "ui";
+import { isDate } from "utils";
 
 export const ServiceReservastion: React.FC = () => {
   const { visit } = useRouting();
@@ -92,12 +93,13 @@ export const ServiceReservastion: React.FC = () => {
                     <MenuButton>
                       <div className="flex gap-1 px-2 justify-between items-center">
                         <p className="text-black font-semibold text-lg">
-                          {new Date(values["checkin_date"]).toLocaleDateString(
-                            "en",
-                            {
-                              dateStyle: "short",
-                            }
-                          )}
+                          {isDate(values["checkin_date"])
+                            ? new Date(
+                                values["checkin_date"]
+                              ).toLocaleDateString("en", {
+                                dateStyle: "short",
+                              })
+                            : "dd/mm/yy"}
                         </p>
                         <ArrowDownIcon className="text-xl" />
                       </div>
@@ -105,9 +107,10 @@ export const ServiceReservastion: React.FC = () => {
                     <MenuList>
                       <DateInput
                         value={values["checkin_date"]}
-                        onDaySelect={(date) =>
-                          setFieldValue("checkin_date", date)
-                        }
+                        onDaySelect={(date) => {
+                          console.log("date", date);
+                          setFieldValue("checkin_date", date);
+                        }}
                       />
                     </MenuList>
                   </Menu>
@@ -125,12 +128,13 @@ export const ServiceReservastion: React.FC = () => {
                     <MenuButton>
                       <div className="flex gap-1 px-2 justify-between items-center">
                         <p className="text-black font-semibold text-lg">
-                          {new Date(values["checkout_date"]).toLocaleDateString(
-                            "en",
-                            {
-                              dateStyle: "short",
-                            }
-                          )}
+                          {isDate(values["checkout_date"])
+                            ? new Date(
+                                values["checkout_date"]
+                              ).toLocaleDateString("en", {
+                                dateStyle: "short",
+                              })
+                            : "dd/mm/yy"}
                         </p>
                         <ArrowDownIcon className="text-2xl" />
                       </div>

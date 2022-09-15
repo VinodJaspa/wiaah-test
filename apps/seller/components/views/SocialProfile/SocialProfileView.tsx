@@ -112,11 +112,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
             </div>
           </div>
           <FilterModal />
-          <ShopCardsListWrapper
-            // grid={isMobile}
-            cols={cols}
-            items={ShopCardsInfoPlaceholder}
-          />
+          <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} />
         </div>
       ),
     },
@@ -173,7 +169,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   return (
     <div className="flex flex-col h-full">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
-        <Container className="flex-grow flex-col flex gap-10">
+        <Container className="flex-grow flex-col flex gap-7">
           {/* <div className="w-full flex justify-center overflow-hidden relative h-[26rem]"> */}
           {profileInfo ? (
             <SocialProfile shopInfo={{ ...profileInfo.data }} />
@@ -185,14 +181,13 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
             <>
               {profileInfo.data.public ? (
                 <>
-                  {/* <TabsViewer
+                  <TabsViewer
                     tabs={
                       profileInfo.data.accountType === "seller"
                         ? sellerTabs
                         : buyerTabs
                     }
-                  /> */}
-                  {sellerTabs.at(0).component}
+                  ></TabsViewer>
                   <Divider className="my-4" />
                 </>
               ) : (

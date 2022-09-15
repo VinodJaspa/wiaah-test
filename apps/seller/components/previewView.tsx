@@ -13,7 +13,7 @@ export const PreviewView: React.FC = () => {
   return (
     <div className="flex w-full h-full justify-center items-center">
       <Button onClick={() => setOpen(true)}>test</Button>
-      <Modal isOpen={open} onClose={() => setOpen(false)}>
+      <Modal onOpen={()=>{}} isOpen={open} onClose={() => setOpen(false)}>
         <ModalOverlay />
         <ModalContent>
           <Button onClick={() => setOpen(false)}>controled</Button>

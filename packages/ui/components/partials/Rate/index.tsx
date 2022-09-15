@@ -20,7 +20,7 @@ export const Rate: React.FC<RateProps> = ({
   return (
     <div
       {...props}
-      className={`${className} flex text-primary items-center gap-2`}
+      className={`${className || ""} flex text-primary items-center gap-2`}
     >
       {[...Array(outOf)].map((_, i) => (
         <React.Fragment key={i}>

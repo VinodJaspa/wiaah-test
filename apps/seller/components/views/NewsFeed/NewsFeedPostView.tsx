@@ -37,11 +37,7 @@ export const NewsFeedPostView: React.FC<NewsFeedPostViewProps> = () => {
   return (
     <div className="flex flex-col gap-8 pt-8">
       <div className="flex overflow-hidden flex-col h-[50rem] md:flex-row gap-8 items-start">
-        <PostCard
-          showComments
-          postInfo={post.postInfo}
-          profileInfo={post.profileInfo}
-        />
+        <PostCard postInfo={post.postInfo} profileInfo={post.profileInfo} />
         <div className="flex flex-col h-full overflow-scroll thinScroll gap-4 w-[min(35rem,100%)]">
           {post
             ? post.postInfo.comments.map((post, i) => (

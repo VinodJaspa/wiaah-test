@@ -21,6 +21,7 @@ import {
   MessageOutlineIcon,
   SquarePlusOutlineIcon,
   useUserData,
+  AddNewPostModal,
 } from "ui";
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
@@ -95,10 +96,15 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
       )}
 
       <div className="flex items-center gap-8 p-2">
-        <SquarePlusOutlineIcon
-          className="text-icon text-lightBlack"
-          onClick={OpenModal}
-        />
+        {isMobile ? (
+          <>
+            <SquarePlusOutlineIcon
+              className="text-icon text-lightBlack"
+              onClick={() => OpenModal()}
+            />
+            <AddNewPostModal />
+          </>
+        ) : null}
         <div className="relative">
           <NotifiactionsMenu>
             <BellOutlineIcon className="text-icon text-lightBlack" />
@@ -120,10 +126,10 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             <MenuButton>
               <div className="flex flex-col justify-center">
                 <Avatar
-                  className="h-10 w-10 bg-black"
+                  className=""
                   showBorder={false}
                   name="wiaah"
-                  photoSrc="/wiaah_logo.png"
+                  src="/wiaah_logo.png"
                 />
               </div>
             </MenuButton>

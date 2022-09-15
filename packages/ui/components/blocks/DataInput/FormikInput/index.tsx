@@ -25,7 +25,7 @@ export function FormikInput<T = InputProps>({
       <div
         className={`${
           containerProps ? containerProps.className : ""
-        } flex flex-col w-full`}
+        } gap-2 flex flex-col w-full`}
       >
         {typeof label === "string" ? (
           <p

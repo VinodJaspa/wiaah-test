@@ -18,7 +18,7 @@ export const useGetBeautyCenterDetailsQuery = (
 ) => {
   return useQuery(
     getBeautyCenterDetailsDataQueryKey({ id }),
-    () => getBeautyCenterDetailsDataFetcher(),
+    () => getBeautyCenterDetailsDataFetcher({id}),
     options
   );
 };

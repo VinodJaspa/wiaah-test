@@ -5,6 +5,9 @@ import {
 } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
+export const getRestaurantServiceProviderDetailsDataQuerykey = (
+  filters: FormatedSearchableFilter
+) => ["resturantServiceDetialsData", { filters }];
 export const useGetRestaurantServiceDetailsDataQuery = (
   filters: FormatedSearchableFilter,
   options?: UseQueryOptions<
@@ -15,7 +18,7 @@ export const useGetRestaurantServiceDetailsDataQuery = (
   >
 ) => {
   return useQuery(
-    ["resturantServiceDetialsData", { filters }],
+    getRestaurantServiceProviderDetailsDataQuerykey(filters),
     () => getResturantServiceDetialsData(filters),
     options
   );

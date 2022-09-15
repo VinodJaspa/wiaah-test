@@ -12,7 +12,7 @@ export type ServicePostType = InferType<typeof ServicesPostsValidationSchema>;
 
 const shopTypes: ServicesType[] = [
   "hotel",
-  "resturant",
+  "restaurant",
   "health_center",
   "vehicle",
   "holidays_rentals",
@@ -63,6 +63,7 @@ export const getServicesPostsFetcher = async (
       hashtags: ["fashion", "gaming", "shopping"],
       content: sentence.substring(0, randomNum(sentence.length)),
       user: {
+        profession: "profession",
         accountType: "seller",
         id: "132",
         name: "seller name",

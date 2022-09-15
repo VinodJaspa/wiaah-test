@@ -1,13 +1,4 @@
-import {
-  Box,
-  Flex,
-  IconButton,
-  Image,
-  Text,
-  useBreakpointValue,
-  useDimensions,
-  Divider,
-} from "@chakra-ui/react";
+import { useDimensions } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiCamera } from "react-icons/bi";
@@ -28,7 +19,6 @@ import {
   socialAffiliationCardPlaceholders,
   SocialNewsfeedPostsState,
   SocialProfileInfo,
-  SocialProfileInfoState,
   SpinnerFallback,
   TabsViewer,
   useFileUploadModal,
@@ -36,14 +26,16 @@ import {
   useResponsive,
   useUpdateMyProfile,
   newsfeedPosts,
+  Divider,
 } from "ui";
+import { useBreakpointValue } from "utils";
 import { MyProfile } from "./MyProfile";
 
 export interface MyProfileView {}
 
 export const MyProfileView: React.FC<MyProfileView> = () => {
   const boxRef = React.useRef<HTMLDivElement>(null);
-  const dims = useDimensions(boxRef, true);
+  const dims = useDimensions(boxRef);
   const { t } = useTranslation();
   const client = useQueryClient();
   const { uploadImage, cancelUpload } = useFileUploadModal();
@@ -55,7 +47,6 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
     },
   });
 
-  const profileInfo = useRecoilValue(SocialProfileInfoState);
   const { isMobile } = useResponsive();
   const posts = useRecoilValue(SocialNewsfeedPostsState);
   const cols = useBreakpointValue({ base: 3 });
@@ -67,16 +58,14 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
       name: t("news_feed", "news feed"),
       component: (
         <PostCardsListWrapper
-          grid={isMobile}
-          cols={cols}
-          posts={newsfeedPosts}
+          posts={[...Array(4)].reduce((acc) => [...acc, ...newsfeedPosts], [])}
         />
       ),
     },
     {
       name: t("shop", "shop"),
       component: (
-        <Flex gap="1rem" direction={"column"}>
+        <div className="flex flex-col gap-4">
           <div className="flex justify-end">
             <div
               onClick={() => {
@@ -88,16 +77,13 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
               <FaChevronDown className="ml-2" />
             </div>
           </div>
-          <FilterModal
-            isOpen={filterOpen}
-            onClose={() => setFilterOpen(false)}
-          />
+          <FilterModal />
           <ShopCardsListWrapper
             grid={isMobile}
             cols={cols}
             items={ShopCardsInfoPlaceholder}
           />
-        </Flex>
+        </div>
       ),
     },
     {
@@ -128,56 +114,48 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
   ];
 
   return (
-    <Flex direction={"column"}>
-      <Flex position={{ base: "relative", md: "initial" }}>
-        <Box h={"fit-content"} ref={boxRef}>
-          <MyProfile />
-        </Box>
-        <Box
-          position={{ base: "absolute", md: "relative" }}
-          w="100%"
-          h={{ base: dims ? dims.borderBox.height : "unset" }}
-        >
-          <SpinnerFallback isLoading={isLoading} isError={isError}>
-            {data && (
-              <>
-                <MediaUploadModal
-                  onImgUpload={(src) => {
-                    console.log("upload");
-                    mutate({
-                      profileCoverPhoto: src.toString(),
-                    });
-                  }}
-                />
-                <Image
-                  position={{ base: "absolute", md: "unset" }}
-                  top="0px"
-                  left="0px"
-                  w="100%"
-                  h="100%"
-                  overflow={"hidden"}
-                  bgColor={"blackAlpha.200"}
-                  zIndex={-1}
-                  src={data.profileCoverPhoto}
-                  objectFit={"cover"}
-                />
-                <IconButton
-                  variant={"icon"}
-                  fontSize="xx-large"
-                  position={"absolute"}
-                  bgColor="whiteAlpha.800"
-                  top="1rem"
-                  right="1rem"
-                  aria-label={t("change_cover_photo", "Change Cover Photo")}
-                  as={BiCamera}
-                  onClick={uploadImage}
-                />
-              </>
-            )}
-          </SpinnerFallback>
-        </Box>
-      </Flex>
-      <Container className="flex-grow flex-col">
+    <div className="flex flex-col w-full gap-4">
+      <MyProfile
+        shopInfo={{
+          ...data,
+          verified: true,
+          location: {
+            country: "USA",
+            countryCode: "CH",
+            state: "LA",
+            address: "Smart Street",
+            postalCode: 8,
+            cords: {
+              lat: 56,
+              lng: 24,
+            },
+            city: "LA",
+          },
+          bio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley",
+          links: ["https://instagram.com"],
+        }}
+      />
+      <div
+        className={`absolute md:relative w-full h-[${
+          dims ? dims.height : "unset"
+        }]`}
+      >
+        <SpinnerFallback isLoading={isLoading} isError={isError}>
+          {data && (
+            <>
+              <MediaUploadModal
+                onImgUpload={(src) => {
+                  console.log("upload");
+                  mutate({
+                    profileCoverPhoto: src.toString(),
+                  });
+                }}
+              />
+            </>
+          )}
+        </SpinnerFallback>
+      </div>
+      <Container className="flex-grow flex flex-col gap-4">
         {SocialProfileInfo && SocialProfileInfo.public ? (
           <>
             <TabsViewer
@@ -187,27 +165,18 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
                   : buyerTabs
               }
             />
-            <Divider my="1rem" />
+            <Divider />
           </>
         ) : (
           <>
-            <Flex
-              h="100%"
-              flexGrow={"inherit"}
-              align="center"
-              justify={"center"}
-            >
-              <Text
-                fontWeight={"bold"}
-                textTransform={"capitalize"}
-                fontSize={"xx-large"}
-              >
-                {t("this_profile_is_private", "this profile is private")}
-              </Text>
-            </Flex>
+            <div className="h-full flex flex-grow-[inherit] items-center justify-center">
+              <p className="font-bold text-2xl">
+                {t("This Profile Is Private")}
+              </p>
+            </div>
           </>
         )}
       </Container>
-    </Flex>
+    </div>
   );
 };

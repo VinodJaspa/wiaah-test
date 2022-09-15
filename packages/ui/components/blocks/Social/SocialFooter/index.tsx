@@ -1,4 +1,4 @@
-import { Flex, Divider, Text, Select, Icon } from "@chakra-ui/react";
+import { Divider, Select, SelectOption } from "ui";
 import { Language } from "ui/languages/enums/Language";
 import { useRouter } from "next/router";
 import { Country } from "country-state-city";
@@ -155,47 +155,34 @@ export const SocialFooter: React.FC<SocialFooterProps> = ({
     onLinkClick && onLinkClick(link);
   }
   return (
-    <div>
-      <Divider my="1rem" borderColor={"blackAlpha.500"} />
-      <Flex gap="1rem" align={"center"} direction={"column"}>
-        <Flex flexWrap={"wrap"} justify={"center"}>
+    <div className="py-2">
+      <Divider />
+      <div className="flex flex-col items-center gap-4">
+        <div className="flex flex-wrap gap-8 justify-center">
           {links.map(({ label, link }, i) => (
-            <Text
+            <p
               key={i}
-              mx="1rem"
-              my="0.25rem"
-              cursor={"pointer"}
-              _hover={{
-                textDecorationColor: "primary.main",
-                color: "primary.main",
-              }}
-              textTransform={"capitalize"}
-              color="gray"
+              className="mx4 my-1 cursor-pointer hover:text-primary text-gray-500"
               onClick={() => handleLinkClick(link)}
             >
               {label}
-            </Text>
+            </p>
           ))}
-        </Flex>
-        <Flex gap="1rem">
-          <Select
-            _focus={{ ringColor: "primary.main" }}
-            minW="8rem"
-            defaultValue={langCode}
-            onChange={onLanguageChange}
-          >
-            <option value="en">English</option>
-            <option value="fr">Français</option>
-            <option value="es">Española</option>
-            <option value="de">Deutsch</option>
+        </div>
+        <div className="flex gap-4">
+          <Select value={langCode} onChange={onLanguageChange}>
+            <SelectOption value="en">English</SelectOption>
+            <SelectOption value="fr">Français</SelectOption>
+            <SelectOption value="es">Española</SelectOption>
+            <SelectOption value="de">Deutsch</SelectOption>
           </Select>
-          <Flex gap="0.5rem" color="gray" align={"center"}>
-            <Icon as={FaRegCopyright} />
+          <div className="flex gap-2 text-gray-500 items-center">
+            <FaRegCopyright />
             {copyRightYear}
-            <Text>Wiaah</Text>
-          </Flex>
-        </Flex>
-      </Flex>
+            <p>Wiaah</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

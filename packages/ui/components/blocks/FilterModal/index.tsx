@@ -42,7 +42,7 @@ export const FilterModal: React.FC<FilterModalProps> = () => {
               <CloseIcon className="text-4xl cursor-pointer" />
             </DrawerCloseButton>
           </DrawerHeader>
-          <div className="h-full w-full overflow-y-scroll thinScroll">
+          <div className="h-full w-full px-2 overflow-y-scroll thinScroll">
             <ShopProductFilter
               open={true}
               shipping={["Click and Collect", "Free", "International"]}

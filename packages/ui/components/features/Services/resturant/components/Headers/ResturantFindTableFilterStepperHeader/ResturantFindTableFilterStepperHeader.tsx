@@ -39,7 +39,7 @@ export const ResturantFindTableFilterStepperHeader: React.FC<
               <React.Fragment key={i}>
                 <div
                   className={`${
-                    currentStepIdx >= i ? "text-white" : ""
+                    currentStepIdx >= i ? "text-white fill-white" : ""
                   } flex items-center gap-2`}
                 >
                   <span className="text-xl">

@@ -26,6 +26,9 @@ import {
   HashtagIcon,
   LocationButton,
   Divider,
+  ScrollableContainer,
+  SocialReportModal,
+  SocialPostSettingsPopup,
 } from "ui";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
@@ -99,9 +102,19 @@ export const placesPlaceholder: string[] = [
   "restaurant",
   "health center",
   "vehicle",
+  "shop",
+  "hotel",
+  "restaurant",
+  "health center",
+  "vehicle",
 ];
 
 export const hashtagsPlaceholder: string[] = [
+  "Fashion",
+  "Gaming",
+  "Food",
+  "Sports",
+  "Relaxing",
   "Fashion",
   "Gaming",
   "Food",
@@ -176,6 +189,8 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
 
   return (
     <Root>
+      <SocialReportModal />
+      <SocialPostSettingsPopup />
       {sideBar && (
         <SellerNavigationSideBar
           headerElement={
@@ -192,21 +207,33 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
             />
             <Divider />
             <div className="text-white flex flex-col gap-4">
-              {placesPlaceholder.map((place, i) => (
-                <LocationButton
-                  iconProps={{ className: "" }}
-                  name={place}
-                  key={i}
-                />
-              ))}
+              <ScrollableContainer
+                containerProps={{ className: "gap-4" }}
+                autoShowAll
+                maxInitialItems={5}
+              >
+                {placesPlaceholder.map((place, i) => (
+                  <LocationButton
+                    iconProps={{ className: "" }}
+                    name={place}
+                    key={i}
+                  />
+                ))}
+              </ScrollableContainer>
             </div>
             <Divider />
-            {hashtagsPlaceholder.map((tag, i) => (
-              <HStack className="text-white gap-[1rem]" key={i}>
-                <HashtagIcon className="p-2 text-3xl rounded-full bg-white" />
-                <p>{tag}</p>
-              </HStack>
-            ))}
+            <ScrollableContainer
+              containerProps={{ className: "gap-4" }}
+              autoShowAll
+              maxInitialItems={5}
+            >
+              {hashtagsPlaceholder.map((tag, i) => (
+                <HStack className="text-white gap-[1rem]" key={i}>
+                  <HashtagIcon className="p-2 text-3xl rounded-full bg-white" />
+                  <p>{tag}</p>
+                </HStack>
+              ))}
+            </ScrollableContainer>
           </div>
         </SellerNavigationSideBar>
       )}
@@ -238,12 +265,16 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
             style={{
               paddingTop: `calc(${headerHeight || 0}px + 2rem)`,
             }}
-            className="pb-24 sm:pb-0 h-[max(fit,100%)]"
+            className="pb-24 sm:pb-44  h-[max(fit,100%)]"
             {...containerProps}
           >
             {children}
           </main>
-          {!isMobile && <SocialFooter copyRightYear={2022} />}
+          {!isMobile && (
+            <div className="fixed bottom-0 w-screen bg-white right-0">
+              <SocialFooter copyRightYear={2022} />
+            </div>
+          )}
         </div>
       </Container>
     </Root>

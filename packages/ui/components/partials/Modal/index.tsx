@@ -31,14 +31,16 @@ const ModalContext = React.createContext<ModalContextValues>({
   isLazy: false,
 });
 
-export interface ModalProps extends Omit<ModalContextValues, "isLazy"> {
+export interface ModalProps
+  extends Omit<ModalContextValues, "isLazy" | "onOpen"> {
   isLazy?: boolean;
+  onOpen?: (key?: string) => any;
 }
 
 export const Modal: React.FC<ModalProps> = ({
   isOpen,
   onClose,
-  onOpen,
+  onOpen = () => {},
   isLazy,
   ...props
 }) => {
@@ -102,7 +104,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
         isOpen
           ? "-translate-y-1/2"
           : "-translate-y-[calc(50% - 5rem)] opacity-0 pointer-events-none"
-      } fixed top-1/2 w-[min(100%,40rem)] max-h-[90%] overflow-y-scroll thinScroll opacity-100 left-1/2 p-4 z-[60] transition-all bg-white rounded -translate-x-1/2`}
+      } fixed top-1/2 w-[min(100%,40rem)] max-h-[90%] overflow-y-scroll thinScroll opacity-100 left-1/2 p-4 z-[60] transition-all bg-white rounded-xl -translate-x-1/2`}
     >
       {show ? children : null}
     </div>

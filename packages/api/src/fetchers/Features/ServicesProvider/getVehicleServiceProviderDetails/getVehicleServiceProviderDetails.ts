@@ -108,80 +108,39 @@ export const getVehicleServiceProviderDetailsFetcher = async (
       workingDays: [
         {
           weekDay: "Friday",
-          from: {
-            hour: 0,
-            minutes: 0,
-          },
-          to: {
-            hour: 0,
-            minutes: 0,
-          },
+
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Monday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Saturday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Sunday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Thursday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Tuesday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
         {
           weekDay: "Wednesday",
-          from: {
-            hour: 9,
-            minutes: 0,
-          },
-          to: {
-            hour: 19,
-            minutes: 30,
-          },
+          from: new Date(2022, 8, 11, 15).toString(),
+          to: new Date(2022, 8, 11, 19).toString(),
         },
       ],
       serviceFee: 850,

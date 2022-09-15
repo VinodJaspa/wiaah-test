@@ -46,7 +46,7 @@ export const MenuList: React.FC<MenuListProps> = ({
       data-testid="MenuList"
       className={`${className || ""} ${
         isOpen ? "scale-100" : "scale-0"
-      } z-50 transition-all duration-200 absolute bg-white border-gray-200 border-[1px] rounded-xl m-2 py-2 w-fit shadow-lg flex flex-col gap-2 top-full right-0`}
+      } z-50 transition-all duration-200 absolute bg-white border-gray-200 border-[1px] rounded-xl m-2 py-2 shadow-lg flex flex-col gap-2 top-full right-0`}
     >
       {showChild && <>{children}</>}
     </div>

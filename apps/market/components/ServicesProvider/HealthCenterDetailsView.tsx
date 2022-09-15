@@ -4,7 +4,7 @@ import {
   useSearchFilters,
   Divider,
   ServiceReachOutSection,
-  ServiceOnMapLocationSection,
+  ServiceOnMapLocalizationSection,
   ServicePoliciesSection,
   ServiceWorkingHoursSection,
   ServicesProviderDescriptionSection,
@@ -16,7 +16,7 @@ import {
   Accordion,
   useGetHealthCenterDetailsQuery,
   ServicesProviderHeader,
-  WorkingDaysCalander,
+  WorkingDaysCalender,
   HealthCenterDoctorsList,
   Button,
 } from "ui";
@@ -46,7 +46,7 @@ export const HealthCenterDetailsView: React.FC = () => {
       <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={
-          <WorkingDaysCalander
+          <WorkingDaysCalender
             workingDates={res ? res.data.workingDates : []}
           />
         }
@@ -56,8 +56,6 @@ export const HealthCenterDetailsView: React.FC = () => {
             <Accordion>
               <ServicesProviderDescriptionSection
                 description={res.data.description}
-                name={res.data.name}
-                proprtyType={res.data.proprtyType}
               />
               <Divider />
               <HealthCenterDoctorsList

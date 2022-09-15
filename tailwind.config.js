@@ -14,6 +14,7 @@ module.exports = {
         "custum-aspect": "5 / 4",
       },
       colors: {
+        iconGray: "#999999",
         primary: {
           DEFAULT: "#3AD398",
           hover: "#1d9266",

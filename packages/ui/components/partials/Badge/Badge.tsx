@@ -6,6 +6,7 @@ type BadgeCases = {
   fail?: string;
   info?: string;
   warning?: string;
+  off?: string;
 };
 
 export interface BadgeProps extends HtmlDivProps {
@@ -27,6 +28,7 @@ export const Badge: React.FC<BadgeProps> = ({
     fail: `bg-red-50 border border-red-500`,
     info: `bg-blue-50 border border-blue-500`,
     warning: `bg-yellow-50 border border-yellow-500`,
+    off: "bg-gray-100 border border-gray-500",
   };
   const styleSwitcher = () => {
     if (cases) {
@@ -34,6 +36,7 @@ export const Badge: React.FC<BadgeProps> = ({
       if (value === cases.info) return styleCases.info;
       if (value === cases.fail) return styleCases.fail;
       if (value === cases.warning) return styleCases.warning;
+      if (value === cases.off) return styleCases.off;
     }
     if (variant) return styleCases[variant];
   };

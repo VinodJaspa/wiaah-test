@@ -3,7 +3,13 @@ import { HtmlSvgProps } from "types";
 
 export const HorizontalDotsIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
-    <svg {...props} width="1em" height="1em" viewBox="0 0 436.873 436.873">
+    <svg
+      {...props}
+      width="1em"
+      height="1em"
+      fill="currentColor"
+      viewBox="0 0 436.873 436.873"
+    >
       <g>
         <g>
           <g>
