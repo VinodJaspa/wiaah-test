@@ -13,6 +13,7 @@ import React from "react";
 import NextHead from "next/head";
 import { ReactPubsubClient, ReactPubsubProvider } from "react-pubsub";
 import { ReactSeoProvider } from "react-seo";
+import { ClearNextJSQuery } from "utils";
 const coomingSoon = false;
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -23,7 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedProps}>
         <RoutingProvider
-          getQuery={() => router.query}
+          getQuery={() => ClearNextJSQuery(router.query, router.pathname)}
           getCurrentPath={() => {
             return router.asPath;
           }}

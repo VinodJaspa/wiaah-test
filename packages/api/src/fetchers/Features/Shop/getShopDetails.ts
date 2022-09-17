@@ -21,7 +21,8 @@ export const getShopDetailsFetcher = async (
     data: {
       id: "131",
       createdAt: new Date().toUTCString(),
-      description: "description",
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has",
       location: {
         address: "address",
         city: "city",
@@ -34,7 +35,7 @@ export const getShopDetailsFetcher = async (
         postalCode: 1324,
         state: "Geneve",
       },
-      name: "shop name",
+      name: "Deem Clothes",
       rating: randomNum(5),
       thumbnail: "/shop.jpeg",
       verified: true,

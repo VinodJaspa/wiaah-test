@@ -23,7 +23,7 @@ import { reviews } from "placeholder";
 import { useTranslation } from "react-i18next";
 import { useResponsive } from "hooks";
 
-export const ResturantDetailsView: React.FC = () => {
+export const RestaurantDetailsView: React.FC = () => {
   const { filters } = useSearchFilters();
   const {
     data: res,
@@ -31,7 +31,6 @@ export const ResturantDetailsView: React.FC = () => {
     isLoading,
   } = useGetRestaurantServiceDetailsDataQuery(filters);
   const { isMobile } = useResponsive();
-  const { t } = useTranslation();
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">

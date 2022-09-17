@@ -29,6 +29,7 @@ import {
   ScrollableContainer,
   SocialReportModal,
   SocialPostSettingsPopup,
+  MasterLocationMapModal,
 } from "ui";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
@@ -191,6 +192,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
     <Root>
       <SocialReportModal />
       <SocialPostSettingsPopup />
+      <MasterLocationMapModal />
       {sideBar && (
         <SellerNavigationSideBar
           headerElement={
@@ -214,7 +216,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
               >
                 {placesPlaceholder.map((place, i) => (
                   <LocationButton
-                    iconProps={{ className: "" }}
+                    iconProps={{ className: "text-black" }}
                     name={place}
                     key={i}
                   />

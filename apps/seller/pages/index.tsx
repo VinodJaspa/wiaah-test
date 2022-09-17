@@ -32,7 +32,6 @@ const RecentStoriesPlaceHolder: StoryDisplayProps[] = [...Array(11)].map(
 
 const seller: NextPage = () => {
   const router = useRouter();
-  const { t } = useTranslation();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const isMobile = useBreakpointValue({ base: true, md: false });
   return (

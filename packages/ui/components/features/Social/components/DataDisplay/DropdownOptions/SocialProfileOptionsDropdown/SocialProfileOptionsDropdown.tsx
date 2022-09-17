@@ -23,8 +23,14 @@ export const SocialProfileOptionsDropdown: React.FC<
       <MenuButton>
         <HorizontalDotsIcon className="cursor-pointer" />
       </MenuButton>
-      <MenuList className="text-black w-48">
+      <MenuList className="text-black ">
         <MenuItem onClick={() => OpenModal(profileId)}>{t("Report")}</MenuItem>
+        <MenuItem>{t("Turn off  commenting")}</MenuItem>
+        <MenuItem>{t("Copy link")}</MenuItem>
+        <MenuItem>{t("Disable notifications")}</MenuItem>
+        <MenuItem className="text-red-500" onClick={() => OpenModal(profileId)}>
+          {t("Block")}
+        </MenuItem>
       </MenuList>
     </Menu>
   );

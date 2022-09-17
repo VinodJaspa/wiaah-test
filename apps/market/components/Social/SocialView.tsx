@@ -210,15 +210,9 @@ export const SocialView: React.FC<SocialViewProps> = () => {
     <>
       <ShareWithModal />
       <SocialPostsCommentsDrawer />
-      <div className="flex flex-col">
-        <div className="flex relative md:static max-h-[24rem]">
-          <SocialProfile shopInfo={SocialProfileInfo} />
-          <img
-            className="absolute md:static top-0 left-0 w-full bg-black bg-opacity-20 -z-[1] h-full md:h-auto object-cover"
-            src="/shop.jpeg"
-          />
-        </div>
-        <Container className="flex-grow flex-col">
+      <div className="flex gap-4 flex-col">
+        <SocialProfile shopInfo={SocialProfileInfo} />
+        <Container className="flex-grow gap-4 flex-col">
           {profileInfo && profileInfo.public ? (
             <>
               <TabsViewer tabs={tabsSet} />

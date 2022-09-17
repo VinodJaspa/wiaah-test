@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { NotificationData } from "types";
-import { useDateDiff, Button, Avatar, EllipsisText } from "ui";
+import { useDateDiff, Button, Avatar, EllipsisText, ClockIcon } from "ui";
 export interface NotifiactionCardProps {
   notificationDetails: NotificationData;
 }
@@ -32,10 +32,10 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
 
         case "follow-request":
           return (
-            <div className="flex w-full gap-4 items-end">
-              <Button>{t("Accept")}</Button>
+            <>
+              <Button className="mr-4 ml-24">{t("Accept")}</Button>
               <Button colorScheme="gray">{t("Decline")}</Button>;
-            </div>
+            </>
           );
 
         case "follow-notify":
@@ -48,23 +48,26 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
     return (
       <div
         className={`${
-          type === "follow-request" ? "flex-col" : ""
+          type === "follow-request" ? "" : ""
         } flex items-center gap-4 justify-between max-w-full`}
       >
         <div className="flex w-full items-center gap-2">
           <Avatar className="min-w-[3rem]" src={by.thumbnail} name={by.name} />
-          <div className="flex flex-col gap-1 w-full whitespace-pre-wrap">
-            <div className="flex justify-between">
+          <div className="flex flex-col gap-2 w-full whitespace-pre-wrap">
+            <EllipsisText maxLines={2}>
               <span className="font-bold">{by.name} </span>
+              {message}
+            </EllipsisText>
+            <div className="flex items-center gap-2">
+              <ClockIcon />
               <span className="text-gray-500 text-right font-bold">
                 {since.value}
                 {since.timeUnit.substring(0, 1)}
               </span>
             </div>
-            <EllipsisText maxLines={2}>{message}</EllipsisText>
           </div>
         </div>
-        <div className="min-w-[5.1rem] flex justify-end">
+        <div className="min-w-[5.1rem] h-full flex justify-end">
           {TypeSpecificContent()}
         </div>
       </div>

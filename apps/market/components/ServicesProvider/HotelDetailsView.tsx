@@ -1,34 +1,31 @@
 import React from "react";
 import {
-  Tabs,
-  TabItem,
-  TabList,
-  TabTitle,
-  TabsHeader,
+  ServicesProviderHeader,
+  SpinnerFallback,
   useGetServicesProviderQuery,
   useSearchFilters,
   Divider,
-  ServiceReachOutSection,
-  ServiceOnMapLocalizationSection,
-  ServicePoliciesSection,
-  ServiceWorkingHoursSection,
-  HotelServiceRoomsSection,
-  PopularAmenitiesSection,
-  ServicesProviderDescriptionSection,
-  Reviews,
-  SectionTabType,
-  ServicePresentationCarosuel,
-  StaticSideBarWrapper,
-  ServiceReservastion,
   SectionsScrollTabList,
   Accordion,
   Button,
-  SpinnerFallback,
+  HotelServiceRoomsSection,
+  PopularAmenitiesSection,
+  Reviews,
+  ServiceOnMapLocalizationSection,
+  ServicePoliciesSection,
+  ServicePresentationCarosuel,
+  ServiceReachOutSection,
+  ServiceReservastion,
+  ServicesProviderDescriptionSection,
+  ServiceWorkingHoursSection,
+  StaticSideBarWrapper,
+  SectionTabType,
+  HotelMarketDescriptionSection,
 } from "ui";
 import { reviews } from "placeholder";
 import { useResponsive } from "hooks";
 import { useTranslation } from "react-i18next";
-import { runIfFn } from "utils";
+import { isError } from "react-query";
 
 export const HotelDetailsView: React.FC = () => {
   const { filters } = useSearchFilters();
@@ -39,146 +36,48 @@ export const HotelDetailsView: React.FC = () => {
     isLoading,
   } = useGetServicesProviderQuery(filters);
   const { t } = useTranslation();
-
-  console.log({ isLoading, isError, res });
-
-  const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
-    React.useMemo(
-      () => [
-        {
-          name: "Description",
-          component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
-                <>
-                  <ServicesProviderDescriptionSection
-                    description={res.data.description}
-                    name={res.data.name}
-                    proprtyType={res.data.proprtyType}
-                  />
-                  <Divider />
-                  <PopularAmenitiesSection
-                    cols={2}
-                    amenities={res.data.PopularAmenities || []}
-                  />
-                </>
-              ) : null}
-            </SpinnerFallback>
-          ),
-        },
-        {
-          name: "Contact",
-          component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
-                <>
-                  <ServiceReachOutSection
-                    email={res.data.email}
-                    location={res.data.location}
-                    telephone={res.data.telephone}
-                  />
-                </>
-              ) : null}
-            </SpinnerFallback>
-          ),
-        },
-        {
-          name: "Policies",
-          component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
-                <>
-                  <ServicePoliciesSection
-                    deposit={15}
-                    policies={res.data.policies}
-                  />
-                </>
-              ) : null}
-            </SpinnerFallback>
-          ),
-        },
-        {
-          name: "Working hours",
-          component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
-                <>
-                  <ServiceWorkingHoursSection
-                    workingDays={res.data.workingDays}
-                  />
-                </>
-              ) : null}
-            </SpinnerFallback>
-          ),
-        },
-        {
-          name: "Rooms",
-          component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
-                <>
-                  <HotelServiceRoomsSection rooms={res.data.rooms} />
-                </>
-              ) : null}
-            </SpinnerFallback>
-          ),
-        },
-        {
-          name: "Localization",
-          component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
-                <>
-                  <ServiceOnMapLocalizationSection
-                    location={res.data.location}
-                  />
-                </>
-              ) : null}
-            </SpinnerFallback>
-          ),
-        },
-        {
-          name: "Customer reviews",
-          component: (
-            <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
-                <>
-                  <Reviews id={res?.data.id || ""} reviews={reviews} />
-                </>
-              ) : null}
-            </SpinnerFallback>
-          ),
-        },
-      ],
-      [res]
-    );
-
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
+      <Divider />
       <ServicePresentationCarosuel
         data={res ? res.data.presintations || [] : []}
       />
+      <SpinnerFallback isLoading={isLoading} isError={isError}>
+        {res ? <ServicesProviderHeader {...res.data} /> : null}
+      </SpinnerFallback>
+      <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper sidebar={ServiceReservastion}>
-        <Tabs>
-          <TabsHeader />
-          <TabList />
-          {ServicesProviderTabs.map((tab, i) => (
-            <>
-              <TabTitle TabKey={i}>
-                {({ currentActive }) => (
-                  <p
-                    className={`${
-                      currentActive ? "text-primary" : "text-lightBlack"
-                    } font-bold text-sm`}
-                  >
-                    {t(tab.name)}
-                  </p>
-                )}
-              </TabTitle>
-            </>
-          ))}
-        </Tabs>
-        {ServicesProviderTabs[0].component}
+        {res ? (
+          <>
+            <HotelMarketDescriptionSection
+              description={res.data.description}
+              name={res.data.name}
+              proprtyType={t("Hotel")}
+            />
+            <Divider />
+            <Accordion>
+              <PopularAmenitiesSection
+                cols={2}
+                amenities={res.data.PopularAmenities || []}
+              />
+              <Divider />
+              <ServiceReachOutSection
+                email={res.data.email}
+                location={res.data.location}
+                telephone={res.data.telephone}
+              />
+              <HotelServiceRoomsSection rooms={res.data.rooms} />
+              <ServiceWorkingHoursSection workingDays={res.data.workingDays} />
+              <ServicePoliciesSection
+                deposit={res.data.deposit}
+                title={t("Hotel Polices")}
+                policies={res.data.policies}
+              />
+              <ServiceOnMapLocalizationSection location={res.data.location} />
+            </Accordion>
+          </>
+        ) : null}
+        <Reviews id={res?.data.id || ""} reviews={reviews} />
       </StaticSideBarWrapper>
     </div>
   );

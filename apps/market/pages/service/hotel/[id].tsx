@@ -1,15 +1,8 @@
 import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
-import Head from "next/head";
-import { ServicesViewsList } from "@data";
-import { BeautyCenterServiceDetailsView, MasterLayout } from "@components";
+import { HotelDetailsView, MasterLayout } from "@components";
 import { Container, GetServiceDetailsQueryKey } from "ui";
-import {
-  ExtractParamFromQuery,
-  ExtractServiceTypeFromQuery,
-  getServiceView,
-  ServicesTypeSwitcher,
-} from "utils";
+import { ExtractParamFromQuery, ExtractServiceTypeFromQuery } from "utils";
 import { useRouter } from "next/router";
 import { dehydrate, QueryClient } from "react-query";
 import { getServiceDetailsDataSwitcher } from "api";
@@ -23,17 +16,17 @@ import {
   RequiredSocialMediaTags,
 } from "react-seo";
 
-interface ServiceDetailsPageProps {
+interface HotelServiceDetailsPageProps {
   data: AsyncReturnType<ReturnType<typeof getServiceDetailsDataSwitcher>>;
 }
 
 export const getServerSideProps: GetServerSideProps<
-  ServerSideQueryClientProps<ServiceDetailsPageProps>
+  ServerSideQueryClientProps<HotelServiceDetailsPageProps>
 > = async ({ query }) => {
   const queryClient = new QueryClient();
 
-  const serviceType = ExtractServiceTypeFromQuery(query);
-  const serviceId = ExtractParamFromQuery(query, "serviceId");
+  const serviceType = "hotel";
+  const serviceId = ExtractParamFromQuery(query, "id");
 
   const data = await getServiceDetailsDataSwitcher(serviceType)({
     id: serviceId,
@@ -52,7 +45,9 @@ export const getServerSideProps: GetServerSideProps<
   };
 };
 
-const ServiceDetailPage: NextPage<ServiceDetailsPageProps> = ({ data }) => {
+const HotelServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
+  data,
+}) => {
   const router = useRouter();
   const serviceType = ExtractServiceTypeFromQuery(router.query);
 
@@ -73,15 +68,11 @@ const ServiceDetailPage: NextPage<ServiceDetailsPageProps> = ({ data }) => {
       ) : null}
       <MasterLayout>
         <Container>
-          <ServicesTypeSwitcher
-            get={getServiceView.DETAILS}
-            servicesList={ServicesViewsList}
-            serviceType={serviceType}
-          />
+          <HotelDetailsView />
         </Container>
       </MasterLayout>
     </>
   );
 };
 
-export default ServiceDetailPage;
+export default HotelServiceDetailsPage;

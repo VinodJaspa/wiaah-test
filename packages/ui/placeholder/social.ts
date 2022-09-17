@@ -155,7 +155,7 @@ export const PostCardPlaceHolder: PostCardInfo = {
     url: `${baseUri}/social/wiaah/newsfeed-post/15`,
   },
   profileInfo: {
-    profession: "Profession",
+    profession: "Los Angeles",
     verifed: true,
     id: "1",
     name: "Wiaah",
@@ -436,7 +436,7 @@ export const newsfeedPosts: PostCardInfo[] = [
         },
         {
           src: "/verticalVideo.mp4",
-          type: "video",
+          type: "image",
         },
       ],
       content: "",
@@ -667,47 +667,6 @@ export const stringplaceholder =
 const getRandomType = (): "service" | "product" =>
   randomNum(10) > 4 ? "product" : "service";
 export const ShopCardsInfoPlaceholder: ShopCardInfo[] = [
-  {
-    ...shopCardInfoPlaceholder,
-    id: "1",
-    attachments: [
-      // {
-      //   type: "image",
-      //   src: "/verticalImage.jpg",
-      // },
-      {
-        src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
-        type: "video",
-      },
-    ],
-    title: stringplaceholder.substring(0, randomNum(30)),
-    rating: randomNum(5),
-    noOfComments: randomNum(50),
-    likes: randomNum(50),
-    // views: randomNum(50),
-    comments: [{ ...comments[0], attachment: null }],
-    type: getRandomType(),
-  },
-  {
-    ...shopCardInfoPlaceholder,
-    attachments: [
-      {
-        src: "/verticalVideo.mp4",
-        type: "video",
-      },
-    ],
-    title: stringplaceholder.substring(0, randomNum(30)),
-    rating: randomNum(5),
-    id: "15",
-    noOfComments: randomNum(50),
-    likes: randomNum(50),
-    // views: randomNum(50),
-    type: "service",
-    comments: [
-      { ...comments[0], attachment: null },
-      { ...comments[1], attachment: null },
-    ],
-  },
   {
     ...shopCardInfoPlaceholder,
     id: "2",

@@ -51,7 +51,7 @@ export const SellerPostInput: React.FC<SellerPostInputProps> = ({
     {
       icon: SmilingFaceEmoji,
       name: t("Feeling"),
-      enabled: true,
+      enabled: false,
       className: "bg-yellow-100 fill-yellow-500 text-yellow-500",
     },
     {

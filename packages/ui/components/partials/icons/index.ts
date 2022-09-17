@@ -103,3 +103,5 @@ export * from "./SpeedClockIcon";
 export * from "./NikeIcon";
 export * from "./TriangleArrowFill";
 export * from "./SlimArrow";
+export * from "./PersonPlusIcon";
+export * from "./ListWithHeartIcon";
