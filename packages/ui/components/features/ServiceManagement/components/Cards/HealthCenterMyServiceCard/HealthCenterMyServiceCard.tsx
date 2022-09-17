@@ -14,11 +14,14 @@ import {
 import { randomNum } from "utils";
 
 export interface HealthCenterMyServiceCardProps
-  extends HealthCenterMyServiceDataType {}
+  extends HealthCenterMyServiceDataType {
+  onEdit: (serviceType: string, id: string) => any;
+  onRemove: (serviceType: string, id: string) => any;
+}
 
 export const HealthCenterMyServiceCard: React.FC<
   HealthCenterMyServiceCardProps
-> = () => {
+> = ({ onRemove, onEdit }) => {
   const { t } = useTranslation();
   const { visit } = useRouting();
   const centerData = {
@@ -118,8 +121,14 @@ export const HealthCenterMyServiceCard: React.FC<
       <div className="flex flex-col items-end text-xl gap-6">
         <Badge className="whitespace-nowrap">{t("Health Center")}</Badge>
         <div className="flex gap-2 text-3xl">
-          <EditIcon />
-          <TrashIcon className="text-secondaryRed" />
+          <EditIcon
+            className="cursor-pointer"
+            onClick={() => onEdit && onEdit("hotel", centerData.id)}
+          />
+          <TrashIcon
+            onClick={() => onRemove && onRemove("hotel", centerData.id)}
+            className="text-secondaryRed cursor-pointer"
+          />
         </div>
       </div>
     </div>

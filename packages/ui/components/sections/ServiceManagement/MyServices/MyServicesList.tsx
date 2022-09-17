@@ -14,17 +14,24 @@ export interface MyServicesListProps {}
 
 export const MyServicesList: React.FC<MyServicesListProps> = ({}) => {
   const { AddNewService } = React.useContext(MyServicesCtx);
-  const { visit } = useRouting();
   const { page, take } = usePagination(4);
   const { data: res } = useGetMyServicesQuery({ page, take });
   const { t } = useTranslation();
+  const { visit } = useRouting();
 
   return (
     <div className="flex flex-col gap-8 w-full">
       <Stack col divider={<Divider />}>
         {res
           ? res.data.map((service, i) => (
-              <MyServicesCardSwitcher data={service} key={i} />
+              <MyServicesCardSwitcher
+                onEdit={() => {
+                  visit((r) => r.addQuery({ c: "edit" }));
+                }}
+                onRemove={() => {}}
+                data={service}
+                key={i}
+              />
             ))
           : null}
       </Stack>
@@ -33,12 +40,4 @@ export const MyServicesList: React.FC<MyServicesListProps> = ({}) => {
       </Button>
     </div>
   );
-};
-
-export interface MyServicesCardSwticherProps {}
-
-export const MyServicesCardSwticher: React.FC<MyServicesCardSwticherProps> = (
-  props
-) => {
-  return <></>;
 };

@@ -105,3 +105,5 @@ export * from "./TriangleArrowFill";
 export * from "./SlimArrow";
 export * from "./PersonPlusIcon";
 export * from "./ListWithHeartIcon";
+export * from "./StoreIcon";
+export * from "./DownloadIcon";

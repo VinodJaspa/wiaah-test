@@ -16,7 +16,7 @@ import {
   ServicePresentationCarosuel,
   ServiceReachOutSection,
   ServiceReservastion,
-  ServicesProviderDescriptionSection,
+  MarketServicesProviderHeader,
   ServiceWorkingHoursSection,
   StaticSideBarWrapper,
   SectionTabType,
@@ -38,13 +38,15 @@ export const HotelDetailsView: React.FC = () => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
+      {res ? <MarketServicesProviderHeader {...res.data} /> : null}
       <Divider />
       <ServicePresentationCarosuel
         data={res ? res.data.presintations || [] : []}
       />
-      <SpinnerFallback isLoading={isLoading} isError={isError}>
-        {res ? <ServicesProviderHeader {...res.data} /> : null}
-      </SpinnerFallback>
+      <SpinnerFallback
+        isLoading={isLoading}
+        isError={isError}
+      ></SpinnerFallback>
       <SectionsScrollTabList visible={!isMobile} tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper sidebar={ServiceReservastion}>
         {res ? (

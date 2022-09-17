@@ -1,6 +1,11 @@
+import { FormatedSearchableFilter } from "api";
+import { Form, Formik } from "formik";
 import { useResponsive } from "hooks";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useReactPubsub } from "react-pubsub";
+import { useSetRecoilState } from "recoil";
+import { ServicesType } from "types";
 import {
   Modal,
   ModalContent,
@@ -8,11 +13,15 @@ import {
   RenderMap,
   ModalCloseButton,
   CloseIcon,
-  useSetMapLocationsState,
   LocationSearchInput,
-  ScrollingWrapper,
-  HotelsSearchList,
+  ServicesSearchBadgeList,
+  useGetServicesOnMapLocationQuery,
+  SearchServiceCard,
+  ResturantsDataState,
+  servicesOnMapState,
+  StoreIcon,
 } from "ui";
+import { mapArray } from "utils";
 
 export type MasterLocationData = {
   id: string;
@@ -24,7 +33,7 @@ export const useMasterLocationMapModal = (props?: {
   subToChanges?: boolean;
 }) => {
   const subToChanges = props?.subToChanges;
-  const [location, setLocation] = React.useState<MasterLocationData[]>();
+  const [locations, setLocation] = React.useState<MasterLocationData[]>();
   const { Listen, emit, removeListner } = useReactPubsub(
     () => "MasterLocationMapSearch"
   );
@@ -48,48 +57,87 @@ export const useMasterLocationMapModal = (props?: {
   React.useEffect(() => removeListner, []);
 
   return {
-    location,
+    locations,
     CloseMap,
     SearchForLocation,
+    SearchForLocations,
   };
 };
 
 export const MasterLocationMapModal: React.FC = () => {
-  const { location, CloseMap } = useMasterLocationMapModal({
+  const { locations, CloseMap } = useMasterLocationMapModal({
     subToChanges: true,
   });
+  const { t } = useTranslation();
+  const [filters, setFilters] = React.useState<FormatedSearchableFilter>();
+  const { data: res } = useGetServicesOnMapLocationQuery(filters);
+  const setLocations = useSetRecoilState(servicesOnMapState);
+  setLocations(
+    res
+      ? res.data.map((ser) => ({
+          id: ser.serviceData.id,
+          price: ser.serviceData.price,
+          title: ser.serviceData.title,
+          lat: ser.serviceData.location.cords.lat,
+          lng: ser.serviceData.location.cords.lng,
+        }))
+      : []
+  );
 
-  const { isTablet } = useResponsive();
   return (
-    <Modal isOpen={true} onClose={CloseMap}>
+    <Modal isOpen={!!locations} onClose={CloseMap}>
       <ModalOverlay />
       <ModalContent className="w-[100vw] rounded-[0px] max-h-[fit-content] h-[100vh]">
         <div className="w-full h-full relative">
-          <div className="flex p-4 flex-col gap-2">
-            <span className="w-full md:w-1/2">
-              <LocationSearchInput onLocationSelect={() => {}} />
-            </span>
-            <div className="w-full relative pb-40 md:pb-0 flex-col-reverse md:flex-row h-auto md:h-[75vh] flex gap-8 md:gap-4 justify-between">
-              <div className="w-full absolute bottom-0 left-0 z-50 md:static md:w-full md:h-full">
-                <ScrollingWrapper horizonatal={isTablet}>
-                  <HotelsSearchList />
-                </ScrollingWrapper>
-              </div>
-              <div className="w-full h-[75vh] md:h-auto">
-                <RenderMap />
-              </div>
-            </div>
-          </div>
-
-          <ModalCloseButton>
-            <div
-              onClick={() => CloseMap()}
-              className="cursor-pointer absolute bg-black text-white text-2xl bg-opacity-25 rounded-xl p-2 top-4 right-4"
-            >
-              <CloseIcon />
-            </div>
-          </ModalCloseButton>
+          <RenderMap />
+          <Formik
+            initialValues={{ serviceType: "hotel", location: "" }}
+            onSubmit={() => {}}
+          >
+            {({ values, setFieldValue }) => {
+              setFilters(values);
+              return (
+                <Form>
+                  <div className="flex gap-2 pointer-events-none absolute top-0 left-0 right-0 bottom-0">
+                    <div className="self-center rounded-r-2xl pointer-events-auto bg-white px-2 w-1/2 h-full">
+                      <div className="grid grid-cols-2 gap-4 px-2 h-full overflow-y-scroll thinScroll">
+                        {res
+                          ? mapArray(res.data, (data, i) => (
+                              <SearchServiceCard key={i} {...data} />
+                            ))
+                          : null}
+                      </div>
+                    </div>
+                    <div className="w-full h-full pointer-events-none relative">
+                      <div className="absolute pointer-events-auto top-24 w-full overflow-x-scroll noScroll left-1/2 -translate-x-1/2">
+                        <ServicesSearchBadgeList
+                          activeKey={values["serviceType"] as ServicesType}
+                          additionalLinks={[
+                            { key: "shop", name: t("Shop"), icon: StoreIcon },
+                          ]}
+                          onClick={(v) => {
+                            setFieldValue("serviceType", v);
+                          }}
+                        />
+                      </div>
+                      <div className="absolute pointer-events-auto bg-white w-[min(70rem,95%)] top-4 left-1/2 -translate-x-1/2">
+                        <LocationSearchInput onLocationSelect={() => {}} />
+                      </div>
+                    </div>
+                  </div>
+                </Form>
+              );
+            }}
+          </Formik>
         </div>
+        <ModalCloseButton>
+          <div
+            onClick={() => CloseMap()}
+            className="cursor-pointer absolute bg-black text-white text-2xl bg-opacity-25 rounded-xl p-2 top-4 right-4"
+          >
+            <CloseIcon />
+          </div>
+        </ModalCloseButton>
       </ModalContent>
     </Modal>
   );

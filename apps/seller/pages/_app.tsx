@@ -13,6 +13,7 @@ import { ReactSeoProvider } from "react-seo";
 import NextHead from "next/head";
 import { RoutingProvider } from "routing";
 import { useRouter } from "next/router";
+import { ClearNextJSQuery } from "utils";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
@@ -23,7 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <RoutingProvider
-          getQuery={() => router.query}
+          getQuery={() => ClearNextJSQuery(router.query, router.route)}
           getCurrentPath={() => {
             return router.asPath;
           }}

@@ -5,7 +5,7 @@ export type ServiceType =
   | "healthCenter"
   | "beautyCenter"
   | "holidayRentals"
-  | "Vehicle";
+  | "vehicle";
 export type CancelFees = "free" | "paid";
 export type ParkingAvailablity = "no" | "yes-free" | "yes-paid";
 export type ReservationOptions = "needed" | "not-needed";

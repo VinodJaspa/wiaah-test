@@ -11,11 +11,15 @@ export const useRouting = () => {
     // removeParam: RemoveParam,
   } = React.useContext(routingContext);
 
-  function visit(fn: (routes: RoutesType) => RoutesType) {
+  function visit(
+    fn: (routes: RoutesType) => RoutesType,
+    presistQuery: boolean = true
+  ) {
     const routes = fn({ ...MainRoutes });
     const route =
       routes.route.length > 1 ? routes.route : getCurrentPath().split("?")[0];
-    const query = { ...getQuery(), ...routes.query };
+    const presistedQuery = presistQuery ? GetQuery() : {};
+    const query = { ...presistedQuery, ...routes.query };
     const queries = Object.entries(query);
     const combinedQueries = queries.reduce((acc, curr, idx) => {
       return `${acc}${idx >= queries.length ? "" : idx === 0 ? "" : "&"}${
@@ -39,11 +43,10 @@ export const useRouting = () => {
   function removeParam(param: string) {
     const currParams = getQuery();
     delete currParams[param];
-    return visit((routes) => routes.addQuery({ ...currParams }));
+    return visit((routes) => routes.addQuery({ ...currParams }), false);
   }
 
   function getQuery(): Record<string, any> {
-    // console.log(GetQuery());
     return GetQuery();
   }
 

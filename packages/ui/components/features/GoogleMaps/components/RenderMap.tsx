@@ -95,7 +95,6 @@ export const RenderMap: React.FC = () => {
           } else {
             span = document.createElement("span");
             span.innerText = spanText;
-            console.log(services[i]);
             span.onclick = () => handleFocusService(services[i]);
             Object.entries(spanStyles).forEach(([key, value]: [any, any]) => {
               span.style[key] = value;

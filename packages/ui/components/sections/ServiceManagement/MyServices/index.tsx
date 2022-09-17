@@ -14,6 +14,7 @@ export * from "./HolidayRentalsGeneralDetailsForm";
 export * from "./HealthCenterIncludedServices";
 export * from "./AddNewService";
 export * from "./MyServicesList";
+export * from "./DiscoverOurServiceForm";
 
 interface MyServicesCtxValues {
   AddingNew: boolean;

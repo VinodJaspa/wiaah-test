@@ -22,6 +22,7 @@ import {
   SquarePlusOutlineIcon,
   useUserData,
   AddNewPostModal,
+  useMasterLocationMapModal,
 } from "ui";
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
@@ -47,6 +48,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
   props,
   headerNavLinks = [],
 }) => {
+  const { SearchForLocations } = useMasterLocationMapModal();
   const { user } = useUserData();
   const { openModal: openSearchBox } = useGeneralSearchModal();
   const router = useRouter();
@@ -90,6 +92,7 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             iconProps={{
               className: "fill-transparent",
             }}
+            onClick={() => SearchForLocations([])}
             className="text-icon fill-transparent text-lightBlack"
           />
         </div>

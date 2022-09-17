@@ -17,9 +17,15 @@ import {
   LocationAddressDisplay,
 } from "ui";
 
-export interface VehicleMyServiceCardProps extends VehicleMyServiceDataType {}
+export interface VehicleMyServiceCardProps extends VehicleMyServiceDataType {
+  onEdit: (serviceType: string, id: string) => any;
+  onRemove: (serviceType: string, id: string) => any;
+}
 
-export const VehicleMyServiceCard: React.FC<VehicleMyServiceCardProps> = () => {
+export const VehicleMyServiceCard: React.FC<VehicleMyServiceCardProps> = ({
+  onEdit,
+  onRemove,
+}) => {
   const { t } = useTranslation();
   const { visit } = useRouting();
   const props = {
@@ -139,8 +145,14 @@ export const VehicleMyServiceCard: React.FC<VehicleMyServiceCardProps> = () => {
         <div className="flex flex-col items-end text-xl gap-6">
           <Badge className="whitespace-nowrap">{t("Vehicle")}</Badge>
           <div className="flex gap-2 text-3xl">
-            <EditIcon />
-            <TrashIcon className="text-secondaryRed" />
+            <EditIcon
+              className="cursor-pointer"
+              onClick={() => onEdit && onEdit("hotel", id)}
+            />
+            <TrashIcon
+              onClick={() => onRemove && onRemove("hotel", id)}
+              className="text-secondaryRed cursor-pointer"
+            />
           </div>
         </div>
         <span className="text-lg text-primary flex whitespace-nowrap gap-2">

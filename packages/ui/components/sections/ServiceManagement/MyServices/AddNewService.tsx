@@ -23,6 +23,8 @@ import {
   TabTitle,
   FlagIcon,
   MyServicesCtx,
+  ServicePoliciesInputSection,
+  DiscoverOurServiceForm,
 } from "ui";
 import { NewServiceSchemas } from "validation";
 import { CallbackAfter } from "utils";
@@ -33,7 +35,6 @@ import { RestaurantServiceDetailsForm } from "ui";
 import { HealthCenterServiceDetailsForm } from "ui";
 import { VehicleServiceDetailsForm } from "ui";
 import { BeautyCenterServiceDetailsForm } from "ui";
-import { ServicePoliciesSection } from "ui";
 import { RestaurantIncludedServicesSection } from "ui";
 import { HolidayRentalsGeneralDetailsForm } from "ui";
 import { HealthCenterIncludedServices } from "ui";
@@ -117,7 +118,7 @@ export const NewServiceStepper: React.FC = () => {
     },
     {
       serviceIcon: CarWheelIcon,
-      serviceKey: "Vehicle",
+      serviceKey: "vehicle",
       serviceDescription: "offer your vehicle for rent to whoever needs!",
       serviceName: "Vehicle renting",
     },
@@ -146,7 +147,7 @@ export const NewServiceStepper: React.FC = () => {
       schema: NewServiceSchemas.healthCenterDetailsSchema,
     },
     {
-      key: "Vehicle",
+      key: "vehicle",
       component: VehicleServiceDetailsForm,
       schema: NewServiceSchemas.vehicleDetailsSchema,
     },
@@ -254,12 +255,52 @@ export const NewServiceStepper: React.FC = () => {
                   },
                 },
                 {
+                  key: "Discover our service",
+                  stepComponent: (
+                    <StepperFormHandler handlerKey="discoverOurService">
+                      {({ validate }) => {
+                        return (
+                          <>
+                            {detailsSection ? (
+                              <DiscoverOurServiceForm
+                                onChange={validate}
+                                serviceLabel={(() => {
+                                  switch (serviceType) {
+                                    case "hotel":
+                                      return t("Hotel");
+                                    case "restaurant":
+                                      return t("Restaurant");
+                                    case "healthCenter":
+                                      return t("Health Center");
+                                    case "beautyCenter":
+                                      return t("Beauty Center");
+                                    case "holidayRentals":
+                                      return t("Holiday Rentals");
+                                    case "vehicle":
+                                      return t("Vehicles");
+                                    default:
+                                      return t("Service");
+                                  }
+                                })()}
+                              />
+                            ) : null}
+                          </>
+                        );
+                      }}
+                    </StepperFormHandler>
+                  ),
+                  stepName: {
+                    translationKey: "discover_our_service",
+                    fallbackText: "Discover Our Service",
+                  },
+                },
+                {
                   key: "servicePolicies",
                   stepComponent: (
                     <StepperFormHandler handlerKey="servicePolicies">
                       {({ validate }) => (
                         <>
-                          <ServicePoliciesSection onChange={validate} />
+                          <ServicePoliciesInputSection onChange={validate} />
                         </>
                       )}
                     </StepperFormHandler>

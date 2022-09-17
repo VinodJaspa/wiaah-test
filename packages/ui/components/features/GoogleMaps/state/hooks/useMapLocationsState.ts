@@ -2,7 +2,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { onMapLocationsState } from "../atoms";
 
 export const useSetMapLocationsState = () => {
-  const setLocations = useSetRecoilState(onMapLocationsState);
+  const setLocations = (...props: any) => {};
 
   return {
     setLocations,

@@ -49,7 +49,7 @@ export const LocationSearchInput: React.FC<LocationSearchInputProps> = ({
       ref={ref}
       className={`${
         className || ""
-      } rounded-lg relative w-full border-[1px] border-gray-200 border-b-0 p-2`}
+      } rounded-lg relative isolate w-full border-[1px] border-gray-200 border-b-0 p-2`}
     >
       <InputGroup flushed className="border-b-black ">
         <InputLeftElement className="flex px-2 justify-center items-center">

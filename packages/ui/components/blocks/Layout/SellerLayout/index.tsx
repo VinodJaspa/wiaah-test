@@ -170,7 +170,6 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
       url: "affiliation",
     },
   ];
-
   const { accountType } = useAccountType();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
   const { isMobile } = useResponsive();

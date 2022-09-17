@@ -34,26 +34,34 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
   );
   const mainSection = sections[sectionIdx];
 
-  const serviceSection = getParam("s_section");
-  const serviceType = getParam("s_type");
+  const serviceSection = getParam("sub");
+  const clusterKey = getParam("c");
 
   const subSectionCluster = mainSection?.subSections?.find(
-    (cluster) => cluster.key === serviceType
+    (cluster) => cluster.key === clusterKey
   );
 
   const subSectionIdx =
-    serviceSection === "auto"
-      ? 0
-      : subSectionCluster
-      ? subSectionCluster.sections?.findIndex(
-          (panel) => panel.panelUrl === `/${serviceSection}`
-        )
+    typeof serviceSection === "string"
+      ? subSectionCluster
+        ? subSectionCluster.sections?.findIndex(
+            (panel) => panel.panelUrl === `/${serviceSection}`
+          )
+        : 0
       : 0;
 
   const subSection = subSectionCluster
     ? subSectionCluster.sections[subSectionIdx] ?? null
     : null;
 
+  console.log({
+    clusterKey,
+    subSectionCluster,
+    mainSection,
+    subSectionIdx,
+    subSection,
+    serviceSection,
+  });
   const { isMobile, isTablet } = useResponsive();
 
   const minGap = isTablet ? 0 : 48;
@@ -138,20 +146,20 @@ export const NestedSettingsSectionsSidebar: React.FC<
   );
   const mainSection = sections[sectionIdx];
 
-  const serviceSection = getParam("s_section");
-  const serviceType = getParam("s_type");
+  const serviceSection = getParam("sub");
+  const serviceType = getParam("c");
 
   const subSectionCluster = mainSection?.subSections?.find(
     (cluster) => cluster.key === serviceType
   );
 
   const subSectionIdx =
-    serviceSection === "auto"
-      ? 0
-      : subSectionCluster
-      ? subSectionCluster.sections?.findIndex(
-          (panel) => panel.panelUrl === `/${serviceSection}`
-        )
+    typeof serviceSection === "string"
+      ? subSectionCluster
+        ? subSectionCluster.sections?.findIndex(
+            (panel) => panel.panelUrl === `/${serviceSection}`
+          )
+        : 0
       : 0;
 
   const subSection = subSectionCluster
@@ -168,7 +176,7 @@ export const NestedSettingsSectionsSidebar: React.FC<
       {subSection && (
         <>
           <HStack
-            onClick={() => removeParam("s_section")}
+            onClick={() => removeParam("c")}
             className="my-2 text-xl cursor-pointer"
           >
             <ArrowLeftIcon />

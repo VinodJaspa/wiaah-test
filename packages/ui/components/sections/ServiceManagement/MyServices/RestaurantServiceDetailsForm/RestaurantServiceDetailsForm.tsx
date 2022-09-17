@@ -21,8 +21,6 @@ import {
 import { FileRes } from "utils";
 import { NewServiceSchemas } from "validation";
 
-const MAX_PRODUCTS_IMAGE = 4;
-
 export interface RestaurantServiceDetailsFormProps {
   onChange?: (data: Record<string, any>) => any;
 }

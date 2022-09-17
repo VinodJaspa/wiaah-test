@@ -1,7 +1,6 @@
 import { HotelMyServiceDataType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useRouting } from "routing";
 import {
   AspectRatioImage,
   HeartIcon,
@@ -11,14 +10,15 @@ import {
   TrashIcon,
   EditIcon,
   PopularAmenitiesSection,
-  ServiceCancelationPolicyInput,
-  SearchFilter,
   DotIcon,
   ServiceRefundableTypeDescription,
   LocationAddressDisplay,
 } from "ui";
 
-export interface HotelMyServiceCardProps extends HotelMyServiceDataType {}
+export interface HotelMyServiceCardProps extends HotelMyServiceDataType {
+  onEdit: (serviceType: string, id: string) => any;
+  onRemove: (serviceType: string, id: string) => any;
+}
 
 export const HotelMyServiceCard: React.FC<HotelMyServiceCardProps> = (
   props
@@ -32,6 +32,8 @@ export const HotelMyServiceCard: React.FC<HotelMyServiceCardProps> = (
     thumbnail,
     title,
     type,
+    onEdit,
+    onRemove,
   } = props;
   const { t } = useTranslation();
 
@@ -141,7 +143,7 @@ export const HotelMyServiceCard: React.FC<HotelMyServiceCardProps> = (
     <div
       className={`flex flex-col lg:flex-row gap-4 border-2 bg-white border-gray-300 p-2 rounded-lg`}
     >
-      <div className="relative min-w-[13rem]">
+      <div className="relative isolate min-w-[13rem]">
         <AspectRatioImage src={thumbnail} alt={title} ratio={1} />
         <HeartIcon className="absolute top-2 right-2 z-[5] bg-black bg-opacity-50 rounded-full text-white p-1 text-2xl cursor-pointer" />
       </div>
@@ -185,14 +187,22 @@ export const HotelMyServiceCard: React.FC<HotelMyServiceCardProps> = (
           </div>
         ))}
       </div>
-      <PopularAmenitiesSection amenities={PopularAmenities} />
+      <div className="h-64 w-full overflow-y-scroll noScroll">
+        <PopularAmenitiesSection amenities={PopularAmenities} />
+      </div>
 
       <div className={`flex-col items-end flex justify-between h-auto gap-2`}>
         <div className="flex flex-col text-xl gap-6 items-end">
           <Badge>{t("Hotel")}</Badge>
           <div className="flex gap-2 text-3xl">
-            <EditIcon />
-            <TrashIcon className="text-secondaryRed" />
+            <EditIcon
+              className="cursor-pointer"
+              onClick={() => onEdit && onEdit("hotel", id)}
+            />
+            <TrashIcon
+              onClick={() => onRemove && onRemove("hotel", id)}
+              className="text-secondaryRed cursor-pointer"
+            />
           </div>
         </div>
         <div
