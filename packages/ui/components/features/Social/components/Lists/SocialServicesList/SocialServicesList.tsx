@@ -1,19 +1,46 @@
 import { usePagination, useResponsive } from "hooks";
-import { ShopCardsInfoPlaceholder } from "placeholder";
+import { PostCardPlaceHolder, ShopCardsInfoPlaceholder } from "placeholder";
 import React from "react";
 import { useRouting } from "routing";
-import { ShopCardInfo } from "types";
 import {
   useGetServicesPostsQuery,
-  ListWrapper,
-  SocialServicePostCard,
   SpinnerFallback,
   PostViewPopup,
   SocialServiceDetailsCard,
   SocialServiceDetailsModal,
   SocialServiceDetailsCardProps,
+  GridListOrganiser,
+  SocialServicesPostCard,
 } from "ui";
 import { randomNum } from "utils";
+
+const servicesData = [
+  {
+    src: "https://cdn2.hubspot.net/hubfs/439788/Blog/Featured%20Images/Best%20Hotel%20Website%20Designs.jpg",
+    type: "Hotel",
+  },
+  {
+    src: "https://media-cdn.tripadvisor.com/media/photo-s/1a/b8/46/6d/london-stock.jpg",
+    type: "Restaurant",
+  },
+  {
+    src: "https://www.brandeis.edu/health/images/homepage/reception.jpg",
+    type: "Health Center",
+  },
+  {
+    src: "https://mostaql.hsoubcdn.com/uploads/thumbnails/835649/5fb1c7c34bc0a/Beauty-Centre-1.jpg",
+    type: "Beauty Center",
+  },
+  {
+    src: "https://www.autocar.co.uk/sites/autocar.co.uk/files/styles/gallery_slide/public/images/car-reviews/first-drives/legacy/dealer-car-sales-0519.jpg?itok=psw3eEer",
+    type: "Vehicle",
+  },
+  {
+    src: "https://www.costablancadreams.eu/wp-content/uploads/2021/05/JUNE30-450x300.jpg",
+    type: "Holiday Rentals",
+  },
+];
+
 export interface SocialServicesPostsListProps {}
 
 export const SocialServicePostsList: React.FC<
@@ -30,6 +57,7 @@ export const SocialServicePostsList: React.FC<
   return (
     <SpinnerFallback isLoading={isLoading} isError={isError}>
       <PostViewPopup<SocialServiceDetailsCardProps>
+        //@ts-ignore
         fetcher={async ({ queryKey }: any) => {
           const id = queryKey[1].postId;
           const sentence =
@@ -82,17 +110,117 @@ export const SocialServicePostsList: React.FC<
           );
         }}
       />
+
       {Array.isArray(res?.data) ? (
-        <ListWrapper cols={isTablet ? 2 : isMobile ? 1 : 3}>
-          {res?.data.map((post) => (
-            <SocialServicePostCard
-              onServiceClick={(id) =>
-                visit((routes) => routes.addQuery({ servicepostid: id }))
-              }
-              {...post}
-            />
-          ))}
-        </ListWrapper>
+        <GridListOrganiser
+          rowSize="14.5rem"
+          presets={[
+            {
+              length: 6,
+              cols: 5,
+              points: [
+                {
+                  c: 2,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+              ],
+            },
+            {
+              cols: 5,
+              length: 8,
+              points: [
+                { c: 1, r: 1 },
+                { c: 1, r: 1 },
+                { c: 1, r: 1 },
+                { c: 1, r: 1 },
+                { c: 1, r: 2 },
+                { c: 2, r: 1 },
+                { c: 1, r: 1 },
+                { c: 1, r: 1 },
+              ],
+            },
+
+            {
+              length: 9,
+              cols: 4,
+              points: [
+                {
+                  c: 2,
+                  r: 1,
+                },
+                {
+                  c: 2,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 2,
+                  r: 1,
+                },
+              ],
+            },
+          ]}
+        >
+          {res?.data.map((post) => {
+            const attachments = servicesData[randomNum(servicesData.length)];
+            return (
+              <SocialServicesPostCard
+                profileInfo={{ ...PostCardPlaceHolder.profileInfo }}
+                postInfo={{
+                  ...PostCardPlaceHolder.postInfo,
+                  attachments: [{ src: attachments.src, type: "image" }],
+                }}
+                cashback={10}
+                discount={15}
+                price={120}
+                serviceLabel={attachments.type}
+              />
+            );
+          })}
+        </GridListOrganiser>
       ) : null}
       <SocialServiceDetailsModal />
     </SpinnerFallback>

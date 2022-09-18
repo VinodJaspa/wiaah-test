@@ -1,5 +1,5 @@
 import React from "react";
-import { AspectRatioProps, AspectRatio } from "ui";
+import { AspectRatioProps, AspectRatio, Image } from "ui";
 
 export interface AspectRatioImageProps extends AspectRatioProps {
   src: string;
@@ -14,7 +14,7 @@ export const AspectRatioImage: React.FC<AspectRatioImageProps> = ({
 }) => {
   return (
     <AspectRatio {...props}>
-      <img className="w-full h-full object-cover" src={src} alt={alt} />
+      <Image className="w-full h-full object-cover" src={src} alt={alt} />
       {children}
     </AspectRatio>
   );

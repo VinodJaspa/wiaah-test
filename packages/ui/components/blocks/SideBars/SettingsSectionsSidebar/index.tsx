@@ -1,6 +1,7 @@
 import React from "react";
 import { HtmlDivProps, SettingsSectionType } from "types";
 import { TranslationText, Divider } from "ui";
+import { PassPropsToChild, PassPropsToFnOrElem } from "utils";
 
 export interface SettingsSectionsSidebarProps {
   innerProps?: HtmlDivProps;
@@ -26,7 +27,7 @@ export const SettingsSectionsSidebar: React.FC<
               currentActive === panelUrl ? "bg-primary-50" : ""
             } hover:bg-primary-light flex gap-2 py-4 px-8 items-center`}
           >
-            <Icon className="text-2xl" />
+            {PassPropsToFnOrElem(Icon, { className: "text-25xl" })}
             <div className="flex flex-col">
               <TranslationText
                 className="font-bold"

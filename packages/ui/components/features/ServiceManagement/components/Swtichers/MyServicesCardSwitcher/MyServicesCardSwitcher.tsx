@@ -11,26 +11,29 @@ import {
 
 export interface MyServicesCardSwitcherProps {
   data: MyServiceData;
+  onEdit: () => any;
+  onRemove: () => any;
 }
 
 export const MyServicesCardSwitcher: React.FC<MyServicesCardSwitcherProps> = ({
   data,
+  ...props
 }) => {
   if (!data) return null;
   const { type } = data;
   switch (type) {
     case "hotel":
-      return <HotelMyServiceCard {...data} />;
+      return <HotelMyServiceCard {...props} {...data} />;
     case "restaurant":
-      return <RestaurantMyServiceCard {...data} />;
+      return <RestaurantMyServiceCard {...props} {...data} />;
     case "holiday_rentals":
-      return <HolidayRentalsMyServiceCard {...data} />;
+      return <HolidayRentalsMyServiceCard {...props} {...data} />;
     case "health_center":
-      return <HealthCenterMyServiceCard {...data} />;
+      return <HealthCenterMyServiceCard {...props} {...data} />;
     case "vehicle":
-      return <VehicleMyServiceCard {...data} />;
+      return <VehicleMyServiceCard {...props} {...data} />;
     case "beauty_center":
-      return <BeautyCenterMyServiceCard {...data} />;
+      return <BeautyCenterMyServiceCard {...props} {...data} />;
     default:
       return null;
   }

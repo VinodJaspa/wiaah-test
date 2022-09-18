@@ -667,7 +667,6 @@ export const ServicesSearchView: React.FC = () => {
                     const currentService = values[
                       "serviceType"
                     ] as ServicesType;
-                    if (currentService === "general") return true;
                     return v.serviceType === currentService;
                   })
                   .map((service, i) => (

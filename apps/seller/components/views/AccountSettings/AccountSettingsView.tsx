@@ -27,7 +27,9 @@ import {
   AccountVerification,
   PersonalizationAndDataSection,
   Verified,
+  ShareIcon,
   MyVerificationSection,
+  ShareYourWiaahQr,
 } from "ui";
 import { ImBlocked } from "react-icons/im";
 import { useResponsive } from "hooks";
@@ -103,6 +105,12 @@ const sections: SettingsSectionType[] = [
     panelUrl: "/newsletter",
 
     panelComponent: <NewsLetterSection />,
+  },
+  {
+    panelName: "Share Your Wiaah Qr",
+    panelIcon: ShareIcon,
+    panelUrl: "/shareyourqr",
+    panelComponent: <ShareYourWiaahQr />,
   },
   {
     panelName: "Invite Friends",

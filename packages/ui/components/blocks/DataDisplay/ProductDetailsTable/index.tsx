@@ -1,12 +1,8 @@
 import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { BiEdit } from "react-icons/bi";
-import { FiPlusSquare } from "react-icons/fi";
-import { IoTrash } from "react-icons/io5";
 import { ProductManagementDetailsDataType } from "types";
 import {
-  ItemsPagination,
   useEditProductData,
   Button,
   Table,
@@ -17,19 +13,32 @@ import {
   THead,
   TableContainer,
   SectionHeader,
+  TrashIcon,
+  EditIcon,
+  SquarePlusOutlineIcon,
+  usePaginationControls,
+  ItemsPagination,
 } from "ui";
 
 export interface ProductDetailsTableProps {}
 
 export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
   const { AddNewProduct } = useEditProductData();
+  const {
+    controls,
+    changeTotalItems,
+    pagination: { page, take },
+  } = usePaginationControls();
   const { isMobile } = useResponsive();
   const { t } = useTranslation();
+  React.useEffect(() => {
+    changeTotalItems(products.length);
+  }, []);
   return (
     <div className="w-full flex flex-col gap-4">
       <SectionHeader sectionTitle={t("your_products", "Your Products")}>
         {isMobile ? (
-          <FiPlusSquare className="text-2xl" onClick={AddNewProduct} />
+          <SquarePlusOutlineIcon className="text-2xl" onClick={AddNewProduct} />
         ) : (
           <Button onClick={AddNewProduct}>
             {t("add_new_product", "Add New Product")}
@@ -52,36 +61,39 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
               </Tr>
             </THead>
             <TBody>
-              {products.map((product, i) => (
-                <Tr key={product.id + i}>
-                  <Td align="center" className="w-24">
-                    <img
-                      className="h-auto w-full"
-                      src={product.image}
-                      alt={product.name}
-                    />
-                  </Td>
-                  <Td align="center">{product.name}</Td>
-                  <Td align="center">
-                    {product.price.amount} {product.price.currency}
-                  </Td>
-                  <Td align="center">{product.stockStatus}</Td>
-                  <Td align="center">
-                    {product.earnings.amount} {product.earnings.currency}
-                  </Td>
-                  <Td align="center">{product.sales}</Td>
-                  <Td align="center">{product.status}</Td>
-                  <Td align="center">
-                    <div className="flex items-center gap-2">
-                      <BiEdit className="text-xl cursor-pointer" />
-                      <IoTrash className="text-red-700 text-xl cursor-pointer" />
-                    </div>
-                  </Td>
-                </Tr>
-              ))}
+              {products
+                .slice(page * take, page * take + take)
+                .map((product, i) => (
+                  <Tr key={product.id + i}>
+                    <Td align="center" className="w-24">
+                      <img
+                        className="h-auto w-full"
+                        src={product.image}
+                        alt={product.name}
+                      />
+                    </Td>
+                    <Td align="center">{product.name}</Td>
+                    <Td align="center">
+                      {product.price.amount} {product.price.currency}
+                    </Td>
+                    <Td align="center">{product.stockStatus}</Td>
+                    <Td align="center">
+                      {product.earnings.amount} {product.earnings.currency}
+                    </Td>
+                    <Td align="center">{product.sales}</Td>
+                    <Td align="center">{product.status}</Td>
+                    <Td align="center">
+                      <div className="flex items-center gap-2">
+                        <EditIcon className="text-xl cursor-pointer" />
+                        <TrashIcon className="text-red-700 text-xl cursor-pointer" />
+                      </div>
+                    </Td>
+                  </Tr>
+                ))}
             </TBody>
           </Table>
         </TableContainer>
+        <ItemsPagination controls={controls} />
       </div>
     </div>
   );

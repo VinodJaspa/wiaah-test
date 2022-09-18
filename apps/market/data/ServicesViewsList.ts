@@ -13,7 +13,7 @@ import {
   VehicleSearchResultsView,
   VehicleSearchView,
   HotelDetailsView,
-  ResturantDetailsView,
+  RestaurantDetailsView,
   HealthCenterDetailsView,
   VehicleServiceDetailsView,
   BeautyCenterSearchView,
@@ -42,11 +42,11 @@ export const ServicesViewsList: ServiceViewListItem[] = [
     searchHorizontalList: null,
   },
   {
-    slug: "resturant",
+    slug: "restaurant",
     search: ResturantSearchView,
     searchResaults: ResturantSearchResultsView,
     searchList: ResturantSearchList,
-    details: ResturantDetailsView,
+    details: RestaurantDetailsView,
     searchHorizontalList: ResturantHorizontalList,
   },
   {

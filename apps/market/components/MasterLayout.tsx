@@ -11,6 +11,7 @@ import {
   SocialAuthFooter,
   CommentReportModal,
   RootProps,
+  MasterLocationMapModal,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { useSetRecoilState } from "recoil";
@@ -319,6 +320,7 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
   return (
     <Root {...rootProps}>
       <CommentReportModal />
+      <MasterLocationMapModal />
       <AuthPopup />
       {!social && <Header />}
       {social && <SocialHeader />}

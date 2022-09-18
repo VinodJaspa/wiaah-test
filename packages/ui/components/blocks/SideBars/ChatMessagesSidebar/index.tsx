@@ -51,7 +51,7 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
             <ChatUserCard
               onClick={() => onCardClick && onCardClick(cardData.id)}
               {...cardData}
-              key={cardData.id}
+              key={cardData.id + i}
             />
             {i !== userCards.length - 1 && <Divider />}
           </>

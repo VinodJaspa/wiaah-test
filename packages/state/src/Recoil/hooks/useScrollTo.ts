@@ -7,9 +7,10 @@ export const useScrollTo = () => {
   const sections = useRecoilValue(pageRefSectionState);
 
   const ScrollTo = (elementKey: string) => {
+    console.log({ sections, elementKey });
     const targetElement = sections.find((e) => e.key === elementKey);
     if (!targetElement) return;
-
+    console.log("found");
     targetElement.ref.scrollIntoView();
   };
 

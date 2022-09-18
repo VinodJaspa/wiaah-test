@@ -19,11 +19,14 @@ import {
 } from "ui";
 
 export interface RestaurantMyServiceCardProps
-  extends RestaurantMyServiceDataType {}
+  extends RestaurantMyServiceDataType {
+  onEdit: (serviceType: string, id: string) => any;
+  onRemove: (serviceType: string, id: string) => any;
+}
 
 export const RestaurantMyServiceCard: React.FC<
   RestaurantMyServiceCardProps
-> = () => {
+> = ({ onEdit, onRemove }) => {
   const { t } = useTranslation();
   const { visit } = useRouting();
 
@@ -110,8 +113,14 @@ export const RestaurantMyServiceCard: React.FC<
         <div className="flex flex-col items-end text-xl gap-6">
           <Badge>{t("Restaurant")}</Badge>
           <div className="flex gap-2 text-3xl">
-            <EditIcon />
-            <TrashIcon className="text-secondaryRed" />
+            <EditIcon
+              className="cursor-pointer"
+              onClick={() => onEdit && onEdit("hotel", id)}
+            />
+            <TrashIcon
+              onClick={() => onRemove && onRemove("hotel", id)}
+              className="text-secondaryRed cursor-pointer"
+            />
           </div>
         </div>
 

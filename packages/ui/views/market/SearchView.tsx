@@ -8,7 +8,6 @@ import {
   GridContainerPager,
   useGetProductsQuery,
   useSearchFilters,
-  SpinnerFallback,
 } from "ui";
 import { BreadCrumb } from "ui";
 import { BsArrowLeft } from "react-icons/bs";

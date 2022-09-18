@@ -7,6 +7,9 @@ import {
   ShareIcon,
   useSocialPostSettingsPopup,
   HorizontalDotsIcon,
+  LocationIcon,
+  StarOutlineIcon,
+  PersonFillIcon,
 } from "ui";
 import { Interaction } from "types";
 import { useDateDiff } from "hooks";
@@ -44,8 +47,8 @@ export const PostCard: React.FC<PostCardProps> = ({
       />
 
       <div className="absolute group-hover:opacity-100 opacity-0 transition-opacity bg-black bg-opacity-40 px-8 py-6 text-white top-0 left-0 bottom-0 right-0 flex flex-col w-full justify-between">
-        <div className="flex flex-col w-full gap-2">
-          <div className="flex gap-4 items-center">
+        <div className="flex flex-col w-full ">
+          <div className="flex gap-2 items-center">
             <div className="min-w-[2.5rem] ">
               <UserProfileDisplay
                 storyUserData={{
@@ -55,15 +58,20 @@ export const PostCard: React.FC<PostCardProps> = ({
               />
             </div>
             <div className="flex w-full justify-between">
-              <div className="flex flex-col gap-1">
+              <div className="flex flex-col">
                 <p className="font-bold">{profileInfo.name}</p>
-                <p>{profileInfo.profession}</p>
+                <div className="flex gap-1 items-center">
+                  <LocationIcon className="text-white" />
+                  <p>{profileInfo.profession}</p>
+                </div>
               </div>
               <div className="flex items-end flex-col">
-                <HorizontalDotsIcon
-                  onClick={() => OpenModal(postInfo?.id)}
-                  className="text-2xl text-white fill-white cursor-pointer"
-                />
+                <div className="h-4 overflow-hidden">
+                  <HorizontalDotsIcon
+                    onClick={() => OpenModal(postInfo?.id)}
+                    className="text-2xl text-white fill-white cursor-pointer"
+                  />
+                </div>
                 <p className="font-semibold">
                   {date ? `${date.value} ${date.timeUnit} ${t("ago")}` : ""}
                 </p>
@@ -91,13 +99,24 @@ export const PostCard: React.FC<PostCardProps> = ({
               </span>
               <p className="font-bold text-base">{postInfo.numberOfComments}</p>
             </div>
+            <div className="flex gap-2 items-center">
+              <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
+                <ShareIcon />
+              </span>
+              <p className="font-bold text-base">{postInfo.numberOfShares}</p>
+            </div>
           </div>
-
-          <div className="flex gap-2 items-center">
-            <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
-              <ShareIcon />
-            </span>
-            <p className="font-bold text-base">{postInfo.numberOfShares}</p>
+          <div className="flex gap-4">
+            <div className="flex gap-2 items-center">
+              <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
+                <PersonFillIcon />
+              </span>
+            </div>
+            <div className="flex gap-2 items-center">
+              <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
+                <StarOutlineIcon />
+              </span>
+            </div>
           </div>
         </div>
       </div>

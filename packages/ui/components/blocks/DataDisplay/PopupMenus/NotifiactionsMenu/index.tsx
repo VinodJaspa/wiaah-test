@@ -6,8 +6,6 @@ import {
   MenuItem,
   MenuList,
   MenuButton,
-  Stack,
-  Divider,
 } from "ui";
 import React from "react";
 import { useTranslation } from "react-i18next";

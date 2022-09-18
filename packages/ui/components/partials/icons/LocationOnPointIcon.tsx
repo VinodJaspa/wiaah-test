@@ -18,7 +18,13 @@ export const LocationOnPointIcon: React.FC<HtmlSvgProps> = (props) => {
 };
 export const LocationOnPointFillIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
-    <svg viewBox="0 0 264.018 264.018" width={"1em"} height={"1em"}>
+    <svg
+      {...props}
+      viewBox="0 0 264.018 264.018"
+      fill="currentColor"
+      width={"1em"}
+      height={"1em"}
+    >
       <path
         d="M132.009,0c-42.66,0-77.366,34.706-77.366,77.366c0,11.634,2.52,22.815,7.488,33.24c0.1,0.223,0.205,0.442,0.317,0.661
 		l58.454,113.179c2.146,4.154,6.431,6.764,11.106,6.764c4.676,0,8.961-2.609,11.106-6.764l58.438-113.148

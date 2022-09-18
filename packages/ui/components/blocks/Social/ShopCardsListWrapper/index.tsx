@@ -3,17 +3,14 @@ import React from "react";
 import { useRouting } from "routing";
 import { ShopCardInfo } from "types";
 import {
-  ListWrapper,
+  GridListOrganiser,
   SocialShopCard,
   SocialShopCardProps,
   ListWrapperProps,
-  GridWrapper,
-  ShopCardAttachment,
   useShopPostPopup,
-  ShopPostViewModal,
   PostViewPopup,
+  SocialShopPostcard,
 } from "ui";
-import { NumberShortner } from "utils";
 
 export interface ShopCardsListWrapperProps
   extends Omit<SocialShopCardProps, "shopCardInfo"> {
@@ -32,47 +29,6 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
 }) => {
   const { visit } = useRouting();
   const { setCurrentPostId } = useShopPostPopup();
-  if (grid) {
-    return (
-      <>
-        <ShopPostViewModal />
-        <GridWrapper
-          cols={cols}
-          itemProps={{
-            bgColor: "black",
-          }}
-          items={items.map((item, i) => ({
-            displayVariant:
-              i === 0
-                ? "landscape"
-                : i === 1
-                ? "portrait"
-                : i === 4
-                ? "large"
-                : "normal",
-            component: (
-              <ShopCardAttachment
-                innerProps={{ onClick: () => setCurrentPostId(item.id) }}
-                attachmentProps={{
-                  controls: false,
-                  blur: true,
-                  src: item.attachments[0].src,
-                  type: item.attachments[0].type,
-                  footer: item.views ? (
-                    <p className="w-full px-4 text-left text-xl font-bold text-white">
-                      {NumberShortner(item.views)}
-                    </p>
-                  ) : undefined,
-                }}
-                productType={item.type || "product"}
-                {...item}
-              />
-            ),
-          }))}
-        />
-      </>
-    );
-  }
 
   return (
     <>
@@ -95,19 +51,129 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
           );
         }}
       />
-      <ListWrapper {...wrapperProps} cols={cols}>
+
+      <GridListOrganiser
+        rowSize="14.5rem"
+        presets={[
+          {
+            length: 6,
+            cols: 5,
+            points: [
+              {
+                c: 2,
+                r: 2,
+              },
+              {
+                c: 1,
+                r: 1,
+              },
+              {
+                c: 1,
+                r: 2,
+              },
+              {
+                c: 1,
+                r: 1,
+              },
+              {
+                c: 1,
+                r: 1,
+              },
+              {
+                c: 1,
+                r: 1,
+              },
+            ],
+          },
+          {
+            cols: 5,
+            length: 8,
+            points: [
+              { c: 1, r: 1 },
+              { c: 1, r: 1 },
+              { c: 1, r: 1 },
+              { c: 1, r: 1 },
+              { c: 1, r: 2 },
+              { c: 2, r: 1 },
+              { c: 1, r: 1 },
+              { c: 1, r: 1 },
+            ],
+          },
+
+          {
+            length: 9,
+            cols: 4,
+            points: [
+              {
+                c: 2,
+                r: 1,
+              },
+              {
+                c: 2,
+                r: 2,
+              },
+              {
+                c: 1,
+                r: 2,
+              },
+              {
+                c: 1,
+                r: 2,
+              },
+              {
+                c: 1,
+                r: 1,
+              },
+              {
+                c: 1,
+                r: 1,
+              },
+              {
+                c: 1,
+                r: 1,
+              },
+              {
+                c: 1,
+                r: 1,
+              },
+              {
+                c: 2,
+                r: 1,
+              },
+            ],
+          },
+        ]}
+      >
         {items.map((shop, i) => (
-          <SocialShopCard
+          <SocialShopPostcard
             onCardClick={() =>
               visit((routes) => routes.addQuery({ shopPostId: shop.id }))
             }
             showComments
             key={i}
             {...props}
-            shopCardInfo={shop}
+            postInfo={{
+              createdAt: new Date().toString(),
+              id: shop.id,
+              numberOfComments: shop.noOfComments,
+              numberOfLikes: shop.likes,
+              numberOfShares: 15,
+              tags: ["fashion", "gaming"],
+              url: "",
+              attachments: shop.attachments,
+              comments: [],
+              content: "test",
+              views: shop.views,
+            }}
+            cashback={5}
+            price={150}
+            discount={10}
+            profileInfo={{
+              ...shop.user,
+            }}
           />
         ))}
-      </ListWrapper>
+      </GridListOrganiser>
     </>
   );
 };

@@ -127,7 +127,7 @@ export const PostCardPlaceHolder: PostCardInfo = {
     attachments: [
       {
         type: "image",
-        src: "/verticalImage.jpg",
+        src: "https://fragrances.com.ng/media/catalog/product/cache/4cf9e516177489ae500dec59d26ccb3b/c/h/christian_dior_sauvage_parfum_100ml_2019_perfume_for_men.jpeg",
       },
       {
         src: "https://storage.googleapis.com/web-dev-assets/video-and-source-tags/chrome.webm",
@@ -155,6 +155,8 @@ export const PostCardPlaceHolder: PostCardInfo = {
     url: `${baseUri}/social/wiaah/newsfeed-post/15`,
   },
   profileInfo: {
+    profession: "Los Angeles",
+    verifed: true,
     id: "1",
     name: "Wiaah",
     thumbnail: "/wiaah_logo.png",

@@ -29,6 +29,7 @@ export const storybookSteppersTitle = "UI / Blocks / Steppers /";
 export const storybookSteppersHeadersTitle = "UI / Blocks / SteppersHeaders /";
 export const storybookSearchInputs = storybookDataInputBlocksTitle + "Search /";
 export const storybookListWrappersTitle = blocksTitle + "ListWrappers /";
+export const storybookNavigationTitle = blocksTitle + "Navigation /";
 
 export const storybookBlocksInputTitle = storybookBlocksTitle + inputsTitle;
 
@@ -117,6 +118,9 @@ export const storybookSocialServiceCardsTitle =
   storybookSocialCardsTitle + "services /";
 export const storybookSocialServiceDataDisplayTitle =
   storybookSocialDataDisplayTitle + "services /";
+
+export const storybookSocialShopPostCardsTitle =
+  storybookSocialCardsTitle + "shop /";
 
 // serviceManagement
 export const storybookServiceManagementTitle =

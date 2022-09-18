@@ -7,6 +7,7 @@ import { IoTrash } from "react-icons/io5";
 import {
   AffiliationManagementContext,
   ItemsPagination,
+  usePaginationControls,
   Button,
   Table,
   TBody,
@@ -21,35 +22,44 @@ import { FiPlusSquare } from "react-icons/fi";
 
 export interface AffiliationListSectionProps {}
 
-export const AffiliationListSection: React.FC<AffiliationListSectionProps> =
-  () => {
-    const { addNew } = React.useContext(AffiliationManagementContext);
-    const { isMobile } = useResponsive();
-    const [maxItems, setMaxItems] = React.useState<number>(5);
-    const { t } = useTranslation();
-    return (
-      <div className="flex flex-col">
-        <SectionHeader sectionTitle={t("affiliation_list", "Affiliation List")}>
-          {isMobile ? (
-            <FiPlusSquare className="text-2xl" onClick={addNew} />
-          ) : (
-            <Button onClick={addNew}>
-              {t("add_new_affiliation", "Add New Affiliation")}
-            </Button>
-          )}
-        </SectionHeader>
-        <TableContainer>
-          <Table className="w-full overflow-scroll">
-            <Th>{t("product_image", "Product Image")}</Th>
-            <Th>{t("product_id", "Product Id")}</Th>
-            <Th>{t("product_name", "Product Name")}</Th>
-            <Th>{t("commission", "Commission")} %</Th>
-            <Th>{t("expiry_date", "Expiry Date")}</Th>
-            <Th>{t("affiliation_link", "Affiliation Link")}</Th>
-            <Th>{t("status", "Status")}</Th>
-            <Th className="pr-0 text-right">{t("action", "Action")}</Th>
-            <TBody>
-              {AffiliationLinksPH.slice(0, maxItems).map((link, i) => (
+export const AffiliationListSection: React.FC<
+  AffiliationListSectionProps
+> = () => {
+  const { addNew } = React.useContext(AffiliationManagementContext);
+  const { isMobile } = useResponsive();
+  const {
+    changeTotalItems,
+    controls,
+    pagination: { page, take },
+  } = usePaginationControls();
+  const { t } = useTranslation();
+  React.useEffect(() => {
+    changeTotalItems(AffiliationLinksPH.length);
+  }, []);
+  return (
+    <div className="flex flex-col">
+      <SectionHeader sectionTitle={t("affiliation_list", "Affiliation List")}>
+        {isMobile ? (
+          <FiPlusSquare className="text-2xl" onClick={addNew} />
+        ) : (
+          <Button onClick={addNew}>
+            {t("add_new_affiliation", "Add New Affiliation")}
+          </Button>
+        )}
+      </SectionHeader>
+      <TableContainer>
+        <Table className="w-full overflow-scroll">
+          <Th>{t("product_image", "Product Image")}</Th>
+          <Th>{t("product_id", "Product Id")}</Th>
+          <Th>{t("product_name", "Product Name")}</Th>
+          <Th>{t("commission", "Commission")} %</Th>
+          <Th>{t("expiry_date", "Expiry Date")}</Th>
+          <Th>{t("affiliation_link", "Affiliation Link")}</Th>
+          <Th>{t("status", "Status")}</Th>
+          <Th className="pr-0 text-right">{t("action", "Action")}</Th>
+          <TBody>
+            {AffiliationLinksPH.slice(page * take, page * take + take).map(
+              (link, i) => (
                 <Tr key={link.productId}>
                   <Td>
                     <img
@@ -75,13 +85,15 @@ export const AffiliationListSection: React.FC<AffiliationListSectionProps> =
                     </div>
                   </Td>
                 </Tr>
-              ))}
-            </TBody>
-          </Table>
-        </TableContainer>
-      </div>
-    );
-  };
+              )
+            )}
+          </TBody>
+        </Table>
+      </TableContainer>
+      <ItemsPagination controls={controls} />
+    </div>
+  );
+};
 
 interface AffiliationLinkData {
   productImage: string;

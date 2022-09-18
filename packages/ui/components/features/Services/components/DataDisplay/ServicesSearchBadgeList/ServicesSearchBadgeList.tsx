@@ -16,10 +16,10 @@ import { mapArray, runIfFn } from "utils";
 type ServiceBadgeData = {
   name: string;
   icon: React.ReactNode;
-  key: ServicesType;
+  key: string;
 };
 export interface ServicesSearchBadgeListProps {
-  onClick: (serviceType: ServicesType) => any;
+  onClick: (serviceType: string) => any;
   additionalLinks?: ServiceBadgeData[];
   activeKey: ServicesType;
 }

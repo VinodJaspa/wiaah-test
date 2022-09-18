@@ -87,7 +87,7 @@ export const SocialPostSettingsPopup = () => {
       onClick: () => {},
     },
     {
-      label: t("Desactivate notification"),
+      label: t("Disable notification"),
       onClick: () => {},
     },
     {

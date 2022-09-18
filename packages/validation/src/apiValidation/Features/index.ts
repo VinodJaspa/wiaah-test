@@ -6,3 +6,4 @@ export * from "./Recommendation";
 export * from "./Social";
 export * from "./CurrencyConversion";
 export * from "./Cart";
+export * from "./GeoLocation";

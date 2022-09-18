@@ -9,6 +9,7 @@ import {
   useGetShopDetailsQuery,
   useSearchFilters,
   SpinnerFallback,
+  QrcodeDisplay,
 } from "ui";
 
 export interface ShopProfileProps {
@@ -109,10 +110,16 @@ export const ShopProfile: React.FC<ShopProfileProps> = ({ fullWidth }) => {
         <div className="flex h-auto w-full flex-col gap-4 md:w-96 lg:w-[30rem]">
           {/* shop destails */}
 
-          <div className="flex h-16 items-center justify-center rounded-md bg-white p-4 text-lg font-bold">
+          <div className="flex h-16 items-center justify-between rounded-md bg-white p-4 text-lg font-bold">
             {/* shop name */}
             <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? res.data.name : null}
+              {res ? (
+                <>
+                  <p>{res.data.name}</p>
+
+                  <QrcodeDisplay className="w-12" value={res.data.id} />
+                </>
+              ) : null}
             </SpinnerFallback>
           </div>
           <div className="h-full bg-white p-4">

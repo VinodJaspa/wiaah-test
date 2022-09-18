@@ -8,6 +8,7 @@ import {
   Step,
   Button,
   LocationIcon,
+  useMasterLocationMapModal,
 } from "ui";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
@@ -83,6 +84,7 @@ export const Header: React.FC<HeaderProps> = () => {
         ],
       }))
     : [];
+  const { SearchForLocations } = useMasterLocationMapModal();
 
   const handleItemDeletion = (item: ShoppingCartItem) => {};
 
@@ -104,7 +106,10 @@ export const Header: React.FC<HeaderProps> = () => {
 
           <div className="hidden md:flex gap-2 items-center">
             <MainHeaderSearchBar categories={categories || []} />
-            <LocationIcon className="text-white text-4xl" />
+            <LocationIcon
+              onClick={() => SearchForLocations([])}
+              className="cursour-pointer text-white text-4xl"
+            />
           </div>
 
           <div className="flex text-white">
@@ -120,10 +125,9 @@ export const Header: React.FC<HeaderProps> = () => {
               <li className="cursor-pointer">
                 <FaHeart className="h-8 w-8" />
               </li>
-              <ShoppingCart
-                items={items}
-                onItemDelete={(item) => handleItemDeletion(item)}
-              />
+              <li className="fill-white text-2xl">
+                <ShoppingCart />
+              </li>
             </ul>
           </div>
         </div>
