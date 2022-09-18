@@ -2,7 +2,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useModalDisclouser } from "ui";
 import {
-  SectionContainer,
   AccountDeletionModal,
   Modal,
   ModalContent,
@@ -20,13 +19,8 @@ export const AccountDeletionSection: React.FC = () => {
   const { mutate, data } = useSuspendAccountMutation();
 
   return (
-    <SectionContainer
-      header={
-        <SectionHeader
-          sectionTitle={t("account_deletion", "Account Deletion")}
-        />
-      }
-    >
+    <div className="flex flex-col gap-8">
+      <SectionHeader sectionTitle={t("Account Deletion")} />
       <div className="flex flex-col gap-4">
         <div className="flex items-center gap-2 justify-between">
           <div className="flex flex-col gap-2">
@@ -69,31 +63,32 @@ export const AccountDeletionSection: React.FC = () => {
           </Button>
         </div>
       </div>
-    </SectionContainer>
+    </div>
   );
 };
 
 export interface DeleteAccountConfirmationModalProps {}
 
-export const DeleteAccountConfirmationModal: React.FC<DeleteAccountConfirmationModalProps> =
-  () => {
-    const { handleClose, handleOpen, isOpen } = useModalDisclouser({});
-    const { t } = useTranslation();
-    return (
-      <Modal isOpen={isOpen} onOpen={handleOpen} onClose={handleClose}>
-        <ModalOverlay />
-        <ModalContent className="w-[min(100%,25rem)]">
-          <div className="flex flex-col gap-4">
-            <span>{t("type_your_password", "Type Your Password")}</span>
-            <Input type={"password"} className="border-2" flushed />
-            <ModalButton closeAll>
-              <Button colorScheme="danger">{t("delete", "Delete")}</Button>
-            </ModalButton>
-          </div>
-        </ModalContent>
-      </Modal>
-    );
-  };
+export const DeleteAccountConfirmationModal: React.FC<
+  DeleteAccountConfirmationModalProps
+> = () => {
+  const { handleClose, handleOpen, isOpen } = useModalDisclouser({});
+  const { t } = useTranslation();
+  return (
+    <Modal isOpen={isOpen} onOpen={handleOpen} onClose={handleClose}>
+      <ModalOverlay />
+      <ModalContent className="w-[min(100%,25rem)]">
+        <div className="flex flex-col gap-4">
+          <span>{t("type_your_password", "Type Your Password")}</span>
+          <Input type={"password"} className="border-2" flushed />
+          <ModalButton closeAll>
+            <Button colorScheme="danger">{t("delete", "Delete")}</Button>
+          </ModalButton>
+        </div>
+      </ModalContent>
+    </Modal>
+  );
+};
 
 export const DeleteAccountConfirmation: React.FC<{ onDelete: () => any }> = ({
   onDelete,

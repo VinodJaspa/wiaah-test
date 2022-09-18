@@ -1,7 +1,6 @@
 import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { PriceType } from "types";
 import {
   SectionHeader,
   FormikInput,
@@ -17,14 +16,23 @@ import {
   Th,
   TableContainer,
   ItemsPagination,
+  usePaginationControls,
 } from "ui";
-import { randomNum } from "../../../../helpers";
+import { randomNum } from "utils";
 
 const availableAmount = randomNum(500);
 const convertedBalance = randomNum(500);
 
 export const VouchersSection: React.FC = () => {
   const { t } = useTranslation();
+  const {
+    changeTotalItems,
+    controls,
+    pagination: { page, take },
+  } = usePaginationControls();
+  React.useEffect(() => {
+    changeTotalItems(vouchers.length);
+  }, []);
   return (
     <div className="flex flex-col gap-8">
       <SectionHeader sectionTitle={t("vouchers", "Vouchers")} />
@@ -99,19 +107,21 @@ export const VouchersSection: React.FC = () => {
             </Tr>
           </THead>
           <TBody>
-            {vouchers.map((voucher, i) => (
-              <Tr key={i}>
-                <Td>{voucher.code}</Td>
-                <Td>{voucher.date}</Td>
-                <Td>{voucher.amount}</Td>
-                <Td>{voucher.currency}</Td>
-                <Td>{voucher.status}</Td>
-              </Tr>
-            ))}
+            {vouchers
+              .slice(page * take, page * take + take)
+              .map((voucher, i) => (
+                <Tr key={i}>
+                  <Td>{voucher.code}</Td>
+                  <Td>{voucher.date}</Td>
+                  <Td>{voucher.amount}</Td>
+                  <Td>{voucher.currency}</Td>
+                  <Td>{voucher.status}</Td>
+                </Tr>
+              ))}
           </TBody>
         </Table>
       </TableContainer>
-      <ItemsPagination currentPage={1} maxItemsNum={vouchers.length} />
+      <ItemsPagination controls={controls} />
     </div>
   );
 };
@@ -126,7 +136,7 @@ interface VoucherData {
   status: string;
 }
 
-const vouchers: VoucherData[] = [...Array(5)].map(() => ({
+const vouchers: VoucherData[] = [...Array(50)].map(() => ({
   code: `${randomNum(5000000)}`,
   amount: randomNum(500),
   currency: currencys[randomNum(currencys.length)],

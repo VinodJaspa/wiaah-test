@@ -5,7 +5,6 @@ import { PriceType } from "types";
 import {
   Button,
   ItemsPagination,
-  Divider,
   Table,
   Tr,
   Td,
@@ -14,6 +13,7 @@ import {
   THead,
   TableContainer,
   SectionHeader,
+  usePaginationControls,
 } from "ui";
 
 export interface AffiliationHistorySection {}
@@ -28,43 +28,53 @@ type AffiliationHistoryCardData = {
   productImage: string;
 };
 
-export const AffiliationHistorySection: React.FC<AffiliationHistorySection> =
-  () => {
-    const { t } = useTranslation();
-    return (
-      <div className="flex flex-col gap-4 w-full">
-        <SectionHeader
-          sectionTitle={t("affiliation_history", "Affiliation History")}
+export const AffiliationHistorySection: React.FC<
+  AffiliationHistorySection
+> = () => {
+  const {
+    changeTotalItems,
+    controls,
+    pagination: { page, take },
+  } = usePaginationControls();
+  const { t } = useTranslation();
+  React.useEffect(() => {
+    changeTotalItems(AffiliationHistoryCards.length);
+  }, []);
+  return (
+    <div className="flex flex-col gap-4 w-full">
+      <SectionHeader
+        sectionTitle={t("affiliation_history", "Affiliation History")}
+      >
+        <Button className="flex py-1 items-center gap-2">
+          <BsFilePdfFill /> {t("pdf", "pdf")}
+        </Button>
+      </SectionHeader>
+      <TableContainer className="w-full">
+        <Table
+          ThProps={{
+            className: "border-[1px] border-gray-300",
+          }}
+          TdProps={{
+            className: "border-[1px] border-gray-300",
+          }}
+          TrProps={{
+            className: "border-collapse",
+          }}
         >
-          <Button className="flex py-1 items-center gap-2">
-            <BsFilePdfFill /> {t("pdf", "pdf")}
-          </Button>
-        </SectionHeader>
-        <TableContainer className="w-full">
-          <Table
-            ThProps={{
-              className: "border-[1px] border-gray-300",
-            }}
-            TdProps={{
-              className: "border-[1px] border-gray-300",
-            }}
-            TrProps={{
-              className: "border-collapse",
-            }}
-          >
-            <THead>
-              <Tr>
-                <Th>{t("product_image", "Product Image")}</Th>
-                <Th>{t("product_name", "Product Name")}</Th>
-                <Th>{t("product_price", "Product Price")}</Th>
-                <Th>{t("affilator", "Affilator")}</Th>
-                <Th>{t("purchaser", "Purchaser")}</Th>
-                <Th>{t("commission", "Commission")}</Th>
-                <Th>{t("commission_amount", "Commission Amount")}</Th>
-              </Tr>
-            </THead>
-            <TBody>
-              {AffiliationHistoryCards.map((card, i) => (
+          <THead>
+            <Tr>
+              <Th>{t("product_image", "Product Image")}</Th>
+              <Th>{t("product_name", "Product Name")}</Th>
+              <Th>{t("product_price", "Product Price")}</Th>
+              <Th>{t("affilator", "Affilator")}</Th>
+              <Th>{t("purchaser", "Purchaser")}</Th>
+              <Th>{t("commission", "Commission")}</Th>
+              <Th>{t("commission_amount", "Commission Amount")}</Th>
+            </Tr>
+          </THead>
+          <TBody>
+            {AffiliationHistoryCards.slice(page * take, page * take + take).map(
+              (card, i) => (
                 <Tr key={i}>
                   <Td>
                     <img className="w-full h-auto" src={card.productImage} />
@@ -81,29 +91,31 @@ export const AffiliationHistorySection: React.FC<AffiliationHistorySection> =
                     {card.commissionAmount.currency}
                   </Td>
                 </Tr>
-              ))}
-              <Tr>
-                <Td></Td>
-                <Td></Td>
-                <Td></Td>
-                <Td></Td>
-                <Td></Td>
-                <Td className="border-[1px] border-gray-300">
-                  {t("total_money", "Total Money")}:
-                </Td>
-                <Td className="border-[1px] border-gray-300">
-                  {AffiliationHistoryCards.reduce((acc, card) => {
-                    return (acc += card.commissionAmount.amount);
-                  }, 0)}{" "}
-                  {AffiliationHistoryCards[0].commissionAmount.currency}
-                </Td>
-              </Tr>
-            </TBody>
-          </Table>
-        </TableContainer>
-      </div>
-    );
-  };
+              )
+            )}
+            <Tr>
+              <Td></Td>
+              <Td></Td>
+              <Td></Td>
+              <Td></Td>
+              <Td></Td>
+              <Td className="border-[1px] border-gray-300">
+                {t("total_money", "Total Money")}:
+              </Td>
+              <Td className="border-[1px] border-gray-300">
+                {AffiliationHistoryCards.reduce((acc, card) => {
+                  return (acc += card.commissionAmount.amount);
+                }, 0)}{" "}
+                {AffiliationHistoryCards[0].commissionAmount.currency}
+              </Td>
+            </Tr>
+          </TBody>
+        </Table>
+      </TableContainer>
+      <ItemsPagination controls={controls} />
+    </div>
+  );
+};
 
 const AffiliationHistoryCards: AffiliationHistoryCardData[] = [...Array(3)].map(
   (_, i) => ({

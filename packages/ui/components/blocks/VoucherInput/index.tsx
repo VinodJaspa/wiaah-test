@@ -1,16 +1,7 @@
 import React from "react";
 import { IoTicket } from "react-icons/io5";
 import yup, { object, string } from "yup";
-import {
-  BoxShadow,
-  Padding,
-  FlexStack,
-  Input,
-  Button,
-  Text,
-  InputGroup,
-  InputLeftElement,
-} from "ui";
+import { BoxShadow, Input, Button, InputGroup, InputLeftElement } from "ui";
 import { useTranslation } from "react-i18next";
 
 const VoucherSchema = object().shape({
@@ -63,7 +54,7 @@ export const VoucherInput: React.FC<VoucherInputProps> = ({ onSuccess }) => {
       <div className="bg-white">
         <div className="flex flex-col px-4 py-4 gap-4 items-end">
           <div className="w-full">
-            <p className="text-3xl">{t("voucher", "Voucher")}</p>
+            <p className="text-3xl">{t("Voucher")}</p>
           </div>
           <InputGroup className="w-full">
             <InputLeftElement>

@@ -11,6 +11,7 @@ import {
   PriceDisplay,
   SectionHeader,
   TableContainer,
+  usePaginationControls,
 } from "ui";
 import { getRandomImage } from "ui/placeholder";
 import { HiShoppingCart } from "react-icons/hi";
@@ -21,11 +22,18 @@ export interface MyWishListSectionProps {}
 
 export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
   const { t } = useTranslation();
-  const [itemsLimit, setItemsLimit] = React.useState<number>(0);
-
+  const {
+    changeTotalItems,
+    controls,
+    pagination: { page, take },
+  } = usePaginationControls();
   function handleItemDelete(itemId: string) {}
 
   function handleAddItemToCart(itemId: string) {}
+
+  React.useEffect(() => {
+    changeTotalItems(wishlistItems.length);
+  }, []);
 
   return (
     <div className="flex flex-col">
@@ -41,43 +49,41 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
             <Th className="pr-0 text-right">{t("action", "Action")}</Th>
           </Tr>
           <TBody>
-            {wishlistItems.slice(0, itemsLimit).map((item, i) => (
-              <Tr>
-                <Td className="pl-0">
-                  <img
-                    className="w-16 md:w-20 lg:w-24 xl:w-32 h-auto"
-                    src={item.productImage}
-                    alt={item.productName}
-                  />
-                </Td>
-                <Td>{item.productName}</Td>
-                <Td>{item.info}</Td>
-                <Td>{item.stock}</Td>
-                <Td>
-                  <PriceDisplay priceObject={item.unitPrice} />
-                </Td>
-                <Td className="pr-0">
-                  <div className="w-full text-4xl gap-2  items-center flex justify-end">
-                    <HiShoppingCart
-                      onClick={() => handleAddItemToCart(item.id)}
-                      className="text-white p-2 rounded cursor-pointer bg-primary"
+            {wishlistItems
+              .slice(page * take, page * take + take)
+              .map((item, i) => (
+                <Tr>
+                  <Td className="pl-0">
+                    <img
+                      className="w-16 md:w-20 lg:w-24 xl:w-32 h-auto"
+                      src={item.productImage}
+                      alt={item.productName}
                     />
-                    <IoTrash
-                      onClick={() => handleItemDelete(item.id)}
-                      className="text-white bg-red-600 rounded cursor-pointer p-2"
-                    />
-                  </div>
-                </Td>
-              </Tr>
-            ))}
+                  </Td>
+                  <Td>{item.productName}</Td>
+                  <Td>{item.info}</Td>
+                  <Td>{item.stock}</Td>
+                  <Td>
+                    <PriceDisplay priceObject={item.unitPrice} />
+                  </Td>
+                  <Td className="pr-0">
+                    <div className="w-full text-4xl gap-2  items-center flex justify-end">
+                      <HiShoppingCart
+                        onClick={() => handleAddItemToCart(item.id)}
+                        className="text-white p-2 rounded cursor-pointer bg-primary"
+                      />
+                      <IoTrash
+                        onClick={() => handleItemDelete(item.id)}
+                        className="text-white bg-red-600 rounded cursor-pointer p-2"
+                      />
+                    </div>
+                  </Td>
+                </Tr>
+              ))}
           </TBody>
         </Table>
       </TableContainer>
-      <ItemsPagination
-        currentPage={1}
-        onItemsPerPageChange={setItemsLimit}
-        maxItemsNum={wishlistItems.length}
-      />
+      <ItemsPagination controls={controls} />
     </div>
   );
 };

@@ -54,14 +54,6 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
     ? subSectionCluster.sections[subSectionIdx] ?? null
     : null;
 
-  console.log({
-    clusterKey,
-    subSectionCluster,
-    mainSection,
-    subSectionIdx,
-    subSection,
-    serviceSection,
-  });
   const { isMobile, isTablet } = useResponsive();
 
   const minGap = isTablet ? 0 : 48;
