@@ -3,7 +3,6 @@ import { Formik, Form } from "formik";
 import { usePagination } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { GiPayMoney } from "react-icons/gi";
 import { useReactPubsub } from "react-pubsub";
 import { FormOptionType, OrdersFilter, TranslationTextType } from "types";
 import {
@@ -35,7 +34,6 @@ import {
   Avatar,
   SectionHeader,
   EyeIcon,
-  BookConfirmationDataDisplayModal,
   CashPaymentIcon,
 } from "ui";
 import {
@@ -70,7 +68,7 @@ export const BookingsHistorySection: React.FC = () => {
   } = useCancelAppointmentMutation();
   return (
     <div className="flex flex-col gap-4">
-      <SectionHeader sectionTitle={t("bookings", "Bookings")} />
+      <SectionHeader sectionTitle={t("Bookings")} />
       <Tabs>
         <TabsHeader className="flex-wrap" />
         <InputGroup>
@@ -259,8 +257,6 @@ export const BookingsHistorySection: React.FC = () => {
                   </Tr>
                 )
               )}
-
-            <BookConfirmationDataDisplayModal />
           </TBody>
         </Table>
       </TableContainer>

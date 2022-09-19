@@ -11,6 +11,7 @@ import {
   VerifiedIcon,
   QrcodeDisplay,
   SocialProfileOptionsDropdown,
+  HorizontalDotsIcon,
 } from "ui";
 import { useLoginPopup, useStory } from "ui/Hooks";
 import { mapArray, NumberShortner } from "utils";
@@ -73,7 +74,9 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
   return (
     <div className="flex flex-col w-full bg-primary h-80 relative rounded-2xl ">
       <div className="absolute right-10 text-white text-xl top-2">
-        <SocialProfileOptionsDropdown profileId={id} />
+        <SocialProfileOptionsDropdown profileId={id}>
+          <HorizontalDotsIcon className="cursor-pointer" />
+        </SocialProfileOptionsDropdown>
       </div>
 
       <div className="flex flex-col h-[11rem] w-full  items-end justify-center pt-6 px-8 gap-3 text-white">

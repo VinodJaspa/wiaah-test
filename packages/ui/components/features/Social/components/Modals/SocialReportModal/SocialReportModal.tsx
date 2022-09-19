@@ -46,7 +46,6 @@ export const SocialReportModal: React.FC = () => {
   }
 
   Listen((props) => {
-    console.log("test");
     if (props) {
       if ("id" in props) {
         setId(props.id);

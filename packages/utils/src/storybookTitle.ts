@@ -6,6 +6,7 @@ const dataDisplayTitle = "Data Display /";
 const headersTitle = "Headers /";
 const sectionsTitle = "Sections /";
 const blocksTitle = "UI / Blocks /";
+const modalsTitle = "Modals /";
 export const storybookPartailsTitle = "UI / partials / ";
 export const storybookBlocksTitle = "UI / blocks / ";
 export const storybookSectionsTitle = "UI / sections / ";
@@ -112,6 +113,7 @@ export const storybookShopFeatureCardsTitle =
 // social
 export const storybookSocialTitle = storybookFeaturesTitle + "Social /";
 export const storybookSocialCardsTitle = storybookSocialTitle + cardsTitle;
+export const storybookSocialModalsTitle = storybookSocialTitle + modalsTitle;
 export const storybookSocialDataDisplayTitle =
   storybookSocialTitle + dataDisplayTitle;
 export const storybookSocialServiceCardsTitle =
@@ -129,6 +131,8 @@ export const storybookServiceManagementInputTitle =
   storybookServiceManagementTitle + inputsTitle;
 export const storybookServiceManagementCardsTitle =
   storybookServiceManagementTitle + cardsTitle;
+export const storybookServiceManagementSectionsTitle =
+  storybookServiceManagementTitle + sectionsTitle;
 
 // search
 export const storybookSearchFeatureTitle = storybookFeaturesTitle + "Search /";

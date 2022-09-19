@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { WeekdaysOpenTimeInput } from "ui";
 
-export const WeekdaysSchedule = () => {
+export const WeekdaysSchedule: React.FC = () => {
   const { t } = useTranslation();
   return (
     <div className="w-full">

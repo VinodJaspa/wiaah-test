@@ -1,13 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import {
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  HorizontalDotsIcon,
-  useSocialReportModal,
-} from "ui";
+import { Menu, MenuButton, MenuList, MenuItem, useSocialReportModal } from "ui";
 
 export interface SocialProfileOptionsDropdownProps {
   profileId: string;
@@ -15,14 +8,12 @@ export interface SocialProfileOptionsDropdownProps {
 
 export const SocialProfileOptionsDropdown: React.FC<
   SocialProfileOptionsDropdownProps
-> = ({ profileId }) => {
+> = ({ profileId, children }) => {
   const { OpenModal } = useSocialReportModal();
   const { t } = useTranslation();
   return (
     <Menu>
-      <MenuButton>
-        <HorizontalDotsIcon className="cursor-pointer" />
-      </MenuButton>
+      <MenuButton>{children}</MenuButton>
       <MenuList className="text-black ">
         <MenuItem onClick={() => OpenModal(profileId)}>{t("Report")}</MenuItem>
         <MenuItem>{t("Turn off  commenting")}</MenuItem>

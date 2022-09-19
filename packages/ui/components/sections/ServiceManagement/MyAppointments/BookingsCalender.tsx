@@ -21,9 +21,7 @@ import {
   HStack,
   Verified,
   Tabs,
-  TabList,
   TabsHeader,
-  TabItem,
   TabTitle,
   TranslationText,
 } from "ui";
@@ -42,134 +40,135 @@ type BookingsObjectType = Record<string, BookingAppointement[]>;
 
 export interface BookingCalenderSectionProps {}
 
-export const BookingsCalenderSection: React.FC<BookingCalenderSectionProps> =
-  () => {
-    const { t } = useTranslation();
-    const { setBookId } = React.useContext(BookingsSectionCtx);
-    const [days, setDays] = React.useState<FormatedDays[]>([]);
-    const [bookings, setBookings] = React.useState<BookingsObjectType>();
-    const [date, setDate] = React.useState<{ year: number; month: number }>({
-      year: new Date(Date.now()).getFullYear(),
-      month: new Date(Date.now()).getMonth(),
-    });
+export const BookingsCalenderSection: React.FC<
+  BookingCalenderSectionProps
+> = () => {
+  const { t } = useTranslation();
+  const { setBookId } = React.useContext(BookingsSectionCtx);
+  const [days, setDays] = React.useState<FormatedDays[]>([]);
+  const [bookings, setBookings] = React.useState<BookingsObjectType>();
+  const [date, setDate] = React.useState<{ year: number; month: number }>({
+    year: new Date(Date.now()).getFullYear(),
+    month: new Date(Date.now()).getMonth(),
+  });
 
-    const { data: FetchedBookings, isLoading: BookingIsLoading } =
-      useGetAppointmentsQuery();
+  const { data: FetchedBookings, isLoading: BookingIsLoading } =
+    useGetAppointmentsQuery();
 
-    React.useEffect(() => {
-      if (!FetchedBookings) return;
-      const res: BookingsObjectType = FetchedBookings.reduce((acc, curr) => {
-        const day = new Date(curr.date).getDate();
-        const newObj = { ...acc };
+  React.useEffect(() => {
+    if (!FetchedBookings) return;
+    const res: BookingsObjectType = FetchedBookings.reduce((acc, curr) => {
+      const day = new Date(curr.date).getDate();
+      const newObj = { ...acc };
 
-        newObj[day] =
-          typeof newObj[day] !== "undefined" ? [...newObj[day], curr] : [curr];
-        return newObj;
-      }, {} as BookingsObjectType);
-      setBookings(res);
-    }, [FetchedBookings]);
+      newObj[day] =
+        typeof newObj[day] !== "undefined" ? [...newObj[day], curr] : [curr];
+      return newObj;
+    }, {} as BookingsObjectType);
+    setBookings(res);
+  }, [FetchedBookings]);
 
-    React.useEffect(() => {
-      if (date) {
-        setDays(getMonthDays(date.year, date.month));
-      }
-    }, [date]);
-    return (
+  React.useEffect(() => {
+    if (date) {
+      setDays(getMonthDays(date.year, date.month));
+    }
+  }, [date]);
+  return (
+    <div className="flex flex-col gap-4">
+      <SectionHeader sectionTitle={t("my_appointments", "My Appointments")} />
       <div className="flex flex-col gap-4">
-        <SectionHeader sectionTitle={t("my_appointments", "My Appointments")} />
-        <div className="flex flex-col gap-4">
-          <Tabs>
-            <div className="flex justify-between">
-              <TabsHeader>
-                {BookingPeriodFilterTabsTitles.map((title, i) => (
-                  <TabTitle TabKey={i}>
-                    {({ currentTabIdx }) => (
-                      <TranslationText
-                        className={`${
-                          currentTabIdx === i
-                            ? "border-b-2 border-primary pb-2 text-primary"
-                            : ""
-                        }`}
-                        translationObject={title}
-                        key={i}
-                      />
-                    )}
-                  </TabTitle>
-                ))}
-              </TabsHeader>
-              <Select<HistoryMonth>
-                onOptionSelect={(v) => {
-                  setDate({ year: v.year, month: v.monthIdx });
-                }}
-                className="text-xl font-bold"
-              >
-                {getHistoryMonths().map(({ monthName, year, monthIdx }, i) => (
-                  <SelectOption
-                    className="font-semibold px-2"
-                    key={i}
-                    value={{ monthName, year, monthIdx }}
-                  >
-                    {monthName} {year}
-                  </SelectOption>
-                ))}
-              </Select>
-            </div>
+        <Tabs>
+          <div className="flex justify-between">
+            <TabsHeader>
+              {BookingPeriodFilterTabsTitles.map((title, i) => (
+                <TabTitle TabKey={i}>
+                  {({ currentTabIdx }) => (
+                    <TranslationText
+                      className={`${
+                        currentTabIdx === i
+                          ? "border-b-2 border-primary pb-2 text-primary"
+                          : ""
+                      }`}
+                      translationObject={title}
+                      key={i}
+                    />
+                  )}
+                </TabTitle>
+              ))}
+            </TabsHeader>
+            <Select<HistoryMonth>
+              onOptionSelect={(v) => {
+                setDate({ year: v.year, month: v.monthIdx });
+              }}
+              className="text-xl font-bold"
+            >
+              {getHistoryMonths().map(({ monthName, year, monthIdx }, i) => (
+                <SelectOption
+                  className="font-semibold px-2"
+                  key={i}
+                  value={{ monthName, year, monthIdx }}
+                >
+                  {monthName} {year}
+                </SelectOption>
+              ))}
+            </Select>
+          </div>
 
-            <TableContainer>
-              <Table
-                TdProps={{ className: "border-gray-200 border-2 h-[8rem]" }}
-                className="w-full"
-              >
-                <THead>
-                  <Tr>
-                    {weekDays.map((day, i) => (
-                      <Th key={i}>{day}</Th>
-                    ))}
-                  </Tr>
-                </THead>
-                <TBody>
-                  {getDividedWeeks(days).map((week, i) => (
-                    <Tr key={i}>
-                      {week.map((day, i) => {
-                        const daysBookings = bookings
-                          ? bookings[day.dayNum]
-                          : null;
-                        return (
-                          <Td
-                            className={`${
-                              day.currentMonth
-                                ? "text-black font-bold"
-                                : "text-gray-400 text-semibold"
-                            } min-w-[8rem] min-h-[8rem]`}
-                            valign="baseline"
-                            key={i}
-                          >
-                            <span className="w-full flex justify-end">
-                              {day.dayNum}
-                            </span>
-                            {daysBookings &&
-                              day.currentMonth &&
-                              daysBookings.map(({ bookId, ...rest }, i) => (
-                                <BookedDayCard
-                                  className="cursor-pointer"
-                                  onClick={() => setBookId(bookId)}
-                                  cardDetails={{ ...rest, bookId }}
-                                  key={i}
-                                />
-                              ))}
-                          </Td>
-                        );
-                      })}
-                    </Tr>
+          <TableContainer>
+            <Table
+              TdProps={{ className: "border-gray-200 border-2 h-[8rem]" }}
+              className="w-full"
+            >
+              <THead>
+                <Tr>
+                  {weekDays.map((day, i) => (
+                    <Th key={i}>{day}</Th>
                   ))}
-                </TBody>
-              </Table>
-            </TableContainer>
-          </Tabs>
-        </div>
+                </Tr>
+              </THead>
+              <TBody>
+                {getDividedWeeks(days).map((week, i) => (
+                  <Tr key={i}>
+                    {week.map((day, i) => {
+                      const daysBookings = bookings
+                        ? bookings[day.dayNum]
+                        : null;
+                      return (
+                        <Td
+                          className={`${
+                            day.currentMonth
+                              ? "text-black font-bold"
+                              : "text-gray-400 text-semibold"
+                          } min-w-[8rem] min-h-[8rem]`}
+                          valign="baseline"
+                          key={i}
+                        >
+                          <span className="w-full flex justify-end">
+                            {day.dayNum}
+                          </span>
+                          {daysBookings &&
+                            day.currentMonth &&
+                            daysBookings.map(({ bookId, ...rest }, i) => (
+                              <BookedDayCard
+                                className="cursor-pointer"
+                                onClick={() => setBookId(bookId)}
+                                cardDetails={{ ...rest, bookId }}
+                                key={i}
+                              />
+                            ))}
+                        </Td>
+                      );
+                    })}
+                  </Tr>
+                ))}
+              </TBody>
+            </Table>
+          </TableContainer>
+        </Tabs>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
 const BookingPeriodFilterTabsTitles: TranslationTextType[] = [
   {
