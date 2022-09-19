@@ -63,11 +63,7 @@ export const ProductImageGallery: React.FC<ProductImageGalleryProps> = ({
             swipe
           >
             {images.map(({ type, original }, i) => (
-              <PostAttachment
-                play={currentComponent === i}
-                src={original}
-                type={type}
-              />
+              <PostAttachment type="image" src={original} />
             ))}
           </ChakraCarousel>
         </div>

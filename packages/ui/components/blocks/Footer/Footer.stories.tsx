@@ -1,6 +1,6 @@
 import { storybookFootersTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
-import { Footer } from "ui";
+import { Footer } from "./index";
 
 export default {
   title: storybookFootersTitle + "Footer",

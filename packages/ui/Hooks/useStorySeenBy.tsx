@@ -1,6 +1,5 @@
-import React, { useState } from "react";
 import { useRecoilState } from "recoil";
-import { StorySeenByUserInfo } from "types/market/Social";
+import { StorySeenByUserInfo } from "types";
 import { StorySeenByPopupOpenState, StorySeenByState } from "ui/state";
 export const useStorySeenBy = () => {
   const [isOpen, setOpen] = useRecoilState<boolean>(StorySeenByPopupOpenState);

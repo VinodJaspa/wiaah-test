@@ -18,6 +18,7 @@ export const QrcodeDisplay: React.FC<QrcodeDisplayProps> = ({
   return (
     <div {...props} className={`${className || ""}`}>
       <QRCodeSVG
+        //@ts-ignore
         size={"100%"}
         fgColor={color}
         bgColor={transparentBg ? "transparent" : undefined}

@@ -1,5 +1,5 @@
 import React from "react";
-import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
+import { CSSValueUnit } from "types";
 export interface BorderProps {
   thinkness?: CSSValueUnit;
   color?: {

@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
+import { ProductDescTabs } from "types";
 import { ProductDescriptionTabsState } from "../state";
-import { ProductDescTabs } from "types/market/Product";
 
 export const useProductDescTabs = () => {
   const [tab, setTab] = useRecoilState(ProductDescriptionTabsState);

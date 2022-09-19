@@ -1,7 +1,5 @@
-import React from "react";
-import { useTranslation } from "react-i18next";
 import { useRecoilState } from "recoil";
-import { TabType } from "types/market/misc/tabs";
+import { TabType } from "types";
 import { DiscoverCurrentTabState, DiscoverTabsState } from "ui/state";
 
 export interface DiscoverTabsLinks extends TabType {

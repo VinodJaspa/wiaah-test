@@ -99,7 +99,8 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
                 <div className="flex flex-col w-full gap-2">
                   <p className="text-xl font-bold">{t("Payment")}</p>
                   <div className="flex gap-2 items-center text-lg">
-                    Visa **56 <CreditCardIcon />
+                    {res ? res.data.payment.method || "" : ""}{" "}
+                    {res ? res.data.payment.value || "" : ""} <CreditCardIcon />
                   </div>
                 </div>
                 <div className="flex flex-col gap-2 w-full">

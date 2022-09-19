@@ -3,9 +3,16 @@ import {
   Location,
   Phone,
 } from "../../../SharedSchema";
-import { array, number, object, string } from "yup";
+import { array, mixed, number, object, string } from "yup";
 import { DateTypeValidationSchema } from "../../Services";
 import { Cashback } from "../Products";
+
+const PaymentMethodValidationSchema = object({
+  method: string().required(),
+  value: mixed<string | number>().test(
+    (v) => typeof v === "string" || typeof v === "number"
+  ),
+});
 
 const ShippingMothedValidationSchema = object({
   name: string().required(),
@@ -47,6 +54,7 @@ export const OrderDetailsValidationSchema = object({
   deliveryCost: number().required(),
   tax: number().required(),
   discount: number().required(),
+  payment: PaymentMethodValidationSchema,
 });
 
 export const OrderDetailsApiResponseValidationSchema =

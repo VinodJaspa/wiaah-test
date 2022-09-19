@@ -13,6 +13,10 @@ export const getOrderDetailsFetcher = (): Promise<
 > => {
   const res: AsyncReturnType<typeof getOrderDetailsFetcher> = {
     data: {
+      payment: {
+        method: "Visa",
+        value: "5841",
+      },
       orderId: "123465",
       orderedDate: new Date().toString(),
       deliveryDate: new Date().toString(),

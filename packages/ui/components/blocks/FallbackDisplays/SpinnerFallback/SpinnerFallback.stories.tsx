@@ -1,5 +1,5 @@
 import { storybookFallbackDisplayTitle } from "utils";
-import { SpinnerFallback } from "ui";
+import { SpinnerFallback } from "./index";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

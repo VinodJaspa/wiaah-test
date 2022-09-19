@@ -13,7 +13,7 @@ export type RecommendedShopsAndServicesApiResponse = InferType<
 
 const shopTypes: ServicesType[] = [
   "hotel",
-  "resturant",
+  "restaurant",
   "health_center",
   "vehicle",
   "holidays_rentals",

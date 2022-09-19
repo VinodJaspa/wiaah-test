@@ -1,5 +1,5 @@
 import { storybookHeadersTitle } from "utils";
-import { MinimalHeader } from "ui";
+import { MinimalHeader } from "./index";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

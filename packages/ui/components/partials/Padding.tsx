@@ -1,5 +1,5 @@
 import React from "react";
-import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
+import { CSSValueUnit } from "types";
 import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
 export interface PaddingProps {
   X?: CSSValueUnit;

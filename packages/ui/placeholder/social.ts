@@ -152,7 +152,7 @@ export const PostCardPlaceHolder: PostCardInfo = {
       { ...PostCommentPlaceholder },
       { ...PostCommentPlaceholder },
     ],
-    url: `${baseUri}/social/wiaah/newsfeed-post/15`,
+    url: `/social/wiaah/newsfeed-post/15`,
   },
   profileInfo: {
     profession: "Los Angeles",
