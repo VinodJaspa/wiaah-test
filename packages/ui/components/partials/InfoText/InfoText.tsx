@@ -1,6 +1,6 @@
 import React from "react";
 
-type InfoTextCases = {
+export type InfoTextCases = {
   success?: string;
   fail?: string;
   info?: string;
@@ -15,9 +15,10 @@ export interface InfoTextProps {
 export const InfoText: React.FC<InfoTextProps> = ({
   children,
   cases,
-  value,
-  variant = "success",
+  value: _value,
+  variant,
 }) => {
+  const value = children ?? _value;
   const styleCases: Record<keyof InfoTextCases, string> = {
     success: `text-primary`,
     fail: `text-red-500`,
@@ -26,14 +27,15 @@ export const InfoText: React.FC<InfoTextProps> = ({
   };
   const styleSwitcher = () => {
     if (variant) return styleCases[variant];
-    if (!cases) return;
+    if (!cases) return styleCases.success;
     if (value === cases.success) return styleCases.success;
     if (value === cases.info) return styleCases.info;
     if (value === cases.fail) return styleCases.fail;
     if (value === cases.warning) return styleCases.warning;
+    return styleCases.success;
   };
   return (
-    <div className={`${styleSwitcher()} flex relative`}>
+    <div className={`${styleSwitcher()} flex relative isolate`}>
       <span className={`${styleSwitcher()} w-1 absolute lef-0 top-0 h-full`} />
       <span className="pl-4">{children}</span>
     </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ReviewLevel, ReviewLevelData, Avatar, StarIcon } from "ui";
-import { mapArray } from "utils";
+import { mapArray, setTestid } from "utils";
 
 export interface ServiceDetailsReviewsSectionProps {
   overAllRating: number;
@@ -30,12 +30,15 @@ export const ServiceDetailsReviewsSection: React.FC<
       <div className="flex flex-col w-full gap-10">
         <div className="grid gap-y-3 gap-9 grid-cols-1 md:grid-cols-2">
           {mapArray(ratingLevels, (rate, i) => (
-            <ReviewLevel {...rate} key={i} />
+            <ReviewLevel {...setTestid("ReviewLevel")} {...rate} key={i} />
           ))}
         </div>
         <div className="grid gap-8 grid-cols-1 md:grid-cols-2">
           {mapArray(reviews, ({ content, date, name, thumbnail }, i) => (
-            <div className="flex flex-col gap-4">
+            <div
+              {...setTestid("ReviewComment")}
+              className="flex flex-col gap-4"
+            >
               <div className="flex items-center gap-4">
                 <Avatar src={thumbnail} />
                 <div className="flex flex-col gap-1">

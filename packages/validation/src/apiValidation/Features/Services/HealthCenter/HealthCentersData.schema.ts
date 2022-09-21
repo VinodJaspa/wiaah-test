@@ -1,6 +1,6 @@
 import { array, mixed, number, object, string } from "yup";
 import { CreatePaginationValidationSchemaOf } from "../../../SharedSchema";
-import { HealthCenterPractitionerDataValidationSchema } from "../../";
+import { HealthCenterPractitionerDataValidationSchema } from "./HealthCenterPractitionerData.schema";
 
 export const DateTypeValidationSchema = mixed<string | number>().required();
 

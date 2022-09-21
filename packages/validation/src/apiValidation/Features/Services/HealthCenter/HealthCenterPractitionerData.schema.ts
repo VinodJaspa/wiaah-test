@@ -1,5 +1,5 @@
 import { string, object, number } from "yup";
-import { locationValidationSchema } from "../../../../";
+import { locationValidationSchema } from "validation";
 export const HealthCenterPractitionerSearchDataValidationSchema = object({
   name: string().required(),
   photo: string().required(),

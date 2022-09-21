@@ -2,8 +2,10 @@ import React from "react";
 import { TransactionStatusEnum } from "types";
 import { PendingIcon, FailedIcon, SuccessIcon } from "ui";
 
+export type StatusEnum = TransactionStatusEnum;
+
 export interface StatusProps {
-  status: TransactionStatusEnum;
+  status: StatusEnum;
 }
 
 export const Status: React.FC<StatusProps> = ({ status }) => {

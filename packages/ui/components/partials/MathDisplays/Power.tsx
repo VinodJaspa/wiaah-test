@@ -1,10 +1,10 @@
 import React from "react";
 
-export interface MathPowerDisplay {
+export interface MathPowerDisplayProps {
   power: number;
 }
 
-export const MathPowerDisplay: React.FC<MathPowerDisplay> = ({
+export const MathPowerDisplay: React.FC<MathPowerDisplayProps> = ({
   power,
   children,
 }) => {
