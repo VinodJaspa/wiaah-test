@@ -52,5 +52,4 @@ module.exports = {
   },
   transformIgnorePatterns: ["<rootDir>/node_modules/"],
   snapshotSerializers: ["enzyme-to-json/serializer"],
-  setupFilesAfterEnv: ["./jest.setup.js"],
 };

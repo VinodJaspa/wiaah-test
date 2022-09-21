@@ -16,7 +16,6 @@ export const CategoriesSelectInput: React.FC<CategoriesSelectInputProps> = ({
   value,
   placeholder,
 }) => {
-  console.log("categoeis", value);
   const { t } = useTranslation();
   const ph = placeholder || `${t("Categories")}`;
   return (

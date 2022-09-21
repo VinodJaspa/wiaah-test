@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Input, Button } from "ui";
+import { setTestid } from "utils";
 
 export type ExtraServiceData = {
   name: string;
@@ -24,6 +25,7 @@ export const ExtraServiceInput: React.FC<ExtraServiceInputProps> = ({
       <div className="flex flex-col gap-1 w-full">
         <p>{t("Extra name")}</p>
         <Input
+          {...setTestid("ExtraServiceNameInput")}
           type={"text"}
           placeholder={t("Extra name")}
           onChange={(e) =>
@@ -40,6 +42,7 @@ export const ExtraServiceInput: React.FC<ExtraServiceInputProps> = ({
         <div className="flex w-full items-center gap-2">
           <Input
             min={0}
+            {...setTestid("ExtraServiceCostInput")}
             type={"number"}
             placeholder={t("Choose policy cost")}
             onChange={(e) =>
@@ -53,7 +56,12 @@ export const ExtraServiceInput: React.FC<ExtraServiceInputProps> = ({
           <p className="text-xl">$</p>
         </div>
       </div>
-      <Button onClick={() => onAdd && onAdd(values)}>{t("Add")}</Button>
+      <Button
+        {...setTestid("ExtraAddBtn")}
+        onClick={() => onAdd && onAdd(values)}
+      >
+        {t("Add")}
+      </Button>
     </div>
   );
 };

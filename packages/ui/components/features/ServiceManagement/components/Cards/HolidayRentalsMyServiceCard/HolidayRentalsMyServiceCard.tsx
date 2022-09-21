@@ -14,130 +14,31 @@ import {
   PopularAmenitiesSection,
   LocationAddressDisplay,
 } from "ui";
+import { mapArray, setTestid } from "utils";
 
 export interface HolidayRentalsMyServiceCardProps
   extends HolidayRentalsMyServiceDataType {
-  onEdit: (serviceType: string, id: string) => any;
-  onRemove: (serviceType: string, id: string) => any;
+  onEdit: (id: string) => any;
+  onRemove: (id: string) => any;
 }
 
 export const HolidayRentalsMyServiceCard: React.FC<
   HolidayRentalsMyServiceCardProps
 > = (props) => {
   const {
-    children,
     description,
     id,
-    provider,
     thumbnail,
     title,
-    type,
     pricePerNight,
+    cancelationPolicies,
+    extras,
+    location,
+    amenites,
     onEdit,
     onRemove,
   } = props;
   const { t } = useTranslation();
-
-  const PopularAmenities = [
-    {
-      name: "Pool",
-      slug: "pool",
-    },
-    {
-      name: "Pet-friendly",
-      slug: "pet-friendly",
-    },
-    {
-      name: "Resturant",
-      slug: "resturant",
-    },
-    {
-      name: "Breakfast available",
-      slug: "breakfast",
-    },
-    {
-      name: "Parking available",
-      slug: "parking",
-    },
-    {
-      name: "Laundry",
-      slug: "laundry",
-    },
-    {
-      name: "Housekeeping",
-      slug: "housekeeping",
-    },
-    {
-      name: "Free Wifi",
-      slug: "free_wifi",
-    },
-    {
-      name: "Air conditioning",
-      slug: "a/c",
-    },
-    {
-      name: "Gym",
-      slug: "gym",
-    },
-    {
-      name: "Business services",
-      slug: "business_services",
-    },
-    {
-      name: "Bar",
-      slug: "bar",
-    },
-    {
-      name: "Room service",
-      slug: "room_service",
-    },
-    {
-      name: "24/7 front desk",
-      slug: "24/7_front_desk",
-    },
-  ];
-
-  const cancelationPolicies = [
-    {
-      duration: 6,
-      cost: 0,
-      id: "1",
-    },
-    {
-      duration: 10,
-      cost: 10,
-      id: "2",
-    },
-    {
-      cost: 50,
-      duration: 0,
-      id: "3",
-    },
-    {
-      id: "4",
-      cost: 0,
-      duration: 0,
-    },
-  ];
-  const extras = [
-    "No Extras",
-    "Book now, pay later",
-    "Breakfast",
-    "Breakfast + Book now, pay later",
-  ];
-
-  const location = {
-    address: "street name",
-    city: "Geneve",
-    cords: {
-      lat: 15,
-      lng: 16,
-    },
-    country: "switzerland",
-    countryCode: "CHF",
-    postalCode: 1565,
-    state: "state",
-  };
 
   return (
     <div
@@ -167,7 +68,7 @@ export const HolidayRentalsMyServiceCard: React.FC<
         <p className="text-black text-sm md:text-lg">
           {t("Cancelation policy")}
         </p>
-        {cancelationPolicies.map((policy, i) => (
+        {mapArray(cancelationPolicies, (policy, i) => (
           <div key={i} className="flex items-center gap-4 justify-between">
             <div className="flex items-center gap-2">
               <DotIcon className="text-xl" />
@@ -188,7 +89,7 @@ export const HolidayRentalsMyServiceCard: React.FC<
         ))}
       </div>
       <div className="h-64 w-full overflow-y-scroll noScroll">
-        <PopularAmenitiesSection amenities={PopularAmenities} />
+        <PopularAmenitiesSection amenities={amenites} />
       </div>
 
       <div className={`flex-col items-end flex justify-between h-auto gap-2`}>
@@ -196,11 +97,13 @@ export const HolidayRentalsMyServiceCard: React.FC<
           <Badge className="whitespace-nowrap">{t("Holiday Rentals")}</Badge>
           <div className="flex gap-2 text-3xl">
             <EditIcon
+              {...setTestid("EditServiceBtn")}
               className="cursor-pointer"
-              onClick={() => onEdit && onEdit("hotel", id)}
+              onClick={() => onEdit && onEdit(id)}
             />
             <TrashIcon
-              onClick={() => onRemove && onRemove("hotel", id)}
+              {...setTestid("RemoveServiceBtn")}
+              onClick={() => onRemove && onRemove(id)}
               className="text-secondaryRed cursor-pointer"
             />
           </div>

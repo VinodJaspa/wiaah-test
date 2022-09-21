@@ -1,37 +1,26 @@
 import { BeautyCenterMyServiceDataType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useRouting } from "routing";
 import {
   AspectRatioImage,
   Rate,
   EditIcon,
   TrashIcon,
-  ServicesRequestKeys,
   Badge,
   LocationAddressDisplay,
 } from "ui";
-import { SeperatedStringArray } from "utils";
+import { SeperatedStringArray, setTestid } from "utils";
 
 export interface BeautyCenterMyServiceCardProps
   extends BeautyCenterMyServiceDataType {
-  onEdit: (serviceType: string, id: string) => any;
-  onRemove: (serviceType: string, id: string) => any;
+  onEdit: (id: string) => any;
+  onRemove: (id: string) => any;
 }
 
 export const BeautyCenterMyServiceCard: React.FC<
   BeautyCenterMyServiceCardProps
-> = ({ onEdit, onRemove }) => {
+> = ({ onEdit, onRemove, ...props }) => {
   const { t } = useTranslation();
-  const { visit } = useRouting();
-  const props = {
-    id: "12",
-    name: "center name",
-    owners: ["owner 1", "owner 2"],
-    rate: 4,
-    reviews: 150,
-    thumbnail: "/place-3.jpg",
-  };
 
   const { id, name, owners, rate, reviews, thumbnail } = props;
   const location = {
@@ -77,11 +66,13 @@ export const BeautyCenterMyServiceCard: React.FC<
         <Badge className="whitespace-nowrap">{t("Beauty Center")}</Badge>
         <div className="flex gap-2 text-3xl">
           <EditIcon
+            {...setTestid("EditServiceBtn")}
             className="cursor-pointer"
-            onClick={() => onEdit && onEdit("hotel", id)}
+            onClick={() => onEdit && onEdit(id)}
           />
           <TrashIcon
-            onClick={() => onRemove && onRemove("hotel", id)}
+            {...setTestid("RemoveServiceBtn")}
+            onClick={() => onRemove && onRemove(id)}
             className="text-secondaryRed cursor-pointer"
           />
         </div>

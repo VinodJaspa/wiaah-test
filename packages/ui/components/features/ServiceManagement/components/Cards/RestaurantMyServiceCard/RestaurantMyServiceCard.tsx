@@ -9,50 +9,23 @@ import {
   AspectRatio,
   ImageSlider,
   PercentIcon,
-  Button,
   InfoText,
-  CommentIcon,
   PriceLevelDisplay,
-  ServicesRequestKeys,
   PriceConverter,
   LocationAddressDisplay,
 } from "ui";
+import { setTestid } from "utils";
 
 export interface RestaurantMyServiceCardProps
   extends RestaurantMyServiceDataType {
-  onEdit: (serviceType: string, id: string) => any;
-  onRemove: (serviceType: string, id: string) => any;
+  onEdit: (id: string) => any;
+  onRemove: (id: string) => any;
 }
 
 export const RestaurantMyServiceCard: React.FC<
   RestaurantMyServiceCardProps
-> = ({ onEdit, onRemove }) => {
+> = ({ onEdit, onRemove, ...props }) => {
   const { t } = useTranslation();
-  const { visit } = useRouting();
-
-  const props = {
-    id: "12",
-    averagePrice: 30,
-    discount: { amount: 15, rule: "on drinks" },
-    isGoodDeal: true,
-    name: "restruent name",
-    rate: 4,
-    location: {
-      address: "street name",
-      city: "Geneve",
-      cords: {
-        lat: 15,
-        lng: 16,
-      },
-      country: "switzerland",
-      countryCode: "CHF",
-      postalCode: 1565,
-      state: "state",
-    },
-    reviewsCount: 750,
-    tags: ["pizza", "pasta"],
-    thumbnails: ["/shop-3.jpeg"],
-  };
   const {
     averagePrice,
     discount,
@@ -61,7 +34,6 @@ export const RestaurantMyServiceCard: React.FC<
     location,
     name,
     rate,
-    reviewsCount,
     tags,
     thumbnails,
   } = props;
@@ -114,11 +86,13 @@ export const RestaurantMyServiceCard: React.FC<
           <Badge>{t("Restaurant")}</Badge>
           <div className="flex gap-2 text-3xl">
             <EditIcon
+              {...setTestid("EditServiceBtn")}
               className="cursor-pointer"
-              onClick={() => onEdit && onEdit("hotel", id)}
+              onClick={() => onEdit && onEdit(id)}
             />
             <TrashIcon
-              onClick={() => onRemove && onRemove("hotel", id)}
+              {...setTestid("RemoveServiceBtn")}
+              onClick={() => onRemove && onRemove(id)}
               className="text-secondaryRed cursor-pointer"
             />
           </div>

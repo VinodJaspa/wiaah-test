@@ -86,7 +86,6 @@ describe("ServiceCheckoutCommonCardWrapper tests", () => {
     expect(wrapper.find("ExclamationCircleIcon").length).toBe(1);
   });
   it("should display the guests if the guests probs is provided otherwise unmount it", () => {
-    // console.log(wrapper.debug());
     expect(
       wrapper.findWhere((node) => node.text() === `Guests:${props.guests}`)
         .length

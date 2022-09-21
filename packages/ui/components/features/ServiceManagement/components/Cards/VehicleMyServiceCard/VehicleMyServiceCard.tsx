@@ -1,112 +1,46 @@
 import { VehicleMyServiceDataType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useRouting } from "routing";
 import {
-  AspectRatio,
-  Button,
   PriceDisplay,
   VehicleProprtiesList,
   Badge,
   EditIcon,
   TrashIcon,
-  ServicesRequestKeys,
   AspectRatioImage,
   ServiceRefundableTypeDescription,
   DotIcon,
   LocationAddressDisplay,
 } from "ui";
+import { setTestid } from "utils";
 
 export interface VehicleMyServiceCardProps extends VehicleMyServiceDataType {
-  onEdit: (serviceType: string, id: string) => any;
-  onRemove: (serviceType: string, id: string) => any;
+  onEdit: (id: string) => any;
+  onRemove: (id: string) => any;
 }
 
 export const VehicleMyServiceCard: React.FC<VehicleMyServiceCardProps> = ({
   onEdit,
   onRemove,
+  ...props
 }) => {
   const { t } = useTranslation();
-  const { visit } = useRouting();
-  const props = {
-    cancelationPolicies: [
-      {
-        duration: 6,
-        cost: 0,
-        id: "1",
-      },
-      {
-        duration: 10,
-        cost: 10,
-        id: "2",
-      },
-      {
-        cost: 50,
-        duration: 0,
-        id: "3",
-      },
-      {
-        id: "4",
-        cost: 0,
-        duration: 0,
-      },
-    ],
-    id: "15",
-    name: "vehicle name",
-    pricePerDay: 34,
-    thumbnail:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6qGP9ztoNcjgTB-vVh46teop0TIp5toqIg25Bf7Xg&s",
-    vehicleProps: [
-      {
-        type: "a/c",
-        value: true,
-      },
-      {
-        type: "gps",
-        value: true,
-      },
-      {
-        type: "passengers",
-        value: 5,
-      },
-      {
-        type: "windows",
-        value: 4,
-      },
-      {
-        type: "bags",
-        value: 3,
-      },
-    ],
-  };
 
   const {
     cancelationPolicies,
     id,
-    name,
     pricePerDay,
     thumbnail,
     vehicleProps,
+    location,
+    title,
   } = props;
-
-  const location = {
-    address: "street name",
-    city: "Geneve",
-    cords: {
-      lat: 15,
-      lng: 16,
-    },
-    country: "switzerland",
-    countryCode: "CHF",
-    postalCode: 1565,
-    state: "state",
-  };
 
   return (
     <div className="border flex-col sm:flex-row border-gray-400 rounded p-2 flex justify-between gap-4">
       <div className="flex flex-col sm:flex-row gap-4 w-full">
         <div className="min-w-[13rem]">
-          <AspectRatioImage alt={name} ratio={3 / 4} src={thumbnail} />
+          <AspectRatioImage alt={title} ratio={3 / 4} src={thumbnail} />
         </div>
 
         <div className="flex flex-col gap-2">
@@ -146,11 +80,13 @@ export const VehicleMyServiceCard: React.FC<VehicleMyServiceCardProps> = ({
           <Badge className="whitespace-nowrap">{t("Vehicle")}</Badge>
           <div className="flex gap-2 text-3xl">
             <EditIcon
+              {...setTestid("EditServiceBtn")}
               className="cursor-pointer"
-              onClick={() => onEdit && onEdit("hotel", id)}
+              onClick={() => onEdit && onEdit(id)}
             />
             <TrashIcon
-              onClick={() => onRemove && onRemove("hotel", id)}
+              {...setTestid("RemoveServiceBtn")}
+              onClick={() => onRemove && onRemove(id)}
               className="text-secondaryRed cursor-pointer"
             />
           </div>

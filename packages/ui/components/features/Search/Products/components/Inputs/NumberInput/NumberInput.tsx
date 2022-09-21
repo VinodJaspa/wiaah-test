@@ -7,6 +7,7 @@ import {
   TriangleArrowFillDownIcon,
   TriangleArrowFillUpIcon,
 } from "ui";
+import { setTestid } from "utils";
 export interface NumberInputProps
   extends Omit<HtmlInputProps, "value" | "onChange"> {
   value: number;
@@ -29,15 +30,23 @@ export const NumberInput: React.FC<NumberInputProps> = ({
         <div className="flex flex-col gap-1 text-sm items-center text-iconGray pr-4">
           <TriangleArrowFillUpIcon
             className="cursor-pointer"
+            {...setTestid("IncrementBtn")}
             onClick={() => onChange && onChange(value + 1)}
           />
           <TriangleArrowFillDownIcon
+            {...setTestid("DecrementBtn")}
             className="cursor-pointer"
             onClick={() => onChange && onChange(value - 1)}
           />
         </div>
       </InputRightElement>
-      <Input {...props} className="rounded-md" type={"number"} value={value} />
+      <Input
+        {...props}
+        {...setTestid("Input")}
+        className="rounded-md"
+        type={"number"}
+        value={value}
+      />
     </InputGroup>
   );
 };

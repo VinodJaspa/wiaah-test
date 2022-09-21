@@ -1,5 +1,4 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
 import { hoursAday, weekDays } from "utils";
 import {
   HStack,
@@ -23,7 +22,6 @@ export const WeekdaysOpenTimeInput: React.FC<WeekdaysOpenTimeInputProps> = ({
   onChange,
   value,
 }) => {
-  const { t } = useTranslation();
   const [activeBorders, setActiveBorders] = React.useState<number[]>([]);
   const scrollingPartRef = React.useRef<HTMLDivElement>(null);
 
@@ -111,7 +109,6 @@ export const WeekdaysOpenTimeInput: React.FC<WeekdaysOpenTimeInputProps> = ({
                         const same = activeBorders.every((v, i) => {
                           return activeBorders[i] === range[i];
                         });
-                        console.log("same", same);
                         if (!same) {
                           setActiveBorders(range);
                         }
