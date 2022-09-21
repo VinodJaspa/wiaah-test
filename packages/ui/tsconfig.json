@@ -6,7 +6,7 @@
     "outDir": "./dist",
     "module": "CommonJS",
     "target": "ES5",
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     // "rootDir": ".",
     // "baseUrl": ".",
     "paths": {

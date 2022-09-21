@@ -11,21 +11,24 @@ import { DataInitializationWrapper, useUserData } from "ui";
 import { Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 import React from "react";
+import { ReactPubsubClient, ReactPubsubProvider } from "react-pubsub";
 
 addDecorator((story) => {
   return (
     <QueryClientProvider client={new QueryClient()}>
       <ChakraProvider theme={theme}>
         <CookiesProvider>
-          <Suspense fallback={"Loading"}>
-            <RecoilRoot>
-              <DataInitializationWrapper accountType="seller">
-                <section className="flex min-h-screen w-full items-center justify-center bg-white p-8">
-                  {story()}
-                </section>
-              </DataInitializationWrapper>
-            </RecoilRoot>
-          </Suspense>
+          <ReactPubsubProvider client={new ReactPubsubClient()}>
+            <Suspense fallback={"Loading"}>
+              <RecoilRoot>
+                <DataInitializationWrapper accountType="seller">
+                  <section className="flex min-h-screen w-full items-center justify-center bg-white p-8">
+                    {story()}
+                  </section>
+                </DataInitializationWrapper>
+              </RecoilRoot>
+            </Suspense>
+          </ReactPubsubProvider>
         </CookiesProvider>
       </ChakraProvider>
     </QueryClientProvider>
@@ -57,5 +60,5 @@ const OriginalNextImage = NextImage.default;
 
 Object.defineProperty(NextImage, "default", {
   configurable: true,
-  value: (props) => <OriginalNextImage {...props} unoptimized />,
+  value: (props: any) => <OriginalNextImage {...props} unoptimized />,
 });

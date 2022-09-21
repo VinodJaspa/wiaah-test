@@ -1,10 +1,5 @@
-import React, {
-  CSSProperties,
-  DetailedHTMLProps,
-  FC,
-  HTMLAttributes,
-} from "react";
-import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
+import React, { DetailedHTMLProps, FC, HTMLAttributes } from "react";
+import { CSSValueUnit } from "types";
 import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
 
 export interface FlexStackProps

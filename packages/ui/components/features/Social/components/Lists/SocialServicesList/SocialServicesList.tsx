@@ -1,13 +1,11 @@
-import { usePagination, useResponsive } from "hooks";
+import { usePagination } from "hooks";
 import { PostCardPlaceHolder, ShopCardsInfoPlaceholder } from "placeholder";
 import React from "react";
-import { useRouting } from "routing";
 import {
   useGetServicesPostsQuery,
   SpinnerFallback,
   PostViewPopup,
   SocialServiceDetailsCard,
-  SocialServiceDetailsModal,
   SocialServiceDetailsCardProps,
   GridListOrganiser,
   SocialServicesPostCard,
@@ -52,8 +50,7 @@ export const SocialServicePostsList: React.FC<
     isLoading,
     isError,
   } = useGetServicesPostsQuery({ take, page });
-  const { isMobile, isTablet } = useResponsive();
-  const { visit } = useRouting();
+
   return (
     <SpinnerFallback isLoading={isLoading} isError={isError}>
       <PostViewPopup<SocialServiceDetailsCardProps>
@@ -222,7 +219,6 @@ export const SocialServicePostsList: React.FC<
           })}
         </GridListOrganiser>
       ) : null}
-      <SocialServiceDetailsModal />
     </SpinnerFallback>
   );
 };

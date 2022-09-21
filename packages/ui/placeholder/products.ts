@@ -1,4 +1,4 @@
-import { CartSummaryItemData } from "types/market/CartSummary";
+import { CartSummaryItemData } from "types";
 import { ProductDetails } from "../uiTypes/products/ProductDetail.interface";
 
 export const ProductsWithProfile: CartSummaryItemData[] = [
@@ -23,27 +23,14 @@ export const ProductsWithProfile: CartSummaryItemData[] = [
           },
           name: "European union",
           value: "european_union",
-        },
-        {
-          deliveryTime: {
-            from: 1,
-            to: 3,
-          },
-          name: "Click & Collect",
-          value: "click_and_collect",
-        },
-        {
-          deliveryTime: {
-            from: 6,
-            to: 8,
-          },
-          name: "International",
-          value: "international",
+          cost: 15,
+          description: "desc",
+          id: "13",
         },
       ],
 
-      color: "relay blue/yellow",
-      size: "One Size",
+      colors: ["relay blue/yellow"],
+      sizes: ["One Size"],
       type: "product",
       cashback: {
         unit: "%",
@@ -70,35 +57,10 @@ export const ProductsWithProfile: CartSummaryItemData[] = [
       name: "item1",
       price: 15,
       qty: 3,
-      shippingMotheds: [
-        {
-          deliveryTime: {
-            from: 5,
-            to: 7,
-          },
-          name: "European union",
-          value: "european_union",
-        },
-        {
-          deliveryTime: {
-            from: 1,
-            to: 3,
-          },
-          name: "Click & Collect",
-          value: "click_and_collect",
-        },
-        {
-          deliveryTime: {
-            from: 6,
-            to: 8,
-          },
-          name: "International",
-          value: "international",
-        },
-      ],
+      shippingMotheds: [],
 
-      color: "relay blue/yellow",
-      size: "One Size",
+      colors: ["relay blue/yellow"],
+      sizes: ["One Size"],
       type: "product",
       cashback: {
         unit: "%",
@@ -125,32 +87,7 @@ export const ProductsWithProfile: CartSummaryItemData[] = [
       name: "item1",
       price: 15,
       qty: 3,
-      shippingMotheds: [
-        {
-          deliveryTime: {
-            from: 5,
-            to: 7,
-          },
-          name: "European union",
-          value: "european_union",
-        },
-        {
-          deliveryTime: {
-            from: 1,
-            to: 3,
-          },
-          name: "Click & Collect",
-          value: "click_and_collect",
-        },
-        {
-          deliveryTime: {
-            from: 6,
-            to: 8,
-          },
-          name: "International",
-          value: "international",
-        },
-      ],
+      shippingMotheds: [],
       type: "service",
       location: "123 main st apt 4 atlana ga",
       date: Date.now(),

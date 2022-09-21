@@ -25,7 +25,7 @@ export const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
   }
   return (
     <div className="w-full h-full overflow-hidden relative">
-      <Slider currentImgIdx={currentImgIdx}>
+      <Slider currentItemIdx={currentImgIdx}>
         {Array.isArray(images)
           ? images.map((src, i) => (
               <img

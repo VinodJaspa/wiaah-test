@@ -16,12 +16,11 @@ export const ShopsAndServicesRecommendationsList: React.FC<
 > = () => {
   const { visit } = useRouting();
   const { page, take } = usePagination(24);
-  const { filters } = useSearchFilters();
   const {
     data: res,
     isLoading,
     isError,
-  } = useGetRecommendedShopsQuery({ page, take }, filters);
+  } = useGetRecommendedShopsQuery({ page, take }, {});
 
   return (
     <PaginationWrapper>

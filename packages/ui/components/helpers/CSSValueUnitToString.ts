@@ -1,4 +1,4 @@
-import { CSSUnit, CSSValueUnit } from "types/sharedTypes/css/valueUnit";
+import { CSSUnit, CSSValueUnit } from "types";
 
 export function CSSValueUnitToString(
   input: CSSValueUnit,

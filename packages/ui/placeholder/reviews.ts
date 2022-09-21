@@ -3,7 +3,7 @@ import { BuyerCommentProps } from "../components/blocks/BuyerComment";
 export const reviews: BuyerCommentProps[] = [
   {
     name: "John",
-    date: "08-Oct-2020",
+    date: new Date("08-Oct-2020"),
     rating: 4,
     comment: "Really great product highly recommand it",
     product: {
@@ -14,7 +14,7 @@ export const reviews: BuyerCommentProps[] = [
   },
   {
     name: "John",
-    date: "08-Oct-2020",
+    date: new Date("08-Oct-2020"),
     rating: 4,
     comment: "Really great product highly recommand it",
     product: {
@@ -25,7 +25,7 @@ export const reviews: BuyerCommentProps[] = [
   },
   {
     name: "John",
-    date: "08-Oct-2020",
+    date: new Date("08-Oct-2020"),
     rating: 4,
     comment: "Really great product highly recommand it",
     product: {
@@ -36,7 +36,7 @@ export const reviews: BuyerCommentProps[] = [
   },
   {
     name: "John",
-    date: "08-Oct-2020",
+    date: new Date("08-Oct-2020"),
     rating: 4,
     comment: "Really great product highly recommand it",
     product: {
@@ -47,7 +47,7 @@ export const reviews: BuyerCommentProps[] = [
   },
   {
     name: "John",
-    date: "08-Oct-2020",
+    date: new Date("08-Oct-2020"),
     rating: 4,
     comment: "Really great product highly recommand it",
     product: {

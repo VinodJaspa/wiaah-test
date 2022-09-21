@@ -1,6 +1,5 @@
 import React, { DetailedHTMLProps, HTMLAttributes } from "react";
-import { Size } from "types/sharedTypes/css/size";
-import { CSSValueUnit } from "types/sharedTypes/css/valueUnit";
+import { CSSValueUnit, Size } from "types";
 import { CSSValueUnitToString } from "../helpers/CSSValueUnitToString";
 
 export interface TextProps

@@ -1,6 +1,7 @@
 import { Progress } from "@chakra-ui/react";
 import React from "react";
-import { ProgressBar } from "types/market/ProgressBar";
+import { ProgressBar } from "types";
+
 export interface ProgressBarsProps {
   progressBarsData: ProgressBar[];
 }

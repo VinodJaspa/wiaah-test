@@ -1,6 +1,5 @@
 import { atom, selector } from "recoil";
-import { CartSummaryItem } from "types/market/CartSummary";
-import { VoucherType } from "types/market/Checkout";
+import { CartSummaryItem, VoucherType } from "types";
 
 export const VoucherState = atom<VoucherType | undefined>({
   key: "VoucherState",

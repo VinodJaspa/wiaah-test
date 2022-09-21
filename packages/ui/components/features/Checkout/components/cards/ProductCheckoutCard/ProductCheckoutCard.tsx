@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { BsTrash } from "react-icons/bs";
 import { IoHeartOutline } from "react-icons/io5";
 import {
-  Image,
   EllipsisText,
   Prefix,
   PriceDisplay,
@@ -19,8 +18,12 @@ import {
   Td,
   AspectRatioImage,
 } from "ui";
+import { setTestid } from "utils";
 
-export interface ProductCheckoutCardProps extends ProductCheckoutData {}
+export interface ProductCheckoutCardProps extends ProductCheckoutData {
+  onItemDelete?: (id: string) => void;
+  onMoveToWishlist?: (id: string) => void;
+}
 
 export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
   cashback,
@@ -34,33 +37,23 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
   shippingMethods,
   size,
   thumbnail,
+
+  onItemDelete,
+  onMoveToWishlist,
 }) => {
   const { t } = useTranslation();
   const { min } = useScreenWidth({ minWidth: 900 });
-  function handleItemQtyChange(qty: number, id: string) {
-    // if (onQtyChange) onQtyChange(id, qty);
-  }
+
   function handleMoveToWishList() {
-    // if (onMoveToWishList) {
-    //   onMoveToWishList(product.id);
-    // }
+    if (onMoveToWishlist) {
+      onMoveToWishlist(id);
+    }
   }
   function handleItemDeletion() {
-    // if (onRemove) {
-    //   onRemove(product.id);
-    // }
+    if (onItemDelete) {
+      onItemDelete(id);
+    }
   }
-  function handleProfileClick() {
-    // if (onProfileClick && profile) {
-    //   onProfileClick(profile.id);
-    // }
-  }
-  function handleContactClick() {
-    // if (onContactClick && profile) {
-    //   onContactClick(profile.id);
-    // }
-  }
-  function handleLocationClick() {}
 
   return (
     <div className="flex w-full">
@@ -158,6 +151,7 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
                     <div
                       className="cursor-pointer"
                       id="RemoveProductButton"
+                      {...setTestid("DeleteBtn")}
                       onClick={handleItemDeletion}
                     >
                       <Prefix Prefix={<BsTrash />}>{t("Remove")}</Prefix>
@@ -166,6 +160,7 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
                       className="cursor-pointer"
                       id="MoveToWishListButton"
                       onClick={handleMoveToWishList}
+                      {...setTestid("MoveToWishlistBtn")}
                     >
                       <Prefix Prefix={<IoHeartOutline />}>
                         {t("Move to wish list")}

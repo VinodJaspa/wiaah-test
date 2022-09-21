@@ -1,7 +1,6 @@
 import React from "react";
 import { ServicesType, ServiceViewListItem } from "types";
 import { runIfFn } from "../runIfFun";
-import { NotFound } from "ui";
 
 export type getServiceViewType =
   | "search"
@@ -36,7 +35,7 @@ export const ServicesTypeSwitcher: React.FC<{
   get: Get,
   serviceType,
   servicesList,
-  fallbackComponent = NotFound,
+  fallbackComponent = null,
   props = {},
 }) => {
   const get = typeof Get === "function" ? Get(getServiceView) : Get;

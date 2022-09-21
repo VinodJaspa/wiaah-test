@@ -6,6 +6,7 @@ import {
   ExtraServiceInput,
   CloseIcon,
 } from "ui";
+import { setTestid } from "utils";
 
 export interface ServiceExtrasInputListProps {
   onChange: (list: ExtraServiceData[]) => any;
@@ -16,7 +17,6 @@ export const ServiceExtrasInputList: React.FC<ServiceExtrasInputListProps> = ({
   onChange,
   value = [],
 }) => {
-  const { t } = useTranslation();
   function checkAddable(value: ExtraServiceData, values: ExtraServiceData[]) {
     return (
       values.findIndex((v) => v.cost === value.cost && v.name === value.name) <
@@ -28,8 +28,12 @@ export const ServiceExtrasInputList: React.FC<ServiceExtrasInputListProps> = ({
     <div className="flex flex-col gap-2">
       {Array.isArray(value)
         ? value.map((v, i) => (
-            <div className="flex items-center gap-2">
+            <div
+              {...setTestid("ExtraItem")}
+              className="flex items-center gap-2"
+            >
               <CloseIcon
+                {...setTestid("DeleteItemBtn")}
                 className="cursor-pointer"
                 onClick={() =>
                   onChange &&
@@ -49,6 +53,7 @@ export const ServiceExtrasInputList: React.FC<ServiceExtrasInputListProps> = ({
           ))
         : null}
       <ExtraServiceInput
+        {...setTestid("ExtraServiceInput")}
         onAdd={(extra) =>
           checkAddable(extra, value)
             ? onChange && onChange([...value, extra])

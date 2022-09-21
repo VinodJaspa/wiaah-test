@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   InputGroup,
   InputLeftElement,
@@ -13,9 +14,17 @@ export interface StatusSelectInputProps {
   options: string[];
   value: string;
   onChange: (value: string) => any;
+  placeholder?: string;
 }
 
-export const StatusSelectInput: React.FC<StatusSelectInputProps> = (props) => {
+export const StatusSelectInput: React.FC<StatusSelectInputProps> = ({
+  onChange,
+  options,
+  value,
+  placeholder,
+}) => {
+  const { t } = useTranslation();
+  const ph = placeholder || t("Select Status");
   return (
     <InputGroup
       style={{
@@ -28,11 +37,12 @@ export const StatusSelectInput: React.FC<StatusSelectInputProps> = (props) => {
         <Divider variant="vert" className="border-iconGray h-[auto] mx-[0px]" />
       </InputLeftElement>
       <Select
+        placeholder={ph}
         className="border-[0px] pl-[0px] text-iconGray w-full"
-        value={props.value || ""}
-        onOptionSelect={props.onChange || (() => {})}
+        value={value || ""}
+        onOptionSelect={onChange || (() => {})}
       >
-        {mapArray(props.options, (opt, i) => (
+        {mapArray(options, (opt, i) => (
           <SelectOption className="pl-[0px]" key={i} value={opt}>
             {opt}
           </SelectOption>

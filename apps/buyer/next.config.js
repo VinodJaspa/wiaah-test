@@ -1,3 +1,4 @@
+const { patchWebpackConfig } = require("next-global-css");
 // @ts-check
 
 /**

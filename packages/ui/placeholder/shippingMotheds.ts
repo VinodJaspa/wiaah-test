@@ -1,25 +1,37 @@
-import { ShippingMothed } from "types/market/Checkout";
+import { ShippingMothed } from "types";
 
 export const shippingMotheds: ShippingMothed[] = [
   {
     cost: 0,
-    name: "Click and collect",
+    name: "Click & Collect",
     description: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. ",
     id: "1",
+    value: "click_and_collect",
+    deliveryTime: {
+      from: 4,
+      to: 6,
+    },
   },
   {
     cost: 0,
-    name: "Free shipping",
+    name: "European union",
+    description: "desct",
+    value: "european_union",
     id: "2",
+    deliveryTime: {
+      from: 4,
+      to: 6,
+    },
   },
   {
     cost: 0.99,
-    name: "European shipping",
-    id: "3",
-  },
-  {
-    cost: 5.99,
     name: "International",
-    id: "4",
+    id: "3",
+    deliveryTime: {
+      from: 4,
+      to: 6,
+    },
+    description: "desc",
+    value: "international",
   },
 ];

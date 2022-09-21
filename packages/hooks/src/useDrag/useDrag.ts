@@ -23,7 +23,7 @@ export const useDrag = ({
   }>();
   const [startDate, setStartDate] = React.useState<number>();
 
-  const throttledOnDrag = throttle(onDrag, 200);
+  const throttledOnDrag = throttle(onDrag || (() => {}), 200);
 
   return React.useCallback(
     (node?: HTMLDivElement | null) => {

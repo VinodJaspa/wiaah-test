@@ -1,4 +1,10 @@
 module.exports = {
+  globals: {
+    "ts-jest": {
+      diagnostics: false,
+    },
+  },
+
   collectCoverageFrom: [
     "!**/*.{ts,tsx}",
     "**/seller/**/*.{ts,tsx}",
@@ -37,13 +43,13 @@ module.exports = {
   moduleFileExtensions: ["ts", "tsx", "js", "json"],
   moduleNameMapper: {
     "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
-    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|jfif)$":
       "<rootDir>/__mocks__/fileMock.js",
   },
   transform: {
-    ".(ts|tsx)": "babel-jest",
+    "^.+\\.(ts|tsx)?$": "ts-jest",
+    "^.+\\.(js|jsx)$": "babel-jest",
   },
   transformIgnorePatterns: ["<rootDir>/node_modules/"],
   snapshotSerializers: ["enzyme-to-json/serializer"],
-  setupFilesAfterEnv: ["./jest.setup.js"],
 };

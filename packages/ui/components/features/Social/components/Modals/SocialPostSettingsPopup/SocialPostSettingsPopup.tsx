@@ -33,8 +33,8 @@ export const useSocialPostSettingsPopup = () => {
   };
 };
 
-export const SocialPostSettingsPopup = () => {
-  const { Listen, emit, removeListner } = useSocialPostSettingsPopup();
+export const SocialPostSettingsPopup: React.FC = () => {
+  const { Listen, removeListner } = useSocialPostSettingsPopup();
   const [id, setId] = React.useState<string>();
   const { t } = useTranslation();
 

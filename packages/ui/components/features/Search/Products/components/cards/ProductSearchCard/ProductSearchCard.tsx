@@ -2,7 +2,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   AspectRatio,
-  Badge,
   HeartIcon,
   PriceDisplay,
   VerifiedIcon,
@@ -31,21 +30,12 @@ export interface ProductSearchCardProps {
   };
 }
 
-// 125 : 111
 export const ProductSearchCard: React.FC<ProductSearchCardProps> = ({
   productInfo,
   sellerInfo,
 }) => {
-  const {
-    cashback,
-    discount,
-    price,
-    rating,
-    reviewsCount,
-    title,
-    colors,
-    thumbnail,
-  } = productInfo;
+  const { cashback, discount, rating, reviewsCount, title, colors, thumbnail } =
+    productInfo;
 
   const { t } = useTranslation();
   return (

@@ -73,6 +73,10 @@ export const getMyServicesFetcher = async (
         type: "beauty_center",
         provider: "beauty center provider name",
         thumbnail: "/place-2.jpeg",
+        name: "beauty center name",
+        owners: ["owner 1", "owner 2"],
+        rate: 4.8,
+        reviews: 2655,
       },
       {
         id: "5",

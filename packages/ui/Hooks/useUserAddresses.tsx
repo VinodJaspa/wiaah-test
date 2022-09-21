@@ -1,8 +1,5 @@
 import { useRecoilState } from "recoil";
-import {
-  AddressCardDetails,
-  AddressDetails,
-} from "types/market/AddressDetails.interface";
+import { AddressCardDetails, AddressDetails } from "types";
 import { UserAddressesState } from "../state";
 
 export const useUserAddresses = () => {
