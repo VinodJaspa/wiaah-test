@@ -43,6 +43,7 @@ mockSearchData = {
     photo:
       "https://img.freepik.com/premium-photo/mature-doctor-hospital_256588-179.jpg?w=2000",
     specialty: "Dentist",
+    reviews: 150,
   })),
   specialties: [...Array(50)].map(() => ({
     title: mockSpecialties[randomNum(mockSpecialties.length)],

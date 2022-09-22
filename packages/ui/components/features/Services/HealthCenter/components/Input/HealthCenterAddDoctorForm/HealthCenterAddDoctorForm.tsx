@@ -13,7 +13,7 @@ import {
   MediaUploadModal,
   useFileUploadModal,
 } from "ui";
-import { FileRes } from "utils";
+import { FileRes, setTestid } from "utils";
 import { mixed, object, string } from "yup";
 
 export type DoctorInputData = {
@@ -34,43 +34,49 @@ export const HealthCenterAddDoctorForm: React.FC<
   const [add, setAdd] = React.useState<boolean>(false);
   return add ? (
     <Formik<DoctorInputData>
-      validationSchema={object({
-        name: string().required(),
-        specialist: string().required(),
-        picture: mixed().test({
-          name: "doctor photo",
-          message: "please provide a valid photo",
-          test: (v) => true,
-        }),
-      })}
+      // validationSchema={object({
+      //   name: string().required(),
+      //   specialist: string().required(),
+      //   picture: mixed().test({
+      //     name: "doctor photo",
+      //     message: "please provide a valid photo",
+      //     test: (v) => true,
+      //   }),
+      // })}
       initialValues={{ name: "", picture: "", specialist: "" }}
       onSubmit={(values, { resetForm }) => {
-        if (onAdd) {
+        console.log("submited", values);
+        if (onAdd && values.name.length > 0) {
+          console.log("added", values);
           onAdd({
             ...values,
-            picture:
-              "https://t4.ftcdn.net/jpg/03/20/52/31/360_F_320523164_tx7Rdd7I2XDTvvKfz2oRuRpKOPE5z0ni.jpg",
           });
+          resetForm();
+          setAdd(false);
         }
-
-        resetForm();
       }}
     >
       {({ handleSubmit, isValid, errors, setFieldValue, values }) => {
+        console.log("input", values);
         return (
           <div
             className={`${
               isValid ? "items-end" : "items-center"
             } flex gap-2 w-full`}
           >
+            <pre>{JSON.stringify(values)}</pre>
             <FormikInput
+              onChange={(e) => setFieldValue("name", e.target.value)}
+              value={values.name}
               name="name"
               placeholder={t("name") + "..."}
               label={t("Doctor name")}
+              {...setTestid("DoctorNameInput")}
             />
             <div className="w-full">
               <FormikInput<SelectProps>
                 name="specialist"
+                {...setTestid("DoctorSpecialistSelectInput")}
                 as={Select}
                 onOptionSelect={(v) => setFieldValue("specialist", v)}
                 value={values["specialist"]}
@@ -86,31 +92,29 @@ export const HealthCenterAddDoctorForm: React.FC<
                 </SelectOption>
               </FormikInput>
             </div>
-            <FormikInput
-              label={t("Photo")}
-              name={"picture"}
-              containerProps={{ className: "w-[fit-content]" }}
-              as={() => {
-                return (
-                  <div
-                    onClick={() => {
-                      uploadImage();
-                    }}
-                    className={`${
-                      errors.picture
-                        ? "animate-pulse text-red-400"
-                        : "text-primary"
-                    } cursor-pointer justify-center rounded items-center h-10 w-10 bg-gray-100 border-gray-300 border-[1px] flex`}
-                  >
-                    <HiFolderAdd className="text-3xl" />
-                  </div>
-                );
-              }}
-            />
+            <div className="flex flex-col gap-2 w-full">
+              <p className="font-semibold">{t("Photo")}</p>
+              <div
+                {...setTestid("DoctorPhotoButton")}
+                onClick={() => {
+                  uploadImage();
+                }}
+                className={`${
+                  errors.picture ? "animate-pulse text-red-400" : "text-primary"
+                } cursor-pointer justify-center rounded items-center h-10 w-10 bg-gray-100 border-gray-300 border-[1px] flex`}
+              >
+                <HiFolderAdd className="text-3xl" />
+              </div>
+            </div>
             <MediaUploadModal
+              {...setTestid("PhotoUploadModal")}
               onImgUpload={(res) => setFieldValue("picture", res)}
             />
-            <Button onClick={() => handleSubmit()} type="button">
+            <Button
+              {...setTestid("DoctorAddBtn")}
+              onClick={() => handleSubmit()}
+              type="button"
+            >
               {t("Add")}
             </Button>
           </div>
@@ -118,7 +122,10 @@ export const HealthCenterAddDoctorForm: React.FC<
       }}
     </Formik>
   ) : (
-    <AddBadgeButton onClick={() => setAdd(true)}>
+    <AddBadgeButton
+      {...setTestid("AddNewDoctorButton")}
+      onClick={() => setAdd(true)}
+    >
       {t("Add a new doctor")}
     </AddBadgeButton>
   );
