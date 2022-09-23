@@ -3,7 +3,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import { useBreakpointValue } from "@chakra-ui/react";
 import {
-  FloatingContainer,
   PostCardsListWrapper,
   PostViewPopup,
   RecentStories,
@@ -18,7 +17,6 @@ import {
   SquarePlusOutlineIcon,
 } from "ui";
 import { newsfeedPosts } from "ui";
-import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import { PostCardInfo } from "types";
 import { randomNum } from "utils";
