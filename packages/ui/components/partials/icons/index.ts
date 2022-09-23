@@ -110,3 +110,4 @@ export * from "./DownloadIcon";
 export * from "./ImageColoredIcon";
 export * from "./VideoAaddIcon";
 export * from "./PhotoAddIcon";
+export * from "./MessageWriteIcon";

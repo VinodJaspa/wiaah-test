@@ -1,5 +1,5 @@
 import { createApiResponseValidationSchema } from "../../../SharedSchema";
-import { ServiceCheckoutDataValidationTester } from "../Checkout";
+import { CheckoutDataValidationTester } from "../Checkout";
 import { object, string } from "yup";
 import {
   ServiceReachOutDataValidationSchema,
@@ -7,7 +7,7 @@ import {
 } from "../common";
 
 export const BookConfirmationValidationSchema = object({
-  propertyData: ServiceCheckoutDataValidationTester,
+  propertyData: CheckoutDataValidationTester,
   bookedId: string().required(),
   reactOut: ServiceReachOutDataValidationSchema.required(),
 }).concat(ServiceWorkingDaysValidationSchema);

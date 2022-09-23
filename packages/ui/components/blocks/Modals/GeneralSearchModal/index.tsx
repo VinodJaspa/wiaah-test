@@ -9,7 +9,6 @@ import {
   UserProfile,
   usersProfilesPlaceHolder,
   HashTagSearchItem,
-  placesPlaceholder,
   LocalizationsPH,
   LocalizationSearchItem,
   RecentSearchItemsPH,
@@ -26,7 +25,7 @@ const LocalizationPh: any[] = [...Array(5)].reduce((acc: any[]) => {
 
 const discoverPlacesPlaceHolder: string[] = [...Array(5)].reduce(
   (acc: any[]) => {
-    return acc.concat(placesPlaceholder);
+    return acc.concat([]);
   },
   []
 );

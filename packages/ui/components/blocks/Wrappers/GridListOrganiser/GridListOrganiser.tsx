@@ -4,7 +4,7 @@ import { Divider } from "ui";
 
 export interface GridListOrganiser {
   presets: GridPreset[];
-  rowSize: string;
+  rowSize?: string;
 }
 
 export const GridListOrganiser: React.FC<GridListOrganiser> = ({
@@ -66,7 +66,7 @@ export interface GridPresetOrganiserProps {
 export const GridPresetOrganiser: React.FC<GridPresetOrganiserProps> = ({
   children,
   preset,
-  rowSize,
+  rowSize = "14.5rem",
 }) => {
   return (
     <div

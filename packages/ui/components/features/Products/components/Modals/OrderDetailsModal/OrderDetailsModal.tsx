@@ -13,10 +13,28 @@ import {
   PriceDisplay,
   PdfIcon,
   TargetCursorIcon,
-  ProductCheckoutCard,
+  MessageWriteIcon,
   CreditCardIcon,
+  RateFeedBackModal,
 } from "ui";
 import { DateDetails } from "utils";
+
+import { useScreenWidth } from "hooks";
+import { IoHeartOutline } from "react-icons/io5";
+import {
+  EllipsisText,
+  Prefix,
+  UnDiscountedPriceDisplay,
+  BoldText,
+  CashbackBadge,
+  Radio,
+  Table,
+  TBody,
+  Tr,
+  Td,
+  AspectRatioImage,
+} from "ui";
+import { setTestid } from "utils";
 
 export interface OrderDetailsModalProps {}
 
@@ -47,6 +65,12 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
   const tax = res ? res.data.tax : 0;
   const total = subtotal - discountCost + deliveryCost + tax;
   const { t } = useTranslation();
+
+  const { min } = useScreenWidth({ minWidth: 900 });
+
+  function handleMoveToWishList() {}
+  function handleItemDeletion() {}
+
   return (
     <Modal isOpen={!!id} onClose={() => setId(undefined)} onOpen={() => {}}>
       <ModalOverlay />
@@ -91,10 +115,173 @@ export const OrderDetailsModal: React.FC<OrderDetailsModalProps> = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-4">
-                {res.data.products.map((prod, i) => (
-                  <ProductCheckoutCard key={i} {...prod} />
-                ))}
+                {res.data.products.map(
+                  (
+                    {
+                      cashback,
+                      color,
+                      description,
+                      discount,
+                      id,
+                      location,
+                      name,
+                      price,
+                      qty,
+                      shippingMethods,
+                      size,
+                      thumbnail,
+                    },
+                    i
+                  ) => (
+                    <div key={i} className="flex w-full">
+                      <div className="flex flex-col w-full">
+                        <div
+                          className={`${
+                            min ? "flex-col" : "flex-row"
+                          } flex w-full gap-4 justify-between`}
+                        >
+                          <div
+                            className={`${
+                              min ? "flex-col" : "flex-row"
+                            } flex w-full gap-4`}
+                          >
+                            <div
+                              className={`${
+                                min ? "w-full" : ""
+                              } flex justify-center`}
+                            >
+                              <div className="relative w-40">
+                                <AspectRatioImage
+                                  src={thumbnail}
+                                  alt={name}
+                                  ratio={6 / 4}
+                                />
+                              </div>
+                            </div>
+                            <div className="flex flex-col justify-between">
+                              <div className="flex  justify-between">
+                                <div className="flex flex-col">
+                                  <span id="ProductName" className="font-bold">
+                                    {name}
+                                  </span>
+                                  <EllipsisText maxLines={1}>
+                                    {description}
+                                  </EllipsisText>
+                                  <div>
+                                    {color && (
+                                      <p id="ProductColor">
+                                        {t("Color")}: {color}
+                                      </p>
+                                    )}
+                                    {size && (
+                                      <p id="ProductSize">
+                                        {t("Size")}: {size}
+                                      </p>
+                                    )}
+                                  </div>
+                                </div>
+                                <div
+                                  className={`${
+                                    min ? "items-start" : "items-end"
+                                  } flex flex-col`}
+                                >
+                                  <div className="flex gap-2">
+                                    <BoldText>
+                                      <UnDiscountedPriceDisplay
+                                        id="ProductOldPrice"
+                                        amount={price}
+                                        discount={discount}
+                                      />
+                                    </BoldText>
+                                    <BoldText>
+                                      <PriceDisplay price={price} />
+                                    </BoldText>
+                                  </div>
+                                  {discount && (
+                                    <p
+                                      className="text-[#ff0000] whitespace-nowrap"
+                                      id="ProductDiscount"
+                                    >
+                                      {t("You Save")} %{discount}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+
+                              <Table
+                                TdProps={{ className: "py-1 px-0" }}
+                                className="text-xs"
+                              >
+                                <TBody>
+                                  {Array.isArray(shippingMethods)
+                                    ? shippingMethods.map((method) => (
+                                        <Tr>
+                                          <Td>
+                                            <Radio
+                                              name={`shippingMethod-${id}`}
+                                              value={method.value}
+                                            >
+                                              {method.name}
+                                            </Radio>
+                                          </Td>
+                                          <Td>
+                                            <PriceDisplay price={method.cost} />
+                                          </Td>
+                                          <Td>
+                                            <p>
+                                              {t("Available in")}{" "}
+                                              {method.deliveryTime.from} -{" "}
+                                              {method.deliveryTime.to}{" "}
+                                              {t("Days")}
+                                            </p>
+                                          </Td>
+                                        </Tr>
+                                      ))
+                                    : null}
+                                </TBody>
+                              </Table>
+
+                              <div className="flex items-end gap-1 justify-between">
+                                <p className="text-xs">
+                                  <div className="flex items-center w-fit gap-4">
+                                    <div
+                                      className="cursor-pointer"
+                                      id="MoveToWishListButton"
+                                      onClick={handleMoveToWishList}
+                                      {...setTestid("MoveToWishlistBtn")}
+                                    >
+                                      <Prefix Prefix={<IoHeartOutline />}>
+                                        {t("Move to wish list")}
+                                      </Prefix>
+                                    </div>
+                                    <div
+                                      className="cursor-pointer"
+                                      id="GiveFeedBack"
+                                      {...setTestid("GiveFeedBackBtn")}
+                                      onClick={handleItemDeletion}
+                                    >
+                                      <Prefix Prefix={<MessageWriteIcon />}>
+                                        {t("Give Feedback")}
+                                      </Prefix>
+                                    </div>
+                                  </div>
+                                </p>
+                                <div className="flex flex-col text-xs items-end gap-1">
+                                  <p id="ProductQty">
+                                    {qty} {t("Units")}
+                                  </p>
+                                  {cashback && <CashbackBadge {...cashback} />}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )
+                )}
               </div>
+              <RateFeedBackModal variant="product" />
               <div className="grid grid-cols-2 gap-8">
                 <div className="flex flex-col w-full gap-2">
                   <p className="text-xl font-bold">{t("Payment")}</p>

@@ -145,5 +145,10 @@ export const storybookSearchInputsTitle =
 export const storybookCheckoutTitle = storybookFeaturesTitle + "checkout /";
 export const storybookCheckoutCardsTitle = storybookCheckoutTitle + cardsTitle;
 
+// feedback
+export const storybookFeedBackTitle = storybookFeaturesTitle + "feedback /";
+export const storybookFeedBackModalsTitle =
+  storybookFeedBackTitle + modalsTitle;
+
 // storybook misc
 export const storybookPlaygourndTitle = "Playground /";
