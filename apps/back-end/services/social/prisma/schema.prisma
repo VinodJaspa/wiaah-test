@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output = "./generated"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model Profile {
+  id String @id() @default(auto()) @db.ObjectId() @map("_id")
+  ownerId String @db.ObjectId() @unique()
+  bio String
+  photo String
+  followers Int @default(0)
+  followersIds String[]
+  following Int @default(0)
+  followingIds String[]
+  publications Int @default(0)
+  postsIds String[]
+  profession String
+  visibility ProfileVisibility
+}
+
+enum ProfileVisibility {
+  public
+  followers
+  private
+}
+
+model Post {
+  id String  @id() @default(auto()) @map("_id") @db.ObjectId()
+
+}

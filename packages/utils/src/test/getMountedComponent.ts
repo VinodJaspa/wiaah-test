@@ -40,3 +40,10 @@ export const getMountedComponent = (
       .find(uniqeSelector);
   }
 };
+
+export const getDeepMountedComponent = (
+  wrapper: ReactWrapper,
+  uniqeSelector: string
+): ReactWrapper => {
+  return getMountedComponent(wrapper, uniqeSelector, 100);
+};

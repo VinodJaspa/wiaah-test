@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { CountInput } from "ui";
+import { setTestid } from "utils";
 type NightsStayDataType = { min: number; max: number };
 
 export interface HoliydayRentalsBoundedStayNightsInputProps {
@@ -15,10 +16,11 @@ export const HoliydayRentalsBoundedStayNightsInput: React.FC<
   return (
     <div className="whitespace-nowrap flex flex-col sm:flex-row gap-4 items-center">
       <div className="border px-2 py-4 w-full rounded gap-4 flex justify-between">
-        <p>
-          {value.min} {t("nights min")}
+        <p {...setTestid("minNightsText")}>
+          {value.min} {t("min nights")}
         </p>
         <CountInput
+          {...setTestid("minCountInput")}
           count={value.min}
           onCountChange={(count) =>
             onChange && onChange({ ...value, min: count })
@@ -26,10 +28,11 @@ export const HoliydayRentalsBoundedStayNightsInput: React.FC<
         />
       </div>
       <div className="border px-2 py-4 w-full rounded gap-4 flex justify-between">
-        <p>
-          {value.max} {t("nights max")}
+        <p {...setTestid("maxNightsText")}>
+          {value.max} {t("max nights")}
         </p>
         <CountInput
+          {...setTestid("maxCountInput")}
           count={value.max}
           onCountChange={(count) =>
             onChange && onChange({ ...value, max: count })

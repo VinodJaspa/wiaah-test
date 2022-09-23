@@ -1,9 +1,8 @@
 import React from "react";
 import { NextPage } from "next";
 import Head from "next/head";
-import { DiscoverView } from "../../components";
+import { DiscoverView } from "@components";
 import { SellerLayout } from "ui";
-import { Box } from "@chakra-ui/react";
 
 interface DiscoverPageProps {}
 

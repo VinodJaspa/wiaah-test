@@ -9,20 +9,14 @@ import {
   usersProfilesPlaceHolder,
   placesPlaceholder,
   LocationButton,
-  HashTagSearch,
   DiscoverItem,
+  HashTagSearchItem,
+  GridListOrganiser,
+  PostCard,
 } from "ui";
-import {
-  Text,
-  Image,
-  VStack,
-  HStack,
-  Icon,
-  StackProps,
-} from "@chakra-ui/react";
 import { useTranslation } from "react-i18next";
-import { HiHashtag } from "react-icons/hi";
-import { randomNum, NumberShortner } from "ui/components/helpers";
+import { randomNum, useBreakpointValue } from "utils";
+import { newsfeedPosts } from "placeholder";
 
 const discoverItemsPlaceholder = products.map((prod, i) => ({
   image: prod.imgUrl,
@@ -38,7 +32,7 @@ const discoverHashtagsPlaceholder: string[] = [...Array(5)].reduce((acc) => {
 
 export const DiscoverView: React.FC = ({}) => {
   const { t } = useTranslation();
-  // const cols = useBreakpointValue({ base: 4, md: 2, lg: 3, xl: 5 });
+  const cols = useBreakpointValue({ base: 4, md: 2, lg: 3, xl: 5 });
   const { discoverTabs, changeDiscoverTab, currentTab, setTabsData } =
     useDiscoverTabs();
   const { data, isLoading, isError } = useQuery(
@@ -46,16 +40,42 @@ export const DiscoverView: React.FC = ({}) => {
     () => discoverItemsPlaceholder
   );
 
+  const posts = [
+    ...[...Array(4)].reduce((acc) => {
+      return [...acc, ...newsfeedPosts.slice(0, 8)];
+    }, []),
+  ];
+
   React.useEffect(() => {
     setTabsData([
       {
         name: t("community", "community"),
         component: (
-          <ListWrapper cols={4}>
-            {discoverItemsPlaceholder.map((item, i) => (
-              <DiscoverItem thumbnail={item.image} key={i} />
+          <GridListOrganiser
+            rowSize="14.5rem"
+            presets={[
+              {
+                length: 10,
+                cols: 5,
+                points: [
+                  { c: 2, r: 1 },
+                  { c: 1, r: 2 },
+                  { c: 1, r: 1 },
+                  { c: 1, r: 1 },
+                  { c: 2, r: 2 },
+                  { c: 1, r: 1 },
+                  { c: 1, r: 1 },
+                  { c: 1, r: 1 },
+                  { c: 1, r: 1 },
+                  { c: 1, r: 1 },
+                ],
+              },
+            ]}
+          >
+            {posts.map((item, i) => (
+              <PostCard {...item} key={i} />
             ))}
-          </ListWrapper>
+          </GridListOrganiser>
         ),
         link: "/",
       },
@@ -75,11 +95,7 @@ export const DiscoverView: React.FC = ({}) => {
         component: (
           <ListWrapper>
             {discoverPlacesPlaceHolder.map((place, i) => (
-              <LocationButton
-                iconStyle={{ color: "primary.main" }}
-                name={place}
-                key={i}
-              />
+              <LocationButton name={place} key={i} />
             ))}
           </ListWrapper>
         ),
@@ -88,9 +104,9 @@ export const DiscoverView: React.FC = ({}) => {
       {
         name: t("hashtags", "hashtags"),
         component: (
-          <ListWrapper style={{ w: "100%" }}>
+          <ListWrapper>
             {discoverHashtagsPlaceholder.map((tag, i) => (
-              <HashTagSearch
+              <HashTagSearchItem
                 hashtagName={tag}
                 hashtagViews={randomNum(50000000)}
               />
@@ -103,24 +119,8 @@ export const DiscoverView: React.FC = ({}) => {
   }, []);
   console.log(discoverTabs);
   return (
-    <VStack overflow={"scroll"} align={"start"} h="100%">
-      {/* <Text
-        textTransform={"capitalize"}
-        pb="1rem"
-        fontSize={"4xl"}
-        fontWeight="bold"
-      >
-        {t("discover", "discover")}
-      </Text> */}
-      <TabsViewer
-        tabsProps={{
-          index: currentTab,
-          onChange: (index) => changeDiscoverTab(discoverTabs[index].link),
-          w: "100%",
-        }}
-        showTabs={false}
-        tabs={discoverTabs}
-      />
-    </VStack>
+    <div className="flex flex-col overflow-y-scroll items-start  h-full">
+      <TabsViewer showTabs={false} tabs={discoverTabs} />
+    </div>
   );
 };

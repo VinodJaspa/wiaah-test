@@ -11,6 +11,10 @@ export function getTestId(id: string): string {
 export function getRoleId(id: string): string {
   return `[role='${id}']`;
 }
+
+export function getShallowInputFormField(node: ShallowWrapper): ShallowWrapper {
+  return node.dive().find("Field");
+}
 import React from "react";
 import { runIfFn } from "../runIfFun";
 

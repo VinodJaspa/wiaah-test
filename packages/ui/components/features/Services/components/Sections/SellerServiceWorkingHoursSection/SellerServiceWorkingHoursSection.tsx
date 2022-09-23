@@ -4,10 +4,11 @@ import { useTranslation } from "react-i18next";
 import { DateDetails, mapArray } from "utils";
 import { TimeClockDisplay } from "ui";
 
-export interface SellerServiceWorkingHoursSection extends ServiceWorkingDays {}
+export interface SellerServiceWorkingHoursSectionProps
+  extends ServiceWorkingDays {}
 
 export const SellerServiceWorkingHoursSection: React.FC<
-  SellerServiceWorkingHoursSection
+  SellerServiceWorkingHoursSectionProps
 > = ({ workingDays }) => {
   const { t } = useTranslation();
   return (

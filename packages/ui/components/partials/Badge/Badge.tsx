@@ -1,7 +1,7 @@
 import React from "react";
 import { HtmlDivProps } from "types";
 
-type BadgeCases = {
+export type BadgeCases = {
   success?: string;
   fail?: string;
   info?: string;

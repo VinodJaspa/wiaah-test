@@ -20,6 +20,7 @@ export class GqlAuthorizationGuard implements CanActivate {
     if (!user) throw new UnauthorizedException();
 
     if (this.roles) {
+      if (this.roles.length === 0) return true;
       if (!this.roles.includes(user.accountType)) {
         throw new UnauthorizedException(
           "this account can not preform this action"
