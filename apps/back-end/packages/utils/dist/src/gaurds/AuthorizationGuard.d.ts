@@ -6,4 +6,3 @@ export declare class GqlAuthorizationGuard implements CanActivate {
     constructor(roles: AccountType[]);
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean>;
 }
-//# sourceMappingURL=AuthorizationGuard.d.ts.map

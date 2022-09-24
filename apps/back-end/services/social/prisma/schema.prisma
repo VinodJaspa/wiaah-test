@@ -16,6 +16,10 @@ datasource db {
 model Profile {
   id String @id() @default(auto()) @db.ObjectId() @map("_id")
   ownerId String @db.ObjectId() @unique()
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  lastActive DateTime 
+  activeStatus ActiveStatus @default(inActive)
   bio String
   photo String
   followers Int @default(0)
@@ -26,6 +30,13 @@ model Profile {
   postsIds String[]
   profession String
   visibility ProfileVisibility
+}
+
+enum ActiveStatus {
+  idle
+  active
+  inActive
+  doNotDisturb
 }
 
 enum ProfileVisibility {

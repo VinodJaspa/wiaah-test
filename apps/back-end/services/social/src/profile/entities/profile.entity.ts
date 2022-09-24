@@ -1,7 +1,9 @@
 import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
-import { ProfileVisibility } from 'prismaClient';
+import { CreateGqlPaginatedResponse, CreateGqlResponse } from 'nest-utils';
+import { ActiveStatus, ProfileVisibility } from 'prismaClient';
 
 registerEnumType(ProfileVisibility, { name: 'ProfileVisibility' });
+registerEnumType(ActiveStatus, { name: 'ActiveStatus' });
 
 @ObjectType()
 export class Profile {
@@ -10,6 +12,18 @@ export class Profile {
 
   @Field(() => ID)
   ownerId: string;
+
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date)
+  updatedAt: Date;
+
+  @Field(() => ActiveStatus)
+  activeStatus: ActiveStatus;
+
+  @Field(() => Date)
+  lastActive: Date;
 
   @Field(() => String)
   bio: string;
@@ -41,3 +55,11 @@ export class Profile {
   @Field(() => ProfileVisibility)
   visibility: ProfileVisibility;
 }
+
+@ObjectType()
+export class ProfilePaginatedResponse extends CreateGqlPaginatedResponse(
+  Profile,
+) {}
+
+@ObjectType()
+export class ProfileResponse extends CreateGqlResponse(Profile) {}
