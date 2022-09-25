@@ -6,18 +6,47 @@ registerEnumType(ProfileVisibility, { name: 'ProfileVisibility' });
 registerEnumType(ActiveStatus, { name: 'ActiveStatus' });
 
 @ObjectType()
-export class Profile {
+export class FollowData {
+  @Field(() => ID)
+  id: string;
+  @Field(() => Date)
+  followedAt: Date;
+}
+
+@ObjectType()
+export class BlockedUser {
   @Field(() => ID)
   id: string;
 
   @Field(() => ID)
-  ownerId: string;
+  blockerProfileId: string;
+
+  @Field(() => ID)
+  blockedProfileId: string;
 
   @Field(() => Date)
-  createdAt: Date;
+  blockedAt: Date;
+}
 
-  @Field(() => Date)
-  updatedAt: Date;
+@ObjectType()
+export class ContentLike {}
+
+@ObjectType()
+export class Profile {
+  @Field(() => ID)
+  id: string;
+
+  // @Field(() => ID)
+  // ownerId: string;
+
+  // @Field(() => Date)
+  // createdAt: Date;
+
+  // @Field(() => Date)
+  // updatedAt: Date;
+
+  @Field(() => String)
+  username: string;
 
   @Field(() => ActiveStatus)
   activeStatus: ActiveStatus;
@@ -34,14 +63,14 @@ export class Profile {
   @Field(() => Int)
   followers: number;
 
-  @Field(() => [String])
-  followersIds: string[];
+  @Field(() => [FollowData])
+  followersData: FollowData[];
 
   @Field(() => Int)
   following: number;
 
-  @Field(() => [String])
-  followingIds: string[];
+  @Field(() => [FollowData])
+  followingData: FollowData[];
 
   @Field(() => Int)
   publications: number;
@@ -55,6 +84,11 @@ export class Profile {
   @Field(() => ProfileVisibility)
   visibility: ProfileVisibility;
 }
+
+@ObjectType()
+export class BlockedUserPaginationResponse extends CreateGqlPaginatedResponse(
+  BlockedUser,
+) {}
 
 @ObjectType()
 export class ProfilePaginatedResponse extends CreateGqlPaginatedResponse(

@@ -22,6 +22,7 @@
       "@profile-exceptions": ["src/profile/exceptions"],
       "@profile-input": ["src/profile/dto"],
       "@profile-entities": ["src/profile/entities"],
+      "@profile-error-messages": ["src/profile/profileErrorMessage"],
       "prismaService": ["src/prisma.service"]
     }
   }

@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
@@ -9,17 +9,22 @@ import {
   Profile,
   ProfilePaginatedResponse,
   ProfileResponse,
+  ProfileMetaPaginatedResponse,
 } from '@profile-entities';
 import { ProfileService } from './profile.service';
 import {
+  BlockProfileInput,
   CreateProfileInput,
   FollowProfileInput,
+  GetMyProfileFollowersMetaInput,
+  GetProfileFollowersMetaInput,
+  UnBlockProfileInput,
   UnFollowProfileInput,
   UpdateProfileInput,
 } from '@profile-input';
 
 @Resolver(() => Profile)
-// @UseGuards(new GqlAuthorizationGuard([]))
+@UseGuards(new GqlAuthorizationGuard([]))
 export class ProfileResolver {
   constructor(private readonly profileService: ProfileService) {}
 
@@ -30,7 +35,10 @@ export class ProfileResolver {
     @Args('createProfileInput') createProfileInput: CreateProfileInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<ProfileResponse> {
-    const profile = await this.profileService.create(createProfileInput, 'e10');
+    const profile = await this.profileService.create(
+      createProfileInput,
+      user.id,
+    );
     return {
       data: profile,
     };
@@ -83,7 +91,45 @@ export class ProfileResolver {
   // Follow system //
   // ---------------------------------- //
 
-  // @Query(()=> )
+  @Query(() => ProfileMetaPaginatedResponse)
+  getFollowersByProfile(
+    @Args('getFollowersMetaInput') args: GetProfileFollowersMetaInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<ProfileMetaPaginatedResponse> {
+    return this.profileService.getFollowersMetaByProfileId(
+      args.pagination,
+      args.profileId,
+      user.id,
+    );
+  }
+
+  @Query(() => ProfileMetaPaginatedResponse)
+  getFollowingByProfile(
+    @Args('getFollowingMetaInput') args: GetProfileFollowersMetaInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<ProfileMetaPaginatedResponse> {
+    return this.profileService.getFollowersMetaByProfileId(
+      args.pagination,
+      args.profileId,
+      user.id,
+    );
+  }
+
+  @Query(() => ProfileMetaPaginatedResponse)
+  getMyFollowers(
+    @Args('getMyFollowersInput') args: GetMyProfileFollowersMetaInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.profileService.getMyFollowers(args.pagination, user.id);
+  }
+
+  @Query(() => ProfileMetaPaginatedResponse)
+  getMyFollowing(
+    @Args('getMyFollowersInput') args: GetMyProfileFollowersMetaInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.profileService.getMyFollowings(args.pagination, user.id);
+  }
 
   @Mutation(() => ProfileResponse)
   async followProfile(
@@ -104,4 +150,23 @@ export class ProfileResolver {
   }
 
   // Follow system //
+  // ------------------------------------- //
+  // Block system //
+
+  @Mutation(() => Boolean)
+  BlockProfile(
+    @Args('BlockProfileInput') args: BlockProfileInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<boolean> {
+    return this.profileService.blockProfile(args.profileId, user.id);
+  }
+
+  @Mutation(() => Boolean)
+  unBlockProfile(
+    @Args('unBlockProfileInput') args: UnBlockProfileInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<boolean> {
+    return this.profileService.unBlockProfile(args.profileId, user.id);
+  }
+  // Block system //
 }

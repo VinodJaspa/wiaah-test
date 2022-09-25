@@ -9,6 +9,8 @@ export function getUserFromRequest<T = Record<string, string>>(req: any): T {
     email: "barco01014@gmail.com",
     accountType: "seller",
     shopId: "62b8c8cb69e68f34eb948b3f",
+    firstName: "name",
+    lastName: "last ",
   };
 
   if (mockAuthorzation && !user) return mockedUser as any;

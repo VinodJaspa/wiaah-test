@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./generated"
+  output   = "./generated"
 }
 
 datasource db {
@@ -11,25 +11,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 model Profile {
-  id String @id() @default(auto()) @db.ObjectId() @map("_id")
-  ownerId String @db.ObjectId() @unique()
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
-  lastActive DateTime 
-  activeStatus ActiveStatus @default(inActive)
-  bio String
-  photo String
-  followers Int @default(0)
-  followersIds String[]
-  following Int @default(0)
-  followingIds String[]
-  publications Int @default(0)
-  postsIds String[]
-  profession String
-  visibility ProfileVisibility
+  id            String            @id() @default(auto()) @map("_id") @db.ObjectId()
+  ownerId       String            @unique() @db.ObjectId()
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt()
+  username      String
+  lastActive    DateTime
+  activeStatus  ActiveStatus      @default(inActive)
+  bio           String
+  photo         String
+  followers     Int               @default(0)
+  followersData FollowData[]
+  following     Int               @default(0)
+  followingData FollowData[]
+  publications  Int               @default(0)
+  postsIds      String[]
+  profession    String
+  visibility    ProfileVisibility
+  Posts         NewsfeedPost[]
+}
+
+model BlockedUser {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  blockerProfileId String   @db.ObjectId
+  blockedProfileId String   @db.ObjectId
+  blockedAt        DateTime @default(now())
+}
+
+type FollowData {
+  id         String
+  followedAt DateTime
 }
 
 enum ActiveStatus {
@@ -45,7 +57,59 @@ enum ProfileVisibility {
   private
 }
 
-model Post {
-  id String  @id() @default(auto()) @map("_id") @db.ObjectId()
+type Hashtag {
+  tag String
+}
 
+enum AttachmentType {
+  img
+}
+
+type Attachment {
+  type AttachmentType
+  src  String
+}
+
+model NewsfeedPost {
+  id          String       @id() @default(auto()) @map("_id") @db.ObjectId()
+  publisher   Profile      @relation(fields: [profileId], references: [id])
+  profileId   String       @db.ObjectId
+  title       String
+  content     String
+  attachments Attachment[]
+  tags        Hashtag[]
+  likes       Int          @default(0)
+  comments    Int          @default(0)
+}
+
+model ContentLike {
+  id       String   @id() @default(auto()) @map("_id") @db.ObjectId()
+  hostId   String   @db.ObjectId
+  hostType String
+  likedBy  String   @db.ObjectId
+  LikedAt  DateTime @default(now())
+}
+
+enum ContentHostType {
+  post
+  comment
+  action
+  story
+}
+
+model Comment {
+  id          String          @id() @default(auto()) @map("_id") @db.ObjectId()
+  hostType    ContentHostType
+  hostId      String          @db.ObjectId
+  author      CommentAuthor
+  attachments Attachment[]
+  content     String
+  commentedAt DateTime        @default(now())
+}
+
+type CommentAuthor {
+  username  String
+  profileId String
+  userId    String
+  verified  Boolean
 }

@@ -14,4 +14,7 @@ export class CreateProfileInput {
 
   @Field(() => ProfileVisibility, { nullable: true })
   visibility?: ProfileVisibility;
+
+  @Field(() => String)
+  username: string;
 }
