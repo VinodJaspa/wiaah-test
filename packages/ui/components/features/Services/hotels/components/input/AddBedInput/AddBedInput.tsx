@@ -30,7 +30,6 @@ export const AddBedInput: React.FC<AddBedInputProps> = ({ onAdd }) => {
       initialValues={{ name: "" }}
     >
       {({ handleSubmit, values }) => {
-        console.log("state update", values);
         return (
           <div className="flex gap-2 items-end">
             <FormikInput

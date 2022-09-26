@@ -15,7 +15,7 @@ const services: ServicesType[] = [
   "health_center",
   "holidays_rentals",
   "hotel",
-  "resturant",
+  "restaurant",
   "vehicle",
 ];
 

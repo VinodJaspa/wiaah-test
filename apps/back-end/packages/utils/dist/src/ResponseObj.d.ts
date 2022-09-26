@@ -5,4 +5,3 @@ export declare type ResponseObj<TData = any, TError = string> = {
     success: true;
     data: TData;
 };
-//# sourceMappingURL=ResponseObj.d.ts.map

@@ -12,7 +12,7 @@ export const NewServiceSchemas = {
       .string()
       .oneOf<ServiceType>([
         "placeBooking",
-        "Vehicle",
+        "vehicle",
         "beautyCenter",
         "healthCenter",
         "holidayRentals",

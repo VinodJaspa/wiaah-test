@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./generated"
+  output   = "./generated"
 }
 
 datasource db {
@@ -11,21 +11,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-
 model Profile {
-  id String @id() @default(auto()) @db.ObjectId() @map("_id")
-  ownerId String @db.ObjectId() @unique()
-  bio String
-  photo String
-  followers Int @default(0)
-  followersIds String[]
-  following Int @default(0)
-  followingIds String[]
-  publications Int @default(0)
-  postsIds String[]
-  profession String
-  visibility ProfileVisibility
+  id            String            @id() @default(auto()) @map("_id") @db.ObjectId()
+  ownerId       String            @unique() @db.ObjectId()
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt()
+  username      String
+  lastActive    DateTime
+  activeStatus  ActiveStatus      @default(inActive)
+  bio           String
+  photo         String
+  followers     Int               @default(0)
+  following     Int               @default(0)
+  followingData Follow[]          @relation(name: "followingProfile")
+  followersData Follow[]
+  publications  Int               @default(0)
+  profession    String
+  visibility    ProfileVisibility
+  Posts         NewsfeedPost[]
+  Comment       Comment[]
+  blockedUsers  BlockedUser[]
+  myShares      ContentShare[]
+}
+
+model BlockedUser {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  blockerProfile   Profile  @relation(fields: [blockerProfileId], references: [id])
+  blockerProfileId String   @db.ObjectId
+  blockedProfileId String   @db.ObjectId
+  blockedAt        DateTime @default(now())
+}
+
+model Follow {
+  id                String  @id @default(auto()) @map("_id") @db.ObjectId
+  followerProfile   Profile @relation(fields: [followerProfileId], references: [id])
+  followerProfileId String  @db.ObjectId
+
+  followingProfile   Profile  @relation(name: "followingProfile", fields: [followingProfileId], references: [id])
+  followingProfileId String   @db.ObjectId
+  followedAt         DateTime @default(now())
+}
+
+enum ActiveStatus {
+  idle
+  active
+  inActive
+  doNotDisturb
 }
 
 enum ProfileVisibility {
@@ -34,7 +65,75 @@ enum ProfileVisibility {
   private
 }
 
-model Post {
-  id String  @id() @default(auto()) @map("_id") @db.ObjectId()
+type Hashtag {
+  tag String
+}
 
+enum AttachmentType {
+  img
+}
+
+type Attachment {
+  type AttachmentType
+  src  String
+}
+
+enum PostVisibility {
+  hidden
+  public
+  followers
+  following
+}
+
+model NewsfeedPost {
+  id          String         @id() @default(auto()) @map("_id") @db.ObjectId()
+  userId      String         @db.ObjectId
+  publisher   Profile        @relation(fields: [profileId], references: [id])
+  profileId   String         @db.ObjectId
+  title       String
+  content     String
+  attachments Attachment[]
+  tags        Hashtag[]
+  likes       Int            @default(0)
+  comments    Int            @default(0)
+  shares      Int            @default(0)
+  visibility  PostVisibility @default(hidden)
+}
+
+model ContentLike {
+  id       String          @id() @default(auto()) @map("_id") @db.ObjectId()
+  hostId   String          @db.ObjectId
+  hostType ContentHostType
+  likedBy  String          @db.ObjectId
+  LikedAt  DateTime        @default(now())
+}
+
+model ContentShare {
+  id         String          @id @default(auto()) @map("_id") @db.ObjectId
+  hostId     String          @db.ObjectId
+  hostType   ContentHostType
+  sharedBy   Profile         @relation(fields: [sharedById], references: [id])
+  sharedById String          @db.ObjectId
+  sharedAt   DateTime        @default(now())
+}
+
+enum ContentHostType {
+  post
+  comment
+  action
+  story
+}
+
+model Comment {
+  id          String          @id() @default(auto()) @map("_id") @db.ObjectId()
+  hostType    ContentHostType
+  hostId      String          @db.ObjectId
+  author      Profile         @relation(fields: [authorId], references: [id])
+  authorId    String          @db.ObjectId
+  attachments Attachment[]
+  content     String
+  commentedAt DateTime        @default(now())
+  mentions    String[]
+  likes       Int             @default(0)
+  replies     Int             @default(0)
 }

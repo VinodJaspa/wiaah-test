@@ -36,3 +36,35 @@ export const Rate: React.FC<RateProps> = ({
     </div>
   );
 };
+
+// export interface RateSelectableProps {
+//   outOf: number;
+//   allowHalf: boolean;
+// }
+
+// export const RateSelectable: React.FC<RateSelectableProps> = ({
+//   outOf = 5,
+//   allowHalf,
+//   ...props
+// }) => {
+//   const reminder = rating % 1;
+//   const half: boolean = reminder >= 0.5;
+//   return (
+//     <div
+//       {...props}
+//       className={`${className || ""} flex text-primary items-center gap-2`}
+//     >
+//       {[...Array(outOf)].map((_, i) => (
+//         <React.Fragment key={i}>
+//           {i < Math.floor(rating) ? (
+//             <BsStarFill key={i} />
+//           ) : half && allowHalf && Math.floor(rating) === i ? (
+//             <BsStarHalf key={i} />
+//           ) : (
+//             <BsStar key={i} />
+//           )}
+//         </React.Fragment>
+//       ))}
+//     </div>
+//   );
+// };

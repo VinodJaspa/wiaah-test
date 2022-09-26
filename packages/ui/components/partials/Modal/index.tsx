@@ -59,7 +59,11 @@ export const Modal: React.FC<ModalProps> = ({
     <ModalContext.Provider
       {...props}
       value={{ isOpen, onClose: handleClose, onOpen, isLazy: !!isLazy }}
-    />
+    >
+      {/* <div className={`fixed w-full h-full pointer-events-none`}>
+        <div {...props} className={`relative w-full h-full isolate`} />
+      </div> */}
+    </ModalContext.Provider>
   );
 };
 

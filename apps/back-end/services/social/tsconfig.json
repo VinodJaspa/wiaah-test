@@ -18,7 +18,14 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "prismaClient": ["prisma/generated"]
+      "prismaClient": ["prisma/generated"],
+      "@exceptions": ["src/exceptions"],
+      "@input": ["src/dto"],
+      "@profile-error-messages": ["src/profile/profileErrorMessage"],
+      "@profile-service": ["src/profile/profile.service"],
+      "@profile-module": ["src/profile/profile.module"],
+      "@entities": ["src/entities"],
+      "prismaService": ["src/prisma.service"]
     }
   }
 }
