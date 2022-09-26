@@ -7,6 +7,7 @@ import {
 } from '@nestjs/apollo';
 import { getUserFromRequest } from 'nest-utils';
 import { NewsfeedPostsModule } from './newsfeed-posts/newsfeed-posts.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { NewsfeedPostsModule } from './newsfeed-posts/newsfeed-posts.module';
       },
     }),
     NewsfeedPostsModule,
+    CommentsModule,
   ],
 })
 export class AppModule {}

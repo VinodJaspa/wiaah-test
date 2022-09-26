@@ -133,6 +133,7 @@ model Comment {
   attachments Attachment[]
   content     String
   commentedAt DateTime        @default(now())
+  mentions    String[]
   likes       Int             @default(0)
   replies     Int             @default(0)
 }
