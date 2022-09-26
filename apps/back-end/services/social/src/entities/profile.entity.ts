@@ -1,17 +1,10 @@
 import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
 import { CreateGqlPaginatedResponse, CreateGqlResponse } from 'nest-utils';
 import { ActiveStatus, ProfileVisibility } from 'prismaClient';
+import { Follow } from '@entities';
 
 registerEnumType(ProfileVisibility, { name: 'ProfileVisibility' });
 registerEnumType(ActiveStatus, { name: 'ActiveStatus' });
-
-@ObjectType()
-export class FollowData {
-  @Field(() => ID)
-  id: string;
-  @Field(() => Date)
-  followedAt: Date;
-}
 
 @ObjectType()
 export class BlockedUser {
@@ -27,9 +20,6 @@ export class BlockedUser {
   @Field(() => Date)
   blockedAt: Date;
 }
-
-@ObjectType()
-export class ContentLike {}
 
 @ObjectType()
 export class Profile {
@@ -63,20 +53,17 @@ export class Profile {
   @Field(() => Int)
   followers: number;
 
-  @Field(() => [FollowData])
-  followersData: FollowData[];
+  @Field(() => [Follow], { nullable: true })
+  followingData?: Follow[];
 
   @Field(() => Int)
   following: number;
 
-  @Field(() => [FollowData])
-  followingData: FollowData[];
+  @Field(() => [Follow], { nullable: true })
+  followersData?: Follow[];
 
   @Field(() => Int)
   publications: number;
-
-  @Field(() => [String])
-  postsIds: string[];
 
   @Field(() => String)
   profession: string;

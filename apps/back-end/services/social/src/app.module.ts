@@ -6,6 +6,7 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { getUserFromRequest } from 'nest-utils';
+import { NewsfeedPostsModule } from './newsfeed-posts/newsfeed-posts.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { getUserFromRequest } from 'nest-utils';
         return { req, res, user };
       },
     }),
+    NewsfeedPostsModule,
   ],
 })
 export class AppModule {}

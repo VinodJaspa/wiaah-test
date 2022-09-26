@@ -10,7 +10,7 @@ import {
   ProfilePaginatedResponse,
   ProfileResponse,
   ProfileMetaPaginatedResponse,
-} from '@profile-entities';
+} from '@entities';
 import { ProfileService } from './profile.service';
 import {
   BlockProfileInput,
@@ -21,7 +21,7 @@ import {
   UnBlockProfileInput,
   UnFollowProfileInput,
   UpdateProfileInput,
-} from '@profile-input';
+} from '@input';
 
 @Resolver(() => Profile)
 @UseGuards(new GqlAuthorizationGuard([]))

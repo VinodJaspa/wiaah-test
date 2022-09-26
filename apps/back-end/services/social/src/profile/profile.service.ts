@@ -1,19 +1,19 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'prismaService';
-import { UpdateProfileInput, CreateProfileInput } from '@profile-input';
+import { UpdateProfileInput, CreateProfileInput } from '@input';
 import {
   ProfileAlreadyBlockedException,
   ProfileBlockedException,
   ProfileNotBlockedException,
   ProfileNotfoundException,
-} from '@profile-exceptions';
+} from '@exceptions';
 import {
   ProfilePaginatedResponse,
   ProfileMetaPaginatedResponse,
   Profile,
-  FollowData,
+  Follow,
   BlockedUser,
-} from '@profile-entities';
+} from '@entities';
 import {
   DBErrorException,
   ExtractPagination,
@@ -75,6 +75,20 @@ export class ProfileService {
           lastActive: new Date(),
           username,
         },
+        include: {
+          followersData: {
+            include: {
+              followerProfile: true,
+              followingProfile: true,
+            },
+          },
+          followingData: {
+            include: {
+              followerProfile: true,
+              followingProfile: true,
+            },
+          },
+        },
       });
 
       this.eventClient.emit(
@@ -129,7 +143,6 @@ export class ProfileService {
       select: {
         bio: true,
         followers: true,
-        followersData: true,
         following: true,
         id: true,
         ownerId: true,
@@ -147,7 +160,7 @@ export class ProfileService {
         throw new ProfileNotfoundException();
       },
     });
-    return { ...profile, followingData: [], postsIds: [] };
+    return { ...profile };
   }
 
   async getProfileByUserId(userId: string): Promise<Profile> {
@@ -225,13 +238,17 @@ export class ProfileService {
           following: {
             increment: 1,
           },
-          followingData: {
-            push: { id: followingProfile.id, followedAt: new Date() },
-          },
         },
         select: {
           ownerId: true,
           id: true,
+        },
+      });
+
+      await this.prisma.follow.create({
+        data: {
+          followerProfileId: followerProfile.id,
+          followingProfileId: followingProfile.id,
         },
       });
 
@@ -244,13 +261,17 @@ export class ProfileService {
           followers: {
             increment: 1,
           },
-          followersData: {
-            push: { id: followerProfile.id, followedAt: new Date() },
-          },
         },
         select: {
           ownerId: true,
           id: true,
+        },
+      });
+
+      await this.prisma.follow.create({
+        data: {
+          followerProfileId: followingProfile.id,
+          followingProfileId: followerProfile.id,
         },
       });
 
@@ -291,9 +312,6 @@ export class ProfileService {
             following: {
               decrement: 1,
             },
-            followingData: {
-              set: followingData.filter((f) => f.id !== profileId),
-            },
           },
           select: {
             id: true,
@@ -311,15 +329,28 @@ export class ProfileService {
             followers: {
               decrement: 1,
             },
-            followersData: {
-              set: followersData.filter((f) => f.id !== userProfileId),
-            },
           },
           select: {
             id: true,
             ownerId: true,
           },
         });
+        await this.prisma.follow.deleteMany({
+          where: {
+            AND: {
+              followerProfileId: follower.id,
+              followingProfileId: followed.id,
+            },
+          },
+        });
+
+        await this.prisma.follow.deleteMany({
+          where: {
+            followerProfileId: followed.id,
+            followingProfileId: follower.id,
+          },
+        });
+
         this.eventClient.emit(
           KAFKA_EVENTS.SOCIAL_EVENTS.profileUnFollowed,
           new ProfileUnFollowEvent({
@@ -366,63 +397,41 @@ export class ProfileService {
     return { followed: false, userProfileId: null };
   }
 
-  async getFollowersDataByProfileId(profileId: string): Promise<FollowData[]> {
-    const profile = await this.prisma.profile.findUnique({
+  async getFollowersDataByProfileId(profileId: string): Promise<Follow[]> {
+    const follows = await this.prisma.follow.findMany({
       where: {
-        id: profileId,
-      },
-      select: {
-        followersData: true,
-      },
-      rejectOnNotFound: () => {
-        throw new ProfileNotfoundException();
+        followingProfileId: profileId,
       },
     });
-    return profile?.followersData || [];
+    return follows || [];
   }
-  async getFollowersIdsByUserId(userId: string): Promise<FollowData[]> {
-    const profile = await this.prisma.profile.findUnique({
+  async getFollowersIdsByUserId(userId: string): Promise<Follow[]> {
+    const profileId = await this.getProfileIdByUserId(userId);
+    const follows = await this.prisma.follow.findMany({
       where: {
-        ownerId: userId,
-      },
-      select: {
-        followersData: true,
-      },
-      rejectOnNotFound: () => {
-        throw new ProfileNotfoundException();
+        followingProfileId: profileId,
       },
     });
-    return profile?.followersData || [];
+    return follows || [];
   }
 
-  async getFollowingDataByProfileId(profileId: string): Promise<FollowData[]> {
-    const profile = await this.prisma.profile.findUnique({
+  async getFollowingDataByProfileId(profileId: string): Promise<Follow[]> {
+    const follows = await this.prisma.follow.findMany({
       where: {
-        id: profileId,
-      },
-      select: {
-        followingData: true,
-      },
-      rejectOnNotFound: () => {
-        throw new ProfileNotfoundException();
+        followerProfileId: profileId,
       },
     });
-    return profile?.followingData || [];
+    return follows || [];
   }
 
-  async getFollowingIdsByUserId(userId: string): Promise<FollowData[]> {
-    const profile = await this.prisma.profile.findUnique({
+  async getFollowingIdsByUserId(userId: string): Promise<Follow[]> {
+    const profileId = await this.getProfileIdByUserId(userId);
+    const follows = await this.prisma.follow.findMany({
       where: {
-        ownerId: userId,
-      },
-      select: {
-        followingData: true,
-      },
-      rejectOnNotFound: () => {
-        throw new ProfileNotfoundException();
+        followerProfileId: profileId,
       },
     });
-    return profile?.followingData || [];
+    return follows || [];
   }
 
   async getFollowersMetaByProfileId(
@@ -430,7 +439,7 @@ export class ProfileService {
     profileId: string,
     userId: string,
   ): Promise<ProfileMetaPaginatedResponse> {
-    const followersIds = await this.getFollowersDataByProfileId(profileId);
+    const followers = await this.getFollowersDataByProfileId(profileId);
 
     const { skip, take, totalSearched } = ExtractPagination(pagination);
 
@@ -439,7 +448,7 @@ export class ProfileService {
       take: take,
       where: {
         id: {
-          in: followersIds.map((f) => f.id),
+          in: followers.map((f) => f.id),
         },
       },
       select: {
@@ -451,38 +460,35 @@ export class ProfileService {
 
     return {
       data: profiles,
-      hasMore: totalSearched < followersIds.length,
-      total: followersIds.length,
+      hasMore: totalSearched < followers.length,
+      total: followers.length,
     };
   }
 
-  async getFollowersMetaByUserId(
+  async getFollowersByUserId(
     pagination: GqlPaginationInput,
     userId: string,
   ): Promise<ProfileMetaPaginatedResponse> {
-    const followersData = await this.getFollowersIdsByUserId(userId);
-
+    const profileId = await this.getProfileIdByUserId(userId);
     const { skip, take, totalSearched } = ExtractPagination(pagination);
 
-    const profiles = await this.prisma.profile.findMany({
+    const follows = await this.prisma.follow.findMany({
       skip: skip,
       take: take,
       where: {
-        id: {
-          in: followersData.map((f) => f.id),
-        },
+        followingProfileId: profileId,
       },
-      select: {
-        username: true,
-        id: true,
-        photo: true,
+      include: {
+        followerProfile: true,
       },
     });
 
+    const followers = follows.map((f) => f.followerProfile);
+
     return {
-      data: profiles,
-      hasMore: totalSearched < followersData.length,
-      total: followersData.length,
+      data: followers,
+      hasMore: totalSearched < followers.length,
+      total: followers.length,
     };
   }
 
@@ -490,67 +496,61 @@ export class ProfileService {
     pagination: GqlPaginationInput,
     userId: string,
   ): Promise<ProfileMetaPaginatedResponse> {
-    return this.getFollowersMetaByUserId(pagination, userId);
+    return this.getFollowersByUserId(pagination, userId);
   }
 
-  async getFollowingsMetaByProfileId(
+  async getFollowingsByProfileId(
     pagination: GqlPaginationInput,
     profileId: string,
     userId: string,
   ): Promise<ProfileMetaPaginatedResponse> {
-    const followingData = await this.getFollowingDataByProfileId(profileId);
-
     const { skip, take, totalSearched } = ExtractPagination(pagination);
 
-    const profiles = await this.prisma.profile.findMany({
+    const follows = await this.prisma.follow.findMany({
       skip: skip,
       take: take,
       where: {
-        id: {
-          in: followingData.map((f) => f.id),
-        },
+        followerProfileId: profileId,
       },
-      select: {
-        username: true,
-        id: true,
-        photo: true,
+      include: {
+        followingProfile: true,
       },
     });
 
+    const following = follows.map((f) => f.followingProfile);
+
     return {
-      data: profiles,
-      hasMore: totalSearched < followingData.length,
-      total: followingData.length,
+      data: following,
+      hasMore: totalSearched < following.length,
+      total: following.length,
     };
   }
 
-  async getFollowingsMetaByUserId(
+  async getFollowingsByUserId(
     pagination: GqlPaginationInput,
     userId: string,
   ): Promise<ProfileMetaPaginatedResponse> {
-    const followingData = await this.getFollowingIdsByUserId(userId);
+    const profileId = await this.getProfileIdByUserId(userId);
 
     const { skip, take, totalSearched } = ExtractPagination(pagination);
 
-    const profiles = await this.prisma.profile.findMany({
+    const follows = await this.prisma.follow.findMany({
       skip: skip,
       take: take,
       where: {
-        id: {
-          in: followingData.map((f) => f.id),
-        },
+        followerProfileId: profileId,
       },
-      select: {
-        username: true,
-        id: true,
-        photo: true,
+      include: {
+        followingProfile: true,
       },
     });
 
+    const following = follows.map((f) => f.followingProfile);
+
     return {
-      data: profiles,
-      hasMore: totalSearched < followingData.length,
-      total: followingData.length,
+      data: following,
+      hasMore: totalSearched < following.length,
+      total: following.length,
     };
   }
 
@@ -558,7 +558,7 @@ export class ProfileService {
     pagination: GqlPaginationInput,
     userId: string,
   ): Promise<ProfileMetaPaginatedResponse> {
-    return this.getFollowingsMetaByUserId(pagination, userId);
+    return this.getFollowingsByUserId(pagination, userId);
   }
 
   // Follow //

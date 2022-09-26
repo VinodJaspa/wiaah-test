@@ -19,10 +19,12 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "prismaClient": ["prisma/generated"],
-      "@profile-exceptions": ["src/profile/exceptions"],
-      "@profile-input": ["src/profile/dto"],
-      "@profile-entities": ["src/profile/entities"],
+      "@exceptions": ["src/exceptions"],
+      "@input": ["src/dto"],
       "@profile-error-messages": ["src/profile/profileErrorMessage"],
+      "@profile-service": ["src/profile/profile.service"],
+      "@profile-module": ["src/profile/profile.module"],
+      "@entities": ["src/entities"],
       "prismaService": ["src/prisma.service"]
     }
   }
