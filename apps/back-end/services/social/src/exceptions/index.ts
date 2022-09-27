@@ -5,3 +5,6 @@ export * from './ProfileAlreadyBlockedException';
 export * from './ProfileNotBlockedException';
 export * from './PostCreatationFailed.exception';
 export * from './PostNotFoundException';
+export * from './CannotInteractException.exception';
+export * from './CommentNotFoundException.exception';
+export * from './ContentNotFoundException';

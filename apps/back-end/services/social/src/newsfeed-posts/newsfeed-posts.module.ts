@@ -7,5 +7,6 @@ import { PrismaService } from 'prismaService';
 @Module({
   imports: [ProfileModule],
   providers: [NewsfeedPostsResolver, NewsfeedPostsService, PrismaService],
+  exports: [NewsfeedPostsService],
 })
 export class NewsfeedPostsModule {}

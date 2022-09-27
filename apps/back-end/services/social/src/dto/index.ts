@@ -1,3 +1,5 @@
 export * from './NewsFeedPost';
 export * from './Profile';
 export * from './shared';
+export * from './Comments';
+export * from './Reaction';

@@ -43,6 +43,15 @@ export const KAFKA_EVENTS = {
     profileBlocked: "profile.blocked",
     profileUnBlocked: "profile.unBlocked",
   },
+  COMMENTS_EVENTS: {
+    commentCreated: "comment.created",
+    commentMentions: "comment.mentions",
+    commentUpdated: "comment.update",
+    commentDeleted: "comment.deleted",
+  },
+  REACTION_EVENTS: {
+    contentReacted: "content.reacted",
+  },
   createAccount: "create.account",
   createWishlist: "create.wishlist",
   createWishersList: "create.wisherlist",

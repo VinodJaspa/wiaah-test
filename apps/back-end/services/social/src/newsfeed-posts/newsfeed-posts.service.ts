@@ -17,6 +17,18 @@ export class NewsfeedPostsService {
   ) {}
   logger = new Logger('NewfeedPostsService');
 
+  getNewsfeedPostById(postId: string): Promise<NewsfeedPost> {
+    return this.prisma.newsfeedPost.findUnique({
+      where: {
+        id: postId,
+      },
+      rejectOnNotFound(error) {
+        this.logger.error(error);
+        throw new PostNotFoundException();
+      },
+    });
+  }
+
   async createNewsfeedPost(
     createNewsfeedPostInput: CreateNewsfeedPostInput,
     userId: string,

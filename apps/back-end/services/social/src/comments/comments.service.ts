@@ -1,26 +1,238 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCommentInput } from './dto/create-comment.input';
-import { UpdateCommentInput } from './dto/update-comment.input';
+import {
+  Inject,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { CreateCommentInput, GetCommentsOfContent } from '@input';
+import { UpdateCommentInput } from '@input';
+import { PrismaService } from 'prismaService';
+import { ProfileService } from '@profile-service';
+import { Comment, PaginationCommentsResponse } from '@entities';
+import { CannotInteractException, CommentNotFoundException } from '@exceptions';
+import {
+  DBErrorException,
+  ExtractPagination,
+  KAFKA_EVENTS,
+  SERVICES,
+} from 'nest-utils';
+import { ClientKafka } from '@nestjs/microservices';
+import { ContentHostType } from 'prismaClient';
+import { CommentCreatedEvent, CommentMentionedEvent } from 'nest-dto';
 
 @Injectable()
 export class CommentsService {
-  create(createCommentInput: CreateCommentInput) {
-    return 'This action adds a new comment';
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly profileSerivce: ProfileService,
+    @Inject(SERVICES.SOCIAL_SERVICE.token)
+    private readonly eventClient: ClientKafka,
+  ) {}
+
+  logger = new Logger('CommentsService');
+
+  getCommentById(commentId: string): Promise<Omit<Comment, 'author'>> {
+    return this.prisma.comment.findUnique({
+      where: {
+        id: commentId,
+      },
+    });
   }
 
-  findAll() {
-    return `This action returns all comments`;
+  async createComment(
+    createCommentInput: CreateCommentInput,
+    userId: string,
+  ): Promise<Comment> {
+    const {
+      authorProfileId,
+      content,
+      hostId,
+      hostType,
+      mentions,
+      attachments,
+    } = createCommentInput;
+    const canInteract = await this.profileSerivce.canInteractWith(
+      authorProfileId,
+      userId,
+    );
+    if (!canInteract) throw new CannotInteractException();
+    try {
+      const comment = await this.prisma.comment.create({
+        data: {
+          content,
+          hostId,
+          hostType,
+          attachments,
+          mentions,
+          authorProfileId,
+          userId,
+        },
+        include: {
+          author: true,
+        },
+      });
+
+      this.eventClient.emit(
+        KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated,
+        new CommentCreatedEvent({
+          commentedAt: new Date().toUTCString(),
+          commentedByProfileId: authorProfileId,
+          commentId: comment.id,
+        }),
+      );
+
+      this.eventClient.emit(
+        KAFKA_EVENTS.COMMENTS_EVENTS.commentMentions,
+        new CommentMentionedEvent({
+          commentId: comment.id,
+          mentionedAt: new Date().toUTCString(),
+          mentionedByProfileId: authorProfileId,
+          mentionedProfileIds: mentions,
+        }),
+      );
+
+      return comment;
+    } catch (error) {
+      this.logger.error(error);
+      throw new DBErrorException('Error creating comment');
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} comment`;
+  findAll(): Promise<Comment[]> {
+    return this.prisma.comment.findMany({
+      include: {
+        author: true,
+      },
+    });
   }
 
-  update(id: number, updateCommentInput: UpdateCommentInput) {
-    return `This action updates a #${id} comment`;
+  async updateComment(
+    updateCommentInput: UpdateCommentInput,
+    userId: string,
+  ): Promise<Omit<Comment, 'author'>> {
+    const { content, id, mentions } = updateCommentInput;
+    const isAuthor = await this.isAuthorOfCommentByUserId(id, userId);
+    if (!isAuthor) throw new UnauthorizedException();
+
+    try {
+      const comment = await this.prisma.comment.update({
+        where: {
+          id,
+        },
+        data: {
+          content,
+          mentions,
+        },
+      });
+
+      return comment;
+    } catch (error) {
+      this.logger.error(error);
+      throw new DBErrorException('failed to update comment');
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} comment`;
+  async deleteComment(
+    commentId: string,
+    userId: string,
+  ): Promise<Omit<Comment, 'author'>> {
+    const isAuthor = await this.isAuthorOfCommentByUserId(commentId, userId);
+    if (!isAuthor) throw new UnauthorizedException();
+
+    try {
+      const comment = await this.prisma.comment.delete({
+        where: {
+          id: commentId,
+        },
+      });
+
+      return comment;
+    } catch (error) {
+      this.logger.error(error);
+    }
+  }
+
+  async isAuthorOfCommentByUserId(
+    commentId: string,
+    userId: string,
+  ): Promise<boolean> {
+    const profileId = await this.profileSerivce.getProfileIdByUserId(userId);
+    return this.isAuthorOfCommentByProfileId(commentId, profileId);
+  }
+
+  async isAuthorOfCommentByProfileId(
+    commentId: string,
+    authorProfileId: string,
+  ): Promise<boolean> {
+    try {
+      const comment = await this.prisma.comment.findUnique({
+        where: {
+          id: commentId,
+        },
+        select: {
+          authorProfileId: true,
+        },
+        rejectOnNotFound() {
+          throw new CommentNotFoundException();
+        },
+      });
+
+      if (comment.authorProfileId !== authorProfileId)
+        throw new UnauthorizedException();
+      return true;
+    } catch (error) {
+      this.logger.error(error);
+      return false;
+    }
+  }
+
+  async getCommentsOfContent(
+    input: GetCommentsOfContent,
+    userId: string,
+  ): Promise<PaginationCommentsResponse> {
+    const { contentId, type, pagination } = input;
+    const { skip, take, totalSearched } = ExtractPagination(pagination);
+    const canView = await this.canViewComments(type, contentId, userId);
+    if (!canView)
+      throw new UnauthorizedException('You cannot see this content');
+    try {
+      const count = await this.prisma.comment.count({
+        where: {
+          hostId: contentId,
+          hostType: type,
+        },
+      });
+      const comments = await this.prisma.comment.findMany({
+        take,
+        skip,
+        where: {
+          hostId: contentId,
+          hostType: type,
+        },
+        include: {
+          author: true,
+        },
+      });
+
+      return {
+        data: comments,
+        total: count,
+        hasMore: comments.length >= take,
+      };
+    } catch (error) {
+      this.logger.error(error);
+      throw new DBErrorException(
+        'Failed to get comments, please try again later',
+      );
+    }
+  }
+
+  async canViewComments(
+    contentType: ContentHostType,
+    contentId: string,
+    userId?: string,
+    profileId?: string,
+  ): Promise<boolean> {
+    return true;
   }
 }

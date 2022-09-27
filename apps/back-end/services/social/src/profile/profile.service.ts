@@ -685,4 +685,23 @@ export class ProfileService {
       throw new DBErrorException(ErrorMessages.db.unBlockProfileErr);
     }
   }
+
+  // Block
+  // -------------- //
+  // validation //
+
+  async canInteractWith(
+    authorProfileId: string,
+    userProfileId: string,
+  ): Promise<boolean> {
+    try {
+      const isBlocked = await this.isBlocked(authorProfileId, userProfileId);
+      if (!isBlocked) throw new Error('user is blocked');
+
+      return true;
+    } catch (error) {
+      this.logger.error(error);
+      return false;
+    }
+  }
 }
