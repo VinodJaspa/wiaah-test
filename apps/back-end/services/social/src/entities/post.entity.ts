@@ -7,6 +7,9 @@ export class NewsfeedPost {
   @Field(() => ID)
   id: string;
 
+  @Field(() => ID)
+  userId: string;
+
   @Field(() => Profile, { nullable: true })
   publisher?: Profile;
 
@@ -26,7 +29,7 @@ export class NewsfeedPost {
   tags: Hashtag[];
 
   @Field(() => Int)
-  likes: number;
+  reactionNum: number;
 
   @Field(() => Int)
   comments: number;

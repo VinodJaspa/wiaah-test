@@ -24,6 +24,11 @@
       "@profile-error-messages": ["src/profile/profileErrorMessage"],
       "@profile-service": ["src/profile/profile.service"],
       "@profile-module": ["src/profile/profile.module"],
+      "@content-discovery": ["src/content-discovery"],
+      "@posts-newsfeed": ["src/newsfeed-posts"],
+      "@profile": ["src/profile"],
+      "@comments": ["src/comments"],
+      "@reaction": ["src/reaction"],
       "@entities": ["src/entities"],
       "prismaService": ["src/prisma.service"]
     }

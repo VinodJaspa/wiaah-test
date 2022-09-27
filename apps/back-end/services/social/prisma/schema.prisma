@@ -12,26 +12,27 @@ datasource db {
 }
 
 model Profile {
-  id            String            @id() @default(auto()) @map("_id") @db.ObjectId()
-  ownerId       String            @unique() @db.ObjectId()
-  createdAt     DateTime          @default(now())
-  updatedAt     DateTime          @updatedAt()
-  username      String
-  lastActive    DateTime
-  activeStatus  ActiveStatus      @default(inActive)
-  bio           String
-  photo         String
-  followers     Int               @default(0)
-  following     Int               @default(0)
-  followingData Follow[]          @relation(name: "followingProfile")
-  followersData Follow[]
-  publications  Int               @default(0)
-  profession    String
-  visibility    ProfileVisibility
-  Posts         NewsfeedPost[]
-  Comment       Comment[]
-  blockedUsers  BlockedUser[]
-  myShares      ContentShare[]
+  id             String            @id() @default(auto()) @map("_id") @db.ObjectId()
+  ownerId        String            @unique() @db.ObjectId()
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt()
+  username       String
+  lastActive     DateTime
+  activeStatus   ActiveStatus      @default(inActive)
+  bio            String
+  photo          String
+  followers      Int               @default(0)
+  following      Int               @default(0)
+  followingData  Follow[]          @relation(name: "followingProfile")
+  followersData  Follow[]
+  publications   Int               @default(0)
+  profession     String
+  visibility     ProfileVisibility
+  Posts          NewsfeedPost[]
+  Comment        Comment[]
+  blockedUsers   BlockedUser[]
+  myShares       ContentShare[]
+  reactedContent ContentReaction[]
 }
 
 model BlockedUser {
@@ -85,27 +86,39 @@ enum PostVisibility {
   following
 }
 
-model NewsfeedPost {
-  id          String         @id() @default(auto()) @map("_id") @db.ObjectId()
-  userId      String         @db.ObjectId
-  publisher   Profile        @relation(fields: [profileId], references: [id])
-  profileId   String         @db.ObjectId
-  title       String
-  content     String
-  attachments Attachment[]
-  tags        Hashtag[]
-  likes       Int            @default(0)
-  comments    Int            @default(0)
-  shares      Int            @default(0)
-  visibility  PostVisibility @default(hidden)
+enum CommentsVisibility {
+  hidden
+  public
+  followers
+  following
 }
 
-model ContentLike {
-  id       String          @id() @default(auto()) @map("_id") @db.ObjectId()
-  hostId   String          @db.ObjectId
-  hostType ContentHostType
-  likedBy  String          @db.ObjectId
-  LikedAt  DateTime        @default(now())
+model NewsfeedPost {
+  id                 String             @id() @default(auto()) @map("_id") @db.ObjectId()
+  userId             String             @db.ObjectId
+  publisher          Profile            @relation(fields: [profileId], references: [id])
+  profileId          String             @db.ObjectId
+  title              String
+  content            String
+  attachments        Attachment[]
+  tags               Hashtag[]
+  reactionNum        Int                @default(0)
+  comments           Int                @default(0)
+  shares             Int                @default(0)
+  visibility         PostVisibility     @default(hidden)
+  commentsVisibility CommentsVisibility @default(public)
+
+}
+
+model ContentReaction {
+  id                 String              @id() @default(auto()) @map("_id") @db.ObjectId()
+  userId             String              @db.ObjectId
+  hostId             String              @db.ObjectId
+  hostType           ContentHostType
+  reactionType       ContentReactionType @default(like)
+  reactedBy          Profile             @relation(fields: [reactedByProfileId], references: [id])
+  reactedByProfileId String              @db.ObjectId
+  reactedAt          DateTime            @default(now())
 }
 
 model ContentShare {
@@ -118,22 +131,33 @@ model ContentShare {
 }
 
 enum ContentHostType {
-  post
+  post_newsfeed
+  post_service
+  post_shop
   comment
   action
   story
 }
 
+enum ContentReactionType {
+  like
+  love
+  funny
+  sad
+  angry
+}
+
 model Comment {
-  id          String          @id() @default(auto()) @map("_id") @db.ObjectId()
-  hostType    ContentHostType
-  hostId      String          @db.ObjectId
-  author      Profile         @relation(fields: [authorId], references: [id])
-  authorId    String          @db.ObjectId
-  attachments Attachment[]
-  content     String
-  commentedAt DateTime        @default(now())
-  mentions    String[]
-  likes       Int             @default(0)
-  replies     Int             @default(0)
+  id              String          @id() @default(auto()) @map("_id") @db.ObjectId()
+  hostType        ContentHostType
+  hostId          String          @db.ObjectId
+  author          Profile         @relation(fields: [authorProfileId], references: [id])
+  authorProfileId String          @db.ObjectId
+  userId          String          @db.ObjectId
+  attachments     Attachment[]
+  content         String
+  commentedAt     DateTime        @default(now())
+  mentions        String[]
+  likes           Int             @default(0)
+  replies         Int             @default(0)
 }

@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
-import { CommentsService } from './comments.service';
-import { CommentsResolver } from './comments.resolver';
+import { ReactionService } from './reaction.service';
+import { ReactionResolver } from './reaction.resolver';
 import { PrismaService } from 'prismaService';
 import { ProfileModule } from '@profile-module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { ContentDiscoveryModule } from '@content-discovery';
 
 @Module({
   imports: [
+    ContentDiscoveryModule,
     ProfileModule,
     ClientsModule.register([
       {
@@ -25,7 +27,6 @@ import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
       },
     ]),
   ],
-  providers: [CommentsResolver, CommentsService, PrismaService],
-  exports: [CommentsService],
+  providers: [ReactionResolver, ReactionService, PrismaService],
 })
-export class CommentsModule {}
+export class ReactionModule {}

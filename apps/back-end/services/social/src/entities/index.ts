@@ -4,3 +4,5 @@ export * from './profile.entity';
 export * from './profile-meta.entity';
 export * from './post.entity';
 export * from './Follow.entity';
+export * from './Comment.entity';
+export * from './ContentReaction';

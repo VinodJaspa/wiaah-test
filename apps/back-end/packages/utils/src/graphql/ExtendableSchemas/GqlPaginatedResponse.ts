@@ -1,6 +1,5 @@
 import { Field, Int, ObjectType } from "@nestjs/graphql";
 import { ClassType } from "../../types";
-import { ResponseError } from "./ResponseError";
 
 export function CreateGqlPaginatedResponse<TData>(
   TItemClass: ClassType<TData>
