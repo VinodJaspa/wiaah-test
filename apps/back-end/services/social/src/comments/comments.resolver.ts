@@ -8,7 +8,6 @@ import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
 @Resolver(() => Comment)
 export class CommentsResolver {
   constructor(private readonly commentsService: CommentsService) {}
-
   @Mutation(() => Comment)
   createComment(
     @Args('createCommentInput') createCommentInput: CreateCommentInput,
@@ -16,12 +15,10 @@ export class CommentsResolver {
   ) {
     return this.commentsService.createComment(createCommentInput, user.id);
   }
-
   @Query(() => [Comment], { name: 'comments' })
   findAll() {
     return this.commentsService.findAll();
   }
-
   @Query(() => PaginationCommentsResponse)
   @Mutation(() => Comment)
   updateComment(
@@ -30,7 +27,6 @@ export class CommentsResolver {
   ) {
     return this.commentsService.updateComment(updateCommentInput, user.id);
   }
-
   @Mutation(() => Comment)
   removeComment(
     @Args('id', { type: () => Int }) id: string,

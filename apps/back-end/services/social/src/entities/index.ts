@@ -6,3 +6,4 @@ export * from './post.entity';
 export * from './Follow.entity';
 export * from './Comment.entity';
 export * from './ContentReaction';
+export * from './content-share.entity';

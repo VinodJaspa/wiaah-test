@@ -1,15 +1,18 @@
 import { Module } from '@nestjs/common';
-import { CommentsService } from './comments.service';
-import { CommentsResolver } from './comments.resolver';
-import { PrismaService } from 'prismaService';
+import { ContentShareService } from './content-share.service';
+import { ContentShareResolver } from './content-share.resolver';
 import { ProfileModule } from '@profile-module';
+import { ContentDiscoveryModule } from '@content-discovery';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { PrismaService } from 'prismaService';
 import { ContentManagementModule } from '@content-management';
 
 @Module({
   imports: [
     ProfileModule,
+    ContentDiscoveryModule,
+    ContentManagementModule,
     ClientsModule.register([
       {
         name: SERVICES.SOCIAL_SERVICE.token,
@@ -25,9 +28,7 @@ import { ContentManagementModule } from '@content-management';
         },
       },
     ]),
-    ContentManagementModule,
   ],
-  providers: [CommentsResolver, CommentsService, PrismaService],
-  exports: [CommentsService],
+  providers: [ContentShareResolver, ContentShareService, PrismaService],
 })
-export class CommentsModule {}
+export class ContentShareModule {}

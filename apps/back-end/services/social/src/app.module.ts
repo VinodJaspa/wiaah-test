@@ -10,6 +10,8 @@ import { NewsfeedPostsModule } from './newsfeed-posts/newsfeed-posts.module';
 import { CommentsModule } from './comments/comments.module';
 import { ReactionModule } from './reaction/reaction.module';
 import { ContentDiscoveryModule } from './content-discovery/content-discovery.module';
+import { ContentShareModule } from './content-share/content-share.module';
+import { ContentManagementModule } from './content-management/content-management.module';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { ContentDiscoveryModule } from './content-discovery/content-discovery.mo
     CommentsModule,
     ReactionModule,
     ContentDiscoveryModule,
+    ContentShareModule,
+    ContentManagementModule,
   ],
 })
 export class AppModule {}

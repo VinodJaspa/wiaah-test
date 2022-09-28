@@ -1,4 +1,5 @@
 import {
+  forwardRef,
   Inject,
   Injectable,
   Logger,
@@ -19,12 +20,16 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { ContentHostType } from 'prismaClient';
 import { CommentCreatedEvent, CommentMentionedEvent } from 'nest-dto';
+import { ContentDiscoveryService } from '@content-discovery';
+import { ContentHostTypeEnum } from '@keys';
+import { ContentManagementService } from '@content-management';
 
 @Injectable()
 export class CommentsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly profileSerivce: ProfileService,
+    private readonly contentManagementService: ContentManagementService,
     @Inject(SERVICES.SOCIAL_SERVICE.token)
     private readonly eventClient: ClientKafka,
   ) {}
@@ -46,8 +51,8 @@ export class CommentsService {
     const {
       authorProfileId,
       content,
-      hostId,
-      hostType,
+      contentId,
+      contentType,
       mentions,
       attachments,
     } = createCommentInput;
@@ -55,13 +60,15 @@ export class CommentsService {
       authorProfileId,
       userId,
     );
+
     if (!canInteract) throw new CannotInteractException();
+
     try {
       const comment = await this.prisma.comment.create({
         data: {
           content,
-          hostId,
-          hostType,
+          hostId: contentId,
+          hostType: contentType,
           attachments,
           mentions,
           authorProfileId,
@@ -71,6 +78,11 @@ export class CommentsService {
           author: true,
         },
       });
+
+      await this.contentManagementService.incrementContentComments(
+        contentType,
+        contentId,
+      );
 
       this.eventClient.emit(
         KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated,
@@ -132,10 +144,7 @@ export class CommentsService {
     }
   }
 
-  async deleteComment(
-    commentId: string,
-    userId: string,
-  ): Promise<Omit<Comment, 'author'>> {
+  async deleteComment(commentId: string, userId: string): Promise<Comment> {
     const isAuthor = await this.isAuthorOfCommentByUserId(commentId, userId);
     if (!isAuthor) throw new UnauthorizedException();
 
@@ -145,6 +154,11 @@ export class CommentsService {
           id: commentId,
         },
       });
+
+      await this.contentManagementService.decrementContentComments(
+        ContentHostTypeEnum.COMMENT,
+        commentId,
+      );
 
       return comment;
     } catch (error) {

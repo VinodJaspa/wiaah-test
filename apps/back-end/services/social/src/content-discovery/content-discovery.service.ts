@@ -3,15 +3,14 @@ import { Comment, NewsfeedPost } from '@entities';
 import { ContentNotFoundException } from '@exceptions';
 import { Injectable } from '@nestjs/common';
 import { NewsfeedPostsService } from '@posts-newsfeed';
-import { ProfileService } from '@profile-service';
 import { ContentHostType } from 'prismaClient';
+import { PrismaService } from 'prismaService';
 
-type ContentData = Omit<Comment, 'author'> | NewsfeedPost;
+type ContentData = Comment | NewsfeedPost;
 
 @Injectable()
 export class ContentDiscoveryService {
   constructor(
-    private readonly profileService: ProfileService,
     private readonly newsfeedPostsService: NewsfeedPostsService,
     private readonly commentsService: CommentsService,
   ) {}

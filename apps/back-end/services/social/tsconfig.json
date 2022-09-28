@@ -30,7 +30,9 @@
       "@comments": ["src/comments"],
       "@reaction": ["src/reaction"],
       "@entities": ["src/entities"],
-      "prismaService": ["src/prisma.service"]
+      "prismaService": ["src/prisma.service"],
+      "@keys": ["src/keys"],
+      "@content-management": ["src/content-management"]
     }
   }
 }

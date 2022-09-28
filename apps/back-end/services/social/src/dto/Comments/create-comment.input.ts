@@ -7,10 +7,10 @@ registerEnumType(ContentHostType, { name: 'ContentHostType' });
 @InputType()
 export class CreateCommentInput {
   @Field(() => ContentHostType)
-  hostType: ContentHostType;
+  contentType: ContentHostType;
 
   @Field(() => ID)
-  hostId: string;
+  contentId: string;
 
   @Field(() => ID)
   authorProfileId: string;

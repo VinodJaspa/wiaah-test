@@ -72,6 +72,8 @@ type Hashtag {
 
 enum AttachmentType {
   img
+  vid
+  text
 }
 
 type Attachment {
@@ -96,8 +98,8 @@ enum CommentsVisibility {
 model NewsfeedPost {
   id                 String             @id() @default(auto()) @map("_id") @db.ObjectId()
   userId             String             @db.ObjectId
-  publisher          Profile            @relation(fields: [profileId], references: [id])
-  profileId          String             @db.ObjectId
+  publisher          Profile            @relation(fields: [authorProfileId], references: [id])
+  authorProfileId    String             @db.ObjectId
   title              String
   content            String
   attachments        Attachment[]
@@ -122,12 +124,14 @@ model ContentReaction {
 }
 
 model ContentShare {
-  id         String          @id @default(auto()) @map("_id") @db.ObjectId
-  hostId     String          @db.ObjectId
-  hostType   ContentHostType
-  sharedBy   Profile         @relation(fields: [sharedById], references: [id])
-  sharedById String          @db.ObjectId
-  sharedAt   DateTime        @default(now())
+  id       String          @id @default(auto()) @map("_id") @db.ObjectId
+  hostId   String          @db.ObjectId
+  hostType ContentHostType
+
+  sharedBy          Profile  @relation(fields: [sharedByProfileId], references: [id])
+  sharedByProfileId String   @db.ObjectId
+  sharedByUserId    String   @db.ObjectId
+  sharedAt          DateTime @default(now())
 }
 
 enum ContentHostType {

@@ -14,7 +14,7 @@ export class NewsfeedPost {
   publisher?: Profile;
 
   @Field(() => ID)
-  profileId: string;
+  authorProfileId: string;
 
   @Field(() => String)
   title: string;

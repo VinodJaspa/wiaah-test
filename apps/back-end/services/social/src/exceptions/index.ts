@@ -8,3 +8,7 @@ export * from './PostNotFoundException';
 export * from './CannotInteractException.exception';
 export * from './CommentNotFoundException.exception';
 export * from './ContentNotFoundException';
+export * from './PostMinimumAttachmentsExecption';
+export * from './PostAttachmentsTypeException';
+export * from './PostMinimumAttachmentsExecption';
+export * from './PostMaximumAttachmentsExecption';

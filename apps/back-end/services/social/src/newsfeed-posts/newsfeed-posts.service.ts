@@ -8,12 +8,14 @@ import {
   PostNotFoundException,
 } from '@exceptions';
 import { DBErrorException } from 'nest-utils';
+import { ContentManagementService } from '@content-management';
 
 @Injectable()
 export class NewsfeedPostsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly profileService: ProfileService,
+    private readonly contentManagementService: ContentManagementService,
   ) {}
   logger = new Logger('NewfeedPostsService');
 
@@ -35,6 +37,9 @@ export class NewsfeedPostsService {
   ): Promise<NewsfeedPost> {
     const { attachments, content, tags, title, visibility } =
       createNewsfeedPostInput;
+
+    await this.contentManagementService.validatePostAttachments(attachments);
+
     const profileId = await this.profileService.getProfileIdByUserId(userId);
 
     try {
@@ -45,7 +50,7 @@ export class NewsfeedPostsService {
           attachments,
           tags,
           visibility,
-          profileId,
+          authorProfileId: profileId,
           userId,
         },
       });
@@ -57,10 +62,6 @@ export class NewsfeedPostsService {
 
   findAll() {
     return this.prisma.newsfeedPost.findMany();
-  }
-
-  getNewsfeedPost(id: string, userId: string) {
-    return `This action returns a #${id} newsfeedPost`;
   }
 
   async update(
