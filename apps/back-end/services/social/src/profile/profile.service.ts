@@ -704,4 +704,14 @@ export class ProfileService {
       return false;
     }
   }
+
+  canViewContentByProfileId(authorProfileId:string,viewerProfileId:string):Promise<boolean>{
+    return this.canInteractWith(authorProfileId,viewerProfileId)
+  }
+  async canViewContentByUserId(authorProfileId:string,viewerUserId:string):Promise<boolean>{
+    const viewerProfileId = await this.getProfileIdByUserId(viewerUserId)
+   
+    return this.canViewContentByProfileId(authorProfileId,viewerProfileId)
+  }
+
 }

@@ -1,0 +1,1 @@
+export * from './UpdateNotificationSettings.input';

@@ -6,6 +6,7 @@ import { ProfileService } from '@profile-service';
 import {
   PostCreataionFailedException,
   PostNotFoundException,
+  UserCannotViewContentException,
 } from '@exceptions';
 import { DBErrorException } from 'nest-utils';
 import { ContentManagementService } from '@content-management';
@@ -19,8 +20,8 @@ export class NewsfeedPostsService {
   ) {}
   logger = new Logger('NewfeedPostsService');
 
-  getNewsfeedPostById(postId: string): Promise<NewsfeedPost> {
-    return this.prisma.newsfeedPost.findUnique({
+  async getNewsfeedPostById(postId: string): Promise<NewsfeedPost> {
+    const post = await this.prisma.newsfeedPost.findUnique({
       where: {
         id: postId,
       },
@@ -29,6 +30,36 @@ export class NewsfeedPostsService {
         throw new PostNotFoundException();
       },
     });
+    const { visibility } = post;
+    if (visibility === 'hidden') {
+      return { ...post, comments: 0 };
+    }
+  }
+
+  async getProtectedNewsfeedPostById(
+    postId: string,
+    userId: string,
+    inclueUser?: boolean,
+  ): Promise<NewsfeedPost> {
+    const post = await this.prisma.newsfeedPost.findUnique({
+      where: {
+        id: postId,
+      },
+      include: {
+        publisher: inclueUser,
+      },
+      rejectOnNotFound() {
+        throw new PostNotFoundException();
+      },
+    });
+    const canView = await this.profileService.canViewContentByUserId(
+      post.authorProfileId,
+      userId,
+    );
+
+    if (!canView) throw new UserCannotViewContentException();
+
+    return post;
   }
 
   async createNewsfeedPost(
@@ -125,5 +156,20 @@ export class NewsfeedPostsService {
     } catch (error) {
       this.logger.error(error);
     }
+  }
+
+  async getPostAuthorProfileIdByPostId(postId: string): Promise<string> {
+    const { authorProfileId } = await this.prisma.newsfeedPost.findUnique({
+      where: {
+        id: postId,
+      },
+      select: {
+        authorProfileId: true,
+      },
+      rejectOnNotFound() {
+        throw new PostNotFoundException();
+      },
+    });
+    return authorProfileId;
   }
 }

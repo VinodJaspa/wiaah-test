@@ -12,3 +12,5 @@ export * from './PostMinimumAttachmentsExecption';
 export * from './PostAttachmentsTypeException';
 export * from './PostMinimumAttachmentsExecption';
 export * from './PostMaximumAttachmentsExecption';
+export * from './UserCannotViewContent.exception';
+export * from './CannotCommentOnContent.exception';

@@ -203,4 +203,21 @@ export class ContentManagementService {
         throw new ContentNotFoundException();
     }
   }
+
+  async getContentCommentingStatus(
+    contentType: string,
+    contentId: string,
+  ): Promise<string> {
+    switch (contentType) {
+      case 'post_newsfeed':
+        const post = await this.prisma.newsfeedPost.findUnique({
+          where: { id: contentId },
+          select: { commentsVisibility: true },
+        });
+        return post.commentsVisibility;
+
+      default:
+        throw new ContentNotFoundException();
+    }
+  }
 }

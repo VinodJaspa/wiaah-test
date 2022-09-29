@@ -1,5 +1,4 @@
 import {
-  forwardRef,
   Inject,
   Injectable,
   Logger,
@@ -10,7 +9,10 @@ import { UpdateCommentInput } from '@input';
 import { PrismaService } from 'prismaService';
 import { ProfileService } from '@profile-service';
 import { Comment, PaginationCommentsResponse } from '@entities';
-import { CannotInteractException, CommentNotFoundException } from '@exceptions';
+import {
+  CannotCommentOnContentException,
+  CommentNotFoundException,
+} from '@exceptions';
 import {
   DBErrorException,
   ExtractPagination,
@@ -20,8 +22,7 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { ContentHostType } from 'prismaClient';
 import { CommentCreatedEvent, CommentMentionedEvent } from 'nest-dto';
-import { ContentDiscoveryService } from '@content-discovery';
-import { ContentHostTypeEnum } from '@keys';
+import { CommentsPublicStatus, ContentHostTypeEnum } from '@keys';
 import { ContentManagementService } from '@content-management';
 
 @Injectable()
@@ -56,12 +57,17 @@ export class CommentsService {
       mentions,
       attachments,
     } = createCommentInput;
-    const canInteract = await this.profileSerivce.canInteractWith(
+
+    const canComment = await this.canCommentOnContentByUserId(
+      contentType,
+      contentId,
       authorProfileId,
       userId,
     );
 
-    if (!canInteract) throw new CannotInteractException();
+    if (!canComment) {
+      throw new CannotCommentOnContentException({});
+    }
 
     try {
       const comment = await this.prisma.comment.create({
@@ -248,5 +254,43 @@ export class CommentsService {
     profileId?: string,
   ): Promise<boolean> {
     return true;
+  }
+
+  async canCommentOnContentByUserId(
+    contentType: ContentHostType,
+    contentId: string,
+    contentAuthorProfileId: string,
+    userId: string,
+  ): Promise<boolean> {
+    const profileId = await this.profileSerivce.getProfileIdByUserId(userId);
+    return this.canCommentOnContentByProfileId(
+      contentType,
+      contentId,
+      contentAuthorProfileId,
+      profileId,
+    );
+  }
+  async canCommentOnContentByProfileId(
+    contentType: ContentHostType,
+    contentId: string,
+    contentAuthorProfileId: string,
+    profileId: string,
+  ): Promise<boolean> {
+    const conditions: boolean[] = [];
+
+    const canInteract = await this.profileSerivce.canInteractWith(
+      contentAuthorProfileId,
+      profileId,
+    );
+    if (!canInteract) conditions.push(false);
+
+    const commentsVisiblity =
+      await this.contentManagementService.getContentCommentingStatus(
+        contentType,
+        contentId,
+      );
+    if (commentsVisiblity !== CommentsPublicStatus) conditions.push(false);
+
+    return conditions.every((c) => c);
   }
 }
