@@ -10,6 +10,7 @@ export const ReactPubSubEventKeys = {
   openOrderDetailsModal: "openOrderDetailsModal",
   openSocialShopPostsFilterDrawer: "OpenSocialShopPostsFilterDrawer",
   openSocialReportModal: "OpenSocialReportModal",
+  shareUrlModal: "shareUrlModal",
 } as const;
 
 type helperType<T, P, D, E> = T extends P ? D : E;

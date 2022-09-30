@@ -22,7 +22,8 @@
       "@input": ["src/dto"],
       "@entities": ["src/entities"],
       "prismaClient": ["prisma/generated/client"],
-      "prismaService": ["src/prisma.service"]
+      "prismaService": ["src/prisma.service"],
+      "@notification-settings": ["src/notification-settings"]
     }
   }
 }

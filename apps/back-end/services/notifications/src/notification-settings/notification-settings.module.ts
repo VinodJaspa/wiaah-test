@@ -11,5 +11,6 @@ import { PrismaService } from 'prismaService';
     PrismaService,
   ],
   controllers: [NotificationSettingsController],
+  exports: [NotificationSettingsService],
 })
 export class NotificationSettingsModule {}

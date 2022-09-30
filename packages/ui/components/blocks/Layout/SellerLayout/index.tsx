@@ -30,6 +30,7 @@ import {
   SocialReportModal,
   SocialPostSettingsPopup,
   MasterLocationMapModal,
+  SocialShareCotentModal,
 } from "ui";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
@@ -190,6 +191,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   return (
     <Root>
       <SocialReportModal />
+      <SocialShareCotentModal />
       <SocialPostSettingsPopup />
       <MasterLocationMapModal />
       {sideBar && (

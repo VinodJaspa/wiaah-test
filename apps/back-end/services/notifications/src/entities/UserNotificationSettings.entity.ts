@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { NotificationSettingsEnum } from 'prismaClient';
+import { SilentContent } from './SilentContent.entity';
 
 registerEnumType(NotificationSettingsEnum, {
   name: 'NotificationSettingsEnum',
@@ -21,4 +22,7 @@ export class UserNotificationSettings {
 
   @Field(() => NotificationSettingsEnum)
   mentions: NotificationSettingsEnum;
+
+  @Field(() => [SilentContent])
+  silentedContent: SilentContent[];
 }

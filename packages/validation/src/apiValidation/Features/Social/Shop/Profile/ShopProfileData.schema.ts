@@ -9,6 +9,7 @@ export const SocialAccountTypeEnum: SocialAccountType[] = ["seller", "buyer"];
 
 export const SocialProfileInfoValidationSchema = object({
   id: string().required(),
+  userId: string().required(),
   verified: boolean().required(),
   name: string().required(),
   thumbnail: string().required(),

@@ -1,7 +1,11 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { NotificationSettingsService } from './notification-settings.service';
 import { UserNotificationSettings } from '@entities';
-import { UpdateNotificationSettingInput } from '@input';
+import {
+  DisableNotificationFromContentInput,
+  UpdateNotificationSettingInput,
+} from '@input';
+import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
 
 @Resolver(() => UserNotificationSettings)
 export class NotificationSettingsResolver {
@@ -10,5 +14,24 @@ export class NotificationSettingsResolver {
   ) {}
 
   @Mutation(() => UserNotificationSettings)
-  updateMyNotification(@Args() input: UpdateNotificationSettingInput) {}
+  updateMyNotification(
+    @Args() input: UpdateNotificationSettingInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.notificationSettingsService.updateUserNotificationSettings(
+      input,
+      user.id,
+    );
+  }
+
+  @Mutation(() => UserNotificationSettings)
+  disableNotificationFromContent(
+    input: DisableNotificationFromContentInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.notificationSettingsService.disableNotificationOfContent(
+      input,
+      user.id,
+    );
+  }
 }

@@ -1,6 +1,7 @@
 import { KafkaMessage } from "../../../Base";
 
 export class CommentMentionedEvent extends KafkaMessage<{
+  mainHostId: string;
   commentId: string;
   mentionedIds: {
     userId: string;

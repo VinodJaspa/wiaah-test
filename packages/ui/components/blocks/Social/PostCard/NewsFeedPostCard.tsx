@@ -10,10 +10,12 @@ import {
   LocationIcon,
   StarOutlineIcon,
   PersonFillIcon,
+  useShareModal,
 } from "ui";
 import { Interaction } from "types";
 import { useDateDiff } from "hooks";
 import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
 
 export interface PostCardProps {
   profileInfo: ProfileInfo;
@@ -26,6 +28,8 @@ export const PostCard: React.FC<PostCardProps> = ({
   profileInfo,
   onInteraction,
 }) => {
+  const { open } = useShareModal();
+  const { visit, getUrl } = useRouting();
   const { OpenModal } = useSocialPostSettingsPopup();
   const { t } = useTranslation();
   const { getSince } = useDateDiff({
@@ -55,6 +59,9 @@ export const PostCard: React.FC<PostCardProps> = ({
                   name: profileInfo.name,
                   userPhotoSrc: profileInfo.thumbnail,
                 }}
+                onProfileClick={() =>
+                  visit((r) => r.visitSocialPostAuthorProfile(profileInfo))
+                }
               />
             </div>
             <div className="flex w-full justify-between">
@@ -100,7 +107,12 @@ export const PostCard: React.FC<PostCardProps> = ({
               <p className="font-bold text-base">{postInfo.numberOfComments}</p>
             </div>
             <div className="flex gap-2 items-center">
-              <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
+              <span
+                onClick={() =>
+                  open(getUrl((r) => r.visitNewsfeedPostPage(postInfo)))
+                }
+                className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30"
+              >
                 <ShareIcon />
               </span>
               <p className="font-bold text-base">{postInfo.numberOfShares}</p>

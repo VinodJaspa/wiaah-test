@@ -33,6 +33,7 @@ type Author {
 model Notification {
   id              String           @id @default(auto()) @map("_id") @db.ObjectId
   userId          String           @db.ObjectId
+  contentId       String?          @db.ObjectId
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   type            NotifiactionType
@@ -48,12 +49,20 @@ enum NotificationSettingsEnum {
 }
 
 model UserNotificationSettings {
-  id           String                   @id @default(auto()) @map("_id") @db.ObjectId
-  userId       String                   @db.ObjectId @unique
-  createdAt    DateTime                 @default(now())
-  updatedAt    DateTime                 @updatedAt
-  postReaction NotificationSettingsEnum @default(on)
-  postComment  NotificationSettingsEnum @default(on)
-  commentLike  NotificationSettingsEnum @default(on)
-  mentions     NotificationSettingsEnum @default(on)
+  id              String                   @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String                   @unique @db.ObjectId
+  createdAt       DateTime                 @default(now())
+  updatedAt       DateTime                 @updatedAt
+  postReaction    NotificationSettingsEnum @default(on)
+  postComment     NotificationSettingsEnum @default(on)
+  commentLike     NotificationSettingsEnum @default(on)
+  mentions        NotificationSettingsEnum @default(on)
+  silentedContent SilentContent[]
+}
+
+model SilentContent {
+  id         String                   @id @default(auto()) @map("_id") @db.ObjectId
+  contentId  String                   @db.ObjectId
+  silentedBy UserNotificationSettings @relation(fields: [userId], references: [userId])
+  userId     String
 }
