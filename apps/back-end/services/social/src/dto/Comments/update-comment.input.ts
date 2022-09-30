@@ -1,3 +1,4 @@
+import { PostMention } from '@entities';
 import { Field, ID, InputType } from '@nestjs/graphql';
 
 @InputType()
@@ -8,6 +9,6 @@ export class UpdateCommentInput {
   @Field(() => String)
   content: string;
 
-  @Field(() => [String])
-  mentions: string[];
+  @Field(() => [PostMention])
+  mentions: PostMention[];
 }

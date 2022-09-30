@@ -62,6 +62,16 @@ export class NewsfeedPostsService {
     return post;
   }
 
+  getNewsfeedPostsById(ids: string[]): Promise<NewsfeedPost[]> {
+    return this.prisma.newsfeedPost.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+  }
+
   async createNewsfeedPost(
     createNewsfeedPostInput: CreateNewsfeedPostInput,
     userId: string,

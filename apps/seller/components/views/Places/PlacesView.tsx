@@ -16,7 +16,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { AiOutlineShop } from "react-icons/ai";
 import { useQuery } from "react-query";
-import { PlaceCardProps, ListWrapper, PlaceCard } from "ui";
+import { PlaceCardProps, ListWrapper, PlaceCard, ShowMapButton } from "ui";
 import { placesPH } from "ui/placeholder";
 
 export const PlacesView: React.FC = () => {
@@ -38,9 +38,9 @@ export const PlacesView: React.FC = () => {
     <Flex direction={"column"} my="2rem">
       <HStack px="1rem" justify={"space-between"} w="100%">
         {!isMobile && (
-          <Button visibility={"hidden"} textTransform={"capitalize"}>
-            {t("follow", "follow")}
-          </Button>
+          <div className="w-40">
+            <ShowMapButton onClick={() => {}} />
+          </div>
         )}
         <HStack>
           <Image

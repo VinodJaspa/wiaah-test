@@ -18,7 +18,6 @@ import {
 import { useReactPubsub } from "react-pubsub";
 import { useTranslation } from "react-i18next";
 import { mapArray, runIfFn } from "utils";
-import { useRouting } from "routing";
 
 export const useShareModal = (subscribe: boolean = false) => {
   const [url, setUrl] = React.useState<string>();
@@ -52,7 +51,6 @@ export const useShareModal = (subscribe: boolean = false) => {
 
 export const SocialShareCotentModal: React.FC = () => {
   const { close, isOpen, url } = useShareModal(true);
-  const { visit } = useRouting();
   const { t } = useTranslation();
 
   const sharablePlatforms: {
@@ -60,6 +58,17 @@ export const SocialShareCotentModal: React.FC = () => {
     onClick: () => void;
     label: string;
   }[] = [
+    {
+      icon: (
+        <img
+          className="w-[1em] bg-primary rounded-xl px-2 h-[1em] object-contain"
+          src="/logo.svg"
+          alt=""
+        />
+      ),
+      label: t("Wiaah messages"),
+      onClick() {},
+    },
     {
       icon: FacebookIcon,
       label: t("Facebook"),
@@ -122,14 +131,16 @@ export const SocialShareCotentModal: React.FC = () => {
             </ModalCloseButton>
           </div>
           <Divider />
-          <div className="flex items-center justify-center flex-wrap gap-16 h-full">
+          <div className="grid grid-cols-2 md:grid-cols-4 items-center justify-center h-[16rem] overflow-scroll gap-8 thinScroll">
             {mapArray(sharablePlatforms, ({ icon, label, onClick }, i) => (
               <div
                 className="text-7xl flex items-center flex-col gap-2"
                 onClick={() => onClick()}
               >
                 {runIfFn(icon)}
-                <p className="font-semibold text-base">{label}</p>
+                <p className="font-semibold whitespace-nowrap text-base">
+                  {label}
+                </p>
               </div>
             ))}
           </div>

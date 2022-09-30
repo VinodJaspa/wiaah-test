@@ -8,3 +8,4 @@ export * from "./share";
 export * from "./socialProfile";
 export * from "./Posts";
 export * from "./Comments";
+export * from "./mentions";

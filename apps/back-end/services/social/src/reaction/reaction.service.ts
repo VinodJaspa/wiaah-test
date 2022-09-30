@@ -75,7 +75,8 @@ export class ReactionService {
           contentId,
           reacterProfileId: profileId,
           reacterUserId: userId,
-          contentType,
+          contentType:
+            contentType === 'post_newsfeed' ? 'newsfeed-post' : 'comment',
           contentTitle: content.content,
         }),
       );

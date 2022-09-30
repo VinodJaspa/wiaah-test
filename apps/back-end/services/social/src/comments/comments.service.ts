@@ -96,6 +96,10 @@ export class CommentsService {
           commentedAt: new Date().toUTCString(),
           commentedByProfileId: authorProfileId,
           commentId: comment.id,
+          commentedByUserId: userId,
+          hostId: comment.id,
+          hostType: 'comment',
+          mainHostId: comment.hostId,
         }),
       );
 
@@ -105,7 +109,9 @@ export class CommentsService {
           commentId: comment.id,
           mentionedAt: new Date().toUTCString(),
           mentionedByProfileId: authorProfileId,
-          mentionedProfileIds: mentions,
+          mentionedByUserId: userId,
+          mainHostId: comment.hostId,
+          mentionedIds: mentions,
         }),
       );
 

@@ -93,6 +93,18 @@ enum CommentsVisibility {
   public
 }
 
+type PostMention {
+  userId    String
+  profileId String
+}
+
+type PostLocation {
+  city    String
+  country String
+  address String?
+  state   String?
+}
+
 model NewsfeedPost {
   id                 String             @id() @default(auto()) @map("_id") @db.ObjectId()
   userId             String             @db.ObjectId
@@ -106,7 +118,9 @@ model NewsfeedPost {
   comments           Int                @default(0)
   shares             Int                @default(0)
   visibility         PostVisibility     @default(hidden)
+  location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
+  mentions           PostMention[]
 }
 
 model ContentReaction {
@@ -148,6 +162,11 @@ enum ContentReactionType {
   angry
 }
 
+type CommentMention {
+  userId String
+  profileId String
+}
+
 model Comment {
   id              String          @id() @default(auto()) @map("_id") @db.ObjectId()
   hostType        ContentHostType
@@ -158,7 +177,33 @@ model Comment {
   attachments     Attachment[]
   content         String
   commentedAt     DateTime        @default(now())
-  mentions        String[]
+  mentions        CommentMention[]
   likes           Int             @default(0)
   replies         Int             @default(0)
+}
+
+model HashtagSearch {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String @db.ObjectId
+  profileId String @db.ObjectId
+  views     Int    @default(0)
+  tag       String
+}
+
+enum PostType {
+  newsfeed_post
+  shop_post
+  service_post
+  affiliation_post
+}
+
+type UserSavedPost {
+  postId   String
+  postType PostType
+}
+
+model UserSavedPostsGroup {
+  id     String          @id @default(auto()) @map("_id") @db.ObjectId
+  userId String          @db.ObjectId @unique
+  posts  UserSavedPost[]
 }

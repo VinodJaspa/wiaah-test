@@ -36,11 +36,11 @@
     "class-validator": "^0.13.2",
     "graphql": "15.8.0",
     "kafkajs": "^2.2.0",
+    "nest-dto": "*",
     "nest-utils": "*",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0",
-    "nest-dto": "*"
+    "rxjs": "^7.2.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",

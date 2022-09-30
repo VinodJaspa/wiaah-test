@@ -12,6 +12,8 @@ import { ReactionModule } from './reaction/reaction.module';
 import { ContentDiscoveryModule } from './content-discovery/content-discovery.module';
 import { ContentShareModule } from './content-share/content-share.module';
 import { ContentManagementModule } from './content-management/content-management.module';
+import { HashtagModule } from './hashtag/hashtag.module';
+import { SavedPostsModule } from './saved-posts/saved-posts.module';
 
 @Module({
   imports: [
@@ -30,6 +32,8 @@ import { ContentManagementModule } from './content-management/content-management
     ContentDiscoveryModule,
     ContentShareModule,
     ContentManagementModule,
+    HashtagModule,
+    SavedPostsModule,
   ],
 })
 export class AppModule {}

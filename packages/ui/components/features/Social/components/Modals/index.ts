@@ -1,3 +1,4 @@
 export * from "./SocialReportModal";
 export * from "./SocialPostSettingsPopup";
-export * from "./SocialShareCotentModal";
+export * from "./SocialShareContentModal";
+export * from "./SocialPostMentionsModal";

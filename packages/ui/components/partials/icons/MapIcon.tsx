@@ -1,8 +1,18 @@
 import React from "react";
+import { HtmlSvgProps } from "types";
 
-export const MapIcon = () => {
+export const MapIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
-    <svg version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 360 360">
+    <svg
+      {...props}
+      version="1.1"
+      id="Capa_1"
+      x="0px"
+      y="0px"
+      width={"1em"}
+      height={"1em"}
+      viewBox="0 0 360 360"
+    >
       <g id="XMLID_1088_">
         <polygon
           id="XMLID_1104_"

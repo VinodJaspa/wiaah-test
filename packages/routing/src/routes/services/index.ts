@@ -5,6 +5,8 @@ export type ServicesRoutesType = {
   service: () => RoutesType;
   services: () => RoutesType;
   serviceType: (serviceType: string) => RoutesType;
+  place: () => RoutesType;
+  places: () => RoutesType;
   visitService: (props: Record<string, any>, serviceType: string) => RoutesType;
   visitServiceOnMap: (
     props: Record<string, any>,
@@ -16,6 +18,7 @@ export type ServicesRoutesType = {
     location: string
   ) => RoutesType;
   visitServiceSearch: (props: Record<string, any>) => RoutesType;
+  visitPlace: (props: Record<string, any>) => RoutesType;
 };
 
 export const ServicesRoutes: RoutesType = {
@@ -27,6 +30,14 @@ export const ServicesRoutes: RoutesType = {
   },
   serviceType(serviceType) {
     return this.addPath(serviceType);
+  },
+
+  place() {
+    return this.addPath("place");
+  },
+
+  places() {
+    return this.addPath("places");
   },
 
   extractServiceId(props) {
@@ -64,5 +75,9 @@ export const ServicesRoutes: RoutesType = {
     const serviceSlug = props["slug"];
     if (!serviceSlug) return this;
     return this.search().services().serviceType(serviceSlug);
+  },
+  visitPlace(props) {
+    const place = props["location"];
+    return this.places().addQuery({ tag: place });
   },
 } as RoutesType;

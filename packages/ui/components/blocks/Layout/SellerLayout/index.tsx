@@ -31,6 +31,8 @@ import {
   SocialPostSettingsPopup,
   MasterLocationMapModal,
   SocialShareCotentModal,
+  SocialPostMentionsModal,
+  StarOutlineIcon,
 } from "ui";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
@@ -193,6 +195,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
       <SocialReportModal />
       <SocialShareCotentModal />
       <SocialPostSettingsPopup />
+      <SocialPostMentionsModal />
       <MasterLocationMapModal />
       {sideBar && (
         <SellerNavigationSideBar
@@ -376,6 +379,16 @@ const SellerNavLinks: HeaderNavLink[] = [
       href: "/account-settings",
     },
     icon: IoSettingsOutline,
+  },
+  {
+    icon: ()=> <StarOutlineIcon />,
+    link: {
+      href: "/saved",
+      name: {
+        translationKey: "Saved",
+        fallbackText: "Saved",
+      },
+    },
   },
   {
     link: {

@@ -40,7 +40,7 @@ export const PlaceCard: React.FC<PlaceCardProps> = ({
   const router = useRouter();
   return (
     <div
-      className={`relative overflow-hidden rounded-xl bg-black w-full max-w-[30rem]`}
+      className={`relative isolate overflow-hidden rounded-xl bg-black w-full max-w-[30rem]`}
     >
       <PostAttachmentsViewer attachments={placeAttachments} />
       {openFrom && openTo && (

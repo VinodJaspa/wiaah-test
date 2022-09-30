@@ -10,7 +10,9 @@ import {
   LocationIcon,
   StarOutlineIcon,
   PersonFillIcon,
+  StarIcon,
   useShareModal,
+  useSocialPostMentionsModal,
 } from "ui";
 import { Interaction } from "types";
 import { useDateDiff } from "hooks";
@@ -31,6 +33,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   const { open } = useShareModal();
   const { visit, getUrl } = useRouting();
   const { OpenModal } = useSocialPostSettingsPopup();
+  const { open: openPostMentions } = useSocialPostMentionsModal();
   const { t } = useTranslation();
   const { getSince } = useDateDiff({
     from: new Date(postInfo.createdAt),
@@ -67,7 +70,14 @@ export const PostCard: React.FC<PostCardProps> = ({
             <div className="flex w-full justify-between">
               <div className="flex flex-col">
                 <p className="font-bold">{profileInfo.name}</p>
-                <div className="flex gap-1 items-center">
+                <div
+                  onClick={() =>
+                    visit((r) =>
+                      r.visitPlace({ location: profileInfo.profession })
+                    )
+                  }
+                  className="cursor-pointer flex gap-1 items-center"
+                >
                   <LocationIcon className="text-white" />
                   <p>{profileInfo.profession}</p>
                 </div>
@@ -87,7 +97,21 @@ export const PostCard: React.FC<PostCardProps> = ({
           </div>
           <div className="flex noScroll gap-3 font-medium text-white overflow-x-scroll">
             {postInfo.tags.map((tag, i) => (
-              <p key={i}>#{tag}</p>
+              <p
+                className="cursor-pointer"
+                onClick={() =>
+                  visit((r) =>
+                    r.visitUserHashtagPage({
+                      ...profileInfo,
+                      profileId: profileInfo.id,
+                      tag,
+                    })
+                  )
+                }
+                key={i}
+              >
+                #{tag}
+              </p>
             ))}
           </div>
         </div>
@@ -111,7 +135,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                 onClick={() =>
                   open(getUrl((r) => r.visitNewsfeedPostPage(postInfo)))
                 }
-                className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30"
+                className="cursor-pointer w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30"
               >
                 <ShareIcon />
               </span>
@@ -120,13 +144,21 @@ export const PostCard: React.FC<PostCardProps> = ({
           </div>
           <div className="flex gap-4">
             <div className="flex gap-2 items-center">
-              <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
+              <span
+                onClick={() =>
+                  openPostMentions({
+                    postId: postInfo.id,
+                    postType: "newsfeed-post",
+                  })
+                }
+                className="cursor-pointer w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30"
+              >
                 <PersonFillIcon />
               </span>
             </div>
             <div className="flex gap-2 items-center">
               <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
-                <StarOutlineIcon />
+                <StarIcon className="text-primary fill-primary" />
               </span>
             </div>
           </div>
