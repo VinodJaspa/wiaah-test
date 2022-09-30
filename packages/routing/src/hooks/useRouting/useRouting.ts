@@ -2,12 +2,19 @@ import { MainRoutes, RoutesType } from "../../routes";
 import React from "react";
 import { routingContext } from "../../Providers";
 
+export const getRouting = (fn: (r: RoutesType) => RoutesType): string => {
+  const routes = fn({ ...MainRoutes });
+
+  return routes.route;
+};
+
 export const useRouting = () => {
   const {
     visit: VisitRoute,
     getCurrentPath: getPath,
     getParam: GetParam,
     getQuery: GetQuery,
+    getBaseUrl,
     // removeParam: RemoveParam,
   } = React.useContext(routingContext);
 
@@ -30,6 +37,11 @@ export const useRouting = () => {
     VisitRoute(
       `${route}${combinedQueries.length > 0 ? "?" : ""}${combinedQueries}`
     );
+  }
+
+  function getUrl(fn: (routes: RoutesType) => RoutesType): string {
+    const routes = fn({ ...MainRoutes });
+    return `${getBaseUrl()}${routes.route}`;
   }
 
   function getParam(queryName: string): string | null {
@@ -55,5 +67,6 @@ export const useRouting = () => {
     getCurrentPath,
     getParam,
     removeParam,
+    getUrl,
   };
 };

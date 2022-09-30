@@ -5,6 +5,7 @@ import { PrismaService } from 'prismaService';
 import { ProfileModule } from '@profile-module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { ContentManagementModule } from '@content-management';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
         },
       },
     ]),
+    ContentManagementModule,
   ],
   providers: [CommentsResolver, CommentsService, PrismaService],
   exports: [CommentsService],

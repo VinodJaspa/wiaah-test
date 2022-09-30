@@ -1,7 +1,8 @@
 import React from "react";
 import { HtmlDivProps } from "types";
 import { FloatingContainer, FloatingContainerProps } from "ui";
-import { useResponsive, AspectRatio } from "ui";
+import { AspectRatio, Image } from "ui";
+
 export type StoryUserData = {
   name: string;
   userPhotoSrc: string;
@@ -12,6 +13,7 @@ export interface StoryDisplayProps {
   seen?: boolean;
   floatingIcon?: FloatingContainerProps;
   innerProps?: HtmlDivProps;
+  onProfileClick?: () => any;
 }
 
 export const UserProfileDisplay: React.FC<StoryDisplayProps> = ({
@@ -19,6 +21,7 @@ export const UserProfileDisplay: React.FC<StoryDisplayProps> = ({
   seen,
   floatingIcon,
   innerProps,
+  onProfileClick,
 }) => {
   return (
     <FloatingContainer className="w-full" {...floatingIcon}>
@@ -28,8 +31,12 @@ export const UserProfileDisplay: React.FC<StoryDisplayProps> = ({
         } rounded-[20%] bg-gradient-to-b from-primary to-blue-400`}
       >
         <div className="w-full h-full overflow-hidden rounded-[20%] bg-white p-[0.125rem]">
-          <AspectRatio ratio={1}>
-            <img
+          <AspectRatio
+            onClick={() => onProfileClick && onProfileClick()}
+            className={"cursor-pointer"}
+            ratio={1}
+          >
+            <Image
               className="w-full h-full rounded-[20%] object-cover"
               src={storyUserData.userPhotoSrc}
             />

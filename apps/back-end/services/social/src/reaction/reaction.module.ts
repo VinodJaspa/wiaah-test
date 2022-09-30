@@ -6,10 +6,12 @@ import { ProfileModule } from '@profile-module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { ContentDiscoveryModule } from '@content-discovery';
+import { ContentManagementModule } from '@content-management';
 
 @Module({
   imports: [
     ContentDiscoveryModule,
+    ContentManagementModule,
     ProfileModule,
     ClientsModule.register([
       {

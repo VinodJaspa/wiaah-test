@@ -52,6 +52,9 @@ export const KAFKA_EVENTS = {
   REACTION_EVENTS: {
     contentReacted: "content.reacted",
   },
+  SHARES_EVENTS: {
+    contentShared: "content.shared",
+  },
   createAccount: "create.account",
   createWishlist: "create.wishlist",
   createWishersList: "create.wisherlist",

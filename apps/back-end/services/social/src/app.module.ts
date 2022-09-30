@@ -10,6 +10,10 @@ import { NewsfeedPostsModule } from './newsfeed-posts/newsfeed-posts.module';
 import { CommentsModule } from './comments/comments.module';
 import { ReactionModule } from './reaction/reaction.module';
 import { ContentDiscoveryModule } from './content-discovery/content-discovery.module';
+import { ContentShareModule } from './content-share/content-share.module';
+import { ContentManagementModule } from './content-management/content-management.module';
+import { HashtagModule } from './hashtag/hashtag.module';
+import { SavedPostsModule } from './saved-posts/saved-posts.module';
 
 @Module({
   imports: [
@@ -26,6 +30,10 @@ import { ContentDiscoveryModule } from './content-discovery/content-discovery.mo
     CommentsModule,
     ReactionModule,
     ContentDiscoveryModule,
+    ContentShareModule,
+    ContentManagementModule,
+    HashtagModule,
+    SavedPostsModule,
   ],
 })
 export class AppModule {}

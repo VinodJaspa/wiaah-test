@@ -25,6 +25,7 @@ export const getSocialProfileData = async (
   const res: AsyncReturnType<typeof getSocialProfileData> = {
     data: {
       accountType: "seller",
+      userId: "1325",
       id: "1230",
       name: "Jane Daniel",
       public: true,

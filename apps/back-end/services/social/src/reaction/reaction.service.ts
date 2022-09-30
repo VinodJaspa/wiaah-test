@@ -13,6 +13,8 @@ import { ProfileService } from '@profile-service';
 import { ContentDiscoveryService } from '@content-discovery';
 import { ContentNotFoundException } from '@exceptions';
 import { ContentReactedEvent } from 'nest-dto';
+import { ContentHostType } from 'prismaClient';
+import { ContentManagementService } from '@content-management';
 
 @Injectable()
 export class ReactionService {
@@ -20,6 +22,7 @@ export class ReactionService {
     private readonly prisma: PrismaService,
     private readonly profileService: ProfileService,
     private readonly contentDiscoveryService: ContentDiscoveryService,
+    private readonly contentManagementService: ContentManagementService,
     @Inject(SERVICES.SOCIAL_SERVICE.token)
     private readonly eventClient: ClientKafka,
   ) {}
@@ -58,6 +61,11 @@ export class ReactionService {
         },
       });
 
+      await this.contentManagementService.incrementContentReactions(
+        contentType,
+        contentId,
+      );
+
       // TODO: create kafka event
       this.eventClient.emit(
         KAFKA_EVENTS.REACTION_EVENTS.contentReacted,
@@ -67,7 +75,8 @@ export class ReactionService {
           contentId,
           reacterProfileId: profileId,
           reacterUserId: userId,
-          contentType,
+          contentType:
+            contentType === 'post_newsfeed' ? 'newsfeed-post' : 'comment',
           contentTitle: content.content,
         }),
       );
@@ -85,6 +94,9 @@ export class ReactionService {
     userId: string,
   ): Promise<boolean> {
     const { contentId, contentType } = input;
+
+    // const isAuthor = await this.
+
     try {
       await this.prisma.contentReaction.deleteMany({
         where: {
@@ -95,6 +107,11 @@ export class ReactionService {
           },
         },
       });
+
+      await this.contentManagementService.decrementContentReactions(
+        contentType,
+        contentId,
+      );
 
       return true;
     } catch (error) {

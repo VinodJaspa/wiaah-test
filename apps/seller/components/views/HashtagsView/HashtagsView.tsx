@@ -3,7 +3,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { TabType } from "types";
 import {
-  ActionsListWrapper,
   HashTagPostsListWrapper,
   PostCardsListWrapper,
   ShopCardsListWrapper,
@@ -58,16 +57,16 @@ export const HashtagsView: React.FC = () => {
         </div>
       ),
     },
-    {
-      name: t("Action"),
-      component: (
-        <div className="flex flex-col gap-16">
-          <HashTagPostsListWrapper hashtags={hashTagCardsInfoPlaceholder} />
-          <Divider />
-          <ActionsListWrapper cols={cols} actions={actionsPlaceholders} />
-        </div>
-      ),
-    },
+    // {
+    //   name: t("Action"),
+    //   component: (
+    //     <div className="flex flex-col gap-16">
+    //       <HashTagPostsListWrapper hashtags={hashTagCardsInfoPlaceholder} />
+    //       <Divider />
+    //       <ActionsListWrapper cols={cols} actions={actionsPlaceholders} />
+    //     </div>
+    //   ),
+    // },
   ];
   return (
     <div className="flex flex-col items-center">

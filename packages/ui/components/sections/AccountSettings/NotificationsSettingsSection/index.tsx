@@ -6,45 +6,40 @@ import { FormikRadio, SectionHeader } from "ui";
 
 export interface NotificationsSettingsSectionProps {}
 
-export const NotificationsSettingsSection: React.FC<NotificationsSettingsSectionProps> =
-  ({}) => {
-    const { t } = useTranslation();
-    return (
-      <div className="w-full gap-8 flex flex-col">
-        <SectionHeader sectionTitle={t("notifications", "Notifications")} />
-        <Formik
-          initialValues={{
-            likes: "iFollow",
-          }}
-          onSubmit={() => {}}
-        >
-          {({ values, setFieldValue }) => {
-            return (
-              <Form className="w-full">
-                <div className="w-full flex flex-col gap-8">
-                  {notificationsOptions.map(({ label, opts, name }, i) => (
-                    <FormikRadio
-                      defaultChecked
-                      stackProps={{ w: "100%", align: "end" }}
-                      onChange={(v) => setFieldValue(name, v)}
-                      radioProps={{
-                        colorScheme: "primary",
-                        flexDirection: "row-reverse",
-                        gap: "0.5rem",
-                      }}
-                      name={name}
-                      label={label}
-                      options={opts}
-                    />
-                  ))}
-                </div>
-              </Form>
-            );
-          }}
-        </Formik>
-      </div>
-    );
-  };
+export const NotificationsSettingsSection: React.FC<
+  NotificationsSettingsSectionProps
+> = ({}) => {
+  const { t } = useTranslation();
+  return (
+    <div className="w-full gap-8 flex flex-col">
+      <SectionHeader sectionTitle={t("notifications", "Notifications")} />
+      <Formik
+        initialValues={{
+          likes: "iFollow",
+        }}
+        onSubmit={() => {}}
+      >
+        {({ values, setFieldValue }) => {
+          return (
+            <Form className="w-full">
+              <div className="w-full flex flex-col gap-8">
+                {notificationsOptions.map(({ label, opts, name }, i) => (
+                  <FormikRadio
+                    defaultChecked
+                    onChange={(v) => setFieldValue(name, v)}
+                    name={name}
+                    label={label}
+                    options={opts}
+                  />
+                ))}
+              </div>
+            </Form>
+          );
+        }}
+      </Formik>
+    </div>
+  );
+};
 
 const fromPeopleIFollow: TranslationTextType = {
   translationKey: "from_people_i_follow",

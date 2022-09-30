@@ -16,8 +16,8 @@ export class Comment {
   @Field(() => ID)
   hostId: string;
 
-  @Field(() => Profile)
-  author: Profile;
+  @Field(() => Profile, { nullable: true })
+  author?: Profile;
 
   @Field(() => String)
   authorProfileId: string;

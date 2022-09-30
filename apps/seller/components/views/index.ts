@@ -22,3 +22,4 @@ export * from "./Services";
 export * from "./Social";
 export * from "./ServicesProvider";
 export * from "./Search";
+export * from "./Saved";

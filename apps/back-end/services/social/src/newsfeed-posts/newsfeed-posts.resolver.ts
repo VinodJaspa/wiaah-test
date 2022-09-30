@@ -31,14 +31,6 @@ export class NewsfeedPostsResolver {
     return this.newsfeedPostsService.findAll();
   }
 
-  @Query(() => NewsfeedPost, { name: 'newsfeedPost' })
-  findOne(
-    @Args('id', { type: () => Int }) id: string,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    return this.newsfeedPostsService.getNewsfeedPost(id, user.id);
-  }
-
   @Mutation(() => NewsfeedPost)
   updateNewsfeedPost(
     @Args('updateNewsfeedPostInput')

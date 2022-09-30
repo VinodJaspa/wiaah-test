@@ -4,7 +4,9 @@ import React from "react";
 import { dehydrate, QueryClient } from "react-query";
 import { getSocialProfileData } from "api";
 import { SellerLayout, useGetSocialProfile } from "ui";
-import { SocialView } from "../../components/views/SocialProfile/SocialProfileView";
+import { SocialView } from "@components";
+import { extractUserfromNextjsCookies } from "utils";
+import { getRouting } from "routing";
 
 interface ProfilePageProps {
   profileId: string;
@@ -12,14 +14,31 @@ interface ProfilePageProps {
 
 export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({
   query,
+  req,
 }) => {
+  const user = await extractUserfromNextjsCookies(req.cookies);
+
   const { profileId } = query;
+
   const id = Array.isArray(profileId) ? profileId[0] : profileId;
 
-  const queryClient = new QueryClient();
+  const profileData = await getSocialProfileData(id);
 
-  queryClient.prefetchQuery(["SocialProfile", { profileId }], () =>
-    getSocialProfileData(id)
+  if (profileData.data.userId === user.id) {
+    return {
+      props: {
+        profileId: profileData.data.id,
+      },
+      redirect: {
+        destination: getRouting((r) => r.visitMyProfile()),
+      },
+    };
+  }
+
+  const queryClient = new QueryClient();
+  queryClient.prefetchQuery(
+    ["SocialProfile", { profileId }],
+    () => profileData
   );
 
   return {

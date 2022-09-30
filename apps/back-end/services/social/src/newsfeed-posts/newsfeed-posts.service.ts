@@ -6,25 +6,68 @@ import { ProfileService } from '@profile-service';
 import {
   PostCreataionFailedException,
   PostNotFoundException,
+  UserCannotViewContentException,
 } from '@exceptions';
 import { DBErrorException } from 'nest-utils';
+import { ContentManagementService } from '@content-management';
 
 @Injectable()
 export class NewsfeedPostsService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly profileService: ProfileService,
+    private readonly contentManagementService: ContentManagementService,
   ) {}
   logger = new Logger('NewfeedPostsService');
 
-  getNewsfeedPostById(postId: string): Promise<NewsfeedPost> {
-    return this.prisma.newsfeedPost.findUnique({
+  async getNewsfeedPostById(postId: string): Promise<NewsfeedPost> {
+    const post = await this.prisma.newsfeedPost.findUnique({
       where: {
         id: postId,
       },
       rejectOnNotFound(error) {
         this.logger.error(error);
         throw new PostNotFoundException();
+      },
+    });
+    const { visibility } = post;
+    if (visibility === 'hidden') {
+      return { ...post, comments: 0 };
+    }
+  }
+
+  async getProtectedNewsfeedPostById(
+    postId: string,
+    userId: string,
+    inclueUser?: boolean,
+  ): Promise<NewsfeedPost> {
+    const post = await this.prisma.newsfeedPost.findUnique({
+      where: {
+        id: postId,
+      },
+      include: {
+        publisher: inclueUser,
+      },
+      rejectOnNotFound() {
+        throw new PostNotFoundException();
+      },
+    });
+    const canView = await this.profileService.canViewContentByUserId(
+      post.authorProfileId,
+      userId,
+    );
+
+    if (!canView) throw new UserCannotViewContentException();
+
+    return post;
+  }
+
+  getNewsfeedPostsById(ids: string[]): Promise<NewsfeedPost[]> {
+    return this.prisma.newsfeedPost.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
       },
     });
   }
@@ -35,6 +78,9 @@ export class NewsfeedPostsService {
   ): Promise<NewsfeedPost> {
     const { attachments, content, tags, title, visibility } =
       createNewsfeedPostInput;
+
+    await this.contentManagementService.validatePostAttachments(attachments);
+
     const profileId = await this.profileService.getProfileIdByUserId(userId);
 
     try {
@@ -45,7 +91,7 @@ export class NewsfeedPostsService {
           attachments,
           tags,
           visibility,
-          profileId,
+          authorProfileId: profileId,
           userId,
         },
       });
@@ -57,10 +103,6 @@ export class NewsfeedPostsService {
 
   findAll() {
     return this.prisma.newsfeedPost.findMany();
-  }
-
-  getNewsfeedPost(id: string, userId: string) {
-    return `This action returns a #${id} newsfeedPost`;
   }
 
   async update(
@@ -124,5 +166,20 @@ export class NewsfeedPostsService {
     } catch (error) {
       this.logger.error(error);
     }
+  }
+
+  async getPostAuthorProfileIdByPostId(postId: string): Promise<string> {
+    const { authorProfileId } = await this.prisma.newsfeedPost.findUnique({
+      where: {
+        id: postId,
+      },
+      select: {
+        authorProfileId: true,
+      },
+      rejectOnNotFound() {
+        throw new PostNotFoundException();
+      },
+    });
+    return authorProfileId;
   }
 }

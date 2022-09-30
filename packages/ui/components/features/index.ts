@@ -11,3 +11,4 @@ export * from "./ServiceManagement";
 export * from "./Search";
 export * from "./GeoLocation";
 export * from "./Feedback";
+export * from "./Saved";

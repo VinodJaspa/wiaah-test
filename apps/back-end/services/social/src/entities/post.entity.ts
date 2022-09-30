@@ -1,6 +1,30 @@
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
+import { ObjectType, Field, Int, ID, InputType } from '@nestjs/graphql';
 import { Profile } from '@entities';
 import { Attachment, Hashtag } from '@entities';
+
+@ObjectType()
+export class PostMention {
+  @Field(() => ID)
+  userId: string;
+
+  @Field(() => ID)
+  profileId: string;
+}
+
+@ObjectType()
+export class PostLocation {
+  @Field(() => String)
+  city: string;
+
+  @Field(() => String)
+  country: string;
+
+  @Field(() => String, { nullable: true })
+  address: string;
+
+  @Field(() => String, { nullable: true })
+  state: string;
+}
 
 @ObjectType()
 export class NewsfeedPost {
@@ -14,7 +38,7 @@ export class NewsfeedPost {
   publisher?: Profile;
 
   @Field(() => ID)
-  profileId: string;
+  authorProfileId: string;
 
   @Field(() => String)
   title: string;
@@ -36,4 +60,10 @@ export class NewsfeedPost {
 
   @Field(() => Int)
   shares: number;
+
+  @Field(() => [PostMention])
+  mentions: PostMention[];
+
+  @Field(() => PostLocation, { nullable: true })
+  location?: PostLocation;
 }

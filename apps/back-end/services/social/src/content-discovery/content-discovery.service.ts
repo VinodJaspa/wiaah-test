@@ -3,15 +3,13 @@ import { Comment, NewsfeedPost } from '@entities';
 import { ContentNotFoundException } from '@exceptions';
 import { Injectable } from '@nestjs/common';
 import { NewsfeedPostsService } from '@posts-newsfeed';
-import { ProfileService } from '@profile-service';
-import { ContentHostType } from 'prismaClient';
+import { ContentHostType, PostType } from 'prismaClient';
 
-type ContentData = Omit<Comment, 'author'> | NewsfeedPost;
+export type ContentData = Comment | NewsfeedPost;
 
 @Injectable()
 export class ContentDiscoveryService {
   constructor(
-    private readonly profileService: ProfileService,
     private readonly newsfeedPostsService: NewsfeedPostsService,
     private readonly commentsService: CommentsService,
   ) {}
@@ -29,5 +27,35 @@ export class ContentDiscoveryService {
       default:
         throw new ContentNotFoundException();
     }
+  }
+
+  async getManyPosts(
+    contents: { type: PostType; contentId: string }[],
+  ): Promise<ContentData[]> {
+    const organisedContentData = contents.reduce((acc, curr) => {
+      return {
+        ...acc,
+        [curr.type]: [...(acc[curr.type] || []), curr.contentId],
+      };
+    }, {} as Record<PostType, string[]>);
+
+    const postsData: ContentData[] = [];
+
+    for (const _type in organisedContentData) {
+      const type = _type as PostType;
+      switch (type) {
+        case 'newsfeed_post':
+          const posts = await this.newsfeedPostsService.getNewsfeedPostsById(
+            organisedContentData[type] || [],
+          );
+          postsData.concat(posts);
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    return postsData;
   }
 }
