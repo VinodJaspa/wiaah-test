@@ -113,7 +113,12 @@ export class ProfileService {
   }
 
   getMyProfile(userId: string) {
-    return this.prisma.profile.findUnique({ where: { ownerId: userId } });
+    return this.prisma.profile.findUnique({
+      where: { ownerId: userId },
+      rejectOnNotFound(error) {
+        throw new ProfileNotfoundException();
+      },
+    });
   }
 
   updateMyProfile(newData: UpdateProfileInput, userId: string) {
@@ -268,13 +273,6 @@ export class ProfileService {
         },
       });
 
-      await this.prisma.follow.create({
-        data: {
-          followerProfileId: followingProfile.id,
-          followingProfileId: followerProfile.id,
-        },
-      });
-
       this.eventClient.emit(
         KAFKA_EVENTS.SOCIAL_EVENTS.profileFollowed,
         new ProfileFollowedEvent({
@@ -301,9 +299,6 @@ export class ProfileService {
     try {
       if (followed) {
         // update the follower
-        const followingData = await this.getFollowingDataByProfileId(
-          userProfileId,
-        );
         const follower = await this.prisma.profile.update({
           where: {
             id: userProfileId,
@@ -319,11 +314,10 @@ export class ProfileService {
           },
         });
 
-        // update the following
-        const followersData = await this.getFollowersDataByProfileId(profileId);
+        // update the followed
         const followed = await this.prisma.profile.update({
           where: {
-            id: userProfileId,
+            id: profileId,
           },
           data: {
             followers: {
@@ -344,13 +338,6 @@ export class ProfileService {
           },
         });
 
-        await this.prisma.follow.deleteMany({
-          where: {
-            followerProfileId: followed.id,
-            followingProfileId: follower.id,
-          },
-        });
-
         this.eventClient.emit(
           KAFKA_EVENTS.SOCIAL_EVENTS.profileUnFollowed,
           new ProfileUnFollowEvent({
@@ -360,6 +347,8 @@ export class ProfileService {
             followerProfileId: follower.id,
           }),
         );
+      } else {
+        return false;
       }
 
       return true;
@@ -377,23 +366,20 @@ export class ProfileService {
       userId,
     );
     if (!has) throw new ProfileNotfoundException();
-    const profile = await this.prisma.profile.findFirst({
+    const follow = await this.prisma.follow.findFirst({
       where: {
-        AND: {
-          id: profileId,
-          followersData: {
-            some: {
-              id: userProfileId,
-            },
+        AND: [
+          {
+            followingProfileId: profileId,
           },
-        },
-      },
-      select: {
-        id: true,
+          {
+            followerProfileId: userProfileId,
+          },
+        ],
       },
     });
 
-    if (profile) return { followed: true, userProfileId };
+    if (follow) return { followed: true, userProfileId };
     return { followed: false, userProfileId: null };
   }
 
@@ -448,7 +434,7 @@ export class ProfileService {
       take: take,
       where: {
         id: {
-          in: followers.map((f) => f.id),
+          in: followers.map((f) => f.followerProfileId),
         },
       },
       select: {
@@ -457,11 +443,10 @@ export class ProfileService {
         photo: true,
       },
     });
-
     return {
       data: profiles,
-      hasMore: totalSearched < followers.length,
-      total: followers.length,
+      hasMore: totalSearched < profiles.length,
+      total: profiles.length,
     };
   }
 
@@ -526,6 +511,10 @@ export class ProfileService {
     };
   }
 
+  getFollowData() {
+    return this.prisma.follow.findMany();
+  }
+
   async getFollowingsByUserId(
     pagination: GqlPaginationInput,
     userId: string,
@@ -565,6 +554,10 @@ export class ProfileService {
   // --------------------------------------------------
   // Block
 
+  getBlocks() {
+    return this.prisma.blockedUser.findMany();
+  }
+
   async getAllBlockedListByProfileId(
     profileId: string,
   ): Promise<BlockedUser[]> {
@@ -589,10 +582,14 @@ export class ProfileService {
     try {
       await this.prisma.blockedUser.findFirst({
         where: {
-          AND: {
-            blockedProfileId: userProfileId,
-            blockerProfileId: BlockerProfileId,
-          },
+          AND: [
+            {
+              blockedProfileId: userProfileId,
+            },
+            {
+              blockerProfileId: BlockerProfileId,
+            },
+          ],
         },
         select: {
           id: true,
@@ -696,7 +693,7 @@ export class ProfileService {
   ): Promise<boolean> {
     try {
       const isBlocked = await this.isBlocked(authorProfileId, userProfileId);
-      if (!isBlocked) throw new Error('user is blocked');
+      if (isBlocked) throw new Error('user is blocked');
 
       return true;
     } catch (error) {
@@ -705,13 +702,18 @@ export class ProfileService {
     }
   }
 
-  canViewContentByProfileId(authorProfileId:string,viewerProfileId:string):Promise<boolean>{
-    return this.canInteractWith(authorProfileId,viewerProfileId)
+  canViewContentByProfileId(
+    authorProfileId: string,
+    viewerProfileId: string,
+  ): Promise<boolean> {
+    return this.canInteractWith(authorProfileId, viewerProfileId);
   }
-  async canViewContentByUserId(authorProfileId:string,viewerUserId:string):Promise<boolean>{
-    const viewerProfileId = await this.getProfileIdByUserId(viewerUserId)
-   
-    return this.canViewContentByProfileId(authorProfileId,viewerProfileId)
-  }
+  async canViewContentByUserId(
+    authorProfileId: string,
+    viewerUserId: string,
+  ): Promise<boolean> {
+    const viewerProfileId = await this.getProfileIdByUserId(viewerUserId);
 
+    return this.canViewContentByProfileId(authorProfileId, viewerProfileId);
+  }
 }

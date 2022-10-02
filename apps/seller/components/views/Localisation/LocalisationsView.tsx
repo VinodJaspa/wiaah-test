@@ -37,12 +37,12 @@ export const LocalisationsView: React.FC<LocailisationsViewProps> = ({}) => {
 
   return (
     <Flex direction={"column"} my="2rem">
-      <HStack px="1rem" justify={"space-between"} w="100%">
-        {!isMobile && (
+      <HStack px="" justify={"space-between"} w="100%">
+        {isMobile ? (
           <Button visibility={"hidden"} textTransform={"capitalize"}>
             {t("follow", "follow")}
           </Button>
-        )}
+        ) : null}
         <HStack w="100%">
           <Image
             rounded="xl"
@@ -61,12 +61,12 @@ export const LocalisationsView: React.FC<LocailisationsViewProps> = ({}) => {
             lineHeight={"1.3em"}
           >
             <Icon fontSize={"1.5em"} as={MdPlace} />
-            <Flex direction={"column"} align="center">
-              <Text>{tag}</Text>
-              <Text fontWeight={"bold"} fontSize={"normal"}>
-                5.5m
-              </Text>
-            </Flex>
+
+            <p>{tag}</p>
+            <p className="font-bold text-lg">
+              {"("}5.5m {t("Views")}
+              {")"}
+            </p>
           </Flex>
         </HStack>
         <Button textTransform={"capitalize"}>{t("follow", "follow")}</Button>

@@ -11,6 +11,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { useResponsive } from "hooks";
 import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -20,7 +21,7 @@ import { PlaceCardProps, ListWrapper, PlaceCard, ShowMapButton } from "ui";
 import { placesPH } from "ui/placeholder";
 
 export const PlacesView: React.FC = () => {
-  const isMobile = useBreakpointValue({ base: true, sm: false });
+  const { isMobile } = useResponsive();
   const { t } = useTranslation();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 

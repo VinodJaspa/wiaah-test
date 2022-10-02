@@ -73,7 +73,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                 <div
                   onClick={() =>
                     visit((r) =>
-                      r.visitPlace({ location: profileInfo.profession })
+                      r.visitLocalisation({ location: profileInfo.profession })
                     )
                   }
                   className="cursor-pointer flex gap-1 items-center"

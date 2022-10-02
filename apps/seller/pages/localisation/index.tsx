@@ -4,7 +4,7 @@ import { dehydrate, QueryClient } from "react-query";
 import { placesPH } from "ui/placeholder";
 import Head from "next/head";
 import { SellerLayout, useResponsive } from "ui";
-import { LocalisationsView } from "../../components";
+import { LocalisationsView } from "@components";
 
 const getLoclisations = async () => {
   return placesPH;
@@ -12,18 +12,19 @@ const getLoclisations = async () => {
 
 interface LocalisationPageProps {}
 
-export const getServerSideProps: GetServerSideProps<LocalisationPageProps> =
-  async () => {
-    const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps<
+  LocalisationPageProps
+> = async () => {
+  const queryClient = new QueryClient();
 
-    queryClient.prefetchQuery("localisations", getLoclisations);
+  queryClient.prefetchQuery("localisations", getLoclisations);
 
-    return {
-      props: {
-        dehydratedState: dehydrate(queryClient),
-      },
-    };
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
   };
+};
 
 const localisation: NextPage = () => {
   const { isMobile } = useResponsive();

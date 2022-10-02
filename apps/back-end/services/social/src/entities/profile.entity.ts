@@ -26,8 +26,8 @@ export class Profile {
   @Field(() => ID)
   id: string;
 
-  // @Field(() => ID)
-  // ownerId: string;
+  @Field(() => ID)
+  ownerId: string;
 
   // @Field(() => Date)
   // createdAt: Date;

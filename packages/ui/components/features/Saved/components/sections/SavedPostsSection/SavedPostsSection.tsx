@@ -11,7 +11,7 @@ export const SavedPostsSection: React.FC = () => {
   const { t } = useTranslation();
   return (
     <SectionWrapper>
-      <SectionHeader sectionTitle={t("Saved Posts")}></SectionHeader>
+      <SectionHeader sectionTitle={t("Saved")}></SectionHeader>
       <PostCardsListWrapper
         posts={[...Array(5)].reduce((acc) => {
           return [...acc, ...newsfeedPosts];
