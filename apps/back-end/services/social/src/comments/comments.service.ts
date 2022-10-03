@@ -168,8 +168,8 @@ export class CommentsService {
       });
 
       await this.contentManagementService.decrementContentComments(
-        ContentHostTypeEnum.COMMENT,
-        commentId,
+        comment.hostType,
+        comment.hostId,
       );
 
       return comment;

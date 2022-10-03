@@ -91,14 +91,17 @@ export class ProfileService {
         },
       });
 
-      this.eventClient.emit(
-        KAFKA_EVENTS.SOCIAL_EVENTS.profileCreated,
-        new ProfileCreatedEvent({ profileId: profile.id, userId }),
-      );
+      try {
+        this.eventClient.emit(
+          KAFKA_EVENTS.PROFILE_EVENTS.profileCreated,
+          new ProfileCreatedEvent({ profileId: profile.id, userId }),
+        );
+      } catch (error) {}
 
       return profile;
     } catch (err) {
       this.logger.log(err);
+      console.log(err);
       throw new DBErrorException(ErrorMessages.db.creatingProfileErr);
     }
   }
@@ -274,7 +277,7 @@ export class ProfileService {
       });
 
       this.eventClient.emit(
-        KAFKA_EVENTS.SOCIAL_EVENTS.profileFollowed,
+        KAFKA_EVENTS.PROFILE_EVENTS.profileFollowed,
         new ProfileFollowedEvent({
           followedId: followed.ownerId,
           followedProfileId: followed.id,
@@ -339,7 +342,7 @@ export class ProfileService {
         });
 
         this.eventClient.emit(
-          KAFKA_EVENTS.SOCIAL_EVENTS.profileUnFollowed,
+          KAFKA_EVENTS.PROFILE_EVENTS.profileUnFollowed,
           new ProfileUnFollowEvent({
             followedId: followed.ownerId,
             followedProfileId: followed.id,
@@ -631,7 +634,7 @@ export class ProfileService {
       });
 
       this.eventClient.emit(
-        KAFKA_EVENTS.SOCIAL_EVENTS.profileBlocked,
+        KAFKA_EVENTS.PROFILE_EVENTS.profileBlocked,
         new ProfileBlockEvent({
           blockedProfileId: toBlockProfileId,
           blockerProfileId: myProfileId,
@@ -669,7 +672,7 @@ export class ProfileService {
       });
 
       this.eventClient.emit(
-        KAFKA_EVENTS.SOCIAL_EVENTS.profileUnBlocked,
+        KAFKA_EVENTS.PROFILE_EVENTS.profileUnBlocked,
         new ProfileUnBlockedEvent({
           unBlockedProfileId: BlockedProfileId,
           unBlockerProfileID: myProfileId,

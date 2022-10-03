@@ -73,7 +73,7 @@ describe('Block/unblock functionlaity', () => {
     );
 
     expect(mockKafkaEmit).toBeCalledWith(
-      KAFKA_EVENTS.SOCIAL_EVENTS.profileBlocked,
+      KAFKA_EVENTS.PROFILE_EVENTS.profileBlocked,
       new ProfileBlockEvent({
         blockedProfileId: secendProfile.id,
         blockerProfileId: firstProfile.id,

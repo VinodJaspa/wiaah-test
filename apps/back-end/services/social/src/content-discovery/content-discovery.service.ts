@@ -20,6 +20,7 @@ export class ContentDiscoveryService {
   ): Promise<ContentData> {
     switch (type) {
       case 'post_newsfeed':
+        console.log('found newsfeed');
         return this.newsfeedPostsService.getNewsfeedPostById(contentId);
       case 'comment':
         return this.commentsService.getCommentById(contentId);

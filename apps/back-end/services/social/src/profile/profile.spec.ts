@@ -93,7 +93,7 @@ describe('Profile CRUD', () => {
 
     expect(mockKafkaEmit).toBeCalledTimes(1);
     expect(mockKafkaEmit).toBeCalledWith(
-      KAFKA_EVENTS.SOCIAL_EVENTS.profileCreated,
+      KAFKA_EVENTS.PROFILE_EVENTS.profileCreated,
       new ProfileCreatedEvent({
         profileId: profile.id,
         userId: mockedUser.id,

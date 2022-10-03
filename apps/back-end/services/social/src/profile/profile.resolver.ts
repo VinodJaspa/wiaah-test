@@ -8,7 +8,6 @@ import { UseGuards } from '@nestjs/common';
 import {
   Profile,
   ProfilePaginatedResponse,
-  ProfileResponse,
   ProfileMetaPaginatedResponse,
 } from '@entities';
 import { ProfileService } from './profile.service';

@@ -46,7 +46,7 @@ export class CreateNewsfeedPostInput {
   visibility: PostVisibility;
 
   @Field(() => [PostMentionInput])
-  sssmentions: PostMentionInput;
+  mentions: PostMentionInput[];
 
   @Field(() => PostLocationInput, { nullable: true })
   location?: PostLocationInput;

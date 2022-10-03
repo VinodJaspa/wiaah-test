@@ -1,4 +1,4 @@
-import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { Attachment, Profile } from '@entities';
 import { ContentHostType } from 'prismaClient';
 import { CreateGqlPaginatedResponse } from 'nest-utils';
@@ -33,6 +33,9 @@ export class Comment {
 
   @Field(() => Date)
   commentedAt: Date;
+
+  @Field(() => Int)
+  likes: number;
 }
 
 @ObjectType()

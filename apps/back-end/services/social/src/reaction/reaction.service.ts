@@ -4,7 +4,7 @@ import {
   Logger,
   UnauthorizedException,
 } from '@nestjs/common';
-import { CreateReactionInput } from '@input';
+import { CreateReactionInput, RemoveReactionInput } from '@input';
 import { ContentReaction } from '@entities';
 import { PrismaService } from 'prismaService';
 import { DBErrorException, KAFKA_EVENTS, SERVICES } from 'nest-utils';
@@ -40,6 +40,7 @@ export class ReactionService {
       contentType,
       contentId,
     );
+    console.log(content);
     if (!content) throw new ContentNotFoundException();
 
     // validate the user have the right premission to react on this content
@@ -66,7 +67,6 @@ export class ReactionService {
         contentId,
       );
 
-      // TODO: create kafka event
       this.eventClient.emit(
         KAFKA_EVENTS.REACTION_EVENTS.contentReacted,
         new ContentReactedEvent({
@@ -90,7 +90,7 @@ export class ReactionService {
   }
 
   async removeReaction(
-    input: CreateReactionInput,
+    input: RemoveReactionInput,
     userId: string,
   ): Promise<boolean> {
     const { contentId, contentType } = input;
@@ -100,11 +100,9 @@ export class ReactionService {
     try {
       await this.prisma.contentReaction.deleteMany({
         where: {
-          AND: {
-            hostType: contentType,
-            hostId: contentId,
-            userId,
-          },
+          hostType: contentType,
+          hostId: contentId,
+          userId,
         },
       });
 
@@ -115,9 +113,14 @@ export class ReactionService {
 
       return true;
     } catch (error) {
+      console.log(error);
       throw new DBErrorException(
         'failed to remove reaction, please try again later',
       );
     }
+  }
+
+  findAll() {
+    return this.prisma.contentReaction.findMany();
   }
 }

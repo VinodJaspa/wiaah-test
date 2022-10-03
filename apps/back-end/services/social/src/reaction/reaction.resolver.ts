@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { ReactionService } from './reaction.service';
 import { ContentReaction, ContentReactionResponse } from '@entities';
-import { CreateReactionInput } from '@input';
+import { CreateReactionInput, RemoveReactionInput } from '@input';
 import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
@@ -20,5 +20,13 @@ export class ReactionResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<ContentReactionResponse> {
     return { data: await this.reactionService.createReaction(args, user.id) };
+  }
+
+  @Mutation(() => ContentReaction)
+  async removeReaction(
+    @Args('removeReactionArgs') args: RemoveReactionInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.reactionService.removeReaction(args, user.id);
   }
 }
