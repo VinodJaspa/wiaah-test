@@ -7,7 +7,8 @@
     "packages/*",
     "apps/back-end/*",
     "apps/back-end/services/*",
-    "apps/back-end/packages/*"
+    "apps/back-end/packages/*",
+    "apps/front-end/*"
   ],
   "scripts": {
     "build": "turbo run build",
