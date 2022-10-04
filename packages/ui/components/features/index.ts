@@ -12,3 +12,4 @@ export * from "./Search";
 export * from "./GeoLocation";
 export * from "./Feedback";
 export * from "./Saved";
+export * from "./Admin";

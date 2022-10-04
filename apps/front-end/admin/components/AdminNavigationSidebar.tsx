@@ -6,6 +6,7 @@ import {
   AccordionButton,
   AccordionItem,
   AccordionPanel,
+  DashboardIcon,
 } from "ui";
 import { mapArray, runIfFn } from "utils";
 
@@ -28,55 +29,55 @@ export const AdminNavigationSidebar: React.FC<{
 
   const links: NavigationLink[] = [
     {
-      icon: "icon",
-      name: "dashboard",
+      icon: DashboardIcon,
+      name: "Dashboard",
       onClick() {},
       slug: "dashboard",
       subLinks: [
-        {
-          icon: "sub",
-          name: "sub panel",
-          onClick() {},
-          slug: "sub",
-          subLinks: [],
-        },
-        {
-          icon: "sub",
-          name: "sub panel",
-          onClick() {},
-          slug: "sub-1",
-          subLinks: [],
-        },
-        {
-          icon: "sub",
-          name: "sub panel",
-          onClick() {},
-          slug: "sub-2",
-          subLinks: [
-            {
-              icon: "sub",
-              name: "sub panel",
-              onClick() {},
-              slug: "sub-3",
-              subLinks: [],
-            },
-            {
-              icon: "sub",
-              name: "sub panel",
-              onClick() {},
-              slug: "sub-4",
-              subLinks: [
-                {
-                  icon: "sub",
-                  name: "sub panel",
-                  onClick() {},
-                  slug: "sub-5",
-                  subLinks: [],
-                },
-              ],
-            },
-          ],
-        },
+        // {
+        //   icon: "sub",
+        //   name: "sub panel",
+        //   onClick() {},
+        //   slug: "sub",
+        //   subLinks: [],
+        // },
+        // {
+        //   icon: "sub",
+        //   name: "sub panel",
+        //   onClick() {},
+        //   slug: "sub-1",
+        //   subLinks: [],
+        // },
+        // {
+        //   icon: "sub",
+        //   name: "sub panel",
+        //   onClick() {},
+        //   slug: "sub-2",
+        //   subLinks: [
+        //     {
+        //       icon: "sub",
+        //       name: "sub panel",
+        //       onClick() {},
+        //       slug: "sub-3",
+        //       subLinks: [],
+        //     },
+        //     {
+        //       icon: "sub",
+        //       name: "sub panel",
+        //       onClick() {},
+        //       slug: "sub-4",
+        //       subLinks: [
+        //         {
+        //           icon: "sub",
+        //           name: "sub panel",
+        //           onClick() {},
+        //           slug: "sub-5",
+        //           subLinks: [],
+        //         },
+        //       ],
+        //     },
+        //   ],
+        // },
       ],
     },
   ];
@@ -125,26 +126,31 @@ const NestedLinks: React.FC<{
         });
         return subLinks.length > 0 ? (
           <AccordionItem itemkey={`${currDeepNum}-${i}`}>
-            <AccordionButton>
-              {selected ? (
-                <div
-                  style={{
-                    paddingLeft: `${currDeepNum * 0.5}rem`,
-                  }}
-                  className={` text-primary border-b-primary flex text-lg items-center py-2 border-b border-opacity-20 gap-2`}
-                >
-                  {name}
-                </div>
-              ) : (
-                <div
-                  style={{
-                    paddingLeft: `${currDeepNum * 0.5}rem`,
-                  }}
-                  className={` text-primary border-b-primary flex text-lg items-center py-2 border-b border-opacity-20 gap-2`}
-                >
-                  {name}
-                </div>
-              )}
+            <AccordionButton
+              className={`${
+                lastDeepNum === 0
+                  ? "text-white"
+                  : selected
+                  ? "text-primary"
+                  : "text-black"
+              }`}
+            >
+              <div
+                style={{
+                  paddingLeft: `${currDeepNum * 0.5}rem`,
+                }}
+                className={`${
+                  selected
+                    ? `${
+                        lastDeepNum === 0
+                          ? "bg-primary rounded text-white"
+                          : "text-primary"
+                      }`
+                    : "text-black"
+                } flex text-lg items-center py-2 gap-2`}
+              >
+                {runIfFn(icon)} {name}
+              </div>
             </AccordionButton>
             <AccordionPanel>
               <NestedLinks
@@ -166,11 +172,15 @@ const NestedLinks: React.FC<{
             }}
             className={`${
               selected
-                ? " text-primary border-b-primary"
-                : "border-b-black text-black"
-            } flex text-lg items-center py-2 border-b border-opacity-20 border-b-black gap-2`}
+                ? `${
+                    lastDeepNum === 0
+                      ? "bg-primary rounded text-white"
+                      : "text-primary"
+                  }`
+                : "text-black"
+            } flex text-lg items-center py-2 gap-2`}
           >
-            {name}
+            {runIfFn(icon)} {name}
           </div>
         );
       })}
