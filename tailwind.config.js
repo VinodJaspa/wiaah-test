@@ -1,8 +1,8 @@
 module.exports = {
   content: [
     "./packages/ui/**/*.{js,ts,jsx,tsx}",
-    "./apps/market/pages/**/*.{js,ts,jsx,tsx}",
-    "./apps/market/components/**/*.{js,ts,jsx,tsx}",
+    "./apps/front-end/market/pages/**/*.{js,ts,jsx,tsx}",
+    "./apps/front-end/market/components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {

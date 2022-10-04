@@ -3,12 +3,14 @@ import { HtmlDivProps } from "types";
 import { CallbackAfter } from "utils";
 import { AccordionContext, AccordionItemContext } from "state";
 
-export interface AccordionPanelProps extends HtmlDivProps {}
+export interface AccordionPanelProps extends HtmlDivProps {
+  forceState?: boolean;
+}
 
 export const AccordionPanel: React.FC<AccordionPanelProps> = ({
   className,
   children,
-
+  forceState,
   ...props
 }) => {
   const [show, setShow] = React.useState<boolean>(false);
@@ -16,7 +18,7 @@ export const AccordionPanel: React.FC<AccordionPanelProps> = ({
   const { isItemOpen, isLazy, defaultOpen } =
     React.useContext(AccordionContext);
   const { key } = React.useContext(AccordionItemContext);
-  const open = isItemOpen(key);
+  const open = typeof forceState === "boolean" ? forceState : isItemOpen(key);
 
   React.useEffect(() => {
     if (open) {
@@ -33,7 +35,7 @@ export const AccordionPanel: React.FC<AccordionPanelProps> = ({
         open ? "h-fit" : "h-0"
       } overflow-clip origin-top transform w-full transition-all`}
     >
-      {show ? children : null}
+      {isLazy ? (show ? children : null) : children}
     </div>
   );
 };

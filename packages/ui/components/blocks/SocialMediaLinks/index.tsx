@@ -9,15 +9,14 @@ import {
 } from "react-icons/fa";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { social } from "../../../../../apps/market/data/Links";
-import { Text } from "@chakra-ui/react";
+import { social } from "../../../../../apps/front-end/market/data/Links";
 export const SocialMediaLinks: FC = () => {
   const { t, i18n } = useTranslation();
   return (
     <div className="block w-full space-y-4">
-      <Text color="primary.main" className="font-bold uppercase">
+      <p className="text-primary font-bold uppercase">
         {t("Stay_Connected", "Stay Connected")}
-      </Text>
+      </p>
       <ul className="block space-y-4 text-sm text-gray-400">
         <li className="flex items-center">
           <FaTwitter className="mr-2 h-4 w-4 text-sky-400" />

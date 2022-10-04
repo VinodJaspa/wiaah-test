@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { customer_service } from "../../../../../apps/market/data/Links";
+import { customer_service } from "../../../../../apps/front-end/market/data/Links";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 

@@ -119,3 +119,5 @@ export * from "./TelegramLogoIcon";
 export * from "./LinkedInLogoIcon";
 export * from "./WhatsappLogoIcon";
 export * from "./AtEmailIcon";
+export * from "./LockIcon";
+export * from "./LogoIcon";
