@@ -5,7 +5,6 @@ import { AdminNavigationSidebar } from "./AdminNavigationSidebar";
 
 export const AdminLayout: React.FC = ({ children }) => {
   const { getCurrentPath } = useRouting();
-  console.log(getCurrentPath());
   return (
     <div className="w-screen overflow-x-hidden min-h-[100vh] grid grid-cols-6">
       <AdminNavigationSidebar
@@ -13,7 +12,7 @@ export const AdminLayout: React.FC = ({ children }) => {
         onRoute={() => {}}
       />
       <div className="flex flex-col px-12 w-full gap-4 col-span-5">
-        <AdminHeader title="Dashboard" />
+        <AdminHeader title={getCurrentPath().split("/")[1].replace("-", " ")} />
         {children}
       </div>
     </div>

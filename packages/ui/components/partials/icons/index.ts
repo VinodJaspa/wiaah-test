@@ -122,3 +122,6 @@ export * from "./AtEmailIcon";
 export * from "./LockIcon";
 export * from "./LogoIcon";
 export * from "./DashboardIcon";
+export * from "./ShopIcon";
+export * from "./ListIcon";
+export * from "./RefreshIcon";

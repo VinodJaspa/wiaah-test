@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import {
   LogoIcon,
@@ -7,6 +8,8 @@ import {
   AccordionItem,
   AccordionPanel,
   DashboardIcon,
+  ShopIcon,
+  ArrowRightIcon,
 } from "ui";
 import { mapArray, runIfFn } from "utils";
 
@@ -24,8 +27,7 @@ export const AdminNavigationSidebar: React.FC<{
 }> = ({ currentUrl: _url = "", onRoute }) => {
   let currentUrl = _url[0] === "/" ? _url.slice(1) : _url;
   const routeSlugs = currentUrl.split("?")[0].split("/");
-
-  console.log(routeSlugs);
+  const { t } = useTranslation();
 
   const links: NavigationLink[] = [
     {
@@ -33,51 +35,25 @@ export const AdminNavigationSidebar: React.FC<{
       name: "Dashboard",
       onClick() {},
       slug: "dashboard",
+      subLinks: [],
+    },
+    {
+      icon: ShopIcon,
+      name: t("Product Shop"),
+      onClick() {},
+      slug: "product-shop",
       subLinks: [
-        // {
-        //   icon: "sub",
-        //   name: "sub panel",
-        //   onClick() {},
-        //   slug: "sub",
-        //   subLinks: [],
-        // },
-        // {
-        //   icon: "sub",
-        //   name: "sub panel",
-        //   onClick() {},
-        //   slug: "sub-1",
-        //   subLinks: [],
-        // },
-        // {
-        //   icon: "sub",
-        //   name: "sub panel",
-        //   onClick() {},
-        //   slug: "sub-2",
-        //   subLinks: [
-        //     {
-        //       icon: "sub",
-        //       name: "sub panel",
-        //       onClick() {},
-        //       slug: "sub-3",
-        //       subLinks: [],
-        //     },
-        //     {
-        //       icon: "sub",
-        //       name: "sub panel",
-        //       onClick() {},
-        //       slug: "sub-4",
-        //       subLinks: [
-        //         {
-        //           icon: "sub",
-        //           name: "sub panel",
-        //           onClick() {},
-        //           slug: "sub-5",
-        //           subLinks: [],
-        //         },
-        //       ],
-        //     },
-        //   ],
-        // },
+        {
+          icon: () => (
+            <>
+              <ArrowRightIcon />
+            </>
+          ),
+          name: t("Category"),
+          onClick() {},
+          slug: "category",
+          subLinks: [],
+        },
       ],
     },
   ];

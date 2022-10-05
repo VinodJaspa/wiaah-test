@@ -21,7 +21,7 @@ export const AdminHeader: React.FC<{ title: string }> = ({ title = "" }) => {
   return (
     <div className="w-full">
       <div className="h-24 flex items-center justify-between">
-        <p className="md:text-xl xl:text-2xl font-bold">{title}</p>
+        <p className="md:text-xl xl:text-2xl font-bold capitalize">{title}</p>
         <InputGroup className="rounded-lg w-1/2">
           <InputLeftElement>
             <SearchIcon className="" />

@@ -1,8 +1,10 @@
 import React from "react";
+import { HtmlSvgProps } from "types";
 
-export const DashboardIcon = () => {
+export const DashboardIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
     <svg
+      {...props}
       width="1em"
       height="1em"
       viewBox="0 0 24 24"
