@@ -10,6 +10,7 @@ import {
   DashboardIcon,
   ShopIcon,
   ArrowRightIcon,
+  ServicesIcon,
 } from "ui";
 import { mapArray, runIfFn } from "utils";
 
@@ -52,6 +53,69 @@ export const AdminNavigationSidebar: React.FC<{
           name: t("Category"),
           onClick() {},
           slug: "category",
+          subLinks: [],
+        },
+        {
+          icon: () => (
+            <>
+              <ArrowRightIcon />
+            </>
+          ),
+          name: t("Products"),
+          onClick() {},
+          slug: "products",
+          subLinks: [],
+        },
+        {
+          icon: () => (
+            <>
+              <ArrowRightIcon />
+            </>
+          ),
+          name: t("Filters"),
+          onClick() {},
+          slug: "filters",
+          subLinks: [],
+        },
+      ],
+    },
+    {
+      icon: ServicesIcon,
+      name: t("Service Shop"),
+      onClick() {},
+      slug: "service-shop",
+      subLinks: [
+        {
+          icon: () => (
+            <>
+              <ArrowRightIcon />
+            </>
+          ),
+          name: t("Category"),
+          onClick() {},
+          slug: "category",
+          subLinks: [],
+        },
+        {
+          icon: () => (
+            <>
+              <ArrowRightIcon />
+            </>
+          ),
+          name: t("Services"),
+          onClick() {},
+          slug: "services",
+          subLinks: [],
+        },
+        {
+          icon: () => (
+            <>
+              <ArrowRightIcon />
+            </>
+          ),
+          name: t("Filters"),
+          onClick() {},
+          slug: "filters",
           subLinks: [],
         },
       ],
@@ -104,7 +168,7 @@ const NestedLinks: React.FC<{
           <AccordionItem itemkey={`${currDeepNum}-${i}`}>
             <AccordionButton
               className={`${
-                lastDeepNum === 0
+                lastDeepNum === 0 && selected
                   ? "text-white"
                   : selected
                   ? "text-primary"
@@ -130,7 +194,7 @@ const NestedLinks: React.FC<{
             </AccordionButton>
             <AccordionPanel forceState={selected === true ? true : undefined}>
               <NestedLinks
-                canBeSelected={true}
+                canBeSelected={selected}
                 lastDeepNum={currDeepNum}
                 links={subLinks}
                 routeSlugs={routeSlugs}
@@ -141,7 +205,7 @@ const NestedLinks: React.FC<{
         ) : (
           <div
             onClick={() =>
-              visit((r) => r.addPath([...deepSlugs, slug].join("/")))
+              visit((r) => r.addPath([...deepSlugs, slug].join("/")), false)
             }
             style={{
               paddingLeft: `${currDeepNum * 0.5}rem`,

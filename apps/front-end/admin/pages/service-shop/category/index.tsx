@@ -1,11 +1,13 @@
-import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import {
+  Button,
   Checkbox,
   EditIcon,
+  ItemsPagination,
   ListIcon,
+  PlusIcon,
   RefreshIcon,
   Table,
   TBody,
@@ -13,11 +15,8 @@ import {
   Th,
   THead,
   Tr,
-  PlusIcon,
   TrashIcon,
-  ItemsPagination,
   usePaginationControls,
-  Button,
 } from "ui";
 import { mapArray, randomNum, SeperatedStringArray } from "utils";
 
@@ -27,15 +26,20 @@ export default () => {
   const { visit, getCurrentPath } = useRouting();
 
   const categories: {
-    name: string[];
+    name: string;
     sortOrder: number;
     id: string;
-  }[] = [...Array(50)].map((_, i) => ({
+  }[] = [
+    "Hotel",
+    "Holiday Rentals",
+    "Restaurant",
+    "Health Center",
+    "Beauty Center",
+    "Vehicle",
+  ].map((v, i) => ({
     id: i.toString(),
-    name: [...Array(randomNum(3))]
-      .map((_, i) => `category-${i}`)
-      .concat("category"),
-    sortOrder: randomNum(10),
+    name: `${v}`,
+    sortOrder: i + 1,
   }));
 
   React.useEffect(() => {
@@ -51,12 +55,6 @@ export default () => {
         <div className="flex items-center gap-1">
           <span className="border text-lg flex justify-center items-center shadow rounded h-12 w-12">
             <RefreshIcon />
-          </span>
-          <span className="border text-lg  text-white flex justify-center items-center bg-primary shadow rounded h-12 w-12">
-            <PlusIcon />
-          </span>
-          <span className="border text-lg  text-white flex justify-center items-center bg-secondaryRed shadow rounded h-12 w-12">
-            <TrashIcon />
           </span>
         </div>
       </div>
@@ -75,7 +73,7 @@ export default () => {
           <THead>
             <Th align="left">
               <div className="flex w-full items-center gap-4">
-                <Checkbox />
+                {/* <Checkbox /> */}
                 <p>{t("Category Name")}</p>
               </div>
             </Th>
@@ -83,38 +81,32 @@ export default () => {
             <Th>{t("Action")}</Th>
           </THead>
           <TBody>
-            {mapArray(
-              categories.slice(
-                pagination.page * pagination.take,
-                (pagination.page + 1) * pagination.take
-              ),
-              ({ id, name, sortOrder }, i) => (
-                <Tr>
-                  <Td className="w-[99%]">
-                    <div className="flex items-center gap-4 font-semibold">
-                      <Checkbox />
-                      <p>{SeperatedStringArray(name, " > ")}</p>
-                    </div>
-                  </Td>
-                  <Td>{sortOrder}</Td>
-                  <Td>
-                    <Button
-                      onClick={() =>
-                        visit((r) =>
-                          r
-                            .addPath(getCurrentPath({ noParams: true }))
-                            .addPath("form")
-                            .addQuery({ category_id: id })
-                        )
-                      }
-                      className="flex items-center justify-center  text-2xl h-12 w-12"
-                    >
-                      <EditIcon />
-                    </Button>
-                  </Td>
-                </Tr>
-              )
-            )}
+            {mapArray(categories, ({ id, name, sortOrder }, i) => (
+              <Tr>
+                <Td className="w-[99%]">
+                  <div className="flex items-center gap-4 font-semibold">
+                    {/* <Checkbox /> */}
+                    <p>{name}</p>
+                  </div>
+                </Td>
+                <Td>{sortOrder}</Td>
+                <Td>
+                  <Button
+                    onClick={() =>
+                      visit((r) =>
+                        r
+                          .addPath(getCurrentPath({ noParams: true }))
+                          .addPath("form")
+                          .addQuery({ category_id: id })
+                      )
+                    }
+                    className="flex items-center justify-center  text-2xl h-12 w-12"
+                  >
+                    <EditIcon />
+                  </Button>
+                </Td>
+              </Tr>
+            ))}
           </TBody>
         </Table>
         <ItemsPagination controls={controls} />

@@ -61,35 +61,33 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
               </Tr>
             </THead>
             <TBody>
-              {products
-                .slice(page * take, page * take + take)
-                .map((product, i) => (
-                  <Tr key={product.id + i}>
-                    <Td align="center" className="w-24">
-                      <img
-                        className="h-auto w-full"
-                        src={product.image}
-                        alt={product.name}
-                      />
-                    </Td>
-                    <Td align="center">{product.name}</Td>
-                    <Td align="center">
-                      {product.price.amount} {product.price.currency}
-                    </Td>
-                    <Td align="center">{product.stockStatus}</Td>
-                    <Td align="center">
-                      {product.earnings.amount} {product.earnings.currency}
-                    </Td>
-                    <Td align="center">{product.sales}</Td>
-                    <Td align="center">{product.status}</Td>
-                    <Td align="center">
-                      <div className="flex items-center gap-2">
-                        <EditIcon className="text-xl cursor-pointer" />
-                        <TrashIcon className="text-red-700 text-xl cursor-pointer" />
-                      </div>
-                    </Td>
-                  </Tr>
-                ))}
+              {products.map((product, i) => (
+                <Tr key={product.id + i}>
+                  <Td align="center" className="w-24">
+                    <img
+                      className="h-auto w-full"
+                      src={product.image}
+                      alt={product.name}
+                    />
+                  </Td>
+                  <Td align="center">{product.name}</Td>
+                  <Td align="center">
+                    {product.price.amount} {product.price.currency}
+                  </Td>
+                  <Td align="center">{product.stockStatus}</Td>
+                  <Td align="center">
+                    {product.earnings.amount} {product.earnings.currency}
+                  </Td>
+                  <Td align="center">{product.sales}</Td>
+                  <Td align="center">{product.status}</Td>
+                  <Td align="center">
+                    <div className="flex items-center gap-2">
+                      <EditIcon className="text-xl cursor-pointer" />
+                      <TrashIcon className="text-red-700 text-xl cursor-pointer" />
+                    </div>
+                  </Td>
+                </Tr>
+              ))}
             </TBody>
           </Table>
         </TableContainer>

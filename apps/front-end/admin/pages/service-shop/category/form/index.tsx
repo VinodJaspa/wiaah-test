@@ -26,12 +26,7 @@ import {
   SelectOption,
   StarOutlineIcon,
 } from "ui";
-import {
-  countries,
-  mapArray,
-  runIfFn,
-  WiaahLanguageCountriesIsoCodes,
-} from "utils";
+import { countries, mapArray, runIfFn } from "utils";
 
 const EditCategory = () => {
   const { getParam } = useRouting();
@@ -46,16 +41,19 @@ const EditCategory = () => {
           <SimpleTabs>
             <div className="flex items-center">
               <SimpleTabHead>
-                {mapArray(WiaahLanguageCountriesIsoCodes, (v, i) => (
-                  <div
-                    className={`${
-                      i === 0 ? "border-2 border-gray-300 border-b-white" : ""
-                    } px-8 py-2`}
-                    key={i}
-                  >
-                    <FlagIcon code={v} />
-                  </div>
-                ))}
+                {mapArray(
+                  ["GB", "FR", "DE", "ES"] as FlagIconCode[],
+                  (v, i) => (
+                    <div
+                      className={`${
+                        i === 0 ? "border-2 border-gray-300 border-b-white" : ""
+                      } px-8 py-2`}
+                      key={i}
+                    >
+                      <FlagIcon code={v} />
+                    </div>
+                  )
+                )}
               </SimpleTabHead>
             </div>
             <SimpleTabItemList>
@@ -105,16 +103,19 @@ const EditCategory = () => {
           <SimpleTabs>
             <div className="flex items-center">
               <SimpleTabHead>
-                {mapArray(WiaahLanguageCountriesIsoCodes, (v, i) => (
-                  <div
-                    className={`${
-                      i === 0 ? "border-2 border-gray-300 border-b-white" : ""
-                    } px-8 py-2`}
-                    key={i}
-                  >
-                    <FlagIcon code={v} />
-                  </div>
-                ))}
+                {mapArray(
+                  ["US", "FR", "GE", "ES"] as FlagIconCode[],
+                  (v, i) => (
+                    <div
+                      className={`${
+                        i === 0 ? "border-2 border-gray-300 border-b-white" : ""
+                      } px-8 py-2`}
+                      key={i}
+                    >
+                      <FlagIcon code={v} />
+                    </div>
+                  )
+                )}
               </SimpleTabHead>
             </div>
           </SimpleTabs>
@@ -184,7 +185,7 @@ const EditCategory = () => {
             <InputGroup className="w-full col-span-7">
               <InputLeftElement className="px-[0px]">
                 <Select>
-                  {mapArray(WiaahLanguageCountriesIsoCodes, (isoCode, i) => (
+                  {mapArray(["GB", "FR", "DE", "ES"], (isoCode, i) => (
                     <SelectOption value={isoCode} key={i} className="w-12">
                       <FlagIcon code={isoCode} />
                     </SelectOption>

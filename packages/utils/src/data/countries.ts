@@ -17,3 +17,5 @@ export const getStateByCodeAndCountry = (
   stateCode: string,
   countryCode: string
 ) => State.getStateByCodeAndCountry(stateCode, countryCode);
+
+export const WiaahLanguageCountriesIsoCodes = ["GB", "FR", "DE", "ES"];
