@@ -1,8 +1,16 @@
 import { AdminLayout } from "@components";
-import { NextPage } from "next";
+import { GetServerSideProps, NextPage } from "next";
+
+export const getServerSideProps: GetServerSideProps = async () => {
+  return {
+    redirect: "/dashbaord",
+    notFound: true,
+    props: {},
+  };
+};
 
 const index: NextPage = () => {
-  return <div>main</div>;
+  return <div>test</div>;
 };
 
 export default index;

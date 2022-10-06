@@ -128,7 +128,7 @@ const NestedLinks: React.FC<{
                 {runIfFn(icon)} {name}
               </div>
             </AccordionButton>
-            <AccordionPanel>
+            <AccordionPanel forceState={selected === true ? true : undefined}>
               <NestedLinks
                 canBeSelected={true}
                 lastDeepNum={currDeepNum}

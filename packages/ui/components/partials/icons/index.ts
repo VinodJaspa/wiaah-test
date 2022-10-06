@@ -125,3 +125,5 @@ export * from "./DashboardIcon";
 export * from "./ShopIcon";
 export * from "./ListIcon";
 export * from "./RefreshIcon";
+export * from "./SaveIcon";
+export * from "./ArrowRoundBack";

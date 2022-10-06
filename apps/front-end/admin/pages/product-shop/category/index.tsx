@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useRouting } from "routing";
 import {
   Checkbox,
   EditIcon,
@@ -16,12 +17,14 @@ import {
   TrashIcon,
   ItemsPagination,
   usePaginationControls,
+  Button,
 } from "ui";
 import { mapArray, randomNum, SeperatedStringArray } from "utils";
 
 const ProductShop: NextPage = () => {
   const { t } = useTranslation();
   const { controls, changeTotalItems, pagination } = usePaginationControls();
+  const { visit, getCurrentPath } = useRouting();
   const categories: {
     name: string[];
     sortOrder: number;
@@ -57,12 +60,17 @@ const ProductShop: NextPage = () => {
         </div>
       </div>
 
-      <div className="flex flex-col w-full shadow-lg border p-2 rounded-lg">
+      <div className="flex flex-col gap-4 w-full shadow-lg border p-2 rounded-lg">
         <div className="flex items-center text-xl font-bold gap-2">
           <ListIcon className="text-base" />
           <p>{t("Category List")}</p>
         </div>
-        <Table ThProps={{ className: "whitespace-nowrap" }} className="w-full">
+        <Table
+          TrProps={{ className: "" }}
+          TdProps={{ className: "border" }}
+          ThProps={{ className: "whitespace-nowrap border" }}
+          className="w-full"
+        >
           <THead>
             <Th align="left">
               <div className="flex w-full items-center gap-4">
@@ -89,9 +97,19 @@ const ProductShop: NextPage = () => {
                   </Td>
                   <Td>{sortOrder}</Td>
                   <Td>
-                    <div className="bg-primary flex justify-center items-center rounded text-white text-2xl h-12 w-12">
+                    <Button
+                      onClick={() =>
+                        visit((r) =>
+                          r
+                            .addPath(getCurrentPath({ noParams: true }))
+                            .addPath("form")
+                            .addQuery({ category_id: id })
+                        )
+                      }
+                      className="flex items-center justify-center  text-2xl h-12 w-12"
+                    >
                       <EditIcon />
-                    </div>
+                    </Button>
                   </Td>
                 </Tr>
               )

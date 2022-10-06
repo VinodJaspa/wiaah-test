@@ -20,7 +20,6 @@ import {
 import {
   Area,
   AreaChart,
-  Cell,
   RadialBar,
   RadialBarChart,
   Tooltip,
