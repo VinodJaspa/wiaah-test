@@ -16,6 +16,9 @@ import {
   Td,
   DownloadIcon,
   Button,
+  useGetAdminRecentSales,
+  useGetAdminLatestOrders,
+  useGetAdminDashboardData,
 } from "ui";
 import {
   Area,
@@ -26,13 +29,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { mapArray, randomNum } from "utils";
+import { mapArray, randomNum, SnakeCaseToText } from "utils";
 import { useTranslation } from "react-i18next";
-import { useDateDiff } from "hooks";
-
-type LatestOrderStatus = "Chargeback" | "Paid" | "Refund";
+import { useDateDiff, useResponsive } from "hooks";
+import { AnalyticsProfit } from "api";
 
 const Dashboard: NextPage = () => {
+  useResponsive();
   const chartRef = React.useRef<HTMLDivElement>(null);
   const radialChartRef = React.useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
@@ -42,94 +45,45 @@ const Dashboard: NextPage = () => {
     buyers: randomNum(50),
   }));
 
-  const totalProfit = 45813;
+  const { data: recentSalesRes } = useGetAdminRecentSales();
 
-  const profitDetails: {
-    pointName: string;
-    pointPercentage: number;
-    fill: string;
-  }[] = [
-    {
-      pointName: t("Maintenace"),
-      pointPercentage: 50,
-      fill: "#fff",
-    },
-    {
-      pointName: t("Giveaway"),
-      pointPercentage: 60,
-      fill: "#fff",
-    },
-    {
-      pointName: t("Affiliate"),
-      pointPercentage: 70,
-      fill: "#fff",
-    },
-    {
-      pointName: t("Ofline Sales"),
-      pointPercentage: 80,
-      fill: "#fff",
-    },
-  ];
+  const { data: latestOrdersRes } = useGetAdminLatestOrders();
 
-  const recentSales: {
-    buyer: {
-      name: string;
-      photo: string;
-      id: string;
-    };
-    date: Date;
-    price: number;
-  }[] = [...Array(9)].map((_, i) => ({
-    buyer: {
-      id: i.toString(),
-      name: "username",
-      photo: `/profile (${i + 1}).jfif`,
-    },
-    date: new Date(),
-    price: randomNum(400),
-  }));
-
-  const status: LatestOrderStatus[] = ["Chargeback", "Paid", "Paid", "Refund"];
-
-  const recentOrders: {
-    date: Date;
-    billingName: string;
-    amount: number;
-    status: LatestOrderStatus;
-  }[] = [...Array(10)].map((_, i) => ({
-    amount: randomNum(50000),
-    billingName: "user name",
-    date: new Date(),
-    status: status[randomNum(status.length)],
-  }));
+  const { data: analyticsData } = useGetAdminDashboardData();
 
   return (
     <div className="grid grid-cols-3 gap-4">
       <div className="col-span-2 flex gap-16 flex-col">
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4">
           <AnalyticsCard
             className="bg-indigo-200"
-            amount={34000}
+            amount={analyticsData?.generalAnalytics.totalBalance.amount}
             icon={ShoppingBagOutlineIcon}
-            incress={true}
-            percentage={25}
-            title={"total balance"}
+            incress={analyticsData?.generalAnalytics.totalBalance.incress}
+            percentage={
+              analyticsData?.generalAnalytics.totalBalance.changePercent
+            }
+            title={"Total Balance"}
           />
           <AnalyticsCard
             className="bg-neutral-200"
-            amount={34000}
+            amount={analyticsData?.generalAnalytics.totalExpenses.amount}
             icon={ShoppingBagOutlineIcon}
-            incress={true}
-            percentage={25}
-            title={"total balance"}
+            incress={analyticsData?.generalAnalytics.totalExpenses.incress}
+            percentage={
+              analyticsData?.generalAnalytics.totalExpenses.changePercent
+            }
+            title={"Total Expenses"}
           />
           <AnalyticsCard
             className="bg-orange-200"
-            amount={34500}
+            amount={analyticsData?.generalAnalytics.totalProfit.amount}
             icon={ShoppingBagOutlineIcon}
-            incress={true}
-            percentage={25}
-            title={"total balance"}
+            incress={analyticsData?.generalAnalytics.totalProfit.incress}
+            percentage={
+              analyticsData?.generalAnalytics.totalProfit.changePercent
+            }
+            title={"Total Profit"}
           />
         </div>
         <div ref={chartRef} className="w-full h-96">
@@ -191,7 +145,7 @@ const Dashboard: NextPage = () => {
             </THead>
             <TBody>
               {mapArray(
-                recentOrders,
+                latestOrdersRes?.data,
                 ({ amount, billingName, date, status }, i) => (
                   <Tr key={i}>
                     <Td>
@@ -205,7 +159,7 @@ const Dashboard: NextPage = () => {
                     <Td>
                       <PriceDisplay price={amount} />
                     </Td>
-                    <Td>{status}</Td>
+                    <Td>{SnakeCaseToText(status)}</Td>
 
                     <Td align="center">
                       <DownloadIcon />
@@ -230,22 +184,25 @@ const Dashboard: NextPage = () => {
           </div>
           <div className="flex gap-8 justify-between">
             <div className="flex list-disc flex-col gap-2">
-              {mapArray(profitDetails, ({ pointName, pointPercentage }, i) => (
-                <div className="text-white list-item" key={i}>
-                  <div className="flex flex-col gap-1">
-                    <p className="whitespace-nowrap text-white text-opacity-70">
-                      {pointName}
-                    </p>
-                    <p className="font-bold">{pointPercentage}%</p>
+              {mapArray(
+                analyticsData?.monthlyProfit.profitAnalytics,
+                ({ percent, title }, i) => (
+                  <div className="text-white list-item" key={i}>
+                    <div className="flex flex-col gap-1">
+                      <p className="whitespace-nowrap text-white text-opacity-70">
+                        {title}
+                      </p>
+                      <p className="font-bold">{percent}%</p>
+                    </div>
                   </div>
-                </div>
-              ))}
+                )
+              )}
             </div>
             <div ref={radialChartRef} className="w-full">
               <AspectRatio ratio={1}>
                 <div className="absolute text-white flex flex-col items-center top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
                   <p>{t("Total")}</p>
-                  <PriceDisplay price={totalProfit} />
+                  <PriceDisplay price={analyticsData?.monthlyProfit.total} />
                 </div>
                 <RadialBarChart
                   width={radialChartRef.current?.getBoundingClientRect().width}
@@ -255,25 +212,19 @@ const Dashboard: NextPage = () => {
                   innerRadius="25%"
                   outerRadius="100%"
                   data={[
-                    {
-                      pointName: "",
-                      pointPercentage: 0,
+                    { percent: 0, title: "" },
+                    { percent: 100, title: "", fill: "rgba(0,0,0,0)" },
+                  ].concat(
+                    analyticsData?.monthlyProfit.profitAnalytics.map((v) => ({
+                      ...v,
                       fill: "#fff",
-                    },
-                    {
-                      pointName: "",
-                      pointPercentage: 100,
-                      fill: "rgba(0,0,0,0)",
-                    },
-                  ].concat(profitDetails)}
+                    })) || []
+                  )}
                   startAngle={450}
-                  //   barGap={16}
                   endAngle={90}
                   barSize={4}
-                  //   barCategoryGap={16}
                 >
-                  <RadialBar dataKey="pointPercentage"></RadialBar>
-                  {/* <Legend iconSize={10} width={120} height={140} layout='vertical' verticalAlign='middle' align="right" /> */}
+                  <RadialBar dataKey="percent"></RadialBar>
                   <Tooltip />
                 </RadialBarChart>
               </AspectRatio>
@@ -286,7 +237,7 @@ const Dashboard: NextPage = () => {
             <p className="font-bold text-lg">{t("Recent Sales")}</p>
             <p className="font-semibold">{t("See All")}</p>
           </div>
-          {mapArray(recentSales, ({ buyer, date, price }, i) => {
+          {mapArray(recentSalesRes?.data, ({ buyer, date, price }, i) => {
             const { getSince } = useDateDiff({ from: date, to: new Date() });
 
             const since = getSince();

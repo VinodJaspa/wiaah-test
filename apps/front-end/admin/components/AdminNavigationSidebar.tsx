@@ -156,14 +156,7 @@ const NestedLinks: React.FC<{
     <div className="flex flex-col gap-2 w-full">
       {mapArray(links, ({ icon, name, onClick, slug, subLinks }, i) => {
         const selected = routeSlugs[lastDeepNum] === slug && canBeSelected;
-        console.log({
-          selected,
-          routeSlugs,
-          lastDeepNum,
-          currDeepNum,
-          canBeSelected,
-          slug,
-        });
+
         return subLinks.length > 0 ? (
           <AccordionItem itemkey={`${currDeepNum}-${i}`}>
             <AccordionButton
@@ -192,7 +185,7 @@ const NestedLinks: React.FC<{
                 {runIfFn(icon)} {name}
               </div>
             </AccordionButton>
-            <AccordionPanel forceState={selected === true ? true : undefined}>
+            <AccordionPanel initialState={selected === true ? true : undefined}>
               <NestedLinks
                 canBeSelected={selected}
                 lastDeepNum={currDeepNum}

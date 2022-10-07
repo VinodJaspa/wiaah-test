@@ -7,3 +7,4 @@ export * from "./Recommendation";
 export * from "./CurrencyConversion";
 export * from "./Cart";
 export * from "./GeoLocation";
+export * from "./Admin";

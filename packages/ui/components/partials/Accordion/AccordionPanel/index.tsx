@@ -4,21 +4,26 @@ import { CallbackAfter } from "utils";
 import { AccordionContext, AccordionItemContext } from "state";
 
 export interface AccordionPanelProps extends HtmlDivProps {
-  forceState?: boolean;
+  initialState?: boolean;
 }
 
 export const AccordionPanel: React.FC<AccordionPanelProps> = ({
   className,
   children,
-  forceState,
+  initialState,
   ...props
 }) => {
   const [show, setShow] = React.useState<boolean>(false);
 
-  const { isItemOpen, isLazy, defaultOpen } =
-    React.useContext(AccordionContext);
+  const { isItemOpen, isLazy, openItem } = React.useContext(AccordionContext);
   const { key } = React.useContext(AccordionItemContext);
-  const open = typeof forceState === "boolean" ? forceState : isItemOpen(key);
+  const open = isItemOpen(key);
+
+  React.useEffect(() => {
+    if (initialState === true) {
+      openItem(key);
+    }
+  }, []);
 
   React.useEffect(() => {
     if (open) {
