@@ -2,7 +2,7 @@ const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
   content: [
-    "../../packages/ui/**/*.{js,ts,jsx,tsx}",
+    "../../../packages/ui/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
@@ -19,7 +19,7 @@ module.exports = {
         "custum-aspect": "5 / 4",
       },
       colors: {
-        iconGray:"#999999",
+        iconGray: "#999999",
         PHText: "#626262",
         lightGray: "#F5F5F5",
         lightBlack: "#00000099",

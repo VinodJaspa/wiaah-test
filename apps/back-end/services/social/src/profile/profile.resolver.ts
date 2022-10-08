@@ -8,7 +8,6 @@ import { UseGuards } from '@nestjs/common';
 import {
   Profile,
   ProfilePaginatedResponse,
-  ProfileResponse,
   ProfileMetaPaginatedResponse,
 } from '@entities';
 import { ProfileService } from './profile.service';
@@ -30,18 +29,16 @@ export class ProfileResolver {
 
   // Profile CRUD //
 
-  @Mutation(() => ProfileResponse)
+  @Mutation(() => Profile)
   async createProfile(
     @Args('createProfileInput') createProfileInput: CreateProfileInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ): Promise<ProfileResponse> {
+  ): Promise<Profile> {
     const profile = await this.profileService.create(
       createProfileInput,
       user.id,
     );
-    return {
-      data: profile,
-    };
+    return profile;
   }
 
   @Query(() => ProfilePaginatedResponse)
@@ -49,35 +46,29 @@ export class ProfileResolver {
     return this.profileService.findAll();
   }
 
-  @Query(() => ProfileResponse)
+  @Query(() => Profile)
   async myProfile(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ): Promise<ProfileResponse> {
-    return {
-      data: await this.profileService.getMyProfile(user.id),
-    };
+  ): Promise<Profile> {
+    return await this.profileService.getMyProfile(user.id);
   }
 
-  @Mutation(() => ProfileResponse)
-  async updateProfile(
+  @Mutation(() => Profile)
+  async updateMyProfile(
     @Args('updateProfileInput') updateProfileInput: UpdateProfileInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ): Promise<ProfileResponse> {
-    return {
-      data: await this.profileService.updateMyProfile(
-        updateProfileInput,
-        user.id,
-      ),
-    };
+  ): Promise<Profile> {
+    return await this.profileService.updateMyProfile(
+      updateProfileInput,
+      user.id,
+    );
   }
 
-  @Mutation(() => ProfileResponse)
-  async removeProfile(
+  @Mutation(() => Profile)
+  async deleteMyProfile(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ): Promise<ProfileResponse> {
-    return {
-      data: await this.profileService.removeMyProfile(user.id),
-    };
+  ): Promise<Profile> {
+    return await this.profileService.removeMyProfile(user.id);
   }
 
   // TODO: remove on production
@@ -92,7 +83,7 @@ export class ProfileResolver {
   // ---------------------------------- //
 
   @Query(() => ProfileMetaPaginatedResponse)
-  getFollowersByProfile(
+  getFollowersByProfileId(
     @Args('getFollowersMetaInput') args: GetProfileFollowersMetaInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<ProfileMetaPaginatedResponse> {
@@ -104,11 +95,11 @@ export class ProfileResolver {
   }
 
   @Query(() => ProfileMetaPaginatedResponse)
-  getFollowingByProfile(
+  getFollowingByProfileId(
     @Args('getFollowingMetaInput') args: GetProfileFollowersMetaInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<ProfileMetaPaginatedResponse> {
-    return this.profileService.getFollowersMetaByProfileId(
+    return this.profileService.getFollowingsByProfileId(
       args.pagination,
       args.profileId,
       user.id,
@@ -131,14 +122,12 @@ export class ProfileResolver {
     return this.profileService.getMyFollowings(args.pagination, user.id);
   }
 
-  @Mutation(() => ProfileResponse)
+  @Mutation(() => Profile)
   async followProfile(
     @Args('followUserInput') args: FollowProfileInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ): Promise<ProfileResponse> {
-    return {
-      data: await this.profileService.followProfile(args.profileId, user.id),
-    };
+  ): Promise<Profile> {
+    return await this.profileService.followProfile(args.profileId, user.id);
   }
 
   @Mutation(() => Boolean)

@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output = "./generated/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+
+type ServiceCategoryFilterValue {
+  name String
+  sortOrder Int
+}
+
+type ServiceCategoryFilter {
+  filterGroupName String
+  filterValues ServiceCategoryFilterValue[]
+  sortOrder Int 
+}
+
+model ServiceCategory {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  createdByUserId String
+  name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  filters ServiceCategoryFilter[]
+}

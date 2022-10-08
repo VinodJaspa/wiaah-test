@@ -36,12 +36,15 @@ export const KAFKA_EVENTS = {
     partnerDeActivated: "partner.deactivated",
     partnerActivated: "partner.activated",
   },
-  SOCIAL_EVENTS: {
+  PROFILE_EVENTS: {
     profileCreated: "profile.created",
     profileFollowed: "profile.followed",
     profileUnFollowed: "profile.unFollowed",
     profileBlocked: "profile.blocked",
     profileUnBlocked: "profile.unBlocked",
+  },
+  NEWSFEED_POST_EVENTS: {
+    postCreated: "newsfeed.post.created",
   },
   COMMENTS_EVENTS: {
     commentCreated: "comment.created",

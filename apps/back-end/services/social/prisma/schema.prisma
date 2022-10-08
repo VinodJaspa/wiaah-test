@@ -19,7 +19,7 @@ model Profile {
   username       String
   lastActive     DateTime
   activeStatus   ActiveStatus      @default(inActive)
-  bio            String
+  bio            String            @default("Hi, im a new Wiaah user")
   photo          String
   followers      Int               @default(0)
   following      Int               @default(0)
@@ -27,7 +27,7 @@ model Profile {
   followersData  Follow[]
   publications   Int               @default(0)
   profession     String
-  visibility     ProfileVisibility
+  visibility     ProfileVisibility @default(public)
   Posts          NewsfeedPost[]
   Comment        Comment[]
   blockedUsers   BlockedUser[]
@@ -163,23 +163,23 @@ enum ContentReactionType {
 }
 
 type CommentMention {
-  userId String
+  userId    String
   profileId String
 }
 
 model Comment {
-  id              String          @id() @default(auto()) @map("_id") @db.ObjectId()
+  id              String           @id() @default(auto()) @map("_id") @db.ObjectId()
   hostType        ContentHostType
-  hostId          String          @db.ObjectId
-  author          Profile         @relation(fields: [authorProfileId], references: [id])
-  authorProfileId String          @db.ObjectId
-  userId          String          @db.ObjectId
+  hostId          String           @db.ObjectId
+  author          Profile          @relation(fields: [authorProfileId], references: [id])
+  authorProfileId String           @db.ObjectId
+  userId          String           @db.ObjectId
   attachments     Attachment[]
   content         String
-  commentedAt     DateTime        @default(now())
+  commentedAt     DateTime         @default(now())
   mentions        CommentMention[]
-  likes           Int             @default(0)
-  replies         Int             @default(0)
+  likes           Int              @default(0)
+  replies         Int              @default(0)
 }
 
 model HashtagSearch {
@@ -204,6 +204,6 @@ type UserSavedPost {
 
 model UserSavedPostsGroup {
   id     String          @id @default(auto()) @map("_id") @db.ObjectId
-  userId String          @db.ObjectId @unique
+  userId String          @unique @db.ObjectId
   posts  UserSavedPost[]
 }

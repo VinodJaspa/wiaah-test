@@ -53,3 +53,5 @@ module.exports = {
   transformIgnorePatterns: ["<rootDir>/node_modules/"],
   snapshotSerializers: ["enzyme-to-json/serializer"],
 };
+
+// "^.+\\.(t|j)s$": "ts-jest",

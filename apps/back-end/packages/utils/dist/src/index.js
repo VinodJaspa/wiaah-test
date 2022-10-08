@@ -28,4 +28,5 @@ __exportStar(require("./generators"), exports);
 __exportStar(require("./validators"), exports);
 __exportStar(require("./graphql"), exports);
 __exportStar(require("./Errors"), exports);
+__exportStar(require("./test"), exports);
 //# sourceMappingURL=index.js.map

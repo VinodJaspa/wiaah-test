@@ -32,8 +32,9 @@ export class NewsfeedPostsService {
     });
     const { visibility } = post;
     if (visibility === 'hidden') {
-      return { ...post, comments: 0 };
+      return { ...post, comments: 0, reactionNum: 0 };
     }
+    return post;
   }
 
   async getProtectedNewsfeedPostById(
@@ -86,11 +87,7 @@ export class NewsfeedPostsService {
     try {
       return await this.prisma.newsfeedPost.create({
         data: {
-          content,
-          title,
-          attachments,
-          tags,
-          visibility,
+          ...createNewsfeedPostInput,
           authorProfileId: profileId,
           userId,
         },

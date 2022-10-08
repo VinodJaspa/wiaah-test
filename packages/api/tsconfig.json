@@ -9,7 +9,8 @@
     "paths": {
       "@Dto": ["Dto"],
       "@Fetchers": ["fetchers"],
-      "@Utils": ["src/utils"]
+      "@Utils": ["src/utils"],
+      "@types": ["src/types"]
     }
   }
 }

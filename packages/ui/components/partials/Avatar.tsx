@@ -1,6 +1,6 @@
 import React from "react";
 import { HtmlDivProps, HtmlImgProps } from "types";
-import { AspectRatio } from "ui";
+import { AspectRatio, Image } from "ui";
 export interface AvatarProps extends HtmlImgProps {
   name?: string;
   photoSrc?: string;
@@ -31,13 +31,13 @@ export const Avatar: React.FC<AvatarProps> = ({
     <div
       className={`${
         className || ""
-      } rounded-full overflow-hidden relative w-12`}
+      } rounded-full overflow-hidden bg-black relative w-12`}
     >
       <AspectRatio ratio={1}>
-        <img
+        <Image
           onClick={handleAvatarClick}
           src={photoSrc || src}
-          className={`w-full h-full overflow-hidden rounded-full bg-black cursor-pointer object-cover`}
+          className={`w-full h-full overflow-hidden rounded-full  cursor-pointer object-cover`}
           {...props}
         />
 

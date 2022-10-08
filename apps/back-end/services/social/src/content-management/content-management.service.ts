@@ -133,7 +133,7 @@ export class ContentManagementService {
           },
         });
       case 'comment':
-        return this.prisma.comment.update({
+        return await this.prisma.comment.update({
           where: {
             id: contentId,
           },
@@ -143,7 +143,6 @@ export class ContentManagementService {
             },
           },
         });
-
       default:
         throw new ContentNotFoundException();
     }
@@ -205,7 +204,7 @@ export class ContentManagementService {
   }
 
   async getContentCommentingStatus(
-    contentType: string,
+    contentType: ContentHostType,
     contentId: string,
   ): Promise<string> {
     switch (contentType) {
@@ -215,6 +214,9 @@ export class ContentManagementService {
           select: { commentsVisibility: true },
         });
         return post.commentsVisibility;
+
+      case 'comment':
+        return 'public';
 
       default:
         throw new ContentNotFoundException();

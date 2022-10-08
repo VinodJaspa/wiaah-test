@@ -1,1 +1,2 @@
-export declare function getUserFromRequest<T = Record<string, string>>(req: any): T;
+import { AuthorizationDecodedUser } from "./types";
+export declare function getUserFromRequest<T = AuthorizationDecodedUser>(req: any): T;

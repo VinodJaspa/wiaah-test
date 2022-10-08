@@ -12,3 +12,4 @@ export * from "./generators";
 export * from "./validators";
 export * from "./graphql";
 export * from "./Errors";
+export * from "./test";

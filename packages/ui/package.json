@@ -8,29 +8,30 @@
     "@types/google.maps": "^3.49.2",
     "@types/react": "^17.0.37",
     "@types/react-dom": "^17.0.11",
+    "config": "*",
     "tsconfig": "*",
-    "typescript": "^4.5.3",
-    "config": "*"
+    "typescript": "^4.5.3"
   },
   "dependencies": {
     "@googlemaps/react-wrapper": "1.1.35",
-    "classnames": "^2.3.1",
-    "qrcode.react": "^3.0.2",
-    "react-icons": "^4.3.1",
-    "react-responsive": "^9.0.0-beta.6",
-    "react-simple-image-slider": "^2.3.0",
-    "recoil": "^0.6.1",
-    "swiper": "8.0.5",
     "api": "*",
+    "classnames": "^2.3.1",
     "dto": "*",
     "hooks": "*",
+    "lib": "*",
     "placeholder": "*",
+    "qrcode.react": "^3.0.2",
+    "react-icons": "^4.3.1",
+    "react-pubsub": "*",
+    "react-responsive": "^9.0.0-beta.6",
+    "react-simple-image-slider": "^2.3.0",
+    "recharts": "2.1.12",
+    "recoil": "^0.6.1",
+    "routing": "*",
     "state": "*",
+    "swiper": "8.0.5",
     "types": "*",
     "utils": "*",
-    "validation": "*",
-    "routing": "*",
-    "react-pubsub": "*",
-    "lib": "*"
+    "validation": "*"
   }
 }

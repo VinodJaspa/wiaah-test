@@ -41,9 +41,11 @@ export const PriceConverter = ({
   const currency = useRecoilValue(PreferedCurrencyState);
   if (typeof amount !== "number") return null;
   return currency
-    ? `${symbol ? currency.currencySymbol : ""}${(
-        amount * currency.currencyRateToUsd
-      ).toFixed(decimel ? 2 : 0)}${!symbol ? ` ${currency.currencyCode}` : ""}`
+    ? `${symbol ? currency.currencySymbol : ""}${Intl.NumberFormat(undefined, {
+        minimumFractionDigits: decimel ? 2 : 0,
+      }).format(amount * currency.currencyRateToUsd)}${
+        !symbol ? ` ${currency.currencyCode}` : ""
+      }`
     : `${symbol ? "$" : ""}${amount.toFixed(decimel ? 2 : 0)}${
         symbol ? "" : " usd"
       }`;

@@ -48,8 +48,8 @@ export const useRouting = () => {
     return GetParam(queryName);
   }
 
-  function getCurrentPath(): string {
-    return getPath();
+  function getCurrentPath(props?: { noParams?: boolean }): string {
+    return props?.noParams ? getPath().split("?")[0] : getPath();
   }
 
   function removeParam(param: string) {
