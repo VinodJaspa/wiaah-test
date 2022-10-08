@@ -31,7 +31,7 @@ import { ShippingDetails } from './entities/shippingDetails.entity';
 export class ProductsResolver implements OnModuleInit {
   constructor(
     private readonly productsService: ProductsService,
-    @Inject(SERVICES.SHOP_SERVICE.token)
+    @Inject(SERVICES.PRODUCTS_SERVICE.token)
     private readonly shopClient: ClientKafka,
   ) {}
 

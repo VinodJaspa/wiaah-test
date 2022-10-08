@@ -11,6 +11,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model ProductCategory {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  parantId String?
+}
+
+type ProductFilterGroupValue {
+  name      String
+  sortOrder Int
+}
+
+model ProductFilterGroup {
+  id        String                    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  values    ProductFilterGroupValue[]
+  sortOrder Int
+}
+
 model Product {
   id               String                @id() @default(auto()) @map("_id") @db.ObjectId()
   sellerId         String

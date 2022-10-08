@@ -33,11 +33,8 @@ import { UpdateProdutctInput } from './dto/update-produtct.input';
 export class ProductsService {
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(SERVICES.WISHLIST_SERVICE.token)
-    private readonly wishlistClient: ClientKafka,
-    @Inject(SERVICES.SHOP_SERVICE.token)
-    private readonly shopclient: ClientKafka,
-    @Inject(KAFKA_SERVICE_TOKEN) private readonly kafkaClient: ClientKafka,
+    @Inject(SERVICES.PRODUCTS_SERVICE.token)
+    private readonly eventClient: ClientKafka,
   ) {}
 
   async createNewProduct(
@@ -51,7 +48,7 @@ export class ProductsService {
       GetUserShopMetaDataMessage,
       GetUserShopMetaDataMessageReply
     >(
-      this.shopclient,
+      this.eventClient,
       KAFKA_MESSAGES.getUserShopId,
       new GetUserShopMetaDataMessage({ accountId: user.id }),
     );
@@ -70,7 +67,7 @@ export class ProductsService {
       },
     });
 
-    this.kafkaClient.emit<string, NewProductCreatedEvent>(
+    this.eventClient.emit<string, NewProductCreatedEvent>(
       KAFKA_EVENTS.PRODUCTS_EVENTS.productCreated,
       new NewProductCreatedEvent({ id: product.id, ownerId: user.id, shopId }),
     );
@@ -118,7 +115,7 @@ export class ProductsService {
       IsOwnerOfShopMessage,
       IsOwnerOfShopMessageReply
     >(
-      this.shopclient,
+      this.eventClient,
       KAFKA_MESSAGES.isOwnerOfShop,
       new IsOwnerOfShopMessage({ ownerId: userId, shopId }),
       'shop validation timed out',

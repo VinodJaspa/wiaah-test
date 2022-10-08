@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProfileResolver } from './profile.resolver';
 import { ProfileService } from './profile.service';
-import { MongoMemoryServer, MongoMemoryReplSet } from 'mongodb-memory-server';
+import { MongoMemoryReplSet } from 'mongodb-memory-server';
 import { PrismaService } from 'prismaService';
 import { KAFKA_EVENTS, mockedUser, SERVICES } from 'nest-utils';
 import { ProfileCreatedEvent } from 'nest-dto';

@@ -24,17 +24,6 @@ import { ProductsController } from './products.controller';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
-      driver: ApolloFederationDriver,
-      autoSchemaFile: './schema.graphql',
-      context({ req, res }) {
-        const user = getUserFromRequest(req);
-        return { req, res, user };
-      },
-      buildSchemaOptions: {
-        orphanedTypes: [Shop, Search],
-      },
-    }),
     ClientsModule.register([
       {
         name: SERVICES.PRODUCTS_SERVICE.token,
