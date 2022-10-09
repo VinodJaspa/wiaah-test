@@ -6,16 +6,11 @@ import {
   ResolveReference,
   ResolveField,
   Parent,
-  Context,
-  GraphQLExecutionContext,
-  GqlExecutionContext,
-  GqlContextType,
 } from '@nestjs/graphql';
 import { ProductsService } from './products.service';
 import { Product } from './entities/product.entity';
 import { CreateProdutctInput } from './dto/create-produtct.input';
-import { Shop } from './entities/shop.entity';
-import { Inject, OnModuleInit, Req, UseGuards } from '@nestjs/common';
+import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
 import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
@@ -28,7 +23,7 @@ import { UpdateProdutctInput } from './dto/update-produtct.input';
 import { ShippingDetails } from './entities/shippingDetails.entity';
 
 @Resolver(() => Product)
-export class ProductsResolver implements OnModuleInit {
+export class ProductsResolver {
   constructor(
     private readonly productsService: ProductsService,
     @Inject(SERVICES.PRODUCTS_SERVICE.token)
@@ -38,7 +33,7 @@ export class ProductsResolver implements OnModuleInit {
   @Query(() => Product)
   async getProductById(@Args('id') id: string): Promise<Product> {
     const product = await this.productsService.getProductById(id);
-    return { ...product, country: 'usa' };
+    return { ...product, country: 'usa', attributes: [] };
   }
 
   @Query(() => [Product])
@@ -74,14 +69,6 @@ export class ProductsResolver implements OnModuleInit {
     return this.productsService.createPh();
   }
 
-  @ResolveField((of) => Shop)
-  shop(@Parent() product: Product) {
-    return {
-      __typename: 'Shop',
-      id: product.shopId,
-    };
-  }
-
   @ResolveField((of) => ShippingDetails, { nullable: true })
   shippingDetails(@Parent() product: Product) {
     if (!product.country) return null;
@@ -95,11 +82,5 @@ export class ProductsResolver implements OnModuleInit {
   @ResolveReference()
   resolveReference(ref: { __typename: string; id: string }) {
     return this.productsService.getProductById(ref.id);
-  }
-
-  async onModuleInit() {
-    this.shopClient.subscribeToResponseOf(KAFKA_MESSAGES.isOwnerOfShop);
-    this.shopClient.subscribeToResponseOf(KAFKA_MESSAGES.getUserShopId);
-    await this.shopClient.connect();
   }
 }

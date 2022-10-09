@@ -42,6 +42,15 @@ export class Discount {
 }
 
 @ObjectType()
+export class ProductAttribute {
+  @Field(() => String)
+  name: string;
+
+  @Field(() => [String])
+  values: string[];
+}
+
+@ObjectType()
 @Directive('@key(fields: "id,title,storeId,shippingRulesIds")')
 export class Product {
   @Field((type) => ID)
@@ -56,14 +65,11 @@ export class Product {
   @Field((type) => ID)
   shopId: string;
 
-  @Field((type) => String)
-  category: string;
-
   @Field((type) => [String])
-  colors: string[];
+  category: string[];
 
-  @Field((type) => [String])
-  sizes: string[];
+  @Field(() => [ProductAttribute])
+  attributes: ProductAttribute[];
 
   @Field((type) => Int)
   stock: number;

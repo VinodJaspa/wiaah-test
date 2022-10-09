@@ -8,10 +8,9 @@ export interface ServicesProviderHeaderProps
   extends ServicesProviderHeaderData {}
 
 export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
-  name,
+  serviceTitle,
   rating,
   reviewsCount,
-  thumbnail,
   travelPeriod,
 }) => {
   const departure = travelPeriod ? DateDetails(travelPeriod.departure) : null;
@@ -23,10 +22,10 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
       style={{
         boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.1)",
       }}
-      className="flex w-full justify-between rounded-[1.25rem] gap-4 px-10 py-[1.875rem]"
+      className="flex w-full items-center justify-between rounded-[1.25rem] gap-4 px-10 py-[1.875rem]"
     >
       <div className="flex flex-col gap-6">
-        <p className="font-semibold text-[1.75rem]">{name}</p>
+        <p className="font-semibold text-[1.75rem]">{serviceTitle}</p>
         <div className="flex flex-wrap gap-4 items-center">
           <p className="text-lg font-semibold text-lightBlack">
             {rating}/{5}
@@ -62,11 +61,6 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
               </div>
             </>
           ) : null}
-        </div>
-        <div className="flex gap-2">
-          <Button>{t("Follow")}</Button>
-
-          <Button outline>{t("Contact")}</Button>
         </div>
       </div>
     </div>

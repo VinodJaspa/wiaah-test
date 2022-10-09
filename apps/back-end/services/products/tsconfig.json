@@ -21,7 +21,11 @@
       "@prisma-client": ["prisma/generated/client"],
       "prismaService": ["src/prisma.service"],
       "@category": ["src/category"],
-      "@filter": ["src/filter"]
+      "@filter": ["src/filter"],
+      "@shop": ["src/shop"],
+      "@shipping-details": ["src/shipping-details"],
+      "@shipping-rules": ["src/shipping-rules"],
+      "@shipping-settings": ["src/shipping-settings"]
     }
   }
 }

@@ -77,6 +77,8 @@ export function StepperFormController<FinaleDataType extends Data>({
     setStepsValidation((state) => {
       if (JSON.stringify(state[handlerKey]) === JSON.stringify(data))
         return state;
+
+      console.log("validating");
       const _state = { ...state };
       _state[handlerKey] = data;
       return _state;
@@ -197,7 +199,7 @@ export const StepperFormHandler: React.FC<StepperFormHandlerProps> = ({
     React.useContext(StepperFormCtx);
 
   function handleValidate(data: Data) {
-    if (!validationSchema) return;
+    if (!validationSchema) return validate(data, handlerKey);
 
     const valid = validationSchema.isValidSync(data);
 

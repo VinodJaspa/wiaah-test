@@ -15,7 +15,11 @@ import {
   TabTitle,
   TabsHeader,
   TabItem,
+  StepperFormController,
+  StepperFormHandler,
+  AddNewDigitalProductSection,
 } from "ui";
+import { mapArray, PassPropsToFnOrElem, runIfFn } from "utils";
 
 export interface AddNewProductSectionProps {}
 
@@ -58,20 +62,69 @@ export const AddNewProductSection: React.FC<AddNewProductSectionProps> = () => {
 };
 export const NewProductInputsSection: React.FC = () => {
   const { t } = useTranslation();
-  const [step, setStep] = React.useState<number>(0);
   return (
     <div className="flex gap-4 h-full w-full flex-col justify-between">
-      <CheckMarkStepper
-        currentStepIdx={step}
-        onStepChange={(step) => setStep(step)}
-        steps={steps}
-      />
-      <div className="w-full flex justify-end gap-4">
-        <Button className="bg-gray-100 hover:bg-gray-300 active:bg-gray-400 text-black">
-          {t("preview", "preview")}
-        </Button>
-        <Button>{t("save and continue", "Save and continue")}</Button>
-      </div>
+      <StepperFormController
+        lock={false}
+        onFormComplete={() => {}}
+        stepsNum={steps.length}
+      >
+        {({ currentStepIdx, goToStep, nextStep, values }) => {
+          return (
+            <>
+              <CheckMarkStepper
+                currentStepIdx={currentStepIdx}
+                onStepChange={(step) => goToStep(step)}
+                steps={mapArray(steps, ({ key, stepComponent, stepName }) =>
+                  key === "shipping" &&
+                  values["product_type"] === "downloadable"
+                    ? {
+                        key: "files",
+                        stepComponent: () => (
+                          <StepperFormHandler handlerKey="files">
+                            {({ validate }) => (
+                              <AddNewDigitalProductSection
+                                onChange={validate}
+                              />
+                            )}
+                          </StepperFormHandler>
+                        ),
+                        stepName: "Files",
+                      }
+                    : {
+                        key,
+                        stepName,
+                        stepComponent: () => (
+                          <StepperFormHandler handlerKey={key}>
+                            {({ validate }) => (
+                              <>
+                                {PassPropsToFnOrElem(stepComponent, {
+                                  onChange: validate,
+                                })}
+                              </>
+                            )}
+                          </StepperFormHandler>
+                        ),
+                      }
+                )}
+              />
+              <div className="w-full flex justify-end gap-4">
+                <Button className="bg-gray-100 hover:bg-gray-300 active:bg-gray-400 text-black">
+                  {t("preview", "preview")}
+                </Button>
+                <Button
+                  onClick={() => {
+                    console.log("clicked");
+                    nextStep();
+                  }}
+                >
+                  {t("save and continue", "Save and continue")}
+                </Button>
+              </div>
+            </>
+          );
+        }}
+      </StepperFormController>
     </div>
   );
 };
@@ -81,7 +134,7 @@ const steps: StepperStepType[] = [
       translationKey: "general",
       fallbackText: "General",
     },
-    stepComponent: () => <ProductGeneralDetails />,
+    stepComponent: (props: any) => <ProductGeneralDetails {...props} />,
     key: "general",
   },
   {
@@ -89,7 +142,7 @@ const steps: StepperStepType[] = [
       translationKey: "shipping",
       fallbackText: "Shipping",
     },
-    stepComponent: () => <NewProductShippingOptions />,
+    stepComponent: (props: any) => <NewProductShippingOptions {...props} />,
     key: "shipping",
   },
   {
@@ -97,7 +150,7 @@ const steps: StepperStepType[] = [
       translationKey: "options",
       fallbackText: "Options",
     },
-    stepComponent: () => <ProductOptions />,
+    stepComponent: (props: any) => <ProductOptions {...props} />,
     key: "options",
   },
   {
@@ -105,7 +158,7 @@ const steps: StepperStepType[] = [
       translationKey: "special_discount",
       fallbackText: "Special Discount",
     },
-    stepComponent: () => <NewProductDiscountOptions />,
+    stepComponent: (props: any) => <NewProductDiscountOptions {...props} />,
     key: "special discount",
   },
 ];

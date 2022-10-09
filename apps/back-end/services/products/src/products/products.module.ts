@@ -4,20 +4,9 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { GraphQLModule } from '@nestjs/graphql';
-import {
-  getUserFromRequest,
-  KAFKA_BROKERS,
-  KAFKA_SERVICE_CLIENTID,
-  KAFKA_SERVICE_GROUPID,
-  KAFKA_SERVICE_TOKEN,
-  SERVICES,
-} from 'nest-utils';
+import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { PrismaService } from 'src/Prisma.service';
-import { ShopResolver } from './shop.resolver';
-import { Shop } from './entities/shop.entity';
 import { SearchResolver } from './search.resolver';
-import { Search } from './entities/search.entity';
 import { ProductsResolver } from './products.resolver';
 import { ProductsService } from './products.service';
 import { ProductsController } from './products.controller';
@@ -40,13 +29,7 @@ import { ProductsController } from './products.controller';
       },
     ]),
   ],
-  providers: [
-    ProductsResolver,
-    ProductsService,
-    PrismaService,
-    ShopResolver,
-    SearchResolver,
-  ],
+  providers: [ProductsResolver, ProductsService, PrismaService, SearchResolver],
   controllers: [ProductsController],
 })
 export class ProdutctsModule {}

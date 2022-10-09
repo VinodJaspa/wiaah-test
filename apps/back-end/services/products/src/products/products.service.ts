@@ -2,16 +2,14 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { Prisma, Product } from '@prisma-client';
-import { PrismaService } from 'src/Prisma.service';
+import { PrismaService } from 'prismaService';
 import { CreateProdutctInput } from './dto/create-produtct.input';
 import {
   SearchInput,
-  CreatWisherListPayload,
   IsOwnerOfShopMessage,
   IsOwnerOfShopMessageReply,
   NewProductCreatedEvent,
@@ -23,7 +21,6 @@ import {
   KafkaMessageHandler,
   KAFKA_EVENTS,
   KAFKA_MESSAGES,
-  KAFKA_SERVICE_TOKEN,
   SERVICES,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
@@ -168,78 +165,42 @@ export class ProductsService {
     try {
       const prismaFilters: Prisma.ProductWhereInput[] = [];
 
-      filters.map(
-        (
-          {
-            brands,
-            categories,
-            cities,
-            colors,
-            countries,
-            price,
-            rating,
-            shippingMotheds,
-            size,
-            stockStatus,
-            title,
-          },
-          i,
-        ) => {
-          if (title) {
-            prismaFilters.push({
-              title: { contains: title },
-            });
-          }
+      filters.map(({ brands, price, rating, stockStatus, title }, i) => {
+        if (title) {
+          prismaFilters.push({
+            title: { contains: title },
+          });
+        }
 
-          if (brands) {
-            prismaFilters.push({
-              brand: { in: brands },
-            });
-          }
+        if (brands) {
+          prismaFilters.push({
+            brand: { in: brands },
+          });
+        }
 
-          if (categories) {
-            prismaFilters.push({
-              category: {
-                in: categories,
-              },
-            });
-          }
-
-          if (colors) {
-            prismaFilters.push({
-              colors: { hasSome: colors },
-            });
-          }
-
-          if (price) {
-            prismaFilters.push({
-              price: { gte: price.min, lte: price.max },
-            });
-          }
-          if (size) {
-            prismaFilters.push({
-              sizes: { hasSome: size },
-            });
-          }
-          if (stockStatus) {
-            prismaFilters.push({
-              stock:
-                stockStatus === 'available'
-                  ? { gt: 0 }
-                  : stockStatus === 'unavailable'
-                  ? 0
-                  : undefined,
-            });
-          }
-          if (rating) {
-            prismaFilters.push({
-              rate: {
-                in: rating,
-              },
-            });
-          }
-        },
-      );
+        if (price) {
+          prismaFilters.push({
+            price: { gte: price.min, lte: price.max },
+          });
+        }
+        if (stockStatus) {
+          prismaFilters.push({
+            stock:
+              stockStatus === 'available'
+                ? { gt: 0 }
+                : stockStatus === 'unavailable'
+                ? 0
+                : undefined,
+          });
+        }
+        if (rating) {
+          prismaFilters.push({
+            rate: {
+              in: rating,
+            },
+          });
+        }
+      });
 
       if (prismaFilters.length < 1) return [];
 
@@ -285,6 +246,7 @@ export class ProductsService {
 
 const ProductsPh: Prisma.ProductCreateInput[] = [
   {
+    type: 'goods',
     category: 'test',
     description: 'test product description',
     stock: 13,
@@ -292,11 +254,11 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     title: 'cutting board',
     brand: 'nike',
     price: 16,
-    colors: ['red', 'blue'],
     sellerId: 'sellerid',
     thumbnail: '',
   },
   {
+    type: 'goods',
     category: 'test',
     description: 'test product description',
     stock: 0,
@@ -304,11 +266,11 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     title: 'cup',
     brand: 'or',
     price: 18,
-    colors: ['yellow', 'green'],
     sellerId: 'sellerid',
     thumbnail: '',
   },
   {
+    type: 'goods',
     category: 'test',
     description: 'test product description',
     stock: 13,
@@ -316,11 +278,11 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     title: 'sofa',
     brand: 'zara',
     price: 30,
-    colors: ['red', 'gray', 'white'],
     sellerId: 'sellerid',
     thumbnail: '',
   },
   {
+    type: 'digital',
     category: 'test',
     description: 'test product description',
     stock: 13,
@@ -328,11 +290,11 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     title: 'mouse',
     brand: 'zake',
     price: 5,
-    colors: ['purple', 'lime', 'yellow'],
     sellerId: 'sellerid',
     thumbnail: '',
   },
   {
+    type: 'digital',
     category: 'test',
     description: 'test product description',
     stock: 13,
@@ -340,7 +302,6 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     title: 'vase',
     brand: 'dior',
     price: 98,
-    colors: ['cyan', 'lime', 'black', 'crimson'],
     sellerId: 'sellerid',
     thumbnail: '',
   },

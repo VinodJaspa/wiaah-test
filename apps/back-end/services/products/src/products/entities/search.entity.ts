@@ -1,6 +1,5 @@
-import { Directive, Field, ID, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, ObjectType } from '@nestjs/graphql';
 import { Product } from './product.entity';
-import { Shop } from './shop.entity';
 
 @ObjectType()
 class Filter {

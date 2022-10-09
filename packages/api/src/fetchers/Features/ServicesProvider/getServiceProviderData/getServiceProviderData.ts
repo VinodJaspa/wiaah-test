@@ -30,7 +30,7 @@ export type PresntationMediaType = InferType<
 
 export type ServicesProviderHeaderData = Pick<
   ServicesProviderData,
-  "name" | "rating" | "reviewsCount" | "thumbnail" | "travelPeriod"
+  "serviceTitle" | "rating" | "reviewsCount" | "travelPeriod"
 >;
 
 export type ServiceWorkingDays = Pick<ServicesProviderData, "workingDays">;
@@ -67,8 +67,9 @@ export const getServicesProviderDataFetcher = async (
 ): Promise<ServicesProviderApiResponse> => {
   const data: getServicesProviderDataFetcherResponse = {
     data: {
+      name: "seller name",
       id: "testid",
-      name: "ibis Paris Maine Montparnasse 14th",
+      serviceTitle: "ibis Paris Maine Montparnasse 14th",
       rating: 4.1,
       reviewsCount: 1115,
       thumbnail: "/shop-2.jpeg",

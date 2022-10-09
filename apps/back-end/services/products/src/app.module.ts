@@ -9,7 +9,10 @@ import {
 import { GraphQLModule } from '@nestjs/graphql';
 import { getUserFromRequest } from 'nest-utils';
 import { Search } from './products/entities/search.entity';
-import { Shop } from './products/entities/shop.entity';
+import { ShopModule } from '@shop';
+import { ShippingDetailsModule } from '@shipping-details';
+import { ShippingRulesModule } from '@shipping-rules';
+import { ShippingSettingsModule } from '@shipping-settings';
 
 @Module({
   imports: [
@@ -21,13 +24,16 @@ import { Shop } from './products/entities/shop.entity';
         return { req, res, user };
       },
       buildSchemaOptions: {
-        orphanedTypes: [Shop, Search],
+        orphanedTypes: [Search],
       },
     }),
-    ,
+    ShopModule,
     ProdutctsModule,
     CategoryModule,
     FilterModule,
+    ShippingSettingsModule,
+    ShippingDetailsModule,
+    ShippingRulesModule,
   ],
   controllers: [],
   providers: [],

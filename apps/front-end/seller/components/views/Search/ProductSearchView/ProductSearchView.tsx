@@ -53,30 +53,40 @@ export const ProductSearchView: React.FC = () => {
             <div className="grid grid-cols-6 gap-5">
               <FormikInput<StatusSelectInputProps>
                 name="status"
+                onChange={() => {}}
+                value={""}
                 label={t("Status")}
                 options={[t("Available")]}
                 as={StatusSelectInput}
               />
               <FormikInput<BrandSelectInputProps>
                 name="brand"
+                onChange={() => {}}
+                value={""}
                 label={t("Brand")}
                 options={[t("Nike")]}
                 as={BrandSelectInput}
               />
               <FormikInput<FilterSelectInputProps>
                 name="shipping"
+                onChange={() => {}}
+                value={""}
                 label={t("Shipping")}
                 options={[t("Click & Collect")]}
                 as={FilterSelectInput}
               />
               <FormikInput<FilterSelectInputProps>
                 name="size"
+                onChange={() => {}}
+                value={""}
                 label={t("Size")}
                 options={[t("Extra Large")]}
                 as={FilterSelectInput}
               />
               <FormikInput<FilterSelectInputProps>
                 name="rating"
+                onChange={() => {}}
+                value={""}
                 label={t("Rating")}
                 options={[...Array(5)].map(
                   (_, i) => `${Math.abs(i - 5)} ${t("Stars")}`
@@ -85,11 +95,21 @@ export const ProductSearchView: React.FC = () => {
               />
               <FormikInput
                 name="price"
+                onChange={() => {}}
+                value={""}
                 label={t("Price")}
                 as={() => (
                   <div className="flex gap-1">
-                    <NumberInput placeholder="Min" />
-                    <NumberInput placeholder="Max" />
+                    <NumberInput
+                      onChange={() => {}}
+                      value={0}
+                      placeholder="Min"
+                    />
+                    <NumberInput
+                      onChange={() => {}}
+                      value={0}
+                      placeholder="Max"
+                    />
                   </div>
                 )}
               />

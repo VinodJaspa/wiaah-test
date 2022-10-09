@@ -9,11 +9,11 @@ import {
   useUserAddresses,
   VoucherInput,
   PaymentGateway,
-  TotalCost,
   useGetCheckoutDataQuery,
   useSearchFilters,
   SpinnerFallback,
   ServiceCheckoutCardSwitcher,
+  TotalCost,
 } from "ui";
 import { AddressCardDetails, AddressDetails } from "types";
 import { VoucherState } from "ui/state";

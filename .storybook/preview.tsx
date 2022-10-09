@@ -1,4 +1,4 @@
-import "../apps/market/styles/globals.css";
+import "../apps/front-end/market/styles/globals.css";
 import * as NextImage from "next/image";
 //import {i18n} from '../packages/ui/languages/i18n';
 import { i18n } from "./i18next";

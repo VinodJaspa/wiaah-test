@@ -14,9 +14,9 @@ const config: StorybookConfig = {
 
   /** Expose public folder to storybook as static */
   staticDirs: [
-    "../apps/market/public",
-    "../apps/seller/public",
-    "../apps/buyer/public",
+    "../apps/front-end/market/public",
+    "../apps/front-end/seller/public",
+    "../apps/front-end/buyer/public",
   ],
   addons: [
     "@storybook/addon-links",
@@ -48,15 +48,18 @@ const config: StorybookConfig = {
       config.resolve.alias = {
         ...config.resolve.alias,
         "@": [
-          path.resolve(__dirname, "../apps/market/**"),
-          path.resolve(__dirname, "../apps/seller/**"),
+          path.resolve(__dirname, "../apps/front-end/market/**"),
+          path.resolve(__dirname, "../apps/front-end/seller/**"),
           path.resolve(__dirname, "../packages/**"),
         ],
       };
       config.resolve.plugins = [
         ...(config.resolve.plugins || []),
         new TsconfigPathsPlugin({
-          configFile: path.resolve(__dirname, "../apps/market/tsconfig.json"),
+          configFile: path.resolve(
+            __dirname,
+            "../apps/front-end/market/tsconfig.json"
+          ),
         }),
       ];
     }

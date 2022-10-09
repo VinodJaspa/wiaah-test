@@ -6,10 +6,16 @@ import {
   registerEnumType,
   Float,
 } from '@nestjs/graphql';
-import { CashbackType, PresentationType, VisibilityEnum } from '@prisma-client';
+import {
+  CashbackType,
+  PresentationType,
+  ProdcutType,
+  VisibilityEnum,
+} from '@prisma-client';
 
 registerEnumType(PresentationType, { name: 'PresentationType' });
 registerEnumType(CashbackType, { name: 'CashbackType' });
+registerEnumType(ProdcutType, { name: 'ProductType' });
 
 @InputType()
 export class ProductPresentationInput {
@@ -42,7 +48,19 @@ export class DiscountInput {
 }
 
 @InputType()
+export class ProductAttributeInput {
+  @Field(() => String)
+  name: string;
+
+  @Field(() => [String])
+  values: string[];
+}
+
+@InputType()
 export class CreateProdutctInput {
+  @Field(() => ProdcutType)
+  type: ProdcutType;
+
   @Field((type) => String)
   title: string;
 
@@ -52,11 +70,8 @@ export class CreateProdutctInput {
   @Field((type) => String)
   category: string;
 
-  @Field((type) => [String])
-  colors: string[];
-
-  @Field((type) => [String])
-  sizes: string[];
+  @Field(() => [ProductAttributeInput])
+  attributes: ProductAttributeInput[];
 
   @Field((type) => Int)
   stock: number;
