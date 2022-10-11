@@ -5,14 +5,19 @@ import {
 } from '@nestjs/apollo';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
-import { PrismaService } from 'src/Prisma.service';
-import { SearchResolver } from './search.resolver';
+import { PrismaService } from 'prismaService';
 import { ProductsResolver } from './products.resolver';
 import { ProductsService } from './products.service';
 import { ProductsController } from './products.controller';
+import { UploadModule, UploadServiceProviders } from '@wiaah/upload';
 
 @Module({
   imports: [
+    UploadModule.forRoot({
+      secretKey: 'secret',
+      serviceKey: 'servicekey',
+      provider: UploadServiceProviders.CLOUDFLARE,
+    }),
     ClientsModule.register([
       {
         name: SERVICES.PRODUCTS_SERVICE.token,
@@ -29,7 +34,7 @@ import { ProductsController } from './products.controller';
       },
     ]),
   ],
-  providers: [ProductsResolver, ProductsService, PrismaService, SearchResolver],
+  providers: [ProductsResolver, ProductsService, PrismaService],
   controllers: [ProductsController],
 })
-export class ProdutctsModule {}
+export class ProductsModule {}

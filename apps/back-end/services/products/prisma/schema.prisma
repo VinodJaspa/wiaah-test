@@ -47,7 +47,8 @@ model Product {
   title            String
   description      String
   price            Int
-  category         String[]
+  hostCategories   String[]
+  category         String
   attributes       ProductAttribute[]
   stock            Int
   rate             Int                   @default(0)

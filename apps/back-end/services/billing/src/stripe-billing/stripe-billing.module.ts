@@ -4,13 +4,7 @@ import { StripeBillingResolver } from './stripe-billing.resolver';
 import { StripeModule } from 'src/stripe/stripe.module';
 import { BillingAddressModule } from 'src/billing-address/billing-address.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import {
-  KAFKA_SERVICE_TOKEN,
-  KAFKA_BROKERS,
-  KAFKA_SERVICE_CLIENTID,
-  KAFKA_SERVICE_GROUPID,
-  SERVICES,
-} from 'nest-utils';
+import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 
 @Module({
   imports: [

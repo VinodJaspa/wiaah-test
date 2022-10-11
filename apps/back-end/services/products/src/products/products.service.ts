@@ -1,20 +1,17 @@
 import {
-  BadRequestException,
   Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Prisma, Product } from '@prisma-client';
+import { Prisma } from '@prisma-client';
 import { PrismaService } from 'prismaService';
 import { CreateProdutctInput } from './dto/create-produtct.input';
 import {
-  SearchInput,
+  ProductSearchPaginationInput,
   IsOwnerOfShopMessage,
   IsOwnerOfShopMessageReply,
   NewProductCreatedEvent,
-  GetUserShopMetaDataMessage,
-  GetUserShopMetaDataMessageReply,
 } from 'nest-dto';
 import {
   AuthorizationDecodedUser,
@@ -22,7 +19,9 @@ import {
   KAFKA_EVENTS,
   KAFKA_MESSAGES,
   SERVICES,
+  ExtractPagination,
 } from 'nest-utils';
+import { Product, ProductSearchPaginationResponse } from '@products';
 import { ClientKafka } from '@nestjs/microservices';
 import { UpdateProdutctInput } from './dto/update-produtct.input';
 
@@ -38,23 +37,7 @@ export class ProductsService {
     createProductInput: CreateProdutctInput,
     user: AuthorizationDecodedUser,
   ) {
-    const {
-      results: { success, data, error },
-    } = await KafkaMessageHandler<
-      string,
-      GetUserShopMetaDataMessage,
-      GetUserShopMetaDataMessageReply
-    >(
-      this.eventClient,
-      KAFKA_MESSAGES.getUserShopId,
-      new GetUserShopMetaDataMessage({ accountId: user.id }),
-    );
-
-    if (!success) {
-      throw new Error(error);
-    }
-
-    const { shopId } = data;
+    const { shopId } = user;
 
     const product = await this.prisma.product.create({
       data: {
@@ -73,24 +56,24 @@ export class ProductsService {
   }
 
   async updateProduct(userId: string, input: UpdateProdutctInput) {
+    const { id, ...rest } = input;
+    const product = await this.prisma.product.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!product)
+      throw new NotFoundException('no product with the given id was found');
+
+    const isOwner = product.sellerId === userId;
+
+    if (!isOwner)
+      throw new UnauthorizedException(
+        'you can only update products in your shop',
+      );
+
     try {
-      const { id, ...rest } = input;
-      const product = await this.prisma.product.findUnique({
-        where: {
-          id,
-        },
-      });
-
-      if (!product)
-        throw new BadRequestException('no product with the given id was found');
-
-      const isOwner = await this.isOwnerOfShop(userId, id);
-
-      if (!isOwner)
-        throw new UnauthorizedException(
-          'you can only update products in your shop',
-        );
-
       await this.prisma.product.update({
         where: {
           id,
@@ -102,6 +85,33 @@ export class ProductsService {
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  async removeProduct(productId: string, userId: string): Promise<Product> {
+    const { id } = await this.getProductIfOwner(productId, userId);
+
+    const removed = await this.prisma.product.delete({
+      where: {
+        id,
+      },
+    });
+    return removed;
+  }
+
+  async getProductIfOwner(productId: string, userId: string): Promise<Product> {
+    const product = await this.prisma.product.findUnique({
+      where: {
+        id: productId,
+      },
+      rejectOnNotFound() {
+        throw new NotFoundException('this product not found');
+      },
+    });
+    if (product.sellerId !== userId)
+      throw new UnauthorizedException(
+        'you cannot preform this action on products you dont own',
+      );
+    return product;
   }
 
   async isOwnerOfShop(userId: string, shopId: string): Promise<boolean> {
@@ -121,7 +131,7 @@ export class ProductsService {
     return data;
   }
 
-  getProductById(productId: string) {
+  getProductById(productId: string): Promise<Product> {
     return this.prisma.product.findUnique({
       where: {
         id: productId,
@@ -150,6 +160,14 @@ export class ProductsService {
     });
   }
 
+  getAllBySellerId(sellerId: string): Promise<Product[]> {
+    return this.prisma.product.findMany({
+      where: {
+        sellerId,
+      },
+    });
+  }
+
   async createPh() {
     try {
       await this.prisma.product.createMany({
@@ -161,55 +179,75 @@ export class ProductsService {
     }
   }
 
-  async getFilteredProducts(filters: SearchInput[]) {
+  async getFilteredProducts(
+    input: ProductSearchPaginationInput,
+  ): Promise<ProductSearchPaginationResponse> {
     try {
+      const { page, skip, take, totalSearched } = ExtractPagination(
+        input.pagination,
+      );
+
       const prismaFilters: Prisma.ProductWhereInput[] = [];
+      const { filters } = input;
 
-      filters.map(({ brands, price, rating, stockStatus, title }, i) => {
-        if (title) {
-          prismaFilters.push({
-            title: { contains: title },
-          });
-        }
+      if (filters.title) {
+        prismaFilters.push({
+          title: { contains: filters.title },
+        });
+      }
 
-        if (brands) {
-          prismaFilters.push({
-            brand: { in: brands },
-          });
-        }
+      if (filters.brands) {
+        prismaFilters.push({
+          brand: { in: filters.brands },
+        });
+      }
 
-        if (price) {
-          prismaFilters.push({
-            price: { gte: price.min, lte: price.max },
-          });
-        }
-        if (stockStatus) {
-          prismaFilters.push({
-            stock:
-              stockStatus === 'available'
-                ? { gt: 0 }
-                : stockStatus === 'unavailable'
-                ? 0
-                : undefined,
-          });
-        }
-        if (rating) {
-          prismaFilters.push({
-            rate: {
-              in: rating,
-            },
-          });
-        }
-      });
+      if (filters.price) {
+        prismaFilters.push({
+          price: { gte: filters.price.min, lte: filters.price.max },
+        });
+      }
+      if (filters.stockStatus) {
+        prismaFilters.push({
+          stock:
+            filters.stockStatus === 'available'
+              ? { gt: 0 }
+              : filters.stockStatus === 'unavailable'
+              ? 0
+              : undefined,
+        });
+      }
+      if (filters.rating) {
+        prismaFilters.push({
+          rate: {
+            in: filters.rating,
+          },
+        });
+      }
 
-      if (prismaFilters.length < 1) return [];
-
-      return this.prisma.product.findMany({
+      const products = await this.prisma.product.findMany({
         where: {
           AND: prismaFilters,
         },
-        take: 10,
+        take,
+        skip,
+        orderBy: {
+          rate: 'asc',
+        },
       });
+
+      if (prismaFilters.length < 1)
+        return {
+          data: [],
+          hasMore: false,
+          total: 0,
+        };
+
+      return {
+        data: products,
+        total: totalSearched,
+        hasMore: products.length >= take,
+      };
     } catch (error) {}
   }
 
@@ -224,7 +262,6 @@ export class ProductsService {
       throw new UnauthorizedException('this product is private');
 
     const isShopOwner = await this.isOwnerOfShop(reviewerId, product.shopId);
-    console.log('isshopowner', isShopOwner);
 
     if (isShopOwner)
       throw new UnauthorizedException('you cant review you own products');

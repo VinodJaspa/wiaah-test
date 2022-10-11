@@ -67,6 +67,9 @@ export class CreateProdutctInput {
   @Field((type) => String)
   description: string;
 
+  @Field(() => [String])
+  hostCategories: string[];
+
   @Field((type) => String)
   category: string;
 

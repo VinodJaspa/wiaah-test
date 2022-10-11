@@ -1,13 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ShopService } from './shop.service';
 import { ShopResolver } from './shop.resolver';
-import { GraphQLModule } from '@nestjs/graphql';
-import {
-  ApolloFederationDriver,
-  ApolloFederationDriverConfig,
-} from '@nestjs/apollo';
 import { PrismaService } from 'src/prisma.service';
-import { getUserFromRequest, KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ShopController } from './shop.controller';
 

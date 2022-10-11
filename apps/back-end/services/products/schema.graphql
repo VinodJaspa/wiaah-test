@@ -48,7 +48,7 @@ type Product {
   title: String!
   description: String!
   shopId: ID!
-  category: String!
+  category: [String!]!
   attributes: [ProductAttribute!]!
   stock: Int!
   discount: Discount!
@@ -167,6 +167,7 @@ type Mutation {
   updateProduct(updateProductArgs: UpdateProdutctInput!): Boolean!
   deleteAllProducts: Boolean!
   createProductsPh: Boolean!
+  uploadProductPresentations(files: [Upload!]!): Boolean!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   deleteCategory(deleteCategoryId: String!): Category!
   updateCategory(updateCategoryArgs: UpdateCategoryInput!): Category!
@@ -250,6 +251,9 @@ input UpdateProdutctInput {
   thumbnail: String
   id: ID!
 }
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input CreateCategoryInput {
   parantId: ID

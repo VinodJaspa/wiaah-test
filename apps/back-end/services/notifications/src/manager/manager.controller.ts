@@ -10,7 +10,7 @@ import {
 import { KAFKA_EVENTS } from 'nest-utils';
 
 @Controller('manger')
-export class MangerController {
+export class ManagerController {
   constructor(private readonly notificationsService: MangerService) {}
 
   @EventPattern(KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated)

@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ProdutctsModule } from './products/products.module';
+import { ProductsModule } from './products/products.module';
 import { CategoryModule } from './category/category.module';
 import { FilterModule } from './filter/filter.module';
 import {
@@ -10,9 +10,10 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { getUserFromRequest } from 'nest-utils';
 import { Search } from './products/entities/search.entity';
 import { ShopModule } from '@shop';
-import { ShippingDetailsModule } from '@shipping-details';
-import { ShippingRulesModule } from '@shipping-rules';
-import { ShippingSettingsModule } from '@shipping-settings';
+import { PrismaService } from './Prisma.service';
+// import { ShippingDetailsModule } from '@shipping-details';
+// import { ShippingRulesModule } from '@shipping-rules';
+// import { ShippingSettingsModule } from '@shipping-settings';
 
 @Module({
   imports: [
@@ -23,19 +24,20 @@ import { ShippingSettingsModule } from '@shipping-settings';
         const user = getUserFromRequest(req);
         return { req, res, user };
       },
+
       buildSchemaOptions: {
         orphanedTypes: [Search],
       },
     }),
     ShopModule,
-    ProdutctsModule,
+    ProductsModule,
     CategoryModule,
     FilterModule,
-    ShippingSettingsModule,
-    ShippingDetailsModule,
-    ShippingRulesModule,
+    // ShippingSettingsModule,
+    // ShippingDetailsModule,
+    // ShippingRulesModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [PrismaService],
 })
 export class AppModule {}

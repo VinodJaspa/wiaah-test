@@ -20,6 +20,7 @@
     "paths": {
       "@prisma-client": ["prisma/generated/client"],
       "prismaService": ["src/prisma.service"],
+      "@products": ["src/products"],
       "@category": ["src/category"],
       "@filter": ["src/filter"],
       "@shop": ["src/shop"],
