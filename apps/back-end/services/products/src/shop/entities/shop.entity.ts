@@ -43,11 +43,20 @@ export class Shop {
   @Field((type) => String)
   name: string;
 
+  @Field((type) => String)
+  ownerId: string;
+
   @Field((type) => Location)
   location: Location;
 
-  @Field((type) => String)
-  ownerId: string;
+  @Field(() => String)
+  description: string;
+
+  @Field(() => String)
+  banner: string;
+
+  @Field(() => Boolean)
+  verified: boolean;
 
   @Field((type) => [StoreType])
   storeType: StoreType[];

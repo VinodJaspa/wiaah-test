@@ -1,7 +1,7 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { Shop, Prisma } from '@prisma-client';
 import { AuthorizationDecodedUser, createNewCoords } from 'nest-utils';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'prismaService';
 import { CreateShopInput } from './dto/create-shop.input';
 import { FilterShopsInput } from './dto/filter-shops.input';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
@@ -14,18 +14,15 @@ export class ShopService {
     createShopInput: CreateShopInput,
     user: AuthorizationDecodedUser,
   ): Promise<Shop> {
+    const { accountType } = user;
+    const userHasShop = await this.hasShop(user.id);
+
+    if (userHasShop)
+      throw new UnprocessableEntityException(
+        'this account already has an shop, seller account can only have 1 shop',
+      );
+
     try {
-      const { accountType } = user;
-      const isSellerAccount = accountType === 'seller';
-      const userHasShop = await this.hasShop(user.id);
-
-      if (userHasShop)
-        throw new UnprocessableEntityException(
-          'this account already has an shop, seller account can only have 1 shop',
-        );
-
-      if (!isSellerAccount)
-        throw new Error('only seller accounts can open a shop');
       const createdShop = await this.prisma.shop.create({
         data: { ...createShopInput, ownerId: user.id },
       });
@@ -105,6 +102,8 @@ export class ShopService {
       -input.distance,
     );
 
+    console.log({ lat1, lat2, lon1, lon2, input });
+
     const shops = await this.prisma.shop.findMany({
       where: {
         location: {
@@ -173,7 +172,6 @@ export class ShopService {
       });
     }
 
-    console.log('queries', searchQueries);
     const shops = this.prisma.shop.findMany({
       where: {
         AND: searchQueries,

@@ -15,4 +15,6 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 __exportStar(require("./TransformReadStream"), exports);
+__exportStar(require("./TransformGqlUploadToMeta"), exports);
+__exportStar(require("./PrepareGqlUpload"), exports);
 //# sourceMappingURL=index.js.map

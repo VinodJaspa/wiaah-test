@@ -14,7 +14,7 @@ module.exports = {
     prismaService: '<rootDir>/src/prisma.service',
     '@prisma-client': '<rootDir>/prisma/generated/client',
     '@filter': '<rootDir>/src/filter',
-    '@shop': '<rootDir>/src/',
+    '@shop': '<rootDir>/src/shop',
     '@products': '<rootDir>/src/products',
   },
   coverageDirectory: '../coverage',

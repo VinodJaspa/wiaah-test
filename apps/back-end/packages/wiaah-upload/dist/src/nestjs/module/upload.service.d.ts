@@ -8,8 +8,9 @@ export declare class UploadService {
     private serviceProvider;
     private serviceKey;
     private secretKey;
-    uploadImages(imageFile: ImageFile): Promise<boolean>;
+    uploadFiles(files: ImageFile[], userId: string): Promise<void>;
+    uploadImages(images: ImageFile[], userId: string): Promise<boolean>;
     uploadVideos(videoFile: VideoFile): Promise<void>;
-    uploadCloudFlareImage(imageFile: ImageFile): Promise<boolean>;
-    uploadCloudFlareVideo(videoFile: ImageFile): Promise<void>;
+    uploadCloudFlareImages(imageFile: ImageFile[]): Promise<boolean>;
+    uploadCloudFlareVideos(videoFile: ImageFile[]): Promise<void>;
 }

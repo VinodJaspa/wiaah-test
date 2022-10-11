@@ -45,10 +45,12 @@ type ProductAttribute {
 
 type Product {
   id: ID!
+  sellerId: ID!
   title: String!
   description: String!
   shopId: ID!
-  category: [String!]!
+  hostCategories: [String!]!
+  category: String!
   attributes: [ProductAttribute!]!
   stock: Int!
   discount: Discount!
@@ -59,22 +61,11 @@ type Product {
   price: Float!
   visibility: VisibilityEnum!
   shippingRulesIds: [ID!]!
-  shippingDetails: ShippingDetails
 }
 
 enum VisibilityEnum {
   hidden
   public
-}
-
-type Search {
-  filter: String!
-  products: [Product!]!
-}
-
-type ShippingDetails {
-  country: String!
-  shippingRulesIds: [String!]!
 }
 
 type Category {
@@ -95,6 +86,11 @@ type Filter {
   sortOrder: Int!
 }
 
+type Search {
+  filter: String!
+  products: [Product!]!
+}
+
 type Location {
   lat: Float!
   long: Float!
@@ -107,8 +103,11 @@ type Location {
 type Shop {
   id: ID!
   name: String!
-  location: Location!
   ownerId: String!
+  location: Location!
+  description: String!
+  banner: String!
+  verified: Boolean!
   storeType: [StoreType!]!
   vendorType: [VendorType!]!
   targetGenders: [TargetGenders!]!
@@ -197,6 +196,7 @@ input CreateProdutctInput {
   type: ProductType!
   title: String!
   description: String!
+  hostCategories: [String!]!
   category: String!
   attributes: [ProductAttributeInput!]!
   stock: Int!
@@ -239,6 +239,7 @@ input UpdateProdutctInput {
   type: ProductType
   title: String
   description: String
+  hostCategories: [String!]
   category: String
   attributes: [ProductAttributeInput!]
   stock: Int

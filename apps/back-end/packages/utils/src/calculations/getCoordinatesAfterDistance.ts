@@ -39,25 +39,45 @@ function toRad(v: number) {
   return (v * Math.PI) / 180;
 }
 
+function degrees_to_radians(degrees: number) {
+  const pi = Math.PI;
+  return degrees * (pi / 180);
+}
+
+function radians_to_degrees(radians: number) {
+  const pi = Math.PI;
+  return radians * (180 / pi);
+}
+
 export function createNewCoords(
   lat: number,
   lon: number,
   distanceInKm: number
 ) {
-  const dis = distanceInKm / 1.41;
+  const d = distanceInKm;
+  const r_earth = 6378.1;
+  const brng = 1.57;
 
-  const disInMeter = dis / 1000;
+  const lat1 = degrees_to_radians(lat);
+  const lon1 = degrees_to_radians(lon);
 
-  const pi = Math.PI;
-  const r_earth = 6378;
-  const cos = Math.cos;
+  const lat2 = Math.asin(
+    Math.sin(lat1) * Math.cos(d / r_earth) +
+      Math.cos(lat1) * Math.sin(d / r_earth) * Math.cos(brng)
+  );
+  const lon2 =
+    lon1 +
+    Math.atan2(
+      Math.sin(brng) * Math.sin(d / r_earth) * Math.cos(lat1),
+      Math.cos(d / r_earth) - Math.sin(lat1) * Math.sin(lat2)
+    );
 
-  const new_latitude = lat + (disInMeter / r_earth) * (180 / pi);
-  const new_longitude =
-    lon + ((disInMeter / r_earth) * (180 / pi)) / cos((lat * pi) / 180);
+  // const new_latitude = lat + (disInMeter / r_earth) * (180 / pi);
+  // const new_longitude =
+  //   lon + ((disInMeter / r_earth) * (180 / pi)) / cos((lat * pi) / 180);
 
   return {
-    lat: new_latitude,
-    lon: new_longitude,
+    lat: radians_to_degrees(lat2),
+    lon: radians_to_degrees(lon2),
   };
 }

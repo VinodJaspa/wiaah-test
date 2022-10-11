@@ -20,7 +20,7 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { UpdateProdutctInput } from './dto/update-produtct.input';
 import { ShippingDetails } from './entities/shippingDetails.entity';
-import { TransformReadStream, UploadService } from '@wiaah/upload';
+import { PrepareGqlUploads, UploadService } from '@wiaah/upload';
 import { GraphQLUpload, Upload } from 'graphql-upload';
 
 @Resolver(() => Product)
@@ -82,12 +82,10 @@ export class ProductsResolver {
   async uploadProductPresentations(
     @Args({ name: 'files', type: () => [GraphQLUpload] })
     files: Upload[],
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    const promises = await Promise.all(files.map((v) => v.promise));
     try {
-      this.uploadService.uploadImages(
-        TransformReadStream(promises.map((v) => v.createReadStream())),
-      );
+      await this.uploadService.uploadFiles(PrepareGqlUploads(files), user.id);
       return true;
     } catch (error) {
       this.logger.error(error);

@@ -94,11 +94,14 @@ enum PresentationType {
 
 model Shop {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId       String          @unique
   name          String
+  banner        String
+  description   String
+  verified      Boolean
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt()
   location      Location
-  ownerId       String          @unique
   storeType     StoreType[]
   vendorType    VendorType[]
   targetGenders TargetGenders[]

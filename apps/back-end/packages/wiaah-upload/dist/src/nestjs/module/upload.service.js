@@ -25,20 +25,28 @@ let UploadService = class UploadService {
         this.serviceKey = this.options.serviceKey;
         this.secretKey = this.options.secretKey;
     }
-    async uploadImages(imageFile) {
+    async uploadFiles(files, userId) {
+        const sortedFiles = files.reduce((acc, curr) => {
+            const fileType = "";
+            const newAcc = Object.assign({}, acc);
+            newAcc[fileType] = [...acc[fileType], curr];
+            return newAcc;
+        }, {});
+    }
+    async uploadImages(images, userId) {
         switch (this.serviceProvider) {
             case constants_1.UploadServiceProviders.CLOUDFLARE:
-                return this.uploadCloudFlareImage(imageFile);
+                return this.uploadCloudFlareImages(images);
             default:
                 this.logger.error("incorrect upload service provider");
                 throw new common_1.InternalServerErrorException();
         }
     }
     async uploadVideos(videoFile) { }
-    async uploadCloudFlareImage(imageFile) {
+    async uploadCloudFlareImages(imageFile) {
         return true;
     }
-    async uploadCloudFlareVideo(videoFile) { }
+    async uploadCloudFlareVideos(videoFile) { }
 };
 UploadService = __decorate([
     (0, common_1.Injectable)(),

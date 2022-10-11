@@ -1,11 +1,8 @@
 import {
   Resolver,
   Query,
-  Parent,
   Mutation,
   Args,
-  Int,
-  ResolveField,
   ResolveReference,
 } from '@nestjs/graphql';
 import { ShopService } from './shop.service';
@@ -75,7 +72,6 @@ export class ShopResolver implements OnModuleInit {
 
   @ResolveReference()
   shop(ref: { __typename: string; id: string }) {
-    console.log('test shops', ref);
     return this.shopService.getShopById(ref.id);
   }
 

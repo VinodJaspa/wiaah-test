@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ShopService } from './shop.service';
 import { ShopResolver } from './shop.resolver';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'prismaService';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ShopController } from './shop.controller';
