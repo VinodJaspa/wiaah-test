@@ -91,12 +91,21 @@ export class ShopService {
   }
 
   async getNearShops(input: GetNearShopsInput) {
-    const { lat: lat1, lon: lon1 } = createNewCoords(
+    const { lat: lat1 } = createNewCoords(
       input.lat,
       input.lon,
       input.distance,
+      360,
     );
-    const { lat: lat2, lon: lon2 } = createNewCoords(
+    const { lat: lat2 } = createNewCoords(
+      input.lat,
+      input.lon,
+      -input.distance,
+      360,
+    );
+
+    const { lon: lon1 } = createNewCoords(input.lat, input.lon, input.distance);
+    const { lon: lon2 } = createNewCoords(
       input.lat,
       input.lon,
       -input.distance,

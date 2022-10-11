@@ -52,11 +52,12 @@ function radians_to_degrees(radians: number) {
 export function createNewCoords(
   lat: number,
   lon: number,
-  distanceInKm: number
+  distanceInKm: number,
+  angle: number = 90
 ) {
   const d = distanceInKm;
   const r_earth = 6378.1;
-  const brng = 1.57;
+  const brng = degrees_to_radians(angle);
 
   const lat1 = degrees_to_radians(lat);
   const lon1 = degrees_to_radians(lon);

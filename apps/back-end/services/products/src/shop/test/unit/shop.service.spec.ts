@@ -108,7 +108,7 @@ describe('Shop service unit testing', () => {
     const nearShops = await service.getNearShops({
       lat: 32,
       lon: 20,
-      distance: 80,
+      distance: 20,
     });
 
     console.log(nearShops);
