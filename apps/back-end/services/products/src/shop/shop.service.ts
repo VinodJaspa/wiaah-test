@@ -1,10 +1,10 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
-import { Shop, Prisma } from '@prisma-client';
-import { AuthorizationDecodedUser, createNewCoords } from 'nest-utils';
+import { AuthorizationDecodedUser, createRadiusCoordsByKm } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { CreateShopInput } from './dto/create-shop.input';
 import { FilterShopsInput } from './dto/filter-shops.input';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
+import { Shop } from '@shop';
 
 @Injectable()
 export class ShopService {
@@ -14,7 +14,6 @@ export class ShopService {
     createShopInput: CreateShopInput,
     user: AuthorizationDecodedUser,
   ): Promise<Shop> {
-    const { accountType } = user;
     const userHasShop = await this.hasShop(user.id);
 
     if (userHasShop)
@@ -24,7 +23,7 @@ export class ShopService {
 
     try {
       const createdShop = await this.prisma.shop.create({
-        data: { ...createShopInput, ownerId: user.id },
+        data: { ...createShopInput, ownerId: user.id, verified: false },
       });
 
       return createdShop;
@@ -61,18 +60,6 @@ export class ShopService {
     }
   }
 
-  async createPlaceholderShops() {
-    try {
-      await this.prisma.shop.createMany({
-        data: shopsPh,
-      });
-
-      return true;
-    } catch (error) {
-      throw new Error(error);
-    }
-  }
-
   getShopById(id: string) {
     return this.prisma.shop.findUnique({
       where: {
@@ -90,28 +77,12 @@ export class ShopService {
     }
   }
 
-  async getNearShops(input: GetNearShopsInput) {
-    const { lat: lat1 } = createNewCoords(
-      input.lat,
-      input.lon,
-      input.distance,
-      360,
-    );
-    const { lat: lat2 } = createNewCoords(
-      input.lat,
-      input.lon,
-      -input.distance,
-      360,
-    );
-
-    const { lon: lon1 } = createNewCoords(input.lat, input.lon, input.distance);
-    const { lon: lon2 } = createNewCoords(
-      input.lat,
-      input.lon,
-      -input.distance,
-    );
-
-    console.log({ lat1, lat2, lon1, lon2, input });
+  async getNearShops(input: GetNearShopsInput): Promise<Shop[]> {
+    const { maxLat, maxLon, minLat, minLon } = await createRadiusCoordsByKm({
+      lat: input.lat,
+      lon: input.lon,
+      distanceInKm: input.distance,
+    });
 
     const shops = await this.prisma.shop.findMany({
       where: {
@@ -120,14 +91,14 @@ export class ShopService {
             AND: [
               {
                 long: {
-                  lte: lon1,
-                  gte: lon2,
+                  lte: maxLon,
+                  gte: minLon,
                 },
               },
               {
                 lat: {
-                  lte: lat1,
-                  gte: lat2,
+                  lte: maxLat,
+                  gte: minLat,
                 },
               },
             ],
@@ -189,81 +160,3 @@ export class ShopService {
     return shops;
   }
 }
-
-const shopsPh: Prisma.ShopCreateInput[] = [
-  {
-    name: 'test',
-    ownerId: 'id',
-    storeType: ['type1', 'type2'],
-    targetGenders: ['male'],
-    vendorType: ['vendor3'],
-    location: {
-      lat: 32.00063711672341,
-      long: 20.000751274280667,
-      address: 'address',
-      city: 'idk',
-      country: 'idk',
-      state: 'test',
-    },
-  },
-  {
-    name: 'test',
-    ownerId: 'id',
-    storeType: ['type3'],
-    targetGenders: ['female'],
-    vendorType: ['vendor1'],
-    location: {
-      lat: 55,
-      long: 53,
-      address: 'address',
-      city: 'idk',
-      country: 'idk',
-      state: 'test',
-    },
-  },
-  {
-    name: 'test',
-    ownerId: 'id',
-    storeType: ['type2'],
-    targetGenders: ['male', 'female'],
-    vendorType: ['vendor2'],
-    location: {
-      lat: 90,
-      long: 93,
-      address: 'address',
-      city: 'idk',
-      country: 'idk',
-      state: 'test',
-    },
-  },
-  {
-    name: 'test',
-    ownerId: 'id',
-    storeType: ['type1', 'type2'],
-    targetGenders: ['male'],
-    vendorType: ['vendor3'],
-    location: {
-      lat: 64,
-      long: 65,
-      address: 'address',
-      city: 'idk',
-      country: 'idk',
-      state: 'test',
-    },
-  },
-  {
-    name: 'test',
-    ownerId: 'id',
-    storeType: ['type1', 'type2'],
-    targetGenders: ['male'],
-    vendorType: ['vendor3'],
-    location: {
-      lat: 5,
-      long: 7,
-      address: 'address',
-      city: 'idk',
-      country: 'idk',
-      state: 'test',
-    },
-  },
-];

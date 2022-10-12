@@ -4,20 +4,20 @@ import { VendorType, TargetGenders, StoreType } from '@prisma-client';
 @InputType()
 export class FilterShopsInput {
   @Field((type) => StoreType, { nullable: true })
-  storeType: StoreType;
+  storeType?: StoreType;
 
   @Field((type) => VendorType, { nullable: true })
-  vendorType: VendorType;
+  vendorType?: VendorType;
 
   @Field((type) => TargetGenders, { nullable: true })
-  targetGender: TargetGenders;
+  targetGender?: TargetGenders;
 
   @Field((type) => String, { nullable: true })
-  country: string;
+  country?: string;
 
   @Field((type) => String, { nullable: true })
-  city: string;
+  city?: string;
 
   @Field((type) => Int, { defaultValue: 10 })
-  limit: number;
+  limit?: number;
 }

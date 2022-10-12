@@ -82,3 +82,31 @@ export function createNewCoords(
     lon: radians_to_degrees(lon2),
   };
 }
+
+export async function createRadiusCoordsByKm({
+  distanceInKm,
+  lat,
+  lon,
+}: {
+  lat: number;
+  lon: number;
+  distanceInKm: number;
+}): Promise<{
+  maxLat: number;
+  minLat: number;
+  maxLon: number;
+  minLon: number;
+}> {
+  const { lat: maxLat } = createNewCoords(lat, lon, distanceInKm, 360);
+  const { lat: minLat } = createNewCoords(lat, lon, -distanceInKm, 360);
+
+  const { lon: maxLon } = createNewCoords(lat, lon, distanceInKm);
+  const { lon: minLon } = createNewCoords(lat, lon, -distanceInKm);
+
+  return {
+    maxLat,
+    maxLon,
+    minLat,
+    minLon,
+  };
+}

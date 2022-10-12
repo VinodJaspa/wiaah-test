@@ -1,25 +1,15 @@
 import { CategoryService, CategoryResolver } from '@category';
 import { Test, TestingModule } from '@nestjs/testing';
-import { MongoMemoryReplSet } from 'mongodb-memory-server';
 import { mockedUser, SERVICES } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 
 describe('Category Testing', () => {
   let service: CategoryService;
   let resolver: CategoryResolver;
-  let mockMongo: MongoMemoryReplSet;
   let mockKafkaEmit: jest.Mock;
-
-  afterEach(async () => await mockMongo.stop());
 
   beforeEach(async () => {
     mockKafkaEmit = jest.fn();
-    mockMongo = await MongoMemoryReplSet.create({
-      replSet: { count: 1 },
-      instanceOpts: [{ storageEngine: 'wiredTiger' }],
-    });
-    process.env.DATABASE_URL = mockMongo.getUri('testDB');
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CategoryService,

@@ -61,11 +61,6 @@ export class ShopResolver implements OnModuleInit {
   }
 
   @Mutation((type) => Boolean)
-  createShopsPh() {
-    return this.shopService.createPlaceholderShops();
-  }
-
-  @Mutation((type) => Boolean)
   removeAllShops() {
     return this.shopService.removeAllShops();
   }

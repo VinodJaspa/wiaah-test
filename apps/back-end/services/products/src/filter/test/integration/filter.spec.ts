@@ -7,18 +7,10 @@ import { PrismaService } from 'prismaService';
 describe('filter fnctionality testing', () => {
   let service: FilterService;
   let resolver: FilterResolver;
-  let mockMongo: MongoMemoryReplSet;
   let mockKafkaEmit: jest.Mock;
-
-  afterEach(async () => await mockMongo.stop());
 
   beforeEach(async () => {
     mockKafkaEmit = jest.fn();
-    mockMongo = await MongoMemoryReplSet.create({
-      replSet: { count: 1 },
-      instanceOpts: [{ storageEngine: 'wiredTiger' }],
-    });
-    process.env.DATABASE_URL = mockMongo.getUri('testDB');
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [

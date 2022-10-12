@@ -27,6 +27,12 @@ export class CreateShopInput {
   @Field((type) => String)
   name: string;
 
+  @Field(() => String)
+  banner: string;
+
+  @Field(() => String)
+  description: string;
+
   @Field((type) => LocationInput)
   location: LocationInput;
 

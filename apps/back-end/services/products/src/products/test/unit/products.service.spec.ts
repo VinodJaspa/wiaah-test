@@ -1,21 +1,16 @@
-import {
-  BadRequestException,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import {
   ProductsService,
   UpdateProdutctInput,
   CreateProdutctInput,
+  ProductSearchPaginationResponse,
 } from '@products';
-import { MongoMemoryReplSet } from 'mongodb-memory-server';
 import { mockedUser, secendMockedUser, SERVICES } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 
 describe('products services unit tests', () => {
   let service: ProductsService;
-  let mockMongo: MongoMemoryReplSet;
   let mockKafkaEmit: jest.Mock;
 
   let createProductInput: CreateProdutctInput = {
@@ -38,19 +33,12 @@ describe('products services unit tests', () => {
     thumbnail: '/test.jpeg',
     title: 'title',
     type: 'goods',
-    visibility: 'hidden',
+    visibility: 'public',
     hostCategories: ['cate', 'category'],
   };
 
-  afterEach(async () => await mockMongo.stop());
-
   beforeEach(async () => {
     mockKafkaEmit = jest.fn();
-    mockMongo = await MongoMemoryReplSet.create({
-      replSet: { count: 1 },
-      instanceOpts: [{ storageEngine: 'wiredTiger' }],
-    });
-    process.env.DATABASE_URL = mockMongo.getUri('testDB');
 
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -187,61 +175,130 @@ describe('products services unit tests', () => {
     );
   });
 
-  it('should search on products with the given filters', async () => {
-    for (const v of ProductsPh) {
-      await service.createNewProduct(v, mockedUser);
-    }
+  describe('Product Search functionality tests, should search on products with the given filters:', () => {
+    let products: ProductSearchPaginationResponse;
 
-    // filter by brand
-    let products = await service.getFilteredProducts({
-      pagination: {
-        page: 1,
-        take: 10,
-      },
-      filters: {
-        brands: ['nike'],
-      },
+    beforeEach(async () => {
+      for (const v of ProductsPh) {
+        await service.createNewProduct(v, mockedUser);
+      }
     });
 
-    expect(products.data.every((v) => v.brand === 'nike')).toBe(true);
+    it('brands', async () => {
+      // filter by brand
+      products = await service.getFilteredProducts({
+        pagination: {
+          page: 1,
+          take: 10,
+        },
+        filters: {
+          brands: ['nike'],
+        },
+      });
 
-    // filter by title
-    products = await service.getFilteredProducts({
-      pagination: {
-        page: 1,
-        take: 10,
-      },
-      filters: {
-        title: 'sofa',
-      },
+      expect(products.data.length).toBeGreaterThan(0);
+      expect(products.data.every((v) => v.brand === 'nike')).toBe(true);
     });
 
-    expect(products.data.every((v) => v.title.includes('sofa'))).toBe(true);
+    it('title', async () => {
+      // filter by title
+      products = await service.getFilteredProducts({
+        pagination: {
+          page: 1,
+          take: 10,
+        },
+        filters: {
+          title: 'sofa',
+        },
+      });
 
-    // filter by stock status
-    products = await service.getFilteredProducts({
-      pagination: {
-        page: 1,
-        take: 10,
-      },
-      filters: {
-        stockStatus: 'available',
-      },
+      expect(products.data.length).toBeGreaterThan(0);
+      expect(products.data.every((v) => v.title.includes('sofa'))).toBe(true);
     });
 
-    expect(products.data.every((v) => v.stock > 0)).toBe(true);
+    it('stock status', async () => {
+      // filter by stock status
+      products = await service.getFilteredProducts({
+        pagination: {
+          page: 1,
+          take: 10,
+        },
+        filters: {
+          stockStatus: 'available',
+        },
+      });
 
-    products = await service.getFilteredProducts({
-      pagination: {
-        page: 1,
-        take: 10,
-      },
-      filters: {
-        rating: [3],
-      },
+      expect(products.data.length).toBeGreaterThan(0);
+      expect(products.data.every((v) => v.stock > 0)).toBe(true);
     });
 
-    expect(products.data.every((v) => v.rate >= 3 && v.rate < 4)).toBe(true);
+    it('rating', async () => {
+      const createdProduct = await createProduct();
+
+      await service.rateProduct(
+        {
+          productId: createdProduct.id,
+          rate: 4,
+        },
+        mockedUser.id,
+      );
+
+      await service.rateProduct(
+        {
+          productId: createdProduct.id,
+          rate: 3,
+        },
+        mockedUser.id,
+      );
+
+      products = await service.getFilteredProducts({
+        pagination: {
+          page: 1,
+          take: 10,
+        },
+        filters: {
+          rating: [3],
+        },
+      });
+
+      expect(products.data.length).toBeGreaterThan(0);
+      expect(products.data.every((v) => v.rate >= 3 && v.rate < 4)).toBe(true);
+    });
+
+    it('category', async () => {
+      products = await service.getFilteredProducts({
+        pagination: {
+          page: 1,
+          take: 10,
+        },
+        filters: {
+          categories: ['shoes'],
+        },
+      });
+
+      expect(products.data.length).toBeGreaterThan(0);
+      expect(products.data.every((v) => v.category === 'shoes')).toBe(true);
+    });
+
+    it('price', async () => {
+      products = await service.getFilteredProducts({
+        pagination: {
+          page: 1,
+          take: 10,
+        },
+        filters: {
+          price: {
+            max: 100,
+            min: 50,
+          },
+        },
+      });
+
+      expect(products.data.length).toBeGreaterThan(0);
+      expect(products.data.every((v) => v.price <= 100 && v.price >= 50)).toBe(
+        true,
+      );
+    });
   });
 });
 

@@ -104,6 +104,11 @@ export class Product {
 
   @Field((type) => [ID])
   shippingRulesIds: string[];
+
+  @Field(() => Int)
+  reviews: number;
+
+  rateStarCount: number;
 }
 
 @ObjectType()

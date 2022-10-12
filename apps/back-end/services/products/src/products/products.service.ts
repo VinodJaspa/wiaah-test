@@ -21,7 +21,13 @@ import {
   SERVICES,
   ExtractPagination,
 } from 'nest-utils';
-import { Product, ProductSearchPaginationResponse } from '@products';
+import {
+  Product,
+  ProductSearchPaginationResponse,
+  ProductNotFoundException,
+  ProductNotFoundOrUnaccessable,
+  ReviewProductInput,
+} from '@products';
 import { ClientKafka } from '@nestjs/microservices';
 import { UpdateProdutctInput } from './dto/update-produtct.input';
 
@@ -32,6 +38,8 @@ export class ProductsService {
     @Inject(SERVICES.PRODUCTS_SERVICE.token)
     private readonly eventClient: ClientKafka,
   ) {}
+
+  private readonly maxRate: number = 5;
 
   async createNewProduct(
     createProductInput: CreateProdutctInput,
@@ -136,6 +144,9 @@ export class ProductsService {
       where: {
         id: productId,
       },
+      rejectOnNotFound(error) {
+        throw new ProductNotFoundException();
+      },
     });
   }
 
@@ -143,6 +154,34 @@ export class ProductsService {
     return this.prisma.product.findMany();
   }
 
+  async rateProduct(input: ReviewProductInput, userId: string) {
+    const { productId, rate } = input;
+    const product = await this.getProtectedProductById(productId, userId);
+
+    console.log({ product }, await this.getAll());
+
+    const newOverallRate =
+      ((product.rateStarCount + rate) /
+        ((product.reviews + 1) * this.maxRate)) *
+      this.maxRate;
+
+    await this.prisma.product.update({
+      where: {
+        id: product.id,
+      },
+      data: {
+        rate: newOverallRate,
+        rateStarCount: {
+          increment: rate,
+        },
+        reviews: {
+          increment: 1,
+        },
+      },
+    });
+  }
+
+  // TODO: remove on production
   async deleteAll() {
     try {
       await this.prisma.product.deleteMany();
@@ -183,9 +222,7 @@ export class ProductsService {
     input: ProductSearchPaginationInput,
   ): Promise<ProductSearchPaginationResponse> {
     try {
-      const { page, skip, take, totalSearched } = ExtractPagination(
-        input.pagination,
-      );
+      const { skip, take, totalSearched } = ExtractPagination(input.pagination);
 
       const prismaFilters: Prisma.ProductWhereInput[] = [];
       const { filters } = input;
@@ -218,12 +255,30 @@ export class ProductsService {
         });
       }
       if (filters.rating) {
+        filters.rating.forEach((v) => {
+          prismaFilters.push({
+            rate: {
+              gte: v,
+              lt: v + 1,
+            },
+          });
+        });
+      }
+
+      if (filters.categories) {
         prismaFilters.push({
-          rate: {
-            in: filters.rating,
+          category: {
+            in: filters.categories,
           },
         });
       }
+
+      if (prismaFilters.length < 1)
+        return {
+          data: [],
+          hasMore: false,
+          total: 0,
+        };
 
       const products = await this.prisma.product.findMany({
         where: {
@@ -235,13 +290,6 @@ export class ProductsService {
           rate: 'asc',
         },
       });
-
-      if (prismaFilters.length < 1)
-        return {
-          data: [],
-          hasMore: false,
-          total: 0,
-        };
 
       return {
         data: products,
@@ -278,6 +326,33 @@ export class ProductsService {
         visibility: 'public',
       },
     });
+  }
+
+  async getProtectedProductById(id: string, userId: string): Promise<Product> {
+    const filters = await this.getPremissionFilters(id, userId);
+    return this.prisma.product.findFirst({
+      where: {
+        AND: filters.concat({
+          id,
+        }),
+      },
+      rejectOnNotFound() {
+        throw new ProductNotFoundOrUnaccessable();
+      },
+    });
+  }
+
+  private async getPremissionFilters(
+    productId: string,
+    userId: string,
+  ): Promise<Prisma.ProductWhereInput[]> {
+    const filters: Prisma.ProductWhereInput[] = [];
+
+    filters.push({
+      visibility: 'public',
+    });
+
+    return filters;
   }
 }
 

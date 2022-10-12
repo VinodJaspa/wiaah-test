@@ -1,14 +1,12 @@
 import { UnprocessableEntityException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ShopService, CreateShopInput } from '@shop';
-import { MongoMemoryReplSet } from 'mongodb-memory-server';
+import { ShopService, CreateShopInput, Shop } from '@shop';
 import { mockedUser, SERVICES } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 
 describe('Shop service unit testing', () => {
   let service: ShopService;
   let dbSerivce: PrismaService;
-  let mockMongo: MongoMemoryReplSet;
   let mockKafkaEmit: jest.Mock;
 
   let createShopInput: CreateShopInput = {
@@ -24,18 +22,11 @@ describe('Shop service unit testing', () => {
     storeType: ['type1'],
     targetGenders: ['female', 'male'],
     vendorType: ['vendor1'],
+    banner: 'test.jpeg',
+    description: 'test desc',
   };
 
-  afterEach(async () => await mockMongo.stop());
-
   beforeEach(async () => {
-    mockKafkaEmit = jest.fn();
-    mockMongo = await MongoMemoryReplSet.create({
-      replSet: { count: 1 },
-      instanceOpts: [{ storageEngine: 'wiredTiger' }],
-    });
-    process.env.DATABASE_URL = mockMongo.getUri('testDB');
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ShopService,
@@ -78,6 +69,8 @@ describe('Shop service unit testing', () => {
   });
 
   it('should get shop by its owner id', async () => {
+    console.log(await service.findAll());
+    expect((await service.findAll()).length).toBe(0);
     const created = await createShop();
 
     const shop = await service.getShopByOwnerId(created.ownerId);
@@ -95,29 +88,143 @@ describe('Shop service unit testing', () => {
     expect(shop.id).toBe(created.id);
   });
 
-  it('should get near shops to the given coordinates', async () => {
-    for (const shopData of shopsPh) {
-      await dbSerivce.shop.create({
-        data: {
-          ...shopData,
-          ownerId: mockedUser.id,
-        },
-      });
-    }
+  describe('get nearby shops algorithm, should get near shops with max distance of', () => {
+    let lat = 32;
+    let lon = 20;
+    let nearShops: Shop[];
 
-    const nearShops = await service.getNearShops({
-      lat: 32,
-      lon: 20,
-      distance: 20,
+    beforeEach(async () => {
+      for (const shopData of shopsPh) {
+        await dbSerivce.shop.create({
+          data: {
+            ...shopData,
+            ownerId: mockedUser.id,
+            verified: false,
+          },
+        });
+      }
     });
 
-    console.log(nearShops);
+    it('20 km', async () => {
+      nearShops = await service.getNearShops({
+        lat,
+        lon,
+        distance: 20,
+      });
+
+      expect(nearShops.length).toBe(1);
+    });
+
+    it('150 km', async () => {
+      nearShops = await service.getNearShops({
+        lat,
+        lon,
+        distance: 150,
+      });
+
+      expect(nearShops.length).toBe(2);
+    });
+
+    it('400 km', async () => {
+      nearShops = await service.getNearShops({
+        lat,
+        lon,
+        distance: 400,
+      });
+
+      expect(nearShops.length).toBe(3);
+    });
+
+    it('1000 km', async () => {
+      nearShops = await service.getNearShops({
+        lat,
+        lon,
+        distance: 1000,
+      });
+
+      expect(nearShops.length).toBe(4);
+    });
+    it('1700 km', async () => {
+      nearShops = await service.getNearShops({
+        lat,
+        lon,
+        distance: 1700,
+      });
+
+      expect(nearShops.length).toBe(5);
+    });
+  });
+
+  describe('shop search with filters tests, should return only shops contains the filter', () => {
+    let shops: Shop[];
+
+    beforeEach(async () => {
+      for (const shopData of shopsPh) {
+        await dbSerivce.shop.create({
+          data: {
+            ...shopData,
+            ownerId: mockedUser.id,
+            verified: false,
+          },
+        });
+      }
+    });
+
+    it('storeType', async () => {
+      shops = await service.getFilteredShops({
+        storeType: 'type1',
+      });
+
+      expect(shops.every((v) => v.storeType.includes('type1'))).toBe(true);
+    });
+
+    it('target gender', async () => {
+      shops = await service.getFilteredShops({
+        targetGender: 'male',
+      });
+
+      expect(shops.every((v) => v.targetGenders.includes('male'))).toBe(true);
+
+      shops = await service.getFilteredShops({
+        targetGender: 'female',
+      });
+
+      expect(shops.every((v) => v.targetGenders.includes('female'))).toBe(true);
+    });
+
+    it('vendorType', async () => {
+      shops = await service.getFilteredShops({
+        vendorType: 'vendor1',
+      });
+
+      expect(shops.every((v) => v.vendorType.includes('vendor1'))).toBe(true);
+    });
+
+    it('country', async () => {
+      shops = await service.getFilteredShops({
+        country: 'usa',
+      });
+
+      expect(shops.every((v) => v.location.country === 'usa')).toBe(true);
+      expect(shops.every((v) => v.location.country === 'uk')).toBe(false);
+    });
+
+    it('city', async () => {
+      shops = await service.getFilteredShops({
+        city: 'cario',
+      });
+
+      expect(shops.every((v) => v.location.city === 'cario')).toBe(true);
+      expect(shops.every((v) => v.location.city === 'geneve')).toBe(false);
+    });
   });
 });
 
 const shopsPh: CreateShopInput[] = [
   {
     name: 'test',
+    banner: 'test.jpeg',
+    description: 'test desc',
     storeType: ['type1', 'type2'],
     targetGenders: ['male'],
     vendorType: ['vendor3'],
@@ -125,64 +232,72 @@ const shopsPh: CreateShopInput[] = [
       lat: 32.00063711672341,
       long: 20.000751274280667,
       address: 'address',
-      city: 'idk',
-      country: 'idk',
+      city: 'cario',
+      country: 'usa',
       state: 'test',
     },
   },
   {
     name: 'test',
     storeType: ['type3'],
+    banner: 'test.jpeg',
+    description: 'test desc',
     targetGenders: ['female'],
     vendorType: ['vendor1'],
     location: {
-      lat: 55,
-      long: 53,
+      lat: 33,
+      long: 21,
       address: 'address',
-      city: 'idk',
-      country: 'idk',
+      city: 'cario',
+      country: 'usa',
       state: 'test',
     },
   },
   {
     name: 'test',
     storeType: ['type2'],
+    banner: 'test.jpeg',
+    description: 'test desc',
     targetGenders: ['male', 'female'],
     vendorType: ['vendor2'],
     location: {
-      lat: 90,
-      long: 93,
+      lat: 35,
+      long: 22,
       address: 'address',
-      city: 'idk',
-      country: 'idk',
+      city: 'geneve',
+      country: 'uk',
       state: 'test',
     },
   },
   {
     name: 'test',
     storeType: ['type1', 'type2'],
+    banner: 'test.jpeg',
+    description: 'test desc',
     targetGenders: ['male'],
     vendorType: ['vendor3'],
     location: {
-      lat: 64,
-      long: 65,
+      lat: 40,
+      long: 25,
       address: 'address',
-      city: 'idk',
-      country: 'idk',
+      city: 'geneve',
+      country: 'uk',
       state: 'test',
     },
   },
   {
     name: 'test',
     storeType: ['type1', 'type2'],
+    banner: 'test.jpeg',
+    description: 'test desc',
     targetGenders: ['male'],
     vendorType: ['vendor3'],
     location: {
-      lat: 5,
-      long: 7,
+      lat: 45,
+      long: 30,
       address: 'address',
-      city: 'idk',
-      country: 'idk',
+      city: 'geneve',
+      country: 'as',
       state: 'test',
     },
   },

@@ -51,7 +51,9 @@ model Product {
   category         String
   attributes       ProductAttribute[]
   stock            Int
-  rate             Int                   @default(0)
+  rate             Float                   @default(0)
+  reviews          Int                   @default(0)
+  rateStarCount    Int                   @default(0)
   brand            String
   discount         Discount?
   cashback         CashBack?

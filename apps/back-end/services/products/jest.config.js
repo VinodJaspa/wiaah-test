@@ -19,4 +19,7 @@ module.exports = {
   },
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
+  globalSetup: '<rootDir>/test/setup/globalSetup.ts',
+  globalTeardown: '<rootDir>/test/setup/globalTeardown.ts',
+  setupFilesAfterEnv: ['<rootDir>/test/setup/setupFile.ts'],
 };
