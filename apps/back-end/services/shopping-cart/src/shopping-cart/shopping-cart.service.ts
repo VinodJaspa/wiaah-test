@@ -2,19 +2,17 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { CartItem } from '@prisma-client';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'prismaService';
 import { ShoppingCart } from '@entities';
 import {
   AuthorizationDecodedUser,
   KafkaMessageHandler,
   KAFKA_EVENTS,
   KAFKA_MESSAGES,
-  KAFKA_SERVICE_TOKEN,
   SERVICES,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';

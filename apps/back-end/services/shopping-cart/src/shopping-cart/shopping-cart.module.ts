@@ -16,7 +16,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: true,
-      context: ({ req }) => ({ req, user: getUserFromRequest(req) }),
+      context: ({ req, res }) => ({ req, res, user: getUserFromRequest(req) }),
     }),
     ClientsModule.register([
       {

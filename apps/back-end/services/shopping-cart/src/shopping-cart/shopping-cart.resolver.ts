@@ -25,7 +25,7 @@ import { ClientKafka } from '@nestjs/microservices';
 type Hooks = OnModuleInit & OnModuleDestroy;
 
 @Resolver(() => ShoppingCart)
-@UseGuards(GqlAuthorizationGuard)
+@UseGuards(new GqlAuthorizationGuard([]))
 export class ShoppingCartResolver implements Hooks {
   constructor(
     private readonly shoppingCartService: ShoppingCartService,
