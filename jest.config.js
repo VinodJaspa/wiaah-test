@@ -1,10 +1,11 @@
 module.exports = {
   globals: {
     "ts-jest": {
-      diagnostics: false,
+      diagnostics: {
+        warnOnly: true,
+      },
     },
   },
-
   collectCoverageFrom: [
     "!**/*.{ts,tsx}",
     "**/seller/**/*.{ts,tsx}",
@@ -53,5 +54,3 @@ module.exports = {
   transformIgnorePatterns: ["<rootDir>/node_modules/"],
   snapshotSerializers: ["enzyme-to-json/serializer"],
 };
-
-// "^.+\\.(t|j)s$": "ts-jest",

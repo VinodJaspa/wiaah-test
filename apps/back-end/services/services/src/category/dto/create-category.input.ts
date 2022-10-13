@@ -1,7 +1,7 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
 
 @InputType()
-export class ServiceCategoryFilterValue {
+export class ServiceCategoryFilterValueInput {
   @Field(() => String)
   name: string;
 
@@ -10,15 +10,15 @@ export class ServiceCategoryFilterValue {
 }
 
 @InputType()
-export class ServiceCategoryFilter {
+export class ServiceCategoryFilterInput {
   @Field(() => String)
   filterGroupName: string;
 
   @Field(() => Int)
   sortOrder: number;
 
-  @Field(() => [ServiceCategoryFilterValue])
-  filterValues: ServiceCategoryFilterValue[];
+  @Field(() => [ServiceCategoryFilterValueInput])
+  filterValues: ServiceCategoryFilterValueInput[];
 }
 
 @InputType()
@@ -26,6 +26,6 @@ export class CreateCategoryInput {
   @Field(() => String)
   name: string;
 
-  @Field(() => [ServiceCategoryFilter])
-  filters: ServiceCategoryFilter[];
+  @Field(() => [ServiceCategoryFilterInput])
+  filters: ServiceCategoryFilterInput[];
 }

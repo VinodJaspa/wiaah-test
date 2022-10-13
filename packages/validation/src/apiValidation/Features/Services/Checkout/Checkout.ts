@@ -58,14 +58,14 @@ export const ProductCheckoutDataValidationSchema = object({
   name: string().required(),
   thumbnail: string().required(),
   qty: number().required(),
-  shippingMethods: array()
-    .of(ShippingMothedValidationSchema.required())
-    .min(0)
+  type: mixed<"goods" | "downloadable">()
+    .oneOf(["goods", "downloadable"])
     .required(),
+  shippingMethods: array().of(ShippingMothedValidationSchema.required()).min(0),
   price: number().required(),
   location: Location().required(),
-  size: string().required(),
-  color: string().required(),
+  size: string(),
+  color: string(),
   discount: number().min(1).max(99).required(),
   cashback: Cashback().required(),
   description: string().required(),
@@ -167,6 +167,7 @@ export const CheckoutDataValidationTester = mixed<ServicesCheckoutData>().test(
           );
           break;
         case "product":
+          ProductCheckoutDataValidationSchema.validateSync(value.data);
           break;
         default:
           return false;

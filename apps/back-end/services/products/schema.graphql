@@ -38,14 +38,20 @@ type Discount {
   amount: Int!
 }
 
+type ProductAttribute {
+  name: String!
+  values: [String!]!
+}
+
 type Product {
   id: ID!
+  sellerId: ID!
   title: String!
   description: String!
   shopId: ID!
+  hostCategories: [String!]!
   category: String!
-  colors: [String!]!
-  sizes: [String!]!
+  attributes: [ProductAttribute!]!
   stock: Int!
   discount: Discount!
   cashback: CashBack!
@@ -55,8 +61,6 @@ type Product {
   price: Float!
   visibility: VisibilityEnum!
   shippingRulesIds: [ID!]!
-  shop: Shop!
-  shippingDetails: ShippingDetails
 }
 
 enum VisibilityEnum {
@@ -64,9 +68,22 @@ enum VisibilityEnum {
   public
 }
 
-type Shop {
+type Category {
+  id: ID!
   name: String!
-  products: [Product!]!
+  parantId: ID!
+}
+
+type ProductFilterGroupValue {
+  name: String!
+  sortOrder: Int!
+}
+
+type Filter {
+  id: ID!
+  name: String!
+  values: [ProductFilterGroupValue!]!
+  sortOrder: Int!
 }
 
 type Search {
@@ -74,29 +91,114 @@ type Search {
   products: [Product!]!
 }
 
-type ShippingDetails {
+type Location {
+  lat: Float!
+  long: Float!
+  address: String!
   country: String!
-  shippingRulesIds: [String!]!
+  city: String!
+  state: String!
+}
+
+type Shop {
+  id: ID!
+  name: String!
+  ownerId: String!
+  location: Location!
+  description: String!
+  banner: String!
+  verified: Boolean!
+  storeType: [StoreType!]!
+  vendorType: [VendorType!]!
+  targetGenders: [TargetGenders!]!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum StoreType {
+  type1
+  type2
+  type3
+}
+
+enum VendorType {
+  vendor1
+  vendor2
+  vendor3
+}
+
+enum TargetGenders {
+  male
+  female
 }
 
 type Query {
+  getNearShops(GetNearShopsInput: GetNearShopsInput!): [Shop!]!
+  getAllShops: [Shop!]!
+  getShopById(id: String!): Shop!
+  getFilteredShops(filteredShopsArgs: FilterShopsInput!): [Shop!]!
   getProductById(id: String!): Product!
   getProducts: [Product!]!
+  getCategories: [Category!]!
+  getProductsFilters: [Filter!]!
+}
+
+input GetNearShopsInput {
+  lat: Float!
+  lon: Float!
+  distance: Float!
+}
+
+input FilterShopsInput {
+  storeType: StoreType
+  vendorType: VendorType
+  targetGender: TargetGenders
+  country: String
+  city: String
+  limit: Int = 10
 }
 
 type Mutation {
+  createShop(createShopInput: CreateShopInput!): Shop!
+  createShopsPh: Boolean!
+  removeAllShops: Boolean!
   createNewProduct(createNewProductInput: CreateProdutctInput!): Product!
   updateProduct(updateProductArgs: UpdateProdutctInput!): Boolean!
   deleteAllProducts: Boolean!
   createProductsPh: Boolean!
+  uploadProductPresentations(files: [Upload!]!): Boolean!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  deleteCategory(deleteCategoryId: String!): Category!
+  updateCategory(updateCategoryArgs: UpdateCategoryInput!): Category!
+  createFilter(createFilterGroupArgs: CreateFilterInput!): Filter!
+  updateFilter(updateFilterArgs: UpdateFilterInput!): Filter!
+  deleteFilter(deleteFilterId: String!): Filter!
+}
+
+input CreateShopInput {
+  name: String!
+  location: LocationInput!
+  storeType: [StoreType!]!
+  vendorType: [VendorType!]!
+  targetGenders: [TargetGenders!]!
+}
+
+input LocationInput {
+  lat: Float!
+  long: Float!
+  address: String!
+  country: String!
+  city: String!
+  state: String!
 }
 
 input CreateProdutctInput {
+  type: ProductType!
   title: String!
   description: String!
+  hostCategories: [String!]!
   category: String!
-  colors: [String!]!
-  sizes: [String!]!
+  attributes: [ProductAttributeInput!]!
   stock: Int!
   discount: DiscountInput!
   cashback: CashBackInput!
@@ -105,6 +207,16 @@ input CreateProdutctInput {
   brand: String!
   visibility: VisibilityEnum!
   thumbnail: String!
+}
+
+enum ProductType {
+  goods
+  digital
+}
+
+input ProductAttributeInput {
+  name: String!
+  values: [String!]!
 }
 
 input DiscountInput {
@@ -124,11 +236,12 @@ input ProductPresentationInput {
 }
 
 input UpdateProdutctInput {
+  type: ProductType
   title: String
   description: String
+  hostCategories: [String!]
   category: String
-  colors: [String!]
-  sizes: [String!]
+  attributes: [ProductAttributeInput!]
   stock: Int
   discount: DiscountInput
   cashback: CashBackInput
@@ -137,5 +250,37 @@ input UpdateProdutctInput {
   brand: String
   visibility: VisibilityEnum
   thumbnail: String
+  id: ID!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input CreateCategoryInput {
+  parantId: ID
+  name: String!
+}
+
+input UpdateCategoryInput {
+  parantId: ID
+  name: String
+  id: ID!
+}
+
+input CreateFilterInput {
+  name: String!
+  sortOrder: Int!
+  values: [ProductFilterGroupValueInput!]!
+}
+
+input ProductFilterGroupValueInput {
+  name: String!
+  sortOrder: Int!
+}
+
+input UpdateFilterInput {
+  name: String
+  sortOrder: Int
+  values: [ProductFilterGroupValueInput!]
   id: ID!
 }

@@ -11,20 +11,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model ProductCategory {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  parantId String?
+}
+
+type ProductFilterGroupValue {
+  name      String
+  sortOrder Int
+}
+
+model ProductFilterGroup {
+  id        String                    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  values    ProductFilterGroupValue[]
+  sortOrder Int
+}
+
+enum ProdcutType {
+  goods
+  digital
+}
+
+type ProductAttribute {
+  name String
+  values String[]
+}
+
 model Product {
   id               String                @id() @default(auto()) @map("_id") @db.ObjectId()
   sellerId         String
+  shopId           String
+  type             ProdcutType
   title            String
   description      String
   price            Int
+  hostCategories   String[]
   category         String
-  colors           String[]
-  sizes            String[]
+  attributes       ProductAttribute[]
   stock            Int
-  rate             Int                   @default(0)
+  rate             Float                   @default(0)
+  reviews          Int                   @default(0)
+  rateStarCount    Int                   @default(0)
   brand            String
   discount         Discount?
-  shopId           String
   cashback         CashBack?
   thumbnail        String
   shippingRulesIds String[]              @db.ObjectId
@@ -62,3 +93,83 @@ enum PresentationType {
   video
   image
 }
+
+model Shop {
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId       String          @unique
+  name          String
+  banner        String
+  description   String
+  verified      Boolean
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt()
+  location      Location
+  storeType     StoreType[]
+  vendorType    VendorType[]
+  targetGenders TargetGenders[]
+}
+
+type Location {
+  lat     Float
+  long    Float
+  country String
+  city    String
+  state   String
+  address String
+}
+
+enum StoreType {
+  type1
+  type2
+  type3
+}
+
+enum VendorType {
+  vendor1
+  vendor2
+  vendor3
+}
+
+enum TargetGenders {
+  male
+  female
+}
+
+
+model ShippingSettings {
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  shopId        String         @db.ObjectId @unique
+  ownerId       String         @db.ObjectId @unique
+  shippingRules ShippingRule[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+model ShippingRule {
+  id                 String            @id @default(auto()) @map("_id") @db.ObjectId
+  countries          ShippingCountry[]
+  cost               Float
+  deliveryTimeRange  DeliveryTimeRange   
+  shippingTypes       ShippingType[]
+  ShippingSettings   ShippingSettings? @relation(fields: [shippingSettingsId], references: [id])
+  shippingSettingsId String           @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+type DeliveryTimeRange {
+  from Int
+  to Int
+}
+
+type ShippingCountry {
+  name String
+  code String
+}
+
+enum ShippingType {
+  free
+  paid
+  click_and_collect
+}
+

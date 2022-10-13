@@ -1,0 +1,1 @@
+{"version":3,"file":"TransformGqlUploadToMeta.js","sourceRoot":"","sources":["../../../src/transform/TransformGqlUploadToMeta.ts"],"names":[],"mappings":";;;AAGA,SAAgB,wBAAwB,CAAC,SAAiB;IACxD,MAAM,EACJ,IAAI,EAAE,EAAE,QAAQ,EAAE,QAAQ,EAAE,GAC7B,GAAG,SAAS,CAAC;IACd,OAAO;QACL,QAAQ;QACR,IAAI,EAAE,QAAQ;KACf,CAAC;AACJ,CAAC;AARD,4DAQC"}

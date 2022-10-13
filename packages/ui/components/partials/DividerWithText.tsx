@@ -44,7 +44,7 @@ export const DividerWidthText: FC<DivderWithTextProps> = ({
         className={` my-4 flex h-0.5 w-full bg-gray-100 `}
       ></div>
       {children ? (
-        children
+        <>{children}</>
       ) : text ? (
         <div style={TextStyles} className={` min-w-fit px-4 capitalize`}>
           {text}

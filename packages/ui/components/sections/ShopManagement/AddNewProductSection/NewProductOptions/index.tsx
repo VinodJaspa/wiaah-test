@@ -32,7 +32,7 @@ export const ProductOptions: React.FC<ProductOptionsProps> = () => {
   return (
     <div className="py-4 flex flex-col gap-4">
       {selectedOptions.map((opt, i) => (
-        <div className="flex flex-col gap-2">
+        <div key={i} className="flex flex-col gap-2">
           <div className="bg-gray-200 w-full px-4 py-2 flex justify-between">
             <IoMdCheckmark />
             <TranslationText translationObject={opt.name} />
@@ -51,7 +51,7 @@ export const ProductOptions: React.FC<ProductOptionsProps> = () => {
       >
         {options.map((opt, i) => (
           <SelectOption value={i} key={opt.value + i}>
-            {t(opt.name.translationKey, opt.name.fallbackText)}
+            <TranslationText translationObject={opt.name} />
           </SelectOption>
         ))}
       </Select>

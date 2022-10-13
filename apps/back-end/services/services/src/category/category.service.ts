@@ -38,4 +38,8 @@ export class CategoryService {
       },
     });
   }
+
+  getAllCategories() {
+    return this.prisma.serviceCategory.findMany();
+  }
 }

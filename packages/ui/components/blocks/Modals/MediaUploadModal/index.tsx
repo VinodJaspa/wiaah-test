@@ -1,7 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiCamera, HiFolderAdd, HiVideoCamera } from "react-icons/hi";
-import { useReactPubsub } from "react-pubsub";
 import {
   useFileUploadModal,
   PostsViewModalsHeader,
@@ -13,10 +12,48 @@ import {
 import { TakePictureModal, RecordVideoModal } from "ui";
 import { getFileSrcData, FileRes } from "utils";
 
+export type MediaUploadType = "image" | "video";
+
+type MediaUploadModalControls = {
+  uploadType: MediaUploadType | undefined;
+  cancelUpload: () => void;
+};
+
+type useMediaUploadControlsReturn = {
+  uploadVideo: () => void;
+  uploadImage: () => void;
+  controls: MediaUploadModalControls;
+};
+
+export const useMediaUploadControls = (): useMediaUploadControlsReturn => {
+  const [uploadType, setUploadType] = React.useState<MediaUploadType>();
+
+  function uploadImage() {
+    setUploadType("image");
+  }
+
+  function uploadVideo() {
+    setUploadType("video");
+  }
+
+  function cancelUpload() {
+    setUploadType(undefined);
+  }
+
+  return {
+    uploadImage,
+    uploadVideo,
+    controls: {
+      uploadType,
+      cancelUpload,
+    },
+  };
+};
+
 export interface MediaUploadModalProps {
   onImgUpload?: (converted: FileRes, raw?: File) => any;
   onVidUpload?: (converted: string, raw?: File) => any;
-
+  controls?: MediaUploadModalControls;
   multiple?: boolean;
 }
 
@@ -24,8 +61,14 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
   onImgUpload,
   onVidUpload,
   multiple,
+  controls,
 }) => {
-  const { cancelUpload, uploadType } = useFileUploadModal();
+  const { cancelUpload: _cancelUpload, uploadType: _uploadType } =
+    useFileUploadModal();
+
+  const cancelUpload = controls ? controls.cancelUpload : _cancelUpload;
+  const uploadType = controls ? controls.uploadType : _uploadType;
+
   const { t } = useTranslation();
   const [takePicture, setTakePicture] = React.useState<boolean>(false);
   const [recordVideo, setRecordVideo] = React.useState<boolean>(false);

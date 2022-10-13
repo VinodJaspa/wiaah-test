@@ -60,7 +60,7 @@ export class ProductsController {
         data: {
           name: product.title,
           price: product.price,
-          thumbnail: product.thumbnail,
+          thumbnail: product.presentations.find((v) => v.type === 'image').src,
           shopId: product.shopId,
         },
         error: null,

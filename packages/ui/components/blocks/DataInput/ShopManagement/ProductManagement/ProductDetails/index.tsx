@@ -10,24 +10,29 @@ import {
   HashTagInput,
   InputProps,
   SubCategorySelect,
+  Select,
+  SelectOption,
 } from "ui";
 import { FileRes } from "utils";
 
-export interface ProductGeneralDetailsProps {}
+export interface ProductGeneralDetailsProps {
+  onChange?: (values: Record<string, any>) => any;
+}
 
 const MAX_PRODUCTS_IMAGE = 4;
 
-export const ProductGeneralDetails: React.FC<
-  ProductGeneralDetailsProps
-> = () => {
+export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
+  onChange,
+}) => {
   const { uploadImage, uploadVideo } = useFileUploadModal();
   const [images, setImages] = React.useState<FileRes[]>([]);
   const [videos, setVideos] = React.useState<string[]>([]);
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
-      <Formik initialValues={{}} onSubmit={() => {}}>
-        {({}) => {
+      <Formik initialValues={{} as Record<string, any>} onSubmit={() => {}}>
+        {({ values, setFieldValue }) => {
+          onChange && onChange(values);
           return (
             <Form className="w-full flex flex-col gap-4">
               <span className="text-2xl font-semibold">
@@ -61,6 +66,18 @@ export const ProductGeneralDetails: React.FC<
               <span className="text-2xl font-semibold">
                 {t("Price & Attributes")}
               </span>
+
+              <Select
+                value={values["product_type"]}
+                placeholder={t("Select Prdouct Type")}
+                onOptionSelect={(v) => setFieldValue("product_type", v)}
+              >
+                <SelectOption value={"goods"}>{t("Goods")}</SelectOption>
+                <SelectOption value={"downloadable"}>
+                  {t("Downloadable Products")}
+                </SelectOption>
+              </Select>
+
               <FormikInput<InputProps>
                 type={"number"}
                 min={1}

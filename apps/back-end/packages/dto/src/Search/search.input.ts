@@ -5,6 +5,10 @@ import {
   Float,
   registerEnumType,
 } from "@nestjs/graphql";
+import {
+  CreateGqlPaginatedResponse,
+  ExtendableGqlPaginationInput,
+} from "nest-utils";
 
 enum StockStatusFilter {
   "available",
@@ -29,37 +33,43 @@ export class PriceRangeInput {
 }
 
 @InputType()
-export class SearchInput {
+class SearchInput {
   @Field((type) => String, { nullable: true })
-  title: string;
+  title?: string;
 
   @Field((type) => [String], { nullable: true })
-  categories: string[];
+  categories?: string[];
 
   @Field((type) => PriceRangeInput, { nullable: true })
-  price: PriceRangeInput;
+  price?: PriceRangeInput;
 
   @Field((type) => [ShippingMothedsFilter], { nullable: true })
-  shippingMotheds: ShippingMothedsFilter;
+  shippingMotheds?: ShippingMothedsFilter;
 
   @Field((type) => [String], { nullable: true })
-  brands: string[];
+  brands?: string[];
 
   @Field((type) => [Int], { nullable: true })
-  rating: number[];
+  rating?: number[];
 
   @Field((type) => [String], { nullable: true })
-  colors: string[];
+  colors?: string[];
 
   @Field((type) => [String], { nullable: true })
-  size: string[];
+  size?: string[];
 
   @Field((type) => String, { nullable: true })
-  stockStatus: keyof typeof StockStatusFilter;
+  stockStatus?: keyof typeof StockStatusFilter;
 
   @Field((type) => [String], { nullable: true })
-  countries: string[];
+  countries?: string[];
 
   @Field((type) => [String], { nullable: true })
-  cities: string[];
+  cities?: string[];
+}
+
+@InputType()
+export class ProductSearchPaginationInput extends ExtendableGqlPaginationInput {
+  @Field(() => SearchInput)
+  filters: SearchInput;
 }

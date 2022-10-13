@@ -51,6 +51,7 @@ export const HotelServiceProviderRoomValidationSchema =
 export const HotelServiceDetailsValidationSchema =
   CommonServiceDataSchema.concat(
     object({
+      serviceTitle: string().required(),
       pricePerNight: number().required(),
       serviceFee: number().required(),
       taxes: number().required(),

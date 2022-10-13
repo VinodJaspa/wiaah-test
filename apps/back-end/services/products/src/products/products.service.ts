@@ -1,31 +1,33 @@
 import {
-  BadRequestException,
   Inject,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { Prisma, Product } from '@prisma-client';
-import { PrismaService } from 'src/Prisma.service';
+import { Prisma } from '@prisma-client';
+import { PrismaService } from 'prismaService';
 import { CreateProdutctInput } from './dto/create-produtct.input';
 import {
-  SearchInput,
-  CreatWisherListPayload,
+  ProductSearchPaginationInput,
   IsOwnerOfShopMessage,
   IsOwnerOfShopMessageReply,
   NewProductCreatedEvent,
-  GetUserShopMetaDataMessage,
-  GetUserShopMetaDataMessageReply,
 } from 'nest-dto';
 import {
   AuthorizationDecodedUser,
   KafkaMessageHandler,
   KAFKA_EVENTS,
   KAFKA_MESSAGES,
-  KAFKA_SERVICE_TOKEN,
   SERVICES,
+  ExtractPagination,
 } from 'nest-utils';
+import {
+  Product,
+  ProductSearchPaginationResponse,
+  ProductNotFoundException,
+  ProductNotFoundOrUnaccessable,
+  ReviewProductInput,
+} from '@products';
 import { ClientKafka } from '@nestjs/microservices';
 import { UpdateProdutctInput } from './dto/update-produtct.input';
 
@@ -33,34 +35,17 @@ import { UpdateProdutctInput } from './dto/update-produtct.input';
 export class ProductsService {
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(SERVICES.WISHLIST_SERVICE.token)
-    private readonly wishlistClient: ClientKafka,
-    @Inject(SERVICES.SHOP_SERVICE.token)
-    private readonly shopclient: ClientKafka,
-    @Inject(KAFKA_SERVICE_TOKEN) private readonly kafkaClient: ClientKafka,
+    @Inject(SERVICES.PRODUCTS_SERVICE.token)
+    private readonly eventClient: ClientKafka,
   ) {}
+
+  private readonly maxRate: number = 5;
 
   async createNewProduct(
     createProductInput: CreateProdutctInput,
     user: AuthorizationDecodedUser,
   ) {
-    const {
-      results: { success, data, error },
-    } = await KafkaMessageHandler<
-      string,
-      GetUserShopMetaDataMessage,
-      GetUserShopMetaDataMessageReply
-    >(
-      this.shopclient,
-      KAFKA_MESSAGES.getUserShopId,
-      new GetUserShopMetaDataMessage({ accountId: user.id }),
-    );
-
-    if (!success) {
-      throw new Error(error);
-    }
-
-    const { shopId } = data;
+    const { shopId } = user;
 
     const product = await this.prisma.product.create({
       data: {
@@ -70,7 +55,7 @@ export class ProductsService {
       },
     });
 
-    this.kafkaClient.emit<string, NewProductCreatedEvent>(
+    this.eventClient.emit<string, NewProductCreatedEvent>(
       KAFKA_EVENTS.PRODUCTS_EVENTS.productCreated,
       new NewProductCreatedEvent({ id: product.id, ownerId: user.id, shopId }),
     );
@@ -79,24 +64,24 @@ export class ProductsService {
   }
 
   async updateProduct(userId: string, input: UpdateProdutctInput) {
+    const { id, ...rest } = input;
+    const product = await this.prisma.product.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!product)
+      throw new NotFoundException('no product with the given id was found');
+
+    const isOwner = product.sellerId === userId;
+
+    if (!isOwner)
+      throw new UnauthorizedException(
+        'you can only update products in your shop',
+      );
+
     try {
-      const { id, ...rest } = input;
-      const product = await this.prisma.product.findUnique({
-        where: {
-          id,
-        },
-      });
-
-      if (!product)
-        throw new BadRequestException('no product with the given id was found');
-
-      const isOwner = await this.isOwnerOfShop(userId, id);
-
-      if (!isOwner)
-        throw new UnauthorizedException(
-          'you can only update products in your shop',
-        );
-
       await this.prisma.product.update({
         where: {
           id,
@@ -110,6 +95,33 @@ export class ProductsService {
     }
   }
 
+  async removeProduct(productId: string, userId: string): Promise<Product> {
+    const { id } = await this.getProductIfOwner(productId, userId);
+
+    const removed = await this.prisma.product.delete({
+      where: {
+        id,
+      },
+    });
+    return removed;
+  }
+
+  async getProductIfOwner(productId: string, userId: string): Promise<Product> {
+    const product = await this.prisma.product.findUnique({
+      where: {
+        id: productId,
+      },
+      rejectOnNotFound() {
+        throw new NotFoundException('this product not found');
+      },
+    });
+    if (product.sellerId !== userId)
+      throw new UnauthorizedException(
+        'you cannot preform this action on products you dont own',
+      );
+    return product;
+  }
+
   async isOwnerOfShop(userId: string, shopId: string): Promise<boolean> {
     const {
       results: { data, error, success },
@@ -118,7 +130,7 @@ export class ProductsService {
       IsOwnerOfShopMessage,
       IsOwnerOfShopMessageReply
     >(
-      this.shopclient,
+      this.eventClient,
       KAFKA_MESSAGES.isOwnerOfShop,
       new IsOwnerOfShopMessage({ ownerId: userId, shopId }),
       'shop validation timed out',
@@ -127,10 +139,13 @@ export class ProductsService {
     return data;
   }
 
-  getProductById(productId: string) {
+  getProductById(productId: string): Promise<Product> {
     return this.prisma.product.findUnique({
       where: {
         id: productId,
+      },
+      rejectOnNotFound(error) {
+        throw new ProductNotFoundException();
       },
     });
   }
@@ -139,6 +154,34 @@ export class ProductsService {
     return this.prisma.product.findMany();
   }
 
+  async rateProduct(input: ReviewProductInput, userId: string) {
+    const { productId, rate } = input;
+    const product = await this.getProtectedProductById(productId, userId);
+
+    console.log({ product }, await this.getAll());
+
+    const newOverallRate =
+      ((product.rateStarCount + rate) /
+        ((product.reviews + 1) * this.maxRate)) *
+      this.maxRate;
+
+    await this.prisma.product.update({
+      where: {
+        id: product.id,
+      },
+      data: {
+        rate: newOverallRate,
+        rateStarCount: {
+          increment: rate,
+        },
+        reviews: {
+          increment: 1,
+        },
+      },
+    });
+  }
+
+  // TODO: remove on production
   async deleteAll() {
     try {
       await this.prisma.product.deleteMany();
@@ -156,6 +199,14 @@ export class ProductsService {
     });
   }
 
+  getAllBySellerId(sellerId: string): Promise<Product[]> {
+    return this.prisma.product.findMany({
+      where: {
+        sellerId,
+      },
+    });
+  }
+
   async createPh() {
     try {
       await this.prisma.product.createMany({
@@ -167,91 +218,84 @@ export class ProductsService {
     }
   }
 
-  async getFilteredProducts(filters: SearchInput[]) {
+  async getFilteredProducts(
+    input: ProductSearchPaginationInput,
+  ): Promise<ProductSearchPaginationResponse> {
     try {
+      const { skip, take, totalSearched } = ExtractPagination(input.pagination);
+
       const prismaFilters: Prisma.ProductWhereInput[] = [];
+      const { filters } = input;
 
-      filters.map(
-        (
-          {
-            brands,
-            categories,
-            cities,
-            colors,
-            countries,
-            price,
-            rating,
-            shippingMotheds,
-            size,
-            stockStatus,
-            title,
+      if (filters.title) {
+        prismaFilters.push({
+          title: { contains: filters.title },
+        });
+      }
+
+      if (filters.brands) {
+        prismaFilters.push({
+          brand: { in: filters.brands },
+        });
+      }
+
+      if (filters.price) {
+        prismaFilters.push({
+          price: { gte: filters.price.min, lte: filters.price.max },
+        });
+      }
+      if (filters.stockStatus) {
+        prismaFilters.push({
+          stock:
+            filters.stockStatus === 'available'
+              ? { gt: 0 }
+              : filters.stockStatus === 'unavailable'
+              ? 0
+              : undefined,
+        });
+      }
+      if (filters.rating) {
+        filters.rating.forEach((v) => {
+          prismaFilters.push({
+            rate: {
+              gte: v,
+              lt: v + 1,
+            },
+          });
+        });
+      }
+
+      if (filters.categories) {
+        prismaFilters.push({
+          category: {
+            in: filters.categories,
           },
-          i,
-        ) => {
-          if (title) {
-            prismaFilters.push({
-              title: { contains: title },
-            });
-          }
+        });
+      }
 
-          if (brands) {
-            prismaFilters.push({
-              brand: { in: brands },
-            });
-          }
+      if (prismaFilters.length < 1)
+        return {
+          data: [],
+          hasMore: false,
+          total: 0,
+        };
 
-          if (categories) {
-            prismaFilters.push({
-              category: {
-                in: categories,
-              },
-            });
-          }
-
-          if (colors) {
-            prismaFilters.push({
-              colors: { hasSome: colors },
-            });
-          }
-
-          if (price) {
-            prismaFilters.push({
-              price: { gte: price.min, lte: price.max },
-            });
-          }
-          if (size) {
-            prismaFilters.push({
-              sizes: { hasSome: size },
-            });
-          }
-          if (stockStatus) {
-            prismaFilters.push({
-              stock:
-                stockStatus === 'available'
-                  ? { gt: 0 }
-                  : stockStatus === 'unavailable'
-                  ? 0
-                  : undefined,
-            });
-          }
-          if (rating) {
-            prismaFilters.push({
-              rate: {
-                in: rating,
-              },
-            });
-          }
-        },
-      );
-
-      if (prismaFilters.length < 1) return [];
-
-      return this.prisma.product.findMany({
+      const products = await this.prisma.product.findMany({
         where: {
           AND: prismaFilters,
         },
-        take: 10,
+        take,
+        skip,
+        orderBy: {
+          rate: 'asc',
+        },
       });
+
+      return {
+        data: products,
+        total: totalSearched,
+        hasMore: products.length >= take,
+      };
     } catch (error) {}
   }
 
@@ -266,7 +310,6 @@ export class ProductsService {
       throw new UnauthorizedException('this product is private');
 
     const isShopOwner = await this.isOwnerOfShop(reviewerId, product.shopId);
-    console.log('isshopowner', isShopOwner);
 
     if (isShopOwner)
       throw new UnauthorizedException('you cant review you own products');
@@ -284,10 +327,38 @@ export class ProductsService {
       },
     });
   }
+
+  async getProtectedProductById(id: string, userId: string): Promise<Product> {
+    const filters = await this.getPremissionFilters(id, userId);
+    return this.prisma.product.findFirst({
+      where: {
+        AND: filters.concat({
+          id,
+        }),
+      },
+      rejectOnNotFound() {
+        throw new ProductNotFoundOrUnaccessable();
+      },
+    });
+  }
+
+  private async getPremissionFilters(
+    productId: string,
+    userId: string,
+  ): Promise<Prisma.ProductWhereInput[]> {
+    const filters: Prisma.ProductWhereInput[] = [];
+
+    filters.push({
+      visibility: 'public',
+    });
+
+    return filters;
+  }
 }
 
 const ProductsPh: Prisma.ProductCreateInput[] = [
   {
+    type: 'goods',
     category: 'test',
     description: 'test product description',
     stock: 13,
@@ -295,11 +366,11 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     title: 'cutting board',
     brand: 'nike',
     price: 16,
-    colors: ['red', 'blue'],
     sellerId: 'sellerid',
     thumbnail: '',
   },
   {
+    type: 'goods',
     category: 'test',
     description: 'test product description',
     stock: 0,
@@ -307,11 +378,11 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     title: 'cup',
     brand: 'or',
     price: 18,
-    colors: ['yellow', 'green'],
     sellerId: 'sellerid',
     thumbnail: '',
   },
   {
+    type: 'goods',
     category: 'test',
     description: 'test product description',
     stock: 13,
@@ -319,11 +390,11 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     title: 'sofa',
     brand: 'zara',
     price: 30,
-    colors: ['red', 'gray', 'white'],
     sellerId: 'sellerid',
     thumbnail: '',
   },
   {
+    type: 'digital',
     category: 'test',
     description: 'test product description',
     stock: 13,
@@ -331,11 +402,11 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     title: 'mouse',
     brand: 'zake',
     price: 5,
-    colors: ['purple', 'lime', 'yellow'],
     sellerId: 'sellerid',
     thumbnail: '',
   },
   {
+    type: 'digital',
     category: 'test',
     description: 'test product description',
     stock: 13,
@@ -343,7 +414,6 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     title: 'vase',
     brand: 'dior',
     price: 98,
-    colors: ['cyan', 'lime', 'black', 'crimson'],
     sellerId: 'sellerid',
     thumbnail: '',
   },

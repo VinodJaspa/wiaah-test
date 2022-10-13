@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { graphqlUploadExpress } from 'graphql-upload';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,6 +19,7 @@ async function bootstrap() {
     },
   });
   app.startAllMicroservices();
-  await app.listen(3006);
+  app.use(graphqlUploadExpress());
+  await app.listen(process.env.PORT || 3006);
 }
 bootstrap();

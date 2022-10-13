@@ -6,16 +6,12 @@ import {
   TabsHeader,
   useGetServicesProviderQuery,
   useSearchFilters,
-  Divider,
   ServiceReachOutSection,
   ServiceOnMapLocalizationSection,
   ServicePoliciesSection,
-  ServiceWorkingHoursSection,
   HotelServiceRoomsSection,
   PopularAmenitiesSection,
   ServicesProviderDescriptionSection,
-  Reviews,
-  SectionTabType,
   ServicePresentationCarosuel,
   StaticSideBarWrapper,
   ServiceReservastion,
@@ -23,8 +19,13 @@ import {
   ServiceDetailsReviewsSection,
   SellerServiceWorkingHoursSection,
   ServicesProviderHeader,
+  Image,
+  Button,
+  Divider,
+  LocationIcon,
+  LocationOnPointFillIcon,
+  LocationAddressDisplay,
 } from "ui";
-import { reviews } from "placeholder";
 import { useResponsive } from "hooks";
 import { useTranslation } from "react-i18next";
 
@@ -185,6 +186,30 @@ export const HotelDetailsView: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
+      <div className="flex w-full items-center justify-between shadow p-4">
+        <div className="flex gap-4">
+          <Image
+            className="w-28 h-20 rounded-xl object-cover"
+            src={res ? res.data.thumbnail : ""}
+          />
+          <div className="flex flex-col">
+            <p className=" font-bold text-xl">{res ? res.data.name : null}</p>
+            <div className="flex text-black gap-1 items-center">
+              <LocationOnPointFillIcon />
+              {res ? (
+                <p>
+                  {res.data.location.city}, {res.data.location.country}
+                </p>
+              ) : null}
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button>{t("Follow")}</Button>
+          <Button outline>{t("Contact")}</Button>
+        </div>
+      </div>
+      <Divider />
       <ServicePresentationCarosuel
         data={res ? res.data.presintations || [] : []}
       />

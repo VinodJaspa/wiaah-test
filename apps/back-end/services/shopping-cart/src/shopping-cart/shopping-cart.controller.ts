@@ -32,7 +32,6 @@ export class ShoppingCartController implements OnModuleInit {
   async createShoppingCart(
     @Payload() payload: KafkaPayload<NewAccountCreatedEvent>,
   ) {
-    console.log('creating shopping cart', payload);
     try {
       await this.shoppingCartService.createShoppingCart(payload.value.input.id);
     } catch (err) {

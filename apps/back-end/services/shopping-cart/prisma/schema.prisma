@@ -21,11 +21,10 @@ model Cart {
 
 type AppliedVoucher {
   code String
-  amount Int
+  amount Float
   currency String
   convertedAmount Float
   convertedToCurrency String
-
 }
 
 type CartItem {

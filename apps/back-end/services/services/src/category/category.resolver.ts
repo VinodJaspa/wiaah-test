@@ -11,7 +11,6 @@ import {
 import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Category)
-@UseGuards(new GqlAuthorizationGuard([]))
 export class CategoryResolver {
   constructor(private readonly categoryService: CategoryService) {}
 
@@ -21,6 +20,11 @@ export class CategoryResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.categoryService.getCategoryById(id, user.id);
+  }
+
+  @Query(() => [Category])
+  getServiceCategories() {
+    return this.categoryService.getAllCategories();
   }
 
   @Mutation(() => Category)

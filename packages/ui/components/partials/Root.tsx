@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { useTranslation } from "react-i18next";
 import { Language } from "ui/languages/enums/Language";
 import { useResponsive } from "ui";
+import { runIfFn } from "utils";
 
 export interface RootProps {
   scrollable?: boolean;
@@ -47,7 +48,7 @@ export const Root: React.FC<RootProps> = ({ children, scrollable = true }) => {
             }`
           )}
         >
-          {children}
+          {runIfFn(children)}
         </div>
       </SidebarProvider>
     </>

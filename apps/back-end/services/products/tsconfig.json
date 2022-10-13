@@ -18,7 +18,15 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@prisma-client": ["prisma/generated/client"]
+      "@prisma-client": ["prisma/generated/client"],
+      "prismaService": ["src/prisma.service"],
+      "@products": ["src/products"],
+      "@category": ["src/category"],
+      "@filter": ["src/filter"],
+      "@shop": ["src/shop"],
+      "@shipping-details": ["src/shipping-details"],
+      "@shipping-rules": ["src/shipping-rules"],
+      "@shipping-settings": ["src/shipping-settings"]
     }
   }
 }

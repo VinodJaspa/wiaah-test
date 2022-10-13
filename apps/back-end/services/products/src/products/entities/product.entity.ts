@@ -8,6 +8,7 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import { CashbackType, PresentationType, VisibilityEnum } from '@prisma-client';
+import { CreateGqlPaginatedResponse } from 'nest-utils';
 
 registerEnumType(VisibilityEnum, { name: 'VisibilityEnum' });
 
@@ -42,10 +43,22 @@ export class Discount {
 }
 
 @ObjectType()
+export class ProductAttribute {
+  @Field(() => String)
+  name: string;
+
+  @Field(() => [String])
+  values: string[];
+}
+
+@ObjectType()
 @Directive('@key(fields: "id,title,storeId,shippingRulesIds")')
 export class Product {
   @Field((type) => ID)
   id: string;
+
+  @Field(() => ID)
+  sellerId: string;
 
   @Field((type) => String)
   title: string;
@@ -56,14 +69,14 @@ export class Product {
   @Field((type) => ID)
   shopId: string;
 
+  @Field(() => [String])
+  hostCategories: string[];
+
   @Field((type) => String)
   category: string;
 
-  @Field((type) => [String])
-  colors: string[];
-
-  @Field((type) => [String])
-  sizes: string[];
+  @Field(() => [ProductAttribute])
+  attributes: ProductAttribute[];
 
   @Field((type) => Int)
   stock: number;
@@ -92,5 +105,13 @@ export class Product {
   @Field((type) => [ID])
   shippingRulesIds: string[];
 
-  country: string;
+  @Field(() => Int)
+  reviews: number;
+
+  rateStarCount: number;
 }
+
+@ObjectType()
+export class ProductSearchPaginationResponse extends CreateGqlPaginatedResponse(
+  Product,
+) {}

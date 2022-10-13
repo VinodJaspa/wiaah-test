@@ -1,8 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
-import { WisherslistService } from 'src/wisherslist/wisherslist.service';
-import { AddWishlistItemInput } from './dto/add-wishlist-item.input';
-import { RemoveWishlistItemInput } from './dto/remove-wishlist-item.input';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnprocessableEntityException,
+} from '@nestjs/common';
+import { DBErrorException } from 'nest-utils';
+import { PrismaService } from 'prismaService';
+import {
+  AddWishlistItemInput,
+  RemoveWishlistItemInput,
+  Wishlist,
+} from '@wishlist';
+import { WisherslistService } from '@wishersList';
 
 @Injectable()
 export class WishlistService {
@@ -11,13 +21,29 @@ export class WishlistService {
     private readonly wishersService: WisherslistService,
   ) {}
 
-  createWishlist(ownerId: string) {
-    return this.prisma.wishlist.create({
-      data: {
-        ownerId,
-        wishedItems: [],
-      },
-    });
+  async createWishlist(ownerId: string): Promise<Wishlist> {
+    try {
+      await this.getWishlist(ownerId);
+      throw new UnprocessableEntityException(
+        'this account already owns a wishlist',
+      );
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        const createdWishlist = await this.prisma.wishlist.create({
+          data: {
+            ownerId,
+            wishedItems: [],
+          },
+        });
+        return createdWishlist;
+      } else {
+        throw error;
+      }
+    }
+  }
+
+  getAll() {
+    return this.prisma.wishlist.findMany();
   }
 
   async getWishlist(ownerId: string) {
@@ -26,30 +52,43 @@ export class WishlistService {
         where: {
           ownerId,
         },
+        rejectOnNotFound() {
+          throw new NotFoundException('this account doesnt have a wishlist');
+        },
       });
-      if (wishlist === null)
-        throw new Error('this account doesnt have a wishlist');
       return wishlist;
     } catch (error) {
-      throw new Error(error);
+      if (error instanceof NotFoundException) throw error;
+      throw new DBErrorException('error creating wishlish');
     }
   }
 
-  async addWishlistItem(ownerId: string, { itemId }: AddWishlistItemInput) {
+  async addWishlistItem(
+    userId: string,
+    { itemId, sellerId }: AddWishlistItemInput,
+  ) {
     try {
-      await this.prisma.wishlist.update({
+      await this.prisma.wishlist.upsert({
         where: {
-          ownerId,
+          ownerId: userId,
         },
-        data: {
+        create: {
+          ownerId: userId,
+          wishedItems: [{ itemId }],
+          wishedItemsCount: 1,
+        },
+        update: {
           wishedItems: {
             push: {
               itemId,
             },
           },
+          wishedItemsCount: {
+            increment: 1,
+          },
         },
       });
-      await this.wishersService.addWisherListItem(itemId, ownerId);
+      await this.wishersService.addWisherListItem(itemId, sellerId, userId);
       return true;
     } catch (error) {
       throw new Error(error);
@@ -60,25 +99,31 @@ export class WishlistService {
     ownerId: string,
     { itemId }: RemoveWishlistItemInput,
   ) {
+    const wishlist = await this.getWishlist(ownerId);
+    const filterdItems = wishlist.wishedItems.filter(
+      (v) => v.itemId !== itemId,
+    );
+
+    const didRemove = filterdItems.length === wishlist.wishedItems.length - 1;
+
+    if (!didRemove) return false;
+
     try {
       await this.prisma.wishlist.update({
         where: {
-          ownerId,
+          ownerId: wishlist.ownerId,
         },
         data: {
-          wishedItems: {
-            deleteMany: {
-              where: {
-                itemId,
-              },
-            },
+          wishedItems: filterdItems,
+          wishedItemsCount: {
+            decrement: 1,
           },
         },
       });
       await this.wishersService.removeWisherListItem(itemId, ownerId);
       return true;
     } catch (error) {
-      throw new Error(error);
+      throw error;
     }
   }
 }

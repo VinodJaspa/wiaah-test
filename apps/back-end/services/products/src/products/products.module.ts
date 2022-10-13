@@ -4,36 +4,19 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { GraphQLModule } from '@nestjs/graphql';
-import {
-  getUserFromRequest,
-  KAFKA_BROKERS,
-  KAFKA_SERVICE_CLIENTID,
-  KAFKA_SERVICE_GROUPID,
-  KAFKA_SERVICE_TOKEN,
-  SERVICES,
-} from 'nest-utils';
-import { PrismaService } from 'src/Prisma.service';
-import { ShopResolver } from './shop.resolver';
-import { Shop } from './entities/shop.entity';
-import { SearchResolver } from './search.resolver';
-import { Search } from './entities/search.entity';
+import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { PrismaService } from 'prismaService';
 import { ProductsResolver } from './products.resolver';
 import { ProductsService } from './products.service';
 import { ProductsController } from './products.controller';
+import { UploadModule, UploadServiceProviders } from '@wiaah/upload';
 
 @Module({
   imports: [
-    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
-      driver: ApolloFederationDriver,
-      autoSchemaFile: './schema.graphql',
-      context({ req, res }) {
-        const user = getUserFromRequest(req);
-        return { req, res, user };
-      },
-      buildSchemaOptions: {
-        orphanedTypes: [Shop, Search],
-      },
+    UploadModule.forRoot({
+      secretKey: 'secret',
+      serviceKey: 'servicekey',
+      provider: UploadServiceProviders.CLOUDFLARE,
     }),
     ClientsModule.register([
       {
@@ -51,13 +34,7 @@ import { ProductsController } from './products.controller';
       },
     ]),
   ],
-  providers: [
-    ProductsResolver,
-    ProductsService,
-    PrismaService,
-    ShopResolver,
-    SearchResolver,
-  ],
+  providers: [ProductsResolver, ProductsService, PrismaService],
   controllers: [ProductsController],
 })
-export class ProdutctsModule {}
+export class ProductsModule {}
