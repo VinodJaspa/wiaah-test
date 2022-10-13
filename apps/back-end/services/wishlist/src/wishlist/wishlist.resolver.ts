@@ -10,7 +10,7 @@ import {
 import { AddWishlistItemInput } from './dto/add-wishlist-item.input';
 import { RemoveWishlistItemInput } from './dto/remove-wishlist-item.input';
 
-@UseGuards(GqlAuthorizationGuard)
+@UseGuards(new GqlAuthorizationGuard([]))
 @Resolver(() => Wishlist)
 export class WishlistResolver {
   constructor(private readonly wishlistService: WishlistService) {}

@@ -8,6 +8,12 @@ export class Wisherslist {
   @Field((type) => ID)
   itemId: string;
 
+  @Field(() => ID)
+  sellerId: string;
+
+  @Field(() => Int)
+  wishersCount: number;
+
   @Field((type) => [Wisher])
   wishers: Wisher[];
 }
@@ -15,5 +21,5 @@ export class Wisherslist {
 @ObjectType()
 export class Wisher {
   @Field((type) => String)
-  wisherId: string;
+  userId: string;
 }

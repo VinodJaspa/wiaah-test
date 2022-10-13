@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./generated/client"
+  output   = "./generated/client"
 }
 
 datasource db {
@@ -11,21 +11,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Wishlist {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId String @unique
-  wishedItems WishlistItem[]
+  id               String         @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId          String         @unique
+  wishedItems      WishlistItem[]
+  wishedItemsCount Int            @default(0)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
 }
 
 model WishersList {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  itemId String @unique
-  wishers Wisher[] 
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  itemId       String   @unique
+  sellerId     String
+  wishers      Wisher[]
+  wishersCount Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 type Wisher {
-  wisherId String
+  userId String
 }
 
 type WishlistItem {

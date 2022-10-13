@@ -13,7 +13,6 @@ import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
   KAFKA_MESSAGES,
-  KAFKA_SERVICE_TOKEN,
   SERVICES,
 } from 'nest-utils';
 import {

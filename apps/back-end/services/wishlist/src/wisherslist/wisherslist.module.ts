@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { WisherslistService } from './wisherslist.service';
 import { WisherslistResolver } from './wisherslist.resolver';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'prismaService';
 import { WisherslistController } from './wisherslist.controller';
 
 @Module({

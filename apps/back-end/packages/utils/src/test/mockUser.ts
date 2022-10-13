@@ -15,7 +15,7 @@ export const secendMockedUser: AuthorizationDecodedUser = {
   id: "62b8bae86f604a137f315879",
   email: "barco01014@gmail.com",
   accountType: "seller",
-  shopId: "62b8c8cb69e68f34eb948b3f",
+  shopId: "62b8c8cb69e68f34eb948b9f",
   firstName: "name",
   lastName: "last ",
   exp: 1560,
