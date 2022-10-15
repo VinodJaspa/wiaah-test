@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./generated/client"
+  output   = "./generated/client"
 }
 
 datasource db {
@@ -11,23 +11,165 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 type ServiceCategoryFilterValue {
-  name String
+  name      String
   sortOrder Int
 }
 
 type ServiceCategoryFilter {
   filterGroupName String
-  filterValues ServiceCategoryFilterValue[]
-  sortOrder Int 
+  filterValues    ServiceCategoryFilterValue[]
+  sortOrder       Int
 }
 
 model ServiceCategory {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+  id              String                  @id @default(auto()) @map("_id") @db.ObjectId
   createdByUserId String
-  name String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
-  filters ServiceCategoryFilter[]
+  name            String
+  createdAt       DateTime                @default(now())
+  updatedAt       DateTime                @updatedAt()
+  filters         ServiceCategoryFilter[]
+}
+
+model ServiceWorkingSchedule {
+  id          String                      @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId     String                      @unique @db.ObjectId
+  weekdays    ServiceWeekDaysWorkingHours
+  specialDays DateTime[]
+}
+
+model HotelService {
+  id              String                @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId         String                @unique @db.ObjectId
+  createdAt       DateTime              @default(now())
+  updatedAt       DateTime              @updatedAt
+  presentations   ServicePresentation[]
+  policies        ServicePolicies[]
+  serviceMetaInfo ServiceMetaInfo[]
+  rooms           HotelRoom[]
+}
+
+model HotelRoom {
+  id                  String                     @id @default(auto()) @map("_id") @db.ObjectId
+  hotel               HotelService               @relation(fields: [hotelId], references: [id])
+  hotelId             String                     @db.ObjectId
+  createdAt           DateTime                   @default(now())
+  updatedAt           DateTime                   @updatedAt
+  pricePerNight       Float
+  dailyPrice          Boolean
+  dailyPrices         ServiceDailyPrices
+  discount            ServiceDiscount
+  includedServices    TranslationArrayText[]
+  popularAmenities    ServiceAmenity[]
+  cancelationPolicies ServiceCancelationPolicy[]
+  extras              ServiceExtra[]
+  includedAmenites    TranslationArrayText[]
+  measurements        PropertyMeasurements
+}
+
+type HotelRoomMetaInfo {
+  langId String
+  title               String
+  description         String
+}
+
+
+type ServiceWeekDaysWorkingHours {
+  0 ServiceDayWorkingHours
+  1 ServiceDayWorkingHours
+  2 ServiceDayWorkingHours
+  3 ServiceDayWorkingHours
+  4 ServiceDayWorkingHours
+  5 ServiceDayWorkingHours
+  6 ServiceDayWorkingHours
+}
+
+type ServiceDayWorkingHours {
+  periods DateTime[]
+}
+
+type PropertyMeasurements {
+  inFeet  Int
+  inMeter Int
+}
+
+type ServiceDailyPrices {
+  0 Int
+  1 Int
+  2 Int
+  3 Int
+  4 Int
+  5 Int
+  6 Int
+}
+
+type ServiceExtra {
+  name TranslationText[]
+  cost Int
+}
+
+type ServiceCancelationPolicy {
+  duration Int
+  cost     Int
+}
+
+type ServiceAmenity {
+  value String
+  label TranslationText[]
+}
+
+type ServiceDiscount {
+  value Int
+  units Int
+}
+
+type ServiceMetaInfo {
+  langId             String
+  title              String
+  description        String
+  metaTagDescription String
+  metaTagKeywords    String
+  serviceTag         String
+  hashtags           String[]
+}
+
+
+
+type ServiceContact {
+  address String
+  country String
+  state   String?
+  city    String
+  email   String
+  phone   String
+}
+
+type ServicePolicy {
+  policyTitle String
+  terms       String[]
+}
+
+type ServicePolicies {
+  langId String
+  policies ServicePolicy[]
+}
+
+type ServicePresentation {
+  type ServicePresentationType
+  src  String
+}
+
+enum ServicePresentationType {
+  img
+  vid
+}
+
+type TranslationText {
+  langId String
+  value String
+}
+
+type TranslationArrayText {
+  langId String
+  value String[]
 }

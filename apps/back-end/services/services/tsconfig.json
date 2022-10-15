@@ -21,7 +21,8 @@
       "@dto": ["src/dto"],
       "@category": ["src/category"],
       "prismaClient": ["prisma/generated/client"],
-      "prismaService": ["src/prisma.service"]
+      "prismaService": ["src/prisma.service"],
+      "@entities": ["src/entities"]
     }
   }
 }

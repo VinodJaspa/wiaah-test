@@ -73,7 +73,7 @@ export const getMyCartSummaryDataFetcher = (): Promise<
         itemData: {
           type: "resturant",
           data: {
-            serviceType: "resturant",
+            serviceType: "restaurant",
             bookedDates: {
               from: new Date(Date.now()).toString(),
               to: null,
@@ -239,6 +239,7 @@ export const getMyCartSummaryDataFetcher = (): Promise<
             thumbnail:
               "https://cdn.mena-tech.com/wp-content/uploads/2021/08/MR-Future-Products-2020-2.png",
             name: "item1",
+            type: "goods",
             price: 15,
             qty: 3,
             shippingMethods: [
