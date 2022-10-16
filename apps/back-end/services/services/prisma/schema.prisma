@@ -43,18 +43,20 @@ model HotelService {
   ownerId         String                @unique @db.ObjectId
   createdAt       DateTime              @default(now())
   updatedAt       DateTime              @updatedAt
+  status          ServiceStatus         @default(inActive)
   presentations   ServicePresentation[]
-  policies        ServicePolicies[]
-  serviceMetaInfo ServiceMetaInfo[]
+  policies        ServiceTranslationPolicies[]
+  serviceMetaInfo ServiceMetaTranslationInfo[]
   rooms           HotelRoom[]
 }
 
 model HotelRoom {
-  id                  String                     @id @default(auto()) @map("_id") @db.ObjectId
-  hotel               HotelService               @relation(fields: [hotelId], references: [id])
-  hotelId             String                     @db.ObjectId
-  createdAt           DateTime                   @default(now())
-  updatedAt           DateTime                   @updatedAt
+  id                  String                         @id @default(auto()) @map("_id") @db.ObjectId
+  hotel               HotelService                   @relation(fields: [hotelId], references: [id])
+  hotelId             String                         @db.ObjectId
+  createdAt           DateTime                       @default(now())
+  updatedAt           DateTime                       @updatedAt
+  roomMetaInfo        HotelRoomTranslationMetaInfo[]
   pricePerNight       Float
   dailyPrice          Boolean
   dailyPrices         ServiceDailyPrices
@@ -63,25 +65,33 @@ model HotelRoom {
   popularAmenities    ServiceAmenity[]
   cancelationPolicies ServiceCancelationPolicy[]
   extras              ServiceExtra[]
-  includedAmenites    TranslationArrayText[]
+  includedAmenities   TranslationArrayText[]
   measurements        PropertyMeasurements
 }
 
-type HotelRoomMetaInfo {
-  langId String
-  title               String
-  description         String
+enum ServiceStatus {
+  inActive
+  active
 }
 
+type HotelRoomMetaInfo {
+  title       String
+  description String
+}
+
+type HotelRoomTranslationMetaInfo {
+  langId String
+  value  HotelRoomMetaInfo
+}
 
 type ServiceWeekDaysWorkingHours {
-  0 ServiceDayWorkingHours
-  1 ServiceDayWorkingHours
-  2 ServiceDayWorkingHours
-  3 ServiceDayWorkingHours
-  4 ServiceDayWorkingHours
-  5 ServiceDayWorkingHours
-  6 ServiceDayWorkingHours
+  mo ServiceDayWorkingHours
+  tu ServiceDayWorkingHours
+  we ServiceDayWorkingHours
+  th ServiceDayWorkingHours
+  fr ServiceDayWorkingHours
+  sa ServiceDayWorkingHours
+  su ServiceDayWorkingHours
 }
 
 type ServiceDayWorkingHours {
@@ -94,13 +104,13 @@ type PropertyMeasurements {
 }
 
 type ServiceDailyPrices {
-  0 Int
-  1 Int
-  2 Int
-  3 Int
-  4 Int
-  5 Int
-  6 Int
+  mo Int
+  tu Int
+  we Int
+  th Int
+  fr Int
+  sa Int
+  su Int
 }
 
 type ServiceExtra {
@@ -124,16 +134,17 @@ type ServiceDiscount {
 }
 
 type ServiceMetaInfo {
-  langId             String
   title              String
   description        String
   metaTagDescription String
-  metaTagKeywords    String
-  serviceTag         String
+  metaTagKeywords    String[]
   hashtags           String[]
 }
 
-
+type ServiceMetaTranslationInfo {
+  langId String
+  value ServiceMetaInfo
+}
 
 type ServiceContact {
   address String
@@ -149,9 +160,9 @@ type ServicePolicy {
   terms       String[]
 }
 
-type ServicePolicies {
-  langId String
-  policies ServicePolicy[]
+type ServiceTranslationPolicies {
+  langId   String
+  value ServicePolicy[]
 }
 
 type ServicePresentation {
@@ -166,10 +177,10 @@ enum ServicePresentationType {
 
 type TranslationText {
   langId String
-  value String
+  value  String
 }
 
 type TranslationArrayText {
   langId String
-  value String[]
+  value  String[]
 }

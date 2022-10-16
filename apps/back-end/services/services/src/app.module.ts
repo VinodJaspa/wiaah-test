@@ -6,6 +6,7 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { getUserFromRequest } from 'nest-utils';
+import { HotelModule } from './hotel/hotel.module';
 
 @Module({
   imports: [
@@ -13,10 +14,12 @@ import { getUserFromRequest } from 'nest-utils';
       driver: ApolloFederationDriver,
       autoSchemaFile: true,
       context: (req) => {
-        return getUserFromRequest(req);
+        const user = getUserFromRequest(req);
+        return { ...req, user };
       },
     }),
     CategoryModule,
+    HotelModule,
   ],
 })
 export class AppModule {}

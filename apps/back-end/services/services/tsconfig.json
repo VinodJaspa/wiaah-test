@@ -22,7 +22,9 @@
       "@category": ["src/category"],
       "prismaClient": ["prisma/generated/client"],
       "prismaService": ["src/prisma.service"],
-      "@entities": ["src/entities"]
+      "@entities": ["src/entities"],
+      "@const": ["src/constents"],
+      "@decorators": ["src/decorators"]
     }
   }
 }

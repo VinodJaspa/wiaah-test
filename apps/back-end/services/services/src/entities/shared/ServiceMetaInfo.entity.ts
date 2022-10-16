@@ -11,11 +11,8 @@ export class ServiceMetaInfo {
   @Field(() => String)
   metaTagDescription: string;
 
-  @Field(() => String)
-  metaTagKeywords: string;
-
-  @Field(() => String)
-  serviceTag: string;
+  @Field(() => [String])
+  metaTagKeywords: string[];
 
   @Field(() => [String])
   hashtags: string[];

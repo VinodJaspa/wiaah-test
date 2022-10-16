@@ -3,12 +3,12 @@ import {
   ServicePresentation,
   ServicePolicy,
   ServiceMetaInfo,
-  HotelRoom,
-  ServiceDayWorkingHours,
+  ServiceWeekDaysWorkingHours,
 } from '@entities';
+import { HotelRoom } from './hotelRoom.entity';
 
 @ObjectType()
-export class HotelService {
+export class HotelServiceEntity {
   @Field(() => ID)
   id: string;
 
@@ -33,6 +33,6 @@ export class HotelService {
   @Field(() => [HotelRoom])
   rooms: HotelRoom[];
 
-  @Field(() => ServiceDayWorkingHours, { nullable: false })
-  workingHours: ServiceDayWorkingHours;
+  @Field(() => ServiceWeekDaysWorkingHours, { nullable: false })
+  workingHours?: ServiceWeekDaysWorkingHours;
 }

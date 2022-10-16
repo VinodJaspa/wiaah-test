@@ -6,7 +6,7 @@ registerEnumType(ServicePresentationType, { name: 'ServicePresentationType' });
 @ObjectType()
 export class ServicePresentation {
   @Field(() => ServicePresentationType)
-  type: ServicePresentation;
+  type: ServicePresentationType;
 
   @Field(() => String)
   src: string;

@@ -1,22 +1,21 @@
 import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { ServiceDailyPrices } from '@entities';
 import {
-  HotelService,
   ServiceDiscount,
   ServiceAmenity,
   ServiceCancelationPolicy,
   ServiceExtra,
   ServicePropertyMeasurements,
-  ServiceDayWorkingHours,
 } from '@entities';
+import { HotelServiceEntity } from './hotel.entity';
 
 @ObjectType()
 export class HotelRoom {
   @Field(() => ID)
   id: string;
 
-  @Field(() => HotelService)
-  hotel: HotelService;
+  @Field(() => HotelServiceEntity, { nullable: true })
+  hotel?: HotelServiceEntity;
 
   @Field(() => ID)
   hotelId: string;

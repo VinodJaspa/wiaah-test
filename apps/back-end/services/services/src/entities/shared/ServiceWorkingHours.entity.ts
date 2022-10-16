@@ -9,23 +9,23 @@ export class ServiceDayWorkingHours {
 @ObjectType()
 export class ServiceWeekDaysWorkingHours {
   @Field(() => ServiceDayWorkingHours)
-  0: ServiceDayWorkingHours;
+  mo: ServiceDayWorkingHours;
 
   @Field(() => ServiceDayWorkingHours)
-  1: ServiceDayWorkingHours;
+  tu: ServiceDayWorkingHours;
 
   @Field(() => ServiceDayWorkingHours)
-  2: ServiceDayWorkingHours;
+  we: ServiceDayWorkingHours;
 
   @Field(() => ServiceDayWorkingHours)
-  3: ServiceDayWorkingHours;
+  th: ServiceDayWorkingHours;
 
   @Field(() => ServiceDayWorkingHours)
-  4: ServiceDayWorkingHours;
+  fr: ServiceDayWorkingHours;
 
   @Field(() => ServiceDayWorkingHours)
-  5: ServiceDayWorkingHours;
+  sa: ServiceDayWorkingHours;
 
   @Field(() => ServiceDayWorkingHours)
-  6: ServiceDayWorkingHours;
+  su: ServiceDayWorkingHours;
 }
