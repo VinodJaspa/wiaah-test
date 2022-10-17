@@ -2,7 +2,7 @@ export interface KafkaMessageInterface {
   toString(): string;
 }
 
-export class KafkaMessageReply<TData, TError = string>
+export class KafkaMessageReply<TData, TError extends Error = Error>
   implements KafkaMessageInterface
 {
   constructor(

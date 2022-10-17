@@ -9,7 +9,7 @@ export class CategoryService {
 
   create(input: CreateCategoryInput, userId: string) {
     return this.prisma.serviceCategory.create({
-      data: input,
+      data: { ...input, createdByUserId: userId },
     });
   }
 

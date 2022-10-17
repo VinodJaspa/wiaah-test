@@ -10,11 +10,16 @@ module.exports = {
   moduleNameMapper: {
     // Force module uuid to resolve with the CJS entry point, because Jest does not support package.json.exports. See https://github.com/uuidjs/uuid/issues/451
     uuid: require.resolve('uuid'),
-    '@entities': '<rootDir>/src/entities/index.ts',
-    prismaClient: '<rootDir>/prisma/generated/client/index.js',
-    prismaService: '<rootDir>/src/prisma.service.ts',
     '@category': '<rootDir>/src/category',
+    prismaService: '<rootDir>/src/prisma.service',
+    prismaClient: '<rootDir>/prisma/generated/client',
+    '@entities': '<rootDir>/src/entities',
+    '@const': '<rootDir>/src/constents',
+    '@decorators': '<rootDir>/src/decorators',
   },
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
+  globalSetup: '<rootDir>/test/setup/globalSetup.ts',
+  globalTeardown: '<rootDir>/test/setup/globalTeardown.ts',
+  setupFilesAfterEnv: ['<rootDir>/test/setup/setupFile.ts'],
 };

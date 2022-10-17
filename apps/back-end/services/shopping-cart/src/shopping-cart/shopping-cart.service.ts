@@ -10,6 +10,7 @@ import { PrismaService } from 'prismaService';
 import { ShoppingCart } from '@entities';
 import {
   AuthorizationDecodedUser,
+  DBErrorException,
   KafkaMessageHandler,
   KAFKA_EVENTS,
   KAFKA_MESSAGES,
@@ -100,12 +101,12 @@ export class ShoppingCartService {
       }),
       'fetch product metadata timed out',
     );
-    if (!success) throw new Error(error);
+    if (!success) throw error;
     const { name, price, thumbnail, shopId } = data;
     const newCartItem: CartItem = {
       itemId: product.itemId,
       quantity: product.quantity,
-      itemType: product.itemType,
+      itemType: 'product',
       providerId: shopId,
       name,
       price,
@@ -115,7 +116,11 @@ export class ShoppingCartService {
     const hasitem = await this.alreadyHasItem(user.id, product.itemId);
 
     if (hasitem) {
-      await this.incressShoppingCartItem(user.id, product.itemId);
+      await this.incressShoppingCartItem(
+        user.id,
+        product.itemId,
+        product.quantity,
+      );
 
       return newCartItem;
     }
@@ -145,6 +150,11 @@ export class ShoppingCartService {
             itemId: true,
           },
         },
+      },
+      rejectOnNotFound() {
+        throw new NotFoundException(
+          'could not find shopping cart record for this user',
+        );
       },
     });
     const { cartItems } = item;
@@ -184,11 +194,7 @@ export class ShoppingCartService {
     service: AddShoppingCartItemInput,
   ): Promise<CartItem> {
     const {
-      results: {
-        data: { name, price, thumbnail },
-        error,
-        success,
-      },
+      results: { data, error, success },
     } = await KafkaMessageHandler<
       string,
       GetServiceMetaDataMessage,
@@ -201,13 +207,13 @@ export class ShoppingCartService {
         userId: user.id,
       }),
     );
-    if (!success) throw new Error(error);
-
+    if (!success) throw error;
+    const { name, price, providerId, thumbnail } = data;
     const newCartItem: CartItem = {
       itemId: service.itemId,
-      itemType: service.itemType,
+      itemType: 'service',
       quantity: service.quantity,
-      providerId: null,
+      providerId,
       name,
       price,
       thumbnail,
@@ -277,7 +283,7 @@ export class ShoppingCartService {
       'failed to validate voucher code, please try again later',
     );
 
-    if (!success) throw new Error(error);
+    if (!success) throw error;
 
     const {
       applyable,
@@ -316,5 +322,20 @@ export class ShoppingCartService {
         },
       },
     });
+  }
+
+  async removeVoucher(userId: string): Promise<ShoppingCart> {
+    try {
+      return await this.prisma.cart.update({
+        where: {
+          ownerId: userId,
+        },
+        data: {
+          appliedVoucher: null,
+        },
+      });
+    } catch (error) {
+      throw new DBErrorException('error removing voucher');
+    }
   }
 }

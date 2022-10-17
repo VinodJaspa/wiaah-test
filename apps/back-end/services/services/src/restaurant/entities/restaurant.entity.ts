@@ -1,0 +1,46 @@
+import { ServiceMetaInfo, ServicePolicy, ServicePresentation } from '@entities';
+import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
+import { ServicePaymentMethods, ServiceStatus } from 'prismaClient';
+import { RestaurantMenu } from './restaurant-menu.entity';
+
+registerEnumType(ServiceStatus, { name: 'ServiceStatus' });
+registerEnumType(ServicePaymentMethods, { name: 'ServicePaymentMethods' });
+
+@ObjectType()
+export class Restaurant {
+  @Field(() => ID)
+  id: string;
+
+  @Field(() => ID)
+  ownerId: string;
+
+  @Field(() => Int)
+  vat: number;
+
+  @Field(() => Int)
+  cancelation_fee: number;
+
+  @Field(() => ServiceStatus)
+  status: ServiceStatus;
+
+  @Field(() => [ServicePresentation])
+  presentations: ServicePresentation[];
+
+  @Field(() => [ServicePolicy])
+  policies: ServicePolicy[];
+
+  @Field(() => ServiceMetaInfo)
+  serviceMetaInfo: ServiceMetaInfo;
+
+  @Field(() => [ServicePaymentMethods])
+  payment_methods: ServicePaymentMethods[];
+
+  @Field(() => [RestaurantMenu])
+  menus: RestaurantMenu[];
+
+  @Field(() => String)
+  setting_and_ambiance: string;
+
+  @Field(() => Int)
+  michelin_guide_stars: number;
+}
