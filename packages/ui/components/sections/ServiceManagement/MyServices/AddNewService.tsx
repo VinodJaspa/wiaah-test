@@ -165,7 +165,7 @@ export const NewServiceStepper: React.FC = () => {
 
   const includedServiceSections: ServiceSectionWithSchemaType[] = [
     {
-      key: "placeBooking",
+      key: "hotel",
       component: IncludedServices,
       schema: NewServiceSchemas.hotelIncludedServicesSchema,
     },
@@ -196,11 +196,7 @@ export const NewServiceStepper: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4 h-full justify-between">
-      <StepperFormController
-        lock={false}
-        stepsNum={5}
-        onFormComplete={() => {}}
-      >
+      <StepperFormController lock={true} stepsNum={5} onFormComplete={() => {}}>
         {({ nextStep, currentStepIdx, goToStep }) => (
           <>
             <CheckMarkStepper
@@ -317,9 +313,15 @@ export const NewServiceStepper: React.FC = () => {
                       handlerKey="includedServices"
                       validationSchema={includedServiceSection?.schema}
                     >
-                      {includedServiceSection ? (
-                        <includedServiceSection.component />
-                      ) : null}
+                      {({ validate }) => (
+                        <>
+                          {includedServiceSection ? (
+                            <includedServiceSection.component
+                              onChange={validate}
+                            />
+                          ) : null}
+                        </>
+                      )}
                     </StepperFormHandler>
                   ),
                   stepName: {
@@ -334,7 +336,9 @@ export const NewServiceStepper: React.FC = () => {
                       handlerKey="extraServiceOptions"
                       validationSchema={NewServiceSchemas.extraSreivce}
                     >
-                      <ExtraServiceOptions onChange={() => {}} />
+                      {({ validate }) => (
+                        <ExtraServiceOptions onChange={validate} />
+                      )}
                     </StepperFormHandler>
                   ),
                   stepName: {
@@ -348,7 +352,9 @@ export const NewServiceStepper: React.FC = () => {
                       handlerKey="discount"
                       validationSchema={NewServiceSchemas.discount}
                     >
-                      <NewProductDiscountOptions />
+                      {({ validate }) => (
+                        <NewProductDiscountOptions onChange={validate} />
+                      )}
                     </StepperFormHandler>
                   ),
                   stepName: {

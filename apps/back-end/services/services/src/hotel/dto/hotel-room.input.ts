@@ -54,8 +54,17 @@ export class HotelRoomInput {
   @Field(() => [ServiceCancelationPolicyInput])
   cancelationPolicies: ServiceCancelationPolicyInput[];
 
+  @Field(() => Int)
+  beds: number;
+
+  @Field(() => Int)
+  bathrooms: number;
+
   @Field(() => [ServiceExtraInput])
   extras: ServiceExtraInput[];
+
+  @Field(() => Int)
+  num_of_rooms: number;
 
   @Field(() => [ServiceIncludedAmenitiesInput])
   @TranslationsInput()

@@ -59,6 +59,15 @@ export class HotelRoom {
   @Field(() => [String])
   includedAmenites: string[];
 
+  @Field(() => Int)
+  beds: number;
+
+  @Field(() => Int)
+  bathrooms: number;
+
+  @Field(() => Int)
+  num_of_rooms: number;
+
   @Field(() => ServicePropertyMeasurements)
   measurements: ServicePropertyMeasurements;
 }

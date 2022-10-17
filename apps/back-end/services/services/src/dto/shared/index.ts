@@ -9,3 +9,4 @@ export * from './ServiceCancelationPolicy.input';
 export * from './ServiceExtra.input';
 export * from './ServiceIncludedAmenities.input';
 export * from './ServicePropertyMeasurements.input';
+export * from './TranslationText';

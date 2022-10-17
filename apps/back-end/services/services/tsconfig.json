@@ -24,7 +24,8 @@
       "prismaService": ["src/prisma.service"],
       "@entities": ["src/entities"],
       "@const": ["src/constents"],
-      "@decorators": ["src/decorators"]
+      "@decorators": ["src/decorators"],
+      "@restaurant": ["src/restaurant"]
     }
   }
 }

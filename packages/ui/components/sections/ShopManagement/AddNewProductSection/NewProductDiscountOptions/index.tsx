@@ -5,21 +5,26 @@ import { BiCalendarEdit } from "react-icons/bi";
 import { Menu, MenuButton, MenuList, DateInput, Select } from "ui";
 import { SelectOption } from "ui";
 
-export interface NewProductDiscountOptionsProps {}
+export interface NewProductDiscountOptionsProps {
+  onChange: (props: any) => any;
+}
 
 const MAX_DISCOUNT = 100;
 const DISCOUNT_INCREMENTAL = 5;
 
-export const NewProductDiscountOptions: React.FC<NewProductDiscountOptionsProps> =
-  ({}) => {
-    const { t } = useTranslation();
-    return (
-      <div className="flex flex-col gap-4">
-        <h1 className="text-xl font-bold">
-          {t("create_discount_code", "Create Discount Code")}
-        </h1>
-        <Formik initialValues={{}} onSubmit={() => {}}>
-          {({ setFieldValue, values }) => (
+export const NewProductDiscountOptions: React.FC<
+  NewProductDiscountOptionsProps
+> = ({ onChange }) => {
+  const { t } = useTranslation();
+  return (
+    <div className="flex flex-col gap-4">
+      <h1 className="text-xl font-bold">
+        {t("create_discount_code", "Create Discount Code")}
+      </h1>
+      <Formik initialValues={{}} onSubmit={() => {}}>
+        {({ setFieldValue, values }) => {
+          onChange && onChange(values);
+          return (
             <Form className="flex flex-col gap-4">
               <Select
                 onOptionSelect={(opt) =>
@@ -62,8 +67,9 @@ export const NewProductDiscountOptions: React.FC<NewProductDiscountOptionsProps>
                 <p>{t("end_date", "End Date")}</p>
               </div>
             </Form>
-          )}
-        </Formik>
-      </div>
-    );
-  };
+          );
+        }}
+      </Formik>
+    </div>
+  );
+};

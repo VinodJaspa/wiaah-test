@@ -116,35 +116,29 @@ describe('HotelService', () => {
         'fr',
       );
 
-      expect(
-        (await prisma.hotelService.findFirst()).serviceMetaInfo.length,
-      ).toBe(3);
+      let langTested: boolean[] = [];
+      let langs = ['en', 'es', 'fr'];
 
-      const lang = 'fr';
-      const hotel = await service.getHotelWithRoomsById(
-        created.id,
-        mockedUser.id,
-        lang,
-      );
+      for (const lang of langs) {
+        const hotel = await service.getHotelWithRoomsById(
+          created.id,
+          mockedUser.id,
+          lang,
+        );
 
-      console.log({ hotel: hotel.serviceMetaInfo });
+        expect(hotel.serviceMetaInfo).toStrictEqual<ServiceMetaInfo>({
+          description: `${lang} desc`,
+          hashtags: [`${lang}`],
+          metaTagDescription: `${lang} meta desc`,
+          metaTagKeywords: [lang, 'meta', 'keywords'],
+          title: `${lang} title`,
+        });
 
-      expect(hotel.serviceMetaInfo).toStrictEqual<ServiceMetaInfo>({
-        description: `${lang} desc`,
-        hashtags: [`${lang}`],
-        metaTagDescription: `${lang} meta desc`,
-        metaTagKeywords: [lang, 'meta', 'keywords'],
-        title: `${lang} title`,
-      });
+        langTested.push(true);
+      }
 
-      // let langTested: boolean[] = [];
-      // let langs = ['en', 'es', 'fr'];
-
-      // for (const lang of langs) {
-      // }
-
-      // expect(langTested.length).toBe(langs.length);
-      // expect(langTested.every((v) => v)).toBe(true);
+      expect(langTested.length).toBe(langs.length);
+      expect(langTested.every((v) => v)).toBe(true);
     });
   });
 });

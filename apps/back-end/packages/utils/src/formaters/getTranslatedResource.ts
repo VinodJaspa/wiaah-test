@@ -7,9 +7,7 @@ export function getTranslatedResource<TResource>({
   langId: string;
   fallbackLangId?: string;
 }): TResource {
-  console.log("get", resource, resource.length);
-
-  if (resource.length === 0) throw new Error("empty translation resource");
+  if (resource.length === 0) return null;
   if (resource.length === 1) return resource[0].value;
 
   let targetedResource = resource.find((v) => v.langId === langId);
