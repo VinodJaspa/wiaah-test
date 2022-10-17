@@ -7,8 +7,6 @@ import {
 } from '@nestjs/apollo';
 import { getUserFromRequest } from 'nest-utils';
 import { HotelModule } from './hotel/hotel.module';
-import { RestuarntModule } from './restuarnt/restuarnt.module';
-import { RestauarntModule } from './restauarnt/restauarnt.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
 
 @Module({
@@ -23,8 +21,6 @@ import { RestaurantModule } from './restaurant/restaurant.module';
     }),
     CategoryModule,
     HotelModule,
-    RestuarntModule,
-    RestauarntModule,
     RestaurantModule,
   ],
 })

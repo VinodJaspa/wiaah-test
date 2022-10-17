@@ -1,9 +1,13 @@
+import { TranslationText } from '@entities';
 import { InputType, Int, Field } from '@nestjs/graphql';
 
 @InputType()
 export class ServiceCategoryFilterValueInput {
+  @Field(() => [TranslationText])
+  name: TranslationText[];
+
   @Field(() => String)
-  name: string;
+  filteringValue: string;
 
   @Field(() => Int)
   sortOrder: number;
@@ -11,8 +15,11 @@ export class ServiceCategoryFilterValueInput {
 
 @InputType()
 export class ServiceCategoryFilterInput {
+  @Field(() => [TranslationText])
+  filterGroupName: TranslationText[];
+
   @Field(() => String)
-  filterGroupName: string;
+  filteringKey: string;
 
   @Field(() => Int)
   sortOrder: number;
@@ -23,8 +30,8 @@ export class ServiceCategoryFilterInput {
 
 @InputType()
 export class CreateCategoryInput {
-  @Field(() => String)
-  name: string;
+  @Field(() => [TranslationText])
+  name: TranslationText[];
 
   @Field(() => [ServiceCategoryFilterInput])
   filters: ServiceCategoryFilterInput[];

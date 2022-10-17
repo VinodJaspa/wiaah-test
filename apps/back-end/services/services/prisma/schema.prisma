@@ -12,12 +12,14 @@ datasource db {
 }
 
 type ServiceCategoryFilterValue {
-  name      String
-  sortOrder Int
+  name           TranslationText[]
+  filteringValue String
+  sortOrder      Int
 }
 
 type ServiceCategoryFilter {
-  filterGroupName String
+  filterGroupName TranslationText[]
+  filteringKey    String
   filterValues    ServiceCategoryFilterValue[]
   sortOrder       Int
 }
@@ -25,7 +27,7 @@ type ServiceCategoryFilter {
 model ServiceCategory {
   id              String                  @id @default(auto()) @map("_id") @db.ObjectId
   createdByUserId String
-  name            String
+  name            TranslationText[]
   createdAt       DateTime                @default(now())
   updatedAt       DateTime                @updatedAt()
   filters         ServiceCategoryFilter[]
@@ -53,22 +55,49 @@ model HotelService {
 }
 
 model RestaurantService {
-  id                   String                       @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId              String                       @unique @db.ObjectId
-  createdAt            DateTime                     @default(now())
-  updatedAt            DateTime                     @updatedAt
-  vat                  Int                          @default(0)
-  cancelation_fee      Int                          @default(0)
-  status               ServiceStatus                @default(inActive)
-  presentations        ServicePresentation[]
-  policies             ServiceTranslationPolicies[]
-  serviceMetaInfo      ServiceMetaTranslationInfo[]
-  payment_methods      ServicePaymentMethods[]
-  menus                RestaurantMenu[]
-  establishmentType    String
-  cuisinesType         String
-  setting_and_ambiance String
-  michelin_guide_stars Int
+  id                     String                       @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId                String                       @unique @db.ObjectId
+  createdAt              DateTime                     @default(now())
+  updatedAt              DateTime                     @updatedAt
+  vat                    Int                          @default(0)
+  cancelation_fee        Int                          @default(0)
+  status                 ServiceStatus                @default(inActive)
+  presentations          ServicePresentation[]
+  policies               ServiceTranslationPolicies[]
+  serviceMetaInfo        ServiceMetaTranslationInfo[]
+  payment_methods        ServicePaymentMethods[]
+  menus                  RestaurantMenu[]
+  establishmentTypeId    String                       @db.ObjectId
+  cuisinesTypeId         String                       @db.ObjectId
+  setting_and_ambianceId String                       @db.ObjectId
+  michelin_guide_stars   Int
+}
+
+model RestaurantEstablishmentType {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  name        TranslationText[]
+  status      ServiceStatus     @default(inActive)
+  createdById String            @db.ObjectId
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model RestaurantCuisinesType {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  name        TranslationText[]
+  status      ServiceStatus     @default(inActive)
+  createdById String            @db.ObjectId
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model RestaurnatSettingAndAmbiance {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  name        TranslationText[]
+  status      ServiceStatus     @default(inActive)
+  createdById String            @db.ObjectId
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 }
 
 model HotelRoom {
@@ -95,7 +124,7 @@ model HotelRoom {
 
 type RestaurantMenu {
   id    String
-  name TranslationText[]
+  name  TranslationText[]
   dishs RestaurantDish[]
 }
 

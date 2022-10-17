@@ -16,11 +16,8 @@ export function getTranslatedResource<TResource>({
     targetedResource = resource.find((v) => v.langId === fallbackLangId);
 
   if (!targetedResource) {
-    console.log("falling back to the frist ");
     return resource[0].value;
   }
-
-  console.log("found targeted language");
 
   return targetedResource.value;
 }

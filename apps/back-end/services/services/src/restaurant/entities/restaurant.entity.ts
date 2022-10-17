@@ -38,8 +38,14 @@ export class Restaurant {
   @Field(() => [RestaurantMenu])
   menus: RestaurantMenu[];
 
-  @Field(() => String)
-  setting_and_ambiance: string;
+  @Field(() => ID)
+  setting_and_ambianceId: string;
+
+  @Field(() => ID)
+  establishmentTypeId: string;
+
+  @Field(() => ID)
+  cuisinesTypeId: string;
 
   @Field(() => Int)
   michelin_guide_stars: number;
