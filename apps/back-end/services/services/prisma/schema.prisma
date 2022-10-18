@@ -40,6 +40,13 @@ model ServiceWorkingSchedule {
   specialDays DateTime[]
 }
 
+model ServiceOwnerShip {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId     String      @unique @db.ObjectId
+  serviceId   String      @unique @db.ObjectId
+  serviceType ServiceType
+}
+
 model HotelService {
   id              String                       @id @default(auto()) @map("_id") @db.ObjectId
   ownerId         String                       @unique @db.ObjectId
@@ -60,17 +67,56 @@ model RestaurantService {
   createdAt              DateTime                     @default(now())
   updatedAt              DateTime                     @updatedAt
   vat                    Int                          @default(0)
-  cancelation_fee        Int                          @default(0)
   status                 ServiceStatus                @default(inActive)
   presentations          ServicePresentation[]
   policies               ServiceTranslationPolicies[]
   serviceMetaInfo        ServiceMetaTranslationInfo[]
   payment_methods        ServicePaymentMethods[]
   menus                  RestaurantMenu[]
+  cancelationPolicies    ServiceCancelationPolicy[]
   establishmentTypeId    String                       @db.ObjectId
   cuisinesTypeId         String                       @db.ObjectId
   setting_and_ambianceId String                       @db.ObjectId
   michelin_guide_stars   Int
+}
+
+model HealthCenterService {
+  id                  String                       @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId             String                       @db.ObjectId
+  createdAt           DateTime                     @default(now())
+  updatedAt           DateTime                     @updatedAt
+  vat                 Float                        @default(0)
+  rating              Float                        @default(0)
+  totalReviews        Int                          @default(0)
+  status              ServiceStatus                @default(inActive)
+  name                TranslationText[]
+  presentations       ServicePresentation[]
+  policies            ServiceTranslationPolicies[]
+  serviceMetaInfo     ServiceMetaTranslationInfo[]
+  payment_methods     ServicePaymentMethods[]
+  cancelationPolicies ServiceCancelationPolicy[]
+  doctors             HealthCenterDoctor[]
+}
+
+model HealthCenterDoctor {
+  id                String                              @id @default(auto()) @map("_id") @db.ObjectId
+  healthCenter      HealthCenterService                 @relation(fields: [healthCenterId], references: [id])
+  speciality        HealthCenterSpecialty               @relation(fields: [specialtyId], references: [id])
+  healthCenterId    String                              @db.ObjectId
+  specialtyId       String                              @db.ObjectId
+  rating            Float                               @default(0)
+  name              String
+  thumbnail         String
+  price             Float
+  description       TranslationText[]
+  availablityStatus HealthCenterDoctorAvailablityStatus @default(unavailable)
+}
+
+model HealthCenterSpecialty {
+  id          String               @id @default(auto()) @map("_id") @db.ObjectId
+  doctors     HealthCenterDoctor[]
+  name        String
+  description TranslationText[]
 }
 
 model RestaurantEstablishmentType {
@@ -147,6 +193,11 @@ enum ServicePaymentMethods {
 enum ServiceStatus {
   inActive
   active
+}
+
+enum HealthCenterDoctorAvailablityStatus {
+  available
+  unavailable
 }
 
 type HotelRoomMetaInfo {
@@ -258,4 +309,9 @@ type TranslationText {
 type TranslationArrayText {
   langId String
   value  String[]
+}
+
+enum ServiceType {
+  hotel
+  restaurant
 }

@@ -1,8 +1,8 @@
-import { TranslationText } from '@entities';
-import { Field, ID, InputType } from '@nestjs/graphql';
+import { TranslationTextInput } from '@dto';
+import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class CreateRestaurantEstablishmentTypeInput {
-  @Field(() => [TranslationText])
-  name: TranslationText[];
+  @Field(() => [TranslationTextInput])
+  name: TranslationTextInput[];
 }

@@ -2,7 +2,10 @@ import { TranslationTextInput } from '@dto';
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class CreateRestaurantCuisinesTypeInput {
+export class HealthCenterSpecialityInput {
   @Field(() => [TranslationTextInput])
-  name: TranslationTextInput[];
+  name: TranslationTextInput;
+
+  @Field(() => [TranslationTextInput])
+  description: TranslationTextInput[];
 }

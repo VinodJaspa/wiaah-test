@@ -20,11 +20,11 @@ import { HiFolderAdd, HiVideoCamera } from "react-icons/hi";
 
 export interface HealthCenterServiceDetailsFormProps {
   onChange?: (data: Record<string, any>) => any;
+  lang?: string;
 }
-
 export const HealthCenterServiceDetailsForm: React.FC<
   HealthCenterServiceDetailsFormProps
-> = ({ onChange }) => {
+> = ({ onChange, lang = "en" }) => {
   const { emit } = useReactPubsub((keys) => keys.openFileUploadModal);
   const [images, setImages] = React.useState<FileRes[]>([]);
   const [videos, setVideos] = React.useState<string[]>([]);
@@ -33,7 +33,18 @@ export const HealthCenterServiceDetailsForm: React.FC<
     <div className="w-full flex flex-col gap-4">
       <Formik
         validationSchema={NewServiceSchemas.restaurantDetailsSchema}
-        initialValues={{} as Record<string, any>}
+        initialValues={
+          {
+            metaInfo: {
+              en: {
+                name: "",
+                description: "",
+                metaTagDescription: "",
+                metaTagKeywords: "",
+              },
+            },
+          } as Record<string, any>
+        }
         onSubmit={() => {}}
       >
         {({ values, setFieldValue }) => {
@@ -98,14 +109,14 @@ export const HealthCenterServiceDetailsForm: React.FC<
                 />
 
                 <FormikInput<MultiChooseInputProps>
-                  placeholder={t("Choose Speciality types")}
+                  placeholder={t("Choose Speaking languages")}
                   as={MultiChooseInput}
-                  label={t("Speciality types")}
+                  label={t("Speaking Languages")}
                   labelProps={{ className: "text-lg" }}
-                  onChange={(v) => setFieldValue("speaking_language", v)}
-                  value={values["speaking_language"]}
+                  onChange={(v) => setFieldValue("speaking_languages", v)}
+                  value={values["speaking_languages"]}
                   suggestions={["Arabian", "English", "French"]}
-                  name="speicality_types"
+                  name="speaking_languages"
                 />
               </Stack>
 

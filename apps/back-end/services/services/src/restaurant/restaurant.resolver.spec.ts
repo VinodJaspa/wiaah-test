@@ -6,6 +6,7 @@ import { RestaurantResolver } from './restaurant.resolver';
 import { RestaurantService } from './restaurant.service';
 import { ObjectId } from 'mongodb';
 import { ForbiddenException, UnauthorizedException } from '@nestjs/common';
+import { ServiceOwnershipModule } from '@service-ownership';
 
 describe('RestaurantResolver', () => {
   let resolver: RestaurantResolver;
@@ -92,6 +93,7 @@ describe('RestaurantResolver', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [ServiceOwnershipModule],
       providers: [RestaurantResolver, RestaurantService, PrismaService],
     }).compile();
 
@@ -264,5 +266,22 @@ describe('RestaurantResolver', () => {
       'en',
     );
     expect((await prisma.restaurantService.findMany()).length).toBe(0);
+  });
+
+  it('should not be able to create resaurant if he already owns a service', async () => {
+    const created = await resolver.createRestaurant(input, mockedUser, 'en');
+
+    expect(await prisma.restaurantService.count()).toBe(1);
+
+    let tested = false;
+    try {
+      await resolver.createRestaurant(input, mockedUser, 'en');
+    } catch (error) {
+      expect(error instanceof ForbiddenException).toBe(true);
+      tested = true;
+    }
+
+    expect(tested).toBe(true);
+    expect(await prisma.restaurantService.count()).toBe(1);
   });
 });

@@ -17,9 +17,6 @@ export class Restaurant {
   @Field(() => Int)
   vat: number;
 
-  @Field(() => Int)
-  cancelation_fee: number;
-
   @Field(() => ServiceStatus)
   status: ServiceStatus;
 

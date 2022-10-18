@@ -1,19 +1,19 @@
 import { TranslationsInput } from '@decorators';
-import { TranslationText, TranslationTextArray } from '@dto';
+import { TranslationTextInput, TranslationTextArrayInput } from '@dto';
 import { Field, InputType, Int } from '@nestjs/graphql';
 
 @InputType()
 export class RestaurantMenuDishInput {
-  @Field(() => [TranslationText])
+  @Field(() => [TranslationTextInput])
   @TranslationsInput()
-  name: TranslationText[];
+  name: TranslationTextInput[];
 
   @Field(() => Int)
   price: number;
 
-  @Field(() => [TranslationTextArray])
+  @Field(() => [TranslationTextArrayInput])
   @TranslationsInput()
-  ingredients: TranslationTextArray[];
+  ingredients: TranslationTextArrayInput[];
 
   @Field(() => String)
   thumbnail: string;
@@ -21,9 +21,9 @@ export class RestaurantMenuDishInput {
 
 @InputType()
 export class RestaurantMenuInput {
-  @Field(() => [TranslationText])
+  @Field(() => [TranslationTextInput])
   @TranslationsInput()
-  name: TranslationText[];
+  name: TranslationTextInput[];
 
   @Field(() => [RestaurantMenuDishInput])
   dishs: RestaurantMenuDishInput[];

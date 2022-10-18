@@ -25,7 +25,10 @@
       "@entities": ["src/entities"],
       "@const": ["src/constents"],
       "@decorators": ["src/decorators"],
-      "@restaurant": ["src/restaurant"]
+      "@restaurant": ["src/restaurant"],
+      "@service-ownership": ["src/service-ownership"],
+      "@health-center": ["src/health-center"],
+      "@utils": ["src/utils"]
     }
   }
 }

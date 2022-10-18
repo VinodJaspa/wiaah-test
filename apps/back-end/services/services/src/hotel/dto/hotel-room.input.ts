@@ -9,7 +9,7 @@ import {
   ServiceIncludedServicesInput,
   ServicePropertyMeasurementsInput,
 } from '@dto';
-import { Field, ID, InputType, Int } from '@nestjs/graphql';
+import { Field, InputType, Int } from '@nestjs/graphql';
 import { CreateGqlTranslationInputField } from 'nest-utils';
 
 @InputType()

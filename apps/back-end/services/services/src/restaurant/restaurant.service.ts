@@ -29,16 +29,21 @@ import {
   getTranslatedResource,
   UserPreferedLang,
 } from 'nest-utils';
+import { ServiceOwnershipService } from '@service-ownership';
 
 @Injectable()
 export class RestaurantService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly ownerShipService: ServiceOwnershipService,
+  ) {}
 
   async createRestaurant(
     input: CreateRestaurantInput,
     userId: string,
     langId: UserPreferedLang = 'en',
   ): Promise<Restaurant> {
+    await this.checkCreatePremissions(userId);
     try {
       const created = await this.prisma.restaurantService.create({
         data: {
@@ -53,6 +58,10 @@ export class RestaurantService {
             name: v.name,
           })),
         },
+      });
+      await this.ownerShipService.createRestaurantServiceOwnership({
+        ownerId: userId,
+        serviceId: created.id,
       });
       return this.formatRestaurant(created, langId);
     } catch (error) {
@@ -78,7 +87,6 @@ export class RestaurantService {
     langId: UserPreferedLang = 'en',
   ): Promise<Restaurant> {
     const { id, ...rest } = input;
-    console.log('updating', input);
     await this.checkCRUDPremissions(input.id, userId);
     try {
       const res = await this.prisma.restaurantService.update({
@@ -114,7 +122,7 @@ export class RestaurantService {
           id: input.id,
         },
       });
-
+      await this.ownerShipService.deleteServiceOwnerShipByServiceId(res.id);
       return this.formatRestaurant(res, langId);
     } catch (error) {
       console.log(error);
@@ -291,6 +299,13 @@ export class RestaurantService {
       throw new ForbiddenException('this service is not active');
 
     return res;
+  }
+
+  private async checkCreatePremissions(userId: string): Promise<boolean> {
+    const hasService =
+      !!(await this.ownerShipService.getServiceOwnershipByUserId(userId));
+    if (hasService) throw new ForbiddenException();
+    return true;
   }
 
   private async checkCRUDPremissions(
