@@ -15,7 +15,6 @@ describe('RestaurantResolver', () => {
 
   let input: CreateRestaurantInput = {
     vat: 15,
-    cancelation_fee: 15,
     cuisinesTypeId: new ObjectId().toHexString(),
     establishmentTypeId: new ObjectId().toHexString(),
     menus: [],
@@ -119,7 +118,6 @@ describe('RestaurantResolver', () => {
 
     let updatedInput: UpdateRestaurantInput = {
       id: created.id,
-      cancelation_fee: 15,
       menus: [],
       michelin_guide_stars: 4,
       payment_methods: ['cash'],

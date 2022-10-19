@@ -14,6 +14,6 @@ const LangIdService = {
 @Global()
 @Module({
   providers: [LangIdService],
-  exports: [LangIdService],
+  exports: [LANG_ID],
 })
 export class TranslationModule {}

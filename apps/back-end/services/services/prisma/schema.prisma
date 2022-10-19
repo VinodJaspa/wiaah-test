@@ -101,9 +101,9 @@ model HealthCenterService {
 model HealthCenterDoctor {
   id                String                              @id @default(auto()) @map("_id") @db.ObjectId
   healthCenter      HealthCenterService                 @relation(fields: [healthCenterId], references: [id])
-  speciality        HealthCenterSpecialty               @relation(fields: [specialtyId], references: [id])
+  speciality        HealthCenterSpecialty               @relation(fields: [specialityId], references: [id])
   healthCenterId    String                              @db.ObjectId
-  specialtyId       String                              @db.ObjectId
+  specialityId      String                              @db.ObjectId
   rating            Float                               @default(0)
   name              String
   thumbnail         String
@@ -115,8 +115,10 @@ model HealthCenterDoctor {
 model HealthCenterSpecialty {
   id          String               @id @default(auto()) @map("_id") @db.ObjectId
   doctors     HealthCenterDoctor[]
-  name        String
+  name        TranslationText[]
   description TranslationText[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model RestaurantEstablishmentType {
@@ -313,5 +315,9 @@ type TranslationArrayText {
 
 enum ServiceType {
   hotel
+  holiday_rentals
   restaurant
+  health_center
+  beauty_center
+  vehicle
 }

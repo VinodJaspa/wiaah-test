@@ -50,3 +50,23 @@ export class ErrorHandlingService<TMessages> {
     return message;
   }
 }
+
+const defaultErrors = {
+  DBError: {
+    en: "",
+    es: "",
+    fr: "",
+    ge: "",
+  },
+};
+
+type DefaultErrors = typeof defaultErrors;
+
+export function createErrorObject<
+  T extends { [name: string]: ErrorTranslationMessage }
+>(cfg: T): T & DefaultErrors {
+  return {
+    ...cfg,
+    ...defaultErrors,
+  };
+}

@@ -19,6 +19,8 @@ module.exports = {
     '@decorators': '<rootDir>/src/decorators',
     '@restaurant': '<rootDir>/src/restaurant',
     '@service-ownership': '<rootDir>/src/service-ownership',
+    '@health-center': '<rootDir>/src/health-center',
+    '@utils': '<rootDir>/src/utils',
   },
   coverageDirectory: '../coverage',
   testEnvironment: 'node',

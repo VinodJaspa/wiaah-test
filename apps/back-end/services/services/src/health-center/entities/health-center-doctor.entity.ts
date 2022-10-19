@@ -1,4 +1,11 @@
-import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { TranslationText } from '@entities';
+import {
+  Field,
+  Float,
+  ID,
+  ObjectType,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { HealthCenterDoctorAvailablityStatus } from 'prismaClient';
 import { HealthCenterSpecialty } from './health-center-specialty.entity';
 import { HealthCenter } from './health-center.entity';
@@ -13,16 +20,31 @@ export class HealthCenterDoctor {
   id: string;
 
   @Field(() => HealthCenter, { nullable: true })
-  healthCenter: HealthCenter;
+  healthCenter?: HealthCenter;
 
-  @Field(() => [HealthCenterSpecialty])
-  speciality: HealthCenterSpecialty[];
+  @Field(() => HealthCenterSpecialty, { nullable: true })
+  speciality?: HealthCenterSpecialty;
 
   @Field(() => ID)
   healthCenterId: string;
 
   @Field(() => ID)
-  specialtyId: string;
+  specialityId: string;
+
+  @Field(() => Float)
+  rating: number;
+
+  @Field(() => String)
+  name: string;
+
+  @Field(() => String)
+  thumbnail: string;
+
+  @Field(() => Float)
+  price: number;
+
+  @Field(() => String)
+  description: string;
 
   @Field(() => HealthCenterDoctorAvailablityStatus)
   availablityStatus: HealthCenterDoctorAvailablityStatus;

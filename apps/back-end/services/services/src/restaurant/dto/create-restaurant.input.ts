@@ -13,9 +13,6 @@ export class CreateRestaurantInput {
   @Field(() => Int)
   vat: number;
 
-  @Field(() => Int)
-  cancelation_fee: number;
-
   @Field(() => ServiceStatus, { nullable: true })
   status?: ServiceStatus;
 

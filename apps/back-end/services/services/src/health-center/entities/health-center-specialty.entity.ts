@@ -6,8 +6,8 @@ export class HealthCenterSpecialty {
   @Field(() => ID)
   id: string;
 
-  @Field(() => [HealthCenterDoctor])
-  doctors: HealthCenterDoctor[];
+  @Field(() => [HealthCenterDoctor], { nullable: true })
+  doctors?: HealthCenterDoctor[];
 
   @Field(() => String)
   name: string;

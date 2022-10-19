@@ -6,6 +6,7 @@ import {
 } from '@entities';
 import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
 import { ServicePaymentMethods, ServiceStatus } from 'prismaClient';
+import { HealthCenterDoctor } from './health-center-doctor.entity';
 
 @ObjectType()
 export class HealthCenter {
@@ -41,4 +42,7 @@ export class HealthCenter {
 
   @Field(() => [ServiceCancelationPolicy])
   cancelationPolicies: ServiceCancelationPolicy[];
+
+  @Field(() => [HealthCenterDoctor])
+  doctors: HealthCenterDoctor[];
 }

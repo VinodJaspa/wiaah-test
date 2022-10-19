@@ -60,7 +60,42 @@ export class ServiceOwnershipService {
     return this.prisma.serviceOwnerShip.create({
       data: {
         ...input,
-        serviceType: 'hotel',
+        serviceType: 'restaurant',
+      },
+    });
+  }
+
+  createHealthCenterServiceOwnership(input: CreateServiceOwnershipInput) {
+    return this.prisma.serviceOwnerShip.create({
+      data: {
+        ...input,
+        serviceType: 'health_center',
+      },
+    });
+  }
+  createBeautyCenterServiceOwnership(input: CreateServiceOwnershipInput) {
+    return this.prisma.serviceOwnerShip.create({
+      data: {
+        ...input,
+        serviceType: 'beauty_center',
+      },
+    });
+  }
+
+  createVehicleServiceOwnership(input: CreateServiceOwnershipInput) {
+    return this.prisma.serviceOwnerShip.create({
+      data: {
+        ...input,
+        serviceType: 'vehicle',
+      },
+    });
+  }
+
+  createHolidayRentalsServiceOwnership(input: CreateServiceOwnershipInput) {
+    return this.prisma.serviceOwnerShip.create({
+      data: {
+        ...input,
+        serviceType: 'holiday_rentals',
       },
     });
   }
