@@ -35,6 +35,18 @@ export const ErrorMessages = createErrorObject({
     ge: 'failed to create speciality',
     fr: 'failed to create speciality',
   },
+  treatmentCategoryIdNotFoundErr: {
+    en: 'no treatment category with the given id was found',
+    es: 'no treatment category with the given id was found',
+    fr: 'no treatment category with the given id was found',
+    ge: 'no treatment category with the given id was found',
+  },
+  serviceIdNotFoundErr: {
+    en: 'could not find service with the given id',
+    es: 'could not find service with the given id',
+    fr: 'could not find service with the given id',
+    ge: 'could not find service with the given id',
+  },
 });
 
 export type ErrorHandlingTypedService = ErrorHandlingService<

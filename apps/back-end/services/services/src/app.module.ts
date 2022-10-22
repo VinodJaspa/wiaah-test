@@ -15,15 +15,18 @@ import { RestaurantModule } from './restaurant/restaurant.module';
 import { ServiceOwnershipModule } from './service-ownership/service-ownership.module';
 import { HealthCenterModule } from './health-center/health-center.module';
 import { ErrorMessages } from '@utils';
+import { BeautyCenterModule } from './beauty-center/beauty-center.module';
+import gql from 'graphql-tag';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: true,
-      context: (req) => {
-        const user = getUserFromRequest(req);
-        return { ...req, user };
+      context: (ctx) => {
+        const user = getUserFromRequest(ctx.req);
+
+        return { ...ctx, user };
       },
     }),
     ErrorHandlingModule.register({
@@ -35,6 +38,7 @@ import { ErrorMessages } from '@utils';
     RestaurantModule,
     ServiceOwnershipModule,
     HealthCenterModule,
+    BeautyCenterModule,
   ],
 })
 export class AppModule {}

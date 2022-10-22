@@ -51,7 +51,7 @@ export class HealthCenterService {
 
     const { doctors, ...rest } = input;
 
-    const healthcenter = await this.prisma.healthCenterService.create({
+    const created = await this.prisma.healthCenterService.create({
       data: {
         ...rest,
         ownerId: userId,
@@ -71,9 +71,9 @@ export class HealthCenterService {
     });
     await this.serviceOwnership.createHealthCenterServiceOwnership({
       ownerId: userId,
-      serviceId: healthcenter.id,
+      serviceId: created.id,
     });
-    return this.formatHealthCenterService(healthcenter);
+    return this.formatHealthCenterService(created);
   }
 
   async createHealthCenterSpeciality(

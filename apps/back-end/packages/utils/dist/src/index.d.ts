@@ -16,3 +16,4 @@ export * from "./test";
 export * from "./constants";
 export * from "./formaters";
 export * from "./translation";
+export * from "./pipes";

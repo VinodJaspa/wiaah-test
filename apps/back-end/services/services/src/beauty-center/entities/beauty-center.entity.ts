@@ -1,0 +1,76 @@
+import {
+  ServiceCancelationPolicy,
+  ServiceMetaInfo,
+  ServicePolicy,
+  ServicePresentation,
+} from '@entities';
+import {
+  ObjectType,
+  Field,
+  Int,
+  ID,
+  Float,
+  registerEnumType,
+} from '@nestjs/graphql';
+import {
+  ServicePaymentMethods,
+  ServiceStatus,
+  ServiceTypeOfSeller,
+} from 'prismaClient';
+import { BeautyCenterTreatment } from './beauty-center-treatment.entity';
+
+registerEnumType(ServiceTypeOfSeller, { name: 'ServiceTypeOfSeller' });
+
+@ObjectType()
+export class BeautyCenter {
+  @Field(() => ID)
+  id: string;
+
+  @Field(() => ID)
+  ownerId: string;
+
+  @Field(() => Date)
+  createdAt: Date;
+
+  @Field(() => Date)
+  updatedAt: Date;
+
+  @Field(() => Float)
+  vat: number;
+
+  @Field(() => Float)
+  rating: number;
+
+  @Field(() => Int)
+  totalReviews: number;
+
+  @Field(() => ID)
+  beauty_center_typeId: string;
+
+  @Field(() => ServiceStatus)
+  status: ServiceStatus;
+
+  @Field(() => String)
+  title: string;
+
+  @Field(() => [ServicePresentation])
+  presentations: ServicePresentation[];
+
+  @Field(() => [ServicePolicy])
+  policies: ServicePolicy[];
+
+  @Field(() => ServiceMetaInfo)
+  serviceMetaInfo: ServiceMetaInfo;
+
+  @Field(() => [ServicePaymentMethods])
+  payment_methods: ServicePaymentMethods[];
+
+  @Field(() => [ServiceCancelationPolicy])
+  cancelationPolicies: ServiceCancelationPolicy[];
+
+  @Field(() => ServiceTypeOfSeller)
+  type_of_seller: ServiceTypeOfSeller;
+
+  @Field(() => [BeautyCenterTreatment])
+  treatments: BeautyCenterTreatment[];
+}

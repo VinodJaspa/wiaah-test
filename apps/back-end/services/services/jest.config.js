@@ -21,6 +21,7 @@ module.exports = {
     '@service-ownership': '<rootDir>/src/service-ownership',
     '@health-center': '<rootDir>/src/health-center',
     '@utils': '<rootDir>/src/utils',
+    '@beauty-center': '<rootDir>/src/beauty-center',
   },
   coverageDirectory: '../coverage',
   testEnvironment: 'node',

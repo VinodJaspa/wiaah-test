@@ -7,6 +7,7 @@ export function getTranslatedResource<TResource>({
   langId: string;
   fallbackLangId?: string;
 }): TResource {
+  if (!Array.isArray(resource)) return undefined;
   if (resource.length === 0) return null;
   if (resource.length === 1) return resource[0].value;
 

@@ -47,6 +47,8 @@ model ServiceOwnerShip {
   serviceType ServiceType
 }
 
+// ------------------------------------------------services------------------------------------------------------------
+
 model HotelService {
   id              String                       @id @default(auto()) @map("_id") @db.ObjectId
   ownerId         String                       @unique @db.ObjectId
@@ -98,6 +100,44 @@ model HealthCenterService {
   doctors             HealthCenterDoctor[]
 }
 
+model BeautyCenterService {
+  id                   String                       @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId              String                       @db.ObjectId
+  createdAt            DateTime                     @default(now())
+  updatedAt            DateTime                     @updatedAt
+  vat                  Float                        @default(0)
+  rating               Float                        @default(0)
+  totalReviews         Int                          @default(0)
+  beauty_center_typeId String                       @db.ObjectId
+  status               ServiceStatus                @default(inActive)
+  title                TranslationText[]
+  presentations        ServicePresentation[]
+  policies             ServiceTranslationPolicies[]
+  serviceMetaInfo      ServiceMetaTranslationInfo[]
+  payment_methods      ServicePaymentMethods[]
+  cancelationPolicies  ServiceCancelationPolicy[]
+  type_of_seller       ServiceTypeOfSeller
+  treatments           BeautyCenterTreatment[]
+}
+
+model BeautyCenterTreatmentCategory {
+  id          String                  @id @default(auto()) @map("_id") @db.ObjectId
+  createdById String
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+  title       TranslationText[]
+  status      TreatmentCategoryStatus @default(active)
+}
+
+type BeautyCenterTreatment {
+  id                  String
+  treatmentCategoryId String
+  title               TranslationText[]
+  price               Float
+  duration            Int[]
+  discount            ServiceDiscount
+}
+
 model HealthCenterDoctor {
   id                String                              @id @default(auto()) @map("_id") @db.ObjectId
   healthCenter      HealthCenterService                 @relation(fields: [healthCenterId], references: [id])
@@ -117,8 +157,8 @@ model HealthCenterSpecialty {
   doctors     HealthCenterDoctor[]
   name        TranslationText[]
   description TranslationText[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
 }
 
 model RestaurantEstablishmentType {
@@ -182,24 +222,6 @@ type RestaurantDish {
   price       Int
   ingredients TranslationArrayText[]
   thumbnail   String
-}
-
-enum ServicePaymentMethods {
-  credit_card
-  visa
-  mastercard
-  check
-  cash
-}
-
-enum ServiceStatus {
-  inActive
-  active
-}
-
-enum HealthCenterDoctorAvailablityStatus {
-  available
-  unavailable
 }
 
 type HotelRoomMetaInfo {
@@ -320,4 +342,32 @@ enum ServiceType {
   health_center
   beauty_center
   vehicle
+}
+
+enum ServicePaymentMethods {
+  credit_card
+  visa
+  mastercard
+  check
+  cash
+}
+
+enum ServiceStatus {
+  inActive
+  active
+}
+
+enum HealthCenterDoctorAvailablityStatus {
+  available
+  unavailable
+}
+
+enum ServiceTypeOfSeller {
+  individual
+  professional
+}
+
+enum TreatmentCategoryStatus {
+  active
+  inActive
 }

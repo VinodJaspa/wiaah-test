@@ -91,7 +91,9 @@ export function StepperFormController<FinaleDataType extends Data>({
   }
 
   function nextStep() {
+    console.log("next");
     if (lock) {
+      console.log("locked");
       const currentStepKey = handlers[currentStepIdx];
       if (typeof currentStepKey !== "string") return;
 
@@ -109,6 +111,7 @@ export function StepperFormController<FinaleDataType extends Data>({
         }
       });
     } else {
+      console.log("unlocked");
       setCurrentStepIdx((state) => {
         const lastStep = state > stepsNum - 2;
 
@@ -181,7 +184,6 @@ export function StepperFormController<FinaleDataType extends Data>({
 type StepperFormHandlerChildrenProps = {
   validate: (data: Data) => any;
   values: Data;
-  // errors?: string[];
 };
 
 export interface StepperFormHandlerProps {

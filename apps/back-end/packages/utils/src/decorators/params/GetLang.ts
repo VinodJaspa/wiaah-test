@@ -14,6 +14,7 @@ export const GetLang = createParamDecorator(
       req = GqlExecutionContext.create(context).getContext().req;
     } else return null;
 
+    // console.log(req);
     const langHeader = req?.headers["accept-language"];
     if (typeof langHeader !== "string") return "en";
     return langHeader;
