@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { AppModule } from './app.module';
+import { raw } from 'body-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

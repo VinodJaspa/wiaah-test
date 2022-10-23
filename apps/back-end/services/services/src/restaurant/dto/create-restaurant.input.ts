@@ -1,47 +1,51 @@
 import {
-  ServiceMetaInfoInput,
+  ServiceLocationInput,
   ServiceMetaInfoTranslationInput,
   ServicePolicyTranslatedInput,
   ServicePresentationInput,
 } from '@dto';
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Int, Field, ID } from '@nestjs/graphql';
 import { ServicePaymentMethods, ServiceStatus } from 'prismaClient';
 import { RestaurantMenuInput } from '@restaurant';
+import { ServicePresentationsLength, TranslationsInput } from '@decorators';
 
 @InputType()
 export class CreateRestaurantInput {
   @Field(() => Int)
   vat: number;
 
-  @Field(() => Int)
-  cancelation_fee: number;
+  @Field(() => ServiceStatus, { nullable: true })
+  status?: ServiceStatus;
 
-  @Field(() => ServiceStatus)
-  status: ServiceStatus;
+  @Field(() => ServiceLocationInput)
+  location: ServiceLocationInput;
 
   @Field(() => [ServicePresentationInput])
+  @ServicePresentationsLength()
   presentations: ServicePresentationInput[];
 
   @Field(() => [ServicePolicyTranslatedInput])
-  policies: ServicePolicyTranslatedInput;
+  @TranslationsInput()
+  policies: ServicePolicyTranslatedInput[];
 
   @Field(() => [ServiceMetaInfoTranslationInput])
+  @TranslationsInput()
   serviceMetaInfo: ServiceMetaInfoTranslationInput[];
 
-  @Field(() => ServicePaymentMethods)
-  payment_methods: ServicePaymentMethods;
+  @Field(() => [ServicePaymentMethods])
+  payment_methods: ServicePaymentMethods[];
 
   @Field(() => [RestaurantMenuInput])
   menus: RestaurantMenuInput[];
 
-  @Field(() => String)
-  establishmentType: string;
+  @Field(() => ID)
+  establishmentTypeId: string;
 
-  @Field(() => String)
-  cuisinesType: string;
+  @Field(() => ID)
+  cuisinesTypeId: string;
 
-  @Field(() => String)
-  setting_and_ambiance: string;
+  @Field(() => ID)
+  setting_and_ambianceId: string;
 
   @Field(() => Int)
   michelin_guide_stars: number;

@@ -196,7 +196,11 @@ export const NewServiceStepper: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-4 h-full justify-between">
-      <StepperFormController lock={true} stepsNum={5} onFormComplete={() => {}}>
+      <StepperFormController
+        lock={false}
+        stepsNum={7}
+        onFormComplete={() => {}}
+      >
         {({ nextStep, currentStepIdx, goToStep }) => (
           <>
             <CheckMarkStepper
@@ -216,10 +220,9 @@ export const NewServiceStepper: React.FC = () => {
                           onServiceChoosen={(key) => {
                             validate({ type: key });
 
+                            nextStep();
                             setServiceType(key);
-                            CallbackAfter(50, () => {
-                              nextStep();
-                            });
+                            CallbackAfter(50, () => {});
                           }}
                         />
                       )}

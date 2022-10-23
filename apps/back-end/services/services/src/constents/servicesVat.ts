@@ -1,0 +1,2 @@
+export const SERVICE_MAX_VAT_PERCENT = 30;
+export const SERVICE_MIN_VAT_PERCENT = 0;

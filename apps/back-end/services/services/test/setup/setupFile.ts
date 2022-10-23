@@ -11,6 +11,16 @@ async function clearDB() {
   await prisma.hotelService.deleteMany();
   await prisma.serviceCategory.deleteMany();
   await prisma.serviceWorkingSchedule.deleteMany();
+  await prisma.restaurantService.deleteMany();
+  await prisma.restaurantEstablishmentType.deleteMany();
+  await prisma.restaurantCuisinesType.deleteMany();
+  await prisma.restaurnatSettingAndAmbiance.deleteMany();
+  await prisma.serviceOwnerShip.deleteMany();
+  await prisma.healthCenterDoctor.deleteMany();
+  await prisma.healthCenterService.deleteMany();
+  await prisma.healthCenterSpecialty.deleteMany();
+  await prisma.beautyCenterService.deleteMany();
+  await prisma.beautyCenterTreatmentCategory.deleteMany();
 }
 
 const prisma = new PrismaService();

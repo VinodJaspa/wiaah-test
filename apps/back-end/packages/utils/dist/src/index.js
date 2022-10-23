@@ -31,4 +31,6 @@ __exportStar(require("./Errors"), exports);
 __exportStar(require("./test"), exports);
 __exportStar(require("./constants"), exports);
 __exportStar(require("./formaters"), exports);
+__exportStar(require("./translation"), exports);
+__exportStar(require("./pipes"), exports);
 //# sourceMappingURL=index.js.map

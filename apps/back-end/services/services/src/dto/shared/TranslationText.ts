@@ -5,9 +5,11 @@ import {
 } from 'nest-utils';
 
 @InputType()
-export class TranslationText extends CreateGqlTranslationInputField(String) {}
+export class TranslationTextInput extends CreateGqlTranslationInputField(
+  String,
+) {}
 
 @InputType()
-export class TranslationTextArray extends CreateGqlTranslationInputFields(
+export class TranslationTextArrayInput extends CreateGqlTranslationInputFields(
   String,
 ) {}

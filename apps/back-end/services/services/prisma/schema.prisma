@@ -12,12 +12,14 @@ datasource db {
 }
 
 type ServiceCategoryFilterValue {
-  name      String
-  sortOrder Int
+  name           TranslationText[]
+  filteringValue String
+  sortOrder      Int
 }
 
 type ServiceCategoryFilter {
-  filterGroupName String
+  filterGroupName TranslationText[]
+  filteringKey    String
   filterValues    ServiceCategoryFilterValue[]
   sortOrder       Int
 }
@@ -25,7 +27,7 @@ type ServiceCategoryFilter {
 model ServiceCategory {
   id              String                  @id @default(auto()) @map("_id") @db.ObjectId
   createdByUserId String
-  name            String
+  name            TranslationText[]
   createdAt       DateTime                @default(now())
   updatedAt       DateTime                @updatedAt()
   filters         ServiceCategoryFilter[]
@@ -38,37 +40,171 @@ model ServiceWorkingSchedule {
   specialDays DateTime[]
 }
 
+model ServiceOwnerShip {
+  id          String      @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId     String      @unique @db.ObjectId
+  serviceId   String      @unique @db.ObjectId
+  serviceType ServiceType
+}
+
+// ------------------------------------------------services------------------------------------------------------------
+
 model HotelService {
-  id              String                       @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId         String                       @unique @db.ObjectId
-  createdAt       DateTime                     @default(now())
-  updatedAt       DateTime                     @updatedAt
-  vat             Int                          @default(0)
-  status          ServiceStatus                @default(inActive)
-  presentations   ServicePresentation[]
-  policies        ServiceTranslationPolicies[]
-  serviceMetaInfo ServiceMetaTranslationInfo[]
-  rooms           HotelRoom[]
-  payment_methods ServicePaymentMethods[]
+  id                  String                       @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId             String                       @unique @db.ObjectId
+  createdAt           DateTime                     @default(now())
+  updatedAt           DateTime                     @updatedAt
+  vat                 Int                          @default(0)
+  status              ServiceStatus                @default(inActive)
+  presentations       ServicePresentation[]
+  policies            ServiceTranslationPolicies[]
+  serviceMetaInfo     ServiceMetaTranslationInfo[]
+  payment_methods     ServicePaymentMethods[]
+  cancelationPolicies ServiceCancelationPolicy[]
+  location            Location
+  rooms               HotelRoom[]
 }
 
 model RestaurantService {
+  id                     String                       @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId                String                       @unique @db.ObjectId
+  createdAt              DateTime                     @default(now())
+  updatedAt              DateTime                     @updatedAt
+  vat                    Int                          @default(0)
+  status                 ServiceStatus                @default(inActive)
+  presentations          ServicePresentation[]
+  policies               ServiceTranslationPolicies[]
+  serviceMetaInfo        ServiceMetaTranslationInfo[]
+  payment_methods        ServicePaymentMethods[]
+  cancelationPolicies    ServiceCancelationPolicy[]
+  menus                  RestaurantMenu[]
+  location               Location
+  establishmentTypeId    String                       @db.ObjectId
+  cuisinesTypeId         String                       @db.ObjectId
+  setting_and_ambianceId String                       @db.ObjectId
+  michelin_guide_stars   Int
+}
+
+model HealthCenterService {
+  id                  String                       @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId             String                       @db.ObjectId
+  createdAt           DateTime                     @default(now())
+  updatedAt           DateTime                     @updatedAt
+  vat                 Float                        @default(0)
+  rating              Float                        @default(0)
+  totalReviews        Int                          @default(0)
+  status              ServiceStatus                @default(inActive)
+  location            Location
+  presentations       ServicePresentation[]
+  policies            ServiceTranslationPolicies[]
+  serviceMetaInfo     ServiceMetaTranslationInfo[]
+  payment_methods     ServicePaymentMethods[]
+  cancelationPolicies ServiceCancelationPolicy[]
+  doctors             HealthCenterDoctor[]
+}
+
+model BeautyCenterService {
   id                   String                       @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId              String                       @unique @db.ObjectId
+  ownerId              String                       @db.ObjectId
   createdAt            DateTime                     @default(now())
   updatedAt            DateTime                     @updatedAt
-  vat                  Int                          @default(0)
-  cancelation_fee      Int                          @default(0)
+  vat                  Float                        @default(0)
+  rating               Float                        @default(0)
+  totalReviews         Int                          @default(0)
+  beauty_center_typeId String                       @db.ObjectId
+  location             Location
   status               ServiceStatus                @default(inActive)
   presentations        ServicePresentation[]
   policies             ServiceTranslationPolicies[]
   serviceMetaInfo      ServiceMetaTranslationInfo[]
   payment_methods      ServicePaymentMethods[]
-  menus                RestaurantMenu[]
-  establishmentType    String
-  cuisinesType         String
-  setting_and_ambiance String
-  michelin_guide_stars Int
+  cancelationPolicies  ServiceCancelationPolicy[]
+  type_of_seller       ServiceTypeOfSeller
+  treatments           BeautyCenterTreatment[]
+}
+
+model VehicleService {
+  id                  String                       @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId             String                       @db.ObjectId
+  createdAt           DateTime                     @default(now())
+  updatedAt           DateTime                     @updatedAt
+  vat                 Float                        @default(0)
+  rating              Float                        @default(0)
+  totalReviews        Int                          @default(0)
+  location            Location
+  presentations       ServicePresentation[]
+  policies            ServiceTranslationPolicies[]
+  serviceMetaInfo     ServiceMetaTranslationInfo[]
+  payment_methods     ServicePaymentMethods[]
+  cancelationPolicies ServiceCancelationPolicy[]
+  vehicles            Vehicle[]
+}
+
+model VehicleType {
+  id String @id @db.ObjectId @default(auto()) @map("_id")
+  createdById String @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name TranslationText[]
+}
+
+model BeautyCenterTreatmentCategory {
+  id          String                  @id @default(auto()) @map("_id") @db.ObjectId
+  createdById String
+  createdAt   DateTime                @default(now())
+  updatedAt   DateTime                @updatedAt
+  title       TranslationText[]
+  status      TreatmentCategoryStatus @default(active)
+}
+
+model HealthCenterDoctor {
+  id                String                              @id @default(auto()) @map("_id") @db.ObjectId
+  healthCenter      HealthCenterService                 @relation(fields: [healthCenterId], references: [id])
+  speciality        HealthCenterSpecialty               @relation(fields: [specialityId], references: [id])
+  healthCenterId    String                              @db.ObjectId
+  specialityId      String                              @db.ObjectId
+  rating            Float                               @default(0)
+  name              String
+  thumbnail         String
+  price             Float
+  description       TranslationText[]
+  availablityStatus HealthCenterDoctorAvailablityStatus @default(unavailable)
+}
+
+model HealthCenterSpecialty {
+  id          String               @id @default(auto()) @map("_id") @db.ObjectId
+  doctors     HealthCenterDoctor[]
+  name        TranslationText[]
+  description TranslationText[]
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+}
+
+model RestaurantEstablishmentType {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  name        TranslationText[]
+  status      ServiceStatus     @default(inActive)
+  createdById String            @db.ObjectId
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model RestaurantCuisinesType {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  name        TranslationText[]
+  status      ServiceStatus     @default(inActive)
+  createdById String            @db.ObjectId
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model RestaurnatSettingAndAmbiance {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  name        TranslationText[]
+  status      ServiceStatus     @default(inActive)
+  createdById String            @db.ObjectId
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 }
 
 model HotelRoom {
@@ -83,6 +219,7 @@ model HotelRoom {
   beds                Int
   bathrooms           Int
   num_of_rooms        Int
+  presentations       ServicePresentation[]
   dailyPrices         ServiceDailyPrices
   discount            ServiceDiscount
   includedServices    TranslationArrayText[]
@@ -93,9 +230,30 @@ model HotelRoom {
   measurements        PropertyMeasurements
 }
 
+type Vehicle {
+  id                  String
+  typeId String
+  title               TranslationText[]
+  presentations       ServicePresentation[]
+  brand               String
+  model               String
+  price               Int
+  properties          VehicleProperties
+  cancelationPolicies ServiceCancelationPolicy[]
+}
+
+type VehicleProperties {
+  seats           Int
+  windows         Int
+  maxSpeedInKm    Int
+  lugaggeCapacity Int
+  gpsAvailiable   Boolean
+  airCondition    Boolean
+}
+
 type RestaurantMenu {
   id    String
-  name TranslationText[]
+  name  TranslationText[]
   dishs RestaurantDish[]
 }
 
@@ -107,19 +265,6 @@ type RestaurantDish {
   thumbnail   String
 }
 
-enum ServicePaymentMethods {
-  credit_card
-  visa
-  mastercard
-  check
-  cash
-}
-
-enum ServiceStatus {
-  inActive
-  active
-}
-
 type HotelRoomMetaInfo {
   title       String
   description String
@@ -128,6 +273,15 @@ type HotelRoomMetaInfo {
 type HotelRoomTranslationMetaInfo {
   langId String
   value  HotelRoomMetaInfo
+}
+
+type BeautyCenterTreatment {
+  id                  String
+  treatmentCategoryId String
+  title               TranslationText[]
+  price               Float
+  duration            Int[]
+  discount            ServiceDiscount
 }
 
 type ServiceWeekDaysWorkingHours {
@@ -216,11 +370,6 @@ type ServicePresentation {
   src  String
 }
 
-enum ServicePresentationType {
-  img
-  vid
-}
-
 type TranslationText {
   langId String
   value  String
@@ -229,4 +378,55 @@ type TranslationText {
 type TranslationArrayText {
   langId String
   value  String[]
+}
+
+type Location {
+  address    String
+  country    String
+  state      String
+  lat        Float
+  lon        Float
+  postalCode Int
+}
+
+enum ServicePresentationType {
+  img
+  vid
+}
+
+enum ServiceType {
+  hotel
+  holiday_rentals
+  restaurant
+  health_center
+  beauty_center
+  vehicle
+}
+
+enum ServicePaymentMethods {
+  credit_card
+  visa
+  mastercard
+  check
+  cash
+}
+
+enum ServiceStatus {
+  inActive
+  active
+}
+
+enum HealthCenterDoctorAvailablityStatus {
+  available
+  unavailable
+}
+
+enum ServiceTypeOfSeller {
+  individual
+  professional
+}
+
+enum TreatmentCategoryStatus {
+  active
+  inActive
 }

@@ -5,27 +5,42 @@ import {
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
-import { getUserFromRequest } from 'nest-utils';
+import {
+  ErrorHandlingModule,
+  getUserFromRequest,
+  TranslationModule,
+} from 'nest-utils';
 import { HotelModule } from './hotel/hotel.module';
-import { RestuarntModule } from './restuarnt/restuarnt.module';
-import { RestauarntModule } from './restauarnt/restauarnt.module';
 import { RestaurantModule } from './restaurant/restaurant.module';
+import { ServiceOwnershipModule } from './service-ownership/service-ownership.module';
+import { HealthCenterModule } from './health-center/health-center.module';
+import { ErrorMessages } from '@utils';
+import { BeautyCenterModule } from './beauty-center/beauty-center.module';
+import { VehicleModule } from './vehicle/vehicle.module';
+import gql from 'graphql-tag';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: true,
-      context: (req) => {
-        const user = getUserFromRequest(req);
-        return { ...req, user };
+      context: (ctx) => {
+        const user = getUserFromRequest(ctx.req);
+
+        return { ...ctx, user };
       },
     }),
+    ErrorHandlingModule.register({
+      messages: ErrorMessages,
+    }),
+    TranslationModule,
     CategoryModule,
     HotelModule,
-    RestuarntModule,
-    RestauarntModule,
     RestaurantModule,
+    ServiceOwnershipModule,
+    HealthCenterModule,
+    BeautyCenterModule,
+    VehicleModule,
   ],
 })
 export class AppModule {}

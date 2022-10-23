@@ -1,4 +1,9 @@
-import { ServiceMetaInfo, ServicePolicy, ServicePresentation } from '@entities';
+import {
+  ServiceLocation,
+  ServiceMetaInfo,
+  ServicePolicy,
+  ServicePresentation,
+} from '@entities';
 import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
 import { ServicePaymentMethods, ServiceStatus } from 'prismaClient';
 import { RestaurantMenu } from './restaurant-menu.entity';
@@ -17,11 +22,11 @@ export class Restaurant {
   @Field(() => Int)
   vat: number;
 
-  @Field(() => Int)
-  cancelation_fee: number;
-
   @Field(() => ServiceStatus)
   status: ServiceStatus;
+
+  @Field(() => ServiceLocation)
+  location: ServiceLocation;
 
   @Field(() => [ServicePresentation])
   presentations: ServicePresentation[];
@@ -38,8 +43,14 @@ export class Restaurant {
   @Field(() => [RestaurantMenu])
   menus: RestaurantMenu[];
 
-  @Field(() => String)
-  setting_and_ambiance: string;
+  @Field(() => ID)
+  setting_and_ambianceId: string;
+
+  @Field(() => ID)
+  establishmentTypeId: string;
+
+  @Field(() => ID)
+  cuisinesTypeId: string;
 
   @Field(() => Int)
   michelin_guide_stars: number;

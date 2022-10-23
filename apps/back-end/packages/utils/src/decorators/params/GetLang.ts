@@ -1,6 +1,8 @@
 import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 import { GqlContextType, GqlExecutionContext } from "@nestjs/graphql";
 
+export type UserPreferedLang = string;
+
 export const GetLang = createParamDecorator(
   (data: unknown, context: ExecutionContext) => {
     const ctxType = context.getType<GqlContextType>();
@@ -12,6 +14,7 @@ export const GetLang = createParamDecorator(
       req = GqlExecutionContext.create(context).getContext().req;
     } else return null;
 
+    // console.log(req);
     const langHeader = req?.headers["accept-language"];
     if (typeof langHeader !== "string") return "en";
     return langHeader;

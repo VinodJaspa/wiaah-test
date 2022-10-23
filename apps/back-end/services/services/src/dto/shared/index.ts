@@ -10,3 +10,5 @@ export * from './ServiceExtra.input';
 export * from './ServiceIncludedAmenities.input';
 export * from './ServicePropertyMeasurements.input';
 export * from './TranslationText';
+export * from './ServicePaymentMethods.input';
+export * from './ServiceLocation.input';

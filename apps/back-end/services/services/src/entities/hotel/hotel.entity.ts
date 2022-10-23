@@ -4,6 +4,7 @@ import {
   ServicePolicy,
   ServiceMetaInfo,
   ServiceWeekDaysWorkingHours,
+  ServiceLocation,
 } from '@entities';
 import { HotelRoom } from './hotelRoom.entity';
 
@@ -20,6 +21,9 @@ export class HotelServiceEntity {
 
   @Field(() => Date)
   updatedAt: Date;
+
+  @Field(() => ServiceLocation)
+  location: ServiceLocation;
 
   @Field(() => [ServicePresentation])
   presentations: ServicePresentation[];

@@ -5,6 +5,9 @@ export class ServiceCategoryFilterValue {
   @Field(() => String)
   name: string;
 
+  @Field(() => String)
+  filteringValue: string;
+
   @Field(() => Int)
   sortOrder: number;
 }
@@ -13,6 +16,9 @@ export class ServiceCategoryFilterValue {
 export class ServiceCategoryFilter {
   @Field(() => String)
   filterGroupName: string;
+
+  @Field(() => String)
+  filteringKey: string;
 
   @Field(() => Int)
   sortOrder: number;

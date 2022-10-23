@@ -1,5 +1,6 @@
 import { ServicePresentationsLength, TranslationsInput } from '@decorators';
 import {
+  ServiceLocationInput,
   ServiceMetaInfoTranslationInput,
   ServicePresentationInput,
 } from '@dto';
@@ -12,6 +13,9 @@ export class CreateHotelInput {
   @Field(() => [ServicePresentationInput])
   @ServicePresentationsLength()
   presentations: [ServicePresentationInput];
+
+  @Field(() => ServiceLocationInput)
+  location: ServiceLocationInput;
 
   @Field(() => [ServicePolicyTranslatedInput])
   @TranslationsInput()
