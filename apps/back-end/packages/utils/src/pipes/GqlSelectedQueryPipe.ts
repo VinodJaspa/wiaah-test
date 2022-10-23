@@ -12,29 +12,13 @@ export type GqlSelectedFields<T extends Record<string, any> = any> = {
     : true;
 };
 
-// export type GqlSelectedFields<T extends Record<string, any> = any> = {
-//   [key in keyof T]: T[key] extends
-//     | number
-//     | string
-//     | boolean
-//     | Array<number>
-//     | Array<string>
-//     | Array<boolean>
-//     | Date
-//     | Array<Date>
-//     ? true
-//     : { select: GqlSelectedFields<ArrayElement<T[key]>> };
-// };
-
 @Injectable()
 export class GqlSelectedQueryPipe implements PipeTransform {
-  constructor(private readonly rootMethodName: string) {}
+  constructor(private readonly rootMethodName?: string) {}
   transform(
     value: GraphQLResolveInfo,
     metadata: ArgumentMetadata
   ): GqlSelectedFields {
-    console.log("pipe meta", JSON.stringify(metadata, null, 4));
-
     const targetedRootField =
       value.fieldNodes.find((v) => v.name.value === this.rootMethodName) ||
       value.fieldNodes[0];

@@ -1,19 +1,24 @@
-import { Global, Module } from "@nestjs/common";
+import { Global, Inject, Injectable, Module, Scope } from "@nestjs/common";
 import { REQUEST } from "@nestjs/core";
+import { UserPreferedLang } from "../";
 export const LANG_ID = "LANG_ID";
 
-const LangIdService = {
-  provide: LANG_ID,
-  useFactory(ctx: any) {
-    const langId = ctx?.req?.headers["accept-language"] || "en";
+@Injectable()
+export class TranslationService {
+  constructor(
+    @Inject(REQUEST)
+    private readonly ctx: any
+  ) {}
+
+  getLangIdFromLangHeader(): UserPreferedLang {
+    const langId = this.ctx?.req?.headers["accept-language"] || "en";
     return langId;
-  },
-  inject: [REQUEST],
-};
+  }
+}
 
 @Global()
 @Module({
-  providers: [LangIdService],
-  exports: [LANG_ID],
+  providers: [TranslationService],
+  exports: [TranslationService],
 })
 export class TranslationModule {}

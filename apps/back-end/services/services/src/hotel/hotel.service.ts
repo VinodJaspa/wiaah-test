@@ -1,14 +1,24 @@
 import { HotelServiceEntity } from '@entities';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DBErrorException, getTranslatedResource } from 'nest-utils';
+import {
+  DBErrorException,
+  getTranslatedResource,
+  TranslationService,
+} from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { CreateHotelInput } from './dto/create-hotel.input';
 import { HotelService as PrismaHotelService, HotelRoom } from 'prismaClient';
 
 @Injectable()
 export class HotelService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly translationService: TranslationService,
+  ) {}
 
+  getLangId() {
+    return this.translationService.getLangIdFromLangHeader();
+  }
   async createHotelService(
     input: CreateHotelInput,
     userId: string,
@@ -35,7 +45,7 @@ export class HotelService {
       },
     });
 
-    return this.formatHotelData({ ...hotel, rooms: hotel.rooms || [] }, lang);
+    return this.formatHotelData({ ...hotel, rooms: hotel.rooms || [] });
   }
 
   async getHotelWithRoomsById(
@@ -55,7 +65,7 @@ export class HotelService {
         },
       });
 
-      return this.formatHotelData(Object.assign(hotel, { rooms: [] }), lang);
+      return this.formatHotelData(Object.assign(hotel, { rooms: [] }));
     } catch (error) {
       const notFoundError = error instanceof NotFoundException;
       if (notFoundError) throw error;
@@ -69,31 +79,30 @@ export class HotelService {
 
   formatHotelData(
     hotel: PrismaHotelService & { rooms: HotelRoom[] },
-    langId: string,
   ): HotelServiceEntity {
     return {
       ...hotel,
       policies: getTranslatedResource({
-        langId,
+        langId: this.getLangId(),
         resource: hotel.policies,
       }),
       serviceMetaInfo: getTranslatedResource({
-        langId,
+        langId: this.getLangId(),
         resource: hotel.serviceMetaInfo,
       }),
       rooms: hotel.rooms.map((v) => ({
         ...v,
         includedAmenites: getTranslatedResource({
           resource: v.includedAmenities,
-          langId,
+          langId: this.getLangId(),
         }),
         includedServices: getTranslatedResource({
           resource: v.includedServices,
-          langId,
+          langId: this.getLangId(),
         }),
         ...getTranslatedResource({
           resource: v.roomMetaInfo,
-          langId,
+          langId: this.getLangId(),
         }),
         cancelationPolicices: v.cancelationPolicies,
         hotelId: hotel.id,
@@ -101,14 +110,14 @@ export class HotelService {
           value: v.value,
           label: getTranslatedResource({
             resource: v.label,
-            langId,
+            langId: this.getLangId(),
           }),
         })),
         extras: v.extras.map((v) => ({
           cost: v.cost,
           name: getTranslatedResource({
             resource: v.name,
-            langId,
+            langId: this.getLangId(),
           }),
         })),
       })),

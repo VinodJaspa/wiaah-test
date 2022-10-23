@@ -1,4 +1,4 @@
-export * from './vehicle-service-created';
-import { handleVehicleServiceCreatedEvent } from './vehicle-service-created';
+export * from './impl';
+import { handleVehicleServiceCreatedEvent } from './handlers';
 
-export const vehicleEventsHandlers = [handleVehicleServiceCreatedEvent];
+export const VehicleEventsHandlers = [handleVehicleServiceCreatedEvent];

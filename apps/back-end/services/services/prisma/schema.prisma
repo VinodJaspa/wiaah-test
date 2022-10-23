@@ -131,6 +131,7 @@ model VehicleService {
   vat                 Float                        @default(0)
   rating              Float                        @default(0)
   totalReviews        Int                          @default(0)
+  title TranslationText[]
   location            Location
   presentations       ServicePresentation[]
   policies            ServiceTranslationPolicies[]
@@ -247,7 +248,7 @@ type VehicleProperties {
   windows         Int
   maxSpeedInKm    Int
   lugaggeCapacity Int
-  gpsAvailiable   Boolean
+  gpsAvailable   Boolean
   airCondition    Boolean
 }
 

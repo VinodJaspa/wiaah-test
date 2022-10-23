@@ -15,6 +15,7 @@ import {
   ErrorHandlingService,
   getTranslatedResource,
   LANG_ID,
+  TranslationService,
   UserPreferedLang,
 } from 'nest-utils';
 import { ServiceOwnershipService } from '@service-ownership';
@@ -35,11 +36,11 @@ export class HealthCenterService {
     private readonly serviceOwnership: ServiceOwnershipService,
     @Inject(ErrorHandlingService)
     private readonly errorService: ErrorHandlingTypedService,
-    @Inject(LANG_ID) private readonly _langId: UserPreferedLang,
+    private readonly translationService: TranslationService,
   ) {}
 
   getLangId(): UserPreferedLang {
-    return this._langId;
+    return this.translationService.getLangIdFromLangHeader();
   }
 
   async createHealthCenterService(

@@ -27,6 +27,7 @@ import {
 import {
   DBErrorException,
   getTranslatedResource,
+  TranslationService,
   UserPreferedLang,
 } from 'nest-utils';
 import { ServiceOwnershipService } from '@service-ownership';
@@ -36,6 +37,7 @@ export class RestaurantService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly ownerShipService: ServiceOwnershipService,
+    private readonly translationService: TranslationService,
   ) {}
 
   async createRestaurant(
@@ -63,7 +65,7 @@ export class RestaurantService {
         ownerId: userId,
         serviceId: created.id,
       });
-      return this.formatRestaurant(created, langId);
+      return this.formatRestaurant(created);
     } catch (error) {
       throw new DBErrorException('error creating restaurant service');
     }
@@ -78,7 +80,7 @@ export class RestaurantService {
       input.id,
       userId,
     );
-    return this.formatRestaurant(restaurant, langId);
+    return this.formatRestaurant(restaurant);
   }
 
   async updateRestaurant(
@@ -106,7 +108,7 @@ export class RestaurantService {
         },
       });
 
-      return this.formatRestaurant(res, langId);
+      return this.formatRestaurant(res);
     } catch (error) {}
   }
 
@@ -123,7 +125,7 @@ export class RestaurantService {
         },
       });
       await this.ownerShipService.deleteServiceOwnerShipByServiceId(res.id);
-      return this.formatRestaurant(res, langId);
+      return this.formatRestaurant(res);
     } catch (error) {
       console.log(error);
     }
@@ -362,38 +364,39 @@ export class RestaurantService {
     };
   }
 
-  private formatRestaurant(
-    input: PrismaRestaurantService,
-    langId: UserPreferedLang,
-  ): Restaurant {
+  private formatRestaurant(input: PrismaRestaurantService): Restaurant {
     return {
       ...input,
       serviceMetaInfo: getTranslatedResource({
-        langId,
+        langId: this.getLang(),
         resource: input.serviceMetaInfo,
       }),
       policies: getTranslatedResource({
-        langId,
+        langId: this.getLang(),
         resource: input.policies,
       }),
       menus: input.menus.map((v) => ({
         ...v,
         name: getTranslatedResource({
-          langId,
+          langId: this.getLang(),
           resource: v.name,
         }),
         dishs: v.dishs.map((v) => ({
           ...v,
           name: getTranslatedResource({
-            langId,
+            langId: this.getLang(),
             resource: v.name,
           }),
           ingredients: getTranslatedResource({
-            langId,
+            langId: this.getLang(),
             resource: v.ingredients,
           }),
         })),
       })),
     };
+  }
+
+  getLang() {
+    return this.translationService.getLangIdFromLangHeader();
   }
 }

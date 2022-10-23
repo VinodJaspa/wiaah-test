@@ -16,12 +16,6 @@ export class CreateVehicleServiceInput {
   @ServiceVatPercent()
   vat: number;
 
-  @Field(() => Float)
-  rating: number;
-
-  @Field(() => Int)
-  totalReviews: number;
-
   @Field(() => ServiceLocationInput)
   location: ServiceLocationInput;
 
@@ -37,9 +31,6 @@ export class CreateVehicleServiceInput {
   @Field(() => [ServicePaymentMethodInput])
   payment_methods: ServicePaymentMethodInput[];
 
-  @Field(() => [ServiceCancelationPolicyInput])
-  cancelationPolicies: ServiceCancelationPolicyInput[];
-
-  @Field(() => CreateVehicleInput)
-  vehicles: CreateVehicleInput;
+  @Field(() => [CreateVehicleInput])
+  vehicles: CreateVehicleInput[];
 }

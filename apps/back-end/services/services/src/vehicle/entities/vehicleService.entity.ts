@@ -44,8 +44,8 @@ export class VehicleService {
   @Field(() => [ServicePolicy])
   policies: ServicePolicy[];
 
-  @Field(() => [ServiceMetaInfo])
-  serviceMetaInfo: ServiceMetaInfo[];
+  @Field(() => ServiceMetaInfo)
+  serviceMetaInfo: ServiceMetaInfo;
 
   @Field(() => [ServicePaymentMethods])
   payment_methods: ServicePaymentMethods[];
@@ -54,5 +54,5 @@ export class VehicleService {
   cancelationPolicies: ServiceCancelationPolicy[];
 
   @Field(() => [Vehicle])
-  vehicles: Vehicle;
+  vehicles: Vehicle[];
 }

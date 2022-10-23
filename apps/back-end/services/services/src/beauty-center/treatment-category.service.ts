@@ -6,6 +6,7 @@ import {
   getTranslatedResource,
   GqlSelectedFields,
   LANG_ID,
+  TranslationService,
   UserPreferedLang,
 } from 'nest-utils';
 import {
@@ -26,8 +27,7 @@ type GqlBeautyCenterTreatmentCategorySelectedFields =
 export class TreatmentCategoryService {
   constructor(
     private readonly prisma: PrismaService,
-    @Inject(forwardRef(() => LANG_ID))
-    private readonly langId: UserPreferedLang,
+    private readonly translationService: TranslationService,
     @Inject(ErrorHandlingService)
     private readonly errorService: ErrorHandlingTypedService,
   ) {}
@@ -162,6 +162,6 @@ export class TreatmentCategoryService {
   }
 
   private getLang() {
-    return this.langId;
+    return this.translationService.getLangIdFromLangHeader();
   }
 }

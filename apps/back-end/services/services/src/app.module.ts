@@ -18,6 +18,7 @@ import { ErrorMessages } from '@utils';
 import { BeautyCenterModule } from './beauty-center/beauty-center.module';
 import { VehicleModule } from './vehicle/vehicle.module';
 import gql from 'graphql-tag';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
   imports: [

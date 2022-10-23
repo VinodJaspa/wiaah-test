@@ -1,9 +1,11 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { VehicleServiceCreatedEvent } from './vehicle-service-created.event';
+import { VehicleServiceCreatedEvent } from '../impl';
 
 @EventsHandler(VehicleServiceCreatedEvent)
 export class handleVehicleServiceCreatedEvent
   implements IEventHandler<VehicleServiceCreatedEvent>
 {
-  async handle(event: VehicleServiceCreatedEvent) {}
+  async handle(event: VehicleServiceCreatedEvent) {
+    console.log({ event });
+  }
 }

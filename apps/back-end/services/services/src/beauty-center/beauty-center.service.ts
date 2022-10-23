@@ -12,7 +12,7 @@ import {
   ErrorHandlingService,
   getTranslatedResource,
   GqlSelectedFields,
-  LANG_ID,
+  TranslationService,
   UserPreferedLang,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
@@ -39,7 +39,7 @@ export class BeautyCenterService {
     private readonly serviceOwnership: ServiceOwnershipService,
     private readonly treatmentCategoriesService: TreatmentCategoryService,
     private readonly prisma: PrismaService,
-    @Inject(LANG_ID) private readonly langId: UserPreferedLang,
+    private readonly translationService: TranslationService,
     @Inject(ErrorHandlingService)
     private readonly errorService: ErrorHandlingTypedService,
   ) {}
@@ -250,7 +250,7 @@ export class BeautyCenterService {
       : undefined;
   }
   private getLang(): UserPreferedLang {
-    return this.langId;
+    return this.translationService.getLangIdFromLangHeader();
   }
 
   private formatBeautyCenterServiceData(
