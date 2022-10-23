@@ -29,7 +29,8 @@
       "@service-ownership": ["src/service-ownership"],
       "@health-center": ["src/health-center"],
       "@utils": ["src/utils"],
-      "@beauty-center": ["src/beauty-center"]
+      "@beauty-center": ["src/beauty-center"],
+      "@vehicle-service": ["src/vehicle"]
     }
   }
 }

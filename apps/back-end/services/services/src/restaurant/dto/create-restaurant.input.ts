@@ -1,4 +1,5 @@
 import {
+  ServiceLocationInput,
   ServiceMetaInfoTranslationInput,
   ServicePolicyTranslatedInput,
   ServicePresentationInput,
@@ -15,6 +16,9 @@ export class CreateRestaurantInput {
 
   @Field(() => ServiceStatus, { nullable: true })
   status?: ServiceStatus;
+
+  @Field(() => ServiceLocationInput)
+  location: ServiceLocationInput;
 
   @Field(() => [ServicePresentationInput])
   @ServicePresentationsLength()

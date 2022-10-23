@@ -26,7 +26,6 @@ type GqlBeautyCenterTreatmentCategorySelectedFields =
 export class TreatmentCategoryService {
   constructor(
     private readonly prisma: PrismaService,
-
     @Inject(forwardRef(() => LANG_ID))
     private readonly langId: UserPreferedLang,
     @Inject(ErrorHandlingService)
@@ -54,6 +53,7 @@ export class TreatmentCategoryService {
 
   async getTreatmentCategories(
     ids?: string[],
+    selectedFields?: GqlBeautyCenterTreatmentCategorySelectedFields,
   ): Promise<BeautyCenterTreatmentCategory[]> {
     const filters: Prisma.BeautyCenterTreatmentCategoryWhereInput[] = [
       { status: 'active' },
@@ -72,6 +72,7 @@ export class TreatmentCategoryService {
         where: {
           AND: filters,
         },
+        select: this.getBeautyCenterTreatmentCategorySelection(selectedFields),
       },
     );
 

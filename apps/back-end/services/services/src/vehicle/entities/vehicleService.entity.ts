@@ -5,25 +5,12 @@ import {
   ServicePolicy,
   ServicePresentation,
 } from '@entities';
-import {
-  ObjectType,
-  Field,
-  Int,
-  ID,
-  Float,
-  registerEnumType,
-} from '@nestjs/graphql';
-import {
-  ServicePaymentMethods,
-  ServiceStatus,
-  ServiceTypeOfSeller,
-} from 'prismaClient';
-import { BeautyCenterTreatment } from './beauty-center-treatment.entity';
-
-registerEnumType(ServiceTypeOfSeller, { name: 'ServiceTypeOfSeller' });
+import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
+import { ServicePaymentMethods } from 'prismaClient';
+import { Vehicle } from './vehicle.entity';
 
 @ObjectType()
-export class BeautyCenter {
+export class VehicleService {
   @Field(() => ID)
   id: string;
 
@@ -45,17 +32,11 @@ export class BeautyCenter {
   @Field(() => Int)
   totalReviews: number;
 
-  @Field(() => ID)
-  beauty_center_typeId: string;
-
-  @Field(() => ServiceStatus)
-  status: ServiceStatus;
+  @Field(() => ServiceLocation)
+  location: ServiceLocation;
 
   @Field(() => String)
   title: string;
-
-  @Field(() => ServiceLocation)
-  location: ServiceLocation;
 
   @Field(() => [ServicePresentation])
   presentations: ServicePresentation[];
@@ -63,8 +44,8 @@ export class BeautyCenter {
   @Field(() => [ServicePolicy])
   policies: ServicePolicy[];
 
-  @Field(() => ServiceMetaInfo)
-  serviceMetaInfo: ServiceMetaInfo;
+  @Field(() => [ServiceMetaInfo])
+  serviceMetaInfo: ServiceMetaInfo[];
 
   @Field(() => [ServicePaymentMethods])
   payment_methods: ServicePaymentMethods[];
@@ -72,9 +53,6 @@ export class BeautyCenter {
   @Field(() => [ServiceCancelationPolicy])
   cancelationPolicies: ServiceCancelationPolicy[];
 
-  @Field(() => ServiceTypeOfSeller)
-  type_of_seller: ServiceTypeOfSeller;
-
-  @Field(() => [BeautyCenterTreatment])
-  treatments: BeautyCenterTreatment[];
+  @Field(() => [Vehicle])
+  vehicles: Vehicle;
 }

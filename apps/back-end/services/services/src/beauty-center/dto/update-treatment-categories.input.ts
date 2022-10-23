@@ -6,5 +6,5 @@ export class UpdateTreatmentCategoriesInput extends PartialType(
   CreateBeautyCenterTreatmentCategoryInput,
 ) {
   @Field(() => [ID])
-  ids: string;
+  ids: string[];
 }

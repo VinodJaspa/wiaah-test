@@ -1,8 +1,4 @@
-import {
-  ServicePresentationsLength,
-  TranslationsInput,
-  ServiceVatPercent,
-} from '@decorators';
+import { ServiceVatPercent } from '@decorators';
 import {
   ServiceCancelationPolicyInput,
   ServiceLocationInput,
@@ -10,38 +6,32 @@ import {
   ServicePaymentMethodInput,
   ServicePolicyTranslatedInput,
   ServicePresentationInput,
-  TranslationTextInput,
 } from '@dto';
-import { InputType, Field, Float, ID } from '@nestjs/graphql';
-import { ServiceTypeOfSeller } from 'prismaClient';
-import { CreateBeautyCenterTreatmentInput } from './create-beauty-center-treatment.input';
+import { InputType, Int, Field, Float } from '@nestjs/graphql';
+import { CreateVehicleInput } from './create-vehicle.input';
 
 @InputType()
-export class CreateBeautyCenterInput {
+export class CreateVehicleServiceInput {
   @Field(() => Float)
   @ServiceVatPercent()
   vat: number;
 
-  @Field(() => ID)
-  beauty_center_typeId: string;
+  @Field(() => Float)
+  rating: number;
 
-  @Field(() => [TranslationTextInput])
-  @TranslationsInput()
-  title: TranslationTextInput[];
+  @Field(() => Int)
+  totalReviews: number;
 
   @Field(() => ServiceLocationInput)
   location: ServiceLocationInput;
 
   @Field(() => [ServicePresentationInput])
-  @ServicePresentationsLength()
   presentations: ServicePresentationInput[];
 
   @Field(() => [ServicePolicyTranslatedInput])
-  @TranslationsInput()
   policies: ServicePolicyTranslatedInput[];
 
   @Field(() => [ServiceMetaInfoTranslationInput])
-  @TranslationsInput()
   serviceMetaInfo: ServiceMetaInfoTranslationInput[];
 
   @Field(() => [ServicePaymentMethodInput])
@@ -50,9 +40,6 @@ export class CreateBeautyCenterInput {
   @Field(() => [ServiceCancelationPolicyInput])
   cancelationPolicies: ServiceCancelationPolicyInput[];
 
-  @Field(() => ServiceTypeOfSeller)
-  type_of_seller: ServiceTypeOfSeller;
-
-  @Field(() => [CreateBeautyCenterTreatmentInput])
-  treatments: CreateBeautyCenterTreatmentInput[];
+  @Field(() => CreateVehicleInput)
+  vehicles: CreateVehicleInput;
 }

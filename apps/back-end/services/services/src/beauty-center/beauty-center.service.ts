@@ -126,7 +126,7 @@ export class BeautyCenterService {
     userId: string,
     selectedFields?: GqlBeautyCenterSelectedFields,
   ): Promise<BeautyCenter> {
-    await this.checkModifyPremissions(userId, serviceId);
+    await this.checkModifyPremissions(serviceId, userId);
 
     try {
       const service = await this.prisma.beautyCenterService.delete({
@@ -227,49 +227,47 @@ export class BeautyCenterService {
   private getBeautyCenterSelection(
     selectedFields: GqlBeautyCenterSelectedFields,
   ): Prisma.BeautyCenterServiceSelect {
-    return {
-      ...selectedFields,
-      serviceMetaInfo: selectedFields.serviceMetaInfo
-        ? {
-            select: {
-              langId: true,
-              value: selectedFields.serviceMetaInfo,
-            },
-          }
-        : false,
-      policies: selectedFields.policies
-        ? {
-            select: {
-              langId: true,
-              value: selectedFields.policies,
-            },
-          }
-        : false,
-    };
+    return selectedFields
+      ? {
+          ...selectedFields,
+          serviceMetaInfo: selectedFields.serviceMetaInfo
+            ? {
+                select: {
+                  langId: true,
+                  value: selectedFields.serviceMetaInfo,
+                },
+              }
+            : false,
+          policies: selectedFields.policies
+            ? {
+                select: {
+                  langId: true,
+                  value: selectedFields.policies,
+                },
+              }
+            : false,
+        }
+      : undefined;
   }
   private getLang(): UserPreferedLang {
     return this.langId;
   }
 
   private formatBeautyCenterServiceData(
-    input: Partial<PrismaBeautyCenterService>,
+    input?: Partial<PrismaBeautyCenterService>,
   ): BeautyCenter {
     return {
       ...input,
       policies: getTranslatedResource({
         langId: this.getLang(),
-        resource: input.policies,
+        resource: input?.policies,
       }),
       serviceMetaInfo: getTranslatedResource({
         langId: this.getLang(),
-        resource: input.serviceMetaInfo,
+        resource: input?.serviceMetaInfo,
       }),
-      title: getTranslatedResource({
-        langId: this.getLang(),
-        resource: input.title,
-      }),
-      treatments: Array.isArray(input.treatments)
-        ? input.treatments.map((v) => ({
+      treatments: Array.isArray(input?.treatments)
+        ? input?.treatments.map((v) => ({
             ...v,
             title: getTranslatedResource({
               langId: this.getLang(),

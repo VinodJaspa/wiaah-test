@@ -9,3 +9,4 @@ export * from './ServiceExtra.entity';
 export * from './ServicePropertyMeasurements.entity';
 export * from './ServiceWorkingHours.entity';
 export * from './TranslationText.entity';
+export * from './ServiceLocation.entity';

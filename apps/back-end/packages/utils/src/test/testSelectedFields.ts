@@ -1,4 +1,4 @@
-import { GqlSelectedFields } from "src/pipes";
+import { GqlSelectedFields } from "../";
 
 export function testSelectedFields<
   TFields extends GqlSelectedFields,

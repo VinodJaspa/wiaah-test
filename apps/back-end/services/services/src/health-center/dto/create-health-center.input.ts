@@ -2,6 +2,7 @@ import { SERVICE_MAX_VAT_PERCENT, SERVICE_MIN_VAT_PERCENT } from '@const';
 import { ServicePresentationsLength } from '@decorators';
 import {
   ServiceCancelationPolicyInput,
+  ServiceLocationInput,
   ServiceMetaInfoTranslationInput,
   ServicePolicyTranslatedInput,
   ServicePresentationInput,
@@ -24,6 +25,9 @@ export class CreateHealthCenterInput {
 
   @Field(() => [ServicePolicyTranslatedInput])
   policies: ServicePolicyTranslatedInput[];
+
+  @Field(() => ServiceLocationInput)
+  location: ServiceLocationInput;
 
   @Field(() => [ServiceMetaInfoTranslationInput])
   serviceMetaInfo: ServiceMetaInfoTranslationInput[];

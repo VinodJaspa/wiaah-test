@@ -1,4 +1,9 @@
-import { ServiceMetaInfo, ServicePolicy, ServicePresentation } from '@entities';
+import {
+  ServiceLocation,
+  ServiceMetaInfo,
+  ServicePolicy,
+  ServicePresentation,
+} from '@entities';
 import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
 import { ServicePaymentMethods, ServiceStatus } from 'prismaClient';
 import { RestaurantMenu } from './restaurant-menu.entity';
@@ -19,6 +24,9 @@ export class Restaurant {
 
   @Field(() => ServiceStatus)
   status: ServiceStatus;
+
+  @Field(() => ServiceLocation)
+  location: ServiceLocation;
 
   @Field(() => [ServicePresentation])
   presentations: ServicePresentation[];

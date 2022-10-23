@@ -1,5 +1,6 @@
 import {
   ServiceCancelationPolicy,
+  ServiceLocation,
   ServiceMetaInfo,
   ServicePolicy,
   ServicePresentation,
@@ -24,6 +25,9 @@ export class HealthCenter {
 
   @Field(() => Int)
   totalReviews: number;
+
+  @Field(() => ServiceLocation)
+  location: ServiceLocation;
 
   @Field(() => ServiceStatus)
   status: ServiceStatus;

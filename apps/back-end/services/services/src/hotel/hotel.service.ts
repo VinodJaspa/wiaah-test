@@ -16,6 +16,7 @@ export class HotelService {
   ): Promise<HotelServiceEntity> {
     const hotel = await this.prisma.hotelService.create({
       data: {
+        ...input,
         ownerId: userId,
         policies: input.policies,
         presentations: input.presentations,

@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { BeautyCenterService } from './beauty-center.service';
 import { BeautyCenter } from './entities/beauty-center.entity';
 import {
@@ -48,5 +48,15 @@ export class BeautyCenterResolver {
     fields: GqlBeautyCenterSelectedFields,
   ) {
     return this.beautyCenterService.getBeautyCenterById(id, user?.id, fields);
+  }
+
+  @Mutation(() => BeautyCenter)
+  @UseGuards(new GqlAuthorizationGuard(['seller']))
+  async deleteBeautyCenter(
+    @Args('id') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @GqlSelectedQueryFields() fields: GqlBeautyCenterSelectedFields,
+  ): Promise<BeautyCenter> {
+    return this.beautyCenterService.deleteBeautyCenter(id, user.id, fields);
   }
 }

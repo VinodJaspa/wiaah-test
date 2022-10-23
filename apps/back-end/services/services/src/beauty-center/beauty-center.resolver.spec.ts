@@ -4,6 +4,7 @@ import {
   ErrorHandlingService,
   LANG_ID,
   mockedUser,
+  secendMockedUser,
   testTranslation,
 } from 'nest-utils';
 import {
@@ -17,7 +18,7 @@ import {
 } from '@beauty-center';
 import { PrismaService } from 'prismaService';
 import { ObjectId } from 'mongodb';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { ServiceOwnershipModule } from '@service-ownership';
 
 describe('BeautyCenterResolver', () => {
@@ -282,7 +283,6 @@ describe('BeautyCenterResolver', () => {
             mockedUser,
             undefined,
           );
-          console.log({ service });
           return service[key];
         },
         updateInput[key],
@@ -312,5 +312,34 @@ describe('BeautyCenterResolver', () => {
         transaltionInput.title,
       );
     }
+  });
+
+  it('should delete beauty center only by its owner', async () => {
+    jest
+      .spyOn(service as any, 'validateCreateInput')
+      .mockImplementation(() => {});
+    const center = await createBeautyCenter();
+    expect(
+      await prisma.beautyCenterService.findUnique({
+        where: {
+          id: center.id,
+        },
+      }),
+    ).toBeDefined();
+
+    let authTested = false;
+    try {
+      await resolver.deleteBeautyCenter(center.id, secendMockedUser, undefined);
+    } catch (error) {
+      expect(error instanceof ForbiddenException).toBe(true);
+      authTested = true;
+    }
+
+    expect((await prisma.beautyCenterService.findMany()).length).toBe(1);
+    expect(authTested).toBe(true);
+
+    await resolver.deleteBeautyCenter(center.id, mockedUser, undefined);
+
+    expect((await prisma.beautyCenterService.findMany()).length).toBe(0);
   });
 });

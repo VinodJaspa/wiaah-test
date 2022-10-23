@@ -50,17 +50,19 @@ model ServiceOwnerShip {
 // ------------------------------------------------services------------------------------------------------------------
 
 model HotelService {
-  id              String                       @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId         String                       @unique @db.ObjectId
-  createdAt       DateTime                     @default(now())
-  updatedAt       DateTime                     @updatedAt
-  vat             Int                          @default(0)
-  status          ServiceStatus                @default(inActive)
-  presentations   ServicePresentation[]
-  policies        ServiceTranslationPolicies[]
-  serviceMetaInfo ServiceMetaTranslationInfo[]
-  rooms           HotelRoom[]
-  payment_methods ServicePaymentMethods[]
+  id                  String                       @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId             String                       @unique @db.ObjectId
+  createdAt           DateTime                     @default(now())
+  updatedAt           DateTime                     @updatedAt
+  vat                 Int                          @default(0)
+  status              ServiceStatus                @default(inActive)
+  presentations       ServicePresentation[]
+  policies            ServiceTranslationPolicies[]
+  serviceMetaInfo     ServiceMetaTranslationInfo[]
+  payment_methods     ServicePaymentMethods[]
+  cancelationPolicies ServiceCancelationPolicy[]
+  location            Location
+  rooms               HotelRoom[]
 }
 
 model RestaurantService {
@@ -74,8 +76,9 @@ model RestaurantService {
   policies               ServiceTranslationPolicies[]
   serviceMetaInfo        ServiceMetaTranslationInfo[]
   payment_methods        ServicePaymentMethods[]
-  menus                  RestaurantMenu[]
   cancelationPolicies    ServiceCancelationPolicy[]
+  menus                  RestaurantMenu[]
+  location               Location
   establishmentTypeId    String                       @db.ObjectId
   cuisinesTypeId         String                       @db.ObjectId
   setting_and_ambianceId String                       @db.ObjectId
@@ -91,7 +94,7 @@ model HealthCenterService {
   rating              Float                        @default(0)
   totalReviews        Int                          @default(0)
   status              ServiceStatus                @default(inActive)
-  name                TranslationText[]
+  location            Location
   presentations       ServicePresentation[]
   policies            ServiceTranslationPolicies[]
   serviceMetaInfo     ServiceMetaTranslationInfo[]
@@ -109,8 +112,8 @@ model BeautyCenterService {
   rating               Float                        @default(0)
   totalReviews         Int                          @default(0)
   beauty_center_typeId String                       @db.ObjectId
+  location             Location
   status               ServiceStatus                @default(inActive)
-  title                TranslationText[]
   presentations        ServicePresentation[]
   policies             ServiceTranslationPolicies[]
   serviceMetaInfo      ServiceMetaTranslationInfo[]
@@ -120,6 +123,31 @@ model BeautyCenterService {
   treatments           BeautyCenterTreatment[]
 }
 
+model VehicleService {
+  id                  String                       @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId             String                       @db.ObjectId
+  createdAt           DateTime                     @default(now())
+  updatedAt           DateTime                     @updatedAt
+  vat                 Float                        @default(0)
+  rating              Float                        @default(0)
+  totalReviews        Int                          @default(0)
+  location            Location
+  presentations       ServicePresentation[]
+  policies            ServiceTranslationPolicies[]
+  serviceMetaInfo     ServiceMetaTranslationInfo[]
+  payment_methods     ServicePaymentMethods[]
+  cancelationPolicies ServiceCancelationPolicy[]
+  vehicles            Vehicle[]
+}
+
+model VehicleType {
+  id String @id @db.ObjectId @default(auto()) @map("_id")
+  createdById String @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name TranslationText[]
+}
+
 model BeautyCenterTreatmentCategory {
   id          String                  @id @default(auto()) @map("_id") @db.ObjectId
   createdById String
@@ -127,15 +155,6 @@ model BeautyCenterTreatmentCategory {
   updatedAt   DateTime                @updatedAt
   title       TranslationText[]
   status      TreatmentCategoryStatus @default(active)
-}
-
-type BeautyCenterTreatment {
-  id                  String
-  treatmentCategoryId String
-  title               TranslationText[]
-  price               Float
-  duration            Int[]
-  discount            ServiceDiscount
 }
 
 model HealthCenterDoctor {
@@ -200,6 +219,7 @@ model HotelRoom {
   beds                Int
   bathrooms           Int
   num_of_rooms        Int
+  presentations       ServicePresentation[]
   dailyPrices         ServiceDailyPrices
   discount            ServiceDiscount
   includedServices    TranslationArrayText[]
@@ -208,6 +228,27 @@ model HotelRoom {
   extras              ServiceExtra[]
   includedAmenities   TranslationArrayText[]
   measurements        PropertyMeasurements
+}
+
+type Vehicle {
+  id                  String
+  typeId String
+  title               TranslationText[]
+  presentations       ServicePresentation[]
+  brand               String
+  model               String
+  price               Int
+  properties          VehicleProperties
+  cancelationPolicies ServiceCancelationPolicy[]
+}
+
+type VehicleProperties {
+  seats           Int
+  windows         Int
+  maxSpeedInKm    Int
+  lugaggeCapacity Int
+  gpsAvailiable   Boolean
+  airCondition    Boolean
 }
 
 type RestaurantMenu {
@@ -232,6 +273,15 @@ type HotelRoomMetaInfo {
 type HotelRoomTranslationMetaInfo {
   langId String
   value  HotelRoomMetaInfo
+}
+
+type BeautyCenterTreatment {
+  id                  String
+  treatmentCategoryId String
+  title               TranslationText[]
+  price               Float
+  duration            Int[]
+  discount            ServiceDiscount
 }
 
 type ServiceWeekDaysWorkingHours {
@@ -320,11 +370,6 @@ type ServicePresentation {
   src  String
 }
 
-enum ServicePresentationType {
-  img
-  vid
-}
-
 type TranslationText {
   langId String
   value  String
@@ -333,6 +378,20 @@ type TranslationText {
 type TranslationArrayText {
   langId String
   value  String[]
+}
+
+type Location {
+  address    String
+  country    String
+  state      String
+  lat        Float
+  lon        Float
+  postalCode Int
+}
+
+enum ServicePresentationType {
+  img
+  vid
 }
 
 enum ServiceType {
