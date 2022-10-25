@@ -19,6 +19,7 @@ import { BeautyCenterModule } from './beauty-center/beauty-center.module';
 import { VehicleModule } from './vehicle/vehicle.module';
 import gql from 'graphql-tag';
 import { CqrsModule } from '@nestjs/cqrs';
+import { ServicesSearchEngineModule } from './services-search-engine/services-search-engine.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { CqrsModule } from '@nestjs/cqrs';
     HealthCenterModule,
     BeautyCenterModule,
     VehicleModule,
+    ServicesSearchEngineModule,
   ],
 })
 export class AppModule {}

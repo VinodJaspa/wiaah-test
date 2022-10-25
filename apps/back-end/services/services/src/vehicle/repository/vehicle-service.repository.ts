@@ -9,13 +9,23 @@ import { ErrorHandlingTypedService } from '@utils';
 import {
   ErrorHandlingService,
   getTranslatedResource,
+  updateTranslationResource,
   UserPreferedLang,
 } from 'nest-utils';
-import { Prisma, VehicleService as PrismaVehicleService } from 'prismaClient';
+import {
+  Prisma,
+  VehicleService as PrismaVehicleService,
+  Vehicle as PrismaVehicle,
+} from 'prismaClient';
 import { PrismaService } from 'prismaService';
 import { v4 as uuid } from 'uuid';
 
-import { CreateVehicleServiceInput, UpdateVehicleInput } from '../dto';
+import {
+  CreateVehicleServiceInput,
+  UpdateVehicleInput,
+  UpdateVehicleServiceInput,
+} from '../dto';
+import { CreateVehicleInput } from '../dto/create-vehicle.input';
 import { VehicleService } from '../entities';
 import { GqlVehicleSelectedFields } from '../types';
 
@@ -69,25 +79,80 @@ export class VehicleServiceRepository {
   }
 
   async updateService(
-    input: UpdateVehicleInput,
+    input: UpdateVehicleServiceInput,
     userId: string,
     langId: UserPreferedLang,
     fields: GqlVehicleSelectedFields,
   ): Promise<VehicleService> {
     const { id, ...rest } = input;
-    const service = await this.checkCrudPremissions(userId, id, fields, langId);
+    const service = await this.checkCrudPremissions(
+      userId,
+      id,
+      { ...fields, serviceMetaInfo: true, policies: true },
+      langId,
+    );
     const updated = await this.prisma.vehicleService.update({
       where: {
         id: id,
       },
       data: {
         ...rest,
-        vehicles: rest.vehicles,
+        policies: updateTranslationResource({
+          originalObj: service.policies,
+          update: rest.policies,
+        }),
+        serviceMetaInfo: updateTranslationResource({
+          originalObj: service.serviceMetaInfo,
+          update: rest.serviceMetaInfo,
+        }),
+        vehicles: rest.vehicles
+          ? await this.updateVehicles(service.vehicles, rest.vehicles)
+          : undefined,
       },
       select: this.getVehicleSelectionFields(fields),
     });
 
     return this.formatVehicleServicedata(updated, langId);
+  }
+
+  async updateVehicles(
+    ogVehiclesData: PrismaVehicle[],
+    updatingData: UpdateVehicleInput[],
+    upsert: boolean = false,
+  ): Promise<PrismaVehicle[]> {
+    const existingVehicles: {
+      og: PrismaVehicle;
+      update: UpdateVehicleInput;
+    }[] = [];
+    const newVehicles: UpdateVehicleInput[] = [];
+    const unTouchedVehicles: PrismaVehicle[] = ogVehiclesData.filter(
+      (v) => existingVehicles.findIndex((eV) => eV.og.id === v.id) < 0,
+    );
+
+    updatingData.forEach((v) => {
+      const idx = ogVehiclesData.findIndex((ogV) => ogV.id === v.id);
+      if (idx > -1) {
+        existingVehicles.push({
+          og: ogVehiclesData[idx],
+          update: v,
+        });
+      } else {
+        newVehicles.push(v);
+      }
+    });
+
+    const updatedVehicles: PrismaVehicle[] = existingVehicles.map(
+      ({ og, update }) => ({
+        ...og,
+        ...update,
+        title: updateTranslationResource({
+          originalObj: og.title,
+          update: update.title,
+        }),
+      }),
+    );
+
+    return [...unTouchedVehicles, ...updatedVehicles];
   }
 
   async checkCrudPremissions(
@@ -100,6 +165,10 @@ export class VehicleServiceRepository {
       where: {
         id: serviceId,
       },
+      select: {
+        ...this.getVehicleSelectionFields(fields),
+        ownerId: true,
+      },
     });
     if (!service)
       throw new NotFoundException(
@@ -110,7 +179,7 @@ export class VehicleServiceRepository {
         this.errorHandlingService.getError((v) => v.forbiddenActionErr, langId),
       );
 
-    return service;
+    return service as PrismaVehicleService;
   }
 
   async getById(
@@ -192,10 +261,6 @@ export class VehicleServiceRepository {
           resource: v?.title,
         }),
       })),
-      title: getTranslatedResource({
-        langId: langId,
-        resource: input?.title,
-      }),
     } as VehicleService;
   }
 }

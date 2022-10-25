@@ -1,14 +1,16 @@
+import { DeepPartial } from "..//types";
+
 interface options<
-  TInputObj extends Object,
-  TUpdateObj extends Partial<TInputObj>
+  TInputObj extends Record<string, any>,
+  TUpdateObj extends DeepPartial<TInputObj>
 > {
   inputObj: TInputObj;
   updateObj: TUpdateObj;
 }
 
 export function updateDeepObject<
-  TInputObj extends Object,
-  TUpdateObj extends Partial<TInputObj>
+  TInputObj extends Record<string, any>,
+  TUpdateObj extends DeepPartial<TInputObj>
 >({ inputObj, updateObj }: options<TInputObj, TUpdateObj>): TInputObj {
   const mergedObj: TInputObj = {} as TInputObj;
   for (const key in inputObj) {
@@ -19,6 +21,7 @@ export function updateDeepObject<
         updateObj: updateObj[key],
       });
     } else if (typeof updateObj[key] !== "undefined") {
+      //@ts-ignore
       mergedObj[key] = updateObj[key];
     } else {
       mergedObj[key] = inputObj[key];

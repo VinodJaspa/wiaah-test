@@ -8,7 +8,7 @@ export type GqlSelectedFields<T extends Record<string, any> = any> = {
       ? true
       : T[key] extends Date
       ? true
-      : { select: GqlSelectedFields<ArrayElement<T[key]>> }
+      : { select: GqlSelectedFields<ArrayElement<T[key]>> } | true
     : true;
 };
 

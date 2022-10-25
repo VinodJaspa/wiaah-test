@@ -11,6 +11,9 @@ export class ServiceLocationInput {
   @Field(() => String)
   state: string;
 
+  @Field(() => String)
+  city: string;
+
   @Field(() => Float)
   lat: number;
 

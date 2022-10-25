@@ -131,7 +131,6 @@ model VehicleService {
   vat                 Float                        @default(0)
   rating              Float                        @default(0)
   totalReviews        Int                          @default(0)
-  title TranslationText[]
   location            Location
   presentations       ServicePresentation[]
   policies            ServiceTranslationPolicies[]
@@ -385,6 +384,7 @@ type Location {
   address    String
   country    String
   state      String
+  city       String
   lat        Float
   lon        Float
   postalCode Int

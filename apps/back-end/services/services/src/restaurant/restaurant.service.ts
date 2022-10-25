@@ -1,5 +1,6 @@
 import {
   ForbiddenException,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -26,18 +27,22 @@ import {
 } from 'prismaClient';
 import {
   DBErrorException,
+  ErrorHandlingService,
   getTranslatedResource,
+  mergeObjectArray,
   TranslationService,
   UserPreferedLang,
 } from 'nest-utils';
 import { ServiceOwnershipService } from '@service-ownership';
+import { ErrorHandlingTypedService } from '@utils';
 
 @Injectable()
 export class RestaurantService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly ownerShipService: ServiceOwnershipService,
-    private readonly translationService: TranslationService,
+    @Inject(ErrorHandlingService)
+    private readonly errorHandlingService: ErrorHandlingTypedService,
   ) {}
 
   async createRestaurant(
@@ -65,7 +70,7 @@ export class RestaurantService {
         ownerId: userId,
         serviceId: created.id,
       });
-      return this.formatRestaurant(created);
+      return this.formatRestaurant(created, langId);
     } catch (error) {
       throw new DBErrorException('error creating restaurant service');
     }
@@ -80,7 +85,7 @@ export class RestaurantService {
       input.id,
       userId,
     );
-    return this.formatRestaurant(restaurant);
+    return this.formatRestaurant(restaurant, langId);
   }
 
   async updateRestaurant(
@@ -89,7 +94,18 @@ export class RestaurantService {
     langId: UserPreferedLang = 'en',
   ): Promise<Restaurant> {
     const { id, ...rest } = input;
-    await this.checkCRUDPremissions(input.id, userId);
+    const service = await this.checkCRUDPremissions(input.id, userId);
+
+    const { all } = mergeObjectArray({
+      originalData: service.menus,
+      updateData: rest.menus.map((v) => ({
+        ...v,
+        id: uuid(),
+        dishs: v.dishs.map((v) => ({ ...v, id: uuid() })),
+      })),
+      compareKey: 'id',
+    });
+
     try {
       const res = await this.prisma.restaurantService.update({
         where: {
@@ -97,18 +113,11 @@ export class RestaurantService {
         },
         data: {
           ...rest,
-          menus: input.menus.map((v) => ({
-            id: uuid(),
-            dishs: v.dishs.map((v) => ({
-              id: uuid(),
-              ...v,
-            })),
-            name: v.name,
-          })),
+          menus: all,
         },
       });
 
-      return this.formatRestaurant(res);
+      return this.formatRestaurant(res, langId);
     } catch (error) {}
   }
 
@@ -125,7 +134,7 @@ export class RestaurantService {
         },
       });
       await this.ownerShipService.deleteServiceOwnerShipByServiceId(res.id);
-      return this.formatRestaurant(res);
+      return this.formatRestaurant(res, langId);
     } catch (error) {
       console.log(error);
     }
@@ -364,39 +373,38 @@ export class RestaurantService {
     };
   }
 
-  private formatRestaurant(input: PrismaRestaurantService): Restaurant {
+  private formatRestaurant(
+    input: PrismaRestaurantService,
+    langId: UserPreferedLang,
+  ): Restaurant {
     return {
       ...input,
       serviceMetaInfo: getTranslatedResource({
-        langId: this.getLang(),
+        langId: langId,
         resource: input.serviceMetaInfo,
       }),
       policies: getTranslatedResource({
-        langId: this.getLang(),
+        langId: langId,
         resource: input.policies,
       }),
       menus: input.menus.map((v) => ({
         ...v,
         name: getTranslatedResource({
-          langId: this.getLang(),
+          langId: langId,
           resource: v.name,
         }),
         dishs: v.dishs.map((v) => ({
           ...v,
           name: getTranslatedResource({
-            langId: this.getLang(),
+            langId: langId,
             resource: v.name,
           }),
           ingredients: getTranslatedResource({
-            langId: this.getLang(),
+            langId: langId,
             resource: v.ingredients,
           }),
         })),
       })),
     };
-  }
-
-  getLang() {
-    return this.translationService.getLangIdFromLangHeader();
   }
 }

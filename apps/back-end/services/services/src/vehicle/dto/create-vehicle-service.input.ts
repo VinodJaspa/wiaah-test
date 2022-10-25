@@ -1,6 +1,5 @@
 import { ServiceVatPercent } from '@decorators';
 import {
-  ServiceCancelationPolicyInput,
   ServiceLocationInput,
   ServiceMetaInfoTranslationInput,
   ServicePaymentMethodInput,

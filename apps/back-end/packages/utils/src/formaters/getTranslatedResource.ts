@@ -1,9 +1,14 @@
+export type TranslationResource<TResource> = {
+  langId: string;
+  value: TResource;
+};
+
 export function getTranslatedResource<TResource>({
   fallbackLangId = "fr",
   langId,
   resource,
 }: {
-  resource: { langId: string; value: TResource }[];
+  resource: TranslationResource<TResource>[];
   langId: string;
   fallbackLangId?: string;
 }): TResource {

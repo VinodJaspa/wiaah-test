@@ -3,11 +3,11 @@ import {
   CommandBase,
   GqlSelectedFields,
 } from 'nest-utils';
-import { UpdateVehicleInput } from '../../dto';
+import { UpdateVehicleServiceInput } from '../../dto';
 
 export class UpdateVehicleServiceCommand extends CommandBase<
   {
-    input: UpdateVehicleInput;
+    input: UpdateVehicleServiceInput;
     user: AuthorizationDecodedUser;
   },
   GqlSelectedFields

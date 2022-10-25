@@ -3,9 +3,8 @@ import "../styles/globals.css";
 import "ui/languages/i18n";
 import { CookiesProvider } from "react-cookie";
 import { RecoilRoot } from "recoil";
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { CoomingSoon, SeoWrapper } from "@components";
-import theme from "ui/themes/chakra_ui/theme";
 import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
 import { RoutingProvider } from "routing";
 import { useRouter } from "next/router";
@@ -14,6 +13,7 @@ import NextHead from "next/head";
 import { ReactPubsubClient, ReactPubsubProvider } from "react-pubsub";
 import { ReactSeoProvider } from "react-seo";
 import { ClearNextJSQuery } from "utils";
+
 const coomingSoon = false;
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -40,7 +40,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <ReactPubsubProvider client={new ReactPubsubClient()}>
             <ReactSeoProvider TagWrapper={NextHead}>
               <SeoWrapper>
-                <ChakraProvider theme={theme}>
+                <ChakraProvider>
                   <CookiesProvider>
                     <RecoilRoot>
                       {coomingSoon ? (

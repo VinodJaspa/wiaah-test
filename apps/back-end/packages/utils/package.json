@@ -4,6 +4,9 @@
   "main": "./dist/index.js",
   "types": "./index.ts",
   "license": "MIT",
+  "scripts": {
+    "test": "jest"
+  },
   "devDependencies": {
     "@types/jest": "^29.2.0",
     "config": "*",

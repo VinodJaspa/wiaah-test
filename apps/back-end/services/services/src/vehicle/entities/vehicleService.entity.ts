@@ -35,9 +35,6 @@ export class VehicleService {
   @Field(() => ServiceLocation)
   location: ServiceLocation;
 
-  @Field(() => String)
-  title: string;
-
   @Field(() => [ServicePresentation])
   presentations: ServicePresentation[];
 
