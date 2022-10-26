@@ -2,12 +2,19 @@ import { HotelServiceEntity } from '@entities';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   DBErrorException,
+  ExcludeFieldsFromObject,
   getTranslatedResource,
   TranslationService,
+  UserPreferedLang,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { CreateHotelInput } from './dto/create-hotel.input';
-import { HotelService as PrismaHotelService, HotelRoom } from 'prismaClient';
+import {
+  HotelService as PrismaHotelService,
+  HotelRoom,
+  Prisma,
+} from 'prismaClient';
+import { GqlHotelSelectedFields } from './types/selectedFields';
 
 @Injectable()
 export class HotelService {
@@ -22,8 +29,9 @@ export class HotelService {
   async createHotelService(
     input: CreateHotelInput,
     userId: string,
-    lang: string,
+    langId: UserPreferedLang,
   ): Promise<HotelServiceEntity> {
+    console.log(JSON.stringify(input, null, 2));
     const hotel = await this.prisma.hotelService.create({
       data: {
         ...input,
@@ -45,27 +53,38 @@ export class HotelService {
       },
     });
 
-    return this.formatHotelData({ ...hotel, rooms: hotel.rooms || [] });
+    return this.formatHotelData({ ...hotel, rooms: hotel.rooms || [] }, langId);
   }
 
   async getHotelWithRoomsById(
     hotelId: string,
     userId: string,
-    lang: string,
+    langId: UserPreferedLang,
+    selectedFields: GqlHotelSelectedFields,
   ): Promise<HotelServiceEntity> {
     await this.checkViewHotelPremissions(hotelId, userId);
 
     try {
+      const fields = this.getSelectionFields(selectedFields);
+
       const hotel = await this.prisma.hotelService.findUnique({
         where: {
           id: hotelId,
         },
+        select: fields,
         rejectOnNotFound() {
           throw new NotFoundException('hotel with the given id was not found');
         },
       });
 
-      return this.formatHotelData(Object.assign(hotel, { rooms: [] }));
+      const formated = this.formatHotelData(
+        hotel as PrismaHotelService & {
+          rooms: HotelRoom[];
+        },
+        langId,
+      );
+
+      return formated;
     } catch (error) {
       const notFoundError = error instanceof NotFoundException;
       if (notFoundError) throw error;
@@ -77,47 +96,94 @@ export class HotelService {
 
   async checkViewHotelPremissions(hotelId: string, userId: string) {}
 
+  getSelectionFields(
+    fields: GqlHotelSelectedFields,
+  ): Prisma.HotelServiceSelect {
+    return fields
+      ? {
+          ...fields,
+          serviceMetaInfo: {
+            select: {
+              langId: true,
+              value: fields.serviceMetaInfo,
+            },
+          },
+          rooms: fields.rooms
+            ? {
+                select: {
+                  ...ExcludeFieldsFromObject(fields.rooms.select, [
+                    'description',
+                    'title',
+                  ]),
+                  roomMetaInfo:
+                    fields.rooms.select.description || fields.rooms.select.title
+                      ? {
+                          select: {
+                            langId: true,
+                            value: {
+                              select: {
+                                description: fields.rooms.select?.description,
+                                title: fields.rooms.select?.title,
+                              },
+                            },
+                          },
+                        }
+                      : false,
+                },
+              }
+            : false,
+          policies: {
+            select: {
+              langId: true,
+              value: fields.policies,
+            },
+          },
+        }
+      : undefined;
+  }
+
   formatHotelData(
     hotel: PrismaHotelService & { rooms: HotelRoom[] },
+    langId: UserPreferedLang,
   ): HotelServiceEntity {
     return {
       ...hotel,
       policies: getTranslatedResource({
-        langId: this.getLangId(),
+        langId,
         resource: hotel.policies,
       }),
       serviceMetaInfo: getTranslatedResource({
-        langId: this.getLangId(),
+        langId,
         resource: hotel.serviceMetaInfo,
       }),
-      rooms: hotel.rooms.map((v) => ({
+      rooms: hotel.rooms?.map((v) => ({
         ...v,
-        includedAmenites: getTranslatedResource({
+        includedAmenities: getTranslatedResource({
           resource: v.includedAmenities,
-          langId: this.getLangId(),
+          langId,
         }),
         includedServices: getTranslatedResource({
           resource: v.includedServices,
-          langId: this.getLangId(),
+          langId,
         }),
         ...getTranslatedResource({
           resource: v.roomMetaInfo,
-          langId: this.getLangId(),
+          langId,
         }),
-        cancelationPolicices: v.cancelationPolicies,
+        cancelationPolicies: v.cancelationPolicies,
         hotelId: hotel.id,
-        popularAmenities: v.popularAmenities.map((v) => ({
+        popularAmenities: v.popularAmenities?.map((v) => ({
           value: v.value,
           label: getTranslatedResource({
             resource: v.label,
-            langId: this.getLangId(),
+            langId,
           }),
         })),
-        extras: v.extras.map((v) => ({
+        extras: v.extras?.map((v) => ({
           cost: v.cost,
           name: getTranslatedResource({
             resource: v.name,
-            langId: this.getLangId(),
+            langId,
           }),
         })),
       })),

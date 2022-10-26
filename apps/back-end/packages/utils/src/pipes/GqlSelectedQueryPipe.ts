@@ -2,19 +2,27 @@ import { ArgumentMetadata, Injectable, PipeTransform } from "@nestjs/common";
 import { ArrayElement } from "@nestjs/graphql";
 import { GraphQLResolveInfo, FieldNode, SelectionNode } from "graphql";
 
-export type GqlSelectedFields<T extends Record<string, any> = any> = {
+export type GqlSelectedFields<
+  T extends Record<string, any> = any,
+  SelectField extends boolean = true
+> = {
   [key in keyof T]: T[key] extends object
     ? T[key] extends Array<string | number | boolean>
       ? true
       : T[key] extends Date
       ? true
-      : { select: GqlSelectedFields<ArrayElement<T[key]>> } | true
+      : SelectField extends true
+      ? { select: GqlSelectedFields<ArrayElement<T[key]>> }
+      : GqlSelectedFields<ArrayElement<T[key]>, false>
     : true;
 };
 
 @Injectable()
 export class GqlSelectedQueryPipe implements PipeTransform {
-  constructor(private readonly rootMethodName?: string) {}
+  constructor(
+    private readonly rootMethodName?: string,
+    private selectField: boolean = true
+  ) {}
   transform(
     value: GraphQLResolveInfo,
     metadata: ArgumentMetadata
@@ -28,8 +36,10 @@ export class GqlSelectedQueryPipe implements PipeTransform {
     );
   }
 
-  private formatField(nodes: readonly FieldNode[]): GqlSelectedFields {
-    const fields: GqlSelectedFields = {};
+  private formatField(
+    nodes: readonly FieldNode[]
+  ): GqlSelectedFields<any, typeof this.selectField> {
+    const fields: GqlSelectedFields<any, typeof this.selectField> = {};
 
     for (const node of nodes) {
       const subFields: readonly SelectionNode[] =
@@ -37,8 +47,11 @@ export class GqlSelectedQueryPipe implements PipeTransform {
       const hasSubFields = Array.isArray(subFields) && subFields.length > 0;
 
       const value = hasSubFields
-        ? { select: this.formatField(subFields || []) }
+        ? this.selectField
+          ? { select: this.formatField(subFields || []) }
+          : this.formatField(subFields || [])
         : true;
+
       fields[node.name.value] = value;
     }
 

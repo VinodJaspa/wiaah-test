@@ -45,6 +45,10 @@ export class RestaurantService {
     private readonly errorHandlingService: ErrorHandlingTypedService,
   ) {}
 
+  getRestaurants() {
+    return this.prisma.restaurantService.findMany();
+  }
+
   async createRestaurant(
     input: CreateRestaurantInput,
     userId: string,

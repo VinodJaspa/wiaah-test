@@ -38,8 +38,8 @@ export class HotelRoomInput {
   @Field(() => Boolean)
   dailyPrice: boolean;
 
-  @Field(() => ServiceDailyPricesInput)
-  dailyPrices: ServiceDailyPricesInput;
+  @Field(() => ServiceDailyPricesInput, { nullable: true })
+  dailyPrices?: ServiceDailyPricesInput;
 
   @Field(() => ServiceDiscountInput)
   discount: ServiceDiscountInput;

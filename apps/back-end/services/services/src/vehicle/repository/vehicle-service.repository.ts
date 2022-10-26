@@ -88,6 +88,7 @@ export class VehicleServiceRepository {
     const service = await this.checkCrudPremissions(
       userId,
       id,
+      //@ts-ignore
       { ...fields, serviceMetaInfo: true, policies: true },
       langId,
     );
