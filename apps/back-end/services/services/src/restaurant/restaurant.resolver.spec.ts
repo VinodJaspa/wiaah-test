@@ -20,6 +20,15 @@ describe('RestaurantResolver', () => {
     menus: [],
     michelin_guide_stars: 1,
     payment_methods: ['cash', 'credit_card'],
+    location: {
+      address: 'address',
+      city: 'city',
+      country: 'country',
+      lat: 15,
+      lon: 13,
+      postalCode: 13245,
+      state: 'state',
+    },
     policies: [
       {
         langId: 'es',

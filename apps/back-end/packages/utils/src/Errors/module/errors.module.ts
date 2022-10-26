@@ -1,11 +1,5 @@
-import {
-  DynamicModule,
-  forwardRef,
-  Inject,
-  Injectable,
-  Module,
-} from "@nestjs/common";
-import { REQUEST } from "@nestjs/core";
+import { DynamicModule, Inject, Injectable, Module } from "@nestjs/common";
+import { UserPreferedLang } from "../../";
 
 export type ErrorTranslationMessage = {
   en: string;
@@ -44,18 +38,15 @@ export class ErrorHandlingModule {
 export class ErrorHandlingService<TMessages> {
   constructor(
     @Inject("options")
-    private readonly options: ErrorHandlingModuleRegisterOptions<TMessages>,
-
-    @Inject(forwardRef(() => REQUEST)) private readonly request: any
+    private readonly options: ErrorHandlingModuleRegisterOptions<TMessages>
   ) {}
-  private lang = this.request?.req?.headers["accept-language"] as string;
-
   getError(
     fn: (messages: TMessages) => ErrorTranslationMessage,
+    langId: UserPreferedLang = "en",
     err?: any
   ): string {
     const resource = fn(this.options.messages);
-    const message = resource[this.lang];
+    const message: any = resource[langId];
     if (typeof message !== "string") return Object.entries(resource).at(0)[1];
     return message;
   }

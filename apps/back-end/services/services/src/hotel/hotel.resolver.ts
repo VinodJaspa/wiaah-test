@@ -5,10 +5,12 @@ import {
   GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  GqlSelectedQueryFields,
 } from 'nest-utils';
-import { HotelServiceEntity } from '@entities';
+import { HotelRoom, HotelServiceEntity } from '@entities';
 import { CreateHotelInput, GetHotelServiceArgs } from './dto';
 import { UseGuards } from '@nestjs/common';
+import { GqlHotelSelectedFields } from './types/selectedFields';
 
 @Resolver(() => HotelServiceEntity)
 export class HotelResolver {
@@ -19,8 +21,14 @@ export class HotelResolver {
     @Args('getHotelServiceArgs') args: GetHotelServiceArgs,
     @GetLang() lang: string,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @GqlSelectedQueryFields() fields: GqlHotelSelectedFields,
   ): Promise<HotelServiceEntity> {
-    return this.hotelService.getHotelWithRoomsById(args.id, user.id, lang);
+    return this.hotelService.getHotelWithRoomsById(
+      args.id,
+      user.id,
+      lang,
+      fields,
+    );
   }
 
   @Mutation(() => HotelServiceEntity)

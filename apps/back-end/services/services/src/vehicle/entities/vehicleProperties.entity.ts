@@ -12,7 +12,7 @@ export class VehicleProperties {
   maxSpeedInKm: number;
 
   @Field(() => Int)
-  lugaggueCapacity: number;
+  lugaggeCapacity: number;
 
   @Field(() => Boolean)
   gpsAvailable: boolean;

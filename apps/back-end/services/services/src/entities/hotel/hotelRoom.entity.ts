@@ -38,26 +38,26 @@ export class HotelRoom {
   @Field(() => Boolean)
   dailyPrice: boolean;
 
-  @Field(() => ServiceDailyPrices)
-  dailyPrices: ServiceDailyPrices;
+  @Field(() => ServiceDailyPrices, { nullable: true })
+  dailyPrices?: ServiceDailyPrices;
 
   @Field(() => ServiceDiscount)
   discount: ServiceDiscount;
 
-  @Field(() => [String])
+  @Field(() => [String], { nullable: true })
   includedServices: string[];
 
-  @Field(() => [ServiceAmenity])
+  @Field(() => [ServiceAmenity], { nullable: true })
   popularAmenities: ServiceAmenity[];
 
   @Field(() => [ServiceCancelationPolicy])
-  cancelationPolicices: ServiceCancelationPolicy[];
+  cancelationPolicies: ServiceCancelationPolicy[];
 
-  @Field(() => [ServiceExtra])
+  @Field(() => [ServiceExtra], { nullable: true })
   extras: ServiceExtra[];
 
-  @Field(() => [String])
-  includedAmenites: string[];
+  @Field(() => [String], { nullable: true })
+  includedAmenities: string[];
 
   @Field(() => Int)
   beds: number;

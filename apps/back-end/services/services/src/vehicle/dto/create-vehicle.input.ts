@@ -1,5 +1,9 @@
 import { ServicePresentationsLength, TranslationsInput } from '@decorators';
-import { ServicePresentationInput, TranslationTextInput } from '@dto';
+import {
+  ServiceCancelationPolicyInput,
+  ServicePresentationInput,
+  TranslationTextInput,
+} from '@dto';
 import { Field, Float, ID, InputType, Int } from '@nestjs/graphql';
 
 @InputType()
@@ -17,7 +21,7 @@ export class CreateVehiclePropertiesInput {
   lugaggeCapacity: number;
 
   @Field(() => Boolean)
-  gpsAvailiable: boolean;
+  gpsAvailable: boolean;
 
   @Field(() => Boolean)
   airCondition: boolean;
@@ -36,6 +40,9 @@ export class CreateVehicleInput {
   @ServicePresentationsLength()
   presentations: ServicePresentationInput[];
 
+  @Field(() => [ServiceCancelationPolicyInput])
+  cancelationPolicies: ServiceCancelationPolicyInput[];
+
   @Field(() => String)
   brand: string;
 
@@ -45,6 +52,6 @@ export class CreateVehicleInput {
   @Field(() => Float)
   price: number;
 
-  @Field(() => [CreateVehiclePropertiesInput])
-  properties: CreateVehiclePropertiesInput[];
+  @Field(() => CreateVehiclePropertiesInput)
+  properties: CreateVehiclePropertiesInput;
 }

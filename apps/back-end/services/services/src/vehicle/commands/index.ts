@@ -1,4 +1,5 @@
-export * from './create-vehicle-service';
-import { CreateVehicleServiceHandler } from './create-vehicle-service';
+export * from './impl';
 
-export const vehicleCommandsHandlers = [CreateVehicleServiceHandler];
+import { CreateVehicleServiceHandler } from './handlers';
+
+export const VehicleCommandsHandlers = [CreateVehicleServiceHandler];

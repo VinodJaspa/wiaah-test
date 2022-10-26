@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
 import {
   VehicleService,
   CreateVehicleServiceInput,
@@ -8,9 +8,13 @@ import {
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   AuthorizationDecodedUser,
+  GetLang,
   GqlCurrentUser,
+  GqlSelectedFields,
   GqlSelectedQueryFields,
+  UserPreferedLang,
 } from 'nest-utils';
+import { GetAllVehiclesQuery, GetVehicleServiceByIdQuery } from './queries';
 
 @Resolver(() => VehicleService)
 export class VehicleResolver {
@@ -26,9 +30,31 @@ export class VehicleResolver {
     @GqlCurrentUser()
     user: AuthorizationDecodedUser,
     @GqlSelectedQueryFields() fields: GqlVehicleSelectedFields,
+    @GetLang() langId: UserPreferedLang,
   ) {
     return this.commandBus.execute<CreateVehicleServiceCommand, VehicleService>(
-      new CreateVehicleServiceCommand(createVehicleInput, user, fields),
+      new CreateVehicleServiceCommand(createVehicleInput, user, fields, langId),
+    );
+  }
+
+  @Query(() => [VehicleService])
+  getAllVehicles(
+    @GqlSelectedQueryFields() fields: GqlVehicleSelectedFields,
+    @GetLang() langId: UserPreferedLang,
+  ) {
+    return this.queryBus.execute<any, VehicleService[]>(
+      new GetAllVehiclesQuery(langId, fields),
+    );
+  }
+
+  @Query(() => VehicleService)
+  getVehicleServicebyId(
+    @Args('id', { type: () => String }) id: string,
+    @GqlSelectedQueryFields() selectedFields: GqlSelectedFields,
+    @GetLang() langId: UserPreferedLang,
+  ) {
+    return this.queryBus.execute<any, VehicleService>(
+      new GetVehicleServiceByIdQuery({ langId, selectedFields, vehicleId: id }),
     );
   }
 }

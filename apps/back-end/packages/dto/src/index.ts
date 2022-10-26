@@ -14,3 +14,4 @@ export * from "./Billing";
 export * from "./Vouchers";
 export * from "./Partners";
 export * from "./Social";
+export * from "./Base";

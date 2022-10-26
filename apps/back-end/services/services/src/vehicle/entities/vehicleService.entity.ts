@@ -35,17 +35,14 @@ export class VehicleService {
   @Field(() => ServiceLocation)
   location: ServiceLocation;
 
-  @Field(() => String)
-  title: string;
-
   @Field(() => [ServicePresentation])
   presentations: ServicePresentation[];
 
   @Field(() => [ServicePolicy])
   policies: ServicePolicy[];
 
-  @Field(() => [ServiceMetaInfo])
-  serviceMetaInfo: ServiceMetaInfo[];
+  @Field(() => ServiceMetaInfo)
+  serviceMetaInfo: ServiceMetaInfo;
 
   @Field(() => [ServicePaymentMethods])
   payment_methods: ServicePaymentMethods[];
@@ -54,5 +51,5 @@ export class VehicleService {
   cancelationPolicies: ServiceCancelationPolicy[];
 
   @Field(() => [Vehicle])
-  vehicles: Vehicle;
+  vehicles: Vehicle[];
 }

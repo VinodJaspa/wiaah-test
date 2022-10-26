@@ -141,11 +141,11 @@ model VehicleService {
 }
 
 model VehicleType {
-  id String @id @db.ObjectId @default(auto()) @map("_id")
-  createdById String @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name TranslationText[]
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  createdById String            @db.ObjectId
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  name        TranslationText[]
 }
 
 model BeautyCenterTreatmentCategory {
@@ -219,8 +219,11 @@ model HotelRoom {
   beds                Int
   bathrooms           Int
   num_of_rooms        Int
+  rating              Float                          @default(0)
+  reviews             Int                            @default(0)
+  ratingStars         Float                          @default(0)
   presentations       ServicePresentation[]
-  dailyPrices         ServiceDailyPrices
+  dailyPrices         ServiceDailyPrices?
   discount            ServiceDiscount
   includedServices    TranslationArrayText[]
   popularAmenities    ServiceAmenity[]
@@ -232,7 +235,7 @@ model HotelRoom {
 
 type Vehicle {
   id                  String
-  typeId String
+  typeId              String
   title               TranslationText[]
   presentations       ServicePresentation[]
   brand               String
@@ -247,7 +250,7 @@ type VehicleProperties {
   windows         Int
   maxSpeedInKm    Int
   lugaggeCapacity Int
-  gpsAvailiable   Boolean
+  gpsAvailable    Boolean
   airCondition    Boolean
 }
 
@@ -384,6 +387,7 @@ type Location {
   address    String
   country    String
   state      String
+  city       String
   lat        Float
   lon        Float
   postalCode Int

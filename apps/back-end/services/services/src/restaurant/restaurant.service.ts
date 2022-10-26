@@ -1,5 +1,6 @@
 import {
   ForbiddenException,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -26,17 +27,27 @@ import {
 } from 'prismaClient';
 import {
   DBErrorException,
+  ErrorHandlingService,
   getTranslatedResource,
+  mergeObjectArray,
+  TranslationService,
   UserPreferedLang,
 } from 'nest-utils';
 import { ServiceOwnershipService } from '@service-ownership';
+import { ErrorHandlingTypedService } from '@utils';
 
 @Injectable()
 export class RestaurantService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly ownerShipService: ServiceOwnershipService,
+    @Inject(ErrorHandlingService)
+    private readonly errorHandlingService: ErrorHandlingTypedService,
   ) {}
+
+  getRestaurants() {
+    return this.prisma.restaurantService.findMany();
+  }
 
   async createRestaurant(
     input: CreateRestaurantInput,
@@ -87,7 +98,18 @@ export class RestaurantService {
     langId: UserPreferedLang = 'en',
   ): Promise<Restaurant> {
     const { id, ...rest } = input;
-    await this.checkCRUDPremissions(input.id, userId);
+    const service = await this.checkCRUDPremissions(input.id, userId);
+
+    const { all } = mergeObjectArray({
+      originalData: service.menus,
+      updateData: rest.menus.map((v) => ({
+        ...v,
+        id: uuid(),
+        dishs: v.dishs.map((v) => ({ ...v, id: uuid() })),
+      })),
+      compareKey: 'id',
+    });
+
     try {
       const res = await this.prisma.restaurantService.update({
         where: {
@@ -95,14 +117,7 @@ export class RestaurantService {
         },
         data: {
           ...rest,
-          menus: input.menus.map((v) => ({
-            id: uuid(),
-            dishs: v.dishs.map((v) => ({
-              id: uuid(),
-              ...v,
-            })),
-            name: v.name,
-          })),
+          menus: all,
         },
       });
 
@@ -369,27 +384,27 @@ export class RestaurantService {
     return {
       ...input,
       serviceMetaInfo: getTranslatedResource({
-        langId,
+        langId: langId,
         resource: input.serviceMetaInfo,
       }),
       policies: getTranslatedResource({
-        langId,
+        langId: langId,
         resource: input.policies,
       }),
       menus: input.menus.map((v) => ({
         ...v,
         name: getTranslatedResource({
-          langId,
+          langId: langId,
           resource: v.name,
         }),
         dishs: v.dishs.map((v) => ({
           ...v,
           name: getTranslatedResource({
-            langId,
+            langId: langId,
             resource: v.name,
           }),
           ingredients: getTranslatedResource({
-            langId,
+            langId: langId,
             resource: v.ingredients,
           }),
         })),

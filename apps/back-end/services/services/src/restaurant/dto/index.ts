@@ -6,3 +6,4 @@ export * from './delete-restaurant.input';
 export * from './create-restaurant-cuisines-type.input';
 export * from './create-restaurant-establishment-type';
 export * from './create-setting-and-ambiance.input';
+export * from './search-filtered-restaurant.input';

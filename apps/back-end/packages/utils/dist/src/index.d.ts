@@ -17,3 +17,4 @@ export * from "./constants";
 export * from "./formaters";
 export * from "./translation";
 export * from "./pipes";
+export * from "./CQRS";

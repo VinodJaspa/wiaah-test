@@ -6,19 +6,32 @@ import {
   UpdateRestaurantInput,
   DeleteRestaurantInput,
   GetRestaurantInput,
+  SearchFilteredRestaurantInput,
 } from '@restaurant';
 import {
   AuthorizationDecodedUser,
   GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  GqlSelectedQueryFields,
   UserPreferedLang,
 } from 'nest-utils';
 import { UseGuards } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
+import { SearchFilteredRestaurantQuery } from './queries';
+import { GqlRestaurantAggregationSelectedFields } from './types/gqlSelectedFields';
 
 @Resolver(() => Restaurant)
 export class RestaurantResolver {
-  constructor(private readonly restaurantService: RestaurantService) {}
+  constructor(
+    private readonly restaurantService: RestaurantService,
+    private readonly queryBus: QueryBus,
+  ) {}
+
+  @Query(() => [Restaurant])
+  getRestaurants() {
+    return this.restaurantService.getRestaurants();
+  }
 
   @Query(() => Restaurant)
   getRestaurant(
@@ -65,5 +78,21 @@ export class RestaurantResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.restaurantService.activateRestaurant(id, user.id);
+  }
+
+  @Query(() => [Restaurant])
+  searchFilteredRestaurant(
+    @Args('filtersInput') args: SearchFilteredRestaurantInput,
+    @GetLang() langId: UserPreferedLang,
+    @GqlSelectedQueryFields({ selectField: false })
+    selectedFields: GqlRestaurantAggregationSelectedFields,
+  ): Promise<Restaurant[]> {
+    return this.queryBus.execute<SearchFilteredRestaurantQuery, Restaurant[]>(
+      new SearchFilteredRestaurantQuery({
+        langId,
+        selectedFields,
+        ...args,
+      }),
+    );
   }
 }

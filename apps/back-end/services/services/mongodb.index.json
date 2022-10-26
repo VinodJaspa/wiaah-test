@@ -1,0 +1,30 @@
+{
+  "mappings": {
+    "dynamic": false,
+    "fields": {
+      "location": {
+        "dynamic": false,
+        "fields": {
+          "serviceMetaInfo": {
+            "dynamic": false,
+            "type": "embeddedDocuments",
+            "fields": {
+              "value": {
+                "type": "embeddedDocuments",
+                "dynamic": false,
+                "fields": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
