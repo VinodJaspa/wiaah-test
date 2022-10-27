@@ -3,7 +3,7 @@ import {
   VehicleService,
   CreateVehicleServiceInput,
   CreateVehicleServiceCommand,
-  GqlVehicleSelectedFields,
+  GqlVehicleServiceSelectedFields,
 } from '@vehicle-service';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
@@ -29,7 +29,7 @@ export class VehicleResolver {
     createVehicleInput: CreateVehicleServiceInput,
     @GqlCurrentUser()
     user: AuthorizationDecodedUser,
-    @GqlSelectedQueryFields() fields: GqlVehicleSelectedFields,
+    @GqlSelectedQueryFields() fields: GqlVehicleServiceSelectedFields,
     @GetLang() langId: UserPreferedLang,
   ) {
     return this.commandBus.execute<CreateVehicleServiceCommand, VehicleService>(
@@ -39,7 +39,7 @@ export class VehicleResolver {
 
   @Query(() => [VehicleService])
   getAllVehicles(
-    @GqlSelectedQueryFields() fields: GqlVehicleSelectedFields,
+    @GqlSelectedQueryFields() fields: GqlVehicleServiceSelectedFields,
     @GetLang() langId: UserPreferedLang,
   ) {
     return this.queryBus.execute<any, VehicleService[]>(

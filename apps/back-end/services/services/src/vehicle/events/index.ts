@@ -1,4 +1,10 @@
 export * from './impl';
-import { handleVehicleServiceCreatedEvent } from './handlers';
+import {
+  handleVehicleServiceCreatedEvent,
+  VehicleCreatedEventHandler,
+} from './handlers';
 
-export const VehicleEventsHandlers = [handleVehicleServiceCreatedEvent];
+export const VehicleEventsHandlers = [
+  handleVehicleServiceCreatedEvent,
+  VehicleCreatedEventHandler,
+];

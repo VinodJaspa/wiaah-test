@@ -8,6 +8,7 @@ import { ServiceOwnershipService } from '@service-ownership';
 import { ErrorHandlingTypedService } from '@utils';
 import {
   ErrorHandlingService,
+  ExtractPagination,
   getTranslatedResource,
   updateTranslationResource,
   UserPreferedLang,
@@ -22,12 +23,16 @@ import { v4 as uuid } from 'uuid';
 
 import {
   CreateVehicleServiceInput,
+  SearchFilteredVehicleInput,
   UpdateVehicleInput,
   UpdateVehicleServiceInput,
 } from '../dto';
-import { CreateVehicleInput } from '../dto/create-vehicle.input';
-import { VehicleService } from '../entities';
-import { GqlVehicleSelectedFields } from '../types';
+import { Vehicle, VehicleService } from '../entities';
+import {
+  GqlVehicleSelectedFields,
+  GqlVehicleServiceSelectedFields,
+} from '../types';
+import { VehicleServiceElasticRepository } from './vehicle-service.elastic.repository';
 
 @Injectable()
 export class VehicleServiceRepository {
@@ -36,12 +41,111 @@ export class VehicleServiceRepository {
     private readonly serviceOwnership: ServiceOwnershipService,
     @Inject(ErrorHandlingService)
     private readonly errorHandlingService: ErrorHandlingTypedService,
+    private readonly elasticRepo: VehicleServiceElasticRepository,
   ) {}
+
+  async searchVehiclesByLocationQuery(
+    input: SearchFilteredVehicleInput,
+    langId: UserPreferedLang,
+    selectedFields: GqlVehicleSelectedFields,
+  ): Promise<Vehicle[]> {
+    const hasQuery = input?.query?.length > 0;
+
+    const ids = hasQuery
+      ? await this.elasticRepo.searchVehicleIdsByQuery(input.query)
+      : [];
+
+    const filters: Prisma.VehicleWhereInput[] = [];
+
+    if (Array.isArray(ids) && ids.length > 0) {
+      filters.push({
+        id: {
+          in: ids,
+        },
+      });
+    }
+
+    if (input.passengerNum) {
+      // filters.push({});
+    }
+
+    if (input.seatsNum) {
+      filters.push({
+        // properties:{
+        //   seats:input.seatsNum
+        // }
+      });
+    }
+
+    if (input.maxPrice && input.minPrice) {
+      filters.push({
+        price: {
+          lte: input.maxPrice,
+          gte: input.minPrice,
+        },
+      });
+    } else if (input.maxPrice) {
+      filters.push({
+        price: {
+          lte: input.maxPrice,
+        },
+      });
+    } else if (input.minPrice) {
+      filters.push({
+        price: {
+          gte: input.minPrice,
+        },
+      });
+    }
+
+    if (input.vehicleTypeId) {
+      filters.push({
+        typeId: input.vehicleTypeId,
+      });
+    }
+
+    if (input.rating) {
+      filters.push({
+        rating: {
+          gte: input.rating,
+        },
+      });
+    }
+
+    if (input.securityDeposit) {
+      filters.push({
+        securityDeposit: {
+          lte: input.securityDeposit,
+        },
+      });
+    }
+
+    if (typeof input.freeCancelation === 'boolean') {
+      filters.push({
+        cancelationPolicies: {
+          some: {
+            cost: input.freeCancelation ? 0 : undefined,
+          },
+        },
+      });
+    }
+
+    const { skip, take } = ExtractPagination(input.pagination);
+    const vehicles = await this.prisma.vehicle.findMany({
+      where: {
+        AND: filters,
+      },
+      skip,
+      take,
+    });
+
+    return vehicles.map((v) => this.formatVehicleData(v, langId));
+  }
 
   async create(
     input: CreateVehicleServiceInput,
     userId: string,
-    selectedFields?: GqlVehicleSelectedFields,
+    selectedFields?: GqlVehicleServiceSelectedFields,
     langId?: UserPreferedLang,
   ): Promise<VehicleService> {
     await this.checkCreatePremissions(userId);
@@ -50,23 +154,26 @@ export class VehicleServiceRepository {
       data: {
         ...input,
         ownerId: userId,
-        vehicles: input.vehicles.map((v) => ({
-          id: uuid(),
-          brand: v.brand,
-          cancelationPolicies: v.cancelationPolicies,
-          model: v.model,
-          presentations: v.presentations,
-          price: v.price,
-          properties: {
-            ...v.properties,
+        vehicles: {
+          createMany: {
+            data: input.vehicles.map((v) => ({
+              id: uuid(),
+              brand: v.brand,
+              cancelationPolicies: v.cancelationPolicies,
+              model: v.model,
+              presentations: v.presentations,
+              price: v.price,
+              properties: {
+                ...v.properties,
+              },
+              title: v.title,
+              typeId: v.typeId,
+            })),
           },
-          title: v.title,
-          typeId: v.typeId,
-        })),
+        },
       },
-      select: {
-        ...this.getVehicleSelectionFields(selectedFields),
-        id: true,
+      include: {
+        vehicles: !!selectedFields.vehicles,
       },
     });
 
@@ -82,7 +189,7 @@ export class VehicleServiceRepository {
     input: UpdateVehicleServiceInput,
     userId: string,
     langId: UserPreferedLang,
-    fields: GqlVehicleSelectedFields,
+    fields: GqlVehicleServiceSelectedFields,
   ): Promise<VehicleService> {
     const { id, ...rest } = input;
     const service = await this.checkCrudPremissions(
@@ -106,9 +213,6 @@ export class VehicleServiceRepository {
           originalObj: service.serviceMetaInfo,
           update: rest.serviceMetaInfo,
         }),
-        vehicles: rest.vehicles
-          ? await this.updateVehicles(service.vehicles, rest.vehicles)
-          : undefined,
       },
       select: this.getVehicleSelectionFields(fields),
     });
@@ -159,7 +263,7 @@ export class VehicleServiceRepository {
   async checkCrudPremissions(
     userId: string,
     serviceId: string,
-    fields: GqlVehicleSelectedFields,
+    fields: GqlVehicleServiceSelectedFields,
     langId: UserPreferedLang,
   ): Promise<PrismaVehicleService> {
     const service = await this.prisma.vehicleService.findUnique({
@@ -186,7 +290,7 @@ export class VehicleServiceRepository {
   async getById(
     id: string,
     langId?: UserPreferedLang,
-    selectedFields?: GqlVehicleSelectedFields,
+    selectedFields?: GqlVehicleServiceSelectedFields,
   ) {
     const vehicle = await this.prisma.vehicleService.findUnique({
       where: {
@@ -218,7 +322,7 @@ export class VehicleServiceRepository {
   }
 
   getVehicleSelectionFields(
-    fields: GqlVehicleSelectedFields,
+    fields: GqlVehicleServiceSelectedFields,
   ): Prisma.VehicleServiceSelect {
     return {
       ...fields,
@@ -255,13 +359,16 @@ export class VehicleServiceRepository {
         langId: langId,
         resource: input?.serviceMetaInfo,
       }),
-      vehicles: input?.vehicles?.map((v) => ({
-        ...v,
-        title: getTranslatedResource({
-          langId: langId,
-          resource: v?.title,
-        }),
-      })),
     } as VehicleService;
+  }
+
+  formatVehicleData(input: PrismaVehicle, langId: UserPreferedLang): Vehicle {
+    return {
+      ...input,
+      title: getTranslatedResource({
+        langId,
+        resource: input.title,
+      }),
+    };
   }
 }
