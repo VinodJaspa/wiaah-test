@@ -7,7 +7,7 @@ import {
   GqlCurrentUser,
   GqlSelectedQueryFields,
 } from 'nest-utils';
-import { HotelRoom, HotelServiceEntity } from '@entities';
+import { HotelServiceEntity } from '@entities';
 import { CreateHotelInput, GetHotelServiceArgs } from './dto';
 import { UseGuards } from '@nestjs/common';
 import { GqlHotelSelectedFields } from './types/selectedFields';
@@ -15,6 +15,11 @@ import { GqlHotelSelectedFields } from './types/selectedFields';
 @Resolver(() => HotelServiceEntity)
 export class HotelResolver {
   constructor(private readonly hotelService: HotelService) {}
+
+  @Query(() => [HotelServiceEntity])
+  getHotels() {
+    return this.hotelService.getHotels();
+  }
 
   @Query(() => HotelServiceEntity)
   getHotelService(

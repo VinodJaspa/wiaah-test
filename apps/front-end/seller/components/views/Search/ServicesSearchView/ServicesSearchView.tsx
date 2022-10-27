@@ -3,14 +3,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { ServicesType } from "types";
 import {
-  Button,
   CalenderIcon,
   ClockIcon,
   DateAndTimeInput,
   DateFormInput,
   DateFormInputProps,
   DateInput,
-  Divider,
   FilterSelectInput,
   FilterSelectInputProps,
   FormikInput,
@@ -27,15 +25,12 @@ import {
   ResturantFindTableFilterStepper,
   ResturantFindTableFilterStepperHeader,
   ResturantReplacableTimeComponent,
-  SearchIcon,
   SearchInput,
   SearchInputProps,
   SearchServiceCard,
   SearchServiceCardProps,
   ServiceBookingStepper,
-  ServicesIcon,
   ServicesSearchBadgeList,
-  Stack,
   Stepper,
   StepperContent,
   StepperHeader,
@@ -564,7 +559,6 @@ export const ServicesSearchView: React.FC = () => {
           };
 
           const filtersPerLine = getFiltersPerLine(filtersLen);
-
           return (
             <Form className="flex flex-col gap-7">
               <ServicesSearchBadgeList
@@ -620,18 +614,21 @@ export const ServicesSearchView: React.FC = () => {
                     )}
                   </MenuList>
                 </Menu>
-                {mapArray(filters, (filter, i) => (
-                  <FormikInput<FilterSelectInputProps>
-                    key={i}
-                    label={filter.label}
-                    options={filter.options}
-                    placeholder={filter.placeholder}
-                    value={values[filter.valueKey]}
-                    onChange={(v) => setFieldValue(filter.valueKey, v)}
-                    as={FilterSelectInput}
-                    name={filter.valueKey}
-                  />
-                ))}
+                {mapArray(filters, (filter, i) => {
+                  console.log({ filter });
+                  return (
+                    <FormikInput<FilterSelectInputProps>
+                      key={i}
+                      label={filter.label}
+                      options={filter.options}
+                      placeholder={filter.placeholder}
+                      value={values[filter.valueKey]}
+                      onChange={(v) => setFieldValue(filter.valueKey, v)}
+                      as={FilterSelectInput}
+                      name={filter.valueKey}
+                    />
+                  );
+                })}
                 <FormikInput<FilterSelectInputProps>
                   name="rating"
                   label={t("Rating")}

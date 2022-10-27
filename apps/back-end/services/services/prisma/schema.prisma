@@ -79,6 +79,8 @@ model RestaurantService {
   cancelationPolicies    ServiceCancelationPolicy[]
   menus                  RestaurantMenu[]
   location               Location
+  lowest_price           Float                        @default(0)
+  highest_price          Float                        @default(0)
   establishmentTypeId    String                       @db.ObjectId
   cuisinesTypeId         String                       @db.ObjectId
   setting_and_ambianceId String                       @db.ObjectId
@@ -161,6 +163,7 @@ model HealthCenterDoctor {
   id                String                              @id @default(auto()) @map("_id") @db.ObjectId
   healthCenter      HealthCenterService                 @relation(fields: [healthCenterId], references: [id])
   speciality        HealthCenterSpecialty               @relation(fields: [specialityId], references: [id])
+  speakingLanguages HealthCenterDoctorSpeakingLanguage[]
   healthCenterId    String                              @db.ObjectId
   specialityId      String                              @db.ObjectId
   rating            Float                               @default(0)
@@ -433,4 +436,11 @@ enum ServiceTypeOfSeller {
 enum TreatmentCategoryStatus {
   active
   inActive
+}
+
+enum HealthCenterDoctorSpeakingLanguage {
+  EN
+  FR
+  GE
+  GD
 }

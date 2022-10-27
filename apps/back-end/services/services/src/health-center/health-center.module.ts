@@ -3,9 +3,26 @@ import { HealthCenterService } from './health-center.service';
 import { HealthCenterResolver } from './health-center.resolver';
 import { PrismaService } from 'prismaService';
 import { ServiceOwnershipModule } from '@service-ownership';
+import { CqrsModule } from '@nestjs/cqrs';
+import { HealthCenterQueryHandlers } from './queries';
+import {
+  HealthCenterElasticRepository,
+  HealthCenterRepository,
+} from './repository';
+import { healthCenterEventHandlers } from './commands';
+import { HealthCenterSagas } from './sagas';
 
 @Module({
-  imports: [ServiceOwnershipModule],
-  providers: [HealthCenterResolver, HealthCenterService, PrismaService],
+  imports: [ServiceOwnershipModule, CqrsModule],
+  providers: [
+    HealthCenterResolver,
+    HealthCenterService,
+    PrismaService,
+    HealthCenterRepository,
+    HealthCenterElasticRepository,
+    ...HealthCenterSagas,
+    ...healthCenterEventHandlers,
+    ...HealthCenterQueryHandlers,
+  ],
 })
 export class HealthCenterModule {}

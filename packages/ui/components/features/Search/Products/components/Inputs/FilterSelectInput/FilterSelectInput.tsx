@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  InputGroup,
-  InputLeftElement,
-  Select,
-  SelectOption,
-  SpeedClockIcon,
-  Divider,
-} from "ui";
+import { InputGroup, Select, SelectOption } from "ui";
 import { mapArray } from "utils";
 
 export interface FilterSelectInputProps {

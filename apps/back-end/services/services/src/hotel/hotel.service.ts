@@ -8,20 +8,33 @@ import {
   UserPreferedLang,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
-import { CreateHotelInput } from './dto/create-hotel.input';
+import { EventBus } from '@nestjs/cqrs';
 import {
   HotelService as PrismaHotelService,
   HotelRoom,
   Prisma,
 } from 'prismaClient';
+
+import { CreateHotelInput } from './dto/create-hotel.input';
 import { GqlHotelSelectedFields } from './types/selectedFields';
+import { HotelCreatedEvent, HotelRoomCreatedEvent } from './events';
+import { ElasticsearchService } from '@nestjs/elasticsearch';
 
 @Injectable()
 export class HotelService {
   constructor(
     private readonly prisma: PrismaService,
+    private readonly elasticSearch: ElasticsearchService,
     private readonly translationService: TranslationService,
+    private readonly eventBus: EventBus,
   ) {}
+
+  async getHotels() {
+    const services = await this.prisma.hotelService.findMany({
+      include: { rooms: true },
+    });
+    return services.map((v) => this.formatHotelData(v, 'en'));
+  }
 
   getLangId() {
     return this.translationService.getLangIdFromLangHeader();
@@ -31,7 +44,6 @@ export class HotelService {
     userId: string,
     langId: UserPreferedLang,
   ): Promise<HotelServiceEntity> {
-    console.log(JSON.stringify(input, null, 2));
     const hotel = await this.prisma.hotelService.create({
       data: {
         ...input,
@@ -52,7 +64,15 @@ export class HotelService {
         rooms: input.rooms.length > 0,
       },
     });
-
+    this.eventBus.publish(new HotelCreatedEvent(input));
+    hotel.rooms.forEach((v) => {
+      this.eventBus.publish(
+        new HotelRoomCreatedEvent({
+          roomId: v.id,
+          hotelLocation: hotel.location,
+        }),
+      );
+    });
     return this.formatHotelData({ ...hotel, rooms: hotel.rooms || [] }, langId);
   }
 

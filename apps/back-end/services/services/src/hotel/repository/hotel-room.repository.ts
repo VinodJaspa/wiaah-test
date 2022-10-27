@@ -9,81 +9,79 @@ import {
 import { PrismaService } from 'prismaService';
 import { HotelRoom as PrismaHotelRoom, Prisma } from 'prismaClient';
 import { SearchHotelRoomLocationInput } from '../dto';
-import { GqlHotelRoomAggregationSelectedFields } from '../types/selectedFields';
+import {
+  GqlHotelRoomAggregationSelectedFields,
+  GqlHotelRoomSelectedFields,
+} from '../types/selectedFields';
+import { HotelRoomElasticRepository } from './hotel-room.elastic.repository';
 
 @Injectable()
 export class HotelRoomRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly hotelRoomElasticRepo: HotelRoomElasticRepository,
+  ) {}
 
   async getFilteredRoomsWithLocationSearch(
-    { pagination, query, ...filters }: SearchHotelRoomLocationInput,
+    { pagination, query, ..._filters }: SearchHotelRoomLocationInput,
     selectedFields: GqlHotelRoomAggregationSelectedFields,
     langId: UserPreferedLang,
   ): Promise<HotelRoom[]> {
-    const matches: Record<string, any> = {};
+    const ids = await this.hotelRoomElasticRepo.getRoomsIdByLocationQuery(
+      query,
+    );
+    if (ids.length < 1) return [];
 
-    if (filters.num_of_beds) {
-      matches['beds'] = filters.num_of_beds;
+    const filters: Prisma.HotelRoomWhereInput[] = [];
+
+    if (_filters.rating) {
+      filters.push({
+        rating: {
+          gte: _filters.rating,
+        },
+      });
     }
 
-    if (filters.num_of_rooms) {
-      matches['num_of_rooms'] = filters.num_of_rooms;
+    if (_filters.maxPrice && _filters.minPrice) {
+      filters.push({
+        pricePerNight: {
+          gte: _filters.minPrice,
+          lte: _filters.maxPrice,
+        },
+      });
+    } else if (_filters.maxPrice) {
+      filters.push({
+        pricePerNight: {
+          lte: _filters.maxPrice,
+        },
+      });
+    } else if (_filters.minPrice) {
+      filters.push({
+        pricePerNight: {
+          gte: _filters.minPrice,
+        },
+      });
     }
 
-    if (filters.minPrice && filters.maxPrice) {
-      matches['pricePerNight'] = {
-        $gte: filters.minPrice,
-        $lte: filters.maxPrice,
-      };
-    } else if (filters.minPrice) {
-      matches['pricePerNight'] = {
-        $gte: filters.minPrice,
-      };
-    } else if (filters.maxPrice) {
-      matches['pricePerNight'] = {
-        $lte: filters.maxPrice,
-      };
-    }
-
-    if (filters.rating) {
-      matches['rating'] = {
-        $gte: filters.rating,
-      };
-    }
-
-    const fields = this.getSelectionFields(selectedFields);
-
-    const rooms = (await this.prisma.hotelRoom.aggregateRaw({
-      pipeline: [
-        {
-          $search: {
-            index: 'location',
-            text: {
-              query,
-              path: {
-                wildcard: '*',
-              },
-              fuzzy: {
-                maxEdits: 2,
-              },
+    const rooms = await this.prisma.hotelRoom.findMany({
+      where: {
+        AND: [
+          {
+            id: {
+              in: ids,
             },
           },
-        },
-        {
-          $match: matches,
-        },
-        {
-          $project: {
-            ...fields,
-          } as any,
-        },
-      ],
-    })) as any;
+          ...filters,
+        ],
+      },
+    });
 
     return rooms.map((v) => this.formatHotelRoom(v, langId));
   }
 
-  getSelectionFields(fields: GqlHotelRoomAggregationSelectedFields) {
+  getSelectionFields(
+    fields: GqlHotelRoomSelectedFields,
+  ): Prisma.HotelRoomSelect {
     return fields
       ? {
           ...fields,
@@ -91,34 +89,17 @@ export class HotelRoomRepository {
           roomMetaInfo:
             fields.description || fields.title
               ? {
-                  langId: true,
-                  value: {
-                    description: fields.description,
-                    title: fields.title,
+                  select: {
+                    langId: true,
+                    value: {
+                      select: {
+                        description: fields.description,
+                        title: fields.title,
+                      },
+                    },
                   },
                 }
               : undefined,
-
-          createdAt: fields.createdAt
-            ? {
-                $dateToString: { date: '$createdAt' },
-              }
-            : undefined,
-          updatedAt: fields.updatedAt
-            ? {
-                $dateToString: { date: '$updatedAt' },
-              }
-            : undefined,
-          id: fields.id
-            ? {
-                $toString: '$_id',
-              }
-            : undefined,
-          hotelId: fields.hotelId
-            ? {
-                $toString: 'hotelId',
-              }
-            : undefined,
         }
       : undefined;
   }
