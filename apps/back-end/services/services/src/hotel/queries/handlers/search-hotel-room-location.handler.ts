@@ -1,4 +1,4 @@
-import { HotelRoom, HotelServiceEntity } from '@entities';
+import { HotelRoom } from '@entities';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { HotelRoomRepository } from '../../repository';
 import { SearchHotelRoomQuery } from '../impl';

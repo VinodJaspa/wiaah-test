@@ -17,11 +17,7 @@ import { HealthCenterModule } from './health-center/health-center.module';
 import { ErrorMessages } from '@utils';
 import { BeautyCenterModule } from './beauty-center/beauty-center.module';
 import { VehicleModule } from './vehicle/vehicle.module';
-import { ServicesSearchEngineModule } from './services-search-engine/services-search-engine.module';
-import {
-  ElasticsearchModule,
-  ElasticsearchService,
-} from '@nestjs/elasticsearch';
+import { ElasticsearchModule } from '@nestjs/elasticsearch';
 
 @Global()
 @Module({
@@ -61,7 +57,6 @@ class GlobalElasticsearchModule {}
     HealthCenterModule,
     BeautyCenterModule,
     VehicleModule,
-    ServicesSearchEngineModule,
   ],
 })
 export class AppModule {}

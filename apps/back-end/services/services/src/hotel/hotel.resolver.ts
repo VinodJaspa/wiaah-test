@@ -39,9 +39,9 @@ export class HotelResolver {
   @Mutation(() => HotelServiceEntity)
   @UseGuards(new GqlAuthorizationGuard(['seller']))
   createHotelService(
-    @GetLang() lang: string,
     @Args('createHotelServiceArgs') args: CreateHotelInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @GetLang() lang: string,
   ) {
     return this.hotelService.createHotelService(args, user.id, lang);
   }

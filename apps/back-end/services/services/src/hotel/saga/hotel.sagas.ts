@@ -21,11 +21,12 @@ export class HotelSaga {
   hotelRoomCreated = (events$: Observable<any>): Observable<void> => {
     return events$.pipe(
       ofType(HotelRoomCreatedEvent),
-      map((event) => {
+      map(({ args: { hotel, room, userId } }) => {
+        console.log({ hotel: hotel.id, room: room.id, userId });
         this.commandBus.execute<CreateElasticHotelRoomCommand, void>(
           new CreateElasticHotelRoomCommand({
-            location: event.input.hotelLocation,
-            roomId: event.input.roomId,
+            location: hotel.location,
+            roomId: room.id,
           }),
         );
       }),

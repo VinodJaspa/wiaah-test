@@ -4,7 +4,6 @@ import {
   DBErrorException,
   ExcludeFieldsFromObject,
   getTranslatedResource,
-  TranslationService,
   UserPreferedLang,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
@@ -18,14 +17,11 @@ import {
 import { CreateHotelInput } from './dto/create-hotel.input';
 import { GqlHotelSelectedFields } from './types/selectedFields';
 import { HotelCreatedEvent, HotelRoomCreatedEvent } from './events';
-import { ElasticsearchService } from '@nestjs/elasticsearch';
 
 @Injectable()
 export class HotelService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly elasticSearch: ElasticsearchService,
-    private readonly translationService: TranslationService,
     private readonly eventBus: EventBus,
   ) {}
 
@@ -36,9 +32,6 @@ export class HotelService {
     return services.map((v) => this.formatHotelData(v, 'en'));
   }
 
-  getLangId() {
-    return this.translationService.getLangIdFromLangHeader();
-  }
   async createHotelService(
     input: CreateHotelInput,
     userId: string,
@@ -65,12 +58,9 @@ export class HotelService {
       },
     });
     this.eventBus.publish(new HotelCreatedEvent(input));
-    hotel.rooms.forEach((v) => {
+    hotel.rooms?.forEach((v) => {
       this.eventBus.publish(
-        new HotelRoomCreatedEvent({
-          roomId: v.id,
-          hotelLocation: hotel.location,
-        }),
+        new HotelRoomCreatedEvent({ hotel, room: v, userId }),
       );
     });
     return this.formatHotelData({ ...hotel, rooms: hotel.rooms || [] }, langId);

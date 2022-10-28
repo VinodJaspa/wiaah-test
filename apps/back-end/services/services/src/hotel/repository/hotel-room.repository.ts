@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import {
   ExcludeFieldsFromObject,
   getTranslatedResource,
-  GqlPaginationInput,
   UserPreferedLang,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
@@ -27,12 +26,21 @@ export class HotelRoomRepository {
     selectedFields: GqlHotelRoomAggregationSelectedFields,
     langId: UserPreferedLang,
   ): Promise<HotelRoom[]> {
+    const hasQuery = query?.length > 0;
     const ids = await this.hotelRoomElasticRepo.getRoomsIdByLocationQuery(
       query,
     );
-    if (ids.length < 1) return [];
+    console.log({ ids, query });
 
     const filters: Prisma.HotelRoomWhereInput[] = [];
+
+    if (hasQuery) {
+      filters.push({
+        id: {
+          in: ids || [],
+        },
+      });
+    }
 
     if (_filters.rating) {
       filters.push({
@@ -65,17 +73,16 @@ export class HotelRoomRepository {
 
     const rooms = await this.prisma.hotelRoom.findMany({
       where: {
-        AND: [
-          {
-            id: {
-              in: ids,
-            },
-          },
-          ...filters,
-        ],
+        AND: filters,
+      },
+      include: {
+        hotel: !!selectedFields?.hotel,
       },
     });
 
+    console.log(
+      JSON.stringify({ filters, rooms: rooms.map((v) => v.id) }, null, 2),
+    );
     return rooms.map((v) => this.formatHotelRoom(v, langId));
   }
 

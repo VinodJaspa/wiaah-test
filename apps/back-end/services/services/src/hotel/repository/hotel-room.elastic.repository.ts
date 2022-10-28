@@ -9,11 +9,12 @@ export class HotelRoomElasticRepository {
   constructor(private readonly elasticSearch: ElasticsearchService) {}
 
   async createRoomIndex(input: { id: string; location: ServiceLocation }) {
+    console.log('elastic', { id: input.id, location: input.location });
     await this.elasticSearch.index({
       index: HOTEL_ROOM_ELASTIC_SEARCH_INDEX,
       document: {
-        mongoId: input.id,
         ...input.location,
+        mongoId: input.id,
       },
     });
   }
@@ -29,7 +30,12 @@ export class HotelRoomElasticRepository {
           fuzziness: 'AUTO',
         },
       },
+
+      allow_no_indices: true,
+      explain: true,
     });
+
+    console.log(JSON.stringify({ query, res }, null, 2));
 
     return res.hits.hits.map((v) => {
       return v._source.mongoId;

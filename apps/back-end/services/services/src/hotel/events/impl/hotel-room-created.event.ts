@@ -1,10 +1,7 @@
-import { ServiceLocationInput } from '@dto';
+import { HotelService, HotelRoom } from 'prismaClient';
 
 export class HotelRoomCreatedEvent {
   constructor(
-    public readonly input: {
-      roomId: string;
-      hotelLocation: ServiceLocationInput;
-    },
+    public args: { room: HotelRoom; hotel: HotelService; userId: string },
   ) {}
 }
