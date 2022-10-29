@@ -1,18 +1,37 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
-import { SearchService } from './search.service';
-import { Search } from './entities/search.entity';
-import { SearchInput } from 'nest-dto';
+import { CommandBus } from '@nestjs/cqrs';
+import {
+  AuthorizationDecodedUser,
+  GetLang,
+  GqlCurrentUser,
+  GqlSelectedFields,
+  GqlSelectedQueryFields,
+  UserPreferedLang,
+} from 'nest-utils';
 
-@Resolver(() => Search)
+import { Localization } from './entities';
+import { GetLocalizationInput } from './dto';
+import { SearchLocalizationCommand } from './commands';
+
+@Resolver(() => Localization)
 export class SearchResolver {
-  constructor(private readonly searchService: SearchService) {}
+  constructor(private readonly commandBus: CommandBus) {}
 
-  @Query(() => Search)
-  searchWiaah(@Args('searchInputs') inputs: SearchInput): { filter: string } {
-    const formatedInputs: Record<string, any>[] = Object.entries(inputs).map(
-      ([key, value]) => ({ [key]: value }),
+  @Query(() => Localization)
+  getLocalisation(
+    @Args('getLocalisationInput') input: GetLocalizationInput,
+    @GetLang() langId: UserPreferedLang,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @GqlSelectedQueryFields() fields: GqlSelectedFields,
+  ) {
+    console.log('test');
+    return this.commandBus.execute<SearchLocalizationCommand>(
+      new SearchLocalizationCommand({
+        ...input,
+        langId,
+        userId: user.id,
+        selectedFields: fields,
+      }),
     );
-    console.log('formatedInputs', formatedInputs);
-    return { filter: JSON.stringify(formatedInputs) };
   }
 }

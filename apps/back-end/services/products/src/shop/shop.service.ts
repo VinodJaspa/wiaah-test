@@ -1,14 +1,20 @@
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { AuthorizationDecodedUser, createRadiusCoordsByKm } from 'nest-utils';
 import { PrismaService } from 'prismaService';
+import { EventBus } from '@nestjs/cqrs';
+
+import { Shop } from './entities';
 import { CreateShopInput } from './dto/create-shop.input';
 import { FilterShopsInput } from './dto/filter-shops.input';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
-import { Shop } from '@shop';
+import { ShopCreatedEvent, ShopCreationFailedEvent } from './events';
 
 @Injectable()
 export class ShopService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly eventBus: EventBus,
+  ) {}
 
   async CreateShop(
     createShopInput: CreateShopInput,
@@ -25,9 +31,14 @@ export class ShopService {
       const createdShop = await this.prisma.shop.create({
         data: { ...createShopInput, ownerId: user.id, verified: false },
       });
-
+      this.eventBus.publish<ShopCreatedEvent>(
+        new ShopCreatedEvent(user.id, createdShop),
+      );
       return createdShop;
     } catch (error) {
+      this.eventBus.publish<ShopCreationFailedEvent>(
+        new ShopCreationFailedEvent(error),
+      );
       throw new Error(error);
     }
   }

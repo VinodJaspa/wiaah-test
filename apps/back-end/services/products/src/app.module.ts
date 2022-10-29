@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { ProductsModule } from './products/products.module';
 import { CategoryModule } from './category/category.module';
 import { FilterModule } from './filter/filter.module';
@@ -8,12 +8,29 @@ import {
 } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { getUserFromRequest } from 'nest-utils';
-import { Search } from './products/entities/search.entity';
 import { ShopModule } from '@shop';
+import { ShippingDetailsModule } from '@shipping-details';
+import { ShippingRulesModule } from '@shipping-rules';
+import { ShippingSettingsModule } from '@shipping-settings';
+import { ElasticsearchModule } from '@nestjs/elasticsearch';
+
+import { Search } from './products/entities/search.entity';
 import { PrismaService } from './Prisma.service';
-// import { ShippingDetailsModule } from '@shipping-details';
-// import { ShippingRulesModule } from '@shipping-rules';
-// import { ShippingSettingsModule } from '@shipping-settings';
+
+@Global()
+@Module({
+  imports: [
+    ElasticsearchModule.register({
+      node: process.env.ELASTIC_NODE,
+      auth: {
+        username: process.env.ELASTIC_USERNAME,
+        password: process.env.ELASTIC_PASSWORD,
+      },
+    }),
+  ],
+  exports: [ElasticsearchModule],
+})
+class ElasticGlobalModule {}
 
 @Module({
   imports: [
@@ -33,11 +50,11 @@ import { PrismaService } from './Prisma.service';
     ProductsModule,
     CategoryModule,
     FilterModule,
+    ElasticGlobalModule,
     // ShippingSettingsModule,
     // ShippingDetailsModule,
     // ShippingRulesModule,
   ],
   controllers: [],
-  providers: [PrismaService],
 })
 export class AppModule {}

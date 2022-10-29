@@ -87,7 +87,7 @@ export class ShippingRulesService {
       new GetUserShopMetaDataMessage({ accountId: userId }),
     );
 
-    if (!success) throw new Error(error);
+    if (!success) throw new Error(error.message);
 
     const { shopId } = data;
 

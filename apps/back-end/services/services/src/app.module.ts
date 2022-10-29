@@ -18,6 +18,7 @@ import { ErrorMessages } from '@utils';
 import { BeautyCenterModule } from './beauty-center/beauty-center.module';
 import { VehicleModule } from './vehicle/vehicle.module';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
+import { ServiceModule } from './service/service.module';
 
 @Global()
 @Module({
@@ -29,6 +30,7 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
         username: 'admin',
       },
     }),
+    ServiceModule,
   ],
   exports: [ElasticsearchModule],
 })

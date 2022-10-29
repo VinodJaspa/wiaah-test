@@ -2,8 +2,8 @@ import React from "react";
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import { Container } from "ui";
-import MasterLayout from "../../components/MasterLayout";
-import { LocalisationView } from "../../components/Localisation/LocalisationView";
+import {MasterLayout} from "@components";
+import { LocalisationView } from "@components";
 interface LocalisationProps {}
 
 export const getServerSideProps: GetServerSideProps<LocalisationProps> =

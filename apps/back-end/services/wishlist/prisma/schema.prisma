@@ -35,5 +35,12 @@ type Wisher {
 }
 
 type WishlistItem {
-  itemId String
+  itemId      String
+  serviceType String?
+  itemType    WishlistItemType
+}
+
+enum WishlistItemType {
+  service
+  product
 }

@@ -5,9 +5,6 @@ import {
   Args,
   ResolveReference,
 } from '@nestjs/graphql';
-import { ShopService } from './shop.service';
-import { Shop } from './entities/shop.entity';
-import { CreateShopInput } from './dto/create-shop.input';
 import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
 import {
   GqlAuthorizationGuard,
@@ -17,6 +14,10 @@ import {
   KAFKA_MESSAGES,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
+
+import { ShopService } from './shop.service';
+import { Shop } from './entities/shop.entity';
+import { CreateShopInput } from './dto/create-shop.input';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
 import { FilterShopsInput } from './dto/filter-shops.input';
 
@@ -66,7 +67,7 @@ export class ShopResolver implements OnModuleInit {
   }
 
   @ResolveReference()
-  shop(ref: { __typename: string; id: string }) {
+  shop(ref: { __typename: string; id: string; name: string; ownerId: string }) {
     return this.shopService.getShopById(ref.id);
   }
 

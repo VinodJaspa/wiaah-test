@@ -37,7 +37,10 @@ export class ShopController {
       return new GetUserShopMetaDataMessageReply({
         success: false,
         data: null,
-        error: formatCaughtError(error),
+        error: {
+          ...error,
+          message: formatCaughtError(error),
+        },
       });
     }
   }
@@ -71,7 +74,10 @@ export class ShopController {
       return new IsOwnerOfShopMessageReply({
         success: false,
         data: null,
-        error: formatCaughtError(error),
+        error: {
+          ...error,
+          message: formatCaughtError(error),
+        },
       });
     }
   }

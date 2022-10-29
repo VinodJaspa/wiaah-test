@@ -135,7 +135,7 @@ export class ProductsService {
       new IsOwnerOfShopMessage({ ownerId: userId, shopId }),
       'shop validation timed out',
     );
-    if (!success) throw new Error(error);
+    if (!success) throw new Error(error.message);
     return data;
   }
 

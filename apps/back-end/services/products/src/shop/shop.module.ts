@@ -1,13 +1,18 @@
 import { Module } from '@nestjs/common';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { CqrsModule } from '@nestjs/cqrs';
+import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+
 import { ShopService } from './shop.service';
 import { ShopResolver } from './shop.resolver';
-import { PrismaService } from 'prismaService';
-import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ShopController } from './shop.controller';
+import { ShopEventHandlers } from './events';
+import { ShopElasticRepository, ShopRepository } from './repository';
+import { PrismaService } from 'prismaService';
 
 @Module({
   imports: [
+    CqrsModule,
     ClientsModule.register([
       {
         name: SERVICES.SHOP_SERVICE.token,
@@ -25,6 +30,13 @@ import { ShopController } from './shop.controller';
     ]),
   ],
   controllers: [ShopController],
-  providers: [ShopResolver, ShopService, PrismaService],
+  providers: [
+    PrismaService,
+    ShopResolver,
+    ShopService,
+    ShopElasticRepository,
+    ShopRepository,
+    ...ShopEventHandlers,
+  ],
 })
 export class ShopModule {}

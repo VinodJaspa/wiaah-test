@@ -1,11 +1,8 @@
 import { Module } from '@nestjs/common';
-import {
-  ApolloFederationDriver,
-  ApolloFederationDriverConfig,
-} from '@nestjs/apollo';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { PrismaService } from 'prismaService';
+
 import { ProductsResolver } from './products.resolver';
 import { ProductsService } from './products.service';
 import { ProductsController } from './products.controller';
@@ -34,7 +31,7 @@ import { UploadModule, UploadServiceProviders } from '@wiaah/upload';
       },
     ]),
   ],
+  // controllers: [ProductsController],
   providers: [ProductsResolver, ProductsService, PrismaService],
-  controllers: [ProductsController],
 })
 export class ProductsModule {}

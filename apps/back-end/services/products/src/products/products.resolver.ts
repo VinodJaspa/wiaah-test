@@ -7,9 +7,6 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-import { ProductsService } from './products.service';
-import { Product } from './entities/product.entity';
-import { CreateProdutctInput } from './dto/create-produtct.input';
 import { Inject, Logger, UseGuards } from '@nestjs/common';
 import {
   AuthorizationDecodedUser,
@@ -18,14 +15,19 @@ import {
   SERVICES,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
+import { GraphQLUpload, Upload } from 'graphql-upload';
+import { PrepareGqlUploads, UploadService } from '@wiaah/upload';
+
+import { ProductsService } from './products.service';
+import { Product } from './entities/product.entity';
+import { CreateProdutctInput } from './dto/create-produtct.input';
 import { UpdateProdutctInput } from './dto/update-produtct.input';
 import { ShippingDetails } from './entities/shippingDetails.entity';
-import { PrepareGqlUploads, UploadService } from '@wiaah/upload';
-import { GraphQLUpload, Upload } from 'graphql-upload';
 
 @Resolver(() => Product)
 export class ProductsResolver {
   constructor(
+    @Inject(ProductsService)
     private readonly productsService: ProductsService,
     @Inject(SERVICES.PRODUCTS_SERVICE.token)
     private readonly shopClient: ClientKafka,

@@ -1,4 +1,4 @@
-import { Controller, NotFoundException } from '@nestjs/common';
+import { Controller, Inject, NotFoundException } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { formatCaughtError, KAFKA_MESSAGES } from 'nest-utils';
@@ -16,7 +16,10 @@ import {
 
 @Controller('products')
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(
+    @Inject(ProductsService)
+    private readonly productsService: ProductsService,
+  ) {}
 
   @MessagePattern(KAFKA_MESSAGES.productReviewable)
   async productReviewable(
@@ -36,7 +39,10 @@ export class ProductsController {
     } catch (error) {
       return new IsProductReviewableMessageReply({
         success: false,
-        error: formatCaughtError(error),
+        error: {
+          ...error,
+          message: formatCaughtError(error),
+        },
         data: null,
       });
     }
@@ -68,8 +74,11 @@ export class ProductsController {
     } catch (error) {
       return new GetProductMetaDataMessageReply({
         data: null,
-        error: formatCaughtError(error),
         success: false,
+        error: {
+          ...error,
+          message: formatCaughtError(error),
+        },
       });
     }
   }
@@ -95,7 +104,10 @@ export class ProductsController {
     } catch (error) {
       return new GetProductsMetaDataMessageReply({
         success: false,
-        error: formatCaughtError(error),
+        error: {
+          ...error,
+          message: formatCaughtError(error),
+        },
         data: null,
       });
     }

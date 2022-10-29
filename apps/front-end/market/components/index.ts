@@ -9,3 +9,4 @@ export * from "./Actions";
 export * from "./ComingSoon";
 export * from "./Seo";
 export * from "./CartSummary";
+export * from "./Localisation";
