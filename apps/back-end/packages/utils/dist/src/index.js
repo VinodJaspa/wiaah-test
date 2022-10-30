@@ -34,4 +34,5 @@ __exportStar(require("./formaters"), exports);
 __exportStar(require("./translation"), exports);
 __exportStar(require("./pipes"), exports);
 __exportStar(require("./CQRS"), exports);
+__exportStar(require("./db"), exports);
 //# sourceMappingURL=index.js.map

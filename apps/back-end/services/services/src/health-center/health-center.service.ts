@@ -14,7 +14,6 @@ import {
   DBErrorException,
   ErrorHandlingService,
   getTranslatedResource,
-  LANG_ID,
   TranslationService,
   UserPreferedLang,
 } from 'nest-utils';
@@ -28,6 +27,8 @@ import {
   CreateHealthCenterSpecialityInput,
   HealthCenter,
 } from '@health-center';
+import { EventBus } from '@nestjs/cqrs';
+import { HealthCenterCreatedEvent } from './events/impl';
 
 @Injectable()
 export class HealthCenterService {
@@ -37,6 +38,7 @@ export class HealthCenterService {
     @Inject(ErrorHandlingService)
     private readonly errorService: ErrorHandlingTypedService,
     private readonly translationService: TranslationService,
+    private readonly eventbus: EventBus,
   ) {}
 
   getLangId(): UserPreferedLang {
@@ -70,10 +72,14 @@ export class HealthCenterService {
         },
       },
     });
+
+    this.eventbus.publish(new HealthCenterCreatedEvent(created));
+
     await this.serviceOwnership.createHealthCenterServiceOwnership({
       ownerId: userId,
       serviceId: created.id,
     });
+
     return this.formatHealthCenterService(created);
   }
 

@@ -1,6 +1,5 @@
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { BeautyCenterService } from './beauty-center.service';
-import { BeautyCenter } from './entities/beauty-center.entity';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
 import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
@@ -8,8 +7,10 @@ import {
   GqlSelectedFields,
   GqlSelectedQueryFields,
 } from 'nest-utils';
+
+import { BeautyCenterService } from './beauty-center.service';
+import { BeautyCenter } from './entities/beauty-center.entity';
 import { CreateBeautyCenterInput } from './dto/create-beauty-center.input';
-import { UseGuards } from '@nestjs/common';
 import { UpdateBeautyCenterInput } from './dto';
 
 export type GqlBeautyCenterSelectedFields = GqlSelectedFields<BeautyCenter>;

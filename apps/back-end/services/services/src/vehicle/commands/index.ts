@@ -1,5 +1,11 @@
 export * from './impl';
 
-import { CreateVehicleServiceHandler } from './handlers';
+import {
+  CreateVehicleServiceHandler,
+  UpdateVehicleServiveHandler,
+} from './handlers';
 
-export const VehicleCommandsHandlers = [CreateVehicleServiceHandler];
+export const VehicleCommandsHandlers = [
+  CreateVehicleServiceHandler,
+  UpdateVehicleServiveHandler,
+];

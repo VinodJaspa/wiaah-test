@@ -1,12 +1,13 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { WishlistService } from './wishlist.service';
-import { Wishlist } from './entities/wishlist.entity';
 import { UseGuards } from '@nestjs/common';
 import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
 } from 'nest-utils';
+
+import { WishlistService } from './wishlist.service';
+import { Wishlist } from './entities/wishlist.entity';
 import { AddWishlistItemInput } from './dto/add-wishlist-item.input';
 import { RemoveWishlistItemInput } from './dto/remove-wishlist-item.input';
 

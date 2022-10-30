@@ -16,7 +16,7 @@ export class HotelRoomResolver {
     @GetLang() langId: string,
     @GqlSelectedQueryFields({ selectField: false })
     selectedFields: GqlHotelRoomAggregationSelectedFields,
-  ): Promise<HotelRoom> {
+  ): Promise<HotelRoom[]> {
     return this.queryBus.execute(
       new SearchHotelRoomQuery({
         selectedFields,

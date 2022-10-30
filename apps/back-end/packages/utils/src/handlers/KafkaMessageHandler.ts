@@ -8,8 +8,6 @@ export function KafkaMessageHandler<TPattern, TInput, TData>(
   timeout = 2000
 ): Promise<TData> {
   return new Promise<TData>((res, rej) => {
-    const date = Date.now();
-
     const timer = setTimeout(() => {
       rej(timeoutErrMessage || "service timed out");
     }, timeout);

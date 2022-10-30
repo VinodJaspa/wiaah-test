@@ -32,7 +32,7 @@ export class GqlSelectedQueryPipe implements PipeTransform {
       value.fieldNodes[0];
 
     return this.formatField(
-      targetedRootField.selectionSet.selections as FieldNode[]
+      targetedRootField?.selectionSet?.selections as FieldNode[]
     );
   }
 
@@ -42,7 +42,7 @@ export class GqlSelectedQueryPipe implements PipeTransform {
     const fields: GqlSelectedFields<any, typeof this.selectField> = {};
 
     for (const node of nodes) {
-      const subFields: readonly SelectionNode[] =
+      const subFields: readonly SelectionNode[] | undefined =
         node?.selectionSet?.selections;
       const hasSubFields = Array.isArray(subFields) && subFields.length > 0;
 

@@ -61,6 +61,7 @@ type Product {
   price: Float!
   visibility: VisibilityEnum!
   shippingRulesIds: [ID!]!
+  reviews: Int!
 }
 
 enum VisibilityEnum {
@@ -86,11 +87,6 @@ type Filter {
   sortOrder: Int!
 }
 
-type Search {
-  filter: String!
-  products: [Product!]!
-}
-
 type Location {
   lat: Float!
   long: Float!
@@ -111,8 +107,8 @@ type Shop {
   storeType: [StoreType!]!
   vendorType: [VendorType!]!
   targetGenders: [TargetGenders!]!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 enum StoreType {
@@ -131,6 +127,11 @@ enum TargetGenders {
   male
   female
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 type Query {
   getNearShops(GetNearShopsInput: GetNearShopsInput!): [Shop!]!
@@ -160,7 +161,6 @@ input FilterShopsInput {
 
 type Mutation {
   createShop(createShopInput: CreateShopInput!): Shop!
-  createShopsPh: Boolean!
   removeAllShops: Boolean!
   createNewProduct(createNewProductInput: CreateProdutctInput!): Product!
   updateProduct(updateProductArgs: UpdateProdutctInput!): Boolean!
@@ -177,6 +177,8 @@ type Mutation {
 
 input CreateShopInput {
   name: String!
+  banner: String!
+  description: String!
   location: LocationInput!
   storeType: [StoreType!]!
   vendorType: [VendorType!]!

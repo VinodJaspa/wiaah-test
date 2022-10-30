@@ -2,8 +2,11 @@ import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import {
   AuthorizationDecodedUser,
+  GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  GqlSelectedQueryFields,
+  UserPreferedLang,
 } from 'nest-utils';
 import {
   CreateHealthCenterInput,
@@ -13,10 +16,17 @@ import {
   CreateHealthCenterSpecialityInput,
   HealthCenterService,
 } from '@health-center';
+import { SearchHealthCenterInput } from './dto';
+import { CommandBus } from '@nestjs/cqrs';
+import { SearchHealthCenterQuery } from './queries/impl/search-health-centers.query';
+import { GqlHealthCenterSelectedFields } from './types';
 
 @Resolver(() => HealthCenter)
 export class HealthCenterResolver {
-  constructor(private readonly healthCenterService: HealthCenterService) {}
+  constructor(
+    private readonly healthCenterService: HealthCenterService,
+    private readonly commandBus: CommandBus,
+  ) {}
 
   @Query(() => HealthCenter)
   @UseGuards(new GqlAuthorizationGuard([]))
@@ -53,5 +63,20 @@ export class HealthCenterResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.healthCenterService.createHealthCenterSpeciality(args, user.id);
+  }
+
+  @Query(() => [HealthCenter])
+  searchHealthCenters(
+    @Args('searchHealthCenterArgs') input: SearchHealthCenterInput,
+    @GqlSelectedQueryFields() selectedFields: GqlHealthCenterSelectedFields,
+    @GetLang() langId: UserPreferedLang,
+  ) {
+    return this.commandBus.execute<SearchHealthCenterQuery, HealthCenter[]>(
+      new SearchHealthCenterQuery({
+        langId,
+        selectedFields,
+        input,
+      }),
+    );
   }
 }

@@ -35,7 +35,7 @@ export class Location {
 }
 
 @ObjectType()
-@Directive('@key(fields: "name")')
+@Directive('@key(fields: "id, name, ownerId")')
 export class Shop {
   @Field((type) => ID)
   id: string;

@@ -46,8 +46,10 @@ export class ErrorHandlingService<TMessages> {
     err?: any
   ): string {
     const resource = fn(this.options.messages);
-    const message: any = resource[langId];
-    if (typeof message !== "string") return Object.entries(resource).at(0)[1];
+    //@ts-ignore
+    const message: any = resource[langId] as any;
+    if (typeof message !== "string")
+      return Object.entries(resource)?.at(0)?.at(1) || "";
     return message;
   }
 }

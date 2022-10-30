@@ -1,9 +1,24 @@
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
+import { ElasticsearchModule } from '@nestjs/elasticsearch';
+
 import { SearchModule } from './search/search.module';
 
+@Global()
 @Module({
-  imports: [SearchModule],
-  controllers: [],
-  providers: [],
+  imports: [
+    ElasticsearchModule.register({
+      node: 'http://localhost:9200',
+      auth: {
+        username: 'admin',
+        password: 'admin123',
+      },
+    }),
+  ],
+  exports: [ElasticsearchModule],
+})
+class ElasticGlobalModule {}
+
+@Module({
+  imports: [SearchModule, ElasticGlobalModule],
 })
 export class AppModule {}

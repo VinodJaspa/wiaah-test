@@ -85,6 +85,8 @@ export const KAFKA_MESSAGES = {
   SERVICES_MESSAGES: {
     isServiceAddable: "is.service.addable",
     getServiceMetaData: "get.service.metadata",
+    getServiceOpenTimeData: (serviceType: string) =>
+      `get.service.open.tiem.data-${serviceType}`,
   },
   CURRENCY_MESSAGES: {
     getCurrencyExchangeRate: "get.currency.exchange.rate",

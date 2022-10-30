@@ -28,7 +28,7 @@ export async function testTranslation<TService, TValue>(
           "couldnt found expected transaltion resource of langId:" + lang
         );
 
-      expect(data).toStrictEqual(input.find((v) => v.langId === lang).value);
+      expect(data).toStrictEqual(input.find((v) => v.langId === lang)?.value);
     }
   }
 }

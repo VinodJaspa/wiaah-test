@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { DynamicModule, Global, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { CategoryModule } from './category/category.module';
 import {
@@ -17,9 +17,24 @@ import { HealthCenterModule } from './health-center/health-center.module';
 import { ErrorMessages } from '@utils';
 import { BeautyCenterModule } from './beauty-center/beauty-center.module';
 import { VehicleModule } from './vehicle/vehicle.module';
-import gql from 'graphql-tag';
-import { CqrsModule } from '@nestjs/cqrs';
-import { ServicesSearchEngineModule } from './services-search-engine/services-search-engine.module';
+import { ElasticsearchModule } from '@nestjs/elasticsearch';
+import { ServiceModule } from './service/service.module';
+
+@Global()
+@Module({
+  imports: [
+    ElasticsearchModule.register({
+      node: 'http://localhost:9200',
+      auth: {
+        password: 'admin123',
+        username: 'admin',
+      },
+    }),
+    ServiceModule,
+  ],
+  exports: [ElasticsearchModule],
+})
+class GlobalElasticsearchModule {}
 
 @Module({
   imports: [
@@ -32,6 +47,7 @@ import { ServicesSearchEngineModule } from './services-search-engine/services-se
         return { ...ctx, user };
       },
     }),
+    GlobalElasticsearchModule,
     ErrorHandlingModule.register({
       messages: ErrorMessages,
     }),
@@ -43,7 +59,6 @@ import { ServicesSearchEngineModule } from './services-search-engine/services-se
     HealthCenterModule,
     BeautyCenterModule,
     VehicleModule,
-    ServicesSearchEngineModule,
   ],
 })
 export class AppModule {}

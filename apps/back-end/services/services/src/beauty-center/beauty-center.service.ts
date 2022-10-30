@@ -16,8 +16,6 @@ import {
   UserPreferedLang,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
-import { CreateBeautyCenterInput } from './dto/create-beauty-center.input';
-import { BeautyCenter } from './entities/beauty-center.entity';
 import {
   BeautyCenterService as PrismaBeautyCenterService,
   BeautyCenterTreatment,
@@ -25,11 +23,16 @@ import {
 } from 'prismaClient';
 import { v4 as uuid } from 'uuid';
 import { ErrorHandlingTypedService } from '@utils';
+
+import { CreateBeautyCenterInput } from './dto/create-beauty-center.input';
+import { BeautyCenter } from './entities/beauty-center.entity';
 import {
   UpdateBeautyCenterInput,
   UpdateBeautyCenterTreatmentInput,
 } from './dto/update-beauty-center.input';
 import { TreatmentCategoryService } from './treatment-category.service';
+import { EventBus } from '@nestjs/cqrs';
+import { BeautyCenterCreatedEvent, BeautyCenterUpdatedEvent } from './events';
 
 type GqlBeautyCenterSelectedFields = GqlSelectedFields<BeautyCenter>;
 
@@ -42,6 +45,7 @@ export class BeautyCenterService {
     private readonly translationService: TranslationService,
     @Inject(ErrorHandlingService)
     private readonly errorService: ErrorHandlingTypedService,
+    private readonly eventbus: EventBus,
   ) {}
 
   logger = new Logger('BeautyCenterService');
@@ -54,20 +58,34 @@ export class BeautyCenterService {
     await this.validateCreateInput(input);
     await this.checkCreatePremissions(userId);
 
+    const lowest_price = Array.isArray(input.treatments)
+      ? input.treatments.reduce((acc, curr) => {
+          return acc > curr.price ? curr.price : acc;
+        }, 0)
+      : undefined;
+
+    const heigest_price = Array.isArray(input.treatments)
+      ? input.treatments.reduce((acc, curr) => {
+          return acc > curr.price ? acc : curr.price;
+        }, 0)
+      : undefined;
+
     const center = await this.prisma.beautyCenterService.create({
       data: {
         ...input,
         ownerId: userId,
+        heigest_price,
+        lowest_price,
         treatments: input.treatments.map((v) => ({
           ...v,
           id: uuid(),
         })),
       },
-      select: selectedFields
-        ? this.getBeautyCenterSelection(selectedFields)
-        : undefined,
     });
 
+    this.eventbus.publish<BeautyCenterCreatedEvent>(
+      new BeautyCenterCreatedEvent(center),
+    );
     return this.formatBeautyCenterServiceData(center);
   }
 
@@ -98,22 +116,38 @@ export class BeautyCenterService {
     try {
       const { treatments, id, ...rest } = input;
 
+      const updatedTreats = this.updateBeautyCenterTreatments(
+        treatments,
+        service.treatments,
+      );
+
+      const lowest_price = Array.isArray(updatedTreats)
+        ? input.treatments.reduce((acc, curr) => {
+            return acc > curr.price ? curr.price : acc;
+          }, 0)
+        : undefined;
+
+      const heigest_price = Array.isArray(updatedTreats)
+        ? input.treatments.reduce((acc, curr) => {
+            return acc > curr.price ? acc : curr.price;
+          }, 0)
+        : undefined;
+
       const res = await this.prisma.beautyCenterService.update({
         where: {
           id: input.id,
         },
         data: {
           ...rest,
-          treatments: this.updateBeautyCenterTreatments(
-            treatments,
-            service.treatments,
-          ),
+          lowest_price,
+          heigest_price,
+          treatments: updatedTreats,
         },
-        select: selectedFields
-          ? this.getBeautyCenterSelection(selectedFields)
-          : undefined,
       });
 
+      this.eventbus.publish<BeautyCenterUpdatedEvent>(
+        new BeautyCenterUpdatedEvent(res, service),
+      );
       return this.formatBeautyCenterServiceData(res);
     } catch (error) {
       this.logger.error(error);

@@ -79,6 +79,8 @@ model RestaurantService {
   cancelationPolicies    ServiceCancelationPolicy[]
   menus                  RestaurantMenu[]
   location               Location
+  lowest_price           Float                        @default(0)
+  highest_price          Float                        @default(0)
   establishmentTypeId    String                       @db.ObjectId
   cuisinesTypeId         String                       @db.ObjectId
   setting_and_ambianceId String                       @db.ObjectId
@@ -112,6 +114,8 @@ model BeautyCenterService {
   rating               Float                        @default(0)
   totalReviews         Int                          @default(0)
   beauty_center_typeId String                       @db.ObjectId
+  lowest_price         Float                        @default(0)
+  heigest_price        Float                        @default(0)
   location             Location
   status               ServiceStatus                @default(inActive)
   presentations        ServicePresentation[]
@@ -158,17 +162,18 @@ model BeautyCenterTreatmentCategory {
 }
 
 model HealthCenterDoctor {
-  id                String                              @id @default(auto()) @map("_id") @db.ObjectId
-  healthCenter      HealthCenterService                 @relation(fields: [healthCenterId], references: [id])
-  speciality        HealthCenterSpecialty               @relation(fields: [specialityId], references: [id])
-  healthCenterId    String                              @db.ObjectId
-  specialityId      String                              @db.ObjectId
-  rating            Float                               @default(0)
+  id                String                               @id @default(auto()) @map("_id") @db.ObjectId
+  healthCenter      HealthCenterService                  @relation(fields: [healthCenterId], references: [id])
+  speciality        HealthCenterSpecialty                @relation(fields: [specialityId], references: [id])
+  speakingLanguages HealthCenterDoctorSpeakingLanguage[]
+  healthCenterId    String                               @db.ObjectId
+  specialityId      String                               @db.ObjectId
+  rating            Float                                @default(0)
   name              String
   thumbnail         String
   price             Float
   description       TranslationText[]
-  availablityStatus HealthCenterDoctorAvailablityStatus @default(unavailable)
+  availablityStatus HealthCenterDoctorAvailablityStatus  @default(unavailable)
 }
 
 model HealthCenterSpecialty {
@@ -233,16 +238,20 @@ model HotelRoom {
   measurements        PropertyMeasurements
 }
 
-type Vehicle {
-  id                  String
-  typeId              String
+model Vehicle {
+  id                  String                     @id @default(auto()) @map("_id") @db.ObjectId
+  typeId              String                     @db.ObjectId
   title               TranslationText[]
   presentations       ServicePresentation[]
   brand               String
   model               String
   price               Int
+  rating              Float                      @default(0)
+  securityDeposit     Float                      @default(0)
   properties          VehicleProperties
   cancelationPolicies ServiceCancelationPolicy[]
+  parantServiceId     String
+  parantService       VehicleService             @relation(fields: [parantServiceId], references: [id])
 }
 
 type VehicleProperties {
@@ -433,4 +442,11 @@ enum ServiceTypeOfSeller {
 enum TreatmentCategoryStatus {
   active
   inActive
+}
+
+enum HealthCenterDoctorSpeakingLanguage {
+  EN
+  FR
+  GE
+  GD
 }

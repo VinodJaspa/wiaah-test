@@ -56,10 +56,26 @@ export class RestaurantService {
   ): Promise<Restaurant> {
     await this.checkCreatePremissions(userId);
     try {
+      const lowest_price = input.menus.reduce((acc, curr) => {
+        const lowestDishPrice = curr.dishs.reduce((acc, curr) => {
+          return curr.price < acc ? curr.price : acc;
+        }, 0);
+        return lowestDishPrice < acc ? lowestDishPrice : acc;
+      }, 0);
+
+      const highest_price = input.menus.reduce((acc, curr) => {
+        const highestDishPrice = curr.dishs.reduce((acc, curr) => {
+          return curr.price > acc ? curr.price : acc;
+        }, 0);
+        return highestDishPrice > acc ? highestDishPrice : acc;
+      }, 0);
+
       const created = await this.prisma.restaurantService.create({
         data: {
           ownerId: userId,
           ...input,
+          highest_price,
+          lowest_price,
           menus: input.menus.map((v) => ({
             id: uuid(),
             dishs: v.dishs.map((v) => ({
@@ -110,6 +126,24 @@ export class RestaurantService {
       compareKey: 'id',
     });
 
+    const lowest_price = all
+      ? all.reduce((acc, curr) => {
+          const lowestDishPrice = curr.dishs.reduce((acc, curr) => {
+            return curr.price < acc ? curr.price : acc;
+          }, 0);
+          return lowestDishPrice < acc ? lowestDishPrice : acc;
+        }, 0)
+      : null;
+
+    const highest_price = all
+      ? all.reduce((acc, curr) => {
+          const highestDishPrice = curr.dishs.reduce((acc, curr) => {
+            return curr.price > acc ? curr.price : acc;
+          }, 0);
+          return highestDishPrice > acc ? highestDishPrice : acc;
+        }, 0)
+      : null;
+
     try {
       const res = await this.prisma.restaurantService.update({
         where: {
@@ -117,6 +151,12 @@ export class RestaurantService {
         },
         data: {
           ...rest,
+          highest_price: highest_price
+            ? Math.max(highest_price, service.highest_price)
+            : undefined,
+          lowest_price: lowest_price
+            ? Math.min(lowest_price, service.lowest_price)
+            : undefined,
           menus: all,
         },
       });

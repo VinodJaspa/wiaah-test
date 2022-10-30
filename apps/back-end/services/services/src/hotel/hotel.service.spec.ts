@@ -10,6 +10,15 @@ describe('HotelService', () => {
   let prisma: PrismaService;
 
   let createHotelInput: CreateHotelInput = {
+    location: {
+      address: 'address',
+      city: 'city',
+      country: 'country',
+      state: 'state',
+      lat: 15,
+      lon: 32,
+      postalCode: 2345,
+    },
     serviceMetaInfo: [
       {
         langId: 'en',
@@ -100,6 +109,7 @@ describe('HotelService', () => {
         hotel.id,
         mockedUser.id,
         'en',
+        undefined,
       );
       const hotels = await prisma.hotelService.findMany();
 
@@ -124,6 +134,7 @@ describe('HotelService', () => {
           created.id,
           mockedUser.id,
           lang,
+          undefined,
         );
 
         expect(hotel.serviceMetaInfo).toStrictEqual<ServiceMetaInfo>({

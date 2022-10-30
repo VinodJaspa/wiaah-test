@@ -5,7 +5,7 @@ import {
   ServicePresentationInput,
 } from '@dto';
 import { InputType, Field } from '@nestjs/graphql';
-import { ServicePolicyTranslatedInput } from 'src/dto/shared/ServicePolicies.input';
+import { ServicePolicyTranslatedInput } from '@dto';
 import { HotelRoomInput } from './hotel-room.input';
 
 @InputType()

@@ -29,6 +29,15 @@ describe('BeautyCenterResolver', () => {
     beauty_center_typeId: new ObjectId().toString(),
     cancelationPolicies: [{ cost: 4, duration: 5 }],
     payment_methods: ['cash', 'credit_card'],
+    location: {
+      address: 'address',
+      city: 'city',
+      country: 'country',
+      lat: 13,
+      lon: 32,
+      postalCode: 2134,
+      state: 'state',
+    },
     policies: [
       {
         langId: 'en',

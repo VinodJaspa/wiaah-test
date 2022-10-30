@@ -7,9 +7,9 @@ class Filter {
   title: string;
 }
 
-@ObjectType()
-@Directive('@extends')
-@Directive('@key(fields: "filter")')
+// @ObjectType()
+// @Directive('@extends')
+// @Directive('@key(fields: "filter")')
 export class Search {
   @Field((type) => String)
   @Directive('@external')

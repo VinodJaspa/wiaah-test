@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { getTranslatedResource, UserPreferedLang } from 'nest-utils';
 import {
   Prisma,
@@ -9,54 +10,90 @@ import { PrismaService } from 'prismaService';
 import { SearchFilteredRestaurantInput } from '../dto';
 import { Restaurant } from '../entities';
 import { GqlRestaurantAggregationSelectedFields } from '../types/gqlSelectedFields';
+import { RestaurantElasticSearchRepository } from './restaurant.elastic.repository';
 
 @Injectable()
 export class RestaurantRepository {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly elasticRepository: RestaurantElasticSearchRepository,
+  ) {}
 
   async searchFilteredRestaurant(
     input: SearchFilteredRestaurantInput,
     selectedFields: GqlRestaurantAggregationSelectedFields,
     langId: UserPreferedLang,
   ): Promise<Restaurant[]> {
-    const matches = {};
+    const hasQuery = input?.query?.length > 0;
+    const ids = hasQuery
+      ? await this.elasticRepository.getRestaurantIdsByLocationQuery(
+          input.query,
+        )
+      : [];
+
+    const filters: Prisma.RestaurantServiceWhereInput[] = [];
+
+    if (hasQuery) {
+      filters.push({
+        id: {
+          in: ids,
+        },
+      });
+    }
 
     if (input.establishmentTypeId) {
-      matches['establishmentTypeId'] = input.establishmentTypeId;
+      filters.push({
+        establishmentTypeId: input.establishmentTypeId,
+      });
     }
 
     if (input.cusinesTypeId) {
-      matches['cuisinesTypeId'] = input.cusinesTypeId;
+      filters.push({
+        cuisinesTypeId: input.cusinesTypeId,
+      });
     }
 
     if (input.settingAndAmbinaceId) {
-      matches['setting_and_ambianceId'] = input.settingAndAmbinaceId;
+      filters.push({
+        setting_and_ambianceId: input.settingAndAmbinaceId,
+      });
     }
 
     if (input.paymentMethods) {
-      matches['payment_methods'] = input.paymentMethods;
+      filters.push({
+        payment_methods: {
+          hasSome: input.paymentMethods,
+        },
+      });
     }
 
-    const rests = await this.prisma.restaurantService.aggregateRaw({
-      pipeline: [
-        {
-          $search: {
-            index: 'location',
-            text: {
-              query: input.query || '',
-              path: {
-                wildcard: '*',
-              },
-              fuzzy: {
-                maxEdits: 2,
-              },
-            },
-          },
+    if (input.maxPrice && input.minPrice) {
+      filters.push({
+        lowest_price: {
+          gte: input.minPrice,
         },
-        {
-          $match: matches,
+        highest_price: {
+          lte: input.maxPrice,
         },
-      ],
+      });
+    } else if (input.maxPrice) {
+      filters.push({
+        highest_price: {
+          lte: input.maxPrice,
+        },
+      });
+    } else if (input.minPrice) {
+      filters.push({
+        lowest_price: {
+          gte: input.minPrice,
+        },
+      });
+    }
+
+    const rests = await this.prisma.restaurantService.findMany({
+      where: {
+        AND: [...filters],
+      },
     });
 
     return Array.isArray(rests)

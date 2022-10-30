@@ -1,7 +1,5 @@
 import {
-  BadRequestException,
   Injectable,
-  InternalServerErrorException,
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
@@ -65,7 +63,7 @@ export class WishlistService {
 
   async addWishlistItem(
     userId: string,
-    { itemId, sellerId }: AddWishlistItemInput,
+    { itemId, sellerId, itemType }: AddWishlistItemInput,
   ) {
     try {
       await this.prisma.wishlist.upsert({
@@ -74,13 +72,14 @@ export class WishlistService {
         },
         create: {
           ownerId: userId,
-          wishedItems: [{ itemId }],
+          wishedItems: [{ itemId, itemType }],
           wishedItemsCount: 1,
         },
         update: {
           wishedItems: {
             push: {
               itemId,
+              itemType,
             },
           },
           wishedItemsCount: {

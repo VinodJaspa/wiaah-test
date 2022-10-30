@@ -1,4 +1,5 @@
 import { PrismaClient } from 'prismaClient';
+import { Client } from '@elastic/elasticsearch';
 
 class PrismaService extends PrismaClient {
   async onModuleInit() {
@@ -21,8 +22,22 @@ async function clearDB() {
   await prisma.healthCenterSpecialty.deleteMany();
   await prisma.beautyCenterService.deleteMany();
   await prisma.beautyCenterTreatmentCategory.deleteMany();
+
+  client.deleteByQuery({
+    index: '*',
+    query: {
+      match_all: {},
+    },
+  });
 }
 
+const client = new Client({
+  node: process.env.ELASTIC_HOST_TEST,
+  auth: {
+    username: process.env.ELASTIC_USERNAME_TEST,
+    password: process.env.ELASTIC_PASSWORD_TEST,
+  },
+});
 const prisma = new PrismaService();
 beforeAll(async () => {
   await clearDB();

@@ -23,18 +23,25 @@
   "dependencies": {
     "@apollo/federation": "0.36.1",
     "@apollo/subgraph": "0.1.5",
+    "@elastic/elasticsearch": "^8.4.0",
     "@nestjs/apollo": "9.2.5",
     "@nestjs/common": "^8.0.0",
-    "@nestjs/config": "^2.1.0",
+    "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^8.0.0",
+    "@nestjs/cqrs": "8.0.0",
+    "@nestjs/elasticsearch": "^9.0.0",
     "@nestjs/graphql": "10.0.0",
     "@nestjs/platform-express": "^8.0.0",
     "graphql": "15.8.0",
-    "nest-utils": "*",
+    "joi": "^17.6.4",
+    "joi-extract-type": "^15.0.8",
     "nest-dto": "*",
+    "nest-utils": "*",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "yup": "^0.32.11",
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",
@@ -58,22 +65,5 @@
     "ts-node": "^10.0.0",
     "tsconfig-paths": "4.0.0",
     "typescript": "^4.3.5"
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
-    ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
   }
 }

@@ -1,20 +1,14 @@
 import { INestApplication } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
 import { Test, TestingModule } from '@nestjs/testing';
-import { getUserFromRequest, mockedUser } from 'nest-utils';
+import { mockedUser } from 'nest-utils';
 import { WishlistResolver } from './wishlist.resolver';
 import { WishlistService } from './wishlist.service';
 
-import * as request from 'supertest';
-import {
-  ApolloFederationDriver,
-  ApolloFederationDriverConfig,
-} from '@nestjs/apollo';
 import { AppModule } from '../app.module';
+import { AddWishlistItemInput, CreateWishlistInput } from './dto';
 
 describe('WishlistResolver', () => {
   let resolver: WishlistResolver;
-  let app: INestApplication;
   let mockGetWishlist: jest.Mock;
   let mockAddWishListItem: jest.Mock;
   let mockRemoveWishlistItem: jest.Mock;
@@ -35,28 +29,28 @@ describe('WishlistResolver', () => {
       })
       .compile();
 
-    app = module.createNestApplication();
-    app.init();
+    resolver = module.get(WishlistResolver);
   });
 
   it('should get my wishlist', async () => {
-    const res = await request(app.getHttpServer())
-      .post('/graphql')
-      .send({
-        query: `query myWishlist{
-    MyWishlist{
-        id
-        ownerId
-        wishedItems {
-            itemId
-        }
-    }
-}`,
-        variables: {},
-      });
+    await resolver.MyWishlist(mockedUser);
 
-    expect(mockGetWishlist).toBeCalled();
     expect(mockGetWishlist).toBeCalledWith(mockedUser.id);
-    expect(res.body.data).toBe('tested');
+  });
+
+  it('should remove wishlist', async () => {
+    await resolver.RemoveWishlistItem(mockedUser, { itemId: 'id' });
+    expect(mockRemoveWishlistItem).toBeCalledWith(mockedUser.id, {
+      itemId: 'id',
+    });
+  });
+
+  it('should add wishlist', async () => {
+    const input: AddWishlistItemInput = {
+      itemId: 'testid',
+      itemType: 'product',
+      sellerId: 'sellerid',
+    };
+    await resolver.AddWishlistItem(mockedUser, input);
   });
 });

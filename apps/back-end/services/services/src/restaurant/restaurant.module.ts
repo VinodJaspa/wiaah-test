@@ -3,7 +3,10 @@ import { RestaurantService } from './restaurant.service';
 import { RestaurantResolver } from './restaurant.resolver';
 import { PrismaService } from 'prismaService';
 import { ServiceOwnershipModule } from '@service-ownership';
-import { RestaurantRepository } from './repository';
+import {
+  RestaurantElasticSearchRepository,
+  RestaurantRepository,
+} from './repository';
 import { SearchFilteredRestaurantQueryHandler } from './queries/handlers/search-filtered-restaurant.handler';
 import { CqrsModule } from '@nestjs/cqrs';
 
@@ -14,6 +17,7 @@ import { CqrsModule } from '@nestjs/cqrs';
     RestaurantService,
     PrismaService,
     RestaurantRepository,
+    RestaurantElasticSearchRepository,
     SearchFilteredRestaurantQueryHandler,
   ],
 })

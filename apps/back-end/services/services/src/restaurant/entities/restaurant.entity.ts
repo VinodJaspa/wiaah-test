@@ -4,7 +4,14 @@ import {
   ServicePolicy,
   ServicePresentation,
 } from '@entities';
-import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
+import {
+  ObjectType,
+  Field,
+  Int,
+  ID,
+  registerEnumType,
+  Float,
+} from '@nestjs/graphql';
 import { ServicePaymentMethods, ServiceStatus } from 'prismaClient';
 import { RestaurantMenu } from './restaurant-menu.entity';
 
@@ -42,6 +49,12 @@ export class Restaurant {
 
   @Field(() => [RestaurantMenu])
   menus: RestaurantMenu[];
+
+  @Field(() => Float)
+  lowest_price: number;
+
+  @Field(() => Float)
+  highest_price: number;
 
   @Field(() => ID)
   setting_and_ambianceId: string;
