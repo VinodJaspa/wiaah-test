@@ -79,6 +79,7 @@ describe('WishlistService', () => {
     await service.addWishlistItem(mockedUser.id, {
       itemId: mockItemId,
       sellerId: secendMockedUser.id,
+      itemType: 'product',
     });
 
     expect(mockAddWisherListItem).toBeCalledTimes(1);
@@ -90,7 +91,9 @@ describe('WishlistService', () => {
 
     const wishlist = await service.getWishlist(mockedUser.id);
 
-    expect(wishlist.wishedItems).toStrictEqual([{ itemId: mockItemId }]);
+    expect(wishlist.wishedItems).toStrictEqual([
+      { itemId: mockItemId, itemType: 'product', serviceType: null },
+    ]);
     expect(wishlist.wishedItemsCount).toBe(1);
   });
 
@@ -100,6 +103,7 @@ describe('WishlistService', () => {
     await service.addWishlistItem(mockedUser.id, {
       itemId: mockedUser.shopId,
       sellerId: secendMockedUser.id,
+      itemType: 'service',
     });
 
     expect((await service.getAll()).at(0).wishedItems.length).toBe(1);

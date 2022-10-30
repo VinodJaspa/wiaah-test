@@ -22,6 +22,9 @@ export class OpenTime {
 }
 @ObjectType()
 export class Localization {
+  @Field(() => ID)
+  id: string;
+
   @Field(() => Boolean)
   isOpen: boolean;
 
@@ -31,8 +34,14 @@ export class Localization {
   @Field(() => String)
   propertyType: string;
 
-  @Field(() => Seller)
-  seller: Seller;
+  @Field(() => ID)
+  sellerId: string;
+
+  @Field(() => Seller, { nullable: true })
+  seller?: Seller;
+
+  @Field(() => String)
+  thumbnail: string;
 
   @Field(() => String)
   city: string;

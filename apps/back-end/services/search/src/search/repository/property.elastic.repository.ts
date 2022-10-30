@@ -3,8 +3,6 @@ import { ELASTIC_INDICES } from 'nest-utils';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { z } from 'zod';
 
-import { Localization } from '../entities';
-
 const schema = z
   .object({
     dbId: z.string(),
@@ -14,29 +12,33 @@ const schema = z
 
 type SchemaType = z.infer<typeof schema>;
 
+const {
+  BEAUTY_CENTER_LOCATION_INDEX,
+  HEALTH_CENTER_LOCATION_INDEX,
+  HOTEL_LOCATION_INDEX,
+  RESTAURANT_LOCATION_INDEX,
+  SHOP_LOCATION_INDEX,
+  VEHICLE_LOCATION_INDEX,
+} = ELASTIC_INDICES;
+
 @Injectable()
 export class SearchElasticRepository {
   constructor(private readonly elasticService: ElasticsearchService) {}
 
-  async getPropertiesIdsAndTypes(query: string): Promise<SchemaType[]> {
-    const {
-      BEAUTY_CENTER_LOCATION_INDEX,
-      HEALTH_CENTER_LOCATION_INDEX,
-      HOTEL_LOCATION_INDEX,
-      RESTAURANT_LOCATION_INDEX,
-      SHOP_LOCATION_INDEX,
-      VEHICLE_LOCATION_INDEX,
-    } = ELASTIC_INDICES;
+  index = [
+    BEAUTY_CENTER_LOCATION_INDEX,
+    HEALTH_CENTER_LOCATION_INDEX,
+    HOTEL_LOCATION_INDEX,
+    RESTAURANT_LOCATION_INDEX,
+    SHOP_LOCATION_INDEX,
+    VEHICLE_LOCATION_INDEX,
+  ];
 
+  async getPropertiesIdsAndTypesByLocationQuery(
+    query: string,
+  ): Promise<SchemaType[]> {
     const res = await this.elasticService.search<SchemaType>({
-      index: [
-        BEAUTY_CENTER_LOCATION_INDEX,
-        HEALTH_CENTER_LOCATION_INDEX,
-        HOTEL_LOCATION_INDEX,
-        RESTAURANT_LOCATION_INDEX,
-        SHOP_LOCATION_INDEX,
-        VEHICLE_LOCATION_INDEX,
-      ],
+      index: this.index,
       query: {
         multi_match: {
           query,
@@ -47,14 +49,40 @@ export class SearchElasticRepository {
       ignore_unavailable: true,
     });
 
-    console.log('test', JSON.stringify(res, null, 2));
-
     const filterdData = res.hits.hits.filter((v) => this.isValidDoc(v._source));
 
     return filterdData.map((v) => ({
       id: v._source.dbId,
       type: v._source.type,
     }));
+  }
+
+  async getPropertiesIdsByTypeQuery(
+    query: string,
+  ): Promise<{ ids: string[]; type: string }> {
+    const res = await this.elasticService.search<SchemaType>({
+      index: this.index,
+      query: {
+        multi_match: {
+          query,
+          fields: ['type'],
+        },
+      },
+    });
+
+    return {
+      ids: res.hits.hits
+        .map((v) => v._source.dbId)
+        .filter((v) => {
+          try {
+            z.string().parse(v);
+            return true;
+          } catch {
+            return false;
+          }
+        }),
+      type: res.hits.hits.at(0)._source.type,
+    };
   }
 
   isValidDoc(doc: Record<string, any>): boolean {

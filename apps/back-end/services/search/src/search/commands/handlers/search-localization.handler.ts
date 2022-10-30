@@ -1,8 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { ElasticsearchService } from '@nestjs/elasticsearch';
-import { ELASTIC_INDICES } from 'nest-utils';
-import { SearchElasticRepository } from '../../repository';
 
+import { SearchRepository } from '../../repository';
 import { Localization } from '../../entities';
 import { SearchLocalizationCommand } from '../impl';
 
@@ -10,15 +8,11 @@ import { SearchLocalizationCommand } from '../impl';
 export class SearchLocalizationCommandHandler
   implements ICommandHandler<SearchLocalizationCommand>
 {
-  constructor(private readonly elasticRepo: SearchElasticRepository) {}
+  constructor(private readonly searchRepo: SearchRepository) {}
 
   async execute({
     args: { query, langId, selectedFields, userId },
   }: SearchLocalizationCommand): Promise<Localization[]> {
-    const ids = await this.elasticRepo.getPropertiesIdsAndTypes(query);
-
-    for (const id of ids) {
-    }
-    return [];
+    return this.searchRepo.getLocalizationsBySearchQuery(query, langId);
   }
 }

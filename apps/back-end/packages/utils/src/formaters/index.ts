@@ -3,3 +3,4 @@ export * from "./updateTransaltionResource";
 export * from "./updateDeepObject";
 export * from "./mergeObjectArray";
 export * from "./deleteFields";
+export * from "./isWithinTime";

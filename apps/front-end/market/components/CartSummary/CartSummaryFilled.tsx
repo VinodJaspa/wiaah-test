@@ -6,7 +6,6 @@ import {
   Divider,
   useGetMyCartSummaryDataQuery,
   ServiceCheckoutCardSwitcher,
-  AspectRatioImage,
   Avatar,
   Button,
 } from "ui";

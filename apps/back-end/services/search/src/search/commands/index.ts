@@ -1,4 +1,10 @@
 export * from './impl';
-import { SearchLocalizationCommandHandler } from './handlers';
+import {
+  SearchLocalizationCommandHandler,
+  SearchPlacesQueryHandler,
+} from './handlers';
 
-export const searchCommandHandlers = [SearchLocalizationCommandHandler];
+export const searchCommandHandlers = [
+  SearchLocalizationCommandHandler,
+  SearchPlacesQueryHandler,
+];

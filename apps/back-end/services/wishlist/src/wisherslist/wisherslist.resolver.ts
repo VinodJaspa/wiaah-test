@@ -1,4 +1,4 @@
-import { Resolver, Query } from '@nestjs/graphql';
+import { Resolver, Query, ResolveField, Parent } from '@nestjs/graphql';
 import { WisherslistService } from './wisherslist.service';
 import { Wisherslist } from './entities/wisherslist.entity';
 

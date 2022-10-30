@@ -11,10 +11,11 @@ import {
 
 import { Localization } from './entities';
 import { GetLocalizationInput } from './dto';
-import { SearchLocalizationCommand } from './commands';
+import { SearchLocalizationCommand, SearchPlacesCommand } from './commands';
+import { GqlLocalizationSelectedFields } from './types/GqlSelectedFields';
 
 @Resolver(() => Localization)
-export class SearchResolver {
+export class LocalizationResolver {
   constructor(private readonly commandBus: CommandBus) {}
 
   @Query(() => Localization)
@@ -30,6 +31,23 @@ export class SearchResolver {
         ...input,
         langId,
         userId: user.id,
+        selectedFields: fields,
+      }),
+    );
+  }
+
+  @Query(() => Localization)
+  getPlaces(
+    @Args('placeQuery') query: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @GetLang() langId: string,
+    @GqlSelectedQueryFields() fields: GqlLocalizationSelectedFields,
+  ) {
+    console.log('places');
+    return this.commandBus.execute<SearchPlacesCommand>(
+      new SearchPlacesCommand({
+        langId,
+        query,
         selectedFields: fields,
       }),
     );
