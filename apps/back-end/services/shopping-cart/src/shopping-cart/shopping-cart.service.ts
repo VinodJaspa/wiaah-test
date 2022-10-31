@@ -5,9 +5,8 @@ import {
   NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { CartItem } from '@prisma-client';
 import { PrismaService } from 'prismaService';
-import { ShoppingCart } from '@entities';
+import { ShoppingCart, CartProduct } from '@entities';
 import {
   AuthorizationDecodedUser,
   DBErrorException,
@@ -22,15 +21,14 @@ import {
   ApplyableVoucherMessageReply,
   GetProductMetaDataMessage,
   GetProductMetaDataMessageReply,
-  GetServiceMetaDataMessage,
-  GetServiceMetaDataMessageReply,
   VoucherAppliedEvent,
 } from 'nest-dto';
 import {
-  AddShoppingCartItemInput,
+  AddShoppingCartProductItemInput,
   ApplyVoucherInput,
   RemoveShoppingCartItemInput,
 } from '@dto';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class ShoppingCartService {
@@ -69,8 +67,8 @@ export class ShoppingCartService {
     return this.prisma.cart.findMany();
   }
 
-  getShoppingCartByOwnerId(ownerId: string): Promise<ShoppingCart> {
-    return this.prisma.cart.findUnique({
+  async getShoppingCartByOwnerId(ownerId: string): Promise<ShoppingCart> {
+    const res = await this.prisma.cart.findUnique({
       where: {
         ownerId,
       },
@@ -80,12 +78,14 @@ export class ShoppingCartService {
         );
       },
     });
+
+    return res;
   }
 
   async addProduct(
     user: AuthorizationDecodedUser,
-    product: AddShoppingCartItemInput,
-  ): Promise<CartItem> {
+    product: AddShoppingCartProductItemInput,
+  ): Promise<CartProduct> {
     const {
       results: { data, error, success },
     } = await KafkaMessageHandler<
@@ -102,35 +102,31 @@ export class ShoppingCartService {
       'fetch product metadata timed out',
     );
     if (!success) throw error;
-    const { name, price, thumbnail, shopId } = data;
-    const newCartItem: CartItem = {
-      itemId: product.itemId,
-      quantity: product.quantity,
-      itemType: 'product',
-      providerId: shopId,
-      name,
-      price,
-      thumbnail,
+    data;
+    const newCartItem: CartProduct = {
+      id: uuid(),
+      productId: product.itemId,
+      shippingRuleId: product.shippingRuleId,
     };
 
-    const hasitem = await this.alreadyHasItem(user.id, product.itemId);
+    // const hasitem = await this.alreadyHasItem(user.id, product.itemId);
 
-    if (hasitem) {
-      await this.incressShoppingCartItem(
-        user.id,
-        product.itemId,
-        product.quantity,
-      );
+    // if (hasitem) {
+    //   await this.incressShoppingCartItem(
+    //     user.id,
+    //     product.itemId,
+    //     product.quantity,
+    //   );
 
-      return newCartItem;
-    }
+    //   return newCartItem;
+    // }
 
     await this.prisma.cart.update({
       where: {
         ownerId: user.id,
       },
       data: {
-        cartItems: {
+        cartProducts: {
           push: newCartItem,
         },
       },
@@ -139,99 +135,94 @@ export class ShoppingCartService {
     return newCartItem;
   }
 
-  async alreadyHasItem(userId: string, itemId: string): Promise<boolean> {
-    const item = await this.prisma.cart.findUnique({
-      where: {
-        ownerId: userId,
-      },
-      select: {
-        cartItems: {
-          select: {
-            itemId: true,
-          },
-        },
-      },
-      rejectOnNotFound() {
-        throw new NotFoundException(
-          'could not find shopping cart record for this user',
-        );
-      },
-    });
-    const { cartItems } = item;
-    const hasItem = cartItems.findIndex((item) => item.itemId === itemId) > -1;
+  // async alreadyHasItem(userId: string, itemId: string): Promise<boolean> {
+  //   const item = await this.prisma.cart.findUnique({
+  //     where: {
+  //       ownerId: userId,
+  //     },
+  //     select: {
+  //       cartItems: {
+  //         select: {
+  //           itemId: true,
+  //         },
+  //       },
+  //     },
+  //     rejectOnNotFound() {
+  //       throw new NotFoundException(
+  //         'could not find shopping cart record for this user',
+  //       );
+  //     },
+  //   });
+  //   const { cartItems } = item;
+  //   const hasItem = cartItems.findIndex((item) => item.itemId === itemId) > -1;
 
-    return hasItem;
-  }
+  //   return hasItem;
+  // }
 
-  async incressShoppingCartItem(
-    ownerId: string,
-    itemId: string,
-    amount: number = 1,
-  ) {
-    return this.prisma.cart.update({
-      where: {
-        ownerId,
-      },
-      data: {
-        cartItems: {
-          updateMany: {
-            where: {
-              itemId,
-            },
-            data: {
-              quantity: {
-                increment: amount,
-              },
-            },
-          },
-        },
-      },
-    });
-  }
+  // async incressShoppingCartItem(
+  //   ownerId: string,
+  //   itemId: string,
+  //   amount: number = 1,
+  // ) {
+  //   return this.prisma.cart.update({
+  //     where: {
+  //       ownerId,
+  //     },
+  //     data: {
+  //       cartItems: {
+  //         updateMany: {
+  //           where: {
+  //             itemId,
+  //           },
+  //           data: {
+  //             quantity: {
+  //               increment: amount,
+  //             },
+  //           },
+  //         },
+  //       },
+  //     },
+  //   });
+  // }
 
-  async addService(
-    user: AuthorizationDecodedUser,
-    service: AddShoppingCartItemInput,
-  ): Promise<CartItem> {
-    const {
-      results: { data, error, success },
-    } = await KafkaMessageHandler<
-      string,
-      GetServiceMetaDataMessage,
-      GetServiceMetaDataMessageReply
-    >(
-      this.eventsClient,
-      KAFKA_MESSAGES.SERVICES_MESSAGES.getServiceMetaData,
-      new GetServiceMetaDataMessage({
-        serviceId: service.itemId,
-        userId: user.id,
-      }),
-    );
-    if (!success) throw error;
-    const { name, price, providerId, thumbnail } = data;
-    const newCartItem: CartItem = {
-      itemId: service.itemId,
-      itemType: 'service',
-      quantity: service.quantity,
-      providerId,
-      name,
-      price,
-      thumbnail,
-    };
+  // async addService(
+  //   user: AuthorizationDecodedUser,
+  //   service: AddShoppingCartServiceItemInput,
+  // ): Promise<BookedService> {
+  //   const {
+  //     results: { data, error, success },
+  //   } = await KafkaMessageHandler<
+  //     string,
+  //     GetServiceMetaDataMessage,
+  //     GetServiceMetaDataMessageReply
+  //   >(
+  //     this.eventsClient,
+  //     KAFKA_MESSAGES.SERVICES_MESSAGES.getServiceMetaData,
+  //     new GetServiceMetaDataMessage({
+  //       serviceId: service.itemId,
+  //       userId: user.id,
+  //     }),
+  //   );
+  //   if (!success) throw error;
+  //   const { name, price, providerId, thumbnail } = data;
+  //   const newCartItem: BookedService = {
+  //     id: uuid(),
+  //     cancelationPolicyId:service,
+  //   };
 
-    await this.prisma.cart.update({
-      where: {
-        ownerId: user.id,
-      },
-      data: {
-        cartItems: {
-          push: newCartItem,
-        },
-      },
-    });
+  //   await this.prisma.cart.update({
+  //     where: {
+  //       ownerId: user.id,
+  //     },
+  //     data: {
+  //       cartServices: {
+  //         push: newCartItem,
+  //       },
+  //     },
+  //   });
 
-    return newCartItem;
-  }
+  //   return newCartItem;
+  // }
 
   async removeItem(
     user: AuthorizationDecodedUser,
@@ -242,13 +233,26 @@ export class ShoppingCartService {
         ownerId: user.id,
       },
       data: {
-        cartItems: {
-          deleteMany: {
-            where: {
-              itemId: input.itemId,
-            },
-          },
-        },
+        cartProducts:
+          input.type === 'product'
+            ? {
+                deleteMany: {
+                  where: {
+                    id: input.itemId,
+                  },
+                },
+              }
+            : undefined,
+        cartServices:
+          input.type === 'service'
+            ? {
+                deleteMany: {
+                  where: {
+                    id: input.itemId,
+                  },
+                },
+              }
+            : undefined,
       },
     });
 
@@ -261,7 +265,8 @@ export class ShoppingCartService {
         ownerId,
       },
       data: {
-        cartItems: [],
+        cartProducts: [],
+        cartServices: [],
       },
     });
   }
@@ -292,6 +297,7 @@ export class ShoppingCartService {
       convertedAmount,
       currency,
       convertedToCurrency,
+      voucherId,
     } = data;
 
     if (!applyable)
@@ -313,13 +319,7 @@ export class ShoppingCartService {
         ownerId: userId,
       },
       data: {
-        appliedVoucher: {
-          amount,
-          code,
-          currency,
-          convertedAmount,
-          convertedToCurrency,
-        },
+        appliedVoucherId: voucherId,
       },
     });
   }
@@ -331,7 +331,7 @@ export class ShoppingCartService {
           ownerId: userId,
         },
         data: {
-          appliedVoucher: null,
+          appliedVoucherId: null,
         },
       });
     } catch (error) {

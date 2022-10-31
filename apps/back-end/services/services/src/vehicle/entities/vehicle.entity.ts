@@ -1,8 +1,9 @@
 import { ServiceCancelationPolicy, ServicePresentation } from '@entities';
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { VehicleProperties } from './vehicleProperties.entity';
 
 @ObjectType()
+@Directive('@key(fields:"id")')
 export class Vehicle {
   @Field(() => ID)
   id: string;

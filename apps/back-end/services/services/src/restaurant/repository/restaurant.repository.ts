@@ -1,5 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { ElasticsearchService } from '@nestjs/elasticsearch';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { getTranslatedResource, UserPreferedLang } from 'nest-utils';
 import {
   Prisma,
@@ -7,7 +6,7 @@ import {
 } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 
-import { SearchFilteredRestaurantInput } from '../dto';
+import { GetRestaurantInput, SearchFilteredRestaurantInput } from '../dto';
 import { Restaurant } from '../entities';
 import { GqlRestaurantAggregationSelectedFields } from '../types/gqlSelectedFields';
 import { RestaurantElasticSearchRepository } from './restaurant.elastic.repository';
@@ -100,7 +99,33 @@ export class RestaurantRepository {
       ? rests.map((v) => this.formatRestaurant(v, langId))
       : [];
   }
+  async getRestaurantById(
+    input: GetRestaurantInput,
+    userId: string,
+    langId: UserPreferedLang,
+  ): Promise<Restaurant> {
+    const restaurant = await this.checkRestaurantViewPremissions(
+      input.id,
+      userId,
+    );
+    return this.formatRestaurant(restaurant, langId);
+  }
 
+  private async checkRestaurantViewPremissions(
+    id: string,
+    userId: string | null,
+  ): Promise<PrismaRestaurantService> {
+    const res = await this.prisma.restaurantService.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (res.status !== 'active')
+      throw new ForbiddenException('this service is not active');
+
+    return res;
+  }
   formatRestaurant(
     input: PrismaRestaurantService,
     langId: UserPreferedLang,

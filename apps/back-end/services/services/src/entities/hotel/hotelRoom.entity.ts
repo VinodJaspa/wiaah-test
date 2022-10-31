@@ -1,4 +1,4 @@
-import { Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, ID, Int, ObjectType } from '@nestjs/graphql';
 import { ServiceDailyPrices } from '@entities';
 import {
   ServiceDiscount,
@@ -7,15 +7,16 @@ import {
   ServiceExtra,
   ServicePropertyMeasurements,
 } from '@entities';
-import { HotelServiceEntity } from './hotel.entity';
+import { Hotel } from './hotel.entity';
 
 @ObjectType()
+@Directive('@key(fields:"id")')
 export class HotelRoom {
   @Field(() => ID)
   id: string;
 
-  @Field(() => HotelServiceEntity, { nullable: true })
-  hotel?: HotelServiceEntity;
+  @Field(() => Hotel, { nullable: true })
+  hotel?: Hotel;
 
   @Field(() => ID)
   hotelId: string;

@@ -9,7 +9,7 @@ import {
 import { HotelRoom } from './hotelRoom.entity';
 
 @ObjectType()
-export class HotelServiceEntity {
+export class Hotel {
   @Field(() => ID)
   id: string;
 

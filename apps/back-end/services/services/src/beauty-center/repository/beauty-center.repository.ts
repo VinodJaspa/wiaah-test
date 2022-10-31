@@ -21,6 +21,20 @@ export class BeautyCenterRepository {
     private readonly elasticDbRepo: BeautyCenterElasticRepository,
   ) {}
 
+  async getBeautyCenterById(
+    id: string,
+    userId: string,
+    langId: UserPreferedLang,
+    selectedFields: GqlBeautyCenterSelectedFields,
+  ): Promise<BeautyCenter> {
+    const res = await this.prisma.beautyCenterService.findUnique({
+      where: {
+        id,
+      },
+    });
+    return this.formatBeautyCenterServiceData(res, langId);
+  }
+
   async searchFilteredBeautyCenter(
     input: SearchFilteredBeautyCenterInput,
     selectedFields: GqlBeautyCenterSelectedFields,

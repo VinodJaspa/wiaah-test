@@ -1,6 +1,10 @@
 export * from './impl';
-import { SearchFilteredBeautyCenterQueryHandler } from './handlers';
+import {
+  SearchFilteredBeautyCenterQueryHandler,
+  GetBeautyCenterByIdQueryHandler,
+} from './handlers';
 
 export const BeautyCenterQueryHandlers = [
   SearchFilteredBeautyCenterQueryHandler,
+  GetBeautyCenterByIdQueryHandler,
 ];

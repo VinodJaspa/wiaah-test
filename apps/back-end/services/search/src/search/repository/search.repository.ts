@@ -61,6 +61,7 @@ export class SearchRepository {
     query: string,
     langId: string,
   ): Promise<Localization[]> {
+    console.log('places repo');
     const ids = await this.elasticRepo.getPropertiesIdsAndTypesByLocationQuery(
       query,
     );

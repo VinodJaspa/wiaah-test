@@ -6,6 +6,7 @@ export class ApplyableVoucherMessage extends KafkaMessage<{
 }> {}
 
 export class ApplyableVoucherMessageReply extends KafkaMessageReply<{
+  voucherId: string;
   applyable: boolean;
   code: string;
   amount: number;

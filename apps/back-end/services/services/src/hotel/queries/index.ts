@@ -1,4 +1,10 @@
 export * from './impl';
-import { SearchHotelRoomLocationHandler } from './handlers';
+import {
+  SearchHotelRoomLocationHandler,
+  GetHotelByIdQueryHandler,
+} from './handlers';
 
-export const HotelQueryHandlers = [SearchHotelRoomLocationHandler];
+export const HotelQueryHandlers = [
+  SearchHotelRoomLocationHandler,
+  GetHotelByIdQueryHandler,
+];

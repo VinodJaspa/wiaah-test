@@ -1,4 +1,10 @@
 export * from './impl';
-import { SearchFilteredRestaurantQueryHandler } from './handlers/search-filtered-restaurant.handler';
+import {
+  SearchFilteredRestaurantQueryHandler,
+  GetRestuarntByIdQueryHandler,
+} from './handlers';
 
-export const RestaurantQueryHandlers = [SearchFilteredRestaurantQueryHandler];
+export const RestaurantQueryHandlers = [
+  SearchFilteredRestaurantQueryHandler,
+  GetRestuarntByIdQueryHandler,
+];

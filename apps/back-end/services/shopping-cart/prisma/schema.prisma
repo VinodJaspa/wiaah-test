@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./generated/client"
+  output   = "./generated/client"
 }
 
 datasource db {
@@ -11,33 +11,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Cart {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId String @unique
-  cartItems CartItem[]
-  appliedVoucher AppliedVoucher?
+  id               String          @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId          String          @unique
+  cartServices     BookedService[]
+  cartProducts     CartProduct[]
+  appliedVoucherId String?
+}
+
+type CartProduct {
+  id             String
+  productId      String
+  shippingRuleId String
+}
+
+// @id @default(auto()) @map("_id") @db.ObjectId
+
+type BookedService {
+  id                  String
+  serviceId           String
+  ownerId             String
+  type                String
+  checkin             DateTime?
+  checkout            DateTime?
+  duration            Int?
+  guests              Int
+  cancelationPolicyId String
+  dishsIds            String[]
+  extrasIds           String[]
+  treatmentsIds       String[]
+  roomId              String?
+  doctorId            String?
+  vehicleId           String?
 }
 
 type AppliedVoucher {
-  code String
-  amount Float
-  currency String
-  convertedAmount Float
+  code                String
+  amount              Float
+  currency            String
+  convertedAmount     Float
   convertedToCurrency String
 }
 
-type CartItem {
-  itemId String
-  providerId String?
-  itemType CartItemType
-  thumbnail String
-  name String
-  price Int
-  quantity Int
-}
-
 enum CartItemType {
-  product
   service
+  product
 }

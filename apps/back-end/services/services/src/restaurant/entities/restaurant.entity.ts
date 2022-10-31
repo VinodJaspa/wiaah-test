@@ -11,6 +11,7 @@ import {
   ID,
   registerEnumType,
   Float,
+  Directive,
 } from '@nestjs/graphql';
 import { ServicePaymentMethods, ServiceStatus } from 'prismaClient';
 import { RestaurantMenu } from './restaurant-menu.entity';
@@ -19,6 +20,7 @@ registerEnumType(ServiceStatus, { name: 'ServiceStatus' });
 registerEnumType(ServicePaymentMethods, { name: 'ServicePaymentMethods' });
 
 @ObjectType()
+@Directive('@key(fields:"id")')
 export class Restaurant {
   @Field(() => ID)
   id: string;

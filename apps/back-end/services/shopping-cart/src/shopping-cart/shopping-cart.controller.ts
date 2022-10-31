@@ -44,7 +44,7 @@ export class ShoppingCartController implements OnModuleInit {
     @Payload() payload: KafkaPayload<GetShoppingCartItemsMessage>,
   ): Promise<GetShoppingCartItemsMessageReply> {
     try {
-      const { cartItems, appliedVoucher } =
+      const { cartProduct, cartServices, appliedVoucher } =
         await this.shoppingCartService.getShoppingCartByOwnerId(
           payload.value.input.ownerId,
         );
@@ -53,19 +53,14 @@ export class ShoppingCartController implements OnModuleInit {
         success: true,
         error: null,
         data: {
-          items: cartItems.map(({ itemId, name, price, providerId }) => ({
-            id: itemId,
-            name,
-            price,
-            shopId: providerId,
-          })),
+          items: [],
           voucher: appliedVoucher,
         },
       });
     } catch (err) {
       return new GetShoppingCartItemsMessageReply({
         success: false,
-        error: 'something went wrong',
+        error: new Error('something went wrong'),
         data: null,
       });
     }

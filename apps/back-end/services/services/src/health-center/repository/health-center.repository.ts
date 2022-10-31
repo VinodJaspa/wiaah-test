@@ -27,6 +27,19 @@ export class HealthCenterRepository {
     private readonly elasticRepo: HealthCenterElasticRepository,
   ) {}
 
+  async getHealthCenterbyId(
+    id: string,
+    userId: string,
+    langId: UserPreferedLang,
+  ): Promise<HealthCenter> {
+    const res = await this.prisma.healthCenterService.findUnique({
+      where: {
+        id,
+      },
+    });
+    return this.formatHealthCenterService(res, langId);
+  }
+
   async searchFilteredHealthCenters(
     input: SearchHealthCenterInput,
     selectedFields: GqlHealthCenterSelectedFields,

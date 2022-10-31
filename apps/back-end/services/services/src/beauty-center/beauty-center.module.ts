@@ -8,7 +8,10 @@ import {
   TreatmentCategoryService,
 } from '@beauty-center';
 import { CqrsModule } from '@nestjs/cqrs';
-import { BeautyCenterRepositories } from './repository';
+import {
+  BeautyCenterElasticRepository,
+  BeautyCenterRepository,
+} from './repository';
 import { BeautyCenterEventHandlers } from './events';
 import { BeautyCenterCommndHandlers } from './commands';
 import { BeautyCenterSagas } from './sagas';
@@ -20,7 +23,8 @@ import { BeautyCenterSagas } from './sagas';
     TreatmentCategoryService,
     BeautyCenterService,
     PrismaService,
-    ...BeautyCenterRepositories,
+    BeautyCenterElasticRepository,
+    BeautyCenterRepository,
     ...BeautyCenterEventHandlers,
     ...BeautyCenterCommndHandlers,
     ...BeautyCenterSagas,

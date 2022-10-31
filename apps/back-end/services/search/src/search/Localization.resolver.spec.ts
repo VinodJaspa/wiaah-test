@@ -1,10 +1,8 @@
 import { Test } from '@nestjs/testing';
 import { KAFKA_MESSAGES, mockedUser, SERVICES } from 'nest-utils';
-import { ClientKafka } from '@nestjs/microservices';
 
 import { LocalizationResolver } from './Localization.resolver';
 import { SearchElasticRepository, SearchRepository } from './repository';
-import { SearchModule } from './search.module';
 import { CqrsModule } from '@nestjs/cqrs';
 import { searchCommandHandlers } from './commands';
 import {
@@ -294,7 +292,9 @@ describe('Localization Tests', () => {
         type: 'hotel',
       },
     ];
+
     mockElasticGetPropertiesIdsByTypeQuery.mockReturnValue(mockSearchData);
+
     const mockfilteredData = mockSearchData.reduce((acc, curr) => {
       const typeAcc = Array.isArray(acc[curr.type]) ? [...acc[curr.type]] : [];
       return { ...acc, [curr.type]: [...typeAcc, curr.dbId] };

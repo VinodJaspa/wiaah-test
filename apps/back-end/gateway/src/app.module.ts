@@ -4,18 +4,16 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
 import { subgraphs, parseCookies } from '@lib';
 import * as jwt from 'jsonwebtoken';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloGatewayDriverConfig>({
       driver: ApolloGatewayDriver,
       gateway: {
-        buildService({ name, url }) {
+        buildService({ url }) {
           return new RemoteGraphQLDataSource({
             url,
-            willSendRequest({ context, kind, request }) {
+            willSendRequest({ context, request }) {
               if (typeof context['req'] !== 'undefined') {
                 // @ts-ignore
                 if (context?.req?.headers && context?.req?.headers['cookie']) {
@@ -70,7 +68,5 @@ import { AppService } from './app.service';
       },
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

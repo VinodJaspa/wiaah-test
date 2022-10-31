@@ -1,5 +1,11 @@
 import { UseGuards } from '@nestjs/common';
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Args,
+  Mutation,
+  ResolveReference,
+} from '@nestjs/graphql';
 import {
   AuthorizationDecodedUser,
   GetLang,
@@ -16,16 +22,18 @@ import {
   CreateHealthCenterSpecialityInput,
   HealthCenterService,
 } from '@health-center';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
+
 import { SearchHealthCenterInput } from './dto';
-import { CommandBus } from '@nestjs/cqrs';
 import { SearchHealthCenterQuery } from './queries/impl/search-health-centers.query';
 import { GqlHealthCenterSelectedFields } from './types';
+import { GetHealthCenterByIdQuery } from './queries';
 
 @Resolver(() => HealthCenter)
 export class HealthCenterResolver {
   constructor(
     private readonly healthCenterService: HealthCenterService,
-    private readonly commandBus: CommandBus,
+    private readonly queryBus: QueryBus,
   ) {}
 
   @Query(() => HealthCenter)
@@ -71,11 +79,28 @@ export class HealthCenterResolver {
     @GqlSelectedQueryFields() selectedFields: GqlHealthCenterSelectedFields,
     @GetLang() langId: UserPreferedLang,
   ) {
-    return this.commandBus.execute<SearchHealthCenterQuery, HealthCenter[]>(
+    return this.queryBus.execute<SearchHealthCenterQuery, HealthCenter[]>(
       new SearchHealthCenterQuery({
         langId,
         selectedFields,
         input,
+      }),
+    );
+  }
+
+  @ResolveReference()
+  resloveRef(
+    { id }: { __typename: string; id: string },
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @GqlSelectedQueryFields() fields: GqlHealthCenterSelectedFields,
+    @GetLang() langId: UserPreferedLang,
+  ) {
+    return this.queryBus.execute<GetHealthCenterByIdQuery>(
+      new GetHealthCenterByIdQuery({
+        id,
+        langId,
+        selectedFields: fields,
+        userId: user.id,
       }),
     );
   }

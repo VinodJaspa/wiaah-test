@@ -34,7 +34,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       },
     ]),
   ],
-  providers: [ShoppingCartResolver, ShoppingCartService, PrismaService],
+  providers: [ShoppingCartResolver, ShoppingCartService],
   controllers: [ShoppingCartController],
 })
 export class ShoppingCartModule {}

@@ -12,6 +12,7 @@ import {
   ID,
   Float,
   registerEnumType,
+  Directive,
 } from '@nestjs/graphql';
 import {
   ServicePaymentMethods,
@@ -23,6 +24,7 @@ import { BeautyCenterTreatment } from './beauty-center-treatment.entity';
 registerEnumType(ServiceTypeOfSeller, { name: 'ServiceTypeOfSeller' });
 
 @ObjectType()
+@Directive('@key(fields:"id")')
 export class BeautyCenter {
   @Field(() => ID)
   id: string;
