@@ -1,15 +1,26 @@
 import { Module } from '@nestjs/common';
-import { StripeBillingService } from './stripe-billing.service';
-import { StripeBillingResolver } from './stripe-billing.resolver';
-import { StripeModule } from 'src/stripe/stripe.module';
-import { BillingAddressModule } from 'src/billing-address/billing-address.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { CqrsModule } from '@nestjs/cqrs';
+
+import { StripeBillingService } from './stripe-billing.service';
+import { StripeBillingResolver } from './stripe-billing.resolver';
+import { StripeModule } from '../stripe/stripe.module';
+import { BillingAddressModule } from '../billing-address/billing-address.module';
+import { StripeBillingCommandsHandlers } from './commands';
+import { StripeBillingEventsHandlers } from './events';
+import { StripeBillingSagas } from './sagas';
+import { STRIPE_INJECT_TOKEN } from '../constants';
+import Stripe from 'stripe';
 
 @Module({
   imports: [
+    CqrsModule,
     BillingAddressModule,
-    StripeModule.forRoot({ apiKey: process.env.STRIPE_API_KEY }),
+    StripeModule.forRoot({
+      apiKey: process.env.STRIPE_API_SECRET_KEY,
+      application_cut_percent: parseInt(process.env.APP_CUT_PERCENT),
+    }),
     ClientsModule.register([
       {
         name: SERVICES.BILLING_SERVICE.token,
@@ -26,6 +37,12 @@ import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
       },
     ]),
   ],
-  providers: [StripeBillingResolver, StripeBillingService],
+  providers: [
+    StripeBillingResolver,
+    StripeBillingService,
+    ...StripeBillingCommandsHandlers,
+    ...StripeBillingEventsHandlers,
+    ...StripeBillingSagas,
+  ],
 })
 export class StripeBillingModule {}

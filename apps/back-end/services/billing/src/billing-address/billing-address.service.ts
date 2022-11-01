@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateBillingAddressInput, UpdateBillingAddressInput } from '@dto';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'prismaService';
 import { BillingAddress, BillingAddressCollection } from '@entities';
 import {
   BillingAddressCollection as PrismaBillingAddressesCollection,

@@ -6,27 +6,20 @@ import {
   ApolloFederationDriverConfig,
   ApolloFederationDriver,
 } from '@nestjs/apollo';
-import {
-  getUserFromRequest,
-  KAFKA_BROKERS,
-  KAFKA_SERVICE_CLIENTID,
-  KAFKA_SERVICE_GROUPID,
-  KAFKA_SERVICE_TOKEN,
-} from 'nest-utils';
+import { getUserFromRequest } from 'nest-utils';
 import { StripeBillingModule } from './stripe-billing/stripe-billing.module';
 import { StripeModule } from './stripe/stripe.module';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { BalanceModule } from './balance/balance.module';
 
 @Module({
   imports: [
-    TransactionsModule,
-    BillingAddressModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: true,
       context: ({ req }) => ({ req, user: getUserFromRequest(req) }),
     }),
+    TransactionsModule,
+    BillingAddressModule,
     StripeBillingModule,
     StripeModule,
     BalanceModule,

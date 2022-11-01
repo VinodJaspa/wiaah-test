@@ -76,12 +76,8 @@ export class ShoppingCartResolver implements Hooks {
       KAFKA_MESSAGES.VOUCHERS_MESSAGES.isApplyableVoucher,
     );
     await this.eventsClient.connect();
-    await this.eventsClient.connect();
-    await this.eventsClient.connect();
   }
   async onModuleDestroy() {
-    await this.eventsClient.close();
-    await this.eventsClient.close();
     await this.eventsClient.close();
   }
 }

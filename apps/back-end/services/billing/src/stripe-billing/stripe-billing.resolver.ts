@@ -1,6 +1,5 @@
-import { CheckoutInput } from '@dto';
 import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation } from '@nestjs/graphql';
 import { ClientKafka } from '@nestjs/microservices';
 import {
   AuthorizationDecodedUser,
@@ -9,10 +8,11 @@ import {
   KAFKA_MESSAGES,
   SERVICES,
 } from 'nest-utils';
+
 import { StripeBillingService } from './stripe-billing.service';
 
 @Resolver()
-@UseGuards(new GqlAuthorizationGuard(['buyer', 'seller']))
+@UseGuards(new GqlAuthorizationGuard(['seller']))
 export class StripeBillingResolver implements OnModuleInit {
   constructor(
     private readonly stripeBillingService: StripeBillingService,
@@ -20,43 +20,43 @@ export class StripeBillingResolver implements OnModuleInit {
     private readonly eventsCLient: ClientKafka,
   ) {}
 
-  @Mutation(() => Boolean)
-  async createConnectedAccount() {
+  @Mutation(() => String)
+  async createConnectedAccount(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
     try {
-      await this.stripeBillingService.createdStripeConnectedAccount();
-
-      return true;
-    } catch {
-      return false;
+      return await this.stripeBillingService.createStripeConnectedAccount(user);
+    } catch (err) {
+      throw err;
     }
   }
-  @Mutation(() => Boolean)
+
+  @Mutation(() => String)
+  async createPaymentIntent(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<string> {
+    return await this.stripeBillingService.checkout(user);
+  }
+
+  @Query(() => Boolean)
   async getConnectedAccounts() {
     try {
-      await this.stripeBillingService.getStripeConnectedAccounts();
+      const res = await this.stripeBillingService.getStripeConnectedAccounts();
 
+      console.log(res);
       return true;
-    } catch {
+    } catch (err) {
+      console.log(err);
       return false;
     }
-  }
-
-  @Mutation(() => Boolean)
-  checkout(
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-    @Args('checkoutInput', { nullable: true }) checkoutInput: CheckoutInput,
-  ) {
-    return this.stripeBillingService.checkout(user.id, checkoutInput);
-  }
-
-  @Mutation(() => Boolean)
-  setupStripeAccount() {
-    return this.stripeBillingService.setupStripeConnectedAccount();
   }
 
   async onModuleInit() {
-    await this.eventsCLient.subscribeToResponseOf(
+    this.eventsCLient.subscribeToResponseOf(
       KAFKA_MESSAGES.SHOPPING_CART_MESSAGES.getShoppingCartItems,
+    );
+    this.eventsCLient.subscribeToResponseOf(
+      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.hasStripeId,
     );
     await this.eventsCLient.connect();
   }

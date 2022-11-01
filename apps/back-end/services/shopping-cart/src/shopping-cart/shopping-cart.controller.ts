@@ -12,12 +12,12 @@ import {
   SERVICES,
 } from 'nest-utils';
 import {
-  CreateShoppingCartEvent,
   GetShoppingCartItemsMessage,
   GetShoppingCartItemsMessageReply,
   KafkaPayload,
   NewAccountCreatedEvent,
 } from 'nest-dto';
+
 import { ShoppingCartService } from './shopping-cart.service';
 
 @Controller()
@@ -44,7 +44,7 @@ export class ShoppingCartController implements OnModuleInit {
     @Payload() payload: KafkaPayload<GetShoppingCartItemsMessage>,
   ): Promise<GetShoppingCartItemsMessageReply> {
     try {
-      const { cartProduct, cartServices, appliedVoucher } =
+      const { cartProduct, cartServices, appliedVoucherId } =
         await this.shoppingCartService.getShoppingCartByOwnerId(
           payload.value.input.ownerId,
         );
@@ -53,8 +53,12 @@ export class ShoppingCartController implements OnModuleInit {
         success: true,
         error: null,
         data: {
-          items: [],
-          voucher: appliedVoucher,
+          items: cartProduct.map((v) => ({
+            id: v.id,
+            qty: 1,
+            type: 'product',
+          })),
+          voucherId: appliedVoucherId,
         },
       });
     } catch (err) {

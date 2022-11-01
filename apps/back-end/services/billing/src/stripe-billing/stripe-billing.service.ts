@@ -3,26 +3,39 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  OnModuleInit,
+  InternalServerErrorException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import {
+  AuthorizationDecodedUser,
   KafkaMessageHandler,
   KAFKA_MESSAGES,
-  KAFKA_SERVICE_TOKEN,
   SERVICES,
 } from 'nest-utils';
-import { BillingAddressService } from 'src/billing-address/billing-address.service';
-import { StripeService } from 'src/stripe/stripe.service';
 import {
+  GetProductsCheckoutDataMessage,
+  GetProductsCheckoutDataMessageReply,
+  GetServicesCheckoutDataMessage,
+  GetServicesCheckoutDataMessageReply,
   GetShoppingCartItemsMessage,
   GetShoppingCartItemsMessageReply,
-  GetShopVouchersMessageReply,
+  UserHasStripeAccountMessage,
+  UserHasStripeAccountMessageReply,
 } from 'nest-dto';
+import { CommandBus } from '@nestjs/cqrs';
 
-interface FormatedData<TData> {
-  shopId: string;
-  products: TData;
+import { BillingAddressService } from '../billing-address/billing-address.service';
+import { StripeService } from '../stripe/stripe.service';
+import { CreateStripeConnectedAccountCommand } from './commands';
+
+interface FormatedData {
+  providerId: string;
+  providerStripeId: string;
+  items: {
+    id: string;
+    title: string;
+  }[];
   totalPrice: number;
 }
 
@@ -33,21 +46,71 @@ export class StripeBillingService {
     private readonly billingAddressService: BillingAddressService,
     @Inject(SERVICES.BILLING_SERVICE.token)
     private readonly eventsClient: ClientKafka,
+    private readonly commandBus: CommandBus,
   ) {}
 
-  createdStripeConnectedAccount() {
-    return this.StripeService.createdConnectedAccount();
+  servicesType = [
+    'hotel-room',
+    'restaurant',
+    'health-center',
+    'beauty-center',
+    'vehicle',
+    'holiday-rentals',
+  ];
+
+  productsType = ['shop', 'product'];
+
+  async createStripeConnectedAccount(
+    user: AuthorizationDecodedUser,
+  ): Promise<{ url: string }> {
+    const stripeId = user.stripeId;
+
+    if (stripeId)
+      throw new UnprocessableEntityException(
+        'this account already has an stripe connected account',
+      );
+
+    const checkHasStripeId = await this.userHasStripeAccount(user.id);
+
+    if (checkHasStripeId)
+      throw new UnprocessableEntityException(
+        'this account already has an stripe connected account',
+      );
+
+    const res = await this.commandBus.execute<
+      CreateStripeConnectedAccountCommand,
+      string
+    >(new CreateStripeConnectedAccountCommand(user.id));
+
+    return {
+      url: res,
+    };
   }
   getStripeConnectedAccounts() {
     return this.StripeService.getConnectedAccounts();
   }
 
-  async checkout(userId: string, input: CheckoutInput) {
-    // const { billingAddressId } = input;
-    // const {} = await this.billingAddressService.getBillingAddressById(
-    //   userId,
-    //   billingAddressId,
-    // );
+  async userHasStripeAccount(userId: string): Promise<boolean> {
+    const {
+      results: { data, error, success },
+    } = await KafkaMessageHandler<
+      string,
+      UserHasStripeAccountMessage,
+      UserHasStripeAccountMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.hasStripeId,
+      new UserHasStripeAccountMessage({
+        userId,
+      }),
+    );
+
+    if (!success) throw error;
+
+    return data.hasAccount;
+  }
+
+  async checkout(user: AuthorizationDecodedUser): Promise<string> {
     const {
       results: { data, error, success },
     } = await KafkaMessageHandler<
@@ -58,40 +121,117 @@ export class StripeBillingService {
       this.eventsClient,
       KAFKA_MESSAGES.SHOPPING_CART_MESSAGES.getShoppingCartItems,
       new GetShoppingCartItemsMessage({
-        ownerId: userId,
+        ownerId: user.id,
       }),
     );
 
-    if (!success) throw new Error(error);
-    const { items, voucher } = data;
+    if (!success) throw error;
+
+    const { items, voucherId } = data;
+
     if (items.length < 1) throw new BadRequestException('empty shopping cart');
 
-    const formatedData: FormatedData<typeof items>[] = items.reduce(
-      (acc, curr) => {
-        const shopIdx = acc.findIndex((shop) => shop.shopId === curr.shopId);
-        const shopExists = shopIdx > -1;
-        if (shopExists) {
-          acc[shopIdx].products.push(curr);
-          acc[shopIdx].totalPrice += curr.price;
-          return acc;
-        } else {
-          return [
-            { shopId: curr.shopId, products: [curr], totalPrice: curr.price },
-            ...acc,
-          ];
-        }
-      },
-      [] as FormatedData<typeof items>[],
+    const {
+      results: { data: scData, error: scError, success: scSuccess },
+    } = await KafkaMessageHandler<
+      string,
+      GetServicesCheckoutDataMessage,
+      GetServicesCheckoutDataMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.SERVICES_MESSAGES.getServicesCheckoutData,
+      new GetServicesCheckoutDataMessage({
+        services: items.filter((v) => this.servicesType.includes(v.type)),
+      }),
     );
-    const totalPrice = formatedData.reduce((acc, curr) => {
-      return acc + curr.totalPrice;
-    }, 0);
 
-    console.log('formated data', formatedData, voucher, totalPrice);
-  }
+    const {
+      results: { data: pcData, error: pcError, success: pcSuccess },
+    } = await KafkaMessageHandler<
+      string,
+      GetProductsCheckoutDataMessage,
+      GetProductsCheckoutDataMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.PRODUCTS_MESSAGES.getProductsCheckoutData,
+      new GetProductsCheckoutDataMessage({
+        products: items
+          .filter((v) => this.productsType.includes(v.type))
+          .map((v) => ({
+            id: v.id,
+            qty: v.qty,
+          })),
+      }),
+    );
 
-  async setupStripeConnectedAccount() {
-    const accounts = await this.getStripeConnectedAccounts();
-    return this.StripeService.createdStripeAccountLink(accounts[0].id);
+    const formatedItems: FormatedData[] = scData.services
+      .reduce((acc, curr) => {
+        const seller: FormatedData = acc.find(
+          (v) => v.providerId === curr.sellerId,
+        );
+        const updatedSeller: FormatedData = seller
+          ? {
+              ...seller,
+              items: [...seller.items, { id: curr.id, title: curr.title }],
+            }
+          : {
+              providerId: curr.sellerId,
+              providerStripeId: curr.sellerStripeId,
+              totalPrice: curr.price,
+              items: [{ id: curr.id, title: curr.title }],
+            };
+
+        return [
+          ...acc.filter((v) => v.providerId !== seller.providerId),
+          updatedSeller,
+        ];
+      }, [] as FormatedData[])
+      .concat(
+        pcData.products.reduce((acc, curr) => {
+          const seller: FormatedData = acc.find(
+            (v) => v.providerId === curr.sellerId,
+          );
+
+          const updatedProduct: FormatedData = seller
+            ? {
+                ...seller,
+                items: [...seller.items, { id: curr.id, title: curr.title }],
+              }
+            : {
+                providerId: curr.sellerId,
+                providerStripeId: curr.sellerStripeId,
+                totalPrice: curr.price,
+                items: [{ id: curr.id, title: curr.title }],
+              };
+
+          return [
+            ...(seller
+              ? acc.filter((v) => v.providerId === seller.providerId)
+              : acc),
+            updatedProduct,
+          ];
+        }, [] as FormatedData[]),
+      );
+
+    const allunique: boolean = formatedItems
+      .reduce((acc, curr, _, arr) => {
+        const items = arr.filter((v) => v.providerId === curr.providerId);
+        return acc.concat(items.length === 1 ? true : false);
+      }, [] as boolean[])
+      .every((v) => v);
+
+    console.log({ formatedItems, allunique });
+
+    if (!allunique) throw new InternalServerErrorException();
+
+    const res = await this.StripeService.createPaymentIntent({
+      buyerId: user.id,
+      items: formatedItems.map((v) => ({
+        sellerStripeId: v.providerStripeId,
+        totalPrice: v.totalPrice,
+      })),
+    });
+
+    return res.client_secret;
   }
 }

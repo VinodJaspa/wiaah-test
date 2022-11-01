@@ -58,6 +58,6 @@ export class ShoppingCart {
   @Field(() => [CartProduct], { nullable: true })
   cartProduct?: CartProduct[];
 
-  @Field(() => AppliedVoucher, { nullable: true })
-  appliedVoucher?: AppliedVoucher;
+  @Field(() => ID, { nullable: true })
+  appliedVoucherId?: String;
 }

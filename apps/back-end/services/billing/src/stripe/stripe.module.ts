@@ -3,6 +3,8 @@ import { StripeService } from './stripe.service';
 import { DynamicModule } from '@nestjs/common';
 import { StripeForRootOptions } from './types';
 import { ConfigModule } from '@nestjs/config';
+import { STRIPE_INJECT_TOKEN } from '../constants';
+import Stripe from 'stripe';
 
 @Module({})
 export class StripeModule {
@@ -14,6 +16,13 @@ export class StripeModule {
         {
           provide: 'options',
           useValue: options,
+        },
+        {
+          provide: STRIPE_INJECT_TOKEN,
+          useValue: new Stripe(options.apiKey, {
+            apiVersion: '2020-08-27',
+            typescript: true,
+          }),
         },
       ],
       imports: [ConfigModule.forRoot()],

@@ -25,6 +25,7 @@ export const KAFKA_EVENTS = {
   BILLING_EVNETS: {
     balanceCreated: "balance.created",
     transactionCreated: "transaction.created",
+    stripeAccountCreated: "stripe.account.created",
   },
   VOUCHER_EVENTS: {
     voucherCreated: "voucher.created",
@@ -71,12 +72,14 @@ export const KAFKA_MESSAGES = {
     isSellerAccount: "is.seller.account",
     getUserShopId: "get.user.store.id",
     getAccountById: "get.account.by.id",
+    hasStripeId: "user.has.stripe.id",
   },
   PRODUCTS_MESSAGES: {
     productReviewable: "is.product.reviewable",
     isProductAddable: "is.product.addable",
     getProductMetaData: "get.product.metadata",
     getProductsMetaData: "get.products.metadata",
+    getProductsCheckoutData: "get.products.checkout.data",
   },
   SHOP_MESSAGES: {
     isOwnerOfShop: "is.owner.of.shop",
@@ -85,6 +88,7 @@ export const KAFKA_MESSAGES = {
   SERVICES_MESSAGES: {
     isServiceAddable: "is.service.addable",
     getServiceMetaData: "get.service.metadata",
+    getServicesCheckoutData: "get.services.checkout.data",
     getServiceOpenTimeData: (serviceType: string) =>
       `get.service.open.tiem.data-${serviceType}`,
   },

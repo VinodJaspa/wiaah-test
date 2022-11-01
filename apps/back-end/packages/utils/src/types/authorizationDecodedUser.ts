@@ -8,7 +8,10 @@ export class AuthorizationDecodedUser {
   shopId: string | null;
 
   @IsString()
-  accountType: AccountType;
+  stripeId: string;
+
+  @IsString({ always: false })
+  accountType?: AccountType;
 
   @IsString()
   firstName: string;

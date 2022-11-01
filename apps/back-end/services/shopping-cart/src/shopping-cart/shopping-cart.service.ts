@@ -247,9 +247,7 @@ export class ShoppingCartService {
           input.type === 'service'
             ? {
                 deleteMany: {
-                  where: {
-                    id: input.itemId,
-                  },
+                  id: input.itemId,
                 },
               }
             : undefined,
@@ -266,7 +264,9 @@ export class ShoppingCartService {
       },
       data: {
         cartProducts: [],
-        cartServices: [],
+        cartServices: {
+          deleteMany: {},
+        },
       },
     });
   }

@@ -25,10 +25,10 @@ type CartProduct {
   shippingRuleId String
 }
 
-// @id @default(auto()) @map("_id") @db.ObjectId
 
-type BookedService {
-  id                  String
+model BookedService {
+  id                  String @id @default(auto()) @map("_id") @db.ObjectId
+  ownerCart           Cart @relation(fields: [ownerId],references: [ownerId])
   serviceId           String
   ownerId             String
   type                String
