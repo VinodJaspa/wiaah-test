@@ -13,7 +13,7 @@ export interface ChatRoomProps {
 export const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
   const { data, isLoading, isError } = useGetChatRoomData(roomId);
   return (
-    <div className="flex justify-between h-full flex-col">
+    <div className="flex justify-between h-full p-4 flex-col">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         {data && (
           <>

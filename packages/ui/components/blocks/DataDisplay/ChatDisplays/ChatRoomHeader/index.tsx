@@ -47,7 +47,7 @@ export const ChatRoomHeader: React.FC<ChatRoomHeaderProps> = ({
     router.push(router.asPath.split("?")[0]);
   }
   return (
-    <div className="flex items-center gap-2 p-2 border-t-2 border-gray-200 justify-between">
+    <div className="flex items-center gap-2 p-2 border-gray-200 justify-between">
       <div className="flex items-center gap-2">
         {isMobile && (
           <BiChevronLeft

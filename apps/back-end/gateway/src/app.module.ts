@@ -13,7 +13,8 @@ import * as jwt from 'jsonwebtoken';
         buildService({ url }) {
           return new RemoteGraphQLDataSource({
             url,
-            willSendRequest({ context, request }) {
+            willSendRequest({ context, request, kind }) {
+              console.log('gateway req', context, request, kind);
               if (typeof context['req'] !== 'undefined') {
                 // @ts-ignore
                 if (context?.req?.headers && context?.req?.headers['cookie']) {

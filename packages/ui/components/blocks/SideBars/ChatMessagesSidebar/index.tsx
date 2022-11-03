@@ -20,7 +20,7 @@ export interface ChatMessagesSideBarProps {
 }
 
 export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
-  props,
+  props: { className, ...rest },
   onCardClick,
 }) => {
   const { t } = useTranslation();
@@ -31,7 +31,7 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
     visit((r) => r.addPath("/"));
   }
   return (
-    <div className="flex flex-col gap-4 shadow w-full" {...props}>
+    <div className={`${className} flex flex-col gap-4 shadow w-full`} {...rest}>
       <div className="flex items-center gap-2 font-bold text-3xl w-full justify-between px-2">
         <div className="flex items-center gap-2">
           <ArrowLeftIcon
@@ -44,7 +44,7 @@ export const ChatMessagesSideBar: React.FC<ChatMessagesSideBarProps> = ({
           <EditIcon className="text-[0.8em] text-white " />
         </Button>
       </div>
-      <ChatSearchInput className="px-4" />
+      <ChatSearchInput className="px-2" />
       <div className="noScroll flex flex-col overflow-scroll">
         {userCards.map((cardData, i) => (
           <>

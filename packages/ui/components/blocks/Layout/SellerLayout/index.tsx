@@ -277,7 +277,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
             {children}
           </main>
           {!isMobile && (
-            <div className="fixed bottom-0 w-screen bg-white right-0">
+            <div className="bg-white">
               <SocialFooter copyRightYear={2022} />
             </div>
           )}
@@ -381,7 +381,7 @@ const SellerNavLinks: HeaderNavLink[] = [
     icon: IoSettingsOutline,
   },
   {
-    icon: ()=> <StarOutlineIcon />,
+    icon: () => <StarOutlineIcon />,
     link: {
       href: "/saved",
       name: {
