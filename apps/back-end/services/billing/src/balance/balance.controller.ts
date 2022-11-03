@@ -33,7 +33,7 @@ export class BalanceController {
       return new GetUserCashbackBalanceMessageReply({
         success: false,
         data: null,
-        error: formatCaughtError(err),
+        error: new Error(formatCaughtError(err)),
       });
     }
   }

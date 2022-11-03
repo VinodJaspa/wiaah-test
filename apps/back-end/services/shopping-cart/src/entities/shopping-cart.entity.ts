@@ -1,44 +1,63 @@
-import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
-import { CartItemType } from '@prisma-client';
+import {
+  ObjectType,
+  Field,
+  ID,
+  registerEnumType,
+  Directive,
+} from '@nestjs/graphql';
 import { AppliedVoucher } from '@entities';
-
-registerEnumType(CartItemType, { name: 'CartItemType' });
+import { BookedService } from '../book-service';
 
 @ObjectType()
-export class CartItem {
-  @Field((type) => ID)
-  itemId: string;
+@Directive('@extends')
+@Directive('@key(fields:"id")')
+class Product {
+  @Field(() => ID)
+  @Directive('@external')
+  id: string;
+}
 
-  @Field((type) => CartItemType)
-  itemType: CartItemType;
+@ObjectType()
+@Directive('@extends')
+@Directive('@key(fields:"id")')
+class ShippingRule {
+  @Field(() => ID)
+  @Directive('@external')
+  id: string;
+}
 
-  @Field((type) => String)
-  thumbnail: string;
+@ObjectType()
+export class CartProduct {
+  @Field(() => String)
+  id: string;
 
-  @Field((type) => String)
-  name: string;
+  @Field(() => ID)
+  productId: string;
 
-  @Field((type) => Int)
-  price: number;
+  @Field(() => Product, { nullable: true })
+  product?: Product;
 
-  @Field((type) => Int)
-  quantity: number;
+  @Field(() => ID)
+  shippingRuleId: string;
 
-  @Field((type) => ID)
-  providerId: string;
+  @Field(() => ShippingRule, { nullable: true })
+  shippingRule?: ShippingRule;
 }
 
 @ObjectType()
 export class ShoppingCart {
-  @Field((type) => ID)
+  @Field(() => ID)
   id: string;
 
-  @Field((type) => ID)
+  @Field(() => ID)
   ownerId: string;
 
-  @Field((type) => [CartItem])
-  cartItems: CartItem[];
+  @Field(() => [BookedService], { nullable: true })
+  cartServices?: BookedService[];
 
-  @Field((type) => AppliedVoucher, { nullable: true })
-  appliedVoucher?: AppliedVoucher;
+  @Field(() => [CartProduct], { nullable: true })
+  cartProduct?: CartProduct[];
+
+  @Field(() => ID, { nullable: true })
+  appliedVoucherId?: String;
 }

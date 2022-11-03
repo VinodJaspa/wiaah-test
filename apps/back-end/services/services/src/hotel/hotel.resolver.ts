@@ -7,27 +7,27 @@ import {
   GqlCurrentUser,
   GqlSelectedQueryFields,
 } from 'nest-utils';
-import { HotelServiceEntity } from '@entities';
+import { Hotel } from '@entities';
 import { CreateHotelInput, GetHotelServiceArgs } from './dto';
 import { UseGuards } from '@nestjs/common';
 import { GqlHotelSelectedFields } from './types/selectedFields';
 
-@Resolver(() => HotelServiceEntity)
+@Resolver(() => Hotel)
 export class HotelResolver {
   constructor(private readonly hotelService: HotelService) {}
 
-  @Query(() => [HotelServiceEntity])
+  @Query(() => [Hotel])
   getHotels() {
     return this.hotelService.getHotels();
   }
 
-  @Query(() => HotelServiceEntity)
+  @Query(() => Hotel)
   getHotelService(
     @Args('getHotelServiceArgs') args: GetHotelServiceArgs,
     @GetLang() lang: string,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @GqlSelectedQueryFields() fields: GqlHotelSelectedFields,
-  ): Promise<HotelServiceEntity> {
+  ): Promise<Hotel> {
     return this.hotelService.getHotelWithRoomsById(
       args.id,
       user.id,
@@ -36,7 +36,7 @@ export class HotelResolver {
     );
   }
 
-  @Mutation(() => HotelServiceEntity)
+  @Mutation(() => Hotel)
   @UseGuards(new GqlAuthorizationGuard(['seller']))
   createHotelService(
     @Args('createHotelServiceArgs') args: CreateHotelInput,

@@ -7,14 +7,8 @@ export class GetShoppingCartItemsMessage extends KafkaMessage<{
 export class GetShoppingCartItemsMessageReply extends KafkaMessageReply<{
   items: {
     id: string;
-    shopId: string;
-    name: string;
-    price: number;
+    type: string;
+    qty: number;
   }[];
-  voucher: {
-    code: string;
-    amount: number;
-    currency: string;
-    convertedAmount: number;
-  };
+  voucherId?: String;
 }> {}

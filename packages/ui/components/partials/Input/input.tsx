@@ -54,7 +54,7 @@ export const Input: React.FC<InputProps> = ({
   );
 };
 
-export interface InputGroupProps extends HtmlDivProps {
+export interface InputGroupProps extends Omit<HtmlDivProps, "children"> {
   flushed?: boolean;
   children?: MaybeFn<InputContextValue>;
 }

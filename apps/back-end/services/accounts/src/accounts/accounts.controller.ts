@@ -1,4 +1,10 @@
-import { Controller, Inject, Logger, OnModuleInit } from '@nestjs/common';
+import {
+  Controller,
+  Inject,
+  Logger,
+  NotFoundException,
+  OnModuleInit,
+} from '@nestjs/common';
 import {
   ClientKafka,
   EventPattern,
@@ -24,6 +30,9 @@ import {
   GetAccountMetaDataByEmailMessageReply,
   KafkaPayload,
   PasswordChangedEvent,
+  StripeAccountCreatedEvent,
+  UserHasStripeAccountMessage,
+  UserHasStripeAccountMessageReply,
 } from 'nest-dto';
 @Controller()
 export class AccountsController implements OnModuleInit {
@@ -33,6 +42,24 @@ export class AccountsController implements OnModuleInit {
     @Inject(SERVICES.ACCOUNTS_SERVICE.token)
     private readonly eventsClient: ClientKafka,
   ) {}
+
+  @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.hasStripeId)
+  async hasStripeId(@Payload() value: UserHasStripeAccountMessage) {
+    try {
+      const {
+        input: { userId },
+      } = value;
+      const account = await this.accountService.findOne(userId);
+      if (!account)
+        throw new NotFoundException('user with the given id was not found');
+
+      return new UserHasStripeAccountMessageReply({
+        error: null,
+        success: true,
+        data: { hasAccount: typeof account.stripeId === 'string' },
+      });
+    } catch (error) {}
+  }
 
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.emailExists)
   async emailExists(
@@ -54,7 +81,7 @@ export class AccountsController implements OnModuleInit {
       return new EmailExistsMessageReply({
         success: false,
         data: null,
-        error: formatCaughtError(err),
+        error: err,
       });
     }
   }
@@ -80,7 +107,7 @@ export class AccountsController implements OnModuleInit {
       return new GetAccountMetaDataByEmailMessageReply({
         success: false,
         data: null,
-        error: formatCaughtError(error),
+        error: error,
       });
     }
   }
@@ -128,9 +155,20 @@ export class AccountsController implements OnModuleInit {
       return false;
     }
   }
+
+  @EventPattern(KAFKA_EVENTS.BILLING_EVNETS.stripeAccountCreated)
+  async addStripeId(@Payload() value: StripeAccountCreatedEvent) {
+    try {
+      const {
+        input: { stripeId, userId },
+      } = value;
+      await this.accountService.update(userId, { stripeId });
+    } catch (error) {
+      this.logger.error(error);
+    }
+  }
+
   async onModuleInit() {
-    await this.eventsClient.connect();
-    await this.eventsClient.connect();
     await this.eventsClient.connect();
   }
 }

@@ -1,5 +1,11 @@
-import { Resolver, Mutation, Args, Query, Int } from '@nestjs/graphql';
-import { RestaurantService } from './restaurant.service';
+import {
+  Resolver,
+  Mutation,
+  Args,
+  Query,
+  Int,
+  ResolveReference,
+} from '@nestjs/graphql';
 import { Restaurant } from '@restaurant';
 import {
   CreateRestaurantInput,
@@ -18,8 +24,16 @@ import {
 } from 'nest-utils';
 import { UseGuards } from '@nestjs/common';
 import { QueryBus } from '@nestjs/cqrs';
-import { SearchFilteredRestaurantQuery } from './queries';
-import { GqlRestaurantAggregationSelectedFields } from './types/gqlSelectedFields';
+
+import { RestaurantService } from './restaurant.service';
+import {
+  GetRestaurantByIdQuery,
+  SearchFilteredRestaurantQuery,
+} from './queries';
+import {
+  GqlRestaurantAggregationSelectedFields,
+  GqlRestaurantSelectedFields,
+} from './types/gqlSelectedFields';
 
 @Resolver(() => Restaurant)
 export class RestaurantResolver {
@@ -92,6 +106,23 @@ export class RestaurantResolver {
         langId,
         selectedFields,
         ...args,
+      }),
+    );
+  }
+
+  @ResolveReference()
+  resloveReference(
+    ref: { __typename: string; id: string },
+    @GetLang() langId: UserPreferedLang,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @GqlSelectedQueryFields() fields: GqlRestaurantSelectedFields,
+  ): Promise<Restaurant> {
+    return this.queryBus.execute<GetRestaurantByIdQuery>(
+      new GetRestaurantByIdQuery({
+        id: ref.id,
+        langId,
+        selectedFields: fields,
+        userId: user.id,
       }),
     );
   }

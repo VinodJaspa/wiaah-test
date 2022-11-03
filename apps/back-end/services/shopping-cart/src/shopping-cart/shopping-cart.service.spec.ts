@@ -1,4 +1,4 @@
-import { AddShoppingCartItemInput } from '@dto';
+import { AddShoppingCartServiceItemInput } from '@dto';
 import { AppliedVoucher, CartItem, ShoppingCart } from '@entities';
 import {
   BadRequestException,
@@ -113,7 +113,7 @@ describe('ShoppingCartService', () => {
   describe('add product', () => {
     let item: CartItem;
     let mockProductKafkaResponseData;
-    let mockProductInput: AddShoppingCartItemInput;
+    let mockProductInput: AddShoppingCartServiceItemInput;
 
     beforeEach(async () => {
       await service.createShoppingCart(mockedUser.id);
@@ -273,7 +273,7 @@ describe('ShoppingCartService', () => {
       },
     }));
 
-    const mockServiceInput: AddShoppingCartItemInput = {
+    const mockServiceInput: AddShoppingCartServiceItemInput = {
       itemId: 'test service',
       itemType: 'service',
       quantity: 2,

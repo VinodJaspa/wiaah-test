@@ -1,10 +1,10 @@
 import { QueryBase } from 'nest-utils';
+import { GqlVehicleSelectedFields } from '../../types';
 
-import { GqlVehicleServiceSelectedFields } from '../../';
-
-export class GetVehicleServiceByIdQuery extends QueryBase<
+export class GetVehicleByIdQuery extends QueryBase<
   {
     vehicleId: string;
+    userId: string;
   },
-  GqlVehicleServiceSelectedFields
+  GqlVehicleSelectedFields
 > {}

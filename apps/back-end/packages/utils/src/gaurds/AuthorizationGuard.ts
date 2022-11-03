@@ -10,7 +10,10 @@ import { AccountType, AuthorizationDecodedUser } from "../types";
 
 @Injectable()
 export class GqlAuthorizationGuard implements CanActivate {
-  constructor(private roles: AccountType[]) {}
+  roles: string[] = [];
+  constructor(roles: AccountType[]) {
+    this.roles = ["admin", ...roles];
+  }
   canActivate(
     context: ExecutionContext
   ): boolean | Promise<boolean> | Observable<boolean> {
@@ -21,7 +24,7 @@ export class GqlAuthorizationGuard implements CanActivate {
 
     if (this.roles) {
       if (this.roles.length === 0) return true;
-      if (!this.roles.includes(user.accountType)) {
+      if (!user.accountType || !this.roles.includes(user.accountType)) {
         throw new UnauthorizedException(
           "this account can not preform this action"
         );

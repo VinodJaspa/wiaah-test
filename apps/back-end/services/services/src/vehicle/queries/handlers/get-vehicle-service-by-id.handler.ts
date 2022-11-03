@@ -1,12 +1,7 @@
-import {
-  EventBus,
-  IEventHandler,
-  IQueryHandler,
-  QueryHandler,
-} from '@nestjs/cqrs';
+import { EventBus, IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { VehicleServiceRepository } from '../../repository/vehicle-service.repository';
 import { VehicleService } from '../../';
-import { GetVehicleServiceByIdQuery } from '../impl/get-vehicle-by-id.query';
+import { GetVehicleServiceByIdQuery } from '../impl';
 
 @QueryHandler(GetVehicleServiceByIdQuery)
 export class GetVehicleServiceByIdHandler

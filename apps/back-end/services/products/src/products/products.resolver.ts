@@ -4,14 +4,14 @@ import {
   Mutation,
   Args,
   ResolveReference,
-  ResolveField,
-  Parent,
+  ID,
 } from '@nestjs/graphql';
 import { Inject, Logger, UseGuards } from '@nestjs/common';
 import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  KAFKA_BROKERS,
   SERVICES,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
@@ -22,7 +22,17 @@ import { ProductsService } from './products.service';
 import { Product } from './entities/product.entity';
 import { CreateProdutctInput } from './dto/create-produtct.input';
 import { UpdateProdutctInput } from './dto/update-produtct.input';
-import { ShippingDetails } from './entities/shippingDetails.entity';
+import { KafkaPubSub } from 'graphql-kafkajs-subscriptions';
+import { Kafka } from 'kafkajs';
+
+export const pubsub = KafkaPubSub.create({
+  topic: 'subscriptions',
+  kafka: new Kafka({
+    brokers: KAFKA_BROKERS,
+    clientId: 'subscriptions',
+  }),
+  groupIdPrefix: 'sub-service-group',
+});
 
 @Resolver(() => Product)
 export class ProductsResolver {
@@ -36,6 +46,18 @@ export class ProductsResolver {
 
   logger = new Logger('ProductResolver');
 
+  @Mutation(() => Boolean)
+  async test() {
+    await (
+      await pubsub
+    ).publish(
+      'subscriptions',
+      JSON.stringify({ id: '6363313d1737d02ecdcab5e5' }),
+    );
+    console.log('tested 2');
+    return true;
+  }
+
   @Query(() => Product)
   async getProductById(@Args('id') id: string): Promise<Product> {
     const product = await this.productsService.getProductById(id);
@@ -45,6 +67,12 @@ export class ProductsResolver {
   @Query(() => [Product])
   getProducts() {
     return this.productsService.getAll();
+  }
+
+  @Query(() => Product)
+  product(@Args('id', { type: () => ID }) id: string) {
+    console.log('getting prod', id);
+    return this.productsService.getProductById(id);
   }
 
   @Mutation(() => Product)

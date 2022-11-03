@@ -13,6 +13,7 @@ export class SearchPlacesQueryHandler
   execute({
     args: { langId, query, selectedFields },
   }: SearchPlacesCommand): Promise<Localization[]> {
+    console.log('places command');
     return this.searchRepo.getLocalizationsBySearchQuery(query, langId);
   }
 }

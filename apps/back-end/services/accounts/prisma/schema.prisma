@@ -13,6 +13,7 @@ datasource db {
 
 model Account {
   id            String @id @default(auto()) @map("_id") @db.ObjectId 
+  stripeId      String? @unique
   firstName     String
   lastName      String
   email         String @unique
@@ -24,6 +25,7 @@ model Account {
 }
 
 enum AccountType {
+  admin
   seller
   buyer
 }

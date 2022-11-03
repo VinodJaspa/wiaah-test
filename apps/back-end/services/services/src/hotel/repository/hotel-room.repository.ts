@@ -21,6 +21,20 @@ export class HotelRoomRepository {
     private readonly hotelRoomElasticRepo: HotelRoomElasticRepository,
   ) {}
 
+  async getHotelRoomById(
+    id: string,
+    userId: string,
+    selectedFields: GqlHotelRoomSelectedFields,
+    langId: UserPreferedLang,
+  ): Promise<HotelRoom> {
+    const res = await this.prisma.hotelRoom.findUnique({
+      where: {
+        id,
+      },
+    });
+    return this.formatHotelRoom(res, langId);
+  }
+
   async getFilteredRoomsWithLocationSearch(
     { pagination, query, ..._filters }: SearchHotelRoomLocationInput,
     selectedFields: GqlHotelRoomAggregationSelectedFields,
@@ -30,7 +44,6 @@ export class HotelRoomRepository {
     const ids = await this.hotelRoomElasticRepo.getRoomsIdByLocationQuery(
       query,
     );
-    console.log({ ids, query });
 
     const filters: Prisma.HotelRoomWhereInput[] = [];
 
@@ -86,7 +99,7 @@ export class HotelRoomRepository {
     return rooms.map((v) => this.formatHotelRoom(v, langId));
   }
 
-  getSelectionFields(
+  private getSelectionFields(
     fields: GqlHotelRoomSelectedFields,
   ): Prisma.HotelRoomSelect {
     return fields
@@ -111,7 +124,10 @@ export class HotelRoomRepository {
       : undefined;
   }
 
-  formatHotelRoom(room: PrismaHotelRoom, langId: UserPreferedLang): HotelRoom {
+  private formatHotelRoom(
+    room: PrismaHotelRoom,
+    langId: UserPreferedLang,
+  ): HotelRoom {
     return {
       ...room,
       description: getTranslatedResource({

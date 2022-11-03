@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { BillingAddressService } from './billing-address.service';
 import { BillingAddressResolver } from './billing-address.resolver';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'prismaService';
 
 @Module({
   providers: [BillingAddressResolver, BillingAddressService, PrismaService],

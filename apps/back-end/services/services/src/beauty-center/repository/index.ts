@@ -1,7 +1,2 @@
-import { BeautyCenterElasticRepository } from './beauty-center.elastic.repository';
-import { BeautyCenterRepository } from './beauty-center.repository';
-
-export const BeautyCenterRepositories = [
-  BeautyCenterElasticRepository,
-  BeautyCenterRepository,
-];
+export * from './beauty-center.elastic.repository';
+export * from './beauty-center.repository';

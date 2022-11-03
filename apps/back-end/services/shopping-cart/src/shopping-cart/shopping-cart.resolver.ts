@@ -1,8 +1,6 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { ShoppingCartService } from './shopping-cart.service';
-import { CartItem, ShoppingCart } from '@entities';
+import { ShoppingCart, CartProduct } from '@entities';
 import {
-  BadRequestException,
   Inject,
   OnModuleDestroy,
   OnModuleInit,
@@ -16,11 +14,13 @@ import {
   SERVICES,
 } from 'nest-utils';
 import {
-  AddShoppingCartItemInput,
+  AddShoppingCartProductItemInput,
   ApplyVoucherInput,
   RemoveShoppingCartItemInput,
 } from '@dto';
 import { ClientKafka } from '@nestjs/microservices';
+
+import { ShoppingCartService } from './shopping-cart.service';
 
 type Hooks = OnModuleInit & OnModuleDestroy;
 
@@ -40,29 +40,17 @@ export class ShoppingCartResolver implements Hooks {
     return this.shoppingCartService.getShoppingCartByOwnerId(user.id);
   }
 
-  @Query((type) => [ShoppingCart])
-  getAllShoppingCarts(): Promise<ShoppingCart[]> {
-    return this.shoppingCartService.getShoppingCarts();
-  }
-
   @Mutation((type) => ShoppingCart)
   clearShoppingCart(@GqlCurrentUser() user: AuthorizationDecodedUser) {
     return this.shoppingCartService.clearShoppingCart(user.id);
   }
 
-  @Mutation((type) => CartItem)
-  addItemToCart(
+  @Mutation((type) => CartProduct)
+  addProductToCart(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-    @Args('addItemToCartArgs') input: AddShoppingCartItemInput,
-  ): Promise<CartItem> {
-    switch (input.itemType) {
-      case 'product':
-        return this.shoppingCartService.addProduct(user, input);
-      case 'service':
-        return this.shoppingCartService.addService(user, input);
-      default:
-        throw new BadRequestException('invalid item type');
-    }
+    @Args('addItemToCartArgs') input: AddShoppingCartProductItemInput,
+  ): Promise<CartProduct> {
+    return this.shoppingCartService.addProduct(user, input);
   }
 
   @Mutation((type) => Boolean)
@@ -88,12 +76,8 @@ export class ShoppingCartResolver implements Hooks {
       KAFKA_MESSAGES.VOUCHERS_MESSAGES.isApplyableVoucher,
     );
     await this.eventsClient.connect();
-    await this.eventsClient.connect();
-    await this.eventsClient.connect();
   }
   async onModuleDestroy() {
-    await this.eventsClient.close();
-    await this.eventsClient.close();
     await this.eventsClient.close();
   }
 }

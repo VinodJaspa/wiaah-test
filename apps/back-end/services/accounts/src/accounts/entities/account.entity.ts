@@ -10,11 +10,12 @@ import { AccountType } from '@prisma-client';
 registerEnumType(AccountType, { name: 'AccountType' });
 
 @ObjectType()
-// @Directive('@extends')
 export class Account {
   @Field((type) => ID)
-  // @Directive('@external')
   id: string;
+
+  @Field(() => String)
+  stripeId: string;
 
   @Field((type) => String)
   firstName: string;

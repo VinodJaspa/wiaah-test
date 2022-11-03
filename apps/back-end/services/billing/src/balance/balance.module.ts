@@ -3,14 +3,7 @@ import { BalanceService } from './balance.service';
 import { BalanceResolver } from './balance.resolver';
 import { PrismaService } from 'src/prisma.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import {
-  KAFKA_BROKERS,
-  KAFKA_MESSAGES,
-  KAFKA_SERVICE_CLIENTID,
-  KAFKA_SERVICE_GROUPID,
-  KAFKA_SERVICE_TOKEN,
-  SERVICES,
-} from 'nest-utils';
+import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { BalanceController } from './balance.controller';
 
 @Module({

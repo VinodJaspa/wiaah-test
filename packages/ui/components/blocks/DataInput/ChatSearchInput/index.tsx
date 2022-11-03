@@ -20,6 +20,7 @@ export const ChatSearchInput: React.FC<ChatSearchInputProps> = ({
           <FiSearch className="text-[0.85em] text-gray" />
         </InputLeftElement>
         <Input
+          className="rounded-[0.5rem] border-[1px]"
           placeholder={t("search", "Search")}
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}

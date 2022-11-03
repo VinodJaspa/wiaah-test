@@ -5,11 +5,12 @@ import {
   ServicePolicy,
   ServicePresentation,
 } from '@entities';
-import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
+import { ObjectType, Field, Int, ID, Float, Directive } from '@nestjs/graphql';
 import { ServicePaymentMethods, ServiceStatus } from 'prismaClient';
 import { HealthCenterDoctor } from './health-center-doctor.entity';
 
 @ObjectType()
+@Directive('@key(fields:"id")')
 export class HealthCenter {
   @Field(() => ID)
   id: string;

@@ -1,13 +1,12 @@
 import { Field, ID, InputType, Int } from '@nestjs/graphql';
-import { CartItemType } from '@prisma-client';
 
 @InputType()
-export class AddShoppingCartItemInput {
+export class AddShoppingCartProductItemInput {
   @Field((type) => ID)
   itemId: string;
 
-  @Field((type) => CartItemType)
-  itemType: CartItemType;
+  @Field(() => ID)
+  shippingRuleId: string;
 
   @Field((type) => Int)
   quantity: number;

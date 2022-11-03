@@ -33,6 +33,7 @@ import { ServiceModule } from './service/service.module';
     ServiceModule,
   ],
   exports: [ElasticsearchModule],
+  providers: [],
 })
 class GlobalElasticsearchModule {}
 

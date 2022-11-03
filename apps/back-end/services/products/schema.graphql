@@ -140,6 +140,7 @@ type Query {
   getFilteredShops(filteredShopsArgs: FilterShopsInput!): [Shop!]!
   getProductById(id: String!): Product!
   getProducts: [Product!]!
+  product(id: ID!): Product!
   getCategories: [Category!]!
   getProductsFilters: [Filter!]!
 }
@@ -162,6 +163,7 @@ input FilterShopsInput {
 type Mutation {
   createShop(createShopInput: CreateShopInput!): Shop!
   removeAllShops: Boolean!
+  test: Boolean!
   createNewProduct(createNewProductInput: CreateProdutctInput!): Product!
   updateProduct(updateProductArgs: UpdateProdutctInput!): Boolean!
   deleteAllProducts: Boolean!

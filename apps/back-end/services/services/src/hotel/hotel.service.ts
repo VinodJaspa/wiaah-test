@@ -1,4 +1,4 @@
-import { HotelServiceEntity } from '@entities';
+import { Hotel } from '@entities';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import {
   DBErrorException,
@@ -36,7 +36,7 @@ export class HotelService {
     input: CreateHotelInput,
     userId: string,
     langId: UserPreferedLang,
-  ): Promise<HotelServiceEntity> {
+  ): Promise<Hotel> {
     const hotel = await this.prisma.hotelService.create({
       data: {
         ...input,
@@ -71,7 +71,7 @@ export class HotelService {
     userId: string,
     langId: UserPreferedLang,
     selectedFields: GqlHotelSelectedFields,
-  ): Promise<HotelServiceEntity> {
+  ): Promise<Hotel> {
     await this.checkViewHotelPremissions(hotelId, userId);
 
     try {
@@ -155,7 +155,7 @@ export class HotelService {
   formatHotelData(
     hotel: PrismaHotelService & { rooms: HotelRoom[] },
     langId: UserPreferedLang,
-  ): HotelServiceEntity {
+  ): Hotel {
     return {
       ...hotel,
       policies: getTranslatedResource({

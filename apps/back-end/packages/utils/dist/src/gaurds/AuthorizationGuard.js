@@ -14,7 +14,8 @@ const common_1 = require("@nestjs/common");
 const graphql_1 = require("@nestjs/graphql");
 let GqlAuthorizationGuard = class GqlAuthorizationGuard {
     constructor(roles) {
-        this.roles = roles;
+        this.roles = [];
+        this.roles = ["admin", ...roles];
     }
     canActivate(context) {
         const ctx = graphql_1.GqlExecutionContext.create(context);
@@ -24,7 +25,7 @@ let GqlAuthorizationGuard = class GqlAuthorizationGuard {
         if (this.roles) {
             if (this.roles.length === 0)
                 return true;
-            if (!this.roles.includes(user.accountType)) {
+            if (!user.accountType || !this.roles.includes(user.accountType)) {
                 throw new common_1.UnauthorizedException("this account can not preform this action");
             }
         }

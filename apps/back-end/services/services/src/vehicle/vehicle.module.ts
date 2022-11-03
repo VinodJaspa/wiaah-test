@@ -10,6 +10,7 @@ import { VehicleEventsHandlers } from './events';
 import { VehicleSagasHandlers } from './sagas';
 import { VehicleResolver } from './vehicle.resolver';
 import {
+  VehicleRepository,
   VehicleServiceElasticRepository,
   VehicleServiceRepository,
 } from './repository';
@@ -28,6 +29,7 @@ import { VehicleQueriesHandlers } from './queries';
     PrismaService,
     VehicleServiceRepository,
     VehicleServiceElasticRepository,
+    VehicleRepository,
     ...VehicleQueriesHandlers,
     ...VehicleCommandsHandlers,
     ...VehicleEventsHandlers,

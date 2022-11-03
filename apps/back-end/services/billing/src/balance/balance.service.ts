@@ -201,7 +201,7 @@ export class BalanceService {
       new GetVoucherDataMessage({ userId, voucherCode }),
     );
 
-    if (!success) throw new Error(error);
+    if (!success) throw error;
 
     const { amount, code, currency } = data;
 
@@ -219,7 +219,7 @@ export class BalanceService {
       }),
     );
 
-    if (!cSuccess) throw new Error(cError);
+    if (!cSuccess) throw cError;
 
     const { rate } = cData;
 

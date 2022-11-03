@@ -1,6 +1,7 @@
 import { AuthorizationDecodedUser } from "../../index";
 
 export const mockedUser: AuthorizationDecodedUser = {
+  stripeId: "stripe id testing",
   id: "62b8bae86f604a137f311608",
   email: "barco01014@gmail.com",
   accountType: "seller",
@@ -12,6 +13,7 @@ export const mockedUser: AuthorizationDecodedUser = {
 };
 
 export const secendMockedUser: AuthorizationDecodedUser = {
+  stripeId: "stripe id testing",
   id: "62b8bae86f604a137f315879",
   email: "barco01014@gmail.com",
   accountType: "seller",

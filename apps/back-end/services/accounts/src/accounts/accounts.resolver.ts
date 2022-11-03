@@ -39,7 +39,7 @@ export class AccountsResolver {
     return this.accountsService.deleteAll();
   }
 
-  @UseGuards(GqlAuthorizationGuard)
+  @UseGuards(new GqlAuthorizationGuard(['buyer']))
   @Mutation((type) => Boolean)
   switchToSeller(@GqlCurrentUser() user: AuthorizationDecodedUser) {
     return this.accountsService.switchToSeller(user.id);

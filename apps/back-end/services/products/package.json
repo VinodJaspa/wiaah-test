@@ -36,6 +36,7 @@
     "@wiaah/upload": "*",
     "apollo-server-express": "3.6.2",
     "graphql": "15.8.0",
+    "graphql-kafkajs-subscriptions": "^3.0.0",
     "graphql-tools": "8.0.0",
     "graphql-upload": "13.0.0",
     "nest-dto": "*",
