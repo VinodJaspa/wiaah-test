@@ -36,8 +36,8 @@ model Message {
 
 type RoomMember {
   userId String
-  lastSeenDate DateTime
   unSeenNum Int
+  online Boolean @default(false)
 }
 
 type MessageAttachment {

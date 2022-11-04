@@ -35,4 +35,6 @@ __exportStar(require("./translation"), exports);
 __exportStar(require("./pipes"), exports);
 __exportStar(require("./CQRS"), exports);
 __exportStar(require("./db"), exports);
+__exportStar(require("./CookiesParser"), exports);
+__exportStar(require("./getUserFromRequest"), exports);
 //# sourceMappingURL=index.js.map

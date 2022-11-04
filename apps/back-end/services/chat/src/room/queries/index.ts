@@ -1,4 +1,10 @@
 export * from './impl';
-import { GetMyRoomsQueryHandler } from './handlers';
+import {
+  GetMyRoomsQueryHandler,
+  GetRoomByUserIdQueryHandler,
+} from './handlers';
 
-export const RoomsQueryHandlers = [GetMyRoomsQueryHandler];
+export const RoomsQueryHandlers = [
+  GetMyRoomsQueryHandler,
+  GetRoomByUserIdQueryHandler,
+];

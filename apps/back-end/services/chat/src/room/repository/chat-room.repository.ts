@@ -14,12 +14,12 @@ export class ChatRoomRepository {
         roomType: 'private',
         members: membersIds.map((v) => ({
           userId: v,
-          lastSeenDate: new Date(),
           unSeenNum: 0,
+          online: false,
         })),
       },
     });
-
+    res.members.at(0);
     return {
       ...res,
       members: [],
@@ -56,14 +56,131 @@ export class ChatRoomRepository {
       },
     });
 
-    return res.map((v) => this.formatChatRoomData(v));
+    return res.map((v) => this.formatChatRoomData(v, userId));
   }
 
-  formatChatRoomData({ members, ...rest }: PrismaChatRoom): Room {
+  async incrementRoomMembersUnSeenMessages(roomId: string): Promise<boolean> {
+    try {
+      await this.prisma.room.update({
+        where: {
+          id: roomId,
+        },
+        data: {
+          members: {
+            updateMany: {
+              where: {
+                online: {
+                  equals: false,
+                },
+              },
+              data: {
+                unSeenNum: {
+                  increment: 1,
+                },
+              },
+            },
+          },
+        },
+      });
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
+  async setRoomMemberOnline(userId: string, roomId: string): Promise<Boolean> {
+    try {
+      await this.prisma.room.update({
+        where: {
+          id: roomId,
+        },
+        data: {
+          members: {
+            updateMany: {
+              where: {
+                userId,
+              },
+              data: {
+                online: true,
+                unSeenNum: 0,
+              },
+            },
+          },
+        },
+      });
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
+  async setRoomMemberOffline(userId: string, roomId: string): Promise<Boolean> {
+    try {
+      await this.prisma.room.update({
+        where: {
+          id: roomId,
+        },
+        data: {
+          members: {
+            updateMany: {
+              where: {
+                userId,
+              },
+              data: {
+                online: false,
+              },
+            },
+          },
+        },
+      });
+      return true;
+    } catch (error) {
+      console.log({ error });
+      return false;
+    }
+  }
+
+  async getPrivateRoomByUserId(
+    senderId: string,
+    reciverId: string,
+  ): Promise<Room | null> {
+    const room = await this.prisma.room.findFirst({
+      where: {
+        roomType: 'private',
+        members: {
+          every: {
+            userId: {
+              in: [senderId, reciverId],
+            },
+          },
+        },
+      },
+    });
+    if (!room) return null;
+    return this.formatChatRoomData(room);
+  }
+
+  async getRoomById(id: string): Promise<Room> {
+    const res = await this.prisma.room.findUnique({
+      where: {
+        id,
+      },
+    });
+    return this.formatChatRoomData(res);
+  }
+
+  formatChatRoomData(
+    { members, ...rest }: PrismaChatRoom,
+    userId?: string,
+  ): Room {
     return {
       ...rest,
       membersUserIds: members.map((v) => v.userId),
-      unSeenMessages: 0,
+      unSeenMessages: userId
+        ? members.find((v) => v.userId === userId)?.unSeenNum || 0
+        : 0,
     };
   }
 }

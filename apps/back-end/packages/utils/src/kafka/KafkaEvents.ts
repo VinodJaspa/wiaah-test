@@ -1,7 +1,11 @@
 export const KAFKA_EVENTS = {
-  ACCOUNTS_EVENT: {
+  ACCOUNTS_EVENTS: {
     createAccount: "create.account",
     accountCreated: "account.created",
+  },
+  USER_EVENTS: {
+    userConnected: "user.connected",
+    userDisconnected: "user.disconnected",
   },
   WISHLIST_EVENTS: {
     createWishersList: "create.wisherlist",
@@ -58,6 +62,14 @@ export const KAFKA_EVENTS = {
   },
   SHARES_EVENTS: {
     contentShared: "content.shared",
+  },
+  CHAT: {
+    messageSent: "chat.message.sent",
+    userJoinedRoom: "user.joined.room",
+    userLeftRoom: "user.left.room",
+  },
+  SUBSCRIPTIONS: {
+    chatMessageSent: (roomId: string) => `chat.message.sent.${roomId}`,
   },
   createAccount: "create.account",
   createWishlist: "create.wishlist",

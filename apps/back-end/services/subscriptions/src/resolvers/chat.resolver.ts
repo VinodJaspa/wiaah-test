@@ -1,55 +1,55 @@
+import { UnauthorizedException } from '@nestjs/common';
 import {
   Directive,
   Field,
-  Mutation,
   ObjectType,
   Resolver,
   Subscription,
   Query,
-  GraphQLSchemaBuilderModule,
-  BuildSchemaOptions,
   ID,
+  Args,
+  InputType,
+  Context,
 } from '@nestjs/graphql';
-import { KafkaPubSub } from 'graphql-kafkajs-subscriptions';
-import { Kafka } from 'kafkajs';
-import { KAFKA_BROKERS } from 'nest-utils';
-import { ChatDataSource } from 'src/datasources';
+import { AuthorizationDecodedUser, KafkaPubsubService } from 'nest-utils';
 
-export const pubsub = KafkaPubSub.create({
-  topic: 'subscriptions',
-  kafka: new Kafka({
-    brokers: KAFKA_BROKERS,
-    clientId: 'subscriptions',
-  }),
-  groupIdPrefix: 'sub-service-group',
-});
+import { CtxDatasources } from '../datasources';
 
 @ObjectType()
 @Directive('@extends')
 @Directive('@key(fields:"id")')
-class Product {
+class ChatMessage {
   @Field(() => ID)
   @Directive('@external')
   id: string;
 }
 
+@InputType()
+class JoinRoomInput {
+  @Field(() => ID)
+  roomId: string;
+}
+
 @Resolver()
 export class ChatResolver {
+  constructor(private readonly pubsub: KafkaPubsubService) {}
+
   @Query(() => Boolean)
   tests() {
     return true;
   }
 
-  @Subscription(() => Product, {
+  @Subscription(() => ChatMessage, {
     async resolve(
+      this: ChatResolver,
       _payload,
       args,
-      ctx: { dataSources: { gatewayApi: ChatDataSource } },
+      ctx: CtxDatasources,
       info,
     ) {
-      const payload = JSON.parse(_payload.value.toString());
+      const payload = this.pubsub.parseKafkaMessagePayload(_payload || {});
       const res =
-        await ctx.dataSources.gatewayApi.fetchAndMergeNonPayloadChatMessageData(
+        await ctx.dataSources.gatewayApi.chat.fetchAndMergeNonPayloadChatMessageData(
           payload.id,
           payload,
           info,
@@ -57,8 +57,22 @@ export class ChatResolver {
 
       return res;
     },
+    async filter(payload, variables, context: CtxDatasources) {
+      console.log('context');
+      console.log(JSON.stringify({ payload, variables, context }));
+      return true;
+    },
   })
-  async testquery() {
-    return (await pubsub).asyncIterator('subscriptions');
+  async joinRoom(
+    @Args('joinRoomArgs') args: JoinRoomInput,
+    @Context() ctx: CtxDatasources<{ user: AuthorizationDecodedUser }>,
+  ) {
+    if (!ctx.user) throw new UnauthorizedException();
+    const hasAccess = ctx.dataSources.gatewayApi.chat.fetchCanAccessChatRoom(
+      args.roomId,
+      ctx,
+    );
+    if (!hasAccess) throw new UnauthorizedException();
+    return this.pubsub.listen(`chat-room.${args.roomId}`);
   }
 }

@@ -19,3 +19,5 @@ export * from "./translation";
 export * from "./pipes";
 export * from "./CQRS";
 export * from "./db";
+export * from "./CookiesParser";
+export * from "./getUserFromRequest";

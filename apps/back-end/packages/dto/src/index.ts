@@ -15,3 +15,4 @@ export * from "./Vouchers";
 export * from "./Partners";
 export * from "./Social";
 export * from "./Base";
+export * from "./Chat";

@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
-import { Message } from '@message';
+import { ChatMessage } from '@message';
 import { RoomTypes } from '@prisma-client';
 import { User } from './extends';
 
@@ -25,9 +25,9 @@ export class Room {
   @Field(() => Date)
   updatedAt: Date;
 
-  @Field(() => [User], { nullable: true })
+  // @Field(() => [User], { nullable: true })
   members?: User[];
 
-  @Field(() => [Message], { nullable: true })
-  messages?: Message[];
+  @Field(() => [ChatMessage], { nullable: true })
+  messages?: ChatMessage[];
 }

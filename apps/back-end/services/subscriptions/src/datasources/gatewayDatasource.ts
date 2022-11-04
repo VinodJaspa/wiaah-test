@@ -3,10 +3,15 @@ import {
   AuthenticationError,
   ForbiddenError,
 } from 'apollo-server';
-import { createHttpLink, execute, from, toPromise } from '@apollo/client/core';
+import {
+  createHttpLink,
+  execute,
+  from,
+  toPromise,
+  GraphQLRequest,
+} from '@apollo/client/core';
 import { DataSource, DataSourceConfig } from 'apollo-datasource';
 import { DocumentNode } from 'graphql';
-import { GraphQLOptions } from 'apollo-server';
 import { onError } from '@apollo/client/link/error';
 import {
   FieldsByTypeName,
@@ -19,9 +24,16 @@ const merge = require('lodash/merge');
 
 export function addGatewayDataSourceToSubscriptionContext<
   TDatasource extends GatewayDataSource,
->(context, gatewayDataSource: TDatasource) {
-  gatewayDataSource.initialize({ context, cache: undefined });
-  return { dataSources: { gatewayApi: gatewayDataSource } };
+  TDatasourceRecord extends Record<string, TDatasource>,
+>(context, dataSources: TDatasourceRecord) {
+  return {
+    dataSources: {
+      gatewayApi: Object.entries(dataSources).reduce((acc, curr) => {
+        curr[1].initialize({ context, cache: undefined });
+        return { ...acc, [curr[0]]: curr[1] };
+      }, {} as TDatasourceRecord),
+    },
+  };
 }
 
 export class GatewayDataSource<TContext = any> extends DataSource {
@@ -67,7 +79,7 @@ export class GatewayDataSource<TContext = any> extends DataSource {
     }
     throw apolloError;
   }
-  async query(query: DocumentNode, options: GraphQLOptions) {
+  async query(query: DocumentNode, options: Omit<GraphQLRequest, 'query'>) {
     const link = this.composeLinks();
     try {
       const response = await toPromise(execute(link, { query, ...options }));

@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prismaService';
 import { CreateMessageInput } from '../dto';
-import { Message } from '../entities';
+import { ChatMessage } from '../entities';
 
 @Injectable()
 export class MessagesRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async createMessage(
-    messageInput: CreateMessageInput,
+    messageInput: Omit<CreateMessageInput, 'roomId'> & { roomId: string },
     userId: string,
-  ): Promise<Message> {
+  ): Promise<ChatMessage> {
     const message = await this.prisma.message.create({
       data: {
         ...messageInput,
