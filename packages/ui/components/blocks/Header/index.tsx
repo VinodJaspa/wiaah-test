@@ -86,8 +86,6 @@ export const Header: React.FC<HeaderProps> = () => {
     : [];
   const { SearchForLocations } = useMasterLocationMapModal();
 
-  const handleItemDeletion = (item: ShoppingCartItem) => {};
-
   return (
     <nav className="w-full bg-black">
       {/* Top Navbar */}

@@ -1,11 +1,11 @@
 import { Args, ID, Query, Resolver } from '@nestjs/graphql';
-import { Room } from './entities/room.entity';
+import { ChatRoom } from './entities/room.entity';
 import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
 import { QueryBus } from '@nestjs/cqrs';
 import { CanAccessRoomQuery, GetMyRoomsQuery } from './queries';
 import { PrismaService } from 'prismaService';
 
-@Resolver(() => Room)
+@Resolver(() => ChatRoom)
 export class RoomResolver {
   constructor(
     private readonly querybus: QueryBus,
@@ -22,11 +22,16 @@ export class RoomResolver {
     );
   }
 
-  @Query(() => [Room])
+  @Query(() => ChatRoom)
+  getChatRoom() {
+    return this.querybus.execute;
+  }
+
+  @Query(() => [ChatRoom])
   getMyChatRooms(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ): Promise<Room[]> {
-    return this.querybus.execute<GetMyRoomsQuery, Room[]>(
+  ): Promise<ChatRoom[]> {
+    return this.querybus.execute<GetMyRoomsQuery, ChatRoom[]>(
       new GetMyRoomsQuery(user.id),
     );
   }

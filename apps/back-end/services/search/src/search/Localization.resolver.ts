@@ -25,7 +25,6 @@ export class LocalizationResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @GqlSelectedQueryFields() fields: GqlSelectedFields,
   ) {
-    console.log('test');
     return this.commandBus.execute<SearchLocalizationCommand>(
       new SearchLocalizationCommand({
         ...input,
@@ -43,7 +42,6 @@ export class LocalizationResolver {
     @GetLang() langId: string,
     @GqlSelectedQueryFields() fields: GqlLocalizationSelectedFields,
   ) {
-    console.log('places');
     return this.commandBus.execute<SearchPlacesCommand>(
       new SearchPlacesCommand({
         langId,

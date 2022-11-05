@@ -69,6 +69,7 @@
     "ts-loader": "^9.4.0",
     "tsconfig-paths-webpack-plugin": "^3.5.2",
     "turbo": "latest",
+    "typescript": "^4.3.5",
     "webpack": "5"
   },
   "lint-staged": {

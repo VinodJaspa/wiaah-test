@@ -1,5 +1,5 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { Room } from '../../entities';
+import { ChatRoom } from '../../entities';
 import { ChatRoomRepository } from '../../repository';
 import { GetRoomByUserIdQuery } from '../impl';
 
@@ -12,7 +12,7 @@ export class GetRoomByUserIdQueryHandler
   async execute({
     reciverId,
     senderId,
-  }: GetRoomByUserIdQuery): Promise<Room | null> {
+  }: GetRoomByUserIdQuery): Promise<ChatRoom | null> {
     let res = await this.roomRepo.getPrivateRoomByUserId(senderId, reciverId);
     if (!res)
       res = await this.roomRepo.CreatePrivateChatRoom([senderId, reciverId]);

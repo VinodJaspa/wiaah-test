@@ -5,5 +5,6 @@ export class NewAccountCreatedEvent extends KafkaMessage<{
   email: string;
   firstName?: string;
   lastName?: string;
+  username: string;
   accountType?: string;
 }> {}

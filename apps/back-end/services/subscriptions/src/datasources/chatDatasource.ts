@@ -6,7 +6,7 @@ export class ChatDataSource extends GatewayDataSource {
     super(gatewayUrl);
   }
 
-  async fetchAndMergeNonPayloadChatMessageData(postID, payload, info) {
+  async fetchAndMergeNonPayloadChatMessageData(messageId, payload, info) {
     const selections = this.buildNonPayloadSelections(payload, info);
     const payloadData = Object.values(payload)[0];
 
@@ -24,7 +24,33 @@ export class ChatDataSource extends GatewayDataSource {
 
     try {
       const response = await this.query(Subscription_ChatMessage, {
-        variables: { id: postID },
+        variables: { id: messageId },
+      });
+      return this.mergeFieldData(payloadData, response.data.chatMessage);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async fetchAndMergeNonPayloadChatRoomData(roomId, payload, info) {
+    const selections = this.buildNonPayloadSelections(payload, info);
+    const payloadData = Object.values(payload)[0];
+
+    if (!selections) {
+      return payloadData;
+    }
+
+    const query = gql`
+      query Subscription_ChatRoom($id: ID!) {
+        getChatRoom(id: $id) {
+          ${selections}
+        }
+      }
+    `;
+
+    try {
+      const response = await this.query(query, {
+        variables: { id: roomId },
       });
       return this.mergeFieldData(payloadData, response.data.chatMessage);
     } catch (error) {
@@ -46,7 +72,7 @@ export class ChatDataSource extends GatewayDataSource {
         },
         context: {
           headers: {
-            cookies: ctx?.token,
+            cookie: { [process.env.COOKIES_KEY || 'Auth_cookie']: ctx.token },
           },
         },
       });

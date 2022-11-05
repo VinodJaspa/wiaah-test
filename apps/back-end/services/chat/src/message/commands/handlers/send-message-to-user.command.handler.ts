@@ -4,7 +4,7 @@ import {
   ICommandHandler,
   QueryBus,
 } from '@nestjs/cqrs';
-import { GetRoomByUserIdQuery, Room } from '@room';
+import { GetRoomByUserIdQuery, ChatRoom } from '@room';
 import {
   BadRequestException,
   InternalServerErrorException,
@@ -30,7 +30,7 @@ export class SendMessageToUserCommandHandler
     if (!input.userId)
       throw new BadRequestException('message reciver userid required');
 
-    const room = await this.querybus.execute<GetRoomByUserIdQuery, Room>(
+    const room = await this.querybus.execute<GetRoomByUserIdQuery, ChatRoom>(
       new GetRoomByUserIdQuery(userId, input.userId),
     );
 

@@ -68,8 +68,16 @@ export const KAFKA_EVENTS = {
     userJoinedRoom: "user.joined.room",
     userLeftRoom: "user.left.room",
   },
+  HASHTAG: {
+    hashtagUsed: "hashtag.used",
+    hashtagUnUsed: "hashtag.unused",
+    hashtagCreated: "hashtag.created",
+    hashtagDeleted: "hashtag.deleted",
+  },
+  SEARCH: {},
   SUBSCRIPTIONS: {
     chatMessageSent: (roomId: string) => `chat.message.sent.${roomId}`,
+    roomDataUpdated: (userId: string) => `room.data.updated.${userId}`,
   },
   createAccount: "create.account",
   createWishlist: "create.wishlist",

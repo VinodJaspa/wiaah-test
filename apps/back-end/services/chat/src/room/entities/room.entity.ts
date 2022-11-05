@@ -6,7 +6,7 @@ import { User } from './extends';
 registerEnumType(RoomTypes, { name: 'RoomTypes' });
 
 @ObjectType()
-export class Room {
+export class ChatRoom {
   @Field(() => ID)
   id: string;
 

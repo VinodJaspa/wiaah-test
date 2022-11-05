@@ -13,7 +13,7 @@ export function GenerateDataSources(ctx: any) {
   return dataSourceContext;
 }
 
-export type CtxDatasources<TCtx = any> = ReturnType<
+export type CtxDatasources<TCtx = unknown> = ReturnType<
   typeof GenerateDataSources
 > &
   TCtx;

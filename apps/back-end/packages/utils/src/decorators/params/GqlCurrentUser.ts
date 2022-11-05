@@ -1,9 +1,16 @@
-import { createParamDecorator, ExecutionContext } from "@nestjs/common";
+import {
+  createParamDecorator,
+  ExecutionContext,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { GqlExecutionContext } from "@nestjs/graphql";
 
 export const GqlCurrentUser = createParamDecorator(
-  (data: unknown, context: ExecutionContext) => {
+  ({ required = false }: { required?: boolean }, context: ExecutionContext) => {
     const ctx = GqlExecutionContext.create(context);
-    return ctx.getContext().user;
+    const user = ctx.getContext().user;
+    if (required && !user)
+      throw new UnauthorizedException("you must be logined to do this action");
+    return;
   }
 );

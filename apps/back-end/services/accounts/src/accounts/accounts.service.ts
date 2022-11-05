@@ -34,7 +34,7 @@ export class AccountsService {
         },
       });
       this.eventsClient.emit<string, NewAccountCreatedEvent>(
-        KAFKA_EVENTS.ACCOUNTS_EVENT.accountCreated,
+        KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated,
         new NewAccountCreatedEvent({
           email: createdUser.email,
           id: createdUser.id,

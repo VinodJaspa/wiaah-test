@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { mockedUser, secendMockedUser } from 'nest-utils';
-import { GetRoomByUserIdQuery, Room } from '@room';
+import { GetRoomByUserIdQuery, ChatRoom } from '@room';
 import { PrismaModule } from '../../app.module';
 import { MessageModule } from '../message.module';
 import { MessageResolver } from '../message.resolver';
@@ -41,7 +41,7 @@ describe('MessageResolver', () => {
   });
 
   it('should send message to a new user', async () => {
-    const mockRoom: Room = {
+    const mockRoom: ChatRoom = {
       createdAt: new Date(),
       id: new ObjectId().toHexString(),
       membersUserIds: [mockedUser.id, secendMockedUser.id],

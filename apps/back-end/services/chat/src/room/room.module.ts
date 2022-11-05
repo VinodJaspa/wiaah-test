@@ -8,9 +8,18 @@ import { ChatRoomRepository } from './repository';
 import { RoomController } from './room.controller';
 import { RoomEventHandlers } from './events';
 import { ChatRoomSagas } from './saga';
+import { KafkaPubsubModule, KAFKA_BROKERS, SERVICES } from 'nest-utils';
 
 @Module({
-  imports: [CqrsModule],
+  imports: [
+    CqrsModule,
+    KafkaPubsubModule.register({
+      brokers: KAFKA_BROKERS,
+      clientId: SERVICES.CHAT.clientId,
+      groupIdPrefix: SERVICES.CHAT.groupId,
+      topic: SERVICES.CHAT.pubsubTopic,
+    }),
+  ],
   providers: [
     RoomResolver,
     ChatRoomRepository,

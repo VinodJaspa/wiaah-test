@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { ApolloGateway } from '@apollo/gateway';
+import { ApolloGateway, IntrospectAndCompose } from '@apollo/gateway';
 import { mergeSchemas } from '@graphql-tools/schema';
 import { GraphQLSchema } from 'graphql';
 
-import { ChatDataSource, GenerateDataSources } from './datasources';
-import { addGatewayDataSourceToSubscriptionContext } from './datasources/gatewayDatasource';
+import { GenerateDataSources } from './datasources';
 import { ResolversModule } from './resolvers.module';
 import { VerifyAndGetUserFromContext } from 'nest-utils';
 
@@ -27,7 +26,11 @@ export const gatewayEndpoint = 'http://localhost:3003/graphql';
                 const user = VerifyAndGetUserFromContext({ headers });
                 const dataSource = GenerateDataSources(ctx);
 
-                return { token: user.token, user, ...dataSource } as any;
+                return {
+                  token: user ? user.token : null,
+                  user,
+                  ...dataSource,
+                } as any;
               },
             },
           },
@@ -38,14 +41,16 @@ export const gatewayEndpoint = 'http://localhost:3003/graphql';
 
             const gateway = new ApolloGateway({
               debug: true,
-              serviceList: [
-                // { name: 'products', url: 'http://localhost:3006/graphql' },
-                // { name: 'wishlist', url: 'http://localhost:3009/graphql' },
-                { name: 'chat', url: 'http://localhost:3022/graphql' },
-                // { name: 'services', url: 'http://localhost:3020/graphql' },
-                // { name: 'accounts', url: 'http://localhost:3005/graphql' },
-              ],
-              experimental_pollInterval: 36000,
+              supergraphSdl: new IntrospectAndCompose({
+                subgraphs: [
+                  // { name: 'products', url: 'http://localhost:3006/graphql' },
+                  // { name: 'wishlist', url: 'http://localhost:3009/graphql' },
+                  { name: 'chat', url: 'http://localhost:3022/graphql' },
+                  // { name: 'services', url: 'http://localhost:3020/graphql' },
+                  // { name: 'accounts', url: 'http://localhost:3005/graphql' },
+                ],
+              }),
+              pollIntervalInMs: 120000,
             });
             gateway.onSchemaLoadOrUpdate((schemaContext) => {
               schema = schemaContext.apiSchema;

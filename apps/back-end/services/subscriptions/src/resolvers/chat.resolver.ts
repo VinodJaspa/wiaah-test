@@ -1,38 +1,27 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { Inject, UnauthorizedException } from '@nestjs/common';
+import { Resolver, Subscription, Query, Args, Context } from '@nestjs/graphql';
+import { ClientKafka } from '@nestjs/microservices';
 import {
-  Directive,
-  Field,
-  ObjectType,
-  Resolver,
-  Subscription,
-  Query,
-  ID,
-  Args,
-  InputType,
-  Context,
-} from '@nestjs/graphql';
-import { AuthorizationDecodedUser, KafkaPubsubService } from 'nest-utils';
+  AuthorizationDecodedUser,
+  GqlCurrentUser,
+  KafkaPubsubService,
+  KAFKA_EVENTS,
+  SERVICES,
+} from 'nest-utils';
+import { UserJoinedRoom, UserLeftRoom } from 'nest-dto';
+import { ChatMessage, ChatRoom } from '@entities';
+import { JoinRoomInput } from '@dto';
+import { PubsubWithOnUnsubscribe } from '@utils';
 
 import { CtxDatasources } from '../datasources';
 
-@ObjectType()
-@Directive('@extends')
-@Directive('@key(fields:"id")')
-class ChatMessage {
-  @Field(() => ID)
-  @Directive('@external')
-  id: string;
-}
-
-@InputType()
-class JoinRoomInput {
-  @Field(() => ID)
-  roomId: string;
-}
-
 @Resolver()
 export class ChatResolver {
-  constructor(private readonly pubsub: KafkaPubsubService) {}
+  constructor(
+    @Inject(SERVICES.SUBSCRIPTIONS.token)
+    private readonly eventClient: ClientKafka,
+    private readonly pubsub: KafkaPubsubService,
+  ) {}
 
   @Query(() => Boolean)
   tests() {
@@ -73,6 +62,47 @@ export class ChatResolver {
       ctx,
     );
     if (!hasAccess) throw new UnauthorizedException();
-    return this.pubsub.listen(`chat-room.${args.roomId}`);
+    this.eventClient.emit(
+      KAFKA_EVENTS.CHAT.userJoinedRoom,
+      new UserJoinedRoom({
+        roomId: args.roomId,
+        userId: ctx.user.id,
+      }),
+    );
+    return PubsubWithOnUnsubscribe(
+      this.pubsub.listen(
+        KAFKA_EVENTS.SUBSCRIPTIONS.chatMessageSent(args.roomId),
+      ),
+      () => {
+        this.eventClient.emit(
+          KAFKA_EVENTS.CHAT.userLeftRoom,
+          new UserLeftRoom({
+            roomId: args.roomId,
+            userId: ctx.user.id,
+          }),
+        );
+      },
+    );
+  }
+
+  @Subscription(() => ChatRoom, {
+    resolve(this: ChatResolver, _payload, args, context: CtxDatasources, info) {
+      const payload = this.pubsub.parseKafkaMessagePayload(_payload);
+      const res =
+        context.dataSources.gatewayApi.chat.fetchAndMergeNonPayloadChatRoomData(
+          payload.roomId,
+          payload,
+          info,
+        );
+
+      return res;
+    },
+  })
+  listenToMyRoomsChanges(
+    @GqlCurrentUser({ required: true }) user: AuthorizationDecodedUser,
+  ) {
+    return this.pubsub.listen(
+      KAFKA_EVENTS.SUBSCRIPTIONS.roomDataUpdated(user.id),
+    );
   }
 }

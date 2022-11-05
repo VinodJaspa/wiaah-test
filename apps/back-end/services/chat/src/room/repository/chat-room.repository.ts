@@ -1,14 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prismaService';
-import { Room as PrismaChatRoom } from '@prisma-client';
+import { Room as PrismaChatRoom, Room } from '@prisma-client';
 
-import { Room } from '../entities';
+import { ChatRoom } from '../entities';
 
 @Injectable()
 export class ChatRoomRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async CreatePrivateChatRoom(membersIds: string[]): Promise<Room> {
+  async CreatePrivateChatRoom(membersIds: string[]): Promise<ChatRoom> {
     const res = await this.prisma.room.create({
       data: {
         roomType: 'private',
@@ -28,7 +28,7 @@ export class ChatRoomRepository {
     };
   }
 
-  async CreateGroupChatRoom(membersIds: string[]): Promise<Room> {
+  async CreateGroupChatRoom(membersIds: string[]): Promise<ChatRoom> {
     const res = await this.prisma.room.create({
       data: {
         roomType: 'group',
@@ -45,7 +45,7 @@ export class ChatRoomRepository {
     return this.formatChatRoomData(res);
   }
 
-  async getUserRooms(userId: string): Promise<Room[]> {
+  async getUserRooms(userId: string): Promise<ChatRoom[]> {
     const res = await this.prisma.room.findMany({
       where: {
         members: {
@@ -59,9 +59,11 @@ export class ChatRoomRepository {
     return res.map((v) => this.formatChatRoomData(v, userId));
   }
 
-  async incrementRoomMembersUnSeenMessages(roomId: string): Promise<boolean> {
+  async incrementRoomMembersUnSeenMessages(
+    roomId: string,
+  ): Promise<[string[], Room]> {
     try {
-      await this.prisma.room.update({
+      const res = await this.prisma.room.update({
         where: {
           id: roomId,
         },
@@ -82,10 +84,13 @@ export class ChatRoomRepository {
           },
         },
       });
-      return true;
+      return [
+        res.members.filter((v) => v.unSeenNum > 0).map((v) => v.userId),
+        res,
+      ];
     } catch (error) {
       console.log(error);
-      return false;
+      return [[], null];
     }
   }
 
@@ -145,7 +150,7 @@ export class ChatRoomRepository {
   async getPrivateRoomByUserId(
     senderId: string,
     reciverId: string,
-  ): Promise<Room | null> {
+  ): Promise<ChatRoom | null> {
     const room = await this.prisma.room.findFirst({
       where: {
         roomType: 'private',
@@ -162,7 +167,7 @@ export class ChatRoomRepository {
     return this.formatChatRoomData(room);
   }
 
-  async getRoomById(id: string): Promise<Room> {
+  async getRoomById(id: string): Promise<ChatRoom> {
     const res = await this.prisma.room.findUnique({
       where: {
         id,
@@ -174,7 +179,7 @@ export class ChatRoomRepository {
   formatChatRoomData(
     { members, ...rest }: PrismaChatRoom,
     userId?: string,
-  ): Room {
+  ): ChatRoom {
     return {
       ...rest,
       membersUserIds: members.map((v) => v.userId),

@@ -7,16 +7,14 @@ import {
   GetShopOpenTimeMessageReply,
 } from 'nest-dto';
 import {
-  DeepRequired,
   isWithinTime,
   KafkaMessageHandler,
   KAFKA_MESSAGES,
   SERVICES,
 } from 'nest-utils';
-import { isArray } from 'util';
 import * as yup from 'yup';
 
-import { Localization, OpenTime } from '../entities';
+import { Localization } from '../entities';
 import { SearchElasticRepository } from './property.elastic.repository';
 
 const schema = yup
