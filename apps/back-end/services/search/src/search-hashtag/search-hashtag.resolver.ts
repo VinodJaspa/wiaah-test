@@ -1,7 +1,5 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Args } from '@nestjs/graphql';
 import { SearchHashtag } from './entities/search-hashtag.entity';
-import { CreateSearchHashtagInput } from './dto/create-search-hashtag.input';
-import { UpdateSearchHashtagInput } from './dto/update-search-hashtag.input';
 import { QueryBus } from '@nestjs/cqrs';
 import { SearchHashtagQuery } from './queries';
 

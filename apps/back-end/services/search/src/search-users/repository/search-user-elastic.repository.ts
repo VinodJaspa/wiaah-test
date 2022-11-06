@@ -11,7 +11,13 @@ export class SearchUserElasticRepository {
   async searchUsersIds(query: string): Promise<string[]> {
     const res = await this.elsticService.search<UserElasticModel>({
       index: ELASTIC_SEARCH_USER_INDEX,
-      fields: ['username'],
+      size: 10,
+      query: {
+        multi_match: {
+          query,
+          fields: ['username'],
+        },
+      },
     });
     return res.hits.hits.map((v) => v._source.id);
   }

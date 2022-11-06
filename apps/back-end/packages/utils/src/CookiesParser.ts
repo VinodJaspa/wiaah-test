@@ -5,7 +5,7 @@ type CookieOptions = {
   path?: string;
   domain?: string;
   secure?: boolean;
-  sameSite?: boolean | 'lax' | 'strict' | 'none';
+  sameSite?: boolean | "lax" | "strict" | "none";
 };
 
 type ParsedCookie = {
@@ -16,10 +16,10 @@ type ParsedCookie = {
 
 function hasExpiresField(cookie: string): boolean {
   return cookie
-    .split(';')
+    .split(";")
     .map((part) => {
-      if (part.split('=').length > 1) {
-        return part.split('=')[0].trim().toLowerCase() === 'expires';
+      if (part.split("=").length > 1) {
+        return part.split("=")[0].trim().toLowerCase() === "expires";
       }
 
       return false;
@@ -29,9 +29,9 @@ function hasExpiresField(cookie: string): boolean {
 
 export function parseCookies(rawCookies: string): ParsedCookie[] {
   // Make this check more effective
-  if (!rawCookies.includes('=')) {
+  if (!rawCookies.includes("=")) {
     throw new Error(
-      'Invalid raw cookies, look at the format of a set-cookie header string and provide something similar.',
+      "Invalid raw cookies, look at the format of a set-cookie header string and provide something similar."
     );
   }
 
@@ -39,35 +39,35 @@ export function parseCookies(rawCookies: string): ParsedCookie[] {
     Cookie format: "name=value; Path=/; HttpOnly; Secure"
     Multiple cookies format: "name=value; Path=/; HttpOnly; Secure, name2=value2"
   */
-  const arraifyedRawCookies = rawCookies.split(',');
+  const arraifyedRawCookies = rawCookies.split(",");
   const validRawCookies = arraifyedRawCookies
     .map((rawCookie, index, ref) => {
       if (hasExpiresField(rawCookie)) {
         return `${rawCookie}${ref[index + 1]}`;
       }
 
-      if (index > 0 && hasExpiresField(ref[index - 1])) return 'invalid';
+      if (index > 0 && hasExpiresField(ref[index - 1])) return "invalid";
 
       return rawCookie;
     })
-    .filter((rawCookie) => rawCookie !== 'invalid');
+    .filter((rawCookie) => rawCookie !== "invalid");
 
   const parsedCookies = validRawCookies.map((rawCookie) => {
-    const [cookieNameAndValue, ...cookieProperties] = rawCookie.split(';');
-    const [cookieName, cookieValue] = cookieNameAndValue.split('=');
+    const [cookieNameAndValue, ...cookieProperties] = rawCookie.split(";");
+    const [cookieName, cookieValue] = cookieNameAndValue.split("=");
 
     const sanitizedCookieProperties = cookieProperties.map((cookieProperty) => {
-      const [propertyName, propertyValue] = cookieProperty.split('=');
+      const [propertyName, propertyValue] = cookieProperty.split("=");
       const sanitizedPropertyName = propertyName
-        .replace('-', '')
+        .replace("-", "")
         .toLowerCase()
         .trim();
 
-      if (sanitizedPropertyName === 'maxage') {
+      if (sanitizedPropertyName === "maxage") {
         return `maxAge=${propertyValue}`;
-      } else if (sanitizedPropertyName === 'httponly') {
-        return 'httpOnly=true';
-      } else if (sanitizedPropertyName === 'samesite') {
+      } else if (sanitizedPropertyName === "httponly") {
+        return "httpOnly=true";
+      } else if (sanitizedPropertyName === "samesite") {
         return `sameSite=${propertyValue.toLowerCase()}`;
       }
 
@@ -81,28 +81,29 @@ export function parseCookies(rawCookies: string): ParsedCookie[] {
     const objectifyedCookieProperties = sanitizedCookieProperties.map(
       (sanitizedCookieProperty) => {
         const [propertyName, propertyValue] =
-          sanitizedCookieProperty.split('=');
+          sanitizedCookieProperty.split("=");
 
         return {
-          [propertyName]: propertyValue === 'true' ? true : propertyValue,
+          [propertyName]: propertyValue === "true" ? true : propertyValue,
         };
-      },
+      }
     );
 
     const options: CookieOptions = {};
 
     objectifyedCookieProperties.forEach((objectifyedCookieProperty) => {
       Object.entries(objectifyedCookieProperty).forEach(([key, value]) => {
-        if (key === 'expires') {
+        if (key === "expires") {
           options[key] = new Date(value as string);
           return;
         }
 
-        if (key === 'maxAge') {
+        if (key === "maxAge") {
           options[key] = Number(value as string);
           return;
         }
 
+        // @ts-ignore
         options[key] = value;
       });
     });

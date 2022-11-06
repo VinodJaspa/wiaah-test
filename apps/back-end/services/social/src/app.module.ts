@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ProfileModule } from './profile/profile.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import {
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { getUserFromRequest } from 'nest-utils';
+
+import { ProfileModule } from './profile/profile.module';
 import { NewsfeedPostsModule } from './newsfeed-posts/newsfeed-posts.module';
 import { CommentsModule } from './comments/comments.module';
 import { ReactionModule } from './reaction/reaction.module';
@@ -14,6 +15,7 @@ import { ContentShareModule } from './content-share/content-share.module';
 import { ContentManagementModule } from './content-management/content-management.module';
 import { HashtagModule } from './hashtag/hashtag.module';
 import { SavedPostsModule } from './saved-posts/saved-posts.module';
+import { StoryModule } from './story/story.module';
 
 @Module({
   imports: [
@@ -34,6 +36,7 @@ import { SavedPostsModule } from './saved-posts/saved-posts.module';
     ContentManagementModule,
     HashtagModule,
     SavedPostsModule,
+    StoryModule,
   ],
 })
 export class AppModule {}

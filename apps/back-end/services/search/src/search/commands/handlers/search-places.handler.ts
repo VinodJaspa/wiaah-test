@@ -14,6 +14,6 @@ export class SearchPlacesQueryHandler
     args: { langId, query, selectedFields },
   }: SearchPlacesCommand): Promise<Localization[]> {
     console.log('places command');
-    return this.searchRepo.getLocalizationsBySearchQuery(query, langId);
+    return this.searchRepo.searchPropertiesByPlaceType(query, langId);
   }
 }

@@ -4,6 +4,7 @@ import { SearchHashtagController } from './search-hashtag.controller';
 import { SearchHashtagCommandHandlers } from './commands';
 import { SearchHashtagElasticRepository } from './repository';
 import { CqrsModule } from '@nestjs/cqrs';
+import { SearchHashtagQueryHandlers } from './queries';
 
 @Module({
   imports: [CqrsModule],
@@ -11,7 +12,7 @@ import { CqrsModule } from '@nestjs/cqrs';
     SearchHashtagResolver,
     SearchHashtagElasticRepository,
     ...SearchHashtagCommandHandlers,
-    ...SearchHashtagCommandHandlers,
+    ...SearchHashtagQueryHandlers,
   ],
   controllers: [SearchHashtagController],
 })

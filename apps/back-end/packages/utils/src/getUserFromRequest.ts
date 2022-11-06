@@ -16,7 +16,7 @@ export function getUserFromRequest<T = AuthorizationDecodedUser>(req: any): T {
 
 export function VerifyAndGetUserFromContext(
   ctx: any
-): AuthorizationDecodedUser & { token: string } {
+): (AuthorizationDecodedUser & { token: string }) | null {
   if (typeof ctx["req"] !== "undefined") {
     // @ts-ignore
     if (ctx?.req?.headers && ctx?.req?.headers["cookie"]) {
@@ -27,8 +27,8 @@ export function VerifyAndGetUserFromContext(
       const jwtSecret = process.env.JWT_SERCERT || "secret";
       if (typeof cookiesKey === "string") {
         const authToken = parsedCookies.find(
-          (cookie) => cookie.cookieName === cookiesKey
-        ).cookieValue;
+          (cookie) => cookie?.cookieName === cookiesKey
+        )?.cookieValue;
         if (authToken) {
           try {
             const user = jwt.verify(authToken, jwtSecret);
@@ -46,4 +46,5 @@ export function VerifyAndGetUserFromContext(
       }
     }
   }
+  return null;
 }

@@ -20,6 +20,7 @@ export class SearchHashtagElasticRepository {
   async searchHashtags(query: string): Promise<string[]> {
     const res = await this.elasticService.search<SearchHashtagElasticModel>({
       index: SEARCH_HASHTAG_ELASTIS_SEARCH_INDEX,
+      size: 10,
       query: {
         multi_match: {
           query,

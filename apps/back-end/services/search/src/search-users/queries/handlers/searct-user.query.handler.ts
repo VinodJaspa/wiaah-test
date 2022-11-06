@@ -7,7 +7,7 @@ import { SearchUserQuery } from '../impl';
 export class SearchUserQueryHandler implements IQueryHandler<SearchUserQuery> {
   constructor(private readonly elastic: SearchUserElasticRepository) {}
 
-  async execute(query: string): Promise<SearchUsers> {
+  async execute({ query }: SearchUserQuery): Promise<SearchUsers> {
     const ids = await this.elastic.searchUsersIds(query);
     return {
       usersIds: ids,
