@@ -3,14 +3,23 @@ import { InputType, Field, ID } from '@nestjs/graphql';
 
 @InputType()
 export class CreateStoryInput {
-  @Field(() => String, { nullable: true })
-  referenceType?: string;
+  @Field(() => ID, { nullable: true })
+  productId?: string;
 
   @Field(() => ID, { nullable: true })
-  referenceId?: string;
+  newsfeedPostId?: string;
+
+  @Field(() => ID, { nullable: true })
+  shopPostId?: string;
+
+  @Field(() => ID, { nullable: true })
+  affiliationPostId?: string;
+
+  @Field(() => ID, { nullable: true })
+  servicePostId?: string;
 
   @Field(() => String, { nullable: true })
-  content: string;
+  content?: string;
 
   @Field(() => AttachmentInput, { nullable: true })
   attachment?: AttachmentInput;

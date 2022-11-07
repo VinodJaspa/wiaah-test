@@ -1,4 +1,5 @@
 import { AuthorizationDecodedUser } from 'nest-utils';
+
 import { GetRecentStoriesInput } from '../../dto';
 
 export class GetRecentStoriesQuery {

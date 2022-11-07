@@ -41,6 +41,7 @@ export class AccountsService {
           accountType: createdUser.type,
           firstName: createdUser.firstName,
           lastName: createdUser.lastName,
+          username: createdUser.firstName,
         }),
       );
       return createdUser;

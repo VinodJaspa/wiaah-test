@@ -22,7 +22,7 @@ export class HashtagSearch {
 
 function createHashtagPostsSearch<T>(Class: ClassType<T>) {
   @ObjectType({ isAbstract: true })
-  abstract class HashtagPostsSearch extends HashtagSearch {
+  abstract class HashtagPostsSearch {
     @Field(() => Class)
     mostLikedPost: T;
 

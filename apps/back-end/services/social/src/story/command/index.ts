@@ -1,4 +1,14 @@
 export * from './impl';
-import { CreateStoryCommandHandler } from './handlers';
+import {
+  CreateStoryCommandHandler,
+  LikeStoryCommandHandler,
+  UpdateUserFollowerStoryLastSeenAtCommandHandler,
+  DeleteStoryCommandHandler,
+} from './handlers';
 
-export const StoryCommandHandlers = [CreateStoryCommandHandler];
+export const StoryCommandHandlers = [
+  CreateStoryCommandHandler,
+  LikeStoryCommandHandler,
+  UpdateUserFollowerStoryLastSeenAtCommandHandler,
+  DeleteStoryCommandHandler,
+];

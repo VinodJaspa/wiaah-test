@@ -15,7 +15,7 @@ function getUserFromRequest(req) {
 }
 exports.getUserFromRequest = getUserFromRequest;
 function VerifyAndGetUserFromContext(ctx) {
-    var _a, _b;
+    var _a, _b, _c;
     if (typeof ctx["req"] !== "undefined") {
         if (((_a = ctx === null || ctx === void 0 ? void 0 : ctx.req) === null || _a === void 0 ? void 0 : _a.headers) && ((_b = ctx === null || ctx === void 0 ? void 0 : ctx.req) === null || _b === void 0 ? void 0 : _b.headers["cookie"])) {
             const rawCookies = ctx.req.headers["cookie"];
@@ -23,7 +23,7 @@ function VerifyAndGetUserFromContext(ctx) {
             const cookiesKey = process.env.COOKIES_KEY || "Auth_cookie";
             const jwtSecret = process.env.JWT_SERCERT || "secret";
             if (typeof cookiesKey === "string") {
-                const authToken = parsedCookies.find((cookie) => cookie.cookieName === cookiesKey).cookieValue;
+                const authToken = (_c = parsedCookies.find((cookie) => (cookie === null || cookie === void 0 ? void 0 : cookie.cookieName) === cookiesKey)) === null || _c === void 0 ? void 0 : _c.cookieValue;
                 if (authToken) {
                     try {
                         const user = jwt.verify(authToken, jwtSecret);
@@ -39,6 +39,7 @@ function VerifyAndGetUserFromContext(ctx) {
             }
         }
     }
+    return null;
 }
 exports.VerifyAndGetUserFromContext = VerifyAndGetUserFromContext;
 //# sourceMappingURL=getUserFromRequest.js.map

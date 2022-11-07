@@ -1,5 +1,6 @@
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Story } from '../../entities';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
+
+import { StoryLikedEvent } from '../../events';
 import { StoryRepository } from '../../repository';
 import { LikeStoryCommand } from '../impl';
 
@@ -7,11 +8,14 @@ import { LikeStoryCommand } from '../impl';
 export class LikeStoryCommandHandler
   implements ICommandHandler<LikeStoryCommand>
 {
-  constructor(private readonly storyRepo: StoryRepository) {}
+  constructor(
+    private readonly storyRepo: StoryRepository,
+    private readonly eventBus: EventBus,
+  ) {}
 
   async execute({ input, user }: LikeStoryCommand): Promise<true> {
-    await this.storyRepo.likeStory(input, user.id);
-
+    const story = await this.storyRepo.likeStory(input, user.id);
+    this.eventBus.publish<StoryLikedEvent>(new StoryLikedEvent(story, user));
     return true;
   }
 }

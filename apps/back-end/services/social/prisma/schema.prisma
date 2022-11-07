@@ -50,7 +50,6 @@ model Follow {
   followerUserId          String   @db.ObjectId
   followerProfileId       String   @db.ObjectId
   followerLastStorySeenAt DateTime @default(now())
-  followerLastStorySeenId String   @db.ObjectId
 
   followingLastStoryPostedAt DateTime @default(now())
   followingProfile           Profile  @relation(name: "followingProfile", fields: [followingProfileId], references: [id])
@@ -126,7 +125,7 @@ model Story {
   publisherId   String      @db.ObjectId
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  referenceType String?
+  type String?
   referenceId   String?     @db.ObjectId
   content       String?
   reactionsNum  Int         @default(0)

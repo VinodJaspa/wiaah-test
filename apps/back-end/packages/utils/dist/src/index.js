@@ -37,4 +37,5 @@ __exportStar(require("./CQRS"), exports);
 __exportStar(require("./db"), exports);
 __exportStar(require("./CookiesParser"), exports);
 __exportStar(require("./getUserFromRequest"), exports);
+__exportStar(require("./date"), exports);
 //# sourceMappingURL=index.js.map

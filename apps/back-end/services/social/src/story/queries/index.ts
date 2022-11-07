@@ -1,4 +1,10 @@
 export * from './impl';
-import { GetRecentStoriesQueryHandler } from './handlers';
+import {
+  GetRecentStoriesQueryHandler,
+  ViewUserStoryQueryHandler,
+} from './handlers';
 
-export const StoryQueryHandlers = [GetRecentStoriesQueryHandler];
+export const StoryQueryHandlers = [
+  GetRecentStoriesQueryHandler,
+  ViewUserStoryQueryHandler,
+];

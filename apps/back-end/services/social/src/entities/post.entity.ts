@@ -1,4 +1,11 @@
-import { ObjectType, Field, Int, ID, InputType } from '@nestjs/graphql';
+import {
+  ObjectType,
+  Field,
+  Int,
+  ID,
+  InputType,
+  Directive,
+} from '@nestjs/graphql';
 import { Profile } from '@entities';
 import { Attachment, Hashtag } from '@entities';
 
@@ -27,6 +34,7 @@ export class PostLocation {
 }
 
 @ObjectType()
+@Directive('@key(fields: "id")')
 export class NewsfeedPost {
   @Field(() => ID)
   id: string;

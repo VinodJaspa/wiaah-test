@@ -14,6 +14,6 @@ export class GetRecentStoriesQueryHandler
     input,
     user,
   }: GetRecentStoriesQuery): Promise<RecentStory[]> {
-    return this.storyRepo.getRecentStories(input, user.id);
+    return this.storyRepo.getRecentStories(input, user?.id);
   }
 }

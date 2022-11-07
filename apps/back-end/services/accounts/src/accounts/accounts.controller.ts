@@ -12,15 +12,7 @@ import {
   Payload,
 } from '@nestjs/microservices';
 import { AccountsService } from './accounts.service';
-import { CreateAccountInput } from './dto/create-account.input';
-import { GetAccountByEmailDto } from './dto/get-account-by-email.dto';
-import {
-  KAFKA_MESSAGES,
-  KAFKA_EVENTS,
-  formatCaughtError,
-  SERVICES,
-  KAFKA_SERVICE_TOKEN,
-} from 'nest-utils';
+import { KAFKA_MESSAGES, KAFKA_EVENTS, SERVICES } from 'nest-utils';
 import {
   AccountRegisteredEvent,
   AccountVerifiedEvent,
@@ -78,6 +70,7 @@ export class AccountsController implements OnModuleInit {
         error: null,
       });
     } catch (err) {
+      console.log({ err });
       return new EmailExistsMessageReply({
         success: false,
         data: null,
@@ -104,10 +97,11 @@ export class AccountsController implements OnModuleInit {
         error: null,
       });
     } catch (error) {
+      console.log({ error });
       return new GetAccountMetaDataByEmailMessageReply({
         success: false,
         data: null,
-        error: error,
+        error: error.message,
       });
     }
   }

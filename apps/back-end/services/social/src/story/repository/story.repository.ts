@@ -1,15 +1,39 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ExtractPagination, SubtractFromDate } from 'nest-utils';
 import { PrismaService } from 'prismaService';
-import { Follow } from 'prismaClient';
+import { Follow, Story, StoryLike, StoryView } from 'prismaClient';
 
 import { CreateStoryInput, GetStorySeenByInput, LikeStoryInput } from '../dto';
 import { GetRecentStoriesInput } from '../dto';
-import { Story, StoryLike, StoryView, RecentStory } from '../entities';
+import { RecentStory } from '../entities';
 
 @Injectable()
 export class StoryRepository {
   constructor(private readonly prisma: PrismaService) {}
+
+  async DeleteStory(storyId: string, userId: string): Promise<Story> {
+    const story = await this.checkStoryCrudPremissions(storyId, userId);
+
+    await this.prisma.story.delete({
+      where: {
+        id: story.id,
+      },
+    });
+
+    return story;
+  }
+
+  async getUserStories(userId: string): Promise<Story[]> {
+    return await this.prisma.story.findMany({
+      where: {
+        publisherId: userId,
+      },
+    });
+  }
 
   async viewUserStories(
     publisherUserId: string,
@@ -132,8 +156,12 @@ export class StoryRepository {
     return views;
   }
 
-  async likeStory(input: LikeStoryInput, userId: string) {
+  async likeStory(input: LikeStoryInput, userId: string): Promise<Story> {
     await this.checkStoryPublisherInteractionPremissions(input.storyId, userId);
+    const story = await this.checkStoryInteractionPremissions(
+      input.storyId,
+      userId,
+    );
 
     const liked = await this.haveLikedStory(input.storyId, userId);
 
@@ -151,6 +179,8 @@ export class StoryRepository {
         },
       });
     }
+
+    return story;
   }
 
   async haveLikedStory(
@@ -189,6 +219,36 @@ export class StoryRepository {
       );
 
     return followRel;
+  }
+
+  async checkStoryInteractionPremissions(
+    storyId: string,
+    userId: string,
+  ): Promise<Story> {
+    const story = await this.prisma.story.findUnique({
+      where: {
+        id: storyId,
+      },
+    });
+    if (!story)
+      throw new NotFoundException('story with the given id was not found');
+    return story;
+  }
+
+  async checkStoryCrudPremissions(
+    storyId: string,
+    userId: string,
+  ): Promise<Story> {
+    const story = await this.prisma.story.findUnique({
+      where: {
+        id: storyId,
+      },
+    });
+
+    if (story.publisherId !== userId)
+      throw new UnauthorizedException('you can cannot preform this action');
+
+    return story;
   }
 
   getUnprotectedStory(storyId: string): Promise<Story> {
