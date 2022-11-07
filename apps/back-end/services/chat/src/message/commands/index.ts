@@ -1,4 +1,10 @@
 export * from './impl';
-import { SendMessageCommandHandler } from './handlers';
+import {
+  SendMessageCommandHandler,
+  SendMessageToUserCommandHandler,
+} from './handlers';
 
-export const MessageCommandsHandlers = [SendMessageCommandHandler];
+export const MessageCommandsHandlers = [
+  SendMessageCommandHandler,
+  SendMessageToUserCommandHandler,
+];

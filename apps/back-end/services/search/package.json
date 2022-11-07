@@ -31,6 +31,7 @@
     "@nestjs/cqrs": "8.0.0",
     "@nestjs/elasticsearch": "^9.0.0",
     "@nestjs/graphql": "10.0.0",
+    "@nestjs/microservices": "9.1.4",
     "@nestjs/platform-express": "^8.0.0",
     "graphql": "15.8.0",
     "joi": "^17.6.4",

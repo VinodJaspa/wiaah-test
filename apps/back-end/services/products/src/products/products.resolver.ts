@@ -26,7 +26,7 @@ import { KafkaPubSub } from 'graphql-kafkajs-subscriptions';
 import { Kafka } from 'kafkajs';
 
 export const pubsub = KafkaPubSub.create({
-  topic: 'subscriptions',
+  topic: 'subscriptions-topic',
   kafka: new Kafka({
     brokers: KAFKA_BROKERS,
     clientId: 'subscriptions',

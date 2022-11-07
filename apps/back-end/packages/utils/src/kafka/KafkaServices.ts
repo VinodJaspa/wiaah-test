@@ -2,6 +2,7 @@ interface ServiceInfo {
   token: string;
   groupId: string;
   clientId: string;
+  pubsubTopic?: string;
 }
 
 export type Services =
@@ -21,7 +22,9 @@ export type Services =
   | "PARTNERS_SERVICE"
   | "REVIEWS_SERVICE"
   | "SOCIAL_SERVICE"
-  | "SEARCH_SERVICE";
+  | "SEARCH_SERVICE"
+  | "CHAT"
+  | "SUBSCRIPTIONS";
 
 export const SERVICES: Record<Services, ServiceInfo> = {
   ACCOUNTS_SERVICE: {
@@ -108,5 +111,16 @@ export const SERVICES: Record<Services, ServiceInfo> = {
     clientId: "search",
     groupId: "search",
     token: "SEARCH_SERVICE",
+  },
+  CHAT: {
+    clientId: "chat-client",
+    groupId: "chat-consumer",
+    token: "CHAT_SERVICE",
+    pubsubTopic: "CHAT_SUBSCRIPTIONS_TOPIC",
+  },
+  SUBSCRIPTIONS: {
+    clientId: "subscriptions-client",
+    groupId: "consumer-group",
+    token: "SUBSCRIPTIONS_SERVICE",
   },
 };

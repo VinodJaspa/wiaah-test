@@ -1,55 +1,44 @@
+import { Inject, UnauthorizedException } from '@nestjs/common';
+import { Resolver, Subscription, Query, Args, Context } from '@nestjs/graphql';
+import { ClientKafka } from '@nestjs/microservices';
 import {
-  Directive,
-  Field,
-  Mutation,
-  ObjectType,
-  Resolver,
-  Subscription,
-  Query,
-  GraphQLSchemaBuilderModule,
-  BuildSchemaOptions,
-  ID,
-} from '@nestjs/graphql';
-import { KafkaPubSub } from 'graphql-kafkajs-subscriptions';
-import { Kafka } from 'kafkajs';
-import { KAFKA_BROKERS } from 'nest-utils';
-import { ChatDataSource } from 'src/datasources';
+  AuthorizationDecodedUser,
+  GqlCurrentUser,
+  KafkaPubsubService,
+  KAFKA_EVENTS,
+  SERVICES,
+} from 'nest-utils';
+import { UserJoinedRoom, UserLeftRoom } from 'nest-dto';
+import { ChatMessage, ChatRoom } from '@entities';
+import { JoinRoomInput } from '@dto';
+import { PubsubWithOnUnsubscribe } from '@utils';
 
-export const pubsub = KafkaPubSub.create({
-  topic: 'subscriptions',
-  kafka: new Kafka({
-    brokers: KAFKA_BROKERS,
-    clientId: 'subscriptions',
-  }),
-  groupIdPrefix: 'sub-service-group',
-});
-
-@ObjectType()
-@Directive('@extends')
-@Directive('@key(fields:"id")')
-class Product {
-  @Field(() => ID)
-  @Directive('@external')
-  id: string;
-}
+import { CtxDatasources } from '../datasources';
 
 @Resolver()
 export class ChatResolver {
+  constructor(
+    @Inject(SERVICES.SUBSCRIPTIONS.token)
+    private readonly eventClient: ClientKafka,
+    private readonly pubsub: KafkaPubsubService,
+  ) {}
+
   @Query(() => Boolean)
   tests() {
     return true;
   }
 
-  @Subscription(() => Product, {
+  @Subscription(() => ChatMessage, {
     async resolve(
+      this: ChatResolver,
       _payload,
       args,
-      ctx: { dataSources: { gatewayApi: ChatDataSource } },
+      ctx: CtxDatasources,
       info,
     ) {
-      const payload = JSON.parse(_payload.value.toString());
+      const payload = this.pubsub.parseKafkaMessagePayload(_payload || {});
       const res =
-        await ctx.dataSources.gatewayApi.fetchAndMergeNonPayloadChatMessageData(
+        await ctx.dataSources.gatewayApi.chat.fetchAndMergeNonPayloadChatMessageData(
           payload.id,
           payload,
           info,
@@ -57,8 +46,63 @@ export class ChatResolver {
 
       return res;
     },
+    async filter(payload, variables, context: CtxDatasources) {
+      console.log('context');
+      console.log(JSON.stringify({ payload, variables, context }));
+      return true;
+    },
   })
-  async testquery() {
-    return (await pubsub).asyncIterator('subscriptions');
+  async joinRoom(
+    @Args('joinRoomArgs') args: JoinRoomInput,
+    @Context() ctx: CtxDatasources<{ user: AuthorizationDecodedUser }>,
+  ) {
+    if (!ctx.user) throw new UnauthorizedException();
+    const hasAccess = ctx.dataSources.gatewayApi.chat.fetchCanAccessChatRoom(
+      args.roomId,
+      ctx,
+    );
+    if (!hasAccess) throw new UnauthorizedException();
+    this.eventClient.emit(
+      KAFKA_EVENTS.CHAT.userJoinedRoom,
+      new UserJoinedRoom({
+        roomId: args.roomId,
+        userId: ctx.user.id,
+      }),
+    );
+    return PubsubWithOnUnsubscribe(
+      this.pubsub.listen(
+        KAFKA_EVENTS.SUBSCRIPTIONS.chatMessageSent(args.roomId),
+      ),
+      () => {
+        this.eventClient.emit(
+          KAFKA_EVENTS.CHAT.userLeftRoom,
+          new UserLeftRoom({
+            roomId: args.roomId,
+            userId: ctx.user.id,
+          }),
+        );
+      },
+    );
+  }
+
+  @Subscription(() => ChatRoom, {
+    resolve(this: ChatResolver, _payload, args, context: CtxDatasources, info) {
+      const payload = this.pubsub.parseKafkaMessagePayload(_payload);
+      const res =
+        context.dataSources.gatewayApi.chat.fetchAndMergeNonPayloadChatRoomData(
+          payload.roomId,
+          payload,
+          info,
+        );
+
+      return res;
+    },
+  })
+  listenToMyRoomsChanges(
+    @GqlCurrentUser({ required: true }) user: AuthorizationDecodedUser,
+  ) {
+    return this.pubsub.listen(
+      KAFKA_EVENTS.SUBSCRIPTIONS.roomDataUpdated(user.id),
+    );
   }
 }

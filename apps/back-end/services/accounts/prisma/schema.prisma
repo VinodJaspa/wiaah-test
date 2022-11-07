@@ -18,6 +18,7 @@ model Account {
   lastName      String
   email         String @unique
   password      String
+  online        Boolean @default(false)
   type          AccountType
   verified      Boolean @default(false)
   createdAt     DateTime @default(now())

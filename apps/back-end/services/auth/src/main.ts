@@ -1,11 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import {
-  KAFKA_BROKERS,
-  KAFKA_SERVICE_CLIENTID,
-  KAFKA_SERVICE_GROUPID,
-  SERVICES,
-} from 'nest-utils';
+import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { AppModule } from './app.module';
 
 async function bootstrap() {

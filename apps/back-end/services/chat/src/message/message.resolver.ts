@@ -1,26 +1,31 @@
 import { CommandBus } from '@nestjs/cqrs';
-import { Args, Mutation, Resolver, Subscription } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
-import { SendMessageCommand } from './commands';
-import { CreateMessageInput } from './dto';
-import { Message } from './entities/message.entity';
 
-@Resolver(() => Message)
+import { SendMessageCommand, SendMessageToUserCommand } from './commands';
+import { CreateMessageInput } from './dto';
+import { ChatMessage } from './entities/message.entity';
+
+@Resolver(() => ChatMessage)
 export class MessageResolver {
   constructor(private readonly commandBus: CommandBus) {}
 
-  @Mutation(() => Message)
-  SendMessage(
+  @Mutation(() => ChatMessage)
+  async sendMessage(
     @Args('sendMessageInput') args: CreateMessageInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ): Promise<Message> {
-    return this.commandBus.execute<SendMessageCommand, Message>(
-      new SendMessageCommand({ message: args, userId: user.id }),
-    );
-  }
+  ): Promise<ChatMessage> {
+    const res = args.roomId
+      ? await this.commandBus.execute<SendMessageCommand, ChatMessage>(
+          new SendMessageCommand({
+            message: { ...args, roomId: args.roomId },
+            userId: user.id,
+          }),
+        )
+      : await this.commandBus.execute<SendMessageToUserCommand, ChatMessage>(
+          new SendMessageToUserCommand(user.id, args),
+        );
 
-  @Subscription(() => Message)
-  onMessage(@GqlCurrentUser() user: AuthorizationDecodedUser) {
-    return;
+    return res;
   }
 }

@@ -253,13 +253,6 @@ export class ProfileService {
         },
       });
 
-      await this.prisma.follow.create({
-        data: {
-          followerProfileId: followerProfile.id,
-          followingProfileId: followingProfile.id,
-        },
-      });
-
       // update the following
       const followed = await this.prisma.profile.update({
         where: {
@@ -276,6 +269,14 @@ export class ProfileService {
         },
       });
 
+      await this.prisma.follow.create({
+        data: {
+          followingUserId: followed.id,
+          followerUserId: follower.ownerId,
+          followerProfileId: followerProfile.id,
+          followingProfileId: followingProfile.id,
+        },
+      });
       this.eventClient.emit(
         KAFKA_EVENTS.PROFILE_EVENTS.profileFollowed,
         new ProfileFollowedEvent({

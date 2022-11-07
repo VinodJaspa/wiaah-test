@@ -9,3 +9,4 @@ export * from './ContentReaction';
 export * from './content-share.entity';
 export * from './HashtagPosts.entity';
 export * from './UserSavedPostsGroup';
+export * from './extends';

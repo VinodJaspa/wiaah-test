@@ -6,7 +6,7 @@ export class ChatDataSource extends GatewayDataSource {
     super(gatewayUrl);
   }
 
-  async fetchAndMergeNonPayloadChatMessageData(postID, payload, info) {
+  async fetchAndMergeNonPayloadChatMessageData(messageId, payload, info) {
     const selections = this.buildNonPayloadSelections(payload, info);
     const payloadData = Object.values(payload)[0];
 
@@ -16,7 +16,7 @@ export class ChatDataSource extends GatewayDataSource {
 
     const Subscription_ChatMessage = gql`
       query Subscription_ChatMessage($id: ID!) {
-        product(id: $id) {
+        chatMessage(id: $id) {
           ${selections}
         }
       }
@@ -24,10 +24,59 @@ export class ChatDataSource extends GatewayDataSource {
 
     try {
       const response = await this.query(Subscription_ChatMessage, {
-        //@ts-ignore
-        variables: { id: postID },
+        variables: { id: messageId },
       });
-      return this.mergeFieldData(payloadData, response.data.product);
+      return this.mergeFieldData(payloadData, response.data.chatMessage);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async fetchAndMergeNonPayloadChatRoomData(roomId, payload, info) {
+    const selections = this.buildNonPayloadSelections(payload, info);
+    const payloadData = Object.values(payload)[0];
+
+    if (!selections) {
+      return payloadData;
+    }
+
+    const query = gql`
+      query Subscription_ChatRoom($id: ID!) {
+        getChatRoom(id: $id) {
+          ${selections}
+        }
+      }
+    `;
+
+    try {
+      const response = await this.query(query, {
+        variables: { id: roomId },
+      });
+      return this.mergeFieldData(payloadData, response.data.chatMessage);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async fetchCanAccessChatRoom(roomId: string, ctx?: any): Promise<boolean> {
+    const query = gql`
+      query CanAccessRoom($id: ID!) {
+        canAccessRoom(rooId: $id)
+      }
+    `;
+
+    try {
+      const response = await this.query(query, {
+        variables: {
+          id: roomId,
+        },
+        context: {
+          headers: {
+            cookie: { [process.env.COOKIES_KEY || 'Auth_cookie']: ctx.token },
+          },
+        },
+      });
+      return response.data.canAccessRoom;
     } catch (error) {
       console.error(error);
     }

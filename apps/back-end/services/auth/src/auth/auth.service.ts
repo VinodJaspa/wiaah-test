@@ -154,7 +154,7 @@ export class AuthService {
     const {
       results: { data, error, success },
     } = await this.getAccountMetaDataByEmail(email);
-    if (!success) throw new Error(error);
+    if (!success) throw error;
     const { firstName, username, id: accountId } = data;
     const verificationCode = generateVerificationToken();
 
@@ -242,15 +242,16 @@ export class AuthService {
       }),
     );
 
+    console.log({ error, success, data });
     if (!success) {
-      throw new InternalServerErrorException('error validating account email');
+      console.log(JSON.stringify(error, null, 2));
+      throw new InternalServerErrorException(error || 'error validating email');
     }
 
     if (!data)
       throw new NotFoundException('account with this email was not found');
 
     const { password: hashedPassword, ...rest } = data;
-    console.log(password, hashedPassword);
 
     const compere = await bcrypt.compare(password, hashedPassword);
 

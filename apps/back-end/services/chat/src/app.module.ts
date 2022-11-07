@@ -16,7 +16,7 @@ import { MessageModule } from './message/message.module';
   exports: [PrismaService],
   imports: [MessageModule],
 })
-class PrismaModule {}
+export class PrismaModule {}
 
 @Module({
   imports: [

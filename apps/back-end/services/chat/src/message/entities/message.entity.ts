@@ -1,9 +1,8 @@
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 import { MessageAttachmentType } from '@prisma-client';
-import { ClassType } from 'nest-utils';
 
 @ObjectType()
-export class Message {
+export class ChatMessage {
   @Field(() => ID)
   id: string;
 

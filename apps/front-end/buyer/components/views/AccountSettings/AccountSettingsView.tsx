@@ -116,15 +116,6 @@ const sections: SettingsSectionType[] = [
   },
   {
     panelName: {
-      fallbackText: "Your Membership",
-      translationKey: "your_membership",
-    },
-    panelIcon: MdCardMembership,
-    panelUrl: "/membership",
-    panelComponent: <MembershipSection />,
-  },
-  {
-    panelName: {
       translationKey: "blocklist",
       fallbackText: "Blocklist",
     },

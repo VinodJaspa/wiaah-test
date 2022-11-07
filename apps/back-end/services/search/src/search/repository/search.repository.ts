@@ -7,16 +7,14 @@ import {
   GetShopOpenTimeMessageReply,
 } from 'nest-dto';
 import {
-  DeepRequired,
   isWithinTime,
   KafkaMessageHandler,
   KAFKA_MESSAGES,
   SERVICES,
 } from 'nest-utils';
-import { isArray } from 'util';
 import * as yup from 'yup';
 
-import { Localization, OpenTime } from '../entities';
+import { Localization } from '../entities';
 import { SearchElasticRepository } from './property.elastic.repository';
 
 const schema = yup
@@ -155,13 +153,15 @@ export class SearchRepository {
     return validData;
   }
 
-  async searchPropertiesByPlaceType(query: string, langId: string) {
-    console.log('places test');
+  async searchPropertiesByPlaceType(
+    query: string,
+    langId: string,
+  ): Promise<Localization[]> {
     const { ids, type } = await this.elasticRepo.getPropertiesIdsByTypeQuery(
       query,
     );
 
-    const validData = [];
+    const validData: Localization[] = [];
 
     if (this.servicesTypes.includes(type)) {
       const {
@@ -195,6 +195,7 @@ export class SearchRepository {
             propertyType: v.type,
             openTime: v.openTime,
             thumbnail: v.thumbnail,
+            id: v.id,
           })),
         );
       }
@@ -224,10 +225,14 @@ export class SearchRepository {
               sellerId: v.sellerId,
               propertyType: type,
               isOpen: isWithinTime(v.openTime.from, v.openTime.to),
+              id: v.id,
+              thumbnail: v.thumbnail,
             })),
         );
       }
     }
+
+    return validData;
   }
 
   validateOpenTimeData(data: any): boolean {

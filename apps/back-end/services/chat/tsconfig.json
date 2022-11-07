@@ -20,7 +20,9 @@
     "paths": {
       "@prisma-client": ["prisma/generated/client"],
       "@message": ["src/message"],
-      "prismaService": ["src/prisma.service"]
+      "prismaService": ["src/prisma.service"],
+      "@room/*": ["src/room/*"],
+      "@room": ["src/room"]
     }
   }
 }

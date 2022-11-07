@@ -26,7 +26,7 @@ export class NewsfeedPostsService {
         id: postId,
       },
       rejectOnNotFound(error) {
-        this.logger.error(error);
+        console.log(error);
         throw new PostNotFoundException();
       },
     });

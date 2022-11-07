@@ -18,8 +18,8 @@ type UnwrapTuple<Tuple extends readonly unknown[]> = {
  */
 export type RoomMember = {
   userId: string
-  lastSeenDate: Date
   unSeenNum: number
+  online: boolean
 }
 
 /**
@@ -852,8 +852,8 @@ export namespace Prisma {
 
   export type RoomMemberSelect = {
     userId?: boolean
-    lastSeenDate?: boolean
     unSeenNum?: boolean
+    online?: boolean
   }
 
   export type RoomMemberGetPayload<
@@ -3243,8 +3243,8 @@ export namespace Prisma {
 
   export type RoomMemberObjectEqualityInput = {
     userId: string
-    lastSeenDate: Date | string
     unSeenNum: number
+    online: boolean
   }
 
   export type MessageListRelationFilter = {
@@ -3446,8 +3446,8 @@ export namespace Prisma {
 
   export type RoomMemberCreateInput = {
     userId: string
-    lastSeenDate: Date | string
     unSeenNum: number
+    online?: boolean
   }
 
   export type MessageCreateNestedManyWithoutRoomInput = {
@@ -3575,8 +3575,8 @@ export namespace Prisma {
     OR?: Enumerable<RoomMemberWhereInput>
     NOT?: Enumerable<RoomMemberWhereInput>
     userId?: StringFilter | string
-    lastSeenDate?: DateTimeFilter | Date | string
     unSeenNum?: IntFilter | number
+    online?: BoolFilter | boolean
   }
 
   export type NestedEnumRoomTypesFilter = {
@@ -3833,6 +3833,11 @@ export namespace Prisma {
     not?: NestedIntFilter | number
   }
 
+  export type BoolFilter = {
+    equals?: boolean
+    not?: NestedBoolFilter | boolean
+  }
+
   export type EnumMessageAttachmentTypeFilter = {
     equals?: MessageAttachmentType
     in?: Enumerable<MessageAttachmentType>
@@ -3853,8 +3858,8 @@ export namespace Prisma {
 
   export type RoomMemberUpdateInput = {
     userId?: StringFieldUpdateOperationsInput | string
-    lastSeenDate?: DateTimeFieldUpdateOperationsInput | Date | string
     unSeenNum?: IntFieldUpdateOperationsInput | number
+    online?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type MessageUpdateWithoutRoomInput = {
@@ -3893,6 +3898,11 @@ export namespace Prisma {
     src?: StringFieldUpdateOperationsInput | string
   }
 
+  export type NestedBoolFilter = {
+    equals?: boolean
+    not?: NestedBoolFilter | boolean
+  }
+
   export type NestedEnumMessageAttachmentTypeFilter = {
     equals?: MessageAttachmentType
     in?: Enumerable<MessageAttachmentType>
@@ -3906,6 +3916,10 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type BoolFieldUpdateOperationsInput = {
+    set?: boolean
   }
 
   export type EnumMessageAttachmentTypeFieldUpdateOperationsInput = {

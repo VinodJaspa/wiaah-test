@@ -1,17 +1,23 @@
-import { ICommandHandler, QueryHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
+import { ChatMessageSentEvent } from '../../events';
 import { MessagesRepository } from '../../repository';
-import { Message } from '../../entities';
+import { ChatMessage } from '../../entities';
 import { SendMessageCommand } from '../impl';
 
-@QueryHandler(SendMessageCommand)
+@CommandHandler(SendMessageCommand)
 export class SendMessageCommandHandler
   implements ICommandHandler<SendMessageCommand>
 {
-  constructor(private readonly messageRepo: MessagesRepository) {}
+  constructor(
+    private readonly messageRepo: MessagesRepository,
+    private readonly eventbus: EventBus,
+  ) {}
 
-  execute({
+  async execute({
     input: { message, userId },
-  }: SendMessageCommand): Promise<Message> {
-    return this.messageRepo.createMessage(message, userId);
+  }: SendMessageCommand): Promise<ChatMessage> {
+    const msg = await this.messageRepo.createMessage(message, userId);
+    this.eventbus.publish(new ChatMessageSentEvent(userId, msg));
+    return msg;
   }
 }

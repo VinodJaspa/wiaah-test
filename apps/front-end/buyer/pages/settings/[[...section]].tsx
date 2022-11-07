@@ -10,18 +10,19 @@ import { AccountSettingsView } from "../../components/views/AccountSettings/Acco
 
 interface AccountSettingsPageProps {}
 
-export const getServerSideProps: GetServerSideProps<AccountSettingsPageProps> =
-  async () => {
-    const queryClient = new QueryClient();
+export const getServerSideProps: GetServerSideProps<
+  AccountSettingsPageProps
+> = async () => {
+  const queryClient = new QueryClient();
 
-    // prefecth queries
+  // prefecth queries
 
-    return {
-      props: {
-        dehydratedState: dehydrate(queryClient),
-      },
-    };
+  return {
+    props: {
+      dehydratedState: dehydrate(queryClient),
+    },
   };
+};
 
 const accountSettings: NextPage<AccountSettingsPageProps> = ({}) => {
   const router = useRouter();
@@ -32,7 +33,7 @@ const accountSettings: NextPage<AccountSettingsPageProps> = ({}) => {
       <Head>
         <title>{t("account_settings", "Account Settings")}</title>
       </Head>
-      <SellerLayout noContainer header={null}>
+      <SellerLayout noContainer>
         <AccountSettingsView />
       </SellerLayout>
     </>

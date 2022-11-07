@@ -44,65 +44,19 @@ model BlockedUser {
 }
 
 model Follow {
-  id                String  @id @default(auto()) @map("_id") @db.ObjectId
-  followerProfile   Profile @relation(fields: [followerProfileId], references: [id])
-  followerProfileId String  @db.ObjectId
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 
-  followingProfile   Profile  @relation(name: "followingProfile", fields: [followingProfileId], references: [id])
-  followingProfileId String   @db.ObjectId
-  followedAt         DateTime @default(now())
-}
+  followerProfile         Profile  @relation(fields: [followerProfileId], references: [id])
+  followerUserId          String   @db.ObjectId
+  followerProfileId       String   @db.ObjectId
+  followerLastStorySeenAt DateTime @default(now())
 
-enum ActiveStatus {
-  idle
-  active
-  inActive
-  doNotDisturb
-}
+  followingLastStoryPostedAt DateTime @default(now())
+  followingProfile           Profile  @relation(name: "followingProfile", fields: [followingProfileId], references: [id])
+  followingUserId            String   @db.ObjectId
+  followingProfileId         String   @db.ObjectId
 
-enum ProfileVisibility {
-  public
-  followers
-  private
-}
-
-type Hashtag {
-  tag String
-}
-
-enum AttachmentType {
-  img
-  vid
-  text
-}
-
-type Attachment {
-  type AttachmentType
-  src  String
-}
-
-enum PostVisibility {
-  hidden
-  public
-  followers
-  following
-}
-
-enum CommentsVisibility {
-  hidden
-  public
-}
-
-type PostMention {
-  userId    String
-  profileId String
-}
-
-type PostLocation {
-  city    String
-  country String
-  address String?
-  state   String?
+  followedAt DateTime @default(now())
 }
 
 model NewsfeedPost {
@@ -145,26 +99,10 @@ model ContentShare {
   sharedAt          DateTime @default(now())
 }
 
-enum ContentHostType {
-  post_newsfeed
-  post_service
-  post_shop
-  comment
-  action
-  story
-}
-
-enum ContentReactionType {
-  like
-  love
-  funny
-  sad
-  angry
-}
-
-type CommentMention {
-  userId    String
-  profileId String
+model UserSavedPostsGroup {
+  id     String          @id @default(auto()) @map("_id") @db.ObjectId
+  userId String          @unique @db.ObjectId
+  posts  UserSavedPost[]
 }
 
 model Comment {
@@ -182,12 +120,66 @@ model Comment {
   replies         Int              @default(0)
 }
 
-model HashtagSearch {
-  id        String @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String @db.ObjectId
-  profileId String @db.ObjectId
-  views     Int    @default(0)
-  tag       String
+model Story {
+  id            String      @id @default(auto()) @map("_id") @db.ObjectId
+  publisherId   String      @db.ObjectId
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  type String?
+  referenceId   String?     @db.ObjectId
+  content       String?
+  reactionsNum  Int         @default(0)
+  attachment    Attachment?
+  viewsCount    Int         @default(0)
+  archived      Boolean     @default(false)
+  views         StoryView[]
+  likes         StoryLike[]
+}
+
+model StoryView {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  viewerId  String   @db.ObjectId
+  storyId   String   @db.ObjectId
+  createdAt DateTime @default(now())
+  story     Story    @relation(fields: [storyId], references: [id])
+}
+
+model StoryLike {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  userId  String @db.ObjectId
+  storyId String @db.ObjectId
+  story   Story  @relation(fields: [storyId], references: [id])
+}
+
+type Hashtag {
+  tag String
+}
+
+type CommentMention {
+  userId    String
+  profileId String
+}
+
+type Attachment {
+  type AttachmentType
+  src  String
+}
+
+type PostMention {
+  userId    String
+  profileId String
+}
+
+type PostLocation {
+  city    String
+  country String
+  address String?
+  state   String?
+}
+
+type UserSavedPost {
+  postId   String
+  postType PostType
 }
 
 enum PostType {
@@ -197,13 +189,50 @@ enum PostType {
   affiliation_post
 }
 
-type UserSavedPost {
-  postId   String
-  postType PostType
+enum ContentHostType {
+  post_newsfeed
+  post_service
+  post_shop
+  comment
+  action
+  story
 }
 
-model UserSavedPostsGroup {
-  id     String          @id @default(auto()) @map("_id") @db.ObjectId
-  userId String          @unique @db.ObjectId
-  posts  UserSavedPost[]
+enum ContentReactionType {
+  like
+  love
+  funny
+  sad
+  angry
+}
+
+enum PostVisibility {
+  hidden
+  public
+  followers
+  following
+}
+
+enum CommentsVisibility {
+  hidden
+  public
+}
+
+enum ActiveStatus {
+  idle
+  active
+  inActive
+  doNotDisturb
+}
+
+enum ProfileVisibility {
+  public
+  followers
+  private
+}
+
+enum AttachmentType {
+  img
+  vid
+  text
 }

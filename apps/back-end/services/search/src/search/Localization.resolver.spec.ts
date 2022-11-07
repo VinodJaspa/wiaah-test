@@ -1,5 +1,5 @@
 import { Test } from '@nestjs/testing';
-import { KAFKA_MESSAGES, mockedUser, SERVICES } from 'nest-utils';
+import { KAFKA_MESSAGES, mockedUser, SERVICES, waitFor } from 'nest-utils';
 
 import { LocalizationResolver } from './Localization.resolver';
 import { SearchElasticRepository, SearchRepository } from './repository';
@@ -18,8 +18,8 @@ jest.useFakeTimers().setSystemTime(new Date(2022));
 describe('Localization Tests', () => {
   let resolver: LocalizationResolver;
 
-  let mockElasticGetPropertiesIdsAndTypesByLocationQuery = jest.fn();
-  let mockElasticGetPropertiesIdsByTypeQuery = jest.fn();
+  let mockElasticGetPropertiesIdsAndTypesByLocationQuery: jest.Mock;
+  let mockElasticGetPropertiesIdsByTypeQuery: jest.Mock;
   let mockKafkaEmit: jest.Mock;
   let mockKafkaSend: jest.Mock;
   let mockKafkaSubscribe: jest.Mock;
@@ -28,6 +28,9 @@ describe('Localization Tests', () => {
     mockKafkaEmit = jest.fn();
     mockKafkaSend = jest.fn();
     mockKafkaSubscribe = jest.fn();
+    mockElasticGetPropertiesIdsAndTypesByLocationQuery = jest.fn();
+    mockElasticGetPropertiesIdsByTypeQuery = jest.fn();
+
     const module = await Test.createTestingModule({
       imports: [CqrsModule],
       providers: [
@@ -370,7 +373,7 @@ describe('Localization Tests', () => {
     const data = await resolver.getPlaces('hotel', mockedUser, 'en', undefined);
 
     expect(mockElasticGetPropertiesIdsByTypeQuery).toBeCalledTimes(1);
-    expect(mockElasticGetPropertiesIdsByTypeQuery).toBeCalledWith('new york');
+    expect(mockElasticGetPropertiesIdsByTypeQuery).toBeCalledWith('hotel');
 
     expect(mockKafkaSend).toBeCalledTimes(7);
 
