@@ -1,7 +1,9 @@
 import {
+  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { ExtractPagination, SubtractFromDate } from 'nest-utils';
 import { PrismaService } from 'prismaService';
@@ -62,21 +64,58 @@ export class StoryRepository {
           },
         ],
       },
+
       orderBy: {
         createdAt: 'asc',
       },
     });
-
+    console.log(JSON.stringify({ followRel, story }, null, 2));
     return story;
   }
 
-  async updateUserFollowerStoryLastSeenAt(relId: string) {
-    await this.prisma.follow.update({
-      data: {
-        followerLastStorySeenAt: new Date(),
+  async getPrevUserStory(storyId: string, userId: string): Promise<Story> {
+    const story = await this.prisma.story.findUnique({
+      where: {
+        id: storyId,
+      },
+    });
+
+    const targetedStory = await this.prisma.story.findFirst({
+      cursor: {
+        id: story.id,
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
       where: {
-        id: relId,
+        AND: [
+          {
+            publisherId: story.publisherId,
+          },
+          {
+            createdAt: {
+              gte: SubtractFromDate(new Date(), { days: 1 }),
+            },
+          },
+        ],
+      },
+      skip: 1,
+      take: 1,
+    });
+
+    return targetedStory;
+  }
+
+  async updateUserFollowerStoryLastSeenAt(story: Story, userId: string) {
+    await this.prisma.follow.update({
+      data: {
+        followerLastStorySeenAt: new Date(story.createdAt),
+      },
+      where: {
+        followRelation: {
+          followerUserId: userId,
+          followingUserId: story.publisherId,
+        },
       },
     });
   }
@@ -113,23 +152,66 @@ export class StoryRepository {
       take,
     });
 
-    return follows.map((v) => ({
+    const filtered = follows.filter(
+      (v) => new Date(v.followedAt) < new Date(v.followingLastStoryPostedAt),
+    );
+
+    return filtered.map((v) => ({
       userId: v.followingUserId,
       newStory:
-        Date.parse(new Date(v.followingLastStoryPostedAt).toString()) >
-          Date.parse(new Date(v.followerLastStorySeenAt).toString()) || false,
+        new Date(v.followingLastStoryPostedAt) >
+        new Date(v.followerLastStorySeenAt),
     }));
   }
 
   async create(input: CreateStoryInput, userId: string): Promise<Story> {
     const story = await this.prisma.story.create({
-      data: { ...input, publisherId: userId },
+      data: {
+        ...input,
+        publisherId: userId,
+        type: this.getStoryTypeFromInput(input),
+      },
       include: {
         views: true,
       },
     });
 
+    const follow = await this.prisma.follow.findFirst({
+      where: {
+        followingUserId: userId,
+      },
+    });
+
+    await this.updatePublisherStoryLastPostedAt(follow.id);
+
     return story;
+  }
+
+  getStoryTypeFromInput(input: CreateStoryInput): string {
+    if (input.attachment) {
+      if (input.attachment.type === 'img') {
+        return 'image';
+      }
+      if (input.attachment.type === 'vid') {
+        return 'video';
+      }
+    }
+    if (input.affiliationPostId) {
+      return 'affilation-post';
+    }
+    if (input.newsfeedPostId) {
+      return 'newsfeed-post';
+    }
+    if (input.shopPostId) {
+      return 'shop-post';
+    }
+    if (input.servicePostId) {
+      return 'service-post';
+    }
+    if (input.productId) {
+      return 'product-post';
+    }
+    return 'text';
   }
 
   async getSeenBy(
@@ -156,10 +238,42 @@ export class StoryRepository {
     return views;
   }
 
+  async incrementStoryViews(storyId: string, userId: string) {
+    const story = await this.prisma.story.findUnique({
+      where: {
+        id: storyId,
+      },
+    });
+    if (!story) throw new BadRequestException();
+
+    const viewed = await this.haveViewedStory(story.id, userId);
+
+    if (viewed) return story;
+
+    return await this.prisma.story.update({
+      data: {
+        viewsCount: {
+          increment: 1,
+        },
+        views: {
+          create: {
+            viewerId: userId,
+          },
+        },
+      },
+      where: {
+        id: storyId,
+      },
+    });
+  }
+
   async likeStory(input: LikeStoryInput, userId: string): Promise<Story> {
-    await this.checkStoryPublisherInteractionPremissions(input.storyId, userId);
     const story = await this.checkStoryInteractionPremissions(
       input.storyId,
+      userId,
+    );
+    await this.checkStoryPublisherInteractionPremissions(
+      story.publisherId,
       userId,
     );
 
@@ -196,11 +310,26 @@ export class StoryRepository {
 
     return liked;
   }
+  async haveViewedStory(storyId: string, userId: string): Promise<StoryView> {
+    const view = await this.prisma.storyView.findUnique({
+      where: {
+        storyViewIds: {
+          storyId,
+          viewerId: userId,
+        },
+      },
+    });
+    return view;
+  }
 
   async checkStoryPublisherInteractionPremissions(
     publisherId: string,
     userId: string,
   ): Promise<Follow | null> {
+    if (publisherId === userId)
+      throw new UnprocessableEntityException(
+        'you cannot interact with your own stories',
+      );
     const followRel = await this.prisma.follow.findFirst({
       where: {
         AND: [

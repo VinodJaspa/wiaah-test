@@ -1,4 +1,3 @@
-import { PostMention } from '@entities';
 import { CommentMentionInput } from '@input';
 import { Field, ID, InputType, PartialType } from '@nestjs/graphql';
 

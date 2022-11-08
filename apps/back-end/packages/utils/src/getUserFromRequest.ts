@@ -4,13 +4,17 @@ import { ObjectId } from "mongodb";
 import { parseCookies } from "./CookiesParser";
 import * as jwt from "jsonwebtoken";
 
-const mockAuthorzation = true;
-
-export function getUserFromRequest<T = AuthorizationDecodedUser>(req: any): T {
+export function getUserFromRequest<T = AuthorizationDecodedUser>(
+  req: any,
+  mock: boolean = false,
+  _mockedUser?: AuthorizationDecodedUser
+): T {
   const user = req?.headers?.user ? JSON.parse(req.headers.user) : null;
 
-  if (mockAuthorzation && !user)
-    return { ...mockedUser, id: new ObjectId().toHexString() } as any;
+  if (mock && !user)
+    return _mockedUser
+      ? _mockedUser
+      : ({ ...mockedUser, id: new ObjectId().toHexString() } as any);
   return user;
 }
 

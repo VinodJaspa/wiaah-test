@@ -6,9 +6,9 @@ export const waitFor = (
     const startTime = Date.now();
 
     const nextInterval = () => {
-      setTimeout(() => {
+      setTimeout(async () => {
         try {
-          callback();
+          await callback();
           resolve(null);
         } catch (err) {
           if (Date.now() - startTime > timeout) {

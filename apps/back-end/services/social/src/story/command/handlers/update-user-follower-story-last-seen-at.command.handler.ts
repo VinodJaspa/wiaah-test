@@ -10,10 +10,12 @@ export class UpdateUserFollowerStoryLastSeenAtCommandHandler
   constructor(private readonly storyRepo: StoryRepository) {}
 
   async execute({
-    usersRelations,
+    viewer,
+    story,
   }: UpdateUserFollowerStoryLastSeenAtCommand): Promise<void> {
     const res = await this.storyRepo.updateUserFollowerStoryLastSeenAt(
-      usersRelations.id,
+      story,
+      viewer.id,
     );
   }
 }

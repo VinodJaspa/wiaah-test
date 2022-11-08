@@ -5,12 +5,13 @@ const test_1 = require("./test");
 const mongodb_1 = require("mongodb");
 const CookiesParser_1 = require("./CookiesParser");
 const jwt = require("jsonwebtoken");
-const mockAuthorzation = true;
-function getUserFromRequest(req) {
+function getUserFromRequest(req, mock = false, _mockedUser) {
     var _a;
     const user = ((_a = req === null || req === void 0 ? void 0 : req.headers) === null || _a === void 0 ? void 0 : _a.user) ? JSON.parse(req.headers.user) : null;
-    if (mockAuthorzation && !user)
-        return Object.assign(Object.assign({}, test_1.mockedUser), { id: new mongodb_1.ObjectId().toHexString() });
+    if (mock && !user)
+        return _mockedUser
+            ? _mockedUser
+            : Object.assign(Object.assign({}, test_1.mockedUser), { id: new mongodb_1.ObjectId().toHexString() });
     return user;
 }
 exports.getUserFromRequest = getUserFromRequest;

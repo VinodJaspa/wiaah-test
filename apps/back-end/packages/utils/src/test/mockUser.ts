@@ -23,3 +23,15 @@ export const secendMockedUser: AuthorizationDecodedUser = {
   exp: 1560,
   iat: 1256,
 };
+
+export const thirdMockedUser: AuthorizationDecodedUser = {
+  stripeId: "stripe id testing",
+  id: "62b8c8cb69e68f34eb948b9f",
+  email: "barco01014@gmail.com",
+  accountType: "seller",
+  shopId: "62b8bae86f604a137f315879",
+  firstName: "name",
+  lastName: "last ",
+  exp: 1560,
+  iat: 1256,
+};

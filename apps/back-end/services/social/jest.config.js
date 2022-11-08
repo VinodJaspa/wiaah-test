@@ -22,7 +22,11 @@ module.exports = {
     '@comments': '<rootDir>/src/comments',
     '@keys': '<rootDir>/src/keys',
     '@posts-newsfeed': '<rootDir>/src/newsfeed-posts',
+    '@prisma-module': '<rootDir>/src/app.module',
   },
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
+  globalSetup: '<rootDir>/test/setup/globalSetup.ts',
+  globalTeardown: '<rootDir>/test/setup/globalTeardown.ts',
+  setupFilesAfterEnv: ['<rootDir>/test/setup/setupFile.ts'],
 };

@@ -11,7 +11,6 @@ export class GetMyStoriesQueryHandler
 
   async execute({ user }: GetMyStoriesQuery): Promise<Story[]> {
     const stories = await this.storyRepo.getUserStories(user.id);
-
     return stories;
   }
 }

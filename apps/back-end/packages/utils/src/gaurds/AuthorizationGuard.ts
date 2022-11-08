@@ -12,7 +12,7 @@ import { AccountType, AuthorizationDecodedUser } from "../types";
 export class GqlAuthorizationGuard implements CanActivate {
   roles: string[] = [];
   constructor(roles: AccountType[]) {
-    this.roles = ["admin", ...roles];
+    this.roles = [...roles];
   }
   canActivate(
     context: ExecutionContext
@@ -20,7 +20,8 @@ export class GqlAuthorizationGuard implements CanActivate {
     const ctx = GqlExecutionContext.create(context);
     const user: AuthorizationDecodedUser = ctx.getContext().user;
 
-    if (!user) throw new UnauthorizedException();
+    if (!user || typeof user !== "object" || typeof user.id !== "string")
+      throw new UnauthorizedException();
 
     if (this.roles) {
       if (this.roles.length === 0) return true;

@@ -15,12 +15,12 @@ const graphql_1 = require("@nestjs/graphql");
 let GqlAuthorizationGuard = class GqlAuthorizationGuard {
     constructor(roles) {
         this.roles = [];
-        this.roles = ["admin", ...roles];
+        this.roles = [...roles];
     }
     canActivate(context) {
         const ctx = graphql_1.GqlExecutionContext.create(context);
         const user = ctx.getContext().user;
-        if (!user)
+        if (!user || typeof user !== "object" || typeof user.id !== "string")
             throw new common_1.UnauthorizedException();
         if (this.roles) {
             if (this.roles.length === 0)
