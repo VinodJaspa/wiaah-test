@@ -20,6 +20,7 @@ import { Shop } from './entities/shop.entity';
 import { CreateShopInput } from './dto/create-shop.input';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
 import { FilterShopsInput } from './dto/filter-shops.input';
+import { UpdateShopInput } from './dto';
 
 @Resolver(() => Shop)
 export class ShopResolver implements OnModuleInit {
@@ -64,6 +65,14 @@ export class ShopResolver implements OnModuleInit {
   @Mutation((type) => Boolean)
   removeAllShops() {
     return this.shopService.removeAllShops();
+  }
+
+  @Mutation(() => Shop)
+  updateMyShop(
+    @Args('updateMyShopInput') input: UpdateShopInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.shopService.updateShopData(input, user.id);
   }
 
   @ResolveReference()

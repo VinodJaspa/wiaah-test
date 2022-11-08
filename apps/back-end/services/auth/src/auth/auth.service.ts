@@ -230,26 +230,17 @@ export class AuthService {
   ): Promise<{ email: string; id: string; accountType: string }> {
     const {
       results: { data, error, success },
-    } = await KafkaMessageHandler<
-      any,
-      GetAccountMetaDataByEmailMessage,
-      GetAccountMetaDataByEmailMessageReply
-    >(
-      this.eventsClient,
-      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountByEmail,
-      new GetAccountMetaDataByEmailMessage({
-        email,
-      }),
-    );
+    } = await this.getAccountMetaDataByEmail(email);
 
-    console.log({ error, success, data });
     if (!success) {
-      console.log(JSON.stringify(error, null, 2));
       throw new InternalServerErrorException(error || 'error validating email');
     }
 
     if (!data)
       throw new NotFoundException('account with this email was not found');
+
+    if (!data.emailVerified)
+      throw new BadRequestException('you need to verify your email to login');
 
     const { password: hashedPassword, ...rest } = data;
 
@@ -310,7 +301,6 @@ export class AuthService {
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.emailExists,
       new EmailExistsMessage({ email }),
       'email validation timed out',
-      10000,
     );
     if (!success) throw new Error('error validating email');
     const { emailExists } = data;

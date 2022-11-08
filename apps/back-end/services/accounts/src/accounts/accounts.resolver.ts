@@ -1,11 +1,5 @@
 import { Inject, UseGuards } from '@nestjs/common';
-import {
-  Resolver,
-  Query,
-  Args,
-  ResolveReference,
-  Mutation,
-} from '@nestjs/graphql';
+import { Resolver, ResolveReference, Mutation, Args } from '@nestjs/graphql';
 import { ClientKafka } from '@nestjs/microservices';
 import {
   AuthorizationDecodedUser,
@@ -13,7 +7,9 @@ import {
   GqlCurrentUser,
   SERVICES,
 } from 'nest-utils';
+
 import { AccountsService } from './accounts.service';
+import { UpdateAccountInput } from './dto/update-account.input';
 import { Account } from './entities';
 
 @Resolver(() => Account)
@@ -24,19 +20,13 @@ export class AccountsResolver {
     private readonly eventsClient: ClientKafka,
   ) {}
 
-  @Query(() => [Account])
-  getAccounts() {
-    return this.accountsService.findAll();
-  }
-
-  @Query(() => Account)
-  findOne(@Args('id', { type: () => String }) id: string) {
-    return this.accountsService.findOne(id);
-  }
-
-  @Mutation((type) => Boolean)
-  DeleteAllAccounts() {
-    return this.accountsService.deleteAll();
+  @Mutation(() => Account)
+  @UseGuards(new GqlAuthorizationGuard([]))
+  editAccount(
+    @Args('editAccountInput') input: UpdateAccountInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.accountsService.update(input, user.id);
   }
 
   @UseGuards(new GqlAuthorizationGuard(['buyer']))

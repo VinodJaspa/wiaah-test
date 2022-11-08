@@ -1,8 +1,5 @@
-import { CreateAccountInput } from './create-account.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { CreateSellerAccountInput } from './create-account.input';
+import { InputType, PartialType } from '@nestjs/graphql';
 
 @InputType()
-export class UpdateAccountInput extends PartialType(CreateAccountInput) {
-  @Field(() => String)
-  id: string;
-}
+export class UpdateAccountInput extends PartialType(CreateSellerAccountInput) {}

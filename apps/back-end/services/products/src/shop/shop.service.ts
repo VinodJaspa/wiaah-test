@@ -1,4 +1,8 @@
-import { Injectable, UnprocessableEntityException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnprocessableEntityException,
+} from '@nestjs/common';
 import { AuthorizationDecodedUser, createRadiusCoordsByKm } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { EventBus } from '@nestjs/cqrs';
@@ -8,6 +12,7 @@ import { CreateShopInput } from './dto/create-shop.input';
 import { FilterShopsInput } from './dto/filter-shops.input';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
 import { ShopCreatedEvent, ShopCreationFailedEvent } from './events';
+import { UpdateShopInput } from './dto';
 
 @Injectable()
 export class ShopService {
@@ -118,6 +123,21 @@ export class ShopService {
       },
     });
     return shops;
+  }
+
+  async updateShopData(input: UpdateShopInput, userId: string): Promise<Shop> {
+    try {
+      const shop = await this.prisma.shop.update({
+        where: {
+          ownerId: userId,
+        },
+        data: input,
+      });
+
+      return shop;
+    } catch (error) {
+      throw new BadRequestException('error validating shop authority');
+    }
   }
 
   async getFilteredShops(input: FilterShopsInput): Promise<Shop[]> {

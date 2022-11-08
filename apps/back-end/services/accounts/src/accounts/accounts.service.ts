@@ -4,13 +4,14 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateAccountInput, UpdateAccountInput } from './dto';
-import { Account } from './entities';
-import { PrismaService } from 'src/prisma.service';
-import { KAFKA_EVENTS, KAFKA_SERVICE_TOKEN, SERVICES } from 'nest-utils';
+import { KAFKA_EVENTS, SERVICES } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
-import { CreateShoppingCartEvent, NewAccountCreatedEvent } from 'nest-dto';
-import { AccountType, Prisma } from '@prisma-client';
+import { NewAccountCreatedEvent } from 'nest-dto';
+import { Prisma } from '@prisma-client';
+import { PrismaService } from 'prismaService';
+
+import { Account } from './entities';
+import { UpdateAccountInput } from './dto/update-account.input';
 
 @Injectable()
 export class AccountsService {
@@ -46,7 +47,6 @@ export class AccountsService {
       );
       return createdUser;
     } catch (error) {
-      console.log('err', error);
       return null;
     }
   }
@@ -106,21 +106,47 @@ export class AccountsService {
   }
 
   async update(
-    id: string,
-    updateAccountInput: Prisma.AccountUpdateInput,
+    { ...rest }: UpdateAccountInput,
+    userId: string,
   ): Promise<Partial<Account>> {
     try {
-      console.log(id);
-      const res = await this.prisma.account.update({
+      const { password, ...res } = await this.prisma.account.update({
         where: {
-          id,
+          id: userId,
         },
-        data: updateAccountInput,
+        data: rest,
+      });
+
+      return res;
+    } catch (err) {
+      throw new BadRequestException('account was not found');
+    }
+  }
+
+  async updatePassword(password: string, userId: string) {
+    await this.prisma.account.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        password,
+      },
+    });
+  }
+
+  async updateStripeId(stripeId: string, userId: string) {
+    try {
+      const { password, ...res } = await this.prisma.account.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          stripeId,
+        },
       });
       return res;
     } catch (err) {
-      console.log(err);
-      // throw new BadRequestException('account was not found');
+      throw new BadRequestException('account was not found');
     }
   }
 
@@ -139,7 +165,7 @@ export class AccountsService {
       where: {
         id: accountId,
       },
-      rejectOnNotFound(error) {
+      rejectOnNotFound() {
         throw new NotFoundException('account with the given id was not found');
       },
     });
@@ -162,8 +188,8 @@ export class AccountsService {
       throw new Error(error);
     }
   }
-  async handleVerifiedAccount(email: string) {
-    const res = await this.prisma.account.update({
+  async handleVerifyAccount(email: string) {
+    await this.prisma.account.update({
       where: {
         email,
       },

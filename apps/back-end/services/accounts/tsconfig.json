@@ -20,7 +20,8 @@
     "paths": {
       "@dto": ["src/accounts/dto"],
       "@entities": ["src/accounts/entities"],
-      "@prisma-client": ["prisma/generated/client"]
+      "@prisma-client": ["prisma/generated/client"],
+      "prismaService": ["src/prisma.service"]
     }
   }
 }

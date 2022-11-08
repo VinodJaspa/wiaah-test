@@ -37,4 +37,7 @@ export class Account {
 
   @Field((type) => Boolean)
   verified: boolean;
+
+  @Field(() => String, { nullable: true })
+  companyRegisterationNumber?: string;
 }

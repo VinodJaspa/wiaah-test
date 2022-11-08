@@ -11,21 +11,25 @@ import {
   MessagePattern,
   Payload,
 } from '@nestjs/microservices';
-import { AccountsService } from './accounts.service';
 import { KAFKA_MESSAGES, KAFKA_EVENTS, SERVICES } from 'nest-utils';
 import {
   AccountRegisteredEvent,
   AccountVerifiedEvent,
+  BuyerAccountRegisteredEvent,
   EmailExistsMessage,
   EmailExistsMessageReply,
   GetAccountMetaDataByEmailMessage,
   GetAccountMetaDataByEmailMessageReply,
   KafkaPayload,
   PasswordChangedEvent,
+  SellerAccountRegisteredEvent,
   StripeAccountCreatedEvent,
   UserHasStripeAccountMessage,
   UserHasStripeAccountMessageReply,
 } from 'nest-dto';
+
+import { AccountsService } from './accounts.service';
+
 @Controller()
 export class AccountsController implements OnModuleInit {
   private logger = new Logger(AccountsController.name);
@@ -57,20 +61,17 @@ export class AccountsController implements OnModuleInit {
   async emailExists(
     @Payload() payload: KafkaPayload<EmailExistsMessage>,
   ): Promise<EmailExistsMessageReply> {
-    console.log('called');
     try {
       const exists = await this.accountService.emailExists(
         payload.value.input.email,
       );
 
-      console.log('done');
       return new EmailExistsMessageReply({
         success: true,
         data: { emailExists: exists },
         error: null,
       });
     } catch (err) {
-      console.log({ err });
       return new EmailExistsMessageReply({
         success: false,
         data: null,
@@ -90,14 +91,21 @@ export class AccountsController implements OnModuleInit {
         },
       } = payload;
       const account = await this.accountService.getByEmail(email);
-      const { firstName, password, type, id } = account;
+      const { firstName, password, type, id, lastName, verified } = account;
       return new GetAccountMetaDataByEmailMessageReply({
         success: true,
-        data: { accountType: type, email, password, firstName, id },
+        data: {
+          accountType: type,
+          email,
+          password,
+          firstName,
+          lastName,
+          id,
+          emailVerified: verified,
+        },
         error: null,
       });
     } catch (error) {
-      console.log({ error });
       return new GetAccountMetaDataByEmailMessageReply({
         success: false,
         data: null,
@@ -106,11 +114,31 @@ export class AccountsController implements OnModuleInit {
     }
   }
 
-  @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.accountRegistered)
-  createAccount(@Payload() payload: KafkaPayload<AccountRegisteredEvent>) {
+  @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.sellerAccountRegistered)
+  handleCreateSellerAccount(
+    @Payload() payload: KafkaPayload<SellerAccountRegisteredEvent>,
+  ) {
     this.accountService.createAccountRecord({
-      ...payload.value.input,
-      type: payload.value.input.accountType,
+      firstName: payload.value.input.firstName,
+      lastName: payload.value.input.lastName,
+      email: payload.value.input.email,
+      password: payload.value.input.password,
+      companyRegisterationNumber:
+        payload.value.input.companyRegisterationNumber,
+      type: 'seller',
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.buyerAccountRegistered)
+  handleCreateBuyerAccount(
+    @Payload() payload: KafkaPayload<BuyerAccountRegisteredEvent>,
+  ) {
+    this.accountService.createAccountRecord({
+      firstName: payload.value.input.firstName,
+      lastName: payload.value.input.lastName,
+      email: payload.value.input.email,
+      password: payload.value.input.password,
+      type: 'buyer',
     });
   }
 
@@ -119,11 +147,10 @@ export class AccountsController implements OnModuleInit {
     @Payload()
     { value }: KafkaPayload<AccountVerifiedEvent>,
   ) {
-    console.log('account,verfifed', value);
     const {
       input: { email },
     } = value;
-    this.accountService.handleVerifiedAccount(email);
+    this.accountService.handleVerifyAccount(email);
   }
 
   @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.passwordChanged)
@@ -133,7 +160,7 @@ export class AccountsController implements OnModuleInit {
         input: { email, newPassword, id },
       } = value;
       console.log(value);
-      this.accountService.update(id, { password: newPassword });
+      this.accountService.updatePassword(newPassword, id);
     } catch (error) {
       this.logger.error(error);
     }
@@ -156,7 +183,7 @@ export class AccountsController implements OnModuleInit {
       const {
         input: { stripeId, userId },
       } = value;
-      await this.accountService.update(userId, { stripeId });
+      await this.accountService.updateStripeId(stripeId, userId);
     } catch (error) {
       this.logger.error(error);
     }
