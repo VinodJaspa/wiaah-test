@@ -1,4 +1,5 @@
 import { UnprocessableEntityException } from '@nestjs/common';
+import { CqrsModule } from '@nestjs/cqrs';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ShopService, CreateShopInput, Shop } from '@shop';
 import { mockedUser, SERVICES } from 'nest-utils';
@@ -19,9 +20,9 @@ describe('Shop service unit testing', () => {
       long: 13,
       state: 'test state',
     },
-    storeType: ['type1'],
+    storeType: ['product'],
     targetGenders: ['female', 'male'],
-    vendorType: ['vendor1'],
+    vendorType: ['individual'],
     banner: 'test.jpeg',
     description: 'test desc',
   };
@@ -29,6 +30,7 @@ describe('Shop service unit testing', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
+        CqrsModule,
         ShopService,
         PrismaService,
         {
@@ -172,10 +174,10 @@ describe('Shop service unit testing', () => {
 
     it('storeType', async () => {
       shops = await service.getFilteredShops({
-        storeType: 'type1',
+        storeType: 'product',
       });
 
-      expect(shops.every((v) => v.storeType.includes('type1'))).toBe(true);
+      expect(shops.every((v) => v.storeType.includes('product'))).toBe(true);
     });
 
     it('target gender', async () => {
@@ -194,10 +196,12 @@ describe('Shop service unit testing', () => {
 
     it('vendorType', async () => {
       shops = await service.getFilteredShops({
-        vendorType: 'vendor1',
+        vendorType: 'individual',
       });
 
-      expect(shops.every((v) => v.vendorType.includes('vendor1'))).toBe(true);
+      expect(shops.every((v) => v.vendorType.includes('individual'))).toBe(
+        true,
+      );
     });
 
     it('country', async () => {
@@ -225,9 +229,9 @@ const shopsPh: CreateShopInput[] = [
     name: 'test',
     banner: 'test.jpeg',
     description: 'test desc',
-    storeType: ['type1', 'type2'],
+    storeType: ['product', 'service'],
     targetGenders: ['male'],
-    vendorType: ['vendor3'],
+    vendorType: ['profissional'],
     location: {
       lat: 32.00063711672341,
       long: 20.000751274280667,
@@ -239,11 +243,11 @@ const shopsPh: CreateShopInput[] = [
   },
   {
     name: 'test',
-    storeType: ['type3'],
+    storeType: ['product'],
     banner: 'test.jpeg',
     description: 'test desc',
     targetGenders: ['female'],
-    vendorType: ['vendor1'],
+    vendorType: ['individual'],
     location: {
       lat: 33,
       long: 21,
@@ -255,11 +259,11 @@ const shopsPh: CreateShopInput[] = [
   },
   {
     name: 'test',
-    storeType: ['type2'],
+    storeType: ['service'],
     banner: 'test.jpeg',
     description: 'test desc',
     targetGenders: ['male', 'female'],
-    vendorType: ['vendor2'],
+    vendorType: ['profissional'],
     location: {
       lat: 35,
       long: 22,
@@ -271,11 +275,11 @@ const shopsPh: CreateShopInput[] = [
   },
   {
     name: 'test',
-    storeType: ['type1', 'type2'],
+    storeType: ['product', 'service'],
     banner: 'test.jpeg',
     description: 'test desc',
     targetGenders: ['male'],
-    vendorType: ['vendor3'],
+    vendorType: ['profissional'],
     location: {
       lat: 40,
       long: 25,
@@ -287,11 +291,11 @@ const shopsPh: CreateShopInput[] = [
   },
   {
     name: 'test',
-    storeType: ['type1', 'type2'],
+    storeType: ['product', 'service'],
     banner: 'test.jpeg',
     description: 'test desc',
     targetGenders: ['male'],
-    vendorType: ['vendor3'],
+    vendorType: ['profissional'],
     location: {
       lat: 45,
       long: 30,

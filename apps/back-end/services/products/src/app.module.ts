@@ -30,7 +30,7 @@ import { PrismaService } from './Prisma.service';
   ],
   exports: [ElasticsearchModule],
 })
-class ElasticGlobalModule {}
+export class ElasticGlobalModule {}
 
 @Module({
   imports: [
