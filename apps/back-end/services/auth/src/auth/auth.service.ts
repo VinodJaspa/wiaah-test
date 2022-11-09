@@ -210,12 +210,20 @@ export class AuthService {
     const hashedNewPassword = await this.hashPassword(newPassword);
 
     // everything went right, emit an password changed event
+    await this.emitPasswordChange(
+      email,
+      hashedNewPassword,
+      changeRequest.accountId,
+    );
+  }
+
+  async emitPasswordChange(email: string, newPass: string, accountId: string) {
     this.eventsClient.emit(
       KAFKA_EVENTS.AUTH_EVENTS.passwordChanged,
       new PasswordChangedEvent({
         email,
-        newPassword: hashedNewPassword,
-        id: changeRequest.accountId,
+        newPassword: newPass,
+        id: accountId,
       }),
     );
   }

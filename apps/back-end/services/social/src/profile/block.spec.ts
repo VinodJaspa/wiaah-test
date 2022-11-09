@@ -15,7 +15,6 @@ import { ProfileBlockEvent } from 'nest-dto';
 describe('Block/unblock functionlaity', () => {
   let service: ProfileService;
   let resolver: ProfileResolver;
-  let mockMongo: MongoMemoryReplSet;
   let mockKafkaEmit: jest.Mock;
 
   const createProfileMockInput = {
@@ -26,16 +25,8 @@ describe('Block/unblock functionlaity', () => {
     visibility: 'public' as ProfileVisibility,
   };
 
-  afterEach(async () => await mockMongo.stop());
-
   beforeEach(async () => {
     mockKafkaEmit = jest.fn();
-    mockMongo = await MongoMemoryReplSet.create({
-      replSet: { count: 1 },
-      instanceOpts: [{ storageEngine: 'wiredTiger' }],
-    });
-    process.env.DATABASE_URL = mockMongo.getUri('testDB');
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProfileService,

@@ -22,8 +22,29 @@ model Account {
   type                       AccountType
   companyRegisterationNumber String?
   verified                   Boolean     @default(false)
+  idVerified                 Boolean     @default(false)
   createdAt                  DateTime    @default(now())
   updatedAt                  DateTime    @updatedAt()
+}
+
+model UserIdenityVerificationRequest {
+  id String @id @default(auto()) @db.ObjectId @map("_id")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId String @db.ObjectId @unique
+
+  compeleted Boolean @default(false)
+  accepted Boolean @default(false)
+  acceptedById String? @db.ObjectId
+  
+  firstName String
+  lastName String
+  fullAddress String
+  dateOfBirth DateTime
+  id_front String
+  id_back String
+  VVCPicture String?
+  VVC String 
 }
 
 enum AccountType {

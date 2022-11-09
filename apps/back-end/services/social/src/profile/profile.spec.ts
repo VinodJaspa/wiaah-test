@@ -11,7 +11,6 @@ import { ProfileNotfoundException } from '@exceptions';
 describe('Profile CRUD', () => {
   let service: ProfileService;
   let resolver: ProfileResolver;
-  let mockMongo: MongoMemoryReplSet;
   let mockKafkaEmit: jest.Mock;
 
   const createProfileMockInput = {
@@ -22,16 +21,8 @@ describe('Profile CRUD', () => {
     visibility: 'public' as ProfileVisibility,
   };
 
-  afterEach(async () => await mockMongo.stop());
-
   beforeEach(async () => {
     mockKafkaEmit = jest.fn();
-    mockMongo = await MongoMemoryReplSet.create({
-      replSet: { count: 1 },
-      instanceOpts: [{ storageEngine: 'wiredTiger' }],
-    });
-    process.env.DATABASE_URL = mockMongo.getUri('testDB');
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         ProfileService,
@@ -56,8 +47,6 @@ describe('Profile CRUD', () => {
   });
 
   it('should create profile and emit kafka event', async () => {
-    console.log(process.env.DATABASE_URL);
-
     let profiles = await resolver.findAll();
     expect(profiles.total).toBe(0);
     expect(profiles.hasMore).toBe(false);

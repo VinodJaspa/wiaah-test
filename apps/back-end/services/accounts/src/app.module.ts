@@ -6,6 +6,7 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { getUserFromRequest } from 'nest-utils';
 import { AccountsModule } from './accounts/accounts.module';
+import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { AccountsModule } from './accounts/accounts.module';
       },
     }),
     AccountsModule,
+    IdentityVerificationModule,
   ],
   controllers: [],
   providers: [],

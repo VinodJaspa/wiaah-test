@@ -20,7 +20,8 @@
     "paths": {
       "@models": ["models"],
       "@utils": ["src/utils"],
-      "@prisma-client": ["prisma/generated"]
+      "@prisma-client": ["prisma/generated"],
+      "prismaService": ["src/prisma.service"]
     }
   }
 }

@@ -29,7 +29,7 @@ model Profile {
   profession     String
   visibility     ProfileVisibility @default(public)
   Posts          NewsfeedPost[]
-  Comment        Comment[]
+  comments       Comment[]
   blockedUsers   BlockedUser[]
   myShares       ContentShare[]
   reactedContent ContentReaction[]
