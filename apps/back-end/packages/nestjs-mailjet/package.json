@@ -1,0 +1,18 @@
+{
+  "name": "@nestjs/mailing",
+  "version": "1.0.0",
+  "description": "mailjet module for nestjs integration",
+  "main": "./dist/index.js",
+  "types": "./index.ts",
+  "scripts": {
+    "build": "npx tsc"
+  },
+  "author": "wiaah",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "node-mailjet": "4.0.1"
+  }
+}

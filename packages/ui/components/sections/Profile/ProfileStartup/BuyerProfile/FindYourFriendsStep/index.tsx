@@ -50,7 +50,7 @@ export const FindYourFriendsStep: React.FC<FindYourFriendsStepProps> = ({}) => {
                       <div className="flex items-center">
                         <div className="inline-block w-16">
                           <img
-                            className="h-8"
+                            className="h-8 w-12 object-cover"
                             src={service.image}
                             alt={`${service.name} logo`}
                           />
