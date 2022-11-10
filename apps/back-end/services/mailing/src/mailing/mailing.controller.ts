@@ -5,7 +5,6 @@ import {
   AccountRegisteredEvent,
   ChangePasswordEvent,
   KafkaPayload,
-  SendVerificationEmailEvent,
 } from 'nest-dto';
 import { KAFKA_EVENTS } from 'nest-utils';
 
@@ -18,7 +17,6 @@ export class MailingController {
   sendVerificationMail(
     @Payload() payload: KafkaPayload<AccountRegisteredEvent>,
   ) {
-    console.log('calleds');
     const {
       value: {
         input: { email, firstName, verificationCode },
