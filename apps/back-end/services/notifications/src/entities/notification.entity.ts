@@ -1,20 +1,9 @@
 import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
 import { CreateGqlPaginatedResponse } from 'nest-utils';
 import { NotifiactionType } from 'prismaClient';
+import { User } from './extends';
 
 registerEnumType(NotifiactionType, { name: 'NotificationType' });
-
-@ObjectType()
-export class NotificationAuthor {
-  @Field(() => ID)
-  id: string;
-
-  @Field(() => String)
-  thumbnail: string;
-
-  @Field(() => String)
-  name: string;
-}
 
 @ObjectType()
 export class Notification {
@@ -23,6 +12,9 @@ export class Notification {
 
   @Field(() => ID)
   userId: string;
+
+  @Field(() => ID)
+  authorId: string;
 
   @Field(() => Date)
   createdAt: Date;
@@ -33,8 +25,8 @@ export class Notification {
   @Field(() => NotifiactionType)
   type: NotifiactionType;
 
-  @Field(() => NotificationAuthor)
-  author: NotificationAuthor;
+  @Field(() => User, { nullable: true })
+  author?: User;
 
   @Field(() => ID)
   authorProfileId: string;
@@ -44,6 +36,6 @@ export class Notification {
 }
 
 @ObjectType()
-export class NotifactionsPaginationResponse extends CreateGqlPaginatedResponse(
+export class NotificationPaginationResponse extends CreateGqlPaginatedResponse(
   Notification,
 ) {}

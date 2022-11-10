@@ -1,11 +1,29 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
-import { MangerService } from './manager.service';
-import { Notification } from '@entities';
+import { Resolver, Query, ResolveField, Parent } from '@nestjs/graphql';
+import { ManagerService } from './manager.service';
+import {
+  NotificationPaginationResponse,
+  Notification,
+  Profile,
+} from '@entities';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthorizationGuard } from 'nest-utils';
+import {
+  AuthorizationDecodedUser,
+  GqlAuthorizationGuard,
+  GqlCurrentUser,
+} from 'nest-utils';
 
 @Resolver(() => Notification)
 @UseGuards(new GqlAuthorizationGuard([]))
-export class MangerResolver {
-  constructor(private readonly mangerService: MangerService) {}
+export class ManagerResolver {
+  constructor(private readonly managerService: ManagerService) {}
+
+  @Query(() => NotificationPaginationResponse)
+  getMyNotifications(@GqlCurrentUser() user: AuthorizationDecodedUser) {
+    return this.managerService.getMyNotifications(user.id);
+  }
+
+  @ResolveField(() => Profile)
+  User(@Parent() notification: Notification) {
+    return { __typename: 'User', id: notification.authorProfileId };
+  }
 }

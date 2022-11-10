@@ -11,12 +11,12 @@ export class CreateIdentityVerificationInput {
   @Field(() => String)
   fullAddress: string;
 
-  @Field(() => Date)
-  dateOfBirth: Date;
+  @Field(() => String)
+  dateOfBirth: string;
 
-  @Field(() => ID)
+  @Field(() => String)
   id_front: string;
 
-  @Field(() => ID)
+  @Field(() => String)
   id_back: string;
 }

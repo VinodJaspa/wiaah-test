@@ -13,5 +13,6 @@ export const subgraphs: Subgraph[] = [
   // { name: 'reviews', url: 'http://localhost:3010/graphql' },
   // { name: 'cart', url: 'http://localhost:3011/graphql' },
   // { name: 'services', url: 'http://localhost:3020/graphql' },
-  { name: 'chat', url: 'http://localhost:3022/graphql' },
+  // { name: 'chat', url: 'http://localhost:3022/graphql' },
+  { name: 'notification', url: 'http://localhost:3025/graphql' },
 ];

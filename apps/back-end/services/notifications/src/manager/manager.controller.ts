@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
-import { MangerService } from './manager.service';
+import { ManagerService } from './manager.service';
 import {
   CommentCreatedEvent,
   CommentMentionedEvent,
@@ -9,34 +9,48 @@ import {
 } from 'nest-dto';
 import { KAFKA_EVENTS } from 'nest-utils';
 
-@Controller('manger')
+@Controller()
 export class ManagerController {
-  constructor(private readonly notificationsService: MangerService) {}
+  constructor(private readonly notificationsService: ManagerService) {}
 
   @EventPattern(KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated)
-  handleCommentCreatedEvent(@Payload() data: CommentCreatedEvent) {
-    const { commentedByUserId, hostType, mainHostId, commentedByProfileId } =
-      data.input;
+  handleCommentCreatedEvent(@Payload() data: { value: CommentCreatedEvent }) {
+    const {
+      commentedByUserId,
+      hostType,
+      mainHostId,
+      commentedByProfileId,
+      contentOwnerUserId,
+    } = data.value.input;
     this.notificationsService.createNotification({
       type: hostType === 'comment' ? 'commentCommented' : 'postCommented',
-      userId: commentedByUserId,
+      authorId: commentedByUserId,
       content: '',
       contentId: mainHostId,
       authorProfileId: commentedByProfileId,
+      contentOwnerUserId,
     });
   }
 
   @EventPattern(KAFKA_EVENTS.COMMENTS_EVENTS.commentMentions)
-  handleCommentMentionsEvent(@Payload() data: CommentMentionedEvent) {
-    const { mentionedIds, mentionedByProfileId, mainHostId } = data.input;
+  handleCommentMentionsEvent(
+    @Payload() data: { value: CommentMentionedEvent },
+  ) {
+    const {
+      mentionedIds,
+      mentionedByProfileId,
+      mainHostId,
+      mentionedByUserId,
+    } = data.value.input;
 
     Array.isArray(mentionedIds)
       ? mentionedIds.map((id) => {
           this.notificationsService.createNotification({
             content: '',
             type: 'commentMention',
-            userId: id.userId,
+            authorId: mentionedByUserId,
             authorProfileId: mentionedByProfileId,
+            contentOwnerUserId: id.userId,
             contentId: mainHostId,
           });
         })
@@ -44,14 +58,15 @@ export class ManagerController {
   }
 
   @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted)
-  handleContentReactedEvent(@Payload() data: ContentReactedEvent) {
+  handleContentReactedEvent(@Payload() data: { value: ContentReactedEvent }) {
     const {
       contentAuthorUserId,
       contentId,
       contentTitle,
       contentType,
       reacterProfileId,
-    } = data.input;
+      reacterUserId,
+    } = data.value.input;
 
     const postsTypes: ContentReactedType[] = ['newsfeed-post'];
 
@@ -60,7 +75,8 @@ export class ManagerController {
       contentId,
       type: postsTypes.includes(contentType) ? 'postReacted' : 'commentReacted',
       authorProfileId: reacterProfileId,
-      userId: contentAuthorUserId,
+      contentOwnerUserId: contentAuthorUserId,
+      authorId: reacterUserId,
     });
   }
 }

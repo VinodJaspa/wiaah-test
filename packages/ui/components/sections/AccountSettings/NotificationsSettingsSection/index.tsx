@@ -47,40 +47,22 @@ const fromPeopleIFollow: TranslationTextType = {
 };
 const fromPeopleIFollowValue = "iFollow";
 
-const Off: TranslationTextType = {
-  translationKey: "off",
-  fallbackText: "OFF",
-};
+const Off: TranslationTextType = "OFF";
 const OffValue = "off";
 
-const On: TranslationTextType = {
-  translationKey: "on",
-  fallbackText: "On",
-};
+const On: TranslationTextType = "On";
 const OnValue = "on";
 
-const fromEveryone: TranslationTextType = {
-  translationKey: "from_everyone",
-  fallbackText: "From Everyone",
-};
+const fromEveryone: TranslationTextType = "From Everyone";
 const fromEveryoneValue = "everyone";
 
-const everyone: TranslationTextType = {
-  translationKey: "everyone",
-  fallbackText: "Everyone",
-};
+const everyone: TranslationTextType = "Everyone";
 const everyoneValue = "everyone";
 
-const peopleYouFollow: TranslationTextType = {
-  translationKey: "people_you_follow",
-  fallbackText: "People You Follow",
-};
+const peopleYouFollow: TranslationTextType = "People You Follow";
 const peopleYouFollowValue = "youFollow";
 
-const noOne: TranslationTextType = {
-  translationKey: "no_one",
-  fallbackText: "No One",
-};
+const noOne: TranslationTextType = "No One";
 const noOneValue = "noOne";
 
 const LikesNotificationsOpts: FormOptionType[] = [
@@ -114,6 +96,10 @@ const CommentsNotificationsOpts: FormOptionType[] = [
 ];
 
 const CommentLikesNotificationOpts: FormOptionType[] = [
+  {
+    name: On,
+    value: OnValue,
+  },
   {
     name: Off,
     value: OffValue,

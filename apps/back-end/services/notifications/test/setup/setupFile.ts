@@ -1,5 +1,4 @@
-import { PrismaClient } from '@prisma-client';
-import { Client } from '@elastic/elasticsearch';
+import { PrismaClient } from 'prismaClient';
 
 class PrismaService extends PrismaClient {
   async onModuleInit() {
@@ -8,8 +7,9 @@ class PrismaService extends PrismaClient {
 }
 
 async function clearDB() {
-  await prisma.account.deleteMany();
-  await prisma.userIdenityVerificationRequest.deleteMany();
+  await prisma.notification.deleteMany();
+  await prisma.silentContent.deleteMany();
+  await prisma.userNotificationSettings.deleteMany();
 }
 
 const prisma = new PrismaService();

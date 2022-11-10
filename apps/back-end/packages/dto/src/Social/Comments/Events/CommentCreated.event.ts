@@ -10,4 +10,5 @@ export class CommentCreatedEvent extends KafkaMessage<{
   commentedByUserId: string;
   commentedByProfileId: string;
   commentedAt: string;
+  contentOwnerUserId: string;
 }> {}

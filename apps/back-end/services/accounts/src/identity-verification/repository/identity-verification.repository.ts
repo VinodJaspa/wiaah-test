@@ -15,6 +15,7 @@ export class IdentityVerificationRepository {
     await this.prisma.userIdenityVerificationRequest.create({
       data: {
         ...input,
+        dateOfBirth: new Date(input.dateOfBirth),
         VVC: VVC,
         userId,
       },
