@@ -23,6 +23,7 @@ import {
   CreateStoryInput,
   DeleteStoryInput,
   GetRecentStoriesInput,
+  GetStorySeenByInput,
   LikeStoryInput,
 } from './dto';
 import {
@@ -37,6 +38,7 @@ import {
 import {
   GetMyStoriesQuery,
   GetRecentStoriesQuery,
+  GetUserPrevStoryQuery,
   ViewUserStoryQuery,
 } from './queries';
 
@@ -48,22 +50,6 @@ export class StoryResolver {
     private readonly commandbus: CommandBus,
   ) {}
 
-  @Query(() => [RecentStory])
-  getRecentStories(
-    @Args('getRecentStoryInput', {
-      nullable: true,
-      defaultValue: {
-        pagination: { page: 1, take: 10 },
-      } as GetRecentStoriesInput,
-    })
-    args: GetRecentStoriesInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    return this.querybus.execute<GetRecentStoriesQuery, RecentStory[]>(
-      new GetRecentStoriesQuery(args, user),
-    );
-  }
-
   @Query(() => Story)
   getUserStory(
     @Args('userId') publisherId: string,
@@ -74,7 +60,17 @@ export class StoryResolver {
     );
   }
 
-  @Mutation(() => Story)
+  @Query(() => Story)
+  getUserPrevStory(
+    @Args('userId') publisherId: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.querybus.execute<GetUserPrevStoryQuery, Story>(
+      new GetUserPrevStoryQuery(publisherId, user),
+    );
+  }
+
+  @Query(() => [Story])
   getMyStories(@GqlCurrentUser() user: AuthorizationDecodedUser) {
     return this.querybus.execute<GetMyStoriesQuery, Story[]>(
       new GetMyStoriesQuery(user),

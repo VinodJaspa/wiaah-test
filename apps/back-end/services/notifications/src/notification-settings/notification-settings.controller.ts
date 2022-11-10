@@ -4,13 +4,13 @@ import { NewAccountCreatedEvent } from 'nest-dto';
 import { KAFKA_EVENTS } from 'nest-utils';
 import { NotificationSettingsService } from './notification-settings.service';
 
-@Controller('notification-settings')
+@Controller()
 export class NotificationSettingsController {
   constructor(
     private readonly notiSettingsService: NotificationSettingsService,
   ) {}
 
-  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENT.accountCreated)
+  @EventPattern('test')
   handleNewAccountCreated(@Payload() data: NewAccountCreatedEvent) {
     const { id } = data.input;
     this.notiSettingsService.createAccountNotifciationSettings(id);

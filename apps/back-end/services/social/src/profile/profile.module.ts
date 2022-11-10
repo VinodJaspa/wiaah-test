@@ -23,7 +23,7 @@ import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
       },
     ]),
   ],
-  providers: [ProfileResolver, ProfileService, PrismaService],
+  providers: [ProfileResolver, ProfileService],
   exports: [ProfileService],
 })
 export class ProfileModule {}

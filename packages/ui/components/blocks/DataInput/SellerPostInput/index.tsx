@@ -86,7 +86,7 @@ export const SellerPostInput: React.FC<SellerPostInputProps> = ({
       style={{
         boxShadow: "0px 10px 50px rgba(0, 0, 0, 0.1)",
       }}
-      className="flex w-full py-6 gap-4 flex-col"
+      className="flex w-full py-6 gap-4 flex-col rounded-[1.25rem]"
     >
       <div className="flex w-full gap-4 px-12">
         <Avatar

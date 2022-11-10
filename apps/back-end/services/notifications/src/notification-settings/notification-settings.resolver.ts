@@ -15,7 +15,7 @@ export class NotificationSettingsResolver {
 
   @Mutation(() => UserNotificationSettings)
   updateMyNotification(
-    @Args() input: UpdateNotificationSettingInput,
+    @Args('updateNotificationsArgs') input: UpdateNotificationSettingInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.notificationSettingsService.updateUserNotificationSettings(

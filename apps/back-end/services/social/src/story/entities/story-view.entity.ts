@@ -1,3 +1,4 @@
+import { User } from '@entities';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Story } from './story.entity';
 
@@ -8,6 +9,9 @@ export class StoryView {
 
   @Field(() => ID)
   viewerId: string;
+
+  @Field(() => User, { nullable: true })
+  viewer?: User;
 
   @Field(() => ID)
   storyId: string;

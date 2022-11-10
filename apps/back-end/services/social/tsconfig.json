@@ -33,7 +33,8 @@
       "@entities": ["src/entities"],
       "prismaService": ["src/prisma.service"],
       "@keys": ["src/keys"],
-      "@content-management": ["src/content-management"]
+      "@content-management": ["src/content-management"],
+      "@prisma-module": ["src/app.module"]
     }
   }
 }

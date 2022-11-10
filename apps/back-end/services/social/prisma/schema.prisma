@@ -29,7 +29,7 @@ model Profile {
   profession     String
   visibility     ProfileVisibility @default(public)
   Posts          NewsfeedPost[]
-  Comment        Comment[]
+  comments       Comment[]
   blockedUsers   BlockedUser[]
   myShares       ContentShare[]
   reactedContent ContentReaction[]
@@ -41,6 +41,8 @@ model BlockedUser {
   blockerProfileId String   @db.ObjectId
   blockedProfileId String   @db.ObjectId
   blockedAt        DateTime @default(now())
+
+  @@unique([blockedProfileId,blockerProfileId],name: "blockedProfile")
 }
 
 model Follow {
@@ -57,6 +59,8 @@ model Follow {
   followingProfileId         String   @db.ObjectId
 
   followedAt DateTime @default(now())
+
+  @@unique([followerUserId,followingUserId], name:"followRelation")
 }
 
 model NewsfeedPost {
@@ -86,6 +90,7 @@ model ContentReaction {
   reactedBy          Profile             @relation(fields: [reactedByProfileId], references: [id])
   reactedByProfileId String              @db.ObjectId
   reactedAt          DateTime            @default(now())
+  @@unique([hostId,hostType,reactedByProfileId])
 }
 
 model ContentShare {
@@ -142,6 +147,8 @@ model StoryView {
   storyId   String   @db.ObjectId
   createdAt DateTime @default(now())
   story     Story    @relation(fields: [storyId], references: [id])
+
+  @@unique([viewerId,storyId],name: "storyViewIds")
 }
 
 model StoryLike {
@@ -149,6 +156,8 @@ model StoryLike {
   userId  String @db.ObjectId
   storyId String @db.ObjectId
   story   Story  @relation(fields: [storyId], references: [id])
+
+  @@unique([userId,storyId],name:"storyLikeIds")
 }
 
 type Hashtag {

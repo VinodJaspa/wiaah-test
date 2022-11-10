@@ -1,5 +1,5 @@
-import { InputType, Int, Field, Float } from '@nestjs/graphql';
-import { Prisma, StoreType, TargetGenders, VendorType } from '@prisma-client';
+import { InputType, Field, Float } from '@nestjs/graphql';
+import { StoreType, TargetGenders, VendorType } from '@prisma-client';
 
 @InputType()
 export class LocationInput {

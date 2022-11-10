@@ -1,5 +1,4 @@
 import { ContentManagementModule } from '@content-management';
-import { Profile } from '@entities';
 import { CreateNewsfeedPostInput, CreateProfileInput } from '@input';
 import { ContentHostTypeEnum } from '@keys';
 import { UnauthorizedException } from '@nestjs/common';
@@ -8,6 +7,7 @@ import { ProfileModule } from '@profile-module';
 import { MongoMemoryReplSet } from 'mongodb-memory-server';
 import { mockedUser, secendMockedUser, SERVICES } from 'nest-utils';
 import { PrismaService } from 'prismaService';
+
 import { CommentsResolver } from './comments.resolver';
 import { CommentsService } from './comments.service';
 

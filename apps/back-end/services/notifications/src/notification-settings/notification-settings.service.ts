@@ -4,8 +4,8 @@ import { Injectable } from '@nestjs/common';
 import { DBErrorException } from 'nest-utils';
 import { NotifiactionType, NotificationSettingsEnum } from 'prismaClient';
 import { PrismaService } from 'prismaService';
-import { DisableNotificationFromContentInput } from 'src/dto/DisableNotificationFromContent.input';
-import { ContentNotificationAlreadyDisabledException } from 'src/exceptions';
+import { DisableNotificationFromContentInput } from '../dto';
+import { ContentNotificationAlreadyDisabledException } from '../exceptions';
 
 @Injectable()
 export class NotificationSettingsService {
@@ -63,7 +63,7 @@ export class NotificationSettingsService {
 
   async isDisabled(contentId: string, userId: string): Promise<boolean> {
     try {
-      await this.prisma.silentContent.findFirstOrThrow({
+      await this.prisma.silentContent.findFirst({
         where: {
           AND: [
             {
@@ -73,6 +73,9 @@ export class NotificationSettingsService {
               userId,
             },
           ],
+        },
+        rejectOnNotFound(error) {
+          throw error;
         },
       });
 
@@ -94,17 +97,22 @@ export class NotificationSettingsService {
         },
       })) ?? (await this.createAccountNotifciationSettings(userId));
 
-    if (notificationType === 'postCommented') {
-      const rule = userSettings.postComment;
-      return this.checkNotificationRule(rule, isFollowed);
-    }
-    if (notificationType === 'postReacted') {
-      const rule = userSettings.postReaction;
-      return this.checkNotificationRule(rule, isFollowed);
-    }
-    if (notificationType === 'commentReacted') {
-      const rule = userSettings.commentLike;
-      return this.checkNotificationRule(rule, isFollowed);
+    let rule: NotificationSettingsEnum;
+    switch (notificationType) {
+      case 'postCommented':
+        rule = userSettings.postComment;
+        return this.checkNotificationRule(rule, isFollowed);
+
+      case 'postReacted':
+        rule = userSettings.postReaction;
+        return this.checkNotificationRule(rule, isFollowed);
+
+      case 'commentReacted':
+        rule = userSettings.commentLike;
+        return this.checkNotificationRule(rule, isFollowed);
+
+      default:
+        return true;
     }
   }
 

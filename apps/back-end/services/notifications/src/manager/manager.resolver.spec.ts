@@ -1,16 +1,16 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { MangerResolver } from './manager.resolver';
-import { MangerService } from './manager.service';
+import { ManagerResolver } from './manager.resolver';
+import { ManagerService } from './manager.service';
 
 describe('MangerResolver', () => {
-  let resolver: MangerResolver;
+  let resolver: ManagerResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [MangerResolver, MangerService],
+      providers: [ManagerResolver, ManagerService],
     }).compile();
 
-    resolver = module.get<MangerResolver>(MangerResolver);
+    resolver = module.get<ManagerResolver>(ManagerResolver);
   });
 
   it('should be defined', () => {

@@ -22,6 +22,8 @@ export const KAFKA_EVENTS = {
   },
   AUTH_EVENTS: {
     accountRegistered: "account.registered",
+    sellerAccountRegistered: "account.seller.registered",
+    buyerAccountRegistered: "account.buyer.registered",
     accountVerified: "account.verified",
     passwordChangeRequest: "password.change.request",
     passwordChanged: "password.changed",

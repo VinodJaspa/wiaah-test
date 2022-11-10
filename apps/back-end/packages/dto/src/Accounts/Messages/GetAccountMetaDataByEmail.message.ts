@@ -12,5 +12,6 @@ export class GetAccountMetaDataByEmailMessageReply extends KafkaMessageReply<{
   email: string;
   password: string;
   accountType: string;
+  emailVerified: boolean;
   id: string;
 } | null> {}

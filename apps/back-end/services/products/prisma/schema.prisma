@@ -63,6 +63,22 @@ model Product {
   visibility       VisibilityEnum        @default(hidden)
 }
 
+model Shop {
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId       String          @unique
+  name          String
+  banner        String
+  description   String
+  verified      Boolean
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt()
+  phone         String?
+  location      Location
+  storeType     StoreType[]
+  vendorType    VendorType[]
+  targetGenders TargetGenders[]
+}
+
 type Discount {
   units  Int
   amount Int
@@ -94,20 +110,6 @@ enum PresentationType {
   image
 }
 
-model Shop {
-  id            String          @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId       String          @unique
-  name          String
-  banner        String
-  description   String
-  verified      Boolean
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt()
-  location      Location
-  storeType     StoreType[]
-  vendorType    VendorType[]
-  targetGenders TargetGenders[]
-}
 
 type Location {
   lat     Float
@@ -119,15 +121,13 @@ type Location {
 }
 
 enum StoreType {
-  type1
-  type2
-  type3
+  product
+  service
 }
 
 enum VendorType {
-  vendor1
-  vendor2
-  vendor3
+  profissional
+  individual
 }
 
 enum TargetGenders {

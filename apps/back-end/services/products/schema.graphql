@@ -112,15 +112,13 @@ type Shop {
 }
 
 enum StoreType {
-  type1
-  type2
-  type3
+  product
+  service
 }
 
 enum VendorType {
-  vendor1
-  vendor2
-  vendor3
+  profissional
+  individual
 }
 
 enum TargetGenders {
@@ -163,6 +161,7 @@ input FilterShopsInput {
 type Mutation {
   createShop(createShopInput: CreateShopInput!): Shop!
   removeAllShops: Boolean!
+  updateMyShop(updateMyShopInput: UpdateShopInput!): Shop!
   test: Boolean!
   createNewProduct(createNewProductInput: CreateProdutctInput!): Product!
   updateProduct(updateProductArgs: UpdateProdutctInput!): Boolean!
@@ -194,6 +193,16 @@ input LocationInput {
   country: String!
   city: String!
   state: String!
+}
+
+input UpdateShopInput {
+  name: String
+  banner: String
+  description: String
+  location: LocationInput
+  storeType: [StoreType!]
+  vendorType: [VendorType!]
+  targetGenders: [TargetGenders!]
 }
 
 input CreateProdutctInput {

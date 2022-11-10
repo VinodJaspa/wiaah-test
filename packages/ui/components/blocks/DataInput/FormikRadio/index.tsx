@@ -23,11 +23,12 @@ export const FormikRadio: React.FC<FormikRadioProps> = ({
   stackProps,
   ...props
 }) => {
+  console.log(options);
   return (
-    <FormikInput {...props} as={Radio}>
+    <FormikInput {...props} as={({ children }: any) => <>{children}</>}>
       <HStack {...stackProps}>
         {options.map((opt, i) => (
-          <Radio value={opt.value} key={i} {...radioProps}>
+          <Radio value={opt.value} key={i} name={props.name} {...radioProps}>
             <TranslationText translationObject={opt.name} />
           </Radio>
         ))}

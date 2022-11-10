@@ -1,21 +1,16 @@
 import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
+import { CommandBus } from '@nestjs/cqrs';
+import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
+import { ConfigService } from '@nestjs/config';
+import { GqlAuthorizationGuard, KAFKA_MESSAGES, SERVICES } from 'nest-utils';
+
+import { ChangePasswordInput, LoginDto, VerifyEmailDto } from './dto';
 import { AuthService } from './auth.service';
 import { Registeration } from './entities/regiseration.entity';
 import { RegisterDto } from './dto/register.dto';
-import { Inject, OnModuleInit } from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
-import { ACCOUNTS_SERVICE } from 'src/ServicesTokens';
-import { LoginDto, VerifyEmailDto } from './dto';
-import { ConfigService } from '@nestjs/config';
-import {
-  KAFKA_EVENTS,
-  KAFKA_MESSAGES,
-  KAFKA_SERVICE_TOKEN,
-  SERVICES,
-} from 'nest-utils';
 import { ForgotPasswordEmailInput } from './dto/forgotPasswordEmail.input';
 import { ConfirmPasswordChangeInput } from './dto/confirmPasswordChange.input';
-import { NoSchemaIntrospectionCustomRule } from 'graphql';
 
 @Resolver((of) => Registeration)
 export class AuthResolver implements OnModuleInit {
@@ -25,7 +20,14 @@ export class AuthResolver implements OnModuleInit {
     @Inject(SERVICES.AUTH_SERVICE.token)
     private readonly eventsClient: ClientKafka,
     private readonly config: ConfigService,
+    private readonly commandBus: CommandBus,
   ) {}
+
+  @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([]))
+  changePassword(@Args('changePasswordInput') input: ChangePasswordInput) {
+    this.commandBus.execute;
+  }
 
   @Mutation(() => String)
   register(@Args('RegisterInput') registerInput: RegisterDto) {
@@ -54,10 +56,6 @@ export class AuthResolver implements OnModuleInit {
     @Args('EmailVerificationInput') verififactionInput: VerifyEmailDto,
   ) {
     return this.authService.verifyEmail(verififactionInput);
-  }
-  @Mutation(() => Boolean)
-  removeAll() {
-    return this.authService.removeAll();
   }
 
   @Mutation((type) => Boolean)

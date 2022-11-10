@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./generated/client"
+  output   = "./generated/client"
 }
 
 datasource db {
@@ -12,17 +12,39 @@ datasource db {
 }
 
 model Account {
-  id            String @id @default(auto()) @map("_id") @db.ObjectId 
-  stripeId      String? @unique
-  firstName     String
-  lastName      String
-  email         String @unique
-  password      String
-  online        Boolean @default(false)
-  type          AccountType
-  verified      Boolean @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt()
+  id                         String      @id @default(auto()) @map("_id") @db.ObjectId
+  stripeId                   String?     @unique
+  firstName                  String
+  lastName                   String
+  email                      String      @unique
+  password                   String
+  online                     Boolean     @default(false)
+  type                       AccountType
+  companyRegisterationNumber String?
+  verified                   Boolean     @default(false)
+  idVerified                 Boolean     @default(false)
+  createdAt                  DateTime    @default(now())
+  updatedAt                  DateTime    @updatedAt()
+}
+
+model UserIdenityVerificationRequest {
+  id String @id @default(auto()) @db.ObjectId @map("_id")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId String @db.ObjectId @unique
+
+  compeleted Boolean @default(false)
+  accepted Boolean @default(false)
+  acceptedById String? @db.ObjectId
+  
+  firstName String
+  lastName String
+  fullAddress String
+  dateOfBirth DateTime
+  id_front String
+  id_back String
+  VVCPicture String?
+  VVC String 
 }
 
 enum AccountType {

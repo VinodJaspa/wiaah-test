@@ -31,7 +31,7 @@
     "@nestjs/cqrs": "8.0.0",
     "@nestjs/elasticsearch": "^9.0.0",
     "@nestjs/graphql": "10.0.0",
-    "@nestjs/microservices": "^8.4.7",
+    "@nestjs/microservices": "9.1.4",
     "@nestjs/platform-express": "8.2.3",
     "@wiaah/upload": "*",
     "apollo-server-express": "3.6.2",

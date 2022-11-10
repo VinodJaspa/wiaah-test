@@ -1,4 +1,4 @@
-import { NotifactionsPaginationResponse, NotificationAuthor } from '@entities';
+import { NotificationPaginationResponse } from '@entities';
 import { Injectable } from '@nestjs/common';
 import { NotificationSettingsService } from '@notification-settings';
 import { DBErrorException } from 'nest-utils';
@@ -6,7 +6,7 @@ import { NotifiactionType } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 
 @Injectable()
-export class MangerService {
+export class ManagerService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly notificationSettings: NotificationSettingsService,
@@ -14,7 +14,7 @@ export class MangerService {
 
   async getMyNotifications(
     userId: string,
-  ): Promise<NotifactionsPaginationResponse> {
+  ): Promise<NotificationPaginationResponse> {
     const notifications = await this.prisma.notification.findMany({
       where: {
         userId,
@@ -24,24 +24,24 @@ export class MangerService {
     return {
       data: notifications,
       hasMore: false,
-      total: 15,
+      total: notifications.length,
     };
   }
 
   async createNotification(props: {
+    contentOwnerUserId?: string;
     type: NotifiactionType;
     content: string;
-    userId?: string;
-    author?: NotificationAuthor;
     authorProfileId?: string;
+    authorId: string;
     contentId?: string;
     isFollowed?: boolean;
   }) {
     const {
       content,
       type,
-      author,
-      userId,
+      authorId,
+      contentOwnerUserId,
       authorProfileId,
       contentId,
       isFollowed,
@@ -50,26 +50,27 @@ export class MangerService {
     if (contentId) {
       const canSend = await this.canSendNotification(
         contentId,
-        userId,
+        authorId,
         type,
         !!isFollowed,
       );
-
+      console.log('cannot send', canSend);
       if (!canSend) return;
     }
 
     try {
       await this.prisma.notification.create({
         data: {
-          author,
           content,
           type,
-          userId,
+          userId: contentOwnerUserId,
           authorProfileId,
           contentId,
+          authorId,
         },
       });
     } catch (error) {
+      console.log(error);
       throw new DBErrorException('failed to create notification');
     }
   }
@@ -94,7 +95,7 @@ export class MangerService {
         isFollowed,
       );
     if (!notificationAllowed) conditions.push(false);
-
+    console.log({ isDisabled, notificationAllowed });
     return conditions.every((c) => c);
   }
 }

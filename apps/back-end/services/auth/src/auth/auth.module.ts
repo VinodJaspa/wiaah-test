@@ -18,9 +18,12 @@ import {
   KAFKA_SERVICE_TOKEN,
   SERVICES,
 } from 'nest-utils';
+import { CqrsModule } from '@nestjs/cqrs';
+import { AuthCommandHandlers } from './commands';
 
 @Module({
   imports: [
+    CqrsModule,
     ClientsModule.register([
       {
         name: SERVICES.AUTH_SERVICE.token,
@@ -54,6 +57,6 @@ import {
       envFilePath: ['.env'],
     }),
   ],
-  providers: [AuthResolver, AuthService, PrismaService],
+  providers: [AuthResolver, AuthService, PrismaService, ...AuthCommandHandlers],
 })
 export class AuthModule {}
