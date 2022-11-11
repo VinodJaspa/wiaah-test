@@ -9,6 +9,7 @@ import { getUserFromRequest } from 'nest-utils';
 import { MembershipModule } from './membership/membership.module';
 import { UserMembershipModule } from './user-membership/user-membership.module';
 import { PrismaService } from 'prismaService';
+import { Account } from './membership/entities';
 
 @Global()
 @Module({
@@ -25,6 +26,9 @@ export class PrismaModule {}
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: true,
+      buildSchemaOptions: {
+        orphanedTypes: [Account],
+      },
       context: (ctx) => ({ ...ctx, user: getUserFromRequest(ctx.req) }),
     }),
   ],

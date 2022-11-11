@@ -2,6 +2,8 @@ export const KAFKA_EVENTS = {
   ACCOUNTS_EVENTS: {
     createAccount: "create.account",
     accountCreated: "account.created",
+    sellerAccountCreated: "seller.account.created",
+    buyerAccountCreated: "buyer.account.created",
   },
   USER_EVENTS: {
     userConnected: "user.connected",
@@ -80,6 +82,14 @@ export const KAFKA_EVENTS = {
   SUBSCRIPTIONS: {
     chatMessageSent: (roomId: string) => `chat.message.sent.${roomId}`,
     roomDataUpdated: (userId: string) => `room.data.updated.${userId}`,
+  },
+  MEMBERSHIP: {
+    memberShipCreated: "membership.created",
+    memberShipModified: "membership.modified",
+    memberShipDeleted: "membership.deleted",
+  },
+  SELLER: {
+    revenueIncreased: "revenue.increased",
   },
   createAccount: "create.account",
   createWishlist: "create.wishlist",

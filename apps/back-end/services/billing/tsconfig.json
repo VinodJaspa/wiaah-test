@@ -23,7 +23,8 @@
       "@prisma-client": ["prisma/generated/client"],
       "@exception": ["src/exceptions"],
       "prismaClient": ["prisma/generated/client"],
-      "prismaService": ["src/prisma.Service"]
+      "prismaService": ["src/prisma.Service"],
+      "@stripe": ["src/stripe"]
     }
   }
 }

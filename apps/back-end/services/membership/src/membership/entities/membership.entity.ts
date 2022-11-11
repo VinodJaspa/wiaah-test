@@ -1,6 +1,18 @@
 import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
 
 @ObjectType()
+export class MembershipTurnoverRule {
+  @Field(() => Float)
+  turnover_amount: number;
+
+  @Field(() => Float)
+  price: number;
+
+  @Field(() => Float)
+  commission: number;
+}
+
+@ObjectType()
 export class MembershipIncludedItem {
   @Field(() => String)
   title: string;
@@ -14,8 +26,8 @@ export class Membership {
   @Field(() => String)
   name: string;
 
-  @Field(() => Float)
-  price: number;
+  @Field(() => [MembershipTurnoverRule])
+  turnover_rules: MembershipTurnoverRule[];
 
   @Field(() => [MembershipIncludedItem])
   includings: MembershipIncludedItem[];

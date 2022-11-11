@@ -1,4 +1,10 @@
 export * from './impl';
-import { GetSubscriableMemberShipsQueryHandler } from './handlers';
+import {
+  GetSubscriableMemberShipsQueryHandler,
+  GetMembershipPlanByIdQueryHandler,
+} from './handlers';
 
-export const membershipQueryHandlers = [GetSubscriableMemberShipsQueryHandler];
+export const membershipQueryHandlers = [
+  GetSubscriableMemberShipsQueryHandler,
+  GetMembershipPlanByIdQueryHandler,
+];

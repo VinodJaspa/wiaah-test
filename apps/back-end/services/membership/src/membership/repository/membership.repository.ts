@@ -7,6 +7,14 @@ import { CreateMembershipInput, UpdateMembershipInput } from '../dto';
 export class MembershipRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async findById(id: string) {
+    return this.prisma.membership.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
   async create(
     input: CreateMembershipInput,
     userId: string,

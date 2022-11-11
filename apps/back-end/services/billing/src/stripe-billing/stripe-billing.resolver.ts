@@ -1,5 +1,6 @@
 import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
-import { Resolver, Query, Mutation } from '@nestjs/graphql';
+import { CommandBus } from '@nestjs/cqrs';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ClientKafka } from '@nestjs/microservices';
 import {
   AuthorizationDecodedUser,
@@ -9,18 +10,21 @@ import {
   SERVICES,
 } from 'nest-utils';
 
+import { CreateMembershipPaymentIntentCommand } from './commands';
+import { CreateMembershipPaymentIntentInput } from './dto';
 import { StripeBillingService } from './stripe-billing.service';
 
 @Resolver()
-@UseGuards(new GqlAuthorizationGuard(['seller']))
 export class StripeBillingResolver implements OnModuleInit {
   constructor(
     private readonly stripeBillingService: StripeBillingService,
     @Inject(SERVICES.BILLING_SERVICE.token)
     private readonly eventsCLient: ClientKafka,
+    private readonly commandBus: CommandBus,
   ) {}
 
   @Mutation(() => String)
+  @UseGuards(new GqlAuthorizationGuard(['seller']))
   async createConnectedAccount(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
@@ -32,21 +36,32 @@ export class StripeBillingResolver implements OnModuleInit {
   }
 
   @Mutation(() => String)
-  async createPaymentIntent(
+  @UseGuards(new GqlAuthorizationGuard([]))
+  async createCartPaymentIntent(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<string> {
     return await this.stripeBillingService.checkout(user);
   }
 
+  @Mutation(() => String)
+  @UseGuards(new GqlAuthorizationGuard(['seller']))
+  async createMembershipSubscriptionPaymentIntent(
+    @Args('args') args: CreateMembershipPaymentIntentInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    await this.commandBus.execute<
+      CreateMembershipPaymentIntentCommand,
+      { client_secert: string }
+    >(new CreateMembershipPaymentIntentCommand(args, user));
+  }
+
   @Query(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard(['admin']))
   async getConnectedAccounts() {
     try {
-      const res = await this.stripeBillingService.getStripeConnectedAccounts();
-
-      console.log(res);
+      await this.stripeBillingService.getStripeConnectedAccounts();
       return true;
     } catch (err) {
-      console.log(err);
       return false;
     }
   }

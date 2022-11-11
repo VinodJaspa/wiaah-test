@@ -14,7 +14,9 @@ datasource db {
 model Membership {
   id String @id @db.ObjectId @default(auto()) @map("_id")
   name String 
-  price Float
+  stripePriceId String?
+  stripeProductId String?
+  turnover_rules MembershipTurnoverRule[]
   includings MembershipIncludeItem[]
   active Boolean @default(false)
 }
@@ -24,3 +26,8 @@ type MembershipIncludeItem {
 }
 
 
+type MembershipTurnoverRule {
+  turnover_amount Float
+  price Float
+  commission Float
+}

@@ -59,7 +59,6 @@ export class StripeService {
       (acc, curr) => acc + curr.totalPrice,
       0,
     );
-    console.log({ totalAmount, input: JSON.stringify(input, null, 2) });
     const data = await this.stripe.paymentIntents.create({
       amount: totalAmount,
       currency,
@@ -83,5 +82,130 @@ export class StripeService {
     }
 
     return data;
+  }
+
+  async createStripeProduct(
+    productName: string,
+    description?: string,
+  ): Promise<Stripe.Product> {
+    const product = await this.stripe.products.create({
+      name: productName,
+      shippable: false,
+      description,
+    });
+    return product;
+  }
+
+  async updateStripeProduct(
+    name: string,
+    description?: string,
+  ): Promise<Stripe.Product> {
+    const product = await this.stripe.products.create({
+      name: name,
+      shippable: false,
+      description,
+    });
+    return product;
+  }
+
+  async createStripeTieredPrice(
+    stripeProductId: string,
+    tiers: {
+      priceInCents: number;
+      limit: number;
+    }[],
+    recuring: 'monthly' | 'yearly' | 'daily',
+    currency: string = 'usd',
+    name?: string,
+  ): Promise<Stripe.Price> {
+    const price = await this.stripe.prices.create({
+      nickname: name,
+      tiers: tiers.map((v) => ({
+        up_to: v.limit,
+        unit_amount: v.priceInCents,
+      })),
+      currency,
+      recurring: {
+        interval:
+          recuring === 'monthly'
+            ? 'month'
+            : recuring === 'daily'
+            ? 'day'
+            : recuring === 'yearly'
+            ? 'year'
+            : undefined,
+        usage_type: 'metered',
+      },
+      product: stripeProductId,
+      tiers_mode: 'graduated',
+      billing_scheme: 'tiered',
+      expand: ['tiers'],
+    });
+
+    return price;
+  }
+
+  async updateSubscriptionItemUsage(
+    itemId: string,
+    usage: number,
+  ): Promise<Stripe.UsageRecord> {
+    const usageRecord = await this.stripe.subscriptionItems.createUsageRecord(
+      itemId,
+      { quantity: usage, timestamp: 'now' },
+    );
+    return usageRecord;
+  }
+
+  async createCustomerSubscription(
+    customerId: string,
+    priceId: string,
+  ): Promise<{ subscriptionObj: Stripe.Subscription; clientSecret: string }> {
+    const subscription = await this.stripe.subscriptions.create({
+      customer: customerId,
+      items: [{ price: priceId }],
+      payment_behavior: 'default_incomplete',
+      payment_settings: { save_default_payment_method: 'on_subscription' },
+      expand: ['latest_invoice.payment_intent'],
+    });
+
+    const clientSecret =
+      subscription.latest_invoice?.['payment_intent']?.['client_secret'];
+
+    return { clientSecret, subscriptionObj: subscription };
+  }
+
+  async updateCustomerSubscriptionPrice(
+    subscriptionId: string,
+    priceId: string,
+  ): Promise<Stripe.Subscription> {
+    const subscription = await this.stripe.subscriptions.update(
+      subscriptionId,
+      {
+        items: [{ price: priceId }],
+      },
+    );
+    return subscription;
+  }
+
+  async createCustomer(name: string, email: string): Promise<Stripe.Customer> {
+    const customer = await this.stripe.customers.create({
+      name,
+      email,
+    });
+
+    return customer;
+  }
+
+  async updateCustomer(
+    customerId: string,
+    name?: string,
+    email?: string,
+  ): Promise<Stripe.Customer> {
+    const customer = await this.stripe.customers.update(customerId, {
+      name,
+      email,
+    });
+
+    return customer;
   }
 }

@@ -1,5 +1,11 @@
 import { Inject, UseGuards } from '@nestjs/common';
-import { Resolver, ResolveReference, Mutation, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  ResolveReference,
+  Mutation,
+  Args,
+  Query,
+} from '@nestjs/graphql';
 import { ClientKafka } from '@nestjs/microservices';
 import {
   AuthorizationDecodedUser,
@@ -19,6 +25,11 @@ export class AccountsResolver {
     @Inject(SERVICES.ACCOUNTS_SERVICE.token)
     private readonly eventsClient: ClientKafka,
   ) {}
+
+  @Query(() => [Account])
+  getall() {
+    return this.accountsService.findAll();
+  }
 
   @Mutation(() => Account)
   @UseGuards(new GqlAuthorizationGuard([]))

@@ -10,8 +10,7 @@ import { BillingAddressModule } from '../billing-address/billing-address.module'
 import { StripeBillingCommandsHandlers } from './commands';
 import { StripeBillingEventsHandlers } from './events';
 import { StripeBillingSagas } from './sagas';
-import { STRIPE_INJECT_TOKEN } from '../constants';
-import Stripe from 'stripe';
+import { StripeBillingController } from './stripe-billing.controller';
 
 @Module({
   imports: [
@@ -44,5 +43,6 @@ import Stripe from 'stripe';
     ...StripeBillingEventsHandlers,
     ...StripeBillingSagas,
   ],
+  controllers: [StripeBillingController],
 })
 export class StripeBillingModule {}

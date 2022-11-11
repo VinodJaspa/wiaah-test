@@ -1,10 +1,15 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
-import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
+import {
+  AuthorizationDecodedUser,
+  GqlAuthorizationGuard,
+  GqlCurrentUser,
+} from 'nest-utils';
+import { UseGuards } from '@nestjs/common';
 
 import { Membership } from './entities';
-import { CreateMembershipInput } from './dto/create-membership.input';
-import { UpdateMembershipInput } from './dto/update-membership.input';
+import { CreateMembershipInput, PurchaseMembershipInput } from './dto';
+import { UpdateMembershipInput } from './dto';
 import { CreateMembershipCommand, UpdateMembershipCommand } from './commands';
 import { GetSubscriableMembershipsQuery } from './queries';
 
@@ -16,6 +21,7 @@ export class MembershipResolver {
   ) {}
 
   @Mutation(() => Membership)
+  @UseGuards(new GqlAuthorizationGuard(['admin']))
   createMembership(
     @Args('args') args: CreateMembershipInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
@@ -26,6 +32,7 @@ export class MembershipResolver {
   }
 
   @Mutation(() => Membership)
+  @UseGuards(new GqlAuthorizationGuard(['admin']))
   updateMembership(
     @Args('args') args: UpdateMembershipInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
@@ -34,6 +41,12 @@ export class MembershipResolver {
       new UpdateMembershipCommand(args, user),
     );
   }
+
+  @Mutation(() => Boolean)
+  purchaseMembership(
+    @Args('args') args: PurchaseMembershipInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {}
 
   @Query(() => [Membership])
   getSubscriableMemberships() {
