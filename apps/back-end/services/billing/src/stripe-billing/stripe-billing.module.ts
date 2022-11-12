@@ -11,6 +11,7 @@ import { StripeBillingCommandsHandlers } from './commands';
 import { StripeBillingEventsHandlers } from './events';
 import { StripeBillingSagas } from './sagas';
 import { StripeBillingController } from './stripe-billing.controller';
+import { stripeBillingQueryHandlers } from './queries';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { StripeBillingController } from './stripe-billing.controller';
     StripeBillingService,
     ...StripeBillingCommandsHandlers,
     ...StripeBillingEventsHandlers,
+    ...stripeBillingQueryHandlers,
     ...StripeBillingSagas,
   ],
   controllers: [StripeBillingController],

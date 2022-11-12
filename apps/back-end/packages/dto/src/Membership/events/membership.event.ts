@@ -5,6 +5,7 @@ export class MembershipCreatedEvent extends KafkaMessage<{
   name: string;
   active: boolean;
   pricing: { priceInCents: number; limit: number }[];
+  price: number;
 }> {}
 
 export class MembershipUpdatedEvent extends KafkaMessage<{

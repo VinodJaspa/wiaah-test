@@ -19,7 +19,8 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "prismaClient": ["prisma/generated/client"],
-      "prismaService": ["src/prisma.service"]
+      "prismaService": ["src/prisma.service"],
+      "@membership/*": ["src/membership/*"]
     }
   }
 }

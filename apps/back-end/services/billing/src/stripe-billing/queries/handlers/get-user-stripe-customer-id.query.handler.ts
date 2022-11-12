@@ -8,6 +8,6 @@ export class GetUserStripeCustomerIdQueryHandler
   constructor() {}
 
   async execute({ user }: GetUserStripeCustomerIdQuery): Promise<string> {
-    return user.stripeId;
+    return 'cus_MmwrSEbhkSgtL6';
   }
 }

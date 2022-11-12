@@ -16,18 +16,25 @@ model Membership {
   name String 
   stripePriceId String?
   stripeProductId String?
+  type MembershipType
   turnover_rules MembershipTurnoverRule[]
   includings MembershipIncludeItem[]
   active Boolean @default(false)
+}
+model MembershipTurnoverRule {
+  id String @id @default(auto()) @db.ObjectId @map("_id")
+  membershipId String
+  membership Membership @relation(fields: [membershipId],references: [id])
+  turnover_amount Float
+  price Float
+  commission Float
 }
 
 type MembershipIncludeItem {
   title String
 }
 
-
-type MembershipTurnoverRule {
-  turnover_amount Float
-  price Float
-  commission Float
+enum MembershipType {
+  monthly
+  per_unit
 }

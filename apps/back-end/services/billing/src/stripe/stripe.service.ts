@@ -108,19 +108,43 @@ export class StripeService {
     return product;
   }
 
+  async createMonthlyPrice(
+    stripeProductId: string,
+    priceInCents: number,
+    currency: string = 'usd',
+    name?: string,
+  ): Promise<Stripe.Price> {
+    const price = await this.stripe.prices.create({
+      currency,
+      nickname: name,
+      product: stripeProductId,
+      unit_amount: priceInCents,
+      recurring: { interval: 'month' },
+    });
+
+    return price;
+  }
+
   async createStripeTieredPrice(
     stripeProductId: string,
     tiers: {
       priceInCents: number;
-      limit: number;
+      limit: number | 'inf';
     }[],
     recuring: 'monthly' | 'yearly' | 'daily',
     currency: string = 'usd',
     name?: string,
   ): Promise<Stripe.Price> {
+    let _tiers = tiers;
+
+    _tiers.splice(tiers.length - 1, 1, {
+      limit: 'inf',
+      priceInCents: tiers.at(tiers.length - 1).priceInCents,
+    });
+
     const price = await this.stripe.prices.create({
       nickname: name,
-      tiers: tiers.map((v) => ({
+      tiers: _tiers.map((v) => ({
         up_to: v.limit,
         unit_amount: v.priceInCents,
       })),
@@ -163,6 +187,7 @@ export class StripeService {
     const subscription = await this.stripe.subscriptions.create({
       customer: customerId,
       items: [{ price: priceId }],
+
       payment_behavior: 'default_incomplete',
       payment_settings: { save_default_payment_method: 'on_subscription' },
       expand: ['latest_invoice.payment_intent'],

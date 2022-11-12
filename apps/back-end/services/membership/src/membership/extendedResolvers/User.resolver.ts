@@ -14,7 +14,7 @@ export class UserResolver {
     @GqlCurrentUser() authUser: AuthorizationDecodedUser,
   ) {
     return this.queryBus.execute<GetMembershipPlanByIdQuery, Membership>(
-      new GetMembershipPlanByIdQuery(user.membershipId, authUser),
+      new GetMembershipPlanByIdQuery(user.membershipId, authUser.id),
     );
   }
 }

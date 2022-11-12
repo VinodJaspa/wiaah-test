@@ -1,8 +1,11 @@
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { StripeService } from '@stripe';
 
-import { StripeProductCreatedEvent } from '../../events';
-import { CreateStripeProductCommand } from '../impl';
+import { StripeProductCreatedEvent } from '@stripe-billing/events';
+import {
+  CreateStripeProductCommand,
+  StripeProductCommandRes,
+} from '@stripe-billing/commands/impl';
 
 @CommandHandler(CreateStripeProductCommand)
 export class CreateStripeProductCommandHandler
@@ -14,10 +17,8 @@ export class CreateStripeProductCommandHandler
   ) {}
 
   async execute({
-    productId,
-    type,
-    name,
-  }: CreateStripeProductCommand): Promise<void> {
+    input: { productId, type, name },
+  }: CreateStripeProductCommand): Promise<StripeProductCommandRes> {
     const res = await this.stripeService.createStripeProduct(name);
 
     this.eventBus.publish<StripeProductCreatedEvent>(
@@ -27,5 +28,9 @@ export class CreateStripeProductCommandHandler
         type,
       }),
     );
+
+    return {
+      stripeProductId: res.id,
+    };
   }
 }

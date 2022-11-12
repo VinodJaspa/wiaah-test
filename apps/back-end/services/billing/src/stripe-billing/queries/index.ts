@@ -1,4 +1,10 @@
 export * from './impl';
-import { GetUserStripeCustomerIdQueryHandler } from './handlers';
+import {
+  GetUserStripeCustomerIdQueryHandler,
+  GetMembershipPriceIdQueryHandler,
+} from './handlers';
 
-export const stripeBillingQueryHandlers = [GetUserStripeCustomerIdQueryHandler];
+export const stripeBillingQueryHandlers = [
+  GetUserStripeCustomerIdQueryHandler,
+  GetMembershipPriceIdQueryHandler,
+];

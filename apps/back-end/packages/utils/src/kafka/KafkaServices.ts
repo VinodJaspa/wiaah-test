@@ -25,7 +25,8 @@ export type Services =
   | "SEARCH_SERVICE"
   | "CHAT"
   | "SUBSCRIPTIONS"
-  | "NOTIFICATIONS";
+  | "NOTIFICATIONS"
+  | "MEMBERSHIP";
 
 export const SERVICES: Record<Services, ServiceInfo> = {
   ACCOUNTS_SERVICE: {
@@ -128,5 +129,10 @@ export const SERVICES: Record<Services, ServiceInfo> = {
     clientId: "notofications-client",
     groupId: "notifications-group",
     token: "notifications-service",
+  },
+  MEMBERSHIP: {
+    clientId: "memebership-client",
+    groupId: "membership-group",
+    token: "membership-service",
   },
 };

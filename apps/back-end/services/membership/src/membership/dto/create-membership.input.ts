@@ -1,4 +1,7 @@
-import { InputType, Field, Float } from '@nestjs/graphql';
+import { InputType, Field, Float, registerEnumType, ID } from '@nestjs/graphql';
+import { MembershipType } from 'prismaClient';
+
+registerEnumType(MembershipType, { name: 'MemberShipType' });
 
 @InputType()
 export class MembershipTurnoverRuleInput {
@@ -22,6 +25,9 @@ export class MembershipIncludedItemInput {
 export class CreateMembershipInput {
   @Field(() => String)
   name: string;
+
+  @Field(() => MembershipType)
+  type: MembershipType;
 
   @Field(() => [MembershipTurnoverRuleInput])
   turnover_rules: MembershipTurnoverRuleInput[];

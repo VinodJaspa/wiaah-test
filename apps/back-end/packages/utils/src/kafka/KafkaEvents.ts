@@ -34,6 +34,7 @@ export const KAFKA_EVENTS = {
     balanceCreated: "balance.created",
     transactionCreated: "transaction.created",
     stripeAccountCreated: "stripe.account.created",
+    stripeMembershipPricingCreated: "stripe.membership.pricing.created",
   },
   VOUCHER_EVENTS: {
     voucherCreated: "voucher.created",
@@ -132,6 +133,7 @@ export const KAFKA_MESSAGES = {
   },
   BILLING_MESSAGES: {
     getUserCashbackBalance: "get.user.cashback.balance",
+    getUserMembershipPriceId: "get.user.membership.price.id",
   },
   VOUCHERS_MESSAGES: {
     getShopActiveVouchers: "get.shop.active.vouchers",

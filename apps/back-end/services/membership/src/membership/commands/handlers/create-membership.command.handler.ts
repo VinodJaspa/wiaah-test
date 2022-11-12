@@ -1,9 +1,9 @@
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 
-import { MembershipCreatedEvent } from '../../events';
-import { Membership } from '../../entities';
-import { MembershipRepository } from '../../repository';
-import { CreateMembershipCommand } from '../impl';
+import { MembershipCreatedEvent } from '@membership/events';
+import { Membership } from '@membership/entities';
+import { MembershipRepository } from '@membership/repository';
+import { CreateMembershipCommand } from '@membership/commands/impl';
 
 @CommandHandler(CreateMembershipCommand)
 export class CreateMembershipCommandHandler

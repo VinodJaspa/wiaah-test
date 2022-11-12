@@ -1,7 +1,13 @@
 export class CreateStripeProductCommand {
   constructor(
-    public readonly name: string,
-    public readonly productId: string,
-    public readonly type: string,
+    public input: {
+      name: string;
+      productId: string;
+      type: string;
+    },
   ) {}
+}
+
+export class StripeProductCommandRes {
+  stripeProductId: string;
 }

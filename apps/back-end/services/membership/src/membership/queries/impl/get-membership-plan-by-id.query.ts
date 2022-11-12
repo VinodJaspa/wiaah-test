@@ -3,6 +3,7 @@ import { AuthorizationDecodedUser } from 'nest-utils';
 export class GetMembershipPlanByIdQuery {
   constructor(
     public readonly planId: string,
-    public readonly user: AuthorizationDecodedUser,
+    public readonly userId?: string,
+    public readonly user?: AuthorizationDecodedUser,
   ) {}
 }

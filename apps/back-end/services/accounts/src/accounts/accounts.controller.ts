@@ -39,7 +39,7 @@ export class AccountsController implements OnModuleInit {
     private readonly eventsClient: ClientKafka,
   ) {}
 
-  @MessagePattern('test')
+  @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.hasStripeId)
   async hasStripeId(@Payload() value: UserHasStripeAccountMessage) {
     try {
       const {

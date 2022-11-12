@@ -1,16 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { Membership } from 'prismaClient';
+import { Membership, MembershipTurnoverRule, Prisma } from 'prismaClient';
 import { PrismaService } from 'prismaService';
-import { CreateMembershipInput, UpdateMembershipInput } from '../dto';
+import { CreateMembershipInput, UpdateMembershipInput } from '@membership/dto';
 
 @Injectable()
 export class MembershipRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  updateTurn;
+
   async findById(id: string) {
     return this.prisma.membership.findUnique({
       where: {
         id,
+      },
+      include: {
+        turnover_rules: true,
       },
     });
   }
@@ -18,23 +23,41 @@ export class MembershipRepository {
   async create(
     input: CreateMembershipInput,
     userId: string,
-  ): Promise<Membership> {
+  ): Promise<Membership & { turnover_rules: MembershipTurnoverRule[] }> {
     return this.prisma.membership.create({
-      data: input,
+      data: {
+        ...input,
+        turnover_rules: {
+          createMany: {
+            data: input.turnover_rules,
+          },
+        },
+      },
+      include: {
+        turnover_rules: true,
+      },
     });
   }
 
-  async update({ id, ...res }: UpdateMembershipInput, userId: String) {
+  async update(id: string, input: UpdateMembershipInput) {
     return this.prisma.membership.update({
       where: {
         id,
       },
-      data: res,
+      include: {
+        turnover_rules: true,
+      },
+      data: {
+        ...input,
+        turnover_rules: undefined,
+      },
     });
   }
 
-  async findAll(): Promise<Membership[]> {
-    return this.prisma.membership.findMany();
+  async findAll() {
+    return this.prisma.membership.findMany({
+      include: { turnover_rules: true },
+    });
   }
 
   async findAllActive(): Promise<Membership[]> {

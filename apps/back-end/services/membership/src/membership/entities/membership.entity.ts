@@ -2,6 +2,12 @@ import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
 
 @ObjectType()
 export class MembershipTurnoverRule {
+  @Field(() => ID)
+  id: string;
+
+  @Field(() => ID)
+  membershipId: string;
+
   @Field(() => Float)
   turnover_amount: number;
 
@@ -22,6 +28,12 @@ export class MembershipIncludedItem {
 export class Membership {
   @Field(() => ID)
   id: string;
+
+  @Field(() => String, { nullable: true })
+  stripePriceId: String;
+
+  @Field(() => String, { nullable: true })
+  stripeProductId: String;
 
   @Field(() => String)
   name: string;

@@ -4,12 +4,17 @@ import {
   ApolloFederationDriverConfig,
   ApolloFederationDriver,
 } from '@nestjs/apollo';
-import { getUserFromRequest } from 'nest-utils';
+import {
+  getUserFromRequest,
+  KAFKA_BROKERS,
+  MockedAdminUser,
+  SERVICES,
+} from 'nest-utils';
 
 import { MembershipModule } from './membership/membership.module';
-import { UserMembershipModule } from './user-membership/user-membership.module';
 import { PrismaService } from 'prismaService';
 import { Account } from './membership/entities';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Global()
 @Module({
@@ -22,14 +27,16 @@ export class PrismaModule {}
   imports: [
     PrismaModule,
     MembershipModule,
-    UserMembershipModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: true,
       buildSchemaOptions: {
         orphanedTypes: [Account],
       },
-      context: (ctx) => ({ ...ctx, user: getUserFromRequest(ctx.req) }),
+      context: (ctx) => ({
+        ...ctx,
+        user: getUserFromRequest(ctx.req, true, MockedAdminUser),
+      }),
     }),
   ],
 })

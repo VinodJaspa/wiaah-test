@@ -42,12 +42,6 @@ export class MembershipResolver {
     );
   }
 
-  @Mutation(() => Boolean)
-  purchaseMembership(
-    @Args('args') args: PurchaseMembershipInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {}
-
   @Query(() => [Membership])
   getSubscriableMemberships() {
     return this.queryBus.execute<GetSubscriableMembershipsQuery, Membership[]>(

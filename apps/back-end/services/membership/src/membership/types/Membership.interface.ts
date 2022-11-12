@@ -1,0 +1,5 @@
+import { Membership, MembershipTurnoverRule } from 'prismaClient';
+
+export type MembershipType = Membership & {
+  turnover_rules: MembershipTurnoverRule[];
+};

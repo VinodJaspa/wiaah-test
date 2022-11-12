@@ -4,7 +4,4 @@ import { Field, ID, InputType } from '@nestjs/graphql';
 export class CreateMembershipPaymentIntentInput {
   @Field(() => ID)
   membershipId: string;
-
-  @Field(() => String)
-  membershipPriceId: string;
 }

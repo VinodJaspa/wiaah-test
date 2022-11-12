@@ -9,9 +9,11 @@ import {
   KAFKA_MESSAGES,
   SERVICES,
 } from 'nest-utils';
+import { StripeService } from '@stripe';
 
 import { CreateMembershipPaymentIntentCommand } from './commands';
 import { CreateMembershipPaymentIntentInput } from './dto';
+import { PaymentIntent } from './entities';
 import { StripeBillingService } from './stripe-billing.service';
 
 @Resolver()
@@ -21,7 +23,17 @@ export class StripeBillingResolver implements OnModuleInit {
     @Inject(SERVICES.BILLING_SERVICE.token)
     private readonly eventsCLient: ClientKafka,
     private readonly commandBus: CommandBus,
+    private readonly stripeService: StripeService,
   ) {}
+
+  @Mutation(() => String)
+  async createCustomer(@Args('name') name: string) {
+    const res = await this.stripeService.createCustomer(
+      name,
+      'anyrandom@test.com',
+    );
+    return res.id;
+  }
 
   @Mutation(() => String)
   @UseGuards(new GqlAuthorizationGuard(['seller']))
@@ -35,7 +47,7 @@ export class StripeBillingResolver implements OnModuleInit {
     }
   }
 
-  @Mutation(() => String)
+  @Mutation(() => PaymentIntent)
   @UseGuards(new GqlAuthorizationGuard([]))
   async createCartPaymentIntent(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
@@ -43,16 +55,19 @@ export class StripeBillingResolver implements OnModuleInit {
     return await this.stripeBillingService.checkout(user);
   }
 
-  @Mutation(() => String)
+  @Mutation(() => PaymentIntent)
   @UseGuards(new GqlAuthorizationGuard(['seller']))
   async createMembershipSubscriptionPaymentIntent(
     @Args('args') args: CreateMembershipPaymentIntentInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    await this.commandBus.execute<
+    const res = await this.commandBus.execute<
       CreateMembershipPaymentIntentCommand,
       { client_secert: string }
     >(new CreateMembershipPaymentIntentCommand(args, user));
+
+    console.log(res);
+    return res;
   }
 
   @Query(() => Boolean)

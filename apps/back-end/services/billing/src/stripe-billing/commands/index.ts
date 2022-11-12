@@ -6,6 +6,8 @@ import {
   CreateMembershipPaymentIntentCommandHandler,
   UpdatedStripeProductCommandHandler,
   UpdateMembershipUsageCommandHandler,
+  CreateStripeTieredPriceCommandHandler,
+  CreateStripePriceCommandHandler,
 } from './handlers';
 
 export const StripeBillingCommandsHandlers = [
@@ -15,4 +17,6 @@ export const StripeBillingCommandsHandlers = [
   CreateMembershipPaymentIntentCommandHandler,
   UpdatedStripeProductCommandHandler,
   UpdateMembershipUsageCommandHandler,
+  CreateStripeTieredPriceCommandHandler,
+  CreateStripePriceCommandHandler,
 ];

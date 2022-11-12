@@ -1,4 +1,3 @@
-import { CheckoutInput } from '@dto';
 import {
   BadRequestException,
   Inject,
@@ -25,7 +24,6 @@ import {
 } from 'nest-dto';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { BillingAddressService } from '../billing-address/billing-address.service';
 import { StripeService } from '../stripe/stripe.service';
 import { CreateStripeConnectedAccountCommand } from './commands';
 
