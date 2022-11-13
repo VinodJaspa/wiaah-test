@@ -7,7 +7,7 @@ import {
   UpdatedStripeProductCommandHandler,
   UpdateMembershipUsageCommandHandler,
   CreateStripeTieredPriceCommandHandler,
-  CreateStripePriceCommandHandler,
+  CreateStripeMonthlyPriceCommandHandler,
 } from './handlers';
 
 export const StripeBillingCommandsHandlers = [
@@ -18,5 +18,5 @@ export const StripeBillingCommandsHandlers = [
   UpdatedStripeProductCommandHandler,
   UpdateMembershipUsageCommandHandler,
   CreateStripeTieredPriceCommandHandler,
-  CreateStripePriceCommandHandler,
+  CreateStripeMonthlyPriceCommandHandler,
 ];

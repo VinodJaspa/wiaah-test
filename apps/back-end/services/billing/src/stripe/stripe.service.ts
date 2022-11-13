@@ -1,12 +1,14 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
 import { StripeForRootOptions } from './types';
 import { Stripe } from 'stripe';
 import { ConfigService } from '@nestjs/config';
 import { STRIPE_INJECT_TOKEN } from '../constants';
+import { SubscriptionMetadata } from '@stripe-billing/types';
 
 @Injectable()
-export class StripeService {
+export class StripeService implements OnModuleInit {
   private applicationFeePercent: number;
+  private webhookSecret: string;
   constructor(
     @Inject('options') opts: StripeForRootOptions,
     private readonly configService: ConfigService,
@@ -14,6 +16,7 @@ export class StripeService {
     private readonly stripe: Stripe,
   ) {
     this.applicationFeePercent = opts.application_cut_percent;
+    this.webhookSecret = opts.webhookSecret;
   }
 
   async createdConnectedAccount(): Promise<
@@ -43,6 +46,21 @@ export class StripeService {
   ): Promise<Stripe.Account> {
     const data = await this.stripe.accounts.retrieve(stripeConnectedId);
     return data;
+  }
+
+  constructStripeEvent(body: any, headers: any): Stripe.Event {
+    const signature = headers['stripe-signature'];
+    try {
+      const event = this.stripe.webhooks.constructEvent(
+        body,
+        signature,
+        this.webhookSecret,
+      );
+      return event;
+    } catch (err) {
+      console.log(`⚠️  Webhook signature verification failed.`, err.message);
+      return null;
+    }
   }
 
   async createPaymentIntent(
@@ -183,11 +201,12 @@ export class StripeService {
   async createCustomerSubscription(
     customerId: string,
     priceId: string,
+    metadata?: SubscriptionMetadata,
   ): Promise<{ subscriptionObj: Stripe.Subscription; clientSecret: string }> {
     const subscription = await this.stripe.subscriptions.create({
       customer: customerId,
       items: [{ price: priceId }],
-
+      metadata,
       payment_behavior: 'default_incomplete',
       payment_settings: { save_default_payment_method: 'on_subscription' },
       expand: ['latest_invoice.payment_intent'],
@@ -233,4 +252,5 @@ export class StripeService {
 
     return customer;
   }
+  onModuleInit() {}
 }

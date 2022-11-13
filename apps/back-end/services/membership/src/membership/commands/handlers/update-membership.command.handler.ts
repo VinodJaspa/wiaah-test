@@ -15,7 +15,10 @@ export class UpdateMembershipCommandHandler
   ) {}
 
   async execute({ input, user }: UpdateMembershipCommand): Promise<Membership> {
-    const res = await this.repo.update(input.id, input);
+    const res = await this.repo.update(input.id, {
+      ...input,
+      turnover_rules: undefined,
+    });
     this.eventBus.publish(new MembershipModifedEvent(res, user));
     return res;
   }

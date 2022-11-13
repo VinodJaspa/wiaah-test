@@ -2,15 +2,16 @@ import { Controller } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import {
+  BillingPriceCreatedEvent,
   GetUserMembershipPriceIdMessage,
   GetUserMembershipPriceIdMessageReply,
-  StripeMembershipPricingCreatedEvent,
 } from 'nest-dto';
 import { KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
 
-import { MigrateMembershipStripeIdCommand } from '@membership/commands/impl';
-import { GetMembershipPlanByIdQuery } from './queries';
-import { MembershipType } from './types';
+import { MigrateMembershipTurnoverRulePriceIdCommand } from '@membership/commands';
+import { GetMembershipPlanByIdQuery } from '@membership/queries';
+import { MembershipType } from '@membership/types';
+import { MembershipPricesType } from '@membership/const';
 
 @Controller()
 export class MembershipController {
@@ -19,15 +20,18 @@ export class MembershipController {
     private readonly queryBus: QueryBus,
   ) {}
 
-  @EventPattern(KAFKA_EVENTS.BILLING_EVNETS.stripeMembershipPricingCreated)
+  @EventPattern(
+    KAFKA_EVENTS.BILLING_EVNETS.billingPriceCreated(
+      MembershipPricesType.turnover,
+    ),
+  )
   handleUpdateMembershipPricing(
-    @Payload() { value }: { value: StripeMembershipPricingCreatedEvent },
+    @Payload() { value }: { value: BillingPriceCreatedEvent },
   ) {
-    console.log('pricing created', JSON.stringify(value, null, 2));
-    this.commandBus.execute<MigrateMembershipStripeIdCommand>(
-      new MigrateMembershipStripeIdCommand(
+    this.commandBus.execute<MigrateMembershipTurnoverRulePriceIdCommand>(
+      new MigrateMembershipTurnoverRulePriceIdCommand(
+        value.input.id,
         value.input.priceId,
-        value.input.membershipId,
       ),
     );
   }
@@ -47,7 +51,7 @@ export class MembershipController {
       return new GetUserMembershipPriceIdMessageReply({
         success: true,
         data: {
-          priceId: membership.turnover_rules.at(0).id,
+          priceId: membership.turnover_rules.at(0).priceId,
         },
         error: null,
       });

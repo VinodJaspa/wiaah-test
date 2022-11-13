@@ -4,7 +4,7 @@ export class StripeMonthlyPriceCreatedEvent {
   constructor(
     public readonly input: {
       ogProductId: string;
-      productType: StripeProductType;
+      productType: string;
       stripeProductId: string;
       price: number;
       stripePriceId: string;

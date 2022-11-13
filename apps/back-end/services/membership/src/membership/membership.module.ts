@@ -4,7 +4,10 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { membershipCommandHandlers } from './commands';
 import { MembershipResolver } from './membership.resolver';
 import { membershipQueryHandlers } from './queries';
-import { MembershipRepository } from './repository';
+import {
+  MembershipRepository,
+  MembershipTurnoverRuleRepository,
+} from './repository';
 import { exntededResolvers } from './extendedResolvers';
 import { MembershipController } from './membership.controller';
 import { membershipEventHandlers } from './events';
@@ -23,6 +26,9 @@ import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
             clientId: SERVICES.MEMBERSHIP.clientId,
             brokers: KAFKA_BROKERS,
           },
+          consumer: {
+            groupId: SERVICES.MEMBERSHIP.groupId,
+          },
         },
       },
     ]),
@@ -30,6 +36,7 @@ import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
   providers: [
     MembershipResolver,
     MembershipRepository,
+    MembershipTurnoverRuleRepository,
     ...exntededResolvers,
     ...membershipCommandHandlers,
     ...membershipQueryHandlers,

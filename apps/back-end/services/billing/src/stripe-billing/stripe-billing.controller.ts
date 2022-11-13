@@ -1,26 +1,67 @@
-import { Controller } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
+import {
+  BadRequestException,
+  Controller,
+  Headers,
+  Post,
+  Req,
+  Res,
+} from '@nestjs/common';
+import { CommandBus, EventBus } from '@nestjs/cqrs';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import {
+  BillingMonthlyPriceCreateEvent,
   MembershipCreatedEvent,
-  MembershipUpdatedEvent,
   SellerAccountCreatedEvent,
   SellerRevenueIncreasedEvent,
 } from 'nest-dto';
 import { KAFKA_EVENTS } from 'nest-utils';
+import Stripe from 'stripe';
+import { Response } from 'express';
+
+import { StripeService } from '@stripe';
 import {
   CreateStripeCustomerCommand,
   CreateStripeMonthlyPriceCommand,
   CreateStripeProductCommand,
-  CreateStripeTieredPriceCommand,
   StripeProductCommandRes,
   UpdateMembershipUsageCommand,
-} from '@stripe-billing/commands/impl';
-import { ProductTypeEnum } from './const';
+} from '@stripe-billing/commands';
+import { ProductTypeEnum } from '@stripe-billing/const';
+import { StripeSubscriptionPaidEvent } from '@stripe-billing/events';
+import { SubscriptionMetadata } from '@stripe-billing/types';
 
 @Controller()
 export class StripeBillingController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly stripeService: StripeService,
+    private readonly eventBus: EventBus,
+  ) {}
+
+  @Post('/webhook')
+  handleStripeWebhookEvent(
+    @Headers() headers: any,
+    @Res() res: Response,
+    @Req() req: any,
+  ) {
+    const event = this.stripeService.constructStripeEvent(req.rawBody, headers);
+
+    if (!event) throw new BadRequestException('bad webhook signiture');
+    // Handle the event
+    switch (event.type) {
+      case 'customer.subscription.updated':
+        const res = event.data.object as Stripe.Subscription;
+        const meta = res.metadata as SubscriptionMetadata;
+        if (res.status === 'active') {
+          this.eventBus.publish(new StripeSubscriptionPaidEvent(meta));
+        }
+        break;
+      default:
+        console.log(`Unhandled event type ${event.type}. 🌟`);
+    }
+
+    res.send();
+  }
 
   @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.sellerAccountCreated)
   handleSellerAccountCreated(
@@ -32,6 +73,31 @@ export class StripeBillingController {
         `${value.input.firstName} ${value.input.lastName}`,
         value.input.id,
       ),
+    );
+  }
+
+  @EventPattern(KAFKA_EVENTS.BILLING_EVNETS.createMonthlyBillingPrice)
+  async handleCreatePrice(
+    @Payload() { value }: { value: BillingMonthlyPriceCreateEvent },
+  ) {
+    const stripeProduct = await this.commandBus.execute<
+      CreateStripeProductCommand,
+      StripeProductCommandRes
+    >(
+      new CreateStripeProductCommand({
+        name: 'test name',
+        productId: value.input.id,
+        type: value.input.type,
+      }),
+    );
+
+    this.commandBus.execute<CreateStripeMonthlyPriceCommand>(
+      new CreateStripeMonthlyPriceCommand({
+        priceInCents: value.input.price,
+        productOgId: value.input.id,
+        productType: value.input.type,
+        stripeProductId: stripeProduct.stripeProductId,
+      }),
     );
   }
 
@@ -68,17 +134,4 @@ export class StripeBillingController {
       new UpdateMembershipUsageCommand('', value.input.allTimeRevenue),
     );
   }
-
-  // @EventPattern(KAFKA_EVENTS.MEMBERSHIP.memberShipModified)
-  // handleUpdatedMembership(
-  //   @Payload() { value }: { value: MembershipUpdatedEvent },
-  // ) {
-  //   this.commandBus.execute<CreateStripeProductCommand>(
-  //     new CreateStripeProductCommand(
-  //       value.input.name,
-  //       value.input.id,
-  //       'membership',
-  //     ),
-  //   );
-  // }
 }

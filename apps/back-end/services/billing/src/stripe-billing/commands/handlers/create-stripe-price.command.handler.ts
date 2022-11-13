@@ -4,7 +4,7 @@ import { StripeService } from '@stripe';
 import { StripeMonthlyPriceCreatedEvent } from '@stripe-billing/events';
 
 @CommandHandler(CreateStripeMonthlyPriceCommand)
-export class CreateStripePriceCommandHandler
+export class CreateStripeMonthlyPriceCommandHandler
   implements ICommandHandler<CreateStripeMonthlyPriceCommand>
 {
   constructor(

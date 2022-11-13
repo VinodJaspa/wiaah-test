@@ -13,7 +13,6 @@ import {
 } from '@nestjs/microservices';
 import { KAFKA_MESSAGES, KAFKA_EVENTS, SERVICES } from 'nest-utils';
 import {
-  AccountRegisteredEvent,
   AccountVerifiedEvent,
   BuyerAccountRegisteredEvent,
   EmailExistsMessage,
@@ -24,11 +23,15 @@ import {
   PasswordChangedEvent,
   SellerAccountRegisteredEvent,
   StripeAccountCreatedEvent,
+  SubscriptionPaidEvent,
   UserHasStripeAccountMessage,
   UserHasStripeAccountMessageReply,
 } from 'nest-dto';
+import { CommandBus } from '@nestjs/cqrs';
 
-import { AccountsService } from './accounts.service';
+import { AccountsService } from '@accounts/accounts.service';
+import { UpdateUserMembershipCommand } from '@accounts/commands';
+import { Account } from '@accounts/entities';
 
 @Controller()
 export class AccountsController implements OnModuleInit {
@@ -37,6 +40,7 @@ export class AccountsController implements OnModuleInit {
     private readonly accountService: AccountsService,
     @Inject(SERVICES.ACCOUNTS_SERVICE.token)
     private readonly eventsClient: ClientKafka,
+    private readonly commandBus: CommandBus,
   ) {}
 
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.hasStripeId)
@@ -113,6 +117,25 @@ export class AccountsController implements OnModuleInit {
       });
     }
   }
+  @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.isSellerAccount)
+  async checkIsSellerAccount(@Payload() payload: { value: { id: string } }) {
+    try {
+      if (!payload?.value?.id) throw new Error('invalid arguments');
+      const res = await this.accountService.isSellerAccount(payload?.value?.id);
+      return res;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  @EventPattern(
+    KAFKA_EVENTS.BILLING_EVNETS.billingSubscriptionPaid('membership'),
+  )
+  handleMembershipPaid(@Payload() { value }: { value: SubscriptionPaidEvent }) {
+    this.commandBus.execute<UpdateUserMembershipCommand, Account>(
+      new UpdateUserMembershipCommand(value.input.userId, value.input.id),
+    );
+  }
 
   @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.sellerAccountRegistered)
   handleCreateSellerAccount(
@@ -163,17 +186,6 @@ export class AccountsController implements OnModuleInit {
       this.accountService.updatePassword(newPassword, id);
     } catch (error) {
       this.logger.error(error);
-    }
-  }
-
-  @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.isSellerAccount)
-  async checkIsSellerAccount(@Payload() payload: { value: { id: string } }) {
-    try {
-      if (!payload?.value?.id) throw new Error('invalid arguments');
-      const res = await this.accountService.isSellerAccount(payload?.value?.id);
-      return res;
-    } catch (error) {
-      return false;
     }
   }
 

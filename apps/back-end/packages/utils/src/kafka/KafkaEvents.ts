@@ -33,6 +33,11 @@ export const KAFKA_EVENTS = {
   BILLING_EVNETS: {
     balanceCreated: "balance.created",
     transactionCreated: "transaction.created",
+    billingPriceCreated: (key?: string) =>
+      `billing.price.created${key ? `.${key}` : ""}`,
+    billingSubscriptionPaid: (type: string) =>
+      `billing.subscription.paid.${type}`,
+    createMonthlyBillingPrice: "billing.price.monthly.create",
     stripeAccountCreated: "stripe.account.created",
     stripeMembershipPricingCreated: "stripe.membership.pricing.created",
   },

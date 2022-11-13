@@ -21,7 +21,8 @@
       "@dto": ["src/accounts/dto"],
       "@entities": ["src/accounts/entities"],
       "@prisma-client": ["prisma/generated/client"],
-      "prismaService": ["src/prisma.service"]
+      "prismaService": ["src/prisma.service"],
+      "@accounts/*": ["src/accounts/*"]
     }
   }
 }

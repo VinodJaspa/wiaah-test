@@ -8,6 +8,9 @@ export class MembershipTurnoverRule {
   @Field(() => ID)
   membershipId: string;
 
+  @Field(() => String, { nullable: true })
+  priceId?: string;
+
   @Field(() => Float)
   turnover_amount: number;
 
@@ -29,14 +32,11 @@ export class Membership {
   @Field(() => ID)
   id: string;
 
-  @Field(() => String, { nullable: true })
-  stripePriceId: String;
-
-  @Field(() => String, { nullable: true })
-  stripeProductId: String;
-
   @Field(() => String)
   name: string;
+
+  @Field(() => String, { nullable: true })
+  priceId?: string;
 
   @Field(() => [MembershipTurnoverRule])
   turnover_rules: MembershipTurnoverRule[];

@@ -1,7 +1,7 @@
 export class CreateStripeProductCommand {
   constructor(
     public input: {
-      name: string;
+      name?: string;
       productId: string;
       type: string;
     },

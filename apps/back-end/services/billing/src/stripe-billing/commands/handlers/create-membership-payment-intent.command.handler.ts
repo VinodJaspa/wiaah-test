@@ -7,6 +7,7 @@ import {
 } from '@stripe-billing/queries';
 import { PaymentIntent } from '@stripe-billing/entities';
 import { CreateMembershipPaymentIntentCommand } from '@stripe-billing/commands/impl';
+import { ProductTypeEnum } from '@stripe-billing/const';
 
 @CommandHandler(CreateMembershipPaymentIntentCommand)
 export class CreateMembershipPaymentIntentCommandHandler
@@ -34,12 +35,15 @@ export class CreateMembershipPaymentIntentCommandHandler
     const res = await this.stripeService.createCustomerSubscription(
       await customerIdPromise,
       await membershipPriceIdPromise,
+      {
+        itemId: input.membershipId,
+        itemType: ProductTypeEnum.membership,
+        userId: user.id,
+      },
     );
 
-    console.log(JSON.stringify(res.subscriptionObj.latest_invoice, null, 2));
-
     return {
-      client_secret: res.clientSecret,
+      client_secret: res?.clientSecret,
     };
   }
 }

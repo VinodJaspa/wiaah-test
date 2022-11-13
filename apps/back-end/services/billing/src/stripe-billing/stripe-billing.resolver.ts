@@ -88,6 +88,9 @@ export class StripeBillingResolver implements OnModuleInit {
     this.eventsCLient.subscribeToResponseOf(
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.hasStripeId,
     );
+    this.eventsCLient.subscribeToResponseOf(
+      KAFKA_MESSAGES.BILLING_MESSAGES.getUserMembershipPriceId,
+    );
     await this.eventsCLient.connect();
   }
 }

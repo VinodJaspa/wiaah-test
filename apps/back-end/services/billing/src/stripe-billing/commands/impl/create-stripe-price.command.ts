@@ -6,7 +6,7 @@ export class CreateStripeMonthlyPriceCommand {
       stripeProductId: string;
       productOgId: string;
       priceInCents: number;
-      productType: StripeProductType;
+      productType: string;
     },
   ) {}
 }

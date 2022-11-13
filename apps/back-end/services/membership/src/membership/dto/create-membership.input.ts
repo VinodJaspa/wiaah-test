@@ -1,7 +1,8 @@
 import { InputType, Field, Float, registerEnumType, ID } from '@nestjs/graphql';
-import { MembershipType } from 'prismaClient';
+import { MembershipType, MembershipUnitType } from 'prismaClient';
 
-registerEnumType(MembershipType, { name: 'MemberShipType' });
+registerEnumType(MembershipType, { name: 'MembershipType' });
+registerEnumType(MembershipUnitType, { name: 'MembershipUnitType' });
 
 @InputType()
 export class MembershipTurnoverRuleInput {
@@ -25,6 +26,9 @@ export class MembershipIncludedItemInput {
 export class CreateMembershipInput {
   @Field(() => String)
   name: string;
+
+  @Field(() => MembershipUnitType, { nullable: true })
+  unit_type?: MembershipUnitType;
 
   @Field(() => MembershipType)
   type: MembershipType;

@@ -7,8 +7,6 @@ import { CreateMembershipInput, UpdateMembershipInput } from '@membership/dto';
 export class MembershipRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  updateTurn;
-
   async findById(id: string) {
     return this.prisma.membership.findUnique({
       where: {
@@ -20,7 +18,7 @@ export class MembershipRepository {
     });
   }
 
-  async create(
+  create(
     input: CreateMembershipInput,
     userId: string,
   ): Promise<Membership & { turnover_rules: MembershipTurnoverRule[] }> {
@@ -39,7 +37,7 @@ export class MembershipRepository {
     });
   }
 
-  async update(id: string, input: UpdateMembershipInput) {
+  async update(id: string, input: Prisma.MembershipUpdateInput) {
     return this.prisma.membership.update({
       where: {
         id,

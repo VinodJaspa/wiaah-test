@@ -11,5 +11,7 @@ export class MigrateMembershipStripeIdCommandHandler
   async execute({
     membershipId,
     stripePriceId,
-  }: MigrateMembershipStripeIdCommand): Promise<void> {}
+  }: MigrateMembershipStripeIdCommand): Promise<void> {
+    await this.membershipRepo.update(membershipId, { priceId: stripePriceId });
+  }
 }
