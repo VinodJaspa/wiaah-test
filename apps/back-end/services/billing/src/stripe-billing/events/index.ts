@@ -1,6 +1,14 @@
 export * from './impl';
-import { StripeConnectedAccountCreatedEventHandler } from './handlers';
+import {
+  StripeConnectedAccountCreatedEventHandler,
+  StripeTieredPriceCreatedEventHandler,
+  StripeMonthlyPriceCreatedEventHandler,
+  StripeSubscriptionPaidEventHandler,
+} from './handlers';
 
 export const StripeBillingEventsHandlers = [
   StripeConnectedAccountCreatedEventHandler,
+  StripeTieredPriceCreatedEventHandler,
+  StripeMonthlyPriceCreatedEventHandler,
+  StripeSubscriptionPaidEventHandler,
 ];

@@ -1,4 +1,3 @@
-import { CheckoutInput } from '@dto';
 import {
   BadRequestException,
   Inject,
@@ -25,7 +24,6 @@ import {
 } from 'nest-dto';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { BillingAddressService } from '../billing-address/billing-address.service';
 import { StripeService } from '../stripe/stripe.service';
 import { CreateStripeConnectedAccountCommand } from './commands';
 
@@ -43,7 +41,6 @@ interface FormatedData {
 export class StripeBillingService {
   constructor(
     private readonly StripeService: StripeService,
-    private readonly billingAddressService: BillingAddressService,
     @Inject(SERVICES.BILLING_SERVICE.token)
     private readonly eventsClient: ClientKafka,
     private readonly commandBus: CommandBus,
@@ -219,8 +216,6 @@ export class StripeBillingService {
         return acc.concat(items.length === 1 ? true : false);
       }, [] as boolean[])
       .every((v) => v);
-
-    console.log({ formatedItems, allunique });
 
     if (!allunique) throw new InternalServerErrorException();
 

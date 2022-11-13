@@ -5,9 +5,13 @@ import { PrismaService } from 'prismaService';
 import { AccountsController } from './accounts.controller';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { AccountRepository } from './repository';
+import { accountCommandHandlers } from './commands';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
   imports: [
+    CqrsModule,
     ClientsModule.register([
       {
         name: SERVICES.ACCOUNTS_SERVICE.token,
@@ -24,7 +28,13 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       },
     ]),
   ],
-  providers: [AccountsResolver, AccountsService, PrismaService],
+  providers: [
+    AccountsResolver,
+    AccountsService,
+    PrismaService,
+    AccountRepository,
+    ...accountCommandHandlers,
+  ],
   controllers: [AccountsController],
 })
 export class AccountsModule {}

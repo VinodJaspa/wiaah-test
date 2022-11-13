@@ -10,16 +10,10 @@ import { PrismaService } from 'src/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import {
-  getUserFromRequest,
-  KAFKA_BROKERS,
-  KAFKA_SERVICE_CLIENTID,
-  KAFKA_SERVICE_GROUPID,
-  KAFKA_SERVICE_TOKEN,
-  SERVICES,
-} from 'nest-utils';
+import { getUserFromRequest, KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { CqrsModule } from '@nestjs/cqrs';
 import { AuthCommandHandlers } from './commands';
+import { AuthRepository } from './repository';
 
 @Module({
   imports: [
@@ -57,6 +51,12 @@ import { AuthCommandHandlers } from './commands';
       envFilePath: ['.env'],
     }),
   ],
-  providers: [AuthResolver, AuthService, PrismaService, ...AuthCommandHandlers],
+  providers: [
+    AuthResolver,
+    AuthService,
+    PrismaService,
+    AuthRepository,
+    ...AuthCommandHandlers,
+  ],
 })
 export class AuthModule {}

@@ -14,6 +14,7 @@ datasource db {
 model Account {
   id                         String      @id @default(auto()) @map("_id") @db.ObjectId
   stripeId                   String?     @unique
+  membershipId               String?     @db.ObjectId
   firstName                  String
   lastName                   String
   email                      String      @unique

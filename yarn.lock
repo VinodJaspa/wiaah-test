@@ -18805,7 +18805,7 @@ node-libs-browser@^2.2.1:
     util "^0.11.0"
     vm-browserify "^1.0.1"
 
-node-mailjet@^4.0.1:
+node-mailjet@4.0.1, node-mailjet@^4.0.1:
   version "4.0.1"
   resolved "https://registry.npmjs.org/node-mailjet/-/node-mailjet-4.0.1.tgz"
   integrity sha512-OJntDQdC+9VVZVaBv7uR6yQW9ar3nO9nq9/mFpoHr+05eMdEtE7uZ+w4HJvW6LXUcjQmr+kIazpFxQnQbdpIPQ==
@@ -23982,6 +23982,11 @@ typescript@^4.3.5:
   version "4.7.3"
   resolved "https://registry.npmjs.org/typescript/-/typescript-4.7.3.tgz"
   integrity sha512-WOkT3XYvrpXx4vMMqlD+8R8R37fZkjyLGlxavMc4iB8lrl8L0DeTcHbYgw/v0N/z9wAFsgBhcsF0ruoySS22mA==
+
+typescript@^4.8.4:
+  version "4.8.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.8.4.tgz#c464abca159669597be5f96b8943500b238e60e6"
+  integrity sha512-QCh+85mCy+h0IGff8r5XWzOVSbBO+KfeYrMQh7NJ58QujwcE22u+NUSmUxqF+un70P9GXKxa2HCNiTTMJknyjQ==
 
 ua-parser-js@^0.7.18:
   version "0.7.31"

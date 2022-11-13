@@ -189,9 +189,7 @@ describe('StripeBilling integration tests', () => {
       client_secret: 'client secret',
     });
 
-    const res = await resolver.createPaymentIntent(mockedUser);
-
-    console.log(JSON.stringify(mockKafkaSend.mock.calls, null, 2));
+    const res = await resolver.createCartPaymentIntent(mockedUser);
 
     expect(mockKafkaSend.mock.calls[0]).toEqual([
       KAFKA_MESSAGES.SHOPPING_CART_MESSAGES.getShoppingCartItems,

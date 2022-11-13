@@ -10,8 +10,8 @@ import { BillingAddressModule } from '../billing-address/billing-address.module'
 import { StripeBillingCommandsHandlers } from './commands';
 import { StripeBillingEventsHandlers } from './events';
 import { StripeBillingSagas } from './sagas';
-import { STRIPE_INJECT_TOKEN } from '../constants';
-import Stripe from 'stripe';
+import { StripeBillingController } from './stripe-billing.controller';
+import { stripeBillingQueryHandlers } from './queries';
 
 @Module({
   imports: [
@@ -20,6 +20,8 @@ import Stripe from 'stripe';
     StripeModule.forRoot({
       apiKey: process.env.STRIPE_API_SECRET_KEY,
       application_cut_percent: parseInt(process.env.APP_CUT_PERCENT),
+      webhookSecret:
+        'whsec_db22ec16b983f8b3f6e18feb98f4969494d6df89614868a7bf47d926788c0e94',
     }),
     ClientsModule.register([
       {
@@ -42,7 +44,9 @@ import Stripe from 'stripe';
     StripeBillingService,
     ...StripeBillingCommandsHandlers,
     ...StripeBillingEventsHandlers,
+    ...stripeBillingQueryHandlers,
     ...StripeBillingSagas,
   ],
+  controllers: [StripeBillingController],
 })
 export class StripeBillingModule {}

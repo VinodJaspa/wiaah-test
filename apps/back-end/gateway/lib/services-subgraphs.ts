@@ -5,7 +5,7 @@ export interface Subgraph {
 
 export const subgraphs: Subgraph[] = [
   // { name: 'auth', url: 'http://localhost:3004/graphql' },
-  // { name: 'accounts', url: 'http://localhost:3005/graphql' },
+  { name: 'accounts', url: 'http://localhost:3005/graphql' },
   // { name: 'products', url: 'http://localhost:3006/graphql' },
   // { name: 'wishlist', url: 'http://localhost:3009/graphql' },
   // { name: 'shop', url: 'http://localhost:3007/graphql' },
@@ -14,5 +14,6 @@ export const subgraphs: Subgraph[] = [
   // { name: 'cart', url: 'http://localhost:3011/graphql' },
   // { name: 'services', url: 'http://localhost:3020/graphql' },
   // { name: 'chat', url: 'http://localhost:3022/graphql' },
-  { name: 'notification', url: 'http://localhost:3025/graphql' },
+  // { name: 'notification', url: 'http://localhost:3025/graphql' },
+  { name: 'membership', url: 'http://localhost:3026/graphql' },
 ];

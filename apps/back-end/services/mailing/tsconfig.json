@@ -16,6 +16,11 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@const": ["src/const"],
+      "prismaClient": ["prisma/generated/client"],
+      "prismService": ["src/prisma.service"]
+    }
   }
 }

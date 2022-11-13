@@ -121,6 +121,7 @@
     "yup": "^0.32.11"
   },
   "resolutions": {
-    "webpack": "^5"
+    "webpack": "^5",
+    "@nestjs/mailing/@nestjs/config": "2.1.0"
   }
 }

@@ -2,6 +2,8 @@ export const KAFKA_EVENTS = {
   ACCOUNTS_EVENTS: {
     createAccount: "create.account",
     accountCreated: "account.created",
+    sellerAccountCreated: "seller.account.created",
+    buyerAccountCreated: "buyer.account.created",
   },
   USER_EVENTS: {
     userConnected: "user.connected",
@@ -31,7 +33,13 @@ export const KAFKA_EVENTS = {
   BILLING_EVNETS: {
     balanceCreated: "balance.created",
     transactionCreated: "transaction.created",
+    billingPriceCreated: (key?: string) =>
+      `billing.price.created${key ? `.${key}` : ""}`,
+    billingSubscriptionPaid: (type: string) =>
+      `billing.subscription.paid.${type}`,
+    createMonthlyBillingPrice: "billing.price.monthly.create",
     stripeAccountCreated: "stripe.account.created",
+    stripeMembershipPricingCreated: "stripe.membership.pricing.created",
   },
   VOUCHER_EVENTS: {
     voucherCreated: "voucher.created",
@@ -81,6 +89,14 @@ export const KAFKA_EVENTS = {
     chatMessageSent: (roomId: string) => `chat.message.sent.${roomId}`,
     roomDataUpdated: (userId: string) => `room.data.updated.${userId}`,
   },
+  MEMBERSHIP: {
+    memberShipCreated: "membership.created",
+    memberShipModified: "membership.modified",
+    memberShipDeleted: "membership.deleted",
+  },
+  SELLER: {
+    revenueIncreased: "revenue.increased",
+  },
   createAccount: "create.account",
   createWishlist: "create.wishlist",
   createWishersList: "create.wisherlist",
@@ -122,6 +138,7 @@ export const KAFKA_MESSAGES = {
   },
   BILLING_MESSAGES: {
     getUserCashbackBalance: "get.user.cashback.balance",
+    getUserMembershipPriceId: "get.user.membership.price.id",
   },
   VOUCHERS_MESSAGES: {
     getShopActiveVouchers: "get.shop.active.vouchers",
