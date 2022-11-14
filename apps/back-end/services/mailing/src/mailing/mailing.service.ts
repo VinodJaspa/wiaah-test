@@ -1,5 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Mailing } from '@const';
 
 import { MailingService as NestMailingService } from '@nestjs/mailing';
 
@@ -15,7 +14,8 @@ export class MailingService {
   ) {
     try {
       if (!email || !verificationCode) throw new Error('invalid inputs');
-      await this.mailingservice.send({
+      console.log({ email, name, verificationCode });
+      const res = await this.mailingservice.send({
         to: [{ Email: email, Name: name }],
         subject: 'wiaah account verification',
         html:
@@ -23,6 +23,7 @@ export class MailingService {
           verificationCode,
         text: 'thanks for using wiaah, use the code below to continue the registeration proccess',
       });
+      console.log('sent', res);
     } catch (error) {
       this.logger.error(error);
     }

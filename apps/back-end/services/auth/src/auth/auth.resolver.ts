@@ -58,6 +58,11 @@ export class AuthResolver implements OnModuleInit {
     return this.authService.verifyEmail(verififactionInput);
   }
 
+  @Mutation(() => Boolean)
+  resendRegisterationCode(@Args('email') email: string) {
+    return this.authService.resendRegisterationToken(email);
+  }
+
   @Mutation((type) => Boolean)
   async resetPassword(
     @Args('ResetPasswordArgs') inputs: ForgotPasswordEmailInput,

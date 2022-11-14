@@ -5,6 +5,7 @@ import {
   PurchaseMembershipCommandHandler,
   MigrateMembershipStripeIdCommandHandler,
   MigrateMembershipTurnoverRulePriceIdCommandHandler,
+  UpdateMembershipTurnoverRuleCommandHander,
 } from './handlers';
 
 export const membershipCommandHandlers = [
@@ -13,4 +14,5 @@ export const membershipCommandHandlers = [
   PurchaseMembershipCommandHandler,
   MigrateMembershipStripeIdCommandHandler,
   MigrateMembershipTurnoverRulePriceIdCommandHandler,
+  UpdateMembershipTurnoverRuleCommandHander,
 ];

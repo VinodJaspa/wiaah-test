@@ -35,32 +35,34 @@ enum ProdcutType {
 }
 
 type ProductAttribute {
-  name String
+  name   String
   values String[]
 }
 
 model Product {
-  id               String                @id() @default(auto()) @map("_id") @db.ObjectId()
-  sellerId         String
-  shopId           String
-  type             ProdcutType
-  title            String
-  description      String
-  price            Int
-  hostCategories   String[]
-  category         String
-  attributes       ProductAttribute[]
-  stock            Int
-  rate             Float                   @default(0)
-  reviews          Int                   @default(0)
-  rateStarCount    Int                   @default(0)
-  brand            String
-  discount         Discount?
-  cashback         CashBack?
-  thumbnail        String
-  shippingRulesIds String[]              @db.ObjectId
-  presentations    ProductPresentation[]
-  visibility       VisibilityEnum        @default(hidden)
+  id                          String                @id() @default(auto()) @map("_id") @db.ObjectId()
+  sellerId                    String
+  shopId                      String
+  vendor_external_link        String?
+  vendor_external_link_clicks Int                   @default(0)
+  type                        ProdcutType
+  title                       String
+  description                 String
+  price                       Int
+  hostCategories              String[]
+  category                    String
+  attributes                  ProductAttribute[]
+  stock                       Int
+  rate                        Float                 @default(0)
+  reviews                     Int                   @default(0)
+  rateStarCount               Int                   @default(0)
+  brand                       String
+  discount                    Discount?
+  cashback                    CashBack?
+  thumbnail                   String
+  shippingRulesIds            String[]              @db.ObjectId
+  presentations               ProductPresentation[]
+  visibility                  VisibilityEnum        @default(hidden)
 }
 
 model Shop {
@@ -110,7 +112,6 @@ enum PresentationType {
   image
 }
 
-
 type Location {
   lat     Float
   long    Float
@@ -135,31 +136,30 @@ enum TargetGenders {
   female
 }
 
-
 model ShippingSettings {
   id            String         @id @default(auto()) @map("_id") @db.ObjectId
-  shopId        String         @db.ObjectId @unique
-  ownerId       String         @db.ObjectId @unique
+  shopId        String         @unique @db.ObjectId
+  ownerId       String         @unique @db.ObjectId
   shippingRules ShippingRule[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt()
 }
 
 model ShippingRule {
   id                 String            @id @default(auto()) @map("_id") @db.ObjectId
   countries          ShippingCountry[]
   cost               Float
-  deliveryTimeRange  DeliveryTimeRange   
-  shippingTypes       ShippingType[]
+  deliveryTimeRange  DeliveryTimeRange
+  shippingTypes      ShippingType[]
   ShippingSettings   ShippingSettings? @relation(fields: [shippingSettingsId], references: [id])
-  shippingSettingsId String           @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  shippingSettingsId String            @db.ObjectId
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt()
 }
 
 type DeliveryTimeRange {
   from Int
-  to Int
+  to   Int
 }
 
 type ShippingCountry {
@@ -172,4 +172,3 @@ enum ShippingType {
   paid
   click_and_collect
 }
-

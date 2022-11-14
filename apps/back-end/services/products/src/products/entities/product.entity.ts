@@ -61,6 +61,9 @@ export class Product {
   @Field(() => ID)
   sellerId: string;
 
+  @Field(() => String)
+  vendor_external_link: string;
+
   @Field((type) => String)
   title: string;
 

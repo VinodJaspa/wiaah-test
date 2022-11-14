@@ -46,6 +46,7 @@ type ProductAttribute {
 type Product {
   id: ID!
   sellerId: ID!
+  vendor_external_link: String!
   title: String!
   description: String!
   shopId: ID!
@@ -162,7 +163,7 @@ type Mutation {
   createShop(createShopInput: CreateShopInput!): Shop!
   removeAllShops: Boolean!
   updateMyShop(updateMyShopInput: UpdateShopInput!): Shop!
-  test: Boolean!
+  getProductVendorLink(productId: String!): String!
   createNewProduct(createNewProductInput: CreateProdutctInput!): Product!
   updateProduct(updateProductArgs: UpdateProdutctInput!): Boolean!
   deleteAllProducts: Boolean!

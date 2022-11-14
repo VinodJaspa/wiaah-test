@@ -5,6 +5,7 @@ import {
   AccountRegisteredEvent,
   ChangePasswordEvent,
   KafkaPayload,
+  NewRegisterationTokenRequestedEvent,
 } from 'nest-dto';
 import { KAFKA_EVENTS } from 'nest-utils';
 
@@ -27,6 +28,15 @@ export class MailingController {
       firstName,
       verificationCode,
     );
+  }
+
+  @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.newRegisterationTokenRequest)
+  handleResendRegisterationCode(
+    @Payload() { value }: { value: NewRegisterationTokenRequestedEvent },
+  ) {
+    const { email, token } = value.input;
+    console.log('sending', { email, token });
+    return this.mailingService.sendVerificationMail(email, 'User', token);
   }
 
   @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.passwordChangeRequest)

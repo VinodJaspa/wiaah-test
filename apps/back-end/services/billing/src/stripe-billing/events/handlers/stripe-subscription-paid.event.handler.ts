@@ -15,6 +15,10 @@ export class StripeSubscriptionPaidEventHandler
   ) {}
 
   handle({ input: { itemId, itemType, userId } }: StripeSubscriptionPaidEvent) {
+    console.log(
+      'sending sub paid event',
+      JSON.stringify({ itemId, itemType, userId }, null, 2),
+    );
     this.eventClient.emit(
       KAFKA_EVENTS.BILLING_EVNETS.billingSubscriptionPaid(itemType),
       new SubscriptionPaidEvent({ id: itemId, userId, type: itemType }),

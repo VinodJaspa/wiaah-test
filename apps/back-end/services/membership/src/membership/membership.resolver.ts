@@ -9,11 +9,13 @@ import {
 } from 'nest-utils';
 import { Inject, UseGuards } from '@nestjs/common';
 
-import { Membership } from './entities';
-import { CreateMembershipInput } from './dto';
-import { UpdateMembershipInput } from './dto';
-import { CreateMembershipCommand, UpdateMembershipCommand } from './commands';
-import { GetSubscriableMembershipsQuery } from './queries';
+import { Membership } from '@membership/entities';
+import { CreateMembershipInput, UpdateMembershipInput } from '@membership/dto';
+import {
+  CreateMembershipCommand,
+  UpdateMembershipCommand,
+} from '@membership/commands';
+import { GetSubscriableMembershipsQuery } from '@membership/queries';
 import { PrismaService } from 'prismaService';
 import { ClientKafka } from '@nestjs/microservices';
 

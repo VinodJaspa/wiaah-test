@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
+import { MembershipType, MembershipUnitType } from 'prismaClient';
 
 @ObjectType()
 export class MembershipTurnoverRule {
@@ -37,6 +38,15 @@ export class Membership {
 
   @Field(() => String, { nullable: true })
   priceId?: string;
+
+  @Field(() => MembershipType)
+  type: MembershipType;
+
+  @Field(() => MembershipUnitType, { nullable: true })
+  unit_type: MembershipUnitType;
+
+  @Field(() => Float)
+  unit_price: number;
 
   @Field(() => [MembershipTurnoverRule])
   turnover_rules: MembershipTurnoverRule[];
