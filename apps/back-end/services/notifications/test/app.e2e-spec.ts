@@ -55,6 +55,12 @@ describe('root (e2e)', () => {
     await app.startAllMicroservices();
     await producer.connect();
   });
+  afterAll(async () => {
+    if (app) {
+      await app.close();
+    }
+    await producer.disconnect();
+  });
   beforeEach(async () => {
     const notifications = await getMyNotifications();
     expect(notifications).toStrictEqual({
@@ -98,13 +104,6 @@ describe('root (e2e)', () => {
     expect(res.body.errors).not.toBeDefined();
     return res.body.data.getMyNotifications as NotificationPaginationResponse;
   }
-
-  afterAll(async () => {
-    if (app) {
-      await app.close();
-    }
-    await producer.disconnect();
-  });
 
   const emitContentCommentsEvent = () =>
     producer.send({

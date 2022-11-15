@@ -34,7 +34,11 @@
       "prismaService": ["src/prisma.service"],
       "@keys": ["src/keys"],
       "@content-management": ["src/content-management"],
-      "@prisma-module": ["src/app.module"]
+      "@prisma-module": ["src/app.module"],
+      "@block/*": ["src/block/*"],
+      "@block": ["src/block"],
+      "@privacy": ["src/privacy"],
+      "@privacy-settings/*": ["src/privacy/*"]
     }
   }
 }

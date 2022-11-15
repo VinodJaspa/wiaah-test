@@ -4,3 +4,4 @@ export * from "./testTransaltion";
 export * from "./waitFor";
 export * from "./sleep";
 export * from "./requestGraphql";
+export * from "./mockKafka";

@@ -36,13 +36,13 @@ model Profile {
 }
 
 model BlockedUser {
-  id               String   @id @default(auto()) @map("_id") @db.ObjectId
-  blockerProfile   Profile  @relation(fields: [blockerProfileId], references: [id])
-  blockerProfileId String   @db.ObjectId
-  blockedProfileId String   @db.ObjectId
-  blockedAt        DateTime @default(now())
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  blockerProfile Profile  @relation(fields: [blockerUserId], references: [ownerId])
+  blockerUserId  String   @db.ObjectId
+  blockedUserId  String   @db.ObjectId
+  blockedAt      DateTime @default(now())
 
-  @@unique([blockedProfileId,blockerProfileId],name: "blockedProfile")
+  @@unique([blockedUserId, blockerUserId], name: "blockedProfile")
 }
 
 model Follow {
@@ -60,7 +60,7 @@ model Follow {
 
   followedAt DateTime @default(now())
 
-  @@unique([followerUserId,followingUserId], name:"followRelation")
+  @@unique([followerUserId, followingUserId], name: "followRelation")
 }
 
 model NewsfeedPost {
@@ -90,7 +90,8 @@ model ContentReaction {
   reactedBy          Profile             @relation(fields: [reactedByProfileId], references: [id])
   reactedByProfileId String              @db.ObjectId
   reactedAt          DateTime            @default(now())
-  @@unique([hostId,hostType,reactedByProfileId])
+
+  @@unique([hostId, hostType, reactedByProfileId])
 }
 
 model ContentShare {
@@ -126,19 +127,19 @@ model Comment {
 }
 
 model Story {
-  id            String      @id @default(auto()) @map("_id") @db.ObjectId
-  publisherId   String      @db.ObjectId
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  type String?
-  referenceId   String?     @db.ObjectId
-  content       String?
-  reactionsNum  Int         @default(0)
-  attachment    Attachment?
-  viewsCount    Int         @default(0)
-  archived      Boolean     @default(false)
-  views         StoryView[]
-  likes         StoryLike[]
+  id           String      @id @default(auto()) @map("_id") @db.ObjectId
+  publisherId  String      @db.ObjectId
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+  type         String?
+  referenceId  String?     @db.ObjectId
+  content      String?
+  reactionsNum Int         @default(0)
+  attachment   Attachment?
+  viewsCount   Int         @default(0)
+  archived     Boolean     @default(false)
+  views        StoryView[]
+  likes        StoryLike[]
 }
 
 model StoryView {
@@ -148,7 +149,7 @@ model StoryView {
   createdAt DateTime @default(now())
   story     Story    @relation(fields: [storyId], references: [id])
 
-  @@unique([viewerId,storyId],name: "storyViewIds")
+  @@unique([viewerId, storyId], name: "storyViewIds")
 }
 
 model StoryLike {
@@ -157,7 +158,16 @@ model StoryLike {
   storyId String @db.ObjectId
   story   Story  @relation(fields: [storyId], references: [id])
 
-  @@unique([userId,storyId],name:"storyLikeIds")
+  @@unique([userId, storyId], name: "storyLikeIds")
+}
+
+model PrivacySettings {
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String  @unique @db.ObjectId
+  privateAccount  Boolean @default(false) 
+  hideLikesNum    Boolean @default(false)
+  hideCommentsNum Boolean @default(false)
+  hideViewsNum    Boolean @default(false)
 }
 
 type Hashtag {

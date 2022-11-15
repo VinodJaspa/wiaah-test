@@ -9,7 +9,6 @@ import {
 import { ProfileVisibility } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 import { ProfileResolver } from './profile.resolver';
-import { MongoMemoryReplSet } from 'mongodb-memory-server';
 import { ProfileBlockEvent } from 'nest-dto';
 
 describe('Block/unblock functionlaity', () => {

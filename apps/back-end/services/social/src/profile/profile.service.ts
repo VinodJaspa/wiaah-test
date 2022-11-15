@@ -30,6 +30,8 @@ import {
   ProfileUnFollowEvent,
   ProfileUnBlockedEvent,
 } from 'nest-dto';
+import { QueryBus } from '@nestjs/cqrs';
+import { GetIsUserBlockedQuery } from '@block/queries';
 
 @Injectable()
 export class ProfileService {
@@ -37,6 +39,7 @@ export class ProfileService {
     private readonly prisma: PrismaService,
     @Inject(SERVICES.SOCIAL_SERVICE.token)
     private readonly eventClient: ClientKafka,
+    private readonly querybus: QueryBus,
   ) {}
 
   logger = new Logger('ProfileService');
@@ -233,7 +236,10 @@ export class ProfileService {
     if (!followerProfile || !followingProfile)
       throw new ProfileNotfoundException();
 
-    const isBlocked = await this.isBlocked(followingProfile.id, userId);
+    const isBlocked = await this.querybus.execute<
+      GetIsUserBlockedQuery,
+      boolean
+    >(new GetIsUserBlockedQuery(followingProfile.ownerId, userId));
     if (isBlocked) throw new ProfileBlockedException();
 
     // update the follower
@@ -556,147 +562,17 @@ export class ProfileService {
 
   // Follow //
   // --------------------------------------------------
-  // Block
-
-  getBlocks() {
-    return this.prisma.blockedUser.findMany();
-  }
-
-  async getAllBlockedListByProfileId(
-    profileId: string,
-  ): Promise<BlockedUser[]> {
-    try {
-      const users = await this.prisma.blockedUser.findMany({
-        where: {
-          blockerProfileId: profileId,
-        },
-      });
-
-      return users;
-    } catch (error) {
-      this.logger.log(error);
-      throw new DBErrorException(ErrorMessages.db.gettingBlockedListErr);
-    }
-  }
-
-  async isBlocked(
-    BlockerProfileId: string,
-    userProfileId: string,
-  ): Promise<boolean> {
-    try {
-      await this.prisma.blockedUser.findFirst({
-        where: {
-          AND: [
-            {
-              blockedProfileId: userProfileId,
-            },
-            {
-              blockerProfileId: BlockerProfileId,
-            },
-          ],
-        },
-        select: {
-          id: true,
-        },
-        rejectOnNotFound() {
-          throw new Error();
-        },
-      });
-      return true;
-    } catch {
-      return false;
-    }
-  }
-
-  async blockProfile(
-    toBlockProfileId: string,
-    userId: string,
-  ): Promise<boolean> {
-    // get the requesting user profile id using his userId
-    const myProfileId = await this.getProfileIdByUserId(userId);
-
-    // make sure the user is not already blocked
-    const isAlreadyBlocked = await this.isBlocked(
-      myProfileId,
-      toBlockProfileId,
-    );
-    if (isAlreadyBlocked) throw new ProfileAlreadyBlockedException();
-
-    // unFollow the profile before blocking him
-    await this.unFollowProfile(toBlockProfileId, userId);
-
-    // block the user
-    try {
-      await this.prisma.blockedUser.create({
-        data: {
-          blockedProfileId: toBlockProfileId,
-          blockerProfileId: myProfileId,
-        },
-      });
-
-      this.eventClient.emit(
-        KAFKA_EVENTS.PROFILE_EVENTS.profileBlocked,
-        new ProfileBlockEvent({
-          blockedProfileId: toBlockProfileId,
-          blockerProfileId: myProfileId,
-        }),
-      );
-
-      return true;
-    } catch (error) {
-      this.logger.log(error);
-      throw new DBErrorException(ErrorMessages.db.blockProfileErr);
-    }
-  }
-
-  async unBlockProfile(
-    BlockedProfileId: string,
-    userId: string,
-  ): Promise<boolean> {
-    // get the requesting user profile id using his userId
-    const myProfileId = await this.getProfileIdByUserId(userId);
-
-    // make sure the user is blocked
-    const isBlocked = await this.isBlocked(myProfileId, BlockedProfileId);
-    if (!isBlocked) throw new ProfileNotBlockedException();
-
-    // unBlock profile
-
-    try {
-      await this.prisma.blockedUser.deleteMany({
-        where: {
-          AND: {
-            blockedProfileId: BlockedProfileId,
-            blockerProfileId: myProfileId,
-          },
-        },
-      });
-
-      this.eventClient.emit(
-        KAFKA_EVENTS.PROFILE_EVENTS.profileUnBlocked,
-        new ProfileUnBlockedEvent({
-          unBlockedProfileId: BlockedProfileId,
-          unBlockerProfileID: myProfileId,
-        }),
-      );
-
-      return true;
-    } catch (error) {
-      this.logger.log(error);
-      throw new DBErrorException(ErrorMessages.db.unBlockProfileErr);
-    }
-  }
-
-  // Block
-  // -------------- //
   // validation //
 
   async canInteractWith(
-    authorProfileId: string,
-    userProfileId: string,
+    authorUserId: string,
+    userId: string,
   ): Promise<boolean> {
     try {
-      const isBlocked = await this.isBlocked(authorProfileId, userProfileId);
+      const isBlocked = await this.querybus.execute<
+        GetIsUserBlockedQuery,
+        boolean
+      >(new GetIsUserBlockedQuery(authorUserId, userId));
       if (isBlocked) throw new Error('user is blocked');
 
       return true;
@@ -706,18 +582,10 @@ export class ProfileService {
     }
   }
 
-  canViewContentByProfileId(
-    authorProfileId: string,
-    viewerProfileId: string,
-  ): Promise<boolean> {
-    return this.canInteractWith(authorProfileId, viewerProfileId);
-  }
-  async canViewContentByUserId(
-    authorProfileId: string,
+  canViewContentByUserId(
+    authorUserId: string,
     viewerUserId: string,
   ): Promise<boolean> {
-    const viewerProfileId = await this.getProfileIdByUserId(viewerUserId);
-
-    return this.canViewContentByProfileId(authorProfileId, viewerProfileId);
+    return this.canInteractWith(authorUserId, viewerUserId);
   }
 }

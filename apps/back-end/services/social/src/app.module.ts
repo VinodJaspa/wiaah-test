@@ -17,11 +17,14 @@ import { ContentManagementModule } from './content-management/content-management
 import { HashtagModule } from './hashtag/hashtag.module';
 import { SavedPostsModule } from './saved-posts/saved-posts.module';
 import { StoryModule } from './story/story.module';
+import { BlockModule } from './block/block.module';
+import { PrivacyModule } from './privacy/privacy.module';
 
 @Global()
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],
+  imports: [BlockModule, PrivacyModule],
 })
 export class PrismaModule {}
 

@@ -24,6 +24,9 @@ export class CreateCommentInput {
   @Field(() => ID)
   authorProfileId: string;
 
+  @Field(() => ID)
+  authorUserId: string;
+
   @Field(() => String)
   content: string;
 

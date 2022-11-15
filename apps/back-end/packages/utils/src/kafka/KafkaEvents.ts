@@ -2,6 +2,7 @@ export const KAFKA_EVENTS = {
   ACCOUNTS_EVENTS: {
     createAccount: "create.account",
     accountCreated: "account.created",
+    accountDeleted: "account.deleted",
     sellerAccountCreated: "seller.account.created",
     buyerAccountCreated: "buyer.account.created",
   },

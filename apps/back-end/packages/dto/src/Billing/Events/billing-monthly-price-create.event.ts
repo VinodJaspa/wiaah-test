@@ -1,6 +1,6 @@
 import { KafkaMessage } from "../../Base";
 
-export class BillingMonthlyPriceCreateEvent extends KafkaMessage<{
+export class BillingMonthlyPriceCreatedEvent extends KafkaMessage<{
   id: string;
   price: number;
   type: string;

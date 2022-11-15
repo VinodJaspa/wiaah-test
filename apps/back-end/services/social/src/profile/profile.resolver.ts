@@ -140,22 +140,4 @@ export class ProfileResolver {
 
   // Follow system //
   // ------------------------------------- //
-  // Block system //
-
-  @Mutation(() => Boolean)
-  BlockProfile(
-    @Args('BlockProfileInput') args: BlockProfileInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ): Promise<boolean> {
-    return this.profileService.blockProfile(args.profileId, user.id);
-  }
-
-  @Mutation(() => Boolean)
-  unBlockProfile(
-    @Args('unBlockProfileInput') args: UnBlockProfileInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ): Promise<boolean> {
-    return this.profileService.unBlockProfile(args.profileId, user.id);
-  }
-  // Block system //
 }

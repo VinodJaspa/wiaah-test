@@ -39,8 +39,7 @@ export class UpdateMembershipCommandHandler
       >(new UpdateMembershipTurnoverRuleCommand(v, user)),
     );
 
-    const resP = await Promise.all(promises);
-    console.log('resp', resP);
+    await Promise.all(promises);
     this.eventBus.publish(new MembershipModifedEvent(res, user));
     return res;
   }
