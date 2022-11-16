@@ -41,7 +41,7 @@ export class CreateMembershipPaymentIntentCommandHandler
         userId: user.id,
       },
     );
-
+    console.log(JSON.stringify(res, null, 2));
     return {
       client_secret: res?.clientSecret,
     };

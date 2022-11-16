@@ -37,5 +37,5 @@ export class CreateMembershipInput {
   turnover_rules: MembershipTurnoverRuleInput[];
 
   @Field(() => [MembershipIncludedItemInput])
-  includings: MembershipIncludedItemInput;
+  includings: MembershipIncludedItemInput[];
 }

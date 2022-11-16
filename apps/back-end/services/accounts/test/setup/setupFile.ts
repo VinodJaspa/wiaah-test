@@ -10,6 +10,7 @@ class PrismaService extends PrismaClient {
 async function clearDB() {
   await prisma.account.deleteMany();
   await prisma.userIdenityVerificationRequest.deleteMany();
+  await prisma.userAccountVerificationRequest.deleteMany();
 }
 
 const prisma = new PrismaService();

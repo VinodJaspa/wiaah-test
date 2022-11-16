@@ -132,6 +132,7 @@ export class AccountsController implements OnModuleInit {
     KAFKA_EVENTS.BILLING_EVNETS.billingSubscriptionPaid('membership'),
   )
   handleMembershipPaid(@Payload() { value }: { value: SubscriptionPaidEvent }) {
+    console.log("updating user membershipo")
     this.commandBus.execute<UpdateUserMembershipCommand, Account>(
       new UpdateUserMembershipCommand(value.input.userId, value.input.id),
     );

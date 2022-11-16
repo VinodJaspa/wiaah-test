@@ -4,9 +4,10 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { ClientKafka } from '@nestjs/microservices';
+
 import { Prisma } from '@prisma-client';
 import { PrismaService } from 'prismaService';
-import { CreateProdutctInput } from './dto/create-produtct.input';
 import {
   ProductSearchPaginationInput,
   IsOwnerOfShopMessage,
@@ -22,14 +23,15 @@ import {
   ExtractPagination,
 } from 'nest-utils';
 import {
-  Product,
-  ProductSearchPaginationResponse,
   ProductNotFoundException,
   ProductNotFoundOrUnaccessable,
+} from '@products/exceptions';
+import { Product, ProductSearchPaginationResponse } from '@products/entities';
+import {
+  UpdateProdutctInput,
+  CreateProdutctInput,
   ReviewProductInput,
-} from '@products';
-import { ClientKafka } from '@nestjs/microservices';
-import { UpdateProdutctInput } from './dto/update-produtct.input';
+} from '@products/dto';
 
 @Injectable()
 export class ProductsService {

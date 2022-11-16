@@ -39,7 +39,7 @@ export class EventModule {}
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: true,
-      context: ({ req }) => ({ req, user: getUserFromRequest(req, true) }),
+      context: ({ req }) => ({ req, user: getUserFromRequest(req) }),
     }),
     EventModule,
     TransactionsModule,

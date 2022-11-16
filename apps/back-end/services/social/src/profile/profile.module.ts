@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { ProfileResolver } from './profile.resolver';
-import { PrismaService } from 'prismaService';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
   imports: [
+    CqrsModule,
     ClientsModule.register([
       {
         name: SERVICES.SOCIAL_SERVICE.token,

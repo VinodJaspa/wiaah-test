@@ -54,7 +54,7 @@ export class NewsfeedPostsService {
       },
     });
     const canView = await this.profileService.canViewContentByUserId(
-      post.authorProfileId,
+      post.userId,
       userId,
     );
 

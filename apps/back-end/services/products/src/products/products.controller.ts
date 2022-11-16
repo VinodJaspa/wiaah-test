@@ -1,4 +1,4 @@
-import { Controller, Inject, NotFoundException } from '@nestjs/common';
+import { Controller, NotFoundException } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { formatCaughtError, KAFKA_MESSAGES } from 'nest-utils';
@@ -14,12 +14,9 @@ import {
   KafkaPayload,
 } from 'nest-dto';
 
-@Controller('products')
+@Controller()
 export class ProductsController {
-  constructor(
-    @Inject(ProductsService)
-    private readonly productsService: ProductsService,
-  ) {}
+  constructor(private readonly productsService: ProductsService) {}
 
   @MessagePattern(KAFKA_MESSAGES.productReviewable)
   async productReviewable(

@@ -23,6 +23,8 @@ module.exports = {
     '@keys': '<rootDir>/src/keys',
     '@posts-newsfeed': '<rootDir>/src/newsfeed-posts',
     '@prisma-module': '<rootDir>/src/app.module',
+    '^@block/(.+)$': '<rootDir>/src/block/$1',
+    '^@privacy-settings/(.+)$': '<rootDir>/src/privacy/$1',
   },
   coverageDirectory: '../coverage',
   testEnvironment: 'node',

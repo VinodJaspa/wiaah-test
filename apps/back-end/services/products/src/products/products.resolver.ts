@@ -11,28 +11,18 @@ import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
-  KAFKA_BROKERS,
   SERVICES,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 import { GraphQLUpload, Upload } from 'graphql-upload';
 import { PrepareGqlUploads, UploadService } from '@wiaah/upload';
+import { QueryBus } from '@nestjs/cqrs';
 
-import { ProductsService } from './products.service';
-import { Product } from './entities/product.entity';
-import { CreateProdutctInput } from './dto/create-produtct.input';
-import { UpdateProdutctInput } from './dto/update-produtct.input';
-import { KafkaPubSub } from 'graphql-kafkajs-subscriptions';
-import { Kafka } from 'kafkajs';
-
-export const pubsub = KafkaPubSub.create({
-  topic: 'subscriptions-topic',
-  kafka: new Kafka({
-    brokers: KAFKA_BROKERS,
-    clientId: 'subscriptions',
-  }),
-  groupIdPrefix: 'sub-service-group',
-});
+import { ProductsService } from '@products/products.service';
+import { Product } from '@products/entities';
+import { CreateProdutctInput } from '@products/dto';
+import { UpdateProdutctInput } from '@products/dto';
+import { GetProductVendorLinkQuery } from '@products/queries';
 
 @Resolver(() => Product)
 export class ProductsResolver {
@@ -42,20 +32,19 @@ export class ProductsResolver {
     @Inject(SERVICES.PRODUCTS_SERVICE.token)
     private readonly shopClient: ClientKafka,
     private readonly uploadService: UploadService,
+    private readonly querybus: QueryBus,
   ) {}
 
   logger = new Logger('ProductResolver');
 
-  @Mutation(() => Boolean)
-  async test() {
-    await (
-      await pubsub
-    ).publish(
-      'subscriptions',
-      JSON.stringify({ id: '6363313d1737d02ecdcab5e5' }),
+  @Mutation(() => String)
+  getProductVendorLink(
+    @Args('productId') productId: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.querybus.execute<GetProductVendorLinkQuery, string>(
+      new GetProductVendorLinkQuery(productId, user),
     );
-    console.log('tested 2');
-    return true;
   }
 
   @Query(() => Product)
@@ -71,7 +60,6 @@ export class ProductsResolver {
 
   @Query(() => Product)
   product(@Args('id', { type: () => ID }) id: string) {
-    console.log('getting prod', id);
     return this.productsService.getProductById(id);
   }
 

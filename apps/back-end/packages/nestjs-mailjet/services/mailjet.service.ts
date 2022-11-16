@@ -1,11 +1,8 @@
-import {
-  MailingModuleForRootOptions,
-  MAILING_MODULE_FOR_ROOT_OPTIONS_INJECTING_TOKEN,
-  IMailingService,
-} from "../mailing.module";
 import { Injectable, Inject } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { MAILING_MODULE_FOR_ROOT_OPTIONS_INJECTING_TOKEN } from "../const";
 import MailJetType from "node-mailjet";
+import { IMailingService, MailingModuleForRootOptions } from "../types";
 const Mailjet = require("node-mailjet");
 
 @Injectable()
@@ -33,6 +30,7 @@ export class MailJetService implements IMailingService {
     text: string;
     html: string;
   }): Promise<boolean> {
+    console.log("mailjet", { html, subject, text, to });
     await this.mailJet.post("send", { version: "v3.1" }).request({
       Messages: [
         {

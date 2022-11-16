@@ -6,15 +6,19 @@ import {
   InternalServerErrorException,
   NotAcceptableException,
   NotFoundException,
+  HttpStatus,
+  GoneException,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { Registeration } from '../../prisma/generated';
 import { PrismaService } from 'src/prisma.service';
 import {
+  AddToDate,
   KafkaMessageHandler,
   KAFKA_EVENTS,
   KAFKA_MESSAGES,
   KAFKA_SERVICE_TOKEN,
+  SubtractFromDate,
 } from 'nest-utils';
 import { LoginDto, RegisterDto, VerifyEmailDto } from './dto';
 import * as bcrypt from 'bcrypt';
@@ -29,20 +33,23 @@ import {
   EmailExistsMessageReply,
   GetAccountMetaDataByEmailMessage,
   GetAccountMetaDataByEmailMessageReply,
+  NewRegisterationTokenRequestedEvent,
   PasswordChangedEvent,
-  SendVerificationEmailEvent,
 } from 'nest-dto';
 import { ForgotPasswordEmailInput } from './dto/forgotPasswordEmail.input';
 import { ConfirmPasswordChangeInput } from './dto/confirmPasswordChange.input';
 
 @Injectable()
 export class AuthService {
+  registerationVerificationTokenValidDurationInMin: number;
   constructor(
     private readonly prisma: PrismaService,
     @Inject(SERVICES.AUTH_SERVICE.token)
     private readonly eventsClient: ClientKafka,
     private readonly JWTService: JwtService,
-  ) {}
+  ) {
+    this.registerationVerificationTokenValidDurationInMin = 30;
+  }
 
   async register(createAuthInput: RegisterDto): Promise<boolean> {
     try {
@@ -78,6 +85,7 @@ export class AuthService {
       await this.prisma.registeration.create({
         data: {
           email,
+          expiresAt: AddToDate(new Date(), {}),
           verificationCode,
         },
       });
@@ -117,6 +125,8 @@ export class AuthService {
 
       if (registeration.verificationCode !== verificationCode)
         throw new BadRequestException('invalid verification code');
+      if (registeration.expiresAt < new Date())
+        throw new GoneException('token expired');
 
       await this.removeRegisterationsByEmail(email);
 
@@ -129,6 +139,35 @@ export class AuthService {
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  async resendRegisterationToken(email: string) {
+    const verificationCode = `${generateVerificationToken()}`;
+    const expiresAt = AddToDate(new Date(), {
+      minutes: this.registerationVerificationTokenValidDurationInMin,
+    });
+
+    await this.prisma.registeration.upsert({
+      create: {
+        email,
+        expiresAt,
+        verificationCode,
+      },
+      update: {
+        verificationCode,
+        expiresAt,
+      },
+      where: { email },
+    });
+
+    this.eventsClient.emit<any, NewRegisterationTokenRequestedEvent>(
+      KAFKA_EVENTS.AUTH_EVENTS.newRegisterationTokenRequest,
+      new NewRegisterationTokenRequestedEvent({
+        email,
+        token: verificationCode,
+      }),
+    );
+    return true;
   }
 
   async login(input: LoginDto): Promise<{ access_token: string }> {

@@ -2,6 +2,7 @@ export const KAFKA_EVENTS = {
   ACCOUNTS_EVENTS: {
     createAccount: "create.account",
     accountCreated: "account.created",
+    accountDeleted: "account.deleted",
     sellerAccountCreated: "seller.account.created",
     buyerAccountCreated: "buyer.account.created",
   },
@@ -29,6 +30,7 @@ export const KAFKA_EVENTS = {
     accountVerified: "account.verified",
     passwordChangeRequest: "password.change.request",
     passwordChanged: "password.changed",
+    newRegisterationTokenRequest: "registeration.token.request",
   },
   BILLING_EVNETS: {
     balanceCreated: "balance.created",
@@ -144,6 +146,14 @@ export const KAFKA_MESSAGES = {
     getShopActiveVouchers: "get.shop.active.vouchers",
     isApplyableVoucher: "is.applyable.voucher",
     getVoucherData: "get.voucher.data",
+  },
+  SELLER_MESSAGES: {
+    getSellerMembership: "seller.get.membership",
+  },
+  MEMBERSHIP_MESSAGES: {},
+  CAN_PREFORM_ACTION_MESSAGES: {
+    canPreformProductAction: (actionType: string) =>
+      `can.preform.product.action.${actionType}`,
   },
   emailExists: "email.exists",
   getAccountByEmail: "get.account.by.email",

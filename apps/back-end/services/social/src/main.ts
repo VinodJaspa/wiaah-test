@@ -10,10 +10,14 @@ async function bootstrap() {
     options: {
       client: {
         brokers: KAFKA_BROKERS,
+        clientId: SERVICES.SOCIAL_SERVICE.clientId,
+      },
+      consumer: {
+        groupId: SERVICES.SOCIAL_SERVICE.groupId,
       },
     },
   });
-
+  await app.startAllMicroservices();
   await app.listen(3017);
 }
 bootstrap();

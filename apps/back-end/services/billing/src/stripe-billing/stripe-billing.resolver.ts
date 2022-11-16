@@ -56,7 +56,7 @@ export class StripeBillingResolver implements OnModuleInit {
   }
 
   @Mutation(() => PaymentIntent)
-  @UseGuards(new GqlAuthorizationGuard(['seller']))
+  @UseGuards(new GqlAuthorizationGuard(['seller', 'buyer']))
   async createMembershipSubscriptionPaymentIntent(
     @Args('args') args: CreateMembershipPaymentIntentInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,

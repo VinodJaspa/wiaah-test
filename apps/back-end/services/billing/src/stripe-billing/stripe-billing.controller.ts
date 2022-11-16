@@ -52,7 +52,9 @@ export class StripeBillingController {
       case 'customer.subscription.updated':
         const res = event.data.object as Stripe.Subscription;
         const meta = res.metadata as SubscriptionMetadata;
+        console.log('sub update', JSON.stringify(event, null, 2));
         if (res.status === 'active') {
+          console.log('publishing');
           this.eventBus.publish(new StripeSubscriptionPaidEvent(meta));
         }
         break;
