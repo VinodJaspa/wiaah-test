@@ -65,6 +65,22 @@ model UserAccountVerificationRequest {
   idPhoto    String
 }
 
+model Cookies {
+  id String @id @default(auto()) @db.ObjectId @map("_id")
+  title String
+  description String
+  required Boolean
+  benefits String[]
+  cons String[]
+}
+
+model UserCookiesSettings {
+  id String @id @default(auto()) @db.ObjectId @map("_id")
+  userId String @unique @db.ObjectId
+  acceptedCookiesIds String[] @db.ObjectId
+  acceptedRequired Boolean @default(false)
+}
+
 enum AccountType {
   admin
   seller

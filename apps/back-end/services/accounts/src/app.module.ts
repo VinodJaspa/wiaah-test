@@ -9,12 +9,13 @@ import { PrismaService } from 'prismaService';
 import { AccountsModule } from './accounts/accounts.module';
 import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { AccountVerificationModule } from './account-verification/account-verification.module';
+import { CookiesSettingsModule } from './cookies-settings/cookies-settings.module';
 
 @Global()
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],
-  imports: [AccountVerificationModule],
+  imports: [AccountVerificationModule, CookiesSettingsModule],
 })
 export class PrismaModule {}
 
