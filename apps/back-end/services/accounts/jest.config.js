@@ -14,6 +14,8 @@ module.exports = {
     prismaService: '<rootDir>/src/prisma.service',
     '@prisma-client': '<rootDir>/prisma/generated/client',
     '@entities': '<rootDir>/src/accounts/entities',
+    '^@acc-verification/(.+)$': '<rootDir>/src/account-verification/$1',
+    '^@accounts/(.+)$': '<rootDir>/src/accounts/$1',
   },
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
