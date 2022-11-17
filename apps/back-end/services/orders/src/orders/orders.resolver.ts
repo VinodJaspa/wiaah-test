@@ -1,12 +1,4 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Int,
-  ResolveReference,
-} from '@nestjs/graphql';
-import { OrdersService } from './orders.service';
+import { Resolver, Query, Args } from '@nestjs/graphql';
 import { Order } from '@entities';
 import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
 import {
@@ -14,11 +6,11 @@ import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
   KAFKA_MESSAGES,
-  KAFKA_SERVICE_TOKEN,
+  SERVICES,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
-import { SellerOrdersService } from 'src/seller-orders/seller-orders.service';
-import { BuyerOrdersService } from 'src/buyer-orders/buyer-orders.service';
+import { SellerOrdersService } from '../seller-orders/seller-orders.service';
+import { BuyerOrdersService } from '../buyer-orders/buyer-orders.service';
 import { GetMyOrdersInput } from '@dto';
 
 @Resolver(() => Order)
@@ -26,7 +18,8 @@ export class OrdersResolver implements OnModuleInit {
   constructor(
     private readonly sellerOrdersService: SellerOrdersService,
     private readonly buyerOrdersService: BuyerOrdersService,
-    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
+    @Inject(SERVICES.ORDERS_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
 
   @Query((type) => [Order])

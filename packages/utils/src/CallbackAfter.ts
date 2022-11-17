@@ -1,4 +1,4 @@
-let callbackTimeout: NodeJS.Timer;
+let callbackTimeout: NodeJS.Timer | undefined;
 
 export const CallbackAfter = (timeInMs: number = 1000, callback: Function) => {
   if (callbackTimeout) {
@@ -12,5 +12,6 @@ export const CallbackAfter = (timeInMs: number = 1000, callback: Function) => {
 function callAfter(ms: number, callback: Function) {
   callbackTimeout = setTimeout(() => {
     callback();
+    callbackTimeout = undefined;
   }, ms);
 }

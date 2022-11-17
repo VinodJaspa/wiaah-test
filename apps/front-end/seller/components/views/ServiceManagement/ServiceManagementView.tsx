@@ -5,6 +5,7 @@ import { BiTime } from "react-icons/bi";
 import { HiTicket } from "react-icons/hi";
 import { MdPending } from "react-icons/md";
 import { RiBookLine, RiServiceFill } from "react-icons/ri";
+import { getRouting } from "routing";
 import { SettingsSectionType } from "types";
 import {
   SectionsLayout,
@@ -18,7 +19,7 @@ import {
 } from "ui";
 
 export const ServiceManagementView = () => {
-  const baseRoute = "service-management";
+  const baseRoute = getRouting((r) => r.visitServiceManagement());
   const router = useRouter();
   const { section } = router.query;
   const route = Array.isArray(section) ? section[0] : section;
@@ -45,28 +46,28 @@ export const ServiceManagementView = () => {
 const sections: SettingsSectionType[] = [
   {
     panelName: "My rendez-vous",
-    panelIcon: HiTicket,
+    panelIcon: HiTicket({}),
     panelUrl: "/my-rendez-vous",
     panelComponent: <BookingsSection />,
     subSections: [],
   },
   {
     panelName: "Bookings",
-    panelIcon: RiBookLine,
+    panelIcon: RiBookLine({}),
     panelUrl: "/bookings",
     panelComponent: <BookingsHistory />,
     subSections: [],
   },
   {
     panelName: "Pending Appointments",
-    panelIcon: MdPending,
+    panelIcon: MdPending({}),
     panelUrl: "/pending-appointments",
     panelComponent: <PendingAppointmentsSection />,
     subSections: [],
   },
   {
     panelName: "My Service",
-    panelIcon: RiServiceFill,
+    panelIcon: RiServiceFill({}),
     panelUrl: "/my-service",
     panelComponent: <MyServicesSection />,
     subSections: [
@@ -75,7 +76,7 @@ const sections: SettingsSectionType[] = [
         sections: [
           {
             panelName: "Presentation",
-            panelIcon: ImageIcon,
+            panelIcon: ImageIcon({}),
             panelUrl: "/presentation",
             panelComponent: <EditServicePresentationSection />,
           },
@@ -85,7 +86,7 @@ const sections: SettingsSectionType[] = [
   },
   {
     panelName: "Opening time management",
-    panelIcon: BiTime,
+    panelIcon: BiTime({}),
     panelUrl: "/opening-time-management",
     panelComponent: <TimeManagementSection />,
     subSections: [],

@@ -8,6 +8,7 @@ import {
   GqlCurrentUser,
   KAFKA_MESSAGES,
   KAFKA_SERVICE_TOKEN,
+  SERVICES,
 } from 'nest-utils';
 import {
   AcceptReceivedOrderInput,
@@ -19,10 +20,7 @@ import { ClientKafka } from '@nestjs/microservices';
 @Resolver(() => Order)
 @UseGuards(new GqlAuthorizationGuard(['buyer', 'seller']))
 export class BuyerOrdersResolver {
-  constructor(
-    private readonly buyerOrdersService: BuyerOrdersService,
-    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
-  ) {}
+  constructor(private readonly buyerOrdersService: BuyerOrdersService) {}
 
   @Mutation(() => Order)
   acceptRecievedOrder(

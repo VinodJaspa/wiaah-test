@@ -1,14 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { OrdersCluster } from '@prisma-client';
-import {
-  generateFiltersOfArgs,
-  hasFilters,
-  KAFKA_SERVICE_TOKEN,
-} from 'nest-utils';
+import { SellerOrdersCluster } from '@prisma-client';
+import { generateFiltersOfArgs, hasFilters, SERVICES } from 'nest-utils';
 import { Order } from '@entities';
-import { OrdersService } from 'src/orders/orders.service';
-import { PrismaService } from 'src/prisma.service';
+import { OrdersService } from '../orders/orders.service';
+import { PrismaService } from 'prismaService';
 import { GetMyOrdersInput, RejectOrderRequestInput } from '@dto';
 import {
   OrdersClusterNotFoundException,
@@ -19,7 +15,8 @@ import {
 export class SellerOrdersService {
   constructor(
     private readonly ordersService: OrdersService,
-    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
+    @Inject(SERVICES.ORDERS_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
     private readonly prisma: PrismaService,
   ) {}
 
@@ -29,7 +26,7 @@ export class SellerOrdersService {
   ): Promise<Order[]> {
     const filters = generateFiltersOfArgs(args, ['status']);
 
-    const ordersCluster = await this.prisma.ordersCluster.findUnique({
+    const ordersCluster = await this.prisma.sellerOrdersCluster.findUnique({
       where: {
         sellerId,
       },
@@ -48,7 +45,7 @@ export class SellerOrdersService {
   ): Promise<Order> {
     const [order, orderCluster] = await this.getOrder(sellerId, orderId);
 
-    await this.prisma.ordersCluster.update({
+    await this.prisma.sellerOrdersCluster.update({
       where: {
         id: orderCluster.id,
       },
@@ -75,8 +72,8 @@ export class SellerOrdersService {
   async getOrder(
     sellerId: string,
     orderId: string,
-  ): Promise<[Order, OrdersCluster]> {
-    const orderCluster = await this.prisma.ordersCluster.findUnique({
+  ): Promise<[Order, SellerOrdersCluster]> {
+    const orderCluster = await this.prisma.sellerOrdersCluster.findUnique({
       where: {
         sellerId,
       },
@@ -97,7 +94,7 @@ export class SellerOrdersService {
 
   async acceptOrderRequest(sellerId: string, orderId: string): Promise<Order> {
     const [order, orderCluster] = await this.getOrder(sellerId, orderId);
-    await this.prisma.ordersCluster.update({
+    await this.prisma.sellerOrdersCluster.update({
       where: {
         id: orderCluster.id,
       },

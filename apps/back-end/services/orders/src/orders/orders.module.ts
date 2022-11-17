@@ -1,18 +1,12 @@
 import { Module } from '@nestjs/common';
 import { OrdersService } from './orders.service';
 import { OrdersResolver } from './orders.resolver';
-import {
-  KAFKA_BROKERS,
-  KAFKA_SERVICE_CLIENTID,
-  KAFKA_SERVICE_GROUPID,
-  KAFKA_SERVICE_TOKEN,
-  SERVICES,
-} from 'nest-utils';
+import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { OrdersController } from './orders.controller';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'prismaService';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { SellerOrdersService } from 'src/seller-orders/seller-orders.service';
-import { BuyerOrdersService } from 'src/buyer-orders/buyer-orders.service';
+import { SellerOrdersService } from '../seller-orders/seller-orders.service';
+import { BuyerOrdersService } from '../buyer-orders/buyer-orders.service';
 
 @Module({
   imports: [

@@ -21,7 +21,8 @@
       "@prisma-client": ["prisma/generated/client"],
       "@exceptions": ["src/exceptions"],
       "@entities": ["src/entities"],
-      "@dto": ["src/dto"]
+      "@dto": ["src/dto"],
+      "prismaService": ["src/prisma.service"]
     }
   }
 }

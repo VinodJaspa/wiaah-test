@@ -11,11 +11,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model OrdersCluster {
+
+model Order {
+  id String @id @db.ObjectId @default(auto()) @map("_id")
+  sellerId String @db.ObjectId
+  buyerId String @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  items OrderItem[]
+  orderStatus OrderStatus
+}
+
+
+
+model SellerOrdersCluster {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   shopId    String   @unique @db.ObjectId
   sellerId  String   @unique @db.ObjectId
-  orders    Order[]
+  orders    OrderType[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -23,12 +36,12 @@ model OrdersCluster {
 model BuyerOrdersCluster {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   buyerId   String   @unique @db.ObjectId
-  orders    Order[]
+  orders    OrderType[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-type Order {
+type OrderType {
   id         String
   items      OrderItem[]
   status     OrderStatus
@@ -48,13 +61,6 @@ type SellerInfo {
 
 type BuyerInfo {
   id         String
-  address    String
-  address2   String
-  country    String
-  city       String
-  state      String
-  phone      String
-  postalCode String
 }
 
 type OrderStatus {

@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { BuyerOrdersService } from './buyer-orders.service';
 import { BuyerOrdersResolver } from './buyer-orders.resolver';
-import { OrdersModule } from 'src/orders/orders.module';
+import { OrdersModule } from '../orders/orders.module';
 
 @Module({
   imports: [OrdersModule],

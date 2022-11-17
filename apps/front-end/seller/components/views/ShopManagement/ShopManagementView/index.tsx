@@ -20,11 +20,12 @@ import {
   ReturnedOrders,
   OrdersSection,
 } from "ui";
+import { getRouting } from "routing";
 
 export interface ShopManagementViewProps {}
 
 export const ShopManagementView: React.FC<ShopManagementViewProps> = ({}) => {
-  const baseRoute = "shop-management";
+  const baseRoute = getRouting((r) => r.visitShopManagement());
   const router = useRouter();
   const { section } = router.query;
   const route = Array.isArray(section) ? section[0] : section;
@@ -51,43 +52,43 @@ export const ShopManagementView: React.FC<ShopManagementViewProps> = ({}) => {
 const sections: SettingsSectionType[] = [
   {
     panelName: "Product Management",
-    panelIcon: MdOutlineShoppingBasket,
+    panelIcon: MdOutlineShoppingBasket({}),
     panelUrl: "/product-management",
     panelComponent: <ProductManagementSection />,
   },
   {
     panelName: "Orders",
-    panelIcon: BsBoxArrowInUp,
+    panelIcon: BsBoxArrowInUp({}),
     panelUrl: "/orders",
     panelComponent: <OrdersSection shopping={false} />,
   },
   {
     panelName: "Affiliation Management",
-    panelIcon: AffiliationIcon,
+    panelIcon: AffiliationIcon({}),
     panelUrl: "/affiliation-management",
     panelComponent: <AffiliationManagementSection />,
   },
   {
     panelName: "Affiliation History",
-    panelIcon: FaHistory,
+    panelIcon: FaHistory({}),
     panelUrl: "/affiliation-history",
     panelComponent: <AffiliationHistorySection />,
   },
   {
     panelName: "Returned Orders",
-    panelIcon: BsBoxArrowInUp,
+    panelIcon: BsBoxArrowInUp({}),
     panelUrl: "/returned-orders",
     panelComponent: <ReturnedOrders />,
   },
   {
     panelName: "Shipping Settings",
-    panelIcon: MdOutlineLocalShipping,
+    panelIcon: MdOutlineLocalShipping({}),
     panelUrl: "/shipping-settings",
     panelComponent: <ShippingSettingsSection />,
   },
   {
     panelName: "Reviews",
-    panelIcon: MdOutlineComment,
+    panelIcon: MdOutlineComment({}),
     panelUrl: "/reviews",
     panelComponent: <ReviewsSection />,
   },

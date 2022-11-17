@@ -1,16 +1,16 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { OrdersCluster } from '@prisma-client';
+import { SellerOrdersCluster } from '@prisma-client';
 import {
   hasFilters,
   generateFiltersOfArgs,
   KAFKA_SERVICE_TOKEN,
   KafkaMessageHandler,
   KAFKA_MESSAGES,
+  SERVICES,
 } from 'nest-utils';
 import { Order } from '@entities';
-import { OrdersService } from 'src/orders/orders.service';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from 'prismaService';
 import {
   AcceptReceivedOrderInput,
   placeOrderInput,
@@ -34,8 +34,8 @@ import {
 export class BuyerOrdersService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly ordersService: OrdersService,
-    @Inject(KAFKA_SERVICE_TOKEN) private readonly eventsClient: ClientKafka,
+    @Inject(SERVICES.ORDERS_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
 
   async getMyOrders(
@@ -66,7 +66,7 @@ export class BuyerOrdersService {
       shopId,
     );
 
-    await this.prisma.ordersCluster.update({
+    await this.prisma.sellerOrdersCluster.update({
       where: {
         id: clusterId,
       },
@@ -119,7 +119,7 @@ export class BuyerOrdersService {
       shopId,
     );
 
-    await this.prisma.ordersCluster.update({
+    await this.prisma.sellerOrdersCluster.update({
       where: {
         id,
       },
@@ -166,8 +166,8 @@ export class BuyerOrdersService {
     ownerId: string,
     orderId: string,
     shopId: string,
-  ): Promise<[OrdersCluster, Order]> {
-    const cluster = await this.prisma.ordersCluster.findUnique({
+  ): Promise<[SellerOrdersCluster, Order]> {
+    const cluster = await this.prisma.sellerOrdersCluster.findUnique({
       where: {
         shopId,
       },
@@ -200,7 +200,7 @@ export class BuyerOrdersService {
       }),
     );
 
-    if (!success) throw new Error(error);
+    if (!success) throw error;
     const { ownerId: sellerId, productId, shopId } = data[0];
 
     const productsOfSameShop = data.every(
@@ -225,19 +225,12 @@ export class BuyerOrdersService {
         shopId,
       },
       buyerInfo: {
-        address,
-        address2,
-        city,
-        country,
-        phone,
-        postalCode,
-        state,
         id: buyerId,
       },
       items: input.items,
     };
 
-    await this.prisma.ordersCluster.upsert({
+    await this.prisma.sellerOrdersCluster.upsert({
       where: {
         shopId,
       },
@@ -284,7 +277,7 @@ export class BuyerOrdersService {
       new GetAccountByIdMessage({ accountId: buyerId }),
     );
 
-    if (!success) throw new Error(error);
+    if (!success) throw error;
 
     return data;
   }
