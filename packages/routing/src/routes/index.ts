@@ -3,6 +3,7 @@ import { ServicesRoutes, ServicesRoutesType } from "./services";
 import { UserRelatedRoutesType, UserRelatedRoutes } from "./userRelated";
 import { ShopRoutes, ShopRoutesType } from "./Shop";
 import { SocialRoutes, SocialRoutesType } from "./social";
+import { SettingsRoutes, SettingsRoutesType } from "./settings";
 
 export type RoutesType = MainRouterInterface;
 export type RoutingQueryType = Record<string, string>;
@@ -27,13 +28,15 @@ export type MainRouterInterface = {
 } & ServicesRoutesType &
   UserRelatedRoutesType &
   ShopRoutesType &
-  SocialRoutesType;
+  SocialRoutesType &
+  SettingsRoutesType;
 
 export const MainRoutes: MainRouterInterface = {
   ...ServicesRoutes,
   ...UserRelatedRoutes,
   ...ShopRoutes,
   ...SocialRoutes,
+  ...SettingsRoutes,
   route: "",
   query: {},
   dataKeys: {},
