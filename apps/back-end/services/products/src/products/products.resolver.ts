@@ -6,33 +6,34 @@ import {
   ResolveReference,
   ID,
 } from '@nestjs/graphql';
-import { Inject, Logger, UseGuards } from '@nestjs/common';
+import { Logger, UseGuards } from '@nestjs/common';
 import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
-  SERVICES,
+  GqlPaginationInput,
 } from 'nest-utils';
-import { ClientKafka } from '@nestjs/microservices';
 import { GraphQLUpload, Upload } from 'graphql-upload';
 import { PrepareGqlUploads, UploadService } from '@wiaah/upload';
-import { QueryBus } from '@nestjs/cqrs';
-
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ProductsService } from '@products/products.service';
-import { Product } from '@products/entities';
-import { CreateProdutctInput } from '@products/dto';
+import { MyProduct, Product } from '@products/entities';
+import { CreateProductInput } from '@products/dto';
 import { UpdateProdutctInput } from '@products/dto';
-import { GetProductVendorLinkQuery } from '@products/queries';
+import {
+  GetProductVendorLinkQuery,
+  GetSellerProductsQuery,
+} from '@products/queries';
+
+import { DeleteProductCommand } from '@products/command';
 
 @Resolver(() => Product)
 export class ProductsResolver {
   constructor(
-    @Inject(ProductsService)
     private readonly productsService: ProductsService,
-    @Inject(SERVICES.PRODUCTS_SERVICE.token)
-    private readonly shopClient: ClientKafka,
     private readonly uploadService: UploadService,
     private readonly querybus: QueryBus,
+    private readonly commandbus: CommandBus,
   ) {}
 
   logger = new Logger('ProductResolver');
@@ -59,28 +60,29 @@ export class ProductsResolver {
   }
 
   @Query(() => Product)
-  product(@Args('id', { type: () => ID }) id: string) {
+  getProduct(@Args('id', { type: () => ID }) id: string) {
     return this.productsService.getProductById(id);
   }
 
   @Mutation(() => Product)
   @UseGuards(new GqlAuthorizationGuard(['seller']))
   createNewProduct(
-    @Args('createNewProductInput') createProductInput: CreateProdutctInput,
+    @Args('createNewProductInput') createProductInput: CreateProductInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.productsService.createNewProduct(createProductInput, user);
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => Product)
   @UseGuards(new GqlAuthorizationGuard(['seller']))
   updateProduct(
     @Args('updateProductArgs') input: UpdateProdutctInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ): Promise<boolean> {
+  ): Promise<Product> {
     return this.productsService.updateProduct(user.id, input);
   }
 
+  // TODO:delete on production
   @Mutation(() => Boolean)
   deleteAllProducts() {
     return this.productsService.deleteAll();
@@ -109,5 +111,28 @@ export class ProductsResolver {
       this.logger.error(error);
       return false;
     }
+  }
+
+  @Query(() => [MyProduct])
+  @UseGuards(new GqlAuthorizationGuard(['seller']))
+  getMyProducts(
+    @Args('args', { type: () => GqlPaginationInput })
+    pagination: GqlPaginationInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.querybus.execute<GetSellerProductsQuery>(
+      new GetSellerProductsQuery(user.id, pagination),
+    );
+  }
+
+  @Mutation(() => Product)
+  @UseGuards(new GqlAuthorizationGuard(['seller']))
+  deleteProduct(
+    @Args('productId', { type: () => ID }) id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.commandbus.execute<DeleteProductCommand, Product>(
+      new DeleteProductCommand(id, user.id),
+    );
   }
 }

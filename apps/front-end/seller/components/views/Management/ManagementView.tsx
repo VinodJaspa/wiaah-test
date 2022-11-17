@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { BsShop } from "react-icons/bs";
 import { CgShoppingBag } from "react-icons/cg";
 import { IoSettingsOutline } from "react-icons/io5";
-import { getRouting, RoutesType, useRouting } from "routing";
+import { getRouting, useRouting } from "routing";
 import { AspectRatio, ServicesIcon } from "ui";
 import { runIfFn } from "utils";
 

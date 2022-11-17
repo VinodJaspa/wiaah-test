@@ -12,6 +12,12 @@ directive @requires(fields: String!) on FIELD_DEFINITION
 
 directive @provides(fields: String!) on FIELD_DEFINITION
 
+type Category {
+  id: ID!
+  name: String!
+  parantId: ID!
+}
+
 type ProductPresentation {
   type: PresentationType!
   src: String!
@@ -50,8 +56,8 @@ type Product {
   title: String!
   description: String!
   shopId: ID!
-  hostCategories: [String!]!
-  category: String!
+  categoryId: ID!
+  category: Category
   attributes: [ProductAttribute!]!
   stock: Int!
   discount: Discount!
@@ -63,6 +69,7 @@ type Product {
   visibility: VisibilityEnum!
   shippingRulesIds: [ID!]!
   reviews: Int!
+  sales: Int!
 }
 
 enum VisibilityEnum {
@@ -70,10 +77,28 @@ enum VisibilityEnum {
   public
 }
 
-type Category {
+type MyProduct {
   id: ID!
-  name: String!
-  parantId: ID!
+  sellerId: ID!
+  vendor_external_link: String!
+  title: String!
+  description: String!
+  shopId: ID!
+  categoryId: ID!
+  category: Category
+  attributes: [ProductAttribute!]!
+  stock: Int!
+  discount: Discount!
+  cashback: CashBack!
+  presentations: [ProductPresentation!]!
+  rate: Int!
+  brand: String!
+  price: Float!
+  visibility: VisibilityEnum!
+  shippingRulesIds: [ID!]!
+  reviews: Int!
+  sales: Int!
+  earnings: Float!
 }
 
 type ProductFilterGroupValue {
@@ -139,7 +164,8 @@ type Query {
   getFilteredShops(filteredShopsArgs: FilterShopsInput!): [Shop!]!
   getProductById(id: String!): Product!
   getProducts: [Product!]!
-  product(id: ID!): Product!
+  getProduct(id: ID!): Product!
+  getMyProducts(args: GqlPaginationInput!): [MyProduct!]!
   getCategories: [Category!]!
   getProductsFilters: [Filter!]!
 }
@@ -159,16 +185,22 @@ input FilterShopsInput {
   limit: Int = 10
 }
 
+input GqlPaginationInput {
+  page: Int!
+  take: Int!
+}
+
 type Mutation {
   createShop(createShopInput: CreateShopInput!): Shop!
   removeAllShops: Boolean!
   updateMyShop(updateMyShopInput: UpdateShopInput!): Shop!
   getProductVendorLink(productId: String!): String!
-  createNewProduct(createNewProductInput: CreateProdutctInput!): Product!
-  updateProduct(updateProductArgs: UpdateProdutctInput!): Boolean!
+  createNewProduct(createNewProductInput: CreateProductInput!): Product!
+  updateProduct(updateProductArgs: UpdateProdutctInput!): Product!
   deleteAllProducts: Boolean!
   createProductsPh: Boolean!
   uploadProductPresentations(files: [Upload!]!): Boolean!
+  deleteProduct(productId: ID!): Product!
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   deleteCategory(deleteCategoryId: String!): Category!
   updateCategory(updateCategoryArgs: UpdateCategoryInput!): Category!
@@ -206,12 +238,11 @@ input UpdateShopInput {
   targetGenders: [TargetGenders!]
 }
 
-input CreateProdutctInput {
+input CreateProductInput {
   type: ProductType!
   title: String!
   description: String!
-  hostCategories: [String!]!
-  category: String!
+  categoryId: ID!
   attributes: [ProductAttributeInput!]!
   stock: Int!
   discount: DiscountInput!
@@ -220,7 +251,6 @@ input CreateProdutctInput {
   price: Float!
   brand: String!
   visibility: VisibilityEnum!
-  thumbnail: String!
 }
 
 enum ProductType {
@@ -253,8 +283,7 @@ input UpdateProdutctInput {
   type: ProductType
   title: String
   description: String
-  hostCategories: [String!]
-  category: String
+  categoryId: ID
   attributes: [ProductAttributeInput!]
   stock: Int
   discount: DiscountInput
@@ -263,7 +292,6 @@ input UpdateProdutctInput {
   price: Float
   brand: String
   visibility: VisibilityEnum
-  thumbnail: String
   id: ID!
 }
 

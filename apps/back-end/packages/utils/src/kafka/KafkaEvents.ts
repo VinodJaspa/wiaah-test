@@ -22,6 +22,7 @@ export const KAFKA_EVENTS = {
   },
   PRODUCTS_EVENTS: {
     productCreated: "product.created",
+    productPurchased: "product.purchased",
   },
   AUTH_EVENTS: {
     accountRegistered: "account.registered",

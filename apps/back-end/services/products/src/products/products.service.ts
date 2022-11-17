@@ -29,7 +29,7 @@ import {
 import { Product, ProductSearchPaginationResponse } from '@products/entities';
 import {
   UpdateProdutctInput,
-  CreateProdutctInput,
+  CreateProductInput,
   ReviewProductInput,
 } from '@products/dto';
 
@@ -44,7 +44,7 @@ export class ProductsService {
   private readonly maxRate: number = 5;
 
   async createNewProduct(
-    createProductInput: CreateProdutctInput,
+    createProductInput: CreateProductInput,
     user: AuthorizationDecodedUser,
   ) {
     const { shopId } = user;
@@ -65,7 +65,10 @@ export class ProductsService {
     return product;
   }
 
-  async updateProduct(userId: string, input: UpdateProdutctInput) {
+  async updateProduct(
+    userId: string,
+    input: UpdateProdutctInput,
+  ): Promise<Product> {
     const { id, ...rest } = input;
     const product = await this.prisma.product.findUnique({
       where: {
@@ -84,14 +87,14 @@ export class ProductsService {
       );
 
     try {
-      await this.prisma.product.update({
+      const res = await this.prisma.product.update({
         where: {
           id,
         },
         data: rest,
       });
 
-      return true;
+      return res;
     } catch (error) {
       throw new Error(error);
     }
@@ -267,14 +270,6 @@ export class ProductsService {
         });
       }
 
-      if (filters.categories) {
-        prismaFilters.push({
-          category: {
-            in: filters.categories,
-          },
-        });
-      }
-
       if (prismaFilters.length < 1)
         return {
           data: [],
@@ -361,7 +356,6 @@ export class ProductsService {
 const ProductsPh: Prisma.ProductCreateInput[] = [
   {
     type: 'goods',
-    category: 'test',
     description: 'test product description',
     stock: 13,
     shopId: '1234',
@@ -369,11 +363,10 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     brand: 'nike',
     price: 16,
     sellerId: 'sellerid',
-    thumbnail: '',
+    categoryId: '',
   },
   {
     type: 'goods',
-    category: 'test',
     description: 'test product description',
     stock: 0,
     shopId: '1234',
@@ -381,11 +374,10 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     brand: 'or',
     price: 18,
     sellerId: 'sellerid',
-    thumbnail: '',
+    categoryId: '',
   },
   {
     type: 'goods',
-    category: 'test',
     description: 'test product description',
     stock: 13,
     shopId: '1234',
@@ -393,11 +385,10 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     brand: 'zara',
     price: 30,
     sellerId: 'sellerid',
-    thumbnail: '',
+    categoryId: '',
   },
   {
     type: 'digital',
-    category: 'test',
     description: 'test product description',
     stock: 13,
     shopId: '1234',
@@ -405,11 +396,10 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     brand: 'zake',
     price: 5,
     sellerId: 'sellerid',
-    thumbnail: '',
+    categoryId: '',
   },
   {
     type: 'digital',
-    category: 'test',
     description: 'test product description',
     stock: 13,
     shopId: '1234',
@@ -417,6 +407,6 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     brand: 'dior',
     price: 98,
     sellerId: 'sellerid',
-    thumbnail: '',
+    categoryId: '',
   },
 ];

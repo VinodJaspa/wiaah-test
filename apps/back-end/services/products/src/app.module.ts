@@ -9,13 +9,9 @@ import {
 import { GraphQLModule } from '@nestjs/graphql';
 import { getUserFromRequest } from 'nest-utils';
 import { ShopModule } from '@shop';
-import { ShippingDetailsModule } from '@shipping-details';
-import { ShippingRulesModule } from '@shipping-rules';
-import { ShippingSettingsModule } from '@shipping-settings';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 
 import { Search } from './products/entities/search.entity';
-import { PrismaService } from './Prisma.service';
 
 @Global()
 @Module({

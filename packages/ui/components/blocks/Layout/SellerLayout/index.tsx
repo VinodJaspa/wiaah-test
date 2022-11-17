@@ -36,8 +36,10 @@ import {
 } from "ui";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
+import { getRouting } from "routing";
 import { BsShop } from "react-icons/bs";
 import { BiWallet } from "react-icons/bi";
+
 export const usersProfilesPlaceHolder = [
   {
     name: "Wiaah",
@@ -376,7 +378,7 @@ const SellerNavLinks: HeaderNavLink[] = [
         translationKey: "account_settings",
         fallbackText: "Account Settings",
       },
-      href: "/management/account-settings",
+      href: getRouting((r) => r.visitAccountSettings()),
     },
     icon: IoSettingsOutline,
   },
@@ -396,7 +398,7 @@ const SellerNavLinks: HeaderNavLink[] = [
         translationKey: "shop_management",
         fallbackText: "Shop Management",
       },
-      href: "/shop-management",
+      href: getRouting((r) => r.visitShopManagement()),
     },
     icon: BsShop,
   },
@@ -406,7 +408,7 @@ const SellerNavLinks: HeaderNavLink[] = [
         translationKey: "service_management",
         fallbackText: "Service Management",
       },
-      href: "/service-management",
+      href: getRouting((r) => r.visitServiceManagement()),
     },
     icon: BsShop,
   },
@@ -416,7 +418,7 @@ const SellerNavLinks: HeaderNavLink[] = [
         translationKey: "shopping_management",
         fallbackText: "Shopping Management",
       },
-      href: "/shopping-management",
+      href: getRouting((r) => r.visitShoppingManagement()),
     },
     icon: CgShoppingBag,
   },

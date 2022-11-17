@@ -19,6 +19,7 @@ export class ChatRoomRepository {
         })),
       },
     });
+
     res.members.at(0);
     return {
       ...res,

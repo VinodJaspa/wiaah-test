@@ -6,6 +6,7 @@ export type SettingsRoutesType = {
   visitShopManagement: () => RoutesType;
   visitShoppingManagement: () => RoutesType;
   visitServiceManagement: () => RoutesType;
+  vistMyProfile: () => RoutesType;
 };
 
 export const SettingsRoutes: RoutesType = {
@@ -23,5 +24,8 @@ export const SettingsRoutes: RoutesType = {
   },
   visitServiceManagement() {
     return this.management().addPath("service-management");
+  },
+  visitMyProfile() {
+    return this.addPath("myProfile");
   },
 } as RoutesType;

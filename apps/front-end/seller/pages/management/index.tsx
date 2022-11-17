@@ -7,7 +7,7 @@ const ManagementPage = () => {
   return (
     <>
       <Head>
-        <title>Wiaah | Shopping management</title>
+        <title>Wiaah management</title>
       </Head>
       <SellerLayout>
         <ManagementView />

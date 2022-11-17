@@ -1,7 +1,7 @@
 import { Controller, NotFoundException } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { MessagePattern, Payload } from '@nestjs/microservices';
-import { formatCaughtError, KAFKA_MESSAGES } from 'nest-utils';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
+import { formatCaughtError, KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
 import {
   GetProductMetaDataMessage,
   GetProductMetaDataMessageReply,
@@ -13,10 +13,16 @@ import {
   IsProductReviewableMessageReply,
   KafkaPayload,
 } from 'nest-dto';
+import { EventBus } from '@nestjs/cqrs';
+import { ProductPurchasedEvent } from '@products/events';
+import { ProductPurchasedEvent as KafkaProductPurchasedEvent } from 'nest-dto';
 
 @Controller()
 export class ProductsController {
-  constructor(private readonly productsService: ProductsService) {}
+  constructor(
+    private readonly productsService: ProductsService,
+    private readonly eventbus: EventBus,
+  ) {}
 
   @MessagePattern(KAFKA_MESSAGES.productReviewable)
   async productReviewable(
@@ -125,5 +131,14 @@ export class ProductsController {
         data: { isAddable: visibility === 'public' },
       });
     } catch (error) {}
+  }
+
+  @EventPattern(KAFKA_EVENTS.PRODUCTS_EVENTS.productPurchased)
+  async handleProductPurchased(
+    @Payload() { value }: { value: KafkaProductPurchasedEvent },
+  ) {
+    this.eventbus.publish(
+      new ProductPurchasedEvent(value.input.productId, value.input.purchaserId),
+    );
   }
 }

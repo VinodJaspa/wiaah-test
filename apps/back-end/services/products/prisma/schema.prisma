@@ -49,8 +49,7 @@ model Product {
   title                       String
   description                 String
   price                       Int
-  hostCategories              String[]
-  category                    String
+  categoryId                  String
   attributes                  ProductAttribute[]
   stock                       Int
   rate                        Float                 @default(0)
@@ -59,10 +58,11 @@ model Product {
   brand                       String
   discount                    Discount?
   cashback                    CashBack?
-  thumbnail                   String
   shippingRulesIds            String[]              @db.ObjectId
   presentations               ProductPresentation[]
   visibility                  VisibilityEnum        @default(hidden)
+  sales                       Int                   @default(0)
+  earnings                    Float                 @default(0)
 }
 
 model Shop {

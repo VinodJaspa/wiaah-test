@@ -39,6 +39,7 @@
     "graphql-kafkajs-subscriptions": "^3.0.0",
     "graphql-tools": "8.0.0",
     "graphql-upload": "13.0.0",
+    "kafkajs": "2.2.0",
     "nest-dto": "*",
     "nest-utils": "*",
     "reflect-metadata": "^0.1.13",

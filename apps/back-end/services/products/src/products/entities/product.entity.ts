@@ -1,3 +1,4 @@
+import { Category } from '@category';
 import {
   ObjectType,
   Field,
@@ -73,11 +74,11 @@ export class Product {
   @Field((type) => ID)
   shopId: string;
 
-  @Field(() => [String])
-  hostCategories: string[];
+  @Field(() => ID)
+  categoryId: string;
 
-  @Field((type) => String)
-  category: string;
+  @Field((type) => Category, { nullable: true })
+  category?: Category;
 
   @Field(() => [ProductAttribute])
   attributes: ProductAttribute[];
@@ -111,6 +112,9 @@ export class Product {
 
   @Field(() => Int)
   reviews: number;
+
+  @Field(() => Int)
+  sales: number;
 
   rateStarCount: number;
 }
