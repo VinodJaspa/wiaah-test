@@ -19,3 +19,4 @@ export * from "./Chat";
 export * from "./hashtag";
 export * from "./Membership";
 export * from "./Seller";
+export * from "./Affiliation";
