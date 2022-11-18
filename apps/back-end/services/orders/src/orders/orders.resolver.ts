@@ -1,5 +1,4 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
-import { Order } from '@entities';
 import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
 import {
   AuthorizationDecodedUser,
@@ -9,17 +8,17 @@ import {
   SERVICES,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
-import { SellerOrdersService } from '../seller-orders/seller-orders.service';
-import { BuyerOrdersService } from '../buyer-orders/buyer-orders.service';
 import { GetMyOrdersInput } from '@dto';
+import { CommandBus } from '@nestjs/cqrs';
+import { Order } from '@orders/entities';
+import { GetBuyerOrdersQuery, GetSellerOrdersQuery } from '@orders/queries';
 
 @Resolver(() => Order)
 export class OrdersResolver implements OnModuleInit {
   constructor(
-    private readonly sellerOrdersService: SellerOrdersService,
-    private readonly buyerOrdersService: BuyerOrdersService,
     @Inject(SERVICES.ORDERS_SERVICE.token)
     private readonly eventsClient: ClientKafka,
+    private readonly commandbus: CommandBus,
   ) {}
 
   @Query((type) => [Order])
@@ -29,9 +28,13 @@ export class OrdersResolver implements OnModuleInit {
     @Args('getMyOrdersArgs', { nullable: true }) args: GetMyOrdersInput,
   ) {
     if (user.accountType === 'buyer') {
-      return this.buyerOrdersService.getMyOrders(user.id, args);
+      return this.commandbus.execute<GetBuyerOrdersQuery, Order[]>(
+        new GetBuyerOrdersQuery(user.id, args.status),
+      );
     } else if (user.accountType === 'seller') {
-      return this.sellerOrdersService.getMyOrders(user.id, args);
+      return this.commandbus.execute<GetSellerOrdersQuery, Order[]>(
+        new GetSellerOrdersQuery(user.id, args.status),
+      );
     }
   }
   async onModuleInit() {

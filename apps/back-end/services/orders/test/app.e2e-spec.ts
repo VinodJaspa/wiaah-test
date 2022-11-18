@@ -95,6 +95,9 @@ describe('AppController (e2e)', () => {
       mockBuyerUser,
     );
 
+    expect(getOrdersRes.body.errors).not.toBeDefined();
+    expect(getOrdersRes.body.data.getMyOrders).toStrictEqual([]);
+
     console.log(JSON.stringify(getOrdersRes.body, null, 2));
   });
 });

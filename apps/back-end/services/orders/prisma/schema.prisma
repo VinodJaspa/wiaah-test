@@ -11,34 +11,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Order {
-  id String @id @db.ObjectId @default(auto()) @map("_id")
-  sellerId String @db.ObjectId
-  buyerId String @db.ObjectId
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
-  items OrderItem[]
-  orderStatus OrderStatus
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  sellerId  String      @db.ObjectId
+  buyerId   String      @db.ObjectId
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt()
+  items     OrderItem[]
+  status    OrderStatus
 }
 
-
-
 model SellerOrdersCluster {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  shopId    String   @unique @db.ObjectId
-  sellerId  String   @unique @db.ObjectId
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  shopId    String      @unique @db.ObjectId
+  sellerId  String      @unique @db.ObjectId
   orders    OrderType[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 }
 
 model BuyerOrdersCluster {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  buyerId   String   @unique @db.ObjectId
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  buyerId   String      @unique @db.ObjectId
   orders    OrderType[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 }
 
 type OrderType {
@@ -50,8 +47,8 @@ type OrderType {
 }
 
 type OrderItem {
-  itemId   String
-  quantity Int
+  id  String
+  qty Int
 }
 
 type SellerInfo {
@@ -60,7 +57,7 @@ type SellerInfo {
 }
 
 type BuyerInfo {
-  id         String
+  id String
 }
 
 type OrderStatus {

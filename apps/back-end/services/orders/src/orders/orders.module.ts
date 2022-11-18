@@ -1,12 +1,17 @@
 import { Module } from '@nestjs/common';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { PrismaService } from 'prismaService';
+
 import { OrdersService } from './orders.service';
 import { OrdersResolver } from './orders.resolver';
-import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { OrdersController } from './orders.controller';
-import { PrismaService } from 'prismaService';
-import { ClientsModule, Transport } from '@nestjs/microservices';
 import { SellerOrdersService } from '../seller-orders/seller-orders.service';
 import { BuyerOrdersService } from '../buyer-orders/buyer-orders.service';
+
+import { OrdersRepository } from '@orders/repositoy';
+import { OrdersCommandHandlers } from '@orders/commands';
+import { OrdersQueryHandlers } from '@orders/queries';
 
 @Module({
   imports: [
@@ -32,6 +37,9 @@ import { BuyerOrdersService } from '../buyer-orders/buyer-orders.service';
     PrismaService,
     SellerOrdersService,
     BuyerOrdersService,
+    OrdersRepository,
+    ...OrdersCommandHandlers,
+    ...OrdersQueryHandlers,
   ],
   controllers: [OrdersController],
   exports: [ClientsModule, OrdersService, PrismaService],
