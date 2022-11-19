@@ -3,10 +3,13 @@ import { InputType, Int, Field, ID } from '@nestjs/graphql';
 @InputType()
 class OrderItemInput {
   @Field((type) => ID)
-  itemId: string;
+  id: string;
 
   @Field((type) => Int)
-  quantity: number;
+  qty: number;
+
+  @Field(() => String)
+  type: string;
 }
 
 @InputType()

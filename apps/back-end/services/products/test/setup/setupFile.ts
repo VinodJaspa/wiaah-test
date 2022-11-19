@@ -12,7 +12,6 @@ async function clearDB() {
   await prisma.productCategory.deleteMany();
   await prisma.productFilterGroup.deleteMany();
   await prisma.shippingRule.deleteMany();
-  await prisma.shippingSettings.deleteMany();
 }
 
 const prisma = new PrismaService();

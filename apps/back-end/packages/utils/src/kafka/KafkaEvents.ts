@@ -43,6 +43,8 @@ export const KAFKA_EVENTS = {
     createMonthlyBillingPrice: "billing.price.monthly.create",
     stripeAccountCreated: "stripe.account.created",
     stripeMembershipPricingCreated: "stripe.membership.pricing.created",
+    sellerProductsPurchased: (productType: string) =>
+      `seller.products.purchased.${productType}`,
   },
   VOUCHER_EVENTS: {
     voucherCreated: "voucher.created",

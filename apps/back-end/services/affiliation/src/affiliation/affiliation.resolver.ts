@@ -13,7 +13,7 @@ import {
   UpdateAffiliationInput,
 } from '@affiliation/dto';
 import {
-  CreateAffiliationPurchaseCommand,
+  CreateAffiliationCommand,
   DeleteAffiliationCommand,
   UpdateAffiliationCommand,
 } from '@affiliation/commands';
@@ -32,10 +32,9 @@ export class AffiliationResolver {
     @Args('args') args: CreateAffiliationInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<Affiliation> {
-    return this.commandbus.execute<
-      CreateAffiliationPurchaseCommand,
-      Affiliation
-    >(new CreateAffiliationPurchaseCommand(args, user.id));
+    return this.commandbus.execute<CreateAffiliationCommand, Affiliation>(
+      new CreateAffiliationCommand(args, user.id),
+    );
   }
 
   @Mutation(() => Affiliation)

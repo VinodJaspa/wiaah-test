@@ -66,7 +66,6 @@ export class StripeBillingResolver implements OnModuleInit {
       { client_secert: string }
     >(new CreateMembershipPaymentIntentCommand(args, user));
 
-    console.log(res);
     return res;
   }
 

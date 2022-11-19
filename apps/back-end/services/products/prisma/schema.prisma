@@ -136,23 +136,22 @@ enum TargetGenders {
   female
 }
 
-model ShippingSettings {
-  id            String         @id @default(auto()) @map("_id") @db.ObjectId
-  shopId        String         @unique @db.ObjectId
-  ownerId       String         @unique @db.ObjectId
-  shippingRules ShippingRule[]
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt()
-}
+// model ShippingSettings {
+//   id            String         @id @default(auto()) @map("_id") @db.ObjectId
+//   shopId        String         @unique @db.ObjectId
+//   ownerId       String         @unique @db.ObjectId
+//   createdAt     DateTime       @default(now())
+//   updatedAt     DateTime       @updatedAt()
+// }
 
 model ShippingRule {
   id                 String            @id @default(auto()) @map("_id") @db.ObjectId
+  sellerId           String
+  name               String
   countries          ShippingCountry[]
   cost               Float
   deliveryTimeRange  DeliveryTimeRange
   shippingTypes      ShippingType[]
-  ShippingSettings   ShippingSettings? @relation(fields: [shippingSettingsId], references: [id])
-  shippingSettingsId String            @db.ObjectId
   createdAt          DateTime          @default(now())
   updatedAt          DateTime          @updatedAt()
 }
@@ -168,7 +167,6 @@ type ShippingCountry {
 }
 
 enum ShippingType {
-  free
   paid
   click_and_collect
 }

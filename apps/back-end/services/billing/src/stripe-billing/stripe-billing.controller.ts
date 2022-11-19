@@ -9,7 +9,7 @@ import {
 import { CommandBus, EventBus } from '@nestjs/cqrs';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import {
-  BillingMonthlyPriceCreateEvent,
+  BillingMonthlyPriceCreatedEvent,
   MembershipCreatedEvent,
   SellerAccountCreatedEvent,
   SellerRevenueIncreasedEvent,
@@ -57,6 +57,10 @@ export class StripeBillingController {
           console.log('publishing');
           this.eventBus.publish(new StripeSubscriptionPaidEvent(meta));
         }
+
+      case 'payment_intent.succeeded':
+        let eventObj = event.data.object as Stripe.PaymentIntent;
+        console.log({ eventObj });
         break;
       default:
         console.log(`Unhandled event type ${event.type}. 🌟`);
@@ -80,7 +84,7 @@ export class StripeBillingController {
 
   @EventPattern(KAFKA_EVENTS.BILLING_EVNETS.createMonthlyBillingPrice)
   async handleCreatePrice(
-    @Payload() { value }: { value: BillingMonthlyPriceCreateEvent },
+    @Payload() { value }: { value: BillingMonthlyPriceCreatedEvent },
   ) {
     const stripeProduct = await this.commandBus.execute<
       CreateStripeProductCommand,

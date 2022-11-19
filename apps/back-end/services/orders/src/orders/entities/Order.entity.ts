@@ -11,6 +11,9 @@ export class OrderItem {
 
   @Field(() => Int)
   qty: number;
+
+  @Field(() => String)
+  type: string;
 }
 
 @ObjectType()

@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { ShippingRulesService } from './shipping-rules.service';
-import { ShippingRulesResolver } from './shipping-rules.resolver';
-import { ShippingSettingsModule } from '@shipping-settings';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 
+import { ShippingRulesService } from './shipping-rules.service';
+import { ShippingRulesResolver } from './shipping-rules.resolver';
+import { ShippingDetailsResolver } from './shipping-details.resolver';
+
 @Module({
   imports: [
-    ShippingSettingsModule,
     ClientsModule.register([
       {
         name: SERVICES.SHIPPING_SERVICE.token,
@@ -24,6 +24,10 @@ import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
       },
     ]),
   ],
-  providers: [ShippingRulesResolver, ShippingRulesService],
+  providers: [
+    ShippingRulesResolver,
+    ShippingDetailsResolver,
+    ShippingRulesService,
+  ],
 })
 export class ShippingRulesModule {}

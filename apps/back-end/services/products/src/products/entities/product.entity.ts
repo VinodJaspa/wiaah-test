@@ -9,6 +9,7 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import { CashbackType, PresentationType, VisibilityEnum } from '@prisma-client';
+import { ShippingDetails } from '@products/entities/extends';
 import { CreateGqlPaginatedResponse } from 'nest-utils';
 
 registerEnumType(VisibilityEnum, { name: 'VisibilityEnum' });
@@ -109,6 +110,9 @@ export class Product {
 
   @Field((type) => [ID])
   shippingRulesIds: string[];
+
+  @Field(() => ShippingDetails, { nullable: true })
+  shippingDetails?: ShippingDetails;
 
   @Field(() => Int)
   reviews: number;

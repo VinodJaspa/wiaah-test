@@ -6,7 +6,6 @@ import "react-quill/dist/quill.snow.css";
 import { CookiesProvider } from "react-cookie";
 import { RecoilRoot } from "recoil";
 import { ChakraProvider } from "@chakra-ui/react";
-import theme from "ui/themes/chakra_ui/theme";
 import { DataInitializationWrapper } from "ui";
 import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
 import { ReactPubsubClient, ReactPubsubProvider } from "react-pubsub";
@@ -40,7 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             return typeof param === "string" ? param : null;
           }}
         >
-          <ChakraProvider theme={theme}>
+          <ChakraProvider>
             <CookiesProvider>
               <ReactPubsubProvider client={new ReactPubsubClient()}>
                 <ReactSeoProvider TagWrapper={NextHead}>

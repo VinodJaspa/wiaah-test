@@ -1,28 +1,19 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
-import {
-  GetUserShopMetaDataMessage,
-  GetUserShopMetaDataMessageReply,
-} from 'nest-dto';
-import { KafkaMessageHandler, KAFKA_MESSAGES, SERVICES } from 'nest-utils';
-import { PrismaService } from 'src/prisma.service';
+import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'prismaService';
+
 import {
   ShippingRuleNotFoundException,
   ShippingRuleUnAuthorizedException,
-} from './exceptions';
-import { ShippingSettingsService } from '@shipping-settings';
-import { ShippingRule } from './entities/shipping-rule.entity';
-import { CreateShippingRuleInput } from './dto/create-shipping-rule.input';
-import { UpdateShippingSettingsRuleInput } from './dto/update-shipping-rule.input';
+} from '@shipping-rules/exceptions';
+import { ShippingRule } from '@shipping-rules/entities';
+import {
+  CreateShippingRuleInput,
+  UpdateShippingRuleInput,
+} from '@shipping-rules/dto';
 
 @Injectable()
 export class ShippingRulesService {
-  constructor(
-    private readonly shippingSettingsService: ShippingSettingsService,
-    private readonly prisma: PrismaService,
-    @Inject(SERVICES.SHIPPING_SERVICE.token)
-    private readonly eventsClient: ClientKafka,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   getShippingRuleById(id: string): Promise<ShippingRule> {
     return this.prisma.shippingRule.findUnique({
@@ -54,87 +45,37 @@ export class ShippingRulesService {
     userId: string,
     rule: CreateShippingRuleInput,
   ): Promise<ShippingRule> {
-    const shippingSettings = await this.prisma.shippingSettings.findUnique({
-      where: {
-        ownerId: userId,
+    return this.prisma.shippingRule.create({
+      data: {
+        ...rule,
+        sellerId: userId,
       },
-    });
-
-    if (shippingSettings) {
-      return this.prisma.shippingRule.create({
-        data: {
-          ...rule,
-          shippingSettingsId: shippingSettings.id,
-        },
-        select: {
-          cost: true,
-          id: true,
-          countries: true,
-          shippingTypes: true,
-        },
-      });
-    }
-
-    const {
-      results: { data, error, success },
-    } = await KafkaMessageHandler<
-      any,
-      GetUserShopMetaDataMessage,
-      GetUserShopMetaDataMessageReply
-    >(
-      this.eventsClient,
-      KAFKA_MESSAGES.SHOP_MESSAGES.getShopMetaData,
-      new GetUserShopMetaDataMessage({ accountId: userId }),
-    );
-
-    if (!success) throw new Error(error.message);
-
-    const { shopId } = data;
-
-    await this.shippingSettingsService.createShippingSettings({
-      ownerId: userId,
-      shippingRules: [rule],
-      shopId,
     });
   }
 
   async updateShippingRule(
     accountId: string,
-    updateInput: UpdateShippingSettingsRuleInput,
+    updateInput: UpdateShippingRuleInput,
   ): Promise<ShippingRule> {
     const settingsRule = await this.prisma.shippingRule.findUnique({
       where: {
         id: updateInput.id,
-      },
-      include: {
-        ShippingSettings: {
-          select: {
-            ownerId: true,
-          },
-        },
       },
       rejectOnNotFound(error) {
         throw new ShippingRuleNotFoundException('id');
       },
     });
 
-    const {
-      ShippingSettings: { ownerId },
-    } = settingsRule;
+    if (settingsRule.sellerId !== accountId)
+      throw new ShippingRuleUnAuthorizedException();
 
-    if (ownerId !== accountId) throw new ShippingRuleUnAuthorizedException();
-
-    const { id, cost, countries, shippingTypes } = updateInput;
+    const { id, ...rest } = updateInput;
 
     return this.prisma.shippingRule.update({
       where: {
         id,
       },
-      data: {
-        cost,
-        countries,
-        shippingTypes,
-      },
+      data: rest,
     });
   }
 
@@ -143,28 +84,20 @@ export class ShippingRulesService {
       where: {
         id: shippingRuleId,
       },
-      include: {
-        ShippingSettings: {
-          select: {
-            ownerId: true,
-          },
-        },
-      },
       rejectOnNotFound: () => {
         throw new ShippingRuleNotFoundException('id');
       },
     });
-    const {
-      ShippingSettings: { ownerId },
-    } = shippingRule;
-    if (accountId !== ownerId) throw new ShippingRuleUnAuthorizedException();
 
-    await this.prisma.shippingRule.delete({
+    if (accountId !== shippingRule.sellerId)
+      throw new ShippingRuleUnAuthorizedException();
+
+    const deleted = await this.prisma.shippingRule.delete({
       where: {
         id: shippingRuleId,
       },
     });
 
-    return true;
+    return deleted;
   }
 }

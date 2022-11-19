@@ -11,14 +11,14 @@ export class AcceptOrderCommandHandler
 {
   constructor(private readonly repo: OrdersRepository) {}
 
-  async execute({ orderId, userId }: AcceptOrderCommand): Promise<Order> {
+  async execute({ orderId, userId }: AcceptOrderCommand): Promise<boolean> {
     const order = await this.repo.getOrderById(orderId);
     if (!order) throw new OrderNotFoundException();
     if (order.sellerId !== userId)
       throw new UnauthorizedException(
         'you cannot preform this action on this order',
       );
-    const accepted = await this.repo.acceptOrder(orderId);
-    return accepted;
+    const accepted = await this.repo.acceptRequestedOrder(orderId);
+    return true;
   }
 }

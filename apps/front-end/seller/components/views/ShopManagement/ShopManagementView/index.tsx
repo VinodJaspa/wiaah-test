@@ -21,6 +21,7 @@ import {
   OrdersSection,
 } from "ui";
 import { getRouting } from "routing";
+import { FcSettings } from "react-icons/fc";
 
 export interface ShopManagementViewProps {}
 
@@ -28,7 +29,7 @@ export const ShopManagementView: React.FC<ShopManagementViewProps> = ({}) => {
   const baseRoute = getRouting((r) => r.visitShopManagement());
   const router = useRouter();
   const { section } = router.query;
-  const route = Array.isArray(section) ? section[0] : section;
+  const route = Array.isArray(section) ? section.join("/") : section;
 
   const { t } = useTranslation();
 
@@ -63,16 +64,29 @@ const sections: SettingsSectionType[] = [
     panelComponent: <OrdersSection shopping={false} />,
   },
   {
-    panelName: "Affiliation Management",
+    panelName: "Affiliation System",
     panelIcon: AffiliationIcon({}),
-    panelUrl: "/affiliation-management",
-    panelComponent: <AffiliationManagementSection />,
-  },
-  {
-    panelName: "Affiliation History",
-    panelIcon: FaHistory({}),
-    panelUrl: "/affiliation-history",
-    panelComponent: <AffiliationHistorySection />,
+    panelUrl: "affiliation_system",
+    panelComponent: null,
+    subSections: [
+      {
+        key: "affiliation_system",
+        sections: [
+          {
+            panelComponent: <AffiliationManagementSection />,
+            panelIcon: FcSettings({}),
+            panelName: "Affiliation Management",
+            panelUrl: "/affiliation-management",
+          },
+          {
+            panelComponent: <AffiliationHistorySection />,
+            panelIcon: FaHistory({}),
+            panelName: "Affiliation History",
+            panelUrl: "/affiliation-history",
+          },
+        ],
+      },
+    ],
   },
   {
     panelName: "Returned Orders",

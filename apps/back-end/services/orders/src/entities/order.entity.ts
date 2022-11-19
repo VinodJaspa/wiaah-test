@@ -12,9 +12,9 @@ export class Order {
   @Field((type) => OrderStatus)
   status: OrderStatus;
 
-  @Field((type) => SellerInfo)
-  sellerInfo: SellerInfo;
+  @Field((type) => SellerInfo, { nullable: true })
+  sellerInfo?: SellerInfo;
 
-  @Field((type) => BuyerInfo)
-  buyerInfo: BuyerInfo;
+  @Field((type) => BuyerInfo, { nullable: true })
+  buyerInfo?: BuyerInfo;
 }

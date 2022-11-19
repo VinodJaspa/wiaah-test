@@ -1,9 +1,6 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { Order } from '@orders/entities';
-import {
-  GetBuyerOrdersQuery,
-  GetSellerOrdersQuery,
-} from '@orders/queries/impl';
+import { GetSellerOrdersQuery } from '@orders/queries/impl';
 import { OrdersRepository } from '@orders/repositoy';
 
 @QueryHandler(GetSellerOrdersQuery)

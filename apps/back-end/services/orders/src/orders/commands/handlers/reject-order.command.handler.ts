@@ -15,13 +15,12 @@ export class RejectOrderCommandHandler
     orderId,
     userId,
     reason,
-  }: RejectOrderCommand): Promise<Order> {
+  }: RejectOrderCommand): Promise<boolean> {
     const order = await this.repo.getOrderById(orderId);
     if (!order) throw new OrderNotFoundException();
-    if (order.sellerId === userId)
-      return this.repo.rejectOrderBySeller(orderId, reason);
-    if (order.buyerId === userId)
-      return this.repo.rejectOrderByBuyer(orderId, reason);
-    throw new UnauthorizedException();
+    if (order.sellerId !== userId) throw new UnauthorizedException();
+
+    await this.repo.rejectOrderBySeller(orderId, reason);
+    return true;
   }
 }

@@ -17,8 +17,14 @@ export class CreateOrderCommandHandler
     buyerId,
     orderItems,
     sellerId,
+    shippingMethodId,
   }: CreateOrderCommand): Promise<Order> {
-    const res = await this.repo.create(buyerId, sellerId, orderItems);
+    const res = await this.repo.create(
+      buyerId,
+      sellerId,
+      orderItems,
+      shippingMethodId,
+    );
 
     this.eventbus.publish(new OrderCreatedEvent(res));
 

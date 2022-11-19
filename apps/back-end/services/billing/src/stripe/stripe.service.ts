@@ -67,9 +67,11 @@ export class StripeService implements OnModuleInit {
     input: {
       items: {
         sellerStripeId: string;
+
         totalPrice: number;
       }[];
       buyerId: string;
+      meta?: any;
     },
     currency: string = 'usd',
   ): Promise<Stripe.PaymentIntent> {
@@ -84,6 +86,7 @@ export class StripeService implements OnModuleInit {
         enabled: true,
       },
       transfer_group: input.buyerId,
+      metadata: input.meta,
     });
 
     for (const item of input.items) {

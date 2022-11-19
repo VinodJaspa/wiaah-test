@@ -15,10 +15,12 @@ export class OrdersRepository {
   create(
     buyerId: string,
     sellerId: string,
-    items: { id: string; qty: number }[],
+    items: { id: string; qty: number; type: string }[],
+    shippingMethodId: string,
   ): Promise<Order> {
     return this.prisma.order.create({
       data: {
+        shippingMethodId,
         buyerId,
         sellerId,
         items,
@@ -89,7 +91,7 @@ export class OrdersRepository {
     });
   }
 
-  acceptOrder(orderId: string) {
+  acceptRequestedOrder(orderId: string) {
     return this.prisma.order.update({
       where: {
         id: orderId,
@@ -97,6 +99,19 @@ export class OrdersRepository {
       data: {
         status: {
           of: OrderStatus.shipping,
+        },
+      },
+    });
+  }
+
+  acceptReceivedOrder(orderId: string) {
+    return this.prisma.order.update({
+      where: {
+        id: orderId,
+      },
+      data: {
+        status: {
+          of: OrderStatus.compeleted,
         },
       },
     });

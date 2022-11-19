@@ -3,18 +3,17 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 
-import { OrdersService } from './orders.service';
 import { OrdersResolver } from './orders.resolver';
 import { OrdersController } from './orders.controller';
-import { SellerOrdersService } from '../seller-orders/seller-orders.service';
-import { BuyerOrdersService } from '../buyer-orders/buyer-orders.service';
 
 import { OrdersRepository } from '@orders/repositoy';
 import { OrdersCommandHandlers } from '@orders/commands';
 import { OrdersQueryHandlers } from '@orders/queries';
+import { CqrsModule } from '@nestjs/cqrs';
 
 @Module({
   imports: [
+    CqrsModule,
     ClientsModule.register([
       {
         name: SERVICES.ORDERS_SERVICE.token,
@@ -33,15 +32,11 @@ import { OrdersQueryHandlers } from '@orders/queries';
   ],
   providers: [
     OrdersResolver,
-    OrdersService,
     PrismaService,
-    SellerOrdersService,
-    BuyerOrdersService,
     OrdersRepository,
     ...OrdersCommandHandlers,
     ...OrdersQueryHandlers,
   ],
   controllers: [OrdersController],
-  exports: [ClientsModule, OrdersService, PrismaService],
 })
 export class OrdersModule {}

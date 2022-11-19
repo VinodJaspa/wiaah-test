@@ -19,6 +19,7 @@ model Order {
   updatedAt DateTime    @updatedAt()
   items     OrderItem[]
   status    OrderStatus
+  shippingMethodId String @db.ObjectId
 }
 
 model SellerOrdersCluster {
@@ -48,6 +49,7 @@ type OrderType {
 
 type OrderItem {
   id  String
+  type String
   qty Int
 }
 

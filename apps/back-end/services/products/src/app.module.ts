@@ -12,6 +12,8 @@ import { ShopModule } from '@shop';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 
 import { Search } from './products/entities/search.entity';
+import { ShippingRulesModule } from './shipping-rules';
+import { PrismaService } from './Prisma.service';
 
 @Global()
 @Module({
@@ -28,8 +30,16 @@ import { Search } from './products/entities/search.entity';
 })
 export class ElasticGlobalModule {}
 
+@Global()
+@Module({
+  providers: [PrismaService],
+  exports: [PrismaService],
+})
+export class PrismaGlobalModule {}
+
 @Module({
   imports: [
+    PrismaGlobalModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: './schema.graphql',
@@ -49,7 +59,7 @@ export class ElasticGlobalModule {}
     ElasticGlobalModule,
     // ShippingSettingsModule,
     // ShippingDetailsModule,
-    // ShippingRulesModule,
+    ShippingRulesModule,
   ],
   controllers: [],
 })

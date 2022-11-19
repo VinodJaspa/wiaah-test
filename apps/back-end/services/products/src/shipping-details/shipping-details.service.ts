@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prismaService';
 import { ShippingRulesService } from '@shipping-rules';
-import { ShippingDetails } from './entities/shipping-detail.entity';
+import { ShippingDetails } from './entities/shipping-details.entity';
 
 @Injectable()
 export class ShippingDetailsService {
@@ -12,42 +12,46 @@ export class ShippingDetailsService {
 
   async getShippingDetials(
     shippingRulesIds: string[],
-    country: string,
+    countryCode: string,
   ): Promise<ShippingDetails> {
-    const shippingRules = await this.prisma.shippingRule.findMany({
+    const shippingRules = await this.prisma.shippingRule.findFirst({
       where: {
-        AND: {
-          id: {
-            in: shippingRulesIds,
-          },
-          countries: {
-            every: {
-              code: '',
+        AND: [
+          {
+            id: {
+              in: shippingRulesIds,
             },
           },
-        },
+          {
+            countries: {
+              some: {
+                code: countryCode,
+              },
+            },
+          },
+        ],
       },
       take: shippingRulesIds.length,
       orderBy: {
-        createdAt: 'desc',
+        cost: 'asc',
       },
     });
-    if (shippingRules.length < 1)
+    if (!shippingRules)
       return {
         available: false,
         cost: null,
-        country,
+        country: countryCode,
         shippingTypes: [],
         deliveryTimeRange: null,
         shippingRulesIds: [],
       };
 
-    const { cost, shippingTypes, deliveryTimeRange } = shippingRules[0];
+    const { cost, shippingTypes, deliveryTimeRange } = shippingRules;
 
     return {
       available: true,
       cost,
-      country,
+      country: countryCode,
       deliveryTimeRange,
       shippingTypes,
       shippingRulesIds: [shippingRules[0].id],

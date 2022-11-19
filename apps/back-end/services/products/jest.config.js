@@ -17,6 +17,7 @@ module.exports = {
     '@shop': '<rootDir>/src/shop',
     // '@products': '<rootDir>/src/products',
     '^@products/(.+)$': '<rootDir>/src/products/$1',
+    '^@shipping-rules/(.+)$': '<rootDir>/src/shipping-rules/$1',
   },
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
