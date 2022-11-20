@@ -162,6 +162,11 @@ export const KAFKA_MESSAGES = {
     canPreformProductAction: (actionType: string) =>
       `can.preform.product.action.${actionType}`,
   },
+  REVIEW_SERVICE: {
+    getProductSellerId: "get.product.seller.id",
+    getIsUserPurchasedProduct: (type: string) =>
+      `get.is.user.purchased.product.${type}`,
+  },
 
   emailExists: "email.exists",
   getAccountByEmail: "get.account.by.email",

@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
@@ -17,6 +18,9 @@ async function bootstrap() {
       },
     },
   });
+
+  app.useGlobalPipes(new ValidationPipe());
+  await app.startAllMicroservices();
   await app.listen(3010);
 }
 bootstrap();

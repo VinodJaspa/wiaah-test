@@ -12,6 +12,7 @@ export function KafkaMessageHandler<TPattern, TInput, TData>(
       rej(timeoutErrMessage || "service timed out");
     }, timeout);
     client.send(messagePattern, input).subscribe((data: TData) => {
+      console.log("msg", data);
       res(data);
       clearTimeout(timer);
     });
