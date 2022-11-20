@@ -20,7 +20,7 @@ function flatenSections(
     return [
       ...acc,
       { ...curr, subSections: undefined },
-      ...(curr.subSections ? curr.subSections[0].sections : []),
+      ...(curr.subSections ? curr?.subSections[0]?.sections || [] : []),
     ];
   }, [] as SettingsSectionType[]);
   return flatedSections;
@@ -41,7 +41,7 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
 
   const { isMobile, isTablet } = useResponsive();
 
-  const minGap = isTablet ? 0 : 0;
+  const minGap = isTablet ? 0 : 48;
 
   const leftPanelRef = React.useRef<HTMLDivElement>(null);
 

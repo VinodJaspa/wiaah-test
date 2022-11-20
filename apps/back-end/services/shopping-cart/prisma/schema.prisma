@@ -32,7 +32,7 @@ model BookedService {
   serviceId           String
   ownerId             String
   type                String
-  checkin             DateTime?
+  checkin             DateTime
   checkout            DateTime?
   duration            Int?
   guests              Int

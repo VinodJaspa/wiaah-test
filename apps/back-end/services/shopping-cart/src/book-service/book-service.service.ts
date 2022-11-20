@@ -1,16 +1,48 @@
 import { Injectable } from '@nestjs/common';
+import { GetDateBoundaries } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import {
   BookBeautycenterServiceInput,
   BookHealthCenterServiceInput,
   BookHotelRoomInput,
   BookRestaurantInput,
+  GetMyBooknigsInput,
 } from './dto';
 import { BookedService } from './entities/book-service.entity';
 
 @Injectable()
 export class BookServiceService {
   constructor(private readonly prisma: PrismaService) {}
+
+  async getMyBooknigs(
+    input: GetMyBooknigsInput,
+    userId: string,
+  ): Promise<BookedService[]> {
+    const { from, to } = GetDateBoundaries(
+      new Date(input.date),
+      input.searchPeriod,
+    );
+
+    return this.prisma.bookedService.findMany({
+      where: {
+        AND: [
+          {
+            ownerId: userId,
+          },
+          {
+            checkin: {
+              gte: from,
+            },
+          },
+          {
+            checkin: {
+              lte: to,
+            },
+          },
+        ],
+      },
+    });
+  }
 
   async BookHotelRoom(
     input: BookHotelRoomInput,

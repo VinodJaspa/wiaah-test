@@ -7,12 +7,21 @@ import {
   BookHotelRoomInput,
   BookRestaurantInput,
   BookVehicleServiceInput,
+  GetMyBooknigsInput,
 } from './dto';
 import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
 
 @Resolver(() => BookedService)
 export class BookServiceResolver {
   constructor(private readonly bookServiceService: BookServiceService) {}
+
+  @Query(() => [BookedService])
+  getMyBookings(
+    @Args('args') args: GetMyBooknigsInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.bookServiceService.getMyBooknigs(args, user.id);
+  }
 
   @Mutation(() => BookedService)
   BookHotelRoom(
