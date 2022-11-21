@@ -9,13 +9,19 @@ import {
   BookVehicleServiceInput,
   GetMyBooknigsInput,
 } from './dto';
-import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
+import {
+  AuthorizationDecodedUser,
+  GqlAuthorizationGuard,
+  GqlCurrentUser,
+} from 'nest-utils';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => BookedService)
 export class BookServiceResolver {
   constructor(private readonly bookServiceService: BookServiceService) {}
 
   @Query(() => [BookedService])
+  @UseGuards(new GqlAuthorizationGuard(['seller']))
   getMyBookings(
     @Args('args') args: GetMyBooknigsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,

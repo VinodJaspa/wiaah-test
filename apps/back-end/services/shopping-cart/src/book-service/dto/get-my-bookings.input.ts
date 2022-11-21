@@ -5,12 +5,13 @@ const SearchType = {
   week: 'week',
   month: 'month',
 };
+type SearchType = 'day' | 'week' | 'month';
 
 @InputType()
 export class GetMyBooknigsInput {
-  @Field(() => GraphQLISODateTime)
+  @Field(() => String)
   date: string;
 
-  @Field(() => SearchType)
+  @Field(() => String)
   searchPeriod: keyof typeof SearchType;
 }

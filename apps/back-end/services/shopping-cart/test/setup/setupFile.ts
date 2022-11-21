@@ -4,6 +4,7 @@ const prisma = new PrismaClient();
 
 async function clearDB() {
   await prisma.cart.deleteMany();
+  await prisma.bookedService.deleteMany();
 }
 
 beforeAll(async () => {

@@ -21,7 +21,8 @@
       "prismaService": ["src/prisma.service"],
       "@prisma-client": ["prisma/generated/client"],
       "@entities": ["src/entities"],
-      "@dto": ["src/dto"]
+      "@dto": ["src/dto"],
+      "@book-service/*": ["src/book-service/*"]
     }
   }
 }

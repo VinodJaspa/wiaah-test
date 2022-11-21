@@ -15,9 +15,10 @@ export function GetDateBoundaries(
       break;
     case "week":
       const first = date.getDate() - date.getDay();
+      console.log({ first, getday: date.getDay(), date: date.getDate() });
       from = new Date(date.getFullYear(), date.getMonth(), first);
       to = new Date(date.getFullYear(), date.getMonth(), first + 6);
-
+      break;
     case "day":
       from = new Date(date.getFullYear(), date.getMonth(), date.getDate());
       to = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);

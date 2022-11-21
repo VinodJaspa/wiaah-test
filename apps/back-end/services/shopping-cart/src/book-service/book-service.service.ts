@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { GetDateBoundaries } from 'nest-utils';
+import { GetDateBoundaries, mockedUser } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import {
   BookBeautycenterServiceInput,
@@ -14,6 +14,10 @@ import { BookedService } from './entities/book-service.entity';
 export class BookServiceService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getServiceProviderId(serviceId: string, type: string): Promise<string> {
+    return mockedUser.id;
+  }
+
   async getMyBooknigs(
     input: GetMyBooknigsInput,
     userId: string,
@@ -23,11 +27,17 @@ export class BookServiceService {
       input.searchPeriod,
     );
 
+    console.log('getting boundries', {
+      type: input.searchPeriod,
+      from: from.toISOString(),
+      curr: input.date,
+      to: to.toISOString(),
+    });
     return this.prisma.bookedService.findMany({
       where: {
         AND: [
           {
-            ownerId: userId,
+            providerId: userId,
           },
           {
             checkin: {
@@ -48,8 +58,13 @@ export class BookServiceService {
     input: BookHotelRoomInput,
     userId: string,
   ): Promise<BookedService> {
+    const providerId = await this.getServiceProviderId(
+      input.serviceId,
+      'hotel',
+    );
     const res = await this.prisma.bookedService.create({
       data: {
+        providerId,
         ...input,
         ownerId: userId,
         type: 'hotel',
@@ -60,8 +75,13 @@ export class BookServiceService {
   }
 
   async BookRestaurant(input: BookRestaurantInput, userId: string) {
+    const providerId = await this.getServiceProviderId(
+      input.serviceId,
+      'hotel',
+    );
     const res = await this.prisma.bookedService.create({
       data: {
+        providerId,
         ...input,
         ownerId: userId,
         type: 'restaurant',
@@ -72,8 +92,13 @@ export class BookServiceService {
   }
 
   async BookHealthCenter(input: BookHealthCenterServiceInput, userId: string) {
+    const providerId = await this.getServiceProviderId(
+      input.serviceId,
+      'hotel',
+    );
     const res = await this.prisma.bookedService.create({
       data: {
+        providerId,
         ...input,
         ownerId: userId,
         type: 'health-center',
@@ -84,8 +109,13 @@ export class BookServiceService {
   }
 
   async BookBeautyCenter(input: BookBeautycenterServiceInput, userId: string) {
+    const providerId = await this.getServiceProviderId(
+      input.serviceId,
+      'hotel',
+    );
     const res = await this.prisma.bookedService.create({
       data: {
+        providerId,
         ...input,
         ownerId: userId,
         type: 'beauty-center',
@@ -95,8 +125,13 @@ export class BookServiceService {
     return res;
   }
   async BookVehicleCenter(input: BookBeautycenterServiceInput, userId: string) {
+    const providerId = await this.getServiceProviderId(
+      input.serviceId,
+      'hotel',
+    );
     const res = await this.prisma.bookedService.create({
       data: {
+        providerId,
         ...input,
         ownerId: userId,
         type: 'vehicle-center',
