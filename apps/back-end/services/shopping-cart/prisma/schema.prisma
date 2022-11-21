@@ -32,6 +32,10 @@ model BookedService {
   serviceId           String  @db.ObjectId
   ownerId             String  @db.ObjectId
   providerId          String  @db.ObjectId
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  status              ServiceStatus @default(pending)
+  rejectReason        String?
   type                String
   checkin             DateTime
   checkout            DateTime?
@@ -57,4 +61,12 @@ type AppliedVoucher {
 enum CartItemType {
   service
   product
+}
+
+enum ServiceStatus {
+  completed
+  continuing
+  restitute
+  canceled
+  pending
 }

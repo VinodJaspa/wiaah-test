@@ -14,6 +14,7 @@ module.exports = {
     '@prisma-client': '<rootDir>/prisma/generated/client',
     '@entities': '<rootDir>/src/entities',
     '@dto': '<rootDir>/src/dto',
+    '^@book-service/(.+)$': '<rootDir>/src/book-service/$1',
   },
   coverageDirectory: '../coverage',
   testEnvironment: 'node',

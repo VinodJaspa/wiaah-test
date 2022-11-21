@@ -8,7 +8,7 @@ const SearchType = {
 type SearchType = 'day' | 'week' | 'month';
 
 @InputType()
-export class GetMyBooknigsInput {
+export class GetMyBookingsInput {
   @Field(() => String)
   date: string;
 

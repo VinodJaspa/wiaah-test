@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from './../src/app.module';
 import {
+  accountType,
   AuthorizationDecodedUser,
   mockedUser,
   requestGraphql,
@@ -9,22 +10,24 @@ import {
   thirdMockedUser,
 } from 'nest-utils';
 import { PrismaClient } from '@prisma-client';
-import { BookHotelRoomInput } from '@book-service/dto';
+import { GetBookingsHistoryInput } from '@book-service/dto';
+import { BookedService } from '@book-service/entities';
+import { bookedServiceStatus } from '@book-service/const';
 
 let mockSeller: AuthorizationDecodedUser = {
   ...mockedUser,
-  accountType: 'seller',
+  accountType: accountType.SELLER,
 };
 let mockBuyer: AuthorizationDecodedUser = {
   ...secendMockedUser,
-  accountType: 'buyer',
+  accountType: accountType.BUYER,
 };
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   let prisma = new PrismaClient();
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -41,22 +44,46 @@ describe('AppController (e2e)', () => {
 
   const reqGql = (q: string, v: any, user: AuthorizationDecodedUser) =>
     requestGraphql(app, q, v).set({ user: JSON.stringify(user) });
-
-  it('should get seller booked services within a week, a month, or within a day', async () => {
-    const getBookedSericesQuery = `
-    query getBookings(
-      $d:String!
-      $sp:String!
-    ){
-      getMyBookings(
-        args:{
-          date:$d
-          searchPeriod:$sp
+  const hotelInput = {
+    serviceId: secendMockedUser.shopId,
+    checkout: new Date(),
+    cancelationPolicyId: thirdMockedUser.id,
+    extrasIds: [secendMockedUser.id],
+    guests: 1,
+    roomId: thirdMockedUser.shopId,
+  };
+  describe('should get seller and buyer booked services ', () => {
+    const getBookingHistory = `
+      query getBookingHistory(
+        $status:ServiceStatus
+        $pagination:GqlPaginationInput!
+      ) {
+        getBookingHistory(
+          args:{
+            status:$status
+            pagination:$pagination
+          }
+        ){
+          id
         }
-      ){
-        id
       }
-    }`;
+    `;
+
+    const getBookedSericesQuery = `
+      query getBookings(
+        $d:String!
+        $sp:String!
+      ){
+        getMyBookings(
+          args:{
+            date:$d
+            searchPeriod:$sp
+          }
+          ){
+            id
+          }
+        }
+    `;
 
     let lastMonthServiceDate = new Date(2022, 9, 5);
     let currMonthServiceDate = new Date(2022, 10, 5);
@@ -65,99 +92,327 @@ describe('AppController (e2e)', () => {
     let currWeekServiceDate = new Date(2022, 10, 17);
     let currMonthSearchDate = new Date(2022, 10, 15);
 
-    const hotelInput = {
-      serviceId: secendMockedUser.shopId,
-      checkout: new Date(),
-      cancelationPolicyId: thirdMockedUser.id,
-      extrasIds: [secendMockedUser.id],
-      guests: 1,
-      roomId: thirdMockedUser.shopId,
-    };
+    beforeEach(async () => {
+      await prisma.bookedService.create({
+        data: {
+          ...hotelInput,
+          type: 'hotel',
+          ownerId: mockBuyer.id,
+          providerId: mockSeller.id,
+          checkin: currMonthServiceDate,
+          status: 'continuing',
+        },
+      });
 
-    await prisma.bookedService.create({
-      data: {
-        ...hotelInput,
-        type: 'hotel',
-        ownerId: mockBuyer.id,
-        providerId: mockSeller.id,
-        checkin: currMonthServiceDate,
-      },
+      await prisma.bookedService.create({
+        data: {
+          ...hotelInput,
+          type: 'hotel',
+          ownerId: mockBuyer.id,
+          providerId: mockSeller.id,
+          checkin: lastMonthServiceDate,
+          status: 'continuing',
+        },
+      });
+
+      await prisma.bookedService.create({
+        data: {
+          ...hotelInput,
+          type: 'hotel',
+          ownerId: mockBuyer.id,
+          providerId: mockSeller.id,
+          checkin: nextMonthServiceDate,
+          status: 'continuing',
+        },
+      });
+
+      await prisma.bookedService.create({
+        data: {
+          ...hotelInput,
+          type: 'hotel',
+          ownerId: mockBuyer.id,
+          providerId: mockSeller.id,
+          checkin: currDayServiceDate,
+          status: 'continuing',
+        },
+      });
+
+      await prisma.bookedService.create({
+        data: {
+          ...hotelInput,
+          type: 'hotel',
+          ownerId: mockBuyer.id,
+          providerId: mockSeller.id,
+          checkin: currWeekServiceDate,
+          status: 'continuing',
+        },
+      });
+
+      await prisma.bookedService.create({
+        data: {
+          ...hotelInput,
+          type: 'hotel',
+          ownerId: mockBuyer.id,
+          providerId: mockSeller.shopId,
+          checkin: currWeekServiceDate,
+          status: 'completed',
+        },
+      });
+
+      await prisma.bookedService.create({
+        data: {
+          ...hotelInput,
+          type: 'hotel',
+          ownerId: mockBuyer.id,
+          providerId: mockSeller.shopId,
+          checkin: currWeekServiceDate,
+          status: 'completed',
+        },
+      });
+
+      await prisma.bookedService.create({
+        data: {
+          ...hotelInput,
+          type: 'hotel',
+          ownerId: mockBuyer.id,
+          providerId: mockSeller.shopId,
+          checkin: currWeekServiceDate,
+          status: 'restitute',
+        },
+      });
+
+      await prisma.bookedService.create({
+        data: {
+          ...hotelInput,
+          type: 'hotel',
+          ownerId: mockBuyer.id,
+          providerId: mockSeller.shopId,
+          checkin: currWeekServiceDate,
+          status: 'canceled',
+        },
+      });
     });
 
-    await prisma.bookedService.create({
-      data: {
-        ...hotelInput,
-        type: 'hotel',
-        ownerId: mockBuyer.id,
-        providerId: mockSeller.id,
-        checkin: lastMonthServiceDate,
-      },
+    it('within a week, a month, or within a day', async () => {
+      let res = await reqGql(
+        getBookedSericesQuery,
+        {
+          d: currMonthSearchDate.toISOString(),
+          sp: 'month',
+        },
+        mockSeller,
+      );
+
+      expect(res.body.errors).not.toBeDefined();
+      expect(res.body.data.getMyBookings).toHaveLength(3);
+
+      res = await reqGql(
+        getBookedSericesQuery,
+        {
+          d: currMonthSearchDate.toISOString(),
+          sp: 'week',
+        },
+        mockSeller,
+      );
+
+      expect(res.body.errors).not.toBeDefined();
+      expect(res.body.data.getMyBookings).toHaveLength(2);
+
+      res = await reqGql(
+        getBookedSericesQuery,
+        {
+          d: currMonthSearchDate.toISOString(),
+          sp: 'day',
+        },
+        mockSeller,
+      );
+
+      expect(res.body.errors).not.toBeDefined();
+      expect(res.body.data.getMyBookings).toHaveLength(1);
     });
 
-    await prisma.bookedService.create({
-      data: {
-        ...hotelInput,
-        type: 'hotel',
-        ownerId: mockBuyer.id,
-        providerId: mockSeller.id,
-        checkin: nextMonthServiceDate,
-      },
+    it('by status', async () => {
+      let res = await reqGql(
+        getBookingHistory,
+        {
+          pagination: {
+            page: 1,
+            take: 10,
+          },
+        } as GetBookingsHistoryInput,
+        mockBuyer,
+      );
+
+      expect(res.body.errors).not.toBeDefined();
+      expect(res.body.data.getBookingHistory).toHaveLength(9);
+
+      res = await reqGql(
+        getBookingHistory,
+        {
+          pagination: {
+            page: 1,
+            take: 10,
+          },
+          status: 'continuing',
+        } as GetBookingsHistoryInput,
+        mockBuyer,
+      );
+
+      expect(res.body.errors).not.toBeDefined();
+      expect(res.body.data.getBookingHistory).toHaveLength(5);
+
+      res = await reqGql(
+        getBookingHistory,
+        {
+          pagination: {
+            page: 1,
+            take: 10,
+          },
+          status: 'completed',
+        } as GetBookingsHistoryInput,
+        mockBuyer,
+      );
+
+      expect(res.body.errors).not.toBeDefined();
+      expect(res.body.data.getBookingHistory).toHaveLength(2);
+
+      res = await reqGql(
+        getBookingHistory,
+        {
+          pagination: {
+            page: 1,
+            take: 10,
+          },
+          status: 'canceled',
+        } as GetBookingsHistoryInput,
+        mockBuyer,
+      );
+
+      expect(res.body.errors).not.toBeDefined();
+      expect(res.body.data.getBookingHistory).toHaveLength(1);
+
+      res = await reqGql(
+        getBookingHistory,
+        {
+          pagination: {
+            page: 1,
+            take: 10,
+          },
+          status: 'restitute',
+        } as GetBookingsHistoryInput,
+        mockBuyer,
+      );
+
+      expect(res.body.errors).not.toBeDefined();
+      expect(res.body.data.getBookingHistory).toHaveLength(1);
+    });
+  });
+
+  describe('should accept and decline appointment', () => {
+    const acceptAppointmentMutation = `
+      mutation accept(
+        $id:ID!
+      ){
+        acceptAppointment(
+          id:$id
+        )
+      }
+    `;
+
+    const declineAppointmentMutation = `
+      mutation decline(
+        $id:ID!
+        $reason:String!
+      ){
+        declineAppointment(
+          args:{
+            id:$id
+            reason:$reason
+          }
+        )
+      }
+    `;
+    let appointment: BookedService;
+    beforeEach(async () => {
+      appointment = await prisma.bookedService.create({
+        data: {
+          ...hotelInput,
+          checkin: new Date(),
+          providerId: mockSeller.id,
+          type: 'hotel',
+          ownerId: mockBuyer.id,
+        },
+      });
     });
 
-    await prisma.bookedService.create({
-      data: {
-        ...hotelInput,
-        type: 'hotel',
-        ownerId: mockBuyer.id,
-        providerId: mockSeller.id,
-        checkin: currDayServiceDate,
-      },
+    it('should accept appointment', async () => {
+      let res = await reqGql(
+        acceptAppointmentMutation,
+        { id: appointment.id },
+        secendMockedUser,
+      );
+
+      expect(res.body.errors).toBeDefined();
+
+      let app = await prisma.bookedService.findUnique({
+        where: {
+          id: appointment.id,
+        },
+      });
+
+      expect(app.status).toBe(bookedServiceStatus.pending);
+
+      res = await reqGql(
+        acceptAppointmentMutation,
+        { id: appointment.id },
+        mockSeller,
+      );
+
+      expect(res.body.errors).not.toBeDefined();
+
+      app = await prisma.bookedService.findUnique({
+        where: {
+          id: appointment.id,
+        },
+      });
+
+      expect(app.status).toBe(bookedServiceStatus.continuing);
     });
 
-    await prisma.bookedService.create({
-      data: {
-        ...hotelInput,
-        type: 'hotel',
-        ownerId: mockBuyer.id,
-        providerId: mockSeller.id,
-        checkin: currWeekServiceDate,
-      },
+    it('should decline appointment', async () => {
+      let res = await reqGql(
+        declineAppointmentMutation,
+        { id: appointment.id, reason: 'test decline reason' },
+        secendMockedUser,
+      );
+
+      expect(res.body.errors).toBeDefined();
+
+      let app = await prisma.bookedService.findUnique({
+        where: {
+          id: appointment.id,
+        },
+      });
+
+      expect(app.status).toBe(bookedServiceStatus.pending);
+      expect(app.rejectReason).toBeNull();
+
+      res = await reqGql(
+        declineAppointmentMutation,
+        { id: appointment.id, reason: 'test decline reason' },
+        mockSeller,
+      );
+
+      expect(res.body.errors).not.toBeDefined();
+
+      app = await prisma.bookedService.findUnique({
+        where: {
+          id: appointment.id,
+        },
+      });
+
+      expect(app.status).toBe(bookedServiceStatus.canceled);
+      expect(app.rejectReason).toBe('test decline reason');
     });
-
-    let res = await reqGql(
-      getBookedSericesQuery,
-      {
-        d: currMonthSearchDate.toISOString(),
-        sp: 'month',
-      },
-      mockSeller,
-    );
-
-    expect(res.body.errors).not.toBeDefined();
-    expect(res.body.data.getMyBookings).toHaveLength(3);
-
-    res = await reqGql(
-      getBookedSericesQuery,
-      {
-        d: currMonthSearchDate.toISOString(),
-        sp: 'week',
-      },
-      mockSeller,
-    );
-
-    expect(res.body.errors).not.toBeDefined();
-    expect(res.body.data.getMyBookings).toHaveLength(2);
-
-    res = await reqGql(
-      getBookedSericesQuery,
-      {
-        d: currMonthSearchDate.toISOString(),
-        sp: 'day',
-      },
-      mockSeller,
-    );
-
-    expect(res.body.errors).not.toBeDefined();
-    expect(res.body.data.getMyBookings).toHaveLength(1);
   });
 });
