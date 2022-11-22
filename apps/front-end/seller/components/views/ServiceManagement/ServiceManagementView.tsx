@@ -16,6 +16,7 @@ import {
   TimeManagementSection,
   ImageIcon,
   EditServicePresentationSection,
+  ServicesIcon,
 } from "ui";
 
 export const ServiceManagementView = () => {
@@ -68,12 +69,18 @@ const sections: SettingsSectionType[] = [
   {
     panelName: "My Service",
     panelIcon: RiServiceFill({}),
-    panelUrl: "/my-service",
+    panelUrl: "",
     panelComponent: <MyServicesSection />,
     subSections: [
       {
         key: "edit",
         sections: [
+          {
+            panelIcon: ServicesIcon({}),
+            panelComponent: <MyServicesSection />,
+            panelName: "Service",
+            panelUrl: "/my-service",
+          },
           {
             panelName: "Presentation",
             panelIcon: ImageIcon({}),

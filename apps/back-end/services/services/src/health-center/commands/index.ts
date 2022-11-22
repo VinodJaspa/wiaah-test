@@ -1,6 +1,6 @@
 export * from './impl';
 import { CreateElasticHealthCenterCommandHandler } from './handlers';
 
-export const healthCenterEventHandlers = [
+export const healthCenterCommandHandlers = [
   CreateElasticHealthCenterCommandHandler,
 ];

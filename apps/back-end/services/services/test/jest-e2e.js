@@ -1,12 +1,11 @@
 module.exports = {
   moduleFileExtensions: ['js', 'json', 'ts'],
-  rootDir: '.',
-  testRegex: '.*\\.spec\\.ts$',
+  rootDir: '../',
+  testEnvironment: 'node',
+  testRegex: '.e2e-spec.ts$',
   transform: {
-    '^.+\\.(ts|tsx)?$': 'ts-jest',
-    '^.+\\.(js|jsx)$': 'babel-jest',
+    '^.+\\.(t)s$': 'ts-jest',
   },
-  collectCoverageFrom: ['**/*.(t|j)s'],
   moduleNameMapper: {
     // Force module uuid to resolve with the CJS entry point, because Jest does not support package.json.exports. See https://github.com/uuidjs/uuid/issues/451
     uuid: require.resolve('uuid'),
@@ -27,8 +26,6 @@ module.exports = {
     '^@vehicle-service/(.+)$': '<rootDir>/src/vehicle/$1',
     '@vehicle-service': '<rootDir>/src/vehicle',
   },
-  coverageDirectory: '../coverage',
-  testEnvironment: 'node',
   globalSetup: '<rootDir>/test/setup/globalSetup.ts',
   globalTeardown: '<rootDir>/test/setup/globalTeardown.ts',
   setupFilesAfterEnv: ['<rootDir>/test/setup/setupFile.ts'],

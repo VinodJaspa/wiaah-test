@@ -1,5 +1,7 @@
 import { PrismaClient } from 'prismaClient';
 import { Client } from '@elastic/elasticsearch';
+import { config } from 'dotenv';
+config();
 
 class PrismaService extends PrismaClient {
   async onModuleInit() {
@@ -11,7 +13,6 @@ async function clearDB() {
   await prisma.hotelRoom.deleteMany();
   await prisma.hotelService.deleteMany();
   await prisma.serviceCategory.deleteMany();
-  await prisma.serviceWorkingSchedule.deleteMany();
   await prisma.restaurantService.deleteMany();
   await prisma.restaurantEstablishmentType.deleteMany();
   await prisma.restaurantCuisinesType.deleteMany();
@@ -22,6 +23,7 @@ async function clearDB() {
   await prisma.healthCenterSpecialty.deleteMany();
   await prisma.beautyCenterService.deleteMany();
   await prisma.beautyCenterTreatmentCategory.deleteMany();
+  await prisma.serviceWorkingSchedule.deleteMany();
 
   client.deleteByQuery({
     index: '*',

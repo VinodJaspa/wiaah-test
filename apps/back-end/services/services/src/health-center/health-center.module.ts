@@ -9,7 +9,7 @@ import {
   HealthCenterElasticRepository,
   HealthCenterRepository,
 } from './repository';
-import { healthCenterEventHandlers } from './commands';
+import { healthCenterCommandHandlers } from './commands';
 import { HealthCenterSagas } from './sagas';
 
 @Module({
@@ -21,7 +21,7 @@ import { HealthCenterSagas } from './sagas';
     HealthCenterRepository,
     HealthCenterElasticRepository,
     ...HealthCenterSagas,
-    ...healthCenterEventHandlers,
+    ...healthCenterCommandHandlers,
     ...HealthCenterQueryHandlers,
   ],
 })

@@ -24,7 +24,7 @@ import {
 import { Vehicle } from './entities';
 
 import { GetAllVehiclesQuery, GetVehicleServiceByIdQuery } from './queries';
-import { GetVehicleByIdQuery } from './queries/impl/get-vehicle-by-id.query';
+import { GetVehicleByIdQuery } from '@vehicle-service/queries';
 
 @Resolver(() => VehicleService)
 export class VehicleResolver {

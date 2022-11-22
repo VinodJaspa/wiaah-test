@@ -34,10 +34,9 @@ model ServiceCategory {
 }
 
 model ServiceWorkingSchedule {
-  id          String                      @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId     String                      @unique @db.ObjectId
-  weekdays    ServiceWeekDaysWorkingHours
-  specialDays DateTime[]
+  id          String                      @id @map("_id") @db.ObjectId
+  weekdays    ServiceWeekDaysWorkingHours?
+  specialDays ServiceSpecialWorkingHoursDay[]
 }
 
 model ServiceOwnerShip {
@@ -297,13 +296,18 @@ type BeautyCenterTreatment {
 }
 
 type ServiceWeekDaysWorkingHours {
-  mo ServiceDayWorkingHours
-  tu ServiceDayWorkingHours
-  we ServiceDayWorkingHours
-  th ServiceDayWorkingHours
-  fr ServiceDayWorkingHours
-  sa ServiceDayWorkingHours
-  su ServiceDayWorkingHours
+  mo ServiceDayWorkingHours?
+  tu ServiceDayWorkingHours?
+  we ServiceDayWorkingHours?
+  th ServiceDayWorkingHours?
+  fr ServiceDayWorkingHours?
+  sa ServiceDayWorkingHours?
+  su ServiceDayWorkingHours?
+}
+
+type ServiceSpecialWorkingHoursDay {
+  date DateTime
+  workingHours ServiceDayWorkingHours  
 }
 
 type ServiceDayWorkingHours {

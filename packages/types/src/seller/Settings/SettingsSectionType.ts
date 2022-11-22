@@ -1,5 +1,3 @@
-import { TranslationTextType } from "types";
-
 export type SettingsSectionType = {
   panelName: string;
   panelIcon: React.ReactNode;
