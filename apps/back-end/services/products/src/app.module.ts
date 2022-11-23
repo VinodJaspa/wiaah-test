@@ -9,12 +9,10 @@ import {
 import { GraphQLModule } from '@nestjs/graphql';
 import { getUserFromRequest } from 'nest-utils';
 import { ShopModule } from '@shop';
-import { ShippingDetailsModule } from '@shipping-details';
-import { ShippingRulesModule } from '@shipping-rules';
-import { ShippingSettingsModule } from '@shipping-settings';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 
 import { Search } from './products/entities/search.entity';
+import { ShippingRulesModule } from './shipping-rules';
 import { PrismaService } from './Prisma.service';
 
 @Global()
@@ -32,8 +30,16 @@ import { PrismaService } from './Prisma.service';
 })
 export class ElasticGlobalModule {}
 
+@Global()
+@Module({
+  providers: [PrismaService],
+  exports: [PrismaService],
+})
+export class PrismaGlobalModule {}
+
 @Module({
   imports: [
+    PrismaGlobalModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: './schema.graphql',
@@ -53,7 +59,7 @@ export class ElasticGlobalModule {}
     ElasticGlobalModule,
     // ShippingSettingsModule,
     // ShippingDetailsModule,
-    // ShippingRulesModule,
+    ShippingRulesModule,
   ],
   controllers: [],
 })

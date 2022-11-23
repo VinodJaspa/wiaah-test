@@ -1,4 +1,4 @@
-import { User } from '@entities';
+import { Account } from '@entities';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Story } from './story.entity';
 
@@ -10,8 +10,8 @@ export class StoryView {
   @Field(() => ID)
   viewerId: string;
 
-  @Field(() => User, { nullable: true })
-  viewer?: User;
+  @Field(() => Account, { nullable: true })
+  viewer?: Account;
 
   @Field(() => ID)
   storyId: string;

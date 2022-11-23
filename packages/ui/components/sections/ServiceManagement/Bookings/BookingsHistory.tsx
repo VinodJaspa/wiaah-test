@@ -150,7 +150,7 @@ export const BookingsHistorySection: React.FC = () => {
                     <Td onClick={() => viewAppointment(appointmentId)}>
                       <div className="flex items-center gap-2">
                         <Avatar
-                          className="w-[2em] h-[2em]"
+                          className=""
                           name={customer.name.fullName}
                           src={customer.photo}
                           alt={`${customer.name.fullName}`}

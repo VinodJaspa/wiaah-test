@@ -3,7 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import {
   ProductsService,
   UpdateProdutctInput,
-  CreateProdutctInput,
+  CreateProductInput,
   ProductSearchPaginationResponse,
 } from '@products';
 import { mockedUser, secendMockedUser, SERVICES } from 'nest-utils';
@@ -13,7 +13,7 @@ describe('products services unit tests', () => {
   let service: ProductsService;
   let mockKafkaEmit: jest.Mock;
 
-  let createProductInput: CreateProdutctInput = {
+  let createProductInput: CreateProductInput = {
     attributes: [{ name: 'colors', values: ['red', 'yellow'] }],
     brand: 'nike',
     cashback: {
@@ -302,7 +302,7 @@ describe('products services unit tests', () => {
   });
 });
 
-const ProductsPh: CreateProdutctInput[] = [
+const ProductsPh: CreateProductInput[] = [
   {
     type: 'goods',
     category: 'shoes',

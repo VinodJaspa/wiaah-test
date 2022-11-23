@@ -5,6 +5,7 @@ import {
   ObjectType,
   registerEnumType,
   Float,
+  ID,
 } from '@nestjs/graphql';
 import {
   CashbackType,
@@ -57,7 +58,7 @@ export class ProductAttributeInput {
 }
 
 @InputType()
-export class CreateProdutctInput {
+export class CreateProductInput {
   @Field(() => ProdcutType)
   type: ProdcutType;
 
@@ -67,11 +68,8 @@ export class CreateProdutctInput {
   @Field((type) => String)
   description: string;
 
-  @Field(() => [String])
-  hostCategories: string[];
-
-  @Field((type) => String)
-  category: string;
+  @Field((type) => ID)
+  categoryId: string;
 
   @Field(() => [ProductAttributeInput])
   attributes: ProductAttributeInput[];
@@ -96,7 +94,4 @@ export class CreateProdutctInput {
 
   @Field((type) => VisibilityEnum)
   visibility: VisibilityEnum;
-
-  @Field((type) => String)
-  thumbnail: string;
 }

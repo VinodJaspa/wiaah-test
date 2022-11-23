@@ -5,17 +5,18 @@ import {
   ID,
   InputType,
   Directive,
+  registerEnumType,
 } from '@nestjs/graphql';
 import { Profile } from '@entities';
 import { Attachment, Hashtag } from '@entities';
+import { CommentsVisibility } from 'prismaClient';
+
+registerEnumType(CommentsVisibility, { name: 'CommentsVisiblity' });
 
 @ObjectType()
 export class PostMention {
   @Field(() => ID)
   userId: string;
-
-  @Field(() => ID)
-  profileId: string;
 }
 
 @ObjectType()
@@ -34,19 +35,12 @@ export class PostLocation {
 }
 
 @ObjectType()
-@Directive('@key(fields: "id")')
-export class NewsfeedPost {
+export class SocialPost {
   @Field(() => ID)
   id: string;
 
   @Field(() => ID)
   userId: string;
-
-  @Field(() => Profile, { nullable: true })
-  publisher?: Profile;
-
-  @Field(() => ID)
-  authorProfileId: string;
 
   @Field(() => String)
   title: string;
@@ -74,4 +68,13 @@ export class NewsfeedPost {
 
   @Field(() => PostLocation, { nullable: true })
   location?: PostLocation;
+}
+
+@ObjectType()
+export class NewsfeedPost extends SocialPost {
+  @Field(() => Profile, { nullable: true })
+  publisher?: Profile;
+
+  @Field(() => ID)
+  authorProfileId: string;
 }

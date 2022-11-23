@@ -17,9 +17,10 @@ import { BsBoxArrowInUp } from "react-icons/bs";
 import { IoReturnUpBackSharp } from "react-icons/io5";
 import { GiPostStamp } from "react-icons/gi";
 import { RiBookLine } from "react-icons/ri";
+import { getRouting } from "routing";
 
 export const ShoppingManagementView: React.FC = () => {
-  const baseRoute = "shopping-management";
+  const baseRoute = getRouting((r) => r.visitShoppingManagement());
   const router = useRouter();
   const { section } = router.query;
   const route = Array.isArray(section) ? section[0] : section;
@@ -47,37 +48,37 @@ export const ShoppingManagementView: React.FC = () => {
 const sections: SettingsSectionType[] = [
   {
     panelName: "My Wishlist",
-    panelIcon: MdList,
+    panelIcon: MdList({}),
     panelUrl: "/my-wishlist",
     panelComponent: <MyWishListSection />,
   },
   {
     panelName: "Orders",
-    panelIcon: BsBoxArrowInUp,
+    panelIcon: BsBoxArrowInUp({}),
     panelUrl: "/orders",
     panelComponent: <OrdersSection shopping />,
   },
   {
     panelName: "Bookings",
-    panelIcon: RiBookLine,
+    panelIcon: RiBookLine({}),
     panelUrl: "/bookings",
     panelComponent: <BookingsHistory shopping />,
   },
   {
     panelName: "My Returns",
-    panelIcon: IoReturnUpBackSharp,
+    panelIcon: IoReturnUpBackSharp({}),
     panelUrl: "/my-returns",
     panelComponent: <MyReturnsSection />,
   },
   {
     panelName: "Payment Meothds",
-    panelIcon: MdPayment,
+    panelIcon: MdPayment({}),
     panelUrl: "/payment-motheds",
     panelComponent: <PaymentMethodsSection />,
   },
   {
     panelName: "Address Book",
-    panelIcon: GiPostStamp,
+    panelIcon: GiPostStamp({}),
     panelUrl: "/address-book",
     panelComponent: <AddressBookSection />,
   },

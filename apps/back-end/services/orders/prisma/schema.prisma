@@ -11,51 +11,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model OrdersCluster {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  shopId    String   @unique @db.ObjectId
-  sellerId  String   @unique @db.ObjectId
-  orders    Order[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Order {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  sellerId  String      @db.ObjectId
+  buyerId   String      @db.ObjectId
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt()
+  items     OrderItem[]
+  status    OrderStatus
+  shippingMethodId String @db.ObjectId
 }
 
-model BuyerOrdersCluster {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  buyerId   String   @unique @db.ObjectId
-  orders    Order[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
+// model SellerOrdersCluster {
+//   id        String      @id @default(auto()) @map("_id") @db.ObjectId
+//   shopId    String      @unique @db.ObjectId
+//   sellerId  String      @unique @db.ObjectId
+//   orders    OrderType[]
+//   createdAt DateTime    @default(now())
+//   updatedAt DateTime    @updatedAt
+// }
 
-type Order {
-  id         String
-  items      OrderItem[]
-  status     OrderStatus
-  sellerInfo SellerInfo
-  buyerInfo  BuyerInfo
-}
+// model BuyerOrdersCluster {
+//   id        String      @id @default(auto()) @map("_id") @db.ObjectId
+//   buyerId   String      @unique @db.ObjectId
+//   orders    OrderType[]
+//   createdAt DateTime    @default(now())
+//   updatedAt DateTime    @updatedAt
+// }
+
+// type OrderType {
+//   id         String
+//   items      OrderItem[]
+//   status     OrderStatus
+//   sellerInfo SellerInfo
+//   buyerInfo  BuyerInfo
+// }
 
 type OrderItem {
-  itemId   String
-  quantity Int
+  id  String
+  type String
+  qty Int
 }
 
-type SellerInfo {
-  id     String
-  shopId String
-}
+// type SellerInfo {
+//   id     String
+//   shopId String
+// }
 
-type BuyerInfo {
-  id         String
-  address    String
-  address2   String
-  country    String
-  city       String
-  state      String
-  phone      String
-  postalCode String
-}
+// type BuyerInfo {
+//   id String
+// }
 
 type OrderStatus {
   of           OrderStatusEnum

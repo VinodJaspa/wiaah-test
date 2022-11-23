@@ -8,6 +8,7 @@ export class GetProductsCheckoutDataMessageReply extends KafkaMessageReply<{
   products: {
     id: string;
     price: number;
+    qty: number;
     title: string;
     sellerId: string;
     sellerStripeId: string;

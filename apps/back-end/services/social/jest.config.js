@@ -26,9 +26,9 @@ module.exports = {
     '^@block/(.+)$': '<rootDir>/src/block/$1',
     '^@privacy-settings/(.+)$': '<rootDir>/src/privacy/$1',
   },
-  coverageDirectory: '../coverage',
-  testEnvironment: 'node',
   globalSetup: '<rootDir>/test/setup/globalSetup.ts',
   globalTeardown: '<rootDir>/test/setup/globalTeardown.ts',
   setupFilesAfterEnv: ['<rootDir>/test/setup/setupFile.ts'],
+  coverageDirectory: '../coverage',
+  testEnvironment: 'node',
 };

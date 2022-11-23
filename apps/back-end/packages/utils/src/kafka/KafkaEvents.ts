@@ -22,6 +22,7 @@ export const KAFKA_EVENTS = {
   },
   PRODUCTS_EVENTS: {
     productCreated: "product.created",
+    productPurchased: "product.purchased",
   },
   AUTH_EVENTS: {
     accountRegistered: "account.registered",
@@ -42,6 +43,8 @@ export const KAFKA_EVENTS = {
     createMonthlyBillingPrice: "billing.price.monthly.create",
     stripeAccountCreated: "stripe.account.created",
     stripeMembershipPricingCreated: "stripe.membership.pricing.created",
+    sellerProductsPurchased: (productType: string) =>
+      `seller.products.purchased.${productType}`,
   },
   VOUCHER_EVENTS: {
     voucherCreated: "voucher.created",
@@ -99,6 +102,10 @@ export const KAFKA_EVENTS = {
   SELLER: {
     revenueIncreased: "revenue.increased",
   },
+  AFFILIATION: {
+    affiliatedProductPurchased: "affiliated.product.purchased",
+    affiliationEntryCreated: "affiliation.entry.created",
+  },
   createAccount: "create.account",
   createWishlist: "create.wishlist",
   createWishersList: "create.wisherlist",
@@ -149,12 +156,19 @@ export const KAFKA_MESSAGES = {
   },
   SELLER_MESSAGES: {
     getSellerMembership: "seller.get.membership",
+    getItemSellerId: (itemType: string) => `get.item.sellerid.${itemType}`,
   },
   MEMBERSHIP_MESSAGES: {},
   CAN_PREFORM_ACTION_MESSAGES: {
     canPreformProductAction: (actionType: string) =>
       `can.preform.product.action.${actionType}`,
   },
+  REVIEW_SERVICE: {
+    getProductSellerId: "get.product.seller.id",
+    getIsUserPurchasedProduct: (type: string) =>
+      `get.is.user.purchased.product.${type}`,
+  },
+
   emailExists: "email.exists",
   getAccountByEmail: "get.account.by.email",
   isSellerAccount: "is.seller.account",

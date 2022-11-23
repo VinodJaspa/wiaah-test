@@ -1,0 +1,32 @@
+module.exports = {
+  moduleFileExtensions: ['js', 'json', 'ts'],
+  rootDir: '../',
+  testEnvironment: 'node',
+  testRegex: '.e2e-spec.ts$',
+  transform: {
+    '^.+\\.(t)s$': 'ts-jest',
+  },
+  moduleNameMapper: {
+    // Force module uuid to resolve with the CJS entry point, because Jest does not support package.json.exports. See https://github.com/uuidjs/uuid/issues/451
+    uuid: require.resolve('uuid'),
+    '@dto': '<rootDir>/src/dto',
+    '@category': '<rootDir>/src/category',
+    prismaService: '<rootDir>/src/prisma.service',
+    prismaClient: '<rootDir>/prisma/generated/client',
+    '@entities': '<rootDir>/src/entities',
+    '@const': '<rootDir>/src/constents',
+    '@decorators': '<rootDir>/src/decorators',
+    '@restaurant': '<rootDir>/src/restaurant',
+    '@service-ownership': '<rootDir>/src/service-ownership',
+    '@health-center': '<rootDir>/src/health-center',
+    '@utils': '<rootDir>/src/utils',
+    '@beauty-center': '<rootDir>/src/beauty-center',
+    '^@health-center/(.+)$': '<rootDir>/src/health-center/$1',
+    '^@working-schedule/(.+)$': '<rootDir>/src/working-schedule/$1',
+    '^@vehicle-service/(.+)$': '<rootDir>/src/vehicle/$1',
+    '@vehicle-service': '<rootDir>/src/vehicle',
+  },
+  globalSetup: '<rootDir>/test/setup/globalSetup.ts',
+  globalTeardown: '<rootDir>/test/setup/globalTeardown.ts',
+  setupFilesAfterEnv: ['<rootDir>/test/setup/setupFile.ts'],
+};

@@ -1,12 +1,20 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, ID, ObjectType } from '@nestjs/graphql';
 import {
   ServicePresentation,
   ServicePolicy,
   ServiceMetaInfo,
-  ServiceWeekDaysWorkingHours,
   ServiceLocation,
 } from '@entities';
 import { HotelRoom } from './hotelRoom.entity';
+
+@ObjectType()
+@Directive('@extends')
+@Directive('@key(fields:"id")')
+export class WorkingSchedule {
+  @Field(() => ID)
+  @Directive('@external')
+  id: string;
+}
 
 @ObjectType()
 export class Hotel {
@@ -37,6 +45,6 @@ export class Hotel {
   @Field(() => [HotelRoom])
   rooms: HotelRoom[];
 
-  @Field(() => ServiceWeekDaysWorkingHours, { nullable: false })
-  workingHours?: ServiceWeekDaysWorkingHours;
+  // @Field(() => WorkingSchedule, { nullable: false })
+  // workingHours?: WorkingSchedule;
 }

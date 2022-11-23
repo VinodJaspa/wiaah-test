@@ -1,0 +1,33 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output = "./generated/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Affiliation {
+  id String @id @db.ObjectId @default(auto()) @map("_id")
+  sellerId String @db.ObjectId
+  itemId String
+  itemType String
+  commision Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expireAt  DateTime 
+}
+
+model AffiliationPurchase {
+  id String @id @db.ObjectId @default(auto()) @map("_id")
+  itemId String @db.ObjectId
+  itemType String
+  sellerId String @db.ObjectId
+  affiliatorId String @db.ObjectId
+  purchaserId String @db.ObjectId
+  createdAt DateTime @default(now())
+}

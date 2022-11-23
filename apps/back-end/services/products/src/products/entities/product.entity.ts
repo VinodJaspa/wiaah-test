@@ -1,3 +1,4 @@
+import { Category } from '@category';
 import {
   ObjectType,
   Field,
@@ -8,6 +9,7 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import { CashbackType, PresentationType, VisibilityEnum } from '@prisma-client';
+import { ShippingDetails } from '@products/entities/extends';
 import { CreateGqlPaginatedResponse } from 'nest-utils';
 
 registerEnumType(VisibilityEnum, { name: 'VisibilityEnum' });
@@ -73,11 +75,11 @@ export class Product {
   @Field((type) => ID)
   shopId: string;
 
-  @Field(() => [String])
-  hostCategories: string[];
+  @Field(() => ID)
+  categoryId: string;
 
-  @Field((type) => String)
-  category: string;
+  @Field((type) => Category, { nullable: true })
+  category?: Category;
 
   @Field(() => [ProductAttribute])
   attributes: ProductAttribute[];
@@ -109,8 +111,14 @@ export class Product {
   @Field((type) => [ID])
   shippingRulesIds: string[];
 
+  @Field(() => ShippingDetails, { nullable: true })
+  shippingDetails?: ShippingDetails;
+
   @Field(() => Int)
   reviews: number;
+
+  @Field(() => Int)
+  sales: number;
 
   rateStarCount: number;
 }

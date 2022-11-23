@@ -26,12 +26,16 @@ import { CommandBus } from '@nestjs/cqrs';
 
 import { StripeService } from '../stripe/stripe.service';
 import { CreateStripeConnectedAccountCommand } from './commands';
+import { CheckoutMetadata, CheckoutMetadataProduct } from './types';
+import { ProductTypeEnum } from './const';
 
 interface FormatedData {
   providerId: string;
   providerStripeId: string;
   items: {
     id: string;
+    qty: number;
+    type: string;
     title: string;
   }[];
   totalPrice: number;
@@ -128,54 +132,95 @@ export class StripeBillingService {
 
     if (items.length < 1) throw new BadRequestException('empty shopping cart');
 
+    const serviceProducts = items.filter((v) =>
+      this.servicesType.includes(v.type),
+    );
+    const hasServiceProducts = serviceProducts && serviceProducts.length > 0;
+
+    const serviceProductsCheckoutPromise = hasServiceProducts
+      ? KafkaMessageHandler<
+          string,
+          GetServicesCheckoutDataMessage,
+          GetServicesCheckoutDataMessageReply
+        >(
+          this.eventsClient,
+          KAFKA_MESSAGES.SERVICES_MESSAGES.getServicesCheckoutData,
+          new GetServicesCheckoutDataMessage({
+            services: serviceProducts,
+          }),
+        )
+      : new GetServicesCheckoutDataMessageReply({
+          data: { services: [] },
+          error: null,
+          success: true,
+        });
+
+    const products = items
+      .filter((v) => this.productsType.includes(v.type))
+      .map((v) => ({
+        id: v.id,
+        qty: v.qty,
+      }));
+
+    const hasProducts = products && products.length > 0;
+
+    const productsCheckoutPromise = hasProducts
+      ? KafkaMessageHandler<
+          string,
+          GetProductsCheckoutDataMessage,
+          GetProductsCheckoutDataMessageReply
+        >(
+          this.eventsClient,
+          KAFKA_MESSAGES.PRODUCTS_MESSAGES.getProductsCheckoutData,
+          new GetProductsCheckoutDataMessage({
+            products: products,
+          }),
+        )
+      : new GetProductsCheckoutDataMessageReply({
+          data: { products: [] },
+          error: null,
+          success: true,
+        });
+
     const {
       results: { data: scData, error: scError, success: scSuccess },
-    } = await KafkaMessageHandler<
-      string,
-      GetServicesCheckoutDataMessage,
-      GetServicesCheckoutDataMessageReply
-    >(
-      this.eventsClient,
-      KAFKA_MESSAGES.SERVICES_MESSAGES.getServicesCheckoutData,
-      new GetServicesCheckoutDataMessage({
-        services: items.filter((v) => this.servicesType.includes(v.type)),
-      }),
-    );
+    } = await serviceProductsCheckoutPromise;
 
     const {
       results: { data: pcData, error: pcError, success: pcSuccess },
-    } = await KafkaMessageHandler<
-      string,
-      GetProductsCheckoutDataMessage,
-      GetProductsCheckoutDataMessageReply
-    >(
-      this.eventsClient,
-      KAFKA_MESSAGES.PRODUCTS_MESSAGES.getProductsCheckoutData,
-      new GetProductsCheckoutDataMessage({
-        products: items
-          .filter((v) => this.productsType.includes(v.type))
-          .map((v) => ({
-            id: v.id,
-            qty: v.qty,
-          })),
-      }),
-    );
+    } = await productsCheckoutPromise;
 
     const formatedItems: FormatedData[] = scData.services
       .reduce((acc, curr) => {
         const seller: FormatedData = acc.find(
           (v) => v.providerId === curr.sellerId,
         );
+
         const updatedSeller: FormatedData = seller
           ? {
               ...seller,
-              items: [...seller.items, { id: curr.id, title: curr.title }],
+              items: [
+                ...seller.items,
+                {
+                  id: curr.id,
+                  title: curr.title,
+                  qty: 1,
+                  type: ProductTypeEnum.service,
+                },
+              ],
             }
           : {
               providerId: curr.sellerId,
               providerStripeId: curr.sellerStripeId,
               totalPrice: curr.price,
-              items: [{ id: curr.id, title: curr.title }],
+              items: [
+                {
+                  id: curr.id,
+                  title: curr.title,
+                  qty: 1,
+                  type: ProductTypeEnum.service,
+                },
+              ],
             };
 
         return [
@@ -192,13 +237,29 @@ export class StripeBillingService {
           const updatedProduct: FormatedData = seller
             ? {
                 ...seller,
-                items: [...seller.items, { id: curr.id, title: curr.title }],
+                totalPrice: seller.totalPrice + curr.price * curr.qty,
+                items: [
+                  ...seller.items,
+                  {
+                    id: curr.id,
+                    title: curr.title,
+                    qty: curr.qty,
+                    type: ProductTypeEnum.product,
+                  },
+                ],
               }
             : {
                 providerId: curr.sellerId,
                 providerStripeId: curr.sellerStripeId,
-                totalPrice: curr.price,
-                items: [{ id: curr.id, title: curr.title }],
+                totalPrice: curr.price * curr.qty,
+                items: [
+                  {
+                    id: curr.id,
+                    title: curr.title,
+                    qty: curr.qty,
+                    type: ProductTypeEnum.product,
+                  },
+                ],
               };
 
           return [
@@ -219,12 +280,28 @@ export class StripeBillingService {
 
     if (!allunique) throw new InternalServerErrorException();
 
+    const sellersMetaData: CheckoutMetadata = {
+      buyerId: user.id,
+      sellers: formatedItems.map((v) => ({
+        id: v.providerId,
+        products: v.items.map(
+          (v) =>
+            ({
+              id: v.id,
+              qty: v.qty,
+              type: v.type,
+            } as CheckoutMetadataProduct),
+        ),
+      })),
+    };
+
     const res = await this.StripeService.createPaymentIntent({
       buyerId: user.id,
       items: formatedItems.map((v) => ({
         sellerStripeId: v.providerStripeId,
         totalPrice: v.totalPrice,
       })),
+      meta: sellersMetaData,
     });
 
     return res.client_secret;

@@ -1,4 +1,10 @@
 export * from './impl';
-import { VendorExternalLinkClickedEventHandler } from './handlers';
+import {
+  VendorExternalLinkClickedEventHandler,
+  ProductPurchasedEventHandler,
+} from './handlers';
 
-export const productEventHandlers = [VendorExternalLinkClickedEventHandler];
+export const productEventHandlers = [
+  VendorExternalLinkClickedEventHandler,
+  ProductPurchasedEventHandler,
+];

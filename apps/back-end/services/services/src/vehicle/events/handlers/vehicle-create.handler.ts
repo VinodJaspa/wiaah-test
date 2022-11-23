@@ -1,5 +1,5 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { VehicleServiceElasticRepository } from 'src/vehicle/repository';
+import { VehicleServiceElasticRepository } from '@vehicle-service/repository';
 import { VehicleCreatedEvent } from '../impl';
 
 @EventsHandler(VehicleCreatedEvent)

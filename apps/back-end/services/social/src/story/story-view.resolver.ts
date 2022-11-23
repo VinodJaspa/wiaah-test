@@ -1,4 +1,4 @@
-import { User } from '@entities';
+import { Account } from '@entities';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
@@ -19,7 +19,7 @@ export class StoryViewResolver {
     );
   }
 
-  @ResolveField(() => User)
+  @ResolveField(() => Account)
   viewer(@Parent() view: StoryView) {
     return { __typename: 'User', id: view.viewerId };
   }

@@ -81,6 +81,30 @@ model NewsfeedPost {
   mentions           PostMention[]
 }
 
+model ProductPost {
+  id                 String             @id @default(auto()) @map("_id") @db.ObjectId
+  productId          String             @db.ObjectId
+  userId             String             @db.ObjectId
+  reactionNum        Int                @default(0)
+  comments           Int                @default(0)
+  shares             Int                @default(0)
+  visibility         PostVisibility     @default(hidden)
+  location           PostLocation?
+  commentsVisibility CommentsVisibility @default(public)
+}
+
+model AffiliationPost {
+  id                 String             @id @default(auto()) @map("_id") @db.ObjectId
+  affiliationId      String             @db.ObjectId
+  userId             String             @db.ObjectId
+  reactionNum        Int                @default(0)
+  comments           Int                @default(0)
+  shares             Int                @default(0)
+  visibility         PostVisibility     @default(hidden)
+  location           PostLocation?
+  commentsVisibility CommentsVisibility @default(public)
+}
+
 model ContentReaction {
   id                 String              @id() @default(auto()) @map("_id") @db.ObjectId()
   userId             String              @db.ObjectId
@@ -164,7 +188,7 @@ model StoryLike {
 model PrivacySettings {
   id              String  @id @default(auto()) @map("_id") @db.ObjectId
   userId          String  @unique @db.ObjectId
-  privateAccount  Boolean @default(false) 
+  privateAccount  Boolean @default(false)
   hideLikesNum    Boolean @default(false)
   hideCommentsNum Boolean @default(false)
   hideViewsNum    Boolean @default(false)
@@ -186,7 +210,6 @@ type Attachment {
 
 type PostMention {
   userId    String
-  profileId String
 }
 
 type PostLocation {

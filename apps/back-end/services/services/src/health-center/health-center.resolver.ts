@@ -22,7 +22,7 @@ import {
   CreateHealthCenterSpecialityInput,
   HealthCenterService,
 } from '@health-center';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { QueryBus } from '@nestjs/cqrs';
 
 import { SearchHealthCenterInput } from './dto';
 import { SearchHealthCenterQuery } from './queries/impl/search-health-centers.query';

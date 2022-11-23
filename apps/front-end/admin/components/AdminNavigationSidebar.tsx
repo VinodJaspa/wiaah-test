@@ -11,16 +11,9 @@ import {
   ShopIcon,
   ArrowRightIcon,
   ServicesIcon,
+  NestedSubmenuNavigationLinks,
+  NavigationLink,
 } from "ui";
-import { mapArray, runIfFn } from "utils";
-
-type NavigationLink = {
-  name: string;
-  icon: React.ReactNode;
-  slug: string;
-  onClick: () => void;
-  subLinks: NavigationLink[];
-};
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -32,46 +25,34 @@ export const AdminNavigationSidebar: React.FC<{
 
   const links: NavigationLink[] = [
     {
-      icon: DashboardIcon,
+      icon: DashboardIcon({}),
       name: "Dashboard",
       onClick() {},
       slug: "dashboard",
       subLinks: [],
     },
     {
-      icon: ShopIcon,
+      icon: ShopIcon({}),
       name: t("Product Shop"),
       onClick() {},
       slug: "product-shop",
       subLinks: [
         {
-          icon: () => (
-            <>
-              <ArrowRightIcon />
-            </>
-          ),
+          icon: <ArrowRightIcon />,
           name: t("Category"),
           onClick() {},
           slug: "category",
           subLinks: [],
         },
         {
-          icon: () => (
-            <>
-              <ArrowRightIcon />
-            </>
-          ),
+          icon: <ArrowRightIcon />,
           name: t("Products"),
           onClick() {},
           slug: "products",
           subLinks: [],
         },
         {
-          icon: () => (
-            <>
-              <ArrowRightIcon />
-            </>
-          ),
+          icon: <ArrowRightIcon />,
           name: t("Filters"),
           onClick() {},
           slug: "filters",
@@ -80,39 +61,27 @@ export const AdminNavigationSidebar: React.FC<{
       ],
     },
     {
-      icon: ServicesIcon,
+      icon: ServicesIcon({}),
       name: t("Service Shop"),
       onClick() {},
       slug: "service-shop",
       subLinks: [
         {
-          icon: () => (
-            <>
-              <ArrowRightIcon />
-            </>
-          ),
+          icon: <ArrowRightIcon />,
           name: t("Category"),
           onClick() {},
           slug: "category",
           subLinks: [],
         },
         {
-          icon: () => (
-            <>
-              <ArrowRightIcon />
-            </>
-          ),
+          icon: <ArrowRightIcon />,
           name: t("Services"),
           onClick() {},
           slug: "services",
           subLinks: [],
         },
         {
-          icon: () => (
-            <>
-              <ArrowRightIcon />
-            </>
-          ),
+          icon: <ArrowRightIcon />,
           name: t("Filters"),
           onClick() {},
           slug: "filters",
@@ -129,7 +98,7 @@ export const AdminNavigationSidebar: React.FC<{
       </div>
       <div className="px-4 ">
         <Accordion>
-          <NestedLinks
+          <NestedSubmenuNavigationLinks
             canBeSelected={true}
             deepSlugs={[]}
             lastDeepNum={0}
@@ -138,85 +107,6 @@ export const AdminNavigationSidebar: React.FC<{
           />
         </Accordion>
       </div>
-    </div>
-  );
-};
-
-const NestedLinks: React.FC<{
-  links: NavigationLink[];
-  routeSlugs: string[];
-  lastDeepNum: number;
-  deepSlugs: string[];
-  canBeSelected: boolean;
-}> = ({ lastDeepNum, links, routeSlugs, deepSlugs, canBeSelected }) => {
-  const { visit } = useRouting();
-  const currDeepNum = lastDeepNum + 1;
-
-  return (
-    <div className="flex flex-col gap-2 w-full">
-      {mapArray(links, ({ icon, name, onClick, slug, subLinks }, i) => {
-        const selected = routeSlugs[lastDeepNum] === slug && canBeSelected;
-
-        return subLinks.length > 0 ? (
-          <AccordionItem itemkey={`${currDeepNum}-${i}`}>
-            <AccordionButton
-              className={`${
-                lastDeepNum === 0 && selected
-                  ? "text-white"
-                  : selected
-                  ? "text-primary"
-                  : "text-black"
-              }`}
-            >
-              <div
-                style={{
-                  paddingLeft: `${currDeepNum * 0.5}rem`,
-                }}
-                className={`${
-                  selected
-                    ? `${
-                        lastDeepNum === 0
-                          ? "bg-primary rounded text-white"
-                          : "text-primary"
-                      }`
-                    : "text-black"
-                } flex text-lg items-center py-2 gap-2`}
-              >
-                {runIfFn(icon)} {name}
-              </div>
-            </AccordionButton>
-            <AccordionPanel initialState={selected === true ? true : undefined}>
-              <NestedLinks
-                canBeSelected={selected}
-                lastDeepNum={currDeepNum}
-                links={subLinks}
-                routeSlugs={routeSlugs}
-                deepSlugs={[...deepSlugs, slug]}
-              />
-            </AccordionPanel>
-          </AccordionItem>
-        ) : (
-          <div
-            onClick={() =>
-              visit((r) => r.addPath([...deepSlugs, slug].join("/")), false)
-            }
-            style={{
-              paddingLeft: `${currDeepNum * 0.5}rem`,
-            }}
-            className={`${
-              selected
-                ? `${
-                    lastDeepNum === 0
-                      ? "bg-primary rounded text-white"
-                      : "text-primary"
-                  }`
-                : "text-black"
-            } flex text-lg items-center py-2 gap-2`}
-          >
-            {runIfFn(icon)} {name}
-          </div>
-        );
-      })}
     </div>
   );
 };

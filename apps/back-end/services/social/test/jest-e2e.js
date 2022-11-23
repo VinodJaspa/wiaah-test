@@ -1,0 +1,33 @@
+module.exports = {
+  moduleFileExtensions: ['js', 'json', 'ts'],
+  rootDir: '../',
+  testEnvironment: 'node',
+  testRegex: '.e2e-spec.ts$',
+  transform: {
+    '^.+\\.(t)s$': 'ts-jest',
+  },
+  moduleNameMapper: {
+    // Force module uuid to resolve with the CJS entry point, because Jest does not support package.json.exports. See https://github.com/uuidjs/uuid/issues/451
+    uuid: require.resolve('uuid'),
+    '@entities': '<rootDir>/src/entities/index.ts',
+    prismaClient: '<rootDir>/prisma/generated/index.js',
+    '@input': '<rootDir>/src/dto/index.ts',
+    '@exceptions': '<rootDir>/src/exceptions/index.ts',
+    '@profile-error-messages': '<rootDir>/src/profile/profileErrorMessage.ts',
+    prismaService: '<rootDir>/src/prisma.service.ts',
+    '@content-management': '<rootDir>/src/content-management',
+    '@profile': '<rootDir>/src/profile',
+    '@content-discovery': '<rootDir>/src/content-discovery',
+    '@comments': '<rootDir>/src/comments',
+    '@keys': '<rootDir>/src/keys',
+    '@posts-newsfeed': '<rootDir>/src/newsfeed-posts',
+    '@prisma-module': '<rootDir>/src/app.module',
+    '^@block/(.+)$': '<rootDir>/src/block/$1',
+    '^@privacy-settings/(.+)$': '<rootDir>/src/privacy/$1',
+    '^@product-post/(.+)$': '<rootDir>/src/product-post/$1',
+    '^@affiliation-post/(.+)$': '<rootDir>/src/affiliation-post/$1',
+  },
+  globalSetup: '<rootDir>/test/setup/globalSetup.ts',
+  globalTeardown: '<rootDir>/test/setup/globalTeardown.ts',
+  setupFilesAfterEnv: ['<rootDir>/test/setup/setupFile.ts'],
+};

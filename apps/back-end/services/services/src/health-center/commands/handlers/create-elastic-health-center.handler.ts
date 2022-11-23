@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { HealthCenterElasticRepository } from 'src/health-center/repository';
+import { HealthCenterElasticRepository } from '../../repository';
 import { CreateElasticHealthCenterCommand } from '../impl/elastic';
 
 @CommandHandler(CreateElasticHealthCenterCommand)

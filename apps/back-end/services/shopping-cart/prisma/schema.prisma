@@ -29,10 +29,15 @@ type CartProduct {
 model BookedService {
   id                  String @id @default(auto()) @map("_id") @db.ObjectId
   ownerCart           Cart @relation(fields: [ownerId],references: [ownerId])
-  serviceId           String
-  ownerId             String
+  serviceId           String  @db.ObjectId
+  ownerId             String  @db.ObjectId
+  providerId          String  @db.ObjectId
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  status              ServiceStatus @default(pending)
+  rejectReason        String?
   type                String
-  checkin             DateTime?
+  checkin             DateTime
   checkout            DateTime?
   duration            Int?
   guests              Int
@@ -56,4 +61,12 @@ type AppliedVoucher {
 enum CartItemType {
   service
   product
+}
+
+enum ServiceStatus {
+  completed
+  continuing
+  restitute
+  canceled
+  pending
 }

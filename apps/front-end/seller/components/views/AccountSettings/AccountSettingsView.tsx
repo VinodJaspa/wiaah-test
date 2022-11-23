@@ -33,9 +33,15 @@ import {
 } from "ui";
 import { ImBlocked } from "react-icons/im";
 import { useResponsive } from "hooks";
+import { GiReturnArrow } from "react-icons/gi";
+import { useTranslation } from "react-i18next";
+import { IoMdReturnLeft } from "react-icons/io";
+import { useRouting } from "routing";
 
 export const AccountSettingsView: React.FC = () => {
-  const baseRoute = "account-settings";
+  const baseRoute = "management/account-settings";
+  const { t } = useTranslation();
+  const { visit } = useRouting();
   const router = useRouter();
   const { section } = router.query;
   const { isMobile } = useResponsive();
@@ -51,18 +57,27 @@ export const AccountSettingsView: React.FC = () => {
     router.replace(`/${baseRoute}/${url}`);
   }
   return (
-    <SectionsLayout
-      name={{
-        translationKey: "account_settings",
-        fallbackText: "Account Settings",
-      }}
-      handleRetrun={() => {
-        router.push(`/${baseRoute}`, null, { shallow: true });
-      }}
-      currentSectionName={route}
-      sections={sections}
-      handleSectionChange={handleSectionChange}
-    />
+    <>
+      <div
+        onClick={() => visit((r) => r.management())}
+        className="px-6 cursor-pointer w-fit text-xl py-2 my-2 flex gap-4 items-center"
+      >
+        <IoMdReturnLeft />
+        <p>{t("Return")}</p>
+      </div>
+      <SectionsLayout
+        name={{
+          translationKey: "account_settings",
+          fallbackText: "Account Settings",
+        }}
+        handleRetrun={() => {
+          router.push(`/${baseRoute}`, null, { shallow: true });
+        }}
+        currentSectionName={route}
+        sections={sections}
+        handleSectionChange={handleSectionChange}
+      />
+    </>
   );
 };
 

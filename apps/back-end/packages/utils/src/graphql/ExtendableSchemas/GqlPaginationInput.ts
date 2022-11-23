@@ -25,6 +25,13 @@ export class ExtendableGqlPaginationInput {
 }
 
 export const ExtractPagination = (pagination: GqlPaginationInput) => {
+  if (!pagination)
+    return {
+      page: 0,
+      skip: undefined,
+      take: undefined,
+      totalSearched: 0,
+    };
   const { page, take } = pagination;
 
   const currentTake = take;

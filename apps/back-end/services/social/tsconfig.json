@@ -38,7 +38,9 @@
       "@block/*": ["src/block/*"],
       "@block": ["src/block"],
       "@privacy": ["src/privacy"],
-      "@privacy-settings/*": ["src/privacy/*"]
+      "@privacy-settings/*": ["src/privacy/*"],
+      "@product-post/*": ["src/product-post/*"],
+      "@affiliation-post/*": ["src/affiliation-post/*"]
     }
   }
 }

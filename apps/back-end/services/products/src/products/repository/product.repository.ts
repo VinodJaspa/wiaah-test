@@ -14,4 +14,28 @@ export class ProductRepository {
       data: input,
     });
   }
+
+  async findAllBySellerId(sellerId: string) {
+    return this.prisma.product.findMany({
+      where: {
+        sellerId,
+      },
+    });
+  }
+
+  async deleteProduct(id: string) {
+    return this.prisma.product.delete({
+      where: {
+        id,
+      },
+    });
+  }
+
+  async getProduct(id: string) {
+    return this.prisma.product.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
 }

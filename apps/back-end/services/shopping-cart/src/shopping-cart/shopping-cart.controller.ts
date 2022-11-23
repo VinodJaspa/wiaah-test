@@ -28,7 +28,7 @@ export class ShoppingCartController implements OnModuleInit {
     private readonly eventsClient: ClientKafka,
   ) {}
 
-  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENT.accountCreated)
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated)
   async createShoppingCart(
     @Payload() payload: KafkaPayload<NewAccountCreatedEvent>,
   ) {
