@@ -1,4 +1,4 @@
-import { User } from '@entities';
+import { Account } from '@entities';
 import { Field, ID, InputType } from '@nestjs/graphql';
 
 @InputType()
@@ -12,6 +12,6 @@ export class StoryLike {
   @Field(() => ID)
   userId: string;
 
-  @Field(() => User, { nullable: true })
-  user?: User;
+  @Field(() => Account, { nullable: true })
+  user?: Account;
 }

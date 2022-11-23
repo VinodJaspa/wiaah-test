@@ -1,4 +1,4 @@
-import { User } from '@entities';
+import { Account } from '@entities';
 import { QueryBus } from '@nestjs/cqrs';
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
@@ -27,7 +27,7 @@ export class RecentStoryResolver {
     );
   }
 
-  @ResolveField(() => User)
+  @ResolveField(() => Account)
   resloveUser(@Parent() recentStory: RecentStory) {
     return { __typename: 'User', id: recentStory.userId };
   }

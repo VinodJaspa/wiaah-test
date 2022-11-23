@@ -12,7 +12,7 @@ export class ProductPostRepository {
 
     return this.prisma.productPost.findMany({
       where: {
-        authorId,
+        userId: authorId,
       },
       take,
       skip,
@@ -23,7 +23,7 @@ export class ProductPostRepository {
     return this.prisma.productPost.create({
       data: {
         ...input,
-        authorId: userId,
+        userId,
       },
     });
   }

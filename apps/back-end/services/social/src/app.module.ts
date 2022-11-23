@@ -26,7 +26,12 @@ import { AffiliationPostModule } from './affiliation-post/affiliation-post.modul
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],
-  imports: [BlockModule, PrivacyModule, ProductPostModule, AffiliationPostModule],
+  imports: [
+    BlockModule,
+    PrivacyModule,
+    ProductPostModule,
+    AffiliationPostModule,
+  ],
 })
 export class PrismaModule {}
 

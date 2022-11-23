@@ -1,6 +1,15 @@
-import { Attachment, Hashtag, PostLocation, PostMention } from '@entities';
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
+import { Account, PostLocation, SocialPost } from '@entities';
+import { ObjectType, Field, ID, Directive, Int } from '@nestjs/graphql';
 import { CommentsVisibility, PostVisibility } from 'prismaClient';
+
+@ObjectType()
+@Directive('@extends')
+@Directive('@key(fields:"id")')
+export class Product {
+  @Field(() => ID)
+  @Directive('@external')
+  id: string;
+}
 
 @ObjectType()
 export class ProductPost {
@@ -8,22 +17,13 @@ export class ProductPost {
   id: string;
 
   @Field(() => ID)
-  productId: string;
+  userId: string;
+
+  @Field(() => Account, { nullable: true })
+  user?: Account;
 
   @Field(() => ID)
-  authorId: string;
-
-  @Field(() => String)
-  title: string;
-
-  @Field(() => String)
-  content: string;
-
-  @Field(() => [Attachment])
-  attachments: Attachment[];
-
-  @Field(() => [Hashtag])
-  tags: Hashtag[];
+  productId: string;
 
   @Field(() => Int)
   reactionNum: number;
@@ -38,11 +38,11 @@ export class ProductPost {
   visibility: PostVisibility;
 
   @Field(() => PostLocation, { nullable: true })
-  location: PostLocation;
+  location?: PostLocation;
 
   @Field(() => CommentsVisibility)
   commentsVisibility: CommentsVisibility;
 
-  @Field(() => [PostMention])
-  mentions: PostMention[];
+  @Field(() => Product)
+  product?: Product;
 }

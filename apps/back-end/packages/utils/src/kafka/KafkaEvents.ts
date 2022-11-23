@@ -104,6 +104,7 @@ export const KAFKA_EVENTS = {
   },
   AFFILIATION: {
     affiliatedProductPurchased: "affiliated.product.purchased",
+    affiliationEntryCreated: "affiliation.entry.created",
   },
   createAccount: "create.account",
   createWishlist: "create.wishlist",

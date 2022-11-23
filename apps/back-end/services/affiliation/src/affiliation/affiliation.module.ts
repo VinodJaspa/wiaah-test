@@ -4,6 +4,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { SERVICES, KAFKA_BROKERS } from 'nest-utils';
 import { AffiliationResolver } from './affiliation.resolver';
 import { AffiliationCommandHandlers } from './commands';
+import { affiliationEventHandlers } from './events';
 import { affiliationQueryHandlers } from './queries';
 import { AffiliationRepository } from './repository';
 
@@ -31,6 +32,7 @@ import { AffiliationRepository } from './repository';
     AffiliationRepository,
     ...affiliationQueryHandlers,
     ...AffiliationCommandHandlers,
+    ...affiliationEventHandlers,
   ],
 })
 export class AffiliationModule {}

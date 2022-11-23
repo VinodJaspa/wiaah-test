@@ -1,4 +1,4 @@
-import { User } from '@entities';
+import { Account } from '@entities';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
@@ -9,6 +9,6 @@ export class RecentStory {
   @Field(() => Boolean)
   newStory: boolean;
 
-  @Field(() => User, { nullable: true })
-  user?: User;
+  @Field(() => Account, { nullable: true })
+  user?: Account;
 }

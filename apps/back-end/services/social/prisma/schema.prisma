@@ -84,35 +84,25 @@ model NewsfeedPost {
 model ProductPost {
   id                 String             @id @default(auto()) @map("_id") @db.ObjectId
   productId          String             @db.ObjectId
-  authorId           String
-  title              String
-  content            String
-  attachments        Attachment[]
-  tags               Hashtag[]
+  userId             String             @db.ObjectId
   reactionNum        Int                @default(0)
   comments           Int                @default(0)
   shares             Int                @default(0)
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
-  mentions           PostMention[]
 }
 
 model AffiliationPost {
   id                 String             @id @default(auto()) @map("_id") @db.ObjectId
   affiliationId      String             @db.ObjectId
-  authorId           String
-  title              String
-  content            String
-  attachments        Attachment[]
-  tags               Hashtag[]
+  userId             String             @db.ObjectId
   reactionNum        Int                @default(0)
   comments           Int                @default(0)
   shares             Int                @default(0)
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
-  mentions           PostMention[]
 }
 
 model ContentReaction {

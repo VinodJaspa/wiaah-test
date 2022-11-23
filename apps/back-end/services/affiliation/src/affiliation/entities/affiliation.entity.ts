@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
+import { Product, Service } from './extends';
 
 @ObjectType()
 export class Affiliation {
@@ -25,4 +26,10 @@ export class Affiliation {
 
   @Field(() => Date)
   expireAt: Date;
+
+  @Field(() => Product, { nullable: true })
+  product?: Product;
+
+  @Field(() => Service, { nullable: true })
+  service?: Service;
 }
