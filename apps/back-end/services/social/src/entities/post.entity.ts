@@ -13,9 +13,6 @@ import { Attachment, Hashtag } from '@entities';
 export class PostMention {
   @Field(() => ID)
   userId: string;
-
-  @Field(() => ID)
-  profileId: string;
 }
 
 @ObjectType()

@@ -58,7 +58,7 @@ export class RestaurantResolver {
 
   @Mutation(() => Restaurant)
   @UseGuards(new GqlAuthorizationGuard(['seller']))
-  createRestaurant(
+  createRestaurantService(
     @Args('createRestaurantArgs') args: CreateRestaurantInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @GetLang() lang: UserPreferedLang,

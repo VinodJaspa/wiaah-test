@@ -1,4 +1,4 @@
-export * from './NewsFeedPost';
+export * from './posts';
 export * from './Profile';
 export * from './shared';
 export * from './Comments';

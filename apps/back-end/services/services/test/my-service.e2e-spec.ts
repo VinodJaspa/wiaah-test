@@ -7,6 +7,7 @@ import {
   AuthorizationDecodedUser,
   mockedUser,
   requestGraphql,
+  secendMockedUser,
 } from 'nest-utils';
 import { PrismaClient } from 'prismaClient';
 import { AppModule } from '../src/app.module';
@@ -160,21 +161,36 @@ describe('MyService service management menu tests', () => {
   });
 
   it('should create restaurant service', async () => {
-    const createHotelServiceMutation = `
+    const createRestaurantServiceMutation = `
     mutation create(
         $presentations:[ServicePresentationInput!]!
         $location:ServiceLocationInput!
         $policies:[ServicePolicyTranslatedInput!]!
         $serviceMetaInfo:[ServiceMetaInfoTranslationInput!]!
-        $rooms:[HotelRoomInput!]!
+        $menus:[RestaurantMenuInput!]!
+        $establishmentTypeId: ID!
+        $cuisinesTypeId:ID!
+        $setting_and_ambianceId:ID!
+        $michelin_guide_stars:Int!
+        $status:ServiceStatus
+        $payment_methods:[ServicePaymentMethods!]!
+        $vat:Int!
+        
     ){
-        createHotelService(
+        createRestaurantService(
             createRestaurantArgs:{
                 presentations:$presentations
                 location:$location
                 policies:$policies
                 serviceMetaInfo:$serviceMetaInfo
-                rooms:$rooms
+                menus:$menus
+                establishmentTypeId:$establishmentTypeId
+                cuisinesTypeId:$cuisinesTypeId
+                setting_and_ambianceId:$setting_and_ambianceId
+                michelin_guide_stars:$michelin_guide_stars
+                status:$status
+                payment_methods:$payment_methods
+                vat:$vat
             }
 
         ){
@@ -219,22 +235,42 @@ describe('MyService service management menu tests', () => {
           type: 'img',
         },
       ],
+      cuisinesTypeId: secendMockedUser.shopId,
+      establishmentTypeId: secendMockedUser.id,
+      setting_and_ambianceId: mockedUser.shopId,
+      michelin_guide_stars: 5,
+      payment_methods: ['credit_card', 'cash'],
+      status: 'active',
+      vat: 5,
+      menus: [
+        {
+          dishs: [
+            {
+              name: [{ langId: 'en', value: 'en dish name' }],
+              price: 5,
+              thumbnail: 'src',
+              ingredients: [{ langId: 'en', value: ['tomato', 'onion'] }],
+            },
+          ],
+          name: [{ langId: 'en', value: 'en menu name' }],
+        },
+      ],
     };
 
     const res = await reqGql(
-      createHotelServiceMutation,
+      createRestaurantServiceMutation,
       createInput,
       mockSeller,
     );
 
     expect(res.body.errors).not.toBeDefined();
-    const hotels = await prisma.hotelService.findMany();
-    expect(hotels).toHaveLength(1);
-    const { rooms: _rooms, ...hotel } = createInput;
-    expect(hotels.at(0)).toMatchObject(hotel);
+    const restaurants = await prisma.restaurantService.findMany();
+    expect(restaurants).toHaveLength(1);
+    const { menus: _menus, ...rest } = createInput;
+    expect(restaurants.at(0)).toMatchObject(rest);
 
-    const rooms = await prisma.hotelRoom.findMany();
-    expect(rooms).toHaveLength(1);
-    expect(rooms.at(0)).toMatchObject(_rooms[0]);
+    const menus = (await prisma.restaurantService.findFirst()).menus;
+    expect(menus).toHaveLength(1);
+    expect(menus.at(0)).toMatchObject(_menus[0]);
   });
 });

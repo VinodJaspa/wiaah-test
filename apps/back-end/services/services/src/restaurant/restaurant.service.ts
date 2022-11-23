@@ -92,6 +92,7 @@ export class RestaurantService {
       });
       return this.formatRestaurant(created, langId);
     } catch (error) {
+      console.log(error)
       throw new DBErrorException('error creating restaurant service');
     }
   }

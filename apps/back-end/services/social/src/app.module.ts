@@ -19,12 +19,14 @@ import { SavedPostsModule } from './saved-posts/saved-posts.module';
 import { StoryModule } from './story/story.module';
 import { BlockModule } from './block/block.module';
 import { PrivacyModule } from './privacy/privacy.module';
+import { ProductPostModule } from './product-post/product-post.module';
+import { AffiliationPostModule } from './affiliation-post/affiliation-post.module';
 
 @Global()
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],
-  imports: [BlockModule, PrivacyModule],
+  imports: [BlockModule, PrivacyModule, ProductPostModule, AffiliationPostModule],
 })
 export class PrismaModule {}
 
