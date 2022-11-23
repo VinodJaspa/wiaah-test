@@ -1,15 +1,7 @@
-import { Account, PostLocation, SocialPost } from '@entities';
-import { ObjectType, Field, ID, Directive, Int } from '@nestjs/graphql';
+import { Account, PostLocation } from '@entities';
+import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
 import { CommentsVisibility, PostVisibility } from 'prismaClient';
-
-@ObjectType()
-@Directive('@extends')
-@Directive('@key(fields:"id")')
-export class Product {
-  @Field(() => ID)
-  @Directive('@external')
-  id: string;
-}
+import { Product } from './extends';
 
 @ObjectType()
 export class ProductPost {

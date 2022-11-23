@@ -19,6 +19,8 @@ async function clearDB() {
   await prisma.storyView.deleteMany();
   await prisma.userSavedPostsGroup.deleteMany();
   await prisma.privacySettings.deleteMany();
+  await prisma.affiliationPost.deleteMany();
+  await prisma.productPost.deleteMany();
 }
 
 const prisma = new PrismaService();

@@ -10,8 +10,7 @@ import { Product, ProductPost } from '@product-post/entities';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
 import { GetUserProductPostsQuery } from '@product-post/queries';
-import { CreateProductPostInput, GetUserProductPostsInput } from './dto';
-import { CreateProductPostCommand } from '@product-post/commands';
+import { GetUserProductPostsInput } from './dto';
 
 @Resolver(() => ProductPost)
 export class ProductPostResolver {
