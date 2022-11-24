@@ -21,6 +21,7 @@ import { BlockModule } from './block/block.module';
 import { PrivacyModule } from './privacy/privacy.module';
 import { ProductPostModule } from './product-post/product-post.module';
 import { AffiliationPostModule } from './affiliation-post/affiliation-post.module';
+import { ActionModule } from './action/action.module';
 
 @Global()
 @Module({
@@ -31,6 +32,7 @@ import { AffiliationPostModule } from './affiliation-post/affiliation-post.modul
     PrivacyModule,
     ProductPostModule,
     AffiliationPostModule,
+    ActionModule,
   ],
 })
 export class PrismaModule {}

@@ -1,9 +1,7 @@
 import { KafkaMessage } from "../../../Base";
 
-export type ContentReactedType = "newsfeed-post" | "comment";
-
 export class ContentReactedEvent extends KafkaMessage<{
-  contentType: ContentReactedType;
+  contentType: string;
   contentId: string;
   contentAuthorProfileId: string;
   contentAuthorUserId: string;

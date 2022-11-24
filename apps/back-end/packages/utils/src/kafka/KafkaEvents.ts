@@ -32,6 +32,7 @@ export const KAFKA_EVENTS = {
     passwordChangeRequest: "password.change.request",
     passwordChanged: "password.changed",
     newRegisterationTokenRequest: "registeration.token.request",
+    sendLoginOTP: (type: string) => `send.login.otp.${type}`,
   },
   BILLING_EVNETS: {
     balanceCreated: "balance.created",
@@ -67,13 +68,16 @@ export const KAFKA_EVENTS = {
     postCreated: "newsfeed.post.created",
   },
   COMMENTS_EVENTS: {
-    commentCreated: "comment.created",
+    commentCreated: (contentType: string) => `comment.created.${contentType}`,
     commentMentions: "comment.mentions",
     commentUpdated: "comment.update",
-    commentDeleted: "comment.deleted",
+    commentDeleted: (contentType: string) => `comment.deleted.${contentType}`,
   },
   REACTION_EVENTS: {
-    contentReacted: "content.reacted",
+    contentReacted: (contentType: string) =>
+      "content.reacted" + "." + contentType,
+    contentUnReacted: (contentType: string) =>
+      `content.unreacted.${contentType}`,
   },
   SHARES_EVENTS: {
     contentShared: "content.shared",

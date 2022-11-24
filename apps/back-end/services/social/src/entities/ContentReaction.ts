@@ -19,8 +19,8 @@ export class ContentReaction {
   @Field(() => ContentReactionType)
   reactionType: ContentReactionType;
 
-  @Field(() => Profile)
-  reactedBy: Profile;
+  @Field(() => Profile, { nullable: true })
+  reactedBy?: Profile;
 
   @Field(() => ID)
   reactedByProfileId: string;

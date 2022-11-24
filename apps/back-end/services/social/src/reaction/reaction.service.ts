@@ -12,8 +12,7 @@ import { ClientKafka } from '@nestjs/microservices';
 import { ProfileService } from '@profile-service';
 import { ContentDiscoveryService } from '@content-discovery';
 import { ContentNotFoundException } from '@exceptions';
-import { ContentReactedEvent } from 'nest-dto';
-import { ContentHostType } from 'prismaClient';
+import { ContentReactedEvent, ContentUnReactedEvent } from 'nest-dto';
 import { ContentManagementService } from '@content-management';
 
 @Injectable()
@@ -40,7 +39,7 @@ export class ReactionService {
       contentType,
       contentId,
     );
-    console.log(content);
+
     if (!content) throw new ContentNotFoundException();
 
     // validate the user have the right premission to react on this content
@@ -68,20 +67,19 @@ export class ReactionService {
       );
 
       this.eventClient.emit(
-        KAFKA_EVENTS.REACTION_EVENTS.contentReacted,
+        KAFKA_EVENTS.REACTION_EVENTS.contentReacted(contentType),
         new ContentReactedEvent({
           contentAuthorProfileId: authorProfileId,
           contentAuthorUserId: content.userId,
           contentId,
           reacterProfileId: profileId,
           reacterUserId: userId,
-          contentType:
-            contentType === 'post_newsfeed' ? 'newsfeed-post' : 'comment',
+          contentType,
           contentTitle: content.content,
         }),
       );
 
-      return Object.assign(reaction, { reactedBy: null });
+      return reaction;
     } catch (error) {
       throw new DBErrorException(
         'Faild to create reaction, please try again later',
@@ -95,10 +93,15 @@ export class ReactionService {
   ): Promise<boolean> {
     const { contentId, contentType } = input;
 
-    // const isAuthor = await this.
+    const content = await this.contentDiscoveryService.getContent(
+      contentType,
+      contentId,
+    );
+
+    if (content.userId !== userId) throw new UnauthorizedException();
 
     try {
-      await this.prisma.contentReaction.deleteMany({
+      const res = await this.prisma.contentReaction.deleteMany({
         where: {
           hostType: contentType,
           hostId: contentId,
@@ -106,10 +109,21 @@ export class ReactionService {
         },
       });
 
-      await this.contentManagementService.decrementContentReactions(
-        contentType,
-        contentId,
-      );
+      if (res.count > 0) {
+        await this.contentManagementService.decrementContentReactions(
+          contentType,
+          contentId,
+        );
+
+        this.eventClient.emit(
+          KAFKA_EVENTS.REACTION_EVENTS.contentUnReacted(contentType),
+          new ContentUnReactedEvent({
+            contentId,
+            contentType,
+            userId,
+          }),
+        );
+      }
 
       return true;
     } catch (error) {

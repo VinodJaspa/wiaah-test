@@ -105,6 +105,18 @@ model AffiliationPost {
   commentsVisibility CommentsVisibility @default(public)
 }
 
+model Action {
+  id                 String             @id @default(auto()) @map("_id") @db.ObjectId
+  attachment         Attachment
+  userId             String             @db.ObjectId
+  reactionNum        Int                @default(0)
+  comments           Int                @default(0)
+  shares             Int                @default(0)
+  visibility         PostVisibility     @default(hidden)
+  location           PostLocation?
+  commentsVisibility CommentsVisibility @default(public)
+}
+
 model ContentReaction {
   id                 String              @id() @default(auto()) @map("_id") @db.ObjectId()
   userId             String              @db.ObjectId
@@ -209,7 +221,7 @@ type Attachment {
 }
 
 type PostMention {
-  userId    String
+  userId String
 }
 
 type PostLocation {

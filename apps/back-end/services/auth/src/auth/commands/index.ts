@@ -1,4 +1,10 @@
 export * from './impl';
-import { ChangePasswordCommandHandler } from './handlers';
+import {
+  ChangePasswordCommandHandler,
+  ValidateLoginOtpCommandHandler,
+} from './handlers';
 
-export const AuthCommandHandlers = [ChangePasswordCommandHandler];
+export const AuthCommandHandlers = [
+  ChangePasswordCommandHandler,
+  ValidateLoginOtpCommandHandler,
+];

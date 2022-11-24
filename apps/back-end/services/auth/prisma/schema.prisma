@@ -11,6 +11,16 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+
+model UserAuthSettings {
+  id String @id @map("_id") @db.ObjectId
+  twoFactoryAuth Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
 model Registeration {
   id                String            @id() @default(auto()) @map("_id") @db.ObjectId()
   verificationCode  String            
@@ -18,6 +28,15 @@ model Registeration {
   expiresAt         DateTime          
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt()
+}
+
+model authOTP {
+  id String @id @db.ObjectId @default(auto()) @map("_id")
+  email String @unique
+  code String
+  expiresAt         DateTime          
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ChangePasswordRequest {
