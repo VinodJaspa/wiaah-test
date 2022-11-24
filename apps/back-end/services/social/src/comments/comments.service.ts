@@ -21,8 +21,12 @@ import {
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 import { ContentHostType } from 'prismaClient';
-import { CommentCreatedEvent, CommentMentionedEvent } from 'nest-dto';
-import { CommentsPublicStatus, ContentHostTypeEnum } from '@keys';
+import {
+  CommentCreatedEvent,
+  CommentDeletedEvent,
+  CommentMentionedEvent,
+} from 'nest-dto';
+import { CommentsPublicStatus } from '@keys';
 import { ContentManagementService } from '@content-management';
 
 @Injectable()
@@ -92,7 +96,7 @@ export class CommentsService {
       );
 
       this.eventClient.emit(
-        KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated,
+        KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated(contentType),
         new CommentCreatedEvent({
           commentedAt: new Date().toUTCString(),
           commentedByProfileId: authorProfileId,
@@ -172,6 +176,15 @@ export class CommentsService {
       await this.contentManagementService.decrementContentComments(
         comment.hostType,
         comment.hostId,
+      );
+
+      this.eventClient.emit(
+        KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated(comment.hostType),
+        new CommentDeletedEvent({
+          commentId: comment.id,
+          contentId: comment.hostId,
+          contentType: comment.hostType,
+        }),
       );
 
       return comment;

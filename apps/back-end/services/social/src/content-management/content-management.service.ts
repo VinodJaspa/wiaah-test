@@ -6,6 +6,7 @@ import {
   PostMinimumAttachmentsException,
 } from '@exceptions';
 import { Injectable } from '@nestjs/common';
+import { EventBus } from '@nestjs/cqrs';
 import { ContentHostType } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 
@@ -13,7 +14,11 @@ type ContentData = Comment | NewsfeedPost;
 
 @Injectable()
 export class ContentManagementService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly eventbus: EventBus,
+  ) {}
+
   async validatePostAttachments(attachments: Attachment[]): Promise<boolean> {
     if (attachments.length < 1) throw new PostMinimumAttachmentsException(1);
     if (attachments.length > 10) throw new PostMaximumAttachmentException(10);
@@ -55,6 +60,13 @@ export class ContentManagementService {
             },
           },
         });
+
+      case 'action':
+        break;
+      case 'post_shop':
+        break;
+      case 'story':
+        break;
 
       default:
         throw new ContentNotFoundException();

@@ -14,6 +14,8 @@ import { getUserFromRequest, KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { CqrsModule } from '@nestjs/cqrs';
 import { AuthCommandHandlers } from './commands';
 import { AuthRepository } from './repository';
+import { authQueryHandlers } from './queries';
+import { authEventHandlers } from './events';
 
 @Module({
   imports: [
@@ -57,6 +59,8 @@ import { AuthRepository } from './repository';
     PrismaService,
     AuthRepository,
     ...AuthCommandHandlers,
+    ...authQueryHandlers,
+    ...authEventHandlers,
   ],
 })
 export class AuthModule {}

@@ -21,7 +21,10 @@
       "@models": ["models"],
       "@utils": ["src/utils"],
       "@prisma-client": ["prisma/generated"],
-      "prismaService": ["src/prisma.service"]
+      "prismaService": ["src/prisma.service"],
+      "@auth/*": ["src/auth/*"],
+      "@auth-settings/*": ["src/user-auth-settings/*"],
+      "@auth-otp/*": ["src/auth-otp/*"]
     }
   }
 }

@@ -170,23 +170,22 @@ export class AuthService {
     return true;
   }
 
-  async login(input: LoginDto): Promise<{ access_token: string }> {
-    try {
-      const { email, id, accountType } = await this.validateCredentials(
-        input.email,
-        input.password,
-      );
-      return {
-        access_token: this.JWTService.sign({
-          id,
-          email,
+  async generateAccessToken(id: string, email: string, accountType: string) {
+    return {
+      access_token: this.JWTService.sign({
+        id,
+        email,
+        accountType,
+      }),
+    };
+  }
 
-          accountType,
-        }),
-      };
-    } catch (error) {
-      throw new Error(error);
-    }
+  async login(input: LoginDto): Promise<{ access_token: string }> {
+    const { email, id, accountType } = await this.validateCredentials(
+      input.email,
+      input.password,
+    );
+    return this.generateAccessToken(id, email, accountType);
   }
 
   async requestPasswordChange({ email }: ForgotPasswordEmailInput) {
@@ -271,7 +270,7 @@ export class AuthService {
     return bcrypt.hash(password, 12);
   }
 
-  private async validateCredentials(
+  async validateCredentials(
     email: string,
     password: string,
   ): Promise<{ email: string; id: string; accountType: string }> {
