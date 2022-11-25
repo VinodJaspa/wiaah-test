@@ -8,16 +8,19 @@ export class HiddenContentRepository {
   create(contentId: string, userId: string) {
     return this.prisma.hiddenContent.create({
       data: {
-        id: contentId,
+        contentId,
         userId,
       },
     });
   }
 
-  getOne(contentId: string) {
+  getOne(contentId: string, userId: string) {
     return this.prisma.hiddenContent.findUnique({
       where: {
-        id: contentId,
+        contentId_userId: {
+          contentId,
+          userId,
+        },
       },
     });
   }

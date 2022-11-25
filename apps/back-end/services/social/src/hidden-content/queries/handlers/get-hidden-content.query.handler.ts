@@ -9,8 +9,8 @@ export class GetHiddenContentQueryHandler
 {
   constructor(private readonly repo: HiddenContentRepository) {}
 
-  async execute({ id }: GetHiddenContentQuery): Promise<HiddenContent> {
-    const res = await this.repo.getOne(id);
+  async execute({ id, userId }: GetHiddenContentQuery): Promise<HiddenContent> {
+    const res = await this.repo.getOne(id, userId);
     return res;
   }
 }
