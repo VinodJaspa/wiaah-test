@@ -9,7 +9,7 @@ import {
   ModalOverlay,
   ModalContent,
 } from "ui";
-import { mapArray } from "utils";
+import { useSocialReportModal } from "../SocialReportModal";
 
 export const useSocialPostSettingsPopup = () => {
   const { Listen, emit, removeListner } = useReactPubsub(
@@ -35,8 +35,16 @@ export const useSocialPostSettingsPopup = () => {
 
 export const SocialPostSettingsPopup: React.FC = () => {
   const { Listen, removeListner } = useSocialPostSettingsPopup();
+  const { OpenModal } = useSocialReportModal();
   const [id, setId] = React.useState<string>();
   const { t } = useTranslation();
+
+  function handleHide() {
+    if (id) {
+      OpenModal(id);
+    }
+    handleClose();
+  }
 
   function handleClose() {
     setId(undefined);
@@ -68,7 +76,7 @@ export const SocialPostSettingsPopup: React.FC = () => {
     },
     {
       label: t("Hide"),
-      onClick: () => {},
+      onClick: handleHide,
     },
     {
       label: t("Turn off commenting"),

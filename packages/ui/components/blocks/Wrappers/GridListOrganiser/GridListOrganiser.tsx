@@ -1,6 +1,5 @@
 import React from "react";
 import { randomNum } from "utils";
-import { Divider } from "ui";
 
 export interface GridListOrganiser {
   presets: GridPreset[];
@@ -27,11 +26,11 @@ export const GridListOrganiser: React.FC<GridListOrganiser> = ({
       ...state,
       {
         preset: randomPreset,
-        childsPos: [childsCount, childsCount + randomPreset.length],
+        childsPos: [childsCount, childsCount + randomPreset.points.length],
       },
     ]);
 
-    setChildCount((state) => state + randomPreset.length);
+    setChildCount((state) => state + randomPreset.points.length);
   }
 
   return (
@@ -51,7 +50,6 @@ export const GridListOrganiser: React.FC<GridListOrganiser> = ({
 };
 
 export type GridPreset = {
-  length: number;
   cols: number;
   points: {
     c: number;
@@ -68,30 +66,49 @@ export const GridPresetOrganiser: React.FC<GridPresetOrganiserProps> = ({
   preset,
   rowSize = "14.5rem",
 }) => {
+  const pointsum = preset.points.reduce((acc, curr) => {
+    return acc + curr.c * curr.r;
+  }, 0);
+
+  const isValid = pointsum % preset.cols === 0;
+
   return (
-    <div
-      style={{
-        gridAutoRows: rowSize,
-      }}
-      className={`grid gap-4 ${preset ? `grid-cols-${preset.cols || 1}` : ""}`}
-    >
-      {preset
-        ? Array.isArray(preset.points)
-          ? preset.points.map((point, i) => (
-              <div
-                style={{
-                  gridRow: `span ${typeof point.r === "number" ? point.r : 1}`,
-                  gridColumn: `span ${
-                    typeof point.c === "number" ? point.c : 1
-                  }`,
-                }}
-                key={i}
-              >
-                {React.Children.toArray(children).at(i)}
-              </div>
-            ))
-          : null
-        : null}
-    </div>
+    <>
+      {/* {pointsum} */}
+      {/* {preset.points.length} */}
+      {/* {React.Children.count(children)} */}
+      {isValid ? (
+        <div
+          style={{
+            gridAutoRows: rowSize,
+          }}
+          className={`grid gap-4 ${
+            preset ? `grid-cols-${preset.cols || 1}` : ""
+          }`}
+        >
+          {preset
+            ? Array.isArray(preset.points)
+              ? preset.points.map((point, i) => (
+                  <div
+                    style={{
+                      gridRow: `span ${
+                        typeof point.r === "number" ? point.r : 1
+                      }`,
+                      gridColumn: `span ${
+                        typeof point.c === "number" ? point.c : 1
+                      }`,
+                    }}
+                    key={i}
+                  >
+                    {React.Children.toArray(children).at(i)}
+                  </div>
+                ))
+              : null
+            : null}
+        </div>
+      ) : (
+        <div className="w-full py-4 text-center">invalid grid Preset</div>
+      )}
+    </>
   );
 };

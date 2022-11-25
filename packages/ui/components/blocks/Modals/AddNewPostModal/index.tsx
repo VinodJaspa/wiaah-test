@@ -152,7 +152,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
   return user ? (
     <Modal isOpen={isOpen} onClose={CloseModal} onOpen={OpenModal}>
       <ModalOverlay />
-      <ModalContent className="min-w-[min(100%,70rem)]">
+      <ModalContent className="min-w-[min(95%,60rem)]">
         <MediaUploadModal
           onVidUpload={addUploadedVideo}
           onImgUpload={addUploadedImg}
@@ -197,7 +197,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                 "What's on your mind"
               )}, ${user.name}?`}
             />
-            <div className="flex w-full gap-8 px-[4.5rem]">
+            <div className="flex w-full gap-4 px-[4.5rem]">
               {buttons.map(({ className, enabled, icon, name }, i) => (
                 <div
                   key={i}
@@ -208,10 +208,12 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                       enabled
                         ? "cursor-pointer"
                         : "opacity-75 cursor-not-allowed"
-                    } flex py-2 items-center justify-center gap-2 w-full rounded-xl`}
+                    } flex py-2 px-2 items-center justify-center gap-2 w-full rounded-xl`}
                   >
                     <div className="text-xl">{runIfFn(icon)}</div>
-                    <p>{enabled ? name : t("Cooming Soon")}</p>
+                    <p className="whitespace-nowrap">
+                      {enabled ? name : t("Cooming Soon")}
+                    </p>
                   </div>
                 </div>
               ))}

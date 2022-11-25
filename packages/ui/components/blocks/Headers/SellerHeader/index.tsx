@@ -99,15 +99,15 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
       )}
 
       <div className="flex items-center gap-8 p-2">
-        {isMobile ? (
-          <>
-            <SquarePlusOutlineIcon
-              className="text-icon text-lightBlack"
-              onClick={() => OpenModal()}
-            />
-            <AddNewPostModal />
-          </>
-        ) : null}
+        {/* {isMobile ? ( */}
+        <>
+          <SquarePlusOutlineIcon
+            className="text-icon text-lightBlack"
+            onClick={() => OpenModal()}
+          />
+          <AddNewPostModal />
+        </>
+        {/* ) : null} */}
         <div className="relative">
           <NotifiactionsMenu>
             <BellOutlineIcon className="text-icon text-lightBlack" />

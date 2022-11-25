@@ -41,7 +41,8 @@
       "@privacy-settings/*": ["src/privacy/*"],
       "@product-post/*": ["src/product-post/*"],
       "@affiliation-post/*": ["src/affiliation-post/*"],
-      "@action/*": ["src/action/*"]
+      "@action/*": ["src/action/*"],
+      "@hidden-content/*": ["src/hidden-content/*"]
     }
   }
 }

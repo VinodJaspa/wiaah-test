@@ -6,15 +6,15 @@ import {
   Modal,
   ModalContent,
   ModalOverlay,
-  ChooseWithInput,
   Textarea,
   TextAreaProps,
-  FormikInput,
   Radio,
   Divider,
   ModalCloseButton,
   CloseIcon,
-} from "ui";
+  Button,
+} from "ui/components/partials";
+import { FormikInput } from "ui/components/blocks";
 import { mapArray } from "utils";
 
 export const useSocialReportModal = () => {
@@ -56,8 +56,12 @@ export const SocialReportModal: React.FC = () => {
   });
 
   React.useEffect(() => {
-    return removeListner();
+    return removeListner;
   }, []);
+
+  function handleSubmit(data: any) {
+    handleclose();
+  }
 
   const reasons = [
     {
@@ -108,36 +112,40 @@ export const SocialReportModal: React.FC = () => {
           initialValues={
             { report_reason: reasons[0].key } as Record<string, any>
           }
-          onSubmit={() => {}}
+          onSubmit={(data) => handleSubmit(data)}
         >
           {({ values, setFieldValue }) => (
             <Form className="flex flex-col w-full gap-8 text-lg font-bold">
               <p className="text-lightBlack">{t("Please select a scenario")}</p>
+              <div className="flex flex-col items-center sm:items-end sm:flex-row justify-between w-full gap-4">
+                <div className="flex flex-col gap-8">
+                  {mapArray(reasons, ({ title, key }, i) => (
+                    <Radio
+                      key={i + key}
+                      onChange={(e) =>
+                        e.target.checked
+                          ? setFieldValue("report_reason", key)
+                          : null
+                      }
+                      checked={values["report_reason"] === key}
+                      name={"report_reason"}
+                    >
+                      <p className="font-normal">{title}</p>
+                    </Radio>
+                  ))}
 
-              {mapArray(reasons, ({ title, key }, i) => (
-                <Radio
-                  key={i + key}
-                  onChange={(e) =>
-                    e.target.checked
-                      ? setFieldValue("report_reason", key)
-                      : null
-                  }
-                  checked={values["report_reason"] === key}
-                  name={"report_reason"}
-                >
-                  <p className="font-normal">{title}</p>
-                </Radio>
-              ))}
-
-              {values["report_reason"] === "other" ? (
-                <FormikInput<TextAreaProps>
-                  label={t("Type Report reason")}
-                  value={values["other_reason"]}
-                  onChange={(v) => setFieldValue("other_reason", v)}
-                  name="other_reason"
-                  as={Textarea}
-                />
-              ) : null}
+                  {values["report_reason"] === "other" ? (
+                    <FormikInput<TextAreaProps>
+                      label={t("Type Report reason")}
+                      value={values["other_reason"]}
+                      onChange={(v) => setFieldValue("other_reason", v)}
+                      name="other_reason"
+                      as={Textarea}
+                    />
+                  ) : null}
+                </div>
+                <Button>{t("Submit")}</Button>
+              </div>
             </Form>
           )}
         </Formik>

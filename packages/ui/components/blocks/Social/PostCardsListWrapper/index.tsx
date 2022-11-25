@@ -59,7 +59,6 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
         rowSize="14.5rem"
         presets={[
           {
-            length: 6,
             cols: 5,
             points: [
               {
@@ -90,7 +89,6 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
           },
           {
             cols: 5,
-            length: 8,
             points: [
               { c: 1, r: 1 },
               { c: 1, r: 1 },
@@ -102,10 +100,8 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
               { c: 1, r: 1 },
             ],
           },
-
           {
-            length: 9,
-            cols: 4,
+            cols: 5,
             points: [
               {
                 c: 2,
@@ -117,7 +113,7 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
               },
               {
                 c: 1,
-                r: 2,
+                r: 1,
               },
               {
                 c: 1,
