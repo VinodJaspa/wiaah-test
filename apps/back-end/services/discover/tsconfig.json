@@ -17,8 +17,12 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
+    "rootDir": "./",
     "paths": {
-      "@community/*": ["src/community/*"]
+      "@community/*": ["src/community/*"],
+      "@user-activity-stats/*": ["src/user-activity-stats/*"],
+      "@prisma-client": ["src/prisma/generated/client"],
+      "prismaService": ["src/prisma.service"]
     }
   }
 }
