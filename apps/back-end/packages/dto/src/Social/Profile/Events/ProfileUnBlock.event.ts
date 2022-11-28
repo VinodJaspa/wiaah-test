@@ -1,4 +1,4 @@
-import { KafkaMessage } from "../../Base";
+import { KafkaMessage } from "../../../Base";
 
 export class ProfileUnBlockedEvent extends KafkaMessage<{
   unBlockedProfileId: string;

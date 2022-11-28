@@ -42,4 +42,15 @@ export class BookingRepository {
       },
     });
   }
+
+  updatePurchaseStatus(id:string,status:boolean){
+    return this.prisma.bookedService.update({
+      where:{
+        id
+      },
+      data:{
+        purchased:status
+      }
+    })
+  }
 }

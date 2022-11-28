@@ -1,2 +1,6 @@
 export * from './impl';
-import {} from './handlers';
+import { GetUserActivityStatsQueryHandler } from './handlers';
+
+export const userActivityStatsQueryHandlers = [
+  GetUserActivityStatsQueryHandler,
+];

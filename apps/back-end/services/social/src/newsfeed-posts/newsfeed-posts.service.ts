@@ -10,6 +10,8 @@ import {
 } from '@exceptions';
 import { DBErrorException } from 'nest-utils';
 import { ContentManagementService } from '@content-management';
+import { EventBus } from '@nestjs/cqrs';
+import { PostCreatedEvent } from './events';
 
 @Injectable()
 export class NewsfeedPostsService {
@@ -17,6 +19,7 @@ export class NewsfeedPostsService {
     private readonly prisma: PrismaService,
     private readonly profileService: ProfileService,
     private readonly contentManagementService: ContentManagementService,
+    private readonly eventbus: EventBus,
   ) {}
   logger = new Logger('NewfeedPostsService');
 
@@ -85,13 +88,16 @@ export class NewsfeedPostsService {
     const profileId = await this.profileService.getProfileIdByUserId(userId);
 
     try {
-      return await this.prisma.newsfeedPost.create({
+      const res = await this.prisma.newsfeedPost.create({
         data: {
           ...createNewsfeedPostInput,
           authorProfileId: profileId,
           userId,
         },
       });
+
+      this.eventbus.publish(new PostCreatedEvent(res, userId));
+      return res;
     } catch (error) {
       this.logger.error(error);
       throw new PostCreataionFailedException();

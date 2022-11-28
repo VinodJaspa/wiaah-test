@@ -6,4 +6,6 @@ export const USER_ACTIVITY_SCORES = {
   contentLike: 0.5,
   contentComment: 0.5,
   hourOnSite: 2,
+  newsfeedPost: 2,
+  storyCreation: 2,
 };

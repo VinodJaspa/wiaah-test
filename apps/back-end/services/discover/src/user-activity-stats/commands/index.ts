@@ -1,2 +1,12 @@
 export * from './impl';
-import {} from './handler';
+import {
+  IncreaseUserActivityScoreCommandHandler,
+  UpdateUserLastActiveCommandHandler,
+  IncreaseUserActiveTimeCommandHandler,
+} from './handler';
+
+export const userActivityScoreCommandHandlers = [
+  IncreaseUserActivityScoreCommandHandler,
+  UpdateUserLastActiveCommandHandler,
+  IncreaseUserActiveTimeCommandHandler,
+];

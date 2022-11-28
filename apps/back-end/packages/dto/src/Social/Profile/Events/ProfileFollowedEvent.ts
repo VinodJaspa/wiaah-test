@@ -1,6 +1,6 @@
-import { KafkaMessage } from "../../Base";
+import { KafkaMessage } from "../../../Base";
 
-export class ProfileUnFollowEvent extends KafkaMessage<{
+export class ProfileFollowedEvent extends KafkaMessage<{
   followedId: string;
   followerId: string;
   followerProfileId: string;

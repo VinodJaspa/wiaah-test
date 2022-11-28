@@ -1,11 +1,7 @@
 import { bookedServiceStatus } from '@book-service/const';
 import { BookedService } from '@book-service/entities';
-import {
-  GetAppointmentQuery,
-  ValidateIsOwnerOfBookedServiceByAppointmentIdQuery,
-} from '@book-service/queries';
+import { ValidateIsOwnerOfBookedServiceByAppointmentIdQuery } from '@book-service/queries';
 import { BookingRepository } from '@book-service/repository';
-import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler, QueryBus } from '@nestjs/cqrs';
 import { AcceptPendingAppointmentCommand } from '../impl';
 
