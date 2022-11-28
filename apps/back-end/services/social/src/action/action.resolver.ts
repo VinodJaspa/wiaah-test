@@ -1,4 +1,4 @@
-import { CommandBus } from '@nestjs/cqrs';
+import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { Action } from '@action/entities';
 import { CreateActionInput, GetUserActionsInput } from '@action/dto';
@@ -13,7 +13,10 @@ import { GetActionByIdQuery, GetUserActionsQuery } from '@action/queries';
 
 @Resolver(() => Action)
 export class ActionResolver {
-  constructor(private readonly commandbus: CommandBus) {}
+  constructor(
+    private readonly commandbus: CommandBus,
+    private readonly querybus: QueryBus,
+  ) {}
 
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([]))
@@ -33,7 +36,7 @@ export class ActionResolver {
     @Args('args') args: GetUserActionsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    return this.commandbus.execute<GetUserActionsQuery>(
+    return this.querybus.execute<GetUserActionsQuery>(
       new GetUserActionsQuery(args.userId, args.pagination, user.id),
     );
   }

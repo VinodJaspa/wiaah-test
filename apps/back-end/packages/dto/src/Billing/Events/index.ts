@@ -5,3 +5,4 @@ export * from "./billing-price-created.event";
 export * from "./billing-monthly-price-create.event";
 export * from "./subscription-paid.event";
 export * from "./products-purchsed.event";
+export * from "./seller-service-purchased.event";

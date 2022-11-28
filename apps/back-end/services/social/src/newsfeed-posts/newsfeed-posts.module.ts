@@ -4,10 +4,16 @@ import { NewsfeedPostsResolver } from './newsfeed-posts.resolver';
 import { ProfileModule } from '@profile-module';
 import { PrismaService } from 'prismaService';
 import { ContentManagementModule } from '@content-management';
+import { NewsfeedPostEventHandlers } from './events';
 
 @Module({
   imports: [ProfileModule, ContentManagementModule],
-  providers: [NewsfeedPostsResolver, NewsfeedPostsService, PrismaService],
+  providers: [
+    NewsfeedPostsResolver,
+    NewsfeedPostsService,
+    PrismaService,
+    ...NewsfeedPostEventHandlers,
+  ],
   exports: [NewsfeedPostsService],
 })
 export class NewsfeedPostsModule {}

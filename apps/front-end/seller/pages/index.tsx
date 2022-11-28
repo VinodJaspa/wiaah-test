@@ -61,7 +61,7 @@ const seller: NextPage = () => {
         <AddNewPostModal />
         <AddNewStoryModal />
         <CommentReportModal />
-        <div className="flex flex-col items-center w-full gap-4">
+        <div className="flex flex-col items-center w-full gap-8">
           <div className="flex w-full items-center overflow-x-scroll gap-6 noScroll">
             <div className="min-w-[4.75rem]">
               <AspectRatio ratio={1}>
@@ -76,9 +76,9 @@ const seller: NextPage = () => {
               )}
             />
           </div>
-          {!isMobile && (
+          {/* {!isMobile && (
             <SellerPostInput userName="wiaah" userPhotoSrc="/wiaah_logo.png" />
-          )}
+          )} */}
           <div className="w-full">
             <PostCardsListWrapper
               onPostClick={(post) => {

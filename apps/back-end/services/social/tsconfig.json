@@ -27,6 +27,7 @@
       "@profile-module": ["src/profile/profile.module"],
       "@content-discovery": ["src/content-discovery"],
       "@posts-newsfeed": ["src/newsfeed-posts"],
+      "@posts-newsfeed/*": ["src/newsfeed-posts/*"],
       "@profile": ["src/profile"],
       "@comments": ["src/comments"],
       "@reaction": ["src/reaction"],
@@ -41,7 +42,9 @@
       "@privacy-settings/*": ["src/privacy/*"],
       "@product-post/*": ["src/product-post/*"],
       "@affiliation-post/*": ["src/affiliation-post/*"],
-      "@action/*": ["src/action/*"]
+      "@action/*": ["src/action/*"],
+      "@hidden-content/*": ["src/hidden-content/*"],
+      "@story/*": ["src/story/*"]
     }
   }
 }

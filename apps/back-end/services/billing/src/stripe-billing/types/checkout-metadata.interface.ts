@@ -1,6 +1,6 @@
 import { StripeMetadata } from './stripe-metadata.interface';
 
-export type CheckoutMetadataProduct = { id: string; qty: number; type: string };
+export type CheckoutMetadataProduct = { id: string; type: string };
 
 export interface CheckoutMetadata extends StripeMetadata {
   sellers: {

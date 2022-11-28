@@ -26,6 +26,7 @@ module.exports = {
     '^@privacy-settings/(.+)$': '<rootDir>/src/privacy/$1',
     '^@product-post/(.+)$': '<rootDir>/src/product-post/$1',
     '^@affiliation-post/(.+)$': '<rootDir>/src/affiliation-post/$1',
+    '^@action/(.+)$': '<rootDir>/src/action/$1',
   },
   globalSetup: '<rootDir>/test/setup/globalSetup.ts',
   globalTeardown: '<rootDir>/test/setup/globalTeardown.ts',

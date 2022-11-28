@@ -27,8 +27,17 @@ import {
   UpdateMembershipUsageCommand,
 } from '@stripe-billing/commands';
 import { ProductTypeEnum } from '@stripe-billing/const';
-import { StripeSubscriptionPaidEvent } from '@stripe-billing/events';
-import { SubscriptionMetadata } from '@stripe-billing/types';
+import {
+  StripeCheckoutInvoicePaidEvent,
+  StripeInvoicePaidEvent,
+  StripeSubscriptionPaidEvent,
+} from '@stripe-billing/events';
+import { ServiceBookedEvent } from 'nest-dto';
+import {
+  CheckoutMetadata,
+  StripeMetadataObjectType,
+  SubscriptionMetadata,
+} from '@stripe-billing/types';
 
 @Controller()
 export class StripeBillingController {
@@ -51,16 +60,29 @@ export class StripeBillingController {
     switch (event.type) {
       case 'customer.subscription.updated':
         const res = event.data.object as Stripe.Subscription;
-        const meta = res.metadata as SubscriptionMetadata;
-        console.log('sub update', JSON.stringify(event, null, 2));
+        const subMeta = res.metadata as unknown as SubscriptionMetadata;
         if (res.status === 'active') {
           console.log('publishing');
-          this.eventBus.publish(new StripeSubscriptionPaidEvent(meta));
+          this.eventBus.publish(new StripeSubscriptionPaidEvent(subMeta));
         }
+        break;
+      case 'invoice.paid':
+        const invoice = event.data.object as Stripe.Invoice;
+        const invoiceMeta = invoice.metadata as unknown as {
+          type: StripeMetadataObjectType;
+        };
+        switch (invoiceMeta.type) {
+          case 'checkout':
+            this.eventBus.publish(new StripeInvoicePaidEvent(invoice));
+            break;
+          default:
+            break;
+        }
+        break;
 
       case 'payment_intent.succeeded':
-        let eventObj = event.data.object as Stripe.PaymentIntent;
-        console.log({ eventObj });
+        const intent = event.data.object as Stripe.PaymentIntent;
+        console.log({ intent });
         break;
       default:
         console.log(`Unhandled event type ${event.type}. 🌟`);

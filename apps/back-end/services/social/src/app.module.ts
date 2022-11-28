@@ -1,11 +1,10 @@
-import { Global, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import {
   ApolloFederationDriver,
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { getUserFromRequest } from 'nest-utils';
-import { PrismaService } from 'prismaService';
 
 import { ProfileModule } from './profile/profile.module';
 import { NewsfeedPostsModule } from './newsfeed-posts/newsfeed-posts.module';
@@ -22,20 +21,8 @@ import { PrivacyModule } from './privacy/privacy.module';
 import { ProductPostModule } from './product-post/product-post.module';
 import { AffiliationPostModule } from './affiliation-post/affiliation-post.module';
 import { ActionModule } from './action/action.module';
-
-@Global()
-@Module({
-  providers: [PrismaService],
-  exports: [PrismaService],
-  imports: [
-    BlockModule,
-    PrivacyModule,
-    ProductPostModule,
-    AffiliationPostModule,
-    ActionModule,
-  ],
-})
-export class PrismaModule {}
+import { PrismaModule } from './prisma.module';
+import { HiddenContentModule } from './hidden-content/hidden-content.module';
 
 @Module({
   imports: [
@@ -58,6 +45,12 @@ export class PrismaModule {}
     HashtagModule,
     SavedPostsModule,
     StoryModule,
+    BlockModule,
+    PrivacyModule,
+    ProductPostModule,
+    AffiliationPostModule,
+    ActionModule,
+    HiddenContentModule,
   ],
 })
 export class AppModule {}

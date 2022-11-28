@@ -1,19 +1,20 @@
 import React from "react";
 import { ProfileInfo, PostInfo } from "types";
 import {
-  UserProfileDisplay,
   CommentIcon,
   HeartIcon,
   ShareIcon,
-  useSocialPostSettingsPopup,
   HorizontalDotsIcon,
   LocationIcon,
-  StarOutlineIcon,
   PersonFillIcon,
   StarIcon,
+} from "ui/components/partials";
+import {
+  useSocialPostSettingsPopup,
   useShareModal,
   useSocialPostMentionsModal,
-} from "ui";
+} from "ui/components/features";
+import { UserProfileDisplay } from "ui/components/blocks/DataDisplay";
 import { Interaction } from "types";
 import { useDateDiff } from "hooks";
 import { useTranslation } from "react-i18next";

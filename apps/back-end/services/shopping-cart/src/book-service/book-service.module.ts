@@ -6,6 +6,7 @@ import { BookServiceController } from './book-service.controller';
 import { BookingRepository } from './repository';
 import { BookingCommandHandlers } from './commands';
 import { BookingQueryHandlers } from './queries';
+import { BookingsEventHandlers } from './events';
 
 @Module({
   imports: [CqrsModule],
@@ -15,6 +16,7 @@ import { BookingQueryHandlers } from './queries';
     BookingRepository,
     ...BookingCommandHandlers,
     ...BookingQueryHandlers,
+    ...BookingsEventHandlers,
   ],
   controllers: [BookServiceController],
 })

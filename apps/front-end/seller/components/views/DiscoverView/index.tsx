@@ -9,7 +9,6 @@ import {
   usersProfilesPlaceHolder,
   placesPlaceholder,
   LocationButton,
-  DiscoverItem,
   HashTagSearchItem,
   GridListOrganiser,
   PostCard,
@@ -32,9 +31,7 @@ const discoverHashtagsPlaceholder: string[] = [...Array(5)].reduce((acc) => {
 
 export const DiscoverView: React.FC = ({}) => {
   const { t } = useTranslation();
-  const cols = useBreakpointValue({ base: 4, md: 2, lg: 3, xl: 5 });
-  const { discoverTabs, changeDiscoverTab, currentTab, setTabsData } =
-    useDiscoverTabs();
+  const { discoverTabs, currentTab, setTabsData } = useDiscoverTabs();
   const { data, isLoading, isError } = useQuery(
     "DiscoverPageItems",
     () => discoverItemsPlaceholder
@@ -55,7 +52,6 @@ export const DiscoverView: React.FC = ({}) => {
             rowSize="14.5rem"
             presets={[
               {
-                length: 10,
                 cols: 5,
                 points: [
                   { c: 2, r: 1 },
@@ -117,10 +113,13 @@ export const DiscoverView: React.FC = ({}) => {
       },
     ]);
   }, []);
-  console.log(discoverTabs);
   return (
-    <div className="flex flex-col overflow-y-scroll items-start  h-full">
-      <TabsViewer showTabs={false} tabs={discoverTabs} />
+    <div className="flex flex-col overflow-y-scroll thinScroll items-start pt-4 h-full">
+      <TabsViewer
+        showTabs={false}
+        currentTabIdx={currentTab}
+        tabs={discoverTabs}
+      />
     </div>
   );
 };

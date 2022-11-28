@@ -9,6 +9,7 @@ export const KAFKA_EVENTS = {
   USER_EVENTS: {
     userConnected: "user.connected",
     userDisconnected: "user.disconnected",
+    updateUserActiveTime: "user.active.time.update",
   },
   WISHLIST_EVENTS: {
     createWishersList: "create.wisherlist",
@@ -46,6 +47,7 @@ export const KAFKA_EVENTS = {
     stripeMembershipPricingCreated: "stripe.membership.pricing.created",
     sellerProductsPurchased: (productType: string) =>
       `seller.products.purchased.${productType}`,
+    sellerServicePurchased: () => `seller.service.purchased`,
   },
   VOUCHER_EVENTS: {
     voucherCreated: "voucher.created",
@@ -82,6 +84,9 @@ export const KAFKA_EVENTS = {
   SHARES_EVENTS: {
     contentShared: "content.shared",
   },
+  STORIES: {
+    storyCreated: "story.created",
+  },
   CHAT: {
     messageSent: "chat.message.sent",
     userJoinedRoom: "user.joined.room",
@@ -109,6 +114,11 @@ export const KAFKA_EVENTS = {
   AFFILIATION: {
     affiliatedProductPurchased: "affiliated.product.purchased",
     affiliationEntryCreated: "affiliation.entry.created",
+  },
+  SERVICES: {
+    serviceBooked: (serviceType: string) => `service.booked.${serviceType}`,
+    servicePurchased: (serviceType: string) =>
+      `service.purchased.${serviceType}`,
   },
   createAccount: "create.account",
   createWishlist: "create.wishlist",

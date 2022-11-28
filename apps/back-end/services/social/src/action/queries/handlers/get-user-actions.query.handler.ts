@@ -4,7 +4,7 @@ import { Action } from '@action/entities';
 import { ActionRepository } from '@action/repository';
 
 @QueryHandler(GetUserActionsQuery)
-export class GetUserActionQueryHandler
+export class GetUserActionsQueryHandler
   implements IQueryHandler<GetUserActionsQuery>
 {
   constructor(private readonly repo: ActionRepository) {}

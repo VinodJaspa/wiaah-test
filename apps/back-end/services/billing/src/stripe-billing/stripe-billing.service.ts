@@ -25,9 +25,12 @@ import {
 import { CommandBus } from '@nestjs/cqrs';
 
 import { StripeService } from '../stripe/stripe.service';
-import { CreateStripeConnectedAccountCommand } from './commands';
-import { CheckoutMetadata, CheckoutMetadataProduct } from './types';
-import { ProductTypeEnum } from './const';
+import { CreateStripeConnectedAccountCommand } from '@stripe-billing/commands';
+import {
+  CheckoutMetadata,
+  CheckoutMetadataProduct,
+} from '@stripe-billing/types';
+import { ProductTypeEnum, StripeMetadataType } from '@stripe-billing/const';
 
 interface FormatedData {
   providerId: string;
@@ -282,6 +285,7 @@ export class StripeBillingService {
 
     const sellersMetaData: CheckoutMetadata = {
       buyerId: user.id,
+      type: StripeMetadataType.checkout,
       sellers: formatedItems.map((v) => ({
         id: v.providerId,
         products: v.items.map(

@@ -178,6 +178,14 @@
     chalk "^4.1.0"
     js-levenshtein "^1.1.6"
 
+"@apollo/federation-internals@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@apollo/federation-internals/-/federation-internals-2.2.1.tgz#348e842c328e5dbf8138f4542ab968367d2d44ec"
+  integrity sha512-T+nxIhppu/5jNFIhfzYERIhgDvp2QqbSqnQpViDNEmK/iPKsXLFtOedZZgsAUpMIQoUedNNNuceTE9+lDUn+bA==
+  dependencies:
+    chalk "^4.1.0"
+    js-levenshtein "^1.1.6"
+
 "@apollo/federation@0.33.9", "@apollo/federation@^0.33.9":
   version "0.33.9"
   resolved "https://registry.yarnpkg.com/@apollo/federation/-/federation-0.33.9.tgz#875e5518329f9e9f5c0855d130d761e26111588c"
@@ -341,6 +349,14 @@
   integrity sha512-pj+igKgdpmTfgUmscTNuVdLip8WZ8jFKS5FGb/tD2hj4xPwaQ+MfszLsuNfoytp7d63PdLorIndxcHCW+rb7Dg==
   dependencies:
     "@apollo/cache-control-types" "^1.0.2"
+
+"@apollo/subgraph@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@apollo/subgraph/-/subgraph-2.2.1.tgz#56d9a87a36e546354c433a4121d31615dd934289"
+  integrity sha512-fAm7KXr54/5mDA2mhR36AI8rwiaPGHpT9s51t8mOpnKNpX8vc9KrdlPqCAF88LKVxKRZBDTNjlD5sRgx0tQl5w==
+  dependencies:
+    "@apollo/cache-control-types" "^1.0.2"
+    "@apollo/federation-internals" "^2.2.1"
 
 "@apollo/utils.createhash@^1.0.0":
   version "1.1.0"
@@ -4573,6 +4589,14 @@
     cron "2.0.0"
     uuid "8.3.2"
 
+"@nestjs/schedule@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@nestjs/schedule/-/schedule-2.1.0.tgz#a2e21b2078a0c3d56552d40cc97336aa5bbfecdf"
+  integrity sha512-4Xaw56WiW3VsxEPPnj/iDtfjcO+sUZyYAeRxD0gnF5havncxjAnv52Iw7UH3DuzzUA784xPGgGje3Fq0Gu925g==
+  dependencies:
+    cron "2.0.0"
+    uuid "8.3.2"
+
 "@nestjs/schematics@^8.0.0", "@nestjs/schematics@^8.0.3":
   version "8.0.11"
   resolved "https://registry.npmjs.org/@nestjs/schematics/-/schematics-8.0.11.tgz"
@@ -4786,7 +4810,7 @@
 
 "@prisma/engines-version@3.15.1-1.461d6a05159055555eb7dfb337c9fb271cbd4d7e":
   version "3.15.1-1.461d6a05159055555eb7dfb337c9fb271cbd4d7e"
-  resolved "https://registry.npmjs.org/@prisma/engines-version/-/engines-version-3.15.1-1.461d6a05159055555eb7dfb337c9fb271cbd4d7e.tgz"
+  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-3.15.1-1.461d6a05159055555eb7dfb337c9fb271cbd4d7e.tgz#bf5e2373ca68ce7556b967cb4965a7095e93fe53"
   integrity sha512-e3k2Vd606efd1ZYy2NQKkT4C/pn31nehyLhVug6To/q8JT8FpiMrDy7zmm3KLF0L98NOQQcutaVtAPhzKhzn9w==
 
 "@prisma/engines@3.15.1-1.461d6a05159055555eb7dfb337c9fb271cbd4d7e":
@@ -12187,10 +12211,18 @@ enhanced-resolve@^5.0.0, enhanced-resolve@^5.7.0:
     graceful-fs "^4.2.4"
     tapable "^2.2.0"
 
-enhanced-resolve@^5.10.0, enhanced-resolve@^5.9.3:
+enhanced-resolve@^5.10.0:
   version "5.10.0"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.10.0.tgz#0dc579c3bb2a1032e357ac45b8f3a6f3ad4fb1e6"
   integrity sha512-T0yTFjdpldGY8PmuXXR0PyQ1ufZpEGiHVrp7zHKB7jdR4qlmZHhONVM5AQOAWXuF/w3dnHbEQVrNptJgt7F+cQ==
+  dependencies:
+    graceful-fs "^4.2.4"
+    tapable "^2.2.0"
+
+enhanced-resolve@^5.9.3:
+  version "5.12.0"
+  resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.12.0.tgz#300e1c90228f5b570c4d35babf263f6da7155634"
+  integrity sha512-QHTXI/sZQmko1cbDoNAa3mJ5qhWUUNAq3vR0/YiD379fWQrcfuoX1+HW2S0MTt7XmoPLapdaDKUtelUSPic7hQ==
   dependencies:
     graceful-fs "^4.2.4"
     tapable "^2.2.0"

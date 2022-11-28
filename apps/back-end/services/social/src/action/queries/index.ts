@@ -1,10 +1,10 @@
 export * from './impl';
 import {
   GetActionByIdQueryHandler,
-  GetUserActionQueryHandler,
+  GetUserActionsQueryHandler,
 } from './handlers';
 
 export const ActionQueryHandlers = [
   GetActionByIdQueryHandler,
-  GetUserActionQueryHandler,
+  GetUserActionsQueryHandler,
 ];
