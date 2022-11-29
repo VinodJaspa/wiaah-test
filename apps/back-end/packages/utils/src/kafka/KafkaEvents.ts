@@ -25,6 +25,9 @@ export const KAFKA_EVENTS = {
     productCreated: "product.created",
     productPurchased: "product.purchased",
   },
+  SOCIAL_EVENTS: {
+    userMention: (type: string = "*") => `user.mention.${type}`,
+  },
   AUTH_EVENTS: {
     accountRegistered: "account.registered",
     sellerAccountRegistered: "account.seller.registered",
@@ -76,19 +79,20 @@ export const KAFKA_EVENTS = {
     commentDeleted: (contentType: string) => `comment.deleted.${contentType}`,
   },
   REACTION_EVENTS: {
-    contentReacted: (contentType: string) =>
-      "content.reacted" + "." + contentType,
+    contentReacted: (contentType: string, regex: boolean = true) =>
+      `${regex ? "/" : ""}content.reacted.${contentType}${regex ? "/" : ""}`,
     contentUnReacted: (contentType: string) =>
       `content.unreacted.${contentType}`,
   },
   SHARES_EVENTS: {
-    contentShared: "content.shared",
+    contentShared: (contentType: string) => `content.shared.${contentType}`,
   },
   STORIES: {
     storyCreated: "story.created",
   },
   CHAT: {
     messageSent: "chat.message.sent",
+    privateMessageSent: "chat.private.message.sent",
     userJoinedRoom: "user.joined.room",
     userLeftRoom: "user.left.room",
   },
