@@ -7,5 +7,5 @@ export class ContentSharedEvent extends KafkaMessage<{
   contentAuthorUserId: string;
   sharedByProfileId: string;
   sharedByUserId: string;
-  sharedAt: Date;
+  sharedAt: string;
 }> {}

@@ -28,7 +28,8 @@ export type Services =
   | "NOTIFICATIONS"
   | "MEMBERSHIP"
   | "EVENT_SCHEDULING"
-  | "AFFILIATION_SERVICE";
+  | "AFFILIATION_SERVICE"
+  | "ANALYTICS_SERVICE";
 
 export const SERVICES: Record<Services, ServiceInfo> = {
   ACCOUNTS_SERVICE: {
@@ -146,5 +147,10 @@ export const SERVICES: Record<Services, ServiceInfo> = {
     clientId: "affiliation-client",
     groupId: "affiliation-group",
     token: "affiliation-service",
+  },
+  ANALYTICS_SERVICE: {
+    clientId: "analytics-client",
+    groupId: "analytics-group",
+    token: "analytics-service",
   },
 };

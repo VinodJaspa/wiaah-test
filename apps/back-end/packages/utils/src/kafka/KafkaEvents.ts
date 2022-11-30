@@ -1,3 +1,6 @@
+function makeKafkaDynamicEvent(event: string, regex: boolean = true) {
+  return `${regex ? "/" : ""}${event}${regex ? "/" : ""}`;
+}
 export const KAFKA_EVENTS = {
   ACCOUNTS_EVENTS: {
     createAccount: "create.account",
@@ -25,6 +28,12 @@ export const KAFKA_EVENTS = {
     productCreated: "product.created",
     productPurchased: "product.purchased",
   },
+  SOCIAL_EVENTS: {
+    userMention: (type: string = "*", regex?: boolean) =>
+      makeKafkaDynamicEvent(`user.mention.${type}`, regex),
+    postSaved: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`post.saved.${type}`, regex),
+  },
   AUTH_EVENTS: {
     accountRegistered: "account.registered",
     sellerAccountRegistered: "account.seller.registered",
@@ -33,21 +42,23 @@ export const KAFKA_EVENTS = {
     passwordChangeRequest: "password.change.request",
     passwordChanged: "password.changed",
     newRegisterationTokenRequest: "registeration.token.request",
-    sendLoginOTP: (type: string) => `send.login.otp.${type}`,
+    sendLoginOTP: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`send.login.otp.${type}`, regex),
   },
   BILLING_EVNETS: {
     balanceCreated: "balance.created",
     transactionCreated: "transaction.created",
-    billingPriceCreated: (key?: string) =>
-      `billing.price.created${key ? `.${key}` : ""}`,
-    billingSubscriptionPaid: (type: string) =>
-      `billing.subscription.paid.${type}`,
+    billingPriceCreated: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`billing.price.created.${key}`, regex),
+    billingSubscriptionPaid: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`billing.subscription.paid.${type}`, regex),
     createMonthlyBillingPrice: "billing.price.monthly.create",
     stripeAccountCreated: "stripe.account.created",
     stripeMembershipPricingCreated: "stripe.membership.pricing.created",
-    sellerProductsPurchased: (productType: string) =>
-      `seller.products.purchased.${productType}`,
-    sellerServicePurchased: () => `seller.service.purchased`,
+    sellerProductsPurchased: (productType: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`seller.products.purchased.${productType}`, regex),
+    sellerServicePurchased: (regex?: boolean) =>
+      makeKafkaDynamicEvent(`seller.service.purchased`, regex),
   },
   VOUCHER_EVENTS: {
     voucherCreated: "voucher.created",
@@ -65,30 +76,36 @@ export const KAFKA_EVENTS = {
     profileUnFollowed: "profile.unFollowed",
     profileBlocked: "profile.blocked",
     profileUnBlocked: "profile.unBlocked",
+    profileVisited: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`profile.visited.${type}`, regex),
   },
   NEWSFEED_POST_EVENTS: {
     postCreated: "newsfeed.post.created",
   },
   COMMENTS_EVENTS: {
-    commentCreated: (contentType: string) => `comment.created.${contentType}`,
+    commentCreated: (contentType: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`comment.created.${contentType}`, regex),
     commentMentions: "comment.mentions",
     commentUpdated: "comment.update",
-    commentDeleted: (contentType: string) => `comment.deleted.${contentType}`,
+    commentDeleted: (contentType: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`comment.deleted.${contentType}`, regex),
   },
   REACTION_EVENTS: {
-    contentReacted: (contentType: string) =>
-      "content.reacted" + "." + contentType,
-    contentUnReacted: (contentType: string) =>
-      `content.unreacted.${contentType}`,
+    contentReacted: (contentType: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`content.reacted.${contentType}`, regex),
+    contentUnReacted: (contentType: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`content.unreacted.${contentType}`, regex),
   },
   SHARES_EVENTS: {
-    contentShared: "content.shared",
+    contentShared: (contentType: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`content.shared.${contentType}`, regex),
   },
   STORIES: {
     storyCreated: "story.created",
   },
   CHAT: {
     messageSent: "chat.message.sent",
+    privateMessageSent: "chat.private.message.sent",
     userJoinedRoom: "user.joined.room",
     userLeftRoom: "user.left.room",
   },
@@ -100,8 +117,10 @@ export const KAFKA_EVENTS = {
   },
   SEARCH: {},
   SUBSCRIPTIONS: {
-    chatMessageSent: (roomId: string) => `chat.message.sent.${roomId}`,
-    roomDataUpdated: (userId: string) => `room.data.updated.${userId}`,
+    chatMessageSent: (roomId: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`chat.message.sent.${roomId}`, regex),
+    roomDataUpdated: (userId: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`room.data.updated.${userId}`, regex),
   },
   MEMBERSHIP: {
     memberShipCreated: "membership.created",
@@ -116,9 +135,14 @@ export const KAFKA_EVENTS = {
     affiliationEntryCreated: "affiliation.entry.created",
   },
   SERVICES: {
-    serviceBooked: (serviceType: string) => `service.booked.${serviceType}`,
-    servicePurchased: (serviceType: string) =>
-      `service.purchased.${serviceType}`,
+    serviceBooked: (serviceType: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`service.booked.${serviceType}`, regex),
+    servicePurchased: (serviceType: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`service.purchased.${serviceType}`, regex),
+  },
+  REVIEWS_EVENTS: {
+    reviewCreated: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`review.created.${type}`, regex),
   },
   createAccount: "create.account",
   createWishlist: "create.wishlist",

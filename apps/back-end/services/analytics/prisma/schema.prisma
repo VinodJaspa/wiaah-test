@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model UserActivityStats {
+  id            String @id @map("_id") @db.ObjectId
+  activityScore Float  @default(0)
+
+  lastActive     DateTime?
+  day_active_min Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ActivityScore {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  score Float
+}
+
+model UsersInteractions {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId          String   @db.ObjectId
+  userId           String   @db.ObjectId
+  postLikes        Int      @default(0)
+  commentsReply    Int      @default(0)
+  commentsLikes    Int      @default(0)
+  shares           Int      @default(0)
+  messages         Int      @default(0)
+  mentions         Int      @default(0)
+  reviewedItems    Int      @default(0)
+  profileVisits    Int      @default(0)
+  postSaved        Int      @default(0)
+  interactionScore Float    @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([ownerId, userId])
+}
