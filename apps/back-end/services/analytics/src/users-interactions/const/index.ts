@@ -7,6 +7,9 @@ export const USER_INTERACTION_SCORE = {
   commentLike: 1,
   share: 1,
   message: 0.5,
+  reviewingItem: 1,
+  profileVisit: 0.5,
+  postSave: 0.5,
 };
 
 export enum ContentTypeEnum {

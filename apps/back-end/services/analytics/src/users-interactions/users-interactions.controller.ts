@@ -6,6 +6,8 @@ import {
   CommentCreatedEvent,
   ContentReactedEvent,
   ContentSharedEvent,
+  PostSavedEvent,
+  ProfileVisitedEvent,
   UserMentionEvent,
 } from 'nest-dto';
 import { Cron, CronExpression } from '@nestjs/schedule';
@@ -18,15 +20,14 @@ import {
   IncrementUserSharesInteractionCommand,
   IncrementUserCommentsReplyInteractionCommand,
   DecrementUsersInteractionScoreCommand,
+  IncrementUserProfileVisitsInteractionCommand,
+  IncrementUserPostSaveInteractionCommand,
 } from '@users-interations/commands';
 import { ContentTypeEnum, USER_INTERACTION_SCORE } from './const';
 
-let reactionEventPattern = KAFKA_EVENTS.REACTION_EVENTS.contentReacted('*');
 @Controller()
 export class UsersInteractionsController {
-  constructor(private readonly commandbus: CommandBus) {
-    console.log(KAFKA_EVENTS.REACTION_EVENTS.contentReacted('*'));
-  }
+  constructor(private readonly commandbus: CommandBus) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_1AM)
   handleDecrementUsersInteractionScore() {
@@ -43,7 +44,6 @@ export class UsersInteractionsController {
     const reactedToId = value.input.contentAuthorUserId;
     const contentType = value.input.contentType;
 
-    console.log('ran');
     switch (contentType) {
       case ContentTypeEnum.comment:
         this.commandbus.execute(
@@ -69,51 +69,78 @@ export class UsersInteractionsController {
     }
   }
 
-  // @EventPattern(KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated('*'))
-  // handleContentCommented(@Payload() { value }: { value: CommentCreatedEvent }) {
-  //   const commentedById = value.input.commentedByUserId;
-  //   const commentedToId = value.input.hostAuthorId;
+  @EventPattern(KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated('*'))
+  handleContentCommented(@Payload() { value }: { value: CommentCreatedEvent }) {
+    const commentedById = value.input.commentedByUserId;
+    const commentedToId = value.input.hostAuthorId;
 
-  //   this.commandbus.execute(
-  //     new IncrementUserCommentsReplyInteractionCommand(
-  //       commentedById,
-  //       commentedToId,
-  //     ),
-  //   );
-  // }
+    this.commandbus.execute(
+      new IncrementUserCommentsReplyInteractionCommand(
+        commentedById,
+        commentedToId,
+      ),
+    );
+  }
 
-  // @EventPattern(KAFKA_EVENTS.SHARES_EVENTS.contentShared('*'))
-  // handleContentShared(@Payload() { value }: { value: ContentSharedEvent }) {
-  //   const sharedById = value.input.sharedByUserId;
-  //   const sharedContentAuthorId = value.input.contentAuthorUserId;
+  @EventPattern(KAFKA_EVENTS.SHARES_EVENTS.contentShared('*'))
+  handleContentShared(@Payload() { value }: { value: ContentSharedEvent }) {
+    const sharedById = value.input.sharedByUserId;
+    const sharedContentAuthorId = value.input.contentAuthorUserId;
 
-  //   this.commandbus.execute(
-  //     new IncrementUserSharesInteractionCommand(
-  //       sharedById,
-  //       sharedContentAuthorId,
-  //     ),
-  //   );
-  // }
+    this.commandbus.execute(
+      new IncrementUserSharesInteractionCommand(
+        sharedById,
+        sharedContentAuthorId,
+      ),
+    );
+  }
 
-  // @EventPattern(KAFKA_EVENTS.CHAT.privateMessageSent)
-  // handleChatMessageSent(
-  //   @Payload() { value }: { value: ChatPrivateMessageSentEvent },
-  // ) {
-  //   const sentById = value.input.sentById;
-  //   const sentToId = value.input.sentToId;
+  @EventPattern(KAFKA_EVENTS.CHAT.privateMessageSent)
+  handleChatMessageSent(
+    @Payload() { value }: { value: ChatPrivateMessageSentEvent },
+  ) {
+    const sentById = value.input.sentById;
+    const sentToId = value.input.sentToId;
 
-  //   this.commandbus.execute(
-  //     new IncrementUserMessagesInteractionCommand(sentById, sentToId),
-  //   );
-  // }
+    this.commandbus.execute(
+      new IncrementUserMessagesInteractionCommand(sentById, sentToId),
+    );
+  }
 
-  // @EventPattern(KAFKA_EVENTS.SOCIAL_EVENTS.userMention())
-  // handleUserMentions(@Payload() { value }: { value: UserMentionEvent }) {
-  //   const mentionById = value.input.userId;
-  //   const mentionToId = value.input.mentionedId;
+  @EventPattern(KAFKA_EVENTS.SOCIAL_EVENTS.userMention())
+  handleUserMentions(@Payload() { value }: { value: UserMentionEvent }) {
+    const mentionById = value.input.userId;
+    const mentionToId = value.input.mentionedId;
+    if (mentionById && mentionToId) {
+      this.commandbus.execute(
+        new IncrementUserMentionInteractionCommand(mentionById, mentionToId),
+      );
+    }
+  }
 
-  //   this.commandbus.execute(
-  //     new IncrementUserMentionInteractionCommand(mentionById, mentionToId),
-  //   );
-  // }
+  @EventPattern(KAFKA_EVENTS.PROFILE_EVENTS.profileVisited('*'))
+  handleProfileVisit(@Payload() { value }: { value: ProfileVisitedEvent }) {
+    const userId = value.input.visitorId;
+    const profileAuthorId = value.input.profileAuthorId;
+
+    if (userId && profileAuthorId) {
+      this.commandbus.execute(
+        new IncrementUserProfileVisitsInteractionCommand(
+          userId,
+          profileAuthorId,
+        ),
+      );
+    }
+  }
+
+  @EventPattern(KAFKA_EVENTS.SOCIAL_EVENTS.postSaved('*'))
+  handlePostSaved(@Payload() { value }: { value: PostSavedEvent }) {
+    const userId = value.input.saverId;
+    const authorId = value.input.postAuthorId;
+    if (userId && authorId) {
+      this.commandbus.execute(
+        new IncrementUserPostSaveInteractionCommand(userId, authorId),
+      );
+    }
+  }
 }

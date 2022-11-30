@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma-client';
 import { PrismaService } from 'prismaService';
 
-export enum IntInputTypeEnum {
+export enum NumInputTypeEnum {
   increment = 'inc',
   decrement = 'dec',
   set = 'set',
@@ -10,23 +10,24 @@ export enum IntInputTypeEnum {
 
 type IntInput = {
   value: number;
-  type: IntInputTypeEnum;
+  type: NumInputTypeEnum;
 };
 
 function handleUpdateNumInput(
   input: IntInput,
 ): Prisma.IntFieldUpdateOperationsInput {
+  if (!input) return undefined;
   const value = input.value;
   switch (input.type) {
-    case IntInputTypeEnum.increment:
+    case NumInputTypeEnum.increment:
       return {
         increment: value,
       };
-    case IntInputTypeEnum.decrement:
+    case NumInputTypeEnum.decrement:
       return {
         decrement: value,
       };
-    case IntInputTypeEnum.set:
+    case NumInputTypeEnum.set:
       return {
         set: value,
       };
@@ -43,6 +44,9 @@ type UpdateInput = Partial<{
   interactionScore: IntInput;
   commentsLikes: IntInput;
   mentions: IntInput;
+  reviewedItems: IntInput;
+  profileVisits: IntInput;
+  postSaved: IntInput;
 }>;
 
 @Injectable()
@@ -50,26 +54,33 @@ export class UsersInteractionsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   update(ownerId: string, userId: string, input: UpdateInput) {
+    if (!ownerId || !userId) throw new BadRequestException();
     return this.prisma.usersInteractions.upsert({
       create: {
         userId,
         ownerId,
-        commentsReply: input.comments.value,
-        commentsLikes: input.commentsLikes.value,
-        shares: input.shares.value,
-        messages: input.messages.value,
-        postLikes: input.postLikes.value,
-        interactionScore: input.interactionScore.value,
-        mentions: input.mentions.value,
+        commentsReply: input?.comments?.value,
+        commentsLikes: input?.commentsLikes?.value,
+        shares: input?.shares?.value,
+        messages: input?.messages?.value,
+        postLikes: input?.postLikes?.value,
+        interactionScore: input?.interactionScore?.value,
+        mentions: input?.mentions?.value,
+        reviewedItems: input?.reviewedItems?.value,
+        profileVisits: input?.profileVisits?.value,
+        postSaved: input?.postSaved?.value,
       },
       update: {
-        commentsReply: handleUpdateNumInput(input.comments),
-        commentsLikes: handleUpdateNumInput(input.commentsLikes),
-        interactionScore: handleUpdateNumInput(input.interactionScore),
-        messages: handleUpdateNumInput(input.messages),
-        postLikes: handleUpdateNumInput(input.postLikes),
-        shares: handleUpdateNumInput(input.shares),
-        mentions: handleUpdateNumInput(input.mentions),
+        commentsReply: handleUpdateNumInput(input?.comments),
+        commentsLikes: handleUpdateNumInput(input?.commentsLikes),
+        interactionScore: handleUpdateNumInput(input?.interactionScore),
+        messages: handleUpdateNumInput(input?.messages),
+        postLikes: handleUpdateNumInput(input?.postLikes),
+        shares: handleUpdateNumInput(input?.shares),
+        mentions: handleUpdateNumInput(input?.mentions),
+        reviewedItems: handleUpdateNumInput(input?.reviewedItems),
+        postSaved: handleUpdateNumInput(input?.postSaved),
+        profileVisits: handleUpdateNumInput(input?.profileVisits),
       },
       where: {
         ownerId_userId: {

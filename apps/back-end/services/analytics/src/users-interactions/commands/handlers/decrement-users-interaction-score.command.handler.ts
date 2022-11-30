@@ -3,7 +3,7 @@ import { UsersInteractions } from '@prisma-client';
 import { DecrementUsersInteractionScoreCommand } from '@users-interations/commands/impl';
 import { USER_INTERACTION_SCORE } from '@users-interations/const';
 import {
-  IntInputTypeEnum,
+  NumInputTypeEnum,
   UsersInteractionsRepository,
 } from '@users-interations/repository';
 
@@ -18,7 +18,7 @@ export class DecrementUsersInteractionScoreCommandHandler
   }: DecrementUsersInteractionScoreCommand): Promise<boolean> {
     const res = await this.repo.updateAll({
       interactionScore: {
-        type: IntInputTypeEnum.increment,
+        type: NumInputTypeEnum.increment,
         value: amount,
       },
     });

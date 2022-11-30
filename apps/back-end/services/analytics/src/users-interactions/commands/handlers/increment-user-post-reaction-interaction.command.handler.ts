@@ -3,7 +3,7 @@ import { UsersInteractions } from '@prisma-client';
 import { IncreamentUserPostReactionInteractionCommand } from '@users-interations/commands';
 import { USER_INTERACTION_SCORE } from '@users-interations/const';
 import {
-  IntInputTypeEnum,
+  NumInputTypeEnum,
   UsersInteractionsRepository,
 } from '@users-interations/repository';
 
@@ -18,9 +18,9 @@ export class IncreamentUserPostReactionInteractionCommandHandler
     reactedToId,
   }: IncreamentUserPostReactionInteractionCommand): Promise<UsersInteractions> {
     const res = await this.repo.update(reactedById, reactedToId, {
-      postLikes: { type: IntInputTypeEnum.increment, value: 1 },
+      postLikes: { type: NumInputTypeEnum.increment, value: 1 },
       interactionScore: {
-        type: IntInputTypeEnum.increment,
+        type: NumInputTypeEnum.increment,
         value: USER_INTERACTION_SCORE.postLike,
       },
     });

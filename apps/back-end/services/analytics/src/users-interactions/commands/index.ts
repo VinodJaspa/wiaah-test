@@ -7,6 +7,9 @@ import {
   IncrementUserSharesInteractionCommandHandler,
   IncrementUserMentionInteractionCommandHandler,
   DecrementUsersInteractionScoreCommandHandler,
+  IncrementUserReviewedItemsCommandHandler,
+  IncrementUserProfileVisitsInteractionCommandHandler,
+  IncrementUserPostSaveInteractionCommandHandler,
 } from './handlers';
 
 export const analyticsCommandHandlers = [
@@ -17,4 +20,7 @@ export const analyticsCommandHandlers = [
   IncrementUserSharesInteractionCommandHandler,
   IncrementUserMentionInteractionCommandHandler,
   DecrementUsersInteractionScoreCommandHandler,
+  IncrementUserReviewedItemsCommandHandler,
+  IncrementUserProfileVisitsInteractionCommandHandler,
+  IncrementUserPostSaveInteractionCommandHandler,
 ];

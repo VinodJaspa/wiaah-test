@@ -47,8 +47,11 @@ export type UsersInteractions = {
   commentsLikes: number
   shares: number
   messages: number
-  interactionScore: number
   mentions: number
+  reviewedItems: number
+  profileVisits: number
+  postSaved: number
+  interactionScore: number
   createdAt: Date
   updatedAt: Date
 }
@@ -2599,8 +2602,11 @@ export namespace Prisma {
     commentsLikes: number | null
     shares: number | null
     messages: number | null
-    interactionScore: number | null
     mentions: number | null
+    reviewedItems: number | null
+    profileVisits: number | null
+    postSaved: number | null
+    interactionScore: number | null
   }
 
   export type UsersInteractionsSumAggregateOutputType = {
@@ -2609,8 +2615,11 @@ export namespace Prisma {
     commentsLikes: number | null
     shares: number | null
     messages: number | null
-    interactionScore: number | null
     mentions: number | null
+    reviewedItems: number | null
+    profileVisits: number | null
+    postSaved: number | null
+    interactionScore: number | null
   }
 
   export type UsersInteractionsMinAggregateOutputType = {
@@ -2622,8 +2631,11 @@ export namespace Prisma {
     commentsLikes: number | null
     shares: number | null
     messages: number | null
-    interactionScore: number | null
     mentions: number | null
+    reviewedItems: number | null
+    profileVisits: number | null
+    postSaved: number | null
+    interactionScore: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2637,8 +2649,11 @@ export namespace Prisma {
     commentsLikes: number | null
     shares: number | null
     messages: number | null
-    interactionScore: number | null
     mentions: number | null
+    reviewedItems: number | null
+    profileVisits: number | null
+    postSaved: number | null
+    interactionScore: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2652,8 +2667,11 @@ export namespace Prisma {
     commentsLikes: number
     shares: number
     messages: number
-    interactionScore: number
     mentions: number
+    reviewedItems: number
+    profileVisits: number
+    postSaved: number
+    interactionScore: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -2666,8 +2684,11 @@ export namespace Prisma {
     commentsLikes?: true
     shares?: true
     messages?: true
-    interactionScore?: true
     mentions?: true
+    reviewedItems?: true
+    profileVisits?: true
+    postSaved?: true
+    interactionScore?: true
   }
 
   export type UsersInteractionsSumAggregateInputType = {
@@ -2676,8 +2697,11 @@ export namespace Prisma {
     commentsLikes?: true
     shares?: true
     messages?: true
-    interactionScore?: true
     mentions?: true
+    reviewedItems?: true
+    profileVisits?: true
+    postSaved?: true
+    interactionScore?: true
   }
 
   export type UsersInteractionsMinAggregateInputType = {
@@ -2689,8 +2713,11 @@ export namespace Prisma {
     commentsLikes?: true
     shares?: true
     messages?: true
-    interactionScore?: true
     mentions?: true
+    reviewedItems?: true
+    profileVisits?: true
+    postSaved?: true
+    interactionScore?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2704,8 +2731,11 @@ export namespace Prisma {
     commentsLikes?: true
     shares?: true
     messages?: true
-    interactionScore?: true
     mentions?: true
+    reviewedItems?: true
+    profileVisits?: true
+    postSaved?: true
+    interactionScore?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2719,8 +2749,11 @@ export namespace Prisma {
     commentsLikes?: true
     shares?: true
     messages?: true
-    interactionScore?: true
     mentions?: true
+    reviewedItems?: true
+    profileVisits?: true
+    postSaved?: true
+    interactionScore?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -2827,8 +2860,11 @@ export namespace Prisma {
     commentsLikes: number
     shares: number
     messages: number
-    interactionScore: number
     mentions: number
+    reviewedItems: number
+    profileVisits: number
+    postSaved: number
+    interactionScore: number
     createdAt: Date
     updatedAt: Date
     _count: UsersInteractionsCountAggregateOutputType | null
@@ -2861,8 +2897,11 @@ export namespace Prisma {
     commentsLikes?: boolean
     shares?: boolean
     messages?: boolean
-    interactionScore?: boolean
     mentions?: boolean
+    reviewedItems?: boolean
+    profileVisits?: boolean
+    postSaved?: boolean
+    interactionScore?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
@@ -3605,8 +3644,11 @@ export namespace Prisma {
     commentsLikes: 'commentsLikes',
     shares: 'shares',
     messages: 'messages',
-    interactionScore: 'interactionScore',
     mentions: 'mentions',
+    reviewedItems: 'reviewedItems',
+    profileVisits: 'profileVisits',
+    postSaved: 'postSaved',
+    interactionScore: 'interactionScore',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -3733,8 +3775,11 @@ export namespace Prisma {
     commentsLikes?: IntFilter | number
     shares?: IntFilter | number
     messages?: IntFilter | number
-    interactionScore?: FloatFilter | number
     mentions?: IntFilter | number
+    reviewedItems?: IntFilter | number
+    profileVisits?: IntFilter | number
+    postSaved?: IntFilter | number
+    interactionScore?: FloatFilter | number
     createdAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
   }
@@ -3748,8 +3793,11 @@ export namespace Prisma {
     commentsLikes?: SortOrder
     shares?: SortOrder
     messages?: SortOrder
-    interactionScore?: SortOrder
     mentions?: SortOrder
+    reviewedItems?: SortOrder
+    profileVisits?: SortOrder
+    postSaved?: SortOrder
+    interactionScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3768,8 +3816,11 @@ export namespace Prisma {
     commentsLikes?: SortOrder
     shares?: SortOrder
     messages?: SortOrder
-    interactionScore?: SortOrder
     mentions?: SortOrder
+    reviewedItems?: SortOrder
+    profileVisits?: SortOrder
+    postSaved?: SortOrder
+    interactionScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UsersInteractionsCountOrderByAggregateInput
@@ -3791,8 +3842,11 @@ export namespace Prisma {
     commentsLikes?: IntWithAggregatesFilter | number
     shares?: IntWithAggregatesFilter | number
     messages?: IntWithAggregatesFilter | number
-    interactionScore?: FloatWithAggregatesFilter | number
     mentions?: IntWithAggregatesFilter | number
+    reviewedItems?: IntWithAggregatesFilter | number
+    profileVisits?: IntWithAggregatesFilter | number
+    postSaved?: IntWithAggregatesFilter | number
+    interactionScore?: FloatWithAggregatesFilter | number
     createdAt?: DateTimeWithAggregatesFilter | Date | string
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
   }
@@ -3896,8 +3950,11 @@ export namespace Prisma {
     commentsLikes?: number
     shares?: number
     messages?: number
-    interactionScore?: number
     mentions?: number
+    reviewedItems?: number
+    profileVisits?: number
+    postSaved?: number
+    interactionScore?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3911,8 +3968,11 @@ export namespace Prisma {
     commentsLikes?: number
     shares?: number
     messages?: number
-    interactionScore?: number
     mentions?: number
+    reviewedItems?: number
+    profileVisits?: number
+    postSaved?: number
+    interactionScore?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3925,8 +3985,11 @@ export namespace Prisma {
     commentsLikes?: IntFieldUpdateOperationsInput | number
     shares?: IntFieldUpdateOperationsInput | number
     messages?: IntFieldUpdateOperationsInput | number
-    interactionScore?: FloatFieldUpdateOperationsInput | number
     mentions?: IntFieldUpdateOperationsInput | number
+    reviewedItems?: IntFieldUpdateOperationsInput | number
+    profileVisits?: IntFieldUpdateOperationsInput | number
+    postSaved?: IntFieldUpdateOperationsInput | number
+    interactionScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3939,8 +4002,11 @@ export namespace Prisma {
     commentsLikes?: IntFieldUpdateOperationsInput | number
     shares?: IntFieldUpdateOperationsInput | number
     messages?: IntFieldUpdateOperationsInput | number
-    interactionScore?: FloatFieldUpdateOperationsInput | number
     mentions?: IntFieldUpdateOperationsInput | number
+    reviewedItems?: IntFieldUpdateOperationsInput | number
+    profileVisits?: IntFieldUpdateOperationsInput | number
+    postSaved?: IntFieldUpdateOperationsInput | number
+    interactionScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3954,8 +4020,11 @@ export namespace Prisma {
     commentsLikes?: number
     shares?: number
     messages?: number
-    interactionScore?: number
     mentions?: number
+    reviewedItems?: number
+    profileVisits?: number
+    postSaved?: number
+    interactionScore?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3968,8 +4037,11 @@ export namespace Prisma {
     commentsLikes?: IntFieldUpdateOperationsInput | number
     shares?: IntFieldUpdateOperationsInput | number
     messages?: IntFieldUpdateOperationsInput | number
-    interactionScore?: FloatFieldUpdateOperationsInput | number
     mentions?: IntFieldUpdateOperationsInput | number
+    reviewedItems?: IntFieldUpdateOperationsInput | number
+    profileVisits?: IntFieldUpdateOperationsInput | number
+    postSaved?: IntFieldUpdateOperationsInput | number
+    interactionScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3982,8 +4054,11 @@ export namespace Prisma {
     commentsLikes?: IntFieldUpdateOperationsInput | number
     shares?: IntFieldUpdateOperationsInput | number
     messages?: IntFieldUpdateOperationsInput | number
-    interactionScore?: FloatFieldUpdateOperationsInput | number
     mentions?: IntFieldUpdateOperationsInput | number
+    reviewedItems?: IntFieldUpdateOperationsInput | number
+    profileVisits?: IntFieldUpdateOperationsInput | number
+    postSaved?: IntFieldUpdateOperationsInput | number
+    interactionScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4201,8 +4276,11 @@ export namespace Prisma {
     commentsLikes?: SortOrder
     shares?: SortOrder
     messages?: SortOrder
-    interactionScore?: SortOrder
     mentions?: SortOrder
+    reviewedItems?: SortOrder
+    profileVisits?: SortOrder
+    postSaved?: SortOrder
+    interactionScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -4213,8 +4291,11 @@ export namespace Prisma {
     commentsLikes?: SortOrder
     shares?: SortOrder
     messages?: SortOrder
-    interactionScore?: SortOrder
     mentions?: SortOrder
+    reviewedItems?: SortOrder
+    profileVisits?: SortOrder
+    postSaved?: SortOrder
+    interactionScore?: SortOrder
   }
 
   export type UsersInteractionsMaxOrderByAggregateInput = {
@@ -4226,8 +4307,11 @@ export namespace Prisma {
     commentsLikes?: SortOrder
     shares?: SortOrder
     messages?: SortOrder
-    interactionScore?: SortOrder
     mentions?: SortOrder
+    reviewedItems?: SortOrder
+    profileVisits?: SortOrder
+    postSaved?: SortOrder
+    interactionScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -4241,8 +4325,11 @@ export namespace Prisma {
     commentsLikes?: SortOrder
     shares?: SortOrder
     messages?: SortOrder
-    interactionScore?: SortOrder
     mentions?: SortOrder
+    reviewedItems?: SortOrder
+    profileVisits?: SortOrder
+    postSaved?: SortOrder
+    interactionScore?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -4253,8 +4340,11 @@ export namespace Prisma {
     commentsLikes?: SortOrder
     shares?: SortOrder
     messages?: SortOrder
-    interactionScore?: SortOrder
     mentions?: SortOrder
+    reviewedItems?: SortOrder
+    profileVisits?: SortOrder
+    postSaved?: SortOrder
+    interactionScore?: SortOrder
   }
 
   export type FloatFieldUpdateOperationsInput = {

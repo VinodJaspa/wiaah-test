@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { USER_INTERACTION_SCORE } from '@users-interations/const';
 import {
-  IntInputTypeEnum,
+  NumInputTypeEnum,
   UsersInteractionsRepository,
 } from '@users-interations/repository';
 import { IncrementUserMessagesInteractionCommand } from '../impl';
@@ -18,11 +18,11 @@ export class IncrementUserMessagesInteractionCommandHandler
   }: IncrementUserMessagesInteractionCommand): Promise<any> {
     const res = await this.repo.update(sendById, sendToId, {
       messages: {
-        type: IntInputTypeEnum.increment,
+        type: NumInputTypeEnum.increment,
         value: 1,
       },
       interactionScore: {
-        type: IntInputTypeEnum.increment,
+        type: NumInputTypeEnum.increment,
         value: USER_INTERACTION_SCORE.message,
       },
     });

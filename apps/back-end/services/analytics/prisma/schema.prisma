@@ -36,8 +36,11 @@ model UsersInteractions {
   commentsLikes    Int      @default(0)
   shares           Int      @default(0)
   messages         Int      @default(0)
-  interactionScore Float    @default(0)
   mentions         Int      @default(0)
+  reviewedItems    Int      @default(0)
+  profileVisits    Int      @default(0)
+  postSaved        Int      @default(0)
+  interactionScore Float    @default(0)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 

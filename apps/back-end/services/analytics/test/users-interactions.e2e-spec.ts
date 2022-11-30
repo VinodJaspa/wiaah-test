@@ -6,7 +6,15 @@ import {
   USER_INTERACTION_SCORE,
 } from '../src/users-interactions/const';
 import { Kafka } from 'kafkajs';
-import { ContentReactedEvent } from 'nest-dto';
+import {
+  ChatPrivateMessageSentEvent,
+  CommentCreatedEvent,
+  ContentReactedEvent,
+  ContentSharedEvent,
+  PostSavedEvent,
+  ProfileVisitedEvent,
+  UserMentionEvent,
+} from 'nest-dto';
 import { ObjectId } from 'mongodb';
 import {
   KafkaCustomTransport,
@@ -17,10 +25,10 @@ import {
   waitFor,
 } from 'nest-utils';
 import { AppModule } from '../src/app.module';
-import { PrismaClient } from '@prisma-client';
 import { UsersInteractionsRepository } from '@users-interations/repository';
+import { PrismaClient } from '@prisma-client';
 
-describe('users interfactiond e2e tests', () => {
+describe('users interactions e2e tests', () => {
   let app: INestApplication;
 
   let repo: UsersInteractionsRepository;
@@ -50,6 +58,7 @@ describe('users interfactiond e2e tests', () => {
         },
         consumer: {
           groupId: 'test group id',
+          allowAutoTopicCreation: true,
         },
       }),
     });
@@ -92,25 +101,253 @@ describe('users interfactiond e2e tests', () => {
         contentAuthorId,
       );
 
-      const {
-        commentLike,
-        commentReply,
-        mention,
-        message,
-        postComment,
-        postLike,
-        share,
-      } = USER_INTERACTION_SCORE;
+      const { commentLike, postLike } = USER_INTERACTION_SCORE;
 
-      expect(interactionRecord).toStrictEqual({
-        shares: 1,
-        commentsReply: 2,
+      expect(interactionRecord).toMatchObject({
+        shares: 0,
+        commentsReply: 0,
         commentsLikes: 1,
-        messages: 1,
-        mentions: 1,
+        messages: 0,
+        mentions: 0,
         postLikes: 1,
-        interactionScore:
-          commentLike + share + commentReply * 2 + message + mention + postLike,
+        interactionScore: commentLike + postLike,
+      });
+    });
+  });
+
+  it('should handle comments', async () => {
+    let userId = mockedUser.id;
+    let contentAuthorId = secendMockedUser.id;
+
+    await producer.send({
+      topic: KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated('', false),
+      messages: [
+        {
+          value: new CommentCreatedEvent({
+            commentedAt: new Date().toString(),
+            commentedByProfileId: new ObjectId().toHexString(),
+            commentedByUserId: userId,
+            commentId: new ObjectId().toHexString(),
+            contentOwnerUserId: contentAuthorId,
+            hostAuthorId: contentAuthorId,
+            hostId: new ObjectId().toHexString(),
+            hostType: 'comment',
+            mainHostAuthorId: new ObjectId().toHexString(),
+            mainHostId: new ObjectId().toHexString(),
+          }).toString(),
+        },
+      ],
+    });
+
+    await waitFor(async () => {
+      const interactionRecord = await repo.getOneByUserId(
+        userId,
+        contentAuthorId,
+      );
+
+      const { commentReply } = USER_INTERACTION_SCORE;
+
+      expect(interactionRecord).toMatchObject({
+        shares: 0,
+        commentsReply: 1,
+        commentsLikes: 0,
+        messages: 0,
+        mentions: 0,
+        postLikes: 0,
+        interactionScore: commentReply,
+      });
+    });
+  });
+
+  it('should handle shares', async () => {
+    let userId = mockedUser.id;
+    let contentAuthorId = secendMockedUser.id;
+
+    await producer.send({
+      topic: KAFKA_EVENTS.SHARES_EVENTS.contentShared('', false),
+      messages: [
+        {
+          value: new ContentSharedEvent({
+            contentAuthorProfileId: new ObjectId().toHexString(),
+            contentAuthorUserId: contentAuthorId,
+            contentId: new ObjectId().toHexString(),
+            contentType: 'post',
+            sharedAt: new Date().toString(),
+            sharedByProfileId: new ObjectId().toHexString(),
+            sharedByUserId: userId,
+          }).toString(),
+        },
+      ],
+    });
+
+    await waitFor(async () => {
+      const interactionRecord = await repo.getOneByUserId(
+        userId,
+        contentAuthorId,
+      );
+
+      const { share } = USER_INTERACTION_SCORE;
+
+      expect(interactionRecord).toMatchObject({
+        shares: 1,
+        commentsReply: 0,
+        commentsLikes: 0,
+        messages: 0,
+        mentions: 0,
+        postLikes: 0,
+        interactionScore: share,
+      });
+    });
+  });
+
+  it('should handle messages', async () => {
+    let userId = mockedUser.id;
+    let contentAuthorId = secendMockedUser.id;
+
+    await producer.send({
+      topic: KAFKA_EVENTS.CHAT.privateMessageSent,
+      messages: [
+        {
+          value: new ChatPrivateMessageSentEvent({
+            messageId: new ObjectId().toHexString(),
+            sentById: userId,
+            sentToId: contentAuthorId,
+          }).toString(),
+        },
+      ],
+    });
+
+    await waitFor(async () => {
+      const interactionRecord = await repo.getOneByUserId(
+        userId,
+        contentAuthorId,
+      );
+
+      const { message } = USER_INTERACTION_SCORE;
+
+      expect(interactionRecord).toMatchObject({
+        shares: 0,
+        commentsReply: 0,
+        commentsLikes: 0,
+        messages: 1,
+        mentions: 0,
+        postLikes: 0,
+        interactionScore: message,
+      });
+    });
+  });
+
+  it('should handle mentions', async () => {
+    let userId = mockedUser.id;
+    let contentAuthorId = secendMockedUser.id;
+
+    await producer.send({
+      topic: KAFKA_EVENTS.SOCIAL_EVENTS.userMention('', false),
+      messages: [
+        {
+          value: new UserMentionEvent({
+            hostId: new ObjectId().toHexString(),
+            hostType: 'post',
+            mentionedId: contentAuthorId,
+            userId,
+          }).toString(),
+        },
+      ],
+    });
+
+    await waitFor(async () => {
+      const interactionRecord = await repo.getOneByUserId(
+        userId,
+        contentAuthorId,
+      );
+
+      const { mention } = USER_INTERACTION_SCORE;
+
+      expect(interactionRecord).toMatchObject({
+        shares: 0,
+        commentsReply: 0,
+        commentsLikes: 0,
+        messages: 0,
+        mentions: 1,
+        postLikes: 0,
+        interactionScore: mention,
+      });
+    });
+  });
+
+  it('should handle profile visits', async () => {
+    let userId = mockedUser.id;
+    let contentAuthorId = secendMockedUser.id;
+
+    await producer.send({
+      topic: KAFKA_EVENTS.PROFILE_EVENTS.profileVisited('', false),
+      messages: [
+        {
+          value: new ProfileVisitedEvent({
+            profileAuthorId: contentAuthorId,
+            profileId: new ObjectId().toHexString(),
+            visitorId: userId,
+          }).toString(),
+        },
+      ],
+    });
+
+    await waitFor(async () => {
+      const interactionRecord = await repo.getOneByUserId(
+        userId,
+        contentAuthorId,
+      );
+
+      const { profileVisit } = USER_INTERACTION_SCORE;
+
+      expect(interactionRecord).toMatchObject({
+        shares: 0,
+        commentsReply: 0,
+        commentsLikes: 0,
+        messages: 0,
+        mentions: 0,
+        postLikes: 0,
+        profileVisits: 1,
+        interactionScore: profileVisit,
+      });
+    });
+  });
+
+  it('should handle saved posts', async () => {
+    let userId = mockedUser.id;
+    let contentAuthorId = secendMockedUser.id;
+
+    await producer.send({
+      topic: KAFKA_EVENTS.SOCIAL_EVENTS.postSaved('', false),
+      messages: [
+        {
+          value: new PostSavedEvent({
+            postAuthorId: contentAuthorId,
+            postId: new ObjectId().toHexString(),
+            saverId: userId,
+          }).toString(),
+        },
+      ],
+    });
+
+    await waitFor(async () => {
+      const interactionRecord = await repo.getOneByUserId(
+        userId,
+        contentAuthorId,
+      );
+
+      const { postSave } = USER_INTERACTION_SCORE;
+
+      expect(interactionRecord).toMatchObject({
+        shares: 0,
+        commentsReply: 0,
+        commentsLikes: 0,
+        messages: 0,
+        mentions: 0,
+        postLikes: 0,
+        profileVisits: 0,
+        postSaved: 1,
+        interactionScore: postSave,
       });
     });
   });

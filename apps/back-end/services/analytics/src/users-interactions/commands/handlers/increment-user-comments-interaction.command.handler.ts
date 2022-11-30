@@ -1,7 +1,7 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UsersInteractions } from '@prisma-client';
 import {
-  IntInputTypeEnum,
+  NumInputTypeEnum,
   UsersInteractionsRepository,
 } from '@users-interations/repository';
 import { IncrementUserCommentsReplyInteractionCommand } from '@users-interations/commands/impl';
@@ -18,11 +18,11 @@ export class IncrementCommentsCommandHandler
   }: IncrementUserCommentsReplyInteractionCommand): Promise<UsersInteractions> {
     const res = await this.repo.update(commentedById, commentedToId, {
       comments: {
-        type: IntInputTypeEnum.increment,
+        type: NumInputTypeEnum.increment,
         value: 1,
       },
       interactionScore: {
-        type: IntInputTypeEnum.increment,
+        type: NumInputTypeEnum.increment,
         value: USER_INTERACTION_SCORE.commentReply,
       },
     });

@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { IncrementUserSharesInteractionCommand } from '@users-interations/commands/impl';
 import { USER_INTERACTION_SCORE } from '@users-interations/const';
 import {
-  IntInputTypeEnum,
+  NumInputTypeEnum,
   UsersInteractionsRepository,
 } from '@users-interations/repository';
 
@@ -18,11 +18,11 @@ export class IncrementUserSharesInteractionCommandHandler
   }: IncrementUserSharesInteractionCommand): Promise<any> {
     const res = await this.repo.update(sharedById, sharedToId, {
       shares: {
-        type: IntInputTypeEnum.increment,
+        type: NumInputTypeEnum.increment,
         value: 1,
       },
       interactionScore: {
-        type: IntInputTypeEnum.increment,
+        type: NumInputTypeEnum.increment,
         value: USER_INTERACTION_SCORE.share,
       },
     });

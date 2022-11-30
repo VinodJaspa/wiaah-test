@@ -99,8 +99,11 @@ exports.Prisma.UsersInteractionsScalarFieldEnum = makeEnum({
   commentsLikes: 'commentsLikes',
   shares: 'shares',
   messages: 'messages',
-  interactionScore: 'interactionScore',
   mentions: 'mentions',
+  reviewedItems: 'reviewedItems',
+  profileVisits: 'profileVisits',
+  postSaved: 'postSaved',
+  interactionScore: 'interactionScore',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 });
