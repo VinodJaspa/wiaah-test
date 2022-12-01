@@ -30,6 +30,7 @@
       "@posts-newsfeed/*": ["src/newsfeed-posts/*"],
       "@profile": ["src/profile"],
       "@comments": ["src/comments"],
+      "@comments/*": ["src/comments/*"],
       "@reaction": ["src/reaction"],
       "@entities": ["src/entities"],
       "prismaService": ["src/prisma.service"],

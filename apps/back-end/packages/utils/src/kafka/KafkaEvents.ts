@@ -206,6 +206,10 @@ export const KAFKA_MESSAGES = {
     getIsUserPurchasedProduct: (type: string) =>
       `get.is.user.purchased.product.${type}`,
   },
+  ANALYTICS_MESSAGES: {
+    getUsersInteractionsByUserId: () => `get.users.interactions.by.user.id`,
+    getUsersActivityScoresByIds: () => `get.users.activity.scores.by.ids`,
+  },
 
   emailExists: "email.exists",
   getAccountByEmail: "get.account.by.email",
