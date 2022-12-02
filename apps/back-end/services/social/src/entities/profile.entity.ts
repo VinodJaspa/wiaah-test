@@ -29,11 +29,11 @@ export class Profile {
   @Field(() => ID)
   ownerId: string;
 
-  // @Field(() => Date)
-  // createdAt: Date;
+  @Field(() => Date)
+  createdAt: Date;
 
-  // @Field(() => Date)
-  // updatedAt: Date;
+  @Field(() => Date)
+  updatedAt: Date;
 
   @Field(() => String)
   username: string;

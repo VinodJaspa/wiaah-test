@@ -33,6 +33,15 @@ import {
 import { QueryBus } from '@nestjs/cqrs';
 import { GetIsUserBlockedQuery } from '@block/queries';
 
+type Sort = {
+  key: ProfileSortKeys;
+  asc: boolean;
+};
+export enum ProfileSortKeys {
+  followers = 'followers',
+  following = 'following',
+}
+
 @Injectable()
 export class ProfileService {
   constructor(
@@ -114,6 +123,33 @@ export class ProfileService {
     return {
       data: profiles,
       hasMore: false,
+      total: profiles.length,
+    };
+  }
+
+  async getProfilesByNameQuery(
+    q: string,
+    sort: Sort,
+    cursor?: string,
+    take: number = 10,
+  ): Promise<ProfilePaginatedResponse> {
+    const profiles = await this.prisma.profile.findMany({
+      where: {
+        username: { contains: q },
+      },
+      cursor: cursor
+        ? {
+            id: cursor,
+          }
+        : undefined,
+      take,
+      orderBy: {
+        [sort.key]: sort.asc ? 'asc' : 'desc',
+      },
+    });
+    return {
+      data: profiles,
+      hasMore: profiles.length >= take,
       total: profiles.length,
     };
   }
