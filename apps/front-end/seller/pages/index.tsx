@@ -89,11 +89,7 @@ const seller: NextPage = () => {
                 );
               }}
               cols={cols}
-              posts={[
-                ...[...Array(4)].reduce((acc) => {
-                  return [...acc, ...newsfeedPosts.slice(0, 8)];
-                }, []),
-              ]}
+              // posts={[]}
             />
           </div>
         </div>

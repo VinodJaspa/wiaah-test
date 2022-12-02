@@ -5,9 +5,11 @@ import { ProfileModule } from '@profile-module';
 import { PrismaService } from 'prismaService';
 import { ContentManagementModule } from '@content-management';
 import { NewsfeedPostEventHandlers } from './events';
+import { CqrsModule } from '@nestjs/cqrs';
+import { kafkaModule } from '@kafkaModule';
 
 @Module({
-  imports: [ProfileModule, ContentManagementModule],
+  imports: [ProfileModule, ContentManagementModule, CqrsModule, kafkaModule],
   providers: [
     NewsfeedPostsResolver,
     NewsfeedPostsService,

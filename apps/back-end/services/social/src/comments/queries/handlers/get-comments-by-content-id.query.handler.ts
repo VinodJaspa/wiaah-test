@@ -7,14 +7,26 @@ import {
 import { CommentsRepository } from '@comments/repository';
 import { Comment } from '@entities';
 
+export class QueryHandlerBase {
+  querybus: QueryBus;
+  constructor(querybus: QueryBus) {
+    this.querybus = querybus;
+  }
+
+  async validateCommentsQuery(contentId: string, userId: string) {
+    // TODO: check for block secenario
+    return true;
+  }
+}
+
 @QueryHandler(GetCommentsByContentId)
 export class GetCommentsByContentIdQueryHandler
+  extends QueryHandlerBase
   implements IQueryHandler<GetCommentsByContentId>
 {
-  constructor(
-    private readonly repo: CommentsRepository,
-    private readonly querybus: QueryBus,
-  ) {}
+  constructor(private readonly repo: CommentsRepository, querybus: QueryBus) {
+    super(querybus);
+  }
 
   async execute({
     contentId,
@@ -22,6 +34,7 @@ export class GetCommentsByContentIdQueryHandler
     cursor,
     take,
   }: GetCommentsByContentId): Promise<Comment[]> {
+    await this.validateCommentsQuery(contentId, userId);
     const friendsScores = await this.querybus.execute<
       GetUserFriendsIdsQuery,
       { id: string; score: number }[]

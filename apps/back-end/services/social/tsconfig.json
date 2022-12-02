@@ -45,7 +45,8 @@
       "@affiliation-post/*": ["src/affiliation-post/*"],
       "@action/*": ["src/action/*"],
       "@hidden-content/*": ["src/hidden-content/*"],
-      "@story/*": ["src/story/*"]
+      "@story/*": ["src/story/*"],
+      "@kafkaModule": ["src/kafka.module"]
     }
   }
 }

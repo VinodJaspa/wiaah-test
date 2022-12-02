@@ -6,3 +6,4 @@ export * from "./SectionWrapper";
 export * from "./PaginationWrapper";
 export * from "./StaticSideBarWrapper";
 export * from "./GridListOrganiser";
+export * from "./ListWrapper";

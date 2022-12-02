@@ -56,94 +56,96 @@ export class UserActivityStatsController {
     });
   }
 
-  // @EventPattern(KAFKA_EVENTS.PRODUCTS_EVENTS.productPurchased)
-  // handleProductPurchased(
-  //   @Payload() { value }: { value: ProductPurchasedEvent },
-  // ) {
-  //   const userId = value.input.purchaserId;
-  //   this.commandbus.execute(
-  //     new IncreaseUserActivityScoreCommand(
-  //       userId,
-  //       USER_ACTIVITY_SCORES.productPurchase,
-  //     ),
-  //   );
-  // }
+  // TODO: handle get user activity message
 
-  // @EventPattern(KAFKA_EVENTS.NEWSFEED_POST_EVENTS.postCreated)
-  // handlePostCreated(@Payload() { value }: { value: NewPostCreatedEvent }) {
-  //   const userId = value.input.authorId;
+  @EventPattern(KAFKA_EVENTS.PRODUCTS_EVENTS.productPurchased)
+  handleProductPurchased(
+    @Payload() { value }: { value: ProductPurchasedEvent },
+  ) {
+    const userId = value.input.purchaserId;
+    this.commandbus.execute(
+      new IncreaseUserActivityScoreCommand(
+        userId,
+        USER_ACTIVITY_SCORES.productPurchase,
+      ),
+    );
+  }
 
-  //   this.commandbus.execute(
-  //     new IncreaseUserActivityScoreCommand(
-  //       userId,
-  //       USER_ACTIVITY_SCORES.newsfeedPost,
-  //     ),
-  //   );
-  // }
+  @EventPattern(KAFKA_EVENTS.NEWSFEED_POST_EVENTS.postCreated)
+  handlePostCreated(@Payload() { value }: { value: NewPostCreatedEvent }) {
+    const userId = value.input.authorId;
 
-  // @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted('*'))
-  // handleContentReacted(@Payload() { value }: { value: ContentReactedEvent }) {
-  //   const userId = value.input.reacterUserId;
-  //   this.commandbus.execute(
-  //     new IncreaseUserActivityScoreCommand(
-  //       userId,
-  //       USER_ACTIVITY_SCORES.contentLike,
-  //     ),
-  //   );
-  // }
+    this.commandbus.execute(
+      new IncreaseUserActivityScoreCommand(
+        userId,
+        USER_ACTIVITY_SCORES.newsfeedPost,
+      ),
+    );
+  }
 
-  // @EventPattern(KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated('*'))
-  // handleCommentCreated(@Payload() { value }: { value: CommentCreatedEvent }) {
-  //   const userId = value.input.commentedByUserId;
-  //   this.commandbus.execute(
-  //     new IncreaseUserActivityScoreCommand(
-  //       userId,
-  //       USER_ACTIVITY_SCORES.contentComment,
-  //     ),
-  //   );
-  // }
+  @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted('*'))
+  handleContentReacted(@Payload() { value }: { value: ContentReactedEvent }) {
+    const userId = value.input.reacterUserId;
+    this.commandbus.execute(
+      new IncreaseUserActivityScoreCommand(
+        userId,
+        USER_ACTIVITY_SCORES.contentLike,
+      ),
+    );
+  }
 
-  // @EventPattern(KAFKA_EVENTS.SERVICES.servicePurchased(`*`))
-  // handleServiceBooked(@Payload() { value }: { value: ServicePurchasedEvent }) {
-  //   const userId = value.input.purchaserId;
-  //   this.commandbus.execute(
-  //     new IncreaseUserActivityScoreCommand(
-  //       userId,
-  //       USER_ACTIVITY_SCORES.serviceBook,
-  //     ),
-  //   );
-  // }
+  @EventPattern(KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated('*'))
+  handleCommentCreated(@Payload() { value }: { value: CommentCreatedEvent }) {
+    const userId = value.input.commentedByUserId;
+    this.commandbus.execute(
+      new IncreaseUserActivityScoreCommand(
+        userId,
+        USER_ACTIVITY_SCORES.contentComment,
+      ),
+    );
+  }
 
-  // @EventPattern(KAFKA_EVENTS.STORIES.storyCreated)
-  // handleCreatedStory(@Payload() { value }: { value: StoryCreatedEvent }) {
-  //   const userId = value.input.userId;
-  //   this.commandbus.execute(
-  //     new IncreaseUserActivityScoreCommand(
-  //       userId,
-  //       USER_ACTIVITY_SCORES.storyCreation,
-  //     ),
-  //   );
-  // }
+  @EventPattern(KAFKA_EVENTS.SERVICES.servicePurchased(`*`))
+  handleServiceBooked(@Payload() { value }: { value: ServicePurchasedEvent }) {
+    const userId = value.input.purchaserId;
+    this.commandbus.execute(
+      new IncreaseUserActivityScoreCommand(
+        userId,
+        USER_ACTIVITY_SCORES.serviceBook,
+      ),
+    );
+  }
 
-  // @EventPattern(KAFKA_EVENTS.USER_EVENTS.userConnected)
-  // handleUserConnected(@Payload() { value }: { value: UserConnectedEvent }) {
-  //   const userId = value.input.userId;
-  //   this.commandbus.execute(new UpdateUserLastActiveCommand(userId));
-  // }
+  @EventPattern(KAFKA_EVENTS.STORIES.storyCreated)
+  handleCreatedStory(@Payload() { value }: { value: StoryCreatedEvent }) {
+    const userId = value.input.userId;
+    this.commandbus.execute(
+      new IncreaseUserActivityScoreCommand(
+        userId,
+        USER_ACTIVITY_SCORES.storyCreation,
+      ),
+    );
+  }
 
-  // @EventPattern(KAFKA_EVENTS.USER_EVENTS.updateUserActiveTime)
-  // @EventPattern(KAFKA_EVENTS.USER_EVENTS.userDisconnected)
-  // async handleUserDisconnected(
-  //   @Payload() { value }: { value: UserDisconnectedEvent },
-  // ) {
-  //   const userId = value.input.userId;
-  //   const res = await this.querybus.execute<
-  //     GetUserActivityStatsQuery,
-  //     UserActivityStats
-  //   >(new GetUserActivityStatsQuery(userId));
-  //   const lastActive = res.lastActive;
-  //   const { minutes } = GetDateDiff(new Date(lastActive), new Date());
+  @EventPattern(KAFKA_EVENTS.USER_EVENTS.userConnected)
+  handleUserConnected(@Payload() { value }: { value: UserConnectedEvent }) {
+    const userId = value.input.userId;
+    this.commandbus.execute(new UpdateUserLastActiveCommand(userId));
+  }
 
-  //   this.commandbus.execute(new IncreaseUserActiveTimeCommand(userId, minutes));
-  // }
+  @EventPattern(KAFKA_EVENTS.USER_EVENTS.updateUserActiveTime)
+  @EventPattern(KAFKA_EVENTS.USER_EVENTS.userDisconnected)
+  async handleUserDisconnected(
+    @Payload() { value }: { value: UserDisconnectedEvent },
+  ) {
+    const userId = value.input.userId;
+    const res = await this.querybus.execute<
+      GetUserActivityStatsQuery,
+      UserActivityStats
+    >(new GetUserActivityStatsQuery(userId));
+    const lastActive = res.lastActive;
+    const { minutes } = GetDateDiff(new Date(lastActive), new Date());
+
+    this.commandbus.execute(new IncreaseUserActiveTimeCommand(userId, minutes));
+  }
 }

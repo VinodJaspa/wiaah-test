@@ -4,6 +4,7 @@ import { ContentHostTypeEnum } from '@keys';
 import { UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProfileModule } from '@profile-module';
+import { ObjectId } from 'mongodb';
 import { MongoMemoryReplSet } from 'mongodb-memory-server';
 import { mockedUser, secendMockedUser, SERVICES } from 'nest-utils';
 import { PrismaService } from 'prismaService';
@@ -29,7 +30,7 @@ describe('comments testing', () => {
   const createNewsfeedMockInput: CreateNewsfeedPostInput = {
     attachments: [{ src: 'test src', type: 'img' }],
     content: 'test content',
-    mentions: [{ profileId: 'test profile id', userId: 'test user id' }],
+    mentions: [{ userId: 'test user id' }],
     tags: [{ tag: 'test' }, { tag: 'fun' }],
     title: 'test title',
     visibility: 'public',
@@ -50,7 +51,7 @@ describe('comments testing', () => {
       country: 'updated country',
       state: 'updated state',
     },
-    mentions: [{ userId: 'updated user id', profileId: 'updated profile id' }],
+    mentions: [{ userId: 'updated user id' }],
     tags: [{ tag: 'updated' }, { tag: 'update' }],
     title: 'updated title',
     visibility: 'hidden',
@@ -121,6 +122,7 @@ describe('comments testing', () => {
         contentId: newsFeedPost.id,
         contentType: 'post_newsfeed',
         mentions: [],
+        authorUserId: new ObjectId().toHexString(),
       },
       secendMockedUser,
     );
@@ -220,6 +222,7 @@ describe('comments testing', () => {
         contentId: newsFeedPost.id,
         contentType: 'post_newsfeed',
         mentions: [],
+        authorUserId: new ObjectId().toHexString(),
       },
       secendMockedUser,
     );
@@ -240,6 +243,7 @@ describe('comments testing', () => {
         contentId: createdComment.id,
         contentType: ContentHostTypeEnum.COMMENT,
         mentions: [],
+        authorUserId: new ObjectId().toHexString(),
       },
       mockedUser,
     );

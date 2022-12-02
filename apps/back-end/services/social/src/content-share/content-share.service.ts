@@ -55,7 +55,7 @@ export class ContentShareService {
           contentAuthorUserId: content.userId,
           contentId,
           contentType,
-          sharedAt: share.sharedAt,
+          sharedAt: share.sharedAt.toString(),
           sharedByProfileId: SharedByProfileId,
           sharedByUserId: userId,
         }),

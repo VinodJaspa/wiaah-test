@@ -2,7 +2,7 @@ import React from "react";
 import { HtmlDivProps } from "types";
 
 export interface ListWrapperProps {
-  children?: React.ReactElement[];
+  children?: React.ReactNode[];
   cols?: number;
   gap?: boolean;
   listProps?: HtmlDivProps;

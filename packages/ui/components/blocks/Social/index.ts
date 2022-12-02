@@ -21,7 +21,6 @@ export * from "./SocialAffiliationCard";
 export * from "./AffiliationOffersCardListWrapper";
 export * from "./SocialPostHeader";
 export * from "./HashTagCard";
-export * from "./ListWrapper";
 export * from "./HashTagPostsListWrapper";
 export * from "./SocialAuthFooter";
 export * from "./SubscriberCard";

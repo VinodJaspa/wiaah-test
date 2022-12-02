@@ -38,6 +38,8 @@ export class UsersInteractionsController {
     );
   }
 
+  // TODO: handle get users interaction scores message
+
   @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted('*'))
   handleContentReacted(@Payload() { value }: { value: ContentReactedEvent }) {
     const reactedById = value.input.reacterUserId;

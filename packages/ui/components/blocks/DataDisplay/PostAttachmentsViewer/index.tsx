@@ -38,7 +38,6 @@ export const PostAttachmentsViewer: React.FC<PostAttachmentsViewerProps> = ({
         >
           {attachments.map((attachment, i) => (
             <PostAttachment
-              play={i === active}
               key={attachment.src + i}
               type={attachment.type}
               src={attachment.src}

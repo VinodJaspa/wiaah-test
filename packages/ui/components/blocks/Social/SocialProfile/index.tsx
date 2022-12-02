@@ -19,21 +19,21 @@ import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 import { SocialStoryState } from "ui/state";
 import { useReactPubsub } from "react-pubsub";
-import { SocialShopProfileData } from "api";
+import { SocialProfileData } from "api";
 import { useDisclouser } from "hooks";
 
 export interface SocialProfileProps {
-  shopInfo: SocialShopProfileData;
+  profileInfo: SocialProfileData;
   onFollow?: () => void;
 }
 
 export const SocialProfile: React.FC<SocialProfileProps> = ({
   onFollow,
-  shopInfo,
+  profileInfo,
 }) => {
   const { t } = useTranslation();
   const { emit } = useReactPubsub((keys) => keys.serviceModal);
-  const { newStory, OpenStories, removeNewStory } = useStory();
+  const { OpenStories, removeNewStory } = useStory();
   const storyData = useRecoilValue(SocialStoryState);
   const { OpenLoginPopup } = useLoginPopup();
 
@@ -54,7 +54,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
     handleClose: subscriptionsOnClose,
   } = useDisclouser();
 
-  if (!shopInfo) return null;
+  if (!profileInfo) return null;
 
   const {
     publications,
@@ -69,7 +69,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
     isFollowed,
     public: PublicProfile,
     id,
-  } = shopInfo;
+  } = profileInfo;
 
   return (
     <div className="flex flex-col w-full bg-primary h-80 relative rounded-2xl ">
