@@ -1,4 +1,10 @@
 export * from './impl';
-import { PostCreatedEventHandler } from './handlers';
+import {
+  PostCreatedEventHandler,
+  PostTaggedUsersEventHandler,
+} from './handlers';
 
-export const NewsfeedPostEventHandlers = [PostCreatedEventHandler];
+export const NewsfeedPostEventHandlers = [
+  PostCreatedEventHandler,
+  PostTaggedUsersEventHandler,
+];

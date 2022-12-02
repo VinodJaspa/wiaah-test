@@ -1,45 +1,38 @@
 import React from "react";
-import { useScreenWidth } from "hooks";
 import {
   BoxShadow,
-  FlexStack,
-  Padding,
   AddressCard,
-  Clickable,
-  BoldText,
-  Text,
   Divider,
   Spacer,
-  CartSummaryProductCard,
   Button,
   AddressInputs,
   useUserAddresses,
   VoucherInput,
-  ShippingMotheds,
   PaymentGateway,
+  useGetCheckoutDataQuery,
+  useSearchFilters,
+  SpinnerFallback,
+  ServiceCheckoutCardSwitcher,
   TotalCost,
 } from "ui";
 import { AddressCardDetails, AddressDetails } from "types";
-import { CheckoutProductsState, VoucherState } from "ui/state";
-
-import { useRecoilValue, useSetRecoilState } from "recoil";
-import { shippingMotheds } from "ui/placeholder";
+import { VoucherState } from "ui/state";
+import { useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { randomNum } from "utils";
 
-export interface CheckoutViewProps {}
+export interface ServiceCheckoutViewProps {}
 
-export const CheckoutView: React.FC<CheckoutViewProps> = () => {
+export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
   const { t } = useTranslation();
   const { visit } = useRouting();
+  const { filters } = useSearchFilters();
+  const { data: res, isLoading, isError } = useGetCheckoutDataQuery(filters);
   const [editAddress, setEditAddress] = React.useState<AddressCardDetails>();
   const [edit, setEdit] = React.useState<boolean>(false);
 
-  const { min } = useScreenWidth({ minWidth: 1024 });
   const { addresses, AddAddress, DeleteAddress, UpdateAddress } =
     useUserAddresses();
-  const products = useRecoilValue(CheckoutProductsState);
   const setVoucher = useSetRecoilState(VoucherState);
 
   const [activeAddress, setActiveAddress] = React.useState<number>();
@@ -98,17 +91,17 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
   }
 
   return (
-    <Padding Y={{ value: 0.5 }}>
-      <Spacer spaceInRem={2} />
-      <div className={`flex gap-4 w-full ${min ? "flex-col" : "flex-row"}`}>
-        <FlexStack direction="vertical" fullWidth verticalSpacingInRem={1}>
-          <BoxShadow>
-            <div className="bg-white p-4">
-              <Padding Y={{ value: 1 }}>
+    <div className="flex flex-col md:table md:h-24 gap-4 w-full py-2">
+      <div className="md:table-row">
+        <div className="md:table-cell md:w-[99%] md:pr-4">
+          <div className="flex flex-col w-full gap-4">
+            <BoxShadow>
+              <div className="bg-white flex flex-col gap-4 p-4 py-8">
                 <div className="flex w-full justify-center text-3xl">
-                  <BoldText>{t("checkout", "Checkout")}</BoldText>
+                  <p className="font-bold">{t("Checkout")}</p>
                 </div>
-                <p className="font-bold text-lg">{"Address"}</p>
+
+                <p className="text-3xl">{"Address"}</p>
                 {edit ? (
                   <AddressInputs
                     initialInputs={editAddress}
@@ -117,14 +110,11 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                   />
                 ) : (
                   <>
-                    <FlexStack
-                      fullWidth
-                      direction="vertical"
-                      verticalSpacingInRem={1}
-                    >
+                    <div className="w-full flex flex-col gap-4">
                       {addresses.length > 0 &&
                         addresses.map((address, i) => (
-                          <Clickable
+                          <div
+                            className="cursor-pointer"
                             key={i}
                             onClick={() => setActiveAddress(i)}
                           >
@@ -136,68 +126,71 @@ export const CheckoutView: React.FC<CheckoutViewProps> = () => {
                               active={activeAddress === i}
                             />
                             <Divider />
-                          </Clickable>
+                          </div>
                         ))}
-                    </FlexStack>
+                    </div>
                     <Spacer />
-                    <Padding X={{ value: 1 }}>
+                    <div className="w-full flex justify-end">
                       <Button onClick={() => handleAddress()}>
                         {t("add_new_address", "ADD NEW ADDRESS")}
                       </Button>
-                    </Padding>
+                    </div>
                   </>
                 )}
-              </Padding>
+              </div>
+            </BoxShadow>
+            <VoucherInput onSuccess={handleVoucherValidation} />
+            <PaymentGateway />
+          </div>
+        </div>
+        <div className="md:table-cell ">
+          <BoxShadow className="h-full w-[min(30rem,100vw)]">
+            <div className="bg-white h-full">
+              <div className="flex flex-col h-full p-4 gap-2">
+                <div className="w-full flex justify-between items-center">
+                  <p className="text-3xl font-bold">
+                    {res ? res.data.bookedServices.length : 0} {t("items")}
+                  </p>
+                  <p
+                    className="text-lg cursor-pointer"
+                    onClick={() => visit((routes) => routes.visitCarySummary())}
+                  >
+                    {t("Change")}
+                  </p>
+                </div>
+                <Divider />
+                <div className="relative h-full w-full">
+                  <div className="flex flex-col absolute top-0 left-0 bottom-0 right-0 overflow-y-scroll thinScroll gap-4 h-full">
+                    <SpinnerFallback isError={isError} isLoading={isLoading}>
+                      {res
+                        ? res.data.bookedServices.map((service, i) => (
+                            <ServiceCheckoutCardSwitcher
+                              key={i}
+                              service={service}
+                            />
+                          ))
+                        : null}
+                    </SpinnerFallback>
+                  </div>
+                </div>
+                <Divider />
+                <SpinnerFallback isLoading={isLoading} isError={isError}>
+                  {res ? (
+                    <TotalCost
+                      subTotal={res.data.bookedServices.reduce((acc, curr) => {
+                        return acc + curr.data.price;
+                      }, 0)}
+                      vat={res.data.vat}
+                      saved={res.data.saved}
+                      voucherRemoveable
+                    />
+                  ) : null}
+                </SpinnerFallback>
+              </div>
             </div>
           </BoxShadow>
-          <VoucherInput onSuccess={handleVoucherValidation} />
-          <ShippingMotheds motheds={shippingMotheds} />
-          <PaymentGateway />
-        </FlexStack>
-        <BoxShadow fitHeight fitWidth>
-          <div className="bg-white">
-            <Padding X={{ value: 1 }} Y={{ value: 1 }}>
-              <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
-                <FlexStack
-                  width={{ value: 100, unit: "%" }}
-                  justify="between"
-                  alignItems="center"
-                >
-                  <Text size="3xl">
-                    <BoldText>
-                      {products.length} {t("items", "items")}
-                    </BoldText>
-                  </Text>
-                  <Text size="lg">
-                    <Clickable
-                      onClick={() =>
-                        visit((routes) => routes.visitCarySummary())
-                      }
-                    >
-                      {t("Change")}
-                    </Clickable>
-                  </Text>
-                </FlexStack>
-                <Divider />
-                <FlexStack width={{ value: 30 }} direction="vertical">
-                  {products.map((item, i) => (
-                    <>
-                      <CartSummaryProductCard minimal key={i} product={item} />
-                      <Divider />
-                    </>
-                  ))}
-                </FlexStack>
-                <TotalCost
-                  shippingFee={randomNum(30)}
-                  subTotal={randomNum(500)}
-                  vat={randomNum(20)}
-                  voucherRemoveable
-                />
-              </FlexStack>
-            </Padding>
-          </div>
-        </BoxShadow>
+        </div>
       </div>
-    </Padding>
+    </div>
   );
 };

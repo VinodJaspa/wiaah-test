@@ -14,6 +14,12 @@ import { CommentsVisibility } from 'prismaClient';
 registerEnumType(CommentsVisibility, { name: 'CommentsVisiblity' });
 
 @ObjectType()
+export class PostTag {
+  @Field(() => ID)
+  userId: string;
+}
+
+@ObjectType()
 export class PostMention {
   @Field(() => ID)
   userId: string;
@@ -52,7 +58,7 @@ export class SocialPost {
   attachments: Attachment[];
 
   @Field(() => [Hashtag])
-  tags: Hashtag[];
+  hashtags: Hashtag[];
 
   @Field(() => Int)
   reactionNum: number;
@@ -68,6 +74,9 @@ export class SocialPost {
 
   @Field(() => PostLocation, { nullable: true })
   location?: PostLocation;
+
+  @Field(() => [PostTag])
+  tags: PostTag[];
 }
 
 @ObjectType()

@@ -47,8 +47,8 @@ describe('newsfeed posts testing', () => {
   const createNewsfeedMockInput: CreateNewsfeedPostInput = {
     attachments: [{ src: 'test src', type: 'img' }],
     content: 'test content',
-    mentions: [{ profileId: 'test profile id', userId: 'test user id' }],
-    tags: [{ tag: 'test' }, { tag: 'fun' }],
+    mentions: [{ userId: 'test user id' }],
+    hashtags: [{ tag: 'test' }, { tag: 'fun' }],
     title: 'test title',
     visibility: 'public',
     location: {
@@ -57,6 +57,7 @@ describe('newsfeed posts testing', () => {
       country: 'test country',
       state: 'test state',
     },
+    tags: [{ userId: 'test' }],
   };
 
   const updatedNewsfeedMockInput: CreateNewsfeedPostInput = {
@@ -68,8 +69,9 @@ describe('newsfeed posts testing', () => {
       country: 'updated country',
       state: 'updated state',
     },
-    mentions: [{ userId: 'updated user id', profileId: 'updated profile id' }],
-    tags: [{ tag: 'updated' }, { tag: 'update' }],
+    mentions: [{ userId: 'updated user id' }],
+    hashtags: [{ tag: 'updated' }, { tag: 'update' }],
+    tags: [{ userId: 'test' }],
     title: 'updated title',
     visibility: 'hidden',
   };
@@ -163,7 +165,7 @@ describe('newsfeed posts testing', () => {
     );
 
     Object.entries(updatedNewsfeedMockInput).forEach(([key, value], i) => {
-      expect(updatedPost[key]).toStrictEqual(value);
+      expect(updatedPost[key] as any).toStrictEqual(value);
       trackKeys++;
     });
 

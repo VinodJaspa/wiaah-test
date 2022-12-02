@@ -1,4 +1,4 @@
-import { Attachment } from '@entities';
+import { Attachment, PostTag } from '@entities';
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 
 import {

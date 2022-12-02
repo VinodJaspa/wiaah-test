@@ -1,7 +1,7 @@
 import { TranslationTextType } from "types";
 export interface TabType<TComponent = React.ReactElement> {
   name: React.ReactNode;
-  component: TComponent;
+  component: React.ReactNode | React.FC;
 }
 
 export type TabsTabType = {

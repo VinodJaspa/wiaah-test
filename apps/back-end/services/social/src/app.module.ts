@@ -36,7 +36,7 @@ import { HiddenContentModule } from './hidden-content/hidden-content.module';
         return { req, res, user };
       },
     }),
-    NewsfeedPostsModule,
+    // NewsfeedPostsModule,
     CommentsModule,
     ReactionModule,
     ContentDiscoveryModule,

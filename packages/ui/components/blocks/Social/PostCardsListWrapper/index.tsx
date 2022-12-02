@@ -18,8 +18,12 @@ export interface PostCardsListWrapperProps extends ListWrapperProps {
   grid?: boolean;
 }
 
+const _posts = [...Array(5)].reduce((acc) => {
+  return [...acc, ...newsfeedPosts];
+}, [] as PostCardInfo[]) as PostCardInfo[];
+
 export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
-  posts = newsfeedPosts,
+  posts = _posts,
   cols = 1,
   onPostClick,
   grid,

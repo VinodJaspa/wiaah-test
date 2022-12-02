@@ -71,7 +71,7 @@ model NewsfeedPost {
   title              String
   content            String
   attachments        Attachment[]
-  tags               Hashtag[]
+  hashtags           Hashtag[]
   reactionNum        Int                @default(0)
   comments           Int                @default(0)
   shares             Int                @default(0)
@@ -79,6 +79,7 @@ model NewsfeedPost {
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
   mentions           PostMention[]
+  tags               PostTag[]
 }
 
 model ProductPost {
@@ -115,6 +116,8 @@ model Action {
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
+  mentions           PostMention[]
+  tags               PostTag[]
 }
 
 model ContentReaction {
@@ -163,19 +166,20 @@ model Comment {
 }
 
 model Story {
-  id           String      @id @default(auto()) @map("_id") @db.ObjectId
-  publisherId  String      @db.ObjectId
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  publisherId  String        @db.ObjectId
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
   type         String?
-  referenceId  String?     @db.ObjectId
+  referenceId  String?       @db.ObjectId
   content      String?
-  reactionsNum Int         @default(0)
+  reactionsNum Int           @default(0)
   attachment   Attachment?
-  viewsCount   Int         @default(0)
-  archived     Boolean     @default(false)
+  viewsCount   Int           @default(0)
+  archived     Boolean       @default(false)
   views        StoryView[]
   likes        StoryLike[]
+  mentions     PostMention[]
 }
 
 model StoryView {
@@ -207,13 +211,13 @@ model PrivacySettings {
 }
 
 model HiddenContent {
-  id String @id @default(auto()) @db.ObjectId @map("_id")
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
   contentId String
-  userId String @db.ObjectId
+  userId    String   @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([contentId,userId])
+  @@unique([contentId, userId])
 }
 
 type Hashtag {
@@ -221,8 +225,11 @@ type Hashtag {
 }
 
 type CommentMention {
-  userId    String
-  profileId String
+  userId String
+}
+
+type CommentTag {
+  userId String
 }
 
 type Attachment {
@@ -231,6 +238,10 @@ type Attachment {
 }
 
 type PostMention {
+  userId String
+}
+
+type PostTag {
   userId String
 }
 

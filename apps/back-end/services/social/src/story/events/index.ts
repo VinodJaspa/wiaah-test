@@ -1,4 +1,12 @@
 export * from './impl';
-import { StoryViewedEventHandler } from './handlers';
+import {
+  StoryViewedEventHandler,
+  StoryCreatedEventHander,
+  StoryMentionsEventHander,
+} from './handlers';
 
-export const storyEventHandlers = [StoryViewedEventHandler];
+export const storyEventHandlers = [
+  StoryViewedEventHandler,
+  StoryCreatedEventHander,
+  StoryMentionsEventHander,
+];

@@ -16,6 +16,7 @@ import {
   ShoppingCartIcon,
   PriceDisplay,
   UnDiscountedPriceDisplay,
+  CashbackBadge,
 } from "ui";
 
 export interface SocialServicesPostCardProps {
@@ -56,6 +57,11 @@ export const SocialServicesPostCard: React.FC<SocialServicesPostCardProps> = ({
         }
         alt={postInfo.content}
       />
+      {cashback ? (
+        <div className="absolute group-hover:opacity-0 transition-opacity bottom-4 left-4">
+          <CashbackBadge amount={cashback} type={"cash"} />
+        </div>
+      ) : null}
       {serviceLabel ? (
         <div className="absolute group-hover:opacity-0 transition-opacity bg-white text-primary rounded-lg px-4 py-1 flex justify-center items-center origin-center top-4 right-4">
           {serviceLabel}

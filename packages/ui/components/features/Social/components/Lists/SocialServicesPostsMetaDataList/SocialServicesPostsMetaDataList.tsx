@@ -1,6 +1,5 @@
 import { getServicePostDataFetcher } from "api";
 import { usePagination } from "hooks";
-import { ShopCardsInfoPlaceholder } from "placeholder";
 import React from "react";
 import { useRouting } from "routing";
 import { ShopCardInfo } from "types";

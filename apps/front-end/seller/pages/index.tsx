@@ -81,6 +81,7 @@ const seller: NextPage = () => {
           )} */}
           <div className="w-full">
             <PostCardsListWrapper
+              grid={true}
               onPostClick={(post) => {
                 router.push(
                   "/",
