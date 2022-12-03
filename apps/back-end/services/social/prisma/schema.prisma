@@ -80,6 +80,7 @@ model NewsfeedPost {
   commentsVisibility CommentsVisibility @default(public)
   mentions           PostMention[]
   tags               PostTag[]
+  status             PostStatus         @default(active)
 }
 
 model ProductPost {
@@ -310,4 +311,11 @@ enum AttachmentType {
   img
   vid
   text
+}
+
+enum PostStatus {
+  suspended
+  active
+  paused
+  pending
 }

@@ -8,6 +8,7 @@ import { NewsfeedPostEventHandlers } from './events';
 
 import { CqrsModule } from '@nestjs/cqrs';
 import { kafkaModule } from '@kafkaModule';
+import { NewsfeedPostsController } from './newsfeed-posts.controller';
 
 @Module({
   imports: [ProfileModule, ContentManagementModule, CqrsModule, kafkaModule],
@@ -18,5 +19,6 @@ import { kafkaModule } from '@kafkaModule';
     ...NewsfeedPostEventHandlers,
   ],
   exports: [NewsfeedPostsService],
+  controllers: [NewsfeedPostsController],
 })
 export class NewsfeedPostsModule {}
