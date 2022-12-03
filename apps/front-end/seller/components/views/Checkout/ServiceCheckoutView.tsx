@@ -1,12 +1,7 @@
 import React from "react";
 import {
   BoxShadow,
-  FlexStack,
-  Padding,
   AddressCard,
-  Clickable,
-  BoldText,
-  Text,
   Divider,
   Spacer,
   Button,
@@ -15,16 +10,12 @@ import {
   VoucherInput,
   PaymentGateway,
   TotalCost,
-  HotelCheckoutCard,
-  ResturantCheckoutCard,
-  HealthCenterCheckoutCard,
-  BeautyCenterCheckoutCard,
   GuestsInput,
   Modal,
   ModalContent,
   ModalOverlay,
   DateInput,
-  useGetServiceCheckoutDataQuery,
+  useGetCheckoutDataQuery,
   useSearchFilters,
   SpinnerFallback,
   CheckInOutInput,
@@ -47,11 +38,7 @@ export const ServiceCheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
   const { t } = useTranslation();
   const { visit } = useRouting();
   const { filters } = useSearchFilters();
-  const {
-    data: res,
-    isLoading,
-    isError,
-  } = useGetServiceCheckoutDataQuery(filters);
+  const { data: res, isLoading, isError } = useGetCheckoutDataQuery(filters);
   const [editAddress, setEditAddress] = React.useState<AddressCardDetails>();
   const [edit, setEdit] = React.useState<boolean>(false);
 

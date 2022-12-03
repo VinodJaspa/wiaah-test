@@ -411,7 +411,7 @@ describe('AppController (e2e)', () => {
         },
       });
 
-      expect(app.status).toBe(bookedServiceStatus.canceled);
+      expect(app.status).toBe(bookedServiceStatus.canceled_by_seller);
       expect(app.rejectReason).toBe('test decline reason');
     });
   });

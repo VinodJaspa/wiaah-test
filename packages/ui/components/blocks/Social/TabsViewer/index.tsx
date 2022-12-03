@@ -53,7 +53,7 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
       {showPanels && (
         <TabList className="">
           {tabs.map(({ component }, i) => (
-            <TabItem key={i}>{component}</TabItem>
+            <TabItem key={i}>{runIfFn(component)}</TabItem>
           ))}
         </TabList>
       )}

@@ -8,8 +8,6 @@ import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
 } from 'nest-utils';
-import { EventBus } from '@nestjs/cqrs';
-import { PostCreatedEvent } from '@posts-newsfeed/events';
 
 @Resolver(() => NewsfeedPost)
 @UseGuards(new GqlAuthorizationGuard([]))

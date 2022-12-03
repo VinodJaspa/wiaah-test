@@ -53,4 +53,7 @@ export class Order {
 
   @Field(() => OrderStatus)
   status: OrderStatus;
+
+  @Field(() => Boolean)
+  refundable: boolean;
 }

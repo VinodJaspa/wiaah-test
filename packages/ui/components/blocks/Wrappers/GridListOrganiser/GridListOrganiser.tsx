@@ -74,9 +74,6 @@ export const GridPresetOrganiser: React.FC<GridPresetOrganiserProps> = ({
 
   return (
     <>
-      {/* {pointsum} */}
-      {/* {preset.points.length} */}
-      {/* {React.Children.count(children)} */}
       {isValid ? (
         <div
           style={{

@@ -1,19 +1,17 @@
 import { useDimensions } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { BiCamera } from "react-icons/bi";
 import { FaChevronDown } from "react-icons/fa";
 import { useQueryClient } from "react-query";
 import { useRecoilValue } from "recoil";
 import { TabType } from "types";
 import {
-  ActionsListWrapper,
   AffiliationOffersCardListWrapper,
   Container,
   FilterModal,
   MediaUploadModal,
   PostCardsListWrapper,
-  profileActionsPlaceholder,
+  SocialServicePostsList,
   ShopCardsInfoPlaceholder,
   ShopCardsListWrapper,
   socialAffiliationCardPlaceholders,
@@ -27,6 +25,8 @@ import {
   useUpdateMyProfile,
   newsfeedPosts,
   Divider,
+  useGetServicesPostsQuery,
+  usePaginationControls,
 } from "ui";
 import { useBreakpointValue } from "utils";
 import { MyProfile } from "./MyProfile";
@@ -87,6 +87,11 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
       ),
     },
     {
+      name: t("services"),
+      component: <MyProfileServicesPostsList />,
+    },
+
+    {
       name: t("affiliation offers", "affiliation offers"),
       component: (
         <AffiliationOffersCardListWrapper
@@ -99,10 +104,11 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
     {
       name: t("actions", "Actions"),
       component: (
-        <ActionsListWrapper
-          cols={ActionsCols}
-          actions={profileActionsPlaceholder}
-        />
+        <div></div>
+        // <ActionsListWrapper
+        //   cols={ActionsCols}
+        //   actions={profileActionsPlaceholder}
+        // />
       ),
     },
   ];
@@ -133,6 +139,7 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
           },
           bio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley",
           links: ["https://instagram.com"],
+          userId: "",
         }}
       />
       <div
@@ -178,5 +185,17 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
         )}
       </Container>
     </div>
+  );
+};
+
+export const MyProfileServicesPostsList = () => {
+  const { pagination, controls } = usePaginationControls({
+    itemsPerPage: 20,
+  });
+  const { data, isError, isLoading } = useGetServicesPostsQuery(pagination);
+  return (
+    <SpinnerFallback isError={isError} isLoading={isLoading}>
+      <SocialServicePostsList posts={data?.data || []} />
+    </SpinnerFallback>
   );
 };

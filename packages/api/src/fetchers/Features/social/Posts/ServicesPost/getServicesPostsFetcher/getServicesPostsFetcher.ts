@@ -70,6 +70,26 @@ export const getServicesPostsFetcher = async (
         public: true,
         thumbnail: "/shop-2.jpeg",
         verified: true,
+        bio: "test",
+        isFollowed: true,
+        links: [],
+        location: {
+          address: "test",
+          city: "test",
+          cords: {
+            lat: 54,
+            lng: 132,
+          },
+          country: "test",
+          countryCode: "chf",
+          postalCode: 456,
+          state: "test",
+        },
+        profileCoverPhoto: "test",
+        publications: 54,
+        subscribers: 45,
+        subscriptions: 56,
+        userId: "test",
       },
       postInteraction: {
         comments: randomNum(50),
@@ -78,5 +98,5 @@ export const getServicesPostsFetcher = async (
     })),
   };
 
-  return CheckValidation(ServicesPostsApiResponseValidationSchema, res);
+  return res;
 };

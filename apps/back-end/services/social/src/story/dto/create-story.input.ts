@@ -1,4 +1,5 @@
-import { AttachmentInput } from '@input';
+import { PostTag } from '@entities';
+import { AttachmentInput, PostTagInput } from '@input';
 import { InputType, Field, ID } from '@nestjs/graphql';
 
 @InputType()
@@ -23,4 +24,7 @@ export class CreateStoryInput {
 
   @Field(() => AttachmentInput, { nullable: true })
   attachment?: AttachmentInput;
+
+  @Field(() => [PostTagInput], { defaultValue: [] })
+  tags: PostTagInput[];
 }

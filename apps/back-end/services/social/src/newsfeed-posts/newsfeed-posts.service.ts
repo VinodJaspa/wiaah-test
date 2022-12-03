@@ -80,8 +80,7 @@ export class NewsfeedPostsService {
     createNewsfeedPostInput: CreateNewsfeedPostInput,
     userId: string,
   ): Promise<NewsfeedPost> {
-    const { attachments, content, tags, title, visibility } =
-      createNewsfeedPostInput;
+    const { attachments } = createNewsfeedPostInput;
 
     await this.contentManagementService.validatePostAttachments(attachments);
 

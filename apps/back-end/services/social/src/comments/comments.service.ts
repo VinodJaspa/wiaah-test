@@ -98,6 +98,8 @@ export class CommentsService {
       this.eventClient.emit(
         KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated(contentType),
         new CommentCreatedEvent({
+          hostAuthorId: comment.hostId,
+          mainHostAuthorId: comment.userId,
           commentedAt: new Date().toUTCString(),
           commentedByProfileId: authorProfileId,
           commentId: comment.id,

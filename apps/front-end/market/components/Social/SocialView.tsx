@@ -7,12 +7,10 @@ import {
   ShopCardsListWrapper,
   AffiliationOffersCardListWrapper,
   FilterModal,
-  ActionsListWrapper,
   SocialPostsCommentsDrawer,
   ShareWithModal,
   SocialServicePostsList,
   Divider,
-  SocialServiceDetailsModal,
   Menu,
   MenuList,
   MenuButton,
@@ -29,13 +27,8 @@ import {
   postProfilesPlaceholder,
   ShopCardsInfoPlaceholder,
   socialAffiliationCardPlaceholders,
-  SocialProfileInfo,
-  profileActionsPlaceholder,
-  newsfeedPosts,
 } from "placeholder";
-import { TabType } from "types";
-import { useRecoilValue } from "recoil";
-import { SocialNewsfeedPostsState, SocialProfileInfoState } from "state";
+import { ProfileInfo, TabType } from "types";
 import { PostComment } from "types";
 import { products } from "placeholder";
 import { FaChevronDown } from "react-icons/fa";
@@ -43,6 +36,7 @@ import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { useBreakpointValue } from "utils";
 import { useReactPubsub } from "react-pubsub";
+import { SocialProfileData } from "api";
 
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 export const getRandomUser = () =>
@@ -86,13 +80,13 @@ const comments: PostComment[] = [
   },
 ];
 
-export interface SocialViewProps {}
+export interface SocialViewProps {
+  profile: SocialProfileData;
+}
 
-export const SocialView: React.FC<SocialViewProps> = () => {
+export const SocialView: React.FC<SocialViewProps> = ({ profile }) => {
   const { t } = useTranslation();
-  const profileInfo = useRecoilValue(SocialProfileInfoState);
-  const { visit, getParam } = useRouting();
-  const posts = useRecoilValue(SocialNewsfeedPostsState);
+  const { getParam } = useRouting();
   const cols = useBreakpointValue({ base: 3 });
   const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
   const { emit } = useReactPubsub(
@@ -110,7 +104,7 @@ export const SocialView: React.FC<SocialViewProps> = () => {
       component: (
         <PostCardsListWrapper
           cols={cols}
-          posts={newsfeedPosts.concat(newsfeedPosts)}
+          // posts={[]}
         />
       ),
     },
@@ -188,22 +182,22 @@ export const SocialView: React.FC<SocialViewProps> = () => {
           <PlayButtonFillIcon />
         </HStack>
       ),
-      component: (
-        <ActionsListWrapper
-          cols={ActionsCols}
-          actions={profileActionsPlaceholder}
-        />
-      ),
+      component: <div> to be implemented</div>,
     },
   ];
   const buyerTabs: TabType[] = [
     {
       name: t("news_feed", "news feed"),
-      component: <PostCardsListWrapper cols={cols} posts={posts} />,
+      component: (
+        <PostCardsListWrapper
+          cols={cols}
+          // posts={[]}
+        />
+      ),
     },
   ];
 
-  const tabsSet = profileInfo.accountType === "seller" ? sellerTabs : buyerTabs;
+  const tabsSet = profile.accountType === "seller" ? sellerTabs : buyerTabs;
   const tabParam = getParam("tab");
 
   return (
@@ -211,9 +205,9 @@ export const SocialView: React.FC<SocialViewProps> = () => {
       <ShareWithModal />
       <SocialPostsCommentsDrawer />
       <div className="flex gap-4 flex-col">
-        <SocialProfile shopInfo={SocialProfileInfo} />
+        <SocialProfile profileInfo={profile} />
         <Container className="flex-grow gap-4 flex-col">
-          {profileInfo && profileInfo.public ? (
+          {profile && profile.public ? (
             <>
               <TabsViewer tabs={tabsSet} />
               <Divider />
@@ -229,7 +223,6 @@ export const SocialView: React.FC<SocialViewProps> = () => {
           )}
         </Container>
       </div>
-      <SocialServiceDetailsModal />
     </>
   );
 };

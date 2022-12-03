@@ -21,6 +21,7 @@ import { UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import {
   AcceptPendingAppointmentCommand,
+  CancelServiceReservationCommand,
   DeclinePendingAppointmentCommand,
 } from '@book-service/commands';
 
@@ -61,6 +62,19 @@ export class BookServiceResolver {
       );
     }
     return null;
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER, accountType.BUYER]))
+  async cancelServiceReservation(
+    @Args('id') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    await this.commandbus.execute(
+      new CancelServiceReservationCommand(id, user.id),
+    );
+
+    return true;
   }
 
   @Mutation(() => Boolean)

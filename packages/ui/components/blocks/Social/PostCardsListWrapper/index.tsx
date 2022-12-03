@@ -1,36 +1,36 @@
 import { newsfeedPosts } from "placeholder";
 import React from "react";
-import { useRouting } from "routing";
 import { PostCardInfo } from "types";
+import { PostCard } from "ui/components/blocks/Social/PostCard";
+import { PostViewPopup } from "ui/components/blocks/Popups";
+import { PostAttachmentsViewer } from "ui/components/blocks/DataDisplay";
 import {
   ListWrapper,
-  ListWrapperProps,
-  PostCard,
-  GridWrapper,
-  PostAttachment,
-  useNewsFeedPostPopup,
-  NewsfeedPostDetailsPopup,
-  PostViewPopup,
-  PostAttachmentsViewer,
   GridListOrganiser,
-} from "ui";
-import { NumberShortner } from "utils";
+  ListWrapperProps,
+} from "ui/components/blocks/Wrappers";
+import { useNewsFeedPostPopup } from "ui/Hooks";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {
-  posts: PostCardInfo[];
+  posts?: PostCardInfo[];
   cols?: number;
   onPostClick?: (post: PostCardInfo) => any;
   grid?: boolean;
 }
 
+const _posts = [...Array(5)].reduce((acc) => {
+  return [...acc, ...newsfeedPosts];
+}, [] as PostCardInfo[]) as PostCardInfo[];
+
 export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
-  posts,
+  posts = _posts,
   cols = 1,
   onPostClick,
   grid,
-  ...props
 }) => {
   const { setCurrentPost } = useNewsFeedPostPopup();
+  const childPosts =
+    posts && posts.map((post, idx) => <PostCard {...post} key={idx} />);
   return (
     <>
       <PostViewPopup
@@ -55,96 +55,100 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
           );
         }}
       />
-      <GridListOrganiser
-        rowSize="14.5rem"
-        presets={[
-          {
-            cols: 5,
-            points: [
-              {
-                c: 2,
-                r: 2,
-              },
-              {
-                c: 1,
-                r: 1,
-              },
-              {
-                c: 1,
-                r: 2,
-              },
-              {
-                c: 1,
-                r: 1,
-              },
-              {
-                c: 1,
-                r: 1,
-              },
-              {
-                c: 1,
-                r: 1,
-              },
-            ],
-          },
-          {
-            cols: 5,
-            points: [
-              { c: 1, r: 1 },
-              { c: 1, r: 1 },
-              { c: 1, r: 1 },
-              { c: 1, r: 1 },
-              { c: 1, r: 2 },
-              { c: 2, r: 1 },
-              { c: 1, r: 1 },
-              { c: 1, r: 1 },
-            ],
-          },
-          {
-            cols: 5,
-            points: [
-              {
-                c: 2,
-                r: 1,
-              },
-              {
-                c: 2,
-                r: 2,
-              },
-              {
-                c: 1,
-                r: 1,
-              },
-              {
-                c: 1,
-                r: 2,
-              },
-              {
-                c: 1,
-                r: 1,
-              },
-              {
-                c: 1,
-                r: 1,
-              },
-              {
-                c: 1,
-                r: 1,
-              },
-              {
-                c: 1,
-                r: 1,
-              },
-              {
-                c: 2,
-                r: 1,
-              },
-            ],
-          },
-        ]}
-      >
-        {posts && posts.map((post, idx) => <PostCard {...post} key={idx} />)}
-      </GridListOrganiser>
+      {grid ? (
+        <GridListOrganiser
+          rowSize="14.5rem"
+          presets={[
+            {
+              cols: 5,
+              points: [
+                {
+                  c: 2,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+              ],
+            },
+            {
+              cols: 5,
+              points: [
+                { c: 1, r: 1 },
+                { c: 1, r: 1 },
+                { c: 1, r: 1 },
+                { c: 1, r: 1 },
+                { c: 1, r: 2 },
+                { c: 2, r: 1 },
+                { c: 1, r: 1 },
+                { c: 1, r: 1 },
+              ],
+            },
+            {
+              cols: 5,
+              points: [
+                {
+                  c: 2,
+                  r: 1,
+                },
+                {
+                  c: 2,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 2,
+                  r: 1,
+                },
+              ],
+            },
+          ]}
+        >
+          {childPosts}
+        </GridListOrganiser>
+      ) : (
+        <ListWrapper cols={cols}>{childPosts}</ListWrapper>
+      )}
     </>
   );
 };

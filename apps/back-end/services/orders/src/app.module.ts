@@ -6,6 +6,7 @@ import {
 } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { getUserFromRequest } from 'nest-utils';
+import { RefundModule } from './refund/refund.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { getUserFromRequest } from 'nest-utils';
       context: ({ req }) => ({ req, user: getUserFromRequest(req) }),
     }),
     OrdersModule,
+    RefundModule,
   ],
   controllers: [],
   providers: [],

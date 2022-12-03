@@ -81,6 +81,7 @@ const seller: NextPage = () => {
           )} */}
           <div className="w-full">
             <PostCardsListWrapper
+              grid={true}
               onPostClick={(post) => {
                 router.push(
                   "/",
@@ -89,11 +90,7 @@ const seller: NextPage = () => {
                 );
               }}
               cols={cols}
-              posts={[
-                ...[...Array(4)].reduce((acc) => {
-                  return [...acc, ...newsfeedPosts.slice(0, 8)];
-                }, []),
-              ]}
+              // posts={[]}
             />
           </div>
         </div>

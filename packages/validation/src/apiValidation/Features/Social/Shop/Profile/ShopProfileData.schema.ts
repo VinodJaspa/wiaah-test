@@ -18,21 +18,18 @@ export const SocialProfileInfoValidationSchema = object({
     .required(),
   public: boolean().required(),
   profession: string().required(),
+  publications: number().required(),
+  subscriptions: number().required(),
+  subscribers: number().required(),
+  location: Location().required(),
+  bio: string().required(),
+  links: array().of(string().required()).min(0).required(),
+  isFollowed: boolean().required(),
+  profileCoverPhoto: string().required(),
 });
 
 export const SocialShopProfileInfoValidationSchema =
-  SocialProfileInfoValidationSchema.concat(
-    object({
-      publications: number().required(),
-      subscriptions: number().required(),
-      subscribers: number().required(),
-      location: Location().required(),
-      bio: string().required(),
-      links: array().of(string().required()).min(0).required(),
-      isFollowed: boolean().required(),
-      profileCoverPhoto: string().required(),
-    })
-  );
+  SocialProfileInfoValidationSchema.concat(object({}));
 
 export const SocialShopProfileInfoApiResponseValidationSchema =
   createApiResponseValidationSchema(SocialShopProfileInfoValidationSchema);

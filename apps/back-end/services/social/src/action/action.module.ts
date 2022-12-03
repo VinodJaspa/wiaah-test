@@ -5,14 +5,17 @@ import { ActionController } from './action.controller';
 import { ActionCommandHandlers } from './commands';
 import { ActionQueryHandlers } from './queries';
 import { ActionRepository } from './repository';
+import { ActionEventHandlers } from './events';
+import { kafkaModule } from '@kafkaModule';
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, kafkaModule],
   providers: [
     ActionResolver,
     ActionRepository,
     ...ActionCommandHandlers,
     ...ActionQueryHandlers,
+    ...ActionEventHandlers,
   ],
   controllers: [ActionController],
 })

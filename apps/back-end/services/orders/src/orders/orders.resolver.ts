@@ -53,6 +53,7 @@ export class OrdersResolver implements OnModuleInit {
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.BUYER, accountType.SELLER]))
   rejectReceivedOrder(
     @Args('args') args: RejectReceivedOrderInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
@@ -63,6 +64,7 @@ export class OrdersResolver implements OnModuleInit {
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   rejectRequestedOrder(
     @Args('args') args: RejectRequestedOrderInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
@@ -73,6 +75,7 @@ export class OrdersResolver implements OnModuleInit {
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   acceptRequestedOrder(
     @Args('args') args: AcceptRequestedOrderInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
@@ -83,6 +86,7 @@ export class OrdersResolver implements OnModuleInit {
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.BUYER, accountType.SELLER]))
   acceptReceivedOrder(
     @Args('args') args: AcceptReceivedOrderInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,

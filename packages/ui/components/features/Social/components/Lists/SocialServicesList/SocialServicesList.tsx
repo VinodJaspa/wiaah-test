@@ -1,3 +1,4 @@
+import { ServicePostType } from "api";
 import { usePagination } from "hooks";
 import { PostCardPlaceHolder, ShopCardsInfoPlaceholder } from "placeholder";
 import React from "react";
@@ -39,20 +40,17 @@ const servicesData = [
   },
 ];
 
-export interface SocialServicesPostsListProps {}
+export interface SocialServicesPostsListProps {
+  posts: ServicePostType[];
+  grid?: boolean;
+}
 
-export const SocialServicePostsList: React.FC<
-  SocialServicesPostsListProps
-> = () => {
-  const { take, page } = usePagination(16);
-  const {
-    data: res,
-    isLoading,
-    isError,
-  } = useGetServicesPostsQuery({ take, page });
-
+export const SocialServicePostsList: React.FC<SocialServicesPostsListProps> = ({
+  grid = false,
+  posts,
+}) => {
   return (
-    <SpinnerFallback isLoading={isLoading} isError={isError}>
+    <>
       <PostViewPopup<SocialServiceDetailsCardProps>
         //@ts-ignore
         fetcher={async ({ queryKey }: any) => {
@@ -108,12 +106,11 @@ export const SocialServicePostsList: React.FC<
         }}
       />
 
-      {Array.isArray(res?.data) ? (
+      {Array.isArray(posts) ? (
         <GridListOrganiser
           rowSize="14.5rem"
           presets={[
             {
-              length: 6,
               cols: 5,
               points: [
                 {
@@ -144,7 +141,6 @@ export const SocialServicePostsList: React.FC<
             },
             {
               cols: 5,
-              length: 8,
               points: [
                 { c: 1, r: 1 },
                 { c: 1, r: 1 },
@@ -156,10 +152,8 @@ export const SocialServicePostsList: React.FC<
                 { c: 1, r: 1 },
               ],
             },
-
             {
-              length: 9,
-              cols: 4,
+              cols: 5,
               points: [
                 {
                   c: 2,
@@ -194,14 +188,26 @@ export const SocialServicePostsList: React.FC<
                   r: 1,
                 },
                 {
+                  c: 1,
+                  r: 2,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
                   c: 2,
+                  r: 1,
+                },
+                {
+                  c: 1,
                   r: 1,
                 },
               ],
             },
           ]}
         >
-          {res?.data.map((post) => {
+          {posts.map((post) => {
             const attachments = servicesData[randomNum(servicesData.length)];
             return (
               <SocialServicesPostCard
@@ -219,6 +225,6 @@ export const SocialServicePostsList: React.FC<
           })}
         </GridListOrganiser>
       ) : null}
-    </SpinnerFallback>
+    </>
   );
 };

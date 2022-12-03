@@ -1,6 +1,5 @@
 import { shallow, ShallowWrapper } from "enzyme";
-import React from "react";
-import { ListWrapper } from "ui";
+import { ListWrapper } from "./index";
 
 const selectors = {
   listContainer: "[data-testid='ListWrapperListContainer']",

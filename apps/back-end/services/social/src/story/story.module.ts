@@ -1,3 +1,4 @@
+import { kafkaModule } from '@kafkaModule';
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 
@@ -10,7 +11,7 @@ import { StoryViewResolver } from './story-view.resolver';
 import { StoryResolver } from './story.resolver';
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, kafkaModule],
   providers: [
     StoryResolver,
     StoryViewResolver,

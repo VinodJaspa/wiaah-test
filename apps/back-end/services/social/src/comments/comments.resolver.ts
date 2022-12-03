@@ -4,10 +4,16 @@ import { Comment, PaginationCommentsResponse } from '@entities';
 import { CreateCommentInput } from '@input';
 import { UpdateCommentInput } from '@input';
 import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
+import { QueryBus } from '@nestjs/cqrs';
+import { GetCommentsByContentId } from './queries';
+import { GetContentCommentsInput } from './dto';
 
 @Resolver(() => Comment)
 export class CommentsResolver {
-  constructor(private readonly commentsService: CommentsService) {}
+  constructor(
+    private readonly commentsService: CommentsService,
+    private readonly queryBus: QueryBus,
+  ) {}
   @Mutation(() => Comment)
   createComment(
     @Args('createCommentInput') createCommentInput: CreateCommentInput,
@@ -33,5 +39,15 @@ export class CommentsResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.commentsService.deleteComment(id, user.id);
+  }
+
+  @Query(() => [Comment])
+  getContentComments(
+    @Args('getContentCommentsArgs') args: GetContentCommentsInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.queryBus.execute(
+      new GetCommentsByContentId(args.id, user.id, args.cursor, args.take),
+    );
   }
 }

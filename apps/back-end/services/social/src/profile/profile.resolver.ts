@@ -10,17 +10,16 @@ import {
   ProfilePaginatedResponse,
   ProfileMetaPaginatedResponse,
 } from '@entities';
-import { ProfileService } from './profile.service';
+import { ProfileService, ProfileSortKeys } from './profile.service';
 import {
-  BlockProfileInput,
   CreateProfileInput,
   FollowProfileInput,
   GetMyProfileFollowersMetaInput,
   GetProfileFollowersMetaInput,
-  UnBlockProfileInput,
   UnFollowProfileInput,
   UpdateProfileInput,
 } from '@input';
+import { SearchPopularProfilesInput } from './dto';
 
 @Resolver(() => Profile)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -71,10 +70,18 @@ export class ProfileResolver {
     return await this.profileService.removeMyProfile(user.id);
   }
 
-  // TODO: remove on production
-  @Mutation(() => Boolean)
-  deleteAllProfiles(): Promise<boolean> {
-    return this.profileService.deleteAllProfiles();
+  @Query(() => ProfilePaginatedResponse)
+  searchPopularUsers(
+    @Args('args', { type: () => SearchPopularProfilesInput })
+    args: SearchPopularProfilesInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.profileService.getProfilesByNameQuery(
+      args.q,
+      { asc: false, key: ProfileSortKeys.followers },
+      args.cursor,
+      args.take,
+    );
   }
 
   // Profile CRUD //

@@ -67,5 +67,5 @@ export const getServicePostsOnMapDataFetcher = async (
     })),
   };
 
-  return CheckValidation(ServicePostsOnMapApiResponseValidationSchema, res);
+  return res;
 };
