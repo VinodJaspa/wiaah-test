@@ -20,7 +20,8 @@
     "paths": {
       "@report/*": ["src/report/*"],
       "prismaClient": ["prisma/generated/client"],
-      "prismaService": ["src/prisma.service"]
+      "prismaService": ["src/prisma.service"],
+      "@content-suspense/*": ["src/content-suspense/*"]
     }
   }
 }
