@@ -2,9 +2,15 @@ import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { Report } from './entities/report.entity';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateReportInput, GetReportsInput } from '@report/dto';
-import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
+import {
+  accountType,
+  AuthorizationDecodedUser,
+  GqlAuthorizationGuard,
+  GqlCurrentUser,
+} from 'nest-utils';
 import { CreateReportCommand } from './commands';
 import { GetReportsQuery } from './queries';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Report)
 export class ReportResolver {
@@ -23,6 +29,7 @@ export class ReportResolver {
   }
 
   @Query(() => [Report])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   getReports(
     @Args('getReportsArgs') args: GetReportsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
