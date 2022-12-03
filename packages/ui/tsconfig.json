@@ -1,5 +1,16 @@
 {
   "extends": "tsconfig/react-library.json",
   "include": ["."],
-  "exclude": ["dist", "build", "node_modules"]
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "CommonJS",
+    "target": "ES5",
+    "jsx": "react-jsx",
+    "rootDir": ".",
+    // "baseUrl": ".",
+    "paths": {
+      "@partials": ["./components/partials"]
+    }
+  }
 }

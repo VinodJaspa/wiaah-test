@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output = "./generated/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Membership {
+  id String @id @db.ObjectId @default(auto()) @map("_id")
+  name String 
+  type MembershipType
+  priceId String?
+  unit_price Float @default(0)
+  unit_type MembershipUnitType?
+  turnover_rules MembershipTurnoverRule[]
+  includings MembershipIncludeItem[]
+  active Boolean @default(false)
+}
+model MembershipTurnoverRule {
+  id String @id @default(auto()) @db.ObjectId @map("_id")
+  membershipId String
+  membership Membership @relation(fields: [membershipId],references: [id])
+  priceId String?
+  turnover_amount Float
+  price Float
+  commission Float
+}
+
+type MembershipIncludeItem {
+  title String
+}
+
+enum MembershipType {
+  monthly
+  per_unit
+}
+enum MembershipUnitType {
+  vendor_site_click
+}

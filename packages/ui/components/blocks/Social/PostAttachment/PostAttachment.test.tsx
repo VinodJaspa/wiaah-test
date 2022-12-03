@@ -1,0 +1,56 @@
+import { shallow, ShallowWrapper } from "enzyme";
+import React from "react";
+import { PostAttachment as PostAttachmentType } from "types/market/Social";
+import { PostAttachment } from "../PostAttachment";
+
+const selectors = {
+  image: "[data-testid='PostAttachmentImage']",
+  video: "[data-testid='PostAttachmentVideo']",
+};
+
+const ImagePlaceholder: PostAttachmentType = {
+  src: "/shop.jpeg",
+  type: "image",
+};
+
+const VideoPlaceholder: PostAttachmentType = {
+  src: "video.mp4",
+  type: "video",
+};
+
+describe("PostAttachment render tests", () => {
+  let wrapperWithImg: ShallowWrapper;
+  let wrapperWithVideo: ShallowWrapper;
+  let img: ShallowWrapper;
+  let video: ShallowWrapper;
+  beforeEach(() => {
+    wrapperWithImg = shallow(<PostAttachment {...ImagePlaceholder} />);
+    wrapperWithVideo = shallow(<PostAttachment {...VideoPlaceholder} />);
+    img = wrapperWithImg.find(selectors.image);
+    video = wrapperWithVideo.find(selectors.video);
+  });
+
+  it("should have img tag with the right props", () => {
+    expect(img.length).toBe(1);
+    expect(img.prop("src")).toBe(ImagePlaceholder.src);
+  });
+  it("should have video tag with the right props", () => {
+    expect(video.length).toBe(1);
+    expect(video.prop("src")).toBe(VideoPlaceholder.src);
+  });
+});
+
+describe("PostAttachment snapshot tests", () => {
+  let wrapperWithImg: ShallowWrapper;
+  let wrapperWithVideo: ShallowWrapper;
+  beforeEach(() => {
+    wrapperWithImg = shallow(<PostAttachment {...ImagePlaceholder} />);
+    wrapperWithVideo = shallow(<PostAttachment {...VideoPlaceholder} />);
+  });
+  it("should match snapshot with img type", () => {
+    expect(wrapperWithImg).toMatchSnapshot();
+  });
+  it("should match snapshot with video type", () => {
+    expect(wrapperWithVideo).toMatchSnapshot();
+  });
+});

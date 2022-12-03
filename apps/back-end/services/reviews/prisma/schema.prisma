@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model RatingCategory {
+  id          String               @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  eligableFor RatingCategoryType[]
+}
+
+model DetailedRatings {
+  id              String                  @id @default(auto()) @map("_id") @db.ObjectId
+  itemId          String                  @db.ObjectId
+  itemType        RatingCategoryType
+  detailedRatings RatingCategoryDetails[]
+}
+
+type RatingCategoryDetails {
+  categoryId String
+  rates      Int
+  stars      Float
+}
+
+model ProductRating {
+  id String @id @db.ObjectId @map("_id")
+  rating Float @default(0)
+  reviews Int @default(0)
+  givenStars Float @default(0)
+}
+
+model ProductReview {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  sellerId   String   @db.ObjectId
+  productId  String   @db.ObjectId
+  reviewerId String   @db.ObjectId
+  rate       Float    
+  message    String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([productId,reviewerId])
+}
+
+model ServiceReview {
+  id              String           @id @default(auto()) @map("_id") @db.ObjectId
+  serviceId       String           @db.ObjectId
+  reviewerId      String           @db.ObjectId
+  rate            Float            @default(0)
+  message         String
+  categoryRatings CategoryRating[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+type CategoryRating {
+  categoryId String
+  rate       Float
+}
+
+enum RatingCategoryType {
+  service
+  product
+}

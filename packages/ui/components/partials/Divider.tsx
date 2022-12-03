@@ -1,9 +1,19 @@
 import React from "react";
-
-export const Divider: React.FC = () => {
+import { HtmlDivProps } from "types";
+export interface DividerProps extends HtmlDivProps {
+  variant?: "vert" | "hori";
+}
+export const Divider: React.FC<DividerProps> = ({
+  variant,
+  className,
+  ...props
+}) => {
   return (
-    <>
-      <div className="flex w-full h-0.5 my-4 bg-gray-100"></div>
-    </>
+    <div
+      {...props}
+      className={`${className || "border-gray-300"} ${
+        variant === "vert" ? "border-l h-full mx-2" : "border-b w-full my-2"
+      }`}
+    ></div>
   );
 };

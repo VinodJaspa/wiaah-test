@@ -1,0 +1,22 @@
+import { Module } from '@nestjs/common';
+import { NewsfeedPostsService } from './newsfeed-posts.service';
+import { NewsfeedPostsResolver } from './newsfeed-posts.resolver';
+import { ProfileModule } from '@profile-module';
+import { PrismaService } from 'prismaService';
+import { ContentManagementModule } from '@content-management';
+import { NewsfeedPostEventHandlers } from './events';
+
+import { CqrsModule } from '@nestjs/cqrs';
+import { kafkaModule } from '@kafkaModule';
+
+@Module({
+  imports: [ProfileModule, ContentManagementModule, CqrsModule, kafkaModule],
+  providers: [
+    NewsfeedPostsResolver,
+    NewsfeedPostsService,
+    PrismaService,
+    ...NewsfeedPostEventHandlers,
+  ],
+  exports: [NewsfeedPostsService],
+})
+export class NewsfeedPostsModule {}

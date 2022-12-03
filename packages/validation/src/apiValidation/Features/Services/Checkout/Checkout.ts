@@ -1,0 +1,193 @@
+import {
+  createApiResponseValidationSchema,
+  Location,
+} from "../../../SharedSchema";
+import { Cashback, CashbackValidationSchema } from "../../Products";
+import { array, InferType, mixed, number, object, string } from "yup";
+import { ServiceCancelationPolicy } from "../common";
+import { ServicesType } from "types";
+import { HealthCenterDoctorMetaDataValidationSchema } from "../../ServicesProvider/HealthCenterDetailsData.schema";
+import { beautyCenterTreatmentValidationSchema } from "../BeautyCenter";
+
+const services: ServicesType[] = [
+  "beauty_center",
+  "general",
+  "health_center",
+  "holidays_rentals",
+  "hotel",
+  "restaurant",
+  "vehicle",
+];
+
+type ServicesCheckoutData =
+  | {
+      type: "hotel";
+      data: InferType<typeof HotelCheckoutServiceDataValidationSchema>;
+    }
+  | {
+      type: "resturant";
+      data: InferType<typeof RestaurantServiceCheckoutDataValidationSchema>;
+    }
+  | {
+      type: "health_center";
+      data: InferType<typeof HealthCenterServiceCheckoutDataValidationSchema>;
+    }
+  | {
+      type: "beauty_center";
+      data: InferType<typeof BeautyCenterServiceCheckoutDataValidationSchema>;
+    }
+  | {
+      type: "product";
+      data: InferType<typeof ProductCheckoutDataValidationSchema>;
+    };
+
+export const ShippingMothedValidationSchema = object({
+  name: string().required(),
+  value: string().required(),
+  deliveryTime: object({
+    from: number().required(),
+    to: number().required(),
+  }).required(),
+  id: string().required(),
+  cost: number().required(),
+  description: string().required(),
+});
+
+export const ProductCheckoutDataValidationSchema = object({
+  id: string().required(),
+  name: string().required(),
+  thumbnail: string().required(),
+  qty: number().required(),
+  type: mixed<"goods" | "downloadable">()
+    .oneOf(["goods", "downloadable"])
+    .required(),
+  shippingMethods: array().of(ShippingMothedValidationSchema.required()).min(0),
+  price: number().required(),
+  location: Location().required(),
+  size: string(),
+  color: string(),
+  discount: number().min(1).max(99).required(),
+  cashback: Cashback().required(),
+  description: string().required(),
+});
+
+export const ServiceCheckoutCommonDataValidationSchema = object({
+  serviceType: mixed<ServicesType>().oneOf(services),
+  id: string().required(),
+  title: string().required(),
+  thumbnail: string().required(),
+  rate: number().min(0).max(5).required(),
+  reviews: number().required(),
+  refundingRule: ServiceCancelationPolicy,
+  rateReason: string().required(),
+  bookedDates: object({
+    from: string().required(),
+    to: string().nullable(),
+  }),
+  cashback: CashbackValidationSchema.required(),
+  price: number().required(),
+  duration: array().of(number().required()).min(1).max(2).optional(),
+  guests: number().nullable(),
+});
+
+export const HotelCheckoutServiceDataValidationSchema =
+  ServiceCheckoutCommonDataValidationSchema.concat(
+    object({
+      extras: array()
+        .of(
+          object({
+            name: string().required(),
+            price: number().required(),
+          })
+        )
+        .min(0)
+        .required(),
+      guests: number().required(),
+    })
+  );
+
+export const RestaurantServiceCheckoutDataValidationSchema =
+  ServiceCheckoutCommonDataValidationSchema.concat(
+    object({
+      bookedMenus: array()
+        .of(
+          object({
+            title: string().required(),
+            qty: number().required(),
+            price: number().required(),
+          }).required()
+        )
+        .min(0)
+        .required(),
+      guests: number().required(),
+    })
+  );
+
+export const HealthCenterServiceCheckoutDataValidationSchema =
+  ServiceCheckoutCommonDataValidationSchema.concat(
+    object({
+      doctor: HealthCenterDoctorMetaDataValidationSchema.required(),
+      guests: number().required(),
+    })
+  );
+
+export const BeautyCenterServiceCheckoutDataValidationSchema =
+  ServiceCheckoutCommonDataValidationSchema.concat(
+    object({
+      bookedTreatments: array()
+        .of(beautyCenterTreatmentValidationSchema)
+        .min(0)
+        .required(),
+    })
+  );
+
+export const CheckoutDataValidationTester = mixed<ServicesCheckoutData>().test(
+  "ServiceCheckoutData",
+  "service type and data doesnt match",
+  (value) => {
+    if (!value) return false;
+    try {
+      switch (value.type) {
+        case "hotel":
+          HotelCheckoutServiceDataValidationSchema.validateSync(value.data);
+          break;
+        case "resturant":
+          RestaurantServiceCheckoutDataValidationSchema.validateSync(
+            value.data
+          );
+          break;
+        case "health_center":
+          HealthCenterServiceCheckoutDataValidationSchema.validateSync(
+            value.data
+          );
+          break;
+        case "beauty_center":
+          BeautyCenterServiceCheckoutDataValidationSchema.validateSync(
+            value.data
+          );
+          break;
+        case "product":
+          ProductCheckoutDataValidationSchema.validateSync(value.data);
+          break;
+        default:
+          return false;
+      }
+      return true;
+    } catch (err) {
+      console.error(err);
+      return false;
+    }
+  }
+);
+
+export const ServiceCheckoutDataApiResponseValidationSchema =
+  createApiResponseValidationSchema(
+    object({
+      bookedServices: array()
+        .of(CheckoutDataValidationTester.required())
+        .min(0)
+        .required(),
+      vat: number().required(),
+      saved: number().required(),
+    })
+  );

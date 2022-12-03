@@ -1,0 +1,50 @@
+import React from "react";
+import { ComponentStory, ComponentMeta } from "@storybook/react";
+import { SocialProfile } from "ui";
+import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import { SocialProfileInfo } from "ui/placeholder/social";
+import { PostCardPlaceHolder } from "ui/placeholder";
+import { SocialStoriesModal } from "../SocialStoriesModal";
+import { useStory } from "ui/Hooks";
+import { useRecoilState } from "recoil";
+import { SocialStoryState } from "ui/state";
+export default {
+  title: "UI/blocks/Social/SocialProfile",
+  component: SocialProfile,
+  decorators: [ChakraUiDecorator],
+} as ComponentMeta<typeof SocialProfile>;
+
+const Template: ComponentStory<typeof SocialProfile> = (args) => {
+  const [storyData, setStoryData] = useRecoilState(SocialStoryState);
+
+  React.useEffect(() =>
+    setStoryData({
+      storyCreationDate: new Date(Date.UTC(2022, 3, 1)).toISOString(),
+      storyType: "image",
+      storyViews: 12300,
+      storySrc: "/verticalImage.jpg",
+      user: PostCardPlaceHolder.profileInfo,
+    })
+  );
+  return (
+    <>
+      {storyData && <SocialStoriesModal />}
+      <SocialProfile {...args} />
+    </>
+  );
+};
+
+export const Default = Template.bind({});
+Default.args = {
+  shopInfo: SocialProfileInfo,
+};
+
+export const withHighNumbers = Template.bind({});
+withHighNumbers.args = {
+  shopInfo: {
+    ...SocialProfileInfo,
+    publications: 1500,
+    subscribers: 205600,
+    subscriptions: 1300000,
+  },
+};

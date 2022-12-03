@@ -1,2 +1,14 @@
-import { HomeView } from "./HomeView";
-export { HomeView };
+export * from "./HomeView";
+export * from "./SearchView";
+export * from "./ProductView";
+export * from "./Login";
+export * from "./SellerProfileStartupView";
+export * from "./BuyerProfileStartupView";
+export * from "./AboutWiaahView";
+export * from "./PrivacyPolicyView";
+export * from "./TermsAndConditionsView";
+export * from "./ContactUsView";
+export * from "./Services";
+export * from "./SellerSignupView";
+export * from "./BuyerSignupView";
+export * from "./LoginView";

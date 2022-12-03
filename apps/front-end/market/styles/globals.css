@@ -1,0 +1,280 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "~react-image-gallery/styles/css/image-gallery.css";
+@import "~antd/dist/antd.css";
+
+* {
+  scroll-behavior: smooth;
+}
+.thinScroll::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+  border-radius: 10rem;
+}
+
+/* Track */
+.thinScroll::-webkit-scrollbar-track {
+  background: #fff;
+}
+
+/* Handle */
+.thinScroll::-webkit-scrollbar-thumb {
+  border-radius: 10rem;
+  background: #999999;
+}
+
+/* Handle on hover */
+.thinScroll::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}
+.no-scrollBar::-webkit-scrollbar {
+  display: none;
+  width: 0%;
+}
+.noScroll::-webkit-scrollbar {
+  display: none;
+  width: 0%;
+}
+.no-arrows::-webkit-outer-spin-button,
+.no-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-arrows {
+  -moz-appearance: textfield;
+}
+
+.priceRangeSlider > input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 5px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.priceRangeSlider > input[type="range"]::-webkit-slider-thumb {
+  pointer-events: all;
+  z-index: 5;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 0 none;
+  background-color: blue;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+input {
+  outline: none;
+  outline-style: none;
+}
+.react-select-container {
+  border: 1px solid #e5e7eb;
+}
+.react-select__control,
+.react-select__control:hover,
+.react-select__control:focus,
+.react-select__value-container,
+.react-select__indicators {
+  border: none !important;
+  box-shadow: none !important;
+}
+.react-select__dropdown-indicator {
+  color: #000000 !important;
+}
+.react-select__input {
+  border: none !important;
+  --tw-ring-color: none !important;
+  --tw-ring-shadow: none !important;
+}
+.react-select__placeholder {
+  color: #000000 !important;
+}
+.react-select__indicator-separator {
+  display: none !important;
+}
+
+button.image-gallery-icon {
+  display: none;
+}
+
+.image-gallery-content .image-gallery {
+  display: inline-block;
+}
+
+.image-gallery-slide-wrapper.left,
+.image-gallery-slide-wrapper.right {
+  width: 100% !important;
+}
+.gallery-thumbnail {
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.green-text {
+  color: #57bf9c;
+}
+.green-background,
+.ant-tabs-ink-bar {
+  background-color: #57bf9c;
+}
+.green-border {
+  border-color: #57bf9c;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+  background-color: #57bf9c;
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50%;
+  color: initial !important;
+}
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  font-size: initial !important;
+}
+.swiper {
+  position: initial !important;
+}
+.login-view-container {
+  background-image: url("/bg-img.jpg");
+  background-repeat: no-repeat;
+}
+.login-form {
+  min-height: 24rem;
+}
+
+.profile-pic-container {
+  border: solid #d3d3d3 1px;
+}
+
+.ant-collapse-header {
+  border-top: #d3d3d3 solid 1px;
+}
+.profil-pic-btn {
+  background-color: #57bf9c;
+}
+.profil-pic-btn-text {
+  color: #ffffff;
+}
+.centered-step {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+@media (min-width: 1024px) {
+  .profil-pic-btn {
+    background-color: #ffffff;
+  }
+  .profil-pic-btn-text {
+    color: #57bf9c;
+  }
+  .centered-step,
+  .lg-centered-step {
+    position: fixed;
+    top: calc(50% + 40px);
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+  }
+  .filter-panel {
+    border-bottom: #c9c9c9 1px solid;
+    border-left: #c9c9c9 1px solid;
+    border-right: #c9c9c9 1px solid;
+  }
+}
+.int-motal-input-container {
+  border-bottom: solid #c9c9c9 2px;
+  position: relative;
+  height: 35px;
+}
+.int-motal-input-container > * {
+  position: absolute;
+  top: 0px;
+  left: -12px;
+  width: calc(100% + 23px);
+}
+
+.product-image-slider-container {
+  background-color: #000000;
+}
+.product-image-slider-container::before {
+  content: "";
+  display: inline-block;
+  padding-bottom: 60%;
+}
+.slider-arrow {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.RangeInput {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 100%;
+  outline: none;
+  position: absolute;
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  background-color: transparent;
+  pointer-events: none;
+}
+.RangeInput::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  height: 5px;
+}
+.RangeInput::-moz-range-track {
+  -moz-appearance: none;
+  height: 5px;
+}
+.RangeInput::-ms-track {
+  appearance: none;
+  height: 5px;
+}
+.RangeInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 1rem;
+  width: 1rem;
+  background-color: #57bf9c;
+  cursor: pointer;
+  /* margin-top: ; */
+  transform: translateY(-50%);
+  pointer-events: auto;
+  border-radius: 50%;
+}
+.RangeInput::-moz-range-thumb {
+  -webkit-appearance: none;
+  height: 1rem;
+  width: 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #57bf9c;
+  pointer-events: auto;
+}
+.RangeInput::-ms-thumb {
+  appearance: none;
+  height: 1rem;
+  width: 1rem;
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #3264fe;
+  pointer-events: auto;
+}
+.RangeInput:active::-webkit-slider-thumb {
+  background-color: #ffffff;
+  border: 3px solid #57bf9c;
+}

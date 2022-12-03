@@ -1,0 +1,16 @@
+{
+  "extends": "tsconfig/react-library.json",
+  "include": ["."],
+  "exclude": ["dist", "build", "node_modules"],
+  "compilerOptions": {
+    "outDir": "./dist",
+    "module": "CommonJS",
+    "baseUrl": ".",
+    "paths": {
+      "@Dto": ["Dto"],
+      "@Fetchers": ["fetchers"],
+      "@Utils": ["src/utils"],
+      "@types": ["src/types"]
+    }
+  }
+}

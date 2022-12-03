@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Cart {
+  id               String          @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId          String          @unique
+  cartServices     BookedService[]
+  cartProducts     CartProduct[]
+  appliedVoucherId String?
+}
+
+type CartProduct {
+  id             String
+  productId      String
+  shippingRuleId String
+}
+
+
+model BookedService {
+  id                  String @id @default(auto()) @map("_id") @db.ObjectId
+  ownerCart           Cart @relation(fields: [ownerId],references: [ownerId])
+  serviceId           String  @db.ObjectId
+  ownerId             String  @db.ObjectId
+  providerId          String  @db.ObjectId
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  purchased           Boolean @default(false)
+  status              ServiceStatus @default(pending)
+  rejectReason        String?
+  type                String
+  checkin             DateTime
+  checkout            DateTime?
+  duration            Int?
+  guests              Int
+  cancelationPolicyId String
+  dishsIds            String[]
+  extrasIds           String[]
+  treatmentsIds       String[]
+  roomId              String?
+  doctorId            String?
+  vehicleId           String?
+}
+
+type AppliedVoucher {
+  code                String
+  amount              Float
+  currency            String
+  convertedAmount     Float
+  convertedToCurrency String
+}
+
+enum CartItemType {
+  service
+  product
+}
+
+enum ServiceStatus {
+  completed
+  continuing
+  restitute
+  canceled_by_seller
+  canceled_by_buyer
+  pending
+}

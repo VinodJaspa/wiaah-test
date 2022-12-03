@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Order {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  sellerId  String      @db.ObjectId
+  buyerId   String      @db.ObjectId
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt()
+  items     OrderItem[]
+  status    OrderStatus
+  shippingMethodId String @db.ObjectId
+  completedAt DateTime? 
+}
+
+model RefundRequest {
+  id String @id @db.ObjectId @default(auto()) @map("_id")
+  requestedById String @db.ObjectId
+  orderId String @db.ObjectId
+  reason String
+  type RefundType
+  amount Float
+
+  @@unique([orderId,requestedById])
+}
+
+
+
+type OrderItem {
+  id  String
+  type String
+  qty Int
+}
+
+type OrderStatus {
+  of           OrderStatusEnum
+  rejectReason String?
+}
+
+enum OrderStatusEnum {
+  pending
+  rejectedBySeller
+  rejectedByBuyer
+  shipping
+  compeleted
+}
+
+enum RefundType {
+  money
+  credit
+}

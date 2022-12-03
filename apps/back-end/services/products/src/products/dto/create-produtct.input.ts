@@ -1,0 +1,97 @@
+import {
+  InputType,
+  Int,
+  Field,
+  ObjectType,
+  registerEnumType,
+  Float,
+  ID,
+} from '@nestjs/graphql';
+import {
+  CashbackType,
+  PresentationType,
+  ProdcutType,
+  VisibilityEnum,
+} from '@prisma-client';
+
+registerEnumType(PresentationType, { name: 'PresentationType' });
+registerEnumType(CashbackType, { name: 'CashbackType' });
+registerEnumType(ProdcutType, { name: 'ProductType' });
+
+@InputType()
+export class ProductPresentationInput {
+  @Field((type) => PresentationType)
+  type: PresentationType;
+
+  @Field((type) => String)
+  src: string;
+}
+
+@InputType()
+export class CashBackInput {
+  @Field((type) => Int)
+  units: number;
+
+  @Field((type) => Int)
+  amount: number;
+
+  @Field((type) => CashbackType)
+  type: CashbackType;
+}
+
+@InputType()
+export class DiscountInput {
+  @Field((type) => Int)
+  units: number;
+
+  @Field((type) => Int)
+  amount: number;
+}
+
+@InputType()
+export class ProductAttributeInput {
+  @Field(() => String)
+  name: string;
+
+  @Field(() => [String])
+  values: string[];
+}
+
+@InputType()
+export class CreateProductInput {
+  @Field(() => ProdcutType)
+  type: ProdcutType;
+
+  @Field((type) => String)
+  title: string;
+
+  @Field((type) => String)
+  description: string;
+
+  @Field((type) => ID)
+  categoryId: string;
+
+  @Field(() => [ProductAttributeInput])
+  attributes: ProductAttributeInput[];
+
+  @Field((type) => Int)
+  stock: number;
+
+  @Field((type) => DiscountInput)
+  discount: DiscountInput;
+
+  @Field((type) => CashBackInput)
+  cashback: CashBackInput;
+
+  @Field((type) => [ProductPresentationInput])
+  presentations: ProductPresentationInput[];
+
+  @Field((type) => Float)
+  price: number;
+
+  @Field((type) => String)
+  brand: string;
+
+  @Field((type) => VisibilityEnum)
+  visibility: VisibilityEnum;
+}

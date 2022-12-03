@@ -1,0 +1,42 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "strictBindCallApply": false,
+    "forceConsistentCasingInFileNames": false,
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@dto": ["src/dto"],
+      "@category": ["src/category"],
+      "prismaClient": ["prisma/generated/client"],
+      "prismaService": ["src/prisma.service"],
+      "@entities": ["src/entities"],
+      "@const": ["src/constents"],
+      "@decorators": ["src/decorators"],
+      "@restaurant": ["src/restaurant"],
+      "@restaurant/*": ["src/restaurant/*"],
+      "@service-ownership": ["src/service-ownership"],
+      "@health-center": ["src/health-center"],
+      "@utils": ["src/utils"],
+      "@beauty-center": ["src/beauty-center"],
+      "@vehicle-service": ["src/vehicle"],
+      "@vehicle-service/*": ["src/vehicle/*"],
+      "@models": ["src/models"],
+      "@working-schedule/*": ["src/working-schedule/*"],
+      "@health-center/*": ["src/health-center/*"],
+      "@hotel/*": ["src/hotel/*"]
+    }
+  }
+}

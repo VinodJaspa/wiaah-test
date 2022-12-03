@@ -1,0 +1,27 @@
+import { AccountType } from "./accountTypes";
+import { IsString, IsMongoId, ValidateIf, IsEmail } from "class-validator";
+export class AuthorizationDecodedUser {
+  @IsMongoId()
+  id: string;
+
+  @IsMongoId({ always: false })
+  shopId: string | null;
+
+  @IsString()
+  stripeId: string;
+
+  @IsString({ always: false })
+  accountType?: AccountType;
+
+  @IsString()
+  firstName: string;
+
+  @IsString()
+  lastName: string;
+
+  @IsEmail()
+  email: string;
+
+  iat: number;
+  exp: number;
+}

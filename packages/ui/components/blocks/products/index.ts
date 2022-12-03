@@ -1,0 +1,1 @@
+export { ShopProductFilter } from "./ShopProductFilter";

@@ -1,0 +1,172 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model ProductCategory {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  parantId String?
+}
+
+type ProductFilterGroupValue {
+  name      String
+  sortOrder Int
+}
+
+model ProductFilterGroup {
+  id        String                    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  values    ProductFilterGroupValue[]
+  sortOrder Int
+}
+
+enum ProdcutType {
+  goods
+  digital
+}
+
+type ProductAttribute {
+  name   String
+  values String[]
+}
+
+model Product {
+  id                          String                @id() @default(auto()) @map("_id") @db.ObjectId()
+  sellerId                    String
+  shopId                      String
+  vendor_external_link        String?
+  vendor_external_link_clicks Int                   @default(0)
+  type                        ProdcutType
+  title                       String
+  description                 String
+  price                       Int
+  categoryId                  String
+  attributes                  ProductAttribute[]
+  stock                       Int
+  rate                        Float                 @default(0)
+  reviews                     Int                   @default(0)
+  rateStarCount               Int                   @default(0)
+  brand                       String
+  discount                    Discount?
+  cashback                    CashBack?
+  shippingRulesIds            String[]              @db.ObjectId
+  presentations               ProductPresentation[]
+  visibility                  VisibilityEnum        @default(hidden)
+  sales                       Int                   @default(0)
+  earnings                    Float                 @default(0)
+}
+
+model Shop {
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId       String          @unique
+  name          String
+  banner        String
+  description   String
+  verified      Boolean
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt()
+  phone         String?
+  location      Location
+  storeType     StoreType[]
+  vendorType    VendorType[]
+  targetGenders TargetGenders[]
+}
+
+type Discount {
+  units  Int
+  amount Int
+}
+
+type CashBack {
+  units  Int
+  amount Int
+  type   CashbackType
+}
+
+enum CashbackType {
+  percent
+  cash
+}
+
+enum VisibilityEnum {
+  hidden
+  public
+}
+
+type ProductPresentation {
+  type PresentationType
+  src  String
+}
+
+enum PresentationType {
+  video
+  image
+}
+
+type Location {
+  lat     Float
+  long    Float
+  country String
+  city    String
+  state   String
+  address String
+}
+
+enum StoreType {
+  product
+  service
+}
+
+enum VendorType {
+  profissional
+  individual
+}
+
+enum TargetGenders {
+  male
+  female
+}
+
+// model ShippingSettings {
+//   id            String         @id @default(auto()) @map("_id") @db.ObjectId
+//   shopId        String         @unique @db.ObjectId
+//   ownerId       String         @unique @db.ObjectId
+//   createdAt     DateTime       @default(now())
+//   updatedAt     DateTime       @updatedAt()
+// }
+
+model ShippingRule {
+  id                 String            @id @default(auto()) @map("_id") @db.ObjectId
+  sellerId           String
+  name               String
+  countries          ShippingCountry[]
+  cost               Float
+  deliveryTimeRange  DeliveryTimeRange
+  shippingTypes      ShippingType[]
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt()
+}
+
+type DeliveryTimeRange {
+  from Int
+  to   Int
+}
+
+type ShippingCountry {
+  name String
+  code String
+}
+
+enum ShippingType {
+  paid
+  click_and_collect
+}

@@ -1,0 +1,25 @@
+import { CreatePaginationApiResponseValidationSchemaOf } from "../../../../SharedSchema";
+import { object, string } from "yup";
+import {
+  HashTags,
+  PostAttachment,
+  PostInteractionsValidationSchema,
+  PostAttachments,
+} from "../../Shared/PostRelated.schema";
+import { SocialProfileInfoValidationSchema } from "../../Shop";
+
+export const ServicesPostsValidationSchema = object({
+  id: string().required(),
+  name: string().required(),
+  attachements: PostAttachments().required(),
+  label: string().required(),
+  type: string().required(),
+  hashtags: HashTags(),
+  createdAt: string().required(),
+  content: string().required(),
+  user: SocialProfileInfoValidationSchema.required(),
+  postInteraction: PostInteractionsValidationSchema.required(),
+});
+
+export const ServicesPostsApiResponseValidationSchema =
+  CreatePaginationApiResponseValidationSchemaOf(ServicesPostsValidationSchema);
