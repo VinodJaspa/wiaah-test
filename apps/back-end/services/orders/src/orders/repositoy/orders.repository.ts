@@ -113,6 +113,7 @@ export class OrdersRepository {
         status: {
           of: OrderStatus.compeleted,
         },
+        completedAt: new Date(),
       },
     });
   }

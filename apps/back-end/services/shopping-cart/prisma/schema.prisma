@@ -68,6 +68,7 @@ enum ServiceStatus {
   completed
   continuing
   restitute
-  canceled
+  canceled_by_seller
+  canceled_by_buyer
   pending
 }

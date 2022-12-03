@@ -20,47 +20,27 @@ model Order {
   items     OrderItem[]
   status    OrderStatus
   shippingMethodId String @db.ObjectId
+  completedAt DateTime? 
 }
 
-// model SellerOrdersCluster {
-//   id        String      @id @default(auto()) @map("_id") @db.ObjectId
-//   shopId    String      @unique @db.ObjectId
-//   sellerId  String      @unique @db.ObjectId
-//   orders    OrderType[]
-//   createdAt DateTime    @default(now())
-//   updatedAt DateTime    @updatedAt
-// }
+model RefundRequest {
+  id String @id @db.ObjectId @default(auto()) @map("_id")
+  requestedById String @db.ObjectId
+  orderId String @db.ObjectId
+  reason String
+  type RefundType
+  amount Float
 
-// model BuyerOrdersCluster {
-//   id        String      @id @default(auto()) @map("_id") @db.ObjectId
-//   buyerId   String      @unique @db.ObjectId
-//   orders    OrderType[]
-//   createdAt DateTime    @default(now())
-//   updatedAt DateTime    @updatedAt
-// }
+  @@unique([orderId,requestedById])
+}
 
-// type OrderType {
-//   id         String
-//   items      OrderItem[]
-//   status     OrderStatus
-//   sellerInfo SellerInfo
-//   buyerInfo  BuyerInfo
-// }
+
 
 type OrderItem {
   id  String
   type String
   qty Int
 }
-
-// type SellerInfo {
-//   id     String
-//   shopId String
-// }
-
-// type BuyerInfo {
-//   id String
-// }
 
 type OrderStatus {
   of           OrderStatusEnum
@@ -73,4 +53,9 @@ enum OrderStatusEnum {
   rejectedByBuyer
   shipping
   compeleted
+}
+
+enum RefundType {
+  money
+  credit
 }

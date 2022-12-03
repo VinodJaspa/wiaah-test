@@ -23,7 +23,8 @@
       "@entities": ["src/entities"],
       "@dto": ["src/dto"],
       "prismaService": ["src/prisma.service"],
-      "@orders/*": ["src/orders/*"]
+      "@orders/*": ["src/orders/*"],
+      "@refund/*": ["src/refund/*"]
     }
   }
 }

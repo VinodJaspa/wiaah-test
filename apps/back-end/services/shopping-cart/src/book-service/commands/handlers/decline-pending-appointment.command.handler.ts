@@ -25,7 +25,7 @@ export class DeclinePendingAppointmentCommandHandler
 
     return this.repo.updateStatus(
       app.id,
-      bookedServiceStatus.canceled,
+      bookedServiceStatus.canceled_by_seller,
       input.reason,
     );
   }

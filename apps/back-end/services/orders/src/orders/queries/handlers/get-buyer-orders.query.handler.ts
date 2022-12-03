@@ -1,7 +1,9 @@
 import { EventBus, IQueryHandler, QueryHandler } from '@nestjs/cqrs';
+import { MAX_DAYS_REFUND } from '@orders/const';
 import { Order } from '@orders/entities';
 import { GetBuyerOrdersQuery } from '@orders/queries/impl';
 import { OrdersRepository } from '@orders/repositoy';
+import { AddToDate } from 'nest-utils';
 
 @QueryHandler(GetBuyerOrdersQuery)
 export class GetBuyerOrdersQueryHandler
@@ -17,6 +19,10 @@ export class GetBuyerOrdersQueryHandler
     statusFilter,
   }: GetBuyerOrdersQuery): Promise<Order[]> {
     const res = await this.repo.getAllByBuyerId(buyerId, statusFilter);
-    return res;
+    return res.map((v) => ({
+      ...v,
+      refundable:
+        AddToDate(v.completedAt, { days: MAX_DAYS_REFUND }) < new Date(),
+    }));
   }
 }
