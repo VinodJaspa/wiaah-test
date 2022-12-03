@@ -28,6 +28,6 @@ export class CreateOrderCommandHandler
 
     this.eventbus.publish(new OrderCreatedEvent(res));
 
-    return res;
+    return { ...res, refundable: true };
   }
 }

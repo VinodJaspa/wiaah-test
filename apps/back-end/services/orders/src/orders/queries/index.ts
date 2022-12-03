@@ -4,6 +4,7 @@ import {
   GetSellerOrdersQueryHandler,
   GetSellerReturnedOrdersQueryHandler,
   GetIsOrderBuyerQueryHandler,
+  GetOrderByIdQueryHandler,
 } from './handlers';
 
 export const OrdersQueryHandlers = [
@@ -11,4 +12,5 @@ export const OrdersQueryHandlers = [
   GetSellerOrdersQueryHandler,
   GetSellerReturnedOrdersQueryHandler,
   GetIsOrderBuyerQueryHandler,
+  GetOrderByIdQueryHandler,
 ];

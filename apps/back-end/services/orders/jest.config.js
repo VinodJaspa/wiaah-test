@@ -16,6 +16,7 @@ module.exports = {
     '@entities': '<rootDir>/src/entities',
     '@exceptions': '<rootDir>/src/exceptions',
     '^@orders/(.+)$': '<rootDir>/src/orders/$1',
+    '^@refund/(.+)$': '<rootDir>/src/refund/$1',
   },
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
