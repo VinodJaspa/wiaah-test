@@ -14,6 +14,12 @@ export const KAFKA_EVENTS = {
     userDisconnected: "user.disconnected",
     updateUserActiveTime: "user.active.time.update",
   },
+  MODERATION: {
+    contentSuspenseRequest: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`content.suspense.request.${type}`, regex),
+    contentSuspensed: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`content.suspensed.${type}`, regex),
+  },
   WISHLIST_EVENTS: {
     createWishersList: "create.wisherlist",
     createWishlist: "create.wishlist",
