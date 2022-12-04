@@ -49,6 +49,7 @@ model Product {
   title                       String
   description                 String
   price                       Int
+  status                      ProductStatus         @default(active)
   categoryId                  String
   attributes                  ProductAttribute[]
   stock                       Int
@@ -169,4 +170,11 @@ type ShippingCountry {
 enum ShippingType {
   paid
   click_and_collect
+}
+
+enum ProductStatus {
+  suspended
+  active
+  pasued
+  pending
 }

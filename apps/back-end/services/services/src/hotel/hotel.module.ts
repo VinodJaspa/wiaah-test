@@ -9,6 +9,7 @@ import { HotelRoomElasticRepository, HotelRoomRepository } from './repository';
 import { HotelRoomResolver } from './hotel-room.resolver';
 import { HotelSaga } from './saga/hotel.sagas';
 import { HotelCommandHandlers } from './command';
+import { HotelController } from './hotel.controller';
 
 @Module({
   imports: [CqrsModule],
@@ -23,5 +24,6 @@ import { HotelCommandHandlers } from './command';
     ...HotelQueryHandlers,
     ...HotelCommandHandlers,
   ],
+  controllers: [HotelController],
 })
 export class HotelModule {}

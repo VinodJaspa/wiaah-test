@@ -1,8 +1,20 @@
-import { Controller, NotFoundException } from '@nestjs/common';
+import { Controller, Inject, NotFoundException } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
-import { formatCaughtError, KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
 import {
+  ClientKafka,
+  EventPattern,
+  MessagePattern,
+  Payload,
+} from '@nestjs/microservices';
+import {
+  formatCaughtError,
+  KAFKA_EVENTS,
+  KAFKA_MESSAGES,
+  SERVICES,
+} from 'nest-utils';
+import {
+  ContentSuspendedEvent,
+  ContentSuspenseRequestEvent,
   GetProductMetaDataMessage,
   GetProductMetaDataMessageReply,
   GetProductsMetaDataMessage,
@@ -13,15 +25,21 @@ import {
   IsProductReviewableMessageReply,
   KafkaPayload,
 } from 'nest-dto';
-import { EventBus } from '@nestjs/cqrs';
+import { CommandBus, EventBus } from '@nestjs/cqrs';
 import { ProductPurchasedEvent } from '@products/events';
 import { ProductPurchasedEvent as KafkaProductPurchasedEvent } from 'nest-dto';
+import { ProductStatus, PRODUCT_SERVICE_KEY } from './const';
+import { UpdateProductStatusCommand } from './command';
+import { Product } from './entities';
 
 @Controller()
 export class ProductsController {
   constructor(
     private readonly productsService: ProductsService,
     private readonly eventbus: EventBus,
+    private readonly commandbus: CommandBus,
+    @Inject(SERVICES.PRODUCTS_SERVICE.token)
+    private readonly eventClient: ClientKafka,
   ) {}
 
   @MessagePattern(KAFKA_MESSAGES.productReviewable)
@@ -131,6 +149,28 @@ export class ProductsController {
         data: { isAddable: visibility === 'public' },
       });
     } catch (error) {}
+  }
+
+  @EventPattern(
+    KAFKA_EVENTS.MODERATION.contentSuspenseRequest(PRODUCT_SERVICE_KEY),
+  )
+  async handleProductSuspense(
+    @Payload() { value }: { value: ContentSuspenseRequestEvent },
+  ) {
+    const prod = await this.commandbus.execute<
+      UpdateProductStatusCommand,
+      Product
+    >(new UpdateProductStatusCommand(value.input.id, ProductStatus.suspended));
+    if (!prod) return;
+    this.eventClient.emit(
+      KAFKA_EVENTS.MODERATION.contentSuspensed(PRODUCT_SERVICE_KEY),
+      new ContentSuspendedEvent({
+        authorId: prod.sellerId,
+        id: prod.id,
+        type: PRODUCT_SERVICE_KEY,
+        byModeration: true,
+      }),
+    );
   }
 
   @EventPattern(KAFKA_EVENTS.PRODUCTS_EVENTS.productPurchased)

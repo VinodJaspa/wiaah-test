@@ -17,6 +17,7 @@ import {
   Prisma,
   VehicleService as PrismaVehicleService,
   Vehicle as PrismaVehicle,
+  ServiceStatus,
 } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 import { v4 as uuid } from 'uuid';
@@ -183,6 +184,17 @@ export class VehicleServiceRepository {
     });
 
     return this.formatVehicleServicedata(created, langId);
+  }
+
+  updateOneStatus(id: string, status: ServiceStatus) {
+    return this.prisma.vehicleService.update({
+      where: {
+        id,
+      },
+      data: {
+        status,
+      },
+    });
   }
 
   async updateService(

@@ -11,12 +11,14 @@ import {
   CashbackType,
   PresentationType,
   ProdcutType,
+  ProductStatus,
   VisibilityEnum,
 } from '@prisma-client';
 
 registerEnumType(PresentationType, { name: 'PresentationType' });
 registerEnumType(CashbackType, { name: 'CashbackType' });
 registerEnumType(ProdcutType, { name: 'ProductType' });
+registerEnumType(ProductStatus, { name: 'ProductStatus' });
 
 @InputType()
 export class ProductPresentationInput {
@@ -94,4 +96,7 @@ export class CreateProductInput {
 
   @Field((type) => VisibilityEnum)
   visibility: VisibilityEnum;
+
+  @Field(() => ProductStatus, { nullable: true })
+  status: ProductStatus;
 }

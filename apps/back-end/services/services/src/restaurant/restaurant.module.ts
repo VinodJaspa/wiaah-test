@@ -9,6 +9,7 @@ import {
 } from './repository';
 import { SearchFilteredRestaurantQueryHandler } from './queries/handlers/search-filtered-restaurant.handler';
 import { CqrsModule } from '@nestjs/cqrs';
+import { RestaurantController } from './restaurant.controller';
 
 @Module({
   imports: [CqrsModule, ServiceOwnershipModule],
@@ -20,5 +21,6 @@ import { CqrsModule } from '@nestjs/cqrs';
     RestaurantElasticSearchRepository,
     SearchFilteredRestaurantQueryHandler,
   ],
+  controllers: [RestaurantController],
 })
 export class RestaurantModule {}

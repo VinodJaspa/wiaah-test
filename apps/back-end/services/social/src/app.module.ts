@@ -23,6 +23,7 @@ import { AffiliationPostModule } from './affiliation-post/affiliation-post.modul
 import { ActionModule } from './action/action.module';
 import { PrismaModule } from './prisma.module';
 import { HiddenContentModule } from './hidden-content/hidden-content.module';
+import { HotelController } from './hotel/hotel.controller';
 
 @Module({
   imports: [
@@ -52,5 +53,6 @@ import { HiddenContentModule } from './hidden-content/hidden-content.module';
     ActionModule,
     HiddenContentModule,
   ],
+  controllers: [HotelController],
 })
 export class AppModule {}

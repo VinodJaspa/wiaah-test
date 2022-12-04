@@ -21,6 +21,9 @@ export class HotelRoom {
   @Field(() => ID)
   hotelId: string;
 
+  @Field(() => ID)
+  sellerId: string;
+
   @Field(() => String)
   title: string;
 

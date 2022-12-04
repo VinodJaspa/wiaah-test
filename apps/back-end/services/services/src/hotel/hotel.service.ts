@@ -48,7 +48,7 @@ export class HotelService {
           input.rooms.length > 0
             ? {
                 createMany: {
-                  data: input.rooms,
+                  data: input.rooms.map((v) => ({ ...v, sellerId: userId })),
                 },
               }
             : undefined,

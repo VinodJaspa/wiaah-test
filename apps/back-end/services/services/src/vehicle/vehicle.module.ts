@@ -15,6 +15,7 @@ import {
   VehicleServiceRepository,
 } from './repository';
 import { VehicleQueriesHandlers } from './queries';
+import { VehicleController } from './vehicle.controller';
 
 @Module({
   imports: [
@@ -35,5 +36,6 @@ import { VehicleQueriesHandlers } from './queries';
     ...VehicleEventsHandlers,
     ...VehicleSagasHandlers,
   ],
+  controllers: [VehicleController],
 })
 export class VehicleModule {}
