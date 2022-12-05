@@ -152,6 +152,10 @@ export const KAFKA_EVENTS = {
     reviewCreated: (type: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`review.created.${type}`, regex),
   },
+  ORDERS_EVENTS: {
+    orderCreated: (key: string = "", regex?: boolean) =>
+      makeKafkaDynamicEvent(`order.created.${key}`, regex),
+  },
   createAccount: "create.account",
   createWishlist: "create.wishlist",
   createWishersList: "create.wisherlist",
@@ -203,6 +207,10 @@ export const KAFKA_MESSAGES = {
   SELLER_MESSAGES: {
     getSellerMembership: "seller.get.membership",
     getItemSellerId: (itemType: string) => `get.item.sellerid.${itemType}`,
+  },
+  SHIPPING_MESSAGES: {
+    getShippingAddress: (key: string = "", regex?: boolean) =>
+      makeKafkaDynamicEvent(`shipping.address.${key}`, regex),
   },
   MEMBERSHIP_MESSAGES: {},
   CAN_PREFORM_ACTION_MESSAGES: {

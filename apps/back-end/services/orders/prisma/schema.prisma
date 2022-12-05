@@ -20,6 +20,7 @@ model Order {
   items     OrderItem[]
   status    OrderStatus
   shippingMethodId String @db.ObjectId
+  shippingAddressId String @db.ObjectId
   completedAt DateTime? 
 }
 

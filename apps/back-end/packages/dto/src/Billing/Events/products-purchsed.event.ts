@@ -11,4 +11,5 @@ export class SellerProductsPurchasedEvent extends KafkaMessage<{
     affiliatorId?: string;
   }[];
   shippingMethodId?: string;
+  shippingAddressId?: string;
 }> {}

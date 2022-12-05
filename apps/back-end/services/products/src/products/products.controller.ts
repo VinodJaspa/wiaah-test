@@ -24,13 +24,24 @@ import {
   IsProductReviewableMessage,
   IsProductReviewableMessageReply,
   KafkaPayload,
+  SellerProductsPurchasedEvent,
 } from 'nest-dto';
-import { CommandBus, EventBus } from '@nestjs/cqrs';
+import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
 import { ProductPurchasedEvent } from '@products/events';
 import { ProductPurchasedEvent as KafkaProductPurchasedEvent } from 'nest-dto';
-import { ProductStatus, PRODUCT_SERVICE_KEY } from './const';
-import { UpdateProductStatusCommand } from './command';
-import { Product } from './entities';
+import { ProductStatus, PRODUCT_SERVICE_KEY } from '@products/const';
+import { UpdateProductStatusCommand } from '@products/command';
+import { Product } from '@products/entities';
+import {
+  GetShippingAddressQuery,
+  GetShippingMethodQuery,
+  GetUserDataQuery,
+  GetUserDataQueryRes,
+} from '@products/queries';
+import {
+  ShippingAddressQueryRes,
+  ShippingMethodQueryRes,
+} from '@products/queries';
 
 @Controller()
 export class ProductsController {
@@ -40,6 +51,7 @@ export class ProductsController {
     private readonly commandbus: CommandBus,
     @Inject(SERVICES.PRODUCTS_SERVICE.token)
     private readonly eventClient: ClientKafka,
+    private readonly querybus: QueryBus,
   ) {}
 
   @MessagePattern(KAFKA_MESSAGES.productReviewable)
@@ -180,5 +192,47 @@ export class ProductsController {
     this.eventbus.publish(
       new ProductPurchasedEvent(value.input.productId, value.input.purchaserId),
     );
+  }
+
+  @EventPattern(
+    KAFKA_EVENTS.BILLING_EVNETS.sellerProductsPurchased(PRODUCT_SERVICE_KEY),
+  )
+  async handlePurchasedProducts(
+    @Payload() { value }: { value: SellerProductsPurchasedEvent },
+  ) {
+    try {
+      const {
+        input: {
+          shippingMethodId,
+          shippingAddressId,
+          products,
+          buyerId,
+          sellerId,
+        },
+      } = value;
+      const shippingMethodPromise = this.querybus.execute<
+        GetShippingMethodQuery,
+        ShippingMethodQueryRes
+      >(new GetShippingMethodQuery(shippingMethodId));
+      const shippignAddressPromise = this.querybus.execute<
+        GetShippingAddressQuery,
+        ShippingAddressQueryRes
+      >(new GetShippingAddressQuery(shippingAddressId));
+      const buyerPromise = this.querybus.execute<
+        GetUserDataQuery,
+        GetUserDataQueryRes
+      >(new GetUserDataQuery(buyerId));
+      const sellerPromise = this.querybus.execute<
+        GetUserDataQuery,
+        GetUserDataQueryRes
+      >(new GetUserDataQuery(sellerId));
+
+      const shippingMethod = await shippingMethodPromise;
+      const shippingAddress = await shippignAddressPromise;
+      const buyer = await buyerPromise;
+      const seller = await sellerPromise;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

@@ -23,3 +23,12 @@ export class ProductPurchasedEventHandler
     );
   }
 }
+
+@EventsHandler(ProductPurchasedEvent)
+export class ProductOrderConfirmationEmailHandler
+  implements IEventHandler<ProductPurchasedEvent>
+{
+  constructor(private readonly commandBus: CommandBus) {}
+
+  async handle({ productId }: ProductPurchasedEvent) {}
+}

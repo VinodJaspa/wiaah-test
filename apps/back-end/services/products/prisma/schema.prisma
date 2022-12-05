@@ -82,6 +82,13 @@ model Shop {
   targetGenders TargetGenders[]
 }
 
+model ShippingAddress {
+  id String @id @default(auto()) @db.ObjectId @map("_id")
+  ownerId String @db.ObjectId
+  location Location
+}
+
+
 type Discount {
   units  Int
   amount Int
@@ -120,6 +127,7 @@ type Location {
   city    String
   state   String
   address String
+  address2 String?
 }
 
 enum StoreType {
