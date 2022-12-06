@@ -1,4 +1,12 @@
 export * from './impl';
-import { CreateRefundRequestCommandHandler } from './handlers';
+import {
+  CreateRefundRequestCommandHandler,
+  AcceptRequestedRefundCommandHandler,
+  RejectRequestedRefundCommandHandler,
+} from './handlers';
 
-export const RefundCommandHandlers = [CreateRefundRequestCommandHandler];
+export const RefundCommandHandlers = [
+  CreateRefundRequestCommandHandler,
+  AcceptRequestedRefundCommandHandler,
+  RejectRequestedRefundCommandHandler,
+];

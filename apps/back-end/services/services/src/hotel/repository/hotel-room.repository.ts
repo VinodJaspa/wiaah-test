@@ -6,7 +6,11 @@ import {
   UserPreferedLang,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
-import { HotelRoom as PrismaHotelRoom, Prisma } from 'prismaClient';
+import {
+  HotelRoom as PrismaHotelRoom,
+  Prisma,
+  ServiceStatus,
+} from 'prismaClient';
 import { SearchHotelRoomLocationInput } from '../dto';
 import {
   GqlHotelRoomAggregationSelectedFields,
@@ -20,6 +24,17 @@ export class HotelRoomRepository {
     private readonly prisma: PrismaService,
     private readonly hotelRoomElasticRepo: HotelRoomElasticRepository,
   ) {}
+
+  async updateOneStatus(id: string, status: ServiceStatus) {
+    return this.prisma.hotelRoom.update({
+      where: {
+        id,
+      },
+      data: {
+        status,
+      },
+    });
+  }
 
   async getHotelRoomById(
     id: string,
@@ -93,9 +108,6 @@ export class HotelRoomRepository {
       },
     });
 
-    console.log(
-      JSON.stringify({ filters, rooms: rooms.map((v) => v.id) }, null, 2),
-    );
     return rooms.map((v) => this.formatHotelRoom(v, langId));
   }
 

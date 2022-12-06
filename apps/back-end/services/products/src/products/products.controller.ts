@@ -1,8 +1,20 @@
-import { Controller, NotFoundException } from '@nestjs/common';
+import { Controller, Inject, NotFoundException } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
-import { formatCaughtError, KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
 import {
+  ClientKafka,
+  EventPattern,
+  MessagePattern,
+  Payload,
+} from '@nestjs/microservices';
+import {
+  formatCaughtError,
+  KAFKA_EVENTS,
+  KAFKA_MESSAGES,
+  SERVICES,
+} from 'nest-utils';
+import {
+  ContentSuspendedEvent,
+  ContentSuspenseRequestEvent,
   GetProductMetaDataMessage,
   GetProductMetaDataMessageReply,
   GetProductsMetaDataMessage,
@@ -12,16 +24,34 @@ import {
   IsProductReviewableMessage,
   IsProductReviewableMessageReply,
   KafkaPayload,
+  SellerProductsPurchasedEvent,
 } from 'nest-dto';
-import { EventBus } from '@nestjs/cqrs';
+import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
 import { ProductPurchasedEvent } from '@products/events';
 import { ProductPurchasedEvent as KafkaProductPurchasedEvent } from 'nest-dto';
+import { ProductStatus, PRODUCT_SERVICE_KEY } from '@products/const';
+import { UpdateProductStatusCommand } from '@products/command';
+import { Product } from '@products/entities';
+import {
+  GetShippingAddressQuery,
+  GetShippingMethodQuery,
+  GetUserDataQuery,
+  GetUserDataQueryRes,
+} from '@products/queries';
+import {
+  ShippingAddressQueryRes,
+  ShippingMethodQueryRes,
+} from '@products/queries';
 
 @Controller()
 export class ProductsController {
   constructor(
     private readonly productsService: ProductsService,
     private readonly eventbus: EventBus,
+    private readonly commandbus: CommandBus,
+    @Inject(SERVICES.PRODUCTS_SERVICE.token)
+    private readonly eventClient: ClientKafka,
+    private readonly querybus: QueryBus,
   ) {}
 
   @MessagePattern(KAFKA_MESSAGES.productReviewable)
@@ -102,6 +132,11 @@ export class ProductsController {
           productId: prod.id,
           ownerId: prod.sellerId,
           shopId: prod.shopId,
+          price: prod.price,
+          category: [prod.category?.name || ''],
+          tax: prod.vat * prod.price,
+          thumbnail: prod.presentations.find((v) => v.type === 'image').src,
+          title: prod.title,
         })),
       });
     } catch (error) {
@@ -133,6 +168,28 @@ export class ProductsController {
     } catch (error) {}
   }
 
+  @EventPattern(
+    KAFKA_EVENTS.MODERATION.contentSuspenseRequest(PRODUCT_SERVICE_KEY),
+  )
+  async handleProductSuspense(
+    @Payload() { value }: { value: ContentSuspenseRequestEvent },
+  ) {
+    const prod = await this.commandbus.execute<
+      UpdateProductStatusCommand,
+      Product
+    >(new UpdateProductStatusCommand(value.input.id, ProductStatus.suspended));
+    if (!prod) return;
+    this.eventClient.emit(
+      KAFKA_EVENTS.MODERATION.contentSuspensed(PRODUCT_SERVICE_KEY),
+      new ContentSuspendedEvent({
+        authorId: prod.sellerId,
+        id: prod.id,
+        type: PRODUCT_SERVICE_KEY,
+        byModeration: true,
+      }),
+    );
+  }
+
   @EventPattern(KAFKA_EVENTS.PRODUCTS_EVENTS.productPurchased)
   async handleProductPurchased(
     @Payload() { value }: { value: KafkaProductPurchasedEvent },
@@ -140,5 +197,26 @@ export class ProductsController {
     this.eventbus.publish(
       new ProductPurchasedEvent(value.input.productId, value.input.purchaserId),
     );
+  }
+
+  @EventPattern(
+    KAFKA_EVENTS.BILLING_EVNETS.sellerProductsPurchased(PRODUCT_SERVICE_KEY),
+  )
+  async handlePurchasedProducts(
+    @Payload() { value }: { value: SellerProductsPurchasedEvent },
+  ) {
+    try {
+      const {
+        input: {
+          shippingMethodId,
+          shippingAddressId,
+          products,
+          buyerId,
+          sellerId,
+        },
+      } = value;
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

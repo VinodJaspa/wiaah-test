@@ -20,6 +20,8 @@ model Order {
   items     OrderItem[]
   status    OrderStatus
   shippingMethodId String @db.ObjectId
+  shippingAddressId String @db.ObjectId
+  discountId String   @db.ObjectId
   completedAt DateTime? 
 }
 
@@ -27,14 +29,15 @@ model RefundRequest {
   id String @id @db.ObjectId @default(auto()) @map("_id")
   requestedById String @db.ObjectId
   orderId String @db.ObjectId
+  sellerId String @db.ObjectId
   reason String
   type RefundType
   amount Float
-
+  fullAmount Boolean
+  status RefundStatusType @default(pending)
+  rejectReason String?
   @@unique([orderId,requestedById])
 }
-
-
 
 type OrderItem {
   id  String
@@ -45,6 +48,12 @@ type OrderItem {
 type OrderStatus {
   of           OrderStatusEnum
   rejectReason String?
+}
+
+enum RefundStatusType {
+  pending
+  accept
+  reject
 }
 
 enum OrderStatusEnum {

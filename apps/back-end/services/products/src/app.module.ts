@@ -14,6 +14,7 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { Search } from './products/entities/search.entity';
 import { ShippingRulesModule } from './shipping-rules';
 import { PrismaService } from './Prisma.service';
+import { ShippingAddressModule } from './shipping-address/shipping-address.module';
 
 @Global()
 @Module({
@@ -25,6 +26,7 @@ import { PrismaService } from './Prisma.service';
         password: process.env.ELASTIC_PASSWORD,
       },
     }),
+    ShippingAddressModule,
   ],
   exports: [ElasticsearchModule],
 })

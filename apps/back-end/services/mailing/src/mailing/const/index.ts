@@ -1,0 +1,4 @@
+export const MailJetTemplateIds = {
+  SHIPPING_STARTED: 4408590,
+  MEMBERSHIP_WARNING: 4408814,
+};

@@ -1,18 +1,24 @@
 import { Controller, Logger } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
-import { MailingService } from './mailing.service';
 import {
   AccountRegisteredEvent,
   ChangePasswordEvent,
   KafkaPayload,
+  MembershipRenewalFailEvent,
   NewRegisterationTokenRequestedEvent,
+  OrderCreatedEvent,
+  OrderShippingEvent,
+  ServiceBookedEvent,
 } from 'nest-dto';
 import { KAFKA_EVENTS } from 'nest-utils';
+import { MailJetTemplateIds } from '@mailing/const';
+import { BaseController } from '@mailing/abstraction';
+import { GetUserDataQuery, GetUserDataQueryRes } from '@mailing/queries';
+import { renderFile } from 'ejs';
 
 @Controller()
-export class MailingController {
+export class MailingController extends BaseController {
   private logger = new Logger(MailingController.name);
-  constructor(private readonly mailingService: MailingService) {}
 
   @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.accountRegistered)
   sendVerificationMail(
@@ -35,7 +41,6 @@ export class MailingController {
     @Payload() { value }: { value: NewRegisterationTokenRequestedEvent },
   ) {
     const { email, token } = value.input;
-    console.log('sending', { email, token });
     return this.mailingService.sendVerificationMail(email, 'User', token);
   }
 
@@ -57,5 +62,58 @@ export class MailingController {
     } catch (err) {
       this.logger.error(err);
     }
+  }
+
+  @EventPattern(KAFKA_EVENTS.ORDERS_EVENTS.orderCreated('*', true))
+  handleOrderCreatedMail(@Payload() { value }: { value: OrderCreatedEvent }) {}
+
+  @EventPattern(KAFKA_EVENTS.SHIPPING_EVENTS.orderShippingStarted('*', true))
+  handleOrderShippingStartMail(
+    @Payload() { value }: { value: OrderShippingEvent },
+  ) {
+    const {
+      input: { buyer, order, seller },
+    } = value;
+    this.mailingService.sendTemplateMail({
+      templateId: MailJetTemplateIds.SHIPPING_STARTED,
+      to: [{ email: buyer.email, name: buyer.name }],
+      vars: {
+        order_id: order.id,
+        buyer_name: buyer.name,
+        seller_name: seller.name,
+      },
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.MEMBERSHIP.memberShipRenewalFailWarning())
+  handleMembershipRenewalFail(
+    @Payload() { value }: { value: MembershipRenewalFailEvent },
+  ) {
+    this.mailingService.sendTemplateMail({
+      templateId: MailJetTemplateIds.MEMBERSHIP_WARNING,
+      to: [
+        { email: value.input.customerEmail, name: value.input.customerName },
+      ],
+      vars: {
+        customer_name: value.input.customerName,
+        payment_type: value.input.type,
+      },
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.SERVICES.serviceBooked('*', true))
+  async handleBookingConfirmationEmail(
+    @Payload() { value }: { value: ServiceBookedEvent },
+  ) {
+    const user = await this.querybus.execute<
+      GetUserDataQuery,
+      GetUserDataQueryRes
+    >(new GetUserDataQuery(value.input.id));
+    const html = await renderFile('./templates/test.ejs');
+    this.mailingService.sendRawTemplate({
+      to: [{ email: user.email, name: user.name }],
+      subject: 'Booking Confirmation',
+      html,
+    });
   }
 }

@@ -7,6 +7,7 @@ import {
 import { GraphQLModule } from '@nestjs/graphql';
 import { getUserFromRequest } from 'nest-utils';
 import { RefundModule } from './refund/refund.module';
+import { PrismaModule } from './prisma.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { RefundModule } from './refund/refund.module';
       autoSchemaFile: true,
       context: ({ req }) => ({ req, user: getUserFromRequest(req) }),
     }),
+    PrismaModule,
     OrdersModule,
     RefundModule,
   ],

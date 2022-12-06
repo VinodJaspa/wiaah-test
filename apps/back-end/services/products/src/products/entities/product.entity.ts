@@ -120,6 +120,9 @@ export class Product {
   @Field(() => Int)
   sales: number;
 
+  @Field(() => Float)
+  vat: number;
+
   rateStarCount: number;
 }
 

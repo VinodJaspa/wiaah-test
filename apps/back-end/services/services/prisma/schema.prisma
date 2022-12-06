@@ -134,6 +134,7 @@ model VehicleService {
   vat                 Float                        @default(0)
   rating              Float                        @default(0)
   totalReviews        Int                          @default(0)
+  status              ServiceStatus                @default(active)
   location            Location
   presentations       ServicePresentation[]
   policies            ServiceTranslationPolicies[]
@@ -215,9 +216,11 @@ model HotelRoom {
   id                  String                         @id @default(auto()) @map("_id") @db.ObjectId
   hotel               HotelService                   @relation(fields: [hotelId], references: [id])
   hotelId             String                         @db.ObjectId
+  sellerId            String                         @db.ObjectId
   createdAt           DateTime                       @default(now())
   updatedAt           DateTime                       @updatedAt
   roomMetaInfo        HotelRoomTranslationMetaInfo[]
+  status              ServiceStatus                  @default(active)
   pricePerNight       Float
   dailyPrice          Boolean
   beds                Int
@@ -431,6 +434,7 @@ enum ServicePaymentMethods {
 enum ServiceStatus {
   inActive
   active
+  suspended
 }
 
 enum HealthCenterDoctorAvailablityStatus {

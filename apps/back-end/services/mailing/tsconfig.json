@@ -20,7 +20,8 @@
     "paths": {
       "@const": ["src/const"],
       "prismaClient": ["prisma/generated/client"],
-      "prismService": ["src/prisma.service"]
+      "prismService": ["src/prisma.service"],
+      "@mailing/*": ["src/mailing/*"]
     }
   }
 }

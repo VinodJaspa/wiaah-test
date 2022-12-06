@@ -22,3 +22,7 @@ export * from "./Seller";
 export * from "./Affiliation";
 export * from "./User";
 export * from "./Analytics";
+export * from "./Moderation";
+export * from "./Orders";
+export * from "./ShippingAddress";
+export * from "./Shipping";

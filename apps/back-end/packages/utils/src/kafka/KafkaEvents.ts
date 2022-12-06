@@ -14,6 +14,12 @@ export const KAFKA_EVENTS = {
     userDisconnected: "user.disconnected",
     updateUserActiveTime: "user.active.time.update",
   },
+  MODERATION: {
+    contentSuspenseRequest: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`content.suspense.request.${type}`, regex),
+    contentSuspensed: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`content.suspensed.${type}`, regex),
+  },
   WISHLIST_EVENTS: {
     createWishersList: "create.wisherlist",
     createWishlist: "create.wishlist",
@@ -102,6 +108,10 @@ export const KAFKA_EVENTS = {
     contentShared: (contentType: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`content.shared.${contentType}`, regex),
   },
+  SHIPPING_EVENTS: {
+    orderShippingStarted: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`order.shipping.started.${key}`, regex),
+  },
   STORIES: {
     storyCreated: "story.created",
   },
@@ -128,6 +138,8 @@ export const KAFKA_EVENTS = {
     memberShipCreated: "membership.created",
     memberShipModified: "membership.modified",
     memberShipDeleted: "membership.deleted",
+    memberShipRenewalFailWarning: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`membership.renewal.fail.${key}`, regex),
   },
   SELLER: {
     revenueIncreased: "revenue.increased",
@@ -145,6 +157,10 @@ export const KAFKA_EVENTS = {
   REVIEWS_EVENTS: {
     reviewCreated: (type: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`review.created.${type}`, regex),
+  },
+  ORDERS_EVENTS: {
+    orderCreated: (key: string = "", regex?: boolean) =>
+      makeKafkaDynamicEvent(`order.created.${key}`, regex),
   },
   createAccount: "create.account",
   createWishlist: "create.wishlist",
@@ -197,6 +213,12 @@ export const KAFKA_MESSAGES = {
   SELLER_MESSAGES: {
     getSellerMembership: "seller.get.membership",
     getItemSellerId: (itemType: string) => `get.item.sellerid.${itemType}`,
+  },
+  SHIPPING_MESSAGES: {
+    getShippingAddress: (key: string = "", regex?: boolean) =>
+      makeKafkaDynamicEvent(`get.shipping.address.${key}`, regex),
+    getShippingMethod: (key: string = "", regex?: boolean) =>
+      makeKafkaDynamicEvent(`get.shipping.method.${key}`, regex),
   },
   MEMBERSHIP_MESSAGES: {},
   CAN_PREFORM_ACTION_MESSAGES: {

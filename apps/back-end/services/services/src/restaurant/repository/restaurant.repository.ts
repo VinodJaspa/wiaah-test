@@ -3,6 +3,7 @@ import { getTranslatedResource, UserPreferedLang } from 'nest-utils';
 import {
   Prisma,
   RestaurantService as PrismaRestaurantService,
+  ServiceStatus,
 } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 
@@ -17,6 +18,17 @@ export class RestaurantRepository {
     private readonly prisma: PrismaService,
     private readonly elasticRepository: RestaurantElasticSearchRepository,
   ) {}
+
+  updateOneStatus(id: string, status: ServiceStatus) {
+    return this.prisma.restaurantService.update({
+      where: {
+        id,
+      },
+      data: {
+        status,
+      },
+    });
+  }
 
   async searchFilteredRestaurant(
     input: SearchFilteredRestaurantInput,

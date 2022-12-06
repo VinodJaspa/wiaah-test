@@ -49,6 +49,8 @@ model Product {
   title                       String
   description                 String
   price                       Int
+  status                      ProductStatus         @default(active)
+  vat                         Int                   
   categoryId                  String
   attributes                  ProductAttribute[]
   stock                       Int
@@ -80,6 +82,13 @@ model Shop {
   vendorType    VendorType[]
   targetGenders TargetGenders[]
 }
+
+model ShippingAddress {
+  id String @id @default(auto()) @db.ObjectId @map("_id")
+  ownerId String @db.ObjectId
+  location Location
+}
+
 
 type Discount {
   units  Int
@@ -119,6 +128,7 @@ type Location {
   city    String
   state   String
   address String
+  address2 String?
 }
 
 enum StoreType {
@@ -169,4 +179,11 @@ type ShippingCountry {
 enum ShippingType {
   paid
   click_and_collect
+}
+
+enum ProductStatus {
+  suspended
+  active
+  pasued
+  pending
 }
