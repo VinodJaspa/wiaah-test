@@ -2,7 +2,7 @@ import { SilentContent, UserNotificationSettings } from '@entities';
 import { UpdateNotificationSettingInput } from '@input';
 import { Injectable } from '@nestjs/common';
 import { DBErrorException } from 'nest-utils';
-import { NotifiactionType, NotificationSettingsEnum } from 'prismaClient';
+import { NotificationSettingsEnum } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 import { DisableNotificationFromContentInput } from '../dto';
 import { ContentNotificationAlreadyDisabledException } from '../exceptions';
@@ -86,7 +86,7 @@ export class NotificationSettingsService {
   }
 
   async isNoficiationTypeAllowed(
-    notificationType: NotifiactionType,
+    notificationType: string,
     userId: string,
     isFollowed: boolean,
   ): Promise<boolean> {

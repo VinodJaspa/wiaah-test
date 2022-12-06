@@ -3,4 +3,5 @@ export const ContentType = {
   product_post: 'product-post',
   service_post: 'service-post',
   affiliation_post: 'affilation-post',
+  cashback: 'cashback',
 };

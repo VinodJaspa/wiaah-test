@@ -174,6 +174,10 @@ export const KAFKA_EVENTS = {
     orderCreated: (key: string = "", regex?: boolean) =>
       makeKafkaDynamicEvent(`order.created.${key}`, regex),
   },
+  CASHBACK_EVENTS: {
+    cashbackAdded: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`cashback.added.${key || ""}`, regex),
+  },
   createAccount: "create.account",
   createWishlist: "create.wishlist",
   createWishersList: "create.wisherlist",

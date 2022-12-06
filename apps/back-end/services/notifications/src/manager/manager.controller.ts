@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import {
+  CashbackAddedEvent,
   CommentCreatedEvent,
   CommentMentionedEvent,
   ContentReactedEvent,
@@ -131,5 +132,19 @@ export class ManagerController extends NotifciationBaseController {
         authorId: follower.id,
       });
     }
+  }
+
+  @EventPattern(KAFKA_EVENTS.CASHBACK_EVENTS.cashbackAdded())
+  async handleCashbackAddedNotification(
+    @Payload() { value }: { value: CashbackAddedEvent },
+  ) {
+    const amount = value.input.amount;
+    const userId = value.input.userId;
+
+    await this.service.createNotification({
+      authorId: userId,
+      content: `Congrats, you have won ${amount} cashbacks`,
+      type: ContentType.cashback,
+    });
   }
 }

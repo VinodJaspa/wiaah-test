@@ -2,7 +2,6 @@ import { NotificationPaginationResponse } from '@entities';
 import { Injectable } from '@nestjs/common';
 import { NotificationSettingsService } from '@notification-settings';
 import { DBErrorException } from 'nest-utils';
-import { NotifiactionType } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 
 @Injectable()
@@ -30,7 +29,7 @@ export class ManagerService {
 
   async createNotification(props: {
     contentOwnerUserId?: string;
-    type: NotifiactionType;
+    type: string;
     content: string;
     authorProfileId?: string;
     authorId: string;
@@ -78,7 +77,7 @@ export class ManagerService {
   async canSendNotification(
     contentId: string,
     reciverUserId: string,
-    contentType: NotifiactionType,
+    contentType: string,
     isFollowed: boolean,
   ): Promise<boolean> {
     const conditions: boolean[] = [];
