@@ -1,17 +1,13 @@
-import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateOrderCommand } from '@orders/commands/impl';
 import { Order } from '@orders/entities';
-import { OrderCreatedEvent } from '@orders/events';
 import { OrdersRepository } from '@orders/repositoy';
 
 @CommandHandler(CreateOrderCommand)
 export class CreateOrderCommandHandler
   implements ICommandHandler<CreateOrderCommand>
 {
-  constructor(
-    private readonly repo: OrdersRepository,
-    private readonly eventbus: EventBus,
-  ) {}
+  constructor(private readonly repo: OrdersRepository) {}
 
   async execute({
     buyerId,
@@ -25,8 +21,6 @@ export class CreateOrderCommandHandler
       orderItems,
       shippingMethodId,
     );
-
-    this.eventbus.publish(new OrderCreatedEvent(res));
 
     return { ...res, refundable: true };
   }

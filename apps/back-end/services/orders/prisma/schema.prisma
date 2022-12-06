@@ -21,6 +21,7 @@ model Order {
   status    OrderStatus
   shippingMethodId String @db.ObjectId
   shippingAddressId String @db.ObjectId
+  discountId String   @db.ObjectId
   completedAt DateTime? 
 }
 

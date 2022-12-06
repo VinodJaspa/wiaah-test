@@ -50,6 +50,7 @@ model Product {
   description                 String
   price                       Int
   status                      ProductStatus         @default(active)
+  vat                         Int                   
   categoryId                  String
   attributes                  ProductAttribute[]
   stock                       Int

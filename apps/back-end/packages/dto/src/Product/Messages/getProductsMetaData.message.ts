@@ -9,5 +9,10 @@ export class GetProductsMetaDataMessageReply extends KafkaMessageReply<
     productId: string;
     shopId: string;
     ownerId: string;
+    title: string;
+    tax: number;
+    price: number;
+    thumbnail: string;
+    category: string[];
   }[]
 > {}

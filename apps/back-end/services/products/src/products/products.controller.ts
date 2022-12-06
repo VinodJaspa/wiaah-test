@@ -132,6 +132,11 @@ export class ProductsController {
           productId: prod.id,
           ownerId: prod.sellerId,
           shopId: prod.shopId,
+          price: prod.price,
+          category: [prod.category?.name || ''],
+          tax: prod.vat * prod.price,
+          thumbnail: prod.presentations.find((v) => v.type === 'image').src,
+          title: prod.title,
         })),
       });
     } catch (error) {
@@ -210,27 +215,6 @@ export class ProductsController {
           sellerId,
         },
       } = value;
-      const shippingMethodPromise = this.querybus.execute<
-        GetShippingMethodQuery,
-        ShippingMethodQueryRes
-      >(new GetShippingMethodQuery(shippingMethodId));
-      const shippignAddressPromise = this.querybus.execute<
-        GetShippingAddressQuery,
-        ShippingAddressQueryRes
-      >(new GetShippingAddressQuery(shippingAddressId));
-      const buyerPromise = this.querybus.execute<
-        GetUserDataQuery,
-        GetUserDataQueryRes
-      >(new GetUserDataQuery(buyerId));
-      const sellerPromise = this.querybus.execute<
-        GetUserDataQuery,
-        GetUserDataQueryRes
-      >(new GetUserDataQuery(sellerId));
-
-      const shippingMethod = await shippingMethodPromise;
-      const shippingAddress = await shippignAddressPromise;
-      const buyer = await buyerPromise;
-      const seller = await sellerPromise;
     } catch (error) {
       console.log(error);
     }

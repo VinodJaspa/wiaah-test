@@ -3,6 +3,15 @@ import { KafkaMessage } from "../../Base";
 export class OrderCreatedEvent extends KafkaMessage<{
   buyer: {
     id: string;
+    name: string;
+    email: string;
+    currency: string;
+  };
+  seller: {
+    id: string;
+    name: string;
+    email: string;
+    currency: string;
   };
   order: {
     payment: {

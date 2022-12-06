@@ -12,4 +12,8 @@ export class SellerProductsPurchasedEvent extends KafkaMessage<{
   }[];
   shippingMethodId?: string;
   shippingAddressId?: string;
+  payment: {
+    type: string;
+    value: string;
+  };
 }> {}

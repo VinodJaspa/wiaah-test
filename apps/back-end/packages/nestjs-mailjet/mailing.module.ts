@@ -9,6 +9,7 @@ import {
   IMailingService,
   MailingSendType,
   MailingModuleForRootOptions,
+  MailingSendTemplateType,
 } from "./types";
 import { WrongMailingProviderError } from "./exceptions";
 import { MailJetService } from "./services";
@@ -16,6 +17,9 @@ import { MailJetService } from "./services";
 export class MailingService implements IMailingService {
   async send(props: MailingSendType): Promise<boolean> {
     return false;
+  }
+  async sendTemplate(props: MailingSendTemplateType): Promise<boolean> {
+    return true;
   }
 }
 

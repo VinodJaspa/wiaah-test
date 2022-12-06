@@ -364,6 +364,7 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     price: 16,
     sellerId: 'sellerid',
     categoryId: '',
+    vat: 23,
   },
   {
     type: 'goods',
@@ -375,6 +376,7 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     price: 18,
     sellerId: 'sellerid',
     categoryId: '',
+    vat: 23,
   },
   {
     type: 'goods',
@@ -386,6 +388,7 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     price: 30,
     sellerId: 'sellerid',
     categoryId: '',
+    vat: 23,
   },
   {
     type: 'digital',
@@ -397,6 +400,7 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     price: 5,
     sellerId: 'sellerid',
     categoryId: '',
+    vat: 23,
   },
   {
     type: 'digital',
@@ -408,5 +412,6 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     price: 98,
     sellerId: 'sellerid',
     categoryId: '',
+    vat: 23,
   },
 ];

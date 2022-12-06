@@ -108,6 +108,10 @@ export const KAFKA_EVENTS = {
     contentShared: (contentType: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`content.shared.${contentType}`, regex),
   },
+  SHIPPING_EVENTS: {
+    orderShippingStarted: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`order.shipping.started.${key}`, regex),
+  },
   STORIES: {
     storyCreated: "story.created",
   },
@@ -134,6 +138,8 @@ export const KAFKA_EVENTS = {
     memberShipCreated: "membership.created",
     memberShipModified: "membership.modified",
     memberShipDeleted: "membership.deleted",
+    memberShipRenewalFailWarning: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`membership.renewal.fail.${key}`, regex),
   },
   SELLER: {
     revenueIncreased: "revenue.increased",
@@ -210,7 +216,9 @@ export const KAFKA_MESSAGES = {
   },
   SHIPPING_MESSAGES: {
     getShippingAddress: (key: string = "", regex?: boolean) =>
-      makeKafkaDynamicEvent(`shipping.address.${key}`, regex),
+      makeKafkaDynamicEvent(`get.shipping.address.${key}`, regex),
+    getShippingMethod: (key: string = "", regex?: boolean) =>
+      makeKafkaDynamicEvent(`get.shipping.method.${key}`, regex),
   },
   MEMBERSHIP_MESSAGES: {},
   CAN_PREFORM_ACTION_MESSAGES: {

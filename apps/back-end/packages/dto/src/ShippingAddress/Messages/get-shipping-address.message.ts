@@ -14,4 +14,5 @@ export class GetShippingAddressMessageReply extends KafkaMessageReply<{
     lat: number;
     lon: number;
   };
+  ownerId: string;
 }> {}

@@ -99,4 +99,7 @@ export class CreateProductInput {
 
   @Field(() => ProductStatus, { nullable: true })
   status: ProductStatus;
+
+  @Field(() => Float)
+  vat: number;
 }
