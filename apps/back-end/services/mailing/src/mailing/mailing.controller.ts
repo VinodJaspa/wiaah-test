@@ -2,6 +2,8 @@ import { Controller, Logger } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import {
   AccountRegisteredEvent,
+  AccountRestrictedEvent,
+  AccountTermsAndConditionViolationEvent,
   ChangePasswordEvent,
   KafkaPayload,
   MembershipRenewalFailEvent,
@@ -82,6 +84,7 @@ export class MailingController extends BaseController {
         buyer_name: buyer.name,
         seller_name: seller.name,
       },
+      subject: 'Wiaah Order Shipping Confirmation',
     });
   }
 
@@ -98,6 +101,7 @@ export class MailingController extends BaseController {
         customer_name: value.input.customerName,
         payment_type: value.input.type,
       },
+      subject: 'URGENT: Your Account Need Action',
     });
   }
 
@@ -114,6 +118,45 @@ export class MailingController extends BaseController {
       to: [{ email: user.email, name: user.name }],
       subject: 'Booking Confirmation',
       html,
+    });
+  }
+
+  @EventPattern(
+    KAFKA_EVENTS.ACCOUNTS_EVENTS.accountTermsAndConditionViolation(),
+  )
+  async handleTermsAndConditionsViolation(
+    @Payload() { value }: { value: AccountTermsAndConditionViolationEvent },
+  ) {
+    const user = await this.querybus.execute<
+      GetUserDataQuery,
+      GetUserDataQueryRes
+    >(new GetUserDataQuery(value.input.id));
+    this.mailingService.sendTemplateMail({
+      templateId: 4411383,
+      subject: 'account suspension for terms and condition violation',
+      vars: {
+        customer_name: user.name,
+      },
+      to: [{ email: user.email, name: user.name }],
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountRestricted())
+  async handleAccountRestricted(
+    @Payload() { value }: { value: AccountRestrictedEvent },
+  ) {
+    const user = await this.querybus.execute<
+      GetUserDataQuery,
+      GetUserDataQueryRes
+    >(new GetUserDataQuery(value.input.id));
+    this.mailingService.sendTemplateMail({
+      templateId: 4411499,
+      subject: 'Account Restriction',
+      vars: {
+        customer_name: user.name,
+        restriction_reason: value.input.reason,
+      },
+      to: [{ email: user.email, name: user.name }],
     });
   }
 }

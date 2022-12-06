@@ -18,7 +18,8 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false,
     "paths": {
-      "@manger": ["src/manger"],
+      "@manger": ["src/manager"],
+      "@manager/*": ["src/manager/*"],
       "@input": ["src/dto"],
       "@entities": ["src/entities"],
       "prismaClient": ["prisma/generated/client"],

@@ -1,13 +1,23 @@
+import { AccountType } from "../types";
+
 function makeKafkaDynamicEvent(event: string, regex: boolean = false) {
   return `${regex ? "/" : ""}${event}${regex ? "/" : ""}`;
 }
 export const KAFKA_EVENTS = {
   ACCOUNTS_EVENTS: {
     createAccount: "create.account",
-    accountCreated: "account.created",
+    accountCreated: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`account.created.${type}`, regex),
     accountDeleted: "account.deleted",
     sellerAccountCreated: "seller.account.created",
     buyerAccountCreated: "buyer.account.created",
+    accountTermsAndConditionViolation: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(
+        `account.terms.and.condition.violation.${key}`,
+        regex
+      ),
+    accountRestricted: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`account.restricted.${key}`, regex),
   },
   USER_EVENTS: {
     userConnected: "user.connected",
@@ -41,6 +51,8 @@ export const KAFKA_EVENTS = {
       makeKafkaDynamicEvent(`post.saved.${type}`, regex),
     userTag: (type: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`user.tag.${type}`, regex),
+    contentCreated: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(type, regex),
   },
   AUTH_EVENTS: {
     accountRegistered: "account.registered",
@@ -233,6 +245,9 @@ export const KAFKA_MESSAGES = {
   ANALYTICS_MESSAGES: {
     getUsersInteractionsByUserId: () => `get.users.interactions.by.user.id`,
     getUsersActivityScoresByIds: () => `get.users.activity.scores.by.ids`,
+  },
+  SOCIAL_MESSAGES: {
+    getUserFollowsData: () => `get.user.followers.data`,
   },
 
   emailExists: "email.exists",
