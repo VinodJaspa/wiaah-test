@@ -2,7 +2,7 @@ import React from "react";
 import {
   SubscribersPopup,
   Avatar,
-  SocialStoriesModal,
+  SocialStoryModal,
   Button,
   HStack,
   Stack,
@@ -90,7 +90,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           <p>{t("Show on map")}</p>
         </div>
       </div>
-      {storyData && <SocialStoriesModal />}
+      {storyData && <SocialStoryModal />}
       <SubscribersPopup
         title={t("subscribers", "subscribers")}
         isOpen={isOpen}

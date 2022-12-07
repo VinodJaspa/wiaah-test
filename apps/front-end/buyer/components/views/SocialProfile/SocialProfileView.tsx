@@ -70,10 +70,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
               <FaChevronDown className="ml-2" />
             </div>
           </div>
-          <FilterModal
-            isOpen={filterOpen}
-            onClose={() => setFilterOpen(false)}
-          />
+          <FilterModal />
           <ShopCardsListWrapper
             grid={isMobile}
             cols={cols}
@@ -122,7 +119,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         <Container className="flex-grow flex-col">
           <div className="w-full flex overflow-hidden relative max-h-[26rem]">
-            <SocialProfile shopInfo={profileInfo} />
+            <SocialProfile profileInfo={profileInfo} />
             <SocialPostsCommentsDrawer />
             <ShareWithModal />
             <img

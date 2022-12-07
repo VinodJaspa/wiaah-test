@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { SocialStoriesModal } from "ui";
+import { SocialStoryModal } from "ui";
 import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
 import { useStory, useStorySeenBy } from "ui/Hooks";
 import { Button } from "@chakra-ui/react";
@@ -9,11 +9,11 @@ import { PostCardPlaceHolder } from "ui/placeholder";
 import { SocialStoryState } from "ui/state";
 export default {
   title: "UI/blocks/Social/SocialStoriesModal",
-  component: SocialStoriesModal,
+  component: SocialStoryModal,
   decorators: [ChakraUiDecorator],
-} as ComponentMeta<typeof SocialStoriesModal>;
+} as ComponentMeta<typeof SocialStoryModal>;
 
-const Template: ComponentStory<typeof SocialStoriesModal> = (args) => {
+const Template: ComponentStory<typeof SocialStoryModal> = (args) => {
   const { OpenStories } = useStory();
   const setStory = useSetRecoilState(SocialStoryState);
   const { setStorySeenBy } = useStorySeenBy();
@@ -49,7 +49,7 @@ const Template: ComponentStory<typeof SocialStoriesModal> = (args) => {
   return (
     <>
       <Button onClick={OpenStories}>open</Button>
-      <SocialStoriesModal {...args} />
+      <SocialStoryModal {...args} />
     </>
   );
 };

@@ -1,13 +1,12 @@
 import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useBreakpointValue } from "@chakra-ui/react";
+import { useBreakpointValue } from "utils";
 import {
   PostCardsListWrapper,
   PostViewPopup,
   RecentStories,
   SellerLayout,
-  SellerPostInput,
   StoryDisplayProps,
   AddNewPostModal,
   PostAttachmentsViewer,
@@ -15,28 +14,35 @@ import {
   CommentReportModal,
   AspectRatio,
   SquarePlusOutlineIcon,
+  useStoryModal,
 } from "ui";
 import { newsfeedPosts } from "ui";
 import { useRouter } from "next/router";
 import { PostCardInfo } from "types";
 import { randomNum } from "utils";
+import { StoryModal } from "@components";
 
 const RecentStoriesPlaceHolder: StoryDisplayProps[] = [...Array(11)].map(
   (_, i) => ({
     seen: randomNum(10) > 7,
-    storyUserData: { name: "wiaah", userPhotoSrc: `profile (${i + 1}).jfif` },
+    storyUserData: {
+      name: "wiaah",
+      id: i.toString(),
+      userPhotoSrc: `profile (${i + 1}).jfif`,
+    },
   })
 );
 
 const seller: NextPage = () => {
   const router = useRouter();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const { open } = useStoryModal();
   return (
     <>
       <Head>
         <title>Wiaah | seller</title>
       </Head>
+      <StoryModal />
       <SellerLayout header="main">
         <PostViewPopup
           fetcher={async ({ queryKey }) => {
@@ -71,14 +77,12 @@ const seller: NextPage = () => {
               </AspectRatio>
             </div>
             <RecentStories
+              onStoryClick={(props) => open(props.storyUserData.id)}
               stories={RecentStoriesPlaceHolder.concat(
                 RecentStoriesPlaceHolder
               )}
             />
           </div>
-          {/* {!isMobile && (
-            <SellerPostInput userName="wiaah" userPhotoSrc="/wiaah_logo.png" />
-          )} */}
           <div className="w-full">
             <PostCardsListWrapper
               grid={true}

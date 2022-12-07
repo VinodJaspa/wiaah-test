@@ -69,7 +69,6 @@ export class StoryRepository {
         createdAt: 'asc',
       },
     });
-    console.log(JSON.stringify({ followRel, story }, null, 2));
     return story;
   }
 

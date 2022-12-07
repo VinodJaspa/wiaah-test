@@ -4,7 +4,7 @@ import {
   SubscribersPopup,
   Avatar,
   useLoginPopup,
-  SocialStoriesModal,
+  SocialStoryModal,
   QrcodeDisplay,
   VerifiedIcon,
   Stack,
@@ -68,7 +68,7 @@ export const MyProfile: React.FC<MyProfileProps> = ({ shopInfo }) => {
           <p>{t("Show on map")}</p>
         </div>
       </div>
-      {storyData && <SocialStoriesModal />}
+      {storyData && <SocialStoryModal />}
       <SubscribersPopup
         title={t("subscribers", "subscribers")}
         isOpen={isOpen}

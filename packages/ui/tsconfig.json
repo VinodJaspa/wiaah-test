@@ -8,9 +8,12 @@
     "target": "ES5",
     "jsx": "react-jsx",
     "rootDir": ".",
-    // "baseUrl": ".",
+    "baseUrl": ".",
     "paths": {
-      "@partials": ["./components/partials"]
+      "@partials": ["components/partials"],
+      "@blocks": ["components/blocks"],
+      "@libs": ["libs"],
+      "@const": ["constants"]
     }
   }
 }

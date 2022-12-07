@@ -4,7 +4,7 @@ import { SocialProfile } from "ui";
 import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
 import { SocialProfileInfo } from "ui/placeholder/social";
 import { PostCardPlaceHolder } from "ui/placeholder";
-import { SocialStoriesModal } from "../SocialStoriesModal";
+import { SocialStoryModal } from "../SocialStoriesModal";
 import { useStory } from "ui/Hooks";
 import { useRecoilState } from "recoil";
 import { SocialStoryState } from "ui/state";
@@ -28,7 +28,7 @@ const Template: ComponentStory<typeof SocialProfile> = (args) => {
   );
   return (
     <>
-      {storyData && <SocialStoriesModal />}
+      {storyData && <SocialStoryModal />}
       <SocialProfile {...args} />
     </>
   );

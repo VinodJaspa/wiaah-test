@@ -1,1 +1,1 @@
-export * from "./getNewsfeedPostStory";
+export * from "./getUserStory";

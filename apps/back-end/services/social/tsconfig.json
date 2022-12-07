@@ -26,6 +26,7 @@
       "@profile-service": ["src/profile/profile.service"],
       "@profile-module": ["src/profile/profile.module"],
       "@content-discovery": ["src/content-discovery"],
+      "@content-discovery/*": ["src/content-discovery/*"],
       "@posts-newsfeed": ["src/newsfeed-posts"],
       "@posts-newsfeed/*": ["src/newsfeed-posts/*"],
       "@profile": ["src/profile"],
