@@ -1,9 +1,9 @@
 import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
 import { CreateGqlPaginatedResponse } from 'nest-utils';
-import { NotifiactionType } from 'prismaClient';
+import { NotificationType } from 'prismaClient';
 import { User } from './extends';
 
-registerEnumType(NotifiactionType, { name: 'NotificationType' });
+registerEnumType(NotificationType, { name: 'NotificationType' });
 
 @ObjectType()
 export class Notification {
@@ -22,8 +22,8 @@ export class Notification {
   @Field(() => Date)
   updatedAt: Date;
 
-  @Field(() => NotifiactionType)
-  type: NotifiactionType;
+  @Field(() => NotificationType)
+  type: NotificationType;
 
   @Field(() => User, { nullable: true })
   author?: User;

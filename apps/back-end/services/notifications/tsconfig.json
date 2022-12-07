@@ -24,7 +24,8 @@
       "@entities": ["src/entities"],
       "prismaClient": ["prisma/generated/client"],
       "prismaService": ["src/prisma.service"],
-      "@notification-settings": ["src/notification-settings"]
+      "@notification-settings": ["src/notification-settings"],
+      "@notification-settings/*": ["src/notification-settings/*"]
     }
   }
 }

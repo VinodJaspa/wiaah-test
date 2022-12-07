@@ -11,6 +11,14 @@ import { ContentNotificationAlreadyDisabledException } from '../exceptions';
 export class NotificationSettingsService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getOneByUserId(id: string) {
+    return this.prisma.userNotificationSettings.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
   async createAccountNotifciationSettings(
     userId: string,
   ): Promise<UserNotificationSettings> {

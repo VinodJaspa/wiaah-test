@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { NotificationSettingsService } from '@notification-settings';
 import { DBErrorException } from 'nest-utils';
 import { PrismaService } from 'prismaService';
+import { NotifiactionType } from 'prismaClient';
 
 @Injectable()
 export class ManagerService {
@@ -27,9 +28,25 @@ export class ManagerService {
     };
   }
 
+  async createMany(
+    notifications: {
+      userId: string;
+      contentOwnerUserId?: string;
+      type: NotifiactionType;
+      authorProfileId?: string;
+      authorId: string;
+      contentId?: string;
+      isFollowed?: boolean;
+    }[],
+  ) {
+    return this.prisma.notification.createMany({
+      data: notifications,
+    });
+  }
+
   async createNotification(props: {
     contentOwnerUserId?: string;
-    type: string;
+    type: NotifiactionType;
     content: string;
     authorProfileId?: string;
     authorId: string;
@@ -53,7 +70,6 @@ export class ManagerService {
         type,
         !!isFollowed,
       );
-      console.log('cannot send', canSend);
       if (!canSend) return;
     }
 

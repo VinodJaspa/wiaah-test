@@ -5,16 +5,23 @@ import {
   CommentCreatedEvent,
   CommentMentionedEvent,
   ContentReactedEvent,
+  LookForNearShopsPromotionsEvent,
+  PromotionCreatedEvent,
+  ShopNearPromotionsResolvedEvent,
   SocialContentCreatedEvent,
+  UserCurrentLocationUpdateEvent,
 } from 'nest-dto';
 import { KAFKA_EVENTS } from 'nest-utils';
 import { NotifciationBaseController } from '@manager/abstraction';
 import {
+  GetUserNotificationsSettingsQuery,
   GetUserDataQuery,
+  GetUserDataQueryRes,
   GetUserFollowersIdsQuery,
   GetUserFollowersIdsQueryRes,
+  GetUserNotificationsSettingsQueryRes,
 } from '@manager/queries';
-import { ContentType } from '@manager/const';
+import { ContentType, NotificationTypes } from '@manager/const';
 
 @Controller()
 export class ManagerController extends NotifciationBaseController {
@@ -123,15 +130,18 @@ export class ManagerController extends NotifciationBaseController {
         break;
     }
 
-    for (const follower of followers) {
-      this.service.createNotification({
+    this.service.createMany(
+      followers.map((v) => ({
         content: contentTitle,
         contentId: id,
-        type: postsTypes.includes(type) ? 'postReacted' : 'commentReacted',
-        contentOwnerUserId: authorId,
-        authorId: follower.id,
-      });
-    }
+        type: postsTypes.includes(type)
+          ? NotificationTypes.postReacted
+          : NotificationTypes.commentReacted,
+        authorId,
+        isFollowed: true,
+        userId: v.id,
+      })),
+    );
   }
 
   @EventPattern(KAFKA_EVENTS.CASHBACK_EVENTS.cashbackAdded())
@@ -146,5 +156,78 @@ export class ManagerController extends NotifciationBaseController {
       content: `Congrats, you have won ${amount} cashbacks`,
       type: ContentType.cashback,
     });
+  }
+
+  @EventPattern(KAFKA_EVENTS.PROMOTION_EVENTS.promotionCreated('*', true))
+  async handleSnedPromotionShopFollowersNotification(
+    @Payload() { value }: { value: PromotionCreatedEvent },
+  ) {
+    const getSeller = this.querybus.execute<
+      GetUserDataQuery,
+      GetUserDataQueryRes
+    >(new GetUserDataQuery(value.input.sellerId));
+    const getFollowers = this.querybus.execute<
+      GetUserFollowersIdsQuery,
+      GetUserFollowersIdsQueryRes
+    >(new GetUserFollowersIdsQuery(value.input.sellerId));
+    const seller = await getSeller;
+    const followers = await getFollowers;
+
+    this.service.createMany(
+      followers.map((v) => ({
+        authorId: seller.id,
+        userId: v.id,
+        type: NotificationTypes.ShopPromotion,
+        isFollowed: true,
+      })),
+    );
+  }
+
+  @EventPattern(KAFKA_EVENTS.USER_EVENTS.userCurrLocationChanged('*', true))
+  async handleCheckIfWantPromotionNotifications(
+    @Payload() { value }: { value: UserCurrentLocationUpdateEvent },
+  ) {
+    const { id, lat, lon } = value.input;
+
+    const settings = await this.querybus.execute<
+      GetUserNotificationsSettingsQuery,
+      GetUserNotificationsSettingsQueryRes
+    >(new GetUserNotificationsSettingsQuery(id));
+
+    if (settings.nearShopPromotions) {
+      this.eventClient.emit(
+        KAFKA_EVENTS.PROMOTION_EVENTS.lookForNearShopsPromotions(),
+        new LookForNearShopsPromotionsEvent({
+          lat,
+          lon,
+          userId: id,
+        }),
+      );
+    }
+  }
+
+  @EventPattern(KAFKA_EVENTS.PROMOTION_EVENTS.nearUserShopsPromotionsResloved())
+  async handlePromotionsResolved(
+    @Payload() { value }: { value: ShopNearPromotionsResolvedEvent },
+  ) {
+    const { shops, userId } = value.input;
+
+    const getSellers = Promise.all(
+      shops.map((s) => {
+        return this.querybus.execute<GetUserDataQuery, GetUserDataQueryRes>(
+          new GetUserDataQuery(s.sellerId),
+        );
+      }),
+    );
+
+    const sellers = await getSellers;
+
+    this.service.createMany(
+      sellers.map((v) => ({
+        type: NotificationTypes.ShopPromotion,
+        userId,
+        authorId: v.id,
+      })),
+    );
   }
 }

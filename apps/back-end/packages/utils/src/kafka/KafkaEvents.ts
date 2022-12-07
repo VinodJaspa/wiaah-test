@@ -23,6 +23,8 @@ export const KAFKA_EVENTS = {
     userConnected: "user.connected",
     userDisconnected: "user.disconnected",
     updateUserActiveTime: "user.active.time.update",
+    userCurrLocationChanged: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`user.current.location.changed.${key}`, regex),
   },
   MODERATION: {
     contentSuspenseRequest: (type: string, regex?: boolean) =>
@@ -155,6 +157,17 @@ export const KAFKA_EVENTS = {
   },
   SELLER: {
     revenueIncreased: "revenue.increased",
+  },
+  PROMOTION_EVENTS: {
+    promotionCreated: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`promotion.created.${key}`, regex),
+    lookForNearShopsPromotions: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`promotions.shops.near.user.${key}`, regex),
+    nearUserShopsPromotionsResloved: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(
+        `near.user.shops.promotions.resloved.${key}`,
+        regex
+      ),
   },
   AFFILIATION: {
     affiliatedProductPurchased: "affiliated.product.purchased",
