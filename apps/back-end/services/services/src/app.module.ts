@@ -21,6 +21,8 @@ import { BeautyCenterModule } from './beauty-center/beauty-center.module';
 import { VehicleModule } from './vehicle/vehicle.module';
 import { ServiceModule } from './service/service.module';
 import { WorkingScheduleModule } from './working-schedule/working-schedule.module';
+import { InsuranceModule } from './insurance/insurance.module';
+import { ServiceDiscoveryModule } from './service-discovery/service-discovery.module';
 
 @Global()
 @Module({
@@ -34,6 +36,8 @@ import { WorkingScheduleModule } from './working-schedule/working-schedule.modul
     }),
     ServiceModule,
     WorkingScheduleModule,
+    InsuranceModule,
+    ServiceDiscoveryModule,
   ],
   exports: [ElasticsearchModule],
   providers: [],

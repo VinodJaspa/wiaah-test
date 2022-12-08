@@ -37,7 +37,9 @@
       "@models": ["src/models"],
       "@working-schedule/*": ["src/working-schedule/*"],
       "@health-center/*": ["src/health-center/*"],
-      "@hotel/*": ["src/hotel/*"]
+      "@hotel/*": ["src/hotel/*"],
+      "@insurance/*": ["src/insurance/*"],
+      "@service-discovery/*": ["src/service-discovery/*"]
     }
   }
 }

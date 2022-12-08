@@ -229,6 +229,7 @@ model HotelRoom {
   rating              Float                          @default(0)
   reviews             Int                            @default(0)
   ratingStars         Float                          @default(0)
+  insurance           Float
   presentations       ServicePresentation[]
   dailyPrices         ServiceDailyPrices?
   discount            ServiceDiscount
@@ -249,12 +250,34 @@ model Vehicle {
   model               String
   price               Int
   rating              Float                      @default(0)
-  securityDeposit     Float                      @default(0)
+  insurance           Float
   properties          VehicleProperties
   cancelationPolicies ServiceCancelationPolicy[]
   parantServiceId     String
   parantService       VehicleService             @relation(fields: [parantServiceId], references: [id])
 }
+
+model ServiceInsurance {
+  id String @id @db.ObjectId @map("_id") 
+  itemId String @db.ObjectId
+  buyerId String @db.ObjectId
+  sellerId String @db.ObjectId
+  itemType String
+  amount Float
+  status ServiceInsuranceStatusEnum
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+}
+
+enum ServiceInsuranceStatusEnum {
+  pending
+  paid
+  requested
+  refused
+  refunded
+}
+
 
 type VehicleProperties {
   seats           Int
