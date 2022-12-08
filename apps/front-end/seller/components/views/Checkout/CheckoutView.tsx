@@ -16,7 +16,7 @@ import {
   TotalCost,
 } from "ui";
 import { AddressCardDetails, AddressDetails } from "types";
-import { VoucherState } from "ui/state";
+import { VoucherState } from "@src/state";
 import { useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";

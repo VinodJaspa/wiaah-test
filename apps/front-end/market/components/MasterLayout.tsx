@@ -19,7 +19,7 @@ import {
   UserAddressesState,
   VoucherState,
   CheckoutProductsState,
-} from "ui/state";
+} from "@src/state";
 import { useLoginPopup } from "ui";
 
 export interface MasterLayoutProps {

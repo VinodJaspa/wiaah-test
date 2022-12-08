@@ -1,5 +1,5 @@
 import { atom } from "recoil";
-import { DiscoverTabsLinks } from "ui/hooks";
+import { DiscoverTabsLinks } from "@src/Hooks";
 
 export const DiscoverCurrentTabState = atom<number>({
   key: "DiscoverCurrentTabState",

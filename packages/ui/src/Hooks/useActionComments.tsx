@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { ActionCommentsOpenState } from "ui/state";
+import { ActionCommentsOpenState } from "@src/state";
 
 export const useActionComments = () => {
   const [open, setOpen] = useRecoilState(ActionCommentsOpenState);

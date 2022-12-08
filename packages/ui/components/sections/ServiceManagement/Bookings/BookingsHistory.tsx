@@ -39,7 +39,7 @@ import {
 import {
   useGetBookingsHistoryQuery,
   useCancelAppointmentMutation,
-} from "ui/Hooks";
+} from "@src/Hooks";
 import { ReturnDeclineRequestValidationSchema } from "validation";
 import { bookingsHistoryCtx } from ".";
 

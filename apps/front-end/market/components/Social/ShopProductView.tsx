@@ -9,7 +9,7 @@ import {
   SocialStoriesModal,
 } from "ui";
 
-import { SocialShopOtherPostsState, SocialShopPostState } from "ui/state";
+import { SocialShopOtherPostsState, SocialShopPostState } from "@src/state";
 
 export interface ShopProductViewProps {}
 

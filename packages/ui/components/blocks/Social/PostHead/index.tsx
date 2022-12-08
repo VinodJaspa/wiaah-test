@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
-import { useStory } from "ui/Hooks";
+import { useStory } from "@src/Hooks";
 import { DisplayPostedSince, Avatar } from "ui";
 import { useTranslation } from "react-i18next";
 import { TranslationTextType } from "types";

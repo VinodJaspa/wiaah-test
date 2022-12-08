@@ -3,7 +3,7 @@ import {
   useGetPendingAppointmentsQuery,
   useAcceptPendingAppointmentMutation,
   useDeclinePendingAppointmentMutation,
-} from "ui/Hooks";
+} from "@src/Hooks";
 import {
   SectionHeader,
   Button,

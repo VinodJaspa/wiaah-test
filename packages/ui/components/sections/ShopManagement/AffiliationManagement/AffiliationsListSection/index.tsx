@@ -74,7 +74,7 @@ export const AffiliationListSection: React.FC<
                   <Td>{link.expiryDate}</Td>
                   <Td>{link.affiliationLink}</Td>
                   <Td>
-                    <div className="uppercase p-2 bg-primary text-white">
+                    <div className="uppercase p-2 text-center rounded-md bg-primary text-white">
                       {link.status}
                     </div>
                   </Td>

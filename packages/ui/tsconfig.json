@@ -12,8 +12,14 @@
     "paths": {
       "@partials": ["components/partials"],
       "@blocks": ["components/blocks"],
+      "@blocks/*": ["components/blocks/*"],
+      "@sections/*": ["components/sections/*"],
+      "@features/*": ["components/features/*"],
+      "@sections": ["components/sections"],
+      "@features": ["components/features"],
       "@libs": ["libs"],
-      "@const": ["constants"]
+      "@const": ["constants"],
+      "@src/*": ["src/*"]
     }
   }
 }

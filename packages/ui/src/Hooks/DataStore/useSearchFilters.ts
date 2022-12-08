@@ -1,7 +1,7 @@
 import { FormatedSearchableFilter, SearchFilterValue } from "api";
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { ServicesSearchFiltersState } from "state";
-import { filtersTokens } from "../../constants";
+import { filtersTokens } from "@const";
 
 const filtersKeys = {
   propertyName: "propertyName",

@@ -13,11 +13,11 @@ import {
   SocialProfileOptionsDropdown,
   HorizontalDotsIcon,
 } from "ui";
-import { useLoginPopup, useStory } from "ui/Hooks";
+import { useLoginPopup, useStory } from "@src/Hooks";
 import { mapArray, NumberShortner } from "utils";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
-import { SocialStoryState } from "ui/state";
+import { SocialStoryState } from "@src/state";
 import { useReactPubsub } from "react-pubsub";
 import { SocialProfileData } from "api";
 import { useDisclouser } from "hooks";

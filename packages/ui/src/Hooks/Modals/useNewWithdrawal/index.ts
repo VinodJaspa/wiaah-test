@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { NewWithdrawalOpenState } from "ui/state";
+import { NewWithdrawalOpenState } from "@src/state";
 
 export const useNewWithdrawalModal = () => {
   const [isOpen, setOpen] = useRecoilState(NewWithdrawalOpenState);

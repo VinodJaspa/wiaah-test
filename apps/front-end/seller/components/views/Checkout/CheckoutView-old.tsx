@@ -20,7 +20,7 @@ import {
   TotalCost,
 } from "ui";
 import { AddressCardDetails, AddressDetails } from "types";
-import { CheckoutProductsState, VoucherState } from "ui/state";
+import { CheckoutProductsState, VoucherState } from "@src/state";
 
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { shippingMotheds } from "ui/placeholder";

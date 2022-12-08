@@ -11,7 +11,10 @@
       "@partials": ["../../../packages/ui/components/partials"],
       "@blocks": ["../../../packages/ui/components/blocks"],
       "@libs": ["../../../packages/ui/libs"],
-      "@const": ["../../../packages/ui/constants"]
+      "@const": ["../../../packages/ui/constants"],
+      "@blocks/*": ["../../../packages/ui/components/blocks/*"],
+      "@sections/*": ["../../../packages/ui/components/sections/*"],
+      "@sections": ["../../../packages/ui/components/sections"]
     }
   }
 }

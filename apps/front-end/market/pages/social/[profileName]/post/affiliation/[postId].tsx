@@ -10,7 +10,7 @@ import {
   SocialAffiliationOfferState,
   SocialStoriesState,
   SocialStoryState,
-} from "ui/state";
+} from "@src/state";
 import { PostCardPlaceHolder } from "placeholder";
 import { MasterLayout } from "@components";
 import { AffiliationPostView } from "@components";

@@ -1,5 +1,5 @@
+import { useTypedReactPubsub } from "@libs";
 import React from "react";
-import { useReactPubsub } from "react-pubsub";
 import { useRecoilState } from "recoil";
 import { FileUploadTypes } from "types";
 import { UploadModalState } from "ui";
@@ -7,13 +7,13 @@ import { UploadModalState } from "ui";
 export const useFileUploadModal = () => {
   const [uploadType, SetUploadType] = useRecoilState(UploadModalState);
 
-  const { Listen, removeListner } = useReactPubsub(
+  const { Listen, removeListner } = useTypedReactPubsub(
     (keys) => keys.openFileUploadModal
   );
 
   React.useEffect(() => {
     Listen((props) => {
-      if(!props) return
+      if (!props) return;
       if ("uploadType" in props) {
         if (props.uploadType === "img") {
           uploadImage();

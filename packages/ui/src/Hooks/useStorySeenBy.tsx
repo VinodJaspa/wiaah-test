@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { StorySeenByUserInfo } from "types";
-import { StorySeenByPopupOpenState, StorySeenByState } from "ui/state";
+import { StorySeenByPopupOpenState, StorySeenByState } from "@src/state";
 export const useStorySeenBy = () => {
   const [isOpen, setOpen] = useRecoilState<boolean>(StorySeenByPopupOpenState);
   const [users, setUsers] = useRecoilState(StorySeenByState);

@@ -34,7 +34,7 @@ import {
   weekDays,
 } from "utils";
 import { BookingsSectionCtx } from ".";
-import { useGetAppointmentsQuery } from "ui/Hooks";
+import { useGetAppointmentsQuery } from "@src/Hooks";
 
 type BookingsObjectType = Record<string, BookingAppointement[]>;
 

@@ -2,11 +2,11 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { SocialStoryModal } from "ui";
 import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
-import { useStory, useStorySeenBy } from "ui/Hooks";
+import { useStory, useStorySeenBy } from "@src/Hooks";
 import { Button } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
 import { PostCardPlaceHolder } from "ui/placeholder";
-import { SocialStoryState } from "ui/state";
+import { SocialStoryState } from "@src/state";
 export default {
   title: "UI/blocks/Social/SocialStoriesModal",
   component: SocialStoryModal,

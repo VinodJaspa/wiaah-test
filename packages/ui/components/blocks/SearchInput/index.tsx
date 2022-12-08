@@ -1,5 +1,5 @@
 import React from "react";
-import { useOutsideClick } from "ui/Hooks";
+import { useOutsideClick } from "@src/Hooks";
 import { InputGroup, InputLeftElement, InputRightElement } from "ui";
 import { Input } from "ui";
 import { HtmlInputProps } from "types";

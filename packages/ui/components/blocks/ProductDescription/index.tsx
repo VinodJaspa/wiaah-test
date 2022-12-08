@@ -1,7 +1,7 @@
 import React from "react";
 import { BuyerComment } from "ui";
 import { Collapse } from "antd";
-import { useProductDescTabs } from "ui/Hooks";
+import { useProductDescTabs } from "@src/Hooks";
 import { useTranslation } from "react-i18next";
 
 const { Panel } = Collapse;

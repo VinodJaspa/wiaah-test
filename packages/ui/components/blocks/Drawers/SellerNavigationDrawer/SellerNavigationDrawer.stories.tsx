@@ -5,7 +5,7 @@ import { Box, Text } from "@chakra-ui/react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { Button } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
-import { SellerDrawerOpenState } from "ui/state";
+import { SellerDrawerOpenState } from "@src/state";
 import { AffiliationIcon, AffiliationIconOutline, UsersProfiles } from "ui";
 import {
   HiUserGroup,

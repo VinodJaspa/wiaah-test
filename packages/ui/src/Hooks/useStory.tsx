@@ -7,7 +7,7 @@ import {
   CurrentStoryIndexState,
   CurrentStoryProgressState,
   SocialStoriesState,
-} from "ui/state";
+} from "@src/state";
 
 export interface useStoryReturns {
   storiesOpen: boolean;

@@ -9,7 +9,7 @@ import {
   GridListOrganiser,
   ListWrapperProps,
 } from "ui/components/blocks/Wrappers";
-import { useNewsFeedPostPopup } from "ui/Hooks";
+import { useNewsFeedPostPopup } from "@src/Hooks";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {
   posts?: PostCardInfo[];

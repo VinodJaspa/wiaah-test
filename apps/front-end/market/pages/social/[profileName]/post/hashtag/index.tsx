@@ -7,7 +7,7 @@ import { HashTagView } from "@components";
 import { hashTagCardsInfoPlaceholder } from "placeholder";
 import { HashTagCardInfo } from "types";
 import { useSetRecoilState } from "recoil";
-import { SocialHashTagTopPosts } from "ui/state";
+import { SocialHashTagTopPosts } from "@src/state";
 
 export interface HashTagPageProps {
   topPosts: HashTagCardInfo[];

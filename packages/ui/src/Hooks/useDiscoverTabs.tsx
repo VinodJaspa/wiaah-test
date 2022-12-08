@@ -1,6 +1,6 @@
 import { useRecoilState } from "recoil";
 import { TabType } from "types";
-import { DiscoverCurrentTabState, DiscoverTabsState } from "ui/state";
+import { DiscoverCurrentTabState, DiscoverTabsState } from "@src/state";
 
 export interface DiscoverTabsLinks extends TabType {
   link: string;

@@ -11,7 +11,7 @@ import {
   SocialStoryState,
   SocialNewStoryState,
   SocialStoriesState,
-} from "ui/state";
+} from "@src/state";
 import { MasterLayout } from "@components";
 import { PostView } from "@components";
 
