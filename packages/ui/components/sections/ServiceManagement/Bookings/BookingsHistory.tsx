@@ -42,10 +42,11 @@ import {
 } from "@src/Hooks";
 import { ReturnDeclineRequestValidationSchema } from "validation";
 import { bookingsHistoryCtx } from ".";
+import { useTypedReactPubsub } from "@libs";
 
 export const BookingsHistorySection: React.FC = () => {
   const { viewAppointment, shopping } = React.useContext(bookingsHistoryCtx);
-  const { emit: openConfirmationModal } = useReactPubsub(
+  const { emit: openConfirmationModal } = useTypedReactPubsub(
     (keys) => keys.openBookConfirmationModal
   );
   const [Filter, setFilter] = React.useState<OrdersFilter>("all");

@@ -12,8 +12,10 @@ import {
   AffiliationListSection,
   Stack,
   Divider,
-  BookingsSection,
+  BookingsHistorySection,
+  HotelsSearchList,
   OrdersSection,
+  Pagination,
 } from "ui";
 import { randomNum } from "utils";
 import { lngs, lats } from "api";
@@ -60,12 +62,12 @@ const Edit = () => {
   const productComp = isProducts ? (
     <ProductDetailsTable />
   ) : (
-    <HotelDetailedSearchCard {...servicedata} />
+    <HotelsSearchList />
   );
   const invoiceComp = isProducts ? (
     <OrdersSection shopping={false} />
   ) : (
-    <BookingsSection />
+    <BookingsHistorySection />
   );
 
   const productsTitle = isProducts ? "Products" : "services";
@@ -107,7 +109,10 @@ const Edit = () => {
           </Stack>
           {productComp}
           <div>transations</div>
-          <div>{invoiceComp}</div>
+          <div>
+            <div>{invoiceComp}</div>
+            <Pagination />
+          </div>
         </SimpleTabItemList>
       </SimpleTabs>
     </>

@@ -13,8 +13,11 @@
       "@libs": ["../../../packages/ui/libs"],
       "@const": ["../../../packages/ui/constants"],
       "@blocks/*": ["../../../packages/ui/components/blocks/*"],
+      "@src/*": ["../../../packages/ui/src/*"],
       "@sections/*": ["../../../packages/ui/components/sections/*"],
-      "@sections": ["../../../packages/ui/components/sections"]
+      "@sections": ["../../../packages/ui/components/sections"],
+      "@features/*": ["../../../packages/ui/components/features/*"],
+      "@features": ["../../../packages/ui/components/features"]
     }
   }
 }
