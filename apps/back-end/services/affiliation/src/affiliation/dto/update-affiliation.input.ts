@@ -8,3 +8,14 @@ export class UpdateAffiliationInput extends PartialType(
   @Field(() => ID)
   id: string;
 }
+
+@InputType()
+export class UpdateAffiliationAdminInput extends PartialType(
+  CreateAffiliationInput,
+) {
+  @Field(() => ID)
+  id: string;
+
+  @Field(() => ID)
+  sellerId: string;
+}
