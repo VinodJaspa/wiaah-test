@@ -36,6 +36,13 @@ export const AdminNavigationSidebar: React.FC<{
       subLinks: [],
     },
     {
+      icon: PersonIcon({}),
+      name: "Buyers",
+      onClick() {},
+      slug: "buyers",
+      subLinks: [],
+    },
+    {
       icon: ShopIcon({}),
       name: t("Product Shop"),
       onClick() {},

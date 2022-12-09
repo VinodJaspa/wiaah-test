@@ -116,8 +116,8 @@ export const BookingsHistorySection: React.FC = () => {
           className="w-full"
         >
           <Tr>
+            <Th>{shopping ? t("Seller") : t("Customer")}</Th>
             <Th>{t("Appointment ID")}</Th>
-            <Th>{shopping ? t("seller") : t("Customer")}</Th>
             <Th>{t("Service")}</Th>
             <Th>{t("From")}</Th>
             <Th>{t("To")}</Th>
@@ -146,9 +146,6 @@ export const BookingsHistorySection: React.FC = () => {
                 ) => (
                   <Tr className="cursor-pointer" key={i}>
                     <Td onClick={() => viewAppointment(appointmentId)}>
-                      {appointmentId}
-                    </Td>
-                    <Td onClick={() => viewAppointment(appointmentId)}>
                       <div className="flex items-center gap-2">
                         <Avatar
                           className=""
@@ -158,6 +155,9 @@ export const BookingsHistorySection: React.FC = () => {
                         />
                         <span>{customer.name.fullName}</span>
                       </div>
+                    </Td>
+                    <Td onClick={() => viewAppointment(appointmentId)}>
+                      {appointmentId}
                     </Td>
                     <Td onClick={() => viewAppointment(appointmentId)}>
                       {service}

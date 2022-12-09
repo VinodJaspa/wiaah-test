@@ -11,7 +11,7 @@ import {
   AffiliationListSection,
   Stack,
   Divider,
-  BookingsHistorySection,
+  BookingsHistory,
   HotelsSearchList,
   OrdersSection,
   Pagination,
@@ -28,7 +28,7 @@ import {
   Input,
   DateFormInput,
 } from "ui";
-import { mapArray, randomNum } from "utils";
+import { mapArray, NumberShortner, randomNum } from "utils";
 import { lngs, lats } from "api";
 import { getRandomImage } from "placeholder";
 import { BsKey } from "react-icons/bs";
@@ -72,17 +72,6 @@ const Edit = () => {
     },
   };
 
-  const productComp = isProducts ? (
-    <ProductDetailsTable />
-  ) : (
-    <HotelsSearchList />
-  );
-  const invoiceComp = isProducts ? (
-    <OrdersSection shopping={false} />
-  ) : (
-    <BookingsHistorySection />
-  );
-
   const posts = [...Array(10)].map(() => ({
     id: randomNum(500000).toString(),
     description:
@@ -97,16 +86,12 @@ const Edit = () => {
     createdAt: new Date(),
   }));
 
-  const productsTitle = isProducts ? "Products" : "services";
-  const historyTitle = isProducts ? "Orders" : "Bookings";
-
   const tabsTitles = [
     "General",
-    "Fees",
     "Affiliation",
-    productsTitle,
     "Transactions",
-    historyTitle,
+    "Orders",
+    "Bookings",
     "Social Info",
   ];
 
@@ -130,16 +115,17 @@ const Edit = () => {
         </div>
 
         <SimpleTabItemList>
-          <AccountSettingsSection />
-          <div>fees</div>
+          <AccountSettingsSection variant="buyer" />
           <Stack col divider={<Divider />}>
-            <AffiliationListSection />
             <AffiliationHistorySection />
           </Stack>
-          {productComp}
           <div>transations</div>
           <div>
-            <div>{invoiceComp}</div>
+            <OrdersSection shopping={true} />
+            <Pagination />
+          </div>
+          <div>
+            <BookingsHistory shopping />
             <Pagination />
           </div>
           <div>
@@ -220,7 +206,7 @@ const Edit = () => {
                       {data.type === "video" ? (
                         <></>
                       ) : (
-                        <Image className="w-32" src={data.thumbnail} />
+                        <Image className="w-48" src={data.thumbnail} />
                       )}
                     </Td>
                     <Td>{data.id.slice(0, 4)}...</Td>
@@ -236,10 +222,10 @@ const Edit = () => {
                         </div>
                       </div>
                     </Td>
-                    <Td>{data.views}</Td>
-                    <Td>{data.likes}</Td>
-                    <Td>{data.comments}</Td>
-                    <Td>{data.shares}</Td>
+                    <Td>{NumberShortner(data.views)}</Td>
+                    <Td>{NumberShortner(data.likes)}</Td>
+                    <Td>{NumberShortner(data.comments)}</Td>
+                    <Td>{NumberShortner(data.shares)}</Td>
                     <Td>{new Date(data.createdAt).toDateString()}</Td>
                     <Td className="text-white">
                       <div className="flex flex-wrap gap-2">
