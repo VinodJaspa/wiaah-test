@@ -24,6 +24,7 @@ import { ActionModule } from './action/action.module';
 import { PrismaModule } from './prisma.module';
 import { HiddenContentModule } from './hidden-content/hidden-content.module';
 import { HotelController } from './hotel/hotel.controller';
+import { ProfileAdminModule } from '@profile/profile-admin.module';
 
 @Module({
   imports: [
@@ -36,6 +37,12 @@ import { HotelController } from './hotel/hotel.controller';
         const user = getUserFromRequest(req);
         return { req, res, user };
       },
+    }),
+    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
+      driver: ApolloFederationDriver,
+      path: 'admin',
+      include: [ProfileAdminModule],
+      autoSchemaFile: true,
     }),
     NewsfeedPostsModule,
     CommentsModule,
