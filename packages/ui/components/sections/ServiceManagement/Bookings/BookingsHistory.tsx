@@ -116,9 +116,10 @@ export const BookingsHistorySection: React.FC = () => {
           className="w-full"
         >
           <Tr>
-            <Th>{shopping ? t("Seller") : t("Customer")}</Th>
-            <Th>{t("Appointment ID")}</Th>
+            <Th>{t("Photo")}</Th>
+            <Th>{t("ID")}</Th>
             <Th>{t("Service")}</Th>
+            <Th>{shopping ? t("Seller") : t("Customer")}</Th>
             <Th>{t("From")}</Th>
             <Th>{t("To")}</Th>
             <Th>{t("Service Price")}</Th>
@@ -145,22 +146,22 @@ export const BookingsHistorySection: React.FC = () => {
                   i
                 ) => (
                   <Tr className="cursor-pointer" key={i}>
-                    <Td onClick={() => viewAppointment(appointmentId)}>
-                      <div className="flex items-center gap-2">
-                        <Avatar
-                          className=""
-                          name={customer.name.fullName}
-                          src={customer.photo}
-                          alt={`${customer.name.fullName}`}
-                        />
-                        <span>{customer.name.fullName}</span>
-                      </div>
+                    <Td>
+                      <Avatar
+                        className=""
+                        name={customer.name.fullName}
+                        src={customer.photo}
+                        alt={`${customer.name.fullName}`}
+                      />
                     </Td>
                     <Td onClick={() => viewAppointment(appointmentId)}>
                       {appointmentId}
                     </Td>
                     <Td onClick={() => viewAppointment(appointmentId)}>
                       {service}
+                    </Td>
+                    <Td onClick={() => viewAppointment(appointmentId)}>
+                      <p>{customer.name.fullName}</p>
                     </Td>
                     <Td onClick={() => viewAppointment(appointmentId)}>
                       {new Date(from).toLocaleDateString("en", {
