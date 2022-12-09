@@ -23,8 +23,8 @@ import { AffiliationPostModule } from './affiliation-post/affiliation-post.modul
 import { ActionModule } from './action/action.module';
 import { PrismaModule } from './prisma.module';
 import { HiddenContentModule } from './hidden-content/hidden-content.module';
-import { HotelController } from './hotel/hotel.controller';
 import { ProfileAdminModule } from '@profile/profile-admin.module';
+import { NewsfeedPostsAdminModule } from '@posts-newsfeed/newsfeed-posts-admin.module';
 
 @Module({
   imports: [
@@ -41,7 +41,7 @@ import { ProfileAdminModule } from '@profile/profile-admin.module';
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       path: 'admin',
-      include: [ProfileAdminModule],
+      include: [ProfileAdminModule, NewsfeedPostsAdminModule],
       autoSchemaFile: true,
     }),
     NewsfeedPostsModule,
@@ -60,6 +60,5 @@ import { ProfileAdminModule } from '@profile/profile-admin.module';
     ActionModule,
     HiddenContentModule,
   ],
-  controllers: [HotelController],
 })
 export class AppModule {}
