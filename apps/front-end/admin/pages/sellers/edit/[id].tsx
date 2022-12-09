@@ -28,7 +28,7 @@ import {
   Input,
   DateFormInput,
 } from "ui";
-import { mapArray, randomNum } from "utils";
+import { mapArray, NumberShortner, randomNum } from "utils";
 import { lngs, lats } from "api";
 import { getRandomImage } from "placeholder";
 import { BsKey } from "react-icons/bs";
@@ -236,10 +236,10 @@ const Edit = () => {
                         </div>
                       </div>
                     </Td>
-                    <Td>{data.views}</Td>
-                    <Td>{data.likes}</Td>
-                    <Td>{data.comments}</Td>
-                    <Td>{data.shares}</Td>
+                    <Td>{NumberShortner(data.views)}</Td>
+                    <Td>{NumberShortner(data.likes)}</Td>
+                    <Td>{NumberShortner(data.comments)}</Td>
+                    <Td>{NumberShortner(data.shares)}</Td>
                     <Td>{new Date(data.createdAt).toDateString()}</Td>
                     <Td className="text-white">
                       <div className="flex flex-wrap gap-2">
