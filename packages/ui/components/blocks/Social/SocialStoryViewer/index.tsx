@@ -1,42 +1,32 @@
 import React from "react";
-import { ProfileInfo, SocialStoryData } from "types";
+import { ProfileInfo, ProgressBar } from "types";
+import { SocialStoryViewerHeader } from "../SocialStoryViewerHeader";
 import {
-  SocialStoryViewerHeader,
-  StorySeenByPopup,
-  StoiresProgressBars,
   SocialStoriesCarousel,
-} from "ui";
-import { useStory } from "ui/Hooks";
+  SocialStoriesCarouselProps,
+} from "../SocialStoriesCarousel";
+import { ProgressBars } from "@partials";
 
-export interface SocialStoryViewerProps {
+export interface SocialStoryViewerProps extends SocialStoriesCarouselProps {
   user: ProfileInfo;
-  stories: SocialStoryData[];
 }
 
 export const SocialStoryViewer: React.FC<SocialStoryViewerProps> = ({
-  stories,
+  story,
   user,
+  ...props
 }) => {
   try {
-    const { currentStory, CloseStories } = useStory();
-    if (stories.length < 1) return null;
-    const story = stories[currentStory];
-
-    const { storyCreationDate, storyViews } = story;
-
-    if (!story) return null;
-
     return (
       <div className="flex flex-col gap-4 max-h-[100%] max-w-[100%]">
         <SocialStoryViewerHeader
-          // onClose={CloseStories}
+          storyId={story.id}
           user={user}
-          createdAt={storyCreationDate}
-          views={storyViews}
+          createdAt={story.storyCreationDate}
+          views={story.storyViews}
         />
-        <StorySeenByPopup storyId={story.id} />
-        <StoiresProgressBars />
-        <SocialStoriesCarousel stories={stories} />
+        <ProgressBars srcKey={user.id} />
+        <SocialStoriesCarousel {...props} story={story} />
       </div>
     );
   } catch (error) {

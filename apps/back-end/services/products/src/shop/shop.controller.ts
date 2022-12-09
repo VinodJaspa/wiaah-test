@@ -1,6 +1,16 @@
-import { Controller, NotFoundException } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
-import { formatCaughtError, KAFKA_MESSAGES } from 'nest-utils';
+import { Controller, Inject, NotFoundException } from '@nestjs/common';
+import {
+  ClientKafka,
+  EventPattern,
+  MessagePattern,
+  Payload,
+} from '@nestjs/microservices';
+import {
+  formatCaughtError,
+  KAFKA_EVENTS,
+  KAFKA_MESSAGES,
+  SERVICES,
+} from 'nest-utils';
 import { ShopService } from './shop.service';
 import {
   GetUserShopMetaDataMessage,
@@ -8,11 +18,24 @@ import {
   IsOwnerOfShopMessage,
   IsOwnerOfShopMessageReply,
   KafkaPayload,
+  LookForNearShopsPromotionsEvent,
+  ShopNearPromotionsResolvedEvent,
 } from 'nest-dto';
+import { QueryBus } from '@nestjs/cqrs';
+import {
+  GetHeighestDiscountProductInShopQuery,
+  GetHeighstDiscountProductInShopQueryRes,
+} from './queries';
+import { Shop } from '@prisma-client';
 
 @Controller()
 export class ShopController {
-  constructor(private readonly shopService: ShopService) {}
+  constructor(
+    private readonly shopService: ShopService,
+    @Inject(SERVICES.SHOP_SERVICE.token)
+    private readonly eventClient: ClientKafka,
+    private readonly querybus: QueryBus,
+  ) {}
 
   @MessagePattern(KAFKA_MESSAGES.getUserShopId)
   async getUserStoreData(
@@ -80,5 +103,60 @@ export class ShopController {
         },
       });
     }
+  }
+
+  @EventPattern(
+    KAFKA_EVENTS.PROMOTION_EVENTS.lookForNearShopsPromotions('*', true),
+  )
+  async handleCurrentLocationChanged(
+    @Payload() { value }: { value: LookForNearShopsPromotionsEvent },
+  ) {
+    const { lat, lon, userId } = value.input;
+
+    const shops = await this.shopService.getNearShops({
+      distance: 50,
+      lat,
+      lon,
+    });
+
+    if (shops.length < 1) return false;
+
+    const getProducts = Promise.all(
+      shops.map((v) =>
+        this.querybus.execute<
+          GetHeighestDiscountProductInShopQuery,
+          GetHeighstDiscountProductInShopQueryRes
+        >(new GetHeighestDiscountProductInShopQuery(v.id)),
+      ),
+    );
+
+    const products = await getProducts;
+
+    const mergedProdsAndShops = products.reduce((acc, curr) => {
+      if (!curr) return acc;
+
+      const shop = shops.find((s) => s.id === curr.shopId);
+      if (!shop) return acc;
+
+      const mergeCurr = { ...curr, ...shop };
+
+      return [...acc, mergeCurr];
+    }, [] as (GetHeighstDiscountProductInShopQueryRes & Shop)[]);
+
+    this.eventClient.emit(
+      KAFKA_EVENTS.PROMOTION_EVENTS.nearUserShopsPromotionsResloved(),
+      new ShopNearPromotionsResolvedEvent({
+        userId,
+        shops: mergedProdsAndShops.map((v) => ({
+          id: v.id,
+          promotions: {
+            top: {
+              amount: v.percent,
+            },
+          },
+          sellerId: v.ownerId,
+        })),
+      }),
+    );
   }
 }

@@ -1,96 +1,103 @@
+import React from "react";
 import {
+  Avatar,
   Modal,
-  ModalOverlay,
   ModalContent,
-  ModalBody,
-  Flex,
+  ModalOverlay,
   ModalHeader,
   Input,
-  Text,
-  Icon,
   HStack,
-} from "@chakra-ui/react";
-import React from "react";
-import { useStorySeenBy, Avatar } from "ui";
+  Button,
+} from "@partials";
 import { useTranslation } from "react-i18next";
 import { MdClose } from "react-icons/md";
-import { StorySeenByUserInfo } from "types/market/Social";
+import { StorySeenByUserInfo } from "types";
+import { useTypedReactPubsub } from "@libs";
 
 export interface StorySeenByPopupProps {
-  storyId: String;
+  users: StorySeenByUserInfo[] | null;
+  onSearch: (term: string) => any;
+  searchTerm: string;
 }
 
-export const StorySeenByPopup: React.FC<StorySeenByPopupProps> = ({}) => {
+export const useStorySeenByPopup = () => {
+  const { Listen, emit, removeListner } = useTypedReactPubsub(
+    (k) => k.openSocialStoryViewersModal
+  );
+
+  React.useEffect(() => removeListner, []);
+
+  function open(storyId: string) {
+    emit({ storyId });
+  }
+
+  function close() {
+    emit({ storyId: null });
+  }
+
+  return {
+    open,
+    close,
+    listen: Listen,
+  };
+};
+
+export const StorySeenByPopup: React.FC<StorySeenByPopupProps> = ({
+  onSearch,
+  users,
+  searchTerm = "",
+}) => {
+  const { close } = useStorySeenByPopup();
   const { t } = useTranslation();
-  const [userFilter, setUserFilter] = React.useState<string>("");
-  const [Users, setUsers] = React.useState<StorySeenByUserInfo[]>([]);
-  const { CloseStorySeenBy, isOpen, users } = useStorySeenBy();
-
-  React.useEffect(() => {
-    setUsers(users.filter((user) => user.name.includes(userFilter)));
-  }, [users, userFilter]);
-
-  React.useEffect(() => {}, []);
-
+  console.log("users", users);
   return (
-    <>
-      <Modal
-        onClose={CloseStorySeenBy}
-        isOpen={isOpen}
-        motionPreset="slideInBottom"
-        isCentered
-        blockScrollOnMount={false}
-      >
-        <ModalOverlay />
-        {/* <Modal */}
-        <ModalContent mr="1rem">
-          <ModalHeader px="0.5rem">
-            <Flex justify={"space-between"}>
-              <Text textTransform={"capitalize"}>
-                {t(
-                  "people_who_have_seen_story",
-                  "people who have seen this story"
-                )}
-              </Text>
-              <Icon
-                data-testid="CloseModalBtn"
-                cursor={"pointer"}
-                onClick={CloseStorySeenBy}
-                as={MdClose}
-              />
-            </Flex>
-          </ModalHeader>
-          <ModalBody px="0.5rem">
-            <Flex gap="1rem" direction={"column"}>
-              <Input
-                data-testid="SearchUserInput"
-                value={userFilter}
-                onChange={(e) => setUserFilter(e.target.value)}
-                variant={"flushed"}
-                placeholder={t("search", "search")}
-              />
-              <Flex
-                maxH="30rem"
-                overflowY={"scroll"}
-                className="thinScroll"
-                direction={"column"}
-                data-testid="UsersListContainer"
-              >
-                {Users.map((user, i) => (
-                  <HStack data-testid="UserCard" fontSize={"lg"} key={i}>
-                    <Avatar
-                      size={"lg"}
-                      name={user.name}
-                      photoSrc={user.photoSrc}
-                    />
-                    <Text data-testid="Username">{user.name}</Text>
+    <Modal
+      onClose={() => {
+        console.log("close");
+        close();
+      }}
+      isOpen={!!users}
+    >
+      <ModalOverlay />
+      <ModalContent>
+        <div className="flex justify-between">
+          <p>{t("People who have seen this story")}</p>
+          <MdClose
+            data-testid="CloseModalBtn"
+            className="cursor-pointer"
+            onClick={close}
+          />
+        </div>
+        <div className="flex flex-col gap-4 overflow-hidden">
+          <Input
+            data-testid="SearchUserInput"
+            value={searchTerm}
+            onChange={(e) => onSearch && onSearch(e.target.value)}
+            flushed
+            placeholder={t("search")}
+          />
+          <div
+            className="flex gap-4 max-h-[30rem] overflow-y-scroll flex-col thinScroll"
+            data-testid="UsersListContainer"
+          >
+            {users
+              ? users.map((user, i) => (
+                  <HStack
+                    data-testid="UserCard"
+                    className="text-lg justify-between"
+                    key={i}
+                  >
+                    <HStack>
+                      <Avatar name={user.name} photoSrc={user.photoSrc} />
+                      <p data-testid="Username">{user.name}</p>
+                    </HStack>
+                    <Button>{t("Follow")}</Button>
                   </HStack>
-                ))}
-              </Flex>
-            </Flex>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </>
+                ))
+              : null}
+          </div>
+        </div>
+      </ModalContent>
+    </Modal>
   );
 };

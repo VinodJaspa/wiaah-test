@@ -19,13 +19,22 @@ model Account {
   lastName                   String
   email                      String      @unique
   password                   String
+  products                   Int?        @default(0)
+  sales                      Int?        @default(0)
   online                     Boolean     @default(false)
   type                       AccountType
   companyRegisterationNumber String?
   verified                   Boolean     @default(false)
+  status                     AccountStatus @default(active)
+  balance                    Float        @default(0)
   idVerified                 Boolean     @default(false)
   createdAt                  DateTime    @default(now())
   updatedAt                  DateTime    @updatedAt()
+}
+
+enum AccountStatus {
+  active
+  inActive
 }
 
 model UserIdenityVerificationRequest {

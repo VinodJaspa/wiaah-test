@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "@chakra-ui/react";
 import {
-  SocialStoriesModal,
+  SocialStoryModal,
   SocialPostHeader,
   SocialAffiliationCard,
   AffiliationOffersCardListWrapper,
@@ -46,7 +46,7 @@ export const AffilitionOfferView: React.FC<AffilitionOfferView> = () => {
         mb="6rem"
         align={"start"}
       >
-        <SocialStoriesModal />
+        <SocialStoryModal />
         <SocialPostHeader
           name={offer.user.name}
           thumbnail={offer.user.thumbnail}

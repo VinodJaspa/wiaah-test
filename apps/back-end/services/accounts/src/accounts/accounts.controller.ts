@@ -20,7 +20,9 @@ import {
   GetAccountMetaDataByEmailMessage,
   GetAccountMetaDataByEmailMessageReply,
   KafkaPayload,
+  NewProductCreatedEvent,
   PasswordChangedEvent,
+  ProductPurchasedEvent,
   SellerAccountRegisteredEvent,
   StripeAccountCreatedEvent,
   SubscriptionPaidEvent,
@@ -30,7 +32,11 @@ import {
 import { CommandBus } from '@nestjs/cqrs';
 
 import { AccountsService } from '@accounts/accounts.service';
-import { UpdateUserMembershipCommand } from '@accounts/commands';
+import {
+  IncreamentUserProductsCount,
+  IncreamentUserSalesCommand,
+  UpdateUserMembershipCommand,
+} from '@accounts/commands';
 import { Account } from '@accounts/entities';
 
 @Controller()
@@ -132,7 +138,7 @@ export class AccountsController implements OnModuleInit {
     KAFKA_EVENTS.BILLING_EVNETS.billingSubscriptionPaid('membership'),
   )
   handleMembershipPaid(@Payload() { value }: { value: SubscriptionPaidEvent }) {
-    console.log("updating user membershipo")
+    console.log('updating user membershipo');
     this.commandBus.execute<UpdateUserMembershipCommand, Account>(
       new UpdateUserMembershipCommand(value.input.userId, value.input.id),
     );
@@ -200,6 +206,28 @@ export class AccountsController implements OnModuleInit {
     } catch (error) {
       this.logger.error(error);
     }
+  }
+
+  @EventPattern(KAFKA_EVENTS.PRODUCTS_EVENTS.productCreated)
+  handleProductCreated(
+    @Payload() { value }: { value: NewProductCreatedEvent },
+  ) {
+    const {
+      input: { ownerId },
+    } = value;
+
+    this.commandBus.execute(new IncreamentUserProductsCount(ownerId, 1));
+  }
+
+  @EventPattern(KAFKA_EVENTS.PRODUCTS_EVENTS.productPurchased)
+  handleProductPurchased(
+    @Payload() { value }: { value: ProductPurchasedEvent },
+  ) {
+    const {
+      input: { sellerId },
+    } = value;
+
+    this.commandBus.execute(new IncreamentUserSalesCommand(sellerId, 1));
   }
 
   async onModuleInit() {

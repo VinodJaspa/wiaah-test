@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ClientsModule, Transport } from '@nestjs/microservices';
+import { CqrsModule } from '@nestjs/cqrs';
 import { NotificationSettingsService } from './notification-settings.service';
 import { NotificationSettingsResolver } from './notification-settings.resolver';
 import { NotificationSettingsController } from './notification-settings.controller';
 import { PrismaService } from 'prismaService';
-import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 
 @Module({
+  imports: [CqrsModule],
   providers: [
     NotificationSettingsResolver,
     NotificationSettingsService,

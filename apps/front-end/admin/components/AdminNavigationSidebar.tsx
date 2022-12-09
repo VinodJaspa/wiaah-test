@@ -1,12 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useRouting } from "routing";
 import {
   LogoIcon,
   Accordion,
-  AccordionButton,
-  AccordionItem,
-  AccordionPanel,
+  PersonIcon,
   DashboardIcon,
   ShopIcon,
   ArrowRightIcon,
@@ -29,6 +26,20 @@ export const AdminNavigationSidebar: React.FC<{
       name: "Dashboard",
       onClick() {},
       slug: "dashboard",
+      subLinks: [],
+    },
+    {
+      icon: PersonIcon({}),
+      name: "Sellers",
+      onClick() {},
+      slug: "sellers",
+      subLinks: [],
+    },
+    {
+      icon: PersonIcon({}),
+      name: "Buyers",
+      onClick() {},
+      slug: "buyers",
       subLinks: [],
     },
     {

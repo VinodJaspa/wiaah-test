@@ -1,18 +1,12 @@
 import React from "react";
 import { useMutation, useQuery } from "react-query";
 import { MdClose } from "react-icons/md";
-import {
-  Modal,
-  ModalContent,
-  ModalOverlay,
-  ArrowUpIcon,
-  ArrowDownIcon,
-} from "ui";
+import { Modal, ModalContent, ArrowUpIcon, ArrowDownIcon } from "ui";
 import { useTranslation } from "react-i18next";
-import { VerticalCarousel, PostCommentCard, Slider } from "ui";
+import { PostCommentCard, Slider } from "ui";
 import { getParamFromAsPath } from "utils";
 import { PostCardPlaceHolder } from "placeholder";
-import { useActionComments } from "ui/Hooks";
+import { useActionComments } from "@src/Hooks";
 import { useRouting } from "routing";
 import { useModalDisclouser } from "hooks";
 

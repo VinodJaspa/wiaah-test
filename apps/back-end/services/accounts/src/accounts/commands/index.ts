@@ -1,4 +1,12 @@
 export * from './impl';
-import { UpdateUserMembershipCommandHandler } from './handlers';
+import {
+  UpdateUserMembershipCommandHandler,
+  IncreamentUserProductsCountHandler,
+  IncreamentUserSalesCommandHandler,
+} from './handlers';
 
-export const accountCommandHandlers = [UpdateUserMembershipCommandHandler];
+export const accountCommandHandlers = [
+  UpdateUserMembershipCommandHandler,
+  IncreamentUserProductsCountHandler,
+  IncreamentUserSalesCommandHandler,
+];

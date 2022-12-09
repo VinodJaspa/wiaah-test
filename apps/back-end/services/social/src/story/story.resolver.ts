@@ -18,29 +18,21 @@ import {
   CreateStoryCommand,
   DeleteStoryCommand,
   LikeStoryCommand,
-} from './command';
-import {
-  CreateStoryInput,
-  DeleteStoryInput,
-  GetRecentStoriesInput,
-  GetStorySeenByInput,
-  LikeStoryInput,
-} from './dto';
+} from '@story/command';
+import { CreateStoryInput, DeleteStoryInput, LikeStoryInput } from '@story/dto';
 import {
   AffiliationPost,
   NewsfeedPost,
   Product,
-  RecentStory,
   ServicePost,
   ShopPost,
   Story,
-} from './entities';
+} from '@story/entities';
 import {
   GetMyStoriesQuery,
-  GetRecentStoriesQuery,
   GetUserPrevStoryQuery,
   ViewUserStoryQuery,
-} from './queries';
+} from '@story/queries';
 
 @Resolver(() => Story)
 @UseGuards(new GqlAuthorizationGuard([]))

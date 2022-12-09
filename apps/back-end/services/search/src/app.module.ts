@@ -4,6 +4,7 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { SearchModule } from './search/search.module';
 import { SearchUsersModule } from './search-users/search-users.module';
 import { SearchHashtagModule } from './search-hashtag/search-hashtag.module';
+import { SearchShopsModule } from './search-shops/search-shops.module';
 
 @Global()
 @Module({
@@ -17,6 +18,7 @@ import { SearchHashtagModule } from './search-hashtag/search-hashtag.module';
     }),
     SearchUsersModule,
     SearchHashtagModule,
+    SearchShopsModule,
   ],
   exports: [ElasticsearchModule],
 })

@@ -1,18 +1,30 @@
 import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
-import { ManagerService } from './manager.service';
 import {
+  CashbackAddedEvent,
   CommentCreatedEvent,
   CommentMentionedEvent,
   ContentReactedEvent,
-  ContentReactedType,
+  LookForNearShopsPromotionsEvent,
+  PromotionCreatedEvent,
+  ShopNearPromotionsResolvedEvent,
+  SocialContentCreatedEvent,
+  UserCurrentLocationUpdateEvent,
 } from 'nest-dto';
 import { KAFKA_EVENTS } from 'nest-utils';
+import { NotifciationBaseController } from '@manager/abstraction';
+import {
+  GetUserNotificationsSettingsQuery,
+  GetUserDataQuery,
+  GetUserDataQueryRes,
+  GetUserFollowersIdsQuery,
+  GetUserFollowersIdsQueryRes,
+  GetUserNotificationsSettingsQueryRes,
+} from '@manager/queries';
+import { ContentType, NotificationTypes } from '@manager/const';
 
 @Controller()
-export class ManagerController {
-  constructor(private readonly notificationsService: ManagerService) {}
-
+export class ManagerController extends NotifciationBaseController {
   @EventPattern(KAFKA_EVENTS.COMMENTS_EVENTS.commentCreated)
   handleCommentCreatedEvent(@Payload() data: { value: CommentCreatedEvent }) {
     const {
@@ -22,7 +34,7 @@ export class ManagerController {
       commentedByProfileId,
       contentOwnerUserId,
     } = data.value.input;
-    this.notificationsService.createNotification({
+    this.service.createNotification({
       type: hostType === 'comment' ? 'commentCommented' : 'postCommented',
       authorId: commentedByUserId,
       content: '',
@@ -45,7 +57,7 @@ export class ManagerController {
 
     Array.isArray(mentionedIds)
       ? mentionedIds.map((id) => {
-          this.notificationsService.createNotification({
+          this.service.createNotification({
             content: '',
             type: 'commentMention',
             authorId: mentionedByUserId,
@@ -57,7 +69,7 @@ export class ManagerController {
       : null;
   }
 
-  @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted)
+  @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted('*', true))
   handleContentReactedEvent(@Payload() data: { value: ContentReactedEvent }) {
     const {
       contentAuthorUserId,
@@ -68,9 +80,9 @@ export class ManagerController {
       reacterUserId,
     } = data.value.input;
 
-    const postsTypes: ContentReactedType[] = ['newsfeed-post'];
+    const postsTypes = ['newsfeed-post'];
 
-    this.notificationsService.createNotification({
+    this.service.createNotification({
       content: contentTitle,
       contentId,
       type: postsTypes.includes(contentType) ? 'postReacted' : 'commentReacted',
@@ -78,5 +90,144 @@ export class ManagerController {
       contentOwnerUserId: contentAuthorUserId,
       authorId: reacterUserId,
     });
+  }
+
+  @EventPattern(KAFKA_EVENTS.SOCIAL_EVENTS.contentCreated('*', true))
+  async handleSocialContentCreatedEvent(
+    @Payload() data: { value: SocialContentCreatedEvent },
+  ) {
+    const { authorId, id, type } = data.value.input;
+    const authorDataPromise = this.querybus.execute(
+      new GetUserDataQuery(authorId),
+    );
+    const followersPromise = this.querybus.execute<
+      GetUserFollowersIdsQuery,
+      GetUserFollowersIdsQueryRes
+    >(new GetUserFollowersIdsQuery(authorId));
+
+    const authorData = await authorDataPromise;
+    const followers = await followersPromise;
+
+    let contentTitle: string;
+
+    const postsTypes = ['newsfeed-post'];
+
+    switch (type) {
+      case ContentType.newsfeed_post:
+        contentTitle = `${authorData.name} has posted a new post`;
+        break;
+      case ContentType.product_post:
+        contentTitle = `${authorData.name} has published a new product`;
+        break;
+      case ContentType.service_post:
+        contentTitle = `${authorData.name} has published a new service`;
+        break;
+      case ContentType.affiliation_post:
+        contentTitle = `${authorData.name} has published a new affilation`;
+        break;
+      default:
+        contentTitle = `${authorData.name} has published a new content`;
+        break;
+    }
+
+    this.service.createMany(
+      followers.map((v) => ({
+        content: contentTitle,
+        contentId: id,
+        type: postsTypes.includes(type)
+          ? NotificationTypes.postReacted
+          : NotificationTypes.commentReacted,
+        authorId,
+        isFollowed: true,
+        userId: v.id,
+      })),
+    );
+  }
+
+  @EventPattern(KAFKA_EVENTS.CASHBACK_EVENTS.cashbackAdded())
+  async handleCashbackAddedNotification(
+    @Payload() { value }: { value: CashbackAddedEvent },
+  ) {
+    const amount = value.input.amount;
+    const userId = value.input.userId;
+
+    await this.service.createNotification({
+      authorId: userId,
+      content: `Congrats, you have won ${amount} cashbacks`,
+      type: ContentType.cashback,
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.PROMOTION_EVENTS.promotionCreated('*', true))
+  async handleSnedPromotionShopFollowersNotification(
+    @Payload() { value }: { value: PromotionCreatedEvent },
+  ) {
+    const getSeller = this.querybus.execute<
+      GetUserDataQuery,
+      GetUserDataQueryRes
+    >(new GetUserDataQuery(value.input.sellerId));
+    const getFollowers = this.querybus.execute<
+      GetUserFollowersIdsQuery,
+      GetUserFollowersIdsQueryRes
+    >(new GetUserFollowersIdsQuery(value.input.sellerId));
+    const seller = await getSeller;
+    const followers = await getFollowers;
+
+    this.service.createMany(
+      followers.map((v) => ({
+        authorId: seller.id,
+        userId: v.id,
+        type: NotificationTypes.ShopPromotion,
+        isFollowed: true,
+      })),
+    );
+  }
+
+  @EventPattern(KAFKA_EVENTS.USER_EVENTS.userCurrLocationChanged('*', true))
+  async handleCheckIfWantPromotionNotifications(
+    @Payload() { value }: { value: UserCurrentLocationUpdateEvent },
+  ) {
+    const { id, lat, lon } = value.input;
+
+    const settings = await this.querybus.execute<
+      GetUserNotificationsSettingsQuery,
+      GetUserNotificationsSettingsQueryRes
+    >(new GetUserNotificationsSettingsQuery(id));
+
+    if (settings.nearShopPromotions) {
+      this.eventClient.emit(
+        KAFKA_EVENTS.PROMOTION_EVENTS.lookForNearShopsPromotions(),
+        new LookForNearShopsPromotionsEvent({
+          lat,
+          lon,
+          userId: id,
+        }),
+      );
+    }
+  }
+
+  @EventPattern(KAFKA_EVENTS.PROMOTION_EVENTS.nearUserShopsPromotionsResloved())
+  async handlePromotionsResolved(
+    @Payload() { value }: { value: ShopNearPromotionsResolvedEvent },
+  ) {
+    const { shops, userId } = value.input;
+
+    const getSellers = Promise.all(
+      shops.map((s) => {
+        return this.querybus.execute<GetUserDataQuery, GetUserDataQueryRes>(
+          new GetUserDataQuery(s.sellerId),
+        );
+      }),
+    );
+
+    const sellers = await getSellers;
+
+    this.service.createMany(
+      sellers.map((v) => ({
+        type: NotificationTypes.ShopPromotion,
+        userId,
+        authorId: v.id,
+      })),
+    );
   }
 }

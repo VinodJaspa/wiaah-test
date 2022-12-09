@@ -4,6 +4,7 @@ import { FloatingContainer, FloatingContainerProps } from "ui";
 import { AspectRatio, Image } from "ui";
 
 export type StoryUserData = {
+  id: string;
   name: string;
   userPhotoSrc: string;
 };
@@ -20,7 +21,6 @@ export const UserProfileDisplay: React.FC<StoryDisplayProps> = ({
   storyUserData,
   seen,
   floatingIcon,
-  innerProps,
   onProfileClick,
 }) => {
   return (

@@ -2,7 +2,7 @@ import { SilentContent, UserNotificationSettings } from '@entities';
 import { UpdateNotificationSettingInput } from '@input';
 import { Injectable } from '@nestjs/common';
 import { DBErrorException } from 'nest-utils';
-import { NotifiactionType, NotificationSettingsEnum } from 'prismaClient';
+import { NotificationSettingsEnum } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 import { DisableNotificationFromContentInput } from '../dto';
 import { ContentNotificationAlreadyDisabledException } from '../exceptions';
@@ -10,6 +10,14 @@ import { ContentNotificationAlreadyDisabledException } from '../exceptions';
 @Injectable()
 export class NotificationSettingsService {
   constructor(private readonly prisma: PrismaService) {}
+
+  async getOneByUserId(id: string) {
+    return this.prisma.userNotificationSettings.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
 
   async createAccountNotifciationSettings(
     userId: string,
@@ -86,7 +94,7 @@ export class NotificationSettingsService {
   }
 
   async isNoficiationTypeAllowed(
-    notificationType: NotifiactionType,
+    notificationType: string,
     userId: string,
     isFollowed: boolean,
   ): Promise<boolean> {

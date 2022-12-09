@@ -2,7 +2,7 @@ import React from "react";
 import { BsTrash } from "react-icons/bs";
 import { IoHeartOutline } from "react-icons/io5";
 import { CartSummaryItem, ShopContactDetails } from "types";
-import { useScreenWidth } from "ui/Hooks";
+import { useScreenWidth } from "@src/Hooks";
 import {
   Absolute,
   BoldText,

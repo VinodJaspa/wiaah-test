@@ -44,10 +44,11 @@ interface SimpleTabHeadProps {
 }
 
 export const SimpleTabHead: React.FC<SimpleTabHeadProps> = ({ children }) => {
+  console.log("tab childs", children);
   const { setCurrIdx, currIdx } = React.useContext(SimpleTabsContext);
   return (
     <>
-      {mapArray(React.Children.toArray(children), (c, i) => (
+      {mapArray(Array.isArray(children) ? children : [children], (c, i) => (
         <>
           {PassPropsToFnOrElem<SimpleTabHeadChildProps>(c, {
             onClick: () => setCurrIdx(i),

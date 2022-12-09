@@ -47,10 +47,12 @@ export class MailingService {
     templateId: number;
     vars: Record<string, string>;
     to: { name: string; email: string }[];
+    subject: string;
     from?: { name: string; email: string };
   }) {
     await this.mailingservice.sendTemplate({
-      subject: 'Order Shipping Confirmation',
+      subject: opts.subject,
+      //  'Order Shipping Confirmation',
       to: opts.to.map((v) => ({
         Email: v.email,
         Name: v.name,

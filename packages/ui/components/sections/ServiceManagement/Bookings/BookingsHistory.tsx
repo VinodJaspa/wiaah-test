@@ -39,13 +39,14 @@ import {
 import {
   useGetBookingsHistoryQuery,
   useCancelAppointmentMutation,
-} from "ui/Hooks";
+} from "@src/Hooks";
 import { ReturnDeclineRequestValidationSchema } from "validation";
 import { bookingsHistoryCtx } from ".";
+import { useTypedReactPubsub } from "@libs";
 
 export const BookingsHistorySection: React.FC = () => {
   const { viewAppointment, shopping } = React.useContext(bookingsHistoryCtx);
-  const { emit: openConfirmationModal } = useReactPubsub(
+  const { emit: openConfirmationModal } = useTypedReactPubsub(
     (keys) => keys.openBookConfirmationModal
   );
   const [Filter, setFilter] = React.useState<OrdersFilter>("all");
@@ -115,9 +116,10 @@ export const BookingsHistorySection: React.FC = () => {
           className="w-full"
         >
           <Tr>
-            <Th>{t("Appointment ID")}</Th>
-            <Th>{shopping ? t("seller") : t("Customer")}</Th>
+            <Th>{t("Photo")}</Th>
+            <Th>{t("ID")}</Th>
             <Th>{t("Service")}</Th>
+            <Th>{shopping ? t("Seller") : t("Customer")}</Th>
             <Th>{t("From")}</Th>
             <Th>{t("To")}</Th>
             <Th>{t("Service Price")}</Th>
@@ -144,22 +146,22 @@ export const BookingsHistorySection: React.FC = () => {
                   i
                 ) => (
                   <Tr className="cursor-pointer" key={i}>
+                    <Td>
+                      <Avatar
+                        className=""
+                        name={customer.name.fullName}
+                        src={customer.photo}
+                        alt={`${customer.name.fullName}`}
+                      />
+                    </Td>
                     <Td onClick={() => viewAppointment(appointmentId)}>
                       {appointmentId}
                     </Td>
                     <Td onClick={() => viewAppointment(appointmentId)}>
-                      <div className="flex items-center gap-2">
-                        <Avatar
-                          className=""
-                          name={customer.name.fullName}
-                          src={customer.photo}
-                          alt={`${customer.name.fullName}`}
-                        />
-                        <span>{customer.name.fullName}</span>
-                      </div>
+                      {service}
                     </Td>
                     <Td onClick={() => viewAppointment(appointmentId)}>
-                      {service}
+                      <p>{customer.name.fullName}</p>
                     </Td>
                     <Td onClick={() => viewAppointment(appointmentId)}>
                       {new Date(from).toLocaleDateString("en", {

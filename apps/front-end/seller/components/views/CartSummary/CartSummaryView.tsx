@@ -14,7 +14,7 @@ import {
   useCartSummary,
   useScreenWidth,
 } from "ui";
-import { CartSummaryTotalPriceState } from "ui/state";
+import { CartSummaryTotalPriceState } from "@src/state";
 import { CartSummaryFilled } from "./CartSummaryFilled";
 import { EmptyCartSummary } from "./EmptyCartSummary";
 

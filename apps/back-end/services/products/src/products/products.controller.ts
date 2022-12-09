@@ -24,6 +24,7 @@ import {
   IsProductReviewableMessage,
   IsProductReviewableMessageReply,
   KafkaPayload,
+  LookForNearShopsPromotionsEvent,
   SellerProductsPurchasedEvent,
 } from 'nest-dto';
 import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
