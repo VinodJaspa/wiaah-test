@@ -8,6 +8,7 @@ import {
 } from '@nestjs/graphql';
 import { ClientKafka } from '@nestjs/microservices';
 import {
+  accountType,
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
@@ -15,6 +16,7 @@ import {
 } from 'nest-utils';
 
 import { AccountsService } from './accounts.service';
+import { GetBuyersAccountsInput, GetSellersAccountsInput } from '@accounts/dto';
 import { UpdateAccountInput } from './dto/update-account.input';
 import { Account } from './entities';
 
@@ -27,8 +29,24 @@ export class AccountsResolver {
   ) {}
 
   @Query(() => [Account])
-  getall() {
-    return this.accountsService.findAll();
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  getSellers(@Args('getSellersInput') args: GetSellersAccountsInput) {
+    return this.accountsService.findAll(args, accountType.SELLER);
+  }
+
+  @Query(() => [Account])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  getBuyers(@Args('getBuyersInput') args: GetBuyersAccountsInput) {
+    return this.accountsService.findAll(args, accountType.BUYER);
+  }
+
+  @Mutation(() => Account)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  adminEditAccount(
+    @Args('editAccountInput') input: UpdateAccountInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.accountsService.updateUnprotected(input, user.id);
   }
 
   @Mutation(() => Account)
@@ -37,7 +55,7 @@ export class AccountsResolver {
     @Args('editAccountInput') input: UpdateAccountInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    return this.accountsService.update(input, user.id);
+    return this.accountsService.updateProtected(input, user.id);
   }
 
   @UseGuards(new GqlAuthorizationGuard(['buyer']))
