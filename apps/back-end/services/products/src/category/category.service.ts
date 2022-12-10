@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma-client';
 import { PrismaService } from 'prismaService';
+import { GetFilteredCategory } from './dto';
 
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
@@ -9,8 +11,22 @@ import { Category } from './entities';
 export class CategoryService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getAllCategories(): Promise<Category[]> {
-    return this.prisma.productCategory.findMany();
+  async getAllCategories(filter?: GetFilteredCategory): Promise<Category[]> {
+    const filters: Prisma.ProductCategoryWhereInput[] = [];
+
+    if (filter?.name)
+      filters.push({
+        name: { contains: filter.name },
+      });
+
+    if (filter?.sortOrder)
+      filters.push({
+        sortOrder: filter.sortOrder,
+      });
+
+    return this.prisma.productCategory.findMany(
+      filters.length > 0 ? { where: { AND: filters } } : undefined,
+    );
   }
 
   async createCategory(

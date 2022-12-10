@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma-client';
 import { PrismaService } from 'prismaService';
+import { GetFiltersInput } from './dto';
 import { CreateFilterInput } from './dto/create-filter.input';
 import { UpdateFilterInput } from './dto/update-filter.input';
 import { Filter } from './entities/filter.entity';
@@ -24,7 +26,42 @@ export class FilterService {
     });
   }
 
-  getFilters(): Promise<Filter[]> {
+  getFilters(filtersInput: GetFiltersInput): Promise<Filter[]> {
+    const filters: Prisma.ProductFilterGroupWhereInput[] = [];
+
+    if (filtersInput.name)
+      filters.push({
+        OR: [
+          {
+            name: { contains: filtersInput.name },
+          },
+          {
+            values: {
+              some: {
+                name: {
+                  contains: filtersInput.name,
+                },
+              },
+            },
+          },
+        ],
+      });
+    if (filtersInput.sortOrder)
+      filters.push({
+        OR: [
+          {
+            sortOrder: filtersInput.sortOrder,
+          },
+          {
+            values: {
+              some: {
+                sortOrder: filtersInput.sortOrder,
+              },
+            },
+          },
+        ],
+      });
+
     return this.prisma.productFilterGroup.findMany();
   }
 

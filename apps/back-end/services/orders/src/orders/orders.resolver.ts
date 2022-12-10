@@ -25,6 +25,7 @@ import {
   RejectOrderCommand,
   RejectReceivedOrderCommand,
 } from './commands';
+import { GetUserOrders } from './dto/get-user-orders.input';
 
 @Resolver(() => Order)
 export class OrdersResolver implements OnModuleInit {
@@ -41,13 +42,38 @@ export class OrdersResolver implements OnModuleInit {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @Args('getMyOrdersArgs', { nullable: true }) args: GetMyOrdersInput,
   ) {
-    if (user.accountType === 'buyer') {
+    if (user.accountType === accountType.BUYER) {
       return this.queryBus.execute<GetBuyerOrdersQuery, Order[]>(
-        new GetBuyerOrdersQuery(user.id, args.status),
+        new GetBuyerOrdersQuery(user.id, args.pagination, args.status),
       );
-    } else if (user.accountType === 'seller') {
+    } else if (user.accountType === accountType.SELLER) {
       return this.queryBus.execute<GetSellerOrdersQuery, Order[]>(
-        new GetSellerOrdersQuery(user.id, args.status),
+        new GetSellerOrdersQuery(user.id, args.pagination, args.status),
+      );
+    }
+  }
+
+  @Query(() => [Order])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  getUserOrders(@Args('args') args: GetUserOrders) {
+    const type = args.accountType;
+    if (type === accountType.BUYER) {
+      return this.queryBus.execute<GetBuyerOrdersQuery, Order[]>(
+        new GetBuyerOrdersQuery(
+          args.userId,
+          args.pagination,
+          args.status,
+          args.q,
+        ),
+      );
+    } else if (type === accountType.SELLER) {
+      return this.queryBus.execute<GetSellerOrdersQuery, Order[]>(
+        new GetSellerOrdersQuery(
+          args.userId,
+          args.pagination,
+          args.status,
+          args.q,
+        ),
       );
     }
   }

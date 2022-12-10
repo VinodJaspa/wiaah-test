@@ -17,8 +17,15 @@ export class GetBuyerOrdersQueryHandler
   async execute({
     buyerId,
     statusFilter,
+    pagination,
+    q,
   }: GetBuyerOrdersQuery): Promise<Order[]> {
-    const res = await this.repo.getAllByBuyerId(buyerId, statusFilter);
+    const res = await this.repo.getAllByBuyerId(
+      buyerId,
+      statusFilter,
+      pagination,
+      q,
+    );
     return res.map((v) => ({
       ...v,
       refundable:

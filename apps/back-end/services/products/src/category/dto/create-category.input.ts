@@ -7,4 +7,7 @@ export class CreateCategoryInput {
 
   @Field(() => String)
   name: string;
+
+  @Field(() => Int)
+  sortOrder: number;
 }

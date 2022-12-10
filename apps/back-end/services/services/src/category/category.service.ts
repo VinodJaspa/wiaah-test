@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 import { CreateCategoryInput } from './dto/create-category.input';
+import { GetFilteredCategoriesInput } from './dto/get-filtered-categories.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
 
 @Injectable()
@@ -39,7 +41,61 @@ export class CategoryService {
     });
   }
 
-  getAllCategories() {
-    return this.prisma.serviceCategory.findMany();
+  getAllCategories(filter?: GetFilteredCategoriesInput) {
+    const filters: Prisma.ServiceCategoryWhereInput[] = [];
+
+    if (filter.name)
+      filters.push({
+        OR: [
+          {
+            name: {
+              some: {
+                value: {
+                  contains: filter.name,
+                },
+              },
+            },
+          },
+          {
+            filters: {
+              some: {
+                filterGroupName: {
+                  some: {
+                    value: {
+                      contains: filter.name,
+                    },
+                  },
+                },
+              },
+            },
+          },
+          {
+            filters: {
+              some: {
+                filterValues: {
+                  some: {
+                    name: {
+                      some: {
+                        value: {
+                          contains: filter.name,
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        ],
+      });
+
+    if (filter.sortOrder)
+      filters.push({
+        sortOrder: filter.sortOrder,
+      });
+
+    return this.prisma.serviceCategory.findMany(
+      filters.length > 0 ? { where: { AND: filters } } : undefined,
+    );
   }
 }

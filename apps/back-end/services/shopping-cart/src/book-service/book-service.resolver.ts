@@ -8,6 +8,7 @@ import {
   BookRestaurantInput,
   BookVehicleServiceInput,
   DeclineAppointmentInput,
+  GetBookingsHistoryAdminInput,
   GetBookingsHistoryInput,
   GetMyBookingsInput,
 } from '@book-service/dto';
@@ -43,6 +44,33 @@ export class BookServiceResolver {
 
   @Query(() => [BookedService])
   @UseGuards(new GqlAuthorizationGuard([accountType.SELLER, accountType.BUYER]))
+  getUserBookingHistory(
+    @Args('args', { type: () => GetBookingsHistoryAdminInput })
+    args: GetBookingsHistoryAdminInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    if (args.accountType === accountType.SELLER) {
+      return this.bookServiceService.getBuyerSellerBookingHistory(
+        args,
+        args.userId,
+        args.pagination,
+        args.q,
+      );
+    }
+
+    if (args.accountType === accountType.BUYER) {
+      return this.bookServiceService.getBuyerSellerBookingHistory(
+        args,
+        args.userId,
+        args.pagination,
+        args.q,
+      );
+    }
+    return null;
+  }
+
+  @Query(() => [BookedService])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   getBookingHistory(
     @Args('args', { type: () => GetBookingsHistoryInput })
     args: GetBookingsHistoryInput,
@@ -52,6 +80,8 @@ export class BookServiceResolver {
       return this.bookServiceService.getBuyerSellerBookingHistory(
         args,
         user.id,
+        args.pagination,
+        args.q,
       );
     }
 
@@ -59,6 +89,8 @@ export class BookServiceResolver {
       return this.bookServiceService.getBuyerSellerBookingHistory(
         args,
         user.id,
+        args.pagination,
+        args.q,
       );
     }
     return null;
