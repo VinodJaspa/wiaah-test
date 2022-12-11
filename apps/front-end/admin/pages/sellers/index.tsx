@@ -22,8 +22,9 @@ import {
   SearchIcon,
   LockIcon,
   EditIcon,
+  TableContainer,
 } from "ui";
-import { randomNum } from "utils";
+import { NumberShortner, randomNum } from "utils";
 
 type Seller = {
   id: string;
@@ -35,7 +36,14 @@ type Seller = {
   balance: number;
   status: string;
   createdAt: Date;
+  plan: string;
+  visits: number;
+  country: string;
+  city: string;
+  ips: string[];
 };
+
+let plans = ["Pay", "Free", "Per Click"];
 
 let mockSellers: Seller[] = [...Array(15)].map((_, i) => ({
   id: i.toString(),
@@ -47,6 +55,11 @@ let mockSellers: Seller[] = [...Array(15)].map((_, i) => ({
   sales: randomNum(150),
   status: randomNum(100) % 2 === 0 ? "active" : "inActive",
   thumbanil: "/wiaah_logo.png",
+  city: "Geneve",
+  country: "Switzerland",
+  ips: ["192.459.235.1", "158.135.154.3", "159.124.156.1"],
+  plan: plans[randomNum(plans.length)],
+  visits: 150,
 }));
 
 const sellers: NextPage = () => {
@@ -54,8 +67,11 @@ const sellers: NextPage = () => {
   const { visit, getCurrentPath } = useRouting();
   const { changeTotalItems, controls, pagination } = usePaginationControls();
   return (
-    <>
-      <Table TrProps={{ className: "border-b border-darkerGray" }}>
+    <TableContainer>
+      <Table
+        className="w-max"
+        TrProps={{ className: "border-b border-darkerGray w-fit" }}
+      >
         <THead>
           <Tr>
             <Th></Th>
@@ -66,6 +82,11 @@ const sellers: NextPage = () => {
             <Th>{t("Balance")}</Th>
             <Th>{t("Status")}</Th>
             <Th>{t("Date Created")}</Th>
+            <Th>{t("Plan")}</Th>
+            <Th>{t("Vists")}</Th>
+            <Th>{t("city")}</Th>
+            <Th>{t("Country")}</Th>
+            <Th>{t("IPs")}</Th>
             <Th>{t("Action")}</Th>
           </Tr>
         </THead>
@@ -97,6 +118,18 @@ const sellers: NextPage = () => {
             <Td>
               <DateFormInput />
             </Td>
+            <Td>
+              <Input />
+            </Td>
+            <Td>
+              <Input />
+            </Td>
+            <Td>
+              <Input />
+            </Td>
+            <Td>
+              <Input />
+            </Td>
           </Tr>
 
           {mockSellers.map((seller, i) => (
@@ -107,12 +140,23 @@ const sellers: NextPage = () => {
               <Td>{seller.name}</Td>
               <Td>{seller.email}</Td>
               <Td>{seller.products}</Td>
-              <Td>{seller.sales}</Td>
-              <Td>{seller.balance}</Td>
+              <Td>{NumberShortner(seller.sales)}</Td>
+              <Td>{NumberShortner(seller.balance)}</Td>
               <Td>{seller.status}</Td>
               <Td>{new Date(seller.createdAt).toDateString()}</Td>
+              <Td>{seller.plan}</Td>
+              <Td>{NumberShortner(seller.visits)}</Td>
+              <Td>{seller.city}</Td>
+              <Td>{seller.country}</Td>
               <Td>
-                <div className="flex justify-center gap-2 fill-white text-white text-sm flex-wrap">
+                <div className="flex flex-col w-full gap-1">
+                  {seller.ips.map((v, i) => (
+                    <p key={v + i}>{v}</p>
+                  ))}
+                </div>
+              </Td>
+              <Td>
+                <div className="grid grid-cols-3 justify-center gap-2 fill-white text-white text-sm">
                   <SearchIcon className="w-8 h-8 p-2 bg-cyan-600" />
                   <EditIcon
                     onClick={() =>
@@ -136,7 +180,7 @@ const sellers: NextPage = () => {
         </TBody>
       </Table>
       <Pagination />
-    </>
+    </TableContainer>
   );
 };
 
