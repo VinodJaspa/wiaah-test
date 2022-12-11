@@ -6,7 +6,7 @@ import {
   Int,
   ResolveReference,
 } from '@nestjs/graphql';
-import { Restaurant } from '@restaurant';
+import { Restaurant, UpdateRestaurantAdminInput } from '@restaurant';
 import {
   CreateRestaurantInput,
   UpdateRestaurantInput,
@@ -15,6 +15,7 @@ import {
   SearchFilteredRestaurantInput,
 } from '@restaurant';
 import {
+  accountType,
   AuthorizationDecodedUser,
   GetLang,
   GqlAuthorizationGuard,
@@ -67,13 +68,23 @@ export class RestaurantResolver {
   }
 
   @Mutation(() => Restaurant)
-  @UseGuards(new GqlAuthorizationGuard(['seller']))
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER, accountType.ADMIN]))
   updateRestaurant(
     @Args('updateRestaurantArgs') args: UpdateRestaurantInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @GetLang() lang: UserPreferedLang,
   ) {
     return this.restaurantService.updateRestaurant(args, user.id, lang);
+  }
+
+  @Mutation(() => Restaurant)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  updateRestaurantAdmin(
+    @Args('updateRestaurantArgs') args: UpdateRestaurantAdminInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @GetLang() lang: UserPreferedLang,
+  ) {
+    return this.restaurantService.updateRestaurant(args, args.userId, lang);
   }
 
   @Mutation(() => Restaurant)

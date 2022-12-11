@@ -63,6 +63,8 @@ model HotelService {
   cancelationPolicies ServiceCancelationPolicy[]
   location            Location
   rooms               HotelRoom[]
+  lowest_price        Float                        @default(0)
+  highest_price       Float                        @default(0)
 }
 
 model RestaurantService {
@@ -95,6 +97,8 @@ model HealthCenterService {
   vat                 Float                        @default(0)
   rating              Float                        @default(0)
   totalReviews        Int                          @default(0)
+  lowest_price        Float                        @default(0)
+  highest_price       Float                        @default(0)
   status              ServiceStatus                @default(inActive)
   location            Location
   presentations       ServicePresentation[]
@@ -135,6 +139,8 @@ model VehicleService {
   vat                 Float                        @default(0)
   rating              Float                        @default(0)
   totalReviews        Int                          @default(0)
+  lowest_price        Float                        @default(0)
+  highest_price       Float                        @default(0)
   status              ServiceStatus                @default(active)
   location            Location
   presentations       ServicePresentation[]

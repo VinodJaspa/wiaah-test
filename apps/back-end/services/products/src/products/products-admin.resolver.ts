@@ -1,12 +1,12 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { accountType, GqlAuthorizationGuard } from 'nest-utils';
 import { Product } from '@products/entities';
 import { PrismaService } from 'prismaService';
-
-import { GetFilteredProductsAdminInput } from './dto';
 import { Prisma } from '@prisma-client';
 import { QueryBus } from '@nestjs/cqrs';
+
+import { GetFilteredProductsAdminInput, UpdateProdutctInput } from './dto';
 import { GetSellersIdsByNameQuery } from './queries';
 
 @Resolver()
@@ -74,6 +74,17 @@ export class ProductsAdminResolver {
       where: {
         AND: filters,
       },
+    });
+  }
+
+  @Mutation(() => Boolean)
+  updateProductAdmin(@Args('args') args: UpdateProdutctInput) {
+    const { id, ...rest } = args;
+    return this.prisma.product.update({
+      where: {
+        id,
+      },
+      data: rest,
     });
   }
 }

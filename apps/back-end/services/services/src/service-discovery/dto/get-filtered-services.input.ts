@@ -1,13 +1,10 @@
-import { ObjectType, Field, ID, Float } from '@nestjs/graphql';
+import { Field, Float, ID, InputType } from '@nestjs/graphql';
 import { ServiceStatus, ServiceType } from 'prismaClient';
 
-@ObjectType()
-export class ServiceDiscovery {
+@InputType()
+export class GetFilteredServicesAdminInput {
   @Field(() => ID)
   id: string;
-
-  @Field(() => String)
-  thumbnail: string;
 
   @Field(() => String)
   title: string;
@@ -18,8 +15,8 @@ export class ServiceDiscovery {
   @Field(() => ID)
   sellerId: string;
 
-  @Field(() => [Float])
-  price: [number, number];
+  @Field(() => Float)
+  price: number;
 
   @Field(() => ServiceType)
   type: ServiceType;
