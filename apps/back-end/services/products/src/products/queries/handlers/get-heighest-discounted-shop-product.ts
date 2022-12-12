@@ -16,6 +16,9 @@ export class GetHeighestDiscountedShopProductHandler
   }: GetHeighestDiscountedShopProduct): Promise<GetHeighestDiscountedShopProductRes> {
     const res = await this.repo.getTopDiscountedByShop(id);
 
-    return res;
+    return {
+      id: res.id,
+      percent: res.discount.amount,
+    };
   }
 }

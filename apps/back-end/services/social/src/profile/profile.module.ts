@@ -5,7 +5,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ProfileController } from './profile.controller';
-import { ProfileAdminResolver } from './profile-admin.resolver';
 
 @Module({
   imports: [

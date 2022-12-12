@@ -1,4 +1,4 @@
-import { QueryHandlerBase } from '@comments/abstraction';
+import { QueryHandlerBase } from '../../../abstraction/QueryHandlerBase';
 import {
   GetCommentHostDataQuery,
   GetCommentHostDataQueryRes,

@@ -16,6 +16,7 @@ import {
 } from './dto';
 import { BookedService } from './entities/book-service.entity';
 import { QueryBus } from '@nestjs/cqrs';
+import { Prisma } from '@prisma-client';
 
 @Injectable()
 export class BookServiceService {
@@ -27,8 +28,23 @@ export class BookServiceService {
   async getBuyerSellerBookingHistory(
     input: GetBookingsHistoryInput,
     buyerId: string,
+    pagination: GqlPaginationInput,
+    q: string,
   ) {
     const { skip, take } = ExtractPagination(input.pagination);
+    const queryFilters: Prisma.BookedServiceWhereInput[] = [];
+
+    if (q) {
+      queryFilters.push({
+        id: { contains: q },
+      });
+      queryFilters.push({
+        ownerId: { contains: q },
+      });
+      queryFilters.push({
+        providerId: { contains: q },
+      });
+    }
 
     return this.prisma.bookedService.findMany({
       where: {

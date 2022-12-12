@@ -31,10 +31,11 @@ model ServiceCategory {
   createdAt       DateTime                @default(now())
   updatedAt       DateTime                @updatedAt()
   filters         ServiceCategoryFilter[]
+  sortOrder       Int                     @default(1)
 }
 
 model ServiceWorkingSchedule {
-  id          String                      @id @map("_id") @db.ObjectId
+  id          String                          @id @map("_id") @db.ObjectId
   weekdays    ServiceWeekDaysWorkingHours?
   specialDays ServiceSpecialWorkingHoursDay[]
 }
@@ -62,6 +63,8 @@ model HotelService {
   cancelationPolicies ServiceCancelationPolicy[]
   location            Location
   rooms               HotelRoom[]
+  lowest_price        Float                        @default(0)
+  highest_price       Float                        @default(0)
 }
 
 model RestaurantService {
@@ -94,6 +97,8 @@ model HealthCenterService {
   vat                 Float                        @default(0)
   rating              Float                        @default(0)
   totalReviews        Int                          @default(0)
+  lowest_price        Float                        @default(0)
+  highest_price       Float                        @default(0)
   status              ServiceStatus                @default(inActive)
   location            Location
   presentations       ServicePresentation[]
@@ -134,6 +139,8 @@ model VehicleService {
   vat                 Float                        @default(0)
   rating              Float                        @default(0)
   totalReviews        Int                          @default(0)
+  lowest_price        Float                        @default(0)
+  highest_price       Float                        @default(0)
   status              ServiceStatus                @default(active)
   location            Location
   presentations       ServicePresentation[]
@@ -258,15 +265,15 @@ model Vehicle {
 }
 
 model ServiceInsurance {
-  id String @id @db.ObjectId @map("_id") 
-  itemId String @db.ObjectId
-  buyerId String @db.ObjectId
-  sellerId String @db.ObjectId
-  itemType String
-  amount Float
-  status ServiceInsuranceStatusEnum
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String                     @id @map("_id") @db.ObjectId
+  itemId    String                     @db.ObjectId
+  buyerId   String                     @db.ObjectId
+  sellerId  String                     @db.ObjectId
+  itemType  String
+  amount    Float
+  status    ServiceInsuranceStatusEnum
+  createdAt DateTime                   @default(now())
+  updatedAt DateTime                   @updatedAt
 
 }
 
@@ -277,7 +284,6 @@ enum ServiceInsuranceStatusEnum {
   refused
   refunded
 }
-
 
 type VehicleProperties {
   seats           Int
@@ -332,8 +338,8 @@ type ServiceWeekDaysWorkingHours {
 }
 
 type ServiceSpecialWorkingHoursDay {
-  date DateTime
-  workingHours ServiceDayWorkingHours  
+  date         DateTime
+  workingHours ServiceDayWorkingHours
 }
 
 type ServiceDayWorkingHours {

@@ -12,8 +12,12 @@ export const AdminLayout: React.FC = ({ children }) => {
         onRoute={() => {}}
       />
       <div className="flex flex-col px-12 w-full gap-4 col-span-5">
-        <AdminHeader title={getCurrentPath().split("/")[1].replace("-", " ")} />
-        {children}
+        <>
+          <AdminHeader
+            title={getCurrentPath().split("/")[1].replace("-", " ")}
+          />
+          {children}
+        </>
       </div>
     </div>
   );

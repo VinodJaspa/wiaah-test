@@ -15,6 +15,7 @@ import { Search } from './products/entities/search.entity';
 import { ShippingRulesModule } from './shipping-rules';
 import { PrismaService } from './Prisma.service';
 import { ShippingAddressModule } from './shipping-address/shipping-address.module';
+import { ProductsAdminModule } from '@products/products-admin.module';
 
 @Global()
 @Module({
@@ -59,6 +60,7 @@ export class PrismaGlobalModule {}
     CategoryModule,
     FilterModule,
     ElasticGlobalModule,
+    ProductsAdminModule,
     // ShippingSettingsModule,
     // ShippingDetailsModule,
     ShippingRulesModule,

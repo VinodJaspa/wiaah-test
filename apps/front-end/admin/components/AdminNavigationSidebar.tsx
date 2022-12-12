@@ -10,7 +10,9 @@ import {
   ServicesIcon,
   NestedSubmenuNavigationLinks,
   NavigationLink,
+  AffiliationIcon,
 } from "ui";
+import { HiUserGroup } from "react-icons/hi";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -22,28 +24,28 @@ export const AdminNavigationSidebar: React.FC<{
 
   const links: NavigationLink[] = [
     {
-      icon: DashboardIcon({}),
+      icon: <DashboardIcon />,
       name: "Dashboard",
       onClick() {},
       slug: "dashboard",
       subLinks: [],
     },
     {
-      icon: PersonIcon({}),
+      icon: <PersonIcon />,
       name: "Sellers",
       onClick() {},
       slug: "sellers",
       subLinks: [],
     },
     {
-      icon: PersonIcon({}),
+      icon: <PersonIcon />,
       name: "Buyers",
       onClick() {},
       slug: "buyers",
       subLinks: [],
     },
     {
-      icon: ShopIcon({}),
+      icon: <ShopIcon />,
       name: t("Product Shop"),
       onClick() {},
       slug: "product-shop",
@@ -72,7 +74,7 @@ export const AdminNavigationSidebar: React.FC<{
       ],
     },
     {
-      icon: ServicesIcon({}),
+      icon: <ServicesIcon />,
       name: t("Service Shop"),
       onClick() {},
       slug: "service-shop",
@@ -96,6 +98,43 @@ export const AdminNavigationSidebar: React.FC<{
           name: t("Filters"),
           onClick() {},
           slug: "filters",
+          subLinks: [],
+        },
+      ],
+    },
+    {
+      icon: <HiUserGroup />,
+      name: t("Social"),
+      onClick() {},
+      slug: "social",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Posts"),
+          onClick() {},
+          slug: "posts",
+          subLinks: [],
+        },
+      ],
+    },
+    {
+      icon: AffiliationIcon({}),
+      name: t("Affiliation"),
+      onClick() {},
+      slug: "affiliation",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Affiliation History"),
+          onClick() {},
+          slug: "affiliation-history",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Affiliation Management"),
+          onClick() {},
+          slug: "affiliation-management",
           subLinks: [],
         },
       ],

@@ -31,6 +31,8 @@ import {
   ChangePasswordEvent,
   EmailExistsMessage,
   EmailExistsMessageReply,
+  GetAccountByIdMessage,
+  GetAccountByIdMessageReply,
   GetAccountMetaDataByEmailMessage,
   GetAccountMetaDataByEmailMessageReply,
   NewRegisterationTokenRequestedEvent,
@@ -185,6 +187,29 @@ export class AuthService {
       input.email,
       input.password,
     );
+    return this.generateAccessToken(id, email, accountType);
+  }
+
+  async loginAs(id: string) {
+    const {
+      results: { data, error, success },
+    } = await KafkaMessageHandler<
+      string,
+      GetAccountByIdMessage,
+      GetAccountByIdMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountById,
+      new GetAccountByIdMessage({
+        accountId: id,
+      }),
+    );
+
+    if (!success || !data)
+      throw new InternalServerErrorException('error getting user data');
+
+    const { email, accountType } = data;
+
     return this.generateAccessToken(id, email, accountType);
   }
 

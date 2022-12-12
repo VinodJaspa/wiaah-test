@@ -4,77 +4,97 @@ import { useTranslation } from "react-i18next";
 import { GiHouse } from "react-icons/gi";
 import { FaHotel } from "react-icons/fa";
 import {
-  SectionHeader,
-  CheckMarkStepper,
   StepperFormController,
   StepperFormHandler,
-  ServiceSelectingInfo,
-  ServiceTypeCard,
   Button,
-  NewProductDiscountOptions,
   ForkAndSpoonIcon,
   CarWheelIcon,
   HealthIcon,
   BeautyCenterIcon,
-  Tabs,
   TabList,
-  TabsHeader,
-  TabItem,
-  TabTitle,
   FlagIcon,
-  MyServicesCtx,
-  ServicePoliciesInputSection,
-  DiscoverOurServiceForm,
-} from "ui";
+  SimpleTabs,
+  SimpleTabHead,
+  SimpleTabItemList,
+} from "@partials";
+import {
+  CheckMarkStepper,
+  ServiceSelectingInfo,
+  ServiceTypeCard,
+} from "@blocks";
+import { MyServicesCtx } from "./index";
+import { ServicePoliciesInputSection } from "./ServicePoliciesSection";
+import { NewProductDiscountOptions } from "@sections/ShopManagement";
+import { SectionHeader } from "@sections";
+import { DiscoverOurServiceForm } from "./DiscoverOurServiceForm";
+
 import { NewServiceSchemas } from "validation";
 import { CallbackAfter } from "utils";
-import { ServiceGeneralDetails } from "ui";
-import { IncludedServices } from "ui";
-import { ExtraServiceOptions } from "ui";
-import { RestaurantServiceDetailsForm } from "ui";
-import { HealthCenterServiceDetailsForm } from "ui";
-import { VehicleServiceDetailsForm } from "ui";
-import { BeautyCenterServiceDetailsForm } from "ui";
-import { RestaurantIncludedServicesSection } from "ui";
-import { HolidayRentalsGeneralDetailsForm } from "ui";
-import { HealthCenterIncludedServices } from "ui";
+import { ServiceGeneralDetails } from "./ServiceGeneralDetails";
+import { IncludedServices } from "./IncludedServices";
+import { ExtraServiceOptions } from "./ExtraServiceOptions";
+import { RestaurantServiceDetailsForm } from "./RestaurantServiceDetailsForm";
+import { HealthCenterServiceDetailsForm } from "./HealthCenterServiceDetailsForm";
+import { VehicleServiceDetailsForm } from "./VehicleServiceDetailsForm";
+import { BeautyCenterServiceDetailsForm } from "./BeautyCenterServiceDetailsForm";
+import { RestaurantIncludedServicesSection } from "./RestaruantIncludedServicesSection";
+import { HolidayRentalsGeneralDetailsForm } from "./HolidayRentalsGeneralDetailsForm";
+import { HealthCenterIncludedServices } from "./HealthCenterIncludedServices";
 import { AnySchema } from "yup";
 
-export interface AddNewServiceProps {}
-
-export const AddNewService: React.FC<AddNewServiceProps> = () => {
+export interface AddNewServiceProps {
+  isEdit?: boolean;
+  data?: any;
+  serviceType?: string;
+  onSubmit?: (data?: any) => any;
+}
+export const AddNewService: React.FC<AddNewServiceProps> = ({
+  children,
+  data,
+  isEdit,
+  onSubmit,
+  serviceType,
+}) => {
   const { t } = useTranslation();
 
   return (
     <div className="flex flex-col h-full">
-      <SectionHeader sectionTitle={t("Add New Service")} />
+      <SectionHeader
+        sectionTitle={isEdit ? t("Edit Service") : t("Add New Service")}
+      />
 
-      <Tabs>
+      <SimpleTabs>
         <>
-          <TabsHeader className="flex-wrap justify-center sm:justify-start" />
-          {addProductLanguagesSection.map((section, i) => (
-            <React.Fragment key={i}>
-              <TabTitle TabKey={i}>
-                {({ currentTabIdx }) => (
-                  <div
-                    className={`${
-                      currentTabIdx === i ? "border-primary" : "border-gray-300"
-                    } flex items-center gap-2 border-b-[1px] shadow p-2`}
-                  >
-                    <FlagIcon code={section.language.countryCode} />
-                    <span className="hidden sm:block">
-                      {section.language.name}
-                    </span>
-                  </div>
-                )}
-              </TabTitle>
-              <TabItem key={i}>{null}</TabItem>
-            </React.Fragment>
-          ))}
+          <SimpleTabHead>
+            <div className="flex-wrap justify-center sm:justify-start">
+              {addProductLanguagesSection.map(
+                (section, i) =>
+                  ({ selected, onClick }: any) =>
+                    (
+                      <div
+                        className={`${
+                          selected === i ? "border-primary" : "border-gray-300"
+                        } flex items-center gap-2 border-b-[1px] shadow p-2`}
+                      >
+                        <FlagIcon code={section.language.countryCode} />
+                        <span className="hidden sm:block">
+                          {section.language.name}
+                        </span>
+                      </div>
+                    )
+              )}
+            </div>
+          </SimpleTabHead>
+          <SimpleTabItemList></SimpleTabItemList>
           <TabList />
         </>
-      </Tabs>
-      {addProductLanguagesSection[0].section({})}
+      </SimpleTabs>
+      {addProductLanguagesSection[0].section({
+        isEdit,
+        serviceType,
+        data,
+        onSubmit,
+      })}
     </div>
   );
 };
@@ -85,9 +105,14 @@ export type ServiceSectionWithSchemaType = {
   schema: AnySchema;
 };
 
-export const NewServiceStepper: React.FC = () => {
+export const NewServiceStepper: React.FC<{
+  isEdit: boolean;
+  data?: any;
+  onSubmit?: (data: any) => any;
+  serviceType: ServiceType;
+}> = ({ isEdit, data, onSubmit, serviceType: type }) => {
   const { t } = useTranslation();
-  const [serviceType, setServiceType] = React.useState<ServiceType>();
+  const [serviceType, setServiceType] = React.useState<ServiceType>(type);
   const { CancelAddingNewService } = React.useContext(MyServicesCtx);
 
   const serviceTypes: ServiceSelectingInfo[] = [
@@ -364,14 +389,14 @@ export const NewServiceStepper: React.FC = () => {
                     translationKey: "Discount",
                   },
                 },
-              ]}
+              ].slice(isEdit ? 1 : 0)}
             />
             <div className="w-full justify-between flex">
               <Button onClick={() => CancelAddingNewService()}>
                 {t("Cancel")}
               </Button>
 
-              {currentStepIdx !== 0 && (
+              {currentStepIdx === 0 && !isEdit ? null : (
                 <Button className="w-fit self-end" onClick={() => nextStep()}>
                   {t("Next")}
                 </Button>
@@ -416,33 +441,12 @@ const addProductLanguagesSection: {
     name: string;
     countryCode: string;
   };
-  section: React.FunctionComponent;
+  section: React.FC<any>;
 }[] = [
   {
     language: {
       name: "English",
       countryCode: "GB",
-    },
-    section: NewServiceStepper,
-  },
-  {
-    language: {
-      name: "French",
-      countryCode: "FR",
-    },
-    section: NewServiceStepper,
-  },
-  {
-    language: {
-      name: "German",
-      countryCode: "DE",
-    },
-    section: NewServiceStepper,
-  },
-  {
-    language: {
-      name: "Spanish",
-      countryCode: "ES",
     },
     section: NewServiceStepper,
   },

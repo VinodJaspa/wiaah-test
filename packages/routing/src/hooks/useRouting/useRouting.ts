@@ -68,5 +68,6 @@ export const useRouting = () => {
     getParam,
     removeParam,
     getUrl,
+    routes: MainRoutes,
   };
 };

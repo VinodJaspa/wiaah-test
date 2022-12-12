@@ -28,7 +28,7 @@ import {
 } from '@products/exceptions';
 import { Product, ProductSearchPaginationResponse } from '@products/entities';
 import {
-  UpdateProdutctInput,
+  UpdateProductInput,
   CreateProductInput,
   ReviewProductInput,
 } from '@products/dto';
@@ -67,7 +67,7 @@ export class ProductsService {
 
   async updateProduct(
     userId: string,
-    input: UpdateProdutctInput,
+    input: UpdateProductInput,
   ): Promise<Product> {
     const { id, ...rest } = input;
     const product = await this.prisma.product.findUnique({

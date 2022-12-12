@@ -19,7 +19,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ProductsService } from '@products/products.service';
 import { MyProduct, Product } from '@products/entities';
 import { CreateProductInput } from '@products/dto';
-import { UpdateProdutctInput } from '@products/dto';
+import { UpdateProductInput } from '@products/dto';
 import {
   GetProductVendorLinkQuery,
   GetSellerProductsQuery,
@@ -76,7 +76,7 @@ export class ProductsResolver {
   @Mutation(() => Product)
   @UseGuards(new GqlAuthorizationGuard(['seller']))
   updateProduct(
-    @Args('updateProductArgs') input: UpdateProdutctInput,
+    @Args('updateProductArgs') input: UpdateProductInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<Product> {
     return this.productsService.updateProduct(user.id, input);

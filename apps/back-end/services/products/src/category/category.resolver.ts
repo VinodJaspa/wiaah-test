@@ -4,11 +4,13 @@ import { Category } from './entities/category.entity';
 import { CreateCategoryInput } from './dto/create-category.input';
 import { UpdateCategoryInput } from './dto/update-category.input';
 import {
+  accountType,
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
 } from 'nest-utils';
 import { UseGuards } from '@nestjs/common';
+import { GetFilteredCategory } from './dto';
 
 @Resolver(() => Category)
 export class CategoryResolver {
@@ -19,8 +21,16 @@ export class CategoryResolver {
     return this.categoryService.getAllCategories();
   }
 
+  @Query(() => [Category])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  getFilteredCategory(
+    @Args('args', { nullable: true }) args: GetFilteredCategory,
+  ) {
+    return this.categoryService.getAllCategories(args);
+  }
+
   @Mutation(() => Category)
-  @UseGuards(new GqlAuthorizationGuard(['admin']))
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   createCategory(
     @Args('createCategoryInput') args: CreateCategoryInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
@@ -29,7 +39,7 @@ export class CategoryResolver {
   }
 
   @Mutation(() => Category)
-  @UseGuards(new GqlAuthorizationGuard(['admin']))
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   deleteCategory(
     @Args('deleteCategoryId') id: string,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
@@ -38,7 +48,7 @@ export class CategoryResolver {
   }
 
   @Mutation(() => Category)
-  @UseGuards(new GqlAuthorizationGuard(['admin']))
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   updateCategory(
     @Args('updateCategoryArgs') args: UpdateCategoryInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,

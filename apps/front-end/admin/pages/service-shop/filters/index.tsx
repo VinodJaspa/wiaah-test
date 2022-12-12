@@ -7,6 +7,7 @@ import {
   Button,
   Checkbox,
   EditIcon,
+  Input,
   ListIcon,
   PlusIcon,
   Table,
@@ -64,22 +65,32 @@ export default () => {
           TdProps={{ align: "right", className: "border lg:min-w-[12rem]" }}
         >
           <THead>
-            <Th className="text-primary">
-              <div className="flex gap-2">
-                <Checkbox />
-                <div
-                  onClick={() => setFilterGroupAsc((v) => !v)}
-                  className="flex items-center gap-1"
-                >
-                  <p>{t("Filter Group")}</p>
-                  <span className="text-xl">
-                    {filterGroupAsc ? <ArrowUpIcon /> : <ArrowDownIcon />}
-                  </span>
+            <Tr>
+              <Th className="text-primary">
+                <div className="flex gap-2">
+                  <Checkbox />
+                  <div
+                    onClick={() => setFilterGroupAsc((v) => !v)}
+                    className="flex items-center gap-1"
+                  >
+                    <p>{t("Filter Group")}</p>
+                    <span className="text-xl">
+                      {filterGroupAsc ? <ArrowUpIcon /> : <ArrowDownIcon />}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            </Th>
-            <Th className="text-primary">{t("Sort Order")}</Th>
-            <Th>{t("Action")}</Th>
+              </Th>
+              <Th className="text-primary">{t("Sort Order")}</Th>
+              <Th>{t("Action")}</Th>
+            </Tr>
+            <Tr>
+              <Th>
+                <Input placeholder={t("type filter name")} />
+              </Th>
+              <Th>
+                <Input type={"number"} />
+              </Th>
+            </Tr>
           </THead>
           <TBody>
             {mapArray(filterGroups, ({ id, name, sortOrder }) => (

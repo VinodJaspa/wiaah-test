@@ -201,6 +201,8 @@ export const KAFKA_MESSAGES = {
   ACCOUNTS_MESSAGES: {
     emailExists: "email.exists",
     getAccountByEmail: "get.account.by.email",
+    getAccountByName: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`get.account.by.email.${key}`, regex),
     isSellerAccount: "is.seller.account",
     getUserShopId: "get.user.store.id",
     getAccountById: "get.account.by.id",

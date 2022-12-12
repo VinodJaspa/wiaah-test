@@ -1,12 +1,14 @@
 import { CreateProfileInput } from './create-profile.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { InputType, Field, Int, PartialType, ID } from '@nestjs/graphql';
 
 @InputType()
 export class UpdateProfileInput extends PartialType(CreateProfileInput) {}
 
 @InputType()
-export class UpdateProfileAdminInput extends PartialType(
-  class input extends UpdateProfileInput {
-    profileId: string;
-  },
-) {}
+class input extends UpdateProfileInput {
+  @Field(() => ID)
+  profileId: string;
+}
+
+@InputType()
+export class UpdateProfileAdminInput extends PartialType(input) {}
