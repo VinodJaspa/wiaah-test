@@ -16,6 +16,7 @@ import {
 import { ContentManagementService } from '@content-management';
 import { EventBus } from '@nestjs/cqrs';
 import { PostCreatedEvent } from './events';
+import { PostStatus } from 'prismaClient';
 
 @Injectable()
 export class NewsfeedPostsService {
@@ -88,6 +89,21 @@ export class NewsfeedPostsService {
     return this.prisma.newsfeedPost.findMany({
       where: {
         userId,
+      },
+      take,
+      skip,
+    });
+  }
+
+  async getProtectedNewsfeedPostsByUserId(
+    userId: string,
+    pagination: GqlPaginationInput,
+  ) {
+    const { skip, take } = ExtractPagination(pagination);
+    return this.prisma.newsfeedPost.findMany({
+      where: {
+        userId,
+        status: PostStatus.active,
       },
       take,
       skip,

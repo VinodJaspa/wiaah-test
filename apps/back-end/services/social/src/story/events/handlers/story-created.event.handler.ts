@@ -5,7 +5,6 @@ import { KAFKA_EVENTS, SERVICES } from 'nest-utils';
 import {
   StoryCreatedEvent as KafkaStoryCreatedEvent,
   UserMentionEvent,
-  UserTaggedEvent,
 } from 'nest-dto';
 import { STORY_TYPE } from '@story/const';
 import { Inject } from '@nestjs/common';

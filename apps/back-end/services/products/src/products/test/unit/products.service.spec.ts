@@ -2,7 +2,7 @@ import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import {
   ProductsService,
-  UpdateProdutctInput,
+  UpdateProductInput,
   CreateProductInput,
   ProductSearchPaginationResponse,
 } from '@products';
@@ -69,7 +69,7 @@ describe('products services unit tests', () => {
   it('Should create updating product data only if im the owner of it', async () => {
     const product = await createProduct();
 
-    const updateData: UpdateProdutctInput = {
+    const updateData: UpdateProductInput = {
       id: product.id,
       attributes: [{ name: 'updated', values: ['file 1', 'file 2'] }],
       brand: 'updated brand',

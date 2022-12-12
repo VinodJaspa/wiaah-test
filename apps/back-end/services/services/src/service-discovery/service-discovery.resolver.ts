@@ -1,8 +1,15 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { GetLang, UserPreferedLang } from 'nest-utils';
 import { Prisma, ServiceType } from 'prismaClient';
 import { PrismaService } from 'prismaService';
-import { GetFilteredServicesAdminInput } from './dto';
+import {
+  GetFilteredServicesAdminInput,
+  updateBeautyCenterAdminInput,
+  updateHealthCenterAdminInput,
+  updateHotelAdminInput,
+  updateRestaurantAdminInput,
+  updateVehicleAdminInput,
+} from './dto';
 import { ServiceDiscovery } from './entities/service-discovery.entity';
 
 @Resolver(() => ServiceDiscovery)
@@ -345,5 +352,101 @@ export class ServiceDiscoveryResolver {
         vehicles: true,
       },
     });
+  }
+
+  @Mutation(() => Boolean)
+  async updateHotelAdmin(args: updateHotelAdminInput) {
+    const { id, ...rest } = args;
+
+    await this.prisma.hotelService.update({
+      where: {
+        id,
+      },
+      data: {
+        ...rest,
+        rooms: {
+          updateMany: rest.rooms.map((v) => ({
+            where: {
+              id: v.id,
+            },
+            data: {
+              ...v,
+            },
+          })),
+        },
+      },
+    });
+
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  async updateRestaurantAdmin(args: updateRestaurantAdminInput) {
+    const { id, ...rest } = args;
+
+    await this.prisma.restaurantService.update({
+      where: {
+        id,
+      },
+      data: {
+        ...rest,
+      },
+    });
+
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  async updateHealthCentertAdmin(args: updateHealthCenterAdminInput) {
+    const { id, ...rest } = args;
+
+    await this.prisma.healthCenterService.update({
+      where: {
+        id,
+      },
+      data: {
+        ...rest,
+      },
+    });
+
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  async updateBeautyCenterAdmin(args: updateBeautyCenterAdminInput) {
+    const { id, ...rest } = args;
+
+    await this.prisma.beautyCenterService.update({
+      where: {
+        id,
+      },
+      data: {
+        ...rest,
+        treatments: rest.treatments.map((v) => ({
+          ...v,
+          price: v.price,
+          treatmentCategoryId: v.treatmentCategoryId,
+          discount: v.discount,
+        })),
+      },
+    });
+
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  async updateVehicleAdmin(args: updateVehicleAdminInput) {
+    const { id, ...rest } = args;
+
+    await this.prisma.vehicleService.update({
+      where: {
+        id,
+      },
+      data: {
+        ...rest,
+      },
+    });
+
+    return true;
   }
 }

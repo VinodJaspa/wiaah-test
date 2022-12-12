@@ -1,9 +1,9 @@
 import { Product } from '@prisma-client';
-import { UpdateProdutctInput } from '@products/dto';
+import { UpdateProductInput } from '@products/dto';
 
 export class ProductUpdatedEvent {
   constructor(
-    public readonly input: UpdateProdutctInput,
+    public readonly input: UpdateProductInput,
     public readonly prod: Product,
   ) {}
 }

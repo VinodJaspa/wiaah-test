@@ -6,7 +6,7 @@ import { PrismaService } from 'prismaService';
 import { Prisma } from '@prisma-client';
 import { QueryBus } from '@nestjs/cqrs';
 
-import { GetFilteredProductsAdminInput, UpdateProdutctInput } from './dto';
+import { GetFilteredProductsAdminInput, UpdateProductInput } from './dto';
 import { GetSellersIdsByNameQuery } from './queries';
 
 @Resolver()
@@ -78,13 +78,14 @@ export class ProductsAdminResolver {
   }
 
   @Mutation(() => Boolean)
-  updateProductAdmin(@Args('args') args: UpdateProdutctInput) {
+  async updateProductAdmin(@Args('args') args: UpdateProductInput) {
     const { id, ...rest } = args;
-    return this.prisma.product.update({
+    await this.prisma.product.update({
       where: {
         id,
       },
       data: rest,
     });
+    return true;
   }
 }

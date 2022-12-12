@@ -1,10 +1,7 @@
 import { QueryBus } from '@nestjs/cqrs';
 
 export class QueryHandlerBase {
-  querybus: QueryBus;
-  constructor(querybus: QueryBus) {
-    this.querybus = querybus;
-  }
+  constructor(public querybus: QueryBus) {}
 
   async validateCommentsQuery(contentId: string, userId: string) {
     // TODO: check for block secenario

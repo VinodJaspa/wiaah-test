@@ -2,6 +2,7 @@ import { Field, Float, ID, InputType, Int, PartialType } from '@nestjs/graphql';
 import { ProductStatus } from '@prisma-client';
 import { GqlPaginationInput } from 'nest-utils';
 
+@InputType()
 class input {
   @Field(() => String)
   title: string;
