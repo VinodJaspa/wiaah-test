@@ -25,6 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <RoutingProvider
+          back={() => router.back()}
           getBaseUrl={() => router.basePath}
           getQuery={() => ClearNextJSQuery(router.query, router.route)}
           getCurrentPath={() => {

@@ -8,7 +8,7 @@ export const InputRequiredStar: React.FC<HtmlDivProps> = ({
   return (
     <span
       {...props}
-      className={`${className} text-xl font-bold text-red-400 translate-y-1/4 px-1`}
+      className={`${className} text-xl font-bold text-red-400  px-1`}
     >
       *
     </span>

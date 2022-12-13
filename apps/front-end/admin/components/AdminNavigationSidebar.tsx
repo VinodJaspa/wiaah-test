@@ -11,8 +11,11 @@ import {
   NestedSubmenuNavigationLinks,
   NavigationLink,
   AffiliationIcon,
+  CommentIcon,
+  MessageOutlineIcon,
 } from "ui";
-import { HiUserGroup } from "react-icons/hi";
+
+import { HiUserGroup, HiChat } from "react-icons/hi";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -138,6 +141,13 @@ export const AdminNavigationSidebar: React.FC<{
           subLinks: [],
         },
       ],
+    },
+    {
+      icon: <HiChat />,
+      name: t("Reviews"),
+      onClick() {},
+      slug: "reviews",
+      subLinks: [],
     },
   ];
 

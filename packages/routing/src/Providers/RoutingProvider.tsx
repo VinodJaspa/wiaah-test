@@ -6,6 +6,7 @@ interface RoutingContextInterface {
   getParam: (param: string) => string | null;
   getQuery: () => any;
   getBaseUrl: () => string;
+  back: () => void;
   // removeParam: (param: string) => any;
   // getParams:(params:string[])=> string[]
   // getHash:()=> string
@@ -17,6 +18,7 @@ export const routingContext = React.createContext<RoutingContextInterface>({
   getParam: (param) => "",
   getQuery: () => {},
   getBaseUrl: () => "",
+  back: () => {},
   // removeParam: () => {},
 });
 
@@ -27,11 +29,12 @@ export const RoutingProvider: React.FC<RoutingContextInterface> = ({
   // removeParam,
   getQuery,
   getBaseUrl,
+  back,
   ...props
 }) => {
   return (
     <routingContext.Provider
-      value={{ visit, getCurrentPath, getParam, getQuery, getBaseUrl }}
+      value={{ visit, getCurrentPath, getParam, getQuery, getBaseUrl, back }}
       {...props}
     />
   );
