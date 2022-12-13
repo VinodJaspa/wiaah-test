@@ -39,7 +39,8 @@ interface AffiliationHistory {
   commission: number;
   price: number;
   commissionPrice: number;
-  affiliationLink;
+  affiliationLink: string;
+  productTitle: string;
 }
 
 const history: AffiliationHistory[] = [...Array(10)].map((_, i) => ({
@@ -52,6 +53,8 @@ const history: AffiliationHistory[] = [...Array(10)].map((_, i) => ({
   marketerId: "marketer-" + i,
   price: randomNum(150),
   productId: "prod-" + i,
+  productTitle:
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since t",
   purchasedAt: new Date().toString(),
   seller: "seller name",
   sellerId: "seller-" + i,
@@ -65,13 +68,14 @@ const AffiliationHistory: NextPage = () => {
   return (
     <section>
       <TableContainer>
-        <Table>
+        <Table className="w-max">
           <THead>
             <Tr>
               <Th className="w-32">{t("Photo")}</Th>
+              <Th>{t("Title")}</Th>
               <Th>{t("Seller")}</Th>
-              <Th>{t("Marketer")}</Th>
-              <Th>{t("Buyer")}</Th>
+              <Th>{t("Affiliator")}</Th>
+              <Th>{t("Purchaser")}</Th>
               <Th>{t("Price")}</Th>
               <Th>{t("Commission")}</Th>
               <Th>{t("Price rewarded")}</Th>
@@ -81,6 +85,9 @@ const AffiliationHistory: NextPage = () => {
             </Tr>
             <Tr>
               <Th></Th>
+              <Th>
+                <Input />
+              </Th>
               <Th>
                 <Input />
               </Th>
@@ -120,6 +127,7 @@ const AffiliationHistory: NextPage = () => {
                   seller,
                   thumbnail,
                   affiliationLink,
+                  productTitle,
                 },
                 i
               ) => (
@@ -127,6 +135,7 @@ const AffiliationHistory: NextPage = () => {
                   <Td>
                     <Image src={thumbnail} />
                   </Td>
+                  <Td>{productTitle.slice(0, 15)}...</Td>
                   <Td>
                     <Link href={(r) => ""}>
                       <p className="text-primary underline cursor-pointer">

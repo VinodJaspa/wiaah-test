@@ -8,6 +8,8 @@ import { PrismaService } from 'prismaService';
 export class AffiliationRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getFiltered() {}
+
   async create(input: CreateAffiliationInput, sellerId: string) {
     const res = await this.prisma.affiliation.create({
       data: {
