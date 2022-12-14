@@ -105,22 +105,10 @@ const SellerInfo = () => {
     bio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
   };
 
-  const isService = seller.type === "services";
+  const isService = true;
 
   const productsTitle = isService ? "Services" : "Products";
-  const productsComp = isService ? (
-    <div className="justify-between grid grid-cols-4 gap-4">
-      {services.map((v) => (
-        <SearchServiceCard {...v} />
-      ))}
-    </div>
-  ) : (
-    <div className="flex justify-between flex-wrap gap-4">
-      {products.map((v) => (
-        <ProductCard {...v} />
-      ))}
-    </div>
-  );
+
   const productComp = !isService ? (
     <ProductDetailsTable />
   ) : (

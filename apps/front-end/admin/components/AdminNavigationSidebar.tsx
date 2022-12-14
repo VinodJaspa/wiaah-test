@@ -17,6 +17,7 @@ import {
 
 import { HiUserGroup, HiChat } from "react-icons/hi";
 import { ImCheckmark } from "react-icons/im";
+import { BiInfoCircle } from "react-icons/bi";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -155,6 +156,13 @@ export const AdminNavigationSidebar: React.FC<{
       name: t("Seller Requests"),
       onClick() {},
       slug: "seller-requests",
+      subLinks: [],
+    },
+    {
+      icon: <BiInfoCircle />,
+      name: t("Informations"),
+      onClick() {},
+      slug: "informations",
       subLinks: [],
     },
   ];

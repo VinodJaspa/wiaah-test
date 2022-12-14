@@ -3,7 +3,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { ProductManagementDetailsDataType } from "types";
 import {
-  useEditProductData,
   Button,
   Table,
   Th,
@@ -12,13 +11,16 @@ import {
   Td,
   THead,
   TableContainer,
-  SectionHeader,
   TrashIcon,
   EditIcon,
   SquarePlusOutlineIcon,
-  usePaginationControls,
-  ItemsPagination,
-} from "ui";
+  Input,
+  SelectOption,
+  Select,
+} from "@partials";
+import { SectionHeader } from "@sections";
+import { ItemsPagination, usePaginationControls } from "@blocks/Navigating";
+import { useEditProductData } from "@src/Hooks";
 
 export interface ProductDetailsTableProps {}
 
@@ -58,6 +60,40 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
                 <Th>{t("sales", "Sales")}</Th>
                 <Th>{t("status", "Status")}</Th>
                 <Th>{t("action", "Action")}</Th>
+              </Tr>
+              <Tr>
+                <Th></Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input type="number" />
+                </Th>
+                <Th>
+                  <Select>
+                    <SelectOption value={"inStock"}>
+                      {t("InStock")}
+                    </SelectOption>
+                    <SelectOption value={"outStock"}>
+                      {t("outStock")}
+                    </SelectOption>
+                  </Select>
+                </Th>
+                <Th>
+                  <Input type="number" />
+                </Th>
+                <Th>
+                  <Input type="number" />
+                </Th>
+                <Th>
+                  <Select>
+                    <SelectOption value={"active"}>{t("Active")}</SelectOption>
+                    <SelectOption value={"inActive"}>
+                      {t("InActive")}
+                    </SelectOption>
+                  </Select>
+                </Th>
+                <Th></Th>
               </Tr>
             </THead>
             <TBody>
