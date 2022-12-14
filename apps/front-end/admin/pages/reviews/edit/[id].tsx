@@ -5,7 +5,6 @@ import {
   ArrowRoundBack,
   DateFormInput,
   EditIcon,
-  Input,
   InputRequiredStar,
   InputSearch,
   Radio,

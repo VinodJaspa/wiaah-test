@@ -1,6 +1,5 @@
 import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { UserLocation } from './entities/user-location.entity';
-import { QueryBus } from '@nestjs/cqrs';
 import { UpdateUserLocationInput } from '@user-location/dto';
 import { ClientKafka } from '@nestjs/microservices';
 import { Inject, UseGuards } from '@nestjs/common';

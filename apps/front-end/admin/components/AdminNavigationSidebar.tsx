@@ -16,6 +16,7 @@ import {
 } from "ui";
 
 import { HiUserGroup, HiChat } from "react-icons/hi";
+import { ImCheckmark } from "react-icons/im";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -147,6 +148,13 @@ export const AdminNavigationSidebar: React.FC<{
       name: t("Reviews"),
       onClick() {},
       slug: "reviews",
+      subLinks: [],
+    },
+    {
+      icon: <ImCheckmark />,
+      name: t("Seller Requests"),
+      onClick() {},
+      slug: "seller-requests",
       subLinks: [],
     },
   ];

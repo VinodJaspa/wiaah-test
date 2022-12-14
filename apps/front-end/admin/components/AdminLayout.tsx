@@ -6,7 +6,7 @@ import { AdminNavigationSidebar } from "./AdminNavigationSidebar";
 export const AdminLayout: React.FC = ({ children }) => {
   const { getCurrentPath } = useRouting();
   return (
-    <div className="w-full overflow-x-hidden min-h-[100vh] grid grid-cols-6">
+    <div className="w-full pb-8 overflow-x-hidden min-h-[100vh] grid grid-cols-6">
       <AdminNavigationSidebar
         currentUrl={getCurrentPath()}
         onRoute={() => {}}

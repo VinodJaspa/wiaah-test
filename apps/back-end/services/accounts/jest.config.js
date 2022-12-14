@@ -16,6 +16,7 @@ module.exports = {
     '@entities': '<rootDir>/src/accounts/entities',
     '^@acc-verification/(.+)$': '<rootDir>/src/account-verification/$1',
     '^@accounts/(.+)$': '<rootDir>/src/accounts/$1',
+    '^@user-location/(.+)$': '<rootDir>/src/user-location/$1',
   },
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
