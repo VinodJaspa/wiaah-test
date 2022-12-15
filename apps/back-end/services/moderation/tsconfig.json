@@ -21,7 +21,8 @@
       "@report/*": ["src/report/*"],
       "prismaClient": ["prisma/generated/client"],
       "prismaService": ["src/prisma.service"],
-      "@content-suspense/*": ["src/content-suspense/*"]
+      "@content-suspense/*": ["src/content-suspense/*"],
+      "@site-informations/*": ["src/site-informations/*"]
     }
   }
 }

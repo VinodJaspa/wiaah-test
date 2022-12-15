@@ -15,9 +15,9 @@ import {
   MessageOutlineIcon,
 } from "ui";
 
-import { HiUserGroup, HiChat } from "react-icons/hi";
+import { HiUserGroup, HiChat, HiTicket, HiNewspaper } from "react-icons/hi";
 import { ImCheckmark } from "react-icons/im";
-import { BiInfoCircle } from "react-icons/bi";
+import { BiInfoCircle, BiPackage } from "react-icons/bi";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -163,6 +163,27 @@ export const AdminNavigationSidebar: React.FC<{
       name: t("Informations"),
       onClick() {},
       slug: "informations",
+      subLinks: [],
+    },
+    {
+      icon: <BiPackage />,
+      name: t("Orders"),
+      onClick() {},
+      slug: "orders",
+      subLinks: [],
+    },
+    {
+      icon: <HiTicket />,
+      name: t("Bookings"),
+      onClick() {},
+      slug: "service-bookings",
+      subLinks: [],
+    },
+    {
+      icon: <HiNewspaper />,
+      name: t("Newsletter"),
+      onClick() {},
+      slug: "newsletter",
       subLinks: [],
     },
   ];
