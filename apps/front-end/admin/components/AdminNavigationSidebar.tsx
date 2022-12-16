@@ -18,6 +18,7 @@ import {
 import { HiUserGroup, HiChat, HiTicket, HiNewspaper } from "react-icons/hi";
 import { ImCheckmark } from "react-icons/im";
 import { BiInfoCircle, BiPackage } from "react-icons/bi";
+import { GiReturnArrow } from "react-icons/gi";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -184,6 +185,13 @@ export const AdminNavigationSidebar: React.FC<{
       name: t("Newsletter"),
       onClick() {},
       slug: "newsletter",
+      subLinks: [],
+    },
+    {
+      icon: <GiReturnArrow />,
+      name: t("Product Returns"),
+      onClick() {},
+      slug: "product-returns",
       subLinks: [],
     },
   ];
