@@ -58,12 +58,6 @@ export class AccountsResolver {
     return this.accountsService.updateProtected(input, user.id);
   }
 
-  @UseGuards(new GqlAuthorizationGuard(['buyer']))
-  @Mutation((type) => Boolean)
-  switchToSeller(@GqlCurrentUser() user: AuthorizationDecodedUser) {
-    return this.accountsService.switchToSeller(user.id);
-  }
-
   @ResolveReference()
   resolveReference(ref: { __typename: string; id: string }): Promise<Account> {
     return this.accountsService.findOne(ref.id);

@@ -1,11 +1,18 @@
 import { UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { NoSchemaIntrospectionCustomRule } from 'graphql';
 import { accountType, GqlAuthorizationGuard } from 'nest-utils';
 import { UpdateAffiliationCommand } from './commands';
-import { UpdateAffiliationAdminInput, UpdateAffiliationInput } from './dto';
+import {
+  GetFilteredAffiliationsInput,
+  UpdateAffiliationAdminInput,
+} from './dto';
 import { Affiliation } from './entities';
-import { GetAffliationsBySellerIdQuery } from './queries';
+import {
+  GetAffliationsBySellerIdQuery,
+  GetFilteredAffiliationsQuery,
+} from './queries';
 
 @Resolver()
 @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
@@ -24,5 +31,10 @@ export class AffiliationAdminResolver {
     return this.commandbus.execute(
       new UpdateAffiliationCommand(input, input.sellerId),
     );
+  }
+
+  @Query(() => [Affiliation])
+  getFilteredAffiliations(@Args('filters') args: GetFilteredAffiliationsInput) {
+    return this.querybus.execute(new GetFilteredAffiliationsQuery(args));
   }
 }

@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";

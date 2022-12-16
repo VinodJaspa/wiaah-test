@@ -156,6 +156,7 @@ export class AccountsController implements OnModuleInit {
       companyRegisterationNumber:
         payload.value.input.companyRegisterationNumber,
       type: 'seller',
+      status: 'pending',
     });
   }
 
@@ -169,6 +170,7 @@ export class AccountsController implements OnModuleInit {
       email: payload.value.input.email,
       password: payload.value.input.password,
       type: 'buyer',
+      status: 'active',
     });
   }
 

@@ -11,8 +11,13 @@ import {
   NestedSubmenuNavigationLinks,
   NavigationLink,
   AffiliationIcon,
+  CommentIcon,
+  MessageOutlineIcon,
 } from "ui";
-import { HiUserGroup } from "react-icons/hi";
+
+import { HiUserGroup, HiChat, HiTicket, HiNewspaper } from "react-icons/hi";
+import { ImCheckmark } from "react-icons/im";
+import { BiInfoCircle, BiPackage } from "react-icons/bi";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -138,6 +143,48 @@ export const AdminNavigationSidebar: React.FC<{
           subLinks: [],
         },
       ],
+    },
+    {
+      icon: <HiChat />,
+      name: t("Reviews"),
+      onClick() {},
+      slug: "reviews",
+      subLinks: [],
+    },
+    {
+      icon: <ImCheckmark />,
+      name: t("Seller Requests"),
+      onClick() {},
+      slug: "seller-requests",
+      subLinks: [],
+    },
+    {
+      icon: <BiInfoCircle />,
+      name: t("Informations"),
+      onClick() {},
+      slug: "informations",
+      subLinks: [],
+    },
+    {
+      icon: <BiPackage />,
+      name: t("Orders"),
+      onClick() {},
+      slug: "orders",
+      subLinks: [],
+    },
+    {
+      icon: <HiTicket />,
+      name: t("Bookings"),
+      onClick() {},
+      slug: "service-bookings",
+      subLinks: [],
+    },
+    {
+      icon: <HiNewspaper />,
+      name: t("Newsletter"),
+      onClick() {},
+      slug: "newsletter",
+      subLinks: [],
     },
   ];
 

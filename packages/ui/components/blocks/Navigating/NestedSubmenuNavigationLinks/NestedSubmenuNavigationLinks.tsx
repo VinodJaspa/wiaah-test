@@ -59,7 +59,7 @@ export const NestedSubmenuNavigationLinks: React.FC<{
                           ? "bg-primary rounded text-white fill-white"
                           : "text-primary"
                       }`
-                    : "text-black"
+                    : "text-black fill-black"
                 } flex text-lg items-center py-2 gap-2`}
               >
                 {runIfFn(icon)} {name}

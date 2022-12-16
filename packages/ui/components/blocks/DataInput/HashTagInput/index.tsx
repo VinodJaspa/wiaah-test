@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 
 export interface HashTagInputProps {
   onChange?: (HashTags: string[]) => any;
+  value?: string[];
 }
 
 export const HashTagInput: React.FC<HashTagInputProps> = ({ onChange }) => {

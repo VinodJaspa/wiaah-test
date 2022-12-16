@@ -1,6 +1,5 @@
 import { Formik } from "formik";
 import React from "react";
-import { FlagIconCode } from "react-flag-kit";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import {
@@ -12,29 +11,19 @@ import {
   SimpleTabItemList,
   SimpleTabs,
   FlagIcon,
-  Stack,
   Input,
   Textarea,
-  FileInput,
-  AspectRatioImage,
   EditIcon,
-  TrashIcon,
   ExclamationCircleIcon,
   InputGroup,
   InputLeftElement,
   Select,
   SelectOption,
-  StarOutlineIcon,
 } from "ui";
-import {
-  countries,
-  mapArray,
-  runIfFn,
-  WiaahLanguageCountriesIsoCodes,
-} from "utils";
+import { mapArray, runIfFn, WiaahLanguageCountriesIsoCodes } from "utils";
 
-const EditCategory = () => {
-  const { getParam } = useRouting();
+const EditInfo = () => {
+  const { getParam, back } = useRouting();
   const CategoryId: string = getParam("category_id");
   const { t } = useTranslation();
 
@@ -67,7 +56,7 @@ const EditCategory = () => {
                         <span className="text-red-400 inline-block translate-y-1/4 px-2 transform font-bold text-2xl">
                           *
                         </span>
-                        {t("Category Name")}
+                        {t("Information Title")}
                       </p>
                       <Input className="col-span-7" />
                       <p>{t("Description")}</p>
@@ -89,6 +78,20 @@ const EditCategory = () => {
                         className="col-span-7"
                         placeholder={t("Meta Tag Keywords")}
                       />
+                      <p>{t("Sort Order")}</p>
+                      <Input
+                        className="col-span-7"
+                        placeholder={t("Sort Order")}
+                      />
+                      <p>{t("Status")}</p>
+                      <Select>
+                        <SelectOption value={"enabled"}>
+                          {t("Enabled")}
+                        </SelectOption>
+                        <SelectOption value={"disabled"}>
+                          {t("Disabled")}
+                        </SelectOption>
+                      </Select>
                     </>
                   )}
                 </Formik>
@@ -98,75 +101,7 @@ const EditCategory = () => {
         </div>
       ),
     },
-    {
-      name: t("Data"),
-      comp: (
-        <div className="flex flex-col gap-4">
-          <SimpleTabs>
-            <div className="flex items-center">
-              <SimpleTabHead>
-                {mapArray(WiaahLanguageCountriesIsoCodes, (v, i) => (
-                  <div
-                    className={`${
-                      i === 0 ? "border-2 border-gray-300 border-b-white" : ""
-                    } px-8 py-2`}
-                    key={i}
-                  >
-                    <FlagIcon code={v} />
-                  </div>
-                ))}
-              </SimpleTabHead>
-            </div>
-          </SimpleTabs>
-          <div className="grid grid-cols-8 gap-16">
-            <Formik initialValues={{}} onSubmit={() => {}}>
-              {({ values, setFieldValue }) => (
-                <>
-                  <p className="font-bold">{t("Parant")}</p>
-                  <Select
-                    className="col-span-7"
-                    placeholder={t("Parent")}
-                  ></Select>
-                  <p className="font-bold">{t("Image")}</p>
-                  <div className="border-2 w-48 col-span-7 px-1 pt-1 pb-4 flex flex-col gap-2">
-                    <AspectRatioImage
-                      ratio={1}
-                      alt="image"
-                      src={"/profile (3).jfif"}
-                    />
-                    <div className="grid grid-cols-2 gap-2">
-                      <FileInput
-                        innerProps={{
-                          onChange: (e) =>
-                            setFieldValue("image", e.target.files[0]),
-                        }}
-                        accept="picture"
-                      >
-                        <div className="w-full px-4 py-2 text-white cursor-pointer rounded-md bg-primary items-center flex gap-1">
-                          <EditIcon />
-                          <p>{t("Edit")}</p>
-                        </div>
-                      </FileInput>
-                      <Button
-                        className="flex w-full items-center gap-1"
-                        colorScheme="danger"
-                      >
-                        <TrashIcon />
-                        <p>{t("Clear")}</p>
-                      </Button>
-                    </div>
-                  </div>
-                  <p className="font-bold">{t("Sort Order")}</p>
-                  <Input className="col-span-7" placeholder={t("Sort Order")} />
-                  <p className="font-bold">{t("Status")}</p>
-                  <Input className="col-span-7" placeholder={t("Status")} />
-                </>
-              )}
-            </Formik>
-          </div>
-        </div>
-      ),
-    },
+
     {
       name: t("SEO"),
       comp: (
@@ -208,7 +143,7 @@ const EditCategory = () => {
             <SaveIcon />
           </Button>
           <Button className="w-12 h-full">
-            <ArrowRoundBack />
+            <ArrowRoundBack onClick={() => back()} />
           </Button>
         </div>
       </div>
@@ -216,7 +151,7 @@ const EditCategory = () => {
       <div className="border pb-4">
         <div className="flex text-xl xl:text-2xl px-4 py-2 items-center gap-2">
           <EditIcon />
-          <p className="font-semibold">{t("Edit Category")}</p>
+          <p className="font-semibold">{t("Edit Information")}</p>
         </div>
         <Divider style={{ marginTop: "1rem", marginBottom: "1rem" }} />
         <div className="px-4 flex flex-col gap-8 w-full">
@@ -244,4 +179,4 @@ const EditCategory = () => {
   );
 };
 
-export default EditCategory;
+export default EditInfo;
