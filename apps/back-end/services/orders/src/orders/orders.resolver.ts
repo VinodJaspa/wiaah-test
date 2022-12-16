@@ -3,6 +3,7 @@ import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
 import {
   accountType,
   AuthorizationDecodedUser,
+  ExtractPagination,
   GqlAuthorizationGuard,
   GqlCurrentUser,
   KAFKA_MESSAGES,
@@ -26,6 +27,8 @@ import {
   RejectReceivedOrderCommand,
 } from './commands';
 import { GetUserOrders } from './dto/get-user-orders.input';
+import { GetFilteredOrdersInput } from 'src/dto/get-filtered-orders.input';
+import { PrismaService } from 'prismaService';
 
 @Resolver(() => Order)
 export class OrdersResolver implements OnModuleInit {
@@ -34,6 +37,7 @@ export class OrdersResolver implements OnModuleInit {
     private readonly eventsClient: ClientKafka,
     private readonly queryBus: QueryBus,
     private readonly commandbus: CommandBus,
+    private readonly prisma: PrismaService,
   ) {}
 
   @Query((type) => [Order])
@@ -76,6 +80,19 @@ export class OrdersResolver implements OnModuleInit {
         ),
       );
     }
+  }
+
+  @Query(() => [Order])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  getFilteredOrders(@Args('args') args: GetFilteredOrdersInput) {
+    const { skip, take } = ExtractPagination(args.pagination);
+    return this.prisma.order.findMany({
+      take,
+      skip,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 
   @Mutation(() => Boolean)

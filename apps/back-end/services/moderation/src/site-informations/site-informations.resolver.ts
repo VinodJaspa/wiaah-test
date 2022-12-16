@@ -1,6 +1,8 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { SiteInformation } from '@site-informations/entities';
 import { PrismaService } from 'prismaService';
+import { CreateSiteInformationInput } from './dto/create-site-information.input';
+import { UpdateSiteInformationInput } from './dto/update-site-information.input';
 
 @Resolver(() => SiteInformation)
 export class SiteInformationsResolver {
@@ -14,6 +16,24 @@ export class SiteInformationsResolver {
           has: placement,
         },
       },
+    });
+  }
+
+  @Mutation(() => SiteInformation)
+  createSiteInformations(@Args('args') args: CreateSiteInformationInput) {
+    return this.prisma.information.create({
+      data: args,
+    });
+  }
+
+  @Mutation(() => SiteInformation)
+  updateSiteInformations(@Args('args') args: UpdateSiteInformationInput) {
+    const { id, ...rest } = args;
+    return this.prisma.information.update({
+      where: {
+        id,
+      },
+      data: rest,
     });
   }
 }
