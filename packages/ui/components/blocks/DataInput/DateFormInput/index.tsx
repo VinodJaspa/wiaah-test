@@ -1,5 +1,4 @@
 import {
-  DateInput,
   Input,
   InputGroup,
   InputRightElement,
@@ -10,12 +9,15 @@ import {
   MenuProps,
   MenuButtonProps,
   MenuListProps,
-} from "ui";
+  InputProps,
+  InputGroupProps,
+} from "@partials";
+import { DateInput } from "../DateInput";
 import React from "react";
 import { BiCalendarEdit } from "react-icons/bi";
 import { MdClose } from "react-icons/md";
 
-export interface DateFormInputProps {
+export interface DateFormInputProps extends InputGroupProps {
   placeholder?: string;
   onDateChange?: (date: string) => any;
   dateValue?: string | number;
@@ -24,6 +26,7 @@ export interface DateFormInputProps {
     menuProps?: MenuProps;
     menuButtonProps?: MenuButtonProps;
   };
+  inputProps?: InputProps;
 }
 
 export const DateFormInput: React.FC<DateFormInputProps> = ({

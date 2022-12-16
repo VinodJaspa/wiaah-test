@@ -3,7 +3,7 @@ import { useRouting } from "routing";
 import { OrderDetailsSection } from "ui";
 
 const EditOrder = () => {
-  const { getParam, back } = useRouting();
+  const { getParam } = useRouting();
   const orderId = getParam("id");
 
   return (

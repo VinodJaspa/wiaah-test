@@ -49,7 +49,8 @@ export const Input: React.FC<InputProps> = ({
           : flushed
           ? "border-b-2"
           : "border-2"
-      } border-gray-200 rounded px-3 w-full h-10`}
+      }
+      focus:border-primary-200 border-gray-200 rounded px-3 w-full h-10`}
     />
   );
 };
