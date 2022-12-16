@@ -125,7 +125,7 @@ const ProductReturns = () => {
                             .addPath(prod.returnId)
                         )
                       }
-                      className="w-8 h-8 p-2 text-white fill-white hover:bg-cyan-600 bg-cyan-500"
+                      className="w-8 h-8 p-2 text-white fill-white rounded hover:bg-cyan-600 bg-cyan-500"
                     />
                   </Td>
                 </Tr>

@@ -91,7 +91,7 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
                   <QrcodeDisplay className="w-full" value={bookId} />
                 </div>
                 <div className="flex flex-col">
-                  <div className="flex flex-col">
+                  <div className="flex whitespace-nowrap flex-col">
                     {t("booking_number", "Booking Number")}
                     <span className="font-bold" data-testid="BookNumber">
                       #{bookId}
@@ -101,7 +101,6 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
                   <Button outline>{t("save_the_qr", "Save the QR")}</Button>
                 </div>
               </div>
-              <Divider />
               <div className="flex gap-4">
                 <div>
                   <span className="text-xl py-1">

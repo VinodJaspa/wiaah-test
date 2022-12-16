@@ -35,6 +35,7 @@ import {
   ModalOverlay,
   CloseIcon,
   CancelIcon,
+  Pagination,
 } from "ui";
 import { getRandomImage } from "placeholder";
 import { randomNum } from "utils";
@@ -225,7 +226,7 @@ export const OrderDetailsSection: React.FC = () => {
                 <Td className="pr-0">
                   <div className="w-full flex justify-center">
                     <Button>
-                      {shopping ? <>{t("Track")}</> : <>prod.status</>}
+                      {shopping ? <>{t("Track")}</> : <>{prod.status}</>}
                     </Button>
                   </div>
                 </Td>
@@ -253,6 +254,7 @@ export const OrderDetailsSection: React.FC = () => {
             ))}
           </TBody>
         </Table>
+        <Pagination />
       </div>
     </div>
   );
