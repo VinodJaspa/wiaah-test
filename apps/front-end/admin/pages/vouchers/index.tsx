@@ -58,6 +58,13 @@ const Voucher = () => {
               <Th>{t("Voucher Price")}</Th>
               <Th>{t("Date")}</Th>
             </Tr>
+            <Tr>
+              <Th><Input /></Th>
+              <Th><Input /></Th>
+              <Th><Input /></Th>
+              <Th><Input /></Th>
+              <Th><DateFormInput /></Th>
+            </Tr>
           </THead>
 
           <TBody>

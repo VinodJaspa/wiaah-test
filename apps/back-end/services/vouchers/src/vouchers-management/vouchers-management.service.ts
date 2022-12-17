@@ -246,7 +246,7 @@ export class VouchersManagementService {
       new GetUserCashbackBalanceMessage({ userId }),
     );
 
-    if (!success) throw new Error(error);
+    if (!success) throw new Error(error.message);
 
     const { cashbackBalance } = data;
 
@@ -269,7 +269,7 @@ export class VouchersManagementService {
       'checking cashback balance process timedout, try again later',
     );
 
-    if (!currencySuccess) throw new Error(currencyError);
+    if (!currencySuccess) throw new Error(currencyError.message);
 
     const { rate, convertedToCurrency, convertedFromCurrency } = currencyData;
 
