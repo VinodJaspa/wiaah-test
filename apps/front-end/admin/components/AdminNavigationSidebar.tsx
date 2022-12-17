@@ -11,9 +11,9 @@ import {
   NestedSubmenuNavigationLinks,
   NavigationLink,
   AffiliationIcon,
-  CommentIcon,
-  MessageOutlineIcon,
 } from "ui";
+import { FiSettings } from "react-icons/fi";
+import { BiMoney } from "react-icons/bi";
 
 import { HiUserGroup, HiChat, HiTicket, HiNewspaper } from "react-icons/hi";
 import { ImCheckmark } from "react-icons/im";
@@ -200,6 +200,42 @@ export const AdminNavigationSidebar: React.FC<{
       onClick() {},
       slug: "vouchers",
       subLinks: [],
+    },
+    {
+      icon: <FiSettings />,
+      name: t("Maintenance"),
+      onClick() {},
+      slug: "maintenance",
+      subLinks: [],
+    },
+    {
+      icon: <BiMoney />,
+      name: t("Sales Statistics"),
+      onClick() {},
+      slug: "sales-statistics",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("All Time Sales"),
+          onClick() {},
+          slug: "all",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Sales By Month"),
+          onClick() {},
+          slug: "month",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Sales By Month"),
+          onClick() {},
+          slug: "day",
+          subLinks: [],
+        },
+      ],
     },
   ];
 
