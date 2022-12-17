@@ -35,3 +35,22 @@ enum ReportContentType {
   service
   product
 }
+
+model SiteSettings {
+  id String @id @db.ObjectId @default(auto()) @map("_id")
+  mode SiteModes @default(up)
+  socialLinks SocialLink[]
+  comingSoon Boolean @default(false)
+}
+
+enum SiteModes {
+  maintenance
+  down
+  up
+}
+
+type SocialLink {
+  link String 
+  label String
+  placement String[]
+}
