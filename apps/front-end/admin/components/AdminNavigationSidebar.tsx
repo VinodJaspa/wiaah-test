@@ -18,7 +18,8 @@ import { BiMoney } from "react-icons/bi";
 import { HiUserGroup, HiChat, HiTicket, HiNewspaper } from "react-icons/hi";
 import { ImCheckmark } from "react-icons/im";
 import { BiInfoCircle, BiPackage } from "react-icons/bi";
-import { GiReturnArrow, GiTicket } from "react-icons/gi";
+import { GiPayMoney, GiReturnArrow, GiTicket } from "react-icons/gi";
+import { MdPayment } from "react-icons/md";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -236,6 +237,13 @@ export const AdminNavigationSidebar: React.FC<{
           subLinks: [],
         },
       ],
+    },
+    {
+      icon: <MdPayment />,
+      name: t("Payback"),
+      onClick() {},
+      slug: "payback",
+      subLinks: [],
     },
   ];
 
