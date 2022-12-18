@@ -35,20 +35,20 @@ const payback: NextPage = () => {
   const { t } = useTranslation();
 
   const paybackHistory: Payback[] = [...Array(10)].map((_, i) => ({
-    id: i.toString(),
+    id: randomNum(99999999).toString(),
     seller: `seller name-${i}`,
     buyer: `buyer name-${i}`,
     guarantee: randomNum(150),
     service: `service name-${i}`,
     status: "Pending",
-    rejectReason: `reject reason-${i}`,
+    rejectReason: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy-${i}`,
     thumbnail: getRandomImage(),
   }));
 
   return (
     <section>
       <TableContainer>
-        <Table>
+        <Table className="min-w-max">
           <THead>
             <Tr>
               <Th className="w-32">{t("Photo")}</Th>
@@ -56,9 +56,9 @@ const payback: NextPage = () => {
               <Th>{t("Seller")}</Th>
               <Th>{t("Buyer")}</Th>
               <Th>{t("Service")}</Th>
-              <Th>{t("Guarantee")}</Th>
+              <Th className="w-16">{t("Guarantee")}</Th>
               <Th>{t("Status")}</Th>
-              <Th>{t("Refuse Reason")}</Th>
+              <Th className="w-[20rem]">{t("Refuse Reason")}</Th>
             </Tr>
             <Tr>
               <Th></Th>
@@ -75,7 +75,7 @@ const payback: NextPage = () => {
                 <Input />
               </Th>
               <Th>
-                <Input />
+                <Input type="number" />
               </Th>
               <Th>
                 <Select>
@@ -86,7 +86,9 @@ const payback: NextPage = () => {
                   </SelectOption>
                 </Select>
               </Th>
-              <Th></Th>
+              <Th>
+                <Input />
+              </Th>
             </Tr>
           </THead>
           <TBody>

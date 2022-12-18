@@ -11,6 +11,7 @@ import {
   NestedSubmenuNavigationLinks,
   NavigationLink,
   AffiliationIcon,
+  PersonFillIcon,
 } from "ui";
 import { FiSettings } from "react-icons/fi";
 import { BiMoney } from "react-icons/bi";
@@ -243,6 +244,13 @@ export const AdminNavigationSidebar: React.FC<{
       name: t("Payback"),
       onClick() {},
       slug: "payback",
+      subLinks: [],
+    },
+    {
+      icon: <PersonFillIcon />,
+      name: t("Account Deletion"),
+      onClick() {},
+      slug: "account-deletion",
       subLinks: [],
     },
   ];

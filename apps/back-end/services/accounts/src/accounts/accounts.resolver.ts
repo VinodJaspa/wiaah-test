@@ -19,6 +19,10 @@ import { AccountsService } from './accounts.service';
 import { GetBuyersAccountsInput, GetSellersAccountsInput } from '@accounts/dto';
 import { UpdateAccountInput } from './dto/update-account.input';
 import { Account } from './entities';
+import { PrismaService } from 'prismaService';
+import { AccountDeletionRequestStatus } from '@prisma-client';
+import { EventBus } from '@nestjs/cqrs';
+import { AccountDeletionRequestCreatedEvent } from './events';
 
 @Resolver(() => Account)
 export class AccountsResolver {
@@ -26,6 +30,8 @@ export class AccountsResolver {
     private readonly accountsService: AccountsService,
     @Inject(SERVICES.ACCOUNTS_SERVICE.token)
     private readonly eventsClient: ClientKafka,
+    private readonly prisma: PrismaService,
+    private readonly eventbus: EventBus,
   ) {}
 
   @Query(() => [Account])
@@ -47,6 +53,22 @@ export class AccountsResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.accountsService.updateUnprotected(input, user.id);
+  }
+
+  @Mutation(() => Boolean)
+  async requestAccountDeletion(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const created = await this.prisma.accountDeletionRequest.create({
+      data: {
+        accountId: user.id,
+        status: AccountDeletionRequestStatus.pending,
+      },
+    });
+
+    this.eventbus.publish(new AccountDeletionRequestCreatedEvent(created));
+
+    return true;
   }
 
   @Mutation(() => Account)

@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Prisma } from '@prisma-client';
 import {
   accountType,
   ExtractPagination,
@@ -7,6 +8,8 @@ import {
   GqlPaginationInput,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
+import { GetAccountDeletionRequestsInput } from './dto/get-account-deletion-requests.input';
+import { AccountDeletionRequest } from './entities/account-deletion-request.entity';
 import { Account } from './entities/account.entity';
 
 @Resolver()
@@ -56,5 +59,66 @@ export class AccountsAdminResolver {
         status: 'refused',
       },
     });
+  }
+
+  @Query(() => [AccountDeletionRequest])
+  async getAccountDeletionRequests(
+    @Args('args') args: GetAccountDeletionRequestsInput,
+  ) {
+    const filters: Prisma.AccountDeletionRequestWhereInput[] = [];
+
+    if (args.username) {
+      filters.push({
+        account: {
+          firstName: { contains: args.username },
+        },
+      });
+      filters.push({
+        account: {
+          lastName: { contains: args.username },
+        },
+      });
+    }
+
+    if (args.email) {
+      filters.push({
+        account: {
+          email: {
+            contains: args.email,
+          },
+        },
+      });
+    }
+
+    if (args.status) {
+      filters.push({
+        status: args.status,
+      });
+    }
+    if (args.dateAdded) {
+      filters.push({
+        AND: [
+          {
+            createdAt: { gte: new Date(new Date(args.dateAdded).setHours(0)) },
+          },
+          {
+            createdAt: {
+              lte: new Date(new Date(args.dateAdded).setHours(23, 59)),
+            },
+          },
+        ],
+      });
+    }
+
+    const { skip, take } = ExtractPagination(args.pagination);
+    const res = await this.prisma.accountDeletionRequest.findMany({
+      where: {
+        AND: filters,
+      },
+      take,
+      skip,
+    });
+
+    return res || [];
   }
 }

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GqlAuthorizationGuard = void 0;
 const common_1 = require("@nestjs/common");
 const graphql_1 = require("@nestjs/graphql");
+const constants_1 = require("../constants");
 let GqlAuthorizationGuard = class GqlAuthorizationGuard {
     constructor(roles) {
         this.roles = [];
@@ -20,14 +21,24 @@ let GqlAuthorizationGuard = class GqlAuthorizationGuard {
     canActivate(context) {
         const ctx = graphql_1.GqlExecutionContext.create(context);
         const user = ctx.getContext().user;
-        if (!user || typeof user !== "object" || typeof user.id !== "string")
-            throw new common_1.UnauthorizedException();
+        const isPublic = this.roles.includes(constants_1.accountType.PUBLIC);
+        if (!user || typeof user !== "object" || typeof user.id !== "string") {
+            if (isPublic) {
+                return true;
+            }
+            else {
+                throw new common_1.UnauthorizedException();
+            }
+        }
         if (this.roles) {
             if (this.roles.length === 0)
                 return true;
             if (!user.accountType || !this.roles.includes(user.accountType)) {
                 throw new common_1.UnauthorizedException("this account can not preform this action");
             }
+        }
+        else {
+            return false;
         }
         return !!user;
     }
