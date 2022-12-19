@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./generated/client"
+  output   = "./generated/client"
 }
 
 datasource db {
@@ -12,22 +12,36 @@ datasource db {
 }
 
 model Report {
-  id String @id @default(auto()) @db.ObjectId @map("_id")
-  reportedBy String @db.ObjectId
-  contentId String @db.ObjectId
-  contentType ReportContentType 
-  message String
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  reportedBy  String            @db.ObjectId
+  contentId   String            @db.ObjectId
+  contentType ReportContentType
+  message     String
+  status      ReportStatus
+  type        ReportType
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
+enum ReportStatus {
+  accepted
+  rejected
+}
+
+enum ReportType {
+  social
+  product
+  service
+  bug
+}
+
 model Information {
-  id String @id @default(auto()) @db.ObjectId @map("_id")
-  title String
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
   description String
-  placements String[]
-  slug String
+  placements  String[]
+  slug        String
 }
 
 enum ReportContentType {
@@ -36,11 +50,27 @@ enum ReportContentType {
   product
 }
 
+model Design {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  placement String[]
+  src       String
+  name      String
+  type      DesignType
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+enum DesignType {
+  partner
+  slideshow
+  collaboration
+}
+
 model SiteSettings {
-  id String @id @db.ObjectId @default(auto()) @map("_id")
-  mode SiteModes @default(up)
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  mode        SiteModes    @default(up)
   socialLinks SocialLink[]
-  comingSoon Boolean @default(false)
+  comingSoon  Boolean      @default(false)
 }
 
 enum SiteModes {
@@ -50,7 +80,7 @@ enum SiteModes {
 }
 
 type SocialLink {
-  link String 
-  label String
+  link      String
+  label     String
   placement String[]
 }
