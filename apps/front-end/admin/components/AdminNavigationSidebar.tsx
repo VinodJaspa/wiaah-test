@@ -20,7 +20,7 @@ import { HiUserGroup, HiChat, HiTicket, HiNewspaper } from "react-icons/hi";
 import { ImCheckmark } from "react-icons/im";
 import { BiInfoCircle, BiPackage } from "react-icons/bi";
 import { GiPayMoney, GiReturnArrow, GiTicket } from "react-icons/gi";
-import { MdPayment } from "react-icons/md";
+import { MdPayment, MdReport } from "react-icons/md";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -266,7 +266,28 @@ export const AdminNavigationSidebar: React.FC<{
           slug: "slideshow",
           subLinks: [],
         },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Partner"),
+          onClick() {},
+          slug: "partner",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Collaborations"),
+          onClick() {},
+          slug: "collab",
+          subLinks: [],
+        },
       ],
+    },
+    {
+      icon: <MdReport />,
+      name: t("Social reports"),
+      onClick() {},
+      slug: "social-reports",
+      subLinks: [],
     },
   ];
 

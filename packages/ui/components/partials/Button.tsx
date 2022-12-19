@@ -15,6 +15,7 @@ export interface ButtonProps extends HtmlButtonProps {
   outline?: boolean;
   colorScheme?: ColorScheme;
   loading?: boolean;
+  center?: boolean;
 }
 
 export const Button: React.FunctionComponent<ButtonProps> = ({
@@ -24,6 +25,7 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
   colorScheme = "primary",
   loading,
   onClick,
+  center,
   ...props
 }) => {
   const colors = (scheme: ColorScheme): string => {
@@ -55,7 +57,9 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
       }}
       className={` ${className ? className : ""} ${
         outline ? "border-2 text-black hover:text-white bg-transparent" : ""
-      } ${colors(colorScheme)} px-4 py-2  transition-colors rounded-md`}
+      } ${colors(colorScheme)} ${
+        center ? "flex justify-center items-center" : ""
+      } px-4 py-2  transition-colors rounded-md`}
     >
       {loading ? <CgSpinner className="animate-spin" /> : children}
     </button>

@@ -15,6 +15,7 @@ export const NotAllowedIcon: React.FC<NotAllowedIconProps> = ({
         xmlns="http://www.w3.org/2000/svg"
         x="0px"
         y="0px"
+        fill="currentColor"
         width="16px"
         height="16px"
         viewBox="0 0 55.704 55.703"
