@@ -17,7 +17,9 @@
       "@sections/*": ["../../../packages/ui/components/sections/*"],
       "@sections": ["../../../packages/ui/components/sections"],
       "@features/*": ["../../../packages/ui/components/features/*"],
-      "@features": ["../../../packages/ui/components/features"]
+      "@features": ["../../../packages/ui/components/features"],
+      "@UI": ["../../../packages/ui"],
+      "@UI/*": ["../../../packages/ui/*"]
     }
   }
 }

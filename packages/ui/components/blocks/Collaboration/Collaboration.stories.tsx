@@ -1,4 +1,4 @@
-import { Collaboration, storybookBlocksTitle } from "ui";
+import { Collaboration, storybookBlocksTitle } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

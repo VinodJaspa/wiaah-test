@@ -9,7 +9,7 @@ import {
   Button,
   Stack,
   Divider,
-} from "ui";
+} from "@UI";
 export interface MyServicesListProps {}
 
 export const MyServicesList: React.FC<MyServicesListProps> = ({}) => {

@@ -10,7 +10,7 @@ import {
   AspectRatioImage,
   Button,
   ServicesRequestKeys,
-} from "ui";
+} from "@UI";
 
 export interface HotelSearchCardProps extends HotelsMetaData {
   onLiked: (id: string) => any;

@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import { CgPlayButtonR } from "react-icons/cg";
 import { HiHeart, HiOutlineChat, HiShare, HiUserGroup } from "react-icons/hi";
 import { Interaction, Interactions, ShareMotheds } from "types";
-import { NumberShortner } from "ui/components/helpers/numberShortener";
+import { NumberShortner } from "@UI/components/helpers/numberShortener";
 import { FaFacebook, FaTwitter, FaWhatsapp, FaPinterest } from "react-icons/fa";
 
 export interface PostInteractionsProps {

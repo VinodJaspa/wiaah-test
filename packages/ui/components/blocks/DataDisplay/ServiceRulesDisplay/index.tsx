@@ -1,5 +1,5 @@
 import React from "react";
-import { HStack, NotAllowedIcon, CreditCardIcon, CashPaymentIcon } from "ui";
+import { HStack, NotAllowedIcon, CreditCardIcon, CashPaymentIcon } from "@UI";
 import { ServiceRules } from "types";
 import { useTranslation } from "react-i18next";
 

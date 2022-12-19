@@ -1,5 +1,5 @@
 import React from "react";
-import { TimeCustomComponentProps, AspectRatio } from "ui";
+import { TimeCustomComponentProps, AspectRatio } from "@UI";
 import { format2digitNumber } from "utils";
 
 export const ResturantReplacableTimeComponent: React.FC<

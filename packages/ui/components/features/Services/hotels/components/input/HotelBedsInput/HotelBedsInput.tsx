@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { CountInput, CloseIcon, AddBadgeButton, Input, AddBedInput } from "ui";
+import { CountInput, CloseIcon, AddBadgeButton, Input, AddBedInput } from "@UI";
 
 type BedType = {
   name: string;

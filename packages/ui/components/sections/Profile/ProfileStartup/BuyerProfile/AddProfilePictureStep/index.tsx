@@ -1,4 +1,4 @@
-import { Divider, Button, Input } from "ui";
+import { Divider, Button, Input } from "@UI";
 import { blobToDataURL } from "blob-util";
 import { Field, Form, Formik } from "formik";
 import React from "react";

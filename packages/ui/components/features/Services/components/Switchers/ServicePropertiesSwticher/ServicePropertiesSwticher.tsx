@@ -21,7 +21,7 @@ import {
   TelevisionIcon,
   SnowFlakeIcon,
   BalconyIcon,
-} from "ui";
+} from "@UI";
 import { runIfFn } from "utils";
 
 export const ServicePropertiesSwticher: React.FC<{ slug: string }> = ({

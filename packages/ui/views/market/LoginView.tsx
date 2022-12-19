@@ -1,10 +1,10 @@
 import React, { FC, useState } from "react";
 import Link from "next/link";
 import { IoMdMail, IoMdKey } from "react-icons/io";
-import { Spacer, DividerWidthText, Input } from "ui";
+import { Spacer, DividerWidthText, Input } from "@UI";
 import { LoginInputsType } from "../../../types/market/authenticating/loginInput.interface";
 import { LoginType } from "types";
-import { useUserData, useLoginPopup, Button, FormikInput } from "ui";
+import { useUserData, useLoginPopup, Button, FormikInput } from "@UI";
 import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
 

@@ -5,7 +5,7 @@ import {
   VehicleProprtiesList,
   Button,
   ServicesRequestKeys,
-} from "ui";
+} from "@UI";
 import { VehicleSearchData } from "api";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";

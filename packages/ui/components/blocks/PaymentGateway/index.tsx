@@ -8,7 +8,7 @@ import {
   Button,
   Grid,
   FormikInput,
-} from "ui";
+} from "@UI";
 import * as yup from "yup";
 import { CardDetails } from "types";
 import { useTranslation } from "react-i18next";

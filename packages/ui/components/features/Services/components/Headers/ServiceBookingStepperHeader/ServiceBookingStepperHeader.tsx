@@ -1,5 +1,5 @@
 import React from "react";
-import { ArrowRightIcon, TriangleRightIcon } from "ui";
+import { ArrowRightIcon, TriangleRightIcon } from "@UI";
 import { runIfFn } from "utils";
 
 type ServiceBookingStepperStepType = { icon: React.ReactNode; name: string };

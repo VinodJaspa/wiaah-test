@@ -1,7 +1,7 @@
 import React from "react";
 import { HtmlDivProps } from "types";
-import { FloatingContainer, FloatingContainerProps } from "ui";
-import { AspectRatio, Image } from "ui";
+import { FloatingContainer, FloatingContainerProps } from "@UI";
+import { AspectRatio, Image } from "@UI";
 
 export type StoryUserData = {
   id: string;

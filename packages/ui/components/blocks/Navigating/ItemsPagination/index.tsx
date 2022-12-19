@@ -1,7 +1,7 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Select, SelectOption } from "ui";
+import { Select, SelectOption } from "@UI";
 export interface ItemsPaginationProps {
   controls: usePaginationControls;
 }

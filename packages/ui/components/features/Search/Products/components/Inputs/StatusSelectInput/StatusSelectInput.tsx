@@ -7,7 +7,7 @@ import {
   SelectOption,
   SpeedClockIcon,
   Divider,
-} from "ui";
+} from "@UI";
 import { mapArray } from "utils";
 
 export interface StatusSelectInputProps {

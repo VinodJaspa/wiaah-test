@@ -5,8 +5,8 @@ import {
   SpinnerFallback,
   Pagination,
   HealthCenterCard,
-} from "ui";
-import { useGetHealthCentersDataQuery } from "ui";
+} from "@UI";
+import { useGetHealthCentersDataQuery } from "@UI";
 
 export const HealthCenterServiceSearchResultsList: React.FC = () => {
   const { take, page, goToPage } = usePagination(8);

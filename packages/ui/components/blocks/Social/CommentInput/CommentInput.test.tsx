@@ -1,7 +1,7 @@
 import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import React from "react";
-import { CommentInput } from "ui";
-import { getMountedComponent } from "ui/components/helpers/test/getMountedComponent";
+import { CommentInput } from "@UI";
+import { getMountedComponent } from "@UI/components/helpers/test/getMountedComponent";
 
 const selectors = {
   commentInput: "[data-testid='CommentInput']",

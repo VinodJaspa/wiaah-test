@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ListWrapper } from "ui";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import { ListWrapper } from "@UI";
+import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import { randomNum } from "../../../helpers/randomNumber";
 export default {
   title: "UI/blocks/Social/ListWrapper",

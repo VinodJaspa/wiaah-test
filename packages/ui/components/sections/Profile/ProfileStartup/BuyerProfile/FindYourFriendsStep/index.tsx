@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, SectionHeader, Input } from "ui";
+import { Button, SectionHeader, Input } from "@UI";
 import { useTranslation } from "react-i18next";
 import { Field, Form, Formik } from "formik";
 

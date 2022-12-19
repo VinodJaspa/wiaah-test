@@ -5,7 +5,7 @@ import {
   HealthCenterCheckoutCard,
   BeautyCenterCheckoutCard,
   ProductCheckoutCard,
-} from "ui";
+} from "@UI";
 import React from "react";
 
 export interface ServiceCheckoutCardSwitcherProps {

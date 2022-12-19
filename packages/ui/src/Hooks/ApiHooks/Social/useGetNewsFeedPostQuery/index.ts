@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { newsfeedPosts } from "ui";
+import { newsfeedPosts } from "@UI";
 import { getNewsFeedPostDetails } from "api";
 
 export const useGetNewsFeedPostQuery = (id: string | null) => {

@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FormikInput, Button } from "ui";
+import { FormikInput, Button } from "@UI";
 import { setTestid } from "utils";
 import { InferType, object, string } from "yup";
 

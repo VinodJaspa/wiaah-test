@@ -1,6 +1,9 @@
 import { ComponentMeta } from "@storybook/react";
-import { storybookPartailsTitle, StorybookImplemntationLayout } from "ui/utils";
-import { Input, InputGroup, InputLeftElement, InputRightElement } from "ui";
+import {
+  storybookPartailsTitle,
+  StorybookImplemntationLayout,
+} from "@UI/utils";
+import { Input, InputGroup, InputLeftElement, InputRightElement } from "@UI";
 import React from "react";
 import { HiOutlineSearch, HiOutlineSortAscending } from "react-icons/hi";
 
@@ -13,7 +16,7 @@ export const Default: React.FC = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Input } from "ui"
+import { Input } from "@UI"
 
 
 ...
@@ -33,7 +36,7 @@ export const Controlled: React.FC = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Input } from "ui"
+import { Input } from "@UI"
 
 
 ...
@@ -60,7 +63,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
-} from "ui";
+} from "@UI";
 
 ...
 return (

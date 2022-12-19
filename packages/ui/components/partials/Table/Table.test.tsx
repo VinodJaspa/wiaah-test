@@ -1,5 +1,5 @@
-import { Table, Tr, TBody, THead, Td, Th } from "ui/components/partials/Table";
-import { waitFor } from "ui/utils/test-utils";
+import { Table, Tr, TBody, THead, Td, Th } from "@UI/components/partials/Table";
+import { waitFor } from "@UI/utils/test-utils";
 import { shallow, ShallowWrapper, mount, ReactWrapper } from "enzyme";
 import React from "react";
 

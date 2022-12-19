@@ -1,7 +1,7 @@
 import React from "react";
-import { storybookBlocksTitle, StorybookImplemntationLayout } from "ui/utils";
+import { storybookBlocksTitle, StorybookImplemntationLayout } from "@UI/utils";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Button } from "ui";
+import { Button } from "@UI";
 
 export default {
   title: "UI/partials/Button",
@@ -12,7 +12,7 @@ export const Default = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Button } from "ui"
+import { Button } from "@UI"
 
 ...
 return (
@@ -30,7 +30,7 @@ export const WithColorSchemes = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Button } from "ui"
+import { Button } from "@UI"
 
 ...
 return (
@@ -57,7 +57,7 @@ export const loadingState = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Button } from "ui"
+import { Button } from "@UI"
 
 ...
 return (

@@ -1,4 +1,4 @@
-import { NewsfeedPostDetailsPopup, Button, useNewsFeedPostPopup } from "ui";
+import { NewsfeedPostDetailsPopup, Button, useNewsFeedPostPopup } from "@UI";
 import { storybookModalsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
 

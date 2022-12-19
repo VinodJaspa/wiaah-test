@@ -1,6 +1,6 @@
 import { HealthCenterCheckoutBookedPropertyData } from "api";
 import React from "react";
-import { ServiceCheckoutCommonCardWrapper, HealthCenterDoctorCard } from "ui";
+import { ServiceCheckoutCommonCardWrapper, HealthCenterDoctorCard } from "@UI";
 
 export interface HealthCenterCheckoutCardProps
   extends HealthCenterCheckoutBookedPropertyData {}

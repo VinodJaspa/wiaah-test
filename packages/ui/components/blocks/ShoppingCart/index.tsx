@@ -1,9 +1,9 @@
 import React from "react";
 import { MdDeleteOutline, MdClose } from "react-icons/md";
-import { useOutsideClick } from "ui";
+import { useOutsideClick } from "@UI";
 import { ArrElement } from "types";
-import { useCartSummary, Badge, ShoppingBagOutlineIcon } from "ui";
-import { useShoppingCart, useGetMyShoppingCartQuery, PriceDisplay } from "ui";
+import { useCartSummary, Badge, ShoppingBagOutlineIcon } from "@UI";
+import { useShoppingCart, useGetMyShoppingCartQuery, PriceDisplay } from "@UI";
 import { HiOutlineShoppingBag } from "react-icons/hi";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";

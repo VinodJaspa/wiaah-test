@@ -2,8 +2,8 @@ import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { useState } from "react";
 import { RecoilRoot } from "recoil";
 import { ShoppingCart } from "../";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
-import { ShoppingCartItem } from "ui/types/shoppingCart/shoppingCartItem.interface";
+import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
+import { ShoppingCartItem } from "@UI/types/shoppingCart/shoppingCartItem.interface";
 
 export default {
   title: "UI/blocks/ShoppingCart",

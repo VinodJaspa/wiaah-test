@@ -2,8 +2,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiSearch } from "react-icons/hi";
 import { HtmlDivProps } from "types";
-import { TabsViewer, Input, InputGroup, InputLeftElement, Button } from "ui";
-import { useDiscoverTabs } from "ui";
+import { TabsViewer, Input, InputGroup, InputLeftElement, Button } from "@UI";
+import { useDiscoverTabs } from "@UI";
 
 export interface DiscoverHeaderProps {
   containerProps?: HtmlDivProps;

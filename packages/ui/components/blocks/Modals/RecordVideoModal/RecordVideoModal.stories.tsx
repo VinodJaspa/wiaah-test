@@ -1,4 +1,4 @@
-import { RecordVideoModal, Button, useNewsFeedPostPopup } from "ui";
+import { RecordVideoModal, Button, useNewsFeedPostPopup } from "@UI";
 import { storybookModalsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
 import { useDisclouser } from "hooks";

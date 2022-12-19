@@ -3,8 +3,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { MdOutlineReply } from "react-icons/md";
-import { PostAttachment, Verified, EllipsisText } from "ui";
-import { useCommentReportModal, useDateDiff, useLoginPopup } from "ui";
+import { PostAttachment, Verified, EllipsisText } from "@UI";
+import { useCommentReportModal, useDateDiff, useLoginPopup } from "@UI";
 import {
   HashTags,
   Menu,
@@ -14,7 +14,7 @@ import {
   Divider,
   Avatar,
   HStack,
-} from "ui";
+} from "@UI";
 
 export interface PostCommentCardProps extends PostCommentType {
   onReply?: (message: string) => void;

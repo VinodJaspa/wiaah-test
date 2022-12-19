@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { RecentStories, storybookDataDisplayBlocksTitle } from "ui";
+import { RecentStories, storybookDataDisplayBlocksTitle } from "@UI";
 export default {
   title: storybookDataDisplayBlocksTitle + "RecentStories",
   component: RecentStories,

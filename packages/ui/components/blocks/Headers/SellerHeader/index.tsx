@@ -23,7 +23,7 @@ import {
   useUserData,
   AddNewPostModal,
   useMasterLocationMapModal,
-} from "ui";
+} from "@UI";
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import { useResponsive } from "hooks";

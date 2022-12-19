@@ -1,4 +1,4 @@
-import { NotificationsPH, SubscriptionPlanCard } from "ui";
+import { NotificationsPH, SubscriptionPlanCard } from "@UI";
 import { storybookCardsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
 

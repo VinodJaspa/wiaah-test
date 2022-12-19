@@ -1,7 +1,7 @@
 import React from "react";
 import { SubscribeForm } from ".";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 
 export default {
   title: "UI/blocks/SubscribeForm",

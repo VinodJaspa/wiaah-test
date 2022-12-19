@@ -2,7 +2,7 @@ import { RecommendedBeautyCenterDataType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { AspectRatioImage, Rate, ServicesRequestKeys, Button } from "ui";
+import { AspectRatioImage, Rate, ServicesRequestKeys, Button } from "@UI";
 import { SeperatedStringArray } from "utils";
 
 export interface BeautyCenterRecommendedSearchCardProps

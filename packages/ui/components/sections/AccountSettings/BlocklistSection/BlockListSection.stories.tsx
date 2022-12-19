@@ -1,4 +1,4 @@
-import { BlocklistSection, storybookSectionsTitle } from "ui";
+import { BlocklistSection, storybookSectionsTitle } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

@@ -1,6 +1,6 @@
 import { ComponentMeta } from "@storybook/react";
 import { storybookDataInputBlocksTitle } from "utils";
-import { ShopFilter } from "ui";
+import { ShopFilter } from "@UI";
 
 export default {
   title: storybookDataInputBlocksTitle + "ShopFilter",

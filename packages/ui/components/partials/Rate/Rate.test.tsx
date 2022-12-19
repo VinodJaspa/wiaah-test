@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { Rate } from "ui";
+import { Rate } from "@UI";
 
 describe("Rate render test", () => {
   it("should render correctly", () => {

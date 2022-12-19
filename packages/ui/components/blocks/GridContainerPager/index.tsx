@@ -1,5 +1,5 @@
 import React from "react";
-import { Pagination, Spacer } from "ui/components";
+import { Pagination, Spacer } from "@UI/components";
 
 export interface GridContainerPager {
   componentsLimit: number;

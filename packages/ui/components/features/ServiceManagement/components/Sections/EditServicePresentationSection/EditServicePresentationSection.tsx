@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { SectionHeader, AspectRatioImage, EditIcon, Divider } from "ui";
+import { SectionHeader, AspectRatioImage, EditIcon, Divider } from "@UI";
 import { mapArray } from "utils";
 
 export interface EditServicePresentationSectionProps {}

@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { postsCommentsPostIdState } from "ui";
+import { postsCommentsPostIdState } from "@UI";
 
 export const usePostsCommentsDrawer = () => {
   const [postId, setPostId] = useRecoilState(postsCommentsPostIdState);

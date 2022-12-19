@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, Rate } from "ui";
+import { Divider, Rate } from "@UI";
 export interface BuyerCommentProps {
   name: string;
   date: Date;

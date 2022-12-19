@@ -16,7 +16,7 @@ import {
   Menu,
   MenuList,
   MenuButton,
-} from "ui";
+} from "@UI";
 import { randomNum } from "utils";
 
 const LocalizationPh: any[] = [...Array(5)].reduce((acc: any[]) => {

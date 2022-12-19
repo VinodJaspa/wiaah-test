@@ -1,5 +1,5 @@
 import React from "react";
-import { ProgressBars } from "ui";
+import { ProgressBars } from "@UI";
 
 export const StoiresProgressBars: React.FC = () => {
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import { DurationDisplay } from "ui";
+import { DurationDisplay } from "@UI";
 import { useTranslation } from "react-i18next";
 import { BsPlayFill, BsPauseFill } from "react-icons/bs";
 import { HtmlAudioProps } from "types";

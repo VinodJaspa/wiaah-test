@@ -10,7 +10,7 @@ import {
   useShopPostPopup,
   PostViewPopup,
   SocialShopPostcard,
-} from "ui";
+} from "@UI";
 
 export interface ShopCardsListWrapperProps
   extends Omit<SocialShopCardProps, "shopCardInfo"> {

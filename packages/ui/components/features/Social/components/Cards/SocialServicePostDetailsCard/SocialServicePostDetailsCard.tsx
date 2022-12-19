@@ -9,7 +9,7 @@ import {
   EllipsisText,
   SocialServicePostAttachment,
   Slider,
-} from "ui";
+} from "@UI";
 
 export interface SocialServicePostDetailsCardProps extends ServicePostType {
   onServiceClick?: (id: string) => any;

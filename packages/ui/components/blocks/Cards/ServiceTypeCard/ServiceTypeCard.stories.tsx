@@ -1,6 +1,6 @@
 import { storybookCardsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
-import { ServiceTypeCard } from "ui";
+import { ServiceTypeCard } from "@UI";
 
 export default {
   title: storybookCardsTitle + "ServiceTypeCard",

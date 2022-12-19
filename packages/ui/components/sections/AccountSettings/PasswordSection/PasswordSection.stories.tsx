@@ -1,7 +1,10 @@
-import { StorybookImplemntationLayout, storybookSectionsTitle } from "ui/utils";
+import {
+  StorybookImplemntationLayout,
+  storybookSectionsTitle,
+} from "@UI/utils";
 import React from "react";
 import { ComponentMeta } from "@storybook/react";
-import { PasswordSection } from "ui";
+import { PasswordSection } from "@UI";
 
 export default {
   title: storybookSectionsTitle + "PasswordSection",

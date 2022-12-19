@@ -1,5 +1,5 @@
 import { storybookLayoutTitle } from "utils";
-import { SectionsLayout } from "ui";
+import { SectionsLayout } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 import React from "react";
 export default {

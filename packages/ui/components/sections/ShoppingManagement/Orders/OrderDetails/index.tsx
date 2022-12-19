@@ -36,12 +36,12 @@ import {
   CloseIcon,
   CancelIcon,
   Pagination,
-} from "ui";
+} from "@UI";
 import { getRandomImage } from "placeholder";
 import { randomNum } from "utils";
 import { useModalDisclouser, useAccountType } from "hooks";
 import { OrderedProductStatus, PriceType } from "types";
-import { useUpdateProductStatus } from "ui";
+import { useUpdateProductStatus } from "@UI";
 import { UpdateProductStatusDto } from "dto";
 
 export const OrderDetailsSection: React.FC = () => {

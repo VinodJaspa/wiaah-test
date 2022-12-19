@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { WeekdaysOpenTimeInput } from "ui";
+import { WeekdaysOpenTimeInput } from "@UI";
 
 export const WeekdaysSchedule: React.FC = () => {
   const { t } = useTranslation();

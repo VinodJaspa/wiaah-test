@@ -3,8 +3,8 @@ import { useRouter } from "next/router";
 import { SidebarProvider } from "../helpers/SidebarContext";
 import classNames from "classnames";
 import { useTranslation } from "react-i18next";
-import { Language } from "ui/languages/enums/Language";
-import { useResponsive } from "ui";
+import { Language } from "@UI/languages/enums/Language";
+import { useResponsive } from "@UI";
 import { runIfFn } from "utils";
 
 export interface RootProps {

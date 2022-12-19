@@ -16,7 +16,7 @@ import {
   ShoppingCartIcon,
   PriceDisplay,
   UnDiscountedPriceDisplay,
-} from "ui";
+} from "@UI";
 
 export interface SocialShopPostcardProps {
   profileInfo: ProfileInfo;

@@ -5,8 +5,8 @@ import {
   InputLeftElement,
   InputProps,
   InputRightElement,
-} from "ui";
-import { Input } from "ui";
+} from "@UI";
+import { Input } from "@UI";
 import { HtmlInputProps } from "types";
 export interface SearchFilterInputProps extends InputProps {
   value: string;

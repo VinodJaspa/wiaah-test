@@ -17,7 +17,7 @@ import {
   Divider,
   InputProps,
   HashTagInput,
-} from "ui";
+} from "@UI";
 import { FileRes } from "utils";
 import { NewServiceSchemas } from "validation";
 

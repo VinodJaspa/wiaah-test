@@ -4,7 +4,7 @@ import {
   Button,
   ModalExtendedWrapper,
   ModalButton,
-} from "ui";
+} from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

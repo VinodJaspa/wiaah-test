@@ -1,5 +1,5 @@
 import { HtmlDivProps, PriceType } from "types";
-import { PriceDisplay } from "ui";
+import { PriceDisplay } from "@UI";
 
 export interface FinancalCardProps extends HtmlDivProps {
   title: string;

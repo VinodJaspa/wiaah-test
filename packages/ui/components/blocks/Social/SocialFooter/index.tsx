@@ -1,5 +1,5 @@
-import { Divider, Select, SelectOption } from "ui";
-import { Language } from "ui/languages/enums/Language";
+import { Divider, Select, SelectOption } from "@UI";
+import { Language } from "@UI/languages/enums/Language";
 import { useRouter } from "next/router";
 import { Country } from "country-state-city";
 import { useTranslation } from "react-i18next";

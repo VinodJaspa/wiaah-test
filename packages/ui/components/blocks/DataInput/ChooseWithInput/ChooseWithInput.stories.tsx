@@ -1,6 +1,6 @@
 import { storybookDataInputBlocksTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
-import { ChooseWithInput } from "ui";
+import { ChooseWithInput } from "@UI";
 
 export default {
   title: storybookDataInputBlocksTitle + "ChooseWithInput",

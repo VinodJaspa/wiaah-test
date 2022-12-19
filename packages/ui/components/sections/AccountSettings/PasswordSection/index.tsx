@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FormikInput, Button, SectionHeader } from "ui";
+import { FormikInput, Button, SectionHeader } from "@UI";
 
 export interface PasswordSectionProps {}
 

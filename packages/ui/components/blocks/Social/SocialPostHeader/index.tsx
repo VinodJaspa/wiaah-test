@@ -1,7 +1,7 @@
 import { Button, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Avatar } from "ui";
+import { Avatar } from "@UI";
 import { useStory } from "@src/Hooks";
 export interface SocialPostHeaderProps {
   thumbnail: string;

@@ -17,7 +17,7 @@ import {
   TableContainer,
   ItemsPagination,
   usePaginationControls,
-} from "ui";
+} from "@UI";
 import { randomNum } from "utils";
 
 const availableAmount = randomNum(500);

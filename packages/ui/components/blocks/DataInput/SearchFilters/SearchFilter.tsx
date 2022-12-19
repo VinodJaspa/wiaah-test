@@ -10,7 +10,7 @@ import {
   SpinnerFallback,
   FilterDisplaySwitcher,
   SpinnerFallbackProps,
-} from "ui";
+} from "@UI";
 
 export interface SearchFilterProps {
   filters: SearchFilterType[];

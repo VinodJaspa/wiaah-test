@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, RenderResult } from "ui/utils/test-utils";
+import { render, fireEvent, RenderResult } from "@UI/utils/test-utils";
 
 import { SellerHeader } from ".";
 const selectors = {

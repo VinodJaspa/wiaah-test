@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow, ShallowWrapper } from "enzyme";
-import { Radio } from "ui";
+import { Radio } from "@UI";
 import { getTestId, setTestid } from "utils";
 
 describe("Radio render test", () => {

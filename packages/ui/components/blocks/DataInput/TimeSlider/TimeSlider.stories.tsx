@@ -1,6 +1,6 @@
 import { mapTimeRange, storybookDataInputBlocksTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
-import { TimeSlider } from "ui";
+import { TimeSlider } from "@UI";
 import React from "react";
 import { TimeData } from ".";
 export default {

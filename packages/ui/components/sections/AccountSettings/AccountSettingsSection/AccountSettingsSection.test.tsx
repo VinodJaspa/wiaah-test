@@ -1,7 +1,7 @@
 import React from "react";
 import { mount, ReactWrapper } from "enzyme";
-import { AccountSettingsSection } from "ui";
-import * as apiHooks from "ui/Hooks/ApiHooks";
+import { AccountSettingsSection } from "@UI";
+import * as apiHooks from "@UI/Hooks/ApiHooks";
 import { UpdateAccouuntSettingsDto } from "types";
 import { getMountedComponent, getTestId, waitFor } from "utils";
 import { RecoilRoot } from "recoil";

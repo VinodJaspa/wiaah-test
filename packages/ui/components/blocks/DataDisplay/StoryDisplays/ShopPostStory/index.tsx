@@ -1,7 +1,7 @@
 import React from "react";
-import { SocialShopCard, shopCardInfoPlaceholder } from "ui";
+import { SocialShopCard, shopCardInfoPlaceholder } from "@UI";
 import { useRouter } from "next/router";
-import { useStory } from "ui";
+import { useStory } from "@UI";
 
 export interface ShopPostStoryProps {
   postId: string;

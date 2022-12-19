@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { Tabs, TabsHeader, TabList, TabItem, TabTitle } from "ui";
+import { Tabs, TabsHeader, TabList, TabItem, TabTitle } from "@UI";
 
 describe("Tabs render test", () => {
   it("should render correctly", () => {

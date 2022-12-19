@@ -1,14 +1,14 @@
 import { newsfeedPosts } from "placeholder";
 import React from "react";
 import { PostCardInfo } from "types";
-import { PostCard } from "ui/components/blocks/Social/PostCard";
-import { PostViewPopup } from "ui/components/blocks/Popups";
-import { PostAttachmentsViewer } from "ui/components/blocks/DataDisplay";
+import { PostCard } from "@UI/components/blocks/Social/PostCard";
+import { PostViewPopup } from "@UI/components/blocks/Popups";
+import { PostAttachmentsViewer } from "@UI/components/blocks/DataDisplay";
 import {
   ListWrapper,
   GridListOrganiser,
   ListWrapperProps,
-} from "ui/components/blocks/Wrappers";
+} from "@UI/components/blocks/Wrappers";
 import { useNewsFeedPostPopup } from "@src/Hooks";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {

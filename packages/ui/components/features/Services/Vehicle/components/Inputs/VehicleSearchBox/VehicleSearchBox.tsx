@@ -10,7 +10,7 @@ import {
   VehicleDropOffDateInput,
   Button,
   ServicesRequestKeys,
-} from "ui";
+} from "@UI";
 
 export interface VehicleSearchBoxProps {
   onSearch?: (filters: FormatedSearchableFilter) => any;

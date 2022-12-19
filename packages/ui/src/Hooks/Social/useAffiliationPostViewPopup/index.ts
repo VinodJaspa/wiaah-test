@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { AffiliationPostIdState } from "ui";
+import { AffiliationPostIdState } from "@UI";
 
 export const useAffiliationPostViewPopup = () => {
   const [postId, setPostId] = useRecoilState(AffiliationPostIdState);

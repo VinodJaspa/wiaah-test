@@ -2,8 +2,8 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiCalendarEdit } from "react-icons/bi";
-import { Menu, MenuButton, MenuList, DateInput, Select } from "ui";
-import { SelectOption } from "ui";
+import { Menu, MenuButton, MenuList, DateInput, Select } from "@UI";
+import { SelectOption } from "@UI";
 
 export interface NewProductDiscountOptionsProps {
   onChange: (props: any) => any;

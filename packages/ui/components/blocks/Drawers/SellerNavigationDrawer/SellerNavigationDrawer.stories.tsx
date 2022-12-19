@@ -1,12 +1,12 @@
 import React from "react";
 import { SellerNavigationDrawer } from ".";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import { Box, Text } from "@chakra-ui/react";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { Button } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
 import { SellerDrawerOpenState } from "@src/state";
-import { AffiliationIcon, AffiliationIconOutline, UsersProfiles } from "ui";
+import { AffiliationIcon, AffiliationIconOutline, UsersProfiles } from "@UI";
 import {
   HiUserGroup,
   HiOutlineUserGroup,

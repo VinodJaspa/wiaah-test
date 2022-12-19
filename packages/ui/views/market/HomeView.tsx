@@ -6,7 +6,7 @@ import {
   useSearchFilters,
   PaginationWrapper,
   ShopsAndServicesRecommendationsList,
-} from "ui";
+} from "@UI";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { usePagination } from "hooks";

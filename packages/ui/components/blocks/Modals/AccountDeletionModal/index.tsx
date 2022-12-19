@@ -15,7 +15,7 @@ import {
   Textarea,
   Checkbox,
   Divider,
-} from "ui";
+} from "@UI";
 
 export const AccountDeletionModal: React.FC = () => {
   const { t } = useTranslation();

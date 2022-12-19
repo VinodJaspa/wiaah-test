@@ -5,7 +5,7 @@ import {
   ServiceCardPresentation,
   ServicesRequestKeys,
   LocationAddressDisplay,
-} from "ui";
+} from "@UI";
 import { setTestid } from "utils";
 
 export interface PractitionerSearchResultsCardProps {

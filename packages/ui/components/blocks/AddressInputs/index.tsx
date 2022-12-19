@@ -9,13 +9,13 @@ import {
   Prefix,
   Spacer,
   PhoneNumberInput,
-} from "ui";
+} from "@UI";
 import { AddressDetails, AddressInputsFields } from "types";
 import { FlagIcon, FlagIconCode } from "react-flag-kit";
 import { Country } from "country-state-city";
 import { FaSearch } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import { SearchFilterInput } from "ui";
+import { SearchFilterInput } from "@UI";
 import { Form, Formik } from "formik";
 
 export interface AddressInputsProps {

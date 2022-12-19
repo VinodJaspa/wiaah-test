@@ -1,5 +1,5 @@
 import React from "react";
-import { InputGroup, Select, SelectOption } from "ui";
+import { InputGroup, Select, SelectOption } from "@UI";
 import { mapArray } from "utils";
 
 export interface FilterSelectInputProps {

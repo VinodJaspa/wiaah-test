@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { CookiesInfoBanner, storybookBlocksTitle } from "ui";
+import { CookiesInfoBanner, storybookBlocksTitle } from "@UI";
 export default {
   title: storybookBlocksTitle + "CookiesInfoBanner",
   component: CookiesInfoBanner,

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Button, Input, Spacer, Textarea } from "ui";
+import { Button, Input, Spacer, Textarea } from "@UI";
 import { IoMdMail } from "react-icons/io";
 import { FaUser } from "react-icons/fa";
 import { useTranslation } from "react-i18next";

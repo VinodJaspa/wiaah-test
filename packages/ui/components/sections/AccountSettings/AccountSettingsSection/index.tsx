@@ -31,9 +31,9 @@ import {
   useGetAccountSettingsQuery,
   useUpdateAccountSettingsMutation,
   PhoneNumberInput,
-} from "ui";
+} from "@UI";
 import { useAccountType } from "hooks";
-import { accountTypes } from "ui";
+import { accountTypes } from "@UI";
 
 export interface AccountSettingsSectionProps {
   variant?: "seller" | "buyer";

@@ -1,5 +1,5 @@
 import React from "react";
-import { DateDayComponentProps, AspectRatio } from "ui";
+import { DateDayComponentProps, AspectRatio } from "@UI";
 
 export interface ResturantFindTableFilterDateDayComponentProps
   extends DateDayComponentProps {}

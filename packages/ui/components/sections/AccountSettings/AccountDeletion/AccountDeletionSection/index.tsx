@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useModalDisclouser } from "ui";
+import { useModalDisclouser } from "@UI";
 import {
   AccountDeletionModal,
   Modal,
@@ -12,7 +12,7 @@ import {
   Input,
   SectionHeader,
   useSuspendAccountMutation,
-} from "ui";
+} from "@UI";
 
 export const AccountDeletionSection: React.FC = () => {
   const { t } = useTranslation();

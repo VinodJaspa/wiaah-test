@@ -1,5 +1,5 @@
 import { storybookBlocksTitle } from "utils";
-import { Information } from "ui";
+import { Information } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

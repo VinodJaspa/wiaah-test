@@ -16,7 +16,7 @@ import {
   Divider,
   ModalFooter,
   Input,
-} from "ui";
+} from "@UI";
 import { useTranslation } from "react-i18next";
 import { MdClose } from "react-icons/md";
 import { useNewWithdrawalModal } from "@src/Hooks";

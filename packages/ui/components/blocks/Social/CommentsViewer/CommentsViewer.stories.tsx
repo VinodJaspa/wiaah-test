@@ -1,9 +1,9 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { CommentsViewer } from "ui";
-import { PostCardPlaceHolder } from "ui/placeholder";
+import { CommentsViewer } from "@UI";
+import { PostCardPlaceHolder } from "@UI/placeholder";
 
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 export default {
   title: "UI/blocks/Social/CommentsViewer",
   component: CommentsViewer,

@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, EllipsisText, HashTags, Button } from "ui";
+import { Avatar, EllipsisText, HashTags, Button } from "@UI";
 import { useTranslation } from "react-i18next";
 import { HiLocationMarker } from "react-icons/hi";
 import { HiUser } from "react-icons/hi";

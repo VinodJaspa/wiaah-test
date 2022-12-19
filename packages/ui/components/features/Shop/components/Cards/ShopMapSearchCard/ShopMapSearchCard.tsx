@@ -1,7 +1,7 @@
 import { ShopMapSearchDataType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { AspectRatioImage, Rate } from "ui";
+import { AspectRatioImage, Rate } from "@UI";
 
 export interface ShopMapSearchCardProps extends ShopMapSearchDataType {}
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { FlexStack } from "ui";
+import { FlexStack } from "@UI";
 
 export interface ItemTable {
   title: string;

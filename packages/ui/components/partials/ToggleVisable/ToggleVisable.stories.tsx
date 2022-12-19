@@ -1,6 +1,6 @@
 import { storybookPartailsTitle, StorybookImplemntationLayout } from "utils";
 import { ComponentMeta } from "@storybook/react";
-import { ToggleVisable, ToggleVisableItem, Button } from "ui";
+import { ToggleVisable, ToggleVisableItem, Button } from "@UI";
 
 export default {
   title: storybookPartailsTitle + "ToggleVisable",
@@ -11,7 +11,7 @@ export const Default = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { ToggleVisable, ToggleVisableItem, Button } from "ui";
+import { ToggleVisable, ToggleVisableItem, Button } from "@UI";
 <ToggleVisable>
     {({ changeState, state }) => (
         <div className="flex flex-col gap-4">

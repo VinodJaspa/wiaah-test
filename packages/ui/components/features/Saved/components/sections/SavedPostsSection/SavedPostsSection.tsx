@@ -5,7 +5,7 @@ import {
   SectionHeader,
   PostCardsListWrapper,
   newsfeedPosts,
-} from "ui";
+} from "@UI";
 
 export const SavedPostsSection: React.FC = () => {
   const { t } = useTranslation();

@@ -20,7 +20,7 @@ import {
   DateInput,
   Button,
   BookedServicesCostDetails,
-} from "ui";
+} from "@UI";
 import { isDate } from "utils";
 
 export const ServiceReservastion: React.FC = () => {

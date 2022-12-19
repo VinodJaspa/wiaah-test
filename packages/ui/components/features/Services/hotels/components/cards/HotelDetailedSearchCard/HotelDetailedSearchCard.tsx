@@ -8,7 +8,7 @@ import {
   Rate,
   AspectRatioImage,
   RateTextPresentation,
-} from "ui";
+} from "@UI";
 
 export interface HotelDetailedSearchCardProps
   extends FilteredHotelsMetaDataType {

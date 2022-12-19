@@ -8,7 +8,7 @@ import {
   FlexStack,
   Spacer,
   HStack,
-} from "ui";
+} from "@UI";
 import { Country, City } from "country-state-city";
 import { Category } from "types";
 import { useTranslation } from "react-i18next";

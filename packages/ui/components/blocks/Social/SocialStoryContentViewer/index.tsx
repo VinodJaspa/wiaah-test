@@ -6,14 +6,14 @@ import {
   useTimer,
   CurrentStoryProgressState,
   PostAttachment,
-} from "ui";
+} from "@UI";
 import {
   ActionPostStory,
   AffiliationPostStory,
   NewsFeedPostStory,
   ShopPostStory,
   ServicePostStory,
-} from "ui";
+} from "@UI";
 
 export interface SocialStoryContentViewerProps extends SocialStoryContentData {
   play?: boolean;

@@ -9,9 +9,9 @@ import {
   Button,
   EditIcon,
   Divider,
-} from "ui";
+} from "@UI";
 import { ChatUserData, HtmlDivProps } from "types";
-import { useResponsive } from "ui";
+import { useResponsive } from "@UI";
 import { useRouting } from "routing";
 
 export interface ChatMessagesSideBarProps {

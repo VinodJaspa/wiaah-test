@@ -1,6 +1,9 @@
 import React from "react";
-import { StorybookImplemntationLayout, storybookSectionsTitle } from "ui/utils";
-import { AccountSettingsSection } from "ui";
+import {
+  StorybookImplemntationLayout,
+  storybookSectionsTitle,
+} from "@UI/utils";
+import { AccountSettingsSection } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

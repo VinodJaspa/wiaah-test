@@ -1,7 +1,7 @@
 import React from "react";
 import { Translation, useTranslation } from "react-i18next";
 import { FormOptionType } from "types";
-import { Checkbox, HStack, TranslationText, Select, SelectOption } from "ui";
+import { Checkbox, HStack, TranslationText, Select, SelectOption } from "@UI";
 
 export type IncludedServicesCost = "free" | "paid";
 

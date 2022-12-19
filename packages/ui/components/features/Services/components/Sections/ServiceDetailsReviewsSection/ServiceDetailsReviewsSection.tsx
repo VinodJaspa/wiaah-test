@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ReviewLevel, ReviewLevelData, Avatar, StarIcon } from "ui";
+import { ReviewLevel, ReviewLevelData, Avatar, StarIcon } from "@UI";
 import { mapArray, setTestid } from "utils";
 
 export interface ServiceDetailsReviewsSectionProps {

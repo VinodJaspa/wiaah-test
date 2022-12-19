@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow, mount, ReactWrapper } from "enzyme";
 import { BlocklistSection } from "./index";
-import * as apiHooks from "ui/Hooks/ApiHooks";
+import * as apiHooks from "@UI/Hooks/ApiHooks";
 import { getTestId, waitFor } from "utils";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { BlocklistUserInfo } from "types";

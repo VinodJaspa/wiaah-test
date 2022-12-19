@@ -1,5 +1,5 @@
 import { storybookHeadersTitle } from "utils";
-import { DiscoverHeader } from "ui";
+import { DiscoverHeader } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

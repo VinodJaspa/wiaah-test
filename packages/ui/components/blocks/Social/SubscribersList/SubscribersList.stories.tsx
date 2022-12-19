@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { SubscribersList } from "ui";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import { SubscribersList } from "@UI";
+import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import { SubscribersUsersPlaceholder } from "../../../../placeholder";
 export default {
   title: "UI/blocks/Social/SubscribersList",

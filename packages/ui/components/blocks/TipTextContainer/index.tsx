@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, DividerWidthChild } from "ui";
+import { Divider, DividerWidthChild } from "@UI";
 export interface TipTextContainerProps {}
 
 export const TipTextContainer: React.FC<TipTextContainerProps> = ({

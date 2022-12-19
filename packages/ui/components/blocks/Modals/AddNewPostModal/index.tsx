@@ -18,8 +18,8 @@ import {
   HStack,
   VStack,
   Textarea,
-} from "ui";
-import { FloatingContainer, Avatar } from "ui";
+} from "@UI";
+import { FloatingContainer, Avatar } from "@UI";
 import { useUserData } from "hooks";
 import { MdClose } from "react-icons/md";
 import { BsPlayFill } from "react-icons/bs";

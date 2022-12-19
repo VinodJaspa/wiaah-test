@@ -6,7 +6,7 @@ import {
   InputGroup,
   InputLeftElement,
   InputRightElement,
-} from "ui/components/partials/Input";
+} from "@UI/components/partials/Input";
 
 const selectors = {
   leftElement: "InputLeftElement",

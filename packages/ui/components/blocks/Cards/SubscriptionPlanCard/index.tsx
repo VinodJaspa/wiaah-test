@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { PriceType } from "types";
-import { Button } from "ui";
+import { Button } from "@UI";
 
 export interface SubscriptionPlanCardProps {
   price: PriceType;

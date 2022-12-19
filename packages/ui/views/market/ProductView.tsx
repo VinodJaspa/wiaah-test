@@ -1,13 +1,13 @@
 import React from "react";
-import { BreadCrumb } from "ui";
+import { BreadCrumb } from "@UI";
 import {
   ProductImageGallery,
   ProductViewRight,
   ProductDescription,
   SellerCard,
   Spacer,
-} from "ui";
-import { Product } from "ui";
+} from "@UI";
+import { Product } from "@UI";
 import { useTranslation } from "react-i18next";
 import { ProductGalleryItem } from "types";
 

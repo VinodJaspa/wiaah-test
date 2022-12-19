@@ -1,4 +1,4 @@
-import { ContactUsForm, storybookBlocksTitle } from "ui";
+import { ContactUsForm, storybookBlocksTitle } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

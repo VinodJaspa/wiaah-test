@@ -1,8 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useGetServiceSearchFiltersQuery } from "ui";
-import { SpinnerFallback, SearchFilter, SearchFilterProps } from "ui";
-import { SERVICESTYPE_INDEXKEY, ServicesRequestKeys } from "ui";
+import { useGetServiceSearchFiltersQuery } from "@UI";
+import { SpinnerFallback, SearchFilter, SearchFilterProps } from "@UI";
+import { SERVICESTYPE_INDEXKEY, ServicesRequestKeys } from "@UI";
 
 export interface ServiceSidebarFilterProps {
   onChange: Pick<

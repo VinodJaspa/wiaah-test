@@ -1,7 +1,10 @@
 import { ComponentMeta } from "@storybook/react";
 import React from "react";
-import { Table, TBody, THead, Td, Th, Tr } from "ui";
-import { StorybookImplemntationLayout, storybookPartailsTitle } from "ui/utils";
+import { Table, TBody, THead, Td, Th, Tr } from "@UI";
+import {
+  StorybookImplemntationLayout,
+  storybookPartailsTitle,
+} from "@UI/utils";
 
 export default {
   title: storybookPartailsTitle + "Table",
@@ -12,7 +15,7 @@ export const Default = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Table, TBody, THead, Td, Th, Tr } from "ui";
+import { Table, TBody, THead, Td, Th, Tr } from "@UI";
 
 ...
 return (
@@ -67,7 +70,7 @@ export const WithColumnStretch = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Table, TBody, THead, Td, Th, Tr } from "ui";
+import { Table, TBody, THead, Td, Th, Tr } from "@UI";
 
 ...
 return (
@@ -121,7 +124,7 @@ export const WithChildsProps = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Table, TBody, THead, Td, Th, Tr } from "ui";
+import { Table, TBody, THead, Td, Th, Tr } from "@UI";
 
 ...
 return (
@@ -189,7 +192,7 @@ export const Striped = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Table, TBody, THead, Td, Th, Tr } from "ui";
+import { Table, TBody, THead, Td, Th, Tr } from "@UI";
 
 ...
 return (

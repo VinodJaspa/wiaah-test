@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { HorizontalCollaboration } from "ui";
+import { HorizontalCollaboration } from "@UI";
 import { storybookBlocksTitle } from "utils";
 export default {
   title: storybookBlocksTitle + "HorizontalCollaboration",

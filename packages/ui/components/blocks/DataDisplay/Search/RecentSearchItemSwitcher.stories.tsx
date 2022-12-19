@@ -2,7 +2,7 @@ import {
   RecentSearchItemsPH,
   storybookBlocksTitle,
   RecentSearchItemSwticher,
-} from "ui";
+} from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

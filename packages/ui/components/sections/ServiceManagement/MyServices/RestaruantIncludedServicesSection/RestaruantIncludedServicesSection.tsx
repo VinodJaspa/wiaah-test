@@ -7,7 +7,7 @@ import {
   Stack,
   Divider,
   CloseIcon,
-} from "ui";
+} from "@UI";
 import { NewServiceSchemas } from "validation";
 
 type Menu = {

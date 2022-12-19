@@ -7,7 +7,7 @@ import {
   useMediaUploadControls,
   Select,
   SelectOption,
-} from "ui";
+} from "@UI";
 
 export interface AddNewDigitalProductSectionProps {
   onChange?: (data: Record<string, any>) => any;

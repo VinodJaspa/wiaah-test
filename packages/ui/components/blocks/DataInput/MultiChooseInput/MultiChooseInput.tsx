@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { CloseIcon, InputGroup, InputSuggestions, Input, HStack } from "ui";
+import { CloseIcon, InputGroup, InputSuggestions, Input, HStack } from "@UI";
 import { FilterAndAddToArray } from "utils";
 
 export interface MultiChooseInputProps {

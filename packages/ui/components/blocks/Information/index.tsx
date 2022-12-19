@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import Link from "next/link";
-import { information } from "ui";
+import { information } from "@UI";
 import { useTranslation } from "react-i18next";
 export const Information: FC = () => {
   const { t, i18n } = useTranslation();

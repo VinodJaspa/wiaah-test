@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentMeta } from "@storybook/react";
-import { DisplayDate, storybookDataFormatingTitle } from "ui";
+import { DisplayDate, storybookDataFormatingTitle } from "@UI";
 export default {
   title: storybookDataFormatingTitle + "DisplayDate",
   component: DisplayDate,

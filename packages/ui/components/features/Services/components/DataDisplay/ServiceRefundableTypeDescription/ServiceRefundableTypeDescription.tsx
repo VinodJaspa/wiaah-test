@@ -2,7 +2,7 @@ import { useDateManipulation } from "hooks";
 import { useTranslation } from "react-i18next";
 import { DateDetails } from "utils";
 import React from "react";
-import { PriceDisplay } from "ui";
+import { PriceDisplay } from "@UI";
 export interface ServiceRefundableTypeDescriptionProps {
   cost: number;
   duration: number;

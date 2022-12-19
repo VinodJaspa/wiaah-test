@@ -1,114 +1,110 @@
 import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { SectionHeader, Switch, TranslationText } from "ui";
+import { SectionHeader, Switch, TranslationText } from "@UI";
 import { PersonalizationAndDataDto, TranslationTextType } from "types";
 import { BsDot } from "react-icons/bs";
 
 export interface PersonalizationAndDataSectionProps {}
 
-export const PersonalizationAndDataSection: React.FC<PersonalizationAndDataSectionProps> =
-  ({}) => {
-    const [initialValue, setInitialValue] =
-      React.useState<PersonalizationAndDataDto>({
-        cookiesFromOtherCompanies: false,
-        essentialCookies: false,
-        ourCookies: false,
-      });
-    const { t } = useTranslation();
-    return (
-      <div className="flex flex-col gap-8">
-        <SectionHeader sectionTitle={t("cookies", "Cookies")} />
-        <p>
-          {t(
-            "we_use_cookies",
-            "We use cookies to help provide,personalize and improve your experience,including the ads you see,help businesses with analytics and measuring ad performance,and to provideasafer experience for you.You can learn more about how we use cookies in our Cookie Policy. We'll remember your cookie choices and apply them anywhere you're logged into Instagram and where you use your accounts to log into other Facebook products.You can review or change your choices at any time in your cookie settings."
-          )}
-        </p>
-        <Formik<PersonalizationAndDataDto>
-          initialValues={initialValue}
-          onSubmit={(data, { resetForm }) => {
-            console.log(data);
-            resetForm();
-          }}
-        >
-          {({ setFieldValue, values }) => {
-            function handleSelectAllOptional() {
-              notes.forEach((note) => {
-                setFieldValue(note.value, true);
-              });
-            }
-            return (
-              <Form className="flex flex-col gap-8">
-                <div className="hstack justify-between">
-                  <span className="text-xl font-bold">
-                    {t("essential_cookies", "Essential Cookies")}
-                  </span>
-                  <Switch
-                    checked={values.essentialCookies}
-                    onChange={(checked) =>
-                      setFieldValue("essentialCookies", checked)
-                    }
-                  />
-                </div>
-                <p>
-                  {t(
-                    "cookies_required_to_use_facebook_products",
-                    "These cookies are required to use Facebook Company Products.They're necessary for these sites to work as intended."
-                  )}
-                </p>
-                <div className="hstack justify-between">
-                  <span className="font-bold text-xl">
-                    {t("optional_cookies", "Optional Cookies")}
-                  </span>
-                  <span
-                    onClick={handleSelectAllOptional}
-                    className="cursor-pointer text-primary"
-                  >
-                    {t("select_all", "Select All")}
-                  </span>
-                </div>
-                {notes.map((note, i) => (
-                  <div className="flex flex-col gap-4">
-                    <div className="hstack justify-between">
-                      <span className="text-xl font-bold">
-                        <TranslationText translationObject={note.title} />
-                      </span>
+export const PersonalizationAndDataSection: React.FC<
+  PersonalizationAndDataSectionProps
+> = ({}) => {
+  const [initialValue, setInitialValue] =
+    React.useState<PersonalizationAndDataDto>({
+      cookiesFromOtherCompanies: false,
+      essentialCookies: false,
+      ourCookies: false,
+    });
+  const { t } = useTranslation();
+  return (
+    <div className="flex flex-col gap-8">
+      <SectionHeader sectionTitle={t("cookies", "Cookies")} />
+      <p>
+        {t(
+          "we_use_cookies",
+          "We use cookies to help provide,personalize and improve your experience,including the ads you see,help businesses with analytics and measuring ad performance,and to provideasafer experience for you.You can learn more about how we use cookies in our Cookie Policy. We'll remember your cookie choices and apply them anywhere you're logged into Instagram and where you use your accounts to log into other Facebook products.You can review or change your choices at any time in your cookie settings."
+        )}
+      </p>
+      <Formik<PersonalizationAndDataDto>
+        initialValues={initialValue}
+        onSubmit={(data, { resetForm }) => {
+          console.log(data);
+          resetForm();
+        }}
+      >
+        {({ setFieldValue, values }) => {
+          function handleSelectAllOptional() {
+            notes.forEach((note) => {
+              setFieldValue(note.value, true);
+            });
+          }
+          return (
+            <Form className="flex flex-col gap-8">
+              <div className="hstack justify-between">
+                <span className="text-xl font-bold">
+                  {t("essential_cookies", "Essential Cookies")}
+                </span>
+                <Switch
+                  checked={values.essentialCookies}
+                  onChange={(checked) =>
+                    setFieldValue("essentialCookies", checked)
+                  }
+                />
+              </div>
+              <p>
+                {t(
+                  "cookies_required_to_use_facebook_products",
+                  "These cookies are required to use Facebook Company Products.They're necessary for these sites to work as intended."
+                )}
+              </p>
+              <div className="hstack justify-between">
+                <span className="font-bold text-xl">
+                  {t("optional_cookies", "Optional Cookies")}
+                </span>
+                <span
+                  onClick={handleSelectAllOptional}
+                  className="cursor-pointer text-primary"
+                >
+                  {t("select_all", "Select All")}
+                </span>
+              </div>
+              {notes.map((note, i) => (
+                <div className="flex flex-col gap-4">
+                  <div className="hstack justify-between">
+                    <span className="text-xl font-bold">
+                      <TranslationText translationObject={note.title} />
+                    </span>
 
-                      <Switch
-                        //@ts-ignore
-                        checked={values[note.value]}
-                        onChange={(checked) =>
-                          setFieldValue(note.value, checked)
-                        }
-                      />
-                    </div>
-                    <TranslationText translationObject={note.description} />
-                    {note.notes.map((note, i) => (
-                      <div key={i} className="flex flex-col gap-2">
-                        <span className="text-lg font-bold">
-                          <TranslationText
-                            translationObject={note.noteHeader}
-                          />
-                          :
-                        </span>
-                        {note.notePoints.map((point, i) => (
-                          <div key={i} className="flex gap-2 ">
-                            <BsDot className="min-w-[1em] text-3xl" />
-                            <TranslationText translationObject={point} />
-                          </div>
-                        ))}
-                      </div>
-                    ))}
+                    <Switch
+                      //@ts-ignore
+                      checked={values[note.value]}
+                      onChange={(checked) => setFieldValue(note.value, checked)}
+                    />
                   </div>
-                ))}
-              </Form>
-            );
-          }}
-        </Formik>
-      </div>
-    );
-  };
+                  <TranslationText translationObject={note.description} />
+                  {note.notes.map((note, i) => (
+                    <div key={i} className="flex flex-col gap-2">
+                      <span className="text-lg font-bold">
+                        <TranslationText translationObject={note.noteHeader} />:
+                      </span>
+                      {note.notePoints.map((point, i) => (
+                        <div key={i} className="flex gap-2 ">
+                          <BsDot className="min-w-[1em] text-3xl" />
+                          <TranslationText translationObject={point} />
+                        </div>
+                      ))}
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </Form>
+          );
+        }}
+      </Formik>
+    </div>
+  );
+};
 
 type section = {
   title: TranslationTextType;

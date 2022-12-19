@@ -13,7 +13,7 @@ import {
   ModalContent,
   ModalOverlay,
   ModalHeader,
-} from "ui";
+} from "@UI";
 
 export interface NewsfeedPostDetailsPopupProps {}
 

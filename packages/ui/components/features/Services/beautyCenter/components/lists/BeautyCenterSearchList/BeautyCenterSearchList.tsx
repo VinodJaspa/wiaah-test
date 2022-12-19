@@ -6,7 +6,7 @@ import {
   useGetRecommendedBeautyCentersQuery,
   SpinnerFallback,
   PaginationWrapper,
-} from "ui";
+} from "@UI";
 
 export interface BeautyCenterSearchListProps {}
 

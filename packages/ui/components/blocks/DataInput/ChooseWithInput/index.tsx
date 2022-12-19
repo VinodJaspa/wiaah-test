@@ -1,6 +1,6 @@
 import React from "react";
 import { HtmlInputProps, TranslationTextType } from "types";
-import { TranslationText, Radio, HStack, Input } from "ui";
+import { TranslationText, Radio, HStack, Input } from "@UI";
 
 export type ChooseOptionInputOptType = {
   title: TranslationTextType;

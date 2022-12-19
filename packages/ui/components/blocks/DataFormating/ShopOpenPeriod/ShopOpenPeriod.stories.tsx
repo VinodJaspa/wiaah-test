@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentMeta } from "@storybook/react";
-import { ShopOpenPeriod, storybookDataFormatingTitle } from "ui";
+import { ShopOpenPeriod, storybookDataFormatingTitle } from "@UI";
 export default {
   title: storybookDataFormatingTitle + "ShopOpenPeriod",
   component: ShopOpenPeriod,

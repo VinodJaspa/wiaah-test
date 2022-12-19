@@ -2,7 +2,7 @@ import React from "react";
 import { IoHeartOutline, IoHeart, IoTrash } from "react-icons/io5";
 import { ProductType } from "api";
 import { usePreferedCurrency } from "state";
-import { PriceDisplay, Rate } from "ui";
+import { PriceDisplay, Rate } from "@UI";
 
 export interface ProductCardProps extends ProductType {
   buttonText?: string;

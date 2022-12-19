@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { QrcodeDisplay } from "ui";
+import { QrcodeDisplay } from "@UI";
 
 describe("Radio render test", () => {
   it("should render correctly", () => {

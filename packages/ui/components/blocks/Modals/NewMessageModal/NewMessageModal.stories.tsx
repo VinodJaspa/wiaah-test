@@ -1,4 +1,4 @@
-import { NewMessageModal, Button, useNewMessage } from "ui";
+import { NewMessageModal, Button, useNewMessage } from "@UI";
 import { storybookModalsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
 

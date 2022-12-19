@@ -1,5 +1,5 @@
 import React from "react";
-import { render, getTestId } from "ui/utils/test-utils";
+import { render, getTestId } from "@UI/utils/test-utils";
 import { UsersProfiles } from ".";
 
 // testid selectors

@@ -1,6 +1,6 @@
 import { storybookDataInputBlocksTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
-import { FileInput } from "ui";
+import { FileInput } from "@UI";
 
 export default {
   title: storybookDataInputBlocksTitle + "FileInput",

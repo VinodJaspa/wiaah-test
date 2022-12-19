@@ -11,7 +11,7 @@ import {
   Divider,
   TimeRangeDisplay,
   ServiceTripDateInput,
-} from "ui";
+} from "@UI";
 
 export interface ServiceCheckoutCommonCardWrapperProps
   extends CommonServiceCheckoutData {

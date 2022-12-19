@@ -1,6 +1,6 @@
 import React from "react";
 import { ServiceLocation } from "api";
-import { HStack, WrappedMap, Marker, AspectRatio } from "ui";
+import { HStack, WrappedMap, Marker, AspectRatio } from "@UI";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
 

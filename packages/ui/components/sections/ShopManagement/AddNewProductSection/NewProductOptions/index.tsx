@@ -9,7 +9,7 @@ import {
   TranslationText,
   Checkbox,
   SelectOption,
-} from "ui";
+} from "@UI";
 
 export interface ProductOptionsProps {}
 

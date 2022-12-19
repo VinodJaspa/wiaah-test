@@ -1,5 +1,8 @@
-import { NotificationsSettingsSection } from "ui";
-import { StorybookImplemntationLayout, storybookSectionsTitle } from "ui/utils";
+import { NotificationsSettingsSection } from "@UI";
+import {
+  StorybookImplemntationLayout,
+  storybookSectionsTitle,
+} from "@UI/utils";
 import React from "react";
 import { ComponentMeta } from "@storybook/react";
 

@@ -1,4 +1,4 @@
-import { userCards, storybookChatDisplay, ChatUserCard } from "ui";
+import { userCards, storybookChatDisplay, ChatUserCard } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

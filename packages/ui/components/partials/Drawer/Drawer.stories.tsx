@@ -6,7 +6,7 @@ import {
   DrawerOverlay,
   Button,
   DrawerCloseButton,
-} from "ui";
+} from "@UI";
 import React from "react";
 
 export default {
@@ -26,7 +26,7 @@ import {
   DrawerOverlay,
   Button,
   DrawerCloseButton,
-} from "ui";
+} from "@UI";
 
 ...
 const [isOpen, setOpen] = React.useState<boolean>(false);

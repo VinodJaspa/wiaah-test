@@ -2,8 +2,8 @@ import { ShoppingCartItemType } from "api";
 import React from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { getMyShoppingCartQueryKey } from "ui";
-import { ShoppingCartToggleState } from "ui";
+import { getMyShoppingCartQueryKey } from "@UI";
+import { ShoppingCartToggleState } from "@UI";
 
 export const useShoppingCart = () => {
   const [ShoppingCartOpen, setShoppingCartOpen] = useRecoilState(

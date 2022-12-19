@@ -10,8 +10,8 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { MdClose } from "react-icons/md";
-import { SubscribersUsersPlaceholder } from "ui/placeholder/social";
-import { SubscribersList } from "ui";
+import { SubscribersUsersPlaceholder } from "@UI/placeholder/social";
+import { SubscribersList } from "@UI";
 
 export interface SubscribersPopupProps {
   isOpen: boolean;

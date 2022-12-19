@@ -17,7 +17,7 @@ import {
   Th,
   HStack,
   PriceDisplay,
-} from "ui";
+} from "@UI";
 import { BookingsSectionCtx } from ".";
 
 const service: Service = {

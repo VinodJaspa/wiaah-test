@@ -31,7 +31,7 @@ import {
   AspectRatio,
   DateInputProps,
   Button,
-} from "ui";
+} from "@UI";
 import { Form, Formik } from "formik";
 import { HiFolderAdd, HiVideoCamera } from "react-icons/hi";
 import { NewServiceSchemas } from "validation";

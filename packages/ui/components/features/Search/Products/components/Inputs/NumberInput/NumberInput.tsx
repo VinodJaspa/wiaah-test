@@ -6,7 +6,7 @@ import {
   InputRightElement,
   TriangleArrowFillDownIcon,
   TriangleArrowFillUpIcon,
-} from "ui";
+} from "@UI";
 import { setTestid } from "utils";
 export interface NumberInputProps
   extends Omit<HtmlInputProps, "value" | "onChange"> {

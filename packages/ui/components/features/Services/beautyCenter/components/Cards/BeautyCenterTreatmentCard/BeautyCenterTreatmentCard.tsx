@@ -6,7 +6,7 @@ import {
   UnDiscountedPriceDisplay,
   Button,
   TimeRangeDisplay,
-} from "ui";
+} from "@UI";
 
 export interface BeautyCenterTreatmentCardProps
   extends BeautyCenterTreatmentDataType {

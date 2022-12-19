@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { SocialFooter } from "ui";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import { SocialFooter } from "@UI";
+import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 export default {
   title: "UI/blocks/Social/SocialFooter",
   component: SocialFooter,

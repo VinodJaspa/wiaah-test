@@ -17,7 +17,7 @@ import {
   InputLeftElement,
   useMutateSearchFilters,
   useSearchFilters,
-} from "ui";
+} from "@UI";
 
 export interface ServicesSearchResultsFiltersSidebarProps {
   onShowOnMap: () => any;

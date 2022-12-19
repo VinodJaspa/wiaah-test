@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ScrollableContainer, storybookBlocksTitle } from "ui";
+import { ScrollableContainer, storybookBlocksTitle } from "@UI";
 export default {
   title: storybookBlocksTitle + "ScrollableContainer",
   component: ScrollableContainer,

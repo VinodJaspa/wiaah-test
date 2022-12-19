@@ -1,7 +1,7 @@
 import React from "react";
 import { PostAttachment, ProfileInfo } from "types";
-import { ActionHeader, ActionHeaderProps } from "ui";
-import { PostAttachmentsViewer } from "ui";
+import { ActionHeader, ActionHeaderProps } from "@UI";
+import { PostAttachmentsViewer } from "@UI";
 import { useRouter } from "next/router";
 
 export interface PlaceCardProps {

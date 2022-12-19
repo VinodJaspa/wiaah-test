@@ -2,7 +2,7 @@ import { CashbackData } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HtmlDivProps } from "types";
-import { PriceDisplay } from "ui";
+import { PriceDisplay } from "@UI";
 
 export interface CashbackBadgeProps extends CashbackData {
   props?: HtmlDivProps;

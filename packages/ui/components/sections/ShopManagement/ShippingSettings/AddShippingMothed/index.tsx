@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Divider, NewShippingSettings, SectionHeader } from "ui";
+import { Divider, NewShippingSettings, SectionHeader } from "@UI";
 
 export interface AddShippingMothedProps {}
 

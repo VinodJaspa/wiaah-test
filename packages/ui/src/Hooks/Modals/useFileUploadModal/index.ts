@@ -2,7 +2,7 @@ import { useTypedReactPubsub } from "@libs";
 import React from "react";
 import { useRecoilState } from "recoil";
 import { FileUploadTypes } from "types";
-import { UploadModalState } from "ui";
+import { UploadModalState } from "@UI";
 
 export const useFileUploadModal = () => {
   const [uploadType, SetUploadType] = useRecoilState(UploadModalState);

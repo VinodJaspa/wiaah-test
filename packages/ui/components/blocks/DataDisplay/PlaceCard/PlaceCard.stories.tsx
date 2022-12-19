@@ -2,7 +2,7 @@ import {
   placeCardPlaceholder,
   storybookDataDisplayBlocksTitle,
   PlaceCard,
-} from "ui";
+} from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

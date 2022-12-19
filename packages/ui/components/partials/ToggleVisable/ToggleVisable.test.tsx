@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { ToggleVisable, Button, ToggleVisableItem } from "ui";
+import { ToggleVisable, Button, ToggleVisableItem } from "@UI";
 
 describe("Tabs render test", () => {
   it("should render correctly", () => {

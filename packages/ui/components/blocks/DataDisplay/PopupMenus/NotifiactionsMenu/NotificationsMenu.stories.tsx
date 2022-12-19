@@ -1,4 +1,4 @@
-import { storybookMenusTitle, NotifiactionsMenu, Button } from "ui";
+import { storybookMenusTitle, NotifiactionsMenu, Button } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

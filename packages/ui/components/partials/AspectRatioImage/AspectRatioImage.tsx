@@ -1,5 +1,5 @@
 import React from "react";
-import { AspectRatioProps, AspectRatio, Image } from "ui";
+import { AspectRatioProps, AspectRatio, Image } from "@UI";
 
 export interface AspectRatioImageProps extends AspectRatioProps {
   src: string;

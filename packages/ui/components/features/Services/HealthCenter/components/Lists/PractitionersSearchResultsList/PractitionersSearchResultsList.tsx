@@ -9,7 +9,7 @@ import {
   useGetHealthCenterPractitionersQuery,
   ServicesSearchGrid,
   PractitionerSearchResultsCardProps,
-} from "ui";
+} from "@UI";
 
 export const PractitionersSearchResultsList: React.FC = () => {
   const { take, page, nextPage, previousPage, goToPage } = usePagination(8);

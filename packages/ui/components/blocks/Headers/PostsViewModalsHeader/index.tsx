@@ -1,5 +1,5 @@
 import React from "react";
-import { FloatingContainer, ArrowLeftIcon } from "ui";
+import { FloatingContainer, ArrowLeftIcon } from "@UI";
 
 export interface PostsViewModalsHeaderProps {
   onBackClick?: () => any;

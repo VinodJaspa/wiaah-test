@@ -1,5 +1,5 @@
 import { HealthCenterDoctorMetaDataType } from "api";
-import { Avatar, PriceDisplay } from "ui";
+import { Avatar, PriceDisplay } from "@UI";
 import React from "react";
 export interface HealthCenterDoctorCardProps
   extends HealthCenterDoctorMetaDataType {}

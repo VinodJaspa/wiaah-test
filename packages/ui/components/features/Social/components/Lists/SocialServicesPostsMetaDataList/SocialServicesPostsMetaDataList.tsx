@@ -10,7 +10,7 @@ import {
   SpinnerFallback,
   PostViewPopup,
   SocialServiceDetailsCard,
-} from "ui";
+} from "@UI";
 
 export const SocialServicesPostsMetaDataList: React.FC = () => {
   const { page, take } = usePagination();

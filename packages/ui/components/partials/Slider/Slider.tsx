@@ -1,7 +1,7 @@
 import React from "react";
 import { HtmlDivProps } from "types";
 import { setTestid, runIfFn } from "utils";
-import { DraggableSlider } from "ui";
+import { DraggableSlider } from "@UI";
 
 export type SliderVariants = "vertical" | "horizontal";
 

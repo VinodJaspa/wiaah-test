@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { SubscribersPopup } from "ui";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import { SubscribersPopup } from "@UI";
+import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import { Button } from "@chakra-ui/react";
 import { t } from "i18next";
 export default {

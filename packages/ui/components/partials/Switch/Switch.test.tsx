@@ -1,7 +1,7 @@
-import { setTestid, getTestId } from "ui/utils/test-utils";
+import { setTestid, getTestId } from "@UI/utils/test-utils";
 import { shallow, mount, ShallowWrapper } from "enzyme";
 import React from "react";
-import { Switch } from "ui/components/partials/Switch";
+import { Switch } from "@UI/components/partials/Switch";
 
 const selectors = {
   switchButton: "SwitchButton",

@@ -6,7 +6,7 @@ import {
   MenuList,
   MenuButton,
   HotelGuestsInput,
-} from "ui";
+} from "@UI";
 export interface GuestsInputProps {}
 
 export const GuestsInput: React.FC<GuestsInputProps> = () => {

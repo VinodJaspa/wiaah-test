@@ -1,4 +1,4 @@
-import { storybookDataDisplayBlocksTitle, DurationDisplay } from "ui";
+import { storybookDataDisplayBlocksTitle, DurationDisplay } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

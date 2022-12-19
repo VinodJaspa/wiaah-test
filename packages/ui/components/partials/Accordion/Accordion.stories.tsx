@@ -1,7 +1,7 @@
 import { ComponentMeta } from "@storybook/react";
 import React from "react";
 import { StorybookImplemntationLayout, storybookPartailsTitle } from "utils";
-import { AccordionButton, AccordionItem, AccordionPanel, Accordion } from "ui";
+import { AccordionButton, AccordionItem, AccordionPanel, Accordion } from "@UI";
 
 export default {
   title: storybookPartailsTitle + "Accordion",
@@ -17,7 +17,7 @@ export const unControlled: React.FC = () => {
       AccordionItem,
       AccordionButton,
       AccordionPanel
-    } from "ui"
+    } from "@UI"
 
 
     ...
@@ -80,7 +80,7 @@ export const Controlled: React.FC = () => {
       AccordionItem,
       AccordionButton,
       AccordionPanel
-    } from "ui"
+    } from "@UI"
 
 
     ...

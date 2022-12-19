@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { HStack, ServicePropertiesSwticher } from "ui";
+import { HStack, ServicePropertiesSwticher } from "@UI";
 
 export type amenite = {
   name: string;

@@ -9,7 +9,7 @@ import {
   DrawerOverlay,
   Button,
   CloseIcon,
-} from "ui";
+} from "@UI";
 import { categories } from "placeholder";
 import { useModalDisclouser } from "hooks";
 import { useReactPubsub } from "react-pubsub";

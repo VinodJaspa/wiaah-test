@@ -1,9 +1,9 @@
 import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import React from "react";
 import { PostAttachment } from "types/market/Social";
-import { HashTagCard } from "ui";
-import { getMountedComponent } from "ui/components/helpers/test/getMountedComponent";
-import { hashtagCardInfoPlaceholder } from "ui/placeholder";
+import { HashTagCard } from "@UI";
+import { getMountedComponent } from "@UI/components/helpers/test/getMountedComponent";
+import { hashtagCardInfoPlaceholder } from "@UI/placeholder";
 const selectors = {
   postAttachment: "[data-testid='PostAttachment']",
   viewPostBtn: "[data-testid='ViewPostBtn']",

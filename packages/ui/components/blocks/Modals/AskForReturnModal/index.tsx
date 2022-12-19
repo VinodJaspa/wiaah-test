@@ -18,11 +18,11 @@ import {
   HStack,
   Input,
   Textarea,
-} from "ui";
+} from "@UI";
 import {
   useGetReceivedProductsQuery,
   useAskForProductReturnMutation,
-} from "ui";
+} from "@UI";
 import { AskForReturnDto } from "dto";
 import { FormOptionType } from "types";
 import { AskForReturnValidationSchema } from "validation";

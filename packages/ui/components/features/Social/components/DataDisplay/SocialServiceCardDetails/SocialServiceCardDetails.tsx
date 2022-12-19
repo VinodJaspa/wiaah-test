@@ -8,7 +8,7 @@ import {
   Button,
   PriceDisplay,
   UnDiscountedPriceDisplay,
-} from "ui";
+} from "@UI";
 
 export interface SocialServiceCardDetailsProps {
   user: ProfileInfo;

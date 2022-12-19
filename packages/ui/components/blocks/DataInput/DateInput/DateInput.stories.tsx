@@ -1,4 +1,4 @@
-import { DateInput, DateRange } from "ui";
+import { DateInput, DateRange } from "@UI";
 import { storybookDataInputBlocksTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
 import React from "react";

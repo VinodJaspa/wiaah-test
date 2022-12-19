@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
 import { HtmlSvgProps } from "types";
-import { BedIcon, BathTubeIcon, CarIcon, PetPawIcon } from "ui";
+import { BedIcon, BathTubeIcon, CarIcon, PetPawIcon } from "@UI";
 import { runIfFn } from "utils";
 export interface ServicesProviderDescriptionSectionProps {
   description: string;

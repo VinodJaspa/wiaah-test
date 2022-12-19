@@ -1,4 +1,4 @@
-import { ShopPostViewModal, Button, useShopPostPopup } from "ui";
+import { ShopPostViewModal, Button, useShopPostPopup } from "@UI";
 import { storybookModalsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
 

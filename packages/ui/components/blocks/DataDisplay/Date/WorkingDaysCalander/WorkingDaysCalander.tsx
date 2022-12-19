@@ -1,7 +1,7 @@
 import React from "react";
 import { FormatedWorkingDaysType, WorkingDate } from "types";
 import { WorkingDayColumn } from "./WorkingDayColumn";
-import { Slider, ArrowLeftIcon, ArrowRightIcon } from "ui";
+import { Slider, ArrowLeftIcon, ArrowRightIcon } from "@UI";
 
 export interface WorkingDaysCalenderProps {
   workingDates: WorkingDate[];

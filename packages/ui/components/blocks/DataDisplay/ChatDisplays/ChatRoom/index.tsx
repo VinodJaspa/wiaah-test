@@ -5,7 +5,7 @@ import {
   ChatRoomInput,
   useGetChatRoomData,
   SpinnerFallback,
-} from "ui";
+} from "@UI";
 export interface ChatRoomProps {
   roomId: string;
 }

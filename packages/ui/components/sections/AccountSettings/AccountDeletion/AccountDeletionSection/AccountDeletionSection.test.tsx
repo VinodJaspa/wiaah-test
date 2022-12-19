@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
-import { AccountDeletionSection } from "ui";
-import * as apiHooks from "ui/Hooks/ApiHooks";
+import { AccountDeletionSection } from "@UI";
+import * as apiHooks from "@UI/Hooks/ApiHooks";
 import { getMountedComponent, getTestId, waitFor } from "utils";
 import { QueryClient, QueryClientProvider } from "react-query";
 import React from "react";
