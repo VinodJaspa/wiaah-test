@@ -10,7 +10,7 @@ import {
   Button,
   Divider,
   SectionHeader,
-} from "ui";
+} from "@UI";
 import { randomNum } from "utils";
 
 export interface MyVerificationSectionProps {}

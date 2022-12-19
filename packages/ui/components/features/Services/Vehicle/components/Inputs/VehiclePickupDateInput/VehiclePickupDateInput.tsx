@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HtmlDivProps } from "types";
-import { DateInput, Menu, MenuList, CalenderIcon, MenuButton } from "ui";
+import { DateInput, Menu, MenuList, CalenderIcon, MenuButton } from "@UI";
 
 export interface VehiclePickupDateInputProps extends HtmlDivProps {}
 

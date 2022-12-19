@@ -2,7 +2,7 @@ import React from "react";
 import { useResponsive, useDimensions } from "hooks";
 import { SectionContext } from "state";
 import { SettingsSectionType, TranslationTextType } from "types";
-import { SettingsSectionsSidebar, TranslationText } from "ui";
+import { SettingsSectionsSidebar, TranslationText } from "@UI";
 import { useRouting } from "routing";
 
 export interface SettingsLayoutProps {

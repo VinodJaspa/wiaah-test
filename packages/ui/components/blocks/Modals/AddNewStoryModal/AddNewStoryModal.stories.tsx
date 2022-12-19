@@ -1,4 +1,4 @@
-import { AddNewStoryModal, Button, useNewStoryModal } from "ui";
+import { AddNewStoryModal, Button, useNewStoryModal } from "@UI";
 import { storybookModalsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
 

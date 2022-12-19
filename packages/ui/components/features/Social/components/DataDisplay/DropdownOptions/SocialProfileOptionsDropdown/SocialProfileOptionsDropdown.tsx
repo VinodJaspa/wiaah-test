@@ -1,6 +1,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Menu, MenuButton, MenuList, MenuItem, useSocialReportModal } from "ui";
+import {
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  useSocialReportModal,
+} from "@UI";
 
 export interface SocialProfileOptionsDropdownProps {
   profileId: string;

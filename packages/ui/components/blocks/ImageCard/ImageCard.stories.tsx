@@ -1,5 +1,5 @@
 import { storybookBlocksTitle } from "utils";
-import { ImageCard } from "ui";
+import { ImageCard } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

@@ -5,7 +5,7 @@ import {
   PriceDisplay,
   ExtraServiceInput,
   CloseIcon,
-} from "ui";
+} from "@UI";
 import { setTestid } from "utils";
 
 export interface ServiceExtrasInputListProps {

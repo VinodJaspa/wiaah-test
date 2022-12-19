@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { shopPostPopupIdState } from "ui";
+import { shopPostPopupIdState } from "@UI";
 
 export const useShopPostPopup = () => {
   const [postId, setPostId] = useRecoilState(shopPostPopupIdState);

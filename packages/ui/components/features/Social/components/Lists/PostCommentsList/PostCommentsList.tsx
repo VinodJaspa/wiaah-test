@@ -5,7 +5,7 @@ import {
   CommentInput,
   CommentsViewer,
   SpinnerFallback,
-} from "ui";
+} from "@UI";
 
 export interface PostCommentsListProps {
   postId: string;

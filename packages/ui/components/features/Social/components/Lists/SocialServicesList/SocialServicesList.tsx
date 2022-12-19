@@ -10,7 +10,7 @@ import {
   SocialServiceDetailsCardProps,
   GridListOrganiser,
   SocialServicesPostCard,
-} from "ui";
+} from "@UI";
 import { randomNum } from "utils";
 
 const servicesData = [

@@ -8,8 +8,8 @@ import {
   Modal,
   ModalOverlay,
   ModalContent,
-} from "ui";
-import { TakePictureModal, RecordVideoModal } from "ui";
+} from "@UI";
+import { TakePictureModal, RecordVideoModal } from "@UI";
 import { getFileSrcData, FileRes } from "utils";
 
 export type MediaUploadType = "image" | "video";

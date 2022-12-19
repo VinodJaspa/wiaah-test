@@ -9,7 +9,7 @@ import {
   MenuButton,
   MenuList,
   TimeType,
-} from "ui";
+} from "@UI";
 import { DateDetails } from "utils";
 
 export interface DateAndTimeInputProps {

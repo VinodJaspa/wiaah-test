@@ -288,4 +288,12 @@ export class AccountsService {
       },
     });
   }
+
+  async deleteAccount(id: string) {
+    return this.prisma.account.delete({
+      where: {
+        id,
+      },
+    });
+  }
 }

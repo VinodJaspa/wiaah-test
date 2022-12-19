@@ -1,6 +1,6 @@
-import { storybookSectionsTitle } from "ui/utils";
+import { storybookSectionsTitle } from "@UI/utils";
 import { ComponentMeta } from "@storybook/react";
-import { AccountDeletionSection } from "ui";
+import { AccountDeletionSection } from "@UI";
 
 export default {
   title: storybookSectionsTitle + "AccountDeletionSection",

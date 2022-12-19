@@ -15,7 +15,7 @@ import {
   ModalFooter,
   Textarea,
   ServiceCheckoutCardSwitcher,
-} from "ui";
+} from "@UI";
 import { useTranslation } from "react-i18next";
 import { PendingAppointmentData } from "api";
 import { DeclinePendingAppointmentDto } from "dto";

@@ -10,7 +10,7 @@ import {
   VehicleSearchCard,
   ServiceCancelationPolicyInput,
   Button,
-} from "ui";
+} from "@UI";
 
 export const VehiclesSelectableList: React.FC<{
   vehicles: VehicleSearchData[];

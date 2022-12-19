@@ -1,6 +1,6 @@
 import React from "react";
 import { TransactionStatusEnum } from "types";
-import { PendingIcon, FailedIcon, SuccessIcon } from "ui";
+import { PendingIcon, FailedIcon, SuccessIcon } from "@UI";
 
 export type StatusEnum = TransactionStatusEnum;
 

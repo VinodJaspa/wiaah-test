@@ -9,7 +9,7 @@ import {
   CloseIcon,
   Button,
   Textarea,
-} from "ui";
+} from "@UI";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { TranslationTextType } from "types";

@@ -1,6 +1,6 @@
 import { storybookDataInputBlocksTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
-import { FormikInput, Select, SelectOption, SelectProps } from "ui";
+import { FormikInput, Select, SelectOption, SelectProps } from "@UI";
 import React from "react";
 import { Form, Formik } from "formik";
 

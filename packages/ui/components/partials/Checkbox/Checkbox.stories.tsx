@@ -1,6 +1,9 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
-import { StorybookImplemntationLayout, storybookPartailsTitle } from "ui/utils";
+import {
+  StorybookImplemntationLayout,
+  storybookPartailsTitle,
+} from "@UI/utils";
 import { Checkbox } from "./";
 
 export default {
@@ -14,7 +17,7 @@ export const Default = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Checkbox } from "ui"
+import { Checkbox } from "@UI"
 
 
 ...

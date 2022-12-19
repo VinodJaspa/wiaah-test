@@ -1,5 +1,5 @@
 import React from "react";
-import { UserProfileDisplay, storybookStoriesTitle } from "ui";
+import { UserProfileDisplay, storybookStoriesTitle } from "@UI";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 
 export default {

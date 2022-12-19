@@ -8,6 +8,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AccountRepository } from './repository';
 import { accountCommandHandlers } from './commands';
 import { CqrsModule } from '@nestjs/cqrs';
+import { AccountEventHandlers } from './events';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { CqrsModule } from '@nestjs/cqrs';
     PrismaService,
     AccountRepository,
     ...accountCommandHandlers,
+    ...AccountEventHandlers,
   ],
   controllers: [AccountsController],
 })

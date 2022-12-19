@@ -1,7 +1,7 @@
 import { IoMdMail, IoMdKey, IoMdPerson } from "react-icons/io";
 import Link from "next/link";
 import React, { FC } from "react";
-import { Spacer, Button, FormikInput, Checkbox, CheckboxProps } from "ui";
+import { Spacer, Button, FormikInput, Checkbox, CheckboxProps } from "@UI";
 import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
 

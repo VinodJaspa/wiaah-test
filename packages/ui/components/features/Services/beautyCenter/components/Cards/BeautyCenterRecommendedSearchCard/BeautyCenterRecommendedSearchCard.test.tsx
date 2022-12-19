@@ -4,7 +4,7 @@ import {
   BeautyCenterRecommendedSearchCard,
   BeautyCenterRecommendedSearchCardProps,
 } from "./BeautyCenterRecommendedSearchCard";
-import { ServicesRequestKeys } from "ui";
+import { ServicesRequestKeys } from "@UI";
 
 let mockVisit: jest.Mock = jest.fn();
 let mockVisitService: jest.Mock = jest.fn();

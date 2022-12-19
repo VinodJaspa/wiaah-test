@@ -1,7 +1,7 @@
 import { ServiceType } from "dto";
 import { useTranslation } from "react-i18next";
 import { runIfFn } from "utils";
-import { Button, TranslationText } from "ui";
+import { Button, TranslationText } from "@UI";
 
 export type ServiceSelectingInfo = {
   serviceIcon: React.ReactNode;

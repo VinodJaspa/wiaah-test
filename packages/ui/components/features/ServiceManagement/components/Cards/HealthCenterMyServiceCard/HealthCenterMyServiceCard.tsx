@@ -10,7 +10,7 @@ import {
   WorkingDaysCalender,
   AspectRatioImage,
   Button,
-} from "ui";
+} from "@UI";
 import { randomNum, setTestid } from "utils";
 
 export interface HealthCenterMyServiceCardProps

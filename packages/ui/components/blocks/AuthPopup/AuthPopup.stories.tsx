@@ -1,4 +1,4 @@
-import { storybookBlocksTitle, AuthPopup, Button, useLoginPopup } from "ui";
+import { storybookBlocksTitle, AuthPopup, Button, useLoginPopup } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 import { useTranslation } from "react-i18next";
 // import { useLoginPopup } from "@hooks";

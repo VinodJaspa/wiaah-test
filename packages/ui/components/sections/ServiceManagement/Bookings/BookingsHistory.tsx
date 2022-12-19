@@ -35,7 +35,7 @@ import {
   SectionHeader,
   EyeIcon,
   CashPaymentIcon,
-} from "ui";
+} from "@UI";
 import {
   useGetBookingsHistoryQuery,
   useCancelAppointmentMutation,

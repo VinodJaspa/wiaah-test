@@ -8,7 +8,7 @@ import {
   AspectRatioImage,
   WorkingDaysCalender,
   ServicesRequestKeys,
-} from "ui";
+} from "@UI";
 import { setTestid } from "utils";
 
 export interface HealthCenterCardProps {

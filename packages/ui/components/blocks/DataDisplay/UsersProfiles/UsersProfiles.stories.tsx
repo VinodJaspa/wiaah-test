@@ -4,7 +4,7 @@ import {
   UsersProfiles,
   storybookDataDisplayBlocksTitle,
   usersProfilesPlaceHolder,
-} from "ui";
+} from "@UI";
 export default {
   title: storybookDataDisplayBlocksTitle + "UsersProfiles",
   component: UsersProfiles,

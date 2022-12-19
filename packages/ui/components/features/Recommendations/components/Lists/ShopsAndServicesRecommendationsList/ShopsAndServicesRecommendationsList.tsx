@@ -7,7 +7,7 @@ import {
   SpinnerFallback,
   PaginationWrapper,
   RecommendedShopCard,
-} from "ui";
+} from "@UI";
 
 export interface ShopsAndServicesRecommendationsList {}
 

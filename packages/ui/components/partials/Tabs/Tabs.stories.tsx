@@ -9,7 +9,7 @@ import {
   TabsProps,
   TabTitle,
   SubscriptionPlanCard,
-} from "ui";
+} from "@UI";
 
 export default {
   title: storybookPartailsTitle + "Tabs",
@@ -20,7 +20,7 @@ export const Default: React.FC<TabsProps> = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Tabs, TabsHeader, TabList, TabItem, TabTitle } from "ui";
+import { Tabs, TabsHeader, TabList, TabItem, TabTitle } from "@UI";
 
 ...
 return (
@@ -63,7 +63,7 @@ export const CustomItemsOrdering: React.FC<TabsProps> = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Tabs, TabsHeader, TabList, TabItem, TabTitle } from "ui";
+import { Tabs, TabsHeader, TabList, TabItem, TabTitle } from "@UI";
 
 
 Tip: <TabsHeader /> and <TabsList /> has to be insde the Tabs component
@@ -114,7 +114,7 @@ export const accessInnerState: React.FC<TabsProps> = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Tabs, TabsHeader, TabList, TabItem, TabTitle } from "ui";
+import { Tabs, TabsHeader, TabList, TabItem, TabTitle } from "@UI";
 
 ...
 return (

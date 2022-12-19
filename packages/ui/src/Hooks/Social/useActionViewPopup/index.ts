@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { ActionViewIdState } from "ui";
+import { ActionViewIdState } from "@UI";
 
 export const useActionViewPopup = () => {
   const [actionId, setActionId] = useRecoilState(ActionViewIdState);

@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Menu, MenuButton, MenuList, DateInput } from "ui";
+import { Menu, MenuButton, MenuList, DateInput } from "@UI";
 import { getDaysDiff } from "utils";
 
 export interface CheckInOutInputProps {

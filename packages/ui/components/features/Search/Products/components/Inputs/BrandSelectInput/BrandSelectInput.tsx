@@ -7,7 +7,7 @@ import {
   SpeedClockIcon,
   Divider,
   NikeIcon,
-} from "ui";
+} from "@UI";
 import { mapArray } from "utils";
 
 export interface BrandSelectInputProps {

@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik";
 import React from "react";
 import { InferType, NewServiceSchemas } from "validation";
-import { Avatar, HealthCenterAddDoctorForm, CloseIcon } from "ui";
+import { Avatar, HealthCenterAddDoctorForm, CloseIcon } from "@UI";
 
 const schema = NewServiceSchemas.healthCenterIncludedServicesSchema;
 

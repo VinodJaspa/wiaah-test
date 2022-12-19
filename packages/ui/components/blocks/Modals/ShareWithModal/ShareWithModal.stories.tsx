@@ -1,4 +1,4 @@
-import { ShareWithModal, Button, useShareWithModal } from "ui";
+import { ShareWithModal, Button, useShareWithModal } from "@UI";
 import { storybookModalsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
 

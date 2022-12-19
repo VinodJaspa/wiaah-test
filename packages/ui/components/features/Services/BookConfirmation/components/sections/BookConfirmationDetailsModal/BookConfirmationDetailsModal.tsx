@@ -13,7 +13,7 @@ import {
   ServiceReachOutSection,
   ServiceWorkingHoursSection,
   ServiceCheckoutCardSwitcher,
-} from "ui";
+} from "@UI";
 
 export const BookConfirmationDataDisplayModal: React.FC = () => {
   const { Listen } = useReactPubsub((keys) => keys.openBookConfirmationModal);

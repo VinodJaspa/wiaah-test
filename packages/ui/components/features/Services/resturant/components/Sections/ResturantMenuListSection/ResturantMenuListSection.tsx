@@ -2,7 +2,7 @@ import { ResturantMenuData, ServiceCancelationPolicyType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSetUserInput } from "state";
-import { ResturantMenuList, Button, ServiceCancelationPolicyInput } from "ui";
+import { ResturantMenuList, Button, ServiceCancelationPolicyInput } from "@UI";
 import { FilterAndAddToArray } from "utils";
 
 export interface ResturantMenuListSectionProps extends ResturantMenuData {

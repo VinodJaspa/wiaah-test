@@ -8,7 +8,7 @@ import {
   MultiChooseInput,
   MultiChooseInputProps,
   PlusIcon,
-} from "ui";
+} from "@UI";
 import { singleFileValidation, singlePhotoValidation } from "validation";
 import { object, string, number, array, InferType } from "yup";
 

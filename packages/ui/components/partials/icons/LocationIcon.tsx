@@ -1,7 +1,7 @@
 import React from "react";
 import { HiLocationMarker, HiOutlineLocationMarker } from "react-icons/hi";
 import { IconBaseProps } from "react-icons";
-import { Button, ButtonProps } from "ui";
+import { Button, ButtonProps } from "@UI";
 import { HtmlSvgProps } from "types";
 
 export const LocationIcon: React.FC<IconBaseProps> = (props) => {

@@ -7,7 +7,7 @@ import {
   TransportGuestsIcon,
   TransportLuggageIcon,
   GPSIcon,
-} from "ui";
+} from "@UI";
 import { useTranslation } from "react-i18next";
 import { randomNum } from "utils";
 

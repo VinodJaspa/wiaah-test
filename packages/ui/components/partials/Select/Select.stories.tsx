@@ -15,7 +15,7 @@ export const Default = ({ ...args }) => {
           <span className="font-bold text-xl">implementaion</span>
           <pre>
             {`
-import {Select,SelectOption} from "ui"
+import {Select,SelectOption} from "@UI"
 
 
 <Select onOptionSelect={(value)=> {}}>
@@ -46,7 +46,7 @@ export const WithPlaceholder = ({ ...args }) => {
           <span className="font-bold text-xl">implementaion</span>
           <pre>
             {`
-import {Select,SelectOption} from "ui"
+import {Select,SelectOption} from "@UI"
 
 
 <Select placeholder={"test placeholder"} onOptionSelect={(value)=> {}}>

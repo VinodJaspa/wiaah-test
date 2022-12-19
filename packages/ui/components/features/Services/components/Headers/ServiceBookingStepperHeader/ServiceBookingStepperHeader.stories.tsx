@@ -1,7 +1,7 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { storybookOtherServicesDataDisplayTitle } from "utils";
 import { ServiceBookingStepperHeader } from "./ServiceBookingStepperHeader";
-import { CalenderIcon, ClockIcon, PersonIcon } from "ui";
+import { CalenderIcon, ClockIcon, PersonIcon } from "@UI";
 
 export default {
   title: storybookOtherServicesDataDisplayTitle + "ServiceBookingStepperHeader",

@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { EditProductState } from "ui";
+import { EditProductState } from "@UI";
 
 export const useEditProductData = () => {
   const [product, setProduct] = useRecoilState(EditProductState);

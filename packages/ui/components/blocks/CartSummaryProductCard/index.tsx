@@ -17,7 +17,7 @@ import {
   Text,
   Select,
   SelectOption,
-} from "ui";
+} from "@UI";
 import { useTranslation } from "react-i18next";
 
 export interface CartSummaryProdcutCardProps {

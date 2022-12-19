@@ -6,7 +6,7 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-} from "ui";
+} from "@UI";
 
 export interface ChatRoomDrawerProps extends DrawerProps {
   roomId: string;

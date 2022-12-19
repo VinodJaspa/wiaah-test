@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { useUserData } from "ui";
+import { useUserData } from "@UI";
 import { SellerPostInput } from "./index";
 import { storybookDataInputBlocksTitle } from "utils";
 export default {

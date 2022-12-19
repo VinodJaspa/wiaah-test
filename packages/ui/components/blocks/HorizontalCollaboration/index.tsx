@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Spacer, Carousel, ImageCard, ChakraCarousel } from "ui";
+import { Spacer, Carousel, ImageCard, ChakraCarousel } from "@UI";
 
 export const HorizontalCollaboration: React.FC = () => {
   const { t } = useTranslation();

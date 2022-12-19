@@ -4,7 +4,7 @@ import {
   ModalButton,
   Button,
   useActionViewPopup,
-} from "ui";
+} from "@UI";
 import { storybookModalsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
 

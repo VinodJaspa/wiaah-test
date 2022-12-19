@@ -8,7 +8,7 @@ import {
   PostHead,
   EllipsisText,
   SocialServicePostMetaDataCard,
-} from "ui";
+} from "@UI";
 
 export interface SocialServicePostCardProps extends ServicePostType {
   onServiceClick?: (id: string) => any;

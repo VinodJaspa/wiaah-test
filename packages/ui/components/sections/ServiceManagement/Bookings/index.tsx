@@ -1,5 +1,5 @@
 import React from "react";
-import { BookDetailsSection } from "ui";
+import { BookDetailsSection } from "@UI";
 import { BookingsHistorySection } from "./BookingsHistory";
 
 export const bookingsHistoryCtx = React.createContext<{

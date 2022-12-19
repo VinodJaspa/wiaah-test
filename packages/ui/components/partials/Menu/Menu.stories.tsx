@@ -1,10 +1,10 @@
 import { ComponentMeta } from "@storybook/react";
-import { Menu, MenuButton, MenuList, MenuItem, MenuProps } from "ui";
+import { Menu, MenuButton, MenuList, MenuItem, MenuProps } from "@UI";
 import {
   storybookPartailsTitle,
   StorybookImplemntationLayout,
   Counter,
-} from "ui/utils";
+} from "@UI/utils";
 import React from "react";
 
 export default {
@@ -16,7 +16,7 @@ export const Default: React.FC<MenuProps> = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Menu, MenuButton, MenuList, MenuItem } from "ui"
+import { Menu, MenuButton, MenuList, MenuItem } from "@UI"
 
 ...
 return (
@@ -54,7 +54,7 @@ export const WithNoLazy: React.FC<MenuProps> = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Menu, MenuButton, MenuList, MenuItem } from "ui"
+import { Menu, MenuButton, MenuList, MenuItem } from "@UI"
 
 ...
 return (
@@ -86,7 +86,7 @@ export const WithLazy: React.FC<MenuProps> = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import { Menu, MenuButton, MenuList, MenuItem } from "ui"
+import { Menu, MenuButton, MenuList, MenuItem } from "@UI"
 
 ...
 return (

@@ -15,6 +15,8 @@ import { VouchersManagementService } from './vouchers-management.service';
 import {
   ApplyableVoucherMessage,
   ApplyableVoucherMessageReply,
+  GetShopVouchersMessage,
+  GetShopVouchersMessageReply,
   KafkaPayload,
 } from 'nest-dto';
 
@@ -26,45 +28,43 @@ export class VouchersManagementController implements OnModuleInit {
     private readonly eventsClient: ClientKafka,
   ) {}
 
-  // @MessagePattern(KAFKA_MESSAGES.VOUCHERS_MESSAGES.getShopActiveVouchers)
-  // async getShopVouchers(
-  //   @Payload() payload: KafkaPayload<GetShopVouchersMessage>,
-  // ): Promise<GetShopVouchersMessageReply> {
-  //   try {
-  //     const {
-  //       value: {
-  //         input: { shopId },
-  //       },
-  //     } = payload;
-  //     const vouchers = await this.vouchersService.getVouchersByShopId(shopId, {
-  //       status: 'active',
-  //     });
+  @MessagePattern(KAFKA_MESSAGES.VOUCHERS_MESSAGES.getShopActiveVouchers)
+  async getShopVouchers(
+    @Payload() payload: KafkaPayload<GetShopVouchersMessage>,
+  ): Promise<GetShopVouchersMessageReply> {
+    try {
+      const {
+        value: {
+          input: { shopId },
+        },
+      } = payload;
+      const vouchers = await this.vouchersService.getVouchersByOwnerId(shopId, {
+        status: 'active',
+      });
 
-  //     return new GetShopVouchersMessageReply({
-  //       success: true,
-  //       error: null,
-  //       data: vouchers.map(({ amount, code, status, type, currency }) => ({
-  //         amount,
-  //         code,
-  //         currency,
-  //         type,
-  //       })),
-  //     });
-  //   } catch (error) {
-  //     return new GetShopVouchersMessageReply({
-  //       success: false,
-  //       data: null,
-  //       error: formatCaughtError(error),
-  //     });
-  //   }
-  // }
+      return new GetShopVouchersMessageReply({
+        success: true,
+        error: null,
+        data: vouchers.map(({ amount, code, status, currency }) => ({
+          amount,
+          code,
+          currency,
+        })),
+      });
+    } catch (error) {
+      return new GetShopVouchersMessageReply({
+        success: false,
+        data: null,
+        error: new Error(error.message),
+      });
+    }
+  }
 
   @MessagePattern(KAFKA_MESSAGES.VOUCHERS_MESSAGES.isApplyableVoucher)
   async handleIsApplyableVoucherMsg(
     @Payload() payload: KafkaPayload<ApplyableVoucherMessage>,
   ): Promise<ApplyableVoucherMessageReply> {
     try {
-      console.log('test');
       const {
         value: {
           input: { userId, voucherCode },
@@ -87,6 +87,7 @@ export class VouchersManagementController implements OnModuleInit {
         success: true,
         error: null,
         data: {
+          voucherId: '',
           applyable,
           amount,
           code,
@@ -98,7 +99,7 @@ export class VouchersManagementController implements OnModuleInit {
     } catch (err) {
       return new ApplyableVoucherMessageReply({
         success: false,
-        error: formatCaughtError(err),
+        error: new Error(err.message),
         data: null,
       });
     }

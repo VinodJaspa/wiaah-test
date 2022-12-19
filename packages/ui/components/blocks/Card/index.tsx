@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouting } from "routing";
 import { ServicesType } from "types";
-import { colorShades, AspectRatioImage } from "ui";
+import { colorShades, AspectRatioImage } from "@UI";
 
 export interface CardProps {
   imgUrl: string;

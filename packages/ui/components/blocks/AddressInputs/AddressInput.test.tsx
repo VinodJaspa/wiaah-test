@@ -2,7 +2,7 @@ import { mount, ReactWrapper, render, shallow } from "enzyme";
 import React from "react";
 import { AddressDetails, AddressInputsFields } from "types";
 import { AddressInputs } from "../AddressInputs";
-import { getMountedComponent } from "ui/components/helpers/test/getMountedComponent";
+import { getMountedComponent } from "@UI/components/helpers/test/getMountedComponent";
 const selectors = {
   firstName: "#FirstNameInput",
   lastName: "#LastNameInput",

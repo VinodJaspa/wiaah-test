@@ -14,7 +14,7 @@ import {
   MenuButton,
   MenuList,
   SelectOption,
-} from "ui";
+} from "@UI";
 import { products } from "../../../../../placeholder";
 
 export interface NewAffiliationLinkSectionProps<TData> {

@@ -13,8 +13,8 @@ import {
   ModalCloseButton,
   CloseIcon,
   Button,
-} from "ui/components/partials";
-import { FormikInput } from "ui/components/blocks";
+} from "@UI/components/partials";
+import { FormikInput } from "@UI/components/blocks";
 import { mapArray } from "utils";
 
 export const useSocialReportModal = () => {

@@ -4,7 +4,7 @@ import {
   ServiceCheckoutCommonCardWrapper,
   TimeRangeDisplay,
   PriceDisplay,
-} from "ui";
+} from "@UI";
 import { setTestid } from "utils";
 
 export interface BeautyCenterCheckoutCardProps

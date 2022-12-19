@@ -8,7 +8,7 @@ import {
   PhotoAddIcon,
   Image,
   AspectRatio,
-} from "ui";
+} from "@UI";
 import { useTranslation } from "react-i18next";
 
 export interface DiscoverOurServiceFormProps {

@@ -6,7 +6,7 @@ import {
   PaginationWrapper,
   ServicesSearchGrid,
   ShopMapSearchCard,
-} from "ui";
+} from "@UI";
 
 export const ShopsSearchCardsList: React.FC = () => {
   const { page, take } = usePagination(16);

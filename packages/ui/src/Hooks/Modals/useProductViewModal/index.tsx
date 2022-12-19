@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { ProductViewState } from "ui";
+import { ProductViewState } from "@UI";
 
 export const useProductViewModal = () => {
   const [product, setProduct] = useRecoilState(ProductViewState);

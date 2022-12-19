@@ -1,5 +1,5 @@
 import React from "react";
-import { AddNewShippingMothed, ShippingSettings } from "ui";
+import { AddNewShippingMothed, ShippingSettings } from "@UI";
 export interface ShippingSettingsSectionProps {}
 
 export const ShippingSettingsContext = React.createContext({
@@ -8,26 +8,27 @@ export const ShippingSettingsContext = React.createContext({
   cancelAddNew: () => {},
 });
 
-export const ShippingSettingsSection: React.FC<ShippingSettingsSectionProps> =
-  ({}) => {
-    const [isAddNew, setIsAddNew] = React.useState<boolean>(false);
+export const ShippingSettingsSection: React.FC<
+  ShippingSettingsSectionProps
+> = ({}) => {
+  const [isAddNew, setIsAddNew] = React.useState<boolean>(false);
 
-    function handleAddNew() {
-      setIsAddNew(true);
-    }
-    function handleCancelAddNew() {
-      setIsAddNew(false);
-    }
+  function handleAddNew() {
+    setIsAddNew(true);
+  }
+  function handleCancelAddNew() {
+    setIsAddNew(false);
+  }
 
-    return (
-      <ShippingSettingsContext.Provider
-        value={{
-          isAddNew,
-          addNew: handleAddNew,
-          cancelAddNew: handleCancelAddNew,
-        }}
-      >
-        {isAddNew ? <AddNewShippingMothed /> : <ShippingSettings />}
-      </ShippingSettingsContext.Provider>
-    );
-  };
+  return (
+    <ShippingSettingsContext.Provider
+      value={{
+        isAddNew,
+        addNew: handleAddNew,
+        cancelAddNew: handleCancelAddNew,
+      }}
+    >
+      {isAddNew ? <AddNewShippingMothed /> : <ShippingSettings />}
+    </ShippingSettingsContext.Provider>
+  );
+};

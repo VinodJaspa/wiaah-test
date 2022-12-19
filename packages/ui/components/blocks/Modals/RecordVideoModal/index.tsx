@@ -7,7 +7,7 @@ import {
   ModalProps,
   ArrowLeftIcon,
   Button,
-} from "ui";
+} from "@UI";
 import { HiCamera } from "react-icons/hi";
 
 export interface RecordVideoModalProps extends Omit<ModalProps, "children"> {

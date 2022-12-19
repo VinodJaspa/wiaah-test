@@ -9,8 +9,6 @@ import {
   InputLeftElement,
   ListIcon,
   SearchIcon,
-  Select,
-  SelectOption,
   Table,
   TableContainer,
   TBody,

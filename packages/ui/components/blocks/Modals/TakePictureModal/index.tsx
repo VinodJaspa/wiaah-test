@@ -8,7 +8,7 @@ import {
   ModalHeader,
   ArrowLeftIcon,
   Button,
-} from "ui";
+} from "@UI";
 
 export interface CameraPreviewProps extends Omit<ModalProps, "children"> {
   onImgCapture?: (imgDataUrl: string, fileConverted?: File) => any;

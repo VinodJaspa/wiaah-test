@@ -1,7 +1,7 @@
 import React from "react";
-import { SocialAffiliationCard, socialAffiliationCardPlaceholder } from "ui";
+import { SocialAffiliationCard, socialAffiliationCardPlaceholder } from "@UI";
 import { useRouter } from "next/router";
-import { useStory } from "ui";
+import { useStory } from "@UI";
 export interface AffiliationPostStoryProps {
   postId: string;
 }

@@ -16,12 +16,12 @@ import {
   BoxProps,
 } from "@chakra-ui/react";
 import { MdClose } from "react-icons/md";
-import { PostAttachmentsViewer, PostCommentCard } from "ui";
+import { PostAttachmentsViewer, PostCommentCard } from "@UI";
 import { useTranslation } from "react-i18next";
-import { FloatingContainer, VerticalCarousel } from "ui";
-import { getParamFromAsPath } from "ui/components/helpers";
+import { FloatingContainer, VerticalCarousel } from "@UI";
+import { getParamFromAsPath } from "@UI/components/helpers";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
-import { PostCardPlaceHolder } from "ui/placeholder";
+import { PostCardPlaceHolder } from "@UI/placeholder";
 
 export interface ActionsViewPopupProps {
   renderChild: (props: any) => React.ReactElement;

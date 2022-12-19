@@ -13,6 +13,7 @@ import {
 } from '@nestjs/microservices';
 import { KAFKA_MESSAGES, KAFKA_EVENTS, SERVICES } from 'nest-utils';
 import {
+  AccountDeletedEvent,
   AccountVerifiedEvent,
   BuyerAccountRegisteredEvent,
   EmailExistsMessage,
@@ -38,6 +39,8 @@ import {
   UpdateUserMembershipCommand,
 } from '@accounts/commands';
 import { Account } from '@accounts/entities';
+import { PrismaService } from 'prismaService';
+import { AccountDeletionRequestStatus } from '@prisma-client';
 
 @Controller()
 export class AccountsController implements OnModuleInit {
@@ -47,7 +50,31 @@ export class AccountsController implements OnModuleInit {
     @Inject(SERVICES.ACCOUNTS_SERVICE.token)
     private readonly eventsClient: ClientKafka,
     private readonly commandBus: CommandBus,
+    private readonly prisma: PrismaService,
   ) {}
+
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.deleteAccount)
+  async handleDeleteAccount(@Payload() { value }: { value: { id: string } }) {
+    if (!value?.id) return;
+
+    const res = await this.accountService.deleteAccount(value.id);
+    if (res) {
+      this.eventsClient.emit(
+        KAFKA_EVENTS.ACCOUNTS_EVENTS.accountDeleted,
+        new AccountDeletedEvent({
+          accountId: res.id,
+        }),
+      );
+      this.prisma.accountDeletionRequest.update({
+        where: {
+          accountId: res.id,
+        },
+        data: {
+          status: AccountDeletionRequestStatus.deleted,
+        },
+      });
+    }
+  }
 
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.hasStripeId)
   async hasStripeId(@Payload() value: UserHasStripeAccountMessage) {

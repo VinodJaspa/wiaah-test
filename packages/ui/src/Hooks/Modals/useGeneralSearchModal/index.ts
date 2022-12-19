@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { GeneralSearchModalOpenState } from "ui";
+import { GeneralSearchModalOpenState } from "@UI";
 
 export const useGeneralSearchModal = () => {
   const [isOpen, setIsOpen] = useRecoilState(GeneralSearchModalOpenState);

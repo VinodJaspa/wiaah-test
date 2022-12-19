@@ -1,5 +1,5 @@
 import React from "react";
-import { SocialServicePostMetaDataCard } from "ui";
+import { SocialServicePostMetaDataCard } from "@UI";
 
 export interface ServicePostStoryProps {
   postId: string;

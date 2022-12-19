@@ -12,7 +12,7 @@ import {
   QrcodeDisplay,
   SocialProfileOptionsDropdown,
   HorizontalDotsIcon,
-} from "ui";
+} from "@UI";
 import { useLoginPopup, useStory } from "@src/Hooks";
 import { mapArray, NumberShortner } from "utils";
 import { useTranslation } from "react-i18next";

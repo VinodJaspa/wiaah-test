@@ -14,7 +14,7 @@ import {
   TableContainer,
   SectionHeader,
   usePaginationControls,
-} from "ui";
+} from "@UI";
 
 export interface AffiliationHistorySection {}
 

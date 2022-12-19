@@ -3,14 +3,14 @@ import { Form, Formik } from "formik";
 import { usePagination, useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FormikInput, useMutateFocusedMapItemId } from "ui";
+import { FormikInput, useMutateFocusedMapItemId } from "@UI";
 import {
   useGetFilteredServicesMetaDataQuery,
   DisplayFoundServices,
   HotelDetailedSearchCard,
   SpinnerFallback,
   PaginationWrapper,
-} from "ui";
+} from "@UI";
 import { Button } from "@partials";
 
 export interface HotelsSearchListProps {

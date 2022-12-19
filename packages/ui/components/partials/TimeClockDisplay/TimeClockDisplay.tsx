@@ -1,6 +1,6 @@
 import React from "react";
 import { DateDetails } from "utils";
-import { AspectRatio } from "ui";
+import { AspectRatio } from "@UI";
 export interface TimeClockDisplayProps {
   from: Date;
   to: Date;

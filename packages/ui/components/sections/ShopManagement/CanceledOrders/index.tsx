@@ -20,7 +20,7 @@ import {
   Textarea,
   ModalCloseButton,
   ModalFooter,
-} from "ui";
+} from "@UI";
 import {
   useDeclineReturnRequestMutation,
   useAcceptReturnRequestMutation,

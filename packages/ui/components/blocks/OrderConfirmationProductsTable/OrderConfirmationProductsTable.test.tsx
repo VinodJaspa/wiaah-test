@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow, mount, ShallowWrapper, ReactWrapper } from "enzyme";
-import { OrderConfirmationProductsTable } from "ui";
-import { ProductsWithProfile as placeholderProducts } from "ui/placeholder";
+import { OrderConfirmationProductsTable } from "@UI";
+import { ProductsWithProfile as placeholderProducts } from "@UI/placeholder";
 import { getMountedComponent } from "../../helpers";
 import { act } from "react-dom/test-utils";
 

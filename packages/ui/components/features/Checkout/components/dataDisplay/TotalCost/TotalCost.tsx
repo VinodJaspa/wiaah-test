@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import { VoucherState } from "@src/state";
-import { FlexStack, BoldText, Text, PriceDisplay, Divider } from "ui";
+import { FlexStack, BoldText, Text, PriceDisplay, Divider } from "@UI";
 import { useTranslation } from "react-i18next";
 import { CalculateVat } from "utils";
 

@@ -9,7 +9,6 @@ import {
 } from "react-icons/fa";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { social } from "../../../../../apps/front-end/market/data/Links";
 export const SocialMediaLinks: FC = () => {
   const { t, i18n } = useTranslation();
   return (
@@ -20,27 +19,27 @@ export const SocialMediaLinks: FC = () => {
       <ul className="block space-y-4 text-sm text-gray-400">
         <li className="flex items-center">
           <FaTwitter className="mr-2 h-4 w-4 text-sky-400" />
-          <Link href={social.twitter}>Twitter</Link>
+          {/* <Link href={social.twitter}>Twitter</Link> */}
         </li>
         <li className="flex items-center">
           <FaFacebook className="mr-2 h-4 w-4 text-blue-500" />
-          <Link href={social.facebook}>Facebook</Link>
+          {/* <Link href={social.facebook}>Facebook</Link> */}
         </li>
         <li className="flex items-center">
           <FaInstagram className="mr-2 h-4 w-4 text-rose-500" />
-          <Link href={social.instagram}>Instagram</Link>
+          {/* <Link href={social.instagram}>Instagram</Link> */}
         </li>
         <li className="flex items-center">
           <FaYoutube className="mr-2 h-4 w-4 text-red-700" />
-          <Link href={social.youtube}>Youtube</Link>
+          {/* <Link href={social.youtube}>Youtube</Link> */}
         </li>
         <li className="flex items-center">
           <FaTiktok className="mr-2 h-4 w-4 text-stone-100" />
-          <Link href={social.tiktok}>Tiktok</Link>
+          {/* <Link href={social.tiktok}>Tiktok</Link> */}
         </li>
         <li className="flex items-center">
           <FaSnapchat className="mr-2 h-4 w-4 text-amber-300" />
-          <Link href={social.snapchat}>Snapchat</Link>
+          {/* <Link href={social.snapchat}>Snapchat</Link> */}
         </li>
       </ul>
     </div>

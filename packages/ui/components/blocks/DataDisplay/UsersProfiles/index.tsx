@@ -1,6 +1,6 @@
 import React from "react";
 import { HtmlDivProps, UserProfileData, UsersProfilesVariant } from "types";
-import { ScrollableContainer, UserProfileDisplay } from "ui";
+import { ScrollableContainer, UserProfileDisplay } from "@UI";
 
 export interface UsersProfilesProps extends HtmlDivProps {
   users: UserProfileData[];
@@ -23,7 +23,11 @@ export const UsersProfiles: React.FC<UsersProfilesProps> = ({
       {...props}
       className="flex flex-col h-full noScroll overflow-scroll gap-4"
     >
-      <ScrollableContainer containerProps={{className:"gap-4"}} autoShowAll maxInitialItems={maxNarrowItems} >
+      <ScrollableContainer
+        containerProps={{ className: "gap-4" }}
+        autoShowAll
+        maxInitialItems={maxNarrowItems}
+      >
         {users &&
           users
             // .slice(0, variant === "narrow" ? maxNarrowItems : users.length)

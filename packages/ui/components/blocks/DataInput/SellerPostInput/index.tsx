@@ -13,7 +13,7 @@ import {
   PlayButtonFillIcon,
   AddNewPostModal,
   useNewPost,
-} from "ui";
+} from "@UI";
 import { runIfFn } from "utils";
 
 export interface SellerPostInputProps {

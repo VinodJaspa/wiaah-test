@@ -1,6 +1,6 @@
 import { storybookPartailsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
-import { MathPowerDisplay } from "ui";
+import { MathPowerDisplay } from "@UI";
 
 export default {
   title: storybookPartailsTitle + "MathPowerDisplay",

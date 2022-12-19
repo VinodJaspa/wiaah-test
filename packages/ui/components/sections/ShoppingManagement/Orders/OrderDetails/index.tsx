@@ -35,12 +35,13 @@ import {
   ModalOverlay,
   CloseIcon,
   CancelIcon,
-} from "ui";
+  Pagination,
+} from "@UI";
 import { getRandomImage } from "placeholder";
 import { randomNum } from "utils";
 import { useModalDisclouser, useAccountType } from "hooks";
 import { OrderedProductStatus, PriceType } from "types";
-import { useUpdateProductStatus } from "ui";
+import { useUpdateProductStatus } from "@UI";
 import { UpdateProductStatusDto } from "dto";
 
 export const OrderDetailsSection: React.FC = () => {
@@ -225,7 +226,7 @@ export const OrderDetailsSection: React.FC = () => {
                 <Td className="pr-0">
                   <div className="w-full flex justify-center">
                     <Button>
-                      {shopping ? <>{t("Track")}</> : <>prod.status</>}
+                      {shopping ? <>{t("Track")}</> : <>{prod.status}</>}
                     </Button>
                   </div>
                 </Td>
@@ -253,6 +254,7 @@ export const OrderDetailsSection: React.FC = () => {
             ))}
           </TBody>
         </Table>
+        <Pagination />
       </div>
     </div>
   );

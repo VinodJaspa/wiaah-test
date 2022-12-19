@@ -13,7 +13,7 @@ import {
   Input,
   Radio,
   Spinner,
-} from "ui";
+} from "@UI";
 import { useQuery } from "react-query";
 import { ChatNewMessageUserInfo } from "types";
 

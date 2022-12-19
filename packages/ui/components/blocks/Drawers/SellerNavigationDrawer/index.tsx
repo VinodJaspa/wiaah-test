@@ -10,7 +10,7 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerHeader,
-} from "ui";
+} from "@UI";
 
 export interface SellerNavigationDrawerProps
   extends Omit<DrawerProps, "children" | "isOpen" | "onClose"> {

@@ -1,8 +1,8 @@
 import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import React from "react";
-import { CommentsViewer } from "ui";
-import { PostCardPlaceHolder } from "ui/placeholder";
-import { getMountedComponent } from "ui/components/helpers/test/getMountedComponent";
+import { CommentsViewer } from "@UI";
+import { PostCardPlaceHolder } from "@UI/placeholder";
+import { getMountedComponent } from "@UI/components/helpers/test/getMountedComponent";
 import { RecoilRoot } from "recoil";
 const selectors = {
   commentsWrapper: "[data-testid='CommentsWrapper']",

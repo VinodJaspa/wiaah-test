@@ -1,6 +1,6 @@
 import React from "react";
-import { FlexStack, WishListIcon, Rate, Select, SelectOption } from "ui";
-import { useMutateShoppingCart, Button } from "ui";
+import { FlexStack, WishListIcon, Rate, Select, SelectOption } from "@UI";
+import { useMutateShoppingCart, Button } from "@UI";
 import { useCartSummary, useProductDescTabs } from "@src/Hooks";
 import { CartSummaryItem } from "types";
 import { useTranslation } from "react-i18next";

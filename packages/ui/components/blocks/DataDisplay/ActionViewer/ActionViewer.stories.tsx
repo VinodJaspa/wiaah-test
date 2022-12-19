@@ -2,7 +2,7 @@ import {
   storybookDataDisplayBlocksTitle,
   ActionViewer,
   actionsPlaceholders,
-} from "ui";
+} from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

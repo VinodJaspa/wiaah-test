@@ -1,6 +1,6 @@
 import React from "react";
 import { HtmlInputProps } from "types";
-import { HStack } from "ui";
+import { HStack } from "@UI";
 export interface RadioProps extends Omit<HtmlInputProps, "type"> {}
 
 export const Radio: React.FC<RadioProps> = ({

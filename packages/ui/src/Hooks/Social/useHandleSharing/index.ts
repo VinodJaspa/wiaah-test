@@ -1,5 +1,5 @@
 import { ShareMotheds } from "types";
-import { useShareWithModal } from "ui";
+import { useShareWithModal } from "@UI";
 
 export const useHandlePostSharing = () => {
   const { ShareWith } = useShareWithModal();

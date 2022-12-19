@@ -1,6 +1,6 @@
 import { storybookDataInputBlocksTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
-import { HashTagInput } from "ui";
+import { HashTagInput } from "@UI";
 import React from "react";
 
 export default {

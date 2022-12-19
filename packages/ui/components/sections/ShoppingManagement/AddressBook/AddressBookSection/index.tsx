@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 import { BiEdit } from "react-icons/bi";
 import { IoCheckmark, IoTrash } from "react-icons/io5";
 import { HtmlDivProps } from "types";
-import { SectionHeader, AddressInputs } from "ui/components/";
+import { SectionHeader, AddressInputs } from "@UI/components/";
 import { BsMailbox2 } from "react-icons/bs";
-import { Modal, ModalContent, ModalOverlay } from "ui";
+import { Modal, ModalContent, ModalOverlay } from "@UI";
 
 export interface AddressBookSectionProps {}
 

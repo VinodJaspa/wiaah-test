@@ -1,5 +1,5 @@
 import { storybookPartailsTitle } from "utils";
-import { QrcodeDisplay } from "ui";
+import { QrcodeDisplay } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

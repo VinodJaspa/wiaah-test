@@ -1,4 +1,4 @@
-import { CountInput } from "ui";
+import { CountInput } from "@UI";
 
 export interface HotelGuestsInputProps {
   name: string;

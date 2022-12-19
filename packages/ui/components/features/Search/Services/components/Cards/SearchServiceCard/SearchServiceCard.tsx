@@ -12,7 +12,7 @@ import {
   SlimRightArrow,
   Rate,
   UnDiscountedPriceDisplay,
-} from "ui";
+} from "@UI";
 
 export interface SearchServiceCardProps {
   onView?: () => {};

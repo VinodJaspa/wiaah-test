@@ -5,7 +5,7 @@ import {
   useGetHealthCentersDataQuery,
   AspectRatioImage,
   Rate,
-} from "ui";
+} from "@UI";
 
 export const HealthCenterHorizontalCardsList: React.FC = () => {
   const { take, page } = usePagination(8);

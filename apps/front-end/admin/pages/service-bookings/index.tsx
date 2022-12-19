@@ -13,6 +13,7 @@ import {
   PlusIcon,
   PriceDisplay,
   SaveIcon,
+  SearchIcon,
   Select,
   SelectOption,
   Table,
@@ -134,7 +135,7 @@ const order = () => {
                     </Td>
                     <Td>{new Date(order.createdAt).toDateString()}</Td>
                     <Td className="text-white">
-                      <EyeIcon
+                      <SearchIcon
                         onClick={() => {
                           visit((r) =>
                             r
@@ -143,7 +144,7 @@ const order = () => {
                               .addPath(order.id)
                           );
                         }}
-                        className="rounded cursor-pointer hover:bg-blue-600 w-8 h-8 p-2 bg-blue-500"
+                        className="rounded cursor-pointer text-white fill-white hover:bg-cyan-600 w-8 h-8 p-2 bg-cyan-500"
                       />
                     </Td>
                   </Tr>

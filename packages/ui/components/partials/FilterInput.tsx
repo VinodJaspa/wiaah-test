@@ -1,6 +1,6 @@
 import React, { DetailedHTMLProps, InputHTMLAttributes } from "react";
 import { HtmlInputProps } from "types";
-import { Checkbox } from "ui";
+import { Checkbox } from "@UI";
 import { runIfFn } from "utils";
 
 export interface FilterCheckBoxProps extends HtmlInputProps {

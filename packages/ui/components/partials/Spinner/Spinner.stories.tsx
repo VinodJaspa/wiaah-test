@@ -1,6 +1,6 @@
 import { storybookPartailsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
-import { Spinner } from "ui";
+import { Spinner } from "@UI";
 
 export default {
   title: storybookPartailsTitle + "Spinner",

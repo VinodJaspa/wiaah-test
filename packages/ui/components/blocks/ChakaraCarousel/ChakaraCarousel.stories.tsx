@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { ChakraCarousel } from "./index";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 export default {
   title: "UI/blocks/ChakaraCarousel",
   component: ChakraCarousel,

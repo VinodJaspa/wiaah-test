@@ -1,6 +1,6 @@
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Login } from "ui/views";
-import ChakaraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import { Login } from "@UI/views";
+import ChakaraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 export default {
   title: "UI/View/Market/Login",
   component: Login,

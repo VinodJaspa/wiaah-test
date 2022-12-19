@@ -4,8 +4,9 @@ import { ContentSuspenseModule } from './content-suspense/content-suspense.modul
 import { KafkaModule } from './kafka.module';
 import { PrismaModule } from './prisma.module';
 import { SiteInformationsModule } from './site-informations/site-informations.module';
+import { DesignModule } from './design/design.module';
 
 @Module({
-  imports: [ReportModule, ContentSuspenseModule, PrismaModule, KafkaModule, SiteInformationsModule],
+  imports: [ReportModule, ContentSuspenseModule, PrismaModule, KafkaModule, SiteInformationsModule, DesignModule],
 })
 export class AppModule {}

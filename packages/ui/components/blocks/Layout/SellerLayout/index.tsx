@@ -33,7 +33,7 @@ import {
   SocialShareCotentModal,
   SocialPostMentionsModal,
   StarOutlineIcon,
-} from "ui";
+} from "@UI";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
 import { getRouting } from "routing";

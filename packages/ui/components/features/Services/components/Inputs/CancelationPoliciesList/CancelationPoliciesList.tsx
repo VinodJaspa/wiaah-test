@@ -4,7 +4,7 @@ import {
   ServiceRefundableTypeDescription,
   CancelationPolicyInput,
   CloseIcon,
-} from "ui";
+} from "@UI";
 
 export interface CancelationPoliciesListInputProps {
   value: CancelationPolicyType[];

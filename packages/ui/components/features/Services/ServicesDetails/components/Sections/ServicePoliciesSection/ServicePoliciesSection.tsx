@@ -1,7 +1,7 @@
 import { ServicePoliciesType } from "api";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
-import { PriceDisplay, Divider } from "ui";
+import { PriceDisplay, Divider } from "@UI";
 
 export interface ServicePoliciesSectionProps extends ServicePoliciesType {
   title: string;

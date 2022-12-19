@@ -18,7 +18,7 @@ import {
   Input,
   HStack,
   Button,
-} from "ui";
+} from "@UI";
 
 export interface ShareWithModalProps {}
 

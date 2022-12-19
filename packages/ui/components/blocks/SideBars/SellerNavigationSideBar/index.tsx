@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { HtmlDivProps } from "types";
 import { NavigationLinkType } from "types";
-import { Divider, LogoutIcon, Button, HStack } from "ui";
+import { Divider, LogoutIcon, Button, HStack } from "@UI";
 
 export interface SellerSideBarProps extends HtmlDivProps {
   links: NavigationLinkType[];

@@ -18,7 +18,7 @@ import {
   useSpecialDaysOpenTimeModal,
   Switch,
   Button,
-} from "ui";
+} from "@UI";
 
 export interface SpecialScheduleProps {}
 

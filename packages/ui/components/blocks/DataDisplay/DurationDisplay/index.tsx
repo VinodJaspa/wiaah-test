@@ -1,4 +1,4 @@
-import { useTimeDuration } from "ui";
+import { useTimeDuration } from "@UI";
 
 export interface DurationDisplayProps {
   duration: number;

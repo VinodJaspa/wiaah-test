@@ -1,7 +1,7 @@
 import React from "react";
-import { ActionViewer, actionsPlaceholders } from "ui";
+import { ActionViewer, actionsPlaceholders } from "@UI";
 import { useRouter } from "next/router";
-import { useStory } from "ui";
+import { useStory } from "@UI";
 
 export interface ActionPostStoryProps {
   postId: string;

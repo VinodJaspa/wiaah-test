@@ -12,7 +12,7 @@ import {
   SubCategorySelect,
   Select,
   SelectOption,
-} from "ui";
+} from "@UI";
 import { FileRes } from "utils";
 
 export interface ProductGeneralDetailsProps {

@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { City, Country, State } from "country-state-city";
-import { FormikInput } from "ui";
+import { FormikInput } from "@UI";
 import { Field, Formik, Form } from "formik";
 import {
   Input,
@@ -13,7 +13,7 @@ import {
   DateInput,
   SelectOption,
   accountTypes,
-} from "ui";
+} from "@UI";
 
 export interface PersonalInformationStepProps {
   isValid?: (data: null | Record<string, any>) => any;

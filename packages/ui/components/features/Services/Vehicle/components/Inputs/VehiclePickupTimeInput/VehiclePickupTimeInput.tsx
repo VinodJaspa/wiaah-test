@@ -9,7 +9,7 @@ import {
   TimeInput,
   MenuButton,
   ResturantReplacableTimeComponent,
-} from "ui";
+} from "@UI";
 
 export interface VehiclePickupTimeInputProps extends HtmlDivProps {}
 

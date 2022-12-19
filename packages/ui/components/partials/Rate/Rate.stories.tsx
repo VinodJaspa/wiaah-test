@@ -1,7 +1,7 @@
 import { ComponentMeta } from "@storybook/react";
 import React from "react";
 import { Rate, RateProps } from "./";
-import { StorybookImplemntationLayout } from "ui/utils";
+import { StorybookImplemntationLayout } from "@UI/utils";
 
 export default {
   title: "UI / partials / Rate",
@@ -13,7 +13,7 @@ export const Default: React.FC<RateProps> = (props) => {
     <>
       <StorybookImplemntationLayout
         implmentation={`
-      import {Rate} from "ui"
+      import {Rate} from "@UI"
       
       
       <Rate rating={4} />
@@ -29,7 +29,7 @@ export const WithOutOf: React.FC<RateProps> = (props) => {
     <>
       <StorybookImplemntationLayout
         implmentation={`
-      import {Rate} from "ui"
+      import {Rate} from "@UI"
       
       
       <Rate rating={4} outOf={10} />
@@ -45,7 +45,7 @@ export const WithHalf: React.FC<RateProps> = (props) => {
     <>
       <StorybookImplemntationLayout
         implmentation={`
-import {Rate} from "ui"
+import {Rate} from "@UI"
 
 
 <Rate allowHalf rating={7.7} outOf={10} />

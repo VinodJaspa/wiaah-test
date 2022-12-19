@@ -1,6 +1,6 @@
 import { HealthCenterSpecialty } from "api";
 import React from "react";
-import { HighlightText, Avatar } from "ui";
+import { HighlightText, Avatar } from "@UI";
 
 export interface SearchSpecialtiesCardProps {
   searchQuery: string;

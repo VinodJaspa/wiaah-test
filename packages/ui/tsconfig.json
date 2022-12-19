@@ -19,7 +19,9 @@
       "@features": ["components/features"],
       "@libs": ["libs"],
       "@const": ["constants"],
-      "@src/*": ["src/*"]
+      "@src/*": ["src/*"],
+      "@UI": ["."],
+      "@UI/*": ["./*"]
     }
   }
 }

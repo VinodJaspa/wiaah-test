@@ -10,7 +10,7 @@ import {
   ArrowRightIcon,
   Button,
   AspectRatioImage,
-} from "ui";
+} from "@UI";
 export const ServicePresentationCarosuel: React.FC<{
   data: PresntationMediaType[];
 }> = ({ data }) => {

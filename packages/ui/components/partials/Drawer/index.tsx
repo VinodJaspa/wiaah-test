@@ -1,7 +1,7 @@
 import React from "react";
 import { HtmlDivProps } from "types";
 import { PassPropsToChild } from "utils";
-import { CloseIcon } from "ui";
+import { CloseIcon } from "@UI";
 
 type DrawerPositions = "left" | "right" | "top" | "bottom";
 

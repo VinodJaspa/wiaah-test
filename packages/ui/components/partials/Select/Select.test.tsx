@@ -1,7 +1,7 @@
 import React from "react";
 import { shallow, ReactWrapper, ShallowWrapper, mount } from "enzyme";
 import { getTestId, waitFor } from "utils";
-import { Select, SelectOption } from "ui/components/partials/Select";
+import { Select, SelectOption } from "@UI/components/partials/Select";
 
 const selectors = {
   selectOption: "SelectOption",

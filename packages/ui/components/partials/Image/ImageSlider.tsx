@@ -1,6 +1,6 @@
 import React from "react";
 import { BsDot } from "react-icons/bs";
-import { ArrowLeftIcon, ArrowRightIcon, Slider } from "ui";
+import { ArrowLeftIcon, ArrowRightIcon, Slider } from "@UI";
 
 export interface ImageSliderProps {
   images: string[];

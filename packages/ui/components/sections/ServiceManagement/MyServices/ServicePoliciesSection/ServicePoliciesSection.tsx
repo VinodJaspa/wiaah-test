@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useReactPubsub } from "react-pubsub";
 import { NewServiceSchemas } from "validation";
-import { FormikInput, Textarea } from "ui";
+import { FormikInput, Textarea } from "@UI";
 
 export interface ServicePoliciesInputSectionProps {
   onChange?: (data: Record<string, any>) => any;

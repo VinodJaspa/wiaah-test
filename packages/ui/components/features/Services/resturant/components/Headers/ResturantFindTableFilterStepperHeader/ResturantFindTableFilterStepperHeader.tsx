@@ -5,7 +5,7 @@ import {
   ArrowRightIcon,
   TriangleRightIcon,
   ClockIcon,
-} from "ui";
+} from "@UI";
 import { runIfFn } from "utils";
 
 export interface ResturantFindTableFilterStepperHeaderProps {

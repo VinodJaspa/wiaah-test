@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
-import { StorybookImplemntationLayout } from "ui/utils";
+import { StorybookImplemntationLayout } from "@UI/utils";
 import {
   Stepper,
   StepperContent,
@@ -8,7 +8,7 @@ import {
   StepperPreviousButton,
   StepperProps,
 } from "./";
-import { Button } from "ui";
+import { Button } from "@UI";
 
 export default {
   title: "UI / partials / Stepper",
@@ -25,7 +25,7 @@ export const Default: React.FC<StepperProps> = () => {
         StepperNextButton,
         StepperPreviousButton,
         Button
-        } from "ui";
+        } from "@UI";
 
         ...
         return (
@@ -80,7 +80,7 @@ StepperContent,
 StepperNextButton,
 StepperPreviousButton,
 Button
-} from "ui";
+} from "@UI";
 
 ...
 return (

@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { SocialStoryViewerHeader } from "ui";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import { SocialStoryViewerHeader } from "@UI";
+import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import { PostCardPlaceHolder } from "../../../../placeholder";
 import { Box } from "@chakra-ui/react";
 export default {

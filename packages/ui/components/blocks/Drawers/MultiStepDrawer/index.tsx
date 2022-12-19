@@ -8,14 +8,14 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerProps,
-} from "ui";
+} from "@UI";
 import {
   FaChevronLeft,
   FaChevronRight,
   FaTimes,
   FaUserAlt,
 } from "react-icons/fa";
-import { BreadCrumbLink } from "ui";
+import { BreadCrumbLink } from "@UI";
 import { useRouter } from "next/router";
 import { shopRouting } from "uris";
 export interface Step {

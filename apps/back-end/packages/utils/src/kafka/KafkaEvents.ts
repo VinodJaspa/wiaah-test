@@ -18,6 +18,7 @@ export const KAFKA_EVENTS = {
       ),
     accountRestricted: (key?: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`account.restricted.${key}`, regex),
+    deleteAccount: "delete.account",
   },
   USER_EVENTS: {
     userConnected: "user.connected",
@@ -190,6 +191,9 @@ export const KAFKA_EVENTS = {
   CASHBACK_EVENTS: {
     cashbackAdded: (key?: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`cashback.added.${key || ""}`, regex),
+  },
+  EVENT_SCHEDULING: {
+    createEvent: `create.scheduled.event`,
   },
   createAccount: "create.account",
   createWishlist: "create.wishlist",

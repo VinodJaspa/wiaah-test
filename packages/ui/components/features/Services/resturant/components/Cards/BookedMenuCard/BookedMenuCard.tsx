@@ -1,5 +1,5 @@
 import React from "react";
-import { PriceDisplay } from "ui";
+import { PriceDisplay } from "@UI";
 
 export interface BookedMenuCardProps {
   title: string;

@@ -1,6 +1,12 @@
 import { ResturantMenuListType } from "api";
 import React from "react";
-import { Divider, PriceDisplay, CountInput, AspectRatioImage, Badge } from "ui";
+import {
+  Divider,
+  PriceDisplay,
+  CountInput,
+  AspectRatioImage,
+  Badge,
+} from "@UI";
 import { mapArray } from "utils";
 
 export interface ResturantMenuListProps extends ResturantMenuListType {

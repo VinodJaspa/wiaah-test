@@ -1,5 +1,5 @@
 import React from "react";
-import { BuyerComment } from "ui";
+import { BuyerComment } from "@UI";
 import { Collapse } from "antd";
 import { useProductDescTabs } from "@src/Hooks";
 import { useTranslation } from "react-i18next";

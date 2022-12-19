@@ -3,7 +3,7 @@ import { mount, ReactWrapper, shallow } from "enzyme";
 import { StorySeenByPopup } from "./";
 import { RecoilRoot } from "recoil";
 import { StorySeenByUserInfo } from "types/market/Social";
-import { useStorySeenBy } from "ui";
+import { useStorySeenBy } from "@UI";
 import { getMountedComponent } from "../../../helpers";
 
 const selectors = {

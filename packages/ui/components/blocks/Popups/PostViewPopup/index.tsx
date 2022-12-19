@@ -1,9 +1,9 @@
 import React from "react";
 import { useMutation, useQuery } from "react-query";
 import { MdClose } from "react-icons/md";
-import { Modal, ModalContent, ArrowUpIcon, ArrowDownIcon } from "ui";
+import { Modal, ModalContent, ArrowUpIcon, ArrowDownIcon } from "@UI";
 import { useTranslation } from "react-i18next";
-import { PostCommentCard, Slider } from "ui";
+import { PostCommentCard, Slider } from "@UI";
 import { getParamFromAsPath } from "utils";
 import { PostCardPlaceHolder } from "placeholder";
 import { useActionComments } from "@src/Hooks";

@@ -5,7 +5,7 @@ import { FetchingMock, waitFor } from "utils";
 import { getRecommendedBeautyCenterFetcher } from "api";
 import { AsyncReturnType } from "types";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { BeautyCenterRecommendedSearchCard } from "ui";
+import { BeautyCenterRecommendedSearchCard } from "@UI";
 
 const mockedData = [...Array(15)].map((_, i) => ({
   id: `${i}`,

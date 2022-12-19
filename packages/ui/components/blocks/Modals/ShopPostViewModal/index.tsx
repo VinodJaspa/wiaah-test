@@ -12,7 +12,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-} from "ui";
+} from "@UI";
 import { Interaction } from "types";
 
 export interface ShopPostViewModalProps {}

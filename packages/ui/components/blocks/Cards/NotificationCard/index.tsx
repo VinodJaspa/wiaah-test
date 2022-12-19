@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { NotificationData } from "types";
-import { useDateDiff, Button, Avatar, EllipsisText, ClockIcon } from "ui";
+import { useDateDiff, Button, Avatar, EllipsisText, ClockIcon } from "@UI";
 export interface NotifiactionCardProps {
   notificationDetails: NotificationData;
 }

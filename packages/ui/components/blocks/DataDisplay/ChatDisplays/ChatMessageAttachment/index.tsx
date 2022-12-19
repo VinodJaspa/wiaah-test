@@ -1,6 +1,6 @@
 import React from "react";
 import { ChatMessageAttachmentType } from "types";
-import { AudioMessageAttachment, SocialStoryContentViewer } from "ui";
+import { AudioMessageAttachment, SocialStoryContentViewer } from "@UI";
 
 export interface ChatMessageAttachmentProps {
   attachment: ChatMessageAttachmentType;

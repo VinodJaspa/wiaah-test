@@ -1,4 +1,4 @@
-import { ProductViewModal, Button, useProductViewModal } from "ui";
+import { ProductViewModal, Button, useProductViewModal } from "@UI";
 import { storybookModalsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
 

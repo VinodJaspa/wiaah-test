@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { BiPhone, BiVideo } from "react-icons/bi";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { ChatRoomHeaderData, IconList } from "types";
-import { useResponsive, Avatar } from "ui";
+import { useResponsive, Avatar } from "@UI";
 import { useRouter } from "next/router";
 import { Icon, IconButton } from "@chakra-ui/react";
 export interface ChatRoomHeaderProps {

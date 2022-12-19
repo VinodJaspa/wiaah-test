@@ -7,7 +7,7 @@ import {
   BeautyCenterMyServiceCard,
   VehicleMyServiceCard,
   HolidayRentalsMyServiceCard,
-} from "ui";
+} from "@UI";
 
 export interface MyServicesCardSwitcherProps {
   data: MyServiceData;

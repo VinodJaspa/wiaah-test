@@ -7,7 +7,7 @@ import {
   FindYourFriendsStep,
   Container,
   Button,
-} from "ui";
+} from "@UI";
 import { StepperStepType } from "types";
 import { AddProfilePictureStep, MultiStepFromHandle } from "../../components";
 

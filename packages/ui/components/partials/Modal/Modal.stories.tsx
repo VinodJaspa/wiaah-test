@@ -2,7 +2,7 @@ import {
   storybookPartailsTitle,
   StorybookImplemntationLayout,
   Counter,
-} from "ui/utils";
+} from "@UI/utils";
 import { ComponentMeta } from "@storybook/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -14,7 +14,7 @@ import {
   ModalButton,
   Button,
   ModalExtendedWrapper,
-} from "ui";
+} from "@UI";
 
 export default {
   title: storybookPartailsTitle + "Modal",

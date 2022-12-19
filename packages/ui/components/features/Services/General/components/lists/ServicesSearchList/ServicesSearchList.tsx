@@ -8,7 +8,7 @@ import {
   ServicesSearchGrid,
   ServicesSearchCard,
   ServicesSearchCardProps,
-} from "ui";
+} from "@UI";
 
 export const ServicesSearchList: React.FC = () => {
   const { take, page } = usePagination(8);

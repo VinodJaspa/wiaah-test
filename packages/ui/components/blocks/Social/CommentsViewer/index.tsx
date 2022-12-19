@@ -1,7 +1,7 @@
 import { PostCommentType } from "api";
 import React from "react";
-import { PostCommentCard } from "ui";
-import { ScrollableContainer } from "ui";
+import { PostCommentCard } from "@UI";
+import { ScrollableContainer } from "@UI";
 export interface CommentsViewerProps {
   comments: PostCommentType[];
   maxInitailComments?: number;

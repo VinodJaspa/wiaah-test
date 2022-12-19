@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { PaintIcon, Select, SelectOption } from "ui";
+import { PaintIcon, Select, SelectOption } from "@UI";
 import { mapArray } from "utils";
 
 export interface ProductColorSelectInputProps {

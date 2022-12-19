@@ -1,5 +1,5 @@
 import { useRecoilState } from "recoil";
-import { CommentReportModalIdState } from "ui";
+import { CommentReportModalIdState } from "@UI";
 export const useCommentReportModal = () => {
   const [commentId, setCommentId] = useRecoilState(CommentReportModalIdState);
 

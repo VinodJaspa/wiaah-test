@@ -1,9 +1,14 @@
 import React from "react";
 import { useOutsideClick } from "@src/Hooks";
-import { InputGroup, InputLeftElement, InputRightElement } from "ui";
-import { Input } from "ui";
+import {
+  InputGroup,
+  InputLeftElement,
+  InputProps,
+  InputRightElement,
+} from "@UI";
+import { Input } from "@UI";
 import { HtmlInputProps } from "types";
-export interface SearchFilterInputProps extends HtmlInputProps {
+export interface SearchFilterInputProps extends InputProps {
   value: string;
   icon?: () => JSX.Element | undefined;
   initialValue?: string;
@@ -58,7 +63,11 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
   const iconRes = icon ? icon() : undefined;
 
   return (
-    <InputGroup ref={containerRef} className="relative h-12">
+    <InputGroup
+      ref={containerRef}
+      flushed={props.flushed}
+      className="relative h-12"
+    >
       {iconRes && (
         <InputLeftElement>
           <label className={`px-2 text-lg text-gray-400`} htmlFor={props.id}>

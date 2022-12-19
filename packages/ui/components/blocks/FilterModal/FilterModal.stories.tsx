@@ -1,5 +1,5 @@
 import { storybookModalsTitle } from "utils";
-import { FilterModal, Button } from "ui";
+import { FilterModal, Button } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 import { useDisclouser } from "hooks";
 

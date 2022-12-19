@@ -15,7 +15,7 @@ import {
   PostAttachment,
   ActionHeader,
   FloatingContainer,
-} from "ui";
+} from "@UI";
 
 export interface ActionsViewerProps {
   action: SocialActionData;

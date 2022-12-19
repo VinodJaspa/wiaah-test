@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useDateDiff } from "ui";
+import { useDateDiff } from "@UI";
 
 export interface DisplayPostedSinceProps {
   since: string;

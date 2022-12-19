@@ -12,9 +12,9 @@ import {
   ServicePropertyDetailsDisplay,
   VideoCameraIcon,
   HStack,
-} from "ui";
-import { Event } from "ui";
-import { useGetServiceDataQuery } from "ui";
+} from "@UI";
+import { Event } from "@UI";
+import { useGetServiceDataQuery } from "@UI";
 import { getTimeInAmPm } from "utils";
 import { useTranslation } from "react-i18next";
 import { useServiceBookedRange, useServiceBookingModal } from "state";

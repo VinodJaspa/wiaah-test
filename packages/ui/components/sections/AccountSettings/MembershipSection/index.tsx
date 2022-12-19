@@ -16,7 +16,7 @@ import {
   TabList,
   SubscriptionPlanCard,
   PriceDisplay,
-} from "ui";
+} from "@UI";
 import { PriceType } from "types";
 export interface MembershipSectionProps {}
 

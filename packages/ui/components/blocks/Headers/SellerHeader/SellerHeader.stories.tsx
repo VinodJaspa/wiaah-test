@@ -1,6 +1,6 @@
 import React from "react";
 import { storybookHeadersTitle } from "utils";
-import { SellerHeader } from "ui";
+import { SellerHeader } from "@UI";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 
 export default {

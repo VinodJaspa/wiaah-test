@@ -1,4 +1,4 @@
-import { storybookSectionsTitle, NewProductDiscountOptions } from "ui";
+import { storybookSectionsTitle, NewProductDiscountOptions } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

@@ -8,7 +8,7 @@ import {
   UnDiscountedPriceDisplay,
   Avatar,
   Rate,
-} from "ui";
+} from "@UI";
 import { mapArray } from "utils";
 
 export interface ProductSearchCardProps {

@@ -11,7 +11,7 @@ import {
   PriceLevelDisplay,
   Button,
   ServicesRequestKeys,
-} from "ui";
+} from "@UI";
 import { BiStar } from "react-icons/bi";
 import { useRouting } from "routing";
 

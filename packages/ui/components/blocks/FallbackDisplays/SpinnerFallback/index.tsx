@@ -1,5 +1,5 @@
 import React from "react";
-import { HStack, Spinner } from "ui";
+import { HStack, Spinner } from "@UI";
 import { MdError } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 

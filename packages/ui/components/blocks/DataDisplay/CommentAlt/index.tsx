@@ -19,7 +19,7 @@ import {
   Verified,
   HashTags,
   PostAttachment,
-} from "ui";
+} from "@UI";
 
 export interface CommentAltProps extends CommentData {
   main?: boolean;

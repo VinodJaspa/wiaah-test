@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ServiceData } from "api";
-import { AspectRatioImage, Button, ServicesRequestKeys } from "ui";
+import { AspectRatioImage, Button, ServicesRequestKeys } from "@UI";
 import { useRouting } from "routing";
 
 export interface ServicesSearchCardProps {

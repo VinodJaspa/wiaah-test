@@ -3,7 +3,7 @@ import {
   useSearchFilters,
   uesGetShopsOnmapSearchQuery,
   ShopMapSearchCard,
-} from "ui";
+} from "@UI";
 import React from "react";
 
 export const ShopsOnMapSearchList: React.FC = () => {

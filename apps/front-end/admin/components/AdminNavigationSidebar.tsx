@@ -11,13 +11,16 @@ import {
   NestedSubmenuNavigationLinks,
   NavigationLink,
   AffiliationIcon,
-  CommentIcon,
-  MessageOutlineIcon,
+  PersonFillIcon,
 } from "ui";
+import { FiSettings } from "react-icons/fi";
+import { BiBrush, BiMoney } from "react-icons/bi";
 
 import { HiUserGroup, HiChat, HiTicket, HiNewspaper } from "react-icons/hi";
 import { ImCheckmark } from "react-icons/im";
 import { BiInfoCircle, BiPackage } from "react-icons/bi";
+import { GiPayMoney, GiReturnArrow, GiTicket } from "react-icons/gi";
+import { MdPayment, MdReport } from "react-icons/md";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -184,6 +187,106 @@ export const AdminNavigationSidebar: React.FC<{
       name: t("Newsletter"),
       onClick() {},
       slug: "newsletter",
+      subLinks: [],
+    },
+    {
+      icon: <GiReturnArrow />,
+      name: t("Product Returns"),
+      onClick() {},
+      slug: "product-returns",
+      subLinks: [],
+    },
+    {
+      icon: <GiTicket />,
+      name: t("Vouchers"),
+      onClick() {},
+      slug: "vouchers",
+      subLinks: [],
+    },
+    {
+      icon: <FiSettings />,
+      name: t("Maintenance"),
+      onClick() {},
+      slug: "maintenance",
+      subLinks: [],
+    },
+    {
+      icon: <BiMoney />,
+      name: t("Sales Statistics"),
+      onClick() {},
+      slug: "sales-statistics",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("All Time Sales"),
+          onClick() {},
+          slug: "all",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Sales By Month"),
+          onClick() {},
+          slug: "month",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Sales By Month"),
+          onClick() {},
+          slug: "day",
+          subLinks: [],
+        },
+      ],
+    },
+    {
+      icon: <MdPayment />,
+      name: t("Payback"),
+      onClick() {},
+      slug: "payback",
+      subLinks: [],
+    },
+    {
+      icon: <PersonFillIcon />,
+      name: t("Account Deletion"),
+      onClick() {},
+      slug: "account-deletion",
+      subLinks: [],
+    },
+    {
+      icon: <BiBrush />,
+      name: t("Design"),
+      onClick() {},
+      slug: "design",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Slideshow"),
+          onClick() {},
+          slug: "slideshow",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Partner"),
+          onClick() {},
+          slug: "partner",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Collaborations"),
+          onClick() {},
+          slug: "collab",
+          subLinks: [],
+        },
+      ],
+    },
+    {
+      icon: <MdReport />,
+      name: t("Social reports"),
+      onClick() {},
+      slug: "social-reports",
       subLinks: [],
     },
   ];

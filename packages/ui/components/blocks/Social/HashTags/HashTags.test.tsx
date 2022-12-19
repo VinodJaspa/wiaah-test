@@ -1,6 +1,6 @@
 import { shallow, ShallowWrapper } from "enzyme";
 import React from "react";
-import { HashTags } from "ui";
+import { HashTags } from "@UI";
 
 const selectors = {
   tagsContainer: "[data-testid='TagsContainer']",

@@ -1,7 +1,7 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
 import { StorybookImplemntationLayout, storybookPartailsTitle } from "utils";
-import { Switch, SwitchProps } from "ui";
+import { Switch, SwitchProps } from "@UI";
 
 export default {
   title: storybookPartailsTitle + "Switch",
@@ -13,7 +13,7 @@ export const Default: React.FC<SwitchProps> = () => {
   return (
     <StorybookImplemntationLayout
       implmentation={`
-import {Switch} from "ui"
+import {Switch} from "@UI"
 
 const Example = ()=>{
   const [checked,setChecked] = React.useState(false)

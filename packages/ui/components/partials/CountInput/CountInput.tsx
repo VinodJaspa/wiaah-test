@@ -1,6 +1,6 @@
 import React from "react";
 import { useBoundedCountState } from "hooks";
-import { MinusIcon, RoundedPlusIcon } from "ui";
+import { MinusIcon, RoundedPlusIcon } from "@UI";
 import { setTestid } from "utils";
 
 export interface CountInputProps {

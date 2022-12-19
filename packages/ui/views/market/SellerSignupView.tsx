@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { FormikInput, Checkbox, Button } from "ui";
+import { FormikInput, Checkbox, Button } from "@UI";
 import { IoMdMail, IoMdKey, IoMdPerson } from "react-icons/io";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";

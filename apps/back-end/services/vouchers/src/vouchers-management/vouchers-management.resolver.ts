@@ -3,23 +3,26 @@ import { VouchersManagementService } from './vouchers-management.service';
 import { Voucher, VoucherCluster } from '@entities';
 import { UseGuards } from '@nestjs/common';
 import {
+  accountType,
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
 } from 'nest-utils';
 import {
-  ActivateVoucherInput,
   CreateVoucherInput,
   DeactivateVoucherInput,
   DeleteVoucherInput,
-  GetVouchersByShopIdInput,
+  GetFilteredVouchers,
   GetVouchersInput,
 } from '@dto';
+import { PrismaService } from 'prismaService';
+import { Prisma } from '@prisma-client';
 @Resolver(() => VoucherCluster)
 @UseGuards(new GqlAuthorizationGuard(['seller']))
 export class VouchersManagementResolver {
   constructor(
     private readonly vouchersManagementService: VouchersManagementService,
+    private readonly prisma: PrismaService,
   ) {}
 
   @Query(() => [Voucher])
@@ -59,6 +62,56 @@ export class VouchersManagementResolver {
     } catch {
       return false;
     }
+  }
+
+  @Query(() => [Voucher])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async getFilteredVouchers(@Args('args') args: GetFilteredVouchers) {
+    let filters: Prisma.VoucherWhereInput[] = [];
+
+    if (args.currency) {
+      filters.push({
+        currency: args.currency,
+      });
+    }
+
+    if (args.name) {
+      filters.push({
+        code: args.name,
+      });
+    }
+    if (args.date) {
+      const targetDate = new Date(args.date);
+      filters.push({
+        createdAt: {
+          gte: new Date(
+            targetDate.getFullYear(),
+            targetDate.getMonth(),
+            targetDate.getDate(),
+          ),
+        },
+      });
+
+      filters.push({
+        createdAt: {
+          lte: new Date(
+            targetDate.getFullYear(),
+            targetDate.getMonth(),
+            targetDate.getDate() + 1,
+          ),
+        },
+      });
+    }
+
+    if (args.status) {
+      filters.push({
+        status: args.status,
+      });
+    }
+
+    return this.prisma.voucher.findMany({
+      where: {},
+    });
   }
 
   // @Mutation(() => Voucher)

@@ -17,7 +17,7 @@ import {
   PriceDisplay,
   UnDiscountedPriceDisplay,
   CashbackBadge,
-} from "ui";
+} from "@UI";
 
 export interface SocialServicesPostCardProps {
   profileInfo: ProfileInfo;

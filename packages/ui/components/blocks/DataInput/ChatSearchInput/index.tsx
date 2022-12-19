@@ -2,7 +2,7 @@ import { FiSearch } from "react-icons/fi";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HtmlDivProps } from "types";
-import { InputGroup, InputLeftElement, Input } from "ui";
+import { InputGroup, InputLeftElement, Input } from "@UI";
 
 export interface ChatSearchInputProps extends HtmlDivProps {}
 

@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { CarouselPreviewer } from "ui";
+import { CarouselPreviewer } from "@UI";
 
 const images = [
   {

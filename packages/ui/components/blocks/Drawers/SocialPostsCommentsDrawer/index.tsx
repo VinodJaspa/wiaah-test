@@ -12,9 +12,9 @@ import {
   Divider,
   Avatar,
   DrawerHeader,
-} from "ui";
+} from "@UI";
 import React from "react";
-import { useUserData, useGetPostCommentsQuery, SpinnerFallback } from "ui";
+import { useUserData, useGetPostCommentsQuery, SpinnerFallback } from "@UI";
 import { useTranslation } from "react-i18next";
 import { useResponsive } from "hooks";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { usePublishRef } from "state";
-import { Spacer } from "ui";
+import { Spacer } from "@UI";
 import { BuyerComment, BuyerCommentProps } from "../BuyerComment";
 
 interface ReviewsProps {

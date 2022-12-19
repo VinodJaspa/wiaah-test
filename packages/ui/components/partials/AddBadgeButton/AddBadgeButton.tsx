@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Badge, RoundedPlusIcon } from "ui";
+import { Badge, RoundedPlusIcon } from "@UI";
 
 export interface AddBadgeButtonProps {
   onClick: () => any;

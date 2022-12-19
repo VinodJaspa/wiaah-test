@@ -1,4 +1,4 @@
-import { storybookBlocksTitle, LocationButton } from "ui";
+import { storybookBlocksTitle, LocationButton } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

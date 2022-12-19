@@ -2,7 +2,7 @@ import { Button, Flex, Text, Box } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HashTagCardInfo } from "types";
-import { PostAttachment, PostCard } from "ui";
+import { PostAttachment, PostCard } from "@UI";
 
 export interface HashTagCardProps extends HashTagCardInfo {
   onViewPost?: () => void;

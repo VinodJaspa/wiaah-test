@@ -1,8 +1,8 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { SocialStoriesCarousel } from "ui";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
-import { PostCardPlaceHolder } from "ui/placeholder";
+import { SocialStoriesCarousel } from "@UI";
+import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
+import { PostCardPlaceHolder } from "@UI/placeholder";
 export default {
   title: "UI/blocks/Social/SocialStoriesCarousel",
   component: SocialStoriesCarousel,

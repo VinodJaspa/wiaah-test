@@ -1,5 +1,5 @@
 import React from "react";
-import { HashTagCard, ListWrapper } from "ui";
+import { HashTagCard, ListWrapper } from "@UI";
 import { HashTagCardInfo } from "types";
 import { useBreakpointValue } from "utils";
 

@@ -24,7 +24,7 @@ import {
   TabsHeader,
   TabTitle,
   TranslationText,
-} from "ui";
+} from "@UI";
 import {
   FormatedDays,
   getDividedWeeks,

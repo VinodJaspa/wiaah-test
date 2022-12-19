@@ -1,7 +1,7 @@
 import React from "react";
 import { IoTicket } from "react-icons/io5";
 import yup, { object, string } from "yup";
-import { BoxShadow, Input, Button, InputGroup, InputLeftElement } from "ui";
+import { BoxShadow, Input, Button, InputGroup, InputLeftElement } from "@UI";
 import { useTranslation } from "react-i18next";
 
 const VoucherSchema = object().shape({

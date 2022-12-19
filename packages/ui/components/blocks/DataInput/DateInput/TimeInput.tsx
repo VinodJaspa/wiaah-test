@@ -1,6 +1,6 @@
 import React from "react";
 import { FilterAndAddToArray, PassPropsToFnOrElem } from "utils";
-import { AspectRatio } from "ui";
+import { AspectRatio } from "@UI";
 
 export interface TimeCustomComponentProps {
   onClick: (id: string) => any;
