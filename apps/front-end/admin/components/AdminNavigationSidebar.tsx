@@ -14,7 +14,7 @@ import {
   PersonFillIcon,
 } from "ui";
 import { FiSettings } from "react-icons/fi";
-import { BiMoney } from "react-icons/bi";
+import { BiBrush, BiMoney } from "react-icons/bi";
 
 import { HiUserGroup, HiChat, HiTicket, HiNewspaper } from "react-icons/hi";
 import { ImCheckmark } from "react-icons/im";
@@ -252,6 +252,21 @@ export const AdminNavigationSidebar: React.FC<{
       onClick() {},
       slug: "account-deletion",
       subLinks: [],
+    },
+    {
+      icon: <BiBrush />,
+      name: t("Design"),
+      onClick() {},
+      slug: "design",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Slideshow"),
+          onClick() {},
+          slug: "slideshow",
+          subLinks: [],
+        },
+      ],
     },
   ];
 
