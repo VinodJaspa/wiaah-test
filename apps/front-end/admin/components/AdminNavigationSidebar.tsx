@@ -173,7 +173,22 @@ export const AdminNavigationSidebar: React.FC<{
       name: t("Orders"),
       onClick() {},
       slug: "orders",
-      subLinks: [],
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Active Orders"),
+          onClick() {},
+          slug: "active",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Canceled"),
+          onClick() {},
+          slug: "canceled",
+          subLinks: [],
+        },
+      ],
     },
     {
       icon: <HiTicket />,

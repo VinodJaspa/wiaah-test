@@ -17,9 +17,13 @@ export class OrdersRepository {
     sellerId: string,
     items: { id: string; qty: number; type: string }[],
     shippingMethodId: string,
+    shippingAddressId: string,
+    discountId: string,
   ): Promise<Order> {
     return this.prisma.order.create({
       data: {
+        discountId,
+        shippingAddressId,
         shippingMethodId,
         buyerId,
         sellerId,

@@ -28,7 +28,7 @@ model Order {
 model RefundRequest {
   id String @id @db.ObjectId @default(auto()) @map("_id")
   requestedById String @db.ObjectId
-  orderId String @db.ObjectId
+  productId String @db.ObjectId
   sellerId String @db.ObjectId
   reason String
   type RefundType
@@ -36,7 +36,7 @@ model RefundRequest {
   fullAmount Boolean
   status RefundStatusType @default(pending)
   rejectReason String?
-  @@unique([orderId,requestedById])
+  @@unique([productId,requestedById])
 }
 
 type OrderItem {

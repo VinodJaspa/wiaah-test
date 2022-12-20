@@ -18,7 +18,7 @@ export class RefundRepository {
   createOne(input: AskForRefundInput, sellerId: string, userId: string) {
     return this.prisma.refundRequest.create({
       data: {
-        orderId: input.id,
+        productId: input.id,
         ...input,
         requestedById: userId,
         status: 'pending',
