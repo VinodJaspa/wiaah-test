@@ -27,31 +27,36 @@ const InputContext = React.createContext<InputContextValue>({
 export interface InputProps extends HtmlInputProps {
   flushed?: boolean;
   icon?: any;
+  description?: string;
 }
 
 export const Input: React.FC<InputProps> = ({
   className,
   flushed,
+  description,
   ...props
 }) => {
   const { isInputGroup, setFocused } = React.useContext(InputContext);
 
   return (
-    <input
-      onFocus={(e) => {
-        props.onFocus && props.onFocus(e);
-        setFocused && setFocused(true);
-      }}
-      {...props}
-      className={`${className || ""} ${
-        isInputGroup
-          ? "border-none focus:ring-0 focus:border-none focus-visible:border-none focus-within:border-none active:border-none"
-          : flushed
-          ? "border-b-2"
-          : "border-2"
-      }
+    <>
+      <input
+        onFocus={(e) => {
+          props.onFocus && props.onFocus(e);
+          setFocused && setFocused(true);
+        }}
+        {...props}
+        className={`${className || ""} ${
+          isInputGroup
+            ? "border-none focus:ring-0 focus:border-none focus-visible:border-none focus-within:border-none active:border-none"
+            : flushed
+            ? "border-b-2"
+            : "border-2"
+        }
       focus:border-primary-200 border-gray-200 rounded px-3 w-full h-10`}
-    />
+      />
+      {description ? <p>{description}</p> : null}
+    </>
   );
 };
 

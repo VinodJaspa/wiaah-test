@@ -19,8 +19,8 @@ import { BiBrush, BiMoney } from "react-icons/bi";
 import { HiUserGroup, HiChat, HiTicket, HiNewspaper } from "react-icons/hi";
 import { ImCheckmark } from "react-icons/im";
 import { BiInfoCircle, BiPackage } from "react-icons/bi";
-import { GiPayMoney, GiReturnArrow, GiTicket } from "react-icons/gi";
-import { MdPayment, MdReport } from "react-icons/md";
+import { GiTicket } from "react-icons/gi";
+import { MdReport } from "react-icons/md";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -126,7 +126,7 @@ export const AdminNavigationSidebar: React.FC<{
       ],
     },
     {
-      icon: AffiliationIcon({}),
+      icon: <AffiliationIcon />,
       name: t("Affiliation"),
       onClick() {},
       slug: "affiliation",
@@ -188,6 +188,13 @@ export const AdminNavigationSidebar: React.FC<{
           slug: "canceled",
           subLinks: [],
         },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Product Returns"),
+          onClick() {},
+          slug: "product-returns",
+          subLinks: [],
+        },
       ],
     },
     {
@@ -195,20 +202,35 @@ export const AdminNavigationSidebar: React.FC<{
       name: t("Bookings"),
       onClick() {},
       slug: "service-bookings",
-      subLinks: [],
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Active"),
+          onClick() {},
+          slug: "active",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Payback"),
+          onClick() {},
+          slug: "payback",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Canceled"),
+          onClick() {},
+          slug: "canceled",
+          subLinks: [],
+        },
+      ],
     },
     {
       icon: <HiNewspaper />,
       name: t("Newsletter"),
       onClick() {},
       slug: "newsletter",
-      subLinks: [],
-    },
-    {
-      icon: <GiReturnArrow />,
-      name: t("Product Returns"),
-      onClick() {},
-      slug: "product-returns",
       subLinks: [],
     },
     {
@@ -254,13 +276,7 @@ export const AdminNavigationSidebar: React.FC<{
         },
       ],
     },
-    {
-      icon: <MdPayment />,
-      name: t("Payback"),
-      onClick() {},
-      slug: "payback",
-      subLinks: [],
-    },
+
     {
       icon: <PersonFillIcon />,
       name: t("Account Deletion"),
@@ -303,6 +319,35 @@ export const AdminNavigationSidebar: React.FC<{
       onClick() {},
       slug: "social-reports",
       subLinks: [],
+    },
+    {
+      icon: <BiBrush />,
+      name: t("System"),
+      onClick() {},
+      slug: "system",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Profile Edit"),
+          onClick() {},
+          slug: "edit-profile",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Languages"),
+          onClick() {},
+          slug: "languages",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Currency"),
+          onClick() {},
+          slug: "currency",
+          subLinks: [],
+        },
+      ],
     },
   ];
 
