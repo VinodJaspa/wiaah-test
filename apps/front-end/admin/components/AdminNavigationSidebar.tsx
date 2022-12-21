@@ -349,6 +349,28 @@ export const AdminNavigationSidebar: React.FC<{
         },
       ],
     },
+    {
+      icon: <AffiliationIcon />,
+      name: t("Marketing"),
+      onClick() {},
+      slug: "marketing",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Mail"),
+          onClick() {},
+          slug: "mail",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Coupons"),
+          onClick() {},
+          slug: "coupons",
+          subLinks: [],
+        },
+      ],
+    },
   ];
 
   return (

@@ -60,6 +60,17 @@ model Design {
   updatedAt DateTime   @updatedAt
 }
 
+model Language {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  locale String
+  name String
+  code String
+  enabled Boolean @default(false)
+  sortOrder Int @default(0)
+}
+
+
+
 enum DesignType {
   partner
   slideshow

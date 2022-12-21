@@ -64,3 +64,21 @@ export const SimpleTabItemList: React.FC = ({ children }) => {
   const { currIdx } = React.useContext(SimpleTabsContext);
   return <>{React.Children.toArray(children).at(currIdx)}</>;
 };
+
+export const SimpleTabHeadButton: React.FC<{
+  selected?: boolean;
+  onClick?: () => any;
+}> = ({ onClick, selected, children }) => {
+  return (
+    <div
+      onClick={onClick}
+      className={`${
+        selected
+          ? "border border-b-0 border-b-gray-300 text-black"
+          : "text-gray border border-white"
+      } px-4 py-2`}
+    >
+      {children}
+    </div>
+  );
+};

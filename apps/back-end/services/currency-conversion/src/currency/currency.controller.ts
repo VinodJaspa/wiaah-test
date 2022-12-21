@@ -33,7 +33,7 @@ export class CurrencyController {
     } catch (error) {
       return new GetCurrencyExchangeRateMessageReply({
         data: null,
-        error: formatCaughtError(error),
+        error: error,
         success: false,
       });
     }
