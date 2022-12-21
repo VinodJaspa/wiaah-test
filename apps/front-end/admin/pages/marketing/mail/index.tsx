@@ -80,12 +80,12 @@ const Mailing: NextPage = () => {
                 </Td>
               </Tr>
               <Tr>
-                <Td>
+                <Td valign="top">
                   <InputRequiredStar />
                   {t("Message")}
                 </Td>
                 <Td>
-                  <Textarea />
+                  <Textarea className="h-72" />
                 </Td>
               </Tr>
             </TBody>

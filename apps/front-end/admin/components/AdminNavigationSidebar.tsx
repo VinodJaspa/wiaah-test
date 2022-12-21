@@ -21,6 +21,7 @@ import { ImCheckmark } from "react-icons/im";
 import { BiInfoCircle, BiPackage } from "react-icons/bi";
 import { GiTicket } from "react-icons/gi";
 import { MdReport } from "react-icons/md";
+import { BsTruck } from "react-icons/bs";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -367,6 +368,21 @@ export const AdminNavigationSidebar: React.FC<{
           name: t("Coupons"),
           onClick() {},
           slug: "coupons",
+          subLinks: [],
+        },
+      ],
+    },
+    {
+      icon: <BsTruck />,
+      name: t("Shipping"),
+      onClick() {},
+      slug: "shipping",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Geo Zones"),
+          onClick() {},
+          slug: "geo-zones",
           subLinks: [],
         },
       ],

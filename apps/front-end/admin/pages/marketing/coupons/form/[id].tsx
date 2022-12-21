@@ -35,11 +35,9 @@ interface CouponHistory {
   id: string;
   buyer: {
     name: string;
-    photo: string;
   };
   seller: {
     name: string;
-    photo: string;
   };
   amount: number;
   code: string;
@@ -257,12 +255,8 @@ const couponform: NextPage = () => {
                           seller,
                         }) => (
                           <Tr key={id}>
-                            <Td>
-                              <Avatar src={seller.photo} />
-                            </Td>
-                            <Td>
-                              <Avatar src={buyer.photo} />
-                            </Td>
+                            <Td>{seller.name}</Td>
+                            <Td>{buyer.name}</Td>
                             <Td>{id}</Td>
                             <Td>{code}</Td>
                             <Td>{amount}</Td>
