@@ -65,7 +65,7 @@ const zones: zone[] = [
 
 const GeoZones: NextPage = () => {
   const { t } = useTranslation();
-  const { back, getCurrentPath, visit } = useRouting();
+  const { getCurrentPath, visit } = useRouting();
   return (
     <section>
       <div className="flex gap-1 py-4 justify-end">

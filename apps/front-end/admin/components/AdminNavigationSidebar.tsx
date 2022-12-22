@@ -12,6 +12,7 @@ import {
   NavigationLink,
   AffiliationIcon,
   PersonFillIcon,
+  PercentIcon,
 } from "ui";
 import { FiSettings } from "react-icons/fi";
 import { BiBrush, BiMoney } from "react-icons/bi";
@@ -20,7 +21,7 @@ import { HiUserGroup, HiChat, HiTicket, HiNewspaper } from "react-icons/hi";
 import { ImCheckmark } from "react-icons/im";
 import { BiInfoCircle, BiPackage } from "react-icons/bi";
 import { GiTicket } from "react-icons/gi";
-import { MdReport } from "react-icons/md";
+import { MdCardMembership, MdReport } from "react-icons/md";
 import { BsTruck } from "react-icons/bs";
 
 export const AdminNavigationSidebar: React.FC<{
@@ -387,14 +388,43 @@ export const AdminNavigationSidebar: React.FC<{
         },
       ],
     },
+    {
+      icon: <PercentIcon />,
+      name: t("VAT"),
+      onClick() {},
+      slug: "vat",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Tax Classes"),
+          onClick() {},
+          slug: "classes",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Tax Rates"),
+          onClick() {},
+          slug: "rates",
+          subLinks: [],
+        },
+      ],
+    },
+    {
+      icon: <MdCardMembership />,
+      name: t("Plans"),
+      onClick() {},
+      slug: "plans",
+      subLinks: [],
+    },
   ];
 
   return (
-    <div className="flex flex-col w-full border-r border-opacity-20 border-r-black h-full gap-4">
+    <div className="flex max-h-[100vh] flex-col w-full border-r border-opacity-20 border-r-black h-full gap-4">
       <div className="flex bg-white justify-center items-center h-24 border-b border-opacity-20 border-b-black">
         <LogoIcon className="text-8xl text-primary" />
       </div>
-      <div className="px-4 ">
+      <div className="px-4 h-full thinScroll overflow-y-scroll">
         <Accordion>
           <NestedSubmenuNavigationLinks
             canBeSelected={true}
