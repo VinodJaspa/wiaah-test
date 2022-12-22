@@ -168,6 +168,22 @@ model ShippingRule {
   updatedAt         DateTime          @updatedAt()
 }
 
+model ShippingTypeRule {
+  id String @id @default(auto()) @db.ObjectId @map("_id")
+  name String
+  description String
+  type ShippingType
+  geoZones GeoZone[] 
+}
+
+model GeoZone {
+  id String @id @db.ObjectId @map("_id") @default(auto())
+  country String
+  zone String 
+  shippingTypeRuleId String @db.ObjectId
+  shippingTypeRule ShippingTypeRule @relation(fields: [shippingTypeRuleId],references: [id])
+}
+
 type DeliveryTimeRange {
   from Int
   to   Int

@@ -57,7 +57,7 @@ const GeoZoneForm: NextPage = () => {
       <div className="border">
         <div className="p-4 border-b border-b-gray-300 flex items-center gap-2">
           <EditIcon />
-          <p>{t("Edit Coupon")}</p>
+          <p>{t("Edit Zone")}</p>
         </div>
         <div className="p-4">
           <Table

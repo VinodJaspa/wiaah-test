@@ -80,7 +80,7 @@ const GeoZones: NextPage = () => {
       <div className="border">
         <div className="p-4 border-b border-b-gray-300 flex items-center gap-2">
           <ListIcon />
-          <p>{t("Coupon List")}</p>
+          <p>{t("Shipping List")}</p>
         </div>
         <TableContainer>
           <Table className="w-full">
