@@ -106,6 +106,7 @@ export const ItemsPagination: React.FC<ItemsPaginationProps> = ({
           }}
           className="text-gray-500 bg-white cursor-pointer"
         />
+        {page}
         <ChevronRightIcon
           onClick={() => {
             next && next();

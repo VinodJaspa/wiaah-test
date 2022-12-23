@@ -29,13 +29,15 @@ interface SubscriptionHistory {
   expiryDate: string;
 }
 
+const status = ["expired", "active", "pending"];
+
 const subs: SubscriptionHistory[] = [...Array(10)].map((_, i) => ({
   id: i.toString(),
   expiryDate: new Date().toString(),
   nextPaymentDate: new Date().toString(),
   orderId: i.toString(),
   productName: `product name-${i}`,
-  status: "expired",
+  status: status[randomNum(status.length)],
   recurring: {
     amount: randomNum(500),
     days: randomNum(30),
@@ -47,7 +49,7 @@ const History: React.FC = () => {
   const { controls } = usePaginationControls();
   const { t } = useTranslation();
   return (
-    <div>
+    <div className="flex flex-col gap-2 w-full">
       <HStack className="justify-between items-start">
         <HStack>
           <Select>
@@ -72,28 +74,36 @@ const History: React.FC = () => {
             type: AdminTableCellTypeEnum.checkbox,
           },
           {
+            type: AdminTableCellTypeEnum.text,
             value: t("Subscription ID"),
           },
           {
+            type: AdminTableCellTypeEnum.text,
             value: t("Parent Order ID"),
           },
           {
+            type: AdminTableCellTypeEnum.text,
             value: t("Status"),
           },
           {
+            type: AdminTableCellTypeEnum.text,
             value: t("Product Name"),
           },
           {
+            type: AdminTableCellTypeEnum.text,
             value: t("Recurring Amount"),
           },
           {
+            type: AdminTableCellTypeEnum.text,
             value: t("User Name"),
           },
           {
             value: t("Next Payment Date"),
+            type: AdminTableCellTypeEnum.text,
           },
           {
             value: t("Subscription Expiry Date"),
+            type: AdminTableCellTypeEnum.text,
           },
         ]}
         data={subs.map(
@@ -159,6 +169,7 @@ const History: React.FC = () => {
         title={t("Subscription List")}
         contain
       />
+      <ItemsPagination controls={controls} />
     </div>
   );
 };
