@@ -414,8 +414,23 @@ export const AdminNavigationSidebar: React.FC<{
       icon: <MdCardMembership />,
       name: t("Plans"),
       onClick() {},
-      slug: "plans",
-      subLinks: [],
+      slug: "subscription-plans",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("settings"),
+          onClick() {},
+          slug: "settings",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("history"),
+          onClick() {},
+          slug: "history",
+          subLinks: [],
+        },
+      ],
     },
   ];
 

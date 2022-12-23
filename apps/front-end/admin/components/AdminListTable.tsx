@@ -36,8 +36,8 @@ export const AdminListTable: React.FC<{
   title: string;
   pagination?: usePaginationControlsOptions;
   props?: TableProps;
-  onAdd: (ids: string[]) => any;
-  onDelete: (ids: string[]) => any;
+  onAdd?: (ids: string[]) => any;
+  onDelete?: (ids: string[]) => any;
   headers: {
     props?: ThProps;
     value?: string;
@@ -55,36 +55,57 @@ export const AdminListTable: React.FC<{
       custom?: React.ReactNode;
     }[];
   }[];
-}> = ({ data, headers, onAdd, onDelete, title, props, pagination }) => {
+  contain?: boolean;
+}> = ({
+  data,
+  headers,
+  onAdd,
+  onDelete,
+  title,
+  props,
+  pagination,
+  contain,
+}) => {
   const [selected, setSelected] = React.useState<string[]>([]);
 
   return (
     <section>
       <div className="flex gap-1 py-4 justify-end">
-        <Button
-          onClick={() => onAdd && onAdd(selected)}
-          center
-          className="w-8 h-8"
-        >
-          <PlusIcon />
-        </Button>
-        <Button
-          onClick={() => onDelete && onDelete(selected)}
-          center
-          className="w-8 h-8"
-          colorScheme="danger"
-        >
-          <TrashIcon />
-        </Button>
+        {onAdd ? (
+          <Button
+            onClick={() => onAdd && onAdd(selected)}
+            center
+            className="w-8 h-8"
+          >
+            <PlusIcon />
+          </Button>
+        ) : null}
+        {onDelete ? (
+          <Button
+            onClick={() => onDelete && onDelete(selected)}
+            center
+            className="w-8 h-8"
+            colorScheme="danger"
+          >
+            <TrashIcon />
+          </Button>
+        ) : null}
       </div>
       <div className="border border-gray-300">
-        <div className="flex border-b border-gray-300 items-center gap-2 p-4">
-          <ListIcon />
-          <p>{title}</p>
-        </div>
+        {title ? (
+          <div className="flex border-b border-gray-300 items-center gap-2 p-4">
+            <ListIcon />
+            <p>{title}</p>
+          </div>
+        ) : null}
         <div className="p-4">
           <TableContainer>
-            <Table ThProps={{ align: "left" }} className="w-full" {...props}>
+            <Table
+              ThProps={{ align: "left" }}
+              TdProps={{ className: "max-w-[20rem]" }}
+              className={`${contain ? "min-w-max" : "w-full"}`}
+              {...props}
+            >
               <THead>
                 <Tr>
                   {mapArray(headers, ({ props, type, value }) => {
