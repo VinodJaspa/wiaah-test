@@ -11,6 +11,7 @@ import { StripeBillingModule } from './stripe-billing/stripe-billing.module';
 import { StripeModule } from './stripe/stripe.module';
 import { BalanceModule } from './balance/balance.module';
 import { ClientKafka, ClientsModule, Transport } from '@nestjs/microservices';
+import { InvoiceRecordModule } from './invoice-record/invoice-record.module';
 
 @Global()
 @Module({
@@ -30,6 +31,7 @@ import { ClientKafka, ClientsModule, Transport } from '@nestjs/microservices';
         },
       },
     ]),
+    InvoiceRecordModule,
   ],
 })
 export class EventModule {}
