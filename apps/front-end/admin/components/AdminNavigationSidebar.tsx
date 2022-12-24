@@ -22,7 +22,7 @@ import { ImCheckmark } from "react-icons/im";
 import { BiInfoCircle, BiPackage } from "react-icons/bi";
 import { GiTicket } from "react-icons/gi";
 import { MdCardMembership, MdReport } from "react-icons/md";
-import { BsTruck } from "react-icons/bs";
+import { BsCash, BsTruck } from "react-icons/bs";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -431,6 +431,14 @@ export const AdminNavigationSidebar: React.FC<{
           subLinks: [],
         },
       ],
+    },
+
+    {
+      icon: <BsCash />,
+      name: t("Balance"),
+      onClick() {},
+      slug: "balance",
+      subLinks: [],
     },
   ];
 
