@@ -18,6 +18,7 @@ import {
   ThProps,
   Tr,
   TrashIcon,
+  DateFormInput,
 } from "ui";
 import React from "react";
 import { mapArray, runIfFn } from "utils";
@@ -30,6 +31,7 @@ export enum AdminTableCellTypeEnum {
   image = "image",
   avatar = "avatar",
   custom = "custom",
+  date = "date",
 }
 
 export const AdminListTable: React.FC<{
@@ -43,6 +45,7 @@ export const AdminListTable: React.FC<{
     value?: string;
     type?: AdminTableCellTypeEnum;
     actionBtns?: React.ReactNode[];
+    customName?: string;
     custom?: React.ReactNode;
   }[];
   data: {
@@ -122,6 +125,8 @@ export const AdminListTable: React.FC<{
                             />
                           </Th>
                         );
+
+                      case AdminTableCellTypeEnum.custom:
                       default:
                         return <Th {...props}>{value}</Th>;
                     }
@@ -143,6 +148,12 @@ export const AdminListTable: React.FC<{
                           </Th>
                         );
 
+                      case AdminTableCellTypeEnum.date:
+                        return (
+                          <Th>
+                            <DateFormInput />
+                          </Th>
+                        );
                       case AdminTableCellTypeEnum.custom:
                         return <Td {...props}>{runIfFn(custom)}</Td>;
                       default:
