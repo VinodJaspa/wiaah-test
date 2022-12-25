@@ -13,6 +13,7 @@ import {
   AffiliationIcon,
   PersonFillIcon,
   PercentIcon,
+  NotAllowedIcon,
 } from "ui";
 import { FiSettings } from "react-icons/fi";
 import { BiBrush, BiMoney } from "react-icons/bi";
@@ -445,6 +446,28 @@ export const AdminNavigationSidebar: React.FC<{
       onClick() {},
       slug: "withdrawal",
       subLinks: [],
+    },
+    {
+      icon: <NotAllowedIcon />,
+      name: t("Banned Countries"),
+      onClick() {},
+      slug: "banned-countries",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Sellers"),
+          onClick() {},
+          slug: "sellers",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Buyers"),
+          onClick() {},
+          slug: "buyers",
+          subLinks: [],
+        },
+      ],
     },
   ];
 
