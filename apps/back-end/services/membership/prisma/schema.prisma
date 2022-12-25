@@ -14,31 +14,42 @@ datasource db {
 model Membership {
   id String @id @db.ObjectId @default(auto()) @map("_id")
   name String 
-  type MembershipType
+  commissionOn CommissionOn
+  recurring Recurring
   priceId String?
-  unit_price Float @default(0)
-  unit_type MembershipUnitType?
   turnover_rules MembershipTurnoverRule[]
   includings MembershipIncludeItem[]
   active Boolean @default(false)
 }
 model MembershipTurnoverRule {
   id String @id @default(auto()) @db.ObjectId @map("_id")
-  membershipId String
+  membershipId String @db.ObjectId
   membership Membership @relation(fields: [membershipId],references: [id])
   priceId String?
-  turnover_amount Float
-  price Float
+  usage Float
   commission Float
+  commissionType commissionType
+}
+
+enum Recurring {
+  day
+  month
+  week
+  year
 }
 
 type MembershipIncludeItem {
   title String
 }
 
-enum MembershipType {
-  monthly
-  per_unit
+enum CommissionOn {
+  external_click
+  sale
+  revenue
+}
+enum commissionType {
+  fixed
+  percentage
 }
 enum MembershipUnitType {
   vendor_site_click

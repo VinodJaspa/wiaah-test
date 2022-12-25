@@ -19,7 +19,7 @@ export class Refund {
   requestedById: string;
 
   @Field(() => ID)
-  orderId: string;
+  productId: string;
 
   @Field(() => String)
   reason: string;

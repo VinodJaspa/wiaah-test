@@ -58,8 +58,8 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
       className={` ${className ? className : ""} ${
         outline ? "border-2 text-black hover:text-white bg-transparent" : ""
       } ${colors(colorScheme)} ${
-        center ? "flex justify-center items-center" : ""
-      } px-4 py-2  transition-colors rounded-md`}
+        center ? "flex justify-center items-center" : "px-4 py-2"
+      } transition-colors rounded-md`}
     >
       {loading ? <CgSpinner className="animate-spin" /> : children}
     </button>

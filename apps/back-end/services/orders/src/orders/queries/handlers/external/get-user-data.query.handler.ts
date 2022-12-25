@@ -26,6 +26,7 @@ export class GetUserDataQueryHandler
     return {
       email: data.email,
       name: data.firstName,
+      preferedCurrency: data.language,
     };
   }
 }

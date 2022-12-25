@@ -29,6 +29,7 @@ export class OrdersController extends BaseController {
         })),
         value.input.shippingMethodId,
         value.input.shippingAddressId,
+        value.input.discountId,
       ),
     );
   }
@@ -49,6 +50,8 @@ export class OrdersController extends BaseController {
           type: OrderItemType.service,
         })),
         value.input.shippingMethodId,
+        value.input.shippingAddressId,
+        value.input.discountId,
       ),
     );
 

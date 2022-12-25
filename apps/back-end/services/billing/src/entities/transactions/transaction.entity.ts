@@ -1,5 +1,6 @@
 import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
 import { TransactionStatus } from '@prisma-client';
+import { Account } from '../external';
 
 registerEnumType(TransactionStatus, { name: 'TransactionStatus' });
 
@@ -18,10 +19,10 @@ export class Transaction {
   status: TransactionStatus;
 
   @Field((type) => ID)
-  from: string;
+  userId: string;
 
-  @Field((type) => ID)
-  to: string;
+  @Field(() => Account)
+  user: Account;
 
   @Field((type) => Int)
   amount: number;

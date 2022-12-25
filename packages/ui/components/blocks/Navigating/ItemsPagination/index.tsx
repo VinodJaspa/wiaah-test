@@ -83,7 +83,7 @@ export const ItemsPagination: React.FC<ItemsPaginationProps> = ({
   }
 
   return (
-    <div className="text-md md:text-lg lg:text-xl w-full flex items-center gap-4 text-gray-500 justify-end">
+    <div className="w-full flex items-center gap-4 text-gray-500 justify-end">
       <p>{t("items_per_page", "Items Per Page")}</p>
       <Select
         onOptionSelect={handleItemsPerPageChange}
@@ -104,13 +104,14 @@ export const ItemsPagination: React.FC<ItemsPaginationProps> = ({
           onClick={() => {
             previous && previous();
           }}
-          className="text-gray-500 bg-white text-xl cursor-pointer"
+          className="text-gray-500 bg-white cursor-pointer"
         />
+        {page}
         <ChevronRightIcon
           onClick={() => {
             next && next();
           }}
-          className="text-gray-500 bg-white text-xl cursor-pointer"
+          className="text-gray-500 bg-white cursor-pointer"
         />
       </div>
     </div>

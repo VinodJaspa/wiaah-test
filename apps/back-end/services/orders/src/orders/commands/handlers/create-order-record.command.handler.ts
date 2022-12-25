@@ -14,12 +14,16 @@ export class CreateOrderCommandHandler
     orderItems,
     sellerId,
     shippingMethodId,
+    discountId,
+    shippingAddressId,
   }: CreateOrderCommand): Promise<Order> {
     const res = await this.repo.create(
       buyerId,
       sellerId,
       orderItems,
       shippingMethodId,
+      shippingAddressId,
+      discountId,
     );
 
     return { ...res, refundable: true };

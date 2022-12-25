@@ -13,9 +13,10 @@ import { ElasticsearchModule } from '@nestjs/elasticsearch';
 
 import { Search } from './products/entities/search.entity';
 import { ShippingRulesModule } from './shipping-rules';
-import { PrismaService } from './Prisma.service';
+import { PrismaService } from './prisma.service';
 import { ShippingAddressModule } from './shipping-address/shipping-address.module';
 import { ProductsAdminModule } from '@products/products-admin.module';
+import { ShippingTypeRuleModule } from './shipping-type-rule/shipping-type-rule.module';
 
 @Global()
 @Module({
@@ -28,6 +29,7 @@ import { ProductsAdminModule } from '@products/products-admin.module';
       },
     }),
     ShippingAddressModule,
+    ShippingTypeRuleModule,
   ],
   exports: [ElasticsearchModule],
 })

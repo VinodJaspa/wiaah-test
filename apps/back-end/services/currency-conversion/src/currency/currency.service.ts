@@ -8,7 +8,6 @@ import { PrismaService } from 'src/prisma.service';
 import { UpdateCurrencyInput } from './dto/update-currency.input';
 import { Currency } from './entities/currency.entity';
 import { FixerService } from 'src/fixer/fixer.service';
-import { FormatedRate } from 'src/fixer/types/formatedRate';
 
 @Injectable()
 export class CurrencyService {

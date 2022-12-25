@@ -1,29 +1,29 @@
 import React from "react";
 import { HtmlDivProps } from "types";
 
-export type BadgeCases = {
-  success?: string;
-  fail?: string;
-  info?: string;
-  warning?: string;
-  off?: string;
+export type BadgeCases<T> = {
+  success?: T;
+  fail?: T;
+  info?: T;
+  warning?: T;
+  off?: T;
 };
 
-export interface BadgeProps extends HtmlDivProps {
-  value?: string | number | boolean;
-  cases?: BadgeCases;
-  variant?: keyof BadgeCases;
+export interface BadgeProps<T extends string | number> extends HtmlDivProps {
+  value?: T;
+  cases?: BadgeCases<T>;
+  variant?: keyof BadgeCases<T>;
 }
 
-export const Badge: React.FC<BadgeProps> = ({
+export function Badge<T extends string | number>({
   cases,
   value,
   children,
   className,
   variant = "success",
   ...props
-}) => {
-  const styleCases: Record<keyof BadgeCases, string> = {
+}: BadgeProps<T>) {
+  const styleCases: Record<keyof BadgeCases<T>, string> = {
     success: `bg-primary-50 border border-primary`,
     fail: `bg-red-50 border border-red-500`,
     info: `bg-blue-50 border border-blue-500`,
@@ -49,4 +49,4 @@ export const Badge: React.FC<BadgeProps> = ({
       {children}
     </div>
   );
-};
+}

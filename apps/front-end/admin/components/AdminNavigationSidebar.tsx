@@ -12,6 +12,8 @@ import {
   NavigationLink,
   AffiliationIcon,
   PersonFillIcon,
+  PercentIcon,
+  NotAllowedIcon,
 } from "ui";
 import { FiSettings } from "react-icons/fi";
 import { BiBrush, BiMoney } from "react-icons/bi";
@@ -19,8 +21,9 @@ import { BiBrush, BiMoney } from "react-icons/bi";
 import { HiUserGroup, HiChat, HiTicket, HiNewspaper } from "react-icons/hi";
 import { ImCheckmark } from "react-icons/im";
 import { BiInfoCircle, BiPackage } from "react-icons/bi";
-import { GiPayMoney, GiReturnArrow, GiTicket } from "react-icons/gi";
-import { MdPayment, MdReport } from "react-icons/md";
+import { GiTicket } from "react-icons/gi";
+import { MdCardMembership, MdReport } from "react-icons/md";
+import { BsCash, BsCashStack, BsTruck } from "react-icons/bs";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -126,7 +129,7 @@ export const AdminNavigationSidebar: React.FC<{
       ],
     },
     {
-      icon: AffiliationIcon({}),
+      icon: <AffiliationIcon />,
       name: t("Affiliation"),
       onClick() {},
       slug: "affiliation",
@@ -173,27 +176,64 @@ export const AdminNavigationSidebar: React.FC<{
       name: t("Orders"),
       onClick() {},
       slug: "orders",
-      subLinks: [],
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Active Orders"),
+          onClick() {},
+          slug: "active",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Canceled"),
+          onClick() {},
+          slug: "canceled",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Product Returns"),
+          onClick() {},
+          slug: "product-returns",
+          subLinks: [],
+        },
+      ],
     },
     {
       icon: <HiTicket />,
       name: t("Bookings"),
       onClick() {},
       slug: "service-bookings",
-      subLinks: [],
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Active"),
+          onClick() {},
+          slug: "active",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Payback"),
+          onClick() {},
+          slug: "payback",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Canceled"),
+          onClick() {},
+          slug: "canceled",
+          subLinks: [],
+        },
+      ],
     },
     {
       icon: <HiNewspaper />,
       name: t("Newsletter"),
       onClick() {},
       slug: "newsletter",
-      subLinks: [],
-    },
-    {
-      icon: <GiReturnArrow />,
-      name: t("Product Returns"),
-      onClick() {},
-      slug: "product-returns",
       subLinks: [],
     },
     {
@@ -239,13 +279,7 @@ export const AdminNavigationSidebar: React.FC<{
         },
       ],
     },
-    {
-      icon: <MdPayment />,
-      name: t("Payback"),
-      onClick() {},
-      slug: "payback",
-      subLinks: [],
-    },
+
     {
       icon: <PersonFillIcon />,
       name: t("Account Deletion"),
@@ -289,14 +323,160 @@ export const AdminNavigationSidebar: React.FC<{
       slug: "social-reports",
       subLinks: [],
     },
+    {
+      icon: <BiBrush />,
+      name: t("System"),
+      onClick() {},
+      slug: "system",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Profile Edit"),
+          onClick() {},
+          slug: "edit-profile",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Languages"),
+          onClick() {},
+          slug: "languages",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Currency"),
+          onClick() {},
+          slug: "currency",
+          subLinks: [],
+        },
+      ],
+    },
+    {
+      icon: <AffiliationIcon />,
+      name: t("Marketing"),
+      onClick() {},
+      slug: "marketing",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Mail"),
+          onClick() {},
+          slug: "mail",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Coupons"),
+          onClick() {},
+          slug: "coupons",
+          subLinks: [],
+        },
+      ],
+    },
+    {
+      icon: <BsTruck />,
+      name: t("Shipping"),
+      onClick() {},
+      slug: "shipping",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Geo Zones"),
+          onClick() {},
+          slug: "geo-zones",
+          subLinks: [],
+        },
+      ],
+    },
+    {
+      icon: <PercentIcon />,
+      name: t("VAT"),
+      onClick() {},
+      slug: "vat",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Tax Classes"),
+          onClick() {},
+          slug: "classes",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Tax Rates"),
+          onClick() {},
+          slug: "rates",
+          subLinks: [],
+        },
+      ],
+    },
+    {
+      icon: <MdCardMembership />,
+      name: t("Plans"),
+      onClick() {},
+      slug: "subscription-plans",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("settings"),
+          onClick() {},
+          slug: "settings",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("history"),
+          onClick() {},
+          slug: "history",
+          subLinks: [],
+        },
+      ],
+    },
+    {
+      icon: <BsCash />,
+      name: t("Balance"),
+      onClick() {},
+      slug: "balance",
+      subLinks: [],
+    },
+    {
+      icon: <BsCashStack />,
+      name: t("Withdrawal"),
+      onClick() {},
+      slug: "withdrawal",
+      subLinks: [],
+    },
+    {
+      icon: <NotAllowedIcon />,
+      name: t("Banned Countries"),
+      onClick() {},
+      slug: "banned-countries",
+      subLinks: [
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Sellers"),
+          onClick() {},
+          slug: "sellers",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("Buyers"),
+          onClick() {},
+          slug: "buyers",
+          subLinks: [],
+        },
+      ],
+    },
   ];
 
   return (
-    <div className="flex flex-col w-full border-r border-opacity-20 border-r-black h-full gap-4">
+    <div className="flex max-h-[100vh] flex-col w-full border-r border-opacity-20 border-r-black h-full gap-4">
       <div className="flex bg-white justify-center items-center h-24 border-b border-opacity-20 border-b-black">
         <LogoIcon className="text-8xl text-primary" />
       </div>
-      <div className="px-4 ">
+      <div className="px-4 h-full thinScroll overflow-y-scroll">
         <Accordion>
           <NestedSubmenuNavigationLinks
             canBeSelected={true}
