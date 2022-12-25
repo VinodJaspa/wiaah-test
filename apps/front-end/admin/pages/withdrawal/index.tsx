@@ -1,10 +1,11 @@
 import { AdminListTable, AdminTableCellTypeEnum } from "@components";
-import { Badge, Pagination, Select, SelectOption } from "ui";
+import { Badge, Button, CloseIcon, Pagination, Select, SelectOption } from "ui";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { mapArray, randomNum } from "utils";
 import { startCase } from "lodash";
+import { ImCheckmark } from "react-icons/im";
 
 type Statuses = "pending" | "processed" | "refused";
 const statuses: Statuses[] = ["pending", "processed", "refused"];
@@ -119,6 +120,7 @@ const withdrawal: NextPage = () => {
     <section>
       <AdminListTable
         title={t("Withdrawals List")}
+        props={{ TrProps: { className: "border-b border-b-gray-300" } }}
         data={requests.map(
           ({
             amount,
@@ -175,6 +177,19 @@ const withdrawal: NextPage = () => {
                   </Badge>
                 ),
               },
+              {
+                type: AdminTableCellTypeEnum.action,
+
+                actionBtns:
+                  status === "pending"
+                    ? [
+                        <Button center className="w-8 h-8">
+                          <ImCheckmark />
+                        </Button>,
+                      ]
+                    : [],
+                value: amount.toString(),
+              },
             ],
           })
         )}
@@ -219,6 +234,10 @@ const withdrawal: NextPage = () => {
                 ))}
               </Select>
             ),
+          },
+          {
+            type: AdminTableCellTypeEnum.action,
+            value: t("Actiom"),
           },
         ]}
       />

@@ -11,6 +11,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model WithdrawalRequest {
+  id String @id @db.ObjectId @default(auto()) @map("_id")
+  userId String
+  amount Float
+  requestedAt DateTime @default(now())
+  processedAt DateTime
+  status WithdrawalStatus @default(pending)
+}
+
+enum WithdrawalStatus {
+  pending
+  refused
+  processed
+}
+
 
 model InvoiceRecord {
   id String @id @db.ObjectId @default(auto()) @map("_id")

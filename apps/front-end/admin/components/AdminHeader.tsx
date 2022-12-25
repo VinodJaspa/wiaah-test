@@ -1,13 +1,8 @@
 import { useUserData } from "hooks";
 import React from "react";
 import {
-  Container,
-  LogoutIcon,
   BellOutlineIcon,
   Avatar,
-  TriangleArrowFillDownIcon,
-  LogoIcon,
-  NotifiactionsMenu,
   InputGroup,
   Input,
   InputLeftElement,
