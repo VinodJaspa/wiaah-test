@@ -11,6 +11,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model BannedCity {
+  id String @id @default(auto()) @db.ObjectId @map("_id")
+  cityId String @db.ObjectId @unique
+  bannedFor String
+  @@unique([bannedFor,cityId])
+}
+
+model Country {
+  id String @db.ObjectId @default(auto()) @id @map("_id")
+  code String
+  name String
+  cities City[]
+}
+
+model City {
+  id String @db.ObjectId @default(auto()) @id @map("_id")
+  code String
+  name String
+  countryId String @db.ObjectId
+  country Country @relation(fields: [countryId],references: [id])
+}
+
 model Report {
   id          String            @id @default(auto()) @map("_id") @db.ObjectId
   reportedBy  String            @db.ObjectId
@@ -19,7 +41,7 @@ model Report {
   message     String
   status      ReportStatus
   type        ReportType
-
+  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
