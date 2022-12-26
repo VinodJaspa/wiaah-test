@@ -44,16 +44,34 @@ import { OrderedProductStatus, PriceType } from "types";
 import { useUpdateProductStatus } from "@UI";
 import { UpdateProductStatusDto } from "dto";
 
-export const OrderDetailsSection: React.FC = () => {
-  const { orderId, cancelViewOrder, shopping } = React.useContext(OrderContext);
-  const { t } = useTranslation();
-
-  const order = {
+export const OrderDetailsSection: React.FC<{
+  order: {
+    customer: string;
+    dateAdded: string;
+    orderId: string;
+    orderStatus: string;
+    paymentMethod: string;
+    productsNum: number;
+    total: {
+      amount: number;
+      currency: string;
+    };
+    shippingDetails?: {
+      name: string;
+      address: string;
+      zipCode: string;
+      city: string;
+      country: string;
+    };
+    products: ProductType[];
+  };
+}> = ({
+  order = {
     customer: "customer",
     dateAdded: new Date(Date.now()).toDateString(),
     orderId: `${randomNum(100000)}`,
     orderStatus: "confirmed",
-    paymentMoted: "stripe",
+    paymentMethod: "stripe",
     productsNum: randomNum(10),
     total: {
       amount: randomNum(5000),
@@ -67,13 +85,16 @@ export const OrderDetailsSection: React.FC = () => {
       country: "country",
     },
     products,
-  };
+  },
+}) => {
+  const { orderId, cancelViewOrder, shopping } = React.useContext(OrderContext);
+  const { t } = useTranslation();
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between">
-          <span className="text-4xl font-bold">{t("orders", "Orders")}</span>
+          <span className="text-4xl font-bold">{t("Order Details")}</span>
           <div className="flex gap-2 items-center">
             <Button onClick={cancelViewOrder}>{t("go_back", "Go Back")}</Button>
             <Button>{t("download_pdf", "Download PDF")}</Button>
@@ -139,7 +160,7 @@ export const OrderDetailsSection: React.FC = () => {
                   </span>
                   <span>
                     {t("Payment Mothed")}:{" "}
-                    <span className="font-normal">{order.paymentMoted}</span>
+                    <span className="font-normal">{order.paymentMethod}</span>
                   </span>
                   <span>
                     {t("Date Added")}:{" "}
@@ -148,47 +169,49 @@ export const OrderDetailsSection: React.FC = () => {
                 </div>
               </AccordionPanel>
             </AccordionItem>
-            <AccordionItem itemkey={"2"}>
-              <AccordionButton className="text-white text-lg">
-                <div className="p-2 cursor-pointer pr-8 bg-primary text-white flex w-full justify-between">
-                  <span>{t("shipping_details", "Shipping Details")}</span>
-                </div>
-              </AccordionButton>
-              <AccordionPanel>
-                <div className="font-bold shadow-lg flex flex-col gap-2 p-2">
-                  <span>
-                    {t("Name")}:{" "}
-                    <span className="font-normal">
-                      {order.shippingDetails.name}
+            {order.shippingDetails ? (
+              <AccordionItem itemkey={"2"}>
+                <AccordionButton className="text-white text-lg">
+                  <div className="p-2 cursor-pointer pr-8 bg-primary text-white flex w-full justify-between">
+                    <span>{t("shipping_details", "Shipping Details")}</span>
+                  </div>
+                </AccordionButton>
+                <AccordionPanel>
+                  <div className="font-bold shadow-lg flex flex-col gap-2 p-2">
+                    <span>
+                      {t("Name")}:{" "}
+                      <span className="font-normal">
+                        {order.shippingDetails.name}
+                      </span>
                     </span>
-                  </span>
-                  <span>
-                    {t("Address")}:{" "}
-                    <span className="font-normal">
-                      {order.shippingDetails.address}
+                    <span>
+                      {t("Address")}:{" "}
+                      <span className="font-normal">
+                        {order.shippingDetails.address}
+                      </span>
                     </span>
-                  </span>
-                  <span>
-                    {t("Zip Code")}:{" "}
-                    <span className="font-normal">
-                      {order.shippingDetails.zipCode}
+                    <span>
+                      {t("Zip Code")}:{" "}
+                      <span className="font-normal">
+                        {order.shippingDetails.zipCode}
+                      </span>
                     </span>
-                  </span>
-                  <span className="flex gap-1">
-                    {t("City")}:{" "}
-                    <span className="font-normal">
-                      {order.shippingDetails.city}
+                    <span className="flex gap-1">
+                      {t("City")}:{" "}
+                      <span className="font-normal">
+                        {order.shippingDetails.city}
+                      </span>
                     </span>
-                  </span>
-                  <span className="flex gap-1">
-                    {t("Country")}:{" "}
-                    <span className="font-normal">
-                      {order.shippingDetails.country}
+                    <span className="flex gap-1">
+                      {t("Country")}:{" "}
+                      <span className="font-normal">
+                        {order.shippingDetails.country}
+                      </span>
                     </span>
-                  </span>
-                </div>
-              </AccordionPanel>
-            </AccordionItem>
+                  </div>
+                </AccordionPanel>
+              </AccordionItem>
+            ) : null}
           </div>
         </Accordion>
       </div>
@@ -199,6 +222,7 @@ export const OrderDetailsSection: React.FC = () => {
               {t("product_image", "Product Image")}
             </Th>
             <Th>{t("Product Name")}</Th>
+            <Th>{t("Category")}</Th>
             <Th>{t("Quantity")}</Th>
             <Th>{t("Price")}</Th>
             <Th>{t("Total")}</Th>
@@ -215,6 +239,7 @@ export const OrderDetailsSection: React.FC = () => {
                     alt={prod.productName}
                   />
                 </Td>
+                <Td>{prod.productName}</Td>
                 <Td>{prod.productName}</Td>
                 <Td>{prod.quantity}</Td>
                 <Td>
@@ -349,6 +374,7 @@ type ProductType = {
   total: PriceType;
   status: OrderedProductStatus;
   trackingLink: string;
+  category: string;
 };
 
 const products: ProductType[] = [...Array(15)].map((_, i) => ({
@@ -366,4 +392,5 @@ const products: ProductType[] = [...Array(15)].map((_, i) => ({
   },
   status: "confirmed",
   trackingLink: "link",
+  category: "category",
 }));

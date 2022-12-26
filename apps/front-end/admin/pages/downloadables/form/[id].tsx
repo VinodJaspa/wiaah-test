@@ -1,8 +1,9 @@
-import { getRandomImage } from "placeholder";
+import { OrderDetailsSection } from "ui";
+import { NextPage } from "next";
 import React from "react";
 import { useRouting } from "routing";
-import { OrderDetailsSection } from "ui";
 import { randomNum } from "utils";
+import { getRandomImage } from "placeholder";
 
 const products: any[] = [...Array(15)].map((_, i) => ({
   id: String(i),
@@ -17,11 +18,12 @@ const products: any[] = [...Array(15)].map((_, i) => ({
     amount: randomNum(500),
     currency: "USD",
   },
+  category: "category",
   status: "confirmed",
   trackingLink: "link",
 }));
 
-const EditOrder = () => {
+const downloadableForm: NextPage = () => {
   const { getParam } = useRouting();
   const orderId = getParam("id");
 
@@ -47,4 +49,4 @@ const EditOrder = () => {
   );
 };
 
-export default EditOrder;
+export default downloadableForm;

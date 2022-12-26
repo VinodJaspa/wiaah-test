@@ -70,6 +70,12 @@ export class ProductsAdminResolver {
       });
     }
 
+    if (args.type) {
+      filters.push({
+        type: args.type,
+      });
+    }
+
     return this.prisma.product.findMany({
       where: {
         AND: filters,

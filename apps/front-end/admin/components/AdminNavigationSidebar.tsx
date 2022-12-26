@@ -14,6 +14,7 @@ import {
   PersonFillIcon,
   PercentIcon,
   NotAllowedIcon,
+  DownloadIcon,
 } from "ui";
 import { FiSettings } from "react-icons/fi";
 import { BiBrush, BiMoney } from "react-icons/bi";
@@ -468,6 +469,13 @@ export const AdminNavigationSidebar: React.FC<{
           subLinks: [],
         },
       ],
+    },
+    {
+      icon: <DownloadIcon />,
+      name: t("Downloadables"),
+      onClick() {},
+      slug: "downloadables",
+      subLinks: [],
     },
   ];
 
