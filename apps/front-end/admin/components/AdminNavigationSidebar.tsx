@@ -16,7 +16,7 @@ import {
   NotAllowedIcon,
   DownloadIcon,
 } from "ui";
-import { FiSettings } from "react-icons/fi";
+import { FiActivity, FiSettings } from "react-icons/fi";
 import { BiBrush, BiMoney } from "react-icons/bi";
 
 import { HiUserGroup, HiChat, HiTicket, HiNewspaper } from "react-icons/hi";
@@ -475,6 +475,13 @@ export const AdminNavigationSidebar: React.FC<{
       name: t("Downloadables"),
       onClick() {},
       slug: "downloadables",
+      subLinks: [],
+    },
+    {
+      icon: <FiActivity />,
+      name: t("Activity"),
+      onClick() {},
+      slug: "activity",
       subLinks: [],
     },
   ];
