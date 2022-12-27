@@ -56,6 +56,17 @@ export type UsersInteractions = {
   updatedAt: Date
 }
 
+/**
+ * Model Event
+ * 
+ */
+export type Event = {
+  id: string
+  key: string
+  causedById: string
+  causedToId: string | null
+}
+
 
 /**
  * ##  Prisma Client ʲˢ
@@ -196,6 +207,16 @@ export class PrismaClient<
     * ```
     */
   get usersInteractions(): Prisma.UsersInteractionsDelegate<GlobalReject>;
+
+  /**
+   * `prisma.event`: Exposes CRUD operations for the **Event** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Events
+    * const events = await prisma.event.findMany()
+    * ```
+    */
+  get event(): Prisma.EventDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -614,7 +635,8 @@ export namespace Prisma {
   export const ModelName: {
     UserActivityStats: 'UserActivityStats',
     ActivityScore: 'ActivityScore',
-    UsersInteractions: 'UsersInteractions'
+    UsersInteractions: 'UsersInteractions',
+    Event: 'Event'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -3609,6 +3631,873 @@ export namespace Prisma {
 
 
   /**
+   * Model Event
+   */
+
+
+  export type AggregateEvent = {
+    _count: EventCountAggregateOutputType | null
+    _min: EventMinAggregateOutputType | null
+    _max: EventMaxAggregateOutputType | null
+  }
+
+  export type EventMinAggregateOutputType = {
+    id: string | null
+    key: string | null
+    causedById: string | null
+    causedToId: string | null
+  }
+
+  export type EventMaxAggregateOutputType = {
+    id: string | null
+    key: string | null
+    causedById: string | null
+    causedToId: string | null
+  }
+
+  export type EventCountAggregateOutputType = {
+    id: number
+    key: number
+    causedById: number
+    causedToId: number
+    _all: number
+  }
+
+
+  export type EventMinAggregateInputType = {
+    id?: true
+    key?: true
+    causedById?: true
+    causedToId?: true
+  }
+
+  export type EventMaxAggregateInputType = {
+    id?: true
+    key?: true
+    causedById?: true
+    causedToId?: true
+  }
+
+  export type EventCountAggregateInputType = {
+    id?: true
+    key?: true
+    causedById?: true
+    causedToId?: true
+    _all?: true
+  }
+
+  export type EventAggregateArgs = {
+    /**
+     * Filter which Event to aggregate.
+     * 
+    **/
+    where?: EventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Events to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<EventOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: EventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Events from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Events.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Events
+    **/
+    _count?: true | EventCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: EventMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: EventMaxAggregateInputType
+  }
+
+  export type GetEventAggregateType<T extends EventAggregateArgs> = {
+        [P in keyof T & keyof AggregateEvent]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateEvent[P]>
+      : GetScalarType<T[P], AggregateEvent[P]>
+  }
+
+
+
+
+  export type EventGroupByArgs = {
+    where?: EventWhereInput
+    orderBy?: Enumerable<EventOrderByWithAggregationInput>
+    by: Array<EventScalarFieldEnum>
+    having?: EventScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: EventCountAggregateInputType | true
+    _min?: EventMinAggregateInputType
+    _max?: EventMaxAggregateInputType
+  }
+
+
+  export type EventGroupByOutputType = {
+    id: string
+    key: string
+    causedById: string
+    causedToId: string | null
+    _count: EventCountAggregateOutputType | null
+    _min: EventMinAggregateOutputType | null
+    _max: EventMaxAggregateOutputType | null
+  }
+
+  type GetEventGroupByPayload<T extends EventGroupByArgs> = PrismaPromise<
+    Array<
+      PickArray<EventGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof EventGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], EventGroupByOutputType[P]>
+            : GetScalarType<T[P], EventGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type EventSelect = {
+    id?: boolean
+    key?: boolean
+    causedById?: boolean
+    causedToId?: boolean
+  }
+
+  export type EventGetPayload<
+    S extends boolean | null | undefined | EventArgs,
+    U = keyof S
+      > = S extends true
+        ? Event
+    : S extends undefined
+    ? never
+    : S extends EventArgs | EventFindManyArgs
+    ?'include' extends U
+    ? Event 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]:
+    P extends keyof Event ? Event[P] : never
+  } 
+    : Event
+  : Event
+
+
+  type EventCountArgs = Merge<
+    Omit<EventFindManyArgs, 'select' | 'include'> & {
+      select?: EventCountAggregateInputType | true
+    }
+  >
+
+  export interface EventDelegate<GlobalRejectSettings> {
+    /**
+     * Find zero or one Event that matches the filter.
+     * @param {EventFindUniqueArgs} args - Arguments to find a Event
+     * @example
+     * // Get one Event
+     * const event = await prisma.event.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends EventFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, EventFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Event'> extends True ? CheckSelect<T, Prisma__EventClient<Event>, Prisma__EventClient<EventGetPayload<T>>> : CheckSelect<T, Prisma__EventClient<Event | null >, Prisma__EventClient<EventGetPayload<T> | null >>
+
+    /**
+     * Find the first Event that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventFindFirstArgs} args - Arguments to find a Event
+     * @example
+     * // Get one Event
+     * const event = await prisma.event.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends EventFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, EventFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Event'> extends True ? CheckSelect<T, Prisma__EventClient<Event>, Prisma__EventClient<EventGetPayload<T>>> : CheckSelect<T, Prisma__EventClient<Event | null >, Prisma__EventClient<EventGetPayload<T> | null >>
+
+    /**
+     * Find zero or more Events that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Events
+     * const events = await prisma.event.findMany()
+     * 
+     * // Get first 10 Events
+     * const events = await prisma.event.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const eventWithIdOnly = await prisma.event.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends EventFindManyArgs>(
+      args?: SelectSubset<T, EventFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<Event>>, PrismaPromise<Array<EventGetPayload<T>>>>
+
+    /**
+     * Create a Event.
+     * @param {EventCreateArgs} args - Arguments to create a Event.
+     * @example
+     * // Create one Event
+     * const Event = await prisma.event.create({
+     *   data: {
+     *     // ... data to create a Event
+     *   }
+     * })
+     * 
+    **/
+    create<T extends EventCreateArgs>(
+      args: SelectSubset<T, EventCreateArgs>
+    ): CheckSelect<T, Prisma__EventClient<Event>, Prisma__EventClient<EventGetPayload<T>>>
+
+    /**
+     * Create many Events.
+     *     @param {EventCreateManyArgs} args - Arguments to create many Events.
+     *     @example
+     *     // Create many Events
+     *     const event = await prisma.event.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends EventCreateManyArgs>(
+      args?: SelectSubset<T, EventCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Event.
+     * @param {EventDeleteArgs} args - Arguments to delete one Event.
+     * @example
+     * // Delete one Event
+     * const Event = await prisma.event.delete({
+     *   where: {
+     *     // ... filter to delete one Event
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends EventDeleteArgs>(
+      args: SelectSubset<T, EventDeleteArgs>
+    ): CheckSelect<T, Prisma__EventClient<Event>, Prisma__EventClient<EventGetPayload<T>>>
+
+    /**
+     * Update one Event.
+     * @param {EventUpdateArgs} args - Arguments to update one Event.
+     * @example
+     * // Update one Event
+     * const event = await prisma.event.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends EventUpdateArgs>(
+      args: SelectSubset<T, EventUpdateArgs>
+    ): CheckSelect<T, Prisma__EventClient<Event>, Prisma__EventClient<EventGetPayload<T>>>
+
+    /**
+     * Delete zero or more Events.
+     * @param {EventDeleteManyArgs} args - Arguments to filter Events to delete.
+     * @example
+     * // Delete a few Events
+     * const { count } = await prisma.event.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends EventDeleteManyArgs>(
+      args?: SelectSubset<T, EventDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Events.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Events
+     * const event = await prisma.event.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends EventUpdateManyArgs>(
+      args: SelectSubset<T, EventUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Event.
+     * @param {EventUpsertArgs} args - Arguments to update or create a Event.
+     * @example
+     * // Update or create a Event
+     * const event = await prisma.event.upsert({
+     *   create: {
+     *     // ... data to create a Event
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Event we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends EventUpsertArgs>(
+      args: SelectSubset<T, EventUpsertArgs>
+    ): CheckSelect<T, Prisma__EventClient<Event>, Prisma__EventClient<EventGetPayload<T>>>
+
+    /**
+     * Find zero or more Events that matches the filter.
+     * @param {EventFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const event = await prisma.event.findRaw({
+     *   filter: { age: { $gt: 25 } } 
+     * })
+    **/
+    findRaw(
+      args?: EventFindRawArgs
+    ): PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a Event.
+     * @param {EventAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const event = await prisma.event.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+    **/
+    aggregateRaw(
+      args?: EventAggregateRawArgs
+    ): PrismaPromise<JsonObject>
+
+    /**
+     * Count the number of Events.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventCountArgs} args - Arguments to filter Events to count.
+     * @example
+     * // Count the number of Events
+     * const count = await prisma.event.count({
+     *   where: {
+     *     // ... the filter for the Events we want to count
+     *   }
+     * })
+    **/
+    count<T extends EventCountArgs>(
+      args?: Subset<T, EventCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], EventCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Event.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends EventAggregateArgs>(args: Subset<T, EventAggregateArgs>): PrismaPromise<GetEventAggregateType<T>>
+
+    /**
+     * Group by Event.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {EventGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends EventGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: EventGroupByArgs['orderBy'] }
+        : { orderBy?: EventGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, EventGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetEventGroupByPayload<T> : PrismaPromise<InputErrors>
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Event.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__EventClient<T> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+  // Custom InputTypes
+
+  /**
+   * Event findUnique
+   */
+  export type EventFindUniqueArgs = {
+    /**
+     * Select specific fields to fetch from the Event
+     * 
+    **/
+    select?: EventSelect | null
+    /**
+     * Throw an Error if a Event can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which Event to fetch.
+     * 
+    **/
+    where: EventWhereUniqueInput
+  }
+
+
+  /**
+   * Event findFirst
+   */
+  export type EventFindFirstArgs = {
+    /**
+     * Select specific fields to fetch from the Event
+     * 
+    **/
+    select?: EventSelect | null
+    /**
+     * Throw an Error if a Event can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which Event to fetch.
+     * 
+    **/
+    where?: EventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Events to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<EventOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Events.
+     * 
+    **/
+    cursor?: EventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Events from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Events.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Events.
+     * 
+    **/
+    distinct?: Enumerable<EventScalarFieldEnum>
+  }
+
+
+  /**
+   * Event findMany
+   */
+  export type EventFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the Event
+     * 
+    **/
+    select?: EventSelect | null
+    /**
+     * Filter, which Events to fetch.
+     * 
+    **/
+    where?: EventWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Events to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<EventOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Events.
+     * 
+    **/
+    cursor?: EventWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Events from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Events.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<EventScalarFieldEnum>
+  }
+
+
+  /**
+   * Event create
+   */
+  export type EventCreateArgs = {
+    /**
+     * Select specific fields to fetch from the Event
+     * 
+    **/
+    select?: EventSelect | null
+    /**
+     * The data needed to create a Event.
+     * 
+    **/
+    data: XOR<EventCreateInput, EventUncheckedCreateInput>
+  }
+
+
+  /**
+   * Event createMany
+   */
+  export type EventCreateManyArgs = {
+    /**
+     * The data used to create many Events.
+     * 
+    **/
+    data: Enumerable<EventCreateManyInput>
+  }
+
+
+  /**
+   * Event update
+   */
+  export type EventUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the Event
+     * 
+    **/
+    select?: EventSelect | null
+    /**
+     * The data needed to update a Event.
+     * 
+    **/
+    data: XOR<EventUpdateInput, EventUncheckedUpdateInput>
+    /**
+     * Choose, which Event to update.
+     * 
+    **/
+    where: EventWhereUniqueInput
+  }
+
+
+  /**
+   * Event updateMany
+   */
+  export type EventUpdateManyArgs = {
+    /**
+     * The data used to update Events.
+     * 
+    **/
+    data: XOR<EventUpdateManyMutationInput, EventUncheckedUpdateManyInput>
+    /**
+     * Filter which Events to update
+     * 
+    **/
+    where?: EventWhereInput
+  }
+
+
+  /**
+   * Event upsert
+   */
+  export type EventUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the Event
+     * 
+    **/
+    select?: EventSelect | null
+    /**
+     * The filter to search for the Event to update in case it exists.
+     * 
+    **/
+    where: EventWhereUniqueInput
+    /**
+     * In case the Event found by the `where` argument doesn't exist, create a new Event with this data.
+     * 
+    **/
+    create: XOR<EventCreateInput, EventUncheckedCreateInput>
+    /**
+     * In case the Event was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<EventUpdateInput, EventUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Event delete
+   */
+  export type EventDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the Event
+     * 
+    **/
+    select?: EventSelect | null
+    /**
+     * Filter which Event to delete.
+     * 
+    **/
+    where: EventWhereUniqueInput
+  }
+
+
+  /**
+   * Event deleteMany
+   */
+  export type EventDeleteManyArgs = {
+    /**
+     * Filter which Events to delete
+     * 
+    **/
+    where?: EventWhereInput
+  }
+
+
+  /**
+   * Event findRaw
+   */
+  export type EventFindRawArgs = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     * 
+    **/
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     * 
+    **/
+    options?: InputJsonValue
+  }
+
+
+  /**
+   * Event aggregateRaw
+   */
+  export type EventAggregateRawArgs = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     * 
+    **/
+    pipeline?: Array<InputJsonValue>
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     * 
+    **/
+    options?: InputJsonValue
+  }
+
+
+  /**
+   * Event without action
+   */
+  export type EventArgs = {
+    /**
+     * Select specific fields to fetch from the Event
+     * 
+    **/
+    select?: EventSelect | null
+  }
+
+
+
+  /**
    * Enums
    */
 
@@ -3654,6 +4543,16 @@ export namespace Prisma {
   };
 
   export type UsersInteractionsScalarFieldEnum = (typeof UsersInteractionsScalarFieldEnum)[keyof typeof UsersInteractionsScalarFieldEnum]
+
+
+  export const EventScalarFieldEnum: {
+    id: 'id',
+    key: 'key',
+    causedById: 'causedById',
+    causedToId: 'causedToId'
+  };
+
+  export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -3849,6 +4748,47 @@ export namespace Prisma {
     interactionScore?: FloatWithAggregatesFilter | number
     createdAt?: DateTimeWithAggregatesFilter | Date | string
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
+  }
+
+  export type EventWhereInput = {
+    AND?: Enumerable<EventWhereInput>
+    OR?: Enumerable<EventWhereInput>
+    NOT?: Enumerable<EventWhereInput>
+    id?: StringFilter | string
+    key?: StringFilter | string
+    causedById?: StringFilter | string
+    causedToId?: StringNullableFilter | string | null
+  }
+
+  export type EventOrderByWithRelationInput = {
+    id?: SortOrder
+    key?: SortOrder
+    causedById?: SortOrder
+    causedToId?: SortOrder
+  }
+
+  export type EventWhereUniqueInput = {
+    id?: string
+  }
+
+  export type EventOrderByWithAggregationInput = {
+    id?: SortOrder
+    key?: SortOrder
+    causedById?: SortOrder
+    causedToId?: SortOrder
+    _count?: EventCountOrderByAggregateInput
+    _max?: EventMaxOrderByAggregateInput
+    _min?: EventMinOrderByAggregateInput
+  }
+
+  export type EventScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<EventScalarWhereWithAggregatesInput>
+    OR?: Enumerable<EventScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<EventScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    key?: StringWithAggregatesFilter | string
+    causedById?: StringWithAggregatesFilter | string
+    causedToId?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type UserActivityStatsCreateInput = {
@@ -4061,6 +5001,51 @@ export namespace Prisma {
     interactionScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type EventCreateInput = {
+    id?: string
+    key: string
+    causedById: string
+    causedToId?: string | null
+  }
+
+  export type EventUncheckedCreateInput = {
+    id?: string
+    key: string
+    causedById: string
+    causedToId?: string | null
+  }
+
+  export type EventUpdateInput = {
+    key?: StringFieldUpdateOperationsInput | string
+    causedById?: StringFieldUpdateOperationsInput | string
+    causedToId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type EventUncheckedUpdateInput = {
+    key?: StringFieldUpdateOperationsInput | string
+    causedById?: StringFieldUpdateOperationsInput | string
+    causedToId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type EventCreateManyInput = {
+    id?: string
+    key: string
+    causedById: string
+    causedToId?: string | null
+  }
+
+  export type EventUpdateManyMutationInput = {
+    key?: StringFieldUpdateOperationsInput | string
+    causedById?: StringFieldUpdateOperationsInput | string
+    causedToId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type EventUncheckedUpdateManyInput = {
+    key?: StringFieldUpdateOperationsInput | string
+    causedById?: StringFieldUpdateOperationsInput | string
+    causedToId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type StringFilter = {
@@ -4347,6 +5332,62 @@ export namespace Prisma {
     interactionScore?: SortOrder
   }
 
+  export type StringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    mode?: QueryMode
+    not?: NestedStringNullableFilter | string | null
+    isSet?: boolean
+  }
+
+  export type EventCountOrderByAggregateInput = {
+    id?: SortOrder
+    key?: SortOrder
+    causedById?: SortOrder
+    causedToId?: SortOrder
+  }
+
+  export type EventMaxOrderByAggregateInput = {
+    id?: SortOrder
+    key?: SortOrder
+    causedById?: SortOrder
+    causedToId?: SortOrder
+  }
+
+  export type EventMinOrderByAggregateInput = {
+    id?: SortOrder
+    key?: SortOrder
+    causedById?: SortOrder
+    causedToId?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
+    isSet?: boolean
+  }
+
   export type FloatFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -4374,6 +5415,11 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
+    unset?: boolean
   }
 
   export type NestedStringFilter = {
@@ -4523,6 +5569,39 @@ export namespace Prisma {
     _count?: NestedIntFilter
     _min?: NestedDateTimeFilter
     _max?: NestedDateTimeFilter
+  }
+
+  export type NestedStringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
+    isSet?: boolean
+  }
+
+  export type NestedStringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
+    isSet?: boolean
   }
 
 
