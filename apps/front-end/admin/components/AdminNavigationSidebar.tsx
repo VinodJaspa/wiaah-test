@@ -127,6 +127,13 @@ export const AdminNavigationSidebar: React.FC<{
           slug: "posts",
           subLinks: [],
         },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("stories"),
+          onClick() {},
+          slug: "stories",
+          subLinks: [],
+        },
       ],
     },
     {
@@ -273,7 +280,7 @@ export const AdminNavigationSidebar: React.FC<{
         },
         {
           icon: <ArrowRightIcon />,
-          name: t("Sales By Month"),
+          name: t("Sales By Day"),
           onClick() {},
           slug: "day",
           subLinks: [],
