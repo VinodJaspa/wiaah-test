@@ -8,6 +8,7 @@ import {
 } from '@products';
 import { mockedUser, secendMockedUser, SERVICES } from 'nest-utils';
 import { PrismaService } from 'prismaService';
+import { ObjectId } from 'mongodb';
 
 describe('products services unit tests', () => {
   let service: ProductsService;
@@ -21,7 +22,8 @@ describe('products services unit tests', () => {
       amount: 15,
       units: 2,
     },
-    category: 'test',
+    status: 'active',
+    categoryId: new ObjectId().toHexString(),
     description: 'description',
     discount: {
       amount: 10,
@@ -30,11 +32,10 @@ describe('products services unit tests', () => {
     presentations: [{ src: 'test', type: 'image' }],
     price: 156,
     stock: 15,
-    thumbnail: '/test.jpeg',
+    vat: 15,
     title: 'title',
     type: 'goods',
     visibility: 'public',
-    hostCategories: ['cate', 'category'],
   };
 
   beforeEach(async () => {
@@ -78,8 +79,9 @@ describe('products services unit tests', () => {
         type: 'cash',
         units: 3,
       },
-      category: 'updated',
-      hostCategories: ['update', 'updated'],
+      status: 'pasued',
+      categoryId: new ObjectId().toHexString(),
+      vat: 20,
       description: 'updated desc',
       discount: {
         amount: 26,
@@ -272,12 +274,16 @@ describe('products services unit tests', () => {
           take: 10,
         },
         filters: {
-          categories: ['shoes'],
+          categories: [],
         },
       });
 
       expect(products.data.length).toBeGreaterThan(0);
-      expect(products.data.every((v) => v.category === 'shoes')).toBe(true);
+      expect(
+        products.data.every(
+          (v) => v.categoryId === ProductsPh.at(0).categoryId,
+        ),
+      ).toBe(true);
     });
 
     it('price', async () => {
@@ -305,13 +311,12 @@ describe('products services unit tests', () => {
 const ProductsPh: CreateProductInput[] = [
   {
     type: 'goods',
-    category: 'shoes',
+    categoryId: new ObjectId().toHexString(),
     description: 'test product description',
     stock: 13,
     title: 'cutting board',
     brand: 'nike',
     price: 16,
-    thumbnail: '',
     attributes: [],
     cashback: {
       amount: 5,
@@ -322,19 +327,20 @@ const ProductsPh: CreateProductInput[] = [
       amount: 15,
       units: 20,
     },
-    hostCategories: ['fashion', 'clothes'],
     presentations: [],
     visibility: 'public',
+    status: 'pending',
+    vat: 13,
   },
   {
     type: 'goods',
-    category: 'test',
+    categoryId: new ObjectId().toHexString(),
+
     description: 'test product description',
     stock: 0,
     title: 'cup',
     brand: 'or',
     price: 18,
-    thumbnail: '',
     attributes: [],
     cashback: {
       amount: 5,
@@ -345,19 +351,20 @@ const ProductsPh: CreateProductInput[] = [
       amount: 15,
       units: 20,
     },
-    hostCategories: ['fashion', 'accsicories'],
     presentations: [],
     visibility: 'public',
+    status: 'pending',
+    vat: 13,
   },
   {
     type: 'goods',
-    category: 'test',
+    categoryId: new ObjectId().toHexString(),
+
     description: 'test product description',
     stock: 13,
     title: 'sofa',
     brand: 'zara',
     price: 30,
-    thumbnail: '',
     attributes: [],
     cashback: {
       amount: 5,
@@ -368,19 +375,20 @@ const ProductsPh: CreateProductInput[] = [
       amount: 15,
       units: 20,
     },
-    hostCategories: ['fashion', 'clothes'],
     presentations: [],
     visibility: 'public',
+    status: 'pending',
+    vat: 13,
   },
   {
     type: 'digital',
-    category: 'test',
+    categoryId: new ObjectId().toHexString(),
+
     description: 'test product description',
     stock: 13,
     title: 'sofa',
     brand: 'zake',
     price: 5,
-    thumbnail: '',
     attributes: [],
     cashback: {
       amount: 5,
@@ -391,19 +399,19 @@ const ProductsPh: CreateProductInput[] = [
       amount: 15,
       units: 20,
     },
-    hostCategories: ['fashion', 'clothes'],
     presentations: [],
     visibility: 'public',
+    status: 'pending',
+    vat: 13,
   },
   {
     type: 'digital',
-    category: 'test',
+    categoryId: new ObjectId().toHexString(),
     description: 'test product description',
     stock: 13,
     title: 'vase',
     brand: 'dior',
     price: 98,
-    thumbnail: '',
     attributes: [],
     cashback: {
       amount: 5,
@@ -414,8 +422,9 @@ const ProductsPh: CreateProductInput[] = [
       amount: 15,
       units: 20,
     },
-    hostCategories: ['fashion', 'clothes'],
     presentations: [],
     visibility: 'public',
+    status: 'pending',
+    vat: 13,
   },
 ];

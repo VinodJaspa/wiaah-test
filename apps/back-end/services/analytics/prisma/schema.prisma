@@ -46,3 +46,11 @@ model UsersInteractions {
 
   @@unique([ownerId, userId])
 }
+
+
+model Event {
+  id String @id @db.ObjectId @map("_id") @default(auto())
+  key String
+  causedById String
+  causedToId String?
+}

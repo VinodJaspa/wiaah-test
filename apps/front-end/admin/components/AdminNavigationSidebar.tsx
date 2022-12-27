@@ -14,8 +14,9 @@ import {
   PersonFillIcon,
   PercentIcon,
   NotAllowedIcon,
+  DownloadIcon,
 } from "ui";
-import { FiSettings } from "react-icons/fi";
+import { FiActivity, FiSettings } from "react-icons/fi";
 import { BiBrush, BiMoney } from "react-icons/bi";
 
 import { HiUserGroup, HiChat, HiTicket, HiNewspaper } from "react-icons/hi";
@@ -124,6 +125,13 @@ export const AdminNavigationSidebar: React.FC<{
           name: t("Posts"),
           onClick() {},
           slug: "posts",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("stories"),
+          onClick() {},
+          slug: "stories",
           subLinks: [],
         },
       ],
@@ -272,7 +280,7 @@ export const AdminNavigationSidebar: React.FC<{
         },
         {
           icon: <ArrowRightIcon />,
-          name: t("Sales By Month"),
+          name: t("Sales By Day"),
           onClick() {},
           slug: "day",
           subLinks: [],
@@ -468,6 +476,27 @@ export const AdminNavigationSidebar: React.FC<{
           subLinks: [],
         },
       ],
+    },
+    {
+      icon: <DownloadIcon />,
+      name: t("Downloadables"),
+      onClick() {},
+      slug: "downloadables",
+      subLinks: [],
+    },
+    {
+      icon: <FiActivity />,
+      name: t("Activity"),
+      onClick() {},
+      slug: "activity",
+      subLinks: [],
+    },
+    {
+      icon: <HiUserGroup />,
+      name: t("Staff"),
+      onClick() {},
+      slug: "staff",
+      subLinks: [],
     },
   ];
 

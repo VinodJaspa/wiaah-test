@@ -14,6 +14,7 @@ export class OrderCreatedEvent extends KafkaMessage<{
     currency: string;
   };
   order: {
+    id: string;
     payment: {
       ending_with: string;
       type: string;

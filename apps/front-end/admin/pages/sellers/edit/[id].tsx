@@ -28,16 +28,23 @@ import {
   Input,
   DateFormInput,
   TableContainer,
+  PriceDisplay,
+  usePaginationControls,
+  Select,
+  SelectOption,
+  CashbackBadge,
 } from "ui";
 import { mapArray, NumberShortner, randomNum } from "utils";
-import { lngs, lats } from "api";
 import { getRandomImage } from "placeholder";
 import { BsKey } from "react-icons/bs";
+import { AdminListTable, AdminTableCellTypeEnum } from "@components";
+import { random } from "lodash";
 
 const Edit = () => {
   const { getParam } = useRouting();
   const { t } = useTranslation();
   const id = getParam("id");
+  const { controls } = usePaginationControls();
 
   const isProducts = false;
   const productComp = isProducts ? (
@@ -50,6 +57,26 @@ const Edit = () => {
   ) : (
     <BookingsHistorySection />
   );
+
+  const sales = [...Array(10)].map((_, i) => ({
+    address: `testaddress`,
+    total: random(120, 200) + 1,
+    subtotal: random(100, 120) + 1,
+    affiliator: randomNum(100) > 50 ? `affiliator-${i}` : null,
+    discount: {
+      amount: random(5, 15),
+      name: `${random(5, 15)}% OFF`,
+    },
+    cashback: random(10, 30),
+    buyer: `buyer-${i}`,
+    date: new Date().toUTCString(),
+    id: i.toString(),
+    payment_method: `Stripe`,
+    product_name: `product name-${i}`,
+    qty: randomNum(5) + 1,
+    status: `Paid`,
+    thumbnail: getRandomImage(),
+  }));
 
   const posts = [...Array(10)].map(() => ({
     id: randomNum(500000).toString(),
@@ -74,7 +101,10 @@ const Edit = () => {
     productsTitle,
     historyTitle,
     "Social Info",
+    "Sales",
   ];
+
+  const name = "wiaah";
 
   return (
     <>
@@ -218,6 +248,132 @@ const Edit = () => {
               </Table>
             </TableContainer>
             <Pagination />
+          </div>
+          <div className="flex flex-col gap-4 w-full">
+            <Select className="w-fit">
+              <SelectOption value={"daily"}>{t("Daily")}</SelectOption>
+              <SelectOption value={"weekly"}>{t("Weekly")}</SelectOption>
+              <SelectOption value={"monthly"}>{t("Monthly")}</SelectOption>
+              <SelectOption value={"yearly"}>{t("Yearly")}</SelectOption>
+            </Select>
+            <AdminListTable
+              contain
+              pagination={controls}
+              data={sales.map(
+                ({
+                  address,
+                  total,
+                  buyer,
+                  date,
+                  id,
+                  payment_method,
+                  product_name,
+                  qty,
+                  status,
+                  thumbnail,
+                  subtotal,
+                  affiliator,
+                  discount,
+                  cashback,
+                }) => ({
+                  id,
+                  cols: [
+                    {
+                      type: AdminTableCellTypeEnum.image,
+                      value: thumbnail,
+                    },
+                    { value: product_name },
+                    { value: qty.toString() },
+                    { value: buyer },
+                    { value: address },
+                    { value: payment_method },
+                    {
+                      type: AdminTableCellTypeEnum.custom,
+                      custom: (
+                        <Badge cases={{ off: "pending", fail: "canceled" }}>
+                          {status}
+                        </Badge>
+                      ),
+                    },
+                    {
+                      value: affiliator ?? "N/A",
+                      type: AdminTableCellTypeEnum.text,
+                    },
+                    {
+                      type: AdminTableCellTypeEnum.text,
+                      value: `${discount.name} (${discount.amount}%)`,
+                    },
+                    {
+                      type: AdminTableCellTypeEnum.custom,
+                      custom: <PriceDisplay price={subtotal} />,
+                    },
+                    {
+                      type: AdminTableCellTypeEnum.custom,
+                      custom: <PriceDisplay price={total} />,
+                    },
+                    {
+                      type: AdminTableCellTypeEnum.custom,
+                      custom: (
+                        <CashbackBadge
+                          props={{ className: "w-fit" }}
+                          amount={cashback}
+                        />
+                      ),
+                    },
+                    { value: new Date(date).toDateString() },
+                  ],
+                })
+              )}
+              headers={[
+                {
+                  value: t("Photo"),
+                  props: { className: "w-32" },
+                },
+                {
+                  type: AdminTableCellTypeEnum.text,
+                  value: t("Product Name"),
+                },
+                {
+                  type: AdminTableCellTypeEnum.number,
+                  value: t("Quantity"),
+                },
+                {
+                  type: AdminTableCellTypeEnum.text,
+                  value: t("Buyer"),
+                },
+                {
+                  type: AdminTableCellTypeEnum.text,
+                  value: t("Address"),
+                },
+                {
+                  type: AdminTableCellTypeEnum.text,
+                  value: t("Payment Method"),
+                },
+                {
+                  type: AdminTableCellTypeEnum.text,
+                  value: t("Status"),
+                },
+                { value: t("Affiliator"), type: AdminTableCellTypeEnum.text },
+                { value: t("Discount"), type: AdminTableCellTypeEnum.text },
+                {
+                  type: AdminTableCellTypeEnum.number,
+                  value: t("SubTotal"),
+                },
+                {
+                  type: AdminTableCellTypeEnum.number,
+                  value: t("Total"),
+                },
+                {
+                  type: AdminTableCellTypeEnum.number,
+                  value: t("Cashback"),
+                },
+                {
+                  type: AdminTableCellTypeEnum.date,
+                  value: t("Date"),
+                },
+              ]}
+              title={`${name} ${t("Sales")}`}
+            />
           </div>
         </SimpleTabItemList>
       </SimpleTabs>

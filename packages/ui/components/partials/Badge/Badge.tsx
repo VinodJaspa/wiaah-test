@@ -44,7 +44,9 @@ export function Badge<T extends string | number>({
   return (
     <div
       {...props}
-      className={`${className || ""} px-4 py-1 rounded ${styleSwitcher()}`}
+      className={`${
+        className || ""
+      } flex justify-center items-center px-4 py-1 rounded ${styleSwitcher()}`}
     >
       {children}
     </div>
