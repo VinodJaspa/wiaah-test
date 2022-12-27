@@ -2,6 +2,7 @@ import {
   AspectRatioImage,
   Button,
   EditIcon,
+  getRandomImage,
   Input,
   InputRequiredStar,
   SaveIcon,
@@ -10,17 +11,20 @@ import {
   Table,
   TBody,
   Td,
-  Th,
-  THead,
   Tr,
 } from "ui";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { getRandomImage } from "placeholder";
+import { useRouting } from "routing";
 
-const EditProfile: NextPage = () => {
+const manageStaff: NextPage = () => {
   const { t } = useTranslation();
+
+  const { getParam } = useRouting();
+
+  const id = getParam("id");
+
   return (
     <section className="flex flex-col gap-4 w-full">
       <div className="flex justify-end">
@@ -31,7 +35,7 @@ const EditProfile: NextPage = () => {
       <div className="border border-gray-300 p-4">
         <div className="flex items-center gap-2 p-4">
           <EditIcon />
-          <p>{t("Edit Your Profile")}</p>
+          {id ? <p>{t("Add Staff")}</p> : <p>{t("Edit Staff")}</p>}
         </div>
         <div className="p-4">
           <Table
@@ -135,4 +139,4 @@ const EditProfile: NextPage = () => {
   );
 };
 
-export default EditProfile;
+export default manageStaff;

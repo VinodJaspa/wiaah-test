@@ -484,6 +484,13 @@ export const AdminNavigationSidebar: React.FC<{
       slug: "activity",
       subLinks: [],
     },
+    {
+      icon: <HiUserGroup />,
+      name: t("Staff"),
+      onClick() {},
+      slug: "staff",
+      subLinks: [],
+    },
   ];
 
   return (
