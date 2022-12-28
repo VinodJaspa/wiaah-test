@@ -24,7 +24,7 @@ import { ImCheckmark } from "react-icons/im";
 import { BiInfoCircle, BiPackage } from "react-icons/bi";
 import { GiTicket } from "react-icons/gi";
 import { MdCardMembership, MdReport } from "react-icons/md";
-import { BsCash, BsCashStack, BsTruck } from "react-icons/bs";
+import { BsCash, BsCashStack, BsTruck, BsType } from "react-icons/bs";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -497,6 +497,13 @@ export const AdminNavigationSidebar: React.FC<{
       onClick() {},
       slug: "staff",
       subLinks: [],
+    },
+    {
+      icon: <BsType />,
+      name: t("Professions"),
+      onClick() {},
+      subLinks: [],
+      slug: "profession",
     },
   ];
 
