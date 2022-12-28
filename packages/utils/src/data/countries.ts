@@ -24,4 +24,16 @@ export const WiaahLanguageCountries: { code: string; name: string }[] = [
     code: "GB",
     name: "English",
   },
+  {
+    code: "FR",
+    name: "France",
+  },
+  {
+    code: "DE",
+    name: "Germany",
+  },
+  {
+    code: "ES",
+    name: "Spanish",
+  },
 ];

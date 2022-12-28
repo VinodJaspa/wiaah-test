@@ -8,6 +8,7 @@ import {
   GqlPaginationInput,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
+import { DeclineSellerAccountRequest } from './dto/declineSellerAccountRequest.input';
 import { GetAccountDeletionRequestsInput } from './dto/get-account-deletion-requests.input';
 import { AccountDeletionRequest } from './entities/account-deletion-request.entity';
 import { Account } from './entities/account.entity';
@@ -50,13 +51,14 @@ export class AccountsAdminResolver {
   }
 
   @Mutation(() => Boolean)
-  async declineSellerAccount(@Args('id') id: string) {
+  async declineSellerAccount(@Args('args') args: DeclineSellerAccountRequest) {
     await this.prisma.account.update({
       where: {
-        id,
+        id: args.id,
       },
       data: {
         status: 'refused',
+        rejectReason: args.reason,
       },
     });
   }

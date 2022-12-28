@@ -16,13 +16,16 @@ import { UserLocationModule } from './user-location/user-location.module';
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],
-  imports: [AccountVerificationModule, CookiesSettingsModule, UserLocationModule],
+  imports: [],
 })
 export class PrismaModule {}
 
 @Module({
   imports: [
     PrismaModule,
+    AccountVerificationModule,
+    CookiesSettingsModule,
+    UserLocationModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: true,

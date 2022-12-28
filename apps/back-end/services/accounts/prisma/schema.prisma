@@ -26,6 +26,7 @@ model Account {
   companyRegisterationNumber String?
   verified                   Boolean                  @default(false)
   status                     AccountStatus            @default(pending)
+  rejectReason               String
   balance                    Float                    @default(0)
   idVerified                 Boolean                  @default(false)
   createdAt                  DateTime                 @default(now())

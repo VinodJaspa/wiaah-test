@@ -11,10 +11,10 @@ export const CustomerService: FC = () => {
       </span>
       <ul className="block space-y-4 text-sm text-gray-400">
         <li>
-          <Link href={""}>{t("Contact_Us", "Contact Us")}</Link>
+          <Link href={""}>{t("Contact Us")}</Link>
         </li>
         <li>
-          <Link href={""}>{t("Help_and_FAQs", "Help and FAQs")}</Link>
+          <Link href={""}>{t("Help and FAQs")}</Link>
         </li>
       </ul>
     </div>

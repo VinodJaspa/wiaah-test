@@ -12,7 +12,7 @@ import {
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { countries } from "utils";
+import { countries, WiaahLanguageCountries } from "utils";
 import { useRouting } from "routing";
 
 const addProfession: NextPage = () => {
@@ -34,9 +34,9 @@ const addProfession: NextPage = () => {
           <InputGroup className="col-span-3">
             <InputLeftElement>
               <Select className="p-[0px] w-[5rem] border-[0px]">
-                {countries.map(({ isoCode }) => (
-                  <SelectOption value={isoCode}>
-                    <FlagIcon code={isoCode} />
+                {WiaahLanguageCountries.map(({ code }) => (
+                  <SelectOption value={code}>
+                    <FlagIcon code={code} />
                   </SelectOption>
                 ))}
               </Select>
