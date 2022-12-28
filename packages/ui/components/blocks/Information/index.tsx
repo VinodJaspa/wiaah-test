@@ -23,6 +23,11 @@ export const Information: FC = () => {
             {t("Terms_Conditions", "Terms & Conditions")}
           </Link>
         </li>
+        <li>
+          <Link href={information.delivery_information}>
+            {t("Delivery Informations")}
+          </Link>
+        </li>
       </ul>
     </div>
   );

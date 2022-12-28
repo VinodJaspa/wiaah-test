@@ -12,14 +12,13 @@ import {
 } from "@UI";
 import Link from "next/link";
 import { useRecoilValue } from "recoil";
-import { ShoppingCartItem } from "types";
 import { ShoppingCartItemsState } from "state";
 import { useTranslation } from "react-i18next";
-import { useBreakpointValue } from "@chakra-ui/react";
 import { useGetServicesCategoriesQuery } from "@UI";
 import { usePagination } from "hooks";
 import { ServiceCategoryType } from "api";
 import { useRouting } from "routing";
+import { useBreakpointValue } from "utils";
 
 export interface HeaderProps {}
 

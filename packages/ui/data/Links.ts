@@ -7,6 +7,7 @@ export const information = {
   about_wiaah: "/about-us",
   privacy_policy: "/privacy-policy",
   terms_and_conditions: "/terms-and-conditions",
+  delivery_information: "/delivery_info",
 };
 
 export const social = {

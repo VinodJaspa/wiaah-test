@@ -3,7 +3,7 @@ import "../styles/globals.css";
 import "ui/languages/i18n";
 import { CookiesProvider } from "react-cookie";
 import { RecoilRoot } from "recoil";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 import { CoomingSoon, SeoWrapper } from "@components";
 import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
 import { RoutingProvider } from "routing";
@@ -13,6 +13,7 @@ import NextHead from "next/head";
 import { ReactPubsubClient, ReactPubsubProvider } from "react-pubsub";
 import { ReactSeoProvider } from "react-seo";
 import { ClearNextJSQuery } from "utils";
+import { ReactPubsubKeys } from "ui";
 
 const coomingSoon = false;
 
@@ -24,6 +25,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedProps}>
         <RoutingProvider
+          back={() => router.back()}
+          getBaseUrl={() => router.basePath}
           getQuery={() => ClearNextJSQuery(router.query, router.pathname)}
           getCurrentPath={() => {
             return router.asPath;
@@ -37,7 +40,10 @@ function MyApp({ Component, pageProps }: AppProps) {
             return typeof param === "string" ? param : null;
           }}
         >
-          <ReactPubsubProvider client={new ReactPubsubClient()}>
+          <ReactPubsubProvider
+            keys={ReactPubsubKeys}
+            client={new ReactPubsubClient()}
+          >
             <ReactSeoProvider TagWrapper={NextHead}>
               <SeoWrapper>
                 <ChakraProvider>
