@@ -1,6 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import {
+  AppointmentRefusedEvent,
   CashbackAddedEvent,
   CommentCreatedEvent,
   CommentMentionedEvent,
@@ -229,5 +230,16 @@ export class ManagerController extends NotifciationBaseController {
         authorId: v.id,
       })),
     );
+  }
+
+  @EventPattern(KAFKA_EVENTS.SERVICES.appointmentRefused('*'))
+  async handleAppointmentRefused(
+    @Payload() { value }: { value: AppointmentRefusedEvent },
+  ) {
+    this.service.createNotification({
+      authorId: value.input.sellerId,
+      type: value.input.type,
+      content: `Your appointment was refused reason:${value.input.reason}`,
+    });
   }
 }

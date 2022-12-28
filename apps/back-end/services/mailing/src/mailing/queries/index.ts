@@ -1,4 +1,10 @@
-import { GetUserDataQueryHandler } from './handlers';
+import {
+  GetUserDataQueryHandler,
+  GetServiceDataQueryHandler,
+} from './handlers';
 export * from './impl';
 
-export const MailingQueryhandlers = [GetUserDataQueryHandler];
+export const MailingQueryhandlers = [
+  GetUserDataQueryHandler,
+  GetServiceDataQueryHandler,
+];

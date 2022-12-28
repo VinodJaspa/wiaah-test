@@ -4,6 +4,7 @@ import {
   AccountRegisteredEvent,
   AccountRestrictedEvent,
   AccountTermsAndConditionViolationEvent,
+  AppointmentRefusedEvent,
   ChangePasswordEvent,
   KafkaPayload,
   MembershipRenewalFailEvent,
@@ -15,7 +16,12 @@ import {
 import { KAFKA_EVENTS } from 'nest-utils';
 import { MailJetTemplateIds } from '@mailing/const';
 import { BaseController } from '@mailing/abstraction';
-import { GetUserDataQuery, GetUserDataQueryRes } from '@mailing/queries';
+import {
+  GetServiceDataQuery,
+  GetServiceDataQueryRes,
+  GetUserDataQuery,
+  GetUserDataQueryRes,
+} from '@mailing/queries';
 import { renderFile } from 'ejs';
 
 @Controller()
@@ -157,6 +163,39 @@ export class MailingController extends BaseController {
         restriction_reason: value.input.reason,
       },
       to: [{ email: user.email, name: user.name }],
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.SERVICES.appointmentRefused('*'))
+  async handleAppointmentRefused(
+    @Payload() { value }: { value: AppointmentRefusedEvent },
+  ) {
+    const seller = await this.querybus.execute<
+      GetUserDataQuery,
+      GetUserDataQueryRes
+    >(new GetUserDataQuery(value.input.sellerId));
+
+    const buyer = await this.querybus.execute<
+      GetUserDataQuery,
+      GetUserDataQueryRes
+    >(new GetUserDataQuery(value.input.buyerId));
+
+    const service = await this.querybus.execute<
+      GetServiceDataQuery,
+      GetServiceDataQueryRes
+    >(new GetServiceDataQuery(value.input.id, value.input.buyerId));
+
+    this.mailingService.sendTemplateMail({
+      templateId: 4462192,
+      subject: 'Appointment Refused',
+      vars: {
+        customer_name: buyer.name,
+        refuse_reason: value.input.reason,
+        service_name: service.name,
+        seller_name: seller.name,
+        booked_at: new Date(value.input.bookedAt).toDateString(),
+      },
+      to: [{ email: buyer.email, name: buyer.name }],
     });
   }
 }

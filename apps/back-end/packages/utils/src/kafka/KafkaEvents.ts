@@ -179,6 +179,8 @@ export const KAFKA_EVENTS = {
       makeKafkaDynamicEvent(`service.booked.${serviceType}`, regex),
     servicePurchased: (serviceType: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`service.purchased.${serviceType}`, regex),
+    appointmentRefused: (key: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`appointment.refused.${key}`, regex),
   },
   REVIEWS_EVENTS: {
     reviewCreated: (type: string, regex?: boolean) =>
