@@ -10,6 +10,8 @@ async function clearDB() {
   await prisma.transaction.deleteMany();
   await prisma.balance.deleteMany();
   await prisma.billingAddressCollection.deleteMany();
+  await prisma.invoiceRecord.deleteMany();
+  await prisma.withdrawalRequest.deleteMany();
 }
 
 const prisma = new PrismaService();

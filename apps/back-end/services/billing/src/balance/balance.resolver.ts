@@ -9,7 +9,7 @@ import {
 import { BalanceService } from './balance.service';
 
 @Resolver(() => Balance)
-@UseGuards(new GqlAuthorizationGuard(['seller']))
+@UseGuards(new GqlAuthorizationGuard([]))
 export class BalanceResolver {
   constructor(private readonly balanceService: BalanceService) {}
 

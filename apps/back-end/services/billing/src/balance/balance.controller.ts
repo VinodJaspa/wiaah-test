@@ -4,6 +4,7 @@ import {
   GetUserCashbackBalanceMessage,
   GetUserCashbackBalanceMessageReply,
   KafkaPayload,
+  OrderCanceledEvent,
   VoucherAppliedEvent,
 } from 'nest-dto';
 import { formatCaughtError, KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
@@ -43,7 +44,6 @@ export class BalanceController {
     @Payload() payload: KafkaPayload<VoucherAppliedEvent>,
   ) {
     try {
-      console.log('applied voucher');
       const { userId, convertedAmount } = payload.value.input;
       const data = await this.balacneService.removeCashbackBalance(
         userId,
@@ -52,5 +52,18 @@ export class BalanceController {
     } catch (err) {
       console.log(err);
     }
+  }
+  @EventPattern(KAFKA_EVENTS.ORDERS_EVENTS.orderCanceled())
+  handleOrderCanceledEvent(
+    @Payload() { value }: { value: OrderCanceledEvent },
+  ) {
+    this.balacneService.addWithdrawableBalance(
+      value.input.buyerId,
+      value.input.total,
+    );
+    this.balacneService.removeWithdrawableBalance(
+      value.input.sellerId,
+      value.input.total,
+    );
   }
 }

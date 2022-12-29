@@ -6,7 +6,6 @@ import {
   KafkaMessageHandler,
   KAFKA_EVENTS,
   KAFKA_MESSAGES,
-  KAFKA_SERVICE_TOKEN,
   SERVICES,
 } from 'nest-utils';
 import { PrismaService } from 'src/prisma.service';

@@ -58,6 +58,7 @@ enum RefundStatusType {
 
 enum OrderStatusEnum {
   pending
+  paid
   rejectedBySeller
   rejectedByBuyer
   shipping

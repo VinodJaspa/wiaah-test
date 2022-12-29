@@ -9,7 +9,7 @@ const maintenance: NextPage = () => {
     <section className=" w-screen h-screen bg-white flex justify-center items-center">
       <div className="w-[min(30rem,100%)]">
         <AspectRatio ratio={1}>
-          <div className="relative flex-col gap-4 rounded-full bg-primary-50 text-3xl text-center font-bold text-primary flex justify-center items-center h-full w-full">
+          <div className="relative flex-col gap-4 rounded-full bg-primary-50 text-3xl text-center font-bold text-black flex justify-center items-center h-full w-full">
             <p className="text-4xl font-bold">
               {t("This site is under maintenance")}
             </p>

@@ -6,3 +6,4 @@ export * from './reject-order.input';
 export * from './reject-received-order.input';
 export * from './update-order.input';
 export * from './accept-order-request.input';
+export * from './get-filtered-orders.input';

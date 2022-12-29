@@ -26,8 +26,8 @@ import {
   RejectOrderCommand,
   RejectReceivedOrderCommand,
 } from './commands';
-import { GetUserOrders } from './dto/get-user-orders.input';
-import { GetFilteredOrdersInput } from 'src/dto/get-filtered-orders.input';
+import { GetUserOrders } from '@orders/dto/get-user-orders.input';
+import { GetFilteredOrdersInput } from '@dto';
 import { PrismaService } from 'prismaService';
 
 @Resolver(() => Order)
