@@ -1,5 +1,4 @@
 import React, { ReactElement } from "react";
-import { Flex, Button, Box, Text, Image, Input } from "@chakra-ui/react";
 import {
   FaFacebook,
   FaInstagram,
@@ -7,12 +6,13 @@ import {
   FaYoutube,
   FaTiktok,
 } from "react-icons/fa";
-import { BsPlayFill } from "react-icons/bs";
-import { Clickable, Container, Countdown, VideoPopup } from "ui";
+import { BsPlayFill, BsSnapchat } from "react-icons/bs";
+import { Button, Clickable, Container, Countdown, Image, Input } from "ui";
 import { social } from "../../data/Links";
 import Link from "next/link";
 import Head from "next/head";
 import { useTranslation } from "react-i18next";
+import { runIfFn } from "utils";
 
 interface SocialItem {
   name: string;
@@ -55,6 +55,12 @@ const socialData: SocialItem[] = [
     bgColor: "#000",
     link: "Tiktok.com/@wiaah",
   },
+  {
+    name: "snapchat",
+    component: <BsSnapchat fill="#fff" />,
+    bgColor: "#f0f04f",
+    link: social.snapchat,
+  },
 ];
 
 export const CoomingSoon: React.FC = () => {
@@ -72,94 +78,56 @@ export const CoomingSoon: React.FC = () => {
       <Head>
         <title>Wiaah coming soon</title>
       </Head>
-      <VideoPopup
+      {/* <VideoPopup
         open={videoOpen}
         close={handleVideoClose}
         src="https://www.youtube.com/embed/RgKAFK5djSk?autoplay=0&mute=1"
-      />
-      <Box w="100vw" h="100vh" position={"relative"}>
+      /> */}
+      <div className="w-screen h-screen relative">
         <Image
+          className="absolute w-screen h-screen object-cover object-top"
           src="./ComingSoonHero.png"
-          position={"absolute"}
-          w="100vw"
-          h="100vh"
-          objectFit={"cover"}
-          objectPosition={"top"}
         />
         <Container className="absolute top-0 left-1/2 z-10 h-full -translate-x-1/2">
-          <Flex h="100%" w="100%" align={"end"} py="1rem" direction={"column"}>
-            <Flex gap={"1rem"}>
+          <div className="w-full h-full items-end py-4 flex flex-col">
+            <div className="flex gap-4">
               {socialData.map((item, i) => (
                 <Clickable>
                   <Link href={item.link}>
-                    <Box
-                      bg={item.bgColor}
-                      fontSize="1.5rem"
-                      rounded="100%"
-                      p="0.5rem"
+                    <div
+                      style={{
+                        backgroundColor: item.bgColor,
+                      }}
+                      className={`text-2xl rounded-full p-2`}
                     >
-                      {item.component}
-                    </Box>
+                      {runIfFn(item.component)}
+                    </div>
                   </Link>
                 </Clickable>
               ))}
-            </Flex>
+            </div>
 
-            <Flex
-              align="center"
-              direction={"column"}
-              gap="1rem"
-              maxW={"7xl"}
-              justify="center"
-              px="1rem"
-              h="100%"
-              alignSelf={"center"}
-            >
-              <Box
-                w="fit-content"
-                p="1rem"
-                bg="white"
-                fontSize={"3rem"}
-                rounded="100%"
-              >
+            <div className="items-center flex flex-col gap-4 max-w-7xl justify-center px-4 h-full self-center">
+              <div className="w-fit p-4 bg-white text-5xl rounded-full">
                 <Clickable onClick={handleVideoOpen}>
                   <BsPlayFill />
                 </Clickable>
-              </Box>
-              <Text
-                color="white"
-                fontSize={"5xl"}
-                fontWeight="semibold"
-                textAlign="center"
-              >
+              </div>
+              <p className="text-white text-5xl font-semibold text-center">
                 {t("we_are_coming_soon", "we are coming soon".toUpperCase())}
-              </Text>
-              <Flex
-                direction={{ base: "column", md: "row" }}
-                w="full"
-                gap={"1rem"}
-              >
-                <Input bg="white" placeholder={t("your_name", "Your Name")} />
-                <Input bg="white" placeholder={t("Your_email", "Your Email")} />
-                <Button
-                  color="white"
-                  borderColor={"white"}
-                  px={"4rem"}
-                  _hover={{
-                    bgColor: "white",
-                    color: "#000",
-                  }}
-                  borderWidth={"3px"}
-                  variant={"outline"}
-                >
+              </p>
+              <div className="flex flex-col md:flex-row w-full gap-4">
+                <Input placeholder={t("your_name", "Your Name")} />
+                <Input placeholder={t("Your_email", "Your Email")} />
+                <Button className="text-white px-16 whitespace-nowrap border-white border-2 hover:text-black hover:bg-white">
                   {t("sell_with_us", "Sell With Us")}
                 </Button>
-              </Flex>
+              </div>
               <Countdown toDate={new Date(releaseDate)} />
-            </Flex>
-          </Flex>
+            </div>
+          </div>
         </Container>
-      </Box>
+      </div>
     </>
   );
 };
