@@ -9,10 +9,10 @@ export class SellerProductsPurchasedEvent extends KafkaMessage<{
     id: string;
     qty: number;
     affiliatorId?: string;
+    discountId?: string;
   }[];
   shippingMethodId: string;
   shippingAddressId: string;
-  discountId: string;
   payment: {
     type: string;
     value: string;

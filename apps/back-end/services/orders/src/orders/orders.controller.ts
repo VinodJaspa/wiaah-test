@@ -26,10 +26,11 @@ export class OrdersController extends BaseController {
           id: v.id,
           qty: v.qty,
           type: OrderItemType.product,
+          affiliationId: v.affiliatorId,
+          discountId: v.discountId,
         })),
         value.input.shippingMethodId,
         value.input.shippingAddressId,
-        value.input.discountId,
       ),
     );
   }
@@ -48,10 +49,11 @@ export class OrdersController extends BaseController {
           id: v.id,
           qty: v.qty,
           type: OrderItemType.service,
+          affiliationId: v.affiliatorId,
+          discountId: v.discountId,
         })),
         value.input.shippingMethodId,
         value.input.shippingAddressId,
-        value.input.discountId,
       ),
     );
 

@@ -1,4 +1,11 @@
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Args,
+  Mutation,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
 import {
   accountType,
@@ -29,6 +36,8 @@ import {
 import { GetUserOrders } from '@orders/dto/get-user-orders.input';
 import { GetFilteredOrdersInput } from '@dto';
 import { PrismaService } from 'prismaService';
+import { Discount } from './entities/extends/discount.entity';
+import { Product } from './entities/extends';
 
 @Resolver(() => Order)
 export class OrdersResolver implements OnModuleInit {
@@ -147,5 +156,21 @@ export class OrdersResolver implements OnModuleInit {
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountById,
     );
     await this.eventsClient.connect();
+  }
+
+  @ResolveField(() => Discount)
+  discount(@Parent() order: Order) {
+    return {
+      __typename: 'Discount',
+      id: order.discount,
+    };
+  }
+
+  @ResolveField(() => Product)
+  products(@Parent() order: Order) {
+    return order.items.map(({ id }) => ({
+      __typename: 'Product',
+      id: id,
+    }));
   }
 }
