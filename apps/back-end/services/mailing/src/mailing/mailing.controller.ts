@@ -11,6 +11,7 @@ import {
   NewRegisterationTokenRequestedEvent,
   OrderCreatedEvent,
   OrderShippingEvent,
+  SellerAccountRefusedEvent,
   ServiceBookedEvent,
 } from 'nest-dto';
 import { KAFKA_EVENTS } from 'nest-utils';
@@ -196,6 +197,21 @@ export class MailingController extends BaseController {
         booked_at: new Date(value.input.bookedAt).toDateString(),
       },
       to: [{ email: buyer.email, name: buyer.name }],
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.sellerAccountRefused)
+  async handleSellerAccountRefused(
+    @Payload() { value }: { value: SellerAccountRefusedEvent },
+  ) {
+    this.mailingService.sendTemplateMail({
+      templateId: 4463708,
+      subject: 'Seller Account Refused',
+      vars: {
+        customer_name: value.input.firstName,
+        refuse_reason: value.input.reason,
+      },
+      to: [{ email: value.input.email, name: value.input.firstName }],
     });
   }
 }

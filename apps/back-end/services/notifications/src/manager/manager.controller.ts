@@ -8,6 +8,7 @@ import {
   ContentReactedEvent,
   LookForNearShopsPromotionsEvent,
   PromotionCreatedEvent,
+  SellerAccountRefusedEvent,
   ShopNearPromotionsResolvedEvent,
   SocialContentCreatedEvent,
   UserCurrentLocationUpdateEvent,
@@ -155,7 +156,7 @@ export class ManagerController extends NotifciationBaseController {
     await this.service.createNotification({
       authorId: userId,
       content: `Congrats, you have won ${amount} cashbacks`,
-      type: ContentType.cashback,
+      type: NotificationTypes.info,
     });
   }
 
@@ -238,8 +239,20 @@ export class ManagerController extends NotifciationBaseController {
   ) {
     this.service.createNotification({
       authorId: value.input.sellerId,
-      type: value.input.type,
+      contentOwnerUserId: value.input.buyerId,
+      type: NotificationTypes.warning,
       content: `Your appointment was refused reason:${value.input.reason}`,
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.sellerAccountRefused)
+  async handleSellerRefused(
+    @Payload() { value }: { value: SellerAccountRefusedEvent },
+  ) {
+    this.service.createNotification({
+      contentOwnerUserId: value.input.id,
+      type: NotificationTypes.warning,
+      content: `Your request to open a seller account was refused reason:${value.input.reason}`,
     });
   }
 }

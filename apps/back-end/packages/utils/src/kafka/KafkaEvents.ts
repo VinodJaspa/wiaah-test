@@ -19,6 +19,7 @@ export const KAFKA_EVENTS = {
     accountRestricted: (key?: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`account.restricted.${key}`, regex),
     deleteAccount: "delete.account",
+    sellerAccountRefused: "account.seller.refused",
   },
   USER_EVENTS: {
     userConnected: "user.connected",

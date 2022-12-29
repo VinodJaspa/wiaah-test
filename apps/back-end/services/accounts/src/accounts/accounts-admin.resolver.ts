@@ -1,4 +1,5 @@
 import { UseGuards } from '@nestjs/common';
+import { EventBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Prisma } from '@prisma-client';
 import {
@@ -12,11 +13,12 @@ import { DeclineSellerAccountRequest } from './dto/declineSellerAccountRequest.i
 import { GetAccountDeletionRequestsInput } from './dto/get-account-deletion-requests.input';
 import { AccountDeletionRequest } from './entities/account-deletion-request.entity';
 import { Account } from './entities/account.entity';
+import { SellerAccountRequestDeclinedEvent } from './events';
 
 @Resolver()
 @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
 export class AccountsAdminResolver {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private eventBus: EventBus) {}
 
   @Query(() => [Account])
   async getPendingSellers(@Args('pagination') pagination: GqlPaginationInput) {
@@ -48,11 +50,12 @@ export class AccountsAdminResolver {
         status: 'active',
       },
     });
+    return true;
   }
 
   @Mutation(() => Boolean)
   async declineSellerAccount(@Args('args') args: DeclineSellerAccountRequest) {
-    await this.prisma.account.update({
+    const account = await this.prisma.account.update({
       where: {
         id: args.id,
       },
@@ -61,6 +64,10 @@ export class AccountsAdminResolver {
         rejectReason: args.reason,
       },
     });
+
+    this.eventBus.publish(new SellerAccountRequestDeclinedEvent(account));
+
+    return true;
   }
 
   @Query(() => [AccountDeletionRequest])
