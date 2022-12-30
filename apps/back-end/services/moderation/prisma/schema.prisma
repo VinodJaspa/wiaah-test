@@ -91,7 +91,18 @@ model Language {
   sortOrder Int @default(0)
 }
 
+model Profession {
+  id String @id @db.ObjectId @default(auto()) @map("_id")
+  title String
+  usage Int @default(0)
+  sortOrder Int @default(0)
+  status ProfessionStatus @default(active) 
+}
 
+enum ProfessionStatus {
+  active
+  inActive
+}
 
 enum DesignType {
   partner

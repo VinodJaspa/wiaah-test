@@ -11,6 +11,7 @@ import { EventPattern, Payload } from '@nestjs/microservices';
 import {
   BillingMonthlyPriceCreatedEvent,
   MembershipCreatedEvent,
+  OrderCanceledEvent,
   SellerAccountCreatedEvent,
   SellerRevenueIncreasedEvent,
 } from 'nest-dto';

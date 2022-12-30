@@ -19,6 +19,8 @@ export const KAFKA_EVENTS = {
     accountRestricted: (key?: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`account.restricted.${key}`, regex),
     deleteAccount: "delete.account",
+    sellerAccountRefused: "account.seller.refused",
+    accountSuspended: "account.suspended",
   },
   USER_EVENTS: {
     userConnected: "user.connected",
@@ -82,6 +84,8 @@ export const KAFKA_EVENTS = {
       makeKafkaDynamicEvent(`seller.products.purchased.${productType}`, regex),
     sellerServicePurchased: (regex?: boolean) =>
       makeKafkaDynamicEvent(`seller.service.purchased`, regex),
+    withdrawalProcessed: () =>
+      makeKafkaDynamicEvent(`withdrawal.processed`, false),
   },
   VOUCHER_EVENTS: {
     voucherCreated: "voucher.created",
@@ -179,6 +183,8 @@ export const KAFKA_EVENTS = {
       makeKafkaDynamicEvent(`service.booked.${serviceType}`, regex),
     servicePurchased: (serviceType: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`service.purchased.${serviceType}`, regex),
+    appointmentRefused: (key: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`appointment.refused.${key}`, regex),
   },
   REVIEWS_EVENTS: {
     reviewCreated: (type: string, regex?: boolean) =>
@@ -187,6 +193,9 @@ export const KAFKA_EVENTS = {
   ORDERS_EVENTS: {
     orderCreated: (key: string = "", regex?: boolean) =>
       makeKafkaDynamicEvent(`order.created.${key}`, regex),
+    orderCanceled: () => makeKafkaDynamicEvent(`order.canceled`),
+    orderRefundRequestRejected: () =>
+      makeKafkaDynamicEvent(`order.refund.request.rejected`),
   },
   CASHBACK_EVENTS: {
     cashbackAdded: (key?: string, regex?: boolean) =>

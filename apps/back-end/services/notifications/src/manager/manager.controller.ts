@@ -1,15 +1,22 @@
 import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import {
+  AccountSuspendedEvent,
+  AppointmentRefusedEvent,
   CashbackAddedEvent,
   CommentCreatedEvent,
   CommentMentionedEvent,
   ContentReactedEvent,
+  ContentSuspendedEvent,
   LookForNearShopsPromotionsEvent,
+  OrderRefundRequestRejectedEvent,
   PromotionCreatedEvent,
+  SellerAccountRefusedEvent,
+  SellerProductsPurchasedEvent,
   ShopNearPromotionsResolvedEvent,
   SocialContentCreatedEvent,
   UserCurrentLocationUpdateEvent,
+  WithdrawalProcessedEvent,
 } from 'nest-dto';
 import { KAFKA_EVENTS } from 'nest-utils';
 import { NotifciationBaseController } from '@manager/abstraction';
@@ -20,6 +27,10 @@ import {
   GetUserFollowersIdsQuery,
   GetUserFollowersIdsQueryRes,
   GetUserNotificationsSettingsQueryRes,
+  GetProductQuery,
+  GetProductQueryRes,
+  GetCurrencyExchangeQuery,
+  GetCurrencyExchangeQueryRes,
 } from '@manager/queries';
 import { ContentType, NotificationTypes } from '@manager/const';
 
@@ -154,7 +165,7 @@ export class ManagerController extends NotifciationBaseController {
     await this.service.createNotification({
       authorId: userId,
       content: `Congrats, you have won ${amount} cashbacks`,
-      type: ContentType.cashback,
+      type: NotificationTypes.info,
     });
   }
 
@@ -229,5 +240,128 @@ export class ManagerController extends NotifciationBaseController {
         authorId: v.id,
       })),
     );
+  }
+
+  @EventPattern(KAFKA_EVENTS.SERVICES.appointmentRefused('*'))
+  async handleAppointmentRefused(
+    @Payload() { value }: { value: AppointmentRefusedEvent },
+  ) {
+    this.service.createNotification({
+      authorId: value.input.sellerId,
+      contentOwnerUserId: value.input.buyerId,
+      type: NotificationTypes.warning,
+      content: `Your appointment was refused reason:${value.input.reason}`,
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.sellerAccountRefused)
+  async handleSellerRefused(
+    @Payload() { value }: { value: SellerAccountRefusedEvent },
+  ) {
+    this.service.createNotification({
+      contentOwnerUserId: value.input.id,
+      type: NotificationTypes.warning,
+      content: `Your request to open a seller account was refused reason:${value.input.reason}`,
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.BILLING_EVNETS.withdrawalProcessed())
+  async handleProcessedWithdrawal(
+    @Payload() { value }: { value: WithdrawalProcessedEvent },
+  ) {
+    this.service.createNotification({
+      contentOwnerUserId: value.input.userId,
+      type: NotificationTypes.info,
+      content: {
+        lang: 'en',
+        value: `Your withdrawal request of $${value.input.amount} have been processed, and will be in your account within 7 days`,
+      },
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.ORDERS_EVENTS.orderRefundRequestRejected())
+  async handleRefundRequestRejected(
+    @Payload() { value }: { value: OrderRefundRequestRejectedEvent },
+  ) {
+    const productPromise = this.querybus.execute<
+      GetProductQuery,
+      GetProductQueryRes
+    >(new GetProductQuery(value.input.productId));
+
+    const product = await productPromise;
+
+    this.service.createNotification({
+      contentOwnerUserId: value.input.buyerId,
+      type: NotificationTypes.warning,
+      content: {
+        lang: 'en',
+        value: `Your request to refund $${product.title} have been reject by the seller. %l%open a dispute%l%`,
+      },
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.ORDERS_EVENTS.orderRefundRequestRejected())
+  async handleAffiliationUsed(
+    @Payload() { value }: { value: SellerProductsPurchasedEvent },
+  ) {
+    const affiliations = value.input.products.map(({ affiliation, id }) => ({
+      userId: affiliation.affiliatorId,
+      amount: affiliation.affiliationAmount,
+      productId: id,
+    }));
+
+    for (const affilaition of affiliations) {
+      const productPromise = this.querybus.execute<
+        GetProductQuery,
+        GetProductQueryRes
+      >(new GetProductQuery(affilaition.productId));
+      const user = await this.querybus.execute<
+        GetUserDataQuery,
+        GetUserDataQueryRes
+      >(new GetUserDataQuery(value.input.sellerId));
+      const res = await this.querybus.execute<
+        GetCurrencyExchangeQuery,
+        GetCurrencyExchangeQueryRes
+      >(new GetCurrencyExchangeQuery(affilaition.amount, user.currency));
+
+      const product = await productPromise;
+
+      this.service.createNotification({
+        contentOwnerUserId: value.input.buyerId,
+        type: NotificationTypes.info,
+        content: {
+          lang: 'en',
+          value: `Congrats, you have won ${res.symbol || '$'}${
+            res.amount || affilaition.amount
+          } for affiliating ${product.title}`,
+        },
+      });
+    }
+  }
+
+  @EventPattern(KAFKA_EVENTS.MODERATION.contentSuspensed('newsfeed-post'))
+  handlePostSuspension(@Payload() { value }: { value: ContentSuspendedEvent }) {
+    this.service.createNotification({
+      contentOwnerUserId: value.input.authorId,
+      type: NotificationTypes.warning,
+      content: {
+        lang: 'en',
+        value: `one of your posts have been reported for inappropriate content and have been removed`,
+      },
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountSuspended)
+  handleAccountSuspension(
+    @Payload() { value }: { value: AccountSuspendedEvent },
+  ) {
+    this.service.createNotification({
+      contentOwnerUserId: value.input.id,
+      type: NotificationTypes.warning,
+      content: {
+        lang: 'en',
+        value: `your account have been reported for inappropriate content and have been suspended`,
+      },
+    });
   }
 }

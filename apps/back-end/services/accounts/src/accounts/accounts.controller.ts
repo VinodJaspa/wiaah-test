@@ -216,9 +216,8 @@ export class AccountsController implements OnModuleInit {
   changePassword(@Payload() { value }: KafkaPayload<PasswordChangedEvent>) {
     try {
       const {
-        input: { email, newPassword, id },
+        input: { newPassword, id },
       } = value;
-      console.log(value);
       this.accountService.updatePassword(newPassword, id);
     } catch (error) {
       this.logger.error(error);

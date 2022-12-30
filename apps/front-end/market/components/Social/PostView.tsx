@@ -1,9 +1,8 @@
 import React from "react";
-import { useBreakpointValue } from "@chakra-ui/react";
 import {
   PostCard,
   PostCardsListWrapper,
-  SocialStoriesModal,
+  SocialStoryModal,
   SocialPostHeader,
   Button,
 } from "ui";
@@ -11,8 +10,9 @@ import { useRecoilValue } from "recoil";
 import {
   SocialNewsfeedOtherPostsState,
   SocialNewsfeedPostState,
-} from "ui/state/Recoil/Social";
+} from "ui/src/state";
 import { useTranslation } from "react-i18next";
+import { useBreakpointValue } from "utils";
 
 export const PostView: React.FC = () => {
   const postCardInfo = useRecoilValue(SocialNewsfeedPostState);
@@ -22,13 +22,11 @@ export const PostView: React.FC = () => {
   return (
     <div className="py-2 md:py-16 gap-8 flex flex-col">
       <div className="flex items-center flex-col gap-8 mb-24 md:flex-row">
-        <SocialStoriesModal />
         <SocialPostHeader
           name={postCardInfo.profileInfo.name}
           thumbnail={postCardInfo.profileInfo.thumbnail}
         />
         <PostCard
-          showComments
           postInfo={postCardInfo.postInfo}
           profileInfo={postCardInfo.profileInfo}
         />

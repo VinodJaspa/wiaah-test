@@ -2,9 +2,15 @@ import {
   UnauthorizedException,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { CommandHandler, ICommandHandler, QueryBus } from '@nestjs/cqrs';
+import {
+  CommandHandler,
+  EventBus,
+  ICommandHandler,
+  QueryBus,
+} from '@nestjs/cqrs';
 import { RejectReceivedOrderCommand } from '@orders/commands/impl';
 import { Order } from '@orders/entities';
+import { OrderCanceledEvent } from '@orders/events';
 import { GetIsOrderBuyerQuery } from '@orders/queries';
 import { OrdersRepository } from '@orders/repositoy';
 
@@ -15,6 +21,7 @@ export class RejectRecivedOrderCommandHandler
   constructor(
     private readonly repo: OrdersRepository,
     private readonly querybus: QueryBus,
+    private readonly eventBus: EventBus,
   ) {}
   async execute({
     input,
@@ -34,7 +41,7 @@ export class RejectRecivedOrderCommandHandler
       input.id,
       input.rejectReason,
     );
-
+    this.eventBus.publish(new OrderCanceledEvent(res));
     return true;
   }
 }

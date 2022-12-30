@@ -1,7 +1,7 @@
 import { KafkaMessage, KafkaMessageReply } from "../../Base";
 
 export class GetProductsCheckoutDataMessage extends KafkaMessage<{
-  products: { id: string; qty: number }[];
+  products: { id: string; qty: number; discountId?: string }[];
 }> {}
 
 export class GetProductsCheckoutDataMessageReply extends KafkaMessageReply<{
@@ -9,6 +9,7 @@ export class GetProductsCheckoutDataMessageReply extends KafkaMessageReply<{
     id: string;
     price: number;
     qty: number;
+    discounted?: number;
     title: string;
     sellerId: string;
     sellerStripeId: string;

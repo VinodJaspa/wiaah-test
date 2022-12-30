@@ -4,18 +4,26 @@ import {
   AccountRegisteredEvent,
   AccountRestrictedEvent,
   AccountTermsAndConditionViolationEvent,
+  AppointmentRefusedEvent,
   ChangePasswordEvent,
   KafkaPayload,
   MembershipRenewalFailEvent,
   NewRegisterationTokenRequestedEvent,
   OrderCreatedEvent,
   OrderShippingEvent,
+  SellerAccountRefusedEvent,
   ServiceBookedEvent,
+  WithdrawalProcessedEvent,
 } from 'nest-dto';
 import { KAFKA_EVENTS } from 'nest-utils';
 import { MailJetTemplateIds } from '@mailing/const';
 import { BaseController } from '@mailing/abstraction';
-import { GetUserDataQuery, GetUserDataQueryRes } from '@mailing/queries';
+import {
+  GetServiceDataQuery,
+  GetServiceDataQueryRes,
+  GetUserDataQuery,
+  GetUserDataQueryRes,
+} from '@mailing/queries';
 import { renderFile } from 'ejs';
 
 @Controller()
@@ -157,6 +165,74 @@ export class MailingController extends BaseController {
         restriction_reason: value.input.reason,
       },
       to: [{ email: user.email, name: user.name }],
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.SERVICES.appointmentRefused('*'))
+  async handleAppointmentRefused(
+    @Payload() { value }: { value: AppointmentRefusedEvent },
+  ) {
+    const seller = await this.querybus.execute<
+      GetUserDataQuery,
+      GetUserDataQueryRes
+    >(new GetUserDataQuery(value.input.sellerId));
+
+    const buyer = await this.querybus.execute<
+      GetUserDataQuery,
+      GetUserDataQueryRes
+    >(new GetUserDataQuery(value.input.buyerId));
+
+    const service = await this.querybus.execute<
+      GetServiceDataQuery,
+      GetServiceDataQueryRes
+    >(new GetServiceDataQuery(value.input.id, value.input.buyerId));
+
+    this.mailingService.sendTemplateMail({
+      templateId: 4462192,
+      subject: 'Appointment Refused',
+      vars: {
+        customer_name: buyer.name,
+        refuse_reason: value.input.reason,
+        service_name: service.name,
+        seller_name: seller.name,
+        booked_at: new Date(value.input.bookedAt).toDateString(),
+      },
+      to: [{ email: buyer.email, name: buyer.name }],
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.sellerAccountRefused)
+  async handleSellerAccountRefused(
+    @Payload() { value }: { value: SellerAccountRefusedEvent },
+  ) {
+    this.mailingService.sendTemplateMail({
+      templateId: 4463708,
+      subject: 'Seller Account Refused',
+      vars: {
+        customer_name: value.input.firstName,
+        refuse_reason: value.input.reason,
+      },
+      to: [{ email: value.input.email, name: value.input.firstName }],
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.BILLING_EVNETS.withdrawalProcessed())
+  async handleWithdrawalProcesssed(
+    @Payload() { value }: { value: WithdrawalProcessedEvent },
+  ) {
+    const user = await this.querybus.execute<
+      GetUserDataQuery,
+      GetUserDataQueryRes
+    >(new GetUserDataQuery(value.input.userId));
+
+    this.mailingService.sendTemplateMail({
+      templateId: 4464289,
+      subject: 'Withdrawal Request',
+      vars: {
+        customer_name: user.name,
+        amount: `$${value.input.amount}`,
+      },
+      to: [{ email: user.email, name: user.email }],
     });
   }
 }

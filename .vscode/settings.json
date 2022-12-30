@@ -5,5 +5,12 @@
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
+  "sonarlint.connectedMode.project": {
+    "connectionId": "localhost-9000",
+    "projectKey": "wiaah"
   }
 }

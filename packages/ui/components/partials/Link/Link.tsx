@@ -9,8 +9,8 @@ export type LinkProps<TRoutes> = {
 
 export function Link<TRoutes>({ children, href }: LinkProps<TRoutes>) {
   const { visit, routes } = useRouting();
-  // @ts-ignore
-  const url = typeof href === "string" ? href : href(routes);
+
+  const url = typeof href === "string" ? href : href(routes as TRoutes);
   return (
     <>
       {mapArray(React.Children.toArray(children), (child, i) =>

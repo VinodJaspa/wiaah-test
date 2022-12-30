@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "@partials";
 
@@ -10,12 +10,8 @@ export const CustomerService: FC = () => {
         {t("Customer_Service", "Customer Service")}
       </span>
       <ul className="block space-y-4 text-sm text-gray-400">
-        <li>
-          <Link href={""}>{t("Contact_Us", "Contact Us")}</Link>
-        </li>
-        <li>
-          <Link href={""}>{t("Help_and_FAQs", "Help and FAQs")}</Link>
-        </li>
+        <li>{t("Contact Us")}</li>
+        <li>{t("Help and FAQs")}</li>
       </ul>
     </div>
   );

@@ -7,8 +7,9 @@ import { SiteInformationsModule } from './site-informations/site-informations.mo
 import { DesignModule } from './design/design.module';
 import { LanguageModule } from './language/language.module';
 import { BannedCountriesModule } from './banned-countries/banned-countries.module';
+import { ProfessionModule } from './profession/profession.module';
 
 @Module({
-  imports: [ReportModule, ContentSuspenseModule, PrismaModule, KafkaModule, SiteInformationsModule, DesignModule, LanguageModule, BannedCountriesModule],
+  imports: [ReportModule, ContentSuspenseModule, PrismaModule, KafkaModule, SiteInformationsModule, DesignModule, LanguageModule, BannedCountriesModule, ProfessionModule],
 })
 export class AppModule {}

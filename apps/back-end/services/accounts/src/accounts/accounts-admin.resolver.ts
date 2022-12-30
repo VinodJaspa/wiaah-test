@@ -1,5 +1,7 @@
 import { UseGuards } from '@nestjs/common';
+import { EventBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Payload } from '@nestjs/microservices';
 import { Prisma } from '@prisma-client';
 import {
   accountType,
@@ -8,14 +10,19 @@ import {
   GqlPaginationInput,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
+import { DeclineSellerAccountRequest } from './dto/declineSellerAccountRequest.input';
 import { GetAccountDeletionRequestsInput } from './dto/get-account-deletion-requests.input';
 import { AccountDeletionRequest } from './entities/account-deletion-request.entity';
 import { Account } from './entities/account.entity';
+import {
+  AccountSuspendedEvent,
+  SellerAccountRequestDeclinedEvent,
+} from './events';
 
 @Resolver()
 @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
 export class AccountsAdminResolver {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private eventBus: EventBus) {}
 
   @Query(() => [Account])
   async getPendingSellers(@Args('pagination') pagination: GqlPaginationInput) {
@@ -47,18 +54,40 @@ export class AccountsAdminResolver {
         status: 'active',
       },
     });
+    return true;
   }
 
   @Mutation(() => Boolean)
-  async declineSellerAccount(@Args('id') id: string) {
-    await this.prisma.account.update({
+  async declineSellerAccount(@Args('args') args: DeclineSellerAccountRequest) {
+    const account = await this.prisma.account.update({
+      where: {
+        id: args.id,
+      },
+      data: {
+        status: 'refused',
+        rejectReason: args.reason,
+      },
+    });
+
+    this.eventBus.publish(new SellerAccountRequestDeclinedEvent(account));
+
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  async suspenseAccount(@Payload('id') id: string) {
+    const acc = await this.prisma.account.update({
       where: {
         id,
       },
       data: {
-        status: 'refused',
+        status: 'suspended',
+        rejectReason: 'inappropriate activity',
       },
     });
+
+    this.eventBus.publish(new AccountSuspendedEvent(acc));
+    return true;
   }
 
   @Query(() => [AccountDeletionRequest])
