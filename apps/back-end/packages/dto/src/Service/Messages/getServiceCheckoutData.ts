@@ -5,6 +5,7 @@ export class GetServicesCheckoutDataMessage extends KafkaMessage<{
     id: string;
     type: string;
     qty: number;
+    discountId?: string;
   }[];
 }> {}
 
@@ -13,6 +14,7 @@ export class GetServicesCheckoutDataMessageReply extends KafkaMessageReply<{
     id: string;
     price: number;
     title: string;
+    discounted?: number;
     sellerId: string;
     sellerStripeId: string;
   }[];

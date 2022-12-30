@@ -1,11 +1,13 @@
 import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import {
+  AccountSuspendedEvent,
   AppointmentRefusedEvent,
   CashbackAddedEvent,
   CommentCreatedEvent,
   CommentMentionedEvent,
   ContentReactedEvent,
+  ContentSuspendedEvent,
   LookForNearShopsPromotionsEvent,
   OrderRefundRequestRejectedEvent,
   PromotionCreatedEvent,
@@ -269,10 +271,10 @@ export class ManagerController extends NotifciationBaseController {
   ) {
     this.service.createNotification({
       contentOwnerUserId: value.input.userId,
-      type: NotificationTypes.warning,
+      type: NotificationTypes.info,
       content: {
         lang: 'en',
-        value: `Your withdrawal request of $${value.input.amount} have been processed`,
+        value: `Your withdrawal request of $${value.input.amount} have been processed, and will be in your account within 7 days`,
       },
     });
   }
@@ -326,7 +328,7 @@ export class ManagerController extends NotifciationBaseController {
 
       this.service.createNotification({
         contentOwnerUserId: value.input.buyerId,
-        type: NotificationTypes.warning,
+        type: NotificationTypes.info,
         content: {
           lang: 'en',
           value: `Congrats, you have won ${res.symbol || '$'}${
@@ -335,5 +337,31 @@ export class ManagerController extends NotifciationBaseController {
         },
       });
     }
+  }
+
+  @EventPattern(KAFKA_EVENTS.MODERATION.contentSuspensed('newsfeed-post'))
+  handlePostSuspension(@Payload() { value }: { value: ContentSuspendedEvent }) {
+    this.service.createNotification({
+      contentOwnerUserId: value.input.authorId,
+      type: NotificationTypes.warning,
+      content: {
+        lang: 'en',
+        value: `one of your posts have been reported for inappropriate content and have been removed`,
+      },
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountSuspended)
+  handleAccountSuspension(
+    @Payload() { value }: { value: AccountSuspendedEvent },
+  ) {
+    this.service.createNotification({
+      contentOwnerUserId: value.input.id,
+      type: NotificationTypes.warning,
+      content: {
+        lang: 'en',
+        value: `your account have been reported for inappropriate content and have been suspended`,
+      },
+    });
   }
 }

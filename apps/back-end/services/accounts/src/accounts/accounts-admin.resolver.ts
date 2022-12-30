@@ -1,6 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Payload } from '@nestjs/microservices';
 import { Prisma } from '@prisma-client';
 import {
   accountType,
@@ -13,7 +14,10 @@ import { DeclineSellerAccountRequest } from './dto/declineSellerAccountRequest.i
 import { GetAccountDeletionRequestsInput } from './dto/get-account-deletion-requests.input';
 import { AccountDeletionRequest } from './entities/account-deletion-request.entity';
 import { Account } from './entities/account.entity';
-import { SellerAccountRequestDeclinedEvent } from './events';
+import {
+  AccountSuspendedEvent,
+  SellerAccountRequestDeclinedEvent,
+} from './events';
 
 @Resolver()
 @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
@@ -67,6 +71,22 @@ export class AccountsAdminResolver {
 
     this.eventBus.publish(new SellerAccountRequestDeclinedEvent(account));
 
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  async suspenseAccount(@Payload('id') id: string) {
+    const acc = await this.prisma.account.update({
+      where: {
+        id,
+      },
+      data: {
+        status: 'suspended',
+        rejectReason: 'inappropriate activity',
+      },
+    });
+
+    this.eventBus.publish(new AccountSuspendedEvent(acc));
     return true;
   }
 

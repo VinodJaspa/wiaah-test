@@ -20,6 +20,7 @@ export const KAFKA_EVENTS = {
       makeKafkaDynamicEvent(`account.restricted.${key}`, regex),
     deleteAccount: "delete.account",
     sellerAccountRefused: "account.seller.refused",
+    accountSuspended: "account.suspended",
   },
   USER_EVENTS: {
     userConnected: "user.connected",

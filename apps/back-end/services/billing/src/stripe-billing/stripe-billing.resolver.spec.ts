@@ -145,6 +145,7 @@ describe('StripeBilling integration tests', () => {
                   sellerId: '12354',
                   sellerStripeId: '1',
                   title: 'title',
+                  qty: 5,
                 },
               ],
             },
