@@ -5,6 +5,7 @@ import {
   GetUserCashbackBalanceMessageReply,
   KafkaPayload,
   OrderCanceledEvent,
+  SellerProductsPurchasedEvent,
   VoucherAppliedEvent,
 } from 'nest-dto';
 import { formatCaughtError, KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
@@ -65,5 +66,23 @@ export class BalanceController {
       value.input.sellerId,
       value.input.total,
     );
+  }
+
+  @EventPattern(KAFKA_EVENTS.BILLING_EVNETS.sellerProductsPurchased('*'))
+  handleProductPurchasedEvent(
+    @Payload() { value }: { value: SellerProductsPurchasedEvent },
+  ) {
+    const affiliations = value.input.products.map(({ affiliation, id }) => ({
+      userId: affiliation.affiliatorId,
+      amount: affiliation.affiliationAmount,
+      productId: id,
+    }));
+
+    for (const affilaition of affiliations) {
+      this.balacneService.addWithdrawableBalance(
+        affilaition.userId,
+        affilaition.amount,
+      );
+    }
   }
 }

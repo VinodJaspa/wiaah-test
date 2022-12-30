@@ -7,5 +7,6 @@ export class GetCurrencyExchangeRateMessage extends KafkaMessage<{
 export class GetCurrencyExchangeRateMessageReply extends KafkaMessageReply<{
   rate: number;
   convertedToCurrency: string;
+  convertedToSymbol: string;
   convertedFromCurrency: string;
 }> {}

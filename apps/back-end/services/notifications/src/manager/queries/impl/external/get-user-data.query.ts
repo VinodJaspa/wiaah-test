@@ -5,4 +5,5 @@ export type GetUserDataQueryRes = {
   name: string;
   email: string;
   id: string;
+  currency: string;
 };

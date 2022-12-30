@@ -10,6 +10,7 @@ import {
   OrderRefundRequestRejectedEvent,
   PromotionCreatedEvent,
   SellerAccountRefusedEvent,
+  SellerProductsPurchasedEvent,
   ShopNearPromotionsResolvedEvent,
   SocialContentCreatedEvent,
   UserCurrentLocationUpdateEvent,
@@ -26,6 +27,8 @@ import {
   GetUserNotificationsSettingsQueryRes,
   GetProductQuery,
   GetProductQueryRes,
+  GetCurrencyExchangeQuery,
+  GetCurrencyExchangeQueryRes,
 } from '@manager/queries';
 import { ContentType, NotificationTypes } from '@manager/const';
 
@@ -278,16 +281,10 @@ export class ManagerController extends NotifciationBaseController {
   async handleRefundRequestRejected(
     @Payload() { value }: { value: OrderRefundRequestRejectedEvent },
   ) {
-    const seller = this.querybus.execute(
-      new GetUserDataQuery(value.input.sellerId),
-    );
-    const buyers = this.querybus.execute(
-      new GetUserDataQuery(value.input.buyerId),
-    );
     const productPromise = this.querybus.execute<
       GetProductQuery,
       GetProductQueryRes
-    >(new GetProductQuery(value.input.sellerId));
+    >(new GetProductQuery(value.input.productId));
 
     const product = await productPromise;
 
@@ -299,5 +296,44 @@ export class ManagerController extends NotifciationBaseController {
         value: `Your request to refund $${product.title} have been reject by the seller. %l%open a dispute%l%`,
       },
     });
+  }
+
+  @EventPattern(KAFKA_EVENTS.ORDERS_EVENTS.orderRefundRequestRejected())
+  async handleAffiliationUsed(
+    @Payload() { value }: { value: SellerProductsPurchasedEvent },
+  ) {
+    const affiliations = value.input.products.map(({ affiliation, id }) => ({
+      userId: affiliation.affiliatorId,
+      amount: affiliation.affiliationAmount,
+      productId: id,
+    }));
+
+    for (const affilaition of affiliations) {
+      const productPromise = this.querybus.execute<
+        GetProductQuery,
+        GetProductQueryRes
+      >(new GetProductQuery(affilaition.productId));
+      const user = await this.querybus.execute<
+        GetUserDataQuery,
+        GetUserDataQueryRes
+      >(new GetUserDataQuery(value.input.sellerId));
+      const res = await this.querybus.execute<
+        GetCurrencyExchangeQuery,
+        GetCurrencyExchangeQueryRes
+      >(new GetCurrencyExchangeQuery(affilaition.amount, user.currency));
+
+      const product = await productPromise;
+
+      this.service.createNotification({
+        contentOwnerUserId: value.input.buyerId,
+        type: NotificationTypes.warning,
+        content: {
+          lang: 'en',
+          value: `Congrats, you have won ${res.symbol || '$'}${
+            res.amount || affilaition.amount
+          } for affiliating ${product.title}`,
+        },
+      });
+    }
   }
 }
