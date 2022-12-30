@@ -4,6 +4,7 @@ import { NotificationSettingsService } from '@notification-settings';
 import { DBErrorException } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { NotificationType } from 'prismaClient';
+import { TranslationText } from './types';
 
 @Injectable()
 export class ManagerService {
@@ -14,6 +15,7 @@ export class ManagerService {
 
   async getMyNotifications(
     userId: string,
+    lang: string,
   ): Promise<NotificationPaginationResponse> {
     const notifications = await this.prisma.notification.findMany({
       where: {
@@ -22,7 +24,11 @@ export class ManagerService {
     });
 
     return {
-      data: notifications,
+      data: notifications.map((v) => ({
+        ...v,
+        content:
+          v.content.find((c) => c.lang === lang).value || v.content[0].value,
+      })),
       hasMore: false,
       total: notifications.length,
     };
@@ -47,7 +53,7 @@ export class ManagerService {
   async createNotification(props: {
     contentOwnerUserId?: string;
     type: NotificationType;
-    content: string;
+    content: string | TranslationText;
     authorProfileId?: string;
     authorId?: string;
     contentId?: string;
@@ -76,7 +82,10 @@ export class ManagerService {
     try {
       await this.prisma.notification.create({
         data: {
-          content,
+          content:
+            typeof content === 'string'
+              ? [{ lang: 'en', value: content }]
+              : content,
           type,
           userId: contentOwnerUserId,
           authorProfileId,

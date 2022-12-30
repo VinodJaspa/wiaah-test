@@ -55,9 +55,6 @@ export class Order {
   @Field(() => OrderStatus)
   status: OrderStatus;
 
-  @Field(() => Boolean)
-  refundable: boolean;
-
-  @Field(() => Discount)
-  discount: Discount;
+  @Field(() => Discount, { nullable: true })
+  discount?: Discount;
 }

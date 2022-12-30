@@ -83,6 +83,8 @@ export const KAFKA_EVENTS = {
       makeKafkaDynamicEvent(`seller.products.purchased.${productType}`, regex),
     sellerServicePurchased: (regex?: boolean) =>
       makeKafkaDynamicEvent(`seller.service.purchased`, regex),
+    withdrawalProcessed: () =>
+      makeKafkaDynamicEvent(`withdrawal.processed`, false),
   },
   VOUCHER_EVENTS: {
     voucherCreated: "voucher.created",
@@ -191,6 +193,8 @@ export const KAFKA_EVENTS = {
     orderCreated: (key: string = "", regex?: boolean) =>
       makeKafkaDynamicEvent(`order.created.${key}`, regex),
     orderCanceled: () => makeKafkaDynamicEvent(`order.canceled`),
+    orderRefundRequestRejected: () =>
+      makeKafkaDynamicEvent(`order.refund.request.rejected`),
   },
   CASHBACK_EVENTS: {
     cashbackAdded: (key?: string, regex?: boolean) =>

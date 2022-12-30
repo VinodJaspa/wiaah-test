@@ -13,6 +13,7 @@ import {
   OrderShippingEvent,
   SellerAccountRefusedEvent,
   ServiceBookedEvent,
+  WithdrawalProcessedEvent,
 } from 'nest-dto';
 import { KAFKA_EVENTS } from 'nest-utils';
 import { MailJetTemplateIds } from '@mailing/const';
@@ -212,6 +213,26 @@ export class MailingController extends BaseController {
         refuse_reason: value.input.reason,
       },
       to: [{ email: value.input.email, name: value.input.firstName }],
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.BILLING_EVNETS.withdrawalProcessed())
+  async handleWithdrawalProcesssed(
+    @Payload() { value }: { value: WithdrawalProcessedEvent },
+  ) {
+    const user = await this.querybus.execute<
+      GetUserDataQuery,
+      GetUserDataQueryRes
+    >(new GetUserDataQuery(value.input.userId));
+
+    this.mailingService.sendTemplateMail({
+      templateId: 4464289,
+      subject: 'Withdrawal Request',
+      vars: {
+        customer_name: user.name,
+        amount: `$${value.input.amount}`,
+      },
+      to: [{ email: user.email, name: user.email }],
     });
   }
 }

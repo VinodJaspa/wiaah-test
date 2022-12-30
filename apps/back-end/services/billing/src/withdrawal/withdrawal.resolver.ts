@@ -5,15 +5,20 @@ import { UseGuards } from '@nestjs/common';
 import { accountType, GqlAuthorizationGuard } from 'nest-utils';
 import { GetWithdrawalRequestsAdminInput } from './dto';
 import { Prisma, WithdrawalStatus } from '@prisma-client';
+import { EventBus } from '@nestjs/cqrs';
+import { WithdrawalProcessedEvent } from './events';
 
 @Resolver(() => WithdrawalRequest)
 export class WithdrawalResolver {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly eventbus: EventBus,
+  ) {}
 
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async processWithdrawalRequest(@Args('id') id: string) {
-    await this.prisma.withdrawalRequest.update({
+    const withdrawal = await this.prisma.withdrawalRequest.update({
       where: {
         id,
       },
@@ -21,6 +26,9 @@ export class WithdrawalResolver {
         status: WithdrawalStatus.processed,
       },
     });
+
+    this.eventbus.publish(new WithdrawalProcessedEvent(withdrawal));
+
     return true;
   }
 
