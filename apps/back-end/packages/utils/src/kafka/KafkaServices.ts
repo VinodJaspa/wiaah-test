@@ -5,34 +5,7 @@ interface ServiceInfo {
   pubsubTopic?: string;
 }
 
-export type Services =
-  | "ACCOUNTS_SERVICE"
-  | "AUTH_SERVICE"
-  | "MAILING_SERVICE"
-  | "SHOP_SERVICE"
-  | "WISHLIST_SERVICE"
-  | "PRODUCTS_SERVICE"
-  | "SHOPPING_CART_SERVICE"
-  | "SERVICES_SERIVCE"
-  | "CURRENCY_SERVICE"
-  | "SHIPPING_SERVICE"
-  | "ORDERS_SERVICE"
-  | "VOUCHERS_SERVICE"
-  | "BILLING_SERVICE"
-  | "PARTNERS_SERVICE"
-  | "REVIEWS_SERVICE"
-  | "SOCIAL_SERVICE"
-  | "SEARCH_SERVICE"
-  | "CHAT"
-  | "SUBSCRIPTIONS"
-  | "NOTIFICATIONS"
-  | "MEMBERSHIP"
-  | "EVENT_SCHEDULING"
-  | "AFFILIATION_SERVICE"
-  | "ANALYTICS_SERVICE"
-  | "MODERATION";
-
-export const SERVICES: Record<Services, ServiceInfo> = {
+export const SERVICES = {
   ACCOUNTS_SERVICE: {
     token: "ACCOUNTS_SERVICE",
     clientId: "Accounts",
@@ -158,5 +131,10 @@ export const SERVICES: Record<Services, ServiceInfo> = {
     clientId: "moderation-client",
     groupId: "moderation-consumer",
     token: "moderation-service",
+  },
+  DISCOVER: {
+    clientId: "discover-client",
+    groupId: "discover-consumer",
+    token: "discover-service",
   },
 };

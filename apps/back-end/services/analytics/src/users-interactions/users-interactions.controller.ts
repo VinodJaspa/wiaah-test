@@ -1,17 +1,21 @@
 import { Controller } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { EventPattern, Payload } from '@nestjs/microservices';
+import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import {
   ChatPrivateMessageSentEvent,
   CommentCreatedEvent,
   ContentReactedEvent,
   ContentSharedEvent,
+  GetBulkUserMostInteractionersMessage,
+  GetBulkUserMostInteractionersMessageReply,
+  GetUserMostInteractionersMessage,
+  GetUserMostInteractionersMessageReply,
   PostSavedEvent,
   ProfileVisitedEvent,
   UserMentionEvent,
 } from 'nest-dto';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { KAFKA_EVENTS } from 'nest-utils';
+import { ExtractPagination, KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
 import {
   IncreamentUserCommentReactionInteractionCommand,
   IncreamentUserPostReactionInteractionCommand,
@@ -24,10 +28,14 @@ import {
   IncrementUserPostSaveInteractionCommand,
 } from '@users-interations/commands';
 import { ContentTypeEnum, USER_INTERACTION_SCORE } from './const';
+import { PrismaService } from 'prismaService';
 
 @Controller()
 export class UsersInteractionsController {
-  constructor(private readonly commandbus: CommandBus) {}
+  constructor(
+    private readonly commandbus: CommandBus,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_1AM)
   handleDecrementUsersInteractionScore() {
@@ -39,6 +47,70 @@ export class UsersInteractionsController {
   }
 
   // TODO: handle get users interaction scores message
+  @MessagePattern(KAFKA_MESSAGES.ANALYTICS_MESSAGES.getUserMostInteractioners())
+  async getUserMostInteractioners(
+    @Payload() { value }: { value: GetUserMostInteractionersMessage },
+  ): Promise<GetUserMostInteractionersMessageReply> {
+    const { skip, take } = ExtractPagination(value.input.pagination);
+    const res = await this.prisma.usersInteractions.findMany({
+      where: {
+        ownerId: value.input.userId,
+      },
+      orderBy: {
+        interactionScore: 'desc',
+      },
+      skip,
+      take,
+    });
+
+    return new GetUserMostInteractionersMessageReply({
+      error: null,
+      success: true,
+      data: {
+        users: res.map(({ userId, interactionScore }) => ({
+          id: userId,
+          score: interactionScore,
+        })),
+      },
+    });
+  }
+
+  @MessagePattern(KAFKA_MESSAGES.ANALYTICS_MESSAGES.getUserMostInteractioners())
+  async getBulkUserMostInteractioners(
+    @Payload() { value }: { value: GetBulkUserMostInteractionersMessage },
+  ): Promise<GetBulkUserMostInteractionersMessageReply> {
+    const { skip, take } = ExtractPagination(value.input.pagination);
+    const res = await this.prisma.usersInteractions.findMany({
+      where: {
+        ownerId: {
+          in: value.input.userIds,
+        },
+      },
+      orderBy: {
+        interactionScore: 'desc',
+      },
+      skip,
+      take,
+    });
+
+    return new GetBulkUserMostInteractionersMessageReply({
+      error: null,
+      success: true,
+      data: {
+        users: value.input.userIds.map((id) => {
+          const users = res.filter((v) => v.ownerId === id);
+
+          return {
+            id,
+            users: users.map(({ id, interactionScore }) => ({
+              id,
+              score: interactionScore,
+            })),
+          };
+        }),
+      },
+    });
+  }
 
   @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted('*'))
   handleContentReacted(@Payload() { value }: { value: ContentReactedEvent }) {
@@ -109,7 +181,7 @@ export class UsersInteractionsController {
     );
   }
 
-  @EventPattern(KAFKA_EVENTS.SOCIAL_EVENTS.userMention())
+  @EventPattern(KAFKA_EVENTS.SOCIAL_EVENTS.userMention('*'))
   handleUserMentions(@Payload() { value }: { value: UserMentionEvent }) {
     const mentionById = value.input.userId;
     const mentionToId = value.input.mentionedId;

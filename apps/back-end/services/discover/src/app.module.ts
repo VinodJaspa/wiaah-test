@@ -7,8 +7,8 @@ import {
 import { getUserFromRequest } from 'nest-utils';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CommunityModule } from '@community/community.module';
-import { UserActivityStatsModule } from '@user-activity-stats/user-activity-stats.module';
 import { PrismaModule } from './prisma.module';
+import { FriendsModule } from './friends/friends.module';
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import { PrismaModule } from './prisma.module';
       context: (ctx) => ({ ...ctx, user: getUserFromRequest(ctx.req) }),
       autoSchemaFile: true,
     }),
-    UserActivityStatsModule,
+    FriendsModule,
   ],
   providers: [],
 })

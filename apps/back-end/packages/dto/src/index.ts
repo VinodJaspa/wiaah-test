@@ -29,3 +29,4 @@ export * from "./Shipping";
 export * from "./Balance";
 export * from "./Promotiom";
 export * from "./EventScheduling";
+export * from "./UserInterations";

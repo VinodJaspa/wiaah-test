@@ -1,5 +1,5 @@
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CommandBus } from '@nestjs/cqrs';
 import { Action, Community, NewsfeedPost } from '@community/entities';
 import { GetCommunityPostsInput } from './dto';
 import { GetCommunityPostsQuery } from './queries';
@@ -7,10 +7,7 @@ import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
 
 @Resolver(() => Community)
 export class CommunityResolver {
-  constructor(
-    private readonly commandbus: CommandBus,
-    private readonly querybus: QueryBus,
-  ) {}
+  constructor(private readonly commandbus: CommandBus) {}
 
   @Query(() => Community)
   getCommunityPosts(

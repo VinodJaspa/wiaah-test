@@ -8,7 +8,7 @@ const Edit: NextPage = () => {
       values={{}}
       onSubmit={() => {}}
       onBack={() => {}}
-    ></NewAffiliationLinkSection>
+    />
   );
 };
 

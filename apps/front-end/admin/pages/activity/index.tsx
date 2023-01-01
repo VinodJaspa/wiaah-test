@@ -1,7 +1,7 @@
 import { usePaginationControls } from "@blocks";
 import { AdminListTable, AdminTableCellTypeEnum } from "@components";
 import { Select, SelectOption } from "@partials";
-import { camelCase, startCase } from "lodash";
+import { startCase } from "lodash";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -42,7 +42,7 @@ const _events = [
   "buyer-banned",
 ] as const;
 
-const activites: Activity[] = [...Array(10)].map((_, i) => ({
+const Activites: Activity[] = [...Array(10)].map((_, i) => ({
   id: i.toString(),
   causedBy: {
     id: i.toString(),
@@ -56,7 +56,7 @@ const activites: Activity[] = [...Array(10)].map((_, i) => ({
   },
 }));
 
-const activity: NextPage = () => {
+const Activity: NextPage = () => {
   const events = _events.reduce((acc, curr) => {
     const parant = curr.split("-")[0];
     const exists = acc[parant] || [];
@@ -82,15 +82,21 @@ const activity: NextPage = () => {
             custom: (
               <Select>
                 {Object.entries(events)
-                  .map(([parant, events]) =>
-                    [<p className="font-bold p-2">{parant}</p>].concat(
-                      events.map((event) => (
-                        <SelectOption value={event}>
-                          {startCase(event)}
-                        </SelectOption>
-                      ))
-                    )
-                  )
+                  .map(([parant, events], i) => (
+                    <React.Fragment key={parant + i}>
+                      {[
+                        <p key={parant + i} className="font-bold p-2">
+                          {parant}
+                        </p>,
+                      ].concat(
+                        events.map((event, i) => (
+                          <SelectOption key={event + i} value={event}>
+                            {startCase(event)}
+                          </SelectOption>
+                        ))
+                      )}
+                    </React.Fragment>
+                  ))
                   .flat()}
               </Select>
             ),
@@ -106,7 +112,7 @@ const activity: NextPage = () => {
           },
         ]}
         title={t("Marketplace Activity")}
-        data={activites.map(
+        data={Activites.map(
           ({ causedBy, createdAt, event, id, causedTo }, i) => ({
             id,
             cols: [
@@ -138,7 +144,7 @@ const activity: NextPage = () => {
   );
 };
 
-export default activity;
+export default Activity;
 
 const GetActivityMessage: React.FC<{
   event: typeof _events[number];
