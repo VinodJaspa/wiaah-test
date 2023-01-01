@@ -12,8 +12,8 @@ import {
   SectionHeader,
   TableContainer,
   usePaginationControls,
-} from "ui";
-import { getRandomImage } from "ui/placeholder";
+} from "@UI";
+import { getRandomImage } from "@UI/placeholder";
 import { HiShoppingCart } from "react-icons/hi";
 import { randomNum } from "../../../helpers";
 import { IoTrash } from "react-icons/io5";

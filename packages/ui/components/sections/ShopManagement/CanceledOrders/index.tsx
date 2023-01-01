@@ -20,11 +20,11 @@ import {
   Textarea,
   ModalCloseButton,
   ModalFooter,
-} from "ui";
+} from "@UI";
 import {
   useDeclineReturnRequestMutation,
   useAcceptReturnRequestMutation,
-} from "ui/Hooks";
+} from "@src/Hooks";
 import { declineReturnRequestDto } from "dto";
 import { Form, Formik } from "formik";
 import { ReturnDeclineRequestValidationSchema } from "validation";

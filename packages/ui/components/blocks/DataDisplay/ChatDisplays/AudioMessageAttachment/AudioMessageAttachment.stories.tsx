@@ -1,4 +1,4 @@
-import { storybookChatDisplay, AudioMessageAttachment } from "ui";
+import { storybookChatDisplay, AudioMessageAttachment } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

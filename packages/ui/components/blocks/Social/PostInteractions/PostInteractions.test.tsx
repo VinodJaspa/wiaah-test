@@ -1,6 +1,6 @@
 import { shallow, ShallowWrapper } from "enzyme";
 import React from "react";
-import { PostInteractions } from "ui";
+import { PostInteractions } from "@UI";
 
 const selectors = {
   likes: "[data-testid='PostInteractionLikes']",

@@ -9,7 +9,7 @@ import {
   CheckoutProductsState,
   UserAddressesState,
   VoucherState,
-} from "ui/state";
+} from "@src/state";
 import { CheckoutView } from "@components";
 import { CheckoutCart } from "types";
 

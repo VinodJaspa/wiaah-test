@@ -6,7 +6,7 @@ import {
   MenuItem,
   MenuList,
   MenuButton,
-} from "ui";
+} from "@UI";
 import React from "react";
 import { useTranslation } from "react-i18next";
 export interface NotifiactionsMenuProps {}

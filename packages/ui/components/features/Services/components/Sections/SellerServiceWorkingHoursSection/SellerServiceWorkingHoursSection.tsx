@@ -2,7 +2,7 @@ import { ServiceWorkingDays } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { DateDetails, mapArray } from "utils";
-import { TimeClockDisplay } from "ui";
+import { TimeClockDisplay } from "@UI";
 
 export interface SellerServiceWorkingHoursSectionProps
   extends ServiceWorkingDays {}

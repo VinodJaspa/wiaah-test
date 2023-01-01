@@ -1,14 +1,14 @@
 import React from "react";
 import { SellerNavigationSideBar } from ".";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import {
   HomeIcon,
   AffiliationIcon,
   DiscoverIcon,
   ShoppingCartIcon,
   ServicesIcon,
-} from "ui";
+} from "@UI";
 import { CgPlayButtonR } from "react-icons/cg";
 export default {
   title: "UI/blocks/SideBars/SellerNavigationSideBar",

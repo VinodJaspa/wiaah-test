@@ -11,7 +11,7 @@ import {
   CalenderIcon,
   AspectRatio,
   Slider,
-} from "ui";
+} from "@UI";
 import { CashbackData, SocialPostAttachment } from "api";
 import { setTestid } from "utils";
 

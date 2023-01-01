@@ -3,7 +3,7 @@ import {
   AccordionButton,
   AccordionItem,
   AccordionPanel,
-} from "ui/components/partials/Accordion";
+} from "@UI/components/partials/Accordion";
 import { getTestId, waitFor } from "utils/src/test-utils";
 import { shallow, mount, ShallowWrapper, ReactWrapper } from "enzyme";
 import React from "react";

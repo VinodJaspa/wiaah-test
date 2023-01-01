@@ -6,6 +6,33 @@ import { PrismaService } from 'prismaService';
 export class ProductRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async getTopDiscountedByShop(shopId: string) {
+    return this.prisma.product.findFirst({
+      where: {
+        AND: [
+          {
+            shopId,
+          },
+          {
+            discount: {
+              is: {
+                units: {
+                  gt: 1,
+                },
+              },
+            },
+          },
+        ],
+      },
+      orderBy: {
+        discount: {
+          units: 'desc',
+        },
+      },
+      take: 1,
+    });
+  }
+
   async update(id: string, input: Prisma.ProductUpdateInput) {
     return await this.prisma.product.update({
       where: {

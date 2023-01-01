@@ -1,8 +1,8 @@
 import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import React from "react";
 import { RecoilRoot } from "recoil";
-import { AffiliationOffersCardListWrapper } from "ui";
-import { socialAffiliationCardPlaceholders } from "ui/placeholder";
+import { AffiliationOffersCardListWrapper } from "@UI";
+import { socialAffiliationCardPlaceholders } from "@UI/placeholder";
 
 const selectors = {
   colsWrapper: "[data-testid='ColumnsWrapper']",

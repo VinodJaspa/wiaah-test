@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ActionHeader, storybookDataDisplayBlocksTitle } from "ui";
+import { ActionHeader, storybookDataDisplayBlocksTitle } from "@UI";
 export default {
   title: storybookDataDisplayBlocksTitle + "ActionHeader",
   component: ActionHeader,

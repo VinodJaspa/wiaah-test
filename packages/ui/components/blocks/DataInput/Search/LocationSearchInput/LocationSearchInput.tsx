@@ -11,7 +11,7 @@ import {
   useGetPopularServiceLocationsQuery,
   SpinnerFallback,
   useSearchFilters,
-} from "ui";
+} from "@UI";
 import { BiSend } from "react-icons/bi";
 import { Location } from "api";
 import { useOutsideClick, usePagination } from "hooks";

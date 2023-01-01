@@ -11,7 +11,7 @@ import {
   useSetResturantsDataState,
   ServicesSearchGrid,
   DisplayFoundServices,
-} from "ui";
+} from "@UI";
 
 export const ResturantSearchList: React.FC = () => {
   const { filters, getLocationFilterQuery } = useSearchFilters();

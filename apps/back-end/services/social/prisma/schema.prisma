@@ -21,6 +21,7 @@ model Profile {
   activeStatus   ActiveStatus      @default(inActive)
   bio            String            @default("Hi, im a new Wiaah user")
   photo          String
+  status         ProfileStatus     @default(active)
   followers      Int               @default(0)
   following      Int               @default(0)
   followingData  Follow[]          @relation(name: "followingProfile")
@@ -80,6 +81,7 @@ model NewsfeedPost {
   commentsVisibility CommentsVisibility @default(public)
   mentions           PostMention[]
   tags               PostTag[]
+  status             PostStatus         @default(active)
 }
 
 model ProductPost {
@@ -310,4 +312,18 @@ enum AttachmentType {
   img
   vid
   text
+}
+
+enum PostStatus {
+  suspended
+  active
+  paused
+  pending
+}
+
+enum ProfileStatus {
+  suspended
+  active
+  paused
+  pending
 }

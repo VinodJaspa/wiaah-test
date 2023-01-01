@@ -2,15 +2,17 @@ import { CashbackData } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HtmlDivProps } from "types";
-import { PriceDisplay } from "ui";
+import { PriceDisplay } from "@UI";
 
-export interface CashbackBadgeProps extends CashbackData {
+export interface CashbackBadgeProps {
+  type?: "cash" | "percent";
+  amount?: number;
   props?: HtmlDivProps;
 }
 
 export const CashbackBadge: React.FC<CashbackBadgeProps> = ({
   amount = 0,
-  type,
+  type = "cash",
   props,
 }) => {
   const { t } = useTranslation();
@@ -22,7 +24,7 @@ export const CashbackBadge: React.FC<CashbackBadgeProps> = ({
       } px-4 gap-2 py-1 flex flex-nowrap rounded text-white bg-red-500 whitespace-nowrap`}
     >
       {type === "cash" ? (
-        <PriceDisplay priceObject={{ amount }} />
+        <PriceDisplay price={amount} />
       ) : (
         <span>{`${amount}%`}</span>
       )}{" "}

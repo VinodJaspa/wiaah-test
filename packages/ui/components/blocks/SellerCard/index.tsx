@@ -1,7 +1,7 @@
 import React from "react";
 import { IoMdMail } from "react-icons/io";
 import { Rate } from "antd";
-import { useLoginPopup } from "ui/Hooks";
+import { useLoginPopup } from "@src/Hooks";
 import { useTranslation } from "react-i18next";
 
 export interface SellerProps {

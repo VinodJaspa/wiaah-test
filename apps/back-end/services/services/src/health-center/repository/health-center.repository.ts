@@ -9,6 +9,7 @@ import {
   HealthCenterDoctor as PrismaHealthCenterDoctor,
   HealthCenterService as PrismaHealthCenterService,
   HealthCenterSpecialty as PrismaHealthCenterSpecialty,
+  ServiceStatus,
 } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 import { SearchHealthCenterInput } from '../dto';
@@ -26,6 +27,17 @@ export class HealthCenterRepository {
     private readonly prisma: PrismaService,
     private readonly elasticRepo: HealthCenterElasticRepository,
   ) {}
+
+  updateOneStatus(id: string, status: ServiceStatus) {
+    return this.prisma.healthCenterService.update({
+      where: {
+        id,
+      },
+      data: {
+        status,
+      },
+    });
+  }
 
   async getHealthCenterbyId(
     id: string,

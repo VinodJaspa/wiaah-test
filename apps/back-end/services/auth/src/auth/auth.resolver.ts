@@ -56,7 +56,7 @@ export class AuthResolver implements OnModuleInit {
     return this.authService.register(registerInput);
   }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => GqlStatusResponse)
   async login(
     @Args('LoginInput') loginInput: LoginDto,
     @Context() ctx: any,

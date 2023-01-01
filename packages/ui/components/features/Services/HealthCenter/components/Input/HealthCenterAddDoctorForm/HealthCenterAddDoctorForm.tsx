@@ -12,7 +12,7 @@ import {
   Button,
   MediaUploadModal,
   useFileUploadModal,
-} from "ui";
+} from "@UI";
 import { FileRes, setTestid } from "utils";
 import { mixed, object, string } from "yup";
 

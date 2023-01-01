@@ -7,7 +7,7 @@ import {
   HotelRoomDetailsCard,
   CaruoselLeftArrow,
   CaruoselRightArrow,
-} from "ui";
+} from "@UI";
 
 export interface HotelServiceRoomsSectionProps {
   rooms: HotelRoomDataType[];

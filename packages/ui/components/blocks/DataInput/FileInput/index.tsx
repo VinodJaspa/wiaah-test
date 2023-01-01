@@ -1,6 +1,6 @@
 import React from "react";
 import { HtmlInputProps } from "types";
-import { Input } from "ui";
+import { Input } from "@UI";
 
 export interface FileInputProps {
   id?: string;

@@ -1,5 +1,5 @@
 import React from "react";
-import { SellerLayout } from "ui";
+import { SellerLayout } from "@UI";
 import { storybookLayoutTitle } from "utils";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 

@@ -6,7 +6,7 @@ import {
   Divider,
   PriceDisplay,
   HStack,
-} from "ui";
+} from "@UI";
 
 export const RestaurantPriceSidebar: React.FC<{ vatPercent: number }> = ({
   vatPercent: vat,

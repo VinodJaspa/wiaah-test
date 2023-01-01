@@ -7,7 +7,7 @@ import {
   ControlledCarouselProps,
   ArrowLeftIcon,
   ArrowRightIcon,
-} from "ui";
+} from "@UI";
 export interface PostAttachmentsViewerProps {
   attachments: PostAttachmentType[];
   profileInfo?: ProfileInfo;

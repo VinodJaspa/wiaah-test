@@ -131,7 +131,7 @@ export class StripeBillingService {
 
     if (!success) throw error;
 
-    const { items, voucherId } = data;
+    const { items } = data;
 
     if (items.length < 1) throw new BadRequestException('empty shopping cart');
 

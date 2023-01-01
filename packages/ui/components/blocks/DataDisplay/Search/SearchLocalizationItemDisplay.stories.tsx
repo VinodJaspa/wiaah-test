@@ -2,7 +2,7 @@ import {
   storybookBlocksTitle,
   LocalizationSearchItem,
   LocalizationsPH,
-} from "ui";
+} from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

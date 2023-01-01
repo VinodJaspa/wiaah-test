@@ -10,7 +10,7 @@ export class NotificationSettingsController {
     private readonly notiSettingsService: NotificationSettingsService,
   ) {}
 
-  @EventPattern('test')
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated('*', true))
   handleNewAccountCreated(@Payload() data: NewAccountCreatedEvent) {
     const { id } = data.input;
     this.notiSettingsService.createAccountNotifciationSettings(id);

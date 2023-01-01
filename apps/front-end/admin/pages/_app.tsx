@@ -6,7 +6,7 @@ import "react-quill/dist/quill.snow.css";
 import { CookiesProvider } from "react-cookie";
 import { RecoilRoot } from "recoil";
 import { ChakraProvider } from "@chakra-ui/react";
-import { DataInitializationWrapper } from "ui";
+import { DataInitializationWrapper, ReactPubsubKeys } from "ui";
 import { QueryClient, QueryClientProvider, Hydrate } from "react-query";
 import { ReactPubsubClient, ReactPubsubProvider } from "react-pubsub";
 import { ReactSeoProvider } from "react-seo";
@@ -25,6 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
         <RoutingProvider
+          back={() => router.back()}
           getBaseUrl={() => router.basePath}
           getQuery={() => ClearNextJSQuery(router.query, router.route)}
           getCurrentPath={() => {
@@ -41,7 +42,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         >
           <ChakraProvider>
             <CookiesProvider>
-              <ReactPubsubProvider client={new ReactPubsubClient()}>
+              <ReactPubsubProvider
+                keys={ReactPubsubKeys}
+                client={new ReactPubsubClient()}
+              >
                 <ReactSeoProvider TagWrapper={NextHead}>
                   <RecoilRoot>
                     <DataInitializationWrapper accountType="seller">

@@ -1,6 +1,6 @@
 import React from "react";
 import { HtmlDivProps, HtmlImgProps } from "types";
-import { AspectRatio, Image } from "ui";
+import { AspectRatio, Image } from "@UI";
 export interface AvatarProps extends HtmlImgProps {
   name?: string;
   photoSrc?: string;

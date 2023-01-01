@@ -7,7 +7,7 @@ import { WishlistView } from "../components/Wishlist/WishlistView";
 import { Collaboration } from "ui/components/blocks/Collaboration";
 import { products } from "ui";
 import { useSetRecoilState } from "recoil";
-import { SavedItemsState } from "ui/state";
+import { SavedItemsState } from "@src/state";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   // get user wishlist and return it as props

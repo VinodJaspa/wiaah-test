@@ -1,7 +1,7 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { ServiceCardPresentation } from "./ServiceSearchCardPresentation";
 import { storybookOtherServicesDataDisplayTitle } from "utils";
-import { ServicesRequestKeys } from "ui";
+import { ServicesRequestKeys } from "@UI";
 
 export default {
   title:

@@ -1,9 +1,4 @@
 import { OrderStatusEnum } from '@prisma-client';
 
-export const OrderStatus: Record<OrderStatusEnum, OrderStatusEnum> = {
-  compeleted: 'compeleted',
-  pending: 'pending',
-  rejectedByBuyer: 'rejectedByBuyer',
-  rejectedBySeller: 'rejectedBySeller',
-  shipping: 'shipping',
-};
+export const OrderStatus = OrderStatusEnum;
+export type OrderStatus = keyof typeof OrderStatus;

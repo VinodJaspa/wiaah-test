@@ -9,7 +9,7 @@ import {
   Button,
   BeautyCenterTreatmentCard,
   ServiceCancelationPolicyInput,
-} from "ui";
+} from "@UI";
 import { randomNum } from "utils";
 
 export interface BeautyCenterTreatmentsListProps {

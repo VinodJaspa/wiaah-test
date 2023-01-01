@@ -3,17 +3,18 @@ import {
   ProductDetailsTable,
   useEditProductData,
   AddNewProductSection,
-} from "ui";
+} from "@UI";
 
 export interface ProductManagementSectionProps {}
 
-export const ProductManagementSection: React.FC<ProductManagementSectionProps> =
-  () => {
-    const { product } = useEditProductData();
+export const ProductManagementSection: React.FC<
+  ProductManagementSectionProps
+> = () => {
+  const { product } = useEditProductData();
 
-    return typeof product === "undefined" ? (
-      <ProductDetailsTable />
-    ) : (
-      <AddNewProductSection />
-    );
-  };
+  return typeof product === "undefined" ? (
+    <ProductDetailsTable />
+  ) : (
+    <AddNewProductSection />
+  );
+};

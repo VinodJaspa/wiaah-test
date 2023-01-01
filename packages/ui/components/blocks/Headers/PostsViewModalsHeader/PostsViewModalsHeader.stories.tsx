@@ -1,5 +1,5 @@
 import { storybookHeadersTitle } from "utils";
-import { PostsViewModalsHeader } from "ui";
+import { PostsViewModalsHeader } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

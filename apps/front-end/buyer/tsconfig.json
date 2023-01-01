@@ -7,7 +7,19 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@components": ["components"]
+      "@components": ["components"],
+      "@partials": ["../../../packages/ui/components/partials"],
+      "@blocks": ["../../../packages/ui/components/blocks"],
+      "@libs": ["../../../packages/ui/libs"],
+      "@const": ["../../../packages/ui/constants"],
+      "@blocks/*": ["../../../packages/ui/components/blocks/*"],
+      "@src/*": ["../../../packages/ui/src/*"],
+      "@sections/*": ["../../../packages/ui/components/sections/*"],
+      "@sections": ["../../../packages/ui/components/sections"],
+      "@features/*": ["../../../packages/ui/components/features/*"],
+      "@features": ["../../../packages/ui/components/features"],
+      "@UI": ["../../../packages/ui"],
+      "@UI/*": ["../../../packages/ui/*"]
     }
   }
 }

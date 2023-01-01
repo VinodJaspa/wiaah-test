@@ -1,10 +1,11 @@
-import { SearchFilterInput } from "ui";
+import { SearchFilterInput } from "@UI";
 import React from "react";
 import { MdClose } from "react-icons/md";
 import { useTranslation } from "react-i18next";
 
 export interface HashTagInputProps {
   onChange?: (HashTags: string[]) => any;
+  value?: string[];
 }
 
 export const HashTagInput: React.FC<HashTagInputProps> = ({ onChange }) => {

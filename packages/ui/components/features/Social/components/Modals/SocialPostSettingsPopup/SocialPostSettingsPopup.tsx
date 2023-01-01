@@ -8,7 +8,7 @@ import {
   MenuItem,
   ModalOverlay,
   ModalContent,
-} from "ui";
+} from "@UI";
 import { useSocialReportModal } from "../SocialReportModal";
 
 export const useSocialPostSettingsPopup = () => {

@@ -2,7 +2,7 @@ import {
   SpecialDaysOpenTimeModal,
   Button,
   useSpecialDaysOpenTimeModal,
-} from "ui";
+} from "@UI";
 import { storybookModalsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
 

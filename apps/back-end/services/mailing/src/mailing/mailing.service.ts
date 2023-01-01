@@ -23,7 +23,6 @@ export class MailingService {
           verificationCode,
         text: 'thanks for using wiaah, use the code below to continue the registeration proccess',
       });
-      console.log('sent', res);
     } catch (error) {
       this.logger.error(error);
     }
@@ -41,6 +40,43 @@ export class MailingService {
         '<h3>Thanks for using wiaah</h3><br />here is your verification code: ' +
         verificationCode,
       text: 'thanks for using wiaah, use the code below to change your password',
+    });
+  }
+
+  async sendTemplateMail(opts: {
+    templateId: number;
+    vars: Record<string, string>;
+    to: { name: string; email: string }[];
+    subject: string;
+    from?: { name: string; email: string };
+  }) {
+    await this.mailingservice.sendTemplate({
+      subject: opts.subject,
+      //  'Order Shipping Confirmation',
+      to: opts.to.map((v) => ({
+        Email: v.email,
+        Name: v.name,
+      })),
+      from: { Email: opts.from.email, Name: opts.from.name },
+      templateId: opts.templateId,
+      vars: opts.vars,
+    });
+  }
+  async sendRawTemplate(props: {
+    html: string;
+    to: { name: string; email: string }[];
+    from?: { email: string; name: string };
+    subject: string;
+  }) {
+    await this.mailingservice.send({
+      to: props.to.map((v) => ({
+        Email: v.email,
+        Name: v.name,
+      })),
+      from: { Email: props.from.email, Name: props.from.name },
+      html: props.html,
+      subject: props.subject,
+      text: '',
     });
   }
 }

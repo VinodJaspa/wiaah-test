@@ -16,11 +16,11 @@ import {
   Divider,
   ModalFooter,
   Input,
-} from "ui";
+} from "@UI";
 import { useTranslation } from "react-i18next";
 import { MdClose } from "react-icons/md";
-import { useNewWithdrawalModal } from "ui/Hooks";
-import { NewWithdrawalOpenState } from "ui/state";
+import { useNewWithdrawalModal } from "@src/Hooks";
+import { NewWithdrawalOpenState } from "@src/state";
 import { useSetRecoilState } from "recoil";
 import { randomNum } from "../../../../helpers";
 

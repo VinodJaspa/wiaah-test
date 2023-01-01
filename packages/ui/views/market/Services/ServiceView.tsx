@@ -1,7 +1,7 @@
 import React from "react";
-import { BreadCrumb, ProductImageGallery, SpinnerFallback } from "ui";
-import { ProductDescription, SellerCard, useGetServiceDataQuery } from "ui";
-import { ServiceRightView } from "ui";
+import { BreadCrumb, ProductImageGallery, SpinnerFallback } from "@UI";
+import { ProductDescription, SellerCard, useGetServiceDataQuery } from "@UI";
+import { ServiceRightView } from "@UI";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import { ProductGalleryItem } from "types";

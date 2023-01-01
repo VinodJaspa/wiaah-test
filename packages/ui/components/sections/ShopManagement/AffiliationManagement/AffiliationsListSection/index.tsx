@@ -1,5 +1,5 @@
-import { getRandomImage } from "ui/placeholder";
-import { randomNum } from "ui/components/helpers";
+import { getRandomImage } from "@UI/placeholder";
+import { randomNum } from "@UI/components/helpers";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiEdit } from "react-icons/bi";
@@ -16,7 +16,7 @@ import {
   Th,
   TableContainer,
   SectionHeader,
-} from "ui";
+} from "@UI";
 import { useResponsive } from "hooks";
 import { FiPlusSquare } from "react-icons/fi";
 
@@ -74,7 +74,7 @@ export const AffiliationListSection: React.FC<
                   <Td>{link.expiryDate}</Td>
                   <Td>{link.affiliationLink}</Td>
                   <Td>
-                    <div className="uppercase p-2 bg-primary text-white">
+                    <div className="uppercase p-2 text-center rounded-md bg-primary text-white">
                       {link.status}
                     </div>
                   </Td>

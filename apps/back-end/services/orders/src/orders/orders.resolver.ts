@@ -1,8 +1,16 @@
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Args,
+  Mutation,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
 import {
   accountType,
   AuthorizationDecodedUser,
+  ExtractPagination,
   GqlAuthorizationGuard,
   GqlCurrentUser,
   KAFKA_MESSAGES,
@@ -25,6 +33,11 @@ import {
   RejectOrderCommand,
   RejectReceivedOrderCommand,
 } from './commands';
+import { GetUserOrders } from '@orders/dto/get-user-orders.input';
+import { GetFilteredOrdersInput } from '@dto';
+import { PrismaService } from 'prismaService';
+import { Discount } from './entities/extends/discount.entity';
+import { Product } from './entities/extends';
 
 @Resolver(() => Order)
 export class OrdersResolver implements OnModuleInit {
@@ -33,6 +46,7 @@ export class OrdersResolver implements OnModuleInit {
     private readonly eventsClient: ClientKafka,
     private readonly queryBus: QueryBus,
     private readonly commandbus: CommandBus,
+    private readonly prisma: PrismaService,
   ) {}
 
   @Query((type) => [Order])
@@ -41,15 +55,53 @@ export class OrdersResolver implements OnModuleInit {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @Args('getMyOrdersArgs', { nullable: true }) args: GetMyOrdersInput,
   ) {
-    if (user.accountType === 'buyer') {
+    if (user.accountType === accountType.BUYER) {
       return this.queryBus.execute<GetBuyerOrdersQuery, Order[]>(
-        new GetBuyerOrdersQuery(user.id, args.status),
+        new GetBuyerOrdersQuery(user.id, args.pagination, args.status),
       );
-    } else if (user.accountType === 'seller') {
+    } else if (user.accountType === accountType.SELLER) {
       return this.queryBus.execute<GetSellerOrdersQuery, Order[]>(
-        new GetSellerOrdersQuery(user.id, args.status),
+        new GetSellerOrdersQuery(user.id, args.pagination, args.status),
       );
     }
+  }
+
+  @Query(() => [Order])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  getUserOrders(@Args('args') args: GetUserOrders) {
+    const type = args.accountType;
+    if (type === accountType.BUYER) {
+      return this.queryBus.execute<GetBuyerOrdersQuery, Order[]>(
+        new GetBuyerOrdersQuery(
+          args.userId,
+          args.pagination,
+          args.status,
+          args.q,
+        ),
+      );
+    } else if (type === accountType.SELLER) {
+      return this.queryBus.execute<GetSellerOrdersQuery, Order[]>(
+        new GetSellerOrdersQuery(
+          args.userId,
+          args.pagination,
+          args.status,
+          args.q,
+        ),
+      );
+    }
+  }
+
+  @Query(() => [Order])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  getFilteredOrders(@Args('args') args: GetFilteredOrdersInput) {
+    const { skip, take } = ExtractPagination(args.pagination);
+    return this.prisma.order.findMany({
+      take,
+      skip,
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
   }
 
   @Mutation(() => Boolean)
@@ -104,5 +156,21 @@ export class OrdersResolver implements OnModuleInit {
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountById,
     );
     await this.eventsClient.connect();
+  }
+
+  @ResolveField(() => Discount)
+  discount(@Parent() order: Order) {
+    return {
+      __typename: 'Discount',
+      id: order.discount,
+    };
+  }
+
+  @ResolveField(() => Product)
+  products(@Parent() order: Order) {
+    return order.items.map(({ id }) => ({
+      __typename: 'Product',
+      id: id,
+    }));
   }
 }

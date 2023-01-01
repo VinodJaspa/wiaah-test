@@ -1,6 +1,6 @@
 import React from "react";
 import { storybookDrawersTitle } from "utils";
-import { MultiStepDrawer, Button } from "ui";
+import { MultiStepDrawer, Button } from "@UI";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { t } from "i18next";
 

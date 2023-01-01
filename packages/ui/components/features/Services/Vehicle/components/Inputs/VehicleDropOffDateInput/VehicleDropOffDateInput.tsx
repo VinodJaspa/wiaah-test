@@ -1,8 +1,8 @@
-import { Menu, MenuButton, MenuList } from "ui";
+import { Menu, MenuButton, MenuList } from "@UI";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { DateInput } from "ui";
-import { CalenderIcon } from "ui";
+import { DateInput } from "@UI";
+import { CalenderIcon } from "@UI";
 import { HtmlDivProps } from "types";
 
 export interface VehicleDropOffDateInputProps extends HtmlDivProps {}

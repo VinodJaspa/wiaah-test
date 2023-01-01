@@ -9,7 +9,7 @@ import {
 } from "react-icons/fa";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import { social } from "../../../../../apps/front-end/market/data/Links";
+import { social } from "@UI/data";
 export const SocialMediaLinks: FC = () => {
   const { t, i18n } = useTranslation();
   return (

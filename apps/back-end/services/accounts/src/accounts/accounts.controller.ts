@@ -13,6 +13,7 @@ import {
 } from '@nestjs/microservices';
 import { KAFKA_MESSAGES, KAFKA_EVENTS, SERVICES } from 'nest-utils';
 import {
+  AccountDeletedEvent,
   AccountVerifiedEvent,
   BuyerAccountRegisteredEvent,
   EmailExistsMessage,
@@ -20,7 +21,9 @@ import {
   GetAccountMetaDataByEmailMessage,
   GetAccountMetaDataByEmailMessageReply,
   KafkaPayload,
+  NewProductCreatedEvent,
   PasswordChangedEvent,
+  ProductPurchasedEvent,
   SellerAccountRegisteredEvent,
   StripeAccountCreatedEvent,
   SubscriptionPaidEvent,
@@ -30,8 +33,14 @@ import {
 import { CommandBus } from '@nestjs/cqrs';
 
 import { AccountsService } from '@accounts/accounts.service';
-import { UpdateUserMembershipCommand } from '@accounts/commands';
+import {
+  IncreamentUserProductsCount,
+  IncreamentUserSalesCommand,
+  UpdateUserMembershipCommand,
+} from '@accounts/commands';
 import { Account } from '@accounts/entities';
+import { PrismaService } from 'prismaService';
+import { AccountDeletionRequestStatus } from '@prisma-client';
 
 @Controller()
 export class AccountsController implements OnModuleInit {
@@ -41,7 +50,31 @@ export class AccountsController implements OnModuleInit {
     @Inject(SERVICES.ACCOUNTS_SERVICE.token)
     private readonly eventsClient: ClientKafka,
     private readonly commandBus: CommandBus,
+    private readonly prisma: PrismaService,
   ) {}
+
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.deleteAccount)
+  async handleDeleteAccount(@Payload() { value }: { value: { id: string } }) {
+    if (!value?.id) return;
+
+    const res = await this.accountService.deleteAccount(value.id);
+    if (res) {
+      this.eventsClient.emit(
+        KAFKA_EVENTS.ACCOUNTS_EVENTS.accountDeleted,
+        new AccountDeletedEvent({
+          accountId: res.id,
+        }),
+      );
+      this.prisma.accountDeletionRequest.update({
+        where: {
+          accountId: res.id,
+        },
+        data: {
+          status: AccountDeletionRequestStatus.deleted,
+        },
+      });
+    }
+  }
 
   @MessagePattern(KAFKA_MESSAGES.ACCOUNTS_MESSAGES.hasStripeId)
   async hasStripeId(@Payload() value: UserHasStripeAccountMessage) {
@@ -132,7 +165,7 @@ export class AccountsController implements OnModuleInit {
     KAFKA_EVENTS.BILLING_EVNETS.billingSubscriptionPaid('membership'),
   )
   handleMembershipPaid(@Payload() { value }: { value: SubscriptionPaidEvent }) {
-    console.log("updating user membershipo")
+    console.log('updating user membershipo');
     this.commandBus.execute<UpdateUserMembershipCommand, Account>(
       new UpdateUserMembershipCommand(value.input.userId, value.input.id),
     );
@@ -150,6 +183,7 @@ export class AccountsController implements OnModuleInit {
       companyRegisterationNumber:
         payload.value.input.companyRegisterationNumber,
       type: 'seller',
+      status: 'pending',
     });
   }
 
@@ -163,6 +197,7 @@ export class AccountsController implements OnModuleInit {
       email: payload.value.input.email,
       password: payload.value.input.password,
       type: 'buyer',
+      status: 'active',
     });
   }
 
@@ -181,9 +216,8 @@ export class AccountsController implements OnModuleInit {
   changePassword(@Payload() { value }: KafkaPayload<PasswordChangedEvent>) {
     try {
       const {
-        input: { email, newPassword, id },
+        input: { newPassword, id },
       } = value;
-      console.log(value);
       this.accountService.updatePassword(newPassword, id);
     } catch (error) {
       this.logger.error(error);
@@ -200,6 +234,28 @@ export class AccountsController implements OnModuleInit {
     } catch (error) {
       this.logger.error(error);
     }
+  }
+
+  @EventPattern(KAFKA_EVENTS.PRODUCTS_EVENTS.productCreated)
+  handleProductCreated(
+    @Payload() { value }: { value: NewProductCreatedEvent },
+  ) {
+    const {
+      input: { ownerId },
+    } = value;
+
+    this.commandBus.execute(new IncreamentUserProductsCount(ownerId, 1));
+  }
+
+  @EventPattern(KAFKA_EVENTS.PRODUCTS_EVENTS.productPurchased)
+  handleProductPurchased(
+    @Payload() { value }: { value: ProductPurchasedEvent },
+  ) {
+    const {
+      input: { sellerId },
+    } = value;
+
+    this.commandBus.execute(new IncreamentUserSalesCommand(sellerId, 1));
   }
 
   async onModuleInit() {

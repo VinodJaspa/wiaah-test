@@ -1,12 +1,12 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { StorySeenByPopup } from "ui";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
-import { useStorySeenBy } from "ui/Hooks";
+import { StorySeenByPopup } from "@UI";
+import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
+import { useStorySeenBy } from "@src/Hooks";
 import { Button } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
-import { PostCardPlaceHolder } from "ui/placeholder";
-import { StorySeenByState } from "ui/state";
+import { PostCardPlaceHolder } from "@UI/placeholder";
+import { StorySeenByState } from "@src/state";
 
 export default {
   title: "UI/blocks/Social/StorySeenByPopup",

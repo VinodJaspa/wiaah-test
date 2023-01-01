@@ -7,7 +7,7 @@ import {
   Textarea,
   HStack,
   Button,
-} from "ui";
+} from "@UI";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -17,7 +17,7 @@ import {
   ModalContent,
   ModalCloseButton,
   ModalOverlay,
-} from "ui";
+} from "@UI";
 
 export interface AddNewStoryModalProps {}
 

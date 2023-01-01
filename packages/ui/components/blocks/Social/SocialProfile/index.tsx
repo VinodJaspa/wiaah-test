@@ -2,7 +2,7 @@ import React from "react";
 import {
   SubscribersPopup,
   Avatar,
-  SocialStoriesModal,
+  SocialStoryModal,
   Button,
   HStack,
   Stack,
@@ -12,12 +12,12 @@ import {
   QrcodeDisplay,
   SocialProfileOptionsDropdown,
   HorizontalDotsIcon,
-} from "ui";
-import { useLoginPopup, useStory } from "ui/Hooks";
+} from "@UI";
+import { useLoginPopup, useStory } from "@src/Hooks";
 import { mapArray, NumberShortner } from "utils";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
-import { SocialStoryState } from "ui/state";
+import { SocialStoryState } from "@src/state";
 import { useReactPubsub } from "react-pubsub";
 import { SocialProfileData } from "api";
 import { useDisclouser } from "hooks";
@@ -90,7 +90,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           <p>{t("Show on map")}</p>
         </div>
       </div>
-      {storyData && <SocialStoriesModal />}
+      {storyData && <SocialStoryModal />}
       <SubscribersPopup
         title={t("subscribers", "subscribers")}
         isOpen={isOpen}

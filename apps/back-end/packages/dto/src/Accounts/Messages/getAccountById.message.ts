@@ -6,6 +6,7 @@ export class GetAccountByIdMessage extends KafkaMessage<{
 
 export class GetAccountByIdMessageReply extends KafkaMessageReply<{
   email: string;
+  accountType: string;
   firstName: string;
   lastName: string;
   verified: boolean;

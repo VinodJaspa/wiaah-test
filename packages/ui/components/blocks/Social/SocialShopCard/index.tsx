@@ -7,10 +7,10 @@ import {
   CommentsViewer,
   useProductViewModal,
   useHandlePostSharing,
-} from "ui";
+} from "@UI";
 import { ShopCardInfo } from "types";
-import { useLoginPopup } from "ui";
-import { ControlledCarousel } from "ui";
+import { useLoginPopup } from "@UI";
+import { ControlledCarousel } from "@UI";
 import { PostInteractionsProps } from "../PostInteractions";
 
 export interface SocialShopCardProps {

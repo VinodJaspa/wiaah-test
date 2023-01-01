@@ -3,7 +3,7 @@ import {
   useUserData,
   storybookChatDisplay,
   ChatMessage,
-} from "ui";
+} from "@UI";
 import { ComponentMeta } from "@storybook/react";
 import React from "react";
 

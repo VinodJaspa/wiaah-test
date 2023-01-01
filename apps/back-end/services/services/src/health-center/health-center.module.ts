@@ -11,6 +11,7 @@ import {
 } from './repository';
 import { healthCenterCommandHandlers } from './commands';
 import { HealthCenterSagas } from './sagas';
+import { HealthCenterController } from './health-center.controller';
 
 @Module({
   imports: [ServiceOwnershipModule, CqrsModule],
@@ -24,5 +25,6 @@ import { HealthCenterSagas } from './sagas';
     ...healthCenterCommandHandlers,
     ...HealthCenterQueryHandlers,
   ],
+  controllers: [HealthCenterController],
 })
 export class HealthCenterModule {}

@@ -1,5 +1,5 @@
 import React from "react";
-import { PriceDisplay } from "ui/components/partials/PriceDisplay";
+import { PriceDisplay } from "@UI/components/partials/PriceDisplay";
 import { shallow } from "enzyme";
 
 describe("PriceDisaply tests", () => {

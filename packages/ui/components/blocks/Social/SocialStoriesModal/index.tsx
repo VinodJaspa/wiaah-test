@@ -1,38 +1,60 @@
-import { Modal, ModalOverlay, ModalContent, ModalBody } from "@chakra-ui/react";
 import React from "react";
-import { useRecoilValue } from "recoil";
-import { useStory } from "ui/Hooks";
-import { SocialStoryViewer } from "ui";
-import { SocialStoryState, SocialStoriesState } from "ui/state";
+import {
+  SocialStoryViewer,
+  SocialStoryViewerProps,
+} from "../SocialStoryViewer";
+import { Modal, ModalOverlay, ModalContent, useProgressBars } from "@partials";
+import { SocialStoryDataWithUser } from "types";
+import { useTypedReactPubsub } from "@libs";
 
-export interface SocialStoriesModalProps {}
+export const useStoryModal = () => {
+  const { Listen, emit, removeListner } = useTypedReactPubsub(
+    (k) => k.openSocialStoryModal
+  );
+  const { update } = useProgressBars();
 
-export const SocialStoriesModal: React.FC<SocialStoriesModalProps> = () => {
-  const stories = useRecoilValue(SocialStoriesState);
-  const { storiesOpen, CloseStories } = useStory();
-  const storyData = useRecoilValue(SocialStoryState);
+  React.useEffect(() => removeListner, []);
+
+  function open(userId: string) {
+    emit({ userId });
+  }
+
+  function close() {
+    emit({ userId: null });
+  }
+
+  return {
+    open,
+    close,
+    Listen,
+    updateProgressBars: update,
+  };
+};
+
+export interface SocialStoriesModalProps
+  extends Omit<SocialStoryViewerProps, "story"> {
+  story: SocialStoryDataWithUser | null;
+}
+
+export const SocialStoryModal: React.FC<SocialStoriesModalProps> = ({
+  story: _story,
+  ...props
+}) => {
+  const [story, setStory] = React.useState<SocialStoryDataWithUser>();
+  const { close } = useStoryModal();
+
+  if (_story && _story.id !== story?.id) {
+    setStory(_story);
+  }
+
   return (
     <>
-      <Modal
-        isCentered
-        onClose={CloseStories}
-        isOpen={storiesOpen}
-        motionPreset="slideInBottom"
-        blockScrollOnMount={false}
-      >
-        <ModalOverlay bgColor={"black"} />
-        <ModalContent
-          maxH={"80vh"}
-          m="0px"
-          shadow={"none"}
-          color="white"
-          bg="transparent"
-        >
-          <ModalBody h={"100%"} shadow={"none"} p={"0px"}>
-            {storyData && (
-              <SocialStoryViewer stories={stories} user={storyData.user} />
-            )}
-          </ModalBody>
+      <Modal onClose={close} isOpen={!!_story}>
+        <ModalOverlay />
+        <ModalContent className="bg-[#000] max-h-[80vh] text-white">
+          {story ? (
+            <SocialStoryViewer {...props} story={story} user={story.user} />
+          ) : null}
         </ModalContent>
       </Modal>
     </>

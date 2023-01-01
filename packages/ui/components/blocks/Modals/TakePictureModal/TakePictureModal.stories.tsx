@@ -1,4 +1,4 @@
-import { TakePictureModal, Button, useSpecialDaysOpenTimeModal } from "ui";
+import { TakePictureModal, Button, useSpecialDaysOpenTimeModal } from "@UI";
 import { storybookModalsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
 import { useDisclouser } from "hooks";

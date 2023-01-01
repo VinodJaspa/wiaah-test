@@ -12,9 +12,10 @@ datasource db {
 }
 
 model ProductCategory {
-  id       String  @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  parantId String?
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  sortOrder Int
+  parantId  String?
 }
 
 type ProductFilterGroupValue {
@@ -42,13 +43,15 @@ type ProductAttribute {
 model Product {
   id                          String                @id() @default(auto()) @map("_id") @db.ObjectId()
   sellerId                    String
-  shopId                      String
+  shopId                      String                @unique()
   vendor_external_link        String?
   vendor_external_link_clicks Int                   @default(0)
   type                        ProdcutType
   title                       String
   description                 String
   price                       Int
+  status                      ProductStatus         @default(active)
+  vat                         Int
   categoryId                  String
   attributes                  ProductAttribute[]
   stock                       Int
@@ -63,6 +66,8 @@ model Product {
   visibility                  VisibilityEnum        @default(hidden)
   sales                       Int                   @default(0)
   earnings                    Float                 @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Shop {
@@ -79,6 +84,12 @@ model Shop {
   storeType     StoreType[]
   vendorType    VendorType[]
   targetGenders TargetGenders[]
+}
+
+model ShippingAddress {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId  String   @db.ObjectId
+  location Location
 }
 
 type Discount {
@@ -113,12 +124,13 @@ enum PresentationType {
 }
 
 type Location {
-  lat     Float
-  long    Float
-  country String
-  city    String
-  state   String
-  address String
+  lat      Float
+  long     Float
+  country  String
+  city     String
+  state    String
+  address  String
+  address2 String?
 }
 
 enum StoreType {
@@ -145,15 +157,31 @@ enum TargetGenders {
 // }
 
 model ShippingRule {
-  id                 String            @id @default(auto()) @map("_id") @db.ObjectId
-  sellerId           String
-  name               String
-  countries          ShippingCountry[]
-  cost               Float
-  deliveryTimeRange  DeliveryTimeRange
-  shippingTypes      ShippingType[]
-  createdAt          DateTime          @default(now())
-  updatedAt          DateTime          @updatedAt()
+  id                String            @id @default(auto()) @map("_id") @db.ObjectId
+  sellerId          String
+  name              String
+  countries         ShippingCountry[]
+  cost              Float
+  deliveryTimeRange DeliveryTimeRange
+  shippingTypes     ShippingType[]
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt()
+}
+
+model ShippingTypeRule {
+  id String @id @default(auto()) @db.ObjectId @map("_id")
+  name String
+  description String
+  type ShippingType
+  geoZones GeoZone[] 
+}
+
+model GeoZone {
+  id String @id @db.ObjectId @map("_id") @default(auto())
+  country String
+  zone String 
+  shippingTypeRuleId String @db.ObjectId
+  shippingTypeRule ShippingTypeRule @relation(fields: [shippingTypeRuleId],references: [id])
 }
 
 type DeliveryTimeRange {
@@ -169,4 +197,11 @@ type ShippingCountry {
 enum ShippingType {
   paid
   click_and_collect
+}
+
+enum ProductStatus {
+  suspended
+  active
+  pasued
+  pending
 }

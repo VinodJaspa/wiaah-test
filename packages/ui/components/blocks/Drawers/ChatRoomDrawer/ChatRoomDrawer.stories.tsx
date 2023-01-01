@@ -1,6 +1,6 @@
 import { storybookDrawersTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
-import { ChatRoomDrawer, Button } from "ui";
+import { ChatRoomDrawer, Button } from "@UI";
 import { useModalDisclouser } from "hooks";
 
 export default {

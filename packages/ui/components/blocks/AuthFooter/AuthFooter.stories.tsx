@@ -1,4 +1,4 @@
-import { storybookBlocksTitle, AuthFooter } from "ui";
+import { storybookBlocksTitle, AuthFooter } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated/client"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model BannedCity {
+  id String @id @default(auto()) @db.ObjectId @map("_id")
+  cityId String @db.ObjectId @unique
+  bannedFor String
+  @@unique([bannedFor,cityId])
+}
+
+model Country {
+  id String @db.ObjectId @default(auto()) @id @map("_id")
+  code String
+  name String
+  cities City[]
+}
+
+model City {
+  id String @db.ObjectId @default(auto()) @id @map("_id")
+  code String
+  name String
+  countryId String @db.ObjectId
+  country Country @relation(fields: [countryId],references: [id])
+}
+
+model Report {
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  reportedBy  String            @db.ObjectId
+  contentId   String            @db.ObjectId
+  contentType ReportContentType
+  message     String
+  status      ReportStatus
+  type        ReportType
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum ReportStatus {
+  accepted
+  rejected
+}
+
+enum ReportType {
+  social
+  product
+  service
+  bug
+}
+
+model Information {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  placements  String[]
+  slug        String
+}
+
+enum ReportContentType {
+  post
+  service
+  product
+}
+
+model Design {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  placement String[]
+  src       String
+  name      String
+  type      DesignType
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Language {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  locale String
+  name String
+  code String
+  enabled Boolean @default(false)
+  sortOrder Int @default(0)
+}
+
+model Profession {
+  id String @id @db.ObjectId @default(auto()) @map("_id")
+  title String
+  usage Int @default(0)
+  sortOrder Int @default(0)
+  status ProfessionStatus @default(active) 
+}
+
+enum ProfessionStatus {
+  active
+  inActive
+}
+
+enum DesignType {
+  partner
+  slideshow
+  collaboration
+}
+
+model SiteSettings {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  mode        SiteModes    @default(up)
+  socialLinks SocialLink[]
+  comingSoon  Boolean      @default(false)
+}
+
+enum SiteModes {
+  maintenance
+  down
+  up
+}
+
+type SocialLink {
+  link      String
+  label     String
+  placement String[]
+}

@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { HtmlSelectProps } from "types";
 import { Category } from "types";
-import { categories as categoriesPH, Select, SelectOption } from "ui";
+import { categories as categoriesPH, Select, SelectOption } from "@UI";
 
 export interface SubCategorySelectProps extends HtmlSelectProps {
   onCateSelection?: (cate: string[]) => any;

@@ -10,18 +10,22 @@ import { AccountsModule } from './accounts/accounts.module';
 import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
 import { AccountVerificationModule } from './account-verification/account-verification.module';
 import { CookiesSettingsModule } from './cookies-settings/cookies-settings.module';
+import { UserLocationModule } from './user-location/user-location.module';
 
 @Global()
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],
-  imports: [AccountVerificationModule, CookiesSettingsModule],
+  imports: [],
 })
 export class PrismaModule {}
 
 @Module({
   imports: [
     PrismaModule,
+    AccountVerificationModule,
+    CookiesSettingsModule,
+    UserLocationModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: true,

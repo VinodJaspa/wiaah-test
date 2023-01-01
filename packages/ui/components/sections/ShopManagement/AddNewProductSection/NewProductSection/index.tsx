@@ -18,7 +18,7 @@ import {
   StepperFormController,
   StepperFormHandler,
   AddNewDigitalProductSection,
-} from "ui";
+} from "@UI";
 import { mapArray, PassPropsToFnOrElem, runIfFn } from "utils";
 
 export interface AddNewProductSectionProps {}

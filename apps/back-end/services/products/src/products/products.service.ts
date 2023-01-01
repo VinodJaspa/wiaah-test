@@ -28,7 +28,7 @@ import {
 } from '@products/exceptions';
 import { Product, ProductSearchPaginationResponse } from '@products/entities';
 import {
-  UpdateProdutctInput,
+  UpdateProductInput,
   CreateProductInput,
   ReviewProductInput,
 } from '@products/dto';
@@ -67,7 +67,7 @@ export class ProductsService {
 
   async updateProduct(
     userId: string,
-    input: UpdateProdutctInput,
+    input: UpdateProductInput,
   ): Promise<Product> {
     const { id, ...rest } = input;
     const product = await this.prisma.product.findUnique({
@@ -364,6 +364,7 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     price: 16,
     sellerId: 'sellerid',
     categoryId: '',
+    vat: 23,
   },
   {
     type: 'goods',
@@ -375,6 +376,7 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     price: 18,
     sellerId: 'sellerid',
     categoryId: '',
+    vat: 23,
   },
   {
     type: 'goods',
@@ -386,6 +388,7 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     price: 30,
     sellerId: 'sellerid',
     categoryId: '',
+    vat: 23,
   },
   {
     type: 'digital',
@@ -397,6 +400,7 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     price: 5,
     sellerId: 'sellerid',
     categoryId: '',
+    vat: 23,
   },
   {
     type: 'digital',
@@ -408,5 +412,6 @@ const ProductsPh: Prisma.ProductCreateInput[] = [
     price: 98,
     sellerId: 'sellerid',
     categoryId: '',
+    vat: 23,
   },
 ];

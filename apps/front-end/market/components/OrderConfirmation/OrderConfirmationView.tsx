@@ -21,7 +21,7 @@ import {
   useScreenWidth,
 } from "ui";
 import { DividerProps } from "ui/components/partials/Divider";
-import { CartSummaryItemsState, CheckoutProductsState } from "ui/state";
+import { CartSummaryItemsState, CheckoutProductsState } from "@src/state";
 import { randomNum } from "utils";
 
 export interface OrderConfirmationViewProps {}

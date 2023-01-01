@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   SocialPostHeader,
-  SocialStoriesModal,
+  SocialStoryModal,
   SocialServicePostCard,
   useGetServicePostDetailsQuery,
   useSearchFilters,
@@ -24,7 +24,7 @@ export const ServicePostView: React.FC = () => {
   return (
     <div className="py-2 md:py-16 gap-8 flex flex-col">
       <div className="flex items-center md:items-start flex-col gap-8 mb-24 md:flex-row">
-        <SocialStoriesModal />
+        <SocialStoryModal />
         <div className="flex flex-col gap-4">
           <SpinnerFallback isError={isError} isLoading={isLoading}>
             {res ? (

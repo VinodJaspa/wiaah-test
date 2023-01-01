@@ -9,7 +9,7 @@ import {
   CarWheelIcon,
   HotelIcon,
   HouseIcon,
-} from "ui";
+} from "@UI";
 import { mapArray, runIfFn } from "utils";
 
 type ServiceBadgeData = {

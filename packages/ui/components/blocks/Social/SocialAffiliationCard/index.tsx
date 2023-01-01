@@ -14,10 +14,10 @@ import {
 import React from "react";
 import { HiDotsHorizontal, HiOutlineLink } from "react-icons/hi";
 import { AffiliationOfferCardInfo } from "types/market/Social";
-import { useDateDiff, useHandlePostSharing } from "ui";
-import { CommentsViewer, PostInteractions } from "ui";
+import { useDateDiff, useHandlePostSharing } from "@UI";
+import { CommentsViewer, PostInteractions } from "@UI";
 import { useTranslation } from "react-i18next";
-import { PostAttachmentsViewer, PostInteractionsProps } from "ui";
+import { PostAttachmentsViewer, PostInteractionsProps } from "@UI";
 
 export interface SocialAffiliationCardProps extends AffiliationOfferCardInfo {
   showPostInteraction?: boolean;

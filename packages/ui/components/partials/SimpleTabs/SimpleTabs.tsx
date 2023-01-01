@@ -44,10 +44,11 @@ interface SimpleTabHeadProps {
 }
 
 export const SimpleTabHead: React.FC<SimpleTabHeadProps> = ({ children }) => {
+  console.log("tab childs", children);
   const { setCurrIdx, currIdx } = React.useContext(SimpleTabsContext);
   return (
     <>
-      {mapArray(React.Children.toArray(children), (c, i) => (
+      {mapArray(Array.isArray(children) ? children : [children], (c, i) => (
         <>
           {PassPropsToFnOrElem<SimpleTabHeadChildProps>(c, {
             onClick: () => setCurrIdx(i),
@@ -62,4 +63,22 @@ export const SimpleTabHead: React.FC<SimpleTabHeadProps> = ({ children }) => {
 export const SimpleTabItemList: React.FC = ({ children }) => {
   const { currIdx } = React.useContext(SimpleTabsContext);
   return <>{React.Children.toArray(children).at(currIdx)}</>;
+};
+
+export const SimpleTabHeadButton: React.FC<{
+  selected?: boolean;
+  onClick?: () => any;
+}> = ({ onClick, selected, children }) => {
+  return (
+    <div
+      onClick={onClick}
+      className={`${
+        selected
+          ? "border border-b-0 border-b-gray-300 text-black"
+          : "text-gray border border-white"
+      } px-4 py-2`}
+    >
+      {children}
+    </div>
+  );
 };

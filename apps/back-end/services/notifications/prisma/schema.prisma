@@ -11,9 +11,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum NotifiactionType {
+enum NotificationType {
   followRequest
   follow
+  storyReacted
+  DmMessage
+  ShopPromotion
   postReacted
   postCommented
   commentReacted
@@ -25,15 +28,15 @@ enum NotifiactionType {
 }
 
 model Notification {
-  id              String           @id @default(auto()) @map("_id") @db.ObjectId
-  userId          String           @db.ObjectId
-  contentId       String?          @db.ObjectId
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  type            NotifiactionType
-  authorProfileId String?          @db.ObjectId
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String            @db.ObjectId
+  contentId       String?           @db.ObjectId
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  type            NotificationType
+  authorProfileId String?           @db.ObjectId
   authorId        String
-  content         String
+  content         TranslationText[]
 }
 
 enum NotificationSettingsEnum {
@@ -43,15 +46,20 @@ enum NotificationSettingsEnum {
 }
 
 model UserNotificationSettings {
-  id              String                   @id @default(auto()) @map("_id") @db.ObjectId
-  userId          String                   @unique @db.ObjectId
-  createdAt       DateTime                 @default(now())
-  updatedAt       DateTime                 @updatedAt
-  postReaction    NotificationSettingsEnum @default(on)
-  postComment     NotificationSettingsEnum @default(on)
-  commentLike     NotificationSettingsEnum @default(on)
-  mentions        NotificationSettingsEnum @default(on)
-  silentedContent SilentContent[]
+  id                 String                   @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String                   @unique @db.ObjectId
+  createdAt          DateTime                 @default(now())
+  updatedAt          DateTime                 @updatedAt
+  postReaction       NotificationSettingsEnum @default(on)
+  productPosts       NotificationSettingsEnum @default(on)
+  servicePosts       NotificationSettingsEnum @default(on)
+  affilaitionPosts   NotificationSettingsEnum @default(on)
+  actionPosts        NotificationSettingsEnum @default(on)
+  postComment        NotificationSettingsEnum @default(on)
+  commentLike        NotificationSettingsEnum @default(on)
+  mentions           NotificationSettingsEnum @default(on)
+  nearShopPromotions Boolean                  @default(false)
+  silentedContent    SilentContent[]
 }
 
 model SilentContent {
@@ -59,4 +67,9 @@ model SilentContent {
   contentId  String                   @db.ObjectId
   silentedBy UserNotificationSettings @relation(fields: [userId], references: [userId])
   userId     String
+}
+
+type TranslationText {
+  lang  String
+  value String
 }

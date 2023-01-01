@@ -12,20 +12,34 @@ datasource db {
 }
 
 model Account {
-  id                         String      @id @default(auto()) @map("_id") @db.ObjectId
-  stripeId                   String?     @unique
-  membershipId               String?     @db.ObjectId
+  id                         String                   @id @default(auto()) @map("_id") @db.ObjectId
+  stripeId                   String?                  @unique
+  membershipId               String?                  @db.ObjectId
   firstName                  String
   lastName                   String
-  email                      String      @unique
+  email                      String                   @unique
   password                   String
-  online                     Boolean     @default(false)
+  products                   Int?                     @default(0)
+  sales                      Int?                     @default(0)
+  online                     Boolean                  @default(false)
   type                       AccountType
   companyRegisterationNumber String?
-  verified                   Boolean     @default(false)
-  idVerified                 Boolean     @default(false)
-  createdAt                  DateTime    @default(now())
-  updatedAt                  DateTime    @updatedAt()
+  verified                   Boolean                  @default(false)
+  status                     AccountStatus            @default(pending)
+  rejectReason               String?
+  balance                    Float                    @default(0)
+  idVerified                 Boolean                  @default(false)
+  createdAt                  DateTime                 @default(now())
+  updatedAt                  DateTime                 @updatedAt()
+  AccountDeletionRequest     AccountDeletionRequest[]
+}
+
+enum AccountStatus {
+  active
+  pending
+  inActive
+  suspended
+  refused
 }
 
 model UserIdenityVerificationRequest {
@@ -66,23 +80,37 @@ model UserAccountVerificationRequest {
 }
 
 model Cookies {
-  id String @id @default(auto()) @db.ObjectId @map("_id")
-  title String
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
   description String
-  required Boolean
-  benefits String[]
-  cons String[]
+  required    Boolean
+  benefits    String[]
+  cons        String[]
 }
 
 model UserCookiesSettings {
-  id String @id @default(auto()) @db.ObjectId @map("_id")
-  userId String @unique @db.ObjectId
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String   @unique @db.ObjectId
   acceptedCookiesIds String[] @db.ObjectId
-  acceptedRequired Boolean @default(false)
+  acceptedRequired   Boolean  @default(false)
 }
 
 enum AccountType {
   admin
   seller
   buyer
+}
+
+model AccountDeletionRequest {
+  id        String                       @id @default(auto()) @map("_id") @db.ObjectId
+  account   Account                      @relation(fields: [accountId], references: [id])
+  accountId String                       @unique
+  createdAt DateTime                     @default(now())
+  updatedAt DateTime                     @updatedAt
+  status    AccountDeletionRequestStatus
+}
+
+enum AccountDeletionRequestStatus {
+  pending
+  deleted
 }

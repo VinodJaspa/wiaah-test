@@ -1,6 +1,6 @@
 import React from "react";
 import { randomNum, runIfFn } from "utils";
-import { PriceDisplay, ArrowDownIcon, ArrowUpIcon } from "ui";
+import { PriceDisplay, ArrowDownIcon, ArrowUpIcon } from "@UI";
 import { LineChart, Line } from "recharts";
 import { HtmlDivProps } from "types";
 

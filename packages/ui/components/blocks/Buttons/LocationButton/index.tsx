@@ -1,6 +1,6 @@
 import React from "react";
 import { HtmlDivProps, HtmlSvgProps, SearchPlaceItem } from "types";
-import { Button, LocationOnPointFillIcon } from "ui";
+import { Button, LocationOnPointFillIcon } from "@UI";
 export interface LocationButtonProps extends SearchPlaceItem {
   onLocationClick?: (locationName: string) => any;
   props?: HtmlDivProps;

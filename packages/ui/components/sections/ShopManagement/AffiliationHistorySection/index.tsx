@@ -14,7 +14,7 @@ import {
   TableContainer,
   SectionHeader,
   usePaginationControls,
-} from "ui";
+} from "@UI";
 
 export interface AffiliationHistorySection {}
 
@@ -51,6 +51,7 @@ export const AffiliationHistorySection: React.FC<
       </SectionHeader>
       <TableContainer className="w-full">
         <Table
+          className="w-full"
           ThProps={{
             className: "border-[1px] border-gray-300",
           }}
@@ -73,26 +74,24 @@ export const AffiliationHistorySection: React.FC<
             </Tr>
           </THead>
           <TBody>
-            {AffiliationHistoryCards.slice(page * take, page * take + take).map(
-              (card, i) => (
-                <Tr key={i}>
-                  <Td>
-                    <img className="w-full h-auto" src={card.productImage} />
-                  </Td>
-                  <Td>{card.productName}</Td>
-                  <Td>
-                    {card.productPrice.amount} {card.productPrice.currency}
-                  </Td>
-                  <Td>{card.affilator}</Td>
-                  <Td>{card.purchaser}</Td>
-                  <Td>{card.commission}%</Td>
-                  <Td>
-                    {card.commissionAmount.amount}{" "}
-                    {card.commissionAmount.currency}
-                  </Td>
-                </Tr>
-              )
-            )}
+            {AffiliationHistoryCards.map((card, i) => (
+              <Tr key={i}>
+                <Td className="w-fit">
+                  <img className="w-32 h-auto" src={card.productImage} />
+                </Td>
+                <Td>{card.productName}</Td>
+                <Td>
+                  {card.productPrice.amount} {card.productPrice.currency}
+                </Td>
+                <Td>{card.affilator}</Td>
+                <Td>{card.purchaser}</Td>
+                <Td>{card.commission}%</Td>
+                <Td>
+                  {card.commissionAmount.amount}{" "}
+                  {card.commissionAmount.currency}
+                </Td>
+              </Tr>
+            ))}
             <Tr>
               <Td></Td>
               <Td></Td>

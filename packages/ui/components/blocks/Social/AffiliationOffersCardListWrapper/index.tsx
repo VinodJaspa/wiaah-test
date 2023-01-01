@@ -9,7 +9,7 @@ import {
   GridWrapper,
   useAffiliationPostViewPopup,
   AffiliationPostViewModal,
-} from "ui";
+} from "@UI";
 import { NumberShortner } from "../../../helpers";
 import { PostAttachment } from "../PostAttachment";
 

@@ -12,7 +12,7 @@ import {
   useFileUploadModal,
   Button,
   SelectProps,
-} from "ui";
+} from "@UI";
 import { AccountVerificationRequestScheme } from "validation";
 
 export interface AccountVerificationProps {}

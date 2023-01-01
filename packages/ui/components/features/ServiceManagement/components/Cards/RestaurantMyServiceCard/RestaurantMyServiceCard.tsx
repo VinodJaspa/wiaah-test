@@ -13,7 +13,7 @@ import {
   PriceLevelDisplay,
   PriceConverter,
   LocationAddressDisplay,
-} from "ui";
+} from "@UI";
 import { setTestid } from "utils";
 
 export interface RestaurantMyServiceCardProps

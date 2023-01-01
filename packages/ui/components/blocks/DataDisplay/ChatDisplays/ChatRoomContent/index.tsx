@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ChatMessageType } from "types";
-import { ChatMessage, Divider } from "ui";
+import { ChatMessage, Divider } from "@UI";
 export interface ChatRoomContentProps {
   messages: ChatMessageType[];
 }

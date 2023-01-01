@@ -19,7 +19,7 @@ import {
   UserAddressesState,
   VoucherState,
   CheckoutProductsState,
-} from "ui/state";
+} from "@src/state";
 import { useLoginPopup } from "ui";
 
 export interface MasterLayoutProps {
@@ -53,7 +53,9 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
       <AuthPopup />
       {!social && <Header />}
       {social && <SocialHeader />}
-      <main className="flex w-full flex-col">{children}</main>
+      <main className="flex w-full flex-col">
+        <>{children}</>
+      </main>
       {!social && <Footer />}
       {!social && <AuthFooter />}
       {!social && (

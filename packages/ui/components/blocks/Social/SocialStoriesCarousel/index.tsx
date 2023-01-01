@@ -1,33 +1,24 @@
 import React from "react";
-import { SocialStoryContentData } from "types";
-import { ChakraCarousel, SocialStoryContentViewer } from "ui";
-import { useStory } from "ui/Hooks";
+import { SocialStoryContentData, SocialStoryData } from "types";
+import { SocialStoryContentViewer } from "../SocialStoryContentViewer";
+import { Slider } from "@partials";
+
 export interface SocialStoriesCarouselProps {
-  stories: SocialStoryContentData[];
+  story: SocialStoryData;
+  next: (story: SocialStoryData) => any;
+  prev: (story: SocialStoryData) => any;
 }
 
 export const SocialStoriesCarousel: React.FC<SocialStoriesCarouselProps> = ({
-  stories,
+  next,
+  story,
+  prev,
 }) => {
-  const { currentStory, goToStory } = useStory();
-
   return (
     <div className="flex flex-col gap-4 w-full">
-      <ChakraCarousel
-        trackBgColor="blackAlpha.800"
-        activeItem={currentStory}
-        setActiveItem={goToStory}
-        navigateOnClick
-        gap={0}
-      >
-        {stories.map((story, i) => (
-          <SocialStoryContentViewer
-            play={currentStory === i}
-            key={story.id}
-            {...story}
-          />
-        ))}
-      </ChakraCarousel>
+      <Slider>
+        <SocialStoryContentViewer play={true} {...story} />
+      </Slider>
     </div>
   );
 };

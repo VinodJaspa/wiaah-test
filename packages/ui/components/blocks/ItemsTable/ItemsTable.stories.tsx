@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { ItemsTable } from "ui";
+import { ItemsTable } from "@UI";
 import { storybookBlocksTitle } from "utils";
 
 export default {

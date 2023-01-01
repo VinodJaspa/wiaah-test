@@ -6,7 +6,7 @@ import {
   MenuList,
   MenuItem,
   MenuButton,
-} from "ui/components/partials/Menu";
+} from "@UI/components/partials/Menu";
 const selectors = {
   menuButton: "MenuButton",
   menuList: "MenuList",

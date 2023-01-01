@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Modal, ModalContent, ModalOverlay, Textarea, Button } from "ui";
+import { Modal, ModalContent, ModalOverlay, Textarea, Button } from "@UI";
 import { Rate } from "antd";
 
 export interface RateFeedBackModalProps {

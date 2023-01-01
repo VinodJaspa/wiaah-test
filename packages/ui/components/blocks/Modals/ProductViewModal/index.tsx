@@ -7,7 +7,7 @@ import {
   ModalContent,
   ModalOverlay,
   ModalHeader,
-} from "ui";
+} from "@UI";
 import React from "react";
 
 export interface ProductViewModalProps {}

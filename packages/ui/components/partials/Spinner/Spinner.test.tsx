@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { Spinner } from "ui";
+import { Spinner } from "@UI";
 
 describe("Spinner render test", () => {
   it("should render correctly", () => {

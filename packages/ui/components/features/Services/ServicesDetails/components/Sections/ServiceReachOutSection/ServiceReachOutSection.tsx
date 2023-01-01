@@ -7,7 +7,7 @@ import {
   TelephoneFillIcon,
   EmailIcon,
   LocationAddressDisplay,
-} from "ui";
+} from "@UI";
 import { runIfFn } from "utils";
 
 export interface ServiceReachOutSectionProps extends ServiceReachOutType {}

@@ -1,5 +1,5 @@
 import React from "react";
-import { EllipsisText, useLocale, Avatar, AvatarBadge } from "ui";
+import { EllipsisText, useLocale, Avatar, AvatarBadge } from "@UI";
 import { ChatUserData } from "types";
 import { useTranslation } from "react-i18next";
 

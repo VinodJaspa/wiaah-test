@@ -1,5 +1,5 @@
 import React from "react";
-import { Select, SelectOption, SelectProps } from "ui";
+import { Select, SelectOption, SelectProps } from "@UI";
 export interface SelectDropdownProps extends SelectProps {
   name?: string;
   onSelection?: (value: string, index: number | undefined) => void;

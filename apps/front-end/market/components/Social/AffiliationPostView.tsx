@@ -3,7 +3,7 @@ import { useRecoilValue } from "recoil";
 import {
   SocialAffiliationOffersState,
   SocialAffiliationOfferState,
-} from "ui/state";
+} from "@src/state";
 import { Button, Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import {
   SocialPostHeader,

@@ -8,7 +8,7 @@ import {
   TabTitle,
   SectionWrapper,
   SectionHeader,
-} from "ui";
+} from "@UI";
 import { SpecialSchedule } from "./SpecialSchedule";
 import { WeekdaysSchedule } from "./WeekdaysSchedule";
 export interface TimeManagementSectionProps {}

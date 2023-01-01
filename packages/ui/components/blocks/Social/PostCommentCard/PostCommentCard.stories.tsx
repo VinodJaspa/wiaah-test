@@ -1,8 +1,8 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { PostCommentCard } from "ui";
-import { PostCommentPlaceholder } from "ui/placeholder";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
+import { PostCommentCard } from "@UI";
+import { PostCommentPlaceholder } from "@UI/placeholder";
+import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 
 export default {
   title: "UI/blocks/Social/CommentCard",

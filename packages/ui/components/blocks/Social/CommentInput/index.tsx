@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { FaCamera } from "react-icons/fa";
 import { MdSend } from "react-icons/md";
-import { InputGroup, InputLeftElement, InputRightElement, Input } from "ui";
+import { InputGroup, InputLeftElement, InputRightElement, Input } from "@UI";
 export interface CommentInputProps {
   onCameraClick?: () => void;
   onCommentSubmit?: (comment: string) => void;

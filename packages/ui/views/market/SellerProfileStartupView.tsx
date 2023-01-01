@@ -26,10 +26,10 @@ import {
   HolidayRentalsGeneralDetailsForm,
   HealthCenterIncludedServices,
   ServiceSectionWithSchemaType,
-} from "ui";
+} from "@UI";
 
 import { StepperStepType } from "types";
-import { Button } from "ui";
+import { Button } from "@UI";
 import { runIfFn } from "utils";
 import { object } from "yup";
 import { NewServiceSchemas } from "validation";

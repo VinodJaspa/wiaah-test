@@ -7,7 +7,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useQuery } from "react-query";
 import {
-  SocialStoriesModal,
+  SocialStoryModal,
   SocialPostHeader,
   SocialShopCard,
   ShopCardsListWrapper,
@@ -39,7 +39,7 @@ export const SellerShopPostView: React.FC = () => {
         mb="6rem"
         align={"start"}
       >
-        <SocialStoriesModal />
+        <SocialStoryModal />
         <SocialPostHeader
           name={ShopPost.user.name}
           thumbnail={ShopPost.user.thumbnail}

@@ -18,7 +18,7 @@ import {
   ActionViewer,
   useActionViewPopup,
   useGetActionDataQuery,
-} from "ui";
+} from "@UI";
 import {
   ChevronDownIcon,
   ChevronLeftIcon,

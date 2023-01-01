@@ -6,7 +6,7 @@ import {
   Switch,
   ArrowLeftIcon,
   ArrowRightIcon,
-} from "ui";
+} from "@UI";
 
 export type WeekDayInputData = {
   weekday: number;

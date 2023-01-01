@@ -1,5 +1,5 @@
 import { storybookPartailsTitle } from "utils";
-import { Radio } from "ui";
+import { Radio } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

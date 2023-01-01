@@ -11,7 +11,7 @@ import {
   AspectRatio,
   Button,
   GuestsInput,
-} from "ui";
+} from "@UI";
 
 export interface ServiceTripDateInputProps {}
 

@@ -76,6 +76,7 @@ type Product {
   shippingDetails: ShippingDetails
   reviews: Int!
   sales: Int!
+  vat: Float!
 }
 
 enum VisibilityEnum {
@@ -105,6 +106,7 @@ type MyProduct {
   shippingDetails: ShippingDetails
   reviews: Int!
   sales: Int!
+  vat: Float!
   earnings: Float!
 }
 
@@ -199,7 +201,9 @@ type Query {
   getProduct(id: ID!): Product!
   getMyProducts(args: GqlPaginationInput!): [MyProduct!]!
   getCategories: [Category!]!
-  getProductsFilters: [Filter!]!
+  getFilteredCategory(args: GetFilteredCategory): [Category!]!
+  getProductsFilters(getFiltersArgs: GetFiltersInput!): [Filter!]!
+  getAllProducts(args: GetFilteredProductsAdminInput!): [Product!]!
 }
 
 input GetNearShopsInput {
@@ -222,13 +226,41 @@ input GqlPaginationInput {
   take: Int!
 }
 
+input GetFilteredCategory {
+  name: String
+  sortOrder: Int
+}
+
+input GetFiltersInput {
+  name: String
+  sortOrder: Int
+}
+
+input GetFilteredProductsAdminInput {
+  title: String
+  seller: String
+  productId: ID
+  price: Float
+  qty: Int
+  status: ProductStatus
+  updatedAt: String
+  pagination: GqlPaginationInput!
+}
+
+enum ProductStatus {
+  suspended
+  active
+  pasued
+  pending
+}
+
 type Mutation {
   createShop(createShopInput: CreateShopInput!): Shop!
   removeAllShops: Boolean!
   updateMyShop(updateMyShopInput: UpdateShopInput!): Shop!
   getProductVendorLink(productId: String!): String!
   createNewProduct(createNewProductInput: CreateProductInput!): Product!
-  updateProduct(updateProductArgs: UpdateProdutctInput!): Product!
+  updateProduct(updateProductArgs: UpdateProductInput!): Product!
   deleteAllProducts: Boolean!
   createProductsPh: Boolean!
   uploadProductPresentations(files: [Upload!]!): Boolean!
@@ -236,9 +268,10 @@ type Mutation {
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   deleteCategory(deleteCategoryId: String!): Category!
   updateCategory(updateCategoryArgs: UpdateCategoryInput!): Category!
-  createFilter(createFilterGroupArgs: CreateFilterInput!): Filter!
+  createFilter(createFilterGroupArgs: CreateFilterInput): Filter!
   updateFilter(updateFilterArgs: UpdateFilterInput!): Filter!
   deleteFilter(deleteFilterId: String!): Filter!
+  updateProductAdmin(args: UpdateProductInput!): Boolean!
   createShippingRule(createShippingRuleArgs: CreateShippingRuleInput!): ShippingRule!
   updateShippingRule(updateShippingRuleArgs: UpdateShippingRuleInput!): ShippingRule!
   deleteShippingRule(id: ID!): ShippingRule!
@@ -286,6 +319,8 @@ input CreateProductInput {
   price: Float!
   brand: String!
   visibility: VisibilityEnum!
+  status: ProductStatus
+  vat: Float!
 }
 
 enum ProductType {
@@ -314,7 +349,7 @@ input ProductPresentationInput {
   src: String!
 }
 
-input UpdateProdutctInput {
+input UpdateProductInput {
   type: ProductType
   title: String
   description: String
@@ -327,6 +362,8 @@ input UpdateProdutctInput {
   price: Float
   brand: String
   visibility: VisibilityEnum
+  status: ProductStatus
+  vat: Float
   id: ID!
 }
 
@@ -336,11 +373,13 @@ scalar Upload
 input CreateCategoryInput {
   parantId: ID
   name: String!
+  sortOrder: Int!
 }
 
 input UpdateCategoryInput {
   parantId: ID
   name: String
+  sortOrder: Int
   id: ID!
 }
 

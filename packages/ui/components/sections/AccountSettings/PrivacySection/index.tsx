@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormOptionType } from "types";
-import { TranslationText, Switch, SectionHeader } from "ui";
+import { TranslationText, Switch, SectionHeader } from "@UI";
 
 export interface PrivacySectionProps {}
 

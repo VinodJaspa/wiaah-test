@@ -19,9 +19,13 @@ import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { GetMyOrdersInput } from '@dto';
 import { Kafka } from 'kafkajs';
 import { OrderItemType } from '@orders/const';
-import { SellerProductsPurchasedEvent } from 'nest-dto';
-import { PrismaClient } from '@prisma-client';
-import { Order, OrderItem, OrderStatus } from '@orders/entities';
+import {
+  OrderRefundRequestRejectedEvent,
+  SellerProductsPurchasedEvent,
+} from 'nest-dto';
+import { PrismaClient, RefundRequest } from '@prisma-client';
+import { Order, OrderStatus } from '@orders/entities';
+import { ObjectId } from 'mongodb';
 
 let mockSellerUser: AuthorizationDecodedUser = {
   ...mockedUser,
@@ -139,6 +143,20 @@ describe('AppController (e2e)', () => {
     }
     `;
 
+  const rejectRefundRequest = `
+    mutation reject(
+      $id:ID!
+      $reason:String!
+    ){
+      rejectRefundRequest(
+        args:{
+          id:$id
+          reason:$reason
+        }
+      )
+    }
+    `;
+
   const getMyOrdersQuery = `
       query get(
         $status:OrderStatusEnum
@@ -193,6 +211,11 @@ describe('AppController (e2e)', () => {
               productsType: OrderItemType.product,
               shippingMethodId: MockedAdminUser.shopId,
               purchasedAtTimestamp: Date.parse(new Date().toString()),
+              payment: {
+                type: '',
+                value: '',
+              },
+              shippingAddressId: '',
               products: [
                 {
                   id: mockedUser.shopId,
@@ -376,6 +399,71 @@ describe('AppController (e2e)', () => {
         of: 'rejectedByBuyer',
         rejectReason: 'test buyer reject',
       } as OrderStatus);
+    });
+  });
+
+  describe('refund request', () => {
+    const productId = new ObjectId().toHexString();
+    const sellerId = new ObjectId().toHexString();
+    const buyerId = new ObjectId().toHexString();
+    let request: RefundRequest;
+    beforeEach(async () => {
+      const res = await prisma.refundRequest.create({
+        data: {
+          amount: 15,
+          fullAmount: true,
+          productId,
+          sellerId,
+          requestedById: buyerId,
+          reason: 'reason',
+          type: 'money',
+        },
+      });
+
+      request = res;
+    });
+
+    it('should reject and push kafka events', async () => {
+      let res = await reqGql(
+        rejectRefundRequest,
+        {
+          id: request.id,
+          reason: 'reason',
+        },
+        mockBuyerUser,
+      );
+
+      expect(res.body.errors).toBeDefined();
+
+      res = await reqGql(
+        rejectRefundRequest,
+        {
+          id: request.id,
+          reason: 'reason',
+        },
+        mockSellerUser,
+      );
+
+      expect(res.body.errors).not.toBeDefined();
+
+      await waitFor(async () => {
+        const res = await prisma.refundRequest.findUnique({
+          where: {
+            id: request.id,
+          },
+        });
+        expect(res.status === 'reject');
+        expect(mockKafka.emit).toBeCalledWith(
+          KAFKA_EVENTS.ORDERS_EVENTS.orderRefundRequestRejected(),
+          new OrderRefundRequestRejectedEvent({
+            amount: request.amount,
+            buyerId: request.requestedById,
+            productId: request.productId,
+            reason: request.reason,
+            sellerId: request.sellerId,
+          }),
+        );
+      });
     });
   });
 });

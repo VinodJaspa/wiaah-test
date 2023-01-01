@@ -15,6 +15,7 @@ export const useRouting = () => {
     getParam: GetParam,
     getQuery: GetQuery,
     getBaseUrl,
+    back,
     // removeParam: RemoveParam,
   } = React.useContext(routingContext);
 
@@ -68,5 +69,7 @@ export const useRouting = () => {
     getParam,
     removeParam,
     getUrl,
+    routes: MainRoutes,
+    back,
   };
 };

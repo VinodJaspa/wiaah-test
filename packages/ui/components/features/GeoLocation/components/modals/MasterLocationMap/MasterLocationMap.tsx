@@ -20,7 +20,7 @@ import {
   ResturantsDataState,
   servicesOnMapState,
   StoreIcon,
-} from "ui";
+} from "@UI";
 import { mapArray } from "utils";
 
 export type MasterLocationData = {

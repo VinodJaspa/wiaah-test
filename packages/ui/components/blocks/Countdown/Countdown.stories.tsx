@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Countdown, storybookBlocksTitle } from "ui";
+import { Countdown, storybookBlocksTitle } from "@UI";
 export default {
   title: storybookBlocksTitle + "Countdown",
   component: Countdown,

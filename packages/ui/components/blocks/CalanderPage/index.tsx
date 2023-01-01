@@ -26,7 +26,7 @@ export const CalanderPage: React.FC<CalanderPageProps> = ({ date }) => {
       <div className="px-12 py-1 bg-[#4A4A4A]">
         <span className="text-white">{day.toUpperCase()}</span>
       </div>
-      <span className="text-2xl font-bold text-[#4A4A4A]">
+      <span className="text-2xl p-2 font-bold text-[#4A4A4A]">
         <div className="flex flex-col items-center gap-2 py-2">
           <span>{numericDay}</span>
           <span>{month}</span>

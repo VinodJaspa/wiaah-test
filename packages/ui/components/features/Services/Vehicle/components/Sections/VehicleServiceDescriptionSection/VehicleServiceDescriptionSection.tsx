@@ -2,7 +2,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
 import { HtmlSvgProps } from "types";
-import { CarWheelIcon, GPSIcon, TransportSeatIcon, AirConditionIcon } from "ui";
+import {
+  CarWheelIcon,
+  GPSIcon,
+  TransportSeatIcon,
+  AirConditionIcon,
+} from "@UI";
 import { runIfFn } from "utils";
 
 export interface VehicleServiceDescriptionSectionProps {

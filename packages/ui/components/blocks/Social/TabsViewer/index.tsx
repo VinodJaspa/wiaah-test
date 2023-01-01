@@ -7,7 +7,7 @@ import {
   TabsHeader,
   TabsProps,
   Divider,
-} from "ui";
+} from "@UI";
 import { TabType } from "types";
 import { runIfFn } from "utils";
 

@@ -5,7 +5,7 @@ import {
   PriceDisplay,
   ServiceCheckoutCommonCardWrapper,
   BookedMenuCard,
-} from "ui";
+} from "@UI";
 import { setTestid } from "utils";
 
 export interface ResturantCheckoutCardProps

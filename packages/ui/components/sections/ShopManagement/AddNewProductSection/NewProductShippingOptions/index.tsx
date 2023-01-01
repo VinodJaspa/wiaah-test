@@ -1,39 +1,40 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormOptionType, PriceType } from "types";
-import { Checkbox, TranslationText } from "ui";
+import { Checkbox, TranslationText } from "@UI";
 
 export interface NewProductShippingOptions {}
 
-export const NewProductShippingOptions: React.FC<NewProductShippingOptions> =
-  () => {
-    const { t } = useTranslation();
-    return (
-      <div className="flex flex-col gap-4">
-        <h1 className="text-xl font-bold">
-          {t("shipping_mothed", "Shipping Mothed")}
-        </h1>
-        {shippingMotheds.map((mothed, i) => (
-          <div className="flex gap-4">
-            <Checkbox />
-            <span className="flex gap-1">
-              <TranslationText translationObject={mothed.name} />
-              {mothed.period && (
-                <span>
-                  ({mothed.period.from}-{mothed.period.to} {t("days", "days")})
-                </span>
-              )}
-              {mothed.price && (
-                <span>
-                  {mothed.price.amount} {mothed.price.currency}
-                </span>
-              )}
-            </span>
-          </div>
-        ))}
-      </div>
-    );
-  };
+export const NewProductShippingOptions: React.FC<
+  NewProductShippingOptions
+> = () => {
+  const { t } = useTranslation();
+  return (
+    <div className="flex flex-col gap-4">
+      <h1 className="text-xl font-bold">
+        {t("shipping_mothed", "Shipping Mothed")}
+      </h1>
+      {shippingMotheds.map((mothed, i) => (
+        <div className="flex gap-4">
+          <Checkbox />
+          <span className="flex gap-1">
+            <TranslationText translationObject={mothed.name} />
+            {mothed.period && (
+              <span>
+                ({mothed.period.from}-{mothed.period.to} {t("days", "days")})
+              </span>
+            )}
+            {mothed.price && (
+              <span>
+                {mothed.price.amount} {mothed.price.currency}
+              </span>
+            )}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 type shippingMothed = FormOptionType & {
   price?: PriceType;

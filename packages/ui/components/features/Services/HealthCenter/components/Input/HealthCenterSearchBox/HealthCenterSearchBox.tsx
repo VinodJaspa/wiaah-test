@@ -12,10 +12,10 @@ import {
   LocationOutlineIcon,
   SpinnerFallback,
   ServicesRequestKeys,
-} from "ui";
-import { useGetHealthCenterSearchSuggestionsQuery } from "ui";
-import { SearchHealthSpecialtiesCardsList } from "ui";
-import { SearchHealthPractitionersCardsList } from "ui";
+} from "@UI";
+import { useGetHealthCenterSearchSuggestionsQuery } from "@UI";
+import { SearchHealthSpecialtiesCardsList } from "@UI";
+import { SearchHealthPractitionersCardsList } from "@UI";
 import { usePagination } from "hooks";
 import { useRouting } from "routing";
 import { setTestid } from "utils";

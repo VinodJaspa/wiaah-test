@@ -14,7 +14,7 @@ import {
   LinkedInLogoIcon,
   AtEmailIcon,
   Divider,
-} from "ui";
+} from "@UI";
 import { useReactPubsub } from "react-pubsub";
 import { useTranslation } from "react-i18next";
 import { mapArray, runIfFn } from "utils";

@@ -5,7 +5,7 @@ import {
   StepperContent,
   StepperNextButton,
   StepperPreviousButton,
-} from "ui/components/partials/Stepper";
+} from "@UI/components/partials/Stepper";
 import React from "react";
 
 const selectors = {

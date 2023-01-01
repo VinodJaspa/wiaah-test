@@ -1,13 +1,12 @@
 import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { MicroserviceOptions } from '@nestjs/microservices';
+import { KafkaCustomTransport, KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.KAFKA,
-    options: {
+    strategy: new KafkaCustomTransport({
       client: {
         brokers: KAFKA_BROKERS,
         clientId: SERVICES.ORDERS_SERVICE.clientId,
@@ -15,9 +14,9 @@ async function bootstrap() {
       consumer: {
         groupId: SERVICES.ORDERS_SERVICE.groupId,
       },
-    },
+    }),
   });
-  app.startAllMicroservices();
+  await app.startAllMicroservices();
   await app.listen(3014);
 }
 bootstrap();

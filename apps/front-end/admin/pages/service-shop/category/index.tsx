@@ -5,6 +5,7 @@ import {
   Button,
   Checkbox,
   EditIcon,
+  Input,
   ItemsPagination,
   ListIcon,
   PlusIcon,
@@ -15,7 +16,6 @@ import {
   Th,
   THead,
   Tr,
-  TrashIcon,
   usePaginationControls,
 } from "ui";
 import { mapArray, randomNum, SeperatedStringArray } from "utils";
@@ -71,14 +71,24 @@ export default () => {
           className="w-full"
         >
           <THead>
-            <Th align="left">
-              <div className="flex w-full items-center gap-4">
-                {/* <Checkbox /> */}
-                <p>{t("Category Name")}</p>
-              </div>
-            </Th>
-            <Th>{t("Sort Order")}</Th>
-            <Th>{t("Action")}</Th>
+            <Tr>
+              <Th align="left">
+                <div className="flex w-full items-center gap-4">
+                  {/* <Checkbox /> */}
+                  <p>{t("Category Name")}</p>
+                </div>
+              </Th>
+              <Th>{t("Sort Order")}</Th>
+              <Th>{t("Action")}</Th>
+            </Tr>
+            <Tr>
+              <Th>
+                <Input placeholder={t("type category name")} />
+              </Th>
+              <Th>
+                <Input type={"number"} />
+              </Th>
+            </Tr>
           </THead>
           <TBody>
             {mapArray(categories, ({ id, name, sortOrder }, i) => (

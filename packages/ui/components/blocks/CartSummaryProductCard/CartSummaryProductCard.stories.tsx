@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { CartSummaryProductCard } from "ui";
+import { CartSummaryProductCard } from "@UI";
 
 export default {
   title: "UI/blocks/CartSummaryProdcutCard",

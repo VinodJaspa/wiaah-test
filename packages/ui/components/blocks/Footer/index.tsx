@@ -1,12 +1,12 @@
 import React from "react";
 
-import { CountryLanguageCurrencySwitch } from "ui/components";
+import { CountryLanguageCurrencySwitch } from "@UI/components";
 import {
   CustomerService,
   Information,
   SocialMediaLinks,
   SubscribeForm,
-} from "ui";
+} from "@UI";
 
 export const Footer: React.FC = () => {
   return (

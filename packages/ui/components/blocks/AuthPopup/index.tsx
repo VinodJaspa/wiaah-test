@@ -1,7 +1,7 @@
 import React, { FC } from "react";
-import { AuthSwitcher } from "ui";
-import { useLoginPopup } from "ui";
-import { FormContainer, Modal, ModalContent, ModalOverlay } from "ui";
+import { AuthSwitcher } from "@UI";
+import { useLoginPopup } from "@UI";
+import { FormContainer, Modal, ModalContent, ModalOverlay } from "@UI";
 
 export interface AuthPopupProp {
   onClose?: () => void;

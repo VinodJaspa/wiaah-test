@@ -15,7 +15,9 @@ datasource db {
 model Newsletter {
   id String @id @db.ObjectId @default(auto()) @map("_id")
   ownerId String @db.ObjectId @unique
-  emailSettings NewsLetterSettings 
+  emailSettings NewsLetterSettings
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 type NewsLetterSettings {

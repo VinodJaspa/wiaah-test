@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormOptionType, TranslationTextType } from "types";
-import { FormikRadio, SectionHeader } from "ui";
+import { FormikRadio, SectionHeader } from "@UI";
 
 export interface NotificationsSettingsSectionProps {}
 

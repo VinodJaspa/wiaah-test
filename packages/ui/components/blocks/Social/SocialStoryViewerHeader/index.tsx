@@ -1,23 +1,20 @@
+import React from "react";
+import { HiDotsHorizontal } from "react-icons/hi";
 import {
-  Button,
-  Flex,
+  Avatar,
+  DisplayPostedSince,
   HStack,
-  Icon,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
-  Text,
-} from "@chakra-ui/react";
-import React from "react";
-import { HiDotsHorizontal } from "react-icons/hi";
-import { Avatar, DisplayPostedSince } from "ui";
+} from "@partials";
 import { MdClose } from "react-icons/md";
-import { ProfileInfo } from "types/market/Social";
 import { HiEye } from "react-icons/hi";
-import { NumberShortner } from "ui/components/helpers/numberShortener";
-import { useStorySeenBy } from "ui/Hooks";
+import { NumberShortner } from "@UI/components/helpers/numberShortener";
 import { useTranslation } from "react-i18next";
+import { ProfileInfo } from "types";
+import { useStorySeenByPopup } from "../StorySeenByPopup";
 
 export interface SocialStoryViewerHeaderProps {
   user: ProfileInfo;
@@ -25,47 +22,47 @@ export interface SocialStoryViewerHeaderProps {
   views: number;
   newStory?: boolean;
   onClose?: () => any;
+  storyId: string;
 }
 
-export const SocialStoryViewerHeader: React.FC<SocialStoryViewerHeaderProps> =
-  ({ user, views, createdAt, newStory, onClose }) => {
-    const { t } = useTranslation();
-    const { OpenStorySeenBy } = useStorySeenBy();
-    return (
-      <Flex fontSize={"xl"} gap="2rem" w="100%" direction={"column"}>
-        <Flex w="100%" justify={"space-between"}>
-          <Icon
-            cursor={"pointer"}
-            onClick={onClose && onClose()}
-            as={MdClose}
+export const SocialStoryViewerHeader: React.FC<
+  SocialStoryViewerHeaderProps
+> = ({ user, views, createdAt, newStory, onClose, storyId }) => {
+  const { t } = useTranslation();
+  const { open } = useStorySeenByPopup();
+  return (
+    <div className="flex text-xl gap-8 w-full flex-col">
+      <div className="flex w-full justify-between">
+        <MdClose
+          className="cursor-pointer"
+          onClick={() => onClose && onClose()}
+        />
+        <div className="flex flex-col gap-2 items-center">
+          <Avatar
+            newStory={newStory}
+            showBorder
+            name={user.name}
+            photoSrc={user.thumbnail}
           />
-          <Flex gap="0.5rem" align={"center"} direction={"column"}>
-            <Avatar
-              newStory={newStory}
-              showBorder
-              size={"lg"}
-              name={user.name}
-              photoSrc={user.thumbnail}
-            />
-            <Text>{user.name}</Text>
-          </Flex>
-          <Menu>
-            <MenuButton h={"fit-content"}>
-              <Icon as={HiDotsHorizontal} />
-            </MenuButton>
-            <MenuList color={"black"} textTransform={"capitalize"}>
-              <MenuItem>{t("share", "share ")}</MenuItem>
-              <MenuItem>{t("copy_url", "copy url")}</MenuItem>
-            </MenuList>
-          </Menu>
-        </Flex>
-        <Flex w="100%" justify={"space-between"}>
-          <HStack cursor={"pointer"} onClick={OpenStorySeenBy}>
-            <Text>{NumberShortner(views)}</Text>
-            <Icon as={HiEye} />
-          </HStack>
-          <DisplayPostedSince ago since={createdAt} />
-        </Flex>
-      </Flex>
-    );
-  };
+          <p>{user.name}</p>
+        </div>
+        <Menu>
+          <MenuButton>
+            <HiDotsHorizontal />
+          </MenuButton>
+          <MenuList className="text-black">
+            <MenuItem>{t("share")}</MenuItem>
+            <MenuItem>{t("copy url")}</MenuItem>
+          </MenuList>
+        </Menu>
+      </div>
+      <div className="w-full justify-between">
+        <HStack className="cursor-pointer" onClick={() => open(storyId)}>
+          <p>{NumberShortner(views)}</p>
+          <HiEye />
+        </HStack>
+        <DisplayPostedSince ago since={createdAt} />
+      </div>
+    </div>
+  );
+};

@@ -7,7 +7,7 @@ import {
   TranslationText,
   Radio,
   RadioProps,
-} from "ui";
+} from "@UI";
 import { FormOptionType } from "types";
 
 export interface FormikRadioProps extends FormikInputProps {

@@ -1,5 +1,5 @@
 import React from "react";
-import { Spacer } from "ui";
+import { Spacer } from "@UI";
 
 export interface CollaboratorCardProps {
   name: string;

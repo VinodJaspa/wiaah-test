@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
 import { useBreakpointValue } from "@chakra-ui/react";
-import { SocialHashTagTopPosts } from "ui/state";
+import { SocialHashTagTopPosts } from "@src/state";
 import { TabType } from "types";
 import { useRouter } from "next/router";
 import {

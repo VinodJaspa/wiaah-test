@@ -281,5 +281,5 @@ export const getBookedSerivceConfirmationDataFetcher = async (
     },
   };
 
-  return CheckValidation(BookConfirmationApiResponseValidationSchema, res);
+  return res;
 };

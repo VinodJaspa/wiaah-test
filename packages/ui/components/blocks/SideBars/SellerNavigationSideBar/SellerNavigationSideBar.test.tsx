@@ -5,7 +5,7 @@ import {
   getRoleId,
   RenderResult,
   fireEvent,
-} from "ui/utils/test-utils";
+} from "@UI/utils/test-utils";
 import { SellerNavigationSideBar } from ".";
 import {
   HiUserGroup,
@@ -16,7 +16,7 @@ import {
 import { IoVideocam } from "react-icons/io5";
 import { CgPlayButtonR } from "react-icons/cg";
 import { AiOutlineShop, AiFillShop } from "react-icons/ai";
-import { AffiliationIcon, AffiliationIconOutline } from "ui";
+import { AffiliationIcon, AffiliationIconOutline } from "@UI";
 
 const selectors = {
   link: "NavigationSideBarLink",

@@ -15,10 +15,10 @@ import {
   Spacer,
   SelectProps,
   FormikInput,
-} from "ui";
+} from "@UI";
 import { CartSummaryItem } from "types";
 import { IoMdClock } from "react-icons/io";
-import { getTimeInAmPm } from "ui/components/helpers";
+import { getTimeInAmPm } from "@UI/components/helpers";
 import { useTranslation } from "react-i18next";
 
 export interface CartSummaryTableProps {

@@ -8,7 +8,6 @@ export class GetShopVouchersMessageReply extends KafkaMessageReply<
   {
     code: string;
     amount: number;
-    type: "percent" | "cash";
     currency: string;
   }[]
 > {}

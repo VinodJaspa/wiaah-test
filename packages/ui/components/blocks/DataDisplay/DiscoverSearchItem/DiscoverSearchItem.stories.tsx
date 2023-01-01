@@ -1,4 +1,4 @@
-import { storybookDataDisplayBlocksTitle, DiscoverItem } from "ui";
+import { storybookDataDisplayBlocksTitle, DiscoverItem } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

@@ -1,13 +1,13 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { SocialProfile } from "ui";
-import ChakraUiDecorator from "ui/SBDecorators/ChakraUiDecorator";
-import { SocialProfileInfo } from "ui/placeholder/social";
-import { PostCardPlaceHolder } from "ui/placeholder";
-import { SocialStoriesModal } from "../SocialStoriesModal";
-import { useStory } from "ui/Hooks";
+import { SocialProfile } from "@UI";
+import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
+import { SocialProfileInfo } from "@UI/placeholder/social";
+import { PostCardPlaceHolder } from "@UI/placeholder";
+import { SocialStoryModal } from "../SocialStoriesModal";
+import { useStory } from "@src/Hooks";
 import { useRecoilState } from "recoil";
-import { SocialStoryState } from "ui/state";
+import { SocialStoryState } from "@src/state";
 export default {
   title: "UI/blocks/Social/SocialProfile",
   component: SocialProfile,
@@ -28,7 +28,7 @@ const Template: ComponentStory<typeof SocialProfile> = (args) => {
   );
   return (
     <>
-      {storyData && <SocialStoriesModal />}
+      {storyData && <SocialStoryModal />}
       <SocialProfile {...args} />
     </>
   );

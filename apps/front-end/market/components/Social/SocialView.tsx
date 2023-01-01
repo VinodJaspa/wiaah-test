@@ -37,6 +37,7 @@ import { useRouting } from "routing";
 import { useBreakpointValue } from "utils";
 import { useReactPubsub } from "react-pubsub";
 import { SocialProfileData } from "api";
+import { useTypedReactPubsub } from "@libs";
 
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
 export const getRandomUser = () =>
@@ -89,7 +90,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profile }) => {
   const { getParam } = useRouting();
   const cols = useBreakpointValue({ base: 3 });
   const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
-  const { emit } = useReactPubsub(
+  const { emit } = useTypedReactPubsub(
     (events) => events.openSocialShopPostsFilterDrawer
   );
 
@@ -158,7 +159,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profile }) => {
           <ServicesIcon />
         </HStack>
       ),
-      component: <SocialServicePostsList />,
+      component: <SocialServicePostsList posts={[]} />,
     },
     {
       name: (

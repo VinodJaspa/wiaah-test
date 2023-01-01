@@ -1,6 +1,6 @@
 import React from "react";
 import { SubscribersUserInfo } from "types/market/Social";
-import { SubscriberCard, Input, Divider } from "ui";
+import { SubscriberCard, Input, Divider } from "@UI";
 import { useTranslation } from "react-i18next";
 
 export interface SubscribersListProps {

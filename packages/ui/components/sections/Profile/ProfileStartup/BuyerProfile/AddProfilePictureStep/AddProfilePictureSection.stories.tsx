@@ -1,4 +1,4 @@
-import { storybookSectionsTitle, AddProfilePictureStep } from "ui";
+import { storybookSectionsTitle, AddProfilePictureStep } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

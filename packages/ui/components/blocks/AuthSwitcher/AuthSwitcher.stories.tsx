@@ -1,4 +1,4 @@
-import { storybookBlocksTitle, AuthSwitcher } from "ui";
+import { storybookBlocksTitle, AuthSwitcher } from "@UI";
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 
 export default {

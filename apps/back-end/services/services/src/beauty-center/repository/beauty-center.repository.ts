@@ -7,6 +7,7 @@ import {
 import {
   Prisma,
   BeautyCenterService as PrismaBeautyCenterService,
+  ServiceStatus,
 } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 import { SearchFilteredBeautyCenterInput } from '../dto';
@@ -20,6 +21,17 @@ export class BeautyCenterRepository {
     private readonly prisma: PrismaService,
     private readonly elasticDbRepo: BeautyCenterElasticRepository,
   ) {}
+
+  async updateOneStatus(id: string, status: ServiceStatus) {
+    return this.prisma.beautyCenterService.update({
+      where: {
+        id,
+      },
+      data: {
+        status,
+      },
+    });
+  }
 
   async getBeautyCenterById(
     id: string,

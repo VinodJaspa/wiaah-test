@@ -8,8 +8,8 @@ import {
   GridContainerPager,
   useGetProductsQuery,
   useSearchFilters,
-} from "ui";
-import { BreadCrumb } from "ui";
+} from "@UI";
+import { BreadCrumb } from "@UI";
 import { BsArrowLeft } from "react-icons/bs";
 import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
 import { categories } from "placeholder";

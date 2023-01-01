@@ -8,6 +8,9 @@ import { NewsfeedPostEventHandlers } from './events';
 
 import { CqrsModule } from '@nestjs/cqrs';
 import { kafkaModule } from '@kafkaModule';
+import { NewsfeedPostsController } from './newsfeed-posts.controller';
+import { newsfeedCommandHandlers } from './commands';
+import { NewsfeedPostsRepository } from './repository';
 
 @Module({
   imports: [ProfileModule, ContentManagementModule, CqrsModule, kafkaModule],
@@ -15,8 +18,11 @@ import { kafkaModule } from '@kafkaModule';
     NewsfeedPostsResolver,
     NewsfeedPostsService,
     PrismaService,
+    NewsfeedPostsRepository,
     ...NewsfeedPostEventHandlers,
+    ...newsfeedCommandHandlers,
   ],
   exports: [NewsfeedPostsService],
+  controllers: [NewsfeedPostsController],
 })
 export class NewsfeedPostsModule {}

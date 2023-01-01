@@ -2,6 +2,7 @@ import {
   Inject,
   Injectable,
   Logger,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { CreateCommentInput, GetCommentsOfContent } from '@input';
@@ -28,6 +29,8 @@ import {
 } from 'nest-dto';
 import { CommentsPublicStatus } from '@keys';
 import { ContentManagementService } from '@content-management';
+import { QueryBus } from '@nestjs/cqrs';
+import { GetCommentHostDataQuery, GetCommentHostDataQueryRes } from './queries';
 
 @Injectable()
 export class CommentsService {
@@ -37,6 +40,7 @@ export class CommentsService {
     private readonly contentManagementService: ContentManagementService,
     @Inject(SERVICES.SOCIAL_SERVICE.token)
     private readonly eventClient: ClientKafka,
+    private readonly querybus: QueryBus,
   ) {}
 
   logger = new Logger('CommentsService');
@@ -60,7 +64,6 @@ export class CommentsService {
       contentType,
       mentions,
       attachments,
-      authorUserId,
     } = createCommentInput;
 
     const canComment = await this.canCommentOnContentByUserId(
@@ -165,8 +168,18 @@ export class CommentsService {
   }
 
   async deleteComment(commentId: string, userId: string): Promise<Comment> {
-    const isAuthor = await this.isAuthorOfCommentByUserId(commentId, userId);
-    if (!isAuthor) throw new UnauthorizedException();
+    const comment = await this.getCommentById(commentId);
+    if (!comment) throw new NotFoundException();
+
+    const contentAuthor = await this.querybus.execute<
+      GetCommentHostDataQuery,
+      GetCommentHostDataQueryRes
+    >(new GetCommentHostDataQuery(comment.hostId, comment.hostType));
+
+    const isContentAuthor = contentAuthor.authorId === userId;
+    const isAuthor = comment.userId === userId;
+
+    if (!isContentAuthor || !isAuthor) throw new UnauthorizedException();
 
     try {
       const comment = await this.prisma.comment.delete({

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { getTranslatedResource, UserPreferedLang } from 'nest-utils';
 import { PrismaService } from 'prismaService';
-import { Vehicle as PrismaVehicle } from 'prismaClient';
+import { ServiceStatus, Vehicle as PrismaVehicle } from 'prismaClient';
 
 import { Vehicle } from '../entities';
 import { GqlVehicleSelectedFields } from '../types';
@@ -9,7 +9,6 @@ import { GqlVehicleSelectedFields } from '../types';
 @Injectable()
 export class VehicleRepository {
   constructor(private readonly prisma: PrismaService) {}
-
   async getById(
     id: string,
     userId: string,

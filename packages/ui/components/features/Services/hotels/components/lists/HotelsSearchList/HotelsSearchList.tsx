@@ -1,15 +1,17 @@
 import { FilteredHotelsMetaDataType } from "api";
+import { Form, Formik } from "formik";
 import { usePagination, useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useMutateFocusedMapItemId } from "ui";
+import { FormikInput, useMutateFocusedMapItemId } from "@UI";
 import {
   useGetFilteredServicesMetaDataQuery,
   DisplayFoundServices,
   HotelDetailedSearchCard,
   SpinnerFallback,
   PaginationWrapper,
-} from "ui";
+} from "@UI";
+import { Button } from "@partials";
 
 export interface HotelsSearchListProps {
   sorting?: boolean;
@@ -63,6 +65,21 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({
     </div>
   ) : (
     <PaginationWrapper>
+      <div className="w-full justify-start ">
+        <Formik initialValues={{}} onSubmit={() => {}}>
+          {({ values, setValues }) => (
+            <Form className="flex items-center justify-between w-full">
+              <div className="flex gap-4 p-4">
+                <FormikInput name="title" label={t("Title")} />
+                <FormikInput name="rate" type={"number"} label={t("Rating")} />
+                <FormikInput name="price" type="number" label={t("Price")} />
+                <FormikInput name="seller" label={t("Seller")} />
+              </div>
+              <Button>{t("Search")}</Button>
+            </Form>
+          )}
+        </Formik>
+      </div>
       <div className="w-full flex flex-col gap-4 justify-center">
         <DisplayFoundServices
           location={getLocationFilterQuery || ""}

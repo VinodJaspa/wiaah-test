@@ -1,8 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ChatMessageType } from "types";
-import { useUserData, DisplayDate, useLocale, Avatar } from "ui";
-import { ChatMessageAttachment } from "ui";
+import { useUserData, DisplayDate, useLocale, Avatar } from "@UI";
+import { ChatMessageAttachment } from "@UI";
 
 export interface ChatMessageProps {
   messageData: ChatMessageType;

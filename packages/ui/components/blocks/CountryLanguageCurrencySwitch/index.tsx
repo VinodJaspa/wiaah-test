@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Language } from "ui/languages/enums/Language";
+import { Language } from "@UI/languages/enums/Language";
 import {
   Divider,
   Select,
@@ -8,7 +8,7 @@ import {
   Modal,
   ModalContent,
   ModalOverlay,
-} from "ui";
+} from "@UI";
 import { useRouter } from "next/router";
 import { FaGlobeEurope } from "react-icons/fa";
 import { useCookies } from "react-cookie";

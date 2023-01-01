@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { OrderStatus } from '@orders/const';
-import { Order, OrderStatusEnum } from '@prisma-client';
+import { Order, OrderStatusEnum, Prisma } from '@prisma-client';
 import {
   ExtractPagination,
   GqlPaginationInput,
@@ -17,9 +17,13 @@ export class OrdersRepository {
     sellerId: string,
     items: { id: string; qty: number; type: string }[],
     shippingMethodId: string,
+    shippingAddressId: string,
+    discountId: string,
   ): Promise<Order> {
     return this.prisma.order.create({
       data: {
+        discountId,
+        shippingAddressId,
         shippingMethodId,
         buyerId,
         sellerId,
@@ -35,8 +39,40 @@ export class OrdersRepository {
     buyerId: string,
     status?: OrderStatusEnum,
     pagination?: PaginationDataInput,
+    q?: string,
   ): Promise<Order[]> {
     const { skip, take } = ExtractPagination(pagination);
+
+    const queryFilters: Prisma.OrderWhereInput[] = [];
+
+    if (q) {
+      queryFilters.push({
+        id: {
+          contains: q,
+        },
+      });
+      queryFilters.push({
+        buyerId: {
+          contains: q,
+        },
+      });
+      queryFilters.push({
+        sellerId: {
+          contains: q,
+        },
+      });
+
+      queryFilters.push({
+        items: {
+          some: {
+            id: {
+              contains: q,
+            },
+          },
+        },
+      });
+    }
+
     return this.prisma.order.findMany({
       where: {
         AND: [
@@ -47,6 +83,9 @@ export class OrdersRepository {
             status: {
               of: status,
             },
+          },
+          {
+            OR: queryFilters,
           },
         ],
       },
@@ -62,8 +101,39 @@ export class OrdersRepository {
     sellerId: string,
     status?: OrderStatusEnum,
     pagination?: GqlPaginationInput,
+    q?: string,
   ): Promise<Order[]> {
     const { skip, take } = ExtractPagination(pagination);
+    const queryFilters: Prisma.OrderWhereInput[] = [];
+
+    if (q) {
+      queryFilters.push({
+        id: {
+          contains: q,
+        },
+      });
+      queryFilters.push({
+        buyerId: {
+          contains: q,
+        },
+      });
+      queryFilters.push({
+        sellerId: {
+          contains: q,
+        },
+      });
+
+      queryFilters.push({
+        items: {
+          some: {
+            id: {
+              contains: q,
+            },
+          },
+        },
+      });
+    }
+
     return this.prisma.order.findMany({
       where: {
         AND: [
@@ -72,6 +142,9 @@ export class OrdersRepository {
             status: {
               of: status,
             },
+          },
+          {
+            OR: queryFilters,
           },
         ],
       },

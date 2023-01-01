@@ -1,5 +1,5 @@
 import { storybookDataInputBlocksTitle } from "utils";
-import { ChatSearchInput } from "ui";
+import { ChatSearchInput } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

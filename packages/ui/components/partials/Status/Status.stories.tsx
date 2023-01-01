@@ -1,6 +1,6 @@
 import { storybookPartailsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
-import { Status } from "ui";
+import { Status } from "@UI";
 export default {
   title: storybookPartailsTitle + "Status",
   component: Status,

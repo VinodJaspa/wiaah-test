@@ -23,7 +23,7 @@ import {
   CountInput,
   HotelBedsInput,
   DailyPriceInput,
-} from "ui";
+} from "@UI";
 import { Form, Formik } from "formik";
 import { FormOptionType } from "types";
 import { ParkingAvailablity } from "dto";

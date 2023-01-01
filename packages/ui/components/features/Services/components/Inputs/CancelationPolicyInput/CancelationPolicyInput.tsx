@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Input, Button } from "ui";
+import { Input, Button } from "@UI";
 import { setTestid } from "utils";
 
 export type CancelationPolicyType = {

@@ -1,7 +1,7 @@
 import { ServicesProviderHeaderData } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { AspectRatio, Rate, Button, HStack } from "ui";
+import { AspectRatio, Rate, Button, HStack } from "@UI";
 import { DateDetails } from "utils";
 
 export interface MarketServicesProviderHeaderProps

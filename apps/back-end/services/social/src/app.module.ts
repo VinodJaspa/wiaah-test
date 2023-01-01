@@ -23,6 +23,8 @@ import { AffiliationPostModule } from './affiliation-post/affiliation-post.modul
 import { ActionModule } from './action/action.module';
 import { PrismaModule } from './prisma.module';
 import { HiddenContentModule } from './hidden-content/hidden-content.module';
+import { ProfileAdminModule } from '@profile/profile-admin.module';
+import { NewsfeedPostsAdminModule } from '@posts-newsfeed/newsfeed-posts-admin.module';
 
 @Module({
   imports: [
@@ -36,7 +38,13 @@ import { HiddenContentModule } from './hidden-content/hidden-content.module';
         return { req, res, user };
       },
     }),
-    // NewsfeedPostsModule,
+    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
+      driver: ApolloFederationDriver,
+      path: 'admin',
+      include: [ProfileAdminModule, NewsfeedPostsAdminModule],
+      autoSchemaFile: true,
+    }),
+    NewsfeedPostsModule,
     CommentsModule,
     ReactionModule,
     ContentDiscoveryModule,

@@ -7,7 +7,7 @@ export function PassPropsToChild<T = HtmlDivProps>(
 ): React.ReactNode {
   function clone(children: React.ReactNode) {
     if (React.isValidElement(children)) {
-      return React.cloneElement(children, props);
+      return React.cloneElement(children, props as any);
     } else {
       return null;
     }

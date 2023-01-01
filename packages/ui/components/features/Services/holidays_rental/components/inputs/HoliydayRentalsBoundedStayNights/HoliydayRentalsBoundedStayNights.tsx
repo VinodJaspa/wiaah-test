@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { CountInput } from "ui";
+import { CountInput } from "@UI";
 import { setTestid } from "utils";
 type NightsStayDataType = { min: number; max: number };
 

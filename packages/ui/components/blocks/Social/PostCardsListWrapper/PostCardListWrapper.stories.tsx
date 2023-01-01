@@ -1,5 +1,5 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
-import { newsfeedPosts } from "ui";
+import { newsfeedPosts } from "@UI";
 import { storybookListWrappersTitle } from "utils";
 import { PostCardsListWrapper } from "./index";
 

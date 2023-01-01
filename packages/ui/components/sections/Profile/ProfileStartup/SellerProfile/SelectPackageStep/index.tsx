@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { AiFillCheckCircle, AiOutlineInbox } from "react-icons/ai";
 import { FiBox } from "react-icons/fi";
-import { Button } from "ui";
+import { Button } from "@UI";
 
 export interface SelectPackageStepProps {
   shopType: string;

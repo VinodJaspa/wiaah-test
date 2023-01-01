@@ -3,15 +3,22 @@ import {
   Inject,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { KAFKA_EVENTS, SERVICES } from 'nest-utils';
+import {
+  ExtractPagination,
+  GqlPaginationInput,
+  KAFKA_EVENTS,
+  SERVICES,
+} from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 import { NewAccountCreatedEvent } from 'nest-dto';
-import { Prisma } from '@prisma-client';
+import { AccountType, Prisma } from '@prisma-client';
 import { PrismaService } from 'prismaService';
 
 import { Account } from './entities';
 import { UpdateAccountInput } from './dto/update-account.input';
+import { GetSellersAccountsInput } from './dto/get-sellers-accounts.input';
 
 @Injectable()
 export class AccountsService {
@@ -91,8 +98,71 @@ export class AccountsService {
     }
   }
 
-  findAll() {
-    return this.prisma.account.findMany();
+  findAll(args: GetSellersAccountsInput, type: AccountType) {
+    const { page, skip, take } = ExtractPagination(args.pagination);
+    const filters: Prisma.AccountWhereInput[] = [];
+
+    if (args.sales)
+      filters.push({
+        sales: {
+          gte: args.sales,
+        },
+      });
+
+    if (args.name)
+      filters.push({
+        OR: [
+          {
+            firstName: {
+              contains: args.name,
+            },
+          },
+          {
+            lastName: {
+              contains: args.name,
+            },
+          },
+        ],
+      });
+
+    if (args.balance)
+      filters.push({
+        balance: {
+          gte: args.balance,
+        },
+      });
+
+    if (args.email)
+      filters.push({
+        email: {
+          contains: args.email,
+        },
+      });
+
+    if (args.date && !isNaN(Date.parse(new Date(args.date).toString())))
+      filters.push({
+        createdAt: {
+          gte: new Date(args.date),
+        },
+      });
+
+    if (args.products)
+      filters.push({
+        products: {
+          gte: args.products,
+        },
+      });
+
+    if (args.status)
+      filters.push({
+        status: args.status,
+      });
+
+    return this.prisma.account.findMany({
+      where: {
+        AND: filters,
+      },
+    });
   }
 
   async findOne(id: string): Promise<Account> {
@@ -105,8 +175,28 @@ export class AccountsService {
     return account;
   }
 
+  async updateUnprotected(input: UpdateAccountInput, userId: string) {
+    return this.update(input, userId);
+  }
+
+  async validateOwnAccount(userId: string) {
+    const account = await this.findOne(userId);
+
+    if (!account) throw new NotFoundException('account not found');
+
+    if (account.id !== userId)
+      throw new UnauthorizedException("you cannot update other's accounts");
+
+    return account;
+  }
+
+  async updateProtected(input: UpdateAccountInput, userId: string) {
+    await this.validateOwnAccount(userId);
+    return this.update(input, userId);
+  }
+
   async update(
-    { ...rest }: UpdateAccountInput,
+    input: UpdateAccountInput,
     userId: string,
   ): Promise<Partial<Account>> {
     try {
@@ -114,7 +204,7 @@ export class AccountsService {
         where: {
           id: userId,
         },
-        data: rest,
+        data: input,
       });
 
       return res;
@@ -195,6 +285,14 @@ export class AccountsService {
       },
       data: {
         verified: true,
+      },
+    });
+  }
+
+  async deleteAccount(id: string) {
+    return this.prisma.account.delete({
+      where: {
+        id,
       },
     });
   }

@@ -4,7 +4,7 @@ import { HtmlDivProps } from "types";
 import { ElementChilds } from "types";
 import { useOutsideClick } from "hooks";
 import { CallbackAfter } from "utils";
-import { ArrowDownIcon } from "ui";
+import { ArrowDownIcon } from "@UI";
 
 type OnOptionSelect<T> = (value: T) => any;
 export interface SelectChildProps<T> {
@@ -31,8 +31,6 @@ export function Select<ValueType = string>({
   label,
   ...props
 }: SelectProps<ValueType>) {
-  
-
   const ph = placeholder ? (
     <SelectOption className="text-gray-500" value>
       {placeholder}

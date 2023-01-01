@@ -108,6 +108,13 @@ exports.Prisma.UsersInteractionsScalarFieldEnum = makeEnum({
   updatedAt: 'updatedAt'
 });
 
+exports.Prisma.EventScalarFieldEnum = makeEnum({
+  id: 'id',
+  key: 'key',
+  causedById: 'causedById',
+  causedToId: 'causedToId'
+});
+
 exports.Prisma.SortOrder = makeEnum({
   asc: 'asc',
   desc: 'desc'
@@ -122,7 +129,8 @@ exports.Prisma.QueryMode = makeEnum({
 exports.Prisma.ModelName = makeEnum({
   UserActivityStats: 'UserActivityStats',
   ActivityScore: 'ActivityScore',
-  UsersInteractions: 'UsersInteractions'
+  UsersInteractions: 'UsersInteractions',
+  Event: 'Event'
 });
 
 /**

@@ -1,18 +1,39 @@
+import { AccountType } from "../types";
+
 function makeKafkaDynamicEvent(event: string, regex: boolean = false) {
   return `${regex ? "/" : ""}${event}${regex ? "/" : ""}`;
 }
 export const KAFKA_EVENTS = {
   ACCOUNTS_EVENTS: {
     createAccount: "create.account",
-    accountCreated: "account.created",
+    accountCreated: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`account.created.${type}`, regex),
     accountDeleted: "account.deleted",
     sellerAccountCreated: "seller.account.created",
     buyerAccountCreated: "buyer.account.created",
+    accountTermsAndConditionViolation: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(
+        `account.terms.and.condition.violation.${key}`,
+        regex
+      ),
+    accountRestricted: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`account.restricted.${key}`, regex),
+    deleteAccount: "delete.account",
+    sellerAccountRefused: "account.seller.refused",
+    accountSuspended: "account.suspended",
   },
   USER_EVENTS: {
     userConnected: "user.connected",
     userDisconnected: "user.disconnected",
     updateUserActiveTime: "user.active.time.update",
+    userCurrLocationChanged: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`user.current.location.changed.${key}`, regex),
+  },
+  MODERATION: {
+    contentSuspenseRequest: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`content.suspense.request.${type}`, regex),
+    contentSuspensed: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`content.suspensed.${type}`, regex),
   },
   WISHLIST_EVENTS: {
     createWishersList: "create.wisherlist",
@@ -35,6 +56,8 @@ export const KAFKA_EVENTS = {
       makeKafkaDynamicEvent(`post.saved.${type}`, regex),
     userTag: (type: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`user.tag.${type}`, regex),
+    contentCreated: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(type, regex),
   },
   AUTH_EVENTS: {
     accountRegistered: "account.registered",
@@ -61,6 +84,8 @@ export const KAFKA_EVENTS = {
       makeKafkaDynamicEvent(`seller.products.purchased.${productType}`, regex),
     sellerServicePurchased: (regex?: boolean) =>
       makeKafkaDynamicEvent(`seller.service.purchased`, regex),
+    withdrawalProcessed: () =>
+      makeKafkaDynamicEvent(`withdrawal.processed`, false),
   },
   VOUCHER_EVENTS: {
     voucherCreated: "voucher.created",
@@ -102,6 +127,10 @@ export const KAFKA_EVENTS = {
     contentShared: (contentType: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`content.shared.${contentType}`, regex),
   },
+  SHIPPING_EVENTS: {
+    orderShippingStarted: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`order.shipping.started.${key}`, regex),
+  },
   STORIES: {
     storyCreated: "story.created",
   },
@@ -128,9 +157,22 @@ export const KAFKA_EVENTS = {
     memberShipCreated: "membership.created",
     memberShipModified: "membership.modified",
     memberShipDeleted: "membership.deleted",
+    memberShipRenewalFailWarning: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`membership.renewal.fail.${key}`, regex),
   },
   SELLER: {
     revenueIncreased: "revenue.increased",
+  },
+  PROMOTION_EVENTS: {
+    promotionCreated: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`promotion.created.${key}`, regex),
+    lookForNearShopsPromotions: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`promotions.shops.near.user.${key}`, regex),
+    nearUserShopsPromotionsResloved: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(
+        `near.user.shops.promotions.resloved.${key}`,
+        regex
+      ),
   },
   AFFILIATION: {
     affiliatedProductPurchased: "affiliated.product.purchased",
@@ -141,10 +183,26 @@ export const KAFKA_EVENTS = {
       makeKafkaDynamicEvent(`service.booked.${serviceType}`, regex),
     servicePurchased: (serviceType: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`service.purchased.${serviceType}`, regex),
+    appointmentRefused: (key: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`appointment.refused.${key}`, regex),
   },
   REVIEWS_EVENTS: {
     reviewCreated: (type: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`review.created.${type}`, regex),
+  },
+  ORDERS_EVENTS: {
+    orderCreated: (key: string = "", regex?: boolean) =>
+      makeKafkaDynamicEvent(`order.created.${key}`, regex),
+    orderCanceled: () => makeKafkaDynamicEvent(`order.canceled`),
+    orderRefundRequestRejected: () =>
+      makeKafkaDynamicEvent(`order.refund.request.rejected`),
+  },
+  CASHBACK_EVENTS: {
+    cashbackAdded: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`cashback.added.${key || ""}`, regex),
+  },
+  EVENT_SCHEDULING: {
+    createEvent: `create.scheduled.event`,
   },
   createAccount: "create.account",
   createWishlist: "create.wishlist",
@@ -156,6 +214,8 @@ export const KAFKA_MESSAGES = {
   ACCOUNTS_MESSAGES: {
     emailExists: "email.exists",
     getAccountByEmail: "get.account.by.email",
+    getAccountsByName: (key?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`get.accounts.by.name.${key}`, regex),
     isSellerAccount: "is.seller.account",
     getUserShopId: "get.user.store.id",
     getAccountById: "get.account.by.id",
@@ -198,6 +258,12 @@ export const KAFKA_MESSAGES = {
     getSellerMembership: "seller.get.membership",
     getItemSellerId: (itemType: string) => `get.item.sellerid.${itemType}`,
   },
+  SHIPPING_MESSAGES: {
+    getShippingAddress: (key: string = "", regex?: boolean) =>
+      makeKafkaDynamicEvent(`get.shipping.address.${key}`, regex),
+    getShippingMethod: (key: string = "", regex?: boolean) =>
+      makeKafkaDynamicEvent(`get.shipping.method.${key}`, regex),
+  },
   MEMBERSHIP_MESSAGES: {},
   CAN_PREFORM_ACTION_MESSAGES: {
     canPreformProductAction: (actionType: string) =>
@@ -211,6 +277,9 @@ export const KAFKA_MESSAGES = {
   ANALYTICS_MESSAGES: {
     getUsersInteractionsByUserId: () => `get.users.interactions.by.user.id`,
     getUsersActivityScoresByIds: () => `get.users.activity.scores.by.ids`,
+  },
+  SOCIAL_MESSAGES: {
+    getUserFollowsData: () => `get.user.followers.data`,
   },
 
   emailExists: "email.exists",

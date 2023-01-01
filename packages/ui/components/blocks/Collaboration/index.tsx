@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { ImageCard, Spacer } from "ui";
+import { ImageCard, Spacer } from "@UI";
 import { t } from "i18next";
 
 export const Collaboration: FC = () => {

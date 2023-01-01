@@ -12,34 +12,39 @@ datasource db {
 }
 
 model Order {
-  id        String      @id @default(auto()) @map("_id") @db.ObjectId
-  sellerId  String      @db.ObjectId
-  buyerId   String      @db.ObjectId
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt()
-  items     OrderItem[]
-  status    OrderStatus
-  shippingMethodId String @db.ObjectId
-  completedAt DateTime? 
+  id                String      @id @default(auto()) @map("_id") @db.ObjectId
+  sellerId          String      @db.ObjectId
+  buyerId           String      @db.ObjectId
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt()
+  items             OrderItem[]
+  status            OrderStatus
+  shippingMethodId  String      @db.ObjectId
+  shippingAddressId String      @db.ObjectId
+  completedAt       DateTime?
 }
 
 model RefundRequest {
-  id String @id @db.ObjectId @default(auto()) @map("_id")
-  requestedById String @db.ObjectId
-  orderId String @db.ObjectId
-  reason String
-  type RefundType
-  amount Float
+  id            String           @id @default(auto()) @map("_id") @db.ObjectId
+  requestedById String           @db.ObjectId
+  productId     String           @db.ObjectId
+  sellerId      String           @db.ObjectId
+  reason        String
+  type          RefundType
+  amount        Float
+  fullAmount    Boolean
+  status        RefundStatusType @default(pending)
+  rejectReason  String?
 
-  @@unique([orderId,requestedById])
+  @@unique([productId, requestedById])
 }
 
-
-
 type OrderItem {
-  id  String
-  type String
-  qty Int
+  id         String
+  type       String
+  qty        Int
+  discountId String? @db.ObjectId
+  cashbackId String? @db.ObjectId
 }
 
 type OrderStatus {
@@ -47,8 +52,15 @@ type OrderStatus {
   rejectReason String?
 }
 
+enum RefundStatusType {
+  pending
+  accept
+  reject
+}
+
 enum OrderStatusEnum {
   pending
+  paid
   rejectedBySeller
   rejectedByBuyer
   shipping

@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { FaChevronDown } from "react-icons/fa";
 import { HiOutlineViewList, HiOutlineViewGrid } from "react-icons/hi";
-import { FilterModal } from "ui";
+import { FilterModal } from "@UI";
 
 export interface ShopFilterProps {
   onlyMobile?: boolean;

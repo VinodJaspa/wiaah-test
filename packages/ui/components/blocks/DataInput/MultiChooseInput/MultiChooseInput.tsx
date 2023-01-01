@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { CloseIcon, InputGroup, InputSuggestions, Input, HStack } from "ui";
+import { CloseIcon, InputGroup, InputSuggestions, Input, HStack } from "@UI";
 import { FilterAndAddToArray } from "utils";
 
 export interface MultiChooseInputProps {
@@ -33,7 +33,7 @@ export function MultiChooseInput({
     onChange && onChange(value.filter((i) => i !== item));
   }
   return (
-    <InputGroup className="border rounded p-1 border-gray-300">
+    <InputGroup className="border rounded p-1 w-full border-gray-300">
       <label className="flex flex-wrap gap-2 w-full">
         {value.map((item, i) => (
           <span

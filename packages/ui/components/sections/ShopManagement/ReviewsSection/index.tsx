@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { BuyerComment, Divider, Rate, SectionHeader } from "ui";
+import { BuyerComment, Divider, Rate, SectionHeader } from "@UI";
 import { products } from "../../../../placeholder";
 import { randomNum } from "../../../helpers";
 

@@ -9,7 +9,7 @@ import {
   Divider,
   Button,
   HStack,
-} from "ui";
+} from "@UI";
 
 export const PhoneNumbersOriginList: {
   code: string;

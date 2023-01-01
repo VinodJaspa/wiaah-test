@@ -8,13 +8,13 @@ import {
   LocationIcon,
   PersonFillIcon,
   StarIcon,
-} from "ui/components/partials";
+} from "@UI/components/partials";
 import {
   useSocialPostSettingsPopup,
   useShareModal,
   useSocialPostMentionsModal,
-} from "ui/components/features";
-import { UserProfileDisplay } from "ui/components/blocks/DataDisplay";
+} from "@UI/components/features";
+import { UserProfileDisplay } from "@UI/components/blocks/DataDisplay";
 import { Interaction } from "types";
 import { useDateDiff } from "hooks";
 import { useTranslation } from "react-i18next";

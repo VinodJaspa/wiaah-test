@@ -2,7 +2,7 @@ import { getServicesProviderDataFetcherResponse } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { AspectRatioImage, Button } from "ui";
+import { AspectRatioImage, Button } from "@UI";
 
 export interface ServiceSearchCardPresentationProps {
   src: string;

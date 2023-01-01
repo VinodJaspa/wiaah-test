@@ -13,7 +13,7 @@ import {
   DotIcon,
   ServiceRefundableTypeDescription,
   LocationAddressDisplay,
-} from "ui";
+} from "@UI";
 import { mapArray, setTestid } from "utils";
 
 export interface HotelMyServiceCardProps extends HotelMyServiceDataType {

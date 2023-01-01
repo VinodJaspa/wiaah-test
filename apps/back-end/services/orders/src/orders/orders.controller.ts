@@ -1,16 +1,17 @@
 import { Controller } from '@nestjs/common';
-import { CommandBus } from '@nestjs/cqrs';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { KAFKA_EVENTS } from 'nest-utils';
-
 import { CreateOrderCommand } from '@orders/commands';
 import { OrderItemType } from '@orders/const';
-import { SellerProductsPurchasedEvent } from 'nest-dto';
+import {
+  OrderCreatedEvent as OrderCreatedKafkaEvent,
+  SellerProductsPurchasedEvent,
+} from 'nest-dto';
+import { BaseController } from '@orders/abstraction';
+import { OrderCreatedEvent } from '@orders/events';
 
 @Controller()
-export class OrdersController {
-  constructor(private readonly commandbus: CommandBus) {}
-
+export class OrdersController extends BaseController {
   @EventPattern(
     KAFKA_EVENTS.BILLING_EVNETS.sellerProductsPurchased(OrderItemType.product),
   )
@@ -25,8 +26,11 @@ export class OrdersController {
           id: v.id,
           qty: v.qty,
           type: OrderItemType.product,
+          affiliationId: v.affiliatorId,
+          discountId: v.discountId,
         })),
         value.input.shippingMethodId,
+        value.input.shippingAddressId,
       ),
     );
   }
@@ -37,7 +41,7 @@ export class OrdersController {
   async handleSellerServicePurchased(
     @Payload() { value }: { value: SellerProductsPurchasedEvent },
   ) {
-    this.commandbus.execute<CreateOrderCommand>(
+    const order = await this.commandbus.execute<CreateOrderCommand>(
       new CreateOrderCommand(
         value.input.buyerId,
         value.input.sellerId,
@@ -45,9 +49,14 @@ export class OrdersController {
           id: v.id,
           qty: v.qty,
           type: OrderItemType.service,
+          affiliationId: v.affiliatorId,
+          discountId: v.discountId,
         })),
         value.input.shippingMethodId,
+        value.input.shippingAddressId,
       ),
     );
+
+    this.eventbus.publish(new OrderCreatedEvent(order, value.input.payment));
   }
 }

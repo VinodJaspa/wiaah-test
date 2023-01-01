@@ -18,7 +18,7 @@ import {
   PriceDisplay,
   TableContainer,
   SectionHeader,
-} from "ui";
+} from "@UI";
 import { ShippingSettingsContext } from "../ShippingSettingsSection";
 
 export const ShippingSettings: React.FC = () => {

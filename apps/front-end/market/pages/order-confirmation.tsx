@@ -5,7 +5,7 @@ import { useSetRecoilState } from "recoil";
 import { CartSummaryItemData } from "types";
 import { Container, Spacer, Collaboration } from "ui";
 import { ProductsWithProfile } from "ui/placeholder";
-import { CartSummaryItemsState, VoucherState } from "ui/state";
+import { CartSummaryItemsState, VoucherState } from "@src/state";
 import MasterLayout from "../components/MasterLayout";
 import OrderConfirmationView from "../components/OrderConfirmation/OrderConfirmationView";
 interface OrderConfirmationPageProps {

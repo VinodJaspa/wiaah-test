@@ -11,7 +11,7 @@ import {
   Avatar,
   Button,
   Divider,
-} from "ui";
+} from "@UI";
 import { useReactPubsubModal } from "react-pubsub";
 import { useTranslation } from "react-i18next";
 import { mapArray } from "utils";

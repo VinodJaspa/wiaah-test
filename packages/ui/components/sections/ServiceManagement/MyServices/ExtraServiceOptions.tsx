@@ -1,8 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ToggleVisable, ToggleVisableItem, FormikInput } from "ui";
+import { ToggleVisable, ToggleVisableItem, FormikInput } from "@UI";
 import { Formik, Form } from "formik";
-import { HStack, Radio, Select, SelectOption } from "ui";
+import { HStack, Radio, Select, SelectOption } from "@UI";
 import {
   Checkbox,
   CheckBoxGroup,
@@ -10,7 +10,7 @@ import {
   InputGroup,
   InputLeftElement,
   Input,
-} from "ui";
+} from "@UI";
 
 export interface ExtraServiceOptionsProps {
   onChange: (data: any) => any;

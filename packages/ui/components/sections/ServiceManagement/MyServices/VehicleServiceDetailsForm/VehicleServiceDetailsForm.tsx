@@ -18,7 +18,7 @@ import {
   SelectOption,
   InputProps,
   HashTagInput,
-} from "ui";
+} from "@UI";
 import { HiFolderAdd, HiVideoCamera } from "react-icons/hi";
 
 export interface VehicleServiceDetailsFormProps {

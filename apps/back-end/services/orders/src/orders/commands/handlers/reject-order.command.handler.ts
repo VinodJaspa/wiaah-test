@@ -1,7 +1,7 @@
 import { UnauthorizedException } from '@nestjs/common';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { RejectOrderCommand } from '@orders/commands/impl';
-import { Order } from '@orders/entities';
+import { OrderCanceledEvent } from '@orders/events';
 import { OrderNotFoundException } from '@orders/exceptions';
 import { OrdersRepository } from '@orders/repositoy';
 
@@ -9,7 +9,10 @@ import { OrdersRepository } from '@orders/repositoy';
 export class RejectOrderCommandHandler
   implements ICommandHandler<RejectOrderCommand>
 {
-  constructor(private readonly repo: OrdersRepository) {}
+  constructor(
+    private readonly repo: OrdersRepository,
+    private readonly eventBus: EventBus,
+  ) {}
 
   async execute({
     orderId,
@@ -21,6 +24,7 @@ export class RejectOrderCommandHandler
     if (order.sellerId !== userId) throw new UnauthorizedException();
 
     await this.repo.rejectOrderBySeller(orderId, reason);
+    this.eventBus.publish(new OrderCanceledEvent(order));
     return true;
   }
 }

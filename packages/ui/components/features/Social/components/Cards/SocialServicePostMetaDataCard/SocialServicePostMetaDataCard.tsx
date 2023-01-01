@@ -10,7 +10,7 @@ import {
   Rate,
   LocationOutlineIcon,
   UserProfile,
-} from "ui";
+} from "@UI";
 
 export interface SocialServicePostMetaDataCardProps
   extends ServicePostMetaDataType {

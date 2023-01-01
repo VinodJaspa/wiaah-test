@@ -1,7 +1,7 @@
 import { Formik } from "formik";
 import React from "react";
 import { object, string } from "yup";
-import { FormikInput, Button, AddBadgeButton } from "ui";
+import { FormikInput, Button, AddBadgeButton } from "@UI";
 import { useTranslation } from "react-i18next";
 
 export interface RestaurantAddMenuFormProps {

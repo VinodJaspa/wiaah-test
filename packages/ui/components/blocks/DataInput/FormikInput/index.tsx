@@ -1,7 +1,7 @@
 import { ErrorMessage, Field } from "formik";
 import React from "react";
 import { HtmlDivProps, TranslationTextType, HtmlInputProps } from "types";
-import { TranslationText, Input, InputProps } from "ui";
+import { TranslationText, Input, InputProps } from "@UI";
 
 export interface FormikInputProps extends HtmlInputProps {
   label?: TranslationTextType | string;

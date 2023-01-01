@@ -1,6 +1,6 @@
 import React from "react";
 import { shallow } from "enzyme";
-import { Checkbox } from "ui";
+import { Checkbox } from "@UI";
 
 describe("Checkbox render test", () => {
   it("should render correctly", () => {

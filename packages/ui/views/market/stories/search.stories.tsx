@@ -1,6 +1,6 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-import { SearchView } from "ui/views";
+import { SearchView } from "@UI/views";
 export default {
   title: "UI/View/Market/Search Results",
   component: SearchView,

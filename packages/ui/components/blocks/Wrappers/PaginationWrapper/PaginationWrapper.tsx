@@ -1,7 +1,7 @@
 import { usePagination } from "hooks";
 import React from "react";
 import { HtmlDivProps } from "types";
-import { Pagination } from "ui";
+import { Pagination } from "@UI";
 
 export const PaginationWrapper: React.FC<HtmlDivProps> = ({
   children,

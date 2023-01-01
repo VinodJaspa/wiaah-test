@@ -8,6 +8,7 @@ const { patchWebpackConfig } = require("next-global-css");
 const nextConfig = {
   experimental: {
     esmExternals: false,
+    isrMemoryCacheSize: 0,
   },
 };
 

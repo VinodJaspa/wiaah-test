@@ -21,7 +21,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
 }) => {
   const { toggleCheckBox } = React.useContext(CheckBoxCtx);
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex gap-2 w-fit items-center">
       <input
         onChange={() =>
           typeof value === "string" && typeof toggleCheckBox === "function"

@@ -1,6 +1,6 @@
 import React from "react";
 import { SellerPostInput } from "./index";
-import { fireEvent, render, screen, cleanup } from "ui/utils/test-utils";
+import { fireEvent, render, screen, cleanup } from "@UI/utils/test-utils";
 
 // testid selectors
 // data-testid="selectorName"

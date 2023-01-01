@@ -9,7 +9,7 @@ import {
   PostInteractions,
   Slider,
   AspectRatio,
-} from "ui";
+} from "@UI";
 
 export interface SocialServiceDetailsCardProps extends ServicePostDetails {
   showComments?: boolean;

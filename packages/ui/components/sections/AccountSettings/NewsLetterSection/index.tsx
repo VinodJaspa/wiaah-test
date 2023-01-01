@@ -2,7 +2,7 @@ import { Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormOptionType } from "types";
-import { FormikInput, Switch, SectionHeader, TranslationText } from "ui";
+import { FormikInput, Switch, SectionHeader, TranslationText } from "@UI";
 
 export interface NewsLetterSectionProps {}
 

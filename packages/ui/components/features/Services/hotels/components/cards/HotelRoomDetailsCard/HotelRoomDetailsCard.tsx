@@ -21,7 +21,7 @@ import {
   Divider,
   Badge,
   Checkbox,
-} from "ui";
+} from "@UI";
 import { ImImages } from "react-icons/im";
 import { mapArray } from "utils";
 import { Form, Formik } from "formik";

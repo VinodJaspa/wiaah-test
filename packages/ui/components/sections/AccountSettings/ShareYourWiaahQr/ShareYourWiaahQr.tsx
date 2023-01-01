@@ -6,7 +6,7 @@ import {
   Button,
   DownloadIcon,
   ShareIcon,
-} from "ui";
+} from "@UI";
 export interface ShareYourWiaahQrProps {}
 
 export const ShareYourWiaahQr: React.FC<ShareYourWiaahQrProps> = ({}) => {

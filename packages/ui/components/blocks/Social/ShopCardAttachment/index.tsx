@@ -7,7 +7,7 @@ import {
 } from "react-icons/hi";
 import { CashBack, HtmlDivProps, PostAttachmentTypes } from "types";
 import { Interactions } from "types";
-import { PostAttachment, CashbackBadge } from "ui";
+import { PostAttachment, CashbackBadge } from "@UI";
 import { PostAttachmentProps } from "../PostAttachment";
 
 export interface ShopCardAttachmentProps {

@@ -1,4 +1,4 @@
-import { NotificationsPH, storybookCardsTitle, NotifiactionCard } from "ui";
+import { NotificationsPH, storybookCardsTitle, NotifiactionCard } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

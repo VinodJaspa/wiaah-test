@@ -9,7 +9,7 @@ import {
   TimeInput,
   ResturantReplacableTimeComponent,
   AspectRatio,
-} from "ui";
+} from "@UI";
 import { FilterAndAddToArray } from "utils";
 export interface ResturantFindTableFilterStepper {}
 

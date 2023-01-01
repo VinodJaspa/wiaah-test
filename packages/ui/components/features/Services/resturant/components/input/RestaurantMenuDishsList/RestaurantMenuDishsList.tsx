@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { CloseIcon, PriceDisplay, AddMenuDishInput } from "ui";
+import { CloseIcon, PriceDisplay, AddMenuDishInput } from "@UI";
 
 type MenuDish = {
   title: string;

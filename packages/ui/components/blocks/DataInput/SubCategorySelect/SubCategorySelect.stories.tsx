@@ -1,6 +1,6 @@
 import { storybookDataInputBlocksTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
-import { SubCategorySelect } from "ui";
+import { SubCategorySelect } from "@UI";
 
 export default {
   title: storybookDataInputBlocksTitle + "SubCategorySelect",

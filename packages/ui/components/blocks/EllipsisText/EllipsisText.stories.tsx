@@ -1,6 +1,6 @@
 import { storybookBlocksTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
-import { EllipsisText } from "ui";
+import { EllipsisText } from "@UI";
 
 export default {
   title: storybookBlocksTitle + "EllipisisText",

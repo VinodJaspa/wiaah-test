@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, FlexStack } from "ui";
-import { useScreenWidth } from "ui";
+import { Button, FlexStack } from "@UI";
+import { useScreenWidth } from "@UI";
 export interface CookiesInfoBannerProps {
   onAcceptAll?: () => void;
   onLetMeChoose?: () => void;

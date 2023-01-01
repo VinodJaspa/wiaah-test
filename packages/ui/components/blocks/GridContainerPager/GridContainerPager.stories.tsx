@@ -1,4 +1,4 @@
-import { GridContainerPager } from "ui";
+import { GridContainerPager } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 import { storybookBlocksTitle } from "utils";
 

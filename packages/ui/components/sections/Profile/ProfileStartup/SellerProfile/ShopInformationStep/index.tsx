@@ -18,7 +18,7 @@ import {
   Button,
   PlusIcon,
   MediaUploadModal,
-} from "ui";
+} from "@UI";
 import { useReactPubsub } from "react-pubsub";
 
 let countriesArray = Country.getAllCountries().map((element) => ({

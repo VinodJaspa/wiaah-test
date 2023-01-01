@@ -13,7 +13,7 @@ import {
   useGetVehiclePickUpLocationQuery,
   SpinnerFallback,
   PickupLocationSuggistionCard,
-} from "ui";
+} from "@UI";
 
 export interface VehiclePickupLocationInputProps {}
 

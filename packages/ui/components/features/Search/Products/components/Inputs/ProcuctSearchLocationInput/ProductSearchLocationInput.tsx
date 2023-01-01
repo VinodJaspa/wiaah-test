@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HtmlInputProps } from "types";
-import { PaperPlaneIcon, Input, InputGroup, InputLeftElement } from "ui";
+import { PaperPlaneIcon, Input, InputGroup, InputLeftElement } from "@UI";
 
 export interface ProductSearchLocationInputProps extends HtmlInputProps {}
 

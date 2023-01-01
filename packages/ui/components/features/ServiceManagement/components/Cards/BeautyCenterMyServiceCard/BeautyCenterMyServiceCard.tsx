@@ -8,7 +8,7 @@ import {
   TrashIcon,
   Badge,
   LocationAddressDisplay,
-} from "ui";
+} from "@UI";
 import { SeperatedStringArray, setTestid } from "utils";
 
 export interface BeautyCenterMyServiceCardProps

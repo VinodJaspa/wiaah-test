@@ -10,7 +10,7 @@ import {
   SocialShopOtherPostsState,
   SocialStoriesState,
   SocialStoryState,
-} from "ui/state";
+} from "@src/state";
 import { PostCardPlaceHolder } from "placeholder";
 import { MasterLayout } from "@components";
 import { ShopProductView } from "@components";

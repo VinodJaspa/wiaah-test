@@ -2,8 +2,9 @@ import { NotificationPaginationResponse } from '@entities';
 import { Injectable } from '@nestjs/common';
 import { NotificationSettingsService } from '@notification-settings';
 import { DBErrorException } from 'nest-utils';
-import { NotifiactionType } from 'prismaClient';
 import { PrismaService } from 'prismaService';
+import { NotificationType } from 'prismaClient';
+import { TranslationText } from './types';
 
 @Injectable()
 export class ManagerService {
@@ -14,6 +15,7 @@ export class ManagerService {
 
   async getMyNotifications(
     userId: string,
+    lang: string,
   ): Promise<NotificationPaginationResponse> {
     const notifications = await this.prisma.notification.findMany({
       where: {
@@ -22,18 +24,38 @@ export class ManagerService {
     });
 
     return {
-      data: notifications,
+      data: notifications.map((v) => ({
+        ...v,
+        content:
+          v.content.find((c) => c.lang === lang).value || v.content[0].value,
+      })),
       hasMore: false,
       total: notifications.length,
     };
   }
 
+  async createMany(
+    notifications: {
+      userId: string;
+      contentOwnerUserId?: string;
+      type: NotificationType;
+      authorProfileId?: string;
+      authorId: string;
+      contentId?: string;
+      isFollowed?: boolean;
+    }[],
+  ) {
+    return this.prisma.notification.createMany({
+      data: notifications,
+    });
+  }
+
   async createNotification(props: {
     contentOwnerUserId?: string;
-    type: NotifiactionType;
-    content: string;
+    type: NotificationType;
+    content: string | TranslationText;
     authorProfileId?: string;
-    authorId: string;
+    authorId?: string;
     contentId?: string;
     isFollowed?: boolean;
   }) {
@@ -54,14 +76,16 @@ export class ManagerService {
         type,
         !!isFollowed,
       );
-      console.log('cannot send', canSend);
       if (!canSend) return;
     }
 
     try {
       await this.prisma.notification.create({
         data: {
-          content,
+          content:
+            typeof content === 'string'
+              ? [{ lang: 'en', value: content }]
+              : content,
           type,
           userId: contentOwnerUserId,
           authorProfileId,
@@ -78,7 +102,7 @@ export class ManagerService {
   async canSendNotification(
     contentId: string,
     reciverUserId: string,
-    contentType: NotifiactionType,
+    contentType: string,
     isFollowed: boolean,
   ): Promise<boolean> {
     const conditions: boolean[] = [];

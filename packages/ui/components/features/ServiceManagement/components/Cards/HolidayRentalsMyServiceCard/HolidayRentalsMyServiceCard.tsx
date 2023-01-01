@@ -13,7 +13,7 @@ import {
   ServiceRefundableTypeDescription,
   PopularAmenitiesSection,
   LocationAddressDisplay,
-} from "ui";
+} from "@UI";
 import { mapArray, setTestid } from "utils";
 
 export interface HolidayRentalsMyServiceCardProps

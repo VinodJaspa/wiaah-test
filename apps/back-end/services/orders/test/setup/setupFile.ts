@@ -9,8 +9,7 @@ class PrismaService extends PrismaClient {
 
 async function clearDB() {
   await prisma.order.deleteMany();
-  await prisma.buyerOrdersCluster.deleteMany();
-  await prisma.sellerOrdersCluster.deleteMany();
+  await prisma.refundRequest.deleteMany();
 }
 
 const prisma = new PrismaService();

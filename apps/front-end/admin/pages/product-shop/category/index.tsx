@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -18,6 +17,7 @@ import {
   ItemsPagination,
   usePaginationControls,
   Button,
+  Input,
 } from "ui";
 import { mapArray, randomNum, SeperatedStringArray } from "utils";
 
@@ -81,6 +81,14 @@ export default () => {
             </Th>
             <Th>{t("Sort Order")}</Th>
             <Th>{t("Action")}</Th>
+            <Tr>
+              <Th>
+                <Input placeholder={t("Type Category name")} />
+              </Th>
+              <Th>
+                <Input type="number" />
+              </Th>
+            </Tr>
           </THead>
           <TBody>
             {mapArray(

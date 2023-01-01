@@ -10,7 +10,7 @@ import {
   SelectOption,
   SectionHeader,
   SelectProps,
-} from "ui";
+} from "@UI";
 import * as yup from "yup";
 import { randomNum } from "../../../../helpers";
 

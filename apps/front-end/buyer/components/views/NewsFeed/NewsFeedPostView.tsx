@@ -6,7 +6,7 @@ import { PostCardInfo } from "types";
 import { PostCardPlaceHolder, newsfeedPosts } from "ui/placeholder";
 import { useTranslation } from "react-i18next";
 import {
-  SocialStoriesModal,
+  SocialStoryModal,
   SocialPostHeader,
   PostCard,
   PostCardsListWrapper,
@@ -47,7 +47,7 @@ export const NewsFeedPostView: React.FC<NewsFeedPostViewProps> = () => {
         mb="6rem"
         align={"start"}
       >
-        <SocialStoriesModal />
+        <SocialStoryModal />
         <SocialPostHeader
           name={post.profileInfo.name}
           thumbnail={post.profileInfo.thumbnail}

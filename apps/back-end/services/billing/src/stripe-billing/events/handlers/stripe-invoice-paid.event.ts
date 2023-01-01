@@ -1,9 +1,4 @@
-import {
-  CommandBus,
-  EventBus,
-  EventsHandler,
-  IEventHandler,
-} from '@nestjs/cqrs';
+import { EventBus, EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import {
   StripeCheckoutInvoicePaidEvent,
   StripeInvoicePaidEvent,
@@ -17,10 +12,7 @@ import {
 export class StripeInvoicePaidEventHandler
   implements IEventHandler<StripeInvoicePaidEvent>
 {
-  constructor(
-    private readonly commandbus: CommandBus,
-    private readonly eventbus: EventBus,
-  ) {}
+  constructor(private readonly eventbus: EventBus) {}
 
   handle({ invoice }: StripeInvoicePaidEvent) {
     const meta = invoice.metadata as unknown as {

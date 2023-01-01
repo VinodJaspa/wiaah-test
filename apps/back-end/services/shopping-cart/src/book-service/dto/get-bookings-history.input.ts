@@ -1,6 +1,6 @@
-import { Field, InputType, registerEnumType } from '@nestjs/graphql';
+import { Field, ID, InputType, registerEnumType } from '@nestjs/graphql';
 import { ServiceStatus } from '@prisma-client';
-import { GqlPaginationInput } from 'nest-utils';
+import { accountType, GqlPaginationInput } from 'nest-utils';
 
 registerEnumType(ServiceStatus, { name: 'ServiceStatus' });
 
@@ -11,4 +11,16 @@ export class GetBookingsHistoryInput {
 
   @Field(() => GqlPaginationInput)
   pagination: GqlPaginationInput;
+
+  @Field(() => String)
+  q: string;
+}
+
+@InputType()
+export class GetBookingsHistoryAdminInput extends GetBookingsHistoryInput {
+  @Field(() => ID)
+  userId: string;
+
+  @Field(() => accountType)
+  accountType: accountType;
 }

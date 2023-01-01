@@ -6,7 +6,7 @@ import {
   SelectOption,
   Button,
   ShippingSettingsContext,
-} from "ui";
+} from "@UI";
 import { Country } from "country-state-city";
 
 export interface ShippingSettingsProps {}

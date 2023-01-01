@@ -17,7 +17,7 @@ import {
   Tr,
   Td,
   AspectRatioImage,
-} from "ui";
+} from "@UI";
 import { setTestid } from "utils";
 
 export interface ProductCheckoutCardProps extends ProductCheckoutData {

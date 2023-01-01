@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik";
 import React from "react";
 import { NewServiceSchemas } from "validation";
-import { HotelAddRoomDetailsForm } from "ui";
+import { HotelAddRoomDetailsForm } from "@UI";
 
 export const HotelIncludedServicesSection: React.FC<{
   onChange?: (props: Record<string, any>) => any;

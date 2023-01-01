@@ -1,16 +1,15 @@
 import React from "react";
-import { HiPlus } from "react-icons/hi";
 import { HtmlDivProps } from "types";
-import { UserProfileDisplay, StoryDisplayProps } from "ui";
-import { useResponsive, useNewStoryModal } from "ui";
+import { UserProfileDisplay, StoryDisplayProps } from "../StoryDisplay";
+import { useResponsive } from "hooks";
 export interface RecentStoriesProps extends HtmlDivProps {
   stories: StoryDisplayProps[];
-  onNewStoryClick?: () => any;
+  onStoryClick?: (story: StoryDisplayProps) => any;
 }
 
 export const RecentStories: React.FC<RecentStoriesProps> = ({
   stories,
-  onNewStoryClick,
+  onStoryClick,
   className,
   ...props
 }) => {
@@ -24,7 +23,10 @@ export const RecentStories: React.FC<RecentStoriesProps> = ({
     >
       {stories.map((story, i) => (
         <div className="w-[4.75rem]">
-          <UserProfileDisplay {...story} />
+          <UserProfileDisplay
+            onProfileClick={() => onStoryClick && onStoryClick(story)}
+            {...story}
+          />
         </div>
       ))}
     </div>

@@ -6,7 +6,7 @@ import {
   InputRightElement,
   InputGroupProps,
   SearchIcon,
-} from "ui";
+} from "@UI";
 
 export interface SearchInputProps {
   innerProps?: InputGroupProps;

@@ -19,7 +19,7 @@ import {
   CountInput,
   HotelBedsInput,
   DailyPriceInput,
-} from "ui";
+} from "@UI";
 import { FileRes } from "utils";
 
 const MAX_PRODUCTS_IMAGE = 4;

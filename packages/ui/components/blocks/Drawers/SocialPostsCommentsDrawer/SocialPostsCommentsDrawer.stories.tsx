@@ -1,6 +1,6 @@
 import { ComponentMeta } from "@storybook/react";
 import { randomNum, storybookDrawersTitle } from "utils";
-import { SocialPostsCommentsDrawer, Button, usePostsCommentsDrawer } from "ui";
+import { SocialPostsCommentsDrawer, Button, usePostsCommentsDrawer } from "@UI";
 
 export default {
   title: storybookDrawersTitle + "SocialPostsCommentsDrawer",

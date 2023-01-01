@@ -1,7 +1,7 @@
 import { storybookPartailsTitle, StorybookImplemntationLayout } from "utils";
 import { ComponentMeta } from "@storybook/react";
 import { StepperFormHandler, StepperFormController } from "./index";
-import { CheckMarkStepper, FormikInput, Button } from "ui";
+import { CheckMarkStepper, FormikInput, Button } from "@UI";
 import { Form, Formik } from "formik";
 import React from "react";
 import * as yup from "yup";
@@ -33,7 +33,7 @@ import {
   Button,
   StepperFormController,
   StepperFormHandler,
-} from "ui";
+} from "@UI";
 import * as yup from "yup";
 
 const test1Schema = yup.object().shape({

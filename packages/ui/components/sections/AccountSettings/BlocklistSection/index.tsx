@@ -1,7 +1,7 @@
 import { Form, Formik } from "formik";
 import React from "react";
-import { Button, Avatar, SectionHeader, SpinnerFallback } from "ui";
-import { useGetBlockedUsersQuery, useUnFollowUserMutation } from "ui";
+import { Button, Avatar, SectionHeader, SpinnerFallback } from "@UI";
+import { useGetBlockedUsersQuery, useUnFollowUserMutation } from "@UI";
 import { useTranslation } from "react-i18next";
 
 export interface BlocklistSectionProps {}

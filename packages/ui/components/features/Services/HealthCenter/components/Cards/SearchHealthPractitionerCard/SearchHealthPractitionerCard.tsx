@@ -1,6 +1,6 @@
 import { HealthCenterPractitioner } from "api";
 import React from "react";
-import { Avatar, HighlightText } from "ui";
+import { Avatar, HighlightText } from "@UI";
 
 export interface SearchHealthPractitionerCardProps {
   searchQuery: string;

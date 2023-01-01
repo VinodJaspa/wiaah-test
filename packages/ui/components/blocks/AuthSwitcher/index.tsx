@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { LoginType } from "types";
 import { Tabs } from "antd";
 import { useRouter } from "next/router";
-import { LoginView, BuyerSignupView, SellerSignupView } from "ui";
+import { LoginView, BuyerSignupView, SellerSignupView } from "@UI";
 import { useTranslation } from "react-i18next";
 export interface AuthSwitcherProps {
   loginType: LoginType;

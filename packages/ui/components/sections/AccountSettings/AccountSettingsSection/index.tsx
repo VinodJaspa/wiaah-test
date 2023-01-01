@@ -31,16 +31,19 @@ import {
   useGetAccountSettingsQuery,
   useUpdateAccountSettingsMutation,
   PhoneNumberInput,
-} from "ui";
+} from "@UI";
 import { useAccountType } from "hooks";
-import { accountTypes } from "ui";
+import { accountTypes } from "@UI";
 
-export interface AccountSettingsSectionProps {}
+export interface AccountSettingsSectionProps {
+  variant?: "seller" | "buyer";
+}
 
-export const AccountSettingsSection: React.FC<
-  AccountSettingsSectionProps
-> = ({}) => {
-  const { isBuyer, isSeller } = useAccountType();
+export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
+  variant = "seller",
+}) => {
+  const isBuyer = variant === "buyer";
+  const isSeller = variant === "seller";
   const { t } = useTranslation();
   const { uploadImage } = useFileUploadModal();
   const { data } = useGetAccountSettingsQuery();

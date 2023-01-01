@@ -1,4 +1,4 @@
-import { useDateDiff } from "ui/Hooks";
+import { useDateDiff } from "@src/Hooks";
 import React, { useEffect, useState } from "react";
 
 export interface CountdownProps {

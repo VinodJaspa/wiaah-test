@@ -56,10 +56,10 @@ export const NestedSubmenuNavigationLinks: React.FC<{
                   selected
                     ? `${
                         lastDeepNum === 0
-                          ? "bg-primary rounded text-white"
+                          ? "bg-primary rounded text-white fill-white"
                           : "text-primary"
                       }`
-                    : "text-black"
+                    : "text-black fill-black"
                 } flex text-lg items-center py-2 gap-2`}
               >
                 {runIfFn(icon)} {name}

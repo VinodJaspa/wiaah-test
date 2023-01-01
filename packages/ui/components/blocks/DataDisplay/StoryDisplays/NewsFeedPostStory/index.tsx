@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/router";
-import { useGetNewsfeedPostStory, SpinnerFallback, PostCard } from "ui";
-import { useStory } from "ui";
+import { useGetNewsfeedPostStory, SpinnerFallback, PostCard } from "@UI";
+import { useStory } from "@UI";
 
 export interface NewsFeedPostStoryProps {
   postId: string;

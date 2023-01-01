@@ -11,7 +11,7 @@ import {
   ServiceRefundableTypeDescription,
   DotIcon,
   LocationAddressDisplay,
-} from "ui";
+} from "@UI";
 import { setTestid } from "utils";
 
 export interface VehicleMyServiceCardProps extends VehicleMyServiceDataType {

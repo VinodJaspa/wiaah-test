@@ -1,7 +1,7 @@
 import { HotelCheckoutBookedPropertyData } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { PriceDisplay, ServiceCheckoutCommonCardWrapper } from "ui";
+import { PriceDisplay, ServiceCheckoutCommonCardWrapper } from "@UI";
 import { setTestid } from "utils";
 
 export interface HotelCheckoutCardProps

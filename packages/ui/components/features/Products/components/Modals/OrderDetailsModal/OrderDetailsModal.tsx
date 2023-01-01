@@ -16,7 +16,7 @@ import {
   MessageWriteIcon,
   CreditCardIcon,
   RateFeedBackModal,
-} from "ui";
+} from "@UI";
 import { DateDetails } from "utils";
 
 import { useScreenWidth } from "hooks";
@@ -33,7 +33,7 @@ import {
   Tr,
   Td,
   AspectRatioImage,
-} from "ui";
+} from "@UI";
 import { setTestid } from "utils";
 
 export interface OrderDetailsModalProps {}

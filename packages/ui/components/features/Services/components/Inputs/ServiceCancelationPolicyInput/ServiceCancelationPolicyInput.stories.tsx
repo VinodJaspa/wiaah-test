@@ -1,7 +1,7 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import { storybookOtherServicesInputTitle } from "utils";
 import { ServiceCancelationPolicyInput } from "./ServiceCancelationPolicyInput";
-import { CalenderIcon, ClockIcon, PersonIcon } from "ui";
+import { CalenderIcon, ClockIcon, PersonIcon } from "@UI";
 
 export default {
   title: storybookOtherServicesInputTitle + "ServiceCancelationPolicyInput",

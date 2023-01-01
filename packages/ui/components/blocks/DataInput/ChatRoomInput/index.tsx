@@ -1,5 +1,5 @@
 import React from "react";
-import { Divider, Button, Input, InputGroup, InputRightElement } from "ui";
+import { Divider, Button, Input, InputGroup, InputRightElement } from "@UI";
 import { BiMicrophone, BiPaperclip } from "react-icons/bi";
 import { useTranslation } from "react-i18next";
 import { IconList } from "types";

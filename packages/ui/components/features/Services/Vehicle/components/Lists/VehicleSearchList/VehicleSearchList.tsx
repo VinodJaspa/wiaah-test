@@ -10,7 +10,7 @@ import {
   VehicleSearchCard,
   VehicleSearchCardProps,
   DisplayFoundServices,
-} from "ui";
+} from "@UI";
 
 export const VehicleSearchList: React.FC = () => {
   const { take, page } = usePagination(12);
@@ -22,7 +22,6 @@ export const VehicleSearchList: React.FC = () => {
   } = useGetVehicleSearchDataQuery({ page, take }, filters);
   return (
     <PaginationWrapper>
-
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         <ServicesSearchGrid<VehicleSearchData, VehicleSearchCardProps>
           data={res?.data || []}

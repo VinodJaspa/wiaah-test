@@ -24,7 +24,7 @@ import {
   TabsHeader,
   TabTitle,
   TranslationText,
-} from "ui";
+} from "@UI";
 import {
   FormatedDays,
   getDividedWeeks,
@@ -34,7 +34,7 @@ import {
   weekDays,
 } from "utils";
 import { BookingsSectionCtx } from ".";
-import { useGetAppointmentsQuery } from "ui/Hooks";
+import { useGetAppointmentsQuery } from "@src/Hooks";
 
 type BookingsObjectType = Record<string, BookingAppointement[]>;
 

@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { useGetBookedServicesState } from "state";
-import { Divider, PriceDisplay, Button, Stack } from "ui";
+import { Divider, PriceDisplay, Button, Stack } from "@UI";
 import { CalculateVat, setTestid } from "utils";
 
 export interface BookedServicesCostDetailsProps {
