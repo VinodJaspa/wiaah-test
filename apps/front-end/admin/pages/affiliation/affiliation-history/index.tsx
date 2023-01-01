@@ -3,17 +3,12 @@ import { NextPage } from "next";
 import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { BsKey } from "react-icons/bs";
 import { useRouting } from "routing";
 import {
-  EditIcon,
   Image,
   Input,
-  LockIcon,
-  NotAllowedIcon,
   Pagination,
   PriceDisplay,
-  SearchIcon,
   Table,
   TableContainer,
   TBody,
@@ -63,7 +58,6 @@ const history: AffiliationHistory[] = [...Array(10)].map((_, i) => ({
 }));
 
 const AffiliationHistory: NextPage = () => {
-  const { getCurrentPath, visit } = useRouting();
   const { t } = useTranslation();
   return (
     <section>
@@ -116,22 +110,20 @@ const AffiliationHistory: NextPage = () => {
           </THead>
           <TBody>
             {history.map(
-              (
-                {
-                  buyer,
-                  commission,
-                  commissionPrice,
-                  marketer,
-                  price,
-                  purchasedAt,
-                  seller,
-                  thumbnail,
-                  affiliationLink,
-                  productTitle,
-                },
-                i
-              ) => (
-                <Tr>
+              ({
+                buyer,
+                commission,
+                commissionPrice,
+                marketer,
+                price,
+                purchasedAt,
+                seller,
+                thumbnail,
+                affiliationLink,
+                productTitle,
+                id,
+              }) => (
+                <Tr key={id}>
                   <Td>
                     <Image src={thumbnail} />
                   </Td>

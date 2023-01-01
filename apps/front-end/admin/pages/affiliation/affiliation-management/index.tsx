@@ -88,19 +88,15 @@ const AffiliationManagement: NextPage = () => {
           <TBody>
             {mapArray(
               affiliations,
-              (
-                {
-                  affiliationLink,
-                  commision,
-                  createdAt,
-                  id,
-                  product,
-                  sellerId,
-                  sellerName,
-                },
-                i
-              ) => (
-                <Tr>
+              ({
+                affiliationLink,
+                commision,
+                createdAt,
+                id,
+                product,
+                sellerName,
+              }) => (
+                <Tr key={id}>
                   <Td>
                     <Image src={product.thumbnail} />
                   </Td>

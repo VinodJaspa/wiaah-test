@@ -9,10 +9,8 @@ import {
   PersonIcon,
   LockIcon,
   AspectRatio,
-  Image,
-  LogoutIcon,
 } from "ui";
-import LogoIcon from "ui/components/partials/icons/LogoIcon";
+import { LogoIcon } from "ui/components/partials/icons/LogoIcon";
 import * as yup from "yup";
 
 export const LoginView: React.FC = () => {
@@ -25,7 +23,7 @@ export const LoginView: React.FC = () => {
           password: yup.string().required(),
         })}
         initialValues={{ username: "", password: "" }}
-        onSubmit={(data) => {}}
+        onSubmit={() => {}}
       >
         {() => (
           <div className="flex flex-col w-[min(98%,20rem)] uppercase gap-8">
