@@ -7,12 +7,12 @@ import {
 import { getUserFromRequest } from 'nest-utils';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CommunityModule } from '@community/community.module';
-import { PrismaModule } from './prisma.module';
+// import { PrismaModule } from './prisma.module';
 import { FriendsModule } from './friends/friends.module';
 
 @Module({
   imports: [
-    PrismaModule,
+    // PrismaModule,
     ScheduleModule.forRoot(),
     CommunityModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
