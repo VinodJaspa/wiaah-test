@@ -238,6 +238,8 @@ export const KAFKA_MESSAGES = {
     getServicesCheckoutData: "get.services.checkout.data",
     getServiceOpenTimeData: (serviceType: string) =>
       `get.service.open.tiem.data-${serviceType}`,
+    getFilteredServices: (serviceType?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`get.services.filters.${serviceType}`, regex),
   },
   CURRENCY_MESSAGES: {
     getCurrencyExchangeRate: "get.currency.exchange.rate",
@@ -282,6 +284,12 @@ export const KAFKA_MESSAGES = {
   },
   SOCIAL_MESSAGES: {
     getUserFollowsData: () => `get.user.followers.data`,
+  },
+  BOOKING_MESSAGES: {
+    getBookedPaidServices: (type?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`get.booked.services.${type}`, regex),
+    getBulkBookedPaidServices: (type?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`get.bulk.booked.services.${type}`, regex),
   },
 
   emailExists: "email.exists",

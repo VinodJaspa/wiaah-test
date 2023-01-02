@@ -1,5 +1,5 @@
 import { AccountType } from "./accountTypes";
-import { IsString, IsMongoId, ValidateIf, IsEmail } from "class-validator";
+import { IsString, IsMongoId, IsEmail } from "class-validator";
 export class AuthorizationDecodedUser {
   @IsMongoId()
   id: string;
@@ -21,6 +21,11 @@ export class AuthorizationDecodedUser {
 
   @IsEmail()
   email: string;
+
+  city: string;
+  country: string;
+  lat: number;
+  lon: number;
 
   iat: number;
   exp: number;

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { kafkaModule } from '../kafka.module';
-import { FriendsResolver } from './friends.resolver';
+import { PlacesResolver } from './places.resolver';
 
 @Module({
   imports: [kafkaModule],
-  providers: [FriendsResolver],
+  providers: [PlacesResolver],
 })
-export class FriendsModule {}
+export class PlacesModule {}

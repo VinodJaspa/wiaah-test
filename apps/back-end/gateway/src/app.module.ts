@@ -14,12 +14,11 @@ import { subgraphs } from '@lib';
           return new RemoteGraphQLDataSource({
             url,
             willSendRequest({ context, request, kind }) {
-              console.log('gateway req', context, request, kind);
               const user = VerifyAndGetUserFromContext(context);
               request.http.headers.set('user', JSON.stringify(user));
             },
 
-            didReceiveResponse({ context, request, response }) {
+            didReceiveResponse({ context, response }) {
               if (response.http.headers.get('set-cookie')) {
                 const rawCookies = response.http.headers.get('set-cookie');
                 if (rawCookies) {
