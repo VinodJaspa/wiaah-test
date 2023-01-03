@@ -11,6 +11,7 @@ export class Place {
   type: string;
 }
 
+@ObjectType()
 export class PlaceSuggestions {
   @Field(() => [Place])
   places: Place[];

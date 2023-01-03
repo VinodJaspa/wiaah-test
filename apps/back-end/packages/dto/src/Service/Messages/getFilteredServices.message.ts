@@ -4,12 +4,15 @@ export class GetFilteredServicesMessage extends KafkaMessage<{
   servicesIds?: string[];
   country?: string;
   city?: string;
+  lat?: number;
+  lon?: number;
+  keywords?: string[];
 }> {}
 
 export class GetFilteredServicesMessageReply extends KafkaMessageReply<{
   services: {
     id: string;
-    rate: string;
+    rate: number;
     userId: string;
     type: string;
     location: {
@@ -17,6 +20,7 @@ export class GetFilteredServicesMessageReply extends KafkaMessageReply<{
       lon: number;
       city: string;
       country: string;
+      distance: number;
     };
   }[];
 }> {}

@@ -281,6 +281,7 @@ export const KAFKA_MESSAGES = {
     getUserMostInteractioners: () => `get.user.interactioners`,
     getBulkUserMostInteractioners: () => `get.bulk.user.interactioners`,
     getUsersActivityScoresByIds: () => `get.users.activity.scores.by.ids`,
+    getUserInterestsKeywords: () => `get.user.keywords.scores.by.id`,
   },
   SOCIAL_MESSAGES: {
     getUserFollowsData: () => `get.user.followers.data`,

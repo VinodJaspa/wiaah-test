@@ -47,10 +47,21 @@ model UsersInteractions {
   @@unique([ownerId, userId])
 }
 
+model UserInterest {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @unique @db.ObjectId
+
+  keywords UserInterestKeyword[]
+}
+
+type UserInterestKeyword {
+  value String
+  score Float
+}
 
 model Event {
-  id String @id @db.ObjectId @map("_id") @default(auto())
-  key String
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
+  key        String
   causedById String
   causedToId String?
 }
