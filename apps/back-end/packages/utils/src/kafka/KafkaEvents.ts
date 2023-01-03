@@ -227,6 +227,9 @@ export const KAFKA_MESSAGES = {
     getProductMetaData: "get.product.metadata",
     getProductsMetaData: "get.products.metadata",
     getProductsCheckoutData: "get.products.checkout.data",
+    getBulkUsersPaidProducts: "get.bulk.paid.products",
+    getUserPaidProducts: "get.user.paid.products",
+    getFilteredProducts: "get.filtered.products",
   },
   SHOP_MESSAGES: {
     isOwnerOfShop: "is.owner.of.shop",
