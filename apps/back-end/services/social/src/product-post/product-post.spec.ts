@@ -10,6 +10,7 @@ import {
 } from 'nest-utils';
 import {
   GetBulkUsersPaidProductsMessageReply,
+  GetFilteredProductsMessageReply,
   GetUserInterestsScoresMessageReply,
   GetUserMostInteractionersMessageReply,
   GetUserPaidProductsMessageReply,
@@ -91,6 +92,7 @@ describe('product-post tests', () => {
         reactionNum: 150,
         comments: 5,
         shares: 15,
+        visibility: 'public',
       },
     });
 
@@ -101,6 +103,7 @@ describe('product-post tests', () => {
         reactionNum: 350,
         comments: 15,
         shares: 50,
+        visibility: 'public',
       },
     });
 
@@ -108,6 +111,7 @@ describe('product-post tests', () => {
       data: {
         productId: product3,
         userId: interactioner3,
+        visibility: 'public',
       },
     });
 
@@ -115,6 +119,7 @@ describe('product-post tests', () => {
       data: {
         productId: product4,
         userId: interactioner4,
+        visibility: 'public',
       },
     });
 
@@ -167,6 +172,45 @@ describe('product-post tests', () => {
             {
               id: interactioner2,
               products: [{ userId: interactioner2, productId: product2 }],
+            },
+          ],
+        },
+        error: null,
+        success: true,
+      }),
+    );
+
+    mockMessageHandler.mockReturnValueOnce(
+      new GetFilteredProductsMessageReply({
+        data: {
+          products: [
+            {
+              productId: product1,
+              distence: 60,
+              keywords: ['test', 'test2'],
+              rate: 3.2,
+              sales: 4,
+            },
+            {
+              productId: product2,
+              distence: 20,
+              keywords: ['test1'],
+              rate: 4.2,
+              sales: 8,
+            },
+            {
+              productId: product3,
+              distence: 30,
+              keywords: ['test1'],
+              rate: 3.2,
+              sales: 4,
+            },
+            {
+              productId: product4,
+              distence: 80,
+              keywords: ['test, test2'],
+              rate: 3.2,
+              sales: 4,
             },
           ],
         },

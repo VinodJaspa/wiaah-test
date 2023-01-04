@@ -159,17 +159,22 @@ export class ProductPostResolver {
         }),
       );
 
-      productIds.concat(
-        filteredProducts?.results?.data?.products?.map((v) => v.productId) ||
-          [],
-      );
+      const filteredProductsIds =
+        filteredProducts?.results?.data?.products?.map((v) => v.productId);
+
+      productIds = productIds.concat(filteredProductsIds);
 
       const products = await this.prisma.productPost.findMany({
         where: {
-          OR: [
+          AND: [
             {
               productId: {
                 in: productIds,
+              },
+            },
+            {
+              visibility: {
+                not: 'hidden',
               },
             },
           ],
@@ -217,7 +222,9 @@ export class ProductPostResolver {
           const friend = friendsPaidProductsData.users.find((v) =>
             v.products.some((c) => c.productId === curr.productId),
           );
-          const friendInteration = data.users.find((v) => v.id === friend.id);
+          const friendInteration = friend
+            ? data.users.find((v) => v.id === friend.id)
+            : null;
 
           if (friend && friendInteration)
             score += this.friendsPurchasedWeight * friendInteration.score;
@@ -235,7 +242,7 @@ export class ProductPostResolver {
       const sortedProducts: ProductPost[] = weightedProducts.sort(
         (first, next) => next.score - first.score,
       );
-
+      console.log('sorted', sortedProducts);
       return sortedProducts;
     }
     return [];
