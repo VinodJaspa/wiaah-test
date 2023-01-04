@@ -13,6 +13,10 @@ export class GetUserPaidBookingMessageReply extends KafkaMessageReply<{
 
 export class GetBulkUsersPaidBookingMessage extends KafkaMessage<{
   userIds: string[];
+  pagination: {
+    take: number;
+    page: number;
+  };
 }> {}
 
 export class GetBulkUsersPaidBookingMessageReply extends KafkaMessageReply<{

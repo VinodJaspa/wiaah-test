@@ -8,15 +8,15 @@ import {
   requestGraphql,
 } from 'nest-utils';
 import {
-  GetBulkUsersPaidProductsMessageReply,
-  GetFilteredProductsMessageReply,
+  GetBulkUsersPaidBookingMessageReply,
+  GetFilteredServicesMessageReply,
   GetUserInterestsScoresMessageReply,
   GetUserMostInteractionersMessageReply,
-  GetUserPaidProductsMessageReply,
+  GetUserPaidBookingMessageReply,
 } from 'nest-dto';
 import { PrismaClient } from 'prismaClient';
 import { ObjectId } from 'mongodb';
-import { ProductPostModule } from './product-post.module';
+import { ServicePostModule } from './service-post.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloFederationDriver } from '@nestjs/apollo';
 import { PrismaModule } from '@prisma-module';
@@ -38,7 +38,7 @@ describe('product-post tests', () => {
     const module = await Test.createTestingModule({
       imports: [
         CqrsModule,
-        ProductPostModule,
+        ServicePostModule,
         GraphQLModule.forRoot({
           driver: ApolloFederationDriver,
           context: (ctx: any) => ({
@@ -63,12 +63,17 @@ describe('product-post tests', () => {
   const reqGql = (q: string, v: any, u: AuthorizationDecodedUser) =>
     requestGraphql(app, q, v).set({ user: JSON.stringify(u) });
 
-  const getShopProductsSuggestionsQuery = `
-    query {
-        getRecommendedProductPosts {
+  const getServicesPostsSuggestionsQuery = `
+    query get($take:Int!, $page:Int!){
+        getRecommendedServicePosts(
+            pagination:{
+                take:$take
+                page:$page
+            }
+        ) {
             id
             userId
-            productId
+            serviceId
         }
     }
     `;
@@ -78,14 +83,14 @@ describe('product-post tests', () => {
     let interactioner2 = new ObjectId().toHexString();
     let interactioner3 = new ObjectId().toHexString();
     let interactioner4 = new ObjectId().toHexString();
-    let product1 = new ObjectId().toHexString();
-    let product2 = new ObjectId().toHexString();
-    let product3 = new ObjectId().toHexString();
-    let product4 = new ObjectId().toHexString();
+    let service1 = new ObjectId().toHexString();
+    let service2 = new ObjectId().toHexString();
+    let service3 = new ObjectId().toHexString();
+    let service4 = new ObjectId().toHexString();
 
-    await prisma.productPost.create({
+    await prisma.servicePost.create({
       data: {
-        productId: product1,
+        serviceId: service1,
         userId: interactioner1,
         reactionNum: 150,
         comments: 5,
@@ -94,9 +99,9 @@ describe('product-post tests', () => {
       },
     });
 
-    await prisma.productPost.create({
+    await prisma.servicePost.create({
       data: {
-        productId: product2,
+        serviceId: service2,
         userId: interactioner2,
         reactionNum: 350,
         comments: 15,
@@ -105,17 +110,17 @@ describe('product-post tests', () => {
       },
     });
 
-    await prisma.productPost.create({
+    await prisma.servicePost.create({
       data: {
-        productId: product3,
+        serviceId: service3,
         userId: interactioner3,
         visibility: 'public',
       },
     });
 
-    await prisma.productPost.create({
+    await prisma.servicePost.create({
       data: {
-        productId: product4,
+        serviceId: service4,
         userId: interactioner4,
         visibility: 'public',
       },
@@ -135,10 +140,9 @@ describe('product-post tests', () => {
     );
 
     mockMessageHandler.mockReturnValueOnce(
-      new GetUserPaidProductsMessageReply({
+      new GetUserPaidBookingMessageReply({
         data: {
-          id: mockedUser.id,
-          products: [{ productId: product1, userId: mockedUser.id }],
+          bookings: [{ serviceId: service1, userId: mockedUser.id }],
         },
         error: null,
         success: true,
@@ -160,16 +164,16 @@ describe('product-post tests', () => {
     );
 
     mockMessageHandler.mockReturnValueOnce(
-      new GetBulkUsersPaidProductsMessageReply({
+      new GetBulkUsersPaidBookingMessageReply({
         data: {
           users: [
             {
               id: interactioner1,
-              products: [{ productId: product1, userId: interactioner1 }],
+              bookings: [{ serviceId: service1, userId: interactioner1 }],
             },
             {
               id: interactioner2,
-              products: [{ userId: interactioner2, productId: product2 }],
+              bookings: [{ userId: interactioner2, serviceId: service2 }],
             },
           ],
         },
@@ -179,36 +183,44 @@ describe('product-post tests', () => {
     );
 
     mockMessageHandler.mockReturnValueOnce(
-      new GetFilteredProductsMessageReply({
+      new GetFilteredServicesMessageReply({
         data: {
-          products: [
+          services: [
             {
-              productId: product1,
+              id: service1,
               distence: 60,
               keywords: ['test', 'test2'],
               rate: 3.2,
               sales: 4,
+              type: 'hotel',
+              userId: interactioner1,
             },
             {
-              productId: product2,
+              id: service2,
               distence: 20,
               keywords: ['test1'],
               rate: 4.2,
               sales: 8,
+              type: 'restaurant',
+              userId: interactioner2,
             },
             {
-              productId: product3,
+              id: service3,
               distence: 30,
               keywords: ['test1'],
               rate: 3.2,
               sales: 4,
+              type: 'health-center',
+              userId: interactioner3,
             },
             {
-              productId: product4,
+              id: service4,
               distence: 80,
               keywords: ['test, test2'],
               rate: 3.2,
               sales: 4,
+              type: 'beauty-center',
+              userId: interactioner4,
             },
           ],
         },
@@ -217,16 +229,23 @@ describe('product-post tests', () => {
       }),
     );
 
-    let res = await reqGql(getShopProductsSuggestionsQuery, {}, mockedUser);
+    let res = await reqGql(
+      getServicesPostsSuggestionsQuery,
+      {
+        page: 1,
+        take: 50,
+      },
+      mockedUser,
+    );
 
     expect(res.body.errors).not.toBeDefined();
 
-    expect(res.body.data.getRecommendedProductPosts).toHaveLength(4);
-    expect(res.body.data.getRecommendedProductPosts.at(0).productId).toBe(
-      product2,
+    expect(res.body.data.getRecommendedServicePosts).toHaveLength(4);
+    expect(res.body.data.getRecommendedServicePosts.at(0).serviceId).toBe(
+      service2,
     );
-    expect(res.body.data.getRecommendedProductPosts.at(1).productId).toBe(
-      product1,
+    expect(res.body.data.getRecommendedServicePosts.at(1).serviceId).toBe(
+      service1,
     );
   });
 });

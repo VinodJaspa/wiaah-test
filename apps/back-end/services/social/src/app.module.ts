@@ -25,6 +25,7 @@ import { PrismaModule } from './prisma.module';
 import { HiddenContentModule } from './hidden-content/hidden-content.module';
 import { ProfileAdminModule } from '@profile/profile-admin.module';
 import { NewsfeedPostsAdminModule } from '@posts-newsfeed/newsfeed-posts-admin.module';
+import { ServicePostModule } from './service-post/service-post.module';
 
 @Module({
   imports: [
@@ -59,6 +60,7 @@ import { NewsfeedPostsAdminModule } from '@posts-newsfeed/newsfeed-posts-admin.m
     AffiliationPostModule,
     ActionModule,
     HiddenContentModule,
+    ServicePostModule,
   ],
 })
 export class AppModule {}

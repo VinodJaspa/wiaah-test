@@ -1,3 +1,4 @@
+import { GqlPaginationInput } from "nest-utils";
 import { KafkaMessage, KafkaMessageReply } from "../../Base";
 
 export class GetFilteredServicesMessage extends KafkaMessage<{
@@ -7,20 +8,23 @@ export class GetFilteredServicesMessage extends KafkaMessage<{
   lat?: number;
   lon?: number;
   keywords?: string[];
+  pagination: GqlPaginationInput;
 }> {}
 
 export class GetFilteredServicesMessageReply extends KafkaMessageReply<{
   services: {
     id: string;
     rate: number;
+    sales: number;
     userId: string;
     type: string;
-    location: {
+    location?: {
       lat: number;
       lon: number;
       city: string;
       country: string;
-      distance: number;
     };
+    distence: number;
+    keywords: string[];
   }[];
 }> {}
