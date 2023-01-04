@@ -1,17 +1,29 @@
 import { Controller } from '@nestjs/common';
+import { QueryBus } from '@nestjs/cqrs';
 import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { UserInterestKeyword } from '@prisma-client';
 import {
   ContentReactedEvent,
   GetUserInterestsScoresMessage,
   GetUserInterestsScoresMessageReply,
+  ProductPurchasedEvent,
+  ServicePurchasedEvent,
 } from 'nest-dto';
 import { KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
 import { PrismaService } from 'prismaService';
+import {
+  GetProductMetadataQuery,
+  GetProductMetadataQueryRes,
+  GetServiceMetadataQuery,
+  GetServiceMetadataQueryRes,
+} from './queries/impl';
 
 @Controller()
 export class UserInterestsController {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly querybus: QueryBus,
+  ) {}
 
   @EventPattern(KAFKA_EVENTS.REACTION_EVENTS.contentReacted('*'))
   async handleSocialContentReaction(
@@ -19,7 +31,48 @@ export class UserInterestsController {
   ) {
     const keywords = value.input.keywords;
     const userId = value.input.reacterUserId;
+    this.updateUserKeywords(keywords, userId);
+  }
 
+  @EventPattern(KAFKA_EVENTS.PRODUCTS_EVENTS.productPurchased)
+  async handleProductPurchased(
+    @Payload() { value }: { value: ProductPurchasedEvent },
+  ) {
+    const product = await this.querybus.execute<
+      GetProductMetadataQuery,
+      GetProductMetadataQueryRes
+    >(
+      new GetProductMetadataQuery(
+        value.input.productId,
+        value.input.purchaserId,
+      ),
+    );
+
+    const keywords = product.keywords;
+
+    this.updateUserKeywords(keywords, value.input.purchaserId);
+  }
+
+  @EventPattern(KAFKA_EVENTS.SERVICES.servicePurchased('*', true))
+  async handleServicePurchased(
+    @Payload() { value }: { value: ServicePurchasedEvent },
+  ) {
+    const service = await this.querybus.execute<
+      GetServiceMetadataQuery,
+      GetServiceMetadataQueryRes
+    >(
+      new GetServiceMetadataQuery(
+        value.input.serviceId,
+        value.input.purchaserId,
+      ),
+    );
+
+    const keywords = service.keywords;
+
+    this.updateUserKeywords(keywords, value.input.purchaserId);
+  }
+
+  async updateUserKeywords(keywords: string[], userId: string) {
     if (keywords) {
       const user = await this.prisma.userInterest.findUnique({
         where: {
