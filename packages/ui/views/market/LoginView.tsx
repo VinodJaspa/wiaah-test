@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import Link from "next/link";
 import { IoMdMail, IoMdKey } from "react-icons/io";
 import { Spacer, DividerWidthText, Input } from "@UI";
-import { LoginInputsType } from "../../../types/market/authenticating/loginInput.interface";
+import { LoginInputsType } from "types";
 import { LoginType } from "types";
 import { useUserData, useLoginPopup, Button, FormikInput } from "@UI";
 import { useTranslation } from "react-i18next";
@@ -80,9 +80,9 @@ export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
                     </span>
                   </div>
                   <Link href="/forgot-password">
-                    <a className="text-blue-400">
+                    <span className="text-blue-400">
                       {t("Forgot_Password?", "Forgot Password?")}
-                    </a>
+                    </span>
                   </Link>
                 </div>
                 <Spacer />

@@ -77,7 +77,10 @@ export const BuyerSignupView: FC<{}> = () => {
                   <p className="ml-2">
                     I read and accept
                     <Link href="/terms-conditions">
-                      <a className="text-blue-400"> terms and conditions.</a>
+                      <span className="text-blue-400">
+                        {" "}
+                        terms and conditions.
+                      </span>
                     </Link>
                   </p>
                 </div>
