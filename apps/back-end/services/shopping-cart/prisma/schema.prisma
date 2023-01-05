@@ -25,16 +25,15 @@ type CartProduct {
   shippingRuleId String
 }
 
-
 model BookedService {
-  id                  String @id @default(auto()) @map("_id") @db.ObjectId
-  ownerCart           Cart @relation(fields: [ownerId],references: [ownerId])
-  serviceId           String  @db.ObjectId
-  ownerId             String  @db.ObjectId
-  providerId          String  @db.ObjectId
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
-  purchased           Boolean @default(false)
+  id                  String        @id @default(auto()) @map("_id") @db.ObjectId
+  ownerCart           Cart          @relation(fields: [ownerId], references: [ownerId])
+  serviceId           String        @db.ObjectId
+  ownerId             String        @db.ObjectId
+  providerId          String        @db.ObjectId
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  purchased           Boolean       @default(false)
   status              ServiceStatus @default(pending)
   rejectReason        String?
   type                String

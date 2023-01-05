@@ -32,7 +32,7 @@ export class FriendsResolver {
     let users: Account[] = [];
 
     const {
-      results: { data, error, success },
+      results: { data, success },
     } = await KafkaMessageHandler<
       string,
       GetUserMostInteractionersMessage,
@@ -51,7 +51,7 @@ export class FriendsResolver {
 
     if (success) {
       const {
-        results: { data: bulkUsers, error, success },
+        results: { data: bulkUsers, success },
       } = await KafkaMessageHandler<
         string,
         GetBulkUserMostInteractionersMessage,
@@ -79,10 +79,12 @@ export class FriendsResolver {
           return [...acc, ...formatedUsers];
         }, [] as { id: string; finaleScore: number }[]);
 
+        const sorted = users.sort(
+          (first, second) => second.finaleScore - first.finaleScore,
+        );
+
         return {
-          accounts: users.sort(
-            (first, second) => first.finaleScore - second.finaleScore,
-          ),
+          accounts: sorted,
         };
       }
       return {

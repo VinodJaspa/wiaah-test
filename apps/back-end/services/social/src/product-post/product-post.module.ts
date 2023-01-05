@@ -6,9 +6,10 @@ import { productPostCommandHandlers } from './commands';
 // import { productPostEventHandlers } from './events';
 import { productPostQueryHandlers } from './queries';
 import { ProductPostController } from './product-post.controller';
+import { kafkaModule } from '@kafkaModule';
 
 @Module({
-  imports: [CqrsModule],
+  imports: [CqrsModule, kafkaModule],
   providers: [
     ProductPostResolver,
     ProductPostRepository,

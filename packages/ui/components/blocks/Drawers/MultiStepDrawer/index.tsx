@@ -55,7 +55,9 @@ const LinksStack: React.FC<{
                 className="nasted-menu-children group flex w-full cursor-pointer items-center justify-between rounded-full p-2 hover:bg-green-100"
               >
                 <Link href={step.url}>
-                  <a className="group-hover:text-green-400">{step.label}</a>
+                  <span className="group-hover:text-green-400">
+                    {step.label}
+                  </span>
                 </Link>
               </li>
             );
@@ -131,10 +133,10 @@ export const MultiStepDrawer: React.FC<MultiStepDrawerProps> = ({
             <div className="flex w-full items-center justify-between bg-gray-800 p-4 text-white">
               <span className="inline-flex items-center">
                 <Link href="/login">
-                  <a className="flex items-center">
+                  <span className="flex items-center">
                     <FaUserAlt className="mr-2 h-4 w-4" />{" "}
                     {t("Hello_Sign_in", "Hello, Sign in")}
-                  </a>
+                  </span>
                 </Link>
               </span>
               <div className="flex">

@@ -21,6 +21,8 @@ export const KAFKA_EVENTS = {
     deleteAccount: "delete.account",
     sellerAccountRefused: "account.seller.refused",
     accountSuspended: "account.suspended",
+    accountVerificationRequestRejected: "account.verification.request.rejected",
+    accountVerificationRequestAccepted: "account.verification.request.accepted",
   },
   USER_EVENTS: {
     userConnected: "user.connected",
@@ -185,6 +187,8 @@ export const KAFKA_EVENTS = {
       makeKafkaDynamicEvent(`service.purchased.${serviceType}`, regex),
     appointmentRefused: (key: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`appointment.refused.${key}`, regex),
+    serviceCreated: (key: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`service.created.${key}`, regex),
   },
   REVIEWS_EVENTS: {
     reviewCreated: (type: string, regex?: boolean) =>
@@ -227,6 +231,9 @@ export const KAFKA_MESSAGES = {
     getProductMetaData: "get.product.metadata",
     getProductsMetaData: "get.products.metadata",
     getProductsCheckoutData: "get.products.checkout.data",
+    getBulkUsersPaidProducts: "get.bulk.paid.products",
+    getUserPaidProducts: "get.user.paid.products",
+    getFilteredProducts: "get.filtered.products",
   },
   SHOP_MESSAGES: {
     isOwnerOfShop: "is.owner.of.shop",
@@ -238,6 +245,8 @@ export const KAFKA_MESSAGES = {
     getServicesCheckoutData: "get.services.checkout.data",
     getServiceOpenTimeData: (serviceType: string) =>
       `get.service.open.tiem.data-${serviceType}`,
+    getFilteredServices: (serviceType?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`get.services.filters.${serviceType}`, regex),
   },
   CURRENCY_MESSAGES: {
     getCurrencyExchangeRate: "get.currency.exchange.rate",
@@ -279,9 +288,16 @@ export const KAFKA_MESSAGES = {
     getUserMostInteractioners: () => `get.user.interactioners`,
     getBulkUserMostInteractioners: () => `get.bulk.user.interactioners`,
     getUsersActivityScoresByIds: () => `get.users.activity.scores.by.ids`,
+    getUserInterestsKeywords: () => `get.user.keywords.scores.by.id`,
   },
   SOCIAL_MESSAGES: {
     getUserFollowsData: () => `get.user.followers.data`,
+  },
+  BOOKING_MESSAGES: {
+    getBookedPaidServices: (type?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`get.booked.services.${type}`, regex),
+    getBulkBookedPaidServices: (type?: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`get.bulk.booked.services.${type}`, regex),
   },
 
   emailExists: "email.exists",

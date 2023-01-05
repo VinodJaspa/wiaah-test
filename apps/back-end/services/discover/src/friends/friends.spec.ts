@@ -7,10 +7,15 @@ import {
   requestGraphql,
   SERVICES,
   KafkaMessageHandler,
+  mockedUser,
 } from 'nest-utils';
 
 import * as NestUtils from 'nest-utils';
-import { GetUserMostInteractionersMessage } from 'nest-dto';
+import {
+  GetBulkUserMostInteractionersMessageReply,
+  GetUserMostInteractionersMessageReply,
+} from 'nest-dto';
+import { ObjectId } from 'mongodb';
 
 jest.mock('nest-utils', () => ({
   ...((jest.requireActual('nest-utils') as typeof NestUtils) || {}),
@@ -19,7 +24,7 @@ jest.mock('nest-utils', () => ({
 
 describe('friends tests', () => {
   let app: INestApplication;
-  let kafkaMock = NestKafkaClientMock;
+  let kafkaMock = new NestKafkaClientMock();
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
@@ -39,7 +44,7 @@ describe('friends tests', () => {
     requestGraphql(app, q, v).set({ user: JSON.stringify(u) });
 
   const getFriendSuggestionsQuery = `
-  query get(){
+  query{
     getMyFriendSuggestions {
         accounts {
             id
@@ -48,18 +53,51 @@ describe('friends tests', () => {
   }`;
 
   it('should get friend suggestions', async () => {
+    const interactioner1 = new ObjectId().toHexString();
+    const interactioner2 = new ObjectId().toHexString();
+    const interactioner3 = new ObjectId().toHexString();
     mockKafkaHandler.mockReturnValueOnce(
-      new GetUserMostInteractionersMessage({}),
+      new GetUserMostInteractionersMessageReply({
+        success: true,
+        data: { users: [{ id: interactioner1, score: 24 }] },
+        error: null,
+      }),
+    );
+
+    mockKafkaHandler.mockReturnValueOnce(
+      new GetBulkUserMostInteractionersMessageReply({
+        success: true,
+        data: {
+          users: [
+            {
+              id: interactioner1,
+              users: [
+                { id: interactioner3, score: 15 },
+                { id: interactioner2, score: 30 },
+              ],
+            },
+          ],
+        },
+        error: null,
+      }),
     );
 
     let res = await reqGql(getFriendSuggestionsQuery, {}, null);
 
     expect(res.body.errors).toBeDefined();
 
-    res = await reqGql(getFriendSuggestionsQuery, {}, null);
+    res = await reqGql(getFriendSuggestionsQuery, {}, mockedUser);
 
     expect(res.body.errors).not.toBeDefined();
 
-    expect(res.body.data.getMyFriendSuggestions).toHaveLength(10);
+    expect(res.body.data.getMyFriendSuggestions.accounts).toHaveLength(2);
+    expect(res.body.data.getMyFriendSuggestions.accounts[0].id).toBe(
+      interactioner2,
+    );
+    expect(res.body.data.getMyFriendSuggestions.accounts[1].id).toBe(
+      interactioner3,
+    );
+
+    expect(mockKafkaHandler).toBeCalledTimes(2);
   });
 });

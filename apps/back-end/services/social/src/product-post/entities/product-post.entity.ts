@@ -1,7 +1,9 @@
 import { Account, PostLocation } from '@entities';
-import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
+import { ObjectType, Field, ID, Int, registerEnumType } from '@nestjs/graphql';
 import { CommentsVisibility, PostVisibility } from 'prismaClient';
 import { Product } from './extends';
+
+registerEnumType(PostVisibility, { name: 'PostVisibility' });
 
 @ObjectType()
 export class ProductPost {

@@ -9,4 +9,5 @@ export class GetServiceMetaDataMessageReply extends KafkaMessageReply<{
   price: number;
   thumbnail: string;
   providerId: string;
+  keywords: string[];
 }> {}

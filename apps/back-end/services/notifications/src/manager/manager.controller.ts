@@ -2,6 +2,8 @@ import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import {
   AccountSuspendedEvent,
+  AccountVerificationRequestAcceptedEvent,
+  AccountVerificationRequestRejectedEvent,
   AppointmentRefusedEvent,
   CashbackAddedEvent,
   CommentCreatedEvent,
@@ -361,6 +363,20 @@ export class ManagerController extends NotifciationBaseController {
       content: {
         lang: 'en',
         value: `your account have been reported for inappropriate content and have been suspended`,
+      },
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountVerificationRequestRejected)
+  handleAccountVerificationRejected(
+    @Payload() { value }: { value: AccountVerificationRequestRejectedEvent },
+  ) {
+    this.service.createNotification({
+      contentOwnerUserId: value.input.id,
+      type: NotificationTypes.warning,
+      content: {
+        lang: 'en',
+        value: `your account verification request have been rejected reason:${value.input.rejectReason}`,
       },
     });
   }

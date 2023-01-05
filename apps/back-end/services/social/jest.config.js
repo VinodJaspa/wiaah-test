@@ -23,7 +23,7 @@ module.exports = {
     '^@comments/(.+)$': '<rootDir>/src/comments/$1',
     '@keys': '<rootDir>/src/keys',
     '@posts-newsfeed': '<rootDir>/src/newsfeed-posts',
-    '@prisma-module': '<rootDir>/src/app.module',
+    '@prisma-module': '<rootDir>/src/prisma.module',
     '^@block/(.+)$': '<rootDir>/src/block/$1',
     '^@privacy-settings/(.+)$': '<rootDir>/src/privacy/$1',
     '@kafkaModule': '<rootDir>/src/kafka.module.ts',

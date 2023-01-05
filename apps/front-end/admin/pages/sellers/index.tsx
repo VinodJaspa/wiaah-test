@@ -23,6 +23,14 @@ import {
   LockIcon,
   EditIcon,
   TableContainer,
+  QrcodeDisplay,
+  Button,
+  Modal,
+  ModalContent,
+  ModalOverlay,
+  ModalHeader,
+  CloseIcon,
+  ModalCloseButton,
 } from "ui";
 import { NumberShortner, randomNum } from "utils";
 
@@ -39,6 +47,7 @@ type Seller = {
   plan: string;
   visits: number;
   country: string;
+  verified: boolean;
   city: string;
   ips: string[];
 };
@@ -52,6 +61,7 @@ let mockSellers: Seller[] = [...Array(15)].map((_, i) => ({
   email: "testemail" + i + "@email.com",
   createdAt: new Date(),
   products: randomNum(50),
+  verified: randomNum(100) > 50,
   sales: randomNum(150),
   status: randomNum(100) % 2 === 0 ? "active" : "inActive",
   thumbanil: "/wiaah_logo.png",
@@ -64,8 +74,10 @@ let mockSellers: Seller[] = [...Array(15)].map((_, i) => ({
 
 const sellers: NextPage = () => {
   const { t } = useTranslation();
-  const { visit, getCurrentPath } = useRouting();
+  const { visit, getCurrentPath, getUrl } = useRouting();
+  const [qrcode, setQrCode] = React.useState<string>();
   const { changeTotalItems, controls, pagination } = usePaginationControls();
+  console.log(qrcode);
   return (
     <TableContainer>
       <Table
@@ -77,6 +89,7 @@ const sellers: NextPage = () => {
             <Th></Th>
             <Th className="text-left">{t("Seller")}</Th>
             <Th>{t("Email")}</Th>
+            <Th>{t("Verification Status")}</Th>
             <Th>{t("Products")}</Th>
             <Th>{t("Sales")}</Th>
             <Th>{t("Balance")}</Th>
@@ -87,6 +100,7 @@ const sellers: NextPage = () => {
             <Th>{t("city")}</Th>
             <Th>{t("Country")}</Th>
             <Th>{t("IPs")}</Th>
+            <Th>{t("QR Code")}</Th>
             <Th>{t("Action")}</Th>
           </Tr>
         </THead>
@@ -96,6 +110,12 @@ const sellers: NextPage = () => {
             <Td></Td>
             <Td>
               <Input />
+            </Td>
+            <Td>
+              <Select>
+                <SelectOption value={true}>{t("Verified")}</SelectOption>
+                <SelectOption value={false}>{t("unVerified")}</SelectOption>
+              </Select>
             </Td>
             <Td>
               <Input />
@@ -139,6 +159,7 @@ const sellers: NextPage = () => {
               </Td>
               <Td>{seller.name}</Td>
               <Td>{seller.email}</Td>
+              <Td>{seller.verified ? t("Verified") : t("unVerified")}</Td>
               <Td>{seller.products}</Td>
               <Td>{NumberShortner(seller.sales)}</Td>
               <Td>{NumberShortner(seller.balance)}</Td>
@@ -154,6 +175,19 @@ const sellers: NextPage = () => {
                     <p key={v + i}>{v}</p>
                   ))}
                 </div>
+              </Td>
+              <Td>
+                <Button
+                  onClick={() => {
+                    setQrCode(
+                      getUrl((r) =>
+                        r.visitSellerSocialProfile({ sellerId: seller.id })
+                      )
+                    );
+                  }}
+                >
+                  {t("Show Qr Code")}
+                </Button>
               </Td>
               <Td>
                 <div className="grid grid-cols-3 justify-center gap-2 fill-white text-white text-sm">
@@ -180,6 +214,20 @@ const sellers: NextPage = () => {
         </TBody>
       </Table>
       <Pagination />
+      <Modal isOpen={!!qrcode} onClose={() => setQrCode(undefined)}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader title={""} className="flex justify-between">
+            <span></span>
+            <ModalCloseButton>
+              <CloseIcon />
+            </ModalCloseButton>
+          </ModalHeader>
+          <div className="w-96 mx-auto">
+            <QrcodeDisplay value={qrcode} />
+          </div>
+        </ModalContent>
+      </Modal>
     </TableContainer>
   );
 };

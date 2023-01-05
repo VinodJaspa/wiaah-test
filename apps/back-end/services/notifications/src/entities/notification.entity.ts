@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
+import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
 import { CreateGqlPaginatedResponse } from 'nest-utils';
 import { NotificationType } from 'prismaClient';
 import { User } from './extends';

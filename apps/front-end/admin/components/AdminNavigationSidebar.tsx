@@ -15,6 +15,7 @@ import {
   PercentIcon,
   NotAllowedIcon,
   DownloadIcon,
+  VerifiedIcon,
 } from "ui";
 import { FiActivity, FiSettings } from "react-icons/fi";
 import { BiBrush, BiMoney } from "react-icons/bi";
@@ -504,6 +505,13 @@ export const AdminNavigationSidebar: React.FC<{
       onClick() {},
       subLinks: [],
       slug: "profession",
+    },
+    {
+      icon: <VerifiedIcon />,
+      name: t("Account Verifications"),
+      onClick() {},
+      subLinks: [],
+      slug: "account-verification",
     },
   ];
 

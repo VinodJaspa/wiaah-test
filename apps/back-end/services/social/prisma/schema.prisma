@@ -96,6 +96,18 @@ model ProductPost {
   commentsVisibility CommentsVisibility @default(public)
 }
 
+model ServicePost {
+  id                 String             @id @default(auto()) @map("_id") @db.ObjectId
+  serviceId          String             @db.ObjectId
+  userId             String             @db.ObjectId
+  reactionNum        Int                @default(0)
+  comments           Int                @default(0)
+  shares             Int                @default(0)
+  visibility         PostVisibility     @default(hidden)
+  location           PostLocation?
+  commentsVisibility CommentsVisibility @default(public)
+}
+
 model AffiliationPost {
   id                 String             @id @default(auto()) @map("_id") @db.ObjectId
   affiliationId      String             @db.ObjectId

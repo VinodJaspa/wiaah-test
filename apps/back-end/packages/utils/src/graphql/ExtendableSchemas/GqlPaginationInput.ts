@@ -14,8 +14,8 @@ export class GqlCursorPaginationInput {
   @Field(() => Int)
   take: number;
 
-  @Field(() => Int)
-  cursor: number;
+  @Field(() => String)
+  cursor: string;
 }
 
 @InputType()

@@ -13,6 +13,15 @@ type UnwrapTuple<Tuple extends readonly unknown[]> = {
 
 
 /**
+ * Model UserInterestKeyword
+ * 
+ */
+export type UserInterestKeyword = {
+  value: string
+  score: number
+}
+
+/**
  * Model UserActivityStats
  * 
  */
@@ -54,6 +63,16 @@ export type UsersInteractions = {
   interactionScore: number
   createdAt: Date
   updatedAt: Date
+}
+
+/**
+ * Model UserInterest
+ * 
+ */
+export type UserInterest = {
+  id: string
+  userId: string
+  keywords: UserInterestKeyword[]
 }
 
 /**
@@ -207,6 +226,16 @@ export class PrismaClient<
     * ```
     */
   get usersInteractions(): Prisma.UsersInteractionsDelegate<GlobalReject>;
+
+  /**
+   * `prisma.userInterest`: Exposes CRUD operations for the **UserInterest** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserInterests
+    * const userInterests = await prisma.userInterest.findMany()
+    * ```
+    */
+  get userInterest(): Prisma.UserInterestDelegate<GlobalReject>;
 
   /**
    * `prisma.event`: Exposes CRUD operations for the **Event** model.
@@ -636,6 +665,7 @@ export namespace Prisma {
     UserActivityStats: 'UserActivityStats',
     ActivityScore: 'ActivityScore',
     UsersInteractions: 'UsersInteractions',
+    UserInterest: 'UserInterest',
     Event: 'Event'
   };
 
@@ -798,6 +828,109 @@ export namespace Prisma {
   /**
    * Models
    */
+
+  /**
+   * Model UserInterestKeyword
+   */
+
+
+
+
+
+  export type UserInterestKeywordSelect = {
+    value?: boolean
+    score?: boolean
+  }
+
+  export type UserInterestKeywordGetPayload<
+    S extends boolean | null | undefined | UserInterestKeywordArgs,
+    U = keyof S
+      > = S extends true
+        ? UserInterestKeyword
+    : S extends undefined
+    ? never
+    : S extends UserInterestKeywordArgs
+    ?'include' extends U
+    ? UserInterestKeyword 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]:
+    P extends keyof UserInterestKeyword ? UserInterestKeyword[P] : never
+  } 
+    : UserInterestKeyword
+  : UserInterestKeyword
+
+
+
+  export interface UserInterestKeywordDelegate<GlobalRejectSettings> {
+
+
+
+
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserInterestKeyword.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__UserInterestKeywordClient<T> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+  // Custom InputTypes
+
+  /**
+   * UserInterestKeyword without action
+   */
+  export type UserInterestKeywordArgs = {
+    /**
+     * Select specific fields to fetch from the UserInterestKeyword
+     * 
+    **/
+    select?: UserInterestKeywordSelect | null
+  }
+
+
 
   /**
    * Model UserActivityStats
@@ -3631,6 +3764,906 @@ export namespace Prisma {
 
 
   /**
+   * Model UserInterest
+   */
+
+
+  export type AggregateUserInterest = {
+    _count: UserInterestCountAggregateOutputType | null
+    _min: UserInterestMinAggregateOutputType | null
+    _max: UserInterestMaxAggregateOutputType | null
+  }
+
+  export type UserInterestMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+  }
+
+  export type UserInterestMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+  }
+
+  export type UserInterestCountAggregateOutputType = {
+    id: number
+    userId: number
+    _all: number
+  }
+
+
+  export type UserInterestMinAggregateInputType = {
+    id?: true
+    userId?: true
+  }
+
+  export type UserInterestMaxAggregateInputType = {
+    id?: true
+    userId?: true
+  }
+
+  export type UserInterestCountAggregateInputType = {
+    id?: true
+    userId?: true
+    _all?: true
+  }
+
+  export type UserInterestAggregateArgs = {
+    /**
+     * Filter which UserInterest to aggregate.
+     * 
+    **/
+    where?: UserInterestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserInterests to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<UserInterestOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: UserInterestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserInterests from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserInterests.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserInterests
+    **/
+    _count?: true | UserInterestCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserInterestMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserInterestMaxAggregateInputType
+  }
+
+  export type GetUserInterestAggregateType<T extends UserInterestAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserInterest]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserInterest[P]>
+      : GetScalarType<T[P], AggregateUserInterest[P]>
+  }
+
+
+
+
+  export type UserInterestGroupByArgs = {
+    where?: UserInterestWhereInput
+    orderBy?: Enumerable<UserInterestOrderByWithAggregationInput>
+    by: Array<UserInterestScalarFieldEnum>
+    having?: UserInterestScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserInterestCountAggregateInputType | true
+    _min?: UserInterestMinAggregateInputType
+    _max?: UserInterestMaxAggregateInputType
+  }
+
+
+  export type UserInterestGroupByOutputType = {
+    id: string
+    userId: string
+    _count: UserInterestCountAggregateOutputType | null
+    _min: UserInterestMinAggregateOutputType | null
+    _max: UserInterestMaxAggregateOutputType | null
+  }
+
+  type GetUserInterestGroupByPayload<T extends UserInterestGroupByArgs> = PrismaPromise<
+    Array<
+      PickArray<UserInterestGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserInterestGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserInterestGroupByOutputType[P]>
+            : GetScalarType<T[P], UserInterestGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserInterestSelect = {
+    id?: boolean
+    userId?: boolean
+    keywords?: boolean | UserInterestKeywordArgs
+  }
+
+  export type UserInterestInclude = {
+
+  }
+
+  export type UserInterestGetPayload<
+    S extends boolean | null | undefined | UserInterestArgs,
+    U = keyof S
+      > = S extends true
+        ? UserInterest
+    : S extends undefined
+    ? never
+    : S extends UserInterestArgs | UserInterestFindManyArgs
+    ?'include' extends U
+    ? UserInterest  & {
+    [P in TrueKeys<S['include']>]:
+        P extends 'keywords' ? Array < UserInterestKeywordGetPayload<S['include'][P]>>  :  never
+  } 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]:
+        P extends 'keywords' ? Array < UserInterestKeywordGetPayload<S['select'][P]>>  :  P extends keyof UserInterest ? UserInterest[P] : never
+  } 
+    : UserInterest
+  : UserInterest
+
+
+  type UserInterestCountArgs = Merge<
+    Omit<UserInterestFindManyArgs, 'select' | 'include'> & {
+      select?: UserInterestCountAggregateInputType | true
+    }
+  >
+
+  export interface UserInterestDelegate<GlobalRejectSettings> {
+    /**
+     * Find zero or one UserInterest that matches the filter.
+     * @param {UserInterestFindUniqueArgs} args - Arguments to find a UserInterest
+     * @example
+     * // Get one UserInterest
+     * const userInterest = await prisma.userInterest.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends UserInterestFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, UserInterestFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'UserInterest'> extends True ? CheckSelect<T, Prisma__UserInterestClient<UserInterest>, Prisma__UserInterestClient<UserInterestGetPayload<T>>> : CheckSelect<T, Prisma__UserInterestClient<UserInterest | null >, Prisma__UserInterestClient<UserInterestGetPayload<T> | null >>
+
+    /**
+     * Find the first UserInterest that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserInterestFindFirstArgs} args - Arguments to find a UserInterest
+     * @example
+     * // Get one UserInterest
+     * const userInterest = await prisma.userInterest.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends UserInterestFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, UserInterestFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'UserInterest'> extends True ? CheckSelect<T, Prisma__UserInterestClient<UserInterest>, Prisma__UserInterestClient<UserInterestGetPayload<T>>> : CheckSelect<T, Prisma__UserInterestClient<UserInterest | null >, Prisma__UserInterestClient<UserInterestGetPayload<T> | null >>
+
+    /**
+     * Find zero or more UserInterests that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserInterestFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserInterests
+     * const userInterests = await prisma.userInterest.findMany()
+     * 
+     * // Get first 10 UserInterests
+     * const userInterests = await prisma.userInterest.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userInterestWithIdOnly = await prisma.userInterest.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends UserInterestFindManyArgs>(
+      args?: SelectSubset<T, UserInterestFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<UserInterest>>, PrismaPromise<Array<UserInterestGetPayload<T>>>>
+
+    /**
+     * Create a UserInterest.
+     * @param {UserInterestCreateArgs} args - Arguments to create a UserInterest.
+     * @example
+     * // Create one UserInterest
+     * const UserInterest = await prisma.userInterest.create({
+     *   data: {
+     *     // ... data to create a UserInterest
+     *   }
+     * })
+     * 
+    **/
+    create<T extends UserInterestCreateArgs>(
+      args: SelectSubset<T, UserInterestCreateArgs>
+    ): CheckSelect<T, Prisma__UserInterestClient<UserInterest>, Prisma__UserInterestClient<UserInterestGetPayload<T>>>
+
+    /**
+     * Create many UserInterests.
+     *     @param {UserInterestCreateManyArgs} args - Arguments to create many UserInterests.
+     *     @example
+     *     // Create many UserInterests
+     *     const userInterest = await prisma.userInterest.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends UserInterestCreateManyArgs>(
+      args?: SelectSubset<T, UserInterestCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a UserInterest.
+     * @param {UserInterestDeleteArgs} args - Arguments to delete one UserInterest.
+     * @example
+     * // Delete one UserInterest
+     * const UserInterest = await prisma.userInterest.delete({
+     *   where: {
+     *     // ... filter to delete one UserInterest
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends UserInterestDeleteArgs>(
+      args: SelectSubset<T, UserInterestDeleteArgs>
+    ): CheckSelect<T, Prisma__UserInterestClient<UserInterest>, Prisma__UserInterestClient<UserInterestGetPayload<T>>>
+
+    /**
+     * Update one UserInterest.
+     * @param {UserInterestUpdateArgs} args - Arguments to update one UserInterest.
+     * @example
+     * // Update one UserInterest
+     * const userInterest = await prisma.userInterest.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends UserInterestUpdateArgs>(
+      args: SelectSubset<T, UserInterestUpdateArgs>
+    ): CheckSelect<T, Prisma__UserInterestClient<UserInterest>, Prisma__UserInterestClient<UserInterestGetPayload<T>>>
+
+    /**
+     * Delete zero or more UserInterests.
+     * @param {UserInterestDeleteManyArgs} args - Arguments to filter UserInterests to delete.
+     * @example
+     * // Delete a few UserInterests
+     * const { count } = await prisma.userInterest.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends UserInterestDeleteManyArgs>(
+      args?: SelectSubset<T, UserInterestDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserInterests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserInterestUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserInterests
+     * const userInterest = await prisma.userInterest.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends UserInterestUpdateManyArgs>(
+      args: SelectSubset<T, UserInterestUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one UserInterest.
+     * @param {UserInterestUpsertArgs} args - Arguments to update or create a UserInterest.
+     * @example
+     * // Update or create a UserInterest
+     * const userInterest = await prisma.userInterest.upsert({
+     *   create: {
+     *     // ... data to create a UserInterest
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserInterest we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends UserInterestUpsertArgs>(
+      args: SelectSubset<T, UserInterestUpsertArgs>
+    ): CheckSelect<T, Prisma__UserInterestClient<UserInterest>, Prisma__UserInterestClient<UserInterestGetPayload<T>>>
+
+    /**
+     * Find zero or more UserInterests that matches the filter.
+     * @param {UserInterestFindRawArgs} args - Select which filters you would like to apply.
+     * @example
+     * const userInterest = await prisma.userInterest.findRaw({
+     *   filter: { age: { $gt: 25 } } 
+     * })
+    **/
+    findRaw(
+      args?: UserInterestFindRawArgs
+    ): PrismaPromise<JsonObject>
+
+    /**
+     * Perform aggregation operations on a UserInterest.
+     * @param {UserInterestAggregateRawArgs} args - Select which aggregations you would like to apply.
+     * @example
+     * const userInterest = await prisma.userInterest.aggregateRaw({
+     *   pipeline: [
+     *     { $match: { status: "registered" } },
+     *     { $group: { _id: "$country", total: { $sum: 1 } } }
+     *   ]
+     * })
+    **/
+    aggregateRaw(
+      args?: UserInterestAggregateRawArgs
+    ): PrismaPromise<JsonObject>
+
+    /**
+     * Count the number of UserInterests.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserInterestCountArgs} args - Arguments to filter UserInterests to count.
+     * @example
+     * // Count the number of UserInterests
+     * const count = await prisma.userInterest.count({
+     *   where: {
+     *     // ... the filter for the UserInterests we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserInterestCountArgs>(
+      args?: Subset<T, UserInterestCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserInterestCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserInterest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserInterestAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserInterestAggregateArgs>(args: Subset<T, UserInterestAggregateArgs>): PrismaPromise<GetUserInterestAggregateType<T>>
+
+    /**
+     * Group by UserInterest.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserInterestGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserInterestGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserInterestGroupByArgs['orderBy'] }
+        : { orderBy?: UserInterestGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserInterestGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserInterestGroupByPayload<T> : PrismaPromise<InputErrors>
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserInterest.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__UserInterestClient<T> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+    keywords<T extends UserInterestKeywordArgs = {}>(args?: Subset<T, UserInterestKeywordArgs>): CheckSelect<T, PrismaPromise<Array<UserInterestKeyword>>, PrismaPromise<Array<UserInterestKeywordGetPayload<T>>>>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+  // Custom InputTypes
+
+  /**
+   * UserInterest findUnique
+   */
+  export type UserInterestFindUniqueArgs = {
+    /**
+     * Select specific fields to fetch from the UserInterest
+     * 
+    **/
+    select?: UserInterestSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInterestInclude | null
+    /**
+     * Throw an Error if a UserInterest can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which UserInterest to fetch.
+     * 
+    **/
+    where: UserInterestWhereUniqueInput
+  }
+
+
+  /**
+   * UserInterest findFirst
+   */
+  export type UserInterestFindFirstArgs = {
+    /**
+     * Select specific fields to fetch from the UserInterest
+     * 
+    **/
+    select?: UserInterestSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInterestInclude | null
+    /**
+     * Throw an Error if a UserInterest can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which UserInterest to fetch.
+     * 
+    **/
+    where?: UserInterestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserInterests to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<UserInterestOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserInterests.
+     * 
+    **/
+    cursor?: UserInterestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserInterests from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserInterests.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserInterests.
+     * 
+    **/
+    distinct?: Enumerable<UserInterestScalarFieldEnum>
+  }
+
+
+  /**
+   * UserInterest findMany
+   */
+  export type UserInterestFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the UserInterest
+     * 
+    **/
+    select?: UserInterestSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInterestInclude | null
+    /**
+     * Filter, which UserInterests to fetch.
+     * 
+    **/
+    where?: UserInterestWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserInterests to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<UserInterestOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserInterests.
+     * 
+    **/
+    cursor?: UserInterestWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserInterests from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserInterests.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<UserInterestScalarFieldEnum>
+  }
+
+
+  /**
+   * UserInterest create
+   */
+  export type UserInterestCreateArgs = {
+    /**
+     * Select specific fields to fetch from the UserInterest
+     * 
+    **/
+    select?: UserInterestSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInterestInclude | null
+    /**
+     * The data needed to create a UserInterest.
+     * 
+    **/
+    data: XOR<UserInterestCreateInput, UserInterestUncheckedCreateInput>
+  }
+
+
+  /**
+   * UserInterest createMany
+   */
+  export type UserInterestCreateManyArgs = {
+    /**
+     * The data used to create many UserInterests.
+     * 
+    **/
+    data: Enumerable<UserInterestCreateManyInput>
+  }
+
+
+  /**
+   * UserInterest update
+   */
+  export type UserInterestUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the UserInterest
+     * 
+    **/
+    select?: UserInterestSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInterestInclude | null
+    /**
+     * The data needed to update a UserInterest.
+     * 
+    **/
+    data: XOR<UserInterestUpdateInput, UserInterestUncheckedUpdateInput>
+    /**
+     * Choose, which UserInterest to update.
+     * 
+    **/
+    where: UserInterestWhereUniqueInput
+  }
+
+
+  /**
+   * UserInterest updateMany
+   */
+  export type UserInterestUpdateManyArgs = {
+    /**
+     * The data used to update UserInterests.
+     * 
+    **/
+    data: XOR<UserInterestUpdateManyMutationInput, UserInterestUncheckedUpdateManyInput>
+    /**
+     * Filter which UserInterests to update
+     * 
+    **/
+    where?: UserInterestWhereInput
+  }
+
+
+  /**
+   * UserInterest upsert
+   */
+  export type UserInterestUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the UserInterest
+     * 
+    **/
+    select?: UserInterestSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInterestInclude | null
+    /**
+     * The filter to search for the UserInterest to update in case it exists.
+     * 
+    **/
+    where: UserInterestWhereUniqueInput
+    /**
+     * In case the UserInterest found by the `where` argument doesn't exist, create a new UserInterest with this data.
+     * 
+    **/
+    create: XOR<UserInterestCreateInput, UserInterestUncheckedCreateInput>
+    /**
+     * In case the UserInterest was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<UserInterestUpdateInput, UserInterestUncheckedUpdateInput>
+  }
+
+
+  /**
+   * UserInterest delete
+   */
+  export type UserInterestDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the UserInterest
+     * 
+    **/
+    select?: UserInterestSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInterestInclude | null
+    /**
+     * Filter which UserInterest to delete.
+     * 
+    **/
+    where: UserInterestWhereUniqueInput
+  }
+
+
+  /**
+   * UserInterest deleteMany
+   */
+  export type UserInterestDeleteManyArgs = {
+    /**
+     * Filter which UserInterests to delete
+     * 
+    **/
+    where?: UserInterestWhereInput
+  }
+
+
+  /**
+   * UserInterest findRaw
+   */
+  export type UserInterestFindRawArgs = {
+    /**
+     * The query predicate filter. If unspecified, then all documents in the collection will match the predicate. ${@link https://docs.mongodb.com/manual/reference/operator/query MongoDB Docs}.
+     * 
+    **/
+    filter?: InputJsonValue
+    /**
+     * Additional options to pass to the `find` command ${@link https://docs.mongodb.com/manual/reference/command/find/#command-fields MongoDB Docs}.
+     * 
+    **/
+    options?: InputJsonValue
+  }
+
+
+  /**
+   * UserInterest aggregateRaw
+   */
+  export type UserInterestAggregateRawArgs = {
+    /**
+     * An array of aggregation stages to process and transform the document stream via the aggregation pipeline. ${@link https://docs.mongodb.com/manual/reference/operator/aggregation-pipeline MongoDB Docs}.
+     * 
+    **/
+    pipeline?: Array<InputJsonValue>
+    /**
+     * Additional options to pass to the `aggregate` command ${@link https://docs.mongodb.com/manual/reference/command/aggregate/#command-fields MongoDB Docs}.
+     * 
+    **/
+    options?: InputJsonValue
+  }
+
+
+  /**
+   * UserInterest without action
+   */
+  export type UserInterestArgs = {
+    /**
+     * Select specific fields to fetch from the UserInterest
+     * 
+    **/
+    select?: UserInterestSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: UserInterestInclude | null
+  }
+
+
+
+  /**
    * Model Event
    */
 
@@ -4545,6 +5578,14 @@ export namespace Prisma {
   export type UsersInteractionsScalarFieldEnum = (typeof UsersInteractionsScalarFieldEnum)[keyof typeof UsersInteractionsScalarFieldEnum]
 
 
+  export const UserInterestScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId'
+  };
+
+  export type UserInterestScalarFieldEnum = (typeof UserInterestScalarFieldEnum)[keyof typeof UserInterestScalarFieldEnum]
+
+
   export const EventScalarFieldEnum: {
     id: 'id',
     key: 'key',
@@ -4748,6 +5789,42 @@ export namespace Prisma {
     interactionScore?: FloatWithAggregatesFilter | number
     createdAt?: DateTimeWithAggregatesFilter | Date | string
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
+  }
+
+  export type UserInterestWhereInput = {
+    AND?: Enumerable<UserInterestWhereInput>
+    OR?: Enumerable<UserInterestWhereInput>
+    NOT?: Enumerable<UserInterestWhereInput>
+    id?: StringFilter | string
+    userId?: StringFilter | string
+    keywords?: XOR<UserInterestKeywordCompositeListFilter, Enumerable<UserInterestKeywordObjectEqualityInput>>
+  }
+
+  export type UserInterestOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    keywords?: UserInterestKeywordOrderByCompositeAggregateInput
+  }
+
+  export type UserInterestWhereUniqueInput = {
+    id?: string
+    userId?: string
+  }
+
+  export type UserInterestOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    _count?: UserInterestCountOrderByAggregateInput
+    _max?: UserInterestMaxOrderByAggregateInput
+    _min?: UserInterestMinOrderByAggregateInput
+  }
+
+  export type UserInterestScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<UserInterestScalarWhereWithAggregatesInput>
+    OR?: Enumerable<UserInterestScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<UserInterestScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    userId?: StringWithAggregatesFilter | string
   }
 
   export type EventWhereInput = {
@@ -5001,6 +6078,44 @@ export namespace Prisma {
     interactionScore?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserInterestCreateInput = {
+    id?: string
+    userId: string
+    keywords?: XOR<UserInterestKeywordListCreateEnvelopeInput, Enumerable<UserInterestKeywordCreateInput>>
+  }
+
+  export type UserInterestUncheckedCreateInput = {
+    id?: string
+    userId: string
+    keywords?: XOR<UserInterestKeywordListCreateEnvelopeInput, Enumerable<UserInterestKeywordCreateInput>>
+  }
+
+  export type UserInterestUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    keywords?: XOR<UserInterestKeywordListUpdateEnvelopeInput, Enumerable<UserInterestKeywordCreateInput>>
+  }
+
+  export type UserInterestUncheckedUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    keywords?: XOR<UserInterestKeywordListUpdateEnvelopeInput, Enumerable<UserInterestKeywordCreateInput>>
+  }
+
+  export type UserInterestCreateManyInput = {
+    id?: string
+    userId: string
+    keywords?: XOR<UserInterestKeywordListCreateEnvelopeInput, Enumerable<UserInterestKeywordCreateInput>>
+  }
+
+  export type UserInterestUpdateManyMutationInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    keywords?: XOR<UserInterestKeywordListUpdateEnvelopeInput, Enumerable<UserInterestKeywordCreateInput>>
+  }
+
+  export type UserInterestUncheckedUpdateManyInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    keywords?: XOR<UserInterestKeywordListUpdateEnvelopeInput, Enumerable<UserInterestKeywordCreateInput>>
   }
 
   export type EventCreateInput = {
@@ -5332,6 +6447,39 @@ export namespace Prisma {
     interactionScore?: SortOrder
   }
 
+  export type UserInterestKeywordCompositeListFilter = {
+    equals?: Enumerable<UserInterestKeywordObjectEqualityInput>
+    every?: UserInterestKeywordWhereInput
+    some?: UserInterestKeywordWhereInput
+    none?: UserInterestKeywordWhereInput
+    isEmpty?: boolean
+    isSet?: boolean
+  }
+
+  export type UserInterestKeywordObjectEqualityInput = {
+    value: string
+    score: number
+  }
+
+  export type UserInterestKeywordOrderByCompositeAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type UserInterestCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type UserInterestMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+  }
+
+  export type UserInterestMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+  }
+
   export type StringNullableFilter = {
     equals?: string | null
     in?: Enumerable<string> | null
@@ -5415,6 +6563,22 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type UserInterestKeywordListCreateEnvelopeInput = {
+    set?: Enumerable<UserInterestKeywordCreateInput>
+  }
+
+  export type UserInterestKeywordCreateInput = {
+    value: string
+    score: number
+  }
+
+  export type UserInterestKeywordListUpdateEnvelopeInput = {
+    set?: Enumerable<UserInterestKeywordCreateInput>
+    push?: Enumerable<UserInterestKeywordCreateInput>
+    updateMany?: UserInterestKeywordUpdateManyInput
+    deleteMany?: UserInterestKeywordDeleteManyInput
   }
 
   export type NullableStringFieldUpdateOperationsInput = {
@@ -5571,6 +6735,14 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter
   }
 
+  export type UserInterestKeywordWhereInput = {
+    AND?: Enumerable<UserInterestKeywordWhereInput>
+    OR?: Enumerable<UserInterestKeywordWhereInput>
+    NOT?: Enumerable<UserInterestKeywordWhereInput>
+    value?: StringFilter | string
+    score?: FloatFilter | number
+  }
+
   export type NestedStringNullableFilter = {
     equals?: string | null
     in?: Enumerable<string> | null
@@ -5602,6 +6774,20 @@ export namespace Prisma {
     _min?: NestedStringNullableFilter
     _max?: NestedStringNullableFilter
     isSet?: boolean
+  }
+
+  export type UserInterestKeywordUpdateManyInput = {
+    where: UserInterestKeywordWhereInput
+    data: UserInterestKeywordUpdateInput
+  }
+
+  export type UserInterestKeywordDeleteManyInput = {
+    where: UserInterestKeywordWhereInput
+  }
+
+  export type UserInterestKeywordUpdateInput = {
+    value?: StringFieldUpdateOperationsInput | string
+    score?: FloatFieldUpdateOperationsInput | number
   }
 
 
