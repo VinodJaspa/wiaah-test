@@ -4,6 +4,7 @@ import {
   Button,
   CloseIcon,
   EyeIcon,
+  Input,
   Modal,
   ModalCloseButton,
   ModalContent,
@@ -14,7 +15,9 @@ import {
   SelectOption,
   Textarea,
   TrashIcon,
+  Radio,
 } from "@partials";
+import { ChooseWithInput } from "ui";
 import { NextPage } from "next";
 import { getRandomImage } from "placeholder";
 import React from "react";
@@ -24,6 +27,7 @@ import { randomNum } from "utils";
 import { startCase } from "lodash";
 import { usePaginationControls } from "@blocks";
 import { useRouting } from "routing";
+import { Form, Formik } from "formik";
 
 interface AccountVerificationRequest {
   id: string;
@@ -165,23 +169,90 @@ const AccountVerifications: NextPage = () => {
       <Modal isOpen={!!refuseId} onClose={() => setRefuseId(undefined)}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader title={t("Refuse Account Verification")}>
+          <ModalHeader title={""}>
             <ModalCloseButton>
               <CloseIcon />
             </ModalCloseButton>
           </ModalHeader>
-          <Textarea
-            placeholder={t("Refuse Reason")}
-            className="resize-none h-[10rem]"
-          />
-          <ModalFooter>
-            <ModalCloseButton>
-              <Button colorScheme="danger" outline>
-                {t("Cancel")}
-              </Button>
-            </ModalCloseButton>
-            <Button colorScheme="danger">{t("Reject")}</Button>
-          </ModalFooter>
+          <Formik
+            initialValues={{
+              reason: "",
+              otherReason: "",
+            }}
+            onSubmit={() => {}}
+          >
+            {({ setFieldValue, values }) => (
+              <Form>
+                <div className="flex flex-col gap-4">
+                  <p className="font-semibold text-xl">
+                    {t("why do you think this account should be refused ?")}
+                  </p>
+
+                  <Radio
+                    onChange={(e) =>
+                      e.target.checked
+                        ? setFieldValue("reason", e.target.name)
+                        : null
+                    }
+                    name={"seller_refuse_reason"}
+                  >
+                    {t("seller_refuse_fausses_info", "Fuasses Informations")}
+                  </Radio>
+                  <Radio
+                    onChange={(e) =>
+                      e.target.checked
+                        ? setFieldValue("reason", e.target.name)
+                        : null
+                    }
+                    name={"seller_refuse_reason"}
+                  >
+                    {t(
+                      "seller_refuse_verify_identity",
+                      "Impossible to verify the identity of the seller"
+                    )}
+                  </Radio>
+                  <Radio
+                    onChange={(e) =>
+                      e.target.checked
+                        ? setFieldValue("reason", e.target.name)
+                        : null
+                    }
+                    name={"seller_refuse_reason"}
+                  >
+                    {t("Scams")}
+                  </Radio>
+                  <Radio
+                    onChange={(e) =>
+                      e.target.checked ? setFieldValue("reason", "other") : null
+                    }
+                    name={"seller_refuse_reason"}
+                  >
+                    {t("Other")}
+                  </Radio>
+
+                  {values.reason === "other" ? (
+                    <Textarea
+                      value={values.otherReason}
+                      placeholder={t("other reason")}
+                      className="min-h-[10rem]"
+                      onChange={(e) =>
+                        setFieldValue("otherReason", e.target.value)
+                      }
+                    />
+                  ) : null}
+
+                  <ModalFooter>
+                    <ModalCloseButton>
+                      <Button colorScheme="danger" outline>
+                        {t("Cancel")}
+                      </Button>
+                    </ModalCloseButton>
+                    <Button colorScheme="danger">{t("Reject")}</Button>
+                  </ModalFooter>
+                </div>
+              </Form>
+            )}
+          </Formik>
         </ModalContent>
       </Modal>
     </section>

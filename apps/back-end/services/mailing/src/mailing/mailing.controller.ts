@@ -4,6 +4,7 @@ import {
   AccountRegisteredEvent,
   AccountRestrictedEvent,
   AccountTermsAndConditionViolationEvent,
+  AccountVerificationRequestAcceptedEvent,
   AppointmentRefusedEvent,
   ChangePasswordEvent,
   KafkaPayload,
@@ -233,6 +234,20 @@ export class MailingController extends BaseController {
         amount: `$${value.input.amount}`,
       },
       to: [{ email: user.email, name: user.email }],
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountVerificationRequestAccepted)
+  async handleVerificationRequestAccepted(
+    @Payload() { value }: { value: AccountVerificationRequestAcceptedEvent },
+  ) {
+    this.mailingService.sendTemplateMail({
+      templateId: 4477220,
+      subject: 'Account Verification Request',
+      vars: {
+        customer_name: value.input.firstName,
+      },
+      to: [{ email: value.input.email, name: value.input.firstName }],
     });
   }
 }

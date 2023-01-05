@@ -1,21 +1,34 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
+  accountType,
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  KAFKA_EVENTS,
+  SERVICES,
 } from 'nest-utils';
-import { UseGuards } from '@nestjs/common';
+import { Inject, UseGuards } from '@nestjs/common';
 import { AccountVerification } from '@acc-verification/entities';
 import { CreateAccountVerificationInput } from '@acc-verification/dto';
 import { CreateAccountVerificationRequestCommand } from '@acc-verification/commands';
 import { GetAccountVerificationRequestsQuery } from '@acc-verification/queries';
+import { PrismaService } from 'prismaService';
+import { ClientKafka } from '@nestjs/microservices';
+import { RefuseAccountVerificationRequest } from './dto/refuse-account-verification.input';
+import {
+  AccountVerificationRequestAcceptedEvent,
+  AccountVerificationRequestRejectedEvent,
+} from 'nest-dto';
 
 @Resolver(() => AccountVerification)
 export class AccountVerificationResolver {
   constructor(
     private readonly commandbus: CommandBus,
     private readonly querybus: QueryBus,
+    private readonly prisma: PrismaService,
+    @Inject(SERVICES.ACCOUNTS_SERVICE.token)
+    private readonly eventClient: ClientKafka,
   ) {}
 
   @Mutation(() => Boolean)
@@ -31,11 +44,81 @@ export class AccountVerificationResolver {
   }
 
   @Query(() => [AccountVerification])
-  @UseGuards(new GqlAuthorizationGuard(['admin']))
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   getAccountVerificationRequests(): Promise<AccountVerification[]> {
     return this.querybus.execute<
       GetAccountVerificationRequestsQuery,
       AccountVerification[]
     >(new GetAccountVerificationRequestsQuery());
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async refuseAccountVerification(
+    @Args('args') args: RefuseAccountVerificationRequest,
+  ): Promise<boolean> {
+    const res = await this.prisma.userAccountVerificationRequest.update({
+      where: {
+        id: args.id,
+      },
+      data: {
+        status: 'rejected',
+        refuseReason: args.reason,
+      },
+    });
+
+    const account = await this.prisma.account.findUnique({
+      where: {
+        id: res.userId,
+      },
+    });
+
+    this.eventClient.emit(
+      KAFKA_EVENTS.ACCOUNTS_EVENTS.accountVerificationRequestRejected,
+      new AccountVerificationRequestRejectedEvent({
+        email: account.email,
+        firstName: account.firstName,
+        id: res.id,
+        lang: account.lang,
+        lastName: account.lastName,
+        phone: account.phone,
+        rejectReason: res.refuseReason,
+      }),
+    );
+
+    return true;
+  }
+
+  @Query(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async acceptAccountVerification(@Args('id') id: string): Promise<boolean> {
+    const res = await this.prisma.userAccountVerificationRequest.update({
+      where: {
+        id,
+      },
+      data: {
+        status: 'accepted',
+      },
+    });
+
+    const account = await this.prisma.account.findUnique({
+      where: {
+        id: res.userId,
+      },
+    });
+
+    this.eventClient.emit(
+      KAFKA_EVENTS.ACCOUNTS_EVENTS.accountVerificationRequestAccepted,
+      new AccountVerificationRequestAcceptedEvent({
+        email: account.email,
+        firstName: account.firstName,
+        id: res.id,
+        lang: account.lang,
+        lastName: account.lastName,
+        phone: account.phone,
+      }),
+    );
+
+    return true;
   }
 }

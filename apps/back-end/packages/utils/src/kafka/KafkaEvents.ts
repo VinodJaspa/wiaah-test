@@ -21,6 +21,8 @@ export const KAFKA_EVENTS = {
     deleteAccount: "delete.account",
     sellerAccountRefused: "account.seller.refused",
     accountSuspended: "account.suspended",
+    accountVerificationRequestRejected: "account.verification.request.rejected",
+    accountVerificationRequestAccepted: "account.verification.request.accepted",
   },
   USER_EVENTS: {
     userConnected: "user.connected",
