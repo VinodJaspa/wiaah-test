@@ -127,8 +127,8 @@ export const ModalOverlay: React.FC<ModalOverlayProps> = ({
       {...props}
       onClick={() => onClose()}
       className={`${className || ""} ${
-        isOpen ? "bg-opacity-50" : "bg-opacity-0 pointer-events-none"
-      } fixed top-0 left-0 z-50 transition-all w-full h-full bg-black `}
+        isOpen ? "bg-opacity-30" : "bg-opacity-0 pointer-events-none"
+      } fixed top-0 left-0 z-50 transition-all w-full h-full bg-black`}
     />
   );
 };

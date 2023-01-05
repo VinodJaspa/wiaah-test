@@ -101,9 +101,12 @@ export class AccountVerificationResolver {
       },
     });
 
-    const account = await this.prisma.account.findUnique({
+    const account = await this.prisma.account.update({
       where: {
         id: res.userId,
+      },
+      data: {
+        verified: true,
       },
     });
 

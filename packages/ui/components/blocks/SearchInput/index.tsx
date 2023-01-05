@@ -66,7 +66,7 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
     <InputGroup
       ref={containerRef}
       flushed={props.flushed}
-      className="relative h-12"
+      className="relative h-12 px-2"
     >
       {iconRes && (
         <InputLeftElement>
