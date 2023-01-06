@@ -27,13 +27,14 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
   values,
 }) => {
   const { uploadImage, uploadVideo } = useFileUploadModal();
-  const [images, setImages] = React.useState<FileRes[]>(values["images"] || []);
-  const [videos, setVideos] = React.useState<string[]>(values["videos"] || []);
+  const [images, setImages] = React.useState<FileRes[]>(values?.images || []);
+  const [videos, setVideos] = React.useState<string[]>(values?.videos || []);
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
       <Formik initialValues={values as Record<string, any>} onSubmit={() => {}}>
-        {({ values, setFieldValue }) => {
+        {({ values: _value, setFieldValue }) => {
+          const values = _value || {};
           onChange && onChange(values);
           return (
             <Form className="w-full flex flex-col gap-4">
@@ -76,6 +77,15 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
               <span className="text-2xl font-semibold">
                 {t("Price & Attributes")}
               </span>
+
+              <Select
+                value={values["type_of_item"]}
+                placeholder={t("Select type of item")}
+                onOptionSelect={(v) => setFieldValue("type_of_item", v)}
+              >
+                <SelectOption value={"used"}>{t("Used")}</SelectOption>
+                <SelectOption value={"new"}>{t("New")}</SelectOption>
+              </Select>
 
               <Select
                 value={values["product_type"]}

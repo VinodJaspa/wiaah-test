@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { BsKey } from "react-icons/bs";
 import { useRouting } from "routing";
 import {
+  Badge,
   Checkbox,
   EditIcon,
   Image,
@@ -34,6 +35,7 @@ interface Product {
   name: string;
   price: number;
   qty: number;
+  usageStatus: "used" | "new";
   status: string;
   updatedAt: string;
   thubmnail: string;
@@ -52,6 +54,7 @@ const products: NextPage = () => {
     status: "Active",
     updatedAt: new Date().toString(),
     name: `product name ${i}`,
+    usageStatus: randomNum(100) > 50 ? "new" : "used",
   }));
 
   return (
@@ -68,6 +71,7 @@ const products: NextPage = () => {
                 <Th>{t("Product")}</Th>
                 <Th>{t("Seller")}</Th>
                 <Th>{t("Id")}</Th>
+                <Th>{t("Type of item")}</Th>
                 <Th>{t("Price")}</Th>
                 <Th>{t("Quantity")}</Th>
                 <Th>{t("Status")}</Th>
@@ -85,6 +89,12 @@ const products: NextPage = () => {
                 </Th>
                 <Th>
                   <Input />
+                </Th>
+                <Th>
+                  <Select>
+                    <SelectOption value={"used"}>{t("Used")}</SelectOption>
+                    <SelectOption value={"new"}>{t("New")}</SelectOption>
+                  </Select>
                 </Th>
                 <Th>
                   <Input type="number" />
@@ -119,6 +129,14 @@ const products: NextPage = () => {
                   <Td>{prod.name}</Td>
                   <Td>{prod.sellerName}</Td>
                   <Td>{prod.id.slice(0, 8)}...</Td>
+                  <Td>
+                    <Badge
+                      cases={{ success: "new", off: "used" }}
+                      value={prod.usageStatus}
+                    >
+                      {prod.usageStatus}
+                    </Badge>
+                  </Td>
                   <Td>
                     <PriceDisplay price={prod.price} />
                   </Td>
