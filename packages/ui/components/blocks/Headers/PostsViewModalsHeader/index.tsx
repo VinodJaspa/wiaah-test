@@ -24,12 +24,12 @@ export const PostsViewModalsHeader: React.FC<PostsViewModalsHeaderProps> = ({
           top: "50%",
 
           floatingItemProps: {
-            className: "top-1/2 -translate-y-1/2",
+            className: "top-1/2 ",
           },
         },
       ]}
     >
-      {children}
+      <>{children}</>
     </FloatingContainer>
   );
 };

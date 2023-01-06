@@ -26,6 +26,7 @@ import {
   HolidayRentalsGeneralDetailsForm,
   HealthCenterIncludedServices,
   ServiceSectionWithSchemaType,
+  AccountVerification,
 } from "@UI";
 
 import { StepperStepType } from "types";
@@ -54,7 +55,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
       schema: NewServiceSchemas.healthCenterDetailsSchema,
     },
     {
-      key: "Vehicle",
+      key: "vehicle",
       component: VehicleServiceDetailsForm,
       schema: NewServiceSchemas.vehicleDetailsSchema,
     },
@@ -102,6 +103,11 @@ export const SellerProfileStartupView: React.FC = ({}) => {
       stepName: t("Shop information"),
       stepComponent: ShopInformationStep,
       key: "1",
+    },
+    {
+      stepName: t("Verify You Identity"),
+      key: "8",
+      stepComponent: AccountVerification,
     },
     {
       stepName: t("Select a plan"),
@@ -167,7 +173,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
               <StepperFormHandler handlerKey="servicePolicies">
                 {({ validate }) => (
                   <>
-                    <ServicePoliciesSection onChange={validate} />
+                    <ServicePoliciesSection />
                   </>
                 )}
               </StepperFormHandler>
@@ -217,7 +223,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                 handlerKey="discount"
                 validationSchema={NewServiceSchemas.discount}
               >
-                <NewProductDiscountOptions />
+                <NewProductDiscountOptions onChange={() => {}} />
               </StepperFormHandler>
             ),
             stepName: {
