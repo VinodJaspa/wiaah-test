@@ -11,7 +11,7 @@ export class AccountVerificationRepository {
       data: {
         ...input,
         userId,
-        compeleted: true,
+        status: 'pending',
       },
     });
   }
@@ -19,7 +19,7 @@ export class AccountVerificationRepository {
   getAllCompleted() {
     return this.prisma.userAccountVerificationRequest.findMany({
       where: {
-        compeleted: true,
+        status: 'accepted',
       },
     });
   }

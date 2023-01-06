@@ -1,6 +1,14 @@
-import { Field, Float, InputType, Int } from '@nestjs/graphql';
+import {
+  Field,
+  Float,
+  InputType,
+  Int,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { AccountStatus } from '@prisma-client';
 import { GqlPaginationInput } from 'nest-utils';
+
+registerEnumType(AccountStatus, { name: 'AccountStatus' });
 
 @InputType()
 export class GetBuyersAccountsInput {

@@ -22,6 +22,7 @@ export class SellerAccountRequestDeclinedEventHandler
         firstName: account.firstName,
         id: account.id,
         lastName: account.lastName,
+        reason: account.rejectReason,
       }),
     );
   }
