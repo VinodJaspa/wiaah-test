@@ -73,6 +73,12 @@ export class AccountsResolver {
 
   @Mutation(() => Account)
   @UseGuards(new GqlAuthorizationGuard([]))
+  getMyAccount(@GqlCurrentUser() user: AuthorizationDecodedUser) {
+    return this.accountsService.findOne(user.id);
+  }
+
+  @Mutation(() => Account)
+  @UseGuards(new GqlAuthorizationGuard([]))
   editAccount(
     @Args('editAccountInput') input: UpdateAccountInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
