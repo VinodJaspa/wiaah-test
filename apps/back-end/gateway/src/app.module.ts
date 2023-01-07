@@ -10,7 +10,7 @@ import { subgraphs } from '@lib';
     GraphQLModule.forRoot<ApolloGatewayDriverConfig>({
       driver: ApolloGatewayDriver,
       gateway: {
-        buildService({ url }) {
+        buildService({ url, name }) {
           return new RemoteGraphQLDataSource({
             url,
             willSendRequest({ context, request, kind }) {

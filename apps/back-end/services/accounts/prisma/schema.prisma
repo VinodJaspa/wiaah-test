@@ -15,9 +15,11 @@ model Account {
   id                         String                   @id @default(auto()) @map("_id") @db.ObjectId
   stripeId                   String?                  @unique
   membershipId               String?                  @db.ObjectId
+  profession                 String?
   firstName                  String
   lastName                   String
   email                      String                   @unique
+  emailVerified              Boolean                  @default(false)
   password                   String
   products                   Int?                     @default(0)
   sales                      Int?                     @default(0)
@@ -33,6 +35,7 @@ model Account {
   updatedAt                  DateTime                 @updatedAt()
   lang                       String                   @default("en")
   phone                      String?
+  phoneVerified              Boolean                  @default(false)
   AccountDeletionRequest     AccountDeletionRequest[]
 }
 

@@ -7,9 +7,13 @@ import { AuthSwitcher, FormContainer } from "../../components/blocks";
 
 export interface LoginViewProps {
   loginType: LoginType;
+  onSubmit?: (data: any, type: LoginType) => any;
 }
 
-export const Login: React.FC<LoginViewProps> = ({ loginType = "login" }) => {
+export const Login: React.FC<LoginViewProps> = ({
+  loginType = "login",
+  onSubmit,
+}) => {
   const router = useRouter();
   return (
     <>
@@ -39,7 +43,7 @@ export const Login: React.FC<LoginViewProps> = ({ loginType = "login" }) => {
                 )}
               </cite>
               <div className="mt-5 mb-5 lg:mb-0">
-                {t("Founder_of_Wiaah", "Founder of Wiaah")}
+                {t("founder_of_wiaah", "Founder of Wiaah")}
               </div>
             </div>
           </div>
@@ -48,6 +52,7 @@ export const Login: React.FC<LoginViewProps> = ({ loginType = "login" }) => {
               loginType={loginType}
               link={true}
               onViewChange={(view) => router.push(view)}
+              onSubmit={onSubmit}
             />
           </FormContainer>
         </div>

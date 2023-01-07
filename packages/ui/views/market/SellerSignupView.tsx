@@ -5,14 +5,21 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
 
-export const SellerSignupView: FC = () => {
+export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
+  onSubmit,
+}) => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-4" id="SellerSignupView">
       <h2 className="text-3xl capitalize">
         {t("create_an_account", "create an account")}
       </h2>
-      <Formik initialValues={{}} onSubmit={() => {}}>
+      <Formik
+        initialValues={{}}
+        onSubmit={(data) => {
+          onSubmit && onSubmit(data);
+        }}
+      >
         {() => {
           return (
             <Form className="flex flex-col gap-4">

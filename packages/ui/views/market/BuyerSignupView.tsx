@@ -1,33 +1,31 @@
 import { IoMdMail, IoMdKey, IoMdPerson } from "react-icons/io";
 import Link from "next/link";
 import React, { FC } from "react";
-import { Spacer, Button, FormikInput, Checkbox, CheckboxProps } from "@UI";
+import {
+  Spacer,
+  Button,
+  FormikInput,
+  Checkbox,
+  CheckboxProps,
+  HStack,
+} from "@UI";
 import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
 
 export interface BuyerSignupInputType {}
 
-export const BuyerSignupView: FC<{}> = () => {
+export const BuyerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
+  onSubmit,
+}) => {
   const [formInput, setFormInput] = React.useState<BuyerSignupInputType>({
-    username: "",
+    firstName: "",
+    lastName: "",
     password: "",
     confirm_password: "",
     email: "",
     terms_and_conditions: false,
   });
   const { t } = useTranslation();
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // handle signup api call
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormInput((state) => ({ ...state, [e.target.name]: e.target.value }));
-  };
-
-  const handleCheckBoxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormInput((state) => ({ ...state, [e.target.name]: e.target.checked }));
-  };
 
   return (
     <section id="BuyerSignupView">
@@ -35,16 +33,29 @@ export const BuyerSignupView: FC<{}> = () => {
         {t("create_an_account", "create an account")}
       </h2>
       <Spacer spaceInRem={2} />
-      <Formik initialValues={{}} onSubmit={() => {}}>
+      <Formik
+        initialValues={{}}
+        onSubmit={(data) => {
+          onSubmit && onSubmit(data);
+        }}
+      >
         {() => {
           return (
             <Form>
-              <FormikInput
-                id="Username"
-                placeholder="Username"
-                name="username"
-                icon={<IoMdPerson />}
-              />
+              <HStack>
+                <FormikInput
+                  id="firstName"
+                  placeholder="first name"
+                  name="firstName"
+                  icon={<IoMdPerson />}
+                />
+                <FormikInput
+                  id="lastName"
+                  placeholder="last name"
+                  name="lastName"
+                  icon={<IoMdPerson />}
+                />
+              </HStack>
               <Spacer />
               <FormikInput
                 id="Email"
@@ -62,7 +73,7 @@ export const BuyerSignupView: FC<{}> = () => {
               <Spacer />
               <FormikInput
                 id="ConfirmPassword"
-                name="confirm_password"
+                name="confirmPassword"
                 placeholder="ConfirmPassword"
                 icon={<IoMdKey />}
               />

@@ -1,18 +1,11 @@
 import { createGraphqlRequestClient } from "api/src/utils";
 import { useMutation } from "react-query";
 
-export const useSellerSignupMutation = (input: {
-  email: string;
-  firstName: string;
-  lastName: string;
-  password: string;
-  confirmPassword: string;
-}) => {
+export const useSellerSignupMutation = () => {
   const client = createGraphqlRequestClient();
 
-  client
-    .setQuery(
-      `
+  client.setQuery(
+    `
       mutation registerSeller(
           $email:String!
           $firstName:String!
@@ -32,8 +25,17 @@ export const useSellerSignupMutation = (input: {
           )
       }
     `
-    )
-    .setVariables(input);
+  );
 
-  return useMutation("seller-register", () => client.send());
+  return useMutation<
+    unknown,
+    unknown,
+    {
+      email: string;
+      firstName: string;
+      lastName: string;
+      password: string;
+      confirmPassword: string;
+    }
+  >("seller-register", (vars) => client.setVariables(vars).send());
 };

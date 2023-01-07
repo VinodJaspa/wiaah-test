@@ -1,4 +1,4 @@
-import { Inject, UseGuards } from '@nestjs/common';
+import { Inject, NotAcceptableException, UseGuards } from '@nestjs/common';
 import {
   Resolver,
   ResolveReference,
@@ -12,17 +12,24 @@ import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  KAFKA_EVENTS,
   SERVICES,
 } from 'nest-utils';
 
 import { AccountsService } from './accounts.service';
-import { GetBuyersAccountsInput, GetSellersAccountsInput } from '@accounts/dto';
+import {
+  CreateAccountInput,
+  GetBuyersAccountsInput,
+  GetSellersAccountsInput,
+} from '@accounts/dto';
 import { UpdateAccountInput } from './dto/update-account.input';
 import { Account } from './entities';
 import { PrismaService } from 'prismaService';
-import { AccountDeletionRequestStatus } from '@prisma-client';
+import { AccountDeletionRequestStatus, AccountType } from '@prisma-client';
 import { EventBus } from '@nestjs/cqrs';
 import { AccountDeletionRequestCreatedEvent } from './events';
+import * as bcrypt from 'bcrypt';
+import { NewAccountCreatedEvent } from 'nest-dto';
 
 @Resolver(() => Account)
 export class AccountsResolver {
@@ -54,7 +61,64 @@ export class AccountsResolver {
   ) {
     return this.accountsService.updateUnprotected(input, user.id);
   }
+  @Mutation(() => String)
+  async register(
+    @Args('RegisterInput')
+    {
+      accountType,
+      confirmPassword,
+      email,
+      firstName,
+      lastName,
+      password,
+    }: CreateAccountInput,
+  ) {
+    const emailExists = await this.prisma.account.findUnique({
+      where: {
+        email,
+      },
+    });
 
+    if (emailExists) {
+      throw new NotAcceptableException('this email is already used');
+    }
+
+    if (confirmPassword !== password) {
+      throw new NotAcceptableException(
+        'confirm password and password fields must match',
+      );
+    }
+
+    const hashedPassword = await this.hashPassword(password);
+
+    const acc = await this.prisma.account.create({
+      data: {
+        email,
+        firstName,
+        lastName,
+        password: hashedPassword,
+        type: accountType,
+      },
+    });
+
+    this.eventsClient.emit(
+      KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated(accountType),
+      new NewAccountCreatedEvent({
+        email: acc.email,
+        id: acc.id,
+        username: '',
+        accountType: acc.type,
+        firstName: acc.firstName,
+        lastName: acc.lastName,
+        profession: acc.profession,
+      }),
+    );
+    return true;
+  }
+
+  hashPassword(password: string) {
+    return bcrypt.hash(password, 12);
+  }
   @Mutation(() => Boolean)
   async requestAccountDeletion(
     @GqlCurrentUser() user: AuthorizationDecodedUser,

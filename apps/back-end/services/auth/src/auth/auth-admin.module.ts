@@ -7,6 +7,7 @@ import { SERVICES, KAFKA_BROKERS } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { AuthAdminResolver } from './auth-admin.resolver';
 import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
@@ -37,5 +38,6 @@ import { AuthService } from './auth.service';
     }),
   ],
   providers: [AuthAdminResolver, AuthService, PrismaService],
+  controllers: [AuthController],
 })
 export class AuthAdminModule {}

@@ -1,12 +1,11 @@
-import { gql, request } from "graphql-request";
+import { gql, request, GraphQLClient } from "graphql-request";
 
-export class GraphqlRequestClinet {
-  private host: string | null = null;
+export class GraphqlRequestClinet extends GraphQLClient {
   private query: string | null = null;
   private vars: Record<string, any> = {};
 
   setHost(host: string) {
-    this.host = host;
+    this.setEndpoint(host);
     return this;
   }
 
@@ -23,15 +22,20 @@ export class GraphqlRequestClinet {
     return this;
   }
 
-  send() {
-    if (!this.host) throw new Error("no host");
+  async send() {
+    console.log("sending", this.query, this.vars);
     if (!this.query) throw new Error("no query");
 
-    return request(this.host, this.query, this.vars);
+    console.log("requesting");
+    const res = await this.request(this.query, this.vars);
+    console.log("res", res);
   }
 }
 
-export function createGraphqlRequestClient() {
-  const client = new GraphqlRequestClinet();
-  return client.setHost(process.env.GATEWAY_URL!);
+export function createGraphqlRequestClient(cred?: boolean) {
+  const client = new GraphqlRequestClinet(
+    process.env.NEXT_PUBLIC_GATEWAY_URL!,
+    { credentials: cred ? "include" : undefined }
+  );
+  return client;
 }
