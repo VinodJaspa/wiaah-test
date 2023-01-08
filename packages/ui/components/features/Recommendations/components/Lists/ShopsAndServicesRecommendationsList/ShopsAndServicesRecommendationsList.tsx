@@ -2,11 +2,10 @@ import { usePagination } from "hooks";
 import React from "react";
 import { useRouting } from "routing";
 import {
-  useGetRecommendedShopsQuery,
-  useSearchFilters,
   SpinnerFallback,
   PaginationWrapper,
   RecommendedShopCard,
+  useGetFilteredShopsQuery,
 } from "@UI";
 
 export interface ShopsAndServicesRecommendationsList {}
@@ -20,7 +19,7 @@ export const ShopsAndServicesRecommendationsList: React.FC<
     data: res,
     isLoading,
     isError,
-  } = useGetRecommendedShopsQuery({ page, take }, {});
+  } = useGetFilteredShopsQuery({ pagination: { page, take } });
 
   return (
     <PaginationWrapper>
@@ -36,11 +35,11 @@ export const ShopsAndServicesRecommendationsList: React.FC<
                         routes.visitRecommendedServiceOrShop(data)
                       );
                     }}
-                    imgUrl={data.thumbnail}
+                    imgUrl={data.banner}
                     name={data.name}
                     id={data.id}
-                    type={data.type}
-                    label={data.label}
+                    type={data.storeType}
+                    label={data.name}
                   />
                 );
               })

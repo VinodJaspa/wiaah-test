@@ -98,6 +98,7 @@ export class ProductsController {
       return new GetProductMetaDataMessageReply({
         success: true,
         data: {
+          keywords: product.attributes.map((v) => v.values).flat(),
           name: product.title,
           price: product.price,
           thumbnail: product.presentations.find((v) => v.type === 'image').src,

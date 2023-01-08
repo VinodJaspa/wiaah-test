@@ -3,13 +3,17 @@ import {
   Injectable,
   UnprocessableEntityException,
 } from '@nestjs/common';
-import { AuthorizationDecodedUser, createRadiusCoordsByKm } from 'nest-utils';
+import {
+  AuthorizationDecodedUser,
+  createRadiusCoordsByKm,
+  ExtractPagination,
+} from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { EventBus } from '@nestjs/cqrs';
 
 import { Shop } from './entities';
 import { CreateShopInput } from './dto/create-shop.input';
-import { FilterShopsInput } from './dto/filter-shops.input';
+import { FilteredShopsInput } from './dto/filter-shops.input';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
 import { ShopCreatedEvent, ShopCreationFailedEvent } from './events';
 import { UpdateShopInput } from './dto';
@@ -140,8 +144,9 @@ export class ShopService {
     }
   }
 
-  async getFilteredShops(input: FilterShopsInput): Promise<Shop[]> {
+  async getFilteredShops(input: FilteredShopsInput): Promise<Shop[]> {
     const searchQueries = [];
+    const { skip, take } = ExtractPagination(input.pagination);
 
     if (input.storeType) {
       searchQueries.push({
@@ -187,6 +192,8 @@ export class ShopService {
       where: {
         AND: searchQueries,
       },
+      skip,
+      take,
     });
     return shops;
   }

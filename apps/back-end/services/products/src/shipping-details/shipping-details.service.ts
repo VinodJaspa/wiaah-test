@@ -1,14 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'prismaService';
-import { ShippingRulesService } from '@shipping-rules';
 import { ShippingDetails } from './entities/shipping-details.entity';
 
 @Injectable()
 export class ShippingDetailsService {
-  constructor(
-    private readonly ShippingRulesService: ShippingRulesService,
-    private readonly prisma: PrismaService,
-  ) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async getShippingDetials(
     shippingRulesIds: string[],

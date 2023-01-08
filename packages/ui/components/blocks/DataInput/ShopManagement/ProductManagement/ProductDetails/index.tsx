@@ -12,6 +12,10 @@ import {
   SubCategorySelect,
   Select,
   SelectOption,
+  useFormTranslationWrapper,
+  FormikTransalationInput,
+  setTranslationStateValue,
+  getTranslationStateValue,
 } from "@UI";
 import { FileRes } from "utils";
 
@@ -24,8 +28,9 @@ const MAX_PRODUCTS_IMAGE = 4;
 
 export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
   onChange,
-  values,
+  values = {},
 }) => {
+  const { lang } = useFormTranslationWrapper();
   const { uploadImage, uploadVideo } = useFileUploadModal();
   const [images, setImages] = React.useState<FileRes[]>(values?.images || []);
   const [videos, setVideos] = React.useState<string[]>(values?.videos || []);
@@ -33,43 +38,48 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
   return (
     <div className="w-full flex flex-col gap-4">
       <Formik initialValues={values as Record<string, any>} onSubmit={() => {}}>
-        {({ values: _value, setFieldValue }) => {
-          const values = _value || {};
+        {({ values, setFieldValue }) => {
           onChange && onChange(values);
+
           return (
             <Form className="w-full flex flex-col gap-4">
               <span className="text-2xl font-semibold">
                 {t("name_&_description", "Name & Description")}
               </span>
-              <FormikInput
-                value={values["name"]}
+              <FormikTransalationInput
+                formikSetField={setFieldValue}
+                formikValues={values}
                 name="name"
                 placeholder={t("name", "Name")}
               />
-              <FormikInput
+              <FormikTransalationInput
                 name="description"
                 as={Textarea}
-                value={values["description"]}
-                placeholder={t("description", "Description")}
+                formikSetField={setFieldValue}
+                formikValues={values}
+                placeholder={t("Description")}
               />
-              <FormikInput
-                value={values["metatagDescription"]}
+              <FormikTransalationInput
                 name="metaTagDescription"
                 className="bg-white"
+                formikSetField={setFieldValue}
+                formikValues={values}
                 as={Textarea}
                 placeholder={t("Meta Tag Description")}
               />
-              <FormikInput
-                value={values["metatagKeyword"]}
+              <FormikTransalationInput
                 name="metaTagKeyword"
                 className="bg-white"
+                formikSetField={setFieldValue}
+                formikValues={values}
                 as={Textarea}
                 placeholder={t("Meta Tag Keyword")}
               />
-              <FormikInput
-                value={values["productTag"]}
+              <FormikTransalationInput
                 name="productTag"
                 className="bg-white"
+                formikSetField={setFieldValue}
+                formikValues={values}
                 as={Textarea}
                 placeholder={t("Product Tag")}
               />
@@ -121,7 +131,12 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                 value={values["qty"]}
                 placeholder={t("Quantity")}
               />
-              <HashTagInput value={values["hashtags"]} />
+              <HashTagInput
+                value={getTranslationStateValue(values, "hashtags", lang)}
+                onChange={(e) =>
+                  setTranslationStateValue(values, "hashtags", e, lang)
+                }
+              />
               <p className="text-2xl font-semibold">{t("File")}</p>
               <div className="flex flex-col gap-4">
                 <p className="text-xl font-semibold">{t("Upload Video")}</p>

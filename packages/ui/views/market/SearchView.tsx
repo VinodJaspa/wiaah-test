@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import {
   Divider,
@@ -23,7 +23,13 @@ export const SearchView: React.FC = () => {
   let [filterVisibleOnMobile, setFilterVisibleOnMobile] = useState(false);
   const router = useRouter();
   const breadCrumbLinks = [{ text: "wiaah", url: "/" }].concat(
-    [...(router.query.categories || [])].map((cate, i) => ({
+    [
+      ...(Array.isArray(router.query.categories)
+        ? router.query.categories
+        : router.query.categories
+        ? [router.query.categories]
+        : []),
+    ].map((cate, i) => ({
       text: cate,
       url: `/${cate}`,
     }))

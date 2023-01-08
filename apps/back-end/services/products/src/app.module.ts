@@ -17,6 +17,7 @@ import { PrismaService } from './prisma.service';
 import { ShippingAddressModule } from './shipping-address/shipping-address.module';
 import { ProductsAdminModule } from '@products/products-admin.module';
 import { ShippingTypeRuleModule } from './shipping-type-rule/shipping-type-rule.module';
+import { ShippingDetailsModule } from './shipping-details/shipping-details.module';
 
 @Global()
 @Module({
@@ -28,8 +29,6 @@ import { ShippingTypeRuleModule } from './shipping-type-rule/shipping-type-rule.
         password: process.env.ELASTIC_PASSWORD,
       },
     }),
-    ShippingAddressModule,
-    ShippingTypeRuleModule,
   ],
   exports: [ElasticsearchModule],
 })
@@ -63,8 +62,10 @@ export class PrismaGlobalModule {}
     FilterModule,
     ElasticGlobalModule,
     ProductsAdminModule,
+    ShippingAddressModule,
+    ShippingTypeRuleModule,
     // ShippingSettingsModule,
-    // ShippingDetailsModule,
+    ShippingDetailsModule,
     ShippingRulesModule,
   ],
   controllers: [],

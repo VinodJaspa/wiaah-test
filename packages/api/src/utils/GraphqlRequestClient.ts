@@ -22,13 +22,14 @@ export class GraphqlRequestClinet extends GraphQLClient {
     return this;
   }
 
-  async send() {
+  async send<TRes>() {
     console.log("sending", this.query, this.vars);
     if (!this.query) throw new Error("no query");
 
     console.log("requesting");
-    const res = await this.request(this.query, this.vars);
+    const res = await this.request<{ data: TRes }>(this.query, this.vars);
     console.log("res", res);
+    return res;
   }
 }
 

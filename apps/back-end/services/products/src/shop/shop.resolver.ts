@@ -19,7 +19,7 @@ import { ShopService } from './shop.service';
 import { Shop } from './entities/shop.entity';
 import { CreateShopInput } from './dto/create-shop.input';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
-import { FilterShopsInput } from './dto/filter-shops.input';
+import { FilteredShopsInput } from './dto/filter-shops.input';
 import { UpdateShopInput } from './dto';
 
 @Resolver(() => Shop)
@@ -48,7 +48,7 @@ export class ShopResolver implements OnModuleInit {
 
   @Query(() => [Shop])
   getFilteredShops(
-    @Args('filteredShopsArgs') filteredShopsInput: FilterShopsInput,
+    @Args('filteredShopsArgs') filteredShopsInput: FilteredShopsInput,
   ) {
     return this.shopService.getFilteredShops(filteredShopsInput);
   }

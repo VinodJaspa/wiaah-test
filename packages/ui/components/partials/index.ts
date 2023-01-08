@@ -78,3 +78,4 @@ export * from "./SimpleTabs";
 export * from "./InputRequiredStar";
 export * from "./Link";
 export * from "./Progress";
+export * from "./FormTranslationWrapper";

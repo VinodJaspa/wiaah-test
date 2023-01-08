@@ -27,6 +27,7 @@
       "@shop/*": ["src/shop/*"],
       "@shipping-details": ["src/shipping-details"],
       "@shipping-rules/*": ["src/shipping-rules/*"],
+      "@shipping-rules": ["src/shipping-rules"],
       "@shipping-settings": ["src/shipping-settings"],
       "@products/*": ["src/products/*"]
     }

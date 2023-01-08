@@ -11,20 +11,24 @@ import {
   NewProductDiscountOptions,
   SectionHeader,
   Tabs,
-  TabList,
   TabTitle,
   TabsHeader,
-  TabItem,
   StepperFormController,
   StepperFormHandler,
   AddNewDigitalProductSection,
+  FormTranslationWrapper,
+  useCreateNewProductMutation,
+  useEditProductData,
 } from "@UI";
-import { mapArray, PassPropsToFnOrElem, runIfFn } from "utils";
+import { mapArray, PassPropsToFnOrElem } from "utils";
 
 export interface AddNewProductSectionProps {}
 
 export const AddNewProductSection: React.FC<AddNewProductSectionProps> = () => {
   const { t } = useTranslation();
+  const { cancel } = useEditProductData();
+  const { mutate } = useCreateNewProductMutation();
+  const [lang, setLang] = React.useState("en");
 
   return (
     <div className="flex h-full flex-col gap-4 w-full">
@@ -37,36 +41,54 @@ export const AddNewProductSection: React.FC<AddNewProductSectionProps> = () => {
           {addProductLanguagesSection.map((section, i) => (
             <React.Fragment key={i}>
               <TabTitle TabKey={i}>
-                {({ currentTabIdx }) => (
-                  <div
-                    className={`${
-                      currentTabIdx === i ? "border-primary" : "border-gray-300"
-                    } flex items-center gap-2 border-b-[1px] shadow p-2`}
-                  >
-                    <FlagIcon code={section.language.countryCode} />
-                    <span className="hidden sm:block">
-                      {section.language.name}
-                    </span>
-                  </div>
-                )}
+                {({ currentTabIdx }) => {
+                  const currLang = section.language.countryCode;
+                  if (currentTabIdx === i) {
+                    setLang(currLang);
+                  }
+                  return (
+                    <div
+                      className={`${
+                        currentTabIdx === i
+                          ? "border-primary"
+                          : "border-gray-300"
+                      } flex items-center gap-2 border-b-[1px] shadow p-2`}
+                    >
+                      <FlagIcon code={section.language.countryCode} />
+                      <span className="hidden sm:block">
+                        {section.language.name}
+                      </span>
+                    </div>
+                  );
+                }}
               </TabTitle>
-              <TabItem key={i}>{section.section({})}</TabItem>
             </React.Fragment>
           ))}
-
-          <TabList />
         </>
       </Tabs>
+
+      <FormTranslationWrapper lang={lang} onLangChange={setLang}>
+        <NewProductInputsSection
+          onSubmit={(data) => {
+            mutate(data);
+            cancel();
+          }}
+        />
+      </FormTranslationWrapper>
     </div>
   );
 };
-export const NewProductInputsSection: React.FC = () => {
+export const NewProductInputsSection: React.FC<{
+  onSubmit: (data: any) => any;
+}> = ({ onSubmit }) => {
   const { t } = useTranslation();
   return (
     <div className="flex gap-4 h-full w-full flex-col justify-between">
       <StepperFormController
         lock={false}
-        onFormComplete={() => {}}
+        onFormComplete={(data) => {
+          onSubmit && onSubmit(data);
+        }}
         stepsNum={steps.length}
       >
         {({ currentStepIdx, goToStep, nextStep, values }) => {
@@ -168,34 +190,29 @@ const addProductLanguagesSection: {
     name: string;
     countryCode: FlagIconCode;
   };
-  section: React.FunctionComponent;
 }[] = [
   {
     language: {
       name: "English",
       countryCode: "GB",
     },
-    section: NewProductInputsSection,
   },
   {
     language: {
       name: "French",
       countryCode: "FR",
     },
-    section: NewProductInputsSection,
   },
   {
     language: {
       name: "German",
       countryCode: "DE",
     },
-    section: NewProductInputsSection,
   },
   {
     language: {
       name: "Spanish",
       countryCode: "ES",
     },
-    section: NewProductInputsSection,
   },
 ];
