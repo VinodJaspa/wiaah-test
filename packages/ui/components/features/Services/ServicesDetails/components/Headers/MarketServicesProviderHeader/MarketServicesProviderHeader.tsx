@@ -1,16 +1,21 @@
-import { ServicesProviderHeaderData } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { AspectRatio, Rate, Button, HStack } from "@UI";
 import { DateDetails } from "utils";
+import { ServiceOwnerAccount } from "api";
 
-export interface MarketServicesProviderHeaderProps
-  extends ServicesProviderHeaderData {}
+export interface MarketServicesProviderHeaderProps {
+  name: string;
+  rating: number;
+  reviewsCount: number;
+  thumbnail: string;
+  travelPeriod?: string[];
+}
 export const MarketServicesProviderHeader: React.FC<
   MarketServicesProviderHeaderProps
 > = ({ name, rating, reviewsCount, thumbnail, travelPeriod }) => {
-  const departure = travelPeriod ? DateDetails(travelPeriod.departure) : null;
-  const arrival = travelPeriod ? DateDetails(travelPeriod.arrival) : null;
+  const departure = travelPeriod ? DateDetails(travelPeriod[0]) : null;
+  const arrival = travelPeriod ? DateDetails(travelPeriod[1]) : null;
 
   const { t } = useTranslation();
   return (

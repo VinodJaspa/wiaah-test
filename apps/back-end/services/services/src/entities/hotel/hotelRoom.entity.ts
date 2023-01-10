@@ -1,4 +1,4 @@
-import { Directive, Field, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, Float, ID, Int, ObjectType } from '@nestjs/graphql';
 import { ServiceDailyPrices, ServicePresentation } from '@entities';
 import {
   ServiceDiscount,
@@ -47,6 +47,12 @@ export class HotelRoom {
 
   @Field(() => ServiceDailyPrices, { nullable: true })
   dailyPrices?: ServiceDailyPrices;
+
+  @Field(() => Float)
+  rating: number;
+
+  @Field(() => Int)
+  reviews: number;
 
   @Field(() => ServiceDiscount)
   discount: ServiceDiscount;

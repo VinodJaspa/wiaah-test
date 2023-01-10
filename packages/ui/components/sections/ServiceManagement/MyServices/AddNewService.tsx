@@ -236,29 +236,6 @@ export const NewServiceStepper: React.FC<{
               onStepChange={(step) => goToStep(step)}
               steps={[
                 {
-                  key: "selectServiceType",
-                  stepComponent: (
-                    <StepperFormHandler
-                      validationSchema={NewServiceSchemas.serviceTypeSchema}
-                      handlerKey="serviceType"
-                    >
-                      {({ validate }) => (
-                        <ChooseServiceType
-                          ServicesInfo={serviceTypes}
-                          onServiceChoosen={(key) => {
-                            validate({ type: key });
-
-                            nextStep();
-                            setServiceType(key);
-                            CallbackAfter(50, () => {});
-                          }}
-                        />
-                      )}
-                    </StepperFormHandler>
-                  ),
-                  stepName: "Service Type",
-                },
-                {
                   key: "generalDetails",
                   stepComponent: (
                     <StepperFormHandler

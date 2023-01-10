@@ -45,4 +45,7 @@ export class Account {
 
   @Field(() => String, { nullable: true })
   companyRegisterationNumber?: string;
+
+  @Field(() => String, { nullable: true })
+  photo?: string;
 }

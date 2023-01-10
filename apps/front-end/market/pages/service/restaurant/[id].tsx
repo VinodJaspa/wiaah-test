@@ -14,6 +14,7 @@ import {
   MetaVideo,
   RequiredSocialMediaTags,
 } from "react-seo";
+import { useRouting } from "routing";
 
 interface HotelServiceDetailsPageProps {
   data: AsyncReturnType<ReturnType<typeof getServiceDetailsDataSwitcher>>;
@@ -47,11 +48,13 @@ export const getServerSideProps: GetServerSideProps<
 const RestaurantServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
   data,
 }) => {
+  const { getParam } = useRouting();
+  const id = getParam("id");
   return (
     <>
       {data && data.data ? (
         <>
-          <MetaTitle content={`Wiaah | Service Details by ${data.data.name}`} />
+          {/* <MetaTitle content={`Wiaah | Service Details by ${data.data.name}`} />
           <MetaDescription content={data.data.description} />
           {data.data.presintations.at(0).type === "video" ? (
             <MetaVideo content={data.data.presintations.at(0).src} />
@@ -59,12 +62,12 @@ const RestaurantServiceDetailsPage: NextPage<HotelServiceDetailsPageProps> = ({
             <MetaImage content={data.data.presintations.at(0).src} />
           )}
           <MetaAuthor author={data.data.name} />
-          <RequiredSocialMediaTags />
+          <RequiredSocialMediaTags /> */}
         </>
       ) : null}
       <MasterLayout>
         <Container>
-          <RestaurantDetailsView />
+          <RestaurantDetailsView id={id} />
         </Container>
       </MasterLayout>
     </>

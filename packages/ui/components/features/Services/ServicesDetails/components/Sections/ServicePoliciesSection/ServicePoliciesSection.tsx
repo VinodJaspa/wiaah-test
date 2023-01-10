@@ -1,15 +1,16 @@
-import { ServicePoliciesType } from "api";
+import { ServicePolicy } from "api";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
 import { PriceDisplay, Divider } from "@UI";
 
-export interface ServicePoliciesSectionProps extends ServicePoliciesType {
+export interface ServicePoliciesSectionProps {
   title: string;
+  policies: ServicePolicy[];
 }
 
 export const ServicePoliciesSection: React.FC<ServicePoliciesSectionProps> = ({
   policies,
-  deposit,
+  // deposit,
   title,
 }) => {
   const { t } = useTranslation();
@@ -23,8 +24,8 @@ export const ServicePoliciesSection: React.FC<ServicePoliciesSectionProps> = ({
               <p className="font-bold">{t(policy.policyTitle)}</p>
 
               <div className="flex flex-col">
-                {Array.isArray(policy.policyTerms)
-                  ? policy.policyTerms.map((term, i) => (
+                {Array.isArray(policy.terms)
+                  ? policy.terms.map((term, i) => (
                       <p
                         className="font-normal text-lg text-black text-opacity-50"
                         key={i}

@@ -81,6 +81,7 @@ model RestaurantService {
   payment_methods        ServicePaymentMethods[]
   cancelationPolicies    ServiceCancelationPolicy[]
   menus                  RestaurantMenu[]
+  contact                ServiceContact
   location               Location
   lowest_price           Float                        @default(0)
   highest_price          Float                        @default(0)

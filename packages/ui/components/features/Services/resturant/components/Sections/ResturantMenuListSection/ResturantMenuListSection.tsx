@@ -1,12 +1,13 @@
-import { ResturantMenuData, ServiceCancelationPolicyType } from "api";
+import { RestaurantMenu, ServiceCancelationPolicy } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSetUserInput } from "state";
 import { ResturantMenuList, Button, ServiceCancelationPolicyInput } from "@UI";
 import { FilterAndAddToArray } from "utils";
 
-export interface ResturantMenuListSectionProps extends ResturantMenuData {
-  cancelation: ServiceCancelationPolicyType[];
+export interface ResturantMenuListSectionProps {
+  cancelation: ServiceCancelationPolicy[];
+  menus: RestaurantMenu[];
 }
 
 export const ResturantMenuListSection: React.FC<
@@ -35,7 +36,7 @@ export const ResturantMenuListSection: React.FC<
                       itemId,
                       qty,
                       price:
-                        menu.menuItems.find((i) => i.id === itemId)?.price || 0,
+                        menu.dishs.find((i) => i.id === itemId)?.price || 0,
                     },
                     "exclude",
                     "itemId"
@@ -54,7 +55,7 @@ export const ResturantMenuListSection: React.FC<
             {...policy}
             name="cancelationPolicy"
             onSelected={() => {}}
-            key={`${i}-${policy.id}`}
+            key={`${i}-${policy.cost}`}
           />
         ))}
       </div>

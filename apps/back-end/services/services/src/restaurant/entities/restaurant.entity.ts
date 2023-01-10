@@ -1,4 +1,7 @@
 import {
+  Account,
+  ServiceCancelationPolicy,
+  ServiceContact,
   ServiceLocation,
   ServiceMetaInfo,
   ServicePolicy,
@@ -13,6 +16,7 @@ import {
   Float,
   Directive,
 } from '@nestjs/graphql';
+import { WorkingSchedule } from '@working-schedule/entities';
 import { ServicePaymentMethods, ServiceStatus } from 'prismaClient';
 import { RestaurantMenu } from './restaurant-menu.entity';
 
@@ -22,6 +26,15 @@ registerEnumType(ServicePaymentMethods, { name: 'ServicePaymentMethods' });
 @ObjectType()
 @Directive('@key(fields:"id")')
 export class Restaurant {
+  @Field(() => Account)
+  owner?: Account;
+
+  @Field(() => ServiceContact)
+  contact: ServiceContact;
+
+  @Field(() => WorkingSchedule, { nullable: true })
+  workingHours?: WorkingSchedule;
+
   @Field(() => ID)
   id: string;
 
@@ -42,6 +55,9 @@ export class Restaurant {
 
   @Field(() => [ServicePolicy])
   policies: ServicePolicy[];
+
+  @Field(() => [ServiceCancelationPolicy])
+  cancelationPolicies: ServiceCancelationPolicy[];
 
   @Field(() => ServiceMetaInfo)
   serviceMetaInfo: ServiceMetaInfo;

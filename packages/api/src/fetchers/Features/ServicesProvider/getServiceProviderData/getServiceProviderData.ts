@@ -22,13 +22,14 @@ export type Scalars = {
   DateTime: any;
 };
 
-export type Account = {
+export type ServiceOwnerAccount = {
   __typename?: "Account";
   id: Scalars["ID"];
   firstName: Scalars["String"];
   lastName: Scalars["String"];
   email: Scalars["String"];
   verified: Scalars["Boolean"];
+  photo: Scalars["String"];
 };
 
 export type ServiceContact = {
@@ -43,7 +44,7 @@ export type ServiceContact = {
 
 export type Hotel = {
   __typename?: "Hotel";
-  owner: Account;
+  owner: ServiceOwnerAccount;
   id: Scalars["ID"];
   ownerId: Scalars["ID"];
   createdAt: Scalars["DateTime"];
@@ -91,6 +92,8 @@ export type HotelRoom = {
   updatedAt: Scalars["DateTime"];
   pricePerNight: Scalars["Int"];
   dailyPrice: Scalars["Boolean"];
+  rating: Scalars["Float"];
+  reviews: Scalars["Int"];
   dailyPrices?: Maybe<ServiceDailyPrices>;
   discount: ServiceDiscount;
   includedServices?: Maybe<Array<Scalars["String"]>>;
@@ -211,6 +214,8 @@ export const getServicesProviderDataFetcher = async (
                 cost
                 duration
             }
+            reviews
+            rating
             createdAt
             dailyPrice
             dailyPrices{
@@ -295,6 +300,7 @@ export const getServicesProviderDataFetcher = async (
             id
             verified
             email
+            photo
         }
     }
   }

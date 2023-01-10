@@ -5,6 +5,8 @@ import {
   Query,
   Int,
   ResolveReference,
+  ResolveField,
+  Parent,
 } from '@nestjs/graphql';
 import { Restaurant } from '@restaurant';
 import {
@@ -36,6 +38,7 @@ import {
   GqlRestaurantSelectedFields,
 } from './types/gqlSelectedFields';
 import { updateRestaurantAdminInput } from '@service-discovery/dto';
+import { Account } from '@entities';
 
 @Resolver(() => Restaurant)
 export class RestaurantResolver {
@@ -52,10 +55,9 @@ export class RestaurantResolver {
   @Query(() => Restaurant)
   getRestaurant(
     @Args('getRestaurantArgs') input: GetRestaurantInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
     @GetLang() lang: UserPreferedLang,
   ): Promise<Restaurant> {
-    return this.restaurantService.getRestaurantById(input, user.id, lang);
+    return this.restaurantService.getRestaurantById(input, lang);
   }
 
   @Mutation(() => Restaurant)
@@ -120,6 +122,14 @@ export class RestaurantResolver {
         ...args,
       }),
     );
+  }
+
+  @ResolveField(() => Account)
+  owner(@Parent() res: Restaurant) {
+    return {
+      __typename: 'Account',
+      id: res.ownerId,
+    };
   }
 
   @ResolveReference()

@@ -112,6 +112,8 @@ type HotelRoom {
   dailyPrice: Boolean!
   presentations: [ServicePresentation!]!
   dailyPrices: ServiceDailyPrices
+  rating: Float!
+  reviews: Int!
   discount: ServiceDiscount!
   includedServices: [String!]
   popularAmenities: [ServiceAmenity!]
@@ -185,11 +187,15 @@ type RestaurantMenu {
 type RestaurantDish {
   id: ID!
   name: String!
+  price: Float!
   ingredients: [String!]!
   thumbnail: String!
 }
 
 type Restaurant {
+  owner: Account!
+  contact: ServiceContact!
+  workingHours: WorkingSchedule
   id: ID!
   ownerId: ID!
   vat: Int!
@@ -197,6 +203,7 @@ type Restaurant {
   location: ServiceLocation!
   presentations: [ServicePresentation!]!
   policies: [ServicePolicy!]!
+  cancelationPolicies: [ServiceCancelationPolicy!]!
   serviceMetaInfo: ServiceMetaInfo!
   payment_methods: [ServicePaymentMethods!]!
   menus: [RestaurantMenu!]!
@@ -768,6 +775,7 @@ input ServicePropertyMeasurementsInput {
 }
 
 input CreateRestaurantInput {
+  contact: ServiceContactInput!
   vat: Int!
   status: ServiceStatus
   location: ServiceLocationInput!
