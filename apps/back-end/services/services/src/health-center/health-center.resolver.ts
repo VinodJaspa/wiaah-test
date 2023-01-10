@@ -20,8 +20,8 @@ import {
   HealthCenter,
   HealthCenterSpecialty,
   CreateHealthCenterSpecialityInput,
-  HealthCenterService,
 } from '@health-center';
+import { HealthCenterService } from './health-center.service';
 import { QueryBus } from '@nestjs/cqrs';
 
 import { SearchHealthCenterInput } from './dto';

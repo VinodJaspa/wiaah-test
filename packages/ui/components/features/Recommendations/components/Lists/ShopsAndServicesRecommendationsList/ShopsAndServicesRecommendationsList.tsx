@@ -6,46 +6,37 @@ import {
   PaginationWrapper,
   RecommendedShopCard,
   useGetFilteredShopsQuery,
+  Shop,
 } from "@UI";
 
-export interface ShopsAndServicesRecommendationsList {}
+export interface ShopsAndServicesRecommendationsList {
+  shops: Shop[];
+}
 
 export const ShopsAndServicesRecommendationsList: React.FC<
   ShopsAndServicesRecommendationsList
-> = () => {
+> = ({ shops }) => {
   const { visit } = useRouting();
-  const { page, take } = usePagination(24);
-  const {
-    data: res,
-    isLoading,
-    isError,
-  } = useGetFilteredShopsQuery({ pagination: { page, take } });
 
   return (
-    <PaginationWrapper>
-      <SpinnerFallback isLoading={isLoading} isError={isError}>
-        <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {res
-            ? res.data.map((data, i) => {
-                return (
-                  <RecommendedShopCard
-                    key={`${data.id}-${i}`}
-                    onShopClick={() => {
-                      visit((routes) =>
-                        routes.visitRecommendedServiceOrShop(data)
-                      );
-                    }}
-                    imgUrl={data.banner}
-                    name={data.name}
-                    id={data.id}
-                    type={data.storeType}
-                    label={data.name}
-                  />
-                );
-              })
-            : null}
-        </div>
-      </SpinnerFallback>
-    </PaginationWrapper>
+    <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {shops
+        ? shops.map((data, i) => {
+            return (
+              <RecommendedShopCard
+                key={`${data.id}-${i}`}
+                onShopClick={() => {
+                  visit((routes) => routes.visitRecommendedServiceOrShop(data));
+                }}
+                imgUrl={data.banner}
+                name={data.name}
+                id={data.id}
+                type={data.storeType[0]}
+                label={data.name}
+              />
+            );
+          })
+        : null}
+    </div>
   );
 };

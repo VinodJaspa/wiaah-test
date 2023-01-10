@@ -6,12 +6,14 @@ import {
   FaAngleDoubleRight,
 } from "react-icons/fa";
 import { HtmlDivProps } from "types";
+import { usePaginationControls } from "..";
 
 export interface PaginationProps {
   maxPages?: number;
   onPageChange?: (pageNum: number) => void;
   morePages?: boolean;
   htmlProps?: HtmlDivProps;
+  controls?: usePaginationControls;
 }
 
 export const Pagination: React.FC<PaginationProps> = ({
@@ -19,6 +21,7 @@ export const Pagination: React.FC<PaginationProps> = ({
   onPageChange,
   maxPages = 100000,
   htmlProps,
+  controls,
 }) => {
   const [currentPage, setCurrentPage] = React.useState<number>(1);
 
@@ -29,19 +32,15 @@ export const Pagination: React.FC<PaginationProps> = ({
   }, [currentPage]);
 
   function handleNextPage(last?: boolean) {
-    if (currentPage >= maxPages) return;
-    setCurrentPage((state) => {
-      if (!last) return state + 1;
-      return maxPages;
-    });
+    if (controls) {
+      controls.next();
+    }
   }
 
   function handlePrevPage(last?: boolean) {
-    if (currentPage <= 1) return;
-    setCurrentPage((state) => {
-      if (!last) return state - 1;
-      return 1;
-    });
+    if (controls) {
+      controls.previous();
+    }
   }
   return (
     <>

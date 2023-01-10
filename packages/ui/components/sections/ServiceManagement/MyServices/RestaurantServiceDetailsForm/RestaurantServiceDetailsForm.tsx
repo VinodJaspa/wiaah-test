@@ -17,6 +17,7 @@ import {
   Divider,
   InputProps,
   HashTagInput,
+  FormikTransalationInput,
 } from "@UI";
 import { FileRes } from "utils";
 import { NewServiceSchemas } from "validation";
@@ -46,12 +47,16 @@ export const RestaurantServiceDetailsForm: React.FC<
               <span className="text-2xl font-semibold">
                 {t("Name & Description")}
               </span>
-              <FormikInput
+              <FormikTransalationInput
+                formikSetField={setFieldValue}
+                formikValues={values}
                 name="name"
                 as={Textarea}
                 placeholder={t("The name of the serivce")}
               />
-              <FormikInput
+              <FormikTransalationInput
+                formikSetField={setFieldValue}
+                formikValues={values}
                 name="description"
                 as={Textarea}
                 placeholder={t("The Description of the serivce")}
@@ -60,13 +65,17 @@ export const RestaurantServiceDetailsForm: React.FC<
                 name={"numOfStars"}
                 placeholder={t("Number of stars")}
               />
-              <FormikInput
+              <FormikTransalationInput
+                formikSetField={setFieldValue}
+                formikValues={values}
                 name="metaTagDescription"
                 className="bg-white"
                 as={Textarea}
                 placeholder={t("Meta Tag Description")}
               />
-              <FormikInput
+              <FormikTransalationInput
+                formikSetField={setFieldValue}
+                formikValues={values}
                 name="metaTagKeyword"
                 className="bg-white"
                 as={Textarea}
@@ -78,7 +87,10 @@ export const RestaurantServiceDetailsForm: React.FC<
                 as={Textarea}
                 placeholder={t("Service Tag")}
               />
-              <HashTagInput />
+              <HashTagInput
+                value={values["hashtags"]}
+                onChange={(v) => setFieldValue("hashtags", v)}
+              />
               <span className="text-2xl font-semibold">
                 {t("Price & Attributes")}
               </span>

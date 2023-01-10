@@ -28,7 +28,7 @@ export class GetAccountIdsByNameQueryHandler
       GetAccountsByNameQueryMessageReply
     >(
       this.eventClient,
-      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountByName(type),
+      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountsByName(type),
       new GetAccountsbyNameQueryMessage({
         nameQuery: name,
         pagination: {

@@ -15,6 +15,7 @@ import {
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   AuthorizationDecodedUser,
+  ExtractPagination,
   GetLang,
   GqlCurrentUser,
   GqlSelectedFields,
@@ -25,12 +26,16 @@ import { Vehicle } from './entities';
 
 import { GetAllVehiclesQuery, GetVehicleServiceByIdQuery } from './queries';
 import { GetVehicleByIdQuery } from '@vehicle-service/queries';
+import { GetVehiclesInput } from './dto/get-vehicles.input';
+import { PrismaService } from 'prismaService';
+import { Prisma } from 'prismaClient';
 
 @Resolver(() => VehicleService)
 export class VehicleResolver {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
+    private readonly prisma: PrismaService,
   ) {}
 
   @Mutation(() => VehicleService)
@@ -50,11 +55,30 @@ export class VehicleResolver {
   @Query(() => [VehicleService])
   getAllVehicles(
     @GqlSelectedQueryFields() fields: GqlVehicleServiceSelectedFields,
+    @Args('args') args: GetVehiclesInput,
     @GetLang() langId: UserPreferedLang,
   ) {
-    return this.queryBus.execute<any, VehicleService[]>(
-      new GetAllVehiclesQuery(langId, fields),
-    );
+    const { skip, take } = ExtractPagination(args.pagination);
+    const filters: Prisma.VehicleWhereInput[] = [];
+    if (args.q) {
+      filters.push({
+        title: {
+          some: {
+            value: {
+              contains: args.q,
+            },
+          },
+        },
+      });
+    }
+
+    return this.prisma.vehicle.findMany({
+      where: {
+        AND: filters,
+      },
+      skip,
+      take,
+    });
   }
 
   @Query(() => VehicleService)

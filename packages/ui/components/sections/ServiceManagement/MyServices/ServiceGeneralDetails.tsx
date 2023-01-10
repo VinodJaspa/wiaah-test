@@ -1,5 +1,4 @@
 import { useTranslation } from "react-i18next";
-import { FileRes } from "utils";
 import React from "react";
 import {
   Textarea,
@@ -23,12 +22,12 @@ import {
   CountInput,
   HotelBedsInput,
   DailyPriceInput,
+  FormikTransalationInput,
 } from "@UI";
 import { Form, Formik } from "formik";
 import { FormOptionType } from "types";
 import { ParkingAvailablity } from "dto";
 import { NewServiceSchemas } from "validation";
-import { useReactPubsub } from "react-pubsub";
 export interface ServiceGeneralDetailsProps {
   onChange?: (data: Record<string, any>) => any;
 }
@@ -53,12 +52,16 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
               <span className="text-2xl font-semibold">
                 {t("Name & Description")}
               </span>
-              <FormikInput
+              <FormikTransalationInput
+                formikSetField={setFieldValue}
+                formikValues={values}
                 name="name"
                 as={Textarea}
                 placeholder={t("The name of the serivce")}
               />
-              <FormikInput
+              <FormikTransalationInput
+                formikSetField={setFieldValue}
+                formikValues={values}
                 name="description"
                 as={Textarea}
                 placeholder={t("The Description of the serivce")}
@@ -67,13 +70,17 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
                 name={"numOfStars"}
                 placeholder={t("Number of stars")}
               />
-              <FormikInput
+              <FormikTransalationInput
+                formikSetField={setFieldValue}
+                formikValues={values}
                 name="metaTagDescription"
                 className="bg-white"
                 as={Textarea}
                 placeholder={t("Meta Tag Description")}
               />
-              <FormikInput
+              <FormikTransalationInput
+                formikSetField={setFieldValue}
+                formikValues={values}
                 name="metaTagKeyword"
                 className="bg-white"
                 as={Textarea}
@@ -85,7 +92,10 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
                 as={Textarea}
                 placeholder={t("Service Tag")}
               />
-              <HashTagInput />
+              <HashTagInput
+                value={values["hashtags"]}
+                onChange={(v) => setFieldValue("hashtags", v)}
+              />
 
               <span className="text-2xl font-semibold">
                 {t("Price & Attributes")}

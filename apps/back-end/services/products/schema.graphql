@@ -209,12 +209,13 @@ type Query {
   getShopById(id: String!): Shop!
   getFilteredShops(filteredShopsArgs: FilteredShopsInput!): [Shop!]!
   getProductById(id: String!): Product!
-  getProducts: [Product!]!
+  getProducts(filterInput: GetFilteredProductsInput!): [Product!]!
   getProduct(id: ID!): Product!
   getMyProducts(args: GqlPaginationInput!): [MyProduct!]!
   getCategories: [Category!]!
   getFilteredCategory(args: GetFilteredCategory): [Category!]!
-  getProductsFilters(getFiltersArgs: GetFiltersInput!): [Filter!]!
+  getAdminProductsFilters(getFiltersArgs: GetFiltersInput!): [Filter!]!
+  getProductsFilters: [Filter!]!
   getAllProducts(args: GetFilteredProductsAdminInput!): [Product!]!
   getShippingGeoZoneRules: [ShippingTypeRule!]!
   getShippingRuleGeoZones(id: String!): [ShippingRuleGeoZone!]!
@@ -238,6 +239,18 @@ input FilteredShopsInput {
 input GqlPaginationInput {
   page: Int!
   take: Int!
+}
+
+input GetFilteredProductsInput {
+  categories: [ID!]
+  minPrice: Float
+  maxPrice: Float
+  brands: [ID!]
+  ratings: [Int!]
+  colors: [String!]
+  size: [String!]
+  inStock: Boolean
+  pagination: GqlPaginationInput!
 }
 
 input GetFilteredCategory {

@@ -1,4 +1,4 @@
-import { HotelRoomDataType } from "api";
+import { HotelRoom } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -22,27 +22,37 @@ import {
   Badge,
   Checkbox,
 } from "@UI";
-import { ImImages } from "react-icons/im";
 import { mapArray } from "utils";
 import { Form, Formik } from "formik";
 
-export interface HotelRoomDetailsCardProps extends HotelRoomDataType {
+export interface HotelRoomDetailsCardProps extends HotelRoom {
   onBook?: (roomId: string) => any;
 }
 
 export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
-  amenities,
-  thumbnails,
-  title,
-  with_fees_and_taxes,
-  price,
+  bathrooms,
+  beds,
   cancelationPolicies,
-  extras,
-  id,
-  includes,
-  size,
+  createdAt,
+  dailyPrice,
+  description,
   discount,
-  extraServices,
+  hotelId,
+  id,
+  measurements,
+  num_of_rooms,
+  pricePerNight,
+  sellerId,
+  title,
+  updatedAt,
+  __typename,
+  children,
+  dailyPrices,
+  extras,
+  hotel,
+  includedAmenities,
+  includedServices,
+  popularAmenities,
   onBook,
 }) => {
   const { t } = useTranslation();

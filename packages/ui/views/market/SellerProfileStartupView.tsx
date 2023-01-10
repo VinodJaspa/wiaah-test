@@ -29,15 +29,17 @@ import {
   AccountVerification,
 } from "@UI";
 
-import { StepperStepType } from "types";
+import { ServicesType, StepperStepType } from "types";
 import { Button } from "@UI";
 import { runIfFn } from "utils";
 import { object } from "yup";
 import { NewServiceSchemas } from "validation";
+import { useCreateServiceMutation } from "@features/Services/Services/mutation";
 
 export const SellerProfileStartupView: React.FC = ({}) => {
   const { t } = useTranslation();
   const [serviceType, setServiceType] = React.useState<string>("");
+  const { mutate } = useCreateServiceMutation();
   const ServicesDetailsSections: ServiceSectionWithSchemaType[] = [
     {
       key: "restaurant",
@@ -237,7 +239,10 @@ export const SellerProfileStartupView: React.FC = ({}) => {
             <StepperFormController
               lock={false}
               stepsNum={steps.length}
-              onFormComplete={() => {}}
+              onFormComplete={(data) => {
+                console.log(data);
+                mutate({ serviceType: serviceType as ServicesType, ...data });
+              }}
             >
               {({ nextStep, currentStepIdx, goToStep, previousStep }) => {
                 getNextFn &&

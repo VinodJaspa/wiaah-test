@@ -11,7 +11,7 @@ export const getServiceDetailsDataSwitcher = (serviceType: ServicesType) => {
   switch (serviceType) {
     case "hotel":
       return getServicesProviderDataFetcher;
-    case "resturant":
+    case "restaurant":
       return getResturantServiceDetialsData;
     case "health_center":
       return getHealthCenterDetailsFetcher;

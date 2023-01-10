@@ -36,8 +36,8 @@ export class updateInput {
   @Field(() => [ServicePaymentMethods])
   payment_methods: ServicePaymentMethods[];
 
-  @Field(() => [UpdateRestaurantInput])
-  menus: UpdateRestaurantInput[];
+  @Field(() => [UpdateRestaurantMenuInput])
+  menus: UpdateRestaurantMenuInput[];
 
   @Field(() => ID)
   establishmentTypeId: string;
@@ -50,6 +50,9 @@ export class updateInput {
 
   @Field(() => Int)
   michelin_guide_stars: number;
+
+  @Field(() => [UpdateRestaurantMenuDishInput])
+  dishs: UpdateRestaurantMenuDishInput[];
 }
 
 @InputType()
