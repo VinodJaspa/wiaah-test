@@ -41,6 +41,7 @@ model ServiceWorkingSchedule {
   HealthCenterService HealthCenterService[]
   BeautyCenterService BeautyCenterService[]
   VehicleService      VehicleService[]
+  HotelService        HotelService[]
 }
 
 model ServiceOwnerShip {
@@ -69,6 +70,7 @@ model HotelService {
   rooms               HotelRoom[]
   lowest_price        Float                        @default(0)
   highest_price       Float                        @default(0)
+  workingHours        ServiceWorkingSchedule?      @relation(fields: [ownerId], references: [id])
 }
 
 model RestaurantService {

@@ -29,12 +29,18 @@ export class HotelResolver {
   }
 
   @Query(() => Hotel)
-  getHotelService(
+  async getHotelService(
     @Args('getHotelServiceArgs') args: GetHotelServiceArgs,
     @GetLang() lang: string,
     @GqlSelectedQueryFields() fields: GqlHotelSelectedFields,
   ): Promise<Hotel> {
-    return this.hotelService.getHotelWithRoomsById(args.id, lang, fields);
+    const res = await this.hotelService.getHotelWithRoomsById(
+      args.id,
+      lang,
+      fields,
+    );
+    console.log({ res });
+    return res;
   }
 
   @Mutation(() => Hotel)

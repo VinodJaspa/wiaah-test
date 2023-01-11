@@ -2,13 +2,8 @@ import {
   createGraphqlRequestClient,
   FormatedSearchableFilter,
   ServiceOwnerAccount,
-} from "src";
-import { AsyncReturnType, GqlResponse } from "types";
-import {
-  CheckValidation,
-  InferType,
-  vehicleServiceProviderDetailsApiResponseValidationSchema,
-} from "validation";
+} from "api";
+import { GqlResponse } from "types";
 
 type Maybe<T> = T | null;
 type Exact<T extends { [key: string]: unknown }> = {

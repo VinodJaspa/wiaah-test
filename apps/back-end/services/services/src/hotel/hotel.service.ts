@@ -72,13 +72,14 @@ export class HotelService {
     selectedFields: GqlHotelSelectedFields,
   ): Promise<Hotel> {
     try {
-      const fields = this.getSelectionFields(selectedFields);
-
       const hotel = await this.prisma.hotelService.findUnique({
         where: {
           id: hotelId,
         },
-        select: fields,
+        include: {
+          workingHours: true,
+          rooms: true,
+        },
         rejectOnNotFound() {
           throw new NotFoundException('hotel with the given id was not found');
         },
@@ -90,11 +91,12 @@ export class HotelService {
         },
         langId,
       );
-
+      console.log({ formated, hotel });
       return formated;
     } catch (error) {
       const notFoundError = error instanceof NotFoundException;
       if (notFoundError) throw error;
+      console.log(error);
       throw new DBErrorException(
         'failed to get hotel data, please make sure the id of the hotel is correct',
       );

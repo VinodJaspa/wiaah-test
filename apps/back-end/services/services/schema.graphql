@@ -175,7 +175,7 @@ type Hotel {
   serviceMetaInfo: ServiceMetaInfo!
   rooms: [HotelRoom!]!
   contact: ServiceContact!
-  workingHours: WorkingSchedule!
+  workingHours: WorkingSchedule
 }
 
 type RestaurantMenu {

@@ -27,9 +27,12 @@ export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
   const { isMobile } = useResponsive();
   const { data: res, isError, isLoading } = useGetServicesProviderQuery(id);
   const { t } = useTranslation();
-  const rating = res.data.getHotelService.rooms.reduce((acc, curr) => {
-    return acc + curr.rating;
-  }, 0);
+  console.log({ res });
+  const rating =
+    res?.data?.getHotelService?.rooms.reduce((acc, curr) => {
+      return acc + curr.rating;
+    }, 0) || 0;
+
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
       {res ? (
@@ -62,7 +65,7 @@ export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
               <PopularAmenitiesSection
                 cols={2}
                 amenities={
-                  res.data.getHotelService.rooms[0].popularAmenities.map(
+                  res?.data?.getHotelService?.rooms[0]?.popularAmenities.map(
                     ({ label, value }) => ({ name: label, slug: value })
                   ) || []
                 }
@@ -76,9 +79,11 @@ export const HotelDetailsView: React.FC<{ id: string }> = ({ id }) => {
               <HotelServiceRoomsSection
                 rooms={res.data.getHotelService.rooms}
               />
-              <ServiceWorkingHoursSection
-                workingHours={res.data.getHotelService.workingHours}
-              />
+              {res.data.getHotelService.workingHours ? (
+                <ServiceWorkingHoursSection
+                  workingHours={res.data.getHotelService.workingHours}
+                />
+              ) : null}
               <ServicePoliciesSection
                 title={t("Hotel Polices")}
                 policies={res.data.getHotelService.policies}

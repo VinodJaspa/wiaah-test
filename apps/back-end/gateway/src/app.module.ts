@@ -15,6 +15,7 @@ import { subgraphs } from '@lib';
             url,
             willSendRequest({ context, request, kind }) {
               const user = VerifyAndGetUserFromContext(context);
+              console.log({ user, ctx: context['req']?.headers });
               request.http.headers.set('user', JSON.stringify(user));
             },
 
@@ -32,7 +33,7 @@ import { subgraphs } from '@lib';
                   });
                 }
               }
-
+              console.log(response.data);
               return response;
             },
           });

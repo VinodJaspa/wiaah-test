@@ -1,14 +1,5 @@
-import { createGraphqlRequestClient } from "@Utils";
-import { FormatedSearchableFilter } from "src/types";
-import { AsyncReturnType, GqlResponse } from "types";
-import { randomNum } from "utils";
-import {
-  CheckValidation,
-  InferType,
-  BeautyCenterDetailsApiResponseValidationSchema,
-  beautyCenterTreatmentValidationSchema,
-  BeautyCenterDetailsValidationSchema,
-} from "validation";
+import { createGraphqlRequestClient } from "api/src/utils";
+import { GqlResponse } from "types";
 import {
   ServiceOwnerAccount,
   WorkingSchedule,

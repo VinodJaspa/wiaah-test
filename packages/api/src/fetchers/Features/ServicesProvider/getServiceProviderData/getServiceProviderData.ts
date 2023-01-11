@@ -209,6 +209,15 @@ export const getServicesProviderDataFetcher = async (
             src
             type
         }
+         location{
+            address
+            city
+            country
+            lat
+            lon
+             postalCode
+             state
+        }
         rooms{
             cancelationPolicies{
                 cost
@@ -305,11 +314,12 @@ export const getServicesProviderDataFetcher = async (
     }
   }
   `);
-  return client
+  const res = await client
     .setVariables({
       args,
     })
-    .send();
+    .send<any>();
+  return { data: res as any };
 };
 
 // const data: getServicesProviderDataFetcherResponse = {
