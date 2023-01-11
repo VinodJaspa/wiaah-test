@@ -6,11 +6,15 @@ import {
   ServicePolicyTranslatedInput,
   ServicePresentationInput,
 } from '@dto';
+import { ServiceContactInput } from '@hotel/dto';
 import { InputType, Int, Field, Float } from '@nestjs/graphql';
 import { CreateVehicleInput } from './create-vehicle.input';
 
 @InputType()
 export class CreateVehicleServiceInput {
+  @Field(() => ServiceContactInput)
+  contact: ServiceContactInput;
+
   @Field(() => Float)
   @ServiceVatPercent()
   vat: number;

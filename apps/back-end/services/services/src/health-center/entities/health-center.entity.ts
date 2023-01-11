@@ -1,17 +1,26 @@
 import {
+  Account,
   ServiceCancelationPolicy,
+  ServiceContact,
   ServiceLocation,
   ServiceMetaInfo,
   ServicePolicy,
   ServicePresentation,
 } from '@entities';
 import { ObjectType, Field, Int, ID, Float, Directive } from '@nestjs/graphql';
+import { WorkingSchedule } from '@working-schedule/entities';
 import { ServicePaymentMethods, ServiceStatus } from 'prismaClient';
 import { HealthCenterDoctor } from './health-center-doctor.entity';
 
 @ObjectType()
 @Directive('@key(fields:"id")')
 export class HealthCenter {
+  @Field(() => Account, { nullable: true })
+  owner?: Account;
+
+  @Field(() => ServiceContact)
+  contact: ServiceContact;
+
   @Field(() => ID)
   id: string;
 
@@ -50,4 +59,7 @@ export class HealthCenter {
 
   @Field(() => [HealthCenterDoctor])
   doctors: HealthCenterDoctor[];
+
+  @Field(() => WorkingSchedule)
+  workingHours: WorkingSchedule;
 }

@@ -1,11 +1,14 @@
 import {
+  Account,
   ServiceCancelationPolicy,
+  ServiceContact,
   ServiceLocation,
   ServiceMetaInfo,
   ServicePolicy,
   ServicePresentation,
 } from '@entities';
 import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
+import { WorkingSchedule } from '@working-schedule/entities';
 import { ServicePaymentMethods } from 'prismaClient';
 import { Vehicle } from './vehicle.entity';
 
@@ -16,6 +19,15 @@ export class VehicleService {
 
   @Field(() => ID)
   ownerId: string;
+
+  @Field(() => Account)
+  owner: Account;
+
+  @Field(() => WorkingSchedule)
+  workingHours: WorkingSchedule;
+
+  @Field(() => ServiceContact)
+  contact: ServiceContact;
 
   @Field(() => Date)
   createdAt: Date;

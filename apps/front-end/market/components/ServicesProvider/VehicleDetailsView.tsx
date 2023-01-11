@@ -15,20 +15,12 @@ import {
   StaticSideBarWrapper,
   SectionsScrollTabList,
   useGetVehicleProviderDetailsQuery,
-  Slider,
-  VehicleSearchCard,
-  CaruoselLeftArrow,
-  CaruoselRightArrow,
-  Button,
   DateAndTimeInput,
-  ServiceCancelationPolicyInput,
   VehiclesSelectableList,
 } from "ui";
 import { reviews } from "placeholder";
 import { usePublishRef } from "state";
 import { useTranslation } from "react-i18next";
-import { useResponsive } from "hooks";
-import { VehicleSearchData } from "api";
 
 export const VehicleServiceDetailsView: React.FC = () => {
   const { filters } = useSearchFilters();
@@ -45,12 +37,16 @@ export const VehicleServiceDetailsView: React.FC = () => {
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
-        {res ? <ServicesProviderHeader {...res.data} /> : null}
+        {res ? (
+          <ServicesProviderHeader
+            rating={res.rating}
+            reviewsCount={res.totalReviews}
+            serviceTitle={res.serviceMetaInfo.title}
+          />
+        ) : null}
       </SpinnerFallback>
       <Divider />
-      <ServicePresentationCarosuel
-        data={res ? res.data.presintations || [] : []}
-      />
+      <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
       <SectionsScrollTabList tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper
         sidebar={
@@ -69,23 +65,24 @@ export const VehicleServiceDetailsView: React.FC = () => {
         {res ? (
           <>
             <ServicesProviderDescriptionSection
-              description={res.data.description}
-              name={res.data.name}
-              proprtyType={res.data.proprtyType}
+              description={res.serviceMetaInfo.description}
             />
             <Divider />
             <ServiceReachOutSection
-              email={res.data.email}
-              location={res.data.location}
-              telephone={res.data.telephone}
+              email={res.contact.email}
+              location={res.location}
+              telephone={res.contact.phone}
             />
-            <VehiclesSelectableList vehicles={res.data.vehicles || []} />
-            <ServiceWorkingHoursSection workingDays={res.data.workingDays} />
-            <ServicePoliciesSection policies={res.data.policies} />
-            <ServiceOnMapLocalizationSection location={res.data.location} />
+            <VehiclesSelectableList vehicles={res.vehicles || []} />
+            <ServiceWorkingHoursSection workingHours={res.workingHours} />
+            <ServicePoliciesSection
+              title={t("Vehicle Policies")}
+              policies={res.policies}
+            />
+            <ServiceOnMapLocalizationSection location={res.location} />
           </>
         ) : null}
-        <Reviews id={res?.data.id || ""} reviews={reviews} />
+        <Reviews id={res?.id || ""} reviews={reviews} />
       </StaticSideBarWrapper>
     </div>
   );

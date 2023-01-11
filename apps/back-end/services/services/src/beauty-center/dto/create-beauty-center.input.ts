@@ -13,6 +13,7 @@ import {
   TranslationTextInput,
 } from '@dto';
 import { InputType, Field, Float, ID } from '@nestjs/graphql';
+import { CreateWorkingScheduleInput } from '@working-schedule/dto';
 import { ServiceTypeOfSeller } from 'prismaClient';
 import { CreateBeautyCenterTreatmentInput } from './create-beauty-center-treatment.input';
 

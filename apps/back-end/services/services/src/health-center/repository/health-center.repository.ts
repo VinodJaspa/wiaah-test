@@ -10,6 +10,7 @@ import {
   HealthCenterService as PrismaHealthCenterService,
   HealthCenterSpecialty as PrismaHealthCenterSpecialty,
   ServiceStatus,
+  ServiceWorkingSchedule,
 } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 import { SearchHealthCenterInput } from '../dto';
@@ -47,6 +48,9 @@ export class HealthCenterRepository {
     const res = await this.prisma.healthCenterService.findUnique({
       where: {
         id,
+      },
+      include: {
+        workingHours: true,
       },
     });
     return this.formatHealthCenterService(res, langId);
@@ -103,6 +107,9 @@ export class HealthCenterRepository {
       where: {
         AND: filters,
       },
+      include: {
+        workingHours: true,
+      },
       skip,
       take,
     });
@@ -115,6 +122,7 @@ export class HealthCenterRepository {
       doctors?: (PrismaHealthCenterDoctor & {
         speciality: PrismaHealthCenterSpecialty;
       })[];
+      workingHours: ServiceWorkingSchedule;
     },
     langId: string,
   ): HealthCenter {

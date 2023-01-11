@@ -21,51 +21,66 @@ import { reviews } from "placeholder";
 import { useTranslation } from "react-i18next";
 import { randomNum } from "utils";
 
-export const BeautyCenterServiceDetailsView: React.FC = () => {
-  const { filters } = useSearchFilters();
-  const {
-    data: res,
-    isError,
-    isLoading,
-  } = useGetBeautyCenterDetailsQuery(filters["id"] as string);
+export const BeautyCenterServiceDetailsView: React.FC<{ id: string }> = ({
+  id,
+}) => {
+  const { data: res, isError, isLoading } = useGetBeautyCenterDetailsQuery(id);
 
   const { t } = useTranslation();
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
-        {res ? <ServicesProviderHeader {...res.data} /> : null}
+        {res ? (
+          <ServicesProviderHeader
+            rating={res.data.getBeautyCenterById.rating}
+            reviewsCount={res.data.getBeautyCenterById.totalReviews}
+            serviceTitle={res.data.getBeautyCenterById.serviceMetaInfo.title}
+          />
+        ) : null}
       </SpinnerFallback>
       <Divider />
       <ServicePresentationCarosuel
-        data={res ? res.data.presintations || [] : []}
+        data={res ? res.data.getBeautyCenterById.presentations || [] : []}
       />
       <SectionsScrollTabList tabs={ServicesProviderTabs} />
       <StaticSideBarWrapper sidebar={null}>
         {res ? (
           <>
             <ServicesProviderDescriptionSection
-              description={res.data.description}
-              name={res.data.name}
-              proprtyType={res.data.proprtyType}
+              description={
+                res.data.getBeautyCenterById.serviceMetaInfo.description
+              }
             />
             <Divider />
             <BeautyCenterTreatmentsList
-              cancelation={res.data.cancelationPolicies || []}
-              treatments={res.data.treatments}
+              cancelation={
+                res.data.getBeautyCenterById.cancelationPolicies || []
+              }
+              treatments={res.data.getBeautyCenterById.treatments}
             />
             <ServiceReachOutSection
-              email={res.data.email}
-              location={res.data.location}
-              telephone={res.data.telephone}
+              email={res.data.getBeautyCenterById.contact.email}
+              location={res.data.getBeautyCenterById.location}
+              telephone={res.data.getBeautyCenterById.contact.phone}
             />
 
-            <ServiceWorkingHoursSection workingDays={res.data.workingDays} />
-            <ServicePoliciesSection policies={res.data.policies} />
-            <ServiceOnMapLocalizationSection location={res.data.location} />
+            <ServiceWorkingHoursSection
+              workingHours={res.data.getBeautyCenterById.workingHours}
+            />
+            <ServicePoliciesSection
+              policies={res.data.getBeautyCenterById.policies}
+              title=""
+            />
+            <ServiceOnMapLocalizationSection
+              location={res.data.getBeautyCenterById.location}
+            />
           </>
         ) : null}
-        <Reviews id={res?.data.id || ""} reviews={reviews} />
+        <Reviews
+          id={res?.data.getBeautyCenterById.id || ""}
+          reviews={reviews}
+        />
       </StaticSideBarWrapper>
     </div>
   );

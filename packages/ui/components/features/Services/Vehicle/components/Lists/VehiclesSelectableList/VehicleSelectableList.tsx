@@ -1,4 +1,4 @@
-import { VehicleSearchData } from "api";
+import { Vehicle } from "api";
 import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -13,7 +13,7 @@ import {
 } from "@UI";
 
 export const VehiclesSelectableList: React.FC<{
-  vehicles: VehicleSearchData[];
+  vehicles: Vehicle[];
 }> = ({ vehicles }) => {
   const { t } = useTranslation();
   const { isMobile, isTablet } = useResponsive();
@@ -57,7 +57,7 @@ export const VehiclesSelectableList: React.FC<{
                           {...policy}
                           name="cancelationPolicy"
                           onSelected={() => {}}
-                          key={`${i}-${policy.id}`}
+                          key={`${i}-${JSON.stringify(policy)}`}
                         />
                       ))}
                     </div>

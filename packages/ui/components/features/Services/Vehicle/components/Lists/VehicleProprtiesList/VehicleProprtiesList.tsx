@@ -1,5 +1,5 @@
 import React from "react";
-import { VehiclePropertie } from "api";
+import { VehicleProperties } from "api";
 import {
   HStack,
   AirConditionIcon,
@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { randomNum } from "utils";
 
 export interface VehicleProprtiesListProps {
-  VehicleProps: VehiclePropertie[];
+  VehicleProps: VehicleProperties;
 }
 
 export const VehicleProprtiesList: React.FC<VehicleProprtiesListProps> = ({
@@ -20,56 +20,56 @@ export const VehicleProprtiesList: React.FC<VehicleProprtiesListProps> = ({
 }) => {
   return (
     <HStack className="flex-wrap">
-      {Array.isArray(VehicleProps)
-        ? VehicleProps.map((prop, i) => (
-            <VehicleProprtiesSwticher
-              key={`${randomNum(50)}--${i}`}
-              vehicleProp={prop}
-            />
-          ))
-        : null}
+      {Object.entries(VehicleProps).map(([key, value], i) => (
+        <VehicleProprtiesSwticher
+          key={`${randomNum(50)}--${i}`}
+          vehicleProp={key as keyof VehicleProperties}
+          value={value}
+        />
+      ))}
     </HStack>
   );
 };
 
 export const VehicleProprtiesSwticher: React.FC<{
-  vehicleProp: VehiclePropertie;
-}> = ({ vehicleProp }) => {
+  vehicleProp: keyof VehicleProperties;
+  value: VehicleProperties[keyof VehicleProperties];
+}> = ({ vehicleProp, value }) => {
   const { t } = useTranslation();
-  switch (vehicleProp.type) {
-    case "a/c":
+  switch (vehicleProp) {
+    case "airCondition":
       return (
         <HStack>
           <AirConditionIcon />
           <p>{t("A/C")}</p>
         </HStack>
       );
-    case "gps":
+    case "gpsAvailable":
       return (
         <HStack>
           <GPSIcon />
           <p>{t("GPS")}</p>
         </HStack>
       );
-    case "passengers":
+    case "seats":
       return (
         <HStack>
           <TransportGuestsIcon />
-          <p>{vehicleProp.value}</p>
+          <p>{value}</p>
         </HStack>
       );
     case "windows":
       return (
         <HStack>
           <CarWindowIcon />
-          <p>{vehicleProp.value}</p>
+          <p>{value}</p>
         </HStack>
       );
-    case "bags":
+    case "lugaggeCapacity":
       return (
         <HStack>
           <TransportLuggageIcon />
-          <p>{vehicleProp.value}</p>
+          <p>{value}</p>
         </HStack>
       );
     default:

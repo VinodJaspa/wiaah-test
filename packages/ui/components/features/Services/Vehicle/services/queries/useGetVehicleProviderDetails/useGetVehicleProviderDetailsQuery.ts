@@ -1,6 +1,6 @@
+import { AsyncReturnType } from "types";
 import {
   FormatedSearchableFilter,
-  GetVehicleServiceProviderDetailsApiResponse,
   getVehicleServiceProviderDetailsFetcher,
 } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
@@ -14,7 +14,7 @@ export const useGetVehicleProviderDetailsQuery = (
   options?: UseQueryOptions<
     unknown,
     unknown,
-    GetVehicleServiceProviderDetailsApiResponse,
+    AsyncReturnType<typeof getVehicleServiceProviderDetailsFetcher>,
     any
   >
 ) => {

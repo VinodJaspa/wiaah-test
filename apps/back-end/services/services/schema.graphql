@@ -249,7 +249,9 @@ type BeautyCenterTreatment {
 
 type BeautyCenter {
   id: ID!
+  contact: ServiceContact!
   ownerId: ID!
+  owner: Account
   createdAt: DateTime!
   updatedAt: DateTime!
   vat: Float!
@@ -266,6 +268,7 @@ type BeautyCenter {
   cancelationPolicies: [ServiceCancelationPolicy!]!
   type_of_seller: ServiceTypeOfSeller!
   treatments: [BeautyCenterTreatment!]!
+  workingHours: WorkingSchedule
 }
 
 enum ServiceTypeOfSeller {
@@ -300,6 +303,8 @@ enum HealthCenterDoctorAvailablityStatus {
 }
 
 type HealthCenter {
+  owner: Account
+  contact: ServiceContact!
   id: ID!
   ownerId: ID!
   vat: Float!
@@ -313,6 +318,7 @@ type HealthCenter {
   payment_methods: [ServicePaymentMethods!]!
   cancelationPolicies: [ServiceCancelationPolicy!]!
   doctors: [HealthCenterDoctor!]!
+  workingHours: WorkingSchedule!
 }
 
 type VehicleProperties {
@@ -338,6 +344,9 @@ type Vehicle {
 type VehicleService {
   id: ID!
   ownerId: ID!
+  owner: Account!
+  workingHours: WorkingSchedule!
+  contact: ServiceContact!
   createdAt: DateTime!
   updatedAt: DateTime!
   vat: Float!
@@ -831,6 +840,7 @@ input CreateHealthCenterInput {
   serviceMetaInfo: [ServiceMetaInfoTranslationInput!]!
   payment_methods: [ServicePaymentMethods!]!
   cancelationPolicies: [ServiceCancelationPolicyInput!]!
+  contact: ServiceContactInput!
   doctors: [HealthCenterDoctorInput!]!
 }
 
@@ -922,6 +932,7 @@ input UpdateTreatmentCategoriesInput {
 }
 
 input CreateVehicleServiceInput {
+  contact: ServiceContactInput!
   vat: Float!
   location: ServiceLocationInput!
   presentations: [ServicePresentationInput!]!

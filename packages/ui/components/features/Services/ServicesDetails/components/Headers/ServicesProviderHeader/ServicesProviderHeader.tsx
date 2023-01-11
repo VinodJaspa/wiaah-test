@@ -1,11 +1,17 @@
-import { ServicesProviderHeaderData } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { AspectRatio, Rate, Button, HStack, HeartIcon, ShareIcon } from "@UI";
+import { Rate, HeartIcon, ShareIcon } from "@UI";
 import { DateDetails } from "utils";
 
-export interface ServicesProviderHeaderProps
-  extends ServicesProviderHeaderData {}
+export interface ServicesProviderHeaderProps {
+  serviceTitle: string;
+  rating: number;
+  reviewsCount: number;
+  travelPeriod?: {
+    arrival: Date;
+    departure: Date;
+  };
+}
 
 export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
   serviceTitle,

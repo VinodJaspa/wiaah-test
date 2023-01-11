@@ -1,20 +1,18 @@
-import {
-  FormatedSearchableFilter,
-  GetHealthCenterDetailsApiResponse,
-  getHealthCenterDetailsFetcher,
-} from "api";
+import { AsyncReturnType } from "@UI/../types/src";
+import { getHealthCenterDetailsFetcher } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
-export const getHealthCenterDetailsQueryKey = (
-  filters: FormatedSearchableFilter
-) => ["healthCenterDetails", { filters }];
+export const getHealthCenterDetailsQueryKey = (filters: { id: string }) => [
+  "healthCenterDetails",
+  { filters },
+];
 
 export const useGetHealthCenterDetailsQuery = (
-  filters: FormatedSearchableFilter,
+  filters: { id: string },
   options?: UseQueryOptions<
     unknown,
     unknown,
-    GetHealthCenterDetailsApiResponse,
+    AsyncReturnType<typeof getHealthCenterDetailsFetcher>,
     any
   >
 ) => {

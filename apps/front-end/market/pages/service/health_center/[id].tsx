@@ -2,9 +2,12 @@ import React from "react";
 import type { GetServerSideProps, NextPage } from "next";
 import { HealthCenterDetailsView, MasterLayout } from "@components";
 import { Container, GetServiceDetailsQueryKey } from "ui";
-import { ExtractParamFromQuery, ExtractServiceTypeFromQuery } from "utils";
+import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
-import { getServiceDetailsDataSwitcher } from "api";
+import {
+  getHealthCenterDetailsFetcher,
+  getServiceDetailsDataSwitcher,
+} from "api";
 import { AsyncReturnType, ServerSideQueryClientProps } from "types";
 import {
   MetaAuthor,
@@ -14,9 +17,10 @@ import {
   MetaVideo,
   RequiredSocialMediaTags,
 } from "react-seo";
+import { useRouting } from "routing";
 
 interface HealthCenterServiceDetailsPageProps {
-  data: AsyncReturnType<ReturnType<typeof getServiceDetailsDataSwitcher>>;
+  data: AsyncReturnType<typeof getHealthCenterDetailsFetcher>;
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -27,9 +31,9 @@ export const getServerSideProps: GetServerSideProps<
   const serviceType = "health_center";
   const serviceId = ExtractParamFromQuery(query, "id");
 
-  const data = await getServiceDetailsDataSwitcher(serviceType)({
+  const data = (await getServiceDetailsDataSwitcher(serviceType)({
     id: serviceId,
-  });
+  })) as AsyncReturnType<typeof getHealthCenterDetailsFetcher>;
 
   queryClient.prefetchQuery(
     GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
@@ -47,24 +51,34 @@ export const getServerSideProps: GetServerSideProps<
 const HealthCenterServiceDetailsPage: NextPage<
   HealthCenterServiceDetailsPageProps
 > = ({ data }) => {
+  const { getParam } = useRouting();
+  const id = getParam("id");
   return (
     <>
       {data && data.data ? (
         <>
-          <MetaTitle content={`Wiaah | Service Details by ${data.data.name}`} />
-          <MetaDescription content={data.data.description} />
-          {data.data.presintations.at(0).type === "video" ? (
-            <MetaVideo content={data.data.presintations.at(0).src} />
+          <MetaTitle
+            content={`Wiaah | Service Details by ${data.data.getHealthCenter.serviceMetaInfo.title}`}
+          />
+          <MetaDescription
+            content={data.data.getHealthCenter.serviceMetaInfo.description}
+          />
+          {data.data.getHealthCenter.presentations.at(0).type === "vid" ? (
+            <MetaVideo
+              content={data.data.getHealthCenter.presentations.at(0).src}
+            />
           ) : (
-            <MetaImage content={data.data.presintations.at(0).src} />
+            <MetaImage
+              content={data.data.getHealthCenter.presentations.at(0).src}
+            />
           )}
-          <MetaAuthor author={data.data.name} />
+          <MetaAuthor author={data.data.getHealthCenter.owner?.firstName} />
           <RequiredSocialMediaTags />
         </>
       ) : null}
       <MasterLayout>
         <Container>
-          <HealthCenterDetailsView />
+          <HealthCenterDetailsView id={id} />
         </Container>
       </MasterLayout>
     </>

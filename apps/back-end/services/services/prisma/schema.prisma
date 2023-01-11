@@ -35,9 +35,12 @@ model ServiceCategory {
 }
 
 model ServiceWorkingSchedule {
-  id          String                          @id @map("_id") @db.ObjectId
-  weekdays    ServiceWeekDaysWorkingHours?
-  specialDays ServiceSpecialWorkingHoursDay[]
+  id                  String                          @id @map("_id") @db.ObjectId
+  weekdays            ServiceWeekDaysWorkingHours?
+  specialDays         ServiceSpecialWorkingHoursDay[]
+  HealthCenterService HealthCenterService[]
+  BeautyCenterService BeautyCenterService[]
+  VehicleService      VehicleService[]
 }
 
 model ServiceOwnerShip {
@@ -108,7 +111,9 @@ model HealthCenterService {
   serviceMetaInfo     ServiceMetaTranslationInfo[]
   payment_methods     ServicePaymentMethods[]
   cancelationPolicies ServiceCancelationPolicy[]
+  contact             ServiceContact
   doctors             HealthCenterDoctor[]
+  workingHours        ServiceWorkingSchedule       @relation(fields: [ownerId], references: [id])
 }
 
 model BeautyCenterService {
@@ -131,6 +136,7 @@ model BeautyCenterService {
   cancelationPolicies  ServiceCancelationPolicy[]
   type_of_seller       ServiceTypeOfSeller
   treatments           BeautyCenterTreatment[]
+  workingHours         ServiceWorkingSchedule       @relation(fields: [ownerId], references: [id])
 }
 
 model VehicleService {
@@ -151,6 +157,8 @@ model VehicleService {
   payment_methods     ServicePaymentMethods[]
   cancelationPolicies ServiceCancelationPolicy[]
   vehicles            Vehicle[]
+  contact             ServiceContact
+  workingHours        ServiceWorkingSchedule       @relation(fields: [ownerId], references: [id])
 }
 
 model VehicleType {

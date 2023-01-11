@@ -9,6 +9,7 @@ import {
   HealthCenterDoctor as PrismaHealthCenterDoctor,
   HealthCenterService as PrismaHealthCenterService,
   HealthCenterSpecialty as PrismaHealthCenterSpeciality,
+  ServiceWorkingSchedule,
 } from 'prismaClient';
 import {
   DBErrorException,
@@ -70,6 +71,7 @@ export class HealthCenterService {
             speciality: true,
           },
         },
+        workingHours: true,
       },
     });
 
@@ -156,6 +158,9 @@ export class HealthCenterService {
       where: {
         id: serviceId,
       },
+      include: {
+        workingHours: true,
+      },
     });
 
     if (service.status !== 'active')
@@ -175,6 +180,9 @@ export class HealthCenterService {
         where: {
           id: serviceId,
         },
+        include: {
+          workingHours: true,
+        },
       });
 
       return this.formatHealthCenterService(service);
@@ -190,6 +198,9 @@ export class HealthCenterService {
     const service = await this.prisma.healthCenterService.findUnique({
       where: {
         id: serviceId,
+      },
+      include: {
+        workingHours: true,
       },
     });
     if (service.ownerId !== userId)
@@ -211,6 +222,8 @@ export class HealthCenterService {
 
   formatHealthCenterService(
     input: PrismaHealthCenterService & {
+      workingHours: ServiceWorkingSchedule;
+    } & {
       doctors?: (PrismaHealthCenterDoctor & {
         speciality: PrismaHealthCenterSpeciality;
       })[];
