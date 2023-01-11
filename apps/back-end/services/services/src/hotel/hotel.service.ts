@@ -54,7 +54,7 @@ export class HotelService {
             : undefined,
       },
       include: {
-        rooms: input.rooms.length > 0,
+        rooms: true,
       },
     });
     this.eventBus.publish(new HotelCreatedEvent(input));
@@ -68,12 +68,9 @@ export class HotelService {
 
   async getHotelWithRoomsById(
     hotelId: string,
-    userId: string,
     langId: UserPreferedLang,
     selectedFields: GqlHotelSelectedFields,
   ): Promise<Hotel> {
-    await this.checkViewHotelPremissions(hotelId, userId);
-
     try {
       const fields = this.getSelectionFields(selectedFields);
 

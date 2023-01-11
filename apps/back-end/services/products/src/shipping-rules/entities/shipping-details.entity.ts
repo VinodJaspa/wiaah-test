@@ -8,7 +8,7 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import { ShippingType } from '@prisma-client';
-import { ShippingDeliveryTimeRange } from './shipping-rule.entity';
+import { ShippingDeliveryTimeRange } from '@shipping-details';
 
 registerEnumType(ShippingType, { name: 'ShippingType' });
 

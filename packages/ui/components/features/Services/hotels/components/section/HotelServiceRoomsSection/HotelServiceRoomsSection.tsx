@@ -1,4 +1,4 @@
-import { HotelRoomDataType } from "api";
+import { HotelRoom } from "api";
 import { useResponsive } from "hooks";
 import { useTranslation } from "react-i18next";
 import { usePublishRef, useSetBookedServicesState } from "state";
@@ -10,7 +10,7 @@ import {
 } from "@UI";
 
 export interface HotelServiceRoomsSectionProps {
-  rooms: HotelRoomDataType[];
+  rooms: HotelRoom[];
 }
 export const HotelServiceRoomsSection: React.FC<
   HotelServiceRoomsSectionProps

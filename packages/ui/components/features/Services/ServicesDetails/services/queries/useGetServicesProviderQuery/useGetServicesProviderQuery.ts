@@ -1,26 +1,24 @@
-import {
-  FormatedSearchableFilter,
-  getServicesProviderDataFetcher,
-  getServicesProviderDataFetcherResponse,
-} from "api";
+import { AsyncReturnType } from "types";
+import { getServicesProviderDataFetcher } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
-export const getServiceProviderQueryKey = (
-  filters: FormatedSearchableFilter
-) => ["servicesProvider", { filters }];
+export const getServiceProviderQueryKey = (id: string) => [
+  "servicesProvider",
+  { id },
+];
 export const useGetServicesProviderQuery = (
-  filters: FormatedSearchableFilter,
+  id: string,
   options?: UseQueryOptions<
     unknown,
     unknown,
-    getServicesProviderDataFetcherResponse,
+    AsyncReturnType<typeof getServicesProviderDataFetcher>,
     any
   >
 ) => {
   return useQuery(
-    getServiceProviderQueryKey(filters),
+    getServiceProviderQueryKey(id),
     () => {
-      return getServicesProviderDataFetcher(filters);
+      return getServicesProviderDataFetcher({ id });
     },
     options
   );

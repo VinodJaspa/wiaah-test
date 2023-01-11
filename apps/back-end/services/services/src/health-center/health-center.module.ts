@@ -12,9 +12,10 @@ import {
 import { healthCenterCommandHandlers } from './commands';
 import { HealthCenterSagas } from './sagas';
 import { HealthCenterController } from './health-center.controller';
+import { kafkaModule } from '@kafka-module';
 
 @Module({
-  imports: [ServiceOwnershipModule, CqrsModule],
+  imports: [ServiceOwnershipModule, CqrsModule, kafkaModule],
   providers: [
     HealthCenterResolver,
     HealthCenterService,

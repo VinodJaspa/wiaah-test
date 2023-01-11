@@ -4,9 +4,7 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
-  NotAcceptableException,
   NotFoundException,
-  HttpStatus,
   GoneException,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
@@ -17,12 +15,9 @@ import {
   KafkaMessageHandler,
   KAFKA_EVENTS,
   KAFKA_MESSAGES,
-  KAFKA_SERVICE_TOKEN,
-  SubtractFromDate,
 } from 'nest-utils';
 import { LoginDto, RegisterDto, VerifyEmailDto } from './dto';
 import * as bcrypt from 'bcrypt';
-import { Account } from './types';
 import { JwtService } from '@nestjs/jwt';
 import { SERVICES } from 'nest-utils';
 import {
@@ -55,26 +50,7 @@ export class AuthService {
 
   async register(createAuthInput: RegisterDto): Promise<boolean> {
     try {
-      const {
-        confirmPassword,
-        email,
-        firstName,
-        lastName,
-        password,
-        accountType,
-      } = createAuthInput;
-
-      const emailExists = await this.emailExists(email);
-
-      if (emailExists === true) {
-        throw new NotAcceptableException('this email is already used');
-      }
-
-      if (confirmPassword !== password) {
-        throw new NotAcceptableException(
-          'confirm password and password fields must match',
-        );
-      }
+      const { email, firstName, lastName, accountType } = createAuthInput;
 
       const registerations = await this.getRegisterationsByEmail(email);
       if (registerations.length > 0)
@@ -92,15 +68,12 @@ export class AuthService {
         },
       });
 
-      const hashedPassword = await this.hashPassword(password);
-
       this.eventsClient.emit<any, AccountRegisteredEvent>(
         KAFKA_EVENTS.AUTH_EVENTS.accountRegistered,
         new AccountRegisteredEvent({
           firstName,
           lastName,
           email,
-          password: hashedPassword,
           accountType,
           verificationCode,
         }),
@@ -112,9 +85,9 @@ export class AuthService {
     }
   }
 
-  async verifyEmail(inputs: VerifyEmailDto) {
+  async verifyEmail(input: { code: string; email: string }) {
     try {
-      const { email, verificationCode } = inputs;
+      const { email, code } = input;
 
       const registeration = await this.prisma.registeration.findUnique({
         where: {
@@ -125,7 +98,7 @@ export class AuthService {
         },
       });
 
-      if (registeration.verificationCode !== verificationCode)
+      if (registeration.verificationCode !== code)
         throw new BadRequestException('invalid verification code');
       if (registeration.expiresAt < new Date())
         throw new GoneException('token expired');
@@ -309,9 +282,6 @@ export class AuthService {
 
     if (!data)
       throw new NotFoundException('account with this email was not found');
-
-    if (!data.emailVerified)
-      throw new BadRequestException('you need to verify your email to login');
 
     const { password: hashedPassword, ...rest } = data;
 

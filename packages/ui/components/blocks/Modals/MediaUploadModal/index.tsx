@@ -133,7 +133,7 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
       <ModalOverlay />
       <ModalContent className="w-[min(100%, 40rem)] rounded-xl py-4 px-8 flex flex-col gap-4">
         <PostsViewModalsHeader onBackClick={cancelUpload}>
-          <p>
+          <p className="">
             {uploadImg
               ? t("upload_a_picture", "Upload a Picture")
               : uploadVid

@@ -1,22 +1,30 @@
 import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { BuyerProfileStartUpView } from "ui/views";
-import { Container } from "ui";
+import { Login } from "ui/views";
+import { MasterLayout } from "@components";
+import { useBuyerSignupMutation } from "ui";
 
-const SignUpFinalisation: NextPage = () => {
+const BuyerSignup: NextPage = () => {
+  const { mutate, data } = useBuyerSignupMutation();
+  console.log({ data });
   return (
     <>
       <Head>
-        <title>Wiaah | Buyer Signup Finalisation</title>
+        <title>Wiaah | Buyer SignUp</title>
       </Head>
-      <main className="block w-full min-h-screen">
-        <Container>
-          <BuyerProfileStartUpView />
-        </Container>
-      </main>
+      <MasterLayout>
+        <main className="block w-full grow">
+          <Login
+            onSubmit={(data, type) => {
+              type === "buyer-signup" ? mutate(data) : null;
+            }}
+            loginType={"buyer-signup"}
+          />
+        </main>
+      </MasterLayout>
     </>
   );
 };
 
-export default SignUpFinalisation;
+export default BuyerSignup;

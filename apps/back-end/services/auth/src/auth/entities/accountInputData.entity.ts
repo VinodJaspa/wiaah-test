@@ -1,5 +1,4 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Registeration } from './regiseration.entity';
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class AccountInputData {

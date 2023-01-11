@@ -2,7 +2,7 @@ import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { SearchView } from "ui/views";
-import MasterLayout from "../../components/MasterLayout";
+import { MasterLayout } from "@components";
 const Search: NextPage = () => {
   return (
     <>

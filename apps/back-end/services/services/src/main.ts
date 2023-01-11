@@ -21,6 +21,7 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
+  await app.startAllMicroservices();
   await app.init();
   await app.listen(process.env.PORT || 3020);
 }

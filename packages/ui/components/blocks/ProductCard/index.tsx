@@ -2,13 +2,14 @@ import React from "react";
 import { IoHeartOutline, IoHeart, IoTrash } from "react-icons/io5";
 import { ProductType } from "api";
 import { usePreferedCurrency } from "state";
-import { PriceDisplay, Rate } from "@UI";
+import { Image, PriceDisplay, Product, Rate } from "@UI";
 
-export interface ProductCardProps extends ProductType {
+export interface ProductCardProps extends Product {
   buttonText?: string;
   forceHover?: boolean | undefined;
   postion?: "save" | "delete";
   full?: boolean;
+  liked?: boolean;
   onLike?: (id: string) => void;
   onButtonClick?: (id: string) => void;
   onDelete?: (id: string) => void;
@@ -16,18 +17,18 @@ export interface ProductCardProps extends ProductType {
 
 export const ProductCard: React.FC<ProductCardProps> = ({
   id,
-  name,
+  title,
   price,
-  thumbnail,
+  presentations,
   shopId,
-  colors = [],
+  attributes,
   postion = "save",
   liked,
   forceHover,
   buttonText,
   cashback,
   discount,
-  rating,
+  rate,
   onButtonClick,
   onDelete,
   onLike,
@@ -137,11 +138,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
             {buttonText && buttonText}
           </span>
         </div>
-        <img
-          className="h-full w-full object-cover"
-          src={thumbnail}
-          alt={name}
-        />
+        <Image src={presentations.find((v) => v.type === "image")?.src} />
       </div>
       <div className="p-2">
         {/* name */}
@@ -166,7 +163,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               >
                 {/* old price */}
                 {preferedCurrency.currencySymbol}
-                {(price / ((discount - 100) / 100)).toFixed(2)}
+                {(price / ((discount.amount - 100) / 100)).toFixed(2)}
               </span>
             ) : null}
           </div>
@@ -183,9 +180,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
           data-test="productColorsRateContainer"
           className="flex items-center justify-between"
         >
-          <div data-test="productColors" className="flex gap-2">
-            {/* colors */}
-            {colors.map((color, i) => (
+          {/* <div data-test="productColors" className="flex gap-2">
+            {attributes.map(({name,values}, i) => (
               <div
                 onClick={() => handleColorSelection(i)}
                 className={`cursor-pointer rounded-full border-[1px] ${
@@ -200,8 +196,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 ></div>
               </div>
             ))}
-          </div>
-          <Rate className="text-sm" allowHalf rating={rating} />
+          </div> */}
+          <Rate className="text-sm" allowHalf rating={rate} />
         </div>
       </div>
     </div>

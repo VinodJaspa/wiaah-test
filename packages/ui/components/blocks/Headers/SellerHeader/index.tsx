@@ -123,7 +123,9 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
           </span>
           <MessageOutlineIcon className="text-lightBlack text-icon" />
         </div>
-        <ShoppingCart />
+        <div className="text-lightBlack">
+          <ShoppingCart />
+        </div>
         {!isMobile && (
           <Menu>
             <MenuButton>

@@ -28,16 +28,13 @@ export const AccountVerification: React.FC<AccountVerificationProps> = () => {
         sectionTitle={t("request_verification", "Request Verification")}
       />
       <span className="text-black text-xl">
-        {t(
-          "apply_for_instagram_verification",
-          "Apply for Instagram Verification"
-        )}
+        {t("apply_for_wiaah_verification", "Apply for Wiaah Verification")}
       </span>
 
       <p>
         {t(
-          "instagram_verification_explaintion",
-          "A verified badge is a check that appears next to an Instagram account's name to indicate that the account is the authentic presence of a notable public figure, celebrity, global brand or entity it represents"
+          "wiaah_verification_explaintion",
+          "A verified badge is a check that appears next to an Wiaah account's name to indicate that the account is the authentic presence of a notable public figure, celebrity, global brand or entity it represents"
         )}
       </p>
       <p>

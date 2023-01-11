@@ -1,14 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { Transport } from '@nestjs/microservices';
-import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { KafkaCustomTransport, KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { graphqlUploadExpress } from 'graphql-upload';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.connectMicroservice({
-    transport: Transport.KAFKA,
-    options: {
+  app.connectMicroservice<MicroserviceOptions>({
+    strategy: new KafkaCustomTransport({
       client: {
         clientId: SERVICES.PRODUCTS_SERVICE.clientId,
         brokers: KAFKA_BROKERS,
@@ -16,10 +15,10 @@ async function bootstrap() {
       consumer: {
         groupId: SERVICES.PRODUCTS_SERVICE.groupId,
       },
-    },
+    }),
   });
-  app.startAllMicroservices();
   app.use(graphqlUploadExpress());
+  await app.startAllMicroservices();
   await app.listen(process.env.PORT || 3006);
 }
 bootstrap();

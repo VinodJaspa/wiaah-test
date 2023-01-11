@@ -1,6 +1,17 @@
-import { Field, Float, ID, InputType, PartialType } from '@nestjs/graphql';
+import {
+  Field,
+  Float,
+  ID,
+  InputType,
+  PartialType,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { GqlPaginationInput } from 'nest-utils';
 import { ServiceInsuranceStatusEnum } from 'prismaClient';
+
+registerEnumType(ServiceInsuranceStatusEnum, {
+  name: 'ServiceInsuranceStatusEnum',
+});
 
 @InputType()
 class input {

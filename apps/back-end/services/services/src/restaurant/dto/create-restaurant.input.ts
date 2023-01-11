@@ -8,9 +8,13 @@ import { InputType, Int, Field, ID } from '@nestjs/graphql';
 import { ServicePaymentMethods, ServiceStatus } from 'prismaClient';
 import { RestaurantMenuInput } from '@restaurant';
 import { ServicePresentationsLength, TranslationsInput } from '@decorators';
+import { ServiceContactInput } from '@hotel/dto';
 
 @InputType()
 export class CreateRestaurantInput {
+  @Field(() => ServiceContactInput)
+  contact: ServiceContactInput;
+
   @Field(() => Int)
   vat: number;
 

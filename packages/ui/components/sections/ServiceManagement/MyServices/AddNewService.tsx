@@ -11,11 +11,11 @@ import {
   CarWheelIcon,
   HealthIcon,
   BeautyCenterIcon,
-  TabList,
   FlagIcon,
   SimpleTabs,
   SimpleTabHead,
   SimpleTabItemList,
+  FormTranslationWrapper,
 } from "@partials";
 import {
   CheckMarkStepper,
@@ -29,7 +29,7 @@ import { SectionHeader } from "@sections";
 import { DiscoverOurServiceForm } from "./DiscoverOurServiceForm";
 
 import { NewServiceSchemas } from "validation";
-import { CallbackAfter } from "utils";
+import { CallbackAfter, WiaahLanguageCountries } from "utils";
 import { ServiceGeneralDetails } from "./ServiceGeneralDetails";
 import { IncludedServices } from "./IncludedServices";
 import { ExtraServiceOptions } from "./ExtraServiceOptions";
@@ -41,11 +41,12 @@ import { RestaurantIncludedServicesSection } from "./RestaruantIncludedServicesS
 import { HolidayRentalsGeneralDetailsForm } from "./HolidayRentalsGeneralDetailsForm";
 import { HealthCenterIncludedServices } from "./HealthCenterIncludedServices";
 import { AnySchema } from "yup";
+import { useCreateServiceMutation } from "@features/Services/Services/mutation";
 
 export interface AddNewServiceProps {
   isEdit?: boolean;
   data?: any;
-  serviceType?: string;
+  serviceType?: ServiceType;
   onSubmit?: (data?: any) => any;
 }
 export const AddNewService: React.FC<AddNewServiceProps> = ({
@@ -56,45 +57,47 @@ export const AddNewService: React.FC<AddNewServiceProps> = ({
   serviceType,
 }) => {
   const { t } = useTranslation();
+  const [lang, setLang] = React.useState<string>("en");
+  const { mutate } = useCreateServiceMutation();
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex gap-4 flex-col h-full">
       <SectionHeader
         sectionTitle={isEdit ? t("Edit Service") : t("Add New Service")}
       />
 
       <SimpleTabs>
         <>
-          <SimpleTabHead>
-            <div className="flex-wrap justify-center sm:justify-start">
-              {addProductLanguagesSection.map(
-                (section, i) =>
+          <div className="flex-wrap flex gap-4 flex-col sm:flex-row justify-center sm:justify-start">
+            <SimpleTabHead>
+              {WiaahLanguageCountries.map(
+                ({ code, name }, i) =>
                   ({ selected, onClick }: any) =>
                     (
                       <div
+                        onClick={onClick}
                         className={`${
                           selected === i ? "border-primary" : "border-gray-300"
-                        } flex items-center gap-2 border-b-[1px] shadow p-2`}
+                        } flex cursor-pointer w-fit items-center gap-2 border-b-[1px] shadow p-2`}
                       >
-                        <FlagIcon code={section.language.countryCode} />
-                        <span className="hidden sm:block">
-                          {section.language.name}
-                        </span>
+                        <FlagIcon code={code} />
+                        <span className="hidden sm:block">{name}</span>
                       </div>
                     )
               )}
-            </div>
-          </SimpleTabHead>
-          <SimpleTabItemList></SimpleTabItemList>
-          <TabList />
+            </SimpleTabHead>
+          </div>
+          <SimpleTabItemList />
         </>
       </SimpleTabs>
-      {addProductLanguagesSection[0].section({
-        isEdit,
-        serviceType,
-        data,
-        onSubmit,
-      })}
+      <FormTranslationWrapper lang={lang} onLangChange={setLang}>
+        <NewServiceStepper
+          onSubmit={(data) => mutate(data)}
+          isEdit={isEdit || false}
+          data={data}
+          serviceType={serviceType || "hotel"}
+        />
+      </FormTranslationWrapper>
     </div>
   );
 };
@@ -224,7 +227,7 @@ export const NewServiceStepper: React.FC<{
       <StepperFormController
         lock={false}
         stepsNum={7}
-        onFormComplete={() => {}}
+        onFormComplete={(data) => onSubmit && onSubmit(data)}
       >
         {({ nextStep, currentStepIdx, goToStep }) => (
           <>
@@ -232,29 +235,6 @@ export const NewServiceStepper: React.FC<{
               currentStepIdx={currentStepIdx}
               onStepChange={(step) => goToStep(step)}
               steps={[
-                {
-                  key: "selectServiceType",
-                  stepComponent: (
-                    <StepperFormHandler
-                      validationSchema={NewServiceSchemas.serviceTypeSchema}
-                      handlerKey="serviceType"
-                    >
-                      {({ validate }) => (
-                        <ChooseServiceType
-                          ServicesInfo={serviceTypes}
-                          onServiceChoosen={(key) => {
-                            validate({ type: key });
-
-                            nextStep();
-                            setServiceType(key);
-                            CallbackAfter(50, () => {});
-                          }}
-                        />
-                      )}
-                    </StepperFormHandler>
-                  ),
-                  stepName: "Service Type",
-                },
                 {
                   key: "generalDetails",
                   stepComponent: (
@@ -435,19 +415,3 @@ export const ChooseServiceType: React.FC<ChooseServiceTypeProps> = ({
     </div>
   );
 };
-
-const addProductLanguagesSection: {
-  language: {
-    name: string;
-    countryCode: string;
-  };
-  section: React.FC<any>;
-}[] = [
-  {
-    language: {
-      name: "English",
-      countryCode: "GB",
-    },
-    section: NewServiceStepper,
-  },
-];

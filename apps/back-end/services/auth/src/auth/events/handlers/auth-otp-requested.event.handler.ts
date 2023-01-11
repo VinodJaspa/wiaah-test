@@ -1,10 +1,10 @@
 import { CommandBus, EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { AuthOtpRequestedEvent } from '@auth/events';
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { Inject } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { CreateAuthOtpCommand } from '@auth-otp/commands';
 import { AuthOtp } from '@auth-otp/entities';
-import { KAFKA_EVENTS } from 'nest-utils';
+import { KAFKA_EVENTS, SERVICES } from 'nest-utils';
 import { ResponseCodes } from '@auth/const';
 import { sendLoginOTPEvent } from 'nest-dto';
 
@@ -13,7 +13,7 @@ export class AuthOtpRequestedEventHandler
   implements IEventHandler<AuthOtpRequestedEvent>
 {
   constructor(
-    @Inject()
+    @Inject(SERVICES.AUTH_SERVICE.token)
     private readonly eventclient: ClientKafka,
     private readonly commandBus: CommandBus,
   ) {}

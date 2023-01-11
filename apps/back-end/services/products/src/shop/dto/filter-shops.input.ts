@@ -1,8 +1,9 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
 import { VendorType, TargetGenders, StoreType } from '@prisma-client';
+import { GqlPaginationInput } from 'nest-utils';
 
 @InputType()
-export class FilterShopsInput {
+export class FilteredShopsInput {
   @Field((type) => StoreType, { nullable: true })
   storeType?: StoreType;
 
@@ -18,6 +19,6 @@ export class FilterShopsInput {
   @Field((type) => String, { nullable: true })
   city?: string;
 
-  @Field((type) => Int, { defaultValue: 10 })
-  limit?: number;
+  @Field(() => GqlPaginationInput)
+  pagination: GqlPaginationInput;
 }

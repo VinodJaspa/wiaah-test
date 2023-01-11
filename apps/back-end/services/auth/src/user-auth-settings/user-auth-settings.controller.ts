@@ -9,10 +9,11 @@ import { CreateUserAuthSettingsCommand } from '@auth-settings/commands';
 export class UserAuthSettingsController {
   constructor(private readonly commandbus: CommandBus) {}
 
-  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated)
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated('*', true))
   handleNewAccount(@Payload() { value }: { value: NewAccountCreatedEvent }) {
+    console.log('account created');
     this.commandbus.execute<CreateUserAuthSettingsCommand>(
-      new CreateUserAuthSettingsCommand(value.input.id),
+      new CreateUserAuthSettingsCommand(value.input.email),
     );
   }
 }

@@ -191,19 +191,34 @@ enum ShippingType {
   click_and_collect
 }
 
+type ShippingRuleGeoZone {
+  id: ID!
+  country: String!
+  shippingTypeRuleId: ID!
+}
+
+type ShippingTypeRule {
+  id: ID!
+  type: ShippingType!
+  zones: [ShippingRuleGeoZone!]!
+}
+
 type Query {
   getNearShops(GetNearShopsInput: GetNearShopsInput!): [Shop!]!
   getAllShops: [Shop!]!
   getShopById(id: String!): Shop!
-  getFilteredShops(filteredShopsArgs: FilterShopsInput!): [Shop!]!
+  getFilteredShops(filteredShopsArgs: FilteredShopsInput!): [Shop!]!
   getProductById(id: String!): Product!
-  getProducts: [Product!]!
+  getProducts(filterInput: GetFilteredProductsInput!): [Product!]!
   getProduct(id: ID!): Product!
   getMyProducts(args: GqlPaginationInput!): [MyProduct!]!
   getCategories: [Category!]!
   getFilteredCategory(args: GetFilteredCategory): [Category!]!
-  getProductsFilters(getFiltersArgs: GetFiltersInput!): [Filter!]!
+  getAdminProductsFilters(getFiltersArgs: GetFiltersInput!): [Filter!]!
+  getProductsFilters: [Filter!]!
   getAllProducts(args: GetFilteredProductsAdminInput!): [Product!]!
+  getShippingGeoZoneRules: [ShippingTypeRule!]!
+  getShippingRuleGeoZones(id: String!): [ShippingRuleGeoZone!]!
 }
 
 input GetNearShopsInput {
@@ -212,18 +227,30 @@ input GetNearShopsInput {
   distance: Float!
 }
 
-input FilterShopsInput {
+input FilteredShopsInput {
   storeType: StoreType
   vendorType: VendorType
   targetGender: TargetGenders
   country: String
   city: String
-  limit: Int = 10
+  pagination: GqlPaginationInput!
 }
 
 input GqlPaginationInput {
   page: Int!
   take: Int!
+}
+
+input GetFilteredProductsInput {
+  categories: [ID!]
+  minPrice: Float
+  maxPrice: Float
+  brands: [ID!]
+  ratings: [Int!]
+  colors: [String!]
+  size: [String!]
+  inStock: Boolean
+  pagination: GqlPaginationInput!
 }
 
 input GetFilteredCategory {
@@ -244,6 +271,7 @@ input GetFilteredProductsAdminInput {
   qty: Int
   status: ProductStatus
   updatedAt: String
+  type: ProductType
   pagination: GqlPaginationInput!
 }
 
@@ -252,6 +280,11 @@ enum ProductStatus {
   active
   pasued
   pending
+}
+
+enum ProductType {
+  goods
+  digital
 }
 
 type Mutation {
@@ -272,6 +305,8 @@ type Mutation {
   updateFilter(updateFilterArgs: UpdateFilterInput!): Filter!
   deleteFilter(deleteFilterId: String!): Filter!
   updateProductAdmin(args: UpdateProductInput!): Boolean!
+  createShippingTypeRuleGeoZone(args: CreateShippingGeoZone!): Boolean!
+  createShippingTypeRule(args: CreateShippingTypeRuleInput!): Boolean!
   createShippingRule(createShippingRuleArgs: CreateShippingRuleInput!): ShippingRule!
   updateShippingRule(updateShippingRuleArgs: UpdateShippingRuleInput!): ShippingRule!
   deleteShippingRule(id: ID!): ShippingRule!
@@ -321,11 +356,6 @@ input CreateProductInput {
   visibility: VisibilityEnum!
   status: ProductStatus
   vat: Float!
-}
-
-enum ProductType {
-  goods
-  digital
 }
 
 input ProductAttributeInput {
@@ -399,6 +429,18 @@ input UpdateFilterInput {
   sortOrder: Int
   values: [ProductFilterGroupValueInput!]
   id: ID!
+}
+
+input CreateShippingGeoZone {
+  country: String!
+  zone: String!
+  shippingTypeRuleId: ID!
+}
+
+input CreateShippingTypeRuleInput {
+  name: String!
+  description: String!
+  type: ShippingType!
 }
 
 input CreateShippingRuleInput {

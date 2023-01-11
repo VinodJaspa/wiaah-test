@@ -8,10 +8,15 @@ import { useUserData, useLoginPopup, Button, FormikInput } from "@UI";
 import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
 
-export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
-  setAuthView,
-}) => {
-  const { initUserData } = useUserData();
+type loginInput = {
+  email: string;
+  password: string;
+};
+
+export const LoginView: FC<{
+  setAuthView: (view: LoginType) => void;
+  onSubmit: (data: loginInput) => any;
+}> = ({ setAuthView, onSubmit }) => {
   const { CloseLoginPopup } = useLoginPopup();
   const { t } = useTranslation();
   const [formInput, setFormInput] = useState<LoginInputsType>({
@@ -20,15 +25,9 @@ export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
     remember_me: false,
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    initUserData({
-      name: "Wiaah",
-      email: "WiaahMarket@dev.com",
-      accountType: "seller",
-      photoSrc: "/wiaah_logo.png",
-      id: "123",
-    });
+  const handleSubmit = (data: loginInput) => {
+    onSubmit(data);
+
     CloseLoginPopup();
   };
 
@@ -46,48 +45,51 @@ export const LoginView: FC<{ setAuthView: (view: LoginType) => void }> = ({
         {t("Login_to_Wiaah", "Login to Wiaah account")}
       </h2>
       <Spacer spaceInRem={2} />
-      <Formik initialValues={{}} onSubmit={() => {}}>
+      <Formik<loginInput>
+        initialValues={{ email: "", password: "" }}
+        onSubmit={(data) => {
+          handleSubmit(data);
+        }}
+      >
         {() => {
           return (
-            <Form>
-              <form className=" flex flex-col" onSubmit={handleSubmit}>
-                <FormikInput
-                  id="Email"
-                  name="email"
-                  placeholder="Email"
-                  type={"email"}
-                  icon={<IoMdMail />}
-                />
-                <Spacer />
-                <FormikInput
-                  id="Password"
-                  name="password"
-                  placeholder="Password"
-                  type={"password"}
-                  icon={<IoMdKey />}
-                />
-                <Spacer />
-                <div className="flex items-center justify-between font-light">
-                  <div className="flex items-center justify-between pl-1">
-                    <input
-                      checked={formInput.remember_me}
-                      onChange={handleCheckBoxChange}
-                      name="remember_me"
-                      type="checkbox"
-                    />
-                    <span className="ml-2">
-                      {t("Remember_me", "Remember me")}
-                    </span>
-                  </div>
-                  <Link href="/forgot-password">
-                    <span className="text-blue-400">
-                      {t("Forgot_Password?", "Forgot Password?")}
-                    </span>
-                  </Link>
+            <Form className="flex flex-col">
+              <FormikInput
+                id="Email"
+                name="email"
+                placeholder="Email"
+                type={"email"}
+                icon={<IoMdMail />}
+              />
+              <Spacer />
+              <FormikInput
+                id="Password"
+                name="password"
+                placeholder="Password"
+                type={"password"}
+                icon={<IoMdKey />}
+              />
+              <Spacer />
+              <div className="flex items-center justify-between font-light">
+                <div className="flex items-center justify-between pl-1">
+                  <input
+                    checked={formInput.remember_me}
+                    onChange={handleCheckBoxChange}
+                    name="remember_me"
+                    type="checkbox"
+                  />
+                  <span className="ml-2">
+                    {t("Remember_me", "Remember me")}
+                  </span>
                 </div>
-                <Spacer />
-                <Button type="submit">{t("log_in", "log in")}</Button>
-              </form>
+                <Link href="/forgot-password">
+                  <span className="text-blue-400">
+                    {t("Forgot_Password?", "Forgot Password?")}
+                  </span>
+                </Link>
+              </div>
+              <Spacer />
+              <Button type="submit">{t("log_in", "log in")}</Button>
               <Spacer />
             </Form>
           );

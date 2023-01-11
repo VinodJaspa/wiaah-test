@@ -54,4 +54,7 @@ export class CreateVehicleInput {
 
   @Field(() => CreateVehiclePropertiesInput)
   properties: CreateVehiclePropertiesInput;
+
+  @Field(() => Float)
+  insurance: number;
 }

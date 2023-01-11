@@ -63,7 +63,7 @@ export function Select<ValueType = string>({
   }, [open]);
 
   React.useEffect(() => {
-    if (value === "") {
+    if (value === "" || !value) {
       setSelectedOption(ph);
     }
   }, [value]);

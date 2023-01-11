@@ -34,10 +34,6 @@ import { ServiceDiscoveryModule } from './service-discovery/service-discovery.mo
         username: 'admin',
       },
     }),
-    ServiceModule,
-    WorkingScheduleModule,
-    InsuranceModule,
-    ServiceDiscoveryModule,
   ],
   exports: [ElasticsearchModule],
   providers: [],
@@ -55,7 +51,7 @@ export class GlobalPrismaService {}
   imports: [
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
-      autoSchemaFile: true,
+      autoSchemaFile: './schema.graphql',
       context: (ctx) => {
         const user = getUserFromRequest(ctx.req);
 
@@ -66,6 +62,10 @@ export class GlobalPrismaService {}
     ErrorHandlingModule.register({
       messages: ErrorMessages,
     }),
+    ServiceModule,
+    WorkingScheduleModule,
+    InsuranceModule,
+    ServiceDiscoveryModule,
     GlobalPrismaService,
     TranslationModule,
     CategoryModule,

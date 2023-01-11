@@ -6,11 +6,33 @@ import {
   ServiceLocation,
 } from '@entities';
 import { HotelRoom } from './hotelRoom.entity';
+import { WorkingSchedule } from '@working-schedule/entities';
+
+@ObjectType()
+export class ServiceContact {
+  @Field(() => String)
+  address: string;
+
+  @Field(() => String)
+  country: string;
+
+  @Field(() => String, { nullable: true })
+  state: string;
+
+  @Field(() => String)
+  city: string;
+
+  @Field(() => String)
+  email: string;
+
+  @Field(() => String)
+  phone: string;
+}
 
 @ObjectType()
 @Directive('@extends')
 @Directive('@key(fields:"id")')
-export class WorkingSchedule {
+export class Account {
   @Field(() => ID)
   @Directive('@external')
   id: string;
@@ -18,6 +40,9 @@ export class WorkingSchedule {
 
 @ObjectType()
 export class Hotel {
+  @Field(() => Account)
+  owner?: Account;
+
   @Field(() => ID)
   id: string;
 
@@ -45,6 +70,9 @@ export class Hotel {
   @Field(() => [HotelRoom])
   rooms: HotelRoom[];
 
-  // @Field(() => WorkingSchedule, { nullable: false })
-  // workingHours?: WorkingSchedule;
+  @Field(() => ServiceContact)
+  contact: ServiceContact;
+
+  @Field(() => WorkingSchedule, { nullable: false })
+  workingHours?: WorkingSchedule;
 }

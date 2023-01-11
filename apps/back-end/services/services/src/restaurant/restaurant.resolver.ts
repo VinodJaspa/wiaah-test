@@ -5,8 +5,10 @@ import {
   Query,
   Int,
   ResolveReference,
+  ResolveField,
+  Parent,
 } from '@nestjs/graphql';
-import { Restaurant, UpdateRestaurantAdminInput } from '@restaurant';
+import { Restaurant } from '@restaurant';
 import {
   CreateRestaurantInput,
   UpdateRestaurantInput,
@@ -35,6 +37,8 @@ import {
   GqlRestaurantAggregationSelectedFields,
   GqlRestaurantSelectedFields,
 } from './types/gqlSelectedFields';
+import { updateRestaurantAdminInput } from '@service-discovery/dto';
+import { Account } from '@entities';
 
 @Resolver(() => Restaurant)
 export class RestaurantResolver {
@@ -51,10 +55,9 @@ export class RestaurantResolver {
   @Query(() => Restaurant)
   getRestaurant(
     @Args('getRestaurantArgs') input: GetRestaurantInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
     @GetLang() lang: UserPreferedLang,
   ): Promise<Restaurant> {
-    return this.restaurantService.getRestaurantById(input, user.id, lang);
+    return this.restaurantService.getRestaurantById(input, lang);
   }
 
   @Mutation(() => Restaurant)
@@ -80,11 +83,11 @@ export class RestaurantResolver {
   @Mutation(() => Restaurant)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   updateRestaurantAdmin(
-    @Args('updateRestaurantArgs') args: UpdateRestaurantAdminInput,
+    @Args('updateRestaurantArgs') args: updateRestaurantAdminInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @GetLang() lang: UserPreferedLang,
   ) {
-    return this.restaurantService.updateRestaurant(args, args.userId, lang);
+    return this.restaurantService.updateRestaurant(args, user.id, lang);
   }
 
   @Mutation(() => Restaurant)
@@ -119,6 +122,14 @@ export class RestaurantResolver {
         ...args,
       }),
     );
+  }
+
+  @ResolveField(() => Account)
+  owner(@Parent() res: Restaurant) {
+    return {
+      __typename: 'Account',
+      id: res.ownerId,
+    };
   }
 
   @ResolveReference()

@@ -1,6 +1,15 @@
-import { Field, InputType, PartialType } from '@nestjs/graphql';
+import {
+  Field,
+  InputType,
+  PartialType,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { AccountDeletionRequestStatus } from '@prisma-client';
 import { GqlPaginationInput } from 'nest-utils';
+
+registerEnumType(AccountDeletionRequestStatus, {
+  name: 'AccountDeletionRequestStatus',
+});
 
 @InputType()
 export class Input {

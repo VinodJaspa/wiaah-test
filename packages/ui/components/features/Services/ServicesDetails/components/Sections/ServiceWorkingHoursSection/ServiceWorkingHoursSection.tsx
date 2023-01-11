@@ -1,24 +1,34 @@
-import { ServiceWorkingDays } from "api";
+import { WorkingSchedule } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
 import { ArrElement } from "types";
 
-export interface ServiceWorkingHoursSectionProps extends ServiceWorkingDays {}
+export interface ServiceWorkingHoursSectionProps {
+  workingHours: WorkingSchedule;
+}
 
 export const ServiceWorkingHoursSection: React.FC<
   ServiceWorkingHoursSectionProps
-> = ({ workingDays }) => {
+> = ({ workingHours }) => {
   const { t } = useTranslation();
+  const workingDays = Object.entries(workingHours.weekdays).map(
+    ([key, value], i) => ({
+      weekday: key,
+      from:
+        typeof value === "object" && value !== null
+          ? new Date(value.periods[0])
+          : null,
+      to:
+        typeof value === "object" && value !== null
+          ? new Date(value.periods[1])
+          : null,
+    })
+  );
+
   const checkIsWorkingDay = React.useCallback(
     (day: ArrElement<typeof workingDays>) => {
-      if (
-        day.from.hour === 0 &&
-        day.from.minutes === 0 &&
-        day.to.hour === 0 &&
-        day.to.minutes === 0
-      )
-        return false;
+      if (!day.from || !day.to) return false;
       return true;
     },
     []
@@ -36,10 +46,10 @@ export const ServiceWorkingHoursSection: React.FC<
             key={i}
             className={`flex justify-between w-full rounded border-t-[1px] border-x-[1px] py-2`}
           >
-            <p className="font-bold">{t(day.weekDay)}</p>
+            <p className="font-bold">{t(day.weekday)}</p>
             <p className="whitespace-nowrap">
               {checkIsWorkingDay(day)
-                ? `${day.from.hour}H${day.from.minutes} - ${day.to.hour}H${day.to.minutes}`
+                ? `${day.from?.getHours()}H${day.from?.getMinutes()} - ${day.to?.getHours()}H${day.to?.getMinutes()}`
                 : t("closed")}
             </p>
           </div>

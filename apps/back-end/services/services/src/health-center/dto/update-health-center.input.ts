@@ -1,4 +1,12 @@
-import { InputType, Field, Int, Float, ID, PartialType } from '@nestjs/graphql';
+import {
+  InputType,
+  Field,
+  Int,
+  Float,
+  ID,
+  PartialType,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { SERVICE_MAX_VAT_PERCENT, SERVICE_MIN_VAT_PERCENT } from '@const';
 import { Max, Min } from 'class-validator';
 import { ServicePresentationsLength } from '@decorators';
@@ -9,7 +17,7 @@ import {
   ServicePresentationInput,
 } from '@dto';
 import { ServicePaymentMethods, ServiceStatus } from 'prismaClient';
-
+registerEnumType(ServiceStatus, { name: 'ServiceStatus' });
 @InputType()
 class updateHealthCenterInput {
   @Field(() => Float)

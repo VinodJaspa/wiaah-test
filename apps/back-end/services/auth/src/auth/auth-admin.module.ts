@@ -1,15 +1,13 @@
-import {
-  ApolloFederationDriverConfig,
-  ApolloFederationDriver,
-} from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
-import { GraphQLModule } from '@nestjs/graphql';
 import { JwtModule } from '@nestjs/jwt';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { SERVICES, KAFKA_BROKERS, getUserFromRequest } from 'nest-utils';
+import { SERVICES, KAFKA_BROKERS } from 'nest-utils';
+import { PrismaService } from 'prismaService';
 import { AuthAdminResolver } from './auth-admin.resolver';
+import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
@@ -29,15 +27,6 @@ import { AuthAdminResolver } from './auth-admin.resolver';
         },
       },
     ]),
-    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
-      driver: ApolloFederationDriver,
-      autoSchemaFile: true,
-      path: '/admin',
-      context: ({ req, res }) => {
-        const user = getUserFromRequest(req);
-        return { req, res, user };
-      },
-    }),
     JwtModule.register({
       secret: 'secret',
       signOptions: {
@@ -48,6 +37,7 @@ import { AuthAdminResolver } from './auth-admin.resolver';
       envFilePath: ['.env'],
     }),
   ],
-  providers: [AuthAdminResolver],
+  providers: [AuthAdminResolver, AuthService, PrismaService],
+  controllers: [AuthController],
 })
 export class AuthAdminModule {}

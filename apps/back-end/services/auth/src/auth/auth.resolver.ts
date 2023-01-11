@@ -10,7 +10,9 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
 import {
+  AuthorizationDecodedUser,
   GqlAuthorizationGuard,
+  GqlCurrentUser,
   GqlStatusResponse,
   KAFKA_MESSAGES,
   SERVICES,
@@ -24,7 +26,6 @@ import {
 } from './dto';
 import { AuthService } from './auth.service';
 import { Registeration } from './entities/regiseration.entity';
-import { RegisterDto } from './dto/register.dto';
 import { ForgotPasswordEmailInput } from './dto/forgotPasswordEmail.input';
 import { ConfirmPasswordChangeInput } from './dto/confirmPasswordChange.input';
 import { ResponseCodes } from './const';
@@ -51,58 +52,57 @@ export class AuthResolver implements OnModuleInit {
     this.commandBus.execute;
   }
 
-  @Mutation(() => String)
-  register(@Args('RegisterInput') registerInput: RegisterDto) {
-    return this.authService.register(registerInput);
-  }
-
   @Mutation(() => GqlStatusResponse)
   async login(
     @Args('LoginInput') loginInput: LoginDto,
     @Context() ctx: any,
   ): Promise<GqlStatusResponse> {
-    if (typeof this.cookiesKey !== 'string')
-      return { success: false, code: ResponseCodes.InternalServiceError };
+    try {
+      if (typeof this.cookiesKey !== 'string')
+        return { success: false, code: ResponseCodes.InternalServiceError };
 
-    const { email, accountType, id } =
-      await this.authService.validateCredentials(
-        loginInput.email,
-        loginInput.password,
+      const { email, accountType, id } =
+        await this.authService.validateCredentials(
+          loginInput.email,
+          loginInput.password,
+        );
+
+      const code = await this.querybus.execute<
+        ValidateLoginSecurityFeaturesQuery,
+        number | null
+      >(new ValidateLoginSecurityFeaturesQuery(email));
+
+      if (code) {
+        if (
+          code === ResponseCodes.RequireEmailOTP ||
+          code === ResponseCodes.RequireSmsOTP
+        ) {
+          this.eventbus.publish(new AuthOtpRequestedEvent(email, code));
+        }
+
+        return {
+          success: false,
+          code,
+        };
+      }
+
+      const data = await this.authService.generateAccessToken(
+        id,
+        email,
+        accountType,
       );
 
-    const code = await this.querybus.execute<
-      ValidateLoginSecurityFeaturesQuery,
-      number | null
-    >(new ValidateLoginSecurityFeaturesQuery(email));
-
-    if (code) {
-      if (
-        code === ResponseCodes.RequireEmailOTP ||
-        code === ResponseCodes.RequireSmsOTP
-      ) {
-        this.eventbus.publish(new AuthOtpRequestedEvent(email, code));
+      if (ctx && ctx.res && ctx.res.cookie) {
+        ctx.res.cookie(this.cookiesKey, data.access_token, { httpOnly: true });
       }
 
       return {
-        success: false,
-        code,
+        success: true,
+        code: ResponseCodes.TokenInjected,
       };
+    } catch (error) {
+      console.log('error', error);
     }
-
-    const data = await this.authService.generateAccessToken(
-      id,
-      email,
-      accountType,
-    );
-
-    if (ctx && ctx.res && ctx.res.cookie) {
-      ctx.res.cookie(this.cookiesKey, data.access_token, { httpOnly: true });
-    }
-
-    return {
-      success: true,
-      code: ResponseCodes.TokenInjected,
-    };
   }
 
   @Mutation(() => GqlStatusResponse)
@@ -143,10 +143,15 @@ export class AuthResolver implements OnModuleInit {
   }
 
   @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([]))
   verifyEmail(
-    @Args('EmailVerificationInput') verififactionInput: VerifyEmailDto,
+    @Args('EmailVerificationInput') { verificationCode }: VerifyEmailDto,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    return this.authService.verifyEmail(verififactionInput);
+    return this.authService.verifyEmail({
+      code: verificationCode,
+      email: user.email,
+    });
   }
 
   @Mutation(() => Boolean)

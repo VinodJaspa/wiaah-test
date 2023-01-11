@@ -115,7 +115,7 @@ export class VehicleServiceRepository {
 
     if (input.securityDeposit) {
       filters.push({
-        securityDeposit: {
+        insurance: {
           lte: input.securityDeposit,
         },
       });
@@ -158,6 +158,7 @@ export class VehicleServiceRepository {
         vehicles: {
           createMany: {
             data: input.vehicles.map((v) => ({
+              insurance: v.insurance,
               id: uuid(),
               brand: v.brand,
               cancelationPolicies: v.cancelationPolicies,
@@ -217,6 +218,9 @@ export class VehicleServiceRepository {
       },
       data: {
         ...rest,
+        vehicles: {
+          updateMany: [],
+        },
         policies: updateTranslationResource({
           originalObj: service.policies,
           update: rest.policies,

@@ -8,18 +8,10 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import { ShippingType } from '@prisma-client';
+import { ShippingDeliveryTimeRange } from '@shipping-details';
 import { ShippingCountry } from './country.entity';
 
 registerEnumType(ShippingType, { name: 'ShippingType' });
-
-@ObjectType()
-export class ShippingDeliveryTimeRange {
-  @Field((type) => Int)
-  from: number;
-
-  @Field((type) => Int)
-  to: number;
-}
 
 @ObjectType()
 @Directive('@key(fields:"id")')

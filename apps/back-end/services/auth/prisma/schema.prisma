@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./generated"
+  output   = "./generated"
 }
 
 datasource db {
@@ -11,39 +11,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model UserAuthSettings {
-  id String @id @map("_id") @db.ObjectId
+  id             String  @id @map("_id")
   twoFactoryAuth Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-
 model Registeration {
-  id                String            @id() @default(auto()) @map("_id") @db.ObjectId()
-  verificationCode  String            
-  email             String            @unique()
-  expiresAt         DateTime          
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt()
+  id               String   @id() @default(auto()) @map("_id") @db.ObjectId()
+  verificationCode String
+  email            String   @unique()
+  expiresAt        DateTime
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt()
 }
 
 model authOTP {
-  id String @id @db.ObjectId @default(auto()) @map("_id")
-  email String @unique
-  code String
-  expiresAt         DateTime          
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  code      String
+  expiresAt DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model ChangePasswordRequest {
-  id String @id @default(auto()) @map("_id") @db.ObjectId()
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId()
   verificationCode String
-  email String @unique()
-  accountId String @unique()
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  email            String   @unique()
+  accountId        String   @unique()
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt()
 }

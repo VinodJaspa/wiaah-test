@@ -26,17 +26,20 @@ import {
   HolidayRentalsGeneralDetailsForm,
   HealthCenterIncludedServices,
   ServiceSectionWithSchemaType,
+  AccountVerification,
 } from "@UI";
 
-import { StepperStepType } from "types";
+import { ServicesType, StepperStepType } from "types";
 import { Button } from "@UI";
 import { runIfFn } from "utils";
 import { object } from "yup";
 import { NewServiceSchemas } from "validation";
+import { useCreateServiceMutation } from "@features/Services/Services/mutation";
 
 export const SellerProfileStartupView: React.FC = ({}) => {
   const { t } = useTranslation();
   const [serviceType, setServiceType] = React.useState<string>("");
+  const { mutate } = useCreateServiceMutation();
   const ServicesDetailsSections: ServiceSectionWithSchemaType[] = [
     {
       key: "restaurant",
@@ -54,7 +57,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
       schema: NewServiceSchemas.healthCenterDetailsSchema,
     },
     {
-      key: "Vehicle",
+      key: "vehicle",
       component: VehicleServiceDetailsForm,
       schema: NewServiceSchemas.vehicleDetailsSchema,
     },
@@ -102,6 +105,11 @@ export const SellerProfileStartupView: React.FC = ({}) => {
       stepName: t("Shop information"),
       stepComponent: ShopInformationStep,
       key: "1",
+    },
+    {
+      stepName: t("Verify You Identity"),
+      key: "8",
+      stepComponent: AccountVerification,
     },
     {
       stepName: t("Select a plan"),
@@ -167,7 +175,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
               <StepperFormHandler handlerKey="servicePolicies">
                 {({ validate }) => (
                   <>
-                    <ServicePoliciesSection onChange={validate} />
+                    <ServicePoliciesSection />
                   </>
                 )}
               </StepperFormHandler>
@@ -217,7 +225,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
                 handlerKey="discount"
                 validationSchema={NewServiceSchemas.discount}
               >
-                <NewProductDiscountOptions />
+                <NewProductDiscountOptions onChange={() => {}} />
               </StepperFormHandler>
             ),
             stepName: {
@@ -231,7 +239,10 @@ export const SellerProfileStartupView: React.FC = ({}) => {
             <StepperFormController
               lock={false}
               stepsNum={steps.length}
-              onFormComplete={() => {}}
+              onFormComplete={(data) => {
+                console.log(data);
+                mutate({ serviceType: serviceType as ServicesType, ...data });
+              }}
             >
               {({ nextStep, currentStepIdx, goToStep, previousStep }) => {
                 getNextFn &&

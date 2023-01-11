@@ -1,4 +1,11 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { HotelService } from './hotel.service';
 import {
   AuthorizationDecodedUser,
@@ -7,7 +14,7 @@ import {
   GqlCurrentUser,
   GqlSelectedQueryFields,
 } from 'nest-utils';
-import { Hotel } from '@entities';
+import { Account, Hotel } from '@entities';
 import { CreateHotelInput, GetHotelServiceArgs } from './dto';
 import { UseGuards } from '@nestjs/common';
 import { GqlHotelSelectedFields } from './types/selectedFields';
@@ -25,15 +32,9 @@ export class HotelResolver {
   getHotelService(
     @Args('getHotelServiceArgs') args: GetHotelServiceArgs,
     @GetLang() lang: string,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
     @GqlSelectedQueryFields() fields: GqlHotelSelectedFields,
   ): Promise<Hotel> {
-    return this.hotelService.getHotelWithRoomsById(
-      args.id,
-      user.id,
-      lang,
-      fields,
-    );
+    return this.hotelService.getHotelWithRoomsById(args.id, lang, fields);
   }
 
   @Mutation(() => Hotel)
@@ -44,5 +45,13 @@ export class HotelResolver {
     @GetLang() lang: string,
   ) {
     return this.hotelService.createHotelService(args, user.id, lang);
+  }
+
+  @ResolveField(() => Account)
+  owner(@Parent() hotel: Hotel) {
+    return {
+      __typename: 'Account',
+      id: hotel.ownerId,
+    };
   }
 }

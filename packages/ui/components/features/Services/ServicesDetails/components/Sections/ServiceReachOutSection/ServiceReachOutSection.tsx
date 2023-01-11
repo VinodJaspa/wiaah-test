@@ -1,4 +1,3 @@
-import { ServiceReachOutType } from "api";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
 import {
@@ -9,8 +8,14 @@ import {
   LocationAddressDisplay,
 } from "@UI";
 import { runIfFn } from "utils";
+import { ServiceLocation } from "api";
 
-export interface ServiceReachOutSectionProps extends ServiceReachOutType {}
+export interface ServiceReachOutSectionProps {
+  email: string;
+  location: ServiceLocation;
+  telephone: string;
+}
+
 export const ServiceReachOutSection: React.FC<ServiceReachOutSectionProps> = ({
   email,
   location,

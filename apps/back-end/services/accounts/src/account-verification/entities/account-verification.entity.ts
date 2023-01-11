@@ -1,4 +1,9 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { AccountVerificationStatus } from '@prisma-client';
+
+registerEnumType(AccountVerificationStatus, {
+  name: 'AccountVerificationStatus',
+});
 
 @ObjectType()
 export class AccountVerification {
@@ -14,11 +19,8 @@ export class AccountVerification {
   @Field(() => ID)
   userId: string;
 
-  @Field(() => Boolean)
-  compeleted: boolean;
-
-  @Field(() => Boolean)
-  accepted: boolean;
+  @Field(() => AccountVerificationStatus)
+  status: AccountVerificationStatus;
 
   @Field(() => ID, { nullable: true })
   acceptedById?: string;

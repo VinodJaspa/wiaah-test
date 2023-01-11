@@ -74,7 +74,7 @@ export class InsuranceResolver {
     );
   }
 
-  @Query()
+  @Query(() => [Insurance])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async getServiceInsuranceHistory(
     @Args('args') args: GetInsurancesHistoryInput,

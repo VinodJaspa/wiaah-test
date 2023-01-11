@@ -34,3 +34,38 @@ export class GetFilteredProductsAdminInput extends PartialType(input) {
   @Field(() => GqlPaginationInput)
   pagination: GqlPaginationInput;
 }
+
+@InputType()
+export class ProductFilteredInput {
+  @Field(() => [ID])
+  categories: string[];
+
+  @Field(() => Float)
+  minPrice: number;
+
+  @Field(() => Float)
+  maxPrice: number;
+
+  @Field(() => [ID])
+  brands: string[];
+
+  @Field(() => [Int])
+  ratings: number[];
+
+  @Field(() => [String])
+  colors: string[];
+
+  @Field(() => [String])
+  size: string[];
+
+  @Field(() => Boolean)
+  inStock: boolean;
+}
+
+@InputType()
+export class GetFilteredProductsInput extends PartialType(
+  ProductFilteredInput,
+) {
+  @Field(() => GqlPaginationInput)
+  pagination: GqlPaginationInput;
+}

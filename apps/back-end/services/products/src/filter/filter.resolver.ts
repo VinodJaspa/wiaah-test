@@ -11,16 +11,26 @@ import {
 } from 'nest-utils';
 import { UseGuards } from '@nestjs/common';
 import { GetFiltersInput } from './dto';
+import { PrismaService } from 'prismaService';
 
 @Resolver(() => Filter)
 export class FilterResolver {
-  constructor(private readonly filterService: FilterService) {}
+  constructor(
+    private readonly filterService: FilterService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @Query(() => [Filter])
-  getProductsFilters(
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  getAdminProductsFilters(
     @Args('getFiltersArgs') args: GetFiltersInput,
   ): Promise<Filter[]> {
     return this.filterService.getFilters(args);
+  }
+
+  @Query(() => [Filter])
+  getProductsFilters(): Promise<Filter[]> {
+    return this.prisma.productFilterGroup.findMany();
   }
 
   @Mutation(() => Filter)

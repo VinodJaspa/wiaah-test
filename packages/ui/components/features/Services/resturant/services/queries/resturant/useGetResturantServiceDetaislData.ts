@@ -1,25 +1,23 @@
-import {
-  FormatedSearchableFilter,
-  getResturantServiceApiResponseFetcher,
-  getResturantServiceDetialsData,
-} from "api";
+import { AsyncReturnType } from "@UI/../types/src";
+import { getResturantServiceDetialsData } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
-export const getRestaurantServiceProviderDetailsDataQuerykey = (
-  filters: FormatedSearchableFilter
-) => ["resturantServiceDetialsData", { filters }];
+export const getRestaurantServiceProviderDetailsDataQuerykey = (id: string) => [
+  "resturantServiceDetialsData",
+  { id },
+];
 export const useGetRestaurantServiceDetailsDataQuery = (
-  filters: FormatedSearchableFilter,
+  id: string,
   options?: UseQueryOptions<
     unknown,
     unknown,
-    getResturantServiceApiResponseFetcher,
+    AsyncReturnType<typeof getResturantServiceDetialsData>,
     any
   >
 ) => {
   return useQuery(
-    getRestaurantServiceProviderDetailsDataQuerykey(filters),
-    () => getResturantServiceDetialsData(filters),
+    getRestaurantServiceProviderDetailsDataQuerykey(id),
+    () => getResturantServiceDetialsData(id),
     options
   );
 };

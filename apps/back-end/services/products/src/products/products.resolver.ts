@@ -9,6 +9,7 @@ import {
 import { Logger, UseGuards } from '@nestjs/common';
 import {
   AuthorizationDecodedUser,
+  ExtractPagination,
   GqlAuthorizationGuard,
   GqlCurrentUser,
   GqlPaginationInput,
@@ -18,7 +19,11 @@ import { PrepareGqlUploads, UploadService } from '@wiaah/upload';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ProductsService } from '@products/products.service';
 import { MyProduct, Product } from '@products/entities';
-import { CreateProductInput } from '@products/dto';
+import {
+  CreateProductInput,
+  GetFilteredProductsInput,
+  ProductFilteredInput,
+} from '@products/dto';
 import { UpdateProductInput } from '@products/dto';
 import {
   GetProductVendorLinkQuery,
@@ -26,6 +31,8 @@ import {
 } from '@products/queries';
 
 import { DeleteProductCommand } from '@products/command';
+import { PrismaService } from 'prismaService';
+import { Prisma } from '@prisma-client';
 
 @Resolver(() => Product)
 export class ProductsResolver {
@@ -34,6 +41,7 @@ export class ProductsResolver {
     private readonly uploadService: UploadService,
     private readonly querybus: QueryBus,
     private readonly commandbus: CommandBus,
+    private readonly prisma: PrismaService,
   ) {}
 
   logger = new Logger('ProductResolver');
@@ -55,8 +63,55 @@ export class ProductsResolver {
   }
 
   @Query(() => [Product])
-  getProducts() {
-    return this.productsService.getAll();
+  getProducts(@Args('filterInput') args: GetFilteredProductsInput) {
+    const { skip, take } = ExtractPagination(args.pagination);
+    const filters: Prisma.ProductWhereInput[] = [];
+
+    if (args.minPrice) {
+      filters.push({
+        price: {
+          gte: args.minPrice,
+        },
+      });
+    }
+
+    if (args.maxPrice) {
+      filters.push({
+        price: {
+          lte: args.minPrice,
+        },
+      });
+    }
+
+    if (args.brands) {
+      filters.push({
+        brand: {
+          in: args.brands,
+        },
+      });
+    }
+
+    if (typeof args.inStock !== undefined) {
+      if (args.inStock) {
+        filters.push({
+          stock: {
+            gte: 0,
+          },
+        });
+      } else if (args.inStock === false) {
+        filters.push({
+          stock: 0,
+        });
+      }
+    }
+
+    return this.prisma.product.findMany({
+      where: {
+        AND: filters,
+      },
+      skip,
+      take,
+    });
   }
 
   @Query(() => Product)

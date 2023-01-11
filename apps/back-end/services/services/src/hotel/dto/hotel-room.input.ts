@@ -7,9 +7,10 @@ import {
   ServiceExtraInput,
   ServiceIncludedAmenitiesInput,
   ServiceIncludedServicesInput,
+  ServicePresentationInput,
   ServicePropertyMeasurementsInput,
 } from '@dto';
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, Float, InputType, Int } from '@nestjs/graphql';
 import { CreateGqlTranslationInputField } from 'nest-utils';
 
 @InputType()
@@ -72,4 +73,10 @@ export class HotelRoomInput {
 
   @Field(() => ServicePropertyMeasurementsInput)
   measurements: ServicePropertyMeasurementsInput;
+
+  @Field(() => Float)
+  insurance: number;
+
+  @Field(() => [ServicePresentationInput])
+  presentations: ServicePresentationInput[];
 }

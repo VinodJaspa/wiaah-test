@@ -16,6 +16,7 @@ import {
 } from './repository';
 import { VehicleQueriesHandlers } from './queries';
 import { VehicleController } from './vehicle.controller';
+import { kafkaModule } from '@kafka-module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { VehicleController } from './vehicle.controller';
     ErrorHandlingModule.register({
       messages: ErrorMessages,
     }),
+    kafkaModule,
   ],
   providers: [
     VehicleResolver,

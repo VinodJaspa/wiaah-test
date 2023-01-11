@@ -10,6 +10,10 @@ const loginTypes: LoginTypes = {
   seller_signup: "seller-signup",
 };
 
-export type LoginType = "login" | "buyer-signup" | "seller-signup";
+export type LoginType =
+  | "login"
+  | "buyer-signup"
+  | "seller-signup"
+  | "email-verify";
 
 export default loginTypes;

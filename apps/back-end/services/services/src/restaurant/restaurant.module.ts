@@ -10,9 +10,10 @@ import {
 import { SearchFilteredRestaurantQueryHandler } from './queries/handlers/search-filtered-restaurant.handler';
 import { CqrsModule } from '@nestjs/cqrs';
 import { RestaurantController } from './restaurant.controller';
+import { kafkaModule } from '@kafka-module';
 
 @Module({
-  imports: [CqrsModule, ServiceOwnershipModule],
+  imports: [CqrsModule, ServiceOwnershipModule, kafkaModule],
   providers: [
     RestaurantResolver,
     RestaurantService,

@@ -22,6 +22,7 @@ import {
 import { BeautyCenterTreatment } from './beauty-center-treatment.entity';
 
 registerEnumType(ServiceTypeOfSeller, { name: 'ServiceTypeOfSeller' });
+registerEnumType(ServiceStatus, { name: 'ServiceStatus' });
 
 @ObjectType()
 @Directive('@key(fields:"id")')

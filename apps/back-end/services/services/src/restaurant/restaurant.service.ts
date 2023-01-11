@@ -92,20 +92,18 @@ export class RestaurantService {
       });
       return this.formatRestaurant(created, langId);
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new DBErrorException('error creating restaurant service');
     }
   }
 
   async getRestaurantById(
     input: GetRestaurantInput,
-    userId: string,
     langId: UserPreferedLang,
   ): Promise<Restaurant> {
-    const restaurant = await this.checkRestaurantViewPremissions(
-      input.id,
-      userId,
-    );
+    const restaurant = await this.prisma.restaurantService.findUnique({
+      where: { id: input.id },
+    });
     return this.formatRestaurant(restaurant, langId);
   }
 

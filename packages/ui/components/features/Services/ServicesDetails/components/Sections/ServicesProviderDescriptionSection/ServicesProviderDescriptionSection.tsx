@@ -6,11 +6,11 @@ import { BedIcon, BathTubeIcon, CarIcon, PetPawIcon } from "@UI";
 import { runIfFn } from "utils";
 export interface ServicesProviderDescriptionSectionProps {
   description: string;
-  bedrooms: number;
-  bathrooms: number;
-  cars: number;
-  bikes: number;
-  pets: number;
+  bedrooms?: number;
+  bathrooms?: number;
+  cars?: number;
+  bikes?: number;
+  pets?: number;
 }
 
 export const ServicesProviderDescriptionSection: React.FC<
