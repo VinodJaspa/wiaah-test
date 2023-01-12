@@ -15,6 +15,7 @@ import { BeautyCenterCommndHandlers } from './commands';
 import { BeautyCenterSagas } from './sagas';
 import { BeautyCenterController } from './beauty-center.controller';
 import { kafkaModule } from '@kafka-module';
+import { BeautyCenterQueryHandlers } from './queries';
 @Module({
   imports: [CqrsModule, ServiceOwnershipModule, kafkaModule],
   providers: [
@@ -28,6 +29,7 @@ import { kafkaModule } from '@kafka-module';
     ...BeautyCenterEventHandlers,
     ...BeautyCenterCommndHandlers,
     ...BeautyCenterSagas,
+    ...BeautyCenterQueryHandlers,
   ],
   controllers: [BeautyCenterController],
 })

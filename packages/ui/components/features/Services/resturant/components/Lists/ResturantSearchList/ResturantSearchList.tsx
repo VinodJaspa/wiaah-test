@@ -11,34 +11,25 @@ import {
   useSetResturantsDataState,
   ServicesSearchGrid,
   DisplayFoundServices,
+  usePaginationControls,
+  Restaurant,
 } from "@UI";
 
-export const ResturantSearchList: React.FC = () => {
+export const ResturantSearchList: React.FC<{
+  restaurants: Restaurant[];
+}> = ({ restaurants }) => {
   const { filters, getLocationFilterQuery } = useSearchFilters();
-  const { page, take } = usePagination();
-  const { resturants } = useResturantsDataState();
-
-  const { setResturants } = useSetResturantsDataState();
-  const {
-    data: res,
-    isLoading,
-    isError,
-  } = useGetResturantsQuery({ page, take }, filters, {
-    onSuccess: (res) => setResturants(res.data),
-  });
+  const { controls, pagination } = usePaginationControls();
 
   return (
     <div className="flex flex-col gap-4 w-full">
-      <SpinnerFallback isLoading={isLoading} isError={isError}>
-        <ServicesSearchGrid
-          component={ResturantRecommendedCard}
-          data={resturants}
-          handlePassData={(data) => ({
-            ...data,
-          })}
-        />
-      </SpinnerFallback>
-      <Pagination maxPages={3} />
+      <ServicesSearchGrid
+        component={ResturantRecommendedCard}
+        data={restaurants}
+        handlePassData={(data) => ({
+          ...data,
+        })}
+      />
     </div>
   );
 };

@@ -8,6 +8,7 @@ import {
 } from '@nestjs/graphql';
 import {
   AuthorizationDecodedUser,
+  ExtractPagination,
   GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
@@ -20,6 +21,7 @@ import {
   HealthCenter,
   HealthCenterSpecialty,
   CreateHealthCenterSpecialityInput,
+  HealthCenterDoctor,
 } from '@health-center';
 import { HealthCenterService } from './health-center.service';
 import { QueryBus } from '@nestjs/cqrs';
@@ -28,12 +30,15 @@ import { SearchHealthCenterInput } from './dto';
 import { SearchHealthCenterQuery } from './queries/impl/search-health-centers.query';
 import { GqlHealthCenterSelectedFields } from './types';
 import { GetHealthCenterByIdQuery } from './queries';
+import { PrismaService } from 'prismaService';
+import { HealthCenterDoctorSpeakingLanguage, Prisma } from 'prismaClient';
 
 @Resolver(() => HealthCenter)
 export class HealthCenterResolver {
   constructor(
     private readonly healthCenterService: HealthCenterService,
     private readonly queryBus: QueryBus,
+    private readonly prisma: PrismaService,
   ) {}
 
   @Query(() => HealthCenter)
@@ -86,6 +91,91 @@ export class HealthCenterResolver {
         input,
       }),
     );
+  }
+
+  @Query(() => [HealthCenterDoctor])
+  searchHealthCenterDoctors(
+    @Args('searchHealthCenterArgs') input: SearchHealthCenterInput,
+    @GqlSelectedQueryFields() selectedFields: GqlHealthCenterSelectedFields,
+    @GetLang() langId: UserPreferedLang,
+  ) {
+    const filters: Prisma.HealthCenterDoctorWhereInput[] = [];
+
+    const { skip, take } = ExtractPagination(input.pagination);
+
+    if (input.maxPrice) {
+      filters.push({
+        price: {
+          lte: input.maxPrice,
+        },
+      });
+    }
+
+    if (input.minPrice) {
+      filters.push({
+        price: {
+          gte: input.minPrice,
+        },
+      });
+    }
+
+    if (input.payment_methods) {
+      filters.push({
+        healthCenter: {
+          payment_methods: {
+            hasSome: input.payment_methods,
+          },
+        },
+      });
+    }
+
+    if (input.query) {
+      filters.push({
+        name: {
+          contains: input.query,
+        },
+      });
+    }
+    if (input.rate) {
+      filters.push({
+        rating: {
+          gte: input.rate,
+        },
+      });
+    }
+
+    if (input.speakingLanguage) {
+      filters.push({
+        speakingLanguages: {
+          hasSome: input.speakingLanguage as HealthCenterDoctorSpeakingLanguage,
+        },
+      });
+    }
+
+    if (input.specialistType) {
+      filters.push({
+        speciality: {
+          name: {
+            some: {
+              value: {
+                contains: input.specialistType,
+              },
+            },
+          },
+        },
+      });
+    }
+
+    return this.prisma.healthCenterDoctor.findMany({
+      where: {
+        AND: filters,
+      },
+      include: {
+        healthCenter: true,
+      },
+      take,
+      skip,
+    });
   }
 
   @ResolveReference()

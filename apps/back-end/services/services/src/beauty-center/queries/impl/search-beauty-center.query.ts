@@ -6,7 +6,6 @@ export class SearchFilteredBeautyCenterQuery {
   constructor(
     public readonly input: {
       args: SearchFilteredBeautyCenterInput;
-      selectedFields: GqlBeautyCenterSelectedFields;
       langId: UserPreferedLang;
     },
   ) {}

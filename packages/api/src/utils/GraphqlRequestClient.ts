@@ -27,7 +27,7 @@ export class GraphqlRequestClinet extends GraphQLClient {
     if (!this.query) throw new Error("no query");
 
     console.log("requesting");
-    const res = await this.request<{ data: TRes }>(this.query, this.vars);
+    const res = await this.request<TRes>(this.query, this.vars);
     console.log("res", res);
     return res;
   }

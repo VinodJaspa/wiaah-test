@@ -49,7 +49,6 @@ export class BeautyCenterRepository {
 
   async searchFilteredBeautyCenter(
     input: SearchFilteredBeautyCenterInput,
-    selectedFields: GqlBeautyCenterSelectedFields,
     langId: UserPreferedLang,
   ): Promise<BeautyCenter[]> {
     const hasQuery = input?.query?.length > 0;

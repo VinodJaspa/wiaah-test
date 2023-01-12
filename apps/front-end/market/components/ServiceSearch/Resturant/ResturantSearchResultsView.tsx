@@ -8,12 +8,17 @@ import {
   ServicesSearchResultsFiltersSidebar,
   DisplayFoundServices,
   useSearchFilters,
+  useGetResturantsQuery,
+  usePaginationControls,
+  Pagination,
 } from "ui";
 import { randomNum } from "utils";
 
 export const ResturantSearchResultsView: React.FC = () => {
   const { data, isLoading, isError } = useGetResturantSearchFiltersQuery();
   const { getLocationFilterQuery } = useSearchFilters();
+  const { controls, pagination } = usePaginationControls();
+  const { data: restaurants } = useGetResturantsQuery({ pagination });
   return (
     <div className="flex flex-col md:flex-row gap-4 py-4">
       <ServicesSearchResultsFiltersSidebar onShowOnMap={() => {}}>
@@ -39,7 +44,9 @@ export const ResturantSearchResultsView: React.FC = () => {
           location={getLocationFilterQuery || ""}
           servicesNum={randomNum(500)}
         />
-        <ResturantSearchList />
+        <Pagination controls={controls}>
+          <ResturantSearchList restaurants={restaurants} />
+        </Pagination>
       </div>
     </div>
   );

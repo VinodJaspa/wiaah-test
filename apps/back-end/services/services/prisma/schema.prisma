@@ -94,6 +94,8 @@ model RestaurantService {
   cuisinesTypeId         String                       @db.ObjectId
   setting_and_ambianceId String                       @db.ObjectId
   michelin_guide_stars   Int
+  rating                 Float                        @default(0)
+  reviews                Int                          @default(0)
 }
 
 model HealthCenterService {
@@ -177,6 +179,7 @@ model BeautyCenterTreatmentCategory {
   createdAt   DateTime                @default(now())
   updatedAt   DateTime                @updatedAt
   title       TranslationText[]
+  price       Float
   status      TreatmentCategoryStatus @default(active)
 }
 
@@ -329,13 +332,15 @@ type HotelRoomTranslationMetaInfo {
   value  HotelRoomMetaInfo
 }
 
-type BeautyCenterTreatment {
-  id                  String
-  treatmentCategoryId String
-  title               TranslationText[]
-  price               Float
-  duration            Int[]
-  discount            ServiceDiscount
+model BeautyCenterTreatment {
+  id                    String               @id @default(auto()) @map("_id") @db.ObjectId
+  treatmentCategoryId   String
+  title                 TranslationText[]
+  price                 Float
+  duration              Int[]
+  discount              ServiceDiscount
+  BeautyCenterService   BeautyCenterService? @relation(fields: [beautyCenterServiceId], references: [id])
+  beautyCenterServiceId String?              @db.ObjectId
 }
 
 type ServiceWeekDaysWorkingHours {

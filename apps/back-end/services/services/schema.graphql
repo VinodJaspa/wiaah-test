@@ -203,6 +203,8 @@ type Restaurant {
   location: ServiceLocation!
   presentations: [ServicePresentation!]!
   policies: [ServicePolicy!]!
+  rating: Float!
+  reviews: Int!
   cancelationPolicies: [ServiceCancelationPolicy!]!
   serviceMetaInfo: ServiceMetaInfo!
   payment_methods: [ServicePaymentMethods!]!
@@ -427,7 +429,9 @@ type Query {
   searchFilteredRestaurant(filtersInput: SearchFilteredRestaurantInput!): [Restaurant!]!
   getHealthCenter(serviceId: String!): HealthCenter!
   searchHealthCenters(searchHealthCenterArgs: SearchHealthCenterInput!): [HealthCenter!]!
+  searchHealthCenterDoctors(searchHealthCenterArgs: SearchHealthCenterInput!): [HealthCenterDoctor!]!
   getBeautyCenterById(id: String!): BeautyCenter!
+  getFilteredBeuatyCenterTreatments(args: SearchFilteredBeautyCenterInput!): [BeautyCenterTreatment!]!
   getBeautyCenterTreatmentCategories: [BeautyCenterTreatmentCategory!]!
   getBeautyCenterTreatmentCategoriesByIds(ids: [String!]!): [BeautyCenterTreatmentCategory!]!
   getAllVehicles(args: GetVehiclesInput!): [VehicleService!]!
@@ -517,6 +521,19 @@ input SearchHealthCenterInput {
   rate: Int
   minPrice: Float
   maxPrice: Float
+}
+
+input SearchFilteredBeautyCenterInput {
+  pagination: GqlPaginationInput
+  typeOfSeller: String
+  beautyCenterTypeId: ID
+  beautySalonTypeId: ID
+  treatmentTypeId: ID
+  cancelationOption: Boolean
+  rating: Int
+  minPrice: Float
+  maxPrice: Float
+  query: String
 }
 
 input GetVehiclesInput {

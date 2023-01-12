@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import { usePagination, useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FormikInput, useMutateFocusedMapItemId } from "@UI";
+import { FormikInput, HotelRoom, useMutateFocusedMapItemId } from "@UI";
 import {
   useGetFilteredServicesMetaDataQuery,
   DisplayFoundServices,
@@ -16,11 +16,15 @@ import { Button } from "@partials";
 export interface HotelsSearchListProps {
   sorting?: boolean;
   horizontal?: boolean;
+  rooms: HotelRoom[];
+  total: number;
 }
 
 export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({
   sorting,
   horizontal,
+  rooms,
+  total,
 }) => {
   const { focusMapItem } = useMutateFocusedMapItemId();
   const { page, take } = usePagination();
@@ -33,38 +37,28 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({
   );
   const { isTablet } = useResponsive();
 
-  const {
-    data: res,
-    isLoading,
-    isError,
-  } = useGetFilteredServicesMetaDataQuery({ page, take }, filters, {
-    onSuccess: (res) => setServices(res.data),
-  });
-
   return horizontal ? (
     <div className="w-fit flex gap-4 justify-center">
-      <SpinnerFallback isLoading={isLoading} isError={isError}>
-        {services.length < 1 ? (
-          <div className="w-fit h-48 flex just-center items-center text-2xl">
-            <span>{t("no services found")}</span>
+      {services.length < 1 ? (
+        <div className="w-fit h-48 flex just-center items-center text-2xl">
+          <span>{t("no services found")}</span>
+        </div>
+      ) : (
+        services.map((service, i) => (
+          <div className="w-56">
+            <HotelDetailedSearchCard
+              vertical
+              minimal
+              onShowOnMap={(id) => focusMapItem(id)}
+              key={i}
+              {...service}
+            />
           </div>
-        ) : (
-          services.map((service, i) => (
-            <div className="w-56">
-              <HotelDetailedSearchCard
-                vertical
-                minimal
-                onShowOnMap={(id) => focusMapItem(id)}
-                key={i}
-                {...service}
-              />
-            </div>
-          ))
-        )}
-      </SpinnerFallback>
+        ))
+      )}
     </div>
   ) : (
-    <PaginationWrapper>
+    <>
       <div className="w-full justify-start ">
         <Formik initialValues={{}} onSubmit={() => {}}>
           {({ values, setValues }) => (
@@ -83,25 +77,23 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({
       <div className="w-full flex flex-col gap-4 justify-center">
         <DisplayFoundServices
           location={getLocationFilterQuery || ""}
-          servicesNum={res?.total || 0}
+          servicesNum={total || 0}
         />
-        <SpinnerFallback isLoading={isLoading} isError={isError}>
-          {services.length < 1 ? (
-            <div className="w-fit h-48 flex just-center items-center text-2xl">
-              <span>{t("no services found")}</span>
-            </div>
-          ) : (
-            services.map((service, i) => (
-              <HotelDetailedSearchCard
-                vertical={isTablet}
-                onShowOnMap={(id) => focusMapItem(id)}
-                key={i}
-                {...service}
-              />
-            ))
-          )}
-        </SpinnerFallback>
+        {services.length < 1 ? (
+          <div className="w-fit h-48 flex just-center items-center text-2xl">
+            <span>{t("no services found")}</span>
+          </div>
+        ) : (
+          services.map((service, i) => (
+            <HotelDetailedSearchCard
+              vertical={isTablet}
+              onShowOnMap={(id) => focusMapItem(id)}
+              key={i}
+              {...service}
+            />
+          ))
+        )}
       </div>
-    </PaginationWrapper>
+    </>
   );
 };

@@ -1,17 +1,25 @@
-import { RecommendedBeautyCenterDataType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { AspectRatioImage, Rate, ServicesRequestKeys, Button } from "@UI";
+import {
+  AspectRatioImage,
+  Rate,
+  ServicesRequestKeys,
+  Button,
+  BeautyCenterTreatment,
+  BeautyCenter,
+} from "@UI";
 import { SeperatedStringArray } from "utils";
 
-export interface BeautyCenterRecommendedSearchCardProps
-  extends RecommendedBeautyCenterDataType {}
+export interface BeautyCenterRecommendedSearchCardProps {
+  treatment: BeautyCenterTreatment & { center: BeautyCenter };
+}
 
 export const BeautyCenterRecommendedSearchCard: React.FC<
   BeautyCenterRecommendedSearchCardProps
-> = (props) => {
-  const { name, owners, rate, reviews, thumbnail, type } = props;
+> = ({ treatment }) => {
+  const { title, price, center, discount, duration, id, treatmentCategoryId } =
+    treatment;
 
   const { visit } = useRouting();
 
@@ -21,8 +29,8 @@ export const BeautyCenterRecommendedSearchCard: React.FC<
     <div className="flex flex-col shadow">
       <AspectRatioImage
         className="group"
-        src={thumbnail}
-        alt={name}
+        src={center.presentations.find((v) => v.type === "img")?.src || ""}
+        alt={title}
         ratio={3 / 4}
       >
         <div
@@ -33,7 +41,10 @@ export const BeautyCenterRecommendedSearchCard: React.FC<
           <Button
             onClick={() =>
               visit((routes) =>
-                routes.visitService(props, ServicesRequestKeys.beauty_center)
+                routes.visitService(
+                  treatment,
+                  ServicesRequestKeys.beauty_center
+                )
               )
             }
           >
@@ -42,21 +53,21 @@ export const BeautyCenterRecommendedSearchCard: React.FC<
         </div>
       </AspectRatioImage>
       <div className="px-2 py-4 flex flex-col gap-2">
-        <p className="font-bold">{name}</p>
-        <p className="">{t(type)}</p>
+        <p className="font-bold">{title}</p>
+        <p className="">{t(treatment.category?.title || "")}</p>
         <div className="flex gap-4">
-          <Rate rating={rate} />
+          <Rate rating={center.rating} />
           <p>
-            {reviews} {t("review")}
+            {center.totalReviews} {t("review")}
           </p>
         </div>
         <div className="flex gap-4">
-          <p>{SeperatedStringArray(owners, ", ")}</p>
+          <p>{SeperatedStringArray([], ", ")}</p>
           <p
             onClick={() =>
               visit((routes) =>
                 routes.visitServiceOnMap(
-                  props,
+                  treatment,
                   ServicesRequestKeys.beauty_center
                 )
               )

@@ -9,12 +9,8 @@ export class SearchFilteredBeautyCenterQueryHandler
 {
   constructor(private readonly beautyCenterRepo: BeautyCenterRepository) {}
   execute({
-    input: { args, langId, selectedFields },
+    input: { args, langId },
   }: SearchFilteredBeautyCenterQuery): Promise<BeautyCenter[]> {
-    return this.beautyCenterRepo.searchFilteredBeautyCenter(
-      args,
-      selectedFields,
-      langId,
-    );
+    return this.beautyCenterRepo.searchFilteredBeautyCenter(args, langId);
   }
 }

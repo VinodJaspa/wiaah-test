@@ -1,38 +1,32 @@
-import { usePagination, useResponsive } from "hooks";
+import { useResponsive } from "hooks";
 import React from "react";
 import {
-  useSearchFilters,
-  SpinnerFallback,
-  Pagination,
   HealthCenterCard,
+  HealthCenterDoctor,
+  HealthCenter,
+  convertWorkingScheduleToWorkingHours,
 } from "@UI";
-import { useGetHealthCentersDataQuery } from "@UI";
 
-export const HealthCenterServiceSearchResultsList: React.FC = () => {
-  const { take, page, goToPage } = usePagination(8);
-  const { filters } = useSearchFilters();
+export const HealthCenterServiceSearchResultsList: React.FC<{
+  doctors: (HealthCenterDoctor & { healthCenter: HealthCenter })[];
+}> = ({ doctors }) => {
   const { isTablet } = useResponsive();
-  const {
-    data: res,
-    isLoading,
-    isError,
-  } = useGetHealthCentersDataQuery({ page, take }, filters);
+
   return (
     <div className="w-full flex flex-col gap-8">
-      <SpinnerFallback isLoading={isLoading} isError={isError}>
-        <div className="flex flex-col gap-4">
-          {Array.isArray(res?.data)
-            ? res?.data.map((s) => (
-                <HealthCenterCard
-                  vertical={isTablet}
-                  centerData={s.centerData}
-                  workingDates={s.workingDates}
-                />
-              ))
-            : null}
-        </div>
-      </SpinnerFallback>
-      <Pagination onPageChange={(num) => goToPage(num)} />
+      <div className="flex flex-col gap-4">
+        {Array.isArray(doctors)
+          ? doctors.map((s) => (
+              <HealthCenterCard
+                vertical={isTablet}
+                centerData={s}
+                workingDates={convertWorkingScheduleToWorkingHours(
+                  s.healthCenter.workingHours
+                )}
+              />
+            ))
+          : null}
+      </div>
     </div>
   );
 };
