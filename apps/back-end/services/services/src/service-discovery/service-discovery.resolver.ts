@@ -414,7 +414,16 @@ export class ServiceDiscoveryResolver {
 
   @Mutation(() => Boolean)
   async updateBeautyCenterAdmin(args: updateBeautyCenterAdminInput) {
-    const { id, ...rest } = args;
+    const { id, treatments, ...rest } = args;
+
+    for (const treatment of treatments) {
+      await this.prisma.beautyCenterTreatment.update({
+        where: {
+          id: treatment.id,
+        },
+        data: treatment,
+      });
+    }
 
     await this.prisma.beautyCenterService.update({
       where: {
@@ -422,12 +431,6 @@ export class ServiceDiscoveryResolver {
       },
       data: {
         ...rest,
-        treatments: rest.treatments.map((v) => ({
-          ...v,
-          price: v.price,
-          treatmentCategoryId: v.treatmentCategoryId,
-          discount: v.discount,
-        })),
       },
     });
 

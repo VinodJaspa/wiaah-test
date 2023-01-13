@@ -18,7 +18,7 @@ import {
 import { PrismaService } from 'prismaService';
 import {
   BeautyCenterService as PrismaBeautyCenterService,
-  BeautyCenterTreatment,
+  BeautyCenterTreatment as PrismaBeautyCenterTreatment,
   Prisma,
 } from 'prismaClient';
 import { v4 as uuid } from 'uuid';
@@ -76,10 +76,14 @@ export class BeautyCenterService {
         ownerId: userId,
         heigest_price,
         lowest_price,
-        treatments: input.treatments.map((v) => ({
-          ...v,
-          id: uuid(),
-        })),
+        treatments: {
+          createMany: {
+            data: input.treatments.map((v) => ({
+              ...v,
+              id: uuid(),
+            })),
+          },
+        },
       },
     });
 
@@ -116,10 +120,16 @@ export class BeautyCenterService {
     try {
       const { treatments, id, ...rest } = input;
 
-      const updatedTreats = this.updateBeautyCenterTreatments(
-        treatments,
-        service.treatments,
-      );
+      for (const treatment of treatments) {
+        await this.prisma.beautyCenterTreatment.update({
+          where: {
+            id: treatment.id,
+          },
+          data: treatment,
+        });
+      }
+
+      const updatedTreats = await this.prisma.beautyCenterTreatment.findMany();
 
       const lowest_price = Array.isArray(updatedTreats)
         ? input.treatments.reduce((acc, curr) => {
@@ -141,7 +151,6 @@ export class BeautyCenterService {
           ...rest,
           lowest_price,
           heigest_price,
-          treatments: updatedTreats,
         },
       });
 
@@ -179,8 +188,8 @@ export class BeautyCenterService {
 
   private updateBeautyCenterTreatments(
     input: UpdateBeautyCenterTreatmentInput[],
-    oldTreatments: BeautyCenterTreatment[],
-  ): BeautyCenterTreatment[] {
+    oldTreatments: PrismaBeautyCenterTreatment[],
+  ): PrismaBeautyCenterTreatment[] {
     const inputIds = input.map((v) => v.id);
     const unModifedTreatments = oldTreatments.filter(
       (v) => !inputIds.includes(v.id),
@@ -288,7 +297,9 @@ export class BeautyCenterService {
   }
 
   private formatBeautyCenterServiceData(
-    input?: Partial<PrismaBeautyCenterService>,
+    input?: Partial<
+      PrismaBeautyCenterService & { treatments: PrismaBeautyCenterTreatment }
+    >,
   ): BeautyCenter {
     return {
       ...input,

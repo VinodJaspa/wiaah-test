@@ -1,3 +1,4 @@
+import { useCreateNewAffiliationMutation } from "@features/Affiliation";
 import React from "react";
 import { AffiliationListSection } from "../AffiliationsListSection";
 import { NewAffiliationLinkSection } from "../NewAffiliationLinkSection";
@@ -9,24 +10,34 @@ export const AffiliationManagementContext = React.createContext({
   cancelNew: () => {},
 });
 
-export const AffiliationManagementSection: React.FC<AffiliationManagementSection> =
-  () => {
-    const [isAddNew, setIsAddNew] = React.useState<boolean>(false);
+export const AffiliationManagementSection: React.FC<
+  AffiliationManagementSection
+> = () => {
+  const { mutate } = useCreateNewAffiliationMutation();
+  const [isAddNew, setIsAddNew] = React.useState<boolean>(false);
 
-    function handleAddNew() {
-      setIsAddNew(true);
-    }
+  function handleAddNew() {
+    setIsAddNew(true);
+  }
 
-    function handleCancelNew() {
-      setIsAddNew(false);
-      console.log(isAddNew);
-    }
+  function handleCancelNew() {
+    setIsAddNew(false);
+    console.log(isAddNew);
+  }
 
-    return (
-      <AffiliationManagementContext.Provider
-        value={{ isAddNew, addNew: handleAddNew, cancelNew: handleCancelNew }}
-      >
-        {isAddNew ? <NewAffiliationLinkSection /> : <AffiliationListSection />}
-      </AffiliationManagementContext.Provider>
-    );
-  };
+  return (
+    <AffiliationManagementContext.Provider
+      value={{ isAddNew, addNew: handleAddNew, cancelNew: handleCancelNew }}
+    >
+      {isAddNew ? (
+        <NewAffiliationLinkSection
+          onSubmit={(v) => {
+            mutate({ args: v });
+          }}
+        />
+      ) : (
+        <AffiliationListSection />
+      )}
+    </AffiliationManagementContext.Provider>
+  );
+};

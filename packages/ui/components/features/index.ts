@@ -14,3 +14,4 @@ export * from "./Feedback";
 export * from "./Saved";
 export * from "./Admin";
 export * from "./Auth";
+export * from "./Affiliation";

@@ -179,7 +179,6 @@ model BeautyCenterTreatmentCategory {
   createdAt   DateTime                @default(now())
   updatedAt   DateTime                @updatedAt
   title       TranslationText[]
-  price       Float
   status      TreatmentCategoryStatus @default(active)
 }
 

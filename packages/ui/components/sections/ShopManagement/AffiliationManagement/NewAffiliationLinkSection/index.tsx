@@ -14,12 +14,15 @@ import {
   MenuButton,
   MenuList,
   SelectOption,
+  Affiliation,
+  CreateAffiliationInput,
 } from "@UI";
 import { products } from "../../../../../placeholder";
+import { useGetMyProducts } from "@features/Products/services/queries/useGetMyProducts";
 
-export interface NewAffiliationLinkSectionProps<TData> {
-  values?: TData;
-  onSubmit?: (data: TData) => any;
+export interface NewAffiliationLinkSectionProps {
+  values?: CreateAffiliationInput;
+  onSubmit?: (data: CreateAffiliationInput) => any;
   children?: React.ReactNode;
   onBack?: () => any;
 }
@@ -27,17 +30,12 @@ export interface NewAffiliationLinkSectionProps<TData> {
 const MAX_DISCOUNT = 100;
 const DISCOUNT_INCREMENTAL = 5;
 
-const prods = products
-  ? products.map((prod) => ({
-      productId: prod.id,
-      productName: prod.name,
-    }))
-  : [];
-export function NewAffiliationLinkSection<TData>({
+export function NewAffiliationLinkSection({
   onSubmit,
   values,
   onBack,
-}: NewAffiliationLinkSectionProps<TData>) {
+}: NewAffiliationLinkSectionProps) {
+  const { data: prods } = useGetMyProducts({ args: { page: 1, take: 10000 } });
   const { t } = useTranslation();
   const { cancelNew } = React.useContext(AffiliationManagementContext);
   const isEdit = !!values;
@@ -59,16 +57,13 @@ export function NewAffiliationLinkSection<TData>({
         </div>
         <Divider className="border-primary" />
       </div>
-      <Formik
-        initialValues={
-          values || {
-            productId: null,
-            commission: null,
-            price: null,
-            productLink: null,
-            expiryDate: null,
-          }
-        }
+      <Formik<CreateAffiliationInput>
+        initialValues={{
+          commision: 0,
+          itemId: "",
+          itemType: "product",
+          validFor: 65,
+        }}
         onSubmit={(data) => {
           onSubmit && onSubmit(data);
         }}
@@ -85,8 +80,8 @@ export function NewAffiliationLinkSection<TData>({
             >
               {prods &&
                 prods.map((prod, i) => (
-                  <SelectOption key={prod.productId + i} value={prod.productId}>
-                    {prod.productName}
+                  <SelectOption key={prod.id + i} value={prod.id}>
+                    {prod.title}
                   </SelectOption>
                 ))}
             </FormikInput>
