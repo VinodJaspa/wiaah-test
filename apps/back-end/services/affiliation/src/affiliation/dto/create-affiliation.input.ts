@@ -11,6 +11,6 @@ export class CreateAffiliationInput {
   @Field(() => Float)
   commision: number;
 
-  @Field(() => Int)
-  validFor: number;
+  @Field(() => String)
+  expireAt: string;
 }

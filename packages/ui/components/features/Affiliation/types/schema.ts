@@ -123,7 +123,7 @@ export type UpdateAffiliationInput = {
   itemId?: Maybe<Scalars["ID"]>;
   itemType?: Maybe<Scalars["String"]>;
   commision?: Maybe<Scalars["Float"]>;
-  validFor?: Maybe<Scalars["Int"]>;
+  expireAt?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
 };
 
@@ -131,5 +131,5 @@ export type CreateAffiliationInput = {
   itemId: Scalars["ID"];
   itemType: Scalars["String"];
   commision: Scalars["Float"];
-  validFor: Scalars["Int"];
+  expireAt: Scalars["String"];
 };

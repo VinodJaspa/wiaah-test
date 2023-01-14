@@ -165,7 +165,7 @@ export const PostCardPlaceHolder: PostCardInfo = {
   },
 };
 
-import { products } from "@UI/placeholder/products";
+import { products } from "./products";
 import { baseUri } from "uris";
 import { randomNum } from "../components/helpers/randomNumber";
 const images: string[] = [...products.map((pro) => pro.imgUrl)];

@@ -1,6 +1,6 @@
 import { Product, QueryGetMyProductsArgs } from "@features/Products/types";
-import { createGraphqlRequestClient } from "@UI/../api";
-import { GqlResponse } from "@UI/../types/src";
+import { createGraphqlRequestClient } from "api";
+import { GqlResponse } from "types";
 import { useQuery } from "react-query";
 
 export const useGetMyProducts = (args: QueryGetMyProductsArgs) => {

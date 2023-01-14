@@ -14,9 +14,7 @@ export class AffiliationRepository {
     const res = await this.prisma.affiliation.create({
       data: {
         ...input,
-        expireAt: AddToDate(new Date(), {
-          days: input.validFor,
-        }),
+        expireAt: new Date(input.expireAt),
         sellerId,
       },
     });

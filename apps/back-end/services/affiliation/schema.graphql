@@ -90,7 +90,7 @@ input UpdateAffiliationInput {
   itemId: ID
   itemType: String
   commision: Float
-  validFor: Int
+  expireAt: String
   id: ID!
 }
 
@@ -98,5 +98,5 @@ input CreateAffiliationInput {
   itemId: ID!
   itemType: String!
   commision: Float!
-  validFor: Int!
+  expireAt: String!
 }

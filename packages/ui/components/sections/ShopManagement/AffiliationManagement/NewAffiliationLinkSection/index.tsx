@@ -14,10 +14,9 @@ import {
   MenuButton,
   MenuList,
   SelectOption,
-  Affiliation,
   CreateAffiliationInput,
 } from "@UI";
-import { products } from "../../../../../placeholder";
+import * as yup from "yup";
 import { useGetMyProducts } from "@features/Products/services/queries/useGetMyProducts";
 
 export interface NewAffiliationLinkSectionProps {
@@ -62,8 +61,14 @@ export function NewAffiliationLinkSection({
           commision: 0,
           itemId: "",
           itemType: "product",
-          validFor: 65,
+          expireAt: "",
         }}
+        validationSchema={yup.object({
+          commision: yup.number().min(1).max(95).required(),
+          expireAt: yup.string().required(),
+          itemId: yup.string().required(),
+          itemType: yup.string().required(),
+        })}
         onSubmit={(data) => {
           onSubmit && onSubmit(data);
         }}
@@ -72,8 +77,9 @@ export function NewAffiliationLinkSection({
           <Form className="flex flex-col gap-4">
             <FormikInput<SelectProps>
               onOptionSelect={(value) => {
-                setFieldValue("productId", value);
+                setFieldValue("itemId", value);
               }}
+              value={values.itemId}
               as={Select}
               name="productId"
               placeholder={t("select_product", "Select Product")}
@@ -86,7 +92,7 @@ export function NewAffiliationLinkSection({
                 ))}
             </FormikInput>
             <FormikInput<SelectProps>
-              onOptionSelect={(v) => setFieldValue("commission", v)}
+              onOptionSelect={(v) => setFieldValue("commision", v)}
               placeholder={t("commission", "Commission") + " %"}
               as={Select}
               label={t("set_commission_percent", "Set Commission Percent")}
@@ -101,7 +107,7 @@ export function NewAffiliationLinkSection({
             <div className="w-full flex gap-2 items-center">
               <FormikInput
                 placeholder={t("choose_expiry_date", "Choose Expiry Date")}
-                name={"expiryDate"}
+                name={"expireAt"}
                 className="w-96"
               />
               <Menu isLazy>
@@ -110,7 +116,7 @@ export function NewAffiliationLinkSection({
                 </MenuButton>
                 <MenuList className="left-0 origin-top-left">
                   <DateInput
-                    onDaySelect={(date) => setFieldValue("expiryDate", date)}
+                    onDaySelect={(date) => setFieldValue("expireAt", date)}
                   />
                 </MenuList>
               </Menu>
