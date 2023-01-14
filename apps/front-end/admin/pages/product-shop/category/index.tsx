@@ -18,25 +18,46 @@ import {
   usePaginationControls,
   Button,
   Input,
+  useGetFilteredProductCategories,
 } from "ui";
 import { mapArray, randomNum, SeperatedStringArray } from "utils";
 
 export default () => {
   const { t } = useTranslation();
   const { controls, changeTotalItems, pagination } = usePaginationControls();
+  const { data } = useGetFilteredProductCategories({
+    pagination,
+  });
   const { visit, getCurrentPath } = useRouting();
 
-  const categories: {
-    name: string[];
-    sortOrder: number;
-    id: string;
-  }[] = [...Array(50)].map((_, i) => ({
-    id: i.toString(),
-    name: [...Array(randomNum(3))]
-      .map((_, i) => `category-${i}`)
-      .concat("category"),
-    sortOrder: randomNum(10),
-  }));
+  const categories =
+    data?.reduce(
+      (acc, { id, name, parantId, sortOrder }, i, og) => {
+        const names = [name];
+
+        let done = false;
+        let parant = parantId;
+        while (!done) {
+          const _parant = og.find((v) => v.id === parant);
+          if (!parant) done = true;
+          names.push(_parant.name);
+        }
+
+        return [
+          ...acc,
+          {
+            name: names,
+            sortOrder,
+            id,
+          },
+        ];
+      },
+      [] as {
+        name: string[];
+        sortOrder: number;
+        id: string;
+      }[]
+    ) || [];
 
   React.useEffect(() => {
     changeTotalItems(categories.length);
@@ -91,38 +112,32 @@ export default () => {
             </Tr>
           </THead>
           <TBody>
-            {mapArray(
-              categories.slice(
-                pagination.page * pagination.take,
-                (pagination.page + 1) * pagination.take
-              ),
-              ({ id, name, sortOrder }, i) => (
-                <Tr>
-                  <Td className="w-[99%]">
-                    <div className="flex items-center gap-4 font-semibold">
-                      <Checkbox />
-                      <p>{SeperatedStringArray(name, " > ")}</p>
-                    </div>
-                  </Td>
-                  <Td>{sortOrder}</Td>
-                  <Td>
-                    <Button
-                      onClick={() =>
-                        visit((r) =>
-                          r
-                            .addPath(getCurrentPath({ noParams: true }))
-                            .addPath("form")
-                            .addQuery({ category_id: id })
-                        )
-                      }
-                      className="flex items-center justify-center  text-2xl h-12 w-12"
-                    >
-                      <EditIcon />
-                    </Button>
-                  </Td>
-                </Tr>
-              )
-            )}
+            {mapArray(categories, ({ id, name, sortOrder }, i) => (
+              <Tr>
+                <Td className="w-[99%]">
+                  <div className="flex items-center gap-4 font-semibold">
+                    <Checkbox />
+                    <p>{SeperatedStringArray(name, " > ")}</p>
+                  </div>
+                </Td>
+                <Td>{sortOrder}</Td>
+                <Td>
+                  <Button
+                    onClick={() =>
+                      visit((r) =>
+                        r
+                          .addPath(getCurrentPath({ noParams: true }))
+                          .addPath("form")
+                          .addQuery({ category_id: id })
+                      )
+                    }
+                    className="flex items-center justify-center  text-2xl h-12 w-12"
+                  >
+                    <EditIcon />
+                  </Button>
+                </Td>
+              </Tr>
+            ))}
           </TBody>
         </Table>
         <ItemsPagination controls={controls} />

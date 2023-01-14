@@ -1,16 +1,9 @@
 import React, { useState } from "react";
 import { Rate } from "antd";
 import { Select } from "antd";
-import {
-  Button,
-  DropdownPanel,
-  FilterInput,
-  FlexStack,
-  Spacer,
-  HStack,
-} from "@UI";
+import { Button, DropdownPanel, FilterInput, Spacer, HStack } from "@UI";
+import { Category as ProductCategory } from "@features/Products/types";
 import { Country, City } from "country-state-city";
-import { Category } from "types";
 import { useTranslation } from "react-i18next";
 
 export interface ShopProductFilterProps {
@@ -23,7 +16,7 @@ export interface ShopProductFilterProps {
   stockStatus?: boolean;
   countryFilter?: boolean;
   cityFilter?: boolean;
-  categories?: Category[];
+  categories?: ProductCategory[];
   brands?: string[];
   open?: boolean;
 }
@@ -37,6 +30,11 @@ countries.forEach((element) => {
     label: element.name,
   });
 });
+
+type ProductNestedCategory = ProductCategory & {
+  subCategories: ProductNestedCategory[];
+};
+
 export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
   priceRange,
   shipping,
@@ -59,7 +57,25 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
     setCities(City.getCitiesOfCountry(value));
   }
 
-  function renderNested({ name, subCategories }: Category) {
+  function appendSubCategories(
+    cate: ProductCategory,
+    ogArr: ProductCategory[]
+  ): ProductNestedCategory[] {
+    const childs = ogArr.filter((v) => v.parantId === cate.id);
+
+    if (childs.length > 0) {
+      return childs.map((c) => ({
+        ...c,
+        subCategories: appendSubCategories(c, ogArr),
+      }));
+    } else return [{ ...cate, subCategories: [] }];
+  }
+
+  const _categories = categories
+    ?.filter((v) => !v.parantId)
+    .map((v) => ({ ...v, subCategories: appendSubCategories(v, categories) }));
+
+  function renderNested({ name, subCategories }: ProductNestedCategory) {
     const haveNestedCategories = subCategories.length > 0;
     if (haveNestedCategories) {
       return (
@@ -82,7 +98,7 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
           open={open}
           name={t("Category", "Category")}
         >
-          {categories.map((cate, i) => (
+          {_categories?.map((cate, i) => (
             <>{renderNested(cate)}</>
           ))}
           <Spacer />

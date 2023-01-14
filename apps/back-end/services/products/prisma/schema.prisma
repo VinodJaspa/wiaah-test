@@ -12,10 +12,17 @@ datasource db {
 }
 
 model ProductCategory {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  id        String                @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   sortOrder Int
+  status    ProductCategoryStatus
+  thumbnail String?
   parantId  String?
+}
+
+enum ProductCategoryStatus {
+  active
+  inActive
 }
 
 type ProductFilterGroupValue {

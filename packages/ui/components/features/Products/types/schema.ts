@@ -25,8 +25,15 @@ export type Category = {
   __typename?: "Category";
   id: Scalars["ID"];
   name: Scalars["String"];
+  sortOrder: Scalars["Int"];
+  status: ProductCategoryStatus;
   parantId: Scalars["ID"];
 };
+
+export enum ProductCategoryStatus {
+  Active = "active",
+  InActive = "inActive",
+}
 
 export type ShippingDetails = {
   __typename?: "ShippingDetails";
@@ -234,8 +241,8 @@ export type Query = {
   getProducts: Array<Product>;
   getProduct: Product;
   getMyProducts: Array<MyProduct>;
-  getCategories: Array<Category>;
-  getFilteredCategory: Array<Category>;
+  getProductCategories: Array<Category>;
+  getFilteredProductCategories: Array<Category>;
   getAdminProductsFilters: Array<Filter>;
   getProductsFilters: Array<Filter>;
   getAllProducts: Array<Product>;
@@ -271,7 +278,7 @@ export type QueryGetMyProductsArgs = {
   args: GqlPaginationInput;
 };
 
-export type QueryGetFilteredCategoryArgs = {
+export type QueryGetFilteredProductCategoriesArgs = {
   args?: Maybe<GetFilteredCategory>;
 };
 
@@ -320,6 +327,7 @@ export type GetFilteredProductsInput = {
 };
 
 export type GetFilteredCategory = {
+  pagination: GqlPaginationInput;
   name?: Maybe<Scalars["String"]>;
   sortOrder?: Maybe<Scalars["Int"]>;
 };
@@ -365,9 +373,9 @@ export type Mutation = {
   createProductsPh: Scalars["Boolean"];
   uploadProductPresentations: Scalars["Boolean"];
   deleteProduct: Product;
-  createCategory: Category;
-  deleteCategory: Category;
-  updateCategory: Category;
+  createProductCategory: Category;
+  deleteProductCategory: Category;
+  updateProductCategory: Category;
   createFilter: Filter;
   updateFilter: Filter;
   deleteFilter: Filter;
@@ -407,15 +415,15 @@ export type MutationDeleteProductArgs = {
   productId: Scalars["ID"];
 };
 
-export type MutationCreateCategoryArgs = {
+export type MutationCreateProductCategoryArgs = {
   createCategoryInput: CreateCategoryInput;
 };
 
-export type MutationDeleteCategoryArgs = {
+export type MutationDeleteProductCategoryArgs = {
   deleteCategoryId: Scalars["String"];
 };
 
-export type MutationUpdateCategoryArgs = {
+export type MutationUpdateProductCategoryArgs = {
   updateCategoryArgs: UpdateCategoryInput;
 };
 
@@ -544,12 +552,14 @@ export type CreateCategoryInput = {
   parantId?: Maybe<Scalars["ID"]>;
   name: Scalars["String"];
   sortOrder: Scalars["Int"];
+  status: ProductCategoryStatus;
 };
 
 export type UpdateCategoryInput = {
   parantId?: Maybe<Scalars["ID"]>;
   name?: Maybe<Scalars["String"]>;
   sortOrder?: Maybe<Scalars["Int"]>;
+  status?: Maybe<ProductCategoryStatus>;
   id: Scalars["ID"];
 };
 
