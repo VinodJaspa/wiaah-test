@@ -5,20 +5,20 @@ import { Category } from "types";
 import { categories as categoriesPH, Select, SelectOption } from "@UI";
 
 export interface SubCategorySelectProps extends HtmlSelectProps {
-  onCateSelection?: (cate: string[]) => any;
+  onCateSelection?: (cate: Category[]) => any;
+  categories: Category[];
 }
 
 export const SubCategorySelect: React.FC<SubCategorySelectProps> = ({
   onCateSelection,
+  categories,
 }) => {
-  const [categories, setCategories] = React.useState<Category[]>(categoriesPH);
   const [selectedCategories, setSelectedCategories] = React.useState<
     Category[]
   >([]);
 
   React.useEffect(() => {
-    onCateSelection &&
-      onCateSelection(selectedCategories.map((cate) => cate.name));
+    onCateSelection && onCateSelection(selectedCategories);
   }, [selectedCategories]);
 
   const { t } = useTranslation();

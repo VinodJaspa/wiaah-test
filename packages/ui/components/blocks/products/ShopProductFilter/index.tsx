@@ -1,7 +1,15 @@
 import React, { useState } from "react";
 import { Rate } from "antd";
 import { Select } from "antd";
-import { Button, DropdownPanel, FilterInput, Spacer, HStack } from "@UI";
+import {
+  Button,
+  DropdownPanel,
+  FilterInput,
+  Spacer,
+  HStack,
+  ProductNestedCategory,
+  FormatCategoryFilters,
+} from "@UI";
 import { Category as ProductCategory } from "@features/Products/types";
 import { Country, City } from "country-state-city";
 import { useTranslation } from "react-i18next";
@@ -31,10 +39,6 @@ countries.forEach((element) => {
   });
 });
 
-type ProductNestedCategory = ProductCategory & {
-  subCategories: ProductNestedCategory[];
-};
-
 export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
   priceRange,
   shipping,
@@ -57,23 +61,7 @@ export const ShopProductFilter: React.FC<ShopProductFilterProps> = ({
     setCities(City.getCitiesOfCountry(value));
   }
 
-  function appendSubCategories(
-    cate: ProductCategory,
-    ogArr: ProductCategory[]
-  ): ProductNestedCategory[] {
-    const childs = ogArr.filter((v) => v.parantId === cate.id);
-
-    if (childs.length > 0) {
-      return childs.map((c) => ({
-        ...c,
-        subCategories: appendSubCategories(c, ogArr),
-      }));
-    } else return [{ ...cate, subCategories: [] }];
-  }
-
-  const _categories = categories
-    ?.filter((v) => !v.parantId)
-    .map((v) => ({ ...v, subCategories: appendSubCategories(v, categories) }));
+  const _categories = FormatCategoryFilters(categories || []);
 
   function renderNested({ name, subCategories }: ProductNestedCategory) {
     const haveNestedCategories = subCategories.length > 0;

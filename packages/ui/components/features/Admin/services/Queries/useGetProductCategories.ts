@@ -25,3 +25,27 @@ export const useGetProductCategories = () => {
     return res.data.getProductCategories;
   });
 };
+
+export type ProductNestedCategory = Category & {
+  subCategories: ProductNestedCategory[];
+};
+
+function appendSubCategories(
+  cate: Category,
+  ogArr: Category[]
+): ProductNestedCategory[] {
+  const childs = ogArr.filter((v) => v.parantId === cate.id);
+
+  if (childs.length > 0) {
+    return childs.map((c) => ({
+      ...c,
+      subCategories: appendSubCategories(c, ogArr),
+    }));
+  } else return [{ ...cate, subCategories: [] }];
+}
+
+export const FormatCategoryFilters = (categories: Category[]) => {
+  return categories
+    ?.filter((v) => !v.parantId)
+    .map((v) => ({ ...v, subCategories: appendSubCategories(v, categories) }));
+};
