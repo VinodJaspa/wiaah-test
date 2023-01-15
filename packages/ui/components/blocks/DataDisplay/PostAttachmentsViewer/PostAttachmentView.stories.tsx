@@ -1,5 +1,5 @@
 import { storybookBlocksTitle, PostAttachmentsViewer } from "@UI";
-import { PostCardPlaceHolder } placeholder;
+import { PostCardPlaceHolder } from "placeholder";
 import { ComponentMeta } from "@storybook/react";
 
 export default {

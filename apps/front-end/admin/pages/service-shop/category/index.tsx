@@ -17,30 +17,15 @@ import {
   THead,
   Tr,
   usePaginationControls,
+  useGetServiceCategoriesQuery,
 } from "ui";
-import { mapArray, randomNum, SeperatedStringArray } from "utils";
+import { mapArray } from "utils";
 
 export default () => {
   const { t } = useTranslation();
   const { controls, changeTotalItems, pagination } = usePaginationControls();
   const { visit, getCurrentPath } = useRouting();
-
-  const categories: {
-    name: string;
-    sortOrder: number;
-    id: string;
-  }[] = [
-    "Hotel",
-    "Holiday Rentals",
-    "Restaurant",
-    "Health Center",
-    "Beauty Center",
-    "Vehicle",
-  ].map((v, i) => ({
-    id: i.toString(),
-    name: `${v}`,
-    sortOrder: i + 1,
-  }));
+  const { data: categories } = useGetServiceCategoriesQuery();
 
   React.useEffect(() => {
     changeTotalItems(categories.length);

@@ -2,7 +2,7 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { SocialAffiliationCard } from "@UI";
 import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
-import { socialAffiliationCardPlaceholder } placeholder;
+import { socialAffiliationCardPlaceholder } from "placeholder";
 export default {
   title: "UI/blocks/Social/SocialAffiliationCard",
   component: SocialAffiliationCard,

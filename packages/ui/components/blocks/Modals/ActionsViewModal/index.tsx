@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { FloatingContainer, VerticalCarousel } from "@UI";
 import { getParamFromAsPath } from "@UI/components/helpers";
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
-import { PostCardPlaceHolder } placeholder;
+import { PostCardPlaceHolder } from "placeholder";
 
 export interface ActionsViewPopupProps {
   renderChild: (props: any) => React.ReactElement;

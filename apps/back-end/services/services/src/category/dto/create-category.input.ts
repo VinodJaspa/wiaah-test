@@ -35,4 +35,7 @@ export class CreateCategoryInput {
 
   @Field(() => [ServiceCategoryFilterInput])
   filters: ServiceCategoryFilterInput[];
+
+  @Field(() => String)
+  slug: string;
 }

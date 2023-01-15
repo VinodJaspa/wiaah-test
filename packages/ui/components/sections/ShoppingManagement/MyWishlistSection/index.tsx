@@ -13,7 +13,7 @@ import {
   TableContainer,
   usePaginationControls,
 } from "@UI";
-import { getRandomImage } placeholder;
+import { getRandomImage } from "placeholder";
 import { HiShoppingCart } from "react-icons/hi";
 import { randomNum } from "../../../helpers";
 import { IoTrash } from "react-icons/io5";

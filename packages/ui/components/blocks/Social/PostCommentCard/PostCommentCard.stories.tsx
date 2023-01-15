@@ -1,7 +1,7 @@
 import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { PostCommentCard } from "@UI";
-import { PostCommentPlaceholder } placeholder;
+import { PostCommentPlaceholder } from "placeholder";
 import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 
 export default {

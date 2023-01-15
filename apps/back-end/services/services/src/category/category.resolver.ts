@@ -11,10 +11,14 @@ import {
 } from 'nest-utils';
 import { UseGuards } from '@nestjs/common';
 import { GetFilteredCategoriesInput } from './dto/get-filtered-categories.input';
+import { PrismaService } from 'prismaService';
 
 @Resolver(() => Category)
 export class CategoryResolver {
-  constructor(private readonly categoryService: CategoryService) {}
+  constructor(
+    private readonly categoryService: CategoryService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @Query(() => Category)
   getServiceCategoryById(
@@ -24,11 +28,31 @@ export class CategoryResolver {
     return this.categoryService.getCategoryById(id, user.id);
   }
 
+  @Query(() => Category)
+  async getServiceCategoryBySlug(
+    @Args('slug') slug: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const res = await this.prisma.serviceCategory.findUnique({
+      where: {
+        slug,
+      },
+    });
+
+    return res;
+  }
+
   @Query(() => [Category])
-  getServiceCategories(
+  getServiceCategories() {
+    return this.categoryService.getAllCategories();
+  }
+
+  @Query(() => [Category])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  getFilteredServiceCategories(
     @Args('args', { nullable: true }) args: GetFilteredCategoriesInput,
   ) {
-    return this.categoryService.getAllCategories(args);
+    return this.categoryService.getAllFilteredCategories(args);
   }
 
   @Mutation(() => Category)

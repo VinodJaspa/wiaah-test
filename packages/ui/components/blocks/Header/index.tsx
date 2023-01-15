@@ -14,9 +14,12 @@ import Link from "next/link";
 import { useRecoilValue } from "recoil";
 import { ShoppingCartItemsState } from "state";
 import { useTranslation } from "react-i18next";
-import { useGetServicesCategoriesQuery } from "@UI";
+import {
+  useGetServicesCategoriesQuery,
+  useGetServiceCategoriesQuery,
+} from "@UI";
+import { Category as ServiceCategory } from "@features/Services/Services/types";
 import { usePagination } from "hooks";
-import { ServiceCategoryType } from "api";
 import { useRouting } from "routing";
 import { useBreakpointValue } from "utils";
 
@@ -35,6 +38,7 @@ export const Header: React.FC<HeaderProps> = () => {
     isLoading,
     isSuccess,
   } = useGetServicesCategoriesQuery({ page, take });
+  const { data: serviceCategories } = useGetServiceCategoriesQuery();
 
   const steps: Step[] = Array.isArray(categories)
     ? categories.map((cate, i) => ({
@@ -102,7 +106,7 @@ export const Header: React.FC<HeaderProps> = () => {
           </div>
 
           <div className="hidden md:flex gap-2 items-center">
-            <MainHeaderSearchBar categories={categories || []} />
+            <MainHeaderSearchBar categories={serviceCategories || []} />
             <LocationIcon
               onClick={() => SearchForLocations([])}
               className="cursour-pointer text-white text-4xl"
@@ -159,7 +163,7 @@ export const Header: React.FC<HeaderProps> = () => {
               ))}
           </ul>
           <div className="block md:hidden">
-            <MainHeaderSearchBar categories={categories || []} />
+            <MainHeaderSearchBar categories={serviceCategories || []} />
           </div>
         </Container>
       </div>
@@ -173,7 +177,7 @@ export const Header: React.FC<HeaderProps> = () => {
 };
 
 export const MainHeaderSearchBar: React.FC<{
-  categories: ServiceCategoryType[];
+  categories: Omit<ServiceCategory, "filters">[];
 }> = ({ categories }) => {
   const { t } = useTranslation();
 

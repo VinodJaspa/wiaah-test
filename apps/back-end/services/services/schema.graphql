@@ -28,7 +28,15 @@ type ServiceCategoryFilter {
 type Category {
   id: ID!
   name: String!
+  sortOrder: Int!
+  status: ServiceCategoryStatus!
+  slug: String!
   filters: [ServiceCategoryFilter!]!
+}
+
+enum ServiceCategoryStatus {
+  active
+  inActive
 }
 
 type ServicePresentation {
@@ -420,7 +428,9 @@ type Query {
   getServiceInsuranceHistory(args: GetInsurancesHistoryInput!): [Insurance!]!
   getFilteredServices(args: GetFilteredServicesAdminInput!): [ServiceDiscovery!]!
   getServiceCategoryById(categoryId: String!): Category!
-  getServiceCategories(args: GetFilteredCategoriesInput): [Category!]!
+  getServiceCategoryBySlug(slug: String!): Category!
+  getServiceCategories: [Category!]!
+  getFilteredServiceCategories(args: GetFilteredCategoriesInput): [Category!]!
   getHotels: [Hotel!]!
   getHotelService(getHotelServiceArgs: GetHotelServiceArgs!): Hotel!
   searchHotelRooms(searchHotelRoomsArgs: SearchHotelRoomLocationInput!): [HotelRoom!]!
@@ -677,6 +687,7 @@ input TranslationTextArrayInput {
 input CreateCategoryInput {
   name: [TranslationTextInput!]!
   filters: [ServiceCategoryFilterInput!]!
+  slug: String!
 }
 
 input ServiceCategoryFilterInput {
@@ -695,6 +706,7 @@ input ServiceCategoryFilterValueInput {
 input UpdateCategoryInput {
   name: [TranslationTextInput!]
   filters: [ServiceCategoryFilterInput!]
+  slug: String
   id: String!
 }
 

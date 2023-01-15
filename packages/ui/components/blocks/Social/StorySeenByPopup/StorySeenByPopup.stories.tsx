@@ -5,7 +5,7 @@ import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import { useStorySeenBy } from "@src/Hooks";
 import { Button } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
-import { PostCardPlaceHolder } placeholder;
+import { PostCardPlaceHolder } from "placeholder";
 import { StorySeenByState } from "@src/state";
 
 export default {

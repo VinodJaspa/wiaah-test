@@ -31,7 +31,14 @@ model ServiceCategory {
   createdAt       DateTime                @default(now())
   updatedAt       DateTime                @updatedAt()
   filters         ServiceCategoryFilter[]
+  status          ServiceCategoryStatus   @default(active)
   sortOrder       Int                     @default(1)
+  slug            String                  @unique
+}
+
+enum ServiceCategoryStatus {
+  active
+  inActive
 }
 
 model ServiceWorkingSchedule {

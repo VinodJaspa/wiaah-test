@@ -38,8 +38,16 @@ export type Category = {
   __typename?: "Category";
   id: Scalars["ID"];
   name: Scalars["String"];
+  sortOrder: Scalars["Int"];
+  status: ServiceCategoryStatus;
+  slug: Scalars["String"];
   filters: Array<ServiceCategoryFilter>;
 };
+
+export enum ServiceCategoryStatus {
+  Active = "active",
+  InActive = "inActive",
+}
 
 export type ServicePresentation = {
   __typename?: "ServicePresentation";
@@ -459,6 +467,7 @@ export type Query = {
   getFilteredServices: Array<ServiceDiscovery>;
   getServiceCategoryById: Category;
   getServiceCategories: Array<Category>;
+  getFilteredServiceCategories: Array<Category>;
   getHotels: Array<Hotel>;
   getHotelService: Hotel;
   searchHotelRooms: Array<HotelRoom>;
@@ -496,7 +505,7 @@ export type QueryGetServiceCategoryByIdArgs = {
   categoryId: Scalars["String"];
 };
 
-export type QueryGetServiceCategoriesArgs = {
+export type QueryGetFilteredServiceCategoriesArgs = {
   args?: Maybe<GetFilteredCategoriesInput>;
 };
 
@@ -880,6 +889,7 @@ export type TranslationTextArrayInput = {
 export type CreateCategoryInput = {
   name: Array<TranslationTextInput>;
   filters: Array<ServiceCategoryFilterInput>;
+  slug: Scalars["String"];
 };
 
 export type ServiceCategoryFilterInput = {
@@ -898,6 +908,7 @@ export type ServiceCategoryFilterValueInput = {
 export type UpdateCategoryInput = {
   name?: Maybe<Array<TranslationTextInput>>;
   filters?: Maybe<Array<ServiceCategoryFilterInput>>;
+  slug?: Maybe<Scalars["String"]>;
   id: Scalars["String"];
 };
 
@@ -1181,75 +1192,4 @@ export type CreateVehiclePropertiesInput = {
   lugaggeCapacity: Scalars["Int"];
   gpsAvailable: Scalars["Boolean"];
   airCondition: Scalars["Boolean"];
-};
-
-export type GetHotelRoomsQueryVariables = Exact<{
-  args: SearchHotelRoomLocationInput;
-}>;
-
-export type GetHotelRoomsQuery = { __typename?: "Query" } & {
-  searchHotelRooms: Array<
-    { __typename?: "HotelRoom" } & Pick<
-      HotelRoom,
-      | "bathrooms"
-      | "beds"
-      | "createdAt"
-      | "dailyPrice"
-      | "description"
-      | "hotelId"
-      | "id"
-      | "includedAmenities"
-      | "includedServices"
-      | "num_of_rooms"
-      | "pricePerNight"
-      | "rating"
-      | "reviews"
-      | "sellerId"
-      | "title"
-      | "updatedAt"
-    > & {
-        cancelationPolicies: Array<
-          { __typename?: "ServiceCancelationPolicy" } & Pick<
-            ServiceCancelationPolicy,
-            "cost" | "duration"
-          >
-        >;
-        dailyPrices?: Maybe<
-          { __typename?: "ServiceDailyPrices" } & Pick<
-            ServiceDailyPrices,
-            "fr" | "mo" | "sa" | "su" | "th" | "tu" | "we"
-          >
-        >;
-        discount: { __typename?: "ServiceDiscount" } & Pick<
-          ServiceDiscount,
-          "units" | "value"
-        >;
-        extras?: Maybe<
-          Array<
-            { __typename?: "ServiceExtra" } & Pick<
-              ServiceExtra,
-              "cost" | "name"
-            >
-          >
-        >;
-        measurements: { __typename?: "ServicePropertyMeasurements" } & Pick<
-          ServicePropertyMeasurements,
-          "inFeet" | "inMeter"
-        >;
-        popularAmenities?: Maybe<
-          Array<
-            { __typename?: "ServiceAmenity" } & Pick<
-              ServiceAmenity,
-              "label" | "value"
-            >
-          >
-        >;
-        presentations: Array<
-          { __typename?: "ServicePresentation" } & Pick<
-            ServicePresentation,
-            "src" | "type"
-          >
-        >;
-      }
-  >;
 };

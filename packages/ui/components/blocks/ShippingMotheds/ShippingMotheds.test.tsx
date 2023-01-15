@@ -1,7 +1,7 @@
 import { mount, ReactWrapper, render, shallow, ShallowWrapper } from "enzyme";
 import React from "react";
 import { ShippingMotheds } from "../ShippingMotheds";
-import { shippingMotheds } placeholder;
+import { shippingMotheds } from "placeholder";
 import { getMountedComponent } from "../../helpers";
 import { act } from "react-dom/test-utils";
 

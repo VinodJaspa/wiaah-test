@@ -12,7 +12,6 @@ import {
   SimpleTabItemList,
   SimpleTabs,
   FlagIcon,
-  Stack,
   Input,
   Textarea,
   FileInput,
@@ -24,7 +23,6 @@ import {
   InputLeftElement,
   Select,
   SelectOption,
-  StarOutlineIcon,
   PlusIcon,
   ListIcon,
   Table,
@@ -38,81 +36,70 @@ import {
   Td,
   InputRequiredStar,
   MinusIcon,
+  useGetServiceCategory,
+  FormTranslationWrapper,
 } from "ui";
 import {
-  countries,
   mapArray,
   randomNum,
   runIfFn,
   WiaahLanguageCountriesIsoCodes,
 } from "utils";
 import { array, InferType, number, object, string } from "yup";
+import {
+  UpdateCategoryInput,
+  ServiceCategoryFilter,
+} from "@features/Services/Services/types";
+import { useUpdateServiceCategory } from "@features/Services/Services/mutation";
 
 const EditCategory = () => {
   const { getParam } = useRouting();
   const CategoryId: string = getParam("category_id");
   const { t } = useTranslation();
+  const { data } = useGetServiceCategory(CategoryId);
+  const { mutate } = useUpdateServiceCategory();
+  const [lang, setLang] = React.useState<string>("en");
+  const [form, setForm] = React.useState<UpdateCategoryInput>();
+
+  function handleSave() {
+    mutate(form);
+  }
 
   const tabs: { name: string; comp: React.ReactNode }[] = [
     {
       name: t("General"),
       comp: (
         <div className="flex flex-col gap-8 w-full">
-          <SimpleTabs>
-            <div className="flex items-center">
-              <SimpleTabHead>
-                {mapArray(
-                  ["GB", "FR", "DE", "ES"] as FlagIconCode[],
-                  (v, i) => (
-                    <div
-                      className={`${
-                        i === 0 ? "border-2 border-gray-300 border-b-white" : ""
-                      } px-8 py-2`}
-                      key={i}
-                    >
-                      <FlagIcon code={v} />
-                    </div>
-                  )
-                )}
-              </SimpleTabHead>
-            </div>
-            <SimpleTabItemList>
-              <div className="grid grid-cols-8 text-right gap-16 flex-col w-full">
-                <Formik initialValues={{}} onSubmit={() => {}}>
-                  {() => (
-                    <>
-                      <p>
-                        <span className="text-red-400 inline-block translate-y-1/4 px-2 transform font-bold text-2xl">
-                          *
-                        </span>
-                        {t("Category Name")}
-                      </p>
-                      <Input className="col-span-7" />
-                      <p>{t("Description")}</p>
-                      <Textarea className="col-span-7" />
-                      <p>
-                        <span className="text-red-400 inline-block translate-y-1/4 px-2 transform font-bold text-2xl">
-                          *
-                        </span>
-                        {t("Meta Tag Title")}
-                      </p>
-                      <Input className="col-span-7" />
-                      <p>{t("Meta Tag Description")}</p>
-                      <Textarea
-                        className="col-span-7"
-                        placeholder={t("Meta Tag Description")}
-                      />
-                      <p>{t("Meta Tag Keywords")}</p>
-                      <Textarea
-                        className="col-span-7"
-                        placeholder={t("Meta Tag Keywords")}
-                      />
-                    </>
-                  )}
-                </Formik>
-              </div>
-            </SimpleTabItemList>
-          </SimpleTabs>
+          <div className="grid grid-cols-8 text-right gap-16 flex-col w-full">
+            <>
+              <p>
+                <span className="text-red-400 inline-block translate-y-1/4 px-2 transform font-bold text-2xl">
+                  *
+                </span>
+                {t("Category Name")}
+              </p>
+              <Input className="col-span-7" />
+              <p>{t("Description")}</p>
+              <Textarea className="col-span-7" />
+              <p>
+                <span className="text-red-400 inline-block translate-y-1/4 px-2 transform font-bold text-2xl">
+                  *
+                </span>
+                {t("Meta Tag Title")}
+              </p>
+              <Input className="col-span-7" />
+              <p>{t("Meta Tag Description")}</p>
+              <Textarea
+                className="col-span-7"
+                placeholder={t("Meta Tag Description")}
+              />
+              <p>{t("Meta Tag Keywords")}</p>
+              <Textarea
+                className="col-span-7"
+                placeholder={t("Meta Tag Keywords")}
+              />
+            </>
+          </div>
         </div>
       ),
     },
@@ -120,70 +107,39 @@ const EditCategory = () => {
       name: t("Data"),
       comp: (
         <div className="flex flex-col gap-4">
-          <SimpleTabs>
-            <div className="flex items-center">
-              <SimpleTabHead>
-                {mapArray(
-                  ["US", "FR", "GE", "ES"] as FlagIconCode[],
-                  (v, i) => (
-                    <div
-                      className={`${
-                        i === 0 ? "border-2 border-gray-300 border-b-white" : ""
-                      } px-8 py-2`}
-                      key={i}
-                    >
-                      <FlagIcon code={v} />
-                    </div>
-                  )
-                )}
-              </SimpleTabHead>
-            </div>
-          </SimpleTabs>
           <div className="grid grid-cols-8 gap-16">
-            <Formik initialValues={{}} onSubmit={() => {}}>
-              {({ values, setFieldValue }) => (
-                <>
-                  <p className="font-bold">{t("Parant")}</p>
-                  <Select
-                    className="col-span-7"
-                    placeholder={t("Parent")}
-                  ></Select>
-                  <p className="font-bold">{t("Image")}</p>
-                  <div className="border-2 w-48 col-span-7 px-1 pt-1 pb-4 flex flex-col gap-2">
-                    <AspectRatioImage
-                      ratio={1}
-                      alt="image"
-                      src={"/profile (3).jfif"}
-                    />
-                    <div className="grid grid-cols-2 gap-2">
-                      <FileInput
-                        innerProps={{
-                          onChange: (e) =>
-                            setFieldValue("image", e.target.files[0]),
-                        }}
-                        accept="picture"
-                      >
-                        <div className="w-full px-4 py-2 text-white cursor-pointer rounded-md bg-primary items-center flex gap-1">
-                          <EditIcon />
-                          <p>{t("Edit")}</p>
-                        </div>
-                      </FileInput>
-                      <Button
-                        className="flex w-full items-center gap-1"
-                        colorScheme="danger"
-                      >
-                        <TrashIcon />
-                        <p>{t("Clear")}</p>
-                      </Button>
+            <>
+              <p className="font-bold">{t("Image")}</p>
+              <div className="border-2 w-48 col-span-7 px-1 pt-1 pb-4 flex flex-col gap-2">
+                <AspectRatioImage
+                  ratio={1}
+                  alt="image"
+                  src={"/profile (3).jfif"}
+                />
+                <div className="grid grid-cols-2 gap-2">
+                  <FileInput innerProps={{}} accept="picture">
+                    <div className="w-full px-4 py-2 text-white cursor-pointer rounded-md bg-primary items-center flex gap-1">
+                      <EditIcon />
+                      <p>{t("Edit")}</p>
                     </div>
-                  </div>
-                  <p className="font-bold">{t("Sort Order")}</p>
-                  <Input className="col-span-7" placeholder={t("Sort Order")} />
-                  <p className="font-bold">{t("Status")}</p>
-                  <Input className="col-span-7" placeholder={t("Status")} />
-                </>
-              )}
-            </Formik>
+                  </FileInput>
+                  <Button
+                    className="flex w-full items-center gap-1"
+                    colorScheme="danger"
+                  >
+                    <TrashIcon />
+                    <p>{t("Clear")}</p>
+                  </Button>
+                </div>
+              </div>
+              <p className="font-bold">{t("Sort Order")}</p>
+              <Input className="col-span-7" placeholder={t("Sort Order")} />
+              <p className="font-bold">{t("Status")}</p>
+              <Select className="col-span-7" placeholder={t("Status")}>
+                <SelectOption value={"active"}>{t("Active")}</SelectOption>
+                <SelectOption value={"inActive"}>{t("InActive")}</SelectOption>
+              </Select>
+            </>
           </div>
         </div>
       ),
@@ -244,26 +200,53 @@ const EditCategory = () => {
           <p className="font-semibold">{t("Edit Category")}</p>
         </div>
         <Divider style={{ marginTop: "1rem", marginBottom: "1rem" }} />
-        <div className="px-4 flex flex-col gap-8 w-full">
-          <SimpleTabs>
-            <div className="flex border-b text-xl">
+        <FormTranslationWrapper onLangChange={setLang} lang={lang}>
+          <div className="px-4 flex flex-col gap-8 w-full">
+            <SimpleTabs>
               <SimpleTabHead>
-                {mapArray(tabs, ({ name }, i) => (
-                  <div
-                    className={`${
-                      i === 3 ? "border-b-white" : ""
-                    } border px-8 py-2`}
-                  >
-                    {name}
-                  </div>
-                ))}
+                {mapArray(
+                  ["GB", "FR", "DE", "ES"] as FlagIconCode[],
+                  (v, i) =>
+                    ({ onClick, selected }) =>
+                      (
+                        <div
+                          key={i}
+                          onClick={() => {
+                            onClick();
+                            setLang(v);
+                          }}
+                          className={`${
+                            selected
+                              ? "border-2 border-gray-300 border-b-white"
+                              : ""
+                          } px-8 py-2`}
+                        >
+                          <FlagIcon code={v} />
+                        </div>
+                      )
+                )}
               </SimpleTabHead>
-            </div>
-            <SimpleTabItemList>
-              {mapArray(tabs, ({ comp }, i) => runIfFn(comp, { key: i }))}
-            </SimpleTabItemList>
-          </SimpleTabs>
-        </div>
+            </SimpleTabs>
+            <SimpleTabs>
+              <div className="flex border-b text-xl">
+                <SimpleTabHead>
+                  {mapArray(tabs, ({ name }, i) => (
+                    <div
+                      className={`${
+                        i === 3 ? "border-b-white" : ""
+                      } border px-8 py-2`}
+                    >
+                      {name}
+                    </div>
+                  ))}
+                </SimpleTabHead>
+              </div>
+              <SimpleTabItemList>
+                {mapArray(tabs, ({ comp }, i) => runIfFn(comp, { key: i }))}
+              </SimpleTabItemList>
+            </SimpleTabs>
+          </div>
+        </FormTranslationWrapper>
       </div>
     </div>
   );

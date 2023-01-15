@@ -175,7 +175,10 @@ export const SellerProfileStartupView: React.FC = ({}) => {
               <StepperFormHandler handlerKey="servicePolicies">
                 {({ validate }) => (
                   <>
-                    <ServicePoliciesSection />
+                    <ServicePoliciesSection
+                      title={t("Service Policies")}
+                      policies={[]}
+                    />
                   </>
                 )}
               </StepperFormHandler>

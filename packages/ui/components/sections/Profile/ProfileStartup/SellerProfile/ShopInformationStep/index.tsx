@@ -18,8 +18,10 @@ import {
   Button,
   PlusIcon,
   MediaUploadModal,
+  useGetServiceCategoriesQuery,
 } from "@UI";
 import { useReactPubsub } from "react-pubsub";
+import { useTypedReactPubsub } from "@libs";
 
 let countriesArray = Country.getAllCountries().map((element) => ({
   value: element.isoCode,
@@ -34,14 +36,14 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({
   onChange,
 }) => {
   const { t } = useTranslation();
-  const { emit } = useReactPubsub((events) => events.openFileUploadModal);
+  const { emit } = useTypedReactPubsub((events) => events.openFileUploadModal);
   let [states, setState] = React.useState([
     { value: "", label: t("Select_country_first!", "Select country first!") },
   ]);
   let [cities, setCities] = React.useState([
     { value: "", label: t("Select_state_first!", "Select state first!") },
   ]);
-
+  const { data: categories } = useGetServiceCategoriesQuery();
   let [countryCode, setCountryCode] = React.useState("");
   let [stateCode, setStateCode] = React.useState("");
   function handleCountryChange(value: any) {
@@ -232,22 +234,11 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({
                       }
                       placeholder={t("Choose Service Type")}
                     >
-                      <SelectOption value="holiday_rentals">
-                        {t("Holiday Rentals")}
-                      </SelectOption>
-                      <SelectOption value="hotel">{t("Hotel")}</SelectOption>
-                      <SelectOption value="restaurant">
-                        {t("Restaurant")}
-                      </SelectOption>
-                      <SelectOption value="health_center">
-                        {t("Health Center")}
-                      </SelectOption>
-                      <SelectOption value="beauty_center">
-                        {t("Beauty Center")}
-                      </SelectOption>
-                      <SelectOption value="Vehicle_center">
-                        {t("Vehicle Center")}
-                      </SelectOption>
+                      {categories?.map(({ slug, name }, i) => (
+                        <SelectOption key={i} value={slug}>
+                          {name}
+                        </SelectOption>
+                      ))}
                     </Select>
                   ) : null}
                   <Textarea

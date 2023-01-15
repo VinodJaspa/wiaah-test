@@ -34,9 +34,7 @@ const MasterLayout: React.FC<MasterLayoutProps> = ({
 }) => {
   let voucher;
   const { t } = useTranslation();
-  const setCheckoutAddress = useSetRecoilState(UserAddressesState);
   const setVoucher = useSetRecoilState(VoucherState);
-  const setProducts = useSetRecoilState(CheckoutProductsState);
   useEffect(() => {
     setVoucher(voucher);
   }, []);

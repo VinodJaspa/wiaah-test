@@ -3,7 +3,7 @@ import React from "react";
 import { PostAttachment } from "types/market/Social";
 import { HashTagCard } from "@UI";
 import { getMountedComponent } from "@UI/components/helpers/test/getMountedComponent";
-import { hashtagCardInfoPlaceholder } placeholder;
+import { hashtagCardInfoPlaceholder } from "placeholder";
 const selectors = {
   postAttachment: "[data-testid='PostAttachment']",
   viewPostBtn: "[data-testid='ViewPostBtn']",
