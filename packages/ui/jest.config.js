@@ -19,7 +19,7 @@ module.exports = {
     "@const": ["constants"],
     "^@src/(.+)$/*": ["src/*"],
     "@UI": ["."],
-    "^@UI/(.+)$/*": ["./*"],
+    "^@UI/(.+)$": ["./$1"],
   },
   coverageDirectory: "../coverage",
   testEnvironment: "node",

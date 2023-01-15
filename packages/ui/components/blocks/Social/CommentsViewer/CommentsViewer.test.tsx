@@ -1,7 +1,7 @@
 import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import React from "react";
 import { CommentsViewer } from "@UI";
-import { PostCardPlaceHolder } from "@UI/placeholder";
+import { PostCardPlaceHolder } placeholder;
 import { getMountedComponent } from "@UI/components/helpers/test/getMountedComponent";
 import { RecoilRoot } from "recoil";
 const selectors = {

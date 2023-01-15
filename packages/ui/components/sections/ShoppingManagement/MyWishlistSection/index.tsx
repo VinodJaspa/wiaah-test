@@ -13,7 +13,7 @@ import {
   TableContainer,
   usePaginationControls,
 } from "@UI";
-import { getRandomImage } from "@UI/placeholder";
+import { getRandomImage } placeholder;
 import { HiShoppingCart } from "react-icons/hi";
 import { randomNum } from "../../../helpers";
 import { IoTrash } from "react-icons/io5";
@@ -99,7 +99,7 @@ type MyWishlistItemData = {
 
 const wishlistItems: MyWishlistItemData[] = [...Array(15)].map((_, i) => ({
   id: `${randomNum(1000000)}`,
-  productImage: getRandomImage(),
+  productImage: "",
   productName: `product ${i}`,
   info: "info",
   stock: randomNum(200),

@@ -5,7 +5,7 @@ import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
 import { useStory, useStorySeenBy } from "@src/Hooks";
 import { Button } from "@chakra-ui/react";
 import { useSetRecoilState } from "recoil";
-import { PostCardPlaceHolder } from "@UI/placeholder";
+import { PostCardPlaceHolder } placeholder;
 import { SocialStoryState } from "@src/state";
 export default {
   title: "UI/blocks/Social/SocialStoriesModal",

@@ -46,6 +46,18 @@ module.exports = {
     "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga|jfif)$":
       "<rootDir>/__mocks__/fileMock.js",
+    "@UI": ["<rootDir>/packages/ui"],
+    "^@UI/(.+)$": ["<rootDir>/packages/ui/$1"],
+    "@partials": ["<rootDir>/packages/ui/components/partials"],
+    "@blocks": ["<rootDir>/packages/ui/components/blocks"],
+    "^@blocks/(.+)$": ["<rootDir>/packages/ui/components/blocks/$1"],
+    "^@sections/(.+)$": ["<rootDir>/packages/ui/components/sections/$1"],
+    "^@features/(.+)$": ["<rootDir>/packages/ui/components/features/$1"],
+    "@sections": ["<rootDir>/packages/ui/components/sections"],
+    "@features": ["<rootDir>/packages/ui/components/features"],
+    "@libs": ["<rootDir>/packages/ui/libs"],
+    "@const": ["<rootDir>/packages/ui/constants"],
+    "^@src/(.+)$": ["<rootDir>/packages/ui/src/$1"],
   },
   transform: {
     "^.+\\.(ts|tsx)?$": "ts-jest",
