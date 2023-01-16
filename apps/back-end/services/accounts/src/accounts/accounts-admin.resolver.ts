@@ -17,10 +17,7 @@ import { DeclineSellerAccountRequest } from './dto/declineSellerAccountRequest.i
 import { GetAccountDeletionRequestsInput } from './dto/get-account-deletion-requests.input';
 import { GetBuyersAccountsInput } from './dto/get-buyers-accounts.input';
 import { GetFilteredSellersAccountsInput } from './dto/get-sellers-accounts.input';
-import {
-  UpdateAccountInput,
-  UpdateSellerAccountAdminInput,
-} from './dto/update-account.input';
+import { UpdateSellerAccountAdminInput } from './dto/update-account.input';
 import { AccountDeletionRequest } from './entities/account-deletion-request.entity';
 import { Account } from './entities/account.entity';
 import {
@@ -56,7 +53,7 @@ export class AccountsAdminResolver {
     return this.accountsService.updateUnprotected(input, input.id);
   }
 
-  @Mutation(() => Account)
+  @Query(() => Account)
   adminGetAccount(@Args('id') id: string) {
     return this.accountsService.findOne(id);
   }

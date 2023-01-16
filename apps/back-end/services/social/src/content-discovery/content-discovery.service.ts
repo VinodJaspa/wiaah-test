@@ -11,8 +11,8 @@ export type ContentData = Comment | NewsfeedPost;
 export class ContentDiscoveryService {
   constructor(
     private readonly newsfeedPostsService: NewsfeedPostsService,
-    private readonly commentsService: CommentsService,
-  ) {}
+  ) // private readonly commentsService: CommentsService,
+  {}
 
   async getContent(
     type: ContentHostType,
@@ -23,7 +23,7 @@ export class ContentDiscoveryService {
         console.log('found newsfeed');
         return this.newsfeedPostsService.getNewsfeedPostById(contentId);
       case 'comment':
-        return this.commentsService.getCommentById(contentId);
+      // return this.commentsService.getCommentById(contentId);
 
       default:
         throw new ContentNotFoundException();

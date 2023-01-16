@@ -33,20 +33,16 @@ import { ServicePostModule } from './service-post/service-post.module';
     ProfileModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
-      autoSchemaFile: true,
+      autoSchemaFile: 'schema.graphql',
       context({ req, res }) {
         const user = getUserFromRequest(req);
         return { req, res, user };
       },
     }),
-    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
-      driver: ApolloFederationDriver,
-      path: 'admin',
-      include: [ProfileAdminModule, NewsfeedPostsAdminModule],
-      autoSchemaFile: true,
-    }),
     NewsfeedPostsModule,
-    CommentsModule,
+    ProfileAdminModule,
+    NewsfeedPostsAdminModule,
+    // CommentsModule,
     ReactionModule,
     ContentDiscoveryModule,
     ContentShareModule,

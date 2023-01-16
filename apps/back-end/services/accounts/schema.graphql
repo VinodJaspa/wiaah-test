@@ -84,6 +84,7 @@ type Query {
   acceptAccountVerification(id: String!): Boolean!
   getFilteredSellers(getSellersInput: GetFilteredSellersAccountsInput!): [Account!]!
   getFilteredBuyers(getBuyersInput: GetBuyersAccountsInput!): [Account!]!
+  adminGetAccount(id: String!): Account!
   getPendingSellers(pagination: GqlPaginationInput!): [Account!]!
   getAccountDeletionRequests(args: GetAccountDeletionRequestsInput!): [AccountDeletionRequest!]!
 }
@@ -139,7 +140,6 @@ type Mutation {
   refuseAccountVerification(args: RefuseAccountVerificationRequest!): Boolean!
   updateUserLocation(updateLocation: UpdateUserLocationInput!): Boolean!
   adminEditAccount(editAccountInput: UpdateSellerAccountAdminInput!): Account!
-  adminGetAccount(id: String!): Account!
   acceptSellerAccount(id: String!): Boolean!
   declineSellerAccount(args: DeclineSellerAccountRequest!): Boolean!
   suspenseAccount: Boolean!
