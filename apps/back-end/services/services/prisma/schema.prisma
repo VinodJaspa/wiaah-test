@@ -25,15 +25,21 @@ type ServiceCategoryFilter {
 }
 
 model ServiceCategory {
-  id              String                  @id @default(auto()) @map("_id") @db.ObjectId
-  createdByUserId String
-  name            TranslationText[]
-  createdAt       DateTime                @default(now())
-  updatedAt       DateTime                @updatedAt()
-  filters         ServiceCategoryFilter[]
-  status          ServiceCategoryStatus   @default(active)
-  sortOrder       Int                     @default(1)
-  slug            String                  @unique
+  id                 String                  @id @default(auto()) @map("_id") @db.ObjectId
+  createdByUserId    String
+  name               TranslationText[]
+  description        TranslationText[]
+  metaTagDescription TranslationText[]
+  metaTagTitle       TranslationText[]
+  metaTagKeywords    TranslationText[]
+  seo                TranslationText[]
+  thumbnail          String
+  createdAt          DateTime                @default(now())
+  updatedAt          DateTime                @updatedAt()
+  filters            ServiceCategoryFilter[]
+  status             ServiceCategoryStatus   @default(active)
+  sortOrder          Int                     @default(1)
+  slug               String                  @unique
 }
 
 enum ServiceCategoryStatus {

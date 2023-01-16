@@ -16,14 +16,14 @@ export function getTranslationStateValue<TValue extends Record<string, any>>(
   return values?.[key]?.[lang] || "";
 }
 
-export function setTranslationStateValue<TValue>(
+export function setTranslationStateValue<TValue, TKey extends keyof TValue>(
   values: TValue,
-  key: keyof TValue,
+  key: TKey,
   value: any,
   lang: string
-) {
+): TValue[TKey] {
   return {
-    ...(values?.[key] || {}),
+    ...(values?.[key] || ({} as TValue[TKey])),
     [lang]: value,
   };
 }

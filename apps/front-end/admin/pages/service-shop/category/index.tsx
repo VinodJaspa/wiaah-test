@@ -28,7 +28,7 @@ export default () => {
   const { data: categories } = useGetServiceCategoriesQuery();
 
   React.useEffect(() => {
-    changeTotalItems(categories.length);
+    changeTotalItems(categories?.length);
   }, [categories]);
 
   return (

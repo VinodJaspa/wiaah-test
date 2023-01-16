@@ -41,26 +41,6 @@ export class AccountsResolver {
     private readonly eventbus: EventBus,
   ) {}
 
-  @Query(() => [Account])
-  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
-  getSellers(@Args('getSellersInput') args: GetSellersAccountsInput) {
-    return this.accountsService.findAll(args, accountType.SELLER);
-  }
-
-  @Query(() => [Account])
-  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
-  getBuyers(@Args('getBuyersInput') args: GetBuyersAccountsInput) {
-    return this.accountsService.findAll(args, accountType.BUYER);
-  }
-
-  @Mutation(() => Account)
-  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
-  adminEditAccount(
-    @Args('editAccountInput') input: UpdateAccountInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    return this.accountsService.updateUnprotected(input, user.id);
-  }
   @Mutation(() => String)
   async register(
     @Args('RegisterInput')

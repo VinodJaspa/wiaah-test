@@ -19,36 +19,6 @@ export type Scalars = {
   DateTime: any;
 };
 
-export type ServiceCategoryFilterValue = {
-  __typename?: "ServiceCategoryFilterValue";
-  name: Scalars["String"];
-  filteringValue: Scalars["String"];
-  sortOrder: Scalars["Int"];
-};
-
-export type ServiceCategoryFilter = {
-  __typename?: "ServiceCategoryFilter";
-  filterGroupName: Scalars["String"];
-  filteringKey: Scalars["String"];
-  sortOrder: Scalars["Int"];
-  filterValues: Array<ServiceCategoryFilterValue>;
-};
-
-export type Category = {
-  __typename?: "Category";
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  sortOrder: Scalars["Int"];
-  status: ServiceCategoryStatus;
-  slug: Scalars["String"];
-  filters: Array<ServiceCategoryFilter>;
-};
-
-export enum ServiceCategoryStatus {
-  Active = "active",
-  InActive = "inActive",
-}
-
 export type ServicePresentation = {
   __typename?: "ServicePresentation";
   type: ServicePresentationType;
@@ -114,6 +84,12 @@ export type ServicePropertyMeasurements = {
   __typename?: "ServicePropertyMeasurements";
   inFeet: Scalars["Int"];
   inMeter: Scalars["Int"];
+};
+
+export type TranslationText = {
+  __typename?: "TranslationText";
+  langId: Scalars["String"];
+  value: Scalars["String"];
 };
 
 export type ServiceLocation = {
@@ -207,6 +183,42 @@ export type Hotel = {
   contact: ServiceContact;
   workingHours?: Maybe<WorkingSchedule>;
 };
+
+export type ServiceCategoryFilterValue = {
+  __typename?: "ServiceCategoryFilterValue";
+  name: Scalars["String"];
+  filteringValue: Scalars["String"];
+  sortOrder: Scalars["Int"];
+};
+
+export type ServiceCategoryFilter = {
+  __typename?: "ServiceCategoryFilter";
+  filterGroupName: Scalars["String"];
+  filteringKey: Scalars["String"];
+  sortOrder: Scalars["Int"];
+  filterValues: Array<ServiceCategoryFilterValue>;
+};
+
+export type Category = {
+  __typename?: "Category";
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  sortOrder: Scalars["Int"];
+  status: ServiceCategoryStatus;
+  slug: Scalars["String"];
+  filters: Array<ServiceCategoryFilter>;
+  thumbnail: Scalars["String"];
+  description: TranslationText;
+  metaTagDescription: TranslationText;
+  metaTagTitle: TranslationText;
+  metaTagKeywords: TranslationText;
+  seo: TranslationText;
+};
+
+export enum ServiceCategoryStatus {
+  Active = "active",
+  InActive = "inActive",
+}
 
 export type RestaurantMenu = {
   __typename?: "RestaurantMenu";
@@ -466,6 +478,7 @@ export type Query = {
   getServiceInsuranceHistory: Array<Insurance>;
   getFilteredServices: Array<ServiceDiscovery>;
   getServiceCategoryById: Category;
+  getServiceCategoryBySlug: Category;
   getServiceCategories: Array<Category>;
   getFilteredServiceCategories: Array<Category>;
   getHotels: Array<Hotel>;
@@ -503,6 +516,10 @@ export type QueryGetFilteredServicesArgs = {
 
 export type QueryGetServiceCategoryByIdArgs = {
   categoryId: Scalars["String"];
+};
+
+export type QueryGetServiceCategoryBySlugArgs = {
+  slug: Scalars["String"];
 };
 
 export type QueryGetFilteredServiceCategoriesArgs = {
@@ -890,6 +907,12 @@ export type CreateCategoryInput = {
   name: Array<TranslationTextInput>;
   filters: Array<ServiceCategoryFilterInput>;
   slug: Scalars["String"];
+  thumbnail: Scalars["String"];
+  description: TranslationTextInput;
+  metaTagDescription: TranslationTextInput;
+  metaTagTitle: TranslationTextInput;
+  metaTagKeywords: TranslationTextInput;
+  seo: TranslationTextInput;
 };
 
 export type ServiceCategoryFilterInput = {
@@ -909,6 +932,12 @@ export type UpdateCategoryInput = {
   name?: Maybe<Array<TranslationTextInput>>;
   filters?: Maybe<Array<ServiceCategoryFilterInput>>;
   slug?: Maybe<Scalars["String"]>;
+  thumbnail?: Maybe<Scalars["String"]>;
+  description?: Maybe<TranslationTextInput>;
+  metaTagDescription?: Maybe<TranslationTextInput>;
+  metaTagTitle?: Maybe<TranslationTextInput>;
+  metaTagKeywords?: Maybe<TranslationTextInput>;
+  seo?: Maybe<TranslationTextInput>;
   id: Scalars["String"];
 };
 

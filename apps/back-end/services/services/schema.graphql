@@ -12,33 +12,6 @@ directive @requires(fields: String!) on FIELD_DEFINITION
 
 directive @provides(fields: String!) on FIELD_DEFINITION
 
-type ServiceCategoryFilterValue {
-  name: String!
-  filteringValue: String!
-  sortOrder: Int!
-}
-
-type ServiceCategoryFilter {
-  filterGroupName: String!
-  filteringKey: String!
-  sortOrder: Int!
-  filterValues: [ServiceCategoryFilterValue!]!
-}
-
-type Category {
-  id: ID!
-  name: String!
-  sortOrder: Int!
-  status: ServiceCategoryStatus!
-  slug: String!
-  filters: [ServiceCategoryFilter!]!
-}
-
-enum ServiceCategoryStatus {
-  active
-  inActive
-}
-
 type ServicePresentation {
   type: ServicePresentationType!
   src: String!
@@ -95,6 +68,11 @@ type ServiceExtra {
 type ServicePropertyMeasurements {
   inFeet: Int!
   inMeter: Int!
+}
+
+type TranslationText {
+  langId: String!
+  value: String!
 }
 
 type ServiceLocation {
@@ -184,6 +162,39 @@ type Hotel {
   rooms: [HotelRoom!]!
   contact: ServiceContact!
   workingHours: WorkingSchedule
+}
+
+type ServiceCategoryFilterValue {
+  name: String!
+  filteringValue: String!
+  sortOrder: Int!
+}
+
+type ServiceCategoryFilter {
+  filterGroupName: String!
+  filteringKey: String!
+  sortOrder: Int!
+  filterValues: [ServiceCategoryFilterValue!]!
+}
+
+type Category {
+  id: ID!
+  name: String!
+  sortOrder: Int!
+  status: ServiceCategoryStatus!
+  slug: String!
+  filters: [ServiceCategoryFilter!]!
+  thumbnail: String!
+  description: TranslationText!
+  metaTagDescription: TranslationText!
+  metaTagTitle: TranslationText!
+  metaTagKeywords: TranslationText!
+  seo: TranslationText!
+}
+
+enum ServiceCategoryStatus {
+  active
+  inActive
 }
 
 type RestaurantMenu {
@@ -688,6 +699,12 @@ input CreateCategoryInput {
   name: [TranslationTextInput!]!
   filters: [ServiceCategoryFilterInput!]!
   slug: String!
+  thumbnail: String!
+  description: TranslationTextInput!
+  metaTagDescription: TranslationTextInput!
+  metaTagTitle: TranslationTextInput!
+  metaTagKeywords: TranslationTextInput!
+  seo: TranslationTextInput!
 }
 
 input ServiceCategoryFilterInput {
@@ -707,6 +724,12 @@ input UpdateCategoryInput {
   name: [TranslationTextInput!]
   filters: [ServiceCategoryFilterInput!]
   slug: String
+  thumbnail: String
+  description: TranslationTextInput
+  metaTagDescription: TranslationTextInput
+  metaTagTitle: TranslationTextInput
+  metaTagKeywords: TranslationTextInput
+  seo: TranslationTextInput
   id: String!
 }
 

@@ -77,7 +77,7 @@ const sellers: NextPage = () => {
   const { visit, getCurrentPath, getUrl } = useRouting();
   const [qrcode, setQrCode] = React.useState<string>();
   const { changeTotalItems, controls, pagination } = usePaginationControls();
-  console.log(qrcode);
+
   return (
     <TableContainer>
       <Table

@@ -38,6 +38,10 @@ import {
   MinusIcon,
   useGetServiceCategory,
   FormTranslationWrapper,
+  getTranslationStateValue,
+  setTranslationStateValue,
+  ServiceCategoryFilterInput,
+  useFormTranslationWrapper,
 } from "ui";
 import {
   mapArray,
@@ -47,13 +51,13 @@ import {
 } from "utils";
 import { array, InferType, number, object, string } from "yup";
 import {
-  UpdateCategoryInput,
   ServiceCategoryFilter,
+  UpdateCategoryInput,
 } from "@features/Services/Services/types";
 import { useUpdateServiceCategory } from "@features/Services/Services/mutation";
 
 const EditCategory = () => {
-  const { getParam } = useRouting();
+  const { getParam, back } = useRouting();
   const CategoryId: string = getParam("category_id");
   const { t } = useTranslation();
   const { data } = useGetServiceCategory(CategoryId);
@@ -78,7 +82,21 @@ const EditCategory = () => {
                 </span>
                 {t("Category Name")}
               </p>
-              <Input className="col-span-7" />
+              <Input
+                value={getTranslationStateValue(form, "name", lang)}
+                onChange={(e) =>
+                  setForm((old) => ({
+                    ...old,
+                    name: setTranslationStateValue(
+                      form,
+                      "name",
+                      e.target.value,
+                      lang
+                    ),
+                  }))
+                }
+                className="col-span-7"
+              />
               <p>{t("Description")}</p>
               <Textarea className="col-span-7" />
               <p>
@@ -176,7 +194,12 @@ const EditCategory = () => {
     },
     {
       name: t("Filters"),
-      comp: <ServiceCategoryFilterView />,
+      comp: (
+        <ServiceCategoryFilterView
+          value={form?.filters || []}
+          onChange={(e) => setForm((v) => ({ ...v, filters: e }))}
+        />
+      ),
     },
   ];
 
@@ -185,10 +208,10 @@ const EditCategory = () => {
       <div className="flex justify-between w-full items-center">
         <p className="font-bold text-xl">{t("Categories")}</p>
         <div className="flex items-center fill-white h-12 gap-1">
-          <Button className="w-12 h-full">
+          <Button onClick={handleSave} className="w-12 h-full">
             <SaveIcon />
           </Button>
-          <Button className="w-12 h-full">
+          <Button onClick={back} className="w-12 h-full">
             <ArrowRoundBack />
           </Button>
         </div>
@@ -203,29 +226,31 @@ const EditCategory = () => {
         <FormTranslationWrapper onLangChange={setLang} lang={lang}>
           <div className="px-4 flex flex-col gap-8 w-full">
             <SimpleTabs>
-              <SimpleTabHead>
-                {mapArray(
-                  ["GB", "FR", "DE", "ES"] as FlagIconCode[],
-                  (v, i) =>
-                    ({ onClick, selected }) =>
-                      (
-                        <div
-                          key={i}
-                          onClick={() => {
-                            onClick();
-                            setLang(v);
-                          }}
-                          className={`${
-                            selected
-                              ? "border-2 border-gray-300 border-b-white"
-                              : ""
-                          } px-8 py-2`}
-                        >
-                          <FlagIcon code={v} />
-                        </div>
-                      )
-                )}
-              </SimpleTabHead>
+              <div className="flex items-center gap-4">
+                <SimpleTabHead>
+                  {mapArray(
+                    ["GB", "FR", "DE", "ES"] as FlagIconCode[],
+                    (v, i) =>
+                      ({ onClick, selected }) =>
+                        (
+                          <div
+                            key={i}
+                            onClick={() => {
+                              onClick();
+                              setLang(v);
+                            }}
+                            className={`${
+                              selected
+                                ? "border-2 border-gray-300 border-b-white"
+                                : ""
+                            } px-8 py-2`}
+                          >
+                            <FlagIcon code={v} />
+                          </div>
+                        )
+                  )}
+                </SimpleTabHead>
+              </div>
             </SimpleTabs>
             <SimpleTabs>
               <div className="flex border-b text-xl">
@@ -266,16 +291,23 @@ const FilterValuesValidationSchema = object({
     .required(),
 }).required();
 
-const ServiceCategoryFilterView: React.FC = () => {
+const ServiceCategoryFilterView: React.FC<{
+  value: ServiceCategoryFilterInput[];
+  onChange: (updated: ServiceCategoryFilterInput[]) => any;
+}> = ({ onChange, value }) => {
   const { t } = useTranslation();
-  const { visit, getCurrentPath } = useRouting();
+  const { visit, getCurrentPath, back } = useRouting();
 
   const [filterGroupAsc, setFilterGroupAsc] = React.useState<boolean>(false);
   const [EditId, setEditId] = React.useState<string>();
-
+  const [lang, setLang] = React.useState<string>("en");
+  const { lang: ctxLang } = useFormTranslationWrapper();
   const filterId = EditId;
-
+  const filter = value.find((v) => (v.filteringKey = filterId));
   const edit = typeof EditId === "string";
+
+  function handleChange() {}
+
   function handleEdit(id: string) {
     setEditId(id);
   }
@@ -284,25 +316,16 @@ const ServiceCategoryFilterView: React.FC = () => {
     setEditId(undefined);
   }
 
-  const filterGroups: {
-    name: string;
-    sortOrder: number;
-    id: string;
-  }[] = [...Array(10)].map((_, i) => ({
-    name: `filter-${i}`,
-    id: i.toString(),
-    sortOrder: randomNum(5),
-  }));
-
   return edit ? (
     <div className="flex flex-col gap-8">
       <div className="flex justify-between items-center">
         <p className="text-xl">{t("Filters")}</p>
         <div className="text-lg items-stretch h-12 gap-1 flex">
-          <Button className="fill-white">
-            <SaveIcon />
-          </Button>
-          <Button className="text-black" colorScheme="white">
+          <Button
+            onClick={handleCancelEdit}
+            className="text-black"
+            colorScheme="white"
+          >
             <ArrowRoundBack />
           </Button>
         </div>
@@ -326,7 +349,7 @@ const ServiceCategoryFilterView: React.FC = () => {
             </p>
             <InputGroup className="col-span-7 h-fit">
               <InputLeftElement className="px-[0px]">
-                <Select className="h-full">
+                <Select onOptionSelect={(v) => setLang(v)} className="h-full">
                   {mapArray(WiaahLanguageCountriesIsoCodes, (code, i) => (
                     <SelectOption className="h-full" value={code} key={i}>
                       <FlagIcon code={code} />
@@ -334,7 +357,24 @@ const ServiceCategoryFilterView: React.FC = () => {
                   ))}
                 </Select>
               </InputLeftElement>
-              <Input />
+              <Input
+                onChange={(v) => {
+                  onChange([
+                    ...value.filter(
+                      (v) => v.filteringKey !== filter.filteringKey
+                    ),
+                    {
+                      ...filter,
+                      filterGroupName: setTranslationStateValue(
+                        filter,
+                        "filterGroupName",
+                        v.target.value,
+                        lang
+                      ),
+                    },
+                  ]);
+                }}
+              />
             </InputGroup>
             <p className="font-bold text-xl text-right">{t("Sort Order")}</p>
             <Input className="col-span-7 h-12" type={"number"} />
@@ -504,19 +544,25 @@ const ServiceCategoryFilterView: React.FC = () => {
             <Th>{t("Action")}</Th>
           </THead>
           <TBody>
-            {mapArray(filterGroups, ({ id, name, sortOrder }) => (
+            {mapArray(value, ({ sortOrder, filteringKey, ...rest }) => (
               <Tr>
                 <Td className="w-full">
                   <div className="flex gap-2">
                     <Checkbox className="inline-block" />
-                    <p>{name}</p>
+                    <p>
+                      {getTranslationStateValue(
+                        rest,
+                        "filterGroupName",
+                        ctxLang
+                      )}
+                    </p>
                   </div>
                 </Td>
                 <Td>{sortOrder}</Td>
                 <Td>
                   <div className="w-fit h-12 text-lg flex items-stretch gap-1">
                     <Button>
-                      <EditIcon onClick={() => handleEdit(id)} />
+                      <EditIcon onClick={() => handleEdit(filteringKey)} />
                     </Button>
                     <Button colorScheme="danger">
                       <TrashIcon />

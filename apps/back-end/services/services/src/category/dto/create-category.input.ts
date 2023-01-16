@@ -38,4 +38,22 @@ export class CreateCategoryInput {
 
   @Field(() => String)
   slug: string;
+
+  @Field(() => String)
+  thumbnail: string;
+
+  @Field(() => TranslationTextInput)
+  description: TranslationTextInput;
+
+  @Field(() => TranslationTextInput)
+  metaTagDescription: TranslationTextInput;
+
+  @Field(() => TranslationTextInput)
+  metaTagTitle: TranslationTextInput;
+
+  @Field(() => TranslationTextInput)
+  metaTagKeywords: TranslationTextInput;
+
+  @Field(() => TranslationTextInput)
+  seo: TranslationTextInput;
 }
