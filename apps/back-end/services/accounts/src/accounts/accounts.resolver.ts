@@ -20,7 +20,7 @@ import { AccountsService } from './accounts.service';
 import {
   CreateAccountInput,
   GetBuyersAccountsInput,
-  GetSellersAccountsInput,
+  GetFilteredSellersAccountsInput,
 } from '@accounts/dto';
 import { UpdateAccountInput } from './dto/update-account.input';
 import { Account } from './entities';

@@ -16,8 +16,11 @@ import { AccountsService } from './accounts.service';
 import { DeclineSellerAccountRequest } from './dto/declineSellerAccountRequest.input';
 import { GetAccountDeletionRequestsInput } from './dto/get-account-deletion-requests.input';
 import { GetBuyersAccountsInput } from './dto/get-buyers-accounts.input';
-import { GetSellersAccountsInput } from './dto/get-sellers-accounts.input';
-import { UpdateAccountInput } from './dto/update-account.input';
+import { GetFilteredSellersAccountsInput } from './dto/get-sellers-accounts.input';
+import {
+  UpdateAccountInput,
+  UpdateSellerAccountAdminInput,
+} from './dto/update-account.input';
 import { AccountDeletionRequest } from './entities/account-deletion-request.entity';
 import { Account } from './entities/account.entity';
 import {
@@ -35,21 +38,27 @@ export class AccountsAdminResolver {
   ) {}
 
   @Query(() => [Account])
-  getSellers(@Args('getSellersInput') args: GetSellersAccountsInput) {
+  getFilteredSellers(
+    @Args('getSellersInput') args: GetFilteredSellersAccountsInput,
+  ) {
     return this.accountsService.findAll(args, accountType.SELLER);
   }
 
   @Query(() => [Account])
-  getBuyers(@Args('getBuyersInput') args: GetBuyersAccountsInput) {
+  getFilteredBuyers(@Args('getBuyersInput') args: GetBuyersAccountsInput) {
     return this.accountsService.findAll(args, accountType.BUYER);
   }
 
   @Mutation(() => Account)
   adminEditAccount(
-    @Args('editAccountInput') input: UpdateAccountInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('editAccountInput') input: UpdateSellerAccountAdminInput,
   ) {
-    return this.accountsService.updateUnprotected(input, user.id);
+    return this.accountsService.updateUnprotected(input, input.id);
+  }
+
+  @Mutation(() => Account)
+  adminGetAccount(@Args('id') id: string) {
+    return this.accountsService.findOne(id);
   }
 
   @Query(() => [Account])

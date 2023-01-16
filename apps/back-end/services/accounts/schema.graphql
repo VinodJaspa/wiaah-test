@@ -82,13 +82,13 @@ type Query {
   requiredAction(id: Int!): RequiredAction!
   getAccountVerificationRequests: [AccountVerification!]!
   acceptAccountVerification(id: String!): Boolean!
-  getSellers(getSellersInput: GetSellersAccountsInput!): [Account!]!
-  getBuyers(getBuyersInput: GetBuyersAccountsInput!): [Account!]!
+  getFilteredSellers(getSellersInput: GetFilteredSellersAccountsInput!): [Account!]!
+  getFilteredBuyers(getBuyersInput: GetBuyersAccountsInput!): [Account!]!
   getPendingSellers(pagination: GqlPaginationInput!): [Account!]!
   getAccountDeletionRequests(args: GetAccountDeletionRequestsInput!): [AccountDeletionRequest!]!
 }
 
-input GetSellersAccountsInput {
+input GetFilteredSellersAccountsInput {
   pagination: GqlPaginationInput!
   name: String
   id: String
@@ -138,7 +138,8 @@ type Mutation {
   requestAccountVerification(args: CreateAccountVerificationInput!): Boolean!
   refuseAccountVerification(args: RefuseAccountVerificationRequest!): Boolean!
   updateUserLocation(updateLocation: UpdateUserLocationInput!): Boolean!
-  adminEditAccount(editAccountInput: UpdateAccountInput!): Account!
+  adminEditAccount(editAccountInput: UpdateSellerAccountAdminInput!): Account!
+  adminGetAccount(id: String!): Account!
   acceptSellerAccount(id: String!): Boolean!
   declineSellerAccount(args: DeclineSellerAccountRequest!): Boolean!
   suspenseAccount: Boolean!
@@ -179,7 +180,7 @@ input UpdateUserLocationInput {
   lon: Float!
 }
 
-input UpdateAccountInput {
+input UpdateSellerAccountAdminInput {
   firstName: String
   lastName: String
   email: String
@@ -187,6 +188,7 @@ input UpdateAccountInput {
   confirmPassword: String
   accountType: RegisterAccountType
   companyRegisterationNumber: String
+  id: ID!
 }
 
 enum RegisterAccountType {
@@ -206,6 +208,16 @@ input CreateAccountInput {
   password: String!
   confirmPassword: String!
   accountType: RegisterAccountType!
+}
+
+input UpdateAccountInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  confirmPassword: String
+  accountType: RegisterAccountType
+  companyRegisterationNumber: String
 }
 
 input CreateIdentityVerificationInput {

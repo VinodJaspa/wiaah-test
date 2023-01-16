@@ -18,7 +18,7 @@ import { PrismaService } from 'prismaService';
 
 import { Account } from './entities';
 import { UpdateAccountInput } from './dto/update-account.input';
-import { GetSellersAccountsInput } from './dto/get-sellers-accounts.input';
+import { GetFilteredSellersAccountsInput } from './dto/get-sellers-accounts.input';
 
 @Injectable()
 export class AccountsService {
@@ -98,7 +98,7 @@ export class AccountsService {
     }
   }
 
-  findAll(args: GetSellersAccountsInput, type: AccountType) {
+  findAll(args: GetFilteredSellersAccountsInput, type: AccountType) {
     const { page, skip, take } = ExtractPagination(args.pagination);
     const filters: Prisma.AccountWhereInput[] = [];
 
