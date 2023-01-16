@@ -2,7 +2,11 @@ import { UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { NoSchemaIntrospectionCustomRule } from 'graphql';
-import { accountType, GqlAuthorizationGuard } from 'nest-utils';
+import {
+  accountType,
+  GqlAuthorizationGuard,
+  GqlPaginationInput,
+} from 'nest-utils';
 import { UpdateAffiliationCommand } from './commands';
 import {
   GetFilteredAffiliationsInput,
@@ -20,8 +24,13 @@ export class AffiliationAdminResolver {
   constructor(private commandbus: CommandBus, private querybus: QueryBus) {}
 
   @Query(() => Affiliation)
-  getUserAffiliations(@Args('id') id: string) {
-    return this.querybus.execute(new GetAffliationsBySellerIdQuery(id));
+  getUserAffiliations(
+    @Args('id') id: string,
+    @Args('pagination') pagination: GqlPaginationInput,
+  ) {
+    return this.querybus.execute(
+      new GetAffliationsBySellerIdQuery(id, pagination),
+    );
   }
 
   @Mutation(() => Boolean)

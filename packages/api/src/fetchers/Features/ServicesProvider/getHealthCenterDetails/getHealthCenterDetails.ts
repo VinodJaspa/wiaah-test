@@ -1,5 +1,9 @@
-import { FormatedSearchableFilter } from "src";
-import { AsyncReturnType } from "types";
+import {
+  createGraphqlRequestClient,
+  FormatedSearchableFilter,
+  ServiceOwnerAccount,
+} from "api";
+import { AsyncReturnType, GqlResponse } from "types";
 import { randomNum } from "utils";
 import {
   HealthCenterDetailtsApiResponseValidationSchema,
@@ -9,224 +13,269 @@ import {
   CheckValidation,
 } from "validation";
 
-export type HealthCenterDetailsType = InferType<
-  typeof HealthCenterDetailsValidationSchema
->;
+type Maybe<T> = T | null;
+type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
+/** All built-in and custom scalars, mapped to their actual values */
+type Scalars = {
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
+};
 
-export type HealthCenterServicePrviderHeaderData = Pick<
-  HealthCenterDetailsType,
-  "name" | "id" | "rating" | "reviewsCount" | "thumbnail"
->;
+export type HealthCenterSpecialty = {
+  __typename?: "HealthCenterSpecialty";
+  id: Scalars["ID"];
+  doctors?: Maybe<Array<HealthCenterDoctor>>;
+  name: Scalars["String"];
+  description: Scalars["String"];
+};
 
-export type HealthCenterDetailsValidationSchema = InferType<
-  typeof HealthCenterDetailtsApiResponseValidationSchema
->;
+export type HealthCenterDoctor = {
+  __typename?: "HealthCenterDoctor";
+  id: Scalars["ID"];
+  healthCenter?: Maybe<HealthCenter>;
+  speciality?: Maybe<HealthCenterSpecialty>;
+  healthCenterId: Scalars["ID"];
+  specialityId: Scalars["ID"];
+  rating: Scalars["Float"];
+  name: Scalars["String"];
+  thumbnail: Scalars["String"];
+  price: Scalars["Float"];
+  description: Scalars["String"];
+  availablityStatus: HealthCenterDoctorAvailablityStatus;
+};
 
-export type HealthCenterDoctorMetaDataType = InferType<
-  typeof HealthCenterDoctorMetaDataValidationSchema
->;
+export enum HealthCenterDoctorAvailablityStatus {
+  Available = "available",
+  Unavailable = "unavailable",
+}
 
-export type GetHealthCenterDetailsApiResponse = AsyncReturnType<
-  typeof getHealthCenterDetailsFetcher
->;
+export type HealthCenter = {
+  __typename?: "HealthCenter";
+  owner?: Maybe<ServiceOwnerAccount>;
+  contact: ServiceContact;
+  id: Scalars["ID"];
+  ownerId: Scalars["ID"];
+  vat: Scalars["Float"];
+  rating: Scalars["Float"];
+  totalReviews: Scalars["Int"];
+  location: ServiceLocation;
+  status: ServiceStatus;
+  presentations: Array<ServicePresentation>;
+  policies: Array<ServicePolicy>;
+  serviceMetaInfo: ServiceMetaInfo;
+  payment_methods: Array<ServicePaymentMethods>;
+  cancelationPolicies: Array<ServiceCancelationPolicy>;
+  doctors: Array<HealthCenterDoctor>;
+  workingHours: WorkingSchedule;
+};
+
+type ServiceDayWorkingHours = {
+  __typename?: "ServiceDayWorkingHours";
+  periods: Array<Scalars["String"]>;
+};
+
+type WeekdaysWorkingHours = {
+  __typename?: "WeekdaysWorkingHours";
+  mo?: Maybe<ServiceDayWorkingHours>;
+  tu?: Maybe<ServiceDayWorkingHours>;
+  we?: Maybe<ServiceDayWorkingHours>;
+  th?: Maybe<ServiceDayWorkingHours>;
+  fr?: Maybe<ServiceDayWorkingHours>;
+  sa?: Maybe<ServiceDayWorkingHours>;
+  su?: Maybe<ServiceDayWorkingHours>;
+};
+
+type WorkingSchedule = {
+  __typename?: "WorkingSchedule";
+  id: Scalars["ID"];
+  weekdays: WeekdaysWorkingHours;
+};
+
+type ServiceContact = {
+  __typename?: "ServiceContact";
+  address: Scalars["String"];
+  country: Scalars["String"];
+  state?: Maybe<Scalars["String"]>;
+  city: Scalars["String"];
+  email: Scalars["String"];
+  phone: Scalars["String"];
+};
+
+type ServiceLocation = {
+  __typename?: "ServiceLocation";
+  address: Scalars["String"];
+  country: Scalars["String"];
+  state: Scalars["String"];
+  city: Scalars["String"];
+  lat: Scalars["Float"];
+  lon: Scalars["Float"];
+  postalCode: Scalars["Int"];
+};
+
+enum ServiceStatus {
+  InActive = "inActive",
+  Active = "active",
+  Suspended = "suspended",
+}
+
+type ServicePresentation = {
+  __typename?: "ServicePresentation";
+  type: ServicePresentationType;
+  src: Scalars["String"];
+};
+
+enum ServicePresentationType {
+  Img = "img",
+  Vid = "vid",
+}
+
+type ServicePolicy = {
+  __typename?: "ServicePolicy";
+  policyTitle: Scalars["String"];
+  terms: Array<Scalars["String"]>;
+};
+
+type ServiceMetaInfo = {
+  __typename?: "ServiceMetaInfo";
+  title: Scalars["String"];
+  description: Scalars["String"];
+  metaTagDescription: Scalars["String"];
+  metaTagKeywords: Array<Scalars["String"]>;
+  hashtags: Array<Scalars["String"]>;
+};
+
+enum ServicePaymentMethods {
+  CreditCard = "credit_card",
+  Visa = "visa",
+  Mastercard = "mastercard",
+  Check = "check",
+  Cash = "cash",
+}
+
+type ServiceCancelationPolicy = {
+  __typename?: "ServiceCancelationPolicy";
+  duration: Scalars["Int"];
+  cost: Scalars["Int"];
+};
 
 export const getHealthCenterDetailsFetcher = async (
   filters: FormatedSearchableFilter
-): Promise<HealthCenterDetailsValidationSchema> => {
-  const data: GetHealthCenterDetailsApiResponse = {
-    data: {
-      deposit: 15,
-      workingDates: [
-        {
-          date: Date.now(),
-          workingHoursRanges: [...Array(2)].map(() => ({
-            from: Date.now(),
-            to: Date.now(),
-          })),
-        },
-        {
-          date: Date.now(),
-          workingHoursRanges: [...Array(1)].map(() => ({
-            from: Date.now(),
-            to: Date.now(),
-          })),
-        },
-        {
-          date: Date.now(),
-          workingHoursRanges: [...Array(2)].map(() => ({
-            from: Date.now(),
-            to: Date.now(),
-          })),
-        },
-        {
-          date: Date.now(),
-          workingHoursRanges: [...Array(1)].map(() => ({
-            from: Date.now(),
-            to: Date.now(),
-          })),
-        },
-        {
-          date: Date.now(),
-          workingHoursRanges: [...Array(2)].map(() => ({
-            from: Date.now(),
-            to: Date.now(),
-          })),
-        },
-      ],
-      policies: [
-        {
-          policyTerms: [
-            "Lorem Ipsum is simply dummy text of the printing and typesetting",
-            "industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley",
-            "survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem",
-            "Ipsum passages, and more recently with desktop publishing",
-            "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of",
-            "packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
-          ],
-          policyTitle: "checkin - checkout terms",
-        },
-      ],
+): Promise<GqlResponse<HealthCenter, "getHealthCenter">> => {
+  const client = createGraphqlRequestClient();
 
-      id: "testid",
-      doctors: [...Array(5)].map(() => ({
-        id: `${randomNum(15136)}`,
-        name: "Dr. med. Norbert Boos",
-        specialty: "Spine surgeon",
-        price: randomNum(100),
-        photo:
-          "https://t3.ftcdn.net/jpg/02/60/04/08/360_F_260040863_fYxB1SnrzgJ9AOkcT0hoe7IEFtsPiHAD.jpg",
-      })),
+  client.setQuery(
+    `
+    query getHealthCenter($id:String!){
+    getHealthCenter(
+        serviceId:$id
+    ){
+        cancelationPolicies {
+            cost
+            duration
+        }
+        contact{
+            address
+            city
+            country
+            email
+            phone
+            state
+        }
+        doctors{
+            availablityStatus
+            description
+            healthCenterId
+            id
+            name
+            price
+            rating
+            speciality{
+                description
+                id
+                name
+            }
+            specialityId
+            thumbnail
+        }
+        id
+        location {
+            address
+            city
+            country
+            lat
+            lon
+            postalCode
+            state
+        }
+        ownerId
+        owner{
+            id
+            firstName
+            lastName
+            email
+            photo
+            verified
+        }
+        payment_methods
+        policies {
+            policyTitle
+            terms
+        }
+        presentations {
+            src
+            type
+        }
+        rating
+        serviceMetaInfo{
+            description
+            hashtags
+            metaTagDescription
+            metaTagKeywords
+            title
+        }
+        status
+        totalReviews
+        vat
+workingHours {
+            id
+            weekdays{
+                fr{
+                    periods
+                }
+                mo{
+                    periods
+                }
+                sa{
+                    periods
+                }
+                su{
+                    periods
+                }
+                th{
+                    periods
+                }
+                tu{
+                    periods
+                }
+                we{
+                    periods
+                }    
+            }
+    }   }
+}
+    `
+  );
 
-      name: "Union Family Health Center.",
-      rating: 4.1,
-      reviewsCount: 1115,
-      thumbnail:
-        "https://t3.ftcdn.net/jpg/02/60/04/08/360_F_260040863_fYxB1SnrzgJ9AOkcT0hoe7IEFtsPiHAD.jpg",
-      proprtyType: "Health Center",
-      description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting",
-
-      presintations: [
-        {
-          src: "https://www.swissotel.com/assets/0/92/3686/3768/3770/6442451433/ae87da19-9f23-450a-8927-6f4c700aa104.jpg",
-          thumbnail:
-            "https://www.swissotel.com/assets/0/92/3686/3768/3770/6442451433/ae87da19-9f23-450a-8927-6f4c700aa104.jpg",
-          type: "image",
-        },
-        {
-          src: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
-          thumbnail:
-            "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
-          type: "image",
-        },
-        {
-          src: "https://img.freepik.com/free-photo/type-entertainment-complex-popular-resort-with-pools-water-parks-turkey-with-more-than-5-million-visitors-year-amara-dolce-vita-luxury-hotel-resort-tekirova-kemer_146671-18728.jpg?w=2000",
-          thumbnail:
-            "https://img.freepik.com/free-photo/type-entertainment-complex-popular-resort-with-pools-water-parks-turkey-with-more-than-5-million-visitors-year-amara-dolce-vita-luxury-hotel-resort-tekirova-kemer_146671-18728.jpg?w=2000",
-          type: "image",
-        },
-        {
-          src: "https://images.unsplash.com/photo-1615460549969-36fa19521a4f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzR8fGhvdGVsfGVufDB8fDB8fA%3D%3D&w=1000&q=80",
-          thumbnail:
-            "https://images.unsplash.com/photo-1615460549969-36fa19521a4f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzR8fGhvdGVsfGVufDB8fDB8fA%3D%3D&w=1000&q=80",
-          type: "image",
-        },
-        {
-          src: "https://www.swissotel.com/assets/0/92/3686/3768/3770/6442451433/ae87da19-9f23-450a-8927-6f4c700aa104.jpg",
-          thumbnail:
-            "https://www.swissotel.com/assets/0/92/3686/3768/3770/6442451433/ae87da19-9f23-450a-8927-6f4c700aa104.jpg",
-          type: "image",
-        },
-        {
-          src: "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
-          thumbnail:
-            "https://pix10.agoda.net/hotelImages/124/1246280/1246280_16061017110043391702.jpg?ca=6&ce=1&s=1024x768",
-          type: "image",
-        },
-        {
-          src: "https://img.freepik.com/free-photo/type-entertainment-complex-popular-resort-with-pools-water-parks-turkey-with-more-than-5-million-visitors-year-amara-dolce-vita-luxury-hotel-resort-tekirova-kemer_146671-18728.jpg?w=2000",
-          thumbnail:
-            "https://img.freepik.com/free-photo/type-entertainment-complex-popular-resort-with-pools-water-parks-turkey-with-more-than-5-million-visitors-year-amara-dolce-vita-luxury-hotel-resort-tekirova-kemer_146671-18728.jpg?w=2000",
-          type: "image",
-        },
-        {
-          src: "https://images.unsplash.com/photo-1615460549969-36fa19521a4f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzR8fGhvdGVsfGVufDB8fDB8fA%3D%3D&w=1000&q=80",
-          thumbnail:
-            "https://images.unsplash.com/photo-1615460549969-36fa19521a4f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MzR8fGhvdGVsfGVufDB8fDB8fA%3D%3D&w=1000&q=80",
-          type: "image",
-        },
-      ],
-      cancelationPolicies: [
-        {
-          duration: 6,
-          cost: 0,
-          id: "1",
-        },
-        {
-          duration: 10,
-          cost: 10,
-          id: "2",
-        },
-        {
-          cost: 50,
-          duration: 0,
-          id: "3",
-        },
-      ],
-      serviceFee: 15,
-      email: "Example@email.com",
-      location: {
-        address: "Rue du marche 34",
-        city: "Geneve",
-        country: "switzerland",
-        cords: {
-          lat: 45.464664,
-          lng: 9.18854,
-        },
-        postalCode: 1204,
-        countryCode: "CHF",
-        state: "Geneve",
-      },
-      telephone: "101227879123",
-      workingDays: [
-        {
-          weekDay: "Friday",
-
-          from: new Date(2022, 8, 11, 15).toString(),
-          to: new Date(2022, 8, 11, 19).toString(),
-        },
-        {
-          weekDay: "Monday",
-          from: new Date(2022, 8, 11, 15).toString(),
-          to: new Date(2022, 8, 11, 19).toString(),
-        },
-        {
-          weekDay: "Saturday",
-          from: new Date(2022, 8, 11, 15).toString(),
-          to: new Date(2022, 8, 11, 19).toString(),
-        },
-        {
-          weekDay: "Sunday",
-          from: new Date(2022, 8, 11, 15).toString(),
-          to: new Date(2022, 8, 11, 19).toString(),
-        },
-        {
-          weekDay: "Thursday",
-          from: new Date(2022, 8, 11, 15).toString(),
-          to: new Date(2022, 8, 11, 19).toString(),
-        },
-        {
-          weekDay: "Tuesday",
-          from: new Date(2022, 8, 11, 15).toString(),
-          to: new Date(2022, 8, 11, 19).toString(),
-        },
-        {
-          weekDay: "Wednesday",
-          from: new Date(2022, 8, 11, 15).toString(),
-          to: new Date(2022, 8, 11, 19).toString(),
-        },
-      ],
-    },
-  };
-  return CheckValidation(HealthCenterDetailtsApiResponseValidationSchema, data);
+  return client.setVariables(filters).send();
 };

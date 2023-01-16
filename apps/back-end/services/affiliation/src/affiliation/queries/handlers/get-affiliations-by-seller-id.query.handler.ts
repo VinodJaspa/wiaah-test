@@ -11,8 +11,9 @@ export class GetAffliationsBySellerIdQueryHandler
 
   async execute({
     sellerId,
+    pagination,
   }: GetAffliationsBySellerIdQuery): Promise<Affiliation[]> {
-    const res = await this.repo.getAllByUserId(sellerId);
+    const res = await this.repo.getAllByUserId(sellerId, pagination);
     return res;
   }
 }

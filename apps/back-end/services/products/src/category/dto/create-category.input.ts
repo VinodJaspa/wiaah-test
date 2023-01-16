@@ -1,4 +1,5 @@
 import { InputType, Int, Field, ID } from '@nestjs/graphql';
+import { ProductCategoryStatus } from '@prisma-client';
 
 @InputType()
 export class CreateCategoryInput {
@@ -10,4 +11,7 @@ export class CreateCategoryInput {
 
   @Field(() => Int)
   sortOrder: number;
+
+  @Field(() => ProductCategoryStatus)
+  status: ProductCategoryStatus;
 }

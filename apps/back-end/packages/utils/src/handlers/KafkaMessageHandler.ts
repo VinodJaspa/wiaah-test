@@ -5,7 +5,7 @@ export function KafkaMessageHandler<TPattern, TInput, TData>(
   messagePattern: TPattern,
   input: TInput,
   timeoutErrMessage?: string,
-  timeout = 2000
+  timeout = 5000
 ): Promise<TData> {
   return new Promise<TData>((res, rej) => {
     const timer = setTimeout(() => {

@@ -7,6 +7,7 @@ import {
   ServicePolicyTranslatedInput,
   ServicePresentationInput,
 } from '@dto';
+import { ServiceContactInput } from '@hotel/dto';
 import { InputType, Field, Float } from '@nestjs/graphql';
 import { Max, Min } from 'class-validator';
 import { ServicePaymentMethods } from 'prismaClient';
@@ -37,6 +38,9 @@ export class CreateHealthCenterInput {
 
   @Field(() => [ServiceCancelationPolicyInput])
   cancelationPolicies: ServiceCancelationPolicyInput[];
+
+  @Field(() => ServiceContactInput)
+  contact: ServiceContactInput;
 
   @Field(() => [HealthCenterDoctorInput])
   doctors: HealthCenterDoctorInput[];

@@ -9,6 +9,7 @@ import { AccountRepository } from './repository';
 import { accountCommandHandlers } from './commands';
 import { CqrsModule } from '@nestjs/cqrs';
 import { AccountEventHandlers } from './events';
+import { AccountsAdminResolver } from './accounts-admin.resolver';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { AccountEventHandlers } from './events';
     ]),
   ],
   providers: [
+    AccountsAdminResolver,
     AccountsResolver,
     AccountsService,
     PrismaService,

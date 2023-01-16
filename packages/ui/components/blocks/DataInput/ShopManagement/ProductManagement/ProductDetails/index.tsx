@@ -16,6 +16,8 @@ import {
   FormikTransalationInput,
   setTranslationStateValue,
   getTranslationStateValue,
+  useGetProductCategories,
+  FormatCategoryFilters,
 } from "@UI";
 import { FileRes } from "utils";
 
@@ -34,6 +36,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
   const { uploadImage, uploadVideo } = useFileUploadModal();
   const [images, setImages] = React.useState<FileRes[]>(values?.images || []);
   const [videos, setVideos] = React.useState<string[]>(values?.videos || []);
+  const { data: categories } = useGetProductCategories();
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
@@ -123,7 +126,12 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                 placeholder={t("VAT %")}
               />
 
-              <SubCategorySelect />
+              <SubCategorySelect
+                onCateSelection={(category) => {
+                  setFieldValue("categoryId", category[-1].id);
+                }}
+                categories={FormatCategoryFilters(categories || [])}
+              />
 
               <FormikInput
                 name="quantity"

@@ -1,4 +1,5 @@
 import { act } from "react-dom/test-utils";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 // const AllTheProviders: FC = ({ children }) => {
 //   return (
@@ -53,3 +54,9 @@ export const waitFor = (
         nextInterval();
       })
   );
+
+export const QueryClientWrapper: React.FC = ({ children }) => (
+  <QueryClientProvider client={new QueryClient()}>
+    {children}
+  </QueryClientProvider>
+);

@@ -1,5 +1,15 @@
-import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
+import {
+  ObjectType,
+  Field,
+  Int,
+  ID,
+  Float,
+  registerEnumType,
+} from '@nestjs/graphql';
+import { AffiliationStatus } from '@prisma-client';
 import { Product, Service } from './extends';
+
+registerEnumType(AffiliationStatus, { name: 'AffiliationStatus' });
 
 @ObjectType()
 export class Affiliation {
@@ -11,6 +21,9 @@ export class Affiliation {
 
   @Field(() => ID)
   itemId: string;
+
+  @Field(() => AffiliationStatus)
+  status: AffiliationStatus;
 
   @Field(() => String)
   itemType: string;

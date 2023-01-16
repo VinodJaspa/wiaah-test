@@ -151,7 +151,7 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
   // set width after first render
   // set position by startIndex
   // no animation on startIndex
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     RefreshSize();
   }, [vertical]);
 

@@ -2,7 +2,7 @@ import { gql, request, GraphQLClient } from "graphql-request";
 
 export class GraphqlRequestClinet extends GraphQLClient {
   private query: string | null = null;
-  private vars: Record<string, any> = {};
+  private vars: any = {};
 
   setHost(host: string) {
     this.setEndpoint(host);
@@ -17,7 +17,7 @@ export class GraphqlRequestClinet extends GraphQLClient {
     return this;
   }
 
-  setVariables(vars: Record<string, any>) {
+  setVariables<T>(vars: T) {
     this.vars = vars;
     return this;
   }
@@ -27,7 +27,7 @@ export class GraphqlRequestClinet extends GraphQLClient {
     if (!this.query) throw new Error("no query");
 
     console.log("requesting");
-    const res = await this.request<{ data: TRes }>(this.query, this.vars);
+    const res = await this.request<TRes>(this.query, this.vars);
     console.log("res", res);
     return res;
   }

@@ -17,4 +17,5 @@ export const subgraphs: Subgraph[] = [
   // { name: 'notification', url: 'http://localhost:3025/graphql' },
   // { name: 'membership', url: 'http://localhost:3026/graphql' },
   // { name: 'billing', url: 'http://localhost:3015/graphql' },
+  // { name: 'affiliation', url: 'http://localhost:3029/graphql' },
 ];

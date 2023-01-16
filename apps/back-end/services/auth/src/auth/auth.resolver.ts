@@ -57,52 +57,49 @@ export class AuthResolver implements OnModuleInit {
     @Args('LoginInput') loginInput: LoginDto,
     @Context() ctx: any,
   ): Promise<GqlStatusResponse> {
-    try {
-      if (typeof this.cookiesKey !== 'string')
-        return { success: false, code: ResponseCodes.InternalServiceError };
+    if (typeof this.cookiesKey !== 'string')
+      return { success: false, code: ResponseCodes.InternalServiceError };
 
-      const { email, accountType, id } =
-        await this.authService.validateCredentials(
-          loginInput.email,
-          loginInput.password,
-        );
-
-      const code = await this.querybus.execute<
-        ValidateLoginSecurityFeaturesQuery,
-        number | null
-      >(new ValidateLoginSecurityFeaturesQuery(email));
-
-      if (code) {
-        if (
-          code === ResponseCodes.RequireEmailOTP ||
-          code === ResponseCodes.RequireSmsOTP
-        ) {
-          this.eventbus.publish(new AuthOtpRequestedEvent(email, code));
-        }
-
-        return {
-          success: false,
-          code,
-        };
-      }
-
-      const data = await this.authService.generateAccessToken(
-        id,
-        email,
-        accountType,
+    const { email, accountType, id } =
+      await this.authService.validateCredentials(
+        loginInput.email,
+        loginInput.password,
       );
 
-      if (ctx && ctx.res && ctx.res.cookie) {
-        ctx.res.cookie(this.cookiesKey, data.access_token, { httpOnly: true });
+    const code = await this.querybus.execute<
+      ValidateLoginSecurityFeaturesQuery,
+      number | null
+    >(new ValidateLoginSecurityFeaturesQuery(email));
+
+    if (code) {
+      if (
+        code === ResponseCodes.RequireEmailOTP ||
+        code === ResponseCodes.RequireSmsOTP
+      ) {
+        this.eventbus.publish(new AuthOtpRequestedEvent(email, code));
       }
 
       return {
-        success: true,
-        code: ResponseCodes.TokenInjected,
+        success: false,
+        code,
       };
-    } catch (error) {
-      console.log('error', error);
     }
+
+    const data = await this.authService.generateAccessToken(
+      id,
+      email,
+      accountType,
+    );
+
+    if (ctx && ctx.res && ctx.res.cookie) {
+      console.log('settings jwt token', this.cookiesKey, data);
+      ctx.res.cookie(this.cookiesKey, data.access_token, { httpOnly: true });
+    }
+
+    return {
+      success: true,
+      code: ResponseCodes.TokenInjected,
+    };
   }
 
   @Mutation(() => GqlStatusResponse)

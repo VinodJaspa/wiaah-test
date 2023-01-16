@@ -8,6 +8,7 @@ import {
 import { UseGuards } from '@nestjs/common';
 import {
   AuthorizationDecodedUser,
+  ExtractPagination,
   GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
@@ -19,9 +20,14 @@ import {
 import { BeautyCenterService } from './beauty-center.service';
 import { BeautyCenter } from './entities/beauty-center.entity';
 import { CreateBeautyCenterInput } from './dto/create-beauty-center.input';
-import { UpdateBeautyCenterInput } from './dto';
+import {
+  SearchFilteredBeautyCenterInput,
+  UpdateBeautyCenterInput,
+} from './dto';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetBeautyCenterByIdQuery } from './queries/impl/get-beauty-center-by-id.query';
+import { BeautyCenterTreatment } from './entities';
+import { PrismaService } from 'prismaService';
 
 export type GqlBeautyCenterSelectedFields = GqlSelectedFields<BeautyCenter>;
 
@@ -30,6 +36,7 @@ export class BeautyCenterResolver {
   constructor(
     private readonly beautyCenterService: BeautyCenterService,
     private readonly queryBus: QueryBus,
+    private readonly prisma: PrismaService,
   ) {}
 
   @Mutation(() => BeautyCenter)
@@ -62,6 +69,20 @@ export class BeautyCenterResolver {
     fields: GqlBeautyCenterSelectedFields,
   ) {
     return this.beautyCenterService.getBeautyCenterById(id, user?.id, fields);
+  }
+
+  @Query(() => [BeautyCenterTreatment])
+  async getFilteredBeuatyCenterTreatments(
+    @Args('args') args: SearchFilteredBeautyCenterInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @GetLang() lang: UserPreferedLang,
+  ) {
+    const { take, skip } = ExtractPagination(args.pagination);
+    return this.prisma.beautyCenterTreatment.findMany({
+      where: {},
+      take,
+      skip,
+    });
   }
 
   @Mutation(() => BeautyCenter)

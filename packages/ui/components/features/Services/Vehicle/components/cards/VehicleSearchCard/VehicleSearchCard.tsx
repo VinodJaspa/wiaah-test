@@ -5,32 +5,28 @@ import {
   VehicleProprtiesList,
   Button,
   ServicesRequestKeys,
+  Image,
 } from "@UI";
-import { VehicleSearchData } from "api";
+import { Vehicle } from "api";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-export interface VehicleSearchCardProps extends VehicleSearchData {
+export interface VehicleSearchCardProps extends Vehicle {
   showTotal?: boolean;
 }
 
 export const VehicleSearchCard: React.FC<VehicleSearchCardProps> = (props) => {
-  const {
-    name,
-    pricePerDay,
-    thumbnail,
-    vehicleProps,
-    showTotal = false,
-  } = props;
+  const { price, properties, presentations, showTotal = false, title } = props;
   const { visit } = useRouting();
   const { t } = useTranslation();
+  const thumbnail = presentations.find(({ type }) => type === "img")?.src;
   return (
     <div className="flex flex-col gap-4 w-full">
       <div className="w-full">
         <AspectRatio className="group" ratio={3 / 4}>
-          <img
+          <Image
             className="w-full h-full rounded object-cover"
-            src={thumbnail}
-            alt={name}
+            src={presentations.at(0)?.src}
+            alt={title}
           />
           <div
             className={
@@ -52,17 +48,12 @@ export const VehicleSearchCard: React.FC<VehicleSearchCardProps> = (props) => {
 
       <div className="flex flex-col gap-2">
         <p className="font-semibold text-lg">{name}</p>
-        {pricePerDay ? (
+        {price ? (
           <div className="flex flex-col font-bold gap-2">
             <span className="text-lg text-primary flex whitespace-nowrap gap-2">
-              <PriceDisplay
-                priceObject={{
-                  amount: pricePerDay,
-                }}
-              />{" "}
-              | {t("day")}
+              <PriceDisplay price={price} /> | {t("day")}
             </span>
-            {showTotal ? (
+            {/* {showTotal ? (
               <span className="flex gap-2">
                 <PriceDisplay
                   priceObject={{
@@ -71,11 +62,11 @@ export const VehicleSearchCard: React.FC<VehicleSearchCardProps> = (props) => {
                 />
                 {t("total")}
               </span>
-            ) : null}
+            ) : null} */}
           </div>
         ) : null}
         <span className="text-lg">
-          <VehicleProprtiesList VehicleProps={vehicleProps} />
+          <VehicleProprtiesList VehicleProps={properties} />
         </span>
       </div>
     </div>

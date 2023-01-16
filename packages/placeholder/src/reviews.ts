@@ -1,6 +1,4 @@
-import { BuyerCommentProps } from "ui";
-
-export const reviews: BuyerCommentProps[] = [
+export const reviews = [
   {
     name: "John",
     date: new Date("08-Oct-2020"),

@@ -29,7 +29,7 @@ export class PrismaModule {}
     UserLocationModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
-      autoSchemaFile: true,
+      autoSchemaFile: 'schema.graphql',
       context({ req, res }) {
         const user = getUserFromRequest(req);
         return { req, res, user };

@@ -1,4 +1,3 @@
-import { ResturantMetaDataType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -11,11 +10,12 @@ import {
   PriceLevelDisplay,
   Button,
   ServicesRequestKeys,
+  Restaurant,
 } from "@UI";
 import { BiStar } from "react-icons/bi";
 import { useRouting } from "routing";
 
-export interface ResturantRecommendedCardProps extends ResturantMetaDataType {
+export interface ResturantRecommendedCardProps extends Restaurant {
   minimal?: boolean;
 }
 
@@ -23,25 +23,30 @@ export const ResturantRecommendedCard: React.FC<
   ResturantRecommendedCardProps
 > = (props) => {
   const {
-    thumbnails,
-    averagePrice,
-    isGoodDeal,
-    name,
-    rate,
-    reviewsCount,
+    presentations,
+    highest_price,
+    lowest_price,
+    serviceMetaInfo,
+    rating,
+    reviews,
     location,
-    discount,
-    tags,
     id,
     minimal = false,
   } = props;
+
+  const averagePrice = (highest_price + lowest_price) / 2;
+  const isGoodDeal = true;
 
   const { visit } = useRouting();
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-2 w-full">
       <AspectRatio className="w-full group" ratio={3 / 4}>
-        <ImageSlider images={thumbnails} />
+        <ImageSlider
+          images={presentations
+            .filter((v) => v.type === "img")
+            .map((v) => v.src)}
+        />
         {isGoodDeal ? (
           <span className="px-2 flex gap-1 items-center bg-slate-200 absolute top-4 left-4">
             <PercentIcon />
@@ -67,32 +72,32 @@ export const ResturantRecommendedCard: React.FC<
         </p>
         <div className="flex justify-between w-full">
           <div className="flex flex-col gap-2 text-lg text-gray-600">
-            <p className="text-xl font-bold">{name}</p>
+            <p className="text-xl font-bold">{serviceMetaInfo.title}</p>
             <p>{location?.address}</p>
             <p>
               {t("Average price")}{" "}
               {PriceConverter({ amount: averagePrice, symbol: true })}
             </p>
-            <InfoText variant="danger">
+            {/* <InfoText variant="fail">
               {discount.amount}% ${discount.rule}
-            </InfoText>
+            </InfoText> */}
           </div>
           <div className="flex flex-col items-center gap-2">
             <p className="text-2xl flex gap-1 items-center font-bold">
-              <BiStar /> {rate}
+              <BiStar /> {rating}
             </p>
             <div className="flex gap-1 items-center">
               <CommentIcon />
-              <p>{reviewsCount}</p>
+              <p>{reviews}</p>
             </div>
           </div>
         </div>
         <div className="flex gap-2 sm:font-lg flex-wrap font-semibold">
-          {Array.isArray(tags)
-            ? tags.map((tag, i) => (
+          {Array.isArray(serviceMetaInfo.hashtags)
+            ? serviceMetaInfo.hashtags.map((tag, i) => (
                 <p key={i}>
                   {tag}
-                  {i + 1 < tags.length ? "," : ""}
+                  {i + 1 < serviceMetaInfo.hashtags.length ? "," : ""}
                 </p>
               ))
             : null}

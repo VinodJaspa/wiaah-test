@@ -2,7 +2,7 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { PostCard } from "@UI";
 import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
-import { PostCardPlaceHolder } from "@UI/placeholder";
+import { PostCardPlaceHolder } from "placeholder";
 export default {
   title: "UI/blocks/Social/PostCard",
   component: PostCard,

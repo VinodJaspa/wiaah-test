@@ -14,7 +14,7 @@ import { AffiliationAdminModule } from '@affiliation/affiliation-admin.module';
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],
-  imports: [AffiliationHistoryModule],
+  imports: [],
 })
 export class GlobalPrisma {}
 
@@ -22,16 +22,11 @@ export class GlobalPrisma {}
   imports: [
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
-      autoSchemaFile: true,
+      autoSchemaFile: './schema.graphql',
       context: (ctx) => ({ ...ctx, user: getUserFromRequest(ctx.req) }),
     }),
-    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
-      driver: ApolloFederationDriver,
-      autoSchemaFile: true,
-      context: (ctx) => ({ ...ctx, user: getUserFromRequest(ctx.req) }),
-      path: 'admin',
-      include: [AffiliationAdminModule, AffiliationHistoryModule],
-    }),
+    AffiliationHistoryModule,
+    AffiliationAdminModule,
     AffiliationModule,
     GlobalPrisma,
   ],

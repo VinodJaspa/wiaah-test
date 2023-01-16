@@ -1,7 +1,7 @@
 import { CreateAffiliationInput } from '@affiliation/dto';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma-client';
-import { AddToDate } from 'nest-utils';
+import { AddToDate, ExtractPagination, GqlPaginationInput } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 
 @Injectable()
@@ -14,9 +14,7 @@ export class AffiliationRepository {
     const res = await this.prisma.affiliation.create({
       data: {
         ...input,
-        expireAt: AddToDate(new Date(), {
-          days: input.validFor,
-        }),
+        expireAt: new Date(input.expireAt),
         sellerId,
       },
     });
@@ -34,11 +32,14 @@ export class AffiliationRepository {
     return res;
   }
 
-  async getAllByUserId(userId: string) {
+  async getAllByUserId(userId: string, pagination: GqlPaginationInput) {
+    const { take, skip } = ExtractPagination(pagination);
     return this.prisma.affiliation.findMany({
       where: {
         sellerId: userId,
       },
+      take,
+      skip,
     });
   }
   async getOneById(id: string) {

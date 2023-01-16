@@ -13,13 +13,22 @@ import {
   DateInput,
   ClockIcon,
   TimeInput,
+  useGetFilteredBeautyCenterTreatmentsQuery,
+  SpinnerFallback,
+  Pagination,
+  usePaginationControls,
 } from "ui";
 import { randomNum } from "utils";
 
 export const BeautyCenterSearchResultsView: React.FC = () => {
   const { filters, getLocationFilterQuery } = useSearchFilters();
-  console.log("filters", filters);
+  const { controls, pagination } = usePaginationControls();
   const { data, isLoading, isError } = useGetServiceSearchFiltersQuery(filters);
+  const {
+    data: treatments,
+    isLoading: treatmentsIsLoading,
+    isError: treatmentsIsError,
+  } = useGetFilteredBeautyCenterTreatmentsQuery({ pagination });
 
   return (
     <div className="flex flex-col  md:flex-row gap-4 p-4">
@@ -51,7 +60,13 @@ export const BeautyCenterSearchResultsView: React.FC = () => {
           location={"milano"}
           servicesNum={randomNum(500)}
         />
-        <RecommendedBeautyCenterSearchList />
+        <SpinnerFallback
+          isLoading={treatmentsIsLoading}
+          isError={treatmentsIsError}
+        >
+          <RecommendedBeautyCenterSearchList treatments={treatments} />
+          <Pagination controls={controls} />
+        </SpinnerFallback>
       </div>
     </div>
   );

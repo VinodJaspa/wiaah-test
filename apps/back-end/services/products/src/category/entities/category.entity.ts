@@ -1,4 +1,7 @@
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
+import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
+import { ProductCategoryStatus } from '@prisma-client';
+
+registerEnumType(ProductCategoryStatus, { name: 'ProductCategoryStatus' });
 
 @ObjectType()
 export class Category {
@@ -7,6 +10,12 @@ export class Category {
 
   @Field(() => String)
   name: string;
+
+  @Field(() => Int)
+  sortOrder: number;
+
+  @Field(() => ProductCategoryStatus)
+  status: ProductCategoryStatus;
 
   @Field(() => ID)
   parantId: string;

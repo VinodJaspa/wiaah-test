@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import { usePagination, useResponsive } from "hooks";
+import { useResponsive } from "hooks";
 import React from "react";
 import {
   DateInput,
@@ -17,6 +17,10 @@ import {
   StepperContent,
   DisplayFoundServices,
   useSearchFilters,
+  useGetFilteredHealthCenters,
+  usePaginationControls,
+  Pagination,
+  SpinnerFallback,
 } from "ui";
 import { randomNum } from "utils";
 
@@ -24,6 +28,12 @@ export const HealthCenterSearchResultsView: React.FC = () => {
   const { data: res, isLoading, isError } = useGetHealthCenterFiltersQuery();
   const { getLocationFilterQuery } = useSearchFilters();
   const { isTablet } = useResponsive();
+  const { pagination, controls } = usePaginationControls();
+  const {
+    data,
+    isLoading: healthIsLoading,
+    isError: healthIsError,
+  } = useGetFilteredHealthCenters({ pagination });
   return (
     <div className="flex flex-col gap-4">
       <HealthCenterSearchBox />
@@ -79,7 +89,10 @@ export const HealthCenterSearchResultsView: React.FC = () => {
             location={getLocationFilterQuery || ""}
             servicesNum={randomNum(500)}
           />
-          <HealthCenterServiceSearchResultsList />
+          <SpinnerFallback isLoading={healthIsLoading} isError={healthIsError}>
+            <HealthCenterServiceSearchResultsList doctors={data} />
+          </SpinnerFallback>
+          <Pagination controls={controls} />
         </div>
       </div>
     </div>

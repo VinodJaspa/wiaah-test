@@ -1,4 +1,8 @@
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
+import { TranslationText } from '@entities';
+import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
+import { ServiceCategoryStatus } from 'prismaClient';
+
+registerEnumType(ServiceCategoryStatus, { name: 'ServiceCategoryStatus' });
 
 @ObjectType()
 export class ServiceCategoryFilterValue {
@@ -35,6 +39,33 @@ export class Category {
   @Field(() => String)
   name: string;
 
+  @Field(() => Int)
+  sortOrder: number;
+
+  @Field(() => ServiceCategoryStatus)
+  status: ServiceCategoryStatus;
+
+  @Field(() => String)
+  slug: string;
+
   @Field(() => [ServiceCategoryFilter])
   filters: ServiceCategoryFilter[];
+
+  @Field(() => String)
+  thumbnail: string;
+
+  @Field(() => TranslationText)
+  description: TranslationText;
+
+  @Field(() => TranslationText)
+  metaTagDescription: TranslationText;
+
+  @Field(() => TranslationText)
+  metaTagTitle: TranslationText;
+
+  @Field(() => TranslationText)
+  metaTagKeywords: TranslationText;
+
+  @Field(() => TranslationText)
+  seo: TranslationText;
 }

@@ -73,6 +73,6 @@ export class Hotel {
   @Field(() => ServiceContact)
   contact: ServiceContact;
 
-  @Field(() => WorkingSchedule, { nullable: false })
+  @Field(() => WorkingSchedule, { nullable: true })
   workingHours?: WorkingSchedule;
 }

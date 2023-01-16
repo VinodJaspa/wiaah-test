@@ -2,7 +2,7 @@ import { mount, ReactWrapper, shallow, ShallowWrapper } from "enzyme";
 import React from "react";
 import { RecoilRoot } from "recoil";
 import { AffiliationOffersCardListWrapper } from "@UI";
-import { socialAffiliationCardPlaceholders } from "@UI/placeholder";
+import { socialAffiliationCardPlaceholders } from "placeholder";
 
 const selectors = {
   colsWrapper: "[data-testid='ColumnsWrapper']",

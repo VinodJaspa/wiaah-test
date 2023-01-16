@@ -8,11 +8,14 @@ import {
   AspectRatioImage,
   WorkingDaysCalender,
   ServicesRequestKeys,
+  HealthCenterDoctor,
+  Location,
+  HealthCenter,
 } from "@UI";
 import { setTestid } from "utils";
 
 export interface HealthCenterCardProps {
-  centerData: HealthCenterPractitioner;
+  centerData: HealthCenterDoctor & { healthCenter: HealthCenter };
   workingDates: WorkingDate[];
   vertical?: boolean;
 }
@@ -36,7 +39,7 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
           <div {...setTestid("ServicePresentation")} className="w-32">
             <AspectRatioImage
               className="group"
-              src={centerData.photo}
+              src={centerData.thumbnail}
               alt={centerData.name}
               ratio={3 / 4}
             />
@@ -44,13 +47,14 @@ export const HealthCenterCard: React.FC<HealthCenterCardProps> = ({
           <div {...setTestid("ServiceInfo")} className="flex flex-col gap-4">
             <div className="flex flex-col font-bold text-lg gap-2">
               <p className="text-primary">{centerData.name}</p>
-              <p className="">{centerData.specialty}</p>
+              <p className="">{centerData.speciality?.name}</p>
             </div>
             <div className="font-semibold flex flex-col gap-2">
-              <p>{centerData.location.address}</p>
+              <p>{centerData.healthCenter?.location.address}</p>
               <span className="flex gap-2">
                 <p>
-                  {centerData.location.postalCode} {centerData.location.city}
+                  {centerData.healthCenter.location.postalCode}{" "}
+                  {centerData.healthCenter.location.city}
                 </p>
               </span>
             </div>

@@ -16,7 +16,7 @@ export const useResponsive = (cb?: () => any) => {
     }
   }
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (typeof window !== "undefined") {
       window.addEventListener("resize", HandleScreenSize);
       window.addEventListener("load", HandleScreenSize);

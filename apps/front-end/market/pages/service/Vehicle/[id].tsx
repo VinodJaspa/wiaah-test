@@ -4,7 +4,11 @@ import { MasterLayout, VehicleServiceDetailsView } from "@components";
 import { Container, GetServiceDetailsQueryKey } from "ui";
 import { ExtractParamFromQuery } from "utils";
 import { dehydrate, QueryClient } from "react-query";
-import { getServiceDetailsDataSwitcher } from "api";
+import {
+  getServiceDetailsDataSwitcher,
+  getVehicleSearchDataFetcher,
+  getVehicleServiceProviderDetailsFetcher,
+} from "api";
 import { AsyncReturnType, ServerSideQueryClientProps } from "types";
 import {
   MetaAuthor,
@@ -16,7 +20,7 @@ import {
 } from "react-seo";
 
 interface VehicleServiceDetailsPageProps {
-  data: AsyncReturnType<ReturnType<typeof getServiceDetailsDataSwitcher>>;
+  data: AsyncReturnType<typeof getVehicleServiceProviderDetailsFetcher>;
 }
 
 export const getServerSideProps: GetServerSideProps<
@@ -27,9 +31,9 @@ export const getServerSideProps: GetServerSideProps<
   const serviceType = "vehicle";
   const serviceId = ExtractParamFromQuery(query, "id");
 
-  const data = await getServiceDetailsDataSwitcher(serviceType)({
+  const data = (await getServiceDetailsDataSwitcher(serviceType)({
     id: serviceId,
-  });
+  })) as AsyncReturnType<typeof getVehicleServiceProviderDetailsFetcher>;
 
   queryClient.prefetchQuery(
     GetServiceDetailsQueryKey({ serviceType, id: serviceId }),
@@ -49,16 +53,18 @@ const VehicleServiceDetailsPage: NextPage<VehicleServiceDetailsPageProps> = ({
 }) => {
   return (
     <>
-      {data && data.data ? (
+      {data && data ? (
         <>
-          <MetaTitle content={`Wiaah | Service Details by ${data.data.name}`} />
-          <MetaDescription content={data.data.description} />
-          {data.data.presintations.at(0).type === "video" ? (
-            <MetaVideo content={data.data.presintations.at(0).src} />
+          <MetaTitle
+            content={`Wiaah | Service Details by ${data.serviceMetaInfo.title}`}
+          />
+          <MetaDescription content={data.serviceMetaInfo.description} />
+          {data.presentations.at(0).type === "vid" ? (
+            <MetaVideo content={data.presentations.at(0).src} />
           ) : (
-            <MetaImage content={data.data.presintations.at(0).src} />
+            <MetaImage content={data.presentations.at(0).src} />
           )}
-          <MetaAuthor author={data.data.name} />
+          <MetaAuthor author={data.owner.name} />
           <RequiredSocialMediaTags />
         </>
       ) : null}

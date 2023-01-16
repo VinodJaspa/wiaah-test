@@ -1,4 +1,12 @@
-import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  ID,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { UseGuards } from '@nestjs/common';
 import {
@@ -7,9 +15,10 @@ import {
   GqlCurrentUser,
 } from 'nest-utils';
 
-import { Affiliation } from '@affiliation/entities';
+import { Affiliation, Product } from '@affiliation/entities';
 import {
   CreateAffiliationInput,
+  GetMyAffiliationsInput,
   UpdateAffiliationInput,
 } from '@affiliation/dto';
 import {
@@ -59,10 +68,28 @@ export class AffiliationResolver {
 
   @Query(() => [Affiliation])
   getMyAffiliations(
+    @Args('args') args: GetMyAffiliationsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<Affiliation[]> {
     return this.querybus.execute<GetAffliationsBySellerIdQuery, Affiliation[]>(
-      new GetAffliationsBySellerIdQuery(user.id),
+      new GetAffliationsBySellerIdQuery(user.id, args.pagination),
     );
+  }
+
+  @ResolveField(() => Product)
+  product(@Parent() aff: Affiliation) {
+    return {
+      __typename: 'Product',
+      id: aff.itemId,
+    };
+  }
+
+  @ResolveField(() => Product)
+  service(@Parent() aff: Affiliation) {
+    return {
+      __typename: 'Product',
+      id: aff.itemId,
+      serviceType: aff.itemType,
+    };
   }
 }

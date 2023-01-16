@@ -1,0 +1,102 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @key(fields: String!) on OBJECT | INTERFACE
+
+directive @extends on OBJECT | INTERFACE
+
+directive @external on OBJECT | FIELD_DEFINITION
+
+directive @requires(fields: String!) on FIELD_DEFINITION
+
+directive @provides(fields: String!) on FIELD_DEFINITION
+
+type Product {
+  id: ID!
+}
+
+type Service {
+  id: ID!
+  type: String!
+}
+
+type Affiliation {
+  id: ID!
+  sellerId: ID!
+  itemId: ID!
+  status: AffiliationStatus!
+  itemType: String!
+  commision: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  expireAt: DateTime!
+  product: Product
+  service: Service
+}
+
+enum AffiliationStatus {
+  active
+  inActive
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type AffiliationPurchase {
+  id: ID!
+  itemId: ID!
+  itemType: String!
+  sellerId: ID!
+  affiliatorId: ID!
+  purchaserId: ID!
+  createdAt: DateTime!
+}
+
+type Query {
+  getMyProductsAffiliationHistory: AffiliationPurchase!
+  getUserAffiliations(id: String!, pagination: GqlPaginationInput!): Affiliation!
+  getFilteredAffiliations(filters: GetFilteredAffiliationsInput!): [Affiliation!]!
+  getMyAffiliations(args: GetMyAffiliationsInput!): [Affiliation!]!
+}
+
+input GqlPaginationInput {
+  page: Int!
+  take: Int!
+}
+
+input GetFilteredAffiliationsInput {
+  seller: String!
+  commission: Float!
+  price: Float!
+  link: String!
+  createdBefore: DateTime!
+  createdAfter: DateTime!
+}
+
+input GetMyAffiliationsInput {
+  pagination: GqlPaginationInput!
+}
+
+type Mutation {
+  updateAffiliation(args: UpdateAffiliationInput!): Affiliation!
+  createNewAffiliationProduct(args: CreateAffiliationInput!): Affiliation!
+  deleteAffiliation(id: ID!): Affiliation!
+}
+
+input UpdateAffiliationInput {
+  itemId: ID
+  itemType: String
+  commision: Float
+  expireAt: String
+  id: ID!
+}
+
+input CreateAffiliationInput {
+  itemId: ID!
+  itemType: String!
+  commision: Float!
+  expireAt: String!
+}

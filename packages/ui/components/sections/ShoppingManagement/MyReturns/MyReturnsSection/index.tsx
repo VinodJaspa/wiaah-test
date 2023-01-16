@@ -2,7 +2,7 @@ import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HtmlDivProps, PriceType } from "types";
-import { getRandomImage } from "@UI/placeholder";
+import { getRandomImage } from "placeholder";
 import { SectionContext } from "state";
 import { randomNum } from "utils";
 import {

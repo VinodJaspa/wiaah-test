@@ -17,13 +17,13 @@ export class CategoryResolver {
   constructor(private readonly categoryService: CategoryService) {}
 
   @Query(() => [Category])
-  getCategories(): Promise<Category[]> {
+  getProductCategories(): Promise<Category[]> {
     return this.categoryService.getAllCategories();
   }
 
   @Query(() => [Category])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
-  getFilteredCategory(
+  getFilteredProductCategories(
     @Args('args', { nullable: true }) args: GetFilteredCategory,
   ) {
     return this.categoryService.getAllCategories(args);
@@ -31,7 +31,7 @@ export class CategoryResolver {
 
   @Mutation(() => Category)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
-  createCategory(
+  createProductCategory(
     @Args('createCategoryInput') args: CreateCategoryInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<Category> {
@@ -40,7 +40,7 @@ export class CategoryResolver {
 
   @Mutation(() => Category)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
-  deleteCategory(
+  deleteProductCategory(
     @Args('deleteCategoryId') id: string,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
@@ -49,7 +49,7 @@ export class CategoryResolver {
 
   @Mutation(() => Category)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
-  updateCategory(
+  updateProductCategory(
     @Args('updateCategoryArgs') args: UpdateCategoryInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {

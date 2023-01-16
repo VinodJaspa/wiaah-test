@@ -56,6 +56,12 @@ export class Restaurant {
   @Field(() => [ServicePolicy])
   policies: ServicePolicy[];
 
+  @Field(() => Float)
+  rating: number;
+
+  @Field(() => Int)
+  reviews: number;
+
   @Field(() => [ServiceCancelationPolicy])
   cancelationPolicies: ServiceCancelationPolicy[];
 

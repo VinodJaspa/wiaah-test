@@ -1,5 +1,7 @@
 import {
+  Account,
   ServiceCancelationPolicy,
+  ServiceContact,
   ServiceLocation,
   ServiceMetaInfo,
   ServicePolicy,
@@ -14,6 +16,7 @@ import {
   registerEnumType,
   Directive,
 } from '@nestjs/graphql';
+import { WorkingSchedule } from '@working-schedule/entities';
 import {
   ServicePaymentMethods,
   ServiceStatus,
@@ -30,8 +33,14 @@ export class BeautyCenter {
   @Field(() => ID)
   id: string;
 
+  @Field(() => ServiceContact)
+  contact: ServiceContact;
+
   @Field(() => ID)
   ownerId: string;
+
+  @Field(() => Account, { nullable: true })
+  owner?: Account;
 
   @Field(() => Date)
   createdAt: Date;
@@ -80,4 +89,7 @@ export class BeautyCenter {
 
   @Field(() => [BeautyCenterTreatment])
   treatments: BeautyCenterTreatment[];
+
+  @Field(() => WorkingSchedule, { nullable: true })
+  workingHours?: WorkingSchedule;
 }

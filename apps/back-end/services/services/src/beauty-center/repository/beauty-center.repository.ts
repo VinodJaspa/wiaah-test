@@ -7,6 +7,7 @@ import {
 import {
   Prisma,
   BeautyCenterService as PrismaBeautyCenterService,
+  BeautyCenterTreatment as PrismaBeautyCenterTreatment,
   ServiceStatus,
 } from 'prismaClient';
 import { PrismaService } from 'prismaService';
@@ -49,7 +50,6 @@ export class BeautyCenterRepository {
 
   async searchFilteredBeautyCenter(
     input: SearchFilteredBeautyCenterInput,
-    selectedFields: GqlBeautyCenterSelectedFields,
     langId: UserPreferedLang,
   ): Promise<BeautyCenter[]> {
     const hasQuery = input?.query?.length > 0;
@@ -134,7 +134,9 @@ export class BeautyCenterRepository {
   }
 
   private formatBeautyCenterServiceData(
-    input: Partial<PrismaBeautyCenterService>,
+    input: Partial<
+      PrismaBeautyCenterService & { treatments: PrismaBeautyCenterTreatment[] }
+    >,
     langId: string,
   ): BeautyCenter {
     return {
@@ -156,6 +158,6 @@ export class BeautyCenterRepository {
             }),
           }))
         : [],
-    } as BeautyCenter;
+    } as unknown as BeautyCenter;
   }
 }

@@ -15,7 +15,14 @@ directive @provides(fields: String!) on FIELD_DEFINITION
 type Category {
   id: ID!
   name: String!
+  sortOrder: Int!
+  status: ProductCategoryStatus!
   parantId: ID!
+}
+
+enum ProductCategoryStatus {
+  active
+  inActive
 }
 
 type ShippingDetails {
@@ -212,8 +219,8 @@ type Query {
   getProducts(filterInput: GetFilteredProductsInput!): [Product!]!
   getProduct(id: ID!): Product!
   getMyProducts(args: GqlPaginationInput!): [MyProduct!]!
-  getCategories: [Category!]!
-  getFilteredCategory(args: GetFilteredCategory): [Category!]!
+  getProductCategories: [Category!]!
+  getFilteredProductCategories(args: GetFilteredCategory): [Category!]!
   getAdminProductsFilters(getFiltersArgs: GetFiltersInput!): [Filter!]!
   getProductsFilters: [Filter!]!
   getAllProducts(args: GetFilteredProductsAdminInput!): [Product!]!
@@ -254,6 +261,7 @@ input GetFilteredProductsInput {
 }
 
 input GetFilteredCategory {
+  pagination: GqlPaginationInput!
   name: String
   sortOrder: Int
 }
@@ -298,9 +306,9 @@ type Mutation {
   createProductsPh: Boolean!
   uploadProductPresentations(files: [Upload!]!): Boolean!
   deleteProduct(productId: ID!): Product!
-  createCategory(createCategoryInput: CreateCategoryInput!): Category!
-  deleteCategory(deleteCategoryId: String!): Category!
-  updateCategory(updateCategoryArgs: UpdateCategoryInput!): Category!
+  createProductCategory(createCategoryInput: CreateCategoryInput!): Category!
+  deleteProductCategory(deleteCategoryId: String!): Category!
+  updateProductCategory(updateCategoryArgs: UpdateCategoryInput!): Category!
   createFilter(createFilterGroupArgs: CreateFilterInput): Filter!
   updateFilter(updateFilterArgs: UpdateFilterInput!): Filter!
   deleteFilter(deleteFilterId: String!): Filter!
@@ -404,12 +412,14 @@ input CreateCategoryInput {
   parantId: ID
   name: String!
   sortOrder: Int!
+  status: ProductCategoryStatus!
 }
 
 input UpdateCategoryInput {
   parantId: ID
   name: String
   sortOrder: Int
+  status: ProductCategoryStatus
   id: ID!
 }
 

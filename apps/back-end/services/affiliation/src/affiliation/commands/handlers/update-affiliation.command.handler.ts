@@ -12,7 +12,7 @@ export class UpdateAffiliationCommandHandler
   constructor(private readonly repo: AffiliationRepository) {}
 
   async execute({
-    input: { id, validFor, ...rest },
+    input: { id, ...rest },
     sellerId,
   }: UpdateAffiliationCommand): Promise<Affiliation> {
     const aff = await this.repo.getOneById(id);
@@ -21,7 +21,6 @@ export class UpdateAffiliationCommandHandler
 
     const res = await this.repo.update(id, {
       ...rest,
-      expireAt: AddToDate(aff.createdAt, { days: validFor }),
     });
 
     return res;

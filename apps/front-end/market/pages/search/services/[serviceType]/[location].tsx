@@ -11,14 +11,7 @@ import {
   ServicesTypeSwitcher,
 } from "utils";
 import { ServicesViewsList } from "@data";
-import {
-  NotFound,
-  Container,
-  SERVICESTYPE_INDEXKEY,
-  useMutateSearchFilters,
-  filtersTokens,
-  BreadCrumb,
-} from "ui";
+import { NotFound, Container, useMutateSearchFilters, BreadCrumb } from "ui";
 
 const filtered: NextPage = () => {
   const { t } = useTranslation();
@@ -26,9 +19,11 @@ const filtered: NextPage = () => {
   const { addFilter } = useMutateSearchFilters();
   const serviceType = ExtractServiceTypeFromQuery(router.query);
   const searchLocation = ExtractParamFromQuery(router.query, "location");
+
   if (ServicesViewsList.findIndex((list) => list.slug === serviceType) > -1) {
     addFilter((keys) => [keys.serviceType, serviceType]);
   }
+
   if (typeof searchLocation === "string") {
     addFilter((keys) => [keys.location, searchLocation]);
   }

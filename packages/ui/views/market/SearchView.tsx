@@ -5,19 +5,17 @@ import {
   ShopProductFilter,
   ProductCard,
   Collaboration,
-  GridContainerPager,
   useGetProductsQuery,
-  useSearchFilters,
   usePaginationControls,
   Pagination,
+  useGetProductCategories,
 } from "@UI";
 import { BreadCrumb } from "@UI";
 import { BsArrowLeft } from "react-icons/bs";
 import { HiOutlineViewGrid, HiOutlineViewList } from "react-icons/hi";
-import { categories } from "placeholder";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import { useDimensions, usePagination, useResponsive } from "hooks";
+import { useDimensions, useResponsive } from "hooks";
 
 export const SearchView: React.FC = () => {
   const { t } = useTranslation();
@@ -43,6 +41,7 @@ export const SearchView: React.FC = () => {
     isLoading,
     isError,
   } = useGetProductsQuery({ ...filters, pagination });
+  const { data: categories } = useGetProductCategories();
 
   const { isTablet, isMobile } = useResponsive();
 
@@ -129,7 +128,7 @@ export const SearchView: React.FC = () => {
                       stockStatus={true}
                       rating={true}
                       brands={["nike", "or", "zake"]}
-                      categories={categories}
+                      categories={categories || []}
                       countryFilter={true}
                       cityFilter={true}
                     />

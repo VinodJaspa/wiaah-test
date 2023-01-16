@@ -41,10 +41,21 @@ export class CategoryService {
     });
   }
 
-  getAllCategories(filter?: GetFilteredCategoriesInput) {
+  getAllCategories() {
+    return this.prisma.serviceCategory.findMany({
+      where: {
+        status: 'active',
+      },
+      orderBy: {
+        sortOrder: 'desc',
+      },
+    });
+  }
+
+  getAllFilteredCategories(filter?: GetFilteredCategoriesInput) {
     const filters: Prisma.ServiceCategoryWhereInput[] = [];
 
-    if (filter.name)
+    if (filter?.name)
       filters.push({
         OR: [
           {
@@ -89,7 +100,7 @@ export class CategoryService {
         ],
       });
 
-    if (filter.sortOrder)
+    if (filter?.sortOrder)
       filters.push({
         sortOrder: filter.sortOrder,
       });

@@ -12,25 +12,6 @@ directive @requires(fields: String!) on FIELD_DEFINITION
 
 directive @provides(fields: String!) on FIELD_DEFINITION
 
-type ServiceCategoryFilterValue {
-  name: String!
-  filteringValue: String!
-  sortOrder: Int!
-}
-
-type ServiceCategoryFilter {
-  filterGroupName: String!
-  filteringKey: String!
-  sortOrder: Int!
-  filterValues: [ServiceCategoryFilterValue!]!
-}
-
-type Category {
-  id: ID!
-  name: String!
-  filters: [ServiceCategoryFilter!]!
-}
-
 type ServicePresentation {
   type: ServicePresentationType!
   src: String!
@@ -87,6 +68,11 @@ type ServiceExtra {
 type ServicePropertyMeasurements {
   inFeet: Int!
   inMeter: Int!
+}
+
+type TranslationText {
+  langId: String!
+  value: String!
 }
 
 type ServiceLocation {
@@ -175,7 +161,40 @@ type Hotel {
   serviceMetaInfo: ServiceMetaInfo!
   rooms: [HotelRoom!]!
   contact: ServiceContact!
-  workingHours: WorkingSchedule!
+  workingHours: WorkingSchedule
+}
+
+type ServiceCategoryFilterValue {
+  name: String!
+  filteringValue: String!
+  sortOrder: Int!
+}
+
+type ServiceCategoryFilter {
+  filterGroupName: String!
+  filteringKey: String!
+  sortOrder: Int!
+  filterValues: [ServiceCategoryFilterValue!]!
+}
+
+type Category {
+  id: ID!
+  name: String!
+  sortOrder: Int!
+  status: ServiceCategoryStatus!
+  slug: String!
+  filters: [ServiceCategoryFilter!]!
+  thumbnail: String!
+  description: TranslationText!
+  metaTagDescription: TranslationText!
+  metaTagTitle: TranslationText!
+  metaTagKeywords: TranslationText!
+  seo: TranslationText!
+}
+
+enum ServiceCategoryStatus {
+  active
+  inActive
 }
 
 type RestaurantMenu {
@@ -203,6 +222,8 @@ type Restaurant {
   location: ServiceLocation!
   presentations: [ServicePresentation!]!
   policies: [ServicePolicy!]!
+  rating: Float!
+  reviews: Int!
   cancelationPolicies: [ServiceCancelationPolicy!]!
   serviceMetaInfo: ServiceMetaInfo!
   payment_methods: [ServicePaymentMethods!]!
@@ -249,7 +270,9 @@ type BeautyCenterTreatment {
 
 type BeautyCenter {
   id: ID!
+  contact: ServiceContact!
   ownerId: ID!
+  owner: Account
   createdAt: DateTime!
   updatedAt: DateTime!
   vat: Float!
@@ -266,6 +289,7 @@ type BeautyCenter {
   cancelationPolicies: [ServiceCancelationPolicy!]!
   type_of_seller: ServiceTypeOfSeller!
   treatments: [BeautyCenterTreatment!]!
+  workingHours: WorkingSchedule
 }
 
 enum ServiceTypeOfSeller {
@@ -300,6 +324,8 @@ enum HealthCenterDoctorAvailablityStatus {
 }
 
 type HealthCenter {
+  owner: Account
+  contact: ServiceContact!
   id: ID!
   ownerId: ID!
   vat: Float!
@@ -313,6 +339,7 @@ type HealthCenter {
   payment_methods: [ServicePaymentMethods!]!
   cancelationPolicies: [ServiceCancelationPolicy!]!
   doctors: [HealthCenterDoctor!]!
+  workingHours: WorkingSchedule!
 }
 
 type VehicleProperties {
@@ -338,6 +365,9 @@ type Vehicle {
 type VehicleService {
   id: ID!
   ownerId: ID!
+  owner: Account!
+  workingHours: WorkingSchedule!
+  contact: ServiceContact!
   createdAt: DateTime!
   updatedAt: DateTime!
   vat: Float!
@@ -409,7 +439,9 @@ type Query {
   getServiceInsuranceHistory(args: GetInsurancesHistoryInput!): [Insurance!]!
   getFilteredServices(args: GetFilteredServicesAdminInput!): [ServiceDiscovery!]!
   getServiceCategoryById(categoryId: String!): Category!
-  getServiceCategories(args: GetFilteredCategoriesInput): [Category!]!
+  getServiceCategoryBySlug(slug: String!): Category!
+  getServiceCategories: [Category!]!
+  getFilteredServiceCategories(args: GetFilteredCategoriesInput): [Category!]!
   getHotels: [Hotel!]!
   getHotelService(getHotelServiceArgs: GetHotelServiceArgs!): Hotel!
   searchHotelRooms(searchHotelRoomsArgs: SearchHotelRoomLocationInput!): [HotelRoom!]!
@@ -418,7 +450,9 @@ type Query {
   searchFilteredRestaurant(filtersInput: SearchFilteredRestaurantInput!): [Restaurant!]!
   getHealthCenter(serviceId: String!): HealthCenter!
   searchHealthCenters(searchHealthCenterArgs: SearchHealthCenterInput!): [HealthCenter!]!
+  searchHealthCenterDoctors(searchHealthCenterArgs: SearchHealthCenterInput!): [HealthCenterDoctor!]!
   getBeautyCenterById(id: String!): BeautyCenter!
+  getFilteredBeuatyCenterTreatments(args: SearchFilteredBeautyCenterInput!): [BeautyCenterTreatment!]!
   getBeautyCenterTreatmentCategories: [BeautyCenterTreatmentCategory!]!
   getBeautyCenterTreatmentCategoriesByIds(ids: [String!]!): [BeautyCenterTreatmentCategory!]!
   getAllVehicles(args: GetVehiclesInput!): [VehicleService!]!
@@ -508,6 +542,19 @@ input SearchHealthCenterInput {
   rate: Int
   minPrice: Float
   maxPrice: Float
+}
+
+input SearchFilteredBeautyCenterInput {
+  pagination: GqlPaginationInput
+  typeOfSeller: String
+  beautyCenterTypeId: ID
+  beautySalonTypeId: ID
+  treatmentTypeId: ID
+  cancelationOption: Boolean
+  rating: Int
+  minPrice: Float
+  maxPrice: Float
+  query: String
 }
 
 input GetVehiclesInput {
@@ -651,6 +698,13 @@ input TranslationTextArrayInput {
 input CreateCategoryInput {
   name: [TranslationTextInput!]!
   filters: [ServiceCategoryFilterInput!]!
+  slug: String!
+  thumbnail: String!
+  description: TranslationTextInput!
+  metaTagDescription: TranslationTextInput!
+  metaTagTitle: TranslationTextInput!
+  metaTagKeywords: TranslationTextInput!
+  seo: TranslationTextInput!
 }
 
 input ServiceCategoryFilterInput {
@@ -669,6 +723,13 @@ input ServiceCategoryFilterValueInput {
 input UpdateCategoryInput {
   name: [TranslationTextInput!]
   filters: [ServiceCategoryFilterInput!]
+  slug: String
+  thumbnail: String
+  description: TranslationTextInput
+  metaTagDescription: TranslationTextInput
+  metaTagTitle: TranslationTextInput
+  metaTagKeywords: TranslationTextInput
+  seo: TranslationTextInput
   id: String!
 }
 
@@ -831,6 +892,7 @@ input CreateHealthCenterInput {
   serviceMetaInfo: [ServiceMetaInfoTranslationInput!]!
   payment_methods: [ServicePaymentMethods!]!
   cancelationPolicies: [ServiceCancelationPolicyInput!]!
+  contact: ServiceContactInput!
   doctors: [HealthCenterDoctorInput!]!
 }
 
@@ -922,6 +984,7 @@ input UpdateTreatmentCategoriesInput {
 }
 
 input CreateVehicleServiceInput {
+  contact: ServiceContactInput!
   vat: Float!
   location: ServiceLocationInput!
   presentations: [ServicePresentationInput!]!

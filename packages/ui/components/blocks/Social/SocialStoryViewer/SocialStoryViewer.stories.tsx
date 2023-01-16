@@ -2,7 +2,7 @@ import React from "react";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { SocialStoryViewer } from "@UI";
 import ChakraUiDecorator from "@UI/SBDecorators/ChakraUiDecorator";
-import { PostCardPlaceHolder } from "@UI/placeholder";
+import { PostCardPlaceHolder } from "placeholder";
 import { useSetRecoilState } from "recoil";
 import { SocialStoriesState } from "@src/state";
 import { useStorySeenBy } from "../../../../Hooks";
