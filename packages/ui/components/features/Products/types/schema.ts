@@ -1,15 +1,15 @@
-export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = {
+type Maybe<T> = T | null;
+type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]?: Maybe<T[SubKey]>;
 };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>;
 };
 /** All built-in and custom scalars, mapped to their actual values */
-export type Scalars = {
+type Scalars = {
   ID: string;
   String: string;
   Boolean: boolean;
@@ -100,11 +100,27 @@ export type Product = {
   reviews: Scalars["Int"];
   sales: Scalars["Int"];
   vat: Scalars["Float"];
+  status: ProductStatus;
+  usageStatus: ProductUsageStatus;
+  createdAt: Scalars["String"];
+  updatedAt: Scalars["String"];
 };
 
 export enum VisibilityEnum {
   Hidden = "hidden",
   Public = "public",
+}
+
+export enum ProductStatus {
+  Suspended = "suspended",
+  Active = "active",
+  Pasued = "pasued",
+  Pending = "pending",
+}
+
+export enum ProductUsageStatus {
+  Used = "used",
+  New = "new",
 }
 
 export type MyProduct = {
@@ -131,6 +147,10 @@ export type MyProduct = {
   reviews: Scalars["Int"];
   sales: Scalars["Int"];
   vat: Scalars["Float"];
+  status: ProductStatus;
+  usageStatus: ProductUsageStatus;
+  createdAt: Scalars["String"];
+  updatedAt: Scalars["String"];
   earnings: Scalars["Float"];
 };
 
@@ -245,7 +265,8 @@ export type Query = {
   getFilteredProductCategories: Array<Category>;
   getAdminProductsFilters: Array<Filter>;
   getProductsFilters: Array<Filter>;
-  getAllProducts: Array<Product>;
+  getAdminFilteredProducts: Array<Product>;
+  adminGetProduct?: Maybe<Product>;
   getShippingGeoZoneRules: Array<ShippingTypeRule>;
   getShippingRuleGeoZones: Array<ShippingRuleGeoZone>;
 };
@@ -286,8 +307,12 @@ export type QueryGetAdminProductsFiltersArgs = {
   getFiltersArgs: GetFiltersInput;
 };
 
-export type QueryGetAllProductsArgs = {
+export type QueryGetAdminFilteredProductsArgs = {
   args: GetFilteredProductsAdminInput;
+};
+
+export type QueryAdminGetProductArgs = {
+  id: Scalars["String"];
 };
 
 export type QueryGetShippingRuleGeoZonesArgs = {
@@ -323,6 +348,7 @@ export type GetFilteredProductsInput = {
   colors?: Maybe<Array<Scalars["String"]>>;
   size?: Maybe<Array<Scalars["String"]>>;
   inStock?: Maybe<Scalars["Boolean"]>;
+  usageStatus?: Maybe<ProductUsageStatus>;
   pagination: GqlPaginationInput;
 };
 
@@ -346,15 +372,9 @@ export type GetFilteredProductsAdminInput = {
   status?: Maybe<ProductStatus>;
   updatedAt?: Maybe<Scalars["String"]>;
   type?: Maybe<ProductType>;
+  usageStatus?: Maybe<ProductUsageStatus>;
   pagination: GqlPaginationInput;
 };
-
-export enum ProductStatus {
-  Suspended = "suspended",
-  Active = "active",
-  Pasued = "pasued",
-  Pending = "pending",
-}
 
 export enum ProductType {
   Goods = "goods",

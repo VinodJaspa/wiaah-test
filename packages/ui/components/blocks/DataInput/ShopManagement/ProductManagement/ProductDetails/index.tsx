@@ -128,7 +128,9 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
 
               <SubCategorySelect
                 onCateSelection={(category) => {
-                  setFieldValue("categoryId", category[-1].id);
+                  if(category[-1]){
+                    setFieldValue("categoryId", category[-1].id);
+                  }
                 }}
                 categories={FormatCategoryFilters(categories || [])}
               />

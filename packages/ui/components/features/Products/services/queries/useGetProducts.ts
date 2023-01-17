@@ -1,24 +1,19 @@
-import {
-  createGraphqlRequestClient,
-  FormatedSearchableFilter,
-  getProductsFetcher,
-  QueryPaginationInputs,
-} from "api";
+import { createGraphqlRequestClient } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
-import { AsyncReturnType, GqlResponse } from "types";
+import { GqlResponse } from "types";
 
-export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = {
+type Maybe<T> = T | null;
+type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]?: Maybe<T[SubKey]>;
 };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>;
 };
 /** All built-in and custom scalars, mapped to their actual values */
-export type Scalars = {
+type Scalars = {
   ID: string;
   String: string;
   Boolean: boolean;

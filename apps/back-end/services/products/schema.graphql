@@ -84,11 +84,27 @@ type Product {
   reviews: Int!
   sales: Int!
   vat: Float!
+  status: ProductStatus!
+  usageStatus: ProductUsageStatus!
+  createdAt: String!
+  updatedAt: String!
 }
 
 enum VisibilityEnum {
   hidden
   public
+}
+
+enum ProductStatus {
+  suspended
+  active
+  pasued
+  pending
+}
+
+enum ProductUsageStatus {
+  used
+  new
 }
 
 type MyProduct {
@@ -114,6 +130,10 @@ type MyProduct {
   reviews: Int!
   sales: Int!
   vat: Float!
+  status: ProductStatus!
+  usageStatus: ProductUsageStatus!
+  createdAt: String!
+  updatedAt: String!
   earnings: Float!
 }
 
@@ -223,7 +243,8 @@ type Query {
   getFilteredProductCategories(args: GetFilteredCategory): [Category!]!
   getAdminProductsFilters(getFiltersArgs: GetFiltersInput!): [Filter!]!
   getProductsFilters: [Filter!]!
-  getAllProducts(args: GetFilteredProductsAdminInput!): [Product!]!
+  getAdminFilteredProducts(args: GetFilteredProductsAdminInput!): [Product!]!
+  adminGetProduct(id: String!): Product
   getShippingGeoZoneRules: [ShippingTypeRule!]!
   getShippingRuleGeoZones(id: String!): [ShippingRuleGeoZone!]!
 }
@@ -257,6 +278,7 @@ input GetFilteredProductsInput {
   colors: [String!]
   size: [String!]
   inStock: Boolean
+  usageStatus: ProductUsageStatus
   pagination: GqlPaginationInput!
 }
 
@@ -280,14 +302,8 @@ input GetFilteredProductsAdminInput {
   status: ProductStatus
   updatedAt: String
   type: ProductType
+  usageStatus: ProductUsageStatus
   pagination: GqlPaginationInput!
-}
-
-enum ProductStatus {
-  suspended
-  active
-  pasued
-  pending
 }
 
 enum ProductType {

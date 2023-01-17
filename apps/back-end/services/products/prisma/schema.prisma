@@ -47,6 +47,11 @@ type ProductAttribute {
   values String[]
 }
 
+enum ProductUsageStatus {
+  used
+  new
+}
+
 model Product {
   id                          String                @id() @default(auto()) @map("_id") @db.ObjectId()
   sellerId                    String
@@ -58,6 +63,7 @@ model Product {
   description                 String
   price                       Int
   status                      ProductStatus         @default(active)
+  usageStatus                 ProductUsageStatus    @default(new)
   vat                         Int
   categoryId                  String
   attributes                  ProductAttribute[]
