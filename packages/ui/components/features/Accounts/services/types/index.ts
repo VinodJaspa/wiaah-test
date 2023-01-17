@@ -91,6 +91,7 @@ export type Query = {
   acceptAccountVerification: Scalars["Boolean"];
   getFilteredSellers: Array<Account>;
   getFilteredBuyers: Array<Account>;
+  adminGetAccount: Account;
   getPendingSellers: Array<Account>;
   getAccountDeletionRequests: Array<AccountDeletionRequest>;
 };
@@ -109,6 +110,10 @@ export type QueryGetFilteredSellersArgs = {
 
 export type QueryGetFilteredBuyersArgs = {
   getBuyersInput: GetBuyersAccountsInput;
+};
+
+export type QueryAdminGetAccountArgs = {
+  id: Scalars["String"];
 };
 
 export type QueryGetPendingSellersArgs = {
@@ -171,7 +176,6 @@ export type Mutation = {
   refuseAccountVerification: Scalars["Boolean"];
   updateUserLocation: Scalars["Boolean"];
   adminEditAccount: Account;
-  adminGetAccount: Account;
   acceptSellerAccount: Scalars["Boolean"];
   declineSellerAccount: Scalars["Boolean"];
   suspenseAccount: Scalars["Boolean"];
@@ -211,16 +215,16 @@ export type MutationAdminEditAccountArgs = {
   editAccountInput: UpdateSellerAccountAdminInput;
 };
 
-export type MutationAdminGetAccountArgs = {
-  id: Scalars["String"];
-};
-
 export type MutationAcceptSellerAccountArgs = {
   id: Scalars["String"];
 };
 
 export type MutationDeclineSellerAccountArgs = {
   args: DeclineSellerAccountRequest;
+};
+
+export type MutationSuspenseAccountArgs = {
+  args: SuspenseAccountAdminInput;
 };
 
 export type MutationRegisterArgs = {
@@ -287,6 +291,11 @@ export enum RegisterAccountType {
 export type DeclineSellerAccountRequest = {
   id: Scalars["ID"];
   reason: Scalars["String"];
+};
+
+export type SuspenseAccountAdminInput = {
+  userId: Scalars["ID"];
+  rejectReason?: Maybe<Scalars["String"]>;
 };
 
 export type CreateAccountInput = {

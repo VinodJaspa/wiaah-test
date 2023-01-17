@@ -1,6 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Args, Context, Query, Resolver } from '@nestjs/graphql';
+import { Args, Context, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   accountType,
   GqlAuthorizationGuard,
@@ -19,15 +19,15 @@ export class AuthAdminResolver {
 
   cookiesKey = this.config.get('COOKIES_KEY');
 
-  @Query(() => GqlStatusResponse)
+  @Mutation(() => GqlStatusResponse)
   async loginAs(
     @Args('userId') id: string,
     @Context() ctx: any,
   ): Promise<GqlStatusResponse> {
-    const { access_token } = await this.service.loginAs(id);
+    const res = await this.service.loginAs(id);
 
-    if (ctx && ctx.res && ctx.res.cookie) {
-      ctx.res.cookie(this.cookiesKey, access_token, { httpOnly: true });
+    if (ctx && ctx.res && ctx.res.cookie && res?.access_token) {
+      ctx.res.cookie(this.cookiesKey, res.access_token, { httpOnly: true });
     }
 
     return {

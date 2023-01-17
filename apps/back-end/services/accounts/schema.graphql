@@ -142,7 +142,7 @@ type Mutation {
   adminEditAccount(editAccountInput: UpdateSellerAccountAdminInput!): Account!
   acceptSellerAccount(id: String!): Boolean!
   declineSellerAccount(args: DeclineSellerAccountRequest!): Boolean!
-  suspenseAccount: Boolean!
+  suspenseAccount(args: SuspenseAccountAdminInput!): Boolean!
   register(RegisterInput: CreateAccountInput!): String!
   requestAccountDeletion: Boolean!
   getMyAccount: Account!
@@ -199,6 +199,11 @@ enum RegisterAccountType {
 input DeclineSellerAccountRequest {
   id: ID!
   reason: String!
+}
+
+input SuspenseAccountAdminInput {
+  userId: ID!
+  rejectReason: String
 }
 
 input CreateAccountInput {

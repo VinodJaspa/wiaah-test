@@ -17,6 +17,7 @@ import { DeclineSellerAccountRequest } from './dto/declineSellerAccountRequest.i
 import { GetAccountDeletionRequestsInput } from './dto/get-account-deletion-requests.input';
 import { GetBuyersAccountsInput } from './dto/get-buyers-accounts.input';
 import { GetFilteredSellersAccountsInput } from './dto/get-sellers-accounts.input';
+import { SuspenseAccountAdminInput } from './dto/suspense-account-input';
 import { UpdateSellerAccountAdminInput } from './dto/update-account.input';
 import { AccountDeletionRequest } from './entities/account-deletion-request.entity';
 import { Account } from './entities/account.entity';
@@ -109,14 +110,14 @@ export class AccountsAdminResolver {
   }
 
   @Mutation(() => Boolean)
-  async suspenseAccount(@Payload('id') id: string) {
+  async suspenseAccount(@Args('args') args: SuspenseAccountAdminInput) {
     const acc = await this.prisma.account.update({
       where: {
-        id,
+        id: args.userId,
       },
       data: {
         status: 'suspended',
-        rejectReason: 'inappropriate activity',
+        rejectReason: args.rejectReason || 'inappropriate activity',
       },
     });
 
