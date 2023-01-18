@@ -100,6 +100,7 @@ enum ProductStatus {
   active
   pasued
   pending
+  deleted
 }
 
 enum ProductUsageStatus {
@@ -329,6 +330,7 @@ type Mutation {
   updateFilter(updateFilterArgs: UpdateFilterInput!): Filter!
   deleteFilter(deleteFilterId: String!): Filter!
   updateProductAdmin(args: UpdateProductInput!): Boolean!
+  adminDeleteProduct(id: String!, reason: String!): Boolean!
   createShippingTypeRuleGeoZone(args: CreateShippingGeoZone!): Boolean!
   createShippingTypeRule(args: CreateShippingTypeRuleInput!): Boolean!
   createShippingRule(createShippingRuleArgs: CreateShippingRuleInput!): ShippingRule!

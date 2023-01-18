@@ -1,4 +1,9 @@
+import { ServiceMetaInfoInput } from '@dto';
 import { Field, ObjectType } from '@nestjs/graphql';
+import {
+  CreateInputGqlTranslationInputField,
+  CreateObjectGqlTranslationInputField,
+} from 'nest-utils';
 
 @ObjectType()
 export class ServiceMetaInfo {
@@ -17,3 +22,8 @@ export class ServiceMetaInfo {
   @Field(() => [String])
   hashtags: string[];
 }
+
+@ObjectType()
+export class ServiceMetaInfoTranslation extends CreateObjectGqlTranslationInputField(
+  ServiceMetaInfo,
+) {}

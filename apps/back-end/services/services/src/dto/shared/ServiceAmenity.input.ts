@@ -1,9 +1,9 @@
 import { TranslationsInput } from '@decorators';
 import { Field, InputType } from '@nestjs/graphql';
-import { CreateGqlTranslationInputField } from 'nest-utils';
+import { CreateInputGqlTranslationInputField } from 'nest-utils';
 
 @InputType()
-export class ServiceAmenitiesLabelTranslationInput extends CreateGqlTranslationInputField(
+export class ServiceAmenitiesLabelTranslationInput extends CreateInputGqlTranslationInputField(
   String,
 ) {}
 

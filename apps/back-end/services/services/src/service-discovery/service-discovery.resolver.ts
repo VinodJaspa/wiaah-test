@@ -3,6 +3,7 @@ import { GetLang, UserPreferedLang } from 'nest-utils';
 import { Prisma, ServiceType } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 import {
+  AdminDeleteServiceInput,
   GetFilteredServicesAdminInput,
   updateBeautyCenterAdminInput,
   updateHealthCenterAdminInput,
@@ -11,6 +12,7 @@ import {
   updateVehicleAdminInput,
 } from './dto';
 import { ServiceDiscovery } from './entities/service-discovery.entity';
+import { ServiceShopRaw } from './entities/services.entity';
 
 @Resolver(() => ServiceDiscovery)
 export class ServiceDiscoveryResolver {
@@ -96,7 +98,7 @@ export class ServiceDiscoveryResolver {
           type: args.type,
         }));
       default:
-        break;
+        return [];
     }
   }
 
@@ -355,7 +357,7 @@ export class ServiceDiscoveryResolver {
   }
 
   @Mutation(() => Boolean)
-  async updateHotelAdmin(args: updateHotelAdminInput) {
+  async updateHotelAdmin(@Args('args') args: updateHotelAdminInput) {
     const { id, ...rest } = args;
 
     await this.prisma.hotelService.update({
@@ -381,7 +383,7 @@ export class ServiceDiscoveryResolver {
   }
 
   @Mutation(() => Boolean)
-  async updateRestaurantAdmin(args: updateRestaurantAdminInput) {
+  async updateRestaurantAdmin(@Args('args') args: updateRestaurantAdminInput) {
     const { id, ...rest } = args;
 
     await this.prisma.restaurantService.update({
@@ -397,7 +399,9 @@ export class ServiceDiscoveryResolver {
   }
 
   @Mutation(() => Boolean)
-  async updateHealthCentertAdmin(args: updateHealthCenterAdminInput) {
+  async updateHealthCenterAdmin(
+    @Args('args') args: updateHealthCenterAdminInput,
+  ) {
     const { id, ...rest } = args;
 
     await this.prisma.healthCenterService.update({
@@ -413,7 +417,9 @@ export class ServiceDiscoveryResolver {
   }
 
   @Mutation(() => Boolean)
-  async updateBeautyCenterAdmin(args: updateBeautyCenterAdminInput) {
+  async updateBeautyCenterAdmin(
+    @Args('args') args: updateBeautyCenterAdminInput,
+  ) {
     const { id, treatments, ...rest } = args;
 
     for (const treatment of treatments) {
@@ -438,7 +444,7 @@ export class ServiceDiscoveryResolver {
   }
 
   @Mutation(() => Boolean)
-  async updateVehicleAdmin(args: updateVehicleAdminInput) {
+  async updateVehicleAdmin(@Args('args') args: updateVehicleAdminInput) {
     const { id, ...rest } = args;
 
     await this.prisma.vehicleService.update({
@@ -451,5 +457,40 @@ export class ServiceDiscoveryResolver {
     });
 
     return true;
+  }
+
+  @Mutation(() => Boolean)
+  async adminDeleteService(@Args('args') args: AdminDeleteServiceInput) {
+    const { id, deletionReason } = args;
+
+    await this.prisma.service.update({
+      where: {
+        id,
+      },
+      data: {
+        suspensionReason: deletionReason,
+        status: 'suspended',
+      },
+    });
+
+    return true;
+  }
+
+  @Query(() => ServiceShopRaw, { nullable: true })
+  async adminGetRawService(@Args('id') id: string): Promise<ServiceShopRaw> {
+    const service = await this.prisma.service.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    // @ts-ignore
+    return service
+      ? {
+          ...service,
+          createdAt: new Date(service.createdAt).toDateString(),
+          updatedAt: new Date(service.updatedAt).toDateString(),
+        }
+      : null;
   }
 }

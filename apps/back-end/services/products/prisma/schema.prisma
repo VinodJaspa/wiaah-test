@@ -63,6 +63,7 @@ model Product {
   description                 String
   price                       Int
   status                      ProductStatus         @default(active)
+  suspensionReason            String?
   usageStatus                 ProductUsageStatus    @default(new)
   vat                         Int
   categoryId                  String
@@ -217,4 +218,5 @@ enum ProductStatus {
   active
   pasued
   pending
+  deleted
 }

@@ -116,6 +116,7 @@ export enum ProductStatus {
   Active = "active",
   Pasued = "pasued",
   Pending = "pending",
+  Deleted = "deleted",
 }
 
 export enum ProductUsageStatus {
@@ -400,6 +401,7 @@ export type Mutation = {
   updateFilter: Filter;
   deleteFilter: Filter;
   updateProductAdmin: Scalars["Boolean"];
+  adminDeleteProduct: Scalars["Boolean"];
   createShippingTypeRuleGeoZone: Scalars["Boolean"];
   createShippingTypeRule: Scalars["Boolean"];
   createShippingRule: ShippingRule;
@@ -461,6 +463,11 @@ export type MutationDeleteFilterArgs = {
 
 export type MutationUpdateProductAdminArgs = {
   args: UpdateProductInput;
+};
+
+export type MutationAdminDeleteProductArgs = {
+  id: Scalars["String"];
+  reason: Scalars["String"];
 };
 
 export type MutationCreateShippingTypeRuleGeoZoneArgs = {

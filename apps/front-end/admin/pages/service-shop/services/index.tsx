@@ -1,3 +1,4 @@
+import { useAdminDeleteServiceMutation } from "@features/Services/Services/mutation";
 import { NextPage } from "next";
 import { getRandomImage } from "placeholder";
 import React from "react";
@@ -21,6 +22,9 @@ import {
   THead,
   Tr,
   TrashIcon,
+  useGetFilteredServicesQuery,
+  usePaginationControls,
+  ServiceType,
 } from "ui";
 import { randomNum } from "utils";
 
@@ -47,18 +51,22 @@ const serviceTypes = [
 const products: NextPage = () => {
   const { visit, getCurrentPath } = useRouting();
   const { t } = useTranslation();
+  const [serviceType, setServiceType] = React.useState<ServiceType>(
+    ServiceType.Hotel
+  );
+  const { pagination, controls } = usePaginationControls();
+  const { data: services } = useGetFilteredServicesQuery({
+    pagination,
+    type: serviceType,
+  });
+  const { mutate } = useAdminDeleteServiceMutation();
 
-  const products: Service[] = [...Array(15)].map((_, i) => ({
-    id: i.toString(),
-    price: randomNum(15),
-    qty: randomNum(5),
-    type: serviceTypes[randomNum(serviceTypes.length)],
-    sellerName: "seller name",
-    thubmnail: getRandomImage(),
-    status: "Active",
-    updatedAt: new Date().toString(),
-    name: `service name ${i}`,
-  }));
+  function handleDeleteService(id: string) {
+    mutate({
+      id,
+      deletionReason: "",
+    });
+  }
 
   return (
     <>
@@ -115,19 +123,19 @@ const products: NextPage = () => {
             </THead>
 
             <TBody>
-              {products.map((prod, i) => (
+              {services.map((prod, i) => (
                 <Tr key={prod.id}>
                   <Td>
                     <Checkbox />
                   </Td>
                   <Td>
-                    <Image className="w-full" src={prod.thubmnail} />
+                    <Image className="w-full" src={prod.thumbnail} />
                   </Td>
-                  <Td>{prod.name}</Td>
+                  <Td>{prod.title}</Td>
                   <Td>{prod.sellerName}</Td>
                   <Td>{prod.id.slice(0, 8)}...</Td>
                   <Td>
-                    <PriceDisplay price={prod.price} />
+                    <PriceDisplay price={prod.price[0]} />
                   </Td>
                   <Td className="whitespace-nowrap">{prod.type}</Td>
                   <Td>{prod.status}</Td>
@@ -146,7 +154,10 @@ const products: NextPage = () => {
                         }
                         className="w-8 h-8 p-2 bg-cyan-400"
                       />
-                      <TrashIcon className="w-8 h-8 p-2 bg-red-500" />
+                      <TrashIcon
+                        onClick={() => handleDeleteService(prod.id)}
+                        className="w-8 h-8 p-2 bg-red-500"
+                      />
                     </div>
                   </Td>
                 </Tr>

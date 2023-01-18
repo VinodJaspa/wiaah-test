@@ -31,7 +31,7 @@ import {
   usePaginationControls,
 } from "ui";
 
-const products: NextPage = () => {
+const Products: NextPage = () => {
   const { visit, getCurrentPath } = useRouting();
   const { t } = useTranslation();
   const { pagination, controls } = usePaginationControls();
@@ -205,4 +205,4 @@ const products: NextPage = () => {
   );
 };
 
-export default products;
+export default Products;

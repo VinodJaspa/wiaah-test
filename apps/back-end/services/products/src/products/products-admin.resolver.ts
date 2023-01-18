@@ -112,4 +112,21 @@ export class ProductsAdminResolver {
     });
     return res;
   }
+
+  @Mutation(() => Boolean)
+  async adminDeleteProduct(
+    @Args('id') id: string,
+    @Args('reason') reason: string,
+  ) {
+    await this.prisma.product.update({
+      where: {
+        id,
+      },
+      data: {
+        status: 'suspended',
+        suspensionReason: reason,
+      },
+    });
+    return true;
+  }
 }
