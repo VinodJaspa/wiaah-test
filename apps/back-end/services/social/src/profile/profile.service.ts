@@ -266,16 +266,38 @@ export class ProfileService {
   // ---------------------------------------
   // Follow //
 
+  async sendFollowRequest(profileId: string, userId: string) {
+    const isFollowed = await this.isFollowedByUserId(profileId, userId);
+    if (isFollowed) return false;
+    const followingProfile = await this.getProfileByProfileId(profileId);
+
+    const isBlocked = this.isBlocked(followingProfile.ownerId, userId);
+    if (isBlocked) return false;
+
+    const res = await this.prisma.followRequest.create({
+      data: {
+        ownerId: userId,
+        profileId,
+      },
+    });
+
+    return !!res;
+  }
+
+  async isBlocked(blockerId: string, userId: string) {
+    const isBlocked = await this.querybus.execute<
+      GetIsUserBlockedQuery,
+      boolean
+    >(new GetIsUserBlockedQuery(blockerId, userId));
+  }
+
   async followProfile(profileId: string, userId: string): Promise<Profile> {
     const followerProfile = await this.getProfileByUserId(userId);
     const followingProfile = await this.getProfileByProfileId(profileId);
     if (!followerProfile || !followingProfile)
       throw new ProfileNotfoundException();
 
-    const isBlocked = await this.querybus.execute<
-      GetIsUserBlockedQuery,
-      boolean
-    >(new GetIsUserBlockedQuery(followingProfile.ownerId, userId));
+    const isBlocked = this.isBlocked(followingProfile.ownerId, userId);
     if (isBlocked) throw new ProfileBlockedException();
 
     // update the follower

@@ -18,12 +18,17 @@ import { mapArray, NumberShortner } from "utils";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 import { SocialStoryState } from "@src/state";
-import { useReactPubsub } from "react-pubsub";
-import { SocialProfileData } from "api";
 import { useDisclouser } from "hooks";
+import {
+  Profile,
+  ProfileVisibility,
+  useSendFollowRequestMutation,
+} from "@features/Social";
+import { useTypedReactPubsub } from "@libs";
+import { useUnFollowProfileMutation } from "@features/Social";
 
 export interface SocialProfileProps {
-  profileInfo: SocialProfileData;
+  profileInfo: Profile & { isFollowed: boolean };
   onFollow?: () => void;
 }
 
@@ -32,10 +37,13 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
   profileInfo,
 }) => {
   const { t } = useTranslation();
-  const { emit } = useReactPubsub((keys) => keys.serviceModal);
+  const { emit } = useTypedReactPubsub((keys) => keys.serviceModal);
   const { OpenStories, removeNewStory } = useStory();
   const storyData = useRecoilValue(SocialStoryState);
   const { OpenLoginPopup } = useLoginPopup();
+  const { mutate: unFollowProfile } = useUnFollowProfileMutation();
+  const { mutate: followProfile } = useUnFollowProfileMutation();
+  const { mutate: sendFollowReq } = useSendFollowRequestMutation();
 
   function handleOpenStory() {
     OpenStories();
@@ -46,6 +54,24 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
     OpenLoginPopup();
     onFollow && onFollow();
   }
+
+  const isProfilePublic = profileInfo.visibility === ProfileVisibility.Public;
+
+  function handleFollowProfile() {
+    if (profileInfo.isFollowed) {
+      unFollowProfile({ profileId: profileInfo.id });
+      return;
+    }
+    if (isProfilePublic) {
+      followProfile({
+        profileId: profileInfo.id,
+      });
+      return;
+    }
+
+    sendFollowReq(profileInfo.id);
+  }
+
   const { isOpen, handleClose, handleOpen } = useDisclouser();
 
   const {
@@ -55,21 +81,6 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
   } = useDisclouser();
 
   if (!profileInfo) return null;
-
-  const {
-    publications,
-    subscribers,
-    subscriptions,
-    name,
-    profession,
-    thumbnail,
-    verified,
-    bio,
-    links,
-    isFollowed,
-    public: PublicProfile,
-    id,
-  } = profileInfo;
 
   return (
     <div className="flex flex-col w-full bg-primary h-80 relative rounded-2xl ">
@@ -82,7 +93,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
       <div className="flex flex-col h-[11rem] w-full  items-end justify-center pt-6 px-8 gap-3 text-white">
         <div className="flex flex-col gap-3 items-center">
           <QrcodeDisplay
-            value={id}
+            value={profileInfo.id}
             color="#ffffff"
             transparentBg
             className={"w-16 fill-white"}
@@ -110,28 +121,38 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
         <div className="flex flex-col gap-2">
           <div className="flex gap-4">
             <div className="absolute left-14 top-0 -translate-y-1/2">
-              <Avatar className="w-[6.75rem]" src={thumbnail} name={name} />
+              <Avatar
+                className="w-[6.75rem]"
+                src={profileInfo.photo}
+                name={profileInfo.username}
+              />
             </div>
             <div className="w-24 h-full"></div>
 
             <HStack>
-              <p className="text-xl whitespace-nowrap font-bold">{name}</p>
-              <p className="text-sm font-light text-grayText">{profession}</p>
-              {verified ? (
+              <p className="text-xl whitespace-nowrap font-bold">
+                {profileInfo.username}
+              </p>
+              <p className="text-sm font-light text-grayText">
+                {profileInfo.profession}
+              </p>
+              {/* {profileInfo. ? (
                 <VerifiedIcon className="text-lg text-primary" />
-              ) : null}
+              ) : null} */}
             </HStack>
           </div>
           <Stack divider={<Divider variant="vert" className="mx-[1.25rem]" />}>
             <HStack>
               <p className="font-bold text-lg">
-                {NumberShortner(publications)}
+                {NumberShortner(profileInfo.publications)}
               </p>
               <p>{t("Posts")}</p>
             </HStack>
 
             <HStack className="cursor-pointer" onClick={() => handleOpen()}>
-              <p className="font-bold text-lg">{NumberShortner(subscribers)}</p>
+              <p className="font-bold text-lg">
+                {NumberShortner(profileInfo.followers)}
+              </p>
               <p>{t("Followers")}</p>
             </HStack>
 
@@ -140,7 +161,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
               onClick={() => subscriptionsOnOpen()}
             >
               <p className="font-bold text-lg">
-                {NumberShortner(subscriptions)}
+                {NumberShortner(profileInfo.following)}
               </p>
               <p>{t("Following")}</p>
             </HStack>
@@ -149,9 +170,11 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
 
         <div className="flex flex-col w-full gap-1">
           <p className="font-semibold text-lg">{t("Bio")}</p>
-          <p className="font-light text-base text-lightBlack">{bio}</p>
+          <p className="font-light text-base text-lightBlack">
+            {profileInfo.bio}
+          </p>
           <div className="flex flex-wrap gap-2">
-            {mapArray(links, (link, i) => (
+            {mapArray([], (link, i) => (
               <HStack key={i} className="flex gap-2">
                 <LinkIcon className="text-base text-primary" />
                 <p className="text-base text-black font-light underline underline-offset-4">
@@ -162,12 +185,12 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           </div>
         </div>
         <div className="flex flex-col gap-4 items-center">
-          <Button className="whitespace-nowrap">
-            {isFollowed
+          <Button onClick={handleFollowProfile} className="whitespace-nowrap">
+            {profileInfo.isFollowed
               ? t("Unfollow")
-              : PublicProfile
-              ? t("Ask To Follow")
-              : t("Follow")}
+              : isProfilePublic
+              ? t("Follow")
+              : t("Ask To Follow")}
           </Button>
         </div>
       </div>
