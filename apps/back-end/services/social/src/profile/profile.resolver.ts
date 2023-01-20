@@ -52,6 +52,11 @@ export class ProfileResolver {
     return await this.profileService.getMyProfile(user.id);
   }
 
+  @Query(() => Profile)
+  async getProfile(@Args('id') id: string) {
+    return this.profileService.getProfileByProfileId(id);
+  }
+
   @Mutation(() => Profile)
   async updateMyProfile(
     @Args('updateProfileInput') updateProfileInput: UpdateProfileInput,

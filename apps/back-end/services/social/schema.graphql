@@ -40,6 +40,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Profile {
+  user: Account
   id: ID!
   ownerId: ID!
   createdAt: DateTime!
@@ -117,6 +118,8 @@ type NewsfeedPost {
   mentions: [PostMention!]!
   location: PostLocation
   tags: [PostTag!]!
+  createdAt: String!
+  updatedAt: String!
   publisher: Profile
   authorProfileId: ID!
 }
@@ -174,10 +177,6 @@ enum ContentReactionType {
   funny
   sad
   angry
-}
-
-type ContentReactionResponse {
-  data: ContentReaction!
 }
 
 type ContentShare {
@@ -286,27 +285,28 @@ type Story {
   publisherId: ID!
   createdAt: DateTime!
   updatedAt: DateTime!
-  type: String!
+  type: StoryType!
   viewsCount: Int!
   reactionsNum: Int!
+  referenceId: ID
   content: String
   attachements: Attachment
-  views: [StoryView!]
-  productId: ID
-  newsfeedPostId: ID
-  shopPostId: ID
-  affiliationPostId: ID
-  servicePostId: ID
+  views: [StoryView!]!
   newsfeedPost: NewsfeedPost
   shopPost: ShopPost
   affiliationPost: AffiliationPost
-  product: Product
   servicePost: ServicePost
-  resloveProduct: Product!
-  resloveNewsfeedPost: NewsfeedPost!
-  resloveShopPost: ShopPost!
-  resloveAffiliationPost: AffiliationPost!
-  resloveServicePost: ServicePost!
+}
+
+enum StoryType {
+  base
+  text
+  image
+  video
+  affiliation
+  product
+  post
+  service
 }
 
 type StoryView {
@@ -369,14 +369,15 @@ type Action {
 type Query {
   findAll: ProfilePaginatedResponse!
   myProfile: Profile!
+  getProfile(id: String!): Profile!
   searchPopularUsers(args: SearchPopularProfilesInput!): ProfilePaginatedResponse!
   getFollowersByProfileId(getFollowersMetaInput: GetProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
   getFollowingByProfileId(getFollowingMetaInput: GetProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
   getMyFollowers(getMyFollowersInput: GetMyProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
   getMyFollowing(getMyFollowersInput: GetMyProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
   isFollowed(profileId: String!): Boolean!
-  newsfeedPosts: [NewsfeedPost!]!
-  getProfile(id: String!): Profile!
+  getNewsfeedPostsByUserId(args: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
+  getAdminProfile(id: String!): Profile!
   comments: [Comment!]!
   updateComment(updateCommentInput: UpdateCommentInput!): PaginationCommentsResponse!
   getContentComments(getContentCommentsArgs: GetContentCommentsInput!): [Comment!]!
@@ -384,7 +385,7 @@ type Query {
   getNewsfeedHashtagPosts(hashtagSearchInput: GetHashtagNewsfeedPostsInput!): NewsfeedHashtagSearch!
   getMySavedPosts: UserSavedPostsGroup!
   getUserStory(userId: String!): Story!
-  getUserPrevStory(userId: String!): Story!
+  getUserPrevStory(storyId: String!): Story!
   getMyStories: [Story!]!
   getStoryViews(getStoryViewsInput: GetStorySeenByInput!): [StoryView!]!
   getRecentStories(getRecentStoryInput: GetRecentStoriesInput = {pagination: {page: 1, take: 10}}): [RecentStory!]!
@@ -416,6 +417,11 @@ input GqlPaginationInput {
 }
 
 input GetMyProfileFollowersMetaInput {
+  pagination: GqlPaginationInput!
+}
+
+input GetNewsfeedPostsByUserIdInput {
+  userId: ID!
   pagination: GqlPaginationInput!
 }
 
@@ -487,7 +493,7 @@ type Mutation {
   updateNewsfeedPost(updateNewsfeedPostInput: UpdateNewsfeedPostInput!): NewsfeedPost!
   removeNewsfeedPost(id: Int!): NewsfeedPost!
   updateProfile(updateProfileInput: UpdateProfileAdminInput!): Profile!
-  createReaction(CreateReactionInput: CreateReactionInput!): ContentReactionResponse!
+  createReaction(CreateReactionInput: CreateReactionInput!): Boolean!
   removeReaction(removeReactionArgs: RemoveReactionInput!): ContentReaction!
   createComment(createCommentInput: CreateCommentInput!): Comment!
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!

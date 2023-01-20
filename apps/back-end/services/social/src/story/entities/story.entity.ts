@@ -1,5 +1,6 @@
 import { Attachment, PostTag } from '@entities';
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
+import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
+import { StoryType } from 'prismaClient';
 
 import {
   AffiliationPost,
@@ -9,6 +10,8 @@ import {
   ShopPost,
 } from './extends';
 import { StoryView } from './story-view.entity';
+
+registerEnumType(StoryType, { name: 'StoryType' });
 
 @ObjectType()
 export class Story {
@@ -24,8 +27,8 @@ export class Story {
   @Field(() => Date)
   updatedAt: Date;
 
-  @Field(() => String)
-  type: string;
+  @Field(() => StoryType)
+  type: StoryType;
 
   @Field(() => Int)
   viewsCount: number;
@@ -33,29 +36,17 @@ export class Story {
   @Field(() => Int)
   reactionsNum: number;
 
+  @Field(() => ID, { nullable: true })
+  referenceId?: string;
+
   @Field(() => String, { nullable: true })
   content?: string;
 
   @Field(() => Attachment, { nullable: true })
   attachements?: Attachment;
 
-  @Field(() => [StoryView], { nullable: true })
+  @Field(() => [StoryView])
   views?: StoryView[];
-
-  @Field(() => ID, { nullable: true })
-  productId?: string;
-
-  @Field(() => ID, { nullable: true })
-  newsfeedPostId?: string;
-
-  @Field(() => ID, { nullable: true })
-  shopPostId?: string;
-
-  @Field(() => ID, { nullable: true })
-  affiliationPostId?: string;
-
-  @Field(() => ID, { nullable: true })
-  servicePostId?: string;
 
   @Field(() => NewsfeedPost, { nullable: true })
   newsfeedPost?: NewsfeedPost;
@@ -65,9 +56,6 @@ export class Story {
 
   @Field(() => AffiliationPost, { nullable: true })
   affiliationPost?: AffiliationPost;
-
-  @Field(() => Product, { nullable: true })
-  product?: Product;
 
   @Field(() => ServicePost, { nullable: true })
   servicePost?: ServicePost;

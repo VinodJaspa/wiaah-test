@@ -8,10 +8,10 @@ import {
   Stack,
   Divider,
   LinkIcon,
-  VerifiedIcon,
   QrcodeDisplay,
   SocialProfileOptionsDropdown,
   HorizontalDotsIcon,
+  VerifiedIcon,
 } from "@UI";
 import { useLoginPopup, useStory } from "@src/Hooks";
 import { mapArray, NumberShortner } from "utils";
@@ -24,11 +24,12 @@ import {
   ProfileVisibility,
   useSendFollowRequestMutation,
 } from "@features/Social";
-import { useTypedReactPubsub } from "@libs";
 import { useUnFollowProfileMutation } from "@features/Social";
+import { Account } from "@features/Accounts";
+import { useGetProfileStory } from "@features/Social/services/Queries/Stories/useGetProfileStory";
 
 export interface SocialProfileProps {
-  profileInfo: Profile & { isFollowed: boolean };
+  profileInfo: Profile & { isFollowed: boolean; user?: Partial<Account> };
   onFollow?: () => void;
 }
 
@@ -37,23 +38,12 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
   profileInfo,
 }) => {
   const { t } = useTranslation();
-  const { emit } = useTypedReactPubsub((keys) => keys.serviceModal);
-  const { OpenStories, removeNewStory } = useStory();
   const storyData = useRecoilValue(SocialStoryState);
-  const { OpenLoginPopup } = useLoginPopup();
+  const [storyProfileId, setStoryProfileId] = React.useState<string>();
+
   const { mutate: unFollowProfile } = useUnFollowProfileMutation();
   const { mutate: followProfile } = useUnFollowProfileMutation();
   const { mutate: sendFollowReq } = useSendFollowRequestMutation();
-
-  function handleOpenStory() {
-    OpenStories();
-    removeNewStory();
-  }
-
-  function handleOpenLogin() {
-    OpenLoginPopup();
-    onFollow && onFollow();
-  }
 
   const isProfilePublic = profileInfo.visibility === ProfileVisibility.Public;
 
@@ -85,7 +75,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
   return (
     <div className="flex flex-col w-full bg-primary h-80 relative rounded-2xl ">
       <div className="absolute right-10 text-white text-xl top-2">
-        <SocialProfileOptionsDropdown profileId={id}>
+        <SocialProfileOptionsDropdown profileId={profileInfo.id}>
           <HorizontalDotsIcon className="cursor-pointer" />
         </SocialProfileOptionsDropdown>
       </div>
@@ -101,7 +91,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           <p>{t("Show on map")}</p>
         </div>
       </div>
-      {storyData && <SocialStoryModal />}
+      {storyProfileId && <SocialStoryModal profileId={storyProfileId} />}
       <SubscribersPopup
         title={t("subscribers", "subscribers")}
         isOpen={isOpen}
@@ -122,6 +112,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
           <div className="flex gap-4">
             <div className="absolute left-14 top-0 -translate-y-1/2">
               <Avatar
+                onClick={() => setStoryProfileId(profileInfo.id)}
                 className="w-[6.75rem]"
                 src={profileInfo.photo}
                 name={profileInfo.username}
@@ -136,9 +127,9 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
               <p className="text-sm font-light text-grayText">
                 {profileInfo.profession}
               </p>
-              {/* {profileInfo. ? (
+              {profileInfo?.user?.verified ? (
                 <VerifiedIcon className="text-lg text-primary" />
-              ) : null} */}
+              ) : null}
             </HStack>
           </div>
           <Stack divider={<Divider variant="vert" className="mx-[1.25rem]" />}>

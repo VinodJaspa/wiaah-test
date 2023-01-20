@@ -13,6 +13,8 @@ import {
   useSocialPostSettingsPopup,
   useShareModal,
   useSocialPostMentionsModal,
+  NewsfeedPost,
+  Profile,
 } from "@UI/components/features";
 import { UserProfileDisplay } from "@UI/components/blocks/DataDisplay";
 import { Interaction } from "types";
@@ -21,15 +23,14 @@ import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 
 export interface PostCardProps {
-  profileInfo: ProfileInfo;
-  postInfo: PostInfo;
+  profileInfo: Profile;
+  postInfo: NewsfeedPost;
   onInteraction?: (interaction: Interaction) => any;
 }
 
 export const PostCard: React.FC<PostCardProps> = ({
   postInfo,
   profileInfo,
-  onInteraction,
 }) => {
   const { open } = useShareModal();
   const { visit, getUrl } = useRouting();
@@ -60,8 +61,9 @@ export const PostCard: React.FC<PostCardProps> = ({
             <div className="min-w-[2.5rem] ">
               <UserProfileDisplay
                 storyUserData={{
-                  name: profileInfo.name,
-                  userPhotoSrc: profileInfo.thumbnail,
+                  name: profileInfo.username,
+                  userPhotoSrc: profileInfo.photo,
+                  id: profileInfo.id,
                 }}
                 onProfileClick={() =>
                   visit((r) => r.visitSocialPostAuthorProfile(profileInfo))
@@ -70,7 +72,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             </div>
             <div className="flex w-full justify-between">
               <div className="flex flex-col">
-                <p className="font-bold">{profileInfo.name}</p>
+                <p className="font-bold">{profileInfo.username}</p>
                 <div
                   onClick={() =>
                     visit((r) =>
@@ -122,14 +124,14 @@ export const PostCard: React.FC<PostCardProps> = ({
               <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
                 <HeartIcon />
               </span>
-              <p className="font-bold text-base">{postInfo.numberOfLikes}</p>
+              <p className="font-bold text-base">{postInfo.reactionNum}</p>
             </div>
 
             <div className="flex items-center gap-2">
               <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
                 <CommentIcon />
               </span>
-              <p className="font-bold text-base">{postInfo.numberOfComments}</p>
+              <p className="font-bold text-base">{postInfo.comments}</p>
             </div>
             <div className="flex gap-2 items-center">
               <span
@@ -140,7 +142,7 @@ export const PostCard: React.FC<PostCardProps> = ({
               >
                 <ShareIcon />
               </span>
-              <p className="font-bold text-base">{postInfo.numberOfShares}</p>
+              <p className="font-bold text-base">{postInfo.shares}</p>
             </div>
           </div>
           <div className="flex gap-4">

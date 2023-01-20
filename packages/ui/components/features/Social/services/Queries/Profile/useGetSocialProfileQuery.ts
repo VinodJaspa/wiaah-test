@@ -1,6 +1,7 @@
 import { createGraphqlRequestClient } from "api";
-import { Exact, Scalars } from "types";
+import { Exact, Maybe, Scalars } from "types";
 import { Profile, Query } from "@features/Social";
+import { Account } from "@features/Accounts";
 import { useQuery } from "react-query";
 
 export type GetProfileByIdQueryVariables = Exact<{
@@ -27,7 +28,11 @@ export type GetProfileByIdQuery = { __typename?: "Query" } & Pick<
       | "updatedAt"
       | "username"
       | "visibility"
-    >;
+    > & {
+        user?: Maybe<
+          { __typename?: "Account" } & Pick<Account, "id" | "verified" | "type">
+        >;
+      };
   };
 
 export const useGetSocialProfileQuery = (id: string) => {
@@ -71,7 +76,7 @@ export const useGetSocialProfileQuery = (id: string) => {
     const res = await client.send<GetProfileByIdQuery>();
 
     return {
-      ...(res.data.getProfile || {}),
+      ...res.data.getProfile,
       isFollowed: res.data.isFollowed || false,
     };
   });

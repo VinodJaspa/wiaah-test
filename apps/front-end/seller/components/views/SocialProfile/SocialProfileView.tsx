@@ -25,9 +25,11 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  useGetSocialProfileQuery,
+  ProfileVisibility,
+  useGetProfilePosts,
 } from "ui";
 import {
-  useGetSocialProfile,
   ShopCardsInfoPlaceholder,
   socialAffiliationCardPlaceholders,
   profileActionsPlaceholder,
@@ -37,8 +39,8 @@ import { useRecoilValue } from "recoil";
 import { SocialNewsfeedPostsState } from "ui";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import { useReactPubsub } from "react-pubsub";
 import { useBreakpointValue } from "utils";
+import { useTypedReactPubsub } from "@libs";
 
 export interface SocialViewProps {
   profileId: string;
@@ -50,15 +52,14 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
     data: profileInfo,
     isLoading,
     isError,
-  } = useGetSocialProfile(profileId);
+  } = useGetSocialProfileQuery(profileId);
   const { isMobile } = useResponsive();
   const posts = useRecoilValue(SocialNewsfeedPostsState);
   const cols = useBreakpointValue({ base: 3 });
   const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
-  const { emit } = useReactPubsub(
+  const { emit } = useTypedReactPubsub(
     (events) => events.openSocialShopPostsFilterDrawer
   );
-
   const sellerTabs: TabType[] = [
     {
       name: (
@@ -71,9 +72,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
         <PostCardsListWrapper
           grid={isMobile}
           cols={cols}
-          posts={[...Array(9)].reduce((acc) => {
-            return [...acc, ...newsfeedPosts.slice(0, 8)];
-          }, [])}
+          userId={profileInfo.ownerId}
         />
       ),
     },
@@ -129,7 +128,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
           <ServicesIcon />
         </HStack>
       ),
-      component: <SocialServicePostsList />,
+      component: <SocialServicePostsList posts={[]} />,
     },
     {
       name: (
@@ -169,7 +168,9 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
           <HomeIcon />
         </HStack>
       ),
-      component: <PostCardsListWrapper cols={cols} posts={posts} />,
+      component: (
+        <PostCardsListWrapper cols={cols} userId={profileInfo.ownerId} />
+      ),
     },
   ];
   return (
@@ -177,23 +178,21 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         <Container className="flex-grow flex-col flex gap-7">
           {/* <div className="w-full flex justify-center overflow-hidden relative h-[26rem]"> */}
-          {profileInfo ? (
-            <SocialProfile shopInfo={{ ...profileInfo.data }} />
-          ) : null}
+          {profileInfo ? <SocialProfile profileInfo={profileInfo} /> : null}
           <SocialPostsCommentsDrawer />
           <ShareWithModal />
           {/* </div> */}
           {profileInfo && (
             <>
-              {profileInfo.data.public ? (
+              {profileInfo.visibility === ProfileVisibility.Public ? (
                 <>
                   <TabsViewer
                     tabs={
-                      profileInfo.data.accountType === "seller"
+                      profileInfo.user.type === "seller"
                         ? sellerTabs
                         : buyerTabs
                     }
-                  ></TabsViewer>
+                  />
                   <Divider className="my-4" />
                 </>
               ) : (

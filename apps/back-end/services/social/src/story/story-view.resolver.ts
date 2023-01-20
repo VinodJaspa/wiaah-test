@@ -21,6 +21,6 @@ export class StoryViewResolver {
 
   @ResolveField(() => Account)
   viewer(@Parent() view: StoryView) {
-    return { __typename: 'User', id: view.viewerId };
+    return { __typename: 'Account', id: view.viewerId };
   }
 }

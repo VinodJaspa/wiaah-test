@@ -46,6 +46,7 @@ export type BlockedUser = {
 
 export type Profile = {
   __typename?: "Profile";
+  user?: Maybe<Account>;
   id: Scalars["ID"];
   ownerId: Scalars["ID"];
   createdAt: Scalars["DateTime"];
@@ -130,6 +131,8 @@ export type NewsfeedPost = {
   mentions: Array<PostMention>;
   location?: Maybe<PostLocation>;
   tags: Array<PostTag>;
+  createdAt: Scalars["String"];
+  updatedAt: Scalars["String"];
   publisher?: Maybe<Profile>;
   authorProfileId: Scalars["ID"];
 };
@@ -192,11 +195,6 @@ export enum ContentReactionType {
   Sad = "sad",
   Angry = "angry",
 }
-
-export type ContentReactionResponse = {
-  __typename?: "ContentReactionResponse";
-  data: ContentReaction;
-};
 
 export type ContentShare = {
   __typename?: "ContentShare";
@@ -317,28 +315,29 @@ export type Story = {
   publisherId: Scalars["ID"];
   createdAt: Scalars["DateTime"];
   updatedAt: Scalars["DateTime"];
-  type: Scalars["String"];
+  type: StoryType;
   viewsCount: Scalars["Int"];
   reactionsNum: Scalars["Int"];
+  referenceId?: Maybe<Scalars["ID"]>;
   content?: Maybe<Scalars["String"]>;
   attachements?: Maybe<Attachment>;
-  views?: Maybe<Array<StoryView>>;
-  productId?: Maybe<Scalars["ID"]>;
-  newsfeedPostId?: Maybe<Scalars["ID"]>;
-  shopPostId?: Maybe<Scalars["ID"]>;
-  affiliationPostId?: Maybe<Scalars["ID"]>;
-  servicePostId?: Maybe<Scalars["ID"]>;
+  views: Array<StoryView>;
   newsfeedPost?: Maybe<NewsfeedPost>;
   shopPost?: Maybe<ShopPost>;
   affiliationPost?: Maybe<AffiliationPost>;
-  product?: Maybe<Product>;
   servicePost?: Maybe<ServicePost>;
-  resloveProduct: Product;
-  resloveNewsfeedPost: NewsfeedPost;
-  resloveShopPost: ShopPost;
-  resloveAffiliationPost: AffiliationPost;
-  resloveServicePost: ServicePost;
 };
+
+export enum StoryType {
+  Base = "base",
+  Text = "text",
+  Image = "image",
+  Video = "video",
+  Affiliation = "affiliation",
+  Product = "product",
+  Post = "post",
+  Service = "service",
+}
 
 export type StoryView = {
   __typename?: "StoryView";
@@ -407,14 +406,15 @@ export type Query = {
   __typename?: "Query";
   findAll: ProfilePaginatedResponse;
   myProfile: Profile;
+  getProfile: Profile;
   searchPopularUsers: ProfilePaginatedResponse;
   getFollowersByProfileId: ProfileMetaPaginatedResponse;
   getFollowingByProfileId: ProfileMetaPaginatedResponse;
   getMyFollowers: ProfileMetaPaginatedResponse;
   getMyFollowing: ProfileMetaPaginatedResponse;
   isFollowed: Scalars["Boolean"];
-  newsfeedPosts: Array<NewsfeedPost>;
-  getProfile: Profile;
+  getNewsfeedPostsByUserId: Array<NewsfeedPost>;
+  getAdminProfile: Profile;
   comments: Array<Comment>;
   updateComment: PaginationCommentsResponse;
   getContentComments: Array<Comment>;
@@ -435,6 +435,10 @@ export type Query = {
   getAction: Array<Action>;
   getUserServicePosts: ServicePost;
   getRecommendedServicePosts: Array<ServicePost>;
+};
+
+export type QueryGetProfileArgs = {
+  id: Scalars["String"];
 };
 
 export type QuerySearchPopularUsersArgs = {
@@ -461,7 +465,11 @@ export type QueryIsFollowedArgs = {
   profileId: Scalars["String"];
 };
 
-export type QueryGetProfileArgs = {
+export type QueryGetNewsfeedPostsByUserIdArgs = {
+  args: GetNewsfeedPostsByUserIdInput;
+};
+
+export type QueryGetAdminProfileArgs = {
   id: Scalars["String"];
 };
 
@@ -482,7 +490,7 @@ export type QueryGetUserStoryArgs = {
 };
 
 export type QueryGetUserPrevStoryArgs = {
-  userId: Scalars["String"];
+  storyId: Scalars["String"];
 };
 
 export type QueryGetStoryViewsArgs = {
@@ -534,6 +542,11 @@ export type GqlPaginationInput = {
 };
 
 export type GetMyProfileFollowersMetaInput = {
+  pagination: GqlPaginationInput;
+};
+
+export type GetNewsfeedPostsByUserIdInput = {
+  userId: Scalars["ID"];
   pagination: GqlPaginationInput;
 };
 
@@ -606,7 +619,7 @@ export type Mutation = {
   updateNewsfeedPost: NewsfeedPost;
   removeNewsfeedPost: NewsfeedPost;
   updateProfile: Profile;
-  createReaction: ContentReactionResponse;
+  createReaction: Scalars["Boolean"];
   removeReaction: ContentReaction;
   createComment: Comment;
   updateComment: Comment;
