@@ -1,5 +1,5 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { CreateGqlTranslationInputField } from 'nest-utils';
+import { CreateInputGqlTranslationInputField } from 'nest-utils';
 
 @InputType()
 export class ServiceMetaInfoInput {
@@ -20,6 +20,6 @@ export class ServiceMetaInfoInput {
 }
 
 @InputType()
-export class ServiceMetaInfoTranslationInput extends CreateGqlTranslationInputField<ServiceMetaInfoInput>(
+export class ServiceMetaInfoTranslationInput extends CreateInputGqlTranslationInputField<ServiceMetaInfoInput>(
   ServiceMetaInfoInput,
 ) {}

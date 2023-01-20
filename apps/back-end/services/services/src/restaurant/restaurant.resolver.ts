@@ -80,15 +80,15 @@ export class RestaurantResolver {
     return this.restaurantService.updateRestaurant(args, user.id, lang);
   }
 
-  @Mutation(() => Restaurant)
-  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
-  updateRestaurantAdmin(
-    @Args('updateRestaurantArgs') args: updateRestaurantAdminInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-    @GetLang() lang: UserPreferedLang,
-  ) {
-    return this.restaurantService.updateRestaurant(args, user.id, lang);
-  }
+  // @Mutation(() => Restaurant)
+  // @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  // updateRestaurantAdmin(
+  //   @Args('updateRestaurantArgs') args: updateRestaurantAdminInput,
+  //   @GqlCurrentUser() user: AuthorizationDecodedUser,
+  //   @GetLang() lang: UserPreferedLang,
+  // ) {
+  //   return this.restaurantService.updateRestaurant(args, user.id, lang);
+  // }
 
   @Mutation(() => Restaurant)
   @UseGuards(new GqlAuthorizationGuard(['seller']))

@@ -3,7 +3,7 @@ import { AccountStatus } from '@prisma-client';
 import { GqlPaginationInput } from 'nest-utils';
 
 @InputType()
-export class GetSellersAccountsInput {
+export class GetFilteredSellersAccountsInput {
   @Field(() => GqlPaginationInput)
   pagination: GqlPaginationInput;
 

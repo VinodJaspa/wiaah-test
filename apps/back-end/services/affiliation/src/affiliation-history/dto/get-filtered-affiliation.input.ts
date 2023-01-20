@@ -1,6 +1,7 @@
 import { Field, Float, ID, InputType, PartialType } from '@nestjs/graphql';
 import { GqlPaginationInput } from 'nest-utils';
 
+@InputType()
 class input {
   @Field(() => String)
   seller: string;

@@ -6,9 +6,10 @@ export class KafkaCustomTransport
   implements CustomTransportStrategy
 {
   override async bindEvents(consumer: Consumer): Promise<void> {
+    console.log({ handlers: this.messageHandlers });
     const registeredPatterns = [...this.messageHandlers.entries()].map(
       ([pattern, handler]) => {
-        return pattern.startsWith("/") && pattern.endsWith("/")
+        return pattern?.startsWith("/") && pattern.endsWith("/")
           ? new RegExp(
               pattern.slice(1, pattern.length - 1),
               handler?.extras?.flags || "i"

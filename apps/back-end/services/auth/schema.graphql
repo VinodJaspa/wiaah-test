@@ -1,0 +1,78 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @key(fields: String!) on OBJECT | INTERFACE
+
+directive @extends on OBJECT | INTERFACE
+
+directive @external on OBJECT | FIELD_DEFINITION
+
+directive @requires(fields: String!) on FIELD_DEFINITION
+
+directive @provides(fields: String!) on FIELD_DEFINITION
+
+type GqlStatusResponse {
+  code: Int!
+  message: String
+  success: Boolean!
+}
+
+type AccountInputData {
+  firstName: String!
+  lastName: String!
+  password: String!
+}
+
+type Registeration {
+  id: ID!
+  verificationToken: String!
+  email: String!
+  accountInputData: AccountInputData!
+}
+
+type Query {
+  getRegistrations: [Registeration!]!
+}
+
+type Mutation {
+  changePassword(changePasswordInput: ChangePasswordInput!): Boolean!
+  login(LoginInput: LoginDto!): GqlStatusResponse!
+  verifyLoginOTP(args: LoginWithOtpInput!): GqlStatusResponse!
+  verifyEmail(EmailVerificationInput: VerifyEmailDto!): Boolean!
+  resendRegisterationCode(email: String!): Boolean!
+  resetPassword(ResetPasswordArgs: ForgotPasswordEmailInput!): Boolean!
+  verifyNewPassword(verifyNewPassword: ConfirmPasswordChangeInput!): Boolean!
+  loginAs(userId: String!): GqlStatusResponse!
+}
+
+input ChangePasswordInput {
+  currentPassword: String!
+  newPassword: String!
+  confirmNewPassword: String!
+}
+
+input LoginDto {
+  email: String!
+  password: String!
+}
+
+input LoginWithOtpInput {
+  email: String!
+  otp: String!
+}
+
+input VerifyEmailDto {
+  verificationCode: String!
+}
+
+input ForgotPasswordEmailInput {
+  email: String!
+}
+
+input ConfirmPasswordChangeInput {
+  email: String!
+  verificationCode: String!
+  newPassword: String!
+  confirmNewPassword: String!
+}

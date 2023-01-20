@@ -33,6 +33,7 @@ import {
   GetUserPrevStoryQuery,
   ViewUserStoryQuery,
 } from '@story/queries';
+import { StoryType, STORY_TYPE } from './const';
 
 @Resolver(() => Story)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -54,11 +55,11 @@ export class StoryResolver {
 
   @Query(() => Story)
   getUserPrevStory(
-    @Args('userId') publisherId: string,
+    @Args('storyId') storyId: string,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.querybus.execute<GetUserPrevStoryQuery, Story>(
-      new GetUserPrevStoryQuery(publisherId, user),
+      new GetUserPrevStoryQuery(storyId, user),
     );
   }
 
@@ -99,43 +100,39 @@ export class StoryResolver {
     );
   }
 
-  @ResolveField(() => Product)
-  resloveProduct(@Parent() story: Story) {
-    return {
-      __typename: 'Product',
-      id: story.productId,
-    };
-  }
-
   @ResolveField(() => NewsfeedPost)
-  resloveNewsfeedPost(@Parent() story: Story) {
+  newsfeedPost(@Parent() story: Story) {
+    if (story.type !== StoryType.post) return null;
     return {
       __typename: 'NewsfeedPost',
-      id: story.newsfeedPostId,
+      id: story.referenceId,
     };
   }
 
   @ResolveField(() => ShopPost)
-  resloveShopPost(@Parent() story: Story) {
+  shopPost(@Parent() story: Story) {
+    if (story.type !== StoryType.product) return null;
     return {
       __typename: 'ShopPost',
-      id: story.shopPostId,
+      id: story.referenceId,
     };
   }
 
   @ResolveField(() => AffiliationPost)
-  resloveAffiliationPost(@Parent() story: Story) {
+  affiliationPost(@Parent() story: Story) {
+    if (story.type !== StoryType.affiliation) return null;
     return {
       __typename: 'AffiliationPost',
-      id: story.affiliationPostId,
+      id: story.referenceId,
     };
   }
 
   @ResolveField(() => ServicePost)
-  resloveServicePost(@Parent() story: Story) {
+  servicePost(@Parent() story: Story) {
+    if (story.type !== StoryType.service) return null;
     return {
       __typename: 'ServicePost',
-      id: story.servicePostId,
+      id: story.referenceId,
     };
   }
 }

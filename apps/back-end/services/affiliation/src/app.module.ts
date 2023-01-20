@@ -9,6 +9,7 @@ import {
 } from '@nestjs/apollo';
 import { getUserFromRequest } from 'nest-utils';
 import { AffiliationAdminModule } from '@affiliation/affiliation-admin.module';
+import { AffiliationHistoryAdminModule } from '@affiliation-history/affiliation-history-admin..module';
 
 @Global()
 @Module({
@@ -26,6 +27,7 @@ export class GlobalPrisma {}
       context: (ctx) => ({ ...ctx, user: getUserFromRequest(ctx.req) }),
     }),
     AffiliationHistoryModule,
+    AffiliationHistoryAdminModule,
     AffiliationAdminModule,
     AffiliationModule,
     GlobalPrisma,

@@ -52,6 +52,11 @@ export class ProfileResolver {
     return await this.profileService.getMyProfile(user.id);
   }
 
+  @Query(() => Profile)
+  async getProfile(@Args('id') id: string) {
+    return this.profileService.getProfileByProfileId(id);
+  }
+
   @Mutation(() => Profile)
   async updateMyProfile(
     @Args('updateProfileInput') updateProfileInput: UpdateProfileInput,
@@ -88,6 +93,14 @@ export class ProfileResolver {
   // ------------------------------ //
   // Follow system //
   // ---------------------------------- //
+
+  @Mutation(() => Boolean)
+  sendFollowRequest(
+    @Args('profileId') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<boolean> {
+    return this.profileService.sendFollowRequest(id, user.id);
+  }
 
   @Query(() => ProfileMetaPaginatedResponse)
   getFollowersByProfileId(
@@ -129,12 +142,22 @@ export class ProfileResolver {
     return this.profileService.getMyFollowings(args.pagination, user.id);
   }
 
-  @Mutation(() => Profile)
+  @Query(() => Boolean)
+  async isFollowed(
+    @Args('profileId') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<boolean> {
+    const res = await this.profileService.isFollowedByUserId(id, user.id);
+    return res.followed;
+  }
+
+  @Mutation(() => Boolean)
   async followProfile(
     @Args('followUserInput') args: FollowProfileInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ): Promise<Profile> {
-    return await this.profileService.followProfile(args.profileId, user.id);
+  ): Promise<boolean> {
+    await this.profileService.followProfile(args.profileId, user.id);
+    return true;
   }
 
   @Mutation(() => Boolean)

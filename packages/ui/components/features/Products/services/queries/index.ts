@@ -1,3 +1,6 @@
 export * from "./useGetProducts";
 export * from "./useGetOrderDetails";
 export * from "./useGetMyProducts";
+export * from "./useGetAdminProducts";
+export * from "./useAdminEditProduct";
+export * from "./useAdminGetProduct";

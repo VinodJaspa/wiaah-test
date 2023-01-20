@@ -27,13 +27,13 @@ export class GraphqlRequestClinet extends GraphQLClient {
     if (!this.query) throw new Error("no query");
 
     console.log("requesting");
-    const res = await this.request<TRes>(this.query, this.vars);
-    console.log("res", res);
+    const res = await this.rawRequest<TRes>(this.query, this.vars);
+    console.log("graphql req res", res);
     return res;
   }
 }
 
-export function createGraphqlRequestClient(cred?: boolean) {
+export function createGraphqlRequestClient(cred: boolean = true) {
   const client = new GraphqlRequestClinet(
     process.env.NEXT_PUBLIC_GATEWAY_URL!,
     { credentials: cred ? "include" : undefined }

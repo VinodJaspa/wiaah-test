@@ -19,11 +19,7 @@ import { PrepareGqlUploads, UploadService } from '@wiaah/upload';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ProductsService } from '@products/products.service';
 import { MyProduct, Product } from '@products/entities';
-import {
-  CreateProductInput,
-  GetFilteredProductsInput,
-  ProductFilteredInput,
-} from '@products/dto';
+import { CreateProductInput, GetFilteredProductsInput } from '@products/dto';
 import { UpdateProductInput } from '@products/dto';
 import {
   GetProductVendorLinkQuery,

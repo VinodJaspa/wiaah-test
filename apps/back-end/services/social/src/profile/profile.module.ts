@@ -5,6 +5,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ProfileController } from './profile.controller';
+import { AccountProfileResolver } from './Account-Profile.resolver';
 
 @Module({
   imports: [
@@ -25,7 +26,7 @@ import { ProfileController } from './profile.controller';
       },
     ]),
   ],
-  providers: [ProfileResolver, ProfileService],
+  providers: [ProfileResolver, ProfileService, AccountProfileResolver],
   exports: [ProfileService],
   controllers: [ProfileController],
 })

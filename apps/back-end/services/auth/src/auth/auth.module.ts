@@ -5,21 +5,22 @@ import {
 } from '@nestjs/apollo';
 import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
-import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaService } from 'src/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
-import { getUserFromRequest, KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { CqrsModule } from '@nestjs/cqrs';
 import { AuthCommandHandlers } from './commands';
 import { AuthRepository } from './repository';
 import { authQueryHandlers } from './queries';
 import { authEventHandlers } from './events';
+import { AuthAdminModule } from './auth-admin.module';
 
 @Module({
   imports: [
     CqrsModule,
+    AuthAdminModule,
     ClientsModule.register([
       {
         name: SERVICES.AUTH_SERVICE.token,
@@ -35,14 +36,7 @@ import { authEventHandlers } from './events';
         },
       },
     ]),
-    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
-      driver: ApolloFederationDriver,
-      autoSchemaFile: true,
-      context: ({ req, res }) => {
-        const user = getUserFromRequest(req);
-        return { req, res, user };
-      },
-    }),
+
     JwtModule.register({
       secret: 'secret',
       signOptions: {

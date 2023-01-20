@@ -11,7 +11,7 @@ import {
   ServicePropertyMeasurementsInput,
 } from '@dto';
 import { Field, Float, InputType, Int } from '@nestjs/graphql';
-import { CreateGqlTranslationInputField } from 'nest-utils';
+import { CreateInputGqlTranslationInputField } from 'nest-utils';
 
 @InputType()
 class HotelRoomMetaInfoInput {
@@ -23,7 +23,7 @@ class HotelRoomMetaInfoInput {
 }
 
 @InputType()
-class HotelRoomTranslationMetaInfoInput extends CreateGqlTranslationInputField<HotelRoomMetaInfoInput>(
+class HotelRoomTranslationMetaInfoInput extends CreateInputGqlTranslationInputField<HotelRoomMetaInfoInput>(
   HotelRoomMetaInfoInput,
 ) {}
 

@@ -77,6 +77,12 @@ export class SocialPost {
 
   @Field(() => [PostTag])
   tags: PostTag[];
+
+  @Field(() => String)
+  createdAt: Date;
+
+  @Field(() => String)
+  updatedAt: Date;
 }
 
 @ObjectType()

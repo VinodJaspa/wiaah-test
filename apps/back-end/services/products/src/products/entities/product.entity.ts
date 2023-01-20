@@ -8,11 +8,18 @@ import {
   Float,
   registerEnumType,
 } from '@nestjs/graphql';
-import { CashbackType, PresentationType, VisibilityEnum } from '@prisma-client';
+import {
+  CashbackType,
+  PresentationType,
+  ProductStatus,
+  ProductUsageStatus,
+  VisibilityEnum,
+} from '@prisma-client';
 import { ShippingDetails } from '@products/entities/extends';
 import { CreateGqlPaginatedResponse } from 'nest-utils';
 
 registerEnumType(VisibilityEnum, { name: 'VisibilityEnum' });
+registerEnumType(ProductUsageStatus, { name: 'ProductUsageStatus' });
 
 @ObjectType()
 export class ProductPresentation {
@@ -122,6 +129,18 @@ export class Product {
 
   @Field(() => Float)
   vat: number;
+
+  @Field(() => ProductStatus)
+  status: ProductStatus;
+
+  @Field(() => ProductUsageStatus)
+  usageStatus: ProductUsageStatus;
+
+  @Field(() => String)
+  createdAt: Date;
+
+  @Field(() => String)
+  updatedAt: Date;
 
   rateStarCount: number;
 }

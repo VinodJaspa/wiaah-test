@@ -11,7 +11,7 @@ export class ProfileAdminResolver {
   constructor(private service: ProfileService) {}
 
   @Query(() => Profile)
-  async getProfile(@Args('id') id: string) {
+  async getAdminProfile(@Args('id') id: string) {
     return this.service.getProfileByProfileId(id);
   }
 

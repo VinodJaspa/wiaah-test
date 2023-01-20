@@ -89,8 +89,9 @@ export type Query = {
   requiredAction: RequiredAction;
   getAccountVerificationRequests: Array<AccountVerification>;
   acceptAccountVerification: Scalars["Boolean"];
-  getSellers: Array<Account>;
-  getBuyers: Array<Account>;
+  getFilteredSellers: Array<Account>;
+  getFilteredBuyers: Array<Account>;
+  adminGetAccount: Account;
   getPendingSellers: Array<Account>;
   getAccountDeletionRequests: Array<AccountDeletionRequest>;
 };
@@ -103,12 +104,16 @@ export type QueryAcceptAccountVerificationArgs = {
   id: Scalars["String"];
 };
 
-export type QueryGetSellersArgs = {
-  getSellersInput: GetSellersAccountsInput;
+export type QueryGetFilteredSellersArgs = {
+  getSellersInput: GetFilteredSellersAccountsInput;
 };
 
-export type QueryGetBuyersArgs = {
+export type QueryGetFilteredBuyersArgs = {
   getBuyersInput: GetBuyersAccountsInput;
+};
+
+export type QueryAdminGetAccountArgs = {
+  id: Scalars["String"];
 };
 
 export type QueryGetPendingSellersArgs = {
@@ -119,7 +124,7 @@ export type QueryGetAccountDeletionRequestsArgs = {
   args: GetAccountDeletionRequestsInput;
 };
 
-export type GetSellersAccountsInput = {
+export type GetFilteredSellersAccountsInput = {
   pagination: GqlPaginationInput;
   name?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["String"]>;
@@ -207,7 +212,7 @@ export type MutationUpdateUserLocationArgs = {
 };
 
 export type MutationAdminEditAccountArgs = {
-  editAccountInput: UpdateAccountInput;
+  editAccountInput: UpdateSellerAccountAdminInput;
 };
 
 export type MutationAcceptSellerAccountArgs = {
@@ -216,6 +221,10 @@ export type MutationAcceptSellerAccountArgs = {
 
 export type MutationDeclineSellerAccountArgs = {
   args: DeclineSellerAccountRequest;
+};
+
+export type MutationSuspenseAccountArgs = {
+  args: SuspenseAccountAdminInput;
 };
 
 export type MutationRegisterArgs = {
@@ -263,7 +272,7 @@ export type UpdateUserLocationInput = {
   lon: Scalars["Float"];
 };
 
-export type UpdateAccountInput = {
+export type UpdateSellerAccountAdminInput = {
   firstName?: Maybe<Scalars["String"]>;
   lastName?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
@@ -271,6 +280,7 @@ export type UpdateAccountInput = {
   confirmPassword?: Maybe<Scalars["String"]>;
   accountType?: Maybe<RegisterAccountType>;
   companyRegisterationNumber?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
 };
 
 export enum RegisterAccountType {
@@ -283,6 +293,11 @@ export type DeclineSellerAccountRequest = {
   reason: Scalars["String"];
 };
 
+export type SuspenseAccountAdminInput = {
+  userId: Scalars["ID"];
+  rejectReason?: Maybe<Scalars["String"]>;
+};
+
 export type CreateAccountInput = {
   firstName: Scalars["String"];
   lastName: Scalars["String"];
@@ -290,6 +305,16 @@ export type CreateAccountInput = {
   password: Scalars["String"];
   confirmPassword: Scalars["String"];
   accountType: RegisterAccountType;
+};
+
+export type UpdateAccountInput = {
+  firstName?: Maybe<Scalars["String"]>;
+  lastName?: Maybe<Scalars["String"]>;
+  email?: Maybe<Scalars["String"]>;
+  password?: Maybe<Scalars["String"]>;
+  confirmPassword?: Maybe<Scalars["String"]>;
+  accountType?: Maybe<RegisterAccountType>;
+  companyRegisterationNumber?: Maybe<Scalars["String"]>;
 };
 
 export type CreateIdentityVerificationInput = {

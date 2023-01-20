@@ -1,7 +1,7 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { CreateGqlTranslationInputFields } from 'nest-utils';
+import { CreateGqlInputTranslationInputFields } from 'nest-utils';
 
 @InputType()
-export class ServiceIncludedAmenitiesInput extends CreateGqlTranslationInputFields(
+export class ServiceIncludedAmenitiesInput extends CreateGqlInputTranslationInputFields(
   String,
 ) {}

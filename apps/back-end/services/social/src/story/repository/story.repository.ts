@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 import { ExtractPagination, SubtractFromDate } from 'nest-utils';
 import { PrismaService } from 'prismaService';
-import { Follow, Story, StoryLike, StoryView } from 'prismaClient';
+import { Follow, Story, StoryLike, StoryType, StoryView } from 'prismaClient';
 
 import { CreateStoryInput, GetStorySeenByInput, LikeStoryInput } from '../dto';
 import { GetRecentStoriesInput } from '../dto';
@@ -186,7 +186,7 @@ export class StoryRepository {
     return story;
   }
 
-  getStoryTypeFromInput(input: CreateStoryInput): string {
+  getStoryTypeFromInput(input: CreateStoryInput): StoryType {
     if (input.attachment) {
       if (input.attachment.type === 'img') {
         return 'image';
@@ -196,19 +196,16 @@ export class StoryRepository {
       }
     }
     if (input.affiliationPostId) {
-      return 'affilation-post';
+      return 'affiliation';
     }
     if (input.newsfeedPostId) {
-      return 'newsfeed-post';
+      return 'post';
     }
     if (input.shopPostId) {
-      return 'shop-post';
+      return 'product';
     }
     if (input.servicePostId) {
-      return 'service-post';
-    }
-    if (input.productId) {
-      return 'product-post';
+      return 'service';
     }
     return 'text';
   }

@@ -31,6 +31,7 @@ import {
   ModalHeader,
   CloseIcon,
   ModalCloseButton,
+  useGetFilteredSellers,
 } from "ui";
 import { NumberShortner, randomNum } from "utils";
 
@@ -77,6 +78,9 @@ const sellers: NextPage = () => {
   const { visit, getCurrentPath, getUrl } = useRouting();
   const [qrcode, setQrCode] = React.useState<string>();
   const { changeTotalItems, controls, pagination } = usePaginationControls();
+  const { data: sellers } = useGetFilteredSellers({ pagination });
+
+  console.log({ sellers });
 
   return (
     <TableContainer>

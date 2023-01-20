@@ -1,8 +1,7 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { CommentsService } from './comments.service';
 import { Comment, PaginationCommentsResponse } from '@entities';
-import { CreateCommentInput } from '@input';
-import { UpdateCommentInput } from '@input';
+import { CreateCommentInput, UpdateCommentInput } from '@input';
 import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetCommentsByContentId } from './queries';

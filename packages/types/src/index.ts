@@ -5,3 +5,4 @@ export * from "./ApiDto";
 export * from "./entity";
 export * from "./Date";
 export * from "./utils";
+export * from "./graphql";

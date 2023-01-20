@@ -1,5 +1,5 @@
 import { createGraphqlRequestClient } from "api";
-import { UpdateCategoryInput, Category } from "@features/services/Services";
+import { UpdateCategoryInput, Category } from "@features/Services/Services";
 import { useMutation } from "react-query";
 import { GqlResponse } from "@UI/../types/src";
 

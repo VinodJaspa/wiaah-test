@@ -21,6 +21,9 @@ import {
   PlayButtonFillIcon,
   ServicesIcon,
   ShoppingCartIcon,
+  useGetSocialProfileQuery,
+  ProfileVisibility,
+  AccountType,
 } from "ui";
 import {
   PostCommentPlaceholder,
@@ -28,15 +31,13 @@ import {
   ShopCardsInfoPlaceholder,
   socialAffiliationCardPlaceholders,
 } from "placeholder";
-import { ProfileInfo, TabType } from "types";
+import { TabType } from "types";
 import { PostComment } from "types";
 import { products } from "placeholder";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { useBreakpointValue } from "utils";
-import { useReactPubsub } from "react-pubsub";
-import { SocialProfileData } from "api";
 import { useTypedReactPubsub } from "@libs";
 
 const images: string[] = [...products.map((pro) => pro.imgUrl)];
@@ -82,10 +83,10 @@ const comments: PostComment[] = [
 ];
 
 export interface SocialViewProps {
-  profile: SocialProfileData;
+  profileId: string;
 }
 
-export const SocialView: React.FC<SocialViewProps> = ({ profile }) => {
+export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   const { t } = useTranslation();
   const { getParam } = useRouting();
   const cols = useBreakpointValue({ base: 3 });
@@ -93,6 +94,8 @@ export const SocialView: React.FC<SocialViewProps> = ({ profile }) => {
   const { emit } = useTypedReactPubsub(
     (events) => events.openSocialShopPostsFilterDrawer
   );
+
+  const { data: profile } = useGetSocialProfileQuery(profileId);
 
   const sellerTabs: TabType[] = [
     {
@@ -198,8 +201,8 @@ export const SocialView: React.FC<SocialViewProps> = ({ profile }) => {
     },
   ];
 
-  const tabsSet = profile.accountType === "seller" ? sellerTabs : buyerTabs;
-  const tabParam = getParam("tab");
+  const tabsSet =
+    profile.user.type === AccountType.Seller ? sellerTabs : buyerTabs;
 
   return (
     <>
@@ -208,7 +211,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profile }) => {
       <div className="flex gap-4 flex-col">
         <SocialProfile profileInfo={profile} />
         <Container className="flex-grow gap-4 flex-col">
-          {profile && profile.public ? (
+          {profile && profile.visibility === ProfileVisibility.Public ? (
             <>
               <TabsViewer tabs={tabsSet} />
               <Divider />

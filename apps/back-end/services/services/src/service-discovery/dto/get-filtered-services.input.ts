@@ -1,8 +1,9 @@
-import { Field, Float, ID, InputType } from '@nestjs/graphql';
+import { Field, Float, ID, InputType, PartialType } from '@nestjs/graphql';
+import { GqlPaginationInput } from 'nest-utils';
 import { ServiceStatus, ServiceType } from 'prismaClient';
 
 @InputType()
-export class GetFilteredServicesAdminInput {
+class Input {
   @Field(() => ID)
   id: string;
 
@@ -18,12 +19,18 @@ export class GetFilteredServicesAdminInput {
   @Field(() => Float)
   price: number;
 
-  @Field(() => ServiceType)
-  type: ServiceType;
-
   @Field(() => ServiceStatus)
   status: ServiceStatus;
 
   @Field(() => String)
   updatedAt: string;
+}
+
+@InputType()
+export class GetFilteredServicesAdminInput extends PartialType(Input) {
+  @Field(() => ServiceType)
+  type: ServiceType;
+
+  @Field(() => GqlPaginationInput)
+  pagination: GqlPaginationInput;
 }

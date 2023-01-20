@@ -27,12 +27,22 @@ type ServicePolicy {
   terms: [String!]!
 }
 
+type ServiceTranslationPolicy {
+  langId: String!
+  value: [ServicePolicy!]!
+}
+
 type ServiceMetaInfo {
   title: String!
   description: String!
   metaTagDescription: String!
   metaTagKeywords: [String!]!
   hashtags: [String!]!
+}
+
+type ServiceMetaInfoTranslation {
+  langId: String!
+  value: ServiceMetaInfo!
 }
 
 type ServiceDailyPrices {
@@ -250,6 +260,51 @@ enum ServicePaymentMethods {
   cash
 }
 
+type HealthCenterSpecialty {
+  id: ID!
+  doctors: [HealthCenterDoctor!]
+  name: String!
+  description: String!
+}
+
+type HealthCenterDoctor {
+  id: ID!
+  healthCenter: HealthCenter
+  speciality: HealthCenterSpecialty
+  healthCenterId: ID!
+  specialityId: ID!
+  rating: Float!
+  name: String!
+  thumbnail: String!
+  price: Float!
+  description: String!
+  availablityStatus: HealthCenterDoctorAvailablityStatus!
+}
+
+enum HealthCenterDoctorAvailablityStatus {
+  available
+  unavailable
+}
+
+type HealthCenter {
+  owner: Account
+  contact: ServiceContact!
+  id: ID!
+  ownerId: ID!
+  vat: Float!
+  rating: Float!
+  totalReviews: Int!
+  location: ServiceLocation!
+  status: ServiceStatus!
+  presentations: [ServicePresentation!]!
+  policies: [ServicePolicy!]!
+  serviceMetaInfo: ServiceMetaInfo!
+  payment_methods: [ServicePaymentMethods!]!
+  cancelationPolicies: [ServiceCancelationPolicy!]!
+  doctors: [HealthCenterDoctor!]!
+  workingHours: WorkingSchedule!
+}
+
 type BeautyCenterTreatmentCategory {
   id: ID!
   createdById: ID!
@@ -295,51 +350,6 @@ type BeautyCenter {
 enum ServiceTypeOfSeller {
   individual
   professional
-}
-
-type HealthCenterSpecialty {
-  id: ID!
-  doctors: [HealthCenterDoctor!]
-  name: String!
-  description: String!
-}
-
-type HealthCenterDoctor {
-  id: ID!
-  healthCenter: HealthCenter
-  speciality: HealthCenterSpecialty
-  healthCenterId: ID!
-  specialityId: ID!
-  rating: Float!
-  name: String!
-  thumbnail: String!
-  price: Float!
-  description: String!
-  availablityStatus: HealthCenterDoctorAvailablityStatus!
-}
-
-enum HealthCenterDoctorAvailablityStatus {
-  available
-  unavailable
-}
-
-type HealthCenter {
-  owner: Account
-  contact: ServiceContact!
-  id: ID!
-  ownerId: ID!
-  vat: Float!
-  rating: Float!
-  totalReviews: Int!
-  location: ServiceLocation!
-  status: ServiceStatus!
-  presentations: [ServicePresentation!]!
-  policies: [ServicePolicy!]!
-  serviceMetaInfo: ServiceMetaInfo!
-  payment_methods: [ServicePaymentMethods!]!
-  cancelationPolicies: [ServiceCancelationPolicy!]!
-  doctors: [HealthCenterDoctor!]!
-  workingHours: WorkingSchedule!
 }
 
 type VehicleProperties {
@@ -432,12 +442,46 @@ type ServiceDiscovery {
   updatedAt: String!
 }
 
+type ServiceShopRaw {
+  id: ID!
+  type: ServiceType!
+  ownerId: ID!
+  createdAt: String!
+  updatedAt: String!
+  status: ServiceStatus!
+  presentations: [ServicePresentation!]!
+  serviceMetaInfo: [ServiceMetaInfoTranslation!]!
+  contact: ServiceContact!
+  workingHours: WorkingSchedule
+  policies: [ServiceTranslationPolicy!]!
+  payment_methods: [ServicePaymentMethods!]!
+  location: ServiceLocation!
+  vat: Float!
+  cancelationPolicies: [ServiceCancelationPolicy!]!
+  lowest_price: Float!
+  highest_price: Float!
+  rating: Float!
+  reviews: Int!
+  type_of_seller: ServiceTypeOfSeller!
+  suspensionReason: String
+  rooms: [HotelRoom!]
+  menus: [RestaurantMenu!]
+  establishmentTypeId: String
+  cuisinesTypeId: String
+  setting_and_ambianceId: String
+  michelin_guide_stars: Int
+  doctors: [HealthCenterDoctor!]
+  treatments: [BeautyCenterTreatment!]
+  vehicle: [Vehicle!]
+}
+
 type Query {
   getAllServices(args: GetFilteredServicesInput!): [Service!]!
   getMyWorkingSchedule: WorkingSchedule!
   getInsurances(args: GetInsurancesInput!): [Insurance!]!
   getServiceInsuranceHistory(args: GetInsurancesHistoryInput!): [Insurance!]!
   getFilteredServices(args: GetFilteredServicesAdminInput!): [ServiceDiscovery!]!
+  adminGetRawService(id: String!): ServiceShopRaw
   getServiceCategoryById(categoryId: String!): Category!
   getServiceCategoryBySlug(slug: String!): Category!
   getServiceCategories: [Category!]!
@@ -485,14 +529,15 @@ input GetInsurancesHistoryInput {
 }
 
 input GetFilteredServicesAdminInput {
-  id: ID!
-  title: String!
-  sellerName: String!
-  sellerId: ID!
-  price: Float!
+  id: ID
+  title: String
+  sellerName: String
+  sellerId: ID
+  price: Float
+  status: ServiceStatus
+  updatedAt: String
   type: ServiceType!
-  status: ServiceStatus!
-  updatedAt: String!
+  pagination: GqlPaginationInput!
 }
 
 input GetFilteredCategoriesInput {
@@ -567,11 +612,12 @@ type Mutation {
   requestInsurancePayBack(bookId: ID!): Boolean!
   refuseInsurancePayBackRequest(bookId: ID!): Boolean!
   acceptInsurancePayBackRequest(bookId: ID!): Boolean!
-  updateHotelAdmin: Boolean!
-  updateRestaurantAdmin(updateRestaurantArgs: updateRestaurantAdminInput!): Restaurant!
-  updateHealthCentertAdmin: Boolean!
-  updateBeautyCenterAdmin: Boolean!
-  updateVehicleAdmin: Boolean!
+  updateHotelAdmin(args: updateHotelAdminInput!): Boolean!
+  updateRestaurantAdmin(args: updateRestaurantAdminInput!): Boolean!
+  updateHealthCenterAdmin(args: updateHealthCenterAdminInput!): Boolean!
+  updateBeautyCenterAdmin(args: updateBeautyCenterAdminInput!): Boolean!
+  updateVehicleAdmin(args: updateVehicleAdminInput!): Boolean!
+  adminDeleteService(args: AdminDeleteServiceInput!): Boolean!
   createServiceCategory(createServiceCategoryArgs: CreateCategoryInput!): Category!
   updateServiceCategory(updateServiceCategoryArgs: UpdateCategoryInput!): Category!
   removeServiceCategory(serviceCategoryId: String!): Category!
@@ -616,21 +662,18 @@ input SpecialDayWorkingHoursInput {
   workingHours: ServiceDayWorkingHoursInput!
 }
 
-input updateRestaurantAdminInput {
-  vat: Int
-  status: ServiceStatus
-  location: ServiceLocationInput
+input updateHotelAdminInput {
   presentations: [ServicePresentationInput!]
+  location: ServiceLocationInput
   policies: [ServicePolicyTranslatedInput!]
   serviceMetaInfo: [ServiceMetaInfoTranslationInput!]
-  payment_methods: [ServicePaymentMethods!]
-  menus: [UpdateRestaurantMenuInput!]
-  establishmentTypeId: ID
-  cuisinesTypeId: ID
-  setting_and_ambianceId: ID
-  michelin_guide_stars: Int
-  dishs: [UpdateRestaurantMenuDishInput!]
+  rooms: [UpdateHotelRoomAdminInput!]
   id: ID!
+}
+
+input ServicePresentationInput {
+  type: ServicePresentationType!
+  src: String!
 }
 
 input ServiceLocationInput {
@@ -641,11 +684,6 @@ input ServiceLocationInput {
   lat: Float!
   lon: Float!
   postalCode: Int!
-}
-
-input ServicePresentationInput {
-  type: ServicePresentationType!
-  src: String!
 }
 
 input ServicePolicyTranslatedInput {
@@ -671,6 +709,108 @@ input ServiceMetaInfoInput {
   hashtags: [String!]!
 }
 
+input UpdateHotelRoomAdminInput {
+  roomMetaInfo: [HotelRoomTranslationMetaInfoInput!]
+  pricePerNight: Int
+  dailyPrice: Boolean
+  dailyPrices: ServiceDailyPricesInput
+  discount: ServiceDiscountInput
+  includedServices: [ServiceIncludedServicesInput!]
+  popularAmenities: [ServiceAmenitiesInput!]
+  cancelationPolicies: [ServiceCancelationPolicyInput!]
+  beds: Int
+  bathrooms: Int
+  extras: [ServiceExtraInput!]
+  num_of_rooms: Int
+  includedAmenities: [ServiceIncludedAmenitiesInput!]
+  measurements: ServicePropertyMeasurementsInput
+  insurance: Float
+  presentations: [ServicePresentationInput!]
+  id: ID!
+}
+
+input HotelRoomTranslationMetaInfoInput {
+  langId: String!
+  value: HotelRoomMetaInfoInput!
+}
+
+input HotelRoomMetaInfoInput {
+  title: String!
+  description: String!
+}
+
+input ServiceDailyPricesInput {
+  mo: Int!
+  tu: Int!
+  we: Int!
+  th: Int!
+  fr: Int!
+  sa: Int!
+  su: Int!
+}
+
+input ServiceDiscountInput {
+  value: Int!
+  units: Int!
+}
+
+input ServiceIncludedServicesInput {
+  langId: String!
+  value: [String!]!
+}
+
+input ServiceAmenitiesInput {
+  value: String!
+  label: [ServiceAmenitiesLabelTranslationInput!]!
+}
+
+input ServiceAmenitiesLabelTranslationInput {
+  langId: String!
+  value: String!
+}
+
+input ServiceCancelationPolicyInput {
+  duration: Int!
+  cost: Int!
+}
+
+input ServiceExtraInput {
+  name: [ServiceExtraNameTranslationInput!]!
+  cost: Int!
+}
+
+input ServiceExtraNameTranslationInput {
+  langId: String!
+  value: String!
+}
+
+input ServiceIncludedAmenitiesInput {
+  langId: String!
+  value: [String!]!
+}
+
+input ServicePropertyMeasurementsInput {
+  inFeet: Int!
+  inMeter: Int!
+}
+
+input updateRestaurantAdminInput {
+  vat: Int
+  status: ServiceStatus
+  location: ServiceLocationInput
+  presentations: [ServicePresentationInput!]
+  policies: [ServicePolicyTranslatedInput!]
+  serviceMetaInfo: [ServiceMetaInfoTranslationInput!]
+  payment_methods: [ServicePaymentMethods!]
+  menus: [UpdateRestaurantMenuInput!]
+  establishmentTypeId: ID
+  cuisinesTypeId: ID
+  setting_and_ambianceId: ID
+  michelin_guide_stars: Int
+  dishs: [UpdateRestaurantMenuDishInput!]
+  id: ID!
+}
+
 input UpdateRestaurantMenuInput {
   id: ID!
   name: [TranslationTextInput!]!
@@ -693,6 +833,67 @@ input UpdateRestaurantMenuDishInput {
 input TranslationTextArrayInput {
   langId: String!
   value: [String!]!
+}
+
+input updateHealthCenterAdminInput {
+  vat: Float
+  presentations: [ServicePresentationInput!]
+  policies: [ServicePolicyTranslatedInput!]
+  serviceMetaInfo: [ServiceMetaInfoTranslationInput!]
+  payment_methods: [ServicePaymentMethods!]
+  cancelationPolicies: [ServiceCancelationPolicyInput!]
+  status: ServiceStatus
+  id: ID!
+}
+
+input updateBeautyCenterAdminInput {
+  vat: Float
+  beauty_center_typeId: ID
+  title: [TranslationTextInput!]
+  presentations: [ServicePresentationInput!]
+  policies: [ServicePolicyTranslatedInput!]
+  serviceMetaInfo: [ServiceMetaInfoTranslationInput!]
+  payment_methods: [ServicePaymentMethods!]
+  cancelationPolicies: [ServiceCancelationPolicyInput!]
+  type_of_seller: ServiceTypeOfSeller
+  treatments: [UpdateBeautyCenterTreatmentInput!]
+  id: ID!
+}
+
+input UpdateBeautyCenterTreatmentInput {
+  treatmentCategoryId: ID
+  title: [TranslationTextInput!]
+  price: Float
+  duration: [Int!]
+  discount: ServiceDiscountInput
+  id: ID!
+}
+
+input updateVehicleAdminInput {
+  typeId: ID
+  title: [TranslationTextInput!]
+  presentations: [ServicePresentationInput!]
+  cancelationPolicies: [ServiceCancelationPolicyInput!]
+  brand: String
+  model: String
+  price: Float
+  properties: CreateVehiclePropertiesInput
+  insurance: Float
+  id: ID!
+}
+
+input CreateVehiclePropertiesInput {
+  seats: Int!
+  windows: Int!
+  maxSpeedInKm: Int!
+  lugaggeCapacity: Int!
+  gpsAvailable: Boolean!
+  airCondition: Boolean!
+}
+
+input AdminDeleteServiceInput {
+  id: ID!
+  deletionReason: String!
 }
 
 input CreateCategoryInput {
@@ -768,71 +969,6 @@ input HotelRoomInput {
   measurements: ServicePropertyMeasurementsInput!
   insurance: Float!
   presentations: [ServicePresentationInput!]!
-}
-
-input HotelRoomTranslationMetaInfoInput {
-  langId: String!
-  value: HotelRoomMetaInfoInput!
-}
-
-input HotelRoomMetaInfoInput {
-  title: String!
-  description: String!
-}
-
-input ServiceDailyPricesInput {
-  mo: Int!
-  tu: Int!
-  we: Int!
-  th: Int!
-  fr: Int!
-  sa: Int!
-  su: Int!
-}
-
-input ServiceDiscountInput {
-  value: Int!
-  units: Int!
-}
-
-input ServiceIncludedServicesInput {
-  langId: String!
-  value: [String!]!
-}
-
-input ServiceAmenitiesInput {
-  value: String!
-  label: [ServiceAmenitiesLabelTranslationInput!]!
-}
-
-input ServiceAmenitiesLabelTranslationInput {
-  langId: String!
-  value: String!
-}
-
-input ServiceCancelationPolicyInput {
-  duration: Int!
-  cost: Int!
-}
-
-input ServiceExtraInput {
-  name: [ServiceExtraNameTranslationInput!]!
-  cost: Int!
-}
-
-input ServiceExtraNameTranslationInput {
-  langId: String!
-  value: String!
-}
-
-input ServiceIncludedAmenitiesInput {
-  langId: String!
-  value: [String!]!
-}
-
-input ServicePropertyMeasurementsInput {
-  inFeet: Int!
-  inMeter: Int!
 }
 
 input CreateRestaurantInput {
@@ -957,15 +1093,6 @@ input UpdateBeautyCenterInput {
   id: ID!
 }
 
-input UpdateBeautyCenterTreatmentInput {
-  treatmentCategoryId: ID
-  title: [TranslationTextInput!]
-  price: Float
-  duration: [Int!]
-  discount: ServiceDiscountInput
-  id: ID!
-}
-
 input DeleteTreatmentCategoryInput {
   id: ID!
 }
@@ -1004,13 +1131,4 @@ input CreateVehicleInput {
   price: Float!
   properties: CreateVehiclePropertiesInput!
   insurance: Float!
-}
-
-input CreateVehiclePropertiesInput {
-  seats: Int!
-  windows: Int!
-  maxSpeedInKm: Int!
-  lugaggeCapacity: Int!
-  gpsAvailable: Boolean!
-  airCondition: Boolean!
 }

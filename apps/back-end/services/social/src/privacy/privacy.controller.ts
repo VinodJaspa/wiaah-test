@@ -12,7 +12,7 @@ import {
 export class PrivacyController {
   constructor(private readonly commandBus: CommandBus) {}
 
-  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated)
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated('*', true))
   handleAccountCreated(
     @Payload() { value }: { value: NewAccountCreatedEvent },
   ) {

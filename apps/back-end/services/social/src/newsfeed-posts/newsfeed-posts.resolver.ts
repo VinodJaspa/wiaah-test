@@ -8,6 +8,7 @@ import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
 } from 'nest-utils';
+import { GetNewsfeedPostsByUserIdInput } from './dto';
 
 @Resolver(() => NewsfeedPost)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -26,9 +27,12 @@ export class NewsfeedPostsResolver {
     );
   }
 
-  @Query(() => [NewsfeedPost], { name: 'newsfeedPosts' })
-  findAll() {
-    return this.newsfeedPostsService.findAll();
+  @Query(() => [NewsfeedPost])
+  getNewsfeedPostsByUserId(@Args('args') args: GetNewsfeedPostsByUserIdInput) {
+    return this.newsfeedPostsService.getNewsfeedPostsByUserId(
+      args.userId,
+      args.pagination,
+    );
   }
 
   @Mutation(() => NewsfeedPost)

@@ -1,18 +1,19 @@
+import {
+  GetFilteredProductsAdminInput,
+  PresentationType,
+  ProductUsageStatus,
+} from "@features/Products/types";
 import { NextPage } from "next";
-import { useRouter } from "next/router";
-import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { BsKey } from "react-icons/bs";
 import { useRouting } from "routing";
 import {
   Badge,
   Checkbox,
+  DateFormInput,
   EditIcon,
   Image,
   Input,
-  LockIcon,
-  NotAllowedIcon,
   Pagination,
   PriceDisplay,
   SearchIcon,
@@ -26,36 +27,29 @@ import {
   THead,
   Tr,
   TrashIcon,
+  useGetAdminProductsQuery,
+  usePaginationControls,
 } from "ui";
-import { randomNum } from "utils";
 
-interface Product {
-  id: string;
-  sellerName: string;
-  name: string;
-  price: number;
-  qty: number;
-  usageStatus: "used" | "new";
-  status: string;
-  updatedAt: string;
-  thubmnail: string;
-}
-
-const products: NextPage = () => {
+const Products: NextPage = () => {
   const { visit, getCurrentPath } = useRouting();
   const { t } = useTranslation();
+  const { pagination, controls } = usePaginationControls();
+  const [filters, setfilters] = React.useState<
+    Omit<GetFilteredProductsAdminInput, "pagination">
+  >({});
+  const { data: products } = useGetAdminProductsQuery({ pagination });
 
-  const products: Product[] = [...Array(15)].map((_, i) => ({
-    id: i.toString(),
-    price: randomNum(15),
-    qty: randomNum(5),
-    sellerName: "seller name",
-    thubmnail: getRandomImage(),
-    status: "Active",
-    updatedAt: new Date().toString(),
-    name: `product name ${i}`,
-    usageStatus: randomNum(100) > 50 ? "new" : "used",
-  }));
+  function getFitler(key: keyof typeof filters) {
+    return filters[key] || "";
+  }
+
+  function setFilter(
+    key: keyof typeof filters,
+    value: typeof filters[keyof typeof filters]
+  ) {
+    setfilters((old) => ({ ...old, [key]: value }));
+  }
 
   return (
     <>
@@ -82,28 +76,55 @@ const products: NextPage = () => {
                 <Th></Th>
                 <Th></Th>
                 <Th>
-                  <Input />
+                  <Input
+                    value={getFitler("title")}
+                    onChange={(v) => setFilter("title", v.target.value)}
+                  />
                 </Th>
                 <Th>
-                  <Input />
+                  <Input
+                    value={getFitler("seller")}
+                    onChange={(v) => setFilter("seller", v.target.value)}
+                  />
                 </Th>
                 <Th>
-                  <Input />
+                  <Input
+                    value={getFitler("productId")}
+                    onChange={(v) => setFilter("productId", v.target.value)}
+                  />
                 </Th>
                 <Th>
-                  <Select>
-                    <SelectOption value={"used"}>{t("Used")}</SelectOption>
-                    <SelectOption value={"new"}>{t("New")}</SelectOption>
+                  <Select
+                    value={JSON.stringify(getFitler("usageStatus"))}
+                    onOptionSelect={(v) => setFilter("usageStatus", v)}
+                  >
+                    <SelectOption value={ProductUsageStatus.Used}>
+                      {t("Used")}
+                    </SelectOption>
+                    <SelectOption value={ProductUsageStatus.New}>
+                      {t("New")}
+                    </SelectOption>
                   </Select>
                 </Th>
                 <Th>
-                  <Input type="number" />
+                  <Input
+                    type="number"
+                    value={getFitler("price")}
+                    onChange={(v) => setFilter("price", v.target.value)}
+                  />
                 </Th>
                 <Th>
-                  <Input type="number" />
+                  <Input
+                    type="number"
+                    value={getFitler("qty")}
+                    onChange={(v) => setFilter("qty", v.target.value)}
+                  />
                 </Th>
                 <Th>
-                  <Select>
+                  <Select
+                    value={JSON.stringify(getFitler("status"))}
+                    onOptionSelect={(v) => setFilter("status", v)}
+                  >
                     <SelectOption value={"active"}>{t("Active")}</SelectOption>
                     <SelectOption value={"inActive"}>
                       {t("inActive")}
@@ -112,26 +133,39 @@ const products: NextPage = () => {
                 </Th>
 
                 <Th>
-                  <Input />
+                  <DateFormInput
+                    dateValue={getFitler("updatedAt")}
+                    onDateChange={(v) => setFilter("updatedAt", v)}
+                  />
                 </Th>
               </Tr>
             </THead>
 
             <TBody>
-              {products.map((prod, i) => (
-                <Tr key={prod.id}>
+              {products?.map((prod, i) => (
+                <Tr data-testid="product-record" key={prod.id}>
                   <Td>
                     <Checkbox />
                   </Td>
                   <Td>
-                    <Image className="w-full" src={prod.thubmnail} />
+                    <Image
+                      className="w-full"
+                      src={
+                        prod.presentations.find(
+                          (v) => v.type === PresentationType.Image
+                        )?.src
+                      }
+                    />
                   </Td>
-                  <Td>{prod.name}</Td>
-                  <Td>{prod.sellerName}</Td>
+                  <Td>{prod.title}</Td>
+                  <Td>{prod.sellerId}</Td>
                   <Td>{prod.id.slice(0, 8)}...</Td>
                   <Td>
                     <Badge
-                      cases={{ success: "new", off: "used" }}
+                      cases={{
+                        success: ProductUsageStatus.New,
+                        off: ProductUsageStatus.Used,
+                      }}
                       value={prod.usageStatus}
                     >
                       {prod.usageStatus}
@@ -140,7 +174,7 @@ const products: NextPage = () => {
                   <Td>
                     <PriceDisplay price={prod.price} />
                   </Td>
-                  <Td>{prod.qty}</Td>
+                  <Td>{prod.stock}</Td>
                   <Td>{prod.status}</Td>
                   <Td>{new Date(prod.updatedAt).toDateString()}</Td>
                   <Td>
@@ -165,10 +199,10 @@ const products: NextPage = () => {
             </TBody>
           </Table>
         </TableContainer>
-        <Pagination />
+        <Pagination controls={controls} />
       </section>
     </>
   );
 };
 
-export default products;
+export default Products;

@@ -10,27 +10,41 @@ import {
   ListWrapperProps,
 } from "@UI/components/blocks/Wrappers";
 import { useNewsFeedPostPopup } from "@src/Hooks";
+import { NewsfeedPost, Profile } from "@features/Social/services/types";
+import { usePaginationControls } from "@blocks/Navigating";
+import { useGetProfilePosts } from "@features/Social";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {
-  posts?: PostCardInfo[];
+  userId: string;
   cols?: number;
   onPostClick?: (post: PostCardInfo) => any;
   grid?: boolean;
 }
 
-const _posts = [...Array(5)].reduce((acc) => {
-  return [...acc, ...newsfeedPosts];
-}, [] as PostCardInfo[]) as PostCardInfo[];
-
 export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
-  posts = _posts,
+  userId,
   cols = 1,
   onPostClick,
   grid,
 }) => {
   const { setCurrentPost } = useNewsFeedPostPopup();
+
+  const { pagination } = usePaginationControls();
+
+  const { data: posts } = useGetProfilePosts({
+    userId,
+    pagination,
+  });
+
   const childPosts =
-    posts && posts.map((post, idx) => <PostCard {...post} key={idx} />);
+    posts &&
+    posts.map((post, idx) => (
+      <PostCard
+        postInfo={post as NewsfeedPost}
+        profileInfo={post.publisher as Profile}
+        key={idx}
+      />
+    ));
   return (
     <>
       <PostViewPopup

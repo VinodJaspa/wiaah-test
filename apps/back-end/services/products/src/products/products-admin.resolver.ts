@@ -18,7 +18,9 @@ export class ProductsAdminResolver {
   ) {}
 
   @Query(() => [Product])
-  async getAllProducts(@Args('args') args: GetFilteredProductsAdminInput) {
+  async getAdminFilteredProducts(
+    @Args('args') args: GetFilteredProductsAdminInput,
+  ) {
     const filters: Prisma.ProductWhereInput[] = [];
 
     if (args.title) {
@@ -76,6 +78,12 @@ export class ProductsAdminResolver {
       });
     }
 
+    if (args.usageStatus) {
+      filters.push({
+        usageStatus: args.usageStatus,
+      });
+    }
+
     return this.prisma.product.findMany({
       where: {
         AND: filters,
@@ -91,6 +99,33 @@ export class ProductsAdminResolver {
         id,
       },
       data: rest,
+    });
+    return true;
+  }
+
+  @Query(() => Product, { nullable: true })
+  async adminGetProduct(@Args('id') id: string) {
+    const res = await this.prisma.product.findUnique({
+      where: {
+        id,
+      },
+    });
+    return res;
+  }
+
+  @Mutation(() => Boolean)
+  async adminDeleteProduct(
+    @Args('id') id: string,
+    @Args('reason') reason: string,
+  ) {
+    await this.prisma.product.update({
+      where: {
+        id,
+      },
+      data: {
+        status: 'suspended',
+        suspensionReason: reason,
+      },
     });
     return true;
   }

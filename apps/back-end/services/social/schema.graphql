@@ -1,0 +1,650 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @key(fields: String!) on OBJECT | INTERFACE
+
+directive @extends on OBJECT | INTERFACE
+
+directive @external on OBJECT | FIELD_DEFINITION
+
+directive @requires(fields: String!) on FIELD_DEFINITION
+
+directive @provides(fields: String!) on FIELD_DEFINITION
+
+type Attachment {
+  type: AttachmentType!
+  src: String!
+}
+
+enum AttachmentType {
+  img
+  vid
+  text
+}
+
+type Hashtag {
+  tag: String!
+}
+
+type BlockedUser {
+  id: ID!
+  blockerProfileId: ID!
+  blockedProfileId: ID!
+  blockedAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Profile {
+  user: Account
+  id: ID!
+  ownerId: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  username: String!
+  activeStatus: ActiveStatus!
+  lastActive: DateTime!
+  bio: String!
+  photo: String!
+  followers: Int!
+  followingData: [Follow!]
+  following: Int!
+  followersData: [Follow!]
+  publications: Int!
+  profession: String!
+  visibility: ProfileVisibility!
+}
+
+enum ActiveStatus {
+  idle
+  active
+  inActive
+  doNotDisturb
+}
+
+enum ProfileVisibility {
+  public
+  followers
+  private
+}
+
+type ProfilePaginatedResponse {
+  data: [Profile!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
+type ProfileMeta {
+  id: ID!
+  username: String!
+  photo: String!
+}
+
+type ProfileMetaPaginatedResponse {
+  data: [ProfileMeta!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
+type PostTag {
+  userId: ID!
+}
+
+type PostMention {
+  userId: ID!
+}
+
+type PostLocation {
+  city: String!
+  country: String!
+  address: String
+  state: String
+}
+
+type NewsfeedPost {
+  id: ID!
+  userId: ID!
+  title: String!
+  content: String!
+  attachments: [Attachment!]!
+  hashtags: [Hashtag!]!
+  reactionNum: Int!
+  comments: Int!
+  shares: Int!
+  mentions: [PostMention!]!
+  location: PostLocation
+  tags: [PostTag!]!
+  createdAt: String!
+  updatedAt: String!
+  publisher: Profile
+  authorProfileId: ID!
+}
+
+type Follow {
+  id: ID!
+  followerProfile: Profile
+  followerProfileId: ID!
+  followingProfile: Profile
+  followingProfileId: ID!
+  followedAt: DateTime!
+}
+
+type Comment {
+  id: ID!
+  hostType: ContentHostType!
+  hostId: ID!
+  author: Profile
+  authorProfileId: String!
+  userId: String!
+  attachments: [Attachment!]!
+  content: String!
+  commentedAt: DateTime!
+  likes: Int!
+}
+
+enum ContentHostType {
+  post_newsfeed
+  post_service
+  post_shop
+  comment
+  action
+  story
+}
+
+type PaginationCommentsResponse {
+  data: [Comment!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
+type ContentReaction {
+  id: ID!
+  hostId: ID!
+  userId: ID!
+  reactionType: ContentReactionType!
+  reactedBy: Profile
+  reactedByProfileId: ID!
+  reactedAt: DateTime!
+}
+
+enum ContentReactionType {
+  like
+  love
+  funny
+  sad
+  angry
+}
+
+type ContentShare {
+  id: ID!
+  hostId: ID!
+  hostType: ContentHostType!
+  sharedBy: Profile
+  sharedByProfileId: ID!
+  sharedByUserId: ID!
+  sharedAt: DateTime!
+}
+
+type ContentSharePaginationResponse {
+  data: [ContentShare!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
+type NewsfeedHashtagSearch {
+  mostLikedPost: NewsfeedPost!
+  mostCommentedPost: NewsfeedPost!
+  mostLikedVideo: NewsfeedPost!
+  mostViewedVideo: NewsfeedPost!
+}
+
+type UserSavedPost {
+  postId: ID!
+  postType: PostType!
+}
+
+enum PostType {
+  newsfeed_post
+  shop_post
+  service_post
+  affiliation_post
+}
+
+type UserSavedPostsGroup {
+  id: ID!
+  userId: ID!
+  posts: [UserSavedPost!]!
+}
+
+type Account {
+  id: ID!
+  profile: Profile
+}
+
+type Product {
+  id: ID!
+}
+
+type Affiliation {
+  id: ID!
+}
+
+type AffiliationPost {
+  id: ID!
+  userId: ID!
+  user: Account
+  affiliationId: ID!
+  reactionNum: Int!
+  comments: Int!
+  shares: Int!
+  visibility: PostVisibility!
+  location: PostLocation
+  commentsVisibility: CommentsVisibility!
+  affiliation: Affiliation!
+}
+
+enum PostVisibility {
+  hidden
+  public
+  followers
+  following
+}
+
+enum CommentsVisibility {
+  hidden
+  public
+}
+
+type Service {
+  id: ID!
+}
+
+type ServicePost {
+  id: ID!
+  serviceId: ID!
+  service: Service!
+  userId: ID!
+  reactionNum: Int!
+  comments: Int!
+  shares: Int!
+  visibility: PostVisibility!
+  location: PostLocation!
+  commentsVisibility: CommentsVisibility!
+}
+
+type ShopPost {
+  id: ID!
+}
+
+type Story {
+  id: ID!
+  publisherId: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  type: StoryType!
+  viewsCount: Int!
+  reactionsNum: Int!
+  referenceId: ID
+  content: String
+  attachements: Attachment
+  views: [StoryView!]!
+  newsfeedPost: NewsfeedPost
+  shopPost: ShopPost
+  affiliationPost: AffiliationPost
+  servicePost: ServicePost
+}
+
+enum StoryType {
+  base
+  text
+  image
+  video
+  affiliation
+  product
+  post
+  service
+}
+
+type StoryView {
+  id: ID!
+  viewerId: ID!
+  viewer: Account
+  storyId: ID!
+  createdAt: DateTime!
+  story: Story
+}
+
+type RecentStory {
+  userId: ID!
+  newStory: Boolean!
+  user: Account
+  resloveUser: Account!
+}
+
+type Block {
+  id: ID!
+  blockedUserId: ID!
+  blockedAt: DateTime!
+}
+
+type PrivacySettings {
+  id: ID!
+  userId: ID!
+  privateAccount: Boolean!
+  hideLikesNum: Boolean!
+  hideCommentsNum: Boolean!
+  hideViewsNum: Boolean!
+}
+
+type ProductPost {
+  id: ID!
+  userId: ID!
+  user: Account
+  productId: ID!
+  reactionNum: Int!
+  comments: Int!
+  shares: Int!
+  visibility: PostVisibility!
+  location: PostLocation
+  commentsVisibility: CommentsVisibility!
+  product: Product!
+}
+
+type Action {
+  id: ID!
+  attachment: Attachment!
+  userId: ID!
+  reactionNum: Int!
+  comments: Int!
+  shares: Int!
+  visibility: PostVisibility!
+  location: PostLocation!
+  commentsVisibility: CommentsVisibility!
+}
+
+type Query {
+  findAll: ProfilePaginatedResponse!
+  myProfile: Profile!
+  getProfile(id: String!): Profile!
+  searchPopularUsers(args: SearchPopularProfilesInput!): ProfilePaginatedResponse!
+  getFollowersByProfileId(getFollowersMetaInput: GetProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
+  getFollowingByProfileId(getFollowingMetaInput: GetProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
+  getMyFollowers(getMyFollowersInput: GetMyProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
+  getMyFollowing(getMyFollowersInput: GetMyProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
+  isFollowed(profileId: String!): Boolean!
+  getNewsfeedPostsByUserId(args: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
+  getAdminProfile(id: String!): Profile!
+  comments: [Comment!]!
+  updateComment(updateCommentInput: UpdateCommentInput!): PaginationCommentsResponse!
+  getContentComments(getContentCommentsArgs: GetContentCommentsInput!): [Comment!]!
+  getAllShares: ContentSharePaginationResponse!
+  getNewsfeedHashtagPosts(hashtagSearchInput: GetHashtagNewsfeedPostsInput!): NewsfeedHashtagSearch!
+  getMySavedPosts: UserSavedPostsGroup!
+  getUserStory(userId: String!): Story!
+  getUserPrevStory(storyId: String!): Story!
+  getMyStories: [Story!]!
+  getStoryViews(getStoryViewsInput: GetStorySeenByInput!): [StoryView!]!
+  getRecentStories(getRecentStoryInput: GetRecentStoriesInput = {pagination: {page: 1, take: 10}}): [RecentStory!]!
+  getMyBlockList: [Block!]!
+  getMyPrivacySettings: PrivacySettings!
+  getUserProductPosts(args: GetUserProductPostsInput!): [ProductPost!]!
+  getRecommendedProductPosts: [ProductPost!]!
+  getAuthorAffiliationPosts(args: GetUserAffiliationPostsInput!): [AffiliationPost!]!
+  getUserActions(args: GetUserActionsInput!): [Action!]!
+  getAction(id: String!): [Action!]!
+  getUserServicePosts(args: GetUserServicesPostsInput!): ServicePost!
+  getRecommendedServicePosts(pagination: GqlPaginationInput!): [ServicePost!]!
+}
+
+input SearchPopularProfilesInput {
+  q: String!
+  cursor: String
+  take: Int = 15
+}
+
+input GetProfileFollowersMetaInput {
+  pagination: GqlPaginationInput!
+  profileId: String!
+}
+
+input GqlPaginationInput {
+  page: Int!
+  take: Int!
+}
+
+input GetMyProfileFollowersMetaInput {
+  pagination: GqlPaginationInput!
+}
+
+input GetNewsfeedPostsByUserIdInput {
+  userId: ID!
+  pagination: GqlPaginationInput!
+}
+
+input UpdateCommentInput {
+  content: String
+  mentions: [CommentMentionInput!]
+  id: ID!
+}
+
+input CommentMentionInput {
+  userId: ID!
+  profileId: ID!
+}
+
+input GetContentCommentsInput {
+  id: ID!
+  cursor: String
+  take: Int = 10
+}
+
+input GetHashtagNewsfeedPostsInput {
+  tag: String!
+  profileId: ID!
+  userId: ID!
+}
+
+input GetStorySeenByInput {
+  pagination: GqlPaginationInput!
+  storyId: ID!
+}
+
+input GetRecentStoriesInput {
+  pagination: GqlPaginationInput!
+}
+
+input GetUserProductPostsInput {
+  pagination: GqlPaginationInput!
+  authorId: ID!
+}
+
+input GetUserAffiliationPostsInput {
+  userId: ID!
+  pagination: GqlPaginationInput!
+}
+
+input GetUserActionsInput {
+  userId: ID!
+  pagination: GqlPaginationInput!
+}
+
+input GetUserServicesPostsInput {
+  userId: ID!
+  pagination: GqlCursorPaginationInput!
+}
+
+input GqlCursorPaginationInput {
+  take: Int!
+  cursor: String!
+}
+
+type Mutation {
+  createProfile(createProfileInput: CreateProfileInput!): Profile!
+  updateMyProfile(updateProfileInput: UpdateProfileInput!): Profile!
+  deleteMyProfile: Profile!
+  sendFollowRequest(profileId: String!): Boolean!
+  followProfile(followUserInput: FollowProfileInput!): Boolean!
+  unFollow(unFollowProfileInput: UnFollowProfileInput!): Boolean!
+  createNewsfeedPost(createNewsfeedPostInput: CreateNewsfeedPostInput!): NewsfeedPost!
+  updateNewsfeedPost(updateNewsfeedPostInput: UpdateNewsfeedPostInput!): NewsfeedPost!
+  removeNewsfeedPost(id: Int!): NewsfeedPost!
+  updateProfile(updateProfileInput: UpdateProfileAdminInput!): Profile!
+  createReaction(CreateReactionInput: CreateReactionInput!): Boolean!
+  removeReaction(removeReactionArgs: RemoveReactionInput!): ContentReaction!
+  createComment(createCommentInput: CreateCommentInput!): Comment!
+  updateComment(updateCommentInput: UpdateCommentInput!): Comment!
+  removeComment(id: Int!): Comment!
+  shareContent(createContentShareInput: CreateContentShareInput!): ContentShare!
+  deleteStory(deleteStoryInput: DeleteStoryInput!): Story!
+  createStory(createStoryInput: CreateStoryInput!): Story!
+  likeStory(likeStoryInput: LikeStoryInput!): Boolean!
+  blockUser(args: CreateBlockInput!): Boolean!
+  unblockUser(args: CreateBlockInput!): Boolean!
+  updateMyPrivacySettings(args: UpdateMyPrivacyInput!): PrivacySettings!
+  createAction(args: CreateActionInput!): Boolean!
+  hideContent(args: HideContentInput!): Boolean!
+}
+
+input CreateProfileInput {
+  photo: String!
+  bio: String
+  profession: String!
+  visibility: ProfileVisibility
+  username: String!
+}
+
+input UpdateProfileInput {
+  photo: String
+  bio: String
+  profession: String
+  visibility: ProfileVisibility
+  username: String
+}
+
+input FollowProfileInput {
+  profileId: String!
+}
+
+input UnFollowProfileInput {
+  profileId: String!
+}
+
+input CreateNewsfeedPostInput {
+  title: String!
+  content: String!
+  attachments: [AttachmentInput!]!
+  hashtags: [HashtagInput!]!
+  tags: [PostTagInput!]!
+  visibility: PostVisibility
+  location: PostLocationInput
+}
+
+input AttachmentInput {
+  type: AttachmentType!
+  src: String!
+}
+
+input HashtagInput {
+  tag: String!
+}
+
+input PostTagInput {
+  userId: String!
+}
+
+input PostLocationInput {
+  city: String!
+  country: String!
+  address: String
+  state: String
+}
+
+input UpdateNewsfeedPostInput {
+  title: String
+  content: String
+  attachments: [AttachmentInput!]
+  hashtags: [HashtagInput!]
+  tags: [PostTagInput!]
+  visibility: PostVisibility
+  location: PostLocationInput
+  id: ID!
+}
+
+input UpdateProfileAdminInput {
+  photo: String
+  bio: String
+  profession: String
+  visibility: ProfileVisibility
+  username: String
+  profileId: ID
+}
+
+input CreateReactionInput {
+  contentId: ID!
+  contentType: ContentHostType!
+  authorProfileId: ID!
+}
+
+input RemoveReactionInput {
+  contentId: ID!
+  contentType: ContentHostType!
+}
+
+input CreateCommentInput {
+  contentType: ContentHostType!
+  contentId: ID!
+  authorProfileId: ID!
+  authorUserId: ID!
+  content: String!
+  mentions: [CommentMentionInput!]!
+  attachments: [AttachmentInput!]!
+}
+
+input CreateContentShareInput {
+  contentId: ID!
+  contentType: ContentHostType!
+}
+
+input DeleteStoryInput {
+  storyId: ID!
+}
+
+input CreateStoryInput {
+  productId: ID
+  newsfeedPostId: ID
+  shopPostId: ID
+  affiliationPostId: ID
+  servicePostId: ID
+  content: String
+  attachment: AttachmentInput
+  tags: [PostTagInput!] = []
+}
+
+input LikeStoryInput {
+  storyId: ID!
+}
+
+input CreateBlockInput {
+  userId: ID!
+}
+
+input UpdateMyPrivacyInput {
+  privateAccount: Boolean
+  hideLikesNum: Boolean
+  hideCommentsNum: Boolean
+  hideViewsNum: Boolean
+}
+
+input CreateActionInput {
+  attachment: AttachmentInput!
+  location: PostLocationInput
+  commentsVisibility: CommentsVisibility
+}
+
+input HideContentInput {
+  id: ID!
+}

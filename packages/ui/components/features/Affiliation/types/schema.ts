@@ -1,5 +1,5 @@
-import { Product as ResolvedProduct } from "@features/Products/types";
-import { Service as ResolvedService } from "@features/Services/Services/types";
+import { Product } from "@features/Products/types";
+import { Service } from "@features/Services/Services/types";
 
 type Maybe<T> = T | null;
 type Exact<T extends { [key: string]: unknown }> = {
@@ -21,11 +21,6 @@ type Scalars = {
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
 };
-
-export type Product = ResolvedProduct;
-
-export type Service = ResolvedService;
-
 export type Affiliation = {
   __typename?: "Affiliation";
   id: Scalars["ID"];
@@ -46,15 +41,13 @@ export enum AffiliationStatus {
   InActive = "inActive",
 }
 
-export type ResolvedAffiliation = Omit<Affiliation, "product" | "service"> & {
-  product?: Product;
-};
-
 export type AffiliationPurchase = {
   __typename?: "AffiliationPurchase";
   id: Scalars["ID"];
   itemId: Scalars["ID"];
   itemType: Scalars["String"];
+  service?: Maybe<Service>;
+  product?: Maybe<Product>;
   sellerId: Scalars["ID"];
   affiliatorId: Scalars["ID"];
   purchaserId: Scalars["ID"];
@@ -64,14 +57,28 @@ export type AffiliationPurchase = {
 export type Query = {
   __typename?: "Query";
   getMyProductsAffiliationHistory: AffiliationPurchase;
-  getUserAffiliations: Affiliation;
+  getUserAffiliationHistory: Array<AffiliationPurchase>;
+  getUserAffiliationsPurchases: Array<AffiliationPurchase>;
+  getFilteredAffiliationsHistory: Array<AffiliationPurchase>;
+  getUserAffiliations: Array<Affiliation>;
   getFilteredAffiliations: Array<Affiliation>;
   getMyAffiliations: Array<Affiliation>;
 };
 
-export type QueryGetUserAffiliationsArgs = {
+export type QueryGetUserAffiliationHistoryArgs = {
   id: Scalars["String"];
-  pagination: GqlPaginationInput;
+};
+
+export type QueryGetUserAffiliationsPurchasesArgs = {
+  args: GetUserAffiliationsPurchasesInput;
+};
+
+export type QueryGetFilteredAffiliationsHistoryArgs = {
+  filters: GetFilteredAffiliationHistoryInput;
+};
+
+export type QueryGetUserAffiliationsArgs = {
+  args: GetUserAffiliationsInput;
 };
 
 export type QueryGetFilteredAffiliationsArgs = {
@@ -82,9 +89,33 @@ export type QueryGetMyAffiliationsArgs = {
   args: GetMyAffiliationsInput;
 };
 
+export type GetUserAffiliationsPurchasesInput = {
+  pagination: GqlPaginationInput;
+  id: Scalars["ID"];
+};
+
 export type GqlPaginationInput = {
   page: Scalars["Int"];
   take: Scalars["Int"];
+};
+
+export type GetFilteredAffiliationHistoryInput = {
+  seller?: Maybe<Scalars["String"]>;
+  purchaser?: Maybe<Scalars["String"]>;
+  price?: Maybe<Scalars["Float"]>;
+  title?: Maybe<Scalars["String"]>;
+  affiliator?: Maybe<Scalars["String"]>;
+  commission?: Maybe<Scalars["Float"]>;
+  money_generated?: Maybe<Scalars["Float"]>;
+  purchasedBefore?: Maybe<Scalars["String"]>;
+  purchasedAfter?: Maybe<Scalars["String"]>;
+  affiliation_link?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+};
+
+export type GetUserAffiliationsInput = {
+  pagination: GqlPaginationInput;
+  id: Scalars["ID"];
 };
 
 export type GetFilteredAffiliationsInput = {

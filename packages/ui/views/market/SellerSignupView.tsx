@@ -24,8 +24,14 @@ export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
           return (
             <Form className="flex flex-col gap-4">
               <FormikInput
-                name="name"
-                placeholder={t("Name", "Name")}
+                name="firstName"
+                placeholder={t("First Name")}
+                type="text"
+                icon={<IoMdPerson className="mr-2 text-xl text-gray-400" />}
+              />
+              <FormikInput
+                name="lastName"
+                placeholder={t("Last Name")}
                 type="text"
                 icon={<IoMdPerson className="mr-2 text-xl text-gray-400" />}
               />
