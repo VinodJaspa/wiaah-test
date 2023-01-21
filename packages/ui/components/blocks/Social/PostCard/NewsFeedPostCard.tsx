@@ -1,5 +1,4 @@
 import React from "react";
-import { ProfileInfo, PostInfo } from "types";
 import {
   CommentIcon,
   HeartIcon,
@@ -16,16 +15,16 @@ import {
   NewsfeedPost,
   Profile,
 } from "@UI/components/features";
+import { ContentHostType, useLikeContent } from "@features/Social";
 import { UserProfileDisplay } from "@UI/components/blocks/DataDisplay";
-import { Interaction } from "types";
 import { useDateDiff } from "hooks";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
+import { useTypedReactPubsub } from "@libs";
 
 export interface PostCardProps {
   profileInfo: Profile;
   postInfo: NewsfeedPost;
-  onInteraction?: (interaction: Interaction) => any;
 }
 
 export const PostCard: React.FC<PostCardProps> = ({
@@ -37,6 +36,19 @@ export const PostCard: React.FC<PostCardProps> = ({
   const { OpenModal } = useSocialPostSettingsPopup();
   const { open: openPostMentions } = useSocialPostMentionsModal();
   const { t } = useTranslation();
+  const { mutate } = useLikeContent();
+  const { emit } = useTypedReactPubsub((v) => v.openPostCommentInput);
+
+  function handleLike() {
+    mutate({
+      args: {
+        authorProfileId: profileInfo.id,
+        contentId: postInfo.id,
+        contentType: ContentHostType.PostNewsfeed,
+      },
+    });
+  }
+
   const { getSince } = useDateDiff({
     from: new Date(postInfo.createdAt),
     to: new Date(),
@@ -121,14 +133,22 @@ export const PostCard: React.FC<PostCardProps> = ({
         <div className="flex justify-between w-full">
           <div className="flex gap-7">
             <div className="flex gap-2 items-center">
-              <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
+              <span
+                onClick={handleLike}
+                className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30"
+              >
                 <HeartIcon />
               </span>
               <p className="font-bold text-base">{postInfo.reactionNum}</p>
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
+              <span
+                onClick={() =>
+                  emit({ id: postInfo.id, type: ContentHostType.PostNewsfeed })
+                }
+                className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30"
+              >
                 <CommentIcon />
               </span>
               <p className="font-bold text-base">{postInfo.comments}</p>

@@ -5,4 +5,7 @@ import { ExtendableGqlPaginationInput } from 'nest-utils';
 export class GetStorySeenByInput extends ExtendableGqlPaginationInput {
   @Field(() => ID)
   storyId: string;
+
+  @Field(() => String, { nullable: true })
+  q?: string;
 }

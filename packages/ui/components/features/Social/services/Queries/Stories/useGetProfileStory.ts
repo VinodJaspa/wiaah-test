@@ -1,7 +1,8 @@
 import { createGraphqlRequestClient } from "api";
-import { Exact, Scalars } from "types";
+import { Exact, Maybe, Scalars } from "types";
 import { useQuery, UseQueryOptions } from "react-query";
-import { Story } from "@features/Social/services/types";
+import { Profile, Story } from "@features/Social/services/types";
+import { Account } from "@features/Accounts";
 
 export type GetProfileStoryQueryVariables = Exact<{
   id: Scalars["String"];
@@ -18,7 +19,14 @@ export type GetProfileStoryQuery = { __typename?: "Query" } & {
     | "type"
     | "updatedAt"
     | "viewsCount"
-  >;
+  > & {
+      publisher?: Maybe<
+        { __typename?: "Profile" } & Pick<
+          Profile,
+          "photo" | "username" | "visibility" | "id"
+        >
+      >;
+    };
 };
 
 export const useGetProfileStory = (
@@ -46,6 +54,12 @@ export const useGetProfileStory = (
                 type
                 updatedAt
                 viewsCount
+                publisher {
+                    id
+                    photo
+                    username
+                    visibility
+                }
             }
         }
     `);

@@ -9,33 +9,20 @@ import {
   GridListOrganiser,
   ListWrapperProps,
 } from "@UI/components/blocks/Wrappers";
-import { useNewsFeedPostPopup } from "@src/Hooks";
 import { NewsfeedPost, Profile } from "@features/Social/services/types";
-import { usePaginationControls } from "@blocks/Navigating";
-import { useGetProfilePosts } from "@features/Social";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {
-  userId: string;
+  posts: NewsfeedPost[];
   cols?: number;
   onPostClick?: (post: PostCardInfo) => any;
   grid?: boolean;
 }
 
 export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
-  userId,
+  posts,
   cols = 1,
-  onPostClick,
   grid,
 }) => {
-  const { setCurrentPost } = useNewsFeedPostPopup();
-
-  const { pagination } = usePaginationControls();
-
-  const { data: posts } = useGetProfilePosts({
-    userId,
-    pagination,
-  });
-
   const childPosts =
     posts &&
     posts.map((post, idx) => (

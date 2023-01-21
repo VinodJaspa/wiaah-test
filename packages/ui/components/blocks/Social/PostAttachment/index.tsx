@@ -1,8 +1,10 @@
 import React from "react";
-import { HtmlDivProps, PostAttachment as PostAttachmentType } from "types";
+import { HtmlDivProps } from "types";
 import { HiDuplicate } from "react-icons/hi";
-import { Image } from "@UI";
-export interface PostAttachmentProps extends PostAttachmentType {
+import { AttachmentType, Image } from "@UI";
+export interface PostAttachmentProps {
+  src: string;
+  type: AttachmentType;
   alt?: string;
   footer?: React.ReactElement;
   style?: HtmlDivProps;

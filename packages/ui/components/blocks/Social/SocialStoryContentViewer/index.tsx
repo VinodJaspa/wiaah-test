@@ -1,13 +1,11 @@
 import React from "react";
 import { useSetRecoilState } from "recoil";
-import { SocialStoryContentData } from "types";
 import {
   useStory,
   useTimer,
   CurrentStoryProgressState,
   PostAttachment,
-} from "@UI";
-import {
+  StoryType,
   ActionPostStory,
   AffiliationPostStory,
   NewsFeedPostStory,
@@ -15,14 +13,18 @@ import {
   ServicePostStory,
 } from "@UI";
 
-export interface SocialStoryContentViewerProps extends SocialStoryContentData {
+export interface SocialStoryContentViewerProps {
+  type: StoryType;
+  src?: string;
+  text?: string;
+  id: string;
   play?: boolean;
   onProgress?: (progress: number) => any;
   onFinish?: () => any;
 }
 export const SocialStoryContentViewer: React.FC<
   SocialStoryContentViewerProps
-> = ({ storyType, storySrc, storyText, play, id }) => {
+> = ({ type, src, text, play, id }) => {
   const { nextStory } = useStory();
   const setCurrentStoryProgress = useSetRecoilState(CurrentStoryProgressState);
   const videoRef = React.useRef<HTMLVideoElement>(null);
@@ -42,28 +44,28 @@ export const SocialStoryContentViewer: React.FC<
   }, [play]);
 
   const Content = () => {
-    switch (storyType) {
+    switch (type) {
       case "image":
-        return <PostAttachment src={storySrc || ""} type={storyType} />;
+        return <PostAttachment src={src || ""} type={type} />;
       case "video":
         return (
           <div>
             <video
               ref={videoRef}
               style={{ maxHeight: "100%", objectFit: "contain" }}
-              src={storySrc}
+              src={src}
             />
           </div>
         );
-      case "newsFeedPost":
+      case StoryType.Post:
         return <NewsFeedPostStory postId={id} />;
-      case "shopPost":
+      case StoryType.Product:
         return <ShopPostStory postId={id} />;
-      case "affiliationPost":
+      case StoryType.Affiliation:
         return <AffiliationPostStory postId={id} />;
-      case "action":
-        return <ActionPostStory postId={id} />;
-      case "servicePost":
+      // case StoryType.Base:
+      //   return <ActionPostStory postId={id} />;
+      case StoryType.Service:
         return <ServicePostStory postId={id} />;
       default:
         return null;
@@ -74,13 +76,13 @@ export const SocialStoryContentViewer: React.FC<
       className="flex flex-col items-center h-full w-full justify-center"
       // maxW="container.md"
     >
-      {storyText && (
+      {text && (
         <p
           className={`w-full text-center font-bold py-4 ${
-            storyType === "text" ? "text-3xl" : "text-lg"
+            type === "text" ? "text-3xl" : "text-lg"
           }`}
         >
-          {storyText}
+          {text}
         </p>
       )}
       {Content()}

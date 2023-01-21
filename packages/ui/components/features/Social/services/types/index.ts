@@ -63,6 +63,7 @@ export type Profile = {
   publications: Scalars["Int"];
   profession: Scalars["String"];
   visibility: ProfileVisibility;
+  verified: Scalars["Boolean"];
 };
 
 export enum ActiveStatus {
@@ -155,10 +156,13 @@ export type Comment = {
   author?: Maybe<Profile>;
   authorProfileId: Scalars["String"];
   userId: Scalars["String"];
-  attachments: Array<Attachment>;
+  attachment: Attachment;
   content: Scalars["String"];
   commentedAt: Scalars["DateTime"];
   likes: Scalars["Int"];
+  replies: Scalars["Int"];
+  createdAt: Scalars["String"];
+  updatedAt: Scalars["String"];
 };
 
 export enum ContentHostType {
@@ -313,6 +317,7 @@ export type Story = {
   __typename?: "Story";
   id: Scalars["ID"];
   publisherId: Scalars["ID"];
+  publisher?: Maybe<Profile>;
   createdAt: Scalars["DateTime"];
   updatedAt: Scalars["DateTime"];
   type: StoryType;
@@ -354,7 +359,6 @@ export type RecentStory = {
   userId: Scalars["ID"];
   newStory: Scalars["Boolean"];
   user?: Maybe<Account>;
-  resloveUser: Account;
 };
 
 export type Block = {
@@ -576,6 +580,7 @@ export type GetHashtagNewsfeedPostsInput = {
 export type GetStorySeenByInput = {
   pagination: GqlPaginationInput;
   storyId: Scalars["ID"];
+  q?: Maybe<Scalars["String"]>;
 };
 
 export type GetRecentStoriesInput = {
@@ -626,7 +631,7 @@ export type Mutation = {
   removeComment: Comment;
   shareContent: ContentShare;
   deleteStory: Story;
-  createStory: Story;
+  createStory: Scalars["Boolean"];
   likeStory: Scalars["Boolean"];
   blockUser: Scalars["Boolean"];
   unblockUser: Scalars["Boolean"];
@@ -819,7 +824,7 @@ export type CreateCommentInput = {
   authorUserId: Scalars["ID"];
   content: Scalars["String"];
   mentions: Array<CommentMentionInput>;
-  attachments: Array<AttachmentInput>;
+  attachment?: Maybe<AttachmentInput>;
 };
 
 export type CreateContentShareInput = {

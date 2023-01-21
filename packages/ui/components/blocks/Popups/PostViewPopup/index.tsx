@@ -1,7 +1,14 @@
 import React from "react";
 import { useMutation, useQuery } from "react-query";
 import { MdClose } from "react-icons/md";
-import { Modal, ModalContent, ArrowUpIcon, ArrowDownIcon } from "@UI";
+import {
+  Modal,
+  ModalContent,
+  ArrowUpIcon,
+  ArrowDownIcon,
+  CommentInput,
+  useCommentOnContent,
+} from "@UI";
 import { useTranslation } from "react-i18next";
 import { PostCommentCard, Slider } from "@UI";
 import { getParamFromAsPath } from "utils";
@@ -60,6 +67,7 @@ export function PostViewPopup<TData extends {}>({
     },
   });
   const postId = getParamFromAsPath(getCurrentPath(), idParam);
+  const { mutate } = useCommentOnContent()
 
   const {
     data: post,
@@ -134,23 +142,30 @@ export function PostViewPopup<TData extends {}>({
             }}
             className={`thinScroll transition-all transform bg-white flex-col p-2 gap-2 flex overflow-x-scroll`}
           >
-            {PostCardPlaceHolder.postInfo.comments && (
-              <>
-                {PostCardPlaceHolder.postInfo.comments.length > 0 ? (
-                  PostCardPlaceHolder.postInfo.comments.map(
-                    (comment: any, i: any) => (
-                      <PostCommentCard key={i} {...comment} />
+            <div className="h-full overflow-y-scroll">
+              {PostCardPlaceHolder.postInfo.comments && (
+                <>
+                  {PostCardPlaceHolder.postInfo.comments.length > 0 ? (
+                    PostCardPlaceHolder.postInfo.comments.map(
+                      (comment: any, i: any) => (
+                        <PostCommentCard key={i} {...comment} />
+                      )
                     )
-                  )
-                ) : (
-                  <div className="flex justify-center items-center h-full">
-                    <p className="text-xl font-bold">
-                      {t("no comments in this post")}
-                    </p>
-                  </div>
-                )}
-              </>
-            )}
+                  ) : (
+                    <div className="flex justify-center items-center h-full">
+                      <p className="text-xl font-bold">
+                        {t("no comments in this post")}
+                      </p>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+            <CommentInput onCommentSubmit={(v)=> {
+              mutate({
+                authorProfileId:
+              })
+            }} />
           </div>
         </ModalContent>
       </Modal>

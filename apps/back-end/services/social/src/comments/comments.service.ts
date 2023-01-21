@@ -63,7 +63,7 @@ export class CommentsService {
       contentId,
       contentType,
       mentions,
-      attachments,
+      attachment,
     } = createCommentInput;
 
     const canComment = await this.canCommentOnContentByUserId(
@@ -83,7 +83,7 @@ export class CommentsService {
           content,
           hostId: contentId,
           hostType: contentType,
-          attachments,
+          attachment,
           mentions,
           authorProfileId,
           userId,

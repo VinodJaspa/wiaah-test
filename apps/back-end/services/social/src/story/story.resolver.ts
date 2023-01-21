@@ -80,7 +80,7 @@ export class StoryResolver {
     );
   }
 
-  @Mutation(() => Story)
+  @Mutation(() => Boolean)
   createStory(
     @Args('createStoryInput') input: CreateStoryInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,

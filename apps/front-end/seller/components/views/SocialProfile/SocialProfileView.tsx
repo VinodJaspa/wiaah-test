@@ -12,7 +12,6 @@ import {
   SocialPostsCommentsDrawer,
   ShareWithModal,
   SpinnerFallback,
-  newsfeedPosts,
   Divider,
   SocialServicePostsList,
   HomeIcon,
@@ -27,16 +26,12 @@ import {
   MenuList,
   useGetSocialProfileQuery,
   ProfileVisibility,
-  useGetProfilePosts,
-} from "ui";
-import {
   ShopCardsInfoPlaceholder,
   socialAffiliationCardPlaceholders,
   profileActionsPlaceholder,
+  SocialProfileNewsfeedPosts,
 } from "ui";
 import { TabType } from "types";
-import { useRecoilValue } from "recoil";
-import { SocialNewsfeedPostsState } from "ui";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { useBreakpointValue } from "utils";
@@ -54,12 +49,12 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
     isError,
   } = useGetSocialProfileQuery(profileId);
   const { isMobile } = useResponsive();
-  const posts = useRecoilValue(SocialNewsfeedPostsState);
   const cols = useBreakpointValue({ base: 3 });
   const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
   const { emit } = useTypedReactPubsub(
     (events) => events.openSocialShopPostsFilterDrawer
   );
+
   const sellerTabs: TabType[] = [
     {
       name: (
@@ -69,7 +64,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
         </HStack>
       ),
       component: (
-        <PostCardsListWrapper
+        <SocialProfileNewsfeedPosts
           grid={isMobile}
           cols={cols}
           userId={profileInfo.ownerId}
@@ -169,7 +164,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
         </HStack>
       ),
       component: (
-        <PostCardsListWrapper cols={cols} userId={profileInfo.ownerId} />
+        <SocialProfileNewsfeedPosts cols={cols} userId={profileInfo.ownerId} />
       ),
     },
   ];

@@ -1,5 +1,4 @@
 import React from "react";
-import { HiDotsHorizontal } from "react-icons/hi";
 import {
   Avatar,
   DisplayPostedSince,
@@ -10,14 +9,16 @@ import {
   MenuList,
 } from "@partials";
 import { MdClose } from "react-icons/md";
-import { HiEye } from "react-icons/hi";
+import { HiEye, HiDotsHorizontal } from "react-icons/hi";
 import { NumberShortner } from "@UI/components/helpers/numberShortener";
 import { useTranslation } from "react-i18next";
-import { ProfileInfo } from "types";
 import { useStorySeenByPopup } from "../StorySeenByPopup";
 
 export interface SocialStoryViewerHeaderProps {
-  user: ProfileInfo;
+  user: {
+    name: string;
+    thumbnail: string;
+  };
   createdAt: string;
   views: number;
   newStory?: boolean;

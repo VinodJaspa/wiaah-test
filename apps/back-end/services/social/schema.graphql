@@ -57,6 +57,7 @@ type Profile {
   publications: Int!
   profession: String!
   visibility: ProfileVisibility!
+  verified: Boolean!
 }
 
 enum ActiveStatus {
@@ -140,10 +141,13 @@ type Comment {
   author: Profile
   authorProfileId: String!
   userId: String!
-  attachments: [Attachment!]!
+  attachment: Attachment!
   content: String!
   commentedAt: DateTime!
   likes: Int!
+  replies: Int!
+  createdAt: String!
+  updatedAt: String!
 }
 
 enum ContentHostType {
@@ -283,6 +287,7 @@ type ShopPost {
 type Story {
   id: ID!
   publisherId: ID!
+  publisher: Profile
   createdAt: DateTime!
   updatedAt: DateTime!
   type: StoryType!
@@ -322,7 +327,6 @@ type RecentStory {
   userId: ID!
   newStory: Boolean!
   user: Account
-  resloveUser: Account!
 }
 
 type Block {
@@ -451,6 +455,7 @@ input GetHashtagNewsfeedPostsInput {
 input GetStorySeenByInput {
   pagination: GqlPaginationInput!
   storyId: ID!
+  q: String
 }
 
 input GetRecentStoriesInput {
@@ -500,7 +505,7 @@ type Mutation {
   removeComment(id: Int!): Comment!
   shareContent(createContentShareInput: CreateContentShareInput!): ContentShare!
   deleteStory(deleteStoryInput: DeleteStoryInput!): Story!
-  createStory(createStoryInput: CreateStoryInput!): Story!
+  createStory(createStoryInput: CreateStoryInput!): Boolean!
   likeStory(likeStoryInput: LikeStoryInput!): Boolean!
   blockUser(args: CreateBlockInput!): Boolean!
   unblockUser(args: CreateBlockInput!): Boolean!
@@ -601,7 +606,7 @@ input CreateCommentInput {
   authorUserId: ID!
   content: String!
   mentions: [CommentMentionInput!]!
-  attachments: [AttachmentInput!]!
+  attachment: AttachmentInput
 }
 
 input CreateContentShareInput {
