@@ -116,6 +116,7 @@ type NewsfeedPost {
   reactionNum: Int!
   comments: Int!
   shares: Int!
+  views: Int!
   mentions: [PostMention!]!
   location: PostLocation
   tags: [PostTag!]!
@@ -245,6 +246,7 @@ type AffiliationPost {
   reactionNum: Int!
   comments: Int!
   shares: Int!
+  views: Int!
   visibility: PostVisibility!
   location: PostLocation
   commentsVisibility: CommentsVisibility!
@@ -272,12 +274,16 @@ type ServicePost {
   serviceId: ID!
   service: Service!
   userId: ID!
+  user: Account!
   reactionNum: Int!
   comments: Int!
   shares: Int!
+  views: Int!
   visibility: PostVisibility!
   location: PostLocation!
   commentsVisibility: CommentsVisibility!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type ShopPost {
@@ -352,6 +358,7 @@ type ProductPost {
   reactionNum: Int!
   comments: Int!
   shares: Int!
+  views: Int!
   visibility: PostVisibility!
   location: PostLocation
   commentsVisibility: CommentsVisibility!
@@ -400,7 +407,7 @@ type Query {
   getAuthorAffiliationPosts(args: GetUserAffiliationPostsInput!): [AffiliationPost!]!
   getUserActions(args: GetUserActionsInput!): [Action!]!
   getAction(id: String!): [Action!]!
-  getUserServicePosts(args: GetUserServicesPostsInput!): ServicePost!
+  getUserServicePosts(args: GetUserServicesPostsInput!): [ServicePost!]!
   getRecommendedServicePosts(pagination: GqlPaginationInput!): [ServicePost!]!
 }
 

@@ -28,7 +28,7 @@ export interface SubscribersUserInfo {
   avatar: string;
   profileUrl: string;
 }
-export type PostAttachmentTypes = "image";
+export type PostAttachmentTypes = string;
 
 export interface PostAttachment {
   type: PostAttachmentTypes;
@@ -66,7 +66,6 @@ export interface PostInfo {
   numberOfComments: number;
   numberOfShares: number;
   comments?: PostComment[];
-  url: string;
 }
 
 export interface PostCardInfo {

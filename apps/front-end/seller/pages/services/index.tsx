@@ -4,7 +4,7 @@ import Head from "next/head";
 import React from "react";
 import { dehydrate, QueryClient } from "react-query";
 import { ServerSideQueryClientProps } from "types";
-import { SellerLayout } from "ui";
+import { ScrollPaginationWrapper, SellerLayout } from "ui";
 
 export const getServerSideProps: GetServerSideProps<
   ServerSideQueryClientProps
@@ -27,7 +27,9 @@ const ServicesPage: NextPage = () => {
         <title>services</title>
       </Head>
       <SellerLayout>
-        <ServicesView />
+        <ScrollPaginationWrapper onBottomReach={() => {}}>
+          <ServicesView />
+        </ScrollPaginationWrapper>
       </SellerLayout>
     </>
   );

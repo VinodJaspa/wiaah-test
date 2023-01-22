@@ -73,13 +73,15 @@ const Seller: NextPage = () => {
             </div>
             <RecentStories
               onStoryClick={(props) => open(props.storyUserData.id)}
-              stories={recentStories.map((v) => ({
-                storyUserData: {
-                  id: v.user.id,
-                  name: v.user.profile.id,
-                  userPhotoSrc: v.user.profile.photo,
-                },
-              }))}
+              stories={
+                recentStories?.map((v) => ({
+                  storyUserData: {
+                    id: v.user.id,
+                    name: v.user.profile.id,
+                    userPhotoSrc: v.user.profile.photo,
+                  },
+                })) || []
+              }
             />
           </div>
           <div className="w-full">

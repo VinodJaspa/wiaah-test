@@ -16,7 +16,12 @@ import {
   ShoppingCartIcon,
   PriceDisplay,
   UnDiscountedPriceDisplay,
+  PostAttachmentsViewer,
+  useLikeContent,
+  useCommentOnContent,
+  ContentHostType,
 } from "@UI";
+import { useTypedReactPubsub } from "@libs";
 
 export interface SocialShopPostcardProps {
   profileInfo: ProfileInfo;
@@ -41,6 +46,8 @@ export const SocialShopPostcard: React.FC<SocialShopPostcardProps> = ({
     from: new Date(postInfo.createdAt),
     to: new Date(),
   });
+  const { mutate: like } = useLikeContent();
+  const { emit } = useTypedReactPubsub((r) => r.openPostCommentInput);
 
   const date = getSince();
   return (
@@ -73,6 +80,7 @@ export const SocialShopPostcard: React.FC<SocialShopPostcardProps> = ({
                 storyUserData={{
                   name: profileInfo.name,
                   userPhotoSrc: profileInfo.thumbnail,
+                  id: profileInfo.id,
                 }}
               />
             </div>
@@ -125,14 +133,30 @@ export const SocialShopPostcard: React.FC<SocialShopPostcardProps> = ({
           </div>
           <div className="flex justify-between w-full">
             <div className="flex gap-7">
-              <div className="flex gap-2 items-center">
+              <div
+                onClick={() =>
+                  like({
+                    args: {
+                      authorProfileId: profileInfo.id,
+                      contentId: postInfo.id,
+                      contentType: ContentHostType.PostShop,
+                    },
+                  })
+                }
+                className="cursor-pointer flex gap-2 items-center"
+              >
                 <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
                   <HeartIcon />
                 </span>
                 <p className="font-bold text-base">{postInfo.numberOfLikes}</p>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div
+                onClick={() => {
+                  emit({ id: postInfo.id });
+                }}
+                className="cursor-pointer flex items-center gap-2"
+              >
                 <span className="w-9 h-9 flex justify-center items-center rounded-[20%] bg-white bg-opacity-30">
                   <CommentIcon />
                 </span>

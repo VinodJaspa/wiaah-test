@@ -399,6 +399,7 @@ type Service {
   price: Float!
   rating: Float!
   thumbnail: String!
+  hashtags: [String!]!
 }
 
 enum ServiceType {

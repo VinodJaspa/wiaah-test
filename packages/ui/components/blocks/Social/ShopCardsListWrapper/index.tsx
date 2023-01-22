@@ -32,31 +32,10 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
 
   return (
     <>
-      <PostViewPopup
-        fetcher={async ({ queryKey }: any) => {
-          const id = queryKey[1].postId;
-
-          const post = ShopCardsInfoPlaceholder.find((post) => post.id === id);
-          return post ? post : null;
-        }}
-        queryName="shopPost"
-        idParam="shopPostId"
-        renderChild={(props: ShopCardInfo) => {
-          return (
-            <SocialShopCard
-              showCommentInput={false}
-              showInteraction={false}
-              shopCardInfo={props}
-            />
-          );
-        }}
-      />
-
       <GridListOrganiser
         rowSize="14.5rem"
         presets={[
           {
-            length: 6,
             cols: 5,
             points: [
               {
@@ -87,7 +66,6 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
           },
           {
             cols: 5,
-            length: 8,
             points: [
               { c: 1, r: 1 },
               { c: 1, r: 1 },
@@ -101,7 +79,6 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
           },
 
           {
-            length: 9,
             cols: 4,
             points: [
               {
@@ -146,9 +123,7 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
       >
         {items.map((shop, i) => (
           <SocialShopPostcard
-            onCardClick={() =>
-              visit((routes) => routes.addQuery({ shopPostId: shop.id }))
-            }
+            onCardClick={() => setCurrentPostId(shop.id)}
             showComments
             key={i}
             {...props}

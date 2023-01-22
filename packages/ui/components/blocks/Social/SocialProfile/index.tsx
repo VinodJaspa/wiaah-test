@@ -13,7 +13,6 @@ import {
   HorizontalDotsIcon,
   VerifiedIcon,
 } from "@UI";
-import { useLoginPopup, useStory } from "@src/Hooks";
 import { mapArray, NumberShortner } from "utils";
 import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
@@ -25,11 +24,9 @@ import {
   useSendFollowRequestMutation,
 } from "@features/Social";
 import { useUnFollowProfileMutation } from "@features/Social";
-import { Account } from "@features/Accounts";
-import { useGetProfileStory } from "@features/Social/services/Queries/Stories/useGetProfileStory";
 
 export interface SocialProfileProps {
-  profileInfo: Profile & { isFollowed: boolean; user?: Partial<Account> };
+  profileInfo: Profile & { isFollowed: boolean };
   onFollow?: () => void;
 }
 
@@ -127,7 +124,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
               <p className="text-sm font-light text-grayText">
                 {profileInfo.profession}
               </p>
-              {profileInfo?.user?.verified ? (
+              {profileInfo.verified ? (
                 <VerifiedIcon className="text-lg text-primary" />
               ) : null}
             </HStack>

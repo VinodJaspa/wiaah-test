@@ -437,6 +437,7 @@ export type Service = {
   price: Scalars["Float"];
   rating: Scalars["Float"];
   thumbnail: Scalars["String"];
+  hashtags: Array<Scalars["String"]>;
 };
 
 export enum ServiceType {

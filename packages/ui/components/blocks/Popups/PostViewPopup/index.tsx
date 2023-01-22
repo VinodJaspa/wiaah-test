@@ -67,7 +67,7 @@ export function PostViewPopup<TData extends {}>({
     },
   });
   const postId = getParamFromAsPath(getCurrentPath(), idParam);
-  const { mutate } = useCommentOnContent()
+  const { mutate } = useCommentOnContent();
 
   const {
     data: post,
@@ -161,11 +161,13 @@ export function PostViewPopup<TData extends {}>({
                 </>
               )}
             </div>
-            <CommentInput onCommentSubmit={(v)=> {
-              mutate({
-                authorProfileId:
-              })
-            }} />
+            <CommentInput
+              onCommentSubmit={(v) => {
+                // mutate({
+                //   authorProfileId:
+                // })
+              }}
+            />
           </div>
         </ModalContent>
       </Modal>

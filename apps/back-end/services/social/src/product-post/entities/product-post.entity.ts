@@ -28,6 +28,9 @@ export class ProductPost {
   @Field(() => Int)
   shares: number;
 
+  @Field(() => Int)
+  views: number;
+
   @Field(() => PostVisibility)
   visibility: PostVisibility;
 

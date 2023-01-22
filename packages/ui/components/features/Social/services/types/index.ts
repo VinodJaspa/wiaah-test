@@ -129,6 +129,7 @@ export type NewsfeedPost = {
   reactionNum: Scalars["Int"];
   comments: Scalars["Int"];
   shares: Scalars["Int"];
+  views: Scalars["Int"];
   mentions: Array<PostMention>;
   location?: Maybe<PostLocation>;
   tags: Array<PostTag>;
@@ -271,6 +272,7 @@ export type AffiliationPost = {
   reactionNum: Scalars["Int"];
   comments: Scalars["Int"];
   shares: Scalars["Int"];
+  views: Scalars["Int"];
   visibility: PostVisibility;
   location?: Maybe<PostLocation>;
   commentsVisibility: CommentsVisibility;
@@ -300,12 +302,16 @@ export type ServicePost = {
   serviceId: Scalars["ID"];
   service: Service;
   userId: Scalars["ID"];
+  user: Account;
   reactionNum: Scalars["Int"];
   comments: Scalars["Int"];
   shares: Scalars["Int"];
+  views: Scalars["Int"];
   visibility: PostVisibility;
   location: PostLocation;
   commentsVisibility: CommentsVisibility;
+  createdAt: Scalars["String"];
+  updatedAt: Scalars["String"];
 };
 
 export type ShopPost = {
@@ -387,6 +393,7 @@ export type ProductPost = {
   reactionNum: Scalars["Int"];
   comments: Scalars["Int"];
   shares: Scalars["Int"];
+  views: Scalars["Int"];
   visibility: PostVisibility;
   location?: Maybe<PostLocation>;
   commentsVisibility: CommentsVisibility;
@@ -437,7 +444,7 @@ export type Query = {
   getAuthorAffiliationPosts: Array<AffiliationPost>;
   getUserActions: Array<Action>;
   getAction: Array<Action>;
-  getUserServicePosts: ServicePost;
+  getUserServicePosts: Array<ServicePost>;
   getRecommendedServicePosts: Array<ServicePost>;
 };
 

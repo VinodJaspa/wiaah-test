@@ -1,41 +1,28 @@
 import React from "react";
 import {
   Container,
-  PostCardsListWrapper,
   SocialProfile,
   TabsViewer,
-  ShopCardsListWrapper,
-  AffiliationOffersCardListWrapper,
-  FilterModal,
   useResponsive,
-  ActionsListWrapper,
   SocialPostsCommentsDrawer,
   ShareWithModal,
   SpinnerFallback,
   Divider,
-  SocialServicePostsList,
   HomeIcon,
   ShoppingCartIcon,
   ServicesIcon,
   AffiliationIcon,
-  PlayButtonFillIcon,
   HStack,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   useGetSocialProfileQuery,
   ProfileVisibility,
-  ShopCardsInfoPlaceholder,
-  socialAffiliationCardPlaceholders,
-  profileActionsPlaceholder,
   SocialProfileNewsfeedPosts,
+  SocialProfileShopPostsList,
+  SocialProfileServicePosts,
+  SocialProfileAffiliationPostsList,
 } from "ui";
 import { TabType } from "types";
-import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { useBreakpointValue } from "utils";
-import { useTypedReactPubsub } from "@libs";
 
 export interface SocialViewProps {
   profileId: string;
@@ -50,10 +37,6 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   } = useGetSocialProfileQuery(profileId);
   const { isMobile } = useResponsive();
   const cols = useBreakpointValue({ base: 3 });
-  const ActionsCols = useBreakpointValue({ base: 3, xl: 5 });
-  const { emit } = useTypedReactPubsub(
-    (events) => events.openSocialShopPostsFilterDrawer
-  );
 
   const sellerTabs: TabType[] = [
     {
@@ -63,13 +46,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
           <HomeIcon />
         </HStack>
       ),
-      component: (
-        <SocialProfileNewsfeedPosts
-          grid={isMobile}
-          cols={cols}
-          userId={profileInfo.ownerId}
-        />
-      ),
+      component: <SocialProfileNewsfeedPosts userId={profileInfo.ownerId} />,
     },
     {
       name: (
@@ -80,39 +57,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
       ),
       component: (
         <div className="flex flex-col gap-4">
-          <div className="flex justify-between">
-            <Menu>
-              <MenuButton>
-                <div
-                  onClick={() => emit()}
-                  className="mr-2 cursor-pointer flex items-center justify-between rounded-lg border p-2 text-xs"
-                >
-                  <samp>{t("Sort")}</samp>
-                  <FaChevronDown className="ml-2" />
-                </div>
-              </MenuButton>
-              <MenuList className="left-[0px]" origin="top left">
-                <MenuItem>{t("Newest in")}</MenuItem>
-                <MenuItem>{t("Price (Low to High)")}</MenuItem>
-                <MenuItem>{t("Price (High to Low)")}</MenuItem>
-              </MenuList>
-            </Menu>
-            <div
-              onClick={() => emit()}
-              className="mr-2 cursor-pointer flex items-center justify-between rounded-lg border p-2 text-xs"
-            >
-              <samp>{t("Filter")}</samp>
-              <FaChevronDown className="ml-2" />
-            </div>
-          </div>
-          <FilterModal />
-          <ShopCardsListWrapper
-            cols={cols}
-            items={[...Array(10)].reduce(
-              (acc) => [...acc, ...ShopCardsInfoPlaceholder],
-              []
-            )}
-          />
+          <SocialProfileShopPostsList userId={profileInfo.ownerId} />
         </div>
       ),
     },
@@ -123,7 +68,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
           <ServicesIcon />
         </HStack>
       ),
-      component: <SocialServicePostsList posts={[]} />,
+      component: <SocialProfileServicePosts userId={profileInfo.ownerId} />,
     },
     {
       name: (
@@ -133,27 +78,23 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
         </HStack>
       ),
       component: (
-        <AffiliationOffersCardListWrapper
-          grid={isMobile}
-          cols={cols}
-          items={socialAffiliationCardPlaceholders}
-        />
+        <SocialProfileAffiliationPostsList userId={profileInfo.ownerId} />
       ),
     },
-    {
-      name: (
-        <HStack>
-          <p>{t("Actions")}</p>
-          <PlayButtonFillIcon />
-        </HStack>
-      ),
-      component: (
-        <ActionsListWrapper
-          cols={ActionsCols}
-          actions={profileActionsPlaceholder}
-        />
-      ),
-    },
+    // {
+    //   name: (
+    //     <HStack>
+    //       <p>{t("Actions")}</p>
+    //       <PlayButtonFillIcon />
+    //     </HStack>
+    //   ),
+    //   component: (
+    //     <ActionsListWrapper
+    //       cols={ActionsCols}
+    //       actions={profileActionsPlaceholder}
+    //     />
+    //   ),
+    // },
   ];
   const buyerTabs: TabType[] = [
     {

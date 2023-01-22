@@ -59,6 +59,7 @@ model Product {
   vendor_external_link        String?
   vendor_external_link_clicks Int                   @default(0)
   type                        ProdcutType
+  hashtags                    String[]
   title                       String
   description                 String
   price                       Int

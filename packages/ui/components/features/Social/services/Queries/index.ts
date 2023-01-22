@@ -6,3 +6,6 @@ export * from "./Profile";
 export * from "./Stories";
 export * from "./Comments";
 export * from "./NewsfeedPost";
+export * from "./AffiliationPost";
+export * from "./ServicePost";
+export * from "./ShopPost";

@@ -1,15 +1,10 @@
-import { ServicePostType } from "api";
-import { usePagination } from "hooks";
-import { PostCardPlaceHolder, ShopCardsInfoPlaceholder } from "placeholder";
+import { PostCardPlaceHolder } from "placeholder";
 import React from "react";
 import {
-  useGetServicesPostsQuery,
-  SpinnerFallback,
-  PostViewPopup,
-  SocialServiceDetailsCard,
-  SocialServiceDetailsCardProps,
   GridListOrganiser,
   SocialServicesPostCard,
+  ServicePost,
+  SocialServicesPostCardProps,
 } from "@UI";
 import { randomNum } from "utils";
 
@@ -40,8 +35,13 @@ const servicesData = [
   },
 ];
 
+type ServicePostData = {
+  postInfo: SocialServicesPostCardProps["postInfo"];
+  profileInfo: SocialServicesPostCardProps["profileInfo"];
+};
+
 export interface SocialServicesPostsListProps {
-  posts: ServicePostType[];
+  posts: ServicePostData[];
   grid?: boolean;
 }
 
@@ -51,61 +51,6 @@ export const SocialServicePostsList: React.FC<SocialServicesPostsListProps> = ({
 }) => {
   return (
     <>
-      <PostViewPopup<SocialServiceDetailsCardProps>
-        //@ts-ignore
-        fetcher={async ({ queryKey }: any) => {
-          const id = queryKey[1].postId;
-          const sentence =
-            "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley";
-
-          const post = ShopCardsInfoPlaceholder.find((post) => post.id === id);
-          return {
-            id: "123",
-            label: "label",
-            name: "service post",
-            createdAt: new Date().toString(),
-            attachements: [
-              {
-                src: "https://images.unsplash.com/photo-1625602812206-5ec545ca1231?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8YW1lcmljYW4lMjBob3VzZXN8ZW58MHx8MHx8&w=1000&q=80",
-                type: "image",
-              },
-              { src: "/video.mp4", type: "video" },
-            ],
-            type: "hotel",
-            content: sentence.substring(0, randomNum(sentence.length)),
-            profileInfo: {
-              accountType: "seller",
-              id: "1263",
-              name: "seller name",
-              public: true,
-              thumbnail: "/shop-2.jpeg",
-              verified: true,
-            },
-            price: randomNum(123),
-            rate: randomNum(159),
-            views: randomNum(153),
-            hashtags: ["fashion", "gaming"],
-            cashback: { amount: 15, type: "cash" },
-            discount: randomNum(20),
-            postInteraction: {
-              likes: randomNum(300),
-              comments: randomNum(100),
-            },
-          };
-        }}
-        queryName="ServicePost"
-        idParam="servicepostid"
-        renderChild={(props) => {
-          return (
-            <SocialServiceDetailsCard
-              showCommentInput={false}
-              showInteraction={false}
-              {...props}
-            />
-          );
-        }}
-      />
-
       {Array.isArray(posts) ? (
         <GridListOrganiser
           rowSize="14.5rem"
@@ -208,20 +153,7 @@ export const SocialServicePostsList: React.FC<SocialServicesPostsListProps> = ({
           ]}
         >
           {posts.map((post) => {
-            const attachments = servicesData[randomNum(servicesData.length)];
-            return (
-              <SocialServicesPostCard
-                profileInfo={{ ...PostCardPlaceHolder.profileInfo }}
-                postInfo={{
-                  ...PostCardPlaceHolder.postInfo,
-                  attachments: [{ src: attachments.src, type: "image" }],
-                }}
-                cashback={10}
-                discount={15}
-                price={120}
-                serviceLabel={attachments.type}
-              />
-            );
+            return <SocialServicesPostCard {...post} />;
           })}
         </GridListOrganiser>
       ) : null}

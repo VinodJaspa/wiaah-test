@@ -21,4 +21,7 @@ export class Service {
 
   @Field(() => String)
   thumbnail: string;
+
+  @Field(() => [String])
+  hashtags: string[];
 }

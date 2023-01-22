@@ -84,6 +84,7 @@ export type Product = {
   title: Scalars["String"];
   description: Scalars["String"];
   shopId: Scalars["ID"];
+  hashtags: Array<Scalars["String"]>;
   categoryId: Scalars["ID"];
   category?: Maybe<Category>;
   attributes: Array<ProductAttribute>;
@@ -132,6 +133,7 @@ export type MyProduct = {
   title: Scalars["String"];
   description: Scalars["String"];
   shopId: Scalars["ID"];
+  hashtags: Array<Scalars["String"]>;
   categoryId: Scalars["ID"];
   category?: Maybe<Category>;
   attributes: Array<ProductAttribute>;

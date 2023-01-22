@@ -87,6 +87,7 @@ model NewsfeedPost {
   reactionNum        Int                @default(0)
   comments           Int                @default(0)
   shares             Int                @default(0)
+  views              Int                @default(0)
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
@@ -104,9 +105,12 @@ model ProductPost {
   reactionNum        Int                @default(0)
   comments           Int                @default(0)
   shares             Int                @default(0)
+  views              Int                @default(0)
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
 }
 
 model ServicePost {
@@ -116,9 +120,12 @@ model ServicePost {
   reactionNum        Int                @default(0)
   comments           Int                @default(0)
   shares             Int                @default(0)
+  views              Int                @default(0)
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
 }
 
 model AffiliationPost {
@@ -128,9 +135,12 @@ model AffiliationPost {
   reactionNum        Int                @default(0)
   comments           Int                @default(0)
   shares             Int                @default(0)
+  views              Int                @default(0)
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
 }
 
 model Action {
@@ -140,11 +150,14 @@ model Action {
   reactionNum        Int                @default(0)
   comments           Int                @default(0)
   shares             Int                @default(0)
+  views              Int                @default(0)
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
   mentions           PostMention[]
   tags               PostTag[]
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
 }
 
 model ContentReaction {
