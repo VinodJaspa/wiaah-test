@@ -1,11 +1,10 @@
-import { Attachment, PostTag } from '@entities';
+import { Attachment, Profile } from '@entities';
 import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
 import { StoryType } from 'prismaClient';
 
 import {
   AffiliationPost,
   NewsfeedPost,
-  Product,
   ServicePost,
   ShopPost,
 } from './extends';
@@ -20,6 +19,9 @@ export class Story {
 
   @Field(() => ID)
   publisherId: string;
+
+  @Field(() => Profile, { nullable: true })
+  publisher?: Profile;
 
   @Field(() => Date)
   createdAt: Date;

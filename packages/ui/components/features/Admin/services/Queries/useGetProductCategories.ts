@@ -34,14 +34,15 @@ function appendSubCategories(
   cate: Category,
   ogArr: Category[]
 ): ProductNestedCategory[] {
-  const childs = ogArr.filter((v) => v.parantId === cate.id);
+  // const childs = ogArr.filter((v) => v.parantId === cate.id);
 
-  if (childs.length > 0) {
-    return childs.map((c) => ({
-      ...c,
-      subCategories: appendSubCategories(c, ogArr),
-    }));
-  } else return [{ ...cate, subCategories: [] }];
+  // if (childs.length > 0) {
+  //   return childs.map((c) => ({
+  //     ...c,
+  //     subCategories: appendSubCategories(c, ogArr),
+  //   }));
+  // } else return [{ ...cate, subCategories: [] }];
+  return [];
 }
 
 export const FormatCategoryFilters = (categories: Category[]) => {

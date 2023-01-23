@@ -7,7 +7,6 @@ import {
   PostViewPopup,
   RecentStories,
   SellerLayout,
-  StoryDisplayProps,
   AddNewPostModal,
   PostAttachmentsViewer,
   AddNewStoryModal,
@@ -15,28 +14,24 @@ import {
   AspectRatio,
   SquarePlusOutlineIcon,
   useStoryModal,
+  useGetRecentStories,
+  usePaginationControls,
 } from "ui";
 import { newsfeedPosts } from "ui";
 import { useRouter } from "next/router";
 import { PostCardInfo } from "types";
-import { randomNum } from "utils";
 import { StoryModal } from "@components";
 
-const RecentStoriesPlaceHolder: StoryDisplayProps[] = [...Array(11)].map(
-  (_, i) => ({
-    seen: randomNum(10) > 7,
-    storyUserData: {
-      name: "wiaah",
-      id: i.toString(),
-      userPhotoSrc: `profile (${i + 1}).jfif`,
-    },
-  })
-);
-
-const seller: NextPage = () => {
+const Seller: NextPage = () => {
   const router = useRouter();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const { open } = useStoryModal();
+
+  const { pagination } = usePaginationControls();
+  const { data: recentStories } = useGetRecentStories({
+    pagination,
+  });
+
   return (
     <>
       <Head>
@@ -78,9 +73,15 @@ const seller: NextPage = () => {
             </div>
             <RecentStories
               onStoryClick={(props) => open(props.storyUserData.id)}
-              stories={RecentStoriesPlaceHolder.concat(
-                RecentStoriesPlaceHolder
-              )}
+              stories={
+                recentStories?.map((v) => ({
+                  storyUserData: {
+                    id: v.user.id,
+                    name: v.user.profile.id,
+                    userPhotoSrc: v.user.profile.photo,
+                  },
+                })) || []
+              }
             />
           </div>
           <div className="w-full">
@@ -94,7 +95,7 @@ const seller: NextPage = () => {
                 );
               }}
               cols={cols}
-              // posts={[]}
+              posts={[]}
             />
           </div>
         </div>
@@ -103,4 +104,4 @@ const seller: NextPage = () => {
   );
 };
 
-export default seller;
+export default Seller;

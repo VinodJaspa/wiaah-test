@@ -28,7 +28,7 @@ export class RecentStoryResolver {
   }
 
   @ResolveField(() => Account)
-  resloveUser(@Parent() recentStory: RecentStory) {
+  user(@Parent() recentStory: RecentStory) {
     return { __typename: 'User', id: recentStory.userId };
   }
 }

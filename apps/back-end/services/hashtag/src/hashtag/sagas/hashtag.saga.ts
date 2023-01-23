@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ofType, Saga } from '@nestjs/cqrs';
 import { ClientKafka } from '@nestjs/microservices';
-import { KAFKA_EVENTS } from 'nest-utils';
+import { KAFKA_EVENTS, SERVICES } from 'nest-utils';
 import { map, Observable } from 'rxjs';
 import {
   HashtagCreatedEvent as KafkaHashtagCreatedEvent,
@@ -12,7 +12,10 @@ import { HashtagCreatedEvent, HashtagDeletedEvent } from '../events';
 
 @Injectable()
 export class HashtagSaga {
-  constructor(private readonly eventClient: ClientKafka) {}
+  constructor(
+    @Inject(SERVICES.HASHTAG.token)
+    private readonly eventClient: ClientKafka,
+  ) {}
 
   @Saga()
   handleHashTagCreated($event: Observable<any>): Observable<any> {
@@ -21,7 +24,7 @@ export class HashtagSaga {
       map((tag) => {
         this.eventClient.emit(
           KAFKA_EVENTS.HASHTAG.hashtagCreated,
-          new KafkaHashtagCreatedEvent({ id: tag.tag.id }),
+          new KafkaHashtagCreatedEvent({ id: tag.tag.id, name: tag.tag.name }),
         );
       }),
     );

@@ -16,3 +16,4 @@ export * from "./Admin";
 export * from "./Auth";
 export * from "./Affiliation";
 export * from "./Accounts";
+export * from "./Hashtag";

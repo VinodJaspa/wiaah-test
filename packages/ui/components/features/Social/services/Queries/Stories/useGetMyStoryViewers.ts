@@ -45,7 +45,6 @@ export type GetStoryViewersQuery = { __typename?: "Query" } & {
       }
   >;
 };
-
 export const useGetMyStoryViewers = (args: GetStorySeenByInput) => {
   const client = createGraphqlRequestClient();
 

@@ -25,8 +25,8 @@ export class Comment {
   @Field(() => String)
   userId: string;
 
-  @Field(() => [Attachment])
-  attachments: Attachment[];
+  @Field(() => Attachment)
+  attachment: Attachment;
 
   @Field(() => String)
   content: string;
@@ -36,6 +36,15 @@ export class Comment {
 
   @Field(() => Int)
   likes: number;
+
+  @Field(() => Int)
+  replies: number;
+
+  @Field(() => String)
+  createdAt: Date;
+
+  @Field(() => String)
+  updatedAt: Date;
 }
 
 @ObjectType()

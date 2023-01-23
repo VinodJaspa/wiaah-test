@@ -28,6 +28,7 @@ export type GetProfileByIdQuery = { __typename?: "Query" } & Pick<
       | "updatedAt"
       | "username"
       | "visibility"
+      | "verified"
     > & {
         user?: Maybe<
           { __typename?: "Account" } & Pick<Account, "id" | "verified" | "type">
@@ -59,7 +60,12 @@ export const useGetSocialProfileQuery = (id: string) => {
           updatedAt
           username
           visibility
-
+          verified
+          user {
+            id
+            verified
+            type
+          }
       }
       
       isFollowed(

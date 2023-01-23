@@ -79,3 +79,4 @@ export * from "./InputRequiredStar";
 export * from "./Link";
 export * from "./Progress";
 export * from "./FormTranslationWrapper";
+export * from "./ScrollPaginationWrapper";

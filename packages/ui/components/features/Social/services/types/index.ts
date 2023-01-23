@@ -1,3 +1,6 @@
+import { Affiliation } from "@features/Affiliation";
+import { Product } from "@features/Products/types";
+
 type Maybe<T> = T | null;
 type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
@@ -63,6 +66,7 @@ export type Profile = {
   publications: Scalars["Int"];
   profession: Scalars["String"];
   visibility: ProfileVisibility;
+  verified: Scalars["Boolean"];
 };
 
 export enum ActiveStatus {
@@ -128,6 +132,7 @@ export type NewsfeedPost = {
   reactionNum: Scalars["Int"];
   comments: Scalars["Int"];
   shares: Scalars["Int"];
+  views: Scalars["Int"];
   mentions: Array<PostMention>;
   location?: Maybe<PostLocation>;
   tags: Array<PostTag>;
@@ -155,10 +160,13 @@ export type Comment = {
   author?: Maybe<Profile>;
   authorProfileId: Scalars["String"];
   userId: Scalars["String"];
-  attachments: Array<Attachment>;
+  attachment: Attachment;
   content: Scalars["String"];
   commentedAt: Scalars["DateTime"];
   likes: Scalars["Int"];
+  replies: Scalars["Int"];
+  createdAt: Scalars["String"];
+  updatedAt: Scalars["String"];
 };
 
 export enum ContentHostType {
@@ -248,16 +256,6 @@ export type Account = {
   profile?: Maybe<Profile>;
 };
 
-export type Product = {
-  __typename?: "Product";
-  id: Scalars["ID"];
-};
-
-export type Affiliation = {
-  __typename?: "Affiliation";
-  id: Scalars["ID"];
-};
-
 export type AffiliationPost = {
   __typename?: "AffiliationPost";
   id: Scalars["ID"];
@@ -267,6 +265,7 @@ export type AffiliationPost = {
   reactionNum: Scalars["Int"];
   comments: Scalars["Int"];
   shares: Scalars["Int"];
+  views: Scalars["Int"];
   visibility: PostVisibility;
   location?: Maybe<PostLocation>;
   commentsVisibility: CommentsVisibility;
@@ -296,12 +295,16 @@ export type ServicePost = {
   serviceId: Scalars["ID"];
   service: Service;
   userId: Scalars["ID"];
+  user: Account;
   reactionNum: Scalars["Int"];
   comments: Scalars["Int"];
   shares: Scalars["Int"];
+  views: Scalars["Int"];
   visibility: PostVisibility;
   location: PostLocation;
   commentsVisibility: CommentsVisibility;
+  createdAt: Scalars["String"];
+  updatedAt: Scalars["String"];
 };
 
 export type ShopPost = {
@@ -313,6 +316,7 @@ export type Story = {
   __typename?: "Story";
   id: Scalars["ID"];
   publisherId: Scalars["ID"];
+  publisher?: Maybe<Profile>;
   createdAt: Scalars["DateTime"];
   updatedAt: Scalars["DateTime"];
   type: StoryType;
@@ -354,7 +358,6 @@ export type RecentStory = {
   userId: Scalars["ID"];
   newStory: Scalars["Boolean"];
   user?: Maybe<Account>;
-  resloveUser: Account;
 };
 
 export type Block = {
@@ -383,10 +386,13 @@ export type ProductPost = {
   reactionNum: Scalars["Int"];
   comments: Scalars["Int"];
   shares: Scalars["Int"];
+  views: Scalars["Int"];
   visibility: PostVisibility;
   location?: Maybe<PostLocation>;
   commentsVisibility: CommentsVisibility;
   product: Product;
+  createdAt: Scalars["String"];
+  updatedAt: Scalars["String"];
 };
 
 export type Action = {
@@ -400,6 +406,31 @@ export type Action = {
   visibility: PostVisibility;
   location: PostLocation;
   commentsVisibility: CommentsVisibility;
+};
+
+export type Community = {
+  __typename?: "Community";
+  id: Scalars["ID"];
+  type: Scalars["String"];
+  newsfeed?: Maybe<NewsfeedPost>;
+  action?: Maybe<Action>;
+  newsfeedPost?: Maybe<NewsfeedPost>;
+};
+
+export type FriendSuggestion = {
+  __typename?: "FriendSuggestion";
+  accounts: Array<Account>;
+};
+
+export type Place = {
+  __typename?: "Place";
+  id: Scalars["ID"];
+  type: Scalars["String"];
+};
+
+export type PlaceSuggestions = {
+  __typename?: "PlaceSuggestions";
+  places: Array<Place>;
 };
 
 export type Query = {
@@ -433,8 +464,11 @@ export type Query = {
   getAuthorAffiliationPosts: Array<AffiliationPost>;
   getUserActions: Array<Action>;
   getAction: Array<Action>;
-  getUserServicePosts: ServicePost;
+  getUserServicePosts: Array<ServicePost>;
   getRecommendedServicePosts: Array<ServicePost>;
+  getCommunityPosts: Array<Community>;
+  getMyFriendSuggestions: FriendSuggestion;
+  getPlaceSuggestions: PlaceSuggestions;
 };
 
 export type QueryGetProfileArgs = {
@@ -505,6 +539,10 @@ export type QueryGetUserProductPostsArgs = {
   args: GetUserProductPostsInput;
 };
 
+export type QueryGetRecommendedProductPostsArgs = {
+  args: GetShopRecommendedPostsInput;
+};
+
 export type QueryGetAuthorAffiliationPostsArgs = {
   args: GetUserAffiliationPostsInput;
 };
@@ -523,6 +561,14 @@ export type QueryGetUserServicePostsArgs = {
 
 export type QueryGetRecommendedServicePostsArgs = {
   pagination: GqlPaginationInput;
+};
+
+export type QueryGetCommunityPostsArgs = {
+  args: GetCommunityPostsInput;
+};
+
+export type QueryGetMyFriendSuggestionsArgs = {
+  args: GetMyFriendSuggestionsInput;
 };
 
 export type SearchPopularProfilesInput = {
@@ -576,6 +622,7 @@ export type GetHashtagNewsfeedPostsInput = {
 export type GetStorySeenByInput = {
   pagination: GqlPaginationInput;
   storyId: Scalars["ID"];
+  q?: Maybe<Scalars["String"]>;
 };
 
 export type GetRecentStoriesInput = {
@@ -585,6 +632,10 @@ export type GetRecentStoriesInput = {
 export type GetUserProductPostsInput = {
   pagination: GqlPaginationInput;
   authorId: Scalars["ID"];
+};
+
+export type GetShopRecommendedPostsInput = {
+  q?: Maybe<Scalars["String"]>;
 };
 
 export type GetUserAffiliationPostsInput = {
@@ -607,6 +658,15 @@ export type GqlCursorPaginationInput = {
   cursor: Scalars["String"];
 };
 
+export type GetCommunityPostsInput = {
+  q: Scalars["String"];
+};
+
+export type GetMyFriendSuggestionsInput = {
+  pagination: GqlPaginationInput;
+  q?: Maybe<Scalars["String"]>;
+};
+
 export type Mutation = {
   __typename?: "Mutation";
   createProfile: Profile;
@@ -626,7 +686,7 @@ export type Mutation = {
   removeComment: Comment;
   shareContent: ContentShare;
   deleteStory: Story;
-  createStory: Story;
+  createStory: Scalars["Boolean"];
   likeStory: Scalars["Boolean"];
   blockUser: Scalars["Boolean"];
   unblockUser: Scalars["Boolean"];
@@ -819,7 +879,7 @@ export type CreateCommentInput = {
   authorUserId: Scalars["ID"];
   content: Scalars["String"];
   mentions: Array<CommentMentionInput>;
-  attachments: Array<AttachmentInput>;
+  attachment?: Maybe<AttachmentInput>;
 };
 
 export type CreateContentShareInput = {

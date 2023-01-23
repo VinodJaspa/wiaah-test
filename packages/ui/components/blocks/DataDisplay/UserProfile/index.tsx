@@ -1,9 +1,12 @@
 import React from "react";
-import { Verified, Avatar } from "@UI";
+import { Verified, Avatar, Profile } from "@UI";
 import { HtmlDivProps, UserProfileData, UsersProfilesVariant } from "types";
 
 export interface UserProfileProps extends HtmlDivProps {
-  user: UserProfileData;
+  user: Pick<
+    Profile,
+    "id" | "photo" | "username" | "followers" | "verified" | "profession"
+  >;
   variant?: UsersProfilesVariant;
 }
 
@@ -19,20 +22,20 @@ export const UserProfile: React.FC<UserProfileProps> = ({
       className="flex gap-4 items-center"
     >
       {variant === "narrow" ? (
-        <Avatar name={user.name} photoSrc={user.userPhotoSrc} />
+        <Avatar name={user.username} photoSrc={user.photo} />
       ) : (
         <>
-          <Avatar name={user.name} src={user.userPhotoSrc} />
+          <Avatar name={user.username} src={user.photo} />
           <div className="flex w-full flex-col">
             <div className="flex items-center gap-2">
-              <span data-testid="UserName">{user.name}</span>
+              <span data-testid="UserName">{user.username}</span>
               {user.verified && <Verified data-testid="UserVerified" />}
             </div>
             <span
               className="text-[0.8em] font-normal text-left"
               data-testid="UserActivity"
             >
-              {user.activityType}
+              {user.profession}
             </span>
           </div>
         </>

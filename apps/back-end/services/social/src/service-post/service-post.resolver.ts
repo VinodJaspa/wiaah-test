@@ -45,7 +45,7 @@ export class ServicePostResolver {
     private readonly eventClient: ClientKafka,
   ) {}
 
-  @Query(() => ServicePost)
+  @Query(() => [ServicePost])
   async getUserServicePosts(
     @Args('args') args: GetUserServicesPostsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,

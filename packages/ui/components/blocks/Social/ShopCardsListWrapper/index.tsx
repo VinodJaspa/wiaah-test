@@ -1,20 +1,21 @@
-import { ShopCardsInfoPlaceholder } from "placeholder";
 import React from "react";
 import { useRouting } from "routing";
-import { ShopCardInfo } from "types";
 import {
   GridListOrganiser,
-  SocialShopCard,
   SocialShopCardProps,
   ListWrapperProps,
   useShopPostPopup,
-  PostViewPopup,
   SocialShopPostcard,
+  ProductPost,
+  SocialShopPostcardProps,
 } from "@UI";
 
 export interface ShopCardsListWrapperProps
   extends Omit<SocialShopCardProps, "shopCardInfo"> {
-  items: ShopCardInfo[];
+  items: {
+    postInfo: SocialShopPostcardProps["postInfo"];
+    profileInfo: SocialShopPostcardProps["profileInfo"];
+  }[];
   cols?: number;
   wrapperProps?: ListWrapperProps;
   grid?: boolean;
@@ -27,36 +28,14 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
   grid,
   ...props
 }) => {
-  const { visit } = useRouting();
   const { setCurrentPostId } = useShopPostPopup();
 
   return (
     <>
-      <PostViewPopup
-        fetcher={async ({ queryKey }: any) => {
-          const id = queryKey[1].postId;
-
-          const post = ShopCardsInfoPlaceholder.find((post) => post.id === id);
-          return post ? post : null;
-        }}
-        queryName="shopPost"
-        idParam="shopPostId"
-        renderChild={(props: ShopCardInfo) => {
-          return (
-            <SocialShopCard
-              showCommentInput={false}
-              showInteraction={false}
-              shopCardInfo={props}
-            />
-          );
-        }}
-      />
-
       <GridListOrganiser
         rowSize="14.5rem"
         presets={[
           {
-            length: 6,
             cols: 5,
             points: [
               {
@@ -87,7 +66,6 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
           },
           {
             cols: 5,
-            length: 8,
             points: [
               { c: 1, r: 1 },
               { c: 1, r: 1 },
@@ -101,7 +79,6 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
           },
 
           {
-            length: 9,
             cols: 4,
             points: [
               {
@@ -145,33 +122,7 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
         ]}
       >
         {items.map((shop, i) => (
-          <SocialShopPostcard
-            onCardClick={() =>
-              visit((routes) => routes.addQuery({ shopPostId: shop.id }))
-            }
-            showComments
-            key={i}
-            {...props}
-            postInfo={{
-              createdAt: new Date().toString(),
-              id: shop.id,
-              numberOfComments: shop.noOfComments,
-              numberOfLikes: shop.likes,
-              numberOfShares: 15,
-              tags: ["fashion", "gaming"],
-              url: "",
-              attachments: shop.attachments,
-              comments: [],
-              content: "test",
-              views: shop.views,
-            }}
-            cashback={5}
-            price={150}
-            discount={10}
-            profileInfo={{
-              ...shop.user,
-            }}
-          />
+          <SocialShopPostcard key={i} {...shop} />
         ))}
       </GridListOrganiser>
     </>

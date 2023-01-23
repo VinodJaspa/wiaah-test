@@ -33,6 +33,6 @@ export class CreateCommentInput {
   @Field(() => [CommentMentionInput])
   mentions: CommentMentionInput[];
 
-  @Field(() => [AttachmentInput])
-  attachments: AttachmentInput[];
+  @Field(() => AttachmentInput, { nullable: true })
+  attachment?: AttachmentInput;
 }

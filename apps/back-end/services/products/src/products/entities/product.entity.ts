@@ -82,6 +82,9 @@ export class Product {
   @Field((type) => ID)
   shopId: string;
 
+  @Field(() => [String])
+  hashtags: string[];
+
   @Field(() => ID)
   categoryId: string;
 

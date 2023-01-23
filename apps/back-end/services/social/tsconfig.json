@@ -48,7 +48,10 @@
       "@action/*": ["src/action/*"],
       "@hidden-content/*": ["src/hidden-content/*"],
       "@story/*": ["src/story/*"],
-      "@kafkaModule": ["src/kafka.module"]
+      "@kafkaModule": ["src/kafka.module"],
+      "@community/*": ["src/discover/community/*"],
+      "@friends/*": ["src/discover/friends/*"],
+      "@places/*": ["src/discover/places/*"]
     }
   }
 }

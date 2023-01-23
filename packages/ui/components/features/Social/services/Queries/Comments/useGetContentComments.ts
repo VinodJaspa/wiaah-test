@@ -28,7 +28,10 @@ export type GetContentCommentsQuery = { __typename?: "Query" } & {
           { __typename?: "Attachment" } & Pick<Attachment, "src" | "type">
         >;
         author?: Maybe<
-          { __typename?: "Profile" } & Pick<Profile, "username" | "photo">
+          { __typename?: "Profile" } & Pick<
+            Profile,
+            "username" | "photo" | "verified"
+          >
         >;
       }
   >;
@@ -38,20 +41,21 @@ export const useGetContentCommentsQuery = (args: GetContentCommentsInput) => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
-  query getContentComments(
+    query getContentComments(
         $args:GetContentCommentsInput!
     ){
         getContentComments(
             getContentCommentsArgs:$args
         ){
             id
-            attachments{
+            attachment{
                 src
                 type
             }
             author{
                 username
                 photo
+                verified
             }
             content
             commentedAt
@@ -59,6 +63,7 @@ export const useGetContentCommentsQuery = (args: GetContentCommentsInput) => {
             userId
             hostId
             hostType
+            updatedAt
         }
     }
   `);

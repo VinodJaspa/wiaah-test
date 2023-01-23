@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import {
   SubscribersPopup,
   Avatar,
-  useLoginPopup,
   SocialStoryModal,
   QrcodeDisplay,
   VerifiedIcon,
@@ -13,6 +12,7 @@ import {
   HStack,
   Button,
   EditIcon,
+  Profile,
 } from "ui";
 import { NumberShortner } from "ui/components/helpers";
 import { useReactPubsub } from "react-pubsub";
@@ -21,15 +21,14 @@ import { useDisclouser } from "hooks";
 import { mapArray } from "utils";
 import { SocialStoryState } from "state";
 import { SocialShopProfileData } from "api";
+import { useRouting } from "routing";
 
 export interface MyProfileProps {
-  shopInfo: SocialShopProfileData;
+  shopInfo: Profile;
 }
 
 export const MyProfile: React.FC<MyProfileProps> = ({ shopInfo }) => {
   const { t } = useTranslation();
-  const storyData = useRecoilValue(SocialStoryState);
-
   const { isOpen, handleClose, handleOpen } = useDisclouser();
 
   const {
@@ -38,29 +37,16 @@ export const MyProfile: React.FC<MyProfileProps> = ({ shopInfo }) => {
     handleClose: subscriptionsOnClose,
   } = useDisclouser();
 
-  if (!shopInfo) return null;
+  const { getUrl } = useRouting();
 
-  const {
-    publications,
-    subscribers,
-    subscriptions,
-    name,
-    profession,
-    thumbnail,
-    verified,
-    bio,
-    links,
-    isFollowed,
-    public: PublicProfile,
-    id,
-  } = shopInfo;
+  if (!shopInfo) return null;
 
   return (
     <div className="flex flex-col w-full bg-primary h-80 relative rounded-2xl ">
       <div className="flex flex-col h-[11rem] w-full  items-end justify-center pt-6 px-8 gap-3 text-white">
         <div className="flex flex-col gap-3 items-center">
           <QrcodeDisplay
-            value={id}
+            value={getUrl((r) => r.visitSellerSocialProfile(shopInfo))}
             color="#ffffff"
             transparentBg
             className={"w-16 fill-white"}
@@ -68,7 +54,7 @@ export const MyProfile: React.FC<MyProfileProps> = ({ shopInfo }) => {
           <p>{t("Show on map")}</p>
         </div>
       </div>
-      {storyData && <SocialStoryModal />}
+      {shopInfo && <SocialStoryModal profileId={shopInfo.id} />}
       <SubscribersPopup
         title={t("subscribers", "subscribers")}
         isOpen={isOpen}
@@ -88,14 +74,22 @@ export const MyProfile: React.FC<MyProfileProps> = ({ shopInfo }) => {
         <div className="flex flex-col gap-2">
           <div className="flex gap-4">
             <div className="absolute left-14 top-0 -translate-y-1/2">
-              <Avatar className="w-[6.75rem]" src={thumbnail} name={name} />
+              <Avatar
+                className="w-[6.75rem]"
+                src={shopInfo?.photo}
+                name={shopInfo?.username}
+              />
             </div>
             <div className="w-24 h-full"></div>
 
             <HStack>
-              <p className="text-xl whitespace-nowrap font-bold">{name}</p>
-              <p className="text-sm font-light text-grayText">{profession}</p>
-              {verified ? (
+              <p className="text-xl whitespace-nowrap font-bold">
+                {shopInfo?.username}
+              </p>
+              <p className="text-sm font-light text-grayText">
+                {shopInfo?.profession}
+              </p>
+              {shopInfo.verified ? (
                 <VerifiedIcon className="text-lg text-primary" />
               ) : null}
             </HStack>
@@ -103,13 +97,15 @@ export const MyProfile: React.FC<MyProfileProps> = ({ shopInfo }) => {
           <Stack divider={<Divider variant="vert" className="mx-[1.25rem]" />}>
             <HStack>
               <p className="font-bold text-lg">
-                {NumberShortner(publications)}
+                {NumberShortner(shopInfo?.publications)}
               </p>
               <p>{t("Posts")}</p>
             </HStack>
 
             <HStack className="cursor-pointer" onClick={() => handleOpen()}>
-              <p className="font-bold text-lg">{NumberShortner(subscribers)}</p>
+              <p className="font-bold text-lg">
+                {NumberShortner(shopInfo?.followers)}
+              </p>
               <p>{t("Followers")}</p>
             </HStack>
 
@@ -118,7 +114,7 @@ export const MyProfile: React.FC<MyProfileProps> = ({ shopInfo }) => {
               onClick={() => subscriptionsOnOpen()}
             >
               <p className="font-bold text-lg">
-                {NumberShortner(subscriptions)}
+                {NumberShortner(shopInfo?.following)}
               </p>
               <p>{t("Following")}</p>
             </HStack>
@@ -127,16 +123,18 @@ export const MyProfile: React.FC<MyProfileProps> = ({ shopInfo }) => {
 
         <div className="flex flex-col w-full gap-1">
           <p className="font-semibold text-lg">{t("Bio")}</p>
-          <p className="font-light text-base text-lightBlack">{bio}</p>
+          <p className="font-light text-base text-lightBlack">
+            {shopInfo?.bio}
+          </p>
           <div className="flex flex-wrap gap-2">
-            {mapArray(links, (link, i) => (
+            {/* {mapArray(links, (link, i) => (
               <HStack key={i} className="flex gap-2">
                 <LinkIcon className="text-base text-primary" />
                 <p className="text-base text-black font-light underline underline-offset-4">
                   {link}
                 </p>
               </HStack>
-            ))}
+            ))} */}
           </div>
         </div>
         <div className="flex flex-col gap-4 items-center">

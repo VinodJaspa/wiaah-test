@@ -69,6 +69,9 @@ export class SocialPost {
   @Field(() => Int)
   shares: number;
 
+  @Field(() => Int)
+  views: number;
+
   @Field(() => [PostMention])
   mentions: PostMention[];
 

@@ -6,9 +6,28 @@ import { HashtagQueryHandlers } from './queries';
 import { HashtagRepository } from './repository';
 import { HashtagController } from './hashtag.controller';
 import { HashtagSaga } from './sagas';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 
 @Module({
-  imports: [CqrsModule],
+  imports: [
+    CqrsModule,
+    ClientsModule.register([
+      {
+        name: SERVICES.HASHTAG.token,
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            brokers: KAFKA_BROKERS,
+            clientId: SERVICES.HASHTAG.clientId,
+          },
+          consumer: {
+            groupId: SERVICES.HASHTAG.groupId,
+          },
+        },
+      },
+    ]),
+  ],
   providers: [
     HashtagResolver,
     HashtagRepository,

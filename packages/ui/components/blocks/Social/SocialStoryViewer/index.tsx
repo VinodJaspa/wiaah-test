@@ -1,5 +1,5 @@
 import React from "react";
-import { ProfileInfo, ProgressBar } from "types";
+import { ProfileInfo } from "types";
 import { SocialStoryViewerHeader } from "../SocialStoryViewerHeader";
 import {
   SocialStoriesCarousel,
@@ -8,7 +8,7 @@ import {
 import { ProgressBars } from "@partials";
 
 export interface SocialStoryViewerProps extends SocialStoriesCarouselProps {
-  user: ProfileInfo;
+  user: { name: string; thumbnail: string; id: string };
 }
 
 export const SocialStoryViewer: React.FC<SocialStoryViewerProps> = ({
@@ -22,8 +22,8 @@ export const SocialStoryViewer: React.FC<SocialStoryViewerProps> = ({
         <SocialStoryViewerHeader
           storyId={story.id}
           user={user}
-          createdAt={story.storyCreationDate}
-          views={story.storyViews}
+          createdAt={story.createdAt}
+          views={story.viewsCount}
         />
         <ProgressBars srcKey={user.id} />
         <SocialStoriesCarousel {...props} story={story} />

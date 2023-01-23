@@ -68,6 +68,7 @@ type Product {
   title: String!
   description: String!
   shopId: ID!
+  hashtags: [String!]!
   categoryId: ID!
   category: Category
   attributes: [ProductAttribute!]!
@@ -115,6 +116,7 @@ type MyProduct {
   title: String!
   description: String!
   shopId: ID!
+  hashtags: [String!]!
   categoryId: ID!
   category: Category
   attributes: [ProductAttribute!]!

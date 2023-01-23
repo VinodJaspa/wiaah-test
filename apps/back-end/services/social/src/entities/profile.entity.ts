@@ -73,6 +73,9 @@ export class Profile {
 
   @Field(() => ProfileVisibility)
   visibility: ProfileVisibility;
+
+  @Field(() => Boolean)
+  verified: boolean;
 }
 
 @ObjectType()

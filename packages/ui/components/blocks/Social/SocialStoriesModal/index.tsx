@@ -1,12 +1,13 @@
 import React from "react";
-import {
-  SocialStoryViewer,
-  SocialStoryViewerProps,
-} from "../SocialStoryViewer";
+import { SocialStoryViewer } from "../SocialStoryViewer";
 import { Modal, ModalOverlay, ModalContent, useProgressBars } from "@partials";
-import { SocialStoryDataWithUser } from "types";
 import { useTypedReactPubsub } from "@libs";
-import { useGetPrevStory, useGetProfileStory } from "@features/Social";
+import {
+  Profile,
+  Story,
+  useGetPrevStory,
+  useGetProfileStory,
+} from "@features/Social";
 
 export const useStoryModal = () => {
   const { Listen, emit, removeListner } = useTypedReactPubsub(
@@ -39,17 +40,17 @@ export interface SocialStoriesModalProps {
 export const SocialStoryModal: React.FC<SocialStoriesModalProps> = ({
   profileId,
 }) => {
-  const [story, setStory] = React.useState<SocialStoryDataWithUser>();
+  const [story, setStory] = React.useState<Story>();
   const { close } = useStoryModal();
 
   const { refetch } = useGetProfileStory(profileId, {
     onSuccess(data) {
-      setStory(data);
+      setStory({ ...data, views: [], publisher: data.publisher as Profile });
     },
   });
-  useGetPrevStory(story?.id, {
+  useGetPrevStory(story?.id!, {
     onSuccess(data) {
-      setStory(data);
+      setStory({ ...data, views: [] });
     },
     enabled: !!story?.id,
   });
@@ -67,10 +68,14 @@ export const SocialStoryModal: React.FC<SocialStoriesModalProps> = ({
         <ModalContent className="bg-[#000] max-h-[80vh] text-white">
           {story ? (
             <SocialStoryViewer
-              next={() => {}}
-              prev={() => {}}
+              next={handleNext}
+              prev={handlePrev}
               story={story}
-              user={story.user}
+              user={{
+                name: story.publisher?.username || "",
+                thumbnail: story.publisher?.photo || "",
+                id: story.publisher?.id || "",
+              }}
             />
           ) : null}
         </ModalContent>

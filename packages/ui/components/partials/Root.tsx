@@ -43,9 +43,7 @@ export const Root: React.FC<RootProps> = ({ children, scrollable = true }) => {
       <SidebarProvider>
         <div
           className={classNames(
-            `relative flex h-screen w-full flex-col overflow-x-hidden ${
-              isMobile || !scrollable ? "no-scrollBar" : ""
-            }`
+            `relative ${isMobile || !scrollable ? "no-scrollBar" : ""}`
           )}
         >
           {runIfFn(children)}

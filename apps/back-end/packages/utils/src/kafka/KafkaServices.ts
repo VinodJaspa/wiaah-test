@@ -137,4 +137,9 @@ export const SERVICES = {
     groupId: "discover-consumer",
     token: "discover-service",
   },
+  HASHTAG: {
+    clientId: "hashtag-client",
+    groupId: "hashtag-consumer",
+    token: "hashtag-service",
+  },
 };

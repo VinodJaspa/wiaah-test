@@ -1,13 +1,6 @@
-import {
-  Args,
-  Mutation,
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-} from '@nestjs/graphql';
+import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Product, ProductPost } from '@product-post/entities';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { QueryBus } from '@nestjs/cqrs';
 import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
@@ -33,6 +26,7 @@ import {
   GetUserPaidProductsMessageReply,
 } from 'nest-dto';
 import { Inject, UseGuards } from '@nestjs/common';
+import { GetShopRecommendedPostsInput } from './dto/get-shop-recommended-posts.input';
 
 @Resolver(() => ProductPost)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -66,6 +60,7 @@ export class ProductPostResolver {
 
   @Query(() => [ProductPost])
   async getRecommendedProductPosts(
+    @Args('args') args: GetShopRecommendedPostsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<ProductPost[]> {
     let productIds: string[] = [];

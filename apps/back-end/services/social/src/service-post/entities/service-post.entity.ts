@@ -1,4 +1,4 @@
-import { PostLocation } from '@entities';
+import { Account, PostLocation } from '@entities';
 import {
   ObjectType,
   Field,
@@ -35,6 +35,9 @@ export class ServicePost {
   @Field(() => ID)
   userId: string;
 
+  @Field(() => Account)
+  user: Account;
+
   @Field(() => Int)
   reactionNum: number;
 
@@ -44,6 +47,9 @@ export class ServicePost {
   @Field(() => Int)
   shares: number;
 
+  @Field(() => Int)
+  views: number;
+
   @Field(() => PostVisibility)
   visibility: PostVisibility;
 
@@ -52,4 +58,10 @@ export class ServicePost {
 
   @Field(() => CommentsVisibility)
   commentsVisibility: CommentsVisibility;
+
+  @Field(() => String)
+  createdAt: Date;
+
+  @Field(() => String)
+  updatedAt: Date;
 }

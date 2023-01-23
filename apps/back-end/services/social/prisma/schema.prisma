@@ -28,12 +28,16 @@ model Profile {
   followersData  Follow[]
   publications   Int               @default(0)
   profession     String
+  verified       Boolean           @default(false)
+  hashtags       String[]
   visibility     ProfileVisibility @default(public)
   Posts          NewsfeedPost[]
   comments       Comment[]
   blockedUsers   BlockedUser[]
   myShares       ContentShare[]
   reactedContent ContentReaction[]
+  Story          Story[]
+  StoryView      StoryView[]
 }
 
 model FollowRequest {
@@ -84,6 +88,7 @@ model NewsfeedPost {
   reactionNum        Int                @default(0)
   comments           Int                @default(0)
   shares             Int                @default(0)
+  views              Int                @default(0)
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
@@ -101,9 +106,12 @@ model ProductPost {
   reactionNum        Int                @default(0)
   comments           Int                @default(0)
   shares             Int                @default(0)
+  views              Int                @default(0)
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
 }
 
 model ServicePost {
@@ -113,9 +121,12 @@ model ServicePost {
   reactionNum        Int                @default(0)
   comments           Int                @default(0)
   shares             Int                @default(0)
+  views              Int                @default(0)
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
 }
 
 model AffiliationPost {
@@ -125,9 +136,12 @@ model AffiliationPost {
   reactionNum        Int                @default(0)
   comments           Int                @default(0)
   shares             Int                @default(0)
+  views              Int                @default(0)
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
 }
 
 model Action {
@@ -137,11 +151,14 @@ model Action {
   reactionNum        Int                @default(0)
   comments           Int                @default(0)
   shares             Int                @default(0)
+  views              Int                @default(0)
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
   mentions           PostMention[]
   tags               PostTag[]
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
 }
 
 model ContentReaction {
@@ -181,17 +198,20 @@ model Comment {
   author          Profile          @relation(fields: [authorProfileId], references: [id])
   authorProfileId String           @db.ObjectId
   userId          String           @db.ObjectId
-  attachments     Attachment[]
+  attachment      Attachment
   content         String
   commentedAt     DateTime         @default(now())
   mentions        CommentMention[]
   likes           Int              @default(0)
   replies         Int              @default(0)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
 }
 
 model Story {
   id           String        @id @default(auto()) @map("_id") @db.ObjectId
   publisherId  String        @db.ObjectId
+  publisher    Profile       @relation(fields: [profileId], references: [id])
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
   type         StoryType     @default(base)
@@ -204,6 +224,7 @@ model Story {
   views        StoryView[]
   likes        StoryLike[]
   mentions     PostMention[]
+  profileId    String        @db.ObjectId()
 }
 
 enum StoryType {
@@ -223,6 +244,7 @@ model StoryView {
   storyId   String   @db.ObjectId
   createdAt DateTime @default(now())
   story     Story    @relation(fields: [storyId], references: [id])
+  viewer    Profile  @relation(fields: [viewerId], references: [id])
 
   @@unique([viewerId, storyId], name: "storyViewIds")
 }

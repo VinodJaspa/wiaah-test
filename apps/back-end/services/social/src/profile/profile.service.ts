@@ -202,6 +202,7 @@ export class ProfileService {
         lastActive: true,
         updatedAt: true,
         username: true,
+        verified: true,
       },
       rejectOnNotFound() {
         throw new ProfileNotfoundException();

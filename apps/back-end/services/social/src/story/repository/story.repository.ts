@@ -64,7 +64,6 @@ export class StoryRepository {
           },
         ],
       },
-
       orderBy: {
         createdAt: 'asc',
       },
@@ -168,6 +167,11 @@ export class StoryRepository {
       data: {
         ...input,
         publisherId: userId,
+        publisher: {
+          connect: {
+            ownerId: userId,
+          },
+        },
         type: this.getStoryTypeFromInput(input),
       },
       include: {
@@ -213,6 +217,7 @@ export class StoryRepository {
   async getSeenBy(
     { pagination, storyId }: GetStorySeenByInput,
     userId: string,
+    usernameQ?: string,
   ): Promise<StoryView[]> {
     const { skip, take } = ExtractPagination(pagination);
 
@@ -227,7 +232,22 @@ export class StoryRepository {
       skip,
       take,
       where: {
-        storyId,
+        AND: [
+          {
+            storyId,
+          },
+          ...(usernameQ
+            ? [
+                {
+                  viewer: {
+                    username: {
+                      contains: usernameQ,
+                    },
+                  },
+                },
+              ]
+            : null),
+        ],
       },
     });
 

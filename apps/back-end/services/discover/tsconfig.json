@@ -20,7 +20,6 @@
     "rootDir": "./",
     "paths": {
       "@community/*": ["src/community/*"],
-      "@user-activity-stats/*": ["src/user-activity-stats/*"],
       "@prisma-client": ["src/prisma/generated/client"],
       "prismaService": ["src/prisma.service"]
     }

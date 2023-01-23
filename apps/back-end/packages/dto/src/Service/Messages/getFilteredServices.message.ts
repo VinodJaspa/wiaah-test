@@ -23,6 +23,7 @@ export class GetFilteredServicesMessageReply extends KafkaMessageReply<{
       lon: number;
       city: string;
       country: string;
+      distance: number;
     };
     distence: number;
     keywords: string[];

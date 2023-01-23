@@ -4,21 +4,17 @@ import {
   Modal,
   ModalContent,
   ModalOverlay,
-  ModalHeader,
   Input,
   HStack,
   Button,
 } from "@partials";
 import { useTranslation } from "react-i18next";
 import { MdClose } from "react-icons/md";
-import { StorySeenByUserInfo } from "types";
 import { useTypedReactPubsub } from "@libs";
+import { useGetMyStoryViewers } from "@features/Social";
+import { usePaginationControls } from "@blocks/Navigating";
 
-export interface StorySeenByPopupProps {
-  users: StorySeenByUserInfo[] | null;
-  onSearch: (term: string) => any;
-  searchTerm: string;
-}
+export interface StorySeenByPopupProps {}
 
 export const useStorySeenByPopup = () => {
   const { Listen, emit, removeListner } = useTypedReactPubsub(
@@ -42,18 +38,28 @@ export const useStorySeenByPopup = () => {
   };
 };
 
-export const StorySeenByPopup: React.FC<StorySeenByPopupProps> = ({
-  onSearch,
-  users,
-  searchTerm = "",
-}) => {
-  const { close } = useStorySeenByPopup();
+export const StorySeenByPopup: React.FC<StorySeenByPopupProps> = () => {
+  const { close, listen } = useStorySeenByPopup();
   const { t } = useTranslation();
-  console.log("users", users);
+  const [storyId, setStoryId] = React.useState<string>();
+  const [search, setSearch] = React.useState<string>();
+  const { controls, pagination } = usePaginationControls();
+
+  listen((props) => {
+    if (props && props["id"]) {
+      setStoryId(props["id"]);
+    }
+  });
+
+  const { data: users } = useGetMyStoryViewers({
+    pagination,
+    storyId: storyId || "",
+    q: search,
+  });
+
   return (
     <Modal
       onClose={() => {
-        console.log("close");
         close();
       }}
       isOpen={!!users}
@@ -71,8 +77,8 @@ export const StorySeenByPopup: React.FC<StorySeenByPopupProps> = ({
         <div className="flex flex-col gap-4 overflow-hidden">
           <Input
             data-testid="SearchUserInput"
-            value={searchTerm}
-            onChange={(e) => onSearch && onSearch(e.target.value)}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             flushed
             placeholder={t("search")}
           />
@@ -88,8 +94,13 @@ export const StorySeenByPopup: React.FC<StorySeenByPopupProps> = ({
                     key={i}
                   >
                     <HStack>
-                      <Avatar name={user.name} photoSrc={user.photoSrc} />
-                      <p data-testid="Username">{user.name}</p>
+                      <Avatar
+                        name={user.viewer?.profile?.username}
+                        photoSrc={user.viewer?.profile?.photo}
+                      />
+                      <p data-testid="Username">
+                        {user.viewer?.profile?.username}
+                      </p>
                     </HStack>
                     <Button>{t("Follow")}</Button>
                   </HStack>
