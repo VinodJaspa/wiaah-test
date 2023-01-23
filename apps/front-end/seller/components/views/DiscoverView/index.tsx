@@ -1,88 +1,107 @@
-import { useQuery } from "react-query";
 import React from "react";
-import { products } from "ui/placeholder/products";
 import {
   ListWrapper,
   TabsViewer,
   useDiscoverTabs,
   UserProfile,
-  usersProfilesPlaceHolder,
   placesPlaceholder,
   LocationButton,
   HashTagSearchItem,
   GridListOrganiser,
   PostCard,
+  useGetDiscoverPosts,
+  PostType,
+  useGetDiscoverUsers,
+  usePaginationControls,
+  ScrollPaginationWrapper,
+  useGetDiscoverHashtags,
 } from "ui";
 import { useTranslation } from "react-i18next";
-import { randomNum, useBreakpointValue } from "utils";
-import { newsfeedPosts } from "placeholder";
-
-const discoverItemsPlaceholder = products.map((prod, i) => ({
-  image: prod.imgUrl,
-}));
+import { useRouting } from "routing";
 
 const discoverPlacesPlaceHolder: string[] = [...Array(5)].reduce((acc) => {
   return [...acc, ...placesPlaceholder];
 }, []);
 const hashTagsPlaceholder: string[] = ["gaming", "art", "funny"];
-const discoverHashtagsPlaceholder: string[] = [...Array(5)].reduce((acc) => {
-  return [...acc, ...hashTagsPlaceholder];
-}, []);
 
 export const DiscoverView: React.FC = ({}) => {
   const { t } = useTranslation();
   const { discoverTabs, currentTab, setTabsData } = useDiscoverTabs();
-  const { data, isLoading, isError } = useQuery(
-    "DiscoverPageItems",
-    () => discoverItemsPlaceholder
-  );
+  const [search, setSearch] = React.useState<string>();
 
-  const posts = [
-    ...[...Array(4)].reduce((acc) => {
-      return [...acc, ...newsfeedPosts.slice(0, 8)];
-    }, []),
-  ];
+  const { visit } = useRouting();
+
+  const { pagination: usersPagination, controls: usersControls } =
+    usePaginationControls();
+  const { pagination: postsPagination, controls: postsControls } =
+    usePaginationControls();
+  const { pagination: hashtagPagination, controls: hashtagControls } =
+    usePaginationControls();
+
+  const { data: discoverUsers } = useGetDiscoverUsers({
+    q: search,
+    pagination: usersPagination,
+  });
+
+  const { data: discoverPosts } = useGetDiscoverPosts({
+    q: search,
+  });
+
+  const { data: discoverHashtags } = useGetDiscoverHashtags({
+    q: search,
+    pagination: hashtagPagination,
+  });
 
   React.useEffect(() => {
     setTabsData([
       {
         name: t("community", "community"),
         component: (
-          <GridListOrganiser
-            rowSize="14.5rem"
-            presets={[
-              {
-                cols: 5,
-                points: [
-                  { c: 2, r: 1 },
-                  { c: 1, r: 2 },
-                  { c: 1, r: 1 },
-                  { c: 1, r: 1 },
-                  { c: 2, r: 2 },
-                  { c: 1, r: 1 },
-                  { c: 1, r: 1 },
-                  { c: 1, r: 1 },
-                  { c: 1, r: 1 },
-                  { c: 1, r: 1 },
-                ],
-              },
-            ]}
-          >
-            {posts.map((item, i) => (
-              <PostCard {...item} key={i} />
-            ))}
-          </GridListOrganiser>
+          <ScrollPaginationWrapper controls={postsControls}>
+            <GridListOrganiser
+              rowSize="14.5rem"
+              presets={[
+                {
+                  cols: 5,
+                  points: [
+                    { c: 2, r: 1 },
+                    { c: 1, r: 2 },
+                    { c: 1, r: 1 },
+                    { c: 1, r: 1 },
+                    { c: 2, r: 2 },
+                    { c: 1, r: 1 },
+                    { c: 1, r: 1 },
+                    { c: 1, r: 1 },
+                    { c: 1, r: 1 },
+                    { c: 1, r: 1 },
+                  ],
+                },
+              ]}
+            >
+              {discoverPosts.map((item, i) =>
+                item.type === PostType.NewsfeedPost ? (
+                  <PostCard
+                    postInfo={item.newsfeed}
+                    profileInfo={item.newsfeed.publisher}
+                    key={item.id}
+                  />
+                ) : null
+              )}
+            </GridListOrganiser>
+          </ScrollPaginationWrapper>
         ),
         link: "/",
       },
       {
         name: t("users", "users"),
         component: (
-          <ListWrapper>
-            {usersProfilesPlaceHolder.map((user, i) => (
-              <UserProfile user={user} key={i} />
-            ))}
-          </ListWrapper>
+          <ScrollPaginationWrapper controls={usersControls}>
+            <ListWrapper>
+              {discoverUsers.accounts.map((user, i) => (
+                <UserProfile user={user.profile} key={i} />
+              ))}
+            </ListWrapper>
+          </ScrollPaginationWrapper>
         ),
         link: "users",
       },
@@ -100,14 +119,22 @@ export const DiscoverView: React.FC = ({}) => {
       {
         name: t("hashtags", "hashtags"),
         component: (
-          <ListWrapper>
-            {discoverHashtagsPlaceholder.map((tag, i) => (
-              <HashTagSearchItem
-                hashtagName={tag}
-                hashtagViews={randomNum(50000000)}
-              />
-            ))}
-          </ListWrapper>
+          <ScrollPaginationWrapper controls={hashtagControls}>
+            <ListWrapper>
+              {discoverHashtags.map((tag, i) => (
+                <HashTagSearchItem
+                  props={{
+                    onClick: () => {
+                      visit((r) => r.visitSellerHashtagPage(tag.name));
+                    },
+                  }}
+                  key={tag.id}
+                  hashtagName={tag.name}
+                  hashtagViews={tag.usage}
+                />
+              ))}
+            </ListWrapper>
+          </ScrollPaginationWrapper>
         ),
         link: "hashtags",
       },

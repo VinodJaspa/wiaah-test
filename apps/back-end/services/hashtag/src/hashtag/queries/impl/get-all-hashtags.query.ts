@@ -1,3 +1,5 @@
+import { GetTopHashtagsInput } from '../../dto';
+
 export class GetAllHashtagsQuery {
-  constructor() {}
+  constructor(public readonly input: GetTopHashtagsInput) {}
 }

@@ -7,6 +7,7 @@ export type SocialRoutesType = {
   visitMyProfile: () => RoutesType;
   visitNewsfeedPostPage: (props: Record<string, any>) => RoutesType;
   visitUserHashtagPage: (props: Record<string, any>) => RoutesType;
+  visitSellerHashtagPage: (hashtag: string) => RoutesType;
   profile: () => RoutesType;
   myProfile: () => RoutesType;
   newsfeed: () => RoutesType;
@@ -27,6 +28,10 @@ export const SocialRoutes = {
   },
   post() {
     return this.addPath("post");
+  },
+
+  visitSellerHashtagPage(hashtag) {
+    return this.hashtag().addPath(hashtag);
   },
 
   visitSocialPostAuthorProfile(props) {

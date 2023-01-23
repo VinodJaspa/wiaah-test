@@ -1,4 +1,3 @@
-import { VStack, Box, Divider, useBreakpointValue } from "@chakra-ui/react";
 import React from "react";
 import {
   PostViewPopup,
@@ -6,50 +5,26 @@ import {
   ShopFilter,
   SocialShopCard,
   ProductViewModal,
-  useProductViewModal,
+  useGetRecommendedShopPostsQuery,
 } from "ui";
-import { ShopCardsInfoPlaceholder } from "ui/placeholder/social";
-import { useTranslation } from "react-i18next";
-import { useRouter } from "next/router";
 import { ShopCardInfo } from "types";
+import { useBreakpointValue } from "utils";
 
 export const SellerShopView: React.FC = () => {
-  const { t } = useTranslation();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
-  const router = useRouter();
+
+  const { data } = useGetRecommendedShopPostsQuery({});
+
   return (
     <>
-      <VStack
-        w={"100%"}
-        divider={<Divider borderColor={"gray.200"} opacity="1" />}
-      >
+      <div className="w-full ">
         {/* <Text textTransform={"capitalize"} fontSize={"4xl"} fontWeight="bold">
           {t("shop", "shop")}
         </Text> */}
         <ProductViewModal />
-        <PostViewPopup
-          fetcher={async ({ queryKey }) => {
-            const id = queryKey[1].postId;
-
-            const post = ShopCardsInfoPlaceholder.find(
-              (post) => post.id === id
-            );
-            return post ? post : null;
-          }}
-          queryName="shopPost"
-          idParam="shopPostId"
-          renderChild={(props: ShopCardInfo) => {
-            return (
-              <SocialShopCard
-                showCommentInput={false}
-                showInteraction={false}
-                shopCardInfo={props}
-              />
-            );
-          }}
-        />
-        <Box w="100%">
+        <div className="w-full">
           <ShopFilter onlyMobile={false} />
+
           <ShopCardsListWrapper
             onCardClick={(id) => {
               // router.push(
@@ -59,10 +34,13 @@ export const SellerShopView: React.FC = () => {
               // );
             }}
             cols={cols}
-            items={ShopCardsInfoPlaceholder}
+            items={data.map((v) => ({
+              postInfo: v,
+              profileInfo: v.user.profile,
+            }))}
           />
-        </Box>
-      </VStack>
+        </div>
+      </div>
     </>
   );
 };

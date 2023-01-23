@@ -363,6 +363,8 @@ type ProductPost {
   location: PostLocation
   commentsVisibility: CommentsVisibility!
   product: Product!
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Action {
@@ -377,6 +379,27 @@ type Action {
   commentsVisibility: CommentsVisibility!
 }
 
+type Community {
+  id: ID!
+  type: String!
+  newsfeed: NewsfeedPost
+  action: Action
+  newsfeedPost: NewsfeedPost
+}
+
+type FriendSuggestion {
+  accounts: [Account!]!
+}
+
+type Place {
+  id: ID!
+  type: String!
+}
+
+type PlaceSuggestions {
+  places: [Place!]!
+}
+
 type Query {
   findAll: ProfilePaginatedResponse!
   myProfile: Profile!
@@ -388,6 +411,7 @@ type Query {
   getMyFollowing(getMyFollowersInput: GetMyProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
   isFollowed(profileId: String!): Boolean!
   getNewsfeedPostsByUserId(args: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
+  getNewsfeedPostById(id: String!): NewsfeedPost!
   getAdminProfile(id: String!): Profile!
   comments: [Comment!]!
   updateComment(updateCommentInput: UpdateCommentInput!): PaginationCommentsResponse!
@@ -403,12 +427,15 @@ type Query {
   getMyBlockList: [Block!]!
   getMyPrivacySettings: PrivacySettings!
   getUserProductPosts(args: GetUserProductPostsInput!): [ProductPost!]!
-  getRecommendedProductPosts: [ProductPost!]!
+  getRecommendedProductPosts(args: GetShopRecommendedPostsInput!): [ProductPost!]!
   getAuthorAffiliationPosts(args: GetUserAffiliationPostsInput!): [AffiliationPost!]!
   getUserActions(args: GetUserActionsInput!): [Action!]!
   getAction(id: String!): [Action!]!
   getUserServicePosts(args: GetUserServicesPostsInput!): [ServicePost!]!
   getRecommendedServicePosts(pagination: GqlPaginationInput!): [ServicePost!]!
+  getCommunityPosts(args: GetCommunityPostsInput!): [Community!]!
+  getMyFriendSuggestions(args: GetMyFriendSuggestionsInput!): FriendSuggestion!
+  getPlaceSuggestions: PlaceSuggestions!
 }
 
 input SearchPopularProfilesInput {
@@ -474,6 +501,10 @@ input GetUserProductPostsInput {
   authorId: ID!
 }
 
+input GetShopRecommendedPostsInput {
+  q: String
+}
+
 input GetUserAffiliationPostsInput {
   userId: ID!
   pagination: GqlPaginationInput!
@@ -492,6 +523,15 @@ input GetUserServicesPostsInput {
 input GqlCursorPaginationInput {
   take: Int!
   cursor: String!
+}
+
+input GetCommunityPostsInput {
+  q: String!
+}
+
+input GetMyFriendSuggestionsInput {
+  pagination: GqlPaginationInput!
+  q: String
 }
 
 type Mutation {

@@ -26,6 +26,9 @@ import { HiddenContentModule } from './hidden-content/hidden-content.module';
 import { ProfileAdminModule } from '@profile/profile-admin.module';
 import { NewsfeedPostsAdminModule } from '@posts-newsfeed/newsfeed-posts-admin.module';
 import { ServicePostModule } from './service-post/service-post.module';
+import { CommunityModule } from '@community/community.module';
+import { FriendsModule } from '@friends/friends.module';
+import { PlacesModule } from '@places/places.module';
 
 @Module({
   imports: [
@@ -57,6 +60,9 @@ import { ServicePostModule } from './service-post/service-post.module';
     ActionModule,
     HiddenContentModule,
     ServicePostModule,
+    CommunityModule,
+    FriendsModule,
+    PlacesModule,
   ],
 })
 export class AppModule {}

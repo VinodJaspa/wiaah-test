@@ -10,6 +10,6 @@ export class GetAllHashtagsQueryHandler
 {
   constructor(private readonly hashtagRepo: HashtagRepository) {}
   execute(query: GetAllHashtagsQuery): Promise<Hashtag[]> {
-    return this.hashtagRepo.getAll();
+    return this.hashtagRepo.getTop(query.input.q, query.input.pagination);
   }
 }

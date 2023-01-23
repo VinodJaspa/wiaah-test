@@ -1,3 +1,6 @@
+import { Affiliation } from "@features/Affiliation";
+import { Product } from "@features/Products/types";
+
 type Maybe<T> = T | null;
 type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
@@ -253,16 +256,6 @@ export type Account = {
   profile?: Maybe<Profile>;
 };
 
-export type Product = {
-  __typename?: "Product";
-  id: Scalars["ID"];
-};
-
-export type Affiliation = {
-  __typename?: "Affiliation";
-  id: Scalars["ID"];
-};
-
 export type AffiliationPost = {
   __typename?: "AffiliationPost";
   id: Scalars["ID"];
@@ -398,6 +391,8 @@ export type ProductPost = {
   location?: Maybe<PostLocation>;
   commentsVisibility: CommentsVisibility;
   product: Product;
+  createdAt: Scalars["String"];
+  updatedAt: Scalars["String"];
 };
 
 export type Action = {
@@ -411,6 +406,31 @@ export type Action = {
   visibility: PostVisibility;
   location: PostLocation;
   commentsVisibility: CommentsVisibility;
+};
+
+export type Community = {
+  __typename?: "Community";
+  id: Scalars["ID"];
+  type: Scalars["String"];
+  newsfeed?: Maybe<NewsfeedPost>;
+  action?: Maybe<Action>;
+  newsfeedPost?: Maybe<NewsfeedPost>;
+};
+
+export type FriendSuggestion = {
+  __typename?: "FriendSuggestion";
+  accounts: Array<Account>;
+};
+
+export type Place = {
+  __typename?: "Place";
+  id: Scalars["ID"];
+  type: Scalars["String"];
+};
+
+export type PlaceSuggestions = {
+  __typename?: "PlaceSuggestions";
+  places: Array<Place>;
 };
 
 export type Query = {
@@ -446,6 +466,9 @@ export type Query = {
   getAction: Array<Action>;
   getUserServicePosts: Array<ServicePost>;
   getRecommendedServicePosts: Array<ServicePost>;
+  getCommunityPosts: Array<Community>;
+  getMyFriendSuggestions: FriendSuggestion;
+  getPlaceSuggestions: PlaceSuggestions;
 };
 
 export type QueryGetProfileArgs = {
@@ -516,6 +539,10 @@ export type QueryGetUserProductPostsArgs = {
   args: GetUserProductPostsInput;
 };
 
+export type QueryGetRecommendedProductPostsArgs = {
+  args: GetShopRecommendedPostsInput;
+};
+
 export type QueryGetAuthorAffiliationPostsArgs = {
   args: GetUserAffiliationPostsInput;
 };
@@ -534,6 +561,14 @@ export type QueryGetUserServicePostsArgs = {
 
 export type QueryGetRecommendedServicePostsArgs = {
   pagination: GqlPaginationInput;
+};
+
+export type QueryGetCommunityPostsArgs = {
+  args: GetCommunityPostsInput;
+};
+
+export type QueryGetMyFriendSuggestionsArgs = {
+  args: GetMyFriendSuggestionsInput;
 };
 
 export type SearchPopularProfilesInput = {
@@ -599,6 +634,10 @@ export type GetUserProductPostsInput = {
   authorId: Scalars["ID"];
 };
 
+export type GetShopRecommendedPostsInput = {
+  q?: Maybe<Scalars["String"]>;
+};
+
 export type GetUserAffiliationPostsInput = {
   userId: Scalars["ID"];
   pagination: GqlPaginationInput;
@@ -617,6 +656,15 @@ export type GetUserServicesPostsInput = {
 export type GqlCursorPaginationInput = {
   take: Scalars["Int"];
   cursor: Scalars["String"];
+};
+
+export type GetCommunityPostsInput = {
+  q: Scalars["String"];
+};
+
+export type GetMyFriendSuggestionsInput = {
+  pagination: GqlPaginationInput;
+  q?: Maybe<Scalars["String"]>;
 };
 
 export type Mutation = {

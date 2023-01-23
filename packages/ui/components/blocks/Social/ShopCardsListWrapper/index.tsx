@@ -1,20 +1,21 @@
-import { ShopCardsInfoPlaceholder } from "placeholder";
 import React from "react";
 import { useRouting } from "routing";
-import { ShopCardInfo } from "types";
 import {
   GridListOrganiser,
-  SocialShopCard,
   SocialShopCardProps,
   ListWrapperProps,
   useShopPostPopup,
-  PostViewPopup,
   SocialShopPostcard,
+  ProductPost,
+  SocialShopPostcardProps,
 } from "@UI";
 
 export interface ShopCardsListWrapperProps
   extends Omit<SocialShopCardProps, "shopCardInfo"> {
-  items: ShopCardInfo[];
+  items: {
+    postInfo: SocialShopPostcardProps["postInfo"];
+    profileInfo: SocialShopPostcardProps["profileInfo"];
+  }[];
   cols?: number;
   wrapperProps?: ListWrapperProps;
   grid?: boolean;
@@ -27,7 +28,6 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
   grid,
   ...props
 }) => {
-  const { visit } = useRouting();
   const { setCurrentPostId } = useShopPostPopup();
 
   return (
@@ -122,31 +122,7 @@ export const ShopCardsListWrapper: React.FC<ShopCardsListWrapperProps> = ({
         ]}
       >
         {items.map((shop, i) => (
-          <SocialShopPostcard
-            onCardClick={() => setCurrentPostId(shop.id)}
-            showComments
-            key={i}
-            {...props}
-            postInfo={{
-              createdAt: new Date().toString(),
-              id: shop.id,
-              numberOfComments: shop.noOfComments,
-              numberOfLikes: shop.likes,
-              numberOfShares: 15,
-              tags: ["fashion", "gaming"],
-              url: "",
-              attachments: shop.attachments,
-              comments: [],
-              content: "test",
-              views: shop.views,
-            }}
-            cashback={5}
-            price={150}
-            discount={10}
-            profileInfo={{
-              ...shop.user,
-            }}
-          />
+          <SocialShopPostcard key={i} {...shop} />
         ))}
       </GridListOrganiser>
     </>

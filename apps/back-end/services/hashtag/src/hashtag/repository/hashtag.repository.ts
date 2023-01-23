@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma-client';
+import { ExtractPagination, GqlPaginationInput } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { DeleteHashtagInput } from '../dto';
 import { CreateHashtagInput } from '../dto/create-hashtag.input';
@@ -14,8 +16,28 @@ export class HashtagRepository {
     });
   }
 
-  async getAll(): Promise<Hashtag[]> {
-    return this.prisma.hashtag.findMany();
+  async getTop(
+    searchQ: string,
+    pagination: GqlPaginationInput,
+  ): Promise<Hashtag[]> {
+    const { skip, take } = ExtractPagination(pagination);
+    const filters: Prisma.HashtagWhereInput[] = [];
+
+    if (typeof searchQ === 'string' && searchQ.length > 0) {
+      filters.push({
+        name: {
+          contains: searchQ,
+        },
+      });
+    }
+
+    return this.prisma.hashtag.findMany({
+      where: {
+        AND: filters,
+      },
+      take,
+      skip,
+    });
   }
 
   async getHashtagById(id: string): Promise<Hashtag> {

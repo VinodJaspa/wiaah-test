@@ -35,6 +35,11 @@ export class NewsfeedPostsResolver {
     );
   }
 
+  @Query(() => NewsfeedPost)
+  getNewsfeedPostById(@Args('id') id: string) {
+    return this.newsfeedPostsService.getNewsfeedPostById(id);
+  }
+
   @Mutation(() => NewsfeedPost)
   updateNewsfeedPost(
     @Args('updateNewsfeedPostInput')

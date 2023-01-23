@@ -1,16 +1,8 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  ResolveReference,
-  ID,
-} from '@nestjs/graphql';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { Resolver, Query, Args, ResolveReference } from '@nestjs/graphql';
+import { QueryBus } from '@nestjs/cqrs';
 
 import { Hashtag } from './entities';
-import { CreateHashtagInput } from './dto';
-import { CreateHashtagCommand, DeleteHashTagCommand } from './commands';
+import { GetTopHashtagsInput } from './dto';
 import {
   GetAllHashtagsQuery,
   GetHashtagByIdCommand,
@@ -19,31 +11,28 @@ import {
 
 @Resolver(() => Hashtag)
 export class HashtagResolver {
-  constructor(
-    private readonly commandBus: CommandBus,
-    private readonly queryBus: QueryBus,
-  ) {}
+  constructor(private readonly queryBus: QueryBus) {}
 
-  @Mutation(() => Hashtag)
-  createHashtag(@Args('createHashtagInput') args: CreateHashtagInput) {
-    return this.commandBus.execute<CreateHashtagCommand, Hashtag>(
-      new CreateHashtagCommand(args.name),
-    );
-  }
+  // @Mutation(() => Hashtag)
+  // createHashtag(@Args('createHashtagInput') args: CreateHashtagInput) {
+  //   return this.commandBus.execute<CreateHashtagCommand, Hashtag>(
+  //     new CreateHashtagCommand(args.name),
+  //   );
+  // }
 
   @Query(() => [Hashtag])
-  getHashtags(): Promise<Hashtag[]> {
+  getTopHashtags(@Args('args') args: GetTopHashtagsInput): Promise<Hashtag[]> {
     return this.queryBus.execute<GetAllHashtagsQuery, Hashtag[]>(
-      new GetAllHashtagsQuery(),
+      new GetAllHashtagsQuery(args),
     );
   }
 
-  @Mutation(() => Hashtag)
-  removeHashtag(@Args('id', { type: () => ID }) id: string) {
-    return this.commandBus.execute<DeleteHashTagCommand, Hashtag>(
-      new DeleteHashTagCommand(id),
-    );
-  }
+  // @Mutation(() => Hashtag)
+  // removeHashtag(@Args('id', { type: () => ID }) id: string) {
+  //   return this.commandBus.execute<DeleteHashTagCommand, Hashtag>(
+  //     new DeleteHashTagCommand(id),
+  //   );
+  // }
 
   @ResolveReference()
   resloveRef(ref: { __typename: string; id: string; name: string }) {

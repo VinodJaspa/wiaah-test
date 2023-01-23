@@ -42,4 +42,10 @@ export class ProductPost {
 
   @Field(() => Product)
   product?: Product;
+
+  @Field(() => String)
+  createdAt: Date;
+
+  @Field(() => String)
+  updatedAt: Date;
 }

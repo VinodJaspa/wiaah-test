@@ -23,8 +23,24 @@ import { useRouting } from "routing";
 import { useTypedReactPubsub } from "@libs";
 
 export interface PostCardProps {
-  profileInfo: Profile;
-  postInfo: NewsfeedPost;
+  profileInfo: Pick<
+    Profile,
+    "id" | "ownerId" | "username" | "photo" | "profession"
+  >;
+  postInfo: Pick<
+    NewsfeedPost,
+    | "id"
+    | "userId"
+    | "comments"
+    | "reactionNum"
+    | "authorProfileId"
+    | "content"
+    | "hashtags"
+    | "createdAt"
+    | "tags"
+    | "shares"
+    | "attachments"
+  >;
 }
 
 export const PostCard: React.FC<PostCardProps> = ({

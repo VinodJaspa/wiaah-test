@@ -29,6 +29,7 @@ model Profile {
   publications   Int               @default(0)
   profession     String
   verified       Boolean           @default(false)
+  hashtags       String[]
   visibility     ProfileVisibility @default(public)
   Posts          NewsfeedPost[]
   comments       Comment[]
