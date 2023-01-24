@@ -251,6 +251,8 @@ type AffiliationPost {
   location: PostLocation
   commentsVisibility: CommentsVisibility!
   affiliation: Affiliation!
+  createdAt: String!
+  updatedAt: String!
 }
 
 enum PostVisibility {
@@ -273,6 +275,7 @@ type ServicePost {
   id: ID!
   serviceId: ID!
   service: Service!
+  type: ServiceType!
   userId: ID!
   user: Account!
   reactionNum: Int!
@@ -284,6 +287,15 @@ type ServicePost {
   commentsVisibility: CommentsVisibility!
   createdAt: String!
   updatedAt: String!
+}
+
+enum ServiceType {
+  hotelRoom
+  holidayRental
+  restaurantMenu
+  healthCenterTreatment
+  beautyCenterTreatment
+  vehicle
 }
 
 type ShopPost {
@@ -429,10 +441,13 @@ type Query {
   getUserProductPosts(args: GetUserProductPostsInput!): [ProductPost!]!
   getRecommendedProductPosts(args: GetShopRecommendedPostsInput!): [ProductPost!]!
   getAuthorAffiliationPosts(args: GetUserAffiliationPostsInput!): [AffiliationPost!]!
+  getAffiliationPost(args: GetAffiliationPostInput!): AffiliationPost!
+  getRecommendedAffiliationPosts(args: GetRecommendedAffiliationPostsInput!): [AffiliationPost!]!
   getUserActions(args: GetUserActionsInput!): [Action!]!
   getAction(id: String!): [Action!]!
+  getServicePost(id: String!): ServicePost!
   getUserServicePosts(args: GetUserServicesPostsInput!): [ServicePost!]!
-  getRecommendedServicePosts(pagination: GqlPaginationInput!): [ServicePost!]!
+  getRecommendedServicePosts(args: GetRecommendedServicePostsInput!): [ServicePost!]!
   getCommunityPosts(args: GetCommunityPostsInput!): [Community!]!
   getMyFriendSuggestions(args: GetMyFriendSuggestionsInput!): FriendSuggestion!
   getPlaceSuggestions: PlaceSuggestions!
@@ -510,6 +525,14 @@ input GetUserAffiliationPostsInput {
   pagination: GqlPaginationInput!
 }
 
+input GetAffiliationPostInput {
+  id: String!
+}
+
+input GetRecommendedAffiliationPostsInput {
+  pagination: GqlPaginationInput!
+}
+
 input GetUserActionsInput {
   userId: ID!
   pagination: GqlPaginationInput!
@@ -523,6 +546,11 @@ input GetUserServicesPostsInput {
 input GqlCursorPaginationInput {
   take: Int!
   cursor: String!
+}
+
+input GetRecommendedServicePostsInput {
+  pagination: GqlPaginationInput!
+  serviceType: String!
 }
 
 input GetCommunityPostsInput {

@@ -1,10 +1,10 @@
 import React from "react";
 import { HtmlDivProps } from "types";
 import { HiDuplicate } from "react-icons/hi";
-import { AttachmentType, Image } from "@UI";
+import { Image, PresentationType } from "@UI";
 export interface PostAttachmentProps {
   src: string;
-  type: AttachmentType;
+  type: PresentationType;
   alt?: string;
   footer?: React.ReactElement;
   style?: HtmlDivProps;
@@ -13,7 +13,7 @@ export interface PostAttachmentProps {
 }
 
 export const PostAttachment: React.FC<PostAttachmentProps> = ({
-  type = "image",
+  type = PresentationType.Image,
   src,
   alt,
   footer,

@@ -7,7 +7,7 @@ import {
 } from "@features/Social/services/types";
 import { Affiliation } from "@features/Affiliation";
 import { Account } from "@features/Accounts";
-import { useQuery } from "react-query";
+import { useQuery, UseQueryOptions } from "react-query";
 
 export type GetProfileAffiliationPostsQueryVariables = Exact<{
   args: GetUserAffiliationPostsInput;
@@ -17,15 +17,38 @@ export type GetProfileAffiliationPostsQuery = { __typename?: "Query" } & {
   getAuthorAffiliationPosts: Array<
     { __typename?: "AffiliationPost" } & Pick<
       AffiliationPost,
-      "id" | "affiliationId" | "comments" | "reactionNum" | "shares" | "userId"
+      | "id"
+      | "userId"
+      | "affiliationId"
+      | "views"
+      | "reactionNum"
+      | "shares"
+      | "comments"
+      | "createdAt"
     > & {
-        affiliation: { __typename?: "Affiliation" } & Pick<Affiliation, "id">;
+        affiliation: { __typename?: "Affiliation" } & Pick<
+          Affiliation,
+          | "id"
+          | "commision"
+          | "createdAt"
+          | "itemId"
+          | "itemType"
+          | "product"
+          | "service"
+          | "status"
+        >;
         user?: Maybe<
           { __typename?: "Account" } & Pick<Account, "id"> & {
               profile?: Maybe<
                 { __typename?: "Profile" } & Pick<
                   Profile,
-                  "id" | "photo" | "username"
+                  | "id"
+                  | "username"
+                  | "followers"
+                  | "verified"
+                  | "photo"
+                  | "ownerId"
+                  | "profession"
                 >
               >;
             }
@@ -35,7 +58,13 @@ export type GetProfileAffiliationPostsQuery = { __typename?: "Query" } & {
 };
 
 export const useGetProfileAffiliationPosts = (
-  args: GetUserAffiliationPostsInput
+  args: GetUserAffiliationPostsInput,
+  opts?: UseQueryOptions<
+    unknown,
+    unknown,
+    GetProfileAffiliationPostsQuery["getAuthorAffiliationPosts"],
+    any
+  >
 ) => {
   const client = createGraphqlRequestClient();
 
@@ -46,21 +75,34 @@ export const useGetProfileAffiliationPosts = (
         getAuthorAffiliationPosts(
             args:$args
         ) {
-            id
             affiliation {
-                id
+              id
+              commision
+              createdAt
+              itemId
+              itemType
+              product
+              service
+              status
             }
+            id
             affiliationId
             comments
             reactionNum
             shares
             userId
+            createdAt
+            views
             user {
                 id
                 profile {
                     id
                     photo
                     username
+                    followers
+                    verified
+                    ownerId
+                    profession
                 }
             }
 
@@ -72,9 +114,13 @@ export const useGetProfileAffiliationPosts = (
     args,
   });
 
-  return useQuery(["get-profile-affiliation-posts", { args }], async () => {
-    const res = await client.send<GetProfileAffiliationPostsQuery>();
+  return useQuery(
+    ["get-profile-affiliation-posts", { args }],
+    async () => {
+      const res = await client.send<GetProfileAffiliationPostsQuery>();
 
-    return res.data.getAuthorAffiliationPosts;
-  });
+      return res.data.getAuthorAffiliationPosts;
+    },
+    opts
+  );
 };

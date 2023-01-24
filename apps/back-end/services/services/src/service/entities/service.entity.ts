@@ -1,3 +1,4 @@
+import { ServicePresentation } from '@entities';
 import { Directive, Field, Float, ID, ObjectType } from '@nestjs/graphql';
 import { ServiceType } from 'prismaClient';
 
@@ -21,6 +22,9 @@ export class Service {
 
   @Field(() => String)
   thumbnail: string;
+
+  @Field(() => [ServicePresentation], { nullable: true })
+  presentation?: ServicePresentation[];
 
   @Field(() => [String])
   hashtags: string[];

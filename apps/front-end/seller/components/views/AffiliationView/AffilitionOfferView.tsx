@@ -1,81 +1,63 @@
-import { Flex, Text, useBreakpointValue } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "@chakra-ui/react";
 import {
-  SocialStoryModal,
   SocialPostHeader,
   SocialAffiliationCard,
   AffiliationOffersCardListWrapper,
+  useGetAffiliationPostQuery,
+  useGetProfileAffiliationPosts,
+  usePaginationControls,
+  ScrollPaginationWrapper,
+  Button,
 } from "ui";
-import {
-  socialAffiliationCardPlaceholder,
-  socialAffiliationCardPlaceholders,
-} from "ui/placeholder";
-import { useQuery } from "react-query";
-import { useRouter } from "next/router";
+import { useBreakpointValue } from "utils";
 
-export interface AffilitionOfferView {}
+export interface AffilitionOfferView {
+  id: string;
+}
 
-export const AffilitionOfferView: React.FC<AffilitionOfferView> = () => {
+export const AffilitionOfferView: React.FC<AffilitionOfferView> = ({ id }) => {
   const { t } = useTranslation();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
-  const router = useRouter();
-  console.log(router);
-  const offer = socialAffiliationCardPlaceholder;
-  const { data: _offer, isLoading } = useQuery(
-    ["affiliationOffer", { offerId: 15 }],
-    () => {
-      return socialAffiliationCardPlaceholder;
-    }
+  const { data } = useGetAffiliationPostQuery({
+    id,
+  });
+
+  const { controls, pagination } = usePaginationControls();
+  const { data: profilePosts } = useGetProfileAffiliationPosts(
+    {
+      userId: data.userId,
+      pagination,
+    },
+    { enabled: !!data.userId }
   );
 
-  const otherOffers = socialAffiliationCardPlaceholders;
-  const { data: _otherOffers, isLoading: offersLoading } = useQuery(
-    "affiliationOffers",
-    () => {
-      return socialAffiliationCardPlaceholders;
-    }
-  );
   return (
-    <Flex pb="4rem" gap="2rem" direction={"column"}>
-      <Flex
-        direction={{ base: "column", md: "row" }}
-        gap="2rem"
-        mb="6rem"
-        align={"start"}
-      >
-        <SocialStoryModal />
+    <div className="flex pb-16 gap-8 flex-col">
+      <div className="flex flex-col gap-8 mb-24 align-start md:flex-row">
         <SocialPostHeader
-          name={offer.user.name}
-          thumbnail={offer.user.thumbnail}
+          name={data.user.profile.username}
+          thumbnail={data.user.profile.photo}
         />
-        <SocialAffiliationCard showPostInteraction showComments {...offer} />
-      </Flex>
-      <Text
-        fontSize={"xx-large"}
-        fontWeight="bold"
-        w="100%"
-        textAlign={"center"}
-        textTransform={"capitalize"}
-      >
-        {t("view", "view")} {offer.user.name} {t("other_posts", "other posts")}
-      </Text>
-      <AffiliationOffersCardListWrapper cols={cols} items={otherOffers} />
-      <Button
-        _focus={{ ringColor: "primary.main" }}
-        bgColor="white"
-        borderWidth={"0.25rem"}
-        borderColor="gray"
-        mt="2rem"
-        fontSize={"xl"}
-        color="black"
-        py="0.5rem"
-        textTransform={"capitalize"}
-      >
-        {t("view_more", "view more")}
-      </Button>
-    </Flex>
+        {data ? (
+          <SocialAffiliationCard
+            showPostInteraction
+            showComments
+            post={{ ...data, profile: data.user.profile }}
+          />
+        ) : null}
+      </div>
+      <p className="text-2xl font-bold w-full text-center">
+        {t("view")} {data.user?.profile.username} {t("other posts")}
+      </p>
+      <ScrollPaginationWrapper controls={controls}>
+        <AffiliationOffersCardListWrapper
+          cols={cols}
+          items={profilePosts.map((v) => ({ ...v, profile: v.user.profile }))}
+        />
+      </ScrollPaginationWrapper>
+      <Button>{t("view more")}</Button>
+    </div>
   );
 };

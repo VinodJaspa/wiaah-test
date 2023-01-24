@@ -270,6 +270,8 @@ export type AffiliationPost = {
   location?: Maybe<PostLocation>;
   commentsVisibility: CommentsVisibility;
   affiliation: Affiliation;
+  createdAt: Scalars["String"];
+  updatedAt: Scalars["String"];
 };
 
 export enum PostVisibility {
@@ -294,6 +296,7 @@ export type ServicePost = {
   id: Scalars["ID"];
   serviceId: Scalars["ID"];
   service: Service;
+  type: ServiceType;
   userId: Scalars["ID"];
   user: Account;
   reactionNum: Scalars["Int"];
@@ -306,6 +309,15 @@ export type ServicePost = {
   createdAt: Scalars["String"];
   updatedAt: Scalars["String"];
 };
+
+export enum ServiceType {
+  HotelRoom = "hotelRoom",
+  HolidayRental = "holidayRental",
+  RestaurantMenu = "restaurantMenu",
+  HealthCenterTreatment = "healthCenterTreatment",
+  BeautyCenterTreatment = "beautyCenterTreatment",
+  Vehicle = "vehicle",
+}
 
 export type ShopPost = {
   __typename?: "ShopPost";
@@ -445,6 +457,7 @@ export type Query = {
   getMyFollowing: ProfileMetaPaginatedResponse;
   isFollowed: Scalars["Boolean"];
   getNewsfeedPostsByUserId: Array<NewsfeedPost>;
+  getNewsfeedPostById: NewsfeedPost;
   getAdminProfile: Profile;
   comments: Array<Comment>;
   updateComment: PaginationCommentsResponse;
@@ -462,8 +475,11 @@ export type Query = {
   getUserProductPosts: Array<ProductPost>;
   getRecommendedProductPosts: Array<ProductPost>;
   getAuthorAffiliationPosts: Array<AffiliationPost>;
+  getAffiliationPost: AffiliationPost;
+  getRecommendedAffiliationPosts: Array<AffiliationPost>;
   getUserActions: Array<Action>;
   getAction: Array<Action>;
+  getServicePost: ServicePost;
   getUserServicePosts: Array<ServicePost>;
   getRecommendedServicePosts: Array<ServicePost>;
   getCommunityPosts: Array<Community>;
@@ -501,6 +517,10 @@ export type QueryIsFollowedArgs = {
 
 export type QueryGetNewsfeedPostsByUserIdArgs = {
   args: GetNewsfeedPostsByUserIdInput;
+};
+
+export type QueryGetNewsfeedPostByIdArgs = {
+  id: Scalars["String"];
 };
 
 export type QueryGetAdminProfileArgs = {
@@ -547,6 +567,14 @@ export type QueryGetAuthorAffiliationPostsArgs = {
   args: GetUserAffiliationPostsInput;
 };
 
+export type QueryGetAffiliationPostArgs = {
+  args: GetAffiliationPostInput;
+};
+
+export type QueryGetRecommendedAffiliationPostsArgs = {
+  args: GetRecommendedAffiliationPostsInput;
+};
+
 export type QueryGetUserActionsArgs = {
   args: GetUserActionsInput;
 };
@@ -555,12 +583,16 @@ export type QueryGetActionArgs = {
   id: Scalars["String"];
 };
 
+export type QueryGetServicePostArgs = {
+  id: Scalars["String"];
+};
+
 export type QueryGetUserServicePostsArgs = {
   args: GetUserServicesPostsInput;
 };
 
 export type QueryGetRecommendedServicePostsArgs = {
-  pagination: GqlPaginationInput;
+  args: GetRecommendedServicePostsInput;
 };
 
 export type QueryGetCommunityPostsArgs = {
@@ -643,6 +675,14 @@ export type GetUserAffiliationPostsInput = {
   pagination: GqlPaginationInput;
 };
 
+export type GetAffiliationPostInput = {
+  id: Scalars["String"];
+};
+
+export type GetRecommendedAffiliationPostsInput = {
+  pagination: GqlPaginationInput;
+};
+
 export type GetUserActionsInput = {
   userId: Scalars["ID"];
   pagination: GqlPaginationInput;
@@ -656,6 +696,11 @@ export type GetUserServicesPostsInput = {
 export type GqlCursorPaginationInput = {
   take: Scalars["Int"];
   cursor: Scalars["String"];
+};
+
+export type GetRecommendedServicePostsInput = {
+  pagination: GqlPaginationInput;
+  serviceType: Scalars["String"];
 };
 
 export type GetCommunityPostsInput = {

@@ -48,4 +48,10 @@ export class AffiliationPost {
 
   @Field(() => Affiliation)
   affiliation?: Affiliation;
+
+  @Field(() => String)
+  createdAt: Date;
+
+  @Field(() => String)
+  updatedAt: Date;
 }
