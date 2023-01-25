@@ -1,0 +1,22 @@
+import { AddNewPostModal } from "@blocks/Modals";
+import { PostViewPopup } from "@blocks/Popups";
+import { useSetNewPost } from "@src/index";
+import React from "react";
+
+const useSocialControls = () => {
+  const { OpenModal } = useSetNewPost();
+
+  return {
+    openSocialNewPostModal: OpenModal,
+  };
+};
+
+export const SocialLayout: React.FC = ({ children }) => {
+  return (
+    <>
+      <AddNewPostModal />
+      <PostViewPopup />
+      <>{children}</>
+    </>
+  );
+};

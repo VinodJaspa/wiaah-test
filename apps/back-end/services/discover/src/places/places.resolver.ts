@@ -1,9 +1,11 @@
-import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Place, PlaceSuggestions } from './entities/place.entity';
 import { Inject } from '@nestjs/common';
 import {
   AuthorizationDecodedUser,
+  ExtractPagination,
   GqlCurrentUser,
+  GqlPaginationInput,
   KafkaMessageHandler,
   KAFKA_MESSAGES,
   SERVICES,
@@ -19,6 +21,7 @@ import {
   GetUserPaidBookingMessage,
   GetUserPaidBookingMessageReply,
 } from 'nest-dto';
+import { GetPlaceSuggestionsInput } from './dto/get-place-suggestions.input';
 
 @Resolver(() => PlaceSuggestions)
 export class PlacesResolver {
@@ -28,8 +31,10 @@ export class PlacesResolver {
 
   @Query(() => PlaceSuggestions)
   async getPlaceSuggestions(
+    @Args('args') args: GetPlaceSuggestionsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<PlaceSuggestions> {
+    const { take, skip } = ExtractPagination(args.pagination);
     const {
       results: { data: friends, success },
     } = await KafkaMessageHandler<
@@ -79,6 +84,7 @@ export class PlacesResolver {
       KAFKA_MESSAGES.BOOKING_MESSAGES.getBulkBookedPaidServices(),
       new GetBulkUsersPaidBookingMessage({
         userIds: friends.users.map((v) => v.id),
+        pagination: args.pagination,
       }),
     );
 
@@ -107,6 +113,7 @@ export class PlacesResolver {
         country: user.country,
         lat: user.lat,
         lon: user.lon,
+        pagination: args.pagination,
       }),
     );
 

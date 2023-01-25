@@ -1,4 +1,4 @@
-import { Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { Place, PlaceSuggestions } from './entities/place.entity';
 import { Inject } from '@nestjs/common';
 import {
@@ -19,6 +19,7 @@ import {
   GetUserPaidBookingMessage,
   GetUserPaidBookingMessageReply,
 } from 'nest-dto';
+import { GetPlaceSuggestionInput } from './dto/get-place-suggestions.input';
 
 @Resolver(() => PlaceSuggestions)
 export class PlacesResolver {
@@ -28,6 +29,7 @@ export class PlacesResolver {
 
   @Query(() => PlaceSuggestions)
   async getPlaceSuggestions(
+    @Args('args') args: GetPlaceSuggestionInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<PlaceSuggestions> {
     const {
@@ -145,7 +147,7 @@ export class PlacesResolver {
         if (service.location.distance) {
           const distanceScore =
             Math.abs(Math.min(service.location.distance, 100) - 100) / 3;
-          console.log('dis', service.id, serviceScore, distanceScore);
+
           serviceScore += distanceScore;
         }
 

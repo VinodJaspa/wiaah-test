@@ -1,12 +1,9 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { useBreakpointValue } from "@chakra-ui/react";
 import { SocialHashTagTopPosts } from "@src/state";
 import { TabType } from "types";
 import { useRouter } from "next/router";
 import {
-  ActionsListWrapper,
-  actionsPlaceholders,
   HashTagPostsListWrapper,
   PostCardsListWrapper,
   ShopCardsListWrapper,
@@ -16,13 +13,12 @@ import {
   SocialServicePostsList,
   HomeIcon,
   HStack,
-  PlayButtonFillIcon,
   ServicesIcon,
   ShoppingCartIcon,
 } from "ui";
 import { newsfeedPosts, ShopCardsInfoPlaceholder } from "placeholder";
 import { useTranslation } from "react-i18next";
-import { randomNum } from "utils";
+import { randomNum, useBreakpointValue } from "utils";
 
 export interface HashTagViewProps {}
 
@@ -65,7 +61,7 @@ export const HashTagView: React.FC<HashTagViewProps> = () => {
         <div className="flex flex-col w-full gap-16">
           <HashTagPostsListWrapper hashtags={topPosts} />
           <Divider />
-          <SocialServicePostsList />
+          <SocialServicePostsList posts={[]} />
         </div>
       ),
     },
@@ -83,21 +79,6 @@ export const HashTagView: React.FC<HashTagViewProps> = () => {
           <Divider />
 
           <ShopCardsListWrapper cols={cols} items={ShopCardsInfoPlaceholder} />
-        </div>
-      ),
-    },
-    {
-      name: (
-        <HStack>
-          <p>{t("Actions")}</p>
-          <PlayButtonFillIcon />
-        </HStack>
-      ),
-      component: (
-        <div className="flex flex-col gap-16">
-          <HashTagPostsListWrapper hashtags={topPosts} />
-          <Divider />
-          <ActionsListWrapper cols={cols} actions={actionsPlaceholders} />
         </div>
       ),
     },

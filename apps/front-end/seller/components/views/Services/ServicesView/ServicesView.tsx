@@ -29,7 +29,7 @@ export const ServicesView: React.FC<ServicesViewProps> = () => {
         }}
       />
       <SocialServicesPostsMetaDataList
-        posts={data.map((v) => ({ ...v, profile: v.user.profile }))}
+        posts={data?.map((v) => ({ ...v, profile: v.user.profile }))}
       />
     </div>
   );

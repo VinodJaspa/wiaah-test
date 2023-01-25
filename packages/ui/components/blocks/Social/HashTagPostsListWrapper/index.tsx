@@ -1,10 +1,13 @@
 import React from "react";
-import { HashTagCard, ListWrapper } from "@UI";
+import { HashTagCard, HashTagCardProps, ListWrapper } from "@UI";
 import { HashTagCardInfo } from "types";
 import { useBreakpointValue } from "utils";
 
 export interface HashTagPostsListWrapperProps {
-  hashtags: HashTagCardInfo[];
+  hashtags: (HashTagCardProps["post"] & {
+    profile: HashTagCardProps["profile"];
+    listtTitle: string;
+  })[];
   cols?: number;
 }
 
@@ -17,7 +20,13 @@ export const HashTagPostsListWrapper: React.FC<
     <ListWrapper data-testid="HashTagCardsContainer" cols={cols || Cols}>
       {hashtags &&
         hashtags.map((post, i) => (
-          <HashTagCard data-testid="HashTagCard" key={i} {...post} />
+          <HashTagCard
+            data-testid="HashTagCard"
+            key={i}
+            title={post.listtTitle}
+            post={post}
+            profile={post.profile}
+          />
         ))}
     </ListWrapper>
   );

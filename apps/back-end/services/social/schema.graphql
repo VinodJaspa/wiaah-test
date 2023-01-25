@@ -234,6 +234,13 @@ type Product {
   id: ID!
 }
 
+type TopHashtagNewsfeedPosts {
+  viewed: NewsfeedPost!
+  liked: NewsfeedPost!
+  commented: NewsfeedPost!
+  shared: NewsfeedPost!
+}
+
 type Affiliation {
   id: ID!
 }
@@ -424,6 +431,7 @@ type Query {
   isFollowed(profileId: String!): Boolean!
   getNewsfeedPostsByUserId(args: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
   getNewsfeedPostById(id: String!): NewsfeedPost!
+  getTopHashtagNewsfeed: TopHashtagNewsfeedPosts!
   getAdminProfile(id: String!): Profile!
   comments: [Comment!]!
   updateComment(updateCommentInput: UpdateCommentInput!): PaginationCommentsResponse!
@@ -450,7 +458,7 @@ type Query {
   getRecommendedServicePosts(args: GetRecommendedServicePostsInput!): [ServicePost!]!
   getCommunityPosts(args: GetCommunityPostsInput!): [Community!]!
   getMyFriendSuggestions(args: GetMyFriendSuggestionsInput!): FriendSuggestion!
-  getPlaceSuggestions: PlaceSuggestions!
+  getPlaceSuggestions(args: GetPlaceSuggestionInput!): PlaceSuggestions!
 }
 
 input SearchPopularProfilesInput {
@@ -560,6 +568,10 @@ input GetCommunityPostsInput {
 input GetMyFriendSuggestionsInput {
   pagination: GqlPaginationInput!
   q: String
+}
+
+input GetPlaceSuggestionInput {
+  pagination: GqlPaginationInput!
 }
 
 type Mutation {

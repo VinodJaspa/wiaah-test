@@ -21,7 +21,10 @@ export type GetRecentStoriesQuery = { __typename?: "Query" } & {
         user?: Maybe<
           { __typename?: "Account" } & Pick<Account, "id"> & {
               profile?: Maybe<
-                { __typename?: "Profile" } & Pick<Profile, "id" | "photo">
+                { __typename?: "Profile" } & Pick<
+                  Profile,
+                  "id" | "photo" | "profession" | "username"
+                >
               >;
             }
         >;

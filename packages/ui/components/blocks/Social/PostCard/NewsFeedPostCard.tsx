@@ -71,6 +71,9 @@ export const PostCard: React.FC<PostCardProps> = ({
   });
 
   const date = getSince();
+
+  if (!postInfo || !profileInfo) return null;
+
   return (
     <div className="relative group rounded-[1.25rem] overflow-hidden w-full h-full">
       <img

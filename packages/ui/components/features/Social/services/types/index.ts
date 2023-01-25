@@ -256,6 +256,14 @@ export type Account = {
   profile?: Maybe<Profile>;
 };
 
+export type TopHashtagNewsfeedPosts = {
+  __typename?: "TopHashtagNewsfeedPosts";
+  viewed: NewsfeedPost;
+  liked: NewsfeedPost;
+  commented: NewsfeedPost;
+  shared: NewsfeedPost;
+};
+
 export type AffiliationPost = {
   __typename?: "AffiliationPost";
   id: Scalars["ID"];
@@ -458,6 +466,7 @@ export type Query = {
   isFollowed: Scalars["Boolean"];
   getNewsfeedPostsByUserId: Array<NewsfeedPost>;
   getNewsfeedPostById: NewsfeedPost;
+  getTopHashtagNewsfeed: TopHashtagNewsfeedPosts;
   getAdminProfile: Profile;
   comments: Array<Comment>;
   updateComment: PaginationCommentsResponse;
@@ -603,6 +612,10 @@ export type QueryGetMyFriendSuggestionsArgs = {
   args: GetMyFriendSuggestionsInput;
 };
 
+export type QueryGetPlaceSuggestionsArgs = {
+  args: GetPlaceSuggestionInput;
+};
+
 export type SearchPopularProfilesInput = {
   q: Scalars["String"];
   cursor?: Maybe<Scalars["String"]>;
@@ -710,6 +723,10 @@ export type GetCommunityPostsInput = {
 export type GetMyFriendSuggestionsInput = {
   pagination: GqlPaginationInput;
   q?: Maybe<Scalars["String"]>;
+};
+
+export type GetPlaceSuggestionInput = {
+  pagination: GqlPaginationInput;
 };
 
 export type Mutation = {
