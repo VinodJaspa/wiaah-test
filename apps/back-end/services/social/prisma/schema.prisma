@@ -107,6 +107,7 @@ model ProductPost {
   comments           Int                @default(0)
   shares             Int                @default(0)
   views              Int                @default(0)
+  hashtags           String[]
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
@@ -122,6 +123,7 @@ model ServicePost {
   comments           Int                @default(0)
   shares             Int                @default(0)
   views              Int                @default(0)
+  hashtags           String[]
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
@@ -147,6 +149,7 @@ model AffiliationPost {
   comments           Int                @default(0)
   shares             Int                @default(0)
   views              Int                @default(0)
+  hashtags           String[]
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)

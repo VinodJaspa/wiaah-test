@@ -27,6 +27,8 @@ import { ClientKafka } from '@nestjs/microservices';
 import { PostVisibility, ServiceType } from 'prismaClient';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { GetRecommendedServicePostsInput } from './dto/get-recommended-service-posts.input';
+import { ServicePostHashtagSearch } from './entities/service-post-hashtag-search';
+import { GetHashtagTopServicePostsInput } from './dto/get-hashtag-top-service-posts.input';
 
 @Resolver(() => ServicePost)
 export class ServicePostResolver {
@@ -320,7 +322,60 @@ export class ServicePostResolver {
     }
   }
 
-  @Query(()=> )
+  @Query(() => ServicePostHashtagSearch)
+  async getHashtagTopServicePosts(
+    @Args('args') args: GetHashtagTopServicePostsInput,
+  ): Promise<ServicePostHashtagSearch> {
+    const topViewed = await this.prisma.servicePost.findFirst({
+      where: {
+        hashtags: {
+          has: args.tag,
+        },
+        commentsVisibility: 'public',
+      },
+      orderBy: {
+        views: 'desc',
+      },
+    });
+    const topCommented = await this.prisma.servicePost.findFirst({
+      where: {
+        hashtags: {
+          has: args.tag,
+        },
+        commentsVisibility: 'public',
+      },
+      orderBy: {
+        comments: 'desc',
+      },
+    });
+    const topLiked = await this.prisma.servicePost.findFirst({
+      where: {
+        hashtags: {
+          has: args.tag,
+        },
+        commentsVisibility: 'public',
+      },
+      orderBy: {
+        reactionNum: 'desc',
+      },
+    });
+    const topShared = await this.prisma.servicePost.findFirst({
+      where: {
+        hashtags: {
+          has: args.tag,
+        },
+        commentsVisibility: 'public',
+      },
+      orderBy: {
+        shares: 'desc',
+      },
+    });
 
-
+    return {
+      commented: topCommented,
+      liked: topLiked,
+      shared: topShared,
+      viewed: topViewed,
+    };
+  }
 }
