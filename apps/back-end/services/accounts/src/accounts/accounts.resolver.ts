@@ -1,14 +1,7 @@
 import { Inject, NotAcceptableException, UseGuards } from '@nestjs/common';
-import {
-  Resolver,
-  ResolveReference,
-  Mutation,
-  Args,
-  Query,
-} from '@nestjs/graphql';
+import { Resolver, ResolveReference, Mutation, Args } from '@nestjs/graphql';
 import { ClientKafka } from '@nestjs/microservices';
 import {
-  accountType,
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
@@ -17,15 +10,11 @@ import {
 } from 'nest-utils';
 
 import { AccountsService } from './accounts.service';
-import {
-  CreateAccountInput,
-  GetBuyersAccountsInput,
-  GetFilteredSellersAccountsInput,
-} from '@accounts/dto';
+import { CreateAccountInput } from '@accounts/dto';
 import { UpdateAccountInput } from './dto/update-account.input';
 import { Account } from './entities';
 import { PrismaService } from 'prismaService';
-import { AccountDeletionRequestStatus, AccountType } from '@prisma-client';
+import { AccountDeletionRequestStatus } from '@prisma-client';
 import { EventBus } from '@nestjs/cqrs';
 import { AccountDeletionRequestCreatedEvent } from './events';
 import * as bcrypt from 'bcrypt';

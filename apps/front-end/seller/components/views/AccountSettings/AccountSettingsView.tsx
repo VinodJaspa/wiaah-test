@@ -102,7 +102,7 @@ const sections: SettingsSectionType[] = [
   },
   {
     panelName: "My Verification",
-    panelIcon: Verified,
+    panelIcon: <Verified />,
     panelUrl: "/my-verification",
 
     panelComponent: <MyVerificationSection />,

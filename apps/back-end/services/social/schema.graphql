@@ -281,10 +281,10 @@ type Service {
 type ServicePost {
   id: ID!
   serviceId: ID!
-  service: Service!
-  type: ServiceType!
+  service: Service
+  serviceType: ServiceType!
   userId: ID!
-  user: Account!
+  user: Account
   reactionNum: Int!
   comments: Int!
   shares: Int!
@@ -386,6 +386,20 @@ type ProductPost {
   updatedAt: String!
 }
 
+type HashtagProductPost {
+  viewed: ProductPost
+  liked: ProductPost
+  commented: ProductPost
+  shared: ProductPost
+}
+
+type HashtagTopAffiliationPost {
+  viewed: AffiliationPost
+  liked: AffiliationPost
+  shared: AffiliationPost
+  commented: AffiliationPost
+}
+
 type Action {
   id: ID!
   attachment: Attachment!
@@ -396,6 +410,13 @@ type Action {
   visibility: PostVisibility!
   location: PostLocation!
   commentsVisibility: CommentsVisibility!
+}
+
+type ServicePostHashtagSearch {
+  viewed: ServicePost
+  liked: ServicePost
+  shared: ServicePost
+  commented: ServicePost
 }
 
 type Community {
@@ -448,14 +469,17 @@ type Query {
   getMyPrivacySettings: PrivacySettings!
   getUserProductPosts(args: GetUserProductPostsInput!): [ProductPost!]!
   getRecommendedProductPosts(args: GetShopRecommendedPostsInput!): [ProductPost!]!
+  getTopHashtagPosts(tag: String!): HashtagProductPost!
   getAuthorAffiliationPosts(args: GetUserAffiliationPostsInput!): [AffiliationPost!]!
   getAffiliationPost(args: GetAffiliationPostInput!): AffiliationPost!
   getRecommendedAffiliationPosts(args: GetRecommendedAffiliationPostsInput!): [AffiliationPost!]!
+  getHashtagTopAffiliationPost(tag: String!): HashtagTopAffiliationPost
   getUserActions(args: GetUserActionsInput!): [Action!]!
   getAction(id: String!): [Action!]!
   getServicePost(id: String!): ServicePost!
   getUserServicePosts(args: GetUserServicesPostsInput!): [ServicePost!]!
   getRecommendedServicePosts(args: GetRecommendedServicePostsInput!): [ServicePost!]!
+  getHashtagTopServicePosts(args: GetHashtagTopServicePostsInput!): ServicePostHashtagSearch!
   getCommunityPosts(args: GetCommunityPostsInput!): [Community!]!
   getMyFriendSuggestions(args: GetMyFriendSuggestionsInput!): FriendSuggestion!
   getPlaceSuggestions(args: GetPlaceSuggestionInput!): PlaceSuggestions!
@@ -559,6 +583,10 @@ input GqlCursorPaginationInput {
 input GetRecommendedServicePostsInput {
   pagination: GqlPaginationInput!
   serviceType: String!
+}
+
+input GetHashtagTopServicePostsInput {
+  tag: String!
 }
 
 input GetCommunityPostsInput {

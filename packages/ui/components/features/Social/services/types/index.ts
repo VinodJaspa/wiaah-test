@@ -303,10 +303,10 @@ export type ServicePost = {
   __typename?: "ServicePost";
   id: Scalars["ID"];
   serviceId: Scalars["ID"];
-  service: Service;
-  type: ServiceType;
+  service?: Maybe<Service>;
+  serviceType: ServiceType;
   userId: Scalars["ID"];
-  user: Account;
+  user?: Maybe<Account>;
   reactionNum: Scalars["Int"];
   comments: Scalars["Int"];
   shares: Scalars["Int"];
@@ -415,6 +415,22 @@ export type ProductPost = {
   updatedAt: Scalars["String"];
 };
 
+export type HashtagProductPost = {
+  __typename?: "HashtagProductPost";
+  viewed?: Maybe<ProductPost>;
+  liked?: Maybe<ProductPost>;
+  commented?: Maybe<ProductPost>;
+  shared?: Maybe<ProductPost>;
+};
+
+export type HashtagTopAffiliationPost = {
+  __typename?: "HashtagTopAffiliationPost";
+  viewed?: Maybe<AffiliationPost>;
+  liked?: Maybe<AffiliationPost>;
+  shared?: Maybe<AffiliationPost>;
+  commented?: Maybe<AffiliationPost>;
+};
+
 export type Action = {
   __typename?: "Action";
   id: Scalars["ID"];
@@ -426,6 +442,14 @@ export type Action = {
   visibility: PostVisibility;
   location: PostLocation;
   commentsVisibility: CommentsVisibility;
+};
+
+export type ServicePostHashtagSearch = {
+  __typename?: "ServicePostHashtagSearch";
+  viewed?: Maybe<ServicePost>;
+  liked?: Maybe<ServicePost>;
+  shared?: Maybe<ServicePost>;
+  commented?: Maybe<ServicePost>;
 };
 
 export type Community = {
@@ -483,14 +507,17 @@ export type Query = {
   getMyPrivacySettings: PrivacySettings;
   getUserProductPosts: Array<ProductPost>;
   getRecommendedProductPosts: Array<ProductPost>;
+  getTopHashtagPosts: HashtagProductPost;
   getAuthorAffiliationPosts: Array<AffiliationPost>;
   getAffiliationPost: AffiliationPost;
   getRecommendedAffiliationPosts: Array<AffiliationPost>;
+  getHashtagTopAffiliationPost?: Maybe<HashtagTopAffiliationPost>;
   getUserActions: Array<Action>;
   getAction: Array<Action>;
   getServicePost: ServicePost;
   getUserServicePosts: Array<ServicePost>;
   getRecommendedServicePosts: Array<ServicePost>;
+  getHashtagTopServicePosts: ServicePostHashtagSearch;
   getCommunityPosts: Array<Community>;
   getMyFriendSuggestions: FriendSuggestion;
   getPlaceSuggestions: PlaceSuggestions;
@@ -572,6 +599,10 @@ export type QueryGetRecommendedProductPostsArgs = {
   args: GetShopRecommendedPostsInput;
 };
 
+export type QueryGetTopHashtagPostsArgs = {
+  tag: Scalars["String"];
+};
+
 export type QueryGetAuthorAffiliationPostsArgs = {
   args: GetUserAffiliationPostsInput;
 };
@@ -582,6 +613,10 @@ export type QueryGetAffiliationPostArgs = {
 
 export type QueryGetRecommendedAffiliationPostsArgs = {
   args: GetRecommendedAffiliationPostsInput;
+};
+
+export type QueryGetHashtagTopAffiliationPostArgs = {
+  tag: Scalars["String"];
 };
 
 export type QueryGetUserActionsArgs = {
@@ -602,6 +637,10 @@ export type QueryGetUserServicePostsArgs = {
 
 export type QueryGetRecommendedServicePostsArgs = {
   args: GetRecommendedServicePostsInput;
+};
+
+export type QueryGetHashtagTopServicePostsArgs = {
+  args: GetHashtagTopServicePostsInput;
 };
 
 export type QueryGetCommunityPostsArgs = {
@@ -714,6 +753,10 @@ export type GqlCursorPaginationInput = {
 export type GetRecommendedServicePostsInput = {
   pagination: GqlPaginationInput;
   serviceType: Scalars["String"];
+};
+
+export type GetHashtagTopServicePostsInput = {
+  tag: Scalars["String"];
 };
 
 export type GetCommunityPostsInput = {

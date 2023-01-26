@@ -31,7 +31,7 @@ import { ConfirmPasswordChangeInput } from './dto/confirmPasswordChange.input';
 import { ResponseCodes } from './const';
 import { ValidateLoginSecurityFeaturesQuery } from './queries';
 import { AuthOtpRequestedEvent } from '@auth/events';
-import { ValidateLoginOtpCommand } from './commands';
+import { ChangePasswordCommand, ValidateLoginOtpCommand } from './commands';
 
 @Resolver((of) => Registeration)
 export class AuthResolver implements OnModuleInit {
@@ -48,8 +48,11 @@ export class AuthResolver implements OnModuleInit {
 
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([]))
-  changePassword(@Args('changePasswordInput') input: ChangePasswordInput) {
-    this.commandBus.execute;
+  changePassword(
+    @Args('changePasswordInput') input: ChangePasswordInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    this.commandBus.execute(new ChangePasswordCommand(input, user));
   }
 
   @Mutation(() => GqlStatusResponse)

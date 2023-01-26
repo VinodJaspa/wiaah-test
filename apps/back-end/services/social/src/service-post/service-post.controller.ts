@@ -17,6 +17,7 @@ export class ServicePostController {
       data: {
         serviceId: value.input.id,
         userId: value.input.userId,
+        hashtags: value.input.hashtags,
         serviceType: value.input.type as ServiceType,
       },
     });

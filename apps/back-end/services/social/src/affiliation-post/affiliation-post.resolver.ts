@@ -16,6 +16,7 @@ import { PrismaService } from 'prismaService';
 import { GetAffiliationPostInput } from './dto/get-affiliation-post.input';
 import { PostVisibility } from 'prismaClient';
 import { NotFoundException } from '@nestjs/common';
+import { HashtagTopAffiliationPost } from './entities/hashtag-affiliation-post.entity';
 
 @Resolver(() => AffiliationPost)
 export class AffiliationPostResolver {
@@ -65,6 +66,59 @@ export class AffiliationPostResolver {
       skip,
     });
     return res;
+  }
+
+  @Query(() => HashtagTopAffiliationPost, { nullable: true })
+  async getHashtagTopAffiliationPost(
+    @Args('tag') tag: string,
+  ): Promise<HashtagTopAffiliationPost> {
+    const topViewed = this.prisma.affiliationPost.findFirst({
+      where: {
+        hashtags: {
+          has: tag,
+        },
+      },
+      orderBy: {
+        views: 'desc',
+      },
+    });
+    const topLiked = this.prisma.affiliationPost.findFirst({
+      where: {
+        hashtags: {
+          has: tag,
+        },
+      },
+      orderBy: {
+        views: 'desc',
+      },
+    });
+    const topCommented = this.prisma.affiliationPost.findFirst({
+      where: {
+        hashtags: {
+          has: tag,
+        },
+      },
+      orderBy: {
+        views: 'desc',
+      },
+    });
+    const topShared = this.prisma.affiliationPost.findFirst({
+      where: {
+        hashtags: {
+          has: tag,
+        },
+      },
+      orderBy: {
+        views: 'desc',
+      },
+    });
+
+    return {
+      viewed: await topViewed,
+      commented: await topCommented,
+      liked: await topLiked,
+      shared: await topShared,
+    };
   }
 
   @ResolveField(() => Account)

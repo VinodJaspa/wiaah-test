@@ -30,17 +30,17 @@ export class ServicePost {
   @Field(() => ID)
   serviceId: string;
 
-  @Field(() => Service)
-  service: Service;
+  @Field(() => Service, { nullable: true })
+  service?: Service;
 
   @Field(() => ServiceType)
-  type: ServiceType;
+  serviceType: ServiceType;
 
   @Field(() => ID)
   userId: string;
 
-  @Field(() => Account)
-  user: Account;
+  @Field(() => Account, { nullable: true })
+  user?: Account;
 
   @Field(() => Int)
   reactionNum: number;
