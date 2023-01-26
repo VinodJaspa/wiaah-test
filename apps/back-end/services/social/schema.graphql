@@ -234,6 +234,13 @@ type Product {
   id: ID!
 }
 
+type TopHashtagNewsfeedPosts {
+  viewed: NewsfeedPost!
+  liked: NewsfeedPost!
+  commented: NewsfeedPost!
+  shared: NewsfeedPost!
+}
+
 type Affiliation {
   id: ID!
 }
@@ -251,6 +258,8 @@ type AffiliationPost {
   location: PostLocation
   commentsVisibility: CommentsVisibility!
   affiliation: Affiliation!
+  createdAt: String!
+  updatedAt: String!
 }
 
 enum PostVisibility {
@@ -272,9 +281,10 @@ type Service {
 type ServicePost {
   id: ID!
   serviceId: ID!
-  service: Service!
+  service: Service
+  serviceType: ServiceType!
   userId: ID!
-  user: Account!
+  user: Account
   reactionNum: Int!
   comments: Int!
   shares: Int!
@@ -284,6 +294,15 @@ type ServicePost {
   commentsVisibility: CommentsVisibility!
   createdAt: String!
   updatedAt: String!
+}
+
+enum ServiceType {
+  hotelRoom
+  holidayRental
+  restaurantMenu
+  healthCenterTreatment
+  beautyCenterTreatment
+  vehicle
 }
 
 type ShopPost {
@@ -367,6 +386,20 @@ type ProductPost {
   updatedAt: String!
 }
 
+type HashtagProductPost {
+  viewed: ProductPost
+  liked: ProductPost
+  commented: ProductPost
+  shared: ProductPost
+}
+
+type HashtagTopAffiliationPost {
+  viewed: AffiliationPost
+  liked: AffiliationPost
+  shared: AffiliationPost
+  commented: AffiliationPost
+}
+
 type Action {
   id: ID!
   attachment: Attachment!
@@ -377,6 +410,13 @@ type Action {
   visibility: PostVisibility!
   location: PostLocation!
   commentsVisibility: CommentsVisibility!
+}
+
+type ServicePostHashtagSearch {
+  viewed: ServicePost
+  liked: ServicePost
+  shared: ServicePost
+  commented: ServicePost
 }
 
 type Community {
@@ -412,6 +452,7 @@ type Query {
   isFollowed(profileId: String!): Boolean!
   getNewsfeedPostsByUserId(args: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
   getNewsfeedPostById(id: String!): NewsfeedPost!
+  getTopHashtagNewsfeed: TopHashtagNewsfeedPosts!
   getAdminProfile(id: String!): Profile!
   comments: [Comment!]!
   updateComment(updateCommentInput: UpdateCommentInput!): PaginationCommentsResponse!
@@ -428,14 +469,20 @@ type Query {
   getMyPrivacySettings: PrivacySettings!
   getUserProductPosts(args: GetUserProductPostsInput!): [ProductPost!]!
   getRecommendedProductPosts(args: GetShopRecommendedPostsInput!): [ProductPost!]!
+  getTopHashtagPosts(tag: String!): HashtagProductPost!
   getAuthorAffiliationPosts(args: GetUserAffiliationPostsInput!): [AffiliationPost!]!
+  getAffiliationPost(args: GetAffiliationPostInput!): AffiliationPost!
+  getRecommendedAffiliationPosts(args: GetRecommendedAffiliationPostsInput!): [AffiliationPost!]!
+  getHashtagTopAffiliationPost(tag: String!): HashtagTopAffiliationPost
   getUserActions(args: GetUserActionsInput!): [Action!]!
   getAction(id: String!): [Action!]!
+  getServicePost(id: String!): ServicePost!
   getUserServicePosts(args: GetUserServicesPostsInput!): [ServicePost!]!
-  getRecommendedServicePosts(pagination: GqlPaginationInput!): [ServicePost!]!
+  getRecommendedServicePosts(args: GetRecommendedServicePostsInput!): [ServicePost!]!
+  getHashtagTopServicePosts(args: GetHashtagTopServicePostsInput!): ServicePostHashtagSearch!
   getCommunityPosts(args: GetCommunityPostsInput!): [Community!]!
   getMyFriendSuggestions(args: GetMyFriendSuggestionsInput!): FriendSuggestion!
-  getPlaceSuggestions: PlaceSuggestions!
+  getPlaceSuggestions(args: GetPlaceSuggestionInput!): PlaceSuggestions!
 }
 
 input SearchPopularProfilesInput {
@@ -510,6 +557,14 @@ input GetUserAffiliationPostsInput {
   pagination: GqlPaginationInput!
 }
 
+input GetAffiliationPostInput {
+  id: String!
+}
+
+input GetRecommendedAffiliationPostsInput {
+  pagination: GqlPaginationInput!
+}
+
 input GetUserActionsInput {
   userId: ID!
   pagination: GqlPaginationInput!
@@ -525,6 +580,15 @@ input GqlCursorPaginationInput {
   cursor: String!
 }
 
+input GetRecommendedServicePostsInput {
+  pagination: GqlPaginationInput!
+  serviceType: String!
+}
+
+input GetHashtagTopServicePostsInput {
+  tag: String!
+}
+
 input GetCommunityPostsInput {
   q: String!
 }
@@ -532,6 +596,10 @@ input GetCommunityPostsInput {
 input GetMyFriendSuggestionsInput {
   pagination: GqlPaginationInput!
   q: String
+}
+
+input GetPlaceSuggestionInput {
+  pagination: GqlPaginationInput!
 }
 
 type Mutation {

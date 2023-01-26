@@ -58,16 +58,18 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
     },
     {
       name: t("shop", "shop"),
-      component: <SocialProfileShopPostsList userId={profile.ownerId} />,
+      component: <SocialProfileShopPostsList userId={profile?.ownerId} />,
     },
     {
       name: t("services"),
-      component: <SocialProfileServicePosts userId={profile.ownerId} />,
+      component: <SocialProfileServicePosts userId={profile?.ownerId} />,
     },
 
     {
       name: t("affiliation offers", "affiliation offers"),
-      component: <SocialProfileAffiliationPostsList userId={profile.ownerId} />,
+      component: (
+        <SocialProfileAffiliationPostsList userId={profile?.ownerId} />
+      ),
     },
     {
       name: t("actions", "Actions"),

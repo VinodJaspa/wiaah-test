@@ -31,6 +31,7 @@ export class AuthRepository {
     const newHashedPass = await this.service.hashPassword(input.newPassword);
 
     await this.service.emitPasswordChange(user.email, newHashedPass, user.id);
+
     return true;
   }
 }

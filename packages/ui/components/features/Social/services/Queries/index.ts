@@ -11,3 +11,5 @@ export * from "./ServicePost";
 export * from "./ShopPost";
 export * from "./Discover";
 export * from "./Shop";
+export * from "./ServiceSuggestions";
+export * from "./AffiliationSuggestions";

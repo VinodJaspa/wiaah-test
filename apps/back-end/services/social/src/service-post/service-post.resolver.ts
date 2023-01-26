@@ -24,8 +24,11 @@ import {
   GetUserPaidBookingMessageReply,
 } from 'nest-dto';
 import { ClientKafka } from '@nestjs/microservices';
-import { PostVisibility, ProductPost } from 'prismaClient';
-import { Inject } from '@nestjs/common';
+import { PostVisibility, ServiceType } from 'prismaClient';
+import { Inject, NotFoundException } from '@nestjs/common';
+import { GetRecommendedServicePostsInput } from './dto/get-recommended-service-posts.input';
+import { ServicePostHashtagSearch } from './entities/service-post-hashtag-search';
+import { GetHashtagTopServicePostsInput } from './dto/get-hashtag-top-service-posts.input';
 
 @Resolver(() => ServicePost)
 export class ServicePostResolver {
@@ -45,12 +48,46 @@ export class ServicePostResolver {
     private readonly eventClient: ClientKafka,
   ) {}
 
+  @Query(() => ServicePost)
+  async getServicePost(
+    @Args('id') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const allowedViewers: PostVisibility[] = [PostVisibility.public];
+    const res = await this.prisma.servicePost.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (user) {
+      const isFollower = await this.prisma.follow.findUnique({
+        where: {
+          followRelation: {
+            followerUserId: user.id,
+            followingUserId: res.userId,
+          },
+        },
+      });
+
+      if (isFollower) {
+        allowedViewers.push(PostVisibility.followers);
+      }
+    }
+
+    if (!res || !allowedViewers.includes(res.visibility))
+      throw new NotFoundException('Service not found');
+
+    return res;
+  }
+
   @Query(() => [ServicePost])
   async getUserServicePosts(
     @Args('args') args: GetUserServicesPostsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     let visibility: PostVisibility[] = ['public'];
+
     const isFollower = await this.prisma.follow.findUnique({
       where: {
         followRelation: {
@@ -84,10 +121,10 @@ export class ServicePostResolver {
 
   @Query(() => [ServicePost])
   async getRecommendedServicePosts(
-    @Args('pagination') pagination: GqlPaginationInput,
+    @Args('args') args: GetRecommendedServicePostsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<ServicePost[]> {
-    const { skip, take } = ExtractPagination(pagination);
+    const { skip, take } = ExtractPagination(args.pagination);
     let serviceIds: string[] = [];
 
     const MostInteractionersPromise = KafkaMessageHandler<
@@ -211,6 +248,9 @@ export class ServicePostResolver {
                 not: 'hidden',
               },
             },
+            {
+              serviceType: args.serviceType as ServiceType,
+            },
           ],
         },
         orderBy: {
@@ -280,5 +320,62 @@ export class ServicePostResolver {
       );
       return sortedServices;
     }
+  }
+
+  @Query(() => ServicePostHashtagSearch)
+  async getHashtagTopServicePosts(
+    @Args('args') args: GetHashtagTopServicePostsInput,
+  ): Promise<ServicePostHashtagSearch> {
+    const topViewed = await this.prisma.servicePost.findFirst({
+      where: {
+        hashtags: {
+          has: args.tag,
+        },
+        commentsVisibility: 'public',
+      },
+      orderBy: {
+        views: 'desc',
+      },
+    });
+    const topCommented = await this.prisma.servicePost.findFirst({
+      where: {
+        hashtags: {
+          has: args.tag,
+        },
+        commentsVisibility: 'public',
+      },
+      orderBy: {
+        comments: 'desc',
+      },
+    });
+    const topLiked = await this.prisma.servicePost.findFirst({
+      where: {
+        hashtags: {
+          has: args.tag,
+        },
+        commentsVisibility: 'public',
+      },
+      orderBy: {
+        reactionNum: 'desc',
+      },
+    });
+    const topShared = await this.prisma.servicePost.findFirst({
+      where: {
+        hashtags: {
+          has: args.tag,
+        },
+        commentsVisibility: 'public',
+      },
+      orderBy: {
+        shares: 'desc',
+      },
+    });
+
+    return {
+      commented: topCommented,
+      liked: topLiked,
+      shared: topShared,
+      viewed: topViewed,
+    };
   }
 }

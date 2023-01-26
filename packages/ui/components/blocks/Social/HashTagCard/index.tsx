@@ -1,17 +1,18 @@
-import { Button, Flex, Text, Box } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { HashTagCardInfo } from "types";
-import { PostAttachment, PostCard } from "@UI";
+import { PostAttachment, PostCard, PostCardProps } from "@UI";
 
-export interface HashTagCardProps extends HashTagCardInfo {
+export interface HashTagCardProps {
+  post: PostCardProps["postInfo"];
+  profile: PostCardProps["profileInfo"];
+  title: string;
   onViewPost?: () => void;
 }
 
 export const HashTagCard: React.FC<HashTagCardProps> = ({
   title,
-  postInfo,
-  profileInfo,
+  post,
+  profile,
   onViewPost,
 }) => {
   const { t } = useTranslation();
@@ -20,32 +21,13 @@ export const HashTagCard: React.FC<HashTagCardProps> = ({
   }
 
   return (
-    <Flex
-      gap="0.5rem"
-      p="0.5rem"
-      boxShadow={"main"}
-      rounded="lg"
-      //   h="30rem"
-      bg="white"
-      align={"center"}
-      direction={"column"}
-    >
-      <Text
-        data-testid="CardTitle"
-        textTransform={"capitalize"}
-        fontWeight={"semibold"}
-      >
+    <div className="flex gap-2 p-2 shadow-md rounded-lg bg-white items-center flex-col">
+      <p data-testid="CardTitle" className="font-bold">
         {title}
-      </Text>
-      <Box
-        display={"flex"}
-        justifyContent="center"
-        alignItems={"center"}
-        w="100%"
-        h="25rem"
-      >
-        <PostCard postInfo={postInfo} profileInfo={profileInfo} />
-      </Box>
-    </Flex>
+      </p>
+      <div className="flex justify-center items-center w-full h-96">
+        <PostCard postInfo={post} profileInfo={profile} />
+      </div>
+    </div>
   );
 };

@@ -9,14 +9,13 @@ import {
   Divider,
   Image,
   Text,
-  VStack,
 } from "@chakra-ui/react";
 import { useResponsive } from "hooks";
-import { useRouter } from "next/router";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { AiOutlineShop } from "react-icons/ai";
 import { useQuery } from "react-query";
+import { useRouting } from "routing";
 import { PlaceCardProps, ListWrapper, PlaceCard, ShowMapButton } from "ui";
 import { placesPH } from "ui/placeholder";
 
@@ -25,13 +24,15 @@ export const PlacesView: React.FC = () => {
   const { t } = useTranslation();
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
 
-  const router = useRouter();
-  const { tag } = router.query;
+  const { getParam } = useRouting();
+
+  const place = getParam("place");
+
   const { data: places, isLoading } = useQuery<PlaceCardProps[]>(
     "places",
     async () => placesPH,
     {
-      enabled: !!tag,
+      enabled: !!place,
     }
   );
 
@@ -54,7 +55,7 @@ export const PlacesView: React.FC = () => {
           <Icon fontSize={"xx-large"} as={AiOutlineShop} />
           <Flex direction={"column"} align="center">
             <Text fontWeight={"bold"} fontSize="x-large">
-              {tag}
+              {place}
             </Text>
             <Text fontWeight={"bold"} fontSize="lg">
               5.5m

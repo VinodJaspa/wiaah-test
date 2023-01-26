@@ -256,6 +256,14 @@ export type Account = {
   profile?: Maybe<Profile>;
 };
 
+export type TopHashtagNewsfeedPosts = {
+  __typename?: "TopHashtagNewsfeedPosts";
+  viewed: NewsfeedPost;
+  liked: NewsfeedPost;
+  commented: NewsfeedPost;
+  shared: NewsfeedPost;
+};
+
 export type AffiliationPost = {
   __typename?: "AffiliationPost";
   id: Scalars["ID"];
@@ -270,6 +278,8 @@ export type AffiliationPost = {
   location?: Maybe<PostLocation>;
   commentsVisibility: CommentsVisibility;
   affiliation: Affiliation;
+  createdAt: Scalars["String"];
+  updatedAt: Scalars["String"];
 };
 
 export enum PostVisibility {
@@ -293,9 +303,10 @@ export type ServicePost = {
   __typename?: "ServicePost";
   id: Scalars["ID"];
   serviceId: Scalars["ID"];
-  service: Service;
+  service?: Maybe<Service>;
+  serviceType: ServiceType;
   userId: Scalars["ID"];
-  user: Account;
+  user?: Maybe<Account>;
   reactionNum: Scalars["Int"];
   comments: Scalars["Int"];
   shares: Scalars["Int"];
@@ -306,6 +317,15 @@ export type ServicePost = {
   createdAt: Scalars["String"];
   updatedAt: Scalars["String"];
 };
+
+export enum ServiceType {
+  HotelRoom = "hotelRoom",
+  HolidayRental = "holidayRental",
+  RestaurantMenu = "restaurantMenu",
+  HealthCenterTreatment = "healthCenterTreatment",
+  BeautyCenterTreatment = "beautyCenterTreatment",
+  Vehicle = "vehicle",
+}
 
 export type ShopPost = {
   __typename?: "ShopPost";
@@ -395,6 +415,22 @@ export type ProductPost = {
   updatedAt: Scalars["String"];
 };
 
+export type HashtagProductPost = {
+  __typename?: "HashtagProductPost";
+  viewed?: Maybe<ProductPost>;
+  liked?: Maybe<ProductPost>;
+  commented?: Maybe<ProductPost>;
+  shared?: Maybe<ProductPost>;
+};
+
+export type HashtagTopAffiliationPost = {
+  __typename?: "HashtagTopAffiliationPost";
+  viewed?: Maybe<AffiliationPost>;
+  liked?: Maybe<AffiliationPost>;
+  shared?: Maybe<AffiliationPost>;
+  commented?: Maybe<AffiliationPost>;
+};
+
 export type Action = {
   __typename?: "Action";
   id: Scalars["ID"];
@@ -406,6 +442,14 @@ export type Action = {
   visibility: PostVisibility;
   location: PostLocation;
   commentsVisibility: CommentsVisibility;
+};
+
+export type ServicePostHashtagSearch = {
+  __typename?: "ServicePostHashtagSearch";
+  viewed?: Maybe<ServicePost>;
+  liked?: Maybe<ServicePost>;
+  shared?: Maybe<ServicePost>;
+  commented?: Maybe<ServicePost>;
 };
 
 export type Community = {
@@ -445,6 +489,8 @@ export type Query = {
   getMyFollowing: ProfileMetaPaginatedResponse;
   isFollowed: Scalars["Boolean"];
   getNewsfeedPostsByUserId: Array<NewsfeedPost>;
+  getNewsfeedPostById: NewsfeedPost;
+  getTopHashtagNewsfeed: TopHashtagNewsfeedPosts;
   getAdminProfile: Profile;
   comments: Array<Comment>;
   updateComment: PaginationCommentsResponse;
@@ -461,11 +507,17 @@ export type Query = {
   getMyPrivacySettings: PrivacySettings;
   getUserProductPosts: Array<ProductPost>;
   getRecommendedProductPosts: Array<ProductPost>;
+  getTopHashtagPosts: HashtagProductPost;
   getAuthorAffiliationPosts: Array<AffiliationPost>;
+  getAffiliationPost: AffiliationPost;
+  getRecommendedAffiliationPosts: Array<AffiliationPost>;
+  getHashtagTopAffiliationPost?: Maybe<HashtagTopAffiliationPost>;
   getUserActions: Array<Action>;
   getAction: Array<Action>;
+  getServicePost: ServicePost;
   getUserServicePosts: Array<ServicePost>;
   getRecommendedServicePosts: Array<ServicePost>;
+  getHashtagTopServicePosts: ServicePostHashtagSearch;
   getCommunityPosts: Array<Community>;
   getMyFriendSuggestions: FriendSuggestion;
   getPlaceSuggestions: PlaceSuggestions;
@@ -501,6 +553,10 @@ export type QueryIsFollowedArgs = {
 
 export type QueryGetNewsfeedPostsByUserIdArgs = {
   args: GetNewsfeedPostsByUserIdInput;
+};
+
+export type QueryGetNewsfeedPostByIdArgs = {
+  id: Scalars["String"];
 };
 
 export type QueryGetAdminProfileArgs = {
@@ -543,8 +599,24 @@ export type QueryGetRecommendedProductPostsArgs = {
   args: GetShopRecommendedPostsInput;
 };
 
+export type QueryGetTopHashtagPostsArgs = {
+  tag: Scalars["String"];
+};
+
 export type QueryGetAuthorAffiliationPostsArgs = {
   args: GetUserAffiliationPostsInput;
+};
+
+export type QueryGetAffiliationPostArgs = {
+  args: GetAffiliationPostInput;
+};
+
+export type QueryGetRecommendedAffiliationPostsArgs = {
+  args: GetRecommendedAffiliationPostsInput;
+};
+
+export type QueryGetHashtagTopAffiliationPostArgs = {
+  tag: Scalars["String"];
 };
 
 export type QueryGetUserActionsArgs = {
@@ -555,12 +627,20 @@ export type QueryGetActionArgs = {
   id: Scalars["String"];
 };
 
+export type QueryGetServicePostArgs = {
+  id: Scalars["String"];
+};
+
 export type QueryGetUserServicePostsArgs = {
   args: GetUserServicesPostsInput;
 };
 
 export type QueryGetRecommendedServicePostsArgs = {
-  pagination: GqlPaginationInput;
+  args: GetRecommendedServicePostsInput;
+};
+
+export type QueryGetHashtagTopServicePostsArgs = {
+  args: GetHashtagTopServicePostsInput;
 };
 
 export type QueryGetCommunityPostsArgs = {
@@ -569,6 +649,10 @@ export type QueryGetCommunityPostsArgs = {
 
 export type QueryGetMyFriendSuggestionsArgs = {
   args: GetMyFriendSuggestionsInput;
+};
+
+export type QueryGetPlaceSuggestionsArgs = {
+  args: GetPlaceSuggestionInput;
 };
 
 export type SearchPopularProfilesInput = {
@@ -643,6 +727,14 @@ export type GetUserAffiliationPostsInput = {
   pagination: GqlPaginationInput;
 };
 
+export type GetAffiliationPostInput = {
+  id: Scalars["String"];
+};
+
+export type GetRecommendedAffiliationPostsInput = {
+  pagination: GqlPaginationInput;
+};
+
 export type GetUserActionsInput = {
   userId: Scalars["ID"];
   pagination: GqlPaginationInput;
@@ -658,6 +750,15 @@ export type GqlCursorPaginationInput = {
   cursor: Scalars["String"];
 };
 
+export type GetRecommendedServicePostsInput = {
+  pagination: GqlPaginationInput;
+  serviceType: Scalars["String"];
+};
+
+export type GetHashtagTopServicePostsInput = {
+  tag: Scalars["String"];
+};
+
 export type GetCommunityPostsInput = {
   q: Scalars["String"];
 };
@@ -665,6 +766,10 @@ export type GetCommunityPostsInput = {
 export type GetMyFriendSuggestionsInput = {
   pagination: GqlPaginationInput;
   q?: Maybe<Scalars["String"]>;
+};
+
+export type GetPlaceSuggestionInput = {
+  pagination: GqlPaginationInput;
 };
 
 export type Mutation = {

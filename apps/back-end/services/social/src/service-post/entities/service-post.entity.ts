@@ -7,10 +7,11 @@ import {
   Directive,
   registerEnumType,
 } from '@nestjs/graphql';
-import { CommentsVisibility, PostVisibility } from 'prismaClient';
+import { CommentsVisibility, PostVisibility, ServiceType } from 'prismaClient';
 
 registerEnumType(CommentsVisibility, { name: 'CommentsVisibility' });
 registerEnumType(PostVisibility, { name: 'PostVisibility' });
+registerEnumType(ServiceType, { name: 'ServiceType' });
 
 @ObjectType()
 @Directive('@extends')
@@ -29,14 +30,17 @@ export class ServicePost {
   @Field(() => ID)
   serviceId: string;
 
-  @Field(() => Service)
-  service: Service;
+  @Field(() => Service, { nullable: true })
+  service?: Service;
+
+  @Field(() => ServiceType)
+  serviceType: ServiceType;
 
   @Field(() => ID)
   userId: string;
 
-  @Field(() => Account)
-  user: Account;
+  @Field(() => Account, { nullable: true })
+  user?: Account;
 
   @Field(() => Int)
   reactionNum: number;

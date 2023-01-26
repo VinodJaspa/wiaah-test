@@ -3,3 +3,6 @@ export * from "./types";
 export * from "./useGetAccount";
 export * from "./useLoginAsAccount";
 export * from "./useSuspenseAccount";
+export * from "./useGetMyContacts";
+export * from "./useGetMyContacts";
+export * from "./useUpdateMyContacts";

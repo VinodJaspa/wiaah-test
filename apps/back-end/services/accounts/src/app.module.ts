@@ -12,12 +12,13 @@ import { AccountVerificationModule } from './account-verification/account-verifi
 import { CookiesSettingsModule } from './cookies-settings/cookies-settings.module';
 import { UserLocationModule } from './user-location/user-location.module';
 import { RequiredActionsModule } from './required-actions/required-actions.module';
+import { UserContactsModule } from './user-contacts/user-contacts.module';
 
 @Global()
 @Module({
   providers: [PrismaService],
   exports: [PrismaService],
-  imports: [RequiredActionsModule],
+  imports: [RequiredActionsModule, UserContactsModule],
 })
 export class PrismaModule {}
 

@@ -77,9 +77,17 @@ type RequiredAction {
   exampleField: Int!
 }
 
+type UserContact {
+  gmail: String
+  yahoo: String
+  whatsapp: String
+  outlook: String
+}
+
 type Query {
   requiredActions: [RequiredAction!]!
   requiredAction(id: Int!): RequiredAction!
+  getMyContacts: UserContact!
   getAccountVerificationRequests: [AccountVerification!]!
   acceptAccountVerification(id: String!): Boolean!
   getFilteredSellers(getSellersInput: GetFilteredSellersAccountsInput!): [Account!]!
@@ -136,6 +144,7 @@ type Mutation {
   createRequiredAction(createRequiredActionInput: CreateRequiredActionInput!): RequiredAction!
   updateRequiredAction(updateRequiredActionInput: UpdateRequiredActionInput!): RequiredAction!
   removeRequiredAction(id: Int!): RequiredAction!
+  updateMyContact(args: AddContactInput!): Boolean!
   requestAccountVerification(args: CreateAccountVerificationInput!): Boolean!
   refuseAccountVerification(args: RefuseAccountVerificationRequest!): Boolean!
   updateUserLocation(updateLocation: UpdateUserLocationInput!): Boolean!
@@ -160,6 +169,13 @@ input UpdateRequiredActionInput {
   """Example field (placeholder)"""
   exampleField: Int
   id: Int!
+}
+
+input AddContactInput {
+  gmail: String
+  yahoo: String
+  whatsapp: String
+  outlook: String
 }
 
 input CreateAccountVerificationInput {

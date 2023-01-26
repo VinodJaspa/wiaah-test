@@ -12,11 +12,14 @@ export const SavedPostsSection: React.FC = () => {
   return (
     <SectionWrapper>
       <SectionHeader sectionTitle={t("Saved")}></SectionHeader>
-      <PostCardsListWrapper
+      {/* <PostCardsListWrapper
         posts={[...Array(5)].reduce((acc) => {
           return [...acc, ...newsfeedPosts];
         }, [])}
-      />
+      /> */}
+      <div className="text-black font-bold text-2xl text-center py-60">
+        You Dont Have Any Saved Posts
+      </div>
     </SectionWrapper>
   );
 };

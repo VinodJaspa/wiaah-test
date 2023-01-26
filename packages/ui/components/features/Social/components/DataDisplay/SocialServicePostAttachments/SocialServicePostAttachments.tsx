@@ -11,14 +11,16 @@ import {
   CalenderIcon,
   AspectRatio,
   Slider,
+  PresentationType,
 } from "@UI";
-import { CashbackData, SocialPostAttachment } from "api";
-import { setTestid } from "utils";
+import { CashbackData, ServicePresentation } from "api";
+import { mapArray, setTestid } from "utils";
+import { useTypedReactPubsub } from "@libs";
 
 export interface SocialServicePostAttachmentsProps {
   id: string;
   cashback?: CashbackData;
-  attachment: SocialPostAttachment;
+  attachments: ServicePresentation[];
   alt: string;
   discount?: number;
   onInteraction?: (interaction: Interactions) => any;
@@ -30,19 +32,25 @@ export const SocialServicePostAttachment: React.FC<
   SocialServicePostAttachmentsProps
 > = ({
   alt,
-  attachmentProps,
   cashback,
   discount,
   innerProps,
   onInteraction,
-  attachment,
+  attachments,
   id,
 }) => {
-  const { emit } = useReactPubsub((keys) => keys.serviceModal);
+  const { emit } = useTypedReactPubsub((keys) => keys.serviceModal);
   const { t } = useTranslation();
   return (
     <div className="max-w-full h-full relative bg-black" {...innerProps}>
-      <PostAttachment {...attachment} />
+      <Slider>
+        {mapArray(attachments, (v) => (
+          <PostAttachment
+            src={v.src}
+            type={v.type as unknown as PresentationType}
+          />
+        ))}
+      </Slider>
 
       <div className="w-full h-full absolute top-0 left-0 p-1 flex justify-between pointer-events-none z-10">
         <div className="h-fit bg-white rounded-lg px-1 flex items-center justify-center">

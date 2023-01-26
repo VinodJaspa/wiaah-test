@@ -437,6 +437,7 @@ export type Service = {
   price: Scalars["Float"];
   rating: Scalars["Float"];
   thumbnail: Scalars["String"];
+  presentation?: Maybe<Array<ServicePresentation>>;
   hashtags: Array<Scalars["String"]>;
 };
 

@@ -28,6 +28,7 @@ export const FindYourFriendsStep: React.FC<FindYourFriendsStepProps> = ({}) => {
   const { t } = useTranslation();
 
   let [mailService, setMailService] = React.useState(0);
+
   return (
     <div className="w-full flex flex-col gap-2">
       <SectionHeader

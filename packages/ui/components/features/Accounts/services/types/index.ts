@@ -83,10 +83,19 @@ export type RequiredAction = {
   exampleField: Scalars["Int"];
 };
 
+export type UserContact = {
+  __typename?: "UserContact";
+  gmail?: Maybe<Scalars["String"]>;
+  yahoo?: Maybe<Scalars["String"]>;
+  whatsapp?: Maybe<Scalars["String"]>;
+  outlook?: Maybe<Scalars["String"]>;
+};
+
 export type Query = {
   __typename?: "Query";
   requiredActions: Array<RequiredAction>;
   requiredAction: RequiredAction;
+  getMyContacts: UserContact;
   getAccountVerificationRequests: Array<AccountVerification>;
   acceptAccountVerification: Scalars["Boolean"];
   getFilteredSellers: Array<Account>;
@@ -172,6 +181,7 @@ export type Mutation = {
   createRequiredAction: RequiredAction;
   updateRequiredAction: RequiredAction;
   removeRequiredAction: RequiredAction;
+  updateMyContact: Scalars["Boolean"];
   requestAccountVerification: Scalars["Boolean"];
   refuseAccountVerification: Scalars["Boolean"];
   updateUserLocation: Scalars["Boolean"];
@@ -197,6 +207,10 @@ export type MutationUpdateRequiredActionArgs = {
 
 export type MutationRemoveRequiredActionArgs = {
   id: Scalars["Int"];
+};
+
+export type MutationUpdateMyContactArgs = {
+  args: AddContactInput;
 };
 
 export type MutationRequestAccountVerificationArgs = {
@@ -252,6 +266,13 @@ export type UpdateRequiredActionInput = {
   /** Example field (placeholder) */
   exampleField?: Maybe<Scalars["Int"]>;
   id: Scalars["Int"];
+};
+
+export type AddContactInput = {
+  gmail?: Maybe<Scalars["String"]>;
+  yahoo?: Maybe<Scalars["String"]>;
+  whatsapp?: Maybe<Scalars["String"]>;
+  outlook?: Maybe<Scalars["String"]>;
 };
 
 export type CreateAccountVerificationInput = {

@@ -8,7 +8,6 @@ import {
   IoTrash,
 } from "react-icons/io5";
 import { HiUserGroup } from "react-icons/hi";
-import { MdCardMembership } from "react-icons/md";
 import { BiLock } from "react-icons/bi";
 import { MdVerified } from "react-icons/md";
 import { BiData } from "react-icons/bi";
@@ -66,10 +65,7 @@ export const NotFoundSection = () => {
 
 const sections: SettingsSectionType[] = [
   {
-    panelName: {
-      fallbackText: "Account",
-      translationKey: "account",
-    },
+    panelName: "Account",
     panelIcon: FiSettings,
     panelUrl: "/account",
 

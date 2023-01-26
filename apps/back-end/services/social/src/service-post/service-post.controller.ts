@@ -2,6 +2,7 @@ import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { ServiceCreatedEvent } from 'nest-dto';
 import { KAFKA_EVENTS } from 'nest-utils';
+import { ServiceType } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 
 @Controller()
@@ -16,6 +17,8 @@ export class ServicePostController {
       data: {
         serviceId: value.input.id,
         userId: value.input.userId,
+        hashtags: value.input.hashtags,
+        serviceType: value.input.type as ServiceType,
       },
     });
   }

@@ -33,12 +33,16 @@ import {
   SocialShareCotentModal,
   SocialPostMentionsModal,
   StarOutlineIcon,
+  usePaginationControls,
+  useGetRecentStories,
+  useGetDiscoverHashtags,
 } from "@UI";
-import { useResponsive, useAccountType } from "hooks";
+import { useResponsive, useAccountType, usePagination } from "hooks";
 import { HtmlDivProps } from "types";
 import { getRouting } from "routing";
 import { BsShop } from "react-icons/bs";
 import { BiWallet } from "react-icons/bi";
+import { useGetDiscoverPlaces } from "@features/Social/services/Queries/Discover/useGetDiscoverPlaces";
 
 export const usersProfilesPlaceHolder = [
   {
@@ -192,6 +196,22 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
     setDrawerOpen(false);
   };
 
+  const { pagination } = usePaginationControls();
+  const { data } = useGetDiscoverPlaces({
+    pagination,
+  });
+
+  const { pagination: storiesPagination } = usePaginationControls();
+
+  const { data: stories } = useGetRecentStories({
+    pagination: storiesPagination,
+  });
+
+  const { pagination: hashtagPagi } = usePaginationControls();
+  const { data: hashtags } = useGetDiscoverHashtags({
+    pagination: hashtagPagi,
+  });
+
   return (
     <Root>
       <SocialReportModal />
@@ -211,7 +231,14 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           <div className="flex flex-col gap-4">
             <UsersProfiles
               maxNarrowItems={5}
-              users={usersProfilesPlaceHolder}
+              users={
+                stories?.map((v) => ({
+                  id: v.userId,
+                  profession: v.user?.profile?.profession || "",
+                  name: v.user?.profile?.username || "",
+                  userPhotoSrc: v.user?.profile?.photo || "",
+                })) || []
+              }
             />
             <Divider />
             <div className="text-white flex flex-col gap-4">
@@ -235,37 +262,33 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
               autoShowAll
               maxInitialItems={5}
             >
-              {hashtagsPlaceholder.map((tag, i) => (
+              {hashtags?.map((tag, i) => (
                 <HStack className="text-white gap-[1rem]" key={i}>
                   <HashtagIcon className="p-2 text-3xl rounded-full bg-white" />
                   <p>{tag}</p>
                 </HStack>
-              ))}
+              )) || []}
             </ScrollableContainer>
           </div>
         </SellerNavigationSideBar>
       )}
       <Container
-        noContainer={noContainer}
+        noContainer={true}
         className={`${
           isMobile ? "px-4" : sideBar ? "pl-52 pr-4" : "px-8"
         } h-full`}
       >
         {header && header !== null && (
           <div
-            className="bg-white fixed z-10 w-full top-0 left-0"
+            className={`bg-white fixed z-10 w-full top-0 left-0 ${
+              isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
+            }`}
             ref={headerRef}
           >
-            <Container
-              className={`${
-                isMobile ? "px-4" : sideBar ? "pl-52 pr-4" : "px-8"
-              }`}
-            >
-              <HeaderSwitcher
-                links={accountType === "buyer" ? BuyerNavLinks : SellerNavLinks}
-                headerType={header}
-              />
-            </Container>
+            <HeaderSwitcher
+              links={accountType === "buyer" ? BuyerNavLinks : SellerNavLinks}
+              headerType={header}
+            />
           </div>
         )}
         <div className="w-full h-full gap-4 flex flex-col justify-between">

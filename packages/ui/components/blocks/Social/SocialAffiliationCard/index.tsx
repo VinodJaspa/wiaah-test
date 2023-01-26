@@ -1,205 +1,189 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Center,
-  Flex,
-  FlexProps,
-  HStack,
-  Icon,
-  Input,
-  Text,
-  useDimensions,
-} from "@chakra-ui/react";
 import React from "react";
 import { HiDotsHorizontal, HiOutlineLink } from "react-icons/hi";
-import { AffiliationOfferCardInfo } from "types/market/Social";
-import { useDateDiff, useHandlePostSharing } from "@UI";
+import {
+  Affiliation,
+  AffiliationPost,
+  Avatar,
+  Button,
+  Input,
+  PriceDisplay,
+  ProductPresentation,
+  Profile,
+  ServicePresentation,
+  useDateDiff,
+  useHandlePostSharing,
+} from "@UI";
 import { CommentsViewer, PostInteractions } from "@UI";
 import { useTranslation } from "react-i18next";
 import { PostAttachmentsViewer, PostInteractionsProps } from "@UI";
+import { HtmlDivProps } from "types";
+import { useDimensions } from "hooks";
 
-export interface SocialAffiliationCardProps extends AffiliationOfferCardInfo {
+export interface SocialAffiliationCardProps {
+  post: Pick<
+    AffiliationPost,
+    | "id"
+    | "userId"
+    | "affiliationId"
+    | "views"
+    | "reactionNum"
+    | "shares"
+    | "comments"
+    | "createdAt"
+  > & {
+    affiliation: Pick<
+      Affiliation,
+      | "id"
+      | "commision"
+      | "createdAt"
+      | "itemId"
+      | "itemType"
+      | "product"
+      | "service"
+      | "status"
+    >;
+    profile: Pick<
+      Profile,
+      | "id"
+      | "username"
+      | "followers"
+      | "verified"
+      | "photo"
+      | "ownerId"
+      | "profession"
+    >;
+  };
+
   showPostInteraction?: boolean;
   onCardClick?: (id: string) => any;
-  innerProps?: FlexProps;
+  innerProps?: HtmlDivProps;
   interactionsProps?: Partial<PostInteractionsProps>;
+  showComments?: boolean;
 }
 
 export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
-  affiliationLink,
-  commission,
-  createdAt,
-  name,
-  price,
-  attachments,
-  user,
-  noOfComments,
-  noOfLikes,
-  comments = [],
-  showComments,
-  id,
+  post,
   onCardClick,
   showPostInteraction = true,
-  innerProps,
+  showComments = true,
   interactionsProps,
 }) => {
   const detailsRef = React.useRef(null);
   const detailsDimensions = useDimensions(detailsRef);
   const { handleShare } = useHandlePostSharing();
   const { t } = useTranslation();
+
   const { getSince } = useDateDiff({
-    from: new Date(createdAt),
+    from: new Date(post.createdAt),
     to: new Date(),
   });
 
   const since = getSince();
+  const affiliationLink = "";
+
   function handleCopyLink() {
     navigator.clipboard.writeText(affiliationLink);
   }
 
+  const prod: {
+    presentations: ProductPresentation[] | ServicePresentation[];
+    name: string;
+    price: number;
+  } =
+    post.affiliation.itemType === "service"
+      ? {
+          name: post.affiliation.service?.title || "",
+          price: post.affiliation.service?.price || 0,
+          presentations:
+            post.affiliation.service?.presentation ||
+            ([] as ServicePresentation[]),
+        }
+      : {
+          name: post.affiliation.product?.title || "",
+          price: post.affiliation.product?.price || 0,
+          presentations:
+            post.affiliation.product?.presentations ||
+            ([] as ProductPresentation[]),
+        };
+
   return (
-    <Flex
-      {...innerProps}
-      color="white"
-      gap="1rem"
-      rounded={"lg"}
-      maxH="100%"
-      maxW="100%"
-      direction={"column"}
-      bg="primary.main"
-      p="1rem"
+    <div
+      className="text-white gap-4 rounded-lg max-h-full max-w-full flex flex-col bg-primary p-4"
       data-testid="socialAffiliationContainer"
-      onClick={() => onCardClick && onCardClick(id)}
+      onClick={() => onCardClick && onCardClick(post.id)}
     >
-      <Box h="100%" pb="1rem">
-        <Flex justify={"end"} w="100%">
-          <Icon as={HiDotsHorizontal} fontSize="lg" />
-        </Flex>
-        <Flex
-          justify={"space-between"}
-          h="100%"
-          gap="0.5rem"
-          direction={"column"}
-        >
-          <Box>
-            <HStack w="100%" justify={"space-between"}>
-              <HStack>
+      <div className="w-full pb-4">
+        <div className="flex text-lg justify-end w-full">
+          <HiDotsHorizontal />
+        </div>
+        <div className="flex justify-between h-full gap-2 flex-col">
+          <div>
+            <div className="flex items-center w-full justify-between">
+              <div className="flex items-center">
                 <Avatar
-                  bgColor={"black"}
-                  src={user.thumbnail}
-                  name={user.name}
+                  className="bg-black"
+                  src={post.profile.photo}
+                  name={post.profile.username}
                 />
-                <Flex direction={"column"}>
-                  <Text>{user.name}</Text>
-                  <Text>
+                <div className="flex flex-col">
+                  <p>{post.profile.username}</p>
+                  <p>
                     {since.value} {since.timeUnit}
-                  </Text>
-                </Flex>
-              </HStack>
-              <Button
-                _focus={{ ring: "0px" }}
-                textTransform={"capitalize"}
-                bgColor={"primary.main"}
-                colorScheme={"primary"}
-                pr="0px"
-              >
-                {t("folow", "follow")}
-              </Button>
-            </HStack>
-            <Flex gap="0.25rem">
-              <Text textTransform={"capitalize"}>{t("win", "win")}</Text>{" "}
-              <Text>{commission}%</Text>
-              <Text>
-                {t(
-                  "of_comission_by_affiliating_it",
-                  "of commision by affiliating it"
-                )}
-              </Text>
-            </Flex>
-          </Box>
-          <Flex
-            bg="black"
-            h={
-              detailsDimensions
-                ? `calc(100% - ${detailsDimensions.borderBox.height}px)`
-                : "100%"
-            }
-            align="center"
-            position={"relative"}
+                  </p>
+                </div>
+              </div>
+              <Button>{t("folow", "follow")}</Button>
+            </div>
+            <div className="flex gap-1">
+              <p>{t("Win")}</p> <p>{post.affiliation.commision}%</p>
+              <p>{t("of commision by affiliating it")}</p>
+            </div>
+          </div>
+          <div
+            className="bg-black align-center relative"
+            style={{
+              height: detailsDimensions
+                ? `calc(100% - ${detailsDimensions.height}px)`
+                : "100%",
+            }}
           >
             <PostAttachmentsViewer
               carouselProps={{ arrows: false }}
-              attachments={attachments}
+              attachments={prod.presentations}
             />
-            <Center
-              position={"absolute"}
-              bottom="0px"
-              right="0px"
-              px="1rem"
-              py="0.5rem"
-              bg="blackAlpha.600"
-              color="white"
-            >
-              ${price.toFixed(2)}
-            </Center>
-          </Flex>
-          <Flex
+            <div className="flex justify-center items-center absolute bottom-0 right-0 px-4 py-2 bg-black bg-opacity-60 text-white">
+              <PriceDisplay price={prod.price} />
+            </div>
+          </div>
+          <div
+            className="flex text-black bg-white gap-2 flex-col"
             ref={detailsRef}
-            color="black"
-            bg="white"
-            gap="0.5rem"
-            p="0.5rem"
-            direction={"column"}
           >
-            <Text fontWeight={"bold"}>{name}</Text>
-            <Flex
-              borderWidth={"0.5rem"}
-              borderColor="primary.main"
-              rounded={"xl"}
-              align={"center"}
-              h="3rem"
-            >
-              <Center
-                h="100%"
-                borderRightWidth={"1px"}
-                borderColor="gray.200"
-                px="1rem"
-              >
-                <Icon
-                  color="gray"
-                  cursor={"pointer"}
-                  onClick={handleCopyLink}
-                  fontSize="lg"
-                  as={HiOutlineLink}
-                />
-              </Center>
+            <p className="font-bold">{prod.name}</p>
+            <div className="flex border-2 border-primary rounded-xl align-center h-12">
+              <div className="flex justify-center items-center h-full border-r border-gray-200 px-4 cursor-pointer text-gray-500">
+                <HiOutlineLink onClick={handleCopyLink} />
+              </div>
 
-              <Input
-                border="none"
-                w="100%"
-                h="100%"
-                value={affiliationLink}
-                onChange={() => {}}
-              />
-            </Flex>
+              <Input value={affiliationLink} onChange={() => {}} />
+            </div>
 
             {showPostInteraction && (
-              <Box color="black" bg="white" px="1rem">
+              <div className="text-black bg-white px-4">
                 <PostInteractions
                   {...interactionsProps}
-                  comments={noOfComments}
-                  onShare={(mothed) => handleShare(mothed, id)}
-                  likes={noOfLikes}
+                  comments={post.comments}
+                  onShare={(mothed) => handleShare(mothed, post.id)}
+                  likes={post.reactionNum}
                 />
-              </Box>
+              </div>
             )}
             {showComments && (
-              <CommentsViewer maxInitailComments={4} comments={comments} />
+              <CommentsViewer maxInitailComments={4} comments={[]} />
             )}
-          </Flex>
-        </Flex>
-      </Box>
-    </Flex>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };

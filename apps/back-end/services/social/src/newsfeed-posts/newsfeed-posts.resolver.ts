@@ -9,11 +9,16 @@ import {
   GqlCurrentUser,
 } from 'nest-utils';
 import { GetNewsfeedPostsByUserIdInput } from './dto';
+import { TopHashtagNewsfeedPosts } from './entity';
+import { PrismaService } from 'prismaService';
 
 @Resolver(() => NewsfeedPost)
 @UseGuards(new GqlAuthorizationGuard([]))
 export class NewsfeedPostsResolver {
-  constructor(private readonly newsfeedPostsService: NewsfeedPostsService) {}
+  constructor(
+    private readonly newsfeedPostsService: NewsfeedPostsService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @Mutation(() => NewsfeedPost)
   createNewsfeedPost(
@@ -47,6 +52,52 @@ export class NewsfeedPostsResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.newsfeedPostsService.update(updateNewsfeedPostInput, user.id);
+  }
+
+  @Query(() => TopHashtagNewsfeedPosts)
+  async getTopHashtagNewsfeed(): Promise<TopHashtagNewsfeedPosts> {
+    const topViewed = await this.prisma.newsfeedPost.findFirst({
+      where: {
+        visibility: 'public',
+      },
+      orderBy: {
+        views: 'desc',
+      },
+    });
+
+    const topReacted = await this.prisma.newsfeedPost.findFirst({
+      where: {
+        visibility: 'public',
+      },
+      orderBy: {
+        reactionNum: 'desc',
+      },
+    });
+
+    const topCommented = await this.prisma.newsfeedPost.findFirst({
+      where: {
+        visibility: 'public',
+      },
+      orderBy: {
+        comments: 'desc',
+      },
+    });
+
+    const topShared = await this.prisma.newsfeedPost.findFirst({
+      where: {
+        visibility: 'public',
+      },
+      orderBy: {
+        shares: 'desc',
+      },
+    });
+
+    return {
+      viewed: topViewed,
+      commented: topCommented,
+      liked: topReacted,
+      shared: topShared,
+    };
   }
 
   @Mutation(() => NewsfeedPost)

@@ -27,6 +27,7 @@ import {
 } from 'nest-dto';
 import { Inject, UseGuards } from '@nestjs/common';
 import { GetShopRecommendedPostsInput } from './dto/get-shop-recommended-posts.input';
+import { HashtagProductPost } from './entities/hashtag-product-posts';
 
 @Resolver(() => ProductPost)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -237,10 +238,64 @@ export class ProductPostResolver {
       const sortedProducts: ProductPost[] = weightedProducts.sort(
         (first, next) => next.score - first.score,
       );
-      console.log('sorted', sortedProducts);
+
       return sortedProducts;
     }
     return [];
+  }
+
+  @Query(() => HashtagProductPost)
+  async getTopHashtagPosts(
+    @Args('tag') tag: string,
+  ): Promise<HashtagProductPost> {
+    const topViewed = await this.prisma.productPost.findFirst({
+      where: {
+        hashtags: {
+          has: tag,
+        },
+      },
+      orderBy: {
+        views: 'desc',
+      },
+    });
+
+    const topLiked = await this.prisma.productPost.findFirst({
+      where: {
+        hashtags: {
+          has: tag,
+        },
+      },
+      orderBy: {
+        views: 'desc',
+      },
+    });
+    const topShared = await this.prisma.productPost.findFirst({
+      where: {
+        hashtags: {
+          has: tag,
+        },
+      },
+      orderBy: {
+        views: 'desc',
+      },
+    });
+    const topCommented = await this.prisma.productPost.findFirst({
+      where: {
+        hashtags: {
+          has: tag,
+        },
+      },
+      orderBy: {
+        views: 'desc',
+      },
+    });
+
+    return {
+      viewed: topViewed,
+      commented: topCommented,
+      liked: topLiked,
+      shared: topShared,
+    };
   }
 
   @ResolveField(() => Product)

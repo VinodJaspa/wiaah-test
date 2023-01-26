@@ -1,12 +1,7 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
-import { useBreakpointValue } from "@chakra-ui/react";
-import { SocialHashTagTopPosts } from "@src/state";
 import { TabType } from "types";
 import { useRouter } from "next/router";
 import {
-  ActionsListWrapper,
-  actionsPlaceholders,
   HashTagPostsListWrapper,
   PostCardsListWrapper,
   ShopCardsListWrapper,
@@ -16,24 +11,30 @@ import {
   SocialServicePostsList,
   HomeIcon,
   HStack,
-  PlayButtonFillIcon,
   ServicesIcon,
   ShoppingCartIcon,
+  useGetTopHashtagPostsQuery,
+  useGetTopHashtagServicePost,
 } from "ui";
 import { newsfeedPosts, ShopCardsInfoPlaceholder } from "placeholder";
 import { useTranslation } from "react-i18next";
-import { randomNum } from "utils";
+import { randomNum, useBreakpointValue } from "utils";
 
-export interface HashTagViewProps {}
+export interface HashTagViewProps {
+  tag: string;
+}
 
-export const HashTagView: React.FC<HashTagViewProps> = () => {
+export const HashTagView: React.FC<HashTagViewProps> = ({ tag }) => {
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
-  const topPosts = useRecoilValue(SocialHashTagTopPosts);
+
+  const { data: newsfeedHashtagPosts } = useGetTopHashtagPostsQuery();
+  const { data: servicePostHashtagPosts } = useGetTopHashtagServicePost({
+    tag,
+  });
 
   const { t } = useTranslation();
 
-  const router = useRouter();
-  const { tag } = router.query;
+  function handleFollowHashtag() {}
 
   const tabs: TabType[] = [
     {
@@ -45,7 +46,7 @@ export const HashTagView: React.FC<HashTagViewProps> = () => {
       ),
       component: (
         <div className="flex flex-col gap-16">
-          <HashTagPostsListWrapper hashtags={topPosts} />
+          <HashTagPostsListWrapper hashtags={newsfeedHashtagPosts} />
           <Divider />
           <PostCardsListWrapper
             cols={3}
@@ -65,7 +66,7 @@ export const HashTagView: React.FC<HashTagViewProps> = () => {
         <div className="flex flex-col w-full gap-16">
           <HashTagPostsListWrapper hashtags={topPosts} />
           <Divider />
-          <SocialServicePostsList />
+          <SocialServicePostsList posts={[]} />
         </div>
       ),
     },
@@ -86,21 +87,6 @@ export const HashTagView: React.FC<HashTagViewProps> = () => {
         </div>
       ),
     },
-    {
-      name: (
-        <HStack>
-          <p>{t("Actions")}</p>
-          <PlayButtonFillIcon />
-        </HStack>
-      ),
-      component: (
-        <div className="flex flex-col gap-16">
-          <HashTagPostsListWrapper hashtags={topPosts} />
-          <Divider />
-          <ActionsListWrapper cols={cols} actions={actionsPlaceholders} />
-        </div>
-      ),
-    },
   ];
   return (
     <div className="flex flex-col my-8">
@@ -112,7 +98,13 @@ export const HashTagView: React.FC<HashTagViewProps> = () => {
             "Views"
           )}`}</p>
         </div>
-        <Button>{t("Follow")}</Button>
+        <Button
+          onClick={() => {
+            handleFollowHashtag();
+          }}
+        >
+          {t("Follow")}
+        </Button>
       </div>
       <TabsViewer tabs={tabs} />
     </div>

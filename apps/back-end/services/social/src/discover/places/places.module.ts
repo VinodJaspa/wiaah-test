@@ -4,6 +4,6 @@ import { PlacesResolver } from './places.resolver';
 
 @Module({
   imports: [kafkaModule],
-  providers: [PlacesResolver],
+  providers: [PlacesResolver, PlacesResolver],
 })
 export class PlacesModule {}

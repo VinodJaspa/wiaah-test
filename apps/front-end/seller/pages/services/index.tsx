@@ -27,9 +27,7 @@ const ServicesPage: NextPage = () => {
         <title>services</title>
       </Head>
       <SellerLayout>
-        <ScrollPaginationWrapper onBottomReach={() => {}}>
-          <ServicesView />
-        </ScrollPaginationWrapper>
+        <ServicesView />
       </SellerLayout>
     </>
   );
