@@ -2,37 +2,41 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormOptionType } from "types";
-import { TranslationText, Switch, SectionHeader } from "@UI";
+import {
+  TranslationText,
+  Switch,
+  SectionHeader,
+  useGetMySocialPrivacySettings,
+  useUpdateMyPrivacySettings,
+} from "@UI";
 
 export interface PrivacySectionProps {}
 
 export const PrivacySection: React.FC<PrivacySectionProps> = () => {
   const { t } = useTranslation();
 
+  const { data: settings } = useGetMySocialPrivacySettings();
+  const { mutate: updateSettings } = useUpdateMyPrivacySettings();
+
   return (
     <div className="flex flex-col w-full gap-8">
       <SectionHeader sectionTitle={t("privacy", "Privacy")} />
-      <Formik initialValues={{}} onSubmit={() => {}}>
-        {({ values, setFieldValue }) => (
-          <Form>
-            <div className="flex w-full flex-col gap-4">
-              {privacySectionOpts.map((opt, i) => (
-                <div className="w-full flex justify-between">
-                  <TranslationText className="" translationObject={opt.name} />
-                  <div className="flex gap-2 items-center">
-                    <Switch
-                      //@ts-ignore
-                      checked={!!values[opt.value]}
-                      onChange={(checked) => setFieldValue(opt.value, checked)}
-                    />
-                    <p>{t("push", "Push")}</p>
-                  </div>
-                </div>
-              ))}
+      <div className="flex w-full flex-col gap-4">
+        {privacySectionOpts.map((opt, i) => (
+          <div className="w-full flex justify-between">
+            <TranslationText className="" translationObject={opt.name} />
+            <div className="flex gap-2 items-center">
+              <Switch
+                checked={
+                  settings && !!settings[opt.value as keyof typeof settings]
+                }
+                onChange={(checked) => updateSettings({ [opt.value]: checked })}
+              />
+              <p>{t("Push")}</p>
             </div>
-          </Form>
-        )}
-      </Formik>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -46,7 +50,7 @@ const privacySectionOpts: FormOptionType[] = [
     },
   },
   {
-    value: "hideNumOfLikes",
+    value: "hideLikesNum",
     name: {
       translationKey: "hide_number_of_likes",
       fallbackText: "Hide number of Likes",
@@ -57,13 +61,13 @@ const privacySectionOpts: FormOptionType[] = [
       translationKey: "hide_number_of_comments",
       fallbackText: "Hide number of comments",
     },
-    value: "hideNumOfComments",
+    value: "hideCommentsNum",
   },
   {
     name: {
       translationKey: "hide_number_of_views",
       fallbackText: "Hide number of views",
     },
-    value: "hideNumOfViews",
+    value: "hideViewsNum",
   },
 ];
