@@ -13,3 +13,4 @@ export * from "./Discover";
 export * from "./Shop";
 export * from "./ServiceSuggestions";
 export * from "./AffiliationSuggestions";
+export * from "./Block";

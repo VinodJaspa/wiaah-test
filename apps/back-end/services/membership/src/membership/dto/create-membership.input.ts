@@ -1,14 +1,8 @@
 import { InputType, Field, Float, registerEnumType, ID } from '@nestjs/graphql';
-import {
-  CommissionOn,
-  commissionType,
-  MembershipUnitType,
-  Recurring,
-} from 'prismaClient';
+import { CommissionOn, commissionType, Recurring } from 'prismaClient';
 
 registerEnumType(CommissionOn, { name: 'CommissionOn' });
-registerEnumType(commissionType, { name: 'CommissionOn' });
-registerEnumType(MembershipUnitType, { name: 'MembershipUnitType' });
+registerEnumType(commissionType, { name: 'CommissionType' });
 
 @InputType()
 export class MembershipTurnoverRuleInput {

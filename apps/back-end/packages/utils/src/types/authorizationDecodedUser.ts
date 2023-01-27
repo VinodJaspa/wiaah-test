@@ -26,6 +26,7 @@ export class AuthorizationDecodedUser {
   country: string;
   lat: number;
   lon: number;
+  membershipId?: string;
 
   iat: number;
   exp: number;

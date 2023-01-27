@@ -1,5 +1,5 @@
 import { InputType, Field, ID, Float, PartialType } from '@nestjs/graphql';
-import { MembershipType, MembershipUnitType } from 'prismaClient';
+import { CommissionOn } from 'prismaClient';
 
 @InputType()
 class _MembershipTurnoverRuleInput {
@@ -32,11 +32,8 @@ class _UpdateMembershipInput {
   @Field(() => String)
   name: string;
 
-  @Field(() => MembershipUnitType, { nullable: true })
-  unit_type?: MembershipUnitType;
-
-  @Field(() => MembershipType)
-  type: MembershipType;
+  @Field(() => CommissionOn)
+  comissionOn: CommissionOn;
 
   @Field(() => [UpdateMembershipIncludedItemInput])
   includings: UpdateMembershipIncludedItemInput[];

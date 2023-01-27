@@ -28,6 +28,7 @@ module.exports = {
       statements: 100,
     },
   },
+  cache: true,
   setupFiles: ["<rootDir>/config/setup.js"],
   preset: "ts-jest",
   testPathIgnorePatterns: [
@@ -39,7 +40,6 @@ module.exports = {
     "/.storybook/",
   ],
   testRegex: "(/__test__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-  testURL: "http://localhost",
   testEnvironment: "jsdom",
   moduleFileExtensions: ["ts", "tsx", "js", "json"],
   moduleNameMapper: {

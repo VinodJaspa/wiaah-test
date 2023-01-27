@@ -1,5 +1,6 @@
 import { AddNewPostModal } from "@blocks/Modals";
 import { PostViewPopup } from "@blocks/Popups";
+import { SocialShareCotentModal } from "@features/Social";
 import { useSetNewPost } from "@src/index";
 import React from "react";
 
@@ -16,6 +17,7 @@ export const SocialLayout: React.FC = ({ children }) => {
     <>
       <AddNewPostModal />
       <PostViewPopup />
+      <SocialShareCotentModal />
       <>{children}</>
     </>
   );

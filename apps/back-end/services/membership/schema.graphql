@@ -1,0 +1,115 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @key(fields: String!) on OBJECT | INTERFACE
+
+directive @extends on OBJECT | INTERFACE
+
+directive @external on OBJECT | FIELD_DEFINITION
+
+directive @requires(fields: String!) on FIELD_DEFINITION
+
+directive @provides(fields: String!) on FIELD_DEFINITION
+
+type MembershipTurnoverRule {
+  id: ID!
+  membershipId: ID!
+  priceId: String
+  usage: Float!
+  commission: Float!
+  commissionType: CommissionType!
+}
+
+enum CommissionType {
+  fixed
+  percentage
+}
+
+type MembershipIncludedItem {
+  title: String!
+}
+
+type Membership {
+  id: ID!
+  name: String!
+  priceId: String
+  commissionOn: CommissionOn!
+  recurring: Recurring!
+  turnover_rules: [MembershipTurnoverRule!]!
+  includings: [MembershipIncludedItem!]!
+}
+
+enum CommissionOn {
+  external_click
+  sale
+  revenue
+}
+
+enum Recurring {
+  day
+  month
+  week
+  year
+}
+
+type Account {
+  membershipId: ID
+  membership: Membership
+  Membership: Membership!
+}
+
+type MembershipSubscription {
+  userId: ID!
+  membershipId: ID!
+  membership: Membership!
+  startAt: String!
+  endAt: String!
+}
+
+type Query {
+  getSubscriableMemberships: [Membership!]!
+  getMyMembership: MembershipSubscription
+}
+
+type Mutation {
+  createMembership(args: CreateMembershipInput!): Membership!
+  updateMembership(args: UpdateMembershipInput!): Membership!
+}
+
+input CreateMembershipInput {
+  name: String!
+  commissionOn: CommissionOn!
+  recurring: Recurring!
+  turnover_rules: [MembershipTurnoverRuleInput!]!
+  includings: [MembershipIncludedItemInput!]!
+}
+
+input MembershipTurnoverRuleInput {
+  usage: Float!
+  commission: Float!
+  commissionType: CommissionType!
+}
+
+input MembershipIncludedItemInput {
+  title: String!
+}
+
+input UpdateMembershipInput {
+  name: String
+  comissionOn: CommissionOn
+  includings: [UpdateMembershipIncludedItemInput!]
+  id: ID!
+  turnover_rules: [UpdateMembershipTurnoverRuleInput!]
+}
+
+input UpdateMembershipIncludedItemInput {
+  title: String!
+}
+
+input UpdateMembershipTurnoverRuleInput {
+  turnover_amount: Float
+  price: Float
+  commission: Float
+  id: ID!
+}

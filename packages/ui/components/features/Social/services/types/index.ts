@@ -385,6 +385,7 @@ export type Block = {
   id: Scalars["ID"];
   blockedUserId: Scalars["ID"];
   blockedAt: Scalars["DateTime"];
+  blockedProfile?: Maybe<Profile>;
 };
 
 export type PrivacySettings = {
@@ -591,6 +592,10 @@ export type QueryGetRecentStoriesArgs = {
   getRecentStoryInput?: Maybe<GetRecentStoriesInput>;
 };
 
+export type QueryGetMyBlockListArgs = {
+  args: GetMyBlocklistInput;
+};
+
 export type QueryGetUserProductPostsArgs = {
   args: GetUserProductPostsInput;
 };
@@ -710,6 +715,10 @@ export type GetStorySeenByInput = {
 };
 
 export type GetRecentStoriesInput = {
+  pagination: GqlPaginationInput;
+};
+
+export type GetMyBlocklistInput = {
   pagination: GqlPaginationInput;
 };
 

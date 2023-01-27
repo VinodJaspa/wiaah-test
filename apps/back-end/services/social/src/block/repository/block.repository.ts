@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { ExtractPagination, GqlPaginationInput } from 'nest-utils';
 import { BlockedUser, Prisma } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 
@@ -6,18 +7,29 @@ import { PrismaService } from 'prismaService';
 export class BlockRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  getAllByBlockerId(blockerId: string): Promise<BlockedUser[]> {
-    return this.prisma.blockedUser.findMany({
+  async getAllByBlockerId(
+    blockerId: string,
+    pagination: GqlPaginationInput,
+  ): Promise<BlockedUser[]> {
+    const { take, skip } = ExtractPagination(pagination);
+    const block = await this.prisma.blockedUser.findMany({
       where: {
         blockerUserId: blockerId,
       },
+      include: {
+        blockedProfile: true,
+      },
+      take,
+      skip,
     });
+
+    return;
   }
 
   getBlockObj(blockerId: string, blockedId: string) {
     return this.prisma.blockedUser.findUnique({
       where: {
-        blockedProfile: {
+        blockedProfileRel: {
           blockedUserId: blockedId,
           blockerUserId: blockerId,
         },
@@ -49,7 +61,7 @@ export class BlockRepository {
     try {
       const res = await this.prisma.blockedUser.delete({
         where: {
-          blockedProfile: {
+          blockedProfileRel: {
             blockedUserId,
             blockerUserId: blockerId,
           },

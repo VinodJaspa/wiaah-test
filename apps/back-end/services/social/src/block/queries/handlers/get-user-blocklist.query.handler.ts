@@ -9,7 +9,7 @@ export class GetUserBlocklistQueryHandler
 {
   constructor(private readonly repo: BlockRepository) {}
 
-  execute({ user }: GetUserBlocklistQuery): Promise<Block[]> {
-    return this.repo.getAllByBlockerId(user.id);
+  execute({ user, input }: GetUserBlocklistQuery): Promise<Block[]> {
+    return this.repo.getAllByBlockerId(user.id, input.pagination);
   }
 }

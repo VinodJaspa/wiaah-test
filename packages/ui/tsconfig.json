@@ -9,6 +9,7 @@
     "jsx": "react-jsx",
     "rootDir": ".",
     "baseUrl": ".",
+    "types": ["jest"],
     "paths": {
       "@partials": ["components/partials"],
       "@blocks": ["components/blocks"],

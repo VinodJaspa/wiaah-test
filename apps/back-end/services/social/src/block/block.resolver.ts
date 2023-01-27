@@ -11,6 +11,7 @@ import { Block } from '@block/entities';
 import { GetUserBlocklistQuery } from '@block/queries';
 import { BlockUserCommand, unBlockUserCommand } from '@block/commands';
 import { CreateBlockInput } from '@block/dto';
+import { GetMyBlocklistInput } from './dto/get-my-block-list.input';
 
 @Resolver(() => Block)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -21,9 +22,12 @@ export class BlockResolver {
   ) {}
 
   @Query(() => [Block])
-  getMyBlockList(@GqlCurrentUser() user: AuthorizationDecodedUser) {
+  getMyBlockList(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('args') args: GetMyBlocklistInput,
+  ) {
     return this.querybus.execute<GetUserBlocklistQuery>(
-      new GetUserBlocklistQuery(user),
+      new GetUserBlocklistQuery(args, user),
     );
   }
 

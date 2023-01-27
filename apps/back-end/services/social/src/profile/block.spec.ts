@@ -7,13 +7,15 @@ import {
   SERVICES,
 } from 'nest-utils';
 import { ProfileVisibility } from 'prismaClient';
-import { PrismaService } from 'prismaService';
 import { ProfileResolver } from './profile.resolver';
 import { ProfileBlockEvent } from 'nest-dto';
+import { BlockResolver } from '@block/block.resolver';
+import { AppModule } from '../app.module';
 
 describe('Block/unblock functionlaity', () => {
   let service: ProfileService;
-  let resolver: ProfileResolver;
+  let profileResolver: ProfileResolver;
+  let blockResolver: BlockResolver;
   let mockKafkaEmit: jest.Mock;
 
   const createProfileMockInput = {
@@ -27,37 +29,30 @@ describe('Block/unblock functionlaity', () => {
   beforeEach(async () => {
     mockKafkaEmit = jest.fn();
     const module: TestingModule = await Test.createTestingModule({
-      providers: [
-        ProfileService,
-        ProfileResolver,
-        PrismaService,
-        {
-          provide: SERVICES.SOCIAL_SERVICE.token,
-          useValue: {
-            emit: mockKafkaEmit,
-          },
-        },
-      ],
-    }).compile();
+      imports: [AppModule],
+    })
+      .overrideProvider(SERVICES.SOCIAL_SERVICE.token)
+      .useValue(mockKafkaEmit)
+      .compile();
 
     service = module.get<ProfileService>(ProfileService);
-    resolver = module.get<ProfileResolver>(ProfileResolver);
+    profileResolver = module.get<ProfileResolver>(ProfileResolver);
   });
 
   it('should block profile and prevent interactions and fire profile blocked kafka event and unblock profile and fire profile unblocked kafka event', async () => {
-    const firstProfile = await resolver.createProfile(
+    const firstProfile = await profileResolver.createProfile(
       createProfileMockInput,
       mockedUser,
     );
-    const secendProfile = await resolver.createProfile(
+    const secendProfile = await profileResolver.createProfile(
       createProfileMockInput,
       secendMockedUser,
     );
 
     // first profile blocks secend profile
-    const res = await resolver.BlockProfile(
+    const res = await blockResolver.blockUser(
       {
-        profileId: secendProfile.id,
+        userId: secendProfile.id,
       },
       mockedUser,
     );
@@ -78,8 +73,8 @@ describe('Block/unblock functionlaity', () => {
 
     expect(canInteract).toBe(false);
 
-    const unblock = await resolver.unBlockProfile(
-      { profileId: secendProfile.id },
+    const unblock = await blockResolver.unblockUser(
+      { userId: secendProfile.id },
       mockedUser,
     );
 

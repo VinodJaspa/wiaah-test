@@ -9,7 +9,7 @@ import {
 } from 'nest-utils';
 import { Inject, UseGuards } from '@nestjs/common';
 
-import { Membership } from '@membership/entities';
+import { Membership, MembershipSubscription } from '@membership/entities';
 import { CreateMembershipInput, UpdateMembershipInput } from '@membership/dto';
 import {
   CreateMembershipCommand,
@@ -51,18 +51,20 @@ export class MembershipResolver {
     );
   }
 
-  @Mutation(() => Boolean)
-  async deleteAll() {
-    await this.prisma.membership.deleteMany();
-    await this.prisma.membershipTurnoverRule.deleteMany();
-    return true;
-  }
-
   @Query(() => [Membership])
   getSubscriableMemberships() {
     return this.queryBus.execute<GetSubscriableMembershipsQuery, Membership[]>(
       new GetSubscriableMembershipsQuery(),
     );
+  }
+
+  @Query(() => MembershipSubscription, { nullable: true })
+  getMyMembership(@GqlCurrentUser() user: AuthorizationDecodedUser) {
+    return this.prisma.memberShipSubscription.findUnique({
+      where: {
+        userId: user.id,
+      },
+    });
   }
 
   async onModuleInit() {

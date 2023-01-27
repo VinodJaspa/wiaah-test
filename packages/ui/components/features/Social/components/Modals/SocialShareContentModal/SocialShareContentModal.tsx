@@ -15,13 +15,13 @@ import {
   AtEmailIcon,
   Divider,
 } from "@UI";
-import { useReactPubsub } from "react-pubsub";
 import { useTranslation } from "react-i18next";
 import { mapArray, runIfFn } from "utils";
+import { useTypedReactPubsub } from "@libs";
 
 export const useShareModal = (subscribe: boolean = false) => {
   const [url, setUrl] = React.useState<string>();
-  const { Listen, emit } = useReactPubsub((k) => k.shareUrlModal);
+  const { Listen, emit } = useTypedReactPubsub((k) => k.shareUrlModal);
 
   function open(url: string) {
     emit({ url });
