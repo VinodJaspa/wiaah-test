@@ -1,25 +1,25 @@
 import { mount } from "enzyme";
-import { AccountDeletionSection } from "@UI";
-import * as apiHooks from "@UI/Hooks/ApiHooks";
+import { AccountDeletionSection, useDeleteMyAccountMutation } from "@UI";
 import { getMountedComponent, getTestId, waitFor } from "utils";
 import { QueryClient, QueryClientProvider } from "react-query";
-import React from "react";
 
+const mockMutate = jest.fn();
+jest.mock("@UI", () => ({
+  ...jest.requireActual("@UI"),
+  useSuspendAccountMutation: jest.fn().mockReturnValue({
+    mutate: mockMutate,
+  }),
+  useDeleteMyAccountMutation: jest.fn(),
+}));
 const selectors = {
   suspendBtn: "SuspendAccountBtn",
+  deleteModal: "delete-modal",
 };
 
 describe("AccountDeletionSection render tests", () => {
+  let mockDeleteMut = useDeleteMyAccountMutation as jest.Mock;
+
   it("should call suspend mutation on suspend btn", async () => {
-    const mockMutate = jest.fn();
-    jest.mock(
-      "ui",
-      (): Partial<typeof apiHooks> => ({
-        useSuspendAccountMutation: jest.fn().mockReturnValue({
-          mutate: mockMutate,
-        }),
-      })
-    );
     const wrapper = mount(
       <QueryClientProvider client={new QueryClient()}>
         <AccountDeletionSection />
@@ -29,6 +29,8 @@ describe("AccountDeletionSection render tests", () => {
       wrapper,
       getTestId(selectors.suspendBtn)
     );
+
+    expect(mockDeleteMut).toBeCalledTimes(1);
 
     expect(suspendBtn.length).toBe(1);
 

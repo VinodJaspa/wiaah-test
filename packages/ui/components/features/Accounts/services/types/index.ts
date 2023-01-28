@@ -245,6 +245,10 @@ export type MutationRegisterArgs = {
   RegisterInput: CreateAccountInput;
 };
 
+export type MutationRequestAccountDeletionArgs = {
+  args: DeleteAccountRequestInput;
+};
+
 export type MutationEditAccountArgs = {
   editAccountInput: UpdateAccountInput;
 };
@@ -326,6 +330,12 @@ export type CreateAccountInput = {
   password: Scalars["String"];
   confirmPassword: Scalars["String"];
   accountType: RegisterAccountType;
+};
+
+export type DeleteAccountRequestInput = {
+  reason: Scalars["String"];
+  password: Scalars["String"];
+  sendData?: Maybe<Scalars["Boolean"]>;
 };
 
 export type UpdateAccountInput = {

@@ -6,3 +6,4 @@ export * from "./useSuspenseAccount";
 export * from "./useGetMyContacts";
 export * from "./useGetMyContacts";
 export * from "./useUpdateMyContacts";
+export * from "./useDeleteMyAccount";

@@ -153,7 +153,7 @@ type Mutation {
   declineSellerAccount(args: DeclineSellerAccountRequest!): Boolean!
   suspenseAccount(args: SuspenseAccountAdminInput!): Boolean!
   register(RegisterInput: CreateAccountInput!): String!
-  requestAccountDeletion: Boolean!
+  requestAccountDeletion(args: DeleteAccountRequestInput!): Boolean!
   getMyAccount: Account!
   editAccount(editAccountInput: UpdateAccountInput!): Account!
   requestIdVerification(requestInput: CreateIdentityVerificationInput!): String!
@@ -229,6 +229,12 @@ input CreateAccountInput {
   password: String!
   confirmPassword: String!
   accountType: RegisterAccountType!
+}
+
+input DeleteAccountRequestInput {
+  reason: String!
+  password: String!
+  sendData: Boolean
 }
 
 input UpdateAccountInput {

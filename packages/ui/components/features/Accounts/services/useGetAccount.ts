@@ -7,6 +7,6 @@ export const useGetAccount = (accountId: string) => {
   client.setQuery(``);
 
   return useQuery(["admin-get-account", { accountId }], async () => {
-    const res = await client.send<>();
+    const res = await client.send();
   });
 };

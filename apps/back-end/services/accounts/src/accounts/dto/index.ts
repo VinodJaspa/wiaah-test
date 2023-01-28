@@ -5,3 +5,4 @@ export * from './get-sellers-accounts.input';
 export * from './get-buyers-accounts.input';
 export * from './get-account-deletion-requests.input';
 export * from './suspense-account-input';
+export * from './delete-account-request.input';
