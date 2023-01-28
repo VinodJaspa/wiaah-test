@@ -72,6 +72,22 @@ enum AccountVerificationStatus {
   accepted
 }
 
+type CookiesSetting {
+  id: ID!
+  title: String!
+  description: String!
+  required: Boolean!
+  benefits: [String!]!
+  cons: [String!]!
+}
+
+type UserCookiesSettings {
+  id: ID!
+  userId: ID!
+  acceptedCookiesIds: [String!]!
+  acceptedRequired: Boolean!
+}
+
 type RequiredAction {
   """Example field (placeholder)"""
   exampleField: Int!
@@ -90,6 +106,8 @@ type Query {
   getMyContacts: UserContact!
   getAccountVerificationRequests: [AccountVerification!]!
   acceptAccountVerification(id: String!): Boolean!
+  getCookiesSettings: [CookiesSetting!]!
+  getMyCookiesSettings: UserCookiesSettings!
   getFilteredSellers(getSellersInput: GetFilteredSellersAccountsInput!): [Account!]!
   getFilteredBuyers(getBuyersInput: GetBuyersAccountsInput!): [Account!]!
   adminGetAccount(id: String!): Account!
@@ -147,6 +165,7 @@ type Mutation {
   updateMyContact(args: AddContactInput!): Boolean!
   requestAccountVerification(args: CreateAccountVerificationInput!): Boolean!
   refuseAccountVerification(args: RefuseAccountVerificationRequest!): Boolean!
+  updateMyCookiesSettings(args: UpdateUserCookiesSettingsInput!): Boolean!
   updateUserLocation(updateLocation: UpdateUserLocationInput!): Boolean!
   adminEditAccount(editAccountInput: UpdateSellerAccountAdminInput!): Account!
   acceptSellerAccount(id: String!): Boolean!
@@ -189,6 +208,10 @@ input CreateAccountVerificationInput {
 input RefuseAccountVerificationRequest {
   id: ID!
   reason: String!
+}
+
+input UpdateUserCookiesSettingsInput {
+  ids: [ID!]!
 }
 
 input UpdateUserLocationInput {

@@ -1,7 +1,6 @@
 import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useReactPubsub } from "react-pubsub";
 import {
   FormikInput,
   DateFormInput,
@@ -10,8 +9,15 @@ import {
   Button,
   Divider,
   SectionHeader,
+  useVerifyVerificationCode,
+  useRequestAccountVerification,
+  Accordion,
+  AccordionButton,
+  AccordionItem,
+  AccordionPanel,
 } from "@UI";
 import { randomNum } from "utils";
+import { useTypedReactPubsub } from "@libs";
 
 export interface MyVerificationSectionProps {}
 
@@ -19,7 +25,13 @@ export const MyVerificationSection: React.FC<
   MyVerificationSectionProps
 > = () => {
   const { t } = useTranslation();
-  const { emit } = useReactPubsub((events) => events.openFileUploadModal);
+  const { emit } = useTypedReactPubsub((events) => events.openFileUploadModal);
+
+  const [VVC, setVVC] = React.useState<string>();
+
+  const { mutate: verify } = useVerifyVerificationCode();
+  const { mutate: request } = useRequestAccountVerification();
+
   return (
     <div className="flex flex-col gap-4">
       <SectionHeader sectionTitle={t("My Verification")} />
