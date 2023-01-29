@@ -8,23 +8,20 @@ import {
 } from '@nestjs/graphql';
 import { Logger, UseGuards } from '@nestjs/common';
 import {
+  accountType,
   AuthorizationDecodedUser,
   ExtractPagination,
   GqlAuthorizationGuard,
   GqlCurrentUser,
-  GqlPaginationInput,
 } from 'nest-utils';
 import { GraphQLUpload, Upload } from 'graphql-upload';
 import { PrepareGqlUploads, UploadService } from '@wiaah/upload';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ProductsService } from '@products/products.service';
-import { MyProduct, Product } from '@products/entities';
+import { Product } from '@products/entities';
 import { CreateProductInput, GetFilteredProductsInput } from '@products/dto';
 import { UpdateProductInput } from '@products/dto';
-import {
-  GetProductVendorLinkQuery,
-  GetSellerProductsQuery,
-} from '@products/queries';
+import { GetProductVendorLinkQuery } from '@products/queries';
 
 import { DeleteProductCommand } from '@products/command';
 import { PrismaService } from 'prismaService';
@@ -59,7 +56,8 @@ export class ProductsResolver {
   }
 
   @Query(() => [Product])
-  getProducts(@Args('filterInput') args: GetFilteredProductsInput) {
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
+  getMyProducts(@Args('filterInput') args: GetFilteredProductsInput) {
     const { skip, take } = ExtractPagination(args.pagination);
     const filters: Prisma.ProductWhereInput[] = [];
 
@@ -162,18 +160,6 @@ export class ProductsResolver {
       this.logger.error(error);
       return false;
     }
-  }
-
-  @Query(() => [MyProduct])
-  @UseGuards(new GqlAuthorizationGuard(['seller']))
-  getMyProducts(
-    @Args('args', { type: () => GqlPaginationInput })
-    pagination: GqlPaginationInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    return this.querybus.execute<GetSellerProductsQuery>(
-      new GetSellerProductsQuery(user.id, pagination),
-    );
   }
 
   @Mutation(() => Product)

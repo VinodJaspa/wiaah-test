@@ -6,7 +6,12 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
+import {
+  Inject,
+  OnModuleInit,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import {
   accountType,
   AuthorizationDecodedUser,
@@ -53,7 +58,7 @@ export class OrdersResolver implements OnModuleInit {
   @UseGuards(new GqlAuthorizationGuard([accountType.BUYER, accountType.SELLER]))
   getMyOrders(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-    @Args('getMyOrdersArgs', { nullable: true }) args: GetMyOrdersInput,
+    @Args('getMyOrdersArgs') args: GetMyOrdersInput,
   ) {
     if (user.accountType === accountType.BUYER) {
       return this.queryBus.execute<GetBuyerOrdersQuery, Order[]>(
@@ -64,6 +69,23 @@ export class OrdersResolver implements OnModuleInit {
         new GetSellerOrdersQuery(user.id, args.pagination, args.status),
       );
     }
+  }
+
+  @Query(() => Order)
+  async getOrder(
+    @Args('id') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const res = await this.prisma.order.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (res.sellerId !== user.id && res.buyerId !== user.id)
+      throw new UnauthorizedException();
+
+    return res;
   }
 
   @Query(() => [Order])

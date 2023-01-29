@@ -25,9 +25,6 @@ export class GetIsOrderBuyerQueryHandler
           isBuyer,
           {
             ...res,
-            refundable:
-              AddToDate(res.completedAt, { days: MAX_DAYS_REFUND }) <
-              new Date(),
           },
         ]
       : [isBuyer];

@@ -1,6 +1,4 @@
 import React from "react";
-import { useRecoilValue } from "recoil";
-import { CurrentPageState } from "state";
 import { OrderDetailsSection } from "../OrderDetails";
 import { OrdersList } from "../OrdersList";
 

@@ -88,6 +88,9 @@ export class CreateProductInput {
   @Field((type) => [ProductPresentationInput])
   presentations: ProductPresentationInput[];
 
+  @Field(() => String)
+  thumbnail: string;
+
   @Field((type) => Float)
   price: number;
 

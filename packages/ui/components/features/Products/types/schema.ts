@@ -92,6 +92,7 @@ export type Product = {
   discount: Discount;
   cashback: CashBack;
   presentations: Array<ProductPresentation>;
+  thumbnail: Scalars["String"];
   rate: Scalars["Int"];
   brand: Scalars["String"];
   price: Scalars["Float"];
@@ -105,6 +106,7 @@ export type Product = {
   usageStatus: ProductUsageStatus;
   createdAt: Scalars["String"];
   updatedAt: Scalars["String"];
+  earnings: Scalars["Float"];
 };
 
 export enum VisibilityEnum {
@@ -124,38 +126,6 @@ export enum ProductUsageStatus {
   Used = "used",
   New = "new",
 }
-
-export type MyProduct = {
-  __typename?: "MyProduct";
-  id: Scalars["ID"];
-  sellerId: Scalars["ID"];
-  vendor_external_link: Scalars["String"];
-  title: Scalars["String"];
-  description: Scalars["String"];
-  shopId: Scalars["ID"];
-  hashtags: Array<Scalars["String"]>;
-  categoryId: Scalars["ID"];
-  category?: Maybe<Category>;
-  attributes: Array<ProductAttribute>;
-  stock: Scalars["Int"];
-  discount: Discount;
-  cashback: CashBack;
-  presentations: Array<ProductPresentation>;
-  rate: Scalars["Int"];
-  brand: Scalars["String"];
-  price: Scalars["Float"];
-  visibility: VisibilityEnum;
-  shippingRulesIds: Array<Scalars["ID"]>;
-  shippingDetails?: Maybe<ShippingDetails>;
-  reviews: Scalars["Int"];
-  sales: Scalars["Int"];
-  vat: Scalars["Float"];
-  status: ProductStatus;
-  usageStatus: ProductUsageStatus;
-  createdAt: Scalars["String"];
-  updatedAt: Scalars["String"];
-  earnings: Scalars["Float"];
-};
 
 export type ProductFilterGroupValue = {
   __typename?: "ProductFilterGroupValue";
@@ -261,9 +231,8 @@ export type Query = {
   getShopById: Shop;
   getFilteredShops: Array<Shop>;
   getProductById: Product;
-  getProducts: Array<Product>;
+  getMyProducts: Array<Product>;
   getProduct: Product;
-  getMyProducts: Array<MyProduct>;
   getProductCategories: Array<Category>;
   getFilteredProductCategories: Array<Category>;
   getAdminProductsFilters: Array<Filter>;
@@ -290,16 +259,12 @@ export type QueryGetProductByIdArgs = {
   id: Scalars["String"];
 };
 
-export type QueryGetProductsArgs = {
+export type QueryGetMyProductsArgs = {
   filterInput: GetFilteredProductsInput;
 };
 
 export type QueryGetProductArgs = {
   id: Scalars["ID"];
-};
-
-export type QueryGetMyProductsArgs = {
-  args: GqlPaginationInput;
 };
 
 export type QueryGetFilteredProductCategoriesArgs = {
@@ -531,6 +496,7 @@ export type CreateProductInput = {
   discount: DiscountInput;
   cashback: CashBackInput;
   presentations: Array<ProductPresentationInput>;
+  thumbnail: Scalars["String"];
   price: Scalars["Float"];
   brand: Scalars["String"];
   visibility: VisibilityEnum;
@@ -569,6 +535,7 @@ export type UpdateProductInput = {
   discount?: Maybe<DiscountInput>;
   cashback?: Maybe<CashBackInput>;
   presentations?: Maybe<Array<ProductPresentationInput>>;
+  thumbnail?: Maybe<Scalars["String"]>;
   price?: Maybe<Scalars["Float"]>;
   brand?: Maybe<Scalars["String"]>;
   visibility?: Maybe<VisibilityEnum>;

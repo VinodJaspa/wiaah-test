@@ -106,6 +106,9 @@ export class Product {
   @Field((type) => [ProductPresentation])
   presentations: ProductPresentation[];
 
+  @Field(() => String)
+  thumbnail: string;
+
   @Field((type) => Int)
   rate: number;
 
@@ -144,6 +147,9 @@ export class Product {
 
   @Field(() => String)
   updatedAt: Date;
+
+  @Field(() => Float)
+  earnings: number;
 
   rateStarCount: number;
 }
