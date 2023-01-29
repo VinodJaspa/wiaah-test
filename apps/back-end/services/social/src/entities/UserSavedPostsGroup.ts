@@ -1,5 +1,6 @@
 import { Field, ID, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { PostType } from 'prismaClient';
+import { NewsfeedPost } from './post.entity';
 
 registerEnumType(PostType, { name: 'PostType' });
 
@@ -10,6 +11,9 @@ export class UserSavedPost {
 
   @Field(() => PostType)
   postType: PostType;
+
+  @Field(() => NewsfeedPost)
+  post: NewsfeedPost;
 }
 
 @ObjectType()
@@ -20,6 +24,6 @@ export class UserSavedPostsGroup {
   @Field(() => ID)
   userId: string;
 
-  @Field(() => [UserSavedPost])
-  posts: UserSavedPost[];
+  @Field(() => [NewsfeedPost])
+  posts: NewsfeedPost[];
 }

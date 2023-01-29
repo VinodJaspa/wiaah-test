@@ -207,22 +207,10 @@ type NewsfeedHashtagSearch {
   mostViewedVideo: NewsfeedPost!
 }
 
-type UserSavedPost {
-  postId: ID!
-  postType: PostType!
-}
-
-enum PostType {
-  newsfeed_post
-  shop_post
-  service_post
-  affiliation_post
-}
-
 type UserSavedPostsGroup {
   id: ID!
   userId: ID!
-  posts: [UserSavedPost!]!
+  posts: [NewsfeedPost!]!
 }
 
 type Account {
@@ -460,7 +448,7 @@ type Query {
   getContentComments(getContentCommentsArgs: GetContentCommentsInput!): [Comment!]!
   getAllShares: ContentSharePaginationResponse!
   getNewsfeedHashtagPosts(hashtagSearchInput: GetHashtagNewsfeedPostsInput!): NewsfeedHashtagSearch!
-  getMySavedPosts: UserSavedPostsGroup!
+  getMySavedPosts(args: GetMySavedPostsInput!): UserSavedPostsGroup!
   getUserStory(userId: String!): Story!
   getUserPrevStory(storyId: String!): Story!
   getMyStories: [Story!]!
@@ -532,6 +520,10 @@ input GetHashtagNewsfeedPostsInput {
   tag: String!
   profileId: ID!
   userId: ID!
+}
+
+input GetMySavedPostsInput {
+  pagination: GqlPaginationInput!
 }
 
 input GetStorySeenByInput {

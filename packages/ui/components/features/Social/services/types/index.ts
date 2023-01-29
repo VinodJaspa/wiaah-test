@@ -230,24 +230,11 @@ export type NewsfeedHashtagSearch = {
   mostViewedVideo: NewsfeedPost;
 };
 
-export type UserSavedPost = {
-  __typename?: "UserSavedPost";
-  postId: Scalars["ID"];
-  postType: PostType;
-};
-
-export enum PostType {
-  NewsfeedPost = "newsfeed_post",
-  ShopPost = "shop_post",
-  ServicePost = "service_post",
-  AffiliationPost = "affiliation_post",
-}
-
 export type UserSavedPostsGroup = {
   __typename?: "UserSavedPostsGroup";
   id: Scalars["ID"];
   userId: Scalars["ID"];
-  posts: Array<UserSavedPost>;
+  posts: Array<NewsfeedPost>;
 };
 
 export type Account = {
@@ -576,6 +563,10 @@ export type QueryGetNewsfeedHashtagPostsArgs = {
   hashtagSearchInput: GetHashtagNewsfeedPostsInput;
 };
 
+export type QueryGetMySavedPostsArgs = {
+  args: GetMySavedPostsInput;
+};
+
 export type QueryGetUserStoryArgs = {
   userId: Scalars["String"];
 };
@@ -706,6 +697,10 @@ export type GetHashtagNewsfeedPostsInput = {
   tag: Scalars["String"];
   profileId: Scalars["ID"];
   userId: Scalars["ID"];
+};
+
+export type GetMySavedPostsInput = {
+  pagination: GqlPaginationInput;
 };
 
 export type GetStorySeenByInput = {
