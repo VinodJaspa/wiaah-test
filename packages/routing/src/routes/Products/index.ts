@@ -3,6 +3,7 @@ import { RoutesType } from "..";
 export type ProductsRoutesType = {
   product: () => RoutesType;
   visitProduct: (id: string) => RoutesType;
+  addAffiliatorId: (id: string) => RoutesType;
 };
 
 export const ProductsRoutes: RoutesType = {
@@ -13,5 +14,9 @@ export const ProductsRoutes: RoutesType = {
   visitProduct(id) {
     this.product().id(id);
     return this;
+  },
+
+  addAffiliatorId(id) {
+    this.addQuery({ affiliatorId: id });
   },
 } as RoutesType;

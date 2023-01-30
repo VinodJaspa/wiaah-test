@@ -6,4 +6,6 @@ export class AffiliatedProductPurchasedEvent extends KafkaMessage<{
   purchaserId: string;
   affiliatorId: string;
   itemSellerId: string;
+  affiliationId: string;
+  paidPrice: number;
 }> {}

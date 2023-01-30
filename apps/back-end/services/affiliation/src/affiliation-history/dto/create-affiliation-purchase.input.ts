@@ -4,4 +4,6 @@ export class CreateAffiliationPurchaseInput {
   affiliatorId: string;
   purchaserId: string;
   sellerId: string;
+  paidCommissionPercent: number;
+  paidCommissionAmount: number;
 }

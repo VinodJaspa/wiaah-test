@@ -23,9 +23,7 @@ import { CreateStoryInput, DeleteStoryInput, LikeStoryInput } from '@story/dto';
 import {
   AffiliationPost,
   NewsfeedPost,
-  Product,
   ServicePost,
-  ShopPost,
   Story,
 } from '@story/entities';
 import {
@@ -33,7 +31,8 @@ import {
   GetUserPrevStoryQuery,
   ViewUserStoryQuery,
 } from '@story/queries';
-import { StoryType, STORY_TYPE } from './const';
+import { StoryType } from './const';
+import { ProductPost } from '@product-post/entities';
 
 @Resolver(() => Story)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -109,7 +108,7 @@ export class StoryResolver {
     };
   }
 
-  @ResolveField(() => ShopPost)
+  @ResolveField(() => ProductPost)
   shopPost(@Parent() story: Story) {
     if (story.type !== StoryType.product) return null;
     return {

@@ -15,9 +15,11 @@ import {
   MenuList,
   SelectOption,
   CreateAffiliationInput,
+  usePaginationControls,
+  ScrollPaginationWrapper,
 } from "@UI";
 import * as yup from "yup";
-import { useGetMyProducts } from "@features/Products/services/queries/useGetMyProducts";
+import { useGetMyProducts } from "@features/Products";
 
 export interface NewAffiliationLinkSectionProps {
   values?: CreateAffiliationInput;
@@ -34,7 +36,8 @@ export function NewAffiliationLinkSection({
   values,
   onBack,
 }: NewAffiliationLinkSectionProps) {
-  const { data: prods } = useGetMyProducts({ args: { page: 1, take: 10000 } });
+  const { pagination, controls } = usePaginationControls();
+  const { data: prods } = useGetMyProducts({ pagination });
   const { t } = useTranslation();
   const { cancelNew } = React.useContext(AffiliationManagementContext);
   const isEdit = !!values;
@@ -84,12 +87,14 @@ export function NewAffiliationLinkSection({
               name="productId"
               placeholder={t("select_product", "Select Product")}
             >
-              {prods &&
-                prods.map((prod, i) => (
-                  <SelectOption key={prod.id + i} value={prod.id}>
-                    {prod.title}
-                  </SelectOption>
-                ))}
+              <ScrollPaginationWrapper controls={controls}>
+                {prods &&
+                  prods.map((prod, i) => (
+                    <SelectOption key={prod.id + i} value={prod.id}>
+                      {prod.title}
+                    </SelectOption>
+                  ))}
+              </ScrollPaginationWrapper>
             </FormikInput>
             <FormikInput<SelectProps>
               onOptionSelect={(v) => setFieldValue("commision", v)}

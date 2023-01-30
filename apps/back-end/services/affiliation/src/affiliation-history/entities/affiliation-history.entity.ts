@@ -1,5 +1,5 @@
 import { Product, Service } from '@affiliation/entities';
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
+import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
 
 @ObjectType()
 export class AffiliationPurchase {
@@ -29,4 +29,10 @@ export class AffiliationPurchase {
 
   @Field(() => Date)
   createdAt: Date;
+
+  @Field(() => Float)
+  paidCommissionPercent: number;
+
+  @Field(() => Float)
+  paidCommissionAmount: number;
 }

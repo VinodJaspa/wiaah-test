@@ -1,6 +1,7 @@
 import { shallow, ShallowWrapper } from "enzyme";
 import { getTestId, setTestid } from "utils";
 import { Badge, BadgeProps, BadgeCases } from "./Badge";
+import React from "react";
 
 describe("Badge", () => {
   let wrapper: ShallowWrapper;

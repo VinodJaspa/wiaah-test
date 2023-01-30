@@ -4,18 +4,42 @@ import { KAFKA_EVENTS } from 'nest-utils';
 import { AffiliatedProductPurchasedEvent } from 'nest-dto';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateAffiliationPurchaseCommand } from './commands';
+import { PrismaService } from 'prismaService';
 
 @Controller()
 export class AffiliationPurchaseController {
-  constructor(private readonly commandbus: CommandBus) {}
+  constructor(
+    private readonly commandbus: CommandBus,
+    private prisma: PrismaService,
+  ) {}
 
   @EventPattern(KAFKA_EVENTS.AFFILIATION.affiliatedProductPurchased)
-  handleAffiliatedPurchase(
+  async handleAffiliatedPurchase(
     @Payload() { value }: { value: AffiliatedProductPurchasedEvent },
   ) {
     const {
-      input: { affiliatorId, itemId, itemSellerId, itemType, purchaserId },
+      input: {
+        affiliatorId,
+        itemId,
+        itemSellerId,
+        itemType,
+        purchaserId,
+        affiliationId,
+        paidPrice,
+      },
     } = value;
+
+    const res = await this.prisma.affiliation.findUnique({
+      where: {
+        id: affiliationId,
+      },
+    });
+
+    if (!res) return;
+
+    const percent = res.commision;
+
+    const amount = paidPrice * (percent / 100);
 
     return this.commandbus.execute<CreateAffiliationPurchaseCommand>(
       new CreateAffiliationPurchaseCommand({
@@ -24,6 +48,8 @@ export class AffiliationPurchaseController {
         itemType,
         sellerId: itemSellerId,
         purchaserId,
+        paidCommissionAmount: amount,
+        paidCommissionPercent: percent,
       }),
     );
   }
