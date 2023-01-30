@@ -229,6 +229,35 @@ type TopHashtagNewsfeedPosts {
   shared: NewsfeedPost!
 }
 
+type ProductPost {
+  id: ID!
+  userId: ID!
+  user: Account
+  productId: ID!
+  reactionNum: Int!
+  comments: Int!
+  shares: Int!
+  views: Int!
+  visibility: PostVisibility!
+  location: PostLocation
+  commentsVisibility: CommentsVisibility!
+  product: Product!
+  createdAt: String!
+  updatedAt: String!
+}
+
+enum PostVisibility {
+  hidden
+  public
+  followers
+  following
+}
+
+enum CommentsVisibility {
+  hidden
+  public
+}
+
 type Affiliation {
   id: ID!
 }
@@ -248,18 +277,6 @@ type AffiliationPost {
   affiliation: Affiliation!
   createdAt: String!
   updatedAt: String!
-}
-
-enum PostVisibility {
-  hidden
-  public
-  followers
-  following
-}
-
-enum CommentsVisibility {
-  hidden
-  public
 }
 
 type Service {
@@ -293,10 +310,6 @@ enum ServiceType {
   vehicle
 }
 
-type ShopPost {
-  id: ID!
-}
-
 type Story {
   id: ID!
   publisherId: ID!
@@ -311,7 +324,7 @@ type Story {
   attachements: Attachment
   views: [StoryView!]!
   newsfeedPost: NewsfeedPost
-  shopPost: ShopPost
+  shopPost: ProductPost
   affiliationPost: AffiliationPost
   servicePost: ServicePost
 }
@@ -356,23 +369,6 @@ type PrivacySettings {
   hideLikesNum: Boolean!
   hideCommentsNum: Boolean!
   hideViewsNum: Boolean!
-}
-
-type ProductPost {
-  id: ID!
-  userId: ID!
-  user: Account
-  productId: ID!
-  reactionNum: Int!
-  comments: Int!
-  shares: Int!
-  views: Int!
-  visibility: PostVisibility!
-  location: PostLocation
-  commentsVisibility: CommentsVisibility!
-  product: Product!
-  createdAt: String!
-  updatedAt: String!
 }
 
 type HashtagProductPost {

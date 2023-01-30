@@ -35,11 +35,26 @@ export enum ProductCategoryStatus {
   InActive = "inActive",
 }
 
+export type ShippingDeliveryTimeRange = {
+  __typename?: "ShippingDeliveryTimeRange";
+  from: Scalars["Int"];
+  to: Scalars["Int"];
+};
+
 export type ShippingDetails = {
   __typename?: "ShippingDetails";
   country: Scalars["String"];
-  shippingRulesIds: Array<Scalars["String"]>;
+  shippingRulesIds: Array<Scalars["ID"]>;
+  cost?: Maybe<Scalars["Float"]>;
+  available: Scalars["Boolean"];
+  deliveryTimeRange?: Maybe<ShippingDeliveryTimeRange>;
+  shippingTypes?: Maybe<Array<ShippingType>>;
 };
+
+export enum ShippingType {
+  Paid = "paid",
+  ClickAndCollect = "click_and_collect",
+}
 
 export type ProductPresentation = {
   __typename?: "ProductPresentation";
@@ -188,12 +203,6 @@ export type ShippingCountry = {
   code: Scalars["String"];
 };
 
-export type ShippingDeliveryTimeRange = {
-  __typename?: "ShippingDeliveryTimeRange";
-  from: Scalars["Int"];
-  to: Scalars["Int"];
-};
-
 export type ShippingRule = {
   __typename?: "ShippingRule";
   id: Scalars["ID"];
@@ -205,10 +214,12 @@ export type ShippingRule = {
   deliveryTimeRange: ShippingDeliveryTimeRange;
 };
 
-export enum ShippingType {
-  Paid = "paid",
-  ClickAndCollect = "click_and_collect",
-}
+export type ShippingAddress = {
+  __typename?: "ShippingAddress";
+  id: Scalars["ID"];
+  ownerId: Scalars["ID"];
+  location: Location;
+};
 
 export type ShippingRuleGeoZone = {
   __typename?: "ShippingRuleGeoZone";
@@ -239,6 +250,7 @@ export type Query = {
   getProductsFilters: Array<Filter>;
   getAdminFilteredProducts: Array<Product>;
   adminGetProduct?: Maybe<Product>;
+  getMyShippingAddress: Array<ShippingAddress>;
   getShippingGeoZoneRules: Array<ShippingTypeRule>;
   getShippingRuleGeoZones: Array<ShippingRuleGeoZone>;
 };

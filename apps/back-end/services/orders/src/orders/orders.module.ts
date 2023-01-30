@@ -10,6 +10,7 @@ import { OrdersRepository } from '@orders/repositoy';
 import { OrdersCommandHandlers } from '@orders/commands';
 import { OrdersQueryHandlers } from '@orders/queries';
 import { CqrsModule } from '@nestjs/cqrs';
+import { OrderItemResolver } from './order-item.resolver';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { CqrsModule } from '@nestjs/cqrs';
     OrdersResolver,
     PrismaService,
     OrdersRepository,
+    OrderItemResolver,
     ...OrdersCommandHandlers,
     ...OrdersQueryHandlers,
   ],

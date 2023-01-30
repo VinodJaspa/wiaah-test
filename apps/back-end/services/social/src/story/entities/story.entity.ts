@@ -1,13 +1,9 @@
 import { Attachment, Profile } from '@entities';
 import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
+import { ProductPost } from '@product-post/entities';
 import { StoryType } from 'prismaClient';
 
-import {
-  AffiliationPost,
-  NewsfeedPost,
-  ServicePost,
-  ShopPost,
-} from './extends';
+import { AffiliationPost, NewsfeedPost, ServicePost } from './extends';
 import { StoryView } from './story-view.entity';
 
 registerEnumType(StoryType, { name: 'StoryType' });
@@ -53,8 +49,8 @@ export class Story {
   @Field(() => NewsfeedPost, { nullable: true })
   newsfeedPost?: NewsfeedPost;
 
-  @Field(() => ShopPost, { nullable: true })
-  shopPost?: ShopPost;
+  @Field(() => ProductPost, { nullable: true })
+  shopPost?: ProductPost;
 
   @Field(() => AffiliationPost, { nullable: true })
   affiliationPost?: AffiliationPost;

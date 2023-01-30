@@ -1,8 +1,9 @@
+import { OrderStatusEnum } from "@features/Orders/schema";
 import React from "react";
 import { HtmlDivProps, OrdersStatus } from "types";
 
 export interface OrderStatusDisplay extends HtmlDivProps {
-  status: OrdersStatus;
+  status: OrderStatusEnum;
 }
 
 export const OrderStatusDisplay: React.FC<OrderStatusDisplay> = ({
@@ -12,14 +13,17 @@ export const OrderStatusDisplay: React.FC<OrderStatusDisplay> = ({
 }) => {
   const getStyles = (): string => {
     switch (status) {
-      case "completed":
+      case OrderStatusEnum.Compeleted:
         return "bg-primary-50 text-primary border-primary";
-      case "canceled":
+      case OrderStatusEnum.RejectedByBuyer:
+      case OrderStatusEnum.RejectedBySeller:
         return "bg-red-50 text-red-500 border-red-500";
-      case "continuing":
+      case OrderStatusEnum.Pending:
         return "bg-blue-50 text-blue-500 border-blue-500";
-      case "restitue":
+      case OrderStatusEnum.Shipping:
         return "bg-yellow-50 text-yellow-500 border-yellow-500";
+      default:
+        return "bg-primary-50 text-primary border-primary";
     }
   };
   return (

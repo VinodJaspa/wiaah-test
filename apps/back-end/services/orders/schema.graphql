@@ -16,18 +16,22 @@ type Account {
   id: ID!
 }
 
-type Discount {
+type Product {
   id: ID!
 }
 
-type Product {
+type ShippingRule {
+  id: ID!
+}
+
+type ShippingAddress {
   id: ID!
 }
 
 type OrderItem {
   id: ID!
   qty: Int!
-  type: String!
+  product: Product
 }
 
 type OrderStatus {
@@ -54,8 +58,11 @@ type Order {
   updatedAt: DateTime!
   items: [OrderItem!]!
   status: OrderStatus!
-  discount: Discount
-  products: Product!
+  shippingAddressId: String!
+  shippingMethodId: String!
+  paid: Float!
+  shipping: ShippingRule!
+  shippingAddress: ShippingAddress!
 }
 
 """

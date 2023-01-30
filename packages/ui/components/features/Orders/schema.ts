@@ -24,13 +24,18 @@ export type Account = {
   id: Scalars["ID"];
 };
 
-export type Discount = {
-  __typename?: "Discount";
+export type Product = {
+  __typename?: "Product";
   id: Scalars["ID"];
 };
 
-export type Product = {
-  __typename?: "Product";
+export type ShippingRule = {
+  __typename?: "ShippingRule";
+  id: Scalars["ID"];
+};
+
+export type ShippingAddress = {
+  __typename?: "ShippingAddress";
   id: Scalars["ID"];
 };
 
@@ -38,7 +43,7 @@ export type OrderItem = {
   __typename?: "OrderItem";
   id: Scalars["ID"];
   qty: Scalars["Int"];
-  type: Scalars["String"];
+  product?: Maybe<Product>;
 };
 
 export type OrderStatus = {
@@ -67,8 +72,11 @@ export type Order = {
   updatedAt: Scalars["DateTime"];
   items: Array<OrderItem>;
   status: OrderStatus;
-  discount?: Maybe<Discount>;
-  products: Product;
+  shippingAddressId: Scalars["String"];
+  shippingMethodId: Scalars["String"];
+  paid: Scalars["Float"];
+  shipping: ShippingRule;
+  shippingAddress: ShippingAddress;
 };
 
 export type Query = {

@@ -25,9 +25,23 @@ enum ProductCategoryStatus {
   inActive
 }
 
+type ShippingDeliveryTimeRange {
+  from: Int!
+  to: Int!
+}
+
 type ShippingDetails {
   country: String!
-  shippingRulesIds: [String!]!
+  shippingRulesIds: [ID!]!
+  cost: Float
+  available: Boolean!
+  deliveryTimeRange: ShippingDeliveryTimeRange
+  shippingTypes: [ShippingType!]
+}
+
+enum ShippingType {
+  paid
+  click_and_collect
 }
 
 type ProductPresentation {
@@ -172,11 +186,6 @@ type ShippingCountry {
   code: String!
 }
 
-type ShippingDeliveryTimeRange {
-  from: Int!
-  to: Int!
-}
-
 type ShippingRule {
   id: ID!
   sellerId: ID!
@@ -187,9 +196,10 @@ type ShippingRule {
   deliveryTimeRange: ShippingDeliveryTimeRange!
 }
 
-enum ShippingType {
-  paid
-  click_and_collect
+type ShippingAddress {
+  id: ID!
+  ownerId: ID!
+  location: Location!
 }
 
 type ShippingRuleGeoZone {
@@ -218,6 +228,7 @@ type Query {
   getProductsFilters: [Filter!]!
   getAdminFilteredProducts(args: GetFilteredProductsAdminInput!): [Product!]!
   adminGetProduct(id: String!): Product
+  getMyShippingAddress: [ShippingAddress!]!
   getShippingGeoZoneRules: [ShippingTypeRule!]!
   getShippingRuleGeoZones(id: String!): [ShippingRuleGeoZone!]!
 }
