@@ -1,3 +1,6 @@
+import { Account } from "@features/Accounts";
+import { Product, ShippingAddress, ShippingRule } from "@features/Products";
+
 type Maybe<T> = T | null;
 type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
@@ -17,26 +20,6 @@ type Scalars = {
   Float: number;
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
-};
-
-export type Account = {
-  __typename?: "Account";
-  id: Scalars["ID"];
-};
-
-export type Product = {
-  __typename?: "Product";
-  id: Scalars["ID"];
-};
-
-export type ShippingRule = {
-  __typename?: "ShippingRule";
-  id: Scalars["ID"];
-};
-
-export type ShippingAddress = {
-  __typename?: "ShippingAddress";
-  id: Scalars["ID"];
 };
 
 export type OrderItem = {
@@ -79,12 +62,39 @@ export type Order = {
   shippingAddress: ShippingAddress;
 };
 
+export type ReturnedOrder = {
+  __typename?: "ReturnedOrder";
+  id: Scalars["ID"];
+  requestedById: Scalars["ID"];
+  productId: Scalars["ID"];
+  sellerId: Scalars["ID"];
+  reason: Scalars["String"];
+  type: RefundType;
+  amount: Scalars["Float"];
+  fullAmount: Scalars["Float"];
+  status: RefundStatusType;
+  rejectReason?: Maybe<Scalars["String"]>;
+  product: Product;
+};
+
+export enum RefundType {
+  Money = "money",
+  Credit = "credit",
+}
+
+export enum RefundStatusType {
+  Pending = "pending",
+  Accept = "accept",
+  Reject = "reject",
+}
+
 export type Query = {
   __typename?: "Query";
   getMyOrders: Array<Order>;
   getOrder: Order;
   getUserOrders: Array<Order>;
   getFilteredOrders: Array<Order>;
+  getMyReturnedOrders: Array<ReturnedOrder>;
 };
 
 export type QueryGetMyOrdersArgs = {
@@ -101,6 +111,10 @@ export type QueryGetUserOrdersArgs = {
 
 export type QueryGetFilteredOrdersArgs = {
   args: GetFilteredOrdersInput;
+};
+
+export type QueryGetMyReturnedOrdersArgs = {
+  args: GetMyReturnedOrdersInput;
 };
 
 export type GetMyOrdersInput = {
@@ -130,6 +144,10 @@ export type GetFilteredOrdersInput = {
   buyer: Scalars["String"];
   seller: Scalars["String"];
   payment_method: Scalars["String"];
+};
+
+export type GetMyReturnedOrdersInput = {
+  pagination: GqlPaginationInput;
 };
 
 export type Mutation = {
@@ -196,11 +214,6 @@ export type AskForRefundInput = {
   amount?: Maybe<Scalars["Float"]>;
   reason?: Maybe<Scalars["String"]>;
 };
-
-export enum RefundType {
-  Money = "money",
-  Credit = "credit",
-}
 
 export type RejectRefundRequestInput = {
   id: Scalars["ID"];

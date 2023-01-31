@@ -1,5 +1,5 @@
-import { Mutation } from "@features/Products/types";
-import { createGraphqlRequestClient } from "@UI/../api";
+import { Mutation } from "@features/API";
+import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 import { Exact, Scalars } from "types";
 

@@ -9,7 +9,7 @@ import {
   ProductAttribute,
   ProductPresentation,
   ShippingDetails,
-} from "@features/Products/types";
+} from "@features/API";
 
 export type GetProductQueryVariables = Exact<{
   id: Scalars["String"];

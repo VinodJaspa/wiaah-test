@@ -11,7 +11,6 @@ import { getUserFromRequest } from 'nest-utils';
 import { ShopModule } from '@shop';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 
-import { Search } from './products/entities/search.entity';
 import { ShippingRulesModule } from './shipping-rules';
 import { PrismaService } from './prisma.service';
 import { ShippingAddressModule } from './shipping-address/shipping-address.module';
@@ -52,9 +51,9 @@ export class PrismaGlobalModule {}
         return { req, res, user };
       },
 
-      buildSchemaOptions: {
-        orphanedTypes: [Search],
-      },
+      // buildSchemaOptions: {
+      //   orphanedTypes: [Search],
+      // },
     }),
     ShopModule,
     ProductsModule,

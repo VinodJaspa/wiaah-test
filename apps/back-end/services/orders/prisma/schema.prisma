@@ -34,6 +34,7 @@ model RefundRequest {
   type          RefundType
   amount        Float
   fullAmount    Boolean
+  qty           Int
   status        RefundStatusType @default(pending)
   rejectReason  String?
 

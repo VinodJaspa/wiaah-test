@@ -1,9 +1,18 @@
-import { Resolver, Mutation, Args, ID } from '@nestjs/graphql';
+import {
+  Resolver,
+  Mutation,
+  Args,
+  ID,
+  Query,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { AskForRefundInput, RejectRefundRequestInput } from '@refund/dto';
 import { UseGuards } from '@nestjs/common';
 import {
   accountType,
   AuthorizationDecodedUser,
+  ExtractPagination,
   GqlAuthorizationGuard,
   GqlCurrentUser,
 } from 'nest-utils';
@@ -14,10 +23,39 @@ import {
   CreateRefundRequestCommand,
   RejectRequestedRefundCommand,
 } from '@refund/commands';
+import { GetMyReturnedOrdersInput } from 'src/returned-orders/dto/get-my-returned-orders.input';
+import { PrismaService } from 'prismaService';
+import { Product } from '@orders/entities/extends';
 
 @Resolver(() => Refund)
 export class RefundResolver {
-  constructor(private readonly commandbus: CommandBus) {}
+  constructor(
+    private readonly commandbus: CommandBus,
+    private prisma: PrismaService,
+  ) {}
+
+  @Query(() => [Refund])
+  getMyReturnedOrders(
+    @Args('args') args: GetMyReturnedOrdersInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const { skip, take } = ExtractPagination(args.pagination);
+    return this.prisma.refundRequest.findMany({
+      where: {
+        sellerId: user.id,
+      },
+      skip,
+      take,
+    });
+  }
+
+  @ResolveField(() => Product)
+  product(@Parent() order: Refund) {
+    return {
+      __typename: 'Product',
+      id: order.productId,
+    };
+  }
 
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([accountType.BUYER, accountType.SELLER]))

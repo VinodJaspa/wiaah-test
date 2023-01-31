@@ -70,11 +70,38 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Refund {
+  id: ID!
+  requestedById: ID!
+  productId: ID!
+  sellerId: ID!
+  reason: String!
+  type: RefundType!
+  amount: Float!
+  fullAmount: Boolean!
+  qty: Int!
+  status: RefundStatusType!
+  rejectReason: String
+  product: Product!
+}
+
+enum RefundType {
+  money
+  credit
+}
+
+enum RefundStatusType {
+  pending
+  accept
+  reject
+}
+
 type Query {
   getMyOrders(getMyOrdersArgs: GetMyOrdersInput!): [Order!]!
   getOrder(id: String!): Order!
   getUserOrders(args: GetUserOrders!): [Order!]!
   getFilteredOrders(args: GetFilteredOrdersInput!): [Order!]!
+  getMyReturnedOrders(args: GetMyReturnedOrdersInput!): [Refund!]!
 }
 
 input GetMyOrdersInput {
@@ -104,6 +131,10 @@ input GetFilteredOrdersInput {
   buyer: String!
   seller: String!
   payment_method: String!
+}
+
+input GetMyReturnedOrdersInput {
+  pagination: GqlPaginationInput!
 }
 
 type Mutation {
@@ -140,11 +171,7 @@ input AskForRefundInput {
   fullAmount: Boolean
   amount: Float
   reason: String = ""
-}
-
-enum RefundType {
-  money
-  credit
+  qty: Int!
 }
 
 input RejectRefundRequestInput {

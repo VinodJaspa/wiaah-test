@@ -21,18 +21,27 @@ export class Refund {
   @Field(() => ID)
   productId: string;
 
+  @Field(() => ID)
+  sellerId: string;
+
   @Field(() => String)
   reason: string;
 
   @Field(() => RefundType)
   type: RefundType;
 
+  @Field(() => Float)
+  amount: number;
+
+  @Field(() => Boolean)
+  fullAmount: boolean;
+
+  @Field(() => Int)
+  qty: number;
+
   @Field(() => RefundStatusType)
   status: RefundStatusType;
 
-  @Field(() => String)
-  rejectReason: string;
-
-  @Field(() => Float)
-  amount: number;
+  @Field(() => String, { nullable: true })
+  rejectReason?: string;
 }

@@ -192,7 +192,7 @@ type ShippingRule {
   name: String!
   countries: [ShippingCountry!]!
   cost: Float!
-  shippingTypes: [ShippingType!]!
+  shippingType: ShippingType!
   deliveryTimeRange: ShippingDeliveryTimeRange!
 }
 
@@ -231,6 +231,7 @@ type Query {
   getMyShippingAddress: [ShippingAddress!]!
   getShippingGeoZoneRules: [ShippingTypeRule!]!
   getShippingRuleGeoZones(id: String!): [ShippingRuleGeoZone!]!
+  getMyShippingRules: [ShippingRule!]!
 }
 
 input GetNearShopsInput {
@@ -460,7 +461,7 @@ input CreateShippingRuleInput {
   countries: [ShippingCountryInput!]!
   name: String!
   cost: Float!
-  shippingTypes: [ShippingType!]!
+  shippingType: ShippingType!
   deliveryTimeRange: ShippingDeliveryTimeRangeInput!
 }
 
@@ -478,7 +479,7 @@ input UpdateShippingRuleInput {
   countries: [ShippingCountryInput!]
   name: String
   cost: Float
-  shippingTypes: [ShippingType!]
+  shippingType: ShippingType
   deliveryTimeRange: ShippingDeliveryTimeRangeInput
   id: ID!
 }

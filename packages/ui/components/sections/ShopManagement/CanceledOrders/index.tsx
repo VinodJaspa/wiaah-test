@@ -20,14 +20,18 @@ import {
   Textarea,
   ModalCloseButton,
   ModalFooter,
+  useAcceptRefundRequestMutation,
+  usePaginationControls,
+  Image,
 } from "@UI";
-import {
-  useDeclineReturnRequestMutation,
-  useAcceptReturnRequestMutation,
-} from "@src/Hooks";
 import { declineReturnRequestDto } from "dto";
 import { Form, Formik } from "formik";
 import { ReturnDeclineRequestValidationSchema } from "validation";
+import {
+  useGetMyReturnedProductsQuery,
+  useRejectRefundRequest,
+} from "@features/Orders";
+import { RefundStatusType } from "@features/Orders/schema";
 type ReturnRequestStatusEnum = "declined" | "accepted" | "pending";
 
 type CanceledOrderData = {
@@ -47,9 +51,13 @@ export interface CanceledOrdersSectionProps {}
 export const ReturnedOrders: React.FC<CanceledOrdersSectionProps> = ({}) => {
   const { t } = useTranslation();
   const { mutate: declineRequest, isLoading: declineIsLoading } =
-    useDeclineReturnRequestMutation();
+    useRejectRefundRequest();
   const { mutate: acceptRequest, isLoading: acceptIsloading } =
-    useAcceptReturnRequestMutation();
+    useAcceptRefundRequestMutation();
+
+  const { pagination } = usePaginationControls();
+  const { data } = useGetMyReturnedProductsQuery({ pagination });
+
   return (
     <div className="flex flex-col gap-4 w-full">
       <SectionHeader sectionTitle={t("returned_orders", "Returned Orders")}>
@@ -80,29 +88,32 @@ export const ReturnedOrders: React.FC<CanceledOrdersSectionProps> = ({}) => {
             </Tr>
           </THead>
           <TBody>
-            {canceledOrders && canceledOrders.length > 0
-              ? canceledOrders.map((card, i) => (
+            {data && data.length > 0
+              ? data.map((card, i) => (
                   <Tr key={i}>
                     <Td>
-                      <img className="w-auto h-16" src={card.productImage} />
+                      <Image
+                        className="w-auto h-16"
+                        src={card.product.thumbnail}
+                      />
                     </Td>
-                    <Td>{card.productName}</Td>
-                    <Td>{card.quantity}</Td>
+                    <Td>{card.product.title}</Td>
+                    <Td>{card.qty}</Td>
                     <Td>
                       <PriceDisplay
                         className="whitespace-nowrap"
-                        priceObject={card.paidPrice}
+                        price={card.amount}
                       />
                     </Td>
-                    <Td>{card.shippingAmount}</Td>
-                    <Td>{card.returnReason}</Td>
-                    <Td>{card.otherReason}</Td>
+                    <Td>{0}</Td>
+                    <Td>{card.rejectReason}</Td>
+                    <Td>{card.rejectReason}</Td>
                     <Td>
                       <Button
                         colorScheme={
-                          card.status === "pending"
+                          card.status === RefundStatusType.Pending
                             ? "info"
-                            : card.status === "declined"
+                            : card.status === RefundStatusType.Reject
                             ? "danger"
                             : "primary"
                         }
@@ -122,7 +133,10 @@ export const ReturnedOrders: React.FC<CanceledOrdersSectionProps> = ({}) => {
                           <ControlledModal>
                             <Formik<declineReturnRequestDto>
                               onSubmit={(data) => {
-                                declineRequest(data);
+                                declineRequest({
+                                  id: card.id,
+                                  reason: data.declineReason,
+                                });
                               }}
                               initialValues={{
                                 requestId: card.id,
@@ -158,7 +172,7 @@ export const ReturnedOrders: React.FC<CanceledOrdersSectionProps> = ({}) => {
                         </ModalExtendedWrapper>
                         <Button
                           loading={acceptIsloading}
-                          onClick={() => acceptRequest({ requestId: card.id })}
+                          onClick={() => acceptRequest(card.id)}
                         >
                           {t("accpet", "Accept")}
                         </Button>

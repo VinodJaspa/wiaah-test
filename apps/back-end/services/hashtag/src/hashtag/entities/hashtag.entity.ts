@@ -1,8 +1,8 @@
 import { ObjectType, Field, Int, ID, Directive } from '@nestjs/graphql';
 
 @ObjectType()
-@Directive('@key(fields:"id")')
 @Directive('@key(fields:"name")')
+@Directive('@key(fields:"id")')
 export class Hashtag {
   @Field(() => ID)
   id: string;

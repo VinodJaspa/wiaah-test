@@ -29,7 +29,7 @@ export class ServiceCategoryFilterInput {
 }
 
 @InputType()
-export class CreateCategoryInput {
+export class CreateServiceCategoryInput {
   @Field(() => [TranslationTextInput])
   name: TranslationTextInput[];
 

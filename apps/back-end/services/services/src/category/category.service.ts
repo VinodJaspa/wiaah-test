@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from 'prismaClient';
 import { PrismaService } from 'prismaService';
-import { CreateCategoryInput } from './dto/create-category.input';
+import { CreateServiceCategoryInput } from './dto/create-category.input';
 import { GetFilteredCategoriesInput } from './dto/get-filtered-categories.input';
-import { UpdateCategoryInput } from './dto/update-category.input';
+import { UpdateServiceCategoryInput } from './dto/update-category.input';
 
 @Injectable()
 export class CategoryService {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(input: CreateCategoryInput, userId: string) {
+  create(input: CreateServiceCategoryInput, userId: string) {
     return this.prisma.serviceCategory.create({
       data: { ...input, createdByUserId: userId },
     });
@@ -23,7 +23,7 @@ export class CategoryService {
     });
   }
 
-  update(input: UpdateCategoryInput, userId: string) {
+  update(input: UpdateServiceCategoryInput, userId: string) {
     const { id, ...rest } = input;
     return this.prisma.serviceCategory.update({
       where: {

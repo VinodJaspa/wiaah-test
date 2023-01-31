@@ -6,7 +6,7 @@ import { FilterAndAddToArray } from "utils";
 export interface MultiChooseInputProps {
   onChange?: (selected: string[]) => any;
   value?: string[];
-  suggestions?: string[];
+  suggestions?: string[] | { label: string; value: string | number }[];
   placeholder?: string;
 }
 
@@ -23,8 +23,11 @@ export function MultiChooseInput({
     setInputInputValue("");
   }
 
-  function addItem(item: string) {
+  function addItem(item: string | number) {
+    item = typeof item === "number" ? JSON.stringify(item) : item;
+
     if (item.length < 1) return;
+
     onChange && onChange(FilterAndAddToArray(value, item, "exclude"));
     resetSearch();
   }
@@ -63,11 +66,13 @@ export function MultiChooseInput({
           {Array.isArray(suggestions) ? (
             suggestions.map((item, i) => (
               <p
-                onClick={() => addItem(item)}
+                onClick={() =>
+                  addItem(typeof item === "string" ? item : item.value)
+                }
                 className="p-2 w-full cursor-pointer hover:bg-gray-200 bg-white"
                 key={i}
               >
-                {item}
+                {typeof item === "string" ? item : item.label}
               </p>
             ))
           ) : (

@@ -5,7 +5,7 @@ import {
   Product,
   ProductPresentation,
   QueryGetAdminProductsFiltersArgs,
-} from "@features/Products/types";
+} from "@features/API";
 import { useQuery } from "react-query";
 
 export type GetAdminProductsQueryVariables = Exact<{

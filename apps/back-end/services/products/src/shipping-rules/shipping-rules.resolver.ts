@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Args, ID } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, ID, Query } from '@nestjs/graphql';
 import { ShippingRulesService } from '@shipping-rules/shipping-rules.service';
 import { ShippingRule } from '@shipping-rules/entities';
 import { UseGuards } from '@nestjs/common';
@@ -17,6 +17,11 @@ import {
 @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
 export class ShippingRulesResolver {
   constructor(private readonly shippingRulesService: ShippingRulesService) {}
+
+  @Query(() => [ShippingRule])
+  getMyShippingRules(@GqlCurrentUser() user: AuthorizationDecodedUser) {
+    return this.shippingRulesService.getShippingRulesBySellerId(user.id);
+  }
 
   @Mutation(() => ShippingRule)
   createShippingRule(

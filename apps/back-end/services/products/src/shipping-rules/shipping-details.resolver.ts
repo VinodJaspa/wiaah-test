@@ -46,7 +46,7 @@ export class ShippingDetailsResolver {
       country: ref.country,
       deliveryTimeRange: rule.deliveryTimeRange,
       shippingRulesIds: [rule.id],
-      shippingTypes: rule.shippingTypes,
+      shippingTypes: [rule.shippingType],
     };
   }
 }

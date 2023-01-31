@@ -1,7 +1,6 @@
 import { Form, Formik } from "formik";
 import { useResponsive } from "hooks";
 import React from "react";
-import { FlagIcon, FlagIconCode } from "react-flag-kit";
 import { useTranslation } from "react-i18next";
 import { BiEdit } from "react-icons/bi";
 import { FiPlusSquare } from "react-icons/fi";
@@ -18,6 +17,8 @@ import {
   PriceDisplay,
   TableContainer,
   SectionHeader,
+  useGetMyShippingRules,
+  FlagIcon,
 } from "@UI";
 import { ShippingSettingsContext } from "../ShippingSettingsSection";
 
@@ -25,6 +26,9 @@ export const ShippingSettings: React.FC = () => {
   const { addNew } = React.useContext(ShippingSettingsContext);
   const { isMobile } = useResponsive();
   const { t } = useTranslation();
+
+  const { data } = useGetMyShippingRules();
+
   return (
     <div className="flex flex-col gap-4 w-full">
       <SectionHeader sectionTitle={t("shipping_settings", "Shipping Settings")}>
@@ -37,10 +41,7 @@ export const ShippingSettings: React.FC = () => {
         )}
       </SectionHeader>
       <p className="lg:text-xl ">
-        {t(
-          "define_your_shipping",
-          "Define your shipping regions and how rates are calculated."
-        )}{" "}
+        {t("Define your shipping regions and how rates are calculated.")}{" "}
         <span className="text-primary cursor-pointer">
           {t("learn_more", "Learn more")}
         </span>
@@ -53,38 +54,45 @@ export const ShippingSettings: React.FC = () => {
                 <Table className="w-full">
                   <Tr>
                     <Th></Th>
-                    <Th>{t("shipping_type", "Shipping Type")}</Th>
-                    <Th>{t("shipping_calculation", "Shipping Calculation")}</Th>
+                    <Th>{t("Shipping Type")}</Th>
+                    <Th>{t("Shipping Calculation")}</Th>
                     <Th></Th>
                     <Th></Th>
                   </Tr>
                   <TBody>
-                    {ShippingMothedsData.map((mothed, i) => (
-                      <Tr>
-                        <Td className="pl-0">
-                          <FlagIcon size={48} code={mothed.targetCountryCode} />
-                        </Td>
-                        <Td>{mothed.shippingName}</Td>
-                        <Td>
-                          {mothed.shippingCost.amount > 1 ? (
-                            <PriceDisplay priceObject={mothed.shippingCost} />
-                          ) : (
-                            t("free_shipping", "Free Shipping")
-                          )}
-                        </Td>
-                        <Td className="text-primary">
-                          <div className="flex gap-2 items-center">
-                            <BiEdit className="text-lg" />{" "}
-                            {t("edit_shipping_rule", "Edit Shipping Rule")}
-                          </div>
-                        </Td>
-                        <Td className="pr-0">
-                          <div className="flex justify-end w-full">
-                            <Switch />
-                          </div>
-                        </Td>
-                      </Tr>
-                    ))}
+                    {data
+                      ? data.map((method, i) => (
+                          <Tr>
+                            <Td className="pl-0">
+                              {method?.countries?.at(0)?.code ? (
+                                <FlagIcon
+                                  size={"48"}
+                                  code={method.countries.at(0)!.code}
+                                />
+                              ) : null}
+                            </Td>
+                            <Td>{method.name}</Td>
+                            <Td>
+                              {method.cost > 1 ? (
+                                <PriceDisplay price={method.cost} />
+                              ) : (
+                                t("Free Shipping")
+                              )}
+                            </Td>
+                            <Td className="text-primary">
+                              <div className="flex gap-2 items-center">
+                                <BiEdit className="text-lg" />
+                                {t("Edit Shipping Rule")}
+                              </div>
+                            </Td>
+                            <Td className="pr-0">
+                              <div className="flex justify-end w-full">
+                                <Switch />
+                              </div>
+                            </Td>
+                          </Tr>
+                        ))
+                      : null}
                   </TBody>
                 </Table>
               </TableContainer>
@@ -95,36 +103,3 @@ export const ShippingSettings: React.FC = () => {
     </div>
   );
 };
-
-type ShippingMothedData = {
-  shippingName: string;
-  shippingCost: PriceType;
-  targetCountryCode: FlagIconCode;
-};
-
-const ShippingMothedsData: ShippingMothedData[] = [
-  {
-    shippingName: "Paid Shipping",
-    shippingCost: {
-      amount: 25,
-      currency: "USD",
-    },
-    targetCountryCode: "US",
-  },
-  {
-    shippingName: "Free Shipping",
-    shippingCost: {
-      amount: 0,
-      currency: "USD",
-    },
-    targetCountryCode: "CH",
-  },
-  {
-    shippingName: "Click and Collect",
-    shippingCost: {
-      amount: 0,
-      currency: "USD",
-    },
-    targetCountryCode: "FR",
-  },
-];

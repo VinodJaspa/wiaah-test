@@ -1,4 +1,11 @@
-import { Field, Float, ID, InputType, registerEnumType } from '@nestjs/graphql';
+import {
+  Field,
+  Float,
+  ID,
+  InputType,
+  Int,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { RefundType } from '@prisma-client';
 
 registerEnumType(RefundType, { name: 'RefundType' });
@@ -19,4 +26,7 @@ export class AskForRefundInput {
 
   @Field(() => String, { nullable: true, defaultValue: '' })
   reason: string;
+
+  @Field(() => Int)
+  qty: number;
 }

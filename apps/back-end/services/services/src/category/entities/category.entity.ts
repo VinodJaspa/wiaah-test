@@ -32,7 +32,7 @@ export class ServiceCategoryFilter {
 }
 
 @ObjectType()
-export class Category {
+export class ServiceCategory {
   @Field(() => ID)
   id: string;
 

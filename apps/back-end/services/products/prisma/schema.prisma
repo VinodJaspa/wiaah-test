@@ -179,7 +179,7 @@ model ShippingRule {
   countries         ShippingCountry[]
   cost              Float
   deliveryTimeRange DeliveryTimeRange
-  shippingTypes     ShippingType[]
+  shippingType      ShippingType
   createdAt         DateTime          @default(now())
   updatedAt         DateTime          @updatedAt()
 }

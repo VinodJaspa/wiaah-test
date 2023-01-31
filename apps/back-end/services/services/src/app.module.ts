@@ -23,6 +23,7 @@ import { ServiceModule } from './service/service.module';
 import { WorkingScheduleModule } from './working-schedule/working-schedule.module';
 import { InsuranceModule } from './insurance/insurance.module';
 import { ServiceDiscoveryModule } from './service-discovery/service-discovery.module';
+import { RestModule } from './rest/rest.module';
 
 @Global()
 @Module({
@@ -62,6 +63,7 @@ export class GlobalPrismaService {}
     ErrorHandlingModule.register({
       messages: ErrorMessages,
     }),
+    RestModule,
     ServiceModule,
     WorkingScheduleModule,
     InsuranceModule,

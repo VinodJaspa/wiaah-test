@@ -42,14 +42,14 @@ export class ShippingDetailsService {
         shippingRulesIds: [],
       };
 
-    const { cost, shippingTypes, deliveryTimeRange } = shippingRules;
+    const { cost, shippingType, deliveryTimeRange } = shippingRules;
 
     return {
       available: true,
       cost,
       country: countryCode,
       deliveryTimeRange,
-      shippingTypes,
+      shippingTypes: [shippingType],
       shippingRulesIds: [shippingRules[0].id],
     };
   }

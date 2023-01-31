@@ -41,6 +41,14 @@ export class ShippingRulesService {
     });
   }
 
+  getShippingRulesBySellerId(id: string): Promise<ShippingRule[]> {
+    return this.prisma.shippingRule.findMany({
+      where: {
+        sellerId: id,
+      },
+    });
+  }
+
   async addShippingRule(
     userId: string,
     rule: CreateShippingRuleInput,

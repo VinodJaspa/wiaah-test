@@ -8,7 +8,7 @@ import {
   ProductPresentation,
   QueryGetMyProductsArgs,
   ShippingDetails,
-} from "@features/Products/types";
+} from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { Exact, Maybe } from "types";
 import { useQuery } from "react-query";
