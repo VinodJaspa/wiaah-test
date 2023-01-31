@@ -1,0 +1,153 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @key(fields: String!) on OBJECT | INTERFACE
+
+directive @extends on OBJECT | INTERFACE
+
+directive @external on OBJECT | FIELD_DEFINITION
+
+directive @requires(fields: String!) on FIELD_DEFINITION
+
+directive @provides(fields: String!) on FIELD_DEFINITION
+
+type Account {
+  id: ID!
+}
+
+type Product {
+  id: ID!
+}
+
+type ShippingRule {
+  id: ID!
+}
+
+type ShippingAddress {
+  id: ID!
+}
+
+type OrderItem {
+  id: ID!
+  qty: Int!
+  product: Product
+}
+
+type OrderStatus {
+  of: OrderStatusEnum!
+  rejectReason: String
+}
+
+enum OrderStatusEnum {
+  pending
+  paid
+  rejectedBySeller
+  rejectedByBuyer
+  shipping
+  compeleted
+}
+
+type Order {
+  id: ID!
+  sellerId: ID!
+  seller: Account
+  buyerId: ID!
+  buyer: Account
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  items: [OrderItem!]!
+  status: OrderStatus!
+  shippingAddressId: String!
+  shippingMethodId: String!
+  paid: Float!
+  shipping: ShippingRule!
+  shippingAddress: ShippingAddress!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  getMyOrders(getMyOrdersArgs: GetMyOrdersInput!): [Order!]!
+  getOrder(id: String!): Order!
+  getUserOrders(args: GetUserOrders!): [Order!]!
+  getFilteredOrders(args: GetFilteredOrdersInput!): [Order!]!
+}
+
+input GetMyOrdersInput {
+  status: OrderStatusEnum
+  pagination: GqlPaginationInput!
+}
+
+input GqlPaginationInput {
+  page: Int!
+  take: Int!
+}
+
+input GetUserOrders {
+  q: String!
+  status: OrderStatusEnum
+  userId: String!
+  accountType: String!
+  pagination: GqlPaginationInput!
+}
+
+input GetFilteredOrdersInput {
+  pagination: GqlPaginationInput!
+  date_from: String!
+  date_to: String!
+  qty: Int!
+  price: Float!
+  buyer: String!
+  seller: String!
+  payment_method: String!
+}
+
+type Mutation {
+  rejectReceivedOrder(args: RejectReceivedOrderInput!): Boolean!
+  rejectRequestedOrder(args: RejectRequestedOrderInput!): Boolean!
+  acceptRequestedOrder(args: AcceptRequestedOrderInput!): Boolean!
+  acceptReceivedOrder(args: AcceptReceivedOrderInput!): Boolean!
+  askForRefund(askForRefundArgs: AskForRefundInput!): Boolean!
+  acceptRefundRequest(id: ID!): Boolean!
+  rejectRefundRequest(args: RejectRefundRequestInput!): Boolean!
+}
+
+input RejectReceivedOrderInput {
+  id: ID!
+  rejectReason: String!
+}
+
+input RejectRequestedOrderInput {
+  id: ID!
+  rejectReason: String!
+}
+
+input AcceptRequestedOrderInput {
+  id: ID!
+}
+
+input AcceptReceivedOrderInput {
+  id: ID!
+}
+
+input AskForRefundInput {
+  id: ID!
+  type: RefundType!
+  fullAmount: Boolean
+  amount: Float
+  reason: String = ""
+}
+
+enum RefundType {
+  money
+  credit
+}
+
+input RejectRefundRequestInput {
+  id: ID!
+  reason: String = ""
+}

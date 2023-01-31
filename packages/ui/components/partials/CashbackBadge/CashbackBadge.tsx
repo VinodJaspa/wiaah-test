@@ -1,4 +1,3 @@
-import { CashbackData } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HtmlDivProps } from "types";

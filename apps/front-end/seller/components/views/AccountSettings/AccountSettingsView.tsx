@@ -33,7 +33,6 @@ import {
 } from "ui";
 import { ImBlocked } from "react-icons/im";
 import { useResponsive } from "hooks";
-import { GiReturnArrow } from "react-icons/gi";
 import { useTranslation } from "react-i18next";
 import { IoMdReturnLeft } from "react-icons/io";
 import { useRouting } from "routing";
@@ -56,6 +55,7 @@ export const AccountSettingsView: React.FC = () => {
   function handleSectionChange(url: string) {
     router.replace(`/${baseRoute}/${url}`);
   }
+
   return (
     <>
       <div

@@ -10,7 +10,7 @@ import {
 } from 'nest-utils';
 
 import { AccountsService } from './accounts.service';
-import { CreateAccountInput } from '@accounts/dto';
+import { CreateAccountInput, DeleteAccountRequestInput } from '@accounts/dto';
 import { UpdateAccountInput } from './dto/update-account.input';
 import { Account } from './entities';
 import { PrismaService } from 'prismaService';
@@ -90,6 +90,7 @@ export class AccountsResolver {
   }
   @Mutation(() => Boolean)
   async requestAccountDeletion(
+    @Args('args') args: DeleteAccountRequestInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     const created = await this.prisma.accountDeletionRequest.create({

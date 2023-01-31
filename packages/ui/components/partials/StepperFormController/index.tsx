@@ -78,7 +78,6 @@ export function StepperFormController<FinaleDataType extends Data>({
       if (JSON.stringify(state[handlerKey]) === JSON.stringify(data))
         return state;
 
-      console.log("validating");
       const _state = { ...state };
       _state[handlerKey] = data;
       return _state;
@@ -91,9 +90,7 @@ export function StepperFormController<FinaleDataType extends Data>({
   }
 
   function nextStep() {
-    console.log("next");
     if (lock) {
-      console.log("locked");
       const currentStepKey = handlers[currentStepIdx];
       if (typeof currentStepKey !== "string") return;
 
@@ -111,7 +108,6 @@ export function StepperFormController<FinaleDataType extends Data>({
         }
       });
     } else {
-      console.log("unlocked");
       setCurrentStepIdx((state) => {
         const lastStep = state > stepsNum - 2;
 

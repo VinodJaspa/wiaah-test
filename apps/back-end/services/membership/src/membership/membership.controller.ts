@@ -7,8 +7,9 @@ import {
   CanPreformProductActionMessageReply,
   GetUserMembershipPriceIdMessage,
   GetUserMembershipPriceIdMessageReply,
+  SubscriptionPaidEvent,
 } from 'nest-dto';
-import { KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
+import { AddToDate, KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
 
 import { MigrateMembershipTurnoverRulePriceIdCommand } from '@membership/commands';
 import { GetMembershipPlanByIdQuery } from '@membership/queries';
@@ -16,16 +17,17 @@ import { MembershipType } from '@membership/types';
 import {
   membershipPreformAction,
   MembershipPricesType,
-  membershipType,
-  membershipUnitType,
 } from '@membership/const';
 import { Membership } from './entities';
+import { CommissionOn, Recurring } from 'prismaClient';
+import { PrismaService } from 'prismaService';
 
 @Controller()
 export class MembershipController {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly queryBus: QueryBus,
+    private readonly prisma: PrismaService,
   ) {}
 
   @EventPattern(
@@ -42,6 +44,45 @@ export class MembershipController {
         value.input.priceId,
       ),
     );
+  }
+
+  @EventPattern(KAFKA_EVENTS.BILLING_EVNETS.billingSubscriptionPaid('*', true))
+  async handleMembershipSubscribed(
+    @Payload() { value }: { value: SubscriptionPaidEvent },
+  ) {
+    const membership = await this.prisma.membership.findUnique({
+      where: {
+        id: value.input.id,
+      },
+    });
+
+    const endAt = AddToDate(
+      new Date(),
+      membership.recurring === Recurring.day
+        ? { days: 1 }
+        : membership.recurring === Recurring.week
+        ? { days: 7 }
+        : membership.recurring === Recurring.month
+        ? { days: 30 }
+        : { days: 365 },
+    );
+
+    await this.prisma.memberShipSubscription.upsert({
+      where: {
+        userId: value.input.userId,
+      },
+      create: {
+        endAt,
+        startAt: new Date(),
+        userId: value.input.userId,
+        membershipId: value.input.id,
+      },
+      update: {
+        membershipId: value.input.id,
+        endAt,
+        startAt: new Date(),
+      },
+    });
   }
 
   @MessagePattern(KAFKA_MESSAGES.BILLING_MESSAGES.getUserMembershipPriceId)
@@ -85,9 +126,7 @@ export class MembershipController {
       Membership
     >(new GetMembershipPlanByIdQuery(value.input.seller.membershipId));
 
-    const canPreform =
-      membership.type === membershipType.per_unit &&
-      membership.unit_type === membershipUnitType.vendor_site_click;
+    const canPreform = membership.commissionOn === CommissionOn.external_click;
     return new CanPreformProductActionMessageReply({
       success: true,
       data: canPreform,

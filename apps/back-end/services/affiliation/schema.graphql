@@ -21,6 +21,10 @@ type Service {
   type: String!
 }
 
+type Account {
+  id: ID!
+}
+
 type Affiliation {
   id: ID!
   sellerId: ID!
@@ -55,10 +59,15 @@ type AffiliationPurchase {
   affiliatorId: ID!
   purchaserId: ID!
   createdAt: DateTime!
+  paidCommissionPercent: Float!
+  paidCommissionAmount: Float!
+  seller: Account!
+  purchaser: Account!
+  affiliator: Account!
 }
 
 type Query {
-  getMyProductsAffiliationHistory: AffiliationPurchase!
+  getMyProductsAffiliationHistory(args: GetAffiliationHistoryInput!): [AffiliationPurchase!]!
   getUserAffiliationHistory(id: String!): [AffiliationPurchase!]!
   getUserAffiliationsPurchases(args: GetUserAffiliationsPurchasesInput!): [AffiliationPurchase!]!
   getFilteredAffiliationsHistory(filters: GetFilteredAffiliationHistoryInput!): [AffiliationPurchase!]!
@@ -67,14 +76,18 @@ type Query {
   getMyAffiliations(args: GetMyAffiliationsInput!): [Affiliation!]!
 }
 
-input GetUserAffiliationsPurchasesInput {
+input GetAffiliationHistoryInput {
   pagination: GqlPaginationInput!
-  id: ID!
 }
 
 input GqlPaginationInput {
   page: Int!
   take: Int!
+}
+
+input GetUserAffiliationsPurchasesInput {
+  pagination: GqlPaginationInput!
+  id: ID!
 }
 
 input GetFilteredAffiliationHistoryInput {

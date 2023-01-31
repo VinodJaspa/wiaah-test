@@ -10,9 +10,8 @@ export type ContentData = Comment | NewsfeedPost;
 @Injectable()
 export class ContentDiscoveryService {
   constructor(
-    private readonly newsfeedPostsService: NewsfeedPostsService,
-  ) // private readonly commentsService: CommentsService,
-  {}
+    private readonly newsfeedPostsService: NewsfeedPostsService, // private readonly commentsService: CommentsService,
+  ) {}
 
   async getContent(
     type: ContentHostType,
@@ -32,7 +31,7 @@ export class ContentDiscoveryService {
 
   async getManyPosts(
     contents: { type: PostType; contentId: string }[],
-  ): Promise<ContentData[]> {
+  ): Promise<NewsfeedPost[]> {
     const organisedContentData = contents.reduce((acc, curr) => {
       return {
         ...acc,
@@ -40,7 +39,7 @@ export class ContentDiscoveryService {
       };
     }, {} as Record<PostType, string[]>);
 
-    const postsData: ContentData[] = [];
+    const postsData: NewsfeedPost[] = [];
 
     for (const _type in organisedContentData) {
       const type = _type as PostType;

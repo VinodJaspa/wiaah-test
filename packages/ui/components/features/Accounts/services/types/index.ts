@@ -77,6 +77,24 @@ export enum AccountVerificationStatus {
   Accepted = "accepted",
 }
 
+export type CookiesSetting = {
+  __typename?: "CookiesSetting";
+  id: Scalars["ID"];
+  title: Scalars["String"];
+  description: Scalars["String"];
+  required: Scalars["Boolean"];
+  benefits: Array<Scalars["String"]>;
+  cons: Array<Scalars["String"]>;
+};
+
+export type UserCookiesSettings = {
+  __typename?: "UserCookiesSettings";
+  id: Scalars["ID"];
+  userId: Scalars["ID"];
+  acceptedCookiesIds: Array<Scalars["String"]>;
+  acceptedRequired: Scalars["Boolean"];
+};
+
 export type RequiredAction = {
   __typename?: "RequiredAction";
   /** Example field (placeholder) */
@@ -98,6 +116,8 @@ export type Query = {
   getMyContacts: UserContact;
   getAccountVerificationRequests: Array<AccountVerification>;
   acceptAccountVerification: Scalars["Boolean"];
+  getCookiesSettings: Array<CookiesSetting>;
+  getMyCookiesSettings: UserCookiesSettings;
   getFilteredSellers: Array<Account>;
   getFilteredBuyers: Array<Account>;
   adminGetAccount: Account;
@@ -184,6 +204,7 @@ export type Mutation = {
   updateMyContact: Scalars["Boolean"];
   requestAccountVerification: Scalars["Boolean"];
   refuseAccountVerification: Scalars["Boolean"];
+  updateMyCookiesSettings: Scalars["Boolean"];
   updateUserLocation: Scalars["Boolean"];
   adminEditAccount: Account;
   acceptSellerAccount: Scalars["Boolean"];
@@ -221,6 +242,10 @@ export type MutationRefuseAccountVerificationArgs = {
   args: RefuseAccountVerificationRequest;
 };
 
+export type MutationUpdateMyCookiesSettingsArgs = {
+  args: UpdateUserCookiesSettingsInput;
+};
+
 export type MutationUpdateUserLocationArgs = {
   updateLocation: UpdateUserLocationInput;
 };
@@ -243,6 +268,10 @@ export type MutationSuspenseAccountArgs = {
 
 export type MutationRegisterArgs = {
   RegisterInput: CreateAccountInput;
+};
+
+export type MutationRequestAccountDeletionArgs = {
+  args: DeleteAccountRequestInput;
 };
 
 export type MutationEditAccountArgs = {
@@ -288,6 +317,10 @@ export type RefuseAccountVerificationRequest = {
   reason: Scalars["String"];
 };
 
+export type UpdateUserCookiesSettingsInput = {
+  ids: Array<Scalars["ID"]>;
+};
+
 export type UpdateUserLocationInput = {
   lat: Scalars["Float"];
   lon: Scalars["Float"];
@@ -326,6 +359,12 @@ export type CreateAccountInput = {
   password: Scalars["String"];
   confirmPassword: Scalars["String"];
   accountType: RegisterAccountType;
+};
+
+export type DeleteAccountRequestInput = {
+  reason: Scalars["String"];
+  password: Scalars["String"];
+  sendData?: Maybe<Scalars["Boolean"]>;
 };
 
 export type UpdateAccountInput = {

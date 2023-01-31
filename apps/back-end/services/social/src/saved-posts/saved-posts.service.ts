@@ -1,6 +1,9 @@
 import { ContentData, ContentDiscoveryService } from '@content-discovery';
+import { UserSavedPostsGroup } from '@entities';
 import { Injectable } from '@nestjs/common';
+import { ExtractPagination } from 'nest-utils';
 import { PrismaService } from 'prismaService';
+import { GetMySavedPostsInput } from './dto';
 
 @Injectable()
 export class SavedPostsService {
@@ -9,7 +12,11 @@ export class SavedPostsService {
     private readonly contentDiscoveryService: ContentDiscoveryService,
   ) {}
 
-  async getUserSavedPosts(userId: string): Promise<ContentData[]> {
+  async getUserSavedPosts(
+    input: GetMySavedPostsInput,
+    userId: string,
+  ): Promise<UserSavedPostsGroup> {
+    const { skip, take } = ExtractPagination(input.pagination);
     const postsGroup = await this.prisma.userSavedPostsGroup.findUnique({
       where: {
         userId,
@@ -22,6 +29,10 @@ export class SavedPostsService {
       postIds.map((p) => ({ contentId: p.postId, type: p.postType })),
     );
 
-    return posts;
+    return {
+      id: postsGroup.id,
+      posts,
+      userId,
+    };
   }
 }

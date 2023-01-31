@@ -15,9 +15,9 @@ import {
   TableContainer,
   SectionHeader,
   Image,
-  useGetMyAffiliations,
   Badge,
   AffiliationStatus,
+  useGetMyAffiliationQuery,
 } from "@UI";
 import { useResponsive } from "hooks";
 import { FiPlusSquare } from "react-icons/fi";
@@ -35,10 +35,12 @@ export const AffiliationListSection: React.FC<
   const { copy } = useClipboard();
   const { changeTotalItems, controls, pagination } = usePaginationControls();
   const { t } = useTranslation();
-  const { data: affiliations } = useGetMyAffiliations({ pagination });
+  const { data: affiliations } = useGetMyAffiliationQuery({ pagination });
+
   React.useEffect(() => {
     changeTotalItems(affiliations?.length || 0);
   }, []);
+
   return (
     <div className="flex flex-col">
       <SectionHeader sectionTitle={t("affiliation_list", "Affiliation List")}>
@@ -66,11 +68,7 @@ export const AffiliationListSection: React.FC<
                 <Td>
                   <Image
                     className="w-16 md:w-20 lg:w-24 xl:w-32 h-auto"
-                    src={
-                      link.product?.presentations.find(
-                        (v) => v.type === "image"
-                      )?.src || ""
-                    }
+                    src={link.product?.thumbnail}
                     alt={link.product?.title}
                   />
                 </Td>

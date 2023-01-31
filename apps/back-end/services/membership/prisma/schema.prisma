@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./generated/client"
+  output   = "./generated/client"
 }
 
 datasource db {
@@ -12,23 +12,34 @@ datasource db {
 }
 
 model Membership {
-  id String @id @db.ObjectId @default(auto()) @map("_id")
-  name String 
-  commissionOn CommissionOn
-  recurring Recurring
-  priceId String?
-  turnover_rules MembershipTurnoverRule[]
-  includings MembershipIncludeItem[]
-  active Boolean @default(false)
+  id                     String                   @id @default(auto()) @map("_id") @db.ObjectId
+  name                   String
+  commissionOn           CommissionOn
+  recurring              Recurring
+  priceId                String?
+  turnover_rules         MembershipTurnoverRule[]
+  includings             MembershipIncludeItem[]
+  active                 Boolean                  @default(false)
+  MemberShipSubscription MemberShipSubscription[]
 }
+
 model MembershipTurnoverRule {
-  id String @id @default(auto()) @db.ObjectId @map("_id")
-  membershipId String @db.ObjectId
-  membership Membership @relation(fields: [membershipId],references: [id])
-  priceId String?
-  usage Float
-  commission Float
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  membershipId   String         @db.ObjectId
+  membership     Membership     @relation(fields: [membershipId], references: [id])
+  priceId        String?
+  usage          Float
+  commission     Float
   commissionType commissionType
+}
+
+model MemberShipSubscription {
+  userId       String     @id @map("_id") @db.ObjectId
+  membershipId String     @db.ObjectId
+  membership   Membership @relation(fields: [membershipId], references: [id])
+
+  startAt DateTime
+  endAt   DateTime
 }
 
 enum Recurring {
@@ -47,10 +58,12 @@ enum CommissionOn {
   sale
   revenue
 }
+
 enum commissionType {
   fixed
   percentage
 }
+
 enum MembershipUnitType {
   vendor_site_click
 }

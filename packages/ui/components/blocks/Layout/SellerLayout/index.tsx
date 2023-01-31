@@ -240,7 +240,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
                 })) || []
               }
             />
-            <Divider />
+            {stories && stories.length > 0 ? <Divider /> : null}
             <div className="text-white flex flex-col gap-4">
               <ScrollableContainer
                 containerProps={{ className: "gap-4" }}
@@ -301,11 +301,6 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           >
             {children}
           </main>
-          {!isMobile && (
-            <div className="bg-white">
-              <SocialFooter copyRightYear={2022} />
-            </div>
-          )}
         </div>
       </Container>
     </Root>
@@ -433,7 +428,7 @@ const SellerNavLinks: HeaderNavLink[] = [
       },
       href: getRouting((r) => r.visitServiceManagement()),
     },
-    icon: BsShop,
+    icon: () => <ServicesIcon />,
   },
   {
     link: {

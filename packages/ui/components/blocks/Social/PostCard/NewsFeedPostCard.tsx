@@ -7,6 +7,7 @@ import {
   LocationIcon,
   PersonFillIcon,
   StarIcon,
+  Image,
 } from "@UI/components/partials";
 import {
   useSocialPostSettingsPopup,
@@ -23,13 +24,14 @@ import { useRouting } from "routing";
 import { useTypedReactPubsub } from "@libs";
 
 export interface PostCardProps {
-  profileInfo: Pick<
+  profileInfo?: Pick<
     Profile,
     "id" | "ownerId" | "username" | "photo" | "profession"
-  >;
+  > | null;
   postInfo: Pick<
     NewsfeedPost,
     | "id"
+    | "title"
     | "userId"
     | "comments"
     | "reactionNum"
@@ -56,6 +58,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   const { emit } = useTypedReactPubsub((v) => v.openPostCommentInput);
 
   function handleLike() {
+    if (!profileInfo) return;
     mutate({
       args: {
         authorProfileId: profileInfo.id,
@@ -76,7 +79,7 @@ export const PostCard: React.FC<PostCardProps> = ({
 
   return (
     <div className="relative group rounded-[1.25rem] overflow-hidden w-full h-full">
-      <img
+      <Image
         className="w-full h-full object-cover"
         src={
           postInfo?.attachments && postInfo.attachments.length > 0

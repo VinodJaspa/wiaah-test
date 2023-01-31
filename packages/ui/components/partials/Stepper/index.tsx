@@ -21,18 +21,35 @@ type StepperPassedProps = StepperContextValues & {};
 
 export interface StepperProps {
   children: MaybeFn<StepperPassedProps>;
+  controls?: {
+    value: number;
+    onChange: (idx: number) => any;
+  };
 }
 
-export const Stepper: React.FC<StepperProps> = ({ children }) => {
+export const Stepper: React.FC<StepperProps> = ({ children, controls }) => {
   const [currentStepIdx, setCurrentStep] = React.useState<number>(0);
   const [stepsLength, setStepsLength] = React.useState<number>(0);
 
   function handleNextStep() {
+    if (controls) {
+      controls.onChange(
+        controls.value + 1 >= stepsLength ? controls.value : controls.value + 1
+      );
+      return;
+    }
     setCurrentStep((current) => {
       return current + 1 >= stepsLength ? current : current + 1;
     });
   }
   function handlePreviousStep() {
+    if (controls) {
+      controls.onChange(
+        controls.value - 1 < 0 ? controls.value : controls.value - 1
+      );
+      return;
+    }
+
     setCurrentStep((current) => {
       return current - 1 < 0 ? current : current - 1;
     });
@@ -40,7 +57,7 @@ export const Stepper: React.FC<StepperProps> = ({ children }) => {
   return (
     <StepperContext.Provider
       value={{
-        currentStepIdx,
+        currentStepIdx: controls ? controls.value : currentStepIdx,
         nextStep: handleNextStep,
         previousStep: handlePreviousStep,
         setStepsLength,

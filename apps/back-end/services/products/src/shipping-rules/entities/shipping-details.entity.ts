@@ -10,26 +10,28 @@ import {
 import { ShippingType } from '@prisma-client';
 import { ShippingDeliveryTimeRange } from '@shipping-details';
 
+export { ShippingDetails } from '@shipping-details';
+
 registerEnumType(ShippingType, { name: 'ShippingType' });
 
-@ObjectType()
-@Directive('@key(fields: "country, shippingRulesIds")')
-export class ShippingDetails {
-  @Field((type) => String)
-  country: string;
+// @ObjectType()
+// @Directive('@key(fields: "country, shippingRulesIds")')
+// export class ShippingDetails {
+//   @Field((type) => String)
+//   country: string;
 
-  @Field((type) => [ID])
-  shippingRulesIds: string[];
+//   @Field((type) => [ID])
+//   shippingRulesIds: string[];
 
-  @Field((type) => Float, { nullable: true })
-  cost: number;
+//   @Field((type) => Float, { nullable: true })
+//   cost: number;
 
-  @Field((type) => Boolean)
-  available: boolean;
+//   @Field((type) => Boolean)
+//   available: boolean;
 
-  @Field((type) => ShippingDeliveryTimeRange, { nullable: true })
-  deliveryTimeRange: ShippingDeliveryTimeRange;
+//   @Field((type) => ShippingDeliveryTimeRange, { nullable: true })
+//   deliveryTimeRange: ShippingDeliveryTimeRange;
 
-  @Field((type) => [ShippingType], { nullable: true })
-  shippingTypes: ShippingType[];
-}
+//   @Field((type) => [ShippingType], { nullable: true })
+//   shippingTypes: ShippingType[];
+// }

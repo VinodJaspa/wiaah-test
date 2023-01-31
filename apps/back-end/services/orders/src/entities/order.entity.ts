@@ -1,4 +1,4 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { ObjectType, Field, ID, Int } from '@nestjs/graphql';
 import { OrderStatus, BuyerInfo, OrderItem, SellerInfo } from '@entities';
 
 @ObjectType()
@@ -17,4 +17,7 @@ export class Order {
 
   @Field((type) => BuyerInfo, { nullable: true })
   buyerInfo?: BuyerInfo;
+
+  @Field(() => Int)
+  paid?: number;
 }

@@ -17,22 +17,26 @@ import {
   Input,
   SelectOption,
   Select,
+  Image,
+  PriceDisplay,
 } from "@partials";
 import { SectionHeader } from "@sections";
 import { ItemsPagination, usePaginationControls } from "@blocks/Navigating";
 import { useEditProductData } from "@src/Hooks";
+import { useGetMyProducts } from "@features/Products";
 
 export interface ProductDetailsTableProps {}
 
 export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
-  const { AddNewProduct } = useEditProductData();
-  const {
-    controls,
-    changeTotalItems,
-    pagination: { page, take },
-  } = usePaginationControls();
+  const { AddNewProduct, EditProduct } = useEditProductData();
+  const { controls, changeTotalItems, pagination } = usePaginationControls();
   const { isMobile } = useResponsive();
   const { t } = useTranslation();
+
+  const { data: Products } = useGetMyProducts({
+    pagination,
+  });
+
   React.useEffect(() => {
     changeTotalItems(products.length);
   }, []);
@@ -97,28 +101,31 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
               </Tr>
             </THead>
             <TBody>
-              {products.map((product, i) => (
+              {Products?.map((product, i) => (
                 <Tr key={product.id + i}>
                   <Td align="center" className="w-24">
-                    <img
+                    <Image
                       className="h-auto w-full"
-                      src={product.image}
-                      alt={product.name}
+                      src={product.thumbnail}
+                      alt={product.title}
                     />
                   </Td>
-                  <Td align="center">{product.name}</Td>
+                  <Td align="center">{product.title}</Td>
                   <Td align="center">
-                    {product.price.amount} {product.price.currency}
+                    <PriceDisplay price={product.price} />
                   </Td>
-                  <Td align="center">{product.stockStatus}</Td>
+                  <Td align="center">{product.stock}</Td>
                   <Td align="center">
-                    {product.earnings.amount} {product.earnings.currency}
+                    <PriceDisplay price={product.earnings} />
                   </Td>
                   <Td align="center">{product.sales}</Td>
                   <Td align="center">{product.status}</Td>
                   <Td align="center">
                     <div className="flex items-center gap-2">
-                      <EditIcon className="text-xl cursor-pointer" />
+                      <EditIcon
+                        onClick={() => EditProduct(product.id)}
+                        className="text-xl cursor-pointer"
+                      />
                       <TrashIcon className="text-red-700 text-xl cursor-pointer" />
                     </div>
                   </Td>

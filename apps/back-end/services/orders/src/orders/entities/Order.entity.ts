@@ -1,7 +1,13 @@
-import { Field, ID, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
+import {
+  Field,
+  Float,
+  ID,
+  Int,
+  ObjectType,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { OrderStatusEnum } from '@prisma-client';
-import { Account } from './extends';
-import { Discount } from './extends/discount.entity';
+import { Account, Product, ShippingAddress, ShippingRule } from './extends';
 
 registerEnumType(OrderStatusEnum, { name: 'OrderStatusEnum' });
 
@@ -13,8 +19,8 @@ export class OrderItem {
   @Field(() => Int)
   qty: number;
 
-  @Field(() => String)
-  type: string;
+  @Field(() => Product, { nullable: true })
+  product?: Product;
 }
 
 @ObjectType()
@@ -55,6 +61,15 @@ export class Order {
   @Field(() => OrderStatus)
   status: OrderStatus;
 
-  @Field(() => Discount, { nullable: true })
-  discount?: Discount;
+  @Field(() => String)
+  shippingAddressId: string;
+
+  @Field(() => String)
+  shippingMethodId: string;
+
+  @Field(() => Float, { defaultValue: 0 })
+  paid?: number;
+
+  // @Field(() => Discount, { nullable: true })
+  // discount?: Discount;
 }

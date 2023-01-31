@@ -230,24 +230,11 @@ export type NewsfeedHashtagSearch = {
   mostViewedVideo: NewsfeedPost;
 };
 
-export type UserSavedPost = {
-  __typename?: "UserSavedPost";
-  postId: Scalars["ID"];
-  postType: PostType;
-};
-
-export enum PostType {
-  NewsfeedPost = "newsfeed_post",
-  ShopPost = "shop_post",
-  ServicePost = "service_post",
-  AffiliationPost = "affiliation_post",
-}
-
 export type UserSavedPostsGroup = {
   __typename?: "UserSavedPostsGroup";
   id: Scalars["ID"];
   userId: Scalars["ID"];
-  posts: Array<UserSavedPost>;
+  posts: Array<NewsfeedPost>;
 };
 
 export type Account = {
@@ -385,6 +372,7 @@ export type Block = {
   id: Scalars["ID"];
   blockedUserId: Scalars["ID"];
   blockedAt: Scalars["DateTime"];
+  blockedProfile?: Maybe<Profile>;
 };
 
 export type PrivacySettings = {
@@ -575,6 +563,10 @@ export type QueryGetNewsfeedHashtagPostsArgs = {
   hashtagSearchInput: GetHashtagNewsfeedPostsInput;
 };
 
+export type QueryGetMySavedPostsArgs = {
+  args: GetMySavedPostsInput;
+};
+
 export type QueryGetUserStoryArgs = {
   userId: Scalars["String"];
 };
@@ -589,6 +581,10 @@ export type QueryGetStoryViewsArgs = {
 
 export type QueryGetRecentStoriesArgs = {
   getRecentStoryInput?: Maybe<GetRecentStoriesInput>;
+};
+
+export type QueryGetMyBlockListArgs = {
+  args: GetMyBlocklistInput;
 };
 
 export type QueryGetUserProductPostsArgs = {
@@ -703,6 +699,10 @@ export type GetHashtagNewsfeedPostsInput = {
   userId: Scalars["ID"];
 };
 
+export type GetMySavedPostsInput = {
+  pagination: GqlPaginationInput;
+};
+
 export type GetStorySeenByInput = {
   pagination: GqlPaginationInput;
   storyId: Scalars["ID"];
@@ -710,6 +710,10 @@ export type GetStorySeenByInput = {
 };
 
 export type GetRecentStoriesInput = {
+  pagination: GqlPaginationInput;
+};
+
+export type GetMyBlocklistInput = {
   pagination: GqlPaginationInput;
 };
 

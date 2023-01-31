@@ -34,7 +34,7 @@ export const useResponsive = (cb?: () => any) => {
       window.removeEventListener("load", HandleScreenSize);
       window.removeEventListener("DOMContentLoaded", HandleScreenSize);
     };
-  }, [typeof window]);
+  }, [typeof window, typeof document]);
 
   const isMobile = screenWidth < 640;
   const isTablet = screenWidth < 1024;

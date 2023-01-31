@@ -1,10 +1,7 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { ClientKafka } from '@nestjs/microservices';
 import { KAFKA_EVENTS, SERVICES, sleep } from 'nest-utils';
-import {
-  BillingMonthlyPriceCreatedEvent,
-  MembershipCreatedEvent as KafkaMembershipCreatedEvent,
-} from 'nest-dto';
+import { BillingMonthlyPriceCreatedEvent } from 'nest-dto';
 import { MembershipCreatedEvent } from '../impl';
 import { Inject } from '@nestjs/common';
 import { MembershipPricesType } from '@membership/const';
@@ -26,7 +23,7 @@ export class MembershipCreatedEventHandler
         KAFKA_EVENTS.BILLING_EVNETS.createMonthlyBillingPrice,
         new BillingMonthlyPriceCreatedEvent({
           id: rule.id,
-          price: rule.price,
+          price: rule.commission,
           type: MembershipPricesType.turnover,
         }),
       );

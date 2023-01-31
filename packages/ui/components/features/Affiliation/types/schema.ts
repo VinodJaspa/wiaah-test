@@ -1,3 +1,4 @@
+import { Account } from "@features/Accounts";
 import { Product } from "@features/Products/types";
 import { Service } from "@features/Services/Services/types";
 
@@ -21,6 +22,7 @@ type Scalars = {
   /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
 };
+
 export type Affiliation = {
   __typename?: "Affiliation";
   id: Scalars["ID"];
@@ -52,17 +54,26 @@ export type AffiliationPurchase = {
   affiliatorId: Scalars["ID"];
   purchaserId: Scalars["ID"];
   createdAt: Scalars["DateTime"];
+  paidCommissionPercent: Scalars["Float"];
+  paidCommissionAmount: Scalars["Float"];
+  seller: Account;
+  purchaser: Account;
+  affiliator: Account;
 };
 
 export type Query = {
   __typename?: "Query";
-  getMyProductsAffiliationHistory: AffiliationPurchase;
+  getMyProductsAffiliationHistory: Array<AffiliationPurchase>;
   getUserAffiliationHistory: Array<AffiliationPurchase>;
   getUserAffiliationsPurchases: Array<AffiliationPurchase>;
   getFilteredAffiliationsHistory: Array<AffiliationPurchase>;
   getUserAffiliations: Array<Affiliation>;
   getFilteredAffiliations: Array<Affiliation>;
   getMyAffiliations: Array<Affiliation>;
+};
+
+export type QueryGetMyProductsAffiliationHistoryArgs = {
+  args: GetAffiliationHistoryInput;
 };
 
 export type QueryGetUserAffiliationHistoryArgs = {
@@ -89,14 +100,18 @@ export type QueryGetMyAffiliationsArgs = {
   args: GetMyAffiliationsInput;
 };
 
-export type GetUserAffiliationsPurchasesInput = {
+export type GetAffiliationHistoryInput = {
   pagination: GqlPaginationInput;
-  id: Scalars["ID"];
 };
 
 export type GqlPaginationInput = {
   page: Scalars["Int"];
   take: Scalars["Int"];
+};
+
+export type GetUserAffiliationsPurchasesInput = {
+  pagination: GqlPaginationInput;
+  id: Scalars["ID"];
 };
 
 export type GetFilteredAffiliationHistoryInput = {

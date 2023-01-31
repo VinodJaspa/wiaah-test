@@ -6,7 +6,12 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
+import {
+  Inject,
+  OnModuleInit,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import {
   accountType,
   AuthorizationDecodedUser,
@@ -36,8 +41,8 @@ import {
 import { GetUserOrders } from '@orders/dto/get-user-orders.input';
 import { GetFilteredOrdersInput } from '@dto';
 import { PrismaService } from 'prismaService';
-import { Discount } from './entities/extends/discount.entity';
-import { Product } from './entities/extends';
+// import { Discount } from './entities/extends/discount.entity';
+import { Product, ShippingAddress, ShippingRule } from './entities/extends';
 
 @Resolver(() => Order)
 export class OrdersResolver implements OnModuleInit {
@@ -53,7 +58,7 @@ export class OrdersResolver implements OnModuleInit {
   @UseGuards(new GqlAuthorizationGuard([accountType.BUYER, accountType.SELLER]))
   getMyOrders(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-    @Args('getMyOrdersArgs', { nullable: true }) args: GetMyOrdersInput,
+    @Args('getMyOrdersArgs') args: GetMyOrdersInput,
   ) {
     if (user.accountType === accountType.BUYER) {
       return this.queryBus.execute<GetBuyerOrdersQuery, Order[]>(
@@ -64,6 +69,23 @@ export class OrdersResolver implements OnModuleInit {
         new GetSellerOrdersQuery(user.id, args.pagination, args.status),
       );
     }
+  }
+
+  @Query(() => Order)
+  async getOrder(
+    @Args('id') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const res = await this.prisma.order.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (res.sellerId !== user.id && res.buyerId !== user.id)
+      throw new UnauthorizedException();
+
+    return res;
   }
 
   @Query(() => [Order])
@@ -148,6 +170,22 @@ export class OrdersResolver implements OnModuleInit {
     );
   }
 
+  @ResolveField(() => ShippingRule)
+  shipping(@Parent() order: Order) {
+    return {
+      __typename: 'ShippingMethod',
+      id: order.shippingMethodId,
+    };
+  }
+
+  @ResolveField(() => ShippingAddress)
+  shippingAddress(@Parent() order: Order) {
+    return {
+      __typename: 'ShippingAddress',
+      id: order.shippingAddressId,
+    };
+  }
+
   async onModuleInit() {
     this.eventsClient.subscribeToResponseOf(
       KAFKA_MESSAGES.PRODUCTS_MESSAGES.getProductsMetaData,
@@ -156,21 +194,5 @@ export class OrdersResolver implements OnModuleInit {
       KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAccountById,
     );
     await this.eventsClient.connect();
-  }
-
-  @ResolveField(() => Discount)
-  discount(@Parent() order: Order) {
-    return {
-      __typename: 'Discount',
-      id: order.discount,
-    };
-  }
-
-  @ResolveField(() => Product)
-  products(@Parent() order: Order) {
-    return order.items.map(({ id }) => ({
-      __typename: 'Product',
-      id: id,
-    }));
   }
 }

@@ -13,10 +13,13 @@ import {
   SectionHeader,
   useSuspendAccountMutation,
 } from "@UI";
+import { useDeleteMyAccountMutation } from "@features/Accounts/services/useDeleteMyAccount";
+import { setTestid } from "utils";
 
 export const AccountDeletionSection: React.FC = () => {
   const { t } = useTranslation();
   const { mutate, data } = useSuspendAccountMutation();
+  const { mutate: deleteAccount } = useDeleteMyAccountMutation();
 
   return (
     <div className="flex flex-col gap-8">
@@ -27,12 +30,7 @@ export const AccountDeletionSection: React.FC = () => {
             <span className="font-semibold text-lg">
               {t("delete_account", "Delete Account")}
             </span>
-            <span>
-              {t(
-                "delete_account_info",
-                "We do our best to give you a great experience"
-              )}
-            </span>
+            <span>{t("We do our best to give you a great experience")}</span>
           </div>
           <ModalExtendedWrapper modalKey="5">
             <ModalButton>
@@ -40,17 +38,16 @@ export const AccountDeletionSection: React.FC = () => {
                 {t("delete", "Delete")}
               </Button>
             </ModalButton>
-            <AccountDeletionModal />
+            <AccountDeletionModal
+              {...setTestid("delete-modal")}
+              onSubmit={(data) => deleteAccount(data)}
+            />
           </ModalExtendedWrapper>
         </div>
         <div className="flex items-center gap-2 justify-between">
           <div className="flex flex-col gap-2">
-            <span className="font-semibold text-lg">
-              {t("suspend", "Suspend")}
-            </span>
-            <span>
-              {t("suspend_account_info", "You can suspend your account.")}
-            </span>
+            <span className="font-semibold text-lg">{t("Suspend")}</span>
+            <span>{t("You can suspend your account.")}</span>
           </div>
           <Button
             data-testid="SuspendAccountBtn"
@@ -59,7 +56,7 @@ export const AccountDeletionSection: React.FC = () => {
             outline
             colorScheme="danger"
           >
-            {t("suspend", "Suspend")}
+            {t("Suspend")}
           </Button>
         </div>
       </div>
@@ -79,10 +76,10 @@ export const DeleteAccountConfirmationModal: React.FC<
       <ModalOverlay />
       <ModalContent className="w-[min(100%,25rem)]">
         <div className="flex flex-col gap-4">
-          <span>{t("type_your_password", "Type Your Password")}</span>
+          <span>{t("Type Your Password")}</span>
           <Input type={"password"} className="border-2" flushed />
           <ModalButton closeAll>
-            <Button colorScheme="danger">{t("delete", "Delete")}</Button>
+            <Button colorScheme="danger">{t("Delete")}</Button>
           </ModalButton>
         </div>
       </ModalContent>
@@ -97,23 +94,17 @@ export const DeleteAccountConfirmation: React.FC<{ onDelete: () => any }> = ({
   return (
     <div className="flex flex-col text-xl gap-8 p-4">
       <span className="text-3xl text-primary-500">
-        {t(
-          "account_deletion_confimation_msg",
-          "Are you sure you want to delete this account?"
-        )}
+        {t("Are you sure you want to delete this account?")}
       </span>
       <p className="text-gray-600">
         {t(
-          "account_deletion_warning",
           "This action can't be undone. When you delete all your data, it will be erased from our system."
         )}
       </p>
       <div className="hstack">
-        <Button onClick={() => onDelete && onDelete()}>
-          {t("delete", "Delete")}
-        </Button>
+        <Button onClick={() => onDelete && onDelete()}>{t("Delete")}</Button>
         <ModalButton key="5" close>
-          <Button colorScheme="gray">{t("cancel", "Cancel")}</Button>
+          <Button colorScheme="gray">{t("Cancel")}</Button>
         </ModalButton>
       </div>
     </div>

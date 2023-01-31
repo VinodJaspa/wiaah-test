@@ -44,49 +44,7 @@ import { OrderedProductStatus, PriceType } from "types";
 import { useUpdateProductStatus } from "@UI";
 import { UpdateProductStatusDto } from "dto";
 
-export const OrderDetailsSection: React.FC<{
-  order: {
-    customer: string;
-    dateAdded: string;
-    orderId: string;
-    orderStatus: string;
-    paymentMethod: string;
-    productsNum: number;
-    total: {
-      amount: number;
-      currency: string;
-    };
-    shippingDetails?: {
-      name: string;
-      address: string;
-      zipCode: string;
-      city: string;
-      country: string;
-    };
-    products: ProductType[];
-  };
-}> = ({
-  order = {
-    customer: "customer",
-    dateAdded: new Date(Date.now()).toDateString(),
-    orderId: `${randomNum(100000)}`,
-    orderStatus: "confirmed",
-    paymentMethod: "stripe",
-    productsNum: randomNum(10),
-    total: {
-      amount: randomNum(5000),
-      currency: "USD",
-    },
-    shippingDetails: {
-      name: "name",
-      address: "address",
-      zipCode: "1234",
-      city: "city",
-      country: "country",
-    },
-    products,
-  },
-}) => {
+export const OrderDetailsSection: React.FC<{}> = () => {
   const { orderId, cancelViewOrder, shopping } = React.useContext(OrderContext);
   const { t } = useTranslation();
 

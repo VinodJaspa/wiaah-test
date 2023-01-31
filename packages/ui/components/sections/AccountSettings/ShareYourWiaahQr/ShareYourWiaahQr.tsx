@@ -6,11 +6,18 @@ import {
   Button,
   DownloadIcon,
   ShareIcon,
+  useShareModal,
+  useUserData,
 } from "@UI";
+import { useRouting } from "routing";
 export interface ShareYourWiaahQrProps {}
 
 export const ShareYourWiaahQr: React.FC<ShareYourWiaahQrProps> = ({}) => {
   const { t } = useTranslation();
+  const { open } = useShareModal();
+  const { getUrl } = useRouting();
+  const { user } = useUserData();
+  console.log({ user });
   return (
     <div className="flex flex-col w-full h-[max(100%,50rem)] gap-4">
       <SectionHeader sectionTitle={t("Share your Wiaah QR")} />
@@ -32,7 +39,14 @@ export const ShareYourWiaahQr: React.FC<ShareYourWiaahQrProps> = ({}) => {
                 <DownloadIcon />
                 {t("PDF")}
               </Button>
-              <Button colorScheme="info">
+              <Button
+                onClick={() =>
+                  user
+                    ? open(getUrl((r) => r.visitSellerSocialProfile(user)))
+                    : null
+                }
+                colorScheme="info"
+              >
                 <ShareIcon className="text-xl text-white" />
               </Button>
             </div>

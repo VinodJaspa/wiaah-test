@@ -1,10 +1,14 @@
-import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
 import {
-  CommissionOn,
-  commissionType,
-  MembershipUnitType,
-  Recurring,
-} from 'prismaClient';
+  ObjectType,
+  Field,
+  Int,
+  ID,
+  Float,
+  registerEnumType,
+} from '@nestjs/graphql';
+import { CommissionOn, commissionType, Recurring } from 'prismaClient';
+
+registerEnumType(Recurring, { name: 'Recurring' });
 
 @ObjectType()
 export class MembershipTurnoverRule {

@@ -1,7 +1,7 @@
 import { newsfeedPosts } from "placeholder";
 import React from "react";
 import { PostCardInfo } from "types";
-import { PostCard } from "@UI/components/blocks/Social/PostCard";
+import { PostCard, PostCardProps } from "@UI/components/blocks/Social/PostCard";
 import { PostViewPopup } from "@UI/components/blocks/Popups";
 import { PostAttachmentsViewer } from "@UI/components/blocks/DataDisplay";
 import {
@@ -9,10 +9,11 @@ import {
   GridListOrganiser,
   ListWrapperProps,
 } from "@UI/components/blocks/Wrappers";
-import { NewsfeedPost, Profile } from "@features/Social/services/types";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {
-  posts: NewsfeedPost[];
+  posts: (PostCardProps["postInfo"] & {
+    publisher?: PostCardProps["profileInfo"] | null;
+  })[];
   cols?: number;
   onPostClick?: (post: PostCardInfo) => any;
   grid?: boolean;
@@ -26,11 +27,7 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
   const childPosts =
     posts &&
     posts.map((post, idx) => (
-      <PostCard
-        postInfo={post as NewsfeedPost}
-        profileInfo={post.publisher as Profile}
-        key={idx}
-      />
+      <PostCard postInfo={post} profileInfo={post.publisher} key={idx} />
     ));
   return (
     <>

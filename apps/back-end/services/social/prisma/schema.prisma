@@ -33,11 +33,12 @@ model Profile {
   visibility     ProfileVisibility @default(public)
   Posts          NewsfeedPost[]
   comments       Comment[]
-  blockedUsers   BlockedUser[]
+  blockedUsers   BlockedUser[]     @relation(name: "blockerProfile")
   myShares       ContentShare[]
   reactedContent ContentReaction[]
   Story          Story[]
   StoryView      StoryView[]
+  BlockedUser    BlockedUser[]
 }
 
 model FollowRequest {
@@ -50,12 +51,13 @@ model FollowRequest {
 
 model BlockedUser {
   id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  blockerProfile Profile  @relation(fields: [blockerUserId], references: [ownerId])
+  blockerProfile Profile  @relation(fields: [blockerUserId], references: [ownerId], name: "blockerProfile")
+  blockedProfile Profile  @relation(fields: [blockedUserId], references: [ownerId])
   blockerUserId  String   @db.ObjectId
   blockedUserId  String   @db.ObjectId
   blockedAt      DateTime @default(now())
 
-  @@unique([blockedUserId, blockerUserId], name: "blockedProfile")
+  @@unique([blockedUserId, blockerUserId], name: "blockedProfileRel")
 }
 
 model Follow {

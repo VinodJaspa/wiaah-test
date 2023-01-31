@@ -16,16 +16,22 @@ export class OrderCanceledEventHandler
   ) {}
 
   handle({ order }: OrderCanceledEvent) {
-    this.eventClient.emit(
-      KAFKA_EVENTS.ORDERS_EVENTS.orderCanceled(),
-      new KafkaOrderCanceledEvent({
-        buyerId: order.buyerId,
-        discountId: order.discountId,
-        products: order.items.map(({ id, qty }) => ({ id, qty })),
-        sellerId: order.sellerId,
-        status: order.status as unknown as string,
-        shippingMethodId: order.shippingMethodId,
-      }),
-    );
+    const orderTotal = order.items.reduce((acc,v)=> {
+      return acc 
+    },0)
+
+    // this.eventClient.emit(
+    //   KAFKA_EVENTS.ORDERS_EVENTS.orderCanceled(),
+    //   new KafkaOrderCanceledEvent({
+    //     buyerId: order.buyerId,
+    //     discountId: order.discountId,
+    //     products: order.items.map(({ id, qty }) => ({ id, qty })),
+    //     sellerId: order.sellerId,
+    //     status: order.status as unknown as string,
+    //     shippingMethodId: order.shippingMethodId,
+    //     total:orderTotal,
+    //     shippingFee
+    //   }),
+    // );
   }
 }

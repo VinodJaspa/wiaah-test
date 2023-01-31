@@ -35,11 +35,26 @@ export enum ProductCategoryStatus {
   InActive = "inActive",
 }
 
+export type ShippingDeliveryTimeRange = {
+  __typename?: "ShippingDeliveryTimeRange";
+  from: Scalars["Int"];
+  to: Scalars["Int"];
+};
+
 export type ShippingDetails = {
   __typename?: "ShippingDetails";
   country: Scalars["String"];
-  shippingRulesIds: Array<Scalars["String"]>;
+  shippingRulesIds: Array<Scalars["ID"]>;
+  cost?: Maybe<Scalars["Float"]>;
+  available: Scalars["Boolean"];
+  deliveryTimeRange?: Maybe<ShippingDeliveryTimeRange>;
+  shippingTypes?: Maybe<Array<ShippingType>>;
 };
+
+export enum ShippingType {
+  Paid = "paid",
+  ClickAndCollect = "click_and_collect",
+}
 
 export type ProductPresentation = {
   __typename?: "ProductPresentation";
@@ -92,6 +107,7 @@ export type Product = {
   discount: Discount;
   cashback: CashBack;
   presentations: Array<ProductPresentation>;
+  thumbnail: Scalars["String"];
   rate: Scalars["Int"];
   brand: Scalars["String"];
   price: Scalars["Float"];
@@ -105,6 +121,7 @@ export type Product = {
   usageStatus: ProductUsageStatus;
   createdAt: Scalars["String"];
   updatedAt: Scalars["String"];
+  earnings: Scalars["Float"];
 };
 
 export enum VisibilityEnum {
@@ -124,38 +141,6 @@ export enum ProductUsageStatus {
   Used = "used",
   New = "new",
 }
-
-export type MyProduct = {
-  __typename?: "MyProduct";
-  id: Scalars["ID"];
-  sellerId: Scalars["ID"];
-  vendor_external_link: Scalars["String"];
-  title: Scalars["String"];
-  description: Scalars["String"];
-  shopId: Scalars["ID"];
-  hashtags: Array<Scalars["String"]>;
-  categoryId: Scalars["ID"];
-  category?: Maybe<Category>;
-  attributes: Array<ProductAttribute>;
-  stock: Scalars["Int"];
-  discount: Discount;
-  cashback: CashBack;
-  presentations: Array<ProductPresentation>;
-  rate: Scalars["Int"];
-  brand: Scalars["String"];
-  price: Scalars["Float"];
-  visibility: VisibilityEnum;
-  shippingRulesIds: Array<Scalars["ID"]>;
-  shippingDetails?: Maybe<ShippingDetails>;
-  reviews: Scalars["Int"];
-  sales: Scalars["Int"];
-  vat: Scalars["Float"];
-  status: ProductStatus;
-  usageStatus: ProductUsageStatus;
-  createdAt: Scalars["String"];
-  updatedAt: Scalars["String"];
-  earnings: Scalars["Float"];
-};
 
 export type ProductFilterGroupValue = {
   __typename?: "ProductFilterGroupValue";
@@ -218,12 +203,6 @@ export type ShippingCountry = {
   code: Scalars["String"];
 };
 
-export type ShippingDeliveryTimeRange = {
-  __typename?: "ShippingDeliveryTimeRange";
-  from: Scalars["Int"];
-  to: Scalars["Int"];
-};
-
 export type ShippingRule = {
   __typename?: "ShippingRule";
   id: Scalars["ID"];
@@ -235,10 +214,12 @@ export type ShippingRule = {
   deliveryTimeRange: ShippingDeliveryTimeRange;
 };
 
-export enum ShippingType {
-  Paid = "paid",
-  ClickAndCollect = "click_and_collect",
-}
+export type ShippingAddress = {
+  __typename?: "ShippingAddress";
+  id: Scalars["ID"];
+  ownerId: Scalars["ID"];
+  location: Location;
+};
 
 export type ShippingRuleGeoZone = {
   __typename?: "ShippingRuleGeoZone";
@@ -261,15 +242,15 @@ export type Query = {
   getShopById: Shop;
   getFilteredShops: Array<Shop>;
   getProductById: Product;
-  getProducts: Array<Product>;
+  getMyProducts: Array<Product>;
   getProduct: Product;
-  getMyProducts: Array<MyProduct>;
   getProductCategories: Array<Category>;
   getFilteredProductCategories: Array<Category>;
   getAdminProductsFilters: Array<Filter>;
   getProductsFilters: Array<Filter>;
   getAdminFilteredProducts: Array<Product>;
   adminGetProduct?: Maybe<Product>;
+  getMyShippingAddress: Array<ShippingAddress>;
   getShippingGeoZoneRules: Array<ShippingTypeRule>;
   getShippingRuleGeoZones: Array<ShippingRuleGeoZone>;
 };
@@ -290,16 +271,12 @@ export type QueryGetProductByIdArgs = {
   id: Scalars["String"];
 };
 
-export type QueryGetProductsArgs = {
+export type QueryGetMyProductsArgs = {
   filterInput: GetFilteredProductsInput;
 };
 
 export type QueryGetProductArgs = {
   id: Scalars["ID"];
-};
-
-export type QueryGetMyProductsArgs = {
-  args: GqlPaginationInput;
 };
 
 export type QueryGetFilteredProductCategoriesArgs = {
@@ -531,6 +508,7 @@ export type CreateProductInput = {
   discount: DiscountInput;
   cashback: CashBackInput;
   presentations: Array<ProductPresentationInput>;
+  thumbnail: Scalars["String"];
   price: Scalars["Float"];
   brand: Scalars["String"];
   visibility: VisibilityEnum;
@@ -569,6 +547,7 @@ export type UpdateProductInput = {
   discount?: Maybe<DiscountInput>;
   cashback?: Maybe<CashBackInput>;
   presentations?: Maybe<Array<ProductPresentationInput>>;
+  thumbnail?: Maybe<Scalars["String"]>;
   price?: Maybe<Scalars["Float"]>;
   brand?: Maybe<Scalars["String"]>;
   visibility?: Maybe<VisibilityEnum>;

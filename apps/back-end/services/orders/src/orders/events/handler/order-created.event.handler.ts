@@ -91,6 +91,7 @@ export class OrderCreatedKafkaEventHandler
           currency: seller.preferedCurrency,
         },
         order: {
+          id: order.id,
           address: shippingAddress.address_full,
           bills: {
             shipping: {

@@ -5,9 +5,11 @@ import { ObjectType, Field, Int, ID, Directive } from '@nestjs/graphql';
 @Directive('@key(fields:"id, type")')
 export class Place {
   @Field(() => ID)
+  @Directive('@external')
   id: string;
 
   @Field(() => String)
+  @Directive('@external')
   type: string;
 }
 

@@ -14,7 +14,10 @@ import {
   TableContainer,
   SectionHeader,
   usePaginationControls,
+  Image,
+  PriceDisplay,
 } from "@UI";
+import { useGetMyAffiliationHistoryQuery } from "@features/Affiliation/services/queries/useGetMyAffiliationHistory";
 
 export interface AffiliationHistorySection {}
 
@@ -31,11 +34,12 @@ type AffiliationHistoryCardData = {
 export const AffiliationHistorySection: React.FC<
   AffiliationHistorySection
 > = () => {
-  const {
-    changeTotalItems,
-    controls,
-    pagination: { page, take },
-  } = usePaginationControls();
+  const { changeTotalItems, controls, pagination } = usePaginationControls();
+
+  const { data } = useGetMyAffiliationHistoryQuery({
+    pagination,
+  });
+
   const { t } = useTranslation();
   React.useEffect(() => {
     changeTotalItems(AffiliationHistoryCards.length);
@@ -46,7 +50,7 @@ export const AffiliationHistorySection: React.FC<
         sectionTitle={t("affiliation_history", "Affiliation History")}
       >
         <Button className="flex py-1 items-center gap-2">
-          <BsFilePdfFill /> {t("pdf", "pdf")}
+          <BsFilePdfFill /> {t("pdf")}
         </Button>
       </SectionHeader>
       <TableContainer className="w-full">
@@ -74,24 +78,28 @@ export const AffiliationHistorySection: React.FC<
             </Tr>
           </THead>
           <TBody>
-            {AffiliationHistoryCards.map((card, i) => (
-              <Tr key={i}>
-                <Td className="w-fit">
-                  <img className="w-32 h-auto" src={card.productImage} />
-                </Td>
-                <Td>{card.productName}</Td>
-                <Td>
-                  {card.productPrice.amount} {card.productPrice.currency}
-                </Td>
-                <Td>{card.affilator}</Td>
-                <Td>{card.purchaser}</Td>
-                <Td>{card.commission}%</Td>
-                <Td>
-                  {card.commissionAmount.amount}{" "}
-                  {card.commissionAmount.currency}
-                </Td>
-              </Tr>
-            ))}
+            {Array.isArray(data)
+              ? data.map((card, i) => (
+                  <Tr key={i}>
+                    <Td className="w-fit">
+                      <Image
+                        className="w-32 h-auto"
+                        src={card.product?.thumbnail}
+                      />
+                    </Td>
+                    <Td>{card.product?.title}</Td>
+                    <Td>
+                      <PriceDisplay price={card.product?.price} />
+                    </Td>
+                    <Td>{card.affiliator?.profile?.username}</Td>
+                    <Td>{card.purchaser.profile?.username}</Td>
+                    <Td>{card.paidCommissionPercent}%</Td>
+                    <Td>
+                      <PriceDisplay price={card.paidCommissionAmount} />
+                    </Td>
+                  </Tr>
+                ))
+              : null}
             <Tr>
               <Td></Td>
               <Td></Td>
@@ -102,10 +110,11 @@ export const AffiliationHistorySection: React.FC<
                 {t("total_money", "Total Money")}:
               </Td>
               <Td className="border-[1px] border-gray-300">
-                {AffiliationHistoryCards.reduce((acc, card) => {
-                  return (acc += card.commissionAmount.amount);
-                }, 0)}{" "}
-                {AffiliationHistoryCards[0].commissionAmount.currency}
+                <PriceDisplay
+                  price={data?.reduce((acc, card) => {
+                    return (acc += card.paidCommissionAmount);
+                  }, 0)}
+                />
               </Td>
             </Tr>
           </TBody>

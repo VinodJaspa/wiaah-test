@@ -25,9 +25,23 @@ enum ProductCategoryStatus {
   inActive
 }
 
+type ShippingDeliveryTimeRange {
+  from: Int!
+  to: Int!
+}
+
 type ShippingDetails {
   country: String!
-  shippingRulesIds: [String!]!
+  shippingRulesIds: [ID!]!
+  cost: Float
+  available: Boolean!
+  deliveryTimeRange: ShippingDeliveryTimeRange
+  shippingTypes: [ShippingType!]
+}
+
+enum ShippingType {
+  paid
+  click_and_collect
 }
 
 type ProductPresentation {
@@ -76,6 +90,7 @@ type Product {
   discount: Discount!
   cashback: CashBack!
   presentations: [ProductPresentation!]!
+  thumbnail: String!
   rate: Int!
   brand: String!
   price: Float!
@@ -89,6 +104,7 @@ type Product {
   usageStatus: ProductUsageStatus!
   createdAt: String!
   updatedAt: String!
+  earnings: Float!
 }
 
 enum VisibilityEnum {
@@ -107,37 +123,6 @@ enum ProductStatus {
 enum ProductUsageStatus {
   used
   new
-}
-
-type MyProduct {
-  id: ID!
-  sellerId: ID!
-  vendor_external_link: String!
-  title: String!
-  description: String!
-  shopId: ID!
-  hashtags: [String!]!
-  categoryId: ID!
-  category: Category
-  attributes: [ProductAttribute!]!
-  stock: Int!
-  discount: Discount!
-  cashback: CashBack!
-  presentations: [ProductPresentation!]!
-  rate: Int!
-  brand: String!
-  price: Float!
-  visibility: VisibilityEnum!
-  shippingRulesIds: [ID!]!
-  shippingDetails: ShippingDetails
-  reviews: Int!
-  sales: Int!
-  vat: Float!
-  status: ProductStatus!
-  usageStatus: ProductUsageStatus!
-  createdAt: String!
-  updatedAt: String!
-  earnings: Float!
 }
 
 type ProductFilterGroupValue {
@@ -201,11 +186,6 @@ type ShippingCountry {
   code: String!
 }
 
-type ShippingDeliveryTimeRange {
-  from: Int!
-  to: Int!
-}
-
 type ShippingRule {
   id: ID!
   sellerId: ID!
@@ -216,9 +196,10 @@ type ShippingRule {
   deliveryTimeRange: ShippingDeliveryTimeRange!
 }
 
-enum ShippingType {
-  paid
-  click_and_collect
+type ShippingAddress {
+  id: ID!
+  ownerId: ID!
+  location: Location!
 }
 
 type ShippingRuleGeoZone {
@@ -239,15 +220,15 @@ type Query {
   getShopById(id: String!): Shop!
   getFilteredShops(filteredShopsArgs: FilteredShopsInput!): [Shop!]!
   getProductById(id: String!): Product!
-  getProducts(filterInput: GetFilteredProductsInput!): [Product!]!
+  getMyProducts(filterInput: GetFilteredProductsInput!): [Product!]!
   getProduct(id: ID!): Product!
-  getMyProducts(args: GqlPaginationInput!): [MyProduct!]!
   getProductCategories: [Category!]!
   getFilteredProductCategories(args: GetFilteredCategory): [Category!]!
   getAdminProductsFilters(getFiltersArgs: GetFiltersInput!): [Filter!]!
   getProductsFilters: [Filter!]!
   getAdminFilteredProducts(args: GetFilteredProductsAdminInput!): [Product!]!
   adminGetProduct(id: String!): Product
+  getMyShippingAddress: [ShippingAddress!]!
   getShippingGeoZoneRules: [ShippingTypeRule!]!
   getShippingRuleGeoZones(id: String!): [ShippingRuleGeoZone!]!
 }
@@ -379,6 +360,7 @@ input CreateProductInput {
   discount: DiscountInput!
   cashback: CashBackInput!
   presentations: [ProductPresentationInput!]!
+  thumbnail: String!
   price: Float!
   brand: String!
   visibility: VisibilityEnum!
@@ -417,6 +399,7 @@ input UpdateProductInput {
   discount: DiscountInput
   cashback: CashBackInput
   presentations: [ProductPresentationInput!]
+  thumbnail: String
   price: Float
   brand: String
   visibility: VisibilityEnum

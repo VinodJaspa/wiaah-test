@@ -18,14 +18,24 @@ import {
   PriceDisplay,
 } from "@UI";
 import { PriceType } from "types";
+import {
+  CommissionType,
+  useGetMembershipsQuery,
+  useGetMyMembershipQuery,
+} from "@features/Membership";
+import { mapArray } from "utils";
+
 export interface MembershipSectionProps {}
 
 export const MembershipSection: React.FC<MembershipSectionProps> = () => {
   const { t } = useTranslation();
   const { isMobile } = useResponsive();
+  const { data } = useGetMembershipsQuery();
+  const { data: myMembership } = useGetMyMembershipQuery();
+
   return (
     <div className="w-full flex flex-col">
-      <SectionHeader sectionTitle={t("your_membership", "Your Membership")} />
+      <SectionHeader sectionTitle={t("Your Membership")} />
       <div className="border-[1px] border-black border-opacity-10 shadow-md flex flex-col py-4">
         <TableContainer>
           <Table
@@ -37,21 +47,37 @@ export const MembershipSection: React.FC<MembershipSectionProps> = () => {
             }}
           >
             <Tr>
-              <Th>{t("package_name", "Package Name")}</Th>
-              <Th>{t("end_date", "End Date")}</Th>
-              <Th>{t("price", "price")}</Th>
+              <Th>{t("Package Name")}</Th>
+              <Th>{t("End Date")}</Th>
+              <Th>{t("price")}</Th>
             </Tr>
             <Tr>
-              <Td>{membershipdata.packageName}</Td>
+              <Td>{myMembership?.membership.name}</Td>
               <Td>
-                {new Date(membershipdata.endDate).toLocaleString("en", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
+                {myMembership?.endAt
+                  ? new Date(myMembership?.endAt).toLocaleString("en", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                    })
+                  : null}
               </Td>
               <Td>
-                <PriceDisplay priceObject={membershipdata.price} />
+                {myMembership?.membership.turnover_rules.at(0)
+                  ?.commissionType === CommissionType.Fixed ? (
+                  <PriceDisplay
+                    price={
+                      myMembership.membership.turnover_rules.at(0)
+                        ?.commission || 0
+                    }
+                  />
+                ) : (
+                  <>
+                    %
+                    {myMembership?.membership.turnover_rules.at(0)
+                      ?.commission || 0}
+                  </>
+                )}
               </Td>
             </Tr>
           </Table>
@@ -69,7 +95,7 @@ export const MembershipSection: React.FC<MembershipSectionProps> = () => {
                   }`}
                   onClick={() => setCurrentTabIdx(0)}
                 >
-                  {t("free_plan", "Free Plan")}
+                  {t("Free Plan")}
                 </TabTitle>
                 <TabTitle
                   className={`${
@@ -77,42 +103,22 @@ export const MembershipSection: React.FC<MembershipSectionProps> = () => {
                   }`}
                   onClick={() => setCurrentTabIdx(1)}
                 >
-                  {t("paid_plan", "Paid plan")}
+                  {t("Paid plan")}
                 </TabTitle>
               </TabsHeader>
               <TabList>
-                <SubscriptionPlanCard
-                  price={{
-                    amount: 0,
-                    currency: "CHF",
-                  }}
-                  benifits={[
-                    `$0 / ${t("no_limit", "No limit")}`,
-                    `20% ${t(
-                      "commission_on_each_sale",
-                      "Commission on each sale"
-                    )}`,
-                  ]}
-                />
-                <SubscriptionPlanCard
-                  price={{
-                    amount: 500,
-                    currency: "CHF",
-                  }}
-                  benifits={[
-                    `$500 / ${t("no_limit", "No limit")}`,
-                    `${t(
-                      "no_commission_on_each_sale",
-                      "No commission on each sale"
-                    )}`,
-                  ]}
-                />
+                {mapArray(data, (data) => (
+                  <SubscriptionPlanCard
+                    price={data.turnover_rules[0].commission}
+                    benifits={data.includings.map((data) => data.title)}
+                  />
+                ))}
               </TabList>
             </>
           )}
         </Tabs>
       ) : (
-        <SelectPackageStep />
+        <SelectPackageStep value="" onChange={() => {}} shopType="" />
       )}
     </div>
   );
