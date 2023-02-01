@@ -7,9 +7,28 @@ import { BookingRepository } from './repository';
 import { BookingCommandHandlers } from './commands';
 import { BookingQueryHandlers } from './queries';
 import { BookingsEventHandlers } from './events';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 
 @Module({
-  imports: [CqrsModule],
+  imports: [
+    CqrsModule,
+    ClientsModule.register([
+      {
+        name: SERVICES.SHOPPING_CART_SERVICE.token,
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            brokers: KAFKA_BROKERS,
+            clientId: SERVICES.SHOPPING_CART_SERVICE.clientId,
+          },
+          consumer: {
+            groupId: SERVICES.SHOPPING_CART_SERVICE.groupId,
+          },
+        },
+      },
+    ]),
+  ],
   providers: [
     BookServiceResolver,
     BookServiceService,

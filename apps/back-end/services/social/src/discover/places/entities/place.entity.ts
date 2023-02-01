@@ -1,15 +1,15 @@
 import { ObjectType, Field, Int, ID, Directive } from '@nestjs/graphql';
 
 @ObjectType()
-@Directive('@extends')
-@Directive('@key(fields:"id, type")')
+// @Directive('@extends')
+// @Directive('@key(fields:"id, type")')
 export class Place {
   @Field(() => ID)
-  @Directive('@external')
+  // @Directive('@external')
   id: string;
 
   @Field(() => String)
-  @Directive('@external')
+  // @Directive('@external')
   type: string;
 }
 

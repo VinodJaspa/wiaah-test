@@ -5,6 +5,7 @@ import {
   ID,
   Float,
   registerEnumType,
+  Directive,
 } from '@nestjs/graphql';
 import { AffiliationStatus } from '@prisma-client';
 import { Product, Service } from './extends';
@@ -12,6 +13,7 @@ import { Product, Service } from './extends';
 registerEnumType(AffiliationStatus, { name: 'AffiliationStatus' });
 
 @ObjectType()
+@Directive('@key(fields:"id")')
 export class Affiliation {
   @Field(() => ID)
   id: string;

@@ -287,7 +287,7 @@ type ServicePost {
   id: ID!
   serviceId: ID!
   service: Service
-  serviceType: ServiceType!
+  serviceType: TypeOfService!
   userId: ID!
   user: Account
   reactionNum: Int!
@@ -301,7 +301,7 @@ type ServicePost {
   updatedAt: String!
 }
 
-enum ServiceType {
+enum TypeOfService {
   hotelRoom
   holidayRental
   restaurantMenu

@@ -1,14 +1,18 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { ServiceBookedEvent } from '@book-service/events';
 import { ClientKafka } from '@nestjs/microservices';
-import { KAFKA_EVENTS } from 'nest-utils';
+import { KAFKA_EVENTS, SERVICES } from 'nest-utils';
 import { ServiceBookedEvent as KafkaServiceBookedEvent } from 'nest-dto';
+import { Inject } from '@nestjs/common';
 
 @EventsHandler(ServiceBookedEvent)
 export class ServiceBookedEventHandler
   implements IEventHandler<ServiceBookedEvent>
 {
-  constructor(private readonly eventClient: ClientKafka) {}
+  constructor(
+    @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
+    private readonly eventClient: ClientKafka,
+  ) {}
 
   handle({ service }: ServiceBookedEvent) {
     this.eventClient.emit(
@@ -18,6 +22,7 @@ export class ServiceBookedEventHandler
         purchaserId: service.purchaserId,
         sellerId: service.sellerId,
         type: service.type,
+        bookId: service.id,
       }),
     );
   }

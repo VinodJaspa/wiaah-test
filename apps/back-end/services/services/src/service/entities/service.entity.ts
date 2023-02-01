@@ -3,12 +3,14 @@ import { Directive, Field, Float, ID, ObjectType } from '@nestjs/graphql';
 import { ServiceType } from 'prismaClient';
 
 @ObjectType()
+@Directive('@key(fields:"id")')
 @Directive('@key(fields:"id, serviceType")')
 export class Service {
   @Field(() => ID)
   id: string;
 
   @Field(() => ServiceType)
+  @Directive('@shareable')
   serviceType: ServiceType;
 
   @Field(() => String)

@@ -24,7 +24,7 @@ import {
   GetUserPaidBookingMessageReply,
 } from 'nest-dto';
 import { ClientKafka } from '@nestjs/microservices';
-import { PostVisibility, ServiceType } from 'prismaClient';
+import { PostVisibility, TypeOfService } from 'prismaClient';
 import { Inject, NotFoundException } from '@nestjs/common';
 import { GetRecommendedServicePostsInput } from './dto/get-recommended-service-posts.input';
 import { ServicePostHashtagSearch } from './entities/service-post-hashtag-search';
@@ -249,7 +249,7 @@ export class ServicePostResolver {
               },
             },
             {
-              serviceType: args.serviceType as ServiceType,
+              serviceType: args.serviceType as TypeOfService,
             },
           ],
         },

@@ -129,12 +129,12 @@ model ServicePost {
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
-  serviceType        ServiceType
+  serviceType        TypeOfService
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
 }
 
-enum ServiceType {
+enum TypeOfService {
   hotelRoom
   holidayRental
   restaurantMenu

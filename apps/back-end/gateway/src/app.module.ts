@@ -44,7 +44,8 @@ import { subgraphs } from '@lib';
             },
           });
         },
-
+        serviceHealthCheck: true,
+        pollIntervalInMs: 10000,
         supergraphSdl: new IntrospectAndCompose({
           subgraphs,
         }),

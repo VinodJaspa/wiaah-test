@@ -5,3 +5,5 @@ export * from "./useGetAdminProducts";
 export * from "./useAdminEditProduct";
 export * from "./useAdminGetProduct";
 export * from "./useGetMyShippingRules";
+export * from "./useGetMyProducts";
+export * from "./useGetMyProductsReviews";

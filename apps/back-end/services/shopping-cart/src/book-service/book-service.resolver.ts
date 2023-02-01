@@ -1,6 +1,14 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ID,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { BookServiceService } from '@book-service/book-service.service';
-import { BookedService } from '@book-service/entities';
+import { Account, BookedService, Service } from '@book-service/entities';
 import {
   BookBeautycenterServiceInput,
   BookHealthCenterServiceInput,
@@ -168,5 +176,21 @@ export class BookServiceResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.bookServiceService.BookVehicleCenter(input, user.id);
+  }
+
+  @ResolveField(() => Account)
+  buyer(@Parent() service: BookedService) {
+    return {
+      __typename: 'Account',
+      id: service.ownerId,
+    };
+  }
+
+  @ResolveField(() => Service)
+  service(@Parent() bookedService: BookedService) {
+    return {
+      __typename: 'Service',
+      id: bookedService.serviceId,
+    };
   }
 }

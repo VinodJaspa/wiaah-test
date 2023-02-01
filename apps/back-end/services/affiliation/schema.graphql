@@ -18,7 +18,6 @@ type Product {
 
 type Service {
   id: ID!
-  type: String!
 }
 
 type Account {

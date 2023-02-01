@@ -1,8 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { BuyerComment, Divider, Rate, SectionHeader } from "@UI";
-import { products } from "../../../../placeholder";
-import { randomNum } from "../../../helpers";
+import { BuyerComment, Rate, SectionHeader, usePaginationControls } from "@UI";
+import { useGetMyReviewsQuery } from "@features/Products";
 
 export type ReviewData = {
   username: string;
@@ -16,39 +15,49 @@ export interface ReviewsSectionProps {}
 
 export const ReviewsSection: React.FC<ReviewsSectionProps> = ({}) => {
   const { t } = useTranslation();
-  const totalReviewsScore = reviews.reduce((accum, current) => {
-    return (accum += current.rating);
-  }, 0);
-  const average = ((reviews.length * 5) / totalReviewsScore).toFixed(1);
+
+  const { controls, pagination, changeTotalItems } = usePaginationControls();
+  const { data, isLoading, isError } = useGetMyReviewsQuery({
+    pagination,
+  });
+
+  React.useEffect(() => {
+    if (data?.sellerProductsRating) {
+      if (controls.totalItems !== data.sellerProductsRating.reviews) {
+        changeTotalItems(data.sellerProductsRating.reviews);
+      }
+    }
+  }, [data]);
+
   return (
     <div className="flex flex-col gap-4 w-full">
-      <SectionHeader sectionTitle={t("reviews", "Reviews")} />
+      <SectionHeader sectionTitle={t("Reviews")} />
       <div className="shadow flex flex-col gap-4">
         <div className="flex gap-2 items-center">
           <span className="text-gray-500">
-            {t("average_item_review", "Average item review")} {average}{" "}
-            {t("out_of", "out of")} 5 {t("stars", "stars")}
+            {t("Average item review")} {data?.sellerProductsRating.rating}{" "}
+            {t("out of")} 5 {t("stars")}
           </span>
-          <Rate rating={parseInt(average)} />({reviews.length})
+          <Rate rating={data?.sellerProductsRating.rating || 0} />(
+          {data?.sellerProductsRating.reviews})
         </div>
         <span className="text-gray-500">
-          {t("showing", "Showing")} {reviews.length}-{reviews.length}{" "}
-          {t("of", "of")} {reviews.length}
+          {t("showing", "Showing")} {data?.reviews.length} {t("of", "of")}{" "}
+          {data?.sellerProductsRating.reviews}
         </span>
         <div className="flex flex-col gap-4">
-          {reviews.map((review, i) => {
-            const p = products.find((p) => p.id === review.productId);
+          {data?.reviews?.map((review, i) => {
             return (
               <BuyerComment
                 key={i}
-                comment={review.review}
-                date={new Date(review.utcDate)}
-                name={review.username}
-                rating={review.rating}
+                comment={review.message}
+                date={review.createdAt}
+                name={review.reviewer.profile?.username || "User"}
+                rating={review.rate}
                 product={{
-                  name: p?.name || "",
-                  description: "description",
-                  thumbnailUrl: p?.imgUrl || "/shop.jpeg",
+                  name: review.product.title || "",
+                  description: review.product.description,
+                  thumbnailUrl: review.product.thumbnail,
                 }}
               />
             );
@@ -58,11 +67,3 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({}) => {
     </div>
   );
 };
-
-const reviews: ReviewData[] = [...Array(15)].map((_, i) => ({
-  productId: `${i}`,
-  rating: randomNum(5),
-  review: "good product",
-  username: "wiaah  user",
-  utcDate: new Date(Date.now()).toUTCString(),
-}));

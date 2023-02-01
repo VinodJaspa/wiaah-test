@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int, ID, Directive } from '@nestjs/graphql';
-import { ServiceStatus } from '@prisma-client';
+import { BookedServiceStatus } from '@prisma-client';
 
 @ObjectType()
 @Directive('@extends')
@@ -63,8 +63,8 @@ export class BookedService {
   @Field(() => ID)
   providerId: string;
 
-  @Field(() => ServiceStatus)
-  status: ServiceStatus;
+  @Field(() => BookedServiceStatus)
+  status: BookedServiceStatus;
 
   @Field(() => Date)
   checkin: Date;

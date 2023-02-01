@@ -34,10 +34,17 @@ type RatingCategoryDetails {
 }
 
 model ProductRating {
-  id String @id @db.ObjectId @map("_id")
-  rating Float @default(0)
-  reviews Int @default(0)
-  givenStars Float @default(0)
+  id         String @id @map("_id") @db.ObjectId
+  rating     Float  @default(0)
+  reviews    Int    @default(0)
+  givenStars Float  @default(0)
+}
+
+model SellerProductsRating {
+  id         String @id @map("_id") @db.ObjectId
+  rating     Float  @default(0)
+  reviews    Int    @default(0)
+  givenStars Float  @default(0)
 }
 
 model ProductReview {
@@ -45,12 +52,12 @@ model ProductReview {
   sellerId   String   @db.ObjectId
   productId  String   @db.ObjectId
   reviewerId String   @db.ObjectId
-  rate       Float    
+  rate       Float
   message    String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  @@unique([productId,reviewerId])
+  @@unique([productId, reviewerId])
 }
 
 model ServiceReview {

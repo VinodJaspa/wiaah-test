@@ -1,12 +1,4 @@
-import {
-  ObjectType,
-  Field,
-  Int,
-  ID,
-  InputType,
-  Directive,
-  registerEnumType,
-} from '@nestjs/graphql';
+import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
 import { Profile } from '@entities';
 import { Attachment, Hashtag } from '@entities';
 import { CommentsVisibility } from 'prismaClient';

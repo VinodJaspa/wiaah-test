@@ -1,3 +1,3 @@
 export class CreateHashtagCommand {
-  constructor(public name: string) {}
+  constructor(public tag: string) {}
 }
