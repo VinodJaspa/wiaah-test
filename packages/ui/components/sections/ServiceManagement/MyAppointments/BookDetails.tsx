@@ -2,7 +2,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { IoCall, IoLocation } from "react-icons/io5";
 import { MdEmail } from "react-icons/md";
-import { PriceType, Service } from "types";
 import {
   QrcodeDisplay,
   Divider,
@@ -17,42 +16,8 @@ import {
   Th,
   HStack,
   PriceDisplay,
+  useGetAppointmentDetailsQuery,
 } from "@UI";
-import { BookingsSectionCtx } from ".";
-
-const service: Service = {
-  serviceName: "test service name",
-  serviceOwner: "Wiaah",
-  serviceThumbnail:
-    "https://cdn.dayrooms.com/image_cache/A1000/1783/King-d16ae5df94d1ffadec0a2eb6ffa86c97-hotel-homepage.jpg",
-  contacts: {
-    phone: "123456789",
-    email: "testemail@email.com",
-  },
-  rooms: [
-    {
-      type: "one",
-      nightPrice: 1250,
-      nights: 2,
-    },
-    {
-      type: "two",
-      nightPrice: 1550,
-      nights: 2,
-    },
-    {
-      type: "three",
-      nightPrice: 950,
-      nights: 1,
-    },
-  ],
-  location: {
-    streetName: "Shri New Homestay, Coorg, Madikeri Road",
-    streetNumber: 571201,
-    city: "Karnataka",
-    country: "",
-  },
-};
 
 export interface BookDetailsSectionProps {
   bookId: string;
@@ -63,10 +28,7 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
   bookId,
   onGoBack,
 }) => {
-  const total: PriceType = {
-    amount: 150,
-    currency: "CHF",
-  };
+  const { data:service } = useGetAppointmentDetailsQuery(bookId)
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-2">
@@ -74,14 +36,12 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
         <div className="flex flex-col h-auto w-full justify-between">
           <div className="w-full flex gap-8 flex-col">
             <div className="flex w-full justify-between items-center">
-              <span className="text-4xl font-bold">
-                {t("checkin_details", "Checkin Details")}
-              </span>
+              <span className="text-4xl font-bold">{t("Checkin Details")}</span>
               <Button
                 colorScheme="danger"
                 onClick={() => onGoBack && onGoBack()}
               >
-                {t("cancel_the_booking", "Cancel the booking")}
+                {t("Cancel the booking")}
               </Button>
             </div>
             <div className="flex flex-col sm:flex-row justify-between">
@@ -92,26 +52,22 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
                 </div>
                 <div className="flex flex-col">
                   <div className="flex whitespace-nowrap flex-col">
-                    {t("booking_number", "Booking Number")}
+                    {t("Booking Number")}
                     <span className="font-bold" data-testid="BookNumber">
                       #{bookId}
                     </span>
                   </div>
                   <Divider />
-                  <Button outline>{t("save_the_qr", "Save the QR")}</Button>
+                  <Button outline>{t("Save the QR")}</Button>
                 </div>
               </div>
               <div className="flex gap-4">
                 <div>
-                  <span className="text-xl py-1">
-                    {t("checkin", "Checkin")}
-                  </span>
+                  <span className="text-xl py-1">{t("Checkin")}</span>
                   <CalanderPage date={Date.now()} />
                 </div>
                 <div>
-                  <span className="py-1 text-xl">
-                    {t("checkout", "Checkout")}
-                  </span>
+                  <span className="py-1 text-xl">{t("Checkout")}</span>
                   <CalanderPage date={Date.now()} />
                 </div>
               </div>
@@ -120,7 +76,7 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
               {/* checkin details */}
               <div>
                 <span className="text-3xl font-bold">
-                  {t("room_fare_breakup", "Room Fare Breakup")}
+                  {t("Room Fare Breakup")}
                 </span>
                 <TableContainer>
                   <Table
@@ -130,9 +86,9 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
                   >
                     <THead>
                       <Tr>
-                        <Th>{t("room_type", "Room Type")}</Th>
-                        <Th>{t("room_price", "Room Price")}</Th>
-                        <Th>{t("total", "Total")}</Th>
+                        <Th>{t("Room Type")}</Th>
+                        <Th>{t("Room Price")}</Th>
+                        <Th>{t("Total")}</Th>
                       </Tr>
                     </THead>
                     <TBody data-testid="RoomsTable">
@@ -159,7 +115,7 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
             </div>
             <div className="w-full flex justify-end items-center">
               <span className="text-xl font-bold flex items-center gap-2">
-                {t("total", "Total")}: <PriceDisplay priceObject={total} />
+                {t("Total")}: <PriceDisplay priceObject={total} />
               </span>
             </div>
           </div>
@@ -167,7 +123,7 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
             className=" mb-5 w-fit"
             onClick={() => onGoBack && onGoBack()}
           >
-            {t("go_back", "Go back")}
+            {t("Go back")}
           </Button>
         </div>
         <div className="text-xl w-full 2xl:w-[40rem] gap-4 flex flex-col">
@@ -186,7 +142,7 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
             {service.serviceName}
           </span>
           <div className="flex gap-2 font-bold" data-testid="ServiceOwner">
-            {t("buyer", "Buyer")}:{" "}
+            {t("Buyer")}:{" "}
             <span className="text-gray-500">{service.serviceOwner}</span>
           </div>
           <div className="flex gap-2">

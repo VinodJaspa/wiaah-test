@@ -210,10 +210,10 @@ enum ServiceCategoryStatus {
 type RestaurantMenu {
   id: ID!
   name: String!
-  dishs: [RestaurantDish!]!
+  dishs: [Dish!]!
 }
 
-type RestaurantDish {
+type Dish {
   id: ID!
   name: String!
   price: Float!
@@ -262,12 +262,12 @@ enum ServicePaymentMethod {
 
 type HealthCenterSpecialty {
   id: ID!
-  doctors: [HealthCenterDoctor!]
+  doctors: [Doctor!]
   name: String!
   description: String!
 }
 
-type HealthCenterDoctor {
+type Doctor {
   id: ID!
   healthCenter: HealthCenter
   speciality: HealthCenterSpecialty
@@ -301,7 +301,7 @@ type HealthCenter {
   serviceMetaInfo: ServiceMetaInfo!
   payment_methods: [ServicePaymentMethod!]!
   cancelationPolicies: [ServiceCancelationPolicy!]!
-  doctors: [HealthCenterDoctor!]!
+  doctors: [Doctor!]!
   workingHours: WorkingSchedule!
 }
 
@@ -313,7 +313,7 @@ type BeautyCenterTreatmentCategory {
   title: String!
 }
 
-type BeautyCenterTreatment {
+type Treatment {
   id: ID!
   treatmentCategoryId: ID!
   category: BeautyCenterTreatmentCategory
@@ -343,7 +343,7 @@ type BeautyCenter {
   payment_methods: [ServicePaymentMethod!]!
   cancelationPolicies: [ServiceCancelationPolicy!]!
   type_of_seller: ServiceTypeOfSeller!
-  treatments: [BeautyCenterTreatment!]!
+  treatments: [Treatment!]!
   workingHours: WorkingSchedule
 }
 
@@ -401,6 +401,8 @@ type Service {
   thumbnail: String!
   presentation: [ServicePresentation!]
   hashtags: [String!]!
+  location: ServiceLocation!
+  contact: ServiceContact!
 }
 
 enum ServiceType {
@@ -472,18 +474,12 @@ type ServiceShopRaw {
   cuisinesTypeId: String
   setting_and_ambianceId: String
   michelin_guide_stars: Int
-  doctors: [HealthCenterDoctor!]
-  treatments: [BeautyCenterTreatment!]
+  doctors: [Doctor!]
+  treatments: [Treatment!]
   vehicle: [Vehicle!]
 }
 
-type Rest {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
 type Query {
-  rest(id: Int!): Rest!
   getAllServices(args: GetFilteredServicesInput!): [Service!]!
   getMyWorkingSchedule: WorkingSchedule!
   getInsurances(args: GetInsurancesInput!): [Insurance!]!
@@ -502,9 +498,9 @@ type Query {
   searchFilteredRestaurant(filtersInput: SearchFilteredRestaurantInput!): [Restaurant!]!
   getHealthCenter(serviceId: String!): HealthCenter!
   searchHealthCenters(searchHealthCenterArgs: SearchHealthCenterInput!): [HealthCenter!]!
-  searchHealthCenterDoctors(searchHealthCenterArgs: SearchHealthCenterInput!): [HealthCenterDoctor!]!
+  searchHealthCenterDoctors(searchHealthCenterArgs: SearchHealthCenterInput!): [Doctor!]!
   getBeautyCenterById(id: String!): BeautyCenter!
-  getFilteredBeuatyCenterTreatments(args: SearchFilteredBeautyCenterInput!): [BeautyCenterTreatment!]!
+  getFilteredBeuatyCenterTreatments(args: SearchFilteredBeautyCenterInput!): [Treatment!]!
   getBeautyCenterTreatmentCategories: [BeautyCenterTreatmentCategory!]!
   getBeautyCenterTreatmentCategoriesByIds(ids: [String!]!): [BeautyCenterTreatmentCategory!]!
   getAllVehicles(args: GetVehiclesInput!): [VehicleService!]!
@@ -616,9 +612,6 @@ input GetVehiclesInput {
 }
 
 type Mutation {
-  createRest(createRestInput: CreateRestInput!): Rest!
-  updateRest(updateRestInput: UpdateRestInput!): Rest!
-  removeRest(id: Int!): Rest!
   updateMyWorkingSchedule(args: UpdateWorkingScheduleInput!): WorkingSchedule!
   requestInsurancePayBack(bookId: ID!): Boolean!
   refuseInsurancePayBackRequest(bookId: ID!): Boolean!
@@ -647,17 +640,6 @@ type Mutation {
   deleteBeautyCenterServices(deleteBeautyCenterServices: DeleteTreatmentCategoriesInput!): Boolean!
   updateTreatmentCategories(updateTreatmentCategoriesArgs: UpdateTreatmentCategoriesInput!): [BeautyCenterTreatmentCategory!]!
   createVehicle(createVehicleInput: CreateVehicleServiceInput!): VehicleService!
-}
-
-input CreateRestInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
-}
-
-input UpdateRestInput {
-  """Example field (placeholder)"""
-  exampleField: Int
-  id: Int!
 }
 
 input UpdateWorkingScheduleInput {

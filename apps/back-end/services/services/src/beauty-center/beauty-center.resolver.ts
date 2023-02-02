@@ -26,7 +26,7 @@ import {
 } from './dto';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetBeautyCenterByIdQuery } from './queries/impl/get-beauty-center-by-id.query';
-import { BeautyCenterTreatment } from './entities';
+import { Treatment } from './entities';
 import { PrismaService } from 'prismaService';
 
 export type GqlBeautyCenterSelectedFields = GqlSelectedFields<BeautyCenter>;
@@ -71,7 +71,7 @@ export class BeautyCenterResolver {
     return this.beautyCenterService.getBeautyCenterById(id, user?.id, fields);
   }
 
-  @Query(() => [BeautyCenterTreatment])
+  @Query(() => [Treatment])
   async getFilteredBeuatyCenterTreatments(
     @Args('args') args: SearchFilteredBeautyCenterInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,

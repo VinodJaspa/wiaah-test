@@ -1,9 +1,10 @@
 import { ServiceDiscount } from '@entities';
-import { Field, Float, ID, Int, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, Float, ID, Int, ObjectType } from '@nestjs/graphql';
 import { BeautyCenterTreatmentCategory } from './beauty-center-treatment-category.entity';
 
 @ObjectType()
-export class BeautyCenterTreatment {
+@Directive('@key(fields:"id")')
+export class Treatment {
   @Field(() => ID)
   id: string;
 

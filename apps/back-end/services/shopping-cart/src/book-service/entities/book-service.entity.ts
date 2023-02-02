@@ -47,6 +47,33 @@ export class Vehicle {
 }
 
 @ObjectType()
+@Directive('@extends')
+@Directive('@key(fields:"id")')
+export class Treatment {
+  @Field(() => ID)
+  @Directive('@external')
+  id: string;
+}
+
+@ObjectType()
+@Directive('@extends')
+@Directive('@key(fields:"id")')
+export class Dish {
+  @Field(() => ID)
+  @Directive('@external')
+  id: string;
+}
+
+@ObjectType()
+@Directive('@extends')
+@Directive('@key(fields:"id")')
+export class Doctor {
+  @Field(() => ID)
+  @Directive('@external')
+  id: string;
+}
+
+@ObjectType()
 export class BookedService {
   @Field(() => ID)
   id: string;
@@ -65,6 +92,9 @@ export class BookedService {
 
   @Field(() => BookedServiceStatus)
   status: BookedServiceStatus;
+
+  @Field(() => String, { nullable: true })
+  payment?: string;
 
   @Field(() => Date)
   checkin: Date;

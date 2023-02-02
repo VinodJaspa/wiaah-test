@@ -14,11 +14,7 @@ import {
 } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 import { SearchHealthCenterInput } from '../dto';
-import {
-  HealthCenter,
-  HealthCenterDoctor,
-  HealthCenterSpecialty,
-} from '../entities';
+import { HealthCenter, Doctor, HealthCenterSpecialty } from '../entities';
 import { GqlHealthCenterSelectedFields } from '../types';
 import { HealthCenterElasticRepository } from './health-center.elastic.repository';
 
@@ -147,7 +143,7 @@ export class HealthCenterRepository {
       speciality: PrismaHealthCenterSpecialty;
     },
     langId: UserPreferedLang,
-  ): HealthCenterDoctor {
+  ): Doctor {
     return {
       ...input,
       description: getTranslatedResource({

@@ -23,7 +23,7 @@ import { ErrorHandlingTypedService } from '@utils';
 import {
   UpdateHealthCenterInput,
   HealthCenterSpecialty,
-  HealthCenterDoctor,
+  Doctor,
   CreateHealthCenterInput,
   CreateHealthCenterSpecialityInput,
   HealthCenter,
@@ -249,7 +249,7 @@ export class HealthCenterService {
     input: PrismaHealthCenterDoctor & {
       speciality: PrismaHealthCenterSpeciality;
     },
-  ): HealthCenterDoctor {
+  ): Doctor {
     return {
       ...input,
       description: getTranslatedResource({

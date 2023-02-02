@@ -1,4 +1,4 @@
-import { BeautyCenterTreatment } from '@beauty-center';
+import { Treatment } from '@beauty-center';
 import {
   HotelRoom,
   ServiceCancelationPolicy,
@@ -10,7 +10,7 @@ import {
   ServicePresentation,
   ServiceTranslationPolicy,
 } from '@entities';
-import { HealthCenterDoctor } from '@health-center';
+import { Doctor } from '@health-center';
 import {
   Field,
   Float,
@@ -114,11 +114,11 @@ export class ServiceShopRaw {
   @Field(() => Int, { nullable: true })
   michelin_guide_stars?: number;
 
-  @Field(() => [HealthCenterDoctor], { nullable: true })
-  doctors?: HealthCenterDoctor[];
+  @Field(() => [Doctor], { nullable: true })
+  doctors?: Doctor[];
 
-  @Field(() => [BeautyCenterTreatment], { nullable: true })
-  treatments?: BeautyCenterTreatment;
+  @Field(() => [Treatment], { nullable: true })
+  treatments?: Treatment;
 
   @Field(() => [Vehicle], { nullable: true })
   vehicle?: Vehicle[];

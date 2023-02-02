@@ -16,6 +16,7 @@ import { BeautyCenterSagas } from './sagas';
 import { BeautyCenterController } from './beauty-center.controller';
 import { kafkaModule } from '@kafka-module';
 import { BeautyCenterQueryHandlers } from './queries';
+import { TreatmentResolver } from './treatment.resolver';
 @Module({
   imports: [CqrsModule, ServiceOwnershipModule, kafkaModule],
   providers: [
@@ -26,6 +27,7 @@ import { BeautyCenterQueryHandlers } from './queries';
     PrismaService,
     BeautyCenterElasticRepository,
     BeautyCenterRepository,
+    TreatmentResolver,
     ...BeautyCenterEventHandlers,
     ...BeautyCenterCommndHandlers,
     ...BeautyCenterSagas,

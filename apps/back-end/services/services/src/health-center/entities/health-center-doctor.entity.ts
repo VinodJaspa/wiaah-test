@@ -1,5 +1,6 @@
 import { TranslationText } from '@entities';
 import {
+  Directive,
   Field,
   Float,
   ID,
@@ -15,7 +16,8 @@ registerEnumType(HealthCenterDoctorAvailablityStatus, {
 });
 
 @ObjectType()
-export class HealthCenterDoctor {
+@Directive('@key(fields:"id")')
+export class Doctor {
   @Field(() => ID)
   id: string;
 

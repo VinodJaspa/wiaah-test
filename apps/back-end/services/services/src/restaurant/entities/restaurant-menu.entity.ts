@@ -1,4 +1,4 @@
-import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, Float, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class RestaurantMenu {
@@ -8,12 +8,13 @@ export class RestaurantMenu {
   @Field(() => String)
   name: string;
 
-  @Field(() => [RestaurantDish])
-  dishs: RestaurantDish[];
+  @Field(() => [Dish])
+  dishs: Dish[];
 }
 
 @ObjectType()
-export class RestaurantDish {
+@Directive('@key(fields:"id")')
+export class Dish {
   @Field(() => ID)
   id: string;
 

@@ -11,6 +11,7 @@ import { SearchFilteredRestaurantQueryHandler } from './queries/handlers/search-
 import { CqrsModule } from '@nestjs/cqrs';
 import { RestaurantController } from './restaurant.controller';
 import { kafkaModule } from '@kafka-module';
+import { DishResolver } from './dish.resolver';
 
 @Module({
   imports: [CqrsModule, ServiceOwnershipModule, kafkaModule],
@@ -19,6 +20,7 @@ import { kafkaModule } from '@kafka-module';
     RestaurantService,
     PrismaService,
     RestaurantRepository,
+    DishResolver,
     RestaurantElasticSearchRepository,
     SearchFilteredRestaurantQueryHandler,
   ],

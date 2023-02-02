@@ -22,7 +22,7 @@ import {
   ServiceStatus,
   ServiceTypeOfSeller,
 } from 'prismaClient';
-import { BeautyCenterTreatment } from './beauty-center-treatment.entity';
+import { Treatment } from './beauty-center-treatment.entity';
 
 registerEnumType(ServiceTypeOfSeller, { name: 'ServiceTypeOfSeller' });
 registerEnumType(ServiceStatus, { name: 'ServiceStatus' });
@@ -87,8 +87,8 @@ export class BeautyCenter {
   @Field(() => ServiceTypeOfSeller)
   type_of_seller: ServiceTypeOfSeller;
 
-  @Field(() => [BeautyCenterTreatment])
-  treatments: BeautyCenterTreatment[];
+  @Field(() => [Treatment])
+  treatments: Treatment[];
 
   @Field(() => WorkingSchedule, { nullable: true })
   workingHours?: WorkingSchedule;

@@ -21,7 +21,7 @@ import {
   HealthCenter,
   HealthCenterSpecialty,
   CreateHealthCenterSpecialityInput,
-  HealthCenterDoctor,
+  Doctor,
 } from '@health-center';
 import { HealthCenterService } from './health-center.service';
 import { QueryBus } from '@nestjs/cqrs';
@@ -93,7 +93,7 @@ export class HealthCenterResolver {
     );
   }
 
-  @Query(() => [HealthCenterDoctor])
+  @Query(() => [Doctor])
   searchHealthCenterDoctors(
     @Args('searchHealthCenterArgs') input: SearchHealthCenterInput,
     @GqlSelectedQueryFields() selectedFields: GqlHealthCenterSelectedFields,

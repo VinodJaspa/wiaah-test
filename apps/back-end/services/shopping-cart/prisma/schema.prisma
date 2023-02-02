@@ -35,6 +35,7 @@ model BookedService {
   updatedAt           DateTime            @updatedAt
   purchased           Boolean             @default(false)
   status              BookedServiceStatus @default(pending)
+  payment             String?
   rejectReason        String?
   type                String
   checkin             DateTime

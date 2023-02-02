@@ -1,10 +1,5 @@
 import React from "react";
 import {
-  useGetPendingAppointmentsQuery,
-  useAcceptPendingAppointmentMutation,
-  useDeclinePendingAppointmentMutation,
-} from "@src/Hooks";
-import {
   SectionHeader,
   Button,
   ControlledModal,
@@ -15,20 +10,32 @@ import {
   ModalFooter,
   Textarea,
   ServiceCheckoutCardSwitcher,
+  useGetMyBookingsHistoryQuery,
+  usePaginationControls,
+  ScrollPaginationWrapper,
+  useAcceptPendingAppointmentMutation,
+  useDeclinePendingAppointmentMutation,
 } from "@UI";
 import { useTranslation } from "react-i18next";
 import { PendingAppointmentData } from "api";
 import { DeclinePendingAppointmentDto } from "dto";
 import { Formik, Form } from "formik";
 import { ReturnDeclineRequestValidationSchema } from "validation";
+import { BookedServiceStatus } from "@features/API";
 
 export interface PendingAppointmentsSectionProps {}
 
 export const PendingAppointmentsSection: React.FC<
   PendingAppointmentsSectionProps
 > = () => {
-  const { data: res } = useGetPendingAppointmentsQuery();
   const { t } = useTranslation();
+
+  const { pagination, controls } = usePaginationControls();
+  const { data } = useGetMyBookingsHistoryQuery({
+    status: BookedServiceStatus.Pending,
+    pagination,
+    q: "",
+  });
 
   return (
     <div className="flex flex-col gap-4">
@@ -36,14 +43,28 @@ export const PendingAppointmentsSection: React.FC<
         sectionTitle={t("pending_appointments", "Pending Appointments")}
       />
       <div className="flex flex-col gap-8">
-        {res
-          ? res.data.map((appointment, i) => (
-              <PendingAppointmentCard
-                key={i}
-                appointmentRequestData={appointment}
-              />
-            ))
-          : null}
+        <ScrollPaginationWrapper controls={controls}>
+          {data
+            ? data.map((v, i) => (
+                <PendingAppointmentCard
+                  key={i}
+                  appointmentRequestData={{
+                    data: {
+                      bookedDates: {
+                        from: v.checkin,
+                        to: v.checkout,
+                      },
+                      bookedMenus: v.dishs.map((d) => ({
+                        price: d.price,
+                        qty: 1,
+                        title: d.name,
+                      })),
+                    },
+                  }}
+                />
+              ))
+            : null}
+        </ScrollPaginationWrapper>
       </div>
     </div>
   );
@@ -57,6 +78,7 @@ export const PendingAppointmentCard: React.FC<{
     useAcceptPendingAppointmentMutation();
   const { mutate: declineAppointment, isLoading: declineIsLoading } =
     useDeclinePendingAppointmentMutation();
+
   return (
     <div className="flex justify-between gap-2">
       <div className="w-[min(100%,20rem)]">
@@ -72,7 +94,10 @@ export const PendingAppointmentCard: React.FC<{
           <ControlledModal>
             <Formik<DeclinePendingAppointmentDto>
               onSubmit={(data) => {
-                declineAppointment(data);
+                declineAppointment({
+                  id: data.appointmentId,
+                  reason: data.declineReason,
+                });
               }}
               initialValues={{
                 appointmentId: appointmentRequestData.data.id,
@@ -102,9 +127,7 @@ export const PendingAppointmentCard: React.FC<{
 
         <Button
           loading={acceptIsLoading}
-          onClick={() =>
-            acceptAppointment({ appointmentId: appointmentRequestData.data.id })
-          }
+          onClick={() => acceptAppointment(appointmentRequestData.data.id)}
         >
           {t("Approve")}
         </Button>
