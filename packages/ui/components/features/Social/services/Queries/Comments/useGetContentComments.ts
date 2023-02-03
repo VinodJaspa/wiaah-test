@@ -5,7 +5,7 @@ import {
   Comment,
   Attachment,
   Profile,
-} from "@features/Social/services/types";
+} from "@features/API";
 import { useQuery } from "react-query";
 
 export type GetContentCommentsQueryVariables = Exact<{

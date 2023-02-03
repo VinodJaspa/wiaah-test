@@ -23,6 +23,8 @@ import { ServiceModule } from './service/service.module';
 import { WorkingScheduleModule } from './working-schedule/working-schedule.module';
 import { InsuranceModule } from './insurance/insurance.module';
 import { ServiceDiscoveryModule } from './service-discovery/service-discovery.module';
+import { ServiceDiscountModule } from './service-discount/service-discount.module';
+import { ServiceCashbackModule } from './service-cashback/service-cashback.module';
 
 @Global()
 @Module({
@@ -62,6 +64,8 @@ export class GlobalPrismaService {}
     ErrorHandlingModule.register({
       messages: ErrorMessages,
     }),
+    ServiceDiscountModule,
+    ServiceCashbackModule,
     ServiceModule,
     WorkingScheduleModule,
     InsuranceModule,

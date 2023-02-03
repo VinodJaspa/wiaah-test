@@ -1,14 +1,6 @@
 export type WeekDays = "Sun" | "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat";
 
-export const weekDays: WeekDays[] = [
-  "Sat",
-  "Sun",
-  "Mon",
-  "Tue",
-  "Wed",
-  "Thu",
-  "Fri",
-];
+export const weekDays: number[] = [0, 1, 2, 3, 4, 5, 6];
 
 export interface FormatedDays {
   dayNum: number;

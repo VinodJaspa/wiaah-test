@@ -1,6 +1,6 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact, Scalars } from "types";
-import { Mutation } from "@features/Accounts/services/types";
+import { Mutation } from "@features/API";
 import { useMutation } from "react-query";
 
 export type ProvideVvcMutationVariables = Exact<{

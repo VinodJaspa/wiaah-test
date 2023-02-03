@@ -1,13 +1,8 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { Exact, Maybe } from "types";
 import { useQuery } from "react-query";
-import {
-  GetStorySeenByInput,
-  StoryView,
-  Story,
-  Profile,
-} from "@features/Social/services/types";
-import { Account } from "@features/Accounts";
+import { GetStorySeenByInput, StoryView, Story, Profile } from "@features/API";
+import { Account } from "@features/API";
 
 export type GetStoryViewersQueryVariables = Exact<{
   args: GetStorySeenByInput;

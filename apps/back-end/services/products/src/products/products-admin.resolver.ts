@@ -98,7 +98,12 @@ export class ProductsAdminResolver {
       where: {
         id,
       },
-      data: rest,
+      data: {
+        ...rest,
+        discount: {
+          update: rest.discount,
+        },
+      },
     });
     return true;
   }

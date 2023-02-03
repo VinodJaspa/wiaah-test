@@ -2,10 +2,10 @@ import { Account } from "@features/Accounts";
 import {
   AffiliationPurchase,
   GetAffiliationHistoryInput,
-} from "@features/Affiliation/types";
-import { Product } from "@features/Products";
-import { Service } from "@features/Services";
-import { Profile } from "@features/Social";
+  Product,
+  Profile,
+  Service,
+} from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 import { Exact, Maybe } from "types";

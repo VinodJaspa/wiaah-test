@@ -4,9 +4,9 @@ import {
   AffiliationPost,
   GetUserAffiliationPostsInput,
   Profile,
-} from "@features/Social/services/types";
-import { Affiliation } from "@features/Affiliation";
-import { Account } from "@features/Accounts";
+} from "@features/API";
+import { Affiliation } from "@features/API";
+import { Account } from "@features/API";
 import { useQuery, UseQueryOptions } from "react-query";
 
 export type GetProfileAffiliationPostsQueryVariables = Exact<{

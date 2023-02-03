@@ -10,7 +10,7 @@ import {
   PostMention,
   PostTag,
   Profile,
-} from "@features/Social";
+} from "@features/API";
 
 export type GetProfilePostsQueryVariables = Exact<{
   args: GetNewsfeedPostsByUserIdInput;

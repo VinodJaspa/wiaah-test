@@ -1,9 +1,6 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
-import {
-  Mutation,
-  UpdateUserCookiesSettingsInput,
-} from "@features/Accounts/services/types";
+import { Mutation, UpdateUserCookiesSettingsInput } from "@features/API";
 import { useMutation } from "react-query";
 
 export type UpdateMyCookiesMutationVariables = Exact<{

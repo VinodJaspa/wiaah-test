@@ -54,7 +54,8 @@ enum PresentationType {
   image
 }
 
-type CashBack {
+type Cashback {
+  id: ID!
   units: Int!
   amount: Int!
   type: CashbackType!
@@ -66,6 +67,7 @@ enum CashbackType {
 }
 
 type Discount {
+  id: ID!
   units: Int!
   amount: Int!
 }
@@ -87,8 +89,8 @@ type Product {
   category: Category
   attributes: [ProductAttribute!]!
   stock: Int!
-  discount: Discount!
-  cashback: CashBack!
+  discountId: String
+  cashbackId: String
   presentations: [ProductPresentation!]!
   thumbnail: String!
   rate: Int!
@@ -105,6 +107,8 @@ type Product {
   createdAt: String!
   updatedAt: String!
   earnings: Float!
+  discount: Discount!
+  cashback: Cashback!
 }
 
 enum VisibilityEnum {

@@ -17,6 +17,8 @@ import { ShippingAddressModule } from './shipping-address/shipping-address.modul
 import { ProductsAdminModule } from '@products/products-admin.module';
 import { ShippingTypeRuleModule } from './shipping-type-rule/shipping-type-rule.module';
 import { ShippingDetailsModule } from './shipping-details/shipping-details.module';
+import { DiscountModule } from './discount/discount.module';
+import { CashbackModule } from './cashback/cashback.module';
 
 @Global()
 @Module({
@@ -63,6 +65,8 @@ export class PrismaGlobalModule {}
     ProductsAdminModule,
     ShippingAddressModule,
     ShippingTypeRuleModule,
+    DiscountModule,
+    CashbackModule,
     // ShippingSettingsModule,
     ShippingDetailsModule,
     ShippingRulesModule,

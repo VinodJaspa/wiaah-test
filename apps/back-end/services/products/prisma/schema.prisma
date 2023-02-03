@@ -74,8 +74,8 @@ model Product {
   reviews                     Int                   @default(0)
   rateStarCount               Int                   @default(0)
   brand                       String
-  discount                    Discount?
-  cashback                    CashBack?
+  discountId                  String?
+  cashbackId                  String?
   shippingRulesIds            String[]              @db.ObjectId
   presentations               ProductPresentation[]
   thumbnail                   String
@@ -84,6 +84,7 @@ model Product {
   earnings                    Float                 @default(0)
   createdAt                   DateTime              @default(now())
   updatedAt                   DateTime              @updatedAt
+  discount                    Discount?             @relation(fields: [discountId], references: [id])
 }
 
 model Shop {
@@ -108,14 +109,17 @@ model ShippingAddress {
   location Location
 }
 
-type Discount {
-  units  Int
-  amount Int
+model Discount {
+  id      String    @id @default(auto()) @map("_id") @db.ObjectId
+  units   Int
+  amount  Float
+  Product Product[]
 }
 
-type CashBack {
+model CashBack {
+  id     String       @id @default(auto()) @map("_id") @db.ObjectId
   units  Int
-  amount Int
+  amount Float
   type   CashbackType
 }
 

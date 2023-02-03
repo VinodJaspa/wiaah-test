@@ -11,6 +11,8 @@ import { BookServiceService } from '@book-service/book-service.service';
 import {
   Account,
   BookedService,
+  Cashback,
+  Discount,
   Dish,
   Doctor,
   Service,
@@ -251,11 +253,27 @@ export class BookServiceResolver {
     }));
   }
 
-  @ResolveField(() => [Doctor])
-  Doctor(@Parent() service: BookedService) {
+  @ResolveField(() => Doctor)
+  doctor(@Parent() service: BookedService) {
     return service.treatmentsIds.map((id) => ({
       __typename: 'Doctor',
       id,
     }));
+  }
+
+  @ResolveField(() => Discount)
+  cashback(@Parent() service: BookedService) {
+    return {
+      __typename: 'Cashback',
+      id: service.cashbackId,
+    };
+  }
+
+  @ResolveField(() => Cashback)
+  discount(@Parent() service: BookedService) {
+    return {
+      __typename: 'Discount',
+      id: service.discountId,
+    };
   }
 }

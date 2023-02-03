@@ -107,7 +107,9 @@ model Service {
   treatments BeautyCenterTreatment[]
 
   // vehicle
-  vehicles Vehicle[]
+  vehicles   Vehicle[]
+  discountId String?
+  cashbackId String?
 }
 
 model HotelService {

@@ -1,7 +1,7 @@
 import { Exact } from "types";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
-import { PrivacySettings } from "@features/Social/services/types";
+import { PrivacySettings } from "@features/API";
 
 export type GetMyPrivacySettingsQueryVariables = Exact<{
   [key: string]: never;

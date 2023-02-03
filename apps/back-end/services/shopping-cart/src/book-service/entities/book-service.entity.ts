@@ -140,4 +140,10 @@ export class BookedService {
 
   @Field(() => Vehicle, { nullable: true })
   vehicle?: Vehicle;
+
+  @Field(() => String, { nullable: true })
+  discountId?: string;
+
+  @Field(() => String, { nullable: true })
+  cashbackId?: string;
 }

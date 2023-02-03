@@ -1,11 +1,11 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
 import { useQuery } from "react-query";
 import {
   GetProfileFollowersMetaInput,
   ProfileMeta,
   ProfileMetaPaginatedResponse,
-} from "@features/Social";
+} from "@features/API";
 
 export type GetProfileFollowersQueryVariables = Exact<{
   args: GetProfileFollowersMetaInput;

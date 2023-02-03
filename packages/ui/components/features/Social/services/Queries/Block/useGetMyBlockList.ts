@@ -1,11 +1,7 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact, Maybe } from "types";
 import { useQuery } from "react-query";
-import {
-  Block,
-  GetMyBlocklistInput,
-  Profile,
-} from "@features/Social/services/types";
+import { Block, GetMyBlocklistInput, Profile } from "@features/API";
 
 export type GetMyBlocklistQueryVariables = Exact<{
   args: GetMyBlocklistInput;

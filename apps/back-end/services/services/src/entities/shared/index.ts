@@ -9,3 +9,5 @@ export * from './ServiceExtra.entity';
 export * from './ServicePropertyMeasurements.entity';
 export * from './TranslationText.entity';
 export * from './ServiceLocation.entity';
+export * from './ServiceDiscount.entity';
+export * from './ServiceCashback.entity';

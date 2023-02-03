@@ -1,10 +1,7 @@
 import { Exact, Maybe } from "types";
 import { createGraphqlRequestClient } from "api";
-import {
-  GetMyFriendSuggestionsInput,
-  Profile,
-} from "@features/Social/services/types";
-import { Account } from "@features/Accounts";
+import { GetMyFriendSuggestionsInput, Profile } from "@features/API";
+import { Account } from "@features/API";
 import { useQuery } from "react-query";
 
 export type GetDiscoverUsersQueryVariables = Exact<{

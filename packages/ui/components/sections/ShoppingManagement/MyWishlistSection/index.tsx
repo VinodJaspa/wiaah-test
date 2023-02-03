@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { PriceType } from "types";
 import {
   ItemsPagination,
   Table,
@@ -12,11 +11,15 @@ import {
   SectionHeader,
   TableContainer,
   usePaginationControls,
+  Image,
+  useGetMyWishlistQuery,
+  useRemoveItemFromWishlistMutation,
+  SpinnerFallback,
+  Button,
 } from "@UI";
-import { getRandomImage } from "placeholder";
 import { HiShoppingCart } from "react-icons/hi";
-import { randomNum } from "../../../helpers";
 import { IoTrash } from "react-icons/io5";
+import { mapArray, setTestid } from "utils";
 
 export interface MyWishListSectionProps {}
 
@@ -27,59 +30,74 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
     controls,
     pagination: { page, take },
   } = usePaginationControls();
-  function handleItemDelete(itemId: string) {}
+
+  const { data, isLoading, isError } = useGetMyWishlistQuery();
+
+  const { mutate, isLoading: deleteIsLoading } =
+    useRemoveItemFromWishlistMutation();
+
+  function handleItemDelete(itemId: string) {
+    mutate({ itemId });
+  }
 
   function handleAddItemToCart(itemId: string) {}
 
-  React.useEffect(() => {
-    changeTotalItems(wishlistItems.length);
-  }, []);
-
   return (
     <div className="flex flex-col">
-      <SectionHeader sectionTitle={t("my_wish_list", "My Wish List")} />
+      <SectionHeader sectionTitle={t("My Wish List")} />
       <TableContainer>
         <Table>
           <Tr>
-            <Th className="pl-0 text-left">{t("image", "Image")}</Th>
-            <Th>{t("product_name", "Product Name")}</Th>
-            <Th>{t("info", "Info")}</Th>
-            <Th>{t("stock", "Stock")}</Th>
-            <Th>{t("unit_price", "Unit Price")}</Th>
-            <Th className="pr-0 text-right">{t("action", "Action")}</Th>
+            <Th className="pl-0 text-left">{t("Image")}</Th>
+            <Th>{t("Product Name")}</Th>
+            <Th>{t("Stock")}</Th>
+            <Th>{t("Unit Price")}</Th>
+            <Th className="pr-0 text-right">{t("Action")}</Th>
           </Tr>
           <TBody>
-            {wishlistItems
-              .slice(page * take, page * take + take)
-              .map((item, i) => (
-                <Tr>
+            <SpinnerFallback isLoading={isLoading} isError={isError}>
+              {mapArray(data?.wishedItems, (item, i) => (
+                <Tr {...setTestid("item")}>
                   <Td className="pl-0">
-                    <img
+                    <Image
+                      {...setTestid("item-thumbnail")}
                       className="w-16 md:w-20 lg:w-24 xl:w-32 h-auto"
-                      src={item.productImage}
-                      alt={item.productName}
+                      src={item.product?.thumbnail || item.service?.thumbnail}
+                      alt={item.product?.title || item.service?.title}
                     />
                   </Td>
-                  <Td>{item.productName}</Td>
-                  <Td>{item.info}</Td>
-                  <Td>{item.stock}</Td>
+                  <Td {...setTestid("item-title")}>
+                    {item.product?.title || item.service?.title}
+                  </Td>
+                  <Td {...setTestid("item-stock")}>
+                    {item.product?.stock || t("Avaiable")}
+                  </Td>
                   <Td>
-                    <PriceDisplay priceObject={item.unitPrice} />
+                    <PriceDisplay
+                      {...setTestid("item-price")}
+                      price={item.product?.price || item.service?.price || 0}
+                    />
                   </Td>
                   <Td className="pr-0">
                     <div className="w-full text-4xl gap-2  items-center flex justify-end">
                       <HiShoppingCart
-                        onClick={() => handleAddItemToCart(item.id)}
+                        {...setTestid("item-add-to-cart-btn")}
+                        onClick={() => handleAddItemToCart(item.itemId)}
                         className="text-white p-2 rounded cursor-pointer bg-primary"
                       />
-                      <IoTrash
-                        onClick={() => handleItemDelete(item.id)}
-                        className="text-white bg-red-600 rounded cursor-pointer p-2"
-                      />
+                      <Button
+                        {...setTestid("item-delete-btn")}
+                        onClick={() => handleItemDelete(item.itemId)}
+                        center
+                        loading={deleteIsLoading}
+                      >
+                        <IoTrash className="text-white bg-red-600 rounded cursor-pointer p-2" />
+                      </Button>
                     </div>
                   </Td>
                 </Tr>
               ))}
+            </SpinnerFallback>
           </TBody>
         </Table>
       </TableContainer>
@@ -87,24 +105,3 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
     </div>
   );
 };
-
-type MyWishlistItemData = {
-  id: string;
-  productImage: string;
-  productName: string;
-  info: string;
-  stock: number;
-  unitPrice: PriceType;
-};
-
-const wishlistItems: MyWishlistItemData[] = [...Array(15)].map((_, i) => ({
-  id: `${randomNum(1000000)}`,
-  productImage: "",
-  productName: `product ${i}`,
-  info: "info",
-  stock: randomNum(200),
-  unitPrice: {
-    amount: randomNum(500),
-    currency: "USD",
-  },
-}));

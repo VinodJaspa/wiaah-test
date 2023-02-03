@@ -1,7 +1,7 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
 import { useQuery } from "react-query";
-import { UserContact } from "@features/Accounts";
+import { UserContact } from "@features/API";
 
 export type GetMyContactsQueryVariables = Exact<{ [key: string]: never }>;
 

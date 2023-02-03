@@ -1,8 +1,8 @@
-import { Field, Int, ObjectType } from '@nestjs/graphql';
+import { Directive, Field, Float, ID, Int, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class ServiceDiscount {
-  @Field(() => Int)
+  @Field(() => Float)
   value: number;
 
   @Field(() => Int)

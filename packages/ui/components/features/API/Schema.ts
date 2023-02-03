@@ -135,6 +135,12 @@ export type AddShoppingCartProductItemInput = {
   shippingRuleId: Scalars["ID"];
 };
 
+export type AddWishlistItemInput = {
+  itemId: Scalars["ID"];
+  itemType: WishlistItemType;
+  sellerId: Scalars["ID"];
+};
+
 export type AdminDeleteServiceInput = {
   deletionReason: Scalars["String"];
   id: Scalars["ID"];
@@ -321,14 +327,18 @@ export type BookVehicleServiceInput = {
 
 export type BookedService = {
   __typename?: "BookedService";
-  Doctor: Array<Doctor>;
   beautyCenter?: Maybe<BeautyCenter>;
   buyer: Account;
   cancelationPolicyId: Scalars["ID"];
+  cashback: Discount;
+  cashbackId?: Maybe<Scalars["String"]>;
   checkin: Scalars["DateTime"];
   checkout?: Maybe<Scalars["DateTime"]>;
+  discount: Cashback;
+  discountId?: Maybe<Scalars["String"]>;
   dishs: Array<Dish>;
   dishsIds?: Maybe<Array<Scalars["ID"]>>;
+  doctor: Doctor;
   doctorId?: Maybe<Scalars["ID"]>;
   duration?: Maybe<Scalars["Int"]>;
   extrasIds?: Maybe<Array<Scalars["ID"]>>;
@@ -369,15 +379,16 @@ export type CartProduct = {
   shippingRuleId: Scalars["ID"];
 };
 
-export type CashBack = {
-  __typename?: "CashBack";
+export type CashBackInput = {
   amount: Scalars["Int"];
   type: CashbackType;
   units: Scalars["Int"];
 };
 
-export type CashBackInput = {
+export type Cashback = {
+  __typename?: "Cashback";
   amount: Scalars["Int"];
+  id: Scalars["ID"];
   type: CashbackType;
   units: Scalars["Int"];
 };
@@ -812,6 +823,7 @@ export type DeleteTreatmentCategoryInput = {
 export type Discount = {
   __typename?: "Discount";
   amount: Scalars["Int"];
+  id: Scalars["ID"];
   units: Scalars["Int"];
 };
 
@@ -1431,11 +1443,13 @@ export type LoginWithOtpInput = {
 
 export type Mutation = {
   __typename?: "Mutation";
+  AddWishlistItem: Scalars["Boolean"];
   BookBeautyCenterService: BookedService;
   BookHealthCenter: BookedService;
   BookHotelRoom: BookedService;
   BookRestaurant: BookedService;
   BookVehicle: BookedService;
+  RemoveWishlistItem: Scalars["Boolean"];
   acceptAppointment: Scalars["Boolean"];
   acceptInsurancePayBackRequest: Scalars["Boolean"];
   acceptReceivedOrder: Scalars["Boolean"];
@@ -1558,6 +1572,10 @@ export type Mutation = {
   verifyNewPassword: Scalars["Boolean"];
 };
 
+export type MutationAddWishlistItemArgs = {
+  addWishlistItemInput: AddWishlistItemInput;
+};
+
 export type MutationBookBeautyCenterServiceArgs = {
   bookBeautyCenterInput: BookBeautycenterServiceInput;
 };
@@ -1576,6 +1594,10 @@ export type MutationBookRestaurantArgs = {
 
 export type MutationBookVehicleArgs = {
   bookVehicle: BookVehicleServiceInput;
+};
+
+export type MutationRemoveWishlistItemArgs = {
+  removeWishlistItemInput: RemoveWishlistItemInput;
 };
 
 export type MutationAcceptAppointmentArgs = {
@@ -2189,12 +2211,14 @@ export type Product = {
   __typename?: "Product";
   attributes: Array<ProductAttribute>;
   brand: Scalars["String"];
-  cashback: CashBack;
+  cashback: Cashback;
+  cashbackId?: Maybe<Scalars["String"]>;
   category?: Maybe<Category>;
   categoryId: Scalars["ID"];
   createdAt: Scalars["String"];
   description: Scalars["String"];
   discount: Discount;
+  discountId?: Maybe<Scalars["String"]>;
   earnings: Scalars["Float"];
   hashtags: Array<Scalars["String"]>;
   id: Scalars["ID"];
@@ -2357,6 +2381,7 @@ export enum ProfileVisibility {
 export type Query = {
   __typename?: "Query";
   MyShoppingCart: ShoppingCart;
+  MyWishlist: Wishlist;
   acceptAccountVerification: Scalars["Boolean"];
   adminGetAccount: Account;
   adminGetProduct?: Maybe<Product>;
@@ -2465,6 +2490,7 @@ export type Query = {
   getUserServicePosts: Array<ServicePost>;
   getUserStory: Story;
   getVehicleServicebyId: VehicleService;
+  getWisherslist: Array<Wisherslist>;
   isFollowed: Scalars["Boolean"];
   myProfile: Profile;
   requiredAction: RequiredAction;
@@ -2936,6 +2962,10 @@ export type RemoveShoppingCartItemInput = {
   type: Scalars["String"];
 };
 
+export type RemoveWishlistItemInput = {
+  itemId: Scalars["ID"];
+};
+
 export type RequiredAction = {
   __typename?: "RequiredAction";
   exampleField: Scalars["Int"];
@@ -3215,7 +3245,7 @@ export type ServiceDayWorkingHoursInput = {
 export type ServiceDiscount = {
   __typename?: "ServiceDiscount";
   units: Scalars["Int"];
-  value: Scalars["Int"];
+  value: Scalars["Float"];
 };
 
 export type ServiceDiscountInput = {
@@ -3549,6 +3579,12 @@ export type ShoppingCart = {
   cartServices?: Maybe<Array<BookedService>>;
   id: Scalars["ID"];
   ownerId: Scalars["ID"];
+};
+
+export type SpecialDayWorkingHours = {
+  __typename?: "SpecialDayWorkingHours";
+  date: Scalars["String"];
+  workingHours: ServiceDayWorkingHours;
 };
 
 export type SpecialDayWorkingHoursInput = {
@@ -4006,9 +4042,44 @@ export type WeekdaysWorkingHours = {
   we?: Maybe<ServiceDayWorkingHours>;
 };
 
+export type Wisher = {
+  __typename?: "Wisher";
+  userId: Scalars["String"];
+};
+
+export type Wisherslist = {
+  __typename?: "Wisherslist";
+  id: Scalars["ID"];
+  itemId: Scalars["ID"];
+  sellerId: Scalars["ID"];
+  wishers: Array<Wisher>;
+  wishersCount: Scalars["Int"];
+};
+
+export type Wishlist = {
+  __typename?: "Wishlist";
+  id: Scalars["ID"];
+  ownerId: Scalars["ID"];
+  wishedItems: Array<WishlistItem>;
+};
+
+export type WishlistItem = {
+  __typename?: "WishlistItem";
+  itemId: Scalars["ID"];
+  itemType: WishlistItemType;
+  product?: Maybe<Product>;
+  service?: Maybe<Service>;
+};
+
+export enum WishlistItemType {
+  Product = "product",
+  Service = "service",
+}
+
 export type WorkingSchedule = {
   __typename?: "WorkingSchedule";
   id: Scalars["ID"];
+  specialDays: Array<SpecialDayWorkingHours>;
   weekdays: WeekdaysWorkingHours;
 };
 

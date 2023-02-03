@@ -2,7 +2,7 @@ import { Exact, Maybe, Scalars } from "types";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 import {
-  CashBack,
+  Cashback,
   Category,
   Discount,
   Product,
@@ -46,8 +46,8 @@ export type GetProductQuery = { __typename?: "Query" } & {
             "name" | "values"
           >
         >;
-        cashback: { __typename?: "CashBack" } & Pick<
-          CashBack,
+        cashback: { __typename?: "Cashback" } & Pick<
+          Cashback,
           "amount" | "type" | "units"
         >;
         category?: Maybe<

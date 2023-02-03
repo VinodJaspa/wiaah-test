@@ -1,10 +1,10 @@
 import {
   Affiliation,
   GetUserAffiliationsInput,
-} from "@features/Affiliation/types";
-import { Product } from "@features/Products";
-import { Service } from "@features/Services";
-import { createGraphqlRequestClient } from "@UI/../api";
+  Product,
+  Service,
+} from "@features/API";
+import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 import { Exact, Maybe } from "types";
 

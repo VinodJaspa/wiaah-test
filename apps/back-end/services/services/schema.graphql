@@ -56,7 +56,7 @@ type ServiceDailyPrices {
 }
 
 type ServiceDiscount {
-  value: Int!
+  value: Float!
   units: Int!
 }
 
@@ -131,6 +131,11 @@ type ServiceDayWorkingHours {
   periods: [String!]!
 }
 
+type SpecialDayWorkingHours {
+  date: String!
+  workingHours: ServiceDayWorkingHours!
+}
+
 type WeekdaysWorkingHours {
   mo: ServiceDayWorkingHours
   tu: ServiceDayWorkingHours
@@ -144,6 +149,7 @@ type WeekdaysWorkingHours {
 type WorkingSchedule {
   id: ID!
   weekdays: WeekdaysWorkingHours!
+  specialDays: [SpecialDayWorkingHours!]!
 }
 
 type ServiceContact {

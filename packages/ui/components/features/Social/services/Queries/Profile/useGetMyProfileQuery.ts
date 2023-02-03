@@ -1,7 +1,7 @@
 import { Exact } from "types";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
-import { Profile } from "@features/Social/services/types";
+import { Profile } from "@features/API";
 
 export type GetMyProfileQueryVariables = Exact<{ [key: string]: never }>;
 

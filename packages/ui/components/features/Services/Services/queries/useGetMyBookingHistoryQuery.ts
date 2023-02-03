@@ -1,6 +1,8 @@
 import {
   BeautyCenterTreatmentCategory,
   BookedService,
+  Cashback,
+  Discount,
   Dish,
   Doctor,
   Exact,
@@ -11,6 +13,7 @@ import {
   Profile,
   Service,
   ServiceCancelationPolicy,
+  ServiceLocation,
   Treatment,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
@@ -24,8 +27,16 @@ export type GetMyBookingsQuery = { __typename?: "Query" } & {
   getBookingHistory: Array<
     { __typename?: "BookedService" } & Pick<
       BookedService,
-      "id" | "checkout" | "checkin" | "status" | "type" | "payment"
+      "id" | "checkout" | "checkin" | "status" | "type" | "guests" | "payment"
     > & {
+        discount: { __typename?: "Cashback" } & Pick<
+          Cashback,
+          "id" | "amount" | "type" | "units"
+        >;
+        cashback: { __typename?: "Discount" } & Pick<
+          Discount,
+          "amount" | "units" | "id"
+        >;
         buyer: { __typename?: "Account" } & {
           profile?: Maybe<
             { __typename?: "Profile" } & Pick<Profile, "username" | "photo">
@@ -36,7 +47,21 @@ export type GetMyBookingsQuery = { __typename?: "Query" } & {
             { __typename?: "Profile" } & Pick<Profile, "username" | "photo">
           >;
         };
-        service: { __typename?: "Service" } & Pick<Service, "price">;
+        service: { __typename?: "Service" } & Pick<
+          Service,
+          "price" | "title"
+        > & {
+            location: { __typename?: "ServiceLocation" } & Pick<
+              ServiceLocation,
+              | "address"
+              | "city"
+              | "country"
+              | "lat"
+              | "lon"
+              | "postalCode"
+              | "state"
+            >;
+          };
         room?: Maybe<
           { __typename?: "HotelRoom" } & Pick<
             HotelRoom,
@@ -61,19 +86,17 @@ export type GetMyBookingsQuery = { __typename?: "Query" } & {
             "id" | "name" | "price" | "thumbnail" | "ingredients"
           >
         >;
-        Doctor: Array<
-          { __typename?: "Doctor" } & Pick<
-            Doctor,
-            "name" | "thumbnail" | "rating" | "price"
-          > & {
-              speciality?: Maybe<
-                { __typename?: "HealthCenterSpecialty" } & Pick<
-                  HealthCenterSpecialty,
-                  "description" | "id" | "name"
-                >
-              >;
-            }
-        >;
+        doctor: { __typename?: "Doctor" } & Pick<
+          Doctor,
+          "name" | "thumbnail" | "rating" | "price"
+        > & {
+            speciality?: Maybe<
+              { __typename?: "HealthCenterSpecialty" } & Pick<
+                HealthCenterSpecialty,
+                "description" | "id" | "name"
+              >
+            >;
+          };
         treatments: Array<
           { __typename?: "Treatment" } & Pick<
             Treatment,
@@ -90,6 +113,7 @@ export type GetMyBookingsQuery = { __typename?: "Query" } & {
       }
   >;
 };
+
 export const useGetMyBookingsHistoryQuery = (
   args: GetMyBookingsQueryVariables["args"]
 ) => {
@@ -106,6 +130,18 @@ query getMyBookings(
     checkin
     status
     type
+    discount{
+      id
+      amount
+      type
+      units
+    }
+		cashback {
+      amount
+      units
+      id
+    }
+    guests
     buyer{
       profile{
         username
@@ -120,6 +156,7 @@ query getMyBookings(
     }
     service{
       price
+      title
     }
     payment
     room{
@@ -141,7 +178,7 @@ query getMyBookings(
       thumbnail
       ingredients
     }
-    Doctor{
+    doctor{
       name
       speciality{
         description

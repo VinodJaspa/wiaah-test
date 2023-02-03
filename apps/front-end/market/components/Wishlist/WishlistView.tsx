@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
-import { WishlistItem } from "types/market/Wishlist.interface";
+import React from "react";
 import { Spacer, useLoginPopup, useShoppingCart, useSavedItems } from "ui";
 import { TipTextContainer } from "ui/components/blocks/TipTextContainer";
 import { GridContainerPager } from "ui/components/blocks/GridContainerPager";
 import { ProductCard } from "ui/components/blocks/ProductCard";
 import WishlistEmpty from "./WishlistEmpty";
+import { WishlistItem } from "@features/API";
 
 export const WishlistView: React.FC = () => {
   const { OpenLoginPopup } = useLoginPopup();

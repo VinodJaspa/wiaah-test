@@ -1,5 +1,5 @@
-import { createGraphqlRequestClient } from "@UI/../api";
-import { Mutation, SuspenseAccountAdminInput } from "./types";
+import { createGraphqlRequestClient } from "api";
+import { Mutation, SuspenseAccountAdminInput } from "@features/API";
 import { Exact } from "types";
 import { useMutation } from "react-query";
 

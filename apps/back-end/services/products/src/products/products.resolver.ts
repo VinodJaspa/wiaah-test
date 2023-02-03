@@ -5,6 +5,8 @@ import {
   Args,
   ResolveReference,
   ID,
+  ResolveField,
+  Parent,
 } from '@nestjs/graphql';
 import { Logger, UseGuards } from '@nestjs/common';
 import {
@@ -18,7 +20,7 @@ import { GraphQLUpload, Upload } from 'graphql-upload';
 import { PrepareGqlUploads, UploadService } from '@wiaah/upload';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ProductsService } from '@products/products.service';
-import { Product } from '@products/entities';
+import { Discount, Product, Cashback } from '@products/entities';
 import { CreateProductInput, GetFilteredProductsInput } from '@products/dto';
 import { UpdateProductInput } from '@products/dto';
 import { GetProductVendorLinkQuery } from '@products/queries';
@@ -171,5 +173,23 @@ export class ProductsResolver {
     return this.commandbus.execute<DeleteProductCommand, Product>(
       new DeleteProductCommand(id, user.id),
     );
+  }
+
+  @ResolveField(() => Discount)
+  discount(@Parent() prod: Product) {
+    return this.prisma.discount.findUnique({
+      where: {
+        id: prod.discountId,
+      },
+    });
+  }
+
+  @ResolveField(() => Cashback)
+  cashback(@Parent() prod: Product) {
+    return this.prisma.cashBack.findUnique({
+      where: {
+        id: prod.cashbackId,
+      },
+    });
   }
 }

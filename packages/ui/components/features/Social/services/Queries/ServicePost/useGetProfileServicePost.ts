@@ -1,11 +1,7 @@
 import { Exact, Maybe } from "types";
 import { createGraphqlRequestClient } from "api";
-import {
-  GetUserServicesPostsInput,
-  Profile,
-  ServicePost,
-} from "@features/Social/services/types";
-import { Service } from "@features/Services";
+import { GetUserServicesPostsInput, Profile, ServicePost } from "@features/API";
+import { Service } from "@features/API";
 import { useQuery } from "react-query";
 
 export type GetProfileServicePostsQueryVariables = Exact<{

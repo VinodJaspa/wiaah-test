@@ -6,9 +6,9 @@ import {
   GetRecommendedAffiliationPostsInput,
   PostLocation,
   Profile,
-} from "@features/Social/services/types";
-import { Affiliation } from "@features/Affiliation";
-import { Account } from "@features/Accounts";
+} from "@features/API";
+import { Affiliation } from "@features/API";
+import { Account } from "@features/API";
 
 export type GetAffiliationPostSuggestionsQueryVariables = Exact<{
   args: GetRecommendedAffiliationPostsInput;

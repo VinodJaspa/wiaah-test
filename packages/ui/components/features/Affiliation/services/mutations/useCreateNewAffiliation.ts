@@ -1,9 +1,6 @@
-import {
-  Affiliation,
-  CreateAffiliationInput,
-} from "@features/Affiliation/types";
-import { createGraphqlRequestClient } from "@UI/../api";
-import { GqlResponse } from "@UI/../types/src";
+import { Affiliation, CreateAffiliationInput } from "@features/API";
+import { createGraphqlRequestClient } from "api";
+import { GqlResponse } from "types";
 import { useMutation } from "react-query";
 
 export const useCreateNewAffiliationMutation = () => {

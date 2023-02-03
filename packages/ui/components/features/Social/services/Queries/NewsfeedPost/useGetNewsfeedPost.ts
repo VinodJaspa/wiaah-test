@@ -8,7 +8,7 @@ import {
   PostMention,
   PostTag,
   Profile,
-} from "@features/Social";
+} from "@features/API";
 import { Exact, Maybe, Scalars } from "types";
 
 export type GetNewsfeedPostQueryVariables = Exact<{

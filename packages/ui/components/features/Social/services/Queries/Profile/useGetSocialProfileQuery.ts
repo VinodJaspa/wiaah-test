@@ -1,7 +1,7 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact, Maybe, Scalars } from "types";
-import { Profile, Query } from "@features/Social";
-import { Account } from "@features/Accounts";
+import { Profile, Query } from "@features/API";
+import { Account } from "@features/API";
 import { useQuery } from "react-query";
 
 export type GetProfileByIdQueryVariables = Exact<{

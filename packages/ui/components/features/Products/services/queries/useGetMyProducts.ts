@@ -1,5 +1,5 @@
 import {
-  CashBack,
+  Cashback,
   Category,
   Discount,
   GetFilteredProductsInput,
@@ -47,8 +47,8 @@ export type GetMyProductsQuery = { __typename?: "Query" } & {
             "name" | "values"
           >
         >;
-        cashback: { __typename?: "CashBack" } & Pick<
-          CashBack,
+        cashback: { __typename?: "Cashback" } & Pick<
+          Cashback,
           "amount" | "type" | "units"
         >;
         category?: Maybe<

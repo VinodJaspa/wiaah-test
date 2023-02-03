@@ -52,6 +52,9 @@ export class ProductsService {
     const product = await this.prisma.product.create({
       data: {
         ...createProductInput,
+        discount: {
+          create: createProductInput.discount,
+        },
         shopId,
         sellerId: user.id,
       },
@@ -91,7 +94,12 @@ export class ProductsService {
         where: {
           id,
         },
-        data: rest,
+        data: {
+          ...rest,
+          discount: {
+            update: rest.discount,
+          },
+        },
       });
 
       return res;

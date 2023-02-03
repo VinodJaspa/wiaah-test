@@ -4,7 +4,6 @@ import {
   GetFilteredProductsAdminInput,
   Product,
   ProductPresentation,
-  QueryGetAdminProductsFiltersArgs,
 } from "@features/API";
 import { useQuery } from "react-query";
 

@@ -18,3 +18,4 @@ export * from "./Affiliation";
 export * from "./Accounts";
 export * from "./Hashtag";
 export * from "./Orders";
+export * from "./Wishlist";

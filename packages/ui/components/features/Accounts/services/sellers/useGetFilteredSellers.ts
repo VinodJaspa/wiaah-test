@@ -1,5 +1,5 @@
 import { createGraphqlRequestClient } from "api";
-import { Account, GetFilteredSellersAccountsInput } from "../types";
+import { Account, GetFilteredSellersAccountsInput } from "@features/API";
 import { Exact } from "types";
 import { useQuery } from "react-query";
 

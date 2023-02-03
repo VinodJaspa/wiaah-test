@@ -4,7 +4,7 @@ import {
   GetProfileFollowersMetaInput,
   ProfileMeta,
   ProfileMetaPaginatedResponse,
-} from "@features/Social";
+} from "@features/API";
 import { useQuery } from "react-query";
 
 export type GetSocialProfileFollowingsQueryVariables = Exact<{

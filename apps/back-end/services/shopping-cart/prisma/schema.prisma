@@ -49,6 +49,8 @@ model BookedService {
   roomId              String?
   doctorId            String?
   vehicleId           String?
+  discountId          String
+  cashbackId          String
 }
 
 type AppliedVoucher {
