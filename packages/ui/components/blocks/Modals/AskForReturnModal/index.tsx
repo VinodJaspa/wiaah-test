@@ -16,24 +16,29 @@ import {
   SelectProps,
   TranslationText,
   HStack,
-  Input,
   Textarea,
+  Radio,
+  useGetMyOrdersQuery,
+  usePaginationControls,
+  useAskForRefundMutation,
 } from "@UI";
-import {
-  useGetReceivedProductsQuery,
-  useAskForProductReturnMutation,
-} from "@UI";
+import { useAskForProductReturnMutation } from "@UI";
 import { AskForReturnDto } from "dto";
 import { FormOptionType } from "types";
 import { AskForReturnValidationSchema } from "validation";
+import { RefundType } from "@features/API";
 
 export interface AskForReturnModalProps {}
 
 export const AskForReturnModal: React.FC<AskForReturnModalProps> = ({}) => {
   const { isOpen, handleClose, handleOpen } = useModalDisclouser();
   const { t } = useTranslation();
-  const { data, isLoading } = useGetReceivedProductsQuery();
-  const { mutate } = useAskForProductReturnMutation();
+
+  const { pagination, controls } = usePaginationControls();
+  const { data, isLoading } = useGetMyOrdersQuery({
+    pagination,
+  });
+  const { mutate } = useAskForRefundMutation();
   return (
     <Modal isOpen={isOpen} onClose={handleClose} onOpen={handleOpen}>
       <ModalOverlay />
@@ -44,12 +49,21 @@ export const AskForReturnModal: React.FC<AskForReturnModalProps> = ({}) => {
         />
         <Formik<AskForReturnDto>
           onSubmit={(data, { resetForm }) => {
-            mutate(data, {
-              onSuccess: () => {
-                resetForm();
-                handleClose();
+            mutate(
+              {
+                id: data.productId,
+                qty: 1,
+                type: RefundType.Money,
+                fullAmount: true,
+                reason: data.reason,
               },
-            });
+              {
+                onSuccess: () => {
+                  resetForm();
+                  handleClose();
+                },
+              }
+            );
           }}
           initialValues={{
             productId: "",
@@ -66,13 +80,15 @@ export const AskForReturnModal: React.FC<AskForReturnModalProps> = ({}) => {
                   as={Select}
                   onOptionSelect={(v) => setFieldValue("productId", v)}
                   name="productId"
-                  label={t("product", "Product")}
-                  placeholder={t("select_product", "Select Product")}
+                  label={t("Product")}
+                  placeholder={t("Select Product")}
                 >
                   {data ? (
                     data.map((product) => (
                       <SelectOption value={product.id}>
-                        {product.name}
+                        {product.items
+                          .map((v) => v.product?.title.slice(0, 15))
+                          .join("...,")}
                       </SelectOption>
                     ))
                   ) : (
@@ -81,21 +97,11 @@ export const AskForReturnModal: React.FC<AskForReturnModalProps> = ({}) => {
                 </FormikInput>
                 <div className="flex flex-col gap-4">
                   <span className="text-lg font-bold">
-                    {t(
-                      "i_want_to_return_this_product_because_the_item_is",
-                      "I want to return this product because the item is"
-                    )}
+                    {t("I want to return this product because the item is")}
                   </span>
                   {ReturnReasons.map(({ name, value }, i) => (
                     <HStack key={i}>
-                      <FormikInput
-                        type={"radio"}
-                        style={{ borderRadius: "100%" }}
-                        as={Input}
-                        value={value}
-                        name="reason"
-                        id={`returnReason-${value}`}
-                      />
+                      <Radio id={`returnReason-${value}`} />
                       <label htmlFor={`returnReason-${value}`}>
                         <TranslationText translationObject={name} />
                       </label>
@@ -105,20 +111,17 @@ export const AskForReturnModal: React.FC<AskForReturnModalProps> = ({}) => {
                     <FormikInput
                       as={Textarea}
                       className="min-h-[10rem]"
-                      label={t(
-                        "let_us_know_what_went_worng",
-                        "let us know what went wrong"
-                      )}
+                      label={t("let us know what went wrong")}
                       name="otherReason"
                     />
                   ) : null}
                 </div>
                 <ModalFooter>
                   <ModalCloseButton>
-                    <Button colorScheme="white">{t("cancel", "Cancel")}</Button>
+                    <Button colorScheme="white">{t("Cancel")}</Button>
                   </ModalCloseButton>
                   <Button type="submit" loading={isLoading}>
-                    {t("send_request", "Send Request")}
+                    {t("Send Request")}
                   </Button>
                 </ModalFooter>
               </Form>

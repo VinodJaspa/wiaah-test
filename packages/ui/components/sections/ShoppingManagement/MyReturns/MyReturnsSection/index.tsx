@@ -1,10 +1,9 @@
 import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { HtmlDivProps, PriceType } from "types";
-import { getRandomImage } from "placeholder";
+import { HtmlDivProps } from "types";
 import { SectionContext } from "state";
-import { randomNum } from "utils";
+import { setTestid } from "utils";
 import {
   Divider,
   PriceDisplay,
@@ -22,29 +21,27 @@ import {
   ModalExtendedWrapper,
   ModalButton,
   AskForReturnModal,
+  Image,
+  useGetMyReturnedProductsQuery,
+  usePaginationControls,
 } from "@UI";
 
 export interface MyReturnsSectionProps {}
 
 export const MyReturnsSection: React.FC<MyReturnsSectionProps> = () => {
   const { t } = useTranslation();
+
+  const { pagination, controls } = usePaginationControls();
+  const { data } = useGetMyReturnedProductsQuery({ pagination });
+
   return (
     <div className="flex flex-col gap-4">
-      <SectionHeader sectionTitle={t("my_returns", "My Returns")} />
+      <SectionHeader sectionTitle={t("My Returns")} />
       <HStack className="justify-between">
-        <Select
-          className="text-2xl w-96"
-          placeholder={t("filter_returns", "Filter Returns")}
-        >
-          <SelectOption value={"returnPending"}>
-            {t("return", "Return")} {t("pending", "Pending")}
-          </SelectOption>
-          <SelectOption value={"returnAccepted"}>
-            {t("return", "Return")} {t("accepted", "Accepted")}
-          </SelectOption>
-          <SelectOption value={"returnRejected"}>
-            {t("return", "Return")} {t("rejected", "rejceted")}
-          </SelectOption>
+        <Select className="text-lg w-96" placeholder={t("Filter Returns")}>
+          <SelectOption value={"pending"}>{t("Pending")}</SelectOption>
+          <SelectOption value={"accepted"}>{t("Accepted")}</SelectOption>
+          <SelectOption value={"rejected"}>{t("Rejceted")}</SelectOption>
         </Select>
         <ModalExtendedWrapper>
           <ModalButton>
@@ -56,85 +53,50 @@ export const MyReturnsSection: React.FC<MyReturnsSectionProps> = () => {
       <TableContainer>
         <Table ThProps={{ className: "whitespace-nowrap" }} className="w-full">
           <Tr>
-            <Th>{t("product_image", "Product Image")}</Th>
-            <Th>{t("product_name", "Product Name")}</Th>
-            <Th>{t("quantity", "Quantity")}</Th>
-            <Th>{t("paid_price", "Paid price")}</Th>
-            <Th>{t("shipping_amount", "Shipping Amount")}</Th>
-            <Th>{t("return_reason", "Return Reason")}</Th>
-            <Th>{t("other_reason", "Other Reason")}</Th>
-            <Th>{t("admin_status", "Admin Status")}</Th>
-            <Th>{t("seller_status", "Seller Status")}</Th>
+            <Th>{t("Product Image")}</Th>
+            <Th>{t("Product Name")}</Th>
+            <Th>{t("Quantity")}</Th>
+            <Th>{t("Paid price")}</Th>
+            <Th>{t("Return Reason")}</Th>
+            <Th>{t("Admin Status")}</Th>
+            <Th>{t("Seller Status")}</Th>
           </Tr>
           <TBody>
-            {returnedProducts &&
-              returnedProducts.length > 0 &&
-              returnedProducts.map((prod, i) => (
-                <Tr key={i}>
+            {data &&
+              data.length > 0 &&
+              data.map((prod, i) => (
+                <Tr {...setTestid("item")} key={i}>
                   <Td>
-                    <img
+                    <Image
+                      {...setTestid("item-thumbnail")}
                       className="w-16 h-auto"
-                      src={prod.productImage}
-                      alt={prod.productName}
+                      src={prod.product.thumbnail}
+                      alt={prod.product.title}
                     />
                   </Td>
-                  <Td>{prod.productName}</Td>
-                  <Td>{prod.quantity}</Td>
+                  <Td {...setTestid("item-title")}>{prod.product.title}</Td>
+                  <Td {...setTestid("item-qty")}>{prod.qty}</Td>
                   <Td>
-                    <PriceDisplay priceObject={prod.paidPrice} />
+                    <PriceDisplay
+                      {...setTestid("item-price")}
+                      price={prod.amount}
+                    />
                   </Td>
-                  <Td>
-                    <PriceDisplay priceObject={prod.shippingAmount} />
-                  </Td>
-                  <Td>{prod.returnReason}</Td>
-                  <Td>{prod.otherReason}</Td>
-                  <Td>{prod.adminStatus}</Td>
-                  <Td>{prod.sellerStatus}</Td>
+
+                  <Td {...setTestid("item-reason")}>{prod.reason}</Td>
+                  <Td {...setTestid("item-status")}>{prod.status}</Td>
+                  <Td>{prod.status}</Td>
                 </Tr>
               ))}
           </TBody>
         </Table>
       </TableContainer>
-      {!returnedProducts || returnedProducts.length < 1 ? (
-        <span className="text-xl">
-          {t("no_records_found", "No Records Found")}
-        </span>
+      {!data || data.length < 1 ? (
+        <span className="text-xl">{t("No Records Found")}</span>
       ) : null}
     </div>
   );
 };
-
-type ReturnedProductDetails = {
-  productImage: string;
-  productName: string;
-  quantity: number;
-  paidPrice: PriceType;
-  shippingAmount: PriceType;
-  returnReason: string;
-  otherReason: string;
-  adminStatus: string;
-  sellerStatus: string;
-};
-
-const returnedProducts: ReturnedProductDetails[] = [...Array(5)].map(
-  (_, i) => ({
-    productImage: getRandomImage(),
-    productName: `product ${i}`,
-    quantity: randomNum(10),
-    paidPrice: {
-      amount: randomNum(50),
-      currency: "USD",
-    },
-    shippingAmount: {
-      amount: randomNum(20),
-      currency: "USD",
-    },
-    returnReason: "reason",
-    otherReason: "reason 2",
-    adminStatus: "Status",
-    sellerStatus: "Status",
-  })
-);
 
 export interface SectionHeaderProps extends HtmlDivProps {
   sectionTitle: string;

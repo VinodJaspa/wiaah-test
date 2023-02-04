@@ -2,14 +2,16 @@ import { Exact, Maybe } from "types";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 import {
+  Account,
   GetMyOrdersInput,
   Order,
   OrderItem,
   OrderStatus,
-} from "@features/Orders/schema";
-import { Account } from "@features/Accounts";
-import { Product, ShippingAddress, ShippingRule } from "@features/Products";
-import { Profile } from "@features/Social";
+  Product,
+  Profile,
+  ShippingAddress,
+  ShippingRule,
+} from "@features/API";
 
 export type GetOrdersQueryVariables = Exact<{
   args: GetMyOrdersInput;

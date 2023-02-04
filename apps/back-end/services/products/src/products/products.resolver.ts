@@ -133,17 +133,6 @@ export class ProductsResolver {
     return this.productsService.updateProduct(user.id, input);
   }
 
-  // TODO:delete on production
-  @Mutation(() => Boolean)
-  deleteAllProducts() {
-    return this.productsService.deleteAll();
-  }
-
-  @Mutation(() => Boolean)
-  createProductsPh() {
-    return this.productsService.createPh();
-  }
-
   @ResolveReference()
   resolveReference(ref: { __typename: string; id: string }) {
     return this.productsService.getProductById(ref.id);
@@ -165,7 +154,7 @@ export class ProductsResolver {
   }
 
   @Mutation(() => Product)
-  @UseGuards(new GqlAuthorizationGuard(['seller']))
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   deleteProduct(
     @Args('productId', { type: () => ID }) id: string,
     @GqlCurrentUser() user: AuthorizationDecodedUser,

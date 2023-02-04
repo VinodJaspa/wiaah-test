@@ -97,6 +97,7 @@ enum RefundStatusType {
 }
 
 type Query {
+  getRefundableOrders(args: GetRefundableOrdersInput!): [Order!]!
   getMyOrders(getMyOrdersArgs: GetMyOrdersInput!): [Order!]!
   getOrder(id: String!): Order!
   getUserOrders(args: GetUserOrders!): [Order!]!
@@ -104,14 +105,18 @@ type Query {
   getMyReturnedOrders(args: GetMyReturnedOrdersInput!): [Refund!]!
 }
 
-input GetMyOrdersInput {
-  status: OrderStatusEnum
+input GetRefundableOrdersInput {
   pagination: GqlPaginationInput!
 }
 
 input GqlPaginationInput {
   page: Int!
   take: Int!
+}
+
+input GetMyOrdersInput {
+  status: OrderStatusEnum
+  pagination: GqlPaginationInput!
 }
 
 input GetUserOrders {

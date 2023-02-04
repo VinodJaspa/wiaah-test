@@ -1156,6 +1156,10 @@ export type GetRecommendedServicePostsInput = {
   serviceType: Scalars["String"];
 };
 
+export type GetRefundableOrdersInput = {
+  pagination: GqlPaginationInput;
+};
+
 export type GetRestaurantInput = {
   id: Scalars["ID"];
 };
@@ -1479,7 +1483,6 @@ export type Mutation = {
   createNewProduct: Product;
   createNewsfeedPost: NewsfeedPost;
   createProductCategory: Category;
-  createProductsPh: Scalars["Boolean"];
   createProfile: Profile;
   createReaction: Scalars["Boolean"];
   createRequiredAction: RequiredAction;
@@ -1494,7 +1497,6 @@ export type Mutation = {
   declineAppointment: Scalars["Boolean"];
   declineSellerAccount: Scalars["Boolean"];
   deleteAffiliation: Affiliation;
-  deleteAllProducts: Scalars["Boolean"];
   deleteBeautyCenter: Scalars["Boolean"];
   deleteBeautyCenterServices: Scalars["Boolean"];
   deleteFilter: Filter;
@@ -2464,6 +2466,7 @@ export type Query = {
   getRecommendedAffiliationPosts: Array<AffiliationPost>;
   getRecommendedProductPosts: Array<ProductPost>;
   getRecommendedServicePosts: Array<ServicePost>;
+  getRefundableOrders: Array<Order>;
   getRegistrations: Array<Registeration>;
   getRestaurant: Restaurant;
   getRestaurants: Array<Restaurant>;
@@ -2759,6 +2762,10 @@ export type QueryGetRecommendedProductPostsArgs = {
 
 export type QueryGetRecommendedServicePostsArgs = {
   args: GetRecommendedServicePostsInput;
+};
+
+export type QueryGetRefundableOrdersArgs = {
+  args: GetRefundableOrdersInput;
 };
 
 export type QueryGetRestaurantArgs = {

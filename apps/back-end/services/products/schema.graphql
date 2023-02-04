@@ -307,8 +307,6 @@ type Mutation {
   getProductVendorLink(productId: String!): String!
   createNewProduct(createNewProductInput: CreateProductInput!): Product!
   updateProduct(updateProductArgs: UpdateProductInput!): Product!
-  deleteAllProducts: Boolean!
-  createProductsPh: Boolean!
   uploadProductPresentations(files: [Upload!]!): Boolean!
   deleteProduct(productId: ID!): Product!
   createProductCategory(createCategoryInput: CreateCategoryInput!): Category!

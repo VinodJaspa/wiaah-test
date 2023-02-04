@@ -1,7 +1,7 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
 import { useQuery } from "react-query";
-import { Product } from "@features/Products";
+import { Product } from "@features/API";
 import { GetMyReturnedOrdersInput, Refund } from "@features/API";
 
 export type GetReturnedOrdersQueryVariables = Exact<{
