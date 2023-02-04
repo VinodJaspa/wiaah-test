@@ -29,6 +29,9 @@ export class ProductRepository {
           units: 'desc',
         },
       },
+      include: {
+        discount: true,
+      },
       take: 1,
     });
   }

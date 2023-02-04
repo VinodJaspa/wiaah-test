@@ -2,11 +2,11 @@ import React from "react";
 import { HtmlDivProps } from "types";
 
 export type BadgeCases<T> = {
-  success?: T;
-  fail?: T;
-  info?: T;
-  warning?: T;
-  off?: T;
+  success?: T | T[];
+  fail?: T | T[];
+  info?: T | T[];
+  warning?: T | T[];
+  off?: T | T[];
 };
 
 export interface BadgeProps<T extends string | number> extends HtmlDivProps {
@@ -32,11 +32,36 @@ export function Badge<T extends string | number>({
   };
   const styleSwitcher = () => {
     if (cases) {
-      if (value === cases.success) return styleCases.success;
-      if (value === cases.info) return styleCases.info;
-      if (value === cases.fail) return styleCases.fail;
-      if (value === cases.warning) return styleCases.warning;
-      if (value === cases.off) return styleCases.off;
+      if (
+        value && Array.isArray(cases.success)
+          ? cases.success.includes(value)
+          : value === cases.success
+      )
+        return styleCases.success;
+      if (
+        value && Array.isArray(cases.info)
+          ? cases.info.includes(value)
+          : value === cases.info
+      )
+        return styleCases.info;
+      if (
+        value && Array.isArray(cases.fail)
+          ? cases.fail.includes(value)
+          : value === cases.fail
+      )
+        return styleCases.fail;
+      if (
+        value && Array.isArray(cases.warning)
+          ? cases.warning.includes(value)
+          : value === cases.warning
+      )
+        return styleCases.warning;
+      if (
+        value && Array.isArray(cases.off)
+          ? cases.off.includes(value)
+          : value === cases.off
+      )
+        return styleCases.off;
     }
     if (variant) return styleCases[variant];
   };

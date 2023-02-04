@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int, ID, Directive } from '@nestjs/graphql';
-import { ServiceStatus } from '@prisma-client';
+import { BookedServiceStatus } from '@prisma-client';
 
 @ObjectType()
 @Directive('@extends')
@@ -47,6 +47,33 @@ export class Vehicle {
 }
 
 @ObjectType()
+@Directive('@extends')
+@Directive('@key(fields:"id")')
+export class Treatment {
+  @Field(() => ID)
+  @Directive('@external')
+  id: string;
+}
+
+@ObjectType()
+@Directive('@extends')
+@Directive('@key(fields:"id")')
+export class Dish {
+  @Field(() => ID)
+  @Directive('@external')
+  id: string;
+}
+
+@ObjectType()
+@Directive('@extends')
+@Directive('@key(fields:"id")')
+export class Doctor {
+  @Field(() => ID)
+  @Directive('@external')
+  id: string;
+}
+
+@ObjectType()
 export class BookedService {
   @Field(() => ID)
   id: string;
@@ -63,8 +90,11 @@ export class BookedService {
   @Field(() => ID)
   providerId: string;
 
-  @Field(() => ServiceStatus)
-  status: ServiceStatus;
+  @Field(() => BookedServiceStatus)
+  status: BookedServiceStatus;
+
+  @Field(() => String, { nullable: true })
+  payment?: string;
 
   @Field(() => Date)
   checkin: Date;
@@ -110,4 +140,10 @@ export class BookedService {
 
   @Field(() => Vehicle, { nullable: true })
   vehicle?: Vehicle;
+
+  @Field(() => String, { nullable: true })
+  discountId?: string;
+
+  @Field(() => String, { nullable: true })
+  cashbackId?: string;
 }

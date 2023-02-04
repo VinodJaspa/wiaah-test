@@ -26,15 +26,16 @@ type CartProduct {
 }
 
 model BookedService {
-  id                  String        @id @default(auto()) @map("_id") @db.ObjectId
-  ownerCart           Cart          @relation(fields: [ownerId], references: [ownerId])
-  serviceId           String        @db.ObjectId
-  ownerId             String        @db.ObjectId
-  providerId          String        @db.ObjectId
-  createdAt           DateTime      @default(now())
-  updatedAt           DateTime      @updatedAt
-  purchased           Boolean       @default(false)
-  status              ServiceStatus @default(pending)
+  id                  String              @id @default(auto()) @map("_id") @db.ObjectId
+  ownerCart           Cart                @relation(fields: [ownerId], references: [ownerId])
+  serviceId           String              @db.ObjectId
+  ownerId             String              @db.ObjectId
+  providerId          String              @db.ObjectId
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  purchased           Boolean             @default(false)
+  status              BookedServiceStatus @default(pending)
+  payment             String?
   rejectReason        String?
   type                String
   checkin             DateTime
@@ -48,6 +49,8 @@ model BookedService {
   roomId              String?
   doctorId            String?
   vehicleId           String?
+  discountId          String
+  cashbackId          String
 }
 
 type AppliedVoucher {
@@ -63,11 +66,13 @@ enum CartItemType {
   product
 }
 
-enum ServiceStatus {
+enum BookedServiceStatus {
   completed
   continuing
   restitute
   canceled_by_seller
   canceled_by_buyer
   pending
+
+  @@map("ServiceStatus")
 }

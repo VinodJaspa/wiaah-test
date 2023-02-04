@@ -2,7 +2,7 @@ import { Directive, Field, ID, ObjectType } from '@nestjs/graphql';
 import { Order } from '@entities';
 
 @ObjectType()
-@Directive('@key(fields: "id,shopId,sellerId")')
+@Directive('@key(fields: "id, shopId, sellerId")')
 export class OrdersCluster {
   @Field((type) => ID)
   id: string;

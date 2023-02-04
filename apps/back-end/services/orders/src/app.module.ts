@@ -8,6 +8,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { getUserFromRequest } from 'nest-utils';
 import { RefundModule } from './refund/refund.module';
 import { PrismaModule } from './prisma.module';
+import { ReturnedOrdersModule } from './returned-orders/returned-orders.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { PrismaModule } from './prisma.module';
     PrismaModule,
     OrdersModule,
     RefundModule,
+    ReturnedOrdersModule,
   ],
   controllers: [],
   providers: [],

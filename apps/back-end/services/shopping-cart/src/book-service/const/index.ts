@@ -1,6 +1,9 @@
-import { ServiceStatus } from '@prisma-client';
+import { BookedServiceStatus } from '@prisma-client';
 
-export const bookedServiceStatus: Record<ServiceStatus, ServiceStatus> = {
+export const bookedServiceStatus: Record<
+  BookedServiceStatus,
+  BookedServiceStatus
+> = {
   canceled_by_seller: 'canceled_by_seller',
   canceled_by_buyer: 'canceled_by_buyer',
   completed: 'completed',

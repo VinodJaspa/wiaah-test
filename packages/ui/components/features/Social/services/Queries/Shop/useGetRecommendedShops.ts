@@ -6,9 +6,9 @@ import {
   PostLocation,
   ProductPost,
   Profile,
-} from "@features/Social/services/types";
-import { Product } from "@features/Products";
-import { Account } from "@features/Accounts";
+} from "@features/API";
+import { Product } from "@features/API";
+import { Account } from "@features/API";
 
 export type GetShopRecommendedPostsQueryVariables = Exact<{
   args: GetShopRecommendedPostsInput;

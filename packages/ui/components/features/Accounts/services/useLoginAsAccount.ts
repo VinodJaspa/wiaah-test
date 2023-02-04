@@ -1,7 +1,7 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { Exact, Scalars } from "types";
 import { useMutation } from "react-query";
-import { GqlStatusResponse } from "@features/Auth/types";
+import { GqlStatusResponse } from "@features/API";
 
 export type LoginAsMutationVariables = Exact<{
   id: Scalars["String"];

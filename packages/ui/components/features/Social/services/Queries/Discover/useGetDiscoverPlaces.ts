@@ -1,10 +1,7 @@
 import { Exact } from "types";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
-import {
-  GetPlaceSuggestionInput,
-  Place,
-} from "@features/Social/services/types";
+import { GetPlaceSuggestionInput, Place } from "@features/API";
 
 export type GetDiscoverPlacesQueryVariables = Exact<{
   args: GetPlaceSuggestionInput;

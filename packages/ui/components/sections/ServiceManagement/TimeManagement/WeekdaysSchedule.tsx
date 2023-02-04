@@ -12,7 +12,12 @@ export const WeekdaysSchedule: React.FC = () => {
           "Configure your week settings here, must move the sliders and add/remove breaktimes to set up working hours."
         )}
       </p>
-      <WeekdaysOpenTimeInput onChange={() => {}} value={[]} />
+      <WeekdaysOpenTimeInput
+        onChange={(data) => {
+          console.log("time change", data);
+        }}
+        value={[]}
+      />
     </div>
   );
 };

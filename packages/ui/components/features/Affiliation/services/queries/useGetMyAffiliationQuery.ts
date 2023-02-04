@@ -4,9 +4,9 @@ import { useQuery } from "react-query";
 import {
   Affiliation,
   GetMyAffiliationsInput,
-} from "@features/Affiliation/types";
-import { Service } from "@features/Services";
-import { Product } from "@features/Products";
+  Product,
+  Service,
+} from "@features/API";
 
 export type GetAffiliationsQueryVariables = Exact<{
   args: GetMyAffiliationsInput;

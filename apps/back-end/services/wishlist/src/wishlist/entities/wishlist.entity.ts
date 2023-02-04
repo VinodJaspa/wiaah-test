@@ -1,6 +1,5 @@
 import { ObjectType, Field, ID, registerEnumType } from '@nestjs/graphql';
 import { WishlistItemType } from '@prisma-client';
-import { Product } from './product.entity';
 
 registerEnumType(WishlistItemType, { name: 'WishlistItemType' });
 
@@ -23,10 +22,4 @@ export class WishlistItem {
 
   @Field(() => WishlistItemType)
   itemType: WishlistItemType;
-
-  @Field(() => String, { nullable: true })
-  serviceType?: string;
-
-  @Field(() => Product, { nullable: true })
-  product?: Product;
 }

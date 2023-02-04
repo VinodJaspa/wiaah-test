@@ -25,6 +25,7 @@ type Account {
   verified: Boolean!
   companyRegisterationNumber: String
   photo: String
+  phone: String
 }
 
 """

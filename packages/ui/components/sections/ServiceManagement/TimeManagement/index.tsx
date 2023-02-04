@@ -8,6 +8,8 @@ import {
   TabTitle,
   SectionWrapper,
   SectionHeader,
+  useGetMyWorkingHoursQuery,
+  useUpdateWeekWorkingHoursMutation,
 } from "@UI";
 import { SpecialSchedule } from "./SpecialSchedule";
 import { WeekdaysSchedule } from "./WeekdaysSchedule";
@@ -17,6 +19,11 @@ export const TimeManagementSection: React.FC<
   TimeManagementSectionProps
 > = ({}) => {
   const { t } = useTranslation();
+
+  const { data } = useGetMyWorkingHoursQuery();
+
+  const { mutate } = useUpdateWeekWorkingHoursMutation();
+
   return (
     <SectionWrapper>
       <SectionHeader

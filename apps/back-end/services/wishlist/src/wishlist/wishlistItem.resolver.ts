@@ -16,8 +16,6 @@ export class WishlistItemResolver {
 
   @ResolveField((of) => Service, { nullable: true })
   service(@Parent() item: WishlistItem) {
-    if (!item.itemId || item.itemType !== 'service' || !item.serviceType)
-      return null;
     return {
       __typename: 'Service',
       id: item.itemId,

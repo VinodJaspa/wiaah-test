@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { MdOutlineReply } from "react-icons/md";
-import { Comment, ContentHostType } from "@features/Social/services/types";
+import { Comment, ContentHostType } from "@features/API";
 import {
   PostAttachment,
   Verified,

@@ -6,8 +6,8 @@ import {
   PostLocation,
   Profile,
   ServicePost,
-} from "@features/Social/services/types";
-import { Account, Service } from "@features/Services";
+} from "@features/API";
+import { Account, Service } from "@features/API";
 
 export type GetServicePostSuggestionsQueryVariables = Exact<{
   args: GetRecommendedServicePostsInput;
@@ -24,7 +24,7 @@ export type GetServicePostSuggestionsQuery = { __typename?: "Query" } & {
       | "shares"
       | "createdAt"
       | "views"
-      | "type"
+      | "serviceType"
     > & {
         service: { __typename?: "Service" } & Pick<
           Service,

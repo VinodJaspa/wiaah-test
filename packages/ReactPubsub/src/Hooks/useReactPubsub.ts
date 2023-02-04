@@ -13,7 +13,6 @@ export function useReactPubsub<TKeys>(getKey: (keys: TKeys) => string) {
   }
 
   function Listen<TProps = any>(cb: (props?: TProps) => any) {
-    console.log("listen", key);
     subscribe(key, cb);
   }
 

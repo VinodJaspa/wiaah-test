@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./generated/client"
+  output   = "./generated/client"
 }
 
 datasource db {
@@ -11,11 +11,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model Hashtag {
-  id String @id @default(auto()) @db.ObjectId @map("_id")
-  name String @unique
-  usage Int @default(0)
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  tag       String   @unique
+  usage     Int      @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

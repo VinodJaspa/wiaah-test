@@ -32,8 +32,8 @@ export class CreateShippingRuleInput {
   @Field((type) => Float)
   cost: number;
 
-  @Field((type) => [ShippingType])
-  shippingTypes: ShippingType[];
+  @Field((type) => ShippingType)
+  shippingType: ShippingType;
 
   @Field((type) => ShippingDeliveryTimeRangeInput)
   deliveryTimeRange: ShippingDeliveryTimeRangeInput;

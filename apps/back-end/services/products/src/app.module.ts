@@ -11,13 +11,14 @@ import { getUserFromRequest } from 'nest-utils';
 import { ShopModule } from '@shop';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 
-import { Search } from './products/entities/search.entity';
 import { ShippingRulesModule } from './shipping-rules';
 import { PrismaService } from './prisma.service';
 import { ShippingAddressModule } from './shipping-address/shipping-address.module';
 import { ProductsAdminModule } from '@products/products-admin.module';
 import { ShippingTypeRuleModule } from './shipping-type-rule/shipping-type-rule.module';
 import { ShippingDetailsModule } from './shipping-details/shipping-details.module';
+import { DiscountModule } from './discount/discount.module';
+import { CashbackModule } from './cashback/cashback.module';
 
 @Global()
 @Module({
@@ -52,9 +53,9 @@ export class PrismaGlobalModule {}
         return { req, res, user };
       },
 
-      buildSchemaOptions: {
-        orphanedTypes: [Search],
-      },
+      // buildSchemaOptions: {
+      //   orphanedTypes: [Search],
+      // },
     }),
     ShopModule,
     ProductsModule,
@@ -64,6 +65,8 @@ export class PrismaGlobalModule {}
     ProductsAdminModule,
     ShippingAddressModule,
     ShippingTypeRuleModule,
+    DiscountModule,
+    CashbackModule,
     // ShippingSettingsModule,
     ShippingDetailsModule,
     ShippingRulesModule,

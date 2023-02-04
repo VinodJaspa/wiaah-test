@@ -1,5 +1,5 @@
 import { QueryBus } from '@nestjs/cqrs';
-import { Query, Resolver, ResolveReference } from '@nestjs/graphql';
+import { Resolver, ResolveReference } from '@nestjs/graphql';
 import { ProductRating } from '@product-review/entities';
 import { GetProductRatingQuery } from '@product-review/queries';
 

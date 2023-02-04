@@ -1,7 +1,7 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact, Scalars } from "types";
 import { useMutation } from "react-query";
-import { Product } from "@features/Products/types";
+import { Product } from "@features/API";
 
 export type DeleteMyProductMutationVariables = Exact<{
   id: Scalars["ID"];

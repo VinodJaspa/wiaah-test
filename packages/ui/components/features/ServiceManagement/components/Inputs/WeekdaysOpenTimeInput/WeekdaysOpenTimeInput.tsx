@@ -7,15 +7,11 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
 } from "@UI";
-
-export type WeekDayInputData = {
-  weekday: number;
-  openRanges: [Date, Date][];
-};
+import { WeekdaysWorkingHours } from "@features/API";
 
 export interface WeekdaysOpenTimeInputProps {
-  onChange: (data: WeekDayInputData[]) => any;
-  value: WeekDayInputData[];
+  onChange: (data: WeekdaysWorkingHours) => any;
+  value: WeekdaysWorkingHours;
 }
 
 export const WeekdaysOpenTimeInput: React.FC<WeekdaysOpenTimeInputProps> = ({
@@ -124,7 +120,10 @@ export const WeekdaysOpenTimeInput: React.FC<WeekdaysOpenTimeInputProps> = ({
                         },
                       ]}
                       timeRange={hoursAday}
-                      onTimeChange={() => {}}
+                      onChange={(data) => {
+                        onChange && onChange(data);
+                      }}
+                      value={[]}
                     />
                   )}
                 </div>

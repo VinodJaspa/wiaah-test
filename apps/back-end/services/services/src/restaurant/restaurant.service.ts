@@ -24,6 +24,8 @@ import {
   RestaurantEstablishmentType as PrismaEstablishmentType,
   RestaurantCuisinesType as PrismaRestaurantCuisinesType,
   RestaurnatSettingAndAmbiance as PrismaRestaurantSettingAndAmbiance,
+  RestaurantMenu,
+  RestaurantDish,
 } from 'prismaClient';
 import {
   DBErrorException,
@@ -76,14 +78,25 @@ export class RestaurantService {
           ...input,
           highest_price,
           lowest_price,
-          menus: input.menus.map((v) => ({
-            id: uuid(),
-            dishs: v.dishs.map((v) => ({
-              id: uuid(),
-              ...v,
-            })),
-            name: v.name,
-          })),
+          menus: {
+            createMany: {
+              data: input.menus.map((v) => ({
+                id: uuid(),
+                dishs: v.dishs.map((v) => ({
+                  id: uuid(),
+                  ...v,
+                })),
+                name: v.name,
+              })),
+            },
+          },
+        },
+        include: {
+          menus: {
+            include: {
+              dishs: true,
+            },
+          },
         },
       });
       await this.ownerShipService.createRestaurantServiceOwnership({
@@ -103,6 +116,13 @@ export class RestaurantService {
   ): Promise<Restaurant> {
     const restaurant = await this.prisma.restaurantService.findUnique({
       where: { id: input.id },
+      include: {
+        menus: {
+          include: {
+            dishs: true,
+          },
+        },
+      },
     });
     return this.formatRestaurant(restaurant, langId);
   }
@@ -127,7 +147,8 @@ export class RestaurantService {
 
     const lowest_price = all
       ? all.reduce((acc, curr) => {
-          const lowestDishPrice = curr.dishs.reduce((acc, curr) => {
+          const dishs = curr.dishs as RestaurantDish[];
+          const lowestDishPrice = dishs.reduce((acc, curr) => {
             return curr.price < acc ? curr.price : acc;
           }, 0);
           return lowestDishPrice < acc ? lowestDishPrice : acc;
@@ -136,7 +157,8 @@ export class RestaurantService {
 
     const highest_price = all
       ? all.reduce((acc, curr) => {
-          const highestDishPrice = curr.dishs.reduce((acc, curr) => {
+          const dishs = curr.dishs as RestaurantDish[];
+          const highestDishPrice = dishs.reduce((acc, curr) => {
             return curr.price > acc ? curr.price : acc;
           }, 0);
           return highestDishPrice > acc ? highestDishPrice : acc;
@@ -156,11 +178,21 @@ export class RestaurantService {
           lowest_price: lowest_price
             ? Math.min(lowest_price, service.lowest_price)
             : undefined,
+          //@ts-ignore
           menus: all,
+        },
+        include: {
+          menus: {
+            include: {
+              dishs: true,
+            },
+          },
         },
       });
 
-      return this.formatRestaurant(res, langId);
+      const fn = this.formatRestaurant;
+
+      return this.formatRestaurant(res as Parameters<typeof fn>[0], langId);
     } catch (error) {}
   }
 
@@ -174,6 +206,13 @@ export class RestaurantService {
       const res = await this.prisma.restaurantService.delete({
         where: {
           id: input.id,
+        },
+        include: {
+          menus: {
+            include: {
+              dishs: true,
+            },
+          },
         },
       });
       await this.ownerShipService.deleteServiceOwnerShipByServiceId(res.id);
@@ -362,13 +401,17 @@ export class RestaurantService {
     return true;
   }
 
-  private async checkCRUDPremissions(
-    id: string,
-    userId: string,
-  ): Promise<PrismaRestaurantService> {
+  private async checkCRUDPremissions(id: string, userId: string) {
     const res = await this.prisma.restaurantService.findUnique({
       where: {
         id,
+      },
+      include: {
+        menus: {
+          include: {
+            dishs: true,
+          },
+        },
       },
     });
 
@@ -417,7 +460,9 @@ export class RestaurantService {
   }
 
   private formatRestaurant(
-    input: PrismaRestaurantService,
+    input: PrismaRestaurantService & {
+      menus: (RestaurantMenu & { dishs: RestaurantDish[] })[];
+    },
     langId: UserPreferedLang,
   ): Restaurant {
     return {

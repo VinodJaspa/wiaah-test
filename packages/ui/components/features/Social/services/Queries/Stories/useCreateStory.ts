@@ -1,7 +1,7 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
 import { useMutation } from "react-query";
-import { CreateStoryInput, Mutation } from "@features/Social/services/types";
+import { CreateStoryInput, Mutation } from "@features/API";
 
 export type CreateStoryMutationVariables = Exact<{
   args: CreateStoryInput;

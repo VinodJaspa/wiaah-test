@@ -1,9 +1,6 @@
 import { Exact } from "types";
 import { createGraphqlRequestClient } from "api";
-import {
-  DeleteAccountRequestInput,
-  Mutation,
-} from "@features/Accounts/services/types";
+import { DeleteAccountRequestInput, Mutation } from "@features/API";
 import { useMutation } from "react-query";
 
 export type DeleteMyAccountMutationVariables = Exact<{

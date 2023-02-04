@@ -37,7 +37,6 @@ import {
   GqlRestaurantAggregationSelectedFields,
   GqlRestaurantSelectedFields,
 } from './types/gqlSelectedFields';
-import { updateRestaurantAdminInput } from '@service-discovery/dto';
 import { Account } from '@entities';
 
 @Resolver(() => Restaurant)

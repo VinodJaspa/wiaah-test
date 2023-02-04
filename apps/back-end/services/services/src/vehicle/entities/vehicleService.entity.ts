@@ -7,10 +7,19 @@ import {
   ServicePolicy,
   ServicePresentation,
 } from '@entities';
-import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
+import {
+  ObjectType,
+  Field,
+  Int,
+  ID,
+  Float,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { WorkingSchedule } from '@working-schedule/entities';
 import { ServicePaymentMethods } from 'prismaClient';
 import { Vehicle } from './vehicle.entity';
+
+registerEnumType(ServicePaymentMethods, { name: 'ServicePaymentMethod' });
 
 @ObjectType()
 export class VehicleService {

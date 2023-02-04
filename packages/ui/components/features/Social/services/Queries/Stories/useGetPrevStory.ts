@@ -1,7 +1,7 @@
 import { Exact, Scalars } from "types";
 import { createGraphqlRequestClient } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
-import { Story } from "@features/Social/services/types";
+import { Story } from "@features/API";
 
 export type GetPrevStoryQueryVariables = Exact<{
   storyId: Scalars["String"];

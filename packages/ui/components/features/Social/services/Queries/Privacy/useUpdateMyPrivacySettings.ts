@@ -1,9 +1,6 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
-import {
-  PrivacySettings,
-  UpdateMyPrivacyInput,
-} from "@features/Social/services/types";
+import { PrivacySettings, UpdateMyPrivacyInput } from "@features/API";
 import { useMutation } from "react-query";
 
 export type UpdateMyPrivacySettingsMutationVariables = Exact<{

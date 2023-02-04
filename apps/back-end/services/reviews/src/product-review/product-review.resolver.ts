@@ -1,9 +1,20 @@
-import { Args, ID, Mutation, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  ID,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { CommandBus } from '@nestjs/cqrs';
 import { ProductReview } from './entities/product-review.entity';
 import { CreateProductReviewInput } from './dto/create-product-review.input';
 import {
+  accountType,
   AuthorizationDecodedUser,
+  ExtractPagination,
+  GqlAuthorizationGuard,
   GqlCurrentUser,
   KAFKA_MESSAGES,
   SERVICES,
@@ -12,9 +23,12 @@ import {
   DeleteProductReviewCommand,
   ReviewProductCommand,
 } from '@product-review/commands';
-import { Inject, OnModuleInit } from '@nestjs/common';
+import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { ReviewProductType } from './const';
+import { GetMyReviewsInput } from './dto';
+import { PrismaService } from '../Prisma.service';
+import { Account, Product } from './entities';
 
 @Resolver(() => ProductReview)
 export class ProductReviewResolver implements OnModuleInit {
@@ -22,7 +36,24 @@ export class ProductReviewResolver implements OnModuleInit {
     @Inject(SERVICES.REVIEWS_SERVICE.token)
     private readonly eventClient: ClientKafka,
     private readonly commandbus: CommandBus,
+    private prisma: PrismaService,
   ) {}
+
+  @Query(() => [ProductReview])
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
+  getMyProductReviews(
+    @Args('args') args: GetMyReviewsInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const { skip, take } = ExtractPagination(args.pagination);
+    return this.prisma.productReview.findMany({
+      where: {
+        sellerId: user.id,
+      },
+      skip,
+      take,
+    });
+  }
 
   @Mutation(() => ProductReview)
   reviewProduct(
@@ -53,5 +84,21 @@ export class ProductReviewResolver implements OnModuleInit {
       KAFKA_MESSAGES.REVIEW_SERVICE.getProductSellerId,
     );
     await this.eventClient.connect();
+  }
+
+  @ResolveField(() => Account)
+  reviewer(@Parent() review: ProductReview) {
+    return {
+      __typename: 'Account',
+      id: review.reviewerId,
+    };
+  }
+
+  @ResolveField(() => Product)
+  product(@Parent() review: ProductReview) {
+    return {
+      __typename: 'Product',
+      id: review.productId,
+    };
   }
 }

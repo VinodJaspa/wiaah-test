@@ -1,5 +1,5 @@
 import {
-  CashBack,
+  Cashback,
   Category,
   Discount,
   GetFilteredProductsInput,
@@ -8,7 +8,7 @@ import {
   ProductPresentation,
   QueryGetMyProductsArgs,
   ShippingDetails,
-} from "@features/Products/types";
+} from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { Exact, Maybe } from "types";
 import { useQuery } from "react-query";
@@ -47,8 +47,8 @@ export type GetMyProductsQuery = { __typename?: "Query" } & {
             "name" | "values"
           >
         >;
-        cashback: { __typename?: "CashBack" } & Pick<
-          CashBack,
+        cashback: { __typename?: "Cashback" } & Pick<
+          Cashback,
           "amount" | "type" | "units"
         >;
         category?: Maybe<

@@ -1,12 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
-  BookingAppointement,
-  HtmlDivProps,
-  TabsTabType,
-  TranslationTextType,
-} from "types";
-import {
   SectionHeader,
   Select,
   SelectOption,
@@ -24,19 +18,23 @@ import {
   TabsHeader,
   TabTitle,
   TranslationText,
+  useGetMyAppointmentsQuery,
+  Clickable,
 } from "@UI";
 import {
+  BookedService,
+  Maybe,
+  MyBookingsSearchPeriod,
+  Profile,
+} from "@features/API";
+import {
+  AddToDate,
   FormatedDays,
   getDividedWeeks,
-  getHistoryMonths,
   getMonthDays,
-  HistoryMonth,
   weekDays,
 } from "utils";
 import { BookingsSectionCtx } from ".";
-import { useGetAppointmentsQuery } from "@src/Hooks";
-
-type BookingsObjectType = Record<string, BookingAppointement[]>;
 
 export interface BookingCalenderSectionProps {}
 
@@ -46,31 +44,38 @@ export const BookingsCalenderSection: React.FC<
   const { t } = useTranslation();
   const { setBookId } = React.useContext(BookingsSectionCtx);
   const [days, setDays] = React.useState<FormatedDays[]>([]);
-  const [bookings, setBookings] = React.useState<BookingsObjectType>();
-  const [date, setDate] = React.useState<{ year: number; month: number }>({
-    year: new Date(Date.now()).getFullYear(),
-    month: new Date(Date.now()).getMonth(),
+  const [date, setDate] = React.useState<Date>(new Date());
+  const [period, setPeriod] = React.useState<MyBookingsSearchPeriod>(
+    MyBookingsSearchPeriod.Month
+  );
+
+  const { data } = useGetMyAppointmentsQuery({
+    date: date.toString(),
+    searchPeriod: period,
   });
 
-  const { data: FetchedBookings, isLoading: BookingIsLoading } =
-    useGetAppointmentsQuery();
+  const [bookings, setBookings] = React.useState<Record<string, typeof data>>(
+    {}
+  );
 
   React.useEffect(() => {
-    if (!FetchedBookings) return;
-    const res: BookingsObjectType = FetchedBookings.reduce((acc, curr) => {
-      const day = new Date(curr.date).getDate();
+    if (!data) return;
+    const res: typeof bookings = data.reduce((acc, curr) => {
+      const day = new Date(curr.checkin).getDate();
       const newObj = { ...acc };
 
       newObj[day] =
-        typeof newObj[day] !== "undefined" ? [...newObj[day], curr] : [curr];
+        typeof newObj[day] !== "undefined"
+          ? [...(newObj[day] || []), curr]
+          : [curr];
       return newObj;
-    }, {} as BookingsObjectType);
+    }, {} as typeof bookings);
     setBookings(res);
-  }, [FetchedBookings]);
+  }, [data]);
 
   React.useEffect(() => {
     if (date) {
-      setDays(getMonthDays(date.year, date.month));
+      setDays(getMonthDays(date.getFullYear(), date.getMonth()));
     }
   }, [date]);
   return (
@@ -80,7 +85,7 @@ export const BookingsCalenderSection: React.FC<
         <Tabs>
           <div className="flex justify-between">
             <TabsHeader>
-              {BookingPeriodFilterTabsTitles.map((title, i) => (
+              {Object.values(MyBookingsSearchPeriod).map((title, i) => (
                 <TabTitle TabKey={i}>
                   {({ currentTabIdx }) => (
                     <TranslationText
@@ -96,154 +101,144 @@ export const BookingsCalenderSection: React.FC<
                 </TabTitle>
               ))}
             </TabsHeader>
-            <Select<HistoryMonth>
+            <Select<Date>
               onOptionSelect={(v) => {
-                setDate({ year: v.year, month: v.monthIdx });
+                setDate(v);
               }}
               className="text-xl font-bold"
             >
-              {getHistoryMonths().map(({ monthName, year, monthIdx }, i) => (
-                <SelectOption
-                  className="font-semibold px-2"
-                  key={i}
-                  value={{ monthName, year, monthIdx }}
-                >
-                  {monthName} {year}
-                </SelectOption>
-              ))}
+              {[...Array(36)]
+                .map(
+                  (_, i) =>
+                    new Date(new Date().setMonth(new Date().getMonth() + i))
+                )
+                .map((date, i) => (
+                  <SelectOption
+                    className="font-semibold px-2"
+                    key={i}
+                    value={date}
+                  >
+                    {date.getMonth()} {date.getFullYear()}
+                  </SelectOption>
+                ))}
             </Select>
           </div>
+        </Tabs>
 
-          <TableContainer>
-            <Table
-              TdProps={{ className: "border-gray-200 border-2 h-[8rem]" }}
-              className="w-full"
-            >
-              <THead>
-                <Tr>
-                  {weekDays.map((day, i) => (
-                    <Th key={i}>{day}</Th>
-                  ))}
-                </Tr>
-              </THead>
-              <TBody>
-                {getDividedWeeks(days).map((week, i) => (
-                  <Tr key={i}>
-                    {week.map((day, i) => {
-                      const daysBookings = bookings
-                        ? bookings[day.dayNum]
-                        : null;
-                      return (
-                        <Td
-                          className={`${
-                            day.currentMonth
-                              ? "text-black font-bold"
-                              : "text-gray-400 text-semibold"
-                          } min-w-[8rem] min-h-[8rem]`}
-                          valign="baseline"
-                          key={i}
-                        >
-                          <span className="w-full flex justify-end">
-                            {day.dayNum}
-                          </span>
-                          {daysBookings &&
-                            day.currentMonth &&
-                            daysBookings.map(({ bookId, ...rest }, i) => (
+        <TableContainer>
+          <Table
+            TdProps={{ className: "border-gray-200 border-2 h-[8rem]" }}
+            className="w-full"
+          >
+            <THead>
+              <Tr>
+                {weekDays.map((day, i) => (
+                  <Th key={i}>{day}</Th>
+                ))}
+              </Tr>
+            </THead>
+            <TBody>
+              {getDividedWeeks(days).map((week, i) => (
+                <Tr key={i}>
+                  {week.map((day, i) => {
+                    const daysBookings = bookings ? bookings[day.dayNum] : null;
+                    return (
+                      <Td
+                        className={`${
+                          day.currentMonth
+                            ? "text-black font-bold"
+                            : "text-gray-400 text-semibold"
+                        } min-w-[8rem] min-h-[8rem]`}
+                        valign="baseline"
+                        key={i}
+                      >
+                        <span className="w-full flex justify-end">
+                          {day.dayNum}
+                        </span>
+                        {daysBookings &&
+                          day.currentMonth &&
+                          daysBookings.map(({ id, ...rest }, i) => (
+                            <Clickable onClick={() => setBookId(id)}>
                               <BookedDayCard
-                                className="cursor-pointer"
-                                onClick={() => setBookId(bookId)}
-                                cardDetails={{ ...rest, bookId }}
+                                cardDetails={{ ...rest, id }}
                                 key={i}
                               />
-                            ))}
-                        </Td>
-                      );
-                    })}
-                  </Tr>
-                ))}
-              </TBody>
-            </Table>
-          </TableContainer>
-        </Tabs>
+                            </Clickable>
+                          ))}
+                      </Td>
+                    );
+                  })}
+                </Tr>
+              ))}
+            </TBody>
+          </Table>
+        </TableContainer>
       </div>
     </div>
   );
 };
 
-const BookingPeriodFilterTabsTitles: TranslationTextType[] = [
-  {
-    translationKey: "month",
-    fallbackText: "Month",
-  },
-  {
-    translationKey: "week",
-    fallbackText: "Week",
-  },
-  { translationKey: "day", fallbackText: "Day" },
-];
-
-export interface BookedDayCardProps extends HtmlDivProps {
-  cardDetails: BookingAppointement;
+export interface BookedDayCardProps {
+  cardDetails: Pick<
+    BookedService,
+    "checkin" | "checkout" | "duration" | "id"
+  > & {
+    buyer?: Maybe<
+      Pick<BookedService["buyer"], "email" | "phone"> & {
+        profile?: Maybe<Pick<Profile, "verified" | "username" | "photo">>;
+      }
+    >;
+    service?: Maybe<Pick<BookedService["service"], "title">>;
+  };
 }
 
 export const BookedDayCard: React.FC<BookedDayCardProps> = ({
-  cardDetails: {
-    customer,
-    customerPhoto,
-    date,
-    email,
-    from,
-    phone,
-    service,
-    to,
-    verified,
-  },
-  className,
-  ...props
+  cardDetails: { checkin, checkout, duration, buyer, service },
 }) => {
+  const serviceTitle = service?.title;
+
   return (
-    <div
-      {...props}
-      className={`${
-        className || ""
-      } bg-red-200 p-2 flex flex-col gap-1 rounded font-normal`}
-    >
+    <div className={`bg-red-200 p-2 flex flex-col gap-1 rounded font-normal`}>
       <div>
         <span>
-          {new Date(from).toLocaleTimeString("en-us", {
+          {new Date(checkin).toLocaleTimeString("en-us", {
             hour: "2-digit",
             minute: "2-digit",
             hour12: true,
           })}
         </span>
-        {" - "}
-        <span>
-          {new Date(to).toLocaleTimeString("en-us", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          })}
-        </span>
+        {checkout || typeof duration === "number" ? (
+          <>
+            {" - "}
+            <span>
+              {new Date(
+                checkout
+                  ? checkout
+                  : AddToDate(new Date(checkin), { minutes: duration! })
+              ).toLocaleTimeString("en-us", {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+              })}
+            </span>
+          </>
+        ) : null}
       </div>
-      <div>{customer}</div>
-      <div>{email}</div>
-      <div>{phone}</div>
-      <div>{service}</div>
+      <div>{buyer?.profile?.username}</div>
+      <div>{buyer?.email}</div>
+      <div>{buyer?.phone}</div>
+      <div>{serviceTitle}</div>
       <HStack>
-        <Avatar className="w-8 h-8" src={customerPhoto} />
-        <span>{customer}</span>
-        {verified ? <Verified className="text-primary-500 text-lg" /> : null}
+        <Avatar
+          className="w-8 h-8"
+          alt={buyer?.profile?.username}
+          src={buyer?.profile?.photo}
+        />
+        <span>{buyer?.profile?.username}</span>
+        {buyer?.profile?.verified ? (
+          <Verified className="text-primary-500 text-lg" />
+        ) : null}
       </HStack>
     </div>
   );
 };
-
-const bookingTabs: TabsTabType[] = [
-  {
-    tabTitle: {
-      translationKey: "month",
-      fallbackText: "Month",
-    },
-    tabItem: <></>,
-  },
-];

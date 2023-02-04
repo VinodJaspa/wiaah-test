@@ -1,7 +1,7 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
 import { useMutation } from "react-query";
-import { AddContactInput, Mutation } from "@features/Accounts";
+import { AddContactInput, Mutation } from "@features/API";
 
 export type UpdateMyContactsMutationVariables = Exact<{
   args: AddContactInput;

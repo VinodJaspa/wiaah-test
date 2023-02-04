@@ -1,8 +1,8 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact, Maybe } from "types";
 import { useQuery } from "react-query";
-import { GetHashtagTopServicePostsInput, ServicePost } from "@features/Social";
-import { Service } from "@features/Services";
+import { GetHashtagTopServicePostsInput, ServicePost } from "@features/API";
+import { Service } from "@features/API";
 
 export type GetTopServiceHashtagPostsQueryVariables = Exact<{
   args: GetHashtagTopServicePostsInput;

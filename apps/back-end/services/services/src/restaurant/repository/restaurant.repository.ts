@@ -2,6 +2,8 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { getTranslatedResource, UserPreferedLang } from 'nest-utils';
 import {
   Prisma,
+  RestaurantDish,
+  RestaurantMenu,
   RestaurantService as PrismaRestaurantService,
   ServiceStatus,
 } from 'prismaClient';
@@ -105,6 +107,13 @@ export class RestaurantRepository {
       where: {
         AND: [...filters],
       },
+      include: {
+        menus: {
+          include: {
+            dishs: true,
+          },
+        },
+      },
     });
 
     return Array.isArray(rests)
@@ -126,10 +135,17 @@ export class RestaurantRepository {
   private async checkRestaurantViewPremissions(
     id: string,
     userId: string | null,
-  ): Promise<PrismaRestaurantService> {
+  ) {
     const res = await this.prisma.restaurantService.findUnique({
       where: {
         id,
+      },
+      include: {
+        menus: {
+          include: {
+            dishs: true,
+          },
+        },
       },
     });
 
@@ -139,7 +155,9 @@ export class RestaurantRepository {
     return res;
   }
   formatRestaurant(
-    input: PrismaRestaurantService,
+    input: PrismaRestaurantService & {
+      menus: (RestaurantMenu & { dishs: RestaurantDish[] })[];
+    },
     langId: UserPreferedLang,
   ): Restaurant {
     return {

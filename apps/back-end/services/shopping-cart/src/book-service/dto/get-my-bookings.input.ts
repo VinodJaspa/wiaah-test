@@ -1,17 +1,24 @@
-import { Field, GraphQLISODateTime, ID, InputType } from '@nestjs/graphql';
+import {
+  Field,
+  GraphQLISODateTime,
+  ID,
+  InputType,
+  registerEnumType,
+} from '@nestjs/graphql';
 
-const SearchType = {
-  day: 'day',
-  week: 'week',
-  month: 'month',
-};
-type SearchType = 'day' | 'week' | 'month';
+enum SearchType {
+  day = 'day',
+  week = 'week',
+  month = 'month',
+}
+
+registerEnumType(SearchType, { name: 'MyBookingsSearchPeriod' });
 
 @InputType()
 export class GetMyBookingsInput {
   @Field(() => String)
   date: string;
 
-  @Field(() => String)
-  searchPeriod: keyof typeof SearchType;
+  @Field(() => SearchType)
+  searchPeriod: SearchType;
 }

@@ -1,13 +1,9 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact, Maybe } from "types";
 import { useQuery } from "react-query";
-import {
-  GetUserProductPostsInput,
-  ProductPost,
-  Profile,
-} from "@features/Social/services/types";
-import { Product } from "@features/Products/types";
-import { Account } from "@features/Accounts";
+import { GetUserProductPostsInput, ProductPost, Profile } from "@features/API";
+import { Product } from "@features/API";
+import { Account } from "@features/API";
 
 export type GetProfileShopPostsQueryVariables = Exact<{
   args: GetUserProductPostsInput;

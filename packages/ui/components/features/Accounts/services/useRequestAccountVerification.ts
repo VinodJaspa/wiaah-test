@@ -1,9 +1,6 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
-import {
-  CreateIdentityVerificationInput,
-  Mutation,
-} from "@features/Accounts/services/types";
+import { CreateIdentityVerificationInput, Mutation } from "@features/API";
 import { useMutation } from "react-query";
 
 export type RequestAccountVerificationMutationVariables = Exact<{

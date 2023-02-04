@@ -17,6 +17,7 @@ import {
   ImageIcon,
   EditServicePresentationSection,
   ServicesIcon,
+  useGetMyAppointmentsQuery,
 } from "ui";
 
 export const ServiceManagementView = () => {

@@ -25,7 +25,7 @@ export class HashtagRepository {
 
     if (typeof searchQ === 'string' && searchQ.length > 0) {
       filters.push({
-        name: {
+        tag: {
           contains: searchQ,
         },
       });
@@ -51,7 +51,7 @@ export class HashtagRepository {
   async getHashtagByName(name: string): Promise<Hashtag> {
     return this.prisma.hashtag.findUnique({
       where: {
-        name,
+        tag: name,
       },
     });
   }

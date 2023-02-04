@@ -1,6 +1,6 @@
 import { Exact } from "types";
 import { createGraphqlRequestClient } from "api";
-import { ChangePasswordInput, Mutation } from "@features/Auth/types";
+import { ChangePasswordInput, Mutation } from "@features/API";
 import { useMutation } from "react-query";
 
 export type ChangePasswordMutationVariables = Exact<{

@@ -31,8 +31,8 @@ export class ShippingRule {
   @Field((type) => Float)
   cost: number;
 
-  @Field((type) => [ShippingType])
-  shippingTypes: ShippingType[];
+  @Field((type) => ShippingType)
+  shippingType: ShippingType;
 
   @Field(() => ShippingDeliveryTimeRange)
   deliveryTimeRange: ShippingDeliveryTimeRange;

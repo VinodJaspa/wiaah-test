@@ -4,10 +4,16 @@ import { WishlistResolver } from './wishlist.resolver';
 import { PrismaService } from 'prismaService';
 import { WishlistController } from './wishlist.controler';
 import { WisherslistModule } from '@wishersList';
+import { WishlistItemResolver } from './wishlistItem.resolver';
 
 @Module({
   imports: [WisherslistModule],
   controllers: [WishlistController],
-  providers: [WishlistResolver, WishlistService, PrismaService],
+  providers: [
+    WishlistResolver,
+    WishlistService,
+    WishlistItemResolver,
+    PrismaService,
+  ],
 })
 export class WishlistModule {}

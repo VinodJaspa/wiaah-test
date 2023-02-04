@@ -1,12 +1,8 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact, Maybe, Scalars } from "types";
-import {
-  PostLocation,
-  Profile,
-  ServicePost,
-} from "@features/Social/services/types";
-import { Service } from "@features/Services";
-import { Account } from "@features/Accounts";
+import { PostLocation, Profile, ServicePost } from "@features/API";
+import { Service } from "@features/API";
+import { Account } from "@features/API";
 import { useQuery } from "react-query";
 
 export type GetServicePostQueryVariables = Exact<{
@@ -23,7 +19,7 @@ export type GetServicePostQuery = { __typename?: "Query" } & {
     | "createdAt"
     | "userId"
     | "serviceId"
-    | "type"
+    | "serviceType"
     | "views"
   > & {
       location: { __typename?: "PostLocation" } & Pick<
@@ -72,7 +68,7 @@ export const useGetServicePostDetails = (id: string) => {
             service {
                 id
             }
-            type
+            serviceType
             views
             user {
                 id

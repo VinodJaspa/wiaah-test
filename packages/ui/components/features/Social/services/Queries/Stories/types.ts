@@ -1,4 +1,4 @@
-import { Story } from "@features/Social/services/types";
+import { Story } from "@features/API";
 
 export type SharedStoryResponse = { __typename?: "Story" } & Pick<
   Story,

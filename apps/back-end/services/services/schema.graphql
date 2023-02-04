@@ -56,7 +56,7 @@ type ServiceDailyPrices {
 }
 
 type ServiceDiscount {
-  value: Int!
+  value: Float!
   units: Int!
 }
 
@@ -131,6 +131,11 @@ type ServiceDayWorkingHours {
   periods: [String!]!
 }
 
+type SpecialDayWorkingHours {
+  date: String!
+  workingHours: ServiceDayWorkingHours!
+}
+
 type WeekdaysWorkingHours {
   mo: ServiceDayWorkingHours
   tu: ServiceDayWorkingHours
@@ -144,6 +149,7 @@ type WeekdaysWorkingHours {
 type WorkingSchedule {
   id: ID!
   weekdays: WeekdaysWorkingHours!
+  specialDays: [SpecialDayWorkingHours!]!
 }
 
 type ServiceContact {
@@ -187,7 +193,7 @@ type ServiceCategoryFilter {
   filterValues: [ServiceCategoryFilterValue!]!
 }
 
-type Category {
+type ServiceCategory {
   id: ID!
   name: String!
   sortOrder: Int!
@@ -210,10 +216,10 @@ enum ServiceCategoryStatus {
 type RestaurantMenu {
   id: ID!
   name: String!
-  dishs: [RestaurantDish!]!
+  dishs: [Dish!]!
 }
 
-type RestaurantDish {
+type Dish {
   id: ID!
   name: String!
   price: Float!
@@ -236,7 +242,7 @@ type Restaurant {
   reviews: Int!
   cancelationPolicies: [ServiceCancelationPolicy!]!
   serviceMetaInfo: ServiceMetaInfo!
-  payment_methods: [ServicePaymentMethods!]!
+  payment_methods: [ServicePaymentMethod!]!
   menus: [RestaurantMenu!]!
   lowest_price: Float!
   highest_price: Float!
@@ -252,7 +258,7 @@ enum ServiceStatus {
   suspended
 }
 
-enum ServicePaymentMethods {
+enum ServicePaymentMethod {
   credit_card
   visa
   mastercard
@@ -262,12 +268,12 @@ enum ServicePaymentMethods {
 
 type HealthCenterSpecialty {
   id: ID!
-  doctors: [HealthCenterDoctor!]
+  doctors: [Doctor!]
   name: String!
   description: String!
 }
 
-type HealthCenterDoctor {
+type Doctor {
   id: ID!
   healthCenter: HealthCenter
   speciality: HealthCenterSpecialty
@@ -299,9 +305,9 @@ type HealthCenter {
   presentations: [ServicePresentation!]!
   policies: [ServicePolicy!]!
   serviceMetaInfo: ServiceMetaInfo!
-  payment_methods: [ServicePaymentMethods!]!
+  payment_methods: [ServicePaymentMethod!]!
   cancelationPolicies: [ServiceCancelationPolicy!]!
-  doctors: [HealthCenterDoctor!]!
+  doctors: [Doctor!]!
   workingHours: WorkingSchedule!
 }
 
@@ -313,7 +319,7 @@ type BeautyCenterTreatmentCategory {
   title: String!
 }
 
-type BeautyCenterTreatment {
+type Treatment {
   id: ID!
   treatmentCategoryId: ID!
   category: BeautyCenterTreatmentCategory
@@ -340,10 +346,10 @@ type BeautyCenter {
   presentations: [ServicePresentation!]!
   policies: [ServicePolicy!]!
   serviceMetaInfo: ServiceMetaInfo!
-  payment_methods: [ServicePaymentMethods!]!
+  payment_methods: [ServicePaymentMethod!]!
   cancelationPolicies: [ServiceCancelationPolicy!]!
   type_of_seller: ServiceTypeOfSeller!
-  treatments: [BeautyCenterTreatment!]!
+  treatments: [Treatment!]!
   workingHours: WorkingSchedule
 }
 
@@ -387,7 +393,7 @@ type VehicleService {
   presentations: [ServicePresentation!]!
   policies: [ServicePolicy!]!
   serviceMetaInfo: ServiceMetaInfo!
-  payment_methods: [ServicePaymentMethods!]!
+  payment_methods: [ServicePaymentMethod!]!
   cancelationPolicies: [ServiceCancelationPolicy!]!
   vehicles: [Vehicle!]!
 }
@@ -401,6 +407,8 @@ type Service {
   thumbnail: String!
   presentation: [ServicePresentation!]
   hashtags: [String!]!
+  location: ServiceLocation!
+  contact: ServiceContact!
 }
 
 enum ServiceType {
@@ -456,7 +464,7 @@ type ServiceShopRaw {
   contact: ServiceContact!
   workingHours: WorkingSchedule
   policies: [ServiceTranslationPolicy!]!
-  payment_methods: [ServicePaymentMethods!]!
+  payment_methods: [ServicePaymentMethod!]!
   location: ServiceLocation!
   vat: Float!
   cancelationPolicies: [ServiceCancelationPolicy!]!
@@ -472,8 +480,8 @@ type ServiceShopRaw {
   cuisinesTypeId: String
   setting_and_ambianceId: String
   michelin_guide_stars: Int
-  doctors: [HealthCenterDoctor!]
-  treatments: [BeautyCenterTreatment!]
+  doctors: [Doctor!]
+  treatments: [Treatment!]
   vehicle: [Vehicle!]
 }
 
@@ -484,10 +492,10 @@ type Query {
   getServiceInsuranceHistory(args: GetInsurancesHistoryInput!): [Insurance!]!
   getFilteredServices(args: GetFilteredServicesAdminInput!): [ServiceDiscovery!]!
   adminGetRawService(id: String!): ServiceShopRaw
-  getServiceCategoryById(categoryId: String!): Category!
-  getServiceCategoryBySlug(slug: String!): Category!
-  getServiceCategories: [Category!]!
-  getFilteredServiceCategories(args: GetFilteredCategoriesInput): [Category!]!
+  getServiceCategoryById(categoryId: String!): ServiceCategory!
+  getServiceCategoryBySlug(slug: String!): ServiceCategory!
+  getServiceCategories: [ServiceCategory!]!
+  getFilteredServiceCategories(args: GetFilteredCategoriesInput): [ServiceCategory!]!
   getHotels: [Hotel!]!
   getHotelService(getHotelServiceArgs: GetHotelServiceArgs!): Hotel!
   searchHotelRooms(searchHotelRoomsArgs: SearchHotelRoomLocationInput!): [HotelRoom!]!
@@ -496,9 +504,9 @@ type Query {
   searchFilteredRestaurant(filtersInput: SearchFilteredRestaurantInput!): [Restaurant!]!
   getHealthCenter(serviceId: String!): HealthCenter!
   searchHealthCenters(searchHealthCenterArgs: SearchHealthCenterInput!): [HealthCenter!]!
-  searchHealthCenterDoctors(searchHealthCenterArgs: SearchHealthCenterInput!): [HealthCenterDoctor!]!
+  searchHealthCenterDoctors(searchHealthCenterArgs: SearchHealthCenterInput!): [Doctor!]!
   getBeautyCenterById(id: String!): BeautyCenter!
-  getFilteredBeuatyCenterTreatments(args: SearchFilteredBeautyCenterInput!): [BeautyCenterTreatment!]!
+  getFilteredBeuatyCenterTreatments(args: SearchFilteredBeautyCenterInput!): [Treatment!]!
   getBeautyCenterTreatmentCategories: [BeautyCenterTreatmentCategory!]!
   getBeautyCenterTreatmentCategoriesByIds(ids: [String!]!): [BeautyCenterTreatmentCategory!]!
   getAllVehicles(args: GetVehiclesInput!): [VehicleService!]!
@@ -573,7 +581,7 @@ input SearchFilteredRestaurantInput {
   cusinesTypeId: ID
   settingAndAmbinaceId: ID
   foodType: String
-  paymentMethods: [ServicePaymentMethods!]
+  paymentMethods: [ServicePaymentMethod!]
   rating: Int
   minPrice: Float
   maxPrice: Int
@@ -585,7 +593,7 @@ input SearchHealthCenterInput {
   query: String
   specialistType: String
   speakingLanguage: String
-  payment_methods: [ServicePaymentMethods!]
+  payment_methods: [ServicePaymentMethod!]
   rate: Int
   minPrice: Float
   maxPrice: Float
@@ -620,9 +628,9 @@ type Mutation {
   updateBeautyCenterAdmin(args: updateBeautyCenterAdminInput!): Boolean!
   updateVehicleAdmin(args: updateVehicleAdminInput!): Boolean!
   adminDeleteService(args: AdminDeleteServiceInput!): Boolean!
-  createServiceCategory(createServiceCategoryArgs: CreateCategoryInput!): Category!
-  updateServiceCategory(updateServiceCategoryArgs: UpdateCategoryInput!): Category!
-  removeServiceCategory(serviceCategoryId: String!): Category!
+  createServiceCategory(createServiceCategoryArgs: CreateServiceCategoryInput!): ServiceCategory!
+  updateServiceCategory(updateServiceCategoryArgs: UpdateServiceCategoryInput!): ServiceCategory!
+  removeServiceCategory(serviceCategoryId: String!): ServiceCategory!
   createHotelService(createHotelServiceArgs: CreateHotelInput!): Hotel!
   createRestaurantService(createRestaurantArgs: CreateRestaurantInput!): Restaurant!
   updateRestaurant(updateRestaurantArgs: UpdateRestaurantInput!): Restaurant!
@@ -803,7 +811,7 @@ input updateRestaurantAdminInput {
   presentations: [ServicePresentationInput!]
   policies: [ServicePolicyTranslatedInput!]
   serviceMetaInfo: [ServiceMetaInfoTranslationInput!]
-  payment_methods: [ServicePaymentMethods!]
+  payment_methods: [ServicePaymentMethod!]
   menus: [UpdateRestaurantMenuInput!]
   establishmentTypeId: ID
   cuisinesTypeId: ID
@@ -842,7 +850,7 @@ input updateHealthCenterAdminInput {
   presentations: [ServicePresentationInput!]
   policies: [ServicePolicyTranslatedInput!]
   serviceMetaInfo: [ServiceMetaInfoTranslationInput!]
-  payment_methods: [ServicePaymentMethods!]
+  payment_methods: [ServicePaymentMethod!]
   cancelationPolicies: [ServiceCancelationPolicyInput!]
   status: ServiceStatus
   id: ID!
@@ -855,7 +863,7 @@ input updateBeautyCenterAdminInput {
   presentations: [ServicePresentationInput!]
   policies: [ServicePolicyTranslatedInput!]
   serviceMetaInfo: [ServiceMetaInfoTranslationInput!]
-  payment_methods: [ServicePaymentMethods!]
+  payment_methods: [ServicePaymentMethod!]
   cancelationPolicies: [ServiceCancelationPolicyInput!]
   type_of_seller: ServiceTypeOfSeller
   treatments: [UpdateBeautyCenterTreatmentInput!]
@@ -898,7 +906,7 @@ input AdminDeleteServiceInput {
   deletionReason: String!
 }
 
-input CreateCategoryInput {
+input CreateServiceCategoryInput {
   name: [TranslationTextInput!]!
   filters: [ServiceCategoryFilterInput!]!
   slug: String!
@@ -923,7 +931,7 @@ input ServiceCategoryFilterValueInput {
   sortOrder: Int!
 }
 
-input UpdateCategoryInput {
+input UpdateServiceCategoryInput {
   name: [TranslationTextInput!]
   filters: [ServiceCategoryFilterInput!]
   slug: String
@@ -981,7 +989,7 @@ input CreateRestaurantInput {
   presentations: [ServicePresentationInput!]!
   policies: [ServicePolicyTranslatedInput!]!
   serviceMetaInfo: [ServiceMetaInfoTranslationInput!]!
-  payment_methods: [ServicePaymentMethods!]!
+  payment_methods: [ServicePaymentMethod!]!
   menus: [RestaurantMenuInput!]!
   establishmentTypeId: ID!
   cuisinesTypeId: ID!
@@ -1008,7 +1016,7 @@ input UpdateRestaurantInput {
   presentations: [ServicePresentationInput!]
   policies: [ServicePolicyTranslatedInput!]
   serviceMetaInfo: [ServiceMetaInfoTranslationInput!]
-  payment_methods: [ServicePaymentMethods!]
+  payment_methods: [ServicePaymentMethod!]
   menus: [UpdateRestaurantMenuInput!]
   establishmentTypeId: ID
   cuisinesTypeId: ID
@@ -1028,7 +1036,7 @@ input CreateHealthCenterInput {
   policies: [ServicePolicyTranslatedInput!]!
   location: ServiceLocationInput!
   serviceMetaInfo: [ServiceMetaInfoTranslationInput!]!
-  payment_methods: [ServicePaymentMethods!]!
+  payment_methods: [ServicePaymentMethod!]!
   cancelationPolicies: [ServiceCancelationPolicyInput!]!
   contact: ServiceContactInput!
   doctors: [HealthCenterDoctorInput!]!
@@ -1048,7 +1056,7 @@ input UpdateHealthCenterInput {
   presentations: [ServicePresentationInput!]
   policies: [ServicePolicyTranslatedInput!]
   serviceMetaInfo: [ServiceMetaInfoTranslationInput!]
-  payment_methods: [ServicePaymentMethods!]
+  payment_methods: [ServicePaymentMethod!]
   cancelationPolicies: [ServiceCancelationPolicyInput!]
   status: ServiceStatus
   id: ID!
@@ -1067,7 +1075,7 @@ input CreateBeautyCenterInput {
   presentations: [ServicePresentationInput!]!
   policies: [ServicePolicyTranslatedInput!]!
   serviceMetaInfo: [ServiceMetaInfoTranslationInput!]!
-  payment_methods: [ServicePaymentMethods!]!
+  payment_methods: [ServicePaymentMethod!]!
   cancelationPolicies: [ServiceCancelationPolicyInput!]!
   type_of_seller: ServiceTypeOfSeller!
   treatments: [CreateBeautyCenterTreatmentInput!]!
@@ -1088,7 +1096,7 @@ input UpdateBeautyCenterInput {
   presentations: [ServicePresentationInput!]
   policies: [ServicePolicyTranslatedInput!]
   serviceMetaInfo: [ServiceMetaInfoTranslationInput!]
-  payment_methods: [ServicePaymentMethods!]
+  payment_methods: [ServicePaymentMethod!]
   cancelationPolicies: [ServiceCancelationPolicyInput!]
   type_of_seller: ServiceTypeOfSeller
   treatments: [UpdateBeautyCenterTreatmentInput!]
@@ -1119,7 +1127,7 @@ input CreateVehicleServiceInput {
   presentations: [ServicePresentationInput!]!
   policies: [ServicePolicyTranslatedInput!]!
   serviceMetaInfo: [ServiceMetaInfoTranslationInput!]!
-  payment_methods: [ServicePaymentMethods!]!
+  payment_methods: [ServicePaymentMethod!]!
   vehicles: [CreateVehicleInput!]!
 }
 

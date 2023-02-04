@@ -1,10 +1,7 @@
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 import { Exact } from "types";
-import {
-  CookiesSetting,
-  UserCookiesSettings,
-} from "@features/Accounts/services/types";
+import { CookiesSetting, UserCookiesSettings } from "@features/API";
 
 export type GetCookiesSettingsQueryVariables = Exact<{ [key: string]: never }>;
 

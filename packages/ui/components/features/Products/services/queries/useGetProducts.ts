@@ -1,4 +1,4 @@
-import { GetFilteredProductsInput } from "@features/Products/types";
+import { GetFilteredProductsInput } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 

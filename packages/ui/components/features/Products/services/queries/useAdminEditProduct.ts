@@ -1,7 +1,7 @@
 import { Exact } from "types";
 import { createGraphqlRequestClient } from "api";
-import { Mutation, UpdateProductInput } from "@features/Products/types";
-import { useMutation, useQuery } from "react-query";
+import { useMutation } from "react-query";
+import { Mutation, UpdateProductInput } from "@features/API";
 
 export type AdminUpdateProductMutationVariables = Exact<{
   args: UpdateProductInput;

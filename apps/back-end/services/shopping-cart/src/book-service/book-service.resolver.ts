@@ -1,6 +1,23 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  ID,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { BookServiceService } from '@book-service/book-service.service';
-import { BookedService } from '@book-service/entities';
+import {
+  Account,
+  BookedService,
+  Cashback,
+  Discount,
+  Dish,
+  Doctor,
+  Service,
+  Treatment,
+} from '@book-service/entities';
 import {
   BookBeautycenterServiceInput,
   BookHealthCenterServiceInput,
@@ -18,19 +35,25 @@ import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
 } from 'nest-utils';
-import { UseGuards } from '@nestjs/common';
+import {
+  NotFoundException,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import {
   AcceptPendingAppointmentCommand,
   CancelServiceReservationCommand,
   DeclinePendingAppointmentCommand,
 } from '@book-service/commands';
+import { PrismaService } from 'prismaService';
 
 @Resolver(() => BookedService)
 export class BookServiceResolver {
   constructor(
     private readonly bookServiceService: BookServiceService,
     private readonly commandbus: CommandBus,
+    private readonly prisma: PrismaService,
   ) {}
 
   @Query(() => [BookedService])
@@ -40,6 +63,26 @@ export class BookServiceResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.bookServiceService.getMyBooknigs(args, user.id);
+  }
+
+  @Query(() => BookedService)
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
+  async getBookedServiceDetails(
+    @Args('id') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const res = await this.prisma.bookedService.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!res) throw new NotFoundException();
+
+    if (res.ownerId !== user.id && res.providerId !== user.id)
+      throw new UnauthorizedException();
+
+    return res;
   }
 
   @Query(() => [BookedService])
@@ -168,5 +211,69 @@ export class BookServiceResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.bookServiceService.BookVehicleCenter(input, user.id);
+  }
+
+  @ResolveField(() => Account)
+  buyer(@Parent() service: BookedService) {
+    return {
+      __typename: 'Account',
+      id: service.ownerId,
+    };
+  }
+
+  @ResolveField(() => Account)
+  seller(@Parent() service: BookedService) {
+    return {
+      __typename: 'Account',
+      id: service.providerId,
+    };
+  }
+
+  @ResolveField(() => Service)
+  service(@Parent() bookedService: BookedService) {
+    return {
+      __typename: 'Service',
+      id: bookedService.serviceId,
+    };
+  }
+
+  @ResolveField(() => [Treatment])
+  treatments(@Parent() service: BookedService) {
+    return service.treatmentsIds.map((id) => ({
+      __typename: 'Treatment',
+      id,
+    }));
+  }
+
+  @ResolveField(() => [Dish])
+  dishs(@Parent() service: BookedService) {
+    return service.treatmentsIds.map((id) => ({
+      __typename: 'Dish',
+      id,
+    }));
+  }
+
+  @ResolveField(() => Doctor)
+  doctor(@Parent() service: BookedService) {
+    return service.treatmentsIds.map((id) => ({
+      __typename: 'Doctor',
+      id,
+    }));
+  }
+
+  @ResolveField(() => Discount)
+  cashback(@Parent() service: BookedService) {
+    return {
+      __typename: 'Cashback',
+      id: service.cashbackId,
+    };
+  }
+
+  @ResolveField(() => Cashback)
+  discount(@Parent() service: BookedService) {
+    return {
+      __typename: 'Discount',
+      id: service.discountId,
+    };
   }
 }

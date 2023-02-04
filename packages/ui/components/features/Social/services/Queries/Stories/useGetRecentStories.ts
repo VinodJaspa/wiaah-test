@@ -1,12 +1,8 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { Exact, Maybe } from "types";
 import { useQuery } from "react-query";
-import {
-  GetRecentStoriesInput,
-  Profile,
-  RecentStory,
-} from "@features/Social/services/types";
-import { Account } from "@features/Accounts";
+import { GetRecentStoriesInput, Profile, RecentStory } from "@features/API";
+import { Account } from "@features/API";
 
 export type GetRecentStoriesQueryVariables = Exact<{
   args: GetRecentStoriesInput;

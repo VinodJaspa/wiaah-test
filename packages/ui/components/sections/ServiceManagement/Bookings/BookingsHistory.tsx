@@ -1,9 +1,7 @@
 import { CancelAppointmentDto } from "dto";
 import { Formik, Form } from "formik";
-import { usePagination } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useReactPubsub } from "react-pubsub";
 import { FormOptionType, OrdersFilter, TranslationTextType } from "types";
 import {
   Tabs,
@@ -35,29 +33,32 @@ import {
   SectionHeader,
   EyeIcon,
   CashPaymentIcon,
+  useGetMyBookingsHistoryQuery,
+  usePaginationControls,
+  Badge,
 } from "@UI";
-import {
-  useGetBookingsHistoryQuery,
-  useCancelAppointmentMutation,
-} from "@src/Hooks";
+import { useCancelAppointmentMutation } from "@src/Hooks";
 import { ReturnDeclineRequestValidationSchema } from "validation";
 import { bookingsHistoryCtx } from ".";
 import { useTypedReactPubsub } from "@libs";
+import { BookedServiceStatus } from "@features/API";
 
 export const BookingsHistorySection: React.FC = () => {
   const { viewAppointment, shopping } = React.useContext(bookingsHistoryCtx);
   const { emit: openConfirmationModal } = useTypedReactPubsub(
     (keys) => keys.openBookConfirmationModal
   );
-  const [Filter, setFilter] = React.useState<OrdersFilter>("all");
+  const [Filter, setFilter] = React.useState<BookedServiceStatus>();
+  const [q, setQ] = React.useState<string>("");
   const { t } = useTranslation();
-  const { page, take } = usePagination(10);
-  const { data, refetch } = useGetBookingsHistoryQuery({
-    page,
-    limit: 10,
-    filter: Filter,
+
+  const { pagination, controls } = usePaginationControls();
+
+  const { data, refetch } = useGetMyBookingsHistoryQuery({
+    status: Filter,
+    pagination,
+    q,
   });
-  console.log(data);
 
   React.useEffect(() => {
     refetch();
@@ -67,34 +68,35 @@ export const BookingsHistorySection: React.FC = () => {
     mutate: cancelAppointment,
     isLoading: appointmentCancelationLoading,
   } = useCancelAppointmentMutation();
+
   return (
     <div className="flex flex-col gap-4">
       <SectionHeader sectionTitle={t("Bookings")} />
+      <TabsHeader className="flex-wrap" />
+      <InputGroup>
+        <InputLeftElement>
+          <SearchIcon />
+        </InputLeftElement>
+        <Input
+          placeholder={`${t("Search for order ID")}, ${t("customer")}, ${t(
+            "Order Status"
+          )}, ${t("Or")} ${t("something")}`}
+        />
+      </InputGroup>
       <Tabs>
-        <TabsHeader className="flex-wrap" />
-        <InputGroup>
-          <InputLeftElement>
-            <SearchIcon />
-          </InputLeftElement>
-          <Input
-            placeholder={`${t("Search for order ID")}, ${t("customer")}, ${t(
-              "Order Status"
-            )}, ${t("Or")} ${t("something")}`}
-          />
-        </InputGroup>
-        {appointmentsTabs.map(({ tabName, filter }, i) => (
+        {Object.values(BookedServiceStatus).map((d, i) => (
           <>
             <TabTitle TabKey={i}>
               {({ currentTabIdx }) => {
-                setFilter(appointmentsTabs[currentTabIdx].filter);
+                setFilter(d);
                 return (
                   <TranslationText
                     className={`${
-                      appointmentsTabs[currentTabIdx].filter === filter
+                      d === Filter
                         ? "text-primary border-b-2 border-primary"
                         : ""
                     } text-xs sm:text-sm md:text-base whitespace-nowrap`}
-                    translationObject={tabName}
+                    translationObject={d}
                   />
                 );
               }}
@@ -129,18 +131,18 @@ export const BookingsHistorySection: React.FC = () => {
             {shopping ? <Th>{t("Action")}</Th> : <Th>{t("Payback")}</Th>}
           </Tr>
           <TBody>
-            {data &&
-              data.data &&
-              data.data.map(
+            {data && data.length > 0 ? (
+              data.map(
                 (
                   {
-                    customer,
-                    appointmentId,
-                    from,
+                    id,
+                    buyer,
+                    checkin,
+                    seller,
                     service,
-                    servicePrice,
-                    serviceStatus,
-                    to,
+                    status,
+                    type,
+                    checkout,
                     payment,
                   },
                   i
@@ -149,52 +151,68 @@ export const BookingsHistorySection: React.FC = () => {
                     <Td>
                       <Avatar
                         className=""
-                        name={customer.name.fullName}
-                        src={customer.photo}
-                        alt={`${customer.name.fullName}`}
+                        alt={
+                          shopping
+                            ? seller?.profile?.username
+                            : buyer?.profile?.username
+                        }
+                        src={
+                          shopping
+                            ? seller?.profile?.photo
+                            : buyer?.profile?.photo
+                        }
                       />
                     </Td>
-                    <Td onClick={() => viewAppointment(appointmentId)}>
-                      {appointmentId}
+                    <Td onClick={() => viewAppointment(id)}>{id}</Td>
+                    <Td onClick={() => viewAppointment(id)}>{service.title}</Td>
+                    <Td onClick={() => viewAppointment(id)}>
+                      <p>
+                        {shopping
+                          ? buyer.profile?.username
+                          : seller.profile?.username}
+                      </p>
                     </Td>
-                    <Td onClick={() => viewAppointment(appointmentId)}>
-                      {service}
-                    </Td>
-                    <Td onClick={() => viewAppointment(appointmentId)}>
-                      <p>{customer.name.fullName}</p>
-                    </Td>
-                    <Td onClick={() => viewAppointment(appointmentId)}>
-                      {new Date(from).toLocaleDateString("en", {
+                    <Td onClick={() => viewAppointment(id)}>
+                      {new Date(checkin).toLocaleDateString("en", {
                         day: "2-digit",
                         month: "2-digit",
                         year: "numeric",
                       })}
                     </Td>
-                    <Td onClick={() => viewAppointment(appointmentId)}>
-                      {new Date(to).toLocaleDateString("en", {
+                    <Td onClick={() => viewAppointment(id)}>
+                      {new Date(checkout).toLocaleDateString("en", {
                         day: "2-digit",
                         month: "2-digit",
                         year: "numeric",
                       })}
                     </Td>
-                    <Td onClick={() => viewAppointment(appointmentId)}>
-                      <PriceDisplay priceObject={servicePrice} />
+                    <Td onClick={() => viewAppointment(id)}>
+                      <PriceDisplay price={service.price} />
                     </Td>
-                    <Td onClick={() => viewAppointment(appointmentId)}>
-                      <OrderStatusDisplay
-                        className="w-fit capitalize mx-auto"
-                        status={serviceStatus}
-                      />
+                    <Td onClick={() => viewAppointment(id)}>
+                      <Badge
+                        cases={{
+                          success: BookedServiceStatus.Completed,
+                          fail: [
+                            BookedServiceStatus.CanceledByBuyer,
+                            BookedServiceStatus.CanceledBySeller,
+                          ],
+                          info: BookedServiceStatus.Continuing,
+                          warning: BookedServiceStatus.Restitute,
+                          off: BookedServiceStatus.Pending,
+                        }}
+                        value={status}
+                      >
+                        {status}
+                      </Badge>
                     </Td>
-                    <Td onClick={() => viewAppointment(appointmentId)}>
-                      {payment}
-                    </Td>
+                    <Td onClick={() => viewAppointment(id)}>{payment}</Td>
                     <Td>
                       <div className="flex w-full justify-center">
                         <EyeIcon
                           onClick={() =>
                             openConfirmationModal({
-                              id: appointmentId,
+                              id: id,
                             })
                           }
                         />
@@ -214,7 +232,7 @@ export const BookingsHistorySection: React.FC = () => {
                                 cancelAppointment(data);
                               }}
                               initialValues={{
-                                appointmentId,
+                                appointmentId: id,
                                 cancelationReason: "",
                               }}
                               validationSchema={
@@ -258,67 +276,19 @@ export const BookingsHistorySection: React.FC = () => {
                     )}
                   </Tr>
                 )
-              )}
+              )
+            ) : (
+              <Tr>
+                <Td colSpan={12}>
+                  <div className="p-4  text-2xl">
+                    {t("No Bookings History Found")}
+                  </div>
+                </Td>
+              </Tr>
+            )}
           </TBody>
         </Table>
       </TableContainer>
     </div>
   );
 };
-const appointmentsTabs: {
-  tabName: TranslationTextType;
-  filter: OrdersFilter;
-}[] = [
-  {
-    tabName: {
-      translationKey: "all_appointments",
-      fallbackText: "All Appointments",
-    },
-    filter: "all",
-  },
-  {
-    tabName: {
-      translationKey: "completed",
-      fallbackText: "Completed",
-    },
-    filter: "completed",
-  },
-  {
-    tabName: {
-      translationKey: "continuing",
-      fallbackText: "Continuing",
-    },
-    filter: "continuing",
-  },
-  {
-    tabName: {
-      translationKey: "restitute",
-      fallbackText: "Restitute",
-    },
-    filter: "restitue",
-  },
-  {
-    tabName: {
-      translationKey: "canceled",
-      fallbackText: "Canceled",
-    },
-    filter: "canceled",
-  },
-];
-
-const statusOptions: FormOptionType[] = [
-  {
-    name: {
-      translationKey: "active",
-      fallbackText: "Active",
-    },
-    value: "active",
-  },
-  {
-    name: {
-      translationKey: "pending",
-      fallbackText: "Pending",
-    },
-    value: "pending",
-  },
-];

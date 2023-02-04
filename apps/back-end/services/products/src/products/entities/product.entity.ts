@@ -31,7 +31,11 @@ export class ProductPresentation {
 }
 
 @ObjectType()
-export class CashBack {
+@Directive('@key(fields:"id")')
+export class Cashback {
+  @Field(() => ID)
+  id: string;
+
   @Field((type) => Int)
   units: number;
 
@@ -43,7 +47,11 @@ export class CashBack {
 }
 
 @ObjectType()
+@Directive('@key(fields:"id")')
 export class Discount {
+  @Field(() => ID)
+  id: string;
+
   @Field((type) => Int)
   units: number;
 
@@ -97,11 +105,11 @@ export class Product {
   @Field((type) => Int)
   stock: number;
 
-  @Field((type) => Discount)
-  discount: Discount;
+  @Field((type) => String, { nullable: true })
+  discountId?: string;
 
-  @Field((type) => CashBack)
-  cashback: CashBack;
+  @Field((type) => String, { nullable: true })
+  cashbackId?: string;
 
   @Field((type) => [ProductPresentation])
   presentations: ProductPresentation[];

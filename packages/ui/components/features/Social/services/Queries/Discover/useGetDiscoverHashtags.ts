@@ -1,4 +1,4 @@
-import { GetTopHashtagsInput, Hashtag } from "@features/Hashtag";
+import { GetTopHashtagsInput, Hashtag } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 import { Exact } from "types";
@@ -9,7 +9,7 @@ export type GetTopHashtagsQueryVariables = Exact<{
 
 export type GetTopHashtagsQuery = { __typename?: "Query" } & {
   getTopHashtags: Array<
-    { __typename?: "Hashtag" } & Pick<Hashtag, "id" | "name" | "usage">
+    { __typename?: "Hashtag" } & Pick<Hashtag, "id" | "tag" | "usage">
   >;
 };
 
@@ -24,7 +24,7 @@ export const useGetDiscoverHashtags = (input: GetTopHashtagsInput) => {
                 args:$args
             ){
                 id
-                name
+                tag
                 usage
             }
         }

@@ -1,8 +1,8 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { CategoryService } from './category.service';
-import { Category } from './entities/category.entity';
-import { CreateCategoryInput } from './dto/create-category.input';
-import { UpdateCategoryInput } from './dto/update-category.input';
+import { ServiceCategory } from './entities/category.entity';
+import { CreateServiceCategoryInput } from './dto/create-category.input';
+import { UpdateServiceCategoryInput } from './dto/update-category.input';
 import {
   GqlCurrentUser,
   GqlAuthorizationGuard,
@@ -13,14 +13,14 @@ import { UseGuards } from '@nestjs/common';
 import { GetFilteredCategoriesInput } from './dto/get-filtered-categories.input';
 import { PrismaService } from 'prismaService';
 
-@Resolver(() => Category)
+@Resolver(() => ServiceCategory)
 export class CategoryResolver {
   constructor(
     private readonly categoryService: CategoryService,
     private readonly prisma: PrismaService,
   ) {}
 
-  @Query(() => Category)
+  @Query(() => ServiceCategory)
   getServiceCategoryById(
     @Args('categoryId') id: string,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
@@ -28,7 +28,7 @@ export class CategoryResolver {
     return this.categoryService.getCategoryById(id, user.id);
   }
 
-  @Query(() => Category)
+  @Query(() => ServiceCategory)
   async getServiceCategoryBySlug(
     @Args('slug') slug: string,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
@@ -42,12 +42,12 @@ export class CategoryResolver {
     return res;
   }
 
-  @Query(() => [Category])
+  @Query(() => [ServiceCategory])
   getServiceCategories() {
     return this.categoryService.getAllCategories();
   }
 
-  @Query(() => [Category])
+  @Query(() => [ServiceCategory])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   getFilteredServiceCategories(
     @Args('args', { nullable: true }) args: GetFilteredCategoriesInput,
@@ -55,25 +55,25 @@ export class CategoryResolver {
     return this.categoryService.getAllFilteredCategories(args);
   }
 
-  @Mutation(() => Category)
+  @Mutation(() => ServiceCategory)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   createServiceCategory(
-    @Args('createServiceCategoryArgs') args: CreateCategoryInput,
+    @Args('createServiceCategoryArgs') args: CreateServiceCategoryInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.categoryService.create(args, user.id);
   }
 
-  @Mutation(() => Category)
+  @Mutation(() => ServiceCategory)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   updateServiceCategory(
-    @Args('updateServiceCategoryArgs') args: UpdateCategoryInput,
+    @Args('updateServiceCategoryArgs') args: UpdateServiceCategoryInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.categoryService.update(args, user.id);
   }
 
-  @Mutation(() => Category)
+  @Mutation(() => ServiceCategory)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   removeServiceCategory(
     @Args('serviceCategoryId') id: string,

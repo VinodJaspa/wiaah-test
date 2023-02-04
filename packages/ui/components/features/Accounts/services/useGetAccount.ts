@@ -1,4 +1,4 @@
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
 export const useGetAccount = (accountId: string) => {

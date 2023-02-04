@@ -6,6 +6,9 @@ import {
   SelectOption,
   Button,
   ShippingSettingsContext,
+  MultiChooseInput,
+  useUpdateShippingRuleMutation,
+  useCreateShippingRulesMutation,
 } from "@UI";
 import { Country } from "country-state-city";
 
@@ -18,42 +21,89 @@ let countriesArray = Country.getAllCountries().map((element) => ({
 
 export const NewShippingSettings: React.FC<ShippingSettingsProps> = () => {
   const { t } = useTranslation();
-  const { cancelAddNew } = React.useContext(ShippingSettingsContext);
+  const { cancelAddNew, isAddNew, editId } = React.useContext(
+    ShippingSettingsContext
+  );
   let [shippingMethode, setShippingMethod] = React.useState(false);
+
+  const { mutate: updateRule } = useUpdateShippingRuleMutation();
+  const { mutate: addRule } = useCreateShippingRulesMutation();
 
   function handleAddMothed() {
     cancelAddNew();
   }
+
+  const [form, setForm] = React.useState<Parameters<typeof addRule>[0]>(
+    {} as Parameters<typeof addRule>[0]
+  );
+
+  function handleSetForm<
+    TKey extends keyof Required<typeof form>,
+    TNewValue extends Required<typeof form>[TKey]
+  >(key: TKey, v: TNewValue) {
+    setForm(
+      (old) =>
+        ({
+          ...old,
+          [key]: v,
+        } as typeof form)
+    );
+  }
+
   return (
     <div>
       <h2 className="hidden text-xl font-bold lg:block">
-        {t("Enter_shipping_details", "Enter shipping details")}
+        {t("Enter shipping details")}
       </h2>
       <div className="flex flex-col gap-4">
         <div className="flex justify-between lg:mt-6">
           <div className="mr-2 w-6/12">
-            <label htmlFor="">{t("Sending_Country", "Sending Country")}</label>
-            <Select id="sending-country" placeholder={t("Country", "Country")}>
-              {countriesArray.map(({ label, value }, i) => (
-                <SelectOption key={i} value={value}>
-                  {label}
-                </SelectOption>
-              ))}
-            </Select>
+            <label htmlFor="">{t("Sending Countries")}</label>
+            <MultiChooseInput
+              onChange={(e) => {
+                handleSetForm(
+                  "countries",
+                  e.map((v) => ({
+                    code: v,
+                    name: countriesArray.find((c) => c.value === v)?.label || v,
+                  }))
+                );
+              }}
+              value={form?.countries?.map((v) => v.code) || []}
+              suggestions={countriesArray.map((v, i) => ({
+                label: v.label,
+                value: v.value,
+              }))}
+              placeholder={t("Country")}
+            />
           </div>
           <div className="ml-2 w-6/12">
             <label htmlFor="">{t("Treatment_Time", "Treatment Time")}</label>
-            <Select placeholder={t("Treatment_Time", "Treatment Time")}>
-              <SelectOption value="1-3">1-3 {t("days", "days")}</SelectOption>
-              <SelectOption value="3-5">3-5 {t("days", "days")}</SelectOption>
-              <SelectOption value="7">7 {t("days", "days")}</SelectOption>
-              <SelectOption value="1-2weeks">
+            <Select
+              onOptionSelect={(v) => {
+                handleSetForm("deliveryTimeRange", {
+                  from: parseInt(v[0]),
+                  to: parseInt(v[1]),
+                });
+              }}
+              placeholder={t("Treatment_Time", "Treatment Time")}
+            >
+              <SelectOption value={[1, 3]}>
+                1-3 {t("days", "days")}
+              </SelectOption>
+              <SelectOption value={[3, 5]}>
+                3-5 {t("days", "days")}
+              </SelectOption>
+              <SelectOption value={[5, 7]}>
+                5-7 {t("days", "days")}
+              </SelectOption>
+              <SelectOption value={[7, 14]}>
                 1-2 {t("Weeks", "Weeks")}
               </SelectOption>
-              <SelectOption value="2-3weeks">
+              <SelectOption value={[14, 21]}>
                 2-3 {t("Weeks", "Weeks")}
               </SelectOption>
-              <SelectOption value="3-4weeks">
+              <SelectOption value={[21, 28]}>
                 3-4 {t("Weeks", "Weeks")}
               </SelectOption>
             </Select>

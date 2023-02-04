@@ -1,7 +1,7 @@
 import { QueryBus } from '@nestjs/cqrs';
 import { Resolver, Query, ResolveField, Parent, Args } from '@nestjs/graphql';
 import { SearchUserInput } from './dto';
-import { User } from './entities';
+import { Account } from './entities';
 import { SearchUsers } from './entities/search-user.entity';
 import { SearchUserQuery } from './queries';
 
@@ -16,7 +16,7 @@ export class SearchUsersResolver {
     );
   }
 
-  @ResolveField(() => [User])
+  @ResolveField(() => [Account])
   resloveUsers(@Parent() parent: SearchUsers) {
     return parent.usersIds;
   }

@@ -24,7 +24,7 @@ export class HashtagSaga {
       map((tag) => {
         this.eventClient.emit(
           KAFKA_EVENTS.HASHTAG.hashtagCreated,
-          new KafkaHashtagCreatedEvent({ id: tag.tag.id, name: tag.tag.name }),
+          new KafkaHashtagCreatedEvent({ id: tag.tag.id, name: tag.tag.tag }),
         );
       }),
     );

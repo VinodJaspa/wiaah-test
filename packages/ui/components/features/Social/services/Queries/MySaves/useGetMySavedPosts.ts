@@ -6,7 +6,7 @@ import {
   NewsfeedPost,
   Profile,
   UserSavedPostsGroup,
-} from "@features/Social/services/types";
+} from "@features/API";
 
 export type GetMySavedPostsQueryVariables = Exact<{
   args: GetMySavedPostsInput;

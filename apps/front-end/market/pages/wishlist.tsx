@@ -2,10 +2,8 @@ import React, { useEffect } from "react";
 import { NextPage, GetServerSideProps } from "next";
 import Head from "next/head";
 import MasterLayout from "../components/MasterLayout";
-import { Container, Divider, Spacer } from "ui";
+import { Container, Divider, Spacer, Collaboration, products } from "ui";
 import { WishlistView } from "../components/Wishlist/WishlistView";
-import { Collaboration } from "ui/components/blocks/Collaboration";
-import { products } from "ui";
 import { useSetRecoilState } from "recoil";
 import { SavedItemsState } from "@src/state";
 

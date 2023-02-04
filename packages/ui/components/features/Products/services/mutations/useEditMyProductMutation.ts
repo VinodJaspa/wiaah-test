@@ -1,4 +1,4 @@
-import { Product, UpdateProductInput } from "@features/Products/types";
+import { Product, UpdateProductInput } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
 

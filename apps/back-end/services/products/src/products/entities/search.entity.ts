@@ -10,11 +10,11 @@ class Filter {
 // @ObjectType()
 // @Directive('@extends')
 // @Directive('@key(fields: "filter")')
-export class Search {
-  @Field((type) => String)
-  @Directive('@external')
-  filter: string;
+// export class Search {
+//   @Field((type) => String)
+//   @Directive('@external')
+//   filter: string;
 
-  @Field((type) => [Product])
-  products: Product[];
-}
+//   @Field((type) => [Product])
+//   products: Product[];
+// }

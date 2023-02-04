@@ -10,6 +10,7 @@ import { ProductReviewResolver } from './product-review.resolver';
 import { ProductReviewsQueryHandlers } from './queries';
 import { ProductRatingRepository, ProductReviewRepository } from './repository';
 import { ProductReviewController } from './product-review.controller';
+import { SellerProductsRatingResolver } from './seller-product-rating.resolver';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ProductReviewController } from './product-review.controller';
     ]),
   ],
   providers: [
+    SellerProductsRatingResolver,
     ProductReviewResolver,
     ProductRatingResolver,
     ProductReviewRepository,

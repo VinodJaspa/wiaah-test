@@ -3,3 +3,7 @@ export * from "./useGetServiceCategories";
 export * from "./useGetServiceCategory";
 export * from "./useGetServiceCategoryBySlug";
 export * from "./useGetFilteredServicesQuery";
+export * from "./useGetMyAppointmentsQuery";
+export * from "./useGetAppointmentDetailsQuery";
+export * from "./useGetMyBookingHistoryQuery";
+export * from "./useGetMyWorkingHoursQuery";

@@ -8,7 +8,7 @@ import { KafkaPayload, NewAccountCreatedEvent } from 'nest-dto';
 export class WishlistController {
   constructor(private readonly wishlistService: WishlistService) {}
 
-  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENT.accountCreated)
+  @EventPattern(KAFKA_EVENTS.ACCOUNTS_EVENTS.accountCreated('*', true))
   createWishlist(@Payload() payload: KafkaPayload<NewAccountCreatedEvent>) {
     return this.wishlistService.createWishlist(payload.value.input.id);
   }

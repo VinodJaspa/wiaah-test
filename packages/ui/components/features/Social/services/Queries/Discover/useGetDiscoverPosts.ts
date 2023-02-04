@@ -11,7 +11,7 @@ import {
   PostMention,
   PostTag,
   Profile,
-} from "@features/Social/services/types";
+} from "@features/API";
 import { useQuery } from "react-query";
 
 export type GetDiscoverPostsQueryVariables = Exact<{

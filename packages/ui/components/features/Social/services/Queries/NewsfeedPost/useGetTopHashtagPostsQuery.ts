@@ -1,6 +1,6 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
-import { Attachment, NewsfeedPost } from "@features/Social/services/types";
+import { Attachment, NewsfeedPost } from "@features/API";
 import { useQuery } from "react-query";
 
 export type GetTopHashtagNewsfeedPostsQueryVariables = Exact<{
