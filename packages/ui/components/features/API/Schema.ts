@@ -446,6 +446,29 @@ export type ChangePasswordInput = {
   newPassword: Scalars["String"];
 };
 
+export type ChatMessage = {
+  __typename?: "ChatMessage";
+  attachments: Array<MessageAttachment>;
+  content: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  id: Scalars["ID"];
+  mentionsUserIds: Array<Scalars["ID"]>;
+  roomId: Scalars["ID"];
+  updatedAt: Scalars["DateTime"];
+  userId: Scalars["ID"];
+};
+
+export type ChatRoom = {
+  __typename?: "ChatRoom";
+  createdAt: Scalars["DateTime"];
+  id: Scalars["ID"];
+  membersUserIds: Array<Scalars["ID"]>;
+  messages?: Maybe<Array<ChatMessage>>;
+  roomType: RoomTypes;
+  unSeenMessages: Scalars["Int"];
+  updatedAt: Scalars["DateTime"];
+};
+
 export type Comment = {
   __typename?: "Comment";
   attachment: Attachment;
@@ -670,6 +693,19 @@ export type CreateIdentityVerificationInput = {
 
 export type CreateMembershipPaymentIntentInput = {
   membershipId: Scalars["ID"];
+};
+
+export type CreateMessageAttachmentInput = {
+  id: Scalars["ID"];
+  src: Scalars["String"];
+  type: MessageAttachmentType;
+};
+
+export type CreateMessageInput = {
+  attachments?: Maybe<Array<CreateMessageAttachmentInput>>;
+  content: Scalars["String"];
+  roomId?: Maybe<Scalars["ID"]>;
+  userId?: Maybe<Scalars["ID"]>;
 };
 
 export type CreateNewsfeedPostInput = {
@@ -1560,6 +1596,19 @@ export type LoginWithOtpInput = {
   otp: Scalars["String"];
 };
 
+export type MessageAttachment = {
+  __typename?: "MessageAttachment";
+  id: Scalars["ID"];
+  src: Scalars["String"];
+  type: MessageAttachmentType;
+};
+
+export enum MessageAttachmentType {
+  Image = "image",
+  VideoMessage = "videoMessage",
+  VoiceMessage = "voiceMessage",
+}
+
 export type Mutation = {
   __typename?: "Mutation";
   AddWishlistItem: Scalars["Boolean"];
@@ -1666,6 +1715,7 @@ export type Mutation = {
   resetPassword: Scalars["Boolean"];
   reviewProduct: ProductReview;
   sendFollowRequest: Scalars["Boolean"];
+  sendMessage: ChatMessage;
   shareContent: ContentShare;
   suspenseAccount: Scalars["Boolean"];
   unFollow: Scalars["Boolean"];
@@ -2076,6 +2126,10 @@ export type MutationReviewProductArgs = {
 
 export type MutationSendFollowRequestArgs = {
   profileId: Scalars["String"];
+};
+
+export type MutationSendMessageArgs = {
+  sendMessageInput: CreateMessageInput;
 };
 
 export type MutationShareContentArgs = {
@@ -2556,6 +2610,7 @@ export type Query = {
   adminGetAccount: Account;
   adminGetProduct?: Maybe<Product>;
   adminGetRawService?: Maybe<ServiceShopRaw>;
+  canAccessRoom: Scalars["Boolean"];
   comments: Array<Comment>;
   findAll: ProfilePaginatedResponse;
   getAccountDeletionRequests: Array<AccountDeletionRequest>;
@@ -2576,6 +2631,7 @@ export type Query = {
   getBeautyCenterTreatmentCategoriesByIds: Array<BeautyCenterTreatmentCategory>;
   getBookedServiceDetails: BookedService;
   getBookingHistory: Array<BookedService>;
+  getChatRoom: ChatRoom;
   getCommunityPosts: Array<Community>;
   getConnectedAccounts: Scalars["Boolean"];
   getContentComments: Array<Comment>;
@@ -2606,6 +2662,7 @@ export type Query = {
   getMyBillingAddressCollection: BillingAddressCollection;
   getMyBlockList: Array<Block>;
   getMyBookings: Array<BookedService>;
+  getMyChatRooms: Array<ChatRoom>;
   getMyContacts: UserContact;
   getMyCookiesSettings: UserCookiesSettings;
   getMyFollowers: ProfileMetaPaginatedResponse;
@@ -2699,6 +2756,10 @@ export type QueryAdminGetProductArgs = {
 
 export type QueryAdminGetRawServiceArgs = {
   id: Scalars["String"];
+};
+
+export type QueryCanAccessRoomArgs = {
+  roomId: Scalars["ID"];
 };
 
 export type QueryGetAccountDeletionRequestsArgs = {
@@ -3223,6 +3284,11 @@ export type RestaurantMenuInput = {
   dishs: Array<RestaurantMenuDishInput>;
   name: Array<TranslationTextInput>;
 };
+
+export enum RoomTypes {
+  Group = "group",
+  Private = "private",
+}
 
 export type SearchFilteredBeautyCenterInput = {
   beautyCenterTypeId?: Maybe<Scalars["ID"]>;
