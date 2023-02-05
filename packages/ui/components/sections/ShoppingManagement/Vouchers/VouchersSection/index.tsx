@@ -17,6 +17,7 @@ import {
   TableContainer,
   ItemsPagination,
   usePaginationControls,
+  useGetMyBalanceQuery,
 } from "@UI";
 import { mapArray, randomNum } from "utils";
 import { useGetMyVouchersQuery } from "@features/Vouchers";
@@ -28,27 +29,22 @@ export const VouchersSection: React.FC = () => {
     controls,
     pagination: { page, take },
   } = usePaginationControls();
-  React.useEffect(() => {
-    changeTotalItems(vouchers.length);
-  }, []);
 
   const { data } = useGetMyVouchersQuery();
 
+  const { data: balance } = useGetMyBalanceQuery();
+
   return (
     <div className="flex flex-col gap-8">
-      <SectionHeader sectionTitle={t("vouchers", "Vouchers")} />
+      <SectionHeader sectionTitle={t("Vouchers")} />
       <div className="w-full grid grid-cols-2">
         <span>
-          <span className="font-bold">
-            {t("available_amount", "Available Amount")}
-          </span>
-          : {availableAmount}
+          <span className="font-bold">{t("Available Amount")}</span>:{" "}
+          {balance?.cashbackBalance}
         </span>
         <span>
-          <span className="font-bold">
-            {t("converted_amount", "Converted Amount")}:{" "}
-          </span>
-          {convertedBalance}
+          <span className="font-bold">{t("Converted Amount")}: </span>
+          {balance?.convertedCashbackBalance}
         </span>
       </div>
       <Formik
@@ -83,7 +79,7 @@ export const VouchersSection: React.FC = () => {
                 ))}
               </FormikInput>
               <Button type="submit" className="w-fit ml-auto">
-                {t("convert_into_voucher", "Convert Into Voucher")}
+                {t("Convert Into Voucher")}
               </Button>
             </Form>
           );
@@ -100,11 +96,11 @@ export const VouchersSection: React.FC = () => {
         >
           <THead>
             <Tr>
-              <Th>{t("voucher_code", "Voucher Code")}</Th>
-              <Th>{t("date", "Date")}</Th>
-              <Th>{t("amount", "Amount")}</Th>
-              <Th>{t("currency", "Currency")}</Th>
-              <Th>{t("status", "Status")}</Th>
+              <Th>{t("Voucher Code")}</Th>
+              <Th>{t("Date")}</Th>
+              <Th>{t("Amount")}</Th>
+              <Th>{t("Currency")}</Th>
+              <Th>{t("Status")}</Th>
             </Tr>
           </THead>
           <TBody>
@@ -126,19 +122,3 @@ export const VouchersSection: React.FC = () => {
 };
 
 const currencys: string[] = ["USD", "EGP", "CHF"];
-
-interface VoucherData {
-  code: string;
-  date: string;
-  amount: number;
-  currency: string;
-  status: string;
-}
-
-const vouchers: VoucherData[] = [...Array(50)].map(() => ({
-  code: `${randomNum(5000000)}`,
-  amount: randomNum(500),
-  currency: currencys[randomNum(currencys.length)],
-  date: new Date(Date.now()).toDateString(),
-  status: "Active",
-}));

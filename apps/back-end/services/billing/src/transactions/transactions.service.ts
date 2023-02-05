@@ -30,7 +30,7 @@ export class TransactionsService {
                 from: userId,
               },
               {
-                to: userId,
+                userId,
               },
             ],
           },
@@ -50,7 +50,10 @@ export class TransactionsService {
     const transaction = await this.prisma.transaction.create({
       data: {
         status: 'pending',
-        ...input,
+        from: input.from,
+        userId: input.to,
+        amount: input.amount,
+        description: input.descirption || '',
       },
     });
     try {
@@ -71,7 +74,10 @@ export class TransactionsService {
       });
 
       try {
-        this.balanceService.unHoldBalance(transaction.to, transaction.amount);
+        this.balanceService.unHoldBalance(
+          transaction.userId,
+          transaction.amount,
+        );
       } catch {}
 
       return transaction;

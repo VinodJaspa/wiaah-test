@@ -12,12 +12,12 @@ datasource db {
 }
 
 model WithdrawalRequest {
-  id String @id @db.ObjectId @default(auto()) @map("_id")
-  userId String
-  amount Float
-  requestedAt DateTime @default(now())
+  id          String           @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String
+  amount      Float
+  requestedAt DateTime         @default(now())
   processedAt DateTime
-  status WithdrawalStatus @default(pending)
+  status      WithdrawalStatus @default(pending)
 }
 
 enum WithdrawalStatus {
@@ -26,15 +26,14 @@ enum WithdrawalStatus {
   processed
 }
 
-
 model InvoiceRecord {
-  id String @id @db.ObjectId @default(auto()) @map("_id")
-  period String
-  type InvoiceRecordTypes
-  total Float @default(0)
-  overdue Float @default(0)
-  paid Float @default(0)
-  unPaid Float @default(0)
+  id      String             @id @default(auto()) @map("_id") @db.ObjectId
+  period  String
+  type    InvoiceRecordTypes
+  total   Float              @default(0)
+  overdue Float              @default(0)
+  paid    Float              @default(0)
+  unPaid  Float              @default(0)
 }
 
 enum InvoiceRecordTypes {
@@ -43,16 +42,15 @@ enum InvoiceRecordTypes {
   day
 }
 
-
 model Transaction {
-  id        String            @id @default(auto()) @map("_id") @db.ObjectId
-  createdAt DateTime          @default(now())
-  updatedAt DateTime          @updatedAt()
-  status    TransactionStatus @default(pending)
-  from      String            @db.ObjectId
-  userId  String            @db.ObjectId
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt()
+  status      TransactionStatus @default(pending)
+  from        String            @db.ObjectId
+  userId      String            @db.ObjectId
   description String
-  amount    Float
+  amount      Float
 }
 
 enum TransactionStatus {
@@ -60,7 +58,6 @@ enum TransactionStatus {
   success
   failed
 }
-
 
 model BillingAddressCollection {
   id               String           @id @default(auto()) @map("_id") @db.ObjectId
@@ -83,11 +80,12 @@ type BillingAddress {
 }
 
 model Balance {
-  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId             String   @unique @db.ObjectId
-  withdrawableBalance Float    @default(0)
-  pendingBalance      Float    @default(0)
-  cashbackBalance     Float    @default(0)
-  createdAt           DateTime @default(now())
-  updatedAt           DateTime @updatedAt
+  id                       String   @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId                  String   @unique @db.ObjectId
+  withdrawableBalance      Float    @default(0)
+  pendingBalance           Float    @default(0)
+  cashbackBalance          Float    @default(0)
+  convertedCashbackBalance Float    @default(0)
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
 }

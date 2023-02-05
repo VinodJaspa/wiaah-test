@@ -11,7 +11,6 @@ import { EventPattern, Payload } from '@nestjs/microservices';
 import {
   BillingMonthlyPriceCreatedEvent,
   MembershipCreatedEvent,
-  OrderCanceledEvent,
   SellerAccountCreatedEvent,
   SellerRevenueIncreasedEvent,
 } from 'nest-dto';
@@ -29,13 +28,10 @@ import {
 } from '@stripe-billing/commands';
 import { ProductTypeEnum } from '@stripe-billing/const';
 import {
-  StripeCheckoutInvoicePaidEvent,
   StripeInvoicePaidEvent,
   StripeSubscriptionPaidEvent,
 } from '@stripe-billing/events';
-import { ServiceBookedEvent } from 'nest-dto';
 import {
-  CheckoutMetadata,
   StripeMetadataObjectType,
   SubscriptionMetadata,
 } from '@stripe-billing/types';

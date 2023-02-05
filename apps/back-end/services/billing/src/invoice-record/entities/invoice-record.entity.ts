@@ -1,5 +1,14 @@
-import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
+import {
+  ObjectType,
+  Field,
+  Int,
+  ID,
+  Float,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { InvoiceRecordTypes } from '@prisma-client';
+
+registerEnumType(InvoiceRecordTypes, { name: 'InvoiceRecordTypes' });
 
 @ObjectType()
 export class InvoiceRecord {

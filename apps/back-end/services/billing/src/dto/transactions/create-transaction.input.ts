@@ -10,4 +10,7 @@ export class CreateTransactionInput {
 
   @Field((type) => Int)
   amount: number;
+
+  @Field(() => String, { nullable: true })
+  descirption?: string;
 }

@@ -16,4 +16,7 @@ export class Balance {
 
   @Field((type) => Float)
   cashbackBalance: number;
+
+  @Field(() => Float)
+  convertedCashbackBalance: number;
 }

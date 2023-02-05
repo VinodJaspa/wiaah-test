@@ -68,7 +68,7 @@ export class BalanceController {
     );
   }
 
-  @EventPattern(KAFKA_EVENTS.BILLING_EVNETS.sellerProductsPurchased('*'))
+  @EventPattern(KAFKA_EVENTS.BILLING_EVNETS.sellerProductsPurchased('*', true))
   handleProductPurchasedEvent(
     @Payload() { value }: { value: SellerProductsPurchasedEvent },
   ) {
