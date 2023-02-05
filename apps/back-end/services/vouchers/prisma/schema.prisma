@@ -17,19 +17,18 @@ model VoucherCluster {
   vouchersList Voucher[]
 }
 
-
-model Voucher{
-  id           String    @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId      String    @unique @db.ObjectId
-  code     String
-  status   VoucherStatus
-  amount   Float
+model Voucher {
+  id        String        @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId   String        @unique @db.ObjectId
+  code      String
+  status    VoucherStatus
+  amount    Float
   // type     VoucherType
-  currency String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  currency  String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
 
-  cluster VoucherCluster @relation(fields: [ownerId],references: [ownerId])
+  cluster VoucherCluster @relation(fields: [ownerId], references: [ownerId])
 }
 
 enum VoucherType {

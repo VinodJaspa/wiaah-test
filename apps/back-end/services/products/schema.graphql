@@ -204,6 +204,8 @@ type ShippingAddress {
   id: ID!
   ownerId: ID!
   location: Location!
+  instractions: String
+  phone: String
 }
 
 type ShippingRuleGeoZone {
@@ -317,6 +319,8 @@ type Mutation {
   deleteFilter(deleteFilterId: String!): Filter!
   updateProductAdmin(args: UpdateProductInput!): Boolean!
   adminDeleteProduct(id: String!, reason: String!): Boolean!
+  createShippingAddress(args: CreateShippingAddressInput!): Boolean!
+  updateShippingAddress(args: UpdateShippingAddressInput!): Boolean!
   createShippingTypeRuleGeoZone(args: CreateShippingGeoZone!): Boolean!
   createShippingTypeRule(args: CreateShippingTypeRuleInput!): Boolean!
   createShippingRule(createShippingRuleArgs: CreateShippingRuleInput!): ShippingRule!
@@ -445,6 +449,22 @@ input UpdateFilterInput {
   sortOrder: Int
   values: [ProductFilterGroupValueInput!]
   id: ID!
+}
+
+input CreateShippingAddressInput {
+  id: ID!
+  ownerId: ID!
+  location: LocationInput!
+  instractions: String
+  phone: String
+}
+
+input UpdateShippingAddressInput {
+  id: ID!
+  ownerId: ID
+  location: LocationInput
+  instractions: String
+  phone: String
 }
 
 input CreateShippingGeoZone {

@@ -12,4 +12,10 @@ export class ShippingAddress {
 
   @Field(() => Location)
   location: Location;
+
+  @Field(() => String, { nullable: true })
+  instractions?: string;
+
+  @Field(() => String, { nullable: true })
+  phone?: string;
 }

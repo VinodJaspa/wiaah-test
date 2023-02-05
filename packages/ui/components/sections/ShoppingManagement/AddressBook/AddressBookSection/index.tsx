@@ -3,9 +3,16 @@ import { useTranslation } from "react-i18next";
 import { BiEdit } from "react-icons/bi";
 import { IoCheckmark, IoTrash } from "react-icons/io5";
 import { HtmlDivProps } from "types";
-import { SectionHeader, AddressInputs } from "@UI/components/";
+import {
+  SectionHeader,
+  AddressInputs,
+  useGetMyShippingAddressesQuery,
+  Modal,
+  ModalContent,
+  ModalOverlay,
+} from "@UI";
 import { BsMailbox2 } from "react-icons/bs";
-import { Modal, ModalContent, ModalOverlay } from "@UI";
+import { mapArray, setTestid } from "utils";
 
 export interface AddressBookSectionProps {}
 
@@ -22,6 +29,9 @@ export const AddressBookSection: React.FC<AddressBookSectionProps> = ({}) => {
   function handleOpen() {
     setAddNewAddress(true);
   }
+
+  const { data } = useGetMyShippingAddressesQuery();
+
   return (
     <div className="flex flex-col gap-4">
       <SectionHeader sectionTitle={t("address_book", "Address Book")} />
@@ -37,14 +47,19 @@ export const AddressBookSection: React.FC<AddressBookSectionProps> = ({}) => {
             {t("add_new_address", "Add New Address")}
           </span>
         </div>
-        {AddressCardsInfo.map((info, i) => (
+        {mapArray(data, (info, i) => (
           <AddressBookCard
+            {...setTestid("address-card")}
             selected={i === addressSelected}
             innerProps={{
               onClick: () => setAddressSelected(i),
             }}
             key={i}
-            addressInfo={info}
+            addressInfo={{
+              addressName: info.location.address,
+              mobileNumber: info.phone || "",
+              instructions: info.instractions || "",
+            }}
           />
         ))}
       </div>
@@ -67,21 +82,6 @@ interface AddressBookInfo {
   instructions: string;
   mobileNumber: string;
 }
-
-const AddressCardsInfo: AddressBookInfo[] = [
-  {
-    addressName: "Address name",
-    instructions:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima iure id odit officiis quos saepe ",
-    mobileNumber: "123456789",
-  },
-  {
-    addressName: "Address name",
-    instructions:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Minima iure id odit officiis quos saepe ",
-    mobileNumber: "123456789",
-  },
-];
 
 export interface AddressBookCardProps {
   addressInfo: AddressBookInfo;

@@ -18,10 +18,8 @@ import {
   ItemsPagination,
   usePaginationControls,
 } from "@UI";
-import { randomNum } from "utils";
-
-const availableAmount = randomNum(500);
-const convertedBalance = randomNum(500);
+import { mapArray, randomNum } from "utils";
+import { useGetMyVouchersQuery } from "@features/Vouchers";
 
 export const VouchersSection: React.FC = () => {
   const { t } = useTranslation();
@@ -33,6 +31,9 @@ export const VouchersSection: React.FC = () => {
   React.useEffect(() => {
     changeTotalItems(vouchers.length);
   }, []);
+
+  const { data } = useGetMyVouchersQuery();
+
   return (
     <div className="flex flex-col gap-8">
       <SectionHeader sectionTitle={t("vouchers", "Vouchers")} />
@@ -107,17 +108,15 @@ export const VouchersSection: React.FC = () => {
             </Tr>
           </THead>
           <TBody>
-            {vouchers
-              .slice(page * take, page * take + take)
-              .map((voucher, i) => (
-                <Tr key={i}>
-                  <Td>{voucher.code}</Td>
-                  <Td>{voucher.date}</Td>
-                  <Td>{voucher.amount}</Td>
-                  <Td>{voucher.currency}</Td>
-                  <Td>{voucher.status}</Td>
-                </Tr>
-              ))}
+            {mapArray(data, (voucher, i) => (
+              <Tr key={i}>
+                <Td>{voucher.code}</Td>
+                <Td>{new Date(voucher.createdAt).toString()}</Td>
+                <Td>{voucher.amount}</Td>
+                <Td>{voucher.currency}</Td>
+                <Td>{voucher.status}</Td>
+              </Tr>
+            ))}
           </TBody>
         </Table>
       </TableContainer>

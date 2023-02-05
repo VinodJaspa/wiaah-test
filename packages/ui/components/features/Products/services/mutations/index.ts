@@ -5,3 +5,4 @@ export * from "./useEditMyProductMutation";
 export * from "./useCreateShippingRuleMutation";
 export * from "./useUpdateShippingRuleMutation";
 export * from "./useDeleteShippingRuleMutation";
+export * from "./useCreateShippingAddressMutation";

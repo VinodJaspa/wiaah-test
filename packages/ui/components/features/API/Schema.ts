@@ -715,6 +715,14 @@ export type CreateServiceCategoryInput = {
   thumbnail: Scalars["String"];
 };
 
+export type CreateShippingAddressInput = {
+  id: Scalars["ID"];
+  instractions?: Maybe<Scalars["String"]>;
+  location: LocationInput;
+  ownerId: Scalars["ID"];
+  phone?: Maybe<Scalars["String"]>;
+};
+
 export type CreateShippingGeoZone = {
   country: Scalars["String"];
   shippingTypeRuleId: Scalars["ID"];
@@ -788,6 +796,16 @@ export type CreateVehicleServiceInput = {
   vehicles: Array<CreateVehicleInput>;
 };
 
+export type CreateVoucherInput = {
+  amount: Scalars["Float"];
+  code: Scalars["String"];
+  currency: Scalars["String"];
+};
+
+export type DeactivateVoucherInput = {
+  code: Scalars["String"];
+};
+
 export type DeclineAppointmentInput = {
   id: Scalars["ID"];
   reason: Scalars["String"];
@@ -818,6 +836,10 @@ export type DeleteTreatmentCategoriesInput = {
 
 export type DeleteTreatmentCategoryInput = {
   id: Scalars["ID"];
+};
+
+export type DeleteVoucherInput = {
+  voucherCode: Scalars["String"];
 };
 
 export type Discount = {
@@ -1045,6 +1067,15 @@ export type GetFilteredServicesInput = {
   pagination: GqlPaginationInput;
 };
 
+export type GetFilteredVouchers = {
+  currency: Scalars["String"];
+  date: Scalars["String"];
+  name: Scalars["String"];
+  price: Scalars["Float"];
+  status: VoucherStatus;
+  voucherNumber: Scalars["Int"];
+};
+
 export type GetFiltersInput = {
   name?: Maybe<Scalars["String"]>;
   sortOrder?: Maybe<Scalars["Int"]>;
@@ -1220,6 +1251,10 @@ export type GetUserServicesPostsInput = {
 export type GetVehiclesInput = {
   pagination: GqlPaginationInput;
   q: Scalars["String"];
+};
+
+export type GetVouchersInput = {
+  status?: Maybe<VoucherStatus>;
 };
 
 export type GqlCursorPaginationInput = {
@@ -1471,6 +1506,7 @@ export type Mutation = {
   cancelServiceReservation: Scalars["Boolean"];
   changePassword: Scalars["Boolean"];
   clearShoppingCart: ShoppingCart;
+  clearVouchers: Scalars["Boolean"];
   createAction: Scalars["Boolean"];
   createBeautyCenter: BeautyCenter;
   createBeautyCenterTreatmentCategory: BeautyCenterTreatmentCategory;
@@ -1488,12 +1524,15 @@ export type Mutation = {
   createRequiredAction: RequiredAction;
   createRestaurantService: Restaurant;
   createServiceCategory: ServiceCategory;
+  createShippingAddress: Scalars["Boolean"];
   createShippingRule: ShippingRule;
   createShippingTypeRule: Scalars["Boolean"];
   createShippingTypeRuleGeoZone: Scalars["Boolean"];
   createShop: Shop;
   createStory: Scalars["Boolean"];
   createVehicle: VehicleService;
+  createVoucher: Voucher;
+  deActivateVoucher: Voucher;
   declineAppointment: Scalars["Boolean"];
   declineSellerAccount: Scalars["Boolean"];
   deleteAffiliation: Affiliation;
@@ -1506,6 +1545,7 @@ export type Mutation = {
   deleteRestaurant: Restaurant;
   deleteShippingRule: ShippingRule;
   deleteStory: Story;
+  deleteVoucher: Scalars["Boolean"];
   editAccount: Account;
   followProfile: Scalars["Boolean"];
   getMyAccount: Account;
@@ -1564,6 +1604,7 @@ export type Mutation = {
   updateRestaurant: Restaurant;
   updateRestaurantAdmin: Scalars["Boolean"];
   updateServiceCategory: ServiceCategory;
+  updateShippingAddress: Scalars["Boolean"];
   updateShippingRule: ShippingRule;
   updateTreatmentCategories: Array<BeautyCenterTreatmentCategory>;
   updateUserLocation: Scalars["Boolean"];
@@ -1735,6 +1776,10 @@ export type MutationCreateServiceCategoryArgs = {
   createServiceCategoryArgs: CreateServiceCategoryInput;
 };
 
+export type MutationCreateShippingAddressArgs = {
+  args: CreateShippingAddressInput;
+};
+
 export type MutationCreateShippingRuleArgs = {
   createShippingRuleArgs: CreateShippingRuleInput;
 };
@@ -1757,6 +1802,14 @@ export type MutationCreateStoryArgs = {
 
 export type MutationCreateVehicleArgs = {
   createVehicleInput: CreateVehicleServiceInput;
+};
+
+export type MutationCreateVoucherArgs = {
+  createVoucherArgs: CreateVoucherInput;
+};
+
+export type MutationDeActivateVoucherArgs = {
+  deActivateVoucherArgs: DeactivateVoucherInput;
 };
 
 export type MutationDeclineAppointmentArgs = {
@@ -1801,6 +1854,10 @@ export type MutationDeleteShippingRuleArgs = {
 
 export type MutationDeleteStoryArgs = {
   deleteStoryInput: DeleteStoryInput;
+};
+
+export type MutationDeleteVoucherArgs = {
+  deleteVoucherArgs: DeleteVoucherInput;
 };
 
 export type MutationEditAccountArgs = {
@@ -2025,6 +2082,10 @@ export type MutationUpdateRestaurantAdminArgs = {
 
 export type MutationUpdateServiceCategoryArgs = {
   updateServiceCategoryArgs: UpdateServiceCategoryInput;
+};
+
+export type MutationUpdateShippingAddressArgs = {
+  args: UpdateShippingAddressInput;
 };
 
 export type MutationUpdateShippingRuleArgs = {
@@ -2420,6 +2481,7 @@ export type Query = {
   getFilteredServiceCategories: Array<ServiceCategory>;
   getFilteredServices: Array<ServiceDiscovery>;
   getFilteredShops: Array<Shop>;
+  getFilteredVouchers: Array<Voucher>;
   getFollowersByProfileId: ProfileMetaPaginatedResponse;
   getFollowingByProfileId: ProfileMetaPaginatedResponse;
   getHashtagTopAffiliationPost?: Maybe<HashtagTopAffiliationPost>;
@@ -2448,6 +2510,7 @@ export type Query = {
   getMyShippingAddress: Array<ShippingAddress>;
   getMyShippingRules: Array<ShippingRule>;
   getMyStories: Array<Story>;
+  getMyVouchers: Array<Voucher>;
   getMyWorkingSchedule: WorkingSchedule;
   getNearShops: Array<Shop>;
   getNewsfeedHashtagPosts: NewsfeedHashtagSearch;
@@ -2624,6 +2687,10 @@ export type QueryGetFilteredShopsArgs = {
   filteredShopsArgs: FilteredShopsInput;
 };
 
+export type QueryGetFilteredVouchersArgs = {
+  args: GetFilteredVouchers;
+};
+
 export type QueryGetFollowersByProfileIdArgs = {
   getFollowersMetaInput: GetProfileFollowersMetaInput;
 };
@@ -2702,6 +2769,10 @@ export type QueryGetMyReturnedOrdersArgs = {
 
 export type QueryGetMySavedPostsArgs = {
   args: GetMySavedPostsInput;
+};
+
+export type QueryGetMyVouchersArgs = {
+  getMyVouchersInput?: Maybe<GetVouchersInput>;
 };
 
 export type QueryGetNearShopsArgs = {
@@ -3497,8 +3568,10 @@ export enum ServiceTypeOfSeller {
 export type ShippingAddress = {
   __typename?: "ShippingAddress";
   id: Scalars["ID"];
+  instractions?: Maybe<Scalars["String"]>;
   location: Location;
   ownerId: Scalars["ID"];
+  phone?: Maybe<Scalars["String"]>;
 };
 
 export type ShippingCountry = {
@@ -3910,6 +3983,14 @@ export type UpdateServiceCategoryInput = {
   thumbnail?: Maybe<Scalars["String"]>;
 };
 
+export type UpdateShippingAddressInput = {
+  id: Scalars["ID"];
+  instractions?: Maybe<Scalars["String"]>;
+  location?: Maybe<LocationInput>;
+  ownerId?: Maybe<Scalars["ID"]>;
+  phone?: Maybe<Scalars["String"]>;
+};
+
 export type UpdateShippingRuleInput = {
   cost?: Maybe<Scalars["Float"]>;
   countries?: Maybe<Array<ShippingCountryInput>>;
@@ -4036,6 +4117,20 @@ export type VerifyEmailDto = {
 export enum VisibilityEnum {
   Hidden = "hidden",
   Public = "public",
+}
+
+export type Voucher = {
+  __typename?: "Voucher";
+  amount: Scalars["Float"];
+  code: Scalars["String"];
+  createdAt: Scalars["String"];
+  currency: Scalars["String"];
+  status: VoucherStatus;
+};
+
+export enum VoucherStatus {
+  Active = "active",
+  InActive = "inActive",
 }
 
 export type WeekdaysWorkingHours = {
