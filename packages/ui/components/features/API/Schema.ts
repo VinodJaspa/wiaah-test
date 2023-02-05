@@ -234,6 +234,8 @@ export enum AttachmentType {
 
 export type Balance = {
   __typename?: "Balance";
+  allTimeEarnings: Scalars["Float"];
+  balanceCurrency: Scalars["String"];
   cashbackBalance: Scalars["Float"];
   convertedCashbackBalance: Scalars["Float"];
   id: Scalars["ID"];
@@ -1255,8 +1257,8 @@ export type GetTransactionsAdminInput = {
 };
 
 export type GetTransactionsInput = {
+  pagination: GqlPaginationInput;
   status?: Maybe<TransactionStatus>;
-  take?: Maybe<Scalars["Int"]>;
 };
 
 export type GetUserActionsInput = {
@@ -3868,9 +3870,13 @@ export type Transaction = {
   __typename?: "Transaction";
   amount: Scalars["Int"];
   createdAt: Scalars["DateTime"];
+  currency: Scalars["String"];
+  description: Scalars["String"];
   from: Scalars["String"];
+  fromUser: Account;
   id: Scalars["ID"];
   status: TransactionStatus;
+  toUser: Account;
   updatedAt: Scalars["DateTime"];
   userId: Scalars["ID"];
 };

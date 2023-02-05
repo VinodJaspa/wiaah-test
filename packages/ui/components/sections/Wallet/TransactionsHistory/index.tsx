@@ -1,7 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BsFilePdfFill } from "react-icons/bs";
-import { BalanceRecordData, PriceType, TransactionStatusEnum } from "types";
 import {
   Button,
   Table,
@@ -13,145 +12,157 @@ import {
   TableContainer,
   Status,
   HStack,
+  Pagination,
 } from "@partials";
 
 import { FinancialCard } from "@blocks/Cards";
 
 import { SectionHeader } from "@sections";
 
-import { randomNum, randomNumWithNegative } from "utils";
+import { mapArray } from "utils";
+
+import { useGetMyBalanceQuery, useGetMyTransactionHistoryQuery } from "@UI";
+import { usePaginationControls } from "@blocks";
+import { TransactionStatus } from "@features/API";
+import { useUserData } from "@UI";
 
 export interface TransactionsHistorySectionProps {}
 
 export const TransactionsHistorySection: React.FC<
   TransactionsHistorySectionProps
-> = ({}) => {
-  const currentBalance: PriceType = {
-    amount: 5,
-    currency: "CHF",
-  };
-  const earningsToDate: PriceType = {
-    amount: 15,
-    currency: "CHF",
-  };
+> = () => {
+  const { user } = useUserData();
+
+  const { pagination, controls } = usePaginationControls();
+  const { data: transactions } = useGetMyTransactionHistoryQuery({
+    pagination,
+  });
+
+  const { data: balance } = useGetMyBalanceQuery();
+
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-8">
-      <SectionHeader sectionTitle={t("your_finances", "Your Finances")}>
+      <SectionHeader sectionTitle={t("Your Finances")}>
         <Button className="flex gap-2 items-center">
           <BsFilePdfFill />
-          {t("pdf", "PDF")}
+          {t("PDF")}
         </Button>
       </SectionHeader>
       <div className="flex flex-wrap sm:flex-nowrap gap-8 items-center">
         <FinancialCard
           className="w-full"
-          title={t("your_current_balance", "Your Current Balance")}
-          amount={currentBalance}
+          title={t("Your Current Balance")}
+          amount={{
+            amount: balance?.withdrawableBalance || 0,
+            currency: balance?.balanceCurrency,
+          }}
         />
         <FinancialCard
           className="w-full"
-          title={t("your_earnings_to_date", "Your Earnings to Date")}
-          amount={earningsToDate}
+          title={t("Your Earnings to Date")}
+          amount={{
+            amount: balance?.withdrawableBalance || 0,
+            currency: balance?.balanceCurrency,
+          }}
         />
       </div>
-      <span className="text-2xl font-bold">
-        {t("transaction_history", "Transaction History")}
-      </span>
-      <TableContainer>
-        <Table
-          TdProps={{
-            className:
-              "whitespace-nowrap border-collapse border-[1px] border-gray-300 ",
-          }}
-          ThProps={{
-            className:
-              "whitespace-nowrap border-collapse border-[1px] border-gray-300 ",
-          }}
-          className="border-collapse w-full"
-          TrProps={{ className: "border-collapse" }}
-        >
-          <THead>
-            <Tr>
-              <Th>{t("date", "Date")}</Th>
-              <Th>{t("status_and_id", "Status and ID")}</Th>
-              <Th>{t("transaction_type", "Transaction type")}</Th>
-              <Th>{t("recipient", "Recipient")}</Th>
-              <Th>{t("amount", "Amount")}</Th>
-              <Th>{t("currency", "Currency")}</Th>
-            </Tr>
-          </THead>
-          <TBody>
-            {balanceRecords.map(
-              (
-                {
-                  dateAdded,
-                  transactionStatus,
-                  type,
-                  recipient,
-                  amount,
-                  orderId,
-                  currency,
-                },
-                idx
-              ) => (
-                <Tr key={idx}>
-                  <Td>
-                    {new Date(dateAdded).toLocaleDateString("en-us", {
-                      dateStyle: "medium",
-                    })}
-                  </Td>
-                  <Td>
-                    <HStack>
-                      <Status status={transactionStatus} />
-                      {orderId}
-                    </HStack>
-                  </Td>
-                  <Td>{type}</Td>
-                  <Td>
-                    {recipient.slice(0, 4)}...
-                    {recipient.slice(recipient.length - 4, recipient.length)}
-                  </Td>
-                  <Td>
-                    <span
-                      className={`${
-                        amount > 0 ? "text-primary" : "text-red-500"
-                      }`}
-                    >
-                      {amount > 0 ? "+" : "-"}
-                      {amount}
-                    </span>
-                  </Td>
-                  <Td>{currency}</Td>
-                </Tr>
-              )
-            )}
-          </TBody>
-        </Table>
-      </TableContainer>
+      <span className="text-2xl font-bold">{t("Transaction History")}</span>
+      <Pagination controls={controls}>
+        <TableContainer>
+          <Table
+            TdProps={{
+              className:
+                "whitespace-nowrap border-collapse border-[1px] border-gray-300 ",
+            }}
+            ThProps={{
+              className:
+                "whitespace-nowrap border-collapse border-[1px] border-gray-300 ",
+            }}
+            className="border-collapse w-full"
+            TrProps={{ className: "border-collapse" }}
+          >
+            <THead>
+              <Tr>
+                <Th>{t("Date")}</Th>
+                <Th>{t("Status and ID")}</Th>
+                <Th>{t("Transaction type")}</Th>
+                <Th>{t("Recipient")}</Th>
+                <Th>{t("Amount")}</Th>
+                <Th>{t("Currency")}</Th>
+              </Tr>
+            </THead>
+            <TBody>
+              {mapArray(
+                transactions,
+                (
+                  {
+                    amount,
+                    createdAt,
+                    id,
+                    status,
+                    userId,
+                    description,
+                    fromUser,
+                    toUser,
+                    currency,
+                  },
+                  idx
+                ) => {
+                  const recipient =
+                    userId === user?.id
+                      ? toUser.profile?.username || ""
+                      : fromUser.profile?.username || "";
+                  return (
+                    <Tr key={idx}>
+                      <Td>
+                        {new Date(createdAt).toLocaleDateString("en-us", {
+                          dateStyle: "medium",
+                        })}
+                      </Td>
+                      <Td>
+                        <HStack>
+                          <Status
+                            status={
+                              status === TransactionStatus.Success
+                                ? "completed"
+                                : status === TransactionStatus.Failed
+                                ? "failed"
+                                : "pending"
+                            }
+                          />
+                          {id}
+                        </HStack>
+                      </Td>
+                      <Td>{description}</Td>
+                      <Td>
+                        {recipient.slice(0, 4)}...
+                        {recipient.slice(
+                          recipient.length - 4,
+                          recipient.length
+                        )}
+                      </Td>
+                      <Td>
+                        <span
+                          className={`${
+                            userId === user?.id
+                              ? "text-primary"
+                              : "text-red-500"
+                          }`}
+                        >
+                          {userId === user?.id ? "+" : "-"}
+                          {amount}
+                        </span>
+                      </Td>
+                      <Td>{currency}</Td>
+                    </Tr>
+                  );
+                }
+              )}
+            </TBody>
+          </Table>
+        </TableContainer>
+      </Pagination>
     </div>
   );
 };
-
-const transactionStatus: TransactionStatusEnum[] = [
-  "completed",
-  "failed",
-  "pending",
-];
-const recipientType: string[] = [
-  "Receipt from external wallet",
-  "Receipt from a citizen",
-  "Sending to citizen",
-  "Sending to external wallet",
-];
-const Currncies: string[] = ["CHF", "USD", "GP", "EGP"];
-const balanceRecords: BalanceRecordData[] = [...Array(8)].map(() => ({
-  orderId: `${randomNum(143642)}`,
-  amount: randomNumWithNegative(13543),
-  quantity: randomNum(10),
-  dateAdded: new Date(Date.now()).toDateString(),
-  currency: Currncies[randomNum(Currncies.length)],
-  type: recipientType[randomNum(recipientType.length)],
-  recipient: "wkhadkjh2k1jh3124k21hkeh2kjhe",
-  transactionStatus: transactionStatus[randomNum(transactionStatus.length)],
-}));

@@ -51,6 +51,7 @@ model Transaction {
   userId      String            @db.ObjectId
   description String
   amount      Float
+  currency    String
 }
 
 enum TransactionStatus {
@@ -86,6 +87,8 @@ model Balance {
   pendingBalance           Float    @default(0)
   cashbackBalance          Float    @default(0)
   convertedCashbackBalance Float    @default(0)
+  allTimeEarnings          Float    @default(0)
+  balanceCurrency          String
   createdAt                DateTime @default(now())
   updatedAt                DateTime @updatedAt
 }

@@ -18,5 +18,11 @@ export class Balance {
   cashbackBalance: number;
 
   @Field(() => Float)
+  allTimeEarnings: number;
+
+  @Field(() => Float)
   convertedCashbackBalance: number;
+
+  @Field(() => String)
+  balanceCurrency: string;
 }

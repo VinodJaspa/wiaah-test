@@ -7,7 +7,12 @@ export type GetMyBalanceQueryVariables = Exact<{ [key: string]: never }>;
 export type GetMyBalanceQuery = { __typename?: "Query" } & {
   getMyBalance: { __typename?: "Balance" } & Pick<
     Balance,
-    "cashbackBalance" | "convertedCashbackBalance"
+    | "cashbackBalance"
+    | "convertedCashbackBalance"
+    | "allTimeEarnings"
+    | "withdrawableBalance"
+    | "balanceCurrency"
+    | "pendingBalance"
   >;
 };
 
@@ -18,6 +23,11 @@ export const useGetMyBalanceQuery = () => {
 query getMyBalance{
   getMyBalance{
     cashbackBalance
+    convertedCashbackBalance
+    allTimeEarnings
+    withdrawableBalance
+    balanceCurrency
+    pendingBalance
   }
 }
     `);

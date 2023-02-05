@@ -18,6 +18,9 @@ export class Transaction {
   @Field(() => String)
   from: string;
 
+  @Field(() => String)
+  description: string;
+
   @Field((type) => TransactionStatus)
   status: TransactionStatus;
 
@@ -26,4 +29,7 @@ export class Transaction {
 
   @Field((type) => Int)
   amount: number;
+
+  @Field(() => String)
+  currency: string;
 }
