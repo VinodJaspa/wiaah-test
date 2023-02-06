@@ -1,4 +1,4 @@
-import { Resolver, Query, Args } from '@nestjs/graphql';
+import { Resolver, Query, Args, ResolveField, Parent } from '@nestjs/graphql';
 import { TransactionsService } from './transactions.service';
 import { Transaction } from '@entities';
 import { GetTransactionsInput } from '@dto';
@@ -15,9 +15,16 @@ import { PrismaService } from 'src/prisma.service';
 import { Prisma } from '@prisma-client';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetUserIdsByNameQuery, GetUserIdsByNameQueryRes } from './queries';
+import { Account } from '@entities';
 
 @Resolver(() => Transaction)
-@UseGuards(new GqlAuthorizationGuard(['buyer', 'seller']))
+@UseGuards(
+  new GqlAuthorizationGuard([
+    accountType.SELLER,
+    accountType.ADMIN,
+    accountType.BUYER,
+  ]),
+)
 export class TransactionsResolver {
   constructor(
     private readonly transactionsService: TransactionsService,
@@ -31,6 +38,22 @@ export class TransactionsResolver {
     @Args('myTransactionsArgs') input: GetTransactionsInput,
   ): Promise<Transaction[]> {
     return this.transactionsService.getUserTransactions(user.id, input);
+  }
+
+  @ResolveField(() => Account)
+  fromUser(@Parent() trans: Transaction) {
+    return {
+      __typename: 'Account',
+      id: trans.from,
+    };
+  }
+
+  @ResolveField(() => Account)
+  toUser(@Parent() trans: Transaction) {
+    return {
+      __typename: 'Account',
+      id: trans.userId,
+    };
   }
 
   @Query(() => [Transaction])

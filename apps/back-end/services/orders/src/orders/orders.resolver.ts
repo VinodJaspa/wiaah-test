@@ -29,6 +29,7 @@ import { GetBuyerOrdersQuery, GetSellerOrdersQuery } from '@orders/queries';
 import {
   AcceptReceivedOrderInput,
   AcceptRequestedOrderInput,
+  GetRefundableOrdersInput,
   RejectReceivedOrderInput,
   RejectRequestedOrderInput,
 } from '@orders/dto';
@@ -43,6 +44,8 @@ import { GetFilteredOrdersInput } from '@dto';
 import { PrismaService } from 'prismaService';
 // import { Discount } from './entities/extends/discount.entity';
 import { Product, ShippingAddress, ShippingRule } from './entities/extends';
+import { OrderStatus } from './const';
+import { OrderStatusEnum } from '@prisma-client';
 
 @Resolver(() => Order)
 export class OrdersResolver implements OnModuleInit {
@@ -53,6 +56,31 @@ export class OrdersResolver implements OnModuleInit {
     private readonly commandbus: CommandBus,
     private readonly prisma: PrismaService,
   ) {}
+
+  @Query(() => [Order])
+  @UseGuards(new GqlAuthorizationGuard([accountType.BUYER, accountType.SELLER]))
+  getRefundableOrders(
+    @Args('args') args: GetRefundableOrdersInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const { take, skip } = ExtractPagination(args.pagination);
+    return this.prisma.order.findMany({
+      where: {
+        AND: [
+          {
+            buyerId: user.id,
+          },
+          {
+            status: {
+              of: 'compeleted',
+            },
+          },
+        ],
+      },
+      skip,
+      take,
+    });
+  }
 
   @Query((type) => [Order])
   @UseGuards(new GqlAuthorizationGuard([accountType.BUYER, accountType.SELLER]))

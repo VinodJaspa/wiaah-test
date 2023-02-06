@@ -18,6 +18,9 @@ export class Voucher {
   // @Field((type) => VoucherType)
   // type: VoucherType;
 
+  @Field(() => String)
+  createdAt?: Date;
+
   @Field((type) => String)
   currency: string;
 }

@@ -59,6 +59,7 @@ export class BalanceService {
         pendingBalance: 0,
         withdrawableBalance: 0,
         cashbackBalance: 0,
+        balanceCurrency: 'USD',
       },
     });
 

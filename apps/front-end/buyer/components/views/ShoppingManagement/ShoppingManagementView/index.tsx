@@ -15,6 +15,7 @@ import { MdPayment } from "react-icons/md";
 import { BsBoxArrowInUp } from "react-icons/bs";
 import { IoReturnUpBackSharp } from "react-icons/io5";
 import { GiPostStamp } from "react-icons/gi";
+
 export const ShoppingManagementView: React.FC = () => {
   const baseRoute = "shopping-management";
   const router = useRouter();

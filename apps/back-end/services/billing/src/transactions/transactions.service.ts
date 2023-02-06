@@ -3,6 +3,7 @@ import { Transaction } from '@entities';
 import { TransactionNotFoundException } from '@exception';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma-client';
+import { ExtractPagination } from 'nest-utils';
 import { BalanceService } from 'src/balance/balance.service';
 import { PrismaService } from 'src/prisma.service';
 
@@ -17,6 +18,8 @@ export class TransactionsService {
     userId: string,
     input: GetTransactionsInput,
   ): Promise<Transaction[]> {
+    const { take, skip } = ExtractPagination(input.pagination);
+
     const filters: Prisma.TransactionWhereInput[] = [];
 
     if (input.status) filters.push({ status: input.status });
@@ -30,7 +33,7 @@ export class TransactionsService {
                 from: userId,
               },
               {
-                to: userId,
+                userId,
               },
             ],
           },
@@ -40,7 +43,8 @@ export class TransactionsService {
       orderBy: {
         createdAt: 'asc',
       },
-      take: input.take || 10,
+      take,
+      skip,
     });
 
     return transctions;
@@ -50,7 +54,11 @@ export class TransactionsService {
     const transaction = await this.prisma.transaction.create({
       data: {
         status: 'pending',
-        ...input,
+        from: input.from,
+        userId: input.to,
+        amount: input.amount,
+        description: input.descirption || '',
+        currency: input.currency,
       },
     });
     try {
@@ -71,7 +79,10 @@ export class TransactionsService {
       });
 
       try {
-        this.balanceService.unHoldBalance(transaction.to, transaction.amount);
+        this.balanceService.unHoldBalance(
+          transaction.userId,
+          transaction.amount,
+        );
       } catch {}
 
       return transaction;

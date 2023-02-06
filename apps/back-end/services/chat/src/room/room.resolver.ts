@@ -1,11 +1,28 @@
-import { Args, ID, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  ID,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { ChatRoom } from './entities/room.entity';
-import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
+import {
+  AuthorizationDecodedUser,
+  ExtractPagination,
+  GqlAuthorizationGuard,
+  GqlCurrentUser,
+  GqlPaginationInput,
+} from 'nest-utils';
 import { QueryBus } from '@nestjs/cqrs';
 import { CanAccessRoomQuery, GetMyRoomsQuery } from './queries';
 import { PrismaService } from 'prismaService';
+import { ChatMessage } from '@message';
+import { Account } from './entities/extends';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => ChatRoom)
+@UseGuards(new GqlAuthorizationGuard([]))
 export class RoomResolver {
   constructor(
     private readonly querybus: QueryBus,
@@ -23,8 +40,36 @@ export class RoomResolver {
   }
 
   @Query(() => ChatRoom)
-  getChatRoom() {
-    return this.querybus.execute;
+  getChatRoom(@Args('roomId') id: string) {
+    return this.prisma.room.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
+  @ResolveField(() => [ChatMessage])
+  messages(@Args('args') args: GqlPaginationInput, @Parent() room: ChatRoom) {
+    const { skip, take } = ExtractPagination(args);
+
+    return this.prisma.message.findMany({
+      where: {
+        roomId: room.id,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take,
+      skip,
+    });
+  }
+
+  @ResolveField(() => [Account])
+  members(@Parent() room: ChatRoom) {
+    return room.membersUserIds.map((id) => ({
+      __typename: 'Account',
+      id,
+    }));
   }
 
   @Query(() => [ChatRoom])

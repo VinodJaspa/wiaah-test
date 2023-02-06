@@ -23,7 +23,7 @@ import {
   CreateRefundRequestCommand,
   RejectRequestedRefundCommand,
 } from '@refund/commands';
-import { GetMyReturnedOrdersInput } from 'src/returned-orders/dto/get-my-returned-orders.input';
+import { GetMyReturnedOrdersInput } from '../returned-orders/dto/get-my-returned-orders.input';
 import { PrismaService } from 'prismaService';
 import { Product } from '@orders/entities/extends';
 
@@ -35,18 +35,22 @@ export class RefundResolver {
   ) {}
 
   @Query(() => [Refund])
-  getMyReturnedOrders(
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER, accountType.BUYER]))
+  async getMyReturnedOrders(
     @Args('args') args: GetMyReturnedOrdersInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     const { skip, take } = ExtractPagination(args.pagination);
-    return this.prisma.refundRequest.findMany({
-      where: {
-        sellerId: user.id,
-      },
+
+    const res = await this.prisma.refundRequest.findMany({
+      where:
+        user.accountType === accountType.SELLER
+          ? { sellerId: user.id }
+          : { requestedById: user.id },
       skip,
       take,
     });
+    return res;
   }
 
   @ResolveField(() => Product)

@@ -1,7 +1,5 @@
 import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
-import { ChatMessage } from '@message';
 import { RoomTypes } from '@prisma-client';
-import { User } from './extends';
 
 registerEnumType(RoomTypes, { name: 'RoomTypes' });
 
@@ -24,10 +22,4 @@ export class ChatRoom {
 
   @Field(() => Date)
   updatedAt: Date;
-
-  // @Field(() => [User], { nullable: true })
-  members?: User[];
-
-  @Field(() => [ChatMessage], { nullable: true })
-  messages?: ChatMessage[];
 }

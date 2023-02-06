@@ -98,4 +98,25 @@ describe("MyWishListSection", () => {
       );
     });
   });
+
+  it("should call the remove item from wishlist hook with the right id", async () => {
+    expect(useGetMyWishlistQuery).toBeCalledTimes(1);
+
+    const items = wrapper.find(getTestId(testIds.item));
+    expect(items).toHaveLength(2);
+
+    await Promise.all(
+      items.map(async (item, i) => {
+        const data = mockWishlistItems[i];
+
+        const deleteBtn = item
+          .find(getTestId(testIds.deleteBtn))
+          .simulate("click");
+
+        expect(mockMutateRemove).toBeCalledTimes(1);
+        expect(mockMutateRemove).toHaveBeenCalledWith({ itemId: data.itemId });
+        mockMutateRemove.mockClear();
+      })
+    );
+  });
 });

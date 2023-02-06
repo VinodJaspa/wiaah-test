@@ -74,7 +74,7 @@ model Product {
   reviews                     Int                   @default(0)
   rateStarCount               Int                   @default(0)
   brand                       String
-  discountId                  String?
+  discountId                  String?               @db.ObjectId
   cashbackId                  String?
   shippingRulesIds            String[]              @db.ObjectId
   presentations               ProductPresentation[]
@@ -104,9 +104,11 @@ model Shop {
 }
 
 model ShippingAddress {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId  String   @db.ObjectId
-  location Location
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId      String   @db.ObjectId
+  instractions String?
+  phone        String?
+  location     Location
 }
 
 model Discount {

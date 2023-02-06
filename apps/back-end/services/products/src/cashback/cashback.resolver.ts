@@ -1,11 +1,4 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Int,
-  ResolveReference,
-} from '@nestjs/graphql';
+import { Resolver, ResolveReference } from '@nestjs/graphql';
 import { Cashback } from '@products';
 import { PrismaService } from 'prismaService';
 

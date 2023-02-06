@@ -21,7 +21,6 @@ let GqlAuthorizationGuard = class GqlAuthorizationGuard {
     canActivate(context) {
         const ctx = graphql_1.GqlExecutionContext.create(context);
         const user = ctx.getContext().user;
-        return true;
         const isPublic = this.roles.includes(constants_1.accountType.PUBLIC);
         if (!user || typeof user !== "object" || typeof user.id !== "string") {
             if (isPublic) {

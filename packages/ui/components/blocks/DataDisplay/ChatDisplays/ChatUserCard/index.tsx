@@ -1,10 +1,19 @@
 import React from "react";
 import { EllipsisText, useLocale, Avatar, AvatarBadge } from "@UI";
-import { ChatUserData } from "types";
 import { useTranslation } from "react-i18next";
 
-export interface ChatUserCardProps extends ChatUserData {
+export type ChatUserStatus = "online" | "offline" | "idle";
+
+export interface ChatUserCardProps {
   onClick: () => any;
+  id: string;
+  name: string;
+  profilePhoto: string;
+  status: ChatUserStatus;
+  typing?: string;
+  unSeenMsgs: number;
+  lastMsgSentTime?: string;
+  lastMsg?: string;
 }
 
 export const ChatUserCard: React.FC<ChatUserCardProps> = ({
@@ -40,7 +49,9 @@ export const ChatUserCard: React.FC<ChatUserCardProps> = ({
         <div className="flex w-full flex-col">
           <span className="font-bold">{name}</span>
           {typing ? (
-            <span className="text-primary">{t("typing", "Typing")}</span>
+            <span className="text-primary">
+              {typing} {t("is typing")}
+            </span>
           ) : lastMsg ? (
             <EllipsisText ShowMore={false} content={lastMsg} maxLines={1} />
           ) : null}

@@ -1,8 +1,22 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ChatMessageType } from "types";
 import { useUserData, DisplayDate, useLocale, Avatar } from "@UI";
 import { ChatMessageAttachment } from "@UI";
+import { MessageAttachmentType } from "@features/API";
+
+export interface ChatMessageType {
+  id: string;
+  username: string;
+  userPhoto: string;
+  sendDate: string | number;
+  messageContent?: string;
+  messageAttachments?: ChatMessageAttachmentType[];
+}
+
+export interface ChatMessageAttachmentType {
+  type: MessageAttachmentType;
+  src: string;
+}
 
 export interface ChatMessageProps {
   messageData: ChatMessageType;
@@ -30,7 +44,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({ messageData }) => {
 
   const flexDir = isUser ? "flex-row" : "flex-row-reverse";
 
-  const name = isUser ? t("you", "You") : username;
+  const name = isUser ? t("You") : username;
 
   const msgBgColor = isUser ? "bg-primary" : "bg-gray-200";
   const msgTextColor = isUser ? "text-white" : "text-black";

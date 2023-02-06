@@ -15,15 +15,21 @@ export class Transaction {
   @Field((type) => Date)
   updatedAt: Date;
 
+  @Field(() => String)
+  from: string;
+
+  @Field(() => String)
+  description: string;
+
   @Field((type) => TransactionStatus)
   status: TransactionStatus;
 
   @Field((type) => ID)
   userId: string;
 
-  @Field(() => Account)
-  user: Account;
-
   @Field((type) => Int)
   amount: number;
+
+  @Field(() => String)
+  currency: string;
 }

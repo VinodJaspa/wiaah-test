@@ -7,3 +7,4 @@ export * from "./useAdminGetProduct";
 export * from "./useGetMyShippingRules";
 export * from "./useGetMyProducts";
 export * from "./useGetMyProductsReviews";
+export * from "./useGetMyShippingAddressesQuery";

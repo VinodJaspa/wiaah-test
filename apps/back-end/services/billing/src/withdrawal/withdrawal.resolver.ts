@@ -32,7 +32,7 @@ export class WithdrawalResolver {
     return true;
   }
 
-  @Query()
+  @Query(() => [WithdrawalRequest])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   getWithdrawalRequests(@Args('args') args: GetWithdrawalRequestsAdminInput) {
     const filters: Prisma.WithdrawalRequestWhereInput[] = [];

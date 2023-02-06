@@ -23,4 +23,5 @@ export class input {
   status: TransactionStatus;
 }
 
+@InputType()
 export class GetTransactionsAdminInput extends PartialType(input) {}

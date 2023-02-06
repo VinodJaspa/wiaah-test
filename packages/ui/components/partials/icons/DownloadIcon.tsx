@@ -10,6 +10,7 @@ export const DownloadIcon: React.FC<HtmlSvgProps> = (props) => {
       viewBox="0 0 330 330"
       width={"1em"}
       height={"1em"}
+      fill="currentColor"
     >
       <g id="XMLID_23_">
         <path

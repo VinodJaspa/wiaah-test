@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { InvoiceRecordService } from './invoice-record.service';
+import { PrismaService } from 'prismaService';
 import { InvoiceRecordResolver } from './invoice-record.resolver';
 
 @Module({
-  providers: [InvoiceRecordResolver, InvoiceRecordService]
+  providers: [InvoiceRecordResolver, PrismaService],
 })
 export class InvoiceRecordModule {}
