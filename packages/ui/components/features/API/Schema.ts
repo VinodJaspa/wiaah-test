@@ -452,9 +452,11 @@ export type ChatMessage = {
   content: Scalars["String"];
   createdAt: Scalars["DateTime"];
   id: Scalars["ID"];
+  mentions: Array<Account>;
   mentionsUserIds: Array<Scalars["ID"]>;
   roomId: Scalars["ID"];
   updatedAt: Scalars["DateTime"];
+  user: Account;
   userId: Scalars["ID"];
 };
 
@@ -462,11 +464,16 @@ export type ChatRoom = {
   __typename?: "ChatRoom";
   createdAt: Scalars["DateTime"];
   id: Scalars["ID"];
+  members: Array<Account>;
   membersUserIds: Array<Scalars["ID"]>;
-  messages?: Maybe<Array<ChatMessage>>;
+  messages: Array<ChatMessage>;
   roomType: RoomTypes;
   unSeenMessages: Scalars["Int"];
   updatedAt: Scalars["DateTime"];
+};
+
+export type ChatRoomMessagesArgs = {
+  args: GqlPaginationInput;
 };
 
 export type Comment = {
@@ -1188,6 +1195,11 @@ export type GetLocalizationInput = {
   query: Scalars["String"];
 };
 
+export type GetMessagesByRoomIdInput = {
+  pagination: GqlCursorPaginationInput;
+  roomId: Scalars["ID"];
+};
+
 export type GetMyAffiliationsInput = {
   pagination: GqlPaginationInput;
 };
@@ -1357,7 +1369,7 @@ export type GetWithdrawalRequestsAdminInput = {
 };
 
 export type GqlCursorPaginationInput = {
-  cursor: Scalars["String"];
+  cursor?: Maybe<Scalars["String"]>;
   take: Scalars["Int"];
 };
 
@@ -1605,6 +1617,7 @@ export type MessageAttachment = {
 
 export enum MessageAttachmentType {
   Image = "image",
+  Story = "story",
   VideoMessage = "videoMessage",
   VoiceMessage = "voiceMessage",
 }
@@ -2703,6 +2716,7 @@ export type Query = {
   getRegistrations: Array<Registeration>;
   getRestaurant: Restaurant;
   getRestaurants: Array<Restaurant>;
+  getRoomMessages: Array<ChatMessage>;
   getServiceCategories: Array<ServiceCategory>;
   getServiceCategoryById: ServiceCategory;
   getServiceCategoryBySlug: ServiceCategory;
@@ -2711,6 +2725,7 @@ export type Query = {
   getShippingGeoZoneRules: Array<ShippingTypeRule>;
   getShippingRuleGeoZones: Array<ShippingRuleGeoZone>;
   getShopById: Shop;
+  getStory: Story;
   getStoryViews: Array<StoryView>;
   getTopHashtagNewsfeed: TopHashtagNewsfeedPosts;
   getTopHashtagPosts: HashtagProductPost;
@@ -2816,6 +2831,10 @@ export type QueryGetBookedServiceDetailsArgs = {
 
 export type QueryGetBookingHistoryArgs = {
   args: GetBookingsHistoryInput;
+};
+
+export type QueryGetChatRoomArgs = {
+  roomId: Scalars["String"];
 };
 
 export type QueryGetCommunityPostsArgs = {
@@ -3030,6 +3049,10 @@ export type QueryGetRestaurantArgs = {
   getRestaurantArgs: GetRestaurantInput;
 };
 
+export type QueryGetRoomMessagesArgs = {
+  args: GetMessagesByRoomIdInput;
+};
+
 export type QueryGetServiceCategoryByIdArgs = {
   categoryId: Scalars["String"];
 };
@@ -3052,6 +3075,10 @@ export type QueryGetShippingRuleGeoZonesArgs = {
 
 export type QueryGetShopByIdArgs = {
   id: Scalars["String"];
+};
+
+export type QueryGetStoryArgs = {
+  storyId: Scalars["String"];
 };
 
 export type QueryGetStoryViewsArgs = {

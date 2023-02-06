@@ -445,6 +445,7 @@ type Query {
   getAllShares: ContentSharePaginationResponse!
   getNewsfeedHashtagPosts(hashtagSearchInput: GetHashtagNewsfeedPostsInput!): NewsfeedHashtagSearch!
   getMySavedPosts(args: GetMySavedPostsInput!): UserSavedPostsGroup!
+  getStory(storyId: String!): Story!
   getUserStory(userId: String!): Story!
   getUserPrevStory(storyId: String!): Story!
   getMyStories: [Story!]!
@@ -570,7 +571,7 @@ input GetUserServicesPostsInput {
 
 input GqlCursorPaginationInput {
   take: Int!
-  cursor: String!
+  cursor: String
 }
 
 input GetRecommendedServicePostsInput {

@@ -20,3 +20,4 @@ export * from "./Hashtag";
 export * from "./Orders";
 export * from "./Wishlist";
 export * from "./Billing";
+export * from "./Chat";

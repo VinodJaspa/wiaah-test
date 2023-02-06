@@ -111,7 +111,8 @@ exports.RoomTypes = makeEnum({
 exports.MessageAttachmentType = makeEnum({
   image: 'image',
   videoMessage: 'videoMessage',
-  voiceMessage: 'voiceMessage'
+  voiceMessage: 'voiceMessage',
+  story: 'story'
 });
 
 exports.Prisma.ModelName = makeEnum({

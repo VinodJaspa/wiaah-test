@@ -1,6 +1,15 @@
 import React from "react";
-import { ChatMessageAttachmentType } from "types";
-import { AudioMessageAttachment, SocialStoryContentViewer } from "@UI";
+import {
+  AudioMessageAttachment,
+  SocialStoryContentViewer,
+  useGetStoryQuery,
+} from "@UI";
+import { MessageAttachmentType, StoryType } from "@features/API";
+
+export interface ChatMessageAttachmentType {
+  type: MessageAttachmentType;
+  src: string;
+}
 
 export interface ChatMessageAttachmentProps {
   attachment: ChatMessageAttachmentType;
@@ -13,15 +22,15 @@ export const ChatMessageAttachment: React.FC<ChatMessageAttachmentProps> = ({
   const { src, type } = attachment;
 
   switch (type) {
-    case "image":
+    case MessageAttachmentType.Image:
       return <img className="rounded-xl" src={src} />;
 
-    case "video":
+    case MessageAttachmentType.VideoMessage:
       return <video controls src={src} />;
 
-    case "audio":
+    case MessageAttachmentType.VoiceMessage:
       return <AudioMessageAttachment src={src} />;
-    case "story":
+    case MessageAttachmentType.Story:
       return <UserStoryDisplay id={src} />;
     default:
       return null;
@@ -33,12 +42,14 @@ export interface UserStoryDisplayProps {
 }
 
 export const UserStoryDisplay: React.FC<UserStoryDisplayProps> = ({ id }) => {
+  const { data } = useGetStoryQuery(id);
+
   return (
     <SocialStoryContentViewer
       id={id}
-      storyType={id == "1" ? "image" : "video"}
-      storySrc={id == "1" ? "/verticalImage.jpg" : "video.mp4"}
-      storyText="story content"
+      type={data?.type || StoryType.Base}
+      src={data?.attachements?.src}
+      text={data?.content || ""}
     />
   );
 };

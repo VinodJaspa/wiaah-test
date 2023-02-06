@@ -20,10 +20,8 @@ export class ChatRoomRepository {
       },
     });
 
-    res.members.at(0);
     return {
       ...res,
-      members: [],
       membersUserIds: res.members.map((v) => v.userId),
       unSeenMessages: 0,
     };

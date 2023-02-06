@@ -79,7 +79,8 @@ export type RoomTypes = (typeof RoomTypes)[keyof typeof RoomTypes]
 export const MessageAttachmentType: {
   image: 'image',
   videoMessage: 'videoMessage',
-  voiceMessage: 'voiceMessage'
+  voiceMessage: 'voiceMessage',
+  story: 'story'
 };
 
 export type MessageAttachmentType = (typeof MessageAttachmentType)[keyof typeof MessageAttachmentType]

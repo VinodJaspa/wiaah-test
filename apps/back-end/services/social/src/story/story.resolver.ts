@@ -33,6 +33,7 @@ import {
 } from '@story/queries';
 import { StoryType } from './const';
 import { ProductPost } from '@product-post/entities';
+import { PrismaService } from 'prismaService';
 
 @Resolver(() => Story)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -40,7 +41,20 @@ export class StoryResolver {
   constructor(
     private readonly querybus: QueryBus,
     private readonly commandbus: CommandBus,
+    private readonly prisma: PrismaService,
   ) {}
+
+  @Query(() => Story)
+  getStory(
+    @Args('storyId') storyId: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.prisma.story.findUnique({
+      where: {
+        id: storyId,
+      },
+    });
+  }
 
   @Query(() => Story)
   getUserStory(

@@ -1,9 +1,11 @@
-import { Button, Center, Flex, Text, VStack } from "@chakra-ui/react";
 import {
+  Button,
   ChatMessagesSideBar,
   ChatRoom,
   ChatRoomDrawer,
   NewMessageModal,
+  Text,
+  VStack,
 } from "ui";
 import React from "react";
 import { useRouter } from "next/router";
@@ -28,14 +30,7 @@ export const ChatView: React.FC = () => {
   }
 
   return (
-    <Flex
-      direction={{ base: "column", md: "row" }}
-      gap="0.5rem"
-      mx="auto"
-      w={{ sm: "80%" }}
-      pb="1rem"
-      h="100%"
-    >
+    <div className="flex flex-col md:flex-row gap-2 mx-auto sm:w-4/5 pb-4 h-full">
       {/* messages sidebar  */}
       <ChatMessagesSideBar
         onCardClick={handleRouteChatRoom}
@@ -53,23 +48,21 @@ export const ChatView: React.FC = () => {
       ) : roomId ? (
         <ChatRoom roomId={roomId} />
       ) : (
-        <Center minH={"15rem"} shadow={"md"} w="100%" h="100%">
+        <div className="flex justify-center items-center min-h-[15rem] shadow-md w-full h-full">
           <VStack>
-            <Text fontWeight={"semibold"} fontSize="1.5em">
-              {t("your_messages", "Your Messages")}
-            </Text>
-            <Text textAlign={"center"} fontSize={"lg"}>
+            <Text className="font-semibold text-2xl">{t("Your Messages")}</Text>
+            <Text className="text-center text-lg">
               {t(
                 "default_chat_subHeader",
                 "Dont miss a minute to talk to your contacts"
               )}
             </Text>
-            <Button>{t("send_message", "Send Message")}</Button>
+            <Button>{t("Send Message")}</Button>
           </VStack>
-        </Center>
+        </div>
       )}
 
       <NewMessageModal />
-    </Flex>
+    </div>
   );
 };
