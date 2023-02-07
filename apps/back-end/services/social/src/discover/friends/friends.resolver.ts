@@ -1,4 +1,4 @@
-import { Inject, UseGuards } from '@nestjs/common';
+import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { ClientKafka } from '@nestjs/microservices';
 import {
@@ -21,7 +21,7 @@ import { GetMyFriendSuggestionsInput } from './dto/get-friends-suggestion';
 
 @Resolver(() => FriendSuggestion)
 @UseGuards(new GqlAuthorizationGuard([]))
-export class FriendsResolver {
+export class FriendsResolver implements OnModuleInit {
   constructor(
     @Inject(SERVICES.SOCIAL_SERVICE.token)
     private readonly eventClinet: ClientKafka,
@@ -103,5 +103,11 @@ export class FriendsResolver {
   @ResolveField(() => [Account])
   accounts(@Parent() parant: FriendSuggestion) {
     return parant.accounts.map((v) => ({ __typename: 'Account', id: v.id }));
+  }
+
+  onModuleInit() {
+    this.eventClinet.subscribeToResponseOf(
+      KAFKA_MESSAGES.ANALYTICS_MESSAGES.getUserMostInteractioners(),
+    );
   }
 }

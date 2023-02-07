@@ -1,14 +1,8 @@
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
+export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -21,576 +15,577 @@ export type Scalars = {
 };
 
 export type AcceptReceivedOrderInput = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
 };
 
 export type AcceptRequestedOrderInput = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
 };
 
 export type Account = {
-  __typename?: "Account";
-  companyRegisterationNumber?: Maybe<Scalars["String"]>;
-  createdAt: Scalars["DateTime"];
-  email: Scalars["String"];
-  firstName: Scalars["String"];
-  id: Scalars["ID"];
-  lastName: Scalars["String"];
-  membershipId?: Maybe<Scalars["ID"]>;
-  phone?: Maybe<Scalars["String"]>;
-  photo?: Maybe<Scalars["String"]>;
+  __typename?: 'Account';
+  companyRegisterationNumber?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  id: Scalars['ID'];
+  lastName: Scalars['String'];
+  membershipId?: Maybe<Scalars['ID']>;
+  phone?: Maybe<Scalars['String']>;
+  photo?: Maybe<Scalars['String']>;
   profile?: Maybe<Profile>;
-  stripeId?: Maybe<Scalars["String"]>;
+  stripeId?: Maybe<Scalars['String']>;
   type: AccountType;
-  updatedAt: Scalars["DateTime"];
-  verified: Scalars["Boolean"];
+  updatedAt: Scalars['DateTime'];
+  verified: Scalars['Boolean'];
 };
 
 export type AccountDeletionRequest = {
-  __typename?: "AccountDeletionRequest";
+  __typename?: 'AccountDeletionRequest';
   account: Account;
-  accountId: Scalars["ID"];
-  createdAt: Scalars["String"];
-  id: Scalars["ID"];
+  accountId: Scalars['ID'];
+  createdAt: Scalars['String'];
+  id: Scalars['ID'];
   status: AccountDeletionRequestStatus;
-  updatedAt: Scalars["String"];
+  updatedAt: Scalars['String'];
 };
 
 export enum AccountDeletionRequestStatus {
-  Deleted = "deleted",
-  Pending = "pending",
+  Deleted = 'deleted',
+  Pending = 'pending'
 }
 
 export type AccountInputData = {
-  __typename?: "AccountInputData";
-  firstName: Scalars["String"];
-  lastName: Scalars["String"];
-  password: Scalars["String"];
+  __typename?: 'AccountInputData';
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export enum AccountStatus {
-  Active = "active",
-  InActive = "inActive",
-  Pending = "pending",
-  Refused = "refused",
-  Suspended = "suspended",
+  Active = 'active',
+  InActive = 'inActive',
+  Pending = 'pending',
+  Refused = 'refused',
+  Suspended = 'suspended'
 }
 
 export enum AccountType {
-  Admin = "admin",
-  Buyer = "buyer",
-  Seller = "seller",
+  Admin = 'admin',
+  Buyer = 'buyer',
+  Seller = 'seller'
 }
 
 export type AccountVerification = {
-  __typename?: "AccountVerification";
-  acceptedById?: Maybe<Scalars["ID"]>;
-  categoryId: Scalars["ID"];
-  createdAt: Scalars["DateTime"];
-  fullName: Scalars["String"];
-  id: Scalars["ID"];
-  idPhoto: Scalars["String"];
-  knownAs: Scalars["String"];
+  __typename?: 'AccountVerification';
+  acceptedById?: Maybe<Scalars['ID']>;
+  categoryId: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  fullName: Scalars['String'];
+  id: Scalars['ID'];
+  idPhoto: Scalars['String'];
+  knownAs: Scalars['String'];
   status: AccountVerificationStatus;
-  updatedAt: Scalars["DateTime"];
-  userId: Scalars["ID"];
-  username: Scalars["String"];
+  updatedAt: Scalars['DateTime'];
+  userId: Scalars['ID'];
+  username: Scalars['String'];
 };
 
 export enum AccountVerificationStatus {
-  Accepted = "accepted",
-  Pending = "pending",
-  Rejected = "rejected",
+  Accepted = 'accepted',
+  Pending = 'pending',
+  Rejected = 'rejected'
 }
 
 export type Action = {
-  __typename?: "Action";
+  __typename?: 'Action';
   attachment: Attachment;
-  comments: Scalars["Int"];
+  comments: Scalars['Int'];
   commentsVisibility: CommentsVisibility;
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   location: PostLocation;
-  reactionNum: Scalars["Int"];
-  shares: Scalars["Int"];
-  userId: Scalars["ID"];
+  reactionNum: Scalars['Int'];
+  shares: Scalars['Int'];
+  userId: Scalars['ID'];
   visibility: PostVisibility;
 };
 
 export enum ActiveStatus {
-  Active = "active",
-  DoNotDisturb = "doNotDisturb",
-  Idle = "idle",
-  InActive = "inActive",
+  Active = 'active',
+  DoNotDisturb = 'doNotDisturb',
+  Idle = 'idle',
+  InActive = 'inActive'
 }
 
 export type AddContactInput = {
-  gmail?: InputMaybe<Scalars["String"]>;
-  outlook?: InputMaybe<Scalars["String"]>;
-  whatsapp?: InputMaybe<Scalars["String"]>;
-  yahoo?: InputMaybe<Scalars["String"]>;
+  gmail?: InputMaybe<Scalars['String']>;
+  outlook?: InputMaybe<Scalars['String']>;
+  whatsapp?: InputMaybe<Scalars['String']>;
+  yahoo?: InputMaybe<Scalars['String']>;
 };
 
 export type AddShoppingCartProductItemInput = {
-  itemId: Scalars["ID"];
-  quantity: Scalars["Int"];
-  shippingRuleId: Scalars["ID"];
+  itemId: Scalars['ID'];
+  quantity: Scalars['Int'];
+  shippingRuleId: Scalars['ID'];
 };
 
 export type AddWishlistItemInput = {
-  itemId: Scalars["ID"];
+  itemId: Scalars['ID'];
   itemType: WishlistItemType;
-  sellerId: Scalars["ID"];
+  sellerId: Scalars['ID'];
 };
 
 export type AdminDeleteServiceInput = {
-  deletionReason: Scalars["String"];
-  id: Scalars["ID"];
+  deletionReason: Scalars['String'];
+  id: Scalars['ID'];
 };
 
 export type Affiliation = {
-  __typename?: "Affiliation";
-  commision: Scalars["Float"];
-  createdAt: Scalars["DateTime"];
-  expireAt: Scalars["DateTime"];
-  id: Scalars["ID"];
-  itemId: Scalars["ID"];
-  itemType: Scalars["String"];
+  __typename?: 'Affiliation';
+  commision: Scalars['Float'];
+  createdAt: Scalars['DateTime'];
+  expireAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  itemId: Scalars['ID'];
+  itemType: Scalars['String'];
   product?: Maybe<Product>;
-  sellerId: Scalars["ID"];
+  sellerId: Scalars['ID'];
   service?: Maybe<Service>;
   status: AffiliationStatus;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type AffiliationPost = {
-  __typename?: "AffiliationPost";
+  __typename?: 'AffiliationPost';
   affiliation: Affiliation;
-  affiliationId: Scalars["ID"];
-  comments: Scalars["Int"];
+  affiliationId: Scalars['ID'];
+  comments: Scalars['Int'];
   commentsVisibility: CommentsVisibility;
-  createdAt: Scalars["String"];
-  id: Scalars["ID"];
+  createdAt: Scalars['String'];
+  id: Scalars['ID'];
   location?: Maybe<PostLocation>;
-  reactionNum: Scalars["Int"];
-  shares: Scalars["Int"];
-  updatedAt: Scalars["String"];
+  reactionNum: Scalars['Int'];
+  shares: Scalars['Int'];
+  updatedAt: Scalars['String'];
   user?: Maybe<Account>;
-  userId: Scalars["ID"];
-  views: Scalars["Int"];
+  userId: Scalars['ID'];
+  views: Scalars['Int'];
   visibility: PostVisibility;
 };
 
 export type AffiliationPurchase = {
-  __typename?: "AffiliationPurchase";
+  __typename?: 'AffiliationPurchase';
   affiliator: Account;
-  affiliatorId: Scalars["ID"];
-  createdAt: Scalars["DateTime"];
-  id: Scalars["ID"];
-  itemId: Scalars["ID"];
-  itemType: Scalars["String"];
-  paidCommissionAmount: Scalars["Float"];
-  paidCommissionPercent: Scalars["Float"];
+  affiliatorId: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  itemId: Scalars['ID'];
+  itemType: Scalars['String'];
+  paidCommissionAmount: Scalars['Float'];
+  paidCommissionPercent: Scalars['Float'];
   product?: Maybe<Product>;
   purchaser: Account;
-  purchaserId: Scalars["ID"];
+  purchaserId: Scalars['ID'];
   seller: Account;
-  sellerId: Scalars["ID"];
+  sellerId: Scalars['ID'];
   service?: Maybe<Service>;
 };
 
 export enum AffiliationStatus {
-  Active = "active",
-  InActive = "inActive",
+  Active = 'active',
+  InActive = 'inActive'
 }
 
 export type ApplyVoucherInput = {
-  voucherCode: Scalars["String"];
+  voucherCode: Scalars['String'];
 };
 
 export type AskForRefundInput = {
-  amount?: InputMaybe<Scalars["Float"]>;
-  fullAmount?: InputMaybe<Scalars["Boolean"]>;
-  id: Scalars["ID"];
-  qty: Scalars["Int"];
-  reason?: InputMaybe<Scalars["String"]>;
+  amount?: InputMaybe<Scalars['Float']>;
+  fullAmount?: InputMaybe<Scalars['Boolean']>;
+  id: Scalars['ID'];
+  qty: Scalars['Int'];
+  reason?: InputMaybe<Scalars['String']>;
   type: RefundType;
 };
 
 export type Attachment = {
-  __typename?: "Attachment";
-  src: Scalars["String"];
+  __typename?: 'Attachment';
+  src: Scalars['String'];
   type: AttachmentType;
 };
 
 export type AttachmentInput = {
-  src: Scalars["String"];
+  src: Scalars['String'];
   type: AttachmentType;
 };
 
 export enum AttachmentType {
-  Img = "img",
-  Text = "text",
-  Vid = "vid",
+  Img = 'img',
+  Text = 'text',
+  Vid = 'vid'
 }
 
 export type Balance = {
-  __typename?: "Balance";
-  allTimeEarnings: Scalars["Float"];
-  balanceCurrency: Scalars["String"];
-  cashbackBalance: Scalars["Float"];
-  convertedCashbackBalance: Scalars["Float"];
-  id: Scalars["ID"];
-  ownerId: Scalars["ID"];
-  pendingBalance: Scalars["Float"];
-  withdrawableBalance: Scalars["Float"];
+  __typename?: 'Balance';
+  allTimeEarnings: Scalars['Float'];
+  balanceCurrency: Scalars['String'];
+  cashbackBalance: Scalars['Float'];
+  convertedCashbackBalance: Scalars['Float'];
+  id: Scalars['ID'];
+  ownerId: Scalars['ID'];
+  pendingBalance: Scalars['Float'];
+  withdrawableBalance: Scalars['Float'];
 };
 
 export type BeautyCenter = {
-  __typename?: "BeautyCenter";
-  beauty_center_typeId: Scalars["ID"];
+  __typename?: 'BeautyCenter';
+  beauty_center_typeId: Scalars['ID'];
   cancelationPolicies: Array<ServiceCancelationPolicy>;
   contact: ServiceContact;
-  createdAt: Scalars["DateTime"];
-  id: Scalars["ID"];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   location: ServiceLocation;
   owner?: Maybe<Account>;
-  ownerId: Scalars["ID"];
+  ownerId: Scalars['ID'];
   payment_methods: Array<ServicePaymentMethod>;
   policies: Array<ServicePolicy>;
   presentations: Array<ServicePresentation>;
-  rating: Scalars["Float"];
+  rating: Scalars['Float'];
   serviceMetaInfo: ServiceMetaInfo;
   status: ServiceStatus;
-  title: Scalars["String"];
-  totalReviews: Scalars["Int"];
+  title: Scalars['String'];
+  totalReviews: Scalars['Int'];
   treatments: Array<Treatment>;
   type_of_seller: ServiceTypeOfSeller;
-  updatedAt: Scalars["DateTime"];
-  vat: Scalars["Float"];
+  updatedAt: Scalars['DateTime'];
+  vat: Scalars['Float'];
   workingHours?: Maybe<WorkingSchedule>;
 };
 
 export type BeautyCenterTreatmentCategory = {
-  __typename?: "BeautyCenterTreatmentCategory";
-  createdAt: Scalars["DateTime"];
-  createdById: Scalars["ID"];
-  id: Scalars["ID"];
-  title: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
+  __typename?: 'BeautyCenterTreatmentCategory';
+  createdAt: Scalars['DateTime'];
+  createdById: Scalars['ID'];
+  id: Scalars['ID'];
+  title: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type BillingAddress = {
-  __typename?: "BillingAddress";
-  address: Scalars["String"];
-  address2: Scalars["String"];
-  city: Scalars["String"];
-  country: Scalars["String"];
-  id: Scalars["ID"];
-  ownerId: Scalars["ID"];
-  phone: Scalars["String"];
-  postalCode: Scalars["String"];
-  state: Scalars["String"];
+  __typename?: 'BillingAddress';
+  address: Scalars['String'];
+  address2: Scalars['String'];
+  city: Scalars['String'];
+  country: Scalars['String'];
+  id: Scalars['ID'];
+  ownerId: Scalars['ID'];
+  phone: Scalars['String'];
+  postalCode: Scalars['String'];
+  state: Scalars['String'];
 };
 
 export type BillingAddressCollection = {
-  __typename?: "BillingAddressCollection";
+  __typename?: 'BillingAddressCollection';
   billingAddresses: Array<BillingAddress>;
-  id: Scalars["ID"];
-  lastUsedId: Scalars["ID"];
-  ownerId: Scalars["ID"];
+  id: Scalars['ID'];
+  lastUsedId: Scalars['ID'];
+  ownerId: Scalars['ID'];
 };
 
 export type Block = {
-  __typename?: "Block";
-  blockedAt: Scalars["DateTime"];
+  __typename?: 'Block';
+  blockedAt: Scalars['DateTime'];
   blockedProfile?: Maybe<Profile>;
-  blockedUserId: Scalars["ID"];
-  id: Scalars["ID"];
+  blockedUserId: Scalars['ID'];
+  id: Scalars['ID'];
 };
 
 export type BlockedUser = {
-  __typename?: "BlockedUser";
-  blockedAt: Scalars["DateTime"];
-  blockedProfileId: Scalars["ID"];
-  blockerProfileId: Scalars["ID"];
-  id: Scalars["ID"];
+  __typename?: 'BlockedUser';
+  blockedAt: Scalars['DateTime'];
+  blockedProfileId: Scalars['ID'];
+  blockerProfileId: Scalars['ID'];
+  id: Scalars['ID'];
 };
 
 export type BookBeautycenterServiceInput = {
-  cancelationPolicyId: Scalars["ID"];
-  checkin: Scalars["DateTime"];
-  guests: Scalars["Int"];
-  serviceId: Scalars["ID"];
-  treatmentsIds: Array<Scalars["ID"]>;
+  cancelationPolicyId: Scalars['ID'];
+  checkin: Scalars['DateTime'];
+  guests: Scalars['Int'];
+  serviceId: Scalars['ID'];
+  treatmentsIds: Array<Scalars['ID']>;
 };
 
 export type BookHealthCenterServiceInput = {
-  cancelationPolicyId: Scalars["ID"];
-  checkin: Scalars["DateTime"];
-  doctorId: Scalars["ID"];
-  guests: Scalars["Int"];
-  serviceId: Scalars["ID"];
+  cancelationPolicyId: Scalars['ID'];
+  checkin: Scalars['DateTime'];
+  doctorId: Scalars['ID'];
+  guests: Scalars['Int'];
+  serviceId: Scalars['ID'];
 };
 
 export type BookHotelRoomInput = {
-  cancelationPolicyId: Scalars["ID"];
-  checkin: Scalars["DateTime"];
-  checkout: Scalars["DateTime"];
-  extrasIds: Array<Scalars["ID"]>;
-  guests: Scalars["Int"];
-  roomId: Scalars["ID"];
-  serviceId: Scalars["ID"];
+  cancelationPolicyId: Scalars['ID'];
+  checkin: Scalars['DateTime'];
+  checkout: Scalars['DateTime'];
+  extrasIds: Array<Scalars['ID']>;
+  guests: Scalars['Int'];
+  roomId: Scalars['ID'];
+  serviceId: Scalars['ID'];
 };
 
 export type BookRestaurantInput = {
-  cancelationPolicyId: Scalars["ID"];
-  checkin: Scalars["DateTime"];
-  dishsIds: Array<Scalars["ID"]>;
-  duration: Scalars["Int"];
-  guests: Scalars["Int"];
-  serviceId: Scalars["ID"];
+  cancelationPolicyId: Scalars['ID'];
+  checkin: Scalars['DateTime'];
+  dishsIds: Array<Scalars['ID']>;
+  duration: Scalars['Int'];
+  guests: Scalars['Int'];
+  serviceId: Scalars['ID'];
 };
 
 export type BookVehicleServiceInput = {
-  cancelationPolicyId: Scalars["ID"];
-  checkin: Scalars["DateTime"];
-  guests: Scalars["Int"];
-  serviceId: Scalars["ID"];
-  treatmentsIds: Array<Scalars["ID"]>;
+  cancelationPolicyId: Scalars['ID'];
+  checkin: Scalars['DateTime'];
+  guests: Scalars['Int'];
+  serviceId: Scalars['ID'];
+  treatmentsIds: Array<Scalars['ID']>;
 };
 
 export type BookedService = {
-  __typename?: "BookedService";
+  __typename?: 'BookedService';
   beautyCenter?: Maybe<BeautyCenter>;
   buyer: Account;
-  cancelationPolicyId: Scalars["ID"];
+  cancelationPolicyId: Scalars['ID'];
   cashback: Discount;
-  cashbackId?: Maybe<Scalars["String"]>;
-  checkin: Scalars["DateTime"];
-  checkout?: Maybe<Scalars["DateTime"]>;
+  cashbackId?: Maybe<Scalars['String']>;
+  checkin: Scalars['DateTime'];
+  checkout?: Maybe<Scalars['DateTime']>;
   discount: Cashback;
-  discountId?: Maybe<Scalars["String"]>;
+  discountId?: Maybe<Scalars['String']>;
   dishs: Array<Dish>;
-  dishsIds?: Maybe<Array<Scalars["ID"]>>;
+  dishsIds?: Maybe<Array<Scalars['ID']>>;
   doctor: Doctor;
-  doctorId?: Maybe<Scalars["ID"]>;
-  duration?: Maybe<Scalars["Int"]>;
-  extrasIds?: Maybe<Array<Scalars["ID"]>>;
-  guests: Scalars["Int"];
+  doctorId?: Maybe<Scalars['ID']>;
+  duration?: Maybe<Scalars['Int']>;
+  extrasIds?: Maybe<Array<Scalars['ID']>>;
+  guests: Scalars['Int'];
   healthCenter?: Maybe<HealthCenter>;
-  id: Scalars["ID"];
-  ownerId: Scalars["ID"];
-  payment?: Maybe<Scalars["String"]>;
-  providerId: Scalars["ID"];
+  id: Scalars['ID'];
+  ownerId: Scalars['ID'];
+  payment?: Maybe<Scalars['String']>;
+  providerId: Scalars['ID'];
   restaurant?: Maybe<Restaurant>;
   room?: Maybe<HotelRoom>;
-  roomId?: Maybe<Scalars["ID"]>;
+  roomId?: Maybe<Scalars['ID']>;
   seller: Account;
   service: Service;
-  serviceId: Scalars["ID"];
+  serviceId: Scalars['ID'];
   status: BookedServiceStatus;
   treatments: Array<Treatment>;
-  treatmentsIds?: Maybe<Array<Scalars["ID"]>>;
-  type: Scalars["String"];
+  treatmentsIds?: Maybe<Array<Scalars['ID']>>;
+  type: Scalars['String'];
   vehicle?: Maybe<Vehicle>;
 };
 
 export enum BookedServiceStatus {
-  CanceledByBuyer = "canceled_by_buyer",
-  CanceledBySeller = "canceled_by_seller",
-  Completed = "completed",
-  Continuing = "continuing",
-  Pending = "pending",
-  Restitute = "restitute",
+  CanceledByBuyer = 'canceled_by_buyer',
+  CanceledBySeller = 'canceled_by_seller',
+  Completed = 'completed',
+  Continuing = 'continuing',
+  Pending = 'pending',
+  Restitute = 'restitute'
 }
 
 export type CartProduct = {
-  __typename?: "CartProduct";
-  id: Scalars["String"];
+  __typename?: 'CartProduct';
+  id: Scalars['String'];
   product?: Maybe<Product>;
-  productId: Scalars["ID"];
+  productId: Scalars['ID'];
   shippingRule?: Maybe<ShippingRule>;
-  shippingRuleId: Scalars["ID"];
+  shippingRuleId: Scalars['ID'];
 };
 
 export type CashBackInput = {
-  amount: Scalars["Int"];
+  amount: Scalars['Int'];
   type: CashbackType;
-  units: Scalars["Int"];
+  units: Scalars['Int'];
 };
 
 export type Cashback = {
-  __typename?: "Cashback";
-  amount: Scalars["Int"];
-  id: Scalars["ID"];
+  __typename?: 'Cashback';
+  amount: Scalars['Int'];
+  id: Scalars['ID'];
   type: CashbackType;
-  units: Scalars["Int"];
+  units: Scalars['Int'];
 };
 
 export enum CashbackType {
-  Cash = "cash",
-  Percent = "percent",
+  Cash = 'cash',
+  Percent = 'percent'
 }
 
 export type Category = {
-  __typename?: "Category";
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  parantId: Scalars["ID"];
-  sortOrder: Scalars["Int"];
+  __typename?: 'Category';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  parantId: Scalars['ID'];
+  sortOrder: Scalars['Int'];
   status: ProductCategoryStatus;
 };
 
 export type ChangePasswordInput = {
-  confirmNewPassword: Scalars["String"];
-  currentPassword: Scalars["String"];
-  newPassword: Scalars["String"];
+  confirmNewPassword: Scalars['String'];
+  currentPassword: Scalars['String'];
+  newPassword: Scalars['String'];
 };
 
 export type ChatMessage = {
-  __typename?: "ChatMessage";
+  __typename?: 'ChatMessage';
   attachments: Array<MessageAttachment>;
-  content: Scalars["String"];
-  createdAt: Scalars["DateTime"];
-  id: Scalars["ID"];
+  content: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   mentions: Array<Account>;
-  mentionsUserIds: Array<Scalars["ID"]>;
-  roomId: Scalars["ID"];
-  updatedAt: Scalars["DateTime"];
+  mentionsUserIds: Array<Scalars['ID']>;
+  roomId: Scalars['ID'];
+  updatedAt: Scalars['DateTime'];
   user: Account;
-  userId: Scalars["ID"];
+  userId: Scalars['ID'];
 };
 
 export type ChatRoom = {
-  __typename?: "ChatRoom";
-  createdAt: Scalars["DateTime"];
-  id: Scalars["ID"];
+  __typename?: 'ChatRoom';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   members: Array<Account>;
-  membersUserIds: Array<Scalars["ID"]>;
+  membersUserIds: Array<Scalars['ID']>;
   messages: Array<ChatMessage>;
   roomType: RoomTypes;
-  unSeenMessages: Scalars["Int"];
-  updatedAt: Scalars["DateTime"];
+  unSeenMessages: Scalars['Int'];
+  updatedAt: Scalars['DateTime'];
 };
+
 
 export type ChatRoomMessagesArgs = {
   args: GqlPaginationInput;
 };
 
 export type Comment = {
-  __typename?: "Comment";
+  __typename?: 'Comment';
   attachment: Attachment;
   author?: Maybe<Profile>;
-  authorProfileId: Scalars["String"];
-  commentedAt: Scalars["DateTime"];
-  content: Scalars["String"];
-  createdAt: Scalars["String"];
-  hostId: Scalars["ID"];
+  authorProfileId: Scalars['String'];
+  commentedAt: Scalars['DateTime'];
+  content: Scalars['String'];
+  createdAt: Scalars['String'];
+  hostId: Scalars['ID'];
   hostType: ContentHostType;
-  id: Scalars["ID"];
-  likes: Scalars["Int"];
-  replies: Scalars["Int"];
-  updatedAt: Scalars["String"];
-  userId: Scalars["String"];
+  id: Scalars['ID'];
+  likes: Scalars['Int'];
+  replies: Scalars['Int'];
+  updatedAt: Scalars['String'];
+  userId: Scalars['String'];
 };
 
 export type CommentMentionInput = {
-  profileId: Scalars["ID"];
-  userId: Scalars["ID"];
+  profileId: Scalars['ID'];
+  userId: Scalars['ID'];
 };
 
 export enum CommentsVisibility {
-  Hidden = "hidden",
-  Public = "public",
+  Hidden = 'hidden',
+  Public = 'public'
 }
 
 export type Community = {
-  __typename?: "Community";
+  __typename?: 'Community';
   action?: Maybe<Action>;
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   newsfeed?: Maybe<NewsfeedPost>;
   newsfeedPost?: Maybe<NewsfeedPost>;
-  type: Scalars["String"];
+  type: Scalars['String'];
 };
 
 export type ConfirmPasswordChangeInput = {
-  confirmNewPassword: Scalars["String"];
-  email: Scalars["String"];
-  newPassword: Scalars["String"];
-  verificationCode: Scalars["String"];
+  confirmNewPassword: Scalars['String'];
+  email: Scalars['String'];
+  newPassword: Scalars['String'];
+  verificationCode: Scalars['String'];
 };
 
 export enum ContentHostType {
-  Action = "action",
-  Comment = "comment",
-  PostNewsfeed = "post_newsfeed",
-  PostService = "post_service",
-  PostShop = "post_shop",
-  Story = "story",
+  Action = 'action',
+  Comment = 'comment',
+  PostNewsfeed = 'post_newsfeed',
+  PostService = 'post_service',
+  PostShop = 'post_shop',
+  Story = 'story'
 }
 
 export type ContentReaction = {
-  __typename?: "ContentReaction";
-  hostId: Scalars["ID"];
-  id: Scalars["ID"];
-  reactedAt: Scalars["DateTime"];
+  __typename?: 'ContentReaction';
+  hostId: Scalars['ID'];
+  id: Scalars['ID'];
+  reactedAt: Scalars['DateTime'];
   reactedBy?: Maybe<Profile>;
-  reactedByProfileId: Scalars["ID"];
+  reactedByProfileId: Scalars['ID'];
   reactionType: ContentReactionType;
-  userId: Scalars["ID"];
+  userId: Scalars['ID'];
 };
 
 export enum ContentReactionType {
-  Angry = "angry",
-  Funny = "funny",
-  Like = "like",
-  Love = "love",
-  Sad = "sad",
+  Angry = 'angry',
+  Funny = 'funny',
+  Like = 'like',
+  Love = 'love',
+  Sad = 'sad'
 }
 
 export type ContentShare = {
-  __typename?: "ContentShare";
-  hostId: Scalars["ID"];
+  __typename?: 'ContentShare';
+  hostId: Scalars['ID'];
   hostType: ContentHostType;
-  id: Scalars["ID"];
-  sharedAt: Scalars["DateTime"];
+  id: Scalars['ID'];
+  sharedAt: Scalars['DateTime'];
   sharedBy?: Maybe<Profile>;
-  sharedByProfileId: Scalars["ID"];
-  sharedByUserId: Scalars["ID"];
+  sharedByProfileId: Scalars['ID'];
+  sharedByUserId: Scalars['ID'];
 };
 
 export type ContentSharePaginationResponse = {
-  __typename?: "ContentSharePaginationResponse";
+  __typename?: 'ContentSharePaginationResponse';
   data: Array<ContentShare>;
-  hasMore: Scalars["Boolean"];
-  total: Scalars["Int"];
+  hasMore: Scalars['Boolean'];
+  total: Scalars['Int'];
 };
 
 export type CookiesSetting = {
-  __typename?: "CookiesSetting";
-  benefits: Array<Scalars["String"]>;
-  cons: Array<Scalars["String"]>;
-  description: Scalars["String"];
-  id: Scalars["ID"];
-  required: Scalars["Boolean"];
-  title: Scalars["String"];
+  __typename?: 'CookiesSetting';
+  benefits: Array<Scalars['String']>;
+  cons: Array<Scalars['String']>;
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  required: Scalars['Boolean'];
+  title: Scalars['String'];
 };
 
 export type CreateAccountInput = {
   accountType: RegisterAccountType;
-  confirmPassword: Scalars["String"];
-  email: Scalars["String"];
-  firstName: Scalars["String"];
-  lastName: Scalars["String"];
-  password: Scalars["String"];
+  confirmPassword: Scalars['String'];
+  email: Scalars['String'];
+  firstName: Scalars['String'];
+  lastName: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type CreateAccountVerificationInput = {
-  categoryId: Scalars["ID"];
-  fullName: Scalars["String"];
-  idPhoto: Scalars["String"];
-  knownAs: Scalars["String"];
-  username: Scalars["String"];
+  categoryId: Scalars['ID'];
+  fullName: Scalars['String'];
+  idPhoto: Scalars['String'];
+  knownAs: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type CreateActionInput = {
@@ -600,14 +595,14 @@ export type CreateActionInput = {
 };
 
 export type CreateAffiliationInput = {
-  commision: Scalars["Float"];
-  expireAt: Scalars["String"];
-  itemId: Scalars["ID"];
-  itemType: Scalars["String"];
+  commision: Scalars['Float'];
+  expireAt: Scalars['String'];
+  itemId: Scalars['ID'];
+  itemType: Scalars['String'];
 };
 
 export type CreateBeautyCenterInput = {
-  beauty_center_typeId: Scalars["ID"];
+  beauty_center_typeId: Scalars['ID'];
   cancelationPolicies: Array<ServiceCancelationPolicyInput>;
   location: ServiceLocationInput;
   payment_methods: Array<ServicePaymentMethod>;
@@ -617,7 +612,7 @@ export type CreateBeautyCenterInput = {
   title: Array<TranslationTextInput>;
   treatments: Array<CreateBeautyCenterTreatmentInput>;
   type_of_seller: ServiceTypeOfSeller;
-  vat: Scalars["Float"];
+  vat: Scalars['Float'];
 };
 
 export type CreateBeautyCenterTreatmentCategoryInput = {
@@ -626,41 +621,41 @@ export type CreateBeautyCenterTreatmentCategoryInput = {
 
 export type CreateBeautyCenterTreatmentInput = {
   discount: ServiceDiscountInput;
-  duration: Array<Scalars["Int"]>;
-  price: Scalars["Float"];
+  duration: Array<Scalars['Int']>;
+  price: Scalars['Float'];
   title: Array<TranslationTextInput>;
-  treatmentCategoryId: Scalars["ID"];
+  treatmentCategoryId: Scalars['ID'];
 };
 
 export type CreateBlockInput = {
-  userId: Scalars["ID"];
+  userId: Scalars['ID'];
 };
 
 export type CreateCategoryInput = {
-  name: Scalars["String"];
-  parantId?: InputMaybe<Scalars["ID"]>;
-  sortOrder: Scalars["Int"];
+  name: Scalars['String'];
+  parantId?: InputMaybe<Scalars['ID']>;
+  sortOrder: Scalars['Int'];
   status: ProductCategoryStatus;
 };
 
 export type CreateCommentInput = {
   attachment?: InputMaybe<AttachmentInput>;
-  authorProfileId: Scalars["ID"];
-  authorUserId: Scalars["ID"];
-  content: Scalars["String"];
-  contentId: Scalars["ID"];
+  authorProfileId: Scalars['ID'];
+  authorUserId: Scalars['ID'];
+  content: Scalars['String'];
+  contentId: Scalars['ID'];
   contentType: ContentHostType;
   mentions: Array<CommentMentionInput>;
 };
 
 export type CreateContentShareInput = {
-  contentId: Scalars["ID"];
+  contentId: Scalars['ID'];
   contentType: ContentHostType;
 };
 
 export type CreateFilterInput = {
-  name: Scalars["String"];
-  sortOrder: Scalars["Int"];
+  name: Scalars['String'];
+  sortOrder: Scalars['Int'];
   values: Array<ProductFilterGroupValueInput>;
 };
 
@@ -673,7 +668,7 @@ export type CreateHealthCenterInput = {
   policies: Array<ServicePolicyTranslatedInput>;
   presentations: Array<ServicePresentationInput>;
   serviceMetaInfo: Array<ServiceMetaInfoTranslationInput>;
-  vat: Scalars["Float"];
+  vat: Scalars['Float'];
 };
 
 export type CreateHealthCenterSpecialityInput = {
@@ -691,98 +686,98 @@ export type CreateHotelInput = {
 };
 
 export type CreateIdentityVerificationInput = {
-  dateOfBirth: Scalars["String"];
-  firstName: Scalars["String"];
-  fullAddress: Scalars["String"];
-  id_back: Scalars["String"];
-  id_front: Scalars["String"];
-  lastName: Scalars["String"];
+  dateOfBirth: Scalars['String'];
+  firstName: Scalars['String'];
+  fullAddress: Scalars['String'];
+  id_back: Scalars['String'];
+  id_front: Scalars['String'];
+  lastName: Scalars['String'];
 };
 
 export type CreateMembershipPaymentIntentInput = {
-  membershipId: Scalars["ID"];
+  membershipId: Scalars['ID'];
 };
 
 export type CreateMessageAttachmentInput = {
-  id: Scalars["ID"];
-  src: Scalars["String"];
+  id: Scalars['ID'];
+  src: Scalars['String'];
   type: MessageAttachmentType;
 };
 
 export type CreateMessageInput = {
   attachments?: InputMaybe<Array<CreateMessageAttachmentInput>>;
-  content: Scalars["String"];
-  roomId?: InputMaybe<Scalars["ID"]>;
-  userId?: InputMaybe<Scalars["ID"]>;
+  content: Scalars['String'];
+  roomId?: InputMaybe<Scalars['ID']>;
+  userId?: InputMaybe<Scalars['ID']>;
 };
 
 export type CreateNewsfeedPostInput = {
   attachments: Array<AttachmentInput>;
-  content: Scalars["String"];
+  content: Scalars['String'];
   hashtags: Array<HashtagInput>;
   location?: InputMaybe<PostLocationInput>;
   tags: Array<PostTagInput>;
-  title: Scalars["String"];
+  title: Scalars['String'];
   visibility?: InputMaybe<PostVisibility>;
 };
 
 export type CreateProductInput = {
   attributes: Array<ProductAttributeInput>;
-  brand: Scalars["String"];
+  brand: Scalars['String'];
   cashback: CashBackInput;
-  categoryId: Scalars["ID"];
-  description: Scalars["String"];
+  categoryId: Scalars['ID'];
+  description: Scalars['String'];
   discount: DiscountInput;
   presentations: Array<ProductPresentationInput>;
-  price: Scalars["Float"];
+  price: Scalars['Float'];
   status?: InputMaybe<ProductStatus>;
-  stock: Scalars["Int"];
-  thumbnail: Scalars["String"];
-  title: Scalars["String"];
+  stock: Scalars['Int'];
+  thumbnail: Scalars['String'];
+  title: Scalars['String'];
   type: ProductType;
-  vat: Scalars["Float"];
+  vat: Scalars['Float'];
   visibility: VisibilityEnum;
 };
 
 export type CreateProductReviewInput = {
-  message: Scalars["String"];
-  productId: Scalars["ID"];
-  rate: Scalars["Float"];
+  message: Scalars['String'];
+  productId: Scalars['ID'];
+  rate: Scalars['Float'];
 };
 
 export type CreateProfileInput = {
-  bio?: InputMaybe<Scalars["String"]>;
-  photo: Scalars["String"];
-  profession: Scalars["String"];
-  username: Scalars["String"];
+  bio?: InputMaybe<Scalars['String']>;
+  photo: Scalars['String'];
+  profession: Scalars['String'];
+  username: Scalars['String'];
   visibility?: InputMaybe<ProfileVisibility>;
 };
 
 export type CreateReactionInput = {
-  authorProfileId: Scalars["ID"];
-  contentId: Scalars["ID"];
+  authorProfileId: Scalars['ID'];
+  contentId: Scalars['ID'];
   contentType: ContentHostType;
 };
 
 export type CreateRequiredActionInput = {
   /** Example field (placeholder) */
-  exampleField: Scalars["Int"];
+  exampleField: Scalars['Int'];
 };
 
 export type CreateRestaurantInput = {
   contact: ServiceContactInput;
-  cuisinesTypeId: Scalars["ID"];
-  establishmentTypeId: Scalars["ID"];
+  cuisinesTypeId: Scalars['ID'];
+  establishmentTypeId: Scalars['ID'];
   location: ServiceLocationInput;
   menus: Array<RestaurantMenuInput>;
-  michelin_guide_stars: Scalars["Int"];
+  michelin_guide_stars: Scalars['Int'];
   payment_methods: Array<ServicePaymentMethod>;
   policies: Array<ServicePolicyTranslatedInput>;
   presentations: Array<ServicePresentationInput>;
   serviceMetaInfo: Array<ServiceMetaInfoTranslationInput>;
-  setting_and_ambianceId: Scalars["ID"];
+  setting_and_ambianceId: Scalars['ID'];
   status?: InputMaybe<ServiceStatus>;
-  vat: Scalars["Int"];
+  vat: Scalars['Int'];
 };
 
 export type CreateServiceCategoryInput = {
@@ -793,78 +788,78 @@ export type CreateServiceCategoryInput = {
   metaTagTitle: TranslationTextInput;
   name: Array<TranslationTextInput>;
   seo: TranslationTextInput;
-  slug: Scalars["String"];
-  thumbnail: Scalars["String"];
+  slug: Scalars['String'];
+  thumbnail: Scalars['String'];
 };
 
 export type CreateShippingAddressInput = {
-  id: Scalars["ID"];
-  instractions?: InputMaybe<Scalars["String"]>;
+  id: Scalars['ID'];
+  instractions?: InputMaybe<Scalars['String']>;
   location: LocationInput;
-  ownerId: Scalars["ID"];
-  phone?: InputMaybe<Scalars["String"]>;
+  ownerId: Scalars['ID'];
+  phone?: InputMaybe<Scalars['String']>;
 };
 
 export type CreateShippingGeoZone = {
-  country: Scalars["String"];
-  shippingTypeRuleId: Scalars["ID"];
-  zone: Scalars["String"];
+  country: Scalars['String'];
+  shippingTypeRuleId: Scalars['ID'];
+  zone: Scalars['String'];
 };
 
 export type CreateShippingRuleInput = {
-  cost: Scalars["Float"];
+  cost: Scalars['Float'];
   countries: Array<ShippingCountryInput>;
   deliveryTimeRange: ShippingDeliveryTimeRangeInput;
-  name: Scalars["String"];
+  name: Scalars['String'];
   shippingType: ShippingType;
 };
 
 export type CreateShippingTypeRuleInput = {
-  description: Scalars["String"];
-  name: Scalars["String"];
+  description: Scalars['String'];
+  name: Scalars['String'];
   type: ShippingType;
 };
 
 export type CreateShopInput = {
-  banner: Scalars["String"];
-  description: Scalars["String"];
+  banner: Scalars['String'];
+  description: Scalars['String'];
   location: LocationInput;
-  name: Scalars["String"];
+  name: Scalars['String'];
   storeType: Array<StoreType>;
   targetGenders: Array<TargetGenders>;
   vendorType: Array<VendorType>;
 };
 
 export type CreateStoryInput = {
-  affiliationPostId?: InputMaybe<Scalars["ID"]>;
+  affiliationPostId?: InputMaybe<Scalars['ID']>;
   attachment?: InputMaybe<AttachmentInput>;
-  content?: InputMaybe<Scalars["String"]>;
-  newsfeedPostId?: InputMaybe<Scalars["ID"]>;
-  productId?: InputMaybe<Scalars["ID"]>;
-  servicePostId?: InputMaybe<Scalars["ID"]>;
-  shopPostId?: InputMaybe<Scalars["ID"]>;
+  content?: InputMaybe<Scalars['String']>;
+  newsfeedPostId?: InputMaybe<Scalars['ID']>;
+  productId?: InputMaybe<Scalars['ID']>;
+  servicePostId?: InputMaybe<Scalars['ID']>;
+  shopPostId?: InputMaybe<Scalars['ID']>;
   tags?: InputMaybe<Array<PostTagInput>>;
 };
 
 export type CreateVehicleInput = {
-  brand: Scalars["String"];
+  brand: Scalars['String'];
   cancelationPolicies: Array<ServiceCancelationPolicyInput>;
-  insurance: Scalars["Float"];
-  model: Scalars["String"];
+  insurance: Scalars['Float'];
+  model: Scalars['String'];
   presentations: Array<ServicePresentationInput>;
-  price: Scalars["Float"];
+  price: Scalars['Float'];
   properties: CreateVehiclePropertiesInput;
   title: Array<TranslationTextInput>;
-  typeId: Scalars["ID"];
+  typeId: Scalars['ID'];
 };
 
 export type CreateVehiclePropertiesInput = {
-  airCondition: Scalars["Boolean"];
-  gpsAvailable: Scalars["Boolean"];
-  lugaggeCapacity: Scalars["Int"];
-  maxSpeedInKm: Scalars["Int"];
-  seats: Scalars["Int"];
-  windows: Scalars["Int"];
+  airCondition: Scalars['Boolean'];
+  gpsAvailable: Scalars['Boolean'];
+  lugaggeCapacity: Scalars['Int'];
+  maxSpeedInKm: Scalars['Int'];
+  seats: Scalars['Int'];
+  windows: Scalars['Int'];
 };
 
 export type CreateVehicleServiceInput = {
@@ -874,103 +869,103 @@ export type CreateVehicleServiceInput = {
   policies: Array<ServicePolicyTranslatedInput>;
   presentations: Array<ServicePresentationInput>;
   serviceMetaInfo: Array<ServiceMetaInfoTranslationInput>;
-  vat: Scalars["Float"];
+  vat: Scalars['Float'];
   vehicles: Array<CreateVehicleInput>;
 };
 
 export type CreateVoucherInput = {
-  amount: Scalars["Float"];
-  code: Scalars["String"];
-  currency: Scalars["String"];
+  amount: Scalars['Float'];
+  code: Scalars['String'];
+  currency: Scalars['String'];
 };
 
 export type DeactivateVoucherInput = {
-  code: Scalars["String"];
+  code: Scalars['String'];
 };
 
 export type DeclineAppointmentInput = {
-  id: Scalars["ID"];
-  reason: Scalars["String"];
+  id: Scalars['ID'];
+  reason: Scalars['String'];
 };
 
 export type DeclineSellerAccountRequest = {
-  id: Scalars["ID"];
-  reason: Scalars["String"];
+  id: Scalars['ID'];
+  reason: Scalars['String'];
 };
 
 export type DeleteAccountRequestInput = {
-  password: Scalars["String"];
-  reason: Scalars["String"];
-  sendData?: InputMaybe<Scalars["Boolean"]>;
+  password: Scalars['String'];
+  reason: Scalars['String'];
+  sendData?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type DeleteRestaurantInput = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
 
 export type DeleteStoryInput = {
-  storyId: Scalars["ID"];
+  storyId: Scalars['ID'];
 };
 
 export type DeleteTreatmentCategoriesInput = {
-  ids: Array<Scalars["ID"]>;
+  ids: Array<Scalars['ID']>;
 };
 
 export type DeleteTreatmentCategoryInput = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
 };
 
 export type DeleteVoucherInput = {
-  voucherCode: Scalars["String"];
+  voucherCode: Scalars['String'];
 };
 
 export type Discount = {
-  __typename?: "Discount";
-  amount: Scalars["Int"];
-  id: Scalars["ID"];
-  units: Scalars["Int"];
+  __typename?: 'Discount';
+  amount: Scalars['Int'];
+  id: Scalars['ID'];
+  units: Scalars['Int'];
 };
 
 export type DiscountInput = {
-  amount: Scalars["Int"];
-  units: Scalars["Int"];
+  amount: Scalars['Int'];
+  units: Scalars['Int'];
 };
 
 export type Dish = {
-  __typename?: "Dish";
-  id: Scalars["ID"];
-  ingredients: Array<Scalars["String"]>;
-  name: Scalars["String"];
-  price: Scalars["Float"];
-  thumbnail: Scalars["String"];
+  __typename?: 'Dish';
+  id: Scalars['ID'];
+  ingredients: Array<Scalars['String']>;
+  name: Scalars['String'];
+  price: Scalars['Float'];
+  thumbnail: Scalars['String'];
 };
 
 export type Doctor = {
-  __typename?: "Doctor";
+  __typename?: 'Doctor';
   availablityStatus: HealthCenterDoctorAvailablityStatus;
-  description: Scalars["String"];
+  description: Scalars['String'];
   healthCenter?: Maybe<HealthCenter>;
-  healthCenterId: Scalars["ID"];
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  price: Scalars["Float"];
-  rating: Scalars["Float"];
+  healthCenterId: Scalars['ID'];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  price: Scalars['Float'];
+  rating: Scalars['Float'];
   speciality?: Maybe<HealthCenterSpecialty>;
-  specialityId: Scalars["ID"];
-  thumbnail: Scalars["String"];
+  specialityId: Scalars['ID'];
+  thumbnail: Scalars['String'];
 };
 
 export type Filter = {
-  __typename?: "Filter";
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  sortOrder: Scalars["Int"];
+  __typename?: 'Filter';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  sortOrder: Scalars['Int'];
   values: Array<ProductFilterGroupValue>;
 };
 
 export type FilteredShopsInput = {
-  city?: InputMaybe<Scalars["String"]>;
-  country?: InputMaybe<Scalars["String"]>;
+  city?: InputMaybe<Scalars['String']>;
+  country?: InputMaybe<Scalars['String']>;
   pagination: GqlPaginationInput;
   storeType?: InputMaybe<StoreType>;
   targetGender?: InputMaybe<TargetGenders>;
@@ -978,34 +973,34 @@ export type FilteredShopsInput = {
 };
 
 export type Follow = {
-  __typename?: "Follow";
-  followedAt: Scalars["DateTime"];
+  __typename?: 'Follow';
+  followedAt: Scalars['DateTime'];
   followerProfile?: Maybe<Profile>;
-  followerProfileId: Scalars["ID"];
+  followerProfileId: Scalars['ID'];
   followingProfile?: Maybe<Profile>;
-  followingProfileId: Scalars["ID"];
-  id: Scalars["ID"];
+  followingProfileId: Scalars['ID'];
+  id: Scalars['ID'];
 };
 
 export type FollowProfileInput = {
-  profileId: Scalars["String"];
+  profileId: Scalars['String'];
 };
 
 export type ForgotPasswordEmailInput = {
-  email: Scalars["String"];
+  email: Scalars['String'];
 };
 
 export type FriendSuggestion = {
-  __typename?: "FriendSuggestion";
+  __typename?: 'FriendSuggestion';
   accounts: Array<Account>;
 };
 
 export type GetAccountDeletionRequestsInput = {
-  dateAdded?: InputMaybe<Scalars["String"]>;
-  email?: InputMaybe<Scalars["String"]>;
+  dateAdded?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
   pagination: GqlPaginationInput;
   status?: InputMaybe<AccountDeletionRequestStatus>;
-  username?: InputMaybe<Scalars["String"]>;
+  username?: InputMaybe<Scalars['String']>;
 };
 
 export type GetAffiliationHistoryInput = {
@@ -1013,136 +1008,136 @@ export type GetAffiliationHistoryInput = {
 };
 
 export type GetAffiliationPostInput = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
 
 export type GetBookingsHistoryAdminInput = {
-  accountType: Scalars["String"];
+  accountType: Scalars['String'];
   pagination: GqlPaginationInput;
-  q: Scalars["String"];
+  q: Scalars['String'];
   status?: InputMaybe<BookedServiceStatus>;
-  userId: Scalars["ID"];
+  userId: Scalars['ID'];
 };
 
 export type GetBookingsHistoryInput = {
   pagination: GqlPaginationInput;
-  q: Scalars["String"];
+  q: Scalars['String'];
   status?: InputMaybe<BookedServiceStatus>;
 };
 
 export type GetBuyersAccountsInput = {
-  balance?: InputMaybe<Scalars["Float"]>;
-  date?: InputMaybe<Scalars["String"]>;
-  email?: InputMaybe<Scalars["String"]>;
-  id?: InputMaybe<Scalars["String"]>;
-  name?: InputMaybe<Scalars["String"]>;
+  balance?: InputMaybe<Scalars['Float']>;
+  date?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
   pagination: GqlPaginationInput;
   status?: InputMaybe<AccountStatus>;
 };
 
 export type GetCommunityPostsInput = {
-  q: Scalars["String"];
+  q: Scalars['String'];
 };
 
 export type GetContentCommentsInput = {
-  cursor?: InputMaybe<Scalars["String"]>;
-  id: Scalars["ID"];
-  take?: InputMaybe<Scalars["Int"]>;
+  cursor?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 export type GetFilteredAffiliationHistoryInput = {
-  affiliation_link?: InputMaybe<Scalars["String"]>;
-  affiliator?: InputMaybe<Scalars["String"]>;
-  commission?: InputMaybe<Scalars["Float"]>;
-  money_generated?: InputMaybe<Scalars["Float"]>;
+  affiliation_link?: InputMaybe<Scalars['String']>;
+  affiliator?: InputMaybe<Scalars['String']>;
+  commission?: InputMaybe<Scalars['Float']>;
+  money_generated?: InputMaybe<Scalars['Float']>;
   pagination: GqlPaginationInput;
-  price?: InputMaybe<Scalars["Float"]>;
-  purchasedAfter?: InputMaybe<Scalars["String"]>;
-  purchasedBefore?: InputMaybe<Scalars["String"]>;
-  purchaser?: InputMaybe<Scalars["String"]>;
-  seller?: InputMaybe<Scalars["String"]>;
-  title?: InputMaybe<Scalars["String"]>;
+  price?: InputMaybe<Scalars['Float']>;
+  purchasedAfter?: InputMaybe<Scalars['String']>;
+  purchasedBefore?: InputMaybe<Scalars['String']>;
+  purchaser?: InputMaybe<Scalars['String']>;
+  seller?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
 };
 
 export type GetFilteredAffiliationsInput = {
-  commission: Scalars["Float"];
-  createdAfter: Scalars["DateTime"];
-  createdBefore: Scalars["DateTime"];
-  link: Scalars["String"];
-  price: Scalars["Float"];
-  seller: Scalars["String"];
+  commission: Scalars['Float'];
+  createdAfter: Scalars['DateTime'];
+  createdBefore: Scalars['DateTime'];
+  link: Scalars['String'];
+  price: Scalars['Float'];
+  seller: Scalars['String'];
 };
 
 export type GetFilteredCategoriesInput = {
-  name?: InputMaybe<Scalars["String"]>;
-  sortOrder?: InputMaybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars['String']>;
+  sortOrder?: InputMaybe<Scalars['String']>;
 };
 
 export type GetFilteredCategory = {
-  name?: InputMaybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars['String']>;
   pagination: GqlPaginationInput;
-  sortOrder?: InputMaybe<Scalars["Int"]>;
+  sortOrder?: InputMaybe<Scalars['Int']>;
 };
 
 export type GetFilteredOrdersInput = {
-  buyer: Scalars["String"];
-  date_from: Scalars["String"];
-  date_to: Scalars["String"];
+  buyer: Scalars['String'];
+  date_from: Scalars['String'];
+  date_to: Scalars['String'];
   pagination: GqlPaginationInput;
-  payment_method: Scalars["String"];
-  price: Scalars["Float"];
-  qty: Scalars["Int"];
-  seller: Scalars["String"];
+  payment_method: Scalars['String'];
+  price: Scalars['Float'];
+  qty: Scalars['Int'];
+  seller: Scalars['String'];
 };
 
 export type GetFilteredProductsAdminInput = {
   pagination: GqlPaginationInput;
-  price?: InputMaybe<Scalars["Float"]>;
-  productId?: InputMaybe<Scalars["ID"]>;
-  qty?: InputMaybe<Scalars["Int"]>;
-  seller?: InputMaybe<Scalars["String"]>;
+  price?: InputMaybe<Scalars['Float']>;
+  productId?: InputMaybe<Scalars['ID']>;
+  qty?: InputMaybe<Scalars['Int']>;
+  seller?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<ProductStatus>;
-  title?: InputMaybe<Scalars["String"]>;
+  title?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<ProductType>;
-  updatedAt?: InputMaybe<Scalars["String"]>;
+  updatedAt?: InputMaybe<Scalars['String']>;
   usageStatus?: InputMaybe<ProductUsageStatus>;
 };
 
 export type GetFilteredProductsInput = {
-  brands?: InputMaybe<Array<Scalars["ID"]>>;
-  categories?: InputMaybe<Array<Scalars["ID"]>>;
-  colors?: InputMaybe<Array<Scalars["String"]>>;
-  inStock?: InputMaybe<Scalars["Boolean"]>;
-  maxPrice?: InputMaybe<Scalars["Float"]>;
-  minPrice?: InputMaybe<Scalars["Float"]>;
+  brands?: InputMaybe<Array<Scalars['ID']>>;
+  categories?: InputMaybe<Array<Scalars['ID']>>;
+  colors?: InputMaybe<Array<Scalars['String']>>;
+  inStock?: InputMaybe<Scalars['Boolean']>;
+  maxPrice?: InputMaybe<Scalars['Float']>;
+  minPrice?: InputMaybe<Scalars['Float']>;
   pagination: GqlPaginationInput;
-  ratings?: InputMaybe<Array<Scalars["Int"]>>;
-  size?: InputMaybe<Array<Scalars["String"]>>;
+  ratings?: InputMaybe<Array<Scalars['Int']>>;
+  size?: InputMaybe<Array<Scalars['String']>>;
   usageStatus?: InputMaybe<ProductUsageStatus>;
 };
 
 export type GetFilteredSellersAccountsInput = {
-  balance?: InputMaybe<Scalars["Float"]>;
-  date?: InputMaybe<Scalars["String"]>;
-  email?: InputMaybe<Scalars["String"]>;
-  id?: InputMaybe<Scalars["String"]>;
-  name?: InputMaybe<Scalars["String"]>;
+  balance?: InputMaybe<Scalars['Float']>;
+  date?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
   pagination: GqlPaginationInput;
-  products?: InputMaybe<Scalars["Int"]>;
-  sales?: InputMaybe<Scalars["Int"]>;
+  products?: InputMaybe<Scalars['Int']>;
+  sales?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<AccountStatus>;
 };
 
 export type GetFilteredServicesAdminInput = {
-  id?: InputMaybe<Scalars["ID"]>;
+  id?: InputMaybe<Scalars['ID']>;
   pagination: GqlPaginationInput;
-  price?: InputMaybe<Scalars["Float"]>;
-  sellerId?: InputMaybe<Scalars["ID"]>;
-  sellerName?: InputMaybe<Scalars["String"]>;
+  price?: InputMaybe<Scalars['Float']>;
+  sellerId?: InputMaybe<Scalars['ID']>;
+  sellerName?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<ServiceStatus>;
-  title?: InputMaybe<Scalars["String"]>;
+  title?: InputMaybe<Scalars['String']>;
   type: ServiceType;
-  updatedAt?: InputMaybe<Scalars["String"]>;
+  updatedAt?: InputMaybe<Scalars['String']>;
 };
 
 export type GetFilteredServicesInput = {
@@ -1150,42 +1145,42 @@ export type GetFilteredServicesInput = {
 };
 
 export type GetFilteredVouchers = {
-  currency: Scalars["String"];
-  date: Scalars["String"];
-  name: Scalars["String"];
-  price: Scalars["Float"];
+  currency: Scalars['String'];
+  date: Scalars['String'];
+  name: Scalars['String'];
+  price: Scalars['Float'];
   status: VoucherStatus;
-  voucherNumber: Scalars["Int"];
+  voucherNumber: Scalars['Int'];
 };
 
 export type GetFiltersInput = {
-  name?: InputMaybe<Scalars["String"]>;
-  sortOrder?: InputMaybe<Scalars["Int"]>;
+  name?: InputMaybe<Scalars['String']>;
+  sortOrder?: InputMaybe<Scalars['Int']>;
 };
 
 export type GetHashtagNewsfeedPostsInput = {
-  profileId: Scalars["ID"];
-  tag: Scalars["String"];
-  userId: Scalars["ID"];
+  profileId: Scalars['ID'];
+  tag: Scalars['String'];
+  userId: Scalars['ID'];
 };
 
 export type GetHashtagTopServicePostsInput = {
-  tag: Scalars["String"];
+  tag: Scalars['String'];
 };
 
 export type GetHotelServiceArgs = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
 };
 
 export type GetInsurancesHistoryInput = {
-  amount?: InputMaybe<Scalars["Float"]>;
-  buyer?: InputMaybe<Scalars["String"]>;
-  id?: InputMaybe<Scalars["ID"]>;
+  amount?: InputMaybe<Scalars['Float']>;
+  buyer?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
   pagination: GqlPaginationInput;
-  seller?: InputMaybe<Scalars["String"]>;
-  service?: InputMaybe<Scalars["String"]>;
+  seller?: InputMaybe<Scalars['String']>;
+  service?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<ServiceInsuranceStatusEnum>;
-  thumbnail?: InputMaybe<Scalars["String"]>;
+  thumbnail?: InputMaybe<Scalars['String']>;
 };
 
 export type GetInsurancesInput = {
@@ -1194,12 +1189,12 @@ export type GetInsurancesInput = {
 };
 
 export type GetLocalizationInput = {
-  query: Scalars["String"];
+  query: Scalars['String'];
 };
 
 export type GetMessagesByRoomIdInput = {
   pagination: GqlCursorPaginationInput;
-  roomId: Scalars["ID"];
+  roomId: Scalars['ID'];
 };
 
 export type GetMyAffiliationsInput = {
@@ -1211,13 +1206,13 @@ export type GetMyBlocklistInput = {
 };
 
 export type GetMyBookingsInput = {
-  date: Scalars["String"];
+  date: Scalars['String'];
   searchPeriod: MyBookingsSearchPeriod;
 };
 
 export type GetMyFriendSuggestionsInput = {
   pagination: GqlPaginationInput;
-  q?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars['String']>;
 };
 
 export type GetMyOrdersInput = {
@@ -1242,14 +1237,14 @@ export type GetMySavedPostsInput = {
 };
 
 export type GetNearShopsInput = {
-  distance: Scalars["Float"];
-  lat: Scalars["Float"];
-  lon: Scalars["Float"];
+  distance: Scalars['Float'];
+  lat: Scalars['Float'];
+  lon: Scalars['Float'];
 };
 
 export type GetNewsfeedPostsByUserIdInput = {
   pagination: GqlPaginationInput;
-  userId: Scalars["ID"];
+  userId: Scalars['ID'];
 };
 
 export type GetPlaceSuggestionInput = {
@@ -1258,7 +1253,7 @@ export type GetPlaceSuggestionInput = {
 
 export type GetProfileFollowersMetaInput = {
   pagination: GqlPaginationInput;
-  profileId: Scalars["String"];
+  profileId: Scalars['String'];
 };
 
 export type GetRecentStoriesInput = {
@@ -1271,7 +1266,7 @@ export type GetRecommendedAffiliationPostsInput = {
 
 export type GetRecommendedServicePostsInput = {
   pagination: GqlPaginationInput;
-  serviceType: Scalars["String"];
+  serviceType: Scalars['String'];
 };
 
 export type GetRefundableOrdersInput = {
@@ -1279,30 +1274,30 @@ export type GetRefundableOrdersInput = {
 };
 
 export type GetRestaurantInput = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
 };
 
 export type GetShopRecommendedPostsInput = {
-  q?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars['String']>;
 };
 
 export type GetStorySeenByInput = {
   pagination: GqlPaginationInput;
-  q?: InputMaybe<Scalars["String"]>;
-  storyId: Scalars["ID"];
+  q?: InputMaybe<Scalars['String']>;
+  storyId: Scalars['ID'];
 };
 
 export type GetTopHashtagsInput = {
   pagination: GqlPaginationInput;
-  q?: InputMaybe<Scalars["String"]>;
+  q?: InputMaybe<Scalars['String']>;
 };
 
 export type GetTransactionsAdminInput = {
-  amount?: InputMaybe<Scalars["Float"]>;
-  description?: InputMaybe<Scalars["String"]>;
-  id?: InputMaybe<Scalars["String"]>;
+  amount?: InputMaybe<Scalars['Float']>;
+  description?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
   pagination?: InputMaybe<GqlPaginationInput>;
-  seller?: InputMaybe<Scalars["String"]>;
+  seller?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<TransactionStatus>;
 };
 
@@ -1313,45 +1308,45 @@ export type GetTransactionsInput = {
 
 export type GetUserActionsInput = {
   pagination: GqlPaginationInput;
-  userId: Scalars["ID"];
+  userId: Scalars['ID'];
 };
 
 export type GetUserAffiliationPostsInput = {
   pagination: GqlPaginationInput;
-  userId: Scalars["ID"];
+  userId: Scalars['ID'];
 };
 
 export type GetUserAffiliationsInput = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   pagination: GqlPaginationInput;
 };
 
 export type GetUserAffiliationsPurchasesInput = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   pagination: GqlPaginationInput;
 };
 
 export type GetUserOrders = {
-  accountType: Scalars["String"];
+  accountType: Scalars['String'];
   pagination: GqlPaginationInput;
-  q: Scalars["String"];
+  q: Scalars['String'];
   status?: InputMaybe<OrderStatusEnum>;
-  userId: Scalars["String"];
+  userId: Scalars['String'];
 };
 
 export type GetUserProductPostsInput = {
-  authorId: Scalars["ID"];
+  authorId: Scalars['ID'];
   pagination: GqlPaginationInput;
 };
 
 export type GetUserServicesPostsInput = {
   pagination: GqlCursorPaginationInput;
-  userId: Scalars["ID"];
+  userId: Scalars['ID'];
 };
 
 export type GetVehiclesInput = {
   pagination: GqlPaginationInput;
-  q: Scalars["String"];
+  q: Scalars['String'];
 };
 
 export type GetVouchersInput = {
@@ -1359,49 +1354,49 @@ export type GetVouchersInput = {
 };
 
 export type GetWithdrawalRequestsAdminInput = {
-  amount?: InputMaybe<Scalars["Float"]>;
-  email?: InputMaybe<Scalars["String"]>;
-  id?: InputMaybe<Scalars["ID"]>;
+  amount?: InputMaybe<Scalars['Float']>;
+  email?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['ID']>;
   pagination: GqlPaginationInput;
-  processedAt?: InputMaybe<Scalars["String"]>;
-  requestedAt?: InputMaybe<Scalars["String"]>;
-  seller?: InputMaybe<Scalars["String"]>;
-  shop?: InputMaybe<Scalars["String"]>;
+  processedAt?: InputMaybe<Scalars['String']>;
+  requestedAt?: InputMaybe<Scalars['String']>;
+  seller?: InputMaybe<Scalars['String']>;
+  shop?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<WithdrawalStatus>;
 };
 
 export type GqlCursorPaginationInput = {
-  cursor?: InputMaybe<Scalars["String"]>;
-  take: Scalars["Int"];
+  cursor?: InputMaybe<Scalars['String']>;
+  take: Scalars['Int'];
 };
 
 export type GqlPaginationInput = {
-  page: Scalars["Int"];
-  take: Scalars["Int"];
+  page: Scalars['Int'];
+  take: Scalars['Int'];
 };
 
 export type GqlStatusResponse = {
-  __typename?: "GqlStatusResponse";
-  code: Scalars["Int"];
-  message?: Maybe<Scalars["String"]>;
-  success: Scalars["Boolean"];
+  __typename?: 'GqlStatusResponse';
+  code: Scalars['Int'];
+  message?: Maybe<Scalars['String']>;
+  success: Scalars['Boolean'];
 };
 
 export type Hashtag = {
-  __typename?: "Hashtag";
-  createdAt: Scalars["DateTime"];
-  id: Scalars["ID"];
-  tag: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
-  usage: Scalars["Int"];
+  __typename?: 'Hashtag';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  tag: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
+  usage: Scalars['Int'];
 };
 
 export type HashtagInput = {
-  tag: Scalars["String"];
+  tag: Scalars['String'];
 };
 
 export type HashtagProductPost = {
-  __typename?: "HashtagProductPost";
+  __typename?: 'HashtagProductPost';
   commented?: Maybe<ProductPost>;
   liked?: Maybe<ProductPost>;
   shared?: Maybe<ProductPost>;
@@ -1409,7 +1404,7 @@ export type HashtagProductPost = {
 };
 
 export type HashtagTopAffiliationPost = {
-  __typename?: "HashtagTopAffiliationPost";
+  __typename?: 'HashtagTopAffiliationPost';
   commented?: Maybe<AffiliationPost>;
   liked?: Maybe<AffiliationPost>;
   shared?: Maybe<AffiliationPost>;
@@ -1417,253 +1412,253 @@ export type HashtagTopAffiliationPost = {
 };
 
 export type HealthCenter = {
-  __typename?: "HealthCenter";
+  __typename?: 'HealthCenter';
   cancelationPolicies: Array<ServiceCancelationPolicy>;
   contact: ServiceContact;
   doctors: Array<Doctor>;
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   location: ServiceLocation;
   owner?: Maybe<Account>;
-  ownerId: Scalars["ID"];
+  ownerId: Scalars['ID'];
   payment_methods: Array<ServicePaymentMethod>;
   policies: Array<ServicePolicy>;
   presentations: Array<ServicePresentation>;
-  rating: Scalars["Float"];
+  rating: Scalars['Float'];
   serviceMetaInfo: ServiceMetaInfo;
   status: ServiceStatus;
-  totalReviews: Scalars["Int"];
-  vat: Scalars["Float"];
+  totalReviews: Scalars['Int'];
+  vat: Scalars['Float'];
   workingHours: WorkingSchedule;
 };
 
 export enum HealthCenterDoctorAvailablityStatus {
-  Available = "available",
-  Unavailable = "unavailable",
+  Available = 'available',
+  Unavailable = 'unavailable'
 }
 
 export type HealthCenterDoctorInput = {
   availablityStatus: HealthCenterDoctorAvailablityStatus;
   description: Array<TranslationTextInput>;
-  name: Scalars["String"];
-  price: Scalars["Float"];
-  specialityId: Scalars["ID"];
-  thumbnail: Scalars["String"];
+  name: Scalars['String'];
+  price: Scalars['Float'];
+  specialityId: Scalars['ID'];
+  thumbnail: Scalars['String'];
 };
 
 export type HealthCenterSpecialty = {
-  __typename?: "HealthCenterSpecialty";
-  description: Scalars["String"];
+  __typename?: 'HealthCenterSpecialty';
+  description: Scalars['String'];
   doctors?: Maybe<Array<Doctor>>;
-  id: Scalars["ID"];
-  name: Scalars["String"];
+  id: Scalars['ID'];
+  name: Scalars['String'];
 };
 
 export type HideContentInput = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
 };
 
 export type Hotel = {
-  __typename?: "Hotel";
+  __typename?: 'Hotel';
   contact: ServiceContact;
-  createdAt: Scalars["DateTime"];
-  id: Scalars["ID"];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   location: ServiceLocation;
   owner: Account;
-  ownerId: Scalars["ID"];
+  ownerId: Scalars['ID'];
   policies: Array<ServicePolicy>;
   presentations: Array<ServicePresentation>;
   rooms: Array<HotelRoom>;
   serviceMetaInfo: ServiceMetaInfo;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars['DateTime'];
   workingHours?: Maybe<WorkingSchedule>;
 };
 
 export type HotelRoom = {
-  __typename?: "HotelRoom";
-  bathrooms: Scalars["Int"];
-  beds: Scalars["Int"];
+  __typename?: 'HotelRoom';
+  bathrooms: Scalars['Int'];
+  beds: Scalars['Int'];
   cancelationPolicies: Array<ServiceCancelationPolicy>;
-  createdAt: Scalars["DateTime"];
-  dailyPrice: Scalars["Boolean"];
+  createdAt: Scalars['DateTime'];
+  dailyPrice: Scalars['Boolean'];
   dailyPrices?: Maybe<ServiceDailyPrices>;
-  description: Scalars["String"];
+  description: Scalars['String'];
   discount: ServiceDiscount;
   extras?: Maybe<Array<ServiceExtra>>;
   hotel?: Maybe<Hotel>;
-  hotelId: Scalars["ID"];
-  id: Scalars["ID"];
-  includedAmenities?: Maybe<Array<Scalars["String"]>>;
-  includedServices?: Maybe<Array<Scalars["String"]>>;
+  hotelId: Scalars['ID'];
+  id: Scalars['ID'];
+  includedAmenities?: Maybe<Array<Scalars['String']>>;
+  includedServices?: Maybe<Array<Scalars['String']>>;
   measurements: ServicePropertyMeasurements;
-  num_of_rooms: Scalars["Int"];
+  num_of_rooms: Scalars['Int'];
   popularAmenities?: Maybe<Array<ServiceAmenity>>;
   presentations: Array<ServicePresentation>;
-  pricePerNight: Scalars["Int"];
-  rating: Scalars["Float"];
-  reviews: Scalars["Int"];
-  sellerId: Scalars["ID"];
-  title: Scalars["String"];
-  updatedAt: Scalars["DateTime"];
+  pricePerNight: Scalars['Int'];
+  rating: Scalars['Float'];
+  reviews: Scalars['Int'];
+  sellerId: Scalars['ID'];
+  title: Scalars['String'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type HotelRoomInput = {
-  bathrooms: Scalars["Int"];
-  beds: Scalars["Int"];
+  bathrooms: Scalars['Int'];
+  beds: Scalars['Int'];
   cancelationPolicies: Array<ServiceCancelationPolicyInput>;
-  dailyPrice: Scalars["Boolean"];
+  dailyPrice: Scalars['Boolean'];
   dailyPrices?: InputMaybe<ServiceDailyPricesInput>;
   discount: ServiceDiscountInput;
   extras: Array<ServiceExtraInput>;
   includedAmenities: Array<ServiceIncludedAmenitiesInput>;
   includedServices: Array<ServiceIncludedServicesInput>;
-  insurance: Scalars["Float"];
+  insurance: Scalars['Float'];
   measurements: ServicePropertyMeasurementsInput;
-  num_of_rooms: Scalars["Int"];
+  num_of_rooms: Scalars['Int'];
   popularAmenities: Array<ServiceAmenitiesInput>;
   presentations: Array<ServicePresentationInput>;
-  pricePerNight: Scalars["Int"];
+  pricePerNight: Scalars['Int'];
   roomMetaInfo: Array<HotelRoomTranslationMetaInfoInput>;
 };
 
 export type HotelRoomMetaInfoInput = {
-  description: Scalars["String"];
-  title: Scalars["String"];
+  description: Scalars['String'];
+  title: Scalars['String'];
 };
 
 export type HotelRoomTranslationMetaInfoInput = {
-  langId: Scalars["String"];
+  langId: Scalars['String'];
   value: HotelRoomMetaInfoInput;
 };
 
 export type Insurance = {
-  __typename?: "Insurance";
-  amount: Scalars["Float"];
-  buyerId: Scalars["ID"];
-  createdAt: Scalars["DateTime"];
-  id: Scalars["ID"];
-  itemId: Scalars["ID"];
-  itemType: Scalars["String"];
-  sellerId: Scalars["ID"];
+  __typename?: 'Insurance';
+  amount: Scalars['Float'];
+  buyerId: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  itemId: Scalars['ID'];
+  itemType: Scalars['String'];
+  sellerId: Scalars['ID'];
   status: ServiceInsuranceStatusEnum;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type InvoiceRecord = {
-  __typename?: "InvoiceRecord";
-  id: Scalars["ID"];
-  overdue: Scalars["Float"];
-  paid: Scalars["Float"];
-  period: Scalars["String"];
-  total: Scalars["Float"];
+  __typename?: 'InvoiceRecord';
+  id: Scalars['ID'];
+  overdue: Scalars['Float'];
+  paid: Scalars['Float'];
+  period: Scalars['String'];
+  total: Scalars['Float'];
   type: InvoiceRecordTypes;
-  unPaid: Scalars["Float"];
+  unPaid: Scalars['Float'];
 };
 
 export enum InvoiceRecordTypes {
-  Day = "day",
-  Month = "month",
-  Year = "year",
+  Day = 'day',
+  Month = 'month',
+  Year = 'year'
 }
 
 export type JoinRoomInput = {
-  roomId: Scalars["ID"];
+  roomId: Scalars['ID'];
 };
 
 export type LikeStoryInput = {
-  storyId: Scalars["ID"];
+  storyId: Scalars['ID'];
 };
 
 export type Localization = {
-  __typename?: "Localization";
-  city: Scalars["String"];
-  id: Scalars["ID"];
-  isOpen: Scalars["Boolean"];
+  __typename?: 'Localization';
+  city: Scalars['String'];
+  id: Scalars['ID'];
+  isOpen: Scalars['Boolean'];
   openTime: OpenTime;
-  propertyType: Scalars["String"];
+  propertyType: Scalars['String'];
   seller?: Maybe<Seller>;
-  sellerId: Scalars["ID"];
-  thumbnail: Scalars["String"];
+  sellerId: Scalars['ID'];
+  thumbnail: Scalars['String'];
 };
 
 export type Location = {
-  __typename?: "Location";
-  address: Scalars["String"];
-  city: Scalars["String"];
-  country: Scalars["String"];
-  lat: Scalars["Float"];
-  long: Scalars["Float"];
-  state: Scalars["String"];
+  __typename?: 'Location';
+  address: Scalars['String'];
+  city: Scalars['String'];
+  country: Scalars['String'];
+  lat: Scalars['Float'];
+  long: Scalars['Float'];
+  state: Scalars['String'];
 };
 
 export type LocationInput = {
-  address: Scalars["String"];
-  city: Scalars["String"];
-  country: Scalars["String"];
-  lat: Scalars["Float"];
-  long: Scalars["Float"];
-  state: Scalars["String"];
+  address: Scalars['String'];
+  city: Scalars['String'];
+  country: Scalars['String'];
+  lat: Scalars['Float'];
+  long: Scalars['Float'];
+  state: Scalars['String'];
 };
 
 export type LoginDto = {
-  email: Scalars["String"];
-  password: Scalars["String"];
+  email: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type LoginWithOtpInput = {
-  email: Scalars["String"];
-  otp: Scalars["String"];
+  email: Scalars['String'];
+  otp: Scalars['String'];
 };
 
 export type MessageAttachment = {
-  __typename?: "MessageAttachment";
-  id: Scalars["ID"];
-  src: Scalars["String"];
+  __typename?: 'MessageAttachment';
+  id: Scalars['ID'];
+  src: Scalars['String'];
   type: MessageAttachmentType;
 };
 
 export enum MessageAttachmentType {
-  Image = "image",
-  Story = "story",
-  VideoMessage = "videoMessage",
-  VoiceMessage = "voiceMessage",
+  Image = 'image',
+  Story = 'story',
+  VideoMessage = 'videoMessage',
+  VoiceMessage = 'voiceMessage'
 }
 
 export type Mutation = {
-  __typename?: "Mutation";
-  AddWishlistItem: Scalars["Boolean"];
+  __typename?: 'Mutation';
+  AddWishlistItem: Scalars['Boolean'];
   BookBeautyCenterService: BookedService;
   BookHealthCenter: BookedService;
   BookHotelRoom: BookedService;
   BookRestaurant: BookedService;
   BookVehicle: BookedService;
-  RemoveWishlistItem: Scalars["Boolean"];
-  acceptAppointment: Scalars["Boolean"];
-  acceptInsurancePayBackRequest: Scalars["Boolean"];
-  acceptReceivedOrder: Scalars["Boolean"];
-  acceptRefundRequest: Scalars["Boolean"];
-  acceptRequestedOrder: Scalars["Boolean"];
-  acceptSellerAccount: Scalars["Boolean"];
+  RemoveWishlistItem: Scalars['Boolean'];
+  acceptAppointment: Scalars['Boolean'];
+  acceptInsurancePayBackRequest: Scalars['Boolean'];
+  acceptReceivedOrder: Scalars['Boolean'];
+  acceptRefundRequest: Scalars['Boolean'];
+  acceptRequestedOrder: Scalars['Boolean'];
+  acceptSellerAccount: Scalars['Boolean'];
   activateRestaurant: Restaurant;
   addNewBillingAddress: BillingAddress;
   addProductToCart: CartProduct;
-  adminDeleteProduct: Scalars["Boolean"];
-  adminDeleteService: Scalars["Boolean"];
+  adminDeleteProduct: Scalars['Boolean'];
+  adminDeleteService: Scalars['Boolean'];
   adminEditAccount: Account;
   applyVoucher: ShoppingCart;
-  askForRefund: Scalars["Boolean"];
-  blockUser: Scalars["Boolean"];
-  cancelServiceReservation: Scalars["Boolean"];
-  changePassword: Scalars["Boolean"];
-  clearBalance: Scalars["Boolean"];
+  askForRefund: Scalars['Boolean'];
+  blockUser: Scalars['Boolean'];
+  cancelServiceReservation: Scalars['Boolean'];
+  changePassword: Scalars['Boolean'];
+  clearBalance: Scalars['Boolean'];
   clearShoppingCart: ShoppingCart;
-  clearVouchers: Scalars["Boolean"];
-  createAction: Scalars["Boolean"];
+  clearVouchers: Scalars['Boolean'];
+  createAction: Scalars['Boolean'];
   createBeautyCenter: BeautyCenter;
   createBeautyCenterTreatmentCategory: BeautyCenterTreatmentCategory;
   createCartPaymentIntent: PaymentIntent;
   createComment: Comment;
-  createConnectedAccount: Scalars["String"];
-  createCustomer: Scalars["String"];
+  createConnectedAccount: Scalars['String'];
+  createCustomer: Scalars['String'];
   createFilter: Filter;
   createHealthCenter: HealthCenter;
   createHealthCenterSpeciality: HealthCenterSpecialty;
@@ -1674,24 +1669,24 @@ export type Mutation = {
   createNewsfeedPost: NewsfeedPost;
   createProductCategory: Category;
   createProfile: Profile;
-  createReaction: Scalars["Boolean"];
+  createReaction: Scalars['Boolean'];
   createRequiredAction: RequiredAction;
   createRestaurantService: Restaurant;
   createServiceCategory: ServiceCategory;
-  createShippingAddress: Scalars["Boolean"];
+  createShippingAddress: Scalars['Boolean'];
   createShippingRule: ShippingRule;
-  createShippingTypeRule: Scalars["Boolean"];
-  createShippingTypeRuleGeoZone: Scalars["Boolean"];
+  createShippingTypeRule: Scalars['Boolean'];
+  createShippingTypeRuleGeoZone: Scalars['Boolean'];
   createShop: Shop;
-  createStory: Scalars["Boolean"];
+  createStory: Scalars['Boolean'];
   createVehicle: VehicleService;
   createVoucher: Voucher;
   deActivateVoucher: Voucher;
-  declineAppointment: Scalars["Boolean"];
-  declineSellerAccount: Scalars["Boolean"];
+  declineAppointment: Scalars['Boolean'];
+  declineSellerAccount: Scalars['Boolean'];
   deleteAffiliation: Affiliation;
-  deleteBeautyCenter: Scalars["Boolean"];
-  deleteBeautyCenterServices: Scalars["Boolean"];
+  deleteBeautyCenter: Scalars['Boolean'];
+  deleteBeautyCenterServices: Scalars['Boolean'];
   deleteBillingAddress: BillingAddress;
   deleteFilter: Filter;
   deleteMyProfile: Profile;
@@ -1700,609 +1695,739 @@ export type Mutation = {
   deleteRestaurant: Restaurant;
   deleteShippingRule: ShippingRule;
   deleteStory: Story;
-  deleteVoucher: Scalars["Boolean"];
+  deleteVoucher: Scalars['Boolean'];
   editAccount: Account;
-  followProfile: Scalars["Boolean"];
-  getCashbackBalance: Scalars["Boolean"];
+  followProfile: Scalars['Boolean'];
+  getCashbackBalance: Scalars['Boolean'];
   getMyAccount: Account;
-  getProductVendorLink: Scalars["String"];
-  hideContent: Scalars["Boolean"];
-  likeStory: Scalars["Boolean"];
+  getProductVendorLink: Scalars['String'];
+  hideContent: Scalars['Boolean'];
+  likeStory: Scalars['Boolean'];
   login: GqlStatusResponse;
   loginAs: GqlStatusResponse;
-  processWithdrawalRequest: Scalars["Boolean"];
-  provideVVCPicture: Scalars["Boolean"];
-  refuseAccountVerification: Scalars["Boolean"];
-  refuseInsurancePayBackRequest: Scalars["Boolean"];
-  register: Scalars["String"];
-  rejectReceivedOrder: Scalars["Boolean"];
-  rejectRefundRequest: Scalars["Boolean"];
-  rejectRequestedOrder: Scalars["Boolean"];
-  removeAllShops: Scalars["Boolean"];
+  processWithdrawalRequest: Scalars['Boolean'];
+  provideVVCPicture: Scalars['Boolean'];
+  refuseAccountVerification: Scalars['Boolean'];
+  refuseInsurancePayBackRequest: Scalars['Boolean'];
+  register: Scalars['String'];
+  rejectReceivedOrder: Scalars['Boolean'];
+  rejectRefundRequest: Scalars['Boolean'];
+  rejectRequestedOrder: Scalars['Boolean'];
+  removeAllShops: Scalars['Boolean'];
   removeComment: Comment;
-  removeItemFromCart: Scalars["Boolean"];
+  removeItemFromCart: Scalars['Boolean'];
   removeNewsfeedPost: NewsfeedPost;
   removeReaction: ContentReaction;
   removeRequiredAction: RequiredAction;
   removeReview: ProductReview;
   removeServiceCategory: ServiceCategory;
-  requestAccountDeletion: Scalars["Boolean"];
-  requestAccountVerification: Scalars["Boolean"];
-  requestIdVerification: Scalars["String"];
-  requestInsurancePayBack: Scalars["Boolean"];
-  resendRegisterationCode: Scalars["Boolean"];
-  resetPassword: Scalars["Boolean"];
+  requestAccountDeletion: Scalars['Boolean'];
+  requestAccountVerification: Scalars['Boolean'];
+  requestIdVerification: Scalars['String'];
+  requestInsurancePayBack: Scalars['Boolean'];
+  resendRegisterationCode: Scalars['Boolean'];
+  resetPassword: Scalars['Boolean'];
   reviewProduct: ProductReview;
-  sendFollowRequest: Scalars["Boolean"];
+  sendFollowRequest: Scalars['Boolean'];
   sendMessage: ChatMessage;
   shareContent: ContentShare;
-  suspenseAccount: Scalars["Boolean"];
-  unFollow: Scalars["Boolean"];
-  unblockUser: Scalars["Boolean"];
+  suspenseAccount: Scalars['Boolean'];
+  unFollow: Scalars['Boolean'];
+  unblockUser: Scalars['Boolean'];
   updateAffiliation: Affiliation;
   updateBeautyCenter: BeautyCenter;
-  updateBeautyCenterAdmin: Scalars["Boolean"];
+  updateBeautyCenterAdmin: Scalars['Boolean'];
   updateBillingAddress: BillingAddress;
   updateComment: Comment;
   updateFilter: Filter;
   updateHealthCenter: HealthCenter;
-  updateHealthCenterAdmin: Scalars["Boolean"];
-  updateHotelAdmin: Scalars["Boolean"];
-  updateMyContact: Scalars["Boolean"];
-  updateMyCookiesSettings: Scalars["Boolean"];
+  updateHealthCenterAdmin: Scalars['Boolean'];
+  updateHotelAdmin: Scalars['Boolean'];
+  updateMyContact: Scalars['Boolean'];
+  updateMyCookiesSettings: Scalars['Boolean'];
   updateMyPrivacySettings: PrivacySettings;
   updateMyProfile: Profile;
   updateMyShop: Shop;
   updateMyWorkingSchedule: WorkingSchedule;
   updateNewsfeedPost: NewsfeedPost;
   updateProduct: Product;
-  updateProductAdmin: Scalars["Boolean"];
+  updateProductAdmin: Scalars['Boolean'];
   updateProductCategory: Category;
   updateProfile: Profile;
   updateRequiredAction: RequiredAction;
   updateRestaurant: Restaurant;
-  updateRestaurantAdmin: Scalars["Boolean"];
+  updateRestaurantAdmin: Scalars['Boolean'];
   updateServiceCategory: ServiceCategory;
-  updateShippingAddress: Scalars["Boolean"];
+  updateShippingAddress: Scalars['Boolean'];
   updateShippingRule: ShippingRule;
   updateTreatmentCategories: Array<BeautyCenterTreatmentCategory>;
-  updateUserLocation: Scalars["Boolean"];
-  updateVehicleAdmin: Scalars["Boolean"];
-  uploadProductPresentations: Scalars["Boolean"];
-  verifyEmail: Scalars["Boolean"];
+  updateUserLocation: Scalars['Boolean'];
+  updateVehicleAdmin: Scalars['Boolean'];
+  uploadProductPresentations: Scalars['Boolean'];
+  verifyEmail: Scalars['Boolean'];
   verifyLoginOTP: GqlStatusResponse;
-  verifyNewPassword: Scalars["Boolean"];
+  verifyNewPassword: Scalars['Boolean'];
 };
+
 
 export type MutationAddWishlistItemArgs = {
   addWishlistItemInput: AddWishlistItemInput;
 };
 
+
 export type MutationBookBeautyCenterServiceArgs = {
   bookBeautyCenterInput: BookBeautycenterServiceInput;
 };
+
 
 export type MutationBookHealthCenterArgs = {
   bookHealthCenterInput: BookHealthCenterServiceInput;
 };
 
+
 export type MutationBookHotelRoomArgs = {
   bookHotelRoomInput: BookHotelRoomInput;
 };
+
 
 export type MutationBookRestaurantArgs = {
   bookRestarantInput: BookRestaurantInput;
 };
 
+
 export type MutationBookVehicleArgs = {
   bookVehicle: BookVehicleServiceInput;
 };
+
 
 export type MutationRemoveWishlistItemArgs = {
   removeWishlistItemInput: RemoveWishlistItemInput;
 };
 
+
 export type MutationAcceptAppointmentArgs = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
 };
 
+
 export type MutationAcceptInsurancePayBackRequestArgs = {
-  bookId: Scalars["ID"];
+  bookId: Scalars['ID'];
 };
+
 
 export type MutationAcceptReceivedOrderArgs = {
   args: AcceptReceivedOrderInput;
 };
 
+
 export type MutationAcceptRefundRequestArgs = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
 };
+
 
 export type MutationAcceptRequestedOrderArgs = {
   args: AcceptRequestedOrderInput;
 };
 
+
 export type MutationAcceptSellerAccountArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
 
+
 export type MutationActivateRestaurantArgs = {
-  id: Scalars["Int"];
+  id: Scalars['Int'];
 };
+
 
 export type MutationAddProductToCartArgs = {
   addItemToCartArgs: AddShoppingCartProductItemInput;
 };
 
+
 export type MutationAdminDeleteProductArgs = {
-  id: Scalars["String"];
-  reason: Scalars["String"];
+  id: Scalars['String'];
+  reason: Scalars['String'];
 };
+
 
 export type MutationAdminDeleteServiceArgs = {
   args: AdminDeleteServiceInput;
 };
 
+
 export type MutationAdminEditAccountArgs = {
   editAccountInput: UpdateSellerAccountAdminInput;
 };
+
 
 export type MutationApplyVoucherArgs = {
   applyVoucherCode: ApplyVoucherInput;
 };
 
+
 export type MutationAskForRefundArgs = {
   askForRefundArgs: AskForRefundInput;
 };
+
 
 export type MutationBlockUserArgs = {
   args: CreateBlockInput;
 };
 
+
 export type MutationCancelServiceReservationArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
+
 
 export type MutationChangePasswordArgs = {
   changePasswordInput: ChangePasswordInput;
 };
 
+
 export type MutationCreateActionArgs = {
   args: CreateActionInput;
 };
+
 
 export type MutationCreateBeautyCenterArgs = {
   createBeautyCenterArgs: CreateBeautyCenterInput;
 };
 
+
 export type MutationCreateBeautyCenterTreatmentCategoryArgs = {
   createBeautyCenterTreatmentCategory: CreateBeautyCenterTreatmentCategoryInput;
 };
+
 
 export type MutationCreateCommentArgs = {
   createCommentInput: CreateCommentInput;
 };
 
+
 export type MutationCreateCustomerArgs = {
-  name: Scalars["String"];
+  name: Scalars['String'];
 };
+
 
 export type MutationCreateFilterArgs = {
   createFilterGroupArgs?: InputMaybe<CreateFilterInput>;
 };
 
+
 export type MutationCreateHealthCenterArgs = {
   createHealthCenterArgs: CreateHealthCenterInput;
 };
+
 
 export type MutationCreateHealthCenterSpecialityArgs = {
   createHealthCenterSpecialityArgs: CreateHealthCenterSpecialityInput;
 };
 
+
 export type MutationCreateHotelServiceArgs = {
   createHotelServiceArgs: CreateHotelInput;
 };
+
 
 export type MutationCreateMembershipSubscriptionPaymentIntentArgs = {
   args: CreateMembershipPaymentIntentInput;
 };
 
+
 export type MutationCreateNewAffiliationProductArgs = {
   args: CreateAffiliationInput;
 };
+
 
 export type MutationCreateNewProductArgs = {
   createNewProductInput: CreateProductInput;
 };
 
+
 export type MutationCreateNewsfeedPostArgs = {
   createNewsfeedPostInput: CreateNewsfeedPostInput;
 };
+
 
 export type MutationCreateProductCategoryArgs = {
   createCategoryInput: CreateCategoryInput;
 };
 
+
 export type MutationCreateProfileArgs = {
   createProfileInput: CreateProfileInput;
 };
+
 
 export type MutationCreateReactionArgs = {
   CreateReactionInput: CreateReactionInput;
 };
 
+
 export type MutationCreateRequiredActionArgs = {
   createRequiredActionInput: CreateRequiredActionInput;
 };
+
 
 export type MutationCreateRestaurantServiceArgs = {
   createRestaurantArgs: CreateRestaurantInput;
 };
 
+
 export type MutationCreateServiceCategoryArgs = {
   createServiceCategoryArgs: CreateServiceCategoryInput;
 };
+
 
 export type MutationCreateShippingAddressArgs = {
   args: CreateShippingAddressInput;
 };
 
+
 export type MutationCreateShippingRuleArgs = {
   createShippingRuleArgs: CreateShippingRuleInput;
 };
+
 
 export type MutationCreateShippingTypeRuleArgs = {
   args: CreateShippingTypeRuleInput;
 };
 
+
 export type MutationCreateShippingTypeRuleGeoZoneArgs = {
   args: CreateShippingGeoZone;
 };
+
 
 export type MutationCreateShopArgs = {
   createShopInput: CreateShopInput;
 };
 
+
 export type MutationCreateStoryArgs = {
   createStoryInput: CreateStoryInput;
 };
+
 
 export type MutationCreateVehicleArgs = {
   createVehicleInput: CreateVehicleServiceInput;
 };
 
+
 export type MutationCreateVoucherArgs = {
   createVoucherArgs: CreateVoucherInput;
 };
+
 
 export type MutationDeActivateVoucherArgs = {
   deActivateVoucherArgs: DeactivateVoucherInput;
 };
 
+
 export type MutationDeclineAppointmentArgs = {
   args: DeclineAppointmentInput;
 };
+
 
 export type MutationDeclineSellerAccountArgs = {
   args: DeclineSellerAccountRequest;
 };
 
+
 export type MutationDeleteAffiliationArgs = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
 };
+
 
 export type MutationDeleteBeautyCenterArgs = {
   deleteBeautyCenter: DeleteTreatmentCategoryInput;
 };
 
+
 export type MutationDeleteBeautyCenterServicesArgs = {
   deleteBeautyCenterServices: DeleteTreatmentCategoriesInput;
 };
 
+
 export type MutationDeleteFilterArgs = {
-  deleteFilterId: Scalars["String"];
+  deleteFilterId: Scalars['String'];
 };
+
 
 export type MutationDeleteProductArgs = {
-  productId: Scalars["ID"];
+  productId: Scalars['ID'];
 };
 
+
 export type MutationDeleteProductCategoryArgs = {
-  deleteCategoryId: Scalars["String"];
+  deleteCategoryId: Scalars['String'];
 };
+
 
 export type MutationDeleteRestaurantArgs = {
   deleteRestaurantArgs: DeleteRestaurantInput;
 };
 
+
 export type MutationDeleteShippingRuleArgs = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
 };
+
 
 export type MutationDeleteStoryArgs = {
   deleteStoryInput: DeleteStoryInput;
 };
 
+
 export type MutationDeleteVoucherArgs = {
   deleteVoucherArgs: DeleteVoucherInput;
 };
+
 
 export type MutationEditAccountArgs = {
   editAccountInput: UpdateAccountInput;
 };
 
+
 export type MutationFollowProfileArgs = {
   followUserInput: FollowProfileInput;
 };
 
+
 export type MutationGetProductVendorLinkArgs = {
-  productId: Scalars["String"];
+  productId: Scalars['String'];
 };
+
 
 export type MutationHideContentArgs = {
   args: HideContentInput;
 };
 
+
 export type MutationLikeStoryArgs = {
   likeStoryInput: LikeStoryInput;
 };
+
 
 export type MutationLoginArgs = {
   LoginInput: LoginDto;
 };
 
+
 export type MutationLoginAsArgs = {
-  userId: Scalars["String"];
+  userId: Scalars['String'];
 };
+
 
 export type MutationProcessWithdrawalRequestArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
 
+
 export type MutationProvideVvcPictureArgs = {
-  pic: Scalars["String"];
+  pic: Scalars['String'];
 };
+
 
 export type MutationRefuseAccountVerificationArgs = {
   args: RefuseAccountVerificationRequest;
 };
 
+
 export type MutationRefuseInsurancePayBackRequestArgs = {
-  bookId: Scalars["ID"];
+  bookId: Scalars['ID'];
 };
+
 
 export type MutationRegisterArgs = {
   RegisterInput: CreateAccountInput;
 };
 
+
 export type MutationRejectReceivedOrderArgs = {
   args: RejectReceivedOrderInput;
 };
+
 
 export type MutationRejectRefundRequestArgs = {
   args: RejectRefundRequestInput;
 };
 
+
 export type MutationRejectRequestedOrderArgs = {
   args: RejectRequestedOrderInput;
 };
 
+
 export type MutationRemoveCommentArgs = {
-  id: Scalars["Int"];
+  id: Scalars['Int'];
 };
+
 
 export type MutationRemoveItemFromCartArgs = {
   removeItemFromCartArgs: RemoveShoppingCartItemInput;
 };
 
+
 export type MutationRemoveNewsfeedPostArgs = {
-  id: Scalars["Int"];
+  id: Scalars['Int'];
 };
+
 
 export type MutationRemoveReactionArgs = {
   removeReactionArgs: RemoveReactionInput;
 };
 
+
 export type MutationRemoveRequiredActionArgs = {
-  id: Scalars["Int"];
+  id: Scalars['Int'];
 };
+
 
 export type MutationRemoveReviewArgs = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
 };
 
+
 export type MutationRemoveServiceCategoryArgs = {
-  serviceCategoryId: Scalars["String"];
+  serviceCategoryId: Scalars['String'];
 };
+
 
 export type MutationRequestAccountDeletionArgs = {
   args: DeleteAccountRequestInput;
 };
 
+
 export type MutationRequestAccountVerificationArgs = {
   args: CreateAccountVerificationInput;
 };
+
 
 export type MutationRequestIdVerificationArgs = {
   requestInput: CreateIdentityVerificationInput;
 };
 
+
 export type MutationRequestInsurancePayBackArgs = {
-  bookId: Scalars["ID"];
+  bookId: Scalars['ID'];
 };
 
+
 export type MutationResendRegisterationCodeArgs = {
-  email: Scalars["String"];
+  email: Scalars['String'];
 };
+
 
 export type MutationResetPasswordArgs = {
   ResetPasswordArgs: ForgotPasswordEmailInput;
 };
 
+
 export type MutationReviewProductArgs = {
   args: CreateProductReviewInput;
 };
 
+
 export type MutationSendFollowRequestArgs = {
-  profileId: Scalars["String"];
+  profileId: Scalars['String'];
 };
+
 
 export type MutationSendMessageArgs = {
   sendMessageInput: CreateMessageInput;
 };
 
+
 export type MutationShareContentArgs = {
   createContentShareInput: CreateContentShareInput;
 };
+
 
 export type MutationSuspenseAccountArgs = {
   args: SuspenseAccountAdminInput;
 };
 
+
 export type MutationUnFollowArgs = {
   unFollowProfileInput: UnFollowProfileInput;
 };
+
 
 export type MutationUnblockUserArgs = {
   args: CreateBlockInput;
 };
 
+
 export type MutationUpdateAffiliationArgs = {
   args: UpdateAffiliationInput;
 };
+
 
 export type MutationUpdateBeautyCenterArgs = {
   updateBeautyCenter: UpdateBeautyCenterInput;
 };
 
+
 export type MutationUpdateBeautyCenterAdminArgs = {
   args: UpdateBeautyCenterAdminInput;
 };
+
 
 export type MutationUpdateCommentArgs = {
   updateCommentInput: UpdateCommentInput;
 };
 
+
 export type MutationUpdateFilterArgs = {
   updateFilterArgs: UpdateFilterInput;
 };
+
 
 export type MutationUpdateHealthCenterArgs = {
   updateHealthCenterArgs: UpdateHealthCenterInput;
 };
 
+
 export type MutationUpdateHealthCenterAdminArgs = {
   args: UpdateHealthCenterAdminInput;
 };
+
 
 export type MutationUpdateHotelAdminArgs = {
   args: UpdateHotelAdminInput;
 };
 
+
 export type MutationUpdateMyContactArgs = {
   args: AddContactInput;
 };
+
 
 export type MutationUpdateMyCookiesSettingsArgs = {
   args: UpdateUserCookiesSettingsInput;
 };
 
+
 export type MutationUpdateMyPrivacySettingsArgs = {
   args: UpdateMyPrivacyInput;
 };
+
 
 export type MutationUpdateMyProfileArgs = {
   updateProfileInput: UpdateProfileInput;
 };
 
+
 export type MutationUpdateMyShopArgs = {
   updateMyShopInput: UpdateShopInput;
 };
+
 
 export type MutationUpdateMyWorkingScheduleArgs = {
   args: UpdateWorkingScheduleInput;
 };
 
+
 export type MutationUpdateNewsfeedPostArgs = {
   updateNewsfeedPostInput: UpdateNewsfeedPostInput;
 };
+
 
 export type MutationUpdateProductArgs = {
   updateProductArgs: UpdateProductInput;
 };
 
+
 export type MutationUpdateProductAdminArgs = {
   args: UpdateProductInput;
 };
+
 
 export type MutationUpdateProductCategoryArgs = {
   updateCategoryArgs: UpdateCategoryInput;
 };
 
+
 export type MutationUpdateProfileArgs = {
   updateProfileInput: UpdateProfileAdminInput;
 };
+
 
 export type MutationUpdateRequiredActionArgs = {
   updateRequiredActionInput: UpdateRequiredActionInput;
 };
 
+
 export type MutationUpdateRestaurantArgs = {
   updateRestaurantArgs: UpdateRestaurantInput;
 };
+
 
 export type MutationUpdateRestaurantAdminArgs = {
   args: UpdateRestaurantAdminInput;
 };
 
+
 export type MutationUpdateServiceCategoryArgs = {
   updateServiceCategoryArgs: UpdateServiceCategoryInput;
 };
+
 
 export type MutationUpdateShippingAddressArgs = {
   args: UpdateShippingAddressInput;
 };
 
+
 export type MutationUpdateShippingRuleArgs = {
   updateShippingRuleArgs: UpdateShippingRuleInput;
 };
+
 
 export type MutationUpdateTreatmentCategoriesArgs = {
   updateTreatmentCategoriesArgs: UpdateTreatmentCategoriesInput;
 };
 
+
 export type MutationUpdateUserLocationArgs = {
   updateLocation: UpdateUserLocationInput;
 };
+
 
 export type MutationUpdateVehicleAdminArgs = {
   args: UpdateVehicleAdminInput;
 };
 
+
 export type MutationUploadProductPresentationsArgs = {
-  files: Array<Scalars["Upload"]>;
+  files: Array<Scalars['Upload']>;
 };
+
 
 export type MutationVerifyEmailArgs = {
   EmailVerificationInput: VerifyEmailDto;
 };
 
+
 export type MutationVerifyLoginOtpArgs = {
   args: LoginWithOtpInput;
 };
+
 
 export type MutationVerifyNewPasswordArgs = {
   verifyNewPassword: ConfirmPasswordChangeInput;
 };
 
 export enum MyBookingsSearchPeriod {
-  Day = "day",
-  Month = "month",
-  Week = "week",
+  Day = 'day',
+  Month = 'month',
+  Week = 'week'
 }
 
 export type NewsfeedHashtagSearch = {
-  __typename?: "NewsfeedHashtagSearch";
+  __typename?: 'NewsfeedHashtagSearch';
   mostCommentedPost: NewsfeedPost;
   mostLikedPost: NewsfeedPost;
   mostLikedVideo: NewsfeedPost;
@@ -2310,326 +2435,326 @@ export type NewsfeedHashtagSearch = {
 };
 
 export type NewsfeedPost = {
-  __typename?: "NewsfeedPost";
+  __typename?: 'NewsfeedPost';
   attachments: Array<Attachment>;
-  authorProfileId: Scalars["ID"];
-  comments: Scalars["Int"];
-  content: Scalars["String"];
-  createdAt: Scalars["String"];
+  authorProfileId: Scalars['ID'];
+  comments: Scalars['Int'];
+  content: Scalars['String'];
+  createdAt: Scalars['String'];
   hashtags: Array<Hashtag>;
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   location?: Maybe<PostLocation>;
   mentions: Array<PostMention>;
   publisher?: Maybe<Profile>;
-  reactionNum: Scalars["Int"];
-  shares: Scalars["Int"];
+  reactionNum: Scalars['Int'];
+  shares: Scalars['Int'];
   tags: Array<PostTag>;
-  title: Scalars["String"];
-  updatedAt: Scalars["String"];
-  userId: Scalars["ID"];
-  views: Scalars["Int"];
+  title: Scalars['String'];
+  updatedAt: Scalars['String'];
+  userId: Scalars['ID'];
+  views: Scalars['Int'];
 };
 
 export type OpenTime = {
-  __typename?: "OpenTime";
-  from: Scalars["DateTime"];
-  to: Scalars["DateTime"];
+  __typename?: 'OpenTime';
+  from: Scalars['DateTime'];
+  to: Scalars['DateTime'];
 };
 
 export type Order = {
-  __typename?: "Order";
+  __typename?: 'Order';
   buyer?: Maybe<Account>;
-  buyerId: Scalars["ID"];
-  createdAt: Scalars["DateTime"];
-  id: Scalars["ID"];
+  buyerId: Scalars['ID'];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   items: Array<OrderItem>;
-  paid: Scalars["Float"];
+  paid: Scalars['Float'];
   seller?: Maybe<Account>;
-  sellerId: Scalars["ID"];
+  sellerId: Scalars['ID'];
   shipping: ShippingRule;
   shippingAddress: ShippingAddress;
-  shippingAddressId: Scalars["String"];
-  shippingMethodId: Scalars["String"];
+  shippingAddressId: Scalars['String'];
+  shippingMethodId: Scalars['String'];
   status: OrderStatus;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type OrderItem = {
-  __typename?: "OrderItem";
-  id: Scalars["ID"];
+  __typename?: 'OrderItem';
+  id: Scalars['ID'];
   product?: Maybe<Product>;
-  qty: Scalars["Int"];
+  qty: Scalars['Int'];
 };
 
 export type OrderStatus = {
-  __typename?: "OrderStatus";
+  __typename?: 'OrderStatus';
   of: OrderStatusEnum;
-  rejectReason?: Maybe<Scalars["String"]>;
+  rejectReason?: Maybe<Scalars['String']>;
 };
 
 export enum OrderStatusEnum {
-  Compeleted = "compeleted",
-  Paid = "paid",
-  Pending = "pending",
-  RejectedByBuyer = "rejectedByBuyer",
-  RejectedBySeller = "rejectedBySeller",
-  Shipping = "shipping",
+  Compeleted = 'compeleted',
+  Paid = 'paid',
+  Pending = 'pending',
+  RejectedByBuyer = 'rejectedByBuyer',
+  RejectedBySeller = 'rejectedBySeller',
+  Shipping = 'shipping'
 }
 
 export type PaginationCommentsResponse = {
-  __typename?: "PaginationCommentsResponse";
+  __typename?: 'PaginationCommentsResponse';
   data: Array<Comment>;
-  hasMore: Scalars["Boolean"];
-  total: Scalars["Int"];
+  hasMore: Scalars['Boolean'];
+  total: Scalars['Int'];
 };
 
 export type PaymentIntent = {
-  __typename?: "PaymentIntent";
-  client_secret: Scalars["String"];
+  __typename?: 'PaymentIntent';
+  client_secret: Scalars['String'];
 };
 
 export type Place = {
-  __typename?: "Place";
-  id: Scalars["ID"];
-  type: Scalars["String"];
+  __typename?: 'Place';
+  id: Scalars['ID'];
+  type: Scalars['String'];
 };
 
 export type PlaceSuggestions = {
-  __typename?: "PlaceSuggestions";
+  __typename?: 'PlaceSuggestions';
   places: Array<Place>;
 };
 
 export type PostLocation = {
-  __typename?: "PostLocation";
-  address?: Maybe<Scalars["String"]>;
-  city: Scalars["String"];
-  country: Scalars["String"];
-  state?: Maybe<Scalars["String"]>;
+  __typename?: 'PostLocation';
+  address?: Maybe<Scalars['String']>;
+  city: Scalars['String'];
+  country: Scalars['String'];
+  state?: Maybe<Scalars['String']>;
 };
 
 export type PostLocationInput = {
-  address?: InputMaybe<Scalars["String"]>;
-  city: Scalars["String"];
-  country: Scalars["String"];
-  state?: InputMaybe<Scalars["String"]>;
+  address?: InputMaybe<Scalars['String']>;
+  city: Scalars['String'];
+  country: Scalars['String'];
+  state?: InputMaybe<Scalars['String']>;
 };
 
 export type PostMention = {
-  __typename?: "PostMention";
-  userId: Scalars["ID"];
+  __typename?: 'PostMention';
+  userId: Scalars['ID'];
 };
 
 export type PostTag = {
-  __typename?: "PostTag";
-  userId: Scalars["ID"];
+  __typename?: 'PostTag';
+  userId: Scalars['ID'];
 };
 
 export type PostTagInput = {
-  userId: Scalars["String"];
+  userId: Scalars['String'];
 };
 
 export enum PostVisibility {
-  Followers = "followers",
-  Following = "following",
-  Hidden = "hidden",
-  Public = "public",
+  Followers = 'followers',
+  Following = 'following',
+  Hidden = 'hidden',
+  Public = 'public'
 }
 
 export enum PresentationType {
-  Image = "image",
-  Video = "video",
+  Image = 'image',
+  Video = 'video'
 }
 
 export type PrivacySettings = {
-  __typename?: "PrivacySettings";
-  hideCommentsNum: Scalars["Boolean"];
-  hideLikesNum: Scalars["Boolean"];
-  hideViewsNum: Scalars["Boolean"];
-  id: Scalars["ID"];
-  privateAccount: Scalars["Boolean"];
-  userId: Scalars["ID"];
+  __typename?: 'PrivacySettings';
+  hideCommentsNum: Scalars['Boolean'];
+  hideLikesNum: Scalars['Boolean'];
+  hideViewsNum: Scalars['Boolean'];
+  id: Scalars['ID'];
+  privateAccount: Scalars['Boolean'];
+  userId: Scalars['ID'];
 };
 
 export type Product = {
-  __typename?: "Product";
+  __typename?: 'Product';
   attributes: Array<ProductAttribute>;
-  brand: Scalars["String"];
+  brand: Scalars['String'];
   cashback: Cashback;
-  cashbackId?: Maybe<Scalars["String"]>;
+  cashbackId?: Maybe<Scalars['String']>;
   category?: Maybe<Category>;
-  categoryId: Scalars["ID"];
-  createdAt: Scalars["String"];
-  description: Scalars["String"];
+  categoryId: Scalars['ID'];
+  createdAt: Scalars['String'];
+  description: Scalars['String'];
   discount: Discount;
-  discountId?: Maybe<Scalars["String"]>;
-  earnings: Scalars["Float"];
-  hashtags: Array<Scalars["String"]>;
-  id: Scalars["ID"];
+  discountId?: Maybe<Scalars['String']>;
+  earnings: Scalars['Float'];
+  hashtags: Array<Scalars['String']>;
+  id: Scalars['ID'];
   presentations: Array<ProductPresentation>;
-  price: Scalars["Float"];
-  rate: Scalars["Int"];
-  reviews: Scalars["Int"];
-  sales: Scalars["Int"];
-  sellerId: Scalars["ID"];
+  price: Scalars['Float'];
+  rate: Scalars['Int'];
+  reviews: Scalars['Int'];
+  sales: Scalars['Int'];
+  sellerId: Scalars['ID'];
   shippingDetails?: Maybe<ShippingDetails>;
-  shippingRulesIds: Array<Scalars["ID"]>;
-  shopId: Scalars["ID"];
+  shippingRulesIds: Array<Scalars['ID']>;
+  shopId: Scalars['ID'];
   status: ProductStatus;
-  stock: Scalars["Int"];
-  thumbnail: Scalars["String"];
-  title: Scalars["String"];
-  updatedAt: Scalars["String"];
+  stock: Scalars['Int'];
+  thumbnail: Scalars['String'];
+  title: Scalars['String'];
+  updatedAt: Scalars['String'];
   usageStatus: ProductUsageStatus;
-  vat: Scalars["Float"];
-  vendor_external_link: Scalars["String"];
+  vat: Scalars['Float'];
+  vendor_external_link: Scalars['String'];
   visibility: VisibilityEnum;
 };
 
 export type ProductAttribute = {
-  __typename?: "ProductAttribute";
-  name: Scalars["String"];
-  values: Array<Scalars["String"]>;
+  __typename?: 'ProductAttribute';
+  name: Scalars['String'];
+  values: Array<Scalars['String']>;
 };
 
 export type ProductAttributeInput = {
-  name: Scalars["String"];
-  values: Array<Scalars["String"]>;
+  name: Scalars['String'];
+  values: Array<Scalars['String']>;
 };
 
 export enum ProductCategoryStatus {
-  Active = "active",
-  InActive = "inActive",
+  Active = 'active',
+  InActive = 'inActive'
 }
 
 export type ProductFilterGroupValue = {
-  __typename?: "ProductFilterGroupValue";
-  name: Scalars["String"];
-  sortOrder: Scalars["Int"];
+  __typename?: 'ProductFilterGroupValue';
+  name: Scalars['String'];
+  sortOrder: Scalars['Int'];
 };
 
 export type ProductFilterGroupValueInput = {
-  name: Scalars["String"];
-  sortOrder: Scalars["Int"];
+  name: Scalars['String'];
+  sortOrder: Scalars['Int'];
 };
 
 export type ProductPost = {
-  __typename?: "ProductPost";
-  comments: Scalars["Int"];
+  __typename?: 'ProductPost';
+  comments: Scalars['Int'];
   commentsVisibility: CommentsVisibility;
-  createdAt: Scalars["String"];
-  id: Scalars["ID"];
+  createdAt: Scalars['String'];
+  id: Scalars['ID'];
   location?: Maybe<PostLocation>;
   product: Product;
-  productId: Scalars["ID"];
-  reactionNum: Scalars["Int"];
-  shares: Scalars["Int"];
-  updatedAt: Scalars["String"];
+  productId: Scalars['ID'];
+  reactionNum: Scalars['Int'];
+  shares: Scalars['Int'];
+  updatedAt: Scalars['String'];
   user?: Maybe<Account>;
-  userId: Scalars["ID"];
-  views: Scalars["Int"];
+  userId: Scalars['ID'];
+  views: Scalars['Int'];
   visibility: PostVisibility;
 };
 
 export type ProductPresentation = {
-  __typename?: "ProductPresentation";
-  src: Scalars["String"];
+  __typename?: 'ProductPresentation';
+  src: Scalars['String'];
   type: PresentationType;
 };
 
 export type ProductPresentationInput = {
-  src: Scalars["String"];
+  src: Scalars['String'];
   type: PresentationType;
 };
 
 export type ProductReview = {
-  __typename?: "ProductReview";
-  createdAt: Scalars["DateTime"];
-  id: Scalars["ID"];
-  message: Scalars["String"];
+  __typename?: 'ProductReview';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
+  message: Scalars['String'];
   product: Product;
-  productId: Scalars["ID"];
-  rate: Scalars["Float"];
+  productId: Scalars['ID'];
+  rate: Scalars['Float'];
   reviewer: Account;
-  reviewerId: Scalars["ID"];
-  updatedAt: Scalars["DateTime"];
+  reviewerId: Scalars['ID'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export enum ProductStatus {
-  Active = "active",
-  Deleted = "deleted",
-  Pasued = "pasued",
-  Pending = "pending",
-  Suspended = "suspended",
+  Active = 'active',
+  Deleted = 'deleted',
+  Pasued = 'pasued',
+  Pending = 'pending',
+  Suspended = 'suspended'
 }
 
 export enum ProductType {
-  Digital = "digital",
-  Goods = "goods",
+  Digital = 'digital',
+  Goods = 'goods'
 }
 
 export enum ProductUsageStatus {
-  New = "new",
-  Used = "used",
+  New = 'new',
+  Used = 'used'
 }
 
 export type Profile = {
-  __typename?: "Profile";
+  __typename?: 'Profile';
   activeStatus: ActiveStatus;
-  bio: Scalars["String"];
-  createdAt: Scalars["DateTime"];
-  followers: Scalars["Int"];
+  bio: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  followers: Scalars['Int'];
   followersData?: Maybe<Array<Follow>>;
-  following: Scalars["Int"];
+  following: Scalars['Int'];
   followingData?: Maybe<Array<Follow>>;
-  id: Scalars["ID"];
-  lastActive: Scalars["DateTime"];
-  ownerId: Scalars["ID"];
-  photo: Scalars["String"];
-  profession: Scalars["String"];
-  publications: Scalars["Int"];
-  updatedAt: Scalars["DateTime"];
+  id: Scalars['ID'];
+  lastActive: Scalars['DateTime'];
+  ownerId: Scalars['ID'];
+  photo: Scalars['String'];
+  profession: Scalars['String'];
+  publications: Scalars['Int'];
+  updatedAt: Scalars['DateTime'];
   user?: Maybe<Account>;
-  username: Scalars["String"];
-  verified: Scalars["Boolean"];
+  username: Scalars['String'];
+  verified: Scalars['Boolean'];
   visibility: ProfileVisibility;
 };
 
 export type ProfileMeta = {
-  __typename?: "ProfileMeta";
-  id: Scalars["ID"];
-  photo: Scalars["String"];
-  username: Scalars["String"];
+  __typename?: 'ProfileMeta';
+  id: Scalars['ID'];
+  photo: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type ProfileMetaPaginatedResponse = {
-  __typename?: "ProfileMetaPaginatedResponse";
+  __typename?: 'ProfileMetaPaginatedResponse';
   data: Array<ProfileMeta>;
-  hasMore: Scalars["Boolean"];
-  total: Scalars["Int"];
+  hasMore: Scalars['Boolean'];
+  total: Scalars['Int'];
 };
 
 export type ProfilePaginatedResponse = {
-  __typename?: "ProfilePaginatedResponse";
+  __typename?: 'ProfilePaginatedResponse';
   data: Array<Profile>;
-  hasMore: Scalars["Boolean"];
-  total: Scalars["Int"];
+  hasMore: Scalars['Boolean'];
+  total: Scalars['Int'];
 };
 
 export enum ProfileVisibility {
-  Followers = "followers",
-  Private = "private",
-  Public = "public",
+  Followers = 'followers',
+  Private = 'private',
+  Public = 'public'
 }
 
 export type Query = {
-  __typename?: "Query";
+  __typename?: 'Query';
   MyShoppingCart: ShoppingCart;
   MyWishlist: Wishlist;
-  acceptAccountVerification: Scalars["Boolean"];
+  acceptAccountVerification: Scalars['Boolean'];
   adminGetAccount: Account;
   adminGetProduct?: Maybe<Product>;
   adminGetRawService?: Maybe<ServiceShopRaw>;
-  canAccessRoom: Scalars["Boolean"];
+  canAccessRoom: Scalars['Boolean'];
   comments: Array<Comment>;
   findAll: ProfilePaginatedResponse;
   getAccountDeletionRequests: Array<AccountDeletionRequest>;
@@ -2652,7 +2777,7 @@ export type Query = {
   getBookingHistory: Array<BookedService>;
   getChatRoom: ChatRoom;
   getCommunityPosts: Array<Community>;
-  getConnectedAccounts: Scalars["Boolean"];
+  getConnectedAccounts: Scalars['Boolean'];
   getContentComments: Array<Comment>;
   getCookiesSettings: Array<CookiesSetting>;
   getFilteredAffiliations: Array<Affiliation>;
@@ -2749,7 +2874,7 @@ export type Query = {
   getVehicleServicebyId: VehicleService;
   getWisherslist: Array<Wisherslist>;
   getWithdrawalRequests: Array<WithdrawalRequest>;
-  isFollowed: Scalars["Boolean"];
+  isFollowed: Scalars['Boolean'];
   myProfile: Profile;
   requiredAction: RequiredAction;
   requiredActions: Array<RequiredAction>;
@@ -2760,559 +2885,665 @@ export type Query = {
   searchHotelRooms: Array<HotelRoom>;
   searchPopularUsers: ProfilePaginatedResponse;
   searchUsers: SearchUsers;
-  tests: Scalars["Boolean"];
+  tests: Scalars['Boolean'];
   updateComment: PaginationCommentsResponse;
 };
 
+
 export type QueryAcceptAccountVerificationArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
+
 
 export type QueryAdminGetAccountArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
+
 
 export type QueryAdminGetProductArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
+
 
 export type QueryAdminGetRawServiceArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
 
+
 export type QueryCanAccessRoomArgs = {
-  roomId: Scalars["ID"];
+  roomId: Scalars['ID'];
 };
+
 
 export type QueryGetAccountDeletionRequestsArgs = {
   args: GetAccountDeletionRequestsInput;
 };
 
+
 export type QueryGetActionArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
+
 
 export type QueryGetAdminFilteredProductsArgs = {
   args: GetFilteredProductsAdminInput;
 };
 
+
 export type QueryGetAdminProductsFiltersArgs = {
   getFiltersArgs: GetFiltersInput;
 };
 
+
 export type QueryGetAdminProfileArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
+
 
 export type QueryGetAffiliationPostArgs = {
   args: GetAffiliationPostInput;
 };
 
+
 export type QueryGetAllArgs = {
   args: GetTransactionsAdminInput;
 };
+
 
 export type QueryGetAllServicesArgs = {
   args: GetFilteredServicesInput;
 };
 
+
 export type QueryGetAllVehiclesArgs = {
   args: GetVehiclesInput;
 };
+
 
 export type QueryGetAuthorAffiliationPostsArgs = {
   args: GetUserAffiliationPostsInput;
 };
 
+
 export type QueryGetBeautyCenterByIdArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
+
 
 export type QueryGetBeautyCenterTreatmentCategoriesByIdsArgs = {
-  ids: Array<Scalars["String"]>;
+  ids: Array<Scalars['String']>;
 };
 
+
 export type QueryGetBookedServiceDetailsArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
+
 
 export type QueryGetBookingHistoryArgs = {
   args: GetBookingsHistoryInput;
 };
 
+
 export type QueryGetChatRoomArgs = {
-  roomId: Scalars["String"];
+  roomId: Scalars['String'];
 };
+
 
 export type QueryGetCommunityPostsArgs = {
   args: GetCommunityPostsInput;
 };
 
+
 export type QueryGetContentCommentsArgs = {
   getContentCommentsArgs: GetContentCommentsInput;
 };
+
 
 export type QueryGetFilteredAffiliationsArgs = {
   filters: GetFilteredAffiliationsInput;
 };
 
+
 export type QueryGetFilteredAffiliationsHistoryArgs = {
   filters: GetFilteredAffiliationHistoryInput;
 };
+
 
 export type QueryGetFilteredBeuatyCenterTreatmentsArgs = {
   args: SearchFilteredBeautyCenterInput;
 };
 
+
 export type QueryGetFilteredBuyersArgs = {
   getBuyersInput: GetBuyersAccountsInput;
 };
+
 
 export type QueryGetFilteredOrdersArgs = {
   args: GetFilteredOrdersInput;
 };
 
+
 export type QueryGetFilteredProductCategoriesArgs = {
   args?: InputMaybe<GetFilteredCategory>;
 };
+
 
 export type QueryGetFilteredSellersArgs = {
   getSellersInput: GetFilteredSellersAccountsInput;
 };
 
+
 export type QueryGetFilteredServiceCategoriesArgs = {
   args?: InputMaybe<GetFilteredCategoriesInput>;
 };
+
 
 export type QueryGetFilteredServicesArgs = {
   args: GetFilteredServicesAdminInput;
 };
 
+
 export type QueryGetFilteredShopsArgs = {
   filteredShopsArgs: FilteredShopsInput;
 };
+
 
 export type QueryGetFilteredVouchersArgs = {
   args: GetFilteredVouchers;
 };
 
+
 export type QueryGetFollowersByProfileIdArgs = {
   getFollowersMetaInput: GetProfileFollowersMetaInput;
 };
+
 
 export type QueryGetFollowingByProfileIdArgs = {
   getFollowingMetaInput: GetProfileFollowersMetaInput;
 };
 
+
 export type QueryGetHashtagTopAffiliationPostArgs = {
-  tag: Scalars["String"];
+  tag: Scalars['String'];
 };
+
 
 export type QueryGetHashtagTopServicePostsArgs = {
   args: GetHashtagTopServicePostsInput;
 };
 
+
 export type QueryGetHealthCenterArgs = {
-  serviceId: Scalars["String"];
+  serviceId: Scalars['String'];
 };
+
 
 export type QueryGetHotelServiceArgs = {
   getHotelServiceArgs: GetHotelServiceArgs;
 };
 
+
 export type QueryGetInsurancesArgs = {
   args: GetInsurancesInput;
 };
 
+
 export type QueryGetInvoiceRecordArgs = {
-  period: Scalars["String"];
+  period: Scalars['String'];
 };
+
 
 export type QueryGetLocalisationArgs = {
   getLocalisationInput: GetLocalizationInput;
 };
 
+
 export type QueryGetMyAffiliationsArgs = {
   args: GetMyAffiliationsInput;
 };
+
 
 export type QueryGetMyBlockListArgs = {
   args: GetMyBlocklistInput;
 };
 
+
 export type QueryGetMyBookingsArgs = {
   args: GetMyBookingsInput;
 };
+
 
 export type QueryGetMyFollowersArgs = {
   getMyFollowersInput: GetMyProfileFollowersMetaInput;
 };
 
+
 export type QueryGetMyFollowingArgs = {
   getMyFollowersInput: GetMyProfileFollowersMetaInput;
 };
+
 
 export type QueryGetMyFriendSuggestionsArgs = {
   args: GetMyFriendSuggestionsInput;
 };
 
+
 export type QueryGetMyOrdersArgs = {
   getMyOrdersArgs: GetMyOrdersInput;
 };
+
 
 export type QueryGetMyProductReviewsArgs = {
   args: GetMyReviewsInput;
 };
 
+
 export type QueryGetMyProductsArgs = {
   filterInput: GetFilteredProductsInput;
 };
+
 
 export type QueryGetMyProductsAffiliationHistoryArgs = {
   args: GetAffiliationHistoryInput;
 };
 
+
 export type QueryGetMyReturnedOrdersArgs = {
   args: GetMyReturnedOrdersInput;
 };
+
 
 export type QueryGetMySavedPostsArgs = {
   args: GetMySavedPostsInput;
 };
 
+
 export type QueryGetMyTransactionsArgs = {
   myTransactionsArgs: GetTransactionsInput;
 };
+
 
 export type QueryGetMyVouchersArgs = {
   getMyVouchersInput?: InputMaybe<GetVouchersInput>;
 };
 
+
 export type QueryGetNearShopsArgs = {
   GetNearShopsInput: GetNearShopsInput;
 };
+
 
 export type QueryGetNewsfeedHashtagPostsArgs = {
   hashtagSearchInput: GetHashtagNewsfeedPostsInput;
 };
 
+
 export type QueryGetNewsfeedPostByIdArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
+
 
 export type QueryGetNewsfeedPostsByUserIdArgs = {
   args: GetNewsfeedPostsByUserIdInput;
 };
 
+
 export type QueryGetOrderArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
+
 
 export type QueryGetPendingSellersArgs = {
   pagination: GqlPaginationInput;
 };
 
+
 export type QueryGetPlaceSuggestionsArgs = {
   args: GetPlaceSuggestionInput;
 };
 
+
 export type QueryGetPlacesArgs = {
-  placeQuery: Scalars["String"];
+  placeQuery: Scalars['String'];
 };
+
 
 export type QueryGetProductArgs = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
 };
+
 
 export type QueryGetProductByIdArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
 
+
 export type QueryGetProfileArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
+
 
 export type QueryGetRecentStoriesArgs = {
   getRecentStoryInput?: InputMaybe<GetRecentStoriesInput>;
 };
 
+
 export type QueryGetRecommendedAffiliationPostsArgs = {
   args: GetRecommendedAffiliationPostsInput;
 };
+
 
 export type QueryGetRecommendedProductPostsArgs = {
   args: GetShopRecommendedPostsInput;
 };
 
+
 export type QueryGetRecommendedServicePostsArgs = {
   args: GetRecommendedServicePostsInput;
 };
+
 
 export type QueryGetRefundableOrdersArgs = {
   args: GetRefundableOrdersInput;
 };
 
+
 export type QueryGetRestaurantArgs = {
   getRestaurantArgs: GetRestaurantInput;
 };
+
 
 export type QueryGetRoomMessagesArgs = {
   args: GetMessagesByRoomIdInput;
 };
 
+
 export type QueryGetServiceCategoryByIdArgs = {
-  categoryId: Scalars["String"];
+  categoryId: Scalars['String'];
 };
 
+
 export type QueryGetServiceCategoryBySlugArgs = {
-  slug: Scalars["String"];
+  slug: Scalars['String'];
 };
+
 
 export type QueryGetServiceInsuranceHistoryArgs = {
   args: GetInsurancesHistoryInput;
 };
 
+
 export type QueryGetServicePostArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
+
 
 export type QueryGetShippingRuleGeoZonesArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
+
 
 export type QueryGetShopByIdArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
 
+
 export type QueryGetStoryArgs = {
-  storyId: Scalars["String"];
+  storyId: Scalars['String'];
 };
+
 
 export type QueryGetStoryViewsArgs = {
   getStoryViewsInput: GetStorySeenByInput;
 };
 
+
 export type QueryGetTopHashtagPostsArgs = {
-  tag: Scalars["String"];
+  tag: Scalars['String'];
 };
+
 
 export type QueryGetTopHashtagsArgs = {
   args: GetTopHashtagsInput;
 };
 
+
 export type QueryGetUserActionsArgs = {
   args: GetUserActionsInput;
 };
 
+
 export type QueryGetUserAffiliationHistoryArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
+
 
 export type QueryGetUserAffiliationsArgs = {
   args: GetUserAffiliationsInput;
 };
 
+
 export type QueryGetUserAffiliationsPurchasesArgs = {
   args: GetUserAffiliationsPurchasesInput;
 };
+
 
 export type QueryGetUserBookingHistoryArgs = {
   args: GetBookingsHistoryAdminInput;
 };
 
+
 export type QueryGetUserOrdersArgs = {
   args: GetUserOrders;
 };
 
+
 export type QueryGetUserPrevStoryArgs = {
-  storyId: Scalars["String"];
+  storyId: Scalars['String'];
 };
+
 
 export type QueryGetUserProductPostsArgs = {
   args: GetUserProductPostsInput;
 };
 
+
 export type QueryGetUserServicePostsArgs = {
   args: GetUserServicesPostsInput;
 };
 
+
 export type QueryGetUserStoryArgs = {
-  userId: Scalars["String"];
+  userId: Scalars['String'];
 };
 
+
 export type QueryGetVehicleServicebyIdArgs = {
-  id: Scalars["String"];
+  id: Scalars['String'];
 };
+
 
 export type QueryGetWithdrawalRequestsArgs = {
   args: GetWithdrawalRequestsAdminInput;
 };
 
+
 export type QueryIsFollowedArgs = {
-  profileId: Scalars["String"];
+  profileId: Scalars['String'];
 };
 
+
 export type QueryRequiredActionArgs = {
-  id: Scalars["Int"];
+  id: Scalars['Int'];
 };
+
 
 export type QuerySearchFilteredRestaurantArgs = {
   filtersInput: SearchFilteredRestaurantInput;
 };
 
+
 export type QuerySearchHashtagsArgs = {
-  query: Scalars["String"];
+  query: Scalars['String'];
 };
+
 
 export type QuerySearchHealthCenterDoctorsArgs = {
   searchHealthCenterArgs: SearchHealthCenterInput;
 };
 
+
 export type QuerySearchHealthCentersArgs = {
   searchHealthCenterArgs: SearchHealthCenterInput;
 };
+
 
 export type QuerySearchHotelRoomsArgs = {
   searchHotelRoomsArgs: SearchHotelRoomLocationInput;
 };
 
+
 export type QuerySearchPopularUsersArgs = {
   args: SearchPopularProfilesInput;
 };
 
+
 export type QuerySearchUsersArgs = {
   searchUserInput: SearchUserInput;
 };
+
 
 export type QueryUpdateCommentArgs = {
   updateCommentInput: UpdateCommentInput;
 };
 
 export type RecentStory = {
-  __typename?: "RecentStory";
-  newStory: Scalars["Boolean"];
+  __typename?: 'RecentStory';
+  newStory: Scalars['Boolean'];
   user?: Maybe<Account>;
-  userId: Scalars["ID"];
+  userId: Scalars['ID'];
 };
 
 export type Refund = {
-  __typename?: "Refund";
-  amount: Scalars["Float"];
-  fullAmount: Scalars["Boolean"];
-  id: Scalars["ID"];
+  __typename?: 'Refund';
+  amount: Scalars['Float'];
+  fullAmount: Scalars['Boolean'];
+  id: Scalars['ID'];
   product: Product;
-  productId: Scalars["ID"];
-  qty: Scalars["Int"];
-  reason: Scalars["String"];
-  rejectReason?: Maybe<Scalars["String"]>;
-  requestedById: Scalars["ID"];
-  sellerId: Scalars["ID"];
+  productId: Scalars['ID'];
+  qty: Scalars['Int'];
+  reason: Scalars['String'];
+  rejectReason?: Maybe<Scalars['String']>;
+  requestedById: Scalars['ID'];
+  sellerId: Scalars['ID'];
   status: RefundStatusType;
   type: RefundType;
 };
 
 export enum RefundStatusType {
-  Accept = "accept",
-  Pending = "pending",
-  Reject = "reject",
+  Accept = 'accept',
+  Pending = 'pending',
+  Reject = 'reject'
 }
 
 export enum RefundType {
-  Credit = "credit",
-  Money = "money",
+  Credit = 'credit',
+  Money = 'money'
 }
 
 export type RefuseAccountVerificationRequest = {
-  id: Scalars["ID"];
-  reason: Scalars["String"];
+  id: Scalars['ID'];
+  reason: Scalars['String'];
 };
 
 export enum RegisterAccountType {
-  Buyer = "buyer",
-  Seller = "seller",
+  Buyer = 'buyer',
+  Seller = 'seller'
 }
 
 export type Registeration = {
-  __typename?: "Registeration";
+  __typename?: 'Registeration';
   accountInputData: AccountInputData;
-  email: Scalars["String"];
-  id: Scalars["ID"];
-  verificationToken: Scalars["String"];
+  email: Scalars['String'];
+  id: Scalars['ID'];
+  verificationToken: Scalars['String'];
 };
 
 export type RejectReceivedOrderInput = {
-  id: Scalars["ID"];
-  rejectReason: Scalars["String"];
+  id: Scalars['ID'];
+  rejectReason: Scalars['String'];
 };
 
 export type RejectRefundRequestInput = {
-  id: Scalars["ID"];
-  reason?: InputMaybe<Scalars["String"]>;
+  id: Scalars['ID'];
+  reason?: InputMaybe<Scalars['String']>;
 };
 
 export type RejectRequestedOrderInput = {
-  id: Scalars["ID"];
-  rejectReason: Scalars["String"];
+  id: Scalars['ID'];
+  rejectReason: Scalars['String'];
 };
 
 export type RemoveReactionInput = {
-  contentId: Scalars["ID"];
+  contentId: Scalars['ID'];
   contentType: ContentHostType;
 };
 
 export type RemoveShoppingCartItemInput = {
-  itemId: Scalars["ID"];
-  type: Scalars["String"];
+  itemId: Scalars['ID'];
+  type: Scalars['String'];
 };
 
 export type RemoveWishlistItemInput = {
-  itemId: Scalars["ID"];
+  itemId: Scalars['ID'];
 };
 
 export type RequiredAction = {
-  __typename?: "RequiredAction";
+  __typename?: 'RequiredAction';
   /** Example field (placeholder) */
-  exampleField: Scalars["Int"];
+  exampleField: Scalars['Int'];
 };
 
 export type Restaurant = {
-  __typename?: "Restaurant";
+  __typename?: 'Restaurant';
   cancelationPolicies: Array<ServiceCancelationPolicy>;
   contact: ServiceContact;
-  cuisinesTypeId: Scalars["ID"];
-  establishmentTypeId: Scalars["ID"];
-  highest_price: Scalars["Float"];
-  id: Scalars["ID"];
+  cuisinesTypeId: Scalars['ID'];
+  establishmentTypeId: Scalars['ID'];
+  highest_price: Scalars['Float'];
+  id: Scalars['ID'];
   location: ServiceLocation;
-  lowest_price: Scalars["Float"];
+  lowest_price: Scalars['Float'];
   menus: Array<RestaurantMenu>;
-  michelin_guide_stars: Scalars["Int"];
+  michelin_guide_stars: Scalars['Int'];
   owner: Account;
-  ownerId: Scalars["ID"];
+  ownerId: Scalars['ID'];
   payment_methods: Array<ServicePaymentMethod>;
   policies: Array<ServicePolicy>;
   presentations: Array<ServicePresentation>;
-  rating: Scalars["Float"];
-  reviews: Scalars["Int"];
+  rating: Scalars['Float'];
+  reviews: Scalars['Int'];
   serviceMetaInfo: ServiceMetaInfo;
-  setting_and_ambianceId: Scalars["ID"];
+  setting_and_ambianceId: Scalars['ID'];
   status: ServiceStatus;
-  vat: Scalars["Int"];
+  vat: Scalars['Int'];
   workingHours?: Maybe<WorkingSchedule>;
 };
 
 export type RestaurantMenu = {
-  __typename?: "RestaurantMenu";
+  __typename?: 'RestaurantMenu';
   dishs: Array<Dish>;
-  id: Scalars["ID"];
-  name: Scalars["String"];
+  id: Scalars['ID'];
+  name: Scalars['String'];
 };
 
 export type RestaurantMenuDishInput = {
   ingredients: Array<TranslationTextArrayInput>;
   name: Array<TranslationTextInput>;
-  price: Scalars["Int"];
-  thumbnail: Scalars["String"];
+  price: Scalars['Int'];
+  thumbnail: Scalars['String'];
 };
 
 export type RestaurantMenuInput = {
@@ -3321,388 +3552,388 @@ export type RestaurantMenuInput = {
 };
 
 export enum RoomTypes {
-  Group = "group",
-  Private = "private",
+  Group = 'group',
+  Private = 'private'
 }
 
 export type SearchFilteredBeautyCenterInput = {
-  beautyCenterTypeId?: InputMaybe<Scalars["ID"]>;
-  beautySalonTypeId?: InputMaybe<Scalars["ID"]>;
-  cancelationOption?: InputMaybe<Scalars["Boolean"]>;
-  maxPrice?: InputMaybe<Scalars["Float"]>;
-  minPrice?: InputMaybe<Scalars["Float"]>;
+  beautyCenterTypeId?: InputMaybe<Scalars['ID']>;
+  beautySalonTypeId?: InputMaybe<Scalars['ID']>;
+  cancelationOption?: InputMaybe<Scalars['Boolean']>;
+  maxPrice?: InputMaybe<Scalars['Float']>;
+  minPrice?: InputMaybe<Scalars['Float']>;
   pagination?: InputMaybe<GqlPaginationInput>;
-  query?: InputMaybe<Scalars["String"]>;
-  rating?: InputMaybe<Scalars["Int"]>;
-  treatmentTypeId?: InputMaybe<Scalars["ID"]>;
-  typeOfSeller?: InputMaybe<Scalars["String"]>;
+  query?: InputMaybe<Scalars['String']>;
+  rating?: InputMaybe<Scalars['Int']>;
+  treatmentTypeId?: InputMaybe<Scalars['ID']>;
+  typeOfSeller?: InputMaybe<Scalars['String']>;
 };
 
 export type SearchFilteredRestaurantInput = {
-  cusinesTypeId?: InputMaybe<Scalars["ID"]>;
-  establishmentTypeId?: InputMaybe<Scalars["ID"]>;
-  foodType?: InputMaybe<Scalars["String"]>;
-  maxPrice?: InputMaybe<Scalars["Int"]>;
-  minPrice?: InputMaybe<Scalars["Float"]>;
+  cusinesTypeId?: InputMaybe<Scalars['ID']>;
+  establishmentTypeId?: InputMaybe<Scalars['ID']>;
+  foodType?: InputMaybe<Scalars['String']>;
+  maxPrice?: InputMaybe<Scalars['Int']>;
+  minPrice?: InputMaybe<Scalars['Float']>;
   pagination?: InputMaybe<GqlPaginationInput>;
   paymentMethods?: InputMaybe<Array<ServicePaymentMethod>>;
-  query?: InputMaybe<Scalars["String"]>;
-  rating?: InputMaybe<Scalars["Int"]>;
-  settingAndAmbinaceId?: InputMaybe<Scalars["ID"]>;
+  query?: InputMaybe<Scalars['String']>;
+  rating?: InputMaybe<Scalars['Int']>;
+  settingAndAmbinaceId?: InputMaybe<Scalars['ID']>;
 };
 
 export type SearchHashtag = {
-  __typename?: "SearchHashtag";
-  ids: Array<Scalars["ID"]>;
+  __typename?: 'SearchHashtag';
+  ids: Array<Scalars['ID']>;
   tags?: Maybe<Array<Hashtag>>;
 };
 
 export type SearchHealthCenterInput = {
-  maxPrice?: InputMaybe<Scalars["Float"]>;
-  minPrice?: InputMaybe<Scalars["Float"]>;
+  maxPrice?: InputMaybe<Scalars['Float']>;
+  minPrice?: InputMaybe<Scalars['Float']>;
   pagination?: InputMaybe<GqlPaginationInput>;
   payment_methods?: InputMaybe<Array<ServicePaymentMethod>>;
-  query?: InputMaybe<Scalars["String"]>;
-  rate?: InputMaybe<Scalars["Int"]>;
-  speakingLanguage?: InputMaybe<Scalars["String"]>;
-  specialistType?: InputMaybe<Scalars["String"]>;
+  query?: InputMaybe<Scalars['String']>;
+  rate?: InputMaybe<Scalars['Int']>;
+  speakingLanguage?: InputMaybe<Scalars['String']>;
+  specialistType?: InputMaybe<Scalars['String']>;
 };
 
 export type SearchHotelRoomLocationInput = {
-  hotel_class?: InputMaybe<Scalars["Int"]>;
-  maxPrice?: InputMaybe<Scalars["Float"]>;
-  minPrice?: InputMaybe<Scalars["Float"]>;
-  num_of_beds?: InputMaybe<Scalars["Int"]>;
-  num_of_rooms?: InputMaybe<Scalars["Int"]>;
+  hotel_class?: InputMaybe<Scalars['Int']>;
+  maxPrice?: InputMaybe<Scalars['Float']>;
+  minPrice?: InputMaybe<Scalars['Float']>;
+  num_of_beds?: InputMaybe<Scalars['Int']>;
+  num_of_rooms?: InputMaybe<Scalars['Int']>;
   pagination?: InputMaybe<GqlPaginationInput>;
-  property_type?: InputMaybe<Scalars["String"]>;
-  query?: InputMaybe<Scalars["String"]>;
-  rating?: InputMaybe<Scalars["Int"]>;
+  property_type?: InputMaybe<Scalars['String']>;
+  query?: InputMaybe<Scalars['String']>;
+  rating?: InputMaybe<Scalars['Int']>;
 };
 
 export type SearchPopularProfilesInput = {
-  cursor?: InputMaybe<Scalars["String"]>;
-  q: Scalars["String"];
-  take?: InputMaybe<Scalars["Int"]>;
+  cursor?: InputMaybe<Scalars['String']>;
+  q: Scalars['String'];
+  take?: InputMaybe<Scalars['Int']>;
 };
 
 export type SearchUserInput = {
-  query: Scalars["String"];
+  query: Scalars['String'];
 };
 
 export type SearchUsers = {
-  __typename?: "SearchUsers";
+  __typename?: 'SearchUsers';
   resloveUsers: Array<Account>;
   users?: Maybe<Array<Account>>;
-  usersIds: Array<Scalars["ID"]>;
+  usersIds: Array<Scalars['ID']>;
 };
 
 export type Seller = {
-  __typename?: "Seller";
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  thumbnail: Scalars["String"];
+  __typename?: 'Seller';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  thumbnail: Scalars['String'];
 };
 
 export type SellerProductsRating = {
-  __typename?: "SellerProductsRating";
-  givenStars: Scalars["Float"];
-  id: Scalars["ID"];
-  rating: Scalars["Float"];
-  reviews: Scalars["Int"];
+  __typename?: 'SellerProductsRating';
+  givenStars: Scalars['Float'];
+  id: Scalars['ID'];
+  rating: Scalars['Float'];
+  reviews: Scalars['Int'];
 };
 
 export type Service = {
-  __typename?: "Service";
+  __typename?: 'Service';
   contact: ServiceContact;
-  hashtags: Array<Scalars["String"]>;
-  id: Scalars["ID"];
+  hashtags: Array<Scalars['String']>;
+  id: Scalars['ID'];
   location: ServiceLocation;
   presentation?: Maybe<Array<ServicePresentation>>;
-  price: Scalars["Float"];
-  rating: Scalars["Float"];
+  price: Scalars['Float'];
+  rating: Scalars['Float'];
   serviceType: ServiceType;
-  thumbnail: Scalars["String"];
-  title: Scalars["String"];
+  thumbnail: Scalars['String'];
+  title: Scalars['String'];
 };
 
 export type ServiceAmenitiesInput = {
   label: Array<ServiceAmenitiesLabelTranslationInput>;
-  value: Scalars["String"];
+  value: Scalars['String'];
 };
 
 export type ServiceAmenitiesLabelTranslationInput = {
-  langId: Scalars["String"];
-  value: Scalars["String"];
+  langId: Scalars['String'];
+  value: Scalars['String'];
 };
 
 export type ServiceAmenity = {
-  __typename?: "ServiceAmenity";
-  label: Scalars["String"];
-  value: Scalars["String"];
+  __typename?: 'ServiceAmenity';
+  label: Scalars['String'];
+  value: Scalars['String'];
 };
 
 export type ServiceCancelationPolicy = {
-  __typename?: "ServiceCancelationPolicy";
-  cost: Scalars["Int"];
-  duration: Scalars["Int"];
+  __typename?: 'ServiceCancelationPolicy';
+  cost: Scalars['Int'];
+  duration: Scalars['Int'];
 };
 
 export type ServiceCancelationPolicyInput = {
-  cost: Scalars["Int"];
-  duration: Scalars["Int"];
+  cost: Scalars['Int'];
+  duration: Scalars['Int'];
 };
 
 export type ServiceCategory = {
-  __typename?: "ServiceCategory";
+  __typename?: 'ServiceCategory';
   description: TranslationText;
   filters: Array<ServiceCategoryFilter>;
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   metaTagDescription: TranslationText;
   metaTagKeywords: TranslationText;
   metaTagTitle: TranslationText;
-  name: Scalars["String"];
+  name: Scalars['String'];
   seo: TranslationText;
-  slug: Scalars["String"];
-  sortOrder: Scalars["Int"];
+  slug: Scalars['String'];
+  sortOrder: Scalars['Int'];
   status: ServiceCategoryStatus;
-  thumbnail: Scalars["String"];
+  thumbnail: Scalars['String'];
 };
 
 export type ServiceCategoryFilter = {
-  __typename?: "ServiceCategoryFilter";
-  filterGroupName: Scalars["String"];
+  __typename?: 'ServiceCategoryFilter';
+  filterGroupName: Scalars['String'];
   filterValues: Array<ServiceCategoryFilterValue>;
-  filteringKey: Scalars["String"];
-  sortOrder: Scalars["Int"];
+  filteringKey: Scalars['String'];
+  sortOrder: Scalars['Int'];
 };
 
 export type ServiceCategoryFilterInput = {
   filterGroupName: Array<TranslationTextInput>;
   filterValues: Array<ServiceCategoryFilterValueInput>;
-  filteringKey: Scalars["String"];
-  sortOrder: Scalars["Int"];
+  filteringKey: Scalars['String'];
+  sortOrder: Scalars['Int'];
 };
 
 export type ServiceCategoryFilterValue = {
-  __typename?: "ServiceCategoryFilterValue";
-  filteringValue: Scalars["String"];
-  name: Scalars["String"];
-  sortOrder: Scalars["Int"];
+  __typename?: 'ServiceCategoryFilterValue';
+  filteringValue: Scalars['String'];
+  name: Scalars['String'];
+  sortOrder: Scalars['Int'];
 };
 
 export type ServiceCategoryFilterValueInput = {
-  filteringValue: Scalars["String"];
+  filteringValue: Scalars['String'];
   name: Array<TranslationTextInput>;
-  sortOrder: Scalars["Int"];
+  sortOrder: Scalars['Int'];
 };
 
 export enum ServiceCategoryStatus {
-  Active = "active",
-  InActive = "inActive",
+  Active = 'active',
+  InActive = 'inActive'
 }
 
 export type ServiceContact = {
-  __typename?: "ServiceContact";
-  address: Scalars["String"];
-  city: Scalars["String"];
-  country: Scalars["String"];
-  email: Scalars["String"];
-  phone: Scalars["String"];
-  state?: Maybe<Scalars["String"]>;
+  __typename?: 'ServiceContact';
+  address: Scalars['String'];
+  city: Scalars['String'];
+  country: Scalars['String'];
+  email: Scalars['String'];
+  phone: Scalars['String'];
+  state?: Maybe<Scalars['String']>;
 };
 
 export type ServiceContactInput = {
-  address: Scalars["String"];
-  city: Scalars["String"];
-  country: Scalars["String"];
-  email: Scalars["String"];
-  phone: Scalars["String"];
-  state?: InputMaybe<Scalars["String"]>;
+  address: Scalars['String'];
+  city: Scalars['String'];
+  country: Scalars['String'];
+  email: Scalars['String'];
+  phone: Scalars['String'];
+  state?: InputMaybe<Scalars['String']>;
 };
 
 export type ServiceDailyPrices = {
-  __typename?: "ServiceDailyPrices";
-  fr: Scalars["Int"];
-  mo: Scalars["Int"];
-  sa: Scalars["Int"];
-  su: Scalars["Int"];
-  th: Scalars["Int"];
-  tu: Scalars["Int"];
-  we: Scalars["Int"];
+  __typename?: 'ServiceDailyPrices';
+  fr: Scalars['Int'];
+  mo: Scalars['Int'];
+  sa: Scalars['Int'];
+  su: Scalars['Int'];
+  th: Scalars['Int'];
+  tu: Scalars['Int'];
+  we: Scalars['Int'];
 };
 
 export type ServiceDailyPricesInput = {
-  fr: Scalars["Int"];
-  mo: Scalars["Int"];
-  sa: Scalars["Int"];
-  su: Scalars["Int"];
-  th: Scalars["Int"];
-  tu: Scalars["Int"];
-  we: Scalars["Int"];
+  fr: Scalars['Int'];
+  mo: Scalars['Int'];
+  sa: Scalars['Int'];
+  su: Scalars['Int'];
+  th: Scalars['Int'];
+  tu: Scalars['Int'];
+  we: Scalars['Int'];
 };
 
 export type ServiceDayWorkingHours = {
-  __typename?: "ServiceDayWorkingHours";
-  periods: Array<Scalars["String"]>;
+  __typename?: 'ServiceDayWorkingHours';
+  periods: Array<Scalars['String']>;
 };
 
 export type ServiceDayWorkingHoursInput = {
-  periods: Array<Scalars["String"]>;
+  periods: Array<Scalars['String']>;
 };
 
 export type ServiceDiscount = {
-  __typename?: "ServiceDiscount";
-  units: Scalars["Int"];
-  value: Scalars["Float"];
+  __typename?: 'ServiceDiscount';
+  units: Scalars['Int'];
+  value: Scalars['Float'];
 };
 
 export type ServiceDiscountInput = {
-  units: Scalars["Int"];
-  value: Scalars["Int"];
+  units: Scalars['Int'];
+  value: Scalars['Int'];
 };
 
 export type ServiceDiscovery = {
-  __typename?: "ServiceDiscovery";
-  id: Scalars["ID"];
-  price: Array<Scalars["Float"]>;
-  sellerId: Scalars["ID"];
-  sellerName: Scalars["String"];
+  __typename?: 'ServiceDiscovery';
+  id: Scalars['ID'];
+  price: Array<Scalars['Float']>;
+  sellerId: Scalars['ID'];
+  sellerName: Scalars['String'];
   status: ServiceStatus;
-  thumbnail: Scalars["String"];
-  title: Scalars["String"];
+  thumbnail: Scalars['String'];
+  title: Scalars['String'];
   type: ServiceType;
-  updatedAt: Scalars["String"];
+  updatedAt: Scalars['String'];
 };
 
 export type ServiceExtra = {
-  __typename?: "ServiceExtra";
-  cost: Scalars["Int"];
-  name: Scalars["String"];
+  __typename?: 'ServiceExtra';
+  cost: Scalars['Int'];
+  name: Scalars['String'];
 };
 
 export type ServiceExtraInput = {
-  cost: Scalars["Int"];
+  cost: Scalars['Int'];
   name: Array<ServiceExtraNameTranslationInput>;
 };
 
 export type ServiceExtraNameTranslationInput = {
-  langId: Scalars["String"];
-  value: Scalars["String"];
+  langId: Scalars['String'];
+  value: Scalars['String'];
 };
 
 export type ServiceIncludedAmenitiesInput = {
-  langId: Scalars["String"];
-  value: Array<Scalars["String"]>;
+  langId: Scalars['String'];
+  value: Array<Scalars['String']>;
 };
 
 export type ServiceIncludedServicesInput = {
-  langId: Scalars["String"];
-  value: Array<Scalars["String"]>;
+  langId: Scalars['String'];
+  value: Array<Scalars['String']>;
 };
 
 export enum ServiceInsuranceStatusEnum {
-  Paid = "paid",
-  Pending = "pending",
-  Refunded = "refunded",
-  Refused = "refused",
-  Requested = "requested",
+  Paid = 'paid',
+  Pending = 'pending',
+  Refunded = 'refunded',
+  Refused = 'refused',
+  Requested = 'requested'
 }
 
 export type ServiceLocation = {
-  __typename?: "ServiceLocation";
-  address: Scalars["String"];
-  city: Scalars["String"];
-  country: Scalars["String"];
-  lat: Scalars["Float"];
-  lon: Scalars["Float"];
-  postalCode: Scalars["Int"];
-  state: Scalars["String"];
+  __typename?: 'ServiceLocation';
+  address: Scalars['String'];
+  city: Scalars['String'];
+  country: Scalars['String'];
+  lat: Scalars['Float'];
+  lon: Scalars['Float'];
+  postalCode: Scalars['Int'];
+  state: Scalars['String'];
 };
 
 export type ServiceLocationInput = {
-  address: Scalars["String"];
-  city: Scalars["String"];
-  country: Scalars["String"];
-  lat: Scalars["Float"];
-  lon: Scalars["Float"];
-  postalCode: Scalars["Int"];
-  state: Scalars["String"];
+  address: Scalars['String'];
+  city: Scalars['String'];
+  country: Scalars['String'];
+  lat: Scalars['Float'];
+  lon: Scalars['Float'];
+  postalCode: Scalars['Int'];
+  state: Scalars['String'];
 };
 
 export type ServiceMetaInfo = {
-  __typename?: "ServiceMetaInfo";
-  description: Scalars["String"];
-  hashtags: Array<Scalars["String"]>;
-  metaTagDescription: Scalars["String"];
-  metaTagKeywords: Array<Scalars["String"]>;
-  title: Scalars["String"];
+  __typename?: 'ServiceMetaInfo';
+  description: Scalars['String'];
+  hashtags: Array<Scalars['String']>;
+  metaTagDescription: Scalars['String'];
+  metaTagKeywords: Array<Scalars['String']>;
+  title: Scalars['String'];
 };
 
 export type ServiceMetaInfoInput = {
-  description: Scalars["String"];
-  hashtags: Array<Scalars["String"]>;
-  metaTagDescription: Scalars["String"];
-  metaTagKeywords: Array<Scalars["String"]>;
-  title: Scalars["String"];
+  description: Scalars['String'];
+  hashtags: Array<Scalars['String']>;
+  metaTagDescription: Scalars['String'];
+  metaTagKeywords: Array<Scalars['String']>;
+  title: Scalars['String'];
 };
 
 export type ServiceMetaInfoTranslation = {
-  __typename?: "ServiceMetaInfoTranslation";
-  langId: Scalars["String"];
+  __typename?: 'ServiceMetaInfoTranslation';
+  langId: Scalars['String'];
   value: ServiceMetaInfo;
 };
 
 export type ServiceMetaInfoTranslationInput = {
-  langId: Scalars["String"];
+  langId: Scalars['String'];
   value: ServiceMetaInfoInput;
 };
 
 export enum ServicePaymentMethod {
-  Cash = "cash",
-  Check = "check",
-  CreditCard = "credit_card",
-  Mastercard = "mastercard",
-  Visa = "visa",
+  Cash = 'cash',
+  Check = 'check',
+  CreditCard = 'credit_card',
+  Mastercard = 'mastercard',
+  Visa = 'visa'
 }
 
 export type ServicePolicy = {
-  __typename?: "ServicePolicy";
-  policyTitle: Scalars["String"];
-  terms: Array<Scalars["String"]>;
+  __typename?: 'ServicePolicy';
+  policyTitle: Scalars['String'];
+  terms: Array<Scalars['String']>;
 };
 
 export type ServicePolicyInput = {
-  policyTitle: Scalars["String"];
-  terms: Array<Scalars["String"]>;
+  policyTitle: Scalars['String'];
+  terms: Array<Scalars['String']>;
 };
 
 export type ServicePolicyTranslatedInput = {
-  langId: Scalars["String"];
+  langId: Scalars['String'];
   value: Array<ServicePolicyInput>;
 };
 
 export type ServicePost = {
-  __typename?: "ServicePost";
-  comments: Scalars["Int"];
+  __typename?: 'ServicePost';
+  comments: Scalars['Int'];
   commentsVisibility: CommentsVisibility;
-  createdAt: Scalars["String"];
-  id: Scalars["ID"];
+  createdAt: Scalars['String'];
+  id: Scalars['ID'];
   location: PostLocation;
-  reactionNum: Scalars["Int"];
+  reactionNum: Scalars['Int'];
   service?: Maybe<Service>;
-  serviceId: Scalars["ID"];
+  serviceId: Scalars['ID'];
   serviceType: TypeOfService;
-  shares: Scalars["Int"];
-  updatedAt: Scalars["String"];
+  shares: Scalars['Int'];
+  updatedAt: Scalars['String'];
   user?: Maybe<Account>;
-  userId: Scalars["ID"];
-  views: Scalars["Int"];
+  userId: Scalars['ID'];
+  views: Scalars['Int'];
   visibility: PostVisibility;
 };
 
 export type ServicePostHashtagSearch = {
-  __typename?: "ServicePostHashtagSearch";
+  __typename?: 'ServicePostHashtagSearch';
   commented?: Maybe<ServicePost>;
   liked?: Maybe<ServicePost>;
   shared?: Maybe<ServicePost>;
@@ -3710,267 +3941,268 @@ export type ServicePostHashtagSearch = {
 };
 
 export type ServicePresentation = {
-  __typename?: "ServicePresentation";
-  src: Scalars["String"];
+  __typename?: 'ServicePresentation';
+  src: Scalars['String'];
   type: ServicePresentationType;
 };
 
 export type ServicePresentationInput = {
-  src: Scalars["String"];
+  src: Scalars['String'];
   type: ServicePresentationType;
 };
 
 export enum ServicePresentationType {
-  Img = "img",
-  Vid = "vid",
+  Img = 'img',
+  Vid = 'vid'
 }
 
 export type ServicePropertyMeasurements = {
-  __typename?: "ServicePropertyMeasurements";
-  inFeet: Scalars["Int"];
-  inMeter: Scalars["Int"];
+  __typename?: 'ServicePropertyMeasurements';
+  inFeet: Scalars['Int'];
+  inMeter: Scalars['Int'];
 };
 
 export type ServicePropertyMeasurementsInput = {
-  inFeet: Scalars["Int"];
-  inMeter: Scalars["Int"];
+  inFeet: Scalars['Int'];
+  inMeter: Scalars['Int'];
 };
 
 export type ServiceShopRaw = {
-  __typename?: "ServiceShopRaw";
+  __typename?: 'ServiceShopRaw';
   cancelationPolicies: Array<ServiceCancelationPolicy>;
   contact: ServiceContact;
-  createdAt: Scalars["String"];
-  cuisinesTypeId?: Maybe<Scalars["String"]>;
+  createdAt: Scalars['String'];
+  cuisinesTypeId?: Maybe<Scalars['String']>;
   doctors?: Maybe<Array<Doctor>>;
-  establishmentTypeId?: Maybe<Scalars["String"]>;
-  highest_price: Scalars["Float"];
-  id: Scalars["ID"];
+  establishmentTypeId?: Maybe<Scalars['String']>;
+  highest_price: Scalars['Float'];
+  id: Scalars['ID'];
   location: ServiceLocation;
-  lowest_price: Scalars["Float"];
+  lowest_price: Scalars['Float'];
   menus?: Maybe<Array<RestaurantMenu>>;
-  michelin_guide_stars?: Maybe<Scalars["Int"]>;
-  ownerId: Scalars["ID"];
+  michelin_guide_stars?: Maybe<Scalars['Int']>;
+  ownerId: Scalars['ID'];
   payment_methods: Array<ServicePaymentMethod>;
   policies: Array<ServiceTranslationPolicy>;
   presentations: Array<ServicePresentation>;
-  rating: Scalars["Float"];
-  reviews: Scalars["Int"];
+  rating: Scalars['Float'];
+  reviews: Scalars['Int'];
   rooms?: Maybe<Array<HotelRoom>>;
   serviceMetaInfo: Array<ServiceMetaInfoTranslation>;
-  setting_and_ambianceId?: Maybe<Scalars["String"]>;
+  setting_and_ambianceId?: Maybe<Scalars['String']>;
   status: ServiceStatus;
-  suspensionReason?: Maybe<Scalars["String"]>;
+  suspensionReason?: Maybe<Scalars['String']>;
   treatments?: Maybe<Array<Treatment>>;
   type: ServiceType;
   type_of_seller: ServiceTypeOfSeller;
-  updatedAt: Scalars["String"];
-  vat: Scalars["Float"];
+  updatedAt: Scalars['String'];
+  vat: Scalars['Float'];
   vehicle?: Maybe<Array<Vehicle>>;
   workingHours?: Maybe<WorkingSchedule>;
 };
 
 export enum ServiceStatus {
-  Active = "active",
-  InActive = "inActive",
-  Suspended = "suspended",
+  Active = 'active',
+  InActive = 'inActive',
+  Suspended = 'suspended'
 }
 
 export type ServiceTranslationPolicy = {
-  __typename?: "ServiceTranslationPolicy";
-  langId: Scalars["String"];
+  __typename?: 'ServiceTranslationPolicy';
+  langId: Scalars['String'];
   value: Array<ServicePolicy>;
 };
 
 export enum ServiceType {
-  BeautyCenter = "beauty_center",
-  HealthCenter = "health_center",
-  HolidayRentals = "holiday_rentals",
-  Hotel = "hotel",
-  Restaurant = "restaurant",
-  Vehicle = "vehicle",
+  BeautyCenter = 'beauty_center',
+  HealthCenter = 'health_center',
+  HolidayRentals = 'holiday_rentals',
+  Hotel = 'hotel',
+  Restaurant = 'restaurant',
+  Vehicle = 'vehicle'
 }
 
 export enum ServiceTypeOfSeller {
-  Individual = "individual",
-  Professional = "professional",
+  Individual = 'individual',
+  Professional = 'professional'
 }
 
 export type ShippingAddress = {
-  __typename?: "ShippingAddress";
-  id: Scalars["ID"];
-  instractions?: Maybe<Scalars["String"]>;
+  __typename?: 'ShippingAddress';
+  id: Scalars['ID'];
+  instractions?: Maybe<Scalars['String']>;
   location: Location;
-  ownerId: Scalars["ID"];
-  phone?: Maybe<Scalars["String"]>;
+  ownerId: Scalars['ID'];
+  phone?: Maybe<Scalars['String']>;
 };
 
 export type ShippingCountry = {
-  __typename?: "ShippingCountry";
-  code: Scalars["String"];
-  name: Scalars["String"];
+  __typename?: 'ShippingCountry';
+  code: Scalars['String'];
+  name: Scalars['String'];
 };
 
 export type ShippingCountryInput = {
-  code: Scalars["String"];
-  name: Scalars["String"];
+  code: Scalars['String'];
+  name: Scalars['String'];
 };
 
 export type ShippingDeliveryTimeRange = {
-  __typename?: "ShippingDeliveryTimeRange";
-  from: Scalars["Int"];
-  to: Scalars["Int"];
+  __typename?: 'ShippingDeliveryTimeRange';
+  from: Scalars['Int'];
+  to: Scalars['Int'];
 };
 
 export type ShippingDeliveryTimeRangeInput = {
-  from: Scalars["Int"];
-  to: Scalars["Int"];
+  from: Scalars['Int'];
+  to: Scalars['Int'];
 };
 
 export type ShippingDetails = {
-  __typename?: "ShippingDetails";
-  available: Scalars["Boolean"];
-  cost?: Maybe<Scalars["Float"]>;
-  country: Scalars["String"];
+  __typename?: 'ShippingDetails';
+  available: Scalars['Boolean'];
+  cost?: Maybe<Scalars['Float']>;
+  country: Scalars['String'];
   deliveryTimeRange?: Maybe<ShippingDeliveryTimeRange>;
-  shippingRulesIds: Array<Scalars["ID"]>;
+  shippingRulesIds: Array<Scalars['ID']>;
   shippingTypes?: Maybe<Array<ShippingType>>;
 };
 
 export type ShippingRule = {
-  __typename?: "ShippingRule";
-  cost: Scalars["Float"];
+  __typename?: 'ShippingRule';
+  cost: Scalars['Float'];
   countries: Array<ShippingCountry>;
   deliveryTimeRange: ShippingDeliveryTimeRange;
-  id: Scalars["ID"];
-  name: Scalars["String"];
-  sellerId: Scalars["ID"];
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  sellerId: Scalars['ID'];
   shippingType: ShippingType;
 };
 
 export type ShippingRuleGeoZone = {
-  __typename?: "ShippingRuleGeoZone";
-  country: Scalars["String"];
-  id: Scalars["ID"];
-  shippingTypeRuleId: Scalars["ID"];
+  __typename?: 'ShippingRuleGeoZone';
+  country: Scalars['String'];
+  id: Scalars['ID'];
+  shippingTypeRuleId: Scalars['ID'];
 };
 
 export enum ShippingType {
-  ClickAndCollect = "click_and_collect",
-  Paid = "paid",
+  ClickAndCollect = 'click_and_collect',
+  Paid = 'paid'
 }
 
 export type ShippingTypeRule = {
-  __typename?: "ShippingTypeRule";
-  id: Scalars["ID"];
+  __typename?: 'ShippingTypeRule';
+  id: Scalars['ID'];
   type: ShippingType;
   zones: Array<ShippingRuleGeoZone>;
 };
 
 export type Shop = {
-  __typename?: "Shop";
-  banner: Scalars["String"];
-  createdAt: Scalars["DateTime"];
-  description: Scalars["String"];
-  id: Scalars["ID"];
+  __typename?: 'Shop';
+  banner: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
   location: Location;
-  name: Scalars["String"];
-  ownerId: Scalars["String"];
+  name: Scalars['String'];
+  ownerId: Scalars['String'];
   storeType: Array<StoreType>;
   targetGenders: Array<TargetGenders>;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars['DateTime'];
   vendorType: Array<VendorType>;
-  verified: Scalars["Boolean"];
+  verified: Scalars['Boolean'];
 };
 
 export type ShoppingCart = {
-  __typename?: "ShoppingCart";
-  appliedVoucherId?: Maybe<Scalars["ID"]>;
+  __typename?: 'ShoppingCart';
+  appliedVoucherId?: Maybe<Scalars['ID']>;
   cartProduct?: Maybe<Array<CartProduct>>;
   cartServices?: Maybe<Array<BookedService>>;
-  id: Scalars["ID"];
-  ownerId: Scalars["ID"];
+  id: Scalars['ID'];
+  ownerId: Scalars['ID'];
 };
 
 export type SpecialDayWorkingHours = {
-  __typename?: "SpecialDayWorkingHours";
-  date: Scalars["String"];
+  __typename?: 'SpecialDayWorkingHours';
+  date: Scalars['String'];
   workingHours: ServiceDayWorkingHours;
 };
 
 export type SpecialDayWorkingHoursInput = {
-  date: Scalars["String"];
+  date: Scalars['String'];
   workingHours: ServiceDayWorkingHoursInput;
 };
 
 export enum StoreType {
-  Product = "product",
-  Service = "service",
+  Product = 'product',
+  Service = 'service'
 }
 
 export type Story = {
-  __typename?: "Story";
+  __typename?: 'Story';
   affiliationPost?: Maybe<AffiliationPost>;
   attachements?: Maybe<Attachment>;
-  content?: Maybe<Scalars["String"]>;
-  createdAt: Scalars["DateTime"];
-  id: Scalars["ID"];
+  content?: Maybe<Scalars['String']>;
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   newsfeedPost?: Maybe<NewsfeedPost>;
   publisher?: Maybe<Profile>;
-  publisherId: Scalars["ID"];
-  reactionsNum: Scalars["Int"];
-  referenceId?: Maybe<Scalars["ID"]>;
+  publisherId: Scalars['ID'];
+  reactionsNum: Scalars['Int'];
+  referenceId?: Maybe<Scalars['ID']>;
   servicePost?: Maybe<ServicePost>;
   shopPost?: Maybe<ProductPost>;
   type: StoryType;
-  updatedAt: Scalars["DateTime"];
+  updatedAt: Scalars['DateTime'];
   views: Array<StoryView>;
-  viewsCount: Scalars["Int"];
+  viewsCount: Scalars['Int'];
 };
 
 export enum StoryType {
-  Affiliation = "affiliation",
-  Base = "base",
-  Image = "image",
-  Post = "post",
-  Product = "product",
-  Service = "service",
-  Text = "text",
-  Video = "video",
+  Affiliation = 'affiliation',
+  Base = 'base',
+  Image = 'image',
+  Post = 'post',
+  Product = 'product',
+  Service = 'service',
+  Text = 'text',
+  Video = 'video'
 }
 
 export type StoryView = {
-  __typename?: "StoryView";
-  createdAt: Scalars["DateTime"];
-  id: Scalars["ID"];
+  __typename?: 'StoryView';
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   story?: Maybe<Story>;
-  storyId: Scalars["ID"];
+  storyId: Scalars['ID'];
   viewer?: Maybe<Account>;
-  viewerId: Scalars["ID"];
+  viewerId: Scalars['ID'];
 };
 
 export type Subscription = {
-  __typename?: "Subscription";
+  __typename?: 'Subscription';
   joinRoom: ChatMessage;
   listenToMyRoomsChanges: ChatRoom;
 };
+
 
 export type SubscriptionJoinRoomArgs = {
   joinRoomArgs: JoinRoomInput;
 };
 
 export type SuspenseAccountAdminInput = {
-  rejectReason?: InputMaybe<Scalars["String"]>;
-  userId: Scalars["ID"];
+  rejectReason?: InputMaybe<Scalars['String']>;
+  userId: Scalars['ID'];
 };
 
 export enum TargetGenders {
-  Female = "female",
-  Male = "male",
+  Female = 'female',
+  Male = 'male'
 }
 
 export type TopHashtagNewsfeedPosts = {
-  __typename?: "TopHashtagNewsfeedPosts";
+  __typename?: 'TopHashtagNewsfeedPosts';
   commented: NewsfeedPost;
   liked: NewsfeedPost;
   shared: NewsfeedPost;
@@ -3978,88 +4210,88 @@ export type TopHashtagNewsfeedPosts = {
 };
 
 export type Transaction = {
-  __typename?: "Transaction";
-  amount: Scalars["Int"];
-  createdAt: Scalars["DateTime"];
-  currency: Scalars["String"];
-  description: Scalars["String"];
-  from: Scalars["String"];
+  __typename?: 'Transaction';
+  amount: Scalars['Int'];
+  createdAt: Scalars['DateTime'];
+  currency: Scalars['String'];
+  description: Scalars['String'];
+  from: Scalars['String'];
   fromUser: Account;
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   status: TransactionStatus;
   toUser: Account;
-  updatedAt: Scalars["DateTime"];
-  userId: Scalars["ID"];
+  updatedAt: Scalars['DateTime'];
+  userId: Scalars['ID'];
 };
 
 export enum TransactionStatus {
-  Failed = "failed",
-  Pending = "pending",
-  Success = "success",
+  Failed = 'failed',
+  Pending = 'pending',
+  Success = 'success'
 }
 
 export type TranslationText = {
-  __typename?: "TranslationText";
-  langId: Scalars["String"];
-  value: Scalars["String"];
+  __typename?: 'TranslationText';
+  langId: Scalars['String'];
+  value: Scalars['String'];
 };
 
 export type TranslationTextArrayInput = {
-  langId: Scalars["String"];
-  value: Array<Scalars["String"]>;
+  langId: Scalars['String'];
+  value: Array<Scalars['String']>;
 };
 
 export type TranslationTextInput = {
-  langId: Scalars["String"];
-  value: Scalars["String"];
+  langId: Scalars['String'];
+  value: Scalars['String'];
 };
 
 export type Treatment = {
-  __typename?: "Treatment";
+  __typename?: 'Treatment';
   category?: Maybe<BeautyCenterTreatmentCategory>;
   discount: ServiceDiscount;
-  duration: Array<Scalars["Int"]>;
-  id: Scalars["ID"];
-  price: Scalars["Float"];
-  title: Scalars["String"];
-  treatmentCategoryId: Scalars["ID"];
+  duration: Array<Scalars['Int']>;
+  id: Scalars['ID'];
+  price: Scalars['Float'];
+  title: Scalars['String'];
+  treatmentCategoryId: Scalars['ID'];
 };
 
 export enum TypeOfService {
-  BeautyCenterTreatment = "beautyCenterTreatment",
-  HealthCenterTreatment = "healthCenterTreatment",
-  HolidayRental = "holidayRental",
-  HotelRoom = "hotelRoom",
-  RestaurantMenu = "restaurantMenu",
-  Vehicle = "vehicle",
+  BeautyCenterTreatment = 'beautyCenterTreatment',
+  HealthCenterTreatment = 'healthCenterTreatment',
+  HolidayRental = 'holidayRental',
+  HotelRoom = 'hotelRoom',
+  RestaurantMenu = 'restaurantMenu',
+  Vehicle = 'vehicle'
 }
 
 export type UnFollowProfileInput = {
-  profileId: Scalars["String"];
+  profileId: Scalars['String'];
 };
 
 export type UpdateAccountInput = {
   accountType?: InputMaybe<RegisterAccountType>;
-  companyRegisterationNumber?: InputMaybe<Scalars["String"]>;
-  confirmPassword?: InputMaybe<Scalars["String"]>;
-  email?: InputMaybe<Scalars["String"]>;
-  firstName?: InputMaybe<Scalars["String"]>;
-  lastName?: InputMaybe<Scalars["String"]>;
-  password?: InputMaybe<Scalars["String"]>;
+  companyRegisterationNumber?: InputMaybe<Scalars['String']>;
+  confirmPassword?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  lastName?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateAffiliationInput = {
-  commision?: InputMaybe<Scalars["Float"]>;
-  expireAt?: InputMaybe<Scalars["String"]>;
-  id: Scalars["ID"];
-  itemId?: InputMaybe<Scalars["ID"]>;
-  itemType?: InputMaybe<Scalars["String"]>;
+  commision?: InputMaybe<Scalars['Float']>;
+  expireAt?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  itemId?: InputMaybe<Scalars['ID']>;
+  itemType?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateBeautyCenterInput = {
-  beauty_center_typeId?: InputMaybe<Scalars["ID"]>;
+  beauty_center_typeId?: InputMaybe<Scalars['ID']>;
   cancelationPolicies?: InputMaybe<Array<ServiceCancelationPolicyInput>>;
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   payment_methods?: InputMaybe<Array<ServicePaymentMethod>>;
   policies?: InputMaybe<Array<ServicePolicyTranslatedInput>>;
   presentations?: InputMaybe<Array<ServicePresentationInput>>;
@@ -4067,224 +4299,224 @@ export type UpdateBeautyCenterInput = {
   title?: InputMaybe<Array<TranslationTextInput>>;
   treatments?: InputMaybe<Array<UpdateBeautyCenterTreatmentInput>>;
   type_of_seller?: InputMaybe<ServiceTypeOfSeller>;
-  vat?: InputMaybe<Scalars["Float"]>;
+  vat?: InputMaybe<Scalars['Float']>;
 };
 
 export type UpdateBeautyCenterTreatmentInput = {
   discount?: InputMaybe<ServiceDiscountInput>;
-  duration?: InputMaybe<Array<Scalars["Int"]>>;
-  id: Scalars["ID"];
-  price?: InputMaybe<Scalars["Float"]>;
+  duration?: InputMaybe<Array<Scalars['Int']>>;
+  id: Scalars['ID'];
+  price?: InputMaybe<Scalars['Float']>;
   title?: InputMaybe<Array<TranslationTextInput>>;
-  treatmentCategoryId?: InputMaybe<Scalars["ID"]>;
+  treatmentCategoryId?: InputMaybe<Scalars['ID']>;
 };
 
 export type UpdateCategoryInput = {
-  id: Scalars["ID"];
-  name?: InputMaybe<Scalars["String"]>;
-  parantId?: InputMaybe<Scalars["ID"]>;
-  sortOrder?: InputMaybe<Scalars["Int"]>;
+  id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+  parantId?: InputMaybe<Scalars['ID']>;
+  sortOrder?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<ProductCategoryStatus>;
 };
 
 export type UpdateCommentInput = {
-  content?: InputMaybe<Scalars["String"]>;
-  id: Scalars["ID"];
+  content?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
   mentions?: InputMaybe<Array<CommentMentionInput>>;
 };
 
 export type UpdateFilterInput = {
-  id: Scalars["ID"];
-  name?: InputMaybe<Scalars["String"]>;
-  sortOrder?: InputMaybe<Scalars["Int"]>;
+  id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
+  sortOrder?: InputMaybe<Scalars['Int']>;
   values?: InputMaybe<Array<ProductFilterGroupValueInput>>;
 };
 
 export type UpdateHealthCenterInput = {
   cancelationPolicies?: InputMaybe<Array<ServiceCancelationPolicyInput>>;
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   payment_methods?: InputMaybe<Array<ServicePaymentMethod>>;
   policies?: InputMaybe<Array<ServicePolicyTranslatedInput>>;
   presentations?: InputMaybe<Array<ServicePresentationInput>>;
   serviceMetaInfo?: InputMaybe<Array<ServiceMetaInfoTranslationInput>>;
   status?: InputMaybe<ServiceStatus>;
-  vat?: InputMaybe<Scalars["Float"]>;
+  vat?: InputMaybe<Scalars['Float']>;
 };
 
 export type UpdateHotelRoomAdminInput = {
-  bathrooms?: InputMaybe<Scalars["Int"]>;
-  beds?: InputMaybe<Scalars["Int"]>;
+  bathrooms?: InputMaybe<Scalars['Int']>;
+  beds?: InputMaybe<Scalars['Int']>;
   cancelationPolicies?: InputMaybe<Array<ServiceCancelationPolicyInput>>;
-  dailyPrice?: InputMaybe<Scalars["Boolean"]>;
+  dailyPrice?: InputMaybe<Scalars['Boolean']>;
   dailyPrices?: InputMaybe<ServiceDailyPricesInput>;
   discount?: InputMaybe<ServiceDiscountInput>;
   extras?: InputMaybe<Array<ServiceExtraInput>>;
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   includedAmenities?: InputMaybe<Array<ServiceIncludedAmenitiesInput>>;
   includedServices?: InputMaybe<Array<ServiceIncludedServicesInput>>;
-  insurance?: InputMaybe<Scalars["Float"]>;
+  insurance?: InputMaybe<Scalars['Float']>;
   measurements?: InputMaybe<ServicePropertyMeasurementsInput>;
-  num_of_rooms?: InputMaybe<Scalars["Int"]>;
+  num_of_rooms?: InputMaybe<Scalars['Int']>;
   popularAmenities?: InputMaybe<Array<ServiceAmenitiesInput>>;
   presentations?: InputMaybe<Array<ServicePresentationInput>>;
-  pricePerNight?: InputMaybe<Scalars["Int"]>;
+  pricePerNight?: InputMaybe<Scalars['Int']>;
   roomMetaInfo?: InputMaybe<Array<HotelRoomTranslationMetaInfoInput>>;
 };
 
 export type UpdateMyPrivacyInput = {
-  hideCommentsNum?: InputMaybe<Scalars["Boolean"]>;
-  hideLikesNum?: InputMaybe<Scalars["Boolean"]>;
-  hideViewsNum?: InputMaybe<Scalars["Boolean"]>;
-  privateAccount?: InputMaybe<Scalars["Boolean"]>;
+  hideCommentsNum?: InputMaybe<Scalars['Boolean']>;
+  hideLikesNum?: InputMaybe<Scalars['Boolean']>;
+  hideViewsNum?: InputMaybe<Scalars['Boolean']>;
+  privateAccount?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type UpdateNewsfeedPostInput = {
   attachments?: InputMaybe<Array<AttachmentInput>>;
-  content?: InputMaybe<Scalars["String"]>;
+  content?: InputMaybe<Scalars['String']>;
   hashtags?: InputMaybe<Array<HashtagInput>>;
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   location?: InputMaybe<PostLocationInput>;
   tags?: InputMaybe<Array<PostTagInput>>;
-  title?: InputMaybe<Scalars["String"]>;
+  title?: InputMaybe<Scalars['String']>;
   visibility?: InputMaybe<PostVisibility>;
 };
 
 export type UpdateProductInput = {
   attributes?: InputMaybe<Array<ProductAttributeInput>>;
-  brand?: InputMaybe<Scalars["String"]>;
+  brand?: InputMaybe<Scalars['String']>;
   cashback?: InputMaybe<CashBackInput>;
-  categoryId?: InputMaybe<Scalars["ID"]>;
-  description?: InputMaybe<Scalars["String"]>;
+  categoryId?: InputMaybe<Scalars['ID']>;
+  description?: InputMaybe<Scalars['String']>;
   discount?: InputMaybe<DiscountInput>;
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   presentations?: InputMaybe<Array<ProductPresentationInput>>;
-  price?: InputMaybe<Scalars["Float"]>;
+  price?: InputMaybe<Scalars['Float']>;
   status?: InputMaybe<ProductStatus>;
-  stock?: InputMaybe<Scalars["Int"]>;
-  thumbnail?: InputMaybe<Scalars["String"]>;
-  title?: InputMaybe<Scalars["String"]>;
+  stock?: InputMaybe<Scalars['Int']>;
+  thumbnail?: InputMaybe<Scalars['String']>;
+  title?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<ProductType>;
-  vat?: InputMaybe<Scalars["Float"]>;
+  vat?: InputMaybe<Scalars['Float']>;
   visibility?: InputMaybe<VisibilityEnum>;
 };
 
 export type UpdateProfileAdminInput = {
-  bio?: InputMaybe<Scalars["String"]>;
-  photo?: InputMaybe<Scalars["String"]>;
-  profession?: InputMaybe<Scalars["String"]>;
-  profileId?: InputMaybe<Scalars["ID"]>;
-  username?: InputMaybe<Scalars["String"]>;
+  bio?: InputMaybe<Scalars['String']>;
+  photo?: InputMaybe<Scalars['String']>;
+  profession?: InputMaybe<Scalars['String']>;
+  profileId?: InputMaybe<Scalars['ID']>;
+  username?: InputMaybe<Scalars['String']>;
   visibility?: InputMaybe<ProfileVisibility>;
 };
 
 export type UpdateProfileInput = {
-  bio?: InputMaybe<Scalars["String"]>;
-  photo?: InputMaybe<Scalars["String"]>;
-  profession?: InputMaybe<Scalars["String"]>;
-  username?: InputMaybe<Scalars["String"]>;
+  bio?: InputMaybe<Scalars['String']>;
+  photo?: InputMaybe<Scalars['String']>;
+  profession?: InputMaybe<Scalars['String']>;
+  username?: InputMaybe<Scalars['String']>;
   visibility?: InputMaybe<ProfileVisibility>;
 };
 
 export type UpdateRequiredActionInput = {
   /** Example field (placeholder) */
-  exampleField?: InputMaybe<Scalars["Int"]>;
-  id: Scalars["Int"];
+  exampleField?: InputMaybe<Scalars['Int']>;
+  id: Scalars['Int'];
 };
 
 export type UpdateRestaurantInput = {
-  cuisinesTypeId?: InputMaybe<Scalars["ID"]>;
+  cuisinesTypeId?: InputMaybe<Scalars['ID']>;
   dishs?: InputMaybe<Array<UpdateRestaurantMenuDishInput>>;
-  establishmentTypeId?: InputMaybe<Scalars["ID"]>;
-  id: Scalars["ID"];
+  establishmentTypeId?: InputMaybe<Scalars['ID']>;
+  id: Scalars['ID'];
   location?: InputMaybe<ServiceLocationInput>;
   menus?: InputMaybe<Array<UpdateRestaurantMenuInput>>;
-  michelin_guide_stars?: InputMaybe<Scalars["Int"]>;
+  michelin_guide_stars?: InputMaybe<Scalars['Int']>;
   payment_methods?: InputMaybe<Array<ServicePaymentMethod>>;
   policies?: InputMaybe<Array<ServicePolicyTranslatedInput>>;
   presentations?: InputMaybe<Array<ServicePresentationInput>>;
   serviceMetaInfo?: InputMaybe<Array<ServiceMetaInfoTranslationInput>>;
-  setting_and_ambianceId?: InputMaybe<Scalars["ID"]>;
+  setting_and_ambianceId?: InputMaybe<Scalars['ID']>;
   status?: InputMaybe<ServiceStatus>;
-  vat?: InputMaybe<Scalars["Int"]>;
+  vat?: InputMaybe<Scalars['Int']>;
 };
 
 export type UpdateRestaurantMenuDishInput = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   ingredients: Array<TranslationTextArrayInput>;
   name: Array<TranslationTextInput>;
-  price: Scalars["Int"];
-  thumbnail: Scalars["String"];
+  price: Scalars['Int'];
+  thumbnail: Scalars['String'];
 };
 
 export type UpdateRestaurantMenuInput = {
   dishs: Array<UpdateRestaurantMenuDishInput>;
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   name: Array<TranslationTextInput>;
 };
 
 export type UpdateSellerAccountAdminInput = {
   accountType?: InputMaybe<RegisterAccountType>;
-  companyRegisterationNumber?: InputMaybe<Scalars["String"]>;
-  confirmPassword?: InputMaybe<Scalars["String"]>;
-  email?: InputMaybe<Scalars["String"]>;
-  firstName?: InputMaybe<Scalars["String"]>;
-  id: Scalars["ID"];
-  lastName?: InputMaybe<Scalars["String"]>;
-  password?: InputMaybe<Scalars["String"]>;
+  companyRegisterationNumber?: InputMaybe<Scalars['String']>;
+  confirmPassword?: InputMaybe<Scalars['String']>;
+  email?: InputMaybe<Scalars['String']>;
+  firstName?: InputMaybe<Scalars['String']>;
+  id: Scalars['ID'];
+  lastName?: InputMaybe<Scalars['String']>;
+  password?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateServiceCategoryInput = {
   description?: InputMaybe<TranslationTextInput>;
   filters?: InputMaybe<Array<ServiceCategoryFilterInput>>;
-  id: Scalars["String"];
+  id: Scalars['String'];
   metaTagDescription?: InputMaybe<TranslationTextInput>;
   metaTagKeywords?: InputMaybe<TranslationTextInput>;
   metaTagTitle?: InputMaybe<TranslationTextInput>;
   name?: InputMaybe<Array<TranslationTextInput>>;
   seo?: InputMaybe<TranslationTextInput>;
-  slug?: InputMaybe<Scalars["String"]>;
-  thumbnail?: InputMaybe<Scalars["String"]>;
+  slug?: InputMaybe<Scalars['String']>;
+  thumbnail?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateShippingAddressInput = {
-  id: Scalars["ID"];
-  instractions?: InputMaybe<Scalars["String"]>;
+  id: Scalars['ID'];
+  instractions?: InputMaybe<Scalars['String']>;
   location?: InputMaybe<LocationInput>;
-  ownerId?: InputMaybe<Scalars["ID"]>;
-  phone?: InputMaybe<Scalars["String"]>;
+  ownerId?: InputMaybe<Scalars['ID']>;
+  phone?: InputMaybe<Scalars['String']>;
 };
 
 export type UpdateShippingRuleInput = {
-  cost?: InputMaybe<Scalars["Float"]>;
+  cost?: InputMaybe<Scalars['Float']>;
   countries?: InputMaybe<Array<ShippingCountryInput>>;
   deliveryTimeRange?: InputMaybe<ShippingDeliveryTimeRangeInput>;
-  id: Scalars["ID"];
-  name?: InputMaybe<Scalars["String"]>;
+  id: Scalars['ID'];
+  name?: InputMaybe<Scalars['String']>;
   shippingType?: InputMaybe<ShippingType>;
 };
 
 export type UpdateShopInput = {
-  banner?: InputMaybe<Scalars["String"]>;
-  description?: InputMaybe<Scalars["String"]>;
+  banner?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
   location?: InputMaybe<LocationInput>;
-  name?: InputMaybe<Scalars["String"]>;
+  name?: InputMaybe<Scalars['String']>;
   storeType?: InputMaybe<Array<StoreType>>;
   targetGenders?: InputMaybe<Array<TargetGenders>>;
   vendorType?: InputMaybe<Array<VendorType>>;
 };
 
 export type UpdateTreatmentCategoriesInput = {
-  ids: Array<Scalars["ID"]>;
+  ids: Array<Scalars['ID']>;
   title?: InputMaybe<Array<TranslationTextInput>>;
 };
 
 export type UpdateUserCookiesSettingsInput = {
-  ids: Array<Scalars["ID"]>;
+  ids: Array<Scalars['ID']>;
 };
 
 export type UpdateUserLocationInput = {
-  lat: Scalars["Float"];
-  lon: Scalars["Float"];
+  lat: Scalars['Float'];
+  lon: Scalars['Float'];
 };
 
 export type UpdateWeekdaysWorkingHoursInput = {
@@ -4303,101 +4535,101 @@ export type UpdateWorkingScheduleInput = {
 };
 
 export type UserContact = {
-  __typename?: "UserContact";
-  gmail?: Maybe<Scalars["String"]>;
-  outlook?: Maybe<Scalars["String"]>;
-  whatsapp?: Maybe<Scalars["String"]>;
-  yahoo?: Maybe<Scalars["String"]>;
+  __typename?: 'UserContact';
+  gmail?: Maybe<Scalars['String']>;
+  outlook?: Maybe<Scalars['String']>;
+  whatsapp?: Maybe<Scalars['String']>;
+  yahoo?: Maybe<Scalars['String']>;
 };
 
 export type UserCookiesSettings = {
-  __typename?: "UserCookiesSettings";
-  acceptedCookiesIds: Array<Scalars["String"]>;
-  acceptedRequired: Scalars["Boolean"];
-  id: Scalars["ID"];
-  userId: Scalars["ID"];
+  __typename?: 'UserCookiesSettings';
+  acceptedCookiesIds: Array<Scalars['String']>;
+  acceptedRequired: Scalars['Boolean'];
+  id: Scalars['ID'];
+  userId: Scalars['ID'];
 };
 
 export type UserSavedPostsGroup = {
-  __typename?: "UserSavedPostsGroup";
-  id: Scalars["ID"];
+  __typename?: 'UserSavedPostsGroup';
+  id: Scalars['ID'];
   posts: Array<NewsfeedPost>;
-  userId: Scalars["ID"];
+  userId: Scalars['ID'];
 };
 
 export type Vehicle = {
-  __typename?: "Vehicle";
-  brand: Scalars["String"];
+  __typename?: 'Vehicle';
+  brand: Scalars['String'];
   cancelationPolicies: Array<ServiceCancelationPolicy>;
-  id: Scalars["ID"];
-  model: Scalars["String"];
+  id: Scalars['ID'];
+  model: Scalars['String'];
   presentations: Array<ServicePresentation>;
-  price: Scalars["Int"];
+  price: Scalars['Int'];
   properties: VehicleProperties;
-  title: Scalars["String"];
+  title: Scalars['String'];
 };
 
 export type VehicleProperties = {
-  __typename?: "VehicleProperties";
-  airCondition: Scalars["Boolean"];
-  gpsAvailable: Scalars["Boolean"];
-  lugaggeCapacity: Scalars["Int"];
-  maxSpeedInKm: Scalars["Int"];
-  seats: Scalars["Int"];
-  windows: Scalars["Int"];
+  __typename?: 'VehicleProperties';
+  airCondition: Scalars['Boolean'];
+  gpsAvailable: Scalars['Boolean'];
+  lugaggeCapacity: Scalars['Int'];
+  maxSpeedInKm: Scalars['Int'];
+  seats: Scalars['Int'];
+  windows: Scalars['Int'];
 };
 
 export type VehicleService = {
-  __typename?: "VehicleService";
+  __typename?: 'VehicleService';
   cancelationPolicies: Array<ServiceCancelationPolicy>;
   contact: ServiceContact;
-  createdAt: Scalars["DateTime"];
-  id: Scalars["ID"];
+  createdAt: Scalars['DateTime'];
+  id: Scalars['ID'];
   location: ServiceLocation;
   owner: Account;
-  ownerId: Scalars["ID"];
+  ownerId: Scalars['ID'];
   payment_methods: Array<ServicePaymentMethod>;
   policies: Array<ServicePolicy>;
   presentations: Array<ServicePresentation>;
-  rating: Scalars["Float"];
+  rating: Scalars['Float'];
   serviceMetaInfo: ServiceMetaInfo;
-  totalReviews: Scalars["Int"];
-  updatedAt: Scalars["DateTime"];
-  vat: Scalars["Float"];
+  totalReviews: Scalars['Int'];
+  updatedAt: Scalars['DateTime'];
+  vat: Scalars['Float'];
   vehicles: Array<Vehicle>;
   workingHours: WorkingSchedule;
 };
 
 export enum VendorType {
-  Individual = "individual",
-  Profissional = "profissional",
+  Individual = 'individual',
+  Profissional = 'profissional'
 }
 
 export type VerifyEmailDto = {
-  verificationCode: Scalars["String"];
+  verificationCode: Scalars['String'];
 };
 
 export enum VisibilityEnum {
-  Hidden = "hidden",
-  Public = "public",
+  Hidden = 'hidden',
+  Public = 'public'
 }
 
 export type Voucher = {
-  __typename?: "Voucher";
-  amount: Scalars["Float"];
-  code: Scalars["String"];
-  createdAt: Scalars["String"];
-  currency: Scalars["String"];
+  __typename?: 'Voucher';
+  amount: Scalars['Float'];
+  code: Scalars['String'];
+  createdAt: Scalars['String'];
+  currency: Scalars['String'];
   status: VoucherStatus;
 };
 
 export enum VoucherStatus {
-  Active = "active",
-  InActive = "inActive",
+  Active = 'active',
+  InActive = 'inActive'
 }
 
 export type WeekdaysWorkingHours = {
-  __typename?: "WeekdaysWorkingHours";
+  __typename?: 'WeekdaysWorkingHours';
   fr?: Maybe<ServiceDayWorkingHours>;
   mo?: Maybe<ServiceDayWorkingHours>;
   sa?: Maybe<ServiceDayWorkingHours>;
@@ -4408,66 +4640,66 @@ export type WeekdaysWorkingHours = {
 };
 
 export type Wisher = {
-  __typename?: "Wisher";
-  userId: Scalars["String"];
+  __typename?: 'Wisher';
+  userId: Scalars['String'];
 };
 
 export type Wisherslist = {
-  __typename?: "Wisherslist";
-  id: Scalars["ID"];
-  itemId: Scalars["ID"];
-  sellerId: Scalars["ID"];
+  __typename?: 'Wisherslist';
+  id: Scalars['ID'];
+  itemId: Scalars['ID'];
+  sellerId: Scalars['ID'];
   wishers: Array<Wisher>;
-  wishersCount: Scalars["Int"];
+  wishersCount: Scalars['Int'];
 };
 
 export type Wishlist = {
-  __typename?: "Wishlist";
-  id: Scalars["ID"];
-  ownerId: Scalars["ID"];
+  __typename?: 'Wishlist';
+  id: Scalars['ID'];
+  ownerId: Scalars['ID'];
   wishedItems: Array<WishlistItem>;
 };
 
 export type WishlistItem = {
-  __typename?: "WishlistItem";
-  itemId: Scalars["ID"];
+  __typename?: 'WishlistItem';
+  itemId: Scalars['ID'];
   itemType: WishlistItemType;
   product?: Maybe<Product>;
   service?: Maybe<Service>;
 };
 
 export enum WishlistItemType {
-  Product = "product",
-  Service = "service",
+  Product = 'product',
+  Service = 'service'
 }
 
 export type WithdrawalRequest = {
-  __typename?: "WithdrawalRequest";
-  amount: Scalars["Float"];
-  id: Scalars["ID"];
-  processedAt: Scalars["String"];
-  requestedAt: Scalars["String"];
+  __typename?: 'WithdrawalRequest';
+  amount: Scalars['Float'];
+  id: Scalars['ID'];
+  processedAt: Scalars['String'];
+  requestedAt: Scalars['String'];
   status: WithdrawalStatus;
-  userId: Scalars["ID"];
+  userId: Scalars['ID'];
 };
 
 export enum WithdrawalStatus {
-  Pending = "pending",
-  Processed = "processed",
-  Refused = "refused",
+  Pending = 'pending',
+  Processed = 'processed',
+  Refused = 'refused'
 }
 
 export type WorkingSchedule = {
-  __typename?: "WorkingSchedule";
-  id: Scalars["ID"];
+  __typename?: 'WorkingSchedule';
+  id: Scalars['ID'];
   specialDays: Array<SpecialDayWorkingHours>;
   weekdays: WeekdaysWorkingHours;
 };
 
 export type UpdateBeautyCenterAdminInput = {
-  beauty_center_typeId?: InputMaybe<Scalars["ID"]>;
+  beauty_center_typeId?: InputMaybe<Scalars['ID']>;
   cancelationPolicies?: InputMaybe<Array<ServiceCancelationPolicyInput>>;
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   payment_methods?: InputMaybe<Array<ServicePaymentMethod>>;
   policies?: InputMaybe<Array<ServicePolicyTranslatedInput>>;
   presentations?: InputMaybe<Array<ServicePresentationInput>>;
@@ -4475,22 +4707,22 @@ export type UpdateBeautyCenterAdminInput = {
   title?: InputMaybe<Array<TranslationTextInput>>;
   treatments?: InputMaybe<Array<UpdateBeautyCenterTreatmentInput>>;
   type_of_seller?: InputMaybe<ServiceTypeOfSeller>;
-  vat?: InputMaybe<Scalars["Float"]>;
+  vat?: InputMaybe<Scalars['Float']>;
 };
 
 export type UpdateHealthCenterAdminInput = {
   cancelationPolicies?: InputMaybe<Array<ServiceCancelationPolicyInput>>;
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   payment_methods?: InputMaybe<Array<ServicePaymentMethod>>;
   policies?: InputMaybe<Array<ServicePolicyTranslatedInput>>;
   presentations?: InputMaybe<Array<ServicePresentationInput>>;
   serviceMetaInfo?: InputMaybe<Array<ServiceMetaInfoTranslationInput>>;
   status?: InputMaybe<ServiceStatus>;
-  vat?: InputMaybe<Scalars["Float"]>;
+  vat?: InputMaybe<Scalars['Float']>;
 };
 
 export type UpdateHotelAdminInput = {
-  id: Scalars["ID"];
+  id: Scalars['ID'];
   location?: InputMaybe<ServiceLocationInput>;
   policies?: InputMaybe<Array<ServicePolicyTranslatedInput>>;
   presentations?: InputMaybe<Array<ServicePresentationInput>>;
@@ -4499,31 +4731,36 @@ export type UpdateHotelAdminInput = {
 };
 
 export type UpdateRestaurantAdminInput = {
-  cuisinesTypeId?: InputMaybe<Scalars["ID"]>;
+  cuisinesTypeId?: InputMaybe<Scalars['ID']>;
   dishs?: InputMaybe<Array<UpdateRestaurantMenuDishInput>>;
-  establishmentTypeId?: InputMaybe<Scalars["ID"]>;
-  id: Scalars["ID"];
+  establishmentTypeId?: InputMaybe<Scalars['ID']>;
+  id: Scalars['ID'];
   location?: InputMaybe<ServiceLocationInput>;
   menus?: InputMaybe<Array<UpdateRestaurantMenuInput>>;
-  michelin_guide_stars?: InputMaybe<Scalars["Int"]>;
+  michelin_guide_stars?: InputMaybe<Scalars['Int']>;
   payment_methods?: InputMaybe<Array<ServicePaymentMethod>>;
   policies?: InputMaybe<Array<ServicePolicyTranslatedInput>>;
   presentations?: InputMaybe<Array<ServicePresentationInput>>;
   serviceMetaInfo?: InputMaybe<Array<ServiceMetaInfoTranslationInput>>;
-  setting_and_ambianceId?: InputMaybe<Scalars["ID"]>;
+  setting_and_ambianceId?: InputMaybe<Scalars['ID']>;
   status?: InputMaybe<ServiceStatus>;
-  vat?: InputMaybe<Scalars["Int"]>;
+  vat?: InputMaybe<Scalars['Int']>;
 };
 
 export type UpdateVehicleAdminInput = {
-  brand?: InputMaybe<Scalars["String"]>;
+  brand?: InputMaybe<Scalars['String']>;
   cancelationPolicies?: InputMaybe<Array<ServiceCancelationPolicyInput>>;
-  id: Scalars["ID"];
-  insurance?: InputMaybe<Scalars["Float"]>;
-  model?: InputMaybe<Scalars["String"]>;
+  id: Scalars['ID'];
+  insurance?: InputMaybe<Scalars['Float']>;
+  model?: InputMaybe<Scalars['String']>;
   presentations?: InputMaybe<Array<ServicePresentationInput>>;
-  price?: InputMaybe<Scalars["Float"]>;
+  price?: InputMaybe<Scalars['Float']>;
   properties?: InputMaybe<CreateVehiclePropertiesInput>;
   title?: InputMaybe<Array<TranslationTextInput>>;
-  typeId?: InputMaybe<Scalars["ID"]>;
+  typeId?: InputMaybe<Scalars['ID']>;
 };
+
+export type ListenToMyRoomsSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ListenToMyRoomsSubscription = { __typename?: 'Subscription', listenToMyRoomsChanges: { __typename?: 'ChatRoom', id: string, members: Array<{ __typename?: 'Account', profile?: { __typename?: 'Profile', username: string, photo: string, activeStatus: ActiveStatus } | null }> } };

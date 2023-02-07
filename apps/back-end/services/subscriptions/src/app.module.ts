@@ -19,7 +19,7 @@ export const subgraphs = [
   { name: 'reviews', url: 'http://localhost:3010/graphql' },
   { name: 'search', url: 'http://localhost:3008/graphql' },
   { name: 'services', url: 'http://localhost:3020/graphql' },
-  // { name: 'chat', url: 'http://localhost:3022/graphql' },
+  { name: 'chat', url: 'http://localhost:3022/graphql' },
   // { name: 'notification', url: 'http://localhost:3025/graphql' },
   // { name: 'membership', url: 'http://localhost:3026/graphql' },
   { name: 'billing', url: 'http://localhost:3015/graphql' },
@@ -86,7 +86,11 @@ export const subgraphs = [
             // (data source methods will be accessible on the `gatewayApi` key)
             const dataSources = GenerateDataSources(ctx);
             // Return the complete context for the request
-            return { token: token || null, ...dataSources };
+            const user = VerifyAndGetUserFromContext({
+              req: ctx?.extra?.request,
+            });
+            console.log({ ctx: user });
+            return { token: token || null, user, ...ctx, ...dataSources };
           },
         };
       },

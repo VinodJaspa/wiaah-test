@@ -1,0 +1,12 @@
+subscription listenToMyRooms {
+  listenToMyRoomsChanges {
+    id
+    members {
+      profile {
+        username
+        photo
+        activeStatus
+      }
+    }
+  }
+}
