@@ -128,9 +128,10 @@ export class StripeBillingService {
         ownerId: user.id,
       }),
     );
-
+    console.log('no shop cart', { data, success, error });
     if (!success) throw error;
 
+    console.log('shop cart', { data, success, error });
     const { items } = data;
 
     if (items.length < 1) throw new BadRequestException('empty shopping cart');

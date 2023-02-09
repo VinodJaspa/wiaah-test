@@ -68,101 +68,100 @@ export const TransactionsHistorySection: React.FC<
         />
       </div>
       <span className="text-2xl font-bold">{t("Transaction History")}</span>
-      <Pagination controls={controls}>
-        <TableContainer>
-          <Table
-            TdProps={{
-              className:
-                "whitespace-nowrap border-collapse border-[1px] border-gray-300 ",
-            }}
-            ThProps={{
-              className:
-                "whitespace-nowrap border-collapse border-[1px] border-gray-300 ",
-            }}
-            className="border-collapse w-full"
-            TrProps={{ className: "border-collapse" }}
-          >
-            <THead>
+      <TableContainer>
+        <Table
+          TdProps={{
+            className:
+              "whitespace-nowrap border-collapse border-[1px] border-gray-300 ",
+          }}
+          ThProps={{
+            className:
+              "whitespace-nowrap border-collapse border-[1px] border-gray-300 ",
+          }}
+          className="border-collapse w-full"
+          TrProps={{ className: "border-collapse" }}
+        >
+          <THead>
+            <Tr>
+              <Th>{t("Date")}</Th>
+              <Th>{t("Status and ID")}</Th>
+              <Th>{t("Transaction type")}</Th>
+              <Th>{t("Recipient")}</Th>
+              <Th>{t("Amount")}</Th>
+              <Th>{t("Currency")}</Th>
+            </Tr>
+          </THead>
+          <TBody>
+            {mapArray(
+              transactions,
+              (
+                {
+                  amount,
+                  createdAt,
+                  id,
+                  status,
+                  userId,
+                  description,
+                  fromUser,
+                  toUser,
+                  currency,
+                },
+                idx
+              ) => {
+                const recipient =
+                  userId === user?.id
+                    ? toUser.profile?.username || ""
+                    : fromUser.profile?.username || "";
+                return (
+                  <Tr key={idx}>
+                    <Td>
+                      {new Date(createdAt).toLocaleDateString("en-us", {
+                        dateStyle: "medium",
+                      })}
+                    </Td>
+                    <Td>
+                      <HStack>
+                        <Status
+                          status={
+                            status === TransactionStatus.Success
+                              ? "completed"
+                              : status === TransactionStatus.Failed
+                              ? "failed"
+                              : "pending"
+                          }
+                        />
+                        {id}
+                      </HStack>
+                    </Td>
+                    <Td>{description}</Td>
+                    <Td>
+                      {recipient.slice(0, 4)}...
+                      {recipient.slice(recipient.length - 4, recipient.length)}
+                    </Td>
+                    <Td>
+                      <span
+                        className={`${
+                          userId === user?.id ? "text-primary" : "text-red-500"
+                        }`}
+                      >
+                        {userId === user?.id ? "+" : "-"}
+                        {amount}
+                      </span>
+                    </Td>
+                    <Td>{currency}</Td>
+                  </Tr>
+                );
+              }
+            )}
+            {!transactions || transactions.length < 1 ? (
               <Tr>
-                <Th>{t("Date")}</Th>
-                <Th>{t("Status and ID")}</Th>
-                <Th>{t("Transaction type")}</Th>
-                <Th>{t("Recipient")}</Th>
-                <Th>{t("Amount")}</Th>
-                <Th>{t("Currency")}</Th>
+                <Td colSpan={6}>{t("No Records Found")}</Td>
               </Tr>
-            </THead>
-            <TBody>
-              {mapArray(
-                transactions,
-                (
-                  {
-                    amount,
-                    createdAt,
-                    id,
-                    status,
-                    userId,
-                    description,
-                    fromUser,
-                    toUser,
-                    currency,
-                  },
-                  idx
-                ) => {
-                  const recipient =
-                    userId === user?.id
-                      ? toUser.profile?.username || ""
-                      : fromUser.profile?.username || "";
-                  return (
-                    <Tr key={idx}>
-                      <Td>
-                        {new Date(createdAt).toLocaleDateString("en-us", {
-                          dateStyle: "medium",
-                        })}
-                      </Td>
-                      <Td>
-                        <HStack>
-                          <Status
-                            status={
-                              status === TransactionStatus.Success
-                                ? "completed"
-                                : status === TransactionStatus.Failed
-                                ? "failed"
-                                : "pending"
-                            }
-                          />
-                          {id}
-                        </HStack>
-                      </Td>
-                      <Td>{description}</Td>
-                      <Td>
-                        {recipient.slice(0, 4)}...
-                        {recipient.slice(
-                          recipient.length - 4,
-                          recipient.length
-                        )}
-                      </Td>
-                      <Td>
-                        <span
-                          className={`${
-                            userId === user?.id
-                              ? "text-primary"
-                              : "text-red-500"
-                          }`}
-                        >
-                          {userId === user?.id ? "+" : "-"}
-                          {amount}
-                        </span>
-                      </Td>
-                      <Td>{currency}</Td>
-                    </Tr>
-                  );
-                }
-              )}
-            </TBody>
-          </Table>
-        </TableContainer>
-      </Pagination>
+            ) : null}
+          </TBody>
+        </Table>
+      </TableContainer>
+      <Pagination controls={controls} />
     </div>
   );
 };

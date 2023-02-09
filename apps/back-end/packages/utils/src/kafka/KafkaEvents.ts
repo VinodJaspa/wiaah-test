@@ -200,6 +200,7 @@ export const KAFKA_EVENTS = {
     orderCanceled: () => makeKafkaDynamicEvent(`order.canceled`),
     orderRefundRequestRejected: () =>
       makeKafkaDynamicEvent(`order.refund.request.rejected`),
+    orderDelivered: () => makeKafkaDynamicEvent(`order.delivered`),
   },
   CASHBACK_EVENTS: {
     cashbackAdded: (key?: string, regex?: boolean) =>

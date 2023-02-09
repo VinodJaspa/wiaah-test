@@ -10,11 +10,11 @@ export type GetMyShippingAddressQuery = { __typename?: "Query" } & {
   getMyShippingAddress: Array<
     { __typename?: "ShippingAddress" } & Pick<
       ShippingAddress,
-      "id" | "instractions" | "phone" | "ownerId"
+      "firstname" | "id" | "instractions" | "lastname" | "phone" | "zipCode"
     > & {
         location: { __typename?: "Location" } & Pick<
           Location,
-          "address" | "city" | "country" | "state"
+          "address" | "city" | "country" | "lat" | "long" | "state"
         >;
       }
   >;
@@ -26,14 +26,21 @@ export const useGetMyShippingAddressesQuery = () => {
   client.setQuery(`    
 query getMyShippingAddress{
   getMyShippingAddress {
+    firstname
     id
+    instractions
+    lastname
+    phone
+    
     location{
       address
       city
       country
+      lat
+      long
       state
     }
-    ownerId
+    zipCode
   }
 }
     `);

@@ -109,8 +109,8 @@ export function parseCookies(rawCookies: string): ParsedCookie[] {
     });
 
     return {
-      cookieName: cookieName.trim(),
-      cookieValue: cookieValue.trim(),
+      cookieName: cookieName?.trim(),
+      cookieValue: cookieValue?.trim(),
       options,
     };
   });

@@ -8,6 +8,7 @@ import {
 import { UseGuards } from '@nestjs/common';
 import {
   AuthorizationDecodedUser,
+  GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
 } from 'nest-utils';
@@ -18,8 +19,11 @@ export class ManagerResolver {
   constructor(private readonly managerService: ManagerService) {}
 
   @Query(() => NotificationPaginationResponse)
-  getMyNotifications(@GqlCurrentUser() user: AuthorizationDecodedUser) {
-    return this.managerService.getMyNotifications(user.id);
+  getMyNotifications(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @GetLang() lang,
+  ) {
+    return this.managerService.getMyNotifications(user.id, lang);
   }
 
   @ResolveField(() => Profile)

@@ -1,5 +1,4 @@
 export type Maybe<T> = T | null;
-export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
@@ -124,10 +123,10 @@ export enum ActiveStatus {
 }
 
 export type AddContactInput = {
-  gmail?: InputMaybe<Scalars["String"]>;
-  outlook?: InputMaybe<Scalars["String"]>;
-  whatsapp?: InputMaybe<Scalars["String"]>;
-  yahoo?: InputMaybe<Scalars["String"]>;
+  gmail?: Maybe<Scalars["String"]>;
+  outlook?: Maybe<Scalars["String"]>;
+  whatsapp?: Maybe<Scalars["String"]>;
+  yahoo?: Maybe<Scalars["String"]>;
 };
 
 export type AddShoppingCartProductItemInput = {
@@ -208,11 +207,11 @@ export type ApplyVoucherInput = {
 };
 
 export type AskForRefundInput = {
-  amount?: InputMaybe<Scalars["Float"]>;
-  fullAmount?: InputMaybe<Scalars["Boolean"]>;
+  amount?: Maybe<Scalars["Float"]>;
+  fullAmount?: Maybe<Scalars["Boolean"]>;
   id: Scalars["ID"];
   qty: Scalars["Int"];
-  reason?: InputMaybe<Scalars["String"]>;
+  reason?: Maybe<Scalars["String"]>;
   type: RefundType;
 };
 
@@ -595,8 +594,8 @@ export type CreateAccountVerificationInput = {
 
 export type CreateActionInput = {
   attachment: AttachmentInput;
-  commentsVisibility?: InputMaybe<CommentsVisibility>;
-  location?: InputMaybe<PostLocationInput>;
+  commentsVisibility?: Maybe<CommentsVisibility>;
+  location?: Maybe<PostLocationInput>;
 };
 
 export type CreateAffiliationInput = {
@@ -638,13 +637,13 @@ export type CreateBlockInput = {
 
 export type CreateCategoryInput = {
   name: Scalars["String"];
-  parantId?: InputMaybe<Scalars["ID"]>;
+  parantId?: Maybe<Scalars["ID"]>;
   sortOrder: Scalars["Int"];
   status: ProductCategoryStatus;
 };
 
 export type CreateCommentInput = {
-  attachment?: InputMaybe<AttachmentInput>;
+  attachment?: Maybe<AttachmentInput>;
   authorProfileId: Scalars["ID"];
   authorUserId: Scalars["ID"];
   content: Scalars["String"];
@@ -710,20 +709,20 @@ export type CreateMessageAttachmentInput = {
 };
 
 export type CreateMessageInput = {
-  attachments?: InputMaybe<Array<CreateMessageAttachmentInput>>;
+  attachments?: Maybe<Array<CreateMessageAttachmentInput>>;
   content: Scalars["String"];
-  roomId?: InputMaybe<Scalars["ID"]>;
-  userId?: InputMaybe<Scalars["ID"]>;
+  roomId?: Maybe<Scalars["ID"]>;
+  userId?: Maybe<Scalars["ID"]>;
 };
 
 export type CreateNewsfeedPostInput = {
   attachments: Array<AttachmentInput>;
   content: Scalars["String"];
   hashtags: Array<HashtagInput>;
-  location?: InputMaybe<PostLocationInput>;
+  location?: Maybe<PostLocationInput>;
   tags: Array<PostTagInput>;
   title: Scalars["String"];
-  visibility?: InputMaybe<PostVisibility>;
+  visibility?: Maybe<PostVisibility>;
 };
 
 export type CreateProductInput = {
@@ -735,7 +734,7 @@ export type CreateProductInput = {
   discount: DiscountInput;
   presentations: Array<ProductPresentationInput>;
   price: Scalars["Float"];
-  status?: InputMaybe<ProductStatus>;
+  status?: Maybe<ProductStatus>;
   stock: Scalars["Int"];
   thumbnail: Scalars["String"];
   title: Scalars["String"];
@@ -751,11 +750,11 @@ export type CreateProductReviewInput = {
 };
 
 export type CreateProfileInput = {
-  bio?: InputMaybe<Scalars["String"]>;
+  bio?: Maybe<Scalars["String"]>;
   photo: Scalars["String"];
   profession: Scalars["String"];
   username: Scalars["String"];
-  visibility?: InputMaybe<ProfileVisibility>;
+  visibility?: Maybe<ProfileVisibility>;
 };
 
 export type CreateReactionInput = {
@@ -765,7 +764,6 @@ export type CreateReactionInput = {
 };
 
 export type CreateRequiredActionInput = {
-  /** Example field (placeholder) */
   exampleField: Scalars["Int"];
 };
 
@@ -781,7 +779,7 @@ export type CreateRestaurantInput = {
   presentations: Array<ServicePresentationInput>;
   serviceMetaInfo: Array<ServiceMetaInfoTranslationInput>;
   setting_and_ambianceId: Scalars["ID"];
-  status?: InputMaybe<ServiceStatus>;
+  status?: Maybe<ServiceStatus>;
   vat: Scalars["Int"];
 };
 
@@ -798,11 +796,13 @@ export type CreateServiceCategoryInput = {
 };
 
 export type CreateShippingAddressInput = {
-  id: Scalars["ID"];
-  instractions?: InputMaybe<Scalars["String"]>;
+  firstname: Scalars["String"];
+  instractions?: Maybe<Scalars["String"]>;
+  lastname: Scalars["String"];
   location: LocationInput;
   ownerId: Scalars["ID"];
-  phone?: InputMaybe<Scalars["String"]>;
+  phone?: Maybe<Scalars["String"]>;
+  zipCode?: Maybe<Scalars["String"]>;
 };
 
 export type CreateShippingGeoZone = {
@@ -836,14 +836,14 @@ export type CreateShopInput = {
 };
 
 export type CreateStoryInput = {
-  affiliationPostId?: InputMaybe<Scalars["ID"]>;
-  attachment?: InputMaybe<AttachmentInput>;
-  content?: InputMaybe<Scalars["String"]>;
-  newsfeedPostId?: InputMaybe<Scalars["ID"]>;
-  productId?: InputMaybe<Scalars["ID"]>;
-  servicePostId?: InputMaybe<Scalars["ID"]>;
-  shopPostId?: InputMaybe<Scalars["ID"]>;
-  tags?: InputMaybe<Array<PostTagInput>>;
+  affiliationPostId?: Maybe<Scalars["ID"]>;
+  attachment?: Maybe<AttachmentInput>;
+  content?: Maybe<Scalars["String"]>;
+  newsfeedPostId?: Maybe<Scalars["ID"]>;
+  productId?: Maybe<Scalars["ID"]>;
+  servicePostId?: Maybe<Scalars["ID"]>;
+  shopPostId?: Maybe<Scalars["ID"]>;
+  tags?: Maybe<Array<PostTagInput>>;
 };
 
 export type CreateVehicleInput = {
@@ -901,7 +901,7 @@ export type DeclineSellerAccountRequest = {
 export type DeleteAccountRequestInput = {
   password: Scalars["String"];
   reason: Scalars["String"];
-  sendData?: InputMaybe<Scalars["Boolean"]>;
+  sendData?: Maybe<Scalars["Boolean"]>;
 };
 
 export type DeleteRestaurantInput = {
@@ -969,12 +969,12 @@ export type Filter = {
 };
 
 export type FilteredShopsInput = {
-  city?: InputMaybe<Scalars["String"]>;
-  country?: InputMaybe<Scalars["String"]>;
+  city?: Maybe<Scalars["String"]>;
+  country?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
-  storeType?: InputMaybe<StoreType>;
-  targetGender?: InputMaybe<TargetGenders>;
-  vendorType?: InputMaybe<VendorType>;
+  storeType?: Maybe<StoreType>;
+  targetGender?: Maybe<TargetGenders>;
+  vendorType?: Maybe<VendorType>;
 };
 
 export type Follow = {
@@ -1001,11 +1001,11 @@ export type FriendSuggestion = {
 };
 
 export type GetAccountDeletionRequestsInput = {
-  dateAdded?: InputMaybe<Scalars["String"]>;
-  email?: InputMaybe<Scalars["String"]>;
+  dateAdded?: Maybe<Scalars["String"]>;
+  email?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
-  status?: InputMaybe<AccountDeletionRequestStatus>;
-  username?: InputMaybe<Scalars["String"]>;
+  status?: Maybe<AccountDeletionRequestStatus>;
+  username?: Maybe<Scalars["String"]>;
 };
 
 export type GetAffiliationHistoryInput = {
@@ -1020,24 +1020,24 @@ export type GetBookingsHistoryAdminInput = {
   accountType: Scalars["String"];
   pagination: GqlPaginationInput;
   q: Scalars["String"];
-  status?: InputMaybe<BookedServiceStatus>;
+  status?: Maybe<BookedServiceStatus>;
   userId: Scalars["ID"];
 };
 
 export type GetBookingsHistoryInput = {
   pagination: GqlPaginationInput;
   q: Scalars["String"];
-  status?: InputMaybe<BookedServiceStatus>;
+  status?: Maybe<BookedServiceStatus>;
 };
 
 export type GetBuyersAccountsInput = {
-  balance?: InputMaybe<Scalars["Float"]>;
-  date?: InputMaybe<Scalars["String"]>;
-  email?: InputMaybe<Scalars["String"]>;
-  id?: InputMaybe<Scalars["String"]>;
-  name?: InputMaybe<Scalars["String"]>;
+  balance?: Maybe<Scalars["Float"]>;
+  date?: Maybe<Scalars["String"]>;
+  email?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
-  status?: InputMaybe<AccountStatus>;
+  status?: Maybe<AccountStatus>;
 };
 
 export type GetCommunityPostsInput = {
@@ -1045,23 +1045,23 @@ export type GetCommunityPostsInput = {
 };
 
 export type GetContentCommentsInput = {
-  cursor?: InputMaybe<Scalars["String"]>;
+  cursor?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
-  take?: InputMaybe<Scalars["Int"]>;
+  take?: Maybe<Scalars["Int"]>;
 };
 
 export type GetFilteredAffiliationHistoryInput = {
-  affiliation_link?: InputMaybe<Scalars["String"]>;
-  affiliator?: InputMaybe<Scalars["String"]>;
-  commission?: InputMaybe<Scalars["Float"]>;
-  money_generated?: InputMaybe<Scalars["Float"]>;
+  affiliation_link?: Maybe<Scalars["String"]>;
+  affiliator?: Maybe<Scalars["String"]>;
+  commission?: Maybe<Scalars["Float"]>;
+  money_generated?: Maybe<Scalars["Float"]>;
   pagination: GqlPaginationInput;
-  price?: InputMaybe<Scalars["Float"]>;
-  purchasedAfter?: InputMaybe<Scalars["String"]>;
-  purchasedBefore?: InputMaybe<Scalars["String"]>;
-  purchaser?: InputMaybe<Scalars["String"]>;
-  seller?: InputMaybe<Scalars["String"]>;
-  title?: InputMaybe<Scalars["String"]>;
+  price?: Maybe<Scalars["Float"]>;
+  purchasedAfter?: Maybe<Scalars["String"]>;
+  purchasedBefore?: Maybe<Scalars["String"]>;
+  purchaser?: Maybe<Scalars["String"]>;
+  seller?: Maybe<Scalars["String"]>;
+  title?: Maybe<Scalars["String"]>;
 };
 
 export type GetFilteredAffiliationsInput = {
@@ -1074,14 +1074,14 @@ export type GetFilteredAffiliationsInput = {
 };
 
 export type GetFilteredCategoriesInput = {
-  name?: InputMaybe<Scalars["String"]>;
-  sortOrder?: InputMaybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+  sortOrder?: Maybe<Scalars["String"]>;
 };
 
 export type GetFilteredCategory = {
-  name?: InputMaybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
-  sortOrder?: InputMaybe<Scalars["Int"]>;
+  sortOrder?: Maybe<Scalars["Int"]>;
 };
 
 export type GetFilteredOrdersInput = {
@@ -1097,52 +1097,52 @@ export type GetFilteredOrdersInput = {
 
 export type GetFilteredProductsAdminInput = {
   pagination: GqlPaginationInput;
-  price?: InputMaybe<Scalars["Float"]>;
-  productId?: InputMaybe<Scalars["ID"]>;
-  qty?: InputMaybe<Scalars["Int"]>;
-  seller?: InputMaybe<Scalars["String"]>;
-  status?: InputMaybe<ProductStatus>;
-  title?: InputMaybe<Scalars["String"]>;
-  type?: InputMaybe<ProductType>;
-  updatedAt?: InputMaybe<Scalars["String"]>;
-  usageStatus?: InputMaybe<ProductUsageStatus>;
+  price?: Maybe<Scalars["Float"]>;
+  productId?: Maybe<Scalars["ID"]>;
+  qty?: Maybe<Scalars["Int"]>;
+  seller?: Maybe<Scalars["String"]>;
+  status?: Maybe<ProductStatus>;
+  title?: Maybe<Scalars["String"]>;
+  type?: Maybe<ProductType>;
+  updatedAt?: Maybe<Scalars["String"]>;
+  usageStatus?: Maybe<ProductUsageStatus>;
 };
 
 export type GetFilteredProductsInput = {
-  brands?: InputMaybe<Array<Scalars["ID"]>>;
-  categories?: InputMaybe<Array<Scalars["ID"]>>;
-  colors?: InputMaybe<Array<Scalars["String"]>>;
-  inStock?: InputMaybe<Scalars["Boolean"]>;
-  maxPrice?: InputMaybe<Scalars["Float"]>;
-  minPrice?: InputMaybe<Scalars["Float"]>;
+  brands?: Maybe<Array<Scalars["ID"]>>;
+  categories?: Maybe<Array<Scalars["ID"]>>;
+  colors?: Maybe<Array<Scalars["String"]>>;
+  inStock?: Maybe<Scalars["Boolean"]>;
+  maxPrice?: Maybe<Scalars["Float"]>;
+  minPrice?: Maybe<Scalars["Float"]>;
   pagination: GqlPaginationInput;
-  ratings?: InputMaybe<Array<Scalars["Int"]>>;
-  size?: InputMaybe<Array<Scalars["String"]>>;
-  usageStatus?: InputMaybe<ProductUsageStatus>;
+  ratings?: Maybe<Array<Scalars["Int"]>>;
+  size?: Maybe<Array<Scalars["String"]>>;
+  usageStatus?: Maybe<ProductUsageStatus>;
 };
 
 export type GetFilteredSellersAccountsInput = {
-  balance?: InputMaybe<Scalars["Float"]>;
-  date?: InputMaybe<Scalars["String"]>;
-  email?: InputMaybe<Scalars["String"]>;
-  id?: InputMaybe<Scalars["String"]>;
-  name?: InputMaybe<Scalars["String"]>;
+  balance?: Maybe<Scalars["Float"]>;
+  date?: Maybe<Scalars["String"]>;
+  email?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
-  products?: InputMaybe<Scalars["Int"]>;
-  sales?: InputMaybe<Scalars["Int"]>;
-  status?: InputMaybe<AccountStatus>;
+  products?: Maybe<Scalars["Int"]>;
+  sales?: Maybe<Scalars["Int"]>;
+  status?: Maybe<AccountStatus>;
 };
 
 export type GetFilteredServicesAdminInput = {
-  id?: InputMaybe<Scalars["ID"]>;
+  id?: Maybe<Scalars["ID"]>;
   pagination: GqlPaginationInput;
-  price?: InputMaybe<Scalars["Float"]>;
-  sellerId?: InputMaybe<Scalars["ID"]>;
-  sellerName?: InputMaybe<Scalars["String"]>;
-  status?: InputMaybe<ServiceStatus>;
-  title?: InputMaybe<Scalars["String"]>;
+  price?: Maybe<Scalars["Float"]>;
+  sellerId?: Maybe<Scalars["ID"]>;
+  sellerName?: Maybe<Scalars["String"]>;
+  status?: Maybe<ServiceStatus>;
+  title?: Maybe<Scalars["String"]>;
   type: ServiceType;
-  updatedAt?: InputMaybe<Scalars["String"]>;
+  updatedAt?: Maybe<Scalars["String"]>;
 };
 
 export type GetFilteredServicesInput = {
@@ -1159,8 +1159,8 @@ export type GetFilteredVouchers = {
 };
 
 export type GetFiltersInput = {
-  name?: InputMaybe<Scalars["String"]>;
-  sortOrder?: InputMaybe<Scalars["Int"]>;
+  name?: Maybe<Scalars["String"]>;
+  sortOrder?: Maybe<Scalars["Int"]>;
 };
 
 export type GetHashtagNewsfeedPostsInput = {
@@ -1178,14 +1178,14 @@ export type GetHotelServiceArgs = {
 };
 
 export type GetInsurancesHistoryInput = {
-  amount?: InputMaybe<Scalars["Float"]>;
-  buyer?: InputMaybe<Scalars["String"]>;
-  id?: InputMaybe<Scalars["ID"]>;
+  amount?: Maybe<Scalars["Float"]>;
+  buyer?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["ID"]>;
   pagination: GqlPaginationInput;
-  seller?: InputMaybe<Scalars["String"]>;
-  service?: InputMaybe<Scalars["String"]>;
-  status?: InputMaybe<ServiceInsuranceStatusEnum>;
-  thumbnail?: InputMaybe<Scalars["String"]>;
+  seller?: Maybe<Scalars["String"]>;
+  service?: Maybe<Scalars["String"]>;
+  status?: Maybe<ServiceInsuranceStatusEnum>;
+  thumbnail?: Maybe<Scalars["String"]>;
 };
 
 export type GetInsurancesInput = {
@@ -1217,12 +1217,12 @@ export type GetMyBookingsInput = {
 
 export type GetMyFriendSuggestionsInput = {
   pagination: GqlPaginationInput;
-  q?: InputMaybe<Scalars["String"]>;
+  q?: Maybe<Scalars["String"]>;
 };
 
 export type GetMyOrdersInput = {
   pagination: GqlPaginationInput;
-  status?: InputMaybe<OrderStatusEnum>;
+  status?: Maybe<OrderStatusEnum>;
 };
 
 export type GetMyProfileFollowersMetaInput = {
@@ -1283,32 +1283,32 @@ export type GetRestaurantInput = {
 };
 
 export type GetShopRecommendedPostsInput = {
-  q?: InputMaybe<Scalars["String"]>;
+  q?: Maybe<Scalars["String"]>;
 };
 
 export type GetStorySeenByInput = {
   pagination: GqlPaginationInput;
-  q?: InputMaybe<Scalars["String"]>;
+  q?: Maybe<Scalars["String"]>;
   storyId: Scalars["ID"];
 };
 
 export type GetTopHashtagsInput = {
   pagination: GqlPaginationInput;
-  q?: InputMaybe<Scalars["String"]>;
+  q?: Maybe<Scalars["String"]>;
 };
 
 export type GetTransactionsAdminInput = {
-  amount?: InputMaybe<Scalars["Float"]>;
-  description?: InputMaybe<Scalars["String"]>;
-  id?: InputMaybe<Scalars["String"]>;
-  pagination?: InputMaybe<GqlPaginationInput>;
-  seller?: InputMaybe<Scalars["String"]>;
-  status?: InputMaybe<TransactionStatus>;
+  amount?: Maybe<Scalars["Float"]>;
+  description?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["String"]>;
+  pagination?: Maybe<GqlPaginationInput>;
+  seller?: Maybe<Scalars["String"]>;
+  status?: Maybe<TransactionStatus>;
 };
 
 export type GetTransactionsInput = {
   pagination: GqlPaginationInput;
-  status?: InputMaybe<TransactionStatus>;
+  status?: Maybe<TransactionStatus>;
 };
 
 export type GetUserActionsInput = {
@@ -1335,7 +1335,7 @@ export type GetUserOrders = {
   accountType: Scalars["String"];
   pagination: GqlPaginationInput;
   q: Scalars["String"];
-  status?: InputMaybe<OrderStatusEnum>;
+  status?: Maybe<OrderStatusEnum>;
   userId: Scalars["String"];
 };
 
@@ -1355,23 +1355,23 @@ export type GetVehiclesInput = {
 };
 
 export type GetVouchersInput = {
-  status?: InputMaybe<VoucherStatus>;
+  status?: Maybe<VoucherStatus>;
 };
 
 export type GetWithdrawalRequestsAdminInput = {
-  amount?: InputMaybe<Scalars["Float"]>;
-  email?: InputMaybe<Scalars["String"]>;
-  id?: InputMaybe<Scalars["ID"]>;
+  amount?: Maybe<Scalars["Float"]>;
+  email?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["ID"]>;
   pagination: GqlPaginationInput;
-  processedAt?: InputMaybe<Scalars["String"]>;
-  requestedAt?: InputMaybe<Scalars["String"]>;
-  seller?: InputMaybe<Scalars["String"]>;
-  shop?: InputMaybe<Scalars["String"]>;
-  status?: InputMaybe<WithdrawalStatus>;
+  processedAt?: Maybe<Scalars["String"]>;
+  requestedAt?: Maybe<Scalars["String"]>;
+  seller?: Maybe<Scalars["String"]>;
+  shop?: Maybe<Scalars["String"]>;
+  status?: Maybe<WithdrawalStatus>;
 };
 
 export type GqlCursorPaginationInput = {
-  cursor?: InputMaybe<Scalars["String"]>;
+  cursor?: Maybe<Scalars["String"]>;
   take: Scalars["Int"];
 };
 
@@ -1511,7 +1511,7 @@ export type HotelRoomInput = {
   beds: Scalars["Int"];
   cancelationPolicies: Array<ServiceCancelationPolicyInput>;
   dailyPrice: Scalars["Boolean"];
-  dailyPrices?: InputMaybe<ServiceDailyPricesInput>;
+  dailyPrices?: Maybe<ServiceDailyPricesInput>;
   discount: ServiceDiscountInput;
   extras: Array<ServiceExtraInput>;
   includedAmenities: Array<ServiceIncludedAmenitiesInput>;
@@ -1565,10 +1565,6 @@ export enum InvoiceRecordTypes {
   Year = "year",
 }
 
-export type JoinRoomInput = {
-  roomId: Scalars["ID"];
-};
-
 export type LikeStoryInput = {
   storyId: Scalars["ID"];
 };
@@ -1599,8 +1595,8 @@ export type LocationInput = {
   address: Scalars["String"];
   city: Scalars["String"];
   country: Scalars["String"];
-  lat: Scalars["Float"];
-  long: Scalars["Float"];
+  lat?: Maybe<Scalars["Float"]>;
+  long?: Maybe<Scalars["Float"]>;
   state: Scalars["String"];
 };
 
@@ -1698,6 +1694,7 @@ export type Mutation = {
   deleteProduct: Product;
   deleteProductCategory: Category;
   deleteRestaurant: Restaurant;
+  deleteShippingAddress: Scalars["Boolean"];
   deleteShippingRule: ShippingRule;
   deleteStory: Story;
   deleteVoucher: Scalars["Boolean"];
@@ -1848,7 +1845,7 @@ export type MutationAdminEditAccountArgs = {
 };
 
 export type MutationApplyVoucherArgs = {
-  applyVoucherCode: ApplyVoucherInput;
+  args: ApplyVoucherInput;
 };
 
 export type MutationAskForRefundArgs = {
@@ -1888,7 +1885,7 @@ export type MutationCreateCustomerArgs = {
 };
 
 export type MutationCreateFilterArgs = {
-  createFilterGroupArgs?: InputMaybe<CreateFilterInput>;
+  createFilterGroupArgs?: Maybe<CreateFilterInput>;
 };
 
 export type MutationCreateHealthCenterArgs = {
@@ -2013,6 +2010,10 @@ export type MutationDeleteProductCategoryArgs = {
 
 export type MutationDeleteRestaurantArgs = {
   deleteRestaurantArgs: DeleteRestaurantInput;
+};
+
+export type MutationDeleteShippingAddressArgs = {
+  id: Scalars["String"];
 };
 
 export type MutationDeleteShippingRuleArgs = {
@@ -2408,10 +2409,10 @@ export type PostLocation = {
 };
 
 export type PostLocationInput = {
-  address?: InputMaybe<Scalars["String"]>;
+  address?: Maybe<Scalars["String"]>;
   city: Scalars["String"];
   country: Scalars["String"];
-  state?: InputMaybe<Scalars["String"]>;
+  state?: Maybe<Scalars["String"]>;
 };
 
 export type PostMention = {
@@ -2760,7 +2761,6 @@ export type Query = {
   searchHotelRooms: Array<HotelRoom>;
   searchPopularUsers: ProfilePaginatedResponse;
   searchUsers: SearchUsers;
-  tests: Scalars["Boolean"];
   updateComment: PaginationCommentsResponse;
 };
 
@@ -2873,7 +2873,7 @@ export type QueryGetFilteredOrdersArgs = {
 };
 
 export type QueryGetFilteredProductCategoriesArgs = {
-  args?: InputMaybe<GetFilteredCategory>;
+  args?: Maybe<GetFilteredCategory>;
 };
 
 export type QueryGetFilteredSellersArgs = {
@@ -2881,7 +2881,7 @@ export type QueryGetFilteredSellersArgs = {
 };
 
 export type QueryGetFilteredServiceCategoriesArgs = {
-  args?: InputMaybe<GetFilteredCategoriesInput>;
+  args?: Maybe<GetFilteredCategoriesInput>;
 };
 
 export type QueryGetFilteredServicesArgs = {
@@ -2985,7 +2985,7 @@ export type QueryGetMyTransactionsArgs = {
 };
 
 export type QueryGetMyVouchersArgs = {
-  getMyVouchersInput?: InputMaybe<GetVouchersInput>;
+  getMyVouchersInput?: Maybe<GetVouchersInput>;
 };
 
 export type QueryGetNearShopsArgs = {
@@ -3033,7 +3033,7 @@ export type QueryGetProfileArgs = {
 };
 
 export type QueryGetRecentStoriesArgs = {
-  getRecentStoryInput?: InputMaybe<GetRecentStoriesInput>;
+  getRecentStoryInput?: Maybe<GetRecentStoriesInput>;
 };
 
 export type QueryGetRecommendedAffiliationPostsArgs = {
@@ -3247,7 +3247,7 @@ export type RejectReceivedOrderInput = {
 
 export type RejectRefundRequestInput = {
   id: Scalars["ID"];
-  reason?: InputMaybe<Scalars["String"]>;
+  reason?: Maybe<Scalars["String"]>;
 };
 
 export type RejectRequestedOrderInput = {
@@ -3271,7 +3271,6 @@ export type RemoveWishlistItemInput = {
 
 export type RequiredAction = {
   __typename?: "RequiredAction";
-  /** Example field (placeholder) */
   exampleField: Scalars["Int"];
 };
 
@@ -3326,29 +3325,29 @@ export enum RoomTypes {
 }
 
 export type SearchFilteredBeautyCenterInput = {
-  beautyCenterTypeId?: InputMaybe<Scalars["ID"]>;
-  beautySalonTypeId?: InputMaybe<Scalars["ID"]>;
-  cancelationOption?: InputMaybe<Scalars["Boolean"]>;
-  maxPrice?: InputMaybe<Scalars["Float"]>;
-  minPrice?: InputMaybe<Scalars["Float"]>;
-  pagination?: InputMaybe<GqlPaginationInput>;
-  query?: InputMaybe<Scalars["String"]>;
-  rating?: InputMaybe<Scalars["Int"]>;
-  treatmentTypeId?: InputMaybe<Scalars["ID"]>;
-  typeOfSeller?: InputMaybe<Scalars["String"]>;
+  beautyCenterTypeId?: Maybe<Scalars["ID"]>;
+  beautySalonTypeId?: Maybe<Scalars["ID"]>;
+  cancelationOption?: Maybe<Scalars["Boolean"]>;
+  maxPrice?: Maybe<Scalars["Float"]>;
+  minPrice?: Maybe<Scalars["Float"]>;
+  pagination?: Maybe<GqlPaginationInput>;
+  query?: Maybe<Scalars["String"]>;
+  rating?: Maybe<Scalars["Int"]>;
+  treatmentTypeId?: Maybe<Scalars["ID"]>;
+  typeOfSeller?: Maybe<Scalars["String"]>;
 };
 
 export type SearchFilteredRestaurantInput = {
-  cusinesTypeId?: InputMaybe<Scalars["ID"]>;
-  establishmentTypeId?: InputMaybe<Scalars["ID"]>;
-  foodType?: InputMaybe<Scalars["String"]>;
-  maxPrice?: InputMaybe<Scalars["Int"]>;
-  minPrice?: InputMaybe<Scalars["Float"]>;
-  pagination?: InputMaybe<GqlPaginationInput>;
-  paymentMethods?: InputMaybe<Array<ServicePaymentMethod>>;
-  query?: InputMaybe<Scalars["String"]>;
-  rating?: InputMaybe<Scalars["Int"]>;
-  settingAndAmbinaceId?: InputMaybe<Scalars["ID"]>;
+  cusinesTypeId?: Maybe<Scalars["ID"]>;
+  establishmentTypeId?: Maybe<Scalars["ID"]>;
+  foodType?: Maybe<Scalars["String"]>;
+  maxPrice?: Maybe<Scalars["Int"]>;
+  minPrice?: Maybe<Scalars["Float"]>;
+  pagination?: Maybe<GqlPaginationInput>;
+  paymentMethods?: Maybe<Array<ServicePaymentMethod>>;
+  query?: Maybe<Scalars["String"]>;
+  rating?: Maybe<Scalars["Int"]>;
+  settingAndAmbinaceId?: Maybe<Scalars["ID"]>;
 };
 
 export type SearchHashtag = {
@@ -3358,32 +3357,32 @@ export type SearchHashtag = {
 };
 
 export type SearchHealthCenterInput = {
-  maxPrice?: InputMaybe<Scalars["Float"]>;
-  minPrice?: InputMaybe<Scalars["Float"]>;
-  pagination?: InputMaybe<GqlPaginationInput>;
-  payment_methods?: InputMaybe<Array<ServicePaymentMethod>>;
-  query?: InputMaybe<Scalars["String"]>;
-  rate?: InputMaybe<Scalars["Int"]>;
-  speakingLanguage?: InputMaybe<Scalars["String"]>;
-  specialistType?: InputMaybe<Scalars["String"]>;
+  maxPrice?: Maybe<Scalars["Float"]>;
+  minPrice?: Maybe<Scalars["Float"]>;
+  pagination?: Maybe<GqlPaginationInput>;
+  payment_methods?: Maybe<Array<ServicePaymentMethod>>;
+  query?: Maybe<Scalars["String"]>;
+  rate?: Maybe<Scalars["Int"]>;
+  speakingLanguage?: Maybe<Scalars["String"]>;
+  specialistType?: Maybe<Scalars["String"]>;
 };
 
 export type SearchHotelRoomLocationInput = {
-  hotel_class?: InputMaybe<Scalars["Int"]>;
-  maxPrice?: InputMaybe<Scalars["Float"]>;
-  minPrice?: InputMaybe<Scalars["Float"]>;
-  num_of_beds?: InputMaybe<Scalars["Int"]>;
-  num_of_rooms?: InputMaybe<Scalars["Int"]>;
-  pagination?: InputMaybe<GqlPaginationInput>;
-  property_type?: InputMaybe<Scalars["String"]>;
-  query?: InputMaybe<Scalars["String"]>;
-  rating?: InputMaybe<Scalars["Int"]>;
+  hotel_class?: Maybe<Scalars["Int"]>;
+  maxPrice?: Maybe<Scalars["Float"]>;
+  minPrice?: Maybe<Scalars["Float"]>;
+  num_of_beds?: Maybe<Scalars["Int"]>;
+  num_of_rooms?: Maybe<Scalars["Int"]>;
+  pagination?: Maybe<GqlPaginationInput>;
+  property_type?: Maybe<Scalars["String"]>;
+  query?: Maybe<Scalars["String"]>;
+  rating?: Maybe<Scalars["Int"]>;
 };
 
 export type SearchPopularProfilesInput = {
-  cursor?: InputMaybe<Scalars["String"]>;
+  cursor?: Maybe<Scalars["String"]>;
   q: Scalars["String"];
-  take?: InputMaybe<Scalars["Int"]>;
+  take?: Maybe<Scalars["Int"]>;
 };
 
 export type SearchUserInput = {
@@ -3518,7 +3517,7 @@ export type ServiceContactInput = {
   country: Scalars["String"];
   email: Scalars["String"];
   phone: Scalars["String"];
-  state?: InputMaybe<Scalars["String"]>;
+  state?: Maybe<Scalars["String"]>;
 };
 
 export type ServiceDailyPrices = {
@@ -3798,11 +3797,14 @@ export enum ServiceTypeOfSeller {
 
 export type ShippingAddress = {
   __typename?: "ShippingAddress";
+  firstname: Scalars["String"];
   id: Scalars["ID"];
   instractions?: Maybe<Scalars["String"]>;
+  lastname: Scalars["String"];
   location: Location;
   ownerId: Scalars["ID"];
   phone?: Maybe<Scalars["String"]>;
+  zipCode?: Maybe<Scalars["String"]>;
 };
 
 export type ShippingCountry = {
@@ -3949,18 +3951,8 @@ export type StoryView = {
   viewerId: Scalars["ID"];
 };
 
-export type Subscription = {
-  __typename?: "Subscription";
-  joinRoom: ChatMessage;
-  listenToMyRoomsChanges: ChatRoom;
-};
-
-export type SubscriptionJoinRoomArgs = {
-  joinRoomArgs: JoinRoomInput;
-};
-
 export type SuspenseAccountAdminInput = {
-  rejectReason?: InputMaybe<Scalars["String"]>;
+  rejectReason?: Maybe<Scalars["String"]>;
   userId: Scalars["ID"];
 };
 
@@ -4039,173 +4031,172 @@ export type UnFollowProfileInput = {
 };
 
 export type UpdateAccountInput = {
-  accountType?: InputMaybe<RegisterAccountType>;
-  companyRegisterationNumber?: InputMaybe<Scalars["String"]>;
-  confirmPassword?: InputMaybe<Scalars["String"]>;
-  email?: InputMaybe<Scalars["String"]>;
-  firstName?: InputMaybe<Scalars["String"]>;
-  lastName?: InputMaybe<Scalars["String"]>;
-  password?: InputMaybe<Scalars["String"]>;
+  accountType?: Maybe<RegisterAccountType>;
+  companyRegisterationNumber?: Maybe<Scalars["String"]>;
+  confirmPassword?: Maybe<Scalars["String"]>;
+  email?: Maybe<Scalars["String"]>;
+  firstName?: Maybe<Scalars["String"]>;
+  lastName?: Maybe<Scalars["String"]>;
+  password?: Maybe<Scalars["String"]>;
 };
 
 export type UpdateAffiliationInput = {
-  commision?: InputMaybe<Scalars["Float"]>;
-  expireAt?: InputMaybe<Scalars["String"]>;
+  commision?: Maybe<Scalars["Float"]>;
+  expireAt?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
-  itemId?: InputMaybe<Scalars["ID"]>;
-  itemType?: InputMaybe<Scalars["String"]>;
+  itemId?: Maybe<Scalars["ID"]>;
+  itemType?: Maybe<Scalars["String"]>;
 };
 
 export type UpdateBeautyCenterInput = {
-  beauty_center_typeId?: InputMaybe<Scalars["ID"]>;
-  cancelationPolicies?: InputMaybe<Array<ServiceCancelationPolicyInput>>;
+  beauty_center_typeId?: Maybe<Scalars["ID"]>;
+  cancelationPolicies?: Maybe<Array<ServiceCancelationPolicyInput>>;
   id: Scalars["ID"];
-  payment_methods?: InputMaybe<Array<ServicePaymentMethod>>;
-  policies?: InputMaybe<Array<ServicePolicyTranslatedInput>>;
-  presentations?: InputMaybe<Array<ServicePresentationInput>>;
-  serviceMetaInfo?: InputMaybe<Array<ServiceMetaInfoTranslationInput>>;
-  title?: InputMaybe<Array<TranslationTextInput>>;
-  treatments?: InputMaybe<Array<UpdateBeautyCenterTreatmentInput>>;
-  type_of_seller?: InputMaybe<ServiceTypeOfSeller>;
-  vat?: InputMaybe<Scalars["Float"]>;
+  payment_methods?: Maybe<Array<ServicePaymentMethod>>;
+  policies?: Maybe<Array<ServicePolicyTranslatedInput>>;
+  presentations?: Maybe<Array<ServicePresentationInput>>;
+  serviceMetaInfo?: Maybe<Array<ServiceMetaInfoTranslationInput>>;
+  title?: Maybe<Array<TranslationTextInput>>;
+  treatments?: Maybe<Array<UpdateBeautyCenterTreatmentInput>>;
+  type_of_seller?: Maybe<ServiceTypeOfSeller>;
+  vat?: Maybe<Scalars["Float"]>;
 };
 
 export type UpdateBeautyCenterTreatmentInput = {
-  discount?: InputMaybe<ServiceDiscountInput>;
-  duration?: InputMaybe<Array<Scalars["Int"]>>;
+  discount?: Maybe<ServiceDiscountInput>;
+  duration?: Maybe<Array<Scalars["Int"]>>;
   id: Scalars["ID"];
-  price?: InputMaybe<Scalars["Float"]>;
-  title?: InputMaybe<Array<TranslationTextInput>>;
-  treatmentCategoryId?: InputMaybe<Scalars["ID"]>;
+  price?: Maybe<Scalars["Float"]>;
+  title?: Maybe<Array<TranslationTextInput>>;
+  treatmentCategoryId?: Maybe<Scalars["ID"]>;
 };
 
 export type UpdateCategoryInput = {
   id: Scalars["ID"];
-  name?: InputMaybe<Scalars["String"]>;
-  parantId?: InputMaybe<Scalars["ID"]>;
-  sortOrder?: InputMaybe<Scalars["Int"]>;
-  status?: InputMaybe<ProductCategoryStatus>;
+  name?: Maybe<Scalars["String"]>;
+  parantId?: Maybe<Scalars["ID"]>;
+  sortOrder?: Maybe<Scalars["Int"]>;
+  status?: Maybe<ProductCategoryStatus>;
 };
 
 export type UpdateCommentInput = {
-  content?: InputMaybe<Scalars["String"]>;
+  content?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
-  mentions?: InputMaybe<Array<CommentMentionInput>>;
+  mentions?: Maybe<Array<CommentMentionInput>>;
 };
 
 export type UpdateFilterInput = {
   id: Scalars["ID"];
-  name?: InputMaybe<Scalars["String"]>;
-  sortOrder?: InputMaybe<Scalars["Int"]>;
-  values?: InputMaybe<Array<ProductFilterGroupValueInput>>;
+  name?: Maybe<Scalars["String"]>;
+  sortOrder?: Maybe<Scalars["Int"]>;
+  values?: Maybe<Array<ProductFilterGroupValueInput>>;
 };
 
 export type UpdateHealthCenterInput = {
-  cancelationPolicies?: InputMaybe<Array<ServiceCancelationPolicyInput>>;
+  cancelationPolicies?: Maybe<Array<ServiceCancelationPolicyInput>>;
   id: Scalars["ID"];
-  payment_methods?: InputMaybe<Array<ServicePaymentMethod>>;
-  policies?: InputMaybe<Array<ServicePolicyTranslatedInput>>;
-  presentations?: InputMaybe<Array<ServicePresentationInput>>;
-  serviceMetaInfo?: InputMaybe<Array<ServiceMetaInfoTranslationInput>>;
-  status?: InputMaybe<ServiceStatus>;
-  vat?: InputMaybe<Scalars["Float"]>;
+  payment_methods?: Maybe<Array<ServicePaymentMethod>>;
+  policies?: Maybe<Array<ServicePolicyTranslatedInput>>;
+  presentations?: Maybe<Array<ServicePresentationInput>>;
+  serviceMetaInfo?: Maybe<Array<ServiceMetaInfoTranslationInput>>;
+  status?: Maybe<ServiceStatus>;
+  vat?: Maybe<Scalars["Float"]>;
 };
 
 export type UpdateHotelRoomAdminInput = {
-  bathrooms?: InputMaybe<Scalars["Int"]>;
-  beds?: InputMaybe<Scalars["Int"]>;
-  cancelationPolicies?: InputMaybe<Array<ServiceCancelationPolicyInput>>;
-  dailyPrice?: InputMaybe<Scalars["Boolean"]>;
-  dailyPrices?: InputMaybe<ServiceDailyPricesInput>;
-  discount?: InputMaybe<ServiceDiscountInput>;
-  extras?: InputMaybe<Array<ServiceExtraInput>>;
+  bathrooms?: Maybe<Scalars["Int"]>;
+  beds?: Maybe<Scalars["Int"]>;
+  cancelationPolicies?: Maybe<Array<ServiceCancelationPolicyInput>>;
+  dailyPrice?: Maybe<Scalars["Boolean"]>;
+  dailyPrices?: Maybe<ServiceDailyPricesInput>;
+  discount?: Maybe<ServiceDiscountInput>;
+  extras?: Maybe<Array<ServiceExtraInput>>;
   id: Scalars["ID"];
-  includedAmenities?: InputMaybe<Array<ServiceIncludedAmenitiesInput>>;
-  includedServices?: InputMaybe<Array<ServiceIncludedServicesInput>>;
-  insurance?: InputMaybe<Scalars["Float"]>;
-  measurements?: InputMaybe<ServicePropertyMeasurementsInput>;
-  num_of_rooms?: InputMaybe<Scalars["Int"]>;
-  popularAmenities?: InputMaybe<Array<ServiceAmenitiesInput>>;
-  presentations?: InputMaybe<Array<ServicePresentationInput>>;
-  pricePerNight?: InputMaybe<Scalars["Int"]>;
-  roomMetaInfo?: InputMaybe<Array<HotelRoomTranslationMetaInfoInput>>;
+  includedAmenities?: Maybe<Array<ServiceIncludedAmenitiesInput>>;
+  includedServices?: Maybe<Array<ServiceIncludedServicesInput>>;
+  insurance?: Maybe<Scalars["Float"]>;
+  measurements?: Maybe<ServicePropertyMeasurementsInput>;
+  num_of_rooms?: Maybe<Scalars["Int"]>;
+  popularAmenities?: Maybe<Array<ServiceAmenitiesInput>>;
+  presentations?: Maybe<Array<ServicePresentationInput>>;
+  pricePerNight?: Maybe<Scalars["Int"]>;
+  roomMetaInfo?: Maybe<Array<HotelRoomTranslationMetaInfoInput>>;
 };
 
 export type UpdateMyPrivacyInput = {
-  hideCommentsNum?: InputMaybe<Scalars["Boolean"]>;
-  hideLikesNum?: InputMaybe<Scalars["Boolean"]>;
-  hideViewsNum?: InputMaybe<Scalars["Boolean"]>;
-  privateAccount?: InputMaybe<Scalars["Boolean"]>;
+  hideCommentsNum?: Maybe<Scalars["Boolean"]>;
+  hideLikesNum?: Maybe<Scalars["Boolean"]>;
+  hideViewsNum?: Maybe<Scalars["Boolean"]>;
+  privateAccount?: Maybe<Scalars["Boolean"]>;
 };
 
 export type UpdateNewsfeedPostInput = {
-  attachments?: InputMaybe<Array<AttachmentInput>>;
-  content?: InputMaybe<Scalars["String"]>;
-  hashtags?: InputMaybe<Array<HashtagInput>>;
+  attachments?: Maybe<Array<AttachmentInput>>;
+  content?: Maybe<Scalars["String"]>;
+  hashtags?: Maybe<Array<HashtagInput>>;
   id: Scalars["ID"];
-  location?: InputMaybe<PostLocationInput>;
-  tags?: InputMaybe<Array<PostTagInput>>;
-  title?: InputMaybe<Scalars["String"]>;
-  visibility?: InputMaybe<PostVisibility>;
+  location?: Maybe<PostLocationInput>;
+  tags?: Maybe<Array<PostTagInput>>;
+  title?: Maybe<Scalars["String"]>;
+  visibility?: Maybe<PostVisibility>;
 };
 
 export type UpdateProductInput = {
-  attributes?: InputMaybe<Array<ProductAttributeInput>>;
-  brand?: InputMaybe<Scalars["String"]>;
-  cashback?: InputMaybe<CashBackInput>;
-  categoryId?: InputMaybe<Scalars["ID"]>;
-  description?: InputMaybe<Scalars["String"]>;
-  discount?: InputMaybe<DiscountInput>;
+  attributes?: Maybe<Array<ProductAttributeInput>>;
+  brand?: Maybe<Scalars["String"]>;
+  cashback?: Maybe<CashBackInput>;
+  categoryId?: Maybe<Scalars["ID"]>;
+  description?: Maybe<Scalars["String"]>;
+  discount?: Maybe<DiscountInput>;
   id: Scalars["ID"];
-  presentations?: InputMaybe<Array<ProductPresentationInput>>;
-  price?: InputMaybe<Scalars["Float"]>;
-  status?: InputMaybe<ProductStatus>;
-  stock?: InputMaybe<Scalars["Int"]>;
-  thumbnail?: InputMaybe<Scalars["String"]>;
-  title?: InputMaybe<Scalars["String"]>;
-  type?: InputMaybe<ProductType>;
-  vat?: InputMaybe<Scalars["Float"]>;
-  visibility?: InputMaybe<VisibilityEnum>;
+  presentations?: Maybe<Array<ProductPresentationInput>>;
+  price?: Maybe<Scalars["Float"]>;
+  status?: Maybe<ProductStatus>;
+  stock?: Maybe<Scalars["Int"]>;
+  thumbnail?: Maybe<Scalars["String"]>;
+  title?: Maybe<Scalars["String"]>;
+  type?: Maybe<ProductType>;
+  vat?: Maybe<Scalars["Float"]>;
+  visibility?: Maybe<VisibilityEnum>;
 };
 
 export type UpdateProfileAdminInput = {
-  bio?: InputMaybe<Scalars["String"]>;
-  photo?: InputMaybe<Scalars["String"]>;
-  profession?: InputMaybe<Scalars["String"]>;
-  profileId?: InputMaybe<Scalars["ID"]>;
-  username?: InputMaybe<Scalars["String"]>;
-  visibility?: InputMaybe<ProfileVisibility>;
+  bio?: Maybe<Scalars["String"]>;
+  photo?: Maybe<Scalars["String"]>;
+  profession?: Maybe<Scalars["String"]>;
+  profileId?: Maybe<Scalars["ID"]>;
+  username?: Maybe<Scalars["String"]>;
+  visibility?: Maybe<ProfileVisibility>;
 };
 
 export type UpdateProfileInput = {
-  bio?: InputMaybe<Scalars["String"]>;
-  photo?: InputMaybe<Scalars["String"]>;
-  profession?: InputMaybe<Scalars["String"]>;
-  username?: InputMaybe<Scalars["String"]>;
-  visibility?: InputMaybe<ProfileVisibility>;
+  bio?: Maybe<Scalars["String"]>;
+  photo?: Maybe<Scalars["String"]>;
+  profession?: Maybe<Scalars["String"]>;
+  username?: Maybe<Scalars["String"]>;
+  visibility?: Maybe<ProfileVisibility>;
 };
 
 export type UpdateRequiredActionInput = {
-  /** Example field (placeholder) */
-  exampleField?: InputMaybe<Scalars["Int"]>;
+  exampleField?: Maybe<Scalars["Int"]>;
   id: Scalars["Int"];
 };
 
 export type UpdateRestaurantInput = {
-  cuisinesTypeId?: InputMaybe<Scalars["ID"]>;
-  dishs?: InputMaybe<Array<UpdateRestaurantMenuDishInput>>;
-  establishmentTypeId?: InputMaybe<Scalars["ID"]>;
+  cuisinesTypeId?: Maybe<Scalars["ID"]>;
+  dishs?: Maybe<Array<UpdateRestaurantMenuDishInput>>;
+  establishmentTypeId?: Maybe<Scalars["ID"]>;
   id: Scalars["ID"];
-  location?: InputMaybe<ServiceLocationInput>;
-  menus?: InputMaybe<Array<UpdateRestaurantMenuInput>>;
-  michelin_guide_stars?: InputMaybe<Scalars["Int"]>;
-  payment_methods?: InputMaybe<Array<ServicePaymentMethod>>;
-  policies?: InputMaybe<Array<ServicePolicyTranslatedInput>>;
-  presentations?: InputMaybe<Array<ServicePresentationInput>>;
-  serviceMetaInfo?: InputMaybe<Array<ServiceMetaInfoTranslationInput>>;
-  setting_and_ambianceId?: InputMaybe<Scalars["ID"]>;
-  status?: InputMaybe<ServiceStatus>;
-  vat?: InputMaybe<Scalars["Int"]>;
+  location?: Maybe<ServiceLocationInput>;
+  menus?: Maybe<Array<UpdateRestaurantMenuInput>>;
+  michelin_guide_stars?: Maybe<Scalars["Int"]>;
+  payment_methods?: Maybe<Array<ServicePaymentMethod>>;
+  policies?: Maybe<Array<ServicePolicyTranslatedInput>>;
+  presentations?: Maybe<Array<ServicePresentationInput>>;
+  serviceMetaInfo?: Maybe<Array<ServiceMetaInfoTranslationInput>>;
+  setting_and_ambianceId?: Maybe<Scalars["ID"]>;
+  status?: Maybe<ServiceStatus>;
+  vat?: Maybe<Scalars["Int"]>;
 };
 
 export type UpdateRestaurantMenuDishInput = {
@@ -4223,59 +4214,62 @@ export type UpdateRestaurantMenuInput = {
 };
 
 export type UpdateSellerAccountAdminInput = {
-  accountType?: InputMaybe<RegisterAccountType>;
-  companyRegisterationNumber?: InputMaybe<Scalars["String"]>;
-  confirmPassword?: InputMaybe<Scalars["String"]>;
-  email?: InputMaybe<Scalars["String"]>;
-  firstName?: InputMaybe<Scalars["String"]>;
+  accountType?: Maybe<RegisterAccountType>;
+  companyRegisterationNumber?: Maybe<Scalars["String"]>;
+  confirmPassword?: Maybe<Scalars["String"]>;
+  email?: Maybe<Scalars["String"]>;
+  firstName?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
-  lastName?: InputMaybe<Scalars["String"]>;
-  password?: InputMaybe<Scalars["String"]>;
+  lastName?: Maybe<Scalars["String"]>;
+  password?: Maybe<Scalars["String"]>;
 };
 
 export type UpdateServiceCategoryInput = {
-  description?: InputMaybe<TranslationTextInput>;
-  filters?: InputMaybe<Array<ServiceCategoryFilterInput>>;
+  description?: Maybe<TranslationTextInput>;
+  filters?: Maybe<Array<ServiceCategoryFilterInput>>;
   id: Scalars["String"];
-  metaTagDescription?: InputMaybe<TranslationTextInput>;
-  metaTagKeywords?: InputMaybe<TranslationTextInput>;
-  metaTagTitle?: InputMaybe<TranslationTextInput>;
-  name?: InputMaybe<Array<TranslationTextInput>>;
-  seo?: InputMaybe<TranslationTextInput>;
-  slug?: InputMaybe<Scalars["String"]>;
-  thumbnail?: InputMaybe<Scalars["String"]>;
+  metaTagDescription?: Maybe<TranslationTextInput>;
+  metaTagKeywords?: Maybe<TranslationTextInput>;
+  metaTagTitle?: Maybe<TranslationTextInput>;
+  name?: Maybe<Array<TranslationTextInput>>;
+  seo?: Maybe<TranslationTextInput>;
+  slug?: Maybe<Scalars["String"]>;
+  thumbnail?: Maybe<Scalars["String"]>;
 };
 
 export type UpdateShippingAddressInput = {
+  firstname?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
-  instractions?: InputMaybe<Scalars["String"]>;
-  location?: InputMaybe<LocationInput>;
-  ownerId?: InputMaybe<Scalars["ID"]>;
-  phone?: InputMaybe<Scalars["String"]>;
+  instractions?: Maybe<Scalars["String"]>;
+  lastname?: Maybe<Scalars["String"]>;
+  location?: Maybe<LocationInput>;
+  ownerId?: Maybe<Scalars["ID"]>;
+  phone?: Maybe<Scalars["String"]>;
+  zipCode?: Maybe<Scalars["String"]>;
 };
 
 export type UpdateShippingRuleInput = {
-  cost?: InputMaybe<Scalars["Float"]>;
-  countries?: InputMaybe<Array<ShippingCountryInput>>;
-  deliveryTimeRange?: InputMaybe<ShippingDeliveryTimeRangeInput>;
+  cost?: Maybe<Scalars["Float"]>;
+  countries?: Maybe<Array<ShippingCountryInput>>;
+  deliveryTimeRange?: Maybe<ShippingDeliveryTimeRangeInput>;
   id: Scalars["ID"];
-  name?: InputMaybe<Scalars["String"]>;
-  shippingType?: InputMaybe<ShippingType>;
+  name?: Maybe<Scalars["String"]>;
+  shippingType?: Maybe<ShippingType>;
 };
 
 export type UpdateShopInput = {
-  banner?: InputMaybe<Scalars["String"]>;
-  description?: InputMaybe<Scalars["String"]>;
-  location?: InputMaybe<LocationInput>;
-  name?: InputMaybe<Scalars["String"]>;
-  storeType?: InputMaybe<Array<StoreType>>;
-  targetGenders?: InputMaybe<Array<TargetGenders>>;
-  vendorType?: InputMaybe<Array<VendorType>>;
+  banner?: Maybe<Scalars["String"]>;
+  description?: Maybe<Scalars["String"]>;
+  location?: Maybe<LocationInput>;
+  name?: Maybe<Scalars["String"]>;
+  storeType?: Maybe<Array<StoreType>>;
+  targetGenders?: Maybe<Array<TargetGenders>>;
+  vendorType?: Maybe<Array<VendorType>>;
 };
 
 export type UpdateTreatmentCategoriesInput = {
   ids: Array<Scalars["ID"]>;
-  title?: InputMaybe<Array<TranslationTextInput>>;
+  title?: Maybe<Array<TranslationTextInput>>;
 };
 
 export type UpdateUserCookiesSettingsInput = {
@@ -4288,18 +4282,18 @@ export type UpdateUserLocationInput = {
 };
 
 export type UpdateWeekdaysWorkingHoursInput = {
-  fr?: InputMaybe<ServiceDayWorkingHoursInput>;
-  mo?: InputMaybe<ServiceDayWorkingHoursInput>;
-  sa?: InputMaybe<ServiceDayWorkingHoursInput>;
-  su?: InputMaybe<ServiceDayWorkingHoursInput>;
-  th?: InputMaybe<ServiceDayWorkingHoursInput>;
-  tu?: InputMaybe<ServiceDayWorkingHoursInput>;
-  we?: InputMaybe<ServiceDayWorkingHoursInput>;
+  fr?: Maybe<ServiceDayWorkingHoursInput>;
+  mo?: Maybe<ServiceDayWorkingHoursInput>;
+  sa?: Maybe<ServiceDayWorkingHoursInput>;
+  su?: Maybe<ServiceDayWorkingHoursInput>;
+  th?: Maybe<ServiceDayWorkingHoursInput>;
+  tu?: Maybe<ServiceDayWorkingHoursInput>;
+  we?: Maybe<ServiceDayWorkingHoursInput>;
 };
 
 export type UpdateWorkingScheduleInput = {
-  specialDays?: InputMaybe<Array<SpecialDayWorkingHoursInput>>;
-  weekdays?: InputMaybe<UpdateWeekdaysWorkingHoursInput>;
+  specialDays?: Maybe<Array<SpecialDayWorkingHoursInput>>;
+  weekdays?: Maybe<UpdateWeekdaysWorkingHoursInput>;
 };
 
 export type UserContact = {
@@ -4465,65 +4459,65 @@ export type WorkingSchedule = {
 };
 
 export type UpdateBeautyCenterAdminInput = {
-  beauty_center_typeId?: InputMaybe<Scalars["ID"]>;
-  cancelationPolicies?: InputMaybe<Array<ServiceCancelationPolicyInput>>;
+  beauty_center_typeId?: Maybe<Scalars["ID"]>;
+  cancelationPolicies?: Maybe<Array<ServiceCancelationPolicyInput>>;
   id: Scalars["ID"];
-  payment_methods?: InputMaybe<Array<ServicePaymentMethod>>;
-  policies?: InputMaybe<Array<ServicePolicyTranslatedInput>>;
-  presentations?: InputMaybe<Array<ServicePresentationInput>>;
-  serviceMetaInfo?: InputMaybe<Array<ServiceMetaInfoTranslationInput>>;
-  title?: InputMaybe<Array<TranslationTextInput>>;
-  treatments?: InputMaybe<Array<UpdateBeautyCenterTreatmentInput>>;
-  type_of_seller?: InputMaybe<ServiceTypeOfSeller>;
-  vat?: InputMaybe<Scalars["Float"]>;
+  payment_methods?: Maybe<Array<ServicePaymentMethod>>;
+  policies?: Maybe<Array<ServicePolicyTranslatedInput>>;
+  presentations?: Maybe<Array<ServicePresentationInput>>;
+  serviceMetaInfo?: Maybe<Array<ServiceMetaInfoTranslationInput>>;
+  title?: Maybe<Array<TranslationTextInput>>;
+  treatments?: Maybe<Array<UpdateBeautyCenterTreatmentInput>>;
+  type_of_seller?: Maybe<ServiceTypeOfSeller>;
+  vat?: Maybe<Scalars["Float"]>;
 };
 
 export type UpdateHealthCenterAdminInput = {
-  cancelationPolicies?: InputMaybe<Array<ServiceCancelationPolicyInput>>;
+  cancelationPolicies?: Maybe<Array<ServiceCancelationPolicyInput>>;
   id: Scalars["ID"];
-  payment_methods?: InputMaybe<Array<ServicePaymentMethod>>;
-  policies?: InputMaybe<Array<ServicePolicyTranslatedInput>>;
-  presentations?: InputMaybe<Array<ServicePresentationInput>>;
-  serviceMetaInfo?: InputMaybe<Array<ServiceMetaInfoTranslationInput>>;
-  status?: InputMaybe<ServiceStatus>;
-  vat?: InputMaybe<Scalars["Float"]>;
+  payment_methods?: Maybe<Array<ServicePaymentMethod>>;
+  policies?: Maybe<Array<ServicePolicyTranslatedInput>>;
+  presentations?: Maybe<Array<ServicePresentationInput>>;
+  serviceMetaInfo?: Maybe<Array<ServiceMetaInfoTranslationInput>>;
+  status?: Maybe<ServiceStatus>;
+  vat?: Maybe<Scalars["Float"]>;
 };
 
 export type UpdateHotelAdminInput = {
   id: Scalars["ID"];
-  location?: InputMaybe<ServiceLocationInput>;
-  policies?: InputMaybe<Array<ServicePolicyTranslatedInput>>;
-  presentations?: InputMaybe<Array<ServicePresentationInput>>;
-  rooms?: InputMaybe<Array<UpdateHotelRoomAdminInput>>;
-  serviceMetaInfo?: InputMaybe<Array<ServiceMetaInfoTranslationInput>>;
+  location?: Maybe<ServiceLocationInput>;
+  policies?: Maybe<Array<ServicePolicyTranslatedInput>>;
+  presentations?: Maybe<Array<ServicePresentationInput>>;
+  rooms?: Maybe<Array<UpdateHotelRoomAdminInput>>;
+  serviceMetaInfo?: Maybe<Array<ServiceMetaInfoTranslationInput>>;
 };
 
 export type UpdateRestaurantAdminInput = {
-  cuisinesTypeId?: InputMaybe<Scalars["ID"]>;
-  dishs?: InputMaybe<Array<UpdateRestaurantMenuDishInput>>;
-  establishmentTypeId?: InputMaybe<Scalars["ID"]>;
+  cuisinesTypeId?: Maybe<Scalars["ID"]>;
+  dishs?: Maybe<Array<UpdateRestaurantMenuDishInput>>;
+  establishmentTypeId?: Maybe<Scalars["ID"]>;
   id: Scalars["ID"];
-  location?: InputMaybe<ServiceLocationInput>;
-  menus?: InputMaybe<Array<UpdateRestaurantMenuInput>>;
-  michelin_guide_stars?: InputMaybe<Scalars["Int"]>;
-  payment_methods?: InputMaybe<Array<ServicePaymentMethod>>;
-  policies?: InputMaybe<Array<ServicePolicyTranslatedInput>>;
-  presentations?: InputMaybe<Array<ServicePresentationInput>>;
-  serviceMetaInfo?: InputMaybe<Array<ServiceMetaInfoTranslationInput>>;
-  setting_and_ambianceId?: InputMaybe<Scalars["ID"]>;
-  status?: InputMaybe<ServiceStatus>;
-  vat?: InputMaybe<Scalars["Int"]>;
+  location?: Maybe<ServiceLocationInput>;
+  menus?: Maybe<Array<UpdateRestaurantMenuInput>>;
+  michelin_guide_stars?: Maybe<Scalars["Int"]>;
+  payment_methods?: Maybe<Array<ServicePaymentMethod>>;
+  policies?: Maybe<Array<ServicePolicyTranslatedInput>>;
+  presentations?: Maybe<Array<ServicePresentationInput>>;
+  serviceMetaInfo?: Maybe<Array<ServiceMetaInfoTranslationInput>>;
+  setting_and_ambianceId?: Maybe<Scalars["ID"]>;
+  status?: Maybe<ServiceStatus>;
+  vat?: Maybe<Scalars["Int"]>;
 };
 
 export type UpdateVehicleAdminInput = {
-  brand?: InputMaybe<Scalars["String"]>;
-  cancelationPolicies?: InputMaybe<Array<ServiceCancelationPolicyInput>>;
+  brand?: Maybe<Scalars["String"]>;
+  cancelationPolicies?: Maybe<Array<ServiceCancelationPolicyInput>>;
   id: Scalars["ID"];
-  insurance?: InputMaybe<Scalars["Float"]>;
-  model?: InputMaybe<Scalars["String"]>;
-  presentations?: InputMaybe<Array<ServicePresentationInput>>;
-  price?: InputMaybe<Scalars["Float"]>;
-  properties?: InputMaybe<CreateVehiclePropertiesInput>;
-  title?: InputMaybe<Array<TranslationTextInput>>;
-  typeId?: InputMaybe<Scalars["ID"]>;
+  insurance?: Maybe<Scalars["Float"]>;
+  model?: Maybe<Scalars["String"]>;
+  presentations?: Maybe<Array<ServicePresentationInput>>;
+  price?: Maybe<Scalars["Float"]>;
+  properties?: Maybe<CreateVehiclePropertiesInput>;
+  title?: Maybe<Array<TranslationTextInput>>;
+  typeId?: Maybe<Scalars["ID"]>;
 };

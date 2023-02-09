@@ -204,6 +204,9 @@ type ShippingAddress {
   id: ID!
   ownerId: ID!
   location: Location!
+  firstname: String!
+  lastname: String!
+  zipCode: String
   instractions: String
   phone: String
 }
@@ -321,6 +324,7 @@ type Mutation {
   adminDeleteProduct(id: String!, reason: String!): Boolean!
   createShippingAddress(args: CreateShippingAddressInput!): Boolean!
   updateShippingAddress(args: UpdateShippingAddressInput!): Boolean!
+  deleteShippingAddress(id: String!): Boolean!
   createShippingTypeRuleGeoZone(args: CreateShippingGeoZone!): Boolean!
   createShippingTypeRule(args: CreateShippingTypeRuleInput!): Boolean!
   createShippingRule(createShippingRuleArgs: CreateShippingRuleInput!): ShippingRule!
@@ -339,8 +343,8 @@ input CreateShopInput {
 }
 
 input LocationInput {
-  lat: Float!
-  long: Float!
+  lat: Float
+  long: Float
   address: String!
   country: String!
   city: String!
@@ -452,19 +456,24 @@ input UpdateFilterInput {
 }
 
 input CreateShippingAddressInput {
-  id: ID!
   ownerId: ID!
   location: LocationInput!
+  firstname: String!
+  lastname: String!
+  zipCode: String
   instractions: String
   phone: String
 }
 
 input UpdateShippingAddressInput {
-  id: ID!
   ownerId: ID
   location: LocationInput
+  firstname: String
+  lastname: String
+  zipCode: String
   instractions: String
   phone: String
+  id: ID!
 }
 
 input CreateShippingGeoZone {

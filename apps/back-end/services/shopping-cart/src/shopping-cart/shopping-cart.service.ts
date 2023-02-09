@@ -68,16 +68,13 @@ export class ShoppingCartService {
   }
 
   async getShoppingCartByOwnerId(ownerId: string): Promise<ShoppingCart> {
-    const res = await this.prisma.cart.findUnique({
+    let res = await this.prisma.cart.findUnique({
       where: {
         ownerId,
       },
-      rejectOnNotFound(error) {
-        throw new NotFoundException(
-          'could not find a shopping cart for this account',
-        );
-      },
     });
+
+    if (!res) res = await this.prisma.cart.create({ data: { ownerId } });
 
     return res;
   }

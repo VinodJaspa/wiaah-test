@@ -4,13 +4,19 @@ import { LocationInput } from '@shop';
 @InputType()
 export class CreateShippingAddressInput {
   @Field(() => ID)
-  id: string;
-
-  @Field(() => ID)
   ownerId: string;
 
   @Field(() => LocationInput)
   location: LocationInput;
+
+  @Field(() => String)
+  firstname: string;
+
+  @Field(() => String)
+  lastname: string;
+
+  @Field(() => String, { nullable: true })
+  zipCode?: string;
 
   @Field(() => String, { nullable: true })
   instractions?: string;

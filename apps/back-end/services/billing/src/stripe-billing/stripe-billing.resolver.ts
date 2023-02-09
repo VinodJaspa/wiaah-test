@@ -52,7 +52,12 @@ export class StripeBillingResolver implements OnModuleInit {
   async createCartPaymentIntent(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ): Promise<string> {
-    return await this.stripeBillingService.checkout(user);
+    try {
+      return await this.stripeBillingService.checkout(user);
+    } catch (error) {
+      console.log({ error });
+      throw error;
+    }
   }
 
   @Mutation(() => PaymentIntent)

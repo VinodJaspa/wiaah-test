@@ -108,6 +108,9 @@ model ShippingAddress {
   ownerId      String   @db.ObjectId
   instractions String?
   phone        String?
+  zipCode      String?
+  firstname    String
+  lastname     String
   location     Location
 }
 
@@ -146,8 +149,8 @@ enum PresentationType {
 }
 
 type Location {
-  lat      Float
-  long     Float
+  lat      Float?
+  long     Float?
   country  String
   city     String
   state    String

@@ -3,11 +3,11 @@ import { StoreType, TargetGenders, VendorType } from '@prisma-client';
 
 @InputType()
 export class LocationInput {
-  @Field((type) => Float)
-  lat: number;
+  @Field((type) => Float, { nullable: true })
+  lat?: number;
 
-  @Field((type) => Float)
-  long: number;
+  @Field((type) => Float, { nullable: true })
+  long?: number;
 
   @Field((type) => String)
   address: string;
