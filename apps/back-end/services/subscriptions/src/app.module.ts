@@ -29,6 +29,7 @@ export const subgraphs = [
   { name: 'orders', url: 'http://localhost:3014/graphql' },
   { name: 'hashtag', url: 'http://localhost:3024/graphql' },
   { name: 'voucher', url: 'http://localhost:3016/graphql' },
+  { name: 'currency', url: 'http://localhost:3012/graphql' },
 ];
 
 @Module({

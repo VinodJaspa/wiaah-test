@@ -2,12 +2,11 @@ import { useRouter } from "next/router";
 import React from "react";
 import { SettingsSectionType } from "types";
 import {
-  WithdrawalSection,
   SectionsLayout,
   TransactionsHistorySection,
   VouchersSection,
 } from "ui";
-import { FaMoneyBill, FaPercent } from "react-icons/fa";
+import { FaPercent } from "react-icons/fa";
 import { AiOutlineTransaction } from "react-icons/ai";
 
 export const WalletView: React.FC = () => {
@@ -30,16 +29,9 @@ export const WalletView: React.FC = () => {
       handleSectionChange={(url) => router.replace(`/${baseRoute}/${url}`)}
     />
   );
-  // return <>"wallet"</>;
 };
 
 const sections: SettingsSectionType[] = [
-  {
-    panelName: "Withdrawal",
-    panelIcon: FaMoneyBill,
-    panelUrl: "/withdrwal",
-    panelComponent: <WithdrawalSection />,
-  },
   {
     panelName: "Transactions",
     panelIcon: AiOutlineTransaction,

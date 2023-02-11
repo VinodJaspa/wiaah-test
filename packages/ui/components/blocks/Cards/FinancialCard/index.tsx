@@ -10,6 +10,7 @@ export const FinancialCard: React.FC<FinancalCardProps> = ({
   title,
   amount,
   className,
+  children,
   ...props
 }) => {
   return (
@@ -17,12 +18,15 @@ export const FinancialCard: React.FC<FinancalCardProps> = ({
       {...props}
       className={`${
         className || ""
-      } text-white bg-primary p-4 flex flex-col gap-4`}
+      } text-white bg-primary p-4 flex justify-between gap-4`}
     >
-      <span>{title}</span>
-      <span className="font-bold">
-        <PriceDisplay priceObject={amount} />
-      </span>
+      <div className="flex flex-col gap-4">
+        <span>{title}</span>
+        <span className="font-bold">
+          <PriceDisplay priceObject={amount} />
+        </span>
+      </div>
+      {children}
     </div>
   );
 };

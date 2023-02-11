@@ -1,13 +1,7 @@
-import {
-  ObjectType,
-  Field,
-  Int,
-  ID,
-  registerEnumType,
-  Float,
-} from '@nestjs/graphql';
+import { ObjectType, Field, ID, Float, Directive } from '@nestjs/graphql';
 
 @ObjectType()
+@Directive('@key(fields:"code")')
 export class Currency {
   @Field((type) => ID)
   id: string;
@@ -17,6 +11,9 @@ export class Currency {
 
   @Field((type) => String)
   code: string;
+
+  @Field(() => String)
+  symbol: string;
 
   @Field((type) => Float)
   exchangeRate: number;

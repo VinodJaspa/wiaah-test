@@ -1,7 +1,7 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
-
-@ObjectType()
 export class EventScheduling {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  id: string;
+  createdAt: Date;
+  triggerAt: Date;
+  data: string;
+  triggerEvent: string;
 }

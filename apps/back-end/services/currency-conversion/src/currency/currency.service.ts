@@ -38,12 +38,14 @@ export class CurrencyService {
     code: string,
     name: string,
     rate: number,
+    symbol: string,
   ): Promise<Currency> {
     return this.prisma.currency.upsert({
       create: {
         name,
         code,
         exchangeRate: rate,
+        symbol,
       },
       update: {
         exchangeRate: rate,
@@ -58,6 +60,7 @@ export class CurrencyService {
         name: true,
         updatedAt: true,
         id: true,
+        symbol: true,
       },
     });
   }
@@ -67,7 +70,7 @@ export class CurrencyService {
 
     const res = currenices.map(
       async ({ code, name }: { code: string; name: string }) => {
-        const currency = await this.createOrUpdateCurrency(code, name, 0);
+        const currency = await this.createOrUpdateCurrency(code, name, 0, '');
         return currency;
       },
     );
@@ -91,6 +94,7 @@ export class CurrencyService {
           id: true,
           name: true,
           updatedAt: true,
+          symbol: true,
         },
       });
 

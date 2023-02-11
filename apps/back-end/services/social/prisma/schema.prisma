@@ -101,6 +101,18 @@ model NewsfeedPost {
   updatedAt          DateTime           @updatedAt
 }
 
+type MarketingTag {
+  id   String
+  type MarketingTagType
+  x    Float
+  y    Float
+}
+
+enum MarketingTagType {
+  product
+  service
+}
+
 model ProductPost {
   id                 String             @id @default(auto()) @map("_id") @db.ObjectId
   productId          String             @db.ObjectId
@@ -305,8 +317,9 @@ type CommentTag {
 }
 
 type Attachment {
-  type AttachmentType
-  src  String
+  type          AttachmentType
+  src           String
+  marketingTags MarketingTag[]
 }
 
 type PostMention {

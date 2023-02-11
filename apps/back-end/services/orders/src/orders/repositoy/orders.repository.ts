@@ -18,17 +18,24 @@ export class OrdersRepository {
     items: { id: string; qty: number; type: string }[],
     shippingMethodId: string,
     shippingAddressId: string,
-  ): Promise<Order> {
+  ) {
     return this.prisma.order.create({
       data: {
         shippingAddressId,
         shippingMethodId,
         buyerId,
         sellerId,
-        items,
+        items: {
+          createMany: {
+            data: items,
+          },
+        },
         status: {
           of: 'pending',
         },
+      },
+      include: {
+        items: true,
       },
     });
   }
@@ -38,7 +45,7 @@ export class OrdersRepository {
     status?: OrderStatusEnum,
     pagination?: PaginationDataInput,
     q?: string,
-  ): Promise<Order[]> {
+  ) {
     const { skip, take } = ExtractPagination(pagination);
 
     const queryFilters: Prisma.OrderWhereInput[] = [];
@@ -92,6 +99,9 @@ export class OrdersRepository {
       },
       skip,
       take,
+      include: {
+        items: true,
+      },
     });
   }
 
@@ -100,7 +110,7 @@ export class OrdersRepository {
     status?: OrderStatusEnum,
     pagination?: GqlPaginationInput,
     q?: string,
-  ): Promise<Order[]> {
+  ) {
     const { skip, take } = ExtractPagination(pagination);
     const queryFilters: Prisma.OrderWhereInput[] = [];
 
@@ -151,13 +161,19 @@ export class OrdersRepository {
       },
       take,
       skip,
+      include: {
+        items: true,
+      },
     });
   }
 
-  getOrderById(id: string): Promise<Order> {
+  getOrderById(id: string) {
     return this.prisma.order.findUnique({
       where: {
         id,
+      },
+      include: {
+        items: true,
       },
     });
   }
@@ -213,6 +229,9 @@ export class OrdersRepository {
           of: OrderStatus.rejectedByBuyer,
           rejectReason: reason,
         },
+      },
+      include: {
+        items: true,
       },
     });
   }

@@ -1,5 +1,5 @@
-import { Order } from '@prisma-client';
+import { Order, OrderItem } from '@prisma-client';
 
 export class OrderCanceledEvent {
-  constructor(public readonly order: Order) {}
+  constructor(public readonly order: Order & { items: OrderItem[] }) {}
 }

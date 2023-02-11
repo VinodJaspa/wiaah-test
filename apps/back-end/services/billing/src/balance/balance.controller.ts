@@ -4,7 +4,6 @@ import {
   GetUserCashbackBalanceMessage,
   GetUserCashbackBalanceMessageReply,
   KafkaPayload,
-  OrderCanceledEvent,
   SellerProductsPurchasedEvent,
   VoucherAppliedEvent,
 } from 'nest-dto';
@@ -54,22 +53,9 @@ export class BalanceController {
       console.log(err);
     }
   }
-  @EventPattern(KAFKA_EVENTS.ORDERS_EVENTS.orderCanceled())
-  handleOrderCanceledEvent(
-    @Payload() { value }: { value: OrderCanceledEvent },
-  ) {
-    this.balacneService.addWithdrawableBalance(
-      value.input.buyerId,
-      value.input.total,
-    );
-    this.balacneService.removeWithdrawableBalance(
-      value.input.sellerId,
-      value.input.total,
-    );
-  }
 
   @EventPattern(KAFKA_EVENTS.BILLING_EVNETS.sellerProductsPurchased('*', true))
-  handleProductPurchasedEvent(
+  async handleProductPurchasedEvent(
     @Payload() { value }: { value: SellerProductsPurchasedEvent },
   ) {
     const affiliations = value.input.products.map(({ affiliation, id }) => ({
@@ -78,11 +64,10 @@ export class BalanceController {
       productId: id,
     }));
 
-    for (const affilaition of affiliations) {
-      this.balacneService.addWithdrawableBalance(
-        affilaition.userId,
-        affilaition.amount,
-      );
-    }
+    const res = affiliations.map((v) =>
+      this.balacneService.addPendingBalance(v.userId, v.amount),
+    );
+
+    await Promise.all(res);
   }
 }

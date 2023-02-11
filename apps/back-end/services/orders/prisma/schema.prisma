@@ -41,12 +41,15 @@ model RefundRequest {
   @@unique([productId, requestedById])
 }
 
-type OrderItem {
-  id         String
+model OrderItem {
+  id         String  @id @default(auto()) @map("_id") @db.ObjectId
   type       String
   qty        Int
+  refundable Boolean @default(true)
   discountId String? @db.ObjectId
   cashbackId String? @db.ObjectId
+  Order      Order?  @relation(fields: [orderId], references: [id])
+  orderId    String? @db.ObjectId
 }
 
 type OrderStatus {

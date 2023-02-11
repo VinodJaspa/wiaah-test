@@ -29,6 +29,7 @@ import { ServicePostModule } from './service-post/service-post.module';
 import { CommunityModule } from '@community/community.module';
 import { FriendsModule } from '@friends/friends.module';
 import { PlacesModule } from '@places/places.module';
+import { MarketingTagModule } from './marketing-tag/marketing-tag.module';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { PlacesModule } from '@places/places.module';
     CommunityModule,
     FriendsModule,
     PlacesModule,
+    MarketingTagModule,
   ],
 })
 export class AppModule {}

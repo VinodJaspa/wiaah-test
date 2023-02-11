@@ -1,5 +1,11 @@
 import { UseGuards } from '@nestjs/common';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Query,
+  Resolver,
+  ResolveReference,
+} from '@nestjs/graphql';
 import { accountType, GqlAuthorizationGuard } from 'nest-utils';
 import { CurrencyService } from './currency.service';
 import { UpdateCurrencyInput } from './dto/update-currency.input';
@@ -32,8 +38,13 @@ export class CurrencyResolver {
   }
 
   @Mutation((type) => [Currency])
-  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  // @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   updateCurrenciesRates(): Promise<Currency[]> {
     return this.currencyService.updateCurrnciesData();
+  }
+
+  @ResolveReference()
+  resolve(ref: { __typename: string; code: string }) {
+    return this.currencyService.getCurrencyDataByCode(ref.code);
   }
 }

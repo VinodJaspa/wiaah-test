@@ -1,20 +1,36 @@
-import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  InternalServerErrorException,
+  OnModuleInit,
+  UseGuards,
+} from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ClientKafka } from '@nestjs/microservices';
 import {
+  accountType,
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  KafkaMessageHandler,
   KAFKA_MESSAGES,
   SERVICES,
 } from 'nest-utils';
 import { StripeService } from '@stripe';
 
 import { CreateMembershipPaymentIntentCommand } from './commands';
-import { CreateMembershipPaymentIntentInput } from './dto';
+import { CreateMembershipPaymentIntentInput, WithdrawInput } from './dto';
 import { PaymentIntent } from './entities';
 import { StripeBillingService } from './stripe-billing.service';
+import {
+  GetCurrencyExchangeRateMessage,
+  GetCurrencyExchangeRateMessageReply,
+  GetUserBalanceMessage,
+  GetUserBalanceMessageReply,
+} from 'nest-dto';
+import { PrismaService } from 'prismaService';
+import { FinancialAccountType } from '@prisma-client';
 
 @Resolver()
 export class StripeBillingResolver implements OnModuleInit {
@@ -24,19 +40,11 @@ export class StripeBillingResolver implements OnModuleInit {
     private readonly eventsCLient: ClientKafka,
     private readonly commandBus: CommandBus,
     private readonly stripeService: StripeService,
+    private readonly prisma: PrismaService,
   ) {}
 
   @Mutation(() => String)
-  async createCustomer(@Args('name') name: string) {
-    const res = await this.stripeService.createCustomer(
-      name,
-      'anyrandom@test.com',
-    );
-    return res.id;
-  }
-
-  @Mutation(() => String)
-  @UseGuards(new GqlAuthorizationGuard(['seller']))
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   async createConnectedAccount(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
@@ -61,7 +69,7 @@ export class StripeBillingResolver implements OnModuleInit {
   }
 
   @Mutation(() => PaymentIntent)
-  @UseGuards(new GqlAuthorizationGuard(['seller', 'buyer']))
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER, accountType.BUYER]))
   async createMembershipSubscriptionPaymentIntent(
     @Args('args') args: CreateMembershipPaymentIntentInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
@@ -74,8 +82,67 @@ export class StripeBillingResolver implements OnModuleInit {
     return res;
   }
 
+  @Mutation(() => Boolean)
+  async withdraw(
+    @Args('args') args: WithdrawInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const res = await KafkaMessageHandler<
+      string,
+      GetUserBalanceMessage,
+      GetUserBalanceMessageReply
+    >(
+      this.eventsCLient,
+      KAFKA_MESSAGES.BILLING_MESSAGES.getUserBalance,
+      new GetUserBalanceMessage({ userId: user.id }),
+    );
+
+    if (typeof res.input.withdrawable !== 'number')
+      throw new InternalServerErrorException('failed to get balance');
+
+    if (res.input.withdrawable < args.amount)
+      throw new BadRequestException('Not enough balance');
+
+    const finAccount = await this.prisma.financialAccount.findUnique({
+      where: {
+        id: args.methodId,
+      },
+    });
+
+    if (!finAccount)
+      throw new BadRequestException('This financial account was not found');
+
+    switch (finAccount.type) {
+      case FinancialAccountType.stripe:
+        const curr = await KafkaMessageHandler<
+          string,
+          GetCurrencyExchangeRateMessage,
+          GetCurrencyExchangeRateMessageReply
+        >(
+          this.eventsCLient,
+          KAFKA_MESSAGES.CURRENCY_MESSAGES.getCurrencyExchangeRate,
+          new GetCurrencyExchangeRateMessage({
+            targetCurrencyCode: args.currency,
+          }),
+        );
+
+        const amount = args.amount * curr.results.data.rate;
+
+        const res = await this.stripeService.sendFunds({
+          amount,
+          connectedAccId: finAccount.financialId,
+          currency: curr.results.data.convertedToCurrency,
+        });
+        return true;
+        break;
+
+      default:
+        return false;
+    }
+  }
+
   @Query(() => Boolean)
-  @UseGuards(new GqlAuthorizationGuard(['admin']))
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async getConnectedAccounts() {
     try {
       await this.stripeBillingService.getStripeConnectedAccounts();

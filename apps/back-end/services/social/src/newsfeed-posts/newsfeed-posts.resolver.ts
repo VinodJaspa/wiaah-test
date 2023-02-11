@@ -1,6 +1,14 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { NewsfeedPostsService } from './newsfeed-posts.service';
-import { NewsfeedPost } from '@entities';
+import { MarketingTag, NewsfeedPost } from '@entities';
 import { CreateNewsfeedPostInput, UpdateNewsfeedPostInput } from '@input';
 import { UseGuards } from '@nestjs/common';
 import {

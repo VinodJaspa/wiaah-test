@@ -31,6 +31,7 @@ import {
   CheckoutMetadataProduct,
 } from '@stripe-billing/types';
 import { ProductTypeEnum, StripeMetadataType } from '@stripe-billing/const';
+import { PrismaService } from 'prismaService';
 
 interface FormatedData {
   providerId: string;
@@ -51,6 +52,7 @@ export class StripeBillingService {
     @Inject(SERVICES.BILLING_SERVICE.token)
     private readonly eventsClient: ClientKafka,
     private readonly commandBus: CommandBus,
+    private readonly prisma: PrismaService,
   ) {}
 
   servicesType = [
@@ -67,7 +69,16 @@ export class StripeBillingService {
   async createStripeConnectedAccount(
     user: AuthorizationDecodedUser,
   ): Promise<{ url: string }> {
-    const stripeId = user.stripeId;
+    const finAcc = await this.prisma.financialAccount.findUnique({
+      where: {
+        ownerId_type: {
+          ownerId: user.id,
+          type: 'stripe',
+        },
+      },
+    });
+
+    const stripeId = finAcc.financialId;
 
     if (stripeId)
       throw new UnprocessableEntityException(

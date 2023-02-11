@@ -1,32 +1,36 @@
 import React from "react";
 import { HtmlDivProps } from "types";
 import { HiDuplicate } from "react-icons/hi";
-import { Image, PresentationType } from "@UI";
+import { Image } from "@UI";
+import { AttachmentType } from "@features/API";
 export interface PostAttachmentProps {
   src: string;
-  type: PresentationType;
+  type: AttachmentType;
   alt?: string;
   footer?: React.ReactElement;
   style?: HtmlDivProps;
   blur?: boolean;
   cover?: boolean;
+  tags?: {
+    x: number;
+    y: number;
+    title: string;
+    value: string | number;
+  }[];
 }
 
 export const PostAttachment: React.FC<PostAttachmentProps> = ({
-  type = PresentationType.Image,
+  type = AttachmentType.Img,
   src,
   alt,
   footer,
   style,
   blur,
-  cover,
+  cover = true,
+  tags,
 }) => {
-  function handleGoToPost() {
-    // router.push("localhost:3002/social/wiaah/newsfeed-post/15");
-  }
-
   switch (type) {
-    case "image":
+    case AttachmentType.Img:
       return (
         <div
           className="flex justify-center items-center w-full h-full overflow-hidden relative"
@@ -50,7 +54,6 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
             alt={alt && alt}
             src={src}
             data-testid="PostAttachmentImage"
-            onClick={handleGoToPost}
           />
           {footer && (
             <div className="bg-gradient-to-t from-black to-transparent w-full bottom-0 left-0 absolute z-[5]">

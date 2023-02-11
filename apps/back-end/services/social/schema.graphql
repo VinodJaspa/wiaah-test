@@ -12,9 +12,59 @@ directive @requires(fields: String!) on FIELD_DEFINITION
 
 directive @provides(fields: String!) on FIELD_DEFINITION
 
+type PostTag {
+  userId: ID!
+}
+
+type MarketingTag {
+  id: ID!
+  type: MarketingTagType!
+  x: Float!
+  y: Float!
+  product: Product!
+  service: Service!
+}
+
+enum MarketingTagType {
+  product
+  service
+}
+
+type PostMention {
+  userId: ID!
+}
+
+type PostLocation {
+  city: String!
+  country: String!
+  address: String
+  state: String
+}
+
+type NewsfeedPost {
+  id: ID!
+  userId: ID!
+  title: String!
+  content: String!
+  attachments: [Attachment!]!
+  hashtags: [Hashtag!]!
+  reactionNum: Int!
+  comments: Int!
+  shares: Int!
+  views: Int!
+  mentions: [PostMention!]!
+  location: PostLocation
+  tags: [PostTag!]!
+  createdAt: String!
+  updatedAt: String!
+  publisher: Profile
+  authorProfileId: ID!
+}
+
 type Attachment {
   type: AttachmentType!
   src: String!
+  marketingTags: [MarketingTag!]!
 }
 
 enum AttachmentType {
@@ -89,41 +139,6 @@ type ProfileMetaPaginatedResponse {
   data: [ProfileMeta!]!
   total: Int!
   hasMore: Boolean!
-}
-
-type PostTag {
-  userId: ID!
-}
-
-type PostMention {
-  userId: ID!
-}
-
-type PostLocation {
-  city: String!
-  country: String!
-  address: String
-  state: String
-}
-
-type NewsfeedPost {
-  id: ID!
-  userId: ID!
-  title: String!
-  content: String!
-  attachments: [Attachment!]!
-  hashtags: [Hashtag!]!
-  reactionNum: Int!
-  comments: Int!
-  shares: Int!
-  views: Int!
-  mentions: [PostMention!]!
-  location: PostLocation
-  tags: [PostTag!]!
-  createdAt: String!
-  updatedAt: String!
-  publisher: Profile
-  authorProfileId: ID!
 }
 
 type Follow {
@@ -660,6 +675,14 @@ input CreateNewsfeedPostInput {
 input AttachmentInput {
   type: AttachmentType!
   src: String!
+  marketingTags: [AttachmentMarketingTagInput!]!
+}
+
+input AttachmentMarketingTagInput {
+  id: String!
+  type: MarketingTagType!
+  x: Float!
+  y: Float!
 }
 
 input HashtagInput {

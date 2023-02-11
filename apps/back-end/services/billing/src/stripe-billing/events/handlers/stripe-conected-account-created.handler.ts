@@ -3,6 +3,7 @@ import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { ClientKafka } from '@nestjs/microservices';
 import { StripeAccountCreatedEvent } from 'nest-dto';
 import { KAFKA_EVENTS, SERVICES } from 'nest-utils';
+import { PrismaService } from 'prismaService';
 
 import { StripeConnectedAccountCreatedEvent } from '../impl';
 
@@ -13,10 +14,21 @@ export class StripeConnectedAccountCreatedEventHandler
   constructor(
     @Inject(SERVICES.BILLING_SERVICE.token)
     private readonly eventClient: ClientKafka,
+    private readonly prisma: PrismaService,
   ) {}
 
-  handle({ input: { stripeId, userId } }: StripeConnectedAccountCreatedEvent) {
-    console.log('event handle');
+  async handle({
+    input: { stripeId, userId },
+  }: StripeConnectedAccountCreatedEvent) {
+    await this.prisma.financialAccount.create({
+      data: {
+        financialId: stripeId,
+        label: `Stripe`,
+        ownerId: userId,
+        type: 'stripe',
+      },
+    });
+
     this.eventClient.emit(
       KAFKA_EVENTS.BILLING_EVNETS.stripeAccountCreated,
       new StripeAccountCreatedEvent({ stripeId, userId }),

@@ -1,9 +1,11 @@
-import { shallow, ShallowWrapper } from "enzyme";
 import React from "react";
+import { shallow, ShallowWrapper } from "enzyme";
 import { TransactionsHistorySection } from ".";
 import {
   useGetMyBalanceQuery,
+  useGetMyFinancialAccountsQuery,
   useGetMyTransactionHistoryQuery,
+  useGetWithdrawCurrneicesQuery,
   useUserData,
 } from "@UI";
 import { getTestId } from "utils";
@@ -14,6 +16,8 @@ jest.mock("@UI", () => ({
   useGetMyBalanceQuery: jest.fn(),
   useGetMyTransactionHistoryQuery: jest.fn(),
   useUserData: jest.fn(),
+  useGetWithdrawCurrneicesQuery: jest.fn(),
+  useGetMyFinancialAccountsQuery: jest.fn(),
 }));
 
 const testids = {
@@ -44,12 +48,14 @@ let mockData = {
       },
       id: "id 1",
       status: TransactionStatus.Success,
-      toUser: "to id 1",
+      toUser: {
+        id: "test to id",
+      },
       updatedAt: new Date().toString(),
       userId: "user id 1",
     },
   ],
-} as ReturnType<typeof useGetMyTransactionHistoryQuery>;
+} as Partial<ReturnType<typeof useGetMyTransactionHistoryQuery>>;
 
 let mockBalanceData = {
   isLoading: false,
@@ -73,17 +79,57 @@ let mockUseUserData = {
   },
 } as ReturnType<typeof useUserData>;
 
+let mockGetWithdrawCurrenciesData = {
+  data: [
+    {
+      code: "usd",
+      currency: {
+        code: "usd",
+        exchangeRate: 15,
+        id: "test",
+        name: "USD",
+        symbol: "$",
+      },
+    },
+    {
+      code: "eur",
+      currency: {
+        code: "eur",
+        exchangeRate: 10,
+        id: "test12",
+        name: "EUR",
+        symbol: "%",
+      },
+    },
+  ],
+} as ReturnType<typeof useGetWithdrawCurrneicesQuery>;
+
+let mockGetMyFinancialAccountsData = {
+  data: [
+    {
+      id: "tst",
+      financialId: "test",
+      label: "Stripe",
+      type: "stripe",
+    },
+  ],
+} as ReturnType<typeof useGetMyFinancialAccountsQuery>;
+
 describe("addressBookSection tests", () => {
   let wrapper: ShallowWrapper;
 
   let mockGetQuery = useGetMyTransactionHistoryQuery as jest.Mock;
   let mockGetBalance = useGetMyBalanceQuery as jest.Mock;
   let mockUseUser = useUserData as jest.Mock;
+  let mockGetwithdrawCurrencies = useGetWithdrawCurrneicesQuery as jest.Mock;
+  let mockGetFinancialAccounts = useGetMyFinancialAccountsQuery as jest.Mock;
 
   beforeAll(() => {
     mockGetQuery.mockReturnValue(mockData);
     mockGetBalance.mockReturnValue(mockBalanceData);
     mockUseUser.mockReturnValue(mockUseUserData);
+    mockGetwithdrawCurrencies.mockReturnValue(mockGetWithdrawCurrenciesData);
+    mockGetFinancialAccounts.mockReturnValue(mockGetMyFinancialAccountsData);
 
     wrapper = shallow(<TransactionsHistorySection />);
   });

@@ -13,6 +13,20 @@ import {
   Status,
   HStack,
   Pagination,
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  CloseIcon,
+  Select,
+  SelectOption,
+  Link,
+  ModalOverlay,
+  PriceDisplay,
+  InputGroup,
+  InputLeftElement,
+  Input,
+  ModalFooter,
 } from "@partials";
 
 import { FinancialCard } from "@blocks/Cards";
@@ -21,10 +35,17 @@ import { SectionHeader } from "@sections";
 
 import { mapArray } from "utils";
 
-import { useGetMyBalanceQuery, useGetMyTransactionHistoryQuery } from "@UI";
+import {
+  useGetMyBalanceQuery,
+  useGetMyFinancialAccountsQuery,
+  useGetMyTransactionHistoryQuery,
+  useGetWithdrawCurrneicesQuery,
+} from "@UI";
 import { usePaginationControls } from "@blocks";
 import { TransactionStatus } from "@features/API";
 import { useUserData } from "@UI";
+import { useDisclouser } from "hooks";
+import { Form, Formik } from "formik";
 
 export interface TransactionsHistorySectionProps {}
 
@@ -32,11 +53,15 @@ export const TransactionsHistorySection: React.FC<
   TransactionsHistorySectionProps
 > = () => {
   const { user } = useUserData();
+  const { handleClose, handleOpen, isOpen } = useDisclouser();
 
   const { pagination, controls } = usePaginationControls();
   const { data: transactions } = useGetMyTransactionHistoryQuery({
     pagination,
   });
+
+  const { data: currencies } = useGetWithdrawCurrneicesQuery();
+  const { data: accounts } = useGetMyFinancialAccountsQuery();
 
   const { data: balance } = useGetMyBalanceQuery();
 
@@ -57,12 +82,16 @@ export const TransactionsHistorySection: React.FC<
             amount: balance?.withdrawableBalance || 0,
             currency: balance?.balanceCurrency,
           }}
-        />
+        >
+          <Button className="bg-primary-500" onClick={handleOpen}>
+            {t("Get Paid Now")}
+          </Button>
+        </FinancialCard>
         <FinancialCard
           className="w-full"
           title={t("Your Earnings to Date")}
           amount={{
-            amount: balance?.withdrawableBalance || 0,
+            amount: balance?.allTimeEarnings || 0,
             currency: balance?.balanceCurrency,
           }}
         />
@@ -162,6 +191,139 @@ export const TransactionsHistorySection: React.FC<
         </Table>
       </TableContainer>
       <Pagination controls={controls} />
+      <Modal isOpen={isOpen} onClose={handleClose} onOpen={handleOpen}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader className="border-b p-2 font-bold" title={t("Withdraw")}>
+            <ModalCloseButton>
+              <CloseIcon />
+            </ModalCloseButton>
+          </ModalHeader>
+          <Formik
+            initialValues={{
+              methodId: "",
+              amount: 0,
+              currency: balance?.balanceCurrency || "USD",
+            }}
+            onSubmit={() => {}}
+          >
+            {({ values, setFieldValue }) => (
+              <Form>
+                <Table
+                  TdProps={{
+                    className:
+                      "first:align-top whitespace-nowrap first:text-right odd:font-bold even:font-semibold",
+                  }}
+                  className="w-full"
+                  TrProps={{ className: "border-b" }}
+                >
+                  <Tr>
+                    <Td>{t("Transfer to")}:</Td>
+                    <Td>
+                      <Select
+                        onOptionSelect={(v) => setFieldValue("methodId", v)}
+                        value={values.methodId}
+                        placeholder={t("Select financial account")}
+                      >
+                        {mapArray(accounts, ({ id, label }) => (
+                          <SelectOption value={id}>{label}</SelectOption>
+                        ))}
+                      </Select>
+                      <Link href={(r) => ""}>
+                        {t("Add a financial account")}
+                      </Link>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>{t("Available to withdraw")}:</Td>
+                    <Td>
+                      <PriceDisplay price={balance?.withdrawableBalance} />
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>{t("Amount to withdraw")}:</Td>
+                    <Td>
+                      <InputGroup>
+                        <InputLeftElement>
+                          <Select
+                            className="border-none"
+                            value={values.currency}
+                            onOptionSelect={(v) => {
+                              setFieldValue("currency", v);
+                            }}
+                          >
+                            {mapArray(currencies, (v) => (
+                              <SelectOption value={v.code}>
+                                {v.currency.name}
+                              </SelectOption>
+                            ))}
+                          </Select>
+                        </InputLeftElement>
+
+                        <Input
+                          placeholder={t("Withdraw amount")}
+                          value={values.amount}
+                          onChange={(v) =>
+                            setFieldValue("amount", v.target.value)
+                          }
+                        />
+                      </InputGroup>
+
+                      <Table
+                        ThProps={{ className: "whitespace-nowrap" }}
+                        className="text-xs"
+                      >
+                        <THead>
+                          <Tr>
+                            <Th>{t("Currency")}</Th>
+                            <Th>{t("Balance")}</Th>
+                            <Th>{t("Exchange Rate")}</Th>
+                            <Th>{t("US Dollar Equivalent")}</Th>
+                          </Tr>
+                        </THead>
+                        <TBody>
+                          <Tr>
+                            <Td>{values.currency}</Td>
+                            <Td>{Number(values.amount)}</Td>
+                            <Td>
+                              {
+                                currencies?.find(
+                                  (v) => v.code === values.currency
+                                )?.currency.exchangeRate
+                              }
+                            </Td>
+                            <Td>{Number(values.amount)}</Td>
+                          </Tr>
+                        </TBody>
+                      </Table>
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>{t("Fees")}:</Td>
+                    <Td>
+                      <PriceDisplay />
+                    </Td>
+                  </Tr>
+                  <Tr>
+                    <Td>{t("Transfer to Account")}:</Td>
+                    <Td>
+                      <PriceDisplay
+                        priceObject={{
+                          amount: Number(values.amount),
+                          currency: values.currency,
+                        }}
+                      />
+                    </Td>
+                  </Tr>
+                </Table>
+                <ModalFooter className="pt-4">
+                  <Button>{t("Submit")}</Button>
+                </ModalFooter>
+              </Form>
+            )}
+          </Formik>
+        </ModalContent>
+      </Modal>
     </div>
   );
 };

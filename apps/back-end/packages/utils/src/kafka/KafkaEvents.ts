@@ -258,6 +258,7 @@ export const KAFKA_MESSAGES = {
   BILLING_MESSAGES: {
     getUserCashbackBalance: "get.user.cashback.balance",
     getUserMembershipPriceId: "get.user.membership.price.id",
+    getUserBalance: "get.user.balance",
   },
   VOUCHERS_MESSAGES: {
     getShopActiveVouchers: "get.shop.active.vouchers",

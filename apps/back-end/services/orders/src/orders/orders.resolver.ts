@@ -42,10 +42,7 @@ import {
 import { GetUserOrders } from '@orders/dto/get-user-orders.input';
 import { GetFilteredOrdersInput } from '@dto';
 import { PrismaService } from 'prismaService';
-// import { Discount } from './entities/extends/discount.entity';
-import { Product, ShippingAddress, ShippingRule } from './entities/extends';
-import { OrderStatus } from './const';
-import { OrderStatusEnum } from '@prisma-client';
+import { ShippingAddress, ShippingRule } from './entities/extends';
 
 @Resolver(() => Order)
 export class OrdersResolver implements OnModuleInit {
