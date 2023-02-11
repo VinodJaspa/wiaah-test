@@ -8,7 +8,6 @@ import {
 } from '@nestjs/apollo';
 import { getUserFromRequest } from 'nest-utils';
 import { PrismaService } from 'src/prisma.service';
-import { HttpModule } from '@nestjs/axios';
 import { FixerModule } from 'src/fixer/fixer.module';
 import { CurrencyController } from './currency.controller';
 
@@ -19,7 +18,7 @@ import { CurrencyController } from './currency.controller';
       autoSchemaFile: true,
       context: ({ req }) => ({ req, user: getUserFromRequest(req) }),
     }),
-    FixerModule.forRoot({ apiKey: process.env.APILAYERAPIKEY }),
+    FixerModule.forRoot({ apiKey: process.env.API_LAYER_FIXER_API_KEY }),
   ],
   providers: [CurrencyResolver, CurrencyService, PrismaService],
   controllers: [CurrencyController],

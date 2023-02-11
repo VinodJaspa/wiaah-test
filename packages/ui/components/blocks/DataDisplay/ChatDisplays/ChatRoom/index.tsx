@@ -6,6 +6,7 @@ import {
   SpinnerFallback,
   useGetChatRoomQuery,
   useGetChatRoomMessagesQuery,
+  useSubscribeToMyRoomsUpdates,
 } from "@UI";
 import { ActiveStatus } from "@features/API";
 export interface ChatRoomProps {
@@ -21,6 +22,8 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
       take: 10,
     },
   });
+
+  useSubscribeToMyRoomsUpdates();
 
   return (
     <div className="flex justify-between h-full p-4 flex-col">
@@ -39,16 +42,22 @@ export const ChatRoom: React.FC<ChatRoomProps> = ({ roomId }) => {
               }}
             />
             <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {messages ? <ChatRoomContent messages={messages.pages.reduce((acc,curr) => {
-                return [...acc,...curr]
-              },[]).map(v => ({
-                id:v.id,
-                sendDate:v.createdAt,
-                username:v.user.profile?.username || "",
-                userPhoto:v.user.profile?.photo || "",
-                messageAttachments:v.attachments,
-                messageContent:v.content
-              }))} /> : null}
+              {messages ? (
+                <ChatRoomContent
+                  messages={messages.pages
+                    .reduce((acc, curr) => {
+                      return [...acc, ...curr];
+                    }, [])
+                    .map((v) => ({
+                      id: v.id,
+                      sendDate: v.createdAt,
+                      username: v.user.profile?.username || "",
+                      userPhoto: v.user.profile?.photo || "",
+                      messageAttachments: v.attachments,
+                      messageContent: v.content,
+                    }))}
+                />
+              ) : null}
             </SpinnerFallback>
             <ChatRoomInput />
           </>

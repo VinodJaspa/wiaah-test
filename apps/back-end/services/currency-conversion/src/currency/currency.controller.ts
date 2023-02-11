@@ -1,6 +1,6 @@
 import { Controller } from '@nestjs/common';
-import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
-import { formatCaughtError, KAFKA_MESSAGES } from 'nest-utils';
+import { MessagePattern, Payload } from '@nestjs/microservices';
+import { KAFKA_MESSAGES } from 'nest-utils';
 import {
   KafkaPayload,
   GetCurrencyExchangeRateMessage,
@@ -26,6 +26,7 @@ export class CurrencyController {
           rate: currency.exchangeRate,
           convertedFromCurrency: 'usd',
           convertedToCurrency: payload.value.input.targetCurrencyCode,
+          convertedToSymbol: currency.symbol,
         },
         error: null,
         success: true,

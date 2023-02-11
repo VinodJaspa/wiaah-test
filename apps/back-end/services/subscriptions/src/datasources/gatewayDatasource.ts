@@ -50,13 +50,13 @@ export class GatewayDataSource<TContext = any> extends DataSource {
   }
 
   // Creates an Apollo Client to query data from the gateway
-  composeLinks() {
+  composeLinks(headers?: Record<string, any>) {
     const uri = this.resolveUri();
     return from([
       this.onErrorLink(),
       this.onRequestLink(),
       /* @ts-ignore-next-line */
-      createHttpLink({ fetch, uri }),
+      createHttpLink({ fetch, uri, credentials: true, headers }),
     ]);
   }
   didEncounterError(error: any) {
@@ -80,7 +80,7 @@ export class GatewayDataSource<TContext = any> extends DataSource {
     throw apolloError;
   }
   async query(query: DocumentNode, options: Omit<GraphQLRequest, 'query'>) {
-    const link = this.composeLinks();
+    const link = this.composeLinks(options?.context?.req?.headers);
     try {
       const response = await toPromise(execute(link, { query, ...options }));
       return response;
@@ -102,6 +102,7 @@ export class GatewayDataSource<TContext = any> extends DataSource {
       if (typeof (this as any).willSendRequest === 'function') {
         (this as any).willSendRequest(request);
       }
+      console.log({ request });
       return request;
     });
   }

@@ -6,7 +6,6 @@ import {
   Spacer,
   Button,
   AddressInputs,
-  useUserAddresses,
   VoucherInput,
   PaymentGateway,
   useGetCheckoutDataQuery,
@@ -14,6 +13,11 @@ import {
   SpinnerFallback,
   ServiceCheckoutCardSwitcher,
   TotalCost,
+  useGetMyShippingAddressesQuery,
+  useDeleteShippingAddressMutation,
+  useAddShippingAddress,
+  useEditShippingAddressMutation,
+  useApplyVoucherMutation,
 } from "ui";
 import { AddressCardDetails, AddressDetails } from "types";
 import { VoucherState } from "@src/state";
@@ -28,68 +32,55 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
   const { visit } = useRouting();
   const { filters } = useSearchFilters();
   const { data: res, isLoading, isError } = useGetCheckoutDataQuery(filters);
-  const [editAddress, setEditAddress] = React.useState<AddressCardDetails>();
-  const [edit, setEdit] = React.useState<boolean>(false);
+  const [edit, setEdit] = React.useState<string | true>();
 
-  const { addresses, AddAddress, DeleteAddress, UpdateAddress } =
-    useUserAddresses();
-  const setVoucher = useSetRecoilState(VoucherState);
+  const { data: addresses } = useGetMyShippingAddressesQuery();
+  const { mutate: deleteShipping } = useDeleteShippingAddressMutation();
+  const { mutate: addShipping } = useAddShippingAddress();
+  const { mutate: editShipping } = useEditShippingAddressMutation();
+
+  const { mutate: applyVoucher } = useApplyVoucherMutation();
 
   const [activeAddress, setActiveAddress] = React.useState<number>();
 
-  React.useEffect(() => {
-    if (addresses.length < 1) {
-      setEditAddress(undefined);
-      setEdit(true);
-    }
-  }, [addresses, edit]);
-
   function handleDelete(id: string) {
-    DeleteAddress(id);
+    deleteShipping(id);
   }
 
-  function handleAddress(address?: AddressCardDetails) {
-    if (address) {
-      setEditAddress(address);
-      setEdit(true);
-    } else {
-      setEditAddress(undefined);
-      setEdit(true);
-    }
-  }
   function handleCancelEdit() {
-    setEdit(false);
-    setEditAddress(undefined);
+    setEdit(undefined);
   }
 
-  function handleSaveAddress(input: AddressDetails) {
+  function handleSaveAddress(
+    input:
+      | Parameters<typeof editShipping>[0]
+      | Parameters<typeof addShipping>[0]
+  ) {
     // call api to save address
-    if (editAddress) {
-      UpdateAddress(editAddress.id, input);
+    if ("id" in input) {
+      editShipping(input);
       handleCancelEdit();
     } else {
-      AddAddress({
-        id: String(Math.random()),
-        ...input,
-      });
+      addShipping(input);
       handleCancelEdit();
     }
   }
 
   async function handleVoucherValidation(code: string) {
     // call api to check if the voucher is valid
-    const voucherName = "50OFF";
-    let ok = code === voucherName;
-    if (ok) {
-      setVoucher({
-        voucherName,
-        value: 50,
-        unit: "%",
-      });
-    }
-    return ok;
+    return new Promise<boolean>((res, rej) => {
+      applyVoucher(
+        {
+          voucherCode: code,
+        },
+        {
+          onError: rej,
+          onSuccess: () => res(true),
+        }
+      );
+    });
   }
-
+  const editAddress = addresses.find((v) => v.id === edit);
   return (
     <div className="flex flex-col md:table md:h-24 gap-4 w-full py-2">
       <div className="md:table-row">
@@ -104,9 +95,40 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
                 <p className="text-3xl">{"Address"}</p>
                 {edit ? (
                   <AddressInputs
-                    initialInputs={editAddress}
+                    initialInputs={{
+                      address: editAddress.location.address,
+                      city: editAddress.location.city,
+                      contact: editAddress.phone,
+                      country: editAddress.location.country,
+                      firstName: editAddress.firstname,
+                      lastName: editAddress.lastname,
+                      zipCode: parseInt(editAddress.zipCode),
+                    }}
                     onCancel={handleCancelEdit}
-                    onSuccess={handleSaveAddress}
+                    onSuccess={({
+                      address,
+                      city,
+                      contact,
+                      country,
+                      firstName,
+                      lastName,
+                      address2,
+                      zipCode,
+                    }) =>
+                      handleSaveAddress({
+                        id: typeof edit === "string" ? edit : undefined,
+                        firstname: firstName,
+                        lastname: lastName,
+                        location: {
+                          address,
+                          city,
+                          country,
+                          state: city,
+                        },
+                        phone: String(contact),
+                        zipCode: String(zipCode),
+                      })
+                    }
                   />
                 ) : (
                   <>
@@ -121,8 +143,17 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
                             <AddressCard
                               borderColor="#000"
                               onDelete={(id) => handleDelete(id)}
-                              onEdit={(address) => handleAddress(address)}
-                              addressDetails={address}
+                              onEdit={(address) => setEdit(address.id)}
+                              addressDetails={{
+                                address: address.location.address,
+                                city: address.location.city,
+                                country: address.location.country,
+                                firstName: address.firstname,
+                                lastName: address.lastname,
+                                contact: address.phone,
+                                id: address.id,
+                                zipCode: parseInt(address.zipCode),
+                              }}
                               active={activeAddress === i}
                             />
                             <Divider />
@@ -131,15 +162,15 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
                     </div>
                     <Spacer />
                     <div className="w-full flex justify-end">
-                      <Button onClick={() => handleAddress()}>
-                        {t("add_new_address", "ADD NEW ADDRESS")}
+                      <Button onClick={() => setEdit(true)}>
+                        {t("ADD NEW ADDRESS")}
                       </Button>
                     </div>
                   </>
                 )}
               </div>
             </BoxShadow>
-            <VoucherInput onSuccess={handleVoucherValidation} />
+            <VoucherInput onSuccess={(data) => handleVoucherValidation(data)} />
             <PaymentGateway />
           </div>
         </div>

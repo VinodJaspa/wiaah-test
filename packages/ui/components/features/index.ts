@@ -21,3 +21,4 @@ export * from "./Orders";
 export * from "./Wishlist";
 export * from "./Billing";
 export * from "./Chat";
+export * from "./Shipping";

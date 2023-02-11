@@ -31,6 +31,7 @@ import {
   CheckoutMetadataProduct,
 } from '@stripe-billing/types';
 import { ProductTypeEnum, StripeMetadataType } from '@stripe-billing/const';
+import { PrismaService } from 'prismaService';
 
 interface FormatedData {
   providerId: string;
@@ -51,6 +52,7 @@ export class StripeBillingService {
     @Inject(SERVICES.BILLING_SERVICE.token)
     private readonly eventsClient: ClientKafka,
     private readonly commandBus: CommandBus,
+    private readonly prisma: PrismaService,
   ) {}
 
   servicesType = [
@@ -67,7 +69,16 @@ export class StripeBillingService {
   async createStripeConnectedAccount(
     user: AuthorizationDecodedUser,
   ): Promise<{ url: string }> {
-    const stripeId = user.stripeId;
+    const finAcc = await this.prisma.financialAccount.findUnique({
+      where: {
+        ownerId_type: {
+          ownerId: user.id,
+          type: 'stripe',
+        },
+      },
+    });
+
+    const stripeId = finAcc.financialId;
 
     if (stripeId)
       throw new UnprocessableEntityException(
@@ -128,9 +139,10 @@ export class StripeBillingService {
         ownerId: user.id,
       }),
     );
-
+    console.log('no shop cart', { data, success, error });
     if (!success) throw error;
 
+    console.log('shop cart', { data, success, error });
     const { items } = data;
 
     if (items.length < 1) throw new BadRequestException('empty shopping cart');

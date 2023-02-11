@@ -61,9 +61,15 @@ query getChatRoom(
     id,
   });
 
-  return useQuery(["chat", "room", id], async () => {
-    const res = await client.send<GetChatRoomQuery>();
+  return useQuery(
+    ["chat", "room", id],
+    async () => {
+      const res = await client.send<GetChatRoomQuery>();
 
-    return res.data.getChatRoom;
-  });
+      return res.data.getChatRoom;
+    },
+    {
+      enabled: !!id,
+    }
+  );
 };

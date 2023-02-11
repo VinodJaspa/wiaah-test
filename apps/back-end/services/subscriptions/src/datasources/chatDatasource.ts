@@ -6,7 +6,7 @@ export class ChatDataSource extends GatewayDataSource {
     super(gatewayUrl);
   }
 
-  async fetchAndMergeNonPayloadChatMessageData(messageId, payload, info) {
+  async fetchAndMergeNonPayloadChatMessageData(messageId, payload, ctx, info) {
     const selections = this.buildNonPayloadSelections(payload, info);
     const payloadData = Object.values(payload)[0];
 
@@ -25,6 +25,9 @@ export class ChatDataSource extends GatewayDataSource {
     try {
       const response = await this.query(Subscription_ChatMessage, {
         variables: { id: messageId },
+        context: {
+          req: ctx?.extra?.request,
+        },
       });
       return this.mergeFieldData(payloadData, response.data.chatMessage);
     } catch (error) {
@@ -32,7 +35,7 @@ export class ChatDataSource extends GatewayDataSource {
     }
   }
 
-  async fetchAndMergeNonPayloadChatRoomData(roomId, payload, info) {
+  async fetchAndMergeNonPayloadChatRoomData(roomId, payload, ctx, info) {
     const selections = this.buildNonPayloadSelections(payload, info);
     const payloadData = Object.values(payload)[0];
 
@@ -41,8 +44,8 @@ export class ChatDataSource extends GatewayDataSource {
     }
 
     const query = gql`
-      query Subscription_ChatRoom($id: ID!) {
-        getChatRoom(id: $id) {
+      query Subscription_ChatRoom($id: String!) {
+        getChatRoom(roomId: $id) {
           ${selections}
         }
       }
@@ -51,8 +54,11 @@ export class ChatDataSource extends GatewayDataSource {
     try {
       const response = await this.query(query, {
         variables: { id: roomId },
+        context: {
+          req: ctx?.extra?.request,
+        },
       });
-      return this.mergeFieldData(payloadData, response.data.chatMessage);
+      return this.mergeFieldData(payloadData, response.data?.chatMessage);
     } catch (error) {
       console.error(error);
     }
@@ -71,9 +77,7 @@ export class ChatDataSource extends GatewayDataSource {
           id: roomId,
         },
         context: {
-          headers: {
-            cookie: { [process.env.COOKIES_KEY || 'Auth_cookie']: ctx.token },
-          },
+          req: ctx?.extra?.request,
         },
       });
       return response.data.canAccessRoom;

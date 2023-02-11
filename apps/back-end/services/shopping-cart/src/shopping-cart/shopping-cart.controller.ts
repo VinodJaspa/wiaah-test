@@ -53,15 +53,23 @@ export class ShoppingCartController implements OnModuleInit {
         success: true,
         error: null,
         data: {
-          items: cartProduct.map((v) => ({
-            id: v.id,
-            qty: 1,
-            type: 'product',
-          })),
+          items: [
+            ...(cartProduct?.map((v) => ({
+              id: v.id,
+              qty: 1,
+              type: 'product',
+            })) || []),
+            ...(cartServices?.map((v) => ({
+              id: v.id,
+              qty: 1,
+              type: 'service',
+            })) || []),
+          ],
           voucherId: appliedVoucherId,
         },
       });
     } catch (err) {
+      console.log('cart err', { err });
       return new GetShoppingCartItemsMessageReply({
         success: false,
         error: new Error('something went wrong'),

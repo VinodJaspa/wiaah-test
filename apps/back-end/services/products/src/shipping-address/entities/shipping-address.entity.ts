@@ -13,6 +13,15 @@ export class ShippingAddress {
   @Field(() => Location)
   location: Location;
 
+  @Field(() => String)
+  firstname: string;
+
+  @Field(() => String)
+  lastname: string;
+
+  @Field(() => String, { nullable: true })
+  zipCode?: string;
+
   @Field(() => String, { nullable: true })
   instractions?: string;
 

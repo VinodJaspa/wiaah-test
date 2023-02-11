@@ -64,7 +64,7 @@ export class ShoppingCartResolver implements Hooks {
   @Mutation((type) => ShoppingCart)
   applyVoucher(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-    @Args('applyVoucherCode') input: ApplyVoucherInput,
+    @Args('args') input: ApplyVoucherInput,
   ): Promise<ShoppingCart> {
     return this.shoppingCartService.applyVoucher(user.id, input);
   }

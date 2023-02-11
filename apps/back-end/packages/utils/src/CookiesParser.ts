@@ -29,7 +29,7 @@ function hasExpiresField(cookie: string): boolean {
 
 export function parseCookies(rawCookies: string): ParsedCookie[] {
   // Make this check more effective
-  if (!rawCookies.includes("=")) {
+  if (!rawCookies?.includes("=")) {
     throw new Error(
       "Invalid raw cookies, look at the format of a set-cookie header string and provide something similar."
     );
@@ -39,7 +39,7 @@ export function parseCookies(rawCookies: string): ParsedCookie[] {
     Cookie format: "name=value; Path=/; HttpOnly; Secure"
     Multiple cookies format: "name=value; Path=/; HttpOnly; Secure, name2=value2"
   */
-  const arraifyedRawCookies = rawCookies.split(",");
+  const arraifyedRawCookies = rawCookies.split(" ");
   const validRawCookies = arraifyedRawCookies
     .map((rawCookie, index, ref) => {
       if (hasExpiresField(rawCookie)) {
@@ -109,8 +109,8 @@ export function parseCookies(rawCookies: string): ParsedCookie[] {
     });
 
     return {
-      cookieName: cookieName.trim(),
-      cookieValue: cookieValue.trim(),
+      cookieName: cookieName?.trim(),
+      cookieValue: cookieValue?.trim(),
       options,
     };
   });

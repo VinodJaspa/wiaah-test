@@ -25,6 +25,11 @@ export class ChatResolver {
 
   @Query(() => Boolean)
   tests() {
+    this.pubsub.publish(
+      KAFKA_EVENTS.SUBSCRIPTIONS.roomDataUpdated('63c56dad08628ba8e29b3154'),
+      { roomId: '63c56dad08628ba8e29b3154', id: '63c56dad08628ba8e29b3154' },
+    );
+    console.log('published');
     return true;
   }
 
@@ -41,6 +46,7 @@ export class ChatResolver {
         await ctx.dataSources.gatewayApi.chat.fetchAndMergeNonPayloadChatMessageData(
           payload.id,
           payload,
+          ctx,
           info,
         );
 
@@ -88,10 +94,12 @@ export class ChatResolver {
   @Subscription(() => ChatRoom, {
     resolve(this: ChatResolver, _payload, args, context: CtxDatasources, info) {
       const payload = this.pubsub.parseKafkaMessagePayload(_payload);
+      console.log({ payload });
       const res =
         context.dataSources.gatewayApi.chat.fetchAndMergeNonPayloadChatRoomData(
           payload.roomId,
           payload,
+          context,
           info,
         );
 
@@ -99,7 +107,7 @@ export class ChatResolver {
     },
   })
   listenToMyRoomsChanges(
-    @GqlCurrentUser({ required: true }) user: AuthorizationDecodedUser,
+    @GqlCurrentUser({ required: false }) user: AuthorizationDecodedUser,
   ) {
     return this.pubsub.listen(
       KAFKA_EVENTS.SUBSCRIPTIONS.roomDataUpdated(user.id),

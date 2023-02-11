@@ -1,3 +1,4 @@
+import { UnauthorizedException } from '@nestjs/common';
 import {
   Args,
   Mutation,
@@ -46,14 +47,52 @@ export class ShippingAddressResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     try {
-      const res = await this.prisma.shippingAddress.update({
+      const res = await this.prisma.shippingAddress.findUnique({
+        where: {
+          id: args.id,
+        },
+      });
+
+      if (res.ownerId !== user.id)
+        throw new UnauthorizedException('You dont own this shipping address');
+
+      const updated = await this.prisma.shippingAddress.update({
         where: {
           id: args.id,
         },
         data: args,
       });
 
-      return !!res;
+      return !!updated;
+    } catch (error) {
+      console.log({ error });
+
+      return false;
+    }
+  }
+
+  @Mutation(() => Boolean)
+  async deleteShippingAddress(
+    @Args('id') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    try {
+      const res = await this.prisma.shippingAddress.findUnique({
+        where: {
+          id,
+        },
+      });
+
+      if (res.ownerId !== user.id)
+        throw new UnauthorizedException('You dont own this shipping address');
+
+      const updated = await this.prisma.shippingAddress.delete({
+        where: {
+          id,
+        },
+      });
+
+      return !!updated;
     } catch (error) {
       console.log({ error });
 

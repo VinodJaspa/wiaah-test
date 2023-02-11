@@ -7,4 +7,10 @@ export class CreateCurrencyInput {
 
   @Field((type) => Float)
   exchangeRate: number;
+
+  @Field(() => String)
+  name: string;
+
+  @Field(() => String)
+  symbol: string;
 }

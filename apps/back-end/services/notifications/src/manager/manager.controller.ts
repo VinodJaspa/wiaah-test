@@ -11,6 +11,7 @@ import {
   ContentReactedEvent,
   ContentSuspendedEvent,
   LookForNearShopsPromotionsEvent,
+  OrderDeliveredEvent,
   OrderRefundRequestRejectedEvent,
   PromotionCreatedEvent,
   SellerAccountRefusedEvent,
@@ -377,6 +378,18 @@ export class ManagerController extends NotifciationBaseController {
       content: {
         lang: 'en',
         value: `your account verification request have been rejected reason:${value.input.rejectReason}`,
+      },
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.ORDERS_EVENTS.orderDelivered())
+  handleRequestFeedback(@Payload() { value }: { value: OrderDeliveredEvent }) {
+    this.service.createNotification({
+      contentOwnerUserId: value.input.buyerId,
+      type: NotificationTypes.info,
+      content: {
+        lang: 'en',
+        value: `share your experince with your latest order by providing a feedback`,
       },
     });
   }

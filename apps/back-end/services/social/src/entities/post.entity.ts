@@ -1,7 +1,14 @@
-import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
+import {
+  ObjectType,
+  Field,
+  Int,
+  ID,
+  registerEnumType,
+  Float,
+} from '@nestjs/graphql';
 import { Profile } from '@entities';
 import { Attachment, Hashtag } from '@entities';
-import { CommentsVisibility } from 'prismaClient';
+import { CommentsVisibility, MarketingTagType } from 'prismaClient';
 
 registerEnumType(CommentsVisibility, { name: 'CommentsVisiblity' });
 
@@ -9,6 +16,21 @@ registerEnumType(CommentsVisibility, { name: 'CommentsVisiblity' });
 export class PostTag {
   @Field(() => ID)
   userId: string;
+}
+
+@ObjectType()
+export class MarketingTag {
+  @Field(() => ID)
+  id: string;
+
+  @Field(() => MarketingTagType)
+  type: MarketingTagType;
+
+  @Field(() => Float)
+  x: number;
+
+  @Field(() => Float)
+  y: number;
 }
 
 @ObjectType()

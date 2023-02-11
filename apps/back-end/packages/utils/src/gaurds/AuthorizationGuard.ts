@@ -22,6 +22,7 @@ export class GqlAuthorizationGuard implements CanActivate {
     const user: AuthorizationDecodedUser = ctx.getContext().user;
 
     // return true;
+    console.log("user", { user });
 
     const isPublic = this.roles.includes(accountType.PUBLIC);
 

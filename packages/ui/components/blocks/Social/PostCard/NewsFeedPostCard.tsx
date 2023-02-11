@@ -13,18 +13,17 @@ import {
   useSocialPostSettingsPopup,
   useShareModal,
   useSocialPostMentionsModal,
-  NewsfeedPost,
-  Profile,
 } from "@UI/components/features";
-import { ContentHostType, useLikeContent } from "@features/Social";
+import { useLikeContent } from "@features/Social";
 import { UserProfileDisplay } from "@UI/components/blocks/DataDisplay";
 import { useDateDiff } from "hooks";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { useTypedReactPubsub } from "@libs";
+import { ContentHostType, NewsfeedPost, Profile } from "@features/API";
 
 export interface PostCardProps {
-  profileInfo?: Pick<
+  profileInfo: Pick<
     Profile,
     "id" | "ownerId" | "username" | "photo" | "profession"
   > | null;

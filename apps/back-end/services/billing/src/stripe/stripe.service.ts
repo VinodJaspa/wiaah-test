@@ -255,5 +255,26 @@ export class StripeService implements OnModuleInit {
 
     return customer;
   }
+
+  async sendFunds({
+    amount,
+    connectedAccId,
+    currency,
+  }: {
+    connectedAccId: string;
+    amount: number;
+    currency: string;
+  }) {
+    return await this.stripe.payouts.create(
+      {
+        amount,
+        currency,
+      },
+      {
+        stripeAccount: connectedAccId,
+      },
+    );
+  }
+
   onModuleInit() {}
 }

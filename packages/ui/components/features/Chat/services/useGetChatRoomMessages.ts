@@ -84,14 +84,20 @@ query getChatRoomMessage(
 }
     `);
 
-  client.setVariables<GetChatRoomMessageQueryVariables>({
-    args: input,
-  });
-
   return useInfiniteQuery(
-    ["chat", "room", "messages", input],
-    async () => {
-      const res = await client.send<GetChatRoomMessageQuery>();
+    ["chat", "room", "messages", { id: input.roomId }],
+    async (cusor) => {
+      const res = await client
+        .setVariables<GetChatRoomMessageQueryVariables>({
+          args: {
+            roomId: input.roomId,
+            pagination: {
+              take: input.pagination.take,
+              cursor: cusor.pageParam,
+            },
+          },
+        })
+        .send<GetChatRoomMessageQuery>();
 
       return res.data.getRoomMessages;
     },
@@ -99,6 +105,7 @@ query getChatRoomMessage(
       getNextPageParam: (last, all) => {
         return last.at(-1)?.id;
       },
+      enabled: !!input.roomId && !!input.pagination.take,
     }
   );
 };

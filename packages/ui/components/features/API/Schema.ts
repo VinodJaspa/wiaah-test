@@ -217,13 +217,22 @@ export type AskForRefundInput = {
 
 export type Attachment = {
   __typename?: "Attachment";
+  marketingTags: Array<MarketingTag>;
   src: Scalars["String"];
   type: AttachmentType;
 };
 
 export type AttachmentInput = {
+  marketingTags: Array<AttachmentMarketingTagInput>;
   src: Scalars["String"];
   type: AttachmentType;
+};
+
+export type AttachmentMarketingTagInput = {
+  id: Scalars["String"];
+  type: MarketingTagType;
+  x: Scalars["Float"];
+  y: Scalars["Float"];
 };
 
 export enum AttachmentType {
@@ -796,11 +805,13 @@ export type CreateServiceCategoryInput = {
 };
 
 export type CreateShippingAddressInput = {
-  id: Scalars["ID"];
+  firstname: Scalars["String"];
   instractions?: Maybe<Scalars["String"]>;
+  lastname: Scalars["String"];
   location: LocationInput;
   ownerId: Scalars["ID"];
   phone?: Maybe<Scalars["String"]>;
+  zipCode?: Maybe<Scalars["String"]>;
 };
 
 export type CreateShippingGeoZone = {
@@ -880,6 +891,16 @@ export type CreateVoucherInput = {
   amount: Scalars["Float"];
   code: Scalars["String"];
   currency: Scalars["String"];
+};
+
+export type Currency = {
+  __typename?: "Currency";
+  code: Scalars["String"];
+  exchangeRate: Scalars["Float"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  symbol: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
 };
 
 export type DeactivateVoucherInput = {
@@ -974,6 +995,19 @@ export type FilteredShopsInput = {
   targetGender?: Maybe<TargetGenders>;
   vendorType?: Maybe<VendorType>;
 };
+
+export type FinancialAccount = {
+  __typename?: "FinancialAccount";
+  financialId: Scalars["String"];
+  id: Scalars["ID"];
+  label: Scalars["String"];
+  ownerId: Scalars["ID"];
+  type: FinancialAccountType;
+};
+
+export enum FinancialAccountType {
+  Stripe = "stripe",
+}
 
 export type Follow = {
   __typename?: "Follow";
@@ -1593,8 +1627,8 @@ export type LocationInput = {
   address: Scalars["String"];
   city: Scalars["String"];
   country: Scalars["String"];
-  lat: Scalars["Float"];
-  long: Scalars["Float"];
+  lat?: Maybe<Scalars["Float"]>;
+  long?: Maybe<Scalars["Float"]>;
   state: Scalars["String"];
 };
 
@@ -1607,6 +1641,21 @@ export type LoginWithOtpInput = {
   email: Scalars["String"];
   otp: Scalars["String"];
 };
+
+export type MarketingTag = {
+  __typename?: "MarketingTag";
+  id: Scalars["ID"];
+  product: Product;
+  service: Service;
+  type: MarketingTagType;
+  x: Scalars["Float"];
+  y: Scalars["Float"];
+};
+
+export enum MarketingTagType {
+  Product = "product",
+  Service = "service",
+}
 
 export type MessageAttachment = {
   __typename?: "MessageAttachment";
@@ -1657,11 +1706,11 @@ export type Mutation = {
   createCartPaymentIntent: PaymentIntent;
   createComment: Comment;
   createConnectedAccount: Scalars["String"];
-  createCustomer: Scalars["String"];
   createFilter: Filter;
   createHealthCenter: HealthCenter;
   createHealthCenterSpeciality: HealthCenterSpecialty;
   createHotelService: Hotel;
+  createInitialCurrencies: Array<Currency>;
   createMembershipSubscriptionPaymentIntent: PaymentIntent;
   createNewAffiliationProduct: Affiliation;
   createNewProduct: Product;
@@ -1692,6 +1741,7 @@ export type Mutation = {
   deleteProduct: Product;
   deleteProductCategory: Category;
   deleteRestaurant: Restaurant;
+  deleteShippingAddress: Scalars["Boolean"];
   deleteShippingRule: ShippingRule;
   deleteStory: Story;
   deleteVoucher: Scalars["Boolean"];
@@ -1738,6 +1788,8 @@ export type Mutation = {
   updateBeautyCenterAdmin: Scalars["Boolean"];
   updateBillingAddress: BillingAddress;
   updateComment: Comment;
+  updateCurrenciesRates: Array<Currency>;
+  updateCurrency: Currency;
   updateFilter: Filter;
   updateHealthCenter: HealthCenter;
   updateHealthCenterAdmin: Scalars["Boolean"];
@@ -1766,6 +1818,7 @@ export type Mutation = {
   verifyEmail: Scalars["Boolean"];
   verifyLoginOTP: GqlStatusResponse;
   verifyNewPassword: Scalars["Boolean"];
+  withdraw: Scalars["Boolean"];
 };
 
 export type MutationAddWishlistItemArgs = {
@@ -1842,7 +1895,7 @@ export type MutationAdminEditAccountArgs = {
 };
 
 export type MutationApplyVoucherArgs = {
-  applyVoucherCode: ApplyVoucherInput;
+  args: ApplyVoucherInput;
 };
 
 export type MutationAskForRefundArgs = {
@@ -1875,10 +1928,6 @@ export type MutationCreateBeautyCenterTreatmentCategoryArgs = {
 
 export type MutationCreateCommentArgs = {
   createCommentInput: CreateCommentInput;
-};
-
-export type MutationCreateCustomerArgs = {
-  name: Scalars["String"];
 };
 
 export type MutationCreateFilterArgs = {
@@ -2007,6 +2056,10 @@ export type MutationDeleteProductCategoryArgs = {
 
 export type MutationDeleteRestaurantArgs = {
   deleteRestaurantArgs: DeleteRestaurantInput;
+};
+
+export type MutationDeleteShippingAddressArgs = {
+  id: Scalars["String"];
 };
 
 export type MutationDeleteShippingRuleArgs = {
@@ -2177,6 +2230,10 @@ export type MutationUpdateCommentArgs = {
   updateCommentInput: UpdateCommentInput;
 };
 
+export type MutationUpdateCurrencyArgs = {
+  updateCurrencyArgs: UpdateCurrencyInput;
+};
+
 export type MutationUpdateFilterArgs = {
   updateFilterArgs: UpdateFilterInput;
 };
@@ -2287,6 +2344,10 @@ export type MutationVerifyLoginOtpArgs = {
 
 export type MutationVerifyNewPasswordArgs = {
   verifyNewPassword: ConfirmPasswordChangeInput;
+};
+
+export type MutationWithdrawArgs = {
+  args: WithdrawInput;
 };
 
 export enum MyBookingsSearchPeriod {
@@ -2649,6 +2710,8 @@ export type Query = {
   getConnectedAccounts: Scalars["Boolean"];
   getContentComments: Array<Comment>;
   getCookiesSettings: Array<CookiesSetting>;
+  getCurrencies: Array<Currency>;
+  getCurrencyData: Currency;
   getFilteredAffiliations: Array<Affiliation>;
   getFilteredAffiliationsHistory: Array<AffiliationPurchase>;
   getFilteredBeuatyCenterTreatments: Array<Treatment>;
@@ -2678,6 +2741,7 @@ export type Query = {
   getMyChatRooms: Array<ChatRoom>;
   getMyContacts: UserContact;
   getMyCookiesSettings: UserCookiesSettings;
+  getMyFinancialAccounts: Array<FinancialAccount>;
   getMyFollowers: ProfileMetaPaginatedResponse;
   getMyFollowing: ProfileMetaPaginatedResponse;
   getMyFriendSuggestions: FriendSuggestion;
@@ -2742,6 +2806,7 @@ export type Query = {
   getUserStory: Story;
   getVehicleServicebyId: VehicleService;
   getWisherslist: Array<Wisherslist>;
+  getWithdrawCurrencies: Array<WithdrawCurrency>;
   getWithdrawalRequests: Array<WithdrawalRequest>;
   isFollowed: Scalars["Boolean"];
   myProfile: Profile;
@@ -2843,6 +2908,10 @@ export type QueryGetCommunityPostsArgs = {
 
 export type QueryGetContentCommentsArgs = {
   getContentCommentsArgs: GetContentCommentsInput;
+};
+
+export type QueryGetCurrencyDataArgs = {
+  currencyCode: Scalars["String"];
 };
 
 export type QueryGetFilteredAffiliationsArgs = {
@@ -3790,11 +3859,14 @@ export enum ServiceTypeOfSeller {
 
 export type ShippingAddress = {
   __typename?: "ShippingAddress";
+  firstname: Scalars["String"];
   id: Scalars["ID"];
   instractions?: Maybe<Scalars["String"]>;
+  lastname: Scalars["String"];
   location: Location;
   ownerId: Scalars["ID"];
   phone?: Maybe<Scalars["String"]>;
+  zipCode?: Maybe<Scalars["String"]>;
 };
 
 export type ShippingCountry = {
@@ -4075,6 +4147,11 @@ export type UpdateCommentInput = {
   mentions?: Maybe<Array<CommentMentionInput>>;
 };
 
+export type UpdateCurrencyInput = {
+  code: Scalars["String"];
+  exchangeRate?: Maybe<Scalars["Float"]>;
+};
+
 export type UpdateFilterInput = {
   id: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
@@ -4228,11 +4305,14 @@ export type UpdateServiceCategoryInput = {
 };
 
 export type UpdateShippingAddressInput = {
+  firstname?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
   instractions?: Maybe<Scalars["String"]>;
+  lastname?: Maybe<Scalars["String"]>;
   location?: Maybe<LocationInput>;
   ownerId?: Maybe<Scalars["ID"]>;
   phone?: Maybe<Scalars["String"]>;
+  zipCode?: Maybe<Scalars["String"]>;
 };
 
 export type UpdateShippingRuleInput = {
@@ -4421,6 +4501,18 @@ export enum WishlistItemType {
   Product = "product",
   Service = "service",
 }
+
+export type WithdrawCurrency = {
+  __typename?: "WithdrawCurrency";
+  code: Scalars["String"];
+  currency: Currency;
+};
+
+export type WithdrawInput = {
+  amount: Scalars["Float"];
+  currency: Scalars["String"];
+  methodId: Scalars["String"];
+};
 
 export type WithdrawalRequest = {
   __typename?: "WithdrawalRequest";

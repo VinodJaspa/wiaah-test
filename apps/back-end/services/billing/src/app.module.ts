@@ -13,6 +13,7 @@ import { BalanceModule } from './balance/balance.module';
 import { ClientKafka, ClientsModule, Transport } from '@nestjs/microservices';
 import { InvoiceRecordModule } from './invoice-record/invoice-record.module';
 import { WithdrawalModule } from './withdrawal/withdrawal.module';
+import { FinancialAccountModule } from './financial-account/financial-account.module';
 
 @Global()
 @Module({
@@ -34,6 +35,7 @@ import { WithdrawalModule } from './withdrawal/withdrawal.module';
     ]),
     InvoiceRecordModule,
     WithdrawalModule,
+    FinancialAccountModule,
   ],
 })
 export class EventModule {}
