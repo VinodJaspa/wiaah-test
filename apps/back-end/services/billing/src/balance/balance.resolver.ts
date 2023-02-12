@@ -22,14 +22,4 @@ export class BalanceResolver {
   clearBalance() {
     return this.balanceService.clear();
   }
-
-  @Mutation((type) => Boolean)
-  async getCashbackBalance(@GqlCurrentUser() user: AuthorizationDecodedUser) {
-    try {
-      await this.balanceService.addCashbackBalance(user.id);
-      return true;
-    } catch {
-      return false;
-    }
-  }
 }

@@ -1150,6 +1150,7 @@ export type GetFilteredProductsInput = {
   pagination: GqlPaginationInput;
   ratings?: Maybe<Array<Scalars["Int"]>>;
   size?: Maybe<Array<Scalars["String"]>>;
+  type?: Maybe<ProductType>;
   usageStatus?: Maybe<ProductUsageStatus>;
 };
 
@@ -1747,7 +1748,6 @@ export type Mutation = {
   deleteVoucher: Scalars["Boolean"];
   editAccount: Account;
   followProfile: Scalars["Boolean"];
-  getCashbackBalance: Scalars["Boolean"];
   getMyAccount: Account;
   getProductVendorLink: Scalars["String"];
   hideContent: Scalars["Boolean"];
@@ -2525,6 +2525,7 @@ export type Product = {
   rate: Scalars["Int"];
   reviews: Scalars["Int"];
   sales: Scalars["Int"];
+  seller: Account;
   sellerId: Scalars["ID"];
   shippingDetails?: Maybe<ShippingDetails>;
   shippingRulesIds: Array<Scalars["ID"]>;
@@ -4150,6 +4151,8 @@ export type UpdateCommentInput = {
 export type UpdateCurrencyInput = {
   code: Scalars["String"];
   exchangeRate?: Maybe<Scalars["Float"]>;
+  name?: Maybe<Scalars["String"]>;
+  symbol?: Maybe<Scalars["String"]>;
 };
 
 export type UpdateFilterInput = {

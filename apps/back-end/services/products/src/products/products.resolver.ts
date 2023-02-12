@@ -28,6 +28,7 @@ import { GetProductVendorLinkQuery } from '@products/queries';
 import { DeleteProductCommand } from '@products/command';
 import { PrismaService } from 'prismaService';
 import { Prisma } from '@prisma-client';
+import { Account } from './entities/extends';
 
 @Resolver(() => Product)
 export class ProductsResolver {
@@ -62,6 +63,12 @@ export class ProductsResolver {
   getMyProducts(@Args('filterInput') args: GetFilteredProductsInput) {
     const { skip, take } = ExtractPagination(args.pagination);
     const filters: Prisma.ProductWhereInput[] = [];
+
+    if (args.type) {
+      filters.push({
+        type: args.type,
+      });
+    }
 
     if (args.minPrice) {
       filters.push({
@@ -180,5 +187,13 @@ export class ProductsResolver {
         id: prod.cashbackId,
       },
     });
+  }
+
+  @ResolveField(() => Account)
+  seller(@Parent() prod: Product) {
+    return {
+      __typename: 'Account',
+      id: prod.sellerId,
+    };
   }
 }

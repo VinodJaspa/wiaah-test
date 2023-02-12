@@ -66,6 +66,9 @@ export class ProductFilteredInput {
 
   @Field(() => ProductUsageStatus)
   usageStatus: ProductUsageStatus;
+
+  @Field(() => ProdcutType)
+  type: ProdcutType;
 }
 
 @InputType()
