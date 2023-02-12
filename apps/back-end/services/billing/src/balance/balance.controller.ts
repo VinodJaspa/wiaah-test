@@ -92,7 +92,9 @@ export class BalanceController {
 
     await this.balacneService.addWithdrawableBalance(
       value.input.sellerId,
-      value.input.paidPrice,
+      value.input.paidPrice -
+        (value.input.affiliationAmount || 0) -
+        (value.input.cashbackAmount || 0),
     );
   }
 }

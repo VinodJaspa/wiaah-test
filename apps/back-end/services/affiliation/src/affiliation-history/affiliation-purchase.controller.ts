@@ -1,7 +1,10 @@
 import { Controller } from '@nestjs/common';
 import { EventPattern, Payload } from '@nestjs/microservices';
 import { KAFKA_EVENTS } from 'nest-utils';
-import { AffiliatedProductPurchasedEvent } from 'nest-dto';
+import {
+  AffiliatedProductPurchasedEvent,
+  OrderItemBillingReadyEvent,
+} from 'nest-dto';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateAffiliationPurchaseCommand } from './commands';
 import { PrismaService } from 'prismaService';
@@ -52,5 +55,25 @@ export class AffiliationPurchaseController {
         paidCommissionPercent: percent,
       }),
     );
+  }
+
+  @EventPattern(KAFKA_EVENTS.ORDERS_EVENTS.orderItemBillingReady())
+  async handleOrderItemBilling(
+    @Payload() { value }: { value: OrderItemBillingReadyEvent },
+  ) {
+    if (value.input.affiliatorId && value.input.affiliationAmount) {
+      this.commandbus.execute<CreateAffiliationPurchaseCommand>(
+        new CreateAffiliationPurchaseCommand({
+          affiliatorId: value.input.affiliatorId,
+          itemId: value.input.itemId,
+          itemType: 'product',
+          sellerId: value.input.sellerId,
+          purchaserId: value.input.buyerId,
+          paidCommissionAmount: value.input.affiliationAmount,
+          paidCommissionPercent:
+            value.input.affiliationAmount / value.input.paidPrice,
+        }),
+      );
+    }
   }
 }
