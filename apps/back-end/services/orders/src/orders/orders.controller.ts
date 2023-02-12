@@ -4,7 +4,8 @@ import { KAFKA_EVENTS } from 'nest-utils';
 import { CreateOrderCommand } from '@orders/commands';
 import { OrderItemType } from '@orders/const';
 import {
-  OrderCreatedEvent as OrderCreatedKafkaEvent,
+  OrderItemBillingReadyEvent,
+  OrderItemRefundablePeriodOverEvent,
   SellerProductsPurchasedEvent,
 } from 'nest-dto';
 import { BaseController } from '@orders/abstraction';
@@ -58,5 +59,35 @@ export class OrdersController extends BaseController {
     );
 
     this.eventbus.publish(new OrderCreatedEvent(order, value.input.payment));
+  }
+
+  @EventPattern(KAFKA_EVENTS.ORDERS_EVENTS.orderItemRefundPeriodOver())
+  async handleUpdateRefundableItem(
+    @Payload() { value }: { value: OrderItemRefundablePeriodOverEvent },
+  ) {
+    const res = await this.prisma.orderItem.update({
+      where: {
+        id: value.input.itemId,
+      },
+      data: {
+        refundable: false,
+      },
+      include: {
+        Order: true,
+      },
+    });
+
+    this.eventClient.emit(
+      KAFKA_EVENTS.ORDERS_EVENTS.orderItemBillingReady(),
+      new OrderItemBillingReadyEvent({
+        itemId: res.id,
+        affiliatorId: res.affiliationId,
+        cashbackId: res.cashbackId,
+        discountId: res.discountId,
+        buyerId: res.Order.buyerId,
+        sellerId: res.Order.sellerId,
+        paidPrice: res.paid,
+      }),
+    );
   }
 }

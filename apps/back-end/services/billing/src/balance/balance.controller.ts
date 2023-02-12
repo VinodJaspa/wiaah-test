@@ -4,6 +4,7 @@ import {
   GetUserCashbackBalanceMessage,
   GetUserCashbackBalanceMessageReply,
   KafkaPayload,
+  OrderItemBillingReadyEvent,
   SellerProductsPurchasedEvent,
   VoucherAppliedEvent,
 } from 'nest-dto';
@@ -69,5 +70,29 @@ export class BalanceController {
     );
 
     await Promise.all(res);
+  }
+
+  @EventPattern(KAFKA_EVENTS.ORDERS_EVENTS.orderItemBillingReady())
+  async handleOrderBillingReady(
+    @Payload() { value }: { value: OrderItemBillingReadyEvent },
+  ) {
+    if (value.input.cashbackAmount) {
+      await this.balacneService.addCashbackBalance(
+        value.input.buyerId,
+        value.input.cashbackAmount,
+      );
+    }
+
+    if (value.input.affiliationAmount && value.input.affiliatorId) {
+      await this.balacneService.addWithdrawableBalance(
+        value.input.affiliatorId,
+        value.input.affiliationAmount,
+      );
+    }
+
+    await this.balacneService.addWithdrawableBalance(
+      value.input.sellerId,
+      value.input.paidPrice,
+    );
   }
 }
