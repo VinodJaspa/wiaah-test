@@ -30,6 +30,8 @@ import {
   ShareIcon,
   MyVerificationSection,
   ShareYourWiaahQr,
+  VatIcon,
+  VatSection,
 } from "ui";
 import { ImBlocked } from "react-icons/im";
 import { useResponsive } from "hooks";
@@ -168,5 +170,11 @@ const sections: SettingsSectionType[] = [
     panelIcon: BiData,
     panelUrl: "/personalizarion_and_data",
     panelComponent: <PersonalizationAndDataSection />,
+  },
+  {
+    panelName: "Vat settings",
+    panelIcon: VatIcon,
+    panelUrl: "/vat",
+    panelComponent: <VatSection />,
   },
 ];

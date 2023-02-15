@@ -3,7 +3,8 @@ import { createGraphqlRequestClient } from "api";
 import {
   GetFilteredProductsAdminInput,
   Product,
-  ProductPresentation,
+  ProductStatus,
+  ProductUsageStatus,
 } from "@features/API";
 import { useQuery } from "react-query";
 
@@ -21,16 +22,19 @@ export type GetAdminProductsQuery = { __typename?: "Query" } & {
       | "price"
       | "stock"
       | "usageStatus"
+      | "thumbnail"
       | "status"
+      | "totalOrdered"
+      | "totalDiscountedAmount"
+      | "totalDiscounted"
+      | "unitsRefunded"
+      | "positiveFeedback"
+      | "negitiveFeedback"
       | "updatedAt"
-    > & {
-        presentations: Array<
-          { __typename?: "ProductPresentation" } & Pick<
-            ProductPresentation,
-            "src" | "type"
-          >
-        >;
-      }
+      | "sales"
+      | "reviews"
+      | "earnings"
+    >
   >;
 };
 
@@ -46,17 +50,23 @@ export const useGetAdminProductsQuery = (
         getAdminFilteredProducts(
             args:$args
         ){
-            presentations{
-                src
-                type
-            }
             title
             sellerId
             id
             price
             stock
             usageStatus
+            thumbnail
             status
+            totalOrdered
+            totalDiscountedAmount
+            totalDiscounted
+            unitsRefunded
+            positiveFeedback
+            negitiveFeedback
+            sales
+            reviews
+            earnings
             updatedAt
         }
     }
@@ -67,7 +77,28 @@ export const useGetAdminProductsQuery = (
   });
 
   return useQuery(["get-admin-products", { input }], async () => {
-    const res = await client.send<GetAdminProductsQuery>();
-    return res.data.getAdminFilteredProducts;
+    const res: GetAdminProductsQuery["getAdminFilteredProducts"] = [
+      ...Array(5),
+    ].map((_, i) => ({
+      id: i.toString(),
+      negitiveFeedback: 15,
+      positiveFeedback: 35,
+      price: 15,
+      sellerId: "15",
+      status: ProductStatus.Active,
+      stock: 12,
+      thumbnail: "/place-1.jpg",
+      title: "title",
+      totalDiscounted: 15,
+      totalDiscountedAmount: 132,
+      totalOrdered: 15,
+      unitsRefunded: 48,
+      usageStatus: ProductUsageStatus.New,
+      updatedAt: new Date().toString(),
+      reviews: 16,
+      sales: 65,
+      earnings: 156,
+    }));
+    return res;
   });
 };

@@ -141,6 +141,24 @@ export class Product {
   @Field(() => Int)
   sales: number;
 
+  @Field(() => Int)
+  totalOrdered: number;
+
+  @Field(() => Int)
+  totalDiscounted: number;
+
+  @Field(() => Int)
+  totalDiscountedAmount: number;
+
+  @Field(() => Int)
+  unitsRefunded: number;
+
+  @Field(() => Int)
+  positiveFeedback: number;
+
+  @Field(() => Int)
+  negitiveFeedback: number;
+
   @Field(() => Float)
   vat: number;
 

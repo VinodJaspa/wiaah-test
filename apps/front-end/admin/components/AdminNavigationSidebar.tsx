@@ -79,6 +79,13 @@ export const AdminNavigationSidebar: React.FC<{
         },
         {
           icon: <ArrowRightIcon />,
+          name: t("Downloadables"),
+          onClick() {},
+          slug: "downloadables",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
           name: t("Filters"),
           onClick() {},
           slug: "filters",
@@ -478,13 +485,7 @@ export const AdminNavigationSidebar: React.FC<{
         },
       ],
     },
-    {
-      icon: <DownloadIcon />,
-      name: t("Downloadables"),
-      onClick() {},
-      slug: "downloadables",
-      subLinks: [],
-    },
+
     {
       icon: <FiActivity />,
       name: t("Activity"),

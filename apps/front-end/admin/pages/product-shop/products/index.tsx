@@ -2,7 +2,7 @@ import {
   GetFilteredProductsAdminInput,
   PresentationType,
   ProductUsageStatus,
-} from "@features/Products/types";
+} from "@features/API";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -54,8 +54,8 @@ const Products: NextPage = () => {
   return (
     <>
       <section>
-        <TableContainer className="w-fit">
-          <Table>
+        <TableContainer>
+          <Table ThProps={{ className: "whitespace-nowrap" }}>
             <THead>
               <Tr>
                 <Th className="w-fit">
@@ -68,7 +68,19 @@ const Products: NextPage = () => {
                 <Th>{t("Type of item")}</Th>
                 <Th>{t("Price")}</Th>
                 <Th>{t("Quantity")}</Th>
+                <Th>{t("Earnings")}</Th>
+                <Th>{t("Sales")}</Th>
+                <Th>{t("Total Ordered Items")}</Th>
+                <Th>{t("Total Discounted Orders")}</Th>
+                <Th>{t("Total Discounted Amount")}</Th>
+                <Th>{t("Items Refunded")}</Th>
+                <Th>{t("Refund Rate")}</Th>
+                <Th>{t("Positive feedback received")}</Th>
+                <Th>{t("Received Positive feedback rate")}</Th>
+                <Th>{t("Negative feedback received")}</Th>
+                <Th>{t("Received negative feedback rate")}</Th>
                 <Th>{t("Status")}</Th>
+                <Th>{t("Views")}</Th>
                 <Th>{t("Date modified")}</Th>
                 <Th>{t("Action")}</Th>
               </Tr>
@@ -121,6 +133,39 @@ const Products: NextPage = () => {
                   />
                 </Th>
                 <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
                   <Select
                     value={JSON.stringify(getFitler("status"))}
                     onOptionSelect={(v) => setFilter("status", v)}
@@ -131,7 +176,13 @@ const Products: NextPage = () => {
                     </SelectOption>
                   </Select>
                 </Th>
-
+                <Th>
+                  <Input
+                    type="number"
+                    value={getFitler("views" as any)}
+                    onChange={(v) => setFilter("views" as any, v.target.value)}
+                  />
+                </Th>
                 <Th>
                   <DateFormInput
                     dateValue={getFitler("updatedAt")}
@@ -140,7 +191,6 @@ const Products: NextPage = () => {
                 </Th>
               </Tr>
             </THead>
-
             <TBody>
               {products?.map((prod, i) => (
                 <Tr data-testid="product-record" key={prod.id}>
@@ -148,14 +198,7 @@ const Products: NextPage = () => {
                     <Checkbox />
                   </Td>
                   <Td>
-                    <Image
-                      className="w-full"
-                      src={
-                        prod.presentations.find(
-                          (v) => v.type === PresentationType.Image
-                        )?.src
-                      }
-                    />
+                    <Image className="w-full" src={prod.thumbnail} />
                   </Td>
                   <Td>{prod.title}</Td>
                   <Td>{prod.sellerId}</Td>
@@ -174,8 +217,35 @@ const Products: NextPage = () => {
                   <Td>
                     <PriceDisplay price={prod.price} />
                   </Td>
-                  <Td>{prod.stock}</Td>
+                  <Td align="center">{prod.stock}</Td>
+                  <Td align="center">{prod.earnings}</Td>
+                  <Td align="center">{prod.sales}</Td>
+                  <Td align="center">{prod.totalOrdered}</Td>
+                  <Td align="center">{prod.totalDiscounted}</Td>
+                  <Td align="center">{prod.totalDiscountedAmount}</Td>
+                  <Td align="center">{prod.unitsRefunded}</Td>
+                  <Td align="center">
+                    %
+                    {prod.unitsRefunded / prod.sales === Infinity
+                      ? 0
+                      : prod.unitsRefunded / prod.sales}
+                  </Td>
+                  <Td align="center">{prod.positiveFeedback}</Td>
+                  <Td align="center">
+                    %
+                    {prod.positiveFeedback / prod.reviews === Infinity
+                      ? 0
+                      : prod.positiveFeedback / prod.reviews}
+                  </Td>
+                  <Td align="center">{prod.negitiveFeedback}</Td>
+                  <Td align="center">
+                    %
+                    {prod.negitiveFeedback / prod.reviews === Infinity
+                      ? 0
+                      : prod.negitiveFeedback / prod.reviews}
+                  </Td>
                   <Td>{prod.status}</Td>
+                  <Td>{1698}</Td>
                   <Td>{new Date(prod.updatedAt).toDateString()}</Td>
                   <Td>
                     <div className="grid grid-cols-2d justify-center gap-2 fill-white text-white text-sm ">

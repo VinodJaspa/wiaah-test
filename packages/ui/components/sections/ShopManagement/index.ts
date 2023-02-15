@@ -5,3 +5,4 @@ export * from "./CanceledOrders";
 export * from "./ReviewsSection";
 export * from "./ShippingSettings";
 export * from "./AffiliationManagement";
+export * from "./DownloadableManagement";

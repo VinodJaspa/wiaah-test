@@ -125,13 +125,6 @@ export class AccountsService {
         ],
       });
 
-    if (args.balance)
-      filters.push({
-        balance: {
-          gte: args.balance,
-        },
-      });
-
     if (args.email)
       filters.push({
         email: {

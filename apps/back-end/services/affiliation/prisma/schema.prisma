@@ -29,13 +29,20 @@ enum AffiliationStatus {
 }
 
 model AffiliationPurchase {
-  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
-  itemId                String   @db.ObjectId
+  id                    String                    @id @default(auto()) @map("_id") @db.ObjectId
+  itemId                String                    @db.ObjectId
   itemType              String
-  sellerId              String   @db.ObjectId
-  affiliatorId          String   @db.ObjectId
-  purchaserId           String   @db.ObjectId
-  createdAt             DateTime @default(now())
+  sellerId              String                    @db.ObjectId
+  affiliatorId          String                    @db.ObjectId
+  purchaserId           String                    @db.ObjectId
+  createdAt             DateTime                  @default(now())
   paidCommissionPercent Float
   paidCommissionAmount  Float
+  status                AffiliationPurchaseStatus @default(pending)
+}
+
+enum AffiliationPurchaseStatus {
+  pending
+  paid
+  canceled
 }

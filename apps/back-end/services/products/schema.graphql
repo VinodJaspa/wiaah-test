@@ -44,6 +44,10 @@ enum ShippingType {
   click_and_collect
 }
 
+type Account {
+  id: ID!
+}
+
 type ProductPresentation {
   type: PresentationType!
   src: String!
@@ -101,6 +105,12 @@ type Product {
   shippingDetails: ShippingDetails
   reviews: Int!
   sales: Int!
+  totalOrdered: Int!
+  totalDiscounted: Int!
+  totalDiscountedAmount: Int!
+  unitsRefunded: Int!
+  positiveFeedback: Int!
+  negitiveFeedback: Int!
   vat: Float!
   status: ProductStatus!
   usageStatus: ProductUsageStatus!
@@ -109,6 +119,7 @@ type Product {
   earnings: Float!
   discount: Discount!
   cashback: Cashback!
+  seller: Account!
 }
 
 enum VisibilityEnum {
@@ -150,6 +161,11 @@ type Location {
   state: String!
 }
 
+type VatSettings {
+  VatID: String!
+  location: Location!
+}
+
 type Shop {
   id: ID!
   name: String!
@@ -163,6 +179,8 @@ type Shop {
   targetGenders: [TargetGenders!]!
   createdAt: DateTime!
   updatedAt: DateTime!
+  typeOfSeller: TypeOfSeller!
+  vat: VatSettings
 }
 
 enum StoreType {
@@ -184,6 +202,11 @@ enum TargetGenders {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+enum TypeOfSeller {
+  individual
+  professional
+}
 
 type ShippingCountry {
   name: String!
@@ -273,7 +296,13 @@ input GetFilteredProductsInput {
   size: [String!]
   inStock: Boolean
   usageStatus: ProductUsageStatus
+  type: ProductType
   pagination: GqlPaginationInput!
+}
+
+enum ProductType {
+  goods
+  digital
 }
 
 input GetFilteredCategory {
@@ -298,11 +327,6 @@ input GetFilteredProductsAdminInput {
   type: ProductType
   usageStatus: ProductUsageStatus
   pagination: GqlPaginationInput!
-}
-
-enum ProductType {
-  goods
-  digital
 }
 
 type Mutation {
@@ -340,6 +364,8 @@ input CreateShopInput {
   storeType: [StoreType!]!
   vendorType: [VendorType!]!
   targetGenders: [TargetGenders!]!
+  typeOfSeller: TypeOfSeller!
+  vat: VatSettingsPartialInput
 }
 
 input LocationInput {
@@ -351,6 +377,11 @@ input LocationInput {
   state: String!
 }
 
+input VatSettingsPartialInput {
+  VatID: String
+  location: LocationInput
+}
+
 input UpdateShopInput {
   name: String
   banner: String
@@ -359,6 +390,8 @@ input UpdateShopInput {
   storeType: [StoreType!]
   vendorType: [VendorType!]
   targetGenders: [TargetGenders!]
+  typeOfSeller: TypeOfSeller
+  vat: VatSettingsPartialInput
 }
 
 input CreateProductInput {

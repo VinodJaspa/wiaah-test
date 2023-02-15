@@ -1,7 +1,6 @@
 import { useResponsive } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ProductManagementDetailsDataType } from "types";
 import {
   Button,
   Table,
@@ -23,81 +22,145 @@ import {
 import { SectionHeader } from "@sections";
 import { ItemsPagination, usePaginationControls } from "@blocks/Navigating";
 import { useEditProductData } from "@src/Hooks";
-import { useGetMyProducts } from "@features/Products";
+import {
+  useDeleteMyProductMutation,
+  useGetMyProducts,
+} from "@features/Products";
+import { QueryGetMyProductsArgs } from "@features/API";
+import { Formik } from "formik";
+import { FormikInput } from "@blocks/DataInput";
 
 export interface ProductDetailsTableProps {}
 
 export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
   const { AddNewProduct, EditProduct } = useEditProductData();
-  const { controls, changeTotalItems, pagination } = usePaginationControls();
+  const { controls, pagination } = usePaginationControls();
+  const [input, setInput] = React.useState<
+    Omit<QueryGetMyProductsArgs["filterInput"], "pagination">
+  >({});
+
   const { isMobile } = useResponsive();
+
   const { t } = useTranslation();
 
   const { data: Products } = useGetMyProducts({
+    ...input,
     pagination,
   });
 
-  React.useEffect(() => {
-    changeTotalItems(products.length);
-  }, []);
+  const { mutate, data } = useDeleteMyProductMutation();
+
   return (
     <div className="w-full flex flex-col gap-4">
       <SectionHeader sectionTitle={t("your_products", "Your Products")}>
         {isMobile ? (
           <SquarePlusOutlineIcon className="text-2xl" onClick={AddNewProduct} />
         ) : (
-          <Button onClick={AddNewProduct}>
-            {t("add_new_product", "Add New Product")}
-          </Button>
+          <Button onClick={AddNewProduct}>{t("Add New Product")}</Button>
         )}
       </SectionHeader>
       <div className="flex flex-col gap-4 shadow p-4">
         <TableContainer>
-          <Table className="w-full">
+          <Table ThProps={{ className: "whitespace-nowrap" }} className="w-fit">
             <THead>
               <Tr>
-                <Th>{t("image", "Image")}</Th>
-                <Th>{t("product", "Product")}</Th>
-                <Th>{t("price", "Price")}</Th>
-                <Th>{t("stock_status", "Stock Status")}</Th>
-                <Th>{t("earnings", "Earnings")}</Th>
-                <Th>{t("sales", "Sales")}</Th>
-                <Th>{t("status", "Status")}</Th>
-                <Th>{t("action", "Action")}</Th>
+                <Th>{t("Image")}</Th>
+                <Th>{t("Product")}</Th>
+                <Th>{t("Price")}</Th>
+                <Th>{t("Stock Status")}</Th>
+                <Th>{t("Earnings")}</Th>
+                <Th>{t("Sales")}</Th>
+                <Th>{t("Total Ordered Items")}</Th>
+                <Th>{t("Total Discounted Orders")}</Th>
+                <Th>{t("Total Discounted Amount")}</Th>
+                <Th>{t("Items Refunded")}</Th>
+                <Th>{t("Refund Rate")}</Th>
+                <Th>{t("Positive feedback received")}</Th>
+                <Th>{t("Received Positive feedback rate")}</Th>
+                <Th>{t("Negative feedback received")}</Th>
+                <Th>{t("Received negative feedback rate")}</Th>
+                <Th>{t("Status")}</Th>
+                <Th>{t("Views")}</Th>
+                <Th>{t("Action")}</Th>
               </Tr>
               <Tr>
-                <Th></Th>
-                <Th>
-                  <Input />
-                </Th>
-                <Th>
-                  <Input type="number" />
-                </Th>
-                <Th>
-                  <Select>
-                    <SelectOption value={"inStock"}>
-                      {t("InStock")}
-                    </SelectOption>
-                    <SelectOption value={"outStock"}>
-                      {t("outStock")}
-                    </SelectOption>
-                  </Select>
-                </Th>
-                <Th>
-                  <Input type="number" />
-                </Th>
-                <Th>
-                  <Input type="number" />
-                </Th>
-                <Th>
-                  <Select>
-                    <SelectOption value={"active"}>{t("Active")}</SelectOption>
-                    <SelectOption value={"inActive"}>
-                      {t("InActive")}
-                    </SelectOption>
-                  </Select>
-                </Th>
-                <Th></Th>
+                <Formik<typeof input> initialValues={{}} onSubmit={() => {}}>
+                  {({ values, setFieldValue }) => {
+                    setInput(values);
+                    return (
+                      <>
+                        <Th></Th>
+                        <Th>
+                          <FormikInput name="title" />
+                        </Th>
+                        <Th>
+                          <FormikInput name="price" type="number" />
+                        </Th>
+                        <Th>
+                          <Select
+                            onOptionSelect={(e) => setFieldValue("stock", e)}
+                          >
+                            <SelectOption value={"inStock"}>
+                              {t("InStock")}
+                            </SelectOption>
+                            <SelectOption value={"outStock"}>
+                              {t("outStock")}
+                            </SelectOption>
+                          </Select>
+                        </Th>
+                        <Th>
+                          <FormikInput name="earning" type="number" />
+                        </Th>
+                        <Th>
+                          <FormikInput name="sales" type="number" />
+                        </Th>
+                        <Th>
+                          <FormikInput name="totalOrdered" />
+                        </Th>
+                        <Th>
+                          <FormikInput name="totalDiscounted" />
+                        </Th>
+                        <Th>
+                          <FormikInput name="totalDiscountAmount" />
+                        </Th>
+                        <Th>
+                          <FormikInput name="unitRefunded" />
+                        </Th>
+                        <Th>
+                          <FormikInput name="refundRate" />
+                        </Th>
+                        <Th>
+                          <FormikInput name="positiveFeedback" />
+                        </Th>
+                        <Th>
+                          <FormikInput name="positiveFeedbackRate" />
+                        </Th>
+                        <Th>
+                          <FormikInput name="negitiveFeedback" />
+                        </Th>
+                        <Th>
+                          <FormikInput name="negitiveFeedbackRate" />
+                        </Th>
+                        <Th>
+                          <Select
+                            onOptionSelect={(v) => setFieldValue("status", v)}
+                          >
+                            <SelectOption value={"active"}>
+                              {t("Active")}
+                            </SelectOption>
+                            <SelectOption value={"inActive"}>
+                              {t("InActive")}
+                            </SelectOption>
+                          </Select>
+                        </Th>
+                        <Th>
+                          <FormikInput name="views" />
+                        </Th>
+                        <Th></Th>
+                      </>
+                    );
+                  }}
+                </Formik>
               </Tr>
             </THead>
             <TBody>
@@ -119,14 +182,44 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
                     <PriceDisplay price={product.earnings} />
                   </Td>
                   <Td align="center">{product.sales}</Td>
+                  <Td align="center">{product.totalOrdered}</Td>
+                  <Td align="center">{product.totalDiscounted}</Td>
+                  <Td align="center">{product.totalDiscountedAmount}</Td>
+                  <Td align="center">{product.unitsRefunded}</Td>
+                  <Td align="center">
+                    %
+                    {product.unitsRefunded / product.sales === Infinity
+                      ? 0
+                      : product.unitsRefunded / product.sales}
+                  </Td>
+                  <Td align="center">{product.positiveFeedback}</Td>
+                  <Td align="center">
+                    %
+                    {product.positiveFeedback / product.reviews === Infinity
+                      ? 0
+                      : product.positiveFeedback / product.reviews}
+                  </Td>
+                  <Td align="center">{product.negitiveFeedback}</Td>
+                  <Td align="center">
+                    %
+                    {product.negitiveFeedback / product.reviews === Infinity
+                      ? 0
+                      : product.negitiveFeedback / product.reviews}
+                  </Td>
                   <Td align="center">{product.status}</Td>
+                  <Td>165</Td>
                   <Td align="center">
                     <div className="flex items-center gap-2">
                       <EditIcon
                         onClick={() => EditProduct(product.id)}
                         className="text-xl cursor-pointer"
                       />
-                      <TrashIcon className="text-red-700 text-xl cursor-pointer" />
+                      <TrashIcon
+                        onClick={() => {
+                          mutate(product.id);
+                        }}
+                        className="text-red-700 text-xl cursor-pointer"
+                      />
                     </div>
                   </Td>
                 </Tr>
@@ -139,53 +232,3 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
     </div>
   );
 };
-const products: ProductManagementDetailsDataType[] = [
-  {
-    id: "123",
-    image: "/shop-2.jpeg",
-    earnings: {
-      amount: 200,
-      currency: "USD",
-    },
-    name: "product 1",
-    price: {
-      amount: 30,
-      currency: "USD",
-    },
-    sales: 10,
-    status: "active",
-    stockStatus: 15,
-  },
-  {
-    id: "1598",
-    image: "/place-2.jpg",
-    earnings: {
-      amount: 200,
-      currency: "USD",
-    },
-    name: "product 1",
-    price: {
-      amount: 30,
-      currency: "USD",
-    },
-    sales: 10,
-    status: "active",
-    stockStatus: 15,
-  },
-  {
-    id: "234",
-    image: "/verticalImage.jpg",
-    earnings: {
-      amount: 200,
-      currency: "USD",
-    },
-    name: "product 1",
-    price: {
-      amount: 30,
-      currency: "USD",
-    },
-    sales: 10,
-    status: "active",
-    stockStatus: 15,
-  },
-];

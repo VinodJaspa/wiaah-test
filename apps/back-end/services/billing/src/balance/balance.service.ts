@@ -8,7 +8,7 @@ import {
   KAFKA_MESSAGES,
   SERVICES,
 } from 'nest-utils';
-import { PrismaService } from 'src/prisma.service';
+import { PrismaService } from '../prisma.service';
 import {
   BalanceCreatedEvent,
   GetCurrencyExchangeRateMessage,
@@ -29,13 +29,13 @@ export class BalanceService {
     return this.prisma.balance.deleteMany();
   }
 
-  async addCashbackBalance(userId: string): Promise<Balance> {
+  async addCashbackBalance(userId: string, amount: number): Promise<Balance> {
     return this.prisma.balance.update({
       where: {
         ownerId: userId,
       },
       data: {
-        cashbackBalance: 50,
+        cashbackBalance: amount,
       },
     });
   }

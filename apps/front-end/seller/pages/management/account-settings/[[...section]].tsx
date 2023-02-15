@@ -28,7 +28,7 @@ const accountSettings: NextPage<AccountSettingsPageProps> = ({}) => {
   return (
     <>
       <Head>
-        <title>{t("account_settings", "Account Settings")}</title>
+        <title>{t("Account Settings")}</title>
       </Head>
       <SellerLayout noContainer header={"main"}>
         <AccountSettingsView />

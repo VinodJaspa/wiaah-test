@@ -1,6 +1,5 @@
 import { useAdminDeleteServiceMutation } from "@features/Services/Services/mutation";
 import { NextPage } from "next";
-import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -26,7 +25,7 @@ import {
   usePaginationControls,
   ServiceType,
 } from "ui";
-import { randomNum } from "utils";
+import { mapArray } from "utils";
 
 interface Service {
   id: string;
@@ -51,10 +50,8 @@ const serviceTypes = [
 const products: NextPage = () => {
   const { visit, getCurrentPath } = useRouting();
   const { t } = useTranslation();
-  const [serviceType, setServiceType] = React.useState<ServiceType>(
-    ServiceType.Hotel
-  );
-  const { pagination, controls } = usePaginationControls();
+  const [serviceType] = React.useState<ServiceType>(ServiceType.Hotel);
+  const { pagination } = usePaginationControls();
   const { data: services } = useGetFilteredServicesQuery({
     pagination,
     type: serviceType,
@@ -71,8 +68,8 @@ const products: NextPage = () => {
   return (
     <>
       <section>
-        <TableContainer className="w-fit">
-          <Table>
+        <TableContainer>
+          <Table ThProps={{ className: "whitespace-nowrap" }}>
             <THead>
               <Tr>
                 <Th className="w-fit">
@@ -84,7 +81,19 @@ const products: NextPage = () => {
                 <Th>{t("Id")}</Th>
                 <Th>{t("Price")}</Th>
                 <Th>{t("Type")}</Th>
+                <Th>{t("Earnings")}</Th>
+                <Th>{t("Sales")}</Th>
+                <Th>{t("Total Ordered Items")}</Th>
+                <Th>{t("Total Discounted Orders")}</Th>
+                <Th>{t("Total Discounted Amount")}</Th>
+                <Th>{t("Items Refunded")}</Th>
+                <Th>{t("Refund Rate")}</Th>
+                <Th>{t("Positive feedback received")}</Th>
+                <Th>{t("Received Positive feedback rate")}</Th>
+                <Th>{t("Negative feedback received")}</Th>
+                <Th>{t("Received negative feedback rate")}</Th>
                 <Th>{t("Status")}</Th>
+                <Th>{t("Views")}</Th>
                 <Th>{t("Date modified")}</Th>
                 <Th>{t("Action")}</Th>
               </Tr>
@@ -95,18 +104,51 @@ const products: NextPage = () => {
                   <Input />
                 </Th>
                 <Th>
-                  <Input />
-                </Th>
-                <Th>
-                  <Input />
-                </Th>
-                <Th>
                   <Input type="number" />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
                 </Th>
                 <Th>
                   <Select>
                     <SelectOption value={"hotel"}>{t("hotel")}</SelectOption>
                   </Select>
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
+                </Th>
+                <Th>
+                  <Input />
                 </Th>
                 <Th>
                   <Select>
@@ -119,11 +161,14 @@ const products: NextPage = () => {
                 <Th>
                   <Input />
                 </Th>
+                <Th>
+                  <Input />
+                </Th>
               </Tr>
             </THead>
 
             <TBody>
-              {services.map((prod, i) => (
+              {mapArray(services, (prod, i) => (
                 <Tr key={prod.id}>
                   <Td>
                     <Checkbox />

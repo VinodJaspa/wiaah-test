@@ -4,15 +4,21 @@ import {
   GetUserCashbackBalanceMessage,
   GetUserCashbackBalanceMessageReply,
   KafkaPayload,
+  OrderItemBillingReadyEvent,
+  OrderRefundRequestRejectedEvent,
   SellerProductsPurchasedEvent,
   VoucherAppliedEvent,
 } from 'nest-dto';
 import { formatCaughtError, KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
+import { PrismaService } from 'prismaService';
 import { BalanceService } from './balance.service';
 
 @Controller()
 export class BalanceController {
-  constructor(private readonly balacneService: BalanceService) {}
+  constructor(
+    private readonly balacneService: BalanceService,
+    private readonly prisma: PrismaService,
+  ) {}
 
   @MessagePattern(KAFKA_MESSAGES.BILLING_MESSAGES.getUserCashbackBalance)
   async getUserCashbackBalance(
@@ -69,5 +75,61 @@ export class BalanceController {
     );
 
     await Promise.all(res);
+  }
+
+  @EventPattern(KAFKA_EVENTS.ORDERS_EVENTS.orderItemBillingReady())
+  async handleOrderBillingReady(
+    @Payload() { value }: { value: OrderItemBillingReadyEvent },
+  ) {
+    if (value.input.cashbackAmount) {
+      await this.balacneService.addCashbackBalance(
+        value.input.buyerId,
+        value.input.cashbackAmount,
+      );
+    }
+
+    if (value.input.affiliationAmount && value.input.affiliatorId) {
+      await this.balacneService.addWithdrawableBalance(
+        value.input.affiliatorId,
+        value.input.affiliationAmount,
+      );
+    }
+
+    await this.balacneService.addWithdrawableBalance(
+      value.input.sellerId,
+      value.input.paidPrice -
+        (value.input.affiliationAmount || 0) -
+        (value.input.cashbackAmount || 0),
+    );
+  }
+
+  @EventPattern(KAFKA_EVENTS.ORDERS_EVENTS.orderRefundRequestAccepted())
+  async handleProductRefunded(
+    @Payload() { value }: { value: OrderRefundRequestRejectedEvent },
+  ) {
+    try {
+      const res = await this.prisma.$transaction([
+        this.prisma.balance.update({
+          where: {
+            ownerId: value.input.sellerId,
+          },
+          data: {
+            pendingBalance: {
+              decrement: value.input.amount,
+            },
+          },
+        }),
+        this.prisma.balance.update({
+          where: {
+            ownerId: value.input.buyerId,
+          },
+          data: {
+            cashbackBalance: value.input.amount,
+          },
+        }),
+      ]);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

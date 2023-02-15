@@ -127,3 +127,4 @@ export * from "./ListIcon";
 export * from "./RefreshIcon";
 export * from "./SaveIcon";
 export * from "./ArrowRoundBack";
+export * from "./VatIcon";

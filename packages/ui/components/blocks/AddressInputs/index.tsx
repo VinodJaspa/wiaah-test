@@ -21,13 +21,19 @@ import { Form, Formik } from "formik";
 export interface AddressInputsProps {
   initialInputs?: AddressDetails;
   onCancel?: () => void;
+  onChange?: (input: AddressDetails) => any;
   onSuccess?: (input: AddressDetails) => void;
+  askBillingAddress?: boolean;
+  askShippingAddress?: boolean;
 }
 
 export const AddressInputs: React.FC<AddressInputsProps> = ({
   initialInputs,
   onCancel,
   onSuccess,
+  onChange,
+  askBillingAddress = true,
+  askShippingAddress = true,
 }) => {
   const { t } = useTranslation();
   const [edit, setEdit] = React.useState<boolean>(initialInputs ? true : false);
@@ -50,6 +56,8 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
           defaultDeliveryAddress: false,
         }
   );
+
+  onChange && onChange(input);
 
   const [currentCountryCode, setCurrentCountryCode] = React.useState<
     FlagIconCode | undefined
@@ -252,35 +260,41 @@ export const AddressInputs: React.FC<AddressInputsProps> = ({
                   </Grid>
                   <Spacer />
                   <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
-                    <FilterInput
-                      onChange={(e) =>
-                        setInputs((state) => ({
-                          ...state,
-                          defaultDeliveryAddress: e.target.checked,
-                        }))
-                      }
-                      checked={input.defaultDeliveryAddress}
-                      id="SetDefaultDeliveryAddressInput"
-                      variant="box"
-                      label={t("Set as default delivery address")}
-                    />
-                    <FilterInput
-                      id="SetDefaultBillingAddressInput"
-                      variant="box"
-                      checked={input.defaultBillingAddress}
-                      onChange={(e) =>
-                        setInputs((state) => ({
-                          ...state,
-                          defaultBillingAddress: e.target.checked,
-                        }))
-                      }
-                      label={t("Set as default billing address")}
-                    />
+                    {askShippingAddress ? (
+                      <FilterInput
+                        onChange={(e) =>
+                          setInputs((state) => ({
+                            ...state,
+                            defaultDeliveryAddress: e.target.checked,
+                          }))
+                        }
+                        checked={input.defaultDeliveryAddress}
+                        id="SetDefaultDeliveryAddressInput"
+                        variant="box"
+                        label={t("Set as default delivery address")}
+                      />
+                    ) : null}
+                    {askBillingAddress ? (
+                      <FilterInput
+                        id="SetDefaultBillingAddressInput"
+                        variant="box"
+                        checked={input.defaultBillingAddress}
+                        onChange={(e) =>
+                          setInputs((state) => ({
+                            ...state,
+                            defaultBillingAddress: e.target.checked,
+                          }))
+                        }
+                        label={t("Set as default billing address")}
+                      />
+                    ) : null}
                   </FlexStack>
                   <FlexStack horizontalSpacingInRem={1} justify="end" fullWidth>
-                    <Button id="AddAddressButton" onClick={handleSave}>
-                      {edit ? t("SAVE ADDRESS") : t("ADD ADDRESS")}
-                    </Button>
+                    {onSuccess ? (
+                      <Button id="AddAddressButton" onClick={handleSave}>
+                        {edit ? t("SAVE ADDRESS") : t("ADD ADDRESS")}
+                      </Button>
+                    ) : null}
                     {edit && (
                       <Button
                         outline

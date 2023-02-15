@@ -39,7 +39,7 @@ export class UpdateProductRatingCommandHandler
     const givenStars = reviewStars;
     const newRating =
       givenStars <= 0 ? 0 : (givenStars / fullMark) * MAX_REVIEW_RATING;
-    console.log({ reviewStars, newRating, reviewsNum });
+
     const res = await this.repo.update(productId, {
       reviews:
         type === 'inc'

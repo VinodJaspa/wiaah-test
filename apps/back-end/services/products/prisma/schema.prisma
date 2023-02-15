@@ -82,6 +82,13 @@ model Product {
   visibility                  VisibilityEnum        @default(hidden)
   sales                       Int                   @default(0)
   earnings                    Float                 @default(0)
+  totalOrdered                Int                   @default(0)
+  totalDiscounted             Int                   @default(0)
+  totalDiscountedAmount       Int                   @default(0)
+  unitsRefunded               Int                   @default(0)
+  positiveFeedback            Int                   @default(0)
+  negitiveFeedback            Int                   @default(0)
+  views                       Int                   @default(0)
   createdAt                   DateTime              @default(now())
   updatedAt                   DateTime              @updatedAt
   discount                    Discount?             @relation(fields: [discountId], references: [id])
@@ -101,6 +108,18 @@ model Shop {
   storeType     StoreType[]
   vendorType    VendorType[]
   targetGenders TargetGenders[]
+  typeOfSeller  TypeOfSeller
+  vat           VatSettings?
+}
+
+type VatSettings {
+  VatID    String?
+  location Location?
+}
+
+enum TypeOfSeller {
+  individual
+  professional
 }
 
 model ShippingAddress {

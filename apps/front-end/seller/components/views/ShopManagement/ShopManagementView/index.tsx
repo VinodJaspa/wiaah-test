@@ -19,9 +19,11 @@ import {
   SectionsLayout,
   ReturnedOrders,
   OrdersSection,
+  DownloadableManagement,
 } from "ui";
 import { getRouting } from "routing";
 import { FcSettings } from "react-icons/fc";
+import { HiOutlineDocumentDownload } from "react-icons/hi";
 
 export interface ShopManagementViewProps {}
 
@@ -45,7 +47,7 @@ export const ShopManagementView: React.FC<ShopManagementViewProps> = ({}) => {
       handleRetrun={() => {
         router.replace(`/${baseRoute}`);
       }}
-      name={t("shop_management", "Shop Management")}
+      name={t("Shop Management")}
     />
   );
 };
@@ -56,6 +58,12 @@ const sections: SettingsSectionType[] = [
     panelIcon: MdOutlineShoppingBasket({}),
     panelUrl: "/product-management",
     panelComponent: <ProductManagementSection />,
+  },
+  {
+    panelName: "Downloadables Management",
+    panelIcon: HiOutlineDocumentDownload({}),
+    panelUrl: "/donwloadables-management",
+    panelComponent: <DownloadableManagement />,
   },
   {
     panelName: "Orders",

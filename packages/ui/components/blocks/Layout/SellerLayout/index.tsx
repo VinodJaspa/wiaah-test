@@ -37,7 +37,7 @@ import {
   useGetRecentStories,
   useGetDiscoverHashtags,
 } from "@UI";
-import { useResponsive, useAccountType, usePagination } from "hooks";
+import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
 import { getRouting } from "routing";
 import { BsShop } from "react-icons/bs";

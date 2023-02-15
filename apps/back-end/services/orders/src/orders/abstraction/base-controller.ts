@@ -3,6 +3,7 @@ import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
 import { ClientKafka } from '@nestjs/microservices';
 import { OrdersRepository } from '@orders/repositoy';
 import { SERVICES } from 'nest-utils';
+import { PrismaService } from 'prismaService';
 
 export class BaseController {
   constructor(
@@ -12,5 +13,6 @@ export class BaseController {
     @Inject(SERVICES.ORDERS_SERVICE.token)
     public eventClient: ClientKafka,
     public repo: OrdersRepository,
+    public prisma: PrismaService,
   ) {}
 }

@@ -6,3 +6,4 @@ export * from "./useCreateShippingRuleMutation";
 export * from "./useUpdateShippingRuleMutation";
 export * from "./useDeleteShippingRuleMutation";
 export * from "./useCreateShippingAddressMutation";
+export * from "./useUpdateMyShopMutation";

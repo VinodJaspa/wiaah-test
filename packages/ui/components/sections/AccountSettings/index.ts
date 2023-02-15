@@ -10,3 +10,4 @@ export * from "./AccountVerification";
 export * from "./PersonalizationAndData";
 export * from "./MyVerificationSection";
 export * from "./ShareYourWiaahQr";
+export * from "./VatSection";

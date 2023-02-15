@@ -3,7 +3,7 @@ import { FlagIcon as FlagKitIcon, FlagIconCode } from "react-flag-kit";
 
 export interface FlagIconProps {
   code: string;
-  size: string | number;
+  size?: string | number;
 }
 
 export const FlagIcon: React.FC<FlagIconProps> = ({ code, size }) => {
