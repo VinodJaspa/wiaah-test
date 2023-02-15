@@ -24,7 +24,8 @@ import {
   IsProductReviewableMessage,
   IsProductReviewableMessageReply,
   KafkaPayload,
-  LookForNearShopsPromotionsEvent,
+  OrderRefundRequestAcceptedEvent,
+  ReviewCreatedEvemt,
   SellerProductsPurchasedEvent,
 } from 'nest-dto';
 import { CommandBus, EventBus, QueryBus } from '@nestjs/cqrs';
@@ -33,16 +34,7 @@ import { ProductPurchasedEvent as KafkaProductPurchasedEvent } from 'nest-dto';
 import { ProductStatus, PRODUCT_SERVICE_KEY } from '@products/const';
 import { UpdateProductStatusCommand } from '@products/command';
 import { Product } from '@products/entities';
-import {
-  GetShippingAddressQuery,
-  GetShippingMethodQuery,
-  GetUserDataQuery,
-  GetUserDataQueryRes,
-} from '@products/queries';
-import {
-  ShippingAddressQueryRes,
-  ShippingMethodQueryRes,
-} from '@products/queries';
+import { PrismaService } from 'prismaService';
 
 @Controller()
 export class ProductsController {
@@ -53,6 +45,7 @@ export class ProductsController {
     @Inject(SERVICES.PRODUCTS_SERVICE.token)
     private readonly eventClient: ClientKafka,
     private readonly querybus: QueryBus,
+    private readonly prisma: PrismaService,
   ) {}
 
   @MessagePattern(KAFKA_MESSAGES.productReviewable)
@@ -217,8 +210,86 @@ export class ProductsController {
           sellerId,
         },
       } = value;
+
+      products.map((v) =>
+        this.prisma.product.update({
+          where: {
+            id: v.id,
+          },
+          data: {
+            totalOrdered: {
+              increment: 1,
+            },
+            totalDiscounted: {
+              increment:
+                v?.discount?.discountId && v?.discount?.discountAmount ? 1 : 0,
+            },
+            totalDiscountedAmount: {
+              increment: v.discount?.discountAmount || 0,
+            },
+          },
+        }),
+      );
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  @EventPattern(
+    KAFKA_EVENTS.REVIEWS_EVENTS.reviewCreated(PRODUCT_SERVICE_KEY, true),
+  )
+  async handleUpdateProductReviews(
+    @Payload() { value }: { value: ReviewCreatedEvemt },
+  ) {
+    const { input } = value;
+
+    const product = await this.prisma.product.findUnique({
+      where: {
+        id: input.contentId,
+      },
+    });
+
+    if (!product) return;
+
+    await this.prisma.product.update({
+      where: {
+        id: input.contentId,
+      },
+      data: {
+        reviews: {
+          increment: 1,
+        },
+        rate: product.rateStarCount / (product.reviews * 5),
+        rateStarCount: {
+          increment: input.rating,
+        },
+        positiveFeedback: {
+          increment: input.rating > 2.5 ? 1 : 0,
+        },
+        negitiveFeedback: {
+          increment: input.rating > 2.5 ? 0 : 1,
+        },
+      },
+    });
+  }
+
+  @EventPattern(KAFKA_EVENTS.ORDERS_EVENTS.orderRefundRequestAccepted())
+  async handleProductRefunded(
+    @Payload() { value }: { value: OrderRefundRequestAcceptedEvent },
+  ) {
+    try {
+      await this.prisma.product.update({
+        where: {
+          id: value.input.productId,
+        },
+        data: {
+          unitsRefunded: {
+            increment: 1,
+          },
+        },
+      });
+    } catch (error) {
+      console.log({ error });
     }
   }
 }

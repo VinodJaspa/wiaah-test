@@ -1,5 +1,12 @@
 import { Inject, NotAcceptableException, UseGuards } from '@nestjs/common';
-import { Resolver, ResolveReference, Mutation, Args } from '@nestjs/graphql';
+import {
+  Resolver,
+  ResolveReference,
+  Mutation,
+  Args,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { ClientKafka } from '@nestjs/microservices';
 import {
   AuthorizationDecodedUser,
@@ -19,6 +26,7 @@ import { EventBus } from '@nestjs/cqrs';
 import { AccountDeletionRequestCreatedEvent } from './events';
 import * as bcrypt from 'bcrypt';
 import { NewAccountCreatedEvent } from 'nest-dto';
+import { Shop } from './entities/shop.extends.entity';
 
 @Resolver(() => Account)
 export class AccountsResolver {
@@ -118,6 +126,14 @@ export class AccountsResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.accountsService.updateProtected(input, user.id);
+  }
+
+  @ResolveField(() => Shop)
+  shop(@Parent() acc: Account) {
+    return {
+      __typename: 'Shop',
+      ownerId: acc.id,
+    };
   }
 
   @ResolveReference()

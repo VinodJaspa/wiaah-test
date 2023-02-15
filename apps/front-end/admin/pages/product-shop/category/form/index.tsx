@@ -1,7 +1,4 @@
-import {
-  CreateCategoryInput,
-  ProductCategoryStatus,
-} from "@features/Products/types";
+import { CreateCategoryInput, ProductCategoryStatus } from "@features/API";
 import { Formik } from "formik";
 import React from "react";
 import { FlagIconCode } from "react-flag-kit";

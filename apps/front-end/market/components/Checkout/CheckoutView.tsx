@@ -19,9 +19,6 @@ import {
   useEditShippingAddressMutation,
   useApplyVoucherMutation,
 } from "ui";
-import { AddressCardDetails, AddressDetails } from "types";
-import { VoucherState } from "@src/state";
-import { useSetRecoilState } from "recoil";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 
@@ -80,7 +77,7 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
       );
     });
   }
-  const editAddress = addresses.find((v) => v.id === edit);
+  const editAddress = addresses?.find((v) => v.id === edit);
   return (
     <div className="flex flex-col md:table md:h-24 gap-4 w-full py-2">
       <div className="md:table-row">
@@ -95,15 +92,19 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
                 <p className="text-3xl">{"Address"}</p>
                 {edit ? (
                   <AddressInputs
-                    initialInputs={{
-                      address: editAddress.location.address,
-                      city: editAddress.location.city,
-                      contact: editAddress.phone,
-                      country: editAddress.location.country,
-                      firstName: editAddress.firstname,
-                      lastName: editAddress.lastname,
-                      zipCode: parseInt(editAddress.zipCode),
-                    }}
+                    initialInputs={
+                      editAddress
+                        ? {
+                            address: editAddress.location.address,
+                            city: editAddress.location.city,
+                            contact: editAddress.phone,
+                            country: editAddress.location.country,
+                            firstName: editAddress.firstname,
+                            lastName: editAddress.lastname,
+                            zipCode: parseInt(editAddress.zipCode),
+                          }
+                        : null
+                    }
                     onCancel={handleCancelEdit}
                     onSuccess={({
                       address,
@@ -133,7 +134,7 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
                 ) : (
                   <>
                     <div className="w-full flex flex-col gap-4">
-                      {addresses.length > 0 &&
+                      {(addresses?.length || 0) > 0 &&
                         addresses.map((address, i) => (
                           <div
                             className="cursor-pointer"

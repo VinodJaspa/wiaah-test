@@ -120,6 +120,9 @@ describe("downloadable management tests", () => {
           {
             type: AdminTableCellTypeEnum.avatar,
             value: v.thumbnail,
+            props: {
+              className: "w-12",
+            },
           },
           {
             type: AdminTableCellTypeEnum.text,
@@ -155,7 +158,7 @@ describe("downloadable management tests", () => {
           {
             type: AdminTableCellTypeEnum.action,
             actionBtns: [
-              <Button center>
+              <Button className="p-3" center>
                 <DownloadIcon />
               </Button>,
             ],

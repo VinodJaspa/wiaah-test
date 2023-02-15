@@ -17,6 +17,8 @@ export const DownloadableManagement: React.FC<{}> = ({}) => {
     pagination,
   });
 
+  console.log({ data });
+
   return (
     <AdminListTable
       pagination={controls}
@@ -33,6 +35,9 @@ export const DownloadableManagement: React.FC<{}> = ({}) => {
             {
               type: AdminTableCellTypeEnum.avatar,
               value: v.thumbnail,
+              props: {
+                className: "w-12",
+              },
             },
             {
               type: AdminTableCellTypeEnum.text,
@@ -68,7 +73,7 @@ export const DownloadableManagement: React.FC<{}> = ({}) => {
             {
               type: AdminTableCellTypeEnum.action,
               actionBtns: [
-                <Button center>
+                <Button className="p-3" center>
                   <DownloadIcon />
                 </Button>,
               ],

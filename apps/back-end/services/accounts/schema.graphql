@@ -26,6 +26,7 @@ type Account {
   companyRegisterationNumber: String
   photo: String
   phone: String
+  shop: Shop!
 }
 
 """
@@ -51,6 +52,10 @@ type AccountDeletionRequest {
 enum AccountDeletionRequestStatus {
   pending
   deleted
+}
+
+type Shop {
+  ownerId: String!
 }
 
 type AccountVerification {

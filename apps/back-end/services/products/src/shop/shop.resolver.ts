@@ -21,6 +21,7 @@ import { CreateShopInput } from './dto/create-shop.input';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
 import { FilteredShopsInput } from './dto/filter-shops.input';
 import { UpdateShopInput } from './dto';
+import { PrismaService } from 'prismaService';
 
 @Resolver(() => Shop)
 export class ShopResolver implements OnModuleInit {
@@ -28,6 +29,7 @@ export class ShopResolver implements OnModuleInit {
     private readonly shopService: ShopService,
     @Inject(SERVICES.SHOP_SERVICE.token)
     private readonly eventsClient: ClientKafka,
+    private readonly prisma: PrismaService,
   ) {}
   @Query((type) => [Shop])
   getNearShops(

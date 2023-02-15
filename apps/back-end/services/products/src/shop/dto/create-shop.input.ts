@@ -1,5 +1,10 @@
-import { InputType, Field, Float } from '@nestjs/graphql';
-import { StoreType, TargetGenders, VendorType } from '@prisma-client';
+import { InputType, Field, Float, PartialType } from '@nestjs/graphql';
+import {
+  StoreType,
+  TargetGenders,
+  TypeOfSeller,
+  VendorType,
+} from '@prisma-client';
 
 @InputType()
 export class LocationInput {
@@ -23,6 +28,18 @@ export class LocationInput {
 }
 
 @InputType()
+export class VatSettingsInput {
+  @Field(() => String)
+  VatID: string;
+
+  @Field(() => LocationInput)
+  location: LocationInput;
+}
+
+@InputType()
+export class VatSettingsPartialInput extends PartialType(VatSettingsInput) {}
+
+@InputType()
 export class CreateShopInput {
   @Field((type) => String)
   name: string;
@@ -44,4 +61,10 @@ export class CreateShopInput {
 
   @Field((type) => [TargetGenders])
   targetGenders: TargetGenders[];
+
+  @Field(() => TypeOfSeller)
+  typeOfSeller: TypeOfSeller;
+
+  @Field(() => VatSettingsPartialInput, { nullable: true })
+  vat?: VatSettingsPartialInput;
 }

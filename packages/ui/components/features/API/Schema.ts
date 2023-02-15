@@ -39,6 +39,7 @@ export type Account = {
   phone?: Maybe<Scalars["String"]>;
   photo?: Maybe<Scalars["String"]>;
   profile?: Maybe<Profile>;
+  shop: Shop;
   stripeId?: Maybe<Scalars["String"]>;
   type: AccountType;
   updatedAt: Scalars["DateTime"];
@@ -841,6 +842,8 @@ export type CreateShopInput = {
   name: Scalars["String"];
   storeType: Array<StoreType>;
   targetGenders: Array<TargetGenders>;
+  typeOfSeller: TypeOfSeller;
+  vat?: Maybe<VatSettingsPartialInput>;
   vendorType: Array<VendorType>;
 };
 
@@ -2520,6 +2523,8 @@ export type Product = {
   earnings: Scalars["Float"];
   hashtags: Array<Scalars["String"]>;
   id: Scalars["ID"];
+  negitiveFeedback: Scalars["Int"];
+  positiveFeedback: Scalars["Int"];
   presentations: Array<ProductPresentation>;
   price: Scalars["Float"];
   rate: Scalars["Int"];
@@ -2534,6 +2539,10 @@ export type Product = {
   stock: Scalars["Int"];
   thumbnail: Scalars["String"];
   title: Scalars["String"];
+  totalDiscounted: Scalars["Int"];
+  totalDiscountedAmount: Scalars["Int"];
+  totalOrdered: Scalars["Int"];
+  unitsRefunded: Scalars["Int"];
   updatedAt: Scalars["String"];
   usageStatus: ProductUsageStatus;
   vat: Scalars["Float"];
@@ -3943,7 +3952,9 @@ export type Shop = {
   ownerId: Scalars["String"];
   storeType: Array<StoreType>;
   targetGenders: Array<TargetGenders>;
+  typeOfSeller: TypeOfSeller;
   updatedAt: Scalars["DateTime"];
+  vat?: Maybe<VatSettings>;
   vendorType: Array<VendorType>;
   verified: Scalars["Boolean"];
 };
@@ -4079,6 +4090,11 @@ export type Treatment = {
   title: Scalars["String"];
   treatmentCategoryId: Scalars["ID"];
 };
+
+export enum TypeOfSeller {
+  Individual = "individual",
+  Professional = "professional",
+}
 
 export enum TypeOfService {
   BeautyCenterTreatment = "beautyCenterTreatment",
@@ -4334,6 +4350,8 @@ export type UpdateShopInput = {
   name?: Maybe<Scalars["String"]>;
   storeType?: Maybe<Array<StoreType>>;
   targetGenders?: Maybe<Array<TargetGenders>>;
+  typeOfSeller?: Maybe<TypeOfSeller>;
+  vat?: Maybe<VatSettingsPartialInput>;
   vendorType?: Maybe<Array<VendorType>>;
 };
 
@@ -4387,6 +4405,17 @@ export type UserSavedPostsGroup = {
   id: Scalars["ID"];
   posts: Array<NewsfeedPost>;
   userId: Scalars["ID"];
+};
+
+export type VatSettings = {
+  __typename?: "VatSettings";
+  VatID: Scalars["String"];
+  location: Location;
+};
+
+export type VatSettingsPartialInput = {
+  VatID?: Maybe<Scalars["String"]>;
+  location?: Maybe<LocationInput>;
 };
 
 export type Vehicle = {

@@ -1,14 +1,17 @@
 import {
   Cashback,
+  CashbackType,
   Category,
   Discount,
   GetFilteredProductsInput,
   Product,
   ProductAttribute,
   ProductPresentation,
+  ProductStatus,
   Profile,
   QueryGetMyProductsArgs,
   ShippingDetails,
+  VisibilityEnum,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { Exact, Maybe } from "types";
@@ -41,6 +44,12 @@ export type GetMyProductsQuery = { __typename?: "Query" } & {
       | "visibility"
       | "thumbnail"
       | "status"
+      | "totalOrdered"
+      | "totalDiscountedAmount"
+      | "totalDiscounted"
+      | "unitsRefunded"
+      | "positiveFeedback"
+      | "negitiveFeedback"
     > & {
         attributes: Array<
           { __typename?: "ProductAttribute" } & Pick<
@@ -141,14 +150,64 @@ query getMyProducts($args:GetFilteredProductsInput!){
         visibility
         thumbnail
         status
+        totalOrdered
+        totalDiscountedAmount
+        totalDiscounted
+        unitsRefunded
+        positiveFeedback
+        negitiveFeedback
     }
 }
     `);
 
   return useQuery(["get-my-products", { args }], async () => {
+    const ph: GetMyProductsQuery["getMyProducts"] = [...Array(5)].map(() => ({
+      attributes: [],
+      brand: "",
+      cashback: {
+        amount: 0,
+        type: CashbackType.Cash,
+        units: 1,
+      },
+      categoryId: "",
+      description: "",
+      discount: { amount: 0, units: 0 },
+      earnings: 0,
+      id: "test id",
+      presentations: [],
+      price: 0,
+      rate: 0,
+      reviews: 0,
+      sales: 0,
+      seller: {
+        profile: {
+          username: "test seller",
+        },
+      },
+      sellerId: "test",
+      shippingRulesIds: ["test"],
+      shopId: "",
+      status: ProductStatus.Active,
+      stock: 0,
+      thumbnail: "/place-1.jpg",
+      title: "test",
+      vat: 0,
+      vendor_external_link: "",
+      visibility: VisibilityEnum.Public,
+      negitiveFeedback: 15,
+      positiveFeedback: 16,
+      totalDiscounted: 15,
+      totalDiscountedAmount: 150,
+      totalOrdered: 160,
+      unitsRefunded: 10,
+    }));
+
+    return ph;
+
     const res = await client
       .setVariables<QueryGetMyProductsArgs>({ filterInput: args })
       .send<GetMyProductsQuery>();
+
     return res.data.getMyProducts;
   });
 };
