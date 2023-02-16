@@ -18,14 +18,14 @@ import {
   usePaginationControls,
   Button,
   Input,
-  useGetFilteredProductCategories,
+  useGetAdminProductCategoriesQuery,
 } from "ui";
-import { mapArray, randomNum, SeperatedStringArray } from "utils";
+import { mapArray, SeperatedStringArray } from "utils";
 
 export default () => {
   const { t } = useTranslation();
-  const { controls, changeTotalItems, pagination } = usePaginationControls();
-  const { data } = useGetFilteredProductCategories({
+  const { controls, pagination } = usePaginationControls();
+  const { data, refetch } = useGetAdminProductCategoriesQuery({
     pagination,
   });
   const { visit, getCurrentPath } = useRouting();
@@ -59,10 +59,6 @@ export default () => {
       }[]
     ) || [];
 
-  React.useEffect(() => {
-    changeTotalItems(categories.length);
-  }, [categories]);
-
   return (
     <div className="flex flex-col w-full gap-8">
       <div className="flex justify-between">
@@ -70,10 +66,18 @@ export default () => {
           <p className="text-2xl">{t("Categories")}</p>
         </div>
         <div className="flex items-center gap-1">
-          <span className="border text-lg flex justify-center items-center shadow rounded h-12 w-12">
+          <span
+            onClick={() => refetch()}
+            className="border text-lg flex justify-center items-center shadow rounded h-12 w-12"
+          >
             <RefreshIcon />
           </span>
-          <span className="border text-lg  text-white flex justify-center items-center bg-primary shadow rounded h-12 w-12">
+          <span
+            onClick={() =>
+              visit((r) => r.addPath(getCurrentPath()).addPath("form"))
+            }
+            className="border text-lg  text-white flex justify-center items-center bg-primary shadow rounded h-12 w-12"
+          >
             <PlusIcon />
           </span>
           <span className="border text-lg  text-white flex justify-center items-center bg-secondaryRed shadow rounded h-12 w-12">

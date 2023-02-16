@@ -1,14 +1,11 @@
 import { UseGuards } from '@nestjs/common';
 import { EventBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { Payload } from '@nestjs/microservices';
 import { Prisma } from '@prisma-client';
 import {
   accountType,
-  AuthorizationDecodedUser,
   ExtractPagination,
   GqlAuthorizationGuard,
-  GqlCurrentUser,
   GqlPaginationInput,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';

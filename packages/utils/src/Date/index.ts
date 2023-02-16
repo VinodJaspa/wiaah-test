@@ -6,3 +6,4 @@ export * from "./getDaysDiff";
 export * from "./dateDetails";
 export * from "./IsDate";
 export * from "./subtractFromDate";
+export * from "./getDividedDateRange";

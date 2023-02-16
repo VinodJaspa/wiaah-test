@@ -1,4 +1,4 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Field } from '@nestjs/graphql';
 import {
   IsPostalCode,
   IsPhoneNumber,
@@ -12,6 +12,12 @@ export class CreateBillingAddressInput {
   @IsString()
   @MinLength(5)
   address: string;
+
+  @Field(() => String)
+  firstName: string;
+
+  @Field(() => String)
+  lastName: string;
 
   @Field((type) => String)
   address2: string;

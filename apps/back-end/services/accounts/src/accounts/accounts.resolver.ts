@@ -19,7 +19,7 @@ import {
 import { AccountsService } from './accounts.service';
 import { CreateAccountInput, DeleteAccountRequestInput } from '@accounts/dto';
 import { UpdateAccountInput } from './dto/update-account.input';
-import { Account } from './entities';
+import { Account, Balance, Membership } from './entities';
 import { PrismaService } from 'prismaService';
 import { AccountDeletionRequestStatus } from '@prisma-client';
 import { EventBus } from '@nestjs/cqrs';
@@ -139,5 +139,21 @@ export class AccountsResolver {
   @ResolveReference()
   resolveReference(ref: { __typename: string; id: string }): Promise<Account> {
     return this.accountsService.findOne(ref.id);
+  }
+
+  // @ResolveField(() => Membership)
+  // membership(@Parent() acc: Account) {
+  //   return {
+  //     __typename: 'Membership',
+  //     id: acc.membershipId,
+  //   };
+  // }
+
+  @ResolveField(() => Balance)
+  balance(@Parent() acc: Account) {
+    return {
+      __typename: 'Membership',
+      ownerId: acc.id,
+    };
   }
 }

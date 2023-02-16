@@ -26,8 +26,8 @@ import {
   SelectOption,
   FormTranslationWrapper,
   FormikTransalationInput,
-  useGetFilteredProductCategories,
-  useUpdateProductCategory,
+  useGetAdminProductCategoriesQuery,
+  useUpdateProductCategoryMutation,
   useCreateProductCategory,
 } from "ui";
 import { mapArray, runIfFn } from "utils";
@@ -38,13 +38,13 @@ const EditCategory = () => {
   const { t } = useTranslation();
   const [form, setForm] = React.useState<CreateCategoryInput>();
   const [lang, changeLang] = React.useState<string>("en");
-  const { data: cates } = useGetFilteredProductCategories({
+  const { data: cates } = useGetAdminProductCategoriesQuery({
     pagination: {
       page: 1,
       take: 1000,
     },
   });
-  const { mutate: updateCate } = useUpdateProductCategory();
+  const { mutate: updateCate } = useUpdateProductCategoryMutation();
   const { mutate: createCate } = useCreateProductCategory();
   const handleSubmit = () => {
     if (CategoryId) {

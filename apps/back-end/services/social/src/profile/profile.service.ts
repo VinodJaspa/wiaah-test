@@ -203,6 +203,8 @@ export class ProfileService {
         updatedAt: true,
         username: true,
         verified: true,
+        visits: true,
+        coverPhoto: true,
       },
       rejectOnNotFound() {
         throw new ProfileNotfoundException();

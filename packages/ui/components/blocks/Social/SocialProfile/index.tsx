@@ -18,15 +18,25 @@ import { useTranslation } from "react-i18next";
 import { useRecoilValue } from "recoil";
 import { SocialStoryState } from "@src/state";
 import { useDisclouser } from "hooks";
-import {
-  Profile,
-  ProfileVisibility,
-  useSendFollowRequestMutation,
-} from "@features/Social";
+import { useSendFollowRequestMutation } from "@features/Social";
+
 import { useUnFollowProfileMutation } from "@features/Social";
+import { Profile, ProfileVisibility } from "@features/API";
 
 export interface SocialProfileProps {
-  profileInfo: Profile & { isFollowed: boolean };
+  profileInfo: Pick<
+    Profile,
+    | "visibility"
+    | "id"
+    | "photo"
+    | "username"
+    | "bio"
+    | "profession"
+    | "verified"
+    | "publications"
+    | "followers"
+    | "following"
+  > & { isFollowed: boolean };
   onFollow?: () => void;
 }
 

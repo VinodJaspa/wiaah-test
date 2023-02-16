@@ -5,6 +5,7 @@ import {
   Mutation,
   ResolveField,
   Parent,
+  Int,
 } from '@nestjs/graphql';
 import {
   Inject,
@@ -42,7 +43,11 @@ import {
 import { GetUserOrders } from '@orders/dto/get-user-orders.input';
 import { GetFilteredOrdersInput } from '@dto';
 import { PrismaService } from 'prismaService';
-import { ShippingAddress, ShippingRule } from './entities/extends';
+import {
+  BillingAddress,
+  ShippingAddress,
+  ShippingRule,
+} from './entities/extends';
 
 @Resolver(() => Order)
 export class OrdersResolver implements OnModuleInit {
@@ -193,6 +198,31 @@ export class OrdersResolver implements OnModuleInit {
     return this.commandbus.execute<AcceptReceivedOrderCommand, boolean>(
       new AcceptReceivedOrderCommand(args.id, user.id),
     );
+  }
+
+  @Query(() => [Order])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  getLatestOrders(
+    @Args('take', { nullable: true, defaultValue: 10, type: () => Int })
+    take: number,
+  ) {
+    return this.prisma.order.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take,
+    });
+  }
+
+  @ResolveField(() => BillingAddress)
+  billing(@Parent() order: Order) {
+    if (order.billingAddressId) {
+      return {
+        __typename: 'BillingAddress',
+        id: order.billingAddressId,
+        ownerId: order.buyerId,
+      };
+    } else return null;
   }
 
   @ResolveField(() => ShippingRule)

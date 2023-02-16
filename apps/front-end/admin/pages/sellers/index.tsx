@@ -1,3 +1,5 @@
+import { AccountStatus } from "@features/API";
+import { useGetMembershipsQuery } from "@features/Membership";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -33,55 +35,20 @@ import {
   ModalCloseButton,
   useGetFilteredSellers,
 } from "ui";
-import { NumberShortner, randomNum } from "utils";
-
-type Seller = {
-  id: string;
-  thumbanil: string;
-  name: string;
-  email: string;
-  products: number;
-  sales: number;
-  balance: number;
-  status: string;
-  createdAt: Date;
-  plan: string;
-  visits: number;
-  country: string;
-  verified: boolean;
-  city: string;
-  ips: string[];
-};
-
-let plans = ["Pay", "Free", "Per Click"];
-
-let mockSellers: Seller[] = [...Array(15)].map((_, i) => ({
-  id: i.toString(),
-  name: "seller company name" + i,
-  balance: randomNum(2000),
-  email: "testemail" + i + "@email.com",
-  createdAt: new Date(),
-  products: randomNum(50),
-  verified: randomNum(100) > 50,
-  sales: randomNum(150),
-  status: randomNum(100) % 2 === 0 ? "active" : "inActive",
-  thumbanil: "/wiaah_logo.png",
-  city: "Geneve",
-  country: "Switzerland",
-  ips: ["192.459.235.1", "158.135.154.3", "159.124.156.1"],
-  plan: plans[randomNum(plans.length)],
-  visits: 150,
-}));
+import { mapArray, NumberShortner, useForm } from "utils";
 
 const sellers: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath, getUrl } = useRouting();
   const [qrcode, setQrCode] = React.useState<string>();
-  const { changeTotalItems, controls, pagination } = usePaginationControls();
-  const { data: sellers } = useGetFilteredSellers({ pagination });
+  const { controls, pagination } = usePaginationControls();
 
-  console.log({ sellers });
+  const { data: memberships } = useGetMembershipsQuery();
+  const { form, handleChange } = useForm<
+    Parameters<typeof useGetFilteredSellers>[0]
+  >({ pagination }, { pagination });
 
+  const { data: sellers } = useGetFilteredSellers(form);
   return (
     <TableContainer>
       <Table
@@ -113,66 +80,129 @@ const sellers: NextPage = () => {
           <Tr>
             <Td></Td>
             <Td>
-              <Input />
+              <Input onChange={(v) => handleChange("name", v.target.value)} />
             </Td>
             <Td>
-              <Select>
+              <Input onChange={(v) => handleChange("email", v.target.value)} />
+            </Td>
+            <Td>
+              <Select value={form.status} onOptionSelect={(v) => {}}>
                 <SelectOption value={true}>{t("Verified")}</SelectOption>
                 <SelectOption value={false}>{t("unVerified")}</SelectOption>
               </Select>
             </Td>
             <Td>
-              <Input />
+              <Input
+                type={"number"}
+                value={form.products}
+                onChange={(v) =>
+                  handleChange("products", parseInt(v.target.value))
+                }
+              />
             </Td>
             <Td>
-              <Input />
+              <Input
+                type="number"
+                value={form.sales}
+                onChange={(v) =>
+                  handleChange("sales", parseInt(v.target.value))
+                }
+              />
             </Td>
             <Td>
-              <Input />
+              <Input
+                type="number"
+                value={form.balance}
+                onChange={(v) =>
+                  handleChange("balance", parseInt(v.target.value))
+                }
+              />
             </Td>
             <Td>
-              <Input />
-            </Td>
-            <Td>
-              <Select>
-                <SelectOption value={"active"}>{t("active")}</SelectOption>
-                <SelectOption value={"inActive"}>{t("inActive")}</SelectOption>
+              <Select
+                onOptionSelect={(v) =>
+                  handleChange("status", v as AccountStatus)
+                }
+              >
+                <SelectOption value={AccountStatus.Active}>
+                  {t("active")}
+                </SelectOption>
+                <SelectOption value={AccountStatus.InActive}>
+                  {t("inActive")}
+                </SelectOption>
+                <SelectOption value={AccountStatus.Pending}>
+                  {t("Pending")}
+                </SelectOption>
+                <SelectOption value={AccountStatus.Refused}>
+                  {t("Refused")}
+                </SelectOption>
+                <SelectOption value={AccountStatus.Suspended}>
+                  {t("Suspended")}
+                </SelectOption>
               </Select>
             </Td>
             <Td>
-              <DateFormInput />
+              <DateFormInput
+                dateValue={form.date}
+                onDateChange={(v) => handleChange("date", v)}
+              />
             </Td>
             <Td>
-              <Input />
+              <Select
+                onOptionSelect={(v) => handleChange("plan", v)}
+                value={form.plan}
+              >
+                {mapArray(memberships, ({ name, id }) => (
+                  <SelectOption value={id}>{name}</SelectOption>
+                ))}
+              </Select>
             </Td>
             <Td>
-              <Input />
+              <Input
+                type="number"
+                value={form.visits}
+                onChange={(v) =>
+                  handleChange("visits", parseInt(v.target.value))
+                }
+              />
             </Td>
             <Td>
-              <Input />
+              <Input
+                value={form.city}
+                onChange={(v) => handleChange("city", v.target.value)}
+              />
             </Td>
             <Td>
-              <Input />
+              <Input
+                value={form.country}
+                onChange={(v) => handleChange("country", v.target.value)}
+              />
+            </Td>
+            <Td>
+              <Input
+                value={form.ip}
+                onChange={(v) => handleChange("ip", v.target.value)}
+              />
             </Td>
           </Tr>
 
-          {mockSellers.map((seller, i) => (
+          {mapArray(sellers, (seller, i) => (
             <Tr className="hover:bg-darkerGray cursor-pointer" key={i}>
               <Td>
-                <Avatar src={seller.thumbanil} />
+                <Avatar src={seller.photo} />
               </Td>
-              <Td>{seller.name}</Td>
+              <Td>{seller.firstName}</Td>
               <Td>{seller.email}</Td>
               <Td>{seller.verified ? t("Verified") : t("unVerified")}</Td>
-              <Td>{seller.products}</Td>
+              <Td>{seller.lastName}</Td>
               <Td>{NumberShortner(seller.sales)}</Td>
-              <Td>{NumberShortner(seller.balance)}</Td>
+              <Td>{NumberShortner(seller.balance?.withdrawableBalance)}</Td>
               <Td>{seller.status}</Td>
               <Td>{new Date(seller.createdAt).toDateString()}</Td>
-              <Td>{seller.plan}</Td>
-              <Td>{NumberShortner(seller.visits)}</Td>
-              <Td>{seller.city}</Td>
-              <Td>{seller.country}</Td>
+              <Td>{seller?.Membership?.name}</Td>
+              <Td>{NumberShortner(seller.profile?.visits)}</Td>
+              <Td>{seller?.shop?.location?.city}</Td>
+              <Td>{seller?.shop?.location?.country}</Td>
               <Td>
                 <div className="flex flex-col w-full gap-1">
                   {seller.ips.map((v, i) => (
@@ -217,7 +247,7 @@ const sellers: NextPage = () => {
           ))}
         </TBody>
       </Table>
-      <Pagination />
+      <Pagination controls={controls} />
       <Modal isOpen={!!qrcode} onClose={() => setQrCode(undefined)}>
         <ModalOverlay />
         <ModalContent>

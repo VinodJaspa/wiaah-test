@@ -53,6 +53,9 @@ export class Profile {
   @Field(() => String)
   photo: string;
 
+  @Field(() => String)
+  coverPhoto: string;
+
   @Field(() => Int)
   followers: number;
 
@@ -76,6 +79,9 @@ export class Profile {
 
   @Field(() => Boolean)
   verified: boolean;
+
+  @Field(() => Int)
+  visits: number;
 }
 
 @ObjectType()

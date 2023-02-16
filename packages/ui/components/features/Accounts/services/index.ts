@@ -10,3 +10,4 @@ export * from "./useGetCookiesSettings";
 export * from "./useUpdateCookiesSettings";
 export * from "./useRequestAccountVerification";
 export * from "./useVerifyVerificationCode";
+export * from "./buyers";

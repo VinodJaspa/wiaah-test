@@ -1,7 +1,10 @@
 import React from "react";
 import { HtmlDivProps, SettingsSectionType } from "types";
-import { ArrowDownIcon, ArrowUpIcon, TranslationText } from "../../../partials";
+import { ArrowDownIcon, ArrowUpIcon, TranslationText } from "@partials";
 import { PassPropsToFnOrElem } from "utils";
+import { IoMdReturnLeft } from "react-icons/io";
+import { useTranslation } from "react-i18next";
+import { useRouting } from "@UI/../routing";
 
 export interface SettingsSectionsSidebarProps {
   innerProps?: HtmlDivProps;
@@ -22,6 +25,8 @@ export const SettingsSectionsSidebar: React.FC<
   sub,
   deepSlugs = [],
 }) => {
+  const { t } = useTranslation();
+  const { visit } = useRouting();
   return (
     <div
       className={`flex cursor-pointer flex-col ${

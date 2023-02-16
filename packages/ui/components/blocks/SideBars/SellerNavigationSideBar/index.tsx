@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { HtmlDivProps } from "types";
 import { NavigationLinkType } from "types";
-import { Divider, LogoutIcon, Button, HStack } from "@UI";
+import { Divider, LogoutIcon, Button, HStack, Image } from "@UI";
 
 export interface SellerSideBarProps extends HtmlDivProps {
   links: NavigationLinkType[];
@@ -30,7 +30,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
     <div
       className={`${className} w-52 h-screen bg-primary flex z-20 fixed ${
         isMobile ? "flex-row left-0 bottom-0 w-full" : "flex-col left-0  top-0"
-      } items-center flex py-11`}
+      } items-center flex py-3`}
       {...props}
     >
       <div className="overflow-y-scroll noScroll">
@@ -41,7 +41,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
               : "flex-col gap-12"
           }`}
         >
-          {!isMobile && <img src="/logo.svg" className="w-full px-8" />}
+          {!isMobile && <Image src="/logo.svg" className="w-full pl-8 pr-16" />}
           {links.map((link, i) => {
             const active = link.url === activeLink;
             return (

@@ -1,6 +1,8 @@
-import { ObjectType, Field, ID, Float } from '@nestjs/graphql';
+import { ObjectType, Field, ID, Float, Directive } from '@nestjs/graphql';
 
 @ObjectType()
+@Directive('@key(fields:"id")')
+@Directive('@key(fields:"ownerId")')
 export class Balance {
   @Field((type) => ID)
   id: string;

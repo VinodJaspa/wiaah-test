@@ -23,10 +23,13 @@ type Account {
   updatedAt: DateTime!
   type: AccountType!
   verified: Boolean!
+  status: AccountStatus!
   companyRegisterationNumber: String
   photo: String
   phone: String
+  ips: [String!]!
   shop: Shop!
+  balance: Balance!
 }
 
 """
@@ -38,6 +41,14 @@ enum AccountType {
   admin
   seller
   buyer
+}
+
+enum AccountStatus {
+  active
+  pending
+  inActive
+  suspended
+  refused
 }
 
 type AccountDeletionRequest {
@@ -52,6 +63,10 @@ type AccountDeletionRequest {
 enum AccountDeletionRequestStatus {
   pending
   deleted
+}
+
+type Balance {
+  ownerId: ID!
 }
 
 type Shop {
@@ -131,19 +146,16 @@ input GetFilteredSellersAccountsInput {
   status: AccountStatus
   date: String
   balance: Float
+  plan: String
+  visits: Int
+  city: String
+  country: String
+  ip: String
 }
 
 input GqlPaginationInput {
   page: Int!
   take: Int!
-}
-
-enum AccountStatus {
-  active
-  pending
-  inActive
-  suspended
-  refused
 }
 
 input GetBuyersAccountsInput {
@@ -154,6 +166,8 @@ input GetBuyersAccountsInput {
   status: AccountStatus
   date: String
   balance: Float
+  visits: Int
+  ip: String
 }
 
 input GetAccountDeletionRequestsInput {

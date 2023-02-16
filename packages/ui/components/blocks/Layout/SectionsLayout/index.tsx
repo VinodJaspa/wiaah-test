@@ -4,6 +4,8 @@ import { SectionContext } from "state";
 import { SettingsSectionType, TranslationTextType } from "types";
 import { SettingsSectionsSidebar, TranslationText } from "@UI";
 import { useRouting } from "routing";
+import { IoMdReturnLeft } from "react-icons/io";
+import { useTranslation } from "react-i18next";
 
 export interface SettingsLayoutProps {
   sections: SettingsSectionType[];
@@ -33,6 +35,8 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
   handleSectionChange,
   handleRetrun,
 }) => {
+  const { t } = useTranslation();
+  const { visit } = useRouting();
   const flatedSections = flatenSections(sections);
 
   const mainSection = flatedSections.find(
@@ -80,6 +84,13 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
         <div className="fixed h-full left-[13rem]" ref={leftPanelRef}>
           {!isMobile && (
             <div className="gap-4 w-full sm:w-40 md:w-[15rem] h-full xl:w-[20rem] flex flex-col px-2">
+              <div
+                onClick={() => visit((r) => r.management())}
+                className="px-6 cursor-pointer w-fit text-xl py-2 my-2 flex gap-4 items-center"
+              >
+                <IoMdReturnLeft />
+                <p>{t("Return")}</p>
+              </div>
               <p className="text-xl px-4 font-bold">
                 <TranslationText translationObject={name} />
               </p>

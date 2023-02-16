@@ -28,10 +28,26 @@ type ShippingAddress {
   id: ID!
 }
 
+type BillingAddress {
+  id: ID!
+  ownerId: ID!
+}
+
 type OrderItem {
   id: ID!
   qty: Int!
   product: Product
+  paid: Float
+  createdAt: String!
+  updatedAt: String!
+  paidAt: String
+  refundable: Boolean!
+  discountId: String
+  cashbackId: String
+  affiliationId: String
+  orderId: String!
+  seller: Account!
+  buyer: Account!
 }
 
 type OrderStatus {
@@ -59,8 +75,10 @@ type Order {
   items: [OrderItem!]!
   status: OrderStatus!
   shippingAddressId: String!
+  billingAddressId: String!
   shippingMethodId: String!
   paid: Float!
+  billing: BillingAddress!
   shipping: ShippingRule!
   shippingAddress: ShippingAddress!
 }
@@ -102,6 +120,8 @@ type Query {
   getOrder(id: String!): Order!
   getUserOrders(args: GetUserOrders!): [Order!]!
   getFilteredOrders(args: GetFilteredOrdersInput!): [Order!]!
+  getLatestOrders(take: Int = 10): [Order!]!
+  getRecentSales(count: Int = 10): [OrderItem!]!
   getMyReturnedOrders(args: GetMyReturnedOrdersInput!): [Refund!]!
 }
 

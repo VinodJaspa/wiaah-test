@@ -36,6 +36,7 @@ model Account {
   updatedAt                  DateTime                 @updatedAt()
   lang                       String                   @default("en")
   phoneVerified              Boolean                  @default(false)
+  ips                        String[]
   AccountDeletionRequest     AccountDeletionRequest[]
   contacts                   UserContact?
 }

@@ -71,6 +71,8 @@ model BillingAddressCollection {
 
 type BillingAddress {
   id         String
+  firstName  String
+  lastName   String
   address    String
   address2   String
   country    String
