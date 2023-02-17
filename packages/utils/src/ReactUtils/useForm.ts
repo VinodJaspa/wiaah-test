@@ -16,6 +16,7 @@ export function useForm<TForm>(initial: TForm, constents?: TForm) {
     onChangeKey: string = "onChange",
     mapOnChange: (value: any) => any = (e) => e.target.value
   ) {
+    if (!data) return {};
     return {
       [valueKey]: data[key] as TForm[Tkey],
       [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),

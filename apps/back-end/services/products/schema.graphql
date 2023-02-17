@@ -257,6 +257,7 @@ type Query {
   getProductCategories: [Category!]!
   getFilteredProductCategories(args: GetFilteredCategory): [Category!]!
   getAdminProductsFilters(getFiltersArgs: GetFiltersInput!): [Filter!]!
+  getAdminProductsFilter(id: String!): Filter!
   getProductsFilters: [Filter!]!
   getAdminFilteredProducts(args: GetFilteredProductsAdminInput!): [Product!]!
   adminGetProduct(id: String!): Product
@@ -396,8 +397,8 @@ input UpdateShopInput {
 
 input CreateProductInput {
   type: ProductType!
-  title: String!
-  description: String!
+  title: [StringTranslationField!]!
+  description: StringTranslationField!
   categoryId: ID!
   attributes: [ProductAttributeInput!]!
   stock: Int!
@@ -410,6 +411,11 @@ input CreateProductInput {
   visibility: VisibilityEnum!
   status: ProductStatus
   vat: Float!
+}
+
+input StringTranslationField {
+  langId: String!
+  value: String!
 }
 
 input ProductAttributeInput {
@@ -435,8 +441,8 @@ input ProductPresentationInput {
 
 input UpdateProductInput {
   type: ProductType
-  title: String
-  description: String
+  title: [StringTranslationField!]
+  description: StringTranslationField
   categoryId: ID
   attributes: [ProductAttributeInput!]
   stock: Int
@@ -471,18 +477,18 @@ input UpdateCategoryInput {
 }
 
 input CreateFilterInput {
-  name: String!
+  name: [StringTranslationField!]!
   sortOrder: Int!
   values: [ProductFilterGroupValueInput!]!
 }
 
 input ProductFilterGroupValueInput {
-  name: String!
+  name: [StringTranslationField!]!
   sortOrder: Int!
 }
 
 input UpdateFilterInput {
-  name: String
+  name: [StringTranslationField!]
   sortOrder: Int
   values: [ProductFilterGroupValueInput!]
   id: ID!

@@ -17,23 +17,20 @@ import {
   THead,
   Tr,
   TrashIcon,
+  useGetAdminProductsFitlersQuery,
 } from "ui";
-import { mapArray, randomNum } from "utils";
+import { mapArray, randomNum, useForm } from "utils";
 
 export default () => {
   const [filterGroupAsc, setFilterGroupAsc] = React.useState<boolean>(false);
   const { t } = useTranslation();
   const { visit, getCurrentPath } = useRouting();
 
-  const filterGroups: {
-    name: string;
-    sortOrder: number;
-    id: string;
-  }[] = [...Array(10)].map((_, i) => ({
-    name: `filter-${i}`,
-    id: i.toString(),
-    sortOrder: randomNum(5),
-  }));
+  const { form, inputProps } = useForm<
+    Parameters<typeof useGetAdminProductsFitlersQuery>[0]
+  >({});
+
+  const { data: filterGroups } = useGetAdminProductsFitlersQuery(form);
 
   return (
     <div className="flex flex-col gap-8 w-full">
@@ -85,10 +82,13 @@ export default () => {
             </Tr>
             <Tr>
               <Th>
-                <Input placeholder={t("type filter name")} />
+                <Input
+                  {...inputProps("name")}
+                  placeholder={t("type filter name")}
+                />
               </Th>
               <Th>
-                <Input type="number" />
+                <Input {...inputProps("name")} type="number" />
               </Th>
             </Tr>
           </THead>

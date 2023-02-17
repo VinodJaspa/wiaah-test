@@ -9,3 +9,4 @@ export * from "./useGetMyProducts";
 export * from "./useGetMyProductsReviews";
 export * from "./useGetRecentSales";
 export * from "./categories";
+export * from "./filters";

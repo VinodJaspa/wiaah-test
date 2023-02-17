@@ -6,8 +6,8 @@ registerEnumType(ServiceCategoryStatus, { name: 'ServiceCategoryStatus' });
 
 @ObjectType()
 export class ServiceCategoryFilterValue {
-  @Field(() => String)
-  name: string;
+  @Field(() => [TranslationText])
+  name: TranslationText[];
 
   @Field(() => String)
   filteringValue: string;
@@ -18,8 +18,8 @@ export class ServiceCategoryFilterValue {
 
 @ObjectType()
 export class ServiceCategoryFilter {
-  @Field(() => String)
-  filterGroupName: string;
+  @Field(() => [TranslationText])
+  filterGroupName: TranslationText[];
 
   @Field(() => String)
   filteringKey: string;
@@ -36,8 +36,8 @@ export class ServiceCategory {
   @Field(() => ID)
   id: string;
 
-  @Field(() => String)
-  name: string;
+  @Field(() => [TranslationText])
+  name: TranslationText[];
 
   @Field(() => Int)
   sortOrder: number;
@@ -54,18 +54,18 @@ export class ServiceCategory {
   @Field(() => String)
   thumbnail: string;
 
-  @Field(() => TranslationText)
-  description: TranslationText;
+  @Field(() => [TranslationText])
+  description: TranslationText[];
 
-  @Field(() => TranslationText)
-  metaTagDescription: TranslationText;
+  @Field(() => [TranslationText])
+  metaTagDescription: TranslationText[];
 
-  @Field(() => TranslationText)
-  metaTagTitle: TranslationText;
+  @Field(() => [TranslationText])
+  metaTagTitle: TranslationText[];
 
-  @Field(() => TranslationText)
-  metaTagKeywords: TranslationText;
+  @Field(() => [TranslationText])
+  metaTagKeywords: TranslationText[];
 
-  @Field(() => TranslationText)
-  seo: TranslationText;
+  @Field(() => [TranslationText])
+  seo: TranslationText[];
 }

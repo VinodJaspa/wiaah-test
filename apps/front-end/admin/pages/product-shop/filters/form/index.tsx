@@ -22,6 +22,8 @@ import {
   Th,
   THead,
   Tr,
+  useGetAdminProductFitlerQuery,
+  useupdateProductFilter,
 } from "ui";
 import { mapArray, WiaahLanguageCountriesIsoCodes } from "utils";
 import { array, InferType, number, object, string } from "yup";
@@ -43,6 +45,9 @@ export default () => {
   const { getParam } = useRouting();
 
   const filterId = getParam("filter_id");
+
+  const { data } = useGetAdminProductFitlerQuery(filterId);
+  const { mutate } = useupdateProductFilter();
 
   return (
     <div className="flex flex-col gap-8">
@@ -107,75 +112,74 @@ export default () => {
             </THead>
 
             <TBody>
-              <Formik<InferType<typeof FilterValuesValidationSchema>>
+              <Formik<Parameters<typeof mutate>[0]["args"] & { lang: string }>
                 validationSchema={FilterValuesValidationSchema}
                 initialValues={{
-                  filterValues: [],
+                  id: "",
+                  sortOrder: 1,
+                  values: [],
+                  name: [],
+                  lang: "en",
                 }}
                 onSubmit={() => {}}
               >
                 {({ values, setFieldValue, handleChange }) => {
                   return (
                     <>
-                      {mapArray(
-                        values.filterValues,
-                        ({ filterName, sortOrder, countryIsoCode }, idx) => (
-                          <Tr key={idx}>
-                            <Td>
-                              <InputGroup className="col-span-7">
-                                <InputLeftElement className="px-[0px]">
-                                  <Select
-                                    value={
-                                      countryIsoCode.length > 0
-                                        ? countryIsoCode
-                                        : "GB"
-                                    }
-                                    onOptionSelect={(v) =>
-                                      setFieldValue("countryIsoCode", v)
-                                    }
-                                    className="h-full"
-                                  >
-                                    {mapArray(
-                                      WiaahLanguageCountriesIsoCodes,
-                                      (code, i) => (
-                                        <SelectOption
-                                          className="h-full"
-                                          value={code}
-                                          key={i}
-                                        >
-                                          <FlagIcon code={code} />
-                                        </SelectOption>
-                                      )
-                                    )}
-                                  </Select>
-                                </InputLeftElement>
-                                <Input />
-                              </InputGroup>
-                            </Td>
-                            <Td>
-                              <Input type={"number"} />
-                            </Td>
-                            <Td align="right">
-                              <Button
-                                onChange={() =>
-                                  setFieldValue(
-                                    "filterValues",
-                                    values.filterValues.filter(
-                                      (_, i) => i !== idx
+                      {mapArray(values.values, ({ sortOrder, name }, idx) => (
+                        <Tr key={idx}>
+                          <Td>
+                            <InputGroup className="col-span-7">
+                              <InputLeftElement className="px-[0px]">
+                                <Select
+                                  onOptionSelect={(v) =>
+                                    setFieldValue("lang", v)
+                                  }
+                                  className="h-full"
+                                >
+                                  {mapArray(
+                                    WiaahLanguageCountriesIsoCodes,
+                                    (code, i) => (
+                                      <SelectOption
+                                        className="h-full"
+                                        value={code}
+                                        key={i}
+                                      >
+                                        <FlagIcon code={code} />
+                                      </SelectOption>
                                     )
-                                  )
+                                  )}
+                                </Select>
+                              </InputLeftElement>
+                              <Input
+                                value={
+                                  name.find((v) => v.langId === values.lang)
+                                    .value || ""
                                 }
-                                colorScheme="danger"
-                                className="w-12 h-12 flex justify-center items-center"
-                              >
-                                <span className="fill-black  text-black flex justify-center items-center bg-white rounded-full">
-                                  <MinusIcon />
-                                </span>
-                              </Button>
-                            </Td>
-                          </Tr>
-                        )
-                      )}
+                              />
+                            </InputGroup>
+                          </Td>
+                          <Td>
+                            <Input type={"number"} />
+                          </Td>
+                          <Td align="right">
+                            <Button
+                              onChange={() =>
+                                setFieldValue(
+                                  "filterValues",
+                                  values.values.filter((_, i) => i !== idx)
+                                )
+                              }
+                              colorScheme="danger"
+                              className="w-12 h-12 flex justify-center items-center"
+                            >
+                              <span className="fill-black  text-black flex justify-center items-center bg-white rounded-full">
+                                <MinusIcon />
+                              </span>
+                            </Button>
+                          </Td>
+                        </Tr>
+                      ))}
                       <Tr>
                         <Td></Td>
                         <Td></Td>
@@ -183,12 +187,11 @@ export default () => {
                           <Button
                             onClick={() =>
                               setFieldValue("filterValues", [
-                                ...values.filterValues,
+                                ...values.values,
                                 {
-                                  countryIsoCode: "GB",
-                                  filterName: "",
+                                  name: {},
                                   sortOrder: 1,
-                                },
+                                } as typeof data.values[0],
                               ])
                             }
                             className="text-white flex justify-center items-center text-2xl h-12 w-12"

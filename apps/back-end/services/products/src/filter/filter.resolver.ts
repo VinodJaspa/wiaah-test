@@ -6,8 +6,10 @@ import { UpdateFilterInput } from './dto/update-filter.input';
 import {
   accountType,
   AuthorizationDecodedUser,
+  GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  UserPreferedLang,
 } from 'nest-utils';
 import { UseGuards } from '@nestjs/common';
 import { GetFiltersInput } from './dto';
@@ -28,9 +30,23 @@ export class FilterResolver {
     return this.filterService.getFilters(args);
   }
 
+  @Query(() => Filter)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async getAdminProductsFilter(
+    @Args('id') id: string,
+    @GetLang() lang: UserPreferedLang,
+  ): Promise<Filter> {
+    const res = await this.filterService.getFilterById(id);
+
+    return this.filterService.formatfilter(res, lang);
+  }
+
   @Query(() => [Filter])
-  getProductsFilters(): Promise<Filter[]> {
-    return this.prisma.productFilterGroup.findMany();
+  async getProductsFilters(
+    @GetLang() lang: UserPreferedLang,
+  ): Promise<Filter[]> {
+    const res = await this.prisma.productFilterGroup.findMany();
+    return res.map((v) => this.filterService.formatfilter(v, lang));
   }
 
   @Mutation(() => Filter)

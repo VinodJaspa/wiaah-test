@@ -39,6 +39,9 @@ export class CreateServiceCategoryInput {
   @Field(() => String)
   slug: string;
 
+  @Field(() => Int)
+  sortOrder: number;
+
   @Field(() => String)
   thumbnail: string;
 

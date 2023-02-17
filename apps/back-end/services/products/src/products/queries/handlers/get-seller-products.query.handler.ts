@@ -9,7 +9,12 @@ export class GetSellerProductsQueryHandler
 {
   constructor(private readonly repo: ProductRepository) {}
 
-  async execute({ sellerId }: GetSellerProductsQuery): Promise<Product[]> {
-    return this.repo.findAllBySellerId(sellerId);
+  async execute({
+    sellerId,
+    lang,
+  }: GetSellerProductsQuery): Promise<Product[]> {
+    const res = await this.repo.findAllBySellerId(sellerId);
+
+    return res.map((v) => this.repo.formatProduct(v, lang));
   }
 }

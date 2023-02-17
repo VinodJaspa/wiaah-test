@@ -9,8 +9,9 @@ export class IncrementProductVendorSiteCountCommandHandler
 {
   constructor(private readonly productrepo: ProductRepository) {}
 
-  execute({
+  async execute({
     productId,
+    lang = 'en',
   }: IncrementProductVendorSiteCountCommand): Promise<Product> {
     return this.productrepo.update(productId, {
       vendor_external_link_clicks: {

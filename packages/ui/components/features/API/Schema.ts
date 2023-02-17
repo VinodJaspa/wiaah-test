@@ -686,7 +686,7 @@ export type CreateContentShareInput = {
 };
 
 export type CreateFilterInput = {
-  name: Scalars["String"];
+  name: Array<StringTranslationField>;
   sortOrder: Scalars["Int"];
   values: Array<ProductFilterGroupValueInput>;
 };
@@ -766,14 +766,14 @@ export type CreateProductInput = {
   brand: Scalars["String"];
   cashback: CashBackInput;
   categoryId: Scalars["ID"];
-  description: Scalars["String"];
+  description: StringTranslationField;
   discount: DiscountInput;
   presentations: Array<ProductPresentationInput>;
   price: Scalars["Float"];
   status?: Maybe<ProductStatus>;
   stock: Scalars["Int"];
   thumbnail: Scalars["String"];
-  title: Scalars["String"];
+  title: Array<StringTranslationField>;
   type: ProductType;
   vat: Scalars["Float"];
   visibility: VisibilityEnum;
@@ -828,6 +828,7 @@ export type CreateServiceCategoryInput = {
   name: Array<TranslationTextInput>;
   seo: TranslationTextInput;
   slug: Scalars["String"];
+  sortOrder: Scalars["Int"];
   thumbnail: Scalars["String"];
 };
 
@@ -2679,7 +2680,7 @@ export type ProductFilterGroupValue = {
 };
 
 export type ProductFilterGroupValueInput = {
-  name: Scalars["String"];
+  name: Array<StringTranslationField>;
   sortOrder: Scalars["Int"];
 };
 
@@ -2809,6 +2810,7 @@ export type Query = {
   getAccountVerificationRequests: Array<AccountVerification>;
   getAction: Array<Action>;
   getAdminFilteredProducts: Array<Product>;
+  getAdminProductsFilter: Filter;
   getAdminProductsFilters: Array<Filter>;
   getAdminProfile: Profile;
   getAffiliationPost: AffiliationPost;
@@ -2976,6 +2978,10 @@ export type QueryGetActionArgs = {
 
 export type QueryGetAdminFilteredProductsArgs = {
   args: GetFilteredProductsAdminInput;
+};
+
+export type QueryGetAdminProductsFilterArgs = {
+  id: Scalars["String"];
 };
 
 export type QueryGetAdminProductsFiltersArgs = {
@@ -3659,14 +3665,14 @@ export type ServiceCancelationPolicyInput = {
 
 export type ServiceCategory = {
   __typename?: "ServiceCategory";
-  description: TranslationText;
+  description: Array<TranslationText>;
   filters: Array<ServiceCategoryFilter>;
   id: Scalars["ID"];
-  metaTagDescription: TranslationText;
-  metaTagKeywords: TranslationText;
-  metaTagTitle: TranslationText;
-  name: Scalars["String"];
-  seo: TranslationText;
+  metaTagDescription: Array<TranslationText>;
+  metaTagKeywords: Array<TranslationText>;
+  metaTagTitle: Array<TranslationText>;
+  name: Array<TranslationText>;
+  seo: Array<TranslationText>;
   slug: Scalars["String"];
   sortOrder: Scalars["Int"];
   status: ServiceCategoryStatus;
@@ -3675,7 +3681,7 @@ export type ServiceCategory = {
 
 export type ServiceCategoryFilter = {
   __typename?: "ServiceCategoryFilter";
-  filterGroupName: Scalars["String"];
+  filterGroupName: Array<TranslationText>;
   filterValues: Array<ServiceCategoryFilterValue>;
   filteringKey: Scalars["String"];
   sortOrder: Scalars["Int"];
@@ -3691,7 +3697,7 @@ export type ServiceCategoryFilterInput = {
 export type ServiceCategoryFilterValue = {
   __typename?: "ServiceCategoryFilterValue";
   filteringValue: Scalars["String"];
-  name: Scalars["String"];
+  name: Array<TranslationText>;
   sortOrder: Scalars["Int"];
 };
 
@@ -4158,6 +4164,11 @@ export type StoryView = {
   viewerId: Scalars["ID"];
 };
 
+export type StringTranslationField = {
+  langId: Scalars["String"];
+  value: Scalars["String"];
+};
+
 export type SuspenseAccountAdminInput = {
   rejectReason?: Maybe<Scalars["String"]>;
   userId: Scalars["ID"];
@@ -4306,7 +4317,7 @@ export type UpdateCurrencyInput = {
 
 export type UpdateFilterInput = {
   id: Scalars["ID"];
-  name?: Maybe<Scalars["String"]>;
+  name?: Maybe<Array<StringTranslationField>>;
   sortOrder?: Maybe<Scalars["Int"]>;
   values?: Maybe<Array<ProductFilterGroupValueInput>>;
 };
@@ -4396,7 +4407,7 @@ export type UpdateProductInput = {
   brand?: Maybe<Scalars["String"]>;
   cashback?: Maybe<CashBackInput>;
   categoryId?: Maybe<Scalars["ID"]>;
-  description?: Maybe<Scalars["String"]>;
+  description?: Maybe<StringTranslationField>;
   discount?: Maybe<DiscountInput>;
   id: Scalars["ID"];
   presentations?: Maybe<Array<ProductPresentationInput>>;
@@ -4404,7 +4415,7 @@ export type UpdateProductInput = {
   status?: Maybe<ProductStatus>;
   stock?: Maybe<Scalars["Int"]>;
   thumbnail?: Maybe<Scalars["String"]>;
-  title?: Maybe<Scalars["String"]>;
+  title?: Maybe<Array<StringTranslationField>>;
   type?: Maybe<ProductType>;
   vat?: Maybe<Scalars["Float"]>;
   visibility?: Maybe<VisibilityEnum>;
@@ -4484,6 +4495,8 @@ export type UpdateServiceCategoryInput = {
   name?: Maybe<Array<TranslationTextInput>>;
   seo?: Maybe<TranslationTextInput>;
   slug?: Maybe<Scalars["String"]>;
+  sortOrder?: Maybe<Scalars["Int"]>;
+  status?: Maybe<ServiceCategoryStatus>;
   thumbnail?: Maybe<Scalars["String"]>;
 };
 

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma-client';
+import { Prisma, ProductFilterGroup as PrismaFilter } from '@prisma-client';
+import { getTranslatedResource, UserPreferedLang } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { GetFiltersInput } from './dto';
 import { CreateFilterInput } from './dto/create-filter.input';
@@ -10,36 +11,55 @@ import { Filter } from './entities/filter.entity';
 export class FilterService {
   constructor(private readonly prisma: PrismaService) {}
 
-  createFilter(input: CreateFilterInput, userId: string): Promise<Filter> {
-    return this.prisma.productFilterGroup.create({
+  async createFilter(
+    input: CreateFilterInput,
+    userId: string,
+    lang: UserPreferedLang = 'en',
+  ): Promise<Filter> {
+    const res = await this.prisma.productFilterGroup.create({
       data: input,
     });
+
+    return this.formatfilter(res, lang);
   }
 
-  updateFilter(input: UpdateFilterInput, userId: string): Promise<Filter> {
+  async updateFilter(
+    input: UpdateFilterInput,
+    userId: string,
+    lang: UserPreferedLang = 'en',
+  ): Promise<Filter> {
     const { id, ...rest } = input;
-    return this.prisma.productFilterGroup.update({
+    const res = await this.prisma.productFilterGroup.update({
       where: {
         id,
       },
       data: rest,
     });
+
+    return this.formatfilter(res, lang);
   }
 
-  getFilters(filtersInput: GetFiltersInput): Promise<Filter[]> {
+  async getFilters(
+    filtersInput: GetFiltersInput,
+    lang: string = 'en',
+  ): Promise<Filter[]> {
     const filters: Prisma.ProductFilterGroupWhereInput[] = [];
 
     if (filtersInput.name)
       filters.push({
         OR: [
           {
-            name: { contains: filtersInput.name },
+            name: { some: { value: { contains: filtersInput.name } } },
           },
           {
             values: {
               some: {
                 name: {
-                  contains: filtersInput.name,
+                  some: {
+                    value: {
+                      contains: filtersInput.name,
+                    },
+                  },
                 },
               },
             },
@@ -62,14 +82,42 @@ export class FilterService {
         ],
       });
 
-    return this.prisma.productFilterGroup.findMany();
+    const res = await this.prisma.productFilterGroup.findMany({
+      where: { AND: filters },
+    });
+    return res.map((v) => this.formatfilter(v, lang));
   }
 
-  deleteFilter(id: string, userId: string): Promise<Filter> {
-    return this.prisma.productFilterGroup.delete({
+  getFilterById(id: string) {
+    return this.prisma.productFilterGroup.findUnique({
       where: {
         id,
       },
     });
+  }
+
+  async deleteFilter(
+    id: string,
+    userId: string,
+    lang: UserPreferedLang = 'en',
+  ): Promise<Filter> {
+    const res = await this.prisma.productFilterGroup.delete({
+      where: {
+        id,
+      },
+    });
+
+    return this.formatfilter(res, lang);
+  }
+
+  formatfilter(filter: PrismaFilter, langId: UserPreferedLang): Filter {
+    return {
+      ...filter,
+      name: getTranslatedResource({ langId, resource: filter.name }),
+      values: filter.values.map((v) => ({
+        ...v,
+        name: getTranslatedResource({ langId, resource: v.name }),
+      })),
+    };
   }
 }

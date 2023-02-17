@@ -3,12 +3,10 @@ import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import {
   Button,
-  Checkbox,
   EditIcon,
   Input,
   ItemsPagination,
   ListIcon,
-  PlusIcon,
   RefreshIcon,
   Table,
   TBody,
@@ -18,18 +16,16 @@ import {
   Tr,
   usePaginationControls,
   useGetServiceCategoriesQuery,
+  getTranslationStateValue,
 } from "ui";
 import { mapArray } from "utils";
 
 export default () => {
   const { t } = useTranslation();
-  const { controls, changeTotalItems, pagination } = usePaginationControls();
+  const { controls, pagination } = usePaginationControls();
   const { visit, getCurrentPath } = useRouting();
-  const { data: categories } = useGetServiceCategoriesQuery();
-
-  React.useEffect(() => {
-    changeTotalItems(categories?.length);
-  }, [categories]);
+  const [lang, setLang] = React.useState("en");
+  const { data: categories, refetch } = useGetServiceCategoriesQuery();
 
   return (
     <div className="flex flex-col w-full gap-8">
@@ -37,7 +33,7 @@ export default () => {
         <div className="flex gap-2 items-center">
           <p className="text-2xl">{t("Categories")}</p>
         </div>
-        <div className="flex items-center gap-1">
+        <div onClick={() => refetch()} className="flex items-center gap-1">
           <span className="border text-lg flex justify-center items-center shadow rounded h-12 w-12">
             <RefreshIcon />
           </span>
@@ -81,7 +77,7 @@ export default () => {
                 <Td className="w-[99%]">
                   <div className="flex items-center gap-4 font-semibold">
                     {/* <Checkbox /> */}
-                    <p>{name}</p>
+                    <p>{name.find((v) => v.langId === lang)?.value}</p>
                   </div>
                 </Td>
                 <Td>{sortOrder}</Td>

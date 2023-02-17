@@ -1,6 +1,5 @@
 import { Formik } from "formik";
 import React from "react";
-import { FlagIconCode } from "react-flag-kit";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import {
@@ -45,25 +44,24 @@ import {
 } from "ui";
 import {
   mapArray,
-  randomNum,
   runIfFn,
+  useForm,
   WiaahLanguageCountriesIsoCodes,
 } from "utils";
 import { array, InferType, number, object, string } from "yup";
-import {
-  ServiceCategoryFilter,
-  UpdateCategoryInput,
-} from "@features/Services/Services/types";
 import { useUpdateServiceCategory } from "@features/Services/Services/mutation";
 
 const EditCategory = () => {
   const { getParam, back } = useRouting();
   const CategoryId: string = getParam("category_id");
   const { t } = useTranslation();
-  const { data } = useGetServiceCategory(CategoryId);
   const { mutate } = useUpdateServiceCategory();
   const [lang, setLang] = React.useState<string>("en");
-  const [form, setForm] = React.useState<UpdateCategoryInput>();
+  const { data } = useGetServiceCategory(CategoryId);
+
+  const { form, handleChange, inputProps } = useForm<
+    Parameters<typeof mutate>[0]
+  >(data, { id: CategoryId });
 
   function handleSave() {
     mutate(form);
@@ -85,36 +83,70 @@ const EditCategory = () => {
               <Input
                 value={getTranslationStateValue(form, "name", lang)}
                 onChange={(e) =>
-                  setForm((old) => ({
-                    ...old,
-                    name: setTranslationStateValue(
-                      form,
-                      "name",
-                      e.target.value,
-                      lang
-                    ),
-                  }))
+                  handleChange(
+                    "name",
+                    setTranslationStateValue(form, "name", e.target.value, lang)
+                  )
                 }
                 className="col-span-7"
               />
               <p>{t("Description")}</p>
-              <Textarea className="col-span-7" />
+              <Textarea
+                value={getTranslationStateValue(form, "description", lang)}
+                onChange={(e) =>
+                  handleChange(
+                    "description",
+                    setTranslationStateValue(
+                      form,
+                      "description",
+                      e.target.value,
+                      lang
+                    )
+                  )
+                }
+                className="col-span-7"
+              />
               <p>
                 <span className="text-red-400 inline-block translate-y-1/4 px-2 transform font-bold text-2xl">
                   *
                 </span>
                 {t("Meta Tag Title")}
               </p>
-              <Input className="col-span-7" />
+              <Input
+                onChange={(v) => {
+                  handleChange(
+                    "metaTagTitle",
+                    setTranslationStateValue(
+                      form,
+                      "metaTagTitle",
+                      v.target.value,
+                      lang
+                    )
+                  );
+                }}
+                value={getTranslationStateValue(form, "metaTagTitle", lang)}
+                className="col-span-7"
+              />
               <p>{t("Meta Tag Description")}</p>
               <Textarea
                 className="col-span-7"
+                onChange={(v) => {
+                  handleChange(
+                    "metaTagDescription",
+                    setTranslationStateValue(
+                      form,
+                      "metaTagDescription",
+                      v.target.value,
+                      lang
+                    )
+                  );
+                }}
+                value={getTranslationStateValue(
+                  form,
+                  "metaTagDescription",
+                  lang
+                )}
                 placeholder={t("Meta Tag Description")}
-              />
-              <p>{t("Meta Tag Keywords")}</p>
-              <Textarea
-                className="col-span-7"
-                placeholder={t("Meta Tag Keywords")}
               />
             </>
           </div>
@@ -151,9 +183,17 @@ const EditCategory = () => {
                 </div>
               </div>
               <p className="font-bold">{t("Sort Order")}</p>
-              <Input className="col-span-7" placeholder={t("Sort Order")} />
+              <Input
+                {...inputProps("sortOrder")}
+                className="col-span-7"
+                placeholder={t("Sort Order")}
+              />
               <p className="font-bold">{t("Status")}</p>
-              <Select className="col-span-7" placeholder={t("Status")}>
+              <Select
+                {...inputProps("status", "value", "onOptionSelect", (e) => e)}
+                className="col-span-7"
+                placeholder={t("Status")}
+              >
                 <SelectOption value={"active"}>{t("Active")}</SelectOption>
                 <SelectOption value={"inActive"}>{t("InActive")}</SelectOption>
               </Select>
@@ -178,15 +218,29 @@ const EditCategory = () => {
             <p className="text-lg font-bold">{t("Keyword")}</p>
             <InputGroup className="w-full col-span-7">
               <InputLeftElement className="px-[0px]">
-                <Select>
-                  {mapArray(["GB", "FR", "DE", "ES"], (isoCode, i) => (
+                <Select onOptionSelect={(e) => setLang(e)}>
+                  {mapArray(WiaahLanguageCountriesIsoCodes, (isoCode, i) => (
                     <SelectOption value={isoCode} key={i} className="w-12">
                       <FlagIcon code={isoCode} />
                     </SelectOption>
                   ))}
                 </Select>
               </InputLeftElement>
-              <Input className="w-full" />
+              <Input
+                onChange={(v) => {
+                  handleChange(
+                    "metaTagKeywords",
+                    setTranslationStateValue(
+                      form,
+                      "metaTagKeywords",
+                      v.target.value,
+                      lang
+                    )
+                  );
+                }}
+                value={getTranslationStateValue(form, "metaTagKeywords", lang)}
+                className="w-full"
+              />
             </InputGroup>
           </div>
         </div>
@@ -197,7 +251,7 @@ const EditCategory = () => {
       comp: (
         <ServiceCategoryFilterView
           value={form?.filters || []}
-          onChange={(e) => setForm((v) => ({ ...v, filters: e }))}
+          onChange={(e) => handleChange("filters", e)}
         />
       ),
     },
@@ -229,7 +283,7 @@ const EditCategory = () => {
               <div className="flex items-center gap-4">
                 <SimpleTabHead>
                   {mapArray(
-                    ["GB", "FR", "DE", "ES"] as FlagIconCode[],
+                    WiaahLanguageCountriesIsoCodes,
                     (v, i) =>
                       ({ onClick, selected }) =>
                         (

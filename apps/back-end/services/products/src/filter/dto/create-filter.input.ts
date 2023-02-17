@@ -1,9 +1,10 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
+import { StringTranslationField } from '@products';
 
 @InputType()
 export class ProductFilterGroupValueInput {
-  @Field(() => String)
-  name: string;
+  @Field(() => [StringTranslationField])
+  name: StringTranslationField[];
 
   @Field(() => Int)
   sortOrder: number;
@@ -11,8 +12,8 @@ export class ProductFilterGroupValueInput {
 
 @InputType()
 export class CreateFilterInput {
-  @Field(() => String)
-  name: string;
+  @Field(() => [StringTranslationField])
+  name: StringTranslationField[];
 
   @Field(() => Int)
   sortOrder: number;

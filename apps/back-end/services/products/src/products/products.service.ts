@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 
-import { Prisma } from '@prisma-client';
+import { Prisma, Product as PrismaProduct } from '@prisma-client';
 import { PrismaService } from 'prismaService';
 import {
   ProductSearchPaginationInput,
@@ -21,6 +21,8 @@ import {
   KAFKA_MESSAGES,
   SERVICES,
   ExtractPagination,
+  UserPreferedLang,
+  getTranslatedResource,
 } from 'nest-utils';
 import {
   ProductNotFoundException,
@@ -71,6 +73,7 @@ export class ProductsService {
   async updateProduct(
     userId: string,
     input: UpdateProductInput,
+    lang: UserPreferedLang = 'en',
   ): Promise<Product> {
     const { id, ...rest } = input;
     const product = await this.prisma.product.findUnique({
@@ -102,13 +105,17 @@ export class ProductsService {
         },
       });
 
-      return res;
+      return this.formatProduct(res, lang);
     } catch (error) {
       throw new Error(error);
     }
   }
 
-  async removeProduct(productId: string, userId: string): Promise<Product> {
+  async removeProduct(
+    productId: string,
+    userId: string,
+    lang: UserPreferedLang = 'en',
+  ): Promise<Product> {
     const { id } = await this.getProductIfOwner(productId, userId);
 
     const removed = await this.prisma.product.delete({
@@ -116,10 +123,14 @@ export class ProductsService {
         id,
       },
     });
-    return removed;
+    return this.formatProduct(removed, lang);
   }
 
-  async getProductIfOwner(productId: string, userId: string): Promise<Product> {
+  async getProductIfOwner(
+    productId: string,
+    userId: string,
+    lang: UserPreferedLang = 'en',
+  ): Promise<Product> {
     const product = await this.prisma.product.findUnique({
       where: {
         id: productId,
@@ -132,7 +143,7 @@ export class ProductsService {
       throw new UnauthorizedException(
         'you cannot preform this action on products you dont own',
       );
-    return product;
+    return this.formatProduct(product, lang);
   }
 
   async isOwnerOfShop(userId: string, shopId: string): Promise<boolean> {
@@ -152,8 +163,11 @@ export class ProductsService {
     return data;
   }
 
-  getProductById(productId: string): Promise<Product> {
-    return this.prisma.product.findUnique({
+  async getProductById(
+    productId: string,
+    lang: UserPreferedLang = 'en',
+  ): Promise<Product> {
+    const res = await this.prisma.product.findUnique({
       where: {
         id: productId,
       },
@@ -161,6 +175,8 @@ export class ProductsService {
         throw new ProductNotFoundException();
       },
     });
+
+    return this.formatProduct(res, lang);
   }
 
   getAll() {
@@ -204,20 +220,26 @@ export class ProductsService {
     }
   }
 
-  getAllByShopId(shopId: string) {
-    return this.prisma.product.findMany({
+  async getAllByShopId(shopId: string, lang: UserPreferedLang = 'en') {
+    const res = await this.prisma.product.findMany({
       where: {
         shopId,
       },
     });
+    return res.map((v) => this.formatProduct(v, lang));
   }
 
-  getAllBySellerId(sellerId: string): Promise<Product[]> {
-    return this.prisma.product.findMany({
+  async getAllBySellerId(
+    sellerId: string,
+    lang: UserPreferedLang = 'en',
+  ): Promise<Product[]> {
+    const res = await this.prisma.product.findMany({
       where: {
         sellerId,
       },
     });
+
+    return res.map((v) => this.formatProduct(v, lang));
   }
 
   async createPh() {
@@ -233,6 +255,7 @@ export class ProductsService {
 
   async getFilteredProducts(
     input: ProductSearchPaginationInput,
+    lang: UserPreferedLang = 'en',
   ): Promise<ProductSearchPaginationResponse> {
     try {
       const { skip, take, totalSearched } = ExtractPagination(input.pagination);
@@ -242,7 +265,13 @@ export class ProductsService {
 
       if (filters.title) {
         prismaFilters.push({
-          title: { contains: filters.title },
+          title: {
+            some: {
+              value: {
+                contains: filters.title,
+              },
+            },
+          },
         });
       }
 
@@ -297,7 +326,7 @@ export class ProductsService {
       });
 
       return {
-        data: products,
+        data: products.map((v) => this.formatProduct(v, lang)),
         total: totalSearched,
         hasMore: products.length >= take,
       };
@@ -322,8 +351,11 @@ export class ProductsService {
     return true;
   }
 
-  async getPublicProductsByIds(ids: string[]): Promise<Product[]> {
-    return this.prisma.product.findMany({
+  async getPublicProductsByIds(
+    ids: string[],
+    lang: string = 'en',
+  ): Promise<Product[]> {
+    const res = await this.prisma.product.findMany({
       where: {
         id: {
           in: ids,
@@ -331,11 +363,17 @@ export class ProductsService {
         visibility: 'public',
       },
     });
+
+    return res.map((v) => this.formatProduct(v, lang));
   }
 
-  async getProtectedProductById(id: string, userId: string): Promise<Product> {
+  async getProtectedProductById(
+    id: string,
+    userId: string,
+    lang: string = 'en',
+  ): Promise<Product> {
     const filters = await this.getPremissionFilters(id, userId);
-    return this.prisma.product.findFirst({
+    const res = await this.prisma.product.findFirst({
       where: {
         AND: filters.concat({
           id,
@@ -345,6 +383,24 @@ export class ProductsService {
         throw new ProductNotFoundOrUnaccessable();
       },
     });
+
+    return this.formatProduct(res, lang);
+  }
+
+  formatProduct(prod: PrismaProduct, lang: string): Product {
+    return {
+      ...prod,
+      title: getTranslatedResource({
+        langId: lang,
+        resource: prod.title,
+        fallbackLangId: 'en',
+      }),
+      description: getTranslatedResource({
+        langId: lang,
+        resource: prod.description,
+        fallbackLangId: 'en',
+      }),
+    };
   }
 
   private async getPremissionFilters(
@@ -360,66 +416,3 @@ export class ProductsService {
     return filters;
   }
 }
-
-// const ProductsPh: Prisma.ProductCreateInput[] = [
-//   {
-//     type: 'goods',
-//     description: 'test product description',
-//     stock: 13,
-//     shopId: '1234',
-//     title: 'cutting board',
-//     brand: 'nike',
-//     price: 16,
-//     sellerId: 'sellerid',
-//     categoryId: '',
-//     vat: 23,
-//   },
-//   {
-//     type: 'goods',
-//     description: 'test product description',
-//     stock: 0,
-//     shopId: '1234',
-//     title: 'cup',
-//     brand: 'or',
-//     price: 18,
-//     sellerId: 'sellerid',
-//     categoryId: '',
-//     vat: 23,
-//   },
-//   {
-//     type: 'goods',
-//     description: 'test product description',
-//     stock: 13,
-//     shopId: '1234',
-//     title: 'sofa',
-//     brand: 'zara',
-//     price: 30,
-//     sellerId: 'sellerid',
-//     categoryId: '',
-//     vat: 23,
-//   },
-//   {
-//     type: 'digital',
-//     description: 'test product description',
-//     stock: 13,
-//     shopId: '1234',
-//     title: 'mouse',
-//     brand: 'zake',
-//     price: 5,
-//     sellerId: 'sellerid',
-//     categoryId: '',
-//     vat: 23,
-//   },
-//   {
-//     type: 'digital',
-//     description: 'test product description',
-//     stock: 13,
-//     shopId: '1234',
-//     title: 'vase',
-//     brand: 'dior',
-//     price: 98,
-//     sellerId: 'sellerid',
-//     categoryId: '',
-//     vat: 23,
-//   },
-// ];

@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma-client';
+import { Discount, Prisma, Product as PrismaProduct } from '@prisma-client';
+import { Product } from '@products/entities';
+import { getTranslatedResource, UserPreferedLang } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 
 @Injectable()
 export class ProductRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getTopDiscountedByShop(shopId: string) {
-    return this.prisma.product.findFirst({
+  async getTopDiscountedByShop(shopId: string, lang: UserPreferedLang = 'en') {
+    const res = await this.prisma.product.findFirst({
       where: {
         AND: [
           {
@@ -26,7 +28,7 @@ export class ProductRepository {
       },
       orderBy: {
         discount: {
-          units: 'desc',
+          amount: 'desc',
         },
       },
       include: {
@@ -34,15 +36,22 @@ export class ProductRepository {
       },
       take: 1,
     });
+
+    return this.formatProduct<{ discount: Discount }>(res, lang);
   }
 
-  async update(id: string, input: Prisma.ProductUpdateInput) {
-    return await this.prisma.product.update({
+  async update(
+    id: string,
+    input: Prisma.ProductUpdateInput,
+    lang: UserPreferedLang = 'en',
+  ) {
+    const res = await this.prisma.product.update({
       where: {
         id,
       },
       data: input,
     });
+    return this.formatProduct(res, lang);
   }
 
   async findAllBySellerId(sellerId: string) {
@@ -53,19 +62,41 @@ export class ProductRepository {
     });
   }
 
-  async deleteProduct(id: string) {
-    return this.prisma.product.delete({
+  async deleteProduct(id: string, lang: UserPreferedLang = 'en') {
+    const res = await this.prisma.product.delete({
       where: {
         id,
       },
     });
+
+    return this.formatProduct(res, lang);
   }
 
-  async getProduct(id: string) {
-    return this.prisma.product.findUnique({
+  async getProduct(id: string, lang: UserPreferedLang = 'en') {
+    const res = await this.prisma.product.findUnique({
       where: {
         id,
       },
     });
+    return this.formatProduct(res, lang);
+  }
+
+  formatProduct<T = {}, P = {}>(
+    prod: PrismaProduct & T,
+    lang: string,
+  ): Product & T {
+    return {
+      ...prod,
+      title: getTranslatedResource({
+        langId: lang,
+        resource: prod.title,
+        fallbackLangId: 'en',
+      }),
+      description: getTranslatedResource({
+        langId: lang,
+        resource: prod.description,
+        fallbackLangId: 'en',
+      }),
+    };
   }
 }

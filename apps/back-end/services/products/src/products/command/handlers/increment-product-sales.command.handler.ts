@@ -9,13 +9,14 @@ export class IncrementProductSalesCommandHandler
 {
   constructor(private readonly repo: ProductRepository) {}
 
-  async execute({ productId }: IncrementProductSalesCommand): Promise<Product> {
-    const res = await this.repo.update(productId, {
+  async execute({
+    productId,
+    lang = 'en',
+  }: IncrementProductSalesCommand): Promise<Product> {
+    return this.repo.update(productId, {
       sales: {
         increment: 1,
       },
     });
-
-    return res;
   }
 }

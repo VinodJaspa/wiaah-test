@@ -1,5 +1,9 @@
-import { GqlPaginationInput } from 'nest-utils';
+import { GqlPaginationInput, UserPreferedLang } from 'nest-utils';
 
 export class GetSellerProductsQuery {
-  constructor(public sellerId: string, public pagination: GqlPaginationInput) {}
+  constructor(
+    public sellerId: string,
+    public pagination: GqlPaginationInput,
+    public lang: UserPreferedLang,
+  ) {}
 }
