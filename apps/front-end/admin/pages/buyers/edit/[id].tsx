@@ -24,9 +24,9 @@ import {
   Badge,
   Input,
   DateFormInput,
+  useAdminGetProfileQuery,
 } from "ui";
 import { mapArray, NumberShortner, randomNum } from "utils";
-import { lngs, lats } from "api";
 import { getRandomImage } from "placeholder";
 import { BsKey } from "react-icons/bs";
 
@@ -35,39 +35,7 @@ const Edit = () => {
   const { t } = useTranslation();
   const id = getParam("id");
 
-  const isProducts = false;
-
-  const servicedata = {
-    title:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-    provider: "Crowne Plaza",
-    rate: 4.8,
-    serviceClass: 3.5,
-    thumbnail: "/place-1.jpg",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae, deserunt odio quisquam qui sit corrupti ab est voluptas sunt quis nesciunt facilis a debitis eius mollitia quasi eum beatae autem.",
-    reviews: randomNum(500),
-    id: `${1564546}`,
-    date: {
-      from: Date.now(),
-      to: Date.now(),
-    },
-    pricePerNight: randomNum(3000),
-    taxesAndFeesIncluded: true,
-    totalPrice: 5000,
-    location: {
-      address: "address",
-      city: "switzerland",
-      country: "france",
-      countryCode: "CHF",
-      state: "Geneve",
-      postalCode: 1234,
-      cords: {
-        lng: lngs[randomNum(lngs.length)],
-        lat: lats[randomNum(lats.length)],
-      },
-    },
-  };
+  const { data } = useAdminGetProfileQuery(id);
 
   const posts = [...Array(10)].map(() => ({
     id: randomNum(500000).toString(),
@@ -126,37 +94,7 @@ const Edit = () => {
             <Pagination />
           </div>
           <div>
-            <SocialProfile
-              profileInfo={{
-                accountType: "seller",
-                userId: "1325",
-                id: "1230",
-                name: "Jane Daniel",
-                public: true,
-                thumbnail: "/shop-2.jpeg",
-                verified: true,
-                bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eleifend diam cras eu felis egestas aliquam. Amet ornare",
-                isFollowed: false,
-                links: ["this is a test link"],
-                location: {
-                  address: "address",
-                  city: "city",
-                  cords: {
-                    lat: 32,
-                    lng: 23,
-                  },
-                  country: "country",
-                  countryCode: "CH",
-                  postalCode: 1234,
-                  state: "Geneve",
-                },
-                profileCoverPhoto: "/shop-2.jpeg",
-                publications: 156,
-                subscribers: 135,
-                subscriptions: 14,
-                profession: "Agent",
-              }}
-            />
+            <SocialProfile profileInfo={{ ...data, isFollowed: false }} />
             <Table className="w-full">
               <THead>
                 <Tr>

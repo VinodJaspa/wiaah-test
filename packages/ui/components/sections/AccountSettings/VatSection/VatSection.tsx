@@ -22,8 +22,8 @@ export const VatSection: React.FC = () => {
   return (
     <div className="flex flex-col w-full">
       <SectionHeader sectionTitle={t("Vat Settings")}></SectionHeader>
-      <div className="my-4 flex flex-col gap-4">
-        <p className="text-2xl font-bold">{t("Type of seller")}</p>
+      <div className=" flex flex-col gap-4">
+        <p className="text-2xl font-semibold">{t("Type of seller")}</p>
         <div className="text-xl">
           <Radio checked name="type_of_seller" disabled>
             {t("Individual")}

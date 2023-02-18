@@ -5,9 +5,10 @@ import {
   registerEnumType,
   Directive,
 } from '@nestjs/graphql';
-import { AccountType } from '@prisma-client';
+import { AccountStatus, AccountType } from '@prisma-client';
 
 registerEnumType(AccountType, { name: 'AccountType' });
+registerEnumType(AccountStatus, { name: 'AccountStatus' });
 
 @ObjectType()
 @Directive('@key(fields:"id")')
@@ -43,6 +44,9 @@ export class Account {
   @Field((type) => Boolean)
   verified: boolean;
 
+  @Field(() => AccountStatus)
+  status: AccountStatus;
+
   @Field(() => String, { nullable: true })
   companyRegisterationNumber?: string;
 
@@ -51,4 +55,7 @@ export class Account {
 
   @Field(() => String, { nullable: true })
   phone?: string;
+
+  @Field(() => [String])
+  ips: string[];
 }

@@ -1,8 +1,17 @@
-import { Category } from "@features/Products";
-import { CreateCategoryInput } from "@features/Products/types";
-import { GqlResponse } from "types";
 import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
+import { Category, CreateCategoryInput, Exact } from "@features/API";
+
+export type CreateMutationVariables = Exact<{
+  args: CreateCategoryInput;
+}>;
+
+export type CreateMutation = { __typename?: "Mutation" } & {
+  createProductCategory: { __typename?: "Category" } & Pick<
+    Category,
+    "id" | "name" | "parantId" | "sortOrder" | "status"
+  >;
+};
 
 export const useCreateProductCategory = () => {
   const client = createGraphqlRequestClient();
@@ -26,9 +35,7 @@ export const useCreateProductCategory = () => {
   return useMutation<unknown, unknown, CreateCategoryInput>(
     "create-category",
     async (args) => {
-      const res = await client
-        .setVariables({ args })
-        .send<GqlResponse<Category, "createProductCategory">>();
+      const res = await client.setVariables({ args }).send<CreateMutation>();
       return res.data.createProductCategory;
     }
   );

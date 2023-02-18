@@ -5,12 +5,7 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import {
-  ExtractPagination,
-  GqlPaginationInput,
-  KAFKA_EVENTS,
-  SERVICES,
-} from 'nest-utils';
+import { ExtractPagination, KAFKA_EVENTS, SERVICES } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 import { NewAccountCreatedEvent } from 'nest-dto';
 import { AccountType, Prisma } from '@prisma-client';
@@ -151,10 +146,21 @@ export class AccountsService {
         status: args.status,
       });
 
+    if (type) {
+      filters.push({
+        type,
+      });
+    }
+
     return this.prisma.account.findMany({
       where: {
         AND: filters,
       },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take,
+      skip,
     });
   }
 

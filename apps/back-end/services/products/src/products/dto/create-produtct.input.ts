@@ -14,6 +14,7 @@ import {
   ProductStatus,
   VisibilityEnum,
 } from '@prisma-client';
+import { CreateInputGqlTranslationInputField } from 'nest-utils';
 
 registerEnumType(PresentationType, { name: 'PresentationType' });
 registerEnumType(CashbackType, { name: 'CashbackType' });
@@ -60,15 +61,20 @@ export class ProductAttributeInput {
 }
 
 @InputType()
+export class StringTranslationField extends CreateInputGqlTranslationInputField(
+  String,
+) {}
+
+@InputType()
 export class CreateProductInput {
   @Field(() => ProdcutType)
   type: ProdcutType;
 
-  @Field((type) => String)
-  title: string;
+  @Field((type) => [StringTranslationField])
+  title: StringTranslationField[];
 
-  @Field((type) => String)
-  description: string;
+  @Field((type) => StringTranslationField)
+  description: StringTranslationField;
 
   @Field((type) => ID)
   categoryId: string;

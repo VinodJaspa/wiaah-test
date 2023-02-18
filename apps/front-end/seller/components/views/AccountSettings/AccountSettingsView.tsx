@@ -41,8 +41,6 @@ import { useRouting } from "routing";
 
 export const AccountSettingsView: React.FC = () => {
   const baseRoute = "management/account-settings";
-  const { t } = useTranslation();
-  const { visit } = useRouting();
   const router = useRouter();
   const { section } = router.query;
   const { isMobile } = useResponsive();
@@ -60,13 +58,6 @@ export const AccountSettingsView: React.FC = () => {
 
   return (
     <>
-      <div
-        onClick={() => visit((r) => r.management())}
-        className="px-6 cursor-pointer w-fit text-xl py-2 my-2 flex gap-4 items-center"
-      >
-        <IoMdReturnLeft />
-        <p>{t("Return")}</p>
-      </div>
       <SectionsLayout
         name={{
           translationKey: "account_settings",

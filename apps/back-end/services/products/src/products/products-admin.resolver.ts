@@ -26,7 +26,11 @@ export class ProductsAdminResolver {
     if (args.title) {
       filters.push({
         title: {
-          contains: args.title,
+          some: {
+            value: {
+              contains: args.title,
+            },
+          },
         },
       });
     }

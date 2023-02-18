@@ -1,13 +1,20 @@
 import { createGraphqlRequestClient } from "api";
-import { Account, GetFilteredSellersAccountsInput } from "@features/API";
+import {
+  Account,
+  Balance,
+  GetFilteredSellersAccountsInput,
+  Location,
+  Maybe,
+  Membership,
+  Profile,
+} from "@features/API";
 import { Exact } from "types";
 import { useQuery } from "react-query";
 
-type GetFilteredSellersQueryVariables = Exact<{
+export type GetFilteredSellersQueryVariables = Exact<{
   args: GetFilteredSellersAccountsInput;
 }>;
-
-type GetFilteredSellersQuery = { __typename?: "Query" } & {
+export type GetFilteredSellersQuery = { __typename?: "Query" } & {
   getFilteredSellers: Array<
     { __typename?: "Account" } & Pick<
       Account,
@@ -17,9 +24,25 @@ type GetFilteredSellersQuery = { __typename?: "Query" } & {
       | "id"
       | "lastName"
       | "photo"
-      | "type"
       | "verified"
-    >
+      | "type"
+      | "status"
+      | "ips"
+      | "membershipId"
+    > & {
+        profile?: Maybe<{ __typename?: "Profile" } & Pick<Profile, "visits">>;
+        shop: { __typename?: "Shop" } & {
+          location: { __typename?: "Location" } & Pick<
+            Location,
+            "address" | "city" | "country"
+          >;
+        };
+        Membership: { __typename?: "Membership" } & Pick<Membership, "name">;
+        balance: { __typename?: "Balance" } & Pick<
+          Balance,
+          "withdrawableBalance"
+        >;
+      }
   >;
 };
 
@@ -28,23 +51,42 @@ export const useGetFilteredSellers = (
 ) => {
   const client = createGraphqlRequestClient();
   client.setQuery(`
-    query getFilteredSellers(
-        $args:GetFilteredSellersAccountsInput!
-    ){
-        getFilteredSellers(
-            getSellersInput:$args
-        ){        
-            createdAt
-            email
-            firstName
-            id
-            lastName
-            photo
-            type
-            verified
-
+query getFilteredSellers(
+    $args:GetFilteredSellersAccountsInput!
+){
+    getFilteredSellers(
+        getSellersInput:$args
+    ){        
+        createdAt
+        email
+        firstName
+        id
+        lastName
+        photo
+    		verified
+        type
+        verified
+        status
+    		ips
+    		profile{
+          visits
+        }
+    		shop{
+          location {
+            address
+            city
+            country
+          }
+        }
+        membershipId
+        Membership {
+          name
+        }
+        balance {
+          withdrawableBalance
         }
     }
+}
     `);
 
   client.setVariables<GetFilteredSellersQueryVariables>({

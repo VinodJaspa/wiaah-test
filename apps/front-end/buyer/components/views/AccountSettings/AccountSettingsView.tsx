@@ -72,85 +72,58 @@ const sections: SettingsSectionType[] = [
     panelComponent: <AccountSettingsSection />,
   },
   {
-    panelName: {
-      fallbackText: "Password",
-      translationKey: "password",
-    },
+    panelName: "Password",
     panelIcon: BiKey,
     panelUrl: "/password",
 
     panelComponent: <PasswordSection />,
   },
   {
-    panelName: {
-      fallbackText: "Notification",
-      translationKey: "notification",
-    },
+    panelName: "Notification",
     panelIcon: IoNotificationsOutline,
     panelUrl: "/notifications",
 
     panelComponent: <NotificationsSettingsSection />,
   },
   {
-    panelName: {
-      fallbackText: "Newsletter",
-      translationKey: "newsletter",
-    },
+    panelName: "Newsletter",
     panelIcon: IoNewspaperOutline,
     panelUrl: "/newsletter",
 
     panelComponent: <NewsLetterSection />,
   },
   {
-    panelName: {
-      fallbackText: "Invite Friends",
-      translationKey: "invite_friends",
-    },
+    panelName: "Invite Friends",
     panelIcon: HiUserGroup,
     panelUrl: "/invitefriends",
     panelComponent: <FindYourFriendsStep />,
   },
   {
-    panelName: {
-      translationKey: "blocklist",
-      fallbackText: "Blocklist",
-    },
+    panelName: "Blocklist",
     panelIcon: ImBlocked,
     panelUrl: "/blocklist",
     panelComponent: <BlocklistSection />,
   },
   {
-    panelName: {
-      translationKey: "privacy",
-      fallbackText: "Privacy",
-    },
+    panelName: "Privacy",
     panelIcon: BiLock,
     panelUrl: "/privacy",
     panelComponent: <PrivacySection />,
   },
   {
-    panelName: {
-      translationKey: "account_deletion",
-      fallbackText: "Account Deletion",
-    },
+    panelName: "Account Deletion",
     panelIcon: IoTrash,
     panelUrl: "/account_deletion",
     panelComponent: <AccountDeletionSection />,
   },
   {
-    panelName: {
-      translationKey: "account_verification",
-      fallbackText: "Account Verification",
-    },
+    panelName: "Account Verification",
     panelIcon: MdVerified,
     panelUrl: "/account_verification",
     panelComponent: <AccountVerification />,
   },
   {
-    panelName: {
-      translationKey: "personalizarion_and_data",
-      fallbackText: "Personalization and data",
-    },
+    panelName: "Personalization and data",
     panelIcon: BiData,
     panelUrl: "/personalizarion_and_data",
     panelComponent: <PersonalizationAndDataSection />,

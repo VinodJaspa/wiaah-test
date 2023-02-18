@@ -21,6 +21,32 @@ export class OrderItem {
 
   @Field(() => Product, { nullable: true })
   product?: Product;
+
+  @Field(() => Float, { nullable: true })
+  paid: number;
+
+  @Field(() => String)
+  createdAt: Date;
+
+  @Field(() => String)
+  updatedAt: Date;
+
+  @Field(() => String, { nullable: true })
+  paidAt: Date;
+
+  @Field(() => Boolean)
+  refundable: boolean;
+
+  @Field(() => String, { nullable: true })
+  discountId?: string;
+  @Field(() => String, { nullable: true })
+  cashbackId?: string;
+
+  @Field(() => String, { nullable: true })
+  affiliationId?: string;
+
+  @Field(() => String)
+  orderId: string;
 }
 
 @ObjectType()
@@ -63,6 +89,9 @@ export class Order {
 
   @Field(() => String)
   shippingAddressId: string;
+
+  @Field(() => String)
+  billingAddressId: string;
 
   @Field(() => String)
   shippingMethodId: string;

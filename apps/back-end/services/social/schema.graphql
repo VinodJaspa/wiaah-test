@@ -100,6 +100,7 @@ type Profile {
   lastActive: DateTime!
   bio: String!
   photo: String!
+  coverPhoto: String!
   followers: Int!
   followingData: [Follow!]
   following: Int!
@@ -108,6 +109,7 @@ type Profile {
   profession: String!
   visibility: ProfileVisibility!
   verified: Boolean!
+  visits: Int!
 }
 
 enum ActiveStatus {
@@ -454,6 +456,8 @@ type Query {
   getNewsfeedPostById(id: String!): NewsfeedPost!
   getTopHashtagNewsfeed: TopHashtagNewsfeedPosts!
   getAdminProfile(id: String!): Profile!
+  getProfileNewsfeedPosts(getUserNewsfeedPosts: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
+  getNewsfeedPosts: [NewsfeedPost!]!
   comments: [Comment!]!
   updateComment(updateCommentInput: UpdateCommentInput!): PaginationCommentsResponse!
   getContentComments(getContentCommentsArgs: GetContentCommentsInput!): [Comment!]!
@@ -622,6 +626,7 @@ type Mutation {
   updateNewsfeedPost(updateNewsfeedPostInput: UpdateNewsfeedPostInput!): NewsfeedPost!
   removeNewsfeedPost(id: Int!): NewsfeedPost!
   updateProfile(updateProfileInput: UpdateProfileAdminInput!): Profile!
+  editNewsfeedPostAdmin(args: UpdatePostAdminInput!): Boolean!
   createReaction(CreateReactionInput: CreateReactionInput!): Boolean!
   removeReaction(removeReactionArgs: RemoveReactionInput!): ContentReaction!
   createComment(createCommentInput: CreateCommentInput!): Comment!
@@ -718,6 +723,18 @@ input UpdateProfileAdminInput {
   visibility: ProfileVisibility
   username: String
   profileId: ID
+}
+
+input UpdatePostAdminInput {
+  title: String
+  content: String
+  attachments: [AttachmentInput!]
+  hashtags: [HashtagInput!]
+  tags: [PostTagInput!]
+  visibility: PostVisibility
+  location: PostLocationInput
+  id: ID!
+  userId: ID!
 }
 
 input CreateReactionInput {

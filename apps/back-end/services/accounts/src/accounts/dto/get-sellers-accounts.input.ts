@@ -30,4 +30,19 @@ export class GetFilteredSellersAccountsInput {
 
   @Field(() => Float, { nullable: true })
   balance?: number;
+
+  @Field(() => String, { nullable: true })
+  plan?: string;
+
+  @Field(() => Int, { nullable: true })
+  visits?: number;
+
+  @Field(() => String, { nullable: true })
+  city?: string;
+
+  @Field(() => String, { nullable: true })
+  country?: string;
+
+  @Field(() => String, { nullable: true })
+  ip?: string;
 }

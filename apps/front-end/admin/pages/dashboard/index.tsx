@@ -19,6 +19,10 @@ import {
   useGetAdminRecentSales,
   useGetAdminLatestOrders,
   useGetAdminDashboardData,
+  useAdminGetLatestOrdersQuery,
+  useGetRecentSellers,
+  useGetRecentBuyers,
+  useGetAdminRecentSalesQuery,
 } from "ui";
 import {
   Area,
@@ -29,7 +33,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { mapArray, randomNum, SnakeCaseToText } from "utils";
+import {
+  getDatesInRange,
+  mapArray,
+  randomNum,
+  SnakeCaseToText,
+  SubtractFromDate,
+} from "utils";
 import { useTranslation } from "react-i18next";
 import { useDateDiff, useResponsive } from "hooks";
 import { AnalyticsProfit } from "api";
@@ -39,17 +49,50 @@ const Dashboard: NextPage = () => {
   const chartRef = React.useRef<HTMLDivElement>(null);
   const radialChartRef = React.useRef<HTMLDivElement>(null);
   const { t } = useTranslation();
-  const charData = [...Array(5)].map((_, i) => ({
-    time: "10:00 AM",
-    sellers: randomNum(50),
-    buyers: randomNum(50),
-  }));
-
-  const { data: recentSalesRes } = useGetAdminRecentSales();
-
-  const { data: latestOrdersRes } = useGetAdminLatestOrders();
 
   const { data: analyticsData } = useGetAdminDashboardData();
+
+  const { data: recentSales } = useGetAdminRecentSalesQuery(10);
+  const { data: latestOrders } = useAdminGetLatestOrdersQuery(10);
+  const { data: recentSellers } = useGetRecentSellers(
+    { page: 1, take: 100000 },
+    SubtractFromDate(new Date(), { hours: 12 })
+  );
+
+  const { data: recentBuyers } = useGetRecentBuyers(
+    { page: 1, take: 100000 },
+    SubtractFromDate(new Date(), { hours: 12 })
+  );
+
+  const accounts = [...(recentBuyers || []), ...(recentSellers || [])];
+
+  const dateSorted = accounts.sort(
+    (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+  );
+  const charData = getDatesInRange(
+    new Date(accounts[0].createdAt),
+    new Date(accounts[-1].createdAt)
+  ).reduce((acc, curr, idx, arr) => {
+    const from = curr;
+    const to = arr[idx + 1] || new Date();
+
+    return [
+      ...acc,
+      {
+        time: `${from.toLocaleDateString("en-us", {
+          timeStyle: "short",
+        })} - ${to.toLocaleDateString("en-us", {
+          timeStyle: "short",
+        })}`,
+        sellers: recentSellers.filter(
+          (v) => new Date(v.createdAt) > from && new Date(v.createdAt) < to
+        ),
+        buyers: recentBuyers.filter(
+          (v) => new Date(v.createdAt) > from && new Date(v.createdAt) < to
+        ),
+      },
+    ];
+  }, [] as { time: string; sellers: number; buyers: number }[]);
 
   return (
     <div className="grid grid-cols-3 gap-4">
@@ -145,21 +188,21 @@ const Dashboard: NextPage = () => {
             </THead>
             <TBody>
               {mapArray(
-                latestOrdersRes?.data,
-                ({ amount, billingName, date, status }, i) => (
+                latestOrders,
+                ({ billing, createdAt, paid, status }, i) => (
                   <Tr key={i}>
                     <Td>
-                      {new Date(date).toLocaleDateString(undefined, {
+                      {new Date(createdAt).toLocaleDateString(undefined, {
                         day: "2-digit",
                         month: "short",
                         year: "numeric",
                       })}
                     </Td>
-                    <Td>{billingName}</Td>
+                    <Td>{billing.firstName}</Td>
                     <Td>
-                      <PriceDisplay price={amount} />
+                      <PriceDisplay price={paid} />
                     </Td>
-                    <Td>{SnakeCaseToText(status)}</Td>
+                    <Td>{SnakeCaseToText(status.of)}</Td>
 
                     <Td align="center">
                       <DownloadIcon />
@@ -237,16 +280,19 @@ const Dashboard: NextPage = () => {
             <p className="font-bold text-lg">{t("Recent Sales")}</p>
             <p className="font-semibold">{t("See All")}</p>
           </div>
-          {mapArray(recentSalesRes?.data, ({ buyer, date, price }, i) => {
-            const { getSince } = useDateDiff({ from: date, to: new Date() });
+          {mapArray(recentSales, ({ buyer, createdAt, id, paid }, i) => {
+            const { getSince } = useDateDiff({
+              from: new Date(createdAt),
+              to: new Date(),
+            });
 
             const since = getSince();
             return (
               <div key={i} className="flex justify-between items-center">
                 <div className="flex gap-2 items-center">
-                  <Avatar src={buyer.photo} alt={buyer.name} />
+                  <Avatar src={buyer.photo} alt={buyer.firstName} />
                   <div className="flex flex-col gap-1">
-                    <p className="font-bold">{buyer.name}</p>
+                    <p className="font-bold">{buyer.firstName}</p>
                     <p>
                       {since.value} {since.timeUnit} {t("ago")}
                     </p>
@@ -254,7 +300,7 @@ const Dashboard: NextPage = () => {
                 </div>
                 <div className="flex items-center font-bold text-lg">
                   +
-                  <PriceDisplay price={price} />
+                  <PriceDisplay price={paid} />
                 </div>
               </div>
             );

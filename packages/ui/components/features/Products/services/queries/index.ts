@@ -7,3 +7,6 @@ export * from "./useAdminGetProduct";
 export * from "./useGetMyShippingRules";
 export * from "./useGetMyProducts";
 export * from "./useGetMyProductsReviews";
+export * from "./useGetRecentSales";
+export * from "./categories";
+export * from "./filters";

@@ -26,13 +26,13 @@ enum ProductCategoryStatus {
 }
 
 type ProductFilterGroupValue {
-  name      String
+  name      TranslationText[]
   sortOrder Int
 }
 
 model ProductFilterGroup {
   id        String                    @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
+  name      TranslationText[]
   values    ProductFilterGroupValue[]
   sortOrder Int
 }
@@ -60,8 +60,8 @@ model Product {
   vendor_external_link_clicks Int                   @default(0)
   type                        ProdcutType
   hashtags                    String[]
-  title                       String
-  description                 String
+  title                       TranslationText[]
+  description                 TranslationText[]
   price                       Int
   status                      ProductStatus         @default(active)
   suspensionReason            String?
@@ -249,4 +249,9 @@ enum ProductStatus {
   pasued
   pending
   deleted
+}
+
+type TranslationText {
+  langId String
+  value  String
 }

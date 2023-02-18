@@ -21,6 +21,7 @@ model Profile {
   activeStatus   ActiveStatus      @default(inActive)
   bio            String            @default("Hi, im a new Wiaah user")
   photo          String
+  coverPhoto     String?
   status         ProfileStatus     @default(active)
   followers      Int               @default(0)
   following      Int               @default(0)
@@ -30,6 +31,7 @@ model Profile {
   profession     String
   verified       Boolean           @default(false)
   hashtags       String[]
+  visits         Int               @default(0)
   visibility     ProfileVisibility @default(public)
   Posts          NewsfeedPost[]
   comments       Comment[]

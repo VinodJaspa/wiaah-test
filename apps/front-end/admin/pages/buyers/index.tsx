@@ -31,48 +31,22 @@ import {
   ModalCloseButton,
   QrcodeDisplay,
   Button,
+  useGetFilteredBuyers,
 } from "ui";
-import { NumberShortner, randomNum } from "utils";
-
-type Buyer = {
-  id: string;
-  thumbanil: string;
-  name: string;
-  email: string;
-  products: number;
-  sales: number;
-  balance: number;
-  status: string;
-  createdAt: Date;
-  visits: number;
-  country: string;
-  city: string;
-  ips: string[];
-};
-
-let plans = ["Pay", "Free", "Per Click"];
-
-let mockSellers: Buyer[] = [...Array(15)].map((_, i) => ({
-  id: i.toString(),
-  name: "seller company name" + i,
-  balance: randomNum(2000),
-  email: "testemail" + i + "@email.com",
-  createdAt: new Date(),
-  products: randomNum(50),
-  sales: randomNum(150),
-  status: randomNum(100) % 2 === 0 ? "active" : "inActive",
-  thumbanil: "/wiaah_logo.png",
-  city: "Geneve",
-  country: "Switzerland",
-  ips: ["192.459.235.1", "158.135.154.3", "159.124.156.1"],
-  visits: 150,
-}));
+import { mapArray, NumberShortner, useForm } from "utils";
 
 const buyers: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath, getUrl } = useRouting();
   const [qrcode, setQrCode] = React.useState<string>();
-  const { changeTotalItems, controls, pagination } = usePaginationControls();
+  const { controls, pagination } = usePaginationControls();
+
+  const { form, handleChange, inputProps } = useForm<
+    Parameters<typeof useGetFilteredBuyers>[0]
+  >({ pagination }, { pagination });
+
+  const { data: buyers } = useGetFilteredBuyers(form);
+
   return (
     <TableContainer>
       <Table
@@ -89,8 +63,6 @@ const buyers: NextPage = () => {
             <Th>{t("Status")}</Th>
             <Th>{t("Date Created")}</Th>
             <Th>{t("Vists")}</Th>
-            <Th>{t("city")}</Th>
-            <Th>{t("Country")}</Th>
             <Th>{t("IPs")}</Th>
             <Th>{t("QR Code")}</Th>
             <Th>{t("Action")}</Th>
@@ -100,9 +72,11 @@ const buyers: NextPage = () => {
         <TBody>
           <Tr>
             <Td></Td>
-
             <Td>
-              <Input />
+              <Input {...inputProps("name")} />
+            </Td>
+            <Td>
+              <Input {...inputProps("email")} />
             </Td>
             <Td>
               <Select>
@@ -111,53 +85,44 @@ const buyers: NextPage = () => {
               </Select>
             </Td>
             <Td>
-              <Input />
+              <Input type={"number"} {...inputProps("balance")} />
             </Td>
             <Td>
-              <Input />
-            </Td>
-            <Td>
-              <Select>
+              <Select
+                {...inputProps("status", "value", "onOptionSelect", (e) => e)}
+              >
                 <SelectOption value={"active"}>{t("active")}</SelectOption>
                 <SelectOption value={"inActive"}>{t("inActive")}</SelectOption>
               </Select>
             </Td>
-
             <Td>
-              <DateFormInput />
-            </Td>
-
-            <Td>
-              <Input />
+              <DateFormInput
+                {...inputProps("date", "dateValue", "onDateChange", (e) => e)}
+              />
             </Td>
             <Td>
-              <Input />
+              <Input {...inputProps("visits")} />
             </Td>
             <Td>
-              <Input />
-            </Td>
-            <Td>
-              <Input />
+              <Input {...inputProps("ip")} />
             </Td>
           </Tr>
 
-          {mockSellers.map((seller, i) => (
+          {mapArray(buyers, (buyer, i) => (
             <Tr className="hover:bg-darkerGray cursor-pointer" key={i}>
               <Td>
-                <Avatar src={seller.thumbanil} />
+                <Avatar src={buyer.photo} alt={buyer.firstName} />
               </Td>
-              <Td>{seller.name}</Td>
-              <Td>{seller.email}</Td>
-              <Td>{seller.verified ? t("Verified") : t("unVerified")}</Td>
-              <Td>{seller.balance}</Td>
-              <Td>{seller.status}</Td>
-              <Td>{new Date(seller.createdAt).toDateString()}</Td>
-              <Td>{NumberShortner(seller.visits)}</Td>
-              <Td>{seller.city}</Td>
-              <Td>{seller.country}</Td>
+              <Td>{buyer.firstName}</Td>
+              <Td>{buyer.email}</Td>
+              <Td>{buyer.verified ? t("Verified") : t("unVerified")}</Td>
+              <Td>{buyer.balance?.withdrawableBalance}</Td>
+              <Td>{buyer.status}</Td>
+              <Td>{new Date(buyer.createdAt).toDateString()}</Td>
+              <Td>{NumberShortner(buyer.profile?.visits)}</Td>
               <Td>
                 <div className="flex flex-col w-full gap-1">
-                  {seller.ips.map((v, i) => (
+                  {buyer.ips?.map((v, i) => (
                     <p key={v + i}>{v}</p>
                   ))}
                 </div>
@@ -167,7 +132,7 @@ const buyers: NextPage = () => {
                   onClick={() => {
                     setQrCode(
                       getUrl((r) =>
-                        r.visitSellerSocialProfile({ sellerId: seller.id })
+                        r.visitSellerSocialProfile({ sellerId: buyer.id })
                       )
                     );
                   }}
@@ -184,7 +149,7 @@ const buyers: NextPage = () => {
                         r
                           .addPath(getCurrentPath())
                           .addPath("edit")
-                          .addPath(seller.id)
+                          .addPath(buyer.id)
                       )
                     }
                     className="w-8 h-8 p-2 bg-cyan-400"
@@ -199,7 +164,7 @@ const buyers: NextPage = () => {
           ))}
         </TBody>
       </Table>
-      <Pagination />
+      <Pagination controls={controls} />
       <Modal isOpen={!!qrcode} onClose={() => setQrCode(undefined)}>
         <ModalOverlay />
         <ModalContent>

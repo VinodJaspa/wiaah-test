@@ -5,7 +5,9 @@ import { VatSection } from "./VatSection";
 
 jest.mock("@UI", () => ({
   ...jest.requireActual("@UI"),
-  useUpdateMyShopMutation: jest.fn(),
+  useUpdateMyShopMutation: jest
+    .fn()
+    .mockImplementation(() => ({ mutate: jest.fn() })),
 }));
 
 describe("Vat Section testing", () => {
@@ -14,7 +16,6 @@ describe("Vat Section testing", () => {
   let mockUpdateShop = jest.fn();
 
   beforeAll(() => {
-    mockUseUpdateMyShop.mockImplementation(() => ({ mutate: mockUpdateShop }));
     wrapper = shallow(<VatSection />);
   });
 

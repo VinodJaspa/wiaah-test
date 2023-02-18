@@ -37,11 +37,14 @@ import { accountTypes } from "@UI";
 
 export interface AccountSettingsSectionProps {
   variant?: "seller" | "buyer";
+  accountId?: string;
 }
 
 export const AccountSettingsSection: React.FC<AccountSettingsSectionProps> = ({
   variant = "seller",
+  accountId,
 }) => {
+  // if(accountId)
   const isBuyer = variant === "buyer";
   const isSeller = variant === "seller";
   const { t } = useTranslation();

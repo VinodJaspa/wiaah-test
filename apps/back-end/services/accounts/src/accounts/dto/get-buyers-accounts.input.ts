@@ -32,4 +32,10 @@ export class GetBuyersAccountsInput {
 
   @Field(() => Float, { nullable: true })
   balance?: number;
+
+  @Field(() => Int, { nullable: true })
+  visits?: number;
+
+  @Field(() => String, { nullable: true })
+  ip?: string;
 }

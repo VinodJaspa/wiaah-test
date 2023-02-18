@@ -181,13 +181,13 @@ type Hotel {
 }
 
 type ServiceCategoryFilterValue {
-  name: String!
+  name: [TranslationText!]!
   filteringValue: String!
   sortOrder: Int!
 }
 
 type ServiceCategoryFilter {
-  filterGroupName: String!
+  filterGroupName: [TranslationText!]!
   filteringKey: String!
   sortOrder: Int!
   filterValues: [ServiceCategoryFilterValue!]!
@@ -195,17 +195,17 @@ type ServiceCategoryFilter {
 
 type ServiceCategory {
   id: ID!
-  name: String!
+  name: [TranslationText!]!
   sortOrder: Int!
   status: ServiceCategoryStatus!
   slug: String!
   filters: [ServiceCategoryFilter!]!
   thumbnail: String!
-  description: TranslationText!
-  metaTagDescription: TranslationText!
-  metaTagTitle: TranslationText!
-  metaTagKeywords: TranslationText!
-  seo: TranslationText!
+  description: [TranslationText!]!
+  metaTagDescription: [TranslationText!]!
+  metaTagTitle: [TranslationText!]!
+  metaTagKeywords: [TranslationText!]!
+  seo: [TranslationText!]!
 }
 
 enum ServiceCategoryStatus {
@@ -910,6 +910,7 @@ input CreateServiceCategoryInput {
   name: [TranslationTextInput!]!
   filters: [ServiceCategoryFilterInput!]!
   slug: String!
+  sortOrder: Int!
   thumbnail: String!
   description: TranslationTextInput!
   metaTagDescription: TranslationTextInput!
@@ -935,6 +936,7 @@ input UpdateServiceCategoryInput {
   name: [TranslationTextInput!]
   filters: [ServiceCategoryFilterInput!]
   slug: String
+  sortOrder: Int
   thumbnail: String
   description: TranslationTextInput
   metaTagDescription: TranslationTextInput
@@ -942,6 +944,7 @@ input UpdateServiceCategoryInput {
   metaTagKeywords: TranslationTextInput
   seo: TranslationTextInput
   id: String!
+  status: ServiceCategoryStatus
 }
 
 input CreateHotelInput {
