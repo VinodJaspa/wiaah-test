@@ -161,6 +161,7 @@ export type Affiliation = {
   itemId: Scalars["ID"];
   itemType: Scalars["String"];
   product?: Maybe<Product>;
+  seller: Account;
   sellerId: Scalars["ID"];
   service?: Maybe<Service>;
   status: AffiliationStatus;
@@ -187,6 +188,8 @@ export type AffiliationPost = {
 
 export type AffiliationPurchase = {
   __typename?: "AffiliationPurchase";
+  affiliation: Affiliation;
+  affiliationId: Scalars["ID"];
   affiliator: Account;
   affiliatorId: Scalars["ID"];
   createdAt: Scalars["DateTime"];
@@ -1070,6 +1073,29 @@ export type GetAccountDeletionRequestsInput = {
   username?: Maybe<Scalars["String"]>;
 };
 
+export type GetAdminFilteredNewsfeedPostsInput = {
+  comments?: Maybe<Scalars["Int"]>;
+  date?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["String"]>;
+  legend?: Maybe<Scalars["String"]>;
+  likes?: Maybe<Scalars["Int"]>;
+  pagination: GqlPaginationInput;
+  shares?: Maybe<Scalars["Int"]>;
+  username?: Maybe<Scalars["String"]>;
+  views?: Maybe<Scalars["Int"]>;
+};
+
+export type GetAdminFilteredStoriesInput = {
+  comments?: Maybe<Scalars["Int"]>;
+  date?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["String"]>;
+  legend?: Maybe<Scalars["String"]>;
+  likes?: Maybe<Scalars["Int"]>;
+  shares?: Maybe<Scalars["Int"]>;
+  username?: Maybe<Scalars["String"]>;
+  views?: Maybe<Scalars["Int"]>;
+};
+
 export type GetAffiliationHistoryInput = {
   pagination: GqlPaginationInput;
 };
@@ -1129,12 +1155,13 @@ export type GetFilteredAffiliationHistoryInput = {
 };
 
 export type GetFilteredAffiliationsInput = {
-  commission: Scalars["Float"];
-  createdAfter: Scalars["DateTime"];
-  createdBefore: Scalars["DateTime"];
-  link: Scalars["String"];
-  price: Scalars["Float"];
-  seller: Scalars["String"];
+  commission?: Maybe<Scalars["Float"]>;
+  createdAfter?: Maybe<Scalars["DateTime"]>;
+  createdBefore?: Maybe<Scalars["DateTime"]>;
+  link?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  price?: Maybe<Scalars["Float"]>;
+  seller?: Maybe<Scalars["String"]>;
 };
 
 export type GetFilteredCategoriesInput = {
@@ -1772,6 +1799,7 @@ export type Mutation = {
   activateRestaurant: Restaurant;
   addNewBillingAddress: BillingAddress;
   addProductToCart: CartProduct;
+  adminDeleteNewsfeedPost: Scalars["Boolean"];
   adminDeleteProduct: Scalars["Boolean"];
   adminDeleteService: Scalars["Boolean"];
   adminEditAccount: Account;
@@ -1964,6 +1992,10 @@ export type MutationActivateRestaurantArgs = {
 
 export type MutationAddProductToCartArgs = {
   addItemToCartArgs: AddShoppingCartProductItemInput;
+};
+
+export type MutationAdminDeleteNewsfeedPostArgs = {
+  id: Scalars["String"];
 };
 
 export type MutationAdminDeleteProductArgs = {
@@ -2810,6 +2842,7 @@ export type Query = {
   getAccountVerificationRequests: Array<AccountVerification>;
   getAction: Array<Action>;
   getAdminFilteredProducts: Array<Product>;
+  getAdminFilteredStories: Array<Story>;
   getAdminProductsFilter: Filter;
   getAdminProductsFilters: Array<Filter>;
   getAdminProfile: Profile;
@@ -2836,6 +2869,7 @@ export type Query = {
   getFilteredAffiliationsHistory: Array<AffiliationPurchase>;
   getFilteredBeuatyCenterTreatments: Array<Treatment>;
   getFilteredBuyers: Array<Account>;
+  getFilteredNewsfeedPosts: Array<NewsfeedPost>;
   getFilteredOrders: Array<Order>;
   getFilteredProductCategories: Array<Category>;
   getFilteredSellers: Array<Account>;
@@ -2884,7 +2918,6 @@ export type Query = {
   getNearShops: Array<Shop>;
   getNewsfeedHashtagPosts: NewsfeedHashtagSearch;
   getNewsfeedPostById: NewsfeedPost;
-  getNewsfeedPosts: Array<NewsfeedPost>;
   getNewsfeedPostsByUserId: Array<NewsfeedPost>;
   getOrder: Order;
   getPendingSellers: Array<Account>;
@@ -2980,6 +3013,10 @@ export type QueryGetAdminFilteredProductsArgs = {
   args: GetFilteredProductsAdminInput;
 };
 
+export type QueryGetAdminFilteredStoriesArgs = {
+  args: GetAdminFilteredStoriesInput;
+};
+
 export type QueryGetAdminProductsFilterArgs = {
   id: Scalars["String"];
 };
@@ -3058,6 +3095,10 @@ export type QueryGetFilteredBeuatyCenterTreatmentsArgs = {
 
 export type QueryGetFilteredBuyersArgs = {
   getBuyersInput: GetBuyersAccountsInput;
+};
+
+export type QueryGetFilteredNewsfeedPostsArgs = {
+  args: GetAdminFilteredNewsfeedPostsInput;
 };
 
 export type QueryGetFilteredOrdersArgs = {

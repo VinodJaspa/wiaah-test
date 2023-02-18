@@ -457,7 +457,7 @@ type Query {
   getTopHashtagNewsfeed: TopHashtagNewsfeedPosts!
   getAdminProfile(id: String!): Profile!
   getProfileNewsfeedPosts(getUserNewsfeedPosts: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
-  getNewsfeedPosts: [NewsfeedPost!]!
+  getFilteredNewsfeedPosts(args: GetAdminFilteredNewsfeedPostsInput!): [NewsfeedPost!]!
   comments: [Comment!]!
   updateComment(updateCommentInput: UpdateCommentInput!): PaginationCommentsResponse!
   getContentComments(getContentCommentsArgs: GetContentCommentsInput!): [Comment!]!
@@ -466,6 +466,7 @@ type Query {
   getMySavedPosts(args: GetMySavedPostsInput!): UserSavedPostsGroup!
   getStory(storyId: String!): Story!
   getUserStory(userId: String!): Story!
+  getAdminFilteredStories(args: GetAdminFilteredStoriesInput!): [Story!]!
   getUserPrevStory(storyId: String!): Story!
   getMyStories: [Story!]!
   getStoryViews(getStoryViewsInput: GetStorySeenByInput!): [StoryView!]!
@@ -515,6 +516,18 @@ input GetNewsfeedPostsByUserIdInput {
   pagination: GqlPaginationInput!
 }
 
+input GetAdminFilteredNewsfeedPostsInput {
+  id: String
+  username: String
+  legend: String
+  views: Int
+  likes: Int
+  comments: Int
+  shares: Int
+  date: String
+  pagination: GqlPaginationInput!
+}
+
 input UpdateCommentInput {
   content: String
   mentions: [CommentMentionInput!]
@@ -540,6 +553,17 @@ input GetHashtagNewsfeedPostsInput {
 
 input GetMySavedPostsInput {
   pagination: GqlPaginationInput!
+}
+
+input GetAdminFilteredStoriesInput {
+  id: String
+  username: String
+  legend: String
+  views: Int
+  likes: Int
+  comments: Int
+  shares: Int
+  date: String
 }
 
 input GetStorySeenByInput {
@@ -627,6 +651,7 @@ type Mutation {
   removeNewsfeedPost(id: Int!): NewsfeedPost!
   updateProfile(updateProfileInput: UpdateProfileAdminInput!): Profile!
   editNewsfeedPostAdmin(args: UpdatePostAdminInput!): Boolean!
+  adminDeleteNewsfeedPost(id: String!): Boolean!
   createReaction(CreateReactionInput: CreateReactionInput!): Boolean!
   removeReaction(removeReactionArgs: RemoveReactionInput!): ContentReaction!
   createComment(createCommentInput: CreateCommentInput!): Comment!

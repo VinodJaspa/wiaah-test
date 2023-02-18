@@ -53,6 +53,7 @@ export class AffiliationPurchaseController {
         purchaserId,
         paidCommissionAmount: amount,
         paidCommissionPercent: percent,
+        affiliationId,
       }),
     );
   }
@@ -72,6 +73,7 @@ export class AffiliationPurchaseController {
           paidCommissionAmount: value.input.affiliationAmount,
           paidCommissionPercent:
             value.input.affiliationAmount / value.input.paidPrice,
+          affiliationId: value.input.affiliationId,
         }),
       );
     }

@@ -15,7 +15,7 @@ import {
   GqlCurrentUser,
 } from 'nest-utils';
 
-import { Affiliation, Product } from '@affiliation/entities';
+import { Account, Affiliation, Product, Service } from '@affiliation/entities';
 import {
   CreateAffiliationInput,
   GetMyAffiliationsInput,
@@ -84,12 +84,20 @@ export class AffiliationResolver {
     };
   }
 
-  @ResolveField(() => Product)
+  @ResolveField(() => Service)
   service(@Parent() aff: Affiliation) {
     return {
-      __typename: 'Product',
+      __typename: 'Service',
       id: aff.itemId,
       serviceType: aff.itemType,
+    };
+  }
+
+  @ResolveField(() => Account)
+  seller(@Parent() aff: Affiliation) {
+    return {
+      __typename: 'Account',
+      id: aff.sellerId,
     };
   }
 }

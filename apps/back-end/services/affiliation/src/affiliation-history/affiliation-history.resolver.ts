@@ -9,7 +9,7 @@ import {
 import { GetSellerAffiliationHistoryQuery } from './queries';
 import { UseGuards } from '@nestjs/common';
 import { GetAffiliationHistoryInput } from './dto/get-affiliatiom-history.input';
-import { Account, Product, Service } from '@affiliation/entities';
+import { Account, Affiliation, Product, Service } from '@affiliation/entities';
 
 @Resolver(() => AffiliationPurchase)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -65,6 +65,13 @@ export class AffiliationHistoryResolver {
     return {
       __typename: 'Account',
       id: aff.affiliatorId,
+    };
+  }
+  @ResolveField(() => Affiliation)
+  affiliation(@Parent() aff: AffiliationPurchase) {
+    return {
+      __typename: 'Account',
+      id: aff.affiliationId,
     };
   }
 }

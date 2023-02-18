@@ -36,6 +36,7 @@ type Affiliation {
   expireAt: DateTime!
   product: Product
   service: Service
+  seller: Account!
 }
 
 enum AffiliationStatus {
@@ -56,6 +57,7 @@ type AffiliationPurchase {
   product: Product
   sellerId: ID!
   affiliatorId: ID!
+  affiliationId: ID!
   purchaserId: ID!
   createdAt: DateTime!
   paidCommissionPercent: Float!
@@ -63,6 +65,7 @@ type AffiliationPurchase {
   seller: Account!
   purchaser: Account!
   affiliator: Account!
+  affiliation: Affiliation!
 }
 
 type Query {
@@ -109,12 +112,13 @@ input GetUserAffiliationsInput {
 }
 
 input GetFilteredAffiliationsInput {
-  seller: String!
-  commission: Float!
-  price: Float!
-  link: String!
-  createdBefore: DateTime!
-  createdAfter: DateTime!
+  seller: String
+  commission: Float
+  price: Float
+  link: String
+  createdBefore: DateTime
+  createdAfter: DateTime
+  pagination: GqlPaginationInput!
 }
 
 input GetMyAffiliationsInput {

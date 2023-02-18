@@ -7,9 +7,11 @@ import { useRouting } from "routing";
 import {
   DateFormInput,
   EditIcon,
+  getAdminAffiliationsFetcher,
   Image,
   Input,
   Pagination,
+  PriceDisplay,
   Table,
   TableContainer,
   TBody,
@@ -18,40 +20,21 @@ import {
   THead,
   Tr,
   TrashIcon,
+  useGetAdminAffiliationsQuery,
+  usePaginationControls,
 } from "ui";
-import { mapArray, randomNum } from "utils";
-
-type Affiliation = {
-  id: string;
-  sellerId: string;
-  sellerName: string;
-  affiliationLink: string;
-  createdAt: string;
-  commision: number;
-  product: {
-    thumbnail: string;
-    price: number;
-    id: string;
-  };
-};
-
-const affiliations: Affiliation[] = [...Array(10)].map((_, i) => ({
-  id: randomNum(165464).toString(),
-  affiliationLink: `test link ${i}`,
-  commision: randomNum(15),
-  sellerId: i.toString(),
-  sellerName: `seller name ${i}`,
-  createdAt: new Date().toString(),
-  product: {
-    id: i.toString(),
-    price: randomNum(150),
-    thumbnail: getRandomImage(),
-  },
-}));
+import { mapArray, randomNum, useForm } from "utils";
 
 const AffiliationManagement: NextPage = () => {
-  const { getCurrentPath, visit } = useRouting();
+  const { getCurrentPath, visit, getUrl } = useRouting();
   const { t } = useTranslation();
+
+  const { pagination } = usePaginationControls();
+  const { form, inputProps } = useForm<
+    Parameters<typeof getAdminAffiliationsFetcher>[0]
+  >({ pagination }, { pagination });
+  const { data } = useGetAdminAffiliationsQuery(form);
+
   return (
     <section>
       <TableContainer className="w-full">
@@ -69,36 +52,46 @@ const AffiliationManagement: NextPage = () => {
             <Tr>
               <Th></Th>
               <Th>
-                <Input />
+                <Input {...inputProps("seller")} />
               </Th>
               <Th>
-                <Input type={"number"} />
+                <Input {...inputProps("commission")} type={"number"} />
               </Th>
               <Th>
-                <Input type={"number"} />
+                <Input {...inputProps("price")} type={"number"} />
               </Th>
               <Th>
-                <Input />
+                <Input {...inputProps("link")} />
               </Th>
               <Th>
-                <DateFormInput />
+                <DateFormInput
+                  {...inputProps(
+                    "createdAfter",
+                    "dateValue",
+                    "onDateChange",
+                    (e) => e
+                  )}
+                />
               </Th>
             </Tr>
           </THead>
           <TBody>
             {mapArray(
-              affiliations,
+              data,
               ({
-                affiliationLink,
                 commision,
                 createdAt,
                 id,
                 product,
-                sellerName,
+                seller,
+                sellerId,
+                service,
+                itemId,
+                itemType,
               }) => (
                 <Tr key={id}>
                   <Td>
-                    <Image src={product.thumbnail} />
+                    <Image src={product.thumbnail || service.thumbnail} />
                   </Td>
                   <Td>
                     <Link
@@ -107,12 +100,20 @@ const AffiliationManagement: NextPage = () => {
                         // r.visitSocialPostAuthorProfile({ id: sellerId }).route
                       }
                     >
-                      <p className="underline text-primary">{sellerName}</p>
+                      <p className="underline text-primary">
+                        {seller?.profile?.username}
+                      </p>
                     </Link>
                   </Td>
                   <Td>{commision}%</Td>
-                  <Td>{product.price}</Td>
-                  <Td>{affiliationLink.slice(0, 15)}</Td>
+                  <Td>
+                    <PriceDisplay price={product.price || service.price} />
+                  </Td>
+                  <Td>
+                    {itemType === "product"
+                      ? getUrl((r) => r.visitProduct(itemId))
+                      : getUrl((r) => r.visitService({ id: itemId }, itemType))}
+                  </Td>
                   <Td>{new Date(createdAt).toDateString()}</Td>
                   <Td>
                     <div className="grid grid-cols-3 justify-center gap-2 fill-white text-white text-sm">
