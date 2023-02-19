@@ -1,7 +1,8 @@
-import { InputType, Int, Field, ID, registerEnumType } from '@nestjs/graphql';
-import { ReportContentType } from 'prismaClient';
+import { InputType, Field, ID, registerEnumType } from '@nestjs/graphql';
+import { ReportContentType, ReportType } from 'prismaClient';
 
 registerEnumType(ReportContentType, { name: 'ReportContentType' });
+registerEnumType(ReportType, { name: 'ReportType' });
 
 @InputType()
 export class CreateReportInput {
@@ -16,4 +17,7 @@ export class CreateReportInput {
 
   @Field(() => String)
   message: string;
+
+  @Field(() => ReportType)
+  type: ReportType;
 }

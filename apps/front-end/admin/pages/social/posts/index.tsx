@@ -1,4 +1,5 @@
 import { Link } from "@components";
+import { AttachmentType } from "@features/API";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BsKey } from "react-icons/bs";
@@ -17,27 +18,20 @@ import {
   THead,
   Tr,
   TrashIcon,
+  useAdminDeleteNewsfeedPostMutation,
+  useGetAdminFilteredNewsfeedPosts,
 } from "ui";
-import { mapArray, NumberShortner, randomNum } from "utils";
-
-const posts = [...Array(10)].map(() => ({
-  id: randomNum(500000).toString(),
-  username: "Wiaah",
-  authorId: "test id",
-  description:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It h",
-  hashtags: ["new", "sports", "fun", "world cup"],
-  comments: randomNum(500000),
-  likes: randomNum(50000),
-  views: randomNum(50000),
-  shares: randomNum(5000),
-  thumbnail: getRandomImage(),
-  type: "image",
-  createdAt: new Date(),
-}));
+import { mapArray, NumberShortner, randomNum, useForm } from "utils";
 
 const SocialPosts = () => {
   const { t } = useTranslation();
+
+  const { mutate } = useAdminDeleteNewsfeedPostMutation();
+  const { form, handleChange, inputProps } = useForm<
+    Parameters<typeof useGetAdminFilteredNewsfeedPosts>[0]
+  >({});
+  const { data } = useGetAdminFilteredNewsfeedPosts(form);
+
   return (
     <>
       <TableContainer>
@@ -60,74 +54,85 @@ const SocialPosts = () => {
             <Tr>
               <Td></Td>
               <Td>
-                <Input />
+                <Input {...inputProps("id")} />
               </Td>
               <Td>
-                <Input />
+                <Input {...inputProps("username")} />
               </Td>
               <Td>
-                <Input />
+                <Input {...inputProps("legend")} />
               </Td>
               <Td>
-                <Input type="number" />
+                <Input {...inputProps("views")} type="number" />
               </Td>
               <Td>
-                <Input type="number" />
+                <Input {...inputProps("likes")} type="number" />
               </Td>
               <Td>
-                <Input type="number" />
+                <Input {...inputProps("comments")} type="number" />
               </Td>
               <Td>
-                <Input type="number" />
+                <Input {...inputProps("shares")} type="number" />
               </Td>
               <Td>
-                <DateFormInput />
+                <DateFormInput
+                  dateValue={form.date}
+                  onDateChange={(v) => handleChange("date", v)}
+                />
               </Td>
             </Tr>
 
-            {mapArray(posts, (data, i) => (
+            {mapArray(data, (data, i) => (
               <Tr key={i}>
                 <Td className="w-fit">
-                  {data.type === "video" ? (
-                    <></>
+                  {data.attachments[0].type === AttachmentType.Vid ? (
+                    <>vid</>
                   ) : (
-                    <Image className="w-32" src={data.thumbnail} />
+                    <Image className="w-32" src={data.attachments[0].src} />
                   )}
                 </Td>
                 <Td>{data.id.slice(0, 4)}...</Td>
                 <Td className="text-primary">
                   <Link
                     href={(r) =>
-                      r.visitSocialPostAuthorProfile({ id: data.authorId })
-                        .route
+                      r.visitSocialPostAuthorProfile({
+                        id: data.authorProfileId,
+                      }).route
                     }
                   >
                     <p className="text-primary underline cursor-pointer">
-                      {data.username}
+                      {data.publisher.username}
                     </p>
                   </Link>
                 </Td>
                 <Td className="w-[30%]">
                   <div className="flex flex-col gap-4">
-                    <p>{data.description.slice(0, 80)}...</p>
+                    <p>{data.content.slice(0, 80)}...</p>
                     <div className="flex flex-wrap gap-2">
                       {data.hashtags.map((tag, i) => (
                         <Badge variant="off" key={i}>
-                          #{tag}
+                          <>#{tag}</>
                         </Badge>
                       ))}
                     </div>
                   </div>
                 </Td>
                 <Td>{NumberShortner(data.views)}</Td>
-                <Td>{NumberShortner(data.likes)}</Td>
+                <Td>{NumberShortner(data.reactionNum)}</Td>
                 <Td>{NumberShortner(data.comments)}</Td>
                 <Td>{NumberShortner(data.shares)}</Td>
                 <Td>{new Date(data.createdAt).toDateString()}</Td>
                 <Td className="text-white">
                   <div className="flex flex-wrap gap-2">
-                    <BsKey className="w-8 h-8 p-2 bg-green-500" />
-                    <TrashIcon className="w-8 h-8 p-2 bg-red-500" />
+                    <Link
+                      href={(r) => r.visitNewsfeedAccountsPostPage(data).route}
+                    >
+                      <BsKey className="w-8 h-8 p-2 bg-green-500" />
+                    </Link>
+                    <TrashIcon
+                      onClick={() => mutate(data.id)}
+                      className="w-8 h-8 p-2 bg-red-500"
+                    />
                   </div>
                 </Td>
               </Tr>

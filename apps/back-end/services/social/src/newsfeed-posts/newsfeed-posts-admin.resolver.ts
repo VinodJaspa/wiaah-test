@@ -4,7 +4,10 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { accountType, GqlAuthorizationGuard } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 
-import { UpdatePostAdminInput } from './dto';
+import {
+  GetAdminFilteredNewsfeedPostsInput,
+  UpdatePostAdminInput,
+} from './dto';
 import { GetNewsfeedPostsByUserIdInput } from './dto/get-newsfeed-posts-by-user-id.input';
 import { NewsfeedPostsService } from './newsfeed-posts.service';
 
@@ -28,8 +31,10 @@ export class NewsfeedPostsAdminResolver {
   }
 
   @Query(() => [NewsfeedPost])
-  getNewsfeedPosts() {
-    return this.getFilteredNewsfeedPosts();
+  async getFilteredNewsfeedPosts(
+    @Args('args') args: GetAdminFilteredNewsfeedPostsInput,
+  ) {
+    return this.prisma.newsfeedPost.findMany({});
   }
 
   @Mutation(() => Boolean)
@@ -40,7 +45,14 @@ export class NewsfeedPostsAdminResolver {
     return true;
   }
 
-  async getFilteredNewsfeedPosts() {
-    return this.prisma.newsfeedPost.findMany({});
+  @Mutation(() => Boolean)
+  async adminDeleteNewsfeedPost(@Args('id') id: string) {
+    await this.prisma.newsfeedPost.delete({
+      where: {
+        id,
+      },
+    });
+
+    return true;
   }
 }

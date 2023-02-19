@@ -1,10 +1,10 @@
 import { Link } from "@components";
 import { NextPage } from "next";
-import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import {
+  DateFormInput,
   Image,
   Input,
   Pagination,
@@ -17,48 +17,20 @@ import {
   THead,
   Tr,
   TrashIcon,
+  useGetAdminAffiliationsHistoryQuery,
+  usePaginationControls,
 } from "ui";
-import { randomNum } from "utils";
-
-interface AffiliationHistory {
-  id: string;
-  productId: string;
-  seller: string;
-  sellerId: string;
-  marketer: string;
-  marketerId: string;
-  thumbnail: string;
-  buyer: string;
-  buyerId: string;
-  purchasedAt: string;
-  commission: number;
-  price: number;
-  commissionPrice: number;
-  affiliationLink: string;
-  productTitle: string;
-}
-
-const history: AffiliationHistory[] = [...Array(10)].map((_, i) => ({
-  buyer: "buyer name",
-  buyerId: "buyer-" + i,
-  commission: randomNum(15),
-  commissionPrice: randomNum(30),
-  id: "id-" + i,
-  marketer: "marketer name",
-  marketerId: "marketer-" + i,
-  price: randomNum(150),
-  productId: "prod-" + i,
-  productTitle:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since t",
-  purchasedAt: new Date().toString(),
-  seller: "seller name",
-  sellerId: "seller-" + i,
-  thumbnail: getRandomImage(),
-  affiliationLink: "affiliation link test-" + i,
-}));
+import { useForm } from "utils";
 
 const AffiliationHistory: NextPage = () => {
   const { t } = useTranslation();
+  const { getUrl } = useRouting();
+  const { pagination, controls } = usePaginationControls();
+  const { form, inputProps, handleChange } = useForm<
+    Parameters<typeof useGetAdminAffiliationsHistoryQuery>[0]
+  >({ pagination }, { pagination });
+  const { data: history } = useGetAdminAffiliationsHistoryQuery(form);
+
   return (
     <section>
       <TableContainer>
@@ -80,28 +52,35 @@ const AffiliationHistory: NextPage = () => {
             <Tr>
               <Th></Th>
               <Th>
-                <Input />
+                <Input {...inputProps("title")} />
               </Th>
               <Th>
-                <Input />
+                <Input {...inputProps("seller")} />
               </Th>
               <Th>
-                <Input />
+                <Input {...inputProps("affiliator")} />
               </Th>
               <Th>
-                <Input />
+                <Input {...inputProps("purchaser")} />
               </Th>
               <Th>
-                <Input type="number" />
+                <Input {...inputProps("price")} type="number" />
               </Th>
               <Th>
-                <Input type="number" />
+                <Input {...inputProps("commission")} type="number" />
               </Th>
               <Th>
-                <Input type="number" />
+                <Input {...inputProps("money_generated")} type="number" />
               </Th>
               <Th>
-                <Input />
+                <DateFormInput
+                  {...inputProps(
+                    "purchasedAfter",
+                    "dateValue",
+                    "onDateChange",
+                    (e) => e
+                  )}
+                />
               </Th>
               <Th>
                 <Input />
@@ -111,53 +90,72 @@ const AffiliationHistory: NextPage = () => {
           <TBody>
             {history.map(
               ({
-                buyer,
-                commission,
-                commissionPrice,
-                marketer,
-                price,
-                purchasedAt,
+                affiliator,
+                paidCommissionAmount,
+                paidCommissionPercent,
+                purchaser,
                 seller,
-                thumbnail,
-                affiliationLink,
-                productTitle,
+                product,
+                service,
+                itemId,
+                itemType,
+                affiliatorId,
+                affiliation,
+                sellerId,
+                purchaserId,
                 id,
               }) => (
                 <Tr key={id}>
                   <Td>
-                    <Image src={thumbnail} />
+                    <Image src={product?.thumbnail || service?.thumbnail} />
                   </Td>
-                  <Td>{productTitle.slice(0, 15)}...</Td>
+                  <Td>{(product?.title || service?.title).slice(0, 15)}...</Td>
                   <Td>
-                    <Link href={(r) => ""}>
+                    <Link
+                      href={(r) =>
+                        r.visitSellerSocialProfile({ id: seller }).route
+                      }
+                    >
                       <p className="text-primary underline cursor-pointer">
-                        {seller}
+                        {seller?.profile?.username}
                       </p>
                     </Link>
                   </Td>
                   <Td>
-                    <Link href={(r) => ""}>
+                    <Link
+                      href={(r) =>
+                        r.visitSellerSocialProfile({ id: affiliatorId }).route
+                      }
+                    >
                       <p className="text-primary underline cursor-pointer">
-                        {marketer}
+                        {affiliator?.profile?.username}
                       </p>
                     </Link>
                   </Td>
                   <Td>
-                    <Link href={(r) => ""}>
+                    <Link
+                      href={(r) =>
+                        r.visitBuyerSocialProfile({ id: purchaserId }).route
+                      }
+                    >
                       <p className="text-primary underline cursor-pointer">
-                        {buyer}
+                        {purchaser?.profile?.username}
                       </p>
                     </Link>
                   </Td>
                   <Td>
-                    <PriceDisplay price={price} />
+                    <PriceDisplay price={product?.price || service?.price} />
                   </Td>
-                  <Td>{commission}%</Td>
+                  <Td>{paidCommissionPercent}%</Td>
                   <Td>
-                    <PriceDisplay price={commissionPrice} />
+                    <PriceDisplay price={paidCommissionAmount} />
                   </Td>
-                  <Td>{new Date(purchasedAt).toDateString()}</Td>
-                  <Td>{affiliationLink.slice(0, 15)}</Td>
+                  <Td>{new Date().toDateString()}</Td>
+                  <Td>
+                    {itemType === "service"
+                      ? getUrl((r) => r.visitService({ id: itemId }, itemType))
+                      : getUrl((r) => r.visitProduct(itemId))}
+                  </Td>
                   <Td>
                     <div className="grid grid-cols-3 justify-center gap-2 fill-white text-white text-sm">
                       <TrashIcon className="w-8 h-8 p-2 bg-red-500" />

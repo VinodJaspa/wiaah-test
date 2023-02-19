@@ -10,4 +10,10 @@ export class CreateSiteInformationInput {
 
   @Field(() => String)
   title: string;
+
+  @Field(() => Int)
+  sortOrder: number;
+
+  @Field(() => String)
+  route: string;
 }

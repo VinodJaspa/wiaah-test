@@ -1,7 +1,14 @@
-import { Field, Float, GraphQLISODateTime, InputType } from '@nestjs/graphql';
+import {
+  Field,
+  Float,
+  GraphQLISODateTime,
+  InputType,
+  PartialType,
+} from '@nestjs/graphql';
+import { GqlPaginationInput } from 'nest-utils';
 
 @InputType()
-export class GetFilteredAffiliationsInput {
+class input {
   @Field(() => String)
   seller: string;
   @Field(() => Float)
@@ -18,4 +25,10 @@ export class GetFilteredAffiliationsInput {
 
   @Field(() => GraphQLISODateTime)
   createdAfter: string;
+}
+
+@InputType()
+export class GetFilteredAffiliationsInput extends PartialType(input) {
+  @Field(() => GqlPaginationInput)
+  pagination: GqlPaginationInput;
 }

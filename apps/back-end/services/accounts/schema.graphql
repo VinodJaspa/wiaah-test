@@ -132,7 +132,7 @@ type Query {
   getFilteredSellers(getSellersInput: GetFilteredSellersAccountsInput!): [Account!]!
   getFilteredBuyers(getBuyersInput: GetBuyersAccountsInput!): [Account!]!
   adminGetAccount(id: String!): Account!
-  getPendingSellers(pagination: GqlPaginationInput!): [Account!]!
+  getPendingSellers(args: GetAdminPendingSellersInput!): [Account!]!
   getAccountDeletionRequests(args: GetAccountDeletionRequestsInput!): [AccountDeletionRequest!]!
 }
 
@@ -168,6 +168,14 @@ input GetBuyersAccountsInput {
   balance: Float
   visits: Int
   ip: String
+}
+
+input GetAdminPendingSellersInput {
+  email: String
+  name: String
+  CRN: String
+  dateCreated: String
+  pagination: GqlPaginationInput!
 }
 
 input GetAccountDeletionRequestsInput {

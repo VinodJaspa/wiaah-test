@@ -25,6 +25,9 @@ export class AffiliationPurchase {
   affiliatorId: string;
 
   @Field(() => ID)
+  affiliationId: string;
+
+  @Field(() => ID)
   purchaserId: string;
 
   @Field(() => Date)

@@ -25,8 +25,11 @@ import {
   THead,
   Tr,
   TrashIcon,
+  useAdminDeleteProductReviewMutation,
+  useAdminGetProductReviews,
+  usePaginationControls,
 } from "ui";
-import { randomNum } from "utils";
+import { mapArray, randomNum, useForm } from "utils";
 
 interface Review {
   id: string;
@@ -76,6 +79,14 @@ const reviewsData: Review[] = [...Array(10)].map((_, i) => ({
 const reviews: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath } = useRouting();
+
+  const { pagination, controls } = usePaginationControls();
+  const { form, handleChange, inputProps } = useForm<
+    Parameters<typeof useAdminGetProductReviews>[0]
+  >({ pagination }, { pagination });
+  const { data: reviews } = useAdminGetProductReviews(form);
+  const { mutate: deleteReview } = useAdminDeleteProductReviewMutation();
+
   return (
     <section>
       <div className="py-4 text-white gap-2 flex justify-end">
@@ -102,7 +113,6 @@ const reviews: NextPage = () => {
               <Th>{t("seller")}</Th>
               <Th>{t("Review")}</Th>
               <Th>{t("Rating")}</Th>
-              <Th>{t("Status")}</Th>
               <Th>{t("Date Added")}</Th>
               <Th>{t("Action")}</Th>
             </Tr>
@@ -110,35 +120,37 @@ const reviews: NextPage = () => {
               <Th></Th>
               <Th></Th>
               <Th>
-                <Input />
+                <Input {...inputProps("product")} />
               </Th>
               <Th>
-                <Input />
+                <Input {...inputProps("id")} />
               </Th>
               <Th>
-                <Input />
+                <Input {...inputProps("buyer")} />
               </Th>
               <Th>
-                <Input />
+                <Input {...inputProps("seller")} />
               </Th>
               <Th>
-                <Input />
+                <Input {...inputProps("review")} />
               </Th>
               <Th>
-                <Input type={"number"} />
+                <Input {...inputProps("rating")} type={"number"} />
               </Th>
               <Th>
-                <Select>
-                  <SelectOption value={"active"}>{t("Active")}</SelectOption>
-                </Select>
-              </Th>
-              <Th>
-                <DateFormInput />
+                <DateFormInput
+                  {...inputProps(
+                    "dateAdded",
+                    "dateValue",
+                    "onDateChange",
+                    (e) => e
+                  )}
+                />
               </Th>
             </Tr>
           </THead>
           <TBody>
-            {reviewsData.map((v, i) => (
+            {mapArray(reviews, (v, i) => (
               <Tr key={v.id}>
                 <Td>
                   <Checkbox />
@@ -148,14 +160,11 @@ const reviews: NextPage = () => {
                 </Td>
                 <Td>{v.product.title.slice(0, 20)}</Td>
                 <Td>{v.product.id.slice(0, 10)}</Td>
-                <Td>{v.author.name.slice(0, 20)}</Td>
-                <Td>{v.seller.name.slice(0, 20)}</Td>
-                <Td>{v.comment.slice(0, 60)}...</Td>
+                <Td>{v.reviewer?.profile?.username.slice(0, 20)}</Td>
+                <Td>{v.product.seller.profile.username.slice(0, 20)}</Td>
+                <Td>{v.message.slice(0, 60)}...</Td>
                 <Td>
-                  <Rate rating={v.rating} />
-                </Td>
-                <Td align="center">
-                  <Badge className="w-fit">{v.status}</Badge>
+                  <Rate rating={v.rate} />
                 </Td>
                 <Td>{new Date(v.createdAt).toDateString()}</Td>
                 <Td>
@@ -171,7 +180,10 @@ const reviews: NextPage = () => {
                       }
                       className="w-8 h-8 p-2 bg-cyan-400"
                     />
-                    <TrashIcon className="w-8 h-8 p-2 bg-red-500" />
+                    <TrashIcon
+                      onClick={() => deleteReview(v.id)}
+                      className="cursor-pointer w-8 h-8 p-2 bg-red-500"
+                    />
                   </div>
                 </Td>
               </Tr>
@@ -179,7 +191,7 @@ const reviews: NextPage = () => {
           </TBody>
         </Table>
       </TableContainer>
-      <Pagination />
+      <Pagination controls={controls} />
     </section>
   );
 };

@@ -10,16 +10,12 @@ import {
   TBody,
   Td,
   Tr,
-  Image,
-  ProductCard,
   ProductCardProps,
   Avatar,
-  ServiceTypeCard,
   SimpleTabs,
   SimpleTabItemList,
   SimpleTabHead,
   CashPaymentIcon,
-  SearchServiceCard,
   SearchServiceCardProps,
   ProductDetailsTable,
   HotelsSearchList,
@@ -222,19 +218,3 @@ const SellerInfo = () => {
 };
 
 export default SellerInfo;
-
-//   <ProductGeneralDetails
-//     values={{
-//       name: "test product",
-//       description: "test description",
-//       metatagDescription: "test tags",
-//       metatagKeyword: "test keywords",
-//       productTag: "test product tag",
-//       product_type: "goods",
-//       price: 45,
-//       vat: 15,
-//       qty: 50,
-//       images: [...Array(4)].map(() => getRandomImage()),
-//       hashtags: ["tag1", "tag2"],
-//     }}
-//   />

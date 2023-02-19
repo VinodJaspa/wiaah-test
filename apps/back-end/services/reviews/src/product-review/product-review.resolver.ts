@@ -12,6 +12,7 @@ import { ProductReview } from './entities/product-review.entity';
 import { CreateProductReviewInput } from './dto/create-product-review.input';
 import {
   accountType,
+  AddToDate,
   AuthorizationDecodedUser,
   ExtractPagination,
   GqlAuthorizationGuard,
@@ -26,9 +27,11 @@ import {
 import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { ReviewProductType } from './const';
-import { GetMyReviewsInput } from './dto';
+import { GetMyReviewsInput, UpdateProductReviewInput } from './dto';
 import { PrismaService } from '../Prisma.service';
 import { Account, Product } from './entities';
+import { GetAdminFitleredProductReviewsInput } from './dto/get-admin-filtered-product-reviews.input';
+import { Prisma } from '@prisma-client';
 
 @Resolver(() => ProductReview)
 export class ProductReviewResolver implements OnModuleInit {
@@ -38,6 +41,105 @@ export class ProductReviewResolver implements OnModuleInit {
     private readonly commandbus: CommandBus,
     private prisma: PrismaService,
   ) {}
+
+  @Query(() => [ProductReview])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  adminGetFilteredProductReviews(
+    @Args('args') args: GetAdminFitleredProductReviewsInput,
+  ) {
+    const filters: Prisma.ProductReviewWhereInput[] = [];
+
+    if (args.id) {
+      filters.push({
+        id: {
+          contains: args.id,
+        },
+      });
+    }
+
+    if (args.review) {
+      filters.push({
+        message: {
+          contains: args.review,
+        },
+      });
+    }
+
+    if (args.rating) {
+      filters.push({
+        AND: [
+          {
+            rate: {
+              gte: Math.floor(args.rating),
+            },
+          },
+          {
+            rate: {
+              lte: Math.floor(args.rating) + 1,
+            },
+          },
+        ],
+      });
+    }
+
+    if (args.dateAdded) {
+      filters.push({
+        AND: [
+          {
+            createdAt: {
+              gte: new Date(new Date(args.dateAdded).setHours(0)),
+            },
+          },
+          {
+            createdAt: {
+              lte: AddToDate(new Date(new Date(args.dateAdded).setHours(0)), {
+                days: 1,
+              }),
+            },
+          },
+        ],
+      });
+    }
+
+    return this.prisma.productReview.findMany({
+      where: {
+        AND: filters,
+      },
+    });
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async adminDeleteProductReview(@Args('id') id: string) {
+    try {
+      await this.prisma.productReview.delete({
+        where: {
+          id,
+        },
+      });
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async adminUpdateProductReview(@Args('args') args: UpdateProductReviewInput) {
+    try {
+      await this.prisma.productReview.update({
+        where: {
+          id: args.id,
+        },
+        data: args,
+      });
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
 
   @Query(() => [ProductReview])
   @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
@@ -52,6 +154,16 @@ export class ProductReviewResolver implements OnModuleInit {
       },
       skip,
       take,
+    });
+  }
+
+  @Query(() => [ProductReview])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  getProductReviewById(@Args('id') id: string) {
+    return this.prisma.productReview.findUnique({
+      where: {
+        id: id,
+      },
     });
   }
 

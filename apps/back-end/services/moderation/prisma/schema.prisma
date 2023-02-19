@@ -12,25 +12,26 @@ datasource db {
 }
 
 model BannedCity {
-  id String @id @default(auto()) @db.ObjectId @map("_id")
-  cityId String @db.ObjectId @unique
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  cityId    String @unique @db.ObjectId
   bannedFor String
-  @@unique([bannedFor,cityId])
+
+  @@unique([bannedFor, cityId])
 }
 
 model Country {
-  id String @db.ObjectId @default(auto()) @id @map("_id")
-  code String
-  name String
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  code   String
+  name   String
   cities City[]
 }
 
 model City {
-  id String @db.ObjectId @default(auto()) @id @map("_id")
-  code String
-  name String
-  countryId String @db.ObjectId
-  country Country @relation(fields: [countryId],references: [id])
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  code      String
+  name      String
+  countryId String  @db.ObjectId
+  country   Country @relation(fields: [countryId], references: [id])
 }
 
 model Report {
@@ -39,15 +40,16 @@ model Report {
   contentId   String            @db.ObjectId
   contentType ReportContentType
   message     String
-  status      ReportStatus
+  status      ReportStatus      @default(pending)
   type        ReportType
-  
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 enum ReportStatus {
   accepted
+  pending
   rejected
 }
 
@@ -64,6 +66,8 @@ model Information {
   description String
   placements  String[]
   slug        String
+  sortOrder   Int      @default(0)
+  route       String
 }
 
 enum ReportContentType {
@@ -83,20 +87,20 @@ model Design {
 }
 
 model Language {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  locale String
-  name String
-  code String
-  enabled Boolean @default(false)
-  sortOrder Int @default(0)
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  locale    String
+  name      String
+  code      String
+  enabled   Boolean @default(false)
+  sortOrder Int     @default(0)
 }
 
 model Profession {
-  id String @id @db.ObjectId @default(auto()) @map("_id")
-  title String
-  usage Int @default(0)
-  sortOrder Int @default(0)
-  status ProfessionStatus @default(active) 
+  id        String           @id @default(auto()) @map("_id") @db.ObjectId
+  title     String
+  usage     Int              @default(0)
+  sortOrder Int              @default(0)
+  status    ProfessionStatus @default(active)
 }
 
 enum ProfessionStatus {

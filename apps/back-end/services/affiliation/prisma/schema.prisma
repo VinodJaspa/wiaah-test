@@ -35,6 +35,7 @@ model AffiliationPurchase {
   sellerId              String                    @db.ObjectId
   affiliatorId          String                    @db.ObjectId
   purchaserId           String                    @db.ObjectId
+  affiliationId         String
   createdAt             DateTime                  @default(now())
   paidCommissionPercent Float
   paidCommissionAmount  Float

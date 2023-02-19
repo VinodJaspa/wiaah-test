@@ -19,7 +19,12 @@ import {
   DeleteStoryCommand,
   LikeStoryCommand,
 } from '@story/command';
-import { CreateStoryInput, DeleteStoryInput, LikeStoryInput } from '@story/dto';
+import {
+  CreateStoryInput,
+  DeleteStoryInput,
+  GetAdminFilteredStoriesInput,
+  LikeStoryInput,
+} from '@story/dto';
 import {
   AffiliationPost,
   NewsfeedPost,
@@ -34,6 +39,7 @@ import {
 import { StoryType } from './const';
 import { ProductPost } from '@product-post/entities';
 import { PrismaService } from 'prismaService';
+import { Prisma } from 'prismaClient';
 
 @Resolver(() => Story)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -64,6 +70,52 @@ export class StoryResolver {
     return this.querybus.execute<ViewUserStoryQuery, Story>(
       new ViewUserStoryQuery(publisherId, user),
     );
+  }
+
+  @Query(() => [Story])
+  getAdminFilteredStories(
+    @Args('args') args: GetAdminFilteredStoriesInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    let filters: Prisma.StoryWhereInput[] = [];
+    if (args.id) {
+      filters.push({
+        id: {
+          contains: args.id,
+        },
+      });
+    }
+    if (args.username) {
+      filters.push({
+        publisher: {
+          username: {
+            contains: args.username,
+          },
+        },
+      });
+    }
+
+    if (args.legend) {
+      filters.push({
+        OR: [
+          {
+            content: { contains: args.legend },
+          },
+        ],
+      });
+    }
+
+    if (args.likes) {
+      filters.push({
+        reactionsNum: {
+          gte: args.likes,
+        },
+      });
+    }
+
+    return this.prisma.story.findMany({
+      where: {},
+    });
   }
 
   @Query(() => Story)

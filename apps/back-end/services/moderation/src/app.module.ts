@@ -8,8 +8,32 @@ import { DesignModule } from './design/design.module';
 import { LanguageModule } from './language/language.module';
 import { BannedCountriesModule } from './banned-countries/banned-countries.module';
 import { ProfessionModule } from './profession/profession.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import {
+  ApolloFederationDriver,
+  ApolloFederationDriverConfig,
+} from '@nestjs/apollo';
+import { getUserFromRequest } from 'nest-utils';
 
 @Module({
-  imports: [ReportModule, ContentSuspenseModule, PrismaModule, KafkaModule, SiteInformationsModule, DesignModule, LanguageModule, BannedCountriesModule, ProfessionModule],
+  imports: [
+    GraphQLModule.forRoot<ApolloFederationDriverConfig>({
+      driver: ApolloFederationDriver,
+      autoSchemaFile: true,
+      context({ req, res }) {
+        const user = getUserFromRequest(req);
+        return { req, res, user };
+      },
+    }),
+    ReportModule,
+    ContentSuspenseModule,
+    PrismaModule,
+    KafkaModule,
+    SiteInformationsModule,
+    DesignModule,
+    LanguageModule,
+    BannedCountriesModule,
+    ProfessionModule,
+  ],
 })
 export class AppModule {}
