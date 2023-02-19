@@ -126,9 +126,26 @@ input GetMyAffiliationsInput {
 }
 
 type Mutation {
-  updateAffiliation(args: UpdateAffiliationInput!): Affiliation!
+  adminUpdateAffiliation(updateAffilaition: UpdateAffiliationAdminInput!): Boolean!
   createNewAffiliationProduct(args: CreateAffiliationInput!): Affiliation!
+  updateAffiliation(args: UpdateAffiliationInput!): Affiliation!
   deleteAffiliation(id: ID!): Affiliation!
+}
+
+input UpdateAffiliationAdminInput {
+  itemId: ID
+  itemType: String
+  commision: Float
+  expireAt: String
+  id: ID!
+  sellerId: ID!
+}
+
+input CreateAffiliationInput {
+  itemId: ID!
+  itemType: String!
+  commision: Float!
+  expireAt: String!
 }
 
 input UpdateAffiliationInput {
@@ -137,11 +154,4 @@ input UpdateAffiliationInput {
   commision: Float
   expireAt: String
   id: ID!
-}
-
-input CreateAffiliationInput {
-  itemId: ID!
-  itemType: String!
-  commision: Float!
-  expireAt: String!
 }

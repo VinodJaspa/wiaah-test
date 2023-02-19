@@ -1,21 +1,24 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { SiteInformation } from '@site-informations/entities';
-import { Admin, GqlAuthorizationGuard, Public } from 'nest-utils';
-import { Prisma, SiteModes, SocialLink } from 'prismaClient';
+import {
+  accountType,
+  ExtractPagination,
+  GqlAuthorizationGuard,
+} from 'nest-utils';
+import { SiteModes, SocialLink } from 'prismaClient';
 import { PrismaService } from 'prismaService';
+import { AdminGetSiteInformationsInput } from './dto/admin-get-site-informations.input';
 import { CreateSiteInformationInput } from './dto/create-site-information.input';
 import { UpdateSiteInformationInput } from './dto/update-site-information.input';
 import { UpdateSiteSocialInput } from './dto/update-site-social.input';
 
 @Resolver(() => SiteInformation)
-@UseGuards(GqlAuthorizationGuard)
 export class SiteInformationsResolver {
   constructor(private readonly prisma: PrismaService) {}
 
   @Query(() => [SiteInformation])
-  @Public()
-  getsiteInfomrations(@Args('placement') placement: string) {
+  getSiteInfomrationsOfPlacement(@Args('placement') placement: string) {
     return this.prisma.information.findMany({
       where: {
         placements: {
@@ -25,8 +28,30 @@ export class SiteInformationsResolver {
     });
   }
 
+  @Query(() => [SiteInformation])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  adminGetSiteInformations(@Args('args') args: AdminGetSiteInformationsInput) {
+    const { take, skip } = ExtractPagination(args.pagination);
+    return this.prisma.information.findMany({
+      where: {
+        AND: [
+          {
+            title: {
+              contains: args.name,
+            },
+          },
+          {
+            sortOrder: args.sortOrder,
+          },
+        ],
+      },
+      take,
+      skip,
+    });
+  }
+
   @Mutation(() => SiteInformation)
-  @Admin()
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   createSiteInformations(@Args('args') args: CreateSiteInformationInput) {
     return this.prisma.information.create({
       data: args,
@@ -34,7 +59,7 @@ export class SiteInformationsResolver {
   }
 
   @Mutation(() => SiteInformation)
-  @Admin()
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   updateSiteInformations(@Args('args') args: UpdateSiteInformationInput) {
     const { id, ...rest } = args;
     return this.prisma.information.update({
@@ -46,7 +71,7 @@ export class SiteInformationsResolver {
   }
 
   @Mutation(() => Boolean)
-  @Admin()
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async updateSocialLinks(@Args('args') input: UpdateSiteSocialInput) {
     const settings = await this.getSiteSettings();
     let updateLinks: SocialLink[] = [];
@@ -84,7 +109,7 @@ export class SiteInformationsResolver {
   }
 
   @Mutation(() => Boolean)
-  @Admin()
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async enableMaintenanceMode() {
     const settings = await this.getSiteSettings();
 
@@ -101,7 +126,7 @@ export class SiteInformationsResolver {
   }
 
   @Mutation(() => Boolean)
-  @Admin()
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async disableMaintenanceMode() {
     const settings = await this.getSiteSettings();
 
@@ -118,7 +143,7 @@ export class SiteInformationsResolver {
   }
 
   @Mutation(() => Boolean)
-  @Admin()
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async enableComingSoon() {
     const settings = await this.getSiteSettings();
 
@@ -135,7 +160,7 @@ export class SiteInformationsResolver {
   }
 
   @Mutation(() => Boolean)
-  @Admin()
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async disableComingSoon() {
     const settings = await this.getSiteSettings();
 

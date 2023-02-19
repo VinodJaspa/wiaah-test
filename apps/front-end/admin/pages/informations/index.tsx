@@ -15,32 +15,19 @@ import {
   usePaginationControls,
   Button,
   Input,
+  useAdminGetSiteInformationsQuery,
 } from "ui";
-import { mapArray, randomNum, SeperatedStringArray } from "utils";
+import { mapArray, randomNum, useForm } from "utils";
 
 export default () => {
   const { t } = useTranslation();
   const { controls, changeTotalItems, pagination } = usePaginationControls();
   const { visit, getCurrentPath } = useRouting();
 
-  const info: {
-    name: string;
-    sortOrder: number;
-    id: string;
-  }[] = [
-    "About Us",
-    "Delivery Information",
-    "Privacy Policy",
-    "Terms & Conditions",
-  ].map((v, i) => ({
-    id: i.toString(),
-    name: v,
-    sortOrder: randomNum(10),
-  }));
-
-  React.useEffect(() => {
-    changeTotalItems(info.length);
-  }, [info]);
+  const { form } = useForm<
+    Parameters<typeof useAdminGetSiteInformationsQuery>[0]
+  >({ pagination }, { pagination });
+  const { data: info } = useAdminGetSiteInformationsQuery(form);
 
   return (
     <div className="flex flex-col w-full gap-8">
@@ -74,12 +61,12 @@ export default () => {
             </Tr>
           </THead>
           <TBody>
-            {mapArray(info, ({ id, name, sortOrder }, i) => (
+            {mapArray(info, ({ id, title, sortOrder }, i) => (
               <Tr>
                 <Td className="w-[99%]">
                   <div className="flex items-center gap-4 font-semibold">
                     <Checkbox />
-                    <p>{name}</p>
+                    <p>{title}</p>
                   </div>
                 </Td>
                 <Td>{sortOrder}</Td>

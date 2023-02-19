@@ -40,7 +40,7 @@ export class AffiliationAdminResolver {
   }
 
   @Mutation(() => Boolean)
-  updateAffiliation(
+  adminUpdateAffiliation(
     @Args('updateAffilaition') input: UpdateAffiliationAdminInput,
   ) {
     return this.commandbus.execute(

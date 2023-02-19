@@ -16,4 +16,10 @@ export class SiteInformation {
 
   @Field(() => String)
   slug: string;
+
+  @Field(() => Int)
+  sortOrder: number;
+
+  @Field(() => String)
+  route: string;
 }

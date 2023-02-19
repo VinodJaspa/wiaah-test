@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
-import { ContentSuspenseService } from './content-suspense.service';
+import { CqrsModule } from '@nestjs/cqrs';
 import { ContentSuspenseResolver } from './content-suspense.resolver';
 
 @Module({
-  providers: [ContentSuspenseResolver, ContentSuspenseService]
+  imports: [CqrsModule],
+  providers: [ContentSuspenseResolver],
 })
 export class ContentSuspenseModule {}

@@ -4,6 +4,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Prisma } from '@prisma-client';
 import {
   accountType,
+  AddToDate,
   ExtractPagination,
   GqlAuthorizationGuard,
   GqlPaginationInput,
@@ -12,6 +13,7 @@ import { PrismaService } from 'prismaService';
 import { AccountsService } from './accounts.service';
 import { DeclineSellerAccountRequest } from './dto/declineSellerAccountRequest.input';
 import { GetAccountDeletionRequestsInput } from './dto/get-account-deletion-requests.input';
+import { GetAdminPendingSellersInput } from './dto/get-admin-pending-sellers.input';
 import { GetBuyersAccountsInput } from './dto/get-buyers-accounts.input';
 import { GetFilteredSellersAccountsInput } from './dto/get-sellers-accounts.input';
 import { SuspenseAccountAdminInput } from './dto/suspense-account-input';
@@ -57,8 +59,62 @@ export class AccountsAdminResolver {
   }
 
   @Query(() => [Account])
-  async getPendingSellers(@Args('pagination') pagination: GqlPaginationInput) {
-    const { skip, take } = ExtractPagination(pagination);
+  async getPendingSellers(@Args('args') args: GetAdminPendingSellersInput) {
+    const { skip, take } = ExtractPagination(args.pagination);
+    let filters: Prisma.AccountWhereInput[] = [];
+
+    if (args.name) {
+      filters.push({
+        OR: [
+          {
+            firstName: {
+              contains: args.name,
+            },
+          },
+          {
+            lastName: {
+              contains: args.name,
+            },
+          },
+        ],
+      });
+    }
+
+    if (args.CRN) {
+      filters.push({
+        companyRegisterationNumber: {
+          contains: args.CRN,
+        },
+      });
+    }
+
+    if (args.email) {
+      filters.push({
+        email: {
+          contains: args.email,
+        },
+      });
+    }
+
+    if (args.dateCreated) {
+      filters.push({
+        AND: [
+          {
+            createdAt: {
+              gte: new Date(new Date(args.dateCreated).setHours(0)),
+            },
+          },
+          {
+            createdAt: {
+              lte: AddToDate(new Date(new Date(args.dateCreated).setHours(0)), {
+                days: 1,
+              }),
+            },
+          },
+        ],
+      });
+    }
+
     const res = await this.prisma.account.findMany({
       where: {
         AND: [

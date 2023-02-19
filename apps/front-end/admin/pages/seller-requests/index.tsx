@@ -26,10 +26,14 @@ import {
   ModalOverlay,
   ModalContent,
   Radio,
-  MultiChooseInput,
   Textarea,
   Button,
+  useAdminGetSellerRequestsQuery,
+  usePaginationControls,
+  useAdminAcceptSellerRequestMutation,
+  useAdminRejectSellerRequestMutation,
 } from "ui";
+import { mapArray, useForm } from "utils";
 
 interface PendingSellerAccount {
   name: string;
@@ -56,7 +60,18 @@ const sellers: PendingSellerAccount[] = [...Array(15)].map((_, i) => ({
 const pendingProducts = () => {
   const { t } = useTranslation();
   const { getCurrentPath, visit } = useRouting();
-  const { handleClose, handleOpen, isOpen } = useDisclouser();
+  const [rejectId, setRejectId] = React.useState<string>();
+
+  const { pagination, controls } = usePaginationControls();
+
+  const { form, inputProps } = useForm<
+    Parameters<typeof useAdminGetSellerRequestsQuery>[0]
+  >({ pagination }, { pagination });
+
+  const { data: requests } = useAdminGetSellerRequestsQuery(form);
+  const { mutate: acceptRequest } = useAdminAcceptSellerRequestMutation();
+  const { mutate: rejectRequest } = useAdminRejectSellerRequestMutation();
+
   return (
     <section>
       <TableContainer>
@@ -66,7 +81,7 @@ const pendingProducts = () => {
               <Th className="w-32"></Th>
               <Th>{t("Seller")}</Th>
               <Th>{t("Email")}</Th>
-              <Th>{t("Type")}</Th>
+              <Th>{t("Selling Type")}</Th>
               <Th>{t("Company Registeration Number")}</Th>
               <Th>{t("Date Created")}</Th>
               <Th>{t("Action")}</Th>
@@ -74,10 +89,10 @@ const pendingProducts = () => {
             <Tr>
               <Th></Th>
               <Th>
-                <Input />
+                <Input {...inputProps("name")} />
               </Th>
               <Th>
-                <Input />
+                <Input {...inputProps("email")} />
               </Th>
               <Th>
                 <Select>
@@ -88,23 +103,34 @@ const pendingProducts = () => {
                 </Select>
               </Th>
               <Th>
-                <Input />
+                <Input {...inputProps("CRN")} />
               </Th>
               <Th>
-                <DateFormInput />
+                <DateFormInput
+                  {...inputProps(
+                    "dateCreated",
+                    "dateValue",
+                    "onDateChange",
+                    (e) => e
+                  )}
+                />
               </Th>
               <Th></Th>
             </Tr>
           </THead>
           <TBody>
-            {sellers.map((v) => (
+            {mapArray(requests, (v) => (
               <Tr>
                 <Td>
-                  <Image src={v.thumbnail} />
+                  <Image src={v.photo} />
                 </Td>
-                <Td>{v.name}</Td>
+                <Td>
+                  {v.firstName} {v.lastName}
+                </Td>
                 <Td>{v.email}</Td>
-                <Td>{v.type}</Td>
+                <Td>
+                  {typeof v.shop === "object" ? t("Product") : t("Service")}
+                </Td>
                 <Td>{v.companyRegisterationNumber}</Td>
                 <Td>{new Date(v.createdAt).toDateString()}</Td>
                 <Td>
@@ -120,9 +146,12 @@ const pendingProducts = () => {
                       }
                       className="w-8 h-8 p-2 bg-cyan-400"
                     />
-                    <ImCheckmark className="w-8 h-8 p-2 bg-green-500" />
+                    <ImCheckmark
+                      onClick={() => acceptRequest(v.id)}
+                      className="w-8 h-8 p-2 cursor-pointer bg-green-500"
+                    />
                     <NotAllowedIcon
-                      onClick={() => handleOpen()}
+                      onClick={() => setRejectId(v.id)}
                       className="w-8 h-8 p-2 bg-red-500"
                     />
                   </div>
@@ -132,8 +161,8 @@ const pendingProducts = () => {
           </TBody>
         </Table>
       </TableContainer>
-      <Pagination />
-      <Modal isLazy isOpen={isOpen} onClose={handleClose}>
+      <Pagination controls={controls} />
+      <Modal isLazy isOpen={!!rejectId} onClose={() => setRejectId(undefined)}>
         <ModalOverlay />
         <ModalContent>
           <Formik
@@ -141,7 +170,13 @@ const pendingProducts = () => {
               reason: "",
               otherReason: "",
             }}
-            onSubmit={() => {}}
+            onSubmit={(data) => {
+              rejectRequest({
+                reason:
+                  data.otherReason.length > 0 ? data.otherReason : data.reason,
+                id: rejectId,
+              });
+            }}
           >
             {({ setFieldValue, values }) => (
               <Form>
@@ -152,9 +187,10 @@ const pendingProducts = () => {
                   <Radio
                     onChange={(e) =>
                       e.target.checked
-                        ? setFieldValue("reason", e.target.name)
+                        ? setFieldValue("reason", e.target.value)
                         : null
                     }
+                    value={"inappropriate images"}
                     name={"seller_refuse_reason"}
                   >
                     {t(
@@ -165,9 +201,10 @@ const pendingProducts = () => {
                   <Radio
                     onChange={(e) =>
                       e.target.checked
-                        ? setFieldValue("reason", e.target.name)
+                        ? setFieldValue("reason", e.target.value)
                         : null
                     }
+                    value={"fausses info"}
                     name={"seller_refuse_reason"}
                   >
                     {t("seller_refuse_fausses_info", "Fuasses Informations")}
@@ -175,9 +212,10 @@ const pendingProducts = () => {
                   <Radio
                     onChange={(e) =>
                       e.target.checked
-                        ? setFieldValue("reason", e.target.name)
+                        ? setFieldValue("reason", e.target.value)
                         : null
                     }
+                    value={"verify identity"}
                     name={"seller_refuse_reason"}
                   >
                     {t(
@@ -188,9 +226,10 @@ const pendingProducts = () => {
                   <Radio
                     onChange={(e) =>
                       e.target.checked
-                        ? setFieldValue("reason", e.target.name)
+                        ? setFieldValue("reason", e.target.value)
                         : null
                     }
+                    value={"scams"}
                     name={"seller_refuse_reason"}
                   >
                     {t("Scams")}
@@ -212,7 +251,12 @@ const pendingProducts = () => {
                         setFieldValue("otherReason", e.target.value)
                       }
                     />
-                  ) : null}
+                  ) : (
+                    (() => {
+                      setFieldValue("otherReason", "");
+                      return null;
+                    })()
+                  )}
                   <Button type="submit" className="self-end">
                     {t("Submit")}
                   </Button>
