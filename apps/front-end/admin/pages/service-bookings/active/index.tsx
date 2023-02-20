@@ -6,7 +6,6 @@ import {
   Badge,
   Checkbox,
   DateFormInput,
-  EyeIcon,
   Input,
   ListIcon,
   Pagination,
@@ -47,9 +46,12 @@ const books: Book[] = [...Array(10)].map((_, i) => ({
   type: randomNum(100) < 50 ? "Hotel" : "Restaurant",
 }));
 
-const order = () => {
+const bookings = () => {
   const { t } = useTranslation();
   const { getCurrentPath, visit } = useRouting();
+
+  
+
 
   return (
     <section className="w-full flex flex-col gap-8">
@@ -159,4 +161,4 @@ const order = () => {
   );
 };
 
-export default order;
+export default bookings;

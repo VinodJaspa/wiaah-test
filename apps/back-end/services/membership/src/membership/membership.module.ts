@@ -13,6 +13,8 @@ import { MembershipController } from './membership.controller';
 import { membershipEventHandlers } from './events';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { MembershipSubscription } from './entities';
+import { MembershipSubscriptionResolver } from './membership-subscription.resolver';
 
 @Module({
   imports: [
@@ -37,6 +39,7 @@ import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
     MembershipResolver,
     MembershipRepository,
     MembershipTurnoverRuleRepository,
+    MembershipSubscriptionResolver,
     ...exntededResolvers,
     ...membershipCommandHandlers,
     ...membershipQueryHandlers,

@@ -1,11 +1,9 @@
-import { Field, Float, InputType, Int } from '@nestjs/graphql';
+import { Field, Float, InputType, Int, PartialType } from '@nestjs/graphql';
+import { OrderStatusEnum } from '@prisma-client';
 import { GqlPaginationInput } from 'nest-utils';
 
 @InputType()
-export class GetFilteredOrdersInput {
-  @Field(() => GqlPaginationInput)
-  pagination: GqlPaginationInput;
-
+class input {
   @Field(() => String)
   date_from: string;
 
@@ -26,4 +24,19 @@ export class GetFilteredOrdersInput {
 
   @Field(() => String)
   payment_method: string;
+
+  @Field(() => String)
+  id: string;
+
+  @Field(() => OrderStatusEnum)
+  status: OrderStatusEnum;
+
+  @Field(() => Float)
+  total: number;
+}
+
+@InputType()
+export class GetFilteredOrdersInput extends PartialType(input) {
+  @Field(() => GqlPaginationInput)
+  pagination: GqlPaginationInput;
 }

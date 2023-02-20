@@ -6,3 +6,4 @@ export * from "./useAdminGetSellerRequests";
 export * from "./useAdminAcceptSellerRequest";
 export * from "./useAdminRejectSellerRequest";
 export * from "./useAdminGetSiteInformations";
+export * from "./useAdminGetSellerAccountDetails";

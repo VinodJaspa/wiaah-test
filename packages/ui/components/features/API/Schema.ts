@@ -46,6 +46,7 @@ export type Account = {
   shop: Shop;
   status: AccountStatus;
   stripeId?: Maybe<Scalars["String"]>;
+  subscribedPlan: MembershipSubscription;
   type: AccountType;
   updatedAt: Scalars["DateTime"];
   verified: Scalars["Boolean"];
@@ -152,6 +153,17 @@ export type AdminDeleteServiceInput = {
   id: Scalars["ID"];
 };
 
+export type AdminGetReturnedOrdersInput = {
+  buyerName?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  price?: Maybe<Scalars["Float"]>;
+  productName?: Maybe<Scalars["String"]>;
+  qty?: Maybe<Scalars["Int"]>;
+  reason?: Maybe<Scalars["String"]>;
+  sellerName?: Maybe<Scalars["String"]>;
+  shippingAmount?: Maybe<Scalars["Float"]>;
+};
+
 export type AdminGetSiteInformationsInput = {
   name?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
@@ -225,6 +237,7 @@ export type AskForRefundInput = {
   amount?: Maybe<Scalars["Float"]>;
   fullAmount?: Maybe<Scalars["Boolean"]>;
   id: Scalars["ID"];
+  orderItemId: Scalars["ID"];
   qty: Scalars["Int"];
   reason?: Maybe<Scalars["String"]>;
   type: RefundType;
@@ -1278,14 +1291,17 @@ export type GetFilteredCategory = {
 };
 
 export type GetFilteredOrdersInput = {
-  buyer: Scalars["String"];
-  date_from: Scalars["String"];
-  date_to: Scalars["String"];
+  buyer?: Maybe<Scalars["String"]>;
+  date_from?: Maybe<Scalars["String"]>;
+  date_to?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
-  payment_method: Scalars["String"];
-  price: Scalars["Float"];
-  qty: Scalars["Int"];
-  seller: Scalars["String"];
+  payment_method?: Maybe<Scalars["String"]>;
+  price?: Maybe<Scalars["Float"]>;
+  qty?: Maybe<Scalars["Int"]>;
+  seller?: Maybe<Scalars["String"]>;
+  status?: Maybe<OrderStatusEnum>;
+  total?: Maybe<Scalars["Float"]>;
 };
 
 export type GetFilteredProductsAdminInput = {
@@ -2753,6 +2769,7 @@ export type OrderItem = {
   createdAt: Scalars["String"];
   discountId?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
+  order: Order;
   orderId: Scalars["String"];
   paid?: Maybe<Scalars["Float"]>;
   paidAt?: Maybe<Scalars["String"]>;
@@ -3049,6 +3066,7 @@ export type Query = {
   adminGetFilteredProductReviews: Array<ProductReview>;
   adminGetProduct?: Maybe<Product>;
   adminGetRawService?: Maybe<ServiceShopRaw>;
+  adminGetReturnedOrders: Array<ReturnedOrder>;
   adminGetSiteInformations: Array<SiteInformation>;
   canAccessRoom: Scalars["Boolean"];
   comments: Array<Comment>;
@@ -3221,6 +3239,10 @@ export type QueryAdminGetProductArgs = {
 
 export type QueryAdminGetRawServiceArgs = {
   id: Scalars["String"];
+};
+
+export type QueryAdminGetReturnedOrdersArgs = {
+  args: AdminGetReturnedOrdersInput;
 };
 
 export type QueryAdminGetSiteInformationsArgs = {
@@ -3702,8 +3724,8 @@ export type Refund = {
   amount: Scalars["Float"];
   fullAmount: Scalars["Boolean"];
   id: Scalars["ID"];
+  orderItemId: Scalars["ID"];
   product: Product;
-  productId: Scalars["ID"];
   qty: Scalars["Int"];
   reason: Scalars["String"];
   rejectReason?: Maybe<Scalars["String"]>;
@@ -3842,6 +3864,19 @@ export type RestaurantMenuDishInput = {
 export type RestaurantMenuInput = {
   dishs: Array<RestaurantMenuDishInput>;
   name: Array<TranslationTextInput>;
+};
+
+export type ReturnedOrder = {
+  __typename?: "ReturnedOrder";
+  amount: Scalars["Float"];
+  fullAmount: Scalars["Float"];
+  id: Scalars["ID"];
+  orderItem: OrderItem;
+  orderItemId: Scalars["ID"];
+  reason: Scalars["String"];
+  rejectReason?: Maybe<Scalars["String"]>;
+  status: RefundStatusType;
+  type: RefundType;
 };
 
 export enum RoomTypes {

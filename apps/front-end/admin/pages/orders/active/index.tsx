@@ -1,3 +1,4 @@
+import { OrderStatusEnum } from "@features/API";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { HiTruck } from "react-icons/hi";
@@ -20,30 +21,23 @@ import {
   THead,
   Tr,
   TrashIcon,
+  useAdminGetOrdersQuery,
+  usePaginationControls,
 } from "ui";
-import { mapArray, randomNum } from "utils";
-
-interface Order {
-  id: string;
-  seller: string;
-  buyer: string;
-  status: string;
-  total: number;
-  createdAt: Date;
-}
-
-const orders: Order[] = [...Array(10)].map((_, i) => ({
-  id: i.toString(),
-  buyer: `buyer-${i}`,
-  seller: `seller-${i}`,
-  status: "pending",
-  total: randomNum(150),
-  createdAt: new Date(),
-}));
+import { AddToDate, mapArray, useForm } from "utils";
 
 const order = () => {
   const { t } = useTranslation();
+
   const { getCurrentPath, visit } = useRouting();
+
+  const { pagination, controls } = usePaginationControls();
+
+  const { form, handleChange, inputProps } = useForm<
+    Parameters<typeof useAdminGetOrdersQuery>[0]
+  >({ pagination }, { pagination, status: OrderStatusEnum.Pending });
+
+  const { data: orders } = useAdminGetOrdersQuery(form);
 
   return (
     <section className="w-full flex flex-col gap-8">
@@ -83,22 +77,34 @@ const order = () => {
                 <Tr>
                   <Th></Th>
                   <Th>
-                    <Input type="number" />
+                    <Input {...inputProps("id")} type="number" />
                   </Th>
                   <Th>
-                    <Input />
+                    <Input {...inputProps("seller")} />
                   </Th>
                   <Th>
-                    <Input />
+                    <Input {...inputProps("buyer")} />
+                  </Th>
+                  <Th></Th>
+                  <Th>
+                    <Input {...inputProps("total")} type="number" />
                   </Th>
                   <Th>
-                    <Input />
-                  </Th>
-                  <Th>
-                    <Input type="number" />
-                  </Th>
-                  <Th>
-                    <DateFormInput />
+                    <DateFormInput
+                      onDateChange={(e) => {
+                        handleChange(
+                          "date_from",
+                          new Date(new Date(e).setHours(0)).toString()
+                        );
+                        handleChange(
+                          "date_to",
+                          AddToDate(new Date(new Date(e).setHours(0)), {
+                            days: 1,
+                          }).toString()
+                        );
+                      }}
+                      dateValue={form.date_from}
+                    />
                   </Th>
                   <Th></Th>
                 </Tr>
@@ -110,11 +116,11 @@ const order = () => {
                       <Checkbox />
                     </Td>
                     <Td>{order.id}</Td>
-                    <Td>{order.seller}</Td>
-                    <Td>{order.buyer}</Td>
-                    <Td>{order.status}</Td>
+                    <Td>{order.seller?.profile?.username}</Td>
+                    <Td>{order.buyer?.profile?.username}</Td>
+                    <Td>{order.status.of}</Td>
                     <Td>
-                      <PriceDisplay price={order.total} />
+                      <PriceDisplay price={order.paid} />
                     </Td>
                     <Td>{new Date(order.createdAt).toDateString()}</Td>
                     <Td className="text-white">
@@ -135,7 +141,7 @@ const order = () => {
               </TBody>
             </Table>
           </TableContainer>
-          <Pagination />
+          <Pagination controls={controls} />
         </div>
       </div>
     </section>

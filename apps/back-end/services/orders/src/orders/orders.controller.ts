@@ -24,7 +24,7 @@ export class OrdersController extends BaseController {
         value.input.buyerId,
         value.input.sellerId,
         value.input.products.map((v) => ({
-          id: v.id,
+          productId: v.id,
           qty: v.qty,
           type: OrderItemType.product,
           affiliationId: v.affiliation.affiliatorId,
@@ -47,7 +47,7 @@ export class OrdersController extends BaseController {
         value.input.buyerId,
         value.input.sellerId,
         value.input.products.map((v) => ({
-          id: v.id,
+          productId: v.id,
           qty: v.qty,
           type: OrderItemType.service,
           affiliationId: v.affiliation.affiliatorId,

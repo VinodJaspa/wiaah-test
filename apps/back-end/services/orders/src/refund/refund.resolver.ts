@@ -54,10 +54,18 @@ export class RefundResolver {
   }
 
   @ResolveField(() => Product)
-  product(@Parent() order: Refund) {
+  async product(@Parent() order: Refund) {
+    const orderItem = await this.prisma.orderItem.findUnique({
+      where: {
+        id: order.orderItemId,
+      },
+    });
+
+    if (!orderItem) return null;
+
     return {
       __typename: 'Product',
-      id: order.productId,
+      id: orderItem.productId,
     };
   }
 

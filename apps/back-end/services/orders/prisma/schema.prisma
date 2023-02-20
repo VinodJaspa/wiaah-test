@@ -28,7 +28,7 @@ model Order {
 model RefundRequest {
   id            String           @id @default(auto()) @map("_id") @db.ObjectId
   requestedById String           @db.ObjectId
-  productId     String           @db.ObjectId
+  orderItemId   String           @unique() @db.ObjectId
   sellerId      String           @db.ObjectId
   reason        String
   type          RefundType
@@ -37,8 +37,6 @@ model RefundRequest {
   qty           Int
   status        RefundStatusType @default(pending)
   rejectReason  String?
-
-  @@unique([productId, requestedById])
 }
 
 model OrderItem {
@@ -52,6 +50,7 @@ model OrderItem {
   refundable    Boolean   @default(true)
   discountId    String?   @db.ObjectId
   cashbackId    String?   @db.ObjectId
+  productId     String    @db.ObjectId
   affiliationId String?
   Order         Order?    @relation(fields: [orderId], references: [id])
   orderId       String?   @db.ObjectId

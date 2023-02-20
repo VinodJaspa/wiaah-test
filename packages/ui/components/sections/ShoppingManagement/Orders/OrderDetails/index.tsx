@@ -39,7 +39,7 @@ import {
 } from "@UI";
 import { getRandomImage } from "placeholder";
 import { randomNum } from "utils";
-import { useModalDisclouser, useAccountType } from "hooks";
+import { useModalDisclouser } from "hooks";
 import { OrderedProductStatus, PriceType } from "types";
 import { useUpdateProductStatus } from "@UI";
 import { UpdateProductStatusDto } from "dto";

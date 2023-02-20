@@ -1,11 +1,9 @@
-import { t } from "i18next";
 import { NextPage } from "next";
 import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import {
-  Badge,
   Checkbox,
   DateFormInput,
   Divider,
@@ -15,8 +13,6 @@ import {
   Pagination,
   PlusIcon,
   Rate,
-  Select,
-  SelectOption,
   Table,
   TableContainer,
   TBody,
@@ -81,7 +77,7 @@ const reviews: NextPage = () => {
   const { visit, getCurrentPath } = useRouting();
 
   const { pagination, controls } = usePaginationControls();
-  const { form, handleChange, inputProps } = useForm<
+  const { form, inputProps } = useForm<
     Parameters<typeof useAdminGetProductReviews>[0]
   >({ pagination }, { pagination });
   const { data: reviews } = useAdminGetProductReviews(form);

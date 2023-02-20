@@ -15,7 +15,7 @@ export class OrdersRepository {
   create(
     buyerId: string,
     sellerId: string,
-    items: { id: string; qty: number; type: string }[],
+    items: { qty: number; type: string; productId: string }[],
     shippingMethodId: string,
     shippingAddressId: string,
   ) {

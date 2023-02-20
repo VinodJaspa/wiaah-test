@@ -1,4 +1,3 @@
-import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -10,15 +9,14 @@ import {
   TBody,
   Td,
   Tr,
-  ProductCardProps,
   Avatar,
   SimpleTabs,
   SimpleTabItemList,
   SimpleTabHead,
   CashPaymentIcon,
-  SearchServiceCardProps,
   ProductDetailsTable,
   HotelsSearchList,
+  useAdminGetSellerAccountDetailsQuery,
 } from "ui";
 import { randomNum } from "utils";
 
@@ -34,72 +32,12 @@ interface PendingSellerAccount {
   bio: string;
 }
 
-const services: SearchServiceCardProps[] = [...Array(4)].map(() => ({
-  serviceType: "hotel",
-  sellerInfo: {
-    name: "wiaah",
-    profession: "seller",
-    thumbnail: "/wiaah_logo.png",
-    verified: true,
-  },
-  serviceData: {
-    discount: randomNum(15),
-    id: randomNum(1523).toString(),
-    label: "Hotel Room",
-    price: randomNum(500),
-    rating: randomNum(5),
-    reviews: randomNum(15),
-    thumbnail:
-      "https://thumbs.dreamstime.com/b/hotel-room-beautiful-orange-sofa-included-43642330.jpg",
-    title: "Hotel Room Title",
-    location: {
-      address: "address",
-      city: "city",
-      cords: {
-        lat: randomNum(150),
-        lng: randomNum(150),
-      },
-      country: "switzerland",
-      countryCode: "CHF",
-      postalCode: 134565,
-      state: "Geneve",
-    },
-  },
-}));
-
-const products: ProductCardProps[] = [...Array(5)].map(() => ({
-  cashback: {
-    amount: randomNum(10),
-    type: "cash",
-  },
-  colors: ["red", "green"],
-  discount: randomNum(15),
-  id: randomNum(165).toString(),
-  liked: false,
-  name: "test product",
-  price: randomNum(10),
-  rating: 4,
-  shopId: randomNum(15546).toString(),
-  thumbnail: getRandomImage(),
-  buttonText: "view",
-}));
-
 const SellerInfo = () => {
   const { t } = useTranslation();
   const { getParam, back } = useRouting();
   const id = getParam("id");
 
-  const seller: PendingSellerAccount = {
-    id: "1",
-    name: "seller name",
-    createdAt: new Date().toISOString(),
-    companyRegisterationNumber: randomNum(999999999).toString(),
-    email: "test123@example.com",
-    products: randomNum(15),
-    type: randomNum(100) >= 50 ? "services" : "products",
-    thumbnail: "/wiaah_logo.png",
-    bio: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy",
-  };
+  const { data: seller } = useAdminGetSellerAccountDetailsQuery(id);
 
   const isService = true;
 
@@ -155,7 +93,7 @@ const SellerInfo = () => {
                     </div>
                   </Td>
                   <Td className="w-8/12" align="left">
-                    <Avatar className="w-16" src={seller.thumbnail} />
+                    <Avatar className="w-16" src={seller.photo} />
                   </Td>
                 </Tr>
                 <Tr>
@@ -163,7 +101,9 @@ const SellerInfo = () => {
                     <div className="flex w-fit">{t("Name")}</div>
                   </Td>
                   <Td align="left">
-                    <p>{seller.name}</p>
+                    <p>
+                      {seller.firstName} {seller.lastName}
+                    </p>
                   </Td>
                 </Tr>
                 <Tr>
@@ -172,7 +112,7 @@ const SellerInfo = () => {
                 </Tr>
                 <Tr>
                   <Td>{t("Bio")}</Td>
-                  <Td>{seller.bio}</Td>
+                  <Td>{seller.profile?.bio}</Td>
                 </Tr>
                 <Tr>
                   <Td>{t("Company Registeration Number")}</Td>

@@ -1,5 +1,4 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { Membership } from './membership.entity';
 
 @ObjectType()
 export class MembershipSubscription {
@@ -8,9 +7,6 @@ export class MembershipSubscription {
 
   @Field(() => ID)
   membershipId: string;
-
-  @Field(() => Membership)
-  membership: Membership;
 
   @Field(() => String)
   startAt: Date;
