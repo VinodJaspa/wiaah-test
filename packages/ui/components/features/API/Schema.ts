@@ -153,6 +153,17 @@ export type AdminDeleteServiceInput = {
   id: Scalars["ID"];
 };
 
+export type AdminGetBookingsInput = {
+  buyer?: Maybe<Scalars["String"]>;
+  dateAdded?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  seller?: Maybe<Scalars["String"]>;
+  status?: Maybe<BookedServiceStatus>;
+  total?: Maybe<Scalars["Float"]>;
+  type?: Maybe<Scalars["String"]>;
+};
+
 export type AdminGetReturnedOrdersInput = {
   buyerName?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
@@ -1290,6 +1301,11 @@ export type GetFilteredCategory = {
   sortOrder?: Maybe<Scalars["Int"]>;
 };
 
+export type GetFilteredNewsletterInput = {
+  email?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+};
+
 export type GetFilteredOrdersInput = {
   buyer?: Maybe<Scalars["String"]>;
   date_from?: Maybe<Scalars["String"]>;
@@ -1365,12 +1381,13 @@ export type GetFilteredServicesInput = {
 };
 
 export type GetFilteredVouchers = {
-  currency: Scalars["String"];
-  date: Scalars["String"];
-  name: Scalars["String"];
-  price: Scalars["Float"];
-  status: VoucherStatus;
-  voucherNumber: Scalars["Int"];
+  currency?: Maybe<Scalars["String"]>;
+  date?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  price?: Maybe<Scalars["Float"]>;
+  status?: Maybe<VoucherStatus>;
+  voucherNumber?: Maybe<Scalars["Int"]>;
 };
 
 export type GetFiltersInput = {
@@ -1433,6 +1450,10 @@ export type GetMyBookingsInput = {
 export type GetMyFriendSuggestionsInput = {
   pagination: GqlPaginationInput;
   q?: Maybe<Scalars["String"]>;
+};
+
+export type GetMyNewsfeedPostsInput = {
+  pagination: GqlPaginationInput;
 };
 
 export type GetMyOrdersInput = {
@@ -1945,6 +1966,7 @@ export type Mutation = {
   banSellersCities: Scalars["Boolean"];
   blockUser: Scalars["Boolean"];
   cancelServiceReservation: Scalars["Boolean"];
+  changeMyNewsletterSettings: Scalars["Boolean"];
   changePassword: Scalars["Boolean"];
   clearBalance: Scalars["Boolean"];
   clearShoppingCart: ShoppingCart;
@@ -2023,6 +2045,7 @@ export type Mutation = {
   removeComment: Comment;
   removeItemFromCart: Scalars["Boolean"];
   removeNewsfeedPost: NewsfeedPost;
+  removeNewsletterSubscriber: Scalars["Boolean"];
   removeReaction: ContentReaction;
   removeRequiredAction: RequiredAction;
   removeReview: ProductReview;
@@ -2202,6 +2225,10 @@ export type MutationBlockUserArgs = {
 
 export type MutationCancelServiceReservationArgs = {
   id: Scalars["String"];
+};
+
+export type MutationChangeMyNewsletterSettingsArgs = {
+  args: UpdateNewsletterInput;
 };
 
 export type MutationChangePasswordArgs = {
@@ -2458,6 +2485,10 @@ export type MutationRemoveItemFromCartArgs = {
 
 export type MutationRemoveNewsfeedPostArgs = {
   id: Scalars["Int"];
+};
+
+export type MutationRemoveNewsletterSubscriberArgs = {
+  id: Scalars["ID"];
 };
 
 export type MutationRemoveReactionArgs = {
@@ -2733,6 +2764,24 @@ export type NewsfeedPost = {
   updatedAt: Scalars["String"];
   userId: Scalars["ID"];
   views: Scalars["Int"];
+};
+
+export type NewsletterSettings = {
+  __typename?: "NewsletterSettings";
+  feedback: Scalars["Boolean"];
+  news: Scalars["Boolean"];
+  product: Scalars["Boolean"];
+  reminder: Scalars["Boolean"];
+};
+
+export type NewsletterSubscriber = {
+  __typename?: "NewsletterSubscriber";
+  createdAt: Scalars["String"];
+  emailSettings: NewsletterSettings;
+  id: Scalars["ID"];
+  ownerId: Scalars["ID"];
+  updatedAt: Scalars["String"];
+  user: Account;
 };
 
 export type OpenTime = {
@@ -3063,6 +3112,7 @@ export type Query = {
   MyWishlist: Wishlist;
   acceptAccountVerification: Scalars["Boolean"];
   adminGetAccount: Account;
+  adminGetBookings: Array<BookedService>;
   adminGetFilteredProductReviews: Array<ProductReview>;
   adminGetProduct?: Maybe<Product>;
   adminGetRawService?: Maybe<ServiceShopRaw>;
@@ -3137,6 +3187,7 @@ export type Query = {
   getMyFollowing: ProfileMetaPaginatedResponse;
   getMyFriendSuggestions: FriendSuggestion;
   getMyMembership?: Maybe<MembershipSubscription>;
+  getMyNewsfeedPosts: Array<NewsfeedPost>;
   getMyOrders: Array<Order>;
   getMyPrivacySettings: PrivacySettings;
   getMyProductReviews: Array<ProductReview>;
@@ -3152,6 +3203,7 @@ export type Query = {
   getMyVouchers: Array<Voucher>;
   getMyWorkingSchedule: WorkingSchedule;
   getNearShops: Array<Shop>;
+  getNewletterSubscribers: Array<NewsletterSubscriber>;
   getNewsfeedHashtagPosts: NewsfeedHashtagSearch;
   getNewsfeedPostById: NewsfeedPost;
   getNewsfeedPostsByUserId: Array<NewsfeedPost>;
@@ -3227,6 +3279,10 @@ export type QueryAcceptAccountVerificationArgs = {
 
 export type QueryAdminGetAccountArgs = {
   id: Scalars["String"];
+};
+
+export type QueryAdminGetBookingsArgs = {
+  args: AdminGetBookingsInput;
 };
 
 export type QueryAdminGetFilteredProductReviewsArgs = {
@@ -3453,6 +3509,10 @@ export type QueryGetMyFriendSuggestionsArgs = {
   args: GetMyFriendSuggestionsInput;
 };
 
+export type QueryGetMyNewsfeedPostsArgs = {
+  args: GetMyNewsfeedPostsInput;
+};
+
 export type QueryGetMyOrdersArgs = {
   getMyOrdersArgs: GetMyOrdersInput;
 };
@@ -3487,6 +3547,10 @@ export type QueryGetMyVouchersArgs = {
 
 export type QueryGetNearShopsArgs = {
   GetNearShopsInput: GetNearShopsInput;
+};
+
+export type QueryGetNewletterSubscribersArgs = {
+  args: GetFilteredNewsletterInput;
 };
 
 export type QueryGetNewsfeedHashtagPostsArgs = {
@@ -4781,6 +4845,13 @@ export type UpdateNewsfeedPostInput = {
   visibility?: Maybe<PostVisibility>;
 };
 
+export type UpdateNewsletterInput = {
+  feedback?: Maybe<Scalars["Boolean"]>;
+  news?: Maybe<Scalars["Boolean"]>;
+  product?: Maybe<Scalars["Boolean"]>;
+  reminder?: Maybe<Scalars["Boolean"]>;
+};
+
 export type UpdatePostAdminInput = {
   attachments?: Maybe<Array<AttachmentInput>>;
   content?: Maybe<Scalars["String"]>;
@@ -5082,7 +5153,10 @@ export type Voucher = {
   code: Scalars["String"];
   createdAt: Scalars["String"];
   currency: Scalars["String"];
+  id: Scalars["ID"];
+  ownerId: Scalars["ID"];
   status: VoucherStatus;
+  user: Account;
 };
 
 export enum VoucherStatus {

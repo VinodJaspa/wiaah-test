@@ -227,15 +227,13 @@ export class BookServiceResolver {
       });
     }
 
-    if (args.id) {
+    if (args.status) {
       filters.push({
-        id: {
-          contains: args.id,
-        },
+        status: args.status,
       });
     }
 
-    if (args.id) {
+    if (args.total) {
       filters.push({
         id: {
           contains: args.id,

@@ -1,24 +1,29 @@
 import { UseGuards } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  ID,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import {
   accountType,
   AuthorizationDecodedUser,
   ExtractPagination,
   GqlAuthorizationGuard,
   GqlCurrentUser,
-  GqlPaginationInput,
 } from 'nest-utils';
 import { PrismaService } from 'prismService';
 import { ChangeMyNewsletterSettingsCommand } from './commands';
 import { UpdateNewsletterInput } from './dto';
 import { GetFilteredNewsletterInput } from './dto/get-newsletter.input';
-import {
-  NewsletterSettings,
-  NewsletterSubscriber,
-} from './entities/newsletter.entity';
+import { Account } from './entities';
+import { NewsletterSubscriber } from './entities/newsletter.entity';
 
-@Resolver(() => NewsletterSettings)
+@Resolver(() => NewsletterSubscriber)
 @UseGuards(new GqlAuthorizationGuard([]))
 export class NewsletterResolver {
   constructor(
@@ -41,7 +46,7 @@ export class NewsletterResolver {
   getNewletterSubscribers(
     @Args('args', { type: () => GetFilteredNewsletterInput })
     args: GetFilteredNewsletterInput,
-  ) {
+  ): Promise<NewsletterSubscriber[]> {
     const { skip, take } = ExtractPagination(args.pagination);
     return this.prisma.newsletter.findMany({
       take,
@@ -50,5 +55,32 @@ export class NewsletterResolver {
         createdAt: 'desc',
       },
     });
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async removeNewsletterSubscriber(
+    @Args('id', { type: () => ID })
+    args: string,
+  ): Promise<boolean> {
+    try {
+      await this.prisma.newsletter.delete({
+        where: {
+          ownerId: args,
+        },
+      });
+
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  @ResolveField(() => Account)
+  user(@Parent() data: NewsletterSubscriber) {
+    return {
+      __typename: 'Account',
+      id: data.ownerId,
+    };
   }
 }

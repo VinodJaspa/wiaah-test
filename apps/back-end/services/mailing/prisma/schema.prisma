@@ -3,7 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "./generated/client"
+  output   = "./generated/client"
 }
 
 datasource db {
@@ -11,18 +11,25 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model NewsletterPost {
+  id      String @id @default(auto()) @map("_id") @db.ObjectId
+  message String
 
-model Newsletter {
-  id String @id @db.ObjectId @default(auto()) @map("_id")
-  ownerId String @db.ObjectId @unique
-  emailSettings NewsLetterSettings
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Newsletter {
+  id            String             @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId       String             @unique @db.ObjectId
+  emailSettings NewsLetterSettings
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
 }
 
 type NewsLetterSettings {
   feedback Boolean @default(true)
   reminder Boolean @default(true)
-  product Boolean @default(true)
-  news Boolean @default(true)
+  product  Boolean @default(true)
+  news     Boolean @default(true)
 }

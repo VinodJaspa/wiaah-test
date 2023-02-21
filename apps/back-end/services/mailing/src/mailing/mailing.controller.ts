@@ -169,7 +169,7 @@ export class MailingController extends BaseController {
     });
   }
 
-  @EventPattern(KAFKA_EVENTS.SERVICES.appointmentRefused('*'))
+  @EventPattern(KAFKA_EVENTS.SERVICES.appointmentRefused('*', true))
   async handleAppointmentRefused(
     @Payload() { value }: { value: AppointmentRefusedEvent },
   ) {

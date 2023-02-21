@@ -27,7 +27,7 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
   const childPosts =
     posts &&
     posts.map((post, idx) => (
-      <PostCard postInfo={post} profileInfo={post.publisher} key={idx} />
+      <PostCard postInfo={post} profileInfo={post.publisher!} key={idx} />
     ));
   return (
     <>

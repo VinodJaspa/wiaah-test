@@ -1,11 +1,12 @@
+import { VoucherStatus } from "@features/API";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Button,
   DateFormInput,
   Input,
   Pagination,
-  randomNum,
+  Select,
+  SelectOption,
   Table,
   TableContainer,
   TBody,
@@ -13,41 +14,24 @@ import {
   Th,
   THead,
   Tr,
+  usePaginationControls,
+  useAdminGetVouchersQuery,
 } from "ui";
-import { mapArray } from "utils";
-
-interface Voucher {
-  id: string;
-  number: string;
-  username: string;
-  currency: string;
-  price: number;
-  createdAt: string;
-}
-
-const vouchers: Voucher[] = [...Array(10)].map((_, i) => ({
-  id: i.toString(),
-  number: randomNum(150).toString(),
-  createdAt: new Date().toString(),
-  currency: "USD",
-  price: randomNum(300),
-  username: `user-${i}`,
-}));
+import { mapArray, setTestid, useForm } from "utils";
 
 const Voucher = () => {
   const { t } = useTranslation();
+
+  const { pagination, controls } = usePaginationControls();
+
+  const { form, inputProps } = useForm<
+    Parameters<typeof useAdminGetVouchersQuery>[0]
+  >({ pagination });
+
+  const { data: vouchers } = useAdminGetVouchersQuery(form);
+
   return (
     <section>
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        <Input flushed className="w-full" placeholder={t("Voucher Number")} />
-        <Input flushed className="w-full" placeholder={t("User Name")} />
-        <Input flushed className="w-full" placeholder={t("Voucher Currency")} />
-        <Input flushed className="w-full" placeholder={t("Voucher Price")} />
-        <Input flushed className="w-full" placeholder={t("Shop Name")} />
-        <Input flushed className="w-full" placeholder={t("Product Name")} />
-        <DateFormInput flushed placeholder={t("Date")} />
-        <Button className="w-fit">{t("Filter")}</Button>
-      </div>
       <TableContainer>
         <Table className="w-full">
           <THead>
@@ -56,34 +40,62 @@ const Voucher = () => {
               <Th>{t("User Name")}</Th>
               <Th>{t("Voucher Currency")}</Th>
               <Th>{t("Voucher Price")}</Th>
+              <Th>{t("Status")}</Th>
               <Th>{t("Date")}</Th>
             </Tr>
             <Tr>
-              <Th><Input /></Th>
-              <Th><Input /></Th>
-              <Th><Input /></Th>
-              <Th><Input /></Th>
-              <Th><DateFormInput /></Th>
+              <Th>
+                <Input {...inputProps("voucherNumber")} />
+              </Th>
+              <Th>
+                <Input {...inputProps("name")} />
+              </Th>
+              <Th>
+                <Input {...inputProps("currency")} />
+              </Th>
+              <Th>
+                <Input {...inputProps("price")} />
+              </Th>
+              <Th>
+                <Select
+                  {...inputProps("status", "value", "onOptionSelect", (e) => e)}
+                >
+                  <SelectOption value={VoucherStatus.Active}>
+                    {t("Active")}
+                  </SelectOption>
+                  <SelectOption value={VoucherStatus.InActive}>
+                    {t("InActive")}
+                  </SelectOption>
+                </Select>
+              </Th>
+              <Th>
+                <DateFormInput
+                  {...inputProps("date", "dateValue", "onDateChange", (e) => e)}
+                />
+              </Th>
             </Tr>
           </THead>
 
           <TBody>
             {mapArray(
               vouchers,
-              ({ createdAt, currency, number, price, username, id }, i) => (
-                <Tr key={id}>
-                  <Td>{number}</Td>
-                  <Td>{username}</Td>
-                  <Td>{currency}</Td>
-                  <Td>{price}</Td>
-                  <Td>{new Date(createdAt).toDateString()}</Td>
+              ({ createdAt, currency, amount, code, status, user, id }, i) => (
+                <Tr {...setTestid("voucher-record")} key={id}>
+                  <Td {...setTestid("voucher-code")}>{code}</Td>
+                  <Td {...setTestid("voucher-name")}>{user?.firstName}</Td>
+                  <Td {...setTestid("voucher-currency")}>{currency}</Td>
+                  <Td {...setTestid("voucher-price")}>{amount}</Td>
+                  <Td {...setTestid("voucher-status")}>{status}</Td>
+                  <Td {...setTestid("voucher-date")}>
+                    {new Date(createdAt).toDateString()}
+                  </Td>
                 </Tr>
               )
             )}
           </TBody>
         </Table>
       </TableContainer>
-      <Pagination />
+      <Pagination controls={controls} />
     </section>
   );
 };

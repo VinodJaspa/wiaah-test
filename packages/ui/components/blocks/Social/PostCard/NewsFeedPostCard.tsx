@@ -20,7 +20,12 @@ import { useDateDiff } from "hooks";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { useTypedReactPubsub } from "@libs";
-import { ContentHostType, NewsfeedPost, Profile } from "@features/API";
+import {
+  Attachment,
+  ContentHostType,
+  NewsfeedPost,
+  Profile,
+} from "@features/API";
 
 export interface PostCardProps {
   profileInfo: Pick<
@@ -36,12 +41,10 @@ export interface PostCardProps {
     | "reactionNum"
     | "authorProfileId"
     | "content"
-    | "hashtags"
     | "createdAt"
     | "tags"
     | "shares"
-    | "attachments"
-  >;
+  > & { attachments: Pick<Attachment, "src" | "type">[] };
 }
 
 export const PostCard: React.FC<PostCardProps> = ({
