@@ -19,6 +19,7 @@ import {
 import { GetNewsfeedPostsByUserIdInput } from './dto';
 import { TopHashtagNewsfeedPosts } from './entity';
 import { PrismaService } from 'prismaService';
+import { GetMyNewsfeedPostsInput } from './dto/get-my-newsfeed-posts.input';
 
 @Resolver(() => NewsfeedPost)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -37,6 +38,17 @@ export class NewsfeedPostsResolver {
     return this.newsfeedPostsService.createNewsfeedPost(
       createNewsfeedPostInput,
       user.id,
+    );
+  }
+
+  @Query(() => [NewsfeedPost])
+  getMyNewsfeedPosts(
+    @Args('args') args: GetMyNewsfeedPostsInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    return this.newsfeedPostsService.getNewsfeedPostsByUserId(
+      user.id,
+      args.pagination,
     );
   }
 

@@ -15,43 +15,22 @@ import {
   THead,
   Tr,
   TrashIcon,
+  useAdminGetReturnedProductsQuery,
+  usePaginationControls,
 } from "ui";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { mapArray, randomNum } from "utils";
-import { getRandomImage } from "placeholder";
-
-interface CanceledOrder {
-  id: string;
-  thumbnail: string;
-  title: string;
-  seller: string;
-  buyer: string;
-  qty: number;
-  price: number;
-  shippingCost: number;
-  returnReason: string;
-  otherReason: string;
-  paymentMethod: string;
-}
-
-const orders: CanceledOrder[] = [...Array(10)].map((_, i) => ({
-  id: i.toString(),
-  seller: `seller-${i}`,
-  buyer: `buyer-${i}`,
-  otherReason: `other reason`,
-  price: randomNum(500),
-  qty: randomNum(5),
-  returnReason: `return reason-${i}`,
-  shippingCost: randomNum(100),
-  thumbnail: getRandomImage(),
-  title: `product name-${i}`,
-  paymentMethod: "paypal",
-}));
+import { mapArray, useForm } from "utils";
 
 const canceledOrders: NextPage = () => {
   const { t } = useTranslation();
+
+  const { pagination, controls } = usePaginationControls();
+  const { form, handleChange, inputProps } = useForm<
+    Parameters<typeof useAdminGetReturnedProductsQuery>[0]
+  >({ pagination }, { pagination });
+  const { data: orders } = useAdminGetReturnedProductsQuery(form);
 
   return (
     <section>
@@ -78,35 +57,31 @@ const canceledOrders: NextPage = () => {
                   <Th>{t("Paid Price")}</Th>
                   <Th>{t("Shipping Amount")}</Th>
                   <Th>{t("Return Reason")}</Th>
-                  <Th>{t("Other Reason")}</Th>
                   <Th>{t("Payment Method")}</Th>
                   <Th>{t("Action")}</Th>
                 </Tr>
                 <Tr>
                   <Th></Th>
                   <Th>
-                    <Input />
+                    <Input {...inputProps("productName")} />
                   </Th>
                   <Th>
-                    <Input />
+                    <Input {...inputProps("sellerName")} />
                   </Th>
                   <Th>
-                    <Input />
+                    <Input {...inputProps("buyerName")} />
                   </Th>
                   <Th>
-                    <Input type={"number"} />
+                    <Input {...inputProps("qty")} type={"number"} />
                   </Th>
                   <Th>
-                    <Input type={"number"} />
+                    <Input {...inputProps("price")} type={"number"} />
                   </Th>
                   <Th>
-                    <Input type={"number"} />
+                    <Input {...inputProps("shippingAmount")} type={"number"} />
                   </Th>
                   <Th>
-                    <Input />
-                  </Th>
-                  <Th>
-                    <Input />
+                    <Input {...inputProps("reason")} />
                   </Th>
                   <Th>
                     <Input />
@@ -115,50 +90,34 @@ const canceledOrders: NextPage = () => {
                 </Tr>
               </THead>
               <TBody>
-                {mapArray(
-                  orders,
-                  ({
-                    buyer,
-                    id,
-                    otherReason,
-                    paymentMethod,
-                    price,
-                    qty,
-                    returnReason,
-                    seller,
-                    shippingCost,
-                    thumbnail,
-                    title,
-                  }) => (
-                    <Tr>
-                      <Td>
-                        <Image src={thumbnail} />
-                      </Td>
-                      <Td>{title}</Td>
-                      <Td>{seller}</Td>
-                      <Td>{buyer}</Td>
-                      <Td>{qty}</Td>
-                      <Td>
-                        <PriceDisplay price={price} />
-                      </Td>
-                      <Td>
-                        <PriceDisplay price={shippingCost} />
-                      </Td>
-                      <Td>{returnReason}</Td>
-                      <Td>{otherReason}</Td>
-                      <Td>{paymentMethod}</Td>
-                      <Td>
-                        <Button colorScheme="danger">
-                          <TrashIcon></TrashIcon>
-                        </Button>
-                      </Td>
-                    </Tr>
-                  )
-                )}
+                {mapArray(orders, ({ amount, orderItem, reason }) => (
+                  <Tr>
+                    <Td>
+                      <Image src={orderItem?.product?.thumbnail} />
+                    </Td>
+                    <Td>{orderItem?.product?.title}</Td>
+                    <Td>{orderItem.seller?.profile?.username}</Td>
+                    <Td>{orderItem?.buyer.profile?.username}</Td>
+                    {/* <Td>{}</Td> */}
+                    <Td>
+                      <PriceDisplay price={orderItem.paid} />
+                    </Td>
+                    <Td>
+                      <PriceDisplay price={orderItem.paid} />
+                    </Td>
+                    <Td>{reason}</Td>
+                    <Td>{"visa"}</Td>
+                    <Td>
+                      <Button colorScheme="danger">
+                        <TrashIcon onClick={() => {}} />
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))}
               </TBody>
             </Table>
           </TableContainer>
-          <Pagination />
+          <Pagination controls={controls} />
         </div>
       </div>
     </section>

@@ -56,6 +56,21 @@ export const useGetRecentStories = (input: GetRecentStoriesInput) => {
   });
 
   return useQuery(["recent-story", { input }], async () => {
+    return [
+      {
+        userId: "teasd",
+        newStory: true,
+        user: {
+          id: "Teasd",
+          profile: {
+            id: "Teasd",
+            photo: "/profile (1).jfif",
+            profession: "prof",
+            username: "username",
+          },
+        },
+      },
+    ];
     const res = await client.send<GetRecentStoriesQuery>();
     return res.data.getRecentStories;
   });

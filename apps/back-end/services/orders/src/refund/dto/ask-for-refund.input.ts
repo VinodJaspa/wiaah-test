@@ -18,6 +18,9 @@ export class AskForRefundInput {
   @Field(() => RefundType)
   type: RefundType;
 
+  @Field(() => ID)
+  orderItemId: string;
+
   @Field(() => Boolean, { nullable: true })
   fullAmount: boolean;
 

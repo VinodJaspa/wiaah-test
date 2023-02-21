@@ -13,6 +13,7 @@ registerEnumType(AccountStatus, { name: 'AccountStatus' });
 @ObjectType()
 @Directive('@key(fields:"id")')
 @Directive('@key(fields:"membershipId")')
+@Directive('@key(fields:"membershipId, id")')
 export class Account {
   @Field((type) => ID)
   id: string;

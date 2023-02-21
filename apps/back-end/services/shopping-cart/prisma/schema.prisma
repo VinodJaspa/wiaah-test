@@ -35,6 +35,8 @@ model BookedService {
   updatedAt           DateTime            @updatedAt
   purchased           Boolean             @default(false)
   status              BookedServiceStatus @default(pending)
+  originalTotal       Float?
+  total               Float?
   payment             String?
   rejectReason        String?
   type                String
@@ -49,8 +51,8 @@ model BookedService {
   roomId              String?
   doctorId            String?
   vehicleId           String?
-  discountId          String
-  cashbackId          String
+  discountId          String?
+  cashbackId          String?
 }
 
 type AppliedVoucher {

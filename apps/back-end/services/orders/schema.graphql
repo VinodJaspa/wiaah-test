@@ -48,6 +48,7 @@ type OrderItem {
   orderId: String!
   seller: Account!
   buyer: Account!
+  order: Order!
 }
 
 type OrderStatus {
@@ -91,7 +92,7 @@ scalar DateTime
 type Refund {
   id: ID!
   requestedById: ID!
-  productId: ID!
+  orderItemId: ID!
   sellerId: ID!
   reason: String!
   type: RefundType!
@@ -114,6 +115,18 @@ enum RefundStatusType {
   reject
 }
 
+type ReturnedOrder {
+  id: ID!
+  orderItemId: ID!
+  reason: String!
+  type: RefundType!
+  amount: Float!
+  fullAmount: Float!
+  status: RefundStatusType!
+  rejectReason: String
+  orderItem: OrderItem!
+}
+
 type Query {
   getRefundableOrders(args: GetRefundableOrdersInput!): [Order!]!
   getMyOrders(getMyOrdersArgs: GetMyOrdersInput!): [Order!]!
@@ -123,6 +136,7 @@ type Query {
   getLatestOrders(take: Int = 10): [Order!]!
   getRecentSales(count: Int = 10): [OrderItem!]!
   getMyReturnedOrders(args: GetMyReturnedOrdersInput!): [Refund!]!
+  adminGetReturnedOrders(args: AdminGetReturnedOrdersInput!): [ReturnedOrder!]!
 }
 
 input GetRefundableOrdersInput {
@@ -148,17 +162,31 @@ input GetUserOrders {
 }
 
 input GetFilteredOrdersInput {
+  date_from: String
+  date_to: String
+  qty: Int
+  price: Float
+  buyer: String
+  seller: String
+  payment_method: String
+  id: String
+  status: OrderStatusEnum
+  total: Float
   pagination: GqlPaginationInput!
-  date_from: String!
-  date_to: String!
-  qty: Int!
-  price: Float!
-  buyer: String!
-  seller: String!
-  payment_method: String!
 }
 
 input GetMyReturnedOrdersInput {
+  pagination: GqlPaginationInput!
+}
+
+input AdminGetReturnedOrdersInput {
+  productName: String
+  sellerName: String
+  buyerName: String
+  qty: Int
+  price: Float
+  shippingAmount: Float
+  reason: String
   pagination: GqlPaginationInput!
 }
 
@@ -193,6 +221,7 @@ input AcceptReceivedOrderInput {
 input AskForRefundInput {
   id: ID!
   type: RefundType!
+  orderItemId: ID!
   fullAmount: Boolean
   amount: Float
   reason: String = ""

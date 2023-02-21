@@ -452,6 +452,7 @@ type Query {
   getMyFollowers(getMyFollowersInput: GetMyProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
   getMyFollowing(getMyFollowersInput: GetMyProfileFollowersMetaInput!): ProfileMetaPaginatedResponse!
   isFollowed(profileId: String!): Boolean!
+  getMyNewsfeedPosts(args: GetMyNewsfeedPostsInput!): [NewsfeedPost!]!
   getNewsfeedPostsByUserId(args: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
   getNewsfeedPostById(id: String!): NewsfeedPost!
   getTopHashtagNewsfeed: TopHashtagNewsfeedPosts!
@@ -508,6 +509,10 @@ input GqlPaginationInput {
 }
 
 input GetMyProfileFollowersMetaInput {
+  pagination: GqlPaginationInput!
+}
+
+input GetMyNewsfeedPostsInput {
   pagination: GqlPaginationInput!
 }
 

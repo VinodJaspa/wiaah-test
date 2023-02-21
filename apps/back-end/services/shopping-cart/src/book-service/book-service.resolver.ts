@@ -19,6 +19,7 @@ import {
   Treatment,
 } from '@book-service/entities';
 import {
+  AdminGetBookingsInput,
   BookBeautycenterServiceInput,
   BookHealthCenterServiceInput,
   BookHotelRoomInput,
@@ -47,6 +48,7 @@ import {
   DeclinePendingAppointmentCommand,
 } from '@book-service/commands';
 import { PrismaService } from 'prismaService';
+import { Prisma } from '@prisma-client';
 
 @Resolver(() => BookedService)
 export class BookServiceResolver {
@@ -211,6 +213,67 @@ export class BookServiceResolver {
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
     return this.bookServiceService.BookVehicleCenter(input, user.id);
+  }
+
+  @Query(() => [BookedService])
+  adminGetBookings(@Args('args') args: AdminGetBookingsInput) {
+    let filters: Prisma.BookedServiceWhereInput[] = [];
+
+    if (args.id) {
+      filters.push({
+        id: {
+          contains: args.id,
+        },
+      });
+    }
+
+    if (args.status) {
+      filters.push({
+        status: args.status,
+      });
+    }
+
+    if (args.total) {
+      filters.push({
+        id: {
+          contains: args.id,
+        },
+      });
+    }
+    if (args.id) {
+      filters.push({
+        id: {
+          contains: args.id,
+        },
+      });
+    }
+    if (args.id) {
+      filters.push({
+        id: {
+          contains: args.id,
+        },
+      });
+    }
+    if (args.id) {
+      filters.push({
+        id: {
+          contains: args.id,
+        },
+      });
+    }
+    if (args.id) {
+      filters.push({
+        id: {
+          contains: args.id,
+        },
+      });
+    }
+
+    return this.prisma.bookedService.findMany({
+      where: {
+        AND: filters,
+      },
+    });
   }
 
   @ResolveField(() => Account)

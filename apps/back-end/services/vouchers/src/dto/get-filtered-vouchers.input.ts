@@ -1,8 +1,9 @@
-import { Field, Float, InputType, Int } from '@nestjs/graphql';
+import { Field, Float, InputType, Int, PartialType } from '@nestjs/graphql';
 import { VoucherStatus } from '@prisma-client';
+import { GqlPaginationInput } from 'nest-utils';
 
 @InputType()
-export class GetFilteredVouchers {
+class input {
   @Field(() => String)
   name: string;
 
@@ -20,4 +21,10 @@ export class GetFilteredVouchers {
 
   @Field(() => VoucherStatus)
   status: VoucherStatus;
+}
+
+@InputType()
+export class GetFilteredVouchers extends PartialType(input) {
+  @Field(() => GqlPaginationInput)
+  pagination: GqlPaginationInput;
 }

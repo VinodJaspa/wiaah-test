@@ -17,7 +17,11 @@ import {
   THead,
   Tr,
   TrashIcon,
+  useAdminGetNewsletterSubscribersQuery,
+  useAdminRemoveNewsletterSubscriber,
+  usePaginationControls,
 } from "ui";
+import { mapArray, useForm } from "utils";
 
 interface NewsletterUser {
   email: string;
@@ -32,6 +36,15 @@ const newsletter: NextPage = () => {
     user_id: `id-${i}`,
   }));
 
+  const { pagination, controls } = usePaginationControls();
+
+  const { form, inputProps } = useForm<
+    Parameters<typeof useAdminGetNewsletterSubscribersQuery>[0]
+  >({ pagination }, { pagination });
+
+  const { data: subs } = useAdminGetNewsletterSubscribersQuery(form);
+  const { mutate } = useAdminRemoveNewsletterSubscriber();
+
   const { t } = useTranslation();
   return (
     <section>
@@ -45,7 +58,12 @@ const newsletter: NextPage = () => {
             <InputLeftElement>
               <SearchIcon />
             </InputLeftElement>
-            <Input className="w-fit" placeholder={t("Search")} />
+            <Input
+              type={"email"}
+              {...inputProps("email")}
+              className="w-fit"
+              placeholder={t("Search email")}
+            />
           </InputGroup>
         </div>
         <div className="whitespace-nowrap gap-4 flex items-center">
@@ -71,12 +89,19 @@ const newsletter: NextPage = () => {
               </Tr>
             </THead>
             <TBody>
-              {newsletter.map(({ email, name, user_id }, i) => (
-                <Tr key={user_id}>
-                  <Td>{email}</Td>
-                  <Td>{name}</Td>
+              {mapArray(subs, ({ user, ownerId }, i) => (
+                <Tr key={ownerId}>
+                  <Td>{user?.email}</Td>
+                  <Td>
+                    {user?.firstName} {user?.lastName}
+                  </Td>
                   <Td align="right">
-                    <TrashIcon className="text-white rounded cursor-pointer hover:bg-red-600 w-8 h-8 p-2 bg-red-500" />
+                    <TrashIcon
+                      onClick={() => {
+                        mutate(ownerId);
+                      }}
+                      className="text-white rounded cursor-pointer hover:bg-red-600 w-8 h-8 p-2 bg-red-500"
+                    />
                   </Td>
                 </Tr>
               ))}

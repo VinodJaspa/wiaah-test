@@ -103,9 +103,7 @@ export class VouchersManagementService {
 
     if (exists) throw new VoucherAlreadyExistsException('code');
 
-    const newVoucher: Voucher = { ...input, status: 'active' };
-
-    await this.prisma.voucher.create({
+    const v = await this.prisma.voucher.create({
       data: {
         ...input,
         ownerId: userId,
@@ -113,7 +111,7 @@ export class VouchersManagementService {
       },
     });
 
-    return newVoucher;
+    return v;
   }
 
   async VoucherExists(
@@ -267,6 +265,7 @@ export class VouchersManagementService {
         currency,
         status,
         convertedToCurrency: convertedFromCurrency,
+        ...voucher,
       },
     ];
   }

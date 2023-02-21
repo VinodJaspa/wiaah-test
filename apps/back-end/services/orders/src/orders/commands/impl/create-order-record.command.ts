@@ -3,7 +3,7 @@ export class CreateOrderCommand {
     public readonly buyerId: string,
     public readonly sellerId: string,
     public readonly orderItems: {
-      id: string;
+      productId: string;
       qty: number;
       type: string;
       discountId: string;

@@ -7,7 +7,7 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 import { OrderStatusEnum } from '@prisma-client';
-import { Account, Product, ShippingAddress, ShippingRule } from './extends';
+import { Account, Product } from './extends';
 
 registerEnumType(OrderStatusEnum, { name: 'OrderStatusEnum' });
 

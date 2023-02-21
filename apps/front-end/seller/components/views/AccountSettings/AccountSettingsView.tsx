@@ -10,7 +10,6 @@ import {
 import { HiUserGroup } from "react-icons/hi";
 import { MdCardMembership } from "react-icons/md";
 import { BiLock } from "react-icons/bi";
-import { MdVerified } from "react-icons/md";
 import { BiData } from "react-icons/bi";
 import { SettingsSectionType } from "types";
 import {
@@ -24,7 +23,6 @@ import {
   PrivacySection,
   SectionsLayout,
   AccountDeletionSection,
-  AccountVerification,
   PersonalizationAndDataSection,
   Verified,
   ShareIcon,
@@ -35,9 +33,6 @@ import {
 } from "ui";
 import { ImBlocked } from "react-icons/im";
 import { useResponsive } from "hooks";
-import { useTranslation } from "react-i18next";
-import { IoMdReturnLeft } from "react-icons/io";
-import { useRouting } from "routing";
 
 export const AccountSettingsView: React.FC = () => {
   const baseRoute = "management/account-settings";
@@ -150,12 +145,12 @@ const sections: SettingsSectionType[] = [
     panelUrl: "/account_deletion",
     panelComponent: <AccountDeletionSection />,
   },
-  {
-    panelName: "Account Verification",
-    panelIcon: MdVerified,
-    panelUrl: "/account_verification",
-    panelComponent: <AccountVerification />,
-  },
+  // {
+  //   panelName: "Account Verification",
+  //   panelIcon: MdVerified,
+  //   panelUrl: "/account_verification",
+  //   panelComponent: <AccountVerification />,
+  // },
   {
     panelName: "Personalization and data",
     panelIcon: BiData,

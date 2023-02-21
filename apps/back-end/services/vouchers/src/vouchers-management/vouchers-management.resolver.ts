@@ -1,6 +1,13 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+} from '@nestjs/graphql';
 import { VouchersManagementService } from './vouchers-management.service';
-import { Voucher, VoucherCluster } from '@entities';
+import { Account, Voucher, VoucherCluster } from '@entities';
 import { UseGuards } from '@nestjs/common';
 import {
   accountType,
@@ -17,7 +24,8 @@ import {
 } from '@dto';
 import { PrismaService } from 'prismaService';
 import { Prisma } from '@prisma-client';
-@Resolver(() => VoucherCluster)
+
+@Resolver(() => Voucher)
 @UseGuards(new GqlAuthorizationGuard(['seller']))
 export class VouchersManagementResolver {
   constructor(
@@ -112,6 +120,14 @@ export class VouchersManagementResolver {
     return this.prisma.voucher.findMany({
       where: {},
     });
+  }
+
+  @ResolveField(() => Account)
+  user(@Parent() voucher: Voucher) {
+    return {
+      __typename: 'Account',
+      id: voucher.ownerId,
+    };
   }
 
   // @Mutation(() => Voucher)

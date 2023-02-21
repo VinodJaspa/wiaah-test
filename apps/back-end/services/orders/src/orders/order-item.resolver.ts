@@ -9,7 +9,7 @@ import {
 } from '@nestjs/graphql';
 import { accountType, GqlAuthorizationGuard } from 'nest-utils';
 import { PrismaService } from 'prismaService';
-import { OrderItem } from './entities';
+import { Order, OrderItem } from './entities';
 import { Account, Product } from './entities/extends';
 
 @Resolver(() => OrderItem)
@@ -64,5 +64,14 @@ export class OrderItemResolver {
       __typename: 'Product',
       id: orderItem.id,
     };
+  }
+
+  @ResolveField(() => Order)
+  order(@Parent() orderItem: OrderItem) {
+    return this.prisma.order.findUnique({
+      where: {
+        id: orderItem.orderId,
+      },
+    });
   }
 }

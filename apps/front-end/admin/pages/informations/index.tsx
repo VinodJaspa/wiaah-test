@@ -17,11 +17,11 @@ import {
   Input,
   useAdminGetSiteInformationsQuery,
 } from "ui";
-import { mapArray, randomNum, useForm } from "utils";
+import { mapArray, useForm } from "utils";
 
 export default () => {
   const { t } = useTranslation();
-  const { controls, changeTotalItems, pagination } = usePaginationControls();
+  const { controls, pagination } = usePaginationControls();
   const { visit, getCurrentPath } = useRouting();
 
   const { form } = useForm<

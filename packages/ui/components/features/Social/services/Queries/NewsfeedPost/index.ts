@@ -4,3 +4,4 @@ export * from "./useGetTopHashtagPostsQuery";
 export * from "./useAdminGetProfile";
 export * from "./useGetAdminFilteredNewsfeedPosts";
 export * from "./useAdminDeleteNewsfeedPost";
+export * from "./useGetMyNewsfeedPosts";

@@ -1,11 +1,14 @@
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, PartialType } from '@nestjs/graphql';
 import { GqlPaginationInput } from 'nest-utils';
 
 @InputType()
-export class GetFilteredNewsletterInput {
+class input {
   @Field(() => String)
   email: string;
+}
 
+@InputType()
+export class GetFilteredNewsletterInput extends PartialType(input) {
   @Field(() => GqlPaginationInput)
   pagination: GqlPaginationInput;
 }

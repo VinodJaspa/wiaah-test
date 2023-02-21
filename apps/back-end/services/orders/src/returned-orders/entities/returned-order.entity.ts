@@ -7,13 +7,7 @@ export class ReturnedOrder {
   id: string;
 
   @Field(() => ID)
-  requestedById: string;
-
-  @Field(() => ID)
-  productId: string;
-
-  @Field(() => ID)
-  sellerId: string;
+  orderItemId: string;
 
   @Field(() => String)
   reason: string;

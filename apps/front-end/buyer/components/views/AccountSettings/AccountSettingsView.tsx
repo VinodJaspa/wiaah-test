@@ -116,12 +116,12 @@ const sections: SettingsSectionType[] = [
     panelUrl: "/account_deletion",
     panelComponent: <AccountDeletionSection />,
   },
-  {
-    panelName: "Account Verification",
-    panelIcon: MdVerified,
-    panelUrl: "/account_verification",
-    panelComponent: <AccountVerification />,
-  },
+  // {
+  //   panelName: "Account Verification",
+  //   panelIcon: MdVerified,
+  //   panelUrl: "/account_verification",
+  //   panelComponent: <AccountVerification />,
+  // },
   {
     panelName: "Personalization and data",
     panelIcon: BiData,

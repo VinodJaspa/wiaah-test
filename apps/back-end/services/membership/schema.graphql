@@ -55,16 +55,18 @@ enum Recurring {
 
 type Account {
   membershipId: ID
+  id: ID!
   membership: Membership
   Membership: Membership!
+  subscribedPlan: MembershipSubscription!
 }
 
 type MembershipSubscription {
   userId: ID!
   membershipId: ID!
-  membership: Membership!
   startAt: String!
   endAt: String!
+  membership: Membership!
 }
 
 type Query {

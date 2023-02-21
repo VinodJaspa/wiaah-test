@@ -4,7 +4,7 @@ import { SocialShareCotentModal } from "@features/Social";
 import { useSetNewPost } from "@src/index";
 import React from "react";
 
-const useSocialControls = () => {
+export const useSocialControls = () => {
   const { OpenModal } = useSetNewPost();
 
   return {
