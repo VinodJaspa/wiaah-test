@@ -118,11 +118,11 @@ model SiteSettings {
   id          String       @id @default(auto()) @map("_id") @db.ObjectId
   mode        SiteModes    @default(up)
   socialLinks SocialLink[]
-  comingSoon  Boolean      @default(false)
 }
 
 enum SiteModes {
   maintenance
+  comingsoon
   down
   up
 }
