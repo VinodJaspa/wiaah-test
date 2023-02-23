@@ -1,10 +1,12 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
-import { DesignType } from 'prismaClient';
+import { InputType, Field, registerEnumType } from '@nestjs/graphql';
+import { DesignPlacement, DesignType } from 'prismaClient';
+
+registerEnumType(DesignPlacement, { name: 'DesignPlacement' });
 
 @InputType()
 export class CreateDesignInput {
-  @Field(() => [String])
-  placement: string;
+  @Field(() => [DesignPlacement])
+  placement: DesignPlacement[];
 
   @Field(() => String)
   src: string;

@@ -77,13 +77,18 @@ enum ReportContentType {
 }
 
 model Design {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  placement String[]
-  src       String
-  name      String
-  type      DesignType
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+  id          String            @id @default(auto()) @map("_id") @db.ObjectId
+  placement   DesignPlacement[]
+  src         String
+  name        String
+  distenation String
+  type        DesignType
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+enum DesignPlacement {
+  homepage
 }
 
 model Language {

@@ -165,6 +165,13 @@ export type AdminGetBookingsInput = {
   type?: Maybe<Scalars["String"]>;
 };
 
+export type AdminGetDesignsInput = {
+  name?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  placement?: Maybe<DesignPlacement>;
+  type?: Maybe<DesignType>;
+};
+
 export type AdminGetReturnedOrdersInput = {
   buyerName?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
@@ -1073,6 +1080,10 @@ export type Design = {
   updatedAt: Scalars["String"];
 };
 
+export enum DesignPlacement {
+  Homepage = "homepage",
+}
+
 export enum DesignType {
   Collaboration = "collaboration",
   Partner = "partner",
@@ -1270,7 +1281,7 @@ export type GetContentCommentsInput = {
 
 export type GetDesignByPlacementInput = {
   pagination: GqlPaginationInput;
-  placement: Scalars["String"];
+  placement: DesignPlacement;
 };
 
 export type GetFilteredAffiliationHistoryInput = {
@@ -3167,6 +3178,7 @@ export type Query = {
   acceptAccountVerification: Scalars["Boolean"];
   adminGetAccount: Account;
   adminGetBookings: Array<BookedService>;
+  adminGetDesigns: Array<Design>;
   adminGetFilteredProductReviews: Array<ProductReview>;
   adminGetProduct?: Maybe<Product>;
   adminGetRawService?: Maybe<ServiceShopRaw>;
@@ -3340,6 +3352,10 @@ export type QueryAdminGetAccountArgs = {
 
 export type QueryAdminGetBookingsArgs = {
   args: AdminGetBookingsInput;
+};
+
+export type QueryAdminGetDesignsArgs = {
+  args: AdminGetDesignsInput;
 };
 
 export type QueryAdminGetFilteredProductReviewsArgs = {
@@ -4821,7 +4837,7 @@ export type UpdateCurrencyInput = {
 export type UpdateDesignInput = {
   id: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
-  placement?: Maybe<Array<Scalars["String"]>>;
+  placement?: Maybe<Array<DesignPlacement>>;
   src?: Maybe<Scalars["String"]>;
   type?: Maybe<DesignType>;
 };

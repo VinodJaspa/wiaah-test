@@ -25,6 +25,7 @@ import {
 } from "ui";
 import React from "react";
 import { mapArray, runIfFn } from "utils";
+import { HtmlInputProps } from "types";
 
 export enum AdminTableCellTypeEnum {
   checkbox = "checkbox",
@@ -50,6 +51,7 @@ export const AdminListTable: React.FC<{
     props?: ThProps;
     value?: string;
     type?: AdminTableCellTypeEnum;
+    filtersProps?: HtmlInputProps;
     actionBtns?: React.ReactNode[];
     customName?: string;
     custom?: React.ReactNode;
@@ -159,33 +161,39 @@ export const AdminListTable: React.FC<{
                     })}
                   </Tr>
                   <Tr>
-                    {mapArray(headers, ({ custom, props, type }) => {
-                      switch (type) {
-                        case AdminTableCellTypeEnum.text:
-                          return (
-                            <Th {...props}>
-                              <Input />
-                            </Th>
-                          );
-                        case AdminTableCellTypeEnum.number:
-                          return (
-                            <Th {...props}>
-                              <Input type="number" />
-                            </Th>
-                          );
+                    {mapArray(
+                      headers,
+                      ({ custom, props, type, filtersProps }) => {
+                        switch (type) {
+                          case AdminTableCellTypeEnum.text:
+                            return (
+                              <Th {...props}>
+                                <Input {...(filtersProps || {})} />
+                              </Th>
+                            );
+                          case AdminTableCellTypeEnum.number:
+                            return (
+                              <Th {...props}>
+                                <Input
+                                  {...(filtersProps || {})}
+                                  type="number"
+                                />
+                              </Th>
+                            );
 
-                        case AdminTableCellTypeEnum.date:
-                          return (
-                            <Th>
-                              <DateFormInput />
-                            </Th>
-                          );
-                        case AdminTableCellTypeEnum.custom:
-                          return <Td {...props}>{runIfFn(custom)}</Td>;
-                        default:
-                          return <Th {...props} />;
+                          case AdminTableCellTypeEnum.date:
+                            return (
+                              <Th>
+                                <DateFormInput {...(filtersProps || {})} />
+                              </Th>
+                            );
+                          case AdminTableCellTypeEnum.custom:
+                            return <Td {...props}>{runIfFn(custom)}</Td>;
+                          default:
+                            return <Th {...props} />;
+                        }
                       }
-                    })}
+                    )}
                   </Tr>
                 </THead>
                 <TBody>

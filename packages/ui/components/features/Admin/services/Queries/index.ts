@@ -13,3 +13,4 @@ export * from "./useAdminDeleteMaintenancePage";
 export * from "./useAdminUpdateSocialLinks";
 export * from "./sales";
 export * from "./Accounts";
+export * from "./design";
