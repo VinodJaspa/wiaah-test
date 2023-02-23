@@ -1,17 +1,48 @@
-import { createGraphqlRequestClient } from "@UI/../api"
-import { useQuery } from "react-query"
+import { Exact, SiteInformation } from "@features/API";
+import { createGraphqlRequestClient } from "api";
+import { useQuery } from "react-query";
 
-type args= {}
-export const adminGetSettingsQueryKey = ()=> ["admin-get-site-settings"]
+export type AdminGetSiteSettingsQueryVariables = Exact<{
+  [key: string]: never;
+}>;
 
-export const adminGetSettingsQueryFetcher = ()=> {
-    const client = createGraphqlRequestClient()
-    client.setQuery(``)
+export type AdminGetSiteSettingsQuery = { __typename?: "Query" } & {
+  adminGetSiteInformations: { __typename?: "SiteInformation" } & Pick<
+    SiteInformation,
+    | "id"
+    | "descirption"
+    | "placements"
+    | "route"
+    | "slug"
+    | "sortOrder"
+    | "title"
+  >;
+};
 
-    const res = await client.send()
+export const adminGetSettingsQueryKey = () => ["admin-get-site-settings"];
 
-    return res.data.
+export const adminGetSettingsQueryFetcher = async () => {
+  const client = createGraphqlRequestClient();
+  client.setQuery(`
+query adminGetSiteSettings($args:AdminGetSiteInformationsInput!) {
+  adminGetSiteInformations(
+    args:$args
+  ) {
+    id
+    descirption
+    placements
+    route
+    slug
+    sortOrder
+    title
+  }
 }
+    `);
 
+  const res = await client.send<AdminGetSiteSettingsQuery>();
 
-export const useAdminGetSiteSettings = () => useQuery(adminGetSettingsQueryKey(),()=> adminGetSettingsQueryFetcher())
+  return res.data.adminGetSiteInformations;
+};
+
+export const useAdminGetSiteSettings = () =>
+  useQuery(adminGetSettingsQueryKey(), () => adminGetSettingsQueryFetcher());

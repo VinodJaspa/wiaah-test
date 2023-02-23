@@ -39,6 +39,7 @@ export class OrderItem {
 
   @Field(() => String, { nullable: true })
   discountId?: string;
+
   @Field(() => String, { nullable: true })
   cashbackId?: string;
 
@@ -47,6 +48,12 @@ export class OrderItem {
 
   @Field(() => String)
   orderId: string;
+
+  @Field(() => OrderStatusEnum)
+  status: OrderStatusEnum;
+
+  @Field(() => String, { nullable: true })
+  rejectReason?: string;
 }
 
 @ObjectType()

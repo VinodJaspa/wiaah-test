@@ -18,6 +18,22 @@ export class OrderItemResolver {
 
   @Query(() => [OrderItem])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async getSalesDurningPeriod(
+    @Args('count', { nullable: true, defaultValue: 10, type: () => Int })
+    take: number,
+  ) {
+    const res = await this.prisma.orderItem.findMany({
+      orderBy: {
+        paidAt: 'desc',
+      },
+      take,
+    });
+
+    return res;
+  }
+
+  @Query(() => [OrderItem])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async getRecentSales(
     @Args('count', { nullable: true, defaultValue: 10, type: () => Int })
     take: number,

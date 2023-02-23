@@ -152,7 +152,7 @@ export class SiteInformationsResolver {
         id: settings.id,
       },
       data: {
-        comingSoon: true,
+        mode: 'comingsoon',
       },
     });
 
@@ -169,7 +169,7 @@ export class SiteInformationsResolver {
         id: settings.id,
       },
       data: {
-        comingSoon: false,
+        mode: 'up',
       },
     });
 

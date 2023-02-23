@@ -175,12 +175,6 @@ export type AdminGetReturnedOrdersInput = {
   shippingAmount?: Maybe<Scalars["Float"]>;
 };
 
-export type AdminGetSiteInformationsInput = {
-  name?: Maybe<Scalars["String"]>;
-  pagination: GqlPaginationInput;
-  sortOrder?: Maybe<Scalars["Int"]>;
-};
-
 export type Affiliation = {
   __typename?: "Affiliation";
   commision: Scalars["Float"];
@@ -784,6 +778,12 @@ export type CreateLanguageInput = {
   locale: Scalars["String"];
   name: Scalars["String"];
   sortOrder: Scalars["Int"];
+};
+
+export type CreateMaintenanceInput = {
+  from: Scalars["String"];
+  to: Scalars["String"];
+  url: Scalars["String"];
 };
 
 export type CreateMembershipInput = {
@@ -1860,6 +1860,14 @@ export type LoginWithOtpInput = {
   otp: Scalars["String"];
 };
 
+export type Maintenance = {
+  __typename?: "Maintenance";
+  from: Scalars["String"];
+  id: Scalars["ID"];
+  to: Scalars["String"];
+  url: Scalars["String"];
+};
+
 export type MarketingTag = {
   __typename?: "MarketingTag";
   id: Scalars["ID"];
@@ -1983,6 +1991,7 @@ export type Mutation = {
   createHotelService: Hotel;
   createInitialCurrencies: Array<Currency>;
   createLanguage: Scalars["Boolean"];
+  createMaintenancePage: Scalars["Boolean"];
   createMembership: Membership;
   createMembershipSubscriptionPaymentIntent: PaymentIntent;
   createNewAffiliationProduct: Affiliation;
@@ -2012,6 +2021,7 @@ export type Mutation = {
   deleteBeautyCenterServices: Scalars["Boolean"];
   deleteBillingAddress: BillingAddress;
   deleteFilter: Filter;
+  deleteMaintenancePage: Scalars["Boolean"];
   deleteMyProfile: Profile;
   deleteProduct: Product;
   deleteProductCategory: Category;
@@ -2271,6 +2281,10 @@ export type MutationCreateLanguageArgs = {
   args: CreateLanguageInput;
 };
 
+export type MutationCreateMaintenancePageArgs = {
+  args: CreateMaintenanceInput;
+};
+
 export type MutationCreateMembershipArgs = {
   args: CreateMembershipInput;
 };
@@ -2381,6 +2395,10 @@ export type MutationDeleteBeautyCenterServicesArgs = {
 
 export type MutationDeleteFilterArgs = {
   deleteFilterId: Scalars["String"];
+};
+
+export type MutationDeleteMaintenancePageArgs = {
+  id: Scalars["String"];
 };
 
 export type MutationDeleteProductArgs = {
@@ -3117,7 +3135,7 @@ export type Query = {
   adminGetProduct?: Maybe<Product>;
   adminGetRawService?: Maybe<ServiceShopRaw>;
   adminGetReturnedOrders: Array<ReturnedOrder>;
-  adminGetSiteInformations: Array<SiteInformation>;
+  adminGetSiteInformations: SiteInformation;
   canAccessRoom: Scalars["Boolean"];
   comments: Array<Comment>;
   findAll: ProfilePaginatedResponse;
@@ -3174,6 +3192,7 @@ export type Query = {
   getLanguages: Array<Language>;
   getLatestOrders: Array<Order>;
   getLocalisation: Localization;
+  getMaintenancePages: Array<Maintenance>;
   getMyAffiliations: Array<Affiliation>;
   getMyBalance: Balance;
   getMyBillingAddressCollection: BillingAddressCollection;
@@ -3260,6 +3279,7 @@ export type Query = {
   getWithdrawCurrencies: Array<WithdrawCurrency>;
   getWithdrawalRequests: Array<WithdrawalRequest>;
   isFollowed: Scalars["Boolean"];
+  isMaintenance: Scalars["Boolean"];
   myProfile: Profile;
   requiredAction: RequiredAction;
   requiredActions: Array<RequiredAction>;
@@ -3299,10 +3319,6 @@ export type QueryAdminGetRawServiceArgs = {
 
 export type QueryAdminGetReturnedOrdersArgs = {
   args: AdminGetReturnedOrdersInput;
-};
-
-export type QueryAdminGetSiteInformationsArgs = {
-  args: AdminGetSiteInformationsInput;
 };
 
 export type QueryCanAccessRoomArgs = {
@@ -3731,6 +3747,10 @@ export type QueryGetWithdrawalRequestsArgs = {
 
 export type QueryIsFollowedArgs = {
   profileId: Scalars["String"];
+};
+
+export type QueryIsMaintenanceArgs = {
+  url: Scalars["String"];
 };
 
 export type QueryRequiredActionArgs = {

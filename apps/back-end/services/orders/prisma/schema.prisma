@@ -40,20 +40,22 @@ model RefundRequest {
 }
 
 model OrderItem {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
   type          String
   qty           Int
   paid          Float?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
   paidAt        DateTime?
-  refundable    Boolean   @default(true)
-  discountId    String?   @db.ObjectId
-  cashbackId    String?   @db.ObjectId
-  productId     String    @db.ObjectId
+  refundable    Boolean         @default(true)
+  discountId    String?         @db.ObjectId
+  cashbackId    String?         @db.ObjectId
+  productId     String          @db.ObjectId
   affiliationId String?
-  Order         Order?    @relation(fields: [orderId], references: [id])
-  orderId       String?   @db.ObjectId
+  status        OrderStatusEnum @default(pending)
+  rejectReason  String?
+  Order         Order?          @relation(fields: [orderId], references: [id])
+  orderId       String?         @db.ObjectId
 }
 
 type OrderStatus {

@@ -1,4 +1,4 @@
-import { Category } from "@features/Products";
+import { Category } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { GqlResponse } from "types";
 import { useQuery } from "react-query";
