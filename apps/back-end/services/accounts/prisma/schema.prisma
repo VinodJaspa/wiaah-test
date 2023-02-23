@@ -124,15 +124,17 @@ enum AccountType {
 }
 
 model AccountDeletionRequest {
-  id        String                       @id @default(auto()) @map("_id") @db.ObjectId
-  account   Account                      @relation(fields: [accountId], references: [id])
-  accountId String                       @unique @db.ObjectId
-  createdAt DateTime                     @default(now())
-  updatedAt DateTime                     @updatedAt
-  status    AccountDeletionRequestStatus
+  id           String                       @id @default(auto()) @map("_id") @db.ObjectId
+  account      Account                      @relation(fields: [accountId], references: [id])
+  accountId    String                       @unique @db.ObjectId
+  createdAt    DateTime                     @default(now())
+  updatedAt    DateTime                     @updatedAt
+  status       AccountDeletionRequestStatus
+  resolvedById String?
 }
 
 enum AccountDeletionRequestStatus {
+  approved
   pending
-  deleted
+  rejected
 }

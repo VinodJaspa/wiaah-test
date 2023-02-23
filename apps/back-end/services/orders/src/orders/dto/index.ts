@@ -3,3 +3,4 @@ export * from './reject-requested-order.input';
 export * from './accept-received-order.input';
 export * from './accept-requested-order.input';
 export * from './get-refundable-orders.input';
+export * from './get-sales-durning-period.input';

@@ -63,8 +63,9 @@ export type AccountDeletionRequest = {
 };
 
 export enum AccountDeletionRequestStatus {
-  Deleted = "deleted",
+  Approved = "approved",
   Pending = "pending",
+  Rejected = "rejected",
 }
 
 export type AccountInputData = {
@@ -173,6 +174,12 @@ export type AdminGetReturnedOrdersInput = {
   reason?: Maybe<Scalars["String"]>;
   sellerName?: Maybe<Scalars["String"]>;
   shippingAmount?: Maybe<Scalars["Float"]>;
+};
+
+export type AdminGetSiteInformationsInput = {
+  name?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  sortOrder?: Maybe<Scalars["Int"]>;
 };
 
 export type Affiliation = {
@@ -1522,6 +1529,17 @@ export type GetRestaurantInput = {
   id: Scalars["ID"];
 };
 
+export type GetSalesDurningPeriodInput = {
+  address?: Maybe<Scalars["String"]>;
+  buyer?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  productName?: Maybe<Scalars["String"]>;
+  qty?: Maybe<Scalars["Int"]>;
+  searchPeriod?: Maybe<OrderSearchPeriod>;
+  seller?: Maybe<Scalars["String"]>;
+  status?: Maybe<OrderStatusEnum>;
+};
+
 export type GetShopRecommendedPostsInput = {
   q?: Maybe<Scalars["String"]>;
 };
@@ -1952,6 +1970,7 @@ export type Mutation = {
   BookVehicle: BookedService;
   RemoveWishlistItem: Scalars["Boolean"];
   UpdateDesign: Scalars["Boolean"];
+  acceptAccountDeletionRequest: Scalars["Boolean"];
   acceptAppointment: Scalars["Boolean"];
   acceptInsurancePayBackRequest: Scalars["Boolean"];
   acceptReceivedOrder: Scalars["Boolean"];
@@ -2048,6 +2067,7 @@ export type Mutation = {
   refuseAccountVerification: Scalars["Boolean"];
   refuseInsurancePayBackRequest: Scalars["Boolean"];
   register: Scalars["String"];
+  rejectAccountDeletionRequest: Scalars["Boolean"];
   rejectReceivedOrder: Scalars["Boolean"];
   rejectRefundRequest: Scalars["Boolean"];
   rejectRequestedOrder: Scalars["Boolean"];
@@ -2150,6 +2170,10 @@ export type MutationRemoveWishlistItemArgs = {
 
 export type MutationUpdateDesignArgs = {
   args: UpdateDesignInput;
+};
+
+export type MutationAcceptAccountDeletionRequestArgs = {
+  id: Scalars["String"];
 };
 
 export type MutationAcceptAppointmentArgs = {
@@ -2479,6 +2503,10 @@ export type MutationRefuseInsurancePayBackRequestArgs = {
 
 export type MutationRegisterArgs = {
   RegisterInput: CreateAccountInput;
+};
+
+export type MutationRejectAccountDeletionRequestArgs = {
+  id: Scalars["String"];
 };
 
 export type MutationRejectReceivedOrderArgs = {
@@ -2843,9 +2871,17 @@ export type OrderItem = {
   product?: Maybe<Product>;
   qty: Scalars["Int"];
   refundable: Scalars["Boolean"];
+  rejectReason?: Maybe<Scalars["String"]>;
   seller: Account;
+  status: OrderStatusEnum;
   updatedAt: Scalars["String"];
 };
+
+export enum OrderSearchPeriod {
+  Day = "day",
+  Month = "month",
+  Week = "week",
+}
 
 export type OrderStatus = {
   __typename?: "OrderStatus";
@@ -3135,7 +3171,7 @@ export type Query = {
   adminGetProduct?: Maybe<Product>;
   adminGetRawService?: Maybe<ServiceShopRaw>;
   adminGetReturnedOrders: Array<ReturnedOrder>;
-  adminGetSiteInformations: SiteInformation;
+  adminGetSiteInformations: Array<SiteInformation>;
   canAccessRoom: Scalars["Boolean"];
   comments: Array<Comment>;
   findAll: ProfilePaginatedResponse;
@@ -3249,6 +3285,7 @@ export type Query = {
   getRestaurant: Restaurant;
   getRestaurants: Array<Restaurant>;
   getRoomMessages: Array<ChatMessage>;
+  getSalesDurningPeriod: Array<OrderItem>;
   getServiceCategories: Array<ServiceCategory>;
   getServiceCategoryById: ServiceCategory;
   getServiceCategoryBySlug: ServiceCategory;
@@ -3319,6 +3356,10 @@ export type QueryAdminGetRawServiceArgs = {
 
 export type QueryAdminGetReturnedOrdersArgs = {
   args: AdminGetReturnedOrdersInput;
+};
+
+export type QueryAdminGetSiteInformationsArgs = {
+  args: AdminGetSiteInformationsInput;
 };
 
 export type QueryCanAccessRoomArgs = {
@@ -3651,6 +3692,10 @@ export type QueryGetRestaurantArgs = {
 
 export type QueryGetRoomMessagesArgs = {
   args: GetMessagesByRoomIdInput;
+};
+
+export type QueryGetSalesDurningPeriodArgs = {
+  args: GetSalesDurningPeriodInput;
 };
 
 export type QueryGetServiceCategoryByIdArgs = {

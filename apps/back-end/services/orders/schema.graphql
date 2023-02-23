@@ -136,7 +136,7 @@ type Query {
   getUserOrders(args: GetUserOrders!): [Order!]!
   getFilteredOrders(args: GetFilteredOrdersInput!): [Order!]!
   getLatestOrders(take: Int = 10): [Order!]!
-  getSalesDurningPeriod(count: Int = 10): [OrderItem!]!
+  getSalesDurningPeriod(args: GetSalesDurningPeriodInput!): [OrderItem!]!
   getRecentSales(count: Int = 10): [OrderItem!]!
   getMyReturnedOrders(args: GetMyReturnedOrdersInput!): [Refund!]!
   adminGetReturnedOrders(args: AdminGetReturnedOrdersInput!): [ReturnedOrder!]!
@@ -176,6 +176,23 @@ input GetFilteredOrdersInput {
   status: OrderStatusEnum
   total: Float
   pagination: GqlPaginationInput!
+}
+
+input GetSalesDurningPeriodInput {
+  productName: String
+  seller: String
+  buyer: String
+  qty: Int
+  address: String
+  status: OrderStatusEnum
+  searchPeriod: OrderSearchPeriod
+  pagination: GqlPaginationInput!
+}
+
+enum OrderSearchPeriod {
+  day
+  month
+  week
 }
 
 input GetMyReturnedOrdersInput {

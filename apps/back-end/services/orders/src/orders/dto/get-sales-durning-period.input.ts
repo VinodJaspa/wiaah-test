@@ -1,6 +1,20 @@
-import { Field, InputType, Int, PartialType } from '@nestjs/graphql';
+import {
+  Field,
+  InputType,
+  Int,
+  PartialType,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { OrderStatusEnum } from '@prisma-client';
 import { GqlPaginationInput } from 'nest-utils';
+
+export enum OrderSearchPeriod {
+  day = 'day',
+  month = 'month',
+  week = 'week',
+}
+
+registerEnumType(OrderSearchPeriod, { name: 'OrderSearchPeriod' });
 
 @InputType()
 export class input {
@@ -21,6 +35,9 @@ export class input {
 
   @Field(() => OrderStatusEnum)
   status: OrderStatusEnum;
+
+  @Field(() => OrderSearchPeriod)
+  searchPeriod: OrderSearchPeriod;
 }
 
 @InputType()
