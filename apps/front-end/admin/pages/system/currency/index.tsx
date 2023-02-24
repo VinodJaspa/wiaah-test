@@ -13,11 +13,13 @@ import {
   Th,
   THead,
   Tr,
+  useAdminGetCurrenciesQuery,
+  usePaginationControls,
 } from "ui";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { mapArray } from "utils";
+import { mapArray, useForm } from "utils";
 import { useRouting } from "routing";
 
 interface Currency {
@@ -51,6 +53,14 @@ const currencies: Currency[] = [
 const Currency: NextPage = () => {
   const { t } = useTranslation();
   const { getCurrentPath, visit } = useRouting();
+
+  const { pagination, controls } = usePaginationControls();
+  const { form } = useForm<Parameters<typeof useAdminGetCurrenciesQuery>[0]>(
+    { pagination },
+    { pagination }
+  );
+  const { data: currencies } = useAdminGetCurrenciesQuery(form);
+
   return (
     <section>
       <div className="border border-gray-300">
@@ -95,7 +105,7 @@ const Currency: NextPage = () => {
               <TBody>
                 {mapArray(
                   currencies,
-                  ({ code, id, isDefault, name, enabled, rate }) => (
+                  ({ code, id, name, exchangeRate, symbol, enabled }) => (
                     <Tr>
                       <Td>
                         <Checkbox />
@@ -103,13 +113,13 @@ const Currency: NextPage = () => {
                       <Td>
                         <p>
                           {name}
-                          <span className="font-bold">
+                          {/* <span className="font-bold">
                             {isDefault ? `(${t("Default")})` : ""}
-                          </span>
+                          </span> */}
                         </p>
                       </Td>
                       <Td>{code}</Td>
-                      <Td>{rate}</Td>
+                      <Td>{exchangeRate}</Td>
                       <Td>{enabled ? t("Enabled") : t("Disabled")}</Td>
                       <Td>
                         <Button

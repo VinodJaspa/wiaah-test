@@ -31,7 +31,11 @@ export class CurrencyService {
   }
 
   getAllCurrenices() {
-    return this.prisma.currency.findMany();
+    return this.prisma.currency.findMany({
+      where: {
+        enabled: true,
+      },
+    });
   }
 
   async createOrUpdateCurrency(
@@ -53,14 +57,6 @@ export class CurrencyService {
       },
       where: {
         code,
-      },
-      select: {
-        code: true,
-        exchangeRate: true,
-        name: true,
-        updatedAt: true,
-        id: true,
-        symbol: true,
       },
     });
   }
@@ -88,14 +84,6 @@ export class CurrencyService {
           code,
         },
         data: rest,
-        select: {
-          code: true,
-          exchangeRate: true,
-          id: true,
-          name: true,
-          updatedAt: true,
-          symbol: true,
-        },
       });
 
       return updatedCurrency;

@@ -28,8 +28,6 @@ const Seller: NextPage = () => {
   const cols = useBreakpointValue({ base: 1, md: 2, lg: 3 });
   const { open } = useStoryModal();
 
-  const { } = 
-
   const { pagination: storiesPagination } = usePaginationControls();
   const { data: recentStories } = useGetRecentStories({
     pagination: storiesPagination,

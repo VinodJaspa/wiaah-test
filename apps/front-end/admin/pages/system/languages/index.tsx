@@ -3,10 +3,8 @@ import {
   Checkbox,
   EditIcon,
   Input,
-  InputRequiredStar,
   ListIcon,
-  Select,
-  SelectOption,
+  Pagination,
   Table,
   TableContainer,
   TBody,
@@ -14,41 +12,25 @@ import {
   Th,
   THead,
   Tr,
+  useAdminGetLanguagesQuery,
+  usePaginationControls,
 } from "ui";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { mapArray } from "utils";
+import { mapArray, useForm } from "utils";
 import { useRouting } from "routing";
-
-interface LanguageRecord {
-  name: string;
-  code: string;
-  sortOrder: number;
-  isDefault: boolean;
-  id: string;
-}
-
-const languages: LanguageRecord[] = [
-  {
-    id: "1",
-    code: "EN",
-    name: "English",
-    sortOrder: 1,
-    isDefault: true,
-  },
-  {
-    id: "1",
-    code: "FR",
-    name: "French",
-    sortOrder: 1,
-    isDefault: false,
-  },
-];
 
 const LanguagesList: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath } = useRouting();
+
+  const { pagination, controls } = usePaginationControls();
+  const { form, inputProps, handleChange } = useForm<
+    Parameters<typeof useAdminGetLanguagesQuery>[0]
+  >({ pagination });
+  const { data: languages } = useAdminGetLanguagesQuery(form);
+
   return (
     <section>
       <div className="border border-gray-300">
@@ -66,19 +48,20 @@ const LanguagesList: NextPage = () => {
                   </Th>
                   <Th>{t("Language Name")}</Th>
                   <Th>{t("Code")}</Th>
+                  <Th>{t("locale")}</Th>
                   <Th>{t("Sort Order")}</Th>
                   <Th>{t("Action")}</Th>
                 </Tr>
                 <Tr>
                   <Th></Th>
                   <Th>
-                    <Input />
+                    <Input {...inputProps("name")} />
                   </Th>
                   <Th>
-                    <Input />
+                    <Input {...inputProps("code")} />
                   </Th>
                   <Th>
-                    <Input />
+                    <Input {...inputProps("locale")} />
                   </Th>
                   <Th></Th>
                 </Tr>
@@ -86,7 +69,7 @@ const LanguagesList: NextPage = () => {
               <TBody>
                 {mapArray(
                   languages,
-                  ({ code, id, isDefault, name, sortOrder }) => (
+                  ({ code, id, name, sortOrder, enabled, locale }) => (
                     <Tr>
                       <Td>
                         <Checkbox />
@@ -94,20 +77,13 @@ const LanguagesList: NextPage = () => {
                       <Td>
                         <p>
                           {name}
-                              <span className="font-bold">
-                          {
-                            isDefault ? (
-                              `(${t(
-                                "Default"
-                              )})`
-                            ) : (
-                              ""
-                            )
-                          }
-                              </span>
+                          {/* <span className="font-bold">
+                            {isDefault ? `(${t("Default")})` : ""}
+                          </span> */}
                         </p>
                       </Td>
                       <Td>{code}</Td>
+                      <Td>{locale}</Td>
                       <Td>{sortOrder}</Td>
                       <Td>
                         <Button
@@ -129,6 +105,7 @@ const LanguagesList: NextPage = () => {
               </TBody>
             </Table>
           </TableContainer>
+          <Pagination controls={controls} />
         </div>
       </div>
     </section>

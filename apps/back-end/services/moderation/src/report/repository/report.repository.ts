@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateReportInput } from '@report/dto';
-import { ReportContentType } from 'prismaClient';
+import { ReportType } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 
 @Injectable()
@@ -11,14 +11,15 @@ export class ReportRepository {
     return this.prisma.report.create({
       data: {
         ...input,
+        reportedById: userId,
       },
     });
   }
 
-  getAllByType(type: ReportContentType) {
+  getAllByType(type: ReportType) {
     return this.prisma.report.findMany({
       where: {
-        contentType: type,
+        type,
       },
     });
   }

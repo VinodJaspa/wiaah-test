@@ -14,7 +14,6 @@ import {
   AffiliationIcon,
   HStack,
   useGetSocialProfileQuery,
-  ProfileVisibility,
   SocialProfileNewsfeedPosts,
   SocialProfileShopPostsList,
   SocialProfileServicePosts,
@@ -23,6 +22,7 @@ import {
 import { TabType } from "types";
 import { useTranslation } from "react-i18next";
 import { useBreakpointValue } from "utils";
+import { ProfileVisibility } from "@features/API";
 
 export interface SocialViewProps {
   profileId: string;
@@ -38,6 +38,8 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
   const { isMobile } = useResponsive();
   const cols = useBreakpointValue({ base: 3 });
 
+  if (!profileInfo) return null;
+
   const sellerTabs: TabType[] = [
     {
       name: (
@@ -46,7 +48,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
           <HomeIcon />
         </HStack>
       ),
-      component: <SocialProfileNewsfeedPosts userId={profileInfo.ownerId} />,
+      component: <SocialProfileNewsfeedPosts userId={profileInfo?.ownerId} />,
     },
     {
       name: (
@@ -124,7 +126,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
                 <>
                   <TabsViewer
                     tabs={
-                      profileInfo.user.type === "seller"
+                      profileInfo?.user?.type === "seller"
                         ? sellerTabs
                         : buyerTabs
                     }

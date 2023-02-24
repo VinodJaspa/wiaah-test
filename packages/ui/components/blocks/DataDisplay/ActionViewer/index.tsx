@@ -9,13 +9,8 @@ import {
   HiDotsHorizontal,
 } from "react-icons/hi";
 import { SocialActionData } from "types";
-import {
-  useActionComments,
-  useResponsive,
-  PostAttachment,
-  ActionHeader,
-  FloatingContainer,
-} from "@UI";
+import { useActionComments, PostAttachment, ActionHeader } from "@UI";
+import { AttachmentType } from "@features/API";
 
 export interface ActionsViewerProps {
   action: SocialActionData;
@@ -39,12 +34,14 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
   const { ToggleComments } = useActionComments();
   const { t } = useTranslation();
   return (
-    <div className="relative w-[min(35rem,100%)]">
+    <div className="relative  h-full w-[min(35rem,100%)]">
       {action && (
         <>
           <div
             className={`${dark ? "text-white bg-black bg-opacity-30" : " "} ${
-              interactionPos === "in" ? "right-0 text-white" : "left-full"
+              interactionPos === "in"
+                ? "right-0 text-white"
+                : "left-full text-black"
             } z-10 bottom-0 absolute flex justify-center px-1 text-center gap-2 flex-col rounded-full text-7xl`}
           >
             <div className="flex flex-col justify-center">
@@ -91,18 +88,18 @@ export const ActionViewer: React.FC<ActionsViewerProps> = ({
               muteIcon ? "top-14" : "top-4"
             } right-4 z-10 text-5xl text-white`}
           />
-          ,
+
           <div
             className="flex gap-2 self-start h-full flex-col"
             onClick={() => onActionClick && onActionClick(action.id)}
           >
             <PostAttachment
-              controls={false}
-              autoPlay
-              play={play}
-              type={action.storyType !== "text" ? action.storyType : "image"}
+              type={
+                action.storyType === "image"
+                  ? AttachmentType.Img
+                  : AttachmentType.Vid
+              }
               src={action.storySrc || ""}
-              {...action}
             />
           </div>
         </>

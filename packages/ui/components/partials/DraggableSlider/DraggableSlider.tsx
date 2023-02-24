@@ -271,7 +271,7 @@ export const DraggableSlider: React.FC<DraggableSliderProps> = ({
   }
 
   return (
-    <div className="overflow-hidden w-full h-full">
+    <div className="w-full h-full">
       <div
         style={{
           willChange: "transform, scale",

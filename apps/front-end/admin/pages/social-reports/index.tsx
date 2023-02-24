@@ -1,5 +1,6 @@
 import {
   Badge,
+  Button,
   DateFormInput,
   getRandomImage,
   Image,
@@ -15,36 +16,29 @@ import {
   Th,
   THead,
   Tr,
-  TrashIcon,
+  useAdminGetSocialReports,
+  useAdminMarkReportedContentCleanMutation,
+  useAdminSuspenseReportedContentMutation,
+  usePaginationControls,
 } from "ui";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { mapArray, NumberShortner, randomNum } from "utils";
-import { BsKey } from "react-icons/bs";
+import { mapArray, NumberShortner, randomNum, useForm } from "utils";
 import { ImCheckmark } from "react-icons/im";
-
-const posts = [...Array(10)].map(() => ({
-  id: randomNum(500000).toString(),
-  username: "Wiaah",
-  authorId: "test id",
-  description:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It h",
-  hashtags: ["new", "sports", "fun", "world cup"],
-  comments: randomNum(500000),
-  likes: randomNum(50000),
-  views: randomNum(50000),
-  shares: randomNum(5000),
-  thumbnail: getRandomImage(),
-  type: "image",
-  createdAt: new Date(),
-  reason:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It ",
-  status: randomNum(100) > 50 ? "appropriate" : "inappropriate",
-}));
+import { AttachmentType, ReportType } from "@features/API";
 
 const SocialReports: NextPage = () => {
   const { t } = useTranslation();
+
+  const { controls, pagination } = usePaginationControls();
+  const { form, inputProps } = useForm<
+    Parameters<typeof useAdminGetSocialReports>[0]
+  >({ pagination }, { pagination, type: ReportType.Post });
+  const { data: reports } = useAdminGetSocialReports(form);
+  const { mutate: clean } = useAdminMarkReportedContentCleanMutation();
+  const { mutate: suspense } = useAdminSuspenseReportedContentMutation();
+
   return (
     <>
       <TableContainer>
@@ -72,13 +66,15 @@ const SocialReports: NextPage = () => {
             <Tr>
               <Td></Td>
               <Td>
-                <Input />
+                <Input {...inputProps("id")} />
               </Td>
               <Td>
-                <Input />
+                <Input {...inputProps("reason")} />
               </Td>
               <Td>
-                <Select>
+                <Select
+                  {...inputProps("status", "value", "onOptionChange", (e) => e)}
+                >
                   <SelectOption value={"appropriate"}>
                     {t("Appropriate")}
                   </SelectOption>
@@ -88,66 +84,86 @@ const SocialReports: NextPage = () => {
                 </Select>
               </Td>
               <Td>
-                <Input />
+                <Input {...inputProps("legend")} />
               </Td>
               <Td>
-                <Input type="number" />
+                <Input type="number" {...inputProps("views")} />
               </Td>
               <Td>
-                <Input type="number" />
+                <Input type="number" {...inputProps("likes")} />
               </Td>
               <Td>
-                <Input type="number" />
+                <Input type="number" {...inputProps("comments")} />
               </Td>
               <Td>
-                <Input type="number" />
+                <Input type="number" {...inputProps("shares")} />
               </Td>
               <Td>
-                <DateFormInput />
+                <DateFormInput
+                  {...inputProps(
+                    "publishDate",
+                    "dateValue",
+                    "onDateChange",
+                    (e) => e
+                  )}
+                />
               </Td>
             </Tr>
 
-            {mapArray(posts, (data, i) => (
-              <Tr key={i}>
-                <Td className="w-fit">
-                  {data.type === "video" ? (
-                    <></>
-                  ) : (
-                    <Image className="w-32" src={data.thumbnail} />
-                  )}
-                </Td>
-                <Td>{data.id.slice(0, 4)}...</Td>
-                <Td>{data.reason.slice(0, 30)}</Td>
-                <Td>{data.status}</Td>
-                <Td className="w-[30%]">
-                  <div className="flex flex-col gap-4">
-                    <p>{data.description.slice(0, 80)}...</p>
-                    <div className="flex flex-wrap gap-2">
-                      {data.hashtags.map((tag, i) => (
-                        <Badge variant="off" key={i}>
-                          #{tag}
-                        </Badge>
-                      ))}
+            {mapArray(
+              reports,
+              ({ createdAt, id, message, post, status }, i) => (
+                <Tr key={i}>
+                  <Td className="w-fit">
+                    {post.attachments[0].type === AttachmentType.Vid ? (
+                      <></>
+                    ) : (
+                      <Image className="w-32" src={post.attachments[0].src} />
+                    )}
+                  </Td>
+                  <Td>{id.slice(0, 4)}...</Td>
+                  <Td>{message.slice(0, 30)}</Td>
+                  <Td>{status}</Td>
+                  <Td className="w-[30%]">
+                    <div className="flex flex-col gap-4">
+                      <p>{post.content.slice(0, 80)}...</p>
+                      <div className="flex flex-wrap gap-2">
+                        {post.hashtags.map((tag, i) => (
+                          <Badge variant="off" key={i}>
+                            #{tag.tag}
+                          </Badge>
+                        ))}
+                      </div>
                     </div>
-                  </div>
-                </Td>
-                <Td>{NumberShortner(data.views)}</Td>
-                <Td>{NumberShortner(data.likes)}</Td>
-                <Td>{NumberShortner(data.comments)}</Td>
-                <Td>{NumberShortner(data.shares)}</Td>
-                <Td>{new Date(data.createdAt).toDateString()}</Td>
-                <Td className="text-white">
-                  <div className="flex flex-wrap gap-2">
-                    <ImCheckmark className="w-8 h-8 p-2 bg-green-500" />
-                    <NotAllowedIcon className="w-8 h-8 p-2 bg-red-500" />
-                  </div>
-                </Td>
-              </Tr>
-            ))}
+                  </Td>
+                  <Td>{NumberShortner(post.views)}</Td>
+                  <Td>{NumberShortner(post.reactionNum)}</Td>
+                  <Td>{NumberShortner(post.comments)}</Td>
+                  <Td>{NumberShortner(post.shares)}</Td>
+                  <Td>{new Date(createdAt).toDateString()}</Td>
+                  <Td className="text-white">
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        onClick={() => {
+                          clean(id);
+                        }}
+                        center
+                        className="p-2"
+                      >
+                        <ImCheckmark className="text-white" />
+                      </Button>
+                      <Button onClick={() => suspense(id)}>
+                        <NotAllowedIcon className="text-white" />
+                      </Button>
+                    </div>
+                  </Td>
+                </Tr>
+              )
+            )}
           </TBody>
         </Table>
       </TableContainer>
-      <Pagination />
+      <Pagination controls={controls} />
     </>
   );
 };

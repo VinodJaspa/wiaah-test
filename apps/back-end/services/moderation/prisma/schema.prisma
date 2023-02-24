@@ -35,26 +35,26 @@ model City {
 }
 
 model Report {
-  id          String            @id @default(auto()) @map("_id") @db.ObjectId
-  reportedBy  String            @db.ObjectId
-  contentId   String            @db.ObjectId
-  contentType ReportContentType
-  message     String
-  status      ReportStatus      @default(pending)
-  type        ReportType
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  reportedById String       @db.ObjectId
+  contentId    String       @db.ObjectId
+  message      String
+  status       ReportStatus @default(pending)
+  type         ReportType
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 enum ReportStatus {
-  accepted
+  clean
+  suspended
   pending
-  rejected
 }
 
 enum ReportType {
-  social
+  profile
+  post
   product
   service
   bug
@@ -68,12 +68,6 @@ model Information {
   slug        String
   sortOrder   Int      @default(0)
   route       String
-}
-
-enum ReportContentType {
-  post
-  service
-  product
 }
 
 model Design {

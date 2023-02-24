@@ -7,8 +7,8 @@ export class GetReportsQueryHandler
   extends ReportBaseHandler
   implements IQueryHandler<GetReportsQuery>
 {
-  async execute({ input: { contentType } }: GetReportsQuery): Promise<any> {
-    const res = await this.repo.getAllByType(contentType);
+  async execute({ input: { type } }: GetReportsQuery): Promise<any> {
+    const res = await this.repo.getAllByType(type);
 
     return res;
   }

@@ -165,11 +165,27 @@ export type AdminGetBookingsInput = {
   type?: Maybe<Scalars["String"]>;
 };
 
+export type AdminGetCurrenciesInput = {
+  code?: Maybe<Scalars["String"]>;
+  enabled?: Maybe<Scalars["Boolean"]>;
+  pagination: GqlPaginationInput;
+  rate?: Maybe<Scalars["Float"]>;
+  title?: Maybe<Scalars["String"]>;
+};
+
 export type AdminGetDesignsInput = {
   name?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
   placement?: Maybe<DesignPlacement>;
   type?: Maybe<DesignType>;
+};
+
+export type AdminGetLanguagesInput = {
+  code?: Maybe<Scalars["String"]>;
+  locale?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  sortOrder?: Maybe<Scalars["Int"]>;
 };
 
 export type AdminGetReturnedOrdersInput = {
@@ -881,9 +897,7 @@ export type CreateReactionInput = {
 
 export type CreateReportInput = {
   contentId: Scalars["ID"];
-  contentType: ReportContentType;
   message: Scalars["String"];
-  reportedBy: Scalars["ID"];
   type: ReportType;
 };
 
@@ -1022,6 +1036,7 @@ export type CreateVoucherInput = {
 export type Currency = {
   __typename?: "Currency";
   code: Scalars["String"];
+  enabled: Scalars["Boolean"];
   exchangeRate: Scalars["Float"];
   id: Scalars["ID"];
   name: Scalars["String"];
@@ -1533,7 +1548,17 @@ export type GetRefundableOrdersInput = {
 };
 
 export type GetReportsInput = {
-  contentType: ReportContentType;
+  comments?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["String"]>;
+  legend?: Maybe<Scalars["String"]>;
+  likes?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  publishDate?: Maybe<Scalars["String"]>;
+  reason?: Maybe<Scalars["String"]>;
+  shares?: Maybe<Scalars["String"]>;
+  status?: Maybe<Scalars["String"]>;
+  type?: Maybe<ReportType>;
+  views?: Maybe<Scalars["String"]>;
 };
 
 export type GetRestaurantInput = {
@@ -2088,6 +2113,7 @@ export type Mutation = {
   removeNewsfeedPost: NewsfeedPost;
   removeNewsletterSubscriber: Scalars["Boolean"];
   removeReaction: ContentReaction;
+  removeReport: Scalars["Boolean"];
   removeRequiredAction: RequiredAction;
   removeReview: ProductReview;
   removeServiceCategory: ServiceCategory;
@@ -2104,6 +2130,7 @@ export type Mutation = {
   shareContent: ContentShare;
   suspenseAccount: Scalars["Boolean"];
   suspenseContent: Scalars["Boolean"];
+  suspenseReportedContent: Scalars["Boolean"];
   unBanBuyersCities: Scalars["Boolean"];
   unBanSellersCities: Scalars["Boolean"];
   unFollow: Scalars["Boolean"];
@@ -2552,6 +2579,10 @@ export type MutationRemoveReactionArgs = {
   removeReactionArgs: RemoveReactionInput;
 };
 
+export type MutationRemoveReportArgs = {
+  id: Scalars["String"];
+};
+
 export type MutationRemoveRequiredActionArgs = {
   id: Scalars["Int"];
 };
@@ -2614,6 +2645,10 @@ export type MutationSuspenseAccountArgs = {
 
 export type MutationSuspenseContentArgs = {
   suspenseContentArgs: SuspenseContentInput;
+};
+
+export type MutationSuspenseReportedContentArgs = {
+  id: Scalars["String"];
 };
 
 export type MutationUnBanBuyersCitiesArgs = {
@@ -3178,8 +3213,10 @@ export type Query = {
   acceptAccountVerification: Scalars["Boolean"];
   adminGetAccount: Account;
   adminGetBookings: Array<BookedService>;
+  adminGetCurrencies: Array<Currency>;
   adminGetDesigns: Array<Design>;
   adminGetFilteredProductReviews: Array<ProductReview>;
+  adminGetLanguages: Array<Language>;
   adminGetProduct?: Maybe<Product>;
   adminGetRawService?: Maybe<ServiceShopRaw>;
   adminGetReturnedOrders: Array<ReturnedOrder>;
@@ -3354,12 +3391,20 @@ export type QueryAdminGetBookingsArgs = {
   args: AdminGetBookingsInput;
 };
 
+export type QueryAdminGetCurrenciesArgs = {
+  args: AdminGetCurrenciesInput;
+};
+
 export type QueryAdminGetDesignsArgs = {
   args: AdminGetDesignsInput;
 };
 
 export type QueryAdminGetFilteredProductReviewsArgs = {
   args: GetAdminFitleredProductReviewsInput;
+};
+
+export type QueryAdminGetLanguagesArgs = {
+  args: AdminGetLanguagesInput;
 };
 
 export type QueryAdminGetProductArgs = {
@@ -3940,25 +3985,33 @@ export type RemoveWishlistItemInput = {
 
 export type Report = {
   __typename?: "Report";
-  contentType: ReportContentType;
+  contentId: Scalars["String"];
   createdAt: Scalars["DateTime"];
   id: Scalars["ID"];
   message: Scalars["String"];
-  reportedBy: Scalars["ID"];
+  post: NewsfeedPost;
+  product: Product;
+  profile: Profile;
+  reportedBy: Profile;
+  reportedById: Scalars["ID"];
+  service: Service;
+  status: ReportStatus;
+  type: ReportType;
   updatedAt: Scalars["DateTime"];
 };
 
-export enum ReportContentType {
-  Post = "post",
-  Product = "product",
-  Service = "service",
+export enum ReportStatus {
+  Clean = "clean",
+  Pending = "pending",
+  Suspended = "suspended",
 }
 
 export enum ReportType {
   Bug = "bug",
+  Post = "post",
   Product = "product",
+  Profile = "profile",
   Service = "service",
-  Social = "social",
 }
 
 export type RequiredAction = {

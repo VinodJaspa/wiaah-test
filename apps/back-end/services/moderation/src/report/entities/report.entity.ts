@@ -1,5 +1,7 @@
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
-import { ReportContentType } from 'prismaClient';
+import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
+import { ReportStatus, ReportType } from 'prismaClient';
+
+registerEnumType(ReportStatus, { name: 'ReportStatus' });
 
 @ObjectType()
 export class Report {
@@ -7,16 +9,22 @@ export class Report {
   id: string;
 
   @Field(() => ID)
-  reportedBy: string;
+  reportedById: string;
 
-  @Field(() => ReportContentType)
-  contentType: ReportContentType;
+  @Field(() => String)
+  contentId: string;
 
   @Field(() => String)
   message: string;
 
   @Field(() => Date)
   createdAt: Date;
+
+  @Field(() => ReportStatus)
+  status: ReportStatus;
+
+  @Field(() => ReportType)
+  type: ReportType;
 
   @Field(() => Date)
   updatedAt: Date;

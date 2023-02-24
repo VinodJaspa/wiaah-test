@@ -62,6 +62,9 @@ export const PostAttachment: React.FC<PostAttachmentProps> = ({
           )}
         </div>
       );
+
+    case AttachmentType.Vid:
+      return <video src={src}></video>;
     default:
       return null;
   }

@@ -54,7 +54,11 @@ export const MyProfileView: React.FC<MyProfileView> = () => {
   const sellerTabs: TabType[] = [
     {
       name: t("news_feed", "news feed"),
-      component: <SocialProfileNewsfeedPosts userId={profile?.ownerId} />,
+      component: (
+        <>
+          <SocialProfileNewsfeedPosts grid userId={profile?.ownerId} />,
+        </>
+      ),
     },
     {
       name: t("shop", "shop"),
