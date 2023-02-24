@@ -63,8 +63,9 @@ export type AccountDeletionRequest = {
 };
 
 export enum AccountDeletionRequestStatus {
-  Deleted = "deleted",
+  Approved = "approved",
   Pending = "pending",
+  Rejected = "rejected",
 }
 
 export type AccountInputData = {
@@ -162,6 +163,29 @@ export type AdminGetBookingsInput = {
   status?: Maybe<BookedServiceStatus>;
   total?: Maybe<Scalars["Float"]>;
   type?: Maybe<Scalars["String"]>;
+};
+
+export type AdminGetCurrenciesInput = {
+  code?: Maybe<Scalars["String"]>;
+  enabled?: Maybe<Scalars["Boolean"]>;
+  pagination: GqlPaginationInput;
+  rate?: Maybe<Scalars["Float"]>;
+  title?: Maybe<Scalars["String"]>;
+};
+
+export type AdminGetDesignsInput = {
+  name?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  placement?: Maybe<DesignPlacement>;
+  type?: Maybe<DesignType>;
+};
+
+export type AdminGetLanguagesInput = {
+  code?: Maybe<Scalars["String"]>;
+  locale?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  sortOrder?: Maybe<Scalars["Int"]>;
 };
 
 export type AdminGetReturnedOrdersInput = {
@@ -786,6 +810,12 @@ export type CreateLanguageInput = {
   sortOrder: Scalars["Int"];
 };
 
+export type CreateMaintenanceInput = {
+  from: Scalars["String"];
+  to: Scalars["String"];
+  url: Scalars["String"];
+};
+
 export type CreateMembershipInput = {
   commissionOn: CommissionOn;
   includings: Array<MembershipIncludedItemInput>;
@@ -867,9 +897,7 @@ export type CreateReactionInput = {
 
 export type CreateReportInput = {
   contentId: Scalars["ID"];
-  contentType: ReportContentType;
   message: Scalars["String"];
-  reportedBy: Scalars["ID"];
   type: ReportType;
 };
 
@@ -1008,6 +1036,7 @@ export type CreateVoucherInput = {
 export type Currency = {
   __typename?: "Currency";
   code: Scalars["String"];
+  enabled: Scalars["Boolean"];
   exchangeRate: Scalars["Float"];
   id: Scalars["ID"];
   name: Scalars["String"];
@@ -1065,6 +1094,10 @@ export type Design = {
   type: DesignType;
   updatedAt: Scalars["String"];
 };
+
+export enum DesignPlacement {
+  Homepage = "homepage",
+}
 
 export enum DesignType {
   Collaboration = "collaboration",
@@ -1263,7 +1296,7 @@ export type GetContentCommentsInput = {
 
 export type GetDesignByPlacementInput = {
   pagination: GqlPaginationInput;
-  placement: Scalars["String"];
+  placement: DesignPlacement;
 };
 
 export type GetFilteredAffiliationHistoryInput = {
@@ -1515,11 +1548,32 @@ export type GetRefundableOrdersInput = {
 };
 
 export type GetReportsInput = {
-  contentType: ReportContentType;
+  comments?: Maybe<Scalars["String"]>;
+  id?: Maybe<Scalars["String"]>;
+  legend?: Maybe<Scalars["String"]>;
+  likes?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  publishDate?: Maybe<Scalars["String"]>;
+  reason?: Maybe<Scalars["String"]>;
+  shares?: Maybe<Scalars["String"]>;
+  status?: Maybe<Scalars["String"]>;
+  type?: Maybe<ReportType>;
+  views?: Maybe<Scalars["String"]>;
 };
 
 export type GetRestaurantInput = {
   id: Scalars["ID"];
+};
+
+export type GetSalesDurningPeriodInput = {
+  address?: Maybe<Scalars["String"]>;
+  buyer?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  productName?: Maybe<Scalars["String"]>;
+  qty?: Maybe<Scalars["Int"]>;
+  searchPeriod?: Maybe<OrderSearchPeriod>;
+  seller?: Maybe<Scalars["String"]>;
+  status?: Maybe<OrderStatusEnum>;
 };
 
 export type GetShopRecommendedPostsInput = {
@@ -1860,6 +1914,14 @@ export type LoginWithOtpInput = {
   otp: Scalars["String"];
 };
 
+export type Maintenance = {
+  __typename?: "Maintenance";
+  from: Scalars["String"];
+  id: Scalars["ID"];
+  to: Scalars["String"];
+  url: Scalars["String"];
+};
+
 export type MarketingTag = {
   __typename?: "MarketingTag";
   id: Scalars["ID"];
@@ -1944,6 +2006,7 @@ export type Mutation = {
   BookVehicle: BookedService;
   RemoveWishlistItem: Scalars["Boolean"];
   UpdateDesign: Scalars["Boolean"];
+  acceptAccountDeletionRequest: Scalars["Boolean"];
   acceptAppointment: Scalars["Boolean"];
   acceptInsurancePayBackRequest: Scalars["Boolean"];
   acceptReceivedOrder: Scalars["Boolean"];
@@ -1983,6 +2046,7 @@ export type Mutation = {
   createHotelService: Hotel;
   createInitialCurrencies: Array<Currency>;
   createLanguage: Scalars["Boolean"];
+  createMaintenancePage: Scalars["Boolean"];
   createMembership: Membership;
   createMembershipSubscriptionPaymentIntent: PaymentIntent;
   createNewAffiliationProduct: Affiliation;
@@ -2012,6 +2076,7 @@ export type Mutation = {
   deleteBeautyCenterServices: Scalars["Boolean"];
   deleteBillingAddress: BillingAddress;
   deleteFilter: Filter;
+  deleteMaintenancePage: Scalars["Boolean"];
   deleteMyProfile: Profile;
   deleteProduct: Product;
   deleteProductCategory: Category;
@@ -2038,6 +2103,7 @@ export type Mutation = {
   refuseAccountVerification: Scalars["Boolean"];
   refuseInsurancePayBackRequest: Scalars["Boolean"];
   register: Scalars["String"];
+  rejectAccountDeletionRequest: Scalars["Boolean"];
   rejectReceivedOrder: Scalars["Boolean"];
   rejectRefundRequest: Scalars["Boolean"];
   rejectRequestedOrder: Scalars["Boolean"];
@@ -2047,6 +2113,7 @@ export type Mutation = {
   removeNewsfeedPost: NewsfeedPost;
   removeNewsletterSubscriber: Scalars["Boolean"];
   removeReaction: ContentReaction;
+  removeReport: Scalars["Boolean"];
   removeRequiredAction: RequiredAction;
   removeReview: ProductReview;
   removeServiceCategory: ServiceCategory;
@@ -2063,6 +2130,7 @@ export type Mutation = {
   shareContent: ContentShare;
   suspenseAccount: Scalars["Boolean"];
   suspenseContent: Scalars["Boolean"];
+  suspenseReportedContent: Scalars["Boolean"];
   unBanBuyersCities: Scalars["Boolean"];
   unBanSellersCities: Scalars["Boolean"];
   unFollow: Scalars["Boolean"];
@@ -2140,6 +2208,10 @@ export type MutationRemoveWishlistItemArgs = {
 
 export type MutationUpdateDesignArgs = {
   args: UpdateDesignInput;
+};
+
+export type MutationAcceptAccountDeletionRequestArgs = {
+  id: Scalars["String"];
 };
 
 export type MutationAcceptAppointmentArgs = {
@@ -2271,6 +2343,10 @@ export type MutationCreateLanguageArgs = {
   args: CreateLanguageInput;
 };
 
+export type MutationCreateMaintenancePageArgs = {
+  args: CreateMaintenanceInput;
+};
+
 export type MutationCreateMembershipArgs = {
   args: CreateMembershipInput;
 };
@@ -2383,6 +2459,10 @@ export type MutationDeleteFilterArgs = {
   deleteFilterId: Scalars["String"];
 };
 
+export type MutationDeleteMaintenancePageArgs = {
+  id: Scalars["String"];
+};
+
 export type MutationDeleteProductArgs = {
   productId: Scalars["ID"];
 };
@@ -2463,6 +2543,10 @@ export type MutationRegisterArgs = {
   RegisterInput: CreateAccountInput;
 };
 
+export type MutationRejectAccountDeletionRequestArgs = {
+  id: Scalars["String"];
+};
+
 export type MutationRejectReceivedOrderArgs = {
   args: RejectReceivedOrderInput;
 };
@@ -2493,6 +2577,10 @@ export type MutationRemoveNewsletterSubscriberArgs = {
 
 export type MutationRemoveReactionArgs = {
   removeReactionArgs: RemoveReactionInput;
+};
+
+export type MutationRemoveReportArgs = {
+  id: Scalars["String"];
 };
 
 export type MutationRemoveRequiredActionArgs = {
@@ -2557,6 +2645,10 @@ export type MutationSuspenseAccountArgs = {
 
 export type MutationSuspenseContentArgs = {
   suspenseContentArgs: SuspenseContentInput;
+};
+
+export type MutationSuspenseReportedContentArgs = {
+  id: Scalars["String"];
 };
 
 export type MutationUnBanBuyersCitiesArgs = {
@@ -2825,9 +2917,17 @@ export type OrderItem = {
   product?: Maybe<Product>;
   qty: Scalars["Int"];
   refundable: Scalars["Boolean"];
+  rejectReason?: Maybe<Scalars["String"]>;
   seller: Account;
+  status: OrderStatusEnum;
   updatedAt: Scalars["String"];
 };
+
+export enum OrderSearchPeriod {
+  Day = "day",
+  Month = "month",
+  Week = "week",
+}
 
 export type OrderStatus = {
   __typename?: "OrderStatus";
@@ -3113,7 +3213,10 @@ export type Query = {
   acceptAccountVerification: Scalars["Boolean"];
   adminGetAccount: Account;
   adminGetBookings: Array<BookedService>;
+  adminGetCurrencies: Array<Currency>;
+  adminGetDesigns: Array<Design>;
   adminGetFilteredProductReviews: Array<ProductReview>;
+  adminGetLanguages: Array<Language>;
   adminGetProduct?: Maybe<Product>;
   adminGetRawService?: Maybe<ServiceShopRaw>;
   adminGetReturnedOrders: Array<ReturnedOrder>;
@@ -3174,6 +3277,7 @@ export type Query = {
   getLanguages: Array<Language>;
   getLatestOrders: Array<Order>;
   getLocalisation: Localization;
+  getMaintenancePages: Array<Maintenance>;
   getMyAffiliations: Array<Affiliation>;
   getMyBalance: Balance;
   getMyBillingAddressCollection: BillingAddressCollection;
@@ -3230,6 +3334,7 @@ export type Query = {
   getRestaurant: Restaurant;
   getRestaurants: Array<Restaurant>;
   getRoomMessages: Array<ChatMessage>;
+  getSalesDurningPeriod: Array<OrderItem>;
   getServiceCategories: Array<ServiceCategory>;
   getServiceCategoryById: ServiceCategory;
   getServiceCategoryBySlug: ServiceCategory;
@@ -3260,6 +3365,7 @@ export type Query = {
   getWithdrawCurrencies: Array<WithdrawCurrency>;
   getWithdrawalRequests: Array<WithdrawalRequest>;
   isFollowed: Scalars["Boolean"];
+  isMaintenance: Scalars["Boolean"];
   myProfile: Profile;
   requiredAction: RequiredAction;
   requiredActions: Array<RequiredAction>;
@@ -3285,8 +3391,20 @@ export type QueryAdminGetBookingsArgs = {
   args: AdminGetBookingsInput;
 };
 
+export type QueryAdminGetCurrenciesArgs = {
+  args: AdminGetCurrenciesInput;
+};
+
+export type QueryAdminGetDesignsArgs = {
+  args: AdminGetDesignsInput;
+};
+
 export type QueryAdminGetFilteredProductReviewsArgs = {
   args: GetAdminFitleredProductReviewsInput;
+};
+
+export type QueryAdminGetLanguagesArgs = {
+  args: AdminGetLanguagesInput;
 };
 
 export type QueryAdminGetProductArgs = {
@@ -3637,6 +3755,10 @@ export type QueryGetRoomMessagesArgs = {
   args: GetMessagesByRoomIdInput;
 };
 
+export type QueryGetSalesDurningPeriodArgs = {
+  args: GetSalesDurningPeriodInput;
+};
+
 export type QueryGetServiceCategoryByIdArgs = {
   categoryId: Scalars["String"];
 };
@@ -3731,6 +3853,10 @@ export type QueryGetWithdrawalRequestsArgs = {
 
 export type QueryIsFollowedArgs = {
   profileId: Scalars["String"];
+};
+
+export type QueryIsMaintenanceArgs = {
+  url: Scalars["String"];
 };
 
 export type QueryRequiredActionArgs = {
@@ -3859,25 +3985,33 @@ export type RemoveWishlistItemInput = {
 
 export type Report = {
   __typename?: "Report";
-  contentType: ReportContentType;
+  contentId: Scalars["String"];
   createdAt: Scalars["DateTime"];
   id: Scalars["ID"];
   message: Scalars["String"];
-  reportedBy: Scalars["ID"];
+  post: NewsfeedPost;
+  product: Product;
+  profile: Profile;
+  reportedBy: Profile;
+  reportedById: Scalars["ID"];
+  service: Service;
+  status: ReportStatus;
+  type: ReportType;
   updatedAt: Scalars["DateTime"];
 };
 
-export enum ReportContentType {
-  Post = "post",
-  Product = "product",
-  Service = "service",
+export enum ReportStatus {
+  Clean = "clean",
+  Pending = "pending",
+  Suspended = "suspended",
 }
 
 export enum ReportType {
   Bug = "bug",
+  Post = "post",
   Product = "product",
+  Profile = "profile",
   Service = "service",
-  Social = "social",
 }
 
 export type RequiredAction = {
@@ -4756,7 +4890,7 @@ export type UpdateCurrencyInput = {
 export type UpdateDesignInput = {
   id: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
-  placement?: Maybe<Array<Scalars["String"]>>;
+  placement?: Maybe<Array<DesignPlacement>>;
   src?: Maybe<Scalars["String"]>;
   type?: Maybe<DesignType>;
 };

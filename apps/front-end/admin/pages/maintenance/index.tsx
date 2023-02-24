@@ -5,7 +5,6 @@ import {
   Button,
   DateFormInput,
   FormikInput,
-  Input,
   SaveIcon,
   SimpleTabHead,
   SimpleTabItemList,
@@ -51,7 +50,7 @@ const Maintenance: React.FC = () => {
           </div>
           <SimpleTabItemList>
             <div className="flex items-center gap-4">
-              <Switch></Switch>
+              <Switch />
               <span>{t("Enable Maintenance")}</span>
             </div>
             <Formik

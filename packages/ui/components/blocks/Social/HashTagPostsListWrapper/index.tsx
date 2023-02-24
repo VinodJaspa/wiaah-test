@@ -6,7 +6,7 @@ import { useBreakpointValue } from "utils";
 export interface HashTagPostsListWrapperProps {
   hashtags: (HashTagCardProps["post"] & {
     profile: HashTagCardProps["profile"];
-    listtTitle: string;
+    listTitle: string;
   })[];
   cols?: number;
 }
@@ -23,7 +23,7 @@ export const HashTagPostsListWrapper: React.FC<
           <HashTagCard
             data-testid="HashTagCard"
             key={i}
-            title={post.listtTitle}
+            title={post.listTitle}
             post={post}
             profile={post.profile}
           />

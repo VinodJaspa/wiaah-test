@@ -14,6 +14,7 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 import { getUserFromRequest } from 'nest-utils';
+import { MaintenanceModule } from './maintenance/maintenance.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { getUserFromRequest } from 'nest-utils';
     LanguageModule,
     BannedCountriesModule,
     ProfessionModule,
+    MaintenanceModule,
   ],
 })
 export class AppModule {}

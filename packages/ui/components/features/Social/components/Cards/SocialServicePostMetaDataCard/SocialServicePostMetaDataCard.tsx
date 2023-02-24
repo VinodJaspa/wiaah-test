@@ -10,12 +10,10 @@ import {
   Rate,
   LocationOutlineIcon,
   UserProfile,
-  ServicePost,
   Service,
-  Profile,
-  AttachmentType,
 } from "@UI";
 import { startCase } from "lodash";
+import { AttachmentType, Profile, ServicePost } from "@features/API";
 
 type Post = Pick<
   ServicePost,
@@ -26,7 +24,6 @@ type Post = Pick<
   | "shares"
   | "createdAt"
   | "views"
-  | "type"
   | "location"
 > & {
   service: Pick<
@@ -54,6 +51,7 @@ export const SocialServicePostMetaDataCard: React.FC<
   SocialServicePostMetaDataCardProps
 > = ({ post, onClick }) => {
   const { t } = useTranslation();
+  if (!post) return null;
   return (
     <div className="flex flex-col w-full">
       <div
@@ -62,7 +60,7 @@ export const SocialServicePostMetaDataCard: React.FC<
       >
         <AspectRatio ratio={3 / 4}>
           <Slider>
-            {Array.isArray([post.service.thumbnail])
+            {post?.service?.thumbnail
               ? [post.service.thumbnail].map((att) => (
                   <PostAttachment blur src={att} type={AttachmentType.Img} />
                 ))
@@ -86,7 +84,7 @@ export const SocialServicePostMetaDataCard: React.FC<
         <div className="cursor-pointer absolute top-4 left-0 flex flex-col w-full text-lg bg-gray-500 bg-opacity-50 p-2 text-white">
           {/* <p className="font-semibold  lg:text-2xl ">{name}</p> */}
           <p className="w-full text-lg font-bold text-right text-primary">
-            {">>"} {startCase(post.type)} {"<<"}
+            {">>"} {startCase(post.service.serviceType)} {"<<"}
           </p>
         </div>
       </div>

@@ -5,6 +5,7 @@ import {
   ID,
   registerEnumType,
   Float,
+  Directive,
 } from '@nestjs/graphql';
 import { Profile } from '@entities';
 import { Attachment, Hashtag } from '@entities';
@@ -103,6 +104,7 @@ export class SocialPost {
 }
 
 @ObjectType()
+@Directive('@key(fields:"id")')
 export class NewsfeedPost extends SocialPost {
   @Field(() => Profile, { nullable: true })
   publisher?: Profile;

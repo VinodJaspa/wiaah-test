@@ -7,14 +7,70 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { accountType, GqlAuthorizationGuard } from 'nest-utils';
+import { Prisma } from '@prisma-client';
+import {
+  accountType,
+  ExtractPagination,
+  GqlAuthorizationGuard,
+  SubtractFromDate,
+} from 'nest-utils';
 import { PrismaService } from 'prismaService';
+import { GetSalesDurningPeriodInput, OrderSearchPeriod } from './dto';
 import { Order, OrderItem } from './entities';
 import { Account, Product } from './entities/extends';
 
 @Resolver(() => OrderItem)
 export class OrderItemResolver {
   constructor(private readonly prisma: PrismaService) {}
+
+  @Query(() => [OrderItem])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async getSalesDurningPeriod(
+    @Args('args')
+    args: GetSalesDurningPeriodInput,
+  ) {
+    const { take, skip } = ExtractPagination(args.pagination);
+
+    const filters: Prisma.OrderItemWhereInput[] = [];
+
+    if (args.searchPeriod) {
+      switch (args.searchPeriod) {
+        case OrderSearchPeriod.day:
+          filters.push({
+            createdAt: {
+              gte: SubtractFromDate(new Date(), { days: 1 }),
+            },
+          });
+          break;
+
+        case OrderSearchPeriod.week:
+          filters.push({
+            createdAt: {
+              gte: SubtractFromDate(new Date(), { days: 7 }),
+            },
+          });
+          break;
+
+        default:
+          filters.push({
+            createdAt: {
+              gte: SubtractFromDate(new Date(), { days: 30 }),
+            },
+          });
+          break;
+      }
+    }
+
+    const res = await this.prisma.orderItem.findMany({
+      orderBy: {
+        paidAt: 'desc',
+      },
+      take,
+      skip,
+    });
+
+    return res;
+  }
 
   @Query(() => [OrderItem])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))

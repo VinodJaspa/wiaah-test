@@ -1,13 +1,10 @@
 import React from "react";
 import {
-  PostViewPopup,
   ShopCardsListWrapper,
   ShopFilter,
-  SocialShopCard,
   ProductViewModal,
   useGetRecommendedShopPostsQuery,
 } from "ui";
-import { ShopCardInfo } from "types";
 import { useBreakpointValue } from "utils";
 
 export const SellerShopView: React.FC = () => {
@@ -24,7 +21,7 @@ export const SellerShopView: React.FC = () => {
         <ProductViewModal />
         <div className="w-full">
           <ShopFilter onlyMobile={false} />
-
+          {/* {JSON.stringify(data)} */}
           <ShopCardsListWrapper
             onCardClick={(id) => {
               // router.push(
@@ -34,10 +31,14 @@ export const SellerShopView: React.FC = () => {
               // );
             }}
             cols={cols}
-            items={data.map((v) => ({
-              postInfo: v,
-              profileInfo: v.user.profile,
-            }))}
+            items={
+              Array.isArray(data)
+                ? data?.map((v) => ({
+                    postInfo: v,
+                    profileInfo: v?.user?.profile,
+                  }))
+                : []
+            }
           />
         </div>
       </div>

@@ -5,8 +5,10 @@ import { Prisma } from '@prisma-client';
 import {
   accountType,
   AddToDate,
+  AuthorizationDecodedUser,
   ExtractPagination,
   GqlAuthorizationGuard,
+  GqlCurrentUser,
   GqlPaginationInput,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
@@ -237,5 +239,53 @@ export class AccountsAdminResolver {
     });
 
     return res || [];
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async acceptAccountDeletionRequest(
+    @Args('id') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    try {
+      const res = await this.prisma.accountDeletionRequest.update({
+        where: {
+          id,
+        },
+        data: {
+          status: 'approved',
+          resolvedById: user.id,
+        },
+      });
+
+      return true;
+    } catch (error) {
+      console.log({ error });
+      return false;
+    }
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async rejectAccountDeletionRequest(
+    @Args('id') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    try {
+      const res = await this.prisma.accountDeletionRequest.update({
+        where: {
+          id,
+        },
+        data: {
+          status: 'rejected',
+          resolvedById: user.id,
+        },
+      });
+
+      return true;
+    } catch (error) {
+      console.log({ error });
+      return false;
+    }
   }
 }

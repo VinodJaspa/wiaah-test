@@ -28,7 +28,7 @@ export const ActionsView: React.FC = () => {
         }}
       /> */}
 
-      <div className="bg-white h-full w-[min(35rem,100%)] overflow-hidden flex flex-col items-center">
+      <div className="bg-white h-5/6 w-[min(35rem,100%)] flex flex-col items-center">
         {/* actions View */}
         <Slider variant="vertical">
           {actionsPlaceholders.map((action, i) => (

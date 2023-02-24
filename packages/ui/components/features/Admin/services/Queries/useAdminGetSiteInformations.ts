@@ -1,52 +1,39 @@
-import {
-  AdminGetSiteInformationsInput,
-  Exact,
-  SiteInformation,
-} from "@features/API";
+import { Exact, SiteInformation } from "@features/API";
 import { createGraphqlRequestClient } from "@UI/../api";
 import { useQuery } from "react-query";
 
-export type AdminGetInformationsQueryVariables = Exact<{
-  args: AdminGetSiteInformationsInput;
+export type AdminGetSiteSettingsQueryVariables = Exact<{
+  [key: string]: never;
 }>;
 
-export type AdminGetInformationsQuery = { __typename?: "Query" } & {
-  adminGetSiteInformations: Array<
-    { __typename?: "SiteInformation" } & Pick<
-      SiteInformation,
-      | "id"
-      | "descirption"
-      | "title"
-      | "slug"
-      | "placements"
-      | "route"
-      | "sortOrder"
-    >
+export type AdminGetSiteSettingsQuery = { __typename?: "Query" } & {
+  adminGetSiteInformations: { __typename?: "SiteInformation" } & Pick<
+    SiteInformation,
+    | "id"
+    | "descirption"
+    | "placements"
+    | "route"
+    | "slug"
+    | "sortOrder"
+    | "title"
   >;
 };
 
-type args = AdminGetInformationsQueryVariables["args"];
+export const adminGetSiteInformationsQueryKey = () => ["admin-get-site-info"];
 
-export const adminGetSiteInformationsQueryKey = (args: args) => [
-  "admin-get-site-info",
-  { args },
-];
-
-export const adminGetSiteInformationsFetcher = async (args: args) => {
+export const adminGetSiteInformationsFetcher = async () => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
   
   `);
 
-  const res = await client
-    .setVariables<AdminGetInformationsQueryVariables>({ args })
-    .send<AdminGetInformationsQuery>();
+  const res = await client.send<AdminGetSiteSettingsQuery>();
 
   return res.data.adminGetSiteInformations;
 };
 
-export const useAdminGetSiteInformationsQuery = (args: args) =>
-  useQuery(adminGetSiteInformationsQueryKey(args), () =>
-    adminGetSiteInformationsFetcher(args)
+export const useAdminGetSiteInformationsQuery = () =>
+  useQuery(adminGetSiteInformationsQueryKey(), () =>
+    adminGetSiteInformationsFetcher()
   );

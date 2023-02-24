@@ -18,6 +18,9 @@ export class Currency {
   @Field((type) => Float)
   exchangeRate: number;
 
+  @Field(() => Boolean)
+  enabled: boolean;
+
   @Field((type) => Date)
   updatedAt: Date;
 }

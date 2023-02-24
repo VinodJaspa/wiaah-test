@@ -26,6 +26,7 @@ import { BiInfoCircle, BiPackage } from "react-icons/bi";
 import { GiTicket } from "react-icons/gi";
 import { MdCardMembership, MdReport } from "react-icons/md";
 import { BsCash, BsCashStack, BsTruck, BsType } from "react-icons/bs";
+import { DesignType } from "@features/API";
 
 export const AdminNavigationSidebar: React.FC<{
   currentUrl: string;
@@ -308,29 +309,13 @@ export const AdminNavigationSidebar: React.FC<{
       name: t("Design"),
       onClick() {},
       slug: "design",
-      subLinks: [
-        {
-          icon: <ArrowRightIcon />,
-          name: t("Slideshow"),
-          onClick() {},
-          slug: "slideshow",
-          subLinks: [],
-        },
-        {
-          icon: <ArrowRightIcon />,
-          name: t("Partner"),
-          onClick() {},
-          slug: "partner",
-          subLinks: [],
-        },
-        {
-          icon: <ArrowRightIcon />,
-          name: t("Collaborations"),
-          onClick() {},
-          slug: "collab",
-          subLinks: [],
-        },
-      ],
+      subLinks: Object.values(DesignType).map((v, i) => ({
+        icon: <ArrowRightIcon />,
+        name: t(v),
+        onClick() {},
+        slug: v,
+        subLinks: [],
+      })),
     },
     {
       icon: <MdReport />,

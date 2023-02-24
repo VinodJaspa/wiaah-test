@@ -1,12 +1,17 @@
+import { AccountDeletionRequestStatus } from "@features/API";
 import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { ImCheckmark } from "react-icons/im";
+import { IoCheckmarkCircle } from "react-icons/io5";
 import {
   Avatar,
   Badge,
+  Button,
   Checkbox,
+  CloseIcon,
   DateFormInput,
+  HStack,
   Input,
   ListIcon,
   NotAllowedIcon,
@@ -20,31 +25,24 @@ import {
   Th,
   THead,
   Tr,
+  useAdminAcceptAccountDeletionRequest,
+  useAdminGetAccountDeletionRequests,
+  useAdminRejectAccountDeletionRequest,
+  usePaginationControls,
 } from "ui";
-import { mapArray, randomNum } from "utils";
-
-interface DeletionRequests {
-  photo: string;
-  username: string;
-  email: string;
-  request: string;
-  status: string;
-  createdAt: string;
-  id: string;
-}
+import { mapArray, useForm } from "utils";
 
 const AccountDeletion: React.FC = () => {
   const { t } = useTranslation();
 
-  const requests: DeletionRequests[] = [...Array(10)].map((_, i) => ({
-    id: randomNum(9999999).toString(),
-    createdAt: new Date().toString(),
-    email: `test-${i}@email.com`,
-    request: "Delete",
-    status: "Pending",
-    photo: getRandomImage(),
-    username: `username-${i}`,
-  }));
+  const { pagination, controls } = usePaginationControls();
+  const { form, inputProps } = useForm<
+    Parameters<typeof useAdminGetAccountDeletionRequests>[0]
+  >({ pagination }, { pagination });
+  const { data: requests } = useAdminGetAccountDeletionRequests(form);
+
+  const { mutate: acceptAccount } = useAdminAcceptAccountDeletionRequest();
+  const { mutate: rejectAccount } = useAdminRejectAccountDeletionRequest();
 
   return (
     <section className="border border-gray-300">
@@ -64,70 +62,103 @@ const AccountDeletion: React.FC = () => {
                 <Th>{t("E-Mail")}</Th>
                 <Th>{t("Status")}</Th>
                 <Th>{t("Date Added")}</Th>
+                <Th>{t("Actions")}</Th>
               </Tr>
               <Tr>
                 <Th></Th>
                 <Th>
-                  <Input />
+                  <Input {...inputProps("username")} />
                 </Th>
                 <Th>
-                  <Input />
+                  <Input {...inputProps("email")} />
                 </Th>
                 <Th>
-                  <Select>
-                    <SelectOption value={"pending"}>
+                  <Select
+                    {...inputProps(
+                      "status",
+                      "value",
+                      "onOptionChange",
+                      (e) => e
+                    )}
+                  >
+                    <SelectOption value={AccountDeletionRequestStatus.Pending}>
                       {t("Pending")}
                     </SelectOption>
-                    <SelectOption value={"approved"}>
+                    <SelectOption value={AccountDeletionRequestStatus.Approved}>
                       {t("Approved")}
                     </SelectOption>
-                    <SelectOption value={"rejected"}>
+                    <SelectOption value={AccountDeletionRequestStatus.Rejected}>
                       {t("Rejected")}
                     </SelectOption>
                   </Select>
                 </Th>
                 <Th>
-                  <DateFormInput />
+                  <DateFormInput
+                    {...inputProps(
+                      "dateAdded",
+                      "dateValue",
+                      "onDateChange",
+                      (e) => e
+                    )}
+                  />
                 </Th>
                 <Th></Th>
               </Tr>
             </THead>
             <TBody>
-              {mapArray(
-                requests,
-                ({
-                  createdAt,
-                  email,
-                  id,
-                  request,
-                  status,
-                  photo,
-                  username,
-                }) => (
-                  <Tr>
-                    <Td>
-                      <Avatar src={photo} />
-                    </Td>
-                    <Td>{username}</Td>
-                    <Td>{email}</Td>
-                    <Td>
-                      <Badge
-                        value={request}
-                        cases={{ fail: "Delete" }}
-                        className="flex justify-center"
+              {mapArray(requests, ({ account, id, status, createdAt }) => (
+                <Tr key={id}>
+                  <Td>
+                    <Avatar src={account.photo} />
+                  </Td>
+                  <Td>
+                    {account.firstName} {account.lastName}
+                  </Td>
+                  <Td>{account.email}</Td>
+                  <Td>
+                    <Badge
+                      value={status}
+                      cases={{
+                        fail: AccountDeletionRequestStatus.Rejected,
+                        off: AccountDeletionRequestStatus.Pending,
+                        success: AccountDeletionRequestStatus.Approved,
+                      }}
+                      className="flex justify-center"
+                    >
+                      {status}
+                    </Badge>
+                  </Td>
+                  <Td>{new Date(createdAt).toDateString()}</Td>
+                  <Td>
+                    <HStack>
+                      <Button
+                        center
+                        className="p-2"
+                        onClick={() => {
+                          acceptAccount(id);
+                        }}
                       >
-                        {status}
-                      </Badge>
-                    </Td>
-                    <Td>{new Date(createdAt).toDateString()}</Td>
-                  </Tr>
-                )
-              )}
+                        <ImCheckmark className="text-white" />
+                      </Button>
+                      <Button
+                        className="p-2"
+                        center
+                        onClick={() => {
+                          rejectAccount(id);
+                        }}
+                        colorScheme="danger"
+                      >
+                        <CloseIcon className="text-white" />
+                      </Button>
+                    </HStack>
+                  </Td>
+                </Tr>
+              ))}
             </TBody>
           </Table>
         </TableContainer>
       </div>
-      <Pagination />
+      <Pagination controls={controls} />
     </section>
   );
 };

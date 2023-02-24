@@ -1,4 +1,11 @@
-import { ObjectType, Field, Int, ID, registerEnumType } from '@nestjs/graphql';
+import {
+  ObjectType,
+  Field,
+  Int,
+  ID,
+  registerEnumType,
+  Directive,
+} from '@nestjs/graphql';
 import { CreateGqlPaginatedResponse, CreateGqlResponse } from 'nest-utils';
 import { ActiveStatus, ProfileVisibility } from 'prismaClient';
 import { Account, Follow } from '@entities';
@@ -22,6 +29,7 @@ export class BlockedUser {
 }
 
 @ObjectType()
+@Directive('@key(fields:"id")')
 export class Profile {
   @Field(() => Account, { nullable: true })
   user?: Account;

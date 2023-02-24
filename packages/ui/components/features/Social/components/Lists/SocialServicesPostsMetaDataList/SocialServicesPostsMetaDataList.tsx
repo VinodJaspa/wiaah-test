@@ -18,7 +18,7 @@ export const SocialServicesPostsMetaDataList: React.FC<{
           component={SocialServicePostMetaDataCard}
           data={posts}
           handlePassData={(props) => ({
-            ...props,
+            post: props,
             onClick: () =>
               visit((r) => r.addQuery({ servicepostid: props.id })),
           })}

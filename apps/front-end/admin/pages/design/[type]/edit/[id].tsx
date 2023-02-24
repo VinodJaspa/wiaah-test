@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -9,8 +8,6 @@ import {
   Image,
   Input,
   InputRequiredStar,
-  MinusIcon,
-  PlusIcon,
   Select,
   SelectOption,
   SimpleTabHead,
@@ -24,7 +21,7 @@ import {
   THead,
   Tr,
 } from "ui";
-import { mapArray, randomNum, WiaahLanguageCountries } from "utils";
+import { mapArray, WiaahLanguageCountries } from "utils";
 
 interface Slideshowitem {
   title: string;
@@ -35,13 +32,6 @@ interface Slideshowitem {
 
 const EditSlideShowPage: NextPage = () => {
   const { t } = useTranslation();
-
-  const Slides: Slideshowitem[] = [...Array(3)].map((_, i) => ({
-    id: i.toString(),
-    link: getRandomImage(),
-    sortOrder: randomNum(5),
-    title: `test title-${i}`,
-  }));
 
   return (
     <section>

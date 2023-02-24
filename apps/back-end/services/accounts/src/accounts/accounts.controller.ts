@@ -70,7 +70,7 @@ export class AccountsController implements OnModuleInit {
           accountId: res.id,
         },
         data: {
-          status: AccountDeletionRequestStatus.deleted,
+          status: AccountDeletionRequestStatus.rejected,
         },
       });
     }

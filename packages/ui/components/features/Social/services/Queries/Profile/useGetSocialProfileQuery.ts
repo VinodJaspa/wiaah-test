@@ -1,6 +1,6 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact, Maybe, Scalars } from "types";
-import { Profile, Query } from "@features/API";
+import { ActiveStatus, Profile, ProfileVisibility, Query } from "@features/API";
 import { Account } from "@features/API";
 import { useQuery } from "react-query";
 
@@ -79,6 +79,25 @@ export const useGetSocialProfileQuery = (id: string) => {
   });
 
   return useQuery(["get-profile-by-id", { id }], async () => {
+    return {
+      id: "",
+      activeStatus: ActiveStatus.Active,
+      bio: "My Social Profile Bio",
+      createdAt: new Date().toString(),
+      followers: 150,
+      following: 150,
+      lastActive: new Date().toString(),
+      ownerId: "",
+      photo: "/profile (4).jfif",
+      profession: "prof",
+      publications: 150,
+      updatedAt: new Date().toString(),
+      username: "name",
+      verified: true,
+      visibility: ProfileVisibility.Public,
+      isFollowed: true,
+    } as GetProfileByIdQuery["getProfile"];
+
     const res = await client.send<GetProfileByIdQuery>();
 
     return {

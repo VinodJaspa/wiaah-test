@@ -46,14 +46,11 @@ type OrderItem {
   cashbackId: String
   affiliationId: String
   orderId: String!
+  status: OrderStatusEnum!
+  rejectReason: String
   seller: Account!
   buyer: Account!
   order: Order!
-}
-
-type OrderStatus {
-  of: OrderStatusEnum!
-  rejectReason: String
 }
 
 enum OrderStatusEnum {
@@ -63,6 +60,11 @@ enum OrderStatusEnum {
   rejectedByBuyer
   shipping
   compeleted
+}
+
+type OrderStatus {
+  of: OrderStatusEnum!
+  rejectReason: String
 }
 
 type Order {
@@ -134,6 +136,7 @@ type Query {
   getUserOrders(args: GetUserOrders!): [Order!]!
   getFilteredOrders(args: GetFilteredOrdersInput!): [Order!]!
   getLatestOrders(take: Int = 10): [Order!]!
+  getSalesDurningPeriod(args: GetSalesDurningPeriodInput!): [OrderItem!]!
   getRecentSales(count: Int = 10): [OrderItem!]!
   getMyReturnedOrders(args: GetMyReturnedOrdersInput!): [Refund!]!
   adminGetReturnedOrders(args: AdminGetReturnedOrdersInput!): [ReturnedOrder!]!
@@ -173,6 +176,23 @@ input GetFilteredOrdersInput {
   status: OrderStatusEnum
   total: Float
   pagination: GqlPaginationInput!
+}
+
+input GetSalesDurningPeriodInput {
+  productName: String
+  seller: String
+  buyer: String
+  qty: Int
+  address: String
+  status: OrderStatusEnum
+  searchPeriod: OrderSearchPeriod
+  pagination: GqlPaginationInput!
+}
+
+enum OrderSearchPeriod {
+  day
+  month
+  week
 }
 
 input GetMyReturnedOrdersInput {

@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps<ProfilePageProps> = async ({
 
   const profileData = await getSocialProfileData(id);
 
-  if (profileData.data.userId === user.id) {
+  if (profileData?.data?.userId === user?.id) {
     return {
       props: {
         profileId: profileData.data.id,
