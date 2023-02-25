@@ -5,6 +5,7 @@ import { MailingQueryhandlers } from './queries';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { MailingResolver } from './mailing.resolver';
 
 @Module({
   imports: [
@@ -26,6 +27,6 @@ import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
     ]),
   ],
   controllers: [MailingController],
-  providers: [MailingService, ...MailingQueryhandlers],
+  providers: [MailingService, MailingResolver, ...MailingQueryhandlers],
 })
 export class MailingModule {}

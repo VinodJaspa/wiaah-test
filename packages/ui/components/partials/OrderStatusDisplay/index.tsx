@@ -1,4 +1,4 @@
-import { OrderStatusEnum } from "@features/Orders/schema";
+import { OrderStatusEnum } from "@features/API";
 import React from "react";
 import { HtmlDivProps, OrdersStatus } from "types";
 

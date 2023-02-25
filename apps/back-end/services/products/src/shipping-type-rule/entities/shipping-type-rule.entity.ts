@@ -9,6 +9,9 @@ export class ShippingRuleGeoZone {
   @Field(() => String)
   country: string;
 
+  @Field(() => String)
+  zone: string;
+
   @Field(() => ID)
   shippingTypeRuleId: string;
 }
@@ -17,6 +20,12 @@ export class ShippingRuleGeoZone {
 export class ShippingTypeRule {
   @Field(() => ID)
   id: string;
+
+  @Field(() => String)
+  name: string;
+
+  @Field(() => String)
+  description: string;
 
   @Field(() => ShippingType)
   type: ShippingType;

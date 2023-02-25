@@ -199,10 +199,22 @@ export type AdminGetReturnedOrdersInput = {
   shippingAmount?: Maybe<Scalars["Float"]>;
 };
 
+export type AdminGetShippingGeoZoneRulesInput = {
+  description?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+};
+
 export type AdminGetSiteInformationsInput = {
   name?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
   sortOrder?: Maybe<Scalars["Int"]>;
+};
+
+export type AdminSendMailToUsersInput = {
+  message: Scalars["String"];
+  subject: Scalars["String"];
+  userType: MailUserType;
 };
 
 export type Affiliation = {
@@ -950,6 +962,11 @@ export type CreateShippingGeoZone = {
   zone: Scalars["String"];
 };
 
+export type CreateShippingRuleGeoZoneInput = {
+  country: Scalars["String"];
+  zone: Scalars["String"];
+};
+
 export type CreateShippingRuleInput = {
   cost: Scalars["Float"];
   countries: Array<ShippingCountryInput>;
@@ -962,6 +979,7 @@ export type CreateShippingTypeRuleInput = {
   description: Scalars["String"];
   name: Scalars["String"];
   type: ShippingType;
+  zones: Array<CreateShippingRuleGeoZoneInput>;
 };
 
 export type CreateShopInput = {
@@ -1914,6 +1932,14 @@ export type LoginWithOtpInput = {
   otp: Scalars["String"];
 };
 
+export enum MailUserType {
+  All = "all",
+  Buyers = "buyers",
+  Service = "service",
+  Shops = "shops",
+  Subscribers = "subscribers",
+}
+
 export type Maintenance = {
   __typename?: "Maintenance";
   from: Scalars["String"];
@@ -2126,6 +2152,7 @@ export type Mutation = {
   resetPassword: Scalars["Boolean"];
   reviewProduct: ProductReview;
   sendFollowRequest: Scalars["Boolean"];
+  sendGeneralMail: Scalars["Boolean"];
   sendMessage: ChatMessage;
   shareContent: ContentShare;
   suspenseAccount: Scalars["Boolean"];
@@ -2141,7 +2168,7 @@ export type Mutation = {
   updateBillingAddress: BillingAddress;
   updateComment: Comment;
   updateCurrenciesRates: Array<Currency>;
-  updateCurrency: Currency;
+  updateCurrency: Scalars["Boolean"];
   updateFilter: Filter;
   updateHealthCenter: HealthCenter;
   updateHealthCenterAdmin: Scalars["Boolean"];
@@ -2166,6 +2193,7 @@ export type Mutation = {
   updateServiceCategory: ServiceCategory;
   updateShippingAddress: Scalars["Boolean"];
   updateShippingRule: ShippingRule;
+  updateShippingTypeRule: Scalars["Boolean"];
   updateSiteInformations: SiteInformation;
   updateSocialLinks: Scalars["Boolean"];
   updateTreatmentCategories: Array<BeautyCenterTreatmentCategory>;
@@ -2631,6 +2659,10 @@ export type MutationSendFollowRequestArgs = {
   profileId: Scalars["String"];
 };
 
+export type MutationSendGeneralMailArgs = {
+  args: AdminSendMailToUsersInput;
+};
+
 export type MutationSendMessageArgs = {
   sendMessageInput: CreateMessageInput;
 };
@@ -2781,6 +2813,10 @@ export type MutationUpdateShippingAddressArgs = {
 
 export type MutationUpdateShippingRuleArgs = {
   updateShippingRuleArgs: UpdateShippingRuleInput;
+};
+
+export type MutationUpdateShippingTypeRuleArgs = {
+  args: UpdateShippingTypeRuleInput;
 };
 
 export type MutationUpdateSiteInformationsArgs = {
@@ -3775,6 +3811,10 @@ export type QueryGetServicePostArgs = {
   id: Scalars["String"];
 };
 
+export type QueryGetShippingGeoZoneRulesArgs = {
+  args: AdminGetShippingGeoZoneRulesInput;
+};
+
 export type QueryGetShippingRuleGeoZonesArgs = {
   id: Scalars["String"];
 };
@@ -4613,6 +4653,7 @@ export type ShippingRuleGeoZone = {
   country: Scalars["String"];
   id: Scalars["ID"];
   shippingTypeRuleId: Scalars["ID"];
+  zone: Scalars["String"];
 };
 
 export enum ShippingType {
@@ -4622,7 +4663,9 @@ export enum ShippingType {
 
 export type ShippingTypeRule = {
   __typename?: "ShippingTypeRule";
+  description: Scalars["String"];
   id: Scalars["ID"];
+  name: Scalars["String"];
   type: ShippingType;
   zones: Array<ShippingRuleGeoZone>;
 };
@@ -4882,6 +4925,7 @@ export type UpdateCommentInput = {
 
 export type UpdateCurrencyInput = {
   code: Scalars["String"];
+  enabled?: Maybe<Scalars["Boolean"]>;
   exchangeRate?: Maybe<Scalars["Float"]>;
   name?: Maybe<Scalars["String"]>;
   symbol?: Maybe<Scalars["String"]>;
@@ -5121,6 +5165,12 @@ export type UpdateShippingAddressInput = {
   zipCode?: Maybe<Scalars["String"]>;
 };
 
+export type UpdateShippingRuleGeoZoneInput = {
+  country?: Maybe<Scalars["String"]>;
+  id: Scalars["String"];
+  zone?: Maybe<Scalars["String"]>;
+};
+
 export type UpdateShippingRuleInput = {
   cost?: Maybe<Scalars["Float"]>;
   countries?: Maybe<Array<ShippingCountryInput>>;
@@ -5128,6 +5178,14 @@ export type UpdateShippingRuleInput = {
   id: Scalars["ID"];
   name?: Maybe<Scalars["String"]>;
   shippingType?: Maybe<ShippingType>;
+};
+
+export type UpdateShippingTypeRuleInput = {
+  description?: Maybe<Scalars["String"]>;
+  id: Scalars["String"];
+  name?: Maybe<Scalars["String"]>;
+  type?: Maybe<ShippingType>;
+  zones?: Maybe<Array<UpdateShippingRuleGeoZoneInput>>;
 };
 
 export type UpdateShopInput = {

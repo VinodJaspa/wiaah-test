@@ -237,11 +237,14 @@ type ShippingAddress {
 type ShippingRuleGeoZone {
   id: ID!
   country: String!
+  zone: String!
   shippingTypeRuleId: ID!
 }
 
 type ShippingTypeRule {
   id: ID!
+  name: String!
+  description: String!
   type: ShippingType!
   zones: [ShippingRuleGeoZone!]!
 }
@@ -262,7 +265,8 @@ type Query {
   getAdminFilteredProducts(args: GetFilteredProductsAdminInput!): [Product!]!
   adminGetProduct(id: String!): Product
   getMyShippingAddress: [ShippingAddress!]!
-  getShippingGeoZoneRules: [ShippingTypeRule!]!
+  getShippingGeoZoneRules(args: AdminGetShippingGeoZoneRulesInput!): [ShippingTypeRule!]!
+  getShippingTypeRule(id: String!): ShippingTypeRule!
   getShippingRuleGeoZones(id: String!): [ShippingRuleGeoZone!]!
   getMyShippingRules: [ShippingRule!]!
 }
@@ -330,6 +334,12 @@ input GetFilteredProductsAdminInput {
   pagination: GqlPaginationInput!
 }
 
+input AdminGetShippingGeoZoneRulesInput {
+  name: String
+  description: String
+  pagination: GqlPaginationInput!
+}
+
 type Mutation {
   createShop(createShopInput: CreateShopInput!): Shop!
   removeAllShops: Boolean!
@@ -352,6 +362,7 @@ type Mutation {
   deleteShippingAddress(id: String!): Boolean!
   createShippingTypeRuleGeoZone(args: CreateShippingGeoZone!): Boolean!
   createShippingTypeRule(args: CreateShippingTypeRuleInput!): Boolean!
+  updateShippingTypeRule(args: UpdateShippingTypeRuleInput!): Boolean!
   createShippingRule(createShippingRuleArgs: CreateShippingRuleInput!): ShippingRule!
   updateShippingRule(updateShippingRuleArgs: UpdateShippingRuleInput!): ShippingRule!
   deleteShippingRule(id: ID!): ShippingRule!
@@ -525,6 +536,26 @@ input CreateShippingTypeRuleInput {
   name: String!
   description: String!
   type: ShippingType!
+  zones: [CreateShippingRuleGeoZoneInput!]!
+}
+
+input CreateShippingRuleGeoZoneInput {
+  country: String!
+  zone: String!
+}
+
+input UpdateShippingTypeRuleInput {
+  name: String
+  description: String
+  type: ShippingType
+  zones: [UpdateShippingRuleGeoZoneInput!]
+  id: String!
+}
+
+input UpdateShippingRuleGeoZoneInput {
+  country: String
+  zone: String
+  id: String!
 }
 
 input CreateShippingRuleInput {

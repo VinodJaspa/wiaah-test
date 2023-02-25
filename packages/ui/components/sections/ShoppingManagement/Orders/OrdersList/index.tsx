@@ -48,7 +48,7 @@ import { AddToDate, DateDetails, randomNum } from "utils";
 import { ReturnDeclineRequestValidationSchema } from "validation";
 import { useTypedReactPubsub } from "@libs";
 import { useGetMyOrdersQuery } from "@features/Orders";
-import { OrderStatusEnum } from "@features/Orders/schema";
+import { OrderStatusEnum } from "@features/API";
 
 export interface OrdersListProps {}
 

@@ -74,10 +74,16 @@ export class CurrencyResolver {
     });
   }
 
-  @Mutation((type) => Currency)
+  @Mutation((type) => Boolean)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
-  updateCurrency(@Args('updateCurrencyArgs') input: UpdateCurrencyInput) {
-    return this.currencyService.updateCurrency(input);
+  async updateCurrency(@Args('updateCurrencyArgs') input: UpdateCurrencyInput) {
+    try {
+      await this.currencyService.updateCurrency(input);
+
+      return true;
+    } catch (error) {
+      return false;
+    }
   }
 
   @Mutation((type) => [Currency])

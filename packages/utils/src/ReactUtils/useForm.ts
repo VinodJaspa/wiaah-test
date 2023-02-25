@@ -23,5 +23,31 @@ export function useForm<TForm>(initial: TForm, constents?: TForm) {
     };
   }
 
-  return { form: data, handleChange, inputProps };
+  function selectProps<Tkey extends keyof TForm>(
+    key: Tkey,
+    valueKey: string = "value",
+    onChangeKey: string = "onOptionSelect",
+    mapOnChange: (value: any) => any = (e) => e
+  ) {
+    if (!data) return {};
+    return {
+      [valueKey]: data[key] as TForm[Tkey],
+      [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
+    };
+  }
+
+  function dateInputProps<Tkey extends keyof TForm>(
+    key: Tkey,
+    valueKey: string = "dateValue",
+    onChangeKey: string = "onDateChange",
+    mapOnChange: (value: any) => any = (e) => e
+  ) {
+    if (!data) return {};
+    return {
+      [valueKey]: data[key] as TForm[Tkey],
+      [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
+    };
+  }
+
+  return { form: data, handleChange, inputProps, selectProps, dateInputProps };
 }

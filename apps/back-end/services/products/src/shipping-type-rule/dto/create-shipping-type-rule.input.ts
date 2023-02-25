@@ -1,5 +1,16 @@
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, PartialType } from '@nestjs/graphql';
 import { ShippingType } from '@prisma-client';
+
+@InputType()
+export class CreateShippingRuleGeoZoneInput {
+  @Field(() => String)
+  country: string;
+
+  @Field(() => String)
+  zone: string;
+}
+
+
 
 @InputType()
 export class CreateShippingTypeRuleInput {
@@ -11,4 +22,7 @@ export class CreateShippingTypeRuleInput {
 
   @Field(() => ShippingType)
   type: ShippingType;
+
+  @Field(() => [CreateShippingRuleGeoZoneInput])
+  zones: CreateShippingRuleGeoZoneInput[];
 }

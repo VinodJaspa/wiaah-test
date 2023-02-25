@@ -31,7 +31,7 @@ import {
   useGetMyReturnedProductsQuery,
   useRejectRefundRequest,
 } from "@features/Orders";
-import { RefundStatusType } from "@features/Orders/schema";
+import { RefundStatusType } from "@features/API";
 type ReturnRequestStatusEnum = "declined" | "accepted" | "pending";
 
 type CanceledOrderData = {

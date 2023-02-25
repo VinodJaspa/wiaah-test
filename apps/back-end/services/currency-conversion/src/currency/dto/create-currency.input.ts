@@ -13,4 +13,7 @@ export class CreateCurrencyInput {
 
   @Field(() => String)
   symbol: string;
+
+  @Field(() => Boolean)
+  enabled: boolean;
 }
