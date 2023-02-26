@@ -188,6 +188,21 @@ export type AdminGetLanguagesInput = {
   sortOrder?: Maybe<Scalars["Int"]>;
 };
 
+export type AdminGetMembershipsInput = {
+  name?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  sortOrder?: Maybe<Scalars["Int"]>;
+};
+
+export type AdminGetMembersipSubscriptionInput = {
+  expiryDate?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+  nextPaymentDate?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  status?: Maybe<MembershipSubscriptionStatus>;
+  username?: Maybe<Scalars["String"]>;
+};
+
 export type AdminGetReturnedOrdersInput = {
   buyerName?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
@@ -832,7 +847,8 @@ export type CreateMembershipInput = {
   commissionOn: CommissionOn;
   includings: Array<MembershipIncludedItemInput>;
   name: Scalars["String"];
-  recurring: Recurring;
+  recurring: Scalars["Float"];
+  sortOrder: Scalars["Int"];
   turnover_rules: Array<MembershipTurnoverRuleInput>;
 };
 
@@ -1970,7 +1986,8 @@ export type Membership = {
   includings: Array<MembershipIncludedItem>;
   name: Scalars["String"];
   priceId?: Maybe<Scalars["String"]>;
-  recurring: Recurring;
+  recurring: Scalars["Float"];
+  sortOrder: Scalars["Int"];
   turnover_rules: Array<MembershipTurnoverRule>;
 };
 
@@ -1989,8 +2006,17 @@ export type MembershipSubscription = {
   membership: Membership;
   membershipId: Scalars["ID"];
   startAt: Scalars["String"];
+  status: MembershipSubscriptionStatus;
+  subscriber: Account;
+  usage: Scalars["Float"];
   userId: Scalars["ID"];
 };
+
+export enum MembershipSubscriptionStatus {
+  Active = "active",
+  Expired = "expired",
+  Pending = "pending",
+}
 
 export type MembershipTurnoverRule = {
   __typename?: "MembershipTurnoverRule";
@@ -2073,7 +2099,7 @@ export type Mutation = {
   createInitialCurrencies: Array<Currency>;
   createLanguage: Scalars["Boolean"];
   createMaintenancePage: Scalars["Boolean"];
-  createMembership: Membership;
+  createMembership: Scalars["Boolean"];
   createMembershipSubscriptionPaymentIntent: PaymentIntent;
   createNewAffiliationProduct: Affiliation;
   createNewProduct: Product;
@@ -2174,7 +2200,7 @@ export type Mutation = {
   updateHealthCenterAdmin: Scalars["Boolean"];
   updateHotelAdmin: Scalars["Boolean"];
   updateLanguage: Scalars["Boolean"];
-  updateMembership: Membership;
+  updateMembership: Scalars["Boolean"];
   updateMyContact: Scalars["Boolean"];
   updateMyCookiesSettings: Scalars["Boolean"];
   updateMyPrivacySettings: PrivacySettings;
@@ -3253,10 +3279,13 @@ export type Query = {
   adminGetDesigns: Array<Design>;
   adminGetFilteredProductReviews: Array<ProductReview>;
   adminGetLanguages: Array<Language>;
+  adminGetMembershipSubscriptions: Array<MembershipSubscription>;
+  adminGetMemberships: Array<Membership>;
   adminGetProduct?: Maybe<Product>;
   adminGetRawService?: Maybe<ServiceShopRaw>;
   adminGetReturnedOrders: Array<ReturnedOrder>;
   adminGetSiteInformations: Array<SiteInformation>;
+  adminGetTransations: Array<Transaction>;
   canAccessRoom: Scalars["Boolean"];
   comments: Array<Comment>;
   findAll: ProfilePaginatedResponse;
@@ -3269,7 +3298,6 @@ export type Query = {
   getAdminProductsFilters: Array<Filter>;
   getAdminProfile: Profile;
   getAffiliationPost: AffiliationPost;
-  getAll: Array<Transaction>;
   getAllServices: Array<Service>;
   getAllShares: ContentSharePaginationResponse;
   getAllShops: Array<Shop>;
@@ -3378,6 +3406,7 @@ export type Query = {
   getServicePost: ServicePost;
   getShippingGeoZoneRules: Array<ShippingTypeRule>;
   getShippingRuleGeoZones: Array<ShippingRuleGeoZone>;
+  getShippingTypeRule: ShippingTypeRule;
   getShopById: Shop;
   getSiteInfomrationsOfPlacement: Array<SiteInformation>;
   getStory: Story;
@@ -3443,6 +3472,14 @@ export type QueryAdminGetLanguagesArgs = {
   args: AdminGetLanguagesInput;
 };
 
+export type QueryAdminGetMembershipSubscriptionsArgs = {
+  args: AdminGetMembersipSubscriptionInput;
+};
+
+export type QueryAdminGetMembershipsArgs = {
+  args: AdminGetMembershipsInput;
+};
+
 export type QueryAdminGetProductArgs = {
   id: Scalars["String"];
 };
@@ -3457,6 +3494,10 @@ export type QueryAdminGetReturnedOrdersArgs = {
 
 export type QueryAdminGetSiteInformationsArgs = {
   args: AdminGetSiteInformationsInput;
+};
+
+export type QueryAdminGetTransationsArgs = {
+  args: GetTransactionsAdminInput;
 };
 
 export type QueryCanAccessRoomArgs = {
@@ -3493,10 +3534,6 @@ export type QueryGetAdminProfileArgs = {
 
 export type QueryGetAffiliationPostArgs = {
   args: GetAffiliationPostInput;
-};
-
-export type QueryGetAllArgs = {
-  args: GetTransactionsAdminInput;
 };
 
 export type QueryGetAllServicesArgs = {
@@ -3819,6 +3856,10 @@ export type QueryGetShippingRuleGeoZonesArgs = {
   id: Scalars["String"];
 };
 
+export type QueryGetShippingTypeRuleArgs = {
+  id: Scalars["String"];
+};
+
 export type QueryGetShopByIdArgs = {
   id: Scalars["String"];
 };
@@ -3941,13 +3982,6 @@ export type RecentStory = {
   user?: Maybe<Account>;
   userId: Scalars["ID"];
 };
-
-export enum Recurring {
-  Day = "day",
-  Month = "month",
-  Week = "week",
-  Year = "year",
-}
 
 export type Refund = {
   __typename?: "Refund";
@@ -5420,6 +5454,7 @@ export type WithdrawalRequest = {
   processedAt: Scalars["String"];
   requestedAt: Scalars["String"];
   status: WithdrawalStatus;
+  user: Account;
   userId: Scalars["ID"];
 };
 

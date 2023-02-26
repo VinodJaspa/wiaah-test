@@ -13,11 +13,14 @@ import {
   TBody,
   Td,
   Tr,
+  useAdminCreatePlanMutation,
+  useAdminUpdatePlanMutation,
 } from "ui";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { mapArray } from "utils";
+import { mapArray, useForm } from "utils";
+import { CommissionOn } from "@features/API";
 
 const commissionTypes: {
   id: string;
@@ -59,7 +62,26 @@ const editSubscriptionPlan = () => {
   const { t } = useTranslation();
   const { getParam } = useRouting();
   const id = getParam("id");
-  const isNew = !!id;
+  const isNew = id === "new";
+
+  const { form: updateForm, inputProps: changeUpdatePlan } = useForm<
+    Parameters<typeof useAdminUpdatePlanMutation>[0]
+  >({ id }, { id });
+  const { form: createForm, inputProps: changeCreatePlan } = useForm<
+    Parameters<typeof useAdminCreatePlanMutation>[0]
+  >({
+    commissionOn: CommissionOn.Sale,
+    includings: [],
+    name: "",
+    recurring: 0,
+    sortOrder: 1,
+    turnover_rules: [],
+  });
+
+  const { mutate: updatePlan } = useAdminUpdatePlanMutation(updateForm);
+  const { mutate: createPlan } = useAdminCreatePlanMutation(createForm);
+
+  const handleChange = isNew ? changeCreatePlan : changeUpdatePlan;
 
   return (
     <section>
@@ -93,7 +115,7 @@ const editSubscriptionPlan = () => {
                   <p>{t("Subscription Plan Name")}</p>
                 </Td>
                 <Td>
-                  <Input />
+                  <Input {...handleChange("name")} />
                 </Td>
               </Tr>
               <Tr>
@@ -196,10 +218,10 @@ const editSubscriptionPlan = () => {
                   <HStack>
                     <Input type="number" />
                     <Select>
-                      <SelectOption value={"day"}>{t("Day")}</SelectOption>
-                      <SelectOption value={"week"}>{t("Week")}</SelectOption>
-                      <SelectOption value={"month"}>{t("Month")}</SelectOption>
-                      <SelectOption value={"year"}>{t("Year")}</SelectOption>
+                      <SelectOption value={1}>{t("Day")}</SelectOption>
+                      <SelectOption value={7}>{t("Week")}</SelectOption>
+                      <SelectOption value={30}>{t("Month")}</SelectOption>
+                      <SelectOption value={365}>{t("Year")}</SelectOption>
                     </Select>
                   </HStack>
                 </Td>

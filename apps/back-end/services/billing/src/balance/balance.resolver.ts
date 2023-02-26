@@ -1,6 +1,12 @@
 import { Balance } from '@entities';
 import { UseGuards } from '@nestjs/common';
-import { Mutation, Query, Resolver, ResolveReference } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Query,
+  Resolver,
+  ResolveReference,
+} from '@nestjs/graphql';
 import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,

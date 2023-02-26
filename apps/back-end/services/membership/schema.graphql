@@ -35,22 +35,16 @@ type Membership {
   name: String!
   priceId: String
   commissionOn: CommissionOn!
-  recurring: Recurring!
+  recurring: Float!
   turnover_rules: [MembershipTurnoverRule!]!
   includings: [MembershipIncludedItem!]!
+  sortOrder: Int!
 }
 
 enum CommissionOn {
   external_click
   sale
   revenue
-}
-
-enum Recurring {
-  day
-  month
-  week
-  year
 }
 
 type Account {
@@ -66,25 +60,57 @@ type MembershipSubscription {
   membershipId: ID!
   startAt: String!
   endAt: String!
+  status: MembershipSubscriptionStatus!
+  usage: Float!
   membership: Membership!
+  subscriber: Account!
+}
+
+enum MembershipSubscriptionStatus {
+  pending
+  active
+  expired
 }
 
 type Query {
+  adminGetMemberships(args: AdminGetMembershipsInput!): [Membership!]!
   getSubscriableMemberships: [Membership!]!
   getMyMembership: MembershipSubscription
+  adminGetMembershipSubscriptions(args: AdminGetMembersipSubscriptionInput!): [MembershipSubscription!]!
+}
+
+input AdminGetMembershipsInput {
+  name: String
+  sortOrder: Int
+  pagination: GqlPaginationInput!
+}
+
+input GqlPaginationInput {
+  page: Int!
+  take: Int!
+}
+
+input AdminGetMembersipSubscriptionInput {
+  username: String
+  nextPaymentDate: String
+  expiryDate: String
+  name: String
+  status: MembershipSubscriptionStatus
+  pagination: GqlPaginationInput!
 }
 
 type Mutation {
-  createMembership(args: CreateMembershipInput!): Membership!
-  updateMembership(args: UpdateMembershipInput!): Membership!
+  createMembership(args: CreateMembershipInput!): Boolean!
+  updateMembership(args: UpdateMembershipInput!): Boolean!
 }
 
 input CreateMembershipInput {
   name: String!
   commissionOn: CommissionOn!
-  recurring: Recurring!
+  recurring: Float!
   turnover_rules: [MembershipTurnoverRuleInput!]!
   includings: [MembershipIncludedItemInput!]!
+  sortOrder: Int!
 }
 
 input MembershipTurnoverRuleInput {

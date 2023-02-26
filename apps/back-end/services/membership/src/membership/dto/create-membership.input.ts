@@ -1,5 +1,12 @@
-import { InputType, Field, Float, registerEnumType, ID } from '@nestjs/graphql';
-import { CommissionOn, commissionType, Recurring } from 'prismaClient';
+import {
+  InputType,
+  Field,
+  Float,
+  registerEnumType,
+  ID,
+  Int,
+} from '@nestjs/graphql';
+import { CommissionOn, commissionType } from 'prismaClient';
 
 registerEnumType(CommissionOn, { name: 'CommissionOn' });
 registerEnumType(commissionType, { name: 'CommissionType' });
@@ -30,12 +37,15 @@ export class CreateMembershipInput {
   @Field(() => CommissionOn)
   commissionOn: CommissionOn;
 
-  @Field(() => Recurring)
-  recurring: Recurring;
+  @Field(() => Float)
+  recurring: number;
 
   @Field(() => [MembershipTurnoverRuleInput])
   turnover_rules: MembershipTurnoverRuleInput[];
 
   @Field(() => [MembershipIncludedItemInput])
   includings: MembershipIncludedItemInput[];
+
+  @Field(() => Int)
+  sortOrder: number;
 }
