@@ -6,9 +6,6 @@ import {
   ListIcon,
   Pagination,
   PlusIcon,
-  PriceDisplay,
-  Select,
-  SelectOption,
   Table,
   TableContainer,
   TBody,
@@ -17,55 +14,25 @@ import {
   THead,
   Tr,
   TrashIcon,
+  useAdminGetShippingSettings,
+  usePaginationControls,
 } from "ui";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { mapArray } from "utils";
+import { mapArray, useForm } from "utils";
 import { useRouting } from "routing";
-
-interface zone {
-  id: string;
-  name: string;
-  description: string;
-}
-
-const zones: zone[] = [
-  {
-    id: "1",
-    name: "Uk Shipping",
-    description: "uk shipping zones",
-  },
-  {
-    id: "2",
-    name: "Uk Vat Zone",
-    description: "UK Vat",
-  },
-  {
-    id: "1",
-    name: "Uk Shipping",
-    description: "uk shipping zones",
-  },
-  {
-    id: "2",
-    name: "Uk Vat Zone",
-    description: "UK Vat",
-  },
-  {
-    id: "1",
-    name: "Uk Shipping",
-    description: "uk shipping zones",
-  },
-  {
-    id: "2",
-    name: "Uk Vat Zone",
-    description: "UK Vat",
-  },
-];
 
 const GeoZones: NextPage = () => {
   const { t } = useTranslation();
   const { getCurrentPath, visit } = useRouting();
+
+  const { controls, pagination } = usePaginationControls();
+  const { form, inputProps } = useForm<
+    Parameters<typeof useAdminGetShippingSettings>[0]
+  >({ pagination }, { pagination });
+  const { data: zones } = useAdminGetShippingSettings(form);
+
   return (
     <section>
       <div className="flex gap-1 py-4 justify-end">
@@ -96,16 +63,16 @@ const GeoZones: NextPage = () => {
               <Tr>
                 <Th></Th>
                 <Th>
-                  <Input />
+                  <Input {...inputProps("name")} />
                 </Th>
                 <Th>
-                  <Input />
+                  <Input {...inputProps("description")} />
                 </Th>
                 <Th></Th>
               </Tr>
             </THead>
             <TBody>
-              {mapArray(zones, ({ description, name, id }) => (
+              {mapArray(zones, ({ id, description, name }) => (
                 <Tr>
                   <Td>
                     <Checkbox />
@@ -136,7 +103,7 @@ const GeoZones: NextPage = () => {
             </TBody>
           </Table>
         </TableContainer>
-        <Pagination />
+        <Pagination controls={controls} />
       </div>
     </section>
   );

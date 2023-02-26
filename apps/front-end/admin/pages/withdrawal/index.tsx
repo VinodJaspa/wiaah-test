@@ -1,137 +1,42 @@
 import { AdminListTable, AdminTableCellTypeEnum } from "@components";
-import { Badge, Button, CloseIcon, Pagination, Select, SelectOption } from "ui";
+import {
+  Badge,
+  Button,
+  Pagination,
+  Select,
+  SelectOption,
+  useAdminAcceptWithdrawalRequestMutation,
+  useAdminGetWithdrawalsQuery,
+  usePaginationControls,
+} from "ui";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { mapArray, randomNum } from "utils";
+import { mapArray, useForm } from "utils";
 import { startCase } from "lodash";
 import { ImCheckmark } from "react-icons/im";
-
-type Statuses = "pending" | "processed" | "refused";
-const statuses: Statuses[] = ["pending", "processed", "refused"];
-interface WithdrawalRequest {
-  id: string;
-  requestedAt: string;
-  processedAt: string;
-  shop: string;
-  seller: string;
-  email: string;
-  amount: number;
-  status: Statuses;
-}
-
-const requests: WithdrawalRequest[] = [
-  {
-    id: randomNum(1500).toString(),
-    amount: randomNum(150),
-    email: "seller@email.com",
-    processedAt: new Date().toDateString(),
-    requestedAt: new Date().toDateString(),
-    seller: "seller name" + randomNum(1500),
-    shop: "shop name",
-    status: statuses[0],
-  },
-  {
-    id: randomNum(1500).toString(),
-    amount: randomNum(150),
-    email: "seller@email.com",
-    processedAt: new Date().toDateString(),
-    requestedAt: new Date().toDateString(),
-    seller: "seller name" + randomNum(1500),
-    shop: "shop name",
-    status: statuses[1],
-  },
-  {
-    id: randomNum(1500).toString(),
-    amount: randomNum(150),
-    email: "seller@email.com",
-    processedAt: new Date().toDateString(),
-    requestedAt: new Date().toDateString(),
-    seller: "seller name" + randomNum(1500),
-    shop: "shop name",
-    status: statuses[2],
-  },
-  {
-    id: randomNum(1500).toString(),
-    amount: randomNum(150),
-    email: "seller@email.com",
-    processedAt: new Date().toDateString(),
-    requestedAt: new Date().toDateString(),
-    seller: "seller name" + randomNum(1500),
-    shop: "shop name",
-    status: statuses[0],
-  },
-  {
-    id: randomNum(1500).toString(),
-    amount: randomNum(150),
-    email: "seller@email.com",
-    processedAt: new Date().toDateString(),
-    requestedAt: new Date().toDateString(),
-    seller: "seller name" + randomNum(1500),
-    shop: "shop name",
-    status: statuses[1],
-  },
-  {
-    id: randomNum(1500).toString(),
-    amount: randomNum(150),
-    email: "seller@email.com",
-    processedAt: new Date().toDateString(),
-    requestedAt: new Date().toDateString(),
-    seller: "seller name" + randomNum(1500),
-    shop: "shop name",
-    status: statuses[2],
-  },
-  {
-    id: randomNum(1500).toString(),
-    amount: randomNum(150),
-    email: "seller@email.com",
-    processedAt: new Date().toDateString(),
-    requestedAt: new Date().toDateString(),
-    seller: "seller name" + randomNum(1500),
-    shop: "shop name",
-    status: statuses[0],
-  },
-  {
-    id: randomNum(1500).toString(),
-    amount: randomNum(150),
-    email: "seller@email.com",
-    processedAt: new Date().toDateString(),
-    requestedAt: new Date().toDateString(),
-    seller: "seller name" + randomNum(1500),
-    shop: "shop name",
-    status: statuses[1],
-  },
-  {
-    id: randomNum(1500).toString(),
-    amount: randomNum(150),
-    email: "seller@email.com",
-    processedAt: new Date().toDateString(),
-    requestedAt: new Date().toDateString(),
-    seller: "seller name" + randomNum(1500),
-    shop: "shop name",
-    status: statuses[2],
-  },
-];
+import { WithdrawalStatus } from "@features/API";
 
 const withdrawal: NextPage = () => {
   const { t } = useTranslation();
+
+  const { pagination, controls } = usePaginationControls();
+  const { form } = useForm<Parameters<typeof useAdminGetWithdrawalsQuery>[0]>(
+    { pagination },
+    { pagination }
+  );
+  const { data: requests } = useAdminGetWithdrawalsQuery(form);
+
+  const { mutate } = useAdminAcceptWithdrawalRequestMutation();
 
   return (
     <section>
       <AdminListTable
         title={t("Withdrawals List")}
         props={{ TrProps: { className: "border-b border-b-gray-300" } }}
-        data={requests.map(
-          ({
-            amount,
-            email,
-            id,
-            processedAt,
-            requestedAt,
-            seller,
-            shop,
-            status,
-          }) => ({
+        data={mapArray(
+          requests,
+          ({ amount, user, id, processedAt, status, requestedAt, userId }) => ({
             id,
             cols: [
               {
@@ -148,15 +53,15 @@ const withdrawal: NextPage = () => {
               },
               {
                 type: AdminTableCellTypeEnum.text,
-                value: shop,
+                value: user?.shop?.name,
               },
               {
                 type: AdminTableCellTypeEnum.text,
-                value: seller,
+                value: user?.profile?.username,
               },
               {
                 type: AdminTableCellTypeEnum.text,
-                value: email,
+                value: user?.email,
               },
               {
                 type: AdminTableCellTypeEnum.number,
@@ -167,8 +72,8 @@ const withdrawal: NextPage = () => {
                 custom: (
                   <Badge
                     cases={{
-                      off: "pending",
-                      fail: "refused",
+                      off: WithdrawalStatus.Pending,
+                      fail: WithdrawalStatus.Refused,
                     }}
                     value={status}
                     className="flex justify-center"
@@ -183,7 +88,11 @@ const withdrawal: NextPage = () => {
                 actionBtns:
                   status === "pending"
                     ? [
-                        <Button center className="w-8 h-8">
+                        <Button
+                          onClick={() => mutate(id)}
+                          center
+                          className="w-8 h-8"
+                        >
                           <ImCheckmark />
                         </Button>,
                       ]
@@ -227,7 +136,7 @@ const withdrawal: NextPage = () => {
             value: t("Status"),
             custom: (
               <Select>
-                {mapArray(statuses, (s, i) => (
+                {mapArray(Object.values(WithdrawalStatus), (s, i) => (
                   <SelectOption value={s} key={i}>
                     {startCase(s)}
                   </SelectOption>
@@ -240,8 +149,8 @@ const withdrawal: NextPage = () => {
             value: t("Actiom"),
           },
         ]}
+        pagination={controls}
       />
-      <Pagination />
     </section>
   );
 };

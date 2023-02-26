@@ -19,7 +19,7 @@ import {
   MembershipPricesType,
 } from '@membership/const';
 import { Membership } from './entities';
-import { CommissionOn, Recurring } from 'prismaClient';
+import { CommissionOn } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 
 @Controller()
@@ -56,16 +56,7 @@ export class MembershipController {
       },
     });
 
-    const endAt = AddToDate(
-      new Date(),
-      membership.recurring === Recurring.day
-        ? { days: 1 }
-        : membership.recurring === Recurring.week
-        ? { days: 7 }
-        : membership.recurring === Recurring.month
-        ? { days: 30 }
-        : { days: 365 },
-    );
+    const endAt = AddToDate(new Date(), { days: membership.recurring });
 
     await this.prisma.memberShipSubscription.upsert({
       where: {

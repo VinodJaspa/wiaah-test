@@ -9,7 +9,7 @@ export class InvoiceRecordResolver {
 
   @Query(() => InvoiceRecord)
   getInvoiceRecord(@Args('period') period: InvoiceRecordTypes) {
-    return this.getInvoiceRecord(period);
+    return this.getPeriod(period);
   }
 
   async getPeriod(type: InvoiceRecordTypes) {

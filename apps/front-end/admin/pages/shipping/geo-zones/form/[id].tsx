@@ -18,26 +18,32 @@ import {
   Th,
   THead,
   Tr,
+  useAdminGetShippingTypeRule,
+  useAdminUpdateShippingRuleTypeMutation,
 } from "ui";
 import { useRouting } from "routing";
 import { useTranslation } from "react-i18next";
-import { mapArray } from "utils";
-
-interface zone {
-  id: string;
-  country: string;
-  zone: string;
-}
-
-const zones: zone[] = [...Array(3)].map((_, i) => ({
-  id: i.toString(),
-  country: "United kingdom",
-  zone: "All Countries",
-}));
+import { mapArray, useForm } from "utils";
 
 const GeoZoneForm: NextPage = () => {
   const { t } = useTranslation();
-  const { back, getCurrentPath, visit } = useRouting();
+  const { back, getCurrentPath, visit, getParam } = useRouting();
+  const id = getParam("id");
+
+  const isNew = id === "new";
+  const isEdit = !isNew;
+
+  const { data } = useAdminGetShippingTypeRule(id);
+
+  const { form, inputProps } = useForm<Parameters<typeof update>[0]>(
+    {
+      id,
+      ...data,
+    },
+    { id, ...data }
+  );
+  const { mutate: update } = useAdminUpdateShippingRuleTypeMutation();
+
   return (
     <section>
       <div className="py-4 flex gap-1 justify-end">
@@ -71,7 +77,7 @@ const GeoZoneForm: NextPage = () => {
                   {t("Geo Zone Name")}
                 </Td>
                 <Td>
-                  <Input />
+                  <Input {...inputProps("name")} />
                 </Td>
               </Tr>
               <Tr>
@@ -80,7 +86,7 @@ const GeoZoneForm: NextPage = () => {
                   {t("Description")}
                 </Td>
                 <Td>
-                  <Input />
+                  <Input {...inputProps("description")} />
                 </Td>
               </Tr>
             </TBody>
@@ -99,7 +105,7 @@ const GeoZoneForm: NextPage = () => {
               </Tr>
             </THead>
             <TBody>
-              {mapArray(zones, ({ country, zone, id }) => (
+              {mapArray(form.zones, ({ country, zone, id }) => (
                 <Tr key={id}>
                   <Td>
                     <Select value={country}>

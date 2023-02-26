@@ -15,11 +15,12 @@ model Membership {
   id                     String                   @id @default(auto()) @map("_id") @db.ObjectId
   name                   String
   commissionOn           CommissionOn
-  recurring              Recurring
+  recurring              Float
   priceId                String?
   turnover_rules         MembershipTurnoverRule[]
   includings             MembershipIncludeItem[]
   active                 Boolean                  @default(false)
+  sortOrder              Int
   MemberShipSubscription MemberShipSubscription[]
 }
 
@@ -38,8 +39,16 @@ model MemberShipSubscription {
   membershipId String     @db.ObjectId
   membership   Membership @relation(fields: [membershipId], references: [id])
 
+  usage   Float                        @default(0)
+  status  MembershipSubscriptionStatus @default(pending)
   startAt DateTime
   endAt   DateTime
+}
+
+enum MembershipSubscriptionStatus {
+  pending
+  active
+  expired
 }
 
 enum Recurring {

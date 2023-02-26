@@ -6,9 +6,7 @@ import {
   Float,
   registerEnumType,
 } from '@nestjs/graphql';
-import { CommissionOn, commissionType, Recurring } from 'prismaClient';
-
-registerEnumType(Recurring, { name: 'Recurring' });
+import { CommissionOn, commissionType } from 'prismaClient';
 
 @ObjectType()
 export class MembershipTurnoverRule {
@@ -51,12 +49,15 @@ export class Membership {
   @Field(() => CommissionOn)
   commissionOn: CommissionOn;
 
-  @Field(() => Recurring)
-  recurring: Recurring;
+  @Field(() => Float)
+  recurring: number;
 
   @Field(() => [MembershipTurnoverRule])
   turnover_rules: MembershipTurnoverRule[];
 
   @Field(() => [MembershipIncludedItem])
   includings: MembershipIncludedItem[];
+
+  @Field(() => Int)
+  sortOrder: number;
 }

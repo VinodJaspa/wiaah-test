@@ -1,4 +1,5 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Field, Float, ID, ObjectType } from '@nestjs/graphql';
+import { MembershipSubscriptionStatus } from 'prismaClient';
 
 @ObjectType()
 export class MembershipSubscription {
@@ -13,4 +14,10 @@ export class MembershipSubscription {
 
   @Field(() => String)
   endAt: Date;
+
+  @Field(() => MembershipSubscriptionStatus)
+  status: MembershipSubscriptionStatus;
+
+  @Field(() => Float)
+  usage: number;
 }

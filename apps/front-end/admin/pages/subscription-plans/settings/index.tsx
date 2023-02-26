@@ -2,8 +2,14 @@ import React from "react";
 import { NextPage } from "next";
 import { AdminListTable, AdminTableCellTypeEnum } from "@components";
 import { useTranslation } from "react-i18next";
-import { Button, EditIcon } from "ui";
+import {
+  Button,
+  EditIcon,
+  useAdminGetPlansQuery,
+  usePaginationControls,
+} from "ui";
 import { useRouting } from "routing";
+import { mapArray, useForm } from "utils";
 
 interface Plan {
   id: string;
@@ -32,6 +38,13 @@ const plans: Plan[] = [
 const SubscriptionPlans: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath } = useRouting();
+
+  const { pagination, controls } = usePaginationControls();
+  const { form, inputProps } = useForm<
+    Parameters<typeof useAdminGetPlansQuery>[0]
+  >({ pagination }, { pagination });
+
+  const { data: plans } = useAdminGetPlansQuery(form);
   return (
     <section>
       <AdminListTable
@@ -50,7 +63,7 @@ const SubscriptionPlans: NextPage = () => {
             props: { align: "right" },
           },
         ]}
-        data={plans.map((v) => ({
+        data={mapArray(plans, (v) => ({
           id: v.id,
           cols: [
             {
@@ -82,7 +95,11 @@ const SubscriptionPlans: NextPage = () => {
             },
           ],
         }))}
-        onAdd={() => {}}
+        onAdd={() =>
+          visit((r) =>
+            r.addPath(getCurrentPath()).addPath("form").addPath("new")
+          )
+        }
         title={t("Subscription Plan List")}
       />
     </section>

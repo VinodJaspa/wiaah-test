@@ -4,6 +4,7 @@ import {
   EditIcon,
   Input,
   ListIcon,
+  Pagination,
   Select,
   SelectOption,
   Table,
@@ -141,6 +142,7 @@ const Currency: NextPage = () => {
               </TBody>
             </Table>
           </TableContainer>
+          <Pagination controls={controls} />
         </div>
       </div>
     </section>

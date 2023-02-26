@@ -1,158 +1,32 @@
-import { AdminListTable, AdminTableCellTypeEnum } from "@components";
+import { AdminListTable, AdminTableCellTypeEnum } from "../../components";
 import {
   Badge,
   CircularProgress,
   PriceDisplay,
+  useAdminGetFilteredTransactionsQuery,
   usePaginationControls,
 } from "ui";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { randomNum } from "utils";
+import { mapArray, randomNum, setTestid, useForm } from "utils";
 import { startCase } from "lodash";
 import { FaFileInvoice } from "react-icons/fa";
-
-interface CommsissionBalance {
-  id: string;
-  seller: {
-    id: string;
-    name: string;
-    plan: string;
-  };
-  fee: {
-    amount: number;
-  };
-  description: string;
-  createdAt: string;
-  status: string;
-}
-
-const transactions: CommsissionBalance[] = [
-  {
-    id: "1",
-    fee: {
-      amount: 200,
-    },
-    createdAt: new Date().toString(),
-    description: "Monthly subscription (pay)",
-    seller: {
-      id: "1",
-      name: "sellername",
-      plan: "Pay",
-    },
-    status: "compeleted",
-  },
-  {
-    id: "2",
-    fee: {
-      amount: randomNum(200),
-    },
-    createdAt: new Date().toString(),
-    description: "Commission on sale",
-    seller: {
-      id: "1",
-      name: "sellername",
-      plan: "Free",
-    },
-    status: "pending",
-  },
-  {
-    id: "3",
-    fee: {
-      amount: randomNum(200),
-    },
-    createdAt: new Date().toString(),
-    description: "Monthly subscription (pay)",
-    seller: {
-      id: "1",
-      name: "sellername",
-      plan: "Pay",
-    },
-    status: "failed",
-  },
-  {
-    id: "4",
-    fee: {
-      amount: randomNum(200),
-    },
-    createdAt: new Date().toString(),
-    description: `Monthly subscription (per click) (${randomNum(
-      50000
-    )} clicks)`,
-    seller: {
-      id: "1",
-      name: "sellername",
-      plan: "per-click",
-    },
-    status: "on_hold",
-  },
-  {
-    id: "1",
-    fee: {
-      amount: 200,
-    },
-    createdAt: new Date().toString(),
-    description: "Monthly subscription (pay)",
-    seller: {
-      id: "1",
-      name: "sellername",
-      plan: "Pay",
-    },
-    status: "compeleted",
-  },
-  {
-    id: "2",
-    fee: {
-      amount: randomNum(200),
-    },
-    createdAt: new Date().toString(),
-    description: "Commission on sale",
-    seller: {
-      id: "1",
-      name: "sellername",
-      plan: "Free",
-    },
-    status: "pending",
-  },
-  {
-    id: "3",
-    fee: {
-      amount: randomNum(200),
-    },
-    createdAt: new Date().toString(),
-    description: "Monthly subscription (pay)",
-    seller: {
-      id: "1",
-      name: "sellername",
-      plan: "Pay",
-    },
-    status: "failed",
-  },
-  {
-    id: "4",
-    fee: {
-      amount: randomNum(200),
-    },
-    createdAt: new Date().toString(),
-    description: `Monthly subscription (per click) (${randomNum(
-      50000
-    )} clicks)`,
-    seller: {
-      id: "1",
-      name: "sellername",
-      plan: "per-click",
-    },
-    status: "on_hold",
-  },
-];
+import { TransactionStatus } from "@features/API";
 
 const balance: NextPage = () => {
   const { t } = useTranslation();
-  const { controls } = usePaginationControls();
+  const { controls, pagination } = usePaginationControls();
+  const { form, inputProps, selectProps } = useForm<
+    Parameters<typeof useAdminGetFilteredTransactionsQuery>[0]
+  >({});
+  const { data } = useAdminGetFilteredTransactionsQuery(form);
+
   return (
     <section>
       <div className="flex w-full items-center justify-between">
         <div className="flex w-40 flex-col text-primary items-center gap-2">
+          {/* @ts-ignore */}
           <CircularProgress maxValue={100} value={100}>
             <FaFileInvoice className="text-xl" />
           </CircularProgress>
@@ -164,6 +38,7 @@ const balance: NextPage = () => {
           </div>
         </div>
         <div className="flex w-40 flex-col text-secondaryRed items-center gap-2">
+          {/* @ts-ignore */}
           <CircularProgress maxValue={100} value={randomNum(99)}>
             <FaFileInvoice className="text-xl" />
           </CircularProgress>
@@ -175,6 +50,7 @@ const balance: NextPage = () => {
           </div>
         </div>
         <div className="flex w-40 flex-col text-yellow-400 items-center gap-2">
+          {/* @ts-ignore */}
           <CircularProgress maxValue={100} value={randomNum(99)}>
             <FaFileInvoice className="text-xl" />
           </CircularProgress>
@@ -186,6 +62,7 @@ const balance: NextPage = () => {
           </div>
         </div>
         <div className="flex w-40 flex-col text-blue-500 items-center gap-2">
+          {/* @ts-ignore */}
           <CircularProgress maxValue={100} value={randomNum(99)}>
             <FaFileInvoice className="text-xl" />
           </CircularProgress>
@@ -198,11 +75,13 @@ const balance: NextPage = () => {
         </div>
       </div>
       <AdminListTable
+        {...setTestid("transaction-table")}
         // onAdd={() => {}}
         // onDelete={() => {}}
         pagination={controls}
-        data={transactions.map(
-          ({ createdAt, description, fee, id, seller, status }) => ({
+        data={mapArray(
+          data,
+          ({ createdAt, description, id, status, amount, toUser }) => ({
             id,
             cols: [
               {
@@ -212,10 +91,10 @@ const balance: NextPage = () => {
                 value: id,
               },
               {
-                value: seller.name,
+                value: toUser?.profile?.username,
               },
               {
-                value: startCase(seller.plan),
+                value: startCase(toUser?.subscribedPlan?.membership?.name),
               },
               {
                 value: new Date(createdAt).toDateString(),
@@ -230,9 +109,8 @@ const balance: NextPage = () => {
                   <Badge
                     className="w-full"
                     cases={{
-                      off: "pending",
-                      fail: "failed",
-                      warning: "on_hold",
+                      off: TransactionStatus.Pending,
+                      fail: TransactionStatus.Failed,
                     }}
                     value={status}
                   >
@@ -242,7 +120,7 @@ const balance: NextPage = () => {
               },
               {
                 type: AdminTableCellTypeEnum.custom,
-                custom: <PriceDisplay price={fee.amount} />,
+                custom: <PriceDisplay price={amount} />,
               },
             ],
           })
@@ -254,10 +132,12 @@ const balance: NextPage = () => {
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Transaction ID"),
+            props: inputProps("id"),
           },
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Seller"),
+            props: inputProps("seller"),
           },
           {
             type: AdminTableCellTypeEnum.text,
@@ -270,14 +150,17 @@ const balance: NextPage = () => {
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Description"),
+            props: inputProps("description"),
           },
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Status"),
+            props: inputProps("status"),
           },
           {
             type: AdminTableCellTypeEnum.number,
             value: t("Amount"),
+            props: inputProps("amount"),
           },
         ]}
         title={t("Transations")}

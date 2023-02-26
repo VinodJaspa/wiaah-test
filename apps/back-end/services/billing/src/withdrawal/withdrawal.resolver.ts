@@ -1,4 +1,11 @@
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Args,
+  Mutation,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { WithdrawalRequest } from './entities/withdrawal.entity';
 import { PrismaService } from 'prismaService';
 import { UseGuards } from '@nestjs/common';
@@ -7,6 +14,7 @@ import { GetWithdrawalRequestsAdminInput } from './dto';
 import { Prisma, WithdrawalStatus } from '@prisma-client';
 import { EventBus } from '@nestjs/cqrs';
 import { WithdrawalProcessedEvent } from './events';
+import { Account } from '@entities';
 
 @Resolver(() => WithdrawalRequest)
 export class WithdrawalResolver {
@@ -88,5 +96,13 @@ export class WithdrawalResolver {
         AND: filters,
       },
     });
+  }
+
+  @ResolveField(() => Account)
+  user(@Parent() req: WithdrawalRequest) {
+    return {
+      __typename: 'Account',
+      id: req.userId,
+    };
   }
 }

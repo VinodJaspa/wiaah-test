@@ -58,7 +58,7 @@ export class TransactionsResolver {
 
   @Query(() => [Transaction])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
-  async getAll(@Args('args') args: GetTransactionsAdminInput) {
+  async adminGetTransations(@Args('args') args: GetTransactionsAdminInput) {
     const filters: Prisma.TransactionWhereInput[] = [];
     const { skip, take } = ExtractPagination(args.pagination);
 

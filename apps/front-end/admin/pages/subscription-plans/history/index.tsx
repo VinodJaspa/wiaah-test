@@ -8,46 +8,24 @@ import {
   SelectOption,
   ItemsPagination,
   Input,
+  useAdminGetMembershipSubscriptionQuery,
 } from "ui";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { randomNum } from "utils";
+import { mapArray, useForm } from "utils";
 import { startCase } from "lodash";
 import { usePaginationControls } from "@blocks";
-
-interface SubscriptionHistory {
-  id: string;
-  orderId: string;
-  status: string;
-  productName: string;
-  recurring: {
-    amount: number;
-    days: number;
-  };
-  username: string;
-  nextPaymentDate: string;
-  expiryDate: string;
-}
-
-const status = ["expired", "active", "pending"];
-
-const subs: SubscriptionHistory[] = [...Array(10)].map((_, i) => ({
-  id: i.toString(),
-  expiryDate: new Date().toString(),
-  nextPaymentDate: new Date().toString(),
-  orderId: i.toString(),
-  productName: `product name-${i}`,
-  status: status[randomNum(status.length)],
-  recurring: {
-    amount: randomNum(500),
-    days: randomNum(30),
-  },
-  username: `username-${i}`,
-}));
+import { MembershipSubscriptionStatus } from "@features/API";
 
 const History: React.FC = () => {
-  const { controls } = usePaginationControls();
   const { t } = useTranslation();
+
+  const { controls, pagination } = usePaginationControls();
+  const { form, inputProps } = useForm<
+    Parameters<typeof useAdminGetMembershipSubscriptionQuery>[0]
+  >({ pagination }, { pagination });
+  const { data: subs } = useAdminGetMembershipSubscriptionQuery(form);
+
   return (
     <div className="flex flex-col gap-2 w-full">
       <HStack className="justify-between items-start">
@@ -84,10 +62,12 @@ const History: React.FC = () => {
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Status"),
+            props: inputProps("status"),
           },
           {
             type: AdminTableCellTypeEnum.text,
-            value: t("Product Name"),
+            value: t("Plan Name"),
+            props: inputProps("name"),
           },
           {
             type: AdminTableCellTypeEnum.text,
@@ -96,6 +76,7 @@ const History: React.FC = () => {
           {
             type: AdminTableCellTypeEnum.text,
             value: t("User Name"),
+            props: inputProps("username"),
           },
           {
             value: t("Next Payment Date"),
@@ -104,35 +85,31 @@ const History: React.FC = () => {
           {
             value: t("Subscription Expiry Date"),
             type: AdminTableCellTypeEnum.text,
+            props: inputProps("expiryDate"),
           },
         ]}
-        data={subs.map(
-          ({
-            expiryDate,
-            id,
-            nextPaymentDate,
-            orderId,
-            productName,
-            recurring,
-            status,
-            username,
-          }) => ({
+        data={mapArray(
+          subs,
+          ({ endAt, membership, usage, subscriber, userId, status }) => ({
             cols: [
               {
                 type: AdminTableCellTypeEnum.checkbox,
               },
               {
-                value: id,
+                value: userId,
               },
               {
-                value: orderId,
+                value: membership.id,
               },
               {
                 type: AdminTableCellTypeEnum.custom,
                 custom: (
                   <Badge
                     value={status}
-                    cases={{ fail: "expired", off: "pending" }}
+                    cases={{
+                      fail: MembershipSubscriptionStatus.Expired,
+                      off: MembershipSubscriptionStatus.Pending,
+                    }}
                     className="w-fit"
                   >
                     {startCase(status)}
@@ -140,30 +117,37 @@ const History: React.FC = () => {
                 ),
               },
               {
-                value: productName,
+                value: membership.name,
               },
               {
                 type: AdminTableCellTypeEnum.custom,
                 custom: (
                   <HStack>
-                    <PriceDisplay price={recurring.amount} />/
+                    <PriceDisplay
+                      price={
+                        membership.turnover_rules
+                          .sort((a, b) => a.usage - b.usage)
+                          .find((v) => v.usage > usage).commission
+                      }
+                    />
+                    /
                     <p>
-                      {recurring.days} {t("days")}
+                      {membership.recurring} {t("days")}
                     </p>
                   </HStack>
                 ),
               },
               {
-                value: username,
+                value: `${subscriber?.firstName} ${subscriber?.lastName}`,
               },
               {
-                value: new Date(nextPaymentDate).toDateString(),
+                value: new Date(endAt).toDateString(),
               },
               {
-                value: new Date(expiryDate).toDateString(),
+                value: new Date(endAt).toDateString(),
               },
             ],
-            id,
+            id: userId,
           })
         )}
         title={t("Subscription List")}
