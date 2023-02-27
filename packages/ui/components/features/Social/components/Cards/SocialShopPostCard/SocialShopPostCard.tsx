@@ -17,12 +17,9 @@ import {
   PriceDisplay,
   UnDiscountedPriceDisplay,
   useLikeContent,
-  ContentHostType,
-  ProductPost,
-  Profile,
-  Product,
 } from "@UI";
 import { useTypedReactPubsub } from "@libs";
+import { ContentHostType, Product, ProductPost, Profile } from "@features/API";
 
 export interface SocialShopPostcardProps {
   profileInfo: Pick<
@@ -66,7 +63,7 @@ export const SocialShopPostcard: React.FC<SocialShopPostcardProps> = ({
   const cashback = postInfo.product.cashback;
 
   return (
-    <div className="relative isolate group rounded-[1.25rem] overflow-hidden w-full h-full">
+    <div className="relative isolate group rounded md:rounded-[1.25rem] overflow-hidden w-full h-full">
       <Image
         className="w-full h-full object-cover"
         src={
@@ -79,12 +76,12 @@ export const SocialShopPostcard: React.FC<SocialShopPostcardProps> = ({
       />
 
       {discount ? (
-        <div className="absolute -rotate-45 group-hover:opacity-0 transition-opacity bg-red-500 rounded z-10 text-white w-32 py-1 flex justify-center items-center origin-center -left-8 top-4">
+        <div className="absolute text-xs sm:text-sm md:text-base -rotate-45 group-hover:opacity-0 transition-opacity bg-red-500 rounded z-10 text-white w-32 py-1 flex justify-center items-center origin-center -left-8 top-4">
           {discount.amount}% {t("OFF")}
         </div>
       ) : null}
       {cashback ? (
-        <div className="absolute -rotate-45 group-hover:opacity-0 transition-opacity gap-1 bg-red-500 rounded z-10 text-white w-52 py-1 flex justify-center items-center origin-center -left-12 top-12">
+        <div className="absolute text-xs sm:text-sm md:text-base -rotate-45 group-hover:opacity-0 transition-opacity gap-1 bg-red-500 rounded z-10 text-white w-52 py-1 flex justify-center items-center origin-center -left-12 top-12">
           <PriceDisplay price={cashback.amount} /> {t("Cash Back")}
         </div>
       ) : null}

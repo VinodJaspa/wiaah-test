@@ -62,6 +62,6 @@ type UserInterestKeyword {
 model Event {
   id         String  @id @default(auto()) @map("_id") @db.ObjectId
   key        String
-  causedById String
-  causedToId String?
+  causedById String?
+  causedToId String
 }

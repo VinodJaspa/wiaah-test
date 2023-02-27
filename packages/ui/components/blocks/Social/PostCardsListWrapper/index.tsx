@@ -9,6 +9,7 @@ import {
   GridListOrganiser,
   ListWrapperProps,
 } from "@UI/components/blocks/Wrappers";
+import { useResponsive } from "@UI/../hooks";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {
   posts: (PostCardProps["postInfo"] & {
@@ -29,6 +30,9 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
     posts.map((post, idx) => (
       <PostCard postInfo={post} profileInfo={post.publisher!} key={idx} />
     ));
+
+  const { isMobile, isTablet } = useResponsive();
+
   return (
     <>
       <PostViewPopup
@@ -55,92 +59,177 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
       />
       {grid ? (
         <GridListOrganiser
-          rowSize="14.5rem"
-          presets={[
-            {
-              cols: 5,
-              points: [
-                {
-                  c: 2,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-              ],
-            },
-            {
-              cols: 5,
-              points: [
-                { c: 1, r: 1 },
-                { c: 1, r: 1 },
-                { c: 1, r: 1 },
-                { c: 1, r: 1 },
-                { c: 1, r: 2 },
-                { c: 2, r: 1 },
-                { c: 1, r: 1 },
-                { c: 1, r: 1 },
-              ],
-            },
-            {
-              cols: 5,
-              points: [
-                {
-                  c: 2,
-                  r: 1,
-                },
-                {
-                  c: 2,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 2,
-                  r: 1,
-                },
-              ],
-            },
-          ]}
+          rowSize={isMobile ? "6rem" : isTablet ? "10rem" : "14.5rem"}
+          presets={
+            isMobile
+              ? [
+                  {
+                    cols: 3,
+                    points: [
+                      {
+                        c: 2,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 2,
+                        r: 2,
+                      },
+                      {
+                        c: 2,
+                        r: 1,
+                      },
+                    ],
+                  },
+                  {
+                    cols: 3,
+                    points: [
+                      { c: 2, r: 2 },
+                      { c: 1, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 2, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 2, r: 1 },
+                      { c: 1, r: 1 },
+                    ],
+                  },
+
+                  {
+                    cols: 2,
+                    points: [
+                      {
+                        c: 2,
+                        r: 1,
+                      },
+                      {
+                        c: 2,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 2,
+                        r: 1,
+                      },
+                    ],
+                  },
+                ]
+              : [
+                  {
+                    cols: 5,
+                    points: [
+                      {
+                        c: 2,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                    ],
+                  },
+                  {
+                    cols: 5,
+                    points: [
+                      { c: 1, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 1, r: 2 },
+                      { c: 2, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 1, r: 1 },
+                    ],
+                  },
+
+                  {
+                    cols: 4,
+                    points: [
+                      {
+                        c: 2,
+                        r: 1,
+                      },
+                      {
+                        c: 2,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 2,
+                        r: 1,
+                      },
+                    ],
+                  },
+                ]
+          }
         >
           {childPosts}
         </GridListOrganiser>

@@ -344,20 +344,21 @@ export type Balance = {
 };
 
 export type BanCitiesInput = {
-  citiesIds: Scalars["ID"];
+  citiesIds: Array<Scalars["ID"]>;
 };
 
 export type BannedCity = {
   __typename?: "BannedCity";
-  bannedCity: BannedCountry;
-  bannedCountryId: Scalars["ID"];
+  bannedFor: Scalars["String"];
+  city: City;
+  cityId: Scalars["ID"];
   id: Scalars["ID"];
-  name: Scalars["String"];
 };
 
 export type BannedCountry = {
   __typename?: "BannedCountry";
   cities: Array<BannedCity>;
+  country: Country;
   id: Scalars["ID"];
   isoCode: Scalars["String"];
 };
@@ -596,6 +597,15 @@ export type ChatRoomMessagesArgs = {
   args: GqlPaginationInput;
 };
 
+export type City = {
+  __typename?: "City";
+  code: Scalars["String"];
+  country: Country;
+  countryId: Scalars["ID"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+};
+
 export type Comment = {
   __typename?: "Comment";
   attachment: Attachment;
@@ -704,6 +714,14 @@ export type CookiesSetting = {
   id: Scalars["ID"];
   required: Scalars["Boolean"];
   title: Scalars["String"];
+};
+
+export type Country = {
+  __typename?: "Country";
+  cities: Array<City>;
+  code: Scalars["String"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
 };
 
 export type CreateAccountInput = {
@@ -1290,6 +1308,7 @@ export type GetBannedCountriesAdminInput = {
   city?: Maybe<Scalars["String"]>;
   country?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
+  type: Scalars["String"];
 };
 
 export type GetBookingsHistoryAdminInput = {
@@ -1316,6 +1335,11 @@ export type GetBuyersAccountsInput = {
   pagination: GqlPaginationInput;
   status?: Maybe<AccountStatus>;
   visits?: Maybe<Scalars["Int"]>;
+};
+
+export type GetCititesInput = {
+  countryid: Scalars["ID"];
+  name: Scalars["String"];
 };
 
 export type GetCommunityPostsInput = {
@@ -3274,6 +3298,7 @@ export type Query = {
   MyWishlist: Wishlist;
   acceptAccountVerification: Scalars["Boolean"];
   adminGetAccount: Account;
+  adminGetBannedCountry: BannedCountry;
   adminGetBookings: Array<BookedService>;
   adminGetCurrencies: Array<Currency>;
   adminGetDesigns: Array<Design>;
@@ -3310,10 +3335,12 @@ export type Query = {
   getBookedServiceDetails: BookedService;
   getBookingHistory: Array<BookedService>;
   getChatRoom: ChatRoom;
+  getCitites: Array<City>;
   getCommunityPosts: Array<Community>;
   getConnectedAccounts: Scalars["Boolean"];
   getContentComments: Array<Comment>;
   getCookiesSettings: Array<CookiesSetting>;
+  getCountries: Array<Country>;
   getCurrencies: Array<Currency>;
   getCurrencyData: Currency;
   getDesignByPlacement: Array<Design>;
@@ -3452,6 +3479,10 @@ export type QueryAdminGetAccountArgs = {
   id: Scalars["String"];
 };
 
+export type QueryAdminGetBannedCountryArgs = {
+  id: Scalars["String"];
+};
+
 export type QueryAdminGetBookingsArgs = {
   args: AdminGetBookingsInput;
 };
@@ -3572,12 +3603,20 @@ export type QueryGetChatRoomArgs = {
   roomId: Scalars["String"];
 };
 
+export type QueryGetCititesArgs = {
+  args: GetCititesInput;
+};
+
 export type QueryGetCommunityPostsArgs = {
   args: GetCommunityPostsInput;
 };
 
 export type QueryGetContentCommentsArgs = {
   getContentCommentsArgs: GetContentCommentsInput;
+};
+
+export type QueryGetCountriesArgs = {
+  name: Scalars["String"];
 };
 
 export type QueryGetCurrencyDataArgs = {

@@ -25,11 +25,16 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
   function handleLinkClick(link: NavigationLinkType) {
     onLinkClick && onLinkClick(link);
   }
-  const { isMobile } = useResponsive();
+  const { isMobile, screenWidth } = useResponsive();
+
+  console.log({ screenWidth });
+
   return (
     <div
-      className={`${className} w-52 h-screen bg-primary flex z-20 fixed ${
-        isMobile ? "flex-row left-0 bottom-0 w-full" : "flex-col left-0  top-0"
+      className={`${className} bg-primary flex z-20 fixed ${
+        isMobile
+          ? "flex-row z-10 left-0 bottom-0 w-full"
+          : "flex-col left-0 w-52 h-screen top-0"
       } items-center flex py-3`}
       {...props}
     >
@@ -94,13 +99,18 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
           </div>
         )}
       </div>
-      <div className="absolute pb-11 bottom-0 bg-primary flex justify-center flex-col px-6 left-0 w-full">
-        <Divider className="my-10" />
-        <Button colorScheme="white" className="flex items-center gap-3 w-full">
-          <LogoutIcon className="text-icon text-black" />
-          <p className="font-bold text-black text-base">{t("Logout")}</p>
-        </Button>
-      </div>
+      {isMobile ? null : (
+        <div className="absolute pb-11 bottom-0 bg-primary flex justify-center flex-col px-6 left-0 w-full">
+          <Divider className="my-10" />
+          <Button
+            colorScheme="white"
+            className="flex items-center gap-3 w-full"
+          >
+            <LogoutIcon className="text-icon text-black" />
+            <p className="font-bold text-black text-base">{t("Logout")}</p>
+          </Button>
+        </div>
+      )}
     </div>
   );
 };

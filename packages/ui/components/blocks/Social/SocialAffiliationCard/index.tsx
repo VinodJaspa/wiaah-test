@@ -1,14 +1,10 @@
 import React from "react";
 import { HiDotsHorizontal, HiOutlineLink } from "react-icons/hi";
 import {
-  Affiliation,
-  AffiliationPost,
   Avatar,
   Button,
   Input,
   PriceDisplay,
-  ProductPresentation,
-  Profile,
   ServicePresentation,
   useDateDiff,
   useHandlePostSharing,
@@ -18,6 +14,12 @@ import { useTranslation } from "react-i18next";
 import { PostAttachmentsViewer, PostInteractionsProps } from "@UI";
 import { HtmlDivProps } from "types";
 import { useDimensions } from "hooks";
+import {
+  Affiliation,
+  AffiliationPost,
+  ProductPresentation,
+  Profile,
+} from "@features/API";
 
 export interface SocialAffiliationCardProps {
   post: Pick<
@@ -42,16 +44,18 @@ export interface SocialAffiliationCardProps {
       | "service"
       | "status"
     >;
-    profile: Pick<
-      Profile,
-      | "id"
-      | "username"
-      | "followers"
-      | "verified"
-      | "photo"
-      | "ownerId"
-      | "profession"
-    >;
+    user: {
+      profile: Pick<
+        Profile,
+        | "id"
+        | "username"
+        | "followers"
+        | "verified"
+        | "photo"
+        | "ownerId"
+        | "profession"
+      >;
+    };
   };
 
   showPostInteraction?: boolean;
@@ -122,11 +126,11 @@ export const SocialAffiliationCard: React.FC<SocialAffiliationCardProps> = ({
               <div className="flex items-center">
                 <Avatar
                   className="bg-black"
-                  src={post.profile.photo}
-                  name={post.profile.username}
+                  src={post?.user?.profile?.photo}
+                  name={post?.user?.profile?.username}
                 />
                 <div className="flex flex-col">
-                  <p>{post.profile.username}</p>
+                  <p>{post?.user?.profile?.username}</p>
                   <p>
                     {since.value} {since.timeUnit}
                   </p>

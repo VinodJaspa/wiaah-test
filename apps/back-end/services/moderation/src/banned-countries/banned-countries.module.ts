@@ -1,7 +1,10 @@
 import { Module } from '@nestjs/common';
-import { BannedCountriesResolver } from './banned-countries.resolver';
+import {
+  BannedCountriesResolver,
+  BannedCountryResolver,
+} from './banned-countries.resolver';
 
 @Module({
-  providers: [BannedCountriesResolver],
+  providers: [BannedCountriesResolver, BannedCountryResolver],
 })
 export class BannedCountriesModule {}

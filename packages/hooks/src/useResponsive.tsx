@@ -42,5 +42,6 @@ export const useResponsive = (cb?: () => any) => {
   return {
     isMobile,
     isTablet,
+    screenWidth,
   };
 };

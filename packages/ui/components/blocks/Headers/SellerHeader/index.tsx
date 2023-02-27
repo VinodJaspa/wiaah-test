@@ -71,15 +71,17 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
             onClick={() => setDrawerOpen(true)}
           />
         )}
-        <div className="flex items-center gap-4">
-          <WavingHand className="text-[2rem]" />
-          <div className="flex flex-col">
-            <p>
-              {t("Hello")} {user?.name}
-            </p>
-            <p className="font-bold text-lg">{t("Welcome Back")}</p>
+        {isMobile ? null : (
+          <div className="flex items-center gap-4">
+            <WavingHand className="text-[2rem]" />
+            <div className="flex flex-col">
+              <p>
+                {t("Hello")} {user?.name}
+              </p>
+              <p className="font-bold text-lg">{t("Welcome Back")}</p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       {!isMobile && (
         <div className="flex items-center gap-2">

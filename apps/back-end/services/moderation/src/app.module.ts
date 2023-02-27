@@ -15,6 +15,7 @@ import {
 } from '@nestjs/apollo';
 import { getUserFromRequest } from 'nest-utils';
 import { MaintenanceModule } from './maintenance/maintenance.module';
+import { CountryModule } from './country/country.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { MaintenanceModule } from './maintenance/maintenance.module';
     BannedCountriesModule,
     ProfessionModule,
     MaintenanceModule,
+    CountryModule,
   ],
 })
 export class AppModule {}

@@ -80,7 +80,7 @@ export const PostCard: React.FC<PostCardProps> = ({
   if (!postInfo || !profileInfo) return null;
 
   return (
-    <div className="relative group rounded-[1.25rem] overflow-hidden w-full h-full">
+    <div className="relative group rounded md:rounded-[1.25rem] overflow-hidden w-full h-full">
       <Image
         className="w-full h-full object-cover"
         src={
