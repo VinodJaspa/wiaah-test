@@ -1,5 +1,5 @@
 import { Field, InputType, PartialType } from '@nestjs/graphql';
-import { GqlPaginationInput } from 'nest-utils';
+import { accountType, GqlPaginationInput } from 'nest-utils';
 
 @InputType()
 export class GetBannedCountriesAdminFilters {
@@ -16,4 +16,7 @@ export class GetBannedCountriesAdminInput extends PartialType(
 ) {
   @Field(() => GqlPaginationInput)
   pagination: GqlPaginationInput;
+
+  @Field(() => String)
+  type: string;
 }

@@ -22,6 +22,7 @@ import {
   EditIcon,
   ArrowRoundBack,
   SaveIcon,
+  InputProps,
 } from "ui";
 import React from "react";
 import { mapArray, runIfFn } from "utils";
@@ -48,6 +49,7 @@ export const AdminListTable: React.FC<{
   edit?: boolean;
   headers: {
     props?: ThProps;
+    inputProps?: InputProps;
     value?: string;
     type?: AdminTableCellTypeEnum;
     actionBtns?: React.ReactNode[];
@@ -159,33 +161,36 @@ export const AdminListTable: React.FC<{
                     })}
                   </Tr>
                   <Tr>
-                    {mapArray(headers, ({ custom, props, type }) => {
-                      switch (type) {
-                        case AdminTableCellTypeEnum.text:
-                          return (
-                            <Th {...props}>
-                              <Input />
-                            </Th>
-                          );
-                        case AdminTableCellTypeEnum.number:
-                          return (
-                            <Th {...props}>
-                              <Input type="number" />
-                            </Th>
-                          );
+                    {mapArray(
+                      headers,
+                      ({ custom, props, type, inputProps }) => {
+                        switch (type) {
+                          case AdminTableCellTypeEnum.text:
+                            return (
+                              <Th {...props}>
+                                <Input {...inputProps} />
+                              </Th>
+                            );
+                          case AdminTableCellTypeEnum.number:
+                            return (
+                              <Th {...props}>
+                                <Input {...inputProps} type="number" />
+                              </Th>
+                            );
 
-                        case AdminTableCellTypeEnum.date:
-                          return (
-                            <Th>
-                              <DateFormInput />
-                            </Th>
-                          );
-                        case AdminTableCellTypeEnum.custom:
-                          return <Td {...props}>{runIfFn(custom)}</Td>;
-                        default:
-                          return <Th {...props} />;
+                          case AdminTableCellTypeEnum.date:
+                            return (
+                              <Th>
+                                <DateFormInput {...inputProps} />
+                              </Th>
+                            );
+                          case AdminTableCellTypeEnum.custom:
+                            return <Td {...props}>{runIfFn(custom)}</Td>;
+                          default:
+                            return <Th {...props} />;
+                        }
                       }
-                    })}
+                    )}
                   </Tr>
                 </THead>
                 <TBody>

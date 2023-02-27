@@ -29,7 +29,7 @@ export const TabsViewer: React.FC<TabsViewerProps> = ({
   return tabs.length > 0 ? (
     <Tabs {...props}>
       {showTabs && (
-        <TabsHeader className="justify-center py-[0px]">
+        <TabsHeader className="justify-center flex-wrap py-[0px]">
           {tabs.map(({ name }, i) => (
             <TabTitle key={i} TabKey={i}>
               {({ currentTabIdx }) => {

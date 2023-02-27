@@ -5,7 +5,14 @@ import {
   SocialAffiliationCardProps,
   ListWrapperProps,
   useAffiliationPostViewPopup,
+  NumberShortner,
+  PostAttachment,
+  GridWrapper,
+  GridListOrganiser,
+  useResponsive,
 } from "@UI";
+import { Text } from "@chakra-ui/react";
+import { AttachmentType } from "@features/API";
 
 export interface AffiliationOffersCardListWrapperProps {
   items: SocialAffiliationCardProps["post"][];
@@ -18,54 +25,231 @@ export const AffiliationOffersCardListWrapper: React.FC<
   AffiliationOffersCardListWrapperProps
 > = ({ items, cols = 3, wrapperProps, grid }) => {
   const { setCurrentPost } = useAffiliationPostViewPopup();
+  const { isMobile, isTablet } = useResponsive();
 
-  // if (grid) {
-  //   return (
-  //     <>
-  //       <GridWrapper
-  //         cols={cols}
-  //         itemProps={{ bgColor: "primary.main" }}
-  //         items={items.map((post, i) => ({
-  //           displayVariant: i === 1 ? "large" : i === 3 ? "portrait" : "normal",
-  //           component: (
-  //             <PostAttachment
-  //               multiply={post.attachments.length > 1}
-  //               style={{ onClick: () => setCurrentPost(post.id) }}
-  //               blur
-  //               minimal
-  //               controls={false}
-  //               key={i}
-  //               src={(post.attachments && post.attachments[0].src) || ""}
-  //               type={(post.attachments && post.attachments[0].type) || ""}
-  //               footer={
-  //                 post.views ? (
-  //                   <Text
-  //                     w="100%"
-  //                     px="1rem"
-  //                     textAlign={"start"}
-  //                     fontSize={"lg"}
-  //                     fontWeight="bold"
-  //                     color="white"
-  //                   >
-  //                     {NumberShortner(post.views)}
-  //                   </Text>
-  //                 ) : undefined
-  //               }
-  //             />
-  //           ),
-  //         }))}
-  //       />
-  //     </>
-  //   );
-  // } else {
-  return (
-    <ListWrapper {...wrapperProps} cols={cols}>
-      {items.map((offer, i) => (
-        <SocialAffiliationCard showComments key={i} post={offer} />
-      ))}
-    </ListWrapper>
-  );
-  // }
+  if (grid) {
+    return (
+      <>
+        <GridListOrganiser
+          rowSize={isMobile ? "6rem" : isTablet ? "10rem" : "14.5rem"}
+          presets={
+            isMobile
+              ? [
+                  {
+                    cols: 3,
+                    points: [
+                      {
+                        c: 2,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 2,
+                        r: 2,
+                      },
+                      {
+                        c: 2,
+                        r: 1,
+                      },
+                    ],
+                  },
+                  {
+                    cols: 3,
+                    points: [
+                      { c: 2, r: 2 },
+                      { c: 1, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 2, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 2, r: 1 },
+                      { c: 1, r: 1 },
+                    ],
+                  },
+
+                  {
+                    cols: 2,
+                    points: [
+                      {
+                        c: 2,
+                        r: 1,
+                      },
+                      {
+                        c: 2,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 2,
+                        r: 1,
+                      },
+                    ],
+                  },
+                ]
+              : [
+                  {
+                    cols: 5,
+                    points: [
+                      {
+                        c: 2,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                    ],
+                  },
+                  {
+                    cols: 5,
+                    points: [
+                      { c: 1, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 1, r: 2 },
+                      { c: 2, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 1, r: 1 },
+                    ],
+                  },
+
+                  {
+                    cols: 4,
+                    points: [
+                      {
+                        c: 2,
+                        r: 1,
+                      },
+                      {
+                        c: 2,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 2,
+                        r: 1,
+                      },
+                    ],
+                  },
+                ]
+          }
+        >
+          {items.map((post, i) => (
+            <>
+              test
+              <PostAttachment
+                multiply={
+                  (post.affiliation.product?.presentations.length || 0) > 1
+                }
+                style={{ onClick: () => setCurrentPost(post.id) }}
+                blur
+                minimal
+                controls={false}
+                key={i}
+                src={
+                  (post?.affiliation?.product?.presentations &&
+                    post.affiliation.product.presentations[0].src) ||
+                  ""
+                }
+                type={AttachmentType.Img}
+                footer={
+                  post.views ? (
+                    <Text
+                      w="100%"
+                      px="1rem"
+                      textAlign={"start"}
+                      fontSize={"lg"}
+                      fontWeight="bold"
+                      color="white"
+                    >
+                      {NumberShortner(post.views)}
+                    </Text>
+                  ) : undefined
+                }
+              />
+            </>
+          ))}
+        </GridListOrganiser>
+      </>
+    );
+  } else {
+    return (
+      <ListWrapper {...wrapperProps} cols={cols}>
+        {items.map((offer, i) => (
+          <SocialAffiliationCard showComments key={i} post={offer} />
+        ))}
+      </ListWrapper>
+    );
+  }
 };
 
 export default AffiliationOffersCardListWrapper;

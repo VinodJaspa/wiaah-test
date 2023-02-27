@@ -5,14 +5,11 @@ export class BannedCity {
   @Field(() => ID)
   id: string;
 
-  @Field(() => String)
-  name: string;
-
   @Field(() => ID)
-  bannedCountryId: string;
+  cityId: string;
 
-  @Field(() => BannedCountry)
-  bannedCity: BannedCity;
+  @Field(() => String)
+  bannedFor: string;
 }
 
 @ObjectType()

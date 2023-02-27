@@ -1,10 +1,13 @@
 import { usePaginationControls } from "@blocks";
 import { AdminListTable, AdminTableCellTypeEnum } from "@components";
 import { Button, EditIcon } from "@partials";
+import { useAdminGetBannedCountriesQuery } from "@UI";
+import { accountType } from "nest-utils";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
+import { mapArray, useForm } from "utils";
 
 interface BannedCountry {
   id: string;
@@ -23,7 +26,16 @@ const BannedCountries: BannedCountry[] = [
 const bannedBuyers: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath } = useRouting();
-  const { controls } = usePaginationControls();
+
+  const { pagination, controls } = usePaginationControls();
+  const { form, inputProps } = useForm<
+    Parameters<typeof useAdminGetBannedCountriesQuery>[0]
+  >(
+    { pagination, type: accountType.SELLER },
+    { pagination, type: accountType.SELLER }
+  );
+  const { data } = useAdminGetBannedCountriesQuery(form);
+
   return (
     <section>
       <AdminListTable
@@ -35,10 +47,12 @@ const bannedBuyers: NextPage = () => {
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Country Name"),
+            inputProps: inputProps("country"),
           },
           {
             type: AdminTableCellTypeEnum.text,
             value: t("City Name"),
+            inputProps: inputProps("city"),
           },
           {
             props: { align: "right" },
@@ -46,19 +60,25 @@ const bannedBuyers: NextPage = () => {
             value: t("Action"),
           },
         ]}
-        onAdd={() => {}}
-        onDelete={() => {}}
-        data={BannedCountries.map(({ city, country, id }) => ({
+        onAdd={() =>
+          visit((r) =>
+            r.addPath(getCurrentPath()).addPath("form").addPath("new")
+          )
+        }
+        data={mapArray(data, ({ cities, id, isoCode, country }) => ({
           id,
           cols: [
             {
               type: AdminTableCellTypeEnum.checkbox,
             },
             {
-              value: country,
+              value: country.name,
             },
             {
-              value: city,
+              value: cities
+                .map((v) => v?.city?.name)
+                .filter((e) => !!e)
+                .join(", "),
             },
             {
               props: { align: "right" },

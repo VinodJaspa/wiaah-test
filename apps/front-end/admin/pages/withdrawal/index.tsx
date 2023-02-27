@@ -1,4 +1,4 @@
-import { AdminListTable, AdminTableCellTypeEnum } from "@components";
+import { AdminListTable, AdminTableCellTypeEnum } from "../../components";
 import {
   Badge,
   Button,
@@ -12,7 +12,7 @@ import {
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { mapArray, useForm } from "utils";
+import { mapArray, setTestid, useForm } from "utils";
 import { startCase } from "lodash";
 import { ImCheckmark } from "react-icons/im";
 import { WithdrawalStatus } from "@features/API";
@@ -32,6 +32,7 @@ const withdrawal: NextPage = () => {
   return (
     <section>
       <AdminListTable
+        {...setTestid("withdrawal-table")}
         title={t("Withdrawals List")}
         props={{ TrProps: { className: "border-b border-b-gray-300" } }}
         data={mapArray(
@@ -84,11 +85,11 @@ const withdrawal: NextPage = () => {
               },
               {
                 type: AdminTableCellTypeEnum.action,
-
                 actionBtns:
                   status === "pending"
                     ? [
                         <Button
+                          {...setTestid("withdrawal-accept-btn")}
                           onClick={() => mutate(id)}
                           center
                           className="w-8 h-8"

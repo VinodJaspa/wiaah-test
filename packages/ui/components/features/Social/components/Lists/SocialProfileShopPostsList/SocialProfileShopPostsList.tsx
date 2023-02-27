@@ -1,8 +1,5 @@
 import { FilterModal, GridListOrganiser, usePaginationControls } from "@blocks";
-import {
-  ProfileVisibility,
-  useGetProfileShopPosts,
-} from "@features/Social/services";
+import { useGetProfileShopPosts } from "@features/Social/services";
 import {
   Menu,
   MenuButton,
@@ -12,11 +9,10 @@ import {
 } from "@partials";
 import React from "react";
 import { SocialShopPostcard } from "@features/Social/components/Cards";
-import { useRouting } from "routing";
 import { FaChevronDown } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import { AccountType } from "@features/Accounts";
 import { useTypedReactPubsub } from "@libs";
+import { useResponsive } from "@UI/../hooks";
 
 export const SocialProfileShopPostsList: React.FC<{
   userId: string;
@@ -27,11 +23,12 @@ export const SocialProfileShopPostsList: React.FC<{
     authorId: userId,
   });
   const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
-  const { visit } = useRouting();
   const { t } = useTranslation();
   const { emit } = useTypedReactPubsub(
     (events) => events.openSocialShopPostsFilterDrawer
   );
+
+  const { isMobile, isTablet } = useResponsive();
 
   return (
     <ScrollPaginationWrapper controls={controls}>
@@ -64,126 +61,191 @@ export const SocialProfileShopPostsList: React.FC<{
         <FilterModal />
 
         <GridListOrganiser
-          rowSize="14.5rem"
-          presets={[
-            {
-              cols: 5,
-              points: [
-                {
-                  c: 2,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-              ],
-            },
-            {
-              cols: 5,
-              points: [
-                { c: 1, r: 1 },
-                { c: 1, r: 1 },
-                { c: 1, r: 1 },
-                { c: 1, r: 1 },
-                { c: 1, r: 2 },
-                { c: 2, r: 1 },
-                { c: 1, r: 1 },
-                { c: 1, r: 1 },
-              ],
-            },
+          rowSize={isMobile ? "6rem" : isTablet ? "10rem" : "14.5rem"}
+          presets={
+            isMobile
+              ? [
+                  {
+                    cols: 3,
+                    points: [
+                      {
+                        c: 2,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 2,
+                        r: 2,
+                      },
+                      {
+                        c: 2,
+                        r: 1,
+                      },
+                    ],
+                  },
+                  {
+                    cols: 3,
+                    points: [
+                      { c: 2, r: 2 },
+                      { c: 1, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 2, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 2, r: 1 },
+                      { c: 1, r: 1 },
+                    ],
+                  },
 
-            {
-              cols: 4,
-              points: [
-                {
-                  c: 2,
-                  r: 1,
-                },
-                {
-                  c: 2,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 2,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 1,
-                  r: 1,
-                },
-                {
-                  c: 2,
-                  r: 1,
-                },
-              ],
-            },
-          ]}
+                  {
+                    cols: 2,
+                    points: [
+                      {
+                        c: 2,
+                        r: 1,
+                      },
+                      {
+                        c: 2,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 2,
+                        r: 1,
+                      },
+                    ],
+                  },
+                ]
+              : [
+                  {
+                    cols: 5,
+                    points: [
+                      {
+                        c: 2,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                    ],
+                  },
+                  {
+                    cols: 5,
+                    points: [
+                      { c: 1, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 1, r: 2 },
+                      { c: 2, r: 1 },
+                      { c: 1, r: 1 },
+                      { c: 1, r: 1 },
+                    ],
+                  },
+
+                  {
+                    cols: 4,
+                    points: [
+                      {
+                        c: 2,
+                        r: 1,
+                      },
+                      {
+                        c: 2,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 2,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 1,
+                        r: 1,
+                      },
+                      {
+                        c: 2,
+                        r: 1,
+                      },
+                    ],
+                  },
+                ]
+          }
         >
           {items?.map((shop, i) => (
             <SocialShopPostcard
-              onCardClick={() =>
-                visit((routes) => routes.addQuery({ shopPostId: shop.id }))
-              }
-              showComments
               key={i}
               postInfo={{
                 createdAt: new Date().toString(),
                 id: shop.id,
-                numberOfComments: shop.comments,
-                numberOfLikes: shop.reactionNum,
-                numberOfShares: shop.shares,
-                tags: shop.product.hashtags,
-                attachments: shop.product.presentations,
-                comments: [],
-                content: "",
-                views: shop.views,
+                comments: shop.comments,
+                reactionNum: shop.reactionNum,
+                shares: shop.shares,
+                product: shop.product,
+                userId: shop.user?.id,
               }}
-              cashback={5}
-              price={150}
-              discount={10}
-              profileInfo={{
-                id: shop.user?.profile?.id || "",
-                name: shop.user?.profile?.username || "",
-                accountType: shop.user?.type || AccountType.Buyer,
-                profession: shop.user?.profile?.profession || "",
-                public:
-                  shop.user?.profile?.visibility === ProfileVisibility.Public,
-                thumbnail: shop.user?.profile?.photo || "",
-                verifed: shop.user?.profile?.verified,
-              }}
+              profileInfo={shop.user?.profile!}
             />
           )) || null}
         </GridListOrganiser>

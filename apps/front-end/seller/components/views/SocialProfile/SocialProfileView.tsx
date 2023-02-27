@@ -35,7 +35,6 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
     isLoading,
     isError,
   } = useGetSocialProfileQuery(profileId);
-  const { isMobile } = useResponsive();
   const cols = useBreakpointValue({ base: 3 });
 
   if (!profileInfo) return null;
@@ -48,7 +47,9 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
           <HomeIcon />
         </HStack>
       ),
-      component: <SocialProfileNewsfeedPosts userId={profileInfo?.ownerId} />,
+      component: (
+        <SocialProfileNewsfeedPosts grid userId={profileInfo?.ownerId} />
+      ),
     },
     {
       name: (
@@ -128,7 +129,7 @@ export const SocialView: React.FC<SocialViewProps> = ({ profileId }) => {
                     tabs={
                       profileInfo?.user?.type === "seller"
                         ? sellerTabs
-                        : buyerTabs
+                        : sellerTabs
                     }
                   />
                   <Divider className="my-4" />

@@ -82,8 +82,8 @@ export type UserInterest = {
 export type Event = {
   id: string
   key: string
-  causedById: string
-  causedToId: string | null
+  causedById: string | null
+  causedToId: string
 }
 
 
@@ -4800,8 +4800,8 @@ export namespace Prisma {
   export type EventGroupByOutputType = {
     id: string
     key: string
-    causedById: string
-    causedToId: string | null
+    causedById: string | null
+    causedToId: string
     _count: EventCountAggregateOutputType | null
     _min: EventMinAggregateOutputType | null
     _max: EventMaxAggregateOutputType | null
@@ -5833,8 +5833,8 @@ export namespace Prisma {
     NOT?: Enumerable<EventWhereInput>
     id?: StringFilter | string
     key?: StringFilter | string
-    causedById?: StringFilter | string
-    causedToId?: StringNullableFilter | string | null
+    causedById?: StringNullableFilter | string | null
+    causedToId?: StringFilter | string
   }
 
   export type EventOrderByWithRelationInput = {
@@ -5864,8 +5864,8 @@ export namespace Prisma {
     NOT?: Enumerable<EventScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
     key?: StringWithAggregatesFilter | string
-    causedById?: StringWithAggregatesFilter | string
-    causedToId?: StringNullableWithAggregatesFilter | string | null
+    causedById?: StringNullableWithAggregatesFilter | string | null
+    causedToId?: StringWithAggregatesFilter | string
   }
 
   export type UserActivityStatsCreateInput = {
@@ -6121,46 +6121,46 @@ export namespace Prisma {
   export type EventCreateInput = {
     id?: string
     key: string
-    causedById: string
-    causedToId?: string | null
+    causedById?: string | null
+    causedToId: string
   }
 
   export type EventUncheckedCreateInput = {
     id?: string
     key: string
-    causedById: string
-    causedToId?: string | null
+    causedById?: string | null
+    causedToId: string
   }
 
   export type EventUpdateInput = {
     key?: StringFieldUpdateOperationsInput | string
-    causedById?: StringFieldUpdateOperationsInput | string
-    causedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    causedById?: NullableStringFieldUpdateOperationsInput | string | null
+    causedToId?: StringFieldUpdateOperationsInput | string
   }
 
   export type EventUncheckedUpdateInput = {
     key?: StringFieldUpdateOperationsInput | string
-    causedById?: StringFieldUpdateOperationsInput | string
-    causedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    causedById?: NullableStringFieldUpdateOperationsInput | string | null
+    causedToId?: StringFieldUpdateOperationsInput | string
   }
 
   export type EventCreateManyInput = {
     id?: string
     key: string
-    causedById: string
-    causedToId?: string | null
+    causedById?: string | null
+    causedToId: string
   }
 
   export type EventUpdateManyMutationInput = {
     key?: StringFieldUpdateOperationsInput | string
-    causedById?: StringFieldUpdateOperationsInput | string
-    causedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    causedById?: NullableStringFieldUpdateOperationsInput | string | null
+    causedToId?: StringFieldUpdateOperationsInput | string
   }
 
   export type EventUncheckedUpdateManyInput = {
     key?: StringFieldUpdateOperationsInput | string
-    causedById?: StringFieldUpdateOperationsInput | string
-    causedToId?: NullableStringFieldUpdateOperationsInput | string | null
+    causedById?: NullableStringFieldUpdateOperationsInput | string | null
+    causedToId?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter = {

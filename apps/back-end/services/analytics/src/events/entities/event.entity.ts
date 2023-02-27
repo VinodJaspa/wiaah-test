@@ -1,7 +1,16 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 
 @ObjectType()
 export class Event {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field(() => ID)
+  id: string;
+
+  @Field(() => String)
+  key: string;
+
+  @Field(() => String)
+  causedById: string;
+
+  @Field(() => String, { nullable: true })
+  causedToId?: string;
 }
