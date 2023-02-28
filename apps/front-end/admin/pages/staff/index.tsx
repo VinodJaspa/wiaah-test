@@ -1,54 +1,40 @@
-import { AdminListTable, AdminTableCellTypeEnum } from "@components";
+import { AdminListTable, AdminTableCellTypeEnum } from "../../components";
 import {
   Badge,
   Button,
   PlusIcon,
   Select,
   SelectOption,
+  uesAdminGetStaffAccountsQuery,
   usePaginationControls,
 } from "ui";
 import { NextPage } from "next";
-import { getRandomImage } from "placeholder";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { randomNum } from "utils";
+import { mapArray, randomNum, useForm } from "utils";
 import { startCase } from "lodash";
 import { useDateDiff } from "hooks";
 import { useRouting } from "routing";
-
-interface Staff {
-  id: string;
-  name: string;
-  thumbnail: string;
-  role: string;
-  email: string;
-  status: string;
-  lastActivity: string;
-}
-
-const users: Staff[] = [...Array(10)].map((_, i) => ({
-  email: `testemail${i}@email.com`,
-  lastActivity: new Date(
-    new Date().setDate(new Date().getDate() - randomNum(10))
-  ).toDateString(),
-  name: `user-${i}`,
-  role: randomNum(100) > 50 ? "admin" : "moderator",
-  thumbnail: "/wiaah_logo.png",
-  id: i.toString(),
-  status: randomNum(100) > 50 ? "active" : "inActive",
-}));
+import { AccountStatus, StaffAccountType } from "@features/API";
 
 const Staff: NextPage = () => {
   const { t } = useTranslation();
-  const { controls } = usePaginationControls();
+  const { controls, pagination } = usePaginationControls();
   const { visit, getCurrentPath } = useRouting();
+
+  const { form, inputProps, selectProps, dateInputProps } = useForm<
+    Parameters<typeof uesAdminGetStaffAccountsQuery>[0]
+  >({ pagination }, { pagination });
+  const { data } = uesAdminGetStaffAccountsQuery(form);
 
   return (
     <section>
       <div className="flex justify-end">
         <Button
           onClick={() =>
-            visit((r) => r.addPath(getCurrentPath()).addPath("form"))
+            visit((r) =>
+              r.addPath(getCurrentPath()).addPath("form").addPath("new")
+            )
           }
           className="flex gap-2 items-center"
         >
@@ -68,18 +54,22 @@ const Staff: NextPage = () => {
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Name"),
+            inputProps: inputProps("name"),
           },
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Email"),
+            inputProps: inputProps("email"),
           },
           {
             type: AdminTableCellTypeEnum.custom,
             value: t("Role"),
             custom: (
-              <Select>
-                <SelectOption value={"admin"}>{t("Admin")}</SelectOption>
-                <SelectOption value={"moderator"}>
+              <Select {...selectProps("role")}>
+                <SelectOption value={StaffAccountType.Admin}>
+                  {t("Admin")}
+                </SelectOption>
+                <SelectOption value={StaffAccountType.Moderator}>
                   {t("Moderator")}
                 </SelectOption>
               </Select>
@@ -88,14 +78,34 @@ const Staff: NextPage = () => {
           {
             type: AdminTableCellTypeEnum.custom,
             value: t("Status"),
+            custom: (
+              <Select {...selectProps("status")}>
+                {Object.values(AccountStatus).map((v, i) => (
+                  <SelectOption key={i} value={v}>
+                    {v}
+                  </SelectOption>
+                ))}
+              </Select>
+            ),
           },
           {
-            type: AdminTableCellTypeEnum.custom,
+            type: AdminTableCellTypeEnum.date,
             value: t("Last Activity"),
+            inputProps: dateInputProps("lastActivity"),
           },
         ]}
-        data={users.map(
-          ({ email, id, lastActivity, name, role, thumbnail, status }) => ({
+        data={mapArray(
+          data,
+          ({
+            email,
+            id,
+            status,
+            firstName,
+            lastActiveAt,
+            lastName,
+            type,
+            photo,
+          }) => ({
             id,
             cols: [
               {
@@ -103,23 +113,23 @@ const Staff: NextPage = () => {
               },
               {
                 type: AdminTableCellTypeEnum.avatar,
-                value: thumbnail,
+                value: photo,
               },
               {
-                value: name,
+                value: `${firstName} ${lastName}`,
               },
               {
                 value: email,
               },
               {
-                value: startCase(role),
+                value: startCase(type),
               },
               {
                 type: AdminTableCellTypeEnum.custom,
                 custom: (
                   <Badge
                     className="flex justify-center"
-                    cases={{ off: "inActive" }}
+                    cases={{ off: AccountStatus.InActive }}
                     value={status}
                   >
                     {status}
@@ -130,7 +140,7 @@ const Staff: NextPage = () => {
                 value: (() => {
                   const { timeUnit, value } = useDateDiff({
                     from: new Date(),
-                    to: new Date(lastActivity),
+                    to: new Date(lastActiveAt),
                   }).getSince();
 
                   return `${value} ${timeUnit}`;

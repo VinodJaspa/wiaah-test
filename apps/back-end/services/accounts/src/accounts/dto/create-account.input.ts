@@ -1,5 +1,12 @@
-import { InputType, Field, registerEnumType } from '@nestjs/graphql';
+import {
+  InputType,
+  Field,
+  registerEnumType,
+  PartialType,
+  ID,
+} from '@nestjs/graphql';
 import { AccountType } from '@prisma-client';
+import { StaffAccountType } from './admin-get-staff-accounts.input';
 
 enum RegisterAccountType {
   seller = 'seller',
@@ -27,6 +34,37 @@ export class CreateAccountInput {
 
   @Field(() => RegisterAccountType)
   accountType: RegisterAccountType;
+}
+
+@InputType()
+export class AdminCreateAdminAccountInput {
+  @Field(() => String)
+  firstName: string;
+
+  @Field(() => String)
+  lastName: string;
+
+  @Field(() => String)
+  email: string;
+
+  @Field(() => String)
+  password: string;
+
+  @Field(() => String)
+  confirmPassword: string;
+
+  @Field(() => String)
+  photo: string;
+
+  @Field(() => StaffAccountType)
+  type: StaffAccountType;
+}
+@InputType()
+export class AdminUpdateAdminAccountInput extends PartialType(
+  AdminCreateAdminAccountInput,
+) {
+  @Field(() => ID)
+  id: string;
 }
 
 @InputType()

@@ -28,6 +28,7 @@ type Account {
   photo: String
   phone: String
   ips: [String!]!
+  lastActiveAt: String!
   shop: Shop!
   balance: Balance!
 }
@@ -39,6 +40,7 @@ scalar DateTime
 
 enum AccountType {
   admin
+  mod
   seller
   buyer
 }
@@ -135,6 +137,7 @@ type Query {
   adminGetAccount(id: String!): Account!
   getPendingSellers(args: GetAdminPendingSellersInput!): [Account!]!
   getAccountDeletionRequests(args: GetAccountDeletionRequestsInput!): [AccountDeletionRequest!]!
+  adminGetStaffAccounts(args: AdminGetStaffAccountsInput!): [Account!]!
 }
 
 input GetFilteredSellersAccountsInput {
@@ -187,6 +190,20 @@ input GetAccountDeletionRequestsInput {
   pagination: GqlPaginationInput!
 }
 
+input AdminGetStaffAccountsInput {
+  name: String
+  email: String
+  role: StaffAccountType
+  status: AccountStatus
+  lastActivity: String
+  pagination: GqlPaginationInput!
+}
+
+enum StaffAccountType {
+  admin
+  moderator
+}
+
 type Mutation {
   createRequiredAction(createRequiredActionInput: CreateRequiredActionInput!): RequiredAction!
   updateRequiredAction(updateRequiredActionInput: UpdateRequiredActionInput!): RequiredAction!
@@ -202,6 +219,8 @@ type Mutation {
   suspenseAccount(args: SuspenseAccountAdminInput!): Boolean!
   acceptAccountDeletionRequest(id: String!): Boolean!
   rejectAccountDeletionRequest(id: String!): Boolean!
+  adminCreateStaffAccount(args: AdminCreateAdminAccountInput!): Boolean!
+  adminUpdateStaffAccount(args: AdminUpdateAdminAccountInput!): Boolean!
   register(RegisterInput: CreateAccountInput!): String!
   requestAccountDeletion(args: DeleteAccountRequestInput!): Boolean!
   getMyAccount: Account!
@@ -274,6 +293,27 @@ input DeclineSellerAccountRequest {
 input SuspenseAccountAdminInput {
   userId: ID!
   rejectReason: String
+}
+
+input AdminCreateAdminAccountInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  confirmPassword: String!
+  photo: String!
+  type: StaffAccountType!
+}
+
+input AdminUpdateAdminAccountInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  confirmPassword: String
+  photo: String
+  type: StaffAccountType
+  id: ID!
 }
 
 input CreateAccountInput {

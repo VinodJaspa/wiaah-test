@@ -3,16 +3,22 @@ import { EventBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Prisma } from '@prisma-client';
 import {
+  AccountType,
   accountType,
   AddToDate,
   AuthorizationDecodedUser,
   ExtractPagination,
   GqlAuthorizationGuard,
   GqlCurrentUser,
-  GqlPaginationInput,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { AccountsService } from './accounts.service';
+import { AdminGetStaffAccountsInput } from './dto/admin-get-staff-accounts.input';
+import {
+  AdminCreateAdminAccountInput,
+  AdminUpdateAdminAccountInput,
+  CreateAccountInput,
+} from './dto/create-account.input';
 import { DeclineSellerAccountRequest } from './dto/declineSellerAccountRequest.input';
 import { GetAccountDeletionRequestsInput } from './dto/get-account-deletion-requests.input';
 import { GetAdminPendingSellersInput } from './dto/get-admin-pending-sellers.input';
@@ -287,5 +293,57 @@ export class AccountsAdminResolver {
       console.log({ error });
       return false;
     }
+  }
+
+  @Query(() => [Account])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN, accountType.MOD]))
+  async adminGetStaffAccounts(
+    @Args('args') args: AdminGetStaffAccountsInput,
+  ): Promise<Account[]> {
+    const { skip, take } = ExtractPagination(args.pagination);
+    const res = await this.prisma.account.findMany({
+      where: {
+        type: {
+          in: [accountType.ADMIN, accountType.MOD],
+        },
+      },
+      take,
+      skip,
+    });
+
+    return res;
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async adminCreateStaffAccount(
+    @Args('args') args: AdminCreateAdminAccountInput,
+  ): Promise<boolean> {
+    const res = await this.prisma.account.create({
+      data: {
+        ...args,
+        type: args.type as unknown as AccountType,
+      },
+    });
+
+    return true;
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async adminUpdateStaffAccount(
+    @Args('args') args: AdminUpdateAdminAccountInput,
+  ): Promise<boolean> {
+    await this.prisma.account.update({
+      where: {
+        id: args.id,
+      },
+      data: {
+        ...args,
+        type: args.type as unknown as AccountType,
+      },
+    });
+
+    return true;
   }
 }

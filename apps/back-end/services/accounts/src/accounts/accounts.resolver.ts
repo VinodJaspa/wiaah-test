@@ -19,7 +19,7 @@ import {
 import { AccountsService } from './accounts.service';
 import { CreateAccountInput, DeleteAccountRequestInput } from '@accounts/dto';
 import { UpdateAccountInput } from './dto/update-account.input';
-import { Account, Balance, Membership } from './entities';
+import { Account, Balance } from './entities';
 import { PrismaService } from 'prismaService';
 import { AccountDeletionRequestStatus } from '@prisma-client';
 import { EventBus } from '@nestjs/cqrs';

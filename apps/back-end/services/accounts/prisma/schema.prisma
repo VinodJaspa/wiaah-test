@@ -26,6 +26,7 @@ model Account {
   products                   Int?                     @default(0)
   sales                      Int?                     @default(0)
   online                     Boolean                  @default(false)
+  lastActiveAt               DateTime                 @default(now())
   type                       AccountType
   companyRegisterationNumber String?
   verified                   Boolean                  @default(false)
@@ -119,6 +120,7 @@ model UserCookiesSettings {
 
 enum AccountType {
   admin
+  mod
   seller
   buyer
 }

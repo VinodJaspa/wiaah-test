@@ -21,6 +21,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const router = useRouter();
 
+  const currRoute = router.asPath;
+
+  const showlayout = !currRoute.includes("auth");
+
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
@@ -48,10 +52,14 @@ function MyApp({ Component, pageProps }: AppProps) {
               >
                 <ReactSeoProvider TagWrapper={NextHead}>
                   <RecoilRoot>
-                    <DataInitializationWrapper accountType="seller">
-                      <AdminLayout>
+                    <DataInitializationWrapper>
+                      {showlayout ? (
+                        <AdminLayout>
+                          <Component {...pageProps} />
+                        </AdminLayout>
+                      ) : (
                         <Component {...pageProps} />
-                      </AdminLayout>
+                      )}
                     </DataInitializationWrapper>
                   </RecoilRoot>
                 </ReactSeoProvider>

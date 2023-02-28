@@ -1,27 +1,26 @@
 import { AdminListTable, AdminTableCellTypeEnum } from "@components";
-import { Button, EditIcon, usePaginationControls } from "ui";
+import {
+  Button,
+  EditIcon,
+  useAdminGetProfessionQuery,
+  usePaginationControls,
+} from "ui";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { randomNum } from "utils";
-
-interface Profession {
-  id: string;
-  name: string;
-  accounts: number;
-}
-
-const professions: Profession[] = [...Array(10)].map((_, i) => ({
-  id: i.toString(),
-  name: `profession-${i}`,
-  accounts: randomNum(150),
-}));
+import { mapArray, randomNum, useForm } from "utils";
 
 const profession: NextPage = () => {
   const { t } = useTranslation();
   const { visit, getCurrentPath } = useRouting();
-  const { controls } = usePaginationControls();
+  const { controls, pagination } = usePaginationControls();
+
+  const { form, inputProps } = useForm<
+    Parameters<typeof useAdminGetProfessionQuery>[0]
+  >({ pagination }, { pagination });
+  const { data } = useAdminGetProfessionQuery(form);
+
   return (
     <section>
       <AdminListTable
@@ -43,14 +42,14 @@ const profession: NextPage = () => {
             type: AdminTableCellTypeEnum.action,
           },
         ]}
-        data={professions.map(({ accounts, id, name }) => ({
+        data={mapArray(data, ({ id, title, usage }) => ({
           id,
           cols: [
             {
-              value: name,
+              value: title,
             },
             {
-              value: accounts.toString(),
+              value: usage.toString(),
             },
             {
               type: AdminTableCellTypeEnum.action,
