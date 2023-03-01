@@ -253,6 +253,12 @@ export type AdminGetStaffAccountsInput = {
   status?: Maybe<AccountStatus>;
 };
 
+export type AdminGetTaxRatesInput = {
+  name?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  rate?: Maybe<Scalars["Float"]>;
+};
+
 export type AdminSendMailToUsersInput = {
   message: Scalars["String"];
   subject: Scalars["String"];
@@ -1083,6 +1089,12 @@ export type CreateStoryInput = {
   servicePostId?: Maybe<Scalars["ID"]>;
   shopPostId?: Maybe<Scalars["ID"]>;
   tags?: Maybe<Array<PostTagInput>>;
+};
+
+export type CreateTaxRateInput = {
+  appliedOnCountryIds: Array<Scalars["String"]>;
+  percent: Scalars["Float"];
+  title: Scalars["String"];
 };
 
 export type CreateVehicleInput = {
@@ -2136,6 +2148,7 @@ export type Mutation = {
   adminDeleteProductReview: Scalars["Boolean"];
   adminDeleteService: Scalars["Boolean"];
   adminEditAccount: Account;
+  adminLogin: GqlStatusResponse;
   adminUpdateAffiliation: Scalars["Boolean"];
   adminUpdateProductReview: Scalars["Boolean"];
   adminUpdateStaffAccount: Scalars["Boolean"];
@@ -2182,6 +2195,7 @@ export type Mutation = {
   createShop: Shop;
   createSiteInformations: SiteInformation;
   createStory: Scalars["Boolean"];
+  createTaxRate: Scalars["Boolean"];
   createVehicle: VehicleService;
   createVoucher: Voucher;
   deActivateVoucher: Voucher;
@@ -2286,6 +2300,7 @@ export type Mutation = {
   updateShippingTypeRule: Scalars["Boolean"];
   updateSiteInformations: SiteInformation;
   updateSocialLinks: Scalars["Boolean"];
+  updateTaxRate: Scalars["Boolean"];
   updateTreatmentCategories: Array<BeautyCenterTreatmentCategory>;
   updateUserLocation: Scalars["Boolean"];
   updateVehicleAdmin: Scalars["Boolean"];
@@ -2387,6 +2402,10 @@ export type MutationAdminDeleteServiceArgs = {
 
 export type MutationAdminEditAccountArgs = {
   editAccountInput: UpdateSellerAccountAdminInput;
+};
+
+export type MutationAdminLoginArgs = {
+  args: LoginDto;
 };
 
 export type MutationAdminUpdateAffiliationArgs = {
@@ -2547,6 +2566,10 @@ export type MutationCreateSiteInformationsArgs = {
 
 export type MutationCreateStoryArgs = {
   createStoryInput: CreateStoryInput;
+};
+
+export type MutationCreateTaxRateArgs = {
+  args: CreateTaxRateInput;
 };
 
 export type MutationCreateVehicleArgs = {
@@ -2923,6 +2946,10 @@ export type MutationUpdateSiteInformationsArgs = {
 
 export type MutationUpdateSocialLinksArgs = {
   args: UpdateSiteSocialInput;
+};
+
+export type MutationUpdateTaxRateArgs = {
+  args: UpdateTaxRateInput;
 };
 
 export type MutationUpdateTreatmentCategoriesArgs = {
@@ -3360,6 +3387,8 @@ export type Query = {
   adminGetReturnedOrders: Array<ReturnedOrder>;
   adminGetSiteInformations: Array<SiteInformation>;
   adminGetStaffAccounts: Array<Account>;
+  adminGetTaxRate: TaxRate;
+  adminGetTaxRates: Array<TaxRate>;
   adminGetTransations: Array<Transaction>;
   canAccessRoom: Scalars["Boolean"];
   comments: Array<Comment>;
@@ -3583,6 +3612,14 @@ export type QueryAdminGetSiteInformationsArgs = {
 
 export type QueryAdminGetStaffAccountsArgs = {
   args: AdminGetStaffAccountsInput;
+};
+
+export type QueryAdminGetTaxRateArgs = {
+  id: Scalars["String"];
+};
+
+export type QueryAdminGetTaxRatesArgs = {
+  args: AdminGetTaxRatesInput;
 };
 
 export type QueryAdminGetTransationsArgs = {
@@ -4921,6 +4958,15 @@ export enum TargetGenders {
   Male = "male",
 }
 
+export type TaxRate = {
+  __typename?: "TaxRate";
+  appliedOnCountries: Array<Country>;
+  appliedOnCountryIds: Array<Scalars["String"]>;
+  id: Scalars["ID"];
+  percent: Scalars["Float"];
+  title: Scalars["String"];
+};
+
 export type TopHashtagNewsfeedPosts = {
   __typename?: "TopHashtagNewsfeedPosts";
   commented: NewsfeedPost;
@@ -5353,6 +5399,13 @@ export type UpdateSocialLink = {
   label: Scalars["String"];
   link: Scalars["String"];
   placements: Array<Scalars["String"]>;
+};
+
+export type UpdateTaxRateInput = {
+  appliedOnCountryIds?: Maybe<Array<Scalars["String"]>>;
+  id: Scalars["ID"];
+  percent?: Maybe<Scalars["Float"]>;
+  title?: Maybe<Scalars["String"]>;
 };
 
 export type UpdateTreatmentCategoriesInput = {

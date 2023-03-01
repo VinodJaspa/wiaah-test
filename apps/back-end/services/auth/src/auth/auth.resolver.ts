@@ -4,16 +4,19 @@ import {
   BadRequestException,
   Inject,
   InternalServerErrorException,
+  NotFoundException,
   OnModuleInit,
   UseGuards,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
+import * as bcrypt from 'bcrypt';
 import {
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,
   GqlStatusResponse,
+  KafkaMessageHandler,
   KAFKA_MESSAGES,
   SERVICES,
 } from 'nest-utils';
@@ -32,6 +35,10 @@ import { ResponseCodes } from './const';
 import { ValidateLoginSecurityFeaturesQuery } from './queries';
 import { AuthOtpRequestedEvent } from '@auth/events';
 import { ChangePasswordCommand, ValidateLoginOtpCommand } from './commands';
+import {
+  GetAdminAccountByEmailMessageReply,
+  GetAdminAccountByEmailMesssage,
+} from 'nest-dto';
 
 @Resolver((of) => Registeration)
 export class AuthResolver implements OnModuleInit {
@@ -181,6 +188,46 @@ export class AuthResolver implements OnModuleInit {
     } catch (error) {
       throw new Error(error);
     }
+  }
+
+  @Mutation(() => GqlStatusResponse)
+  async adminLogin(
+    @Args('args') args: LoginDto,
+    @Context() ctx: any,
+  ): Promise<GqlStatusResponse> {
+    const acc = await KafkaMessageHandler<
+      string,
+      GetAdminAccountByEmailMesssage,
+      GetAdminAccountByEmailMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.ACCOUNTS_MESSAGES.getAdminAccountByEmail,
+      new GetAdminAccountByEmailMesssage({ email: args.email }),
+    );
+    if (!acc) throw new NotFoundException('Account not found');
+
+    const compere = await bcrypt.compare(
+      args.password,
+      acc.results.data.password,
+    );
+
+    if (!compere) throw new BadRequestException('wrong password');
+
+    const { accountType, email, id } = acc.results.data;
+    const data = await this.authService.generateAccessToken(
+      id,
+      email,
+      accountType,
+    );
+
+    if (ctx && ctx.res && ctx.res.cookie) {
+      ctx.res.cookie(this.cookiesKey, data.access_token, { httpOnly: true });
+    }
+
+    return {
+      success: true,
+      code: ResponseCodes.TokenInjected,
+    };
   }
 
   @Query((type) => [Registeration])

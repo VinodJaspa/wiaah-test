@@ -14,20 +14,58 @@ import {
   TBody,
   Td,
   Tr,
+  useAdminCreateTaxRateMutation,
+  useAdminGetTaxRateQuery,
+  useAdminUpdateTaxRateMutation,
+  useGetCountriesQuery,
 } from "ui";
 import { useTranslation } from "react-i18next";
-import { countries, mapArray } from "utils";
+import { mapArray, useForm } from "utils";
 import { useRouting } from "routing";
-
-const _countries = countries.map((v) => ({ id: v.isoCode, name: v.name }));
 
 const EditVatRate: NextPage = () => {
   const { t } = useTranslation();
-  const { back } = useRouting();
+  const { back, getParam } = useRouting();
+
+  const id = getParam("id");
+  const { data: countries } = useGetCountriesQuery("");
+
+  const isNew = id === "new";
+
+  const { data } = useAdminGetTaxRateQuery(id, !isNew);
+
+  const {
+    form: updateForm,
+    inputProps: updateProps,
+    handleChange: updateChange,
+  } = useForm<Parameters<typeof update>[0]>(data, { id });
+  const {
+    form: createForm,
+    inputProps: createProps,
+    handleChange: createChange,
+  } = useForm<Parameters<typeof create>[0]>({
+    appliedOnCountryIds: [],
+    percent: 0,
+    title: "",
+  });
+
+  const { mutate: update } = useAdminUpdateTaxRateMutation();
+  const { mutate: create } = useAdminCreateTaxRateMutation();
+
+  const inputProps = isNew ? createProps : updateProps;
+
+  const form = isNew ? createForm : updateForm;
+
+  const handleChange = isNew ? createChange : updateChange;
+
   return (
     <section>
       <div className="w-full gap-2 flex justify-end py-4">
-        <Button center className="text-white fill-white w-8 h-8">
+        <Button
+          onClick={() => (isNew ? create(createForm) : update(updateForm))}
+          center
+          className="text-white fill-white w-8 h-8"
+        >
           <SaveIcon />
         </Button>
         <Button className="w-8 h-8" colorScheme="white" center>
@@ -54,7 +92,7 @@ const EditVatRate: NextPage = () => {
                   <p>{t("Tax Name")}</p>
                 </Td>
                 <Td>
-                  <Input />
+                  <Input {...inputProps("title")} />
                 </Td>
               </Tr>
               <Tr>
@@ -63,22 +101,7 @@ const EditVatRate: NextPage = () => {
                   <p>{t("Tax Rate")}</p>
                 </Td>
                 <Td>
-                  <Input />
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>
-                  <p>{t("Type")}</p>
-                </Td>
-                <Td>
-                  <Select>
-                    <SelectOption value={"fixed"}>
-                      {t("Fixed Amount")}
-                    </SelectOption>
-                    <SelectOption value={"percent"}>
-                      {t("Percent")}
-                    </SelectOption>
-                  </Select>
+                  <Input {...inputProps("percent")} />
                 </Td>
               </Tr>
               <Tr>
@@ -88,11 +111,36 @@ const EditVatRate: NextPage = () => {
                 <Td>
                   <div className="p-4 overflow-y-scroll thinScroll rounded h-64 bg-gray-200">
                     <div className="py-2">
-                      <Checkbox>{t("All")}</Checkbox>
+                      <Checkbox
+                        checked={countries.every((v) =>
+                          form.appliedOnCountryIds.includes(v.id)
+                        )}
+                        onChange={(e) =>
+                          handleChange(
+                            "appliedOnCountryIds",
+                            e.target.checked ? countries.map((v) => v.id) : []
+                          )
+                        }
+                      >
+                        {t("All")}
+                      </Checkbox>
                     </div>
-                    {mapArray(_countries, ({ id, name }) => (
-                      <div className="py-2">
-                        <Checkbox key={id}>{name}</Checkbox>
+                    {mapArray(countries, ({ id, name }, i) => (
+                      <div key={id + i} className="py-2">
+                        <Checkbox
+                          checked={form.appliedOnCountryIds.includes(id)}
+                          onChange={(e) =>
+                            handleChange(
+                              "appliedOnCountryIds",
+                              form.appliedOnCountryIds
+                                .filter((v) => v !== id)
+                                .concat(e.target.checked ? [id] : [])
+                            )
+                          }
+                          key={id}
+                        >
+                          {name}
+                        </Checkbox>
                       </div>
                     ))}
                   </div>

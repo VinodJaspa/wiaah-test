@@ -33,10 +33,12 @@ const profession: NextPage = () => {
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Name"),
+            inputProps: inputProps("name"),
           },
           {
             type: AdminTableCellTypeEnum.number,
             value: t("Accounts"),
+            inputProps: inputProps("accounts"),
           },
           {
             type: AdminTableCellTypeEnum.action,

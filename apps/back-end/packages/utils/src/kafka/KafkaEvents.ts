@@ -231,6 +231,7 @@ export const KAFKA_MESSAGES = {
     getUserShopId: "get.user.store.id",
     getAccountById: "get.account.by.id",
     hasStripeId: "user.has.stripe.id",
+    getAdminAccountByEmail: "account.admin.getby.email",
   },
   PRODUCTS_MESSAGES: {
     productReviewable: "is.product.reviewable",

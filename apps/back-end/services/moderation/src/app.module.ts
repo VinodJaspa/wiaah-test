@@ -16,6 +16,7 @@ import {
 import { getUserFromRequest } from 'nest-utils';
 import { MaintenanceModule } from './maintenance/maintenance.module';
 import { CountryModule } from './country/country.module';
+import { TaxRateModule } from './tax-rate/tax-rate.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { CountryModule } from './country/country.module';
     ProfessionModule,
     MaintenanceModule,
     CountryModule,
+    TaxRateModule,
   ],
 })
 export class AppModule {}

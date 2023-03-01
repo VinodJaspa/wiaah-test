@@ -16,7 +16,7 @@ import {
   KAFKA_EVENTS,
   KAFKA_MESSAGES,
 } from 'nest-utils';
-import { LoginDto, RegisterDto, VerifyEmailDto } from './dto';
+import { LoginDto, RegisterDto } from './dto';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { SERVICES } from 'nest-utils';
