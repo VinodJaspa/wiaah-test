@@ -946,6 +946,7 @@ export type CreateProductInput = {
   brand: Scalars["String"];
   cashback: CashBackInput;
   categoryId: Scalars["ID"];
+  condition: ProductCondition;
   description: StringTranslationField;
   discount: DiscountInput;
   presentations: Array<ProductPresentationInput>;
@@ -1615,6 +1616,10 @@ export type GetMyReviewsInput = {
 };
 
 export type GetMySavedPostsInput = {
+  pagination: GqlPaginationInput;
+};
+
+export type GetMyWithdrawalRequestsInput = {
   pagination: GqlPaginationInput;
 };
 
@@ -3187,6 +3192,7 @@ export type Product = {
   cashbackId?: Maybe<Scalars["String"]>;
   category?: Maybe<Category>;
   categoryId: Scalars["ID"];
+  condition: ProductCondition;
   createdAt: Scalars["String"];
   description: Scalars["String"];
   discount: Discount;
@@ -3235,6 +3241,12 @@ export type ProductAttributeInput = {
 export enum ProductCategoryStatus {
   Active = "active",
   InActive = "inActive",
+}
+
+export enum ProductCondition {
+  New = "new",
+  Recondition = "recondition",
+  Used = "used",
 }
 
 export type ProductFilterGroupValue = {
@@ -3475,6 +3487,7 @@ export type Query = {
   getMyStories: Array<Story>;
   getMyTransactions: Array<Transaction>;
   getMyVouchers: Array<Voucher>;
+  getMyWithdrawalRequests: Array<WithdrawalRequest>;
   getMyWorkingSchedule: WorkingSchedule;
   getNearShops: Array<Shop>;
   getNewletterSubscribers: Array<NewsletterSubscriber>;
@@ -3868,6 +3881,10 @@ export type QueryGetMyTransactionsArgs = {
 
 export type QueryGetMyVouchersArgs = {
   getMyVouchersInput?: Maybe<GetVouchersInput>;
+};
+
+export type QueryGetMyWithdrawalRequestsArgs = {
+  args: GetMyWithdrawalRequestsInput;
 };
 
 export type QueryGetNearShopsArgs = {
@@ -4984,6 +5001,7 @@ export type Transaction = {
   from: Scalars["String"];
   fromUser: Account;
   id: Scalars["ID"];
+  paymentType: Scalars["String"];
   status: TransactionStatus;
   toUser: Account;
   updatedAt: Scalars["DateTime"];
@@ -5229,6 +5247,7 @@ export type UpdateProductInput = {
   brand?: Maybe<Scalars["String"]>;
   cashback?: Maybe<CashBackInput>;
   categoryId?: Maybe<Scalars["ID"]>;
+  condition?: Maybe<ProductCondition>;
   description?: Maybe<StringTranslationField>;
   discount?: Maybe<DiscountInput>;
   id: Scalars["ID"];
@@ -5605,6 +5624,8 @@ export type WithdrawInput = {
 export type WithdrawalRequest = {
   __typename?: "WithdrawalRequest";
   amount: Scalars["Float"];
+  financialAccount: FinancialAccount;
+  financialAccountId: Scalars["String"];
   id: Scalars["ID"];
   processedAt: Scalars["String"];
   requestedAt: Scalars["String"];

@@ -11,6 +11,7 @@ import {
 import {
   CashbackType,
   PresentationType,
+  ProductCondition,
   ProductStatus,
   ProductUsageStatus,
   VisibilityEnum,
@@ -20,6 +21,7 @@ import { CreateGqlPaginatedResponse } from 'nest-utils';
 
 registerEnumType(VisibilityEnum, { name: 'VisibilityEnum' });
 registerEnumType(ProductUsageStatus, { name: 'ProductUsageStatus' });
+registerEnumType(ProductCondition, { name: 'ProductCondition' });
 
 @ObjectType()
 export class ProductPresentation {
@@ -176,6 +178,9 @@ export class Product {
 
   @Field(() => Float)
   earnings: number;
+
+  @Field(() => ProductCondition)
+  condition: ProductCondition;
 
   rateStarCount: number;
 }

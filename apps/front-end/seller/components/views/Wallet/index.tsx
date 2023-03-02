@@ -2,12 +2,14 @@ import { useRouter } from "next/router";
 import React from "react";
 import { SettingsSectionType } from "types";
 import {
+  PayoutSection,
   SectionsLayout,
   TransactionsHistorySection,
   VouchersSection,
 } from "ui";
 import { FaPercent } from "react-icons/fa";
 import { AiOutlineTransaction } from "react-icons/ai";
+import { GiPayMoney } from "react-icons/gi";
 
 export const WalletView: React.FC = () => {
   const baseRoute = "wallet";
@@ -43,5 +45,11 @@ const sections: SettingsSectionType[] = [
     panelIcon: FaPercent,
     panelUrl: "/vouchers",
     panelComponent: <VouchersSection />,
+  },
+  {
+    panelName: "payout",
+    panelIcon: GiPayMoney,
+    panelUrl: "/payout",
+    panelComponent: <PayoutSection />,
   },
 ];

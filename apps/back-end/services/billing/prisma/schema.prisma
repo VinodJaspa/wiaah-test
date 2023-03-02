@@ -12,12 +12,13 @@ datasource db {
 }
 
 model WithdrawalRequest {
-  id          String           @id @default(auto()) @map("_id") @db.ObjectId
-  userId      String
-  amount      Float
-  requestedAt DateTime         @default(now())
-  processedAt DateTime
-  status      WithdrawalStatus @default(pending)
+  id                 String           @id @default(auto()) @map("_id") @db.ObjectId
+  userId             String
+  amount             Float
+  requestedAt        DateTime         @default(now())
+  processedAt        DateTime
+  financialAccountId String
+  status             WithdrawalStatus @default(pending)
 }
 
 enum WithdrawalStatus {
@@ -49,6 +50,7 @@ model Transaction {
   status      TransactionStatus @default(pending)
   from        String            @db.ObjectId
   userId      String            @db.ObjectId
+  paymentType String
   description String
   amount      Float
   currency    String

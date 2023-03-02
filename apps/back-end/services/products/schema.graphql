@@ -117,6 +117,7 @@ type Product {
   createdAt: String!
   updatedAt: String!
   earnings: Float!
+  condition: ProductCondition!
   discount: Discount!
   cashback: Cashback!
   seller: Account!
@@ -138,6 +139,12 @@ enum ProductStatus {
 enum ProductUsageStatus {
   used
   new
+}
+
+enum ProductCondition {
+  new
+  used
+  recondition
 }
 
 type ProductFilterGroupValue {
@@ -422,6 +429,7 @@ input CreateProductInput {
   visibility: VisibilityEnum!
   status: ProductStatus
   vat: Float!
+  condition: ProductCondition!
 }
 
 input StringTranslationField {
@@ -466,6 +474,7 @@ input UpdateProductInput {
   visibility: VisibilityEnum
   status: ProductStatus
   vat: Float
+  condition: ProductCondition
   id: ID!
 }
 

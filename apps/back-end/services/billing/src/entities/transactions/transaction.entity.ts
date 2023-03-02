@@ -21,6 +21,9 @@ export class Transaction {
   @Field(() => String)
   description: string;
 
+  @Field(() => String)
+  paymentType: string;
+
   @Field((type) => TransactionStatus)
   status: TransactionStatus;
 

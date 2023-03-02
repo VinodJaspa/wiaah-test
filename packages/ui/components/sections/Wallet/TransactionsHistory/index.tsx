@@ -130,10 +130,10 @@ export const TransactionsHistorySection: React.FC<
                   id,
                   status,
                   userId,
-                  description,
                   fromUser,
                   toUser,
                   currency,
+                  paymentType,
                 },
                 idx
               ) => {
@@ -162,7 +162,7 @@ export const TransactionsHistorySection: React.FC<
                         {id}
                       </HStack>
                     </Td>
-                    <Td>{description}</Td>
+                    <Td>{paymentType}</Td>
                     <Td>
                       {recipient.slice(0, 4)}...
                       {recipient.slice(recipient.length - 4, recipient.length)}

@@ -59,6 +59,7 @@ export class TransactionsService {
         amount: input.amount,
         description: input.descirption || '',
         currency: input.currency,
+        paymentType: input.paymentType,
       },
     });
     try {

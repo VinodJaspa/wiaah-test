@@ -20,6 +20,7 @@ import {
   FormatCategoryFilters,
 } from "@UI";
 import { FileRes } from "utils";
+import { ProductCondition, ProductType } from "@features/API";
 
 export interface ProductGeneralDetailsProps {
   onChange?: (values: Record<string, any>) => any;
@@ -38,6 +39,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
   const [videos, setVideos] = React.useState<string[]>(values?.videos || []);
   const { data: categories } = useGetProductCategories();
   const { t } = useTranslation();
+
   return (
     <div className="w-full flex flex-col gap-4">
       <Formik initialValues={values as Record<string, any>} onSubmit={() => {}}>
@@ -53,7 +55,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                 formikSetField={setFieldValue}
                 formikValues={values}
                 name="name"
-                placeholder={t("name", "Name")}
+                placeholder={t("Name")}
               />
               <FormikTransalationInput
                 name="description"
@@ -92,23 +94,23 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
               </span>
 
               <Select
-                value={values["type_of_item"]}
+                value={values["condition"]}
                 placeholder={t("Select type of item")}
-                onOptionSelect={(v) => setFieldValue("type_of_item", v)}
+                onOptionSelect={(v) => setFieldValue("condition", v)}
               >
-                <SelectOption value={"used"}>{t("Used")}</SelectOption>
-                <SelectOption value={"new"}>{t("New")}</SelectOption>
+                {Object.values(ProductCondition).map((v) => (
+                  <SelectOption value={v}>{v}</SelectOption>
+                ))}
               </Select>
 
               <Select
-                value={values["product_type"]}
+                value={values["type"]}
                 placeholder={t("Select Prdouct Type")}
-                onOptionSelect={(v) => setFieldValue("product_type", v)}
+                onOptionSelect={(v) => setFieldValue("type", v)}
               >
-                <SelectOption value={"goods"}>{t("Goods")}</SelectOption>
-                <SelectOption value={"downloadable"}>
-                  {t("Downloadable Products")}
-                </SelectOption>
+                {Object.values(ProductType).map((v) => (
+                  <SelectOption value={v}>{v}</SelectOption>
+                ))}
               </Select>
 
               <FormikInput<InputProps>
@@ -128,7 +130,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
 
               <SubCategorySelect
                 onCateSelection={(category) => {
-                  if(category[-1]){
+                  if (category[-1]) {
                     setFieldValue("categoryId", category[-1].id);
                   }
                 }}
