@@ -7,15 +7,18 @@ import { mapArray } from "utils";
 import React from "react";
 
 export const AdminCommentsModal: React.FC<{
-  contentId: string;
-  contentType: ContentHostType;
+  contentId?: string;
+  contentType?: ContentHostType;
 }> = ({ contentId, contentType }) => {
   const { pagination, controls } = usePaginationControls();
-  const { data } = useAdminGetContentCommentsQuery({
-    contentId,
-    contentType,
-    pagination,
-  });
+  const { data } = useAdminGetContentCommentsQuery(
+    {
+      contentId,
+      contentType,
+      pagination,
+    } as any,
+    !!contentId && !!contentType
+  );
 
   return (
     <Modal isOpen={!!contentId && !!contentId} onClose={() => {}}>

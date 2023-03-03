@@ -42,11 +42,16 @@ export type AdminGetCommentsQuery = { __typename?: "Query" } & {
   >;
 };
 type args = AdminGetCommentsQueryVariables["args"];
-export const useAdminGetContentCommentsQuery = (args: args) =>
-  useQuery(["admin-get-content-comments", { args }], async () => {
-    const client = createGraphqlRequestClient();
+export const useAdminGetContentCommentsQuery = (
+  args: args,
+  enabled?: boolean
+) =>
+  useQuery(
+    ["admin-get-content-comments", { args }],
+    async () => {
+      const client = createGraphqlRequestClient();
 
-    client.setQuery(`
+      client.setQuery(`
 query adminGetComments($args:AdminGetContentCommentsInput!){
   adminGetContentComments(args:$args){
     id
@@ -73,11 +78,13 @@ query adminGetComments($args:AdminGetContentCommentsInput!){
 }
     `);
 
-    const res = await client
-      .setVariables<AdminGetCommentsQueryVariables>({
-        args,
-      })
-      .send<AdminGetCommentsQuery>();
+      const res = await client
+        .setVariables<AdminGetCommentsQueryVariables>({
+          args,
+        })
+        .send<AdminGetCommentsQuery>();
 
-    return res.data.adminGetContentComments;
-  });
+      return res.data.adminGetContentComments;
+    },
+    { enabled }
+  );

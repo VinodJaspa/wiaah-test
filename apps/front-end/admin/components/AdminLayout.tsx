@@ -8,7 +8,7 @@ export const AdminLayout: React.FC = ({ children }) => {
   const { getCurrentPath } = useRouting();
   return (
     <>
-      <AdminCommentsModal contentId="" contentType="" />
+      <AdminCommentsModal />
       <div className="w-full overflow-x-hidden min-h-[100vh] grid grid-cols-6">
         <AdminNavigationSidebar
           currentUrl={getCurrentPath()}
