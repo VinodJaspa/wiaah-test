@@ -45,7 +45,6 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
       <Formik initialValues={values as Record<string, any>} onSubmit={() => {}}>
         {({ values, setFieldValue }) => {
           onChange && onChange(values);
-
           return (
             <Form className="w-full flex flex-col gap-4">
               <span className="text-2xl font-semibold">

@@ -105,6 +105,7 @@ export const FormikTransalationInput: React.FC<
         ) : null}
         <Field
           as={as}
+          {...props}
           value={getTranslationStateValue(formikValues, name, lang)}
           onChange={(e: any) =>
             formikSetField &&

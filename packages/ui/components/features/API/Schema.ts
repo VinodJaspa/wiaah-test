@@ -177,6 +177,12 @@ export type AdminGetBookingsInput = {
   type?: Maybe<Scalars["String"]>;
 };
 
+export type AdminGetContentCommentsInput = {
+  contentId: Scalars["ID"];
+  contentType: ContentHostType;
+  pagination: GqlPaginationInput;
+};
+
 export type AdminGetCurrenciesInput = {
   code?: Maybe<Scalars["String"]>;
   enabled?: Maybe<Scalars["Boolean"]>;
@@ -3387,6 +3393,7 @@ export type Query = {
   adminGetAccount: Account;
   adminGetBannedCountry: BannedCountry;
   adminGetBookings: Array<BookedService>;
+  adminGetContentComments: Array<Comment>;
   adminGetCurrencies: Array<Currency>;
   adminGetDesigns: Array<Design>;
   adminGetFilteredProductReviews: Array<ProductReview>;
@@ -3403,7 +3410,6 @@ export type Query = {
   adminGetTaxRates: Array<TaxRate>;
   adminGetTransations: Array<Transaction>;
   canAccessRoom: Scalars["Boolean"];
-  comments: Array<Comment>;
   findAll: ProfilePaginatedResponse;
   getAccountDeletionRequests: Array<AccountDeletionRequest>;
   getAccountVerificationRequests: Array<AccountVerification>;
@@ -3577,6 +3583,10 @@ export type QueryAdminGetBannedCountryArgs = {
 
 export type QueryAdminGetBookingsArgs = {
   args: AdminGetBookingsInput;
+};
+
+export type QueryAdminGetContentCommentsArgs = {
+  args: AdminGetContentCommentsInput;
 };
 
 export type QueryAdminGetCurrenciesArgs = {
