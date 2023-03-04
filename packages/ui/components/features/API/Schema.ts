@@ -1784,13 +1784,14 @@ export type GetVouchersInput = {
 };
 
 export type GetWithdrawalRequestsAdminInput = {
+  accountType?: Maybe<WithdrawalAccountType>;
   amount?: Maybe<Scalars["Float"]>;
   email?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["ID"]>;
+  name?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
   processedAt?: Maybe<Scalars["String"]>;
   requestedAt?: Maybe<Scalars["String"]>;
-  seller?: Maybe<Scalars["String"]>;
   shop?: Maybe<Scalars["String"]>;
   status?: Maybe<WithdrawalStatus>;
 };
@@ -5669,6 +5670,11 @@ export type WithdrawInput = {
   currency: Scalars["String"];
   methodId: Scalars["String"];
 };
+
+export enum WithdrawalAccountType {
+  Buyer = "BUYER",
+  Seller = "SELLER",
+}
 
 export type WithdrawalRequest = {
   __typename?: "WithdrawalRequest";

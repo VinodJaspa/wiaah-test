@@ -15,16 +15,15 @@ import { useTranslation } from "react-i18next";
 import { mapArray, setTestid, useForm } from "utils";
 import { startCase } from "lodash";
 import { ImCheckmark } from "react-icons/im";
-import { WithdrawalStatus } from "@features/API";
+import { AccountType, WithdrawalStatus } from "@features/API";
 
 const withdrawal: NextPage = () => {
   const { t } = useTranslation();
 
   const { pagination, controls } = usePaginationControls();
-  const { form } = useForm<Parameters<typeof useAdminGetWithdrawalsQuery>[0]>(
-    { pagination },
-    { pagination }
-  );
+  const { form, selectProps, inputProps, dateInputProps } = useForm<
+    Parameters<typeof useAdminGetWithdrawalsQuery>[0]
+  >({ pagination }, { pagination });
   const { data: requests } = useAdminGetWithdrawalsQuery(form);
 
   const { mutate } = useAdminAcceptWithdrawalRequestMutation();
@@ -55,6 +54,10 @@ const withdrawal: NextPage = () => {
               {
                 type: AdminTableCellTypeEnum.text,
                 value: user?.shop?.name,
+              },
+              {
+                type: AdminTableCellTypeEnum.text,
+                value: user?.type,
               },
               {
                 type: AdminTableCellTypeEnum.text,
@@ -107,36 +110,57 @@ const withdrawal: NextPage = () => {
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Withdrawal ID"),
+            inputProps: inputProps("id"),
           },
           {
             type: AdminTableCellTypeEnum.date,
             value: t("Requested Date"),
+            inputProps: dateInputProps("requestedAt"),
           },
           {
             type: AdminTableCellTypeEnum.date,
             value: t("Processed Date"),
+            inputProps: dateInputProps("processedAt"),
           },
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Shop"),
+            inputProps: inputProps("shop"),
+          },
+          {
+            type: AdminTableCellTypeEnum.custom,
+            value: t("user type"),
+            custom: (
+              <Select {...selectProps("accountType")}>
+                <SelectOption value={AccountType.Seller}>
+                  {AccountType.Seller}
+                </SelectOption>
+                <SelectOption value={AccountType.Buyer}>
+                  {AccountType.Buyer}
+                </SelectOption>
+              </Select>
+            ),
           },
           {
             type: AdminTableCellTypeEnum.text,
-            value: t("Seller Name"),
+            value: t("user Name"),
+            inputProps: inputProps("name"),
           },
           {
             type: AdminTableCellTypeEnum.text,
             value: t("Email"),
+            inputProps: inputProps("email"),
           },
           {
             type: AdminTableCellTypeEnum.number,
             value: t("Amount"),
+            inputProps: inputProps("amount"),
           },
           {
             type: AdminTableCellTypeEnum.custom,
             value: t("Status"),
             custom: (
-              <Select>
+              <Select {...selectProps("status")}>
                 {mapArray(Object.values(WithdrawalStatus), (s, i) => (
                   <SelectOption value={s} key={i}>
                     {startCase(s)}

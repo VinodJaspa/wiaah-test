@@ -1,6 +1,20 @@
-import { Field, Float, ID, InputType, PartialType } from '@nestjs/graphql';
+import {
+  Field,
+  Float,
+  ID,
+  InputType,
+  PartialType,
+  registerEnumType,
+} from '@nestjs/graphql';
 import { WithdrawalStatus } from '@prisma-client';
-import { GqlPaginationInput } from 'nest-utils';
+import { accountType, GqlPaginationInput } from 'nest-utils';
+
+enum WithdrawAccountType {
+  SELLER = accountType.SELLER,
+  BUYER = accountType.BUYER,
+}
+
+registerEnumType(WithdrawAccountType, { name: 'WithdrawalAccountType' });
 
 @InputType()
 export class GetWithdrawalRequestsAdminFilters {
@@ -17,7 +31,7 @@ export class GetWithdrawalRequestsAdminFilters {
   shop: string;
 
   @Field(() => String)
-  seller: string;
+  name: string;
 
   @Field(() => String)
   email: string;
@@ -27,6 +41,9 @@ export class GetWithdrawalRequestsAdminFilters {
 
   @Field(() => WithdrawalStatus)
   status: WithdrawalStatus;
+
+  @Field(() => WithdrawAccountType)
+  accountType: WithdrawAccountType;
 }
 
 @InputType()
