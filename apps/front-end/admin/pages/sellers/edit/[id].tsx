@@ -105,6 +105,15 @@ const Edit = () => {
     historyTitle,
     "Social Info",
     "Sales",
+    "Wishlist",
+    "returns",
+    "PaymentMethods",
+    "AddressBook",
+    "Notifications",
+    "Newsletter",
+    "Blocklist",
+    "Privacy",
+    "Personalization and data",
   ];
 
   const name = "wiaah";
@@ -413,6 +422,10 @@ const Edit = () => {
               title={`${name} ${t("Sales")}`}
             />
           </div>
+          <div>
+            <Wishlist></Wishlist>
+          </div>
+          <div></div>
         </SimpleTabItemList>
       </SimpleTabs>
     </>
