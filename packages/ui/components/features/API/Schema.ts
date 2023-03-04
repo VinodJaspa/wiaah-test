@@ -1815,6 +1815,8 @@ export type GqlStatusResponse = {
 export type Hashtag = {
   __typename?: "Hashtag";
   createdAt: Scalars["DateTime"];
+  createdBy: Account;
+  createdById: Scalars["String"];
   id: Scalars["ID"];
   tag: Scalars["String"];
   updatedAt: Scalars["DateTime"];
