@@ -1311,6 +1311,10 @@ export type GetAccountDeletionRequestsInput = {
   username?: Maybe<Scalars["String"]>;
 };
 
+export type GetAddableHashtagsInput = {
+  pagination: GqlPaginationInput;
+};
+
 export type GetAdminFilteredNewsfeedPostsInput = {
   comments?: Maybe<Scalars["Int"]>;
   date?: Maybe<Scalars["String"]>;
@@ -1447,6 +1451,14 @@ export type GetFilteredCategory = {
   name?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
   sortOrder?: Maybe<Scalars["Int"]>;
+};
+
+export type GetFilteredHashtagsInput = {
+  createdAt?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  status?: Maybe<HashtagStatus>;
+  tag?: Maybe<Scalars["String"]>;
+  usage?: Maybe<Scalars["Int"]>;
 };
 
 export type GetFilteredNewsletterInput = {
@@ -1820,6 +1832,11 @@ export type HashtagProductPost = {
   shared?: Maybe<ProductPost>;
   viewed?: Maybe<ProductPost>;
 };
+
+export enum HashtagStatus {
+  Active = "active",
+  Suspended = "suspended",
+}
 
 export type HashtagTopAffiliationPost = {
   __typename?: "HashtagTopAffiliationPost";
@@ -2285,6 +2302,7 @@ export type Mutation = {
   updateCurrenciesRates: Array<Currency>;
   updateCurrency: Scalars["Boolean"];
   updateFilter: Filter;
+  updateHashtag: Hashtag;
   updateHealthCenter: HealthCenter;
   updateHealthCenterAdmin: Scalars["Boolean"];
   updateHotelAdmin: Scalars["Boolean"];
@@ -2855,6 +2873,10 @@ export type MutationUpdateFilterArgs = {
   updateFilterArgs: UpdateFilterInput;
 };
 
+export type MutationUpdateHashtagArgs = {
+  args: UpdateHashtagInput;
+};
+
 export type MutationUpdateHealthCenterArgs = {
   updateHealthCenterArgs: UpdateHealthCenterInput;
 };
@@ -3397,6 +3419,7 @@ export type Query = {
   adminGetCurrencies: Array<Currency>;
   adminGetDesigns: Array<Design>;
   adminGetFilteredProductReviews: Array<ProductReview>;
+  adminGetHashtag: Array<Hashtag>;
   adminGetLanguages: Array<Language>;
   adminGetMembershipSubscriptions: Array<MembershipSubscription>;
   adminGetMemberships: Array<Membership>;
@@ -3414,6 +3437,7 @@ export type Query = {
   getAccountDeletionRequests: Array<AccountDeletionRequest>;
   getAccountVerificationRequests: Array<AccountVerification>;
   getAction: Array<Action>;
+  getAddableHashtags: Hashtag;
   getAdminFilteredProducts: Array<Product>;
   getAdminFilteredStories: Array<Story>;
   getAdminProductsFilter: Filter;
@@ -3601,6 +3625,10 @@ export type QueryAdminGetFilteredProductReviewsArgs = {
   args: GetAdminFitleredProductReviewsInput;
 };
 
+export type QueryAdminGetHashtagArgs = {
+  args: GetFilteredHashtagsInput;
+};
+
 export type QueryAdminGetLanguagesArgs = {
   args: AdminGetLanguagesInput;
 };
@@ -3659,6 +3687,10 @@ export type QueryGetAccountDeletionRequestsArgs = {
 
 export type QueryGetActionArgs = {
   id: Scalars["String"];
+};
+
+export type QueryGetAddableHashtagsArgs = {
+  args: GetAddableHashtagsInput;
 };
 
 export type QueryGetAdminFilteredProductsArgs = {
@@ -5154,6 +5186,11 @@ export type UpdateFilterInput = {
   name?: Maybe<Array<StringTranslationField>>;
   sortOrder?: Maybe<Scalars["Int"]>;
   values?: Maybe<Array<ProductFilterGroupValueInput>>;
+};
+
+export type UpdateHashtagInput = {
+  status?: Maybe<HashtagStatus>;
+  tag: Scalars["String"];
 };
 
 export type UpdateHealthCenterInput = {

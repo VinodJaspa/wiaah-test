@@ -29,3 +29,4 @@ export * from "./staff-accounts";
 export * from "./profession";
 export * from "./Taxes";
 export * from "./auth";
+export * from "./hashtags";

@@ -12,9 +12,16 @@ datasource db {
 }
 
 model Hashtag {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  tag       String   @unique
-  usage     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  tag         String        @unique
+  usage       Int           @default(0)
+  status      HashtagStatus @default(active)
+  createdById String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+enum HashtagStatus {
+  suspended
+  active
 }
