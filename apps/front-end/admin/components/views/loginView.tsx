@@ -9,59 +9,58 @@ import {
   PersonIcon,
   LockIcon,
   AspectRatio,
+  useAdminLoginMutation,
 } from "ui";
 import { LogoIcon } from "ui/components/partials/icons/LogoIcon";
-import * as yup from "yup";
+import { useForm } from "utils";
 
 export const LoginView: React.FC = () => {
   const { t } = useTranslation();
+
+  const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>({
+    email: "",
+    password: "",
+  });
+  const { mutate } = useAdminLoginMutation();
+
   return (
     <div className="w-screen overflow-clip h-screen relative flex items-center justify-center bg-primary">
-      <Formik
-        validationSchema={yup.object({
-          username: yup.string().required(),
-          password: yup.string().required(),
-        })}
-        initialValues={{ username: "", password: "" }}
-        onSubmit={() => {}}
-      >
-        {() => (
-          <div className="flex flex-col w-[min(98%,20rem)] uppercase gap-8">
-            <LogoIcon className="text-[10rem] mb-4 text-white self-center" />
-            <div className="flex flex-col gap-4">
-              <InputGroup className="border py-1 rounded border-white text-white">
-                <InputLeftElement className="px-2">
-                  <PersonIcon />
-                </InputLeftElement>
-                <Input
-                  className="text-white placeholder-white bg-transparent"
-                  placeholder={t("username")}
-                />
-              </InputGroup>
-              <InputGroup className="border py-1 rounded border-white text-white">
-                <InputLeftElement className="px-2">
-                  <LockIcon />
-                </InputLeftElement>
-                <Input
-                  className="text-white placeholder-white bg-transparent"
-                  placeholder={t("password")}
-                />
-              </InputGroup>
-            </div>
-            <div className="flex flex-col uppercase gap-2 w-full">
-              <Button
-                className="bg-white py-2 rounded uppercase"
-                colorScheme="white"
-              >
-                {t("login")}
-              </Button>
-              <p className="text-white normal-case text-right">
-                {t("Forgot your password") + " ?"}
-              </p>
-            </div>
-          </div>
-        )}
-      </Formik>
+      <div className="flex flex-col w-[min(98%,20rem)] uppercase gap-8">
+        <LogoIcon className="text-[10rem] mb-4 text-white self-center" />
+        <div className="flex flex-col gap-4">
+          <InputGroup className="border py-1 rounded border-white text-white">
+            <InputLeftElement className="px-2">
+              <PersonIcon />
+            </InputLeftElement>
+            <Input
+              {...inputProps("email")}
+              className="text-white placeholder-white bg-transparent"
+              placeholder={t("email")}
+            />
+          </InputGroup>
+          <InputGroup className="border py-1 rounded border-white text-white">
+            <InputLeftElement className="px-2">
+              <LockIcon />
+            </InputLeftElement>
+            <Input
+              {...inputProps("password")}
+              className="text-white placeholder-white bg-transparent"
+              placeholder={t("password")}
+            />
+          </InputGroup>
+        </div>
+        <div className="flex flex-col uppercase gap-2 w-full">
+          <Button
+            className="bg-white py-2 rounded uppercase"
+            colorScheme="white"
+          >
+            {t("login")}
+          </Button>
+          <p className="text-white normal-case text-right">
+            {t("Forgot your password") + " ?"}
+          </p>
+        </div>
+      </div>
       <div className="w-[50%] text-white text-opacity-10 absolute bottom-0 left-0 -translate-x-1/2 translate-y-1/2">
         <AspectRatio ratio={1}>
           <svg

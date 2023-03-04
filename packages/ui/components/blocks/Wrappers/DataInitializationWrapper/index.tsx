@@ -1,5 +1,5 @@
 import React from "react";
-import { useUserData, useAccountType } from "hooks";
+import { useUserData } from "hooks";
 import { AccountType } from "types";
 export interface DataInitializationWrapper {
   accountType: AccountType;
@@ -7,10 +7,8 @@ export interface DataInitializationWrapper {
 
 export const DataInitializationWrapper: React.FC<DataInitializationWrapper> = ({
   children,
-  accountType = "seller",
 }) => {
   const { initUserData } = useUserData();
-  const { setAccountType } = useAccountType();
   React.useEffect(() => {
     initUserData({
       name: "Wiaah",
@@ -19,7 +17,6 @@ export const DataInitializationWrapper: React.FC<DataInitializationWrapper> = ({
       photoSrc: "/wiaah_logo.png",
       id: "123",
     });
-    setAccountType(accountType);
   }, []);
   return <>{children}</>;
 };

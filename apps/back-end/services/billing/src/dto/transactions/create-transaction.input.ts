@@ -15,5 +15,8 @@ export class CreateTransactionInput {
   descirption?: string;
 
   @Field(() => String)
+  paymentType: string;
+
+  @Field(() => String)
   currency: string;
 }

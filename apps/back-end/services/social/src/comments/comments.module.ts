@@ -6,10 +6,16 @@ import { ProfileModule } from '@profile-module';
 import { ContentManagementModule } from '@content-management';
 import { CqrsModule } from '@nestjs/cqrs';
 import { kafkaModule } from '@kafkaModule';
+import { CommentsAdminResolver } from './comments-admin.resolver';
 
 @Module({
   imports: [CqrsModule, ProfileModule, ContentManagementModule, kafkaModule],
-  providers: [CommentsResolver, CommentsService, PrismaService],
+  providers: [
+    CommentsResolver,
+    CommentsService,
+    PrismaService,
+    CommentsAdminResolver,
+  ],
   exports: [CommentsService],
 })
 export class CommentsModule {}

@@ -1,4 +1,3 @@
-import { AdminLayout } from "@components";
 import { GetServerSideProps, NextPage } from "next";
 
 export const getServerSideProps: GetServerSideProps = async () => {
@@ -10,7 +9,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
 };
 
 const index: NextPage = () => {
-  return <div>test</div>;
+  return null;
 };
 
 export default index;

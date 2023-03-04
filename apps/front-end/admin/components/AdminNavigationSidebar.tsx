@@ -14,7 +14,6 @@ import {
   PersonFillIcon,
   PercentIcon,
   NotAllowedIcon,
-  DownloadIcon,
   VerifiedIcon,
 } from "ui";
 import { FiActivity, FiSettings } from "react-icons/fi";
@@ -141,6 +140,13 @@ export const AdminNavigationSidebar: React.FC<{
           name: t("stories"),
           onClick() {},
           slug: "stories",
+          subLinks: [],
+        },
+        {
+          icon: <ArrowRightIcon />,
+          name: t("hashtags"),
+          onClick() {},
+          slug: "hashtags",
           subLinks: [],
         },
       ],

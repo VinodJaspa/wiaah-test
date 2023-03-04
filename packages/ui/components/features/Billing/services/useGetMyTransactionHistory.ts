@@ -26,6 +26,7 @@ export type GetMyTransactionsQuery = { __typename?: "Query" } & {
       | "updatedAt"
       | "userId"
       | "currency"
+      | "paymentType"
     > & {
         toUser: { __typename?: "Account" } & Pick<Account, "id"> & {
             profile?: Maybe<
@@ -62,6 +63,7 @@ query getMyTransactions(
     updatedAt
     userId
     currency
+    paymentType
     toUser{
       id
       profile {

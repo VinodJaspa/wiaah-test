@@ -59,4 +59,7 @@ export class Account {
 
   @Field(() => [String])
   ips: string[];
+
+  @Field(() => String)
+  lastActiveAt: Date;
 }

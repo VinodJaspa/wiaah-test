@@ -6,7 +6,6 @@ import { BsKey } from "react-icons/bs";
 import {
   Badge,
   DateFormInput,
-  getRandomImage,
   Image,
   Input,
   Pagination,
@@ -21,7 +20,7 @@ import {
   useAdminDeleteNewsfeedPostMutation,
   useGetAdminFilteredNewsfeedPosts,
 } from "ui";
-import { mapArray, NumberShortner, randomNum, useForm } from "utils";
+import { mapArray, NumberShortner, useForm } from "utils";
 
 const SocialPosts = () => {
   const { t } = useTranslation();

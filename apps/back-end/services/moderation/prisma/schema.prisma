@@ -138,3 +138,10 @@ type SocialLink {
   label     String
   placement String[]
 }
+
+model TaxRate {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  title               String
+  percent             Float
+  appliedOnCountryIds String[]
+}

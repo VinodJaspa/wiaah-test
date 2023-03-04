@@ -27,6 +27,9 @@ export class WithdrawalRequest {
   @Field(() => String)
   processedAt: string;
 
+  @Field(() => String)
+  financialAccountId: string;
+
   @Field(() => WithdrawalStatus)
   status: WithdrawalStatus;
 }

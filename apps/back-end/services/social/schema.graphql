@@ -459,9 +459,9 @@ type Query {
   getAdminProfile(id: String!): Profile!
   getProfileNewsfeedPosts(getUserNewsfeedPosts: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
   getFilteredNewsfeedPosts(args: GetAdminFilteredNewsfeedPostsInput!): [NewsfeedPost!]!
-  comments: [Comment!]!
   updateComment(updateCommentInput: UpdateCommentInput!): PaginationCommentsResponse!
   getContentComments(getContentCommentsArgs: GetContentCommentsInput!): [Comment!]!
+  adminGetContentComments(args: AdminGetContentCommentsInput!): [Comment!]!
   getAllShares: ContentSharePaginationResponse!
   getNewsfeedHashtagPosts(hashtagSearchInput: GetHashtagNewsfeedPostsInput!): NewsfeedHashtagSearch!
   getMySavedPosts(args: GetMySavedPostsInput!): UserSavedPostsGroup!
@@ -548,6 +548,12 @@ input GetContentCommentsInput {
   id: ID!
   cursor: String
   take: Int = 10
+}
+
+input AdminGetContentCommentsInput {
+  pagination: GqlPaginationInput!
+  contentId: ID!
+  contentType: ContentHostType!
 }
 
 input GetHashtagNewsfeedPostsInput {

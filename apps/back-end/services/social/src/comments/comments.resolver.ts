@@ -2,10 +2,16 @@ import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { CommentsService } from './comments.service';
 import { Comment, PaginationCommentsResponse } from '@entities';
 import { CreateCommentInput, UpdateCommentInput } from '@input';
-import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
+import {
+  accountType,
+  AuthorizationDecodedUser,
+  GqlAuthorizationGuard,
+  GqlCurrentUser,
+} from 'nest-utils';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetCommentsByContentId } from './queries';
 import { GetContentCommentsInput } from './dto';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Comment)
 export class CommentsResolver {
@@ -13,6 +19,7 @@ export class CommentsResolver {
     private readonly commentsService: CommentsService,
     private readonly queryBus: QueryBus,
   ) {}
+
   @Mutation(() => Comment)
   createComment(
     @Args('createCommentInput') createCommentInput: CreateCommentInput,
@@ -20,10 +27,7 @@ export class CommentsResolver {
   ) {
     return this.commentsService.createComment(createCommentInput, user.id);
   }
-  @Query(() => [Comment], { name: 'comments' })
-  findAll() {
-    return this.commentsService.findAll();
-  }
+
   @Query(() => PaginationCommentsResponse)
   @Mutation(() => Comment)
   updateComment(

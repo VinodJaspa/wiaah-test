@@ -16,8 +16,10 @@ type Hashtag {
   id: ID!
   tag: String!
   usage: Int!
+  createdById: String!
   createdAt: DateTime!
   updatedAt: DateTime!
+  createdBy: Account!
 }
 
 """
@@ -25,8 +27,14 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Account {
+  id: ID!
+}
+
 type Query {
   getTopHashtags(args: GetTopHashtagsInput!): [Hashtag!]!
+  getAddableHashtags(args: GetAddableHashtagsInput!): Hashtag!
+  adminGetHashtag(args: GetFilteredHashtagsInput!): [Hashtag!]!
 }
 
 input GetTopHashtagsInput {
@@ -37,4 +45,30 @@ input GetTopHashtagsInput {
 input GqlPaginationInput {
   page: Int!
   take: Int!
+}
+
+input GetAddableHashtagsInput {
+  pagination: GqlPaginationInput!
+}
+
+input GetFilteredHashtagsInput {
+  tag: String
+  usage: Int
+  status: HashtagStatus
+  createdAt: String
+  pagination: GqlPaginationInput!
+}
+
+enum HashtagStatus {
+  suspended
+  active
+}
+
+type Mutation {
+  updateHashtag(args: UpdateHashtagInput!): Hashtag!
+}
+
+input UpdateHashtagInput {
+  status: HashtagStatus
+  tag: String!
 }

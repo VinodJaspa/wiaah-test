@@ -11,6 +11,7 @@ import {
   CashbackType,
   PresentationType,
   ProdcutType,
+  ProductCondition,
   ProductStatus,
   VisibilityEnum,
 } from '@prisma-client';
@@ -111,4 +112,7 @@ export class CreateProductInput {
 
   @Field(() => Float)
   vat: number;
+
+  @Field(() => ProductCondition)
+  condition: ProductCondition;
 }

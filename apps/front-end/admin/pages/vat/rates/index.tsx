@@ -1,56 +1,47 @@
-import { Button, EditIcon, usePaginationControls } from "ui";
+import {
+  Button,
+  EditIcon,
+  useAdminGetTaxRatesQuery,
+  usePaginationControls,
+} from "ui";
 import { NextPage } from "next";
 import React from "react";
-import { randomNum } from "utils";
+import { mapArray, randomNum, useForm } from "utils";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { AdminListTable, AdminTableCellTypeEnum } from "@components";
 
-interface TaxRate {
-  name: string;
-  rate: number;
-  type: "fixed" | "percent";
-  zone: {
-    id: string;
-    name: string;
-  };
-  id: string;
-}
-
-const rates: TaxRate[] = [...Array(3)].map((_, i) => ({
-  id: i.toString(),
-  name: `tax name-${i}`,
-  rate: randomNum(30),
-  type: "fixed",
-  zone: {
-    id: i.toString(),
-    name: "UK VAT Zone",
-  },
-}));
-
 const taxRates: NextPage = () => {
   const { t } = useTranslation();
   const { getCurrentPath, visit } = useRouting();
-  const { controls } = usePaginationControls();
+  const { controls, pagination } = usePaginationControls();
+
+  const { form, inputProps } = useForm<
+    Parameters<typeof useAdminGetTaxRatesQuery>[0]
+  >({ pagination });
+  const { data } = useAdminGetTaxRatesQuery(form);
+
   return (
     <section>
       <AdminListTable
         pagination={controls}
         props={{ TdProps: { className: "border-b border-b-gray-300" } }}
-        onAdd={() => {}}
-        onDelete={() => {}}
+        onAdd={() => {
+          visit((r) =>
+            r.addPath(getCurrentPath()).addPath("form").addPath("new")
+          );
+        }}
         headers={[
           {
             type: AdminTableCellTypeEnum.checkbox,
           },
           {
             value: t("Tax Name"),
+            inputProps: inputProps("name"),
           },
           {
             value: t("Tax Rate"),
-          },
-          {
-            value: t("Type"),
+            inputProps: inputProps("rate"),
           },
           {
             value: t("Geo Zone"),
@@ -60,24 +51,21 @@ const taxRates: NextPage = () => {
           },
         ]}
         title={t("Tax Rate List")}
-        data={rates.map((v) => ({
+        data={mapArray(data, (v) => ({
           id: v.id,
           cols: [
             {
               type: AdminTableCellTypeEnum.checkbox,
             },
             {
-              value: v.name,
+              value: v.title,
             },
             {
-              value: v.rate.toString(),
+              value: v.percent.toString(),
               type: AdminTableCellTypeEnum.number,
             },
             {
-              value: v.type,
-            },
-            {
-              value: v.zone.name,
+              value: v.appliedOnCountries.map((v) => v.name).join(", "),
             },
             {
               type: AdminTableCellTypeEnum.action,

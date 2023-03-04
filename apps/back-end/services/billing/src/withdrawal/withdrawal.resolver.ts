@@ -9,12 +9,22 @@ import {
 import { WithdrawalRequest } from './entities/withdrawal.entity';
 import { PrismaService } from 'prismaService';
 import { UseGuards } from '@nestjs/common';
-import { accountType, GqlAuthorizationGuard } from 'nest-utils';
-import { GetWithdrawalRequestsAdminInput } from './dto';
+import {
+  accountType,
+  AuthorizationDecodedUser,
+  ExtractPagination,
+  GqlAuthorizationGuard,
+  GqlCurrentUser,
+} from 'nest-utils';
+import {
+  GetMyWithdrawalRequestsInput,
+  GetWithdrawalRequestsAdminInput,
+} from './dto';
 import { Prisma, WithdrawalStatus } from '@prisma-client';
 import { EventBus } from '@nestjs/cqrs';
 import { WithdrawalProcessedEvent } from './events';
 import { Account } from '@entities';
+import { FinancialAccount } from '../financial-account/entities';
 
 @Resolver(() => WithdrawalRequest)
 export class WithdrawalResolver {
@@ -22,6 +32,22 @@ export class WithdrawalResolver {
     private readonly prisma: PrismaService,
     private readonly eventbus: EventBus,
   ) {}
+
+  @Query(() => [WithdrawalRequest])
+  getMyWithdrawalRequests(
+    @Args('args') args: GetMyWithdrawalRequestsInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const { take, skip } = ExtractPagination(args.pagination);
+
+    return this.prisma.withdrawalRequest.findMany({
+      where: {
+        userId: user.id,
+      },
+      skip,
+      take,
+    });
+  }
 
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
@@ -104,5 +130,14 @@ export class WithdrawalResolver {
       __typename: 'Account',
       id: req.userId,
     };
+  }
+
+  @ResolveField(() => FinancialAccount)
+  financialAccount(@Parent() req: WithdrawalRequest) {
+    return this.prisma.financialAccount.findUnique({
+      where: {
+        id: req.financialAccountId,
+      },
+    });
   }
 }

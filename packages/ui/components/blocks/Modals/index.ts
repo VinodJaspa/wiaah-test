@@ -16,3 +16,4 @@ export * from "./GeneralSearchModal";
 export * from "./AccountDeletionModal";
 export * from "./AskForReturnModal";
 export * from "./SpecialDaysOpenTimeModal";
+export * from "./CommentsModal";

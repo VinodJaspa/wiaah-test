@@ -12,11 +12,16 @@ import {
   TBody,
   Td,
   Tr,
+  useAdminCreateStaffAccountMutation,
+  useAdminUpdateStaffAccountMutation,
+  useGetAccount,
 } from "ui";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
+import { useForm } from "utils";
+import { AccountType, StaffAccountType } from "@features/API";
 
 const manageStaff: NextPage = () => {
   const { t } = useTranslation();
@@ -24,6 +29,36 @@ const manageStaff: NextPage = () => {
   const { getParam } = useRouting();
 
   const id = getParam("id");
+
+  const isNew = id === "new";
+
+  const { data } = useGetAccount(id);
+  const {
+    form: updateForm,
+    inputProps: updateInputProps,
+    selectProps: updateSelectProps,
+  } = useForm<Parameters<typeof update>[0]>(
+    { id, ...data, type: data.type as unknown as StaffAccountType },
+    { id }
+  );
+  const {
+    form: createForm,
+    inputProps: createInputProps,
+    selectProps: createSelectProps,
+  } = useForm<Parameters<typeof create>[0]>({
+    confirmPassword: "",
+    email: "",
+    firstName: "",
+    lastName: "",
+    password: "",
+    photo: "",
+    type: StaffAccountType.Moderator,
+  });
+  const { mutate: update } = useAdminUpdateStaffAccountMutation();
+  const { mutate: create } = useAdminCreateStaffAccountMutation();
+
+  const inputProps = isNew ? createInputProps : updateInputProps;
+  const selectProps = isNew ? createSelectProps : updateSelectProps;
 
   return (
     <section className="flex flex-col gap-4 w-full">
@@ -61,7 +96,7 @@ const manageStaff: NextPage = () => {
                   <p>{t("First Name")}</p>
                 </Td>
                 <Td>
-                  <Input />
+                  <Input {...inputProps("firstName")} />
                 </Td>
               </Tr>
               <Tr>
@@ -70,7 +105,7 @@ const manageStaff: NextPage = () => {
                   <p>{t("Last Name")}</p>
                 </Td>
                 <Td>
-                  <Input />
+                  <Input {...inputProps("lastName")} />
                 </Td>
               </Tr>
               <Tr>
@@ -79,7 +114,7 @@ const manageStaff: NextPage = () => {
                   <p>{t("E-Mail")}</p>
                 </Td>
                 <Td>
-                  <Input />
+                  <Input {...inputProps("email")} />
                 </Td>
               </Tr>
               <Tr>
@@ -88,7 +123,7 @@ const manageStaff: NextPage = () => {
                   <p>{t("Staff Role")}</p>
                 </Td>
                 <Td>
-                  <Select>
+                  <Select {...selectProps("type")}>
                     <SelectOption value={"admin"}>{t("Admin")}</SelectOption>
                     <SelectOption value={"mod"}>{t("Moderator")}</SelectOption>
                   </Select>
@@ -119,7 +154,7 @@ const manageStaff: NextPage = () => {
                   <p>{t("Password")}</p>
                 </Td>
                 <Td>
-                  <Input />
+                  <Input {...inputProps("password")} />
                 </Td>
               </Tr>
               <Tr>
@@ -128,7 +163,7 @@ const manageStaff: NextPage = () => {
                   <p>{t("Confirm")}</p>
                 </Td>
                 <Td>
-                  <Input />
+                  <Input {...inputProps("confirmPassword")} />
                 </Td>
               </Tr>
             </TBody>

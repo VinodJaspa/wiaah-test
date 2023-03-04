@@ -1,1 +1,1 @@
-export type AccountType = "buyer" | "seller" | "admin";
+export type AccountType = "buyer" | "seller" | "admin" | "mod";

@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Args } from '@nestjs/graphql';
 import { HashtagService } from './hashtag.service';
 import { NewsfeedHashtagSearch } from '@entities';
 import { GetHashtagNewsfeedPostsInput } from '@input';

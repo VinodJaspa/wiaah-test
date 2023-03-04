@@ -8,6 +8,7 @@ import { HashtagController } from './hashtag.controller';
 import { HashtagSaga } from './sagas';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { HashtagAdminResolver } from './hashtag.admin.resolver';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
   providers: [
     HashtagResolver,
     HashtagRepository,
+    HashtagAdminResolver,
     HashtagSaga,
     ...HashtagCommandHandlers,
     ...HashtagQueryHandlers,

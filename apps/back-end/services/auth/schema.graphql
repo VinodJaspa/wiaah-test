@@ -43,6 +43,7 @@ type Mutation {
   resendRegisterationCode(email: String!): Boolean!
   resetPassword(ResetPasswordArgs: ForgotPasswordEmailInput!): Boolean!
   verifyNewPassword(verifyNewPassword: ConfirmPasswordChangeInput!): Boolean!
+  adminLogin(args: LoginDto!): GqlStatusResponse!
   loginAs(userId: String!): GqlStatusResponse!
 }
 

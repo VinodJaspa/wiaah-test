@@ -13,6 +13,9 @@ export class Hashtag {
   @Field(() => Int)
   usage: number;
 
+  @Field(() => String)
+  createdById: string;
+
   @Field(() => Date)
   createdAt: Date;
 

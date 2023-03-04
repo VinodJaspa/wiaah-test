@@ -37,6 +37,7 @@ export type Account = {
   firstName: Scalars["String"];
   id: Scalars["ID"];
   ips: Array<Scalars["String"]>;
+  lastActiveAt: Scalars["String"];
   lastName: Scalars["String"];
   membership?: Maybe<Membership>;
   membershipId?: Maybe<Scalars["ID"]>;
@@ -86,6 +87,7 @@ export enum AccountStatus {
 export enum AccountType {
   Admin = "admin",
   Buyer = "buyer",
+  Mod = "mod",
   Seller = "seller",
 }
 
@@ -149,6 +151,16 @@ export type AddWishlistItemInput = {
   sellerId: Scalars["ID"];
 };
 
+export type AdminCreateAdminAccountInput = {
+  confirmPassword: Scalars["String"];
+  email: Scalars["String"];
+  firstName: Scalars["String"];
+  lastName: Scalars["String"];
+  password: Scalars["String"];
+  photo: Scalars["String"];
+  type: StaffAccountType;
+};
+
 export type AdminDeleteServiceInput = {
   deletionReason: Scalars["String"];
   id: Scalars["ID"];
@@ -163,6 +175,12 @@ export type AdminGetBookingsInput = {
   status?: Maybe<BookedServiceStatus>;
   total?: Maybe<Scalars["Float"]>;
   type?: Maybe<Scalars["String"]>;
+};
+
+export type AdminGetContentCommentsInput = {
+  contentId: Scalars["ID"];
+  contentType: ContentHostType;
+  pagination: GqlPaginationInput;
 };
 
 export type AdminGetCurrenciesInput = {
@@ -203,6 +221,12 @@ export type AdminGetMembersipSubscriptionInput = {
   username?: Maybe<Scalars["String"]>;
 };
 
+export type AdminGetProfessionInput = {
+  accounts?: Maybe<Scalars["Int"]>;
+  name?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+};
+
 export type AdminGetReturnedOrdersInput = {
   buyerName?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
@@ -226,10 +250,36 @@ export type AdminGetSiteInformationsInput = {
   sortOrder?: Maybe<Scalars["Int"]>;
 };
 
+export type AdminGetStaffAccountsInput = {
+  email?: Maybe<Scalars["String"]>;
+  lastActivity?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  role?: Maybe<StaffAccountType>;
+  status?: Maybe<AccountStatus>;
+};
+
+export type AdminGetTaxRatesInput = {
+  name?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  rate?: Maybe<Scalars["Float"]>;
+};
+
 export type AdminSendMailToUsersInput = {
   message: Scalars["String"];
   subject: Scalars["String"];
   userType: MailUserType;
+};
+
+export type AdminUpdateAdminAccountInput = {
+  confirmPassword?: Maybe<Scalars["String"]>;
+  email?: Maybe<Scalars["String"]>;
+  firstName?: Maybe<Scalars["String"]>;
+  id: Scalars["ID"];
+  lastName?: Maybe<Scalars["String"]>;
+  password?: Maybe<Scalars["String"]>;
+  photo?: Maybe<Scalars["String"]>;
+  type?: Maybe<StaffAccountType>;
 };
 
 export type Affiliation = {
@@ -902,6 +952,7 @@ export type CreateProductInput = {
   brand: Scalars["String"];
   cashback: CashBackInput;
   categoryId: Scalars["ID"];
+  condition: ProductCondition;
   description: StringTranslationField;
   discount: DiscountInput;
   presentations: Array<ProductPresentationInput>;
@@ -1045,6 +1096,12 @@ export type CreateStoryInput = {
   servicePostId?: Maybe<Scalars["ID"]>;
   shopPostId?: Maybe<Scalars["ID"]>;
   tags?: Maybe<Array<PostTagInput>>;
+};
+
+export type CreateTaxRateInput = {
+  appliedOnCountryIds: Array<Scalars["String"]>;
+  percent: Scalars["Float"];
+  title: Scalars["String"];
 };
 
 export type CreateVehicleInput = {
@@ -1254,6 +1311,10 @@ export type GetAccountDeletionRequestsInput = {
   username?: Maybe<Scalars["String"]>;
 };
 
+export type GetAddableHashtagsInput = {
+  pagination: GqlPaginationInput;
+};
+
 export type GetAdminFilteredNewsfeedPostsInput = {
   comments?: Maybe<Scalars["Int"]>;
   date?: Maybe<Scalars["String"]>;
@@ -1390,6 +1451,14 @@ export type GetFilteredCategory = {
   name?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
   sortOrder?: Maybe<Scalars["Int"]>;
+};
+
+export type GetFilteredHashtagsInput = {
+  createdAt?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  status?: Maybe<HashtagStatus>;
+  tag?: Maybe<Scalars["String"]>;
+  usage?: Maybe<Scalars["Int"]>;
 };
 
 export type GetFilteredNewsletterInput = {
@@ -1565,6 +1634,10 @@ export type GetMyReviewsInput = {
 };
 
 export type GetMySavedPostsInput = {
+  pagination: GqlPaginationInput;
+};
+
+export type GetMyWithdrawalRequestsInput = {
   pagination: GqlPaginationInput;
 };
 
@@ -1759,6 +1832,11 @@ export type HashtagProductPost = {
   shared?: Maybe<ProductPost>;
   viewed?: Maybe<ProductPost>;
 };
+
+export enum HashtagStatus {
+  Active = "active",
+  Suspended = "suspended",
+}
 
 export type HashtagTopAffiliationPost = {
   __typename?: "HashtagTopAffiliationPost";
@@ -2092,13 +2170,16 @@ export type Mutation = {
   activateRestaurant: Restaurant;
   addNewBillingAddress: BillingAddress;
   addProductToCart: CartProduct;
+  adminCreateStaffAccount: Scalars["Boolean"];
   adminDeleteNewsfeedPost: Scalars["Boolean"];
   adminDeleteProduct: Scalars["Boolean"];
   adminDeleteProductReview: Scalars["Boolean"];
   adminDeleteService: Scalars["Boolean"];
   adminEditAccount: Account;
+  adminLogin: GqlStatusResponse;
   adminUpdateAffiliation: Scalars["Boolean"];
   adminUpdateProductReview: Scalars["Boolean"];
+  adminUpdateStaffAccount: Scalars["Boolean"];
   applyVoucher: ShoppingCart;
   askForRefund: Scalars["Boolean"];
   banBuyersCities: Scalars["Boolean"];
@@ -2142,6 +2223,7 @@ export type Mutation = {
   createShop: Shop;
   createSiteInformations: SiteInformation;
   createStory: Scalars["Boolean"];
+  createTaxRate: Scalars["Boolean"];
   createVehicle: VehicleService;
   createVoucher: Voucher;
   deActivateVoucher: Voucher;
@@ -2220,6 +2302,7 @@ export type Mutation = {
   updateCurrenciesRates: Array<Currency>;
   updateCurrency: Scalars["Boolean"];
   updateFilter: Filter;
+  updateHashtag: Hashtag;
   updateHealthCenter: HealthCenter;
   updateHealthCenterAdmin: Scalars["Boolean"];
   updateHotelAdmin: Scalars["Boolean"];
@@ -2246,6 +2329,7 @@ export type Mutation = {
   updateShippingTypeRule: Scalars["Boolean"];
   updateSiteInformations: SiteInformation;
   updateSocialLinks: Scalars["Boolean"];
+  updateTaxRate: Scalars["Boolean"];
   updateTreatmentCategories: Array<BeautyCenterTreatmentCategory>;
   updateUserLocation: Scalars["Boolean"];
   updateVehicleAdmin: Scalars["Boolean"];
@@ -2324,6 +2408,10 @@ export type MutationAddProductToCartArgs = {
   addItemToCartArgs: AddShoppingCartProductItemInput;
 };
 
+export type MutationAdminCreateStaffAccountArgs = {
+  args: AdminCreateAdminAccountInput;
+};
+
 export type MutationAdminDeleteNewsfeedPostArgs = {
   id: Scalars["String"];
 };
@@ -2345,12 +2433,20 @@ export type MutationAdminEditAccountArgs = {
   editAccountInput: UpdateSellerAccountAdminInput;
 };
 
+export type MutationAdminLoginArgs = {
+  args: LoginDto;
+};
+
 export type MutationAdminUpdateAffiliationArgs = {
   updateAffilaition: UpdateAffiliationAdminInput;
 };
 
 export type MutationAdminUpdateProductReviewArgs = {
   args: UpdateProductReviewInput;
+};
+
+export type MutationAdminUpdateStaffAccountArgs = {
+  args: AdminUpdateAdminAccountInput;
 };
 
 export type MutationApplyVoucherArgs = {
@@ -2499,6 +2595,10 @@ export type MutationCreateSiteInformationsArgs = {
 
 export type MutationCreateStoryArgs = {
   createStoryInput: CreateStoryInput;
+};
+
+export type MutationCreateTaxRateArgs = {
+  args: CreateTaxRateInput;
 };
 
 export type MutationCreateVehicleArgs = {
@@ -2773,6 +2873,10 @@ export type MutationUpdateFilterArgs = {
   updateFilterArgs: UpdateFilterInput;
 };
 
+export type MutationUpdateHashtagArgs = {
+  args: UpdateHashtagInput;
+};
+
 export type MutationUpdateHealthCenterArgs = {
   updateHealthCenterArgs: UpdateHealthCenterInput;
 };
@@ -2875,6 +2979,10 @@ export type MutationUpdateSiteInformationsArgs = {
 
 export type MutationUpdateSocialLinksArgs = {
   args: UpdateSiteSocialInput;
+};
+
+export type MutationUpdateTaxRateArgs = {
+  args: UpdateTaxRateInput;
 };
 
 export type MutationUpdateTreatmentCategoriesArgs = {
@@ -3112,6 +3220,7 @@ export type Product = {
   cashbackId?: Maybe<Scalars["String"]>;
   category?: Maybe<Category>;
   categoryId: Scalars["ID"];
+  condition: ProductCondition;
   createdAt: Scalars["String"];
   description: Scalars["String"];
   discount: Discount;
@@ -3160,6 +3269,12 @@ export type ProductAttributeInput = {
 export enum ProductCategoryStatus {
   Active = "active",
   InActive = "inActive",
+}
+
+export enum ProductCondition {
+  New = "new",
+  Recondition = "recondition",
+  Used = "used",
 }
 
 export type ProductFilterGroupValue = {
@@ -3300,23 +3415,29 @@ export type Query = {
   adminGetAccount: Account;
   adminGetBannedCountry: BannedCountry;
   adminGetBookings: Array<BookedService>;
+  adminGetContentComments: Array<Comment>;
   adminGetCurrencies: Array<Currency>;
   adminGetDesigns: Array<Design>;
   adminGetFilteredProductReviews: Array<ProductReview>;
+  adminGetHashtag: Array<Hashtag>;
   adminGetLanguages: Array<Language>;
   adminGetMembershipSubscriptions: Array<MembershipSubscription>;
   adminGetMemberships: Array<Membership>;
   adminGetProduct?: Maybe<Product>;
+  adminGetProfessions: Array<Profession>;
   adminGetRawService?: Maybe<ServiceShopRaw>;
   adminGetReturnedOrders: Array<ReturnedOrder>;
   adminGetSiteInformations: Array<SiteInformation>;
+  adminGetStaffAccounts: Array<Account>;
+  adminGetTaxRate: TaxRate;
+  adminGetTaxRates: Array<TaxRate>;
   adminGetTransations: Array<Transaction>;
   canAccessRoom: Scalars["Boolean"];
-  comments: Array<Comment>;
   findAll: ProfilePaginatedResponse;
   getAccountDeletionRequests: Array<AccountDeletionRequest>;
   getAccountVerificationRequests: Array<AccountVerification>;
   getAction: Array<Action>;
+  getAddableHashtags: Hashtag;
   getAdminFilteredProducts: Array<Product>;
   getAdminFilteredStories: Array<Story>;
   getAdminProductsFilter: Filter;
@@ -3396,6 +3517,7 @@ export type Query = {
   getMyStories: Array<Story>;
   getMyTransactions: Array<Transaction>;
   getMyVouchers: Array<Voucher>;
+  getMyWithdrawalRequests: Array<WithdrawalRequest>;
   getMyWorkingSchedule: WorkingSchedule;
   getNearShops: Array<Shop>;
   getNewletterSubscribers: Array<NewsletterSubscriber>;
@@ -3487,6 +3609,10 @@ export type QueryAdminGetBookingsArgs = {
   args: AdminGetBookingsInput;
 };
 
+export type QueryAdminGetContentCommentsArgs = {
+  args: AdminGetContentCommentsInput;
+};
+
 export type QueryAdminGetCurrenciesArgs = {
   args: AdminGetCurrenciesInput;
 };
@@ -3497,6 +3623,10 @@ export type QueryAdminGetDesignsArgs = {
 
 export type QueryAdminGetFilteredProductReviewsArgs = {
   args: GetAdminFitleredProductReviewsInput;
+};
+
+export type QueryAdminGetHashtagArgs = {
+  args: GetFilteredHashtagsInput;
 };
 
 export type QueryAdminGetLanguagesArgs = {
@@ -3515,6 +3645,10 @@ export type QueryAdminGetProductArgs = {
   id: Scalars["String"];
 };
 
+export type QueryAdminGetProfessionsArgs = {
+  args: AdminGetProfessionInput;
+};
+
 export type QueryAdminGetRawServiceArgs = {
   id: Scalars["String"];
 };
@@ -3525,6 +3659,18 @@ export type QueryAdminGetReturnedOrdersArgs = {
 
 export type QueryAdminGetSiteInformationsArgs = {
   args: AdminGetSiteInformationsInput;
+};
+
+export type QueryAdminGetStaffAccountsArgs = {
+  args: AdminGetStaffAccountsInput;
+};
+
+export type QueryAdminGetTaxRateArgs = {
+  id: Scalars["String"];
+};
+
+export type QueryAdminGetTaxRatesArgs = {
+  args: AdminGetTaxRatesInput;
 };
 
 export type QueryAdminGetTransationsArgs = {
@@ -3541,6 +3687,10 @@ export type QueryGetAccountDeletionRequestsArgs = {
 
 export type QueryGetActionArgs = {
   id: Scalars["String"];
+};
+
+export type QueryGetAddableHashtagsArgs = {
+  args: GetAddableHashtagsInput;
 };
 
 export type QueryGetAdminFilteredProductsArgs = {
@@ -3773,6 +3923,10 @@ export type QueryGetMyTransactionsArgs = {
 
 export type QueryGetMyVouchersArgs = {
   getMyVouchersInput?: Maybe<GetVouchersInput>;
+};
+
+export type QueryGetMyWithdrawalRequestsArgs = {
+  args: GetMyWithdrawalRequestsInput;
 };
 
 export type QueryGetNearShopsArgs = {
@@ -4792,6 +4946,11 @@ export type SpecialDayWorkingHoursInput = {
   workingHours: ServiceDayWorkingHoursInput;
 };
 
+export enum StaffAccountType {
+  Admin = "admin",
+  Moderator = "moderator",
+}
+
 export enum StoreType {
   Product = "product",
   Service = "service",
@@ -4858,6 +5017,15 @@ export enum TargetGenders {
   Male = "male",
 }
 
+export type TaxRate = {
+  __typename?: "TaxRate";
+  appliedOnCountries: Array<Country>;
+  appliedOnCountryIds: Array<Scalars["String"]>;
+  id: Scalars["ID"];
+  percent: Scalars["Float"];
+  title: Scalars["String"];
+};
+
 export type TopHashtagNewsfeedPosts = {
   __typename?: "TopHashtagNewsfeedPosts";
   commented: NewsfeedPost;
@@ -4875,6 +5043,7 @@ export type Transaction = {
   from: Scalars["String"];
   fromUser: Account;
   id: Scalars["ID"];
+  paymentType: Scalars["String"];
   status: TransactionStatus;
   toUser: Account;
   updatedAt: Scalars["DateTime"];
@@ -5019,6 +5188,11 @@ export type UpdateFilterInput = {
   values?: Maybe<Array<ProductFilterGroupValueInput>>;
 };
 
+export type UpdateHashtagInput = {
+  status?: Maybe<HashtagStatus>;
+  tag: Scalars["String"];
+};
+
 export type UpdateHealthCenterInput = {
   cancelationPolicies?: Maybe<Array<ServiceCancelationPolicyInput>>;
   id: Scalars["ID"];
@@ -5120,6 +5294,7 @@ export type UpdateProductInput = {
   brand?: Maybe<Scalars["String"]>;
   cashback?: Maybe<CashBackInput>;
   categoryId?: Maybe<Scalars["ID"]>;
+  condition?: Maybe<ProductCondition>;
   description?: Maybe<StringTranslationField>;
   discount?: Maybe<DiscountInput>;
   id: Scalars["ID"];
@@ -5290,6 +5465,13 @@ export type UpdateSocialLink = {
   label: Scalars["String"];
   link: Scalars["String"];
   placements: Array<Scalars["String"]>;
+};
+
+export type UpdateTaxRateInput = {
+  appliedOnCountryIds?: Maybe<Array<Scalars["String"]>>;
+  id: Scalars["ID"];
+  percent?: Maybe<Scalars["Float"]>;
+  title?: Maybe<Scalars["String"]>;
 };
 
 export type UpdateTreatmentCategoriesInput = {
@@ -5489,6 +5671,8 @@ export type WithdrawInput = {
 export type WithdrawalRequest = {
   __typename?: "WithdrawalRequest";
   amount: Scalars["Float"];
+  financialAccount: FinancialAccount;
+  financialAccountId: Scalars["String"];
   id: Scalars["ID"];
   processedAt: Scalars["String"];
   requestedAt: Scalars["String"];

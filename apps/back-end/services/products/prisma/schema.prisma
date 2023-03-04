@@ -92,6 +92,13 @@ model Product {
   createdAt                   DateTime              @default(now())
   updatedAt                   DateTime              @updatedAt
   discount                    Discount?             @relation(fields: [discountId], references: [id])
+  condition                   ProductCondition
+}
+
+enum ProductCondition {
+  new
+  used
+  recondition
 }
 
 model Shop {
