@@ -81,9 +81,10 @@ export class OrdersController extends BaseController {
       KAFKA_EVENTS.ORDERS_EVENTS.orderItemBillingReady(),
       new OrderItemBillingReadyEvent({
         itemId: res.id,
-        affiliatorId: res.affiliationId,
-        cashbackId: res.cashbackId,
-        discountId: res.discountId,
+        affiliatorId: res.affiliatorId,
+        cashback: res.cashback,
+        discount: res.discount,
+        discountAmount: res.discountAmount,
         buyerId: res.Order.buyerId,
         sellerId: res.Order.sellerId,
         paidPrice: res.paid,

@@ -30,3 +30,4 @@ export * from "./profession";
 export * from "./Taxes";
 export * from "./auth";
 export * from "./hashtags";
+export * from "./wishlist";

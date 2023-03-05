@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { HtmlDivProps } from "types";
 import { SectionContext } from "state";
-import { setTestid } from "utils";
+import { mapArray, setTestid } from "utils";
 import {
   Divider,
   PriceDisplay,
@@ -25,6 +25,7 @@ import {
   useGetMyReturnedProductsQuery,
   usePaginationControls,
 } from "@UI";
+import { Product, ReturnedOrder } from "@features/API";
 
 export interface MyReturnsSectionProps {}
 
@@ -50,51 +51,59 @@ export const MyReturnsSection: React.FC<MyReturnsSectionProps> = () => {
           <AskForReturnModal />
         </ModalExtendedWrapper>
       </HStack>
-      <TableContainer>
-        <Table ThProps={{ className: "whitespace-nowrap" }} className="w-full">
-          <Tr>
-            <Th>{t("Product Image")}</Th>
-            <Th>{t("Product Name")}</Th>
-            <Th>{t("Quantity")}</Th>
-            <Th>{t("Paid price")}</Th>
-            <Th>{t("Return Reason")}</Th>
-            <Th>{t("Admin Status")}</Th>
-            <Th>{t("Seller Status")}</Th>
-          </Tr>
-          <TBody>
-            {data &&
-              data.length > 0 &&
-              data.map((prod, i) => (
-                <Tr {...setTestid("item")} key={i}>
-                  <Td>
-                    <Image
-                      {...setTestid("item-thumbnail")}
-                      className="w-16 h-auto"
-                      src={prod.product.thumbnail}
-                      alt={prod.product.title}
-                    />
-                  </Td>
-                  <Td {...setTestid("item-title")}>{prod.product.title}</Td>
-                  <Td {...setTestid("item-qty")}>{prod.qty}</Td>
-                  <Td>
-                    <PriceDisplay
-                      {...setTestid("item-price")}
-                      price={prod.amount}
-                    />
-                  </Td>
 
-                  <Td {...setTestid("item-reason")}>{prod.reason}</Td>
-                  <Td {...setTestid("item-status")}>{prod.status}</Td>
-                  <Td>{prod.status}</Td>
-                </Tr>
-              ))}
-          </TBody>
-        </Table>
-      </TableContainer>
       {!data || data.length < 1 ? (
         <span className="text-xl">{t("No Records Found")}</span>
       ) : null}
     </div>
+  );
+};
+
+export const ProductReturnsList: React.FC<{
+  items: (Pick<ReturnedOrder, "id" | "reason" | "amount" | "status"> & {
+    product: Pick<Product, "title" | "thumbnail">;
+  })[];
+}> = ({ items }) => {
+  const { t } = useTranslation();
+
+  return (
+    <TableContainer>
+      <Table ThProps={{ className: "whitespace-nowrap" }} className="w-full">
+        <Tr>
+          <Th>{t("Product Image")}</Th>
+          <Th>{t("Product Name")}</Th>
+          <Th>{t("Paid price")}</Th>
+          <Th>{t("Return Reason")}</Th>
+          <Th>{t("Admin Status")}</Th>
+          <Th>{t("Seller Status")}</Th>
+        </Tr>
+        <TBody>
+          {mapArray(items, (prod, i) => (
+            <Tr {...setTestid("item")} key={i}>
+              <Td>
+                <Image
+                  {...setTestid("item-thumbnail")}
+                  className="w-16 h-auto"
+                  src={prod.product.thumbnail}
+                  alt={prod.product.title}
+                />
+              </Td>
+              <Td {...setTestid("item-title")}>{prod.product.title}</Td>
+              <Td>
+                <PriceDisplay
+                  {...setTestid("item-price")}
+                  price={prod.amount}
+                />
+              </Td>
+
+              <Td {...setTestid("item-reason")}>{prod.reason}</Td>
+              <Td {...setTestid("item-status")}>{prod.status}</Td>
+              <Td>{prod.status}</Td>
+            </Tr>
+          ))}
+        </TBody>
+      </Table>
+    </TableContainer>
   );
 };
 

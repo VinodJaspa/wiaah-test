@@ -184,6 +184,7 @@ export class AccountsController implements OnModuleInit {
         payload.value.input.companyRegisterationNumber,
       type: 'seller',
       status: 'pending',
+      birthDate: payload.value.input.birthDate,
     });
   }
 
@@ -198,6 +199,7 @@ export class AccountsController implements OnModuleInit {
       password: payload.value.input.password,
       type: 'buyer',
       status: 'active',
+      birthDate: payload.value.input.birthDate,
     });
   }
 

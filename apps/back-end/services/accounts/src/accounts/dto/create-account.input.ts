@@ -34,6 +34,9 @@ export class CreateAccountInput {
 
   @Field(() => RegisterAccountType)
   accountType: RegisterAccountType;
+
+  @Field(() => String)
+  birthDate: string;
 }
 
 @InputType()
@@ -58,6 +61,9 @@ export class AdminCreateAdminAccountInput {
 
   @Field(() => StaffAccountType)
   type: StaffAccountType;
+
+  @Field(() => String)
+  birthDate: string;
 }
 @InputType()
 export class AdminUpdateAdminAccountInput extends PartialType(

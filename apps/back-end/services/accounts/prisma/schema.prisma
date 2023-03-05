@@ -38,6 +38,7 @@ model Account {
   lang                       String                   @default("en")
   phoneVerified              Boolean                  @default(false)
   ips                        String[]
+  birthDate                  String
   AccountDeletionRequest     AccountDeletionRequest[]
   contacts                   UserContact?
 }

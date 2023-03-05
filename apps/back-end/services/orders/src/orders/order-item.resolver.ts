@@ -130,4 +130,12 @@ export class OrderItemResolver {
       },
     });
   }
+
+  @ResolveField(() => Account)
+  affiliator(@Parent() item: OrderItem) {
+    return {
+      __typename: 'Account',
+      id: item.affiliatorId,
+    };
+  }
 }

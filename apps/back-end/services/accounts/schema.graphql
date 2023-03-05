@@ -276,6 +276,7 @@ input UpdateSellerAccountAdminInput {
   password: String
   confirmPassword: String
   accountType: RegisterAccountType
+  birthDate: String
   companyRegisterationNumber: String
   id: ID!
 }
@@ -303,6 +304,7 @@ input AdminCreateAdminAccountInput {
   confirmPassword: String!
   photo: String!
   type: StaffAccountType!
+  birthDate: String!
 }
 
 input AdminUpdateAdminAccountInput {
@@ -313,6 +315,7 @@ input AdminUpdateAdminAccountInput {
   confirmPassword: String
   photo: String
   type: StaffAccountType
+  birthDate: String
   id: ID!
 }
 
@@ -323,6 +326,7 @@ input CreateAccountInput {
   password: String!
   confirmPassword: String!
   accountType: RegisterAccountType!
+  birthDate: String!
 }
 
 input DeleteAccountRequestInput {
@@ -338,6 +342,7 @@ input UpdateAccountInput {
   password: String
   confirmPassword: String
   accountType: RegisterAccountType
+  birthDate: String
   companyRegisterationNumber: String
 }
 

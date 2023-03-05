@@ -5,9 +5,8 @@ export class OrderItemBillingReadyEvent extends KafkaMessage<{
   affiliatorId?: string;
   affiliationId?: string;
   affiliationAmount?: number;
-  cashbackId?: string;
-  cashbackAmount?: number;
-  discountId?: string;
+  cashback?: number;
+  discount?: number;
   discountAmount?: number;
   paidPrice: number;
   buyerId: string;

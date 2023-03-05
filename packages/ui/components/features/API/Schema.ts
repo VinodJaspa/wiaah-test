@@ -152,6 +152,7 @@ export type AddWishlistItemInput = {
 };
 
 export type AdminCreateAdminAccountInput = {
+  birthDate: Scalars["String"];
   confirmPassword: Scalars["String"];
   email: Scalars["String"];
   firstName: Scalars["String"];
@@ -265,6 +266,11 @@ export type AdminGetTaxRatesInput = {
   rate?: Maybe<Scalars["Float"]>;
 };
 
+export type AdminGetUserReturnedOrdersInput = {
+  accountId: Scalars["ID"];
+  pagination: GqlPaginationInput;
+};
+
 export type AdminSendMailToUsersInput = {
   message: Scalars["String"];
   subject: Scalars["String"];
@@ -272,6 +278,7 @@ export type AdminSendMailToUsersInput = {
 };
 
 export type AdminUpdateAdminAccountInput = {
+  birthDate?: Maybe<Scalars["String"]>;
   confirmPassword?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
   firstName?: Maybe<Scalars["String"]>;
@@ -776,6 +783,7 @@ export type Country = {
 
 export type CreateAccountInput = {
   accountType: RegisterAccountType;
+  birthDate: Scalars["String"];
   confirmPassword: Scalars["String"];
   email: Scalars["String"];
   firstName: Scalars["String"];
@@ -2178,6 +2186,7 @@ export type Mutation = {
   adminDeleteProduct: Scalars["Boolean"];
   adminDeleteProductReview: Scalars["Boolean"];
   adminDeleteService: Scalars["Boolean"];
+  adminDeleteUserWishlistItem: Scalars["Boolean"];
   adminEditAccount: Account;
   adminLogin: GqlStatusResponse;
   adminUpdateAffiliation: Scalars["Boolean"];
@@ -2430,6 +2439,10 @@ export type MutationAdminDeleteProductReviewArgs = {
 
 export type MutationAdminDeleteServiceArgs = {
   args: AdminDeleteServiceInput;
+};
+
+export type MutationAdminDeleteUserWishlistItemArgs = {
+  accountId: Scalars["String"];
 };
 
 export type MutationAdminEditAccountArgs = {
@@ -3101,11 +3114,13 @@ export type Order = {
 
 export type OrderItem = {
   __typename?: "OrderItem";
-  affiliationId?: Maybe<Scalars["String"]>;
+  affiliator: Account;
+  affiliatorId?: Maybe<Scalars["String"]>;
   buyer: Account;
-  cashbackId?: Maybe<Scalars["String"]>;
+  cashback?: Maybe<Scalars["Float"]>;
   createdAt: Scalars["String"];
-  discountId?: Maybe<Scalars["String"]>;
+  discount?: Maybe<Scalars["Float"]>;
+  discountAmount?: Maybe<Scalars["Float"]>;
   id: Scalars["ID"];
   order: Order;
   orderId: Scalars["String"];
@@ -3435,6 +3450,8 @@ export type Query = {
   adminGetTaxRate: TaxRate;
   adminGetTaxRates: Array<TaxRate>;
   adminGetTransations: Array<Transaction>;
+  adminGetUserReturnedOrders: Array<ReturnedOrder>;
+  adminGetUserWishlist: Array<WishedItem>;
   canAccessRoom: Scalars["Boolean"];
   findAll: ProfilePaginatedResponse;
   getAccountDeletionRequests: Array<AccountDeletionRequest>;
@@ -3678,6 +3695,14 @@ export type QueryAdminGetTaxRatesArgs = {
 
 export type QueryAdminGetTransationsArgs = {
   args: GetTransactionsAdminInput;
+};
+
+export type QueryAdminGetUserReturnedOrdersArgs = {
+  args: AdminGetUserReturnedOrdersInput;
+};
+
+export type QueryAdminGetUserWishlistArgs = {
+  accountId: Scalars["String"];
 };
 
 export type QueryCanAccessRoomArgs = {
@@ -5106,6 +5131,7 @@ export type UnFollowProfileInput = {
 
 export type UpdateAccountInput = {
   accountType?: Maybe<RegisterAccountType>;
+  birthDate?: Maybe<Scalars["String"]>;
   companyRegisterationNumber?: Maybe<Scalars["String"]>;
   confirmPassword?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
@@ -5381,6 +5407,7 @@ export type UpdateRestaurantMenuInput = {
 
 export type UpdateSellerAccountAdminInput = {
   accountType?: Maybe<RegisterAccountType>;
+  birthDate?: Maybe<Scalars["String"]>;
   companyRegisterationNumber?: Maybe<Scalars["String"]>;
   confirmPassword?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
@@ -5623,6 +5650,16 @@ export type WeekdaysWorkingHours = {
   th?: Maybe<ServiceDayWorkingHours>;
   tu?: Maybe<ServiceDayWorkingHours>;
   we?: Maybe<ServiceDayWorkingHours>;
+};
+
+export type WishedItem = {
+  __typename?: "WishedItem";
+  id: Scalars["ID"];
+  itemId: Scalars["String"];
+  itemType: WishlistItemType;
+  product: Product;
+  service: Service;
+  userId: Scalars["ID"];
 };
 
 export type Wisher = {

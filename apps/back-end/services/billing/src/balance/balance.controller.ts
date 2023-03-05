@@ -81,10 +81,10 @@ export class BalanceController {
   async handleOrderBillingReady(
     @Payload() { value }: { value: OrderItemBillingReadyEvent },
   ) {
-    if (value.input.cashbackAmount) {
+    if (value.input.cashback) {
       await this.balacneService.addCashbackBalance(
         value.input.buyerId,
-        value.input.cashbackAmount,
+        value.input.cashback,
       );
     }
 
@@ -99,7 +99,7 @@ export class BalanceController {
       value.input.sellerId,
       value.input.paidPrice -
         (value.input.affiliationAmount || 0) -
-        (value.input.cashbackAmount || 0),
+        (value.input.cashback || 0),
     );
   }
 

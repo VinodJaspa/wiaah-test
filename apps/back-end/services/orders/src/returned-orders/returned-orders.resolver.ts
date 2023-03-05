@@ -2,14 +2,34 @@ import { UseGuards } from '@nestjs/common';
 import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { OrderItem } from '@orders/entities';
 import { Prisma } from '@prisma-client';
-import { accountType, GqlAuthorizationGuard } from 'nest-utils';
+import {
+  accountType,
+  ExtractPagination,
+  GqlAuthorizationGuard,
+} from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { AdminGetReturnedOrdersInput } from './dto';
+import { AdminGetUserReturnedOrdersInput } from './dto/admin-get-user-returned-order.input';
 import { ReturnedOrder } from './entities/returned-order.entity';
 
 @Resolver(() => ReturnedOrder)
 export class ReturnedOrdersResolver {
   constructor(private readonly prisma: PrismaService) {}
+
+  @Query(() => [ReturnedOrder])
+  adminGetUserReturnedOrders(
+    @Args('args') args: AdminGetUserReturnedOrdersInput,
+  ) {
+    const { take, skip } = ExtractPagination(args.pagination);
+
+    return this.prisma.refundRequest.findMany({
+      where: {
+        requestedById: args.accountId,
+      },
+      skip,
+      take,
+    });
+  }
 
   @Query(() => [ReturnedOrder])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))

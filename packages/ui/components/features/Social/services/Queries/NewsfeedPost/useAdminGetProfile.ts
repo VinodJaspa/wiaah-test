@@ -1,5 +1,5 @@
 import { Account, Exact, Maybe, Profile, Scalars } from "@features/API";
-import { createGraphqlRequestClient } from "@UI/../api";
+import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
 export type AdminGetProfileQueryVariables = Exact<{
@@ -62,7 +62,9 @@ query adminGetProfile (
     args,
   });
 
-  return (await client.send<AdminGetProfileQuery>()).data.getAdminProfile;
+  const res = await client.send<AdminGetProfileQuery>();
+
+  return res.data.getAdminProfile;
 };
 
 export const useAdminGetProfileQuery = (

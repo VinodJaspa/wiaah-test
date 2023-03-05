@@ -20,6 +20,7 @@ import {
 import { HiShoppingCart } from "react-icons/hi";
 import { IoTrash } from "react-icons/io5";
 import { mapArray, setTestid } from "utils";
+import { Product, Service, WishedItem } from "@features/API";
 
 export interface MyWishListSectionProps {}
 
@@ -58,7 +59,10 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
 };
 
 export const WishlistTable: React.FC<{
-  items: ReturnType<typeof useGetMyWishlistQuery>["data"];
+  items: (Pick<WishedItem, "id" | "itemId"> & {
+    product: Pick<Product, "id" | "thumbnail" | "title" | "stock" | "price">;
+    service: Pick<Service, "thumbnail" | "title" | "id" | "price">;
+  })[];
   onDelete: (id: string) => any;
   onAdd: (id: string) => any;
   DeletingId?: string;
@@ -76,7 +80,7 @@ export const WishlistTable: React.FC<{
             <Th className="pr-0 text-right">{t("Action")}</Th>
           </Tr>
           <TBody>
-            {mapArray(items?.wishedItems, (item, i) => (
+            {mapArray(items, (item, i) => (
               <Tr {...setTestid("item")}>
                 <Td className="pl-0">
                   <Image
@@ -107,9 +111,9 @@ export const WishlistTable: React.FC<{
                     />
                     <Button
                       {...setTestid("item-delete-btn")}
-                      onClick={() => onDelete(item.itemId)}
+                      onClick={() => onDelete(item.id)}
                       center
-                      loading={!!DeletingId && DeletingId === item.itemId}
+                      loading={!!DeletingId && DeletingId === item.id}
                     >
                       <IoTrash className="text-white bg-red-600 rounded cursor-pointer p-2" />
                     </Button>

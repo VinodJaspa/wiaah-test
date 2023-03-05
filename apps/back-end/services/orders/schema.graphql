@@ -42,15 +42,17 @@ type OrderItem {
   updatedAt: String!
   paidAt: String
   refundable: Boolean!
-  discountId: String
-  cashbackId: String
-  affiliationId: String
+  discount: Float
+  discountAmount: Float
+  cashback: Float
+  affiliatorId: String
   orderId: String!
   status: OrderStatusEnum!
   rejectReason: String
   seller: Account!
   buyer: Account!
   order: Order!
+  affiliator: Account!
 }
 
 enum OrderStatusEnum {
@@ -139,6 +141,7 @@ type Query {
   getSalesDurningPeriod(args: GetSalesDurningPeriodInput!): [OrderItem!]!
   getRecentSales(count: Int = 10): [OrderItem!]!
   getMyReturnedOrders(args: GetMyReturnedOrdersInput!): [Refund!]!
+  adminGetUserReturnedOrders(args: AdminGetUserReturnedOrdersInput!): [ReturnedOrder!]!
   adminGetReturnedOrders(args: AdminGetReturnedOrdersInput!): [ReturnedOrder!]!
 }
 
@@ -197,6 +200,11 @@ enum OrderSearchPeriod {
 
 input GetMyReturnedOrdersInput {
   pagination: GqlPaginationInput!
+}
+
+input AdminGetUserReturnedOrdersInput {
+  pagination: GqlPaginationInput!
+  accountId: ID!
 }
 
 input AdminGetReturnedOrdersInput {

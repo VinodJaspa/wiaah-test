@@ -16,6 +16,21 @@ export class Wishlist {
 }
 
 @ObjectType()
+export class WishedItem {
+  @Field(() => ID)
+  id: string;
+
+  @Field(() => ID)
+  userId: string;
+
+  @Field(() => String)
+  itemId: string;
+
+  @Field(() => WishlistItemType)
+  itemType: WishlistItemType;
+}
+
+@ObjectType()
 export class WishlistItem {
   @Field(() => ID)
   itemId: string;
