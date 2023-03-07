@@ -1,15 +1,35 @@
+import { AccountAddressBook } from "components/views/sellers/AccountAddressBook";
+import { AccountBlockList } from "components/views/sellers/AccountBlockList";
+import { AccountNewsletterSettings } from "components/views/sellers/AccountNewsletterSettings";
+import { AccountNotifications } from "components/views/sellers/AccountNotifications";
+import { AccountOpeningTimeManagement } from "components/views/sellers/AccountOpeningTimeManagement";
+import { AccountPaymentMethods } from "components/views/sellers/AccountPaymentMethods";
+import { AccountPayouts } from "components/views/sellers/AccountPayouts";
+import { AccountPendingAppointments } from "components/views/sellers/AccountPendingAppointments";
+import { AccountPersonalizationSettings } from "components/views/sellers/AccountPersonalizationSettings";
+import { AccountPrivacySettings } from "components/views/sellers/AccountPrivacySettings";
+import { AccountProductManagement } from "components/views/sellers/AccountProductManagement";
+import { AccountRendezVous } from "components/views/sellers/AccountRendezVous";
+import { AccountSavedPosts } from "components/views/sellers/AccountSavedPosts";
+import { AccountServiceManagement } from "components/views/sellers/AccountServiceManagement";
+import { AccountShippingSettings } from "components/views/sellers/AccountShippingSettings";
+import { AccountShopReturns } from "components/views/sellers/AccountShopReturns";
+import { AccountShopReviews } from "components/views/sellers/AccountShopReviews";
+import { AccountTransactions } from "components/views/sellers/AccountTransaction";
+import { AccountVouchers } from "components/views/sellers/AccountVouchers";
+import { AccountAffiliation } from "components/views/sellers/affiliation";
+import { AccountBookingsHistory } from "components/views/sellers/bookingsHistory";
+import { AccountFeesTab } from "components/views/sellers/fees";
+import { AccountGeneralView } from "components/views/sellers/general";
+import { AccountOrderHistory } from "components/views/sellers/orderHistory";
+import { AccountReturns } from "components/views/sellers/returns";
+import { SellerAccountSales } from "components/views/sellers/SellerSales";
+import { AccountSocialInfo } from "components/views/sellers/socialInfo";
+import { AccountWishlist } from "components/views/sellers/wishlist";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import {
-  SimpleTabs,
-  SimpleTabItemList,
-  SimpleTabHead,
-  usePaginationControls,
-} from "ui";
-import { randomNum } from "utils";
-import { getRandomImage } from "placeholder";
-import { random } from "lodash";
+import { SimpleTabs, SimpleTabItemList, SimpleTabHead } from "ui";
 
 const Edit = () => {
   const { getParam } = useRouting();
@@ -38,9 +58,17 @@ const Edit = () => {
     "Blocklist",
     "Privacy",
     "Personalization and data",
+    "Rendez-vous",
+    "Pending Appointments",
+    "Opening time management",
+    "Saved Posts",
+    "Shop Returns",
+    "Shipping Settings",
+    "Shop Reviews",
+    "Transactions",
+    "Payout",
+    "Vouchers",
   ];
-
-  const name = "wiaah";
 
   return (
     <>
@@ -62,6 +90,37 @@ const Edit = () => {
         </div>
 
         <SimpleTabItemList>
+          <AccountGeneralView accountId={id} />
+          <AccountFeesTab accountId={id} />
+          <AccountAffiliation showList accountId={id} />
+          {isProducts ? (
+            <AccountProductManagement accountId={id} />
+          ) : (
+            <AccountServiceManagement accountId={id} />
+          )}
+          <AccountOrderHistory accountId={id} />
+          <AccountBookingsHistory accountId={id} />
+          <AccountSocialInfo accountId={id} />
+          <SellerAccountSales accountId={id} />
+          <AccountWishlist accountId={id} />
+          <AccountReturns accountId={id} />
+          <AccountPaymentMethods accountId={id} />
+          <AccountAddressBook accountId={id} />
+          <AccountNotifications accountId={id} />
+          <AccountNewsletterSettings accountId={id} />
+          <AccountBlockList accountId={id} />
+          <AccountPrivacySettings accountId={id} />
+          <AccountPersonalizationSettings accountId={id} />
+          <AccountRendezVous accountId={id} />
+          <AccountPendingAppointments accountId={id} />
+          <AccountOpeningTimeManagement accountId={id} />
+          <AccountSavedPosts accountId={id} />
+          <AccountShopReturns accountId={id} />
+          <AccountShippingSettings accountId={id} />
+          <AccountShopReviews accountId={id} />
+          <AccountTransactions accountId={id} />
+          <AccountPayouts accountId={id} />
+          <AccountVouchers accountId={id} />
         </SimpleTabItemList>
       </SimpleTabs>
     </>

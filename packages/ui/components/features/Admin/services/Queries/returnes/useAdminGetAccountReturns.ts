@@ -17,7 +17,7 @@ export type AdminGetUserReturnedOrdersQuery = { __typename?: "Query" } & {
   adminGetUserReturnedOrders: Array<
     { __typename?: "ReturnedOrder" } & Pick<
       ReturnedOrder,
-      "reason" | "status"
+      "reason" | "status" | "amount" | "id"
     > & {
         orderItem: { __typename?: "OrderItem" } & Pick<OrderItem, "paid"> & {
             product?: Maybe<
@@ -45,7 +45,8 @@ export const useAdminGetAccountReturnsQuery = (args: args) =>
       }
     reason
     status
-    
+    id
+    amount
   }
 }`);
 

@@ -56,7 +56,9 @@ const VehicleServiceDetailsPage: NextPage = () => {
   return (
     <>
       <MetaTitle
-        content={`${t("Vehicle Details")} | ${res ? res.data.name || "" : ""}`}
+        content={`${t("Vehicle Details")} | ${
+          res ? res?.serviceMetaInfo?.title || "" : ""
+        }`}
       />
 
       <SellerLayout>

@@ -78,3 +78,12 @@ export class GetFilteredProductsInput extends PartialType(
   @Field(() => GqlPaginationInput)
   pagination: GqlPaginationInput;
 }
+
+@InputType()
+export class AdminGetAccountProductsInput extends PartialType(input) {
+  @Field(() => GqlPaginationInput)
+  pagination: GqlPaginationInput;
+
+  @Field(() => ID)
+  accountId: string;
+}

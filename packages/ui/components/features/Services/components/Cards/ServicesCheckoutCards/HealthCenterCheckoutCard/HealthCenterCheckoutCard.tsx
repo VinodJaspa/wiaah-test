@@ -11,7 +11,14 @@ export const HealthCenterCheckoutCard: React.FC<
   const { doctor } = props;
   return (
     <ServiceCheckoutCommonCardWrapper {...props}>
-      <HealthCenterDoctorCard {...doctor} />
+      <HealthCenterDoctorCard
+        doctor={{
+          speciality: { name: doctor.specialty },
+          name: doctor.name,
+          price: doctor.price,
+          thumbnail: doctor.photo,
+        }}
+      />
     </ServiceCheckoutCommonCardWrapper>
   );
 };

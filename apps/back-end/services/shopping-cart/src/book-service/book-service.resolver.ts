@@ -88,7 +88,7 @@ export class BookServiceResolver {
   }
 
   @Query(() => [BookedService])
-  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER, accountType.BUYER]))
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   getUserBookingHistory(
     @Args('args', { type: () => GetBookingsHistoryAdminInput })
     args: GetBookingsHistoryAdminInput,
@@ -115,7 +115,7 @@ export class BookServiceResolver {
   }
 
   @Query(() => [BookedService])
-  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER, accountType.BUYER]))
   getBookingHistory(
     @Args('args', { type: () => GetBookingsHistoryInput })
     args: GetBookingsHistoryInput,

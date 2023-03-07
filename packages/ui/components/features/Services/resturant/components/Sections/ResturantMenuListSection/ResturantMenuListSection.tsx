@@ -3,7 +3,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSetUserInput } from "state";
 import { ResturantMenuList, Button, ServiceCancelationPolicyInput } from "@UI";
-import { FilterAndAddToArray } from "utils";
+import { FilterAndAddToArray, mapArray } from "utils";
 
 export interface ResturantMenuListSectionProps {
   cancelation: ServiceCancelationPolicy[];
@@ -44,13 +44,13 @@ export const ResturantMenuListSection: React.FC<
                 });
               }}
               key={i}
-              {...menu}
+              menu={menu}
             />
           ))
         : null}
       <div className="flex flex-col gap-1">
         <p className="font-bold">{t("Cancelation policy")}</p>
-        {cancelation.map((policy, i) => (
+        {mapArray(cancelation, (policy, i) => (
           <ServiceCancelationPolicyInput
             {...policy}
             name="cancelationPolicy"

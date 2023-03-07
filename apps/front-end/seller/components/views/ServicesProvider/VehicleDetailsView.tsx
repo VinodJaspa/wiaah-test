@@ -15,7 +15,6 @@ import {
   ServiceDetailsReviewsSection,
   VehiclesSelectableList,
   SellerServiceWorkingHoursSection,
-  RestaurantDetailsDescriptionSection,
   DateAndTimeInput,
   VehicleServiceDescriptionSection,
 } from "ui";
@@ -44,7 +43,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
               {res ? (
                 <div className="flex flex-col gap-8">
                   <VehicleServiceDescriptionSection
-                    description={res.data.description}
+                    description={res.serviceMetaInfo.description}
                     GPS
                     airCondition
                     maxSpeed={240}
@@ -62,9 +61,9 @@ export const VehicleServiceDetailsView: React.FC = () => {
               {res ? (
                 <>
                   <ServiceReachOutSection
-                    email={res.data.email}
-                    location={res.data.location}
-                    telephone={res.data.telephone}
+                    email={res.contact.email}
+                    location={res.location}
+                    telephone={res.contact.phone}
                   />
                 </>
               ) : null}
@@ -79,8 +78,8 @@ export const VehicleServiceDetailsView: React.FC = () => {
                 <>
                   <ServicePoliciesSection
                     title={"Health Center Policies and terms"}
-                    deposit={15}
-                    policies={res.data.policies}
+                    // deposit={15}
+                    policies={res.policies}
                   />
                 </>
               ) : null}
@@ -94,7 +93,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
               {res ? (
                 <>
                   <SellerServiceWorkingHoursSection
-                    workingDays={res.data.workingDays}
+                    workingDays={Object.values(res.workingHours) || []}
                   />
                 </>
               ) : null}
@@ -105,9 +104,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
           name: "Vehicles",
           component: (
             <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
-                <VehiclesSelectableList vehicles={res.data.vehicles} />
-              ) : null}
+              {res ? <VehiclesSelectableList vehicles={res.vehicles} /> : null}
             </SpinnerFallback>
           ),
         },
@@ -117,9 +114,7 @@ export const VehicleServiceDetailsView: React.FC = () => {
             <SpinnerFallback isLoading={isLoading} isError={isError}>
               {res ? (
                 <>
-                  <ServiceOnMapLocalizationSection
-                    location={res.data.location}
-                  />
+                  <ServiceOnMapLocalizationSection location={res.location} />
                 </>
               ) : null}
             </SpinnerFallback>
@@ -174,11 +169,16 @@ export const VehicleServiceDetailsView: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
-      <ServicePresentationCarosuel
-        data={res ? res.data.presintations || [] : []}
-      />
+      <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
       <SpinnerFallback isLoading={isLoading} isError={isError}>
-        {res ? <ServicesProviderHeader {...res.data} /> : null}
+        {res ? (
+          <ServicesProviderHeader
+            rating={res.rating}
+            reviewsCount={res.totalReviews}
+            serviceTitle={res.serviceMetaInfo.title}
+            travelPeriod={{ arrival: new Date(), departure: new Date() }}
+          />
+        ) : null}
       </SpinnerFallback>
       <StaticSideBarWrapper
         sidebar={

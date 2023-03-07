@@ -1,21 +1,19 @@
 import {
-  HealthCenterDoctorMetaDataType,
-  ServiceCancelationPolicyType,
-} from "api";
-import {
   Button,
   HStack,
   Radio,
   ServiceCancelationPolicyInput,
   HealthCenterDoctorCard,
+  HealthCenterDoctor,
+  ServiceCancelationPolicy,
 } from "@UI";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
 
 export interface HealthCenterDoctorsListProps {
-  doctors: HealthCenterDoctorMetaDataType[];
-  cancelation: ServiceCancelationPolicyType[];
+  doctors: HealthCenterDoctor[];
+  cancelation: ServiceCancelationPolicy[];
 }
 
 export const HealthCenterDoctorsList: React.FC<
@@ -31,7 +29,7 @@ export const HealthCenterDoctorsList: React.FC<
           ? doctors.map((doctor, i) => (
               <label>
                 <HStack className="justify-between" key={i}>
-                  <HealthCenterDoctorCard {...doctor} />
+                  <HealthCenterDoctorCard doctor={doctor} />
                   <Radio name="doctor" />
                 </HStack>
               </label>
@@ -45,7 +43,7 @@ export const HealthCenterDoctorsList: React.FC<
               {...policy}
               name="cancelationPolicy"
               onSelected={() => {}}
-              key={`${i}-${policy.id}`}
+              key={`${i}-${policy.cost}`}
             />
           ))}
         </div>

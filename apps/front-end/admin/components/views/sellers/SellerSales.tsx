@@ -15,7 +15,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { mapArray, useForm } from "utils";
 
-export const SellerSales: React.FC<{
+export const SellerAccountSales: React.FC<{
   accountId: string;
 }> = ({ accountId }) => {
   const { t } = useTranslation();

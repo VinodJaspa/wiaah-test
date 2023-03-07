@@ -5,7 +5,7 @@ import {
 } from "@UI";
 import React from "react";
 
-export const wishlist: React.FC<{
+export const AccountWishlist: React.FC<{
   accountId: string;
 }> = ({ accountId }) => {
   const { data } = useAdminGetUserWishlist(accountId);

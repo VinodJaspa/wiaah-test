@@ -2,33 +2,31 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import {
-  AccountSettingsSection,
   SimpleTabs,
   SimpleTabItemList,
   SimpleTabHead,
-  AffiliationHistorySection,
-  Stack,
-  Divider,
-  BookingsHistory,
-  OrdersSection,
-  Pagination,
-  SocialProfile,
-  Table,
-  TBody,
-  THead,
-  Tr,
-  Td,
-  Th,
-  Image,
-  TrashIcon,
-  Badge,
-  Input,
-  DateFormInput,
   useAdminGetProfileQuery,
 } from "ui";
-import { mapArray, NumberShortner, randomNum } from "utils";
+import { randomNum } from "utils";
 import { getRandomImage } from "placeholder";
-import { BsKey } from "react-icons/bs";
+import { AccountGeneralView } from "components/views/sellers/general";
+import { AccountAffiliation } from "components/views/sellers/affiliation";
+import { AccountAddressBook } from "components/views/sellers/AccountAddressBook";
+import { AccountBlockList } from "components/views/sellers/AccountBlockList";
+import { AccountNewsletterSettings } from "components/views/sellers/AccountNewsletterSettings";
+import { AccountNotifications } from "components/views/sellers/AccountNotifications";
+import { AccountPaymentMethods } from "components/views/sellers/AccountPaymentMethods";
+import { AccountPayouts } from "components/views/sellers/AccountPayouts";
+import { AccountPersonalizationSettings } from "components/views/sellers/AccountPersonalizationSettings";
+import { AccountPrivacySettings } from "components/views/sellers/AccountPrivacySettings";
+import { AccountSavedPosts } from "components/views/sellers/AccountSavedPosts";
+import { AccountTransactions } from "components/views/sellers/AccountTransaction";
+import { AccountVouchers } from "components/views/sellers/AccountVouchers";
+import { AccountBookingsHistory } from "components/views/sellers/bookingsHistory";
+import { AccountOrderHistory } from "components/views/sellers/orderHistory";
+import { AccountReturns } from "components/views/sellers/returns";
+import { AccountSocialInfo } from "components/views/sellers/socialInfo";
+import { AccountWishlist } from "components/views/sellers/wishlist";
 
 const Edit = () => {
   const { getParam } = useRouting();
@@ -54,10 +52,22 @@ const Edit = () => {
   const tabsTitles = [
     "General",
     "Affiliation",
-    "Transactions",
     "Orders",
     "Bookings",
     "Social Info",
+    "Wishlist",
+    "Returns",
+    "PaymentMethods",
+    "AddressBook",
+    "Notifications",
+    "Newsletter",
+    "Blocklist",
+    "Privacy",
+    "Personalization and data",
+    "Saved Posts",
+    "Transactions",
+    "Payout",
+    "Vouchers",
   ];
 
   return (
@@ -80,100 +90,24 @@ const Edit = () => {
         </div>
 
         <SimpleTabItemList>
-          <AccountSettingsSection variant="buyer" />
-          <Stack col divider={<Divider />}>
-            <AffiliationHistorySection />
-          </Stack>
-          <div>transations</div>
-          <div>
-            <OrdersSection shopping={true} />
-            <Pagination />
-          </div>
-          <div>
-            <BookingsHistory shopping />
-            <Pagination />
-          </div>
-          <div>
-            <SocialProfile profileInfo={{ ...data, isFollowed: false }} />
-            <Table className="w-full">
-              <THead>
-                <Tr>
-                  <Th>{t("Thumbnail")}</Th>
-                  <Th>{t("ID")}</Th>
-                  <Th>{t("Legend")}</Th>
-                  <Th>{t("Views")}</Th>
-                  <Th>{t("Likes")}</Th>
-                  <Th>{t("Comments")}</Th>
-                  <Th>{t("Shares")}</Th>
-                  <Th>{t("Publish Date")}</Th>
-                  <Th>{t("Action")}</Th>
-                </Tr>
-              </THead>
-              <TBody>
-                <Tr>
-                  <Td></Td>
-                  <Td>
-                    <Input />
-                  </Td>
-                  <Td>
-                    <Input />
-                  </Td>
-                  <Td>
-                    <Input type="number" />
-                  </Td>
-                  <Td>
-                    <Input type="number" />
-                  </Td>
-                  <Td>
-                    <Input type="number" />
-                  </Td>
-                  <Td>
-                    <Input type="number" />
-                  </Td>
-                  <Td>
-                    <DateFormInput />
-                  </Td>
-                </Tr>
-
-                {mapArray(posts, (data, i) => (
-                  <Tr key={i}>
-                    <Td className="w-fit">
-                      {data.type === "video" ? (
-                        <></>
-                      ) : (
-                        <Image className="w-48" src={data.thumbnail} />
-                      )}
-                    </Td>
-                    <Td>{data.id.slice(0, 4)}...</Td>
-                    <Td className="w-[30%]">
-                      <div className="flex flex-col gap-4">
-                        <p>{data.description.slice(0, 80)}...</p>
-                        <div className="flex flex-wrap gap-2">
-                          {data.hashtags.map((tag, i) => (
-                            <Badge variant="off" key={i}>
-                              #{tag}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-                    </Td>
-                    <Td>{NumberShortner(data.views)}</Td>
-                    <Td>{NumberShortner(data.likes)}</Td>
-                    <Td>{NumberShortner(data.comments)}</Td>
-                    <Td>{NumberShortner(data.shares)}</Td>
-                    <Td>{new Date(data.createdAt).toDateString()}</Td>
-                    <Td className="text-white">
-                      <div className="flex flex-wrap gap-2">
-                        <BsKey className="w-8 h-8 p-2 bg-green-500" />
-                        <TrashIcon className="w-8 h-8 p-2 bg-red-500" />
-                      </div>
-                    </Td>
-                  </Tr>
-                ))}
-              </TBody>
-            </Table>
-            <Pagination />
-          </div>
+          <AccountGeneralView accountId={id} />
+          <AccountAffiliation accountId={id} />
+          <AccountOrderHistory accountId={id} />
+          <AccountBookingsHistory accountId={id} />
+          <AccountSocialInfo accountId={id} />
+          <AccountWishlist accountId={id} />
+          <AccountReturns accountId={id} />
+          <AccountPaymentMethods accountId={id} />
+          <AccountAddressBook accountId={id} />
+          <AccountNotifications accountId={id} />
+          <AccountNewsletterSettings accountId={id} />
+          <AccountBlockList accountId={id} />
+          <AccountPrivacySettings accountId={id} />
+          <AccountPersonalizationSettings accountId={id} />
+          <AccountSavedPosts accountId={id} />
+          <AccountTransactions accountId={id} />
+          <AccountPayouts accountId={id} />
+          <AccountVouchers accountId={id} />
         </SimpleTabItemList>
       </SimpleTabs>
     </>

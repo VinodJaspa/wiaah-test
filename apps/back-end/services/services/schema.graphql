@@ -487,6 +487,7 @@ type ServiceShopRaw {
 
 type Query {
   getAllServices(args: GetFilteredServicesInput!): [Service!]!
+  adminGetAccountService(accountId: String!): Service!
   getMyWorkingSchedule: WorkingSchedule!
   getInsurances(args: GetInsurancesInput!): [Insurance!]!
   getServiceInsuranceHistory(args: GetInsurancesHistoryInput!): [Insurance!]!
@@ -618,6 +619,7 @@ input GetVehiclesInput {
 }
 
 type Mutation {
+  adminUpdateServiceById(args: UpdateServiceInput!): Boolean!
   updateMyWorkingSchedule(args: UpdateWorkingScheduleInput!): WorkingSchedule!
   requestInsurancePayBack(bookId: ID!): Boolean!
   refuseInsurancePayBackRequest(bookId: ID!): Boolean!
@@ -646,6 +648,11 @@ type Mutation {
   deleteBeautyCenterServices(deleteBeautyCenterServices: DeleteTreatmentCategoriesInput!): Boolean!
   updateTreatmentCategories(updateTreatmentCategoriesArgs: UpdateTreatmentCategoriesInput!): [BeautyCenterTreatmentCategory!]!
   createVehicle(createVehicleInput: CreateVehicleServiceInput!): VehicleService!
+}
+
+input UpdateServiceInput {
+  type: ServiceType
+  id: String!
 }
 
 input UpdateWorkingScheduleInput {

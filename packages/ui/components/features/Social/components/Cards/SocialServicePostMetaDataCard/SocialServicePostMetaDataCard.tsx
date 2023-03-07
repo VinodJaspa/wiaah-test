@@ -11,6 +11,7 @@ import {
   LocationOutlineIcon,
   UserProfile,
   Service,
+  LocationIcon,
 } from "@UI";
 import { startCase } from "lodash";
 import { AttachmentType, Profile, ServicePost } from "@features/API";
@@ -102,7 +103,7 @@ export const SocialServicePostMetaDataCard: React.FC<
               </p> */}
             </div>
             <div className="flex items-center gap-1">
-              <LocationOutlineIcon />
+              <LocationIcon />
               <p>{post.location ? post.location.country || "" : null}</p>
             </div>
           </div>

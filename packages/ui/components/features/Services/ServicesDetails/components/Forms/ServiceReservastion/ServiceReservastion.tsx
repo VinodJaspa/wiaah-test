@@ -158,7 +158,7 @@ export const ServiceReservastion: React.FC = () => {
         </Formik>
       </div>
       <div className="px-11">
-        <BookedServicesCostDetails title="Rooms" vat={res?.data.vat || 0}>
+        <BookedServicesCostDetails title="Rooms" vat={12 || 0}>
           <div className="font-medium text-sm text-black flex justify-between items-center">
             <p>{t("Rooms")}</p>
             <p className="text-black text-sm font-medium text-opacity-50">

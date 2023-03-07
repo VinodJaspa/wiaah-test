@@ -41,14 +41,12 @@ const RestaurantServiceDetailsPage: NextPage = () => {
     data: res,
     isLoading,
     isError,
-  } = useGetRestaurantServiceDetailsDataQuery({
-    id,
-  });
+  } = useGetRestaurantServiceDetailsDataQuery(id);
   return (
     <>
       <MetaTitle
         content={`${t("Restaurant Details")} | ${
-          res ? res.data.name || "" : ""
+          res ? res?.owner?.firstName || "" : ""
         }`}
       />
 

@@ -1,14 +1,26 @@
+import {
+  Pagination,
+  ProductReturnsList,
+  useAdminGetAccountReturnsQuery,
+  usePaginationControls,
+} from "@UI";
+import React from "react";
+import { useForm } from "utils";
 
-
-
-import { MyReturnsSection, ProductReturnsList, useAdminGetUserWishlist } from '@UI'
-import React from 'react'
-
-export const AccountReturns:React.FC<{
-    accountId:string
-}> = () => {
-    const { } =useAdminGetUserWishlist
+export const AccountReturns: React.FC<{
+  accountId: string;
+}> = ({ accountId }) => {
+  const { pagination, controls } = usePaginationControls();
+  const { form } = useForm<
+    Parameters<typeof useAdminGetAccountReturnsQuery>[0]
+  >({ accountId, pagination });
+  const { data } = useAdminGetAccountReturnsQuery(form);
   return (
-    <ProductReturnsList items={} />
-  )
-}
+    <>
+      <ProductReturnsList
+        items={data.map((v) => ({ ...v, product: v.orderItem.product }))}
+      />
+      <Pagination controls={controls} />
+    </>
+  );
+};

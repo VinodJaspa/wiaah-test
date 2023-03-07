@@ -28,7 +28,7 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
       style={{
         boxShadow: "0px 0px 12px rgba(0, 0, 0, 0.1)",
       }}
-      className="flex w-full items-center justify-between rounded-[1.25rem] gap-4 px-10 py-[1.875rem]"
+      className="flex flex-col sm:flex-row w-full items-center justify-between rounded-[1.25rem] gap-4 px-10 py-[1.875rem]"
     >
       <div className="flex flex-col gap-6">
         <p className="font-semibold text-[1.75rem]">{serviceTitle}</p>

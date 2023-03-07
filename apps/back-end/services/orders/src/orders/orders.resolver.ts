@@ -9,6 +9,7 @@ import {
 } from '@nestjs/graphql';
 import {
   Inject,
+  NotFoundException,
   OnModuleInit,
   UnauthorizedException,
   UseGuards,
@@ -48,6 +49,8 @@ import {
   ShippingAddress,
   ShippingRule,
 } from './entities/extends';
+import { AdminGetAccountOrdersInput } from './dto/admin-get-account-orders.input';
+import { OrderStatusEnum } from '@prisma-client';
 
 @Resolver(() => Order)
 export class OrdersResolver implements OnModuleInit {
@@ -58,6 +61,56 @@ export class OrdersResolver implements OnModuleInit {
     private readonly commandbus: CommandBus,
     private readonly prisma: PrismaService,
   ) {}
+
+  @Query(() => Order)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async adminGetAccountOrderById(
+    @Args('id')
+    id: string,
+  ) {
+    const res = await this.prisma.order.findUnique({
+      where: {
+        id,
+      },
+      include: {
+        items: true,
+      },
+    });
+
+    if (!res)
+      throw new NotFoundException('Order with the given id was not found');
+
+    return res;
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async adminCancelOrder(
+    @Args('id')
+    id: string,
+  ) {
+    const res = await this.prisma.order.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!res)
+      throw new NotFoundException('Order with the given id was not found');
+
+    await this.prisma.order.update({
+      where: {
+        id,
+      },
+      data: {
+        status: {
+          of: OrderStatusEnum.canceled,
+        },
+      },
+    });
+
+    return res;
+  }
 
   @Query(() => [Order])
   @UseGuards(new GqlAuthorizationGuard([accountType.BUYER, accountType.SELLER]))
@@ -102,6 +155,7 @@ export class OrdersResolver implements OnModuleInit {
   }
 
   @Query(() => Order)
+  @UseGuards(new GqlAuthorizationGuard([accountType.BUYER, accountType.SELLER]))
   async getOrder(
     @Args('id') id: string,
     @GqlCurrentUser() user: AuthorizationDecodedUser,

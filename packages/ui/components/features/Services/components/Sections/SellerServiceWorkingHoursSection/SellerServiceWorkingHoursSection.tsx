@@ -1,11 +1,12 @@
-import { ServiceWorkingDays } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { DateDetails, mapArray } from "utils";
 import { TimeClockDisplay } from "@UI";
+import { ServiceDayWorkingHours } from "@features/API";
 
-export interface SellerServiceWorkingHoursSectionProps
-  extends ServiceWorkingDays {}
+export interface SellerServiceWorkingHoursSectionProps {
+  workingDays: ServiceDayWorkingHours[];
+}
 
 export const SellerServiceWorkingHoursSection: React.FC<
   SellerServiceWorkingHoursSectionProps
@@ -17,8 +18,8 @@ export const SellerServiceWorkingHoursSection: React.FC<
       <div className="flex gap-4 items-center">
         {mapArray(workingDays, (day, i) => {
           const today = i === 1 ? true : false;
-          const fromDate = DateDetails(new Date(day.from));
-          const toDate = DateDetails(new Date(day.to));
+          const fromDate = DateDetails(new Date(day.periods[0]));
+          const toDate = DateDetails(new Date(day.periods[1]));
           const dayoff = i === 4;
           return (
             <div
@@ -34,12 +35,14 @@ export const SellerServiceWorkingHoursSection: React.FC<
                 } pt-[0.625rem] pb-6 text-lg px-4 flex flex-col items-center gap-8`}
               >
                 <p className="text-sm text-center text-lightBlack font-semibold">
-                  {day.weekDay}
+                  {new Date(day.periods[0]).toLocaleDateString("en", {
+                    weekday: "long",
+                  })}
                 </p>
                 <div className="text-primary flex items-center w-11">
                   <TimeClockDisplay
-                    from={new Date(day.from)}
-                    to={new Date(day.to)}
+                    from={new Date(day.periods[0])}
+                    to={new Date(day.periods[1])}
                     off={dayoff}
                   />
                 </div>

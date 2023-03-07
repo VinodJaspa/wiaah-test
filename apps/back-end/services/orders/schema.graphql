@@ -62,6 +62,7 @@ enum OrderStatusEnum {
   rejectedByBuyer
   shipping
   compeleted
+  canceled
 }
 
 type OrderStatus {
@@ -132,12 +133,14 @@ type ReturnedOrder {
 }
 
 type Query {
+  adminGetAccountOrderById(id: String!): Order!
   getRefundableOrders(args: GetRefundableOrdersInput!): [Order!]!
   getMyOrders(getMyOrdersArgs: GetMyOrdersInput!): [Order!]!
   getOrder(id: String!): Order!
   getUserOrders(args: GetUserOrders!): [Order!]!
   getFilteredOrders(args: GetFilteredOrdersInput!): [Order!]!
   getLatestOrders(take: Int = 10): [Order!]!
+  adminGetSellerSales(args: AdminGetSellerSalesInput!): [OrderItem!]!
   getSalesDurningPeriod(args: GetSalesDurningPeriodInput!): [OrderItem!]!
   getRecentSales(count: Int = 10): [OrderItem!]!
   getMyReturnedOrders(args: GetMyReturnedOrdersInput!): [Refund!]!
@@ -181,6 +184,11 @@ input GetFilteredOrdersInput {
   pagination: GqlPaginationInput!
 }
 
+input AdminGetSellerSalesInput {
+  accountId: String!
+  pagination: GqlPaginationInput!
+}
+
 input GetSalesDurningPeriodInput {
   productName: String
   seller: String
@@ -219,6 +227,7 @@ input AdminGetReturnedOrdersInput {
 }
 
 type Mutation {
+  adminCancelOrder(id: String!): Boolean!
   rejectReceivedOrder(args: RejectReceivedOrderInput!): Boolean!
   rejectRequestedOrder(args: RejectRequestedOrderInput!): Boolean!
   acceptRequestedOrder(args: AcceptRequestedOrderInput!): Boolean!

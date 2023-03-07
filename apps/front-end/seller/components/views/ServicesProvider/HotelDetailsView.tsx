@@ -5,12 +5,10 @@ import {
   TabTitle,
   TabsHeader,
   useGetServicesProviderQuery,
-  useSearchFilters,
   ServiceReachOutSection,
   ServiceOnMapLocalizationSection,
   ServicePoliciesSection,
   HotelServiceRoomsSection,
-  PopularAmenitiesSection,
   ServicesProviderDescriptionSection,
   ServicePresentationCarosuel,
   StaticSideBarWrapper,
@@ -22,21 +20,13 @@ import {
   Image,
   Button,
   Divider,
-  LocationIcon,
   LocationOnPointFillIcon,
-  LocationAddressDisplay,
 } from "ui";
 import { useResponsive } from "hooks";
 import { useTranslation } from "react-i18next";
 
 export const HotelDetailsView: React.FC = () => {
-  const { filters } = useSearchFilters();
-  const { isMobile } = useResponsive();
-  const {
-    data: res,
-    isError,
-    isLoading,
-  } = useGetServicesProviderQuery(filters);
+  const { data: res, isError, isLoading } = useGetServicesProviderQuery("");
   const { t } = useTranslation();
 
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
@@ -49,16 +39,12 @@ export const HotelDetailsView: React.FC = () => {
               {res ? (
                 <div className="flex flex-col gap-8">
                   <ServicesProviderDescriptionSection
-                    description={res.data.description}
+                    description={res.serviceMetaInfo.description}
                     bathrooms={2}
                     bedrooms={3}
                     bikes={3}
                     cars={2}
                     pets={1}
-                  />
-                  <PopularAmenitiesSection
-                    cols={3}
-                    amenities={res.data.PopularAmenities || []}
                   />
                 </div>
               ) : null}
@@ -72,9 +58,9 @@ export const HotelDetailsView: React.FC = () => {
               {res ? (
                 <>
                   <ServiceReachOutSection
-                    email={res.data.email}
-                    location={res.data.location}
-                    telephone={res.data.telephone}
+                    email={res.contact.email}
+                    location={res.location}
+                    telephone={res.contact.phone}
                   />
                 </>
               ) : null}
@@ -89,8 +75,8 @@ export const HotelDetailsView: React.FC = () => {
                 <>
                   <ServicePoliciesSection
                     title={"Check-in Checkout Terms"}
-                    deposit={15}
-                    policies={res.data.policies}
+                    // deposit={15}
+                    policies={res.policies}
                   />
                 </>
               ) : null}
@@ -101,10 +87,10 @@ export const HotelDetailsView: React.FC = () => {
           name: "Working hours",
           component: (
             <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
+              {res && res.workingHours ? (
                 <>
                   <SellerServiceWorkingHoursSection
-                    workingDays={res.data.workingDays}
+                    workingDays={Object.values(res.workingHours.weekdays)}
                   />
                 </>
               ) : null}
@@ -117,7 +103,7 @@ export const HotelDetailsView: React.FC = () => {
             <SpinnerFallback isLoading={isLoading} isError={isError}>
               {res ? (
                 <>
-                  <HotelServiceRoomsSection rooms={res.data.rooms} />
+                  <HotelServiceRoomsSection rooms={res.rooms} />
                 </>
               ) : null}
             </SpinnerFallback>
@@ -129,9 +115,7 @@ export const HotelDetailsView: React.FC = () => {
             <SpinnerFallback isLoading={isLoading} isError={isError}>
               {res ? (
                 <>
-                  <ServiceOnMapLocalizationSection
-                    location={res.data.location}
-                  />
+                  <ServiceOnMapLocalizationSection location={res.location} />
                 </>
               ) : null}
             </SpinnerFallback>
@@ -186,19 +170,25 @@ export const HotelDetailsView: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
-      <div className="flex w-full items-center justify-between shadow p-4">
-        <div className="flex gap-4">
+      <div className="flex flex-col sm:flex-row gap-4 w-full items-center justify-between shadow p-4">
+        <div className="flex flex-col items-center sm:items-start sm:flex-row gap-4">
           <Image
-            className="w-28 h-20 rounded-xl object-cover"
-            src={res ? res.data.thumbnail : ""}
+            className="w-40 h-28 sm:h-20 sm:w-28 rounded-xl object-cover"
+            src={
+              res
+                ? "https://www.murhotels.com/cache/40/b3/40b3566310d686be665d9775f59ca9cd.jpg"
+                : ""
+            }
           />
           <div className="flex flex-col">
-            <p className=" font-bold text-xl">{res ? res.data.name : null}</p>
+            <p className=" font-bold text-xl">
+              {res ? res.serviceMetaInfo.title : null}
+            </p>
             <div className="flex text-black gap-1 items-center">
               <LocationOnPointFillIcon />
               {res ? (
                 <p>
-                  {res.data.location.city}, {res.data.location.country}
+                  {res.location.city}, {res.location.country}
                 </p>
               ) : null}
             </div>
@@ -210,34 +200,40 @@ export const HotelDetailsView: React.FC = () => {
         </div>
       </div>
       <Divider />
-      <ServicePresentationCarosuel
-        data={res ? res.data.presintations || [] : []}
-      />
+      <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
       <SpinnerFallback isLoading={isLoading} isError={isError}>
-        {res ? <ServicesProviderHeader {...res.data} /> : null}
+        {res ? (
+          <ServicesProviderHeader
+            rating={15}
+            reviewsCount={150}
+            serviceTitle={"service title"}
+            travelPeriod={{ arrival: new Date(), departure: new Date() }}
+          />
+        ) : null}
       </SpinnerFallback>
       <StaticSideBarWrapper sidebar={ServiceReservastion}>
         <Tabs>
           {({ currentTabIdx }) => {
             return (
               <>
-                <TabsHeader />
+                <TabsHeader className="flex overflow-x-scroll">
+                  {ServicesProviderTabs.map((tab, i) => (
+                    <>
+                      <TabTitle TabKey={i}>
+                        {({ currentActive }) => (
+                          <p
+                            className={`${
+                              currentActive ? "text-primary" : "text-lightBlack"
+                            } font-bold text-sm`}
+                          >
+                            {t(tab.name)}
+                          </p>
+                        )}
+                      </TabTitle>
+                    </>
+                  ))}
+                </TabsHeader>
                 <TabList />
-                {ServicesProviderTabs.map((tab, i) => (
-                  <>
-                    <TabTitle TabKey={i}>
-                      {({ currentActive }) => (
-                        <p
-                          className={`${
-                            currentActive ? "text-primary" : "text-lightBlack"
-                          } font-bold text-sm`}
-                        >
-                          {t(tab.name)}
-                        </p>
-                      )}
-                    </TabTitle>
-                  </>
-                ))}
                 {ServicesProviderTabs.at(currentTabIdx).component}
               </>
             );
