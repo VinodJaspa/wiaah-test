@@ -19,7 +19,7 @@ export const SellerShopView: React.FC = () => {
           {t("shop", "shop")}
         </Text> */}
         <ProductViewModal />
-        <div className="w-full">
+        <div className="flex flex-col gap-4 w-full">
           <ShopFilter onlyMobile={false} />
           {/* {JSON.stringify(data)} */}
           <ShopCardsListWrapper

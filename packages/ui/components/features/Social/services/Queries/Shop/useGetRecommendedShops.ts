@@ -109,46 +109,46 @@ export const useGetRecommendedShopPostsQuery = (
     args,
   });
   return useQuery(["get-recommended-shop-posts", { args }], async () => {
-    // return [...Array(15)].map((_, i) => ({
-    //   id: i.toString(),
-    //   comments: randomNum(150),
-    //   createdAt: new Date().toString(),
-    //   product: {
-    //     hashtags: [],
-    //     id: i.toString(),
-    //     presentations: [
-    //       { src: getRandomImage(), type: PresentationType.Image },
-    //     ],
-    //     price: randomNum(15),
-    //     title: "title",
-    //     cashback: {
-    //       amount: randomNum(5),
-    //       id: i.toString(),
-    //       units: 5,
-    //       type: CashbackType.Cash,
-    //     },
-    //     discount: {
-    //       amount: randomNum(54),
-    //       id: i.toString(),
-    //       units: randomNum(56),
-    //     },
-    //   },
-    //   productId: i.toString(),
-    //   reactionNum: randomNum(56),
-    //   shares: randomNum(5),
-    //   userId: i.toString(),
-    //   views: randomNum(546),
-    //   user: {
-    //     id: i.toString(),
-    //     profile: {
-    //       id: i.toString(),
-    //       photo: getRandomImage(),
-    //       profession: "profession",
-    //       username: "name",
-    //       verified: true,
-    //     },
-    //   },
-    // }));
+    return [...Array(15)].map((_, i) => ({
+      id: i.toString(),
+      comments: randomNum(150),
+      createdAt: new Date().toString(),
+      product: {
+        hashtags: [],
+        id: i.toString(),
+        presentations: [
+          { src: getRandomImage(), type: PresentationType.Image },
+        ],
+        price: randomNum(15),
+        title: "title",
+        cashback: {
+          amount: randomNum(5),
+          id: i.toString(),
+          units: 5,
+          type: CashbackType.Cash,
+        },
+        discount: {
+          amount: randomNum(54),
+          id: i.toString(),
+          units: randomNum(56),
+        },
+      },
+      productId: i.toString(),
+      reactionNum: randomNum(56),
+      shares: randomNum(5),
+      userId: i.toString(),
+      views: randomNum(546),
+      user: {
+        id: i.toString(),
+        profile: {
+          id: i.toString(),
+          photo: getRandomImage(),
+          profession: "profession",
+          username: "name",
+          verified: true,
+        },
+      },
+    }));
 
     const res = await client.send<GetShopRecommendedPostsQuery>();
 

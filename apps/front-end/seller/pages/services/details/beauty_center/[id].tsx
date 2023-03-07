@@ -43,7 +43,7 @@ const RestaurantServiceDetailsPage: NextPage = () => {
     <>
       <MetaTitle
         content={`${t("Beauty Center Details")} | ${
-          res ? res.data.name || "" : ""
+          res ? res?.serviceMetaInfo?.title || "" : ""
         }`}
       />
 

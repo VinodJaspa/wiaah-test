@@ -1,7 +1,3 @@
-import {
-  BeautyCenterTreatmentDataType,
-  ServiceCancelationPolicyType,
-} from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
@@ -9,12 +5,14 @@ import {
   Button,
   BeautyCenterTreatmentCard,
   ServiceCancelationPolicyInput,
+  BeautyCenterTreatment,
+  ServiceCancelationPolicy,
 } from "@UI";
 import { randomNum } from "utils";
 
 export interface BeautyCenterTreatmentsListProps {
-  treatments: BeautyCenterTreatmentDataType[];
-  cancelation: ServiceCancelationPolicyType[];
+  treatments: BeautyCenterTreatment[];
+  cancelation: ServiceCancelationPolicy[];
 }
 
 export const BeautyCenterTreatmentsList: React.FC<
@@ -28,7 +26,7 @@ export const BeautyCenterTreatmentsList: React.FC<
       <div className="flex flex-col gap-8 pr-2 ">
         {treatments.map((treatment, i) => (
           <BeautyCenterTreatmentCard
-            {...treatment}
+            treatment={treatment}
             selected={randomNum(10) > 7}
             onUnSelect={() => {}}
             onSelect={() => {}}
@@ -44,7 +42,7 @@ export const BeautyCenterTreatmentsList: React.FC<
             {...policy}
             name="cancelationPolicy"
             onSelected={() => {}}
-            key={`${i}-${policy.id}`}
+            key={`${i}-${policy.cost}`}
           />
         ))}
       </div>

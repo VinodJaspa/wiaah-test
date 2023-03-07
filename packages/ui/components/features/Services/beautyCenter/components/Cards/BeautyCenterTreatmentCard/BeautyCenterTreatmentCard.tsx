@@ -1,4 +1,3 @@
-import { BeautyCenterTreatmentDataType } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -6,38 +5,29 @@ import {
   UnDiscountedPriceDisplay,
   Button,
   TimeRangeDisplay,
+  BeautyCenterTreatment,
 } from "@UI";
 
-export interface BeautyCenterTreatmentCardProps
-  extends BeautyCenterTreatmentDataType {
+export interface BeautyCenterTreatmentCardProps {
   onSelect: (treatmentId: string) => any;
   onUnSelect: (treatmentId: string) => any;
   selected?: boolean;
+  treatment: BeautyCenterTreatment;
 }
 
 export const BeautyCenterTreatmentCard: React.FC<
   BeautyCenterTreatmentCardProps
-> = ({
-  category,
-  discount,
-  durationInMinutes,
-  price,
-  title,
-  id,
-  selected,
-  onSelect,
-  onUnSelect,
-}) => {
+> = ({ treatment, selected, onSelect, onUnSelect }) => {
   const { t } = useTranslation();
 
   return (
     <div className="flex w-full justify-between">
       <div className="md:text-lg font-semibold flex flex-col gap-1">
         <p className="">
-          {category} - {title}
+          {treatment.category?.title} - {treatment.title}
         </p>
         <div className="flex font-normal text-base gap-2">
-          <TimeRangeDisplay rangeInMinutes={durationInMinutes} />
+          <TimeRangeDisplay rangeInMinutes={treatment.duration} />
           <p onClick={() => {}} className="cursor-pointer text-primary">
             {t("Show Details")}
           </p>
@@ -45,19 +35,19 @@ export const BeautyCenterTreatmentCard: React.FC<
       </div>
       <div className="flex gap-4">
         <div className="flex font-semibold flex-col gap-1 items-end">
-          <PriceDisplay symbol priceObject={{ amount: price }} />
+          <PriceDisplay symbol priceObject={{ amount: treatment.price }} />
           <UnDiscountedPriceDisplay
             className="text-gray-400"
-            amount={price}
-            discount={discount}
+            amount={treatment?.price || 0 * treatment?.discount?.value || 1}
+            discount={treatment?.discount?.value}
           />
         </div>
         <Button
           onClick={() => {
             if (selected) {
-              onUnSelect && onUnSelect(id);
+              onUnSelect && onUnSelect(treatment.id);
             } else {
-              onSelect && onSelect(id);
+              onSelect && onSelect(treatment.id);
             }
           }}
           className="h-fit w-24"

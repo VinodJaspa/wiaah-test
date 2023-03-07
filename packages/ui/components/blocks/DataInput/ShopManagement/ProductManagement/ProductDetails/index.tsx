@@ -18,6 +18,7 @@ import {
   getTranslationStateValue,
   useGetProductCategories,
   FormatCategoryFilters,
+  Image,
 } from "@UI";
 import { FileRes } from "utils";
 import { ProductCondition, ProductType } from "@features/API";
@@ -184,7 +185,7 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
                     >
                       {images[i] ? (
                         <>
-                          <img
+                          <Image
                             className="w-full h-full object-cover"
                             key={i}
                             //@ts-ignore

@@ -1,4 +1,3 @@
-import { ResturantMenuListType } from "api";
 import React from "react";
 import {
   Divider,
@@ -8,26 +7,27 @@ import {
   Badge,
 } from "@UI";
 import { mapArray } from "utils";
+import { RestaurantMenu } from "@features/API";
 
-export interface ResturantMenuListProps extends ResturantMenuListType {
+export interface ResturantMenuListProps {
   onMenuListChange: (menuItemId: string, quantity: number) => any;
+  menu: RestaurantMenu;
 }
 
 export const ResturantMenuList: React.FC<ResturantMenuListProps> = ({
-  menuItems,
-  listTitle,
+  menu,
   onMenuListChange,
 }) => {
   return (
     <div className="flex flex-col gap-4">
-      <p className="font-bold">{listTitle}</p>
-      {menuItems.map((item, i) => (
+      <p className="font-bold">{menu.name}</p>
+      {mapArray(menu.dishs, (item, i) => (
         <div className="font-semibold justify-between flex items-center pr-2">
           <div className="flex gap-3 items-center">
             <div className="min-w-[5rem] rounded-xl overflow-hidden">
               <AspectRatioImage
                 ratio={3 / 4}
-                alt={item.title}
+                alt={item.name}
                 src={item.thumbnail}
               />
             </div>
@@ -36,7 +36,7 @@ export const ResturantMenuList: React.FC<ResturantMenuListProps> = ({
                 className="overflow-hidden font-bold whitespace-nowrap text-ellipsis"
                 key={i}
               >
-                {item.title}
+                {item.name}
               </p>
               <div className="flex gap-2 font-normal items-center">
                 {mapArray(item.ingredients, (ing, i) => (

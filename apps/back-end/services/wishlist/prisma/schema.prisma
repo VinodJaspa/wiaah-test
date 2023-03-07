@@ -40,6 +40,13 @@ type WishlistItem {
   itemType    WishlistItemType
 }
 
+model WishedItem {
+  id       String           @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String
+  itemId   String
+  itemType WishlistItemType
+}
+
 enum WishlistItemType {
   service
   product

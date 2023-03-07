@@ -26,7 +26,7 @@ export const HotelServiceRoomsSection: React.FC<
     addService({
       id: room.id,
       name: room.title,
-      price: room.price,
+      price: room.pricePerNight,
       qty: 1,
     });
   }

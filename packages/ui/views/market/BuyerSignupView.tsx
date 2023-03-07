@@ -8,23 +8,29 @@ import {
   Checkbox,
   CheckboxProps,
   HStack,
+  CalenderIcon,
+  DateFormInput,
+  DateFormInputProps,
 } from "@UI";
 import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
+import { useForm } from "utils";
 
 export interface BuyerSignupInputType {}
 
 export const BuyerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
   onSubmit,
 }) => {
-  const [formInput, setFormInput] = React.useState<BuyerSignupInputType>({
-    firstName: "",
-    lastName: "",
-    password: "",
-    confirm_password: "",
-    email: "",
-    terms_and_conditions: false,
-  });
+  const { dateInputProps, form, handleChange, inputProps, selectProps } =
+    useForm<BuyerSignupInputType>({
+      firstName: "",
+      lastName: "",
+      password: "",
+      confirm_password: "",
+      email: "",
+      birthday: "",
+      terms_and_conditions: false,
+    });
   const { t } = useTranslation();
 
   return (
@@ -33,13 +39,13 @@ export const BuyerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
         {t("create_an_account", "create an account")}
       </h2>
       <Spacer spaceInRem={2} />
-      <Formik
+      <Formik<any>
         initialValues={{}}
         onSubmit={(data) => {
           onSubmit && onSubmit(data);
         }}
       >
-        {() => {
+        {({ values, setFieldValue }) => {
           return (
             <Form>
               <HStack>
@@ -62,6 +68,16 @@ export const BuyerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
                 name="email"
                 placeholder="Email"
                 icon={<IoMdMail />}
+              />
+              <Spacer />
+              <FormikInput<any>
+                id="BirthDate"
+                name="birthDate"
+                placeholder="BirthDate"
+                as={DateFormInput}
+                dateValue={values?.birthDate}
+                onDateChange={(e: any) => setFieldValue("birthDate", e)}
+                icon={<CalenderIcon />}
               />
               <Spacer />
               <FormikInput

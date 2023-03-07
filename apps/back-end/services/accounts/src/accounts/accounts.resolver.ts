@@ -48,6 +48,7 @@ export class AccountsResolver {
       firstName,
       lastName,
       password,
+      birthDate,
     }: CreateAccountInput,
   ) {
     const emailExists = await this.prisma.account.findUnique({
@@ -75,6 +76,7 @@ export class AccountsResolver {
         lastName,
         password: hashedPassword,
         type: accountType,
+        birthDate,
       },
     });
 
@@ -88,6 +90,7 @@ export class AccountsResolver {
         firstName: acc.firstName,
         lastName: acc.lastName,
         profession: acc.profession,
+        birthDate,
       }),
     );
     return true;

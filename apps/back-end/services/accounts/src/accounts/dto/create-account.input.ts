@@ -34,6 +34,43 @@ export class CreateAccountInput {
 
   @Field(() => RegisterAccountType)
   accountType: RegisterAccountType;
+
+  @Field(() => String)
+  birthDate: string;
+}
+
+@InputType()
+export class AdminCreateAdminAccountInput {
+  @Field(() => String)
+  firstName: string;
+
+  @Field(() => String)
+  lastName: string;
+
+  @Field(() => String)
+  email: string;
+
+  @Field(() => String)
+  password: string;
+
+  @Field(() => String)
+  confirmPassword: string;
+
+  @Field(() => String)
+  photo: string;
+
+  @Field(() => StaffAccountType)
+  type: StaffAccountType;
+
+  @Field(() => String)
+  birthDate: string;
+}
+@InputType()
+export class AdminUpdateAdminAccountInput extends PartialType(
+  AdminCreateAdminAccountInput,
+) {
+  @Field(() => ID)
+  id: string;
 }
 
 @InputType()

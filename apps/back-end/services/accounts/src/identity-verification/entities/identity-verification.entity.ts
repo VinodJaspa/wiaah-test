@@ -36,6 +36,9 @@ export class IdentityVerification {
   dateOfBirth: Date;
 
   @Field(() => String)
+  addressProofBill: string;
+
+  @Field(() => String)
   id_front: string;
 
   @Field(() => String)

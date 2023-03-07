@@ -12,7 +12,7 @@ import {
   SelectProps,
 } from "@UI";
 import * as yup from "yup";
-import { randomNum } from "../../../../helpers";
+import { randomNum } from "utils";
 
 const paymentValidationSchema = yup.object().shape({});
 

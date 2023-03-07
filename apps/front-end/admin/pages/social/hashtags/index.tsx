@@ -1,5 +1,13 @@
 import { AdminListTable } from "@components";
-import { AdminTableCellTypeEnum, useAdminGetHashtagsQuery, usePaginationControls } from "@UI";
+import {
+  AdminTableCellTypeEnum,
+  Button,
+  useAdminGetHashtagsQuery,
+  usePaginationControls,
+  TrashIcon,
+  NotAllowedIcon,
+  useAdminSuspenseHashtag,
+} from "@UI";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -16,15 +24,56 @@ const hashtags: NextPage = () => {
   });
   const { data } = useAdminGetHashtagsQuery(form);
 
-  return <AdminListTable title={t("Hashtags")} headers={[]} data={mapArray(data,(v)=> ({
-    id:v.id,
-    cols:[
-      {
-        type:AdminTableCellTypeEnum.text,
-        
-      }
-    ]
-  }))} />;
+  const { mutate: suspense, isLoading } = useAdminSuspenseHashtag();
+
+  return (
+    <AdminListTable
+      title={t("Hashtags")}
+      headers={[
+        {
+          value: t("Name"),
+        },
+        {
+          value: t("Usage"),
+        },
+        {
+          type: AdminTableCellTypeEnum.action,
+          value: t("Action"),
+        },
+      ]}
+      data={mapArray(data, (v) => ({
+        id: v.id,
+        cols: [
+          {
+            type: AdminTableCellTypeEnum.text,
+            value: v.tag,
+          },
+          {
+            type: AdminTableCellTypeEnum.number,
+            value: v?.usage?.toString(),
+          },
+          {
+            type: AdminTableCellTypeEnum.action,
+            actionBtns: [
+              <Button
+                onClick={() => {
+                  suspense(v.tag);
+                }}
+                loading={isLoading}
+                center
+                className="p-2"
+              >
+                <NotAllowedIcon />
+              </Button>,
+              <Button center className="p-2">
+                <TrashIcon onClick={() => {}} />
+              </Button>,
+            ],
+          },
+        ],
+      }))}
+    />
+  );
 };
 
 export default hashtags;

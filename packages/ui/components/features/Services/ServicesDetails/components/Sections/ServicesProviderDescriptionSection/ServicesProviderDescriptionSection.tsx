@@ -51,15 +51,15 @@ export const ServicesProviderDescriptionSection: React.FC<
     <div ref={descriptionRef} className="flex flex-col gap-[1.875rem]">
       <p className="md:text-lg">{description}</p>
       <div
-        style={{
-          gridTemplateColumns:
-            "repeat(auto-fit, minmax(3rem,calc(25% - 0.6rem)))",
-        }}
-        className="grid grid-cols-[] gap-3"
+        // style={{
+        //   gridTemplateColumns:
+        //     "repeat(auto-fit, minmax(3rem,calc(25% - 0.6rem)))",
+        // }}
+        className="grid grid-cols-2 md:grid-cols-4 gap-3"
       >
         {items.map(({ icon, text }, i) => (
           <div
-            className="flex rounded-lg bg-[#EFF0F2] text-darkBrown  flex-col gap-4 justify-center items-center h-[9.375rem] w-full"
+            className="flex rounded-lg bg-[#EFF0F2] text-darkBrown flex-col gap-4 justify-center items-center h-[9.375rem] w-full"
             key={i}
           >
             {runIfFn<HtmlSvgProps>(icon, { className: "text-[2.125rem]" })}

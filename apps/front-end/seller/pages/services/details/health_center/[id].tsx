@@ -37,18 +37,12 @@ const HealthCenterServiceDetailsPage: NextPage = () => {
   const { t } = useTranslation();
   const { getParam } = useRouting();
   const id = getParam("id");
-  const {
-    data: res,
-    isLoading,
-    isError,
-  } = useGetHealthCenterDetailsQuery({
-    id,
-  });
+  const { data: res, isLoading, isError } = useGetHealthCenterDetailsQuery(id);
   return (
     <>
       <MetaTitle
         content={`${t("Beauty Center Details")} | ${
-          res ? res.data.name || "" : ""
+          res ? res.owner.firstName || "" : ""
         }`}
       />
 

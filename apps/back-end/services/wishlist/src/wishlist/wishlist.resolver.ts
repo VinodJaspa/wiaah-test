@@ -1,20 +1,41 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import {
+  accountType,
   AuthorizationDecodedUser,
+  ExtractPagination,
   GqlAuthorizationGuard,
   GqlCurrentUser,
 } from 'nest-utils';
 
 import { WishlistService } from './wishlist.service';
-import { Wishlist } from './entities/wishlist.entity';
+import { WishedItem, Wishlist } from './entities/wishlist.entity';
 import { AddWishlistItemInput } from './dto/add-wishlist-item.input';
 import { RemoveWishlistItemInput } from './dto/remove-wishlist-item.input';
+import { AdminGetUserWishlistInput } from './dto';
+import { PrismaService } from 'prismaService';
 
-@UseGuards(new GqlAuthorizationGuard([]))
 @Resolver(() => Wishlist)
+@UseGuards(new GqlAuthorizationGuard([]))
 export class WishlistResolver {
-  constructor(private readonly wishlistService: WishlistService) {}
+  constructor(
+    private readonly wishlistService: WishlistService,
+    private readonly prisma: PrismaService,
+  ) {}
+
+  @Query(() => [WishedItem])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  getUserWishelist(@Args('args') args: AdminGetUserWishlistInput) {
+    const { skip, take } = ExtractPagination(args.pagination);
+
+    return this.prisma.wishedItem.findMany({
+      where: {
+        userId: args.accountId,
+      },
+      skip,
+      take,
+    });
+  }
 
   @Query((type) => Wishlist)
   MyWishlist(@GqlCurrentUser() user: AuthorizationDecodedUser) {

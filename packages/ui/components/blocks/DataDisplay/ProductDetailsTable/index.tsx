@@ -13,7 +13,6 @@ import {
   TrashIcon,
   EditIcon,
   SquarePlusOutlineIcon,
-  Input,
   SelectOption,
   Select,
   Image,
@@ -26,15 +25,40 @@ import {
   useDeleteMyProductMutation,
   useGetMyProducts,
 } from "@features/Products";
-import { QueryGetMyProductsArgs } from "@features/API";
+import { Product, QueryGetMyProductsArgs } from "@features/API";
 import { Formik } from "formik";
 import { FormikInput } from "@blocks/DataInput";
+import { mapArray } from "@UI/../utils/src";
 
-export interface ProductDetailsTableProps {}
+export interface ProductDetailsTableProps {
+  products: Pick<
+    Product,
+    | "title"
+    | "thumbnail"
+    | "price"
+    | "stock"
+    | "earnings"
+    | "sales"
+    | "totalOrdered"
+    | "totalDiscounted"
+    | "totalDiscountedAmount"
+    | "unitsRefunded"
+    | "id"
+    | "positiveFeedback"
+    | "reviews"
+    | "negitiveFeedback"
+    | "status"
+  >[];
+  onDelete: (id: string) => any;
+  filters: any;
+  onFiltersChange: (filters: any) => any;
+}
 
-export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
+export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
+  products,
+  onDelete,
+}) => {
   const { AddNewProduct, EditProduct } = useEditProductData();
-  const { controls, pagination } = usePaginationControls();
   const [input, setInput] = React.useState<
     Omit<QueryGetMyProductsArgs["filterInput"], "pagination">
   >({});
@@ -42,13 +66,6 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
   const { isMobile } = useResponsive();
 
   const { t } = useTranslation();
-
-  const { data: Products } = useGetMyProducts({
-    ...input,
-    pagination,
-  });
-
-  const { mutate, data } = useDeleteMyProductMutation();
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -164,7 +181,7 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
               </Tr>
             </THead>
             <TBody>
-              {Products?.map((product, i) => (
+              {mapArray(products, (product, i) => (
                 <Tr key={product.id + i}>
                   <Td align="center" className="w-24">
                     <Image
@@ -216,7 +233,7 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
                       />
                       <TrashIcon
                         onClick={() => {
-                          mutate(product.id);
+                          onDelete && onDelete(product.id);
                         }}
                         className="text-red-700 text-xl cursor-pointer"
                       />
@@ -227,7 +244,6 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({}) => {
             </TBody>
           </Table>
         </TableContainer>
-        <ItemsPagination controls={controls} />
       </div>
     </div>
   );

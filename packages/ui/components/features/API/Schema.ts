@@ -152,6 +152,7 @@ export type AddWishlistItemInput = {
 };
 
 export type AdminCreateAdminAccountInput = {
+  birthDate: Scalars["String"];
   confirmPassword: Scalars["String"];
   email: Scalars["String"];
   firstName: Scalars["String"];
@@ -164,6 +165,20 @@ export type AdminCreateAdminAccountInput = {
 export type AdminDeleteServiceInput = {
   deletionReason: Scalars["String"];
   id: Scalars["ID"];
+};
+
+export type AdminGetAccountProductsInput = {
+  accountId: Scalars["ID"];
+  pagination: GqlPaginationInput;
+  price?: Maybe<Scalars["Float"]>;
+  productId?: Maybe<Scalars["ID"]>;
+  qty?: Maybe<Scalars["Int"]>;
+  seller?: Maybe<Scalars["String"]>;
+  status?: Maybe<ProductStatus>;
+  title?: Maybe<Scalars["String"]>;
+  type?: Maybe<ProductType>;
+  updatedAt?: Maybe<Scalars["String"]>;
+  usageStatus?: Maybe<ProductUsageStatus>;
 };
 
 export type AdminGetBookingsInput = {
@@ -238,6 +253,11 @@ export type AdminGetReturnedOrdersInput = {
   shippingAmount?: Maybe<Scalars["Float"]>;
 };
 
+export type AdminGetSellerSalesInput = {
+  accountId: Scalars["String"];
+  pagination: GqlPaginationInput;
+};
+
 export type AdminGetShippingGeoZoneRulesInput = {
   description?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
@@ -265,6 +285,21 @@ export type AdminGetTaxRatesInput = {
   rate?: Maybe<Scalars["Float"]>;
 };
 
+export type AdminGetUserFinancialAccounts = {
+  accountId: Scalars["String"];
+};
+
+export type AdminGetUserReturnedOrdersInput = {
+  accountId: Scalars["ID"];
+  pagination: GqlPaginationInput;
+};
+
+export type AdminGetUserWishlistInput = {
+  accountId: Scalars["String"];
+  pagination: GqlPaginationInput;
+};
+
+
 export type AdminSendMailToUsersInput = {
   message: Scalars["String"];
   subject: Scalars["String"];
@@ -272,6 +307,7 @@ export type AdminSendMailToUsersInput = {
 };
 
 export type AdminUpdateAdminAccountInput = {
+  birthDate?: Maybe<Scalars["String"]>;
   confirmPassword?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
   firstName?: Maybe<Scalars["String"]>;
@@ -776,6 +812,7 @@ export type Country = {
 
 export type CreateAccountInput = {
   accountType: RegisterAccountType;
+  birthDate: Scalars["String"];
   confirmPassword: Scalars["String"];
   email: Scalars["String"];
   firstName: Scalars["String"];
@@ -889,6 +926,7 @@ export type CreateHotelInput = {
 };
 
 export type CreateIdentityVerificationInput = {
+  addressProofBill: Scalars["String"];
   dateOfBirth: Scalars["String"];
   firstName: Scalars["String"];
   fullAddress: Scalars["String"];
@@ -1784,13 +1822,14 @@ export type GetVouchersInput = {
 };
 
 export type GetWithdrawalRequestsAdminInput = {
+  accountType?: Maybe<WithdrawalAccountType>;
   amount?: Maybe<Scalars["Float"]>;
   email?: Maybe<Scalars["String"]>;
   id?: Maybe<Scalars["ID"]>;
+  name?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
   processedAt?: Maybe<Scalars["String"]>;
   requestedAt?: Maybe<Scalars["String"]>;
-  seller?: Maybe<Scalars["String"]>;
   shop?: Maybe<Scalars["String"]>;
   status?: Maybe<WithdrawalStatus>;
 };
@@ -1815,6 +1854,8 @@ export type GqlStatusResponse = {
 export type Hashtag = {
   __typename?: "Hashtag";
   createdAt: Scalars["DateTime"];
+  createdBy: Account;
+  createdById: Scalars["String"];
   id: Scalars["ID"];
   tag: Scalars["String"];
   updatedAt: Scalars["DateTime"];
@@ -2170,15 +2211,20 @@ export type Mutation = {
   activateRestaurant: Restaurant;
   addNewBillingAddress: BillingAddress;
   addProductToCart: CartProduct;
+  adminCancelOrder: Scalars["Boolean"];
   adminCreateStaffAccount: Scalars["Boolean"];
   adminDeleteNewsfeedPost: Scalars["Boolean"];
   adminDeleteProduct: Scalars["Boolean"];
   adminDeleteProductReview: Scalars["Boolean"];
   adminDeleteService: Scalars["Boolean"];
+  adminDeleteUserWishlistItem: Scalars["Boolean"];
   adminEditAccount: Account;
   adminLogin: GqlStatusResponse;
+  adminRemvoeBlock: Scalars["Boolean"];
+  adminUpdateAccountWorkingSchedule: WorkingSchedule;
   adminUpdateAffiliation: Scalars["Boolean"];
   adminUpdateProductReview: Scalars["Boolean"];
+  adminUpdateServiceById: Scalars["Boolean"];
   adminUpdateStaffAccount: Scalars["Boolean"];
   applyVoucher: ShoppingCart;
   askForRefund: Scalars["Boolean"];
@@ -2188,6 +2234,7 @@ export type Mutation = {
   cancelServiceReservation: Scalars["Boolean"];
   changeMyNewsletterSettings: Scalars["Boolean"];
   changePassword: Scalars["Boolean"];
+  changeUserNewsletterSettings: Scalars["Boolean"];
   clearBalance: Scalars["Boolean"];
   clearShoppingCart: ShoppingCart;
   clearVouchers: Scalars["Boolean"];
@@ -2294,6 +2341,7 @@ export type Mutation = {
   unBanSellersCities: Scalars["Boolean"];
   unFollow: Scalars["Boolean"];
   unblockUser: Scalars["Boolean"];
+  updateAccountPrivacySettings: PrivacySettings;
   updateAffiliation: Affiliation;
   updateBeautyCenter: BeautyCenter;
   updateBeautyCenterAdmin: Scalars["Boolean"];
@@ -2408,6 +2456,10 @@ export type MutationAddProductToCartArgs = {
   addItemToCartArgs: AddShoppingCartProductItemInput;
 };
 
+export type MutationAdminCancelOrderArgs = {
+  id: Scalars["String"];
+};
+
 export type MutationAdminCreateStaffAccountArgs = {
   args: AdminCreateAdminAccountInput;
 };
@@ -2429,6 +2481,10 @@ export type MutationAdminDeleteServiceArgs = {
   args: AdminDeleteServiceInput;
 };
 
+export type MutationAdminDeleteUserWishlistItemArgs = {
+  accountId: Scalars["String"];
+};
+
 export type MutationAdminEditAccountArgs = {
   editAccountInput: UpdateSellerAccountAdminInput;
 };
@@ -2437,12 +2493,25 @@ export type MutationAdminLoginArgs = {
   args: LoginDto;
 };
 
+export type MutationAdminRemvoeBlockArgs = {
+  id: Scalars["String"];
+};
+
+export type MutationAdminUpdateAccountWorkingScheduleArgs = {
+  accountId: Scalars["String"];
+  args: UpdateWorkingScheduleInput;
+};
+
 export type MutationAdminUpdateAffiliationArgs = {
   updateAffilaition: UpdateAffiliationAdminInput;
 };
 
 export type MutationAdminUpdateProductReviewArgs = {
   args: UpdateProductReviewInput;
+};
+
+export type MutationAdminUpdateServiceByIdArgs = {
+  args: UpdateServiceInput;
 };
 
 export type MutationAdminUpdateStaffAccountArgs = {
@@ -2479,6 +2548,11 @@ export type MutationChangeMyNewsletterSettingsArgs = {
 
 export type MutationChangePasswordArgs = {
   changePasswordInput: ChangePasswordInput;
+};
+
+export type MutationChangeUserNewsletterSettingsArgs = {
+  accountId: Scalars["String"];
+  args: UpdateNewsletterInput;
 };
 
 export type MutationCreateActionArgs = {
@@ -2849,6 +2923,11 @@ export type MutationUnblockUserArgs = {
   args: CreateBlockInput;
 };
 
+export type MutationUpdateAccountPrivacySettingsArgs = {
+  args: UpdateMyPrivacyInput;
+  id: Scalars["String"];
+};
+
 export type MutationUpdateAffiliationArgs = {
   args: UpdateAffiliationInput;
 };
@@ -3098,11 +3177,13 @@ export type Order = {
 
 export type OrderItem = {
   __typename?: "OrderItem";
-  affiliationId?: Maybe<Scalars["String"]>;
+  affiliator: Account;
+  affiliatorId?: Maybe<Scalars["String"]>;
   buyer: Account;
-  cashbackId?: Maybe<Scalars["String"]>;
+  cashback?: Maybe<Scalars["Float"]>;
   createdAt: Scalars["String"];
-  discountId?: Maybe<Scalars["String"]>;
+  discount?: Maybe<Scalars["Float"]>;
+  discountAmount?: Maybe<Scalars["Float"]>;
   id: Scalars["ID"];
   order: Order;
   orderId: Scalars["String"];
@@ -3130,6 +3211,7 @@ export type OrderStatus = {
 };
 
 export enum OrderStatusEnum {
+  Canceled = "canceled",
   Compeleted = "compeleted",
   Paid = "paid",
   Pending = "pending",
@@ -3413,6 +3495,13 @@ export type Query = {
   MyWishlist: Wishlist;
   acceptAccountVerification: Scalars["Boolean"];
   adminGetAccount: Account;
+  adminGetAccountBookingHistory: Array<BookedService>;
+  adminGetAccountOrderById: Order;
+  adminGetAccountPrivacySettings: PrivacySettings;
+  adminGetAccountProducts: Array<Product>;
+  adminGetAccountSavedPosts: UserSavedPostsGroup;
+  adminGetAccountService: Service;
+  adminGetAccountWorkingSchedule: WorkingSchedule;
   adminGetBannedCountry: BannedCountry;
   adminGetBookings: Array<BookedService>;
   adminGetContentComments: Array<Comment>;
@@ -3427,11 +3516,18 @@ export type Query = {
   adminGetProfessions: Array<Profession>;
   adminGetRawService?: Maybe<ServiceShopRaw>;
   adminGetReturnedOrders: Array<ReturnedOrder>;
+  adminGetSellerSales: Array<OrderItem>;
   adminGetSiteInformations: Array<SiteInformation>;
   adminGetStaffAccounts: Array<Account>;
   adminGetTaxRate: TaxRate;
   adminGetTaxRates: Array<TaxRate>;
   adminGetTransations: Array<Transaction>;
+  adminGetUserBlockList: Array<Block>;
+  adminGetUserBookings: Array<BookedService>;
+  adminGetUserFinancialAccounts: Array<FinancialAccount>;
+  adminGetUserNewsletterSettings: NewsletterSettings;
+  adminGetUserReturnedOrders: Array<ReturnedOrder>;
+  adminGetUserWishlist: Array<WishedItem>;
   canAccessRoom: Scalars["Boolean"];
   findAll: ProfilePaginatedResponse;
   getAccountDeletionRequests: Array<AccountDeletionRequest>;
@@ -3574,6 +3670,7 @@ export type Query = {
   getUserProductPosts: Array<ProductPost>;
   getUserServicePosts: Array<ServicePost>;
   getUserStory: Story;
+  getUserWishelist: Array<WishedItem>;
   getVehicleServicebyId: VehicleService;
   getWisherslist: Array<Wisherslist>;
   getWithdrawCurrencies: Array<WithdrawCurrency>;
@@ -3599,6 +3696,37 @@ export type QueryAcceptAccountVerificationArgs = {
 
 export type QueryAdminGetAccountArgs = {
   id: Scalars["String"];
+};
+
+export type QueryAdminGetAccountBookingHistoryArgs = {
+  accountId: Scalars["String"];
+  accountType: Scalars["String"];
+  args: GetBookingsHistoryInput;
+};
+
+export type QueryAdminGetAccountOrderByIdArgs = {
+  id: Scalars["String"];
+};
+
+export type QueryAdminGetAccountPrivacySettingsArgs = {
+  id: Scalars["String"];
+};
+
+export type QueryAdminGetAccountProductsArgs = {
+  args: AdminGetAccountProductsInput;
+};
+
+export type QueryAdminGetAccountSavedPostsArgs = {
+  accountId: Scalars["String"];
+  args: GetMySavedPostsInput;
+};
+
+export type QueryAdminGetAccountServiceArgs = {
+  accountId: Scalars["String"];
+};
+
+export type QueryAdminGetAccountWorkingScheduleArgs = {
+  accountId: Scalars["String"];
 };
 
 export type QueryAdminGetBannedCountryArgs = {
@@ -3657,6 +3785,10 @@ export type QueryAdminGetReturnedOrdersArgs = {
   args: AdminGetReturnedOrdersInput;
 };
 
+export type QueryAdminGetSellerSalesArgs = {
+  args: AdminGetSellerSalesInput;
+};
+
 export type QueryAdminGetSiteInformationsArgs = {
   args: AdminGetSiteInformationsInput;
 };
@@ -3675,6 +3807,32 @@ export type QueryAdminGetTaxRatesArgs = {
 
 export type QueryAdminGetTransationsArgs = {
   args: GetTransactionsAdminInput;
+};
+
+export type QueryAdminGetUserBlockListArgs = {
+  accountId: Scalars["String"];
+  args: GetMyBlocklistInput;
+};
+
+export type QueryAdminGetUserBookingsArgs = {
+  accountId: Scalars["String"];
+  args: GetMyBookingsInput;
+};
+
+export type QueryAdminGetUserFinancialAccountsArgs = {
+  args: AdminGetUserFinancialAccounts;
+};
+
+export type QueryAdminGetUserNewsletterSettingsArgs = {
+  accountId: Scalars["String"];
+};
+
+export type QueryAdminGetUserReturnedOrdersArgs = {
+  args: AdminGetUserReturnedOrdersInput;
+};
+
+export type QueryAdminGetUserWishlistArgs = {
+  accountId: Scalars["String"];
 };
 
 export type QueryCanAccessRoomArgs = {
@@ -4115,6 +4273,10 @@ export type QueryGetUserServicePostsArgs = {
 
 export type QueryGetUserStoryArgs = {
   userId: Scalars["String"];
+};
+
+export type QueryGetUserWishelistArgs = {
+  args: AdminGetUserWishlistInput;
 };
 
 export type QueryGetVehicleServicebyIdArgs = {
@@ -5103,6 +5265,7 @@ export type UnFollowProfileInput = {
 
 export type UpdateAccountInput = {
   accountType?: Maybe<RegisterAccountType>;
+  birthDate?: Maybe<Scalars["String"]>;
   companyRegisterationNumber?: Maybe<Scalars["String"]>;
   confirmPassword?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
@@ -5378,6 +5541,7 @@ export type UpdateRestaurantMenuInput = {
 
 export type UpdateSellerAccountAdminInput = {
   accountType?: Maybe<RegisterAccountType>;
+  birthDate?: Maybe<Scalars["String"]>;
   companyRegisterationNumber?: Maybe<Scalars["String"]>;
   confirmPassword?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
@@ -5400,6 +5564,11 @@ export type UpdateServiceCategoryInput = {
   sortOrder?: Maybe<Scalars["Int"]>;
   status?: Maybe<ServiceCategoryStatus>;
   thumbnail?: Maybe<Scalars["String"]>;
+};
+
+export type UpdateServiceInput = {
+  id: Scalars["String"];
+  type?: Maybe<ServiceType>;
 };
 
 export type UpdateShippingAddressInput = {
@@ -5622,6 +5791,16 @@ export type WeekdaysWorkingHours = {
   we?: Maybe<ServiceDayWorkingHours>;
 };
 
+export type WishedItem = {
+  __typename?: "WishedItem";
+  id: Scalars["ID"];
+  itemId: Scalars["String"];
+  itemType: WishlistItemType;
+  product: Product;
+  service: Service;
+  userId: Scalars["ID"];
+};
+
 export type Wisher = {
   __typename?: "Wisher";
   userId: Scalars["String"];
@@ -5667,6 +5846,11 @@ export type WithdrawInput = {
   currency: Scalars["String"];
   methodId: Scalars["String"];
 };
+
+export enum WithdrawalAccountType {
+  Buyer = "BUYER",
+  Seller = "SELLER",
+}
 
 export type WithdrawalRequest = {
   __typename?: "WithdrawalRequest";

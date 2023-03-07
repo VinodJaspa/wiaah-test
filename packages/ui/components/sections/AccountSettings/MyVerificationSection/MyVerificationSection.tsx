@@ -11,10 +11,8 @@ import {
   SectionHeader,
   useVerifyVerificationCode,
   useRequestAccountVerification,
-  Accordion,
-  AccordionButton,
-  AccordionItem,
-  AccordionPanel,
+  useMediaUploadControls,
+  Image,
 } from "@UI";
 import { randomNum } from "utils";
 import { useTypedReactPubsub } from "@libs";
@@ -26,8 +24,15 @@ export const MyVerificationSection: React.FC<
 > = () => {
   const { t } = useTranslation();
   const { emit } = useTypedReactPubsub((events) => events.openFileUploadModal);
+  const { controls: idFrontControls, uploadImage: idFrontUpload } =
+    useMediaUploadControls();
+  const { controls: idBackControls, uploadImage: idBackUpload } =
+    useMediaUploadControls();
 
-  const [VVC, setVVC] = React.useState<string>();
+  const {
+    controls: addressProofBillControls,
+    uploadImage: addressProofBillUpload,
+  } = useMediaUploadControls();
 
   const { mutate: verify } = useVerifyVerificationCode();
   const { mutate: request } = useRequestAccountVerification();
@@ -35,7 +40,20 @@ export const MyVerificationSection: React.FC<
   return (
     <div className="flex flex-col gap-4">
       <SectionHeader sectionTitle={t("My Verification")} />
-      <Formik initialValues={{}} onSubmit={() => {}}>
+      <Formik<Parameters<typeof request>[0]>
+        initialValues={{
+          addressProofBill: "",
+          dateOfBirth: "",
+          firstName: "",
+          fullAddress: "",
+          id_back: "",
+          id_front: "",
+          lastName: "",
+        }}
+        onSubmit={(data) => {
+          request(data);
+        }}
+      >
         {({ values, setFieldValue }) => {
           return (
             <Form className="flex flex-col w-full gap-4">
@@ -55,26 +73,63 @@ export const MyVerificationSection: React.FC<
               </div>
               <Divider />
               <div className="flex flex-col gap-2">
+                <p className="font-bold text-lg">{t("Proof of Address")}</p>
+                <p className="font-semibold text-lg">
+                  {t(
+                    "Please provide a house bill or electricity bill that validate your address, the document must be less than 3 months old"
+                  )}
+                </p>
+                <div className="flex gap-4">
+                  <Button
+                    outline
+                    onClick={() => addressProofBillUpload()}
+                    className="w-48 h-48 justify-center items-center flex flex-col gap-1"
+                  >
+                    {values?.addressProofBill &&
+                    values.addressProofBill.length > 0 ? (
+                      <Image src={values.addressProofBill} />
+                    ) : (
+                      <>
+                        <p>{t("Upload Document")}</p>
+                        <PlusIcon className="text-4xl" />
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </div>
+              <Divider />
+              <div className="flex flex-col gap-2">
                 <p className="font-bold text-lg">{t("ID Verification")}</p>
                 <div className="flex gap-4">
                   <Button
                     outline
-                    onClick={() => emit({ uploadType: "img" })}
+                    onClick={() => idFrontUpload()}
                     className="w-48 h-48 justify-center items-center flex flex-col gap-1"
                   >
-                    <p>{t("Front Side")}</p>
-                    <PlusIcon className="text-4xl" />
+                    {values?.id_front && values.id_front.length > 0 ? (
+                      <Image src={values.id_front} />
+                    ) : (
+                      <>
+                        <p>{t("Front Side")}</p>
+                        <PlusIcon className="text-4xl" />
+                      </>
+                    )}
                   </Button>
 
                   <Button
                     outline
-                    onClick={() => emit({ uploadType: "img" })}
+                    onClick={() => idBackUpload()}
                     className="w-48 h-48 justify-center items-center flex flex-col gap-1"
                   >
-                    <p>{t("Back Side")}</p>
-                    <PlusIcon className="text-4xl" />
+                    {values?.id_back && values.id_back.length > 0 ? (
+                      <Image src={values.id_back} />
+                    ) : (
+                      <>
+                        <p>{t("Back Side")}</p>
+                        <PlusIcon className="text-4xl" />
+                      </>
+                    )}
                   </Button>
-                  <MediaUploadModal />
                 </div>
                 <Divider />
                 <p className="text-lg font-semibold">
@@ -92,7 +147,21 @@ export const MyVerificationSection: React.FC<
                   <PlusIcon className="text-4xl" />
                 </Button>
               </div>
-              <Button className="self-end">{t("Submit")}</Button>
+              <Button type="submit" className="self-end">
+                {t("Submit")}
+              </Button>
+              <MediaUploadModal
+                onImgUpload={(v) => {}}
+                controls={idFrontControls}
+              />
+              <MediaUploadModal
+                onImgUpload={(v) => {}}
+                controls={idBackControls}
+              />
+              <MediaUploadModal
+                onImgUpload={(v) => {}}
+                controls={addressProofBillControls}
+              />
             </Form>
           );
         }}

@@ -2,7 +2,7 @@ import { shallow, ShallowWrapper } from "enzyme";
 import { MyWishListSection } from ".";
 import { useGetMyWishlistQuery, useRemoveItemFromWishlistMutation } from "@UI";
 import React from "react";
-import { getTestId } from "@UI/../utils/src";
+import { getTestId } from "utils";
 
 jest.mock("@UI", () => ({
   ...jest.requireActual("@UI"),

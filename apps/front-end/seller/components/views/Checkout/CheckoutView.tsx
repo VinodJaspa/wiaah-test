@@ -144,7 +144,7 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
           </div>
         </div>
         <div className="md:table-cell ">
-          <BoxShadow className="h-full w-[min(30rem,100vw)]">
+          <BoxShadow className="h-full w-full md:w-[min(30rem,100vw)]">
             <div className="bg-white h-full">
               <div className="flex flex-col h-full p-4 gap-2">
                 <div className="w-full flex justify-between items-center">
@@ -159,7 +159,7 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
                   </p>
                 </div>
                 <Divider />
-                <div className="relative h-full w-full">
+                <div className="relative h-[30rem] sm:h-full w-full">
                   <div className="flex flex-col absolute top-0 left-0 bottom-0 right-0 overflow-y-scroll thinScroll gap-4 h-full">
                     <SpinnerFallback isError={isError} isLoading={isLoading}>
                       {res

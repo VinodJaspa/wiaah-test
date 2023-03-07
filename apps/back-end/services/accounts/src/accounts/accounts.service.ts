@@ -25,7 +25,8 @@ export class AccountsService {
 
   async createAccountRecord(createAccountInput: Prisma.AccountCreateInput) {
     try {
-      const { email, firstName, lastName, password, type } = createAccountInput;
+      const { email, firstName, lastName, password, type, birthDate } =
+        createAccountInput;
 
       const createdUser = await this.prisma.account.create({
         data: {
@@ -34,6 +35,7 @@ export class AccountsService {
           lastName,
           password,
           type,
+          birthDate,
         },
       });
       this.eventsClient.emit<string, NewAccountCreatedEvent>(
@@ -45,6 +47,7 @@ export class AccountsService {
           firstName: createdUser.firstName,
           lastName: createdUser.lastName,
           username: createdUser.firstName,
+          birthDate,
         }),
       );
       return createdUser;

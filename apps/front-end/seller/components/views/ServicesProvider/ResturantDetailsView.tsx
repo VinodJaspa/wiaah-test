@@ -17,6 +17,10 @@ import {
   SellerServiceWorkingHoursSection,
   RestaurantDetailsDescriptionSection,
   ServicesProviderHeader,
+  Image,
+  LocationOnPointFillIcon,
+  Button,
+  Divider,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -28,7 +32,7 @@ export const RestaurantDetailsView: React.FC = () => {
     data: res,
     isError,
     isLoading,
-  } = useGetRestaurantServiceDetailsDataQuery({ id });
+  } = useGetRestaurantServiceDetailsDataQuery(id);
   const { t } = useTranslation();
 
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
@@ -41,7 +45,7 @@ export const RestaurantDetailsView: React.FC = () => {
               {res ? (
                 <div className="flex flex-col gap-8">
                   <RestaurantDetailsDescriptionSection
-                    description={res.data.description}
+                    description={res?.serviceMetaInfo?.description}
                   />
                 </div>
               ) : null}
@@ -55,9 +59,9 @@ export const RestaurantDetailsView: React.FC = () => {
               {res ? (
                 <>
                   <ServiceReachOutSection
-                    email={res.data.email}
-                    location={res.data.location}
-                    telephone={res.data.telephone}
+                    email={res?.contact?.email}
+                    location={res?.location}
+                    telephone={res?.contact?.phone}
                   />
                 </>
               ) : null}
@@ -72,8 +76,7 @@ export const RestaurantDetailsView: React.FC = () => {
                 <>
                   <ServicePoliciesSection
                     title={"Restaurant Policies and terms"}
-                    deposit={15}
-                    policies={res.data.policies}
+                    policies={res?.policies}
                   />
                 </>
               ) : null}
@@ -87,7 +90,7 @@ export const RestaurantDetailsView: React.FC = () => {
               {res ? (
                 <>
                   <SellerServiceWorkingHoursSection
-                    workingDays={res.data.workingDays}
+                    workingDays={Object.values(res?.workingHours || {}) || []}
                   />
                 </>
               ) : null}
@@ -100,8 +103,8 @@ export const RestaurantDetailsView: React.FC = () => {
             <SpinnerFallback isLoading={isLoading} isError={isError}>
               {res ? (
                 <ResturantMenuListSection
-                  cancelation={res.data.cancelationPolicies || []}
-                  menus={res.data.menus}
+                  cancelation={res?.cancelationPolicies || []}
+                  menus={res?.menus || []}
                 />
               ) : null}
             </SpinnerFallback>
@@ -113,9 +116,7 @@ export const RestaurantDetailsView: React.FC = () => {
             <SpinnerFallback isLoading={isLoading} isError={isError}>
               {res ? (
                 <>
-                  <ServiceOnMapLocalizationSection
-                    location={res.data.location}
-                  />
+                  <ServiceOnMapLocalizationSection location={res?.location} />
                 </>
               ) : null}
             </SpinnerFallback>
@@ -170,11 +171,46 @@ export const RestaurantDetailsView: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-8 px-2 py-8">
-      <ServicePresentationCarosuel
-        data={res ? res.data.presintations || [] : []}
-      />
+      <div className="flex w-full items-center justify-between shadow p-4">
+        <div className="flex gap-4">
+          <Image
+            className="w-28 h-20 rounded-xl object-cover"
+            src={
+              res
+                ? "https://www.murhotels.com/cache/40/b3/40b3566310d686be665d9775f59ca9cd.jpg"
+                : ""
+            }
+          />
+          <div className="flex flex-col">
+            <p className=" font-bold text-xl">
+              {res ? res.serviceMetaInfo.title : null}
+            </p>
+            <div className="flex text-black gap-1 items-center">
+              <LocationOnPointFillIcon />
+              {res ? (
+                <p>
+                  {res.location.city}, {res.location.country}
+                </p>
+              ) : null}
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button>{t("Follow")}</Button>
+          <Button outline>{t("Contact")}</Button>
+        </div>
+      </div>
+      <Divider />
+      <ServicePresentationCarosuel data={res ? res.presentations || [] : []} />
       <SpinnerFallback isLoading={isLoading} isError={isError}>
-        {res ? <ServicesProviderHeader {...res.data} /> : null}
+        {res ? (
+          <ServicesProviderHeader
+            rating={4.5}
+            reviewsCount={15}
+            serviceTitle={res.serviceMetaInfo.title}
+            travelPeriod={{ arrival: new Date(), departure: new Date() }}
+          />
+        ) : null}
       </SpinnerFallback>
       <StaticSideBarWrapper sidebar={ResturantFindTableFilterStepper}>
         <Tabs>

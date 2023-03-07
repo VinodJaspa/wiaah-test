@@ -1,7 +1,8 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
+import { ServiceType } from 'prismaClient';
 
 @InputType()
 export class CreateServiceInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field(() => ServiceType)
+  type: ServiceType;
 }

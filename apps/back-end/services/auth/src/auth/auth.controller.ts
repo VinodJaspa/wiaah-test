@@ -18,6 +18,7 @@ export class AuthController {
       email: value.input.email,
       firstName: value.input.firstName,
       lastName: value.input.lastName,
+      birthDate: value.input.birthDate,
     });
   }
 }

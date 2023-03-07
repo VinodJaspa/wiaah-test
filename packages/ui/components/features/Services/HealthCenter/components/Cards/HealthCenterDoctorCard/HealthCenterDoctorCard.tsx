@@ -1,26 +1,25 @@
-import { HealthCenterDoctorMetaDataType } from "api";
-import { Avatar, PriceDisplay } from "@UI";
+import { HealthCenterSpecialty } from "@features/API";
+import { Avatar, HealthCenterDoctor, PriceDisplay } from "@UI";
 import React from "react";
-export interface HealthCenterDoctorCardProps
-  extends HealthCenterDoctorMetaDataType {}
+export interface HealthCenterDoctorCardProps {
+  doctor: Pick<HealthCenterDoctor, "name" | "thumbnail" | "price"> & {
+    speciality: Pick<HealthCenterSpecialty, "name">;
+  };
+}
 
 export const HealthCenterDoctorCard: React.FC<HealthCenterDoctorCardProps> = ({
-  id,
-  name,
-  photo,
-  specialty,
-  price,
+  doctor,
 }) => {
   return (
     <div className="w-full flex justify-between items-center">
       <div className="flex gap-2">
-        <Avatar src={photo} alt={name} />
+        <Avatar src={doctor.thumbnail} alt={doctor.name} />
         <div className="flex flex-col ">
-          <p className="font-semibold">{name}</p>
-          <p>{specialty}</p>
+          <p className="font-semibold">{doctor.name}</p>
+          <p>{doctor.speciality?.name}</p>
         </div>
       </div>
-      <PriceDisplay price={price} />
+      <PriceDisplay price={doctor.price} />
     </div>
   );
 };

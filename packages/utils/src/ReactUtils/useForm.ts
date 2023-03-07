@@ -49,5 +49,12 @@ export function useForm<TForm>(initial: TForm, constents?: TForm) {
     };
   }
 
-  return { form: data, handleChange, inputProps, selectProps, dateInputProps };
+  return {
+    form: data,
+    handleChange,
+    inputProps,
+    selectProps,
+    dateInputProps,
+    setValue: (v: TForm) => setData({ ...v, constents }),
+  };
 }

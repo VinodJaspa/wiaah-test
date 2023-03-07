@@ -8,6 +8,7 @@ export class NewAccountCreatedEvent extends KafkaMessage<{
   username: string;
   accountType?: string;
   profession?: string;
+  birthDate: string;
 }> {}
 
 export class SellerAccountCreatedEvent extends KafkaMessage<{

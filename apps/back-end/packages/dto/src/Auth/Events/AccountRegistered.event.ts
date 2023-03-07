@@ -20,6 +20,7 @@ export class SellerAccountRegisteredEvent extends KafkaMessage<{
   email: string;
   password: string;
   companyRegisterationNumber: string;
+  birthDate: string;
 }> {}
 
 export class BuyerAccountRegisteredEvent extends KafkaMessage<{
@@ -27,4 +28,5 @@ export class BuyerAccountRegisteredEvent extends KafkaMessage<{
   lastName: string;
   email: string;
   password: string;
+  birthDate: string;
 }> {}

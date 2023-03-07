@@ -37,14 +37,17 @@ export class OrderItem {
   @Field(() => Boolean)
   refundable: boolean;
 
-  @Field(() => String, { nullable: true })
-  discountId?: string;
+  @Field(() => Float, { nullable: true })
+  discount?: number;
+
+  @Field(() => Float, { nullable: true })
+  discountAmount?: number;
+
+  @Field(() => Float, { nullable: true })
+  cashback?: number;
 
   @Field(() => String, { nullable: true })
-  cashbackId?: string;
-
-  @Field(() => String, { nullable: true })
-  affiliationId?: string;
+  affiliatorId?: string;
 
   @Field(() => String)
   orderId: string;

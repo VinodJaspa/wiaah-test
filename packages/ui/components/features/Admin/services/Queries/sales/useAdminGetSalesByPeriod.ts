@@ -18,7 +18,14 @@ export type AdminGetSalesDurningPeriodQuery = { __typename?: "Query" } & {
   getSalesDurningPeriod: Array<
     { __typename?: "OrderItem" } & Pick<
       OrderItem,
-      "qty" | "createdAt" | "status" | "paid"
+      | "qty"
+      | "discount"
+      | "discountAmount"
+      | "cashback"
+      | "status"
+      | "paid"
+      | "id"
+      | "createdAt"
     > & {
         product?: Maybe<
           { __typename?: "Product" } & Pick<Product, "title" | "thumbnail">
@@ -35,6 +42,11 @@ export type AdminGetSalesDurningPeriodQuery = { __typename?: "Query" } & {
               "address" | "city" | "country" | "state"
             >;
           };
+        };
+        affiliator: { __typename?: "Account" } & {
+          profile?: Maybe<
+            { __typename?: "Profile" } & Pick<Profile, "username">
+          >;
         };
       }
   >;
@@ -59,6 +71,7 @@ query adminGetSalesDurningPeriod(
   ){
     product {
       title
+      thumbnail
     }
     qty
     buyer {
@@ -76,8 +89,18 @@ query adminGetSalesDurningPeriod(
         }
       }
     }
+    affiliator {
+      profile {
+        username
+      }
+    }
+    discount
+    discountAmount
+    cashback
     status
     paid
+    id
+    createdAt
   }
 }
     `);

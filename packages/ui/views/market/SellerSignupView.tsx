@@ -1,5 +1,11 @@
 import React, { FC } from "react";
-import { FormikInput, Checkbox, Button } from "@UI";
+import {
+  FormikInput,
+  Checkbox,
+  Button,
+  DateFormInput,
+  CalenderIcon,
+} from "@UI";
 import { IoMdMail, IoMdKey, IoMdPerson } from "react-icons/io";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
@@ -14,13 +20,13 @@ export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
       <h2 className="text-3xl capitalize">
         {t("create_an_account", "create an account")}
       </h2>
-      <Formik
+      <Formik<any>
         initialValues={{}}
         onSubmit={(data) => {
           onSubmit && onSubmit(data);
         }}
       >
-        {() => {
+        {({ values, setFieldValue }) => {
           return (
             <Form className="flex flex-col gap-4">
               <FormikInput
@@ -40,6 +46,15 @@ export const SellerSignupView: FC<{ onSubmit?: (data: any) => any }> = ({
                 placeholder={t("Email", "Email")}
                 type="email"
                 icon={<IoMdMail className="mr-2 text-xl text-gray-400" />}
+              />{" "}
+              <FormikInput<any>
+                id="BirthDate"
+                name="birthDate"
+                placeholder="BirthDate"
+                as={DateFormInput}
+                dateValue={values?.birthDate}
+                onDateChange={(e: any) => setFieldValue("birthDate", e)}
+                icon={<CalenderIcon />}
               />
               <FormikInput
                 name="password"

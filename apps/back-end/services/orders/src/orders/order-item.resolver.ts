@@ -16,12 +16,27 @@ import {
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { GetSalesDurningPeriodInput, OrderSearchPeriod } from './dto';
+import { AdminGetSellerSalesInput } from './dto/admin-get-seller-sales';
 import { Order, OrderItem } from './entities';
 import { Account, Product } from './entities/extends';
 
 @Resolver(() => OrderItem)
 export class OrderItemResolver {
   constructor(private readonly prisma: PrismaService) {}
+
+  @Query(() => [OrderItem])
+  async adminGetSellerSales(@Args('args') args: AdminGetSellerSalesInput) {
+    const { skip, take } = ExtractPagination(args.pagination);
+    return this.prisma.orderItem.findMany({
+      where: {
+        Order: {
+          sellerId: args.accountId,
+        },
+      },
+      take,
+      skip,
+    });
+  }
 
   @Query(() => [OrderItem])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
@@ -129,5 +144,13 @@ export class OrderItemResolver {
         id: orderItem.orderId,
       },
     });
+  }
+
+  @ResolveField(() => Account)
+  affiliator(@Parent() item: OrderItem) {
+    return {
+      __typename: 'Account',
+      id: item.affiliatorId,
+    };
   }
 }

@@ -270,6 +270,7 @@ type Query {
   getAdminProductsFilter(id: String!): Filter!
   getProductsFilters: [Filter!]!
   getAdminFilteredProducts(args: GetFilteredProductsAdminInput!): [Product!]!
+  adminGetAccountProducts(args: AdminGetAccountProductsInput!): [Product!]!
   adminGetProduct(id: String!): Product
   getMyShippingAddress: [ShippingAddress!]!
   getShippingGeoZoneRules(args: AdminGetShippingGeoZoneRulesInput!): [ShippingTypeRule!]!
@@ -339,6 +340,20 @@ input GetFilteredProductsAdminInput {
   type: ProductType
   usageStatus: ProductUsageStatus
   pagination: GqlPaginationInput!
+}
+
+input AdminGetAccountProductsInput {
+  title: String
+  seller: String
+  productId: ID
+  price: Float
+  qty: Int
+  status: ProductStatus
+  updatedAt: String
+  type: ProductType
+  usageStatus: ProductUsageStatus
+  pagination: GqlPaginationInput!
+  accountId: ID!
 }
 
 input AdminGetShippingGeoZoneRulesInput {
