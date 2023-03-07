@@ -159,7 +159,7 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
                   </p>
                 </div>
                 <Divider />
-                <div className="relative h-96 sm:h-full w-full">
+                <div className="relative h-[30rem] sm:h-full w-full">
                   <div className="flex flex-col absolute top-0 left-0 bottom-0 right-0 overflow-y-scroll thinScroll gap-4 h-full">
                     <SpinnerFallback isError={isError} isLoading={isLoading}>
                       {res

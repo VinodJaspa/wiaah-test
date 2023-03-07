@@ -350,6 +350,7 @@ input CreateIdentityVerificationInput {
   firstName: String!
   lastName: String!
   fullAddress: String!
+  addressProofBill: String!
   dateOfBirth: String!
   id_front: String!
   id_back: String!

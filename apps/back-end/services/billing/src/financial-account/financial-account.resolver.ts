@@ -17,7 +17,9 @@ export class FinancialAccountResolver {
 
   @Query(() => [FinancialAccount])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
-  adminGetFinancialAccounts(@Args('args') args: AdminGetUserFinancialAccounts) {
+  adminGetUserFinancialAccounts(
+    @Args('args') args: AdminGetUserFinancialAccounts,
+  ) {
     return this.prisma.financialAccount.findMany({
       where: { ownerId: args.accountId },
     });

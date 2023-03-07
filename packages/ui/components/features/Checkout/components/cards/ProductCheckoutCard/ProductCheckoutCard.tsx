@@ -63,10 +63,14 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
             min ? "flex-col" : "flex-row"
           } flex w-full gap-4 justify-between`}
         >
-          <div className={`${min ? "flex-col" : "flex-row"} flex w-full gap-4`}>
+          <div className={`flex flex-col sm:flex-row w-full gap-4`}>
             <div className={`${min ? "w-full" : ""} flex justify-center`}>
-              <div className="relative w-40">
-                <AspectRatioImage src={thumbnail} alt={name} ratio={6 / 4} />
+              <div className="relative w-full sm:w-40">
+                <AspectRatioImage
+                  src={thumbnail}
+                  alt={name}
+                  ratio={min ? 9 / 16 : 6 / 4}
+                />
               </div>
             </div>
             <div className="flex flex-col justify-between">

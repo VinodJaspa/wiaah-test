@@ -69,7 +69,12 @@ export class ReturnedOrdersResolver {
 
     return this.prisma.refundRequest.findMany({
       where: {
-        status: 'accept',
+        AND: [
+          ...filters,
+          {
+            status: 'accept',
+          },
+        ],
       },
     });
   }

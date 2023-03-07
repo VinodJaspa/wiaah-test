@@ -2,7 +2,9 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 
 import {
+  accountType,
   AuthorizationDecodedUser,
+  ExtractPagination,
   GqlAuthorizationGuard,
   GqlCurrentUser,
 } from 'nest-utils';
@@ -12,6 +14,7 @@ import { GetUserBlocklistQuery } from '@block/queries';
 import { BlockUserCommand, unBlockUserCommand } from '@block/commands';
 import { CreateBlockInput } from '@block/dto';
 import { GetMyBlocklistInput } from './dto/get-my-block-list.input';
+import { PrismaService } from 'prismaService';
 
 @Resolver(() => Block)
 @UseGuards(new GqlAuthorizationGuard([]))
@@ -19,7 +22,41 @@ export class BlockResolver {
   constructor(
     private readonly querybus: QueryBus,
     private readonly commandbus: CommandBus,
+    private readonly prisma: PrismaService,
   ) {}
+
+  @Query(() => [Block])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  adminGetUserBlockList(
+    @Args('args') args: GetMyBlocklistInput,
+    @Args('accountId') id: string,
+  ) {
+    const { take, skip } = ExtractPagination(args.pagination);
+
+    return this.prisma.blockedUser.findMany({
+      where: {
+        blockerUserId: id,
+      },
+      take,
+      skip,
+    });
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  async adminRemvoeBlock(@Args('id') id: string) {
+    try {
+      const res = await this.prisma.blockedUser.delete({
+        where: {
+          id,
+        },
+      });
+
+      return !!res;
+    } catch (error) {
+      return false;
+    }
+  }
 
   @Query(() => [Block])
   getMyBlockList(

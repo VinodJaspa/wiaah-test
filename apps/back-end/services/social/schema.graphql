@@ -465,6 +465,7 @@ type Query {
   getAllShares: ContentSharePaginationResponse!
   getNewsfeedHashtagPosts(hashtagSearchInput: GetHashtagNewsfeedPostsInput!): NewsfeedHashtagSearch!
   getMySavedPosts(args: GetMySavedPostsInput!): UserSavedPostsGroup!
+  adminGetAccountSavedPosts(args: GetMySavedPostsInput!, accountId: String!): UserSavedPostsGroup!
   getStory(storyId: String!): Story!
   getUserStory(userId: String!): Story!
   getAdminFilteredStories(args: GetAdminFilteredStoriesInput!): [Story!]!
@@ -472,7 +473,9 @@ type Query {
   getMyStories: [Story!]!
   getStoryViews(getStoryViewsInput: GetStorySeenByInput!): [StoryView!]!
   getRecentStories(getRecentStoryInput: GetRecentStoriesInput = {pagination: {page: 1, take: 10}}): [RecentStory!]!
+  adminGetUserBlockList(args: GetMyBlocklistInput!, accountId: String!): [Block!]!
   getMyBlockList(args: GetMyBlocklistInput!): [Block!]!
+  adminGetAccountPrivacySettings(id: String!): PrivacySettings!
   getMyPrivacySettings: PrivacySettings!
   getUserProductPosts(args: GetUserProductPostsInput!): [ProductPost!]!
   getRecommendedProductPosts(args: GetShopRecommendedPostsInput!): [ProductPost!]!
@@ -672,8 +675,10 @@ type Mutation {
   deleteStory(deleteStoryInput: DeleteStoryInput!): Story!
   createStory(createStoryInput: CreateStoryInput!): Boolean!
   likeStory(likeStoryInput: LikeStoryInput!): Boolean!
+  adminRemvoeBlock(id: String!): Boolean!
   blockUser(args: CreateBlockInput!): Boolean!
   unblockUser(args: CreateBlockInput!): Boolean!
+  updateAccountPrivacySettings(args: UpdateMyPrivacyInput!, id: String!): PrivacySettings!
   updateMyPrivacySettings(args: UpdateMyPrivacyInput!): PrivacySettings!
   createAction(args: CreateActionInput!): Boolean!
   hideContent(args: HideContentInput!): Boolean!

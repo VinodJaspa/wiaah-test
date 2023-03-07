@@ -12,6 +12,9 @@ export class CreateIdentityVerificationInput {
   fullAddress: string;
 
   @Field(() => String)
+  addressProofBill: string;
+
+  @Field(() => String)
   dateOfBirth: string;
 
   @Field(() => String)
