@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
+import { ObjectType, Field, ID } from '@nestjs/graphql';
 
 @ObjectType()
 export class IdentityVerification {
@@ -13,12 +13,6 @@ export class IdentityVerification {
 
   @Field(() => ID)
   userId: string;
-
-  @Field(() => Boolean)
-  completed: boolean;
-
-  @Field(() => Boolean)
-  accepted: boolean;
 
   @Field(() => ID)
   acceptedById: string;

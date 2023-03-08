@@ -76,6 +76,23 @@ type Shop {
   ownerId: String!
 }
 
+type IdentityVerification {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userId: ID!
+  acceptedById: ID!
+  firstName: String!
+  lastName: String!
+  fullAddress: String!
+  dateOfBirth: DateTime!
+  addressProofBill: String!
+  id_front: String!
+  id_back: String!
+  VVCPicture: String!
+  VVC: String!
+}
+
 type AccountVerification {
   id: ID!
   createdAt: DateTime!
@@ -128,7 +145,7 @@ type Query {
   requiredActions: [RequiredAction!]!
   requiredAction(id: Int!): RequiredAction!
   getMyContacts: UserContact!
-  getAccountVerificationRequests: [AccountVerification!]!
+  getAccountVerificationRequests(args: GetAccountVerificationRequestsInput!): [AccountVerification!]!
   acceptAccountVerification(id: String!): Boolean!
   getCookiesSettings: [CookiesSetting!]!
   getMyCookiesSettings: UserCookiesSettings!
@@ -138,6 +155,17 @@ type Query {
   getPendingSellers(args: GetAdminPendingSellersInput!): [Account!]!
   getAccountDeletionRequests(args: GetAccountDeletionRequestsInput!): [AccountDeletionRequest!]!
   adminGetStaffAccounts(args: AdminGetStaffAccountsInput!): [Account!]!
+  adminGetAccountVerification(accountId: String!): IdentityVerification!
+  getMyVerificationRequest: IdentityVerification!
+}
+
+input GetAccountVerificationRequestsInput {
+  pagination: GqlPaginationInput!
+}
+
+input GqlPaginationInput {
+  page: Int!
+  take: Int!
 }
 
 input GetFilteredSellersAccountsInput {
@@ -155,11 +183,6 @@ input GetFilteredSellersAccountsInput {
   city: String
   country: String
   ip: String
-}
-
-input GqlPaginationInput {
-  page: Int!
-  take: Int!
 }
 
 input GetBuyersAccountsInput {

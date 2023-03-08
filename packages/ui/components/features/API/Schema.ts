@@ -140,6 +140,7 @@ export type AddContactInput = {
 };
 
 export type AddShoppingCartProductItemInput = {
+  attributesJson?: Maybe<Scalars["String"]>;
   itemId: Scalars["ID"];
   quantity: Scalars["Int"];
   shippingRuleId: Scalars["ID"];
@@ -611,10 +612,12 @@ export enum BookedServiceStatus {
 
 export type CartProduct = {
   __typename?: "CartProduct";
+  attributesJson: Scalars["String"];
   id: Scalars["String"];
   product?: Maybe<Product>;
   productId: Scalars["ID"];
-  shippingRule?: Maybe<ShippingRule>;
+  qty: Scalars["Int"];
+  shippingRule: ShippingRule;
   shippingRuleId: Scalars["ID"];
 };
 
@@ -1348,6 +1351,10 @@ export type GetAccountDeletionRequestsInput = {
   username?: Maybe<Scalars["String"]>;
 };
 
+export type GetAccountVerificationRequestsInput = {
+  pagination: GqlPaginationInput;
+};
+
 export type GetAddableHashtagsInput = {
   pagination: GqlPaginationInput;
 };
@@ -2003,6 +2010,24 @@ export type HotelRoomMetaInfoInput = {
 export type HotelRoomTranslationMetaInfoInput = {
   langId: Scalars["String"];
   value: HotelRoomMetaInfoInput;
+};
+
+export type IdentityVerification = {
+  __typename?: "IdentityVerification";
+  VVC: Scalars["String"];
+  VVCPicture: Scalars["String"];
+  acceptedById: Scalars["ID"];
+  addressProofBill: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  dateOfBirth: Scalars["DateTime"];
+  firstName: Scalars["String"];
+  fullAddress: Scalars["String"];
+  id: Scalars["ID"];
+  id_back: Scalars["String"];
+  id_front: Scalars["String"];
+  lastName: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+  userId: Scalars["ID"];
 };
 
 export type Insurance = {
@@ -3500,6 +3525,7 @@ export type Query = {
   adminGetAccountProducts: Array<Product>;
   adminGetAccountSavedPosts: UserSavedPostsGroup;
   adminGetAccountService: Service;
+  adminGetAccountVerification: IdentityVerification;
   adminGetAccountWorkingSchedule: WorkingSchedule;
   adminGetBannedCountry: BannedCountry;
   adminGetBookings: Array<BookedService>;
@@ -3611,6 +3637,7 @@ export type Query = {
   getMyShippingRules: Array<ShippingRule>;
   getMyStories: Array<Story>;
   getMyTransactions: Array<Transaction>;
+  getMyVerificationRequest: IdentityVerification;
   getMyVouchers: Array<Voucher>;
   getMyWithdrawalRequests: Array<WithdrawalRequest>;
   getMyWorkingSchedule: WorkingSchedule;
@@ -3721,6 +3748,10 @@ export type QueryAdminGetAccountSavedPostsArgs = {
 };
 
 export type QueryAdminGetAccountServiceArgs = {
+  accountId: Scalars["String"];
+};
+
+export type QueryAdminGetAccountVerificationArgs = {
   accountId: Scalars["String"];
 };
 
@@ -3840,6 +3871,10 @@ export type QueryCanAccessRoomArgs = {
 
 export type QueryGetAccountDeletionRequestsArgs = {
   args: GetAccountDeletionRequestsInput;
+};
+
+export type QueryGetAccountVerificationRequestsArgs = {
+  args: GetAccountVerificationRequestsInput;
 };
 
 export type QueryGetActionArgs = {

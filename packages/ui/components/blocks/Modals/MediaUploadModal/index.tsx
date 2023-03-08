@@ -55,6 +55,8 @@ export interface MediaUploadModalProps {
   onVidUpload?: (converted: string, raw?: File) => any;
   controls?: MediaUploadModalControls;
   multiple?: boolean;
+  onImgServerUploaded?: (url: string) => any;
+  onVidServerUploaded?: (url: string) => any;
 }
 
 export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
@@ -62,6 +64,8 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
   onVidUpload,
   multiple,
   controls,
+  onImgServerUploaded,
+  onVidServerUploaded,
 }) => {
   const { cancelUpload: _cancelUpload, uploadType: _uploadType } =
     useFileUploadModal();

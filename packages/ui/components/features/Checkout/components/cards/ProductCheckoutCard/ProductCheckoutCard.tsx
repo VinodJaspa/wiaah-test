@@ -1,4 +1,4 @@
-import { ProductCheckoutData } from "api";
+import { ProductCheckoutData, ProductType } from "api";
 import { useScreenWidth } from "hooks";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -17,8 +17,21 @@ import {
   Tr,
   Td,
   AspectRatioImage,
+  AspectRatio,
 } from "@UI";
 import { setTestid } from "utils";
+import {
+  CartProduct,
+  OrderItem,
+  Product,
+  ProductAttribute,
+} from "@features/API";
+
+type productDataType = Pick<CartProduct, "id" | "qty" | "productId"> & {
+  product: Pick<Product, "title" | "description" | "attributes"> & {
+    attributes: Pick<ProductAttribute, "name" | "values">[];
+  };
+};
 
 export interface ProductCheckoutCardProps extends ProductCheckoutData {
   onItemDelete?: (id: string) => void;
@@ -37,7 +50,7 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
   shippingMethods,
   size,
   thumbnail,
-
+  type,
   onItemDelete,
   onMoveToWishlist,
 }) => {
@@ -55,7 +68,7 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
     }
   }
 
-  return (
+  return type === "goods" ? (
     <div className="flex w-full">
       <div className="flex flex-col w-full">
         <div
@@ -183,6 +196,14 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
           </div>
         </div>
       </div>
+    </div>
+  ) : (
+    <div className="p-4 h-16 flex gap-4">
+      <AspectRatio className="w-16" ratio={4 / 6}>
+        <div className="bg-gray-200 h-full w-full"></div>
+      </AspectRatio>
+
+      <div>{name}</div>
     </div>
   );
 };

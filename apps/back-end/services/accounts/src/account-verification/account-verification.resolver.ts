@@ -3,6 +3,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   accountType,
   AuthorizationDecodedUser,
+  ExtractPagination,
   GqlAuthorizationGuard,
   GqlCurrentUser,
   KAFKA_EVENTS,
@@ -12,7 +13,6 @@ import { Inject, UseGuards } from '@nestjs/common';
 import { AccountVerification } from '@acc-verification/entities';
 import { CreateAccountVerificationInput } from '@acc-verification/dto';
 import { CreateAccountVerificationRequestCommand } from '@acc-verification/commands';
-import { GetAccountVerificationRequestsQuery } from '@acc-verification/queries';
 import { PrismaService } from 'prismaService';
 import { ClientKafka } from '@nestjs/microservices';
 import { RefuseAccountVerificationRequest } from './dto/refuse-account-verification.input';
@@ -20,6 +20,7 @@ import {
   AccountVerificationRequestAcceptedEvent,
   AccountVerificationRequestRejectedEvent,
 } from 'nest-dto';
+import { GetAccountVerificationRequestsInput } from './dto/get-account-verification-requests.input';
 
 @Resolver(() => AccountVerification)
 export class AccountVerificationResolver {
@@ -45,11 +46,14 @@ export class AccountVerificationResolver {
 
   @Query(() => [AccountVerification])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
-  getAccountVerificationRequests(): Promise<AccountVerification[]> {
-    return this.querybus.execute<
-      GetAccountVerificationRequestsQuery,
-      AccountVerification[]
-    >(new GetAccountVerificationRequestsQuery());
+  getAccountVerificationRequests(
+    @Args('args') args: GetAccountVerificationRequestsInput,
+  ): Promise<AccountVerification[]> {
+    const { skip, take } = ExtractPagination(args.pagination);
+    return this.prisma.userAccountVerificationRequest.findMany({
+      take,
+      skip,
+    });
   }
 
   @Mutation(() => Boolean)

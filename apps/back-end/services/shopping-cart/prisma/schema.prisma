@@ -21,6 +21,8 @@ model Cart {
 
 type CartProduct {
   id             String
+  qty            Int
+  attributesJson String
   productId      String
   shippingRuleId String
 }
