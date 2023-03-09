@@ -198,12 +198,26 @@ export const ProductCheckoutCard: React.FC<ProductCheckoutCardProps> = ({
       </div>
     </div>
   ) : (
-    <div className="p-4 h-16 flex gap-4">
-      <AspectRatio className="w-16" ratio={4 / 6}>
-        <div className="bg-gray-200 h-full w-full"></div>
-      </AspectRatio>
+    <div className="flex justify-between gap-4">
+      <div className="flex gap-4">
+        <div className="bg-gray-200 h-24 w-24 flex justify-center items-center rounded font-semibold text-2xl text-gray-500">
+          .jpg
+        </div>
 
-      <div>{name}</div>
+        <div className=" flex flex-col gap-2">
+          <p className="font-semibold pt-2">
+            {"figma-toolkit-for-web-development.jpg"}
+          </p>
+          <p className="text-gray-400">{"15.5MB"}</p>
+        </div>
+      </div>
+      <div className="flex flex-col justify-between items-end p-2">
+        <div className="flex gap-2 font-bold justify-end justify-self-end ">
+          <UnDiscountedPriceDisplay amount={10} discount={10} />
+          <PriceDisplay price={15} />
+        </div>
+        <p className="font-semibold text-gray-500">{t("Remove")}</p>
+      </div>
     </div>
   );
 };
