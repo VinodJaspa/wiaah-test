@@ -25,3 +25,4 @@ export * from "./Shipping";
 export * from "./Reviews";
 export * from "./Newsletter";
 export * from "./Vouchers";
+export * from "./notifications";

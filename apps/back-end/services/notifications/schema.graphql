@@ -1,0 +1,99 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+directive @key(fields: String!) on OBJECT | INTERFACE
+
+directive @extends on OBJECT | INTERFACE
+
+directive @external on OBJECT | FIELD_DEFINITION
+
+directive @requires(fields: String!) on FIELD_DEFINITION
+
+directive @provides(fields: String!) on FIELD_DEFINITION
+
+type Account {
+  id: ID!
+}
+
+type Profile {
+  id: ID!
+}
+
+type Notification {
+  id: ID!
+  userId: ID!
+  authorId: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  type: NotificationType!
+  author: Account
+  authorProfileId: ID!
+  content: String!
+  User: Profile!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum NotificationType {
+  followRequest
+  follow
+  storyReacted
+  DmMessage
+  ShopPromotion
+  postReacted
+  postCommented
+  commentReacted
+  commentCommented
+  postMention
+  commentMention
+  info
+  warning
+}
+
+type NotificationPaginationResponse {
+  data: [Notification!]!
+  total: Int!
+  hasMore: Boolean!
+}
+
+type SilentContent {
+  id: ID!
+  contentId: ID!
+  silentedBy: UserNotificationSettings
+  userId: ID!
+}
+
+type UserNotificationSettings {
+  id: ID!
+  postReaction: NotificationSettingsEnum!
+  postComment: NotificationSettingsEnum!
+  commentLike: NotificationSettingsEnum!
+  mentions: NotificationSettingsEnum!
+  silentedContent: [SilentContent!]!
+}
+
+enum NotificationSettingsEnum {
+  on
+  off
+  iFollow
+}
+
+type Query {
+  getMyNotifications: NotificationPaginationResponse!
+}
+
+type Mutation {
+  updateMyNotification(updateNotificationsArgs: UpdateNotificationSettingInput!): UserNotificationSettings!
+  disableNotificationFromContent: UserNotificationSettings!
+}
+
+input UpdateNotificationSettingInput {
+  postReaction: NotificationSettingsEnum
+  postComment: NotificationSettingsEnum
+  commentLike: NotificationSettingsEnum
+  mentions: NotificationSettingsEnum
+}

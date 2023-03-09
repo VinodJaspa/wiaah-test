@@ -15,6 +15,7 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format. */
   DateTime: any;
   Upload: any;
 };
@@ -140,6 +141,7 @@ export type AddContactInput = {
 };
 
 export type AddShoppingCartProductItemInput = {
+  attributesJson?: Maybe<Scalars["String"]>;
   itemId: Scalars["ID"];
   quantity: Scalars["Int"];
   shippingRuleId: Scalars["ID"];
@@ -165,6 +167,20 @@ export type AdminCreateAdminAccountInput = {
 export type AdminDeleteServiceInput = {
   deletionReason: Scalars["String"];
   id: Scalars["ID"];
+};
+
+export type AdminGetAccountProductsInput = {
+  accountId: Scalars["ID"];
+  pagination: GqlPaginationInput;
+  price?: Maybe<Scalars["Float"]>;
+  productId?: Maybe<Scalars["ID"]>;
+  qty?: Maybe<Scalars["Int"]>;
+  seller?: Maybe<Scalars["String"]>;
+  status?: Maybe<ProductStatus>;
+  title?: Maybe<Scalars["String"]>;
+  type?: Maybe<ProductType>;
+  updatedAt?: Maybe<Scalars["String"]>;
+  usageStatus?: Maybe<ProductUsageStatus>;
 };
 
 export type AdminGetBookingsInput = {
@@ -239,6 +255,11 @@ export type AdminGetReturnedOrdersInput = {
   shippingAmount?: Maybe<Scalars["Float"]>;
 };
 
+export type AdminGetSellerSalesInput = {
+  accountId: Scalars["String"];
+  pagination: GqlPaginationInput;
+};
+
 export type AdminGetShippingGeoZoneRulesInput = {
   description?: Maybe<Scalars["String"]>;
   name?: Maybe<Scalars["String"]>;
@@ -266,8 +287,17 @@ export type AdminGetTaxRatesInput = {
   rate?: Maybe<Scalars["Float"]>;
 };
 
+export type AdminGetUserFinancialAccounts = {
+  accountId: Scalars["String"];
+};
+
 export type AdminGetUserReturnedOrdersInput = {
   accountId: Scalars["ID"];
+  pagination: GqlPaginationInput;
+};
+
+export type AdminGetUserWishlistInput = {
+  accountId: Scalars["String"];
   pagination: GqlPaginationInput;
 };
 
@@ -583,10 +613,12 @@ export enum BookedServiceStatus {
 
 export type CartProduct = {
   __typename?: "CartProduct";
+  attributesJson: Scalars["String"];
   id: Scalars["String"];
   product?: Maybe<Product>;
   productId: Scalars["ID"];
-  shippingRule?: Maybe<ShippingRule>;
+  qty: Scalars["Int"];
+  shippingRule: ShippingRule;
   shippingRuleId: Scalars["ID"];
 };
 
@@ -897,6 +929,7 @@ export type CreateHotelInput = {
 };
 
 export type CreateIdentityVerificationInput = {
+  addressProofBill: Scalars["String"];
   dateOfBirth: Scalars["String"];
   firstName: Scalars["String"];
   fullAddress: Scalars["String"];
@@ -1317,6 +1350,10 @@ export type GetAccountDeletionRequestsInput = {
   pagination: GqlPaginationInput;
   status?: Maybe<AccountDeletionRequestStatus>;
   username?: Maybe<Scalars["String"]>;
+};
+
+export type GetAccountVerificationRequestsInput = {
+  pagination: GqlPaginationInput;
 };
 
 export type GetAddableHashtagsInput = {
@@ -1976,6 +2013,24 @@ export type HotelRoomTranslationMetaInfoInput = {
   value: HotelRoomMetaInfoInput;
 };
 
+export type IdentityVerification = {
+  __typename?: "IdentityVerification";
+  VVC: Scalars["String"];
+  VVCPicture: Scalars["String"];
+  acceptedById: Scalars["ID"];
+  addressProofBill: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  dateOfBirth: Scalars["DateTime"];
+  firstName: Scalars["String"];
+  fullAddress: Scalars["String"];
+  id: Scalars["ID"];
+  id_back: Scalars["String"];
+  id_front: Scalars["String"];
+  lastName: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+  userId: Scalars["ID"];
+};
+
 export type Insurance = {
   __typename?: "Insurance";
   amount: Scalars["Float"];
@@ -2181,6 +2236,7 @@ export type Mutation = {
   activateRestaurant: Restaurant;
   addNewBillingAddress: BillingAddress;
   addProductToCart: CartProduct;
+  adminCancelOrder: Scalars["Boolean"];
   adminCreateStaffAccount: Scalars["Boolean"];
   adminDeleteNewsfeedPost: Scalars["Boolean"];
   adminDeleteProduct: Scalars["Boolean"];
@@ -2189,8 +2245,11 @@ export type Mutation = {
   adminDeleteUserWishlistItem: Scalars["Boolean"];
   adminEditAccount: Account;
   adminLogin: GqlStatusResponse;
+  adminRemvoeBlock: Scalars["Boolean"];
+  adminUpdateAccountWorkingSchedule: WorkingSchedule;
   adminUpdateAffiliation: Scalars["Boolean"];
   adminUpdateProductReview: Scalars["Boolean"];
+  adminUpdateServiceById: Scalars["Boolean"];
   adminUpdateStaffAccount: Scalars["Boolean"];
   applyVoucher: ShoppingCart;
   askForRefund: Scalars["Boolean"];
@@ -2200,6 +2259,7 @@ export type Mutation = {
   cancelServiceReservation: Scalars["Boolean"];
   changeMyNewsletterSettings: Scalars["Boolean"];
   changePassword: Scalars["Boolean"];
+  changeUserNewsletterSettings: Scalars["Boolean"];
   clearBalance: Scalars["Boolean"];
   clearShoppingCart: ShoppingCart;
   clearVouchers: Scalars["Boolean"];
@@ -2306,6 +2366,7 @@ export type Mutation = {
   unBanSellersCities: Scalars["Boolean"];
   unFollow: Scalars["Boolean"];
   unblockUser: Scalars["Boolean"];
+  updateAccountPrivacySettings: PrivacySettings;
   updateAffiliation: Affiliation;
   updateBeautyCenter: BeautyCenter;
   updateBeautyCenterAdmin: Scalars["Boolean"];
@@ -2350,6 +2411,8 @@ export type Mutation = {
   verifyLoginOTP: GqlStatusResponse;
   verifyNewPassword: Scalars["Boolean"];
   withdraw: Scalars["Boolean"];
+  updateMyNotification: UserNotificationSettings;
+  disableNotificationFromContent: UserNotificationSettings;
 };
 
 export type MutationAddWishlistItemArgs = {
@@ -2420,6 +2483,10 @@ export type MutationAddProductToCartArgs = {
   addItemToCartArgs: AddShoppingCartProductItemInput;
 };
 
+export type MutationAdminCancelOrderArgs = {
+  id: Scalars["String"];
+};
+
 export type MutationAdminCreateStaffAccountArgs = {
   args: AdminCreateAdminAccountInput;
 };
@@ -2453,12 +2520,25 @@ export type MutationAdminLoginArgs = {
   args: LoginDto;
 };
 
+export type MutationAdminRemvoeBlockArgs = {
+  id: Scalars["String"];
+};
+
+export type MutationAdminUpdateAccountWorkingScheduleArgs = {
+  accountId: Scalars["String"];
+  args: UpdateWorkingScheduleInput;
+};
+
 export type MutationAdminUpdateAffiliationArgs = {
   updateAffilaition: UpdateAffiliationAdminInput;
 };
 
 export type MutationAdminUpdateProductReviewArgs = {
   args: UpdateProductReviewInput;
+};
+
+export type MutationAdminUpdateServiceByIdArgs = {
+  args: UpdateServiceInput;
 };
 
 export type MutationAdminUpdateStaffAccountArgs = {
@@ -2495,6 +2575,11 @@ export type MutationChangeMyNewsletterSettingsArgs = {
 
 export type MutationChangePasswordArgs = {
   changePasswordInput: ChangePasswordInput;
+};
+
+export type MutationChangeUserNewsletterSettingsArgs = {
+  accountId: Scalars["String"];
+  args: UpdateNewsletterInput;
 };
 
 export type MutationCreateActionArgs = {
@@ -2865,6 +2950,11 @@ export type MutationUnblockUserArgs = {
   args: CreateBlockInput;
 };
 
+export type MutationUpdateAccountPrivacySettingsArgs = {
+  args: UpdateMyPrivacyInput;
+  id: Scalars["String"];
+};
+
 export type MutationUpdateAffiliationArgs = {
   args: UpdateAffiliationInput;
 };
@@ -3033,6 +3123,10 @@ export type MutationWithdrawArgs = {
   args: WithdrawInput;
 };
 
+export type MutationUpdateMyNotificationArgs = {
+  updateNotificationsArgs: UpdateNotificationSettingInput;
+};
+
 export enum MyBookingsSearchPeriod {
   Day = "day",
   Month = "month",
@@ -3148,6 +3242,7 @@ export type OrderStatus = {
 };
 
 export enum OrderStatusEnum {
+  Canceled = "canceled",
   Compeleted = "compeleted",
   Paid = "paid",
   Pending = "pending",
@@ -3431,6 +3526,14 @@ export type Query = {
   MyWishlist: Wishlist;
   acceptAccountVerification: Scalars["Boolean"];
   adminGetAccount: Account;
+  adminGetAccountBookingHistory: Array<BookedService>;
+  adminGetAccountOrderById: Order;
+  adminGetAccountPrivacySettings: PrivacySettings;
+  adminGetAccountProducts: Array<Product>;
+  adminGetAccountSavedPosts: UserSavedPostsGroup;
+  adminGetAccountService: Service;
+  adminGetAccountVerification: IdentityVerification;
+  adminGetAccountWorkingSchedule: WorkingSchedule;
   adminGetBannedCountry: BannedCountry;
   adminGetBookings: Array<BookedService>;
   adminGetContentComments: Array<Comment>;
@@ -3445,11 +3548,16 @@ export type Query = {
   adminGetProfessions: Array<Profession>;
   adminGetRawService?: Maybe<ServiceShopRaw>;
   adminGetReturnedOrders: Array<ReturnedOrder>;
+  adminGetSellerSales: Array<OrderItem>;
   adminGetSiteInformations: Array<SiteInformation>;
   adminGetStaffAccounts: Array<Account>;
   adminGetTaxRate: TaxRate;
   adminGetTaxRates: Array<TaxRate>;
   adminGetTransations: Array<Transaction>;
+  adminGetUserBlockList: Array<Block>;
+  adminGetUserBookings: Array<BookedService>;
+  adminGetUserFinancialAccounts: Array<FinancialAccount>;
+  adminGetUserNewsletterSettings: NewsletterSettings;
   adminGetUserReturnedOrders: Array<ReturnedOrder>;
   adminGetUserWishlist: Array<WishedItem>;
   canAccessRoom: Scalars["Boolean"];
@@ -3536,6 +3644,7 @@ export type Query = {
   getMyShippingRules: Array<ShippingRule>;
   getMyStories: Array<Story>;
   getMyTransactions: Array<Transaction>;
+  getMyVerificationRequest: IdentityVerification;
   getMyVouchers: Array<Voucher>;
   getMyWithdrawalRequests: Array<WithdrawalRequest>;
   getMyWorkingSchedule: WorkingSchedule;
@@ -3594,6 +3703,7 @@ export type Query = {
   getUserProductPosts: Array<ProductPost>;
   getUserServicePosts: Array<ServicePost>;
   getUserStory: Story;
+  getUserWishelist: Array<WishedItem>;
   getVehicleServicebyId: VehicleService;
   getWisherslist: Array<Wisherslist>;
   getWithdrawCurrencies: Array<WithdrawCurrency>;
@@ -3611,6 +3721,7 @@ export type Query = {
   searchPopularUsers: ProfilePaginatedResponse;
   searchUsers: SearchUsers;
   updateComment: PaginationCommentsResponse;
+  getMyNotifications: NotificationPaginationResponse;
 };
 
 export type QueryAcceptAccountVerificationArgs = {
@@ -3619,6 +3730,41 @@ export type QueryAcceptAccountVerificationArgs = {
 
 export type QueryAdminGetAccountArgs = {
   id: Scalars["String"];
+};
+
+export type QueryAdminGetAccountBookingHistoryArgs = {
+  accountId: Scalars["String"];
+  accountType: Scalars["String"];
+  args: GetBookingsHistoryInput;
+};
+
+export type QueryAdminGetAccountOrderByIdArgs = {
+  id: Scalars["String"];
+};
+
+export type QueryAdminGetAccountPrivacySettingsArgs = {
+  id: Scalars["String"];
+};
+
+export type QueryAdminGetAccountProductsArgs = {
+  args: AdminGetAccountProductsInput;
+};
+
+export type QueryAdminGetAccountSavedPostsArgs = {
+  accountId: Scalars["String"];
+  args: GetMySavedPostsInput;
+};
+
+export type QueryAdminGetAccountServiceArgs = {
+  accountId: Scalars["String"];
+};
+
+export type QueryAdminGetAccountVerificationArgs = {
+  accountId: Scalars["String"];
+};
+
+export type QueryAdminGetAccountWorkingScheduleArgs = {
+  accountId: Scalars["String"];
 };
 
 export type QueryAdminGetBannedCountryArgs = {
@@ -3677,6 +3823,10 @@ export type QueryAdminGetReturnedOrdersArgs = {
   args: AdminGetReturnedOrdersInput;
 };
 
+export type QueryAdminGetSellerSalesArgs = {
+  args: AdminGetSellerSalesInput;
+};
+
 export type QueryAdminGetSiteInformationsArgs = {
   args: AdminGetSiteInformationsInput;
 };
@@ -3697,6 +3847,24 @@ export type QueryAdminGetTransationsArgs = {
   args: GetTransactionsAdminInput;
 };
 
+export type QueryAdminGetUserBlockListArgs = {
+  accountId: Scalars["String"];
+  args: GetMyBlocklistInput;
+};
+
+export type QueryAdminGetUserBookingsArgs = {
+  accountId: Scalars["String"];
+  args: GetMyBookingsInput;
+};
+
+export type QueryAdminGetUserFinancialAccountsArgs = {
+  args: AdminGetUserFinancialAccounts;
+};
+
+export type QueryAdminGetUserNewsletterSettingsArgs = {
+  accountId: Scalars["String"];
+};
+
 export type QueryAdminGetUserReturnedOrdersArgs = {
   args: AdminGetUserReturnedOrdersInput;
 };
@@ -3711,6 +3879,10 @@ export type QueryCanAccessRoomArgs = {
 
 export type QueryGetAccountDeletionRequestsArgs = {
   args: GetAccountDeletionRequestsInput;
+};
+
+export type QueryGetAccountVerificationRequestsArgs = {
+  args: GetAccountVerificationRequestsInput;
 };
 
 export type QueryGetActionArgs = {
@@ -4143,6 +4315,10 @@ export type QueryGetUserServicePostsArgs = {
 
 export type QueryGetUserStoryArgs = {
   userId: Scalars["String"];
+};
+
+export type QueryGetUserWishelistArgs = {
+  args: AdminGetUserWishlistInput;
 };
 
 export type QueryGetVehicleServicebyIdArgs = {
@@ -5432,6 +5608,11 @@ export type UpdateServiceCategoryInput = {
   thumbnail?: Maybe<Scalars["String"]>;
 };
 
+export type UpdateServiceInput = {
+  id: Scalars["String"];
+  type?: Maybe<ServiceType>;
+};
+
 export type UpdateShippingAddressInput = {
   firstname?: Maybe<Scalars["String"]>;
   id: Scalars["ID"];
@@ -5806,4 +5987,72 @@ export type UpdateVehicleAdminInput = {
   properties?: Maybe<CreateVehiclePropertiesInput>;
   title?: Maybe<Array<TranslationTextInput>>;
   typeId?: Maybe<Scalars["ID"]>;
+};
+
+export type Notification = {
+  __typename?: "Notification";
+  id: Scalars["ID"];
+  userId: Scalars["ID"];
+  authorId: Scalars["ID"];
+  createdAt: Scalars["DateTime"];
+  updatedAt: Scalars["DateTime"];
+  type: NotificationType;
+  author?: Maybe<Account>;
+  authorProfileId: Scalars["ID"];
+  content: Scalars["String"];
+  User: Profile;
+};
+
+export enum NotificationType {
+  FollowRequest = "followRequest",
+  Follow = "follow",
+  StoryReacted = "storyReacted",
+  DmMessage = "DmMessage",
+  ShopPromotion = "ShopPromotion",
+  PostReacted = "postReacted",
+  PostCommented = "postCommented",
+  CommentReacted = "commentReacted",
+  CommentCommented = "commentCommented",
+  PostMention = "postMention",
+  CommentMention = "commentMention",
+  Info = "info",
+  Warning = "warning",
+}
+
+export type NotificationPaginationResponse = {
+  __typename?: "NotificationPaginationResponse";
+  data: Array<Notification>;
+  total: Scalars["Int"];
+  hasMore: Scalars["Boolean"];
+};
+
+export type SilentContent = {
+  __typename?: "SilentContent";
+  id: Scalars["ID"];
+  contentId: Scalars["ID"];
+  silentedBy?: Maybe<UserNotificationSettings>;
+  userId: Scalars["ID"];
+};
+
+export type UserNotificationSettings = {
+  __typename?: "UserNotificationSettings";
+  id: Scalars["ID"];
+  postReaction: NotificationSettingsEnum;
+  postComment: NotificationSettingsEnum;
+  commentLike: NotificationSettingsEnum;
+  mentions: NotificationSettingsEnum;
+  silentedContent: Array<SilentContent>;
+};
+
+export enum NotificationSettingsEnum {
+  On = "on",
+  Off = "off",
+  IFollow = "iFollow",
+}
+
+export type UpdateNotificationSettingInput = {
+  postReaction?: Maybe<NotificationSettingsEnum>;
+  postComment?: Maybe<NotificationSettingsEnum>;
+  commentLike?: Maybe<NotificationSettingsEnum>;
+  mentions?: Maybe<NotificationSettingsEnum>;
 };

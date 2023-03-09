@@ -24,11 +24,12 @@ export class GetUserDataQueryHandler
 
     if (!success) return null;
 
-    const { email, firstName } = data;
+    const { email, firstName, preferedCurrency } = data;
     return {
       email,
       id,
       name: firstName,
+      currency: preferedCurrency,
     };
   }
 }

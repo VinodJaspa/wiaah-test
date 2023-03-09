@@ -24,10 +24,13 @@ export class GetUserFollowersIdsQueryHandler
     >(
       this.eventClient,
       KAFKA_MESSAGES.SOCIAL_MESSAGES.getUserFollowsData(),
-      new GetUserFollowersData({ userId: id }),
+      new GetUserFollowersData({
+        userId: id,
+        pagination: { page: 1, take: 10 },
+      }),
     );
     if (!success) return null;
 
-    return data.map((v) => ({ id: v.id }));
+    return data.ids.map((v) => ({ id: v }));
   }
 }

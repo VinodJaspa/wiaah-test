@@ -6,6 +6,7 @@ import {
   MenuItem,
   MenuList,
   MenuButton,
+  useGetMyNotificationsQuery,
 } from "@UI";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -14,7 +15,7 @@ export interface NotifiactionsMenuProps {}
 export const NotifiactionsMenu: React.FC<NotifiactionsMenuProps> = ({
   children,
 }) => {
-  const { data, isLoading, isError } = useGetNotifications();
+  const { data, isLoading, isError } = useGetMyNotificationsQuery();
   const { t } = useTranslation();
   return (
     <Menu>
@@ -26,9 +27,9 @@ export const NotifiactionsMenu: React.FC<NotifiactionsMenuProps> = ({
         <SpinnerFallback isLoading={isLoading} isError={isError}>
           <p className="font-bold text-lg">{t("Today")}</p>
           {Array.isArray(data) &&
-            data.map((notifaction, i) => (
+            data.data.map((notifaction, i) => (
               <MenuItem key={notifaction.id + i}>
-                <NotifiactionCard notificationDetails={notifaction} />
+                <NotifiactionCard notificationDetails={{by:}} />
               </MenuItem>
             ))}
         </SpinnerFallback>
