@@ -51,36 +51,36 @@ const config = {
           path.resolve(__dirname, "../apps/front-end/seller/**"),
           path.resolve(__dirname, "../packages/**"),
         ],
-        "@partials": path.resolve(
-          __dirname,
-          "../packages/ui/components/partials"
-        ),
-        "@blocks": path.resolve(__dirname, "../package/ui/components/blocks"),
-        "@blocks/*": path.resolve(
-          __dirname,
-          "../packages/ui/components/blocks/*"
-        ),
-        "@sections/*": path.resolve(
-          __dirname,
-          "../packages/ui/components/sections/*"
-        ),
-        "@features/*": path.resolve(
-          __dirname,
-          "../packages/ui/components/features/*"
-        ),
-        "@sections": path.resolve(
-          __dirname,
-          "../packages/ui/components/sections"
-        ),
-        "@features": path.resolve(
-          __dirname,
-          "../packages/ui/components/features"
-        ),
-        "@libs": path.resolve(__dirname, "../packages/ui/libs"),
-        "@const": path.resolve(__dirname, "../packages/ui/constants"),
-        "@src/*": path.resolve(__dirname, "../packages/ui/src/*"),
-        "@UI": path.resolve(__dirname, "../packages/ui"),
-        "@UI/*": path.resolve["../packages/ui/*"],
+        // "@partials": path.resolve(
+        //   __dirname,
+        //   "../packages/ui/components/partials"
+        // ),
+        // "@blocks": path.resolve(__dirname, "../package/ui/components/blocks"),
+        // "@blocks/*": path.resolve(
+        //   __dirname,
+        //   "../packages/ui/components/blocks/*"
+        // ),
+        // "@sections/*": path.resolve(
+        //   __dirname,
+        //   "../packages/ui/components/sections/*"
+        // ),
+        // "@features/*": path.resolve(
+        //   __dirname,
+        //   "../packages/ui/components/features/*"
+        // ),
+        // "@sections": path.resolve(
+        //   __dirname,
+        //   "../packages/ui/components/sections"
+        // ),
+        // "@features": path.resolve(
+        //   __dirname,
+        //   "../packages/ui/components/features"
+        // ),
+        // "@libs": path.resolve(__dirname, "../packages/ui/libs"),
+        // "@const": path.resolve(__dirname, "../packages/ui/constants"),
+        // "@src/*": path.resolve(__dirname, "../packages/ui/src/*"),
+        // "@UI": path.resolve(__dirname, "../packages/ui"),
+        // "@UI/*": path.resolve["../packages/ui/*"],
       };
       config.resolve.plugins = [
         ...(config.resolve.plugins || []),

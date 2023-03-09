@@ -31,6 +31,7 @@ import {
   GetMyBookingsInput,
 } from '@book-service/dto';
 import {
+  AccountType,
   accountType,
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
@@ -57,6 +58,15 @@ export class BookServiceResolver {
     private readonly commandbus: CommandBus,
     private readonly prisma: PrismaService,
   ) {}
+
+  @Query(() => [BookedService])
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  adminGetUserBookings(
+    @Args('args') args: GetMyBookingsInput,
+    @Args('accountId') id: string,
+  ) {
+    return this.bookServiceService.getMyBooknigs(args, id);
+  }
 
   @Query(() => [BookedService])
   @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
@@ -107,6 +117,34 @@ export class BookServiceResolver {
       return this.bookServiceService.getBuyerSellerBookingHistory(
         args,
         args.userId,
+        args.pagination,
+        args.q,
+      );
+    }
+    return null;
+  }
+
+  @Query(() => [BookedService])
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER, accountType.BUYER]))
+  adminGetAccountBookingHistory(
+    @Args('args', { type: () => GetBookingsHistoryInput })
+    args: GetBookingsHistoryInput,
+    @Args('accountId') id: string,
+    @Args('accountType') type: AccountType,
+  ) {
+    if (type === accountType.SELLER) {
+      return this.bookServiceService.getBuyerSellerBookingHistory(
+        args,
+        id,
+        args.pagination,
+        args.q,
+      );
+    }
+
+    if (type === accountType.BUYER) {
+      return this.bookServiceService.getBuyerSellerBookingHistory(
+        args,
+        id,
         args.pagination,
         args.q,
       );

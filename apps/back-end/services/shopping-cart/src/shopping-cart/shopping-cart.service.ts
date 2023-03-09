@@ -104,6 +104,8 @@ export class ShoppingCartService {
       id: uuid(),
       productId: product.itemId,
       shippingRuleId: product.shippingRuleId,
+      attributesJson: product.attributesJson,
+      qty: product.quantity,
     };
 
     // const hasitem = await this.alreadyHasItem(user.id, product.itemId);

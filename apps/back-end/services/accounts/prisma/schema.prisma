@@ -71,14 +71,15 @@ model UserIdenityVerificationRequest {
   accepted     Boolean @default(false)
   acceptedById String? @db.ObjectId
 
-  firstName   String
-  lastName    String
-  fullAddress String
-  dateOfBirth DateTime
-  id_front    String
-  id_back     String
-  VVCPicture  String?
-  VVC         String
+  firstName        String
+  lastName         String
+  fullAddress      String
+  addressProofBill String
+  dateOfBirth      DateTime
+  id_front         String
+  id_back          String
+  VVCPicture       String?
+  VVC              String
 }
 
 model UserAccountVerificationRequest {
@@ -89,12 +90,11 @@ model UserAccountVerificationRequest {
 
   status       AccountVerificationStatus @default(pending)
   refuseReason String?
-
-  username   String
-  fullName   String
-  knownAs    String
-  categoryId String
-  idPhoto    String
+  username     String
+  fullName     String
+  knownAs      String
+  categoryId   String
+  idPhoto      String
 }
 
 enum AccountVerificationStatus {

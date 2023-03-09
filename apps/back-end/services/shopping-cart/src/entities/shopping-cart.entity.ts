@@ -4,6 +4,7 @@ import {
   ID,
   registerEnumType,
   Directive,
+  Int,
 } from '@nestjs/graphql';
 import { AppliedVoucher } from '@entities';
 import { BookedService } from '../book-service';
@@ -11,7 +12,7 @@ import { BookedService } from '../book-service';
 @ObjectType()
 @Directive('@extends')
 @Directive('@key(fields:"id")')
-class Product {
+export class Product {
   @Field(() => ID)
   @Directive('@external')
   id: string;
@@ -20,7 +21,7 @@ class Product {
 @ObjectType()
 @Directive('@extends')
 @Directive('@key(fields:"id")')
-class ShippingRule {
+export class ShippingRule {
   @Field(() => ID)
   @Directive('@external')
   id: string;
@@ -34,14 +35,14 @@ export class CartProduct {
   @Field(() => ID)
   productId: string;
 
-  @Field(() => Product, { nullable: true })
-  product?: Product;
+  @Field(() => Int)
+  qty: number;
+
+  @Field(() => String)
+  attributesJson: string;
 
   @Field(() => ID)
   shippingRuleId: string;
-
-  @Field(() => ShippingRule, { nullable: true })
-  shippingRule?: ShippingRule;
 }
 
 @ObjectType()

@@ -16,6 +16,7 @@ import { AccountShippingSettings } from "components/views/sellers/AccountShippin
 import { AccountShopReturns } from "components/views/sellers/AccountShopReturns";
 import { AccountShopReviews } from "components/views/sellers/AccountShopReviews";
 import { AccountTransactions } from "components/views/sellers/AccountTransaction";
+import { AccountVerifciation } from "components/views/sellers/AccountVerifciation";
 import { AccountVouchers } from "components/views/sellers/AccountVouchers";
 import { AccountAffiliation } from "components/views/sellers/affiliation";
 import { AccountBookingsHistory } from "components/views/sellers/bookingsHistory";
@@ -57,6 +58,7 @@ const Edit = () => {
     "Newsletter",
     "Blocklist",
     "Privacy",
+    "Account Verification",
     "Personalization and data",
     "Rendez-vous",
     "Pending Appointments",
@@ -109,6 +111,7 @@ const Edit = () => {
           <AccountNotifications accountId={id} />
           <AccountNewsletterSettings accountId={id} />
           <AccountBlockList accountId={id} />
+          <AccountVerifciation accountId={id} />
           <AccountPrivacySettings accountId={id} />
           <AccountPersonalizationSettings accountId={id} />
           <AccountRendezVous accountId={id} />
