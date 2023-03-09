@@ -300,6 +300,7 @@ export type AdminGetUserWishlistInput = {
   pagination: GqlPaginationInput;
 };
 
+
 export type AdminSendMailToUsersInput = {
   message: Scalars["String"];
   subject: Scalars["String"];
