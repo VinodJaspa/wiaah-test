@@ -21,7 +21,13 @@ export type GetMyNotificationsQueryQuery = { __typename?: "Query" } & {
       data: Array<
         { __typename?: "Notification" } & Pick<
           Notification,
-          "id" | "userId" | "authorId" | "createdAt" | "type" | "content"
+          | "id"
+          | "userId"
+          | "authorId"
+          | "createdAt"
+          | "type"
+          | "content"
+          | "thumbnail"
         > & {
             author?: Maybe<
               { __typename?: "Account" } & Pick<Account, "id"> & {
@@ -52,7 +58,7 @@ export const useGetMyNotificationsQuery = () =>
       createdAt
       type
       content
-      
+      thumbnail
       author {
         id
         profile {

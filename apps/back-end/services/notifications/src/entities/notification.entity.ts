@@ -33,6 +33,9 @@ export class Notification {
 
   @Field(() => String)
   content: string;
+
+  @Field(() => String, { nullable: true })
+  thumbnail?: string;
 }
 
 @ObjectType()

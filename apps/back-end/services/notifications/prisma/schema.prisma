@@ -36,6 +36,7 @@ model Notification {
   type            NotificationType
   authorProfileId String?           @db.ObjectId
   authorId        String
+  thumbnail       String?
   content         TranslationText[]
 }
 

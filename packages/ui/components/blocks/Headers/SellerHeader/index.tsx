@@ -110,14 +110,10 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
           <AddNewPostModal />
         </>
         {/* ) : null} */}
-        <div className="relative">
           <NotifiactionsMenu>
             <BellOutlineIcon className="text-icon text-lightBlack" />
           </NotifiactionsMenu>
-          <div className="h-4 w-4 text-[0.5rem] border-2 border-white absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 rounded-full flex items-center justify-center text-white bg-primary">
-            4
-          </div>
-        </div>
+        
 
         <div className="relative" onClick={() => router.push("/chat")}>
           <span className="h-4 w-4 text-[0.5rem]  border-2 border-white rounded-full absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center items-center text-white bg-primary">

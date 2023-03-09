@@ -1,9 +1,17 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { NotificationData } from "types";
+import { NotificationUserData } from "types";
 import { useDateDiff, Button, Avatar, EllipsisText, ClockIcon } from "@UI";
+import { NotificationType } from "@features/API";
 export interface NotifiactionCardProps {
-  notificationDetails: NotificationData;
+  notificationDetails: {
+    id: string;
+    by: NotificationUserData;
+    type: NotificationType;
+    message: string;
+    creationDate: string;
+    attachment?: string;
+  };
 }
 
 export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
@@ -23,10 +31,7 @@ export const NotifiactionCard: React.FC<NotifiactionCardProps> = ({
         case "info":
           return attachment ? (
             <div className="w-full h-16">
-              <img
-                className="w-full h-full object-cover"
-                src={attachment.src}
-              />
+              <Image className="w-full h-full object-cover" src={attachment} />
             </div>
           ) : null;
 
