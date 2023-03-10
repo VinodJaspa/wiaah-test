@@ -123,7 +123,8 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
 
   function sendVideo(vidSrc: string, idx: number) {
     if (!vidSrc) return;
-    onVidUpload && onVidUpload(vidSrc);
+    onVidUpload &&
+      onVidUpload(vidSrc, videoFiles ? videoFiles[idx] : undefined);
   }
 
   function SendImage(img: FileRes, idx: number) {

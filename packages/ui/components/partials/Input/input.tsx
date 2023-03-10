@@ -50,7 +50,7 @@ export const Input: React.FC<InputProps> = ({
           isInputGroup
             ? "border-none focus:ring-0 focus:border-none focus-visible:border-none focus-within:border-none active:border-none"
             : flushed
-            ? "border-b-2"
+            ? "border-b-2 border-t-0 border-l-0 border-r-0"
             : "border-2"
         }
       focus:border-primary-200 border-gray-200 rounded px-3 w-full h-10`}

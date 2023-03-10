@@ -77,7 +77,10 @@ export default () => {
                 <Td className="w-[99%]">
                   <div className="flex items-center gap-4 font-semibold">
                     {/* <Checkbox /> */}
-                    <p>{name.find((v) => v.langId === lang)?.value}</p>
+                    <p>
+                      {name.find((v) => v.langId === lang)?.value ||
+                        name[0]?.value}
+                    </p>
                   </div>
                 </Td>
                 <Td>{sortOrder}</Td>
