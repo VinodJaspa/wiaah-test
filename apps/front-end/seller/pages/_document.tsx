@@ -12,7 +12,6 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
-          <script src="static/js/ffmpeg.min.js"></script>
         </body>
       </Html>
     );

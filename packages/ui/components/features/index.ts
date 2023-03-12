@@ -26,4 +26,4 @@ export * from "./Reviews";
 export * from "./Newsletter";
 export * from "./Vouchers";
 export * from "./notifications";
-export * from "./VideoEditing";
+export * from "./MediaEditing";

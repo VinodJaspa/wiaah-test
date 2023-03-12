@@ -18,12 +18,22 @@ import {
   HStack,
   VStack,
   Textarea,
+  VideoEditor,
+  Image,
+  ModalHeader,
+  ModalCloseButton,
+  CloseIcon,
+  Stepper,
+  StepperContent,
+  Input,
+  Checkbox,
+  VideoFlattenFrames,
 } from "@UI";
 import { FloatingContainer, Avatar } from "@UI";
-import { useUserData } from "hooks";
+import { useDisclouser, useUserData } from "hooks";
 import { MdClose } from "react-icons/md";
 import { BsPlayFill } from "react-icons/bs";
-import { getFileSrcData, FileRes, runIfFn } from "utils";
+import { getFileSrcData, FileRes, runIfFn, useForm } from "utils";
 
 export interface AddNewPostModalProps {}
 
@@ -31,8 +41,13 @@ const MAX_UPLOAD_LIMIT = 5;
 
 export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
   const { isOpen, CloseModal, OpenModal } = useNewPost();
-  const { setUploadType } = useFileUploadModal();
+  const { handleClose, handleOpen, isOpen: videoEditorOpen } = useDisclouser();
   const [uploadiLimitHit, setUploadLimitHit] = React.useState<boolean>(false);
+
+  const { form, inputProps, handleChange } = useForm<{
+    video: string;
+  }>({ video: "" });
+  const [actionVidBlob, setActionVidBlob] = React.useState<Blob>();
 
   const [uploadedImages, setUploadedImages] = React.useState<FileRes[]>([]);
   const [uploadedVideos, setUploadedVideos] = React.useState<string[]>([]);
@@ -51,6 +66,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
     enabled: boolean;
     note: string;
     className: string;
+    onClick?: () => any;
   }[] = [
     {
       icon: ImageIcon,
@@ -86,6 +102,9 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
       note: "",
       className: "bg-purple-100 fill-purple-500 text-purple-500",
       enabled: true,
+      onClick() {
+        handleOpen();
+      },
     },
     {
       icon: PersonIcon,
@@ -130,136 +149,192 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
     }
   }
 
-  function handleFilesUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    setUploadLimitHit(false);
-    const files = e.target.files;
-    if (files) {
-      const fileArray = Array.from(files);
-      ValidateLimit(fileArray.length);
-      fileArray.slice(0, MAX_UPLOAD_LIMIT).map((file) => {
-        if (file.type.includes("image")) {
-          getFileSrcData(file, (res) => {
-            addUploadedImg(res);
-          });
-        } else if (file.type.includes("video")) {
-          const test = URL.createObjectURL(file);
-          addUploadedVideo(test);
-        }
-      });
-    }
-  }
+  console.log({ form });
 
   return user ? (
-    <Modal isOpen={isOpen} onClose={CloseModal} onOpen={OpenModal}>
-      <ModalOverlay />
-      <ModalContent className="min-w-[min(95%,60rem)]">
-        <MediaUploadModal
-          onVidUpload={addUploadedVideo}
-          onImgUpload={addUploadedImg}
-          multiple
-        />
-        <div className="flex flex-col py-4 gap-4">
-          <FloatingContainer
-            items={[
-              {
-                label: (
-                  <Button
-                    colorScheme={"gray"}
-                    className="px-1 py-1 -translate-y-1/2"
-                    aria-label="close new post modal"
-                    onClick={CloseModal}
-                  >
-                    <MdClose />
-                  </Button>
-                ),
-                right: true,
-                top: "center",
-                floatingItemProps: {},
-              },
-            ]}
-          >
-            <span className="w-full justify-self-center text-xl font-extrabold text-center">
-              {t("create_post", "Create Post")}
-            </span>
-          </FloatingContainer>
-          <Divider className="" />
-          <HStack>
-            <Avatar name={user.name} photoSrc={user.photoSrc} />
-            <VStack>
-              <span className="text-lg">{user.name}</span>
-            </VStack>
-          </HStack>
-          <div className="flex flex-col gap-4 w-full">
-            <Textarea
-              className="text-lg min-h-[10rem] w-full resize-none "
-              placeholder={`${t(
-                "what's_on_your_mind",
-                "What's on your mind"
-              )}, ${user.name}?`}
-            />
-            <div className="flex w-full gap-4 px-[4.5rem]">
-              {buttons.map(({ className, enabled, icon, name }, i) => (
+    <>
+      <Modal isOpen={isOpen} onClose={CloseModal} onOpen={OpenModal}>
+        <ModalOverlay />
+        <ModalContent className="min-w-[min(95%,60rem)]">
+          <MediaUploadModal
+            onVidUpload={addUploadedVideo}
+            onImgUpload={addUploadedImg}
+            multiple
+          />
+          <div className="flex flex-col py-4 gap-4">
+            <FloatingContainer
+              items={[
+                {
+                  label: (
+                    <Button
+                      colorScheme={"gray"}
+                      className="px-1 py-1 -translate-y-1/2"
+                      aria-label="close new post modal"
+                      onClick={CloseModal}
+                    >
+                      <MdClose />
+                    </Button>
+                  ),
+                  right: true,
+                  top: "center",
+                  floatingItemProps: {},
+                },
+              ]}
+            >
+              <span className="w-full justify-self-center text-xl font-extrabold text-center">
+                {t("create_post", "Create Post")}
+              </span>
+            </FloatingContainer>
+            <Divider className="" />
+            <HStack>
+              <Avatar name={user.name} photoSrc={user.photoSrc} />
+              <VStack>
+                <span className="text-lg">{user.name}</span>
+              </VStack>
+            </HStack>
+            <div className="flex flex-col gap-4 w-full">
+              <Textarea
+                className="text-lg min-h-[10rem] w-full resize-none "
+                placeholder={`${t(
+                  "what's_on_your_mind",
+                  "What's on your mind"
+                )}, ${user.name}?`}
+              />
+              <div className="flex w-full gap-4 px-[4.5rem]">
+                {buttons.map(
+                  ({ className, enabled, icon, name, onClick }, i) => (
+                    <div
+                      onClick={onClick}
+                      key={i}
+                      className="flex flex-col w-full items-center gap-1"
+                    >
+                      <div
+                        className={`${className || ""} ${
+                          enabled
+                            ? "cursor-pointer"
+                            : "opacity-75 cursor-not-allowed"
+                        } flex py-2 px-2 items-center justify-center gap-2 w-full rounded-xl`}
+                      >
+                        <div className="text-xl">{runIfFn(icon)}</div>
+                        <p className="whitespace-nowrap">
+                          {enabled ? name : t("Cooming Soon")}
+                        </p>
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
+              <Button className="font-bold self-end text-md lg:text-lg xl:text-xl">
+                {t("Post")}
+              </Button>
+            </div>
+            {uploadiLimitHit && (
+              <span className="w-full text-center text-xl text-red-500">
+                {t("you_can_only_upload", "You can only upload")}{" "}
+                {MAX_UPLOAD_LIMIT} {t("files_per_post", "files per post")}
+              </span>
+            )}
+            <div className="grid grid-cols-3 auto-rows-[8rem] gap-4">
+              {uploadedImages.map((img, i) => (
                 <div
+                  className="flex justify-center items-center w-full h-full border-[4px] border-primary"
                   key={i}
-                  className="flex flex-col w-full items-center gap-1"
                 >
-                  <div
-                    className={`${className || ""} ${
-                      enabled
-                        ? "cursor-pointer"
-                        : "opacity-75 cursor-not-allowed"
-                    } flex py-2 px-2 items-center justify-center gap-2 w-full rounded-xl`}
-                  >
-                    <div className="text-xl">{runIfFn(icon)}</div>
-                    <p className="whitespace-nowrap">
-                      {enabled ? name : t("Cooming Soon")}
-                    </p>
-                  </div>
+                  <Image
+                    className="max-w-full max-h-full object-contain"
+                    //@ts-ignore
+                    src={img || ""}
+                    key={i}
+                  />
+                </div>
+              ))}
+              {uploadedVideos.map((vid, i) => (
+                <div
+                  className="relative flex justify-center items-center w-full h-full border-[4px] border-primary"
+                  key={i}
+                >
+                  <BsPlayFill className="absolute text-white rounded-full text-4xl top-[0.25em] left-[0.25em] pl-[0.1em] bg-black bg-opacity-50" />
+                  <video
+                    style={{
+                      maxHeight: "100%",
+                      maxWidth: "100%",
+                    }}
+                    src={vid}
+                  />
                 </div>
               ))}
             </div>
-            <Button className="font-bold self-end text-md lg:text-lg xl:text-xl">
-              {t("Post")}
-            </Button>
           </div>
-          {uploadiLimitHit && (
-            <span className="w-full text-center text-xl text-red-500">
-              {t("you_can_only_upload", "You can only upload")}{" "}
-              {MAX_UPLOAD_LIMIT} {t("files_per_post", "files per post")}
-            </span>
-          )}
-          <div className="grid grid-cols-3 auto-rows-[8rem] gap-4">
-            {uploadedImages.map((img, i) => (
-              <div
-                className="flex justify-center items-center w-full h-full border-[4px] border-primary"
-                key={i}
-              >
-                <img
-                  className="max-w-full max-h-full object-contain"
-                  //@ts-ignore
-                  src={img || ""}
-                  key={i}
-                />
-              </div>
-            ))}
-            {uploadedVideos.map((vid, i) => (
-              <div
-                className="relative flex justify-center items-center w-full h-full border-[4px] border-primary"
-                key={i}
-              >
-                <BsPlayFill className="absolute text-white rounded-full text-4xl top-[0.25em] left-[0.25em] pl-[0.1em] bg-black bg-opacity-50" />
-                <video
-                  style={{
-                    maxHeight: "100%",
-                    maxWidth: "100%",
-                  }}
-                  src={vid}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </ModalContent>
-    </Modal>
+          <Modal onClose={handleClose} isLazy isOpen={videoEditorOpen}>
+            <ModalOverlay />
+            <ModalContent className="max-h-screen">
+              <ModalHeader title={""}>
+                <ModalCloseButton>
+                  <CloseIcon />
+                </ModalCloseButton>
+              </ModalHeader>
+              <div className="py-2" />
+              <Stepper>
+                {({
+                  currentStepIdx,
+                  nextStep,
+                  previousStep,
+                  setStepsLength,
+                  stepsLength,
+                }) => (
+                  <StepperContent>
+                    <VideoEditor
+                      maxDuration={30}
+                      onFinish={(data) => {
+                        const res = URL.createObjectURL(data);
+                        console.log("res", res);
+                        setActionVidBlob(data);
+                        handleChange("video", URL.createObjectURL(data));
+                        nextStep();
+                      }}
+                    />
+                    <div className="flex flex-col gap-4">
+                      <div className="flex flex-col gap-1">
+                        <p>{t("Tag")}</p>
+                        <Textarea className="h-28" />
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <p>{t("User")}</p>
+                        <Input></Input>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <p>{t("Place")}</p>
+                        <Input></Input>
+                      </div>
+                      <div className="flex flex-col gap-1">
+                        <p>{t("Link")}</p>
+                        <Input></Input>
+                      </div>
+                      <p>{t("Allow user to")}:</p>
+                      <Checkbox>{t("Duet")}</Checkbox>
+                      <Checkbox>{t("Stitch")}</Checkbox>
+                      <Checkbox>{t("Comment")}</Checkbox>
+                      <div className="flex flex-col gap-1">
+                        <p>{t("Cover")}</p>
+
+                        {actionVidBlob ? (
+                          <VideoFlattenFrames
+                            loopSkipFrames={30}
+                            renderItem={(blob) => (
+                              <Image src={URL.createObjectURL(blob)} />
+                            )}
+                            videoBlob={actionVidBlob}
+                          />
+                        ) : null}
+                      </div>
+                    </div>
+                  </StepperContent>
+                )}
+              </Stepper>
+            </ModalContent>
+          </Modal>
+        </ModalContent>
+      </Modal>
+    </>
   ) : null;
 };

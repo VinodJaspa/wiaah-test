@@ -216,7 +216,7 @@ export const HotelDetailsView: React.FC = () => {
           {({ currentTabIdx }) => {
             return (
               <>
-                <TabsHeader className="flex overflow-x-scroll">
+                <TabsHeader className="flex ">
                   {ServicesProviderTabs.map((tab, i) => (
                     <>
                       <TabTitle TabKey={i}>

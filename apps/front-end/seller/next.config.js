@@ -10,6 +10,7 @@ const nextConfig = {
     esmExternals: false,
     isrMemoryCacheSize: 0,
   },
+  crossOrigin: "anonymous",
 };
 
 const withTM = require("next-transpile-modules")([

@@ -4,11 +4,9 @@ import {
   useNewsFeedPostPopup,
   PostCard,
   PostsViewModalsHeader,
-  useLoginPopup,
   useUserData,
   useGetNewsFeedPostQuery,
   usePostsCommentsDrawer,
-  SocialPostsCommentsDrawer,
   Modal,
   ModalContent,
   ModalOverlay,
@@ -30,7 +28,6 @@ export const NewsfeedPostDetailsPopup: React.FC<
     isError,
     error,
   } = useGetNewsFeedPostQuery(postId || null);
-  console.log("poistid", postId);
 
   if (!postId) return null;
   // if (!user) {
