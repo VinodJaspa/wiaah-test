@@ -1,69 +1,75 @@
-import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
+import { Carousel } from "@blocks";
+import {
+  AspectRatio,
+  CaruoselLeftArrow,
+  CaruoselRightArrow,
+  Slider,
+  Spinner,
+} from "@partials";
+import { mapArray } from "@UI/../utils/src";
 import React from "react";
 import { useFFmpeg } from "./ffmpeg";
 
 export const VideoFlattenFrames: React.FC<{
   videoSrc: string;
-  loopSkipMS: number;
-  renderItem: (imageBlob: Blob) => React.ReactNode;
-}> = ({ videoSrc, loopSkipMS, renderItem }) => {
-  const canvasRef = React.useRef<HTMLCanvasElement>(null);
-  const videoRef = React.useRef<HTMLVideoElement>(null);
-  const [images, setImages] = React.useState<Blob[]>([]);
-  const [update, setUpdate] = React.useState(false);
-
-  const parts =
-    videoRef.current && videoRef.current.duration > 0
-      ? videoRef.current.duration * 100
-      : 0;
-  console.log({ parts, images }, videoRef.current?.duration);
-  const printFrame = (time: number) => {
-    if (videoRef.current && canvasRef.current) {
-      const canvas = canvasRef.current;
-      const video = videoRef.current;
-
-      video.currentTime = time;
-
-      const ctx = canvas.getContext("2d");
-
-      if (!ctx) return;
-
-      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-      canvas.toBlob((v) => {
-        setImages((e) => e.concat(v ? [v] : []));
-      });
-    }
-  };
+  videoEverySec: number;
+  renderItem: (imageBlob: Blob, idx: number) => React.ReactNode;
+  onFrameSelected: (blob: Blob, idx: number) => any;
+}> = ({ videoSrc, renderItem, videoEverySec, onFrameSelected }) => {
+  const [videos, setVideos] = React.useState<Blob[]>([]);
+  const [duration, setDuration] = React.useState<number>();
+  const { cropVideo } = useFFmpeg();
 
   React.useEffect(() => {
-    setUpdate((v) => !v);
-  }, [videoRef]);
+    if (!duration) return;
+    const load = async () => {
+      let vids: (Blob | undefined)[] = [];
+      for (let i = 0; i < Math.floor(duration); i++) {
+        const data = await cropVideo(videoSrc, i, i + 1);
+        vids.push(data);
+      }
 
-  const print = () => {
-    if (parts < 1) return;
-    const targetedFramesCount = loopSkipMS / parts;
-    console.log({ targetedFramesCount, loopSkipMS, frames });
+      setVideos(vids.filter((v) => !!v) as Blob[]);
+    };
+    load();
+  }, [videoSrc, videoEverySec, duration]);
 
-    const targetedFrames: number[] = [...Array(targetedFramesCount)].reduce(
-      (acc, curr, idx) => {
-        const frame = idx * loopSkipMS;
-        return [...acc, frame];
-      },
-      [] as number[]
-    );
-
-    targetedFrames.map((frame, idx) => {
-      const targetTime = frame / parts;
-      printFrame(targetTime);
-    });
-  };
-
-  print();
   return (
     <>
-      <video width={200} height={200} src={videoSrc} ref={videoRef} />
-      <canvas ref={canvasRef} width={640} height={360} className="hidden" />
-      {images.map((img) => renderItem(img))}
+      <video
+        src={videoSrc}
+        className="hidden"
+        onLoadedMetadata={(event) =>
+          //@ts-ignore
+          setDuration(event.target.duration as number)
+        }
+      />
+      <div className="overflow-hidden">
+        <div className="mx-auto w-1/2 border-2 border-primary">
+          <AspectRatio ratio={9 / 16}>
+            {!videos || videos.length < 1 ? (
+              <div className="w-full h-full flex justify-center items-center">
+                <Spinner className="text-primary text-4xl" />
+              </div>
+            ) : (
+              <Slider
+                draggingActive={false}
+                gap={8}
+                leftArrowComponent={<CaruoselLeftArrow />}
+                rightArrowComponent={<CaruoselRightArrow />}
+                itemsCount={1}
+                onSliderChange={(v) => {
+                  if (videos.at(0) && onFrameSelected) {
+                    onFrameSelected(videos.at(v) as Blob, v);
+                  }
+                }}
+              >
+                {mapArray(videos, (vid, idx) => renderItem(vid, idx))}
+              </Slider>
+            )}
+          </AspectRatio>
+        </div>
+      </div>
     </>
   );
 };

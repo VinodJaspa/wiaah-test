@@ -10,10 +10,8 @@ import {
 } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { BiChevronDown } from "react-icons/bi";
-import { BsPauseBtn, BsPlayBtn } from "react-icons/bs";
+import { BiChevronDown, BiPause, BiPlay } from "react-icons/bi";
 import { throttle } from "lodash";
-import { fetchFile } from "@ffmpeg/ffmpeg";
 import { useFFmpeg } from "./ffmpeg";
 
 export const VideoEditor: React.FC<{
@@ -26,47 +24,13 @@ export const VideoEditor: React.FC<{
   const [video, setVideo] = React.useState<File>();
   const [update, setUpdate] = React.useState(false);
   const ref = React.useRef<HTMLVideoElement>(null);
-  const { ffmpeg } = useFFmpeg();
+  const { ffmpeg, cropVideo } = useFFmpeg();
 
   const handleSubmit = async (startTime: number, endTime: number) => {
     if (!video) return;
     if (proccessing) return;
 
-    const processVideo = async (
-      inputFile: File,
-      startTime: number,
-      endTime: number
-    ) => {
-      // Load ffmpeg
-      if (!ffmpeg) return;
-      // Create input stream from file input
-      const inputFilePath = URL.createObjectURL(inputFile);
-      await ffmpeg.FS("writeFile", "input.mp4", await fetchFile(inputFilePath));
-
-      // Set start time and duration
-      const args = [
-        "-ss",
-        startTime.toString(),
-        "-t",
-        (endTime - startTime).toString(),
-        "-i",
-        "input.mp4",
-      ];
-
-      // Copy the video codec and stream without re-encoding
-      args.push("-c:v", "copy", "-map", "0:v:0");
-
-      // Create output stream and capture as a Blob
-      const outputFilePath = "output.mp4";
-      await ffmpeg.run(...args, outputFilePath);
-      const data = ffmpeg.FS("readFile", outputFilePath);
-      const blob = new Blob([data.buffer], { type: "video/mp4" });
-
-      // Return the blob
-      return blob;
-    };
-
-    const data = await processVideo(video, startTime, endTime);
+    const data = await cropVideo(video, startTime, endTime);
 
     onFinish && data && onFinish(data);
   };
@@ -105,7 +69,6 @@ export const VideoEditor: React.FC<{
           <p>{t("Loading")}</p>
         </HStack>
       )}
-      <Divider className="" />
       <VideoEditorControls
         maxDuration={maxDuration}
         videoRef={ref}
@@ -141,6 +104,7 @@ export const VideoEditorControls: React.FC<{
   const [from, setFrom] = React.useState<number>(0);
   const [to, setTo] = React.useState<number>(duration);
   const [ready, setReady] = React.useState(true);
+  const [durationUpdate, setDurationUpdate] = React.useState(false);
   const [lastHandler, setLastHandler] = React.useState<0 | 1>(0);
 
   const computedFrom = from / durationMultiplier;
@@ -176,6 +140,27 @@ export const VideoEditorControls: React.FC<{
     }
   }, [ref]);
 
+  React.useEffect(() => {
+    function handleLoad(e: Event) {
+      //@ts-ignore
+      const dur = e.target.duration as number;
+      setTo(dur * durationMultiplier);
+    }
+    if (ref.current) {
+      ref.current.addEventListener("loadedmetadata", handleLoad);
+    }
+    return () => {
+      ref.current?.removeEventListener("loadedmetadata", handleLoad);
+    };
+  }, [ref]);
+
+  if (!durationUpdate) {
+    if (duration > 0) {
+      setTo(duration);
+      setDurationUpdate(true);
+    }
+  }
+
   if (playing && ref.current) {
     ref.current.currentTime = lastHandler === 0 ? from : to;
     ref.current.onprogress = (e) => {
@@ -208,7 +193,8 @@ export const VideoEditorControls: React.FC<{
           ) : null}
           <div className="w-full flex gap-2 items-center justify-between">
             <div className="flex gap-2 items-center">
-              <Button
+              <div
+                className="cursor-pointer text-4xl"
                 onClick={() => {
                   if (playing) {
                     ref.current?.pause();
@@ -218,13 +204,9 @@ export const VideoEditorControls: React.FC<{
                     setPlaying(true);
                   }
                 }}
-                center
-                outline
-                colorScheme="gray"
-                className="p-2 text-xl"
               >
-                {playing ? <BsPauseBtn /> : <BsPlayBtn />}
-              </Button>
+                {playing ? <BiPause /> : <BiPlay />}
+              </div>
               <Input
                 type={"number"}
                 flushed
