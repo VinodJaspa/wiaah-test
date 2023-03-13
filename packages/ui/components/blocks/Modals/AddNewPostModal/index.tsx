@@ -33,7 +33,7 @@ import { FloatingContainer, Avatar } from "@UI";
 import { useDisclouser, useUserData } from "hooks";
 import { MdClose } from "react-icons/md";
 import { BsPlayFill } from "react-icons/bs";
-import { getFileSrcData, FileRes, runIfFn, useForm } from "utils";
+import { FileRes, runIfFn, useForm } from "utils";
 
 export interface AddNewPostModalProps {}
 
@@ -319,11 +319,14 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
 
                         {actionVidBlob ? (
                           <VideoFlattenFrames
-                            loopSkipFrames={30}
+                            loopSkipMS={200}
                             renderItem={(blob) => (
-                              <Image src={URL.createObjectURL(blob)} />
+                              <Image
+                                className="w-24 h-32"
+                                src={URL.createObjectURL(blob)}
+                              />
                             )}
-                            videoBlob={actionVidBlob}
+                            videoSrc={form.video}
                           />
                         ) : null}
                       </div>

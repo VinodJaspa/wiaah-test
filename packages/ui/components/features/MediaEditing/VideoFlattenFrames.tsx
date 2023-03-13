@@ -3,42 +3,20 @@ import React from "react";
 import { useFFmpeg } from "./ffmpeg";
 
 export const VideoFlattenFrames: React.FC<{
-  videoBlob: Blob;
-  loopSkipFrames: number;
+  videoSrc: string;
+  loopSkipMS: number;
   renderItem: (imageBlob: Blob) => React.ReactNode;
-}> = ({ videoBlob, loopSkipFrames, renderItem }) => {
+}> = ({ videoSrc, loopSkipMS, renderItem }) => {
   const canvasRef = React.useRef<HTMLCanvasElement>(null);
   const videoRef = React.useRef<HTMLVideoElement>(null);
-  const [frames, setFrames] = React.useState<number>(0);
   const [images, setImages] = React.useState<Blob[]>([]);
-  const { ffmpeg } = useFFmpeg();
+  const [update, setUpdate] = React.useState(false);
 
-  console.log({ frames });
-  React.useEffect(() => {
-    const updateFrames = async () => {
-      // Load the `@ffmpeg/ffmpeg` library
-      if (!ffmpeg) return;
-      // Read the video input from the blob and write it to the memory file system
-      await ffmpeg.FS("writeFile", "input.mp4", await fetchFile(videoBlob));
-
-      const args =
-        "ffprobe -v error -count_frames -select_streams v:0 -show_entries stream=duration -of default=noprint_wrappers=1:nokey=1 input.mp4 > output.txt".split(
-          " "
-        );
-
-      // Copy the video codec and stream without re-encoding
-      // Run the `ffprobe` command on the input video to get its metadata
-      const outputFilePath = "output.txt";
-      const res = await ffmpeg.run(...args);
-      const data = ffmpeg.FS("readFile", outputFilePath);
-      const blob = new Blob([data.buffer], { type: "text/plain" });
-      const metadata = await blob.text();
-      console.log({ res, data, blob, metadata });
-      // setFrames(totalFrames);
-    };
-    updateFrames();
-  }, [videoBlob, ffmpeg]);
-
+  const parts =
+    videoRef.current && videoRef.current.duration > 0
+      ? videoRef.current.duration * 100
+      : 0;
+  console.log({ parts, images }, videoRef.current?.duration);
   const printFrame = (time: number) => {
     if (videoRef.current && canvasRef.current) {
       const canvas = canvasRef.current;
@@ -57,30 +35,33 @@ export const VideoFlattenFrames: React.FC<{
     }
   };
 
-  console.log({ frames });
-
   React.useEffect(() => {
-    const targetedFramesCount = loopSkipFrames / frames;
-    console.log({ targetedFramesCount, loopSkipFrames, frames });
-    if (frames < 1) return;
+    setUpdate((v) => !v);
+  }, [videoRef]);
+
+  const print = () => {
+    if (parts < 1) return;
+    const targetedFramesCount = loopSkipMS / parts;
+    console.log({ targetedFramesCount, loopSkipMS, frames });
 
     const targetedFrames: number[] = [...Array(targetedFramesCount)].reduce(
       (acc, curr, idx) => {
-        const frame = idx * loopSkipFrames;
+        const frame = idx * loopSkipMS;
         return [...acc, frame];
       },
       [] as number[]
     );
 
     targetedFrames.map((frame, idx) => {
-      const targetTime = frame / frames;
+      const targetTime = frame / parts;
       printFrame(targetTime);
     });
-  }, [frames]);
+  };
 
+  print();
   return (
     <>
-      <video width={200} height={200} ref={videoRef} autoPlay muted loop />
+      <video width={200} height={200} src={videoSrc} ref={videoRef} />
       <canvas ref={canvasRef} width={640} height={360} className="hidden" />
       {images.map((img) => renderItem(img))}
     </>
