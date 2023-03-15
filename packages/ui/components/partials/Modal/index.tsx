@@ -8,6 +8,7 @@ interface ModalContextValues {
   isLazy: boolean;
   onClose: () => any;
   onOpen: () => any;
+  z?: number;
 }
 
 interface ModalExtendedContextValues {
@@ -35,6 +36,7 @@ export interface ModalProps
   extends Omit<ModalContextValues, "isLazy" | "onOpen"> {
   isLazy?: boolean;
   onOpen?: (key?: string) => any;
+  z?: number;
 }
 
 export const Modal: React.FC<ModalProps> = ({
@@ -42,6 +44,7 @@ export const Modal: React.FC<ModalProps> = ({
   onClose,
   onOpen = () => {},
   isLazy,
+  z,
   ...props
 }) => {
   const { isOpen: ExtendedIsOpen, onClose: ExtendedOnClose } =
@@ -58,7 +61,7 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <ModalContext.Provider
       {...props}
-      value={{ isOpen, onClose: handleClose, onOpen, isLazy: !!isLazy }}
+      value={{ isOpen, onClose: handleClose, onOpen, isLazy: !!isLazy, z }}
     >
       {/* <div className={`fixed w-full h-full pointer-events-none`}>
         <div {...props} className={`relative w-full h-full isolate`} />
@@ -83,7 +86,7 @@ export const ModalContent: React.FC<ModalContentProps> = ({
   children,
   ...props
 }) => {
-  const { isOpen, isLazy } = React.useContext(ModalContext);
+  const { isOpen, isLazy, z } = React.useContext(ModalContext);
   const [show, setShow] = React.useState<boolean>(false);
   const contentWrapperRef = React.useRef<HTMLDivElement>(null);
 
@@ -104,6 +107,9 @@ export const ModalContent: React.FC<ModalContentProps> = ({
     <div
       {...props}
       ref={contentWrapperRef}
+      style={{
+        zIndex: z,
+      }}
       className={`${className || ""} ${
         isOpen
           ? "-translate-y-1/2"
@@ -121,11 +127,14 @@ export const ModalOverlay: React.FC<ModalOverlayProps> = ({
   className,
   ...props
 }) => {
-  const { isOpen, onClose } = React.useContext(ModalContext);
+  const { isOpen, onClose, z } = React.useContext(ModalContext);
   return (
     <div
       {...props}
       onClick={() => onClose()}
+      style={{
+        zIndex: z,
+      }}
       className={`${className || ""} ${
         isOpen ? "bg-opacity-30" : "bg-opacity-0 pointer-events-none"
       } fixed top-0 left-0 z-50 transition-all w-full h-full bg-black`}

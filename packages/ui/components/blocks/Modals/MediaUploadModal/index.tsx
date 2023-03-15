@@ -55,6 +55,8 @@ export interface MediaUploadModalProps {
   onVidUpload?: (converted: string, raw?: File) => any;
   controls?: MediaUploadModalControls;
   multiple?: boolean;
+  onImgServerUploaded?: (url: string) => any;
+  onVidServerUploaded?: (url: string) => any;
 }
 
 export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
@@ -62,6 +64,8 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
   onVidUpload,
   multiple,
   controls,
+  onImgServerUploaded,
+  onVidServerUploaded,
 }) => {
   const { cancelUpload: _cancelUpload, uploadType: _uploadType } =
     useFileUploadModal();
@@ -119,7 +123,10 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
 
   function sendVideo(vidSrc: string, idx: number) {
     if (!vidSrc) return;
-    onVidUpload && onVidUpload(vidSrc);
+    onVidUpload &&
+      onVidUpload(vidSrc, videoFiles ? videoFiles[idx] : undefined);
+
+    cancelUpload();
   }
 
   function SendImage(img: FileRes, idx: number) {
@@ -129,7 +136,12 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
   function handleOpen() {}
 
   return (
-    <Modal onOpen={() => {}} isOpen={!!uploadType} onClose={cancelUpload}>
+    <Modal
+      isLazy
+      onOpen={() => {}}
+      isOpen={!!uploadType}
+      onClose={cancelUpload}
+    >
       <ModalOverlay />
       <ModalContent className="w-[min(100%, 40rem)] rounded-xl py-4 px-8 flex flex-col gap-4">
         <PostsViewModalsHeader onBackClick={cancelUpload}>

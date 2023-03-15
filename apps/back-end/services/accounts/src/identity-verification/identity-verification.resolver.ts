@@ -2,15 +2,49 @@ import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { CommandBus } from '@nestjs/cqrs';
 import { IdentityVerification } from './entities/identity-verification.entity';
 import { CreateIdentityVerificationInput } from './dto';
-import { AuthorizationDecodedUser, GqlCurrentUser } from 'nest-utils';
+import {
+  accountType,
+  AuthorizationDecodedUser,
+  GqlAuthorizationGuard,
+  GqlCurrentUser,
+} from 'nest-utils';
 import {
   ProvideVVCPictureCommand,
   RequestIdentityVerificationCommand,
 } from './commands';
+import { UseGuards } from '@nestjs/common';
+import { PrismaService } from 'prismaService';
 
 @Resolver(() => IdentityVerification)
 export class IdentityVerificationResolver {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly prisma: PrismaService,
+  ) {}
+
+  @Query(() => IdentityVerification)
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  adminGetAccountVerification(
+    @Args('accountId') id: string,
+  ): Promise<IdentityVerification> {
+    return this.prisma.userIdenityVerificationRequest.findUnique({
+      where: {
+        userId: id,
+      },
+    });
+  }
+
+  @Query(() => IdentityVerification)
+  @UseGuards(new GqlAuthorizationGuard([]))
+  getMyVerificationRequest(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<IdentityVerification> {
+    return this.prisma.userIdenityVerificationRequest.findUnique({
+      where: {
+        userId: user.id,
+      },
+    });
+  }
 
   @Mutation(() => String)
   requestIdVerification(

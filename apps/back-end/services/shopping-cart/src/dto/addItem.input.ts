@@ -10,4 +10,7 @@ export class AddShoppingCartProductItemInput {
 
   @Field((type) => Int)
   quantity: number;
+
+  @Field(() => String, { nullable: true })
+  attributesJson?: string;
 }

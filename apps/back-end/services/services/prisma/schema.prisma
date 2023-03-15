@@ -39,7 +39,7 @@ model ServiceCategory {
   filters            ServiceCategoryFilter[]
   status             ServiceCategoryStatus   @default(active)
   sortOrder          Int                     @default(1)
-  slug               String                  @unique
+  slug               String
 }
 
 enum ServiceCategoryStatus {

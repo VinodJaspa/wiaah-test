@@ -140,6 +140,7 @@ export type AddContactInput = {
 };
 
 export type AddShoppingCartProductItemInput = {
+  attributesJson?: Maybe<Scalars["String"]>;
   itemId: Scalars["ID"];
   quantity: Scalars["Int"];
   shippingRuleId: Scalars["ID"];
@@ -298,7 +299,6 @@ export type AdminGetUserWishlistInput = {
   accountId: Scalars["String"];
   pagination: GqlPaginationInput;
 };
-
 
 export type AdminSendMailToUsersInput = {
   message: Scalars["String"];
@@ -612,10 +612,12 @@ export enum BookedServiceStatus {
 
 export type CartProduct = {
   __typename?: "CartProduct";
+  attributesJson: Scalars["String"];
   id: Scalars["String"];
   product?: Maybe<Product>;
   productId: Scalars["ID"];
-  shippingRule?: Maybe<ShippingRule>;
+  qty: Scalars["Int"];
+  shippingRule: ShippingRule;
   shippingRuleId: Scalars["ID"];
 };
 
@@ -1349,6 +1351,10 @@ export type GetAccountDeletionRequestsInput = {
   username?: Maybe<Scalars["String"]>;
 };
 
+export type GetAccountVerificationRequestsInput = {
+  pagination: GqlPaginationInput;
+};
+
 export type GetAddableHashtagsInput = {
   pagination: GqlPaginationInput;
 };
@@ -2006,6 +2012,24 @@ export type HotelRoomTranslationMetaInfoInput = {
   value: HotelRoomMetaInfoInput;
 };
 
+export type IdentityVerification = {
+  __typename?: "IdentityVerification";
+  VVC: Scalars["String"];
+  VVCPicture: Scalars["String"];
+  acceptedById: Scalars["ID"];
+  addressProofBill: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  dateOfBirth: Scalars["DateTime"];
+  firstName: Scalars["String"];
+  fullAddress: Scalars["String"];
+  id: Scalars["ID"];
+  id_back: Scalars["String"];
+  id_front: Scalars["String"];
+  lastName: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+  userId: Scalars["ID"];
+};
+
 export type Insurance = {
   __typename?: "Insurance";
   amount: Scalars["Float"];
@@ -2292,6 +2316,7 @@ export type Mutation = {
   deleteVoucher: Scalars["Boolean"];
   disableComingSoon: Scalars["Boolean"];
   disableMaintenanceMode: Scalars["Boolean"];
+  disableNotificationFromContent: UserNotificationSettings;
   editAccount: Account;
   editNewsfeedPostAdmin: Scalars["Boolean"];
   enableComingSoon: Scalars["Boolean"];
@@ -2358,6 +2383,7 @@ export type Mutation = {
   updateMembership: Scalars["Boolean"];
   updateMyContact: Scalars["Boolean"];
   updateMyCookiesSettings: Scalars["Boolean"];
+  updateMyNotification: UserNotificationSettings;
   updateMyPrivacySettings: PrivacySettings;
   updateMyProfile: Profile;
   updateMyShop: Shop;
@@ -2984,6 +3010,10 @@ export type MutationUpdateMyCookiesSettingsArgs = {
   args: UpdateUserCookiesSettingsInput;
 };
 
+export type MutationUpdateMyNotificationArgs = {
+  updateNotificationsArgs: UpdateNotificationSettingInput;
+};
+
 export type MutationUpdateMyPrivacySettingsArgs = {
   args: UpdateMyPrivacyInput;
 };
@@ -3148,6 +3178,50 @@ export type NewsletterSubscriber = {
   updatedAt: Scalars["String"];
   user: Account;
 };
+
+export type Notification = {
+  __typename?: "Notification";
+  User: Profile;
+  author?: Maybe<Account>;
+  authorId: Scalars["ID"];
+  authorProfileId: Scalars["ID"];
+  content: Scalars["String"];
+  createdAt: Scalars["DateTime"];
+  id: Scalars["ID"];
+  thumbnail?: Maybe<Scalars["String"]>;
+  type: NotificationType;
+  updatedAt: Scalars["DateTime"];
+  userId: Scalars["ID"];
+};
+
+export type NotificationPaginationResponse = {
+  __typename?: "NotificationPaginationResponse";
+  data: Array<Notification>;
+  hasMore: Scalars["Boolean"];
+  total: Scalars["Int"];
+};
+
+export enum NotificationSettingsEnum {
+  IFollow = "iFollow",
+  Off = "off",
+  On = "on",
+}
+
+export enum NotificationType {
+  DmMessage = "DmMessage",
+  ShopPromotion = "ShopPromotion",
+  CommentCommented = "commentCommented",
+  CommentMention = "commentMention",
+  CommentReacted = "commentReacted",
+  Follow = "follow",
+  FollowRequest = "followRequest",
+  Info = "info",
+  PostCommented = "postCommented",
+  PostMention = "postMention",
+  PostReacted = "postReacted",
+  StoryReacted = "storyReacted",
+  Warning = "warning",
+}
 
 export type OpenTime = {
   __typename?: "OpenTime";
@@ -3501,6 +3575,7 @@ export type Query = {
   adminGetAccountProducts: Array<Product>;
   adminGetAccountSavedPosts: UserSavedPostsGroup;
   adminGetAccountService: Service;
+  adminGetAccountVerification: IdentityVerification;
   adminGetAccountWorkingSchedule: WorkingSchedule;
   adminGetBannedCountry: BannedCountry;
   adminGetBookings: Array<BookedService>;
@@ -3600,6 +3675,7 @@ export type Query = {
   getMyFriendSuggestions: FriendSuggestion;
   getMyMembership?: Maybe<MembershipSubscription>;
   getMyNewsfeedPosts: Array<NewsfeedPost>;
+  getMyNotifications: NotificationPaginationResponse;
   getMyOrders: Array<Order>;
   getMyPrivacySettings: PrivacySettings;
   getMyProductReviews: Array<ProductReview>;
@@ -3612,6 +3688,7 @@ export type Query = {
   getMyShippingRules: Array<ShippingRule>;
   getMyStories: Array<Story>;
   getMyTransactions: Array<Transaction>;
+  getMyVerificationRequest: IdentityVerification;
   getMyVouchers: Array<Voucher>;
   getMyWithdrawalRequests: Array<WithdrawalRequest>;
   getMyWorkingSchedule: WorkingSchedule;
@@ -3722,6 +3799,10 @@ export type QueryAdminGetAccountSavedPostsArgs = {
 };
 
 export type QueryAdminGetAccountServiceArgs = {
+  accountId: Scalars["String"];
+};
+
+export type QueryAdminGetAccountVerificationArgs = {
   accountId: Scalars["String"];
 };
 
@@ -3841,6 +3922,10 @@ export type QueryCanAccessRoomArgs = {
 
 export type QueryGetAccountDeletionRequestsArgs = {
   args: GetAccountDeletionRequestsInput;
+};
+
+export type QueryGetAccountVerificationRequestsArgs = {
+  args: GetAccountVerificationRequestsInput;
 };
 
 export type QueryGetActionArgs = {
@@ -5086,6 +5171,14 @@ export type ShoppingCart = {
   ownerId: Scalars["ID"];
 };
 
+export type SilentContent = {
+  __typename?: "SilentContent";
+  contentId: Scalars["ID"];
+  id: Scalars["ID"];
+  silentedBy?: Maybe<UserNotificationSettings>;
+  userId: Scalars["ID"];
+};
+
 export type SiteInformation = {
   __typename?: "SiteInformation";
   descirption: Scalars["String"];
@@ -5440,6 +5533,13 @@ export type UpdateNewsletterInput = {
   reminder?: Maybe<Scalars["Boolean"]>;
 };
 
+export type UpdateNotificationSettingInput = {
+  commentLike?: Maybe<NotificationSettingsEnum>;
+  mentions?: Maybe<NotificationSettingsEnum>;
+  postComment?: Maybe<NotificationSettingsEnum>;
+  postReaction?: Maybe<NotificationSettingsEnum>;
+};
+
 export type UpdatePostAdminInput = {
   attachments?: Maybe<Array<AttachmentInput>>;
   content?: Maybe<Scalars["String"]>;
@@ -5686,6 +5786,16 @@ export type UserCookiesSettings = {
   acceptedRequired: Scalars["Boolean"];
   id: Scalars["ID"];
   userId: Scalars["ID"];
+};
+
+export type UserNotificationSettings = {
+  __typename?: "UserNotificationSettings";
+  commentLike: NotificationSettingsEnum;
+  id: Scalars["ID"];
+  mentions: NotificationSettingsEnum;
+  postComment: NotificationSettingsEnum;
+  postReaction: NotificationSettingsEnum;
+  silentedContent: Array<SilentContent>;
 };
 
 export type UserSavedPostsGroup = {

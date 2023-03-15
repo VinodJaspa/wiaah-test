@@ -10,6 +10,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ShoppingCartService } from './shopping-cart.service';
 import { ShoppingCartResolver } from './shopping-cart.resolver';
 import { ShoppingCartController } from './shopping-cart.controller';
+import { CartProductResolver } from './cart-product.resolver';
 
 @Module({
   imports: [
@@ -34,7 +35,7 @@ import { ShoppingCartController } from './shopping-cart.controller';
       },
     ]),
   ],
-  providers: [ShoppingCartResolver, ShoppingCartService],
+  providers: [ShoppingCartResolver, ShoppingCartService, CartProductResolver],
   controllers: [ShoppingCartController],
 })
 export class ShoppingCartModule {}

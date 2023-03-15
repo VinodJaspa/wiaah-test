@@ -15,7 +15,7 @@ import {
     NotificationSettingsModule,
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
-      autoSchemaFile: true,
+      autoSchemaFile: './schema.graphql',
       context: (ctx) => ({ ...ctx, user: getUserFromRequest(ctx.req) }),
     }),
   ],

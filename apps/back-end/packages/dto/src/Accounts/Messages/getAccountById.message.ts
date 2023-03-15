@@ -18,4 +18,5 @@ export class GetAccountByIdMessageReply extends KafkaMessageReply<{
   phone: string;
   postalCode: string;
   language: string;
+  preferedCurrency: string;
 }> {}

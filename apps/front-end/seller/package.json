@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ffmpeg/ffmpeg": "^0.9.3",
     "@tailwindcss/forms": "^0.4.0",
     "@types/react-image-gallery": "^1.0.5",
     "@types/react-window": "^1.8.5",
