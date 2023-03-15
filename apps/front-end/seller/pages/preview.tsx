@@ -5,7 +5,9 @@ import React from "react";
 const preview: NextPage = () => {
   return (
     <div className="w-screen h-screen flex justify-center items-center">
-      <VideoEditor maxDuration={650} />
+      <div className={"w-1/2"}>
+        <VideoEditor onFinish={() => {}} maxDuration={650} />
+      </div>
     </div>
   );
 };

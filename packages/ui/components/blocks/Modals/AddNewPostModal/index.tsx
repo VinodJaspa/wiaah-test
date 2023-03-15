@@ -169,7 +169,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
     <>
       <Modal isOpen={isOpen} onClose={CloseModal} onOpen={OpenModal}>
         <ModalOverlay />
-        <ModalContent className="min-w-[min(95%,60rem)]">
+        <ModalContent className="min-h-[40rem]">
           <MediaUploadModal
             onVidUpload={addUploadedVideo}
             onImgUpload={addUploadedImg}
@@ -184,7 +184,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
             }}
           >
             <StepperContent>
-              <div className="flex flex-col py-4 gap-4">
+              {/* <div className="flex flex-col py-4 gap-4">
                 <FloatingContainer
                   items={[
                     {
@@ -287,7 +287,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                     </div>
                   ))}
                 </div>
-              </div>
+              </div> */}
               <div>
                 <Stepper>
                   {({ nextStep, previousStep, currentStepIdx }) => (
@@ -299,14 +299,16 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                         />
                       )}
                       <StepperContent>
-                        <VideoEditor
-                          maxDuration={30}
-                          onFinish={(data) => {
-                            setActionVidBlob(data);
-                            handleChange("video", URL.createObjectURL(data));
-                            nextStep();
-                          }}
-                        />
+                        <div className="">
+                          <VideoEditor
+                            maxDuration={180}
+                            onFinish={(data) => {
+                              setActionVidBlob(data);
+                              handleChange("video", URL.createObjectURL(data));
+                              nextStep();
+                            }}
+                          />
+                        </div>
                         <div className="flex flex-col gap-4">
                           <div className="flex flex-col gap-1">
                             <p>{t("Legend")}</p>
@@ -365,12 +367,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                                       ? null
                                       : coversRef.current[idx - 1];
                                   const ref2 = coversRef.current[idx + 1];
-                                  console.log({
-                                    idx,
-                                    ref,
-                                    ref1: ref1?.getAttribute("data-idx"),
-                                    ref2: ref2.getAttribute("data-idx"),
-                                  });
+
                                   if (ref1) {
                                     ref1.pause();
                                   }

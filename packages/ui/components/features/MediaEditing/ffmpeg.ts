@@ -5,9 +5,13 @@ const ffmpeg = createFFmpeg({
   log: true,
 });
 
+let ffmpegLoading = false;
+
 export const getFFmpeg = async () => {
-  if (ffmpeg.isLoaded()) return ffmpeg;
+  if (ffmpeg.isLoaded() || ffmpegLoading) return ffmpeg;
+  ffmpegLoading = true;
   await ffmpeg.load();
+  ffmpegLoading = false;
   return ffmpeg;
 };
 

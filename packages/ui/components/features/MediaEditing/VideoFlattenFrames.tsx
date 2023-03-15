@@ -45,30 +45,26 @@ export const VideoFlattenFrames: React.FC<{
         }
       />
       <div className="overflow-hidden">
-        <div className="mx-auto w-1/2 border-2 border-primary">
-          <AspectRatio ratio={9 / 16}>
-            {!videos || videos.length < 1 ? (
-              <div className="w-full h-full flex justify-center items-center">
-                <Spinner className="text-primary text-4xl" />
-              </div>
-            ) : (
-              <Slider
-                draggingActive={false}
-                gap={8}
-                leftArrowComponent={<CaruoselLeftArrow />}
-                rightArrowComponent={<CaruoselRightArrow />}
-                itemsCount={1}
-                onSliderChange={(v) => {
-                  if (videos.at(0) && onFrameSelected) {
-                    onFrameSelected(videos.at(v) as Blob, v);
-                  }
-                }}
-              >
-                {mapArray(videos, (vid, idx) => renderItem(vid, idx))}
-              </Slider>
-            )}
-          </AspectRatio>
-        </div>
+        <AspectRatio ratio={14 / 9}>
+          {!videos || videos.length < 1 ? (
+            <div className="w-full h-full flex justify-center items-center">
+              <Spinner className="text-primary text-4xl" />
+            </div>
+          ) : (
+            <Slider
+              draggingActive={false}
+              gap={8}
+              itemsCount={4}
+              onSliderChange={(v) => {
+                if (videos.at(0) && onFrameSelected) {
+                  onFrameSelected(videos.at(v) as Blob, v);
+                }
+              }}
+            >
+              {mapArray(videos, (vid, idx) => renderItem(vid, idx))}
+            </Slider>
+          )}
+        </AspectRatio>
       </div>
     </>
   );
