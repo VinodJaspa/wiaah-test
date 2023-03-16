@@ -87,61 +87,6 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
     }
   }, [isOpen]);
 
-  // const buttons: {
-  //   icon: React.ReactNode;
-  //   name: string;
-  //   enabled: boolean;
-  //   note: string;
-  //   className: string;
-  //   onClick?: () => any;
-  // }[] = [
-  //   {
-  //     icon: ImageIcon,
-  //     name: t("Picture"),
-  //     enabled: true,
-  //     note: "",
-  //     className: "bg-red-100 fill-red-500 text-red-500",
-  //   },
-  //   {
-  //     icon: SmilingFaceEmoji,
-  //     name: t("Feeling"),
-  //     enabled: true,
-  //     note: "",
-  //     className: "bg-yellow-100 fill-yellow-500 text-yellow-500",
-  //   },
-  //   {
-  //     icon: VideoCameraIcon,
-  //     name: t("Live"),
-  //     enabled: false,
-  //     note: t("Cooming Soon"),
-  //     className: "bg-blue-100 fill-blue-500 text-blue-500",
-  //   },
-  //   {
-  //     icon: LocationOnPointIcon,
-  //     name: t("Location"),
-  //     enabled: true,
-  //     note: "",
-  //     className: "bg-primary-100 fill-primary-500 text-primary-500",
-  //   },
-  //   {
-  //     icon: PlayButtonFillIcon,
-  //     name: t("Action"),
-  //     note: "",
-  //     className: "bg-purple-100 fill-purple-500 text-purple-500",
-  //     enabled: true,
-  //     onClick() {
-  //       setStep(AddPostSectionEnum.action);
-  //     },
-  //   },
-  //   {
-  //     icon: PersonIcon,
-  //     name: t("Idenity"),
-  //     enabled: true,
-  //     note: "",
-  //     className: "bg-indigo-100 fill-indigo-500 text-indigo-500",
-  //   },
-  // ];
-
   function cleanUpStates() {
     setUploadLimitHit(false);
     setUploadedImages([]);
@@ -179,8 +124,47 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
               <div className="w-full flex text-2xl  font-bold justify-center">
                 {t("Create a post")}
               </div>
-
               <div className="h-full justify-self-center flex gap-6">
+                <div className=" w-1/2 flex flex-col gap-2">
+                  <div className="flex flex-col gap-1">
+                    <p>{t("Legend")}</p>
+                    <Textarea className="h-28" />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <p>{t("Tag")}</p>
+                    <InputGroup>
+                      <Input></Input>
+                      <InputRightElement className="px-4">
+                        <HashtagIcon />
+                      </InputRightElement>
+                    </InputGroup>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <p>{t("User")}</p>
+                    <InputGroup>
+                      <Input></Input>
+                      <InputRightElement className="px-4">
+                        <FiAtSign></FiAtSign>
+                      </InputRightElement>
+                    </InputGroup>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <p>{t("Place")}</p>
+                    <InputGroup>
+                      <Input></Input>
+                      <InputRightElement className="px-4">
+                        <GrLocationPin></GrLocationPin>
+                      </InputRightElement>
+                    </InputGroup>
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <p>{t("Link")}</p>
+                    <Input
+                      placeholder={t("You can add a wiaah product link only")}
+                    />
+                  </div>
+                </div>
+
                 <div className="w-1/2 flex pt-2 items-center flex-col gap-4">
                   <AspectRatio className="overflow-hidden" ratio={9 / 14}>
                     <Slider
@@ -226,46 +210,6 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                       : null}
                   </div>
                 </div>
-                <div className=" w-1/2 flex flex-col gap-2">
-                  <div className="flex flex-col gap-1">
-                    <p>{t("Legend")}</p>
-                    <Textarea className="h-28" />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <p>{t("Tag")}</p>
-                    <InputGroup flushed>
-                      <Input></Input>
-                      <InputRightElement className="px-4">
-                        <HashtagIcon />
-                      </InputRightElement>
-                    </InputGroup>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <p>{t("User")}</p>
-                    <InputGroup flushed>
-                      <Input></Input>
-                      <InputRightElement className="px-4">
-                        <FiAtSign></FiAtSign>
-                      </InputRightElement>
-                    </InputGroup>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <p>{t("Place")}</p>
-                    <InputGroup flushed>
-                      <Input></Input>
-                      <InputRightElement className="px-4">
-                        <GrLocationPin></GrLocationPin>
-                      </InputRightElement>
-                    </InputGroup>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <p>{t("Link")}</p>
-                    <Input
-                      flushed
-                      placeholder={t("You can add a wiaah product link only")}
-                    />
-                  </div>
-                </div>
               </div>
             </div>
           ) : mediaType === "video" && media?.item(0) ? (
@@ -305,7 +249,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                           </div>
                           <div className="flex flex-col gap-1">
                             <p>{t("Tag")}</p>
-                            <InputGroup flushed>
+                            <InputGroup>
                               <Input></Input>
                               <InputRightElement className="px-4">
                                 <HashtagIcon />
@@ -314,7 +258,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                           </div>
                           <div className="flex flex-col gap-1">
                             <p>{t("User")}</p>
-                            <InputGroup flushed>
+                            <InputGroup>
                               <Input></Input>
                               <InputRightElement className="px-4">
                                 <FiAtSign></FiAtSign>
@@ -323,7 +267,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                           </div>
                           <div className="flex flex-col gap-1">
                             <p>{t("Place")}</p>
-                            <InputGroup flushed>
+                            <InputGroup>
                               <Input></Input>
                               <InputRightElement className="px-4">
                                 <GrLocationPin></GrLocationPin>
@@ -333,7 +277,6 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                           <div className="flex flex-col gap-1">
                             <p>{t("Link")}</p>
                             <Input
-                              flushed
                               placeholder={t(
                                 "You can add a wiaah product link only"
                               )}
@@ -437,14 +380,71 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
               </div>
             </div>
           )}
-          <ModalFooter className="justify-between">
-            <Button>{t("Cancel")}</Button>
-            <Button>
-              {mediaType === "video" && step === 0 ? t("Next") : t("Share")}
-            </Button>
-          </ModalFooter>
+          {media ? (
+            <ModalFooter className="justify-between">
+              <Button>{t("Cancel")}</Button>
+              <Button>
+                {mediaType === "video" && step === 0 ? t("Next") : t("Share")}
+              </Button>
+            </ModalFooter>
+          ) : null}
         </ModalContent>
       </Modal>
     </>
   ) : null;
 };
+
+// const buttons: {
+//   icon: React.ReactNode;
+//   name: string;
+//   enabled: boolean;
+//   note: string;
+//   className: string;
+//   onClick?: () => any;
+// }[] = [
+//   {
+//     icon: ImageIcon,
+//     name: t("Picture"),
+//     enabled: true,
+//     note: "",
+//     className: "bg-red-100 fill-red-500 text-red-500",
+//   },
+//   {
+//     icon: SmilingFaceEmoji,
+//     name: t("Feeling"),
+//     enabled: true,
+//     note: "",
+//     className: "bg-yellow-100 fill-yellow-500 text-yellow-500",
+//   },
+//   {
+//     icon: VideoCameraIcon,
+//     name: t("Live"),
+//     enabled: false,
+//     note: t("Cooming Soon"),
+//     className: "bg-blue-100 fill-blue-500 text-blue-500",
+//   },
+//   {
+//     icon: LocationOnPointIcon,
+//     name: t("Location"),
+//     enabled: true,
+//     note: "",
+//     className: "bg-primary-100 fill-primary-500 text-primary-500",
+//   },
+//   {
+//     icon: PlayButtonFillIcon,
+//     name: t("Action"),
+//     note: "",
+//     className: "bg-purple-100 fill-purple-500 text-purple-500",
+//     enabled: true,
+//     onClick() {
+//       setStep(AddPostSectionEnum.action);
+//     },
+//   },
+//   {
+//     icon: PersonIcon,
+//     name: t("Idenity"),
+//     enabled: true,
+//     note: "",
+//     className: "bg-indigo-100 fill-indigo-500 text-indigo-500",
+//   },
+// ];
