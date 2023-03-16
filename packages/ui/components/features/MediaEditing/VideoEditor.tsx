@@ -323,6 +323,7 @@ export const VideoEditorControls: React.FC<{
                   </>
                 </div>
               </div>
+              <Button onClick={() => onSubmit(from, to)}>submit</Button>
             </>
           ) : null}
         </div>

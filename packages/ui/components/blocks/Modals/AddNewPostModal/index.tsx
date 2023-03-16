@@ -2,32 +2,17 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   useNewPost,
-  MediaUploadModal,
   Modal,
   ModalOverlay,
   ModalContent,
-  ImageIcon,
-  VideoCameraIcon,
-  SmilingFaceEmoji,
-  PlayButtonFillIcon,
-  PersonIcon,
-  LocationOnPointIcon,
   Button,
-  Divider,
   HStack,
-  VStack,
   Textarea,
   VideoEditor,
   Image,
-  ModalHeader,
-  ModalCloseButton,
-  CloseIcon,
-  Stepper,
-  StepperContent,
   Input,
   Checkbox,
   VideoFlattenFrames,
-  ArrowLeftIcon,
   InputGroup,
   InputRightElement,
   HashtagIcon,
@@ -39,10 +24,7 @@ import {
   ModalFooter,
   CheckMarkStepper,
 } from "@UI";
-import { FloatingContainer, Avatar } from "@UI";
 import { useDisclouser, useUserData } from "hooks";
-import { MdClose } from "react-icons/md";
-import { BsPlayFill } from "react-icons/bs";
 import { FileRes, mapArray, runIfFn, useForm } from "utils";
 import { FiAtSign } from "react-icons/fi";
 import { GrLocationPin } from "react-icons/gr";
@@ -79,7 +61,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
   const [uploadedVideos, setUploadedVideos] = React.useState<string[]>([]);
   const { user } = useUserData();
   const { t } = useTranslation();
-  const [step, setStep] = React.useState<number>(1);
+  const [step, setStep] = React.useState<number>(0);
 
   React.useEffect(() => {
     if (!isOpen) {
@@ -124,102 +106,104 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
               <div className="w-full flex text-2xl  font-bold justify-center">
                 {t("Create a post")}
               </div>
-              <div className="h-full justify-self-center flex gap-6">
-                <div className=" w-1/2 flex flex-col gap-2">
-                  <div className="flex flex-col gap-1">
-                    <p>{t("Legend")}</p>
-                    <Textarea className="h-28" />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <p>{t("Tag")}</p>
-                    <InputGroup>
-                      <Input></Input>
-                      <InputRightElement className="px-4">
-                        <HashtagIcon />
-                      </InputRightElement>
-                    </InputGroup>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <p>{t("User")}</p>
-                    <InputGroup>
-                      <Input></Input>
-                      <InputRightElement className="px-4">
-                        <FiAtSign></FiAtSign>
-                      </InputRightElement>
-                    </InputGroup>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <p>{t("Place")}</p>
-                    <InputGroup>
-                      <Input></Input>
-                      <InputRightElement className="px-4">
-                        <GrLocationPin></GrLocationPin>
-                      </InputRightElement>
-                    </InputGroup>
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <p>{t("Link")}</p>
-                    <Input
-                      placeholder={t("You can add a wiaah product link only")}
-                    />
-                  </div>
-                </div>
 
-                <div className="w-1/2 flex pt-2 items-center flex-col gap-4">
-                  <AspectRatio className="overflow-hidden" ratio={9 / 14}>
-                    <Slider
-                      gap={8}
-                      itemsCount={1}
-                      currentItemIdx={imageIdx}
-                      onSliderChange={(v) => setImageIdx(v)}
-                    >
-                      {media
-                        ? Array.from(media!).map((v) => (
-                            <div className="relative w-full h-full">
-                              <Image
-                                className="w-full h-full object-cover"
-                                src={URL.createObjectURL(v)}
-                              ></Image>
-                              <div className="pointer-events-none hover:pointer-events-auto h-full w-full flex justify-center items-center absolute top-0 left-0 opacity-0 hover:opacity-100 bg-black bg-opacity-30">
-                                <HStack>
-                                  <Button
-                                    colorScheme="danger"
-                                    center
-                                    className="p-2"
-                                  >
-                                    <TrashIcon />
-                                  </Button>
-                                </HStack>
-                              </div>
-                            </div>
-                          ))
-                        : null}
-                    </Slider>
-                  </AspectRatio>
-                  <div className="flex gap-4 items-center">
+              <div className="w-1/2 flex pt-2 items-center flex-col gap-4">
+                <AspectRatio className="overflow-hidden" ratio={9 / 14}>
+                  <Slider
+                    gap={8}
+                    itemsCount={1}
+                    currentItemIdx={imageIdx}
+                    onSliderChange={(v) => setImageIdx(v)}
+                  >
                     {media
-                      ? mapArray(Array.from(media!), (v, i) => (
-                          <Radio
-                            className="cursor-pointer scale-125"
-                            checked={imageIdx === i}
-                            onChange={(v) =>
-                              v.target.checked ? setImageIdx(i) : null
-                            }
-                          ></Radio>
+                      ? Array.from(media!).map((v) => (
+                          <div className="relative w-full h-full">
+                            <Image
+                              className="w-full h-full object-cover"
+                              src={URL.createObjectURL(v)}
+                            ></Image>
+                            <div className="pointer-events-none hover:pointer-events-auto h-full w-full flex justify-center items-center absolute top-0 left-0 opacity-0 hover:opacity-100 bg-black bg-opacity-30">
+                              <HStack>
+                                <Button
+                                  colorScheme="danger"
+                                  center
+                                  className="p-2"
+                                >
+                                  <TrashIcon />
+                                </Button>
+                              </HStack>
+                            </div>
+                          </div>
                         ))
                       : null}
+                  </Slider>
+                </AspectRatio>
+                <div className="flex gap-4 items-center">
+                  {media
+                    ? mapArray(Array.from(media!), (v, i) => (
+                        <Radio
+                          className="cursor-pointer scale-125"
+                          checked={imageIdx === i}
+                          onChange={(v) =>
+                            v.target.checked ? setImageIdx(i) : null
+                          }
+                        ></Radio>
+                      ))
+                    : null}
+                </div>
+
+                <div className="h-full justify-self-center flex gap-6">
+                  <div className=" w-1/2 flex flex-col gap-2">
+                    <div className="flex flex-col gap-1">
+                      <p>{t("Legend")}</p>
+                      <Textarea className="h-28" />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <p>{t("Tag")}</p>
+                      <InputGroup>
+                        <Input></Input>
+                        <InputRightElement className="px-4">
+                          <HashtagIcon />
+                        </InputRightElement>
+                      </InputGroup>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <p>{t("User")}</p>
+                      <InputGroup>
+                        <Input></Input>
+                        <InputRightElement className="px-4">
+                          <FiAtSign></FiAtSign>
+                        </InputRightElement>
+                      </InputGroup>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <p>{t("Place")}</p>
+                      <InputGroup>
+                        <Input></Input>
+                        <InputRightElement className="px-4">
+                          <GrLocationPin></GrLocationPin>
+                        </InputRightElement>
+                      </InputGroup>
+                    </div>
+                    <div className="flex flex-col gap-1">
+                      <p>{t("Link")}</p>
+                      <Input
+                        placeholder={t("You can add a wiaah product link only")}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           ) : mediaType === "video" && media?.item(0) ? (
-            <div className="flex h-[616px] bg-white flex-col gap-4">
-              <div className="w-full h-full flex text-2xl  font-bold justify-center">
+            <div className="flex h-[616px] bg-white w-full flex-col gap-4">
+              <div className="w-full h-full flex text-2xl font-bold justify-center">
                 {step === 0 ? t("Video Editing") : t("Video Details")}
               </div>
-              <div className="w-96 h-full  mx-auto">
+              <div className="h-full w-full mx-auto">
                 <CheckMarkStepper
                   className="h-full"
+                  stepHeaderClassName="w-[24rem] mx-auto"
                   currentStepIdx={step}
                   steps={[
                     {
@@ -232,7 +216,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                             onFinish={(data) => {
                               setActionVidBlob(data);
                               handleChange("video", URL.createObjectURL(data));
-                              // nextStep();
+                              setStep(1);
                             }}
                           />
                         </div>
@@ -242,93 +226,100 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                     {
                       key: "details",
                       stepComponent: () => (
-                        <div className="flex flex-col  h-[calc(100%-6rem)] overflow-y-scroll thinScroll gap-4">
-                          <div className="flex flex-col gap-1">
-                            <p>{t("Legend")}</p>
-                            <Textarea className="h-28" />
-                          </div>
-                          <div className="flex flex-col gap-1">
-                            <p>{t("Tag")}</p>
-                            <InputGroup>
-                              <Input></Input>
-                              <InputRightElement className="px-4">
-                                <HashtagIcon />
-                              </InputRightElement>
-                            </InputGroup>
-                          </div>
-                          <div className="flex flex-col gap-1">
-                            <p>{t("User")}</p>
-                            <InputGroup>
-                              <Input></Input>
-                              <InputRightElement className="px-4">
-                                <FiAtSign></FiAtSign>
-                              </InputRightElement>
-                            </InputGroup>
-                          </div>
-                          <div className="flex flex-col gap-1">
-                            <p>{t("Place")}</p>
-                            <InputGroup>
-                              <Input></Input>
-                              <InputRightElement className="px-4">
-                                <GrLocationPin></GrLocationPin>
-                              </InputRightElement>
-                            </InputGroup>
-                          </div>
-                          <div className="flex flex-col gap-1">
-                            <p>{t("Link")}</p>
-                            <Input
-                              placeholder={t(
-                                "You can add a wiaah product link only"
-                              )}
-                            />
-                          </div>
-                          <p>{t("Allow user to")}:</p>
-                          <Checkbox>{t("Duet")}</Checkbox>
-                          <Checkbox>{t("Stitch")}</Checkbox>
-                          <Checkbox>{t("Comment")}</Checkbox>
-                          <div className="flex flex-col gap-1">
-                            <p>{t("Cover")}</p>
-
-                            {form.video && form.video.length > 0 ? (
-                              <VideoFlattenFrames
-                                videoEverySec={1}
-                                onFrameSelected={(v, idx) => {
-                                  const ref = coversRef.current[idx];
-                                  const ref1 =
-                                    idx === 0
-                                      ? null
-                                      : coversRef.current[idx - 1];
-                                  const ref2 = coversRef.current[idx + 1];
-
-                                  if (ref1) {
-                                    ref1.pause();
-                                  }
-                                  if (ref2) {
-                                    ref2.pause();
-                                  }
-                                  if (ref) {
-                                    ref?.play();
-                                  }
-                                }}
-                                renderItem={(blob, idx) => (
-                                  <video
-                                    muted
-                                    loop
-                                    data-idx={idx}
-                                    ref={(node) => {
-                                      if (node) {
-                                        setCoversRef(idx, node);
-                                      }
-                                      if (idx === 0 && node) {
-                                        node?.play();
-                                      }
-                                    }}
-                                    src={URL.createObjectURL(blob)}
-                                  />
+                        <div className="flex w-full flex-col px-2 h-[calc(100%-6rem)] overflow-y-scroll thinScroll gap-4">
+                          <div className="w-96 mx-auto">
+                            <div className="flex flex-col gap-1">
+                              <p>{t("Legend")}</p>
+                              <Textarea className="h-28" />
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <p>{t("Tag")}</p>
+                              <InputGroup>
+                                <Input></Input>
+                                <InputRightElement className="px-4">
+                                  <HashtagIcon />
+                                </InputRightElement>
+                              </InputGroup>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <p>{t("User")}</p>
+                              <InputGroup>
+                                <Input></Input>
+                                <InputRightElement className="px-4">
+                                  <FiAtSign></FiAtSign>
+                                </InputRightElement>
+                              </InputGroup>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <p>{t("Place")}</p>
+                              <InputGroup>
+                                <Input></Input>
+                                <InputRightElement className="px-4">
+                                  <GrLocationPin></GrLocationPin>
+                                </InputRightElement>
+                              </InputGroup>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                              <p>{t("Link")}</p>
+                              <Input
+                                placeholder={t(
+                                  "You can add a wiaah product link only"
                                 )}
-                                videoSrc={form.video}
                               />
-                            ) : null}
+                            </div>
+                            <p>{t("Allow user to")}:</p>
+                            <Checkbox>{t("Duet")}</Checkbox>
+                            <Checkbox>{t("Stitch")}</Checkbox>
+                            <Checkbox>{t("Comment")}</Checkbox>
+                            <div className="flex flex-col gap-1">
+                              <p>{t("Cover")}</p>
+
+                              {form.video && form.video.length > 0 ? (
+                                <VideoFlattenFrames
+                                  videoEverySec={1}
+                                  onFrameSelected={(v, idx) => {
+                                    const ref = coversRef.current[idx];
+                                    const ref1 =
+                                      idx === 0
+                                        ? null
+                                        : coversRef.current[idx - 1];
+                                    const ref2 = coversRef.current[idx + 1];
+
+                                    if (ref1) {
+                                      ref1.pause();
+                                    }
+                                    if (ref2) {
+                                      ref2.pause();
+                                    }
+                                    if (ref) {
+                                      ref?.play();
+                                    }
+                                  }}
+                                  renderItem={(blob, idx) => (
+                                    <video
+                                      muted
+                                      loop
+                                      className={
+                                        idx === 0
+                                          ? "border-4 border-primary rounded"
+                                          : "border-4 border-white"
+                                      }
+                                      data-idx={idx}
+                                      ref={(node) => {
+                                        if (node) {
+                                          setCoversRef(idx, node);
+                                        }
+                                        if (idx === 0 && node) {
+                                          node?.play();
+                                        }
+                                      }}
+                                      src={URL.createObjectURL(blob)}
+                                    />
+                                  )}
+                                  videoSrc={form.video}
+                                />
+                              ) : null}
+                            </div>
                           </div>
                         </div>
                       ),

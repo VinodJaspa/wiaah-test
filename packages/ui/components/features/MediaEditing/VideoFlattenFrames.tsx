@@ -1,11 +1,5 @@
 import { Carousel } from "@blocks";
-import {
-  AspectRatio,
-  CaruoselLeftArrow,
-  CaruoselRightArrow,
-  Slider,
-  Spinner,
-} from "@partials";
+import { AspectRatio, Slider, Spinner } from "@partials";
 import { mapArray } from "@UI/../utils/src";
 import React from "react";
 import { useFFmpeg } from "./ffmpeg";
