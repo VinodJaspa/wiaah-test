@@ -10,12 +10,14 @@ import {
 import { UseGuards } from '@nestjs/common';
 import { CreateActionCommand } from '@action/commands';
 import { GetActionByIdQuery, GetUserActionsQuery } from '@action/queries';
+import { UploadService } from '@wiaah/upload';
 
 @Resolver(() => Action)
 export class ActionResolver {
   constructor(
     private readonly commandbus: CommandBus,
     private readonly querybus: QueryBus,
+    private readonly uploadService: UploadService,
   ) {}
 
   @Mutation(() => Boolean)
@@ -24,7 +26,25 @@ export class ActionResolver {
     @Args('args') args: CreateActionInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    const res = await this.commandbus.execute<CreateActionCommand, Action>(
+    const src = args.src.file;
+
+    const res = await this.uploadService.uploadFiles([
+      {
+        file: {
+          stream: src.createReadStream(),
+          meta: {
+            mimetype: src.mimetype,
+            name: src.filename,
+          },
+        },
+        options: {
+          allowedMimtypes: [],
+          maxSecDuration: 180,
+        },
+      },
+    ]);
+
+    await this.commandbus.execute<CreateActionCommand, Action>(
       new CreateActionCommand(args, user.id),
     );
 

@@ -6,7 +6,7 @@ import {
 } from "@nestjs/common";
 import { HttpService } from "@nestjs/axios";
 import {
-  FileUploadMeta,
+  BaseFileUploadData,
   ImageFile,
   UploadModuleForRootOptions,
   VideoFile,
@@ -26,18 +26,17 @@ export class UploadService {
   private serviceKey = this.options.serviceKey;
   private secretKey = this.options.secretKey;
 
-  async uploadFiles(files: ImageFile[], userId: string) {
-    const sortedFiles: Record<string, ImageFile[]> = files.reduce(
-      (acc, curr) => {
-        // TODO: get file type form mimetype
-        const fileType = "";
-
-        const newAcc = { ...acc };
-        newAcc[fileType] = [...acc[fileType], curr];
-        return newAcc;
-      },
-      {} as Record<string, ImageFile[]>
-    );
+  async uploadFiles(
+    files: {
+      file: BaseFileUploadData;
+      options: {
+        allowedMimtypes?: string[];
+        maxSecDuration?: number;
+        maxSizeKb?: number;
+      };
+    }[]
+  ): Promise<string[]> {
+    return [];
   }
 
   async uploadImages(images: ImageFile[], userId: string) {
