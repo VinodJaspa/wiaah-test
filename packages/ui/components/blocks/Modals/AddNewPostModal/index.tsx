@@ -296,25 +296,25 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                                     }
                                   }}
                                   renderItem={(blob, idx) => (
-                                    <video
-                                      muted
-                                      loop
-                                      className={
-                                        idx === 0
-                                          ? "border-4 border-primary rounded"
-                                          : "border-4 border-white"
-                                      }
-                                      data-idx={idx}
-                                      ref={(node) => {
-                                        if (node) {
-                                          setCoversRef(idx, node);
-                                        }
-                                        if (idx === 0 && node) {
-                                          node?.play();
-                                        }
-                                      }}
-                                      src={URL.createObjectURL(blob)}
-                                    />
+                                    <div className="relative">
+                                      {idx === 0 ? (
+                                        <div className="absolute top-0 left-0 border-4 border-primary w-full h-full"></div>
+                                      ) : null}
+                                      <video
+                                        muted
+                                        loop
+                                        data-idx={idx}
+                                        ref={(node) => {
+                                          if (node) {
+                                            setCoversRef(idx, node);
+                                          }
+                                          if (idx === 0 && node) {
+                                            node?.play();
+                                          }
+                                        }}
+                                        src={URL.createObjectURL(blob)}
+                                      />
+                                    </div>
                                   )}
                                   videoSrc={form.video}
                                 />

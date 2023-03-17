@@ -1,18 +1,16 @@
 import { CreateActionInput } from '@action/dto';
 import { Injectable } from '@nestjs/common';
 import { ExtractPagination, GqlPaginationInput } from 'nest-utils';
+import { Prisma } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 
 @Injectable()
 export class ActionRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  create(input: CreateActionInput, userId: string) {
+  create(input: Prisma.ActionCreateInput) {
     return this.prisma.action.create({
-      data: {
-        ...input,
-        userId,
-      },
+      data: input,
     });
   }
 

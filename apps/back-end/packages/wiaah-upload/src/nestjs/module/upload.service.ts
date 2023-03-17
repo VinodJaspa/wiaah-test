@@ -13,6 +13,12 @@ import {
 } from "./types";
 import { UploadServiceProviders } from "./constants";
 
+export enum FileTypeEnum {
+  video = "video",
+  image = "image",
+  pdf = "pdf",
+}
+
 @Injectable()
 export class UploadService {
   constructor(
@@ -26,6 +32,21 @@ export class UploadService {
   private serviceKey = this.options.serviceKey;
   private secretKey = this.options.secretKey;
 
+  mimetypes = {
+    videos: {
+      mp4: "video/mp4",
+      mov: "video/mov",
+      all: [] as string[],
+    },
+    image: {
+      jpeg: "image/jpeg",
+      png: "image/png",
+      jpg: "image/jpg",
+      all: [] as string[],
+    },
+    pdf: "application/pdf",
+  };
+
   async uploadFiles(
     files: {
       file: BaseFileUploadData;
@@ -35,8 +56,24 @@ export class UploadService {
         maxSizeKb?: number;
       };
     }[]
-  ): Promise<string[]> {
+  ): Promise<{ src: string; mimetype: string }[]> {
     return [];
+  }
+
+  getFileTypeFromMimetype(mimetype: string) {
+    const vidMimetypes = Object.values(this.mimetypes.videos);
+    const imgMimetypes = Object.values(this.mimetypes.image);
+
+    if (vidMimetypes.includes(mimetype)) {
+      return FileTypeEnum.video;
+    }
+
+    if (imgMimetypes.includes(mimetype)) {
+      return FileTypeEnum.image;
+    }
+    if (mimetype === this.mimetypes.pdf) {
+      return FileTypeEnum.pdf;
+    }
   }
 
   async uploadImages(images: ImageFile[], userId: string) {

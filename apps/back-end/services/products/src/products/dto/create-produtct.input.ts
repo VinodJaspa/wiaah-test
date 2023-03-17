@@ -15,6 +15,7 @@ import {
   ProductStatus,
   VisibilityEnum,
 } from '@prisma-client';
+import { GraphQLUpload, Upload } from 'graphql-upload';
 import { CreateInputGqlTranslationInputField } from 'nest-utils';
 
 registerEnumType(PresentationType, { name: 'PresentationType' });
@@ -92,8 +93,8 @@ export class CreateProductInput {
   @Field((type) => CashBackInput)
   cashback: CashBackInput;
 
-  @Field((type) => [ProductPresentationInput])
-  presentations: ProductPresentationInput[];
+  @Field((type) => [GraphQLUpload])
+  presentations: Upload[];
 
   @Field(() => String)
   thumbnail: string;

@@ -7,9 +7,18 @@ import { ActionQueryHandlers } from './queries';
 import { ActionRepository } from './repository';
 import { ActionEventHandlers } from './events';
 import { kafkaModule } from '@kafkaModule';
+import { UploadModule, UploadServiceProviders } from '@wiaah/upload';
 
 @Module({
-  imports: [CqrsModule, kafkaModule],
+  imports: [
+    CqrsModule,
+    kafkaModule,
+    UploadModule.forRoot({
+      secretKey: 'secret',
+      serviceKey: 'servicekey',
+      provider: UploadServiceProviders.CLOUDFLARE,
+    }),
+  ],
   providers: [
     ActionResolver,
     ActionRepository,

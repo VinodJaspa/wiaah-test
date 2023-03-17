@@ -182,8 +182,8 @@ model Action {
   comments           Int                @default(0)
   shares             Int                @default(0)
   views              Int                @default(0)
-  link               String
-  allowedAction      ActionType[]
+  link               String?
+  allowedActions     ActionType[]
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)

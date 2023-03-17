@@ -47,7 +47,6 @@ export const VideoFlattenFrames: React.FC<{
           ) : (
             <Slider
               draggingActive={false}
-              gap={8}
               itemsCount={4}
               onSliderChange={(v) => {
                 if (videos.at(0) && onFrameSelected) {

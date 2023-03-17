@@ -6,7 +6,11 @@ import {
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
 
-import { Prisma, Product as PrismaProduct } from '@prisma-client';
+import {
+  PresentationType,
+  Prisma,
+  Product as PrismaProduct,
+} from '@prisma-client';
 import { PrismaService } from 'prismaService';
 import {
   ProductSearchPaginationInput,
@@ -34,6 +38,7 @@ import {
   CreateProductInput,
   ReviewProductInput,
 } from '@products/dto';
+import { FileTypeEnum, UploadService } from '@wiaah/upload';
 
 @Injectable()
 export class ProductsService {
@@ -41,6 +46,7 @@ export class ProductsService {
     private readonly prisma: PrismaService,
     @Inject(SERVICES.PRODUCTS_SERVICE.token)
     private readonly eventClient: ClientKafka,
+    private readonly uploadService: UploadService,
   ) {}
 
   private readonly maxRate: number = 5;
@@ -51,6 +57,25 @@ export class ProductsService {
   ) {
     const { shopId } = user;
 
+    const res = await this.uploadService.uploadFiles(
+      createProductInput.presentations.map((v) => ({
+        file: {
+          stream: v.file.createReadStream(),
+          meta: {
+            mimetype: v.file.mimetype,
+            name: v.file.filename,
+          },
+        },
+        options: {
+          allowedMimtypes: [
+            ...this.uploadService.mimetypes.image.all,
+            ...this.uploadService.mimetypes.videos.all,
+          ],
+          maxSecDuration: 60 * 10 * 1000,
+        },
+      })),
+    );
+
     const product = await this.prisma.product.create({
       data: {
         ...createProductInput,
@@ -59,6 +84,20 @@ export class ProductsService {
         },
         shopId,
         sellerId: user.id,
+        presentations: res.map((v) => {
+          const type = this.uploadService.getFileTypeFromMimetype(v.mimetype);
+
+          if (type !== FileTypeEnum.image && type !== FileTypeEnum.video)
+            return null;
+
+          return {
+            src: v.src,
+            type:
+              type === FileTypeEnum.image
+                ? PresentationType.image
+                : PresentationType.video,
+          };
+        }),
       },
     });
 
@@ -93,19 +132,58 @@ export class ProductsService {
       );
 
     try {
-      const res = await this.prisma.product.update({
+      const res = await this.uploadService.uploadFiles(
+        rest.presentations.map((v) => ({
+          file: {
+            stream: v.file.createReadStream(),
+            meta: {
+              mimetype: v.file.mimetype,
+              name: v.file.filename,
+            },
+          },
+          options: {
+            allowedMimtypes: [
+              ...this.uploadService.mimetypes.image.all,
+              ...this.uploadService.mimetypes.videos.all,
+            ],
+            maxSecDuration: 60 * 10 * 1000,
+          },
+        })),
+      );
+
+      const prod = await this.prisma.product.update({
         where: {
           id,
         },
         data: {
           ...rest,
+          presentations: rest.oldPresentations
+            .concat(
+              res.map((v) => {
+                const type = this.uploadService.getFileTypeFromMimetype(
+                  v.mimetype,
+                );
+
+                if (type !== FileTypeEnum.image && type === FileTypeEnum.video)
+                  return null;
+
+                return {
+                  src: v.src,
+                  type:
+                    type === FileTypeEnum.image
+                      ? PresentationType.image
+                      : PresentationType.video,
+                };
+              }),
+            )
+            .filter((v) => !!v),
           discount: {
             update: rest.discount,
           },
         },
       });
 
-      return this.formatProduct(res, lang);
+      return this.formatProduct(prod, lang);
     } catch (error) {
       throw new Error(error);
     }

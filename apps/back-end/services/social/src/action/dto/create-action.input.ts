@@ -1,14 +1,15 @@
 import { PostLocationInput } from '@input';
-import { InputType, Field } from '@nestjs/graphql';
+import { InputType, Field, registerEnumType } from '@nestjs/graphql';
 import { ActionType, CommentsVisibility } from 'prismaClient';
-import { Upload } from 'graphql-upload';
+import { Upload, GraphQLUpload } from 'graphql-upload';
 
+registerEnumType(ActionType, { name: 'ActionType' });
 @InputType()
 export class CreateActionInput {
-  @Field(() => Upload)
+  @Field(() => GraphQLUpload)
   src: Upload;
 
-  @Field(() => Upload)
+  @Field(() => GraphQLUpload)
   cover: Upload;
 
   @Field(() => PostLocationInput, { nullable: true })
@@ -18,5 +19,5 @@ export class CreateActionInput {
   commentsVisibility?: CommentsVisibility;
 
   @Field(() => [ActionType])
-  allowedAction: ActionType[];
+  allowedActions: ActionType[];
 }

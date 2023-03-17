@@ -7,7 +7,7 @@ import {
 } from 'nest-utils';
 import { Product } from '@products/entities';
 import { PrismaService } from 'prismaService';
-import { Prisma } from '@prisma-client';
+import { PresentationType, Prisma } from '@prisma-client';
 import { QueryBus } from '@nestjs/cqrs';
 
 import {
@@ -16,6 +16,7 @@ import {
   UpdateProductInput,
 } from './dto';
 import { GetSellersIdsByNameQuery } from './queries';
+import { FileTypeEnum, UploadService } from '@wiaah/upload';
 
 @Resolver()
 @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
@@ -23,6 +24,7 @@ export class ProductsAdminResolver {
   constructor(
     private readonly prisma: PrismaService,
     private readonly querybus: QueryBus,
+    private readonly uploadService: UploadService,
   ) {}
 
   @Query(() => [Product])
@@ -106,12 +108,51 @@ export class ProductsAdminResolver {
   @Mutation(() => Boolean)
   async updateProductAdmin(@Args('args') args: UpdateProductInput) {
     const { id, ...rest } = args;
-    await this.prisma.product.update({
+    const res = await this.uploadService.uploadFiles(
+      rest.presentations.map((v) => ({
+        file: {
+          stream: v.file.createReadStream(),
+          meta: {
+            mimetype: v.file.mimetype,
+            name: v.file.filename,
+          },
+        },
+        options: {
+          allowedMimtypes: [
+            ...this.uploadService.mimetypes.image.all,
+            ...this.uploadService.mimetypes.videos.all,
+          ],
+          maxSecDuration: 60 * 10 * 1000,
+        },
+      })),
+    );
+
+    const prod = await this.prisma.product.update({
       where: {
         id,
       },
       data: {
         ...rest,
+        presentations: rest.oldPresentations
+          .concat(
+            res.map((v) => {
+              const type = this.uploadService.getFileTypeFromMimetype(
+                v.mimetype,
+              );
+
+              if (type !== FileTypeEnum.image && type === FileTypeEnum.video)
+                return null;
+
+              return {
+                src: v.src,
+                type:
+                  type === FileTypeEnum.image
+                    ? PresentationType.image
+                    : PresentationType.video,
+              };
+            }),
+          )
+          .filter((v) => !!v),
         discount: {
           update: rest.discount,
         },
