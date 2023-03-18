@@ -63,12 +63,40 @@ export class ServiceResolver {
 
     if (rooms) {
       await this.prisma.hotelRoom.createMany({
-        data: rooms.map((v) => ({
-          ...v,
-          hotelId: res.id,
-          sellerId: res.ownerId,
-          presentations: [],
-        })),
+        data: await Promise.all(
+          rooms.map(async (v) => {
+            const pres = await this.uploadService.uploadFiles(
+              v.presentations.map((e) => ({
+                file: {
+                  meta: {
+                    mimetype: e.file.mimetype,
+                    name: e.file.filename,
+                  },
+                  stream: e.file.createReadStream(),
+                },
+                options: {
+                  allowedMimtypes: [
+                    ...this.uploadService.mimetypes.image.all,
+                    ...this.uploadService.mimetypes.videos.all,
+                  ],
+                },
+              })),
+            );
+            return {
+              ...v,
+              hotelId: res.id,
+              sellerId: res.ownerId,
+              presentations: pres.map((v) => ({
+                src: v.src,
+                type:
+                  this.uploadService.getFileTypeFromMimetype(v.mimetype) ===
+                  FileTypeEnum.video
+                    ? ServicePresentationType.vid
+                    : ServicePresentationType.img,
+              })),
+            };
+          }),
+        ),
       });
     }
 
@@ -119,11 +147,40 @@ export class ServiceResolver {
 
     if (vehicles) {
       await this.prisma.vehicle.createMany({
-        data: vehicles.map((v) => ({
-          ...v,
-          parantServiceId: res.id,
-          presentations: [],
-        })),
+        data: await Promise.all(
+          vehicles.map(async (v) => {
+            const pres = await this.uploadService.uploadFiles(
+              v.presentations.map((e) => ({
+                file: {
+                  stream: e.file.createReadStream(),
+                  meta: {
+                    mimetype: e.file.mimetype,
+                    name: e.file.filename,
+                  },
+                },
+                options: {
+                  allowedMimtypes: [
+                    ...this.uploadService.mimetypes.image.all,
+                    ...this.uploadService.mimetypes.videos.all,
+                  ],
+                },
+              })),
+            );
+
+            return {
+              ...v,
+              parantServiceId: res.id,
+              presentations: pres.map((v) => ({
+                src: v.src,
+                type:
+                  this.uploadService.getFileTypeFromMimetype(v.mimetype) ===
+                  FileTypeEnum.video
+                    ? ServicePresentationType.vid
+                    : ServicePresentationType.img,
+              })),
+            };
+          }),
+        ),
       });
     }
 
