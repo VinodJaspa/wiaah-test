@@ -5,13 +5,13 @@ import {
   Button,
   BeautyCenterTreatmentCard,
   ServiceCancelationPolicyInput,
-  BeautyCenterTreatment,
   ServiceCancelationPolicy,
 } from "@UI";
 import { randomNum } from "utils";
+import { Treatment } from "@features/API";
 
 export interface BeautyCenterTreatmentsListProps {
-  treatments: BeautyCenterTreatment[];
+  treatments: Treatment[];
   cancelation: ServiceCancelationPolicy[];
 }
 

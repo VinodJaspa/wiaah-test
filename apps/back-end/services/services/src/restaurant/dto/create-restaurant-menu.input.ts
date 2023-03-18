@@ -16,8 +16,8 @@ export class RestaurantMenuDishInput {
   @TranslationsInput()
   ingredients: TranslationTextArrayInput[];
 
-  @Field(() => GraphQLUpload)
-  thumbnail: Upload;
+  @Field(() => String)
+  thumbnail: string;
 }
 
 @InputType()

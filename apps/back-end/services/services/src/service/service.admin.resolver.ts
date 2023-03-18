@@ -19,12 +19,12 @@ export class AdminServiceResolver {
   @Mutation(() => Boolean)
   async adminUpdateServiceById(@Args('args') args: UpdateServiceInput) {
     try {
-      await this.prisma.service.update({
-        where: {
-          id: args.id,
-        },
-        data: args,
-      });
+      // await this.prisma.service.update({
+      //   where: {
+      //     id: args.id,
+      //   },
+      //   data: args,
+      // });
 
       return true;
     } catch {

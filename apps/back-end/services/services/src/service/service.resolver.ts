@@ -1,10 +1,21 @@
-import { Args, Mutation, Resolver, ResolveReference } from '@nestjs/graphql';
+import {
+  Args,
+  Mutation,
+  Query,
+  Resolver,
+  ResolveReference,
+} from '@nestjs/graphql';
 import { ServiceService } from './service.service';
-import { Service } from './entities/service.entity';
+import { Service, ServiceDetails } from './entities/service.entity';
 import { ServicePresentationType, ServiceType } from 'prismaClient';
 import { CreateServiceInput } from './dto/create-service.input';
 import { UseGuards } from '@nestjs/common';
-import { accountType, GqlAuthorizationGuard } from 'nest-utils';
+import {
+  accountType,
+  GetLang,
+  GqlAuthorizationGuard,
+  UserPreferedLang,
+} from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { FileTypeEnum, UploadService } from '@wiaah/upload';
 
@@ -185,6 +196,21 @@ export class ServiceResolver {
     }
 
     return true;
+  }
+
+  @Query(() => ServiceDetails, { nullable: true })
+  async getServiceDetails(
+    @Args('id') id: string,
+    @GetLang() lang: UserPreferedLang,
+  ): Promise<ServiceDetails> {
+    const service = await this.prisma.service.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (service.status !== 'active') return null;
+    return service as any; // TODO: format service data to user prefered lang
   }
 
   @ResolveReference()

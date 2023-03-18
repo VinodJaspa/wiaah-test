@@ -2,19 +2,25 @@ import { CreateBeautyCenterTreatmentInput } from '@beauty-center';
 import { SERVICE_MAX_VAT_PERCENT, SERVICE_MIN_VAT_PERCENT } from '@const';
 import { ServicePresentationsLength, TranslationsInput } from '@decorators';
 import {
+  ServiceAmenitiesInput,
   ServiceCancelationPolicyInput,
+  ServiceDailyPricesInput,
+  ServiceDiscountInput,
+  ServiceExtraInput,
+  ServiceIncludedAmenitiesInput,
+  ServiceIncludedServicesInput,
   ServiceLocationInput,
   ServiceMetaInfoTranslationInput,
   ServicePolicyTranslatedInput,
-  ServicePresentationInput,
+  ServicePropertyMeasurementsInput,
+  TranslationTextArrayInput,
+  TranslationTextInput,
 } from '@dto';
-import { HealthCenterDoctorInput } from '@health-center';
-import { HotelRoomInput } from '@hotel/dto/hotel-room.input';
 import { InputType, Field, ID, Int, Float } from '@nestjs/graphql';
-import { RestaurantMenuInput } from '@restaurant';
-import { CreateVehicleInput } from '@vehicle-service/dto/create-vehicle.input';
+import { CreateVehiclePropertiesInput } from '@vehicle-service/dto/create-vehicle.input';
 import { Max, Min } from 'class-validator';
 import {
+  HealthCenterDoctorAvailablityStatus,
   ServicePaymentMethods,
   ServiceStatus,
   ServiceType,
@@ -28,6 +34,8 @@ import {
 } from 'class-validator';
 
 import { GraphQLUpload, Upload } from 'graphql-upload';
+import { CreateInputGqlTranslationInputField } from 'nest-utils';
+import { ServiceContactInput } from '@hotel/dto';
 
 export function IsPropertyEqual(
   property: string,
@@ -58,24 +66,150 @@ export function IsPropertyEqual(
 }
 
 @InputType()
-export class ServiceContactInput {
+class ServiceHotelRoomMetaInfoInput {
   @Field(() => String)
-  address: string;
+  title: string;
 
   @Field(() => String)
-  country: string;
+  description: string;
+}
 
-  @Field(() => String, { nullable: true })
-  state: string;
+@InputType()
+class ServiceHotelRoomTranslationMetaInfoInput extends CreateInputGqlTranslationInputField<ServiceHotelRoomMetaInfoInput>(
+  ServiceHotelRoomMetaInfoInput,
+) {}
+
+@InputType()
+class ServiceHotelRoomInput {
+  @Field(() => [ServiceHotelRoomTranslationMetaInfoInput])
+  @TranslationsInput()
+  roomMetaInfo: ServiceHotelRoomTranslationMetaInfoInput[];
+
+  @Field(() => Int)
+  pricePerNight: number;
+
+  @Field(() => Boolean)
+  dailyPrice: boolean;
+
+  @Field(() => ServiceDailyPricesInput, { nullable: true })
+  dailyPrices?: ServiceDailyPricesInput;
+
+  @Field(() => ServiceDiscountInput)
+  discount: ServiceDiscountInput;
+
+  @Field(() => [ServiceIncludedServicesInput])
+  @TranslationsInput()
+  includedServices: ServiceIncludedServicesInput[];
+
+  @Field(() => [ServiceAmenitiesInput])
+  popularAmenities: ServiceAmenitiesInput[];
+
+  @Field(() => [ServiceCancelationPolicyInput])
+  cancelationPolicies: ServiceCancelationPolicyInput[];
+
+  @Field(() => Int)
+  beds: number;
+
+  @Field(() => Int)
+  bathrooms: number;
+
+  @Field(() => [ServiceExtraInput])
+  extras: ServiceExtraInput[];
+
+  @Field(() => Int)
+  num_of_rooms: number;
+
+  @Field(() => [ServiceIncludedAmenitiesInput])
+  @TranslationsInput()
+  includedAmenities: ServiceIncludedAmenitiesInput[];
+
+  @Field(() => ServicePropertyMeasurementsInput)
+  measurements: ServicePropertyMeasurementsInput;
+
+  @Field(() => Float)
+  insurance: number;
+
+  @Field(() => [GraphQLUpload])
+  presentations: Upload[];
+}
+
+@InputType()
+class ServiceRestaurantMenuDishInput {
+  @Field(() => [TranslationTextInput])
+  @TranslationsInput()
+  name: TranslationTextInput[];
+
+  @Field(() => Int)
+  price: number;
+
+  @Field(() => [TranslationTextArrayInput])
+  @TranslationsInput()
+  ingredients: TranslationTextArrayInput[];
+
+  @Field(() => GraphQLUpload)
+  thumbnail: Upload;
+}
+
+@InputType()
+class ServiceRestaurantMenuInput {
+  @Field(() => [TranslationTextInput])
+  @TranslationsInput()
+  name: TranslationTextInput[];
+
+  @Field(() => [ServiceRestaurantMenuDishInput])
+  dishs: ServiceRestaurantMenuDishInput[];
+}
+
+@InputType()
+class ServiceHealthCenterDoctorInput {
+  @Field(() => ID)
+  specialityId: string;
 
   @Field(() => String)
-  city: string;
+  name: string;
+
+  @Field(() => GraphQLUpload)
+  thumbnail: Upload;
+
+  @Field(() => Float)
+  price: number;
+
+  @Field(() => [TranslationTextInput])
+  description: TranslationTextInput[];
+
+  @Field(() => HealthCenterDoctorAvailablityStatus)
+  availablityStatus: HealthCenterDoctorAvailablityStatus;
+}
+
+@InputType()
+export class ServiceVehicleInput {
+  @Field(() => ID)
+  typeId: string;
+
+  @Field(() => [TranslationTextInput])
+  @TranslationsInput()
+  title: TranslationTextInput[];
+
+  @Field(() => [GraphQLUpload])
+  presentations: Upload[];
+
+  @Field(() => [ServiceCancelationPolicyInput])
+  cancelationPolicies: ServiceCancelationPolicyInput[];
 
   @Field(() => String)
-  email: string;
+  brand: string;
 
   @Field(() => String)
-  phone: string;
+  model: string;
+
+  @Field(() => Float)
+  price: number;
+
+  @Field(() => CreateVehiclePropertiesInput)
+  properties: CreateVehiclePropertiesInput;
+
+  @Field(() => Float)
+  insurance: number;
 }
 
 @InputType()
@@ -118,13 +252,13 @@ export class CreateServiceInput {
   @Min(SERVICE_MIN_VAT_PERCENT)
   vat: number;
 
-  @Field(() => [HotelRoomInput], { nullable: true })
+  @Field(() => [ServiceHotelRoomInput], { nullable: true })
   @IsPropertyEqual('type', ServiceType.hotel)
-  rooms?: HotelRoomInput[];
+  rooms?: ServiceHotelRoomInput[];
 
-  @Field(() => [RestaurantMenuInput], { nullable: true })
+  @Field(() => [ServiceRestaurantMenuInput], { nullable: true })
   @IsPropertyEqual('type', ServiceType.restaurant)
-  menus?: RestaurantMenuInput[];
+  menus?: ServiceRestaurantMenuInput[];
 
   @Field(() => ID, { nullable: true })
   @IsPropertyEqual('type', ServiceType.restaurant)
@@ -142,15 +276,15 @@ export class CreateServiceInput {
   @IsPropertyEqual('type', ServiceType.restaurant)
   michelin_guide_stars?: number;
 
-  @Field(() => [HealthCenterDoctorInput], { nullable: true })
+  @Field(() => [ServiceHealthCenterDoctorInput], { nullable: true })
   @IsPropertyEqual('type', ServiceType.health_center)
-  doctors?: HealthCenterDoctorInput[];
+  doctors?: ServiceHealthCenterDoctorInput[];
 
   @Field(() => [CreateBeautyCenterTreatmentInput], { nullable: true })
   @IsPropertyEqual('type', ServiceType.beauty_center)
   treatments?: CreateBeautyCenterTreatmentInput[];
 
-  @Field(() => [CreateVehicleInput], { nullable: true })
+  @Field(() => [ServiceVehicleInput], { nullable: true })
   @IsPropertyEqual('type', ServiceType.vehicle)
-  vehicles?: CreateVehicleInput[];
+  vehicles?: ServiceVehicleInput[];
 }

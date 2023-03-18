@@ -1,7 +1,6 @@
 import { TranslationTextInput } from '@dto';
 import { Field, Float, ID, InputType } from '@nestjs/graphql';
 import { HealthCenterDoctorAvailablityStatus } from 'prismaClient';
-import { GraphQLUpload, Upload } from 'graphql-upload';
 
 @InputType()
 export class HealthCenterDoctorInput {
@@ -11,8 +10,8 @@ export class HealthCenterDoctorInput {
   @Field(() => String)
   name: string;
 
-  @Field(() => GraphQLUpload)
-  thumbnail: Upload;
+  @Field(() => String)
+  thumbnail: string;
 
   @Field(() => Float)
   price: number;

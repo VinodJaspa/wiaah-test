@@ -9,6 +9,7 @@ export type ServicesRoutesType = {
   places: () => RoutesType;
   localisation: () => RoutesType;
   visitService: (props: Record<string, any>, serviceType: string) => RoutesType;
+  visitServiceDetails: (id: string) => RoutesType;
   visitServiceOnMap: (
     props: Record<string, any>,
     serviceType: string
@@ -66,6 +67,10 @@ export const ServicesRoutes: RoutesType = {
       .serviceType(serviceType)
       .onMap()
       .id(serviceId);
+  },
+
+  visitServiceDetails(id) {
+    return this.service().id(id);
   },
 
   visitServiceTypeOnMap(serviceType) {

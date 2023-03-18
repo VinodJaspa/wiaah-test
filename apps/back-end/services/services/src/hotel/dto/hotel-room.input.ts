@@ -78,6 +78,6 @@ export class HotelRoomInput {
   @Field(() => Float)
   insurance: number;
 
-  @Field(() => [GraphQLUpload])
-  presentations: Upload[];
+  @Field(() => [ServicePresentationInput])
+  presentations: ServicePresentationInput[];
 }

@@ -24,9 +24,17 @@ import {
 } from "ui";
 import { useTranslation } from "react-i18next";
 
-export const HotelDetailsView: React.FC = () => {
-  const { data: res, isError, isLoading } = useGetServicesProviderQuery("");
+export const ServiceDetailsView: React.FC<{
+  serviceId: string;
+}> = ({ serviceId }) => {
+  const {
+    data: res,
+    isError,
+    isLoading,
+  } = useGetServicesProviderQuery(serviceId);
   const { t } = useTranslation();
+
+  const serviceType = res.service
 
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
     React.useMemo(

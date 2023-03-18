@@ -81,6 +81,7 @@ model Service {
   policies            ServiceTranslationPolicies[]
   payment_methods     ServicePaymentMethods[]
   location            Location
+  thumbnail           String
   vat                 Int
   cancelationPolicies ServiceCancelationPolicy[]
   lowest_price        Float                        @default(0)
@@ -413,6 +414,7 @@ model BeautyCenterTreatment {
   beautyCenterServiceId String?              @db.ObjectId
   Service               Service?             @relation(fields: [serviceId], references: [id])
   serviceId             String?              @db.ObjectId
+  thumbnail             String
 }
 
 type ServiceWeekDaysWorkingHours {

@@ -21,50 +21,46 @@ export const ServicePresentationCarosuel: React.FC<{
   const { t } = useTranslation();
   return (
     <div ref={ref} className="w-full relative">
-      {/* <AspectRatio ratio={isMobile ? 5 / 7 : 5 / 11.12}> */}
       {Array.isArray(data) ? (
-        <div className="w-full gap-[1.875rem] flex h-full flex-col md:flex-row">
-          <Slider
-            gap={4}
-            leftArrowComponent={<ArrowLeftIcon />}
-            rightArrowComponent={<ArrowRightIcon />}
-            // className="min-w-[8.75rem] flex flex-col gap-[1.875rem] overflow-scroll noScroll"
-          >
-            {data.slice(0, 4).map((img, i) => (
-              <AspectRatioImage
-                ratio={1}
-                className={`${
-                  i === 0 ? "" : "pt-2"
-                } rounded-2xl overflow-hidden`}
-                key={i}
-                src={img.src}
-                alt={""}
-              />
-            ))}
-          </Slider>
-          <Slider
-            itemsCount={4}
-            variant={isMobile ? "horizontal" : "vertical"}
-            gap={16}
-          >
-            {/* <div
+        <AspectRatio ratio={isMobile ? 5 / 7 : 5 / 11.12}>
+          <div className="w-full gap-[1.875rem] flex h-full flex-col md:flex-row">
+            <Slider
+              gap={4}
+              leftArrowComponent={<ArrowLeftIcon />}
+              rightArrowComponent={<ArrowRightIcon />}
+              // className="min-w-[8.75rem] flex flex-col gap-[1.875rem] overflow-scroll noScroll"
+            >
+              {data.slice(0, 4).map((img, i) => (
+                <Image
+                  // ratio={1}
+                  className={`${
+                    i === 0 ? "" : "pt-2"
+                  } rounded-2xl w-full h-full object-cover overflow-hidden`}
+                  key={i}
+                  src={img.src}
+                  alt={""}
+                />
+              ))}
+            </Slider>
+            <div
               style={{
                 height: isMobile ? "4rem" : "654px",
                 width: "calc(100% - 10rem)",
               }}
-            > */}
-            {data.map((img, i) => (
-              <Image
-                className="w-full h-full object-cover rounded md:rounded-[1.25rem]"
-                key={i}
-                src={img.src}
-              />
-            ))}
-            {/* </div> */}
-          </Slider>
-        </div>
+            >
+              <Slider itemsCount={4} variant={"vertical"} gap={16}>
+                {data.map((img, i) => (
+                  <Image
+                    className="w-full h-full object-cover rounded md:rounded-[1.25rem]"
+                    key={i}
+                    src={img.src}
+                  />
+                ))}
+              </Slider>
+            </div>
+          </div>
+        </AspectRatio>
       ) : null}
-      {/* </AspectRatio> */}
     </div>
   );
 };

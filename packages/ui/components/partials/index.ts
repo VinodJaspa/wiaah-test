@@ -80,3 +80,4 @@ export * from "./Link";
 export * from "./Progress";
 export * from "./FormTranslationWrapper";
 export * from "./ScrollPaginationWrapper";
+export * from "./Skeleton";

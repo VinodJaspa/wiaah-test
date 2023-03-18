@@ -37,8 +37,8 @@ export class CreateVehicleInput {
   @TranslationsInput()
   title: TranslationTextInput[];
 
-  @Field(() => [GraphQLUpload])
-  presentations: Upload[];
+  @Field(() => [ServicePresentationInput])
+  presentations: ServicePresentationInput[];
 
   @Field(() => [ServiceCancelationPolicyInput])
   cancelationPolicies: ServiceCancelationPolicyInput[];

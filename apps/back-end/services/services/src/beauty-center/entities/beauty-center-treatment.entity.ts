@@ -25,4 +25,10 @@ export class Treatment {
 
   @Field(() => ServiceDiscount)
   discount: ServiceDiscount;
+
+  @Field(() => String)
+  thumbnail: string;
+
+  @Field(() => ID)
+  beautyCenterServiceId: string;
 }
