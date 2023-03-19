@@ -1,7 +1,9 @@
 import {
   Args,
   Mutation,
+  Parent,
   Query,
+  ResolveField,
   Resolver,
   ResolveReference,
 } from '@nestjs/graphql';
@@ -18,6 +20,7 @@ import {
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { FileTypeEnum, UploadService } from '@wiaah/upload';
+import { WorkingSchedule } from '@working-schedule/entities';
 
 @Resolver(() => Service)
 export class ServiceResolver {
@@ -59,9 +62,27 @@ export class ServiceResolver {
       })),
     );
 
+    const thumbnail = args.thumbnail.file;
+    const thumb = await this.uploadService.uploadFiles([
+      {
+        file: {
+          meta: {
+            mimetype: thumbnail.mimetype,
+            name: thumbnail.filename,
+          },
+          stream: thumbnail.createReadStream(),
+        },
+        options: {
+          allowedMimtypes: this.uploadService.mimetypes.image.all,
+          maxSizeKb: 10 * 1000, // <= 10MB
+        },
+      },
+    ]);
+
     const res = await this.prisma.service.create({
       data: {
         ...rest,
+        thumbnail: thumb[0].src,
         presentations: servicePresenetations.map((v) => ({
           src: v.src,
           type:
@@ -152,7 +173,28 @@ export class ServiceResolver {
 
     if (treatments) {
       await this.prisma.beautyCenterTreatment.createMany({
-        data: treatments.map((v) => ({ ...v })),
+        data: await Promise.all(
+          treatments.map(async (v) => {
+            const thumbnail = v.thumbnail.file;
+            const thumb = await this.uploadService.uploadFiles([
+              {
+                file: {
+                  meta: {
+                    mimetype: thumbnail.mimetype,
+                    name: thumbnail.filename,
+                  },
+                  stream: thumbnail.createReadStream(),
+                },
+                options: {
+                  allowedMimtypes: this.uploadService.mimetypes.image.all,
+                  maxSizeKb: 10 * 1000, // <= 10MB
+                },
+              },
+            ]);
+
+            return { ...v, thumbnail: thumb[0].src };
+          }),
+        ),
       });
     }
 
@@ -196,21 +238,6 @@ export class ServiceResolver {
     }
 
     return true;
-  }
-
-  @Query(() => ServiceDetails, { nullable: true })
-  async getServiceDetails(
-    @Args('id') id: string,
-    @GetLang() lang: UserPreferedLang,
-  ): Promise<ServiceDetails> {
-    const service = await this.prisma.service.findUnique({
-      where: {
-        id,
-      },
-    });
-
-    if (service.status !== 'active') return null;
-    return service as any; // TODO: format service data to user prefered lang
   }
 
   @ResolveReference()

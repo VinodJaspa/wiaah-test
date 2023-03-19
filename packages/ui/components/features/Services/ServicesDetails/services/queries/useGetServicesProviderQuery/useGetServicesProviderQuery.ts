@@ -259,128 +259,209 @@ export const useGetServicesProviderQuery = (id: string) => {
   return useQuery(getServiceProviderQueryKey(id), async () => {
     const client = createGraphqlRequestClient();
     client.setQuery(`
-  query get($args:GetHotelServiceArgs!){
-    getHotelService(
-        getHotelServiceArgs:$args
-    ){
-        createdAt
+query GetServiceDetails($id:String!){
+  getServiceDetails(id:$id){
+    contact{
+      address
+      city
+      country
+      email
+      phone
+      state
+    }
+    createdAt
+    cuisinesTypeId
+    doctors{
+      availablityStatus
+      description
+      healthCenterId
+      id
+      name
+      price
+      rating
+      thumbnail
+      specialityId
+      speciality{
+        description
         id
-        ownerId
-        policies{
-            policyTitle
-            terms
+        name
+      }
+    }
+    establishmentTypeId
+    highest_price
+    id
+    location{
+      address
+      city
+      country
+      lat
+      lon
+      postalCode
+      state
+    }
+    lowest_price
+    menus {
+      id
+      name
+      dishs{
+        id
+        ingredients
+        name
+        price
+        thumbnail
+      }
+    }
+    michelin_guide_stars
+    ownerId
+    payment_methods
+    policies{
+      policyTitle
+      terms
+    }
+    presentations{
+      src
+      type
+    }
+    rooms{
+      bathrooms
+      beds
+      cancelationPolicies{
+        cost
+        duration
+      }
+      createdAt
+      dailyPrice
+      description
+      discount {
+        units
+        value
+      }
+      dailyPrices{
+        fr
+        mo
+        sa
+        su
+        th
+        tu
+        we
+      }
+      extras{
+        cost
+        name
+      }
+      hotelId
+      id
+      includedAmenities
+      includedServices
+      measurements {
+        inFeet
+        inMeter
+      }
+      num_of_rooms
+      popularAmenities {
+        label
+        value
+      }
+      presentations {
+        src
+        type
+      }
+      pricePerNight
+      rating
+      updatedAt
+      title
+      sellerId
+      reviews
+    }
+    serviceMetaInfo{
+      description
+      hashtags
+      metaTagDescription
+      metaTagKeywords
+      title
+    }
+    setting_and_ambianceId
+    treatments{
+      beautyCenterServiceId
+      category{
+        createdAt
+        createdById
+        id
+        title
+      }
+      discount{
+        units
+        value
+      }
+      duration
+      id
+      price
+      thumbnail
+      title
+      treatmentCategoryId
+    }
+    type_of_seller
+    updatedAt
+    vehicles {
+      brand
+      cancelationPolicies{
+        cost
+        duration
+      }
+      id
+      model
+      presentations{
+        src
+        type
+      }
+      price
+      properties{
+        airCondition
+        gpsAvailable
+        lugaggeCapacity
+        maxSpeedInKm
+        seats
+        windows
+      }
+      title
+    }
+    workingHours {
+      id
+      weekdays{
+        fr{
+          periods
         }
-        presentations{
-            src
-            type
+        mo{
+          periods
         }
-         location{
-            address
-            city
-            country
-            lat
-            lon
-             postalCode
-             state
+        sa{
+          periods
         }
-        rooms{
-            cancelationPolicies{
-                cost
-                duration
-            }
-            reviews
-            rating
-            createdAt
-            dailyPrice
-            dailyPrices{
-                fr
-                mo
-                sa
-                su
-                th
-                tu
-                we
-            }
-            description
-            discount{
-                units
-                value
-            }
-            extras{
-                cost
-                name
-            }
-            hotelId
-            id
-            includedAmenities
-            includedServices
-            measurements{
-                inFeet
-                inMeter
-            }
-            popularAmenities{
-                label
-                value
-            }
-            pricePerNight
-            title
-            updatedAt
+        su{
+          periods
         }
-        serviceMetaInfo{
-            description
-            hashtags
-            metaTagDescription
-            metaTagKeywords
-            title
+        th{
+          periods
         }
-        updatedAt
-        workingHours {
-            id
-            weekdays{
-                fr{
-                    periods
-                }
-                mo{
-                    periods
-                }
-                sa{
-                    periods
-                }
-                su{
-                    periods
-                }
-                th{
-                    periods
-                }
-                tu{
-                    periods
-                }
-                we{
-                    periods
-                }    
-            }
+        tu{
+          periods
         }
-        contact{
-            address
-            city
-            country
-            email
-            phone
-            state
+        we{
+          periods
         }
-        owner{
-            firstName
-            lastName
-            id
-            verified
-            email
-            photo
+      }
+      specialDays{
+        date
+        workingHours{
+          periods
         }
+      }
     }
   }
+}
   `);
 
-    const data: GetQuery["getHotelService"] = {
+    const data: GetServiceDetailsQuery["getServiceDetails"] = {
       createdAt: "2023-03-06T00:00:00Z",
       id: "12345",
       ownerId: "67890",
@@ -425,6 +506,7 @@ export const useGetServicesProviderQuery = (id: string) => {
               duration: 60,
             },
           ],
+          presentations:[],
           reviews: 15,
           rating: 4.5,
           createdAt: "2023-03-05T00:00:00Z",

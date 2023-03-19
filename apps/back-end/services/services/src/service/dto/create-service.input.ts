@@ -252,6 +252,9 @@ export class CreateServiceInput {
   @Min(SERVICE_MIN_VAT_PERCENT)
   vat: number;
 
+  @Field(() => GraphQLUpload)
+  thumbnail: Upload;
+
   @Field(() => [ServiceHotelRoomInput], { nullable: true })
   @IsPropertyEqual('type', ServiceType.hotel)
   rooms?: ServiceHotelRoomInput[];

@@ -874,6 +874,7 @@ export type CreateBeautyCenterTreatmentInput = {
   discount: ServiceDiscountInput;
   duration: Array<Scalars["Int"]>;
   price: Scalars["Float"];
+  thumbnail: Scalars["Upload"];
   title: Array<TranslationTextInput>;
   treatmentCategoryId: Scalars["ID"];
 };
@@ -1095,6 +1096,7 @@ export type CreateServiceInput = {
   serviceMetaInfo: Array<ServiceMetaInfoTranslationInput>;
   setting_and_ambianceId?: Maybe<Scalars["ID"]>;
   status: ServiceStatus;
+  thumbnail: Scalars["Upload"];
   treatments?: Maybe<Array<CreateBeautyCenterTreatmentInput>>;
   type: ServiceType;
   type_of_seller: ServiceTypeOfSeller;
@@ -4873,6 +4875,7 @@ export type ServiceDetails = {
   type_of_seller: ServiceTypeOfSeller;
   updatedAt: Scalars["DateTime"];
   vehicles?: Maybe<Array<Vehicle>>;
+  workingHours?: Maybe<WorkingSchedule>;
 };
 
 export type ServiceDiscount = {
@@ -5520,6 +5523,7 @@ export type UpdateBeautyCenterTreatmentInput = {
   duration?: Maybe<Array<Scalars["Int"]>>;
   id: Scalars["ID"];
   price?: Maybe<Scalars["Float"]>;
+  thumbnail?: Maybe<Scalars["Upload"]>;
   title?: Maybe<Array<TranslationTextInput>>;
   treatmentCategoryId?: Maybe<Scalars["ID"]>;
 };
@@ -5801,6 +5805,7 @@ export type UpdateServiceInput = {
   serviceMetaInfo?: Maybe<Array<ServiceMetaInfoTranslationInput>>;
   setting_and_ambianceId?: Maybe<Scalars["ID"]>;
   status?: Maybe<ServiceStatus>;
+  thumbnail?: Maybe<Scalars["Upload"]>;
   treatments?: Maybe<Array<CreateBeautyCenterTreatmentInput>>;
   type?: Maybe<ServiceType>;
   type_of_seller?: Maybe<ServiceTypeOfSeller>;

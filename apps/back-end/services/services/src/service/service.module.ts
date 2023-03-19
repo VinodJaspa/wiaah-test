@@ -3,6 +3,7 @@ import { ServiceService } from './service.service';
 import { ServiceResolver } from './service.resolver';
 import { AdminServiceResolver } from './service.admin.resolver';
 import { UploadModule, UploadServiceProviders } from '@wiaah/upload';
+import { ServiceDetailsResolver } from './service-details.resolver';
 
 @Module({
   imports: [
@@ -12,6 +13,11 @@ import { UploadModule, UploadServiceProviders } from '@wiaah/upload';
       provider: UploadServiceProviders.CLOUDFLARE,
     }),
   ],
-  providers: [ServiceResolver, ServiceService, AdminServiceResolver],
+  providers: [
+    ServiceResolver,
+    ServiceService,
+    AdminServiceResolver,
+    ServiceDetailsResolver,
+  ],
 })
 export class ServiceModule {}

@@ -445,6 +445,8 @@ type ServiceDetails {
   doctors: [Doctor!]
   treatments: [Treatment!]
   vehicles: [Vehicle!]
+  workingHours: WorkingSchedule
+  owner: Account!
 }
 
 type Insurance {
@@ -513,8 +515,8 @@ type ServiceShopRaw {
 }
 
 type Query {
-  getServiceDetails(id: String!): ServiceDetails
   adminGetAccountService(accountId: String!): Service!
+  getServiceDetails(id: String!): ServiceDetails
   adminGetAccountWorkingSchedule(accountId: String!): WorkingSchedule!
   getMyWorkingSchedule: WorkingSchedule!
   getInsurances(args: GetInsurancesInput!): [Insurance!]!
@@ -688,6 +690,7 @@ input CreateServiceInput {
   type_of_seller: ServiceTypeOfSeller!
   cancelationPolicies: [ServiceCancelationPolicyInput!]!
   vat: Float!
+  thumbnail: Upload!
   rooms: [ServiceHotelRoomInput!]
   menus: [ServiceRestaurantMenuInput!]
   establishmentTypeId: ID
@@ -865,6 +868,7 @@ input CreateBeautyCenterTreatmentInput {
   price: Float!
   duration: [Int!]!
   discount: ServiceDiscountInput!
+  thumbnail: Upload!
 }
 
 input ServiceVehicleInput {
@@ -900,6 +904,7 @@ input UpdateServiceInput {
   type_of_seller: ServiceTypeOfSeller
   cancelationPolicies: [ServiceCancelationPolicyInput!]
   vat: Float
+  thumbnail: Upload
   rooms: [ServiceHotelRoomInput!]
   menus: [ServiceRestaurantMenuInput!]
   establishmentTypeId: ID
@@ -1042,6 +1047,7 @@ input UpdateBeautyCenterTreatmentInput {
   price: Float
   duration: [Int!]
   discount: ServiceDiscountInput
+  thumbnail: Upload
   id: ID!
 }
 
