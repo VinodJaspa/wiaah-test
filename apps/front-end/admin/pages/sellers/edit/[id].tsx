@@ -40,7 +40,7 @@ const Edit = () => {
 
   const isProducts = false;
 
-  const productsTitle = isProducts ? "Products" : "services";
+  const productsTitle = isProducts ? "Products" : "Services";
 
   const tabsTitles = [
     "General",

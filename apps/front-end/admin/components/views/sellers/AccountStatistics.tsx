@@ -1,13 +1,87 @@
-import { ArrowDownIcon, ArrowUpIcon, Badge } from "@partials";
 import React from "react";
-import { NumberShortner } from "utils";
+import { NumberShortner, randomNum } from "utils";
 import { useTranslation } from "react-i18next";
 import { BiArrowToBottom, BiArrowToTop } from "react-icons/bi";
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  CartesianAxis,
+  Legend,
+  ReferenceLine,
+  Tooltip,
+  XAxis,
+  YAxis,
+  PieChart,
+  Pie,
+  Cell,
+} from "recharts";
+import { BoxShadow } from "@partials";
 
 export const AccountStatistics: React.FC<{
   accountId: string;
 }> = ({ accountId }) => {
   const { t } = useTranslation();
+  const [overviewDims, setOverviewDims] = React.useState<{
+    h: number;
+    w: number;
+  }>({
+    h: 0,
+    w: 0,
+  });
+  const [reachedDims, setReachedDims] = React.useState<{
+    h: number;
+    w: number;
+  }>({
+    h: 0,
+    w: 0,
+  });
+
+  const overviewRef = React.useRef<HTMLDivElement>(null);
+  const reachedAudinesRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (overviewRef.current) {
+      const h = overviewRef.current.clientHeight;
+      const w = overviewRef.current.clientWidth;
+
+      setOverviewDims({ h, w });
+    }
+  }, [overviewRef]);
+
+  React.useEffect(() => {
+    if (reachedAudinesRef.current) {
+      const h = reachedAudinesRef.current.clientHeight;
+      const w = reachedAudinesRef.current.clientWidth;
+
+      setReachedDims({ h, w });
+    }
+  }, [reachedAudinesRef]);
+
+  const overviewdata: { x: number; y: number; z: number; name: string }[] = [
+    ...Array(12),
+  ].map((v, i) => ({
+    name: new Date(new Date().setMonth(i)).toLocaleDateString("en-us", {
+      month: "short",
+    }),
+    x: randomNum(400000),
+    y: randomNum(200000),
+    z: randomNum(300000),
+  }));
+
+  const reachedData: { name: string; value: number; fill: string }[] = [
+    {
+      name: t("female"),
+      value: 510,
+      fill: "#EA4335",
+    },
+    {
+      name: t("male"),
+      value: 350,
+      fill: "#4285F4",
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-8 w-full">
       <div className="flex gap-2 w-full">
@@ -37,9 +111,75 @@ export const AccountStatistics: React.FC<{
           title={t("Total of Saved")}
         />
       </div>
-      <div className="grid grid-cols-12 gap-4 w-full h-96">
-        <div className="shadow-lg h-full col-span-7"></div>
-        <div className="shadow-lg h-full col-span-5"></div>
+      <div>
+        <div className="grid grid-cols-12 gap-4 w-full h-96">
+          <div
+            ref={overviewRef}
+            className="shadow-lg h-full flex flex-col gap-4 col-span-7"
+          >
+            <div className=" flex items-center justify-between">
+              <p className="font-bold text-xl">{t("Overview")}</p>
+              <div className="flex flex-wrap items-center gap-8">
+                <BarChartLegend color="#4285F4" name={t("Account Reached")} />
+                <BarChartLegend color="#34A853" name={t("Account Engaged")} />
+                <BarChartLegend color="#EA4335" name={t("Profile Activity")} />
+              </div>
+            </div>
+            <BarChart
+              width={overviewDims.w}
+              height={overviewDims.h}
+              data={overviewdata}
+            >
+              <CartesianGrid vertical={false} />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar
+                legendType="none"
+                dataKey="x"
+                stackId={"1"}
+                barSize={10}
+                fill="#4285F4"
+              />
+              <Bar
+                legendType="none"
+                dataKey="y"
+                stackId={"1"}
+                barSize={10}
+                fill="#34A853"
+              />
+              <Bar
+                legendType="none"
+                dataKey="z"
+                stackId={"1"}
+                barSize={10}
+                fill="#EA4335"
+              />
+            </BarChart>
+          </div>
+          <div
+            ref={reachedAudinesRef}
+            className="shadow-lg flex justify-between h-full col-span-5"
+          >
+            <div className="flex flex-col gap-8"></div>
+            <PieChart width={reachedDims.h} height={reachedDims.h}>
+              <Pie
+                data={reachedData}
+                cx={120}
+                cy={200}
+                innerRadius={60}
+                outerRadius={80}
+                paddingAngle={5}
+                dataKey={"value"}
+              >
+                {reachedData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.fill} />
+                ))}
+              </Pie>
+            </PieChart>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -53,21 +193,44 @@ export const StatisticsCard: React.FC<{
   const change = (amount / prevAmount - 1) * 100;
   const positive = change > 0;
   return (
-    <div className="w-full px-4 py-2 rounded bg-gray-100 min-h-[6rem] flex flex-col justify-between">
-      <p className="font-bold text-sm">{title}</p>
-      <div className="w-full items-center flex justify-between">
-        <div
-          className={`${
-            positive
-              ? "text-primary bg-primary-100"
-              : "text-secondaryRed bg-red-100"
-          } flex items-center px-1 rounded`}
-        >
-          {positive ? <BiArrowToTop /> : <BiArrowToBottom />}
-          {Math.floor(change)}%
+    <BoxShadow className="w-full">
+      <div className="w-full px-4 py-2 rounded bg-gray-100 min-h-[6rem] flex flex-col justify-between">
+        <p className="font-bold text-sm">{title}</p>
+        <div className="w-full items-center flex justify-between">
+          <div
+            className={`${
+              positive
+                ? "text-primary bg-primary-100"
+                : "text-secondaryRed bg-red-100"
+            } flex items-center px-1 rounded`}
+          >
+            {positive ? <BiArrowToTop /> : <BiArrowToBottom />}
+            {Math.floor(change)}%
+          </div>
+          <p className="font-bold text-lg">{NumberShortner(amount)}</p>
         </div>
-        <p className="font-bold text-lg">{NumberShortner(amount)}</p>
       </div>
+    </BoxShadow>
+  );
+};
+
+export const BarChartLegend: React.FC<{
+  name: string;
+  amount?: number;
+  color: string;
+}> = ({ amount, name, children, color }) => {
+  return (
+    <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-4">
+        <div
+          style={{
+            backgroundColor: color,
+          }}
+          className="w-8 h-4 rounded"
+        />
+        <p>{name}</p>
+      </div>
+      {amount ? <p className="font-bold">{NumberShortner(amount)}</p> : null}
     </div>
   );
 };

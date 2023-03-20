@@ -7,3 +7,4 @@ export * from "./PaginationWrapper";
 export * from "./StaticSideBarWrapper";
 export * from "./GridListOrganiser";
 export * from "./ListWrapper";
+export * from "./scrollingWrapper";
