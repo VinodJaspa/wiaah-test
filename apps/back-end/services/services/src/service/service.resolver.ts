@@ -1,26 +1,12 @@
-import {
-  Args,
-  Mutation,
-  Parent,
-  Query,
-  ResolveField,
-  Resolver,
-  ResolveReference,
-} from '@nestjs/graphql';
+import { Args, Mutation, Resolver, ResolveReference } from '@nestjs/graphql';
 import { ServiceService } from './service.service';
-import { Service, ServiceDetails } from './entities/service.entity';
+import { Service } from './entities/service.entity';
 import { ServicePresentationType, ServiceType } from 'prismaClient';
 import { CreateServiceInput } from './dto/create-service.input';
 import { UseGuards } from '@nestjs/common';
-import {
-  accountType,
-  GetLang,
-  GqlAuthorizationGuard,
-  UserPreferedLang,
-} from 'nest-utils';
+import { accountType, GqlAuthorizationGuard } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { FileTypeEnum, UploadService } from '@wiaah/upload';
-import { WorkingSchedule } from '@working-schedule/entities';
 
 @Resolver(() => Service)
 export class ServiceResolver {

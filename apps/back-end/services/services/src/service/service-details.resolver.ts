@@ -7,6 +7,7 @@ import {
   Resolver,
   ResolveReference,
 } from '@nestjs/graphql';
+import { RestaurantEstablishmentType } from '@restaurant';
 import { UploadService } from '@wiaah/upload';
 import { WorkingSchedule } from '@working-schedule/entities';
 import { GetLang, UserPreferedLang } from 'nest-utils';
@@ -59,5 +60,16 @@ export class ServiceDetailsResolver {
       __typename: 'Account',
       id: service.ownerId,
     };
+  }
+
+  @ResolveField(() => RestaurantEstablishmentType)
+  establishmentType(@Parent() service: ServiceDetails) {
+    if (service.establishmentTypeId) {
+      return this.prisma.restaurantEstablishmentType.findUnique({
+        where: {
+          id: service.establishmentTypeId,
+        },
+      });
+    } else return null;
   }
 }

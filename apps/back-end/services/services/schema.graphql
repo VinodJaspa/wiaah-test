@@ -163,6 +163,7 @@ type ServiceContact {
 
 type Account {
   id: ID!
+  service: ServiceDetails!
 }
 
 type Hotel {
@@ -215,8 +216,10 @@ enum ServiceCategoryStatus {
 
 type RestaurantMenu {
   id: ID!
+  restaurantId: ID!
   name: String!
   dishs: [Dish!]!
+  restaurant: ServiceDetails!
 }
 
 type Dish {
@@ -225,6 +228,16 @@ type Dish {
   price: Float!
   ingredients: [String!]!
   thumbnail: String!
+  menuId: ID!
+  type: RestaurantDishType!
+  sales: Int!
+  menu: RestaurantMenu!
+}
+
+enum RestaurantDishType {
+  starter
+  dessert
+  main
 }
 
 type Restaurant {
@@ -264,6 +277,14 @@ enum ServicePaymentMethod {
   mastercard
   check
   cash
+}
+
+type RestaurantEstablishmentType {
+  id: ID!
+  createdById: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
 }
 
 type HealthCenterSpecialty {
@@ -425,6 +446,7 @@ enum ServiceType {
 type ServiceDetails {
   id: ID!
   ownerId: ID!
+  type: ServiceType!
   createdAt: DateTime!
   updatedAt: DateTime!
   location: ServiceLocation!
@@ -447,6 +469,7 @@ type ServiceDetails {
   vehicles: [Vehicle!]
   workingHours: WorkingSchedule
   owner: Account!
+  establishmentType: RestaurantEstablishmentType!
 }
 
 type Insurance {
@@ -517,6 +540,7 @@ type ServiceShopRaw {
 type Query {
   adminGetAccountService(accountId: String!): Service!
   getServiceDetails(id: String!): ServiceDetails
+  adminGetDishs(args: AdminGetDishsInput!): [Dish!]!
   adminGetAccountWorkingSchedule(accountId: String!): WorkingSchedule!
   getMyWorkingSchedule: WorkingSchedule!
   getInsurances(args: GetInsurancesInput!): [Insurance!]!
@@ -544,14 +568,24 @@ type Query {
   getVehicleServicebyId(id: String!): VehicleService!
 }
 
-input GetInsurancesInput {
+input AdminGetDishsInput {
+  name: String
+  seller: String
+  type: RestaurantDishType
+  country: String
+  city: String
+  sales: Int
   pagination: GqlPaginationInput!
-  status: ServiceInsuranceStatusEnum!
 }
 
 input GqlPaginationInput {
   page: Int!
   take: Int!
+}
+
+input GetInsurancesInput {
+  pagination: GqlPaginationInput!
+  status: ServiceInsuranceStatusEnum!
 }
 
 input GetInsurancesHistoryInput {

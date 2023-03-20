@@ -44,6 +44,7 @@ export type Account = {
   phone?: Maybe<Scalars["String"]>;
   photo?: Maybe<Scalars["String"]>;
   profile?: Maybe<Profile>;
+  service: ServiceDetails;
   shop: Shop;
   status: AccountStatus;
   stripeId?: Maybe<Scalars["String"]>;
@@ -219,6 +220,16 @@ export type AdminGetDesignsInput = {
   pagination: GqlPaginationInput;
   placement?: Maybe<DesignPlacement>;
   type?: Maybe<DesignType>;
+};
+
+export type AdminGetDishsInput = {
+  city?: Maybe<Scalars["String"]>;
+  country?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  sales?: Maybe<Scalars["Int"]>;
+  seller?: Maybe<Scalars["String"]>;
+  type?: Maybe<RestaurantDishType>;
 };
 
 export type AdminGetLanguagesInput = {
@@ -1303,9 +1314,13 @@ export type Dish = {
   __typename?: "Dish";
   id: Scalars["ID"];
   ingredients: Array<Scalars["String"]>;
+  menu: RestaurantMenu;
+  menuId: Scalars["ID"];
   name: Scalars["String"];
   price: Scalars["Float"];
+  sales: Scalars["Int"];
   thumbnail: Scalars["String"];
+  type: RestaurantDishType;
 };
 
 export type Doctor = {
@@ -3611,6 +3626,7 @@ export type Query = {
   adminGetContentComments: Array<Comment>;
   adminGetCurrencies: Array<Currency>;
   adminGetDesigns: Array<Design>;
+  adminGetDishs: Array<Dish>;
   adminGetFilteredProductReviews: Array<ProductReview>;
   adminGetHashtag: Array<Hashtag>;
   adminGetLanguages: Array<Language>;
@@ -3857,6 +3873,10 @@ export type QueryAdminGetCurrenciesArgs = {
 
 export type QueryAdminGetDesignsArgs = {
   args: AdminGetDesignsInput;
+};
+
+export type QueryAdminGetDishsArgs = {
+  args: AdminGetDishsInput;
 };
 
 export type QueryAdminGetFilteredProductReviewsArgs = {
@@ -4588,11 +4608,28 @@ export type Restaurant = {
   workingHours?: Maybe<WorkingSchedule>;
 };
 
+export enum RestaurantDishType {
+  Dessert = "dessert",
+  Main = "main",
+  Starter = "starter",
+}
+
+export type RestaurantEstablishmentType = {
+  __typename?: "RestaurantEstablishmentType";
+  createdAt: Scalars["DateTime"];
+  createdById: Scalars["ID"];
+  id: Scalars["ID"];
+  name: Scalars["String"];
+  updatedAt: Scalars["DateTime"];
+};
+
 export type RestaurantMenu = {
   __typename?: "RestaurantMenu";
   dishs: Array<Dish>;
   id: Scalars["ID"];
   name: Scalars["String"];
+  restaurant: ServiceDetails;
+  restaurantId: Scalars["ID"];
 };
 
 export type RestaurantMenuDishInput = {
@@ -4857,6 +4894,7 @@ export type ServiceDetails = {
   createdAt: Scalars["DateTime"];
   cuisinesTypeId?: Maybe<Scalars["ID"]>;
   doctors?: Maybe<Array<Doctor>>;
+  establishmentType: RestaurantEstablishmentType;
   establishmentTypeId?: Maybe<Scalars["ID"]>;
   highest_price: Scalars["Float"];
   id: Scalars["ID"];
@@ -4864,6 +4902,7 @@ export type ServiceDetails = {
   lowest_price: Scalars["Float"];
   menus?: Maybe<Array<RestaurantMenu>>;
   michelin_guide_stars?: Maybe<Scalars["Int"]>;
+  owner: Account;
   ownerId: Scalars["ID"];
   payment_methods: Array<ServicePaymentMethod>;
   policies: Array<ServicePolicy>;
@@ -4872,6 +4911,7 @@ export type ServiceDetails = {
   serviceMetaInfo: ServiceMetaInfo;
   setting_and_ambianceId?: Maybe<Scalars["ID"]>;
   treatments?: Maybe<Array<Treatment>>;
+  type: ServiceType;
   type_of_seller: ServiceTypeOfSeller;
   updatedAt: Scalars["DateTime"];
   vehicles?: Maybe<Array<Vehicle>>;

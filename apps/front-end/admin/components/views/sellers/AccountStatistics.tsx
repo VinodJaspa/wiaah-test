@@ -112,72 +112,110 @@ export const AccountStatistics: React.FC<{
         />
       </div>
       <div>
-        <div className="grid grid-cols-12 gap-4 w-full h-96">
+        <div className="grid grid-cols-12 gap-4 w-full h-80">
           <div
-            ref={overviewRef}
-            className="shadow-lg h-full flex flex-col gap-4 col-span-7"
+            style={{
+              backgroundColor: "#FFFFFF",
+              boxShadow: "0px 0px 40px rgba(0, 0, 0, 0.12)",
+              borderRadius: "10px",
+            }}
+            className="p-6 col-span-7 h-full"
           >
-            <div className=" flex items-center justify-between">
-              <p className="font-bold text-xl">{t("Overview")}</p>
-              <div className="flex flex-wrap items-center gap-8">
-                <BarChartLegend color="#4285F4" name={t("Account Reached")} />
-                <BarChartLegend color="#34A853" name={t("Account Engaged")} />
-                <BarChartLegend color="#EA4335" name={t("Profile Activity")} />
-              </div>
-            </div>
-            <BarChart
-              width={overviewDims.w}
-              height={overviewDims.h}
-              data={overviewdata}
+            <div
+              ref={overviewRef}
+              className="h-full flex flex-col gap-4 w-full"
             >
-              <CartesianGrid vertical={false} />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar
-                legendType="none"
-                dataKey="x"
-                stackId={"1"}
-                barSize={10}
-                fill="#4285F4"
-              />
-              <Bar
-                legendType="none"
-                dataKey="y"
-                stackId={"1"}
-                barSize={10}
-                fill="#34A853"
-              />
-              <Bar
-                legendType="none"
-                dataKey="z"
-                stackId={"1"}
-                barSize={10}
-                fill="#EA4335"
-              />
-            </BarChart>
+              <div className="flex items-center justify-between">
+                <p className="font-bold text-xl">{t("Overview")}</p>
+                <div className="flex flex-wrap items-center gap-8">
+                  <BarChartLegend color="#4285F4" name={t("Account Reached")} />
+                  <BarChartLegend color="#34A853" name={t("Account Engaged")} />
+                  <BarChartLegend
+                    color="#EA4335"
+                    name={t("Profile Activity")}
+                  />
+                </div>
+              </div>
+              <BarChart
+                width={overviewDims.w}
+                height={overviewDims.h}
+                data={overviewdata}
+              >
+                <CartesianGrid vertical={false} />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar
+                  legendType="none"
+                  dataKey="x"
+                  stackId={"1"}
+                  barSize={10}
+                  fill="#4285F4"
+                />
+                <Bar
+                  legendType="none"
+                  dataKey="y"
+                  stackId={"1"}
+                  barSize={10}
+                  fill="#34A853"
+                />
+                <Bar
+                  legendType="none"
+                  dataKey="z"
+                  stackId={"1"}
+                  barSize={10}
+                  fill="#EA4335"
+                />
+              </BarChart>
+            </div>
           </div>
           <div
-            ref={reachedAudinesRef}
-            className="shadow-lg flex justify-between h-full col-span-5"
+            style={{
+              backgroundColor: "#FFFFFF",
+              boxShadow: "0px 0px 40px rgba(0, 0, 0, 0.12)",
+              borderRadius: "10px",
+            }}
+            className="p-6 col-span-5 h-full"
           >
-            <div className="flex flex-col gap-8"></div>
-            <PieChart width={reachedDims.h} height={reachedDims.h}>
-              <Pie
-                data={reachedData}
-                cx={120}
-                cy={200}
-                innerRadius={60}
-                outerRadius={80}
-                paddingAngle={5}
-                dataKey={"value"}
-              >
-                {reachedData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.fill} />
-                ))}
-              </Pie>
-            </PieChart>
+            <div className="flex flex-col gap-4 w-full h-full">
+              <p className="text-xl font-bold">{t("Reached Audience")}</p>
+              <div className="flex gap-2 h-full items-center">
+                <div className="flex flex-col gap-4">
+                  <BarChartLegend
+                    amount={randomNum(150000)}
+                    color="#EA4335"
+                    name={t("Total of Women")}
+                  />
+                  <BarChartLegend
+                    amount={randomNum(150000)}
+                    color="#4285F4"
+                    name={t("Total of Men")}
+                  />
+                </div>
+
+                <div
+                  ref={reachedAudinesRef}
+                  className="flex justify-end h-full w-full"
+                >
+                  <PieChart width={reachedDims.h} height={reachedDims.h}>
+                    <Pie
+                      data={reachedData}
+                      cx={100}
+                      cy={100}
+                      innerRadius={80}
+                      outerRadius={100}
+                      paddingAngle={4}
+                      dataKey={"value"}
+                    >
+                      {reachedData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                      ))}
+                    </Pie>
+                  </PieChart>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -228,7 +266,7 @@ export const BarChartLegend: React.FC<{
           }}
           className="w-8 h-4 rounded"
         />
-        <p>{name}</p>
+        <p className="whitespace-nowrap">{name}</p>
       </div>
       {amount ? <p className="font-bold">{NumberShortner(amount)}</p> : null}
     </div>

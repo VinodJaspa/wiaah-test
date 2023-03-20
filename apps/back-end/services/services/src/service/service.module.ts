@@ -4,6 +4,7 @@ import { ServiceResolver } from './service.resolver';
 import { AdminServiceResolver } from './service.admin.resolver';
 import { UploadModule, UploadServiceProviders } from '@wiaah/upload';
 import { ServiceDetailsResolver } from './service-details.resolver';
+import { resolvers } from './resolvers';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ServiceDetailsResolver } from './service-details.resolver';
     ServiceService,
     AdminServiceResolver,
     ServiceDetailsResolver,
+    ...resolvers,
   ],
 })
 export class ServiceModule {}

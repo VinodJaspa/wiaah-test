@@ -11,7 +11,6 @@ import { Doctor } from '@health-center';
 import { Directive, Field, Float, ID, Int, ObjectType } from '@nestjs/graphql';
 import { RestaurantMenu } from '@restaurant';
 import { Vehicle } from '@vehicle-service';
-import { WorkingSchedule } from '@working-schedule/entities';
 import {
   ServicePaymentMethods,
   ServiceType,
@@ -61,6 +60,9 @@ export class ServiceDetails {
 
   @Field(() => ID)
   ownerId: string;
+
+  @Field(() => ServiceType)
+  type: ServiceType;
 
   @Field(() => Date)
   createdAt: Date;

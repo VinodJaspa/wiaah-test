@@ -1,4 +1,11 @@
-import { Account, Exact, Maybe, Profile, Scalars } from "@features/API";
+import {
+  Account,
+  Exact,
+  Maybe,
+  Profile,
+  Scalars,
+  ServiceDetails,
+} from "@features/API";
 import { createGraphqlRequestClient } from "@UI/../api";
 import { useQuery } from "react-query";
 
@@ -15,7 +22,13 @@ export type AdminGetSellerQuery = { __typename?: "Query" } & {
     | "email"
     | "companyRegisterationNumber"
     | "createdAt"
-  > & { profile?: Maybe<{ __typename?: "Profile" } & Pick<Profile, "bio">> };
+  > & {
+      profile?: Maybe<{ __typename?: "Profile" } & Pick<Profile, "bio">>;
+      service: { __typename?: "ServiceDetails" } & Pick<
+        ServiceDetails,
+        "id" | "type"
+      >;
+    };
 };
 
 type args = AdminGetSellerQueryVariables["id"];
@@ -40,6 +53,10 @@ query adminGetSeller($id:String!) {
       bio
     }
    	createdAt 
+    service {
+      id
+      type
+    }
   }
 }`);
 

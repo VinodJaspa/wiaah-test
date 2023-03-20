@@ -60,7 +60,7 @@ export class RestaurantResolver {
   }
 
   @Mutation(() => Restaurant)
-  @UseGuards(new GqlAuthorizationGuard(['seller']))
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   createRestaurantService(
     @Args('createRestaurantArgs') args: CreateRestaurantInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
@@ -90,7 +90,7 @@ export class RestaurantResolver {
   // }
 
   @Mutation(() => Restaurant)
-  @UseGuards(new GqlAuthorizationGuard(['seller']))
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   deleteRestaurant(
     @Args('deleteRestaurantArgs') args: DeleteRestaurantInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,

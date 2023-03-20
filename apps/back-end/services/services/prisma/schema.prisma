@@ -389,8 +389,16 @@ model RestaurantDish {
   price       Int
   ingredients TranslationArrayText[]
   thumbnail   String
+  type        RestaurantDishType
+  sales       Int                    @default(0)
   menuId      String                 @db.ObjectId
   menu        RestaurantMenu         @relation(fields: [menuId], references: [id])
+}
+
+enum RestaurantDishType {
+  starter
+  dessert
+  main
 }
 
 type HotelRoomMetaInfo {
