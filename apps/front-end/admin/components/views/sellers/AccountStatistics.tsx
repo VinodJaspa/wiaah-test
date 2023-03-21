@@ -45,9 +45,18 @@ export const AccountStatistics: React.FC<{
     w: 0,
   });
 
+  const [storiesViewsDims, setStoriesViewDims] = React.useState<{
+    h: number;
+    w: number;
+  }>({
+    h: 0,
+    w: 0,
+  });
+
   const overviewRef = React.useRef<HTMLDivElement>(null);
   const reachedAudinesRef = React.useRef<HTMLDivElement>(null);
   const ageGenderRef = React.useRef<HTMLDivElement>(null);
+  const storiesViewsRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     if (overviewRef.current) {
@@ -74,7 +83,16 @@ export const AccountStatistics: React.FC<{
 
       setAgeGenderDims({ h, w });
     }
-  }, [reachedAudinesRef]);
+  }, [ageGenderRef]);
+
+  React.useEffect(() => {
+    if (storiesViewsRef.current) {
+      const h = storiesViewsRef.current.clientHeight;
+      const w = storiesViewsRef.current.clientWidth;
+
+      setStoriesViewDims({ h, w });
+    }
+  }, [storiesViewsRef]);
 
   const overviewdata: { x: number; y: number; z: number; name: string }[] = [
     ...Array(12),
@@ -86,6 +104,23 @@ export const AccountStatistics: React.FC<{
     y: randomNum(200000),
     z: randomNum(300000),
   }));
+
+  const ageGenderData = ["18-24", "24-34", "35-44", "65+"].map((v, i) => ({
+    name: v,
+    male: randomNum(15000),
+    female: randomNum(15000),
+  }));
+
+  const storiesViewsData = [...Array(14)].map((_, i) => ({
+    name: new Date(new Date().setHours(8 + i)).toLocaleTimeString("en-us", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }),
+    male: randomNum(150000),
+    female: randomNum(150000),
+  }));
+
   const totalAudienece = randomNum(2500000);
 
   const reachedData: { name: string; value: number; fill: string }[] = [
@@ -161,8 +196,8 @@ export const AccountStatistics: React.FC<{
               data={overviewdata}
             >
               <CartesianGrid vertical={false} />
-              <XAxis dataKey="name" />
-              <YAxis />
+              <XAxis axisLine={false} dataKey="name" />
+              <YAxis axisLine={false} />
               <Tooltip />
               <Legend />
               <Bar
@@ -216,9 +251,7 @@ export const AccountStatistics: React.FC<{
                     <div className="flex flex-col gap-2 justify-center h-full w-full items-center rounded-full bg-black bg-opacity-[0.12]">
                       <p>{t("Total of audience")}</p>
                       <p className="font-bold text-xl">
-                        {Intl.NumberFormat("en-us", {
-                          notation: "compact",
-                        }).format(totalAudienece)}
+                        {NumberShortner(totalAudienece)}
                       </p>
                     </div>
                   </AspectRatio>
@@ -266,7 +299,36 @@ export const AccountStatistics: React.FC<{
           <p className="font-bold text-xl">{t("Age and Gender")}</p>
 
           <div className="h-44" ref={ageGenderRef}>
-            <></>
+            <BarChart
+              data={ageGenderData}
+              width={ageGenderDims.w}
+              height={ageGenderDims.h}
+              layout={"vertical"}
+            >
+              <XAxis type="number" hide />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                type="category"
+                dataKey={"name"}
+              />
+              <Tooltip />
+              <Bar
+                background={{ fill: "rgba(0, 0, 0, 0.08)" }}
+                radius={[4, 4, 0, 0]}
+                barSize={20}
+                fill="#4285F4"
+                dataKey={"male"}
+                stackId="1"
+              />
+              <Bar
+                radius={[4, 4, 0, 0]}
+                barSize={20}
+                fill="#91D4EF"
+                dataKey={"female"}
+                stackId="1"
+              />
+            </BarChart>
           </div>
 
           <HStack>
@@ -274,7 +336,42 @@ export const AccountStatistics: React.FC<{
             <BarChartLegend color="#91D4EF" name={t("Female")} />
           </HStack>
         </div>
-        <div className=""></div>
+
+        <div style={boxShadowStyles} className="flex p-8 flex-col gap-8">
+          <p className="font-bold text-xl">{t("Popular Stories Views")}</p>
+
+          <div className="h-44" ref={storiesViewsRef}>
+            <BarChart
+              data={storiesViewsData}
+              width={storiesViewsDims.w}
+              height={storiesViewsDims.h}
+            >
+              <XAxis dataKey={"name"} />
+              <YAxis tickLine={false} axisLine={false} />
+              <Tooltip />
+              <Bar
+                background={{ fill: "rgba(0, 0, 0, 0.08)" }}
+                radius={[4, 4, 0, 0]}
+                barSize={20}
+                fill="#4285F4"
+                dataKey={"male"}
+                stackId="1"
+              />
+              <Bar
+                radius={[4, 4, 0, 0]}
+                barSize={20}
+                fill="#91D4EF"
+                dataKey={"female"}
+                stackId="1"
+              />
+            </BarChart>
+          </div>
+
+          <HStack>
+            <BarChartLegend color="#4285F4" name={t("Male")} />
+            <BarChartLegend color="#91D4EF" name={t("Female")} />
+          </HStack>
+        </div>
       </div>
     </div>
   );
