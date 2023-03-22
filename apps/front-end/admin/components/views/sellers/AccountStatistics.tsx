@@ -1,5 +1,5 @@
 import React from "react";
-import { NumberShortner, randomNum } from "utils";
+import { mapArray, NumberShortner, randomNum, weekDays } from "utils";
 import { useTranslation } from "react-i18next";
 import { BiArrowToBottom, BiArrowToTop } from "react-icons/bi";
 import {
@@ -15,8 +15,25 @@ import {
   PieChart,
   Pie,
   Cell,
+  LabelList,
 } from "recharts";
-import { AspectRatio, BoxShadow, HStack } from "@partials";
+import {
+  AspectRatio,
+  BoxShadow,
+  Button,
+  HStack,
+  Image,
+  Select,
+  SelectOption,
+  Table,
+  TBody,
+  Td,
+  Th,
+  THead,
+  Tr,
+} from "@partials";
+import { BsArrowDown } from "react-icons/bs";
+import { getRandomImage } from "placeholder";
 
 export const AccountStatistics: React.FC<{
   accountId: string;
@@ -53,10 +70,19 @@ export const AccountStatistics: React.FC<{
     w: 0,
   });
 
+  const [visitsPieDims, setVisitsPieDims] = React.useState<{
+    h: number;
+    w: number;
+  }>({
+    h: 0,
+    w: 0,
+  });
+
   const overviewRef = React.useRef<HTMLDivElement>(null);
   const reachedAudinesRef = React.useRef<HTMLDivElement>(null);
   const ageGenderRef = React.useRef<HTMLDivElement>(null);
   const storiesViewsRef = React.useRef<HTMLDivElement>(null);
+  const visitsPieRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     if (overviewRef.current) {
@@ -94,6 +120,15 @@ export const AccountStatistics: React.FC<{
     }
   }, [storiesViewsRef]);
 
+  React.useEffect(() => {
+    if (visitsPieRef.current) {
+      const h = visitsPieRef.current.clientHeight;
+      const w = visitsPieRef.current.clientWidth;
+
+      setVisitsPieDims({ h, w });
+    }
+  }, [visitsPieRef]);
+
   const overviewdata: { x: number; y: number; z: number; name: string }[] = [
     ...Array(12),
   ].map((v, i) => ({
@@ -105,11 +140,13 @@ export const AccountStatistics: React.FC<{
     z: randomNum(300000),
   }));
 
-  const ageGenderData = ["18-24", "24-34", "35-44", "65+"].map((v, i) => ({
-    name: v,
-    male: randomNum(15000),
-    female: randomNum(15000),
-  }));
+  const ageGenderData = ["18-24", "24-34", "35-44", "65+"]
+    .reverse()
+    .map((v, i) => ({
+      name: v,
+      male: randomNum(15000),
+      female: randomNum(15000),
+    }));
 
   const storiesViewsData = [...Array(14)].map((_, i) => ({
     name: new Date(new Date().setHours(8 + i)).toLocaleTimeString("en-us", {
@@ -146,6 +183,80 @@ export const AccountStatistics: React.FC<{
     boxShadow: "0px 0px 40px rgba(0, 0, 0, 0.12)",
     borderRadius: "10px",
   };
+
+  const countries: {
+    name: string;
+    color: string;
+    visits: number;
+  }[] = [
+    {
+      name: "France",
+      color: "#87B2D2",
+      visits: randomNum(500000),
+    },
+    {
+      name: "United States",
+      color: "#70AB51",
+      visits: randomNum(500000),
+    },
+    {
+      name: "Saudi Arabia",
+      color: "#DB5E31",
+      visits: randomNum(500000),
+    },
+    {
+      name: "New Zeeland",
+      color: "#6BC5E1",
+      visits: randomNum(500000),
+    },
+    {
+      name: "Belgium",
+      color: "#82E37B",
+      visits: randomNum(500000),
+    },
+    {
+      name: "Italy",
+      color: "#E89D64",
+      visits: randomNum(500000),
+    },
+    {
+      name: "Germeny",
+      color: "#F8F679",
+      visits: randomNum(500000),
+    },
+  ];
+
+  const totalVisits = countries.reduce((acc, curr) => acc + curr.visits, 0);
+
+  const countriesPercentage = countries.map((v) => ({
+    name: v.name,
+    color: v.color,
+    visits: v.visits / totalVisits,
+  }));
+
+  const posts: {
+    thumbnail: string;
+    date: string;
+    name: string;
+    views: number;
+    likes: number;
+    gender: string;
+    countryName: string;
+    city: string;
+    visits: number;
+    comments: number;
+  }[] = [...Array(5)].map((_, i) => ({
+    city: "Geneve",
+    comments: randomNum(15000000),
+    countryName: "Switzerland",
+    date: new Date().toString(),
+    gender: "Male",
+    likes: randomNum(450000),
+    name: "Post name",
+    thumbnail: getRandomImage(),
+    views: randomNum(90000000),
+    visits: randomNum(90000000),
+  }));
 
   return (
     <div className="flex flex-col gap-14 w-full">
@@ -295,9 +406,9 @@ export const AccountStatistics: React.FC<{
         </div>
       </div>
       <div className="grid w-full grid-cols-2">
-        <div style={boxShadowStyles} className="flex p-8 flex-col gap-8">
+        <div style={boxShadowStyles} className="flex p-8 flex-col">
           <p className="font-bold text-xl">{t("Age and Gender")}</p>
-
+          <div className="h-12"></div>
           <div className="h-44" ref={ageGenderRef}>
             <BarChart
               data={ageGenderData}
@@ -320,7 +431,13 @@ export const AccountStatistics: React.FC<{
                 fill="#4285F4"
                 dataKey={"male"}
                 stackId="1"
-              />
+              >
+                <LabelList
+                  content={({ width, value }) => (
+                    <p className="absolute">test</p>
+                  )}
+                />
+              </Bar>
               <Bar
                 radius={[4, 4, 0, 0]}
                 barSize={20}
@@ -337,20 +454,30 @@ export const AccountStatistics: React.FC<{
           </HStack>
         </div>
 
-        <div style={boxShadowStyles} className="flex p-8 flex-col gap-8">
+        <div style={boxShadowStyles} className="flex p-8 flex-col">
           <p className="font-bold text-xl">{t("Popular Stories Views")}</p>
-
+          <HStack className="h-12">
+            {weekDays.map((v, i) => (
+              <Button className="text-xs " colorScheme="white">
+                {new Date(
+                  new Date().setDate(new Date().getDate() - v)
+                ).toLocaleDateString("en-us", {
+                  weekday: "long",
+                })}
+              </Button>
+            ))}
+          </HStack>
           <div className="h-44" ref={storiesViewsRef}>
             <BarChart
               data={storiesViewsData}
               width={storiesViewsDims.w}
               height={storiesViewsDims.h}
             >
-              <XAxis dataKey={"name"} />
+              <CartesianGrid vertical={false} />
+              <XAxis tickLine={false} axisLine={false} dataKey={"name"} />
               <YAxis tickLine={false} axisLine={false} />
               <Tooltip />
               <Bar
-                background={{ fill: "rgba(0, 0, 0, 0.08)" }}
                 radius={[4, 4, 0, 0]}
                 barSize={20}
                 fill="#4285F4"
@@ -372,6 +499,200 @@ export const AccountStatistics: React.FC<{
             <BarChartLegend color="#91D4EF" name={t("Female")} />
           </HStack>
         </div>
+      </div>
+      <div
+        style={boxShadowStyles}
+        className="grid p-8 grid-rows-4 grid-cols-12"
+      >
+        <div className="col-span-2 border-r pb-4 pr-4 border-b row-span-1 flex flex-col gap-2">
+          <p>{t("Details Level")}</p>
+          <Select
+            className="w-40 bg-[#F3F3F3]"
+            placeholder={`${t("Country")}/${t("Territory")}`}
+          >
+            <SelectOption value={"test"}>test</SelectOption>
+          </Select>
+        </div>
+        <div className="col-span-3 border-b row-span-1 grid grid-cols-3">
+          <div></div>
+          <div></div>
+          <div className="flex items-center">
+            <Button className="bg-[#F3F3F3] text-black">
+              <HStack>
+                <p>{t("Visits")}</p>
+                <BsArrowDown />
+              </HStack>
+            </Button>
+          </div>
+        </div>
+        <div className="col-span-7 border-l border-b row-span-1 items-center grid grid-cols-6">
+          <div className="col-span-2 flex justify-center items-center">
+            <p className="font-bold">{t("Visits")}</p>
+          </div>
+          <div className="col-span-4 justify-end flex gap-8 items-center">
+            <p>{t("Country/Territory contribution to total")}</p>
+            <Button className="bg-[#F3F3F3] text-black">
+              <HStack>
+                {t("Visits")}
+                <BsArrowDown />
+              </HStack>
+            </Button>
+          </div>
+        </div>
+        <div className="col-span-2 border-r row-span-3 pt-4 flex flex-col gap-4">
+          {countries.map((v, i) => (
+            <div className="flex gap-6 items-center">
+              <p className="font-bold">
+                {(i + 1).toLocaleString("en-us", { minimumIntegerDigits: 2 })}
+              </p>
+              <HStack>
+                <div
+                  style={{
+                    backgroundColor: v.color,
+                  }}
+                  className="w-5 h-5"
+                />
+                <p>{v.name}</p>
+              </HStack>
+            </div>
+          ))}
+        </div>
+        <div className="col-span-3 row-span-3 grid grid-cols-3">
+          <div></div>
+          <div></div>
+          <div className="flex flex-col pt-4 gap-4">
+            {countries.map((v, i) => (
+              <p className="font-semibold">
+                {Intl.NumberFormat("en-us", { compactDisplay: "long" }).format(
+                  v.visits
+                )}
+              </p>
+            ))}
+          </div>
+        </div>
+        <div className="col-span-7 row-span-3 border-l pt-4 grid grid-cols-6">
+          <div className="col-span-2 flex flex-col items-center gap-4">
+            {countriesPercentage.map((v, i) => (
+              <p className="font-semibold">{(v.visits * 100).toFixed(2)}%</p>
+            ))}
+          </div>
+          <div
+            ref={visitsPieRef}
+            className="col-span-4 flex justify-center items-center"
+          >
+            <PieChart width={visitsPieDims.w} height={visitsPieDims.h}>
+              <Pie
+                data={countries}
+                dataKey="visits"
+                nameKey="name"
+                cx={visitsPieDims.w / 2}
+                cy={visitsPieDims.h / 2}
+                outerRadius={90}
+                fill="#82ca9d"
+                label
+              >
+                {countries.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+            </PieChart>
+          </div>
+        </div>
+      </div>
+      <div style={boxShadowStyles} className="flex flex-col p-8 gap-4">
+        <p className="font-bold text-xl">{t("Most Popular Post")}</p>
+        <Table
+          ThProps={{ align: "left", className: "first:pl-0 text-gray-500" }}
+          TdProps={{ className: "font-semibold first:pl-0", align: "left" }}
+          className="w-full"
+        >
+          <THead>
+            <Tr>
+              <Th>{t("Post Image")}</Th>
+              <Th>{t("Date")}</Th>
+              <Th>{t("Name")}</Th>
+              <Th>{t("Total Views")}</Th>
+              <Th>{t("Total Likes")}</Th>
+              <Th>{t("Gender")}</Th>
+              <Th>{t("Country Name")}</Th>
+              <Th>{t("City")}</Th>
+              <Th>{t("Number of Visits")}</Th>
+              <Th>{t("Comments")}</Th>
+            </Tr>
+          </THead>
+          <TBody>
+            {mapArray(posts, (v, i) => (
+              <Tr>
+                <Td>
+                  <Image className="w-20 h-12 object-cover" src={v.thumbnail} />
+                </Td>
+                <Td>
+                  {new Date(v.date).toLocaleDateString("en-us", {
+                    month: "short",
+                    day: "2-digit",
+                    year: "numeric",
+                  })}
+                </Td>
+                <Td>{v.name}</Td>
+                <Td>{v.views}</Td>
+                <Td>{v.likes}</Td>
+                <Td>{v.gender}</Td>
+                <Td>{v.countryName}</Td>
+                <Td>{v.city}</Td>
+                <Td>{v.likes}</Td>
+                <Td>{v.comments}</Td>
+              </Tr>
+            ))}
+          </TBody>
+        </Table>
+      </div>
+
+      <div style={boxShadowStyles} className="flex flex-col p-8 gap-4">
+        <p className="font-bold text-xl">{t("Most Popular Post")}</p>
+        <Table
+          ThProps={{ align: "left", className: "first:pl-0 text-gray-500" }}
+          TdProps={{ className: "font-semibold first:pl-0", align: "left" }}
+          className="w-full"
+        >
+          <THead>
+            <Tr>
+              <Th>{t("Post Image")}</Th>
+              <Th>{t("Date")}</Th>
+              <Th>{t("Name")}</Th>
+              <Th>{t("Total Views")}</Th>
+              <Th>{t("Total Likes")}</Th>
+              <Th>{t("Gender")}</Th>
+              <Th>{t("Country Name")}</Th>
+              <Th>{t("City")}</Th>
+              <Th>{t("Number of Visits")}</Th>
+              <Th>{t("Comments")}</Th>
+            </Tr>
+          </THead>
+          <TBody>
+            {mapArray(posts, (v, i) => (
+              <Tr>
+                <Td>
+                  <Image className="w-20 h-12 object-cover" src={v.thumbnail} />
+                </Td>
+                <Td>
+                  {new Date(v.date).toLocaleDateString("en-us", {
+                    month: "short",
+                    day: "2-digit",
+                    year: "numeric",
+                  })}
+                </Td>
+                <Td>{v.name}</Td>
+                <Td>{v.views}</Td>
+                <Td>{v.likes}</Td>
+                <Td>{v.gender}</Td>
+                <Td>{v.countryName}</Td>
+                <Td>{v.city}</Td>
+                <Td>{v.likes}</Td>
+                <Td>{v.comments}</Td>
+              </Tr>
+            ))}
+          </TBody>
+        </Table>
       </div>
     </div>
   );
