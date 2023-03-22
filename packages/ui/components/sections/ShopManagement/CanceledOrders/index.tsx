@@ -23,6 +23,7 @@ import {
   useAcceptRefundRequestMutation,
   usePaginationControls,
   Image,
+  Pagination,
 } from "@UI";
 import { declineReturnRequestDto } from "dto";
 import { Form, Formik } from "formik";
@@ -106,7 +107,7 @@ export const ReturnedOrders: React.FC<CanceledOrdersSectionProps> = ({}) => {
                       />
                     </Td>
                     <Td>{0}</Td>
-                    <Td>{card.rejectReason}</Td>
+                    <Td>{card.reason}</Td>
                     <Td>{card.rejectReason}</Td>
                     <Td>
                       <Button
@@ -189,6 +190,7 @@ export const ReturnedOrders: React.FC<CanceledOrdersSectionProps> = ({}) => {
           </p>
         )}
       </TableContainer>
+      <Pagination />
     </div>
   );
 };

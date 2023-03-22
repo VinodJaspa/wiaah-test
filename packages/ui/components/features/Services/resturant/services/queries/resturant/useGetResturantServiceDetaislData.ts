@@ -4,6 +4,7 @@ import {
   ServicePresentationType,
   ServiceStatus,
   ServicePaymentMethod,
+  ServiceCancelationPolicy,
 } from "@features/API";
 import {
   Exact,
@@ -81,6 +82,12 @@ export type GetRestaurantQuery = { __typename?: "Query" } & {
       contact: { __typename?: "ServiceContact" } & Pick<
         ServiceContact,
         "address" | "city" | "country" | "email" | "phone" | "state"
+      >;
+      cancelationPolicies: Array<
+        { __typename?: "ServiceCancelationPolicy" } & Pick<
+          ServiceCancelationPolicy,
+          "cost" | "duration"
+        >
       >;
       owner: { __typename?: "Account" } & Pick<
         Account,
@@ -244,10 +251,25 @@ query getRestaurant($args:GetRestaurantInput!){
 `);
 
       const data: GetRestaurantQuery["getRestaurant"] = {
+        cancelationPolicies: [
+          {
+            cost: 5,
+            duration: 4,
+          },
+          {
+            cost: 0,
+            duration: 2,
+          },
+          {
+            cost: 10,
+            duration: 6,
+          },
+        ],
         cuisinesTypeId: "italian",
         establishmentTypeId: "restaurant",
         highest_price: 50,
         id: "12345",
+
         location: {
           address: "123 Main St",
           city: "New York",

@@ -20,20 +20,33 @@ import {
   DateInput,
   Button,
   BookedServicesCostDetails,
+  GuestsInput,
+  Input,
 } from "@UI";
 import { isDate } from "utils";
+import { useDisclouser } from "hooks";
 
-export const ServiceReservastion: React.FC = () => {
+export const ServiceReservastion: React.FC<{
+  serviceId: string;
+}> = ({ serviceId }) => {
   const { visit } = useRouting();
-
+  const { handleClose, handleOpen, isOpen } = useDisclouser();
   const { bookedServices } = useGetBookedServicesState();
   const { filters } = useSearchFilters();
   const {
     data: res,
     isError,
     isLoading,
-  } = useGetServicesProviderQuery(filters);
-
+  } = useGetServicesProviderQuery(serviceId);
+  const [guests, setGuests] = React.useState<{
+    adults: number;
+    childrens: number;
+    infants: number;
+  }>({
+    adults: 0,
+    childrens: 0,
+    infants: 0,
+  });
   const { t } = useTranslation();
 
   return (
@@ -72,13 +85,21 @@ export const ServiceReservastion: React.FC = () => {
                       {t("Guests")}
                     </p>
                   </div>
-                  <Select flushed>
-                    <SelectOption className="px-[0]" value={"paris"}>
-                      <p className="font-semibold text-lg">
-                        {`${4} ${t("Persons")}`}
-                      </p>
-                    </SelectOption>
-                  </Select>
+                  <GuestsInput onChange={(v) => setGuests(v)} value={guests}>
+                    <Input
+                      onFocus={() => handleOpen()}
+                      onBlur={() => handleClose()}
+                      value={`${guests.adults} ${t("Adults")} ${
+                        guests.childrens > 0
+                          ? `${guests.childrens}, ${t("childrens")}`
+                          : ""
+                      } ${
+                        guests.infants > 0
+                          ? `${guests.infants}, ${guests.infants}`
+                          : ""
+                      }`}
+                    />
+                  </GuestsInput>
                 </div>
               </div>
 

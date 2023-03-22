@@ -128,3 +128,4 @@ export * from "./RefreshIcon";
 export * from "./SaveIcon";
 export * from "./ArrowRoundBack";
 export * from "./VatIcon";
+export * from "./ImageGreenIcon";

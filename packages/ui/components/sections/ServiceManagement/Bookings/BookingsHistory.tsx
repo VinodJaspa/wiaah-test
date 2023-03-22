@@ -17,7 +17,6 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  OrderStatusDisplay,
   PriceDisplay,
   SearchIcon,
   Button,
@@ -36,12 +35,14 @@ import {
   useGetMyBookingsHistoryQuery,
   usePaginationControls,
   Badge,
+  GetMyBookingsQuery,
+  Pagination,
 } from "@UI";
 import { useCancelAppointmentMutation } from "@src/Hooks";
 import { ReturnDeclineRequestValidationSchema } from "validation";
 import { bookingsHistoryCtx } from ".";
 import { useTypedReactPubsub } from "@libs";
-import { BookedServiceStatus } from "@features/API";
+import { BookedServiceStatus, CashbackType, ServiceType } from "@features/API";
 
 export const BookingsHistorySection: React.FC = () => {
   const { viewAppointment, shopping } = React.useContext(bookingsHistoryCtx);
@@ -54,7 +55,7 @@ export const BookingsHistorySection: React.FC = () => {
 
   const { pagination, controls } = usePaginationControls();
 
-  const { data, refetch } = useGetMyBookingsHistoryQuery({
+  const { refetch } = useGetMyBookingsHistoryQuery({
     status: Filter,
     pagination,
     q,
@@ -64,10 +65,53 @@ export const BookingsHistorySection: React.FC = () => {
     refetch();
   }, [Filter]);
 
+  const data: GetMyBookingsQuery["getBookingHistory"] = [...Array(5)].map(
+    (v, i) => ({
+      id: "test",
+      cashback: {
+        amount: 5,
+        id: "test",
+        units: 15,
+      },
+      buyer: {
+        profile: {
+          photo: "/profile (2).jfif",
+          username: "buyer name",
+        },
+      },
+      checkin: new Date().toString(),
+      checkout: new Date().toString(),
+      payment: "Visa",
+      discount: {
+        amount: 15,
+        id: "test",
+        units: 5,
+        type: CashbackType.Cash,
+      },
+      dishs: [],
+      guests: 1,
+      seller: {
+        profile: {
+          photo: "/profile (3).jfif",
+          username: "seller name",
+        },
+      },
+      service: {
+        price: 48,
+        title: "test service name",
+      },
+      status: BookedServiceStatus.Completed,
+      treatments: [],
+      type: ServiceType.Hotel,
+    })
+  );
+
   const {
     mutate: cancelAppointment,
     isLoading: appointmentCancelationLoading,
   } = useCancelAppointmentMutation();
+
+  console.log({ data });
 
   return (
     <div className="flex flex-col gap-4">
@@ -289,6 +333,7 @@ export const BookingsHistorySection: React.FC = () => {
           </TBody>
         </Table>
       </TableContainer>
+      <Pagination></Pagination>
     </div>
   );
 };

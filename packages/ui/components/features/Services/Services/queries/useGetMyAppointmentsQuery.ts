@@ -6,6 +6,7 @@ import {
   Maybe,
   Profile,
   Service,
+  BookedServiceStatus,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
@@ -80,6 +81,34 @@ query getMyAppointments(
   });
 
   return useQuery(["get-my-bookings", { input }], async () => {
+    const mockRes: GetMyAppointmentsQuery["getMyBookings"] = [
+      {
+        buyer: {
+          email: "test@email.com",
+          phone: "132-456-7984",
+          profile: {
+            photo: "/profile (1).jfif",
+            username: "buyer name",
+            verified: true,
+          },
+        },
+        checkin: new Date().toString(),
+        id: "test",
+        ownerId: "test",
+        providerId: "test",
+        service: {
+          title: "service name",
+        },
+        serviceId: "test",
+        status: BookedServiceStatus.Pending,
+        type: "hotel",
+        checkout: new Date().toString(),
+        duration: 4,
+      },
+    ];
+
+    return mockRes;
+
     const res = await client.send<GetMyAppointmentsQuery>();
 
     return res.data.getMyBookings;

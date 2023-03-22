@@ -369,7 +369,6 @@ type Mutation {
   getProductVendorLink(productId: String!): String!
   createNewProduct(createNewProductInput: CreateProductInput!): Product!
   updateProduct(updateProductArgs: UpdateProductInput!): Product!
-  uploadProductPresentations(files: [Upload!]!): Boolean!
   deleteProduct(productId: ID!): Product!
   createProductCategory(createCategoryInput: CreateCategoryInput!): Category!
   deleteProductCategory(deleteCategoryId: String!): Category!
@@ -437,7 +436,7 @@ input CreateProductInput {
   stock: Int!
   discount: DiscountInput!
   cashback: CashBackInput!
-  presentations: [ProductPresentationInput!]!
+  presentations: [Upload!]!
   thumbnail: String!
   price: Float!
   brand: String!
@@ -468,10 +467,8 @@ input CashBackInput {
   type: CashbackType!
 }
 
-input ProductPresentationInput {
-  type: PresentationType!
-  src: String!
-}
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
 
 input UpdateProductInput {
   type: ProductType
@@ -482,7 +479,7 @@ input UpdateProductInput {
   stock: Int
   discount: DiscountInput
   cashback: CashBackInput
-  presentations: [ProductPresentationInput!]
+  presentations: [Upload!]
   thumbnail: String
   price: Float
   brand: String
@@ -491,10 +488,13 @@ input UpdateProductInput {
   vat: Float
   condition: ProductCondition
   id: ID!
+  oldPresentations: [ProductPresentationInput!]!
 }
 
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload
+input ProductPresentationInput {
+  type: PresentationType!
+  src: String!
+}
 
 input CreateCategoryInput {
   parantId: ID

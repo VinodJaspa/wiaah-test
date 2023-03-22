@@ -37,6 +37,8 @@ export const PendingAppointmentsSection: React.FC<
     q: "",
   });
 
+  console.log({ data }, "services");
+
   return (
     <div className="flex flex-col gap-4">
       <SectionHeader
@@ -49,7 +51,19 @@ export const PendingAppointmentsSection: React.FC<
                 <PendingAppointmentCard
                   key={i}
                   appointmentRequestData={{
+                    type: v.type,
                     data: {
+                      type: v.type,
+                      thumbnail:
+                        "https://cf.bstatic.com/xdata/images/hotel/max1024x768/184305239.jpg?k=2d22fe63ae1f8960e057238c98fb436f7bd9f65854e3a5e918607c5cfa1d0a52&o=&hp=1",
+                      rate: 4,
+                      rateReason: "customer service",
+                      refundingRule: {
+                        cost: 15,
+                        duration: 5,
+                        id: "",
+                      },
+                      reviews: 46,
                       bookedDates: {
                         from: v.checkin,
                         to: v.checkout,
@@ -75,7 +89,13 @@ export const PendingAppointmentsSection: React.FC<
                       discount: v.discount.amount,
                       serviceType: v.type as any,
                       title: v.service.title,
-                      doctor: v.doctor,
+                      doctor: {
+                        id: v.doctor.id,
+                        name: v.doctor.name,
+                        photo: v.doctor.thumbnail,
+                        price: v.doctor.price,
+                        specialty: v.doctor.speciality?.name,
+                      },
                       description: "",
                       duration: "",
                       extras: [],

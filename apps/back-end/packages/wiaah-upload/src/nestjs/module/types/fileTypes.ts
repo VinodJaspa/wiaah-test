@@ -1,7 +1,7 @@
 import { FileUploadMeta } from "./fileMeta";
 import { ReadStream } from "fs";
 
-type BaseFileUploadData = {
+export type BaseFileUploadData = {
   meta: FileUploadMeta;
   stream: ReadStream;
 };

@@ -3,54 +3,31 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { FormOptionType } from "types";
 import { FormikInput, Switch, SectionHeader, TranslationText } from "@UI";
+import { useForm } from "@UI/../utils/src";
 
 export interface NewsLetterSectionProps {}
 
 export const NewsLetterSection: React.FC<NewsLetterSectionProps> = ({}) => {
   const { t } = useTranslation();
+
+  const { form, setValue } = useForm({});
+
   return (
     <div className="w-full flex gap-8 flex-col">
       <SectionHeader sectionTitle={t("newsletter", "Newsletter")} />
-      <Formik initialValues={{}} onSubmit={() => {}}>
-        {({ values, setFieldValue }) => {
-          return (
-            <div className="w-full flex flex-col gap-4">
-              {newsLetterOptions.map((opt, i) => (
-                <div
-                  className="flex justify-between w-full items-center"
-                  key={i}
-                >
-                  <span className="font-semibold text-xl">
-                    <TranslationText translationObject={opt.name} />
-                  </span>
-                  <FormikInput
-                    containerProps={{
-                      direction: "row",
-                      w: "100%",
-                      justify: "space-between",
-                    }}
-                    colorScheme={"primary"}
-                    key={i}
-                    name={opt.value}
-                    as={() => (
-                      <div className="flex gap-2">
-                        <Switch
-                          //@ts-ignore
-                          checked={!!values[opt.value]}
-                          onChange={(checked) =>
-                            setFieldValue(opt.value, checked)
-                          }
-                        />
-                        <span>{t("push", "Push")}</span>
-                      </div>
-                    )}
-                  />
-                </div>
-              ))}
+      <div className="w-full flex flex-col gap-4">
+        {newsLetterOptions.map((opt, i) => (
+          <div className="flex justify-between w-full items-center" key={i}>
+            <span className="font-semibold text-xl">
+              <TranslationText translationObject={opt.name} />
+            </span>
+            <div className="flex gap-2">
+              <Switch checked={false} onChange={(checked) => ""} />
+              <span>{t("push", "Push")}</span>
             </div>
-          );
-        }}
-      </Formik>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

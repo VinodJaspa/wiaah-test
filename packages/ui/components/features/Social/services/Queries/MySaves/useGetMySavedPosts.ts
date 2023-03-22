@@ -2,11 +2,13 @@ import { createGraphqlRequestClient } from "api";
 import { Exact, Maybe } from "types";
 import { useQuery } from "react-query";
 import {
+  AttachmentType,
   GetMySavedPostsInput,
   NewsfeedPost,
   Profile,
   UserSavedPostsGroup,
 } from "@features/API";
+import { randomNum } from "@UI/../utils/src";
 
 export type GetMySavedPostsQueryVariables = Exact<{
   args: GetMySavedPostsInput;
@@ -84,6 +86,41 @@ export const useGetMySavedPostsQuery = (input: GetMySavedPostsInput) => {
   });
 
   return useQuery(["my-saved-posts"], async () => {
+    const mockRes: GetMySavedPostsQuery["getMySavedPosts"] = {
+      id: "test",
+      userId: "",
+      posts: [
+        {
+          id: "test",
+          comments: randomNum(5),
+          authorProfileId: "test",
+          hashtags: [],
+          createdAt: new Date().toString(),
+          attachments: [
+            {
+              marketingTags: [],
+              src: "https://images.pexels.com/photos/15193687/pexels-photo-15193687.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+              type: AttachmentType.Img,
+            },
+          ],
+          content: "test post",
+          reactionNum: randomNum(300),
+          shares: randomNum(100),
+          tags: [],
+          title: "test title",
+          userId: "",
+          publisher: {
+            id: "test",
+            ownerId: "test",
+            photo: "/profile (4).jfif",
+            profession: "Artist",
+            username: "publisher name",
+          },
+        },
+      ],
+    };
+
+    return mockRes;
     const res = await client.send<GetMySavedPostsQuery>();
 
     return res.data.getMySavedPosts;

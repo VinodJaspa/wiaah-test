@@ -1,11 +1,12 @@
-import { Account } from "@features/Accounts";
 import {
+  Account,
   AffiliationPurchase,
   GetAffiliationHistoryInput,
   Product,
   Profile,
   Service,
 } from "@features/API";
+import { getRandomImage } from "@UI/placeholder";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 import { Exact, Maybe } from "types";
@@ -100,6 +101,41 @@ export const useGetMyAffiliationHistoryQuery = (
   });
 
   return useQuery(["get-my-affiliation-history"], async () => {
+    const mockRes: GetMyAffiliatiomHistoryQuery["getMyProductsAffiliationHistory"] =
+      [...Array(5)].map((v, i) => ({
+        id: "test",
+        itemId: "test",
+        sellerId: "test",
+        seller: {
+          id: "test",
+          profile: {
+            username: "test seller name",
+          },
+        },
+        affiliator: {
+          id: "test",
+          profile: {
+            username: "test affiliator name",
+          },
+        },
+        paidCommissionAmount: 15,
+        paidCommissionPercent: 15,
+        purchaser: {
+          id: "test",
+          profile: {
+            username: "test purchaser name",
+          },
+        },
+        purchaserId: "test",
+        product: {
+          id: "test",
+          price: 54,
+          thumbnail: getRandomImage(),
+          title: "product titme",
+        },
+      }));
+
+    return mockRes;
     const res = await client.send<GetMyAffiliatiomHistoryQuery>();
 
     return res.data.getMyProductsAffiliationHistory;

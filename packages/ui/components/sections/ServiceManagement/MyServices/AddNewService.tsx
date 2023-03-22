@@ -376,7 +376,7 @@ export const NewServiceStepper: React.FC<{
                 {t("Cancel")}
               </Button>
 
-              {currentStepIdx === 0 && !isEdit ? null : (
+              {currentStepIdx === 0 ? null : (
                 <Button className="w-fit self-end" onClick={() => nextStep()}>
                   {t("Next")}
                 </Button>

@@ -25,7 +25,7 @@ export const PayoutSection = () => {
         </Button>
       </SectionHeader>
 
-      <Table>
+      <Table className="w-full">
         <Tr>
           <Th>{t("Date")}</Th>
           <Th>{t("Amount")}</Th>

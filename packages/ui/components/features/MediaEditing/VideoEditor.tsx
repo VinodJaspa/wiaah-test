@@ -4,12 +4,9 @@ import {
   Button,
   HStack,
   Image,
-  Input,
   PlusIcon,
   Spinner,
-  VStack,
 } from "@partials";
-import { Slider } from "@chakra-ui/react";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
@@ -21,25 +18,22 @@ import {
   BiVolumeMute,
   BiChevronRight,
   BiChevronLeft,
-  BiChevronUp,
-  BiChevronDown,
 } from "react-icons/bi";
 import { throttle } from "lodash";
 import { useFFmpeg } from "./ffmpeg";
-import { mapArray } from "@UI/../utils/src";
+import { mapArray } from "utils";
 
 export const VideoEditor: React.FC<{
   maxDuration: number;
   onFinish: (data: Blob) => any;
-}> = ({ maxDuration, onFinish }) => {
+  video: File;
+}> = ({ maxDuration, onFinish, video }) => {
   const { t } = useTranslation();
-  const { controls, uploadVideo } = useMediaUploadControls();
   const [proccessing, setProccessing] = React.useState<boolean>(false);
-  const [video, setVideo] = React.useState<File>();
   const [update, setUpdate] = React.useState(false);
   const ref = React.useRef<HTMLVideoElement>(null);
 
-  const { ffmpeg, cropVideo } = useFFmpeg();
+  const { cropVideo } = useFFmpeg();
 
   const handleSubmit = async (startTime: number, endTime: number) => {
     if (!video) return;
@@ -48,10 +42,6 @@ export const VideoEditor: React.FC<{
     const data = await cropVideo(video, startTime, endTime);
 
     onFinish && data && onFinish(data);
-  };
-
-  const handleUpload = (file: File) => {
-    setVideo(file);
   };
 
   React.useEffect(() => {
@@ -73,18 +63,6 @@ export const VideoEditor: React.FC<{
             />
           </div>
         </AspectRatio>
-      ) : ffmpeg ? (
-        <div
-          onClick={() => {
-            uploadVideo();
-          }}
-          className="cursor-pointer w-full h-full items-center flex justify-center flex-col gap-2"
-        >
-          <div className="flex flex-col gap-2 items-center bg-white rounded p-8">
-            <PlusIcon />
-            <p>{t("Select Video")}</p>
-          </div>
-        </div>
       ) : (
         <HStack>
           <Spinner />
@@ -101,14 +79,6 @@ export const VideoEditor: React.FC<{
           }}
         />
       </div>
-      <MediaUploadModal
-        controls={controls}
-        onVidUpload={(e, raw) => {
-          setProccessing(true);
-          if (raw) handleUpload(raw);
-          setProccessing(false);
-        }}
-      />
     </div>
   );
 };
@@ -301,7 +271,7 @@ export const VideoEditorControls: React.FC<{
                   style={{
                     width: `${trackWidth}%`,
                   }}
-                  className="h-36 mt-4 flex items-center relative "
+                  className="h-24 mt-4 flex items-center relative "
                 >
                   {mapArray(times, (v, i) => (
                     <div
@@ -353,6 +323,7 @@ export const VideoEditorControls: React.FC<{
                   </>
                 </div>
               </div>
+              <Button onClick={() => onSubmit(from, to)}>submit</Button>
             </>
           ) : null}
         </div>
@@ -362,17 +333,6 @@ export const VideoEditorControls: React.FC<{
           <p>{t("Loading")}</p>
         </HStack>
       )}
-      {duration > 0 ? (
-        <div className="flex w-full justify-end">
-          <Button
-            onClick={() => {
-              onSubmit(computedFrom, computedTo);
-            }}
-          >
-            {t("Submit")}
-          </Button>
-        </div>
-      ) : null}
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import { TranslationsInput } from '@decorators';
 import { TranslationTextInput, TranslationTextArrayInput } from '@dto';
 import { Field, InputType, Int } from '@nestjs/graphql';
+import { GraphQLUpload, Upload } from 'graphql-upload';
 
 @InputType()
 export class RestaurantMenuDishInput {

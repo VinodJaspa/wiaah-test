@@ -175,12 +175,15 @@ model AffiliationPost {
 
 model Action {
   id                 String             @id @default(auto()) @map("_id") @db.ObjectId
-  attachment         Attachment
+  src                String
+  cover              String
   userId             String             @db.ObjectId
   reactionNum        Int                @default(0)
   comments           Int                @default(0)
   shares             Int                @default(0)
   views              Int                @default(0)
+  link               String?
+  allowedActions     ActionType[]
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
@@ -188,6 +191,12 @@ model Action {
   tags               PostTag[]
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
+}
+
+enum ActionType {
+  duet
+  stitch
+  comment
 }
 
 model ContentReaction {
@@ -218,6 +227,15 @@ model UserSavedPostsGroup {
   id     String          @id @default(auto()) @map("_id") @db.ObjectId
   userId String          @unique @db.ObjectId
   posts  UserSavedPost[]
+}
+
+model SavedPost {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  postId    String   @db.ObjectId
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId])
 }
 
 model Comment {
@@ -304,6 +322,14 @@ model HiddenContent {
   updatedAt DateTime @updatedAt
 
   @@unique([contentId, userId])
+}
+
+model ProfileVisit {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  profileId String   @db.ObjectId
+  visitorId String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 type Hashtag {

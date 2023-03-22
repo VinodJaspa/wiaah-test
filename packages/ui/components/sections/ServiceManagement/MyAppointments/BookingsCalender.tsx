@@ -20,6 +20,7 @@ import {
   TranslationText,
   useGetMyAppointmentsQuery,
   Clickable,
+  Image,
 } from "@UI";
 import {
   BookedService,
@@ -118,7 +119,8 @@ export const BookingsCalenderSection: React.FC<
                     key={i}
                     value={date}
                   >
-                    {date.getMonth()} {date.getFullYear()}
+                    {date.toLocaleDateString("en-us", { month: "short" })}{" "}
+                    {date.getFullYear()}
                   </SelectOption>
                 ))}
             </Select>
@@ -229,8 +231,8 @@ export const BookedDayCard: React.FC<BookedDayCardProps> = ({
       <div>{buyer?.phone}</div>
       <div>{serviceTitle}</div>
       <HStack>
-        <Avatar
-          className="w-8 h-8"
+        <Image
+          className="w-8 h-8 rounded-full object-coverj"
           alt={buyer?.profile?.username}
           src={buyer?.profile?.photo}
         />

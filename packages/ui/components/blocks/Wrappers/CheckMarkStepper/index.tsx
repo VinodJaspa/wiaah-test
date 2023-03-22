@@ -10,6 +10,7 @@ export interface CheckMarkStepperProps {
   currentStepIdx: number;
   onStepChange?: (stepIdx: number) => any;
   className?: string;
+  stepHeaderClassName?: string;
 }
 
 export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
@@ -17,6 +18,7 @@ export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
   currentStepIdx,
   onStepChange,
   className,
+  stepHeaderClassName,
 }) => {
   const CurrentComp = steps[currentStepIdx]
     ? steps[currentStepIdx].stepComponent
@@ -28,7 +30,11 @@ export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
 
   return (
     <div className={`${className || ""} w-full flex flex-col gap-8`}>
-      <div className="w-full relative flex justify-between">
+      <div
+        className={`${
+          stepHeaderClassName || ""
+        } w-full relative flex justify-between`}
+      >
         <span
           className={`w-full border-b-gray-300 absolute top-1/2 left-0 transition-all -translate-y-1/2 border-b-4`}
         />

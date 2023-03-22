@@ -14,7 +14,18 @@ export class CreateActionCommandHandler
   ) {}
 
   async execute({ input, userId }: CreateActionCommand): Promise<Action> {
-    const res = await this.repo.create(input, userId);
+    const link = input.link;
+
+    if (link) {
+      // todo: check if link is a wiaah limk
+    }
+
+    const res = await this.repo.create({
+      ...input,
+      userId,
+      cover: input.actionCoverSrc,
+      src: input.actionSrc,
+    });
     this.eventbus.publish(new ActionCreatedEvent(res));
     return res;
   }

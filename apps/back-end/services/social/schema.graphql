@@ -404,7 +404,8 @@ type HashtagTopAffiliationPost {
 
 type Action {
   id: ID!
-  attachment: Attachment!
+  src: String!
+  link: String!
   userId: ID!
   reactionNum: Int!
   comments: Int!
@@ -835,9 +836,20 @@ input UpdateMyPrivacyInput {
 }
 
 input CreateActionInput {
-  attachment: AttachmentInput!
+  src: Upload!
+  cover: Upload!
   location: PostLocationInput
   commentsVisibility: CommentsVisibility
+  allowedActions: [ActionType!]!
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+enum ActionType {
+  duet
+  stitch
+  comment
 }
 
 input HideContentInput {

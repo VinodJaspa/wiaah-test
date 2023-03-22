@@ -3,10 +3,14 @@ import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 import {
   Affiliation,
+  AffiliationStatus,
   GetMyAffiliationsInput,
   Product,
   Service,
+  ServiceType,
 } from "@features/API";
+import { random } from "lodash";
+import { getRandomImage } from "@UI/placeholder";
 
 export type GetAffiliationsQueryVariables = Exact<{
   args: GetMyAffiliationsInput;
@@ -73,6 +77,31 @@ export const useGetMyAffiliationQuery = (input: GetMyAffiliationsInput) => {
   });
 
   return useQuery(["my-affiliations"], async () => {
+    const mockRes: GetAffiliationsQuery["getMyAffiliations"] = [
+      ...Array(10),
+    ].map((v, i) => ({
+      commision: random(5, 4),
+      createdAt: new Date().toString(),
+      expireAt: new Date().toString(),
+      id: "test",
+      itemId: "test",
+      itemType: "Product",
+      sellerId: "test",
+      status: AffiliationStatus.Active,
+      updatedAt: new Date().toString(),
+      product: {
+        id: "test",
+        thumbnail: getRandomImage(),
+        title: "prod name",
+      },
+      service: {
+        id: "test",
+        serviceType: ServiceType.Hotel,
+      },
+    }));
+
+    return mockRes;
+
     const res = await client.send<GetAffiliationsQuery>();
 
     return res.data.getMyAffiliations;

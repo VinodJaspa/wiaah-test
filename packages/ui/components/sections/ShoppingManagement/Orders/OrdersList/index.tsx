@@ -34,6 +34,7 @@ import {
   Radio,
   EyeIcon,
   LinkIcon,
+  Pagination,
 } from "@partials";
 
 import {
@@ -58,7 +59,7 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
     (keys) => keys.openOrderDetailsModal
   );
   const { visit } = useRouting();
-  const { shopping, viewOrder } = React.useContext(OrderContext);
+  const { shopping } = React.useContext(OrderContext);
   const { pagination } = usePaginationControls();
   const { data: orders } = useGetMyOrdersQuery({
     status: filter,
@@ -343,6 +344,7 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
           <OrderDetailsModal />
         </Table>
       </TableContainer>
+      <Pagination></Pagination>
     </div>
   );
 };

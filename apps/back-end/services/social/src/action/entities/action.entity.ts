@@ -7,8 +7,11 @@ export class Action {
   @Field(() => ID)
   id: string;
 
-  @Field(() => Attachment)
-  attachment: Attachment;
+  @Field(() => String)
+  src: string;
+
+  @Field(() => String)
+  link: string;
 
   @Field(() => ID)
   userId: string;

@@ -16,13 +16,13 @@ import {
   SectionHeader,
   Image,
   Badge,
-  AffiliationStatus,
   useGetMyAffiliationQuery,
 } from "@UI";
 import { useResponsive } from "hooks";
 import { FiPlusSquare } from "react-icons/fi";
 import { mapArray, useClipboard } from "utils";
 import { useRouting } from "routing";
+import { AffiliationStatus } from "@features/API";
 
 export interface AffiliationListSectionProps {}
 

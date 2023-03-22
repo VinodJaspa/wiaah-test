@@ -47,7 +47,7 @@ export const MyWishListSection: React.FC<MyWishListSectionProps> = ({}) => {
       <SectionHeader sectionTitle={t("My Wish List")} />
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         <WishlistTable
-          items={data}
+          items={data?.wishedItems || []}
           onAdd={(id) => handleAddItemToCart(id)}
           onDelete={(id) => handleItemDelete(id)}
           DeletingId={deleteIsLoading ? variables?.itemId : undefined}
@@ -71,7 +71,7 @@ export const WishlistTable: React.FC<{
   return (
     <>
       <TableContainer>
-        <Table>
+        <Table className="w-full">
           <Tr>
             <Th className="pl-0 text-left">{t("Image")}</Th>
             <Th>{t("Product Name")}</Th>

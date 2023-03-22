@@ -39,7 +39,7 @@ model ServiceCategory {
   filters            ServiceCategoryFilter[]
   status             ServiceCategoryStatus   @default(active)
   sortOrder          Int                     @default(1)
-  slug               String
+  slug               String                  @unique
 }
 
 enum ServiceCategoryStatus {
@@ -81,6 +81,7 @@ model Service {
   policies            ServiceTranslationPolicies[]
   payment_methods     ServicePaymentMethods[]
   location            Location
+  thumbnail           String
   vat                 Int
   cancelationPolicies ServiceCancelationPolicy[]
   lowest_price        Float                        @default(0)
@@ -388,8 +389,16 @@ model RestaurantDish {
   price       Int
   ingredients TranslationArrayText[]
   thumbnail   String
+  type        RestaurantDishType
+  sales       Int                    @default(0)
   menuId      String                 @db.ObjectId
   menu        RestaurantMenu         @relation(fields: [menuId], references: [id])
+}
+
+enum RestaurantDishType {
+  starter
+  dessert
+  main
 }
 
 type HotelRoomMetaInfo {
@@ -413,6 +422,7 @@ model BeautyCenterTreatment {
   beautyCenterServiceId String?              @db.ObjectId
   Service               Service?             @relation(fields: [serviceId], references: [id])
   serviceId             String?              @db.ObjectId
+  thumbnail             String
 }
 
 type ServiceWeekDaysWorkingHours {

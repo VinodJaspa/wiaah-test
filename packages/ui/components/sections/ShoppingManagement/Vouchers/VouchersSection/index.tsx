@@ -87,7 +87,7 @@ export const VouchersSection: React.FC = () => {
       </Formik>
       <TableContainer>
         <Table
-          className="shadow border-collapse"
+          className="shadow border-collapse w-full"
           TrProps={{ className: "border-collapse" }}
           ThProps={{
             className: "text-left border-[1px] border-b-gray-400",
@@ -107,7 +107,7 @@ export const VouchersSection: React.FC = () => {
             {mapArray(data, (voucher, i) => (
               <Tr key={i}>
                 <Td>{voucher.code}</Td>
-                <Td>{new Date(voucher.createdAt).toString()}</Td>
+                <Td>{new Date(voucher.createdAt).toDateString()}</Td>
                 <Td>{voucher.amount}</Td>
                 <Td>{voucher.currency}</Td>
                 <Td>{voucher.status}</Td>

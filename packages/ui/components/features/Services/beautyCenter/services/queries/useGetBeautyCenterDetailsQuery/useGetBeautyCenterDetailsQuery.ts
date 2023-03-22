@@ -83,7 +83,13 @@ export type GetBeautyQuery = { __typename?: "Query" } & {
       treatments: Array<
         { __typename?: "Treatment" } & Pick<
           Treatment,
-          "duration" | "id" | "price" | "title" | "treatmentCategoryId"
+          | "duration"
+          | "id"
+          | "price"
+          | "title"
+          | "treatmentCategoryId"
+          | "beautyCenterServiceId"
+          | "thumbnail"
         > & {
             category?: Maybe<
               { __typename?: "BeautyCenterTreatmentCategory" } & Pick<
@@ -309,7 +315,20 @@ export const useGetBeautyCenterDetailsQuery = (id: string) => {
         state: "CA",
       },
       beauty_center_typeId: "",
-      cancelationPolicies: [],
+      cancelationPolicies: [
+        {
+          cost: 5,
+          duration: 4,
+        },
+        {
+          cost: 0,
+          duration: 2,
+        },
+        {
+          cost: 10,
+          duration: 6,
+        },
+      ],
       payment_methods: [
         ServicePaymentMethod.Cash,
         ServicePaymentMethod.CreditCard,
@@ -327,6 +346,9 @@ export const useGetBeautyCenterDetailsQuery = (id: string) => {
           duration: [30, 60],
           id: "",
           price: 160,
+          beautyCenterServiceId: "test",
+          thumbnail:
+            "https://www.lifeclass.net/media/1248/beauty-center-face-massage-woman.jpg",
           title: "back pain treatment",
           treatmentCategoryId: "",
           category: {
@@ -338,6 +360,9 @@ export const useGetBeautyCenterDetailsQuery = (id: string) => {
           },
         },
         {
+          beautyCenterServiceId: "test",
+          thumbnail:
+            "https://www.lifeclass.net/media/1248/beauty-center-face-massage-woman.jpg",
           discount: {
             units: 15,
             value: 10,
@@ -356,6 +381,9 @@ export const useGetBeautyCenterDetailsQuery = (id: string) => {
           },
         },
         {
+          beautyCenterServiceId: "test",
+          thumbnail:
+            "https://www.lifeclass.net/media/1248/beauty-center-face-massage-woman.jpg",
           discount: {
             units: 15,
             value: 10,

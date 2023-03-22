@@ -6,12 +6,18 @@ import {
 } from "@nestjs/common";
 import { HttpService } from "@nestjs/axios";
 import {
-  FileUploadMeta,
+  BaseFileUploadData,
   ImageFile,
   UploadModuleForRootOptions,
   VideoFile,
 } from "./types";
 import { UploadServiceProviders } from "./constants";
+
+export enum FileTypeEnum {
+  video = "video",
+  image = "image",
+  pdf = "pdf",
+}
 
 @Injectable()
 export class UploadService {
@@ -26,18 +32,48 @@ export class UploadService {
   private serviceKey = this.options.serviceKey;
   private secretKey = this.options.secretKey;
 
-  async uploadFiles(files: ImageFile[], userId: string) {
-    const sortedFiles: Record<string, ImageFile[]> = files.reduce(
-      (acc, curr) => {
-        // TODO: get file type form mimetype
-        const fileType = "";
+  mimetypes = {
+    videos: {
+      mp4: "video/mp4",
+      mov: "video/mov",
+      all: [] as string[],
+    },
+    image: {
+      jpeg: "image/jpeg",
+      png: "image/png",
+      jpg: "image/jpg",
+      all: [] as string[],
+    },
+    pdf: "application/pdf",
+  };
 
-        const newAcc = { ...acc };
-        newAcc[fileType] = [...acc[fileType], curr];
-        return newAcc;
-      },
-      {} as Record<string, ImageFile[]>
-    );
+  async uploadFiles(
+    files: {
+      file: BaseFileUploadData;
+      options: {
+        allowedMimtypes?: string[];
+        maxSecDuration?: number;
+        maxSizeKb?: number;
+      };
+    }[]
+  ): Promise<{ src: string; mimetype: string }[]> {
+    return [];
+  }
+
+  getFileTypeFromMimetype(mimetype: string) {
+    const vidMimetypes = Object.values(this.mimetypes.videos);
+    const imgMimetypes = Object.values(this.mimetypes.image);
+
+    if (vidMimetypes.includes(mimetype)) {
+      return FileTypeEnum.video;
+    }
+
+    if (imgMimetypes.includes(mimetype)) {
+      return FileTypeEnum.image;
+    }
+    if (mimetype === this.mimetypes.pdf) {
+      return FileTypeEnum.pdf;
+    }
   }
 
   async uploadImages(images: ImageFile[], userId: string) {

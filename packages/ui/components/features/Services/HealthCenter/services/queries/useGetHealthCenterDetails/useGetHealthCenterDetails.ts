@@ -23,10 +23,7 @@ import {
   WorkingSchedule,
 } from "@features/API";
 import { useQuery } from "react-query";
-import {
-  createGraphqlRequestClient,
-  getHealthCenterDetailsFetcher,
-} from "@UI/../api";
+import { createGraphqlRequestClient } from "@UI/../api";
 import { random } from "lodash";
 
 export type GetHealthCenterQueryVariables = Exact<{
@@ -271,7 +268,20 @@ workingHours {
 
     const data: GetHealthCenterQuery["getHealthCenter"] = {
       // createdAt: "2023-03-06T00:00:00Z",
-      cancelationPolicies: [],
+      cancelationPolicies: [
+        {
+          cost: 5,
+          duration: 4,
+        },
+        {
+          cost: 0,
+          duration: 2,
+        },
+        {
+          cost: 10,
+          duration: 6,
+        },
+      ],
       payment_methods: [
         ServicePaymentMethod.Cash,
         ServicePaymentMethod.CreditCard,

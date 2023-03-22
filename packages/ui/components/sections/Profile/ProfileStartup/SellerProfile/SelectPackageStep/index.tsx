@@ -2,11 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { AiFillCheckCircle, AiOutlineInbox } from "react-icons/ai";
 import { Button, PriceDisplay } from "@UI";
-import {
-  CommissionType,
-  useGetMembershipsQuery,
-  useGetMyMembershipQuery,
-} from "@features/Membership";
+import { CommissionType, useGetMembershipsQuery } from "@features/Membership";
 import { mapArray } from "utils";
 
 export interface SelectPackageStepProps {

@@ -193,7 +193,7 @@ export const MainHeaderSearchBar: React.FC<{
           options={
             Array.isArray(categories)
               ? categories.map((cate, i) => ({
-                  name: t(cate.name),
+                  name: cate.name,
                   value: cate.slug,
                 }))
               : []

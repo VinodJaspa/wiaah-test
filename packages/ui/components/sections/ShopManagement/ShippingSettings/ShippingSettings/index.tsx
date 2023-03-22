@@ -19,6 +19,7 @@ import {
   SectionHeader,
   useGetMyShippingRules,
   FlagIcon,
+  Pagination,
 } from "@UI";
 import { ShippingSettingsContext } from "../ShippingSettingsSection";
 
@@ -96,6 +97,7 @@ export const ShippingSettings: React.FC = () => {
                   </TBody>
                 </Table>
               </TableContainer>
+              <Pagination></Pagination>
             </Form>
           );
         }}

@@ -5,6 +5,7 @@ import {
   TranslationTextInput,
 } from '@dto';
 import { Field, Float, ID, InputType, Int } from '@nestjs/graphql';
+import { GraphQLUpload, Upload } from 'graphql-upload';
 
 @InputType()
 export class CreateVehiclePropertiesInput {
@@ -37,7 +38,6 @@ export class CreateVehicleInput {
   title: TranslationTextInput[];
 
   @Field(() => [ServicePresentationInput])
-  @ServicePresentationsLength()
   presentations: ServicePresentationInput[];
 
   @Field(() => [ServiceCancelationPolicyInput])

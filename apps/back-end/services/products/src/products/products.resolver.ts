@@ -145,21 +145,6 @@ export class ProductsResolver {
     return this.productsService.getProductById(ref.id);
   }
 
-  @Mutation(() => Boolean)
-  async uploadProductPresentations(
-    @Args({ name: 'files', type: () => [GraphQLUpload] })
-    files: Upload[],
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    try {
-      await this.uploadService.uploadFiles(PrepareGqlUploads(files), user.id);
-      return true;
-    } catch (error) {
-      this.logger.error(error);
-      return false;
-    }
-  }
-
   @Mutation(() => Product)
   @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   deleteProduct(

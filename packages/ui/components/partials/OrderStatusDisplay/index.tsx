@@ -17,6 +17,7 @@ export const OrderStatusDisplay: React.FC<OrderStatusDisplay> = ({
         return "bg-primary-50 text-primary border-primary";
       case OrderStatusEnum.RejectedByBuyer:
       case OrderStatusEnum.RejectedBySeller:
+      case OrderStatusEnum.Canceled:
         return "bg-red-50 text-red-500 border-red-500";
       case OrderStatusEnum.Pending:
         return "bg-blue-50 text-blue-500 border-blue-500";

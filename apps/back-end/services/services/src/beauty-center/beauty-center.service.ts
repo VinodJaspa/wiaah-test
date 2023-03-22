@@ -78,6 +78,7 @@ export class BeautyCenterService {
         lowest_price,
         treatments: {
           createMany: {
+            //@ts-ignore
             data: input.treatments.map((v) => ({
               ...v,
               id: uuid(),
@@ -125,6 +126,7 @@ export class BeautyCenterService {
           where: {
             id: treatment.id,
           },
+          //@ts-ignore
           data: treatment,
         });
       }

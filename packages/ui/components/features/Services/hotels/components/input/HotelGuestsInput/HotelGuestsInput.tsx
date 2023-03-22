@@ -3,12 +3,14 @@ import { CountInput } from "@UI";
 export interface HotelGuestsInputProps {
   name: string;
   description: string;
+  count: number;
   onCountChange: (count: number) => any;
 }
 export const HotelGuestsInput: React.FC<HotelGuestsInputProps> = ({
   description,
   name,
   onCountChange,
+  count,
 }) => {
   return (
     <div className="text-xl p-4 flex items-center w-full bg-white justify-between">
@@ -16,7 +18,7 @@ export const HotelGuestsInput: React.FC<HotelGuestsInputProps> = ({
         <p className="font-bold">{name || ""}</p>
         <p>{description || ""}</p>
       </div>
-      <CountInput onCountChange={onCountChange} max={5} min={0} />
+      <CountInput count={count} onCountChange={onCountChange} max={5} min={0} />
     </div>
   );
 };

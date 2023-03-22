@@ -5,10 +5,10 @@ import {
   ServicePresentationInput,
 } from '@dto';
 import { InputType, Int, Field, ID } from '@nestjs/graphql';
-import { ServicePaymentMethods, ServiceStatus } from 'prismaClient';
-import { RestaurantMenuInput } from '@restaurant';
+import { ServiceStatus } from 'prismaClient';
 import { ServicePresentationsLength, TranslationsInput } from '@decorators';
 import { ServiceContactInput } from '@hotel/dto';
+import { RestaurantMenuInput } from './create-restaurant-menu.input';
 
 @InputType()
 export class CreateRestaurantInput {
@@ -35,9 +35,6 @@ export class CreateRestaurantInput {
   @Field(() => [ServiceMetaInfoTranslationInput])
   @TranslationsInput()
   serviceMetaInfo: ServiceMetaInfoTranslationInput[];
-
-  @Field(() => [ServicePaymentMethods])
-  payment_methods: ServicePaymentMethods[];
 
   @Field(() => [RestaurantMenuInput])
   menus: RestaurantMenuInput[];

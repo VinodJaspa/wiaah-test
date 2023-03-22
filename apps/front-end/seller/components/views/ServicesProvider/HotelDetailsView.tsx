@@ -22,7 +22,6 @@ import {
   Divider,
   LocationOnPointFillIcon,
 } from "ui";
-import { useResponsive } from "hooks";
 import { useTranslation } from "react-i18next";
 
 export const HotelDetailsView: React.FC = () => {
@@ -74,7 +73,7 @@ export const HotelDetailsView: React.FC = () => {
               {res ? (
                 <>
                   <ServicePoliciesSection
-                    title={"Check-in Checkout Terms"}
+                    title={"Check-in Checsdkout Terms"}
                     // deposit={15}
                     policies={res.policies}
                   />
@@ -211,7 +210,11 @@ export const HotelDetailsView: React.FC = () => {
           />
         ) : null}
       </SpinnerFallback>
-      <StaticSideBarWrapper sidebar={ServiceReservastion}>
+      <StaticSideBarWrapper
+        sidebar={() =>
+          res ? <ServiceReservastion serviceId={res.id} /> : null
+        }
+      >
         <Tabs>
           {({ currentTabIdx }) => {
             return (

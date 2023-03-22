@@ -427,7 +427,10 @@ export class ServiceDiscoveryResolver {
         where: {
           id: treatment.id,
         },
-        data: treatment,
+        data: {
+          ...treatment,
+          thumbnail: '',
+        },
       });
     }
 

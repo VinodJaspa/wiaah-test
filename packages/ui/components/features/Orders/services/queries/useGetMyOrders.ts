@@ -7,6 +7,7 @@ import {
   Order,
   OrderItem,
   OrderStatus,
+  OrderStatusEnum,
   Product,
   Profile,
   ShippingAddress,
@@ -139,6 +140,62 @@ export const useGetMyOrdersQuery = (input: GetMyOrdersInput) => {
   });
 
   return useQuery(["get-my-orders"], async () => {
+    const mockRes: GetOrdersQuery["getMyOrders"] = [...Array(10)].map(
+      (_, i) => ({
+        buyerId: "test",
+        createdAt: new Date().toString(),
+        id: "test",
+        items: [],
+        paid: 156,
+        sellerId: "test",
+        shipping: {
+          cost: 15,
+          deliveryTimeRange: {
+            from: 5,
+            to: 8,
+          },
+          id: "test",
+          name: "item 1",
+        },
+        shippingAddress: {
+          id: "test",
+          location: {
+            address: "address",
+            city: "city",
+            country: "country",
+            lat: 10,
+            long: 56,
+            state: "state",
+          },
+          ownerId: "test",
+        },
+        status: {
+          of: Object.values(OrderStatusEnum)[
+            i % Object.values(OrderStatusEnum).length
+          ],
+        },
+        updatedAt: new Date().toString(),
+        buyer: {
+          id: "test",
+          profile: {
+            id: "test",
+            photo: "profile (4).jfif",
+            username: "buyer name",
+          },
+        },
+        seller: {
+          id: "test",
+          profile: {
+            id: "test",
+            photo: "profile (2).jfif",
+            username: "seller name",
+          },
+        },
+      })
+    );
+
+    return mockRes;
+
     const res = await client.send<GetOrdersQuery>();
 
     return res.data.getMyOrders;
