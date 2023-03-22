@@ -5,7 +5,9 @@ import {
   Service,
   Wishlist,
   WishlistItem,
+  WishlistItemType,
 } from "@features/API";
+import { getRandomImage } from "@UI/placeholder";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -63,6 +65,23 @@ query getMyWishList {
     `);
 
   return useQuery(["get-my-wishlist"], async () => {
+    const mockRes: GetMyWishListQuery["MyWishlist"] = {
+      id: "test",
+      ownerId: "test",
+      wishedItems: [...Array(5)].map((v, i) => ({
+        itemId: i.toString(),
+        itemType: WishlistItemType.Product,
+        product: {
+          price: 45,
+          stock: 0,
+          thumbnail: getRandomImage(),
+          title: "product title",
+        },
+      })),
+    };
+
+    return mockRes;
+
     const res = await client.send<GetMyWishListQuery>();
 
     return res.data.MyWishlist;

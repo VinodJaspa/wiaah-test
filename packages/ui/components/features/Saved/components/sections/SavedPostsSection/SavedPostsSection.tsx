@@ -19,7 +19,7 @@ export const SavedPostsSection: React.FC = () => {
     <SectionWrapper>
       <SectionHeader sectionTitle={t("Saved")}></SectionHeader>
       <ScrollPaginationWrapper controls={controls}>
-        <PostCardsListWrapper posts={data?.posts || []} />
+        <PostCardsListWrapper cols={4} posts={data?.posts || []} />
       </ScrollPaginationWrapper>
       {!data || data.posts.length < 1 ? (
         <div className="text-black font-bold text-2xl text-center py-60">

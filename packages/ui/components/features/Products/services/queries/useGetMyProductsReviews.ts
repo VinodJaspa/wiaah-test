@@ -8,6 +8,7 @@ import {
   Profile,
   SellerProductsRating,
 } from "@features/API";
+import { getRandomImage } from "@UI/placeholder";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -93,6 +94,40 @@ export const useGetMyReviewsQuery = (input: GetMyReviewsInput) => {
   });
 
   return useQuery(["my-reviews"], async () => {
+    const mockRes: GetMyReviewsQuery["getMyProductReviews"] = [...Array(5)].map(
+      (v, i) => ({
+        createdAt: new Date().toString(),
+        id: "test",
+        message: "Great Product",
+        product: {
+          description: "prod desc",
+          id: "test",
+          price: 65,
+          thumbnail: getRandomImage(),
+          title: "prod title",
+        },
+        productId: "test",
+        rate: 4,
+        reviewer: {
+          photo: "/profile (1).jfif",
+        },
+        reviewerId: "test",
+        updatedAt: new Date().toString(),
+      })
+    );
+
+    const mockRes1: GetMyReviewsQuery["getMySellerProductsRating"] = {
+      givenStars: 60,
+      id: "test",
+      rating: 4,
+      reviews: 15,
+    };
+
+    return {
+      reviews: mockRes,
+      sellerProductsRating: mockRes1,
+    };
+
     const res = await client.send<GetMyReviewsQuery>();
 
     return {

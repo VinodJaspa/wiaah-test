@@ -229,6 +229,15 @@ model UserSavedPostsGroup {
   posts  UserSavedPost[]
 }
 
+model SavedPost {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  postId    String   @db.ObjectId
+  createdAt DateTime @default(now())
+
+  @@unique([postId, userId])
+}
+
 model Comment {
   id              String           @id() @default(auto()) @map("_id") @db.ObjectId()
   hostType        ContentHostType
@@ -313,6 +322,14 @@ model HiddenContent {
   updatedAt DateTime @updatedAt
 
   @@unique([contentId, userId])
+}
+
+model ProfileVisit {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  profileId String   @db.ObjectId
+  visitorId String   @db.ObjectId
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 type Hashtag {

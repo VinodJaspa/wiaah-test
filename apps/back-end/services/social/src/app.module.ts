@@ -30,6 +30,7 @@ import { CommunityModule } from '@community/community.module';
 import { FriendsModule } from '@friends/friends.module';
 import { PlacesModule } from '@places/places.module';
 import { MarketingTagModule } from './marketing-tag/marketing-tag.module';
+import { ProfileStatisticsModule } from './profile-statistics/profile-statistics.module';
 
 @Module({
   imports: [
@@ -65,6 +66,7 @@ import { MarketingTagModule } from './marketing-tag/marketing-tag.module';
     FriendsModule,
     PlacesModule,
     MarketingTagModule,
+    ProfileStatisticsModule,
   ],
 })
 export class AppModule {}

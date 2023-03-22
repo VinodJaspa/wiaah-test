@@ -1,8 +1,14 @@
 import { createGraphqlRequestClient } from "api";
 import { Exact } from "types";
 import { useQuery } from "react-query";
-import { Product } from "@features/API";
-import { GetMyReturnedOrdersInput, Refund } from "@features/API";
+import { Product, RefundType } from "@features/API";
+import {
+  GetMyReturnedOrdersInput,
+  Refund,
+  RefundStatusType,
+} from "@features/API";
+import { random } from "lodash";
+import { getRandomImage } from "@UI/placeholder";
 
 export type GetReturnedOrdersQueryVariables = Exact<{
   args: GetMyReturnedOrdersInput;
@@ -16,13 +22,13 @@ export type GetReturnedOrdersQuery = { __typename?: "Query" } & {
       | "amount"
       | "fullAmount"
       | "id"
-      | "productId"
       | "reason"
       | "rejectReason"
       | "requestedById"
       | "sellerId"
       | "type"
       | "status"
+      | "orderItemId"
     > & {
         product: { __typename?: "Product" } & Pick<
           Product,
@@ -70,6 +76,29 @@ export const useGetMyReturnedProductsQuery = (
   });
 
   return useQuery(["my-returned-orders", { input }], async () => {
+    const mockRes: GetReturnedOrdersQuery["getMyReturnedOrders"] = [
+      ...Array(5),
+    ].map((v, i) => ({
+      id: "test",
+      amount: random(150, 500),
+      fullAmount: false,
+      orderItemId: "test",
+      product: {
+        id: "test",
+        thumbnail: getRandomImage(),
+        title: "test prod",
+      },
+      qty: 5,
+      reason: "return  reason",
+      requestedById: "test",
+      sellerId: "test",
+      status: RefundStatusType.Accept,
+      type: RefundType.Credit,
+      rejectReason: "reject reason",
+    }));
+
+    return mockRes;
+
     const res = await client.send<GetReturnedOrdersQuery>();
     return res.data.getMyReturnedOrders;
   });

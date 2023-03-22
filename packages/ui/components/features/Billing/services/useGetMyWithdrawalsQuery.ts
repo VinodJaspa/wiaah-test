@@ -1,9 +1,12 @@
 import {
   Exact,
   FinancialAccount,
+  FinancialAccountType,
   GetMyWithdrawalRequestsInput,
   WithdrawalRequest,
+  WithdrawalStatus,
 } from "@features/API";
+import { randomNum } from "@UI/../utils/src";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -53,6 +56,23 @@ query getMyWithdrawals($args:GetMyWithdrawalRequestsInput!){
 }
   `);
 
+  const mockRes: GetMyWithdrawalsQuery["getMyWithdrawalRequests"] = [
+    ...Array(15),
+  ].map((v, i) => ({
+    amount: randomNum(100),
+    financialAccount: {
+      id: "test",
+      label: "Stripe",
+      type: FinancialAccountType.Stripe,
+    },
+    id: "test",
+    processedAt: new Date().toDateString(),
+    requestedAt: new Date().toString(),
+    status: WithdrawalStatus.Processed,
+    userId: "test",
+  }));
+
+  return mockRes;
   const res = await client
     .setVariables<GetMyWithdrawalsQueryVariables>({ args })
     .send<GetMyWithdrawalsQuery>();

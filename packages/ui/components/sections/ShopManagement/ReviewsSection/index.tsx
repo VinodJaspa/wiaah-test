@@ -1,6 +1,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { BuyerComment, Rate, SectionHeader, usePaginationControls } from "@UI";
+import {
+  BuyerComment,
+  Pagination,
+  Rate,
+  SectionHeader,
+  usePaginationControls,
+} from "@UI";
 import { useGetMyReviewsQuery } from "@features/Products";
 
 export type ReviewData = {
@@ -63,6 +69,7 @@ export const ReviewsSection: React.FC<ReviewsSectionProps> = ({}) => {
             );
           })}
         </div>
+        <Pagination></Pagination>
       </div>
     </div>
   );

@@ -24,6 +24,7 @@ import {
   Image,
   useGetMyReturnedProductsQuery,
   usePaginationControls,
+  Pagination,
 } from "@UI";
 import { Product, ReturnedOrder } from "@features/API";
 
@@ -51,6 +52,9 @@ export const MyReturnsSection: React.FC<MyReturnsSectionProps> = () => {
           <AskForReturnModal />
         </ModalExtendedWrapper>
       </HStack>
+
+      <ProductReturnsList items={data}></ProductReturnsList>
+      <Pagination></Pagination>
 
       {!data || data.length < 1 ? (
         <span className="text-xl">{t("No Records Found")}</span>

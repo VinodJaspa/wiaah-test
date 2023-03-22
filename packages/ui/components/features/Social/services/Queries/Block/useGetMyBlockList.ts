@@ -45,6 +45,20 @@ export const useGetMyBlockListQuery = () => {
 }`);
 
   return useQuery(["block-list"], async () => {
+    const mockRes: GetMyBlocklistQuery["getMyBlockList"] = [...Array(10)].map(
+      (v, i) => ({
+        blockedAt: new Date().toString(),
+        blockedUserId: "test",
+        id: "test",
+        blockedProfile: {
+          id: "test",
+          photo: "/profile (3).jfif",
+          username: "user-" + i,
+        },
+      })
+    );
+
+    return mockRes;
     const res = await client.send<GetMyBlocklistQuery>();
 
     return res.data.getMyBlockList;

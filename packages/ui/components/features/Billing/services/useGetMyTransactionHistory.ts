@@ -5,6 +5,7 @@ import {
   Maybe,
   Profile,
   Transaction,
+  TransactionStatus,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
@@ -87,6 +88,37 @@ query getMyTransactions(
   });
 
   return useQuery(["my-transactions-history", { input }], async () => {
+    const mockRes: GetMyTransactionsQuery["getMyTransactions"] = [
+      ...Array(5),
+    ].map((v, i) => ({
+      amount: 30,
+      createdAt: new Date().toString(),
+      currency: "USD",
+      description: "desc",
+      from: "test",
+      fromUser: {
+        id: "test",
+        profile: {
+          id: "test",
+          username: "User name",
+        },
+      },
+      id: "test",
+      status: TransactionStatus.Success,
+      toUser: {
+        id: "test",
+        profile: {
+          id: "test",
+          username: "User name",
+        },
+      },
+      paymentType: "Paypal",
+      updatedAt: new Date().toString(),
+      userId: "test",
+    }));
+
+    return mockRes;
+
     const res = await client.send<GetMyTransactionsQuery>();
 
     return res.data.getMyTransactions;

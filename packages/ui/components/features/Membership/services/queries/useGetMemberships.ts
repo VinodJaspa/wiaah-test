@@ -5,7 +5,9 @@ import {
   Membership,
   MembershipIncludedItem,
   MembershipTurnoverRule,
-} from "@features/Membership/services/schema";
+} from "@features/API";
+import { CommissionOn, CommissionType } from "@features/API";
+import { Recurring } from "@features/Membership/schema";
 
 export type GetMembershipsQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -63,6 +65,99 @@ export const useGetMembershipsQuery = () => {
     `);
 
   return useQuery(["get-memberships"], async () => {
+    const mockRes: GetMembershipsQuery["getSubscriableMemberships"] = [
+      {
+        id: "test",
+        commissionOn: CommissionOn.Sale,
+        includings: [
+          {
+            title: "20% commission on sales",
+          },
+        ],
+        name: "Free",
+        priceId: "test",
+        recurring: 31,
+        turnover_rules: [
+          {
+            commission: 5,
+            commissionType: CommissionType.Percentage,
+            id: "test",
+            membershipId: "test",
+            priceId: "test",
+            usage: 10000,
+          },
+          {
+            commission: 5,
+            commissionType: CommissionType.Fixed,
+            id: "test",
+            membershipId: "test",
+            priceId: "test",
+            usage: 10000,
+          },
+        ],
+      },
+      {
+        id: "Pay",
+        commissionOn: CommissionOn.Sale,
+        includings: [
+          {
+            title: "5% commission on sales",
+          },
+          {
+            title: "5$ fixed commission on sales",
+          },
+        ],
+        name: "Pay",
+        priceId: "test",
+        recurring: 31,
+        turnover_rules: [
+          {
+            commission: 5,
+            commissionType: CommissionType.Percentage,
+            id: "test",
+            membershipId: "test",
+            priceId: "test",
+            usage: 10000,
+          },
+          {
+            commission: 5,
+            commissionType: CommissionType.Fixed,
+            id: "test",
+            membershipId: "test",
+            priceId: "test",
+            usage: 50,
+          },
+        ],
+      },
+      {
+        id: "Pay Per Click",
+        commissionOn: CommissionOn.ExternalClick,
+        includings: [
+          {
+            title: "let users shop through your own website",
+          },
+          {
+            title: "commssion on external link click",
+          },
+        ],
+        name: "Pay Per Click",
+        priceId: "test",
+        recurring: 31,
+        turnover_rules: [
+          {
+            commission: 0.001,
+            commissionType: CommissionType.Fixed,
+            id: "test",
+            membershipId: "test",
+            priceId: "test",
+            usage: 50,
+          },
+        ],
+      },
+    ];
+
+    return mockRes;
+
     const res = await client.send<GetMembershipsQuery>();
 
     return res.data.getSubscriableMemberships || [];

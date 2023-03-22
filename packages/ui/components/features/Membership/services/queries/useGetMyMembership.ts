@@ -6,6 +6,7 @@ import {
   MembershipSubscription,
   MembershipTurnoverRule,
 } from "@features/Membership/schema";
+import { CommissionType } from "@features/API";
 
 export type GetMyMembershipQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -49,6 +50,27 @@ export const useGetMyMembershipQuery = () => {
   `);
 
   return useQuery(["my-membership"], async () => {
+    const mockRes: GetMyMembershipQuery["getMyMembership"] = {
+      endAt: new Date().toString(),
+      membership: {
+        name: "Pay Per Click",
+        turnover_rules: [
+          {
+            commissionType: CommissionType.Percentage,
+            commission: 10,
+          },
+          {
+            commissionType: CommissionType.Percentage,
+            commission: 10,
+          },
+        ],
+      },
+      membershipId: "testid",
+      startAt: new Date().toString(),
+      userId: "testid",
+    };
+
+    return mockRes;
     const res = await client.send<GetMyMembershipQuery>();
 
     return res.data.getMyMembership;

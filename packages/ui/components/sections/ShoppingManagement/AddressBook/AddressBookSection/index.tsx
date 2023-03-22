@@ -102,7 +102,7 @@ export const AddressBookCard: React.FC<AddressBookCardProps> = ({
   return (
     <div
       {...innerProps}
-      className="p-4 bg-primary-light border-[0.2em] border-primary w-[min(100%,15rem)] flex flex-col gap-4 relative"
+      className="p-4 bg-primary-light border-[0.2em] border-primary w-[min(100%,15rem)] flex flex-col justify-between gap-4 relative"
     >
       <span className="font-bold">{addressInfo.addressName}</span>
       <p className="w-3/4 font-semibold">{addressInfo.instructions}</p>

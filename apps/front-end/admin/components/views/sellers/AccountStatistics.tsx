@@ -23,6 +23,7 @@ import {
   Button,
   HStack,
   Image,
+  Pagination,
   Select,
   SelectOption,
   Table,
@@ -292,8 +293,16 @@ export const AccountStatistics: React.FC<{
           style={boxShadowStyles}
           className="p-6 col-span-7 flex flex-col gap-4 h-full"
         >
-          <div className="flex items-center justify-between">
+          <div className="flex justify-between w-full">
             <p className="font-bold text-xl">{t("Overview")}</p>
+            <Select className="w-28">
+              <SelectOption value={"day"}>{t("day")}</SelectOption>
+              <SelectOption value={"month"}>{t("month")}</SelectOption>
+              <SelectOption value={"year"}>{t("year")}</SelectOption>
+            </Select>
+          </div>
+          <div className="flex items-center justify-between">
+            <div></div>
             <div className="flex flex-wrap items-center gap-8">
               <BarChartLegend color="#4285F4" name={t("Account Reached")} />
               <BarChartLegend color="#34A853" name={t("Account Engaged")} />
@@ -338,7 +347,15 @@ export const AccountStatistics: React.FC<{
         </div>
         <div style={boxShadowStyles} className="p-6 col-span-5 h-full">
           <div className="flex flex-col gap-1 w-full h-full">
-            <p className="text-xl font-bold">{t("Reached Audience")}</p>
+            <div className="flex justify-between w-full">
+              <p className="text-xl font-bold">{t("Reached Audience")}</p>
+
+              <Select className="w-28">
+                <SelectOption value={"day"}>{t("day")}</SelectOption>
+                <SelectOption value={"month"}>{t("month")}</SelectOption>
+                <SelectOption value={"year"}>{t("year")}</SelectOption>
+              </Select>
+            </div>
             <div className="flex gap-2 h-full items-center">
               <div className="flex flex-col gap-4">
                 <BarChartLegend
@@ -407,7 +424,14 @@ export const AccountStatistics: React.FC<{
       </div>
       <div className="grid w-full grid-cols-2">
         <div style={boxShadowStyles} className="flex p-8 flex-col">
-          <p className="font-bold text-xl">{t("Age and Gender")}</p>
+          <div className="flex justify-between w-full">
+            <p className="font-bold text-xl">{t("Age and Gender")}</p>
+            <Select className="w-28">
+              <SelectOption value={"day"}>{t("day")}</SelectOption>
+              <SelectOption value={"month"}>{t("month")}</SelectOption>
+              <SelectOption value={"year"}>{t("year")}</SelectOption>
+            </Select>
+          </div>
           <div className="h-12"></div>
           <div className="h-44" ref={ageGenderRef}>
             <BarChart
@@ -500,107 +524,122 @@ export const AccountStatistics: React.FC<{
           </HStack>
         </div>
       </div>
-      <div
-        style={boxShadowStyles}
-        className="grid p-8 grid-rows-4 grid-cols-12"
-      >
-        <div className="col-span-2 border-r pb-4 pr-4 border-b row-span-1 flex flex-col gap-2">
-          <p>{t("Details Level")}</p>
-          <Select
-            className="w-40 bg-[#F3F3F3]"
-            placeholder={`${t("Country")}/${t("Territory")}`}
-          >
-            <SelectOption value={"test"}>test</SelectOption>
+      <div className="flex flex-col p-8" style={boxShadowStyles}>
+        <div className="flex justify-between w-full">
+          <p className="font-semibold">{t("Detials Level")}</p>
+
+          <Select className="w-28">
+            <SelectOption value={"day"}>{t("day")}</SelectOption>
+            <SelectOption value={"month"}>{t("month")}</SelectOption>
+            <SelectOption value={"year"}>{t("year")}</SelectOption>
           </Select>
         </div>
-        <div className="col-span-3 border-b row-span-1 grid grid-cols-3">
-          <div></div>
-          <div></div>
-          <div className="flex items-center">
-            <Button className="bg-[#F3F3F3] text-black">
-              <HStack>
-                <p>{t("Visits")}</p>
-                <BsArrowDown />
-              </HStack>
-            </Button>
+
+        <div className="grid grid-rows-4 grid-cols-12">
+          <div className="col-span-2 border-r pb-4 pr-4 border-b row-span-1 flex flex-col gap-2">
+            <Select
+              className="w-40 bg-[#F3F3F3]"
+              placeholder={`${t("Country")}/${t("Territory")}`}
+            >
+              <SelectOption value={"test"}>test</SelectOption>
+            </Select>
           </div>
-        </div>
-        <div className="col-span-7 border-l border-b row-span-1 items-center grid grid-cols-6">
-          <div className="col-span-2 flex justify-center items-center">
-            <p className="font-bold">{t("Visits")}</p>
-          </div>
-          <div className="col-span-4 justify-end flex gap-8 items-center">
-            <p>{t("Country/Territory contribution to total")}</p>
-            <Button className="bg-[#F3F3F3] text-black">
-              <HStack>
-                {t("Visits")}
-                <BsArrowDown />
-              </HStack>
-            </Button>
-          </div>
-        </div>
-        <div className="col-span-2 border-r row-span-3 pt-4 flex flex-col gap-4">
-          {countries.map((v, i) => (
-            <div className="flex gap-6 items-center">
-              <p className="font-bold">
-                {(i + 1).toLocaleString("en-us", { minimumIntegerDigits: 2 })}
-              </p>
-              <HStack>
-                <div
-                  style={{
-                    backgroundColor: v.color,
-                  }}
-                  className="w-5 h-5"
-                />
-                <p>{v.name}</p>
-              </HStack>
+          <div className="col-span-3 border-b row-span-1 grid grid-cols-3">
+            <div></div>
+            <div></div>
+            <div className="flex items-center">
+              <Button className="bg-[#F3F3F3] text-black">
+                <HStack>
+                  <p>{t("Visits")}</p>
+                  <BsArrowDown />
+                </HStack>
+              </Button>
             </div>
-          ))}
-        </div>
-        <div className="col-span-3 row-span-3 grid grid-cols-3">
-          <div></div>
-          <div></div>
-          <div className="flex flex-col pt-4 gap-4">
+          </div>
+          <div className="col-span-7 border-l border-b row-span-1 items-center grid grid-cols-6">
+            <div className="col-span-2 flex justify-center items-center">
+              <p className="font-bold">{t("Visits")}</p>
+            </div>
+            <div className="col-span-4 justify-end flex gap-8 items-center">
+              <p>{t("Country/Territory contribution to total")}</p>
+              <Button className="bg-[#F3F3F3] text-black">
+                <HStack>
+                  {t("Visits")}
+                  <BsArrowDown />
+                </HStack>
+              </Button>
+            </div>
+          </div>
+          <div className="col-span-2 border-r row-span-3 pt-4 flex flex-col gap-4">
             {countries.map((v, i) => (
-              <p className="font-semibold">
-                {Intl.NumberFormat("en-us", { compactDisplay: "long" }).format(
-                  v.visits
-                )}
-              </p>
+              <div className="flex gap-6 items-center">
+                <p className="font-bold">
+                  {(i + 1).toLocaleString("en-us", { minimumIntegerDigits: 2 })}
+                </p>
+                <HStack>
+                  <div
+                    style={{
+                      backgroundColor: v.color,
+                    }}
+                    className="w-5 h-5"
+                  />
+                  <p>{v.name}</p>
+                </HStack>
+              </div>
             ))}
           </div>
-        </div>
-        <div className="col-span-7 row-span-3 border-l pt-4 grid grid-cols-6">
-          <div className="col-span-2 flex flex-col items-center gap-4">
-            {countriesPercentage.map((v, i) => (
-              <p className="font-semibold">{(v.visits * 100).toFixed(2)}%</p>
-            ))}
+          <div className="col-span-3 row-span-3 grid grid-cols-3">
+            <div></div>
+            <div></div>
+            <div className="flex flex-col pt-4 gap-4">
+              {countries.map((v, i) => (
+                <p className="font-semibold">
+                  {Intl.NumberFormat("en-us", {
+                    compactDisplay: "long",
+                  }).format(v.visits)}
+                </p>
+              ))}
+            </div>
           </div>
-          <div
-            ref={visitsPieRef}
-            className="col-span-4 flex justify-center items-center"
-          >
-            <PieChart width={visitsPieDims.w} height={visitsPieDims.h}>
-              <Pie
-                data={countries}
-                dataKey="visits"
-                nameKey="name"
-                cx={visitsPieDims.w / 2}
-                cy={visitsPieDims.h / 2}
-                outerRadius={90}
-                fill="#82ca9d"
-                label
-              >
-                {countries.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-            </PieChart>
+          <div className="col-span-7 row-span-3 border-l pt-4 grid grid-cols-6">
+            <div className="col-span-2 flex flex-col items-center gap-4">
+              {countriesPercentage.map((v, i) => (
+                <p className="font-semibold">{(v.visits * 100).toFixed(2)}%</p>
+              ))}
+            </div>
+            <div
+              ref={visitsPieRef}
+              className="col-span-4 flex justify-center items-center"
+            >
+              <PieChart width={visitsPieDims.w} height={visitsPieDims.h}>
+                <Pie
+                  data={countries}
+                  dataKey="visits"
+                  nameKey="name"
+                  cx={visitsPieDims.w / 2}
+                  cy={visitsPieDims.h / 2}
+                  outerRadius={90}
+                  fill="#82ca9d"
+                  label
+                >
+                  {countries.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+              </PieChart>
+            </div>
           </div>
         </div>
       </div>
       <div style={boxShadowStyles} className="flex flex-col p-8 gap-4">
-        <p className="font-bold text-xl">{t("Most Popular Post")}</p>
+        <div className="flex justify-between w-full">
+          <p className="font-bold text-xl">{t("Most Popular Post")}</p>
+          <Select className="w-28">
+            <SelectOption value={"day"}>{t("day")}</SelectOption>
+            <SelectOption value={"month"}>{t("month")}</SelectOption>
+            <SelectOption value={"year"}>{t("year")}</SelectOption>
+          </Select>
+        </div>
         <Table
           ThProps={{ align: "left", className: "first:pl-0 text-gray-500" }}
           TdProps={{ className: "font-semibold first:pl-0", align: "left" }}
@@ -645,10 +684,20 @@ export const AccountStatistics: React.FC<{
             ))}
           </TBody>
         </Table>
+        <div className="self-center">
+          <Pagination></Pagination>
+        </div>
       </div>
 
       <div style={boxShadowStyles} className="flex flex-col p-8 gap-4">
-        <p className="font-bold text-xl">{t("Most Popular Post")}</p>
+        <div className="flex justify-between w-full">
+          <p className="font-bold text-xl">{t("Most Popular Post")}</p>
+          <Select className="w-28">
+            <SelectOption value={"day"}>{t("day")}</SelectOption>
+            <SelectOption value={"month"}>{t("month")}</SelectOption>
+            <SelectOption value={"year"}>{t("year")}</SelectOption>
+          </Select>
+        </div>
         <Table
           ThProps={{ align: "left", className: "first:pl-0 text-gray-500" }}
           TdProps={{ className: "font-semibold first:pl-0", align: "left" }}
@@ -693,6 +742,9 @@ export const AccountStatistics: React.FC<{
             ))}
           </TBody>
         </Table>
+        <div className="self-center">
+          <Pagination></Pagination>
+        </div>
       </div>
     </div>
   );

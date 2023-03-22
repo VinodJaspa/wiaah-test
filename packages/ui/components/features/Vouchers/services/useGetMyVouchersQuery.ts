@@ -1,4 +1,11 @@
-import { Exact, GetVouchersInput, Maybe, Voucher } from "@features/API";
+import {
+  Exact,
+  GetVouchersInput,
+  Maybe,
+  Voucher,
+  VoucherStatus,
+} from "@features/API";
+import { randomNum } from "@UI/../utils/src";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -33,6 +40,17 @@ query getMyVouchers(
     `);
 
   return useQuery(["get-my-vouchers"], async () => {
+    const mockRes: GetMyVouchersQuery["getMyVouchers"] = [...Array(5)].map(
+      () => ({
+        amount: randomNum(150),
+        code: "VOUCHERCODE",
+        createdAt: new Date().toString(),
+        currency: "USD",
+        status: VoucherStatus.Active,
+      })
+    );
+
+    return mockRes;
     const res = await client.send<GetMyVouchersQuery>();
 
     return res.data.getMyVouchers;

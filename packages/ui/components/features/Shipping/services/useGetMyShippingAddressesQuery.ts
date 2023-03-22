@@ -46,6 +46,26 @@ query getMyShippingAddress{
     `);
 
   return useQuery(["my-shipping-address"], async () => {
+    const mockRes: GetMyShippingAddressQuery["getMyShippingAddress"] = [
+      ...Array(2),
+    ].map((v, i) => ({
+      id: "test",
+      firstname: "first name",
+      lastname: "frist name",
+      location: {
+        address: "3069 Geraldine Lane",
+        city: "New York",
+        country: "country",
+        lat: 40.73962045,
+        long: -74.021118,
+        state: "NY",
+      },
+      instractions: "",
+      phone: "646-366-9896",
+      zipCode: "10036",
+    }));
+
+    return mockRes;
     const res = await client.send<GetMyShippingAddressQuery>();
 
     return res.data.getMyShippingAddress;

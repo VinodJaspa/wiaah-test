@@ -3,6 +3,7 @@ import {
   ShippingCountry,
   ShippingDeliveryTimeRange,
   ShippingRule,
+  ShippingType,
 } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
@@ -57,6 +58,20 @@ export const useGetMyShippingRules = () => {
   client.setVariables({});
 
   return useQuery(["shipping-rules"], async () => {
+    const mockRes: GetMyShippingSettingsQuery["getMyShippingRules"] = [
+      ...Array(5),
+    ].map((v, i) => ({
+      cost: 50,
+      countries: [{ code: "US", name: "United States" }],
+      deliveryTimeRange: { from: 4, to: 8 },
+      id: "test",
+      name: "USA Shipping",
+      sellerId: "test",
+      shippingType: ShippingType.Paid,
+    }));
+
+    return mockRes;
+
     const res = await client.send<GetMyShippingSettingsQuery>();
 
     return res.data.getMyShippingRules;
