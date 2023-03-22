@@ -94,13 +94,14 @@ model UserAccountVerificationRequest {
   updatedAt DateTime @updatedAt
   userId    String   @unique @db.ObjectId
 
-  status       AccountVerificationStatus @default(pending)
-  refuseReason String?
-  username     String
-  fullName     String
-  knownAs      String
-  categoryId   String
-  idPhoto      String
+  status           AccountVerificationStatus @default(pending)
+  refuseReason     String?
+  addressProofBill String
+  username         String
+  fullName         String
+  knownAs          String
+  categoryId       String
+  idPhoto          String
 }
 
 enum AccountVerificationStatus {
