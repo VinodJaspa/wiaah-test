@@ -255,6 +255,11 @@ export class StoryRepository {
   }
 
   async incrementStoryViews(storyId: string, userId: string) {
+    const profile = await this.prisma.profile.findUnique({
+      where: {
+        ownerId: userId,
+      },
+    });
     const story = await this.prisma.story.findUnique({
       where: {
         id: storyId,
@@ -274,6 +279,8 @@ export class StoryRepository {
         views: {
           create: {
             viewerId: userId,
+            storyPublisherProfileId: profile.id,
+            gender: profile.gender,
           },
         },
       },

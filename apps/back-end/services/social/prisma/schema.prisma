@@ -12,30 +12,31 @@ datasource db {
 }
 
 model Profile {
-  id             String            @id() @default(auto()) @map("_id") @db.ObjectId()
-  ownerId        String            @unique() @db.ObjectId()
-  createdAt      DateTime          @default(now())
-  updatedAt      DateTime          @updatedAt()
+  id             String               @id() @default(auto()) @map("_id") @db.ObjectId()
+  ownerId        String               @unique() @db.ObjectId()
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt()
   username       String
   lastActive     DateTime
-  activeStatus   ActiveStatus      @default(inActive)
-  bio            String            @default("Hi, im a new Wiaah user")
+  activeStatus   ActiveStatus         @default(inActive)
+  bio            String               @default("Hi, im a new Wiaah user")
   photo          String
   coverPhoto     String?
-  status         ProfileStatus     @default(active)
-  followers      Int               @default(0)
-  following      Int               @default(0)
-  followingData  Follow[]          @relation(name: "followingProfile")
+  status         ProfileStatus        @default(active)
+  followers      Int                  @default(0)
+  following      Int                  @default(0)
+  followingData  Follow[]             @relation(name: "followingProfile")
   followersData  Follow[]
-  publications   Int               @default(0)
+  publications   Int                  @default(0)
   profession     String
-  verified       Boolean           @default(false)
+  verified       Boolean              @default(false)
   hashtags       String[]
-  visits         Int               @default(0)
-  visibility     ProfileVisibility @default(public)
+  visits         Int                  @default(0)
+  gender         ProfileReachedGender
+  visibility     ProfileVisibility    @default(public)
   Posts          NewsfeedPost[]
   comments       Comment[]
-  blockedUsers   BlockedUser[]     @relation(name: "blockerProfile")
+  blockedUsers   BlockedUser[]        @relation(name: "blockerProfile")
   myShares       ContentShare[]
   reactedContent ContentReaction[]
   Story          Story[]
@@ -87,7 +88,7 @@ model NewsfeedPost {
   authorProfileId    String             @db.ObjectId
   title              String
   content            String
-  attachments        Attachment[]
+  attachments        String[]
   hashtags           Hashtag[]
   reactionNum        Int                @default(0)
   comments           Int                @default(0)
@@ -202,6 +203,8 @@ enum ActionType {
 model ContentReaction {
   id                 String              @id() @default(auto()) @map("_id") @db.ObjectId()
   userId             String              @db.ObjectId
+  hostUserId         String
+  hostProfileId      String
   hostId             String              @db.ObjectId
   hostType           ContentHostType
   reactionType       ContentReactionType @default(like)
@@ -241,6 +244,8 @@ model SavedPost {
 model Comment {
   id              String           @id() @default(auto()) @map("_id") @db.ObjectId()
   hostType        ContentHostType
+  hostUserId      String
+  hostProfileid   String
   hostId          String           @db.ObjectId
   author          Profile          @relation(fields: [authorProfileId], references: [id])
   authorProfileId String           @db.ObjectId
@@ -286,12 +291,14 @@ enum StoryType {
 }
 
 model StoryView {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  viewerId  String   @db.ObjectId
-  storyId   String   @db.ObjectId
-  createdAt DateTime @default(now())
-  story     Story    @relation(fields: [storyId], references: [id])
-  viewer    Profile  @relation(fields: [viewerId], references: [id])
+  id                      String               @id @default(auto()) @map("_id") @db.ObjectId
+  viewerId                String               @db.ObjectId
+  storyId                 String               @db.ObjectId
+  createdAt               DateTime             @default(now())
+  storyPublisherProfileId String               @db.ObjectId
+  gender                  ProfileReachedGender
+  story                   Story                @relation(fields: [storyId], references: [id])
+  viewer                  Profile              @relation(fields: [viewerId], references: [id])
 
   @@unique([viewerId, storyId], name: "storyViewIds")
 }
@@ -330,6 +337,35 @@ model ProfileVisit {
   visitorId String   @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  country   String
+  city      String
+}
+
+model ProfileReached {
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  profileId          String               @db.ObjectId
+  reachedByProfileId String               @db.ObjectId
+  gender             ProfileReachedGender
+  age                Int
+  createdAt          DateTime             @default(now())
+}
+
+enum ProfileReachedGender {
+  male
+  female
+}
+
+model ProfileEngaged {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  profileId          String   @db.ObjectId
+  engagedByProfileId String   @db.ObjectId
+  createdAt          DateTime @default(now())
+}
+
+model ProfileActivity {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  profileId String   @db.ObjectId
+  createdAt DateTime @default(now())
 }
 
 type Hashtag {

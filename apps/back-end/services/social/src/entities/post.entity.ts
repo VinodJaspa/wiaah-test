@@ -69,8 +69,8 @@ export class SocialPost {
   @Field(() => String)
   content: string;
 
-  @Field(() => [Attachment])
-  attachments: Attachment[];
+  @Field(() => [String])
+  attachments: string[];
 
   @Field(() => [Hashtag])
   hashtags: Hashtag[];

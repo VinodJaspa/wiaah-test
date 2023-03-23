@@ -25,4 +25,10 @@ export class ProfileStatistics {
 
   @Field(() => Int)
   prev_total_saves: number;
+
+  @Field(() => Int)
+  total_likes: number;
+
+  @Field(() => Int)
+  prev_total_likes: number;
 }

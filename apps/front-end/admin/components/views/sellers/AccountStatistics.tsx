@@ -652,9 +652,6 @@ export const AccountStatistics: React.FC<{
               <Th>{t("Name")}</Th>
               <Th>{t("Total Views")}</Th>
               <Th>{t("Total Likes")}</Th>
-              <Th>{t("Gender")}</Th>
-              <Th>{t("Country Name")}</Th>
-              <Th>{t("City")}</Th>
               <Th>{t("Number of Visits")}</Th>
               <Th>{t("Comments")}</Th>
             </Tr>
@@ -675,9 +672,6 @@ export const AccountStatistics: React.FC<{
                 <Td>{v.name}</Td>
                 <Td>{v.views}</Td>
                 <Td>{v.likes}</Td>
-                <Td>{v.gender}</Td>
-                <Td>{v.countryName}</Td>
-                <Td>{v.city}</Td>
                 <Td>{v.likes}</Td>
                 <Td>{v.comments}</Td>
               </Tr>
@@ -691,7 +685,7 @@ export const AccountStatistics: React.FC<{
 
       <div style={boxShadowStyles} className="flex flex-col p-8 gap-4">
         <div className="flex justify-between w-full">
-          <p className="font-bold text-xl">{t("Most Popular Post")}</p>
+          <p className="font-bold text-xl">{t("Most Popular Stories")}</p>
           <Select className="w-28">
             <SelectOption value={"day"}>{t("day")}</SelectOption>
             <SelectOption value={"month"}>{t("month")}</SelectOption>
@@ -710,9 +704,6 @@ export const AccountStatistics: React.FC<{
               <Th>{t("Name")}</Th>
               <Th>{t("Total Views")}</Th>
               <Th>{t("Total Likes")}</Th>
-              <Th>{t("Gender")}</Th>
-              <Th>{t("Country Name")}</Th>
-              <Th>{t("City")}</Th>
               <Th>{t("Number of Visits")}</Th>
               <Th>{t("Comments")}</Th>
             </Tr>
@@ -733,10 +724,7 @@ export const AccountStatistics: React.FC<{
                 <Td>{v.name}</Td>
                 <Td>{v.views}</Td>
                 <Td>{v.likes}</Td>
-                <Td>{v.gender}</Td>
-                <Td>{v.countryName}</Td>
-                <Td>{v.city}</Td>
-                <Td>{v.likes}</Td>
+                <Td>{v.visits}</Td>
                 <Td>{v.comments}</Td>
               </Tr>
             ))}

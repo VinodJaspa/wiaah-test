@@ -1,5 +1,6 @@
 import { Account } from '@entities';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { ProfileReachedGender } from 'prismaClient';
 import { Story } from './story.entity';
 
 @ObjectType()
@@ -21,4 +22,7 @@ export class StoryView {
 
   @Field(() => Story, { nullable: true })
   story?: Story;
+
+  @Field(() => ProfileReachedGender)
+  gender: ProfileReachedGender;
 }

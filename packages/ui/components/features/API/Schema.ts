@@ -999,7 +999,7 @@ export type CreateMessageInput = {
 };
 
 export type CreateNewsfeedPostInput = {
-  attachments: Array<AttachmentInput>;
+  attachments: Array<Scalars["String"]>;
   content: Scalars["String"];
   hashtags: Array<HashtagInput>;
   location?: Maybe<PostLocationInput>;
@@ -1041,6 +1041,7 @@ export type CreateProfessionInput = {
 
 export type CreateProfileInput = {
   bio?: Maybe<Scalars["String"]>;
+  gender: ProfileReachedGender;
   photo: Scalars["String"];
   profession: Scalars["String"];
   username: Scalars["String"];
@@ -1749,6 +1750,24 @@ export type GetProfileFollowersMetaInput = {
   profileId: Scalars["String"];
 };
 
+export type GetProfilePopularStoriesViewsInput = {
+  date: Scalars["String"];
+  profileId: Scalars["ID"];
+  userId: Scalars["ID"];
+};
+
+export type GetProfileStatisticsInput = {
+  profileId: Scalars["ID"];
+  sinceHours: Scalars["Int"];
+  userId: Scalars["ID"];
+};
+
+export type GetProfileVisitsDetailsInput = {
+  country: Scalars["String"];
+  profileId: Scalars["ID"];
+  visitsOrderBy: Scalars["Int"];
+};
+
 export type GetRecentStoriesInput = {
   pagination: GqlPaginationInput;
 };
@@ -1808,6 +1827,12 @@ export type GetStorySeenByInput = {
 export type GetTopHashtagsInput = {
   pagination: GqlPaginationInput;
   q?: Maybe<Scalars["String"]>;
+};
+
+export type GetTopProfilePostsInput = {
+  pagination: GqlPaginationInput;
+  profileId: Scalars["ID"];
+  sinceHours: Scalars["Int"];
 };
 
 export type GetTransactionsAdminInput = {
@@ -3186,7 +3211,7 @@ export type NewsfeedHashtagSearch = {
 
 export type NewsfeedPost = {
   __typename?: "NewsfeedPost";
-  attachments: Array<Attachment>;
+  attachments: Array<Scalars["String"]>;
   authorProfileId: Scalars["ID"];
   comments: Scalars["Int"];
   content: Scalars["String"];
@@ -3594,6 +3619,13 @@ export type ProfileMetaPaginatedResponse = {
   total: Scalars["Int"];
 };
 
+export type ProfileOverviewStatistics = {
+  __typename?: "ProfileOverviewStatistics";
+  activity: Scalars["Int"];
+  engaged: Scalars["Int"];
+  reached: Scalars["Int"];
+};
+
 export type ProfilePaginatedResponse = {
   __typename?: "ProfilePaginatedResponse";
   data: Array<Profile>;
@@ -3601,11 +3633,51 @@ export type ProfilePaginatedResponse = {
   total: Scalars["Int"];
 };
 
+export type ProfileReachedAudience = {
+  __typename?: "ProfileReachedAudience";
+  age: Scalars["Int"];
+  createdAt: Scalars["String"];
+  gender: ProfileReachedGender;
+  id: Scalars["ID"];
+  profileId: Scalars["ID"];
+  reachedByProfileId: Scalars["ID"];
+};
+
+export enum ProfileReachedGender {
+  Female = "female",
+  Male = "male",
+}
+
+export type ProfileStatistics = {
+  __typename?: "ProfileStatistics";
+  prev_total_comments: Scalars["Int"];
+  prev_total_followers: Scalars["Int"];
+  prev_total_likes: Scalars["Int"];
+  prev_total_saves: Scalars["Int"];
+  prev_total_visits: Scalars["Int"];
+  total_comments: Scalars["Int"];
+  total_followers: Scalars["Int"];
+  total_likes: Scalars["Int"];
+  total_saves: Scalars["Int"];
+  total_visits: Scalars["Int"];
+};
+
 export enum ProfileVisibility {
   Followers = "followers",
   Private = "private",
   Public = "public",
 }
+
+export type ProfileVisitDetails = {
+  __typename?: "ProfileVisitDetails";
+  country: Scalars["String"];
+  visits: Scalars["Int"];
+};
+
+export type ProfileVisitsDetails = {
+  __typename?: "ProfileVisitsDetails";
+  countries: Array<ProfileVisitDetails>;
+};
 
 export type Query = {
   __typename?: "Query";
@@ -3753,6 +3825,11 @@ export type Query = {
   getProfessions: Array<Profession>;
   getProfile: Profile;
   getProfileNewsfeedPosts: Array<NewsfeedPost>;
+  getProfileOverviewStatistics: ProfileOverviewStatistics;
+  getProfilePopularStoriesViews: StoryView;
+  getProfileReachedAudinece: ProfileReachedAudience;
+  getProfileStatistics: ProfileStatistics;
+  getProfileVisitsDetails: ProfileVisitsDetails;
   getRecentSales: Array<OrderItem>;
   getRecentStories: Array<RecentStory>;
   getRecommendedAffiliationPosts: Array<AffiliationPost>;
@@ -3782,6 +3859,8 @@ export type Query = {
   getTopHashtagNewsfeed: TopHashtagNewsfeedPosts;
   getTopHashtagPosts: HashtagProductPost;
   getTopHashtags: Array<Hashtag>;
+  getTopProfilePosts: Array<NewsfeedPost>;
+  getTopProfileStories: Array<Story>;
   getUserActions: Array<Action>;
   getUserAffiliationHistory: Array<AffiliationPurchase>;
   getUserAffiliations: Array<Affiliation>;
@@ -4273,6 +4352,26 @@ export type QueryGetProfileNewsfeedPostsArgs = {
   getUserNewsfeedPosts: GetNewsfeedPostsByUserIdInput;
 };
 
+export type QueryGetProfileOverviewStatisticsArgs = {
+  args: GetProfileStatisticsInput;
+};
+
+export type QueryGetProfilePopularStoriesViewsArgs = {
+  args: GetProfilePopularStoriesViewsInput;
+};
+
+export type QueryGetProfileReachedAudineceArgs = {
+  args: GetProfileStatisticsInput;
+};
+
+export type QueryGetProfileStatisticsArgs = {
+  args: GetProfileStatisticsInput;
+};
+
+export type QueryGetProfileVisitsDetailsArgs = {
+  args: GetProfileVisitsDetailsInput;
+};
+
 export type QueryGetRecentSalesArgs = {
   count?: Maybe<Scalars["Int"]>;
 };
@@ -4367,6 +4466,14 @@ export type QueryGetTopHashtagPostsArgs = {
 
 export type QueryGetTopHashtagsArgs = {
   args: GetTopHashtagsInput;
+};
+
+export type QueryGetTopProfilePostsArgs = {
+  args: GetTopProfilePostsInput;
+};
+
+export type QueryGetTopProfileStoriesArgs = {
+  args: GetTopProfilePostsInput;
 };
 
 export type QueryGetUserActionsArgs = {
@@ -5403,6 +5510,7 @@ export enum StoryType {
 export type StoryView = {
   __typename?: "StoryView";
   createdAt: Scalars["DateTime"];
+  gender: ProfileReachedGender;
   id: Scalars["ID"];
   story?: Maybe<Story>;
   storyId: Scalars["ID"];
@@ -5677,7 +5785,7 @@ export type UpdateMyPrivacyInput = {
 };
 
 export type UpdateNewsfeedPostInput = {
-  attachments?: Maybe<Array<AttachmentInput>>;
+  attachments?: Maybe<Array<Scalars["String"]>>;
   content?: Maybe<Scalars["String"]>;
   hashtags?: Maybe<Array<HashtagInput>>;
   id: Scalars["ID"];
@@ -5702,7 +5810,7 @@ export type UpdateNotificationSettingInput = {
 };
 
 export type UpdatePostAdminInput = {
-  attachments?: Maybe<Array<AttachmentInput>>;
+  attachments?: Maybe<Array<Scalars["String"]>>;
   content?: Maybe<Scalars["String"]>;
   hashtags?: Maybe<Array<HashtagInput>>;
   id: Scalars["ID"];
@@ -5750,6 +5858,7 @@ export type UpdateProfessionInput = {
 
 export type UpdateProfileAdminInput = {
   bio?: Maybe<Scalars["String"]>;
+  gender?: Maybe<ProfileReachedGender>;
   photo?: Maybe<Scalars["String"]>;
   profession?: Maybe<Scalars["String"]>;
   profileId?: Maybe<Scalars["ID"]>;
@@ -5759,6 +5868,7 @@ export type UpdateProfileAdminInput = {
 
 export type UpdateProfileInput = {
   bio?: Maybe<Scalars["String"]>;
+  gender?: Maybe<ProfileReachedGender>;
   photo?: Maybe<Scalars["String"]>;
   profession?: Maybe<Scalars["String"]>;
   username?: Maybe<Scalars["String"]>;
