@@ -539,7 +539,7 @@ type Query {
   getPlaceSuggestions(args: GetPlaceSuggestionInput!): PlaceSuggestions!
   getProfileStatistics(args: GetProfileStatisticsInput!): ProfileStatistics!
   getProfileOverviewStatistics(args: GetProfileStatisticsInput!): ProfileOverviewStatistics!
-  getProfileReachedAudinece(args: GetProfileStatisticsInput!): ProfileReachedAudience!
+  getProfileReachedAudinece(args: GetProfileStatisticsInput!): [ProfileReachedAudience!]!
   getProfilePopularStoriesViews(args: GetProfilePopularStoriesViewsInput!): StoryView!
   getProfileVisitsDetails(args: GetProfileVisitsDetailsInput!): ProfileVisitsDetails!
   getTopProfileStories(args: GetTopProfilePostsInput!): [Story!]!
@@ -915,6 +915,9 @@ input UpdateMyPrivacyInput {
 input CreateActionInput {
   src: Upload!
   cover: Upload!
+  mentions: [String!] = []
+  tags: [String!] = []
+  link: String
   location: PostLocationInput
   commentsVisibility: CommentsVisibility
   allowedActions: [ActionType!]!

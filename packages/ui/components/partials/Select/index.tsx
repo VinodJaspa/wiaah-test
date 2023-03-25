@@ -16,7 +16,7 @@ export interface SelectProps<SelectOptionType = string>
   children?: ElementChilds<SelectChildProps<SelectOptionType>> | null;
   onOptionSelect?: OnOptionSelect<SelectOptionType>;
   placeholder?: string;
-  value?: string;
+  value?: string | boolean | number;
   flushed?: boolean;
   label?: string;
 }

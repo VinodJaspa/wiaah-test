@@ -30,8 +30,9 @@ import {
   ShareYourWiaahQr,
   VatIcon,
   VatSection,
+  MyProfileStatistics,
 } from "ui";
-import { ImBlocked } from "react-icons/im";
+import { ImBlocked, ImProfile } from "react-icons/im";
 import { useResponsive } from "hooks";
 
 export const AccountSettingsView: React.FC = () => {
@@ -100,6 +101,13 @@ const sections: SettingsSectionType[] = [
     panelIcon: IoNotificationsOutline,
     panelUrl: "/notifications",
 
+    panelComponent: <MyProfileStatistics />,
+  },
+  {
+    panelName: "My Profile Statistics",
+    panelIcon: ImProfile,
+    panelUrl: "/my-profile-statistics",
+
     panelComponent: <NotificationsSettingsSection />,
   },
   {
@@ -145,12 +153,6 @@ const sections: SettingsSectionType[] = [
     panelUrl: "/account_deletion",
     panelComponent: <AccountDeletionSection />,
   },
-  // {
-  //   panelName: "Account Verification",
-  //   panelIcon: MdVerified,
-  //   panelUrl: "/account_verification",
-  //   panelComponent: <AccountVerification />,
-  // },
   {
     panelName: "Personalization and data",
     panelIcon: BiData,

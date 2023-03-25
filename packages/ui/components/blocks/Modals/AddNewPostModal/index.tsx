@@ -25,7 +25,7 @@ import {
   CheckMarkStepper,
 } from "@UI";
 import { useDisclouser, useUserData } from "hooks";
-import { FileRes, mapArray, runIfFn, useForm } from "utils";
+import { FileRes, mapArray, useForm } from "utils";
 import { FiAtSign } from "react-icons/fi";
 import { GrLocationPin } from "react-icons/gr";
 
@@ -39,7 +39,6 @@ enum AddPostSectionEnum {
 
 export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
   const { isOpen, CloseModal, OpenModal } = useNewPost();
-  const { handleClose, handleOpen, isOpen: videoEditorOpen } = useDisclouser();
   const [uploadiLimitHit, setUploadLimitHit] = React.useState<boolean>(false);
 
   const { form, handleChange } = useForm<{

@@ -1,14 +1,12 @@
 import React from "react";
-import { mapArray, NumberShortner, randomNum, weekDays } from "utils";
+import { mapArray, NumberShortner, randomNum, useForm } from "utils";
 import { useTranslation } from "react-i18next";
 import { BiArrowToBottom, BiArrowToTop } from "react-icons/bi";
 import {
   Bar,
   BarChart,
   CartesianGrid,
-  CartesianAxis,
   Legend,
-  ReferenceLine,
   Tooltip,
   XAxis,
   YAxis,
@@ -33,10 +31,24 @@ import {
   THead,
   Tr,
 } from "@partials";
-import { BsArrowDown } from "react-icons/bs";
+import { BsArrowDown, BsArrowUp } from "react-icons/bs";
 import { getRandomImage } from "placeholder";
+import {
+  SpinnerFallback,
+  useGetMyProfileQuery,
+  useGetProfileOverviewStatisticsQuery,
+  useGetProfilePopularStoriesViewsQuery,
+  useGetProfileReachedAudienceQuery,
+  useGetProfileStatisticsQuery,
+  useGetProfileTopStoriesQuery,
+  useGetProfileVisitsDetailsQuery,
+  useGetSocialProfileQuery,
+  usePaginationControls,
+  useUserData,
+} from "@UI";
+import { ProfileReachedGender } from "@features/API";
 
-export const AccountStatistics: React.FC<{
+export const ProfileStatistics: React.FC<{
   accountId: string;
 }> = ({ accountId }) => {
   const { t } = useTranslation();
@@ -129,6 +141,74 @@ export const AccountStatistics: React.FC<{
       setVisitsPieDims({ h, w });
     }
   }, [visitsPieRef]);
+
+  const { form, handleChange, selectProps, inputProps } = useForm<{
+    stats: number;
+    audinece: number;
+    ageGender: number;
+    overview: number;
+    storyPopularity: Date;
+    topStories: number;
+    topPosts: number;
+    details: number;
+    viewsDetailsCountry: string;
+    detailsOrderBy: number;
+  }>({
+    ageGender: 24,
+    audinece: 24,
+    overview: 24,
+    details: 24,
+    stats: 24,
+    storyPopularity: new Date(),
+    topPosts: 24,
+    topStories: 24,
+    viewsDetailsCountry: "",
+    detailsOrderBy: 1,
+  });
+
+  const { data: profile } = useGetSocialProfileQuery(accountId);
+
+  const { data: stats } = useGetProfileStatisticsQuery({
+    profileId: profile?.id || "",
+    sinceHours: form.stats,
+    userId: accountId,
+  });
+  const { data: overview } = useGetProfileOverviewStatisticsQuery({
+    profileId: profile?.id || "",
+    sinceHours: form.overview,
+    userId: accountId,
+  });
+  const { data: reachedAudience } = useGetProfileReachedAudienceQuery({
+    profileId: profile?.id || "",
+    sinceHours: form.audinece,
+    userId: accountId,
+  });
+  const { data: reachedAudineceAge } = useGetProfileReachedAudienceQuery({
+    profileId: profile?.id || "",
+    sinceHours: form.ageGender,
+    userId: accountId,
+  });
+  const { data: storyPopularity } = useGetProfilePopularStoriesViewsQuery({
+    profileId: profile?.id || "",
+    userId: accountId,
+    date: new Date(form.storyPopularity).toString(),
+  });
+  const { data: visitsDetails } = useGetProfileVisitsDetailsQuery({
+    profileId: profile?.id || "",
+    country: form.viewsDetailsCountry,
+    visitsOrderBy: form.detailsOrderBy,
+  });
+
+  const { controls: storiesControls, pagination: storiesPagination } =
+    usePaginationControls();
+  const { form: storiesForm } = useForm<
+    Parameters<typeof useGetProfileTopStoriesQuery>[0]
+  >({
+    pagination: storiesPagination,
+    profileId: profile?.id || "",
+    sinceHours: form.topStories,
+  });
+  const { data: topStories } = useGetProfileTopStoriesQuery(storiesForm);
 
   const overviewdata: { x: number; y: number; z: number; name: string }[] = [
     ...Array(12),
@@ -259,34 +339,47 @@ export const AccountStatistics: React.FC<{
     visits: randomNum(90000000),
   }));
 
+  const day = 24;
+  const month = day * 30;
+  const year = month * 12;
+
   return (
     <div className="flex flex-col gap-14 w-full">
-      <div className="flex gap-2 w-full">
-        <StatisticsCard
-          amount={2562156}
-          prevAmount={1234658}
-          title={t("Total of Visits")}
-        />
-        <StatisticsCard
-          amount={2562156}
-          prevAmount={1234658}
-          title={t("Total of Followers")}
-        />
-        <StatisticsCard
-          prevAmount={2562156}
-          amount={1234658}
-          title={t("Total of Likes")}
-        />
-        <StatisticsCard
-          amount={2562156}
-          prevAmount={1234658}
-          title={t("Total of Comments")}
-        />
-        <StatisticsCard
-          amount={2562156}
-          prevAmount={1234658}
-          title={t("Total of Saved")}
-        />
+      <div>
+        <div className="flex justify-end w-full">
+          <Select {...selectProps("stats")} className="w-28">
+            <SelectOption value={day}>{t("day")}</SelectOption>
+            <SelectOption value={month}>{t("month")}</SelectOption>
+            <SelectOption value={year}>{t("year")}</SelectOption>
+          </Select>
+        </div>
+        <div className="flex gap-2 w-full">
+          <StatisticsCard
+            amount={stats?.total_visits || 0}
+            prevAmount={stats?.prev_total_visits || 0}
+            title={t("Total of Visits")}
+          />
+          <StatisticsCard
+            amount={stats?.total_followers || 0}
+            prevAmount={stats?.prev_total_followers || 0}
+            title={t("Total of Followers")}
+          />
+          <StatisticsCard
+            prevAmount={stats?.total_likes || 0}
+            amount={stats?.prev_total_likes || 0}
+            title={t("Total of Likes")}
+          />
+          <StatisticsCard
+            amount={stats?.total_comments || 0}
+            prevAmount={stats?.prev_total_comments || 0}
+            title={t("Total of Comments")}
+          />
+          <StatisticsCard
+            amount={stats?.total_saves || 0}
+            prevAmount={stats?.prev_total_saves || 0}
+            title={t("Total of Saved")}
+          />
+        </div>
       </div>
       <div className="grid grid-cols-12 gap-4 w-full">
         <div
@@ -295,10 +388,10 @@ export const AccountStatistics: React.FC<{
         >
           <div className="flex justify-between w-full">
             <p className="font-bold text-xl">{t("Overview")}</p>
-            <Select className="w-28">
-              <SelectOption value={"day"}>{t("day")}</SelectOption>
-              <SelectOption value={"month"}>{t("month")}</SelectOption>
-              <SelectOption value={"year"}>{t("year")}</SelectOption>
+            <Select {...selectProps("overview")} className="w-28">
+              <SelectOption value={day}>{t("day")}</SelectOption>
+              <SelectOption value={month}>{t("month")}</SelectOption>
+              <SelectOption value={year}>{t("year")}</SelectOption>
             </Select>
           </div>
           <div className="flex items-center justify-between">
@@ -350,21 +443,29 @@ export const AccountStatistics: React.FC<{
             <div className="flex justify-between w-full">
               <p className="text-xl font-bold">{t("Reached Audience")}</p>
 
-              <Select className="w-28">
-                <SelectOption value={"day"}>{t("day")}</SelectOption>
-                <SelectOption value={"month"}>{t("month")}</SelectOption>
-                <SelectOption value={"year"}>{t("year")}</SelectOption>
+              <Select {...selectProps("audinece")} className="w-28">
+                <SelectOption value={day}>{t("day")}</SelectOption>
+                <SelectOption value={month}>{t("month")}</SelectOption>
+                <SelectOption value={year}>{t("year")}</SelectOption>
               </Select>
             </div>
             <div className="flex gap-2 h-full items-center">
               <div className="flex flex-col gap-4">
                 <BarChartLegend
-                  amount={randomNum(150000)}
+                  amount={
+                    (reachedAudience || []).filter(
+                      (v, i) => v.gender === ProfileReachedGender.Female
+                    ).length
+                  }
                   color="#EA4335"
                   name={t("Total of Women")}
                 />
                 <BarChartLegend
-                  amount={randomNum(150000)}
+                  amount={
+                    (reachedAudience || []).filter(
+                      (v, i) => v.gender === ProfileReachedGender.Male
+                    ).length
+                  }
                   color="#4285F4"
                   name={t("Total of Men")}
                 />
@@ -379,7 +480,7 @@ export const AccountStatistics: React.FC<{
                     <div className="flex flex-col gap-2 justify-center h-full w-full items-center rounded-full bg-black bg-opacity-[0.12]">
                       <p>{t("Total of audience")}</p>
                       <p className="font-bold text-xl">
-                        {NumberShortner(totalAudienece)}
+                        {NumberShortner((reachedAudience || [])?.length)}
                       </p>
                     </div>
                   </AspectRatio>
@@ -426,10 +527,10 @@ export const AccountStatistics: React.FC<{
         <div style={boxShadowStyles} className="flex p-8 flex-col">
           <div className="flex justify-between w-full">
             <p className="font-bold text-xl">{t("Age and Gender")}</p>
-            <Select className="w-28">
-              <SelectOption value={"day"}>{t("day")}</SelectOption>
-              <SelectOption value={"month"}>{t("month")}</SelectOption>
-              <SelectOption value={"year"}>{t("year")}</SelectOption>
+            <Select {...selectProps("ageGender")} className="w-28">
+              <SelectOption value={day}>{t("day")}</SelectOption>
+              <SelectOption value={month}>{t("month")}</SelectOption>
+              <SelectOption value={year}>{t("year")}</SelectOption>
             </Select>
           </div>
           <div className="h-12"></div>
@@ -481,7 +582,7 @@ export const AccountStatistics: React.FC<{
         <div style={boxShadowStyles} className="flex p-8 flex-col">
           <p className="font-bold text-xl">{t("Popular Stories Views")}</p>
           <HStack className="h-12">
-            {weekDays.map((v, i) => (
+            {[...Array(6)].map((_, v) => (
               <Button className="text-xs " colorScheme="white">
                 {new Date(
                   new Date().setDate(new Date().getDate() - v)
@@ -528,16 +629,17 @@ export const AccountStatistics: React.FC<{
         <div className="flex justify-between w-full">
           <p className="font-semibold">{t("Detials Level")}</p>
 
-          <Select className="w-28">
-            <SelectOption value={"day"}>{t("day")}</SelectOption>
-            <SelectOption value={"month"}>{t("month")}</SelectOption>
-            <SelectOption value={"year"}>{t("year")}</SelectOption>
+          <Select {...selectProps("details")} className="w-28">
+            <SelectOption value={day}>{t("day")}</SelectOption>
+            <SelectOption value={month}>{t("month")}</SelectOption>
+            <SelectOption value={year}>{t("year")}</SelectOption>
           </Select>
         </div>
 
         <div className="grid grid-rows-4 grid-cols-12">
           <div className="col-span-2 border-r pb-4 pr-4 border-b row-span-1 flex flex-col gap-2">
             <Select
+              {...selectProps("viewsDetailsCountry")}
               className="w-40 bg-[#F3F3F3]"
               placeholder={`${t("Country")}/${t("Territory")}`}
             >
@@ -548,10 +650,18 @@ export const AccountStatistics: React.FC<{
             <div></div>
             <div></div>
             <div className="flex items-center">
-              <Button className="bg-[#F3F3F3] text-black">
+              <Button
+                onClick={() =>
+                  handleChange(
+                    "detailsOrderBy",
+                    form.detailsOrderBy < 0 ? 1 : -1
+                  )
+                }
+                className="bg-[#F3F3F3] text-black"
+              >
                 <HStack>
                   <p>{t("Visits")}</p>
-                  <BsArrowDown />
+                  {form.detailsOrderBy < 0 ? <BsArrowDown /> : <BsArrowUp />}
                 </HStack>
               </Button>
             </div>
@@ -562,10 +672,18 @@ export const AccountStatistics: React.FC<{
             </div>
             <div className="col-span-4 justify-end flex gap-8 items-center">
               <p>{t("Country/Territory contribution to total")}</p>
-              <Button className="bg-[#F3F3F3] text-black">
+              <Button
+                onClick={() =>
+                  handleChange(
+                    "detailsOrderBy",
+                    form.detailsOrderBy < 0 ? 1 : -1
+                  )
+                }
+                className="bg-[#F3F3F3] text-black"
+              >
                 <HStack>
-                  {t("Visits")}
-                  <BsArrowDown />
+                  <p>{t("Visits")}</p>
+                  {form.detailsOrderBy < 0 ? <BsArrowDown /> : <BsArrowUp />}
                 </HStack>
               </Button>
             </div>
@@ -634,10 +752,10 @@ export const AccountStatistics: React.FC<{
       <div style={boxShadowStyles} className="flex flex-col p-8 gap-4">
         <div className="flex justify-between w-full">
           <p className="font-bold text-xl">{t("Most Popular Post")}</p>
-          <Select className="w-28">
-            <SelectOption value={"day"}>{t("day")}</SelectOption>
-            <SelectOption value={"month"}>{t("month")}</SelectOption>
-            <SelectOption value={"year"}>{t("year")}</SelectOption>
+          <Select {...selectProps("topPosts")} className="w-28">
+            <SelectOption value={day}>{t("day")}</SelectOption>
+            <SelectOption value={month}>{t("month")}</SelectOption>
+            <SelectOption value={year}>{t("year")}</SelectOption>
           </Select>
         </div>
         <Table
@@ -686,10 +804,10 @@ export const AccountStatistics: React.FC<{
       <div style={boxShadowStyles} className="flex flex-col p-8 gap-4">
         <div className="flex justify-between w-full">
           <p className="font-bold text-xl">{t("Most Popular Stories")}</p>
-          <Select className="w-28">
-            <SelectOption value={"day"}>{t("day")}</SelectOption>
-            <SelectOption value={"month"}>{t("month")}</SelectOption>
-            <SelectOption value={"year"}>{t("year")}</SelectOption>
+          <Select {...selectProps("topStories")} className="w-28">
+            <SelectOption value={day}>{t("day")}</SelectOption>
+            <SelectOption value={month}>{t("month")}</SelectOption>
+            <SelectOption value={year}>{t("year")}</SelectOption>
           </Select>
         </div>
         <Table
@@ -785,5 +903,15 @@ export const BarChartLegend: React.FC<{
       </div>
       {amount ? <p className="font-bold">{NumberShortner(amount)}</p> : null}
     </div>
+  );
+};
+
+export const MyProfileStatistics = () => {
+  const { user } = useUserData();
+
+  return user ? (
+    <ProfileStatistics accountId={user?.id}></ProfileStatistics>
+  ) : (
+    <p>error</p>
   );
 };

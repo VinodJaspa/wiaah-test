@@ -1,3 +1,24 @@
+export type Maybe<T> = T | null;
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
+/** All built-in and custom scalars, mapped to their actual values */
+export type Scalars = {
+  ID: string;
+  String: string;
+  Boolean: boolean;
+  Int: number;
+  Float: number;
+  DateTime: any;
+  Upload: any;
+};
+
 export type AcceptReceivedOrderInput = {
   id: Scalars["ID"];
 };
@@ -382,6 +403,7 @@ export type AskForRefundInput = {
   amount?: Maybe<Scalars["Float"]>;
   fullAmount?: Maybe<Scalars["Boolean"]>;
   id: Scalars["ID"];
+  opened: Scalars["Boolean"];
   orderItemId: Scalars["ID"];
   qty: Scalars["Int"];
   reason?: Maybe<Scalars["String"]>;
@@ -831,8 +853,11 @@ export type CreateActionInput = {
   allowedActions: Array<ActionType>;
   commentsVisibility?: Maybe<CommentsVisibility>;
   cover: Scalars["Upload"];
+  link?: Maybe<Scalars["String"]>;
   location?: Maybe<PostLocationInput>;
+  mentions?: Maybe<Array<Scalars["String"]>>;
   src: Scalars["Upload"];
+  tags?: Maybe<Array<Scalars["String"]>>;
 };
 
 export type CreateAffiliationInput = {
@@ -1577,6 +1602,16 @@ export type GetFilteredProductsInput = {
   size?: Maybe<Array<Scalars["String"]>>;
   type?: Maybe<ProductType>;
   usageStatus?: Maybe<ProductUsageStatus>;
+};
+
+export type GetFilteredRefundsInput = {
+  buyer?: Maybe<Scalars["String"]>;
+  pagination: GqlPaginationInput;
+  price?: Maybe<Scalars["Float"]>;
+  qty?: Maybe<Scalars["Int"]>;
+  seller?: Maybe<Scalars["String"]>;
+  shippingCost?: Maybe<Scalars["Float"]>;
+  title?: Maybe<Scalars["String"]>;
 };
 
 export type GetFilteredSellersAccountsInput = {
@@ -3686,6 +3721,7 @@ export type Query = {
   adminGetProduct?: Maybe<Product>;
   adminGetProfessions: Array<Profession>;
   adminGetRawService?: Maybe<ServiceShopRaw>;
+  adminGetRefundRequest: Refund;
   adminGetReturnedOrders: Array<ReturnedOrder>;
   adminGetSellerSales: Array<OrderItem>;
   adminGetSiteInformations: Array<SiteInformation>;
@@ -3806,7 +3842,7 @@ export type Query = {
   getProfileNewsfeedPosts: Array<NewsfeedPost>;
   getProfileOverviewStatistics: ProfileOverviewStatistics;
   getProfilePopularStoriesViews: StoryView;
-  getProfileReachedAudinece: ProfileReachedAudience;
+  getProfileReachedAudinece: Array<ProfileReachedAudience>;
   getProfileStatistics: ProfileStatistics;
   getProfileVisitsDetails: ProfileVisitsDetails;
   getRecentSales: Array<OrderItem>;
@@ -3814,6 +3850,7 @@ export type Query = {
   getRecommendedAffiliationPosts: Array<AffiliationPost>;
   getRecommendedProductPosts: Array<ProductPost>;
   getRecommendedServicePosts: Array<ServicePost>;
+  getRefundRequests: Array<Refund>;
   getRefundableOrders: Array<Order>;
   getRegistrations: Array<Registeration>;
   getReports: Array<Report>;
@@ -3966,6 +4003,10 @@ export type QueryAdminGetProfessionsArgs = {
 };
 
 export type QueryAdminGetRawServiceArgs = {
+  id: Scalars["String"];
+};
+
+export type QueryAdminGetRefundRequestArgs = {
   id: Scalars["String"];
 };
 
@@ -4371,6 +4412,10 @@ export type QueryGetRecommendedServicePostsArgs = {
   args: GetRecommendedServicePostsInput;
 };
 
+export type QueryGetRefundRequestsArgs = {
+  args: GetFilteredRefundsInput;
+};
+
 export type QueryGetRefundableOrdersArgs = {
   args: GetRefundableOrdersInput;
 };
@@ -4561,8 +4606,11 @@ export type RecentStory = {
 export type Refund = {
   __typename?: "Refund";
   amount: Scalars["Float"];
+  createdAt: Scalars["String"];
   fullAmount: Scalars["Boolean"];
   id: Scalars["ID"];
+  opened: Scalars["Boolean"];
+  orderItem?: Maybe<OrderItem>;
   orderItemId: Scalars["ID"];
   product: Product;
   qty: Scalars["Int"];
@@ -4733,6 +4781,7 @@ export type RestaurantMenuInput = {
 export type ReturnedOrder = {
   __typename?: "ReturnedOrder";
   amount: Scalars["Float"];
+  createdAt: Scalars["String"];
   fullAmount: Scalars["Float"];
   id: Scalars["ID"];
   orderItem: OrderItem;

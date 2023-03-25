@@ -35,6 +35,7 @@ export class ReturnedOrdersResolver {
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   adminGetReturnedOrders(@Args('args') args: AdminGetReturnedOrdersInput) {
     const filters: Prisma.RefundRequestWhereInput[] = [];
+    const { take, skip } = ExtractPagination(args.pagination);
 
     if (args.price) {
       filters.push({
@@ -76,6 +77,8 @@ export class ReturnedOrdersResolver {
           },
         ],
       },
+      take,
+      skip,
     });
   }
 

@@ -11,9 +11,11 @@ export type GetProfileReachedAudineceQueryVariables = Exact<{
 }>;
 
 export type GetProfileReachedAudineceQuery = { __typename?: "Query" } & {
-  getProfileReachedAudinece: { __typename?: "ProfileReachedAudience" } & Pick<
-    ProfileReachedAudience,
-    "age" | "createdAt" | "gender" | "id" | "profileId" | "reachedByProfileId"
+  getProfileReachedAudinece: Array<
+    { __typename?: "ProfileReachedAudience" } & Pick<
+      ProfileReachedAudience,
+      "age" | "createdAt" | "gender" | "id" | "profileId" | "reachedByProfileId"
+    >
   >;
 };
 
@@ -28,7 +30,7 @@ export const getProfileReachedAudienceQueryFetcher = async (args: args) => {
 
   const res = await client
     .setQuery(
-      `query getProfileReachedAudineceQuery($args:GetProfileStatisticsInput!){
+      `query getProfileReachedAudinece($args:GetProfileStatisticsInput!){
   getProfileReachedAudinece(args:$args){
     age
     createdAt

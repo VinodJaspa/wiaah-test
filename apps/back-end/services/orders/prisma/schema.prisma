@@ -37,6 +37,8 @@ model RefundRequest {
   qty           Int
   status        RefundStatusType @default(pending)
   rejectReason  String?
+  opened        Boolean
+  createdAt     DateTime         @default(now())
 }
 
 model OrderItem {

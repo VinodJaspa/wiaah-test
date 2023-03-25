@@ -20,3 +20,5 @@ export * from "./calculations";
 export * from "./compare";
 
 export * from "./passPropsToFnOrElem";
+
+export const isDev = true;

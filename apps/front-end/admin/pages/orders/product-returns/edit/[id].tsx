@@ -1,3 +1,4 @@
+import { RefundStatusType } from "@features/API";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -12,12 +13,16 @@ import {
   Select,
   SelectOption,
   Textarea,
+  useGetAdminReturnedOrder,
 } from "ui";
+import { useForm } from "utils";
 
 const ProductReturnsEdit: NextPage = () => {
   const { getParam, back } = useRouting();
   const { t } = useTranslation();
   const id = getParam("id");
+
+  const { data } = useGetAdminReturnedOrder(id);
 
   return (
     <section>
@@ -43,21 +48,28 @@ const ProductReturnsEdit: NextPage = () => {
               <p>{t("Order ID")}</p>
             </div>
             <div className="flex col-span-3 w-full justify-end">
-              <Input />
+              <Input value={data?.orderItem?.order?.id} />
             </div>
 
             <div className="flex w-full justify-end">
               <p>{t("Order Date")}</p>
             </div>
             <div className="flex col-span-3 w-full justify-start">
-              <DateFormInput />
+              <DateFormInput
+                dateValue={new Date(
+                  data?.orderItem?.order?.createdAt || new Date()
+                ).toString()}
+              />
             </div>
 
             <div className="flex w-full justify-end">
               <p>{t("Buyer")}</p>
             </div>
             <div className="flex col-span-3 w-full justify-end">
-              <Input className="w-full" value="" />
+              <Input
+                className="w-full"
+                value={data?.orderItem?.buyer?.profile?.username}
+              />
             </div>
 
             <div className="flex w-full justify-end">
@@ -65,7 +77,9 @@ const ProductReturnsEdit: NextPage = () => {
               <p>{t("First Name")}</p>
             </div>
             <div className="flex col-span-3 w-full justify-end">
-              <Input />
+              <Input
+                value={data?.orderItem?.order?.shippingAddress?.firstname}
+              />
             </div>
 
             <div className="flex w-full justify-end">
@@ -73,7 +87,9 @@ const ProductReturnsEdit: NextPage = () => {
               <p>{t("Last Name")}</p>
             </div>
             <div className="flex col-span-3 w-full justify-end">
-              <Input />
+              <Input
+                value={data?.orderItem?.order?.shippingAddress?.lastname}
+              />
             </div>
 
             <div className="flex w-full justify-end">
@@ -81,7 +97,7 @@ const ProductReturnsEdit: NextPage = () => {
               <p>{t("E-Mail")}</p>
             </div>
             <div className="flex col-span-3 w-full justify-end">
-              <Input />
+              <Input value={data?.orderItem?.buyer?.email} />
             </div>
 
             <div className="flex w-full justify-end">
@@ -89,7 +105,7 @@ const ProductReturnsEdit: NextPage = () => {
               <p>{t("Telephone")}</p>
             </div>
             <div className="flex col-span-3 w-full justify-end">
-              <Input />
+              <Input value={data?.orderItem?.order?.shippingAddress?.phone} />
             </div>
           </div>
 
@@ -101,10 +117,17 @@ const ProductReturnsEdit: NextPage = () => {
           <div className="grid gap-4 grid-cols-4">
             <div className="flex w-full justify-end">
               <InputRequiredStar />
+              <p>{t("Seller")}</p>
+            </div>
+            <div className="flex col-span-3 w-full justify-end">
+              <Input value={data?.orderItem?.seller?.profile?.username} />
+            </div>
+            <div className="flex w-full justify-end">
+              <InputRequiredStar />
               <p>{t("Product")}</p>
             </div>
             <div className="flex col-span-3 w-full justify-end">
-              <Input />
+              <Input value={data?.orderItem?.product?.title} />
             </div>
 
             <div className="flex w-full justify-end">
@@ -112,23 +135,23 @@ const ProductReturnsEdit: NextPage = () => {
               <p>{t("Model")}</p>
             </div>
             <div className="flex col-span-3 w-full justify-start">
-              <Input />
+              <Input value={data?.orderItem?.product?.brand} />
             </div>
 
             <div className="flex w-full justify-end">
               <p>{t("Quantity")}</p>
             </div>
             <div className="flex col-span-3 w-full justify-end">
-              <Input type="number" />
+              <Input type="number" value={data?.orderItem?.qty} />
             </div>
 
             <div className="flex w-full justify-end">
               <p>{t("Opened")}</p>
             </div>
             <div className="flex col-span-3 w-full justify-end">
-              <Select className="w-full">
-                <SelectOption value={"opened"}>{t("Opened")}</SelectOption>
-                <SelectOption value={"unOpened"}>{t("UnOpened")}</SelectOption>
+              <Select value={data?.opened || false} className="w-full">
+                <SelectOption value={true}>{t("Opened")}</SelectOption>
+                <SelectOption value={false}>{t("UnOpened")}</SelectOption>
               </Select>
             </div>
 
@@ -136,18 +159,22 @@ const ProductReturnsEdit: NextPage = () => {
               <p>{t("Comment")}</p>
             </div>
             <div className="flex col-span-3 w-full justify-end">
-              <Textarea />
+              <Textarea value={data?.reason} />
             </div>
 
             <div className="flex w-full justify-end">
               <p>{t("Return Action")}</p>
             </div>
             <div className="flex col-span-3 w-full justify-end">
-              <Select className="w-full">
-                <SelectOption value={"refused"}>{t("Refused")}</SelectOption>
-                <SelectOption value={"refunded"}>{t("Refunded")}</SelectOption>
-                <SelectOption value={"replacement"}>
-                  {t("Recplacement sent")}
+              <Select value={data?.status} className="w-full">
+                <SelectOption value={RefundStatusType.Reject}>
+                  {t("Refused")}
+                </SelectOption>
+                <SelectOption value={RefundStatusType.Accept}>
+                  {t("Refunded")}
+                </SelectOption>
+                <SelectOption value={RefundStatusType.Pending}>
+                  {t("Pending")}
                 </SelectOption>
               </Select>
             </div>

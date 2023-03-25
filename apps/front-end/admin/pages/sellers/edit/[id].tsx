@@ -27,11 +27,15 @@ import { AccountReturns } from "components/views/sellers/returns";
 import { SellerAccountSales } from "components/views/sellers/SellerSales";
 import { AccountSocialInfo } from "components/views/sellers/socialInfo";
 import { AccountWishlist } from "components/views/sellers/wishlist";
-import { AccountStatistics } from "components/views/sellers/AccountStatistics";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
-import { SimpleTabs, SimpleTabItemList, SimpleTabHead } from "ui";
+import {
+  SimpleTabs,
+  SimpleTabItemList,
+  SimpleTabHead,
+  ProfileStatistics,
+} from "ui";
 
 const Edit = () => {
   const { getParam } = useRouting();
@@ -126,7 +130,7 @@ const Edit = () => {
           <AccountTransactions accountId={id} />
           <AccountPayouts accountId={id} />
           <AccountVouchers accountId={id} />
-          <AccountStatistics accountId={id} />
+          <ProfileStatistics accountId={id} />
         </SimpleTabItemList>
       </SimpleTabs>
     </>

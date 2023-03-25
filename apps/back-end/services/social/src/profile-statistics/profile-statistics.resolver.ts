@@ -303,7 +303,7 @@ export class ProfileStatisticsResolver {
     };
   }
 
-  @Query(() => ProfileReachedAudience)
+  @Query(() => [ProfileReachedAudience])
   async getProfileReachedAudinece(
     @Args('args') args: GetProfileStatisticsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,

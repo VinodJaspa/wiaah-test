@@ -18,6 +18,16 @@ export class RefundAdminResolver {
     private readonly prisma: PrismaService,
     private readonly querybus: QueryBus,
   ) {}
+
+  @Query(() => Refund)
+  async adminGetRefundRequest(@Args('id') id: string) {
+    return this.prisma.refundRequest.findUnique({
+      where: {
+        id,
+      },
+    });
+  }
+
   @Query(() => [Refund])
   async getRefundRequests(
     @Args('args') args: GetFilteredRefundsInput,
