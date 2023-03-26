@@ -8,6 +8,7 @@ import {
   ServiceCategoryStatus,
   TranslationText,
 } from "@features/API";
+import { isDev } from "@UI/../utils/src";
 
 export type GetServiceCategoriesQueryVariables = Exact<{
   [key: string]: never;
@@ -142,138 +143,140 @@ query getServiceCategories{
     `);
 
   return useQuery(["service-categories"], async () => {
-    const res = [
-      {
-        id: "",
-        description: "",
-        filters: [
-          {
-            filterGroupName: "test",
-            filteringKey: "test",
-            filterValues: [],
-            sortOrder: 5,
-          },
-        ],
-        metaTagDescription: "",
-        metaTagKeywords: [{ value: "data", langId: "" }],
-        metaTagTitle: [{ langId: "" }],
-        name: [{ langId: "tes", value: "Hotel" }],
-        seo: [{ langId: "test", value: "test" }],
-        slug: "healthcenter",
-        sortOrder: 5,
-        status: ServiceCategoryStatus.Active,
-        thumbnail: "",
-      },
-      {
-        id: "",
-        description: "",
-        filters: [
-          {
-            filterGroupName: "test",
-            filteringKey: "test",
-            filterValues: [],
-            sortOrder: 5,
-          },
-        ],
-        metaTagDescription: "",
-        metaTagKeywords: [{ value: "data", langId: "" }],
-        metaTagTitle: [{ langId: "" }],
-        name: [{ langId: "tes", value: "Holiday Rentals" }],
-        seo: [{ langId: "test", value: "test" }],
-        slug: "healthcenter",
-        sortOrder: 5,
-        status: ServiceCategoryStatus.Active,
-        thumbnail: "",
-      },
-      {
-        id: "",
-        description: "",
-        filters: [
-          {
-            filterGroupName: "test",
-            filteringKey: "test",
-            filterValues: [],
-            sortOrder: 5,
-          },
-        ],
-        metaTagDescription: "",
-        metaTagKeywords: [{ value: "data", langId: "" }],
-        metaTagTitle: [{ langId: "" }],
-        name: [{ langId: "tes", value: "Restaruant" }],
-        seo: [{ langId: "test", value: "test" }],
-        slug: "healthcenter",
-        sortOrder: 5,
-        status: ServiceCategoryStatus.Active,
-        thumbnail: "",
-      },
-      {
-        id: "",
-        description: "",
-        filters: [
-          {
-            filterGroupName: "test",
-            filteringKey: "test",
-            filterValues: [],
-            sortOrder: 5,
-          },
-        ],
-        metaTagDescription: "",
-        metaTagKeywords: [{ value: "data", langId: "" }],
-        metaTagTitle: [{ langId: "" }],
-        name: [{ langId: "tes", value: "Health Center" }],
-        seo: [{ langId: "test", value: "test" }],
-        slug: "healthcenter",
-        sortOrder: 5,
-        status: ServiceCategoryStatus.Active,
-        thumbnail: "",
-      },
-      {
-        id: "",
-        description: "",
-        filters: [
-          {
-            filterGroupName: "test",
-            filteringKey: "test",
-            filterValues: [],
-            sortOrder: 5,
-          },
-        ],
-        metaTagDescription: "",
-        metaTagKeywords: [{ value: "data", langId: "" }],
-        metaTagTitle: [{ langId: "" }],
-        name: [{ langId: "tes", value: "Beauty Center" }],
-        seo: [{ langId: "test", value: "test" }],
-        slug: "healthcenter",
-        sortOrder: 5,
-        status: ServiceCategoryStatus.Active,
-        thumbnail: "",
-      },
-      {
-        id: "",
-        description: "",
-        filters: [
-          {
-            filterGroupName: "test",
-            filteringKey: "test",
-            filterValues: [],
-            sortOrder: 5,
-          },
-        ],
-        metaTagDescription: "",
-        metaTagKeywords: [{ value: "data", langId: "" }],
-        metaTagTitle: [{ langId: "" }],
-        name: [{ langId: "tes", value: "Vehicle" }],
-        seo: [{ langId: "test", value: "test" }],
-        slug: "healthcenter",
-        sortOrder: 5,
-        status: ServiceCategoryStatus.Active,
-        thumbnail: "",
-      },
-    ] as unknown as GetServiceCategoriesQuery["getServiceCategories"];
+    if (isDev) {
+      const res = [
+        {
+          id: "",
+          description: "",
+          filters: [
+            {
+              filterGroupName: "test",
+              filteringKey: "test",
+              filterValues: [],
+              sortOrder: 5,
+            },
+          ],
+          metaTagDescription: "",
+          metaTagKeywords: [{ value: "data", langId: "" }],
+          metaTagTitle: [{ langId: "" }],
+          name: [{ langId: "tes", value: "Hotel" }],
+          seo: [{ langId: "test", value: "test" }],
+          slug: "healthcenter",
+          sortOrder: 5,
+          status: ServiceCategoryStatus.Active,
+          thumbnail: "",
+        },
+        {
+          id: "",
+          description: "",
+          filters: [
+            {
+              filterGroupName: "test",
+              filteringKey: "test",
+              filterValues: [],
+              sortOrder: 5,
+            },
+          ],
+          metaTagDescription: "",
+          metaTagKeywords: [{ value: "data", langId: "" }],
+          metaTagTitle: [{ langId: "" }],
+          name: [{ langId: "tes", value: "Holiday Rentals" }],
+          seo: [{ langId: "test", value: "test" }],
+          slug: "healthcenter",
+          sortOrder: 5,
+          status: ServiceCategoryStatus.Active,
+          thumbnail: "",
+        },
+        {
+          id: "",
+          description: "",
+          filters: [
+            {
+              filterGroupName: "test",
+              filteringKey: "test",
+              filterValues: [],
+              sortOrder: 5,
+            },
+          ],
+          metaTagDescription: "",
+          metaTagKeywords: [{ value: "data", langId: "" }],
+          metaTagTitle: [{ langId: "" }],
+          name: [{ langId: "tes", value: "Restaruant" }],
+          seo: [{ langId: "test", value: "test" }],
+          slug: "healthcenter",
+          sortOrder: 5,
+          status: ServiceCategoryStatus.Active,
+          thumbnail: "",
+        },
+        {
+          id: "",
+          description: "",
+          filters: [
+            {
+              filterGroupName: "test",
+              filteringKey: "test",
+              filterValues: [],
+              sortOrder: 5,
+            },
+          ],
+          metaTagDescription: "",
+          metaTagKeywords: [{ value: "data", langId: "" }],
+          metaTagTitle: [{ langId: "" }],
+          name: [{ langId: "tes", value: "Health Center" }],
+          seo: [{ langId: "test", value: "test" }],
+          slug: "healthcenter",
+          sortOrder: 5,
+          status: ServiceCategoryStatus.Active,
+          thumbnail: "",
+        },
+        {
+          id: "",
+          description: "",
+          filters: [
+            {
+              filterGroupName: "test",
+              filteringKey: "test",
+              filterValues: [],
+              sortOrder: 5,
+            },
+          ],
+          metaTagDescription: "",
+          metaTagKeywords: [{ value: "data", langId: "" }],
+          metaTagTitle: [{ langId: "" }],
+          name: [{ langId: "tes", value: "Beauty Center" }],
+          seo: [{ langId: "test", value: "test" }],
+          slug: "healthcenter",
+          sortOrder: 5,
+          status: ServiceCategoryStatus.Active,
+          thumbnail: "",
+        },
+        {
+          id: "",
+          description: "",
+          filters: [
+            {
+              filterGroupName: "test",
+              filteringKey: "test",
+              filterValues: [],
+              sortOrder: 5,
+            },
+          ],
+          metaTagDescription: "",
+          metaTagKeywords: [{ value: "data", langId: "" }],
+          metaTagTitle: [{ langId: "" }],
+          name: [{ langId: "tes", value: "Vehicle" }],
+          seo: [{ langId: "test", value: "test" }],
+          slug: "healthcenter",
+          sortOrder: 5,
+          status: ServiceCategoryStatus.Active,
+          thumbnail: "",
+        },
+      ] as unknown as GetServiceCategoriesQuery["getServiceCategories"];
 
-    return res;
-    // const res = await client.send<GetServiceCategoriesQuery>();
+      return res;
+    }
+    const res = await client.send<GetServiceCategoriesQuery>();
 
-    // return res.data.getServiceCategories;
+    return res.data.getServiceCategories;
   });
 };

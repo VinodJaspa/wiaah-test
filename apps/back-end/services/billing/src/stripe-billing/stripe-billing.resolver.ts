@@ -43,6 +43,10 @@ export class StripeBillingResolver implements OnModuleInit {
     private readonly prisma: PrismaService,
   ) {}
 
+  @Query(() => String)
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
+  async createConnectAccount() {}
+
   @Mutation(() => String)
   @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
   async createConnectedAccount(

@@ -1,11 +1,10 @@
-import { NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CommandHandler, ICommandHandler, QueryBus } from '@nestjs/cqrs';
 import { AcceptRequestedRefundCommand } from '@refund/commands/impl';
 import { OrderRefundStatusEnum } from '@refund/const';
 import { Refund } from '@refund/entities';
-import { GetRefundRequestQuery } from '@refund/queries';
 import { RefundRepository } from '@refund/repository';
 import { RefundCommandHandlersBase } from '@refund/commands/abstractions';
+import { RefundStatusType } from '@prisma-client';
 
 @CommandHandler(AcceptRequestedRefundCommand)
 export class AcceptRequestedRefundCommandHandler
@@ -23,7 +22,7 @@ export class AcceptRequestedRefundCommandHandler
     await this.validateCanModifyRequest(requestId, userId);
     const res = await this.repo.updateOneStatus(
       requestId,
-      OrderRefundStatusEnum.accept,
+      RefundStatusType.accepted,
     );
 
     return res;

@@ -39,6 +39,7 @@ model RefundRequest {
   rejectReason  String?
   opened        Boolean
   createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
 }
 
 model OrderItem {
@@ -68,8 +69,10 @@ type OrderStatus {
 
 enum RefundStatusType {
   pending
-  accept
-  reject
+  accepted
+  rejected
+  refunded
+  closed
 }
 
 enum OrderStatusEnum {

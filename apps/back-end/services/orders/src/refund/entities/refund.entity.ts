@@ -50,4 +50,7 @@ export class Refund {
 
   @Field(() => String)
   createdAt: Date;
+
+  @Field(() => String)
+  updatedAt: Date;
 }

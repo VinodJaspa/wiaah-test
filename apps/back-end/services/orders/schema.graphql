@@ -108,6 +108,7 @@ type Refund {
   rejectReason: String
   opened: Boolean!
   createdAt: String!
+  updatedAt: String!
   product: Product!
   orderItem: OrderItem
 }
@@ -119,8 +120,10 @@ enum RefundType {
 
 enum RefundStatusType {
   pending
-  accept
-  reject
+  accepted
+  rejected
+  refunded
+  closed
 }
 
 type ReturnedOrder {
@@ -217,12 +220,15 @@ input GetMyReturnedOrdersInput {
 }
 
 input GetFilteredRefundsInput {
+  refundId: String
+  orderId: String
+  comment: String
+  product: String
+  status: RefundStatusType
+  addedDate: String
+  dateModified: String
   seller: String
   buyer: String
-  title: String
-  qty: Int
-  price: Float
-  shippingCost: Float
   pagination: GqlPaginationInput!
 }
 
@@ -251,6 +257,8 @@ type Mutation {
   askForRefund(askForRefundArgs: AskForRefundInput!): Boolean!
   acceptRefundRequest(id: ID!): Boolean!
   rejectRefundRequest(args: RejectRefundRequestInput!): Boolean!
+  adminConfirmRefund(id: String!): Boolean!
+  adminCloseRefund(id: String!): Boolean!
 }
 
 input RejectReceivedOrderInput {

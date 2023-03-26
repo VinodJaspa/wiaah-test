@@ -27,6 +27,7 @@ import {
   HealthCenterIncludedServices,
   ServiceSectionWithSchemaType,
   AccountVerification,
+  MyVerificationSection,
 } from "@UI";
 
 import { ServicesType, StepperStepType } from "types";
@@ -109,7 +110,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
     {
       stepName: t("Verify You Identity"),
       key: "8",
-      stepComponent: AccountVerification,
+      stepComponent: MyVerificationSection,
     },
     {
       stepName: t("Select a plan"),

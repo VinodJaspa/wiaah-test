@@ -73,7 +73,7 @@ export class ReturnedOrdersResolver {
         AND: [
           ...filters,
           {
-            status: 'accept',
+            status: 'accepted',
           },
         ],
       },

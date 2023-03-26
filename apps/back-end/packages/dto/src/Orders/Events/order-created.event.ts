@@ -40,6 +40,8 @@ export class OrderCreatedEvent extends KafkaMessage<{
         percent: number;
       };
       total: number;
+      paid: number;
+      paidCurrency: string;
     };
   };
 }> {}

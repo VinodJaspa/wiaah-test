@@ -4,6 +4,7 @@ import { Stripe } from 'stripe';
 import { ConfigService } from '@nestjs/config';
 import { STRIPE_INJECT_TOKEN } from '../constants';
 import { SubscriptionMetadata } from '@stripe-billing/types';
+import { AccountType } from 'nest-utils';
 
 @Injectable()
 export class StripeService implements OnModuleInit {
@@ -19,7 +20,23 @@ export class StripeService implements OnModuleInit {
     this.webhookSecret = opts.webhookSecret;
   }
 
-  async createdConnectedAccount(): Promise<
+  async createConnectedAccount(id: string, type: AccountType) {
+    const res = await this.stripe.accounts.create({
+      type: 'custom',
+      capabilities: {
+        card_payments: {
+          requested: true,
+        },
+        bank_transfer_payments: {
+          requested: true,
+        },
+      },
+    });
+
+    return res;
+  }
+
+  async createConnectHostedAccount(): Promise<
     [Stripe.AccountLink, Stripe.Account]
   > {
     const res = await this.stripe.accounts.create({

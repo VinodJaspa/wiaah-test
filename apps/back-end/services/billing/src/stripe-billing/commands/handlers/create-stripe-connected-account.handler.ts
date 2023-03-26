@@ -15,7 +15,8 @@ export class CreateStripeConnectedAccountCommandHandler
   async execute({
     userId,
   }: CreateStripeConnectedAccountCommand): Promise<String> {
-    const [link, account] = await this.stripeService.createdConnectedAccount();
+    const [link, account] =
+      await this.stripeService.createConnectHostedAccount();
     this.eventBus.publish(
       new StripeConnectedAccountCreatedEvent({
         stripeId: account.id,

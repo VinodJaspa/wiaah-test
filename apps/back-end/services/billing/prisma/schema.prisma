@@ -48,7 +48,7 @@ model Transaction {
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt()
   status      TransactionStatus @default(pending)
-  from        String            @db.ObjectId
+  fromId      String            @db.ObjectId
   userId      String            @db.ObjectId
   paymentType String
   description String

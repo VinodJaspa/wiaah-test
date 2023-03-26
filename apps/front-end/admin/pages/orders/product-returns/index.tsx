@@ -1,13 +1,20 @@
 import { RefundStatusType } from "@features/API";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { GiCheckMark } from "react-icons/gi";
 import { useRouting } from "routing";
 import {
+  Button,
   Checkbox,
+  CloseIcon,
+  DateFormInput,
+  HStack,
   Input,
   ListIcon,
   Pagination,
   SearchIcon,
+  Select,
+  SelectOption,
   Table,
   TableContainer,
   TBody,
@@ -15,41 +22,27 @@ import {
   Th,
   THead,
   Tr,
-  useGetAdminReturnedOrder,
+  useAdminCloseRefundRequestMutation,
+  useAdminConfirmRefundRequestMutation,
+  useGetAdminFilteredRefundRequests,
   usePaginationControls,
 } from "ui";
-import { mapArray } from "utils";
-
-type ReturnedProduct = {
-  returnId: string;
-  orderId: string;
-  buyer: string;
-  product: string;
-  model: string;
-  status: string;
-  createdAt: string;
-  updatedAt: string;
-  seller: string;
-  reason: string;
-};
-
-const products: ReturnedProduct[] = [...Array(10)].map((_, i) => ({
-  returnId: `returnid-${i}`,
-  buyer: `buyer-${i}`,
-  model: `product model-${i}`,
-  createdAt: new Date().toString(),
-  orderId: `orderid-${i}`,
-  product: `product-${i}`,
-  status: "accepted",
-  updatedAt: new Date().toString(),
-  seller: `seller-${i}`,
-  reason: `refund reason-${i}`,
-}));
+import { mapArray, useForm } from "utils";
 
 const ProductReturns = () => {
   const { t } = useTranslation();
-  const { controls } = usePaginationControls();
-  const { back, getCurrentPath, visit } = useRouting();
+  const { getCurrentPath, visit } = useRouting();
+
+  const { pagination, controls } = usePaginationControls();
+  const { form, inputProps, selectProps, dateInputProps } = useForm<
+    Parameters<typeof useGetAdminFilteredRefundRequests>[0]
+  >({
+    pagination,
+  });
+  const { data } = useGetAdminFilteredRefundRequests(form);
+
+  const { mutate: confirmRefund } = useAdminConfirmRefundRequestMutation();
+  const { mutate: closeRefund } = useAdminCloseRefundRequestMutation();
 
   return (
     <section>
@@ -61,10 +54,10 @@ const ProductReturns = () => {
           </div>
           <TableContainer>
             <Table
-              TrProps={{ className: "" }}
+              TrProps={{ className: "w-fit" }}
               TdProps={{ className: "border" }}
               ThProps={{ className: "whitespace-nowrap border" }}
-              className="w-fit"
+              className=""
             >
               <THead>
                 <Th className="w-fit" align="left">
@@ -72,11 +65,10 @@ const ProductReturns = () => {
                 </Th>
                 <Th>{t("Return ID")}</Th>
                 <Th>{t("Order ID")}</Th>
-                <Th>{t("Buyer")}</Th>
                 <Th>{t("Seller")}</Th>
+                <Th>{t("Buyer")}</Th>
                 <Th>{t("Comment")}</Th>
                 <Th>{t("Product")}</Th>
-                <Th>{t("Model")}</Th>
                 <Th>{t("Status")}</Th>
                 <Th>{t("Date Added")}</Th>
                 <Th>{t("Date Modified")}</Th>
@@ -84,72 +76,110 @@ const ProductReturns = () => {
                 <Tr>
                   <Th></Th>
                   <Th>
-                    <Input />
+                    <Input {...inputProps("refundId")} />
                   </Th>
                   <Th>
-                    <Input />
+                    <Input {...inputProps("orderId")} />
                   </Th>
                   <Th>
-                    <Input />
+                    <Input {...inputProps("seller")} />
                   </Th>
                   <Th>
-                    <Input />
+                    <Input {...inputProps("buyer")} />
                   </Th>
                   <Th>
-                    <Input />
+                    <Input {...inputProps("comment")} />
                   </Th>
                   <Th>
-                    <Input />
+                    <Input {...inputProps("product")} />
                   </Th>
                   <Th>
-                    <Input />
+                    <Select {...selectProps("status")}>
+                      {Object.values(RefundStatusType).map((v, i) => (
+                        <SelectOption key={v + i} value={v}>
+                          {v}
+                        </SelectOption>
+                      ))}
+                    </Select>
                   </Th>
                   <Th>
-                    <Input />
+                    <DateFormInput {...dateInputProps("addedDate")} />
                   </Th>
                   <Th>
-                    <Input />
+                    <DateFormInput {...dateInputProps("dateModified")} />
                   </Th>
-                  <Th>
-                    <Input />
-                  </Th>
+                  <Th></Th>
                 </Tr>
               </THead>
               <TBody>
-                {mapArray(products, (prod, i) => (
+                {mapArray(data, (prod, i) => (
                   <Tr>
                     <Td>
                       <Checkbox />
                     </Td>
-                    <Td>{prod.returnId}</Td>
-                    <Td>{prod.orderId}</Td>
-                    <Td>{prod.buyer}</Td>
-                    <Td>{prod.seller}</Td>
-                    <Td>{prod.reason}</Td>
-                    <Td>{prod.product}</Td>
-                    <Td>{prod.model}</Td>
+                    <Td>{prod.id}</Td>
+                    <Td>{prod?.orderItem?.id}</Td>
+                    <Td className="whitespace-nowrap">
+                      {prod?.orderItem?.seller?.firstName}{" "}
+                      {prod?.orderItem?.seller?.lastName}
+                    </Td>
+                    <Td className="whitespace-nowrap">
+                      {prod?.orderItem?.buyer?.firstName}{" "}
+                      {prod?.orderItem?.buyer?.lastName}
+                    </Td>
+                    <Td className="w-80">{prod.reason}</Td>
+                    <Td>{prod?.product?.title}</Td>
                     <Td>{prod.status}</Td>
                     <Td>{new Date(prod.createdAt).toDateString()}</Td>
                     <Td>{new Date(prod.updatedAt).toDateString()}</Td>
                     <Td>
-                      <SearchIcon
-                        onClick={() =>
-                          visit((r) =>
-                            r
-                              .addPath(getCurrentPath())
-                              .addPath("edit")
-                              .addPath(prod.returnId)
-                          )
-                        }
-                        className="w-8 h-8 p-2 text-white fill-white rounded hover:bg-cyan-600 bg-cyan-500"
-                      />
+                      <HStack>
+                        <SearchIcon
+                          onClick={() =>
+                            visit((r) =>
+                              r
+                                .addPath(getCurrentPath())
+                                .addPath("edit")
+                                .addPath(prod.id)
+                            )
+                          }
+                          className="w-8 h-8 p-2 text-white cursor-pointer fill-white rounded hover:bg-cyan-600 bg-cyan-500"
+                        />
+                        {[
+                          RefundStatusType.Accepted,
+                          RefundStatusType.Rejected,
+                          RefundStatusType.Pending,
+                        ].includes(prod.status) ? (
+                          <>
+                            <Button
+                              onClick={() => {
+                                confirmRefund({ id: prod.id });
+                              }}
+                              center
+                              className="p-2"
+                            >
+                              <GiCheckMark />
+                            </Button>
+                            <Button
+                              onClick={() => {
+                                closeRefund({ id: prod.id });
+                              }}
+                              center
+                              className="p-2"
+                              colorScheme="danger"
+                            >
+                              <CloseIcon />
+                            </Button>
+                          </>
+                        ) : null}
+                      </HStack>
                     </Td>
                   </Tr>
                 ))}
               </TBody>
             </Table>
           </TableContainer>
-          <Pagination />
+          <Pagination controls={controls} />
         </div>
       </div>
     </section>

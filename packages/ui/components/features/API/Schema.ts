@@ -1605,13 +1605,16 @@ export type GetFilteredProductsInput = {
 };
 
 export type GetFilteredRefundsInput = {
+  addedDate?: Maybe<Scalars["String"]>;
   buyer?: Maybe<Scalars["String"]>;
+  comment?: Maybe<Scalars["String"]>;
+  dateModified?: Maybe<Scalars["String"]>;
+  orderId?: Maybe<Scalars["String"]>;
   pagination: GqlPaginationInput;
-  price?: Maybe<Scalars["Float"]>;
-  qty?: Maybe<Scalars["Int"]>;
+  product?: Maybe<Scalars["String"]>;
+  refundId?: Maybe<Scalars["String"]>;
   seller?: Maybe<Scalars["String"]>;
-  shippingCost?: Maybe<Scalars["Float"]>;
-  title?: Maybe<Scalars["String"]>;
+  status?: Maybe<RefundStatusType>;
 };
 
 export type GetFilteredSellersAccountsInput = {
@@ -2319,6 +2322,8 @@ export type Mutation = {
   addNewBillingAddress: BillingAddress;
   addProductToCart: CartProduct;
   adminCancelOrder: Scalars["Boolean"];
+  adminCloseRefund: Scalars["Boolean"];
+  adminConfirmRefund: Scalars["Boolean"];
   adminCreateStaffAccount: Scalars["Boolean"];
   adminDeleteNewsfeedPost: Scalars["Boolean"];
   adminDeleteProduct: Scalars["Boolean"];
@@ -2566,6 +2571,14 @@ export type MutationAddProductToCartArgs = {
 };
 
 export type MutationAdminCancelOrderArgs = {
+  id: Scalars["String"];
+};
+
+export type MutationAdminCloseRefundArgs = {
+  id: Scalars["String"];
+};
+
+export type MutationAdminConfirmRefundArgs = {
   id: Scalars["String"];
 };
 
@@ -4620,12 +4633,15 @@ export type Refund = {
   sellerId: Scalars["ID"];
   status: RefundStatusType;
   type: RefundType;
+  updatedAt: Scalars["String"];
 };
 
 export enum RefundStatusType {
-  Accept = "accept",
+  Accepted = "accepted",
+  Closed = "closed",
   Pending = "pending",
-  Reject = "reject",
+  Refunded = "refunded",
+  Rejected = "rejected",
 }
 
 export enum RefundType {

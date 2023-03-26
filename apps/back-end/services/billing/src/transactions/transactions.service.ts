@@ -30,7 +30,7 @@ export class TransactionsService {
           {
             OR: [
               {
-                from: userId,
+                fromId: userId,
               },
               {
                 userId,
@@ -54,7 +54,7 @@ export class TransactionsService {
     const transaction = await this.prisma.transaction.create({
       data: {
         status: 'pending',
-        from: input.from,
+        fromId: input.from,
         userId: input.to,
         amount: input.amount,
         description: input.descirption || '',
