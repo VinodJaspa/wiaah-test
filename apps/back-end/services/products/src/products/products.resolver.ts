@@ -16,8 +16,7 @@ import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
 } from 'nest-utils';
-import { GraphQLUpload, Upload } from 'graphql-upload';
-import { PrepareGqlUploads, UploadService } from '@wiaah/upload';
+import { UploadService } from '@wiaah/upload';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { ProductsService } from '@products/products.service';
 import { Discount, Product, Cashback } from '@products/entities';

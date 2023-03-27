@@ -6,7 +6,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Context } from '@nestjs/graphql';
 import { ClientKafka } from '@nestjs/microservices';
 import {
   accountType,
@@ -31,6 +31,9 @@ import {
 } from 'nest-dto';
 import { PrismaService } from 'prismaService';
 import { FinancialAccountType } from '@prisma-client';
+import { CreateBillingAccountInput } from './dto/update-billing-account.input';
+import { Upload, GraphQLUpload } from 'graphql-upload';
+import { BillingAccountBusinessType } from './entities/billing-account.entity';
 
 @Resolver()
 export class StripeBillingResolver implements OnModuleInit {
@@ -44,8 +47,128 @@ export class StripeBillingResolver implements OnModuleInit {
   ) {}
 
   @Query(() => String)
-  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
-  async createConnectAccount() {}
+  @UseGuards(new GqlAuthorizationGuard([]))
+  async getMyBillingAccount(@GqlCurrentUser() user: AuthorizationDecodedUser) {
+    const acc = await this.prisma.financialAccount.findUnique({
+      where: {
+        ownerId_type: {
+          ownerId: user.id,
+          type: FinancialAccountType.stripe,
+        },
+      },
+    });
+
+    if (acc) {
+      const stripeAcc = await this.stripeService.getConnectedAccountById(
+        acc.financialId,
+      );
+      console.log(stripeAcc.payouts_enabled, stripeAcc.requirements);
+      console.log(JSON.stringify(stripeAcc, null, 2));
+      return JSON.stringify(stripeAcc);
+    } else {
+      const stripeAcc = await this.stripeService.createConnectedAccount(
+        user.id,
+        user.accountType,
+      );
+
+      await this.prisma.financialAccount.create({
+        data: {
+          financialId: stripeAcc.id,
+          label: 'Stripe',
+          ownerId: user.id,
+          type: FinancialAccountType.stripe,
+        },
+      });
+
+      return JSON.stringify(stripeAcc);
+    }
+  }
+
+  @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([]))
+  async updateByBillingAccount(
+    @Args('args') args: CreateBillingAccountInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Context() ctx: { ip: string },
+  ) {
+    try {
+      console.log(ctx.ip);
+      const finAcc = await this.prisma.financialAccount.findUnique({
+        where: {
+          ownerId_type: {
+            ownerId: user.id,
+            type: 'stripe',
+          },
+        },
+      });
+
+      if (finAcc) {
+        const res = await this.stripeService.updateConnectedAccount(
+          finAcc.financialId,
+          {
+            ...args,
+            company:
+              args.business_type === BillingAccountBusinessType.company
+                ? args.company
+                : undefined,
+            individual:
+              args.business_type === BillingAccountBusinessType.individual
+                ? args.individual
+                : undefined,
+            external_account: undefined,
+            tos_acceptance: {
+              date: Math.floor(Date.now() / 1000),
+              ip: ctx.ip,
+            },
+          },
+        );
+      } else {
+        const res = await this.stripeService.createConnectedAccount(
+          user.id,
+          user.accountType,
+          {
+            ...args,
+            company:
+              args.business_type === BillingAccountBusinessType.company
+                ? args.company
+                : undefined,
+            individual:
+              args.business_type === BillingAccountBusinessType.individual
+                ? args.individual
+                : undefined,
+            tos_acceptance: {
+              date: Math.floor(Date.now() / 1000),
+              ip: ctx.ip,
+            },
+          },
+        );
+
+        await this.prisma.financialAccount.create({
+          data: {
+            financialId: res.id,
+            label: 'Stripe',
+            ownerId: user.id,
+            type: 'stripe',
+          },
+        });
+        console.log(JSON.stringify(res, null, 2));
+      }
+
+      return true;
+    } catch (err) {
+      console.log('err', err);
+      return false;
+    }
+  }
+
+  @Mutation(() => String)
+  @UseGuards(new GqlAuthorizationGuard([]))
+  async uploadStripeBankDocument(
+    @Args('doc', { type: () => GraphQLUpload }) doc: Upload,
+    @Args('test') test: string,
+  ) {
+    console.log('uploaded', doc);
+  }
 
   @Mutation(() => String)
   @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))

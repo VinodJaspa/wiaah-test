@@ -39,7 +39,7 @@ export function parseCookies(rawCookies: string): ParsedCookie[] {
     Cookie format: "name=value; Path=/; HttpOnly; Secure"
     Multiple cookies format: "name=value; Path=/; HttpOnly; Secure, name2=value2"
   */
-  const arraifyedRawCookies = rawCookies.split(" ");
+  const arraifyedRawCookies = rawCookies.split(",");
   const validRawCookies = arraifyedRawCookies
     .map((rawCookie, index, ref) => {
       if (hasExpiresField(rawCookie)) {

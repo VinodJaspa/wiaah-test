@@ -12,7 +12,6 @@ import { StripeBillingEventsHandlers } from './events';
 import { StripeBillingSagas } from './sagas';
 import { StripeBillingController } from './stripe-billing.controller';
 import { stripeBillingQueryHandlers } from './queries';
-import { WithdrawCurrency } from './entities';
 import { PrismaService } from 'prismaService';
 import { WithdrawCurrencyResolver } from './withdraw-currency.resolver';
 

@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { STRIPE_INJECT_TOKEN } from '../constants';
 import { SubscriptionMetadata } from '@stripe-billing/types';
 import { AccountType } from 'nest-utils';
+import { argsToArgsConfig } from 'graphql/type/definition';
 
 @Injectable()
 export class StripeService implements OnModuleInit {
@@ -20,18 +21,47 @@ export class StripeService implements OnModuleInit {
     this.webhookSecret = opts.webhookSecret;
   }
 
-  async createConnectedAccount(id: string, type: AccountType) {
+  async createConnectedAccount(
+    id: string,
+    type: AccountType,
+    params?: Stripe.AccountCreateParams,
+  ) {
     const res = await this.stripe.accounts.create({
+      ...params,
       type: 'custom',
+      metadata: {
+        id,
+        type,
+      },
       capabilities: {
         card_payments: {
           requested: true,
         },
-        bank_transfer_payments: {
+        transfers: {
           requested: true,
         },
       },
     });
+
+    if (params && params.business_type === 'company') {
+      await this.stripe.accounts.createPerson(res.id, {
+        first_name: 'test',
+        last_name: 'test1',
+        relationship: {
+          representative: true,
+          owner: true,
+        },
+      });
+    }
+
+    return res;
+  }
+
+  async updateConnectedAccount(
+    id: string,
+    params?: Stripe.AccountUpdateParams,
+  ) {
+    const res = await this.stripe.accounts.update(id, params);
 
     return res;
   }

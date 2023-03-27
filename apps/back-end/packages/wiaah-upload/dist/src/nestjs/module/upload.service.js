@@ -12,10 +12,16 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UploadService = void 0;
+exports.UploadService = exports.FileTypeEnum = void 0;
 const common_1 = require("@nestjs/common");
 const axios_1 = require("@nestjs/axios");
 const constants_1 = require("./constants");
+var FileTypeEnum;
+(function (FileTypeEnum) {
+    FileTypeEnum["video"] = "video";
+    FileTypeEnum["image"] = "image";
+    FileTypeEnum["pdf"] = "pdf";
+})(FileTypeEnum = exports.FileTypeEnum || (exports.FileTypeEnum = {}));
 let UploadService = class UploadService {
     constructor(options, httpService) {
         this.options = options;
@@ -24,14 +30,36 @@ let UploadService = class UploadService {
         this.serviceProvider = this.options.provider;
         this.serviceKey = this.options.serviceKey;
         this.secretKey = this.options.secretKey;
+        this.mimetypes = {
+            videos: {
+                mp4: "video/mp4",
+                mov: "video/mov",
+                all: [],
+            },
+            image: {
+                jpeg: "image/jpeg",
+                png: "image/png",
+                jpg: "image/jpg",
+                all: [],
+            },
+            pdf: "application/pdf",
+        };
     }
-    async uploadFiles(files, userId) {
-        const sortedFiles = files.reduce((acc, curr) => {
-            const fileType = "";
-            const newAcc = Object.assign({}, acc);
-            newAcc[fileType] = [...acc[fileType], curr];
-            return newAcc;
-        }, {});
+    async uploadFiles(files) {
+        return [];
+    }
+    getFileTypeFromMimetype(mimetype) {
+        const vidMimetypes = Object.values(this.mimetypes.videos);
+        const imgMimetypes = Object.values(this.mimetypes.image);
+        if (vidMimetypes.includes(mimetype)) {
+            return FileTypeEnum.video;
+        }
+        if (imgMimetypes.includes(mimetype)) {
+            return FileTypeEnum.image;
+        }
+        if (mimetype === this.mimetypes.pdf) {
+            return FileTypeEnum.pdf;
+        }
     }
     async uploadImages(images, userId) {
         switch (this.serviceProvider) {
