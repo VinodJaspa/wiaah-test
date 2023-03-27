@@ -163,7 +163,7 @@ type ServiceContact {
 
 type Account {
   id: ID!
-  service: ServiceDetails!
+  service: Service!
 }
 
 type Hotel {
@@ -219,7 +219,7 @@ type RestaurantMenu {
   restaurantId: ID!
   name: String!
   dishs: [Dish!]!
-  restaurant: ServiceDetails!
+  restaurant: Service!
 }
 
 type Dish {
@@ -423,28 +423,6 @@ type VehicleService {
 
 type Service {
   id: ID!
-  serviceType: ServiceType!
-  title: String!
-  price: Float!
-  rating: Float!
-  thumbnail: String!
-  presentation: [ServicePresentation!]
-  hashtags: [String!]!
-  location: ServiceLocation!
-  contact: ServiceContact!
-}
-
-enum ServiceType {
-  hotel
-  holiday_rentals
-  restaurant
-  health_center
-  beauty_center
-  vehicle
-}
-
-type ServiceDetails {
-  id: ID!
   ownerId: ID!
   type: ServiceType!
   createdAt: DateTime!
@@ -470,6 +448,15 @@ type ServiceDetails {
   workingHours: WorkingSchedule
   owner: Account!
   establishmentType: RestaurantEstablishmentType!
+}
+
+enum ServiceType {
+  hotel
+  holiday_rentals
+  restaurant
+  health_center
+  beauty_center
+  vehicle
 }
 
 type Insurance {
@@ -539,7 +526,7 @@ type ServiceShopRaw {
 
 type Query {
   adminGetAccountService(accountId: String!): Service!
-  getServiceDetails(id: String!): ServiceDetails
+  getServiceDetails(id: String!): Service
   adminGetDishs(args: AdminGetDishsInput!): [Dish!]!
   adminGetAccountWorkingSchedule(accountId: String!): WorkingSchedule!
   getMyWorkingSchedule: WorkingSchedule!

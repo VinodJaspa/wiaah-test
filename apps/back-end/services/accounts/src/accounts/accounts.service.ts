@@ -36,6 +36,7 @@ export class AccountsService {
           password,
           type,
           birthDate,
+          ...createAccountInput,
         },
       });
       this.eventsClient.emit<string, NewAccountCreatedEvent>(

@@ -1,5 +1,7 @@
-import { Field, InputType, Int } from '@nestjs/graphql';
+import { Field, ID, InputType, Int, PartialType } from '@nestjs/graphql';
 import { BillingAccountBusinessType } from '@stripe-billing/entities/billing-account.entity';
+import { IsDateString, isDateString } from 'class-validator';
+import { FieldRequired } from 'nest-utils';
 
 @InputType()
 export class BillingAccountAddressInput {
@@ -104,6 +106,58 @@ export class BillingAccountCompanyInput {
 }
 
 @InputType()
+export class createCompanyPersonRelationshipInput {
+  @Field(() => Boolean)
+  owner: boolean;
+
+  @Field(() => Boolean)
+  representative: boolean;
+
+  @Field(() => Boolean)
+  director: boolean;
+
+  @Field(() => Boolean)
+  executive: boolean;
+
+  @Field(() => String)
+  title: string;
+}
+
+export const CreateCompanyPersonRelationshipInput = PartialType(
+  createCompanyPersonRelationshipInput,
+);
+
+@InputType()
+export class CreateCompanyPersonInput {
+  @Field(() => String)
+  id: string;
+
+  @Field(() => BillingAccountAddressInput)
+  address: BillingAccountAddressInput;
+
+  @Field(() => BillingAccountDateOfBirthInput)
+  dob: BillingAccountDateOfBirthInput;
+
+  @Field(() => String)
+  email: string;
+
+  @Field(() => String)
+  phone: string;
+
+  @Field(() => String)
+  first_name: string;
+
+  @Field(() => String)
+  last_name: string;
+
+  @Field(() => String)
+  id_number: string;
+
+  @Field(() => CreateCompanyPersonRelationshipInput)
+  relationship: createCompanyPersonRelationshipInput;
+}
+
+@InputType()
 export class CreateBillingAccountInput {
   @Field(() => BillingAccountBusinessType)
   business_type: BillingAccountBusinessType;
@@ -115,10 +169,22 @@ export class CreateBillingAccountInput {
   external_account: BillingAccountExternalAccountInput;
 
   @Field(() => BillingAccountIndividualInput, { nullable: true })
+  @FieldRequired('business_type', BillingAccountBusinessType.individual, {
+    message: `Individual information is required for accounts with business type of individual`,
+  })
   individual?: BillingAccountIndividualInput;
 
   @Field(() => BillingAccountCompanyInput, { nullable: true })
+  @FieldRequired('business_type', BillingAccountBusinessType.company, {
+    message: `Company information is required for accounts with business type of company`,
+  })
   company?: BillingAccountCompanyInput;
+
+  @Field(() => [CreateCompanyPersonInput], { nullable: true })
+  @FieldRequired('business_type', BillingAccountBusinessType.company, {
+    message: `Company members information is required for accounts with business type of company`,
+  })
+  companyMembers?: CreateCompanyPersonInput[];
 }
 
 @InputType()

@@ -43,17 +43,36 @@ export class StripeService implements OnModuleInit {
       },
     });
 
-    if (params && params.business_type === 'company') {
-      await this.stripe.accounts.createPerson(res.id, {
-        first_name: 'test',
-        last_name: 'test1',
-        relationship: {
-          representative: true,
-          owner: true,
-        },
-      });
-    }
+    return res;
+  }
 
+  async createPerson(
+    stripeAccountId: string,
+    params: Stripe.PersonCreateParams,
+  ) {
+    const res = await this.stripe.accounts.createPerson(
+      stripeAccountId,
+      params,
+    );
+    return res;
+  }
+
+  async getCompanyMembers(stripeAccountId: string) {
+    const res = await this.stripe.accounts.listPersons(stripeAccountId);
+
+    return res;
+  }
+
+  async updateCompanyPerson(
+    stripeAccountId: string,
+    id: string,
+    params?: Stripe.PersonUpdateParams,
+  ) {
+    const res = await this.stripe.accounts.updatePerson(
+      stripeAccountId,
+      id,
+      params,
+    );
     return res;
   }
 

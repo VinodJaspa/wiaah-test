@@ -44,7 +44,7 @@ export type Account = {
   phone?: Maybe<Scalars["String"]>;
   photo?: Maybe<Scalars["String"]>;
   profile?: Maybe<Profile>;
-  service: ServiceDetails;
+  service: Service;
   shop: Shop;
   status: AccountStatus;
   stripeId?: Maybe<Scalars["String"]>;
@@ -68,6 +68,11 @@ export enum AccountDeletionRequestStatus {
   Approved = "approved",
   Pending = "pending",
   Rejected = "rejected",
+}
+
+export enum AccountGenderEnum {
+  Female = "female",
+  Male = "male",
 }
 
 export type AccountInputData = {
@@ -165,6 +170,7 @@ export type AdminCreateAdminAccountInput = {
   confirmPassword: Scalars["String"];
   email: Scalars["String"];
   firstName: Scalars["String"];
+  gender: AccountGenderEnum;
   lastName: Scalars["String"];
   password: Scalars["String"];
   photo: Scalars["String"];
@@ -329,6 +335,7 @@ export type AdminUpdateAdminAccountInput = {
   confirmPassword?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
   firstName?: Maybe<Scalars["String"]>;
+  gender?: Maybe<AccountGenderEnum>;
   id: Scalars["ID"];
   lastName?: Maybe<Scalars["String"]>;
   password?: Maybe<Scalars["String"]>;
@@ -500,6 +507,94 @@ export type BeautyCenterTreatmentCategory = {
   id: Scalars["ID"];
   title: Scalars["String"];
   updatedAt: Scalars["DateTime"];
+};
+
+export type BillingAccountAddressInput = {
+  city: Scalars["String"];
+  country: Scalars["String"];
+  line1: Scalars["String"];
+  postal_code: Scalars["String"];
+  state: Scalars["String"];
+};
+
+export type BillingAccountBusinessProfile = {
+  __typename?: "BillingAccountBusinessProfile";
+  mcc: Scalars["String"];
+  name: Scalars["String"];
+};
+
+export type BillingAccountBusinessProfileInput = {
+  mcc: Scalars["String"];
+  name: Scalars["String"];
+  url: Scalars["String"];
+};
+
+export enum BillingAccountBusinessType {
+  Company = "company",
+  Individual = "individual",
+}
+
+export type BillingAccountCompanyInput = {
+  address: BillingAccountAddressInput;
+  name: Scalars["String"];
+  phone: Scalars["String"];
+  tax_id: Scalars["String"];
+};
+
+export type BillingAccountDateOfBirth = {
+  __typename?: "BillingAccountDateOfBirth";
+  day: Scalars["Int"];
+  month: Scalars["Int"];
+  year: Scalars["Int"];
+};
+
+export type BillingAccountDateOfBirthInput = {
+  day: Scalars["Int"];
+  month: Scalars["Int"];
+  year: Scalars["Int"];
+};
+
+export type BillingAccountExternalAccount = {
+  __typename?: "BillingAccountExternalAccount";
+  account_number: Scalars["String"];
+  country: Scalars["String"];
+  currency: Scalars["String"];
+};
+
+export type BillingAccountExternalAccountInput = {
+  account_number: Scalars["String"];
+  country: Scalars["String"];
+  currency: Scalars["String"];
+  object: Scalars["String"];
+  routing_number: Scalars["String"];
+};
+
+export type BillingAccountIndividual = {
+  __typename?: "BillingAccountIndividual";
+  address: BillingAccountIndividualAddress;
+  dob: BillingAccountDateOfBirth;
+  email: Scalars["String"];
+  phone: Scalars["String"];
+  ssn_last_4: Scalars["String"];
+};
+
+export type BillingAccountIndividualAddress = {
+  __typename?: "BillingAccountIndividualAddress";
+  city: Scalars["String"];
+  country: Scalars["String"];
+  line1: Scalars["String"];
+  postal_code: Scalars["String"];
+};
+
+export type BillingAccountIndividualInput = {
+  address: BillingAccountAddressInput;
+  dob: BillingAccountDateOfBirthInput;
+  email: Scalars["String"];
+  first_name: Scalars["String"];
+  id_number: Scalars["String"];
+  last_name: Scalars["String"];
+  phone: Scalars["String"];
+  ssn_last_4: Scalars["String"];
 };
 
 export type BillingAddress = {
@@ -837,8 +932,10 @@ export type CreateAccountInput = {
   confirmPassword: Scalars["String"];
   email: Scalars["String"];
   firstName: Scalars["String"];
+  gender: AccountGenderEnum;
   lastName: Scalars["String"];
   password: Scalars["String"];
+  phone?: Maybe<Scalars["String"]>;
 };
 
 export type CreateAccountVerificationInput = {
@@ -894,6 +991,15 @@ export type CreateBeautyCenterTreatmentInput = {
   treatmentCategoryId: Scalars["ID"];
 };
 
+export type CreateBillingAccountInput = {
+  business_profile: BillingAccountBusinessProfileInput;
+  business_type: BillingAccountBusinessType;
+  company?: Maybe<BillingAccountCompanyInput>;
+  companyMembers?: Maybe<Array<CreateCompanyPersonInput>>;
+  external_account: BillingAccountExternalAccountInput;
+  individual?: Maybe<BillingAccountIndividualInput>;
+};
+
 export type CreateBlockInput = {
   userId: Scalars["ID"];
 };
@@ -913,6 +1019,18 @@ export type CreateCommentInput = {
   contentId: Scalars["ID"];
   contentType: ContentHostType;
   mentions: Array<CommentMentionInput>;
+};
+
+export type CreateCompanyPersonInput = {
+  address: BillingAccountAddressInput;
+  dob: BillingAccountDateOfBirthInput;
+  email: Scalars["String"];
+  first_name: Scalars["String"];
+  id: Scalars["String"];
+  id_number: Scalars["String"];
+  last_name: Scalars["String"];
+  phone: Scalars["String"];
+  relationship: PartialObjectType;
 };
 
 export type CreateContentShareInput = {
@@ -2460,6 +2578,7 @@ export type Mutation = {
   updateBeautyCenter: BeautyCenter;
   updateBeautyCenterAdmin: Scalars["Boolean"];
   updateBillingAddress: BillingAddress;
+  updateByBillingAccount: Scalars["Boolean"];
   updateComment: Comment;
   updateCurrenciesRates: Array<Currency>;
   updateCurrency: Scalars["Boolean"];
@@ -2496,6 +2615,7 @@ export type Mutation = {
   updateTreatmentCategories: Array<BeautyCenterTreatmentCategory>;
   updateUserLocation: Scalars["Boolean"];
   updateVehicleAdmin: Scalars["Boolean"];
+  uploadStripeBankDocument: Scalars["String"];
   verifyEmail: Scalars["Boolean"];
   verifyLoginOTP: GqlStatusResponse;
   verifyNewPassword: Scalars["Boolean"];
@@ -3066,6 +3186,10 @@ export type MutationUpdateBeautyCenterAdminArgs = {
   args: UpdateBeautyCenterAdminInput;
 };
 
+export type MutationUpdateByBillingAccountArgs = {
+  args: CreateBillingAccountInput;
+};
+
 export type MutationUpdateCommentArgs = {
   updateCommentInput: UpdateCommentInput;
 };
@@ -3204,6 +3328,11 @@ export type MutationUpdateUserLocationArgs = {
 
 export type MutationUpdateVehicleAdminArgs = {
   args: UpdateVehicleAdminInput;
+};
+
+export type MutationUploadStripeBankDocumentArgs = {
+  doc: Scalars["Upload"];
+  test: Scalars["String"];
 };
 
 export type MutationVerifyEmailArgs = {
@@ -3395,6 +3524,14 @@ export type PaginationCommentsResponse = {
   data: Array<Comment>;
   hasMore: Scalars["Boolean"];
   total: Scalars["Int"];
+};
+
+export type PartialObjectType = {
+  director?: Maybe<Scalars["Boolean"]>;
+  executive?: Maybe<Scalars["Boolean"]>;
+  owner?: Maybe<Scalars["Boolean"]>;
+  representative?: Maybe<Scalars["Boolean"]>;
+  title?: Maybe<Scalars["String"]>;
 };
 
 export type PaymentIntent = {
@@ -3807,6 +3944,7 @@ export type Query = {
   getMaintenancePages: Array<Maintenance>;
   getMyAffiliations: Array<Affiliation>;
   getMyBalance: Balance;
+  getMyBillingAccount: Scalars["String"];
   getMyBillingAddressCollection: BillingAddressCollection;
   getMyBlockList: Array<Block>;
   getMyBookings: Array<BookedService>;
@@ -3874,7 +4012,7 @@ export type Query = {
   getServiceCategories: Array<ServiceCategory>;
   getServiceCategoryById: ServiceCategory;
   getServiceCategoryBySlug: ServiceCategory;
-  getServiceDetails?: Maybe<ServiceDetails>;
+  getServiceDetails?: Maybe<Service>;
   getServiceInsuranceHistory: Array<Insurance>;
   getServicePost: ServicePost;
   getShippingGeoZoneRules: Array<ShippingTypeRule>;
@@ -4778,7 +4916,7 @@ export type RestaurantMenu = {
   dishs: Array<Dish>;
   id: Scalars["ID"];
   name: Scalars["String"];
-  restaurant: ServiceDetails;
+  restaurant: Service;
   restaurantId: Scalars["ID"];
 };
 
@@ -4903,15 +5041,32 @@ export type SellerProductsRating = {
 export type Service = {
   __typename?: "Service";
   contact: ServiceContact;
-  hashtags: Array<Scalars["String"]>;
+  createdAt: Scalars["DateTime"];
+  cuisinesTypeId?: Maybe<Scalars["ID"]>;
+  doctors?: Maybe<Array<Doctor>>;
+  establishmentType: RestaurantEstablishmentType;
+  establishmentTypeId?: Maybe<Scalars["ID"]>;
+  highest_price: Scalars["Float"];
   id: Scalars["ID"];
   location: ServiceLocation;
-  presentation?: Maybe<Array<ServicePresentation>>;
-  price: Scalars["Float"];
-  rating: Scalars["Float"];
-  serviceType: ServiceType;
-  thumbnail: Scalars["String"];
-  title: Scalars["String"];
+  lowest_price: Scalars["Float"];
+  menus?: Maybe<Array<RestaurantMenu>>;
+  michelin_guide_stars?: Maybe<Scalars["Int"]>;
+  owner: Account;
+  ownerId: Scalars["ID"];
+  payment_methods: Array<ServicePaymentMethod>;
+  policies: Array<ServicePolicy>;
+  presentations: Array<ServicePresentation>;
+  rooms?: Maybe<Array<HotelRoom>>;
+  serviceMetaInfo: ServiceMetaInfo;
+  setting_and_ambianceId?: Maybe<Scalars["ID"]>;
+  shop: Shop;
+  treatments?: Maybe<Array<Treatment>>;
+  type: ServiceType;
+  type_of_seller: ServiceTypeOfSeller;
+  updatedAt: Scalars["DateTime"];
+  vehicles?: Maybe<Array<Vehicle>>;
+  workingHours?: Maybe<WorkingSchedule>;
 };
 
 export type ServiceAmenitiesInput = {
@@ -5037,36 +5192,6 @@ export type ServiceDayWorkingHours = {
 
 export type ServiceDayWorkingHoursInput = {
   periods: Array<Scalars["String"]>;
-};
-
-export type ServiceDetails = {
-  __typename?: "ServiceDetails";
-  contact: ServiceContact;
-  createdAt: Scalars["DateTime"];
-  cuisinesTypeId?: Maybe<Scalars["ID"]>;
-  doctors?: Maybe<Array<Doctor>>;
-  establishmentType: RestaurantEstablishmentType;
-  establishmentTypeId?: Maybe<Scalars["ID"]>;
-  highest_price: Scalars["Float"];
-  id: Scalars["ID"];
-  location: ServiceLocation;
-  lowest_price: Scalars["Float"];
-  menus?: Maybe<Array<RestaurantMenu>>;
-  michelin_guide_stars?: Maybe<Scalars["Int"]>;
-  owner: Account;
-  ownerId: Scalars["ID"];
-  payment_methods: Array<ServicePaymentMethod>;
-  policies: Array<ServicePolicy>;
-  presentations: Array<ServicePresentation>;
-  rooms?: Maybe<Array<HotelRoom>>;
-  serviceMetaInfo: ServiceMetaInfo;
-  setting_and_ambianceId?: Maybe<Scalars["ID"]>;
-  treatments?: Maybe<Array<Treatment>>;
-  type: ServiceType;
-  type_of_seller: ServiceTypeOfSeller;
-  updatedAt: Scalars["DateTime"];
-  vehicles?: Maybe<Array<Vehicle>>;
-  workingHours?: Maybe<WorkingSchedule>;
 };
 
 export type ServiceDiscount = {
@@ -5462,6 +5587,7 @@ export type Shop = {
   location: Location;
   name: Scalars["String"];
   ownerId: Scalars["String"];
+  service: Service;
   storeType: Array<StoreType>;
   targetGenders: Array<TargetGenders>;
   typeOfSeller: TypeOfSeller;
@@ -5605,7 +5731,7 @@ export type Transaction = {
   createdAt: Scalars["DateTime"];
   currency: Scalars["String"];
   description: Scalars["String"];
-  from: Scalars["String"];
+  fromId: Scalars["String"];
   fromUser: Account;
   id: Scalars["ID"];
   paymentType: Scalars["String"];
@@ -5675,8 +5801,10 @@ export type UpdateAccountInput = {
   confirmPassword?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
   firstName?: Maybe<Scalars["String"]>;
+  gender?: Maybe<AccountGenderEnum>;
   lastName?: Maybe<Scalars["String"]>;
   password?: Maybe<Scalars["String"]>;
+  phone?: Maybe<Scalars["String"]>;
 };
 
 export type UpdateAffiliationAdminInput = {
@@ -5962,9 +6090,11 @@ export type UpdateSellerAccountAdminInput = {
   confirmPassword?: Maybe<Scalars["String"]>;
   email?: Maybe<Scalars["String"]>;
   firstName?: Maybe<Scalars["String"]>;
+  gender?: Maybe<AccountGenderEnum>;
   id: Scalars["ID"];
   lastName?: Maybe<Scalars["String"]>;
   password?: Maybe<Scalars["String"]>;
+  phone?: Maybe<Scalars["String"]>;
 };
 
 export type UpdateServiceCategoryInput = {

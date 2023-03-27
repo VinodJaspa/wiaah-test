@@ -171,37 +171,37 @@ export class AccountsController implements OnModuleInit {
     );
   }
 
-  @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.sellerAccountRegistered)
-  handleCreateSellerAccount(
-    @Payload() payload: KafkaPayload<SellerAccountRegisteredEvent>,
-  ) {
-    this.accountService.createAccountRecord({
-      firstName: payload.value.input.firstName,
-      lastName: payload.value.input.lastName,
-      email: payload.value.input.email,
-      password: payload.value.input.password,
-      companyRegisterationNumber:
-        payload.value.input.companyRegisterationNumber,
-      type: 'seller',
-      status: 'pending',
-      birthDate: payload.value.input.birthDate,
-    });
-  }
+  // @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.sellerAccountRegistered)
+  // handleCreateSellerAccount(
+  //   @Payload() payload: KafkaPayload<SellerAccountRegisteredEvent>,
+  // ) {
+  //   this.accountService.createAccountRecord({
+  //     firstName: payload.value.input.firstName,
+  //     lastName: payload.value.input.lastName,
+  //     email: payload.value.input.email,
+  //     password: payload.value.input.password,
+  //     companyRegisterationNumber:
+  //       payload.value.input.companyRegisterationNumber,
+  //     type: 'seller',
+  //     status: 'pending',
+  //     birthDate: payload.value.input.birthDate,
+  //   });
+  // }
 
-  @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.buyerAccountRegistered)
-  handleCreateBuyerAccount(
-    @Payload() payload: KafkaPayload<BuyerAccountRegisteredEvent>,
-  ) {
-    this.accountService.createAccountRecord({
-      firstName: payload.value.input.firstName,
-      lastName: payload.value.input.lastName,
-      email: payload.value.input.email,
-      password: payload.value.input.password,
-      type: 'buyer',
-      status: 'active',
-      birthDate: payload.value.input.birthDate,
-    });
-  }
+  // @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.buyerAccountRegistered)
+  // handleCreateBuyerAccount(
+  //   @Payload() payload: KafkaPayload<BuyerAccountRegisteredEvent>,
+  // ) {
+  //   this.accountService.createAccountRecord({
+  //     firstName: payload.value.input.firstName,
+  //     lastName: payload.value.input.lastName,
+  //     email: payload.value.input.email,
+  //     password: payload.value.input.password,
+  //     type: 'buyer',
+  //     status: 'active',
+  //     birthDate: payload.value.input.birthDate,
+  //   });
+  // }
 
   @EventPattern(KAFKA_EVENTS.AUTH_EVENTS.accountVerified)
   handleAccountVerified(

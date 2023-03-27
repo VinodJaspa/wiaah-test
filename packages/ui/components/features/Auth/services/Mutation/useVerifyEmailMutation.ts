@@ -1,5 +1,15 @@
+import { Exact, Mutation, Scalars } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
+
+export type VerifyMutationVariables = Exact<{
+  code: Scalars["String"];
+}>;
+
+export type VerifyMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "verifyEmail"
+>;
 
 export const useVerifyEmailMutation = () => {
   const client = createGraphqlRequestClient();
@@ -19,14 +29,15 @@ export const useVerifyEmailMutation = () => {
   );
 
   return useMutation<
-    unknown,
+    VerifyMutation["verifyEmail"],
     unknown,
     {
       code: string;
     }
-  >("verify-email", (input) => client.setVariables(input).send(), {
-    onMutate(variables) {
-      console.log("mutate", variables);
-    },
+  >("verify-email", async (input) => {
+    const res = await client
+      .setVariables<VerifyMutationVariables>(input)
+      .send<VerifyMutation>();
+    return res.data.verifyEmail;
   });
 };

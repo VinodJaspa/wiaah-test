@@ -87,12 +87,12 @@ export class StripeBillingResolver implements OnModuleInit {
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([]))
   async updateByBillingAccount(
-    @Args('args') args: CreateBillingAccountInput,
+    @Args('args') _args: CreateBillingAccountInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @Context() ctx: { ip: string },
   ) {
     try {
-      console.log(ctx.ip);
+      const { companyMembers, ...args } = _args;
       const finAcc = await this.prisma.financialAccount.findUnique({
         where: {
           ownerId_type: {
@@ -103,13 +103,38 @@ export class StripeBillingResolver implements OnModuleInit {
       });
 
       if (finAcc) {
+        await Promise.all(
+          companyMembers.map(async (v) => {
+            if (v.id) {
+              const { id, ...rest } = v;
+              await this.stripeService.updateCompanyPerson(
+                finAcc.financialId,
+                id,
+                rest,
+              );
+            } else {
+              await this.stripeService.createPerson(finAcc.financialId, v);
+            }
+          }),
+        );
+
+        const members = await this.stripeService.getCompanyMembers(
+          finAcc.financialId,
+        );
+
         const res = await this.stripeService.updateConnectedAccount(
           finAcc.financialId,
           {
             ...args,
+
             company:
               args.business_type === BillingAccountBusinessType.company
-                ? args.company
+                ? {
+                    ...args.company,
+                    owners_provided: members.data
+                      .map((v) => v?.relationship?.owner)
+                      .some((v) => !!v),
+                  }
                 : undefined,
             individual:
               args.business_type === BillingAccountBusinessType.individual
@@ -122,6 +147,15 @@ export class StripeBillingResolver implements OnModuleInit {
             },
           },
         );
+        if (companyMembers) {
+          const members = await Promise.all(
+            companyMembers.map((v) =>
+              this.stripeService.createPerson(res.id, {
+                relationship: {},
+              }),
+            ),
+          );
+        }
       } else {
         const res = await this.stripeService.createConnectedAccount(
           user.id,
@@ -130,7 +164,12 @@ export class StripeBillingResolver implements OnModuleInit {
             ...args,
             company:
               args.business_type === BillingAccountBusinessType.company
-                ? args.company
+                ? {
+                    ...args.company,
+                    owners_provided: companyMembers.some(
+                      (v) => !!v?.relationship?.owner,
+                    ),
+                  }
                 : undefined,
             individual:
               args.business_type === BillingAccountBusinessType.individual
@@ -143,6 +182,14 @@ export class StripeBillingResolver implements OnModuleInit {
           },
         );
 
+        if (companyMembers) {
+          const members = await Promise.all(
+            companyMembers.map(({ id, ...v }) =>
+              this.stripeService.createPerson(res.id, v),
+            ),
+          );
+        }
+
         await this.prisma.financialAccount.create({
           data: {
             financialId: res.id,
@@ -151,7 +198,6 @@ export class StripeBillingResolver implements OnModuleInit {
             type: 'stripe',
           },
         });
-        console.log(JSON.stringify(res, null, 2));
       }
 
       return true;

@@ -28,18 +28,23 @@ export interface InputProps extends HtmlInputProps {
   flushed?: boolean;
   icon?: any;
   description?: string;
+  label?: string;
+  error?: string;
 }
 
 export const Input: React.FC<InputProps> = ({
   className,
   flushed,
   description,
+  label,
+  error,
   ...props
 }) => {
   const { isInputGroup, setFocused } = React.useContext(InputContext);
 
   return (
-    <>
+    <div className="w-full">
+      {label ? <p className="font-semibold text-lg pb-1">{label}</p> : null}
       <input
         onFocus={(e) => {
           props.onFocus && props.onFocus(e);
@@ -56,7 +61,10 @@ export const Input: React.FC<InputProps> = ({
       focus:border-primary-200 border-gray-200 rounded px-3 w-full h-10`}
       />
       {description ? <p>{description}</p> : null}
-    </>
+      {error ? (
+        <p className="font-semibold text-red-500 text-lg pt-1">{error}</p>
+      ) : null}
+    </div>
   );
 };
 

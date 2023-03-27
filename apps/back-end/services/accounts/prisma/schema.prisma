@@ -42,6 +42,12 @@ model Account {
   birthDate                  String
   AccountDeletionRequest     AccountDeletionRequest[]
   contacts                   UserContact?
+  requiredActions            RequiredAction[]
+}
+
+type RequiredAction {
+  code     String
+  priority Int
 }
 
 enum AccountGenderEnum {
@@ -94,14 +100,13 @@ model UserAccountVerificationRequest {
   updatedAt DateTime @updatedAt
   userId    String   @unique @db.ObjectId
 
-  status           AccountVerificationStatus @default(pending)
-  refuseReason     String?
-  addressProofBill String
-  username         String
-  fullName         String
-  knownAs          String
-  categoryId       String
-  idPhoto          String
+  status       AccountVerificationStatus @default(pending)
+  refuseReason String?
+  username     String
+  fullName     String
+  knownAs      String
+  categoryId   String
+  idPhoto      String
 }
 
 enum AccountVerificationStatus {

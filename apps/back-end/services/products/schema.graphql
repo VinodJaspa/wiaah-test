@@ -188,6 +188,7 @@ type Shop {
   updatedAt: DateTime!
   typeOfSeller: TypeOfSeller!
   vat: VatSettings
+  service: Service!
 }
 
 enum StoreType {
@@ -213,6 +214,11 @@ scalar DateTime
 enum TypeOfSeller {
   individual
   professional
+}
+
+type Service {
+  ownerId: ID!
+  shop: Shop!
 }
 
 type ShippingCountry {

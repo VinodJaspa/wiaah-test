@@ -12,20 +12,20 @@ import { UploadService } from '@wiaah/upload';
 import { WorkingSchedule } from '@working-schedule/entities';
 import { GetLang, UserPreferedLang } from 'nest-utils';
 import { PrismaService } from 'prismaService';
-import { ServiceDetails } from './entities/service.entity';
+import { Service } from './entities/service.entity';
 
-@Resolver(() => ServiceDetails)
+@Resolver(() => Service)
 export class ServiceDetailsResolver {
   constructor(
     private readonly prisma: PrismaService,
     private readonly uploadService: UploadService,
   ) {}
 
-  @Query(() => ServiceDetails, { nullable: true })
+  @Query(() => Service, { nullable: true })
   async getServiceDetails(
     @Args('id') id: string,
     @GetLang() lang: UserPreferedLang,
-  ): Promise<ServiceDetails> {
+  ): Promise<Service> {
     const service = await this.prisma.service.findUnique({
       where: {
         id,
@@ -46,7 +46,7 @@ export class ServiceDetailsResolver {
   }
 
   @ResolveField(() => WorkingSchedule, { nullable: true })
-  workingHours(@Parent() service: ServiceDetails) {
+  workingHours(@Parent() service: Service) {
     return this.prisma.serviceWorkingSchedule.findUnique({
       where: {
         id: service.id,
@@ -55,7 +55,7 @@ export class ServiceDetailsResolver {
   }
 
   @ResolveField(() => Account)
-  owner(@Parent() service: ServiceDetails) {
+  owner(@Parent() service: Service) {
     return {
       __typename: 'Account',
       id: service.ownerId,
@@ -63,7 +63,7 @@ export class ServiceDetailsResolver {
   }
 
   @ResolveField(() => RestaurantEstablishmentType)
-  establishmentType(@Parent() service: ServiceDetails) {
+  establishmentType(@Parent() service: Service) {
     if (service.establishmentTypeId) {
       return this.prisma.restaurantEstablishmentType.findUnique({
         where: {

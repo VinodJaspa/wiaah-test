@@ -9,6 +9,7 @@ import { ShopController } from './shop.controller';
 import { ShopEventHandlers } from './events';
 import { ShopElasticRepository, ShopRepository } from './repository';
 import { PrismaService } from 'prismaService';
+import { resolvers } from './resolvers';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { PrismaService } from 'prismaService';
     ShopService,
     ShopElasticRepository,
     ShopRepository,
+    ...resolvers,
     ...ShopEventHandlers,
   ],
 })

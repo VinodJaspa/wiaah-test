@@ -27,43 +27,9 @@ import {
   ServiceTypeOfSeller,
 } from 'prismaClient';
 
-import {
-  registerDecorator,
-  ValidationOptions,
-  ValidationArguments,
-} from 'class-validator';
-
 import { GraphQLUpload, Upload } from 'graphql-upload';
-import { CreateInputGqlTranslationInputField } from 'nest-utils';
+import { CreateInputGqlTranslationInputField, FieldRequired } from 'nest-utils';
 import { ServiceContactInput } from '@hotel/dto';
-
-export function IsPropertyEqual(
-  property: string,
-  value: string,
-  validationOptions?: ValidationOptions,
-) {
-  return function (object: Object, propertyName: string) {
-    registerDecorator({
-      name: 'isPropertyEqual',
-      target: object.constructor,
-      propertyName: propertyName,
-      constraints: [property, value],
-      options: validationOptions,
-      validator: {
-        validate(value: any, args: ValidationArguments) {
-          const [relatedPropertyName, expectedValue] = args.constraints;
-          const relatedValue = (args.object as any)[relatedPropertyName];
-
-          if (relatedValue !== expectedValue && !value) return true;
-
-          if (relatedValue === expectedValue && !!value) return true;
-
-          return false;
-        },
-      },
-    });
-  };
-}
 
 @InputType()
 class ServiceHotelRoomMetaInfoInput {
@@ -256,38 +222,38 @@ export class CreateServiceInput {
   thumbnail: Upload;
 
   @Field(() => [ServiceHotelRoomInput], { nullable: true })
-  @IsPropertyEqual('type', ServiceType.hotel)
+  @FieldRequired('type', ServiceType.hotel)
   rooms?: ServiceHotelRoomInput[];
 
   @Field(() => [ServiceRestaurantMenuInput], { nullable: true })
-  @IsPropertyEqual('type', ServiceType.restaurant)
+  @FieldRequired('type', ServiceType.restaurant)
   menus?: ServiceRestaurantMenuInput[];
 
   @Field(() => ID, { nullable: true })
-  @IsPropertyEqual('type', ServiceType.restaurant)
+  @FieldRequired('type', ServiceType.restaurant)
   establishmentTypeId?: string;
 
   @Field(() => ID, { nullable: true })
-  @IsPropertyEqual('type', ServiceType.restaurant)
+  @FieldRequired('type', ServiceType.restaurant)
   cuisinesTypeId?: string;
 
   @Field(() => ID, { nullable: true })
-  @IsPropertyEqual('type', ServiceType.restaurant)
+  @FieldRequired('type', ServiceType.restaurant)
   setting_and_ambianceId?: string;
 
   @Field(() => Int, { nullable: true })
-  @IsPropertyEqual('type', ServiceType.restaurant)
+  @FieldRequired('type', ServiceType.restaurant)
   michelin_guide_stars?: number;
 
   @Field(() => [ServiceHealthCenterDoctorInput], { nullable: true })
-  @IsPropertyEqual('type', ServiceType.health_center)
+  @FieldRequired('type', ServiceType.health_center)
   doctors?: ServiceHealthCenterDoctorInput[];
 
   @Field(() => [CreateBeautyCenterTreatmentInput], { nullable: true })
-  @IsPropertyEqual('type', ServiceType.beauty_center)
+  @FieldRequired('type', ServiceType.beauty_center)
   treatments?: CreateBeautyCenterTreatmentInput[];
 
   @Field(() => [ServiceVehicleInput], { nullable: true })
-  @IsPropertyEqual('type', ServiceType.vehicle)
+  @FieldRequired('type', ServiceType.vehicle)
   vehicles?: ServiceVehicleInput[];
 }

@@ -1,13 +1,13 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { RestaurantMenu } from '@restaurant';
 import { PrismaService } from 'prismaService';
-import { ServiceDetails } from '../../entities/service.entity';
+import { Service } from '../../entities/service.entity';
 
 @Resolver(() => RestaurantMenu)
 export class RestaurantMenuResolver {
   constructor(private readonly prisma: PrismaService) {}
 
-  @ResolveField(() => ServiceDetails)
+  @ResolveField(() => Service)
   restaurant(@Parent() menu: RestaurantMenu) {
     return this.prisma.service.findUnique({
       where: {

@@ -15,7 +15,6 @@ import {
   KAFKA_EVENTS,
   SERVICES,
 } from 'nest-utils';
-
 import { AccountsService } from './accounts.service';
 import { CreateAccountInput, DeleteAccountRequestInput } from '@accounts/dto';
 import { UpdateAccountInput } from './dto/update-account.input';
@@ -49,6 +48,8 @@ export class AccountsResolver {
       lastName,
       password,
       birthDate,
+      gender,
+      phone,
     }: CreateAccountInput,
   ) {
     const emailExists = await this.prisma.account.findUnique({
@@ -77,6 +78,8 @@ export class AccountsResolver {
         password: hashedPassword,
         type: accountType,
         birthDate,
+        gender,
+        phone,
       },
     });
 

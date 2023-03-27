@@ -3,10 +3,12 @@ import { MicroserviceOptions } from '@nestjs/microservices';
 import { KafkaCustomTransport, KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { AppModule } from './app.module';
 import { graphqlUploadExpress } from 'graphql-upload';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { rawBody: true });
   app.use(graphqlUploadExpress());
+  app.useGlobalPipes(new ValidationPipe());
   app.connectMicroservice<MicroserviceOptions>({
     strategy: new KafkaCustomTransport({
       client: {

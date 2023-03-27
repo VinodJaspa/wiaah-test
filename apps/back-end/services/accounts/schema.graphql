@@ -300,6 +300,8 @@ input UpdateSellerAccountAdminInput {
   confirmPassword: String
   accountType: RegisterAccountType
   birthDate: String
+  gender: AccountGenderEnum
+  phone: String
   companyRegisterationNumber: String
   id: ID!
 }
@@ -307,6 +309,11 @@ input UpdateSellerAccountAdminInput {
 enum RegisterAccountType {
   seller
   buyer
+}
+
+enum AccountGenderEnum {
+  male
+  female
 }
 
 input DeclineSellerAccountRequest {
@@ -328,6 +335,7 @@ input AdminCreateAdminAccountInput {
   photo: String!
   type: StaffAccountType!
   birthDate: String!
+  gender: AccountGenderEnum!
 }
 
 input AdminUpdateAdminAccountInput {
@@ -339,6 +347,7 @@ input AdminUpdateAdminAccountInput {
   photo: String
   type: StaffAccountType
   birthDate: String
+  gender: AccountGenderEnum
   id: ID!
 }
 
@@ -350,6 +359,8 @@ input CreateAccountInput {
   confirmPassword: String!
   accountType: RegisterAccountType!
   birthDate: String!
+  gender: AccountGenderEnum!
+  phone: String
 }
 
 input DeleteAccountRequestInput {
@@ -366,6 +377,8 @@ input UpdateAccountInput {
   confirmPassword: String
   accountType: RegisterAccountType
   birthDate: String
+  gender: AccountGenderEnum
+  phone: String
   companyRegisterationNumber: String
 }
 
