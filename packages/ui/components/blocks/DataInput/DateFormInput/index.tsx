@@ -43,7 +43,7 @@ export const DateFormInput: React.FC<DateFormInputProps> = ({
 }) => {
   return (
     <div className="w-full">
-      {label ? <p className="font-semibold text-lg pb-1">{label}</p> : null}
+      {label ? <p className="font-semibold pb-1">{label}</p> : null}
       <InputGroup {...props}>
         <Input
           placeholder={placeholder}

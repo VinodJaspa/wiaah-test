@@ -44,7 +44,7 @@ export const Input: React.FC<InputProps> = ({
 
   return (
     <div className="w-full">
-      {label ? <p className="font-semibold text-lg pb-1">{label}</p> : null}
+      {label ? <p className="font-semibold pb-1">{label}</p> : null}
       <input
         onFocus={(e) => {
           props.onFocus && props.onFocus(e);

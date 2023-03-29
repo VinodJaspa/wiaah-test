@@ -8,6 +8,6 @@ export class WithdrawInput {
   @Field(() => Float)
   amount: number;
 
-  @Field(() => String)
-  currency: string;
+  // @Field(() => String)
+  // currency: string;
 }

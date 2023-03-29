@@ -62,26 +62,20 @@ enum TransactionStatus {
   failed
 }
 
-model BillingAddressCollection {
-  id               String           @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId          String           @unique @db.ObjectId
-  lastUsedId       String?          @db.ObjectId
-  billingAddresses BillingAddress[]
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
-}
-
-type BillingAddress {
-  id         String
+model BillingAddress {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String   @db.ObjectId
   firstName  String
   lastName   String
   address    String
-  address2   String
+  address2   String?
   country    String
   city       String
-  state      String
+  state      String?
   postalCode String
   phone      String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Balance {
@@ -98,16 +92,21 @@ model Balance {
 }
 
 model FinancialAccount {
-  id          String               @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId     String
-  label       String
-  financialId String
-  type        FinancialAccountType
-
-  @@unique([ownerId, type])
+  id             String               @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId        String               @db.ObjectId
+  financialId    String
+  type           FinancialAccountType
+  card_exp_month String?
+  card_exp_year  String?
+  card_number    String?
+  card_cvc       String?
+  currency       String?
+  bank_number    String?
+  bank_country   String?
+  label          String               @default("PaymentMethod")
 }
 
 enum FinancialAccountType {
-  stripe
-  // paypal
+  bank
+  card
 }

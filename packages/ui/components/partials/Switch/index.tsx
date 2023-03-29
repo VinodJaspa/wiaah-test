@@ -7,6 +7,7 @@ import { HtmlDivProps } from "types";
 export interface SwitchProps extends Omit<HtmlDivProps, "onChange"> {
   onChange?: (checked: boolean) => void;
   checked?: boolean;
+  label?: string;
 }
 
 export const Switch: React.FC<SwitchProps> = ({

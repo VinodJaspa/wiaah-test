@@ -1,4 +1,11 @@
-import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
+import {
+  Field,
+  Int,
+  ObjectType,
+  PartialType,
+  registerEnumType,
+} from '@nestjs/graphql';
+import { FieldRequired } from 'nest-utils';
 
 export enum BillingAccountBusinessType {
   company = 'company',
@@ -10,7 +17,7 @@ registerEnumType(BillingAccountBusinessType, {
 });
 
 @ObjectType()
-export class BillingAccountIndividualAddress {
+export class BillingAccountAddress {
   @Field(() => String)
   city: string;
 
@@ -22,7 +29,12 @@ export class BillingAccountIndividualAddress {
 
   @Field(() => String)
   line1: string;
+
+  @Field(() => String)
+  state: string;
 }
+
+const billingAccountAddress = PartialType(BillingAccountAddress);
 
 @ObjectType()
 export class BillingAccountDateOfBirth {
@@ -36,10 +48,12 @@ export class BillingAccountDateOfBirth {
   year: number;
 }
 
+const billingAccountDateOfBirth = PartialType(BillingAccountDateOfBirth);
+
 @ObjectType()
-export class BillingAccountIndividual {
-  @Field(() => BillingAccountIndividualAddress)
-  address: BillingAccountIndividualAddress;
+export class billingAccountIndividual {
+  @Field(() => BillingAccountAddress)
+  address: BillingAccountAddress;
 
   @Field(() => BillingAccountDateOfBirth)
   dob: BillingAccountDateOfBirth;
@@ -51,11 +65,38 @@ export class BillingAccountIndividual {
   phone: string;
 
   @Field(() => String)
-  ssn_last_4: string;
+  first_name: string;
+
+  @Field(() => String)
+  last_name: string;
+
+  @Field(() => String, { nullable: true })
+  id_number?: string;
+
+  @Field(() => String, { nullable: true })
+  ssn_last_4?: string;
 }
 
-// @ObjectType()
-// export class BillingAccountCompany {}
+@ObjectType()
+class BillingAccountIndividual extends PartialType(billingAccountIndividual) {}
+
+@ObjectType()
+export class billingAccountCompany {
+  @Field(() => billingAccountAddress)
+  address: BillingAccountAddress;
+
+  @Field(() => String)
+  name: string;
+
+  @Field(() => String)
+  phone: string;
+
+  @Field(() => String)
+  tax_id: string;
+}
+
+@ObjectType()
+class BillingAccountCompany extends PartialType(billingAccountCompany) {}
 
 @ObjectType()
 export class BillingAccountExternalAccount {
@@ -69,6 +110,63 @@ export class BillingAccountExternalAccount {
   currency: string;
 }
 
+const billingAccountExternalAccount = PartialType(
+  BillingAccountExternalAccount,
+);
+
+@ObjectType()
+export class CompanyPersonRelationship {
+  @Field(() => Boolean)
+  owner: boolean;
+
+  @Field(() => Boolean)
+  representative: boolean;
+
+  @Field(() => Boolean)
+  director: boolean;
+
+  @Field(() => Boolean)
+  executive: boolean;
+
+  @Field(() => String)
+  title: string;
+}
+
+export const companyPersonRelationship = PartialType(CompanyPersonRelationship);
+
+@ObjectType()
+export class companyPerson {
+  @Field(() => String)
+  id: string;
+
+  @Field(() => billingAccountAddress)
+  address: BillingAccountAddress;
+
+  @Field(() => billingAccountDateOfBirth)
+  dob: BillingAccountDateOfBirth;
+
+  @Field(() => String)
+  email: string;
+
+  @Field(() => String)
+  phone: string;
+
+  @Field(() => String)
+  first_name: string;
+
+  @Field(() => String)
+  last_name: string;
+
+  @Field(() => String, { nullable: true })
+  id_number?: string;
+
+  @Field(() => companyPersonRelationship)
+  relationship: CompanyPersonRelationship;
+}
+
+@ObjectType()
+export class CompanyPerson extends PartialType(companyPerson) {}
+
 @ObjectType()
 export class BillingAccountBusinessProfile {
   @Field(() => String)
@@ -76,22 +174,35 @@ export class BillingAccountBusinessProfile {
 
   @Field(() => String)
   name: string;
+
+  @Field(() => String)
+  url: string;
 }
+
+const billingAccountBusinessProfile = PartialType(
+  BillingAccountBusinessProfile,
+);
 
 @ObjectType()
 export class BillingAccount {
-  @Field(() => BillingAccountBusinessType)
-  businessType: BillingAccountBusinessType;
+  @Field(() => BillingAccountBusinessType, { nullable: true })
+  businessType?: BillingAccountBusinessType;
 
-  @Field(() => BillingAccountBusinessProfile)
-  business_profile: BillingAccountBusinessProfile;
+  // @Field(() => billingAccountBusinessProfile, { nullable: true })
+  // business_profile?: BillingAccountBusinessProfile;
 
-  @Field(() => BillingAccountExternalAccount)
-  external_account: BillingAccountExternalAccount;
+  // @Field(() => billingAccountExternalAccount, { nullable: true })
+  // external_account?: BillingAccountExternalAccount;
 
   @Field(() => BillingAccountIndividual, { nullable: true })
   individual?: BillingAccountIndividual;
 
-  //   @Field(() => BillingAccountCompany, { nullable: true })
-  //   company?: BillingAccountCompany;
+  @Field(() => BillingAccountCompany, { nullable: true })
+  company?: BillingAccountCompany;
+
+  @Field(() => [CompanyPerson], { nullable: true })
+  @FieldRequired('business_type', BillingAccountBusinessType.company, {
+    message: `Company members information is required for accounts with business type of company`,
+  })
+  companyMembers?: CompanyPerson[];
 }

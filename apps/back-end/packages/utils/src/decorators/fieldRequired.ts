@@ -6,7 +6,7 @@ import {
 
 export function FieldRequired(
   property: string,
-  value: string,
+  value: string | number | boolean,
   validationOptions?: ValidationOptions
 ) {
   return function (object: Object, propertyName: string) {

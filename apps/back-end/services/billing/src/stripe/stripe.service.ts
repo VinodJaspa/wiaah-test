@@ -23,7 +23,6 @@ export class StripeService implements OnModuleInit {
 
   async createConnectedAccount(
     id: string,
-    type: AccountType,
     params?: Stripe.AccountCreateParams,
   ) {
     const res = await this.stripe.accounts.create({
@@ -31,7 +30,6 @@ export class StripeService implements OnModuleInit {
       type: 'custom',
       metadata: {
         id,
-        type,
       },
       capabilities: {
         card_payments: {
@@ -73,6 +71,47 @@ export class StripeService implements OnModuleInit {
       id,
       params,
     );
+    return res;
+  }
+
+  async createExternalAccount(
+    stripeId: string,
+    data:
+      | { card: Stripe.TokenCreateParams.Card; bank: undefined }
+      | { card: undefined; bank: Stripe.TokenCreateParams.BankAccount },
+  ) {
+    const token = await this.stripe.tokens.create({
+      card: data.card,
+      bank_account: data.bank,
+    });
+
+    const res = await this.stripe.accounts.createExternalAccount(stripeId, {
+      external_account: token.id,
+    });
+
+    return res;
+  }
+  async updateExternalAccount(
+    stripeId: string,
+    external_accountId: string,
+    data:
+      | { card: Stripe.TokenCreateParams.Card; bank: undefined }
+      | { card: undefined; bank: Stripe.TokenCreateParams.BankAccount },
+  ) {
+    const token = await this.stripe.tokens.create({
+      card: data.card,
+      bank_account: data.bank,
+    });
+
+    const res = await this.stripe.accounts.updateExternalAccount(
+      stripeId,
+      external_accountId,
+      {
+        //@ts-ignore
+        external_account: token.id,
+      },
+    );
+
     return res;
   }
 
@@ -326,15 +365,18 @@ export class StripeService implements OnModuleInit {
     amount,
     connectedAccId,
     currency,
+    externalAccountId: methodId,
   }: {
     connectedAccId: string;
     amount: number;
     currency: string;
+    externalAccountId: string;
   }) {
     return await this.stripe.payouts.create(
       {
         amount,
         currency,
+        destination: methodId,
       },
       {
         stripeAccount: connectedAccId,

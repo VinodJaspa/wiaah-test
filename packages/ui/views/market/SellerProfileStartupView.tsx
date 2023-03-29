@@ -28,6 +28,7 @@ import {
   ServiceSectionWithSchemaType,
   MyVerificationSection,
   AccountSettingsSection,
+  BillingAccount,
 } from "@UI";
 
 import { ServicesType, StepperStepType } from "types";
@@ -39,7 +40,7 @@ import { AccountSignup } from "@features/Auth/views";
 
 export const SellerProfileStartupView: React.FC = ({}) => {
   const { t } = useTranslation();
-  const [currentStep, setCurrentStep] = React.useState<number>(0);
+  const [currentStep, setCurrentStep] = React.useState<number>(2);
   const [submitRequests, setSubmitRequests] = React.useState<
     Record<number, () => any>
   >({});
@@ -97,9 +98,22 @@ export const SellerProfileStartupView: React.FC = ({}) => {
       ),
     },
     {
-      stepName: t("Create Yuor Social Profile"),
-      stepComponent: AccountSettingsSection,
       key: 2,
+      stepComponent: (
+        <BillingAccount
+          onSuccess={handleNextStep}
+          ref={(v: { submit: () => any }) => {
+            if (
+              v &&
+              typeof v.submit === "function" &&
+              typeof submitRequests[2] !== "function"
+            ) {
+              addSubmitRequest(2, v.submit);
+            }
+          }}
+        />
+      ),
+      stepName: t("Payout"),
     },
     {
       stepName: t("Shop information"),
@@ -107,7 +121,7 @@ export const SellerProfileStartupView: React.FC = ({}) => {
       key: 3,
     },
     {
-      stepName: t("Verify You Identity"),
+      stepName: t("Verify Your Identity"),
       key: 4,
       stepComponent: MyVerificationSection,
     },

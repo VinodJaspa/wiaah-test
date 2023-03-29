@@ -509,7 +509,18 @@ export type BeautyCenterTreatmentCategory = {
   updatedAt: Scalars["DateTime"];
 };
 
-export type BillingAccountAddressInput = {
+export type BillingAccount = {
+  __typename?: "BillingAccount";
+  businessType?: Maybe<BillingAccountBusinessType>;
+  business_profile?: Maybe<PartialBillingAccountBusinessProfile>;
+  company?: Maybe<PartialBillingAccountCompany>;
+  companyMembers?: Maybe<Array<CompanyPerson>>;
+  external_account?: Maybe<PartialBillingAccountExternalAccount>;
+  individual?: Maybe<BillingAccountIndividual>;
+};
+
+export type BillingAccountAddress = {
+  __typename?: "BillingAccountAddress";
   city: Scalars["String"];
   country: Scalars["String"];
   line1: Scalars["String"];
@@ -517,10 +528,12 @@ export type BillingAccountAddressInput = {
   state: Scalars["String"];
 };
 
-export type BillingAccountBusinessProfile = {
-  __typename?: "BillingAccountBusinessProfile";
-  mcc: Scalars["String"];
-  name: Scalars["String"];
+export type BillingAccountAddressInput = {
+  city: Scalars["String"];
+  country: Scalars["String"];
+  line1: Scalars["String"];
+  postal_code: Scalars["String"];
+  state: Scalars["String"];
 };
 
 export type BillingAccountBusinessProfileInput = {
@@ -554,13 +567,6 @@ export type BillingAccountDateOfBirthInput = {
   year: Scalars["Int"];
 };
 
-export type BillingAccountExternalAccount = {
-  __typename?: "BillingAccountExternalAccount";
-  account_number: Scalars["String"];
-  country: Scalars["String"];
-  currency: Scalars["String"];
-};
-
 export type BillingAccountExternalAccountInput = {
   account_number: Scalars["String"];
   country: Scalars["String"];
@@ -571,19 +577,14 @@ export type BillingAccountExternalAccountInput = {
 
 export type BillingAccountIndividual = {
   __typename?: "BillingAccountIndividual";
-  address: BillingAccountIndividualAddress;
+  address: BillingAccountAddress;
   dob: BillingAccountDateOfBirth;
   email: Scalars["String"];
+  first_name: Scalars["String"];
+  id_number: Scalars["String"];
+  last_name: Scalars["String"];
   phone: Scalars["String"];
   ssn_last_4: Scalars["String"];
-};
-
-export type BillingAccountIndividualAddress = {
-  __typename?: "BillingAccountIndividualAddress";
-  city: Scalars["String"];
-  country: Scalars["String"];
-  line1: Scalars["String"];
-  postal_code: Scalars["String"];
 };
 
 export type BillingAccountIndividualInput = {
@@ -855,6 +856,19 @@ export type Community = {
   type: Scalars["String"];
 };
 
+export type CompanyPerson = {
+  __typename?: "CompanyPerson";
+  address: PartialBillingAccountAddress;
+  dob: PartialBillingAccountDateOfBirth;
+  email: Scalars["String"];
+  first_name: Scalars["String"];
+  id: Scalars["String"];
+  id_number: Scalars["String"];
+  last_name: Scalars["String"];
+  phone: Scalars["String"];
+  relationship: PartialCompanyPersonRelationship;
+};
+
 export type ConfirmPasswordChangeInput = {
   confirmNewPassword: Scalars["String"];
   email: Scalars["String"];
@@ -1030,7 +1044,15 @@ export type CreateCompanyPersonInput = {
   id_number: Scalars["String"];
   last_name: Scalars["String"];
   phone: Scalars["String"];
-  relationship: PartialObjectType;
+  relationship: CreateCompanyPersonRelationshipInput;
+};
+
+export type CreateCompanyPersonRelationshipInput = {
+  director?: Maybe<Scalars["Boolean"]>;
+  executive?: Maybe<Scalars["Boolean"]>;
+  owner?: Maybe<Scalars["Boolean"]>;
+  representative?: Maybe<Scalars["Boolean"]>;
+  title?: Maybe<Scalars["String"]>;
 };
 
 export type CreateContentShareInput = {
@@ -2578,7 +2600,6 @@ export type Mutation = {
   updateBeautyCenter: BeautyCenter;
   updateBeautyCenterAdmin: Scalars["Boolean"];
   updateBillingAddress: BillingAddress;
-  updateByBillingAccount: Scalars["Boolean"];
   updateComment: Comment;
   updateCurrenciesRates: Array<Currency>;
   updateCurrency: Scalars["Boolean"];
@@ -2589,6 +2610,7 @@ export type Mutation = {
   updateHotelAdmin: Scalars["Boolean"];
   updateLanguage: Scalars["Boolean"];
   updateMembership: Scalars["Boolean"];
+  updateMyBillingAccount: Scalars["Boolean"];
   updateMyContact: Scalars["Boolean"];
   updateMyCookiesSettings: Scalars["Boolean"];
   updateMyNotification: UserNotificationSettings;
@@ -3186,10 +3208,6 @@ export type MutationUpdateBeautyCenterAdminArgs = {
   args: UpdateBeautyCenterAdminInput;
 };
 
-export type MutationUpdateByBillingAccountArgs = {
-  args: CreateBillingAccountInput;
-};
-
 export type MutationUpdateCommentArgs = {
   updateCommentInput: UpdateCommentInput;
 };
@@ -3224,6 +3242,10 @@ export type MutationUpdateLanguageArgs = {
 
 export type MutationUpdateMembershipArgs = {
   args: UpdateMembershipInput;
+};
+
+export type MutationUpdateMyBillingAccountArgs = {
+  args: CreateBillingAccountInput;
 };
 
 export type MutationUpdateMyContactArgs = {
@@ -3526,7 +3548,46 @@ export type PaginationCommentsResponse = {
   total: Scalars["Int"];
 };
 
-export type PartialObjectType = {
+export type PartialBillingAccountAddress = {
+  __typename?: "PartialBillingAccountAddress";
+  city?: Maybe<Scalars["String"]>;
+  country?: Maybe<Scalars["String"]>;
+  line1?: Maybe<Scalars["String"]>;
+  postal_code?: Maybe<Scalars["String"]>;
+  state?: Maybe<Scalars["String"]>;
+};
+
+export type PartialBillingAccountBusinessProfile = {
+  __typename?: "PartialBillingAccountBusinessProfile";
+  mcc?: Maybe<Scalars["String"]>;
+  name?: Maybe<Scalars["String"]>;
+  url?: Maybe<Scalars["String"]>;
+};
+
+export type PartialBillingAccountCompany = {
+  __typename?: "PartialBillingAccountCompany";
+  address?: Maybe<PartialBillingAccountAddress>;
+  name?: Maybe<Scalars["String"]>;
+  phone?: Maybe<Scalars["String"]>;
+  tax_id?: Maybe<Scalars["String"]>;
+};
+
+export type PartialBillingAccountDateOfBirth = {
+  __typename?: "PartialBillingAccountDateOfBirth";
+  day?: Maybe<Scalars["Int"]>;
+  month?: Maybe<Scalars["Int"]>;
+  year?: Maybe<Scalars["Int"]>;
+};
+
+export type PartialBillingAccountExternalAccount = {
+  __typename?: "PartialBillingAccountExternalAccount";
+  account_number?: Maybe<Scalars["String"]>;
+  country?: Maybe<Scalars["String"]>;
+  currency?: Maybe<Scalars["String"]>;
+};
+
+export type PartialCompanyPersonRelationship = {
+  __typename?: "PartialCompanyPersonRelationship";
   director?: Maybe<Scalars["Boolean"]>;
   executive?: Maybe<Scalars["Boolean"]>;
   owner?: Maybe<Scalars["Boolean"]>;
@@ -3944,7 +4005,7 @@ export type Query = {
   getMaintenancePages: Array<Maintenance>;
   getMyAffiliations: Array<Affiliation>;
   getMyBalance: Balance;
-  getMyBillingAccount: Scalars["String"];
+  getMyBillingAccount: BillingAccount;
   getMyBillingAddressCollection: BillingAddressCollection;
   getMyBlockList: Array<Block>;
   getMyBookings: Array<BookedService>;

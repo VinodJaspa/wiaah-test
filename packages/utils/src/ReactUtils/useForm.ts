@@ -66,12 +66,30 @@ export function useForm<TForm>(
     };
   }
 
+  function switchInputProps<Tkey extends keyof TForm>(
+    key: Tkey,
+    valueKey: string = "value",
+    onChangeKey: string = "onChange",
+    mapOnChange: (value: any) => any = (e) => e
+  ) {
+    if (!data) return {};
+    return {
+      [valueKey]: data[key] as TForm[Tkey],
+      [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
+      label:
+        options?.addLabel && typeof key === "string"
+          ? startCase(key)
+          : undefined,
+    };
+  }
+
   return {
     form: data,
     handleChange,
     inputProps,
     selectProps,
     dateInputProps,
+    switchInputProps,
     setValue: (v: TForm) => setData({ ...v, constents }),
   };
 }

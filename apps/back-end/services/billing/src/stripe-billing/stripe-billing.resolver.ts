@@ -3,6 +3,7 @@ import {
   Inject,
   InternalServerErrorException,
   OnModuleInit,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
@@ -33,7 +34,10 @@ import { PrismaService } from 'prismaService';
 import { FinancialAccountType } from '@prisma-client';
 import { CreateBillingAccountInput } from './dto/update-billing-account.input';
 import { Upload, GraphQLUpload } from 'graphql-upload';
-import { BillingAccountBusinessType } from './entities/billing-account.entity';
+import {
+  BillingAccount,
+  BillingAccountBusinessType,
+} from './entities/billing-account.entity';
 
 @Resolver()
 export class StripeBillingResolver implements OnModuleInit {
@@ -46,107 +50,68 @@ export class StripeBillingResolver implements OnModuleInit {
     private readonly prisma: PrismaService,
   ) {}
 
-  @Query(() => String)
+  @Query(() => BillingAccount)
   @UseGuards(new GqlAuthorizationGuard([]))
-  async getMyBillingAccount(@GqlCurrentUser() user: AuthorizationDecodedUser) {
-    const acc = await this.prisma.financialAccount.findUnique({
-      where: {
-        ownerId_type: {
-          ownerId: user.id,
-          type: FinancialAccountType.stripe,
-        },
-      },
-    });
+  async getUserPayoutAccount(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('stripeId', { nullable: true }) stripId?: string,
+  ): Promise<BillingAccount> {
+    const stripeId =
+      user.accountType === accountType.ADMIN ? stripId : user.stripeId;
+    const res = await this.stripeService.getConnectedAccountById(stripeId);
 
-    if (acc) {
-      const stripeAcc = await this.stripeService.getConnectedAccountById(
-        acc.financialId,
-      );
-      console.log(stripeAcc.payouts_enabled, stripeAcc.requirements);
-      console.log(JSON.stringify(stripeAcc, null, 2));
-      return JSON.stringify(stripeAcc);
-    } else {
-      const stripeAcc = await this.stripeService.createConnectedAccount(
-        user.id,
-        user.accountType,
-      );
-
-      await this.prisma.financialAccount.create({
-        data: {
-          financialId: stripeAcc.id,
-          label: 'Stripe',
-          ownerId: user.id,
-          type: FinancialAccountType.stripe,
-        },
-      });
-
-      return JSON.stringify(stripeAcc);
-    }
+    return res;
   }
 
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([]))
-  async updateByBillingAccount(
+  async updatePayoutAccount(
     @Args('args') _args: CreateBillingAccountInput,
+    @Args('userId') id: string,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @Context() ctx: { ip: string },
+    @Args('stripeId', { nullable: true }) stripId?: string,
   ) {
+    await this.validateRequest(user, id);
     try {
       const { companyMembers, ...args } = _args;
-      const finAcc = await this.prisma.financialAccount.findUnique({
-        where: {
-          ownerId_type: {
-            ownerId: user.id,
-            type: 'stripe',
-          },
-        },
-      });
+      const stripeId =
+        user.accountType === accountType.ADMIN ? stripId : user.stripeId;
 
-      if (finAcc) {
+      if (stripId) {
         await Promise.all(
           companyMembers.map(async (v) => {
             if (v.id) {
               const { id, ...rest } = v;
-              await this.stripeService.updateCompanyPerson(
-                finAcc.financialId,
-                id,
-                rest,
-              );
+              await this.stripeService.updateCompanyPerson(stripeId, id, rest);
             } else {
-              await this.stripeService.createPerson(finAcc.financialId, v);
+              await this.stripeService.createPerson(stripeId, v);
             }
           }),
         );
 
-        const members = await this.stripeService.getCompanyMembers(
-          finAcc.financialId,
-        );
+        const members = await this.stripeService.getCompanyMembers(stripeId);
 
-        const res = await this.stripeService.updateConnectedAccount(
-          finAcc.financialId,
-          {
-            ...args,
-
-            company:
-              args.business_type === BillingAccountBusinessType.company
-                ? {
-                    ...args.company,
-                    owners_provided: members.data
-                      .map((v) => v?.relationship?.owner)
-                      .some((v) => !!v),
-                  }
-                : undefined,
-            individual:
-              args.business_type === BillingAccountBusinessType.individual
-                ? args.individual
-                : undefined,
-            external_account: undefined,
-            tos_acceptance: {
-              date: Math.floor(Date.now() / 1000),
-              ip: ctx.ip,
-            },
+        const res = await this.stripeService.updateConnectedAccount(stripeId, {
+          ...args,
+          company:
+            args.business_type === BillingAccountBusinessType.company
+              ? {
+                  ...args.company,
+                  owners_provided: members.data
+                    .map((v) => v?.relationship?.owner)
+                    .some((v) => !!v),
+                }
+              : undefined,
+          individual:
+            args.business_type === BillingAccountBusinessType.individual
+              ? args.individual
+              : undefined,
+          tos_acceptance: {
+            date: Math.floor(Date.now() / 1000),
+            ip: ctx.ip,
           },
-        );
+        });
         if (companyMembers) {
           const members = await Promise.all(
             companyMembers.map((v) =>
@@ -157,30 +122,26 @@ export class StripeBillingResolver implements OnModuleInit {
           );
         }
       } else {
-        const res = await this.stripeService.createConnectedAccount(
-          user.id,
-          user.accountType,
-          {
-            ...args,
-            company:
-              args.business_type === BillingAccountBusinessType.company
-                ? {
-                    ...args.company,
-                    owners_provided: companyMembers.some(
-                      (v) => !!v?.relationship?.owner,
-                    ),
-                  }
-                : undefined,
-            individual:
-              args.business_type === BillingAccountBusinessType.individual
-                ? args.individual
-                : undefined,
-            tos_acceptance: {
-              date: Math.floor(Date.now() / 1000),
-              ip: ctx.ip,
-            },
+        const res = await this.stripeService.createConnectedAccount(id, {
+          ...args,
+          company:
+            args.business_type === BillingAccountBusinessType.company
+              ? {
+                  ...args.company,
+                  owners_provided: companyMembers.some(
+                    (v) => !!v?.relationship?.owner,
+                  ),
+                }
+              : undefined,
+          individual:
+            args.business_type === BillingAccountBusinessType.individual
+              ? args.individual
+              : undefined,
+          tos_acceptance: {
+            date: Math.floor(Date.now() / 1000),
+            ip: ctx.ip,
           },
-        );
+        });
 
         if (companyMembers) {
           const members = await Promise.all(
@@ -189,15 +150,6 @@ export class StripeBillingResolver implements OnModuleInit {
             ),
           );
         }
-
-        await this.prisma.financialAccount.create({
-          data: {
-            financialId: res.id,
-            label: 'Stripe',
-            ownerId: user.id,
-            type: 'stripe',
-          },
-        });
       }
 
       return true;
@@ -285,33 +237,12 @@ export class StripeBillingResolver implements OnModuleInit {
     if (!finAccount)
       throw new BadRequestException('This financial account was not found');
 
-    switch (finAccount.type) {
-      case FinancialAccountType.stripe:
-        const curr = await KafkaMessageHandler<
-          string,
-          GetCurrencyExchangeRateMessage,
-          GetCurrencyExchangeRateMessageReply
-        >(
-          this.eventsCLient,
-          KAFKA_MESSAGES.CURRENCY_MESSAGES.getCurrencyExchangeRate,
-          new GetCurrencyExchangeRateMessage({
-            targetCurrencyCode: args.currency,
-          }),
-        );
-
-        const amount = args.amount * curr.results.data.rate;
-
-        const res = await this.stripeService.sendFunds({
-          amount,
-          connectedAccId: finAccount.financialId,
-          currency: curr.results.data.convertedToCurrency,
-        });
-        return true;
-        break;
-
-      default:
-        return false;
-    }
+    const fundsRes = await this.stripeService.sendFunds({
+      amount: args.amount,
+      connectedAccId: user.stripeId,
+      currency: finAccount.currency,
+      externalAccountId: finAccount.financialId,
+    });
   }
 
   @Query(() => Boolean)
@@ -323,6 +254,10 @@ export class StripeBillingResolver implements OnModuleInit {
     } catch (err) {
       return false;
     }
+  }
+
+  async validateRequest(user: AuthorizationDecodedUser, id: string) {
+    return user.id === id || user.accountType === accountType.ADMIN;
   }
 
   async onModuleInit() {

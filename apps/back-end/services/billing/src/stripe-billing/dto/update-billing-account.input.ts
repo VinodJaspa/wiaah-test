@@ -123,9 +123,10 @@ export class createCompanyPersonRelationshipInput {
   title: string;
 }
 
-export const CreateCompanyPersonRelationshipInput = PartialType(
+@InputType()
+export class CreateCompanyPersonRelationshipInput extends PartialType(
   createCompanyPersonRelationshipInput,
-);
+) {}
 
 @InputType()
 export class CreateCompanyPersonInput {
@@ -154,19 +155,13 @@ export class CreateCompanyPersonInput {
   id_number: string;
 
   @Field(() => CreateCompanyPersonRelationshipInput)
-  relationship: createCompanyPersonRelationshipInput;
+  relationship: CreateCompanyPersonRelationshipInput;
 }
 
 @InputType()
 export class CreateBillingAccountInput {
   @Field(() => BillingAccountBusinessType)
   business_type: BillingAccountBusinessType;
-
-  @Field(() => BillingAccountBusinessProfileInput)
-  business_profile: BillingAccountBusinessProfileInput;
-
-  @Field(() => BillingAccountExternalAccountInput)
-  external_account: BillingAccountExternalAccountInput;
 
   @Field(() => BillingAccountIndividualInput, { nullable: true })
   @FieldRequired('business_type', BillingAccountBusinessType.individual, {

@@ -29,7 +29,7 @@ model Account {
   lastActiveAt               DateTime                 @default(now())
   type                       AccountType
   companyRegisterationNumber String?
-  gender                     AccountGenderEnum
+  gender                     AccountGenderEnum        @default(male)
   verified                   Boolean                  @default(false)
   status                     AccountStatus            @default(pending)
   rejectReason               String?

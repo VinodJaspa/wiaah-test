@@ -64,9 +64,6 @@ const CheckoutForm = () => {
     </form>
   );
 };
-// Make sure to call `loadStripe` outside of a component’s render to avoid
-// recreating the `Stripe` object on every render.
-const stripePromise = loadStripe(EnvVars.stripePublicKey);
 
 export interface PaymentGatewayProps {}
 
