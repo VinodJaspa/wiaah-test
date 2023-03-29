@@ -1,9 +1,8 @@
 import { FileUploadMeta } from "./fileMeta";
-import { ReadStream } from "fs";
 
 export type BaseFileUploadData = {
   meta: FileUploadMeta;
-  stream: ReadStream;
+  stream: any;
 };
 
 export type ImageFile = BaseFileUploadData;

@@ -106,7 +106,11 @@ type Refund {
   qty: Int!
   status: RefundStatusType!
   rejectReason: String
+  opened: Boolean!
+  createdAt: String!
+  updatedAt: String!
   product: Product!
+  orderItem: OrderItem
 }
 
 enum RefundType {
@@ -116,8 +120,10 @@ enum RefundType {
 
 enum RefundStatusType {
   pending
-  accept
-  reject
+  accepted
+  rejected
+  refunded
+  closed
 }
 
 type ReturnedOrder {
@@ -129,6 +135,7 @@ type ReturnedOrder {
   fullAmount: Float!
   status: RefundStatusType!
   rejectReason: String
+  createdAt: String!
   orderItem: OrderItem!
 }
 
@@ -144,6 +151,8 @@ type Query {
   getSalesDurningPeriod(args: GetSalesDurningPeriodInput!): [OrderItem!]!
   getRecentSales(count: Int = 10): [OrderItem!]!
   getMyReturnedOrders(args: GetMyReturnedOrdersInput!): [Refund!]!
+  adminGetRefundRequest(id: String!): Refund!
+  getRefundRequests(args: GetFilteredRefundsInput!): [Refund!]!
   adminGetUserReturnedOrders(args: AdminGetUserReturnedOrdersInput!): [ReturnedOrder!]!
   adminGetReturnedOrders(args: AdminGetReturnedOrdersInput!): [ReturnedOrder!]!
 }
@@ -210,6 +219,19 @@ input GetMyReturnedOrdersInput {
   pagination: GqlPaginationInput!
 }
 
+input GetFilteredRefundsInput {
+  refundId: String
+  orderId: String
+  comment: String
+  product: String
+  status: RefundStatusType
+  addedDate: String
+  dateModified: String
+  seller: String
+  buyer: String
+  pagination: GqlPaginationInput!
+}
+
 input AdminGetUserReturnedOrdersInput {
   pagination: GqlPaginationInput!
   accountId: ID!
@@ -235,6 +257,8 @@ type Mutation {
   askForRefund(askForRefundArgs: AskForRefundInput!): Boolean!
   acceptRefundRequest(id: ID!): Boolean!
   rejectRefundRequest(args: RejectRefundRequestInput!): Boolean!
+  adminConfirmRefund(id: String!): Boolean!
+  adminCloseRefund(id: String!): Boolean!
 }
 
 input RejectReceivedOrderInput {
@@ -263,6 +287,7 @@ input AskForRefundInput {
   amount: Float
   reason: String = ""
   qty: Int!
+  opened: Boolean!
 }
 
 input RejectRefundRequestInput {

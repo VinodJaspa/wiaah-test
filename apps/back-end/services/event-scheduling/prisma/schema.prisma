@@ -17,4 +17,5 @@ model Event {
   triggerAt    DateTime
   data         String
   triggerEvent String
+  triggerId    String   @unique
 }

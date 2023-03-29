@@ -9,21 +9,18 @@ import {
 } from "react-icons/io5";
 import { HiUserGroup } from "react-icons/hi";
 import { BiLock } from "react-icons/bi";
-import { MdVerified } from "react-icons/md";
 import { BiData } from "react-icons/bi";
 import { SettingsSectionType } from "types";
 import {
   AccountSettingsSection,
   BlocklistSection,
   FindYourFriendsStep,
-  MembershipSection,
   NewsLetterSection,
   NotificationsSettingsSection,
   PasswordSection,
   PrivacySection,
   SectionsLayout,
   AccountDeletionSection,
-  AccountVerification,
   PersonalizationAndDataSection,
 } from "ui";
 import { ImBlocked } from "react-icons/im";

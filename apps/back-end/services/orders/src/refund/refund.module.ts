@@ -5,6 +5,7 @@ import { RefundCommandHandlers } from '@refund/commands';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { RefundEventHandlers } from './events';
 import { RefundQueryHandler } from './queries';
+import { RefundAdminResolver } from './refund-admin.resolver';
 import { RefundResolver } from './refund.resolver';
 import { RefundRepository } from './repository';
 
@@ -29,6 +30,7 @@ import { RefundRepository } from './repository';
   ],
   providers: [
     RefundResolver,
+    RefundAdminResolver,
     RefundRepository,
     ...RefundCommandHandlers,
     ...RefundQueryHandler,

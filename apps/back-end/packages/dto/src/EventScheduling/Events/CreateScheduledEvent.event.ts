@@ -7,4 +7,6 @@ export class CreateScheduledEvent extends KafkaMessage<{
   payload: string;
 
   triggerAt: string;
+
+  triggerId: string;
 }> {}

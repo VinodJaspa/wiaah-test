@@ -17,8 +17,8 @@ export class CreatePostInput {
   @Field(() => String)
   content: string;
 
-  @Field(() => [AttachmentInput])
-  attachments: AttachmentInput[];
+  @Field(() => [String])
+  attachments: string[];
 
   @Field(() => [HashtagInput])
   hashtags: HashtagInput[];

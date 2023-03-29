@@ -53,6 +53,8 @@ export class ReactionService {
     try {
       const reaction = await this.prisma.contentReaction.create({
         data: {
+          hostProfileId: content.authorProfileId,
+          hostUserId: content.userId,
           hostId: contentId,
           hostType: contentType,
           reactionType: 'like',

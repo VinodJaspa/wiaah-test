@@ -53,7 +53,7 @@ export const TableContainer: React.FC<TableContainer> = ({
       style={{
         overflowX: "scroll",
       }}
-      className={`${className || ""} ${isMobile ? "" : "thinScroll"}`}
+      className={`${className || ""} ${isMobile ? "" : "thinScroll"} w-full`}
       {...props}
     />
   );

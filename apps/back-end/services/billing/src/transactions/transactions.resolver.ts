@@ -44,7 +44,7 @@ export class TransactionsResolver {
   fromUser(@Parent() trans: Transaction) {
     return {
       __typename: 'Account',
-      id: trans.from,
+      id: trans.fromId,
     };
   }
 

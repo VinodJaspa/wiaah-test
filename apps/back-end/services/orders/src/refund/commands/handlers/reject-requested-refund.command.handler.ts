@@ -21,7 +21,7 @@ export class RejectRequestedRefundCommandHandler
     await this.validateCanModifyRequest(id, userId);
     const res = await this.repo.updateOneStatus(
       id,
-      RefundStatusType.reject,
+      RefundStatusType.rejected,
       reason,
     );
 

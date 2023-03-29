@@ -1,5 +1,5 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { ProfileVisibility } from 'prismaClient';
+import { ProfileReachedGender, ProfileVisibility } from 'prismaClient';
 
 import {
   registerDecorator,
@@ -46,4 +46,7 @@ export class CreateProfileInput {
 
   @Field(() => String)
   username: string;
+
+  @Field(() => ProfileReachedGender)
+  gender: ProfileReachedGender;
 }

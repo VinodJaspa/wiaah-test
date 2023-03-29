@@ -101,6 +101,9 @@ export class OrderCreatedKafkaEventHandler
             subtotal,
             tax: taxes,
             total,
+            // TODO: get paid amount and currency from stripe
+            paid: total,
+            paidCurrency: 'usd',
           },
           date: new Date(order.createdAt).toISOString(),
           items: products.map((v) => ({

@@ -16,7 +16,7 @@ export class Transaction {
   updatedAt: Date;
 
   @Field(() => String)
-  from: string;
+  fromId: string;
 
   @Field(() => String)
   description: string;

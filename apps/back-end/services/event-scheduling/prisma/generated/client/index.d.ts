@@ -22,6 +22,7 @@ export type Event = {
   triggerAt: Date
   data: string
   triggerEvent: string
+  triggerId: string
 }
 
 
@@ -740,6 +741,7 @@ export namespace Prisma {
     triggerAt: Date | null
     data: string | null
     triggerEvent: string | null
+    triggerId: string | null
   }
 
   export type EventMaxAggregateOutputType = {
@@ -748,6 +750,7 @@ export namespace Prisma {
     triggerAt: Date | null
     data: string | null
     triggerEvent: string | null
+    triggerId: string | null
   }
 
   export type EventCountAggregateOutputType = {
@@ -756,6 +759,7 @@ export namespace Prisma {
     triggerAt: number
     data: number
     triggerEvent: number
+    triggerId: number
     _all: number
   }
 
@@ -766,6 +770,7 @@ export namespace Prisma {
     triggerAt?: true
     data?: true
     triggerEvent?: true
+    triggerId?: true
   }
 
   export type EventMaxAggregateInputType = {
@@ -774,6 +779,7 @@ export namespace Prisma {
     triggerAt?: true
     data?: true
     triggerEvent?: true
+    triggerId?: true
   }
 
   export type EventCountAggregateInputType = {
@@ -782,6 +788,7 @@ export namespace Prisma {
     triggerAt?: true
     data?: true
     triggerEvent?: true
+    triggerId?: true
     _all?: true
   }
 
@@ -869,6 +876,7 @@ export namespace Prisma {
     triggerAt: Date
     data: string
     triggerEvent: string
+    triggerId: string
     _count: EventCountAggregateOutputType | null
     _min: EventMinAggregateOutputType | null
     _max: EventMaxAggregateOutputType | null
@@ -894,6 +902,7 @@ export namespace Prisma {
     triggerAt?: boolean
     data?: boolean
     triggerEvent?: boolean
+    triggerId?: boolean
   }
 
   export type EventGetPayload<
@@ -1610,7 +1619,8 @@ export namespace Prisma {
     createdAt: 'createdAt',
     triggerAt: 'triggerAt',
     data: 'data',
-    triggerEvent: 'triggerEvent'
+    triggerEvent: 'triggerEvent',
+    triggerId: 'triggerId'
   };
 
   export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum]
@@ -1646,6 +1656,7 @@ export namespace Prisma {
     triggerAt?: DateTimeFilter | Date | string
     data?: StringFilter | string
     triggerEvent?: StringFilter | string
+    triggerId?: StringFilter | string
   }
 
   export type EventOrderByWithRelationInput = {
@@ -1654,10 +1665,12 @@ export namespace Prisma {
     triggerAt?: SortOrder
     data?: SortOrder
     triggerEvent?: SortOrder
+    triggerId?: SortOrder
   }
 
   export type EventWhereUniqueInput = {
     id?: string
+    triggerId?: string
   }
 
   export type EventOrderByWithAggregationInput = {
@@ -1666,6 +1679,7 @@ export namespace Prisma {
     triggerAt?: SortOrder
     data?: SortOrder
     triggerEvent?: SortOrder
+    triggerId?: SortOrder
     _count?: EventCountOrderByAggregateInput
     _max?: EventMaxOrderByAggregateInput
     _min?: EventMinOrderByAggregateInput
@@ -1680,6 +1694,7 @@ export namespace Prisma {
     triggerAt?: DateTimeWithAggregatesFilter | Date | string
     data?: StringWithAggregatesFilter | string
     triggerEvent?: StringWithAggregatesFilter | string
+    triggerId?: StringWithAggregatesFilter | string
   }
 
   export type EventCreateInput = {
@@ -1688,6 +1703,7 @@ export namespace Prisma {
     triggerAt: Date | string
     data: string
     triggerEvent: string
+    triggerId: string
   }
 
   export type EventUncheckedCreateInput = {
@@ -1696,6 +1712,7 @@ export namespace Prisma {
     triggerAt: Date | string
     data: string
     triggerEvent: string
+    triggerId: string
   }
 
   export type EventUpdateInput = {
@@ -1703,6 +1720,7 @@ export namespace Prisma {
     triggerAt?: DateTimeFieldUpdateOperationsInput | Date | string
     data?: StringFieldUpdateOperationsInput | string
     triggerEvent?: StringFieldUpdateOperationsInput | string
+    triggerId?: StringFieldUpdateOperationsInput | string
   }
 
   export type EventUncheckedUpdateInput = {
@@ -1710,6 +1728,7 @@ export namespace Prisma {
     triggerAt?: DateTimeFieldUpdateOperationsInput | Date | string
     data?: StringFieldUpdateOperationsInput | string
     triggerEvent?: StringFieldUpdateOperationsInput | string
+    triggerId?: StringFieldUpdateOperationsInput | string
   }
 
   export type EventCreateManyInput = {
@@ -1718,6 +1737,7 @@ export namespace Prisma {
     triggerAt: Date | string
     data: string
     triggerEvent: string
+    triggerId: string
   }
 
   export type EventUpdateManyMutationInput = {
@@ -1725,6 +1745,7 @@ export namespace Prisma {
     triggerAt?: DateTimeFieldUpdateOperationsInput | Date | string
     data?: StringFieldUpdateOperationsInput | string
     triggerEvent?: StringFieldUpdateOperationsInput | string
+    triggerId?: StringFieldUpdateOperationsInput | string
   }
 
   export type EventUncheckedUpdateManyInput = {
@@ -1732,6 +1753,7 @@ export namespace Prisma {
     triggerAt?: DateTimeFieldUpdateOperationsInput | Date | string
     data?: StringFieldUpdateOperationsInput | string
     triggerEvent?: StringFieldUpdateOperationsInput | string
+    triggerId?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter = {
@@ -1766,6 +1788,7 @@ export namespace Prisma {
     triggerAt?: SortOrder
     data?: SortOrder
     triggerEvent?: SortOrder
+    triggerId?: SortOrder
   }
 
   export type EventMaxOrderByAggregateInput = {
@@ -1774,6 +1797,7 @@ export namespace Prisma {
     triggerAt?: SortOrder
     data?: SortOrder
     triggerEvent?: SortOrder
+    triggerId?: SortOrder
   }
 
   export type EventMinOrderByAggregateInput = {
@@ -1782,6 +1806,7 @@ export namespace Prisma {
     triggerAt?: SortOrder
     data?: SortOrder
     triggerEvent?: SortOrder
+    triggerId?: SortOrder
   }
 
   export type StringWithAggregatesFilter = {

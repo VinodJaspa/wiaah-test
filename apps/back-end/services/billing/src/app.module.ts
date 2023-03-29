@@ -10,7 +10,7 @@ import { getUserFromRequest, KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { StripeBillingModule } from './stripe-billing/stripe-billing.module';
 import { StripeModule } from './stripe/stripe.module';
 import { BalanceModule } from './balance/balance.module';
-import { ClientKafka, ClientsModule, Transport } from '@nestjs/microservices';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { InvoiceRecordModule } from './invoice-record/invoice-record.module';
 import { WithdrawalModule } from './withdrawal/withdrawal.module';
 import { FinancialAccountModule } from './financial-account/financial-account.module';
@@ -45,7 +45,11 @@ export class EventModule {}
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: true,
-      context: ({ req }) => ({ req, user: getUserFromRequest(req) }),
+      context: ({ req }) => ({
+        req,
+        user: getUserFromRequest(req),
+        ip: req.ip,
+      }),
     }),
     EventModule,
     TransactionsModule,

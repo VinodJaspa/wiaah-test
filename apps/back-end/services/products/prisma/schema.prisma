@@ -113,20 +113,14 @@ model Shop {
   phone         String?
   location      Location
   storeType     StoreType[]
-  vendorType    VendorType[]
+  businessType  BusinessType[]
   targetGenders TargetGenders[]
-  typeOfSeller  TypeOfSeller
   vat           VatSettings?
 }
 
 type VatSettings {
   VatID    String?
   location Location?
-}
-
-enum TypeOfSeller {
-  individual
-  professional
 }
 
 model ShippingAddress {
@@ -189,8 +183,8 @@ enum StoreType {
   service
 }
 
-enum VendorType {
-  profissional
+enum BusinessType {
+  company
   individual
 }
 

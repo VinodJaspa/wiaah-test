@@ -31,6 +31,8 @@ import { CommentsPublicStatus } from '@keys';
 import { ContentManagementService } from '@content-management';
 import { QueryBus } from '@nestjs/cqrs';
 import { GetCommentHostDataQuery, GetCommentHostDataQueryRes } from './queries';
+import { ContentData, ContentDiscoveryService } from '@content-discovery';
+import { GetContentDataQuery } from '@content-discovery/queries';
 
 @Injectable()
 export class CommentsService {
@@ -77,9 +79,16 @@ export class CommentsService {
       throw new CannotCommentOnContentException({});
     }
 
+    const Content = await this.querybus.execute<
+      GetContentDataQuery,
+      ContentData
+    >(new GetContentDataQuery(contentId, contentType));
+
     try {
       const comment = await this.prisma.comment.create({
         data: {
+          hostProfileid: Content.authorProfileId,
+          hostUserId: Content.userId,
           content,
           hostId: contentId,
           hostType: contentType,

@@ -26,7 +26,8 @@ import {
 import { GetMyReturnedOrdersInput } from '../returned-orders/dto/get-my-returned-orders.input';
 import { PrismaService } from 'prismaService';
 import { Product } from '@orders/entities/extends';
-
+import { RefundRequest } from '@prisma-client';
+import { OrderItem } from '@orders/entities';
 @Resolver(() => Refund)
 export class RefundResolver {
   constructor(
@@ -103,5 +104,14 @@ export class RefundResolver {
       new RejectRequestedRefundCommand(args, user.id),
     );
     return true;
+  }
+
+  @ResolveField(() => OrderItem, { nullable: true })
+  orderItem(@Parent() req: RefundRequest) {
+    return this.prisma.orderItem.findUnique({
+      where: {
+        id: req.orderItemId,
+      },
+    });
   }
 }

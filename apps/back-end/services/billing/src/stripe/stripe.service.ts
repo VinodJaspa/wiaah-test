@@ -4,6 +4,8 @@ import { Stripe } from 'stripe';
 import { ConfigService } from '@nestjs/config';
 import { STRIPE_INJECT_TOKEN } from '../constants';
 import { SubscriptionMetadata } from '@stripe-billing/types';
+import { AccountType } from 'nest-utils';
+import { argsToArgsConfig } from 'graphql/type/definition';
 
 @Injectable()
 export class StripeService implements OnModuleInit {
@@ -19,7 +21,110 @@ export class StripeService implements OnModuleInit {
     this.webhookSecret = opts.webhookSecret;
   }
 
-  async createdConnectedAccount(): Promise<
+  async createConnectedAccount(
+    id: string,
+    params?: Stripe.AccountCreateParams,
+  ) {
+    const res = await this.stripe.accounts.create({
+      ...params,
+      type: 'custom',
+      metadata: {
+        id,
+      },
+      capabilities: {
+        card_payments: {
+          requested: true,
+        },
+        transfers: {
+          requested: true,
+        },
+      },
+    });
+
+    return res;
+  }
+
+  async createPerson(
+    stripeAccountId: string,
+    params: Stripe.PersonCreateParams,
+  ) {
+    const res = await this.stripe.accounts.createPerson(
+      stripeAccountId,
+      params,
+    );
+    return res;
+  }
+
+  async getCompanyMembers(stripeAccountId: string) {
+    const res = await this.stripe.accounts.listPersons(stripeAccountId);
+
+    return res;
+  }
+
+  async updateCompanyPerson(
+    stripeAccountId: string,
+    id: string,
+    params?: Stripe.PersonUpdateParams,
+  ) {
+    const res = await this.stripe.accounts.updatePerson(
+      stripeAccountId,
+      id,
+      params,
+    );
+    return res;
+  }
+
+  async createExternalAccount(
+    stripeId: string,
+    data:
+      | { card: Stripe.TokenCreateParams.Card; bank: undefined }
+      | { card: undefined; bank: Stripe.TokenCreateParams.BankAccount },
+  ) {
+    const token = await this.stripe.tokens.create({
+      card: data.card,
+      bank_account: data.bank,
+    });
+
+    const res = await this.stripe.accounts.createExternalAccount(stripeId, {
+      external_account: token.id,
+    });
+
+    return res;
+  }
+  async updateExternalAccount(
+    stripeId: string,
+    external_accountId: string,
+    data:
+      | { card: Stripe.TokenCreateParams.Card; bank: undefined }
+      | { card: undefined; bank: Stripe.TokenCreateParams.BankAccount },
+  ) {
+    const token = await this.stripe.tokens.create({
+      card: data.card,
+      bank_account: data.bank,
+    });
+
+    const res = await this.stripe.accounts.updateExternalAccount(
+      stripeId,
+      external_accountId,
+      {
+        //@ts-ignore
+        external_account: token.id,
+      },
+    );
+
+    return res;
+  }
+
+  async updateConnectedAccount(
+    id: string,
+    params?: Stripe.AccountUpdateParams,
+  ) {
+    const res = await this.stripe.accounts.update(id, params);
+
+    return res;
+  }
+
+  async createConnectHostedAccount(): Promise<
     [Stripe.AccountLink, Stripe.Account]
   > {
     const res = await this.stripe.accounts.create({
@@ -260,15 +365,18 @@ export class StripeService implements OnModuleInit {
     amount,
     connectedAccId,
     currency,
+    externalAccountId: methodId,
   }: {
     connectedAccId: string;
     amount: number;
     currency: string;
+    externalAccountId: string;
   }) {
     return await this.stripe.payouts.create(
       {
         amount,
         currency,
+        destination: methodId,
       },
       {
         stripeAccount: connectedAccId,

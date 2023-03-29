@@ -1,41 +1,42 @@
+import { CreateAccountInput, Exact, Mutation } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useMutation } from "react-query";
 
-export const useSellerSignupMutation = () => {
+export type SellerSignupMutationVariables = Exact<{
+  args: CreateAccountInput;
+}>;
+
+export type SellerSignupMutation = { __typename?: "Mutation" } & Pick<
+  Mutation,
+  "register"
+>;
+
+export const useSignupMutation = () => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(
     `
-      mutation registerSeller(
-          $email:String!
-          $firstName:String!
-          $lastName:String!
-          $password:String!
-          $confirmPassword:String!
-      ){
-          register(
-              RegisterInput:{
-                  firstName:$firstName
-                  lastName:$lastName
-                  email:$email
-                  password:$password
-                  confirmPassword:$confirmPassword
-                  accountType:seller
-              }
-          )
-      }
+mutation sellerSignup(
+  $args:CreateAccountInput!
+){
+  register(RegisterInput:$args)
+}
     `
   );
 
-  return useMutation<
-    unknown,
-    unknown,
-    {
-      email: string;
-      firstName: string;
-      lastName: string;
-      password: string;
-      confirmPassword: string;
+  return useMutation<string, unknown, SellerSignupMutationVariables["args"]>(
+    "seller-register",
+    async (args) => {
+      console.log("send mu");
+      const res = await client
+        .setVariables<SellerSignupMutationVariables>({
+          args: {
+            ...args,
+          },
+        })
+        .send<SellerSignupMutation>();
+
+      return res.data.register;
     }
-  >("seller-register", (vars) => client.setVariables(vars).send());
+  );
 };

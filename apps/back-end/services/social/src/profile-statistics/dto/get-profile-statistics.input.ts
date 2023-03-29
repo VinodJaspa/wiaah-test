@@ -5,6 +5,9 @@ export class GetProfileStatisticsInput {
   @Field(() => ID)
   profileId: string;
 
+  @Field(() => ID)
+  userId: string;
+
   @Field(() => Int)
   sinceHours: number;
 }

@@ -214,6 +214,7 @@ export const KAFKA_EVENTS = {
   },
   EVENT_SCHEDULING: {
     createEvent: `create.scheduled.event`,
+    removeEvent: "remove.scheduled.event",
   },
   createAccount: "create.account",
   createWishlist: "create.wishlist",

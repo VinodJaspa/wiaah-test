@@ -16,7 +16,7 @@ export interface SelectProps<SelectOptionType = string>
   children?: ElementChilds<SelectChildProps<SelectOptionType>> | null;
   onOptionSelect?: OnOptionSelect<SelectOptionType>;
   placeholder?: string;
-  value?: string;
+  value?: string | boolean | number;
   flushed?: boolean;
   label?: string;
 }
@@ -81,53 +81,55 @@ export function Select<ValueType = string>({
     setOpen((state) => !state);
   }
   return (
-    <div
-      {...props}
-      ref={ref}
-      className={`${className || ""} ${
-        flushed ? "border-b-2" : "border-2"
-      } bg-white border-gray-200 items-center flex rounded relative`}
-    >
+    <div className="w-full flex flex-col gap-2">
+      {label ? <p className="font-semibold">{label}</p> : null}
       <div
-        onClick={handleToggle}
-        data-testid="SelectBar"
-        className="flex w-full p-2 items-center justify-between"
+        {...props}
+        ref={ref}
+        className={`${className || ""} ${
+          flushed ? "border-b-2" : "border-2"
+        } bg-white border-gray-200 items-center flex rounded relative`}
       >
-        <div className="flex flex-col gap-1">
-          {label ? <p className="font-bold px-2">{label}</p> : null}
-          <div
-            data-testid="SelectedOption"
-            className="cursor-pointer w-full flex items-center gap-2 whitespace-nowrap "
-          >
-            {selectedOption &&
-              React.cloneElement(selectedOption, { selectable: false })}
+        <div
+          onClick={handleToggle}
+          data-testid="SelectBar"
+          className="flex w-full p-2 items-center justify-between"
+        >
+          <div className="flex flex-col gap-1">
+            <div
+              data-testid="SelectedOption"
+              className="cursor-pointer w-full flex items-center gap-2 whitespace-nowrap "
+            >
+              {selectedOption &&
+                React.cloneElement(selectedOption, { selectable: false })}
+            </div>
           </div>
+          <ArrowDownIcon className="text-xl" />
         </div>
-        <ArrowDownIcon className="text-xl" />
-      </div>
-      <div
-        data-testid="SelectOptionsContainer"
-        className={`${
-          open ? "scale-y-100" : "scale-y-0"
-        } transition-all duration-75 z-50 bg-white origin-top max-h-48 overflow-y-scroll thinScroll transform absolute left-0 flex flex-col top-full w-full`}
-      >
-        {children && showChild ? (
-          <>
-            {Array.isArray(children)
-              ? children.map((child, i) => (
-                  <React.Fragment key={i}>
-                    {React.cloneElement<SelectChildProps<ValueType>>(child, {
-                      onOptionSelect: (value) =>
-                        handleSelect(value, children[i]),
-                      key: i,
-                    })}
-                  </React.Fragment>
-                ))
-              : React.cloneElement<SelectChildProps<ValueType>>(children, {
-                  onOptionSelect: (value) => handleSelect(value, children),
-                })}
-          </>
-        ) : null}
+        <div
+          data-testid="SelectOptionsContainer"
+          className={`${
+            open ? "scale-y-100" : "scale-y-0"
+          } transition-all duration-75 z-50 bg-white origin-top max-h-48 overflow-y-scroll thinScroll transform absolute left-0 flex flex-col top-full w-full`}
+        >
+          {children && showChild ? (
+            <>
+              {Array.isArray(children)
+                ? children.map((child, i) => (
+                    <React.Fragment key={i}>
+                      {React.cloneElement<SelectChildProps<ValueType>>(child, {
+                        onOptionSelect: (value) =>
+                          handleSelect(value, children[i]),
+                        key: i,
+                      })}
+                    </React.Fragment>
+                  ))
+                : React.cloneElement<SelectChildProps<ValueType>>(children, {
+                    onOptionSelect: (value) => handleSelect(value, children),
+                  })}
+            </>
+          ) : null}
+        </div>
       </div>
     </div>
   );

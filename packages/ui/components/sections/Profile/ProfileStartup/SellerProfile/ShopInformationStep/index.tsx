@@ -236,7 +236,7 @@ export const ShopInformationStep: React.FC<ShopInformationStepProps> = ({
                     >
                       {categories?.map(({ slug, name }, i) => (
                         <SelectOption key={i} value={slug}>
-                          {name}
+                          {name.find((v) => v.langId === "en")?.value}
                         </SelectOption>
                       ))}
                     </Select>

@@ -6,6 +6,7 @@ import {
   ID,
 } from '@nestjs/graphql';
 import { StaffAccountType } from './admin-get-staff-accounts.input';
+import { AccountGenderEnum } from '@prisma-client';
 
 enum RegisterAccountType {
   seller = 'seller',
@@ -13,6 +14,7 @@ enum RegisterAccountType {
 }
 
 registerEnumType(RegisterAccountType, { name: 'RegisterAccountType' });
+registerEnumType(AccountGenderEnum, { name: 'AccountGenderEnum' });
 
 @InputType()
 export class CreateAccountInput {
@@ -36,6 +38,12 @@ export class CreateAccountInput {
 
   @Field(() => String)
   birthDate: string;
+
+  @Field(() => AccountGenderEnum)
+  gender: AccountGenderEnum;
+
+  @Field(() => String, { nullable: true })
+  phone?: string;
 }
 
 @InputType()
@@ -63,6 +71,9 @@ export class AdminCreateAdminAccountInput {
 
   @Field(() => String)
   birthDate: string;
+
+  @Field(() => AccountGenderEnum)
+  gender: AccountGenderEnum;
 }
 
 @InputType()

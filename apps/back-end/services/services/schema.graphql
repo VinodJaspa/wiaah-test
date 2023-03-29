@@ -163,7 +163,7 @@ type ServiceContact {
 
 type Account {
   id: ID!
-  service: ServiceDetails!
+  service: Service!
 }
 
 type Hotel {
@@ -219,7 +219,7 @@ type RestaurantMenu {
   restaurantId: ID!
   name: String!
   dishs: [Dish!]!
-  restaurant: ServiceDetails!
+  restaurant: Service!
 }
 
 type Dish {
@@ -423,15 +423,31 @@ type VehicleService {
 
 type Service {
   id: ID!
-  serviceType: ServiceType!
-  title: String!
-  price: Float!
-  rating: Float!
-  thumbnail: String!
-  presentation: [ServicePresentation!]
-  hashtags: [String!]!
+  ownerId: ID!
+  type: ServiceType!
+  createdAt: DateTime!
+  updatedAt: DateTime!
   location: ServiceLocation!
+  presentations: [ServicePresentation!]!
+  policies: [ServicePolicy!]!
+  serviceMetaInfo: ServiceMetaInfo!
   contact: ServiceContact!
+  lowest_price: Float!
+  highest_price: Float!
+  payment_methods: [ServicePaymentMethod!]!
+  type_of_seller: ServiceTypeOfSeller!
+  rooms: [HotelRoom!]
+  menus: [RestaurantMenu!]
+  setting_and_ambianceId: ID
+  establishmentTypeId: ID
+  cuisinesTypeId: ID
+  michelin_guide_stars: Int
+  doctors: [Doctor!]
+  treatments: [Treatment!]
+  vehicles: [Vehicle!]
+  workingHours: WorkingSchedule
+  owner: Account!
+  establishmentType: RestaurantEstablishmentType!
 }
 
 enum ServiceType {
@@ -539,7 +555,7 @@ type ServiceShopRaw {
 
 type Query {
   adminGetAccountService(accountId: String!): Service!
-  getServiceDetails(id: String!): ServiceDetails
+  getServiceDetails(id: String!): Service
   adminGetDishs(args: AdminGetDishsInput!): [Dish!]!
   adminGetAccountWorkingSchedule(accountId: String!): WorkingSchedule!
   getMyWorkingSchedule: WorkingSchedule!

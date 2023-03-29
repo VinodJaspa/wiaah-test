@@ -10,7 +10,9 @@ export class GetUserAuthSettingsQueryHandler
   constructor(private readonly repo: UserAuthSettingsRepository) {}
 
   async execute({ id }: GetUserAuthSettingsQuery): Promise<UserAuthSetting> {
-    const res = await this.repo.getOne(id);
+    let res = await this.repo.getOne(id);
+
+    if (!res) res = await this.repo.create(id);
 
     return res;
   }

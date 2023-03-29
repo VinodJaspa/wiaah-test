@@ -2,7 +2,6 @@ import {
   InputType,
   Int,
   Field,
-  ObjectType,
   registerEnumType,
   Float,
   ID,
@@ -15,6 +14,7 @@ import {
   ProductStatus,
   VisibilityEnum,
 } from '@prisma-client';
+
 import { GraphQLUpload, Upload } from 'graphql-upload';
 import { CreateInputGqlTranslationInputField } from 'nest-utils';
 

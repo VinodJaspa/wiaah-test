@@ -4,6 +4,8 @@ import {
   Mutation,
   Args,
   ResolveReference,
+  ResolveField,
+  Parent,
 } from '@nestjs/graphql';
 import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
 import {
@@ -22,6 +24,7 @@ import { GetNearShopsInput } from './dto/get-near-shops.dto';
 import { FilteredShopsInput } from './dto/filter-shops.input';
 import { UpdateShopInput } from './dto';
 import { PrismaService } from 'prismaService';
+import { Service } from './entities/extends/service.extends.entity';
 
 @Resolver(() => Shop)
 export class ShopResolver implements OnModuleInit {
@@ -80,6 +83,14 @@ export class ShopResolver implements OnModuleInit {
   @ResolveReference()
   shop(ref: { __typename: string; id: string; name: string; ownerId: string }) {
     return this.shopService.getShopById(ref.id);
+  }
+
+  @ResolveField(() => Service)
+  service(@Parent() shop: Shop) {
+    return {
+      __typename: 'Service',
+      ownerId: shop.ownerId,
+    };
   }
 
   async onModuleInit() {

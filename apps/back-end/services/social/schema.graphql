@@ -46,7 +46,7 @@ type NewsfeedPost {
   userId: ID!
   title: String!
   content: String!
-  attachments: [Attachment!]!
+  attachments: [String!]!
   hashtags: [Hashtag!]!
   reactionNum: Int!
   comments: Int!
@@ -364,6 +364,12 @@ type StoryView {
   storyId: ID!
   createdAt: DateTime!
   story: Story
+  gender: ProfileReachedGender!
+}
+
+enum ProfileReachedGender {
+  male
+  female
 }
 
 type RecentStory {
@@ -443,6 +449,43 @@ type PlaceSuggestions {
   places: [Place!]!
 }
 
+type ProfileStatistics {
+  total_visits: Int!
+  prev_total_visits: Int!
+  total_followers: Int!
+  prev_total_followers: Int!
+  total_comments: Int!
+  prev_total_comments: Int!
+  total_saves: Int!
+  prev_total_saves: Int!
+  total_likes: Int!
+  prev_total_likes: Int!
+}
+
+type ProfileOverviewStatistics {
+  reached: Int!
+  engaged: Int!
+  activity: Int!
+}
+
+type ProfileReachedAudience {
+  id: ID!
+  profileId: ID!
+  reachedByProfileId: ID!
+  gender: ProfileReachedGender!
+  age: Int!
+  createdAt: String!
+}
+
+type ProfileVisitDetails {
+  country: String!
+  visits: Int!
+}
+
+type ProfileVisitsDetails {
+  countries: [ProfileVisitDetails!]!
+}
+
 type Query {
   findAll: ProfilePaginatedResponse!
   myProfile: Profile!
@@ -494,6 +537,13 @@ type Query {
   getCommunityPosts(args: GetCommunityPostsInput!): [Community!]!
   getMyFriendSuggestions(args: GetMyFriendSuggestionsInput!): FriendSuggestion!
   getPlaceSuggestions(args: GetPlaceSuggestionInput!): PlaceSuggestions!
+  getProfileStatistics(args: GetProfileStatisticsInput!): ProfileStatistics!
+  getProfileOverviewStatistics(args: GetProfileStatisticsInput!): ProfileOverviewStatistics!
+  getProfileReachedAudinece(args: GetProfileStatisticsInput!): [ProfileReachedAudience!]!
+  getProfilePopularStoriesViews(args: GetProfilePopularStoriesViewsInput!): StoryView!
+  getProfileVisitsDetails(args: GetProfileVisitsDetailsInput!): ProfileVisitsDetails!
+  getTopProfileStories(args: GetTopProfilePostsInput!): [Story!]!
+  getTopProfilePosts(args: GetTopProfilePostsInput!): [NewsfeedPost!]!
 }
 
 input SearchPopularProfilesInput {
@@ -654,6 +704,30 @@ input GetPlaceSuggestionInput {
   pagination: GqlPaginationInput!
 }
 
+input GetProfileStatisticsInput {
+  profileId: ID!
+  userId: ID!
+  sinceHours: Int!
+}
+
+input GetProfilePopularStoriesViewsInput {
+  profileId: ID!
+  userId: ID!
+  date: String!
+}
+
+input GetProfileVisitsDetailsInput {
+  visitsOrderBy: Int!
+  country: String!
+  profileId: ID!
+}
+
+input GetTopProfilePostsInput {
+  profileId: ID!
+  pagination: GqlPaginationInput!
+  sinceHours: Int!
+}
+
 type Mutation {
   createProfile(createProfileInput: CreateProfileInput!): Profile!
   updateMyProfile(updateProfileInput: UpdateProfileInput!): Profile!
@@ -691,6 +765,7 @@ input CreateProfileInput {
   profession: String!
   visibility: ProfileVisibility
   username: String!
+  gender: ProfileReachedGender!
 }
 
 input UpdateProfileInput {
@@ -699,6 +774,7 @@ input UpdateProfileInput {
   profession: String
   visibility: ProfileVisibility
   username: String
+  gender: ProfileReachedGender
 }
 
 input FollowProfileInput {
@@ -712,24 +788,11 @@ input UnFollowProfileInput {
 input CreateNewsfeedPostInput {
   title: String!
   content: String!
-  attachments: [AttachmentInput!]!
+  attachments: [String!]!
   hashtags: [HashtagInput!]!
   tags: [PostTagInput!]!
   visibility: PostVisibility
   location: PostLocationInput
-}
-
-input AttachmentInput {
-  type: AttachmentType!
-  src: String!
-  marketingTags: [AttachmentMarketingTagInput!]!
-}
-
-input AttachmentMarketingTagInput {
-  id: String!
-  type: MarketingTagType!
-  x: Float!
-  y: Float!
 }
 
 input HashtagInput {
@@ -750,7 +813,7 @@ input PostLocationInput {
 input UpdateNewsfeedPostInput {
   title: String
   content: String
-  attachments: [AttachmentInput!]
+  attachments: [String!]
   hashtags: [HashtagInput!]
   tags: [PostTagInput!]
   visibility: PostVisibility
@@ -764,13 +827,14 @@ input UpdateProfileAdminInput {
   profession: String
   visibility: ProfileVisibility
   username: String
+  gender: ProfileReachedGender
   profileId: ID
 }
 
 input UpdatePostAdminInput {
   title: String
   content: String
-  attachments: [AttachmentInput!]
+  attachments: [String!]
   hashtags: [HashtagInput!]
   tags: [PostTagInput!]
   visibility: PostVisibility
@@ -798,6 +862,19 @@ input CreateCommentInput {
   content: String!
   mentions: [CommentMentionInput!]!
   attachment: AttachmentInput
+}
+
+input AttachmentInput {
+  type: AttachmentType!
+  src: String!
+  marketingTags: [AttachmentMarketingTagInput!]!
+}
+
+input AttachmentMarketingTagInput {
+  id: String!
+  type: MarketingTagType!
+  x: Float!
+  y: Float!
 }
 
 input CreateContentShareInput {
@@ -838,6 +915,9 @@ input UpdateMyPrivacyInput {
 input CreateActionInput {
   src: Upload!
   cover: Upload!
+  mentions: [String!] = []
+  tags: [String!] = []
+  link: String
   location: PostLocationInput
   commentsVisibility: CommentsVisibility
   allowedActions: [ActionType!]!

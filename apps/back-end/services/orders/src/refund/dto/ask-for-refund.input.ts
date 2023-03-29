@@ -32,4 +32,7 @@ export class AskForRefundInput {
 
   @Field(() => Int)
   qty: number;
+
+  @Field(() => Boolean)
+  opened: boolean;
 }

@@ -1,6 +1,11 @@
 import React from "react";
+import { startCase } from "lodash";
 
-export function useForm<TForm>(initial: TForm, constents?: TForm) {
+export function useForm<TForm>(
+  initial: TForm,
+  constents?: Partial<TForm>,
+  options?: { addLabel?: boolean }
+) {
   const [data, setData] = React.useState<TForm>(initial);
 
   function handleChange<Tkey extends keyof TForm, Tvalue extends TForm[Tkey]>(
@@ -20,6 +25,10 @@ export function useForm<TForm>(initial: TForm, constents?: TForm) {
     return {
       [valueKey]: data[key] as TForm[Tkey],
       [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
+      label:
+        options?.addLabel && typeof key === "string"
+          ? startCase(key)
+          : undefined,
     };
   }
 
@@ -33,6 +42,10 @@ export function useForm<TForm>(initial: TForm, constents?: TForm) {
     return {
       [valueKey]: data[key] as TForm[Tkey],
       [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
+      label:
+        options?.addLabel && typeof key === "string"
+          ? startCase(key)
+          : undefined,
     };
   }
 
@@ -46,6 +59,27 @@ export function useForm<TForm>(initial: TForm, constents?: TForm) {
     return {
       [valueKey]: data[key] as TForm[Tkey],
       [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
+      label:
+        options?.addLabel && typeof key === "string"
+          ? startCase(key)
+          : undefined,
+    };
+  }
+
+  function switchInputProps<Tkey extends keyof TForm>(
+    key: Tkey,
+    valueKey: string = "value",
+    onChangeKey: string = "onChange",
+    mapOnChange: (value: any) => any = (e) => e
+  ) {
+    if (!data) return {};
+    return {
+      [valueKey]: data[key] as TForm[Tkey],
+      [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
+      label:
+        options?.addLabel && typeof key === "string"
+          ? startCase(key)
+          : undefined,
     };
   }
 
@@ -55,6 +89,7 @@ export function useForm<TForm>(initial: TForm, constents?: TForm) {
     inputProps,
     selectProps,
     dateInputProps,
+    switchInputProps,
     setValue: (v: TForm) => setData({ ...v, constents }),
   };
 }

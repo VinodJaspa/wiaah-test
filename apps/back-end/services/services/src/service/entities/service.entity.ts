@@ -17,44 +17,45 @@ import {
   ServiceTypeOfSeller,
 } from 'prismaClient';
 
+// @ObjectType()
+// @Directive('@key(fields:"id")')
+// @Directive('@key(fields:"id, serviceType")')
+// export class Service {
+//   @Field(() => ID)
+//   id: string;
+
+//   @Field(() => ServiceType)
+//   @Directive('@shareable')
+//   serviceType: ServiceType;
+
+//   @Field(() => String)
+//   title: string;
+
+//   @Field(() => Float)
+//   price: number;
+
+//   @Field(() => Float)
+//   rating: number;
+
+//   @Field(() => String)
+//   thumbnail: string;
+
+//   @Field(() => [ServicePresentation], { nullable: true })
+//   presentation?: ServicePresentation[];
+
+//   @Field(() => [String])
+//   hashtags: string[];
+
+//   @Field(() => ServiceLocation)
+//   location: ServiceLocation;
+
+//   @Field(() => ServiceContact)
+//   contact: ServiceContact;
+// }
+
+
 @ObjectType()
-@Directive('@key(fields:"id")')
-@Directive('@key(fields:"id, serviceType")')
 export class Service {
-  @Field(() => ID)
-  id: string;
-
-  @Field(() => ServiceType)
-  @Directive('@shareable')
-  serviceType: ServiceType;
-
-  @Field(() => String)
-  title: string;
-
-  @Field(() => Float)
-  price: number;
-
-  @Field(() => Float)
-  rating: number;
-
-  @Field(() => String)
-  thumbnail: string;
-
-  @Field(() => [ServicePresentation], { nullable: true })
-  presentation?: ServicePresentation[];
-
-  @Field(() => [String])
-  hashtags: string[];
-
-  @Field(() => ServiceLocation)
-  location: ServiceLocation;
-
-  @Field(() => ServiceContact)
-  contact: ServiceContact;
-}
-
-@ObjectType()
-export class ServiceDetails {
   @Field(() => ID)
   id: string;
 

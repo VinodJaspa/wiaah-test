@@ -74,12 +74,14 @@ export class ProfileService {
       bio,
       visibility = 'private',
       username,
+      gender,
     } = createProfileInput;
 
     try {
       const profile = await this.prisma.profile.create({
         data: {
           bio,
+          gender,
           photo,
           profession,
           visibility,

@@ -81,7 +81,8 @@ exports.Prisma.EventScalarFieldEnum = makeEnum({
   createdAt: 'createdAt',
   triggerAt: 'triggerAt',
   data: 'data',
-  triggerEvent: 'triggerEvent'
+  triggerEvent: 'triggerEvent',
+  triggerId: 'triggerId'
 });
 
 exports.Prisma.SortOrder = makeEnum({

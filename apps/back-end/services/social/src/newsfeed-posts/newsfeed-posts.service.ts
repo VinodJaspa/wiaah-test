@@ -114,10 +114,6 @@ export class NewsfeedPostsService {
     createNewsfeedPostInput: CreateNewsfeedPostInput,
     userId: string,
   ): Promise<NewsfeedPost> {
-    const { attachments } = createNewsfeedPostInput;
-
-    await this.contentManagementService.validatePostAttachments(attachments);
-
     const profileId = await this.profileService.getProfileIdByUserId(userId);
 
     try {

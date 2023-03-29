@@ -44,4 +44,13 @@ export class Refund {
 
   @Field(() => String, { nullable: true })
   rejectReason?: string;
+
+  @Field(() => Boolean)
+  opened: boolean;
+
+  @Field(() => String)
+  createdAt: Date;
+
+  @Field(() => String)
+  updatedAt: Date;
 }
