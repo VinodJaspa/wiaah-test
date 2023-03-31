@@ -11,7 +11,6 @@ import {
 } from 'nest-dto';
 import { AddToDate, KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
 
-import { MigrateMembershipTurnoverRulePriceIdCommand } from '@membership/commands';
 import { GetMembershipPlanByIdQuery } from '@membership/queries';
 import { MembershipType } from '@membership/types';
 import {
@@ -31,47 +30,41 @@ export class MembershipController {
   ) {}
 
   @EventPattern(
-    KAFKA_EVENTS.BILLING_EVNETS.billingPriceCreated(
-      MembershipPricesType.turnover,
-    ),
+    KAFKA_EVENTS.BILLING_EVNETS.billingSubscriptionActivated('*', true),
   )
-  handleUpdateMembershipPricing(
-    @Payload() { value }: { value: BillingPriceCreatedEvent },
-  ) {
-    this.commandBus.execute<MigrateMembershipTurnoverRulePriceIdCommand>(
-      new MigrateMembershipTurnoverRulePriceIdCommand(
-        value.input.id,
-        value.input.priceId,
-      ),
-    );
-  }
-
-  @EventPattern(KAFKA_EVENTS.BILLING_EVNETS.billingSubscriptionPaid('*', true))
   async handleMembershipSubscribed(
     @Payload() { value }: { value: SubscriptionPaidEvent },
   ) {
-    const membership = await this.prisma.membership.findUnique({
-      where: {
-        id: value.input.id,
-      },
-    });
-
-    const endAt = AddToDate(new Date(), { days: membership.recurring });
-
     await this.prisma.memberShipSubscription.upsert({
       where: {
         userId: value.input.userId,
       },
       create: {
-        endAt,
-        startAt: new Date(),
+        endAt: value.input.endAt,
+        startAt: value.input.startAt,
+        stripeSubId: value.input.id,
         userId: value.input.userId,
-        membershipId: value.input.id,
+        membershipId: value.input.membershipId,
+        status: 'active',
       },
       update: {
-        membershipId: value.input.id,
-        endAt,
-        startAt: new Date(),
+        status: 'active',
+      },
+    });
+  }
+
+  @EventPattern(
+    KAFKA_EVENTS.BILLING_EVNETS.billingSubscriptionPastdue('*', true),
+  )
+  async handleMembershipExpired(
+    @Payload() { value }: { value: SubscriptionPaidEvent },
+  ) {
+    await this.prisma.memberShipSubscription.update({
+      where: {
+        userId: value.input.userId,
+      },
+      data: {
+        status: 'expired',
       },
     });
   }
@@ -91,7 +84,7 @@ export class MembershipController {
       return new GetUserMembershipPriceIdMessageReply({
         success: true,
         data: {
-          priceId: membership.turnover_rules.at(0).priceId,
+          priceIds: membership.priceIds,
         },
         error: null,
       });

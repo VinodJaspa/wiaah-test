@@ -40,7 +40,7 @@ export class Account {
   updatedAt: Date;
 
   @Field((type) => AccountType)
-  type: AccountType;
+  accountType: AccountType;
 
   @Field((type) => Boolean)
   verified: boolean;

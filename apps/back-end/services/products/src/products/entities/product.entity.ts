@@ -72,7 +72,6 @@ export class ProductAttribute {
 
 @ObjectType()
 @Directive('@key(fields: "id")')
-@Directive('@key(fields: "shopId")')
 export class Product {
   @Field((type) => ID)
   id: string;
@@ -90,9 +89,6 @@ export class Product {
 
   @Field((type) => String)
   description: string;
-
-  @Field((type) => ID)
-  shopId: string;
 
   @Field(() => [String])
   hashtags: string[];

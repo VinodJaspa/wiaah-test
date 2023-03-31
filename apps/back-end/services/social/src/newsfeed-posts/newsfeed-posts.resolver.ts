@@ -12,6 +12,7 @@ import { MarketingTag, NewsfeedPost } from '@entities';
 import { CreateNewsfeedPostInput, UpdateNewsfeedPostInput } from '@input';
 import { UseGuards } from '@nestjs/common';
 import {
+  accountType,
   AuthorizationDecodedUser,
   GqlAuthorizationGuard,
   GqlCurrentUser,

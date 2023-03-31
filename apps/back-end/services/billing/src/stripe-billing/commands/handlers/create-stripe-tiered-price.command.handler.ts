@@ -1,5 +1,5 @@
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
-import { StripeService } from '@stripe';
+import { StripeService } from 'nest-utils';
 import { CreateStripeTieredPriceCommand } from '@stripe-billing/commands';
 import { StripeTieredPriceCreatedEvent } from '@stripe-billing/events';
 
@@ -18,11 +18,7 @@ export class CreateStripeTieredPriceCommandHandler
     const price = await this.stripeService.createStripeTieredPrice(
       productId,
       prices,
-      recurring === 'month'
-        ? 'monthly'
-        : recurring === 'year'
-        ? 'yearly'
-        : 'monthly',
+      recurring,
     );
 
     this.eventBus.publish(

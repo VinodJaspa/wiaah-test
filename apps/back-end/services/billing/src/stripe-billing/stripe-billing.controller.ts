@@ -17,8 +17,7 @@ import {
 import { KAFKA_EVENTS } from 'nest-utils';
 import Stripe from 'stripe';
 import { Response } from 'express';
-
-import { StripeService } from '@stripe';
+import { StripeService } from 'nest-utils';
 import {
   CreateStripeCustomerCommand,
   CreateStripeMonthlyPriceCommand,
@@ -29,7 +28,8 @@ import {
 import { ProductTypeEnum } from '@stripe-billing/const';
 import {
   StripeInvoicePaidEvent,
-  StripeSubscriptionPaidEvent,
+  StripeSubscriptionActivatedEvent,
+  StripeSubscriptionPastDueEvent,
 } from '@stripe-billing/events';
 import {
   StripeMetadataObjectType,
@@ -58,10 +58,17 @@ export class StripeBillingController {
       case 'customer.subscription.updated':
         const res = event.data.object as Stripe.Subscription;
         const subMeta = res.metadata as unknown as SubscriptionMetadata;
+
         if (res.status === 'active') {
-          console.log('publishing');
-          this.eventBus.publish(new StripeSubscriptionPaidEvent(subMeta));
+          this.eventBus.publish(new StripeSubscriptionActivatedEvent(subMeta));
         }
+
+        if (res.status === 'past_due') {
+          this.eventBus.publish(
+            new StripeSubscriptionPastDueEvent(subMeta.userId, res.id),
+          );
+        }
+
         break;
       case 'invoice.paid':
         const invoice = event.data.object as Stripe.Invoice;
@@ -79,7 +86,7 @@ export class StripeBillingController {
 
       case 'payment_intent.succeeded':
         const intent = event.data.object as Stripe.PaymentIntent;
-        console.log({ intent });
+
         break;
       default:
         console.log(`Unhandled event type ${event.type}. 🌟`);

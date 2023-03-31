@@ -162,10 +162,10 @@ export class ShopService {
         },
       });
     }
-    if (input.vendorType) {
+    if (input.businessType) {
       searchQueries.push({
         vendorType: {
-          has: input.vendorType,
+          has: input.businessType,
         },
       });
     }

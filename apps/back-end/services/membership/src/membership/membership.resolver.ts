@@ -7,8 +7,14 @@ import {
   GqlCurrentUser,
   KAFKA_MESSAGES,
   SERVICES,
+  StripeService,
 } from 'nest-utils';
-import { Inject, UseGuards } from '@nestjs/common';
+import {
+  Inject,
+  NotFoundException,
+  UnprocessableEntityException,
+  UseGuards,
+} from '@nestjs/common';
 import { Membership, MembershipSubscription } from '@membership/entities';
 import {
   AdminGetMembershipsInput,
@@ -32,17 +38,21 @@ export class MembershipResolver {
     private readonly prisma: PrismaService,
     @Inject(SERVICES.MEMBERSHIP.token)
     private readonly eventClient: ClientKafka,
+    private readonly stripe: StripeService,
   ) {}
 
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
-  createMembership(
+  async createMembership(
     @Args('args') args: CreateMembershipInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    return this.commandBus.execute<CreateMembershipCommand, Membership>(
-      new CreateMembershipCommand(args, user),
-    );
+  ): Promise<Boolean> {
+    const res = await this.commandBus.execute<
+      CreateMembershipCommand,
+      Membership
+    >(new CreateMembershipCommand(args, user));
+
+    return true;
   }
 
   @Mutation(() => Boolean)
@@ -96,6 +106,87 @@ export class MembershipResolver {
         userId: user.id,
       },
     });
+  }
+
+  @Mutation(() => Boolean)
+  async unsubscribe(@GqlCurrentUser() user: AuthorizationDecodedUser) {
+    try {
+      const sub = await this.prisma.memberShipSubscription.findUnique({
+        where: {
+          userId: user.id,
+        },
+      });
+
+      if (!sub)
+        throw new NotFoundException('You dont have an active subscription');
+
+      const stripeProm = this.stripe.deleteCustomerSubscription(
+        sub.stripeSubId,
+      );
+
+      const subPromise = this.prisma.memberShipSubscription.delete({
+        where: {
+          userId: user.id,
+        },
+      });
+
+      await Promise.all([stripeProm, subPromise]);
+
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  @Mutation(() => String, { nullable: true })
+  async subscribeMembership(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('membershipId') id: string,
+  ) {
+    const alreadySubscribed =
+      await this.prisma.memberShipSubscription.findUnique({
+        where: {
+          userId: user.id,
+        },
+      });
+
+    if (alreadySubscribed)
+      throw new UnprocessableEntityException(
+        'You already has an active subscription, please unsubscribe first',
+      );
+
+    const membership = await this.prisma.membership.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!membership) throw new NotFoundException();
+
+    const stripeSubscription = await this.stripe.createCustomerSubscription(
+      user.stripeCustomerId,
+      membership.priceIds,
+      {
+        itemId: id,
+        userId: user.id,
+      },
+    );
+
+    await this.prisma.memberShipSubscription.create({
+      data: {
+        membershipId: id,
+        userId: user.id,
+        stripeSubId: stripeSubscription.subscriptionObj.id,
+        endAt: new Date(
+          stripeSubscription?.subscriptionObj?.current_period_end,
+        ),
+        startAt: new Date(
+          stripeSubscription?.subscriptionObj?.current_period_start,
+        ),
+      },
+    });
+
+    return stripeSubscription.clientSecret;
   }
 
   async onModuleInit() {

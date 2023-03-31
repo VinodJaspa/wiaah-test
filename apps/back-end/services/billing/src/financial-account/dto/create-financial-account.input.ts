@@ -9,6 +9,7 @@ import {
 import { FinancialAccountType } from '@prisma-client';
 import { FieldRequired } from 'nest-utils';
 
+@InputType()
 class required {
   @Field(() => String)
   currency: string;
@@ -17,6 +18,7 @@ class required {
   type: FinancialAccountType;
 }
 
+@InputType()
 class optional {
   @Field(() => String)
   label: string;

@@ -25,7 +25,7 @@ export class AccountsService {
 
   async createAccountRecord(createAccountInput: Prisma.AccountCreateInput) {
     try {
-      const { email, firstName, lastName, password, type, birthDate } =
+      const { email, firstName, lastName, password, accountType, birthDate } =
         createAccountInput;
 
       const createdUser = await this.prisma.account.create({
@@ -34,7 +34,7 @@ export class AccountsService {
           firstName,
           lastName,
           password,
-          type,
+          accountType,
           birthDate,
           ...createAccountInput,
         },
@@ -44,7 +44,7 @@ export class AccountsService {
         new NewAccountCreatedEvent({
           email: createdUser.email,
           id: createdUser.id,
-          accountType: createdUser.type,
+          accountType: createdUser.accountType,
           firstName: createdUser.firstName,
           lastName: createdUser.lastName,
           username: createdUser.firstName,
@@ -152,7 +152,7 @@ export class AccountsService {
 
     if (type) {
       filters.push({
-        type,
+        accountType: type,
       });
     }
 
@@ -263,14 +263,14 @@ export class AccountsService {
       },
     });
 
-    return account.type === 'seller';
+    return account.accountType === 'seller';
   }
 
   async switchToSeller(userId: string) {
     try {
       await this.prisma.account.update({
         data: {
-          type: 'seller',
+          accountType: 'seller',
         },
         where: {
           id: userId,

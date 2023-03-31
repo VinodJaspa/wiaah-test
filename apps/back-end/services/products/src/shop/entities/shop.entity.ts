@@ -7,17 +7,11 @@ import {
   registerEnumType,
   Directive,
 } from '@nestjs/graphql';
-import {
-  StoreType,
-  TargetGenders,
-  TypeOfSeller,
-  VendorType,
-} from '@prisma-client';
+import { BusinessType, StoreType, TargetGenders } from '@prisma-client';
 
 registerEnumType(StoreType, { name: 'StoreType' });
-registerEnumType(VendorType, { name: 'VendorType' });
 registerEnumType(TargetGenders, { name: 'TargetGenders' });
-registerEnumType(TypeOfSeller, { name: 'TypeOfSeller' });
+registerEnumType(BusinessType, { name: 'BusinessType' });
 
 @ObjectType()
 export class Location {
@@ -78,8 +72,8 @@ export class Shop {
   @Field((type) => [StoreType])
   storeType: StoreType[];
 
-  @Field((type) => [VendorType])
-  vendorType: VendorType[];
+  @Field((type) => BusinessType)
+  businessType: BusinessType;
 
   @Field((type) => [TargetGenders])
   targetGenders: TargetGenders[];
@@ -89,9 +83,6 @@ export class Shop {
 
   @Field((type) => Date)
   updatedAt: Date;
-
-  @Field(() => TypeOfSeller)
-  typeOfSeller: TypeOfSeller;
 
   @Field(() => VatSettings, { nullable: true })
   vat?: VatSettings;

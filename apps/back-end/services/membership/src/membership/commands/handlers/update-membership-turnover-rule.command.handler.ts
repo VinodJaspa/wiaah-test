@@ -14,7 +14,7 @@ export class UpdateMembershipTurnoverRuleCommandHander
     user,
   }: UpdateMembershipTurnoverRuleCommand): Promise<MembershipTurnoverRule> {
     console.log('updateing', { id, rest });
-    const res = await this.repo.update(id, { ...rest, priceId: undefined });
+    const res = await this.repo.update(id, { ...rest });
     return res;
   }
 }

@@ -274,7 +274,6 @@ export class OrdersResolver implements OnModuleInit {
       return {
         __typename: 'BillingAddress',
         id: order.billingAddressId,
-        ownerId: order.buyerId,
       };
     } else return null;
   }

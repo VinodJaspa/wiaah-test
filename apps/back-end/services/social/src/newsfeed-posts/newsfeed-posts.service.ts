@@ -111,7 +111,7 @@ export class NewsfeedPostsService {
   }
 
   async createNewsfeedPost(
-    createNewsfeedPostInput: CreateNewsfeedPostInput,
+    input: CreateNewsfeedPostInput,
     userId: string,
   ): Promise<NewsfeedPost> {
     const profileId = await this.profileService.getProfileIdByUserId(userId);
@@ -119,9 +119,14 @@ export class NewsfeedPostsService {
     try {
       const res = await this.prisma.newsfeedPost.create({
         data: {
-          ...createNewsfeedPostInput,
+          ...input,
           authorProfileId: profileId,
           userId,
+          legend: [
+            input.content,
+            input.title,
+            input.hashtags.map((v) => v.tag).join(' '),
+          ].join(' '),
         },
       });
 
@@ -138,11 +143,11 @@ export class NewsfeedPostsService {
   }
 
   async update(
-    updateNewsfeedPostInput: UpdateNewsfeedPostInput,
+    input: UpdateNewsfeedPostInput,
     userId: string,
   ): Promise<NewsfeedPost> {
-    const { id, ...rest } = updateNewsfeedPostInput;
-    const isAuthor = await this.isAuthorOfPost(id, userId);
+    const { id, ...rest } = input;
+    const [isAuthor, post] = await this.isAuthorOfPost(id, userId);
     if (!isAuthor)
       throw new UnauthorizedException(
         'you can only update posts you have published',
@@ -152,7 +157,14 @@ export class NewsfeedPostsService {
         where: {
           id,
         },
-        data: rest,
+        data: {
+          ...rest,
+          legend: [
+            input.content || post.content,
+            input.title || post.title,
+            (input.hashtags || post.hashtags).map((v) => v.tag).join(' '),
+          ].join(' '),
+        },
       });
     } catch (error) {
       this.logger.error(error);
@@ -160,21 +172,22 @@ export class NewsfeedPostsService {
     }
   }
 
-  async isAuthorOfPost(postId: string, userId: string): Promise<boolean> {
+  async isAuthorOfPost(
+    postId: string,
+    userId: string,
+  ): Promise<[boolean, NewsfeedPost]> {
     try {
       const post = await this.prisma.newsfeedPost.findUnique({
         where: {
           id: postId,
         },
-        select: {
-          userId: true,
-        },
+
         rejectOnNotFound() {
           throw new PostNotFoundException();
         },
       });
 
-      return post.userId === userId;
+      return [post.userId === userId, post];
     } catch (error) {
       this.logger.error(error);
     }

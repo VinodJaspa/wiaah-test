@@ -1,36 +1,33 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
-import { StripeForRootOptions } from './types';
-import { Stripe } from 'stripe';
-import { ConfigService } from '@nestjs/config';
-import { STRIPE_INJECT_TOKEN } from '../constants';
-import { SubscriptionMetadata } from '@stripe-billing/types';
-import { AccountType } from 'nest-utils';
-import { argsToArgsConfig } from 'graphql/type/definition';
+import {
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  OnModuleInit,
+} from "@nestjs/common";
+import { StripeForRootOptions } from "./types";
+import { Stripe } from "stripe";
+import { ConfigService } from "@nestjs/config";
+import { STRIPE_INJECT_TOKEN } from "./constent";
 
 @Injectable()
 export class StripeService implements OnModuleInit {
   private applicationFeePercent: number;
   private webhookSecret: string;
   constructor(
-    @Inject('options') opts: StripeForRootOptions,
+    @Inject("options") opts: StripeForRootOptions,
     private readonly configService: ConfigService,
     @Inject(STRIPE_INJECT_TOKEN)
-    private readonly stripe: Stripe,
+    private readonly stripe: Stripe
   ) {
     this.applicationFeePercent = opts.application_cut_percent;
     this.webhookSecret = opts.webhookSecret;
   }
 
-  async createConnectedAccount(
-    id: string,
-    params?: Stripe.AccountCreateParams,
-  ) {
+  async createConnectedAccount(params?: Stripe.AccountCreateParams) {
     const res = await this.stripe.accounts.create({
       ...params,
-      type: 'custom',
-      metadata: {
-        id,
-      },
+      type: "custom",
+      metadata: {},
       capabilities: {
         card_payments: {
           requested: true,
@@ -44,13 +41,17 @@ export class StripeService implements OnModuleInit {
     return res;
   }
 
+  async createCustomerAccount() {
+    return this.stripe.customers.create({ metadata: {} });
+  }
+
   async createPerson(
     stripeAccountId: string,
-    params: Stripe.PersonCreateParams,
+    params: Stripe.PersonCreateParams
   ) {
     const res = await this.stripe.accounts.createPerson(
       stripeAccountId,
-      params,
+      params
     );
     return res;
   }
@@ -64,12 +65,12 @@ export class StripeService implements OnModuleInit {
   async updateCompanyPerson(
     stripeAccountId: string,
     id: string,
-    params?: Stripe.PersonUpdateParams,
+    params?: Stripe.PersonUpdateParams
   ) {
     const res = await this.stripe.accounts.updatePerson(
       stripeAccountId,
       id,
-      params,
+      params
     );
     return res;
   }
@@ -78,7 +79,7 @@ export class StripeService implements OnModuleInit {
     stripeId: string,
     data:
       | { card: Stripe.TokenCreateParams.Card; bank: undefined }
-      | { card: undefined; bank: Stripe.TokenCreateParams.BankAccount },
+      | { card: undefined; bank: Stripe.TokenCreateParams.BankAccount }
   ) {
     const token = await this.stripe.tokens.create({
       card: data.card,
@@ -96,7 +97,7 @@ export class StripeService implements OnModuleInit {
     external_accountId: string,
     data:
       | { card: Stripe.TokenCreateParams.Card; bank: undefined }
-      | { card: undefined; bank: Stripe.TokenCreateParams.BankAccount },
+      | { card: undefined; bank: Stripe.TokenCreateParams.BankAccount }
   ) {
     const token = await this.stripe.tokens.create({
       card: data.card,
@@ -109,7 +110,7 @@ export class StripeService implements OnModuleInit {
       {
         //@ts-ignore
         external_account: token.id,
-      },
+      }
     );
 
     return res;
@@ -117,7 +118,7 @@ export class StripeService implements OnModuleInit {
 
   async updateConnectedAccount(
     id: string,
-    params?: Stripe.AccountUpdateParams,
+    params?: Stripe.AccountUpdateParams
   ) {
     const res = await this.stripe.accounts.update(id, params);
 
@@ -128,14 +129,14 @@ export class StripeService implements OnModuleInit {
     [Stripe.AccountLink, Stripe.Account]
   > {
     const res = await this.stripe.accounts.create({
-      type: 'express',
+      type: "express",
     });
 
     const data = await this.stripe.accountLinks.create({
       account: res.id,
-      type: 'account_onboarding',
-      return_url: this.configService.get('stripe_return_url'),
-      refresh_url: this.configService.get('stripe_refresh_url'),
+      type: "account_onboarding",
+      return_url: this.configService.get("stripe_return_url"),
+      refresh_url: this.configService.get("stripe_refresh_url"),
     });
 
     return [data, res];
@@ -147,22 +148,23 @@ export class StripeService implements OnModuleInit {
   }
 
   async getConnectedAccountById(
-    stripeConnectedId: string,
+    stripeConnectedId: string
   ): Promise<Stripe.Account> {
     const data = await this.stripe.accounts.retrieve(stripeConnectedId);
     return data;
   }
 
   constructStripeEvent(body: any, headers: any): Stripe.Event {
-    const signature = headers['stripe-signature'];
+    const signature = headers["stripe-signature"];
     try {
       const event = this.stripe.webhooks.constructEvent(
         body,
         signature,
-        this.webhookSecret,
+        this.webhookSecret
       );
       return event;
     } catch (err) {
+      //@ts-ignore
       console.log(`⚠️  Webhook signature verification failed.`, err.message);
       return null;
     }
@@ -178,11 +180,11 @@ export class StripeService implements OnModuleInit {
       buyerId: string;
       meta?: any;
     },
-    currency: string = 'usd',
+    currency: string = "usd"
   ): Promise<Stripe.PaymentIntent> {
     const totalAmount = input.items.reduce(
       (acc, curr) => acc + curr.totalPrice,
-      0,
+      0
     );
     const data = await this.stripe.paymentIntents.create({
       amount: totalAmount,
@@ -196,7 +198,7 @@ export class StripeService implements OnModuleInit {
 
     for (const item of input.items) {
       const sellerAmount = Math.abs(
-        this.applicationFeePercent * item.totalPrice - item.totalPrice,
+        this.applicationFeePercent * item.totalPrice - item.totalPrice
       );
 
       await this.stripe.transfers.create({
@@ -212,7 +214,7 @@ export class StripeService implements OnModuleInit {
 
   async createStripeProduct(
     productName: string,
-    description?: string,
+    description?: string
   ): Promise<Stripe.Product> {
     const product = await this.stripe.products.create({
       name: productName,
@@ -224,7 +226,7 @@ export class StripeService implements OnModuleInit {
 
   async updateStripeProduct(
     name: string,
-    description?: string,
+    description?: string
   ): Promise<Stripe.Product> {
     const product = await this.stripe.products.create({
       name: name,
@@ -234,18 +236,22 @@ export class StripeService implements OnModuleInit {
     return product;
   }
 
+  async createPrice(price: Stripe.PriceCreateParams) {
+    return this.stripe.prices.create(price);
+  }
+
   async createMonthlyPrice(
     stripeProductId: string,
     priceInCents: number,
-    currency: string = 'usd',
-    name?: string,
+    currency: string = "usd",
+    name?: string
   ): Promise<Stripe.Price> {
     const price = await this.stripe.prices.create({
       currency,
       nickname: name,
       product: stripeProductId,
       unit_amount: priceInCents,
-      recurring: { interval: 'month' },
+      recurring: { interval: "month" },
     });
 
     return price;
@@ -255,16 +261,16 @@ export class StripeService implements OnModuleInit {
     stripeProductId: string,
     tiers: {
       priceInCents: number;
-      limit: number | 'inf';
+      limit: number | "inf";
     }[],
-    recuring: 'monthly' | 'yearly' | 'daily',
-    currency: string = 'usd',
-    name?: string,
+    recuring: "month" | "year" | "day" | "week",
+    currency: string = "usd",
+    name?: string
   ): Promise<Stripe.Price> {
     let _tiers = tiers;
 
     _tiers.splice(tiers.length - 1, 1, {
-      limit: 'inf',
+      limit: "inf",
       priceInCents: tiers.at(tiers.length - 1).priceInCents,
     });
 
@@ -276,20 +282,13 @@ export class StripeService implements OnModuleInit {
       })),
       currency,
       recurring: {
-        interval:
-          recuring === 'monthly'
-            ? 'month'
-            : recuring === 'daily'
-            ? 'day'
-            : recuring === 'yearly'
-            ? 'year'
-            : undefined,
-        usage_type: 'metered',
+        interval: recuring,
+        usage_type: "metered",
       },
       product: stripeProductId,
-      tiers_mode: 'graduated',
-      billing_scheme: 'tiered',
-      expand: ['tiers'],
+      tiers_mode: "graduated",
+      billing_scheme: "tiered",
+      expand: ["tiers"],
     });
 
     return price;
@@ -297,44 +296,53 @@ export class StripeService implements OnModuleInit {
 
   async updateSubscriptionItemUsage(
     itemId: string,
-    usage: number,
+    usage: number
   ): Promise<Stripe.UsageRecord> {
     const usageRecord = await this.stripe.subscriptionItems.createUsageRecord(
       itemId,
-      { quantity: usage, timestamp: 'now' },
+      { quantity: usage, timestamp: "now" }
     );
     return usageRecord;
   }
 
   async createCustomerSubscription(
     customerId: string,
-    priceId: string,
-    metadata?: SubscriptionMetadata,
+    priceIds: string[],
+    metadata?: any
   ): Promise<{ subscriptionObj: Stripe.Subscription; clientSecret: string }> {
+    if (!customerId || !Array.isArray(priceIds) || priceIds.length < 1)
+      throw new InternalServerErrorException();
     const subscription = await this.stripe.subscriptions.create({
       customer: customerId,
-      items: [{ price: priceId }],
+      items: priceIds.map((v) => ({ price: v, quantity: 1 })),
       metadata,
-      payment_behavior: 'default_incomplete',
-      payment_settings: { save_default_payment_method: 'on_subscription' },
-      expand: ['latest_invoice.payment_intent'],
+      payment_behavior: "default_incomplete",
+      payment_settings: { save_default_payment_method: "on_subscription" },
+      expand: ["latest_invoice.payment_intent"],
     });
 
     const clientSecret =
-      subscription.latest_invoice?.['payment_intent']?.['client_secret'];
+      //@ts-ignore
+      subscription.latest_invoice?.["payment_intent"]?.[
+        "client_secret"
+      ] as string;
 
     return { clientSecret, subscriptionObj: subscription };
   }
 
+  async deleteCustomerSubscription(subId: string) {
+    return this.stripe.subscriptions.del(subId, { prorate: true });
+  }
+
   async updateCustomerSubscriptionPrice(
     subscriptionId: string,
-    priceId: string,
+    priceId: string
   ): Promise<Stripe.Subscription> {
     const subscription = await this.stripe.subscriptions.update(
       subscriptionId,
       {
         items: [{ price: priceId }],
-      },
+      }
     );
     return subscription;
   }
@@ -351,7 +359,7 @@ export class StripeService implements OnModuleInit {
   async updateCustomer(
     customerId: string,
     name?: string,
-    email?: string,
+    email?: string
   ): Promise<Stripe.Customer> {
     const customer = await this.stripe.customers.update(customerId, {
       name,
@@ -380,7 +388,7 @@ export class StripeService implements OnModuleInit {
       },
       {
         stripeAccount: connectedAccId,
-      },
+      }
     );
   }
 

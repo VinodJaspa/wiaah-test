@@ -127,7 +127,7 @@ export class AccountsAdminResolver {
       where: {
         AND: [
           {
-            type: 'seller',
+            accountType: 'seller',
           },
           {
             status: 'pending',
@@ -303,7 +303,7 @@ export class AccountsAdminResolver {
     const { skip, take } = ExtractPagination(args.pagination);
     const res = await this.prisma.account.findMany({
       where: {
-        type: {
+        accountType: {
           in: [accountType.ADMIN, accountType.MOD],
         },
       },
@@ -322,7 +322,7 @@ export class AccountsAdminResolver {
     const res = await this.prisma.account.create({
       data: {
         ...args,
-        type: args.type as unknown as AccountType,
+        accountType: args.type as unknown as AccountType,
       },
     });
 
@@ -340,7 +340,7 @@ export class AccountsAdminResolver {
       },
       data: {
         ...args,
-        type: args.type as unknown as AccountType,
+        accountType: args.type as unknown as AccountType,
       },
     });
 

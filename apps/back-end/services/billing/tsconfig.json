@@ -24,7 +24,7 @@
       "@exception": ["src/exceptions"],
       "prismaClient": ["prisma/generated/client"],
       "prismaService": ["src/prisma.service"],
-      "@stripe": ["src/stripe"],
+      "@stripe": ["utils"],
       "@stripe-billing/*": ["src/stripe-billing/*"]
     }
   }

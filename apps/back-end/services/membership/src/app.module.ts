@@ -4,7 +4,7 @@ import {
   ApolloFederationDriverConfig,
   ApolloFederationDriver,
 } from '@nestjs/apollo';
-import { getUserFromRequest, MockedAdminUser } from 'nest-utils';
+import { getUserFromRequest, MockedAdminUser, StripeModule } from 'nest-utils';
 
 import { MembershipModule } from './membership/membership.module';
 import { PrismaService } from 'prismaService';
@@ -31,6 +31,11 @@ export class PrismaModule {}
         ...ctx,
         user: getUserFromRequest(ctx.req, true, MockedAdminUser),
       }),
+    }),
+    StripeModule.forRoot({
+      apiKey: process.env.STRIPE_API_SECRET_KEY,
+      application_cut_percent: parseInt(process.env.APP_CUT_PERCENT),
+      webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
     }),
   ],
 })

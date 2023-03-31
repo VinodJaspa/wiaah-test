@@ -3,7 +3,6 @@ import {
   Inject,
   InternalServerErrorException,
   OnModuleInit,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
@@ -18,20 +17,13 @@ import {
   KAFKA_MESSAGES,
   SERVICES,
 } from 'nest-utils';
-import { StripeService } from '@stripe';
-
+import { StripeService } from 'nest-utils';
 import { CreateMembershipPaymentIntentCommand } from './commands';
 import { CreateMembershipPaymentIntentInput, WithdrawInput } from './dto';
 import { PaymentIntent } from './entities';
 import { StripeBillingService } from './stripe-billing.service';
-import {
-  GetCurrencyExchangeRateMessage,
-  GetCurrencyExchangeRateMessageReply,
-  GetUserBalanceMessage,
-  GetUserBalanceMessageReply,
-} from 'nest-dto';
+import { GetUserBalanceMessage, GetUserBalanceMessageReply } from 'nest-dto';
 import { PrismaService } from 'prismaService';
-import { FinancialAccountType } from '@prisma-client';
 import { CreateBillingAccountInput } from './dto/update-billing-account.input';
 import { Upload, GraphQLUpload } from 'graphql-upload';
 import {
@@ -122,7 +114,7 @@ export class StripeBillingResolver implements OnModuleInit {
           );
         }
       } else {
-        const res = await this.stripeService.createConnectedAccount(id, {
+        const res = await this.stripeService.createConnectedAccount({
           ...args,
           company:
             args.business_type === BillingAccountBusinessType.company
@@ -194,11 +186,12 @@ export class StripeBillingResolver implements OnModuleInit {
   }
 
   @Mutation(() => PaymentIntent)
-  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER, accountType.BUYER]))
+  // @UseGuards(new GqlAuthorizationGuard([accountType.SELLER, accountType.BUYER]))
   async createMembershipSubscriptionPaymentIntent(
     @Args('args') args: CreateMembershipPaymentIntentInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
+    console.log({ user });
     const res = await this.commandBus.execute<
       CreateMembershipPaymentIntentCommand,
       { client_secert: string }
@@ -237,7 +230,7 @@ export class StripeBillingResolver implements OnModuleInit {
     if (!finAccount)
       throw new BadRequestException('This financial account was not found');
 
-    const fundsRes = await this.stripeService.sendFunds({
+    await this.stripeService.sendFunds({
       amount: args.amount,
       connectedAccId: user.stripeId,
       currency: finAccount.currency,

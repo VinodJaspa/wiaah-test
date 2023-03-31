@@ -28,7 +28,7 @@ let GqlAuthorizationGuard = class GqlAuthorizationGuard {
                 return true;
             }
             else {
-                throw new common_1.UnauthorizedException();
+                throw new common_1.UnauthorizedException("this account can not preform this action");
             }
         }
         if (this.roles) {

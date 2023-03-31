@@ -21,7 +21,7 @@ type Account {
   email: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  type: AccountType!
+  accountType: AccountType!
   verified: Boolean!
   status: AccountStatus!
   companyRegisterationNumber: String

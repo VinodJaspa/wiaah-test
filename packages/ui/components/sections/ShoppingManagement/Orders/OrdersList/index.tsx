@@ -35,6 +35,7 @@ import {
   EyeIcon,
   LinkIcon,
   Pagination,
+  Modal,
 } from "@partials";
 
 import {
@@ -48,8 +49,8 @@ import { OrderDetailsModal } from "@features";
 import { AddToDate, DateDetails, randomNum } from "utils";
 import { ReturnDeclineRequestValidationSchema } from "validation";
 import { useTypedReactPubsub } from "@libs";
-import { useGetMyOrdersQuery } from "@features/Orders";
-import { OrderStatusEnum } from "@features/API";
+import { useAskForRefundMutation, useGetMyOrdersQuery } from "@features/Orders";
+import { OrderStatusEnum, RefundType } from "@features/API";
 
 export interface OrdersListProps {}
 
@@ -60,12 +61,15 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
   );
   const { visit } = useRouting();
   const { shopping } = React.useContext(OrderContext);
-  const { pagination } = usePaginationControls();
+  const { pagination, controls } = usePaginationControls();
   const { data: orders } = useGetMyOrdersQuery({
     status: filter,
     pagination,
   });
   const { t } = useTranslation();
+
+  const [refundOrderId, setRefundOrderId] = React.useState<string>();
+  const { mutate, isLoading: RefundLoading } = useAskForRefundMutation();
 
   return (
     <div className="flex flex-col gap-4">
@@ -194,12 +198,13 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
                       <ModalExtendedWrapper>
                         <ModalButton>
                           <LinkIcon
-                            onClick={
-                              () => {}
-                              // shopping
-                              //   ? handleGoToTrackingLink(trackingLink)
-                              //   : null
-                            }
+                            onClick={() => {
+                              shopping
+                                ? handleGoToTrackingLink(
+                                    props.trackingLink || ""
+                                  )
+                                : null;
+                            }}
                           />
                         </ModalButton>
                         {shopping ? null : (
@@ -214,126 +219,144 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
                     {shopping ? (
                       <Td>
                         <div className="w-full flex justify-center">
-                          <ModalExtendedWrapper>
-                            <ModalButton>
-                              <CancelIcon className="mx-auto" />
-                            </ModalButton>
-                            <ControlledModal>
-                              <Formik<CancelOrderDto>
-                                onSubmit={(data) => {
-                                  // CancelOrder(data);
-                                }}
-                                initialValues={{
-                                  orderId: id,
-                                  cancelationReason: "",
-                                  get: "money",
-                                  for: "full",
-                                }}
-                                validationSchema={
-                                  ReturnDeclineRequestValidationSchema
-                                }
-                              >
-                                {({ setFieldValue, values }) => (
-                                  <Form className="flex w-full items-center flex-col gap-4">
-                                    <p className="font-bold text-xl">
-                                      {t("Refund Request For Order")} #{id}
-                                    </p>
-                                    <div className="flex gap-2 whitespace-nowrap">
-                                      {t("Paid")} <PriceDisplay price={paid} />{" "}
-                                      {t("on")}{" "}
-                                      {orderDate
-                                        ? `${orderDate.month_long} ${orderDate.day}, ${orderDate.year_num}`
-                                        : null}
-                                    </div>
-                                    <div className="grid grid-cols-3 gap-4 w-full">
-                                      <p>{t("I would like to get")}</p>
-                                      <div className="flex col-span-2 flex-col gap-2">
-                                        <Radio
-                                          checked={values.get === "money"}
-                                          onChange={(e) =>
-                                            e.target.checked
-                                              ? setFieldValue("get", "money")
-                                              : null
-                                          }
-                                        >
-                                          {t("My money back")}
-                                        </Radio>
+                          <CancelIcon className="mx-auto" />
+                          <Modal
+                            isOpen={!!refundOrderId}
+                            onClose={() => setRefundOrderId(undefined)}
+                          >
+                            <Formik<Parameters<typeof mutate>[0]>
+                              onSubmit={(data) => {
+                                mutate(data);
+                              }}
+                              initialValues={{
+                                reason: "",
+                                type: RefundType.Money,
+                                fullAmount: true,
+                                amount: 0,
+                                opened: false,
+                                orderItemId: refundOrderId || "",
+                                qty: 0,
+                              }}
+                              validationSchema={
+                                ReturnDeclineRequestValidationSchema
+                              }
+                            >
+                              {({ setFieldValue, values }) => (
+                                <Form className="flex w-full items-center flex-col gap-4">
+                                  <p className="font-bold text-xl">
+                                    {t("Refund Request For Order")} #{id}
+                                  </p>
+                                  <div className="flex gap-2 whitespace-nowrap">
+                                    {t("Paid")} <PriceDisplay price={paid} />{" "}
+                                    {t("on")}{" "}
+                                    {orderDate
+                                      ? `${orderDate.month_long} ${orderDate.day}, ${orderDate.year_num}`
+                                      : null}
+                                  </div>
+                                  <div className="grid grid-cols-3 gap-4 w-full">
+                                    <p>{t("I would like to get")}</p>
+                                    <div className="flex col-span-2 flex-col gap-2">
+                                      <Radio
+                                        checked={
+                                          values.type === RefundType.Money
+                                        }
+                                        onChange={(e) =>
+                                          e.target.checked
+                                            ? setFieldValue(
+                                                "type",
+                                                RefundType.Money
+                                              )
+                                            : null
+                                        }
+                                      >
+                                        {t("My money back")}
+                                      </Radio>
 
-                                        <Radio
-                                          checked={values.get === "credit"}
-                                          onChange={(e) =>
-                                            e.target.checked
-                                              ? setFieldValue("get", "credit")
-                                              : null
-                                          }
-                                        >
-                                          {t("Credit note for future purchase")}
-                                        </Radio>
-                                      </div>
-                                      <p>{t("For")}</p>
-                                      <div className="flex flex-col col-span-2 gap-2">
-                                        <Radio
-                                          checked={values.for === "full"}
-                                          onChange={(e) =>
-                                            e.target.checked
-                                              ? setFieldValue("for", "full")
-                                              : null
-                                          }
-                                        >
-                                          {t("Full amount")}
-                                        </Radio>
-                                        <Radio
-                                          checked={values.for === "partial"}
-                                          onChange={(e) =>
-                                            e.target.checked
-                                              ? setFieldValue("for", "partial")
-                                              : null
-                                          }
-                                          className="whitespace-nowrap"
-                                        >
-                                          <p className="whitespace-nowrap">
-                                            {t("Partial amount of")}{" "}
-                                          </p>
-                                          {values.for === "partial" ? (
-                                            <Input
-                                              value={values.amount}
-                                              type={"number"}
-                                              onChange={(e) =>
-                                                setFieldValue(
-                                                  "amount",
-                                                  e.target.value
-                                                )
-                                              }
-                                            />
-                                          ) : null}
-                                        </Radio>
-                                      </div>
-                                      <p>{t("Because")}</p>
-                                      <FormikInput
-                                        containerProps={{
-                                          className: "col-span-2",
-                                        }}
-                                        name="cancelationReason"
-                                        as={Textarea}
-                                      />
+                                      <Radio
+                                        checked={
+                                          values.type === RefundType.Credit
+                                        }
+                                        onChange={(e) =>
+                                          e.target.checked
+                                            ? setFieldValue(
+                                                "type",
+                                                RefundType.Credit
+                                              )
+                                            : null
+                                        }
+                                      >
+                                        {t("Credit note for future purchase")}
+                                      </Radio>
                                     </div>
-                                    <ModalFooter>
-                                      <ModalCloseButton>
-                                        <Button
-                                        // loading={orderCancelationLoading}
-                                        >
-                                          {t("Send my request")}
-                                        </Button>
-                                      </ModalCloseButton>
-                                      <Button colorScheme="white">
-                                        {t("Cancel")}
+                                    <p>{t("For")}</p>
+                                    <div className="flex flex-col col-span-2 gap-2">
+                                      <Radio
+                                        checked={values.fullAmount || false}
+                                        onChange={(e) =>
+                                          e.target.checked
+                                            ? setFieldValue("fullAmount", true)
+                                            : null
+                                        }
+                                      >
+                                        {t("Full amount")}
+                                      </Radio>
+                                      <Radio
+                                        checked={!values.fullAmount}
+                                        onChange={(e) =>
+                                          e.target.checked
+                                            ? setFieldValue("fullAmount", false)
+                                            : null
+                                        }
+                                        className="whitespace-nowrap"
+                                      >
+                                        <p className="whitespace-nowrap">
+                                          {t("Partial amount of")}{" "}
+                                        </p>
+                                        {values.fullAmount ? null : (
+                                          <Input
+                                            value={values.amount?.toString()}
+                                            type={"number"}
+                                            onChange={(e) =>
+                                              setFieldValue(
+                                                "amount",
+                                                parseInt(e.target.value)
+                                              )
+                                            }
+                                          />
+                                        )}
+                                      </Radio>
+                                    </div>
+                                    <p>{t("Because")}</p>
+                                    <FormikInput
+                                      containerProps={{
+                                        className: "col-span-2",
+                                      }}
+                                      name="cancelationReason"
+                                      as={Textarea}
+                                    />
+                                  </div>
+                                  <ModalFooter>
+                                    <ModalCloseButton>
+                                      <Button
+                                        type={"submit"}
+                                        loading={RefundLoading}
+                                      >
+                                        {t("Send my request")}
                                       </Button>
-                                    </ModalFooter>
-                                  </Form>
-                                )}
-                              </Formik>
-                            </ControlledModal>
-                          </ModalExtendedWrapper>
+                                    </ModalCloseButton>
+                                    <Button
+                                      onClick={() => {
+                                        setRefundOrderId(undefined);
+                                      }}
+                                      colorScheme="white"
+                                    >
+                                      {t("Cancel")}
+                                    </Button>
+                                  </ModalFooter>
+                                </Form>
+                              )}
+                            </Formik>
+                          </Modal>
                         </div>
                       </Td>
                     ) : null}
@@ -344,7 +367,7 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
           <OrderDetailsModal />
         </Table>
       </TableContainer>
-      <Pagination></Pagination>
+      <Pagination controls={controls} />
     </div>
   );
 };

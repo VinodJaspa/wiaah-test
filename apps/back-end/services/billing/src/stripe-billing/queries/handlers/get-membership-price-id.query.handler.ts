@@ -20,7 +20,7 @@ export class GetMembershipPriceIdQueryHandler
   async execute({
     membershipId,
     user,
-  }: GetMembershipPriceIdQuery): Promise<string> {
+  }: GetMembershipPriceIdQuery): Promise<string[]> {
     const {
       results: { data, error, success },
     } = await KafkaMessageHandler<
@@ -36,8 +36,8 @@ export class GetMembershipPriceIdQueryHandler
       }),
     );
 
-    if (!success || !data || !data?.priceId) throw new Error(error.message);
+    if (!success || !data || !data?.priceIds) throw new Error(error.message);
 
-    return data.priceId;
+    return data.priceIds;
   }
 }

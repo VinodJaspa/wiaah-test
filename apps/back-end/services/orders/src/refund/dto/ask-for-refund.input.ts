@@ -12,9 +12,6 @@ registerEnumType(RefundType, { name: 'RefundType' });
 
 @InputType()
 export class AskForRefundInput {
-  @Field(() => ID)
-  id: string;
-
   @Field(() => RefundType)
   type: RefundType;
 

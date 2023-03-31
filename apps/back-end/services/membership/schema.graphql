@@ -15,15 +15,20 @@ directive @provides(fields: String!) on FIELD_DEFINITION
 type MembershipTurnoverRule {
   id: ID!
   membershipId: ID!
-  priceId: String
-  usage: Float!
+  usage: Float
   commission: Float!
   commissionType: CommissionType!
+  type: MembershipTurnoverRuleType!
 }
 
 enum CommissionType {
   fixed
   percentage
+}
+
+enum MembershipTurnoverRuleType {
+  usage
+  flat
 }
 
 type MembershipIncludedItem {
@@ -33,9 +38,9 @@ type MembershipIncludedItem {
 type Membership {
   id: ID!
   name: String!
-  priceId: String
+  priceIds: [String!]!
   commissionOn: CommissionOn!
-  recurring: Float!
+  recurring: MembershipRecurring!
   turnover_rules: [MembershipTurnoverRule!]!
   includings: [MembershipIncludedItem!]!
   sortOrder: Int!
@@ -43,8 +48,14 @@ type Membership {
 
 enum CommissionOn {
   external_click
-  sale
   revenue
+}
+
+enum MembershipRecurring {
+  day
+  month
+  week
+  year
 }
 
 type Account {
@@ -102,21 +113,24 @@ input AdminGetMembersipSubscriptionInput {
 type Mutation {
   createMembership(args: CreateMembershipInput!): Boolean!
   updateMembership(args: UpdateMembershipInput!): Boolean!
+  unsubscribe: Boolean!
+  subscribeMembership(membershipId: String!): String
 }
 
 input CreateMembershipInput {
   name: String!
   commissionOn: CommissionOn!
-  recurring: Float!
+  recurring: MembershipRecurring!
   turnover_rules: [MembershipTurnoverRuleInput!]!
   includings: [MembershipIncludedItemInput!]!
   sortOrder: Int!
 }
 
 input MembershipTurnoverRuleInput {
-  usage: Float!
+  usage: Float
   commission: Float!
   commissionType: CommissionType!
+  type: MembershipTurnoverRuleType!
 }
 
 input MembershipIncludedItemInput {

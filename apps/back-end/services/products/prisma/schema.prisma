@@ -55,7 +55,6 @@ enum ProductUsageStatus {
 model Product {
   id                          String                @id() @default(auto()) @map("_id") @db.ObjectId()
   sellerId                    String
-  shopId                      String                @unique()
   vendor_external_link        String?
   vendor_external_link_clicks Int                   @default(0)
   type                        ProdcutType
@@ -113,7 +112,7 @@ model Shop {
   phone         String?
   location      Location
   storeType     StoreType[]
-  businessType  BusinessType[]
+  businessType  BusinessType
   targetGenders TargetGenders[]
   vat           VatSettings?
 }

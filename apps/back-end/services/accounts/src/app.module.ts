@@ -4,7 +4,7 @@ import {
 } from '@nestjs/apollo';
 import { Global, Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { getUserFromRequest } from 'nest-utils';
+import { getUserFromRequest, StripeModule } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { AccountsModule } from './accounts/accounts.module';
 import { IdentityVerificationModule } from './identity-verification/identity-verification.module';
@@ -38,6 +38,11 @@ export class PrismaModule {}
     }),
     AccountsModule,
     IdentityVerificationModule,
+    StripeModule.forRoot({
+      apiKey: process.env.STRIPE_API_SECRET_KEY,
+      application_cut_percent: parseInt(process.env.APP_CUT_PERCENT),
+      webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
+    }),
   ],
   controllers: [],
   providers: [],

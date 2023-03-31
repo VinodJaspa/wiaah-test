@@ -11,6 +11,7 @@ import { FinancialAccountType } from '@prisma-client';
 
 registerEnumType(FinancialAccountType, { name: 'FinancialAccountType' });
 
+@ObjectType()
 class required {
   @Field(() => ID)
   id: string;
@@ -31,6 +32,7 @@ class required {
   type: FinancialAccountType;
 }
 
+@ObjectType()
 class optional {
   @Field(() => String)
   card_exp_month: string;

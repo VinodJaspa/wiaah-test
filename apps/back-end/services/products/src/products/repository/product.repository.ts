@@ -8,12 +8,15 @@ import { PrismaService } from 'prismaService';
 export class ProductRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getTopDiscountedByShop(shopId: string, lang: UserPreferedLang = 'en') {
+  async getTopDiscountedBySellerId(
+    sellerId: string,
+    lang: UserPreferedLang = 'en',
+  ) {
     const res = await this.prisma.product.findFirst({
       where: {
         AND: [
           {
-            shopId,
+            sellerId,
           },
           {
             discount: {
@@ -37,7 +40,7 @@ export class ProductRepository {
       take: 1,
     });
 
-    return this.formatProduct<{ discount: Discount }>(res, lang);
+    return this.formatProduct(res, lang);
   }
 
   async update(

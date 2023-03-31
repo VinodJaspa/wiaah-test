@@ -10,6 +10,9 @@ export class AuthorizationDecodedUser {
   @IsString()
   stripeId: string;
 
+  @IsString()
+  stripeCustomerId?: string;
+
   @IsString({ always: false })
   accountType?: AccountType;
 

@@ -30,7 +30,6 @@ type ShippingAddress {
 
 type BillingAddress {
   id: ID!
-  ownerId: ID!
 }
 
 type OrderItem {
@@ -84,6 +83,7 @@ type Order {
   billingAddressId: String!
   shippingMethodId: String!
   paid: Float!
+  trackingLink: String
   billing: BillingAddress!
   shipping: ShippingRule!
   shippingAddress: ShippingAddress!
@@ -280,7 +280,6 @@ input AcceptReceivedOrderInput {
 }
 
 input AskForRefundInput {
-  id: ID!
   type: RefundType!
   orderItemId: ID!
   fullAmount: Boolean

@@ -22,6 +22,7 @@ model Order {
   shippingMethodId  String      @db.ObjectId
   shippingAddressId String      @db.ObjectId
   billingAddressId  String?     @db.ObjectId
+  trackingLink      String?
   completedAt       DateTime?
 }
 

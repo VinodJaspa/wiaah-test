@@ -95,7 +95,6 @@ export class ProductsController {
           name: product.title,
           price: product.price,
           thumbnail: product.presentations.find((v) => v.type === 'image').src,
-          shopId: product.shopId,
         },
         error: null,
       });
@@ -126,7 +125,6 @@ export class ProductsController {
         data: products.map((prod) => ({
           productId: prod.id,
           ownerId: prod.sellerId,
-          shopId: prod.shopId,
           price: prod.price,
           category: [prod.category?.name || ''],
           tax: prod.vat * prod.price,

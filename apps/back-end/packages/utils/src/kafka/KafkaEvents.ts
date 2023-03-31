@@ -77,8 +77,10 @@ export const KAFKA_EVENTS = {
     transactionCreated: "transaction.created",
     billingPriceCreated: (key?: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`billing.price.created.${key}`, regex),
-    billingSubscriptionPaid: (type: string, regex?: boolean) =>
+    billingSubscriptionActivated: (type: string, regex?: boolean) =>
       makeKafkaDynamicEvent(`billing.subscription.paid.${type}`, regex),
+    billingSubscriptionPastdue: (type: string, regex?: boolean) =>
+      makeKafkaDynamicEvent(`billing.subscription.pastdue.${type}`, regex),
     createMonthlyBillingPrice: "billing.price.monthly.create",
     stripeAccountCreated: "stripe.account.created",
     stripeMembershipPricingCreated: "stripe.membership.pricing.created",

@@ -1,7 +1,8 @@
-import { NewsfeedPost } from '@entities';
+import { AdminNewsfeedPost, NewsfeedPost } from '@entities';
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { accountType, GqlAuthorizationGuard } from 'nest-utils';
+import { Prisma } from 'prismaClient';
 import { PrismaService } from 'prismaService';
 
 import {
@@ -34,7 +35,78 @@ export class NewsfeedPostsAdminResolver {
   async getFilteredNewsfeedPosts(
     @Args('args') args: GetAdminFilteredNewsfeedPostsInput,
   ) {
-    return this.prisma.newsfeedPost.findMany({});
+    const filters: Prisma.NewsfeedPostWhereInput[] = [];
+
+    if (args.comments) {
+      filters.push({
+        comments: args.comments,
+      });
+    }
+    if (args.likes) {
+      filters.push({
+        comments: args.likes,
+      });
+    }
+    if (args.shares) {
+      filters.push({
+        comments: args.shares,
+      });
+    }
+
+    if (args.views) {
+      filters.push({
+        comments: args.views,
+      });
+    }
+    if (args.legend) {
+      filters.push({
+        legend: {
+          contains: args.legend,
+        },
+      });
+    }
+    if (args.date) {
+      const argsDate = new Date(args.date);
+      filters.push({
+        createdAt: {
+          gte: new Date(
+            argsDate.getFullYear(),
+            argsDate.getMonth(),
+            argsDate.getDate(),
+            0,
+            0,
+            0,
+          ),
+        },
+      });
+
+      filters.push({
+        createdAt: {
+          lte: new Date(
+            argsDate.getFullYear(),
+            argsDate.getMonth(),
+            argsDate.getDate() + 1,
+            0,
+            0,
+            0,
+          ),
+        },
+      });
+    }
+    return this.prisma.newsfeedPost.findMany({
+      where: {
+        AND: filters,
+      },
+    });
+  }
+
+  @Query(() => AdminNewsfeedPost)
+  async adminGetNewsfeedPost(@Args('id') id: string) {
+    return this.prisma.newsfeedPost.findUnique({
+      where: {
+        id,
+      },
+    });
   }
 
   @Mutation(() => Boolean)

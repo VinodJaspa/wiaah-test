@@ -30,7 +30,9 @@ export class GqlAuthorizationGuard implements CanActivate {
       if (isPublic) {
         return true;
       } else {
-        throw new UnauthorizedException();
+        throw new UnauthorizedException(
+          "this account can not preform this action"
+        );
       }
     }
 
