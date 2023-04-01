@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
+import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 import {
   CommissionOn,
   commissionType,
@@ -20,11 +20,17 @@ export class MembershipTurnoverRule {
   @Field(() => Number)
   commission: number;
 
+  @Field(() => CommissionOn, { nullable: true })
+  commissionOn?: CommissionOn;
+
   @Field(() => commissionType)
   commissionType: commissionType;
 
   @Field(() => MembershipTurnoverRuleType)
   type: MembershipTurnoverRuleType;
+
+  @Field(() => String)
+  key: string;
 }
 
 @ObjectType()
@@ -43,9 +49,6 @@ export class Membership {
 
   @Field(() => [String])
   priceIds: string[];
-
-  @Field(() => CommissionOn)
-  commissionOn: CommissionOn;
 
   @Field(() => membershipRecurring)
   recurring: membershipRecurring;

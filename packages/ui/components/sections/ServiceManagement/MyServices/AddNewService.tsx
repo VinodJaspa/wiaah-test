@@ -118,46 +118,6 @@ export const NewServiceStepper: React.FC<{
   const [serviceType, setServiceType] = React.useState<ServiceType>(type);
   const { CancelAddingNewService } = React.useContext(MyServicesCtx);
 
-  const serviceTypes: ServiceSelectingInfo[] = [
-    {
-      serviceIcon: FaHotel,
-      serviceKey: "hotel",
-      serviceDescription: "Put up your hotel for booking",
-      serviceName: "Hotel booking",
-    },
-    {
-      serviceIcon: GiHouse,
-      serviceKey: "holidayRentals",
-      serviceDescription: "put some place up for rent",
-      serviceName: "Holiday rentals",
-    },
-    {
-      serviceIcon: ForkAndSpoonIcon,
-      serviceKey: "restaurant",
-      serviceDescription:
-        "offer your special dishes for food lovers all over the world!",
-      serviceName: "Restaruant",
-    },
-    {
-      serviceIcon: HealthIcon,
-      serviceKey: "healthCenter",
-      serviceDescription: "offer your experts experience in health medical!",
-      serviceName: "Health Center",
-    },
-    {
-      serviceIcon: CarWheelIcon,
-      serviceKey: "vehicle",
-      serviceDescription: "offer your vehicle for rent to whoever needs!",
-      serviceName: "Vehicle renting",
-    },
-    {
-      serviceIcon: BeautyCenterIcon,
-      serviceKey: "beautyCenter",
-      serviceDescription: "offer beauty methods that you only know!",
-      serviceName: "Beauty Center",
-    },
-  ];
-
   const ServicesDetailsSections: ServiceSectionWithSchemaType[] = [
     {
       key: "restaurant",
@@ -369,7 +329,7 @@ export const NewServiceStepper: React.FC<{
                     translationKey: "Discount",
                   },
                 },
-              ].slice(isEdit ? 1 : 0)}
+              ]}
             />
             <div className="w-full justify-between flex">
               <Button onClick={() => CancelAddingNewService()}>

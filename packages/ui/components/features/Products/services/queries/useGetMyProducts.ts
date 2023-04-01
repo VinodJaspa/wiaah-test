@@ -16,6 +16,7 @@ import {
 import { createGraphqlRequestClient } from "api";
 import { Exact, Maybe } from "types";
 import { useQuery } from "react-query";
+import { isDev, randomNum } from "@UI/../utils/src";
 
 export type GetMyProductsQueryVariables = Exact<{
   args: GetFilteredProductsInput;
@@ -36,7 +37,6 @@ export type GetMyProductsQuery = { __typename?: "Query" } & {
       | "sales"
       | "sellerId"
       | "shippingRulesIds"
-      | "shopId"
       | "stock"
       | "title"
       | "vat"
@@ -50,6 +50,7 @@ export type GetMyProductsQuery = { __typename?: "Query" } & {
       | "unitsRefunded"
       | "positiveFeedback"
       | "negitiveFeedback"
+      | "external_clicks"
     > & {
         attributes: Array<
           { __typename?: "ProductAttribute" } & Pick<
@@ -161,48 +162,50 @@ query getMyProducts($args:GetFilteredProductsInput!){
     `);
 
   return useQuery(["get-my-products", { args }], async () => {
-    const ph: GetMyProductsQuery["getMyProducts"] = [...Array(5)].map(() => ({
-      attributes: [],
-      brand: "",
-      cashback: {
-        amount: 0,
-        type: CashbackType.Cash,
-        units: 1,
-      },
-      categoryId: "",
-      description: "",
-      discount: { amount: 0, units: 0 },
-      earnings: 0,
-      id: "test id",
-      presentations: [],
-      price: 0,
-      rate: 0,
-      reviews: 0,
-      sales: 0,
-      seller: {
-        profile: {
-          username: "test seller",
+    if (isDev) {
+      const ph: GetMyProductsQuery["getMyProducts"] = [...Array(5)].map(() => ({
+        attributes: [],
+        brand: "",
+        cashback: {
+          amount: 0,
+          type: CashbackType.Cash,
+          units: 1,
         },
-      },
-      sellerId: "test",
-      shippingRulesIds: ["test"],
-      shopId: "",
-      status: ProductStatus.Active,
-      stock: 0,
-      thumbnail: "/place-1.jpg",
-      title: "test",
-      vat: 0,
-      vendor_external_link: "",
-      visibility: VisibilityEnum.Public,
-      negitiveFeedback: 15,
-      positiveFeedback: 16,
-      totalDiscounted: 15,
-      totalDiscountedAmount: 150,
-      totalOrdered: 160,
-      unitsRefunded: 10,
-    }));
+        categoryId: "",
+        description: "",
+        discount: { amount: 0, units: 0 },
+        earnings: 0,
+        id: "test id",
+        presentations: [],
+        price: randomNum(650),
+        rate: 0,
+        reviews: 0,
+        sales: 0,
+        seller: {
+          profile: {
+            username: "test seller",
+          },
+        },
+        sellerId: "test",
+        shippingRulesIds: ["test"],
+        external_clicks: randomNum(150),
+        status: ProductStatus.Active,
+        stock: 0,
+        thumbnail: "/place-1.jpg",
+        title: "test",
+        vat: 0,
+        vendor_external_link: "",
+        visibility: VisibilityEnum.Public,
+        negitiveFeedback: 15,
+        positiveFeedback: 16,
+        totalDiscounted: 15,
+        totalDiscountedAmount: 150,
+        totalOrdered: 160,
+        unitsRefunded: 10,
+      }));
 
-    return ph;
+      return ph;
+    }
 
     const res = await client
       .setVariables<QueryGetMyProductsArgs>({ filterInput: args })

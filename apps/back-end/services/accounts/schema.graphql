@@ -30,7 +30,6 @@ type Account {
   ips: [String!]!
   lastActiveAt: String!
   shop: Shop!
-  balance: Balance!
 }
 
 """
@@ -66,10 +65,6 @@ enum AccountDeletionRequestStatus {
   approved
   pending
   rejected
-}
-
-type Balance {
-  ownerId: ID!
 }
 
 type Shop {
@@ -297,12 +292,10 @@ input UpdateSellerAccountAdminInput {
   lastName: String
   email: String
   password: String
-  confirmPassword: String
   accountType: RegisterAccountType
   birthDate: String
   gender: AccountGenderEnum
   phone: String
-  companyRegisterationNumber: String
   id: ID!
 }
 
@@ -372,14 +365,9 @@ input DeleteAccountRequestInput {
 input UpdateAccountInput {
   firstName: String
   lastName: String
-  email: String
-  password: String
-  confirmPassword: String
-  accountType: RegisterAccountType
   birthDate: String
   gender: AccountGenderEnum
   phone: String
-  companyRegisterationNumber: String
 }
 
 input CreateIdentityVerificationInput {

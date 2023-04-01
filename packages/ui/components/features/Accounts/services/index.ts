@@ -13,3 +13,4 @@ export * from "./useVerifyVerificationCode";
 export * from "./buyers";
 export * from "./useGetMyVerificationRequest";
 export * from "./useAdminGetAccountVerification";
+export * from "./useAdminUpdateAccount";

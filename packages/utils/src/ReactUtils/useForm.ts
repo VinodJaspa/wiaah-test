@@ -4,7 +4,7 @@ import { startCase } from "lodash";
 export function useForm<TForm>(
   initial: TForm,
   constents?: Partial<TForm>,
-  options?: { addLabel?: boolean }
+  options?: { addLabel?: boolean; addPlaceholder?: boolean }
 ) {
   const [data, setData] = React.useState<TForm>(initial);
 
@@ -27,6 +27,11 @@ export function useForm<TForm>(
       [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
       label:
         options?.addLabel && typeof key === "string"
+          ? startCase(key)
+          : undefined,
+
+      placeholder:
+        options?.addPlaceholder && typeof key === "string"
           ? startCase(key)
           : undefined,
     };

@@ -3,7 +3,6 @@ import {
   Inject,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { ExtractPagination, KAFKA_EVENTS, SERVICES } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
@@ -11,6 +10,7 @@ import { NewAccountCreatedEvent } from 'nest-dto';
 import { AccountType, Prisma } from '@prisma-client';
 import { PrismaService } from 'prismaService';
 
+import * as bcrypt from 'bcrypt';
 import { Account } from './entities';
 import { UpdateAccountInput } from './dto/update-account.input';
 import { GetFilteredSellersAccountsInput } from './dto/get-sellers-accounts.input';
@@ -56,7 +56,9 @@ export class AccountsService {
       return null;
     }
   }
-
+  hashPassword(password: string) {
+    return bcrypt.hash(password, 12);
+  }
   async emailExists(email: string): Promise<boolean> {
     try {
       if (typeof email !== 'string')
@@ -178,23 +180,7 @@ export class AccountsService {
     return account;
   }
 
-  async updateUnprotected(input: UpdateAccountInput, userId: string) {
-    return this.update(input, userId);
-  }
-
-  async validateOwnAccount(userId: string) {
-    const account = await this.findOne(userId);
-
-    if (!account) throw new NotFoundException('account not found');
-
-    if (account.id !== userId)
-      throw new UnauthorizedException("you cannot update other's accounts");
-
-    return account;
-  }
-
   async updateProtected(input: UpdateAccountInput, userId: string) {
-    await this.validateOwnAccount(userId);
     return this.update(input, userId);
   }
 

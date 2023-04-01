@@ -7,6 +7,7 @@ import {
   ProductUsageStatus,
 } from "@features/API";
 import { useQuery } from "react-query";
+import { randomNum } from "@UI/../utils/src";
 
 export type GetAdminProductsQueryVariables = Exact<{
   args: GetFilteredProductsAdminInput;
@@ -34,6 +35,7 @@ export type GetAdminProductsQuery = { __typename?: "Query" } & {
       | "sales"
       | "reviews"
       | "earnings"
+      | "external_clicks"
     >
   >;
 };
@@ -68,6 +70,7 @@ export const useGetAdminProductsQuery = (
             reviews
             earnings
             updatedAt
+            external_clicks
         }
     }
     `);
@@ -98,6 +101,7 @@ export const useGetAdminProductsQuery = (
       reviews: 16,
       sales: 65,
       earnings: 156,
+      external_clicks: randomNum(150),
     }));
     return res;
   });

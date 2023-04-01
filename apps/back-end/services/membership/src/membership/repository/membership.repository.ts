@@ -55,7 +55,7 @@ export class MembershipRepository {
         return price.id;
       }),
     );
-    console.log({ flatPrices });
+
     const tierdPrice =
       tieredRules.length > 0
         ? await this.stripe.createPrice({

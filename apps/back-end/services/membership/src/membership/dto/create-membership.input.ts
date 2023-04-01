@@ -28,12 +28,18 @@ export class MembershipTurnoverRuleInput {
   @Field(() => Number)
   commission: number;
 
+  @Field(() => CommissionOn)
+  commissionOn: CommissionOn;
+
   @Field(() => commissionType)
   @FieldRequired('type', MembershipTurnoverRuleType.usage)
   commissionType: commissionType;
 
   @Field(() => MembershipTurnoverRuleType)
   type: MembershipTurnoverRuleType;
+
+  @Field(() => String)
+  key: string;
 }
 
 @InputType()
@@ -46,9 +52,6 @@ export class MembershipIncludedItemInput {
 export class CreateMembershipInput {
   @Field(() => String)
   name: string;
-
-  @Field(() => CommissionOn)
-  commissionOn: CommissionOn;
 
   @Field(() => membershipRecurring)
   recurring: membershipRecurring;

@@ -42,7 +42,25 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
     <div className="w-full flex flex-col gap-4">
       <Formik
         validationSchema={NewServiceSchemas.serviceGeneralDetailsSchema}
-        initialValues={{} as Record<string, any>}
+        initialValues={
+          {
+            name: "Ritz-Carlton Hotel",
+            description: "Ritz-Carlton Hotel's description",
+            numOfStars: 4,
+            metaTagDescription: "hotel tags description",
+            metaTagKeyword: "hotel ritz-carlton cheap",
+            hashtags: ["hotel", "cheap", "modern"],
+            vat: 10,
+            property_type: "hotel",
+            type_of_place: "private_appartement",
+            number_of_rooms: 4,
+            number_of_beds: 3,
+            priceByNight: 150,
+            deposit: 100,
+            cancelFees: 30,
+            roomTitle: "Ritzs room",
+          } as Record<string, any>
+        }
         onSubmit={() => {}}
       >
         {({ values, setFieldValue }) => {
@@ -86,12 +104,12 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
                 as={Textarea}
                 placeholder={t("Meta Tag Keyword")}
               />
-              <FormikInput
+              {/* <FormikInput
                 name="serviceTag"
                 className="bg-white"
                 as={Textarea}
                 placeholder={t("Service Tag")}
-              />
+              /> */}
               <HashTagInput
                 value={values["hashtags"]}
                 onChange={(v) => setFieldValue("hashtags", v)}

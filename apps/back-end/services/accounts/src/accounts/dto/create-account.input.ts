@@ -85,7 +85,4 @@ export class AdminUpdateAdminAccountInput extends PartialType(
 }
 
 @InputType()
-export class CreateSellerAccountInput extends CreateAccountInput {
-  @Field(() => String)
-  companyRegisterationNumber: string;
-}
+export class CreateSellerAccountInput extends CreateAccountInput {}

@@ -17,7 +17,6 @@ import { AdminGetStaffAccountsInput } from './dto/admin-get-staff-accounts.input
 import {
   AdminCreateAdminAccountInput,
   AdminUpdateAdminAccountInput,
-  CreateAccountInput,
 } from './dto/create-account.input';
 import { DeclineSellerAccountRequest } from './dto/declineSellerAccountRequest.input';
 import { GetAccountDeletionRequestsInput } from './dto/get-account-deletion-requests.input';
@@ -32,6 +31,7 @@ import {
   AccountSuspendedEvent,
   SellerAccountRequestDeclinedEvent,
 } from './events';
+import * as bcrypt from 'bcrypt';
 
 @Resolver()
 @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
@@ -55,10 +55,21 @@ export class AccountsAdminResolver {
   }
 
   @Mutation(() => Account)
-  adminEditAccount(
+  async adminEditAccount(
     @Args('editAccountInput') input: UpdateSellerAccountAdminInput,
   ) {
-    return this.accountsService.updateUnprotected(input, input.id);
+    const { password, ...rest } = input;
+
+    const hashedPassword = await this.accountsService.hashPassword(password);
+
+    const res = await this.prisma.account.update({
+      where: {
+        id: input.id,
+      },
+      data: { ...rest, password: hashedPassword },
+    });
+
+    return res;
   }
 
   @Query(() => Account)

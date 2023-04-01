@@ -110,7 +110,9 @@ export class MembershipController {
       Membership
     >(new GetMembershipPlanByIdQuery(value.input.seller.membershipId));
 
-    const canPreform = membership.commissionOn === CommissionOn.external_click;
+    const canPreform = membership.turnover_rules.some(
+      (v) => v.commissionOn === CommissionOn.external_click,
+    );
     return new CanPreformProductActionMessageReply({
       success: true,
       data: canPreform,

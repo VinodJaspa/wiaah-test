@@ -59,13 +59,14 @@ export const HotelBedsInput: React.FC<HotelBedsInputProps> = ({
 
       {add ? (
         <AddBedInput
-          onAdd={(data) =>
+          onAdd={(data) => {
             onChange &&
-            onChange([
-              ...value,
-              { name: data.name, amount: 0, required: false },
-            ])
-          }
+              onChange([
+                ...value,
+                { name: data.name, amount: 0, required: false },
+              ]);
+            setAdd(false);
+          }}
         />
       ) : (
         <AddBadgeButton onClick={() => setAdd(true)}>

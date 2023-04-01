@@ -19,6 +19,8 @@ export const MyServicesList: React.FC<MyServicesListProps> = ({}) => {
   const { t } = useTranslation();
   const { visit } = useRouting();
 
+  console.log({ res });
+
   return (
     <div className="flex flex-col gap-8 w-full">
       <Stack col divider={<Divider />}>

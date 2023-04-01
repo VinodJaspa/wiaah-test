@@ -14,7 +14,6 @@ datasource db {
 model Membership {
   id                     String                   @id @default(auto()) @map("_id") @db.ObjectId
   name                   String
-  commissionOn           CommissionOn
   recurring              membershipRecurring
   priceIds               String[]
   turnover_rules         MembershipTurnoverRule[]
@@ -33,12 +32,14 @@ enum membershipRecurring {
 
 model MembershipTurnoverRule {
   id             String                     @id @default(auto()) @map("_id") @db.ObjectId
+  commissionOn   CommissionOn?
   membershipId   String                     @db.ObjectId
   membership     Membership                 @relation(fields: [membershipId], references: [id])
   usage          Float?
   commission     Float
   commissionType commissionType
   type           MembershipTurnoverRuleType
+  key            String
 }
 
 enum MembershipTurnoverRuleType {

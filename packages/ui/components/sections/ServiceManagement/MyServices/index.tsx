@@ -46,7 +46,8 @@ export const MyServicesSection: React.FC = () => {
         CancelAddingNewService: handleCancelAddingNewService,
       }}
     >
-      <AddNewService />
+      {/* <AddNewService isEdit /> */}
+      <MyServicesList></MyServicesList>
     </MyServicesCtx.Provider>
   );
 };

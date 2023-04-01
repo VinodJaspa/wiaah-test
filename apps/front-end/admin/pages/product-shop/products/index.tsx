@@ -1,6 +1,5 @@
 import {
   GetFilteredProductsAdminInput,
-  PresentationType,
   ProductUsageStatus,
 } from "@features/API";
 import { NextPage } from "next";
@@ -67,7 +66,8 @@ const Products: NextPage = () => {
                 <Th>{t("Id")}</Th>
                 <Th>{t("Type of item")}</Th>
                 <Th>{t("Price")}</Th>
-                <Th>{t("Quantity")}</Th>
+                <Th>{t("Stock")}</Th>
+                <Th>{t("Today's Clicks")}</Th>
                 <Th>{t("Earnings")}</Th>
                 <Th>{t("Sales")}</Th>
                 <Th>{t("Total Ordered Items")}</Th>
@@ -197,7 +197,7 @@ const Products: NextPage = () => {
                   <Td>
                     <Checkbox />
                   </Td>
-                  <Td>
+                  <Td className="min-w-[8rem]">
                     <Image className="w-full" src={prod.thumbnail} />
                   </Td>
                   <Td>{prod.title}</Td>
@@ -218,6 +218,7 @@ const Products: NextPage = () => {
                     <PriceDisplay price={prod.price} />
                   </Td>
                   <Td align="center">{prod.stock}</Td>
+                  <Td align="center">{prod.external_clicks}</Td>
                   <Td align="center">{prod.earnings}</Td>
                   <Td align="center">{prod.sales}</Td>
                   <Td align="center">{prod.totalOrdered}</Td>

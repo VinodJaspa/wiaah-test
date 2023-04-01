@@ -108,6 +108,16 @@ export class MembershipResolver {
     });
   }
 
+  @Query(() => MembershipSubscription, { nullable: true })
+  @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
+  getUserMembership(@Args('id') id: string) {
+    return this.prisma.memberShipSubscription.findUnique({
+      where: {
+        userId: id,
+      },
+    });
+  }
+
   @Mutation(() => Boolean)
   async unsubscribe(@GqlCurrentUser() user: AuthorizationDecodedUser) {
     try {

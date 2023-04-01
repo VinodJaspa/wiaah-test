@@ -14,7 +14,7 @@ import {
   Tr,
   useAdminCreateStaffAccountMutation,
   useAdminUpdateStaffAccountMutation,
-  useGetAccount,
+  useAdminGetAccount,
 } from "ui";
 import { NextPage } from "next";
 import React from "react";
@@ -32,7 +32,7 @@ const manageStaff: NextPage = () => {
 
   const isNew = id === "new";
 
-  const { data } = useGetAccount(id);
+  const { data } = useAdminGetAccount(id);
   const {
     form: updateForm,
     inputProps: updateInputProps,

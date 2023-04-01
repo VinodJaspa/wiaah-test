@@ -70,7 +70,7 @@ export class AccountsResolver {
       );
     }
 
-    const hashedPassword = await this.hashPassword(password);
+    const hashedPassword = await this.accountsService.hashPassword(password);
 
     const Sacc = await this.stripe.createConnectedAccount();
     const Cacc = await this.stripe.createCustomerAccount();
@@ -105,9 +105,6 @@ export class AccountsResolver {
     return true;
   }
 
-  hashPassword(password: string) {
-    return bcrypt.hash(password, 12);
-  }
   @Mutation(() => Boolean)
   async requestAccountDeletion(
     @Args('args') args: DeleteAccountRequestInput,
@@ -151,21 +148,5 @@ export class AccountsResolver {
   @ResolveReference()
   resolveReference(ref: { __typename: string; id: string }): Promise<Account> {
     return this.accountsService.findOne(ref.id);
-  }
-
-  // @ResolveField(() => Membership)
-  // membership(@Parent() acc: Account) {
-  //   return {
-  //     __typename: 'Membership',
-  //     id: acc.membershipId,
-  //   };
-  // }
-
-  @ResolveField(() => Balance)
-  balance(@Parent() acc: Account) {
-    return {
-      __typename: 'Membership',
-      ownerId: acc.id,
-    };
   }
 }

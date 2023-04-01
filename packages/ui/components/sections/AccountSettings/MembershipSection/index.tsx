@@ -24,14 +24,80 @@ import {
   useGetMyMembershipQuery,
 } from "@features/Membership";
 import { mapArray } from "utils";
+import { CommissionOn, MembershipTurnoverRuleType } from "@features/API";
+import { startCase } from "lodash";
+
+function getObjectByAmount<
+  TObj extends Record<string, any>,
+  Tkey extends keyof TObj
+>(arr: TObj[], currentAmount: number, key: Tkey) {
+  for (let i = 0; i < arr.length - 1; i++) {
+    if (currentAmount >= arr[i][key] && currentAmount < arr[i + 1][key]) {
+      return arr[i];
+    }
+  }
+
+  // If current amount is higher than the highest amount in the array, return the last object
+  return arr[arr.length - 1];
+}
 
 export interface MembershipSectionProps {}
+
+type FormatedMembershipExpense = {
+  name: string;
+  usage: number;
+  usageType: string;
+  price: number;
+  key: string;
+};
 
 export const MembershipSection: React.FC<MembershipSectionProps> = () => {
   const { t } = useTranslation();
   const { isMobile } = useResponsive();
   const { data } = useGetMembershipsQuery();
   const { data: myMembership } = useGetMyMembershipQuery();
+
+  const formatedExpenses = myMembership?.membership.turnover_rules.reduce(
+    (acc, curr, i) => {
+      const filtered = acc.filter(
+        (v) => v.key !== curr.key
+      ) as FormatedMembershipExpense[];
+      const target = acc.find(
+        (v) => v.key === curr.key
+      ) as FormatedMembershipExpense;
+
+      const currentTier = getObjectByAmount(
+        myMembership.membership.turnover_rules
+          .filter((v) => v.key === curr.key)
+          .sort((a, b) => a.usage! - b.usage!),
+        myMembership.usage,
+        "usage"
+      );
+
+      return filtered.concat(
+        target
+          ? [
+              {
+                ...target,
+                price: currentTier.commission,
+              } as FormatedMembershipExpense,
+            ]
+          : [
+              {
+                name: myMembership.membership.name,
+                key: curr.key,
+                price: curr.commission,
+                usage:
+                  curr.type === MembershipTurnoverRuleType.Flat
+                    ? 1
+                    : myMembership.usage,
+                usageType: startCase(curr.commission),
+              },
+            ]
+      );
+    },
+    [] as FormatedMembershipExpense[]
+  );
 
   return (
     <div className="w-full flex flex-col">
@@ -48,38 +114,20 @@ export const MembershipSection: React.FC<MembershipSectionProps> = () => {
           >
             <Tr>
               <Th>{t("Package Name")}</Th>
+              <Th>{t("Usage")}</Th>
+              <Th>{t("Commission on")}</Th>
+              <Th>{t("Price")}</Th>
               <Th>{t("End Date")}</Th>
-              <Th>{t("price")}</Th>
             </Tr>
-            <Tr>
-              <Td>{myMembership?.membership.name}</Td>
-              <Td>
-                {myMembership?.endAt
-                  ? new Date(myMembership?.endAt).toLocaleString("en", {
-                      day: "numeric",
-                      month: "long",
-                      year: "numeric",
-                    })
-                  : null}
-              </Td>
-              <Td>
-                {myMembership?.membership.turnover_rules.at(0)
-                  ?.commissionType === CommissionType.Fixed ? (
-                  <PriceDisplay
-                    price={
-                      myMembership.membership.turnover_rules.at(0)
-                        ?.commission || 0
-                    }
-                  />
-                ) : (
-                  <>
-                    %
-                    {myMembership?.membership.turnover_rules.at(0)
-                      ?.commission || 0}
-                  </>
-                )}
-              </Td>
-            </Tr>
+            {mapArray(formatedExpenses, (v, i) => (
+              <Tr>
+                <Td>{v.name}</Td>
+                <Td>{v.usage}</Td>
+                <Td>{v.usageType}</Td>
+                <Td>{v.price}</Td>
+                <Td>{new Date(myMembership?.endAt || "").toDateString()}</Td>
+              </Tr>
+            ))}
           </Table>
         </TableContainer>
       </div>
@@ -122,17 +170,4 @@ export const MembershipSection: React.FC<MembershipSectionProps> = () => {
       )}
     </div>
   );
-};
-
-const membershipdata: {
-  packageName: string;
-  endDate: string;
-  price: PriceType;
-} = {
-  packageName: "free plan",
-  endDate: new Date(Date.now() + 150000).toISOString(),
-  price: {
-    amount: 16,
-    currency: "CHF",
-  },
 };

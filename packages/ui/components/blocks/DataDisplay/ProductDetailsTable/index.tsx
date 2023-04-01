@@ -17,6 +17,7 @@ import {
   Select,
   Image,
   PriceDisplay,
+  Input,
 } from "@partials";
 import { SectionHeader } from "@sections";
 import { ItemsPagination, usePaginationControls } from "@blocks/Navigating";
@@ -48,6 +49,7 @@ export interface ProductDetailsTableProps {
     | "reviews"
     | "negitiveFeedback"
     | "status"
+    | "external_clicks"
   >[];
   onDelete: (id: string) => any;
   filters: any;
@@ -57,6 +59,7 @@ export interface ProductDetailsTableProps {
 export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
   products,
   onDelete,
+  onFiltersChange,
 }) => {
   const { AddNewProduct, EditProduct } = useEditProductData();
   const [input, setInput] = React.useState<
@@ -85,6 +88,7 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
                 <Th>{t("Product")}</Th>
                 <Th>{t("Price")}</Th>
                 <Th>{t("Stock Status")}</Th>
+                <Th>{t("Today's Clicks")}</Th>
                 <Th>{t("Earnings")}</Th>
                 <Th>{t("Sales")}</Th>
                 <Th>{t("Total Ordered Items")}</Th>
@@ -124,6 +128,9 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
                               {t("outStock")}
                             </SelectOption>
                           </Select>
+                        </Th>
+                        <Th>
+                          <Input></Input>
                         </Th>
                         <Th>
                           <FormikInput name="earning" type="number" />
@@ -195,6 +202,7 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
                     <PriceDisplay price={product.price} />
                   </Td>
                   <Td align="center">{product.stock}</Td>
+                  <Td align="center">{product.external_clicks}</Td>
                   <Td align="center">
                     <PriceDisplay price={product.earnings} />
                   </Td>

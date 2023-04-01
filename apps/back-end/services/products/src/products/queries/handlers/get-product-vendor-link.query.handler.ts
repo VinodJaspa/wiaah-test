@@ -7,6 +7,7 @@ import {
   GetCanPreformBuyerToProductActionQuery,
   GetProductVendorLinkQuery,
 } from '@products/queries/impl';
+import { PrismaService } from 'prismaService';
 
 @QueryHandler(GetProductVendorLinkQuery)
 export class GetProductVendorLinkQueryHandler
@@ -15,6 +16,7 @@ export class GetProductVendorLinkQueryHandler
   constructor(
     private readonly querybus: QueryBus,
     private readonly eventbus: EventBus,
+    private readonly prisma: PrismaService,
   ) {}
 
   async execute({
@@ -33,6 +35,58 @@ export class GetProductVendorLinkQueryHandler
     );
     if (!canPreformAction)
       throw new UnprocessableEntityException('cannot preform this action');
+
+    const todaysClickRecord =
+      await this.prisma.productDayExternalClicks.findFirst({
+        where: {
+          AND: [
+            {
+              productId,
+              createdAt: {
+                gte: new Date(
+                  new Date().getFullYear(),
+                  new Date().getMonth(),
+                  new Date().getDate(),
+                  0,
+                  0,
+                  0,
+                ),
+              },
+            },
+          ],
+        },
+        orderBy: {
+          createdAt: 'desc',
+        },
+      });
+    if (todaysClickRecord) {
+      await this.prisma.productDayExternalClicks.update({
+        where: {
+          id: todaysClickRecord.id,
+        },
+        data: {
+          clicks: {
+            increment: 1,
+          },
+        },
+      });
+    } else {
+      const clicks = await this.prisma.productDayExternalClicks.create({
+        data: {
+          productId,
+          clicks: 1,
+        },
+      });
+
+      await this.prisma.product.update({
+        where: {
+          id: productId,
+        },
+        data: {
+          todayProductClickId: clicks.id,
+        },
+      });
+    }
 
     this.eventbus.publish<VendorExternalLinkClickedEvent>(
       new VendorExternalLinkClickedEvent(

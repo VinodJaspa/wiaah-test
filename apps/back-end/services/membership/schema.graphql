@@ -17,8 +17,15 @@ type MembershipTurnoverRule {
   membershipId: ID!
   usage: Float
   commission: Float!
+  commissionOn: CommissionOn
   commissionType: CommissionType!
   type: MembershipTurnoverRuleType!
+  key: String!
+}
+
+enum CommissionOn {
+  external_click
+  revenue
 }
 
 enum CommissionType {
@@ -39,16 +46,10 @@ type Membership {
   id: ID!
   name: String!
   priceIds: [String!]!
-  commissionOn: CommissionOn!
   recurring: MembershipRecurring!
   turnover_rules: [MembershipTurnoverRule!]!
   includings: [MembershipIncludedItem!]!
   sortOrder: Int!
-}
-
-enum CommissionOn {
-  external_click
-  revenue
 }
 
 enum MembershipRecurring {
@@ -87,6 +88,7 @@ type Query {
   adminGetMemberships(args: AdminGetMembershipsInput!): [Membership!]!
   getSubscriableMemberships: [Membership!]!
   getMyMembership: MembershipSubscription
+  getUserMembership(id: String!): MembershipSubscription
   adminGetMembershipSubscriptions(args: AdminGetMembersipSubscriptionInput!): [MembershipSubscription!]!
 }
 
@@ -119,7 +121,6 @@ type Mutation {
 
 input CreateMembershipInput {
   name: String!
-  commissionOn: CommissionOn!
   recurring: MembershipRecurring!
   turnover_rules: [MembershipTurnoverRuleInput!]!
   includings: [MembershipIncludedItemInput!]!
@@ -129,8 +130,10 @@ input CreateMembershipInput {
 input MembershipTurnoverRuleInput {
   usage: Float
   commission: Float!
+  commissionOn: CommissionOn!
   commissionType: CommissionType!
   type: MembershipTurnoverRuleType!
+  key: String!
 }
 
 input MembershipIncludedItemInput {

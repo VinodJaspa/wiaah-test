@@ -81,8 +81,9 @@ export class Product {
 
   @Field(() => String)
   vendor_external_link: string;
-  // @Field(() => Int)
-  // vendor_external_link_clicks: string;
+
+  @Field(() => String, { nullable: true })
+  todayProductClickId?: string;
 
   @Field((type) => String)
   title: string;

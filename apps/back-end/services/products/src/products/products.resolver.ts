@@ -7,6 +7,7 @@ import {
   ID,
   ResolveField,
   Parent,
+  Int,
 } from '@nestjs/graphql';
 import { Logger, UseGuards } from '@nestjs/common';
 import {
@@ -179,5 +180,17 @@ export class ProductsResolver {
       __typename: 'Account',
       id: prod.sellerId,
     };
+  }
+
+  @ResolveField(() => Int)
+  async external_clicks(@Parent() prod: Product) {
+    if (!prod.todayProductClickId) return 0;
+    const clicks = await this.prisma.productDayExternalClicks.findUnique({
+      where: {
+        id: prod.todayProductClickId,
+      },
+    });
+
+    if (!clicks) return 0;
   }
 }

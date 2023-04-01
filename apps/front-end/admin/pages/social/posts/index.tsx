@@ -1,6 +1,8 @@
 import { Link } from "@components";
+import { ContentHostType } from "@features/API";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { BiChat } from "react-icons/bi";
 import { BsKey } from "react-icons/bs";
 import { useRouting } from "routing";
 import {
@@ -24,19 +26,31 @@ import {
   AdminUpdatePostSettingsModal,
   Button,
   HStack,
+  EyeIcon,
+  AdminGetPostCommentsModal,
+  EmailIcon,
+  MessageOutlineIcon,
 } from "ui";
 import { mapArray, NumberShortner, useForm } from "utils";
 
 const SocialPosts = () => {
   const { t } = useTranslation();
+
   const { visit } = useRouting();
+
   const { mutate } = useAdminDeleteNewsfeedPostMutation();
+
   const { controls, pagination } = usePaginationControls();
+
   const { form, handleChange, inputProps } = useForm<
     Parameters<typeof useGetAdminFilteredNewsfeedPosts>[0]
   >({ pagination });
+
   const { data } = useGetAdminFilteredNewsfeedPosts(form);
+
   const [editId, setEditId] = React.useState<string>();
+  const [showComments, setShowComments] =
+    React.useState<[string, ContentHostType]>();
 
   return (
     <>
@@ -121,7 +135,19 @@ const SocialPosts = () => {
                 </Td>
                 <Td>{NumberShortner(data?.views)}</Td>
                 <Td>{NumberShortner(data?.reactionNum)}</Td>
-                <Td>{NumberShortner(data?.comments)}</Td>
+                <Td>
+                  <Button
+                    colorScheme="white"
+                    onClick={() =>
+                      setShowComments([data.id, ContentHostType.PostNewsfeed])
+                    }
+                  >
+                    <HStack>
+                      <p>{NumberShortner(data?.comments)}</p>
+                      <BiChat />
+                    </HStack>
+                  </Button>
+                </Td>
                 <Td>{NumberShortner(data?.shares)}</Td>
                 <Td>{new Date(data.createdAt).toDateString()}</Td>
                 <Td className="text-white">
@@ -156,6 +182,11 @@ const SocialPosts = () => {
       <AdminUpdatePostSettingsModal
         onClose={() => setEditId(undefined)}
         postId={editId}
+      />
+      <AdminGetPostCommentsModal
+        onClose={() => setShowComments(undefined)}
+        contentType={showComments?.at(1)}
+        postId={showComments?.at(0)}
       />
       <Pagination controls={controls} />
     </>
