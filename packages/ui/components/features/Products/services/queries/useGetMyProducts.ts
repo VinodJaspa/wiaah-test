@@ -163,7 +163,7 @@ query getMyProducts($args:GetFilteredProductsInput!){
 
   return useQuery(["get-my-products", { args }], async () => {
     if (isDev) {
-      const ph: GetMyProductsQuery["getMyProducts"] = [...Array(5)].map(() => ({
+      const ph: GetMyProductsQuery["getMyProducts"] = [...Array(8)].map(() => ({
         attributes: [],
         brand: "",
         cashback: {

@@ -1,4 +1,4 @@
-import { Field, InputType, Int } from "@nestjs/graphql";
+import { Field, InputType, Int, ObjectType } from "@nestjs/graphql";
 
 @InputType()
 export class GqlPaginationInput {
@@ -11,6 +11,15 @@ export class GqlPaginationInput {
 
 @InputType()
 export class GqlCursorPaginationInput {
+  @Field(() => Int)
+  take: number;
+
+  @Field(() => String, { nullable: true })
+  cursor?: string;
+}
+
+@ObjectType()
+export class GqlCursorPaginationResponse {
   @Field(() => Int)
   take: number;
 

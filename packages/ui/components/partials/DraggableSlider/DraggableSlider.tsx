@@ -80,246 +80,254 @@ export interface DraggableSliderProps {
   draggingActive?: boolean;
 }
 
-export const DraggableSlider: React.FC<DraggableSliderProps> = ({
-  children,
-  onSlideComplete,
-  onSlideStart,
-  activeIndex = null,
-  threshHold = 200,
-  transition = 0.3,
-  scaleOnDrag = false,
-  itemsCount = 1,
-  vertical,
-  gap = 0,
-  draggingActive = true,
-}) => {
-  useResponsive(() => {
-    RefreshSize();
-  });
-  const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
+export const DraggableSlider = React.forwardRef(
+  (
+    {
+      children,
+      onSlideComplete,
+      onSlideStart,
+      activeIndex = null,
+      threshHold = 200,
+      transition = 0.3,
+      scaleOnDrag = false,
+      itemsCount = 1,
+      vertical,
+      gap = 0,
+      draggingActive = true,
+    }: DraggableSliderProps,
+    ref
+  ) => {
+    useResponsive(() => {
+      RefreshSize();
+    });
+    const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
 
-  const dragging = React.useRef(false);
-  const startPos = React.useRef(0);
-  const currentTranslate = React.useRef<number>(0);
-  const prevTranslate = React.useRef<number>(0);
-  const currentIndex = React.useRef(activeIndex || 0);
-  const sliderRef = React.useRef<HTMLDivElement>(null);
-  const animationRef = React.useRef<number>();
+    const dragging = React.useRef(false);
+    const startPos = React.useRef(0);
+    const currentTranslate = React.useRef<number>(0);
+    const prevTranslate = React.useRef<number>(0);
+    const currentIndex = React.useRef(activeIndex || 0);
+    const sliderRef = React.useRef<HTMLDivElement>(null);
+    const animationRef = React.useRef<number>();
 
-  function RefreshSize() {
-    setDimensions(getElementDimensions(sliderRef));
+    function RefreshSize() {
+      setDimensions(getElementDimensions(sliderRef));
 
-    setPositionByIndex(
-      vertical
-        ? getElementDimensions(sliderRef).height
-        : getElementDimensions(sliderRef).width
+      setPositionByIndex(
+        vertical
+          ? getElementDimensions(sliderRef).height
+          : getElementDimensions(sliderRef).width
+      );
+    }
+
+    const setPositionByIndex = React.useCallback(
+      (w = vertical ? dimensions.height : dimensions.width) => {
+        currentTranslate.current = currentIndex.current * -w;
+        prevTranslate.current = currentTranslate.current;
+        setSliderPosition();
+      },
+      [dimensions.width, dimensions.height]
+    );
+
+    const transitionOn = () =>
+      sliderRef.current
+        ? (sliderRef.current.style.transition = `transform ${transition}s ease-out`)
+        : null;
+
+    const transitionOff = () =>
+      sliderRef.current ? (sliderRef.current.style.transition = "none") : null;
+
+    // watch for a change in activeIndex prop
+    React.useEffect(() => {
+      if (activeIndex !== currentIndex.current) {
+        transitionOn();
+        if (
+          typeof currentIndex.current === "number" &&
+          typeof activeIndex === "number"
+        ) {
+          currentIndex.current = activeIndex;
+        }
+        setPositionByIndex();
+        setSliderPosition();
+      }
+    }, [activeIndex, setPositionByIndex]);
+
+    // set width after first render
+    // set position by startIndex
+    // no animation on startIndex
+    React.useEffect(() => {
+      RefreshSize();
+    }, [vertical]);
+
+    // add event listeners
+    React.useEffect(() => {
+      // set width if window resizes
+      const handleResize = () => {
+        transitionOff();
+        const { width, height } = getElementDimensions(sliderRef);
+        setDimensions({ width, height });
+        setPositionByIndex(vertical ? height : width);
+      };
+
+      const handleKeyDown = ({ key }: React.KeyboardEvent<Element>) => {
+        const arrowsPressed = ["ArrowRight", "ArrowLeft"].includes(key);
+        if (arrowsPressed) transitionOn();
+        if (arrowsPressed && onSlideStart) {
+          onSlideStart(currentIndex.current);
+        }
+        if (
+          key === "ArrowRight" &&
+          currentIndex.current <
+            (Array.isArray(children) ? children.length - 1 : 0)
+        ) {
+          currentIndex.current += 1;
+        }
+        if (key === "ArrowLeft" && currentIndex.current > 0) {
+          currentIndex.current -= 1;
+        }
+        if (arrowsPressed && onSlideComplete)
+          onSlideComplete(currentIndex.current);
+        setPositionByIndex();
+      };
+
+      window.addEventListener("resize", handleResize);
+      // @ts-ignore
+      window.addEventListener("keydown", handleKeyDown);
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+        // @ts-ignore
+        window.removeEventListener("keydown", handleKeyDown);
+      };
+    }, [children, setPositionByIndex, onSlideComplete, onSlideStart]);
+
+    function touchStart(index: number) {
+      return function (event: React.MouseEvent | React.TouchEvent) {
+        transitionOn();
+        currentIndex.current = index;
+        startPos.current = vertical ? getPositionY(event) : getPositionX(event);
+        dragging.current = true;
+
+        animationRef.current = requestAnimationFrame(animation);
+
+        sliderRef.current && draggingActive
+          ? (sliderRef.current.style.cursor = "grabbing")
+          : null;
+        // if onSlideStart prop - call it
+        if (onSlideStart) onSlideStart(currentIndex.current);
+      };
+    }
+
+    function touchMove(event: React.MouseEvent | React.TouchEvent) {
+      if (dragging.current && draggingActive) {
+        const currentPosition = vertical
+          ? getPositionY(event)
+          : getPositionX(event);
+        currentTranslate.current =
+          prevTranslate.current + currentPosition - startPos.current;
+      }
+    }
+
+    function touchEnd() {
+      transitionOn();
+      cancelAnimationFrame(animationRef.current || 0);
+      dragging.current = false;
+      const movedBy = currentTranslate.current - prevTranslate.current;
+
+      // if moved enough negative then snap to next slide if there is one
+      if (
+        movedBy < -threshHold &&
+        currentIndex.current <
+          (Array.isArray(children)
+            ? children.length - ((itemsCount > 1 ? itemsCount : 0) + 1)
+            : 0)
+      )
+        currentIndex.current += 1;
+
+      // if moved enough positive then snap to previous slide if there is one
+      if (movedBy > threshHold / 4 && currentIndex.current > 0)
+        currentIndex.current -= 1;
+
+      transitionOn();
+
+      setPositionByIndex();
+      sliderRef.current && draggingActive
+        ? (sliderRef.current.style.cursor = "grab")
+        : null;
+      // if onSlideComplete prop - call it
+      if (onSlideComplete) onSlideComplete(currentIndex.current);
+    }
+
+    function animation() {
+      setSliderPosition();
+      if (dragging.current) requestAnimationFrame(animation);
+    }
+
+    function setSliderPosition() {
+      sliderRef.current
+        ? (sliderRef.current.style.transform = `translate${
+            vertical ? "Y" : "X"
+          }(${
+            currentTranslate.current / (itemsCount || 1) +
+            -(currentIndex.current === 0 ? 0 : gap * currentIndex.current)
+          }px)`)
+        : null;
+    }
+    console.log({ dimensions });
+    return (
+      <div className="w-full h-full">
+        <div
+          style={{
+            willChange: "transform, scale",
+            flexDirection: vertical ? "column" : "row",
+            gap: `${gap}px`,
+          }}
+          ref={sliderRef}
+          data-dims={JSON.stringify(dimensions)}
+          className={`w-full h-full inline-flex ${
+            draggingActive ? "cursor-pointer" : ""
+          }`}
+        >
+          {React.Children.map(children, (child, index) => {
+            if (child) {
+              return (
+                <div
+                  key={`${index}`}
+                  onTouchStart={touchStart(index)}
+                  onMouseDown={touchStart(index)}
+                  onTouchMove={touchMove}
+                  onMouseMove={touchMove}
+                  onTouchEnd={touchEnd}
+                  onMouseUp={touchEnd}
+                  onMouseLeave={() => {
+                    if (dragging.current) touchEnd();
+                  }}
+                  onContextMenu={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                  }}
+                  className=""
+                >
+                  <Slide
+                    child={child}
+                    sliderWidth={
+                      vertical
+                        ? dimensions.width
+                        : dimensions.width / itemsCount
+                    }
+                    sliderHeight={
+                      vertical
+                        ? dimensions.height / itemsCount
+                        : dimensions.height
+                    }
+                    scaleOnDrag={scaleOnDrag}
+                  />
+                </div>
+              );
+            }
+          })}
+        </div>
+      </div>
     );
   }
-
-  const setPositionByIndex = React.useCallback(
-    (w = vertical ? dimensions.height : dimensions.width) => {
-      currentTranslate.current = currentIndex.current * -w;
-      prevTranslate.current = currentTranslate.current;
-      setSliderPosition();
-    },
-    [dimensions.width, dimensions.height]
-  );
-
-  const transitionOn = () =>
-    sliderRef.current
-      ? (sliderRef.current.style.transition = `transform ${transition}s ease-out`)
-      : null;
-
-  const transitionOff = () =>
-    sliderRef.current ? (sliderRef.current.style.transition = "none") : null;
-
-  // watch for a change in activeIndex prop
-  React.useEffect(() => {
-    if (activeIndex !== currentIndex.current) {
-      transitionOn();
-      if (
-        typeof currentIndex.current === "number" &&
-        typeof activeIndex === "number"
-      ) {
-        currentIndex.current = activeIndex;
-      }
-      setPositionByIndex();
-      setSliderPosition();
-    }
-  }, [activeIndex, setPositionByIndex]);
-
-  // set width after first render
-  // set position by startIndex
-  // no animation on startIndex
-  React.useEffect(() => {
-    RefreshSize();
-  }, [vertical]);
-
-  // add event listeners
-  React.useEffect(() => {
-    // set width if window resizes
-    const handleResize = () => {
-      transitionOff();
-      const { width, height } = getElementDimensions(sliderRef);
-      setDimensions({ width, height });
-      setPositionByIndex(vertical ? height : width);
-    };
-
-    const handleKeyDown = ({ key }: React.KeyboardEvent<Element>) => {
-      const arrowsPressed = ["ArrowRight", "ArrowLeft"].includes(key);
-      if (arrowsPressed) transitionOn();
-      if (arrowsPressed && onSlideStart) {
-        onSlideStart(currentIndex.current);
-      }
-      if (
-        key === "ArrowRight" &&
-        currentIndex.current <
-          (Array.isArray(children) ? children.length - 1 : 0)
-      ) {
-        currentIndex.current += 1;
-      }
-      if (key === "ArrowLeft" && currentIndex.current > 0) {
-        currentIndex.current -= 1;
-      }
-      if (arrowsPressed && onSlideComplete)
-        onSlideComplete(currentIndex.current);
-      setPositionByIndex();
-    };
-
-    window.addEventListener("resize", handleResize);
-    // @ts-ignore
-    window.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      // @ts-ignore
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [children, setPositionByIndex, onSlideComplete, onSlideStart]);
-
-  function touchStart(index: number) {
-    return function (event: React.MouseEvent | React.TouchEvent) {
-      transitionOn();
-      currentIndex.current = index;
-      startPos.current = vertical ? getPositionY(event) : getPositionX(event);
-      dragging.current = true;
-
-      animationRef.current = requestAnimationFrame(animation);
-
-      sliderRef.current && draggingActive
-        ? (sliderRef.current.style.cursor = "grabbing")
-        : null;
-      // if onSlideStart prop - call it
-      if (onSlideStart) onSlideStart(currentIndex.current);
-    };
-  }
-
-  function touchMove(event: React.MouseEvent | React.TouchEvent) {
-    if (dragging.current && draggingActive) {
-      const currentPosition = vertical
-        ? getPositionY(event)
-        : getPositionX(event);
-      currentTranslate.current =
-        prevTranslate.current + currentPosition - startPos.current;
-    }
-  }
-
-  function touchEnd() {
-    transitionOn();
-    cancelAnimationFrame(animationRef.current || 0);
-    dragging.current = false;
-    const movedBy = currentTranslate.current - prevTranslate.current;
-
-    // if moved enough negative then snap to next slide if there is one
-    if (
-      movedBy < -threshHold &&
-      currentIndex.current <
-        (Array.isArray(children)
-          ? children.length - ((itemsCount > 1 ? itemsCount : 0) + 1)
-          : 0)
-    )
-      currentIndex.current += 1;
-
-    // if moved enough positive then snap to previous slide if there is one
-    if (movedBy > threshHold / 4 && currentIndex.current > 0)
-      currentIndex.current -= 1;
-
-    transitionOn();
-
-    setPositionByIndex();
-    sliderRef.current && draggingActive
-      ? (sliderRef.current.style.cursor = "grab")
-      : null;
-    // if onSlideComplete prop - call it
-    if (onSlideComplete) onSlideComplete(currentIndex.current);
-  }
-
-  function animation() {
-    setSliderPosition();
-    if (dragging.current) requestAnimationFrame(animation);
-  }
-
-  function setSliderPosition() {
-    sliderRef.current
-      ? (sliderRef.current.style.transform = `translate${
-          vertical ? "Y" : "X"
-        }(${
-          currentTranslate.current / (itemsCount || 1) +
-          -(currentIndex.current === 0 ? 0 : gap * currentIndex.current)
-        }px)`)
-      : null;
-  }
-
-  return (
-    <div className="w-full h-full">
-      <div
-        style={{
-          willChange: "transform, scale",
-          flexDirection: vertical ? "column" : "row",
-          gap: `${gap}px`,
-        }}
-        ref={sliderRef}
-        className={`w-full h-full inline-flex ${
-          draggingActive ? "cursor-pointer" : ""
-        }`}
-      >
-        {React.Children.map(children, (child, index) => {
-          if (child) {
-            return (
-              <div
-                key={`${index}`}
-                onTouchStart={touchStart(index)}
-                onMouseDown={touchStart(index)}
-                onTouchMove={touchMove}
-                onMouseMove={touchMove}
-                onTouchEnd={touchEnd}
-                onMouseUp={touchEnd}
-                onMouseLeave={() => {
-                  if (dragging.current) touchEnd();
-                }}
-                onContextMenu={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-                className=""
-              >
-                <Slide
-                  child={child}
-                  sliderWidth={
-                    vertical ? dimensions.width : dimensions.width / itemsCount
-                  }
-                  sliderHeight={
-                    vertical
-                      ? dimensions.height / itemsCount
-                      : dimensions.height
-                  }
-                  scaleOnDrag={scaleOnDrag}
-                />
-              </div>
-            );
-          }
-        })}
-      </div>
-    </div>
-  );
-};
+);

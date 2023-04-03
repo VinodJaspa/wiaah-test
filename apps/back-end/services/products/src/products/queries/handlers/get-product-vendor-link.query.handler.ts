@@ -42,6 +42,8 @@ export class GetProductVendorLinkQueryHandler
           AND: [
             {
               productId,
+            },
+            {
               createdAt: {
                 gte: new Date(
                   new Date().getFullYear(),

@@ -1,5 +1,9 @@
 import { ObjectType, Field, Int, ID, Directive } from '@nestjs/graphql';
 import { BookedServiceStatus } from '@prisma-client';
+import {
+  GqlCursorPaginationInput,
+  GqlCursorPaginationResponse,
+} from 'nest-utils';
 
 @ObjectType()
 @Directive('@extends')
@@ -146,4 +150,10 @@ export class BookedService {
 
   @Field(() => String, { nullable: true })
   cashbackId?: string;
+}
+
+@ObjectType()
+export class MyBookings extends GqlCursorPaginationResponse {
+  @Field(() => [BookedService])
+  data: BookedService[];
 }

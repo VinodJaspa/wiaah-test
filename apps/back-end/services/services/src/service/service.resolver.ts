@@ -1,12 +1,40 @@
-import { Args, Mutation, Resolver, ResolveReference } from '@nestjs/graphql';
+import {
+  Args,
+  Int,
+  Mutation,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+  ResolveReference,
+} from '@nestjs/graphql';
 import { ServiceService } from './service.service';
 import { Service } from './entities/service.entity';
 import { ServicePresentationType, ServiceType } from 'prismaClient';
 import { CreateServiceInput } from './dto/create-service.input';
-import { UseGuards } from '@nestjs/common';
-import { accountType, GqlAuthorizationGuard } from 'nest-utils';
+import { Inject, UseGuards } from '@nestjs/common';
+import {
+  accountType,
+  AuthorizationDecodedUser,
+  GetLang,
+  GqlAuthorizationGuard,
+  GqlCurrentUser,
+  KAFKA_MESSAGES,
+  KafkaMessageHandler,
+  SERVICES,
+  UserPreferedLang,
+} from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { FileTypeEnum, UploadService } from '@wiaah/upload';
+import { WorkingSchedule } from '@working-schedule/entities';
+import { RestaurantEstablishmentType } from '@restaurant';
+import { Account } from '@entities';
+import {
+  BuyerToProductActionsType,
+  CanPreformProductActionMessage,
+  CanPreformProductActionMessageReply,
+} from 'nest-dto';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Resolver(() => Service)
 export class ServiceResolver {
@@ -14,11 +42,16 @@ export class ServiceResolver {
     private readonly serviceService: ServiceService,
     private readonly prisma: PrismaService,
     private readonly uploadService: UploadService,
+    @Inject(SERVICES.SERVICES_SERIVCE.token)
+    private readonly eventClient: ClientKafka,
   ) {}
 
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
-  async createService(@Args('args') args: CreateServiceInput) {
+  async createService(
+    @Args('args') args: CreateServiceInput,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
     const {
       rooms,
       menus,
@@ -68,6 +101,7 @@ export class ServiceResolver {
     const res = await this.prisma.service.create({
       data: {
         ...rest,
+        ownerId: user.id,
         thumbnail: thumb[0].src,
         presentations: servicePresenetations.map((v) => ({
           src: v.src,
@@ -226,8 +260,152 @@ export class ServiceResolver {
     return true;
   }
 
+  @Query(() => Service, { nullable: true })
+  async getServiceDetails(
+    @Args('id') id: string,
+    @Args('isClick') isClick: Boolean,
+    @GetLang() lang: UserPreferedLang,
+  ): Promise<Service> {
+    const service = await this.prisma.service.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (service.status !== 'active') return null;
+
+    if (isClick) {
+      const {
+        results: { data, error, success },
+      } = await KafkaMessageHandler<
+        string,
+        CanPreformProductActionMessage,
+        CanPreformProductActionMessageReply
+      >(
+        this.eventClient,
+        KAFKA_MESSAGES.CAN_PREFORM_ACTION_MESSAGES.canPreformProductAction(
+          BuyerToProductActionsType.vendor_external_click,
+        ),
+        new CanPreformProductActionMessage({
+          action: BuyerToProductActionsType.vendor_external_click,
+          product: {
+            id,
+          },
+          seller: {
+            id: service.ownerId,
+          },
+        }),
+      );
+
+      if (data === true) {
+        const clicks = await this.prisma.serviceDayClicks.findFirst({
+          where: {
+            AND: [
+              {
+                serviceId: id,
+              },
+              {
+                createdAt: {
+                  gte: new Date(
+                    new Date().getFullYear(),
+                    new Date().getMonth(),
+                    new Date().getDate(),
+                    0,
+                    0,
+                    0,
+                  ),
+                },
+              },
+            ],
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        });
+
+        if (clicks) {
+          await this.prisma.serviceDayClicks.update({
+            where: {
+              id: clicks.id,
+            },
+            data: {
+              clicks: {
+                increment: 1,
+              },
+            },
+          });
+        } else {
+          const clicks = await this.prisma.serviceDayClicks.create({
+            data: {
+              serviceId: id,
+              clicks: 1,
+            },
+          });
+
+          await this.prisma.service.update({
+            where: {
+              id,
+            },
+            data: {
+              dayClicksId: clicks.id,
+            },
+          });
+        }
+      }
+    }
+
+    return service as any; // TODO: format service data to user prefered lang
+  }
+
   @ResolveReference()
-  reslove(ref: { id: string; type: ServiceType }) {
-    return this.serviceService.getServiceByIdAndType(ref?.id, ref?.type);
+  reslove(ref: { id: string }) {
+    return this.prisma.service.findUnique({
+      where: {
+        id: ref.id,
+      },
+    });
+  }
+
+  @ResolveField(() => WorkingSchedule, { nullable: true })
+  workingHours(@Parent() service: Service) {
+    return this.prisma.serviceWorkingSchedule.findUnique({
+      where: {
+        id: service.id,
+      },
+    });
+  }
+
+  @ResolveField(() => Account)
+  owner(@Parent() service: Service) {
+    return {
+      __typename: 'Account',
+      id: service.ownerId,
+    };
+  }
+
+  @ResolveField(() => RestaurantEstablishmentType)
+  establishmentType(@Parent() service: Service) {
+    if (service.establishmentTypeId) {
+      return this.prisma.restaurantEstablishmentType.findUnique({
+        where: {
+          id: service.establishmentTypeId,
+        },
+      });
+    } else return null;
+  }
+
+  @ResolveField(() => Int, { nullable: true })
+  async dayClicks(@Parent() service: Service) {
+    if (service.dayClicksId) return null;
+
+    const clicks = await this.prisma.serviceDayClicks.findUnique({
+      where: {
+        id: service.dayClicksId,
+      },
+    });
+
+    if (typeof clicks?.clicks !== 'number') return null;
+
+    return clicks.clicks;
   }
 }

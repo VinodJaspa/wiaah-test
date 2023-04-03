@@ -2,12 +2,14 @@ import { Exact } from "types";
 import { createGraphqlRequestClient } from "api";
 import {
   GetFilteredProductsAdminInput,
+  Maybe,
   Product,
   ProductStatus,
   ProductUsageStatus,
+  Profile,
 } from "@features/API";
 import { useQuery } from "react-query";
-import { randomNum } from "@UI/../utils/src";
+import { randomNum } from "utils";
 
 export type GetAdminProductsQueryVariables = Exact<{
   args: GetFilteredProductsAdminInput;
@@ -31,12 +33,18 @@ export type GetAdminProductsQuery = { __typename?: "Query" } & {
       | "unitsRefunded"
       | "positiveFeedback"
       | "negitiveFeedback"
-      | "updatedAt"
       | "sales"
       | "reviews"
       | "earnings"
+      | "updatedAt"
       | "external_clicks"
-    >
+    > & {
+        seller: { __typename?: "Account" } & {
+          profile?: Maybe<
+            { __typename?: "Profile" } & Pick<Profile, "username">
+          >;
+        };
+      }
   >;
 };
 
@@ -102,6 +110,11 @@ export const useGetAdminProductsQuery = (
       sales: 65,
       earnings: 156,
       external_clicks: randomNum(150),
+      seller: {
+        profile: {
+          username: "Seller-name",
+        },
+      },
     }));
     return res;
   });

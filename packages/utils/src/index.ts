@@ -20,5 +20,6 @@ export * from "./calculations";
 export * from "./compare";
 
 export * from "./passPropsToFnOrElem";
+export * from "./mocks";
 
 export const isDev = true;

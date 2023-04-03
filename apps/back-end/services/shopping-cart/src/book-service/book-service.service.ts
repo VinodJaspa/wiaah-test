@@ -1,34 +1,41 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import {
+  AddToDate,
   ExtractPagination,
   GetDateBoundaries,
   GqlPaginationInput,
+  KAFKA_MESSAGES,
+  KafkaMessageHandler,
+  SERVICES,
   mockedUser,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import {
-  BookBeautycenterServiceInput,
-  BookHealthCenterServiceInput,
-  BookHotelRoomInput,
-  BookRestaurantInput,
+  BookServiceInput,
   GetBookingsHistoryInput,
   GetMyBookingsInput,
 } from './dto';
 import { BookedService } from './entities/book-service.entity';
 import { QueryBus } from '@nestjs/cqrs';
 import { Prisma } from '@prisma-client';
+import {
+  GetServiceMetaDataMessage,
+  GetServiceMetaDataMessageReply,
+} from 'nest-dto';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
 export class BookServiceService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly querybus: QueryBus,
+    @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
+    private readonly eventsClient: ClientKafka,
   ) {}
 
   async getBuyerSellerBookingHistory(
     input: GetBookingsHistoryInput,
     buyerId: string,
-    pagination: GqlPaginationInput,
     q: string,
   ) {
     const { skip, take } = ExtractPagination(input.pagination);
@@ -98,7 +105,8 @@ export class BookServiceService {
     });
   }
 
-  async getServiceProviderId(serviceId: string, type: string): Promise<string> {
+  async getServiceProviderId(serviceId: string): Promise<string> {
+    //TODO: Get service owner id using kafka message
     return mockedUser.id;
   }
 
@@ -106,10 +114,8 @@ export class BookServiceService {
     input: GetMyBookingsInput,
     userId: string,
   ): Promise<BookedService[]> {
-    const { from, to } = GetDateBoundaries(
-      new Date(input.date),
-      input.searchPeriod,
-    );
+    const from = new Date(input.date);
+    const to = AddToDate(from, { days: input.days });
 
     return this.prisma.bookedService.findMany({
       where: {
@@ -129,7 +135,7 @@ export class BookServiceService {
           },
           {
             status: {
-              in: ['continuing'],
+              in: ['completed', 'continuing'],
             },
           },
         ],
@@ -137,87 +143,33 @@ export class BookServiceService {
     });
   }
 
-  async BookHotelRoom(
-    input: BookHotelRoomInput,
+  async BookService(
+    input: BookServiceInput,
     userId: string,
   ): Promise<BookedService> {
-    const providerId = await this.getServiceProviderId(
-      input.serviceId,
-      'hotel',
+    const {
+      results: { data, error, success },
+    } = await KafkaMessageHandler<
+      string,
+      GetServiceMetaDataMessage,
+      GetServiceMetaDataMessageReply
+    >(
+      this.eventsClient,
+      KAFKA_MESSAGES.SERVICES_MESSAGES.getServiceMetaData,
+      new GetServiceMetaDataMessage({
+        serviceId: input.serviceId,
+        userId: userId,
+      }),
     );
+    if (!success) throw error;
+    const { name, price, providerId, thumbnail, type } = data;
+
     const res = await this.prisma.bookedService.create({
       data: {
-        providerId,
         ...input,
+        type,
         ownerId: userId,
-        type: 'hotel',
-      },
-    });
-
-    return res;
-  }
-
-  async BookRestaurant(input: BookRestaurantInput, userId: string) {
-    const providerId = await this.getServiceProviderId(
-      input.serviceId,
-      'restaurant',
-    );
-    const res = await this.prisma.bookedService.create({
-      data: {
         providerId,
-        ...input,
-        ownerId: userId,
-        type: 'restaurant',
-      },
-    });
-
-    return res;
-  }
-
-  async BookHealthCenter(input: BookHealthCenterServiceInput, userId: string) {
-    const providerId = await this.getServiceProviderId(
-      input.serviceId,
-      'health-center',
-    );
-    const res = await this.prisma.bookedService.create({
-      data: {
-        providerId,
-        ...input,
-        ownerId: userId,
-        type: 'health-center',
-      },
-    });
-
-    return res;
-  }
-
-  async BookBeautyCenter(input: BookBeautycenterServiceInput, userId: string) {
-    const providerId = await this.getServiceProviderId(
-      input.serviceId,
-      'beauty-center',
-    );
-    const res = await this.prisma.bookedService.create({
-      data: {
-        providerId,
-        ...input,
-        ownerId: userId,
-        type: 'beauty-center',
-      },
-    });
-
-    return res;
-  }
-  async BookVehicleCenter(input: BookBeautycenterServiceInput, userId: string) {
-    const providerId = await this.getServiceProviderId(
-      input.serviceId,
-      'vehicle',
-    );
-    const res = await this.prisma.bookedService.create({
-      data: {
-        providerId,
-        ...input,
-        ownerId: userId,
-        type: 'vehicle',
       },
     });
 

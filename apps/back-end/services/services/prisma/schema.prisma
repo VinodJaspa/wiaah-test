@@ -55,7 +55,6 @@ model ServiceWorkingSchedule {
   BeautyCenterService BeautyCenterService[]
   VehicleService      VehicleService[]
   HotelService        HotelService[]
-  Service             Service?
 }
 
 model ServiceOwnerShip {
@@ -71,13 +70,13 @@ model Service {
   id                  String                       @id @default(auto()) @map("_id") @db.ObjectId
   type                ServiceType
   ownerId             String                       @unique @db.ObjectId
+  dayClicksId         String?
   createdAt           DateTime                     @default(now())
   updatedAt           DateTime                     @updatedAt
   status              ServiceStatus                @default(inActive)
   presentations       ServicePresentation[]
   serviceMetaInfo     ServiceMetaTranslationInfo[]
   contact             ServiceContact
-  workingHours        ServiceWorkingSchedule?      @relation(fields: [ownerId], references: [id])
   policies            ServiceTranslationPolicies[]
   payment_methods     ServicePaymentMethods[]
   location            Location
@@ -111,6 +110,14 @@ model Service {
   vehicles   Vehicle[]
   discountId String?
   cashbackId String?
+}
+
+model ServiceDayClicks {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  clicks    Int      @default(0)
+  serviceId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model HotelService {

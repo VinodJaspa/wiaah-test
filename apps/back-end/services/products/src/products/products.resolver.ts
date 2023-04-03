@@ -9,13 +9,16 @@ import {
   Parent,
   Int,
 } from '@nestjs/graphql';
-import { Logger, UseGuards } from '@nestjs/common';
+import { Inject, Logger, UseGuards } from '@nestjs/common';
 import {
   accountType,
   AuthorizationDecodedUser,
   ExtractPagination,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  KAFKA_MESSAGES,
+  KafkaMessageHandler,
+  SERVICES,
 } from 'nest-utils';
 import { UploadService } from '@wiaah/upload';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
@@ -23,38 +26,118 @@ import { ProductsService } from '@products/products.service';
 import { Discount, Product, Cashback } from '@products/entities';
 import { CreateProductInput, GetFilteredProductsInput } from '@products/dto';
 import { UpdateProductInput } from '@products/dto';
-import { GetProductVendorLinkQuery } from '@products/queries';
 
 import { DeleteProductCommand } from '@products/command';
 import { PrismaService } from 'prismaService';
 import { Prisma } from '@prisma-client';
 import { Account } from './entities/extends';
+import {
+  BuyerToProductActionsType,
+  CanPreformProductActionMessage,
+  CanPreformProductActionMessageReply,
+} from 'nest-dto';
+import { ClientKafka } from '@nestjs/microservices';
 
 @Resolver(() => Product)
 export class ProductsResolver {
   constructor(
     private readonly productsService: ProductsService,
     private readonly uploadService: UploadService,
-    private readonly querybus: QueryBus,
     private readonly commandbus: CommandBus,
     private readonly prisma: PrismaService,
+    @Inject(SERVICES.PRODUCTS_SERVICE.token)
+    private readonly eventClient: ClientKafka,
   ) {}
 
   logger = new Logger('ProductResolver');
 
-  @Mutation(() => String)
-  getProductVendorLink(
-    @Args('productId') productId: string,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    return this.querybus.execute<GetProductVendorLinkQuery, string>(
-      new GetProductVendorLinkQuery(productId, user),
-    );
-  }
-
   @Query(() => Product)
-  async getProductById(@Args('id') id: string): Promise<Product> {
+  async getProductById(
+    @Args('id') id: string,
+    @Args('isClick') isClick: boolean,
+  ): Promise<Product> {
     const product = await this.productsService.getProductById(id);
+
+    if (isClick) {
+      const {
+        results: { data, error, success },
+      } = await KafkaMessageHandler<
+        string,
+        CanPreformProductActionMessage,
+        CanPreformProductActionMessageReply
+      >(
+        this.eventClient,
+        KAFKA_MESSAGES.CAN_PREFORM_ACTION_MESSAGES.canPreformProductAction(
+          BuyerToProductActionsType.vendor_external_click,
+        ),
+        new CanPreformProductActionMessage({
+          action: BuyerToProductActionsType.vendor_external_click,
+          product: {
+            id,
+          },
+          seller: {
+            id: product.sellerId,
+          },
+        }),
+      );
+
+      if (data === true) {
+        const clicks = await this.prisma.productDayExternalClicks.findFirst({
+          where: {
+            AND: [
+              {
+                productId: id,
+              },
+              {
+                createdAt: {
+                  gte: new Date(
+                    new Date().getFullYear(),
+                    new Date().getMonth(),
+                    new Date().getDate(),
+                    0,
+                    0,
+                    0,
+                  ),
+                },
+              },
+            ],
+          },
+          orderBy: {
+            createdAt: 'desc',
+          },
+        });
+
+        if (clicks) {
+          await this.prisma.productDayExternalClicks.update({
+            where: {
+              id: clicks.id,
+            },
+            data: {
+              clicks: {
+                increment: 1,
+              },
+            },
+          });
+        } else {
+          const clicks = await this.prisma.productDayExternalClicks.create({
+            data: {
+              productId: id,
+              clicks: 1,
+            },
+          });
+
+          await this.prisma.product.update({
+            where: {
+              id,
+            },
+            data: {
+              todayProductClickId: clicks.id,
+            },
+          });
+        }
+      }
+    }
+
     return { ...product };
   }
 

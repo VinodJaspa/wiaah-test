@@ -262,7 +262,7 @@ type Query {
   getAllShops: [Shop!]!
   getShopById(id: String!): Shop!
   getFilteredShops(filteredShopsArgs: FilteredShopsInput!): [Shop!]!
-  getProductById(id: String!): Product!
+  getProductById(id: String!, isClick: Boolean!): Product!
   getMyProducts(filterInput: GetFilteredProductsInput!): [Product!]!
   getProduct(id: ID!): Product!
   getProductCategories: [Category!]!
@@ -367,7 +367,6 @@ type Mutation {
   createShop(createShopInput: CreateShopInput!): Shop!
   removeAllShops: Boolean!
   updateMyShop(updateMyShopInput: UpdateShopInput!): Shop!
-  getProductVendorLink(productId: String!): String!
   createNewProduct(createNewProductInput: CreateProductInput!): Product!
   updateProduct(updateProductArgs: UpdateProductInput!): Product!
   deleteProduct(productId: ID!): Product!

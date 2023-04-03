@@ -5,8 +5,8 @@ import {
 } from "@blocks";
 import { ContentHostType } from "@features/API";
 import {
+  useAdminDeleteCommentMutation,
   useAdminGetContentCommentsQuery,
-  useGetContentCommentsQuery,
 } from "@features/Social";
 import {
   Button,
@@ -16,7 +16,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Table,
+  Spinner,
   TrashIcon,
 } from "@partials";
 import React from "react";
@@ -31,13 +31,25 @@ export const AdminGetPostCommentsModal: React.FC<{
   const { t } = useTranslation();
   const { controls, pagination } = usePaginationControls();
 
-  const { data, isLoading } = useAdminGetContentCommentsQuery({
+  const { data } = useAdminGetContentCommentsQuery({
     contentId: postId,
     contentType: contentType as ContentHostType,
     pagination,
   });
 
+  const {
+    mutate,
+    isLoading: deleteLoading,
+    variables: deleteVars,
+  } = useAdminDeleteCommentMutation();
+
   const isOpen = !!postId && !!contentType;
+
+  const deleteComment = (id: string) => {
+    mutate(id, {
+      onSuccess() {},
+    });
+  };
 
   return (
     <Modal onClose={onClose} isOpen={isOpen}>
@@ -112,8 +124,9 @@ export const AdminGetPostCommentsModal: React.FC<{
                   type: AdminTableCellTypeEnum.action,
                   actionBtns: [
                     <DeleteCommentActionButtons
-                      onDeletion={() => {}}
-                    ></DeleteCommentActionButtons>,
+                      isloading={deleteLoading && deleteVars === v.id}
+                      onDeletion={() => deleteComment(v.id)}
+                    />,
                   ],
                 },
               ],
@@ -125,15 +138,25 @@ export const AdminGetPostCommentsModal: React.FC<{
   );
 };
 
-const DeleteCommentActionButtons: React.FC<{ onDeletion: () => any }> = ({
-  onDeletion,
-}) => {
+const DeleteCommentActionButtons: React.FC<{
+  onDeletion: () => any;
+  isloading: boolean;
+}> = ({ onDeletion, isloading }) => {
   const [confirm, setConfirm] = React.useState(false);
   return (
     <HStack>
-      {confirm ? (
+      {isloading ? (
+        <Spinner></Spinner>
+      ) : confirm ? (
         <>
-          <Button onClick={onDeletion} center className="p-2">
+          <Button
+            onClick={() => {
+              onDeletion();
+              setConfirm(false);
+            }}
+            center
+            className="p-2"
+          >
             <IoMdCheckmark></IoMdCheckmark>
           </Button>
           <Button

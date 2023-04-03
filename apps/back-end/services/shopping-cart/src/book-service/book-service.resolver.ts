@@ -15,16 +15,13 @@ import {
   Discount,
   Dish,
   Doctor,
+  MyBookings,
   Service,
   Treatment,
 } from '@book-service/entities';
 import {
   AdminGetBookingsInput,
-  BookBeautycenterServiceInput,
-  BookHealthCenterServiceInput,
-  BookHotelRoomInput,
-  BookRestaurantInput,
-  BookVehicleServiceInput,
+  BookServiceInput,
   DeclineAppointmentInput,
   GetBookingsHistoryAdminInput,
   GetBookingsHistoryInput,
@@ -68,13 +65,19 @@ export class BookServiceResolver {
     return this.bookServiceService.getMyBooknigs(args, id);
   }
 
-  @Query(() => [BookedService])
+  @Query(() => MyBookings)
   @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
-  getMyBookings(
+  async getMyBookings(
     @Args('args') args: GetMyBookingsInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    return this.bookServiceService.getMyBooknigs(args, user.id);
+  ): Promise<MyBookings> {
+    const res = await this.bookServiceService.getMyBooknigs(args, user.id);
+
+    return {
+      data: res,
+      take: args.days,
+      cursor: args.date,
+    };
   }
 
   @Query(() => BookedService)
@@ -108,7 +111,6 @@ export class BookServiceResolver {
       return this.bookServiceService.getBuyerSellerBookingHistory(
         args,
         args.userId,
-        args.pagination,
         args.q,
       );
     }
@@ -117,7 +119,6 @@ export class BookServiceResolver {
       return this.bookServiceService.getBuyerSellerBookingHistory(
         args,
         args.userId,
-        args.pagination,
         args.q,
       );
     }
@@ -136,7 +137,6 @@ export class BookServiceResolver {
       return this.bookServiceService.getBuyerSellerBookingHistory(
         args,
         id,
-        args.pagination,
         args.q,
       );
     }
@@ -145,7 +145,6 @@ export class BookServiceResolver {
       return this.bookServiceService.getBuyerSellerBookingHistory(
         args,
         id,
-        args.pagination,
         args.q,
       );
     }
@@ -163,7 +162,6 @@ export class BookServiceResolver {
       return this.bookServiceService.getBuyerSellerBookingHistory(
         args,
         user.id,
-        args.pagination,
         args.q,
       );
     }
@@ -172,7 +170,6 @@ export class BookServiceResolver {
       return this.bookServiceService.getBuyerSellerBookingHistory(
         args,
         user.id,
-        args.pagination,
         args.q,
       );
     }
@@ -218,39 +215,11 @@ export class BookServiceResolver {
   }
 
   @Mutation(() => BookedService)
-  BookHotelRoom(
-    @Args('bookHotelRoomInput') input: BookHotelRoomInput,
+  BookService(
+    @Args('args') input: BookServiceInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    return this.bookServiceService.BookHotelRoom(input, user.id);
-  }
-  @Mutation(() => BookedService)
-  BookRestaurant(
-    @Args('bookRestarantInput') input: BookRestaurantInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    return this.bookServiceService.BookRestaurant(input, user.id);
-  }
-  @Mutation(() => BookedService)
-  BookHealthCenter(
-    @Args('bookHealthCenterInput') input: BookHealthCenterServiceInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    return this.bookServiceService.BookHealthCenter(input, user.id);
-  }
-  @Mutation(() => BookedService)
-  BookBeautyCenterService(
-    @Args('bookBeautyCenterInput') input: BookBeautycenterServiceInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    return this.bookServiceService.BookBeautyCenter(input, user.id);
-  }
-  @Mutation(() => BookedService)
-  BookVehicle(
-    @Args('bookVehicle') input: BookVehicleServiceInput,
-    @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    return this.bookServiceService.BookVehicleCenter(input, user.id);
+    return this.bookServiceService.BookService(input, user.id);
   }
 
   @Query(() => [BookedService])

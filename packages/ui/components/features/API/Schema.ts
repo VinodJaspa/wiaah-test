@@ -151,11 +151,12 @@ export type AddContactInput = {
   yahoo?: Maybe<Scalars["String"]>;
 };
 
-export type AddShoppingCartProductItemInput = {
+export type AddShoppingCartItemInput = {
   attributesJson?: Maybe<Scalars["String"]>;
   itemId: Scalars["ID"];
   quantity: Scalars["Int"];
   shippingRuleId: Scalars["ID"];
+  type: ShoppingCartItemType;
 };
 
 export type AddWishlistItemInput = {
@@ -645,47 +646,19 @@ export type BlockedUser = {
   id: Scalars["ID"];
 };
 
-export type BookBeautycenterServiceInput = {
-  cancelationPolicyId: Scalars["ID"];
-  checkin: Scalars["DateTime"];
-  guests: Scalars["Int"];
-  serviceId: Scalars["ID"];
-  treatmentsIds: Array<Scalars["ID"]>;
-};
-
-export type BookHealthCenterServiceInput = {
-  cancelationPolicyId: Scalars["ID"];
-  checkin: Scalars["DateTime"];
-  doctorId: Scalars["ID"];
-  guests: Scalars["Int"];
-  serviceId: Scalars["ID"];
-};
-
-export type BookHotelRoomInput = {
+export type BookServiceInput = {
   cancelationPolicyId: Scalars["ID"];
   checkin: Scalars["DateTime"];
   checkout: Scalars["DateTime"];
-  extrasIds: Array<Scalars["ID"]>;
+  dishsIds: Scalars["ID"];
+  doctorId: Scalars["ID"];
+  duration: Scalars["Int"];
+  extrasIds: Scalars["ID"];
   guests: Scalars["Int"];
   roomId: Scalars["ID"];
   serviceId: Scalars["ID"];
-};
-
-export type BookRestaurantInput = {
-  cancelationPolicyId: Scalars["ID"];
-  checkin: Scalars["DateTime"];
-  dishsIds: Array<Scalars["ID"]>;
-  duration: Scalars["Int"];
-  guests: Scalars["Int"];
-  serviceId: Scalars["ID"];
-};
-
-export type BookVehicleServiceInput = {
-  cancelationPolicyId: Scalars["ID"];
-  checkin: Scalars["DateTime"];
-  guests: Scalars["Int"];
-  serviceId: Scalars["ID"];
-  treatmentsIds: Array<Scalars["ID"]>;
+  treatmentsIds: Scalars["ID"];
+  vehicleId: Scalars["String"];
 };
 
 export type BookedService = {
@@ -726,7 +699,6 @@ export type BookedService = {
 
 export enum BookedServiceStatus {
   CanceledByBuyer = "canceled_by_buyer",
-  CanceledBySeller = "canceled_by_seller",
   Completed = "completed",
   Continuing = "continuing",
   Pending = "pending",
@@ -742,9 +714,9 @@ export type CartProduct = {
   __typename?: "CartProduct";
   attributesJson: Scalars["String"];
   id: Scalars["String"];
+  ownerId: Scalars["String"];
   product?: Maybe<Product>;
   productId: Scalars["ID"];
-  qty: Scalars["Int"];
   shippingRule: ShippingRule;
   shippingRuleId: Scalars["ID"];
 };
@@ -1879,7 +1851,7 @@ export type GetMyBlocklistInput = {
 
 export type GetMyBookingsInput = {
   date: Scalars["String"];
-  searchPeriod: MyBookingsSearchPeriod;
+  days: Scalars["Int"];
 };
 
 export type GetMyFriendSuggestionsInput = {
@@ -2489,11 +2461,7 @@ export enum MessageAttachmentType {
 export type Mutation = {
   __typename?: "Mutation";
   AddWishlistItem: Scalars["Boolean"];
-  BookBeautyCenterService: BookedService;
-  BookHealthCenter: BookedService;
-  BookHotelRoom: BookedService;
-  BookRestaurant: BookedService;
-  BookVehicle: BookedService;
+  BookService: BookedService;
   RemoveWishlistItem: Scalars["Boolean"];
   UpdateDesign: Scalars["Boolean"];
   acceptAccountDeletionRequest: Scalars["Boolean"];
@@ -2510,6 +2478,7 @@ export type Mutation = {
   adminCloseRefund: Scalars["Boolean"];
   adminConfirmRefund: Scalars["Boolean"];
   adminCreateStaffAccount: Scalars["Boolean"];
+  adminDeleteComment: Scalars["Boolean"];
   adminDeleteNewsfeedPost: Scalars["Boolean"];
   adminDeleteProduct: Scalars["Boolean"];
   adminDeleteProductReview: Scalars["Boolean"];
@@ -2599,7 +2568,6 @@ export type Mutation = {
   enableMaintenanceMode: Scalars["Boolean"];
   followProfile: Scalars["Boolean"];
   getMyAccount: Account;
-  getProductVendorLink: Scalars["String"];
   hideContent: Scalars["Boolean"];
   likeStory: Scalars["Boolean"];
   login: GqlStatusResponse;
@@ -2698,24 +2666,8 @@ export type MutationAddWishlistItemArgs = {
   addWishlistItemInput: AddWishlistItemInput;
 };
 
-export type MutationBookBeautyCenterServiceArgs = {
-  bookBeautyCenterInput: BookBeautycenterServiceInput;
-};
-
-export type MutationBookHealthCenterArgs = {
-  bookHealthCenterInput: BookHealthCenterServiceInput;
-};
-
-export type MutationBookHotelRoomArgs = {
-  bookHotelRoomInput: BookHotelRoomInput;
-};
-
-export type MutationBookRestaurantArgs = {
-  bookRestarantInput: BookRestaurantInput;
-};
-
-export type MutationBookVehicleArgs = {
-  bookVehicle: BookVehicleServiceInput;
+export type MutationBookServiceArgs = {
+  args: BookServiceInput;
 };
 
 export type MutationRemoveWishlistItemArgs = {
@@ -2759,7 +2711,7 @@ export type MutationActivateRestaurantArgs = {
 };
 
 export type MutationAddProductToCartArgs = {
-  addItemToCartArgs: AddShoppingCartProductItemInput;
+  addItemToCartArgs: AddShoppingCartItemInput;
 };
 
 export type MutationAdminCancelOrderArgs = {
@@ -2776,6 +2728,10 @@ export type MutationAdminConfirmRefundArgs = {
 
 export type MutationAdminCreateStaffAccountArgs = {
   args: AdminCreateAdminAccountInput;
+};
+
+export type MutationAdminDeleteCommentArgs = {
+  commentId: Scalars["String"];
 };
 
 export type MutationAdminDeleteNewsfeedPostArgs = {
@@ -3081,10 +3037,6 @@ export type MutationEditNewsfeedPostAdminArgs = {
 
 export type MutationFollowProfileArgs = {
   followUserInput: FollowProfileInput;
-};
-
-export type MutationGetProductVendorLinkArgs = {
-  productId: Scalars["String"];
 };
 
 export type MutationHideContentArgs = {
@@ -3444,11 +3396,12 @@ export type MutationWithdrawArgs = {
   args: WithdrawInput;
 };
 
-export enum MyBookingsSearchPeriod {
-  Day = "day",
-  Month = "month",
-  Week = "week",
-}
+export type MyBookings = {
+  __typename?: "MyBookings";
+  cursor?: Maybe<Scalars["String"]>;
+  data: Array<BookedService>;
+  take: Scalars["Int"];
+};
 
 export type NewsfeedHashtagSearch = {
   __typename?: "NewsfeedHashtagSearch";
@@ -4061,7 +4014,7 @@ export type Query = {
   getMyBalance: Balance;
   getMyBillingAddresses: Array<BillingAddress>;
   getMyBlockList: Array<Block>;
-  getMyBookings: Array<BookedService>;
+  getMyBookings: MyBookings;
   getMyChatRooms: Array<ChatRoom>;
   getMyContacts: UserContact;
   getMyCookiesSettings: UserCookiesSettings;
@@ -4629,6 +4582,7 @@ export type QueryGetProductArgs = {
 
 export type QueryGetProductByIdArgs = {
   id: Scalars["String"];
+  isClick: Scalars["Boolean"];
 };
 
 export type QueryGetProductReviewByIdArgs = {
@@ -4717,6 +4671,7 @@ export type QueryGetServiceCategoryBySlugArgs = {
 
 export type QueryGetServiceDetailsArgs = {
   id: Scalars["String"];
+  isClick: Scalars["Boolean"];
 };
 
 export type QueryGetServiceInsuranceHistoryArgs = {
@@ -4955,7 +4910,7 @@ export type RemoveReactionInput = {
 
 export type RemoveShoppingCartItemInput = {
   itemId: Scalars["ID"];
-  type: Scalars["String"];
+  type: ShoppingCartItemType;
 };
 
 export type RemoveWishlistItemInput = {
@@ -5171,6 +5126,8 @@ export type Service = {
   contact: ServiceContact;
   createdAt: Scalars["DateTime"];
   cuisinesTypeId?: Maybe<Scalars["ID"]>;
+  dayClicks?: Maybe<Scalars["Int"]>;
+  dayClicksId: Scalars["String"];
   doctors?: Maybe<Array<Doctor>>;
   establishmentType: RestaurantEstablishmentType;
   establishmentTypeId?: Maybe<Scalars["ID"]>;
@@ -5732,6 +5689,11 @@ export type ShoppingCart = {
   id: Scalars["ID"];
   ownerId: Scalars["ID"];
 };
+
+export enum ShoppingCartItemType {
+  Product = "product",
+  Service = "service",
+}
 
 export type SilentContent = {
   __typename?: "SilentContent";

@@ -18,11 +18,7 @@ export const BookingsSection: React.FC = () => {
 
   return (
     <BookingsSectionCtx.Provider value={{ bookId, setBookId }}>
-      {bookId ? (
-        <BookDetailsSection onGoBack={() => setBookId(null)} bookId={bookId} />
-      ) : (
-        <BookingsCalenderSection />
-      )}
+      <BookingsCalenderSection />
     </BookingsSectionCtx.Provider>
   );
 };

@@ -2,21 +2,17 @@ import { Controller } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import {
-  BillingPriceCreatedEvent,
   CanPreformProductActionMessage,
   CanPreformProductActionMessageReply,
   GetUserMembershipPriceIdMessage,
   GetUserMembershipPriceIdMessageReply,
   SubscriptionPaidEvent,
 } from 'nest-dto';
-import { AddToDate, KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
+import { KAFKA_EVENTS, KAFKA_MESSAGES } from 'nest-utils';
 
 import { GetMembershipPlanByIdQuery } from '@membership/queries';
 import { MembershipType } from '@membership/types';
-import {
-  membershipPreformAction,
-  MembershipPricesType,
-} from '@membership/const';
+import { membershipPreformAction } from '@membership/const';
 import { Membership } from './entities';
 import { CommissionOn } from 'prismaClient';
 import { PrismaService } from 'prismaService';
@@ -105,12 +101,27 @@ export class MembershipController {
   async handleVendorSiteClickAction(
     @Payload() { value }: { value: CanPreformProductActionMessage },
   ) {
-    const membership = await this.queryBus.execute<
-      GetMembershipPlanByIdQuery,
-      Membership
-    >(new GetMembershipPlanByIdQuery(value.input.seller.membershipId));
+    const membership = await this.prisma.memberShipSubscription.findUnique({
+      where: {
+        userId: value.input.seller.id,
+      },
+      include: {
+        membership: {
+          include: {
+            turnover_rules: true,
+          },
+        },
+      },
+    });
 
-    const canPreform = membership.turnover_rules.some(
+    if (!membership.membership?.turnover_rules)
+      return new CanPreformProductActionMessageReply({
+        success: true,
+        data: false,
+        error: null,
+      });
+
+    const canPreform = membership?.membership?.turnover_rules?.some(
       (v) => v.commissionOn === CommissionOn.external_click,
     );
     return new CanPreformProductActionMessageReply({

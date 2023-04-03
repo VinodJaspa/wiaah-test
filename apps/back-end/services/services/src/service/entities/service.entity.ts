@@ -63,6 +63,9 @@ export class Service {
   @Field(() => ID)
   ownerId: string;
 
+  @Field(() => String)
+  dayClicksId: string;
+
   @Field(() => ServiceType)
   type: ServiceType;
 

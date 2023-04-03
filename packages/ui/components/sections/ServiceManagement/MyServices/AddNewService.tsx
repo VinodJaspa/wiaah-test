@@ -1,16 +1,10 @@
 import { ServiceType } from "dto";
-import React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { GiHouse } from "react-icons/gi";
-import { FaHotel } from "react-icons/fa";
 import {
   StepperFormController,
   StepperFormHandler,
   Button,
-  ForkAndSpoonIcon,
-  CarWheelIcon,
-  HealthIcon,
-  BeautyCenterIcon,
   FlagIcon,
   SimpleTabs,
   SimpleTabHead,
@@ -27,9 +21,8 @@ import { ServicePoliciesInputSection } from "./ServicePoliciesSection";
 import { NewProductDiscountOptions } from "@sections/ShopManagement";
 import { SectionHeader } from "@sections";
 import { DiscoverOurServiceForm } from "./DiscoverOurServiceForm";
-
 import { NewServiceSchemas } from "validation";
-import { CallbackAfter, WiaahLanguageCountries } from "utils";
+import { WiaahLanguageCountries } from "utils";
 import { ServiceGeneralDetails } from "./ServiceGeneralDetails";
 import { IncludedServices } from "./IncludedServices";
 import { ExtraServiceOptions } from "./ExtraServiceOptions";
@@ -43,22 +36,19 @@ import { HealthCenterIncludedServices } from "./HealthCenterIncludedServices";
 import { AnySchema } from "yup";
 import { useCreateServiceMutation } from "@features/Services/Services/mutation";
 
-export interface AddNewServiceProps {
-  isEdit?: boolean;
-  data?: any;
-  serviceType?: ServiceType;
-  onSubmit?: (data?: any) => any;
-}
-export const AddNewService: React.FC<AddNewServiceProps> = ({
-  children,
-  data,
-  isEdit,
-  onSubmit,
-  serviceType,
-}) => {
+export interface AddNewServiceProps {}
+export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
+  const {
+    AddNewService,
+    CancelAddingNewService,
+    EditService,
+    ServiceIdFormState,
+  } = useContext(MyServicesCtx);
   const { t } = useTranslation();
   const [lang, setLang] = React.useState<string>("en");
   const { mutate } = useCreateServiceMutation();
+
+  const isEdit = typeof ServiceIdFormState === "string";
 
   return (
     <div className="flex gap-4 flex-col h-full">

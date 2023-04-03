@@ -30,7 +30,6 @@ export type GetProductQuery = { __typename?: "Query" } & {
       | "sales"
       | "sellerId"
       | "shippingRulesIds"
-      | "shopId"
       | "status"
       | "stock"
       | "title"
@@ -125,7 +124,6 @@ query getProduct(
             shippingRulesIds
         }
         shippingRulesIds
-        shopId
         status
         stock
         title

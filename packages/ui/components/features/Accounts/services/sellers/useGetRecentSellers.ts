@@ -1,3 +1,5 @@
+import { isDev } from "@UI/../utils/src";
+import { getRandomUser } from "@UI/placeholder";
 import { Account, Exact, GetFilteredSellersAccountsInput } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
@@ -47,7 +49,17 @@ export const useGetRecentSellers = (
     pagination,
     date: new Date(since).toString(),
   };
-  return useQuery(GetRecentSellersQueryKey(args), () =>
-    GetRecentSellersQueryFetcher(args)
-  );
+  return useQuery(GetRecentSellersQueryKey(args), () => {
+    if (isDev) {
+      const res: GetRecentSellersQuery["getFilteredSellers"] = [
+        ...Array(10),
+      ].map(() => ({
+        createdAt: new Date().toString(),
+        id: getRandomUser().id,
+      }));
+
+      return res;
+    }
+    return GetRecentSellersQueryFetcher(args);
+  });
 };

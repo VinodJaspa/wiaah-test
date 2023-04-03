@@ -772,6 +772,7 @@ type Mutation {
   createComment(createCommentInput: CreateCommentInput!): Comment!
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
   removeComment(id: Int!): Comment!
+  adminDeleteComment(commentId: String!): Boolean!
   shareContent(createContentShareInput: CreateContentShareInput!): ContentShare!
   deleteStory(deleteStoryInput: DeleteStoryInput!): Story!
   createStory(createStoryInput: CreateStoryInput!): Boolean!
