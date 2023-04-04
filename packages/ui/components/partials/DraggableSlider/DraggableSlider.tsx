@@ -100,6 +100,7 @@ export const DraggableSlider = React.forwardRef(
     useResponsive(() => {
       RefreshSize();
     });
+
     const [dimensions, setDimensions] = React.useState({ width: 0, height: 0 });
 
     const dragging = React.useRef(false);

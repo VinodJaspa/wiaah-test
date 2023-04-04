@@ -108,20 +108,56 @@ enum ProductCondition {
 }
 
 model Shop {
-  id            String          @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId       String          @unique
-  name          String
-  banner        String
-  description   String
-  verified      Boolean
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt()
-  phone         String?
-  location      Location
-  storeType     StoreType[]
-  businessType  BusinessType
-  targetGenders TargetGenders[]
-  vat           VatSettings?
+  id              String                    @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId         String                    @unique
+  name            String
+  banner          String
+  description     String
+  verified        Boolean
+  createdAt       DateTime                  @default(now())
+  updatedAt       DateTime                  @updatedAt()
+  phone           String?
+  location        Location
+  storeType       StoreType[]
+  businessType    BusinessType
+  targetGenders   TargetGenders[]
+  vat             VatSettings?
+  type_of_seller  ServiceTypeOfSeller
+  shopMetaInfo    ShopMetaTranslationInfo[]
+  status          ShopStatus                @default(inActive)
+  payment_methods ShopPaymentMethods[]
+}
+
+enum ShopPaymentMethods {
+  credit_card
+  visa
+  mastercard
+  check
+  cash
+}
+
+enum ShopStatus {
+  inActive
+  active
+  suspended
+}
+
+type ShopMetaTranslationInfo {
+  langId String
+  value  ShopMetaInfo
+}
+
+type ShopMetaInfo {
+  title              String
+  description        String
+  metaTagDescription String
+  metaTagKeywords    String[]
+  hashtags           String[]
+}
+
+enum ServiceTypeOfSeller {
+  individual
+  professional
 }
 
 type VatSettings {

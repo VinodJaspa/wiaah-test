@@ -21,6 +21,7 @@ import {
   WorkingSchedule,
 } from "@features/API";
 import { createGraphqlRequestClient } from "@UI/../api";
+import { isDev } from "@UI/../utils/src";
 import { useQuery } from "react-query";
 
 export type GetRestaurantQueryVariables = Exact<{
@@ -250,150 +251,179 @@ query getRestaurant($args:GetRestaurantInput!){
 }
 `);
 
-      const data: GetRestaurantQuery["getRestaurant"] = {
-        cancelationPolicies: [
-          {
-            cost: 5,
-            duration: 4,
-          },
-          {
-            cost: 0,
-            duration: 2,
-          },
-          {
-            cost: 10,
-            duration: 6,
-          },
-        ],
-        cuisinesTypeId: "italian",
-        establishmentTypeId: "restaurant",
-        highest_price: 50,
-        id: "12345",
+      if (isDev) {
+        const data: GetRestaurantQuery["getRestaurant"] = {
+          cancelationPolicies: [
+            {
+              cost: 5,
+              duration: 4,
+            },
+            {
+              cost: 0,
+              duration: 2,
+            },
+            {
+              cost: 10,
+              duration: 6,
+            },
+          ],
+          cuisinesTypeId: "italian",
+          establishmentTypeId: "restaurant",
+          highest_price: 50,
+          id: "12345",
 
-        location: {
-          address: "123 Main St",
-          city: "New York",
-          country: "USA",
-          lat: 40.7128,
-          lon: -74.006,
-          postalCode: 10001,
-          state: "NY",
-        },
-        lowest_price: 20,
-        menus: [
-          {
-            dishs: [
-              {
-                id: "54321",
-                ingredients: ["tomatoes", "basil", "mozzarella"],
-                price: 12,
-                name: "Margherita Pizza",
-                thumbnail:
-                  "https://www.foodandwine.com/thmb/EuorRdLisZJ5XCD1ZJJnGXGHP_4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/201012-ss-dishes-leeks-7624862883b54db29fbfa87295ba42ac.jpg",
-              },
-              {
-                id: "67890",
-                ingredients: ["pasta", "tomato sauce", "parmesan cheese"],
-                price: 16,
-                name: "Spaghetti Pomodoro",
-                thumbnail:
-                  "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2018/10/4/1/FN_chain-restaurant-entrees_Applebees_Bourbon-Street-Chicken-Shrimp_s6x4.jpg.rend.hgtvcom.616.411.suffix/1538685780055.jpeg",
-              },
-            ],
-            id: "menu123",
-            name: "Dinner Menu",
+          location: {
+            address: "123 Main St",
+            city: "New York",
+            country: "USA",
+            lat: 40.7128,
+            lon: -74.006,
+            postalCode: 10001,
+            state: "NY",
           },
-          {
-            dishs: [
-              {
-                id: "98765",
-                ingredients: [
-                  "lettuce",
-                  "tomatoes",
-                  "cucumber",
-                  " olives",
-                  "feta cheese",
-                ],
-                price: 10,
-                name: "Greek Salad",
-                thumbnail:
-                  "https://www.foodandwine.com/thmb/gRrfFwDl3N3uBOdWINoJKMqE8kk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/201012-ss-dishes-lamb-ragu-1f516715f31244f295426cf2d50193f2.jpg",
-              },
-              {
-                id: "23456",
-                ingredients: [
-                  "grilled chicken",
-                  "lettuce",
-                  "croutons",
-                  "parmesan cheese",
-                  "Caesar dressing",
-                ],
-                price: 14,
-                name: "Caesar Salad",
-                thumbnail:
-                  "https://robbreport.com/wp-content/uploads/2020/12/manti-dumplings-albi-dc.jpg?w=1000",
-              },
-            ],
-            id: "menu456",
-            name: "Lunch Menu",
+          lowest_price: 20,
+          menus: [
+            {
+              dishs: [
+                {
+                  id: "54321",
+                  ingredients: ["tomatoes", "basil", "mozzarella"],
+                  price: 12,
+                  name: "Margherita Pizza",
+                  thumbnail:
+                    "https://www.foodandwine.com/thmb/EuorRdLisZJ5XCD1ZJJnGXGHP_4=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/201012-ss-dishes-leeks-7624862883b54db29fbfa87295ba42ac.jpg",
+                },
+                {
+                  id: "67890",
+                  ingredients: ["pasta", "tomato sauce", "parmesan cheese"],
+                  price: 16,
+                  name: "Spaghetti Pomodoro",
+                  thumbnail:
+                    "https://food.fnr.sndimg.com/content/dam/images/food/fullset/2018/10/4/1/FN_chain-restaurant-entrees_Applebees_Bourbon-Street-Chicken-Shrimp_s6x4.jpg.rend.hgtvcom.616.411.suffix/1538685780055.jpeg",
+                },
+              ],
+              id: "menu123",
+              name: "Dinner Menu",
+            },
+            {
+              dishs: [
+                {
+                  id: "98765",
+                  ingredients: [
+                    "lettuce",
+                    "tomatoes",
+                    "cucumber",
+                    " olives",
+                    "feta cheese",
+                  ],
+                  price: 10,
+                  name: "Greek Salad",
+                  thumbnail:
+                    "https://www.foodandwine.com/thmb/gRrfFwDl3N3uBOdWINoJKMqE8kk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/201012-ss-dishes-lamb-ragu-1f516715f31244f295426cf2d50193f2.jpg",
+                },
+                {
+                  id: "23456",
+                  ingredients: [
+                    "grilled chicken",
+                    "lettuce",
+                    "croutons",
+                    "parmesan cheese",
+                    "Caesar dressing",
+                  ],
+                  price: 14,
+                  name: "Caesar Salad",
+                  thumbnail:
+                    "https://robbreport.com/wp-content/uploads/2020/12/manti-dumplings-albi-dc.jpg?w=1000",
+                },
+              ],
+              id: "menu456",
+              name: "Lunch Menu",
+            },
+            {
+              dishs: [
+                {
+                  id: "12345",
+                  ingredients: [
+                    "orange juice",
+                    "pineapple juice",
+                    "grenadine syrup",
+                    "club soda",
+                  ],
+                  price: 6,
+                  name: "Fruit Punch",
+                  thumbnail:
+                    "https://realfood.tesco.com/media/images/SMOOTHIE-mixedfruitpunch-He-beef6661-8d12-49dc-9357-3d09e4cffb0a-0-472x310.jpg",
+                },
+                {
+                  id: "67890",
+                  ingredients: ["lemon juice", "honey", "ginger ale"],
+                  price: 5,
+                  name: "Ginger Lemonade",
+                  thumbnail:
+                    "https://tmbidigitalassetsazure.blob.core.windows.net/toh/GoogleImagesPostCard/Sparkling-Ginger-Lemonade_EXPS_FT21_40142_F_0521_1.jpg",
+                },
+              ],
+              id: "menu789",
+              name: "Drinks Menu",
+            },
+          ],
+          michelin_guide_stars: 1,
+          ownerId: "67890",
+          payment_methods: [
+            ServicePaymentMethod.Cash,
+            ServicePaymentMethod.CreditCard,
+          ],
+          policies: [
+            {
+              policyTitle: "Cancellation Policy",
+              terms: ["Cancel at least 24 hours in advance to avoid penalty."],
+            },
+            {
+              policyTitle: "Dress Code",
+              terms: ["Business casual attire is required."],
+            },
+          ],
+          presentations: [
+            {
+              src: "https://toohotel.com/wp-content/uploads/2022/09/TOO_restaurant_Panoramique_vue_Paris_nuit_v2-scaled.jpg",
+              type: ServicePresentationType.Img,
+            },
+            {
+              src: "https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg",
+              type: ServicePresentationType.Img,
+            },
+          ],
+          serviceMetaInfo: {
+            description:
+              "Authentic Italian restaurant serving classic dishes in a cozy atmosphere.",
+            hashtags: ["italianfood", "foodie", "nyc"],
+            metaTagDescription:
+              "Authentic Italian restaurant serving classic dishes in a cozy atmosphere.",
+            metaTagKeywords: ["Italian food", "restaurant", " New York City"],
+            title: "Trattoria Italia",
           },
-        ],
-        michelin_guide_stars: 1,
-        ownerId: "67890",
-        payment_methods: [
-          ServicePaymentMethod.Cash,
-          ServicePaymentMethod.CreditCard,
-        ],
-        policies: [
-          {
-            policyTitle: "Cancellation Policy",
-            terms: ["Cancel at least 24 hours in advance to avoid penalty."],
+          setting_and_ambianceId: "cozy",
+          status: ServiceStatus.Active,
+          vat: 0.08,
+          contact: {
+            address: "123 Main St",
+            city: "New York",
+            country: "USA",
+            email: "email",
+            phone: "12435576",
+            state: "state",
           },
-          {
-            policyTitle: "Dress Code",
-            terms: ["Business casual attire is required."],
+          owner: {
+            firstName: "first name",
+            id: "12321",
+            lastName: "last name",
+            verified: true,
+            photo: "profile (2).jfif",
           },
-        ],
-        presentations: [
-          {
-            src: "https://toohotel.com/wp-content/uploads/2022/09/TOO_restaurant_Panoramique_vue_Paris_nuit_v2-scaled.jpg",
-            type: ServicePresentationType.Img,
-          },
-          {
-            src: "https://www.spoon-restaurant.com/wp-content/uploads/2022/06/Spoon_cLe_Bonbon-1-scaled.jpg",
-            type: ServicePresentationType.Img,
-          },
-        ],
-        serviceMetaInfo: {
-          description:
-            "Authentic Italian restaurant serving classic dishes in a cozy atmosphere.",
-          hashtags: ["italianfood", "foodie", "nyc"],
-          metaTagDescription:
-            "Authentic Italian restaurant serving classic dishes in a cozy atmosphere.",
-          metaTagKeywords: ["Italian food", "restaurant", " New York City"],
-          title: "Trattoria Italia",
-        },
-        setting_and_ambianceId: "cozy",
-        status: ServiceStatus.Active,
-        vat: 0.08,
-        contact: {
-          address: "123 Main St",
-          city: "New York",
-          country: "USA",
-          email: "email",
-          phone: "12435576",
-          state: "state",
-        },
-        owner: {
-          firstName: "first name",
-          id: "12321",
-          lastName: "last name",
-          verified: true,
-          photo: "profile (2).jfif",
-        },
-      };
+        };
 
-      return data;
+        return data;
+      }
       client.setVariables<GetRestaurantQueryVariables>({
         args: {
           id,

@@ -74,6 +74,15 @@ export type GetMyAppointmentsQuery = { __typename?: "Query" } & {
     };
 };
 
+function randomDate(): Date {
+  const start = new Date("2023-04-04");
+  const end = new Date("2023-04-11");
+  const randomTime =
+    start.getTime() + Math.random() * (end.getTime() - start.getTime());
+  const randomDate = new Date(randomTime);
+  return randomDate;
+}
+
 export const useGetMyAppointmentsQuery = (
   input: GetMyBookingsInput,
   options?: UseInfiniteQueryOptions<
@@ -90,40 +99,36 @@ export const useGetMyAppointmentsQuery = (
         const mockRes: GetMyAppointmentsQuery["getMyBookings"] = {
           take: (pageParam || input).days,
           cursor: (pageParam || input).date,
-          data: [...Array((pageParam || input).days * randomNum(5))].map(
-            (_, i) => ({
-              room: {
-                title: `Preumim Plus Room`,
+          data: [...Array((pageParam || input).days * 30)].map((_, i) => ({
+            room: {
+              title: `Preumim Plus Room`,
+            },
+            dishs: [],
+            doctor: { name: "" },
+            treatments: [],
+            vehicle: {
+              title: "",
+            },
+            buyer: {
+              firstName: getRandomName().firstName,
+              lastName: getRandomName().lastName,
+              email: "test@email.com",
+              phone: "132-456-7984",
+              profile: {
+                photo: "/profile (1).jfif",
+                username: "buyer name",
+                verified: true,
               },
-              dishs: [],
-              doctor: { name: "" },
-              treatments: [],
-              vehicle: {
-                title: "",
-              },
-              buyer: {
-                firstName: getRandomName().firstName,
-                lastName: getRandomName().lastName,
-                email: "test@email.com",
-                phone: "132-456-7984",
-                profile: {
-                  photo: "/profile (1).jfif",
-                  username: "buyer name",
-                  verified: true,
-                },
-              },
-              checkin: new Date(
-                new Date().setDate(new Date().getDate() + i)
-              ).toString(),
-              id: "test",
-              ownerId: "test",
-              providerId: "test",
-              serviceId: "test",
-              status: BookedServiceStatus.Pending,
-              type: ServiceType.Hotel,
-              duration: 4,
-            })
-          ),
+            },
+            checkin: randomDate(),
+            id: "test",
+            ownerId: "test",
+            providerId: "test",
+            serviceId: "test",
+            status: BookedServiceStatus.Pending,
+            type: ServiceType.Hotel,
+            duration: 4,
+          })),
         };
 
         return mockRes;

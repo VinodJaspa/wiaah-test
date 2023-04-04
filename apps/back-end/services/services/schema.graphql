@@ -427,9 +427,15 @@ type Service {
   dayClicksId: String!
   type: ServiceType!
   createdAt: DateTime!
+  title: String!
+  description: String!
+  metaTagDescription: String!
+  metaTagKeywords: [String!]!
+  hashtags: [String!]!
   updatedAt: DateTime!
   location: ServiceLocation!
   presentations: [ServicePresentation!]!
+  thumbnail: String!
   policies: [ServicePolicy!]!
   serviceMetaInfo: ServiceMetaInfo!
   contact: ServiceContact!

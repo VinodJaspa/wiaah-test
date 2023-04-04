@@ -12,6 +12,10 @@ import { Directive, Field, Float, ID, Int, ObjectType } from '@nestjs/graphql';
 import { RestaurantMenu } from '@restaurant';
 import { Vehicle } from '@vehicle-service';
 import {
+  CreateGqlObjectTranslationInputFields,
+  CreateObjectGqlTranslationInputField,
+} from 'nest-utils';
+import {
   ServicePaymentMethods,
   ServiceType,
   ServiceTypeOfSeller,
@@ -54,6 +58,11 @@ import {
 // }
 
 @ObjectType()
+export class TranslationText extends CreateObjectGqlTranslationInputField(
+  String,
+) {}
+
+@ObjectType()
 @Directive('@key(fields:"id")')
 @Directive('@key(fields:"ownerId")')
 export class Service {
@@ -72,6 +81,21 @@ export class Service {
   @Field(() => Date)
   createdAt: Date;
 
+  @Field(() => String)
+  title: string;
+
+  @Field(() => String)
+  description: string;
+
+  @Field(() => String)
+  metaTagDescription: string;
+
+  @Field(() => [String])
+  metaTagKeywords: string[];
+
+  @Field(() => [String])
+  hashtags: string[];
+
   @Field(() => Date)
   updatedAt: Date;
 
@@ -80,6 +104,9 @@ export class Service {
 
   @Field(() => [ServicePresentation])
   presentations: ServicePresentation[];
+
+  @Field(() => String)
+  thumbnail: string;
 
   @Field(() => [ServicePolicy])
   policies: ServicePolicy[];

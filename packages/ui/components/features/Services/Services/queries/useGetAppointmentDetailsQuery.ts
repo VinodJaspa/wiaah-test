@@ -5,7 +5,6 @@ import {
   Maybe,
   Profile,
   Scalars,
-  Service,
   ServiceContact,
   ServiceLocation,
 } from "@features/API";

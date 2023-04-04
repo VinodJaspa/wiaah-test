@@ -89,13 +89,15 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
                   >
                     <THead>
                       <Tr>
-                        <Th>{t("Room Price")}</Th>
+                        <Th>{t("Item Name")}</Th>
+                        <Th>{t("Item Price")}</Th>
                         <Th>{t("Total")}</Th>
                       </Tr>
                     </THead>
                     <TBody data-testid="RoomsTable">
                       {[...Array(3)].map((room, i) => (
                         <Tr key={i} data-testid="Room">
+                          <Td><></></Td>
                           <Td className="flex items-center">
                             <span data-testid="RoomNightPrice">{150}</span>*
                             <span data-testid="RoomNights">{5}</span>
