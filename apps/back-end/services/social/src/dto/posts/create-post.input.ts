@@ -1,13 +1,9 @@
-import {
-  AttachmentInput,
-  HashtagInput,
-  PostLocationInput,
-  PostTagInput,
-} from '../shared';
+import { HashtagInput, PostLocationInput, PostTagInput } from '../shared';
 import { InputType, Field, registerEnumType } from '@nestjs/graphql';
-import { PostVisibility } from 'prismaClient';
+import { PostVisibility, CommentsVisibility } from 'prismaClient';
 
 registerEnumType(PostVisibility, { name: 'PostVisibility' });
+registerEnumType(CommentsVisibility, { name: 'CommentsVisibility' });
 
 @InputType()
 export class CreatePostInput {
@@ -28,6 +24,12 @@ export class CreatePostInput {
 
   @Field(() => PostVisibility, { nullable: true })
   visibility?: PostVisibility;
+
+  @Field(() => Boolean, { nullable: true })
+  enableComments?: boolean;
+
+  @Field(() => CommentsVisibility, { nullable: true })
+  commentsVisibility?: CommentsVisibility;
 
   @Field(() => PostLocationInput, { nullable: true })
   location?: PostLocationInput;

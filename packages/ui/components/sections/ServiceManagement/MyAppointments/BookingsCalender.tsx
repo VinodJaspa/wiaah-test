@@ -2,245 +2,436 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   SectionHeader,
-  Select,
-  SelectOption,
+  HStack,
+  useGetMyAppointmentsQuery,
+  Slider,
+  Button,
+  DraggableSlider,
+  ArrowUpIcon,
+  ArrowDownIcon,
+  Modal,
+  ModalOverlay,
+  ModalContent,
   Table,
-  TBody,
   THead,
   Tr,
   Th,
+  TBody,
   Td,
   TableContainer,
-  Avatar,
-  HStack,
-  Verified,
-  Tabs,
-  TabsHeader,
-  TabTitle,
-  TranslationText,
-  useGetMyAppointmentsQuery,
-  Clickable,
-  Image,
+  ArrowLeftIcon,
 } from "@UI";
-import {
-  BookedService,
-  Maybe,
-  MyBookingsSearchPeriod,
-  Profile,
-} from "@features/API";
+import { ServiceType } from "@features/API";
 import {
   AddToDate,
-  FormatedDays,
-  getDividedWeeks,
-  getMonthDays,
-  weekDays,
+  SubtractFromDate,
+  mapArray,
+  randomNum,
+  runIfFn,
+  useForm,
+  weekDayLong,
 } from "utils";
-import { BookingsSectionCtx } from ".";
+import { BookDetailsSection, BookingsSectionCtx } from ".";
+import { random } from "lodash";
+import { ArrElement } from "@UI/../types/src";
+import { BiCalendar, BiChevronLeft, BiChevronRight } from "react-icons/bi";
+import { FaClock } from "react-icons/fa";
+import { BsFillInfoCircleFill } from "react-icons/bs";
 
 export interface BookingCalenderSectionProps {}
+
+const contrastColors = ["#00BCD4"];
 
 export const BookingsCalenderSection: React.FC<
   BookingCalenderSectionProps
 > = () => {
   const { t } = useTranslation();
   const { setBookId } = React.useContext(BookingsSectionCtx);
-  const [days, setDays] = React.useState<FormatedDays[]>([]);
-  const [date, setDate] = React.useState<Date>(new Date());
-  const [period, setPeriod] = React.useState<MyBookingsSearchPeriod>(
-    MyBookingsSearchPeriod.Month
-  );
-
-  const { data } = useGetMyAppointmentsQuery({
-    date: date.toString(),
-    searchPeriod: period,
+  const [now] = React.useState(new Date());
+  const [activeWeek, setActiveWeek] = React.useState(0);
+  const [bookDetailsId, setBookDetialsId] = React.useState<string>();
+  const { form } = useForm<Parameters<typeof useGetMyAppointmentsQuery>[0]>({
+    date: get1stWeekDate(now),
+    days: 7,
   });
 
-  const [bookings, setBookings] = React.useState<Record<string, typeof data>>(
-    {}
-  );
+  const {
+    data,
+    fetchNextPage,
+    fetchPreviousPage,
+    isFetchingNextPage,
+    isFetchingPreviousPage,
+  } = useGetMyAppointmentsQuery(form, {
+    getNextPageParam: (data) => {
+      try {
+        return {
+          date: get1stWeekDate(
+            new Date(
+              new Date(data.date).setDate(
+                new Date(data.date).getDate() + data.days
+              )
+            )
+          ),
+          days: 7,
+        } as Parameters<typeof useGetMyAppointmentsQuery>[0];
+      } catch (error) {
+        return data;
+      }
+    },
+    getPreviousPageParam: (data) => {
+      try {
+        return {
+          date: get1stWeekDate(
+            new Date(
+              new Date(data.date).setDate(
+                new Date(data.date).getDate() - data.days
+              )
+            )
+          ),
+          days: 7,
+        } as Parameters<typeof useGetMyAppointmentsQuery>[0];
+      } catch (error) {
+        return data;
+      }
+    },
+    onSuccess(data) {
+      data.pageParams;
+    },
+  });
 
-  React.useEffect(() => {
-    if (!data) return;
-    const res: typeof bookings = data.reduce((acc, curr) => {
-      const day = new Date(curr.checkin).getDate();
-      const newObj = { ...acc };
+  function get1stWeekDate(date: Date) {
+    return new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate() + date.getDay(),
+      0,
+      0,
+      0
+    ).toString();
+  }
 
-      newObj[day] =
-        typeof newObj[day] !== "undefined"
-          ? [...(newObj[day] || []), curr]
-          : [curr];
-      return newObj;
-    }, {} as typeof bookings);
-    setBookings(res);
-  }, [data]);
+  const pages = data?.pages!;
 
-  React.useEffect(() => {
-    if (date) {
-      setDays(getMonthDays(date.getFullYear(), date.getMonth()));
-    }
-  }, [date]);
+  function bookings(
+    page: ArrElement<typeof pages>
+  ): [string, typeof page["data"]][] {
+    return Object.entries(
+      [...Array(7)].reduce((acc, _, i) => {
+        const bookings = page?.data?.filter((v) => {
+          const valid = !isNaN(new Date(v.checkin).getTime());
+          if (!valid) return false;
+
+          const date = new Date(v.checkin).getDate();
+
+          return date === new Date(page.cursor!).getDate() + i;
+        });
+
+        const day =
+          new Date(page?.cursor || get1stWeekDate(new Date())).getDate() + i;
+
+        return { ...acc, [day]: bookings };
+      }, {} as Record<number, typeof page["data"]>)
+    );
+  }
+
   return (
-    <div className="flex flex-col gap-4">
-      <SectionHeader sectionTitle={t("my_appointments", "My Appointments")} />
-      <div className="flex flex-col gap-4">
-        <Tabs>
-          <div className="flex justify-between">
-            <TabsHeader>
-              {Object.values(MyBookingsSearchPeriod).map((title, i) => (
-                <TabTitle TabKey={i}>
-                  {({ currentTabIdx }) => (
-                    <TranslationText
-                      className={`${
-                        currentTabIdx === i
-                          ? "border-b-2 border-primary pb-2 text-primary"
-                          : ""
-                      }`}
-                      translationObject={title}
-                      key={i}
-                    />
-                  )}
-                </TabTitle>
-              ))}
-            </TabsHeader>
-            <Select<Date>
-              onOptionSelect={(v) => {
-                setDate(v);
-              }}
-              className="text-xl font-bold"
-            >
-              {[...Array(36)]
-                .map(
-                  (_, i) =>
-                    new Date(new Date().setMonth(new Date().getMonth() + i))
+    <div className="flex flex-col w-full gap-4">
+      <Modal
+        isOpen={!!bookDetailsId}
+        onClose={() => setBookDetialsId(undefined)}
+      >
+        <ModalOverlay></ModalOverlay>
+        <ModalContent className="w-[95vw]">
+          <BookDetailsSection
+            bookId={bookDetailsId || ""}
+            onGoBack={() => {
+              setBookDetialsId(undefined);
+            }}
+          />
+        </ModalContent>
+      </Modal>
+      <SectionHeader sectionTitle={t("My Appointments")} />
+      <div style={{ width: `calc(100vw - 40vw)` }}>
+        <div className="flex flex-col items-center py-2 justify-center gap-1">
+          <p className="font-semibold uppercase text-sm">{t("Switch Week")}</p>
+          <HStack className="">
+            <BiChevronLeft
+              onClick={() => fetchPreviousPage()}
+              className="text-2xl text-primary"
+            />
+            <p className="text-lg font-bold">
+              {new Date(
+                data?.pages[activeWeek]?.cursor || new Date()
+              ).toLocaleDateString("en-us", {
+                day: "numeric",
+                month: "short",
+              })}
+              -
+              {new Date(
+                new Date(data?.pages[activeWeek]?.cursor || new Date()).setDate(
+                  new Date(
+                    data?.pages[activeWeek]?.cursor || new Date()
+                  ).getDate() + 6
                 )
-                .map((date, i) => (
-                  <SelectOption
-                    className="font-semibold px-2"
-                    key={i}
-                    value={date}
-                  >
-                    {date.toLocaleDateString("en-us", { month: "short" })}{" "}
-                    {date.getFullYear()}
-                  </SelectOption>
-                ))}
-            </Select>
-          </div>
-        </Tabs>
+              ).toLocaleDateString("en-us", {
+                day: "numeric",
+                month: "short",
+              })}
+            </p>
+            <BiChevronRight
+              onClick={() => fetchNextPage()}
+              className="text-2xl text-primary"
+            />
+          </HStack>
+        </div>
+        <div className="w-full h-full">
+          {mapArray(data?.pages, (page, i) => {
+            const Bookings = bookings(page);
+            return (
+              <div className="h-full w-full">
+                <Table
+                  ThProps={{
+                    className: "border",
+                  }}
+                  TdProps={{
+                    className:
+                      "border first:whitespace-nowrap first:font-semibold first:text-gray-600",
+                    valign: "top",
+                  }}
+                  className="w-full h-full"
+                  key={i}
+                >
+                  <THead>
+                    <Tr className="">
+                      <Th></Th>
+                      {weekDayLong.map((v) => (
+                        <Th className="">{v}</Th>
+                      ))}
+                    </Tr>
+                    <Tr>
+                      <Th>{t("Time")}</Th>
+                      {mapArray(Bookings, ([day], i) => {
+                        const istoday = new Date().getDate() === parseInt(day);
+                        return (
+                          <Th>
+                            <HStack className="text-semibold justify-center">
+                              <BiCalendar />
+                              <p className={istoday ? "text-primary" : ""}>
+                                {istoday
+                                  ? t("Today")
+                                  : `${day}/${
+                                      new Date(
+                                        page?.cursor || new Date()
+                                      ).getMonth() + 1
+                                    }/${new Date(
+                                      page?.cursor || new Date()
+                                    ).getFullYear()}`}
+                              </p>
+                            </HStack>
+                          </Th>
+                        );
+                      })}
+                    </Tr>
+                  </THead>
+                  <TBody>
+                    {mapArray([...Array(24)], (_, i) => {
+                      const date = new Date(
+                        new Date().getFullYear(),
+                        new Date().getMonth(),
+                        new Date().getDate(),
+                        i,
+                        0,
+                        0,
+                        0
+                      );
+                      return (
+                        <Tr key={i} className="h-full">
+                          <Td>
+                            {date.toLocaleTimeString("en-us", {
+                              hour: "2-digit",
+                              hour12: true,
+                            })}
+                          </Td>
 
-        <TableContainer>
-          <Table
-            TdProps={{ className: "border-gray-200 border-2 h-[8rem]" }}
-            className="w-full"
-          >
-            <THead>
-              <Tr>
-                {weekDays.map((day, i) => (
-                  <Th key={i}>{day}</Th>
-                ))}
-              </Tr>
-            </THead>
-            <TBody>
-              {getDividedWeeks(days).map((week, i) => (
-                <Tr key={i}>
-                  {week.map((day, i) => {
-                    const daysBookings = bookings ? bookings[day.dayNum] : null;
-                    return (
-                      <Td
-                        className={`${
-                          day.currentMonth
-                            ? "text-black font-bold"
-                            : "text-gray-400 text-semibold"
-                        } min-w-[8rem] min-h-[8rem]`}
-                        valign="baseline"
-                        key={i}
-                      >
-                        <span className="w-full flex justify-end">
-                          {day.dayNum}
-                        </span>
-                        {daysBookings &&
-                          day.currentMonth &&
-                          daysBookings.map(({ id, ...rest }, i) => (
-                            <Clickable onClick={() => setBookId(id)}>
-                              <BookedDayCard
-                                cardDetails={{ ...rest, id }}
-                                key={i}
-                              />
-                            </Clickable>
-                          ))}
-                      </Td>
-                    );
-                  })}
-                </Tr>
-              ))}
-            </TBody>
-          </Table>
-        </TableContainer>
+                          {mapArray(Bookings, (_, bi) => {
+                            const cursorDate = new Date(page.cursor!);
+                            const targetDate = isNaN(
+                              new Date(page?.cursor || "").getTime()
+                            )
+                              ? null
+                              : new Date(
+                                  cursorDate.getFullYear(),
+                                  cursorDate.getMonth(),
+                                  cursorDate.getDate() + bi,
+                                  i
+                                );
+
+                            const end = new Date(
+                              new Date(targetDate!).setHours(
+                                targetDate!?.getHours() + 1
+                              )
+                            );
+                            const bookings = targetDate
+                              ? page.data?.filter((v) => {
+                                  const start = new Date(v.checkin);
+                                  return start >= targetDate && start <= end;
+                                })
+                              : null;
+                            return (
+                              <Td>
+                                <div className="w-full h-full text-xs">
+                                  <CalenderBookingsList
+                                    length={bookings?.length || 0}
+                                  >
+                                    {mapArray(bookings || [], (v, i) => {
+                                      const color =
+                                        contrastColors[
+                                          randomNum(contrastColors.length)
+                                        ];
+
+                                      const buyerName = `${v.buyer.firstName} ${v.buyer.lastName}`;
+                                      const serviceTitle = (() => {
+                                        switch (v.type) {
+                                          case ServiceType.Hotel:
+                                            return v.room?.title || "";
+
+                                          case ServiceType.Restaurant:
+                                            const shownDishs = v.dishs.slice(
+                                              0,
+                                              2
+                                            );
+                                            const dishsLeft =
+                                              v.dishs.length -
+                                              shownDishs.length;
+                                            return `${shownDishs
+                                              .map((v) => v.name)
+                                              .join(", ")}` +
+                                              (dishsLeft > 0)
+                                              ? `, ${t("and")} ${dishsLeft} ${t(
+                                                  "more dishs"
+                                                )}`
+                                              : "";
+
+                                          case ServiceType.HealthCenter:
+                                            return `${
+                                              v.doctor.speciality?.name
+                                                ? `${v.doctor.speciality.name}: `
+                                                : ""
+                                            }${v.doctor.name}`;
+
+                                          case ServiceType.BeautyCenter:
+                                            const shownTreats =
+                                              v.treatments.slice(0, 2);
+                                            const treatsLeft =
+                                              v.treatments.length -
+                                              shownTreats.length;
+                                            return `${shownTreats
+                                              .map((v) => v.title)
+                                              .join(", ")}` +
+                                              (treatsLeft > 0)
+                                              ? `, ${t(
+                                                  "and"
+                                                )} ${treatsLeft} ${t(
+                                                  "more dishs"
+                                                )}`
+                                              : "";
+                                          case ServiceType.Vehicle:
+                                            return `${v.vehicle?.title || ""}`;
+
+                                          case ServiceType.HolidayRentals:
+                                            return `${v.room?.title || ""}`;
+                                          default:
+                                            break;
+                                        }
+                                      })();
+
+                                      return (
+                                        <div
+                                          style={{
+                                            backgroundColor: color,
+                                          }}
+                                          className={`text-white p-2 border-white border rounded`}
+                                          //  first:static absolute top-0 left-0 group-hover:first:translate-x-0 group-hover:translate-x-[110%] first:translate-x-0 translate-x-4 duration-300 transform transition-all w-[95%] h-full -z-10 group-hover:z-10 `}
+                                        >
+                                          <HStack className="">
+                                            <FaClock />
+                                            <p>
+                                              <span className="font-semibold">
+                                                {new Date(
+                                                  v.checkin
+                                                ).toLocaleTimeString("en-us", {
+                                                  hour: "2-digit",
+                                                  hour12: true,
+                                                  minute: "2-digit",
+                                                })}
+                                              </span>{" "}
+                                            </p>
+                                          </HStack>
+                                          <p>{buyerName}</p>
+                                          <p className="inline">
+                                            {serviceTitle}{" "}
+                                            <BsFillInfoCircleFill
+                                              onClick={() =>
+                                                setBookDetialsId(v.id)
+                                              }
+                                              className="inline cursor-pointer"
+                                            />
+                                          </p>
+                                        </div>
+                                      );
+                                    })}
+                                  </CalenderBookingsList>
+                                </div>
+                              </Td>
+                            );
+                          })}
+                        </Tr>
+                      );
+                    })}
+                  </TBody>
+                </Table>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
 };
 
-export interface BookedDayCardProps {
-  cardDetails: Pick<
-    BookedService,
-    "checkin" | "checkout" | "duration" | "id"
-  > & {
-    buyer?: Maybe<
-      Pick<BookedService["buyer"], "email" | "phone"> & {
-        profile?: Maybe<Pick<Profile, "verified" | "username" | "photo">>;
-      }
-    >;
-    service?: Maybe<Pick<BookedService["service"], "title">>;
-  };
-}
+export const CalenderBookingsList: React.FC<{
+  length: number;
+}> = ({ children, length }) => {
+  const { t } = useTranslation();
+  const [open, setOpen] = React.useState<boolean>(false);
 
-export const BookedDayCard: React.FC<BookedDayCardProps> = ({
-  cardDetails: { checkin, checkout, duration, buyer, service },
-}) => {
-  const serviceTitle = service?.title;
+  const showMore = !open && length > 1;
+
+  const showLess = !showMore && open && length > 1;
+
+  const more = length - 1;
 
   return (
-    <div className={`bg-red-200 p-2 flex flex-col gap-1 rounded font-normal`}>
-      <div>
-        <span>
-          {new Date(checkin).toLocaleTimeString("en-us", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true,
-          })}
-        </span>
-        {checkout || typeof duration === "number" ? (
-          <>
-            {" - "}
-            <span>
-              {new Date(
-                checkout
-                  ? checkout
-                  : AddToDate(new Date(checkin), { minutes: duration! })
-              ).toLocaleTimeString("en-us", {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              })}
-            </span>
-          </>
-        ) : null}
-      </div>
-      <div>{buyer?.profile?.username}</div>
-      <div>{buyer?.email}</div>
-      <div>{buyer?.phone}</div>
-      <div>{serviceTitle}</div>
-      <HStack>
-        <Image
-          className="w-8 h-8 rounded-full object-coverj"
-          alt={buyer?.profile?.username}
-          src={buyer?.profile?.photo}
-        />
-        <span>{buyer?.profile?.username}</span>
-        {buyer?.profile?.verified ? (
-          <Verified className="text-primary-500 text-lg" />
-        ) : null}
-      </HStack>
-    </div>
+    <>
+      {React.Children.toArray(children)
+        .slice(0, open ? length : 1)
+        .map((v, i) => runIfFn(v, { key: i }))}
+      {showMore ? (
+        <p
+          onClick={() => setOpen(true)}
+          className=" cursor-pointer w-full text-center text-primary font-semibold"
+        >
+          {t("show more")} {`(${more}+)`}
+        </p>
+      ) : null}
+      {showLess ? (
+        <p
+          onClick={() => setOpen(false)}
+          className="cursor-pointer w-full text-center text-primary font-semibold"
+        >
+          {t("show less")}
+        </p>
+      ) : null}
+    </>
   );
 };

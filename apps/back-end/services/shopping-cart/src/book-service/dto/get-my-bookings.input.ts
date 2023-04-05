@@ -1,10 +1,4 @@
-import {
-  Field,
-  GraphQLISODateTime,
-  ID,
-  InputType,
-  registerEnumType,
-} from '@nestjs/graphql';
+import { Field, InputType, Int, registerEnumType } from '@nestjs/graphql';
 
 enum SearchType {
   day = 'day',
@@ -19,6 +13,6 @@ export class GetMyBookingsInput {
   @Field(() => String)
   date: string;
 
-  @Field(() => SearchType)
-  searchPeriod: SearchType;
+  @Field(() => Int)
+  days: number;
 }

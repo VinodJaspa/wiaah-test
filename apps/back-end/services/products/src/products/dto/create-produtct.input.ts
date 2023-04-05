@@ -75,8 +75,8 @@ export class CreateProductInput {
   @Field((type) => [StringTranslationField])
   title: StringTranslationField[];
 
-  @Field((type) => StringTranslationField)
-  description: StringTranslationField;
+  @Field((type) => [StringTranslationField])
+  description: StringTranslationField[];
 
   @Field((type) => ID)
   categoryId: string;
@@ -107,9 +107,6 @@ export class CreateProductInput {
 
   @Field((type) => VisibilityEnum)
   visibility: VisibilityEnum;
-
-  @Field(() => ProductStatus, { nullable: true })
-  status: ProductStatus;
 
   @Field(() => Float)
   vat: number;

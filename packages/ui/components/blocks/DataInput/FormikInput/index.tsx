@@ -7,6 +7,7 @@ import {
   getTranslationStateValue,
   setTranslationStateValue,
 } from "@UI";
+import { startCase } from "lodash";
 
 export interface FormikInputProps extends HtmlInputProps {
   label?: TranslationTextType | string;
@@ -19,8 +20,8 @@ export interface FormikInputProps extends HtmlInputProps {
 }
 
 export function FormikInput<T = InputProps>({
-  label,
   name,
+  label,
   children,
   as = Input,
   containerProps,
@@ -76,7 +77,7 @@ export const FormikTransalationInput: React.FC<
   containerProps,
   formikSetField,
   formikValues,
-  label,
+  label = startCase(name),
   labelProps,
   as,
   ...props
@@ -117,7 +118,7 @@ export const FormikTransalationInput: React.FC<
         />
         <span className="text-red-500">
           {/* @ts-ignore */}
-          <ErrorMessage name={name} />
+          {/* <ErrorMessage name={name} /> */}
         </span>
       </div>
     </>

@@ -44,7 +44,7 @@ export const HotelMyServiceCard: React.FC<HotelMyServiceCardProps> = (
       className={`flex flex-col lg:flex-row gap-4 border-2 bg-white border-gray-300 p-2 rounded-lg`}
     >
       <div className="relative isolate min-w-[13rem]">
-        <AspectRatioImage src={thumbnail} alt={title} ratio={1} />
+        <AspectRatioImage src={thumbnail} alt={title} ratio={1.2} />
         <HeartIcon className="absolute top-2 right-2 z-[5] bg-black bg-opacity-50 rounded-full text-white p-1 text-2xl cursor-pointer" />
       </div>
       <div className="flex flex-col gap-2 w-full">

@@ -15,6 +15,7 @@ export const Root: React.FC<RootProps> = ({ children, scrollable = true }) => {
   const { isMobile } = useResponsive();
   const router = useRouter();
   const { i18n } = useTranslation();
+
   if (router.locale) {
     const { locale, locales, defaultLocale } = router;
     React.useEffect(() => {

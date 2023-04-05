@@ -128,11 +128,12 @@ export class AccountsController implements OnModuleInit {
         },
       } = payload;
       const account = await this.accountService.getByEmail(email);
-      const { firstName, password, type, id, lastName, verified } = account;
+      const { firstName, password, accountType, id, lastName, verified } =
+        account;
       return new GetAccountMetaDataByEmailMessageReply({
         success: true,
         data: {
-          accountType: type,
+          accountType,
           email,
           password,
           firstName,
@@ -162,10 +163,9 @@ export class AccountsController implements OnModuleInit {
   }
 
   @EventPattern(
-    KAFKA_EVENTS.BILLING_EVNETS.billingSubscriptionPaid('membership'),
+    KAFKA_EVENTS.BILLING_EVNETS.billingSubscriptionActivated('membership'),
   )
   handleMembershipPaid(@Payload() { value }: { value: SubscriptionPaidEvent }) {
-    console.log('updating user membershipo');
     this.commandBus.execute<UpdateUserMembershipCommand, Account>(
       new UpdateUserMembershipCommand(value.input.userId, value.input.id),
     );

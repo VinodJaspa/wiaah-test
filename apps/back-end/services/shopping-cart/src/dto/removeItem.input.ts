@@ -1,10 +1,11 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
+import { ShoppingCartItemType } from './addItem.input';
 
 @InputType()
 export class RemoveShoppingCartItemInput {
-  @Field((type) => ID)
+  @Field(() => ID)
   itemId: string;
 
-  @Field(() => String)
-  type: string;
+  @Field(() => ShoppingCartItemType)
+  type: ShoppingCartItemType;
 }

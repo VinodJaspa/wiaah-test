@@ -20,15 +20,6 @@ export class StripeConnectedAccountCreatedEventHandler
   async handle({
     input: { stripeId, userId },
   }: StripeConnectedAccountCreatedEvent) {
-    await this.prisma.financialAccount.create({
-      data: {
-        financialId: stripeId,
-        label: `Stripe`,
-        ownerId: userId,
-        type: 'stripe',
-      },
-    });
-
     this.eventClient.emit(
       KAFKA_EVENTS.BILLING_EVNETS.stripeAccountCreated,
       new StripeAccountCreatedEvent({ stripeId, userId }),

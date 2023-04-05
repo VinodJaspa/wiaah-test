@@ -25,37 +25,24 @@ import {
   usePaginationControls,
   ServiceType,
 } from "ui";
-import { mapArray } from "utils";
+import { mapArray, useForm } from "utils";
 
-interface Service {
-  id: string;
-  sellerName: string;
-  name: string;
-  price: number;
-  status: string;
-  updatedAt: string;
-  thubmnail: string;
-  type: string;
-}
-
-const serviceTypes = [
-  "hotel",
-  "restaurant",
-  "health-center",
-  "beauty-center",
-  "vehicle",
-  "holiday-rentals",
-];
-
-const products: NextPage = () => {
+const services: NextPage = () => {
   const { visit, getCurrentPath } = useRouting();
   const { t } = useTranslation();
-  const [serviceType] = React.useState<ServiceType>(ServiceType.Hotel);
   const { pagination } = usePaginationControls();
-  const { data: services } = useGetFilteredServicesQuery({
-    pagination,
-    type: serviceType,
-  });
+
+  const { form, inputProps } = useForm<
+    Parameters<typeof useGetFilteredServicesQuery>[0]
+  >(
+    {
+      pagination,
+    },
+    { pagination }
+  );
+
+  const { data: services } = useGetFilteredServicesQuery(form);
+
   const { mutate } = useAdminDeleteServiceMutation();
 
   function handleDeleteService(id: string) {
@@ -81,6 +68,7 @@ const products: NextPage = () => {
                 <Th>{t("Id")}</Th>
                 <Th>{t("Price")}</Th>
                 <Th>{t("Type")}</Th>
+                <Th>{t("Day Clicks")}</Th>
                 <Th>{t("Earnings")}</Th>
                 <Th>{t("Sales")}</Th>
                 <Th>{t("Total Ordered Items")}</Th>
@@ -216,4 +204,4 @@ const products: NextPage = () => {
   );
 };
 
-export default products;
+export default services;

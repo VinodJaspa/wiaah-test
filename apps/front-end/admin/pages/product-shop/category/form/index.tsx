@@ -25,19 +25,28 @@ import {
   Select,
   SelectOption,
   FormTranslationWrapper,
-  FormikTransalationInput,
   useGetAdminProductCategoriesQuery,
   useUpdateProductCategoryMutation,
   useCreateProductCategory,
 } from "ui";
-import { mapArray, runIfFn } from "utils";
+import {
+  WiaahLanguageCountries,
+  WiaahLanguageCountriesIsoCodes,
+  mapArray,
+  runIfFn,
+  useForm,
+} from "utils";
 
 const EditCategory = () => {
   const { getParam, back } = useRouting();
   const CategoryId: string = getParam("category_id");
   const { t } = useTranslation();
-  const [form, setForm] = React.useState<CreateCategoryInput>();
-  const [lang, changeLang] = React.useState<string>("en");
+  const { form, inputProps, selectProps, translationInputProps, handleChange } =
+    useForm<Partial<CreateCategoryInput>>({});
+  const [lang, changeLang] = React.useState<string>(
+    WiaahLanguageCountriesIsoCodes.at(0)
+  );
+
   const { data: cates } = useGetAdminProductCategoriesQuery({
     pagination: {
       page: 1,
@@ -50,7 +59,7 @@ const EditCategory = () => {
     if (CategoryId) {
       updateCate({ ...form, id: CategoryId });
     } else {
-      createCate(form);
+      createCate(form as Required<typeof form>);
     }
   };
 
@@ -59,43 +68,41 @@ const EditCategory = () => {
       name: t("General"),
       comp: (
         <div className="grid grid-cols-8 text-right gap-16 flex-col w-full">
-          <Formik initialValues={{}} onSubmit={() => {}}>
-            <>
-              <p>
-                <span className="text-red-400 inline-block translate-y-1/4 px-2 transform font-bold text-2xl">
-                  *
-                </span>
-                {t("Category Name")}
-              </p>
-              <FormikTransalationInput
-                formikSetField={(key, v) =>
-                  setForm((v) => ({ ...v, [key]: v }))
-                }
-                name={"name"}
-                formikValues={form}
-                containerProps={{ className: "col-span-7" }}
+          <>
+            <p className="col-span-1">
+              <span className="text-red-400 inline-block translate-y-1/4 px-2 transform font-bold text-2xl">
+                *
+              </span>
+              {t("Category Name")}
+            </p>
+            <div className="col-span-7">
+              <Input
+                {...translationInputProps("name", lang)}
+                className={"col-span-7"}
               />
-              <p>{t("Description")}</p>
-              <Textarea className="col-span-7" />
-              <p>
-                <span className="text-red-400 inline-block translate-y-1/4 px-2 transform font-bold text-2xl">
-                  *
-                </span>
-                {t("Meta Tag Title")}
-              </p>
-              <Input className="col-span-7" />
-              <p>{t("Meta Tag Description")}</p>
-              <Textarea
-                className="col-span-7"
-                placeholder={t("Meta Tag Description")}
-              />
-              <p>{t("Meta Tag Keywords")}</p>
-              <Textarea
-                className="col-span-7"
-                placeholder={t("Meta Tag Keywords")}
-              />
-            </>
-          </Formik>
+            </div>
+            <p className="col-span-1">{t("Description")}</p>
+            <Textarea className="col-span-7" />
+            <p className="col-span-1">
+              <span className="text-red-400 inline-block translate-y-1/4 px-2 transform font-bold text-2xl">
+                *
+              </span>
+              {t("Meta Tag Title")}
+            </p>
+            <div className="col-span-7">
+              <Input {...translationInputProps("")} />
+            </div>
+            <p className="col-span-1">{t("Meta Tag Description")}</p>
+            <Textarea
+              className="col-span-7"
+              placeholder={t("Meta Tag Description")}
+            />
+            <p className="col-span-1">{t("Meta Tag Keywords")}</p>
+            <Textarea
+              className="col-span-7"
+              placeholder={t("Meta Tag Keywords")}
+            />
+          </>
         </div>
       ),
     },
@@ -112,9 +119,7 @@ const EditCategory = () => {
                     className="col-span-7"
                     placeholder={t("Parent")}
                     value={form?.parantId || ""}
-                    onOptionSelect={(id) =>
-                      setForm((old) => ({ ...old, parantId: id }))
-                    }
+                    {...inputProps("parantId")}
                   >
                     {mapArray(cates, ({ id, name }) => (
                       <SelectOption value={id}>{name}</SelectOption>
@@ -152,23 +157,13 @@ const EditCategory = () => {
                   <p className="font-bold">{t("Sort Order")}</p>
                   <Input
                     type="number"
-                    onChange={(e) =>
-                      setForm((old) => ({
-                        ...old,
-                        sortOrder: parseInt(e.target.value),
-                      }))
-                    }
+                    {...inputProps("sortOrder")}
                     className="col-span-7"
                     placeholder={t("Sort Order")}
                   />
                   <p className="font-bold">{t("Status")}</p>
                   <Select
-                    onOptionSelect={(e) =>
-                      setForm((old) => ({
-                        ...old,
-                        status: e as ProductCategoryStatus,
-                      }))
-                    }
+                    {...selectProps("status")}
                     className="col-span-7"
                     placeholder={t("Status")}
                   >
@@ -241,7 +236,7 @@ const EditCategory = () => {
             <div className="flex items-center">
               <SimpleTabHead>
                 {mapArray(
-                  ["GB", "FR", "DE", "ES"] as FlagIconCode[],
+                  WiaahLanguageCountriesIsoCodes as FlagIconCode[],
                   (v, i) =>
                     ({ onClick, selected }) =>
                       (

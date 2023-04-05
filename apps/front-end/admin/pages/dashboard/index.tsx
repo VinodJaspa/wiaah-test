@@ -3,7 +3,6 @@ import React from "react";
 import {
   AnalyticsCard,
   ShoppingBagOutlineIcon,
-  DotIcon,
   AspectRatio,
   PriceDisplay,
   HorizontalDotsIcon,
@@ -16,13 +15,14 @@ import {
   Td,
   DownloadIcon,
   Button,
-  useGetAdminRecentSales,
-  useGetAdminLatestOrders,
   useGetAdminDashboardData,
   useAdminGetLatestOrdersQuery,
   useGetRecentSellers,
   useGetRecentBuyers,
   useGetAdminRecentSalesQuery,
+  GetRecentBuyersQuery,
+  GetRecentSellersQuery,
+  getRandomUser,
 } from "ui";
 import {
   Area,
@@ -34,6 +34,7 @@ import {
   YAxis,
 } from "recharts";
 import {
+  AddToDate,
   getDatesInRange,
   mapArray,
   randomNum,
@@ -42,7 +43,6 @@ import {
 } from "utils";
 import { useTranslation } from "react-i18next";
 import { useDateDiff, useResponsive } from "hooks";
-import { AnalyticsProfit } from "api";
 
 const Dashboard: NextPage = () => {
   useResponsive();
@@ -69,30 +69,36 @@ const Dashboard: NextPage = () => {
   const dateSorted = accounts.sort(
     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   );
-  const charData = getDatesInRange(
-    new Date(accounts[0].createdAt),
-    new Date(accounts[-1].createdAt)
-  ).reduce((acc, curr, idx, arr) => {
+  const dates = getDatesInRange(
+    new Date(accounts[0]?.createdAt),
+    new Date(accounts[accounts.length - 1]?.createdAt)
+  );
+
+  const charData = dates.reduce((acc, curr, idx, arr) => {
     const from = curr;
     const to = arr[idx + 1] || new Date();
 
     return [
       ...acc,
       {
-        time: `${from.toLocaleDateString("en-us", {
+        time: `${from.toLocaleTimeString("en-us", {
           timeStyle: "short",
-        })} - ${to.toLocaleDateString("en-us", {
+        })} - ${to.toLocaleTimeString("en-us", {
           timeStyle: "short",
         })}`,
-        sellers: recentSellers.filter(
-          (v) => new Date(v.createdAt) > from && new Date(v.createdAt) < to
-        ),
-        buyers: recentBuyers.filter(
-          (v) => new Date(v.createdAt) > from && new Date(v.createdAt) < to
-        ),
+        sellers: randomNum(150),
+        // recentSellers.filter(
+        //   (v) => new Date(v.createdAt) >= from && new Date(v.createdAt) <= to
+        // ).length,
+        buyers: randomNum(150),
+        // recentBuyers.filter(
+        //   (v) => new Date(v.createdAt) >= from && new Date(v.createdAt) <= to
+        // ).length,
       },
     ];
   }, [] as { time: string; sellers: number; buyers: number }[]);
+
+  console.log({ charData, recentSellers, recentBuyers, dates, accounts });
 
   return (
     <div className="grid grid-cols-3 gap-4">

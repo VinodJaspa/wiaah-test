@@ -129,7 +129,7 @@ export const HotelsSearchResultsView: React.FC = () => {
         </Formik>
       </ServicesSearchResultsFiltersSidebar>
 
-      <HotelsSearchList rooms={data} total={data.length} />
+      <HotelsSearchList rooms={data} total={data?.length || 0} />
     </div>
   );
 };

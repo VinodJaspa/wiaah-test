@@ -1,10 +1,7 @@
 import { CommandHandler, ICommandHandler, QueryBus } from '@nestjs/cqrs';
-import { StripeService } from '@stripe';
+import { StripeService } from 'nest-utils';
 
-import {
-  GetMembershipPriceIdQuery,
-  GetUserStripeCustomerIdQuery,
-} from '@stripe-billing/queries';
+import { GetMembershipPriceIdQuery } from '@stripe-billing/queries';
 import { PaymentIntent } from '@stripe-billing/entities';
 import { CreateMembershipPaymentIntentCommand } from '@stripe-billing/commands/impl';
 import { ProductTypeEnum } from '@stripe-billing/const';
@@ -22,26 +19,21 @@ export class CreateMembershipPaymentIntentCommandHandler
     input,
     user,
   }: CreateMembershipPaymentIntentCommand): Promise<PaymentIntent> {
-    const customerIdPromise = this.querybus.execute<
-      GetUserStripeCustomerIdQuery,
-      string
-    >(new GetUserStripeCustomerIdQuery(user));
-
-    const membershipPriceIdPromise = this.querybus.execute<
+    const priceIds = await this.querybus.execute<
       GetMembershipPriceIdQuery,
-      string
+      string[]
     >(new GetMembershipPriceIdQuery(input.membershipId, user));
 
     const res = await this.stripeService.createCustomerSubscription(
-      await customerIdPromise,
-      await membershipPriceIdPromise,
+      user.stripeCustomerId,
+      priceIds,
       {
         itemId: input.membershipId,
         itemType: ProductTypeEnum.membership,
         userId: user.id,
       },
     );
-    console.log(JSON.stringify(res, null, 2));
+
     return {
       client_secret: res?.clientSecret,
     };

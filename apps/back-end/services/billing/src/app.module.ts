@@ -6,9 +6,13 @@ import {
   ApolloFederationDriverConfig,
   ApolloFederationDriver,
 } from '@nestjs/apollo';
-import { getUserFromRequest, KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import {
+  getUserFromRequest,
+  KAFKA_BROKERS,
+  SERVICES,
+  StripeModule,
+} from 'nest-utils';
 import { StripeBillingModule } from './stripe-billing/stripe-billing.module';
-import { StripeModule } from './stripe/stripe.module';
 import { BalanceModule } from './balance/balance.module';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { InvoiceRecordModule } from './invoice-record/invoice-record.module';
@@ -45,18 +49,24 @@ export class EventModule {}
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
       driver: ApolloFederationDriver,
       autoSchemaFile: true,
-      context: ({ req }) => ({
-        req,
-        user: getUserFromRequest(req),
-        ip: req.ip,
-      }),
+      context: ({ req }) => {
+        return {
+          req,
+          user: getUserFromRequest(req),
+          ip: req.ip,
+        };
+      },
     }),
     EventModule,
     TransactionsModule,
     BillingAddressModule,
     StripeBillingModule,
-    StripeModule,
     BalanceModule,
+    StripeModule.forRoot({
+      apiKey: process.env.STRIPE_API_SECRET_KEY,
+      application_cut_percent: parseInt(process.env.APP_CUT_PERCENT),
+      webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
+    }),
   ],
   controllers: [],
   providers: [],

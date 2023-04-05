@@ -3,12 +3,9 @@ import { Shop } from './shop.entity';
 
 @ObjectType()
 @Directive('@extends')
-@Directive('@key(fields: "storeId")')
+@Directive('@key(fields: "id")')
 export class Product {
   @Field((type) => String)
   @Directive('@external')
-  storeId: string;
-
-  // @Field((type) => Shop)
-  // shop: Shop;
+  id: string;
 }

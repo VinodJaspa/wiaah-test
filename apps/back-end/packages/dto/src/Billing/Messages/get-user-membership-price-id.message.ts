@@ -6,5 +6,5 @@ export class GetUserMembershipPriceIdMessage extends KafkaMessage<{
 }> {}
 
 export class GetUserMembershipPriceIdMessageReply extends KafkaMessageReply<{
-  priceId: string;
+  priceIds: string[];
 }> {}

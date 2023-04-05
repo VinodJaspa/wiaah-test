@@ -1,6 +1,6 @@
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { CreateStripeMonthlyPriceCommand } from '@stripe-billing/commands/impl';
-import { StripeService } from '@stripe';
+import { StripeService } from 'nest-utils';
 import { StripeMonthlyPriceCreatedEvent } from '@stripe-billing/events';
 
 @CommandHandler(CreateStripeMonthlyPriceCommand)

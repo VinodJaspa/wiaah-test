@@ -1,6 +1,6 @@
 import { Comment } from '@entities';
 import { UseGuards } from '@nestjs/common';
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import {
   accountType,
   ExtractPagination,
@@ -28,5 +28,34 @@ export class CommentsAdminResolver {
       skip,
       take,
     });
+  }
+
+  @Mutation(() => Boolean)
+  async adminDeleteComment(@Args('commentId') id: string) {
+    try {
+      await this.prisma.$transaction([
+        this.prisma.comment.delete({
+          where: {
+            id,
+          },
+        }),
+        this.prisma.comment.deleteMany({
+          where: {
+            AND: [
+              {
+                hostId: id,
+              },
+              {
+                hostType: 'comment',
+              },
+            ],
+          },
+        }),
+      ]);
+
+      return true;
+    } catch {
+      return false;
+    }
   }
 }

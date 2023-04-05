@@ -109,6 +109,6 @@ export class Order {
   @Field(() => Float, { defaultValue: 0 })
   paid?: number;
 
-  // @Field(() => Discount, { nullable: true })
-  // discount?: Discount;
+  @Field(() => String, { nullable: true })
+  trackingLink?: string;
 }

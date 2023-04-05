@@ -5,8 +5,10 @@ import {
   Comment,
   Attachment,
   Profile,
+  ContentHostType,
 } from "@features/API";
 import { useQuery } from "react-query";
+import { isDev, randomNum } from "@UI/../utils/src";
 
 export type GetContentCommentsQueryVariables = Exact<{
   args: GetContentCommentsInput;
@@ -73,6 +75,29 @@ export const useGetContentCommentsQuery = (args: GetContentCommentsInput) => {
   });
 
   return useQuery(["get-content-comments", { args }], async () => {
+    if (isDev) {
+      const res: GetContentCommentsQuery["getContentComments"] = [
+        ...Array(10),
+      ].map((_, i) => ({
+        id: "",
+        attachments: [],
+        commentedAt: new Date().toString(),
+        content:
+          "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum",
+        hostId: "",
+        hostType: ContentHostType.PostNewsfeed,
+        likes: randomNum(150),
+        userId: "",
+        author: {
+          photo: `/profile (${i % 9}).jfif`,
+          username: `username ${i}`,
+          verified: i % 2 === 0,
+        },
+      }));
+
+      return res;
+    }
+
     const res = await client.send<GetContentCommentsQuery>();
 
     return res.data.getContentComments;

@@ -5,8 +5,10 @@ import {
   Membership,
   MembershipSubscription,
   MembershipTurnoverRule,
-} from "@features/Membership/schema";
+  MembershipTurnoverRuleType,
+} from "@features/API";
 import { CommissionType } from "@features/API";
+import { isDev, randomNum } from "@UI/../utils/src";
 
 export type GetMyMembershipQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -14,13 +16,19 @@ export type GetMyMembershipQuery = { __typename?: "Query" } & {
   getMyMembership?: Maybe<
     { __typename?: "MembershipSubscription" } & Pick<
       MembershipSubscription,
-      "userId" | "endAt" | "membershipId" | "startAt"
+      "userId" | "endAt" | "membershipId" | "startAt" | "usage"
     > & {
         membership: { __typename?: "Membership" } & Pick<Membership, "name"> & {
             turnover_rules: Array<
               { __typename?: "MembershipTurnoverRule" } & Pick<
                 MembershipTurnoverRule,
-                "commission" | "commissionType"
+                | "commission"
+                | "commissionType"
+                | "id"
+                | "type"
+                | "usage"
+                | "key"
+                | "commissionOn"
               >
             >;
           };
@@ -32,17 +40,23 @@ export const useGetMyMembershipQuery = () => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
-    query getMyMembership {
+        query getMyMembership {
       getMyMembership {
           userId
           endAt
           membershipId
           startAt
+        	usage
           membership{
               name
               turnover_rules {
                   commission
+                  commissionOn
                   commissionType
+                	id
+                	type
+                	usage
+                key
               }
           }
       }
@@ -50,27 +64,37 @@ export const useGetMyMembershipQuery = () => {
   `);
 
   return useQuery(["my-membership"], async () => {
-    const mockRes: GetMyMembershipQuery["getMyMembership"] = {
-      endAt: new Date().toString(),
-      membership: {
-        name: "Pay Per Click",
-        turnover_rules: [
-          {
-            commissionType: CommissionType.Percentage,
-            commission: 10,
-          },
-          {
-            commissionType: CommissionType.Percentage,
-            commission: 10,
-          },
-        ],
-      },
-      membershipId: "testid",
-      startAt: new Date().toString(),
-      userId: "testid",
-    };
+    if (isDev) {
+      const mockRes: GetMyMembershipQuery["getMyMembership"] = {
+        endAt: new Date().toString(),
+        membership: {
+          name: "Pay Per Click",
+          turnover_rules: [
+            {
+              commissionType: CommissionType.Percentage,
+              commission: 10,
+              id: "",
+              type: MembershipTurnoverRuleType.Flat,
+              key: "1",
+            },
+            {
+              commissionType: CommissionType.Percentage,
+              commission: 10,
+              id: "",
+              usage: 165,
+              type: MembershipTurnoverRuleType.Usage,
+              key: "5",
+            },
+          ],
+        },
+        usage: randomNum(1000),
+        membershipId: "testid",
+        startAt: new Date().toString(),
+        userId: "testid",
+      };
+      return mockRes;
+    }
 
-    return mockRes;
     const res = await client.send<GetMyMembershipQuery>();
 
     return res.data.getMyMembership;

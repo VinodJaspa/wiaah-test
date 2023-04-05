@@ -2,7 +2,6 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  NotFoundException,
   UnprocessableEntityException,
 } from '@nestjs/common';
 import { PrismaService } from 'prismaService';
@@ -24,11 +23,10 @@ import {
   VoucherAppliedEvent,
 } from 'nest-dto';
 import {
-  AddShoppingCartProductItemInput,
+  AddShoppingCartItemInput,
   ApplyVoucherInput,
   RemoveShoppingCartItemInput,
 } from '@dto';
-import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class ShoppingCartService {
@@ -81,7 +79,7 @@ export class ShoppingCartService {
 
   async addProduct(
     user: AuthorizationDecodedUser,
-    product: AddShoppingCartProductItemInput,
+    product: AddShoppingCartItemInput,
   ): Promise<CartProduct> {
     const {
       results: { data, error, success },
@@ -99,175 +97,49 @@ export class ShoppingCartService {
       'fetch product metadata timed out',
     );
     if (!success) throw error;
-    data;
-    const newCartItem: CartProduct = {
-      id: uuid(),
-      productId: product.itemId,
-      shippingRuleId: product.shippingRuleId,
-      attributesJson: product.attributesJson,
-      qty: product.quantity,
-    };
 
-    // const hasitem = await this.alreadyHasItem(user.id, product.itemId);
-
-    // if (hasitem) {
-    //   await this.incressShoppingCartItem(
-    //     user.id,
-    //     product.itemId,
-    //     product.quantity,
-    //   );
-
-    //   return newCartItem;
-    // }
-
-    await this.prisma.cart.update({
-      where: {
-        ownerId: user.id,
-      },
+    const res = await this.prisma.cartProduct.create({
       data: {
-        cartProducts: {
-          push: newCartItem,
-        },
+        ownerId: user.id,
+        attributesJson: product.attributesJson,
+        productId: product.itemId,
+        shippingRuleId: product.shippingRuleId,
       },
     });
 
-    return newCartItem;
+    return res;
   }
-
-  // async alreadyHasItem(userId: string, itemId: string): Promise<boolean> {
-  //   const item = await this.prisma.cart.findUnique({
-  //     where: {
-  //       ownerId: userId,
-  //     },
-  //     select: {
-  //       cartItems: {
-  //         select: {
-  //           itemId: true,
-  //         },
-  //       },
-  //     },
-  //     rejectOnNotFound() {
-  //       throw new NotFoundException(
-  //         'could not find shopping cart record for this user',
-  //       );
-  //     },
-  //   });
-  //   const { cartItems } = item;
-  //   const hasItem = cartItems.findIndex((item) => item.itemId === itemId) > -1;
-
-  //   return hasItem;
-  // }
-
-  // async incressShoppingCartItem(
-  //   ownerId: string,
-  //   itemId: string,
-  //   amount: number = 1,
-  // ) {
-  //   return this.prisma.cart.update({
-  //     where: {
-  //       ownerId,
-  //     },
-  //     data: {
-  //       cartItems: {
-  //         updateMany: {
-  //           where: {
-  //             itemId,
-  //           },
-  //           data: {
-  //             quantity: {
-  //               increment: amount,
-  //             },
-  //           },
-  //         },
-  //       },
-  //     },
-  //   });
-  // }
-
-  // async addService(
-  //   user: AuthorizationDecodedUser,
-  //   service: AddShoppingCartServiceItemInput,
-  // ): Promise<BookedService> {
-  //   const {
-  //     results: { data, error, success },
-  //   } = await KafkaMessageHandler<
-  //     string,
-  //     GetServiceMetaDataMessage,
-  //     GetServiceMetaDataMessageReply
-  //   >(
-  //     this.eventsClient,
-  //     KAFKA_MESSAGES.SERVICES_MESSAGES.getServiceMetaData,
-  //     new GetServiceMetaDataMessage({
-  //       serviceId: service.itemId,
-  //       userId: user.id,
-  //     }),
-  //   );
-  //   if (!success) throw error;
-  //   const { name, price, providerId, thumbnail } = data;
-  //   const newCartItem: BookedService = {
-  //     id: uuid(),
-  //     cancelationPolicyId:service,
-  //   };
-
-  //   await this.prisma.cart.update({
-  //     where: {
-  //       ownerId: user.id,
-  //     },
-  //     data: {
-  //       cartServices: {
-  //         push: newCartItem,
-  //       },
-  //     },
-  //   });
-
-  //   return newCartItem;
-  // }
 
   async removeItem(
     user: AuthorizationDecodedUser,
     input: RemoveShoppingCartItemInput,
   ) {
-    await this.prisma.cart.update({
-      where: {
-        ownerId: user.id,
-      },
-      data: {
-        cartProducts:
-          input.type === 'product'
-            ? {
-                deleteMany: {
-                  where: {
-                    id: input.itemId,
-                  },
-                },
-              }
-            : undefined,
-        cartServices:
-          input.type === 'service'
-            ? {
-                deleteMany: {
-                  id: input.itemId,
-                },
-              }
-            : undefined,
-      },
-    });
+    const res =
+      input.type === 'product'
+        ? await this.prisma.cartProduct.delete({
+            where: {
+              id: input.itemId,
+            },
+          })
+        : await this.prisma.bookedService.delete({
+            where: {
+              id: input.itemId,
+            },
+          });
 
     return true;
   }
 
-  clearShoppingCart(ownerId: string): Promise<ShoppingCart> {
-    return this.prisma.cart.update({
-      where: {
-        ownerId,
-      },
-      data: {
-        cartProducts: [],
-        cartServices: {
-          deleteMany: {},
+  async clearShoppingCart(ownerId: string): Promise<boolean> {
+    await this.prisma.$transaction([
+      this.prisma.cartProduct.deleteMany({
+        where: {
+          ownerId,
         },
-      },
-    });
+      }),
+    ]);
+
+    return true;
   }
 
   async applyVoucher(

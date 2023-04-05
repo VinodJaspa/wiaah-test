@@ -91,11 +91,11 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
   }
 
   return (
-    <div className="flex flex-col md:table md:h-24 gap-4 w-full py-2">
+    <div className="flex flex-col md:table md:h-24 gap-4 w-full p-2">
       <div className="md:table-row">
         <div className="md:table-cell md:w-[99%] md:pr-4">
           <div className="flex flex-col w-full gap-4">
-            <BoxShadow>
+            <BoxShadow className="rounded-3xl overflow-hidden">
               <div className="bg-white flex flex-col gap-4 p-4 py-8">
                 <div className="flex w-full justify-center text-3xl">
                   <p className="font-bold">{t("Checkout")}</p>
@@ -143,23 +143,23 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
             <PaymentGateway />
           </div>
         </div>
-        <div className="md:table-cell ">
-          <BoxShadow className="h-full w-full md:w-[min(30rem,100vw)]">
-            <div className="bg-white h-full">
-              <div className="flex flex-col h-full p-4 gap-2">
-                <div className="w-full flex justify-between items-center">
-                  <p className="text-3xl font-bold">
-                    {res ? res.data.bookedServices.length : 0} {t("items")}
+        <div className="md:table-cell">
+          <BoxShadow className="h-full transform -translate-y-4 w-full overflow-hidden rounded-3xl md:w-[min(30rem,100vw)]">
+            <div className="bg-white h-full p-6">
+              <div className="flex flex-col h-full gap-2">
+                <div className="w-full border-b pb-2 flex justify-between items-center">
+                  <p className="text-2xl font-semibold">
+                    {res ? res.data.bookedServices.length : 0} {t("Items")}
                   </p>
                   <p
-                    className="text-lg cursor-pointer"
+                    className="text-lg font-normal cursor-pointer"
                     onClick={() => visit((routes) => routes.visitCarySummary())}
                   >
                     {t("Change")}
                   </p>
                 </div>
-                <Divider />
-                <div className="relative h-[30rem] sm:h-full w-full">
+
+                <div className="relative h-[30rem] py-4 sm:h-full w-full">
                   <div className="flex flex-col absolute top-0 left-0 bottom-0 right-0 overflow-y-scroll thinScroll gap-4 h-full">
                     <SpinnerFallback isError={isError} isLoading={isLoading}>
                       {res

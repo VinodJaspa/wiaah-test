@@ -17,7 +17,7 @@ import {
   VerifiedIcon,
 } from "ui";
 import { FiActivity, FiSettings } from "react-icons/fi";
-import { BiBrush, BiDish, BiMoney } from "react-icons/bi";
+import { BiBrush, BiDish, BiDollar, BiMoney } from "react-icons/bi";
 
 import { HiUserGroup, HiChat, HiTicket, HiNewspaper } from "react-icons/hi";
 import { ImCheckmark } from "react-icons/im";
@@ -511,6 +511,13 @@ export const AdminNavigationSidebar: React.FC<{
       onClick() {},
       subLinks: [],
       slug: "food",
+    },
+    {
+      icon: <BiDollar />,
+      name: t("Profit"),
+      onClick() {},
+      subLinks: [],
+      slug: "profit",
     },
   ];
 

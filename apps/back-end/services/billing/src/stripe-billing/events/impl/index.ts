@@ -4,6 +4,7 @@ export * from './stripe-product-created.event';
 export * from './stripe-product-updated.event';
 export * from './stripe-tiered-price-created.event';
 export * from './stripe-monthly-price-created.event';
-export * from './stripe-subscription.paid.event';
+export * from './stripe-subscription.activated.event';
 export * from './stripe-invoice-paid.event';
 export * from './stripe-checkout-invoice-paid.event';
+export * from './stripe-subscription-past-due';

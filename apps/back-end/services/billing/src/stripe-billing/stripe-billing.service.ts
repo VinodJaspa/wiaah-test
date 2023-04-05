@@ -24,7 +24,7 @@ import {
 } from 'nest-dto';
 import { CommandBus } from '@nestjs/cqrs';
 
-import { StripeService } from '../stripe/stripe.service';
+import { StripeService } from 'nest-utils';
 import { CreateStripeConnectedAccountCommand } from '@stripe-billing/commands';
 import {
   CheckoutMetadata,
@@ -69,25 +69,7 @@ export class StripeBillingService {
   async createStripeConnectedAccount(
     user: AuthorizationDecodedUser,
   ): Promise<{ url: string }> {
-    const finAcc = await this.prisma.financialAccount.findUnique({
-      where: {
-        ownerId_type: {
-          ownerId: user.id,
-          type: 'stripe',
-        },
-      },
-    });
-
-    const stripeId = finAcc.financialId;
-
-    if (stripeId)
-      throw new UnprocessableEntityException(
-        'this account already has an stripe connected account',
-      );
-
-    const checkHasStripeId = await this.userHasStripeAccount(user.id);
-
-    if (checkHasStripeId)
+    if (user.stripeId)
       throw new UnprocessableEntityException(
         'this account already has an stripe connected account',
       );

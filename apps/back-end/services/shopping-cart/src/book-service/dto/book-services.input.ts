@@ -1,7 +1,14 @@
-import { InputType, Int, Field, ID } from '@nestjs/graphql';
+import {
+  InputType,
+  Int,
+  Field,
+  ID,
+  PartialType,
+  IntersectionType,
+} from '@nestjs/graphql';
 
 @InputType()
-class BaseBookServiceInput {
+class required {
   @Field(() => ID)
   serviceId: string;
 
@@ -16,7 +23,7 @@ class BaseBookServiceInput {
 }
 
 @InputType()
-export class BookHotelRoomInput extends BaseBookServiceInput {
+class optional {
   @Field(() => Date)
   checkout: Date;
 
@@ -25,31 +32,22 @@ export class BookHotelRoomInput extends BaseBookServiceInput {
 
   @Field(() => [ID])
   extrasIds: string[];
-}
 
-@InputType()
-export class BookRestaurantInput extends BaseBookServiceInput {
+  @Field(() => [ID])
+  treatmentsIds: string[];
+
+  @Field(() => ID)
+  doctorId: string;
+
   @Field(() => Int)
   duration: number;
 
   @Field(() => [ID])
   dishsIds: string[];
+
+  @Field(() => String)
+  vehicleId: string;
 }
 
 @InputType()
-export class BookHealthCenterServiceInput extends BaseBookServiceInput {
-  @Field(() => ID)
-  doctorId: string;
-}
-
-@InputType()
-export class BookBeautycenterServiceInput extends BaseBookServiceInput {
-  @Field(() => [ID])
-  treatmentsIds: string[];
-}
-
-@InputType()
-export class BookVehicleServiceInput extends BaseBookServiceInput {
-  @Field(() => [ID])
-  treatmentsIds: string[];
-}
+export class BookServiceInput extends IntersectionType(optional, required) {}

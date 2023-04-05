@@ -1,5 +1,6 @@
 import {
   Attachment,
+  AttachmentType,
   Exact,
   GetAdminFilteredNewsfeedPostsInput,
   Hashtag,
@@ -7,6 +8,7 @@ import {
   NewsfeedPost,
   Profile,
 } from "@features/API";
+import { isDev, randomNum } from "utils";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
 
@@ -49,6 +51,31 @@ export const getAdminFilteredNewsfeedPostsQueryKey = (args: args) => [
 export const getAdminFilteredNewsfeedPostsFetcher = async (args: args) => {
   const client = createGraphqlRequestClient();
 
+  if (isDev) {
+    const res: GetAdminFilteredPostsQuery["getFilteredNewsfeedPosts"] = [
+      ...Array(5),
+    ].map((_, i) => ({
+      id: i.toString(),
+      authorProfileId: i.toString(),
+      comments: randomNum(500),
+      content: `post number ${i}`,
+      createdAt: new Date().toString(),
+      hashtags: [],
+      attachments: [
+        {
+          src: "/profile (6).jfif",
+          type: AttachmentType.Img,
+        },
+      ],
+      reactionNum: randomNum(1000),
+      shares: randomNum(150),
+      title: `post title ${i}`,
+      userId: i.toString(),
+      views: randomNum(10000),
+    }));
+
+    return res;
+  }
   client.setQuery(`
 query getAdminFilteredPosts($args:GetAdminFilteredNewsfeedPostsInput!) {
  	getFilteredNewsfeedPosts(

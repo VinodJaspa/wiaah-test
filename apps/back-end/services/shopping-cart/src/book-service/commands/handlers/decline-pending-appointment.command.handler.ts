@@ -32,7 +32,7 @@ export class DeclinePendingAppointmentCommandHandler
 
     const res = await this.repo.updateStatus(
       app.id,
-      bookedServiceStatus.canceled_by_seller,
+      bookedServiceStatus.restitute,
       input.reason,
     );
     this.eventBus.publish(

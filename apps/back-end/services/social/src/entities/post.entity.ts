@@ -8,8 +8,12 @@ import {
   Directive,
 } from '@nestjs/graphql';
 import { Profile } from '@entities';
-import { Attachment, Hashtag } from '@entities';
-import { CommentsVisibility, MarketingTagType } from 'prismaClient';
+import { Hashtag } from '@entities';
+import {
+  CommentsVisibility,
+  MarketingTagType,
+  PostVisibility,
+} from 'prismaClient';
 
 registerEnumType(CommentsVisibility, { name: 'CommentsVisiblity' });
 
@@ -101,6 +105,12 @@ export class SocialPost {
 
   @Field(() => String)
   updatedAt: Date;
+
+  @Field(() => Boolean)
+  enableComments: boolean;
+
+  @Field(() => CommentsVisibility)
+  commentsVisibility: CommentsVisibility;
 }
 
 @ObjectType()
@@ -111,4 +121,10 @@ export class NewsfeedPost extends SocialPost {
 
   @Field(() => ID)
   authorProfileId: string;
+}
+
+@ObjectType()
+export class AdminNewsfeedPost extends NewsfeedPost {
+  @Field(() => PostVisibility)
+  visibility: PostVisibility;
 }

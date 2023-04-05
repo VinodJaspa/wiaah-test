@@ -14,7 +14,7 @@ import {
   SERVICES,
 } from 'nest-utils';
 import {
-  AddShoppingCartProductItemInput,
+  AddShoppingCartItemInput,
   ApplyVoucherInput,
   RemoveShoppingCartItemInput,
 } from '@dto';
@@ -48,7 +48,7 @@ export class ShoppingCartResolver implements Hooks {
   @Mutation((type) => CartProduct)
   addProductToCart(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-    @Args('addItemToCartArgs') input: AddShoppingCartProductItemInput,
+    @Args('addItemToCartArgs') input: AddShoppingCartItemInput,
   ): Promise<CartProduct> {
     return this.shoppingCartService.addProduct(user, input);
   }

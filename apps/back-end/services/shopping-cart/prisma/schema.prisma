@@ -13,15 +13,14 @@ datasource db {
 
 model Cart {
   id               String          @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId          String          @unique
-  cartServices     BookedService[]
-  cartProducts     CartProduct[]
+  ownerId          String          @unique @db.ObjectId
   appliedVoucherId String?
+  BookedService    BookedService[]
 }
 
-type CartProduct {
-  id             String
-  qty            Int
+model CartProduct {
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId        String
   attributesJson String
   productId      String
   shippingRuleId String
@@ -29,7 +28,6 @@ type CartProduct {
 
 model BookedService {
   id                  String              @id @default(auto()) @map("_id") @db.ObjectId
-  ownerCart           Cart                @relation(fields: [ownerId], references: [ownerId])
   serviceId           String              @db.ObjectId
   ownerId             String              @db.ObjectId
   providerId          String              @db.ObjectId
@@ -55,6 +53,8 @@ model BookedService {
   vehicleId           String?
   discountId          String?
   cashbackId          String?
+  Cart                Cart?               @relation(fields: [cartId], references: [id])
+  cartId              String?             @db.ObjectId
 }
 
 type AppliedVoucher {
@@ -74,7 +74,6 @@ enum BookedServiceStatus {
   completed
   continuing
   restitute
-  canceled_by_seller
   canceled_by_buyer
   pending
 

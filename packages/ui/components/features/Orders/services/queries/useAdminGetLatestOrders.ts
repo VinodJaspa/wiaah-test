@@ -4,9 +4,11 @@ import {
   Maybe,
   Order,
   OrderStatus,
+  OrderStatusEnum,
   Scalars,
 } from "@features/API";
 import { createGraphqlRequestClient } from "@UI/../api";
+import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
 import { useQuery } from "react-query";
 
 export type GetLatestOrdersQueryVariables = Exact<{
@@ -59,7 +61,22 @@ export const AdminGetLatestOrdersQueryFetcher = async (
 export const useAdminGetLatestOrdersQuery = (
   args: GetLatestOrdersQueryVariables["take"]
 ) => {
-  return useQuery(AdminGetLatestOrdersQueryKey(args), () =>
-    AdminGetLatestOrdersQueryFetcher(args)
-  );
+  return useQuery(AdminGetLatestOrdersQueryKey(args), () => {
+    if (isDev) {
+      const res: GetLatestOrdersQuery["getLatestOrders"] = [...Array(10)].map(
+        () => ({
+          billing: {
+            firstName: getRandomName().firstName,
+          },
+          createdAt: new Date().toString(),
+          paid: randomNum(156),
+          status: {
+            of: OrderStatusEnum.Paid,
+          },
+        })
+      );
+      return res;
+    }
+    return AdminGetLatestOrdersQueryFetcher(args);
+  });
 };

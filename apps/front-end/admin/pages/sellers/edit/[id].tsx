@@ -11,6 +11,7 @@ import { AccountPrivacySettings } from "components/views/sellers/AccountPrivacyS
 import { AccountProductManagement } from "components/views/sellers/AccountProductManagement";
 import { AccountRendezVous } from "components/views/sellers/AccountRendezVous";
 import { AccountSavedPosts } from "components/views/sellers/AccountSavedPosts";
+import { AccountSecuritySettings } from "components/views/sellers/AccountSecuritySettings";
 import { AccountServiceManagement } from "components/views/sellers/AccountServiceManagement";
 import { AccountShippingSettings } from "components/views/sellers/AccountShippingSettings";
 import { AccountShopReturns } from "components/views/sellers/AccountShopReturns";
@@ -22,6 +23,7 @@ import { AccountAffiliation } from "components/views/sellers/affiliation";
 import { AccountBookingsHistory } from "components/views/sellers/bookingsHistory";
 import { AccountFeesTab } from "components/views/sellers/fees";
 import { AccountGeneralView } from "components/views/sellers/general";
+import { SellerListing } from "components/views/sellers/listing";
 import { AccountOrderHistory } from "components/views/sellers/orderHistory";
 import { AccountReturns } from "components/views/sellers/returns";
 import { SellerAccountSales } from "components/views/sellers/SellerSales";
@@ -49,6 +51,7 @@ const Edit = () => {
 
   const tabsTitles = [
     "General",
+    "Listing",
     "Fees",
     "Affiliation",
     productsTitle,
@@ -77,6 +80,7 @@ const Edit = () => {
     "Payout",
     "Vouchers",
     "Statistics",
+    "Security",
   ];
 
   return (
@@ -100,6 +104,7 @@ const Edit = () => {
 
         <SimpleTabItemList>
           <AccountGeneralView accountId={id} />
+          <SellerListing></SellerListing>
           <AccountFeesTab accountId={id} />
           <AccountAffiliation showList accountId={id} />
           {isProducts ? (
@@ -132,6 +137,7 @@ const Edit = () => {
           <AccountPayouts accountId={id} />
           <AccountVouchers accountId={id} />
           <ProfileStatistics accountId={id} />
+          <AccountSecuritySettings accountId={id} />
         </SimpleTabItemList>
       </SimpleTabs>
     </>

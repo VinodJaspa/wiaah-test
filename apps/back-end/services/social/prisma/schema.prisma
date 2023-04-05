@@ -97,11 +97,13 @@ model NewsfeedPost {
   visibility         PostVisibility     @default(hidden)
   location           PostLocation?
   commentsVisibility CommentsVisibility @default(public)
+  enableComments     Boolean            @default(true)
   mentions           PostMention[]
   tags               PostTag[]
   status             PostStatus         @default(active)
   createdAt          DateTime           @default(now())
   updatedAt          DateTime           @updatedAt
+  legend             String
 }
 
 type MarketingTag {

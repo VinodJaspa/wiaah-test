@@ -424,11 +424,18 @@ type VehicleService {
 type Service {
   id: ID!
   ownerId: ID!
+  dayClicksId: String!
   type: ServiceType!
   createdAt: DateTime!
+  title: String!
+  description: String!
+  metaTagDescription: String!
+  metaTagKeywords: [String!]!
+  hashtags: [String!]!
   updatedAt: DateTime!
   location: ServiceLocation!
   presentations: [ServicePresentation!]!
+  thumbnail: String!
   policies: [ServicePolicy!]!
   serviceMetaInfo: ServiceMetaInfo!
   contact: ServiceContact!
@@ -448,6 +455,7 @@ type Service {
   workingHours: WorkingSchedule
   owner: Account!
   establishmentType: RestaurantEstablishmentType!
+  dayClicks: Int
 }
 
 enum ServiceType {
@@ -554,8 +562,8 @@ type ServiceShopRaw {
 }
 
 type Query {
+  getServiceDetails(id: String!, isClick: Boolean!): Service
   adminGetAccountService(accountId: String!): Service!
-  getServiceDetails(id: String!): Service
   adminGetDishs(args: AdminGetDishsInput!): [Dish!]!
   adminGetAccountWorkingSchedule(accountId: String!): WorkingSchedule!
   getMyWorkingSchedule: WorkingSchedule!

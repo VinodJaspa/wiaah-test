@@ -14,9 +14,8 @@ datasource db {
 model Membership {
   id                     String                   @id @default(auto()) @map("_id") @db.ObjectId
   name                   String
-  commissionOn           CommissionOn
-  recurring              Float
-  priceId                String?
+  recurring              membershipRecurring
+  priceIds               String[]
   turnover_rules         MembershipTurnoverRule[]
   includings             MembershipIncludeItem[]
   active                 Boolean                  @default(false)
@@ -24,20 +23,35 @@ model Membership {
   MemberShipSubscription MemberShipSubscription[]
 }
 
+enum membershipRecurring {
+  day
+  month
+  week
+  year
+}
+
 model MembershipTurnoverRule {
-  id             String         @id @default(auto()) @map("_id") @db.ObjectId
-  membershipId   String         @db.ObjectId
-  membership     Membership     @relation(fields: [membershipId], references: [id])
-  priceId        String?
-  usage          Float
+  id             String                     @id @default(auto()) @map("_id") @db.ObjectId
+  commissionOn   CommissionOn?
+  membershipId   String                     @db.ObjectId
+  membership     Membership                 @relation(fields: [membershipId], references: [id])
+  usage          Float?
   commission     Float
   commissionType commissionType
+  type           MembershipTurnoverRuleType
+  key            String
+}
+
+enum MembershipTurnoverRuleType {
+  usage
+  flat
 }
 
 model MemberShipSubscription {
   userId       String     @id @map("_id") @db.ObjectId
   membershipId String     @db.ObjectId
   membership   Membership @relation(fields: [membershipId], references: [id])
+  stripeSubId  String
 
   usage   Float                        @default(0)
   status  MembershipSubscriptionStatus @default(pending)
@@ -64,7 +78,6 @@ type MembershipIncludeItem {
 
 enum CommissionOn {
   external_click
-  sale
   revenue
 }
 

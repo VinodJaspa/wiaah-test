@@ -5,7 +5,6 @@ import {
   Maybe,
   Profile,
   Scalars,
-  Service,
   ServiceContact,
   ServiceLocation,
 } from "@features/API";
@@ -21,19 +20,16 @@ export type GetAppointmentDetailsQuery = { __typename?: "Query" } & {
     room?: Maybe<
       { __typename?: "HotelRoom" } & Pick<HotelRoom, "title" | "pricePerNight">
     >;
-    service: { __typename?: "Service" } & Pick<
-      Service,
-      "thumbnail" | "title"
-    > & {
-        location: { __typename?: "ServiceLocation" } & Pick<
-          ServiceLocation,
-          "address" | "city" | "country"
-        >;
-        contact: { __typename?: "ServiceContact" } & Pick<
-          ServiceContact,
-          "phone" | "email"
-        >;
-      };
+    service: { __typename?: "Service" } & {
+      location: { __typename?: "ServiceLocation" } & Pick<
+        ServiceLocation,
+        "address" | "city" | "country"
+      >;
+      contact: { __typename?: "ServiceContact" } & Pick<
+        ServiceContact,
+        "phone" | "email"
+      >;
+    };
     seller: { __typename?: "Account" } & Pick<Account, "id"> & {
         profile?: Maybe<{ __typename?: "Profile" } & Pick<Profile, "username">>;
       };
@@ -86,6 +82,6 @@ export const useGetAppointmentDetailsQuery = (
   return useQuery(["appointment-details", { id }], async () => {
     const res = await client.send<GetAppointmentDetailsQuery>();
 
-    res.data.getBookedServiceDetails;
+    return res.data.getBookedServiceDetails;
   });
 };

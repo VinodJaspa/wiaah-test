@@ -295,7 +295,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
             style={{
               paddingTop: `calc(${headerHeight || 0}px + 2rem)`,
             }}
-            className="pb-24 sm:pb-44 overflow-hidden h-[max(fit,100%)]"
+            className=" overflow-hidden h-[max(fit,100%)]"
             {...containerProps}
           >
             {children}

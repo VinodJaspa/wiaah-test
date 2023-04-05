@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { StripeService } from '@stripe';
+import { StripeService } from 'nest-utils';
 
 import { UpdateMembershipUsageCommand } from '../impl';
 

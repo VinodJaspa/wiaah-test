@@ -18,6 +18,7 @@ import {
   PriceDisplay,
   useGetAppointmentDetailsQuery,
 } from "@UI";
+import { AddToDate } from "@UI/../utils/src";
 
 export interface BookDetailsSectionProps {
   bookId: string;
@@ -28,7 +29,7 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
   bookId,
   onGoBack,
 }) => {
-  const { data:service } = useGetAppointmentDetailsQuery(bookId)
+  const { data: service } = useGetAppointmentDetailsQuery(bookId);
   const { t } = useTranslation();
   return (
     <div className="flex flex-col gap-2">
@@ -68,7 +69,9 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
                 </div>
                 <div>
                   <span className="py-1 text-xl">{t("Checkout")}</span>
-                  <CalanderPage date={Date.now()} />
+                  <CalanderPage
+                    date={AddToDate(new Date(), { days: 3 }).getTime()}
+                  />
                 </div>
               </div>
             </div>
@@ -86,26 +89,20 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
                   >
                     <THead>
                       <Tr>
-                        <Th>{t("Room Type")}</Th>
-                        <Th>{t("Room Price")}</Th>
+                        <Th>{t("Item Name")}</Th>
+                        <Th>{t("Item Price")}</Th>
                         <Th>{t("Total")}</Th>
                       </Tr>
                     </THead>
                     <TBody data-testid="RoomsTable">
-                      {service.rooms.map((room, i) => (
+                      {[...Array(3)].map((room, i) => (
                         <Tr key={i} data-testid="Room">
-                          <Td data-testid="RoomType">
-                            <span>Room Type {room.type}</span>
-                          </Td>
+                          <Td><></></Td>
                           <Td className="flex items-center">
-                            <span data-testid="RoomNightPrice">
-                              {room.nightPrice}
-                            </span>
-                            *<span data-testid="RoomNights">{room.nights}</span>
+                            <span data-testid="RoomNightPrice">{150}</span>*
+                            <span data-testid="RoomNights">{5}</span>
                           </Td>
-                          <Td data-testid="RoomTotalPrice">
-                            {room.nightPrice * room.nights}
-                          </Td>
+                          <Td data-testid="RoomTotalPrice">{150 * 5}</Td>
                         </Tr>
                       ))}
                     </TBody>
@@ -115,7 +112,7 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
             </div>
             <div className="w-full flex justify-end items-center">
               <span className="text-xl font-bold flex items-center gap-2">
-                {t("Total")}: <PriceDisplay priceObject={total} />
+                {t("Total")}: <PriceDisplay price={150 * 5 * 3} />
               </span>
             </div>
           </div>
@@ -131,7 +128,9 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
           <div className="w-full h-[30rem]">
             <img
               data-testid="ServicePhoto"
-              src={service.serviceThumbnail}
+              src={
+                "https://www.gannett-cdn.com/-mm-/05b227ad5b8ad4e9dcb53af4f31d7fbdb7fa901b/c=0-64-2119-1259/local/-/media/USATODAY/USATODAY/2014/08/13/1407953244000-177513283.jpg"
+              }
               className="w-full h-[100%] object-cover"
             />
           </div>
@@ -139,46 +138,34 @@ export const BookDetailsSection: React.FC<BookDetailsSectionProps> = ({
             className="font-bold text-3xl text-gray-500"
             data-testid="ServiceName"
           >
-            {service.serviceName}
+            {"Ritz hotel"}
           </span>
           <div className="flex gap-2 font-bold" data-testid="ServiceOwner">
             {t("Buyer")}:{" "}
-            <span className="text-gray-500">{service.serviceOwner}</span>
+            <span className="text-gray-500">{"test buyer name"}</span>
           </div>
           <div className="flex gap-2">
             <IoLocation />
             <div className="flex flex-col">
-              <span data-testid="StreetName">
-                {service.location.streetName}
-              </span>
+              <span data-testid="StreetName">498 Main St</span>
               <span>
-                <span data-testid="LocationCity">{service.location.city}</span>-
-                <span data-testid="StreetNumber">
-                  {service.location.streetNumber}
+                <span data-testid="LocationCity">
+                  {"Arnold California(CA)"}
                 </span>
+                -<span data-testid="StreetNumber">04284</span>
               </span>
             </div>
           </div>
-          {service.contacts && (
-            <>
-              {service.contacts.phone && (
-                <HStack>
-                  <IoCall />
-                  <span data-testid="ContactPhone">
-                    {service.contacts.phone}
-                  </span>
-                </HStack>
-              )}
-              {service.contacts.email && (
-                <HStack>
-                  <MdEmail />
-                  <span data-testid="ContactEmail">
-                    {service.contacts.email}
-                  </span>
-                </HStack>
-              )}
-            </>
-          )}
+          <>
+            <HStack>
+              <IoCall />
+              <span data-testid="ContactPhone">(207) 685-4442</span>
+            </HStack>
+            <HStack>
+              <MdEmail />
+              <span data-testid="ContactEmail">sample@email.com</span>
+            </HStack>
+          </>
         </div>
       </div>
     </div>

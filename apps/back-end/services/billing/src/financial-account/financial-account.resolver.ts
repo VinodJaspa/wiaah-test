@@ -1,7 +1,7 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { FinancialAccountType } from '@prisma-client';
-import { StripeService } from '@stripe';
+import { StripeService } from 'nest-utils';
 import {
   accountType,
   AuthorizationDecodedUser,

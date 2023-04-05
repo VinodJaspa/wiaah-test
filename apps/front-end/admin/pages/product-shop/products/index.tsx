@@ -1,6 +1,5 @@
 import {
   GetFilteredProductsAdminInput,
-  PresentationType,
   ProductUsageStatus,
 } from "@features/API";
 import { NextPage } from "next";
@@ -30,26 +29,18 @@ import {
   useGetAdminProductsQuery,
   usePaginationControls,
 } from "ui";
+import { useForm } from "utils";
 
 const Products: NextPage = () => {
   const { visit, getCurrentPath } = useRouting();
   const { t } = useTranslation();
   const { pagination, controls } = usePaginationControls();
-  const [filters, setfilters] = React.useState<
-    Omit<GetFilteredProductsAdminInput, "pagination">
-  >({});
-  const { data: products } = useGetAdminProductsQuery({ pagination });
-
-  function getFitler(key: keyof typeof filters) {
-    return filters[key] || "";
-  }
-
-  function setFilter(
-    key: keyof typeof filters,
-    value: typeof filters[keyof typeof filters]
-  ) {
-    setfilters((old) => ({ ...old, [key]: value }));
-  }
+  const { form, inputProps, selectProps, dateInputProps } = useForm<
+    Parameters<typeof useGetAdminProductsQuery>[0]
+  >({
+    pagination,
+  });
+  const { data: products } = useGetAdminProductsQuery(form);
 
   return (
     <>
@@ -67,18 +58,7 @@ const Products: NextPage = () => {
                 <Th>{t("Id")}</Th>
                 <Th>{t("Type of item")}</Th>
                 <Th>{t("Price")}</Th>
-                <Th>{t("Quantity")}</Th>
-                <Th>{t("Earnings")}</Th>
-                <Th>{t("Sales")}</Th>
-                <Th>{t("Total Ordered Items")}</Th>
-                <Th>{t("Total Discounted Orders")}</Th>
-                <Th>{t("Total Discounted Amount")}</Th>
-                <Th>{t("Items Refunded")}</Th>
-                <Th>{t("Refund Rate")}</Th>
-                <Th>{t("Positive feedback received")}</Th>
-                <Th>{t("Received Positive feedback rate")}</Th>
-                <Th>{t("Negative feedback received")}</Th>
-                <Th>{t("Received negative feedback rate")}</Th>
+                <Th>{t("Stock")}</Th>
                 <Th>{t("Status")}</Th>
                 <Th>{t("Views")}</Th>
                 <Th>{t("Date modified")}</Th>
@@ -88,28 +68,16 @@ const Products: NextPage = () => {
                 <Th></Th>
                 <Th></Th>
                 <Th>
-                  <Input
-                    value={getFitler("title")}
-                    onChange={(v) => setFilter("title", v.target.value)}
-                  />
+                  <Input {...inputProps("title")} />
                 </Th>
                 <Th>
-                  <Input
-                    value={getFitler("seller")}
-                    onChange={(v) => setFilter("seller", v.target.value)}
-                  />
+                  <Input {...inputProps("seller")} />
                 </Th>
                 <Th>
-                  <Input
-                    value={getFitler("productId")}
-                    onChange={(v) => setFilter("productId", v.target.value)}
-                  />
+                  <Input {...inputProps("id")} />
                 </Th>
                 <Th>
-                  <Select
-                    value={JSON.stringify(getFitler("usageStatus"))}
-                    onOptionSelect={(v) => setFilter("usageStatus", v)}
-                  >
+                  <Select {...inputProps("type")}>
                     <SelectOption value={ProductUsageStatus.Used}>
                       {t("Used")}
                     </SelectOption>
@@ -119,57 +87,13 @@ const Products: NextPage = () => {
                   </Select>
                 </Th>
                 <Th>
-                  <Input
-                    type="number"
-                    value={getFitler("price")}
-                    onChange={(v) => setFilter("price", v.target.value)}
-                  />
+                  <Input type="number" {...inputProps("price")} />
                 </Th>
                 <Th>
-                  <Input
-                    type="number"
-                    value={getFitler("qty")}
-                    onChange={(v) => setFilter("qty", v.target.value)}
-                  />
+                  <Input type="number" {...inputProps("qty")} />
                 </Th>
                 <Th>
-                  <Input />
-                </Th>
-                <Th>
-                  <Input />
-                </Th>
-                <Th>
-                  <Input />
-                </Th>
-                <Th>
-                  <Input />
-                </Th>
-                <Th>
-                  <Input />
-                </Th>
-                <Th>
-                  <Input />
-                </Th>
-                <Th>
-                  <Input />
-                </Th>
-                <Th>
-                  <Input />
-                </Th>
-                <Th>
-                  <Input />
-                </Th>
-                <Th>
-                  <Input />
-                </Th>
-                <Th>
-                  <Input />
-                </Th>
-                <Th>
-                  <Select
-                    value={JSON.stringify(getFitler("status"))}
-                    onOptionSelect={(v) => setFilter("status", v)}
-                  >
+                  <Select {...selectProps("status")}>
                     <SelectOption value={"active"}>{t("Active")}</SelectOption>
                     <SelectOption value={"inActive"}>
                       {t("inActive")}
@@ -177,17 +101,7 @@ const Products: NextPage = () => {
                   </Select>
                 </Th>
                 <Th>
-                  <Input
-                    type="number"
-                    value={getFitler("views" as any)}
-                    onChange={(v) => setFilter("views" as any, v.target.value)}
-                  />
-                </Th>
-                <Th>
-                  <DateFormInput
-                    dateValue={getFitler("updatedAt")}
-                    onDateChange={(v) => setFilter("updatedAt", v)}
-                  />
+                  <DateFormInput {...dateInputProps("updatedAt")} />
                 </Th>
               </Tr>
             </THead>
@@ -197,11 +111,11 @@ const Products: NextPage = () => {
                   <Td>
                     <Checkbox />
                   </Td>
-                  <Td>
+                  <Td className="min-w-[8rem]">
                     <Image className="w-full" src={prod.thumbnail} />
                   </Td>
                   <Td>{prod.title}</Td>
-                  <Td>{prod.sellerId}</Td>
+                  <Td>{prod?.seller?.profile?.username}</Td>
                   <Td>{prod.id.slice(0, 8)}...</Td>
                   <Td>
                     <Badge
@@ -218,32 +132,6 @@ const Products: NextPage = () => {
                     <PriceDisplay price={prod.price} />
                   </Td>
                   <Td align="center">{prod.stock}</Td>
-                  <Td align="center">{prod.earnings}</Td>
-                  <Td align="center">{prod.sales}</Td>
-                  <Td align="center">{prod.totalOrdered}</Td>
-                  <Td align="center">{prod.totalDiscounted}</Td>
-                  <Td align="center">{prod.totalDiscountedAmount}</Td>
-                  <Td align="center">{prod.unitsRefunded}</Td>
-                  <Td align="center">
-                    %
-                    {prod.unitsRefunded / prod.sales === Infinity
-                      ? 0
-                      : prod.unitsRefunded / prod.sales}
-                  </Td>
-                  <Td align="center">{prod.positiveFeedback}</Td>
-                  <Td align="center">
-                    %
-                    {prod.positiveFeedback / prod.reviews === Infinity
-                      ? 0
-                      : prod.positiveFeedback / prod.reviews}
-                  </Td>
-                  <Td align="center">{prod.negitiveFeedback}</Td>
-                  <Td align="center">
-                    %
-                    {prod.negitiveFeedback / prod.reviews === Infinity
-                      ? 0
-                      : prod.negitiveFeedback / prod.reviews}
-                  </Td>
                   <Td>{prod.status}</Td>
                   <Td>{1698}</Td>
                   <Td>{new Date(prod.updatedAt).toDateString()}</Td>

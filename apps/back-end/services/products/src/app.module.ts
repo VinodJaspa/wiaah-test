@@ -50,12 +50,9 @@ export class PrismaGlobalModule {}
       autoSchemaFile: './schema.graphql',
       context({ req, res }) {
         const user = getUserFromRequest(req);
+        console.log({ user });
         return { req, res, user };
       },
-
-      // buildSchemaOptions: {
-      //   orphanedTypes: [Search],
-      // },
     }),
     ShopModule,
     ProductsModule,

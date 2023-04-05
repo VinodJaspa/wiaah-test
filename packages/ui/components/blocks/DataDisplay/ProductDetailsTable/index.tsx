@@ -17,6 +17,7 @@ import {
   Select,
   Image,
   PriceDisplay,
+  Input,
 } from "@partials";
 import { SectionHeader } from "@sections";
 import { ItemsPagination, usePaginationControls } from "@blocks/Navigating";
@@ -48,6 +49,7 @@ export interface ProductDetailsTableProps {
     | "reviews"
     | "negitiveFeedback"
     | "status"
+    | "external_clicks"
   >[];
   onDelete: (id: string) => any;
   filters: any;
@@ -57,6 +59,7 @@ export interface ProductDetailsTableProps {
 export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
   products,
   onDelete,
+  onFiltersChange,
 }) => {
   const { AddNewProduct, EditProduct } = useEditProductData();
   const [input, setInput] = React.useState<
@@ -85,17 +88,6 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
                 <Th>{t("Product")}</Th>
                 <Th>{t("Price")}</Th>
                 <Th>{t("Stock Status")}</Th>
-                <Th>{t("Earnings")}</Th>
-                <Th>{t("Sales")}</Th>
-                <Th>{t("Total Ordered Items")}</Th>
-                <Th>{t("Total Discounted Orders")}</Th>
-                <Th>{t("Total Discounted Amount")}</Th>
-                <Th>{t("Items Refunded")}</Th>
-                <Th>{t("Refund Rate")}</Th>
-                <Th>{t("Positive feedback received")}</Th>
-                <Th>{t("Received Positive feedback rate")}</Th>
-                <Th>{t("Negative feedback received")}</Th>
-                <Th>{t("Received negative feedback rate")}</Th>
                 <Th>{t("Status")}</Th>
                 <Th>{t("Views")}</Th>
                 <Th>{t("Action")}</Th>
@@ -124,39 +116,6 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
                               {t("outStock")}
                             </SelectOption>
                           </Select>
-                        </Th>
-                        <Th>
-                          <FormikInput name="earning" type="number" />
-                        </Th>
-                        <Th>
-                          <FormikInput name="sales" type="number" />
-                        </Th>
-                        <Th>
-                          <FormikInput name="totalOrdered" />
-                        </Th>
-                        <Th>
-                          <FormikInput name="totalDiscounted" />
-                        </Th>
-                        <Th>
-                          <FormikInput name="totalDiscountAmount" />
-                        </Th>
-                        <Th>
-                          <FormikInput name="unitRefunded" />
-                        </Th>
-                        <Th>
-                          <FormikInput name="refundRate" />
-                        </Th>
-                        <Th>
-                          <FormikInput name="positiveFeedback" />
-                        </Th>
-                        <Th>
-                          <FormikInput name="positiveFeedbackRate" />
-                        </Th>
-                        <Th>
-                          <FormikInput name="negitiveFeedback" />
-                        </Th>
-                        <Th>
-                          <FormikInput name="negitiveFeedbackRate" />
                         </Th>
                         <Th>
                           <Select
@@ -195,34 +154,6 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
                     <PriceDisplay price={product.price} />
                   </Td>
                   <Td align="center">{product.stock}</Td>
-                  <Td align="center">
-                    <PriceDisplay price={product.earnings} />
-                  </Td>
-                  <Td align="center">{product.sales}</Td>
-                  <Td align="center">{product.totalOrdered}</Td>
-                  <Td align="center">{product.totalDiscounted}</Td>
-                  <Td align="center">{product.totalDiscountedAmount}</Td>
-                  <Td align="center">{product.unitsRefunded}</Td>
-                  <Td align="center">
-                    %
-                    {product.unitsRefunded / product.sales === Infinity
-                      ? 0
-                      : product.unitsRefunded / product.sales}
-                  </Td>
-                  <Td align="center">{product.positiveFeedback}</Td>
-                  <Td align="center">
-                    %
-                    {product.positiveFeedback / product.reviews === Infinity
-                      ? 0
-                      : product.positiveFeedback / product.reviews}
-                  </Td>
-                  <Td align="center">{product.negitiveFeedback}</Td>
-                  <Td align="center">
-                    %
-                    {product.negitiveFeedback / product.reviews === Infinity
-                      ? 0
-                      : product.negitiveFeedback / product.reviews}
-                  </Td>
                   <Td align="center">{product.status}</Td>
                   <Td>165</Td>
                   <Td align="center">

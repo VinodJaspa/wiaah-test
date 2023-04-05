@@ -13,7 +13,8 @@ datasource db {
 
 model Account {
   id                         String                   @id @default(auto()) @map("_id") @db.ObjectId
-  stripeId                   String?                  @unique
+  stripeId                   String?
+  stripeCustomerId           String?
   membershipId               String?                  @db.ObjectId
   profession                 String?
   firstName                  String
@@ -27,7 +28,7 @@ model Account {
   sales                      Int?                     @default(0)
   online                     Boolean                  @default(false)
   lastActiveAt               DateTime                 @default(now())
-  type                       AccountType
+  accountType                AccountType
   companyRegisterationNumber String?
   gender                     AccountGenderEnum        @default(male)
   verified                   Boolean                  @default(false)

@@ -37,6 +37,12 @@ import {
   Badge,
   GetMyBookingsQuery,
   Pagination,
+  Modal,
+  ModalContent,
+  ModalOverlay,
+  ModalHeader,
+  CloseIcon,
+  HStack,
 } from "@UI";
 import { useCancelAppointmentMutation } from "@src/Hooks";
 import { ReturnDeclineRequestValidationSchema } from "validation";
@@ -54,7 +60,7 @@ export const BookingsHistorySection: React.FC = () => {
   const { t } = useTranslation();
 
   const { pagination, controls } = usePaginationControls();
-
+  const [paybackId, setPaybackId] = React.useState<string>();
   const { refetch } = useGetMyBookingsHistoryQuery({
     status: Filter,
     pagination,
@@ -313,7 +319,10 @@ export const BookingsHistorySection: React.FC = () => {
                       </Td>
                     ) : (
                       <Td>
-                        <div className="flex w-full justify-center">
+                        <div
+                          onClick={() => setPaybackId(id)}
+                          className="flex w-full justify-center"
+                        >
                           <CashPaymentIcon />
                         </div>
                       </Td>
@@ -333,7 +342,31 @@ export const BookingsHistorySection: React.FC = () => {
           </TBody>
         </Table>
       </TableContainer>
-      <Pagination></Pagination>
+      <Modal
+        isOpen={!!paybackId}
+        onClose={() => {
+          setPaybackId(undefined);
+        }}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader
+            className="font-bold text-xl"
+            title={t("Assurance Payback")}
+          />
+          <HStack className="font-semibold text-xl min-h-[10rem]">
+            <p>{t("Pay back client's assurance of")}</p>
+            <PriceDisplay price={250} /> <p>?</p>
+          </HStack>
+          <ModalFooter>
+            <HStack className="justify-end">
+              <Button colorScheme="danger">{t("Cancel")}</Button>
+              <Button>{t("Confirm")}</Button>
+            </HStack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Pagination controls={controls} />
     </div>
   );
 };

@@ -14,6 +14,7 @@ import {
   GqlCurrentUser,
   KAFKA_EVENTS,
   SERVICES,
+  StripeService,
 } from 'nest-utils';
 import { AccountsService } from './accounts.service';
 import { CreateAccountInput, DeleteAccountRequestInput } from '@accounts/dto';
@@ -35,6 +36,7 @@ export class AccountsResolver {
     private readonly eventsClient: ClientKafka,
     private readonly prisma: PrismaService,
     private readonly eventbus: EventBus,
+    private readonly stripe: StripeService,
   ) {}
 
   @Mutation(() => String)
@@ -68,15 +70,19 @@ export class AccountsResolver {
       );
     }
 
-    const hashedPassword = await this.hashPassword(password);
+    const hashedPassword = await this.accountsService.hashPassword(password);
 
+    const Sacc = await this.stripe.createConnectedAccount();
+    const Cacc = await this.stripe.createCustomerAccount();
     const acc = await this.prisma.account.create({
       data: {
+        stripeCustomerId: Cacc.id,
+        stripeId: Sacc.id,
         email,
         firstName,
         lastName,
         password: hashedPassword,
-        type: accountType,
+        accountType: accountType,
         birthDate,
         gender,
         phone,
@@ -89,7 +95,7 @@ export class AccountsResolver {
         email: acc.email,
         id: acc.id,
         username: '',
-        accountType: acc.type,
+        accountType: acc.accountType,
         firstName: acc.firstName,
         lastName: acc.lastName,
         profession: acc.profession,
@@ -99,9 +105,6 @@ export class AccountsResolver {
     return true;
   }
 
-  hashPassword(password: string) {
-    return bcrypt.hash(password, 12);
-  }
   @Mutation(() => Boolean)
   async requestAccountDeletion(
     @Args('args') args: DeleteAccountRequestInput,
@@ -145,21 +148,5 @@ export class AccountsResolver {
   @ResolveReference()
   resolveReference(ref: { __typename: string; id: string }): Promise<Account> {
     return this.accountsService.findOne(ref.id);
-  }
-
-  // @ResolveField(() => Membership)
-  // membership(@Parent() acc: Account) {
-  //   return {
-  //     __typename: 'Membership',
-  //     id: acc.membershipId,
-  //   };
-  // }
-
-  @ResolveField(() => Balance)
-  balance(@Parent() acc: Account) {
-    return {
-      __typename: 'Membership',
-      ownerId: acc.id,
-    };
   }
 }

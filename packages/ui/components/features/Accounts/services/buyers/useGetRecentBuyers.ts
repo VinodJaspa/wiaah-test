@@ -1,3 +1,5 @@
+import { AddToDate, isDev } from "@UI/../utils/src";
+import { getRandomUser } from "@UI/placeholder";
 import {
   Account,
   Exact,
@@ -52,7 +54,17 @@ export const useGetRecentBuyers = (
     pagination,
     date: new Date(since).toString(),
   };
-  return useQuery(GetRecentBuyersQueryKey(args), () =>
-    GetRecentBuyersQueryFetcher(args)
-  );
+  return useQuery(GetRecentBuyersQueryKey(args), () => {
+    if (isDev) {
+      const res: GetRecentBuyersQuery["getFilteredBuyers"] = [...Array(5)].map(
+        (_, i) => ({
+          createdAt: AddToDate(new Date(), { hours: i }),
+          id: i.toString(),
+        })
+      );
+      console.log({ res });
+      return res;
+    }
+    return GetRecentBuyersQueryFetcher(args);
+  });
 };

@@ -3,24 +3,43 @@ import {
   Field,
   Float,
   registerEnumType,
-  ID,
   Int,
 } from '@nestjs/graphql';
-import { CommissionOn, commissionType } from 'prismaClient';
+import { FieldRequired } from 'nest-utils';
+import {
+  CommissionOn,
+  commissionType,
+  membershipRecurring,
+  MembershipTurnoverRuleType,
+} from 'prismaClient';
 
 registerEnumType(CommissionOn, { name: 'CommissionOn' });
 registerEnumType(commissionType, { name: 'CommissionType' });
+registerEnumType(MembershipTurnoverRuleType, {
+  name: 'MembershipTurnoverRuleType',
+});
+registerEnumType(membershipRecurring, { name: 'MembershipRecurring' });
 
 @InputType()
 export class MembershipTurnoverRuleInput {
-  @Field(() => Float)
-  usage: number;
+  @Field(() => Float, { nullable: true })
+  usage?: number;
 
   @Field(() => Number)
   commission: number;
 
+  @Field(() => CommissionOn)
+  commissionOn: CommissionOn;
+
   @Field(() => commissionType)
+  @FieldRequired('type', MembershipTurnoverRuleType.usage)
   commissionType: commissionType;
+
+  @Field(() => MembershipTurnoverRuleType)
+  type: MembershipTurnoverRuleType;
+
+  @Field(() => String)
+  key: string;
 }
 
 @InputType()
@@ -34,11 +53,8 @@ export class CreateMembershipInput {
   @Field(() => String)
   name: string;
 
-  @Field(() => CommissionOn)
-  commissionOn: CommissionOn;
-
-  @Field(() => Float)
-  recurring: number;
+  @Field(() => membershipRecurring)
+  recurring: membershipRecurring;
 
   @Field(() => [MembershipTurnoverRuleInput])
   turnover_rules: MembershipTurnoverRuleInput[];

@@ -1,3 +1,4 @@
+import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
 import { Account, Exact, Maybe, OrderItem, Scalars } from "@features/API";
 import { createGraphqlRequestClient } from "api";
 import { useQuery } from "react-query";
@@ -14,7 +15,7 @@ export type GetRecentsalesQuery = { __typename?: "Query" } & {
     > & {
         buyer: { __typename?: "Account" } & Pick<
           Account,
-          "firstName" | "photo"
+          "firstName" | "photo" | "lastName"
         >;
       }
   >;
@@ -37,6 +38,7 @@ query GetRecentsales($take:Int){
     createdAt
     buyer{
       firstName
+      lastName
       photo
     }
   }
@@ -52,7 +54,24 @@ query GetRecentsales($take:Int){
 export const useGetAdminRecentSalesQuery = (
   args: GetRecentsalesQueryVariables["take"]
 ) => {
-  return useQuery(AdminGetRecentSalesQueryKey(args), () =>
-    AdminGetRecentSalesQueryFetcher(args)
-  );
+  return useQuery(AdminGetRecentSalesQueryKey(args), () => {
+    if (isDev) {
+      const res: GetRecentsalesQuery["getRecentSales"] = [...Array(10)].map(
+        (_, i) => ({
+          id: i.toString(),
+          buyer: {
+            firstName: getRandomName().firstName,
+            lastName: getRandomName().lastName,
+            photo: `/profile (${i % 7}).jfif`,
+          },
+          createdAt: new Date().toString(),
+          paid: randomNum(150),
+        })
+      );
+
+      return res;
+    }
+
+    return AdminGetRecentSalesQueryFetcher(args);
+  });
 };

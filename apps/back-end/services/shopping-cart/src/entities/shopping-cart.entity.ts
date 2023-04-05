@@ -1,12 +1,4 @@
-import {
-  ObjectType,
-  Field,
-  ID,
-  registerEnumType,
-  Directive,
-  Int,
-} from '@nestjs/graphql';
-import { AppliedVoucher } from '@entities';
+import { ObjectType, Field, ID, Directive } from '@nestjs/graphql';
 import { BookedService } from '../book-service';
 
 @ObjectType()
@@ -32,11 +24,11 @@ export class CartProduct {
   @Field(() => String)
   id: string;
 
+  @Field(() => String)
+  ownerId: string;
+
   @Field(() => ID)
   productId: string;
-
-  @Field(() => Int)
-  qty: number;
 
   @Field(() => String)
   attributesJson: string;

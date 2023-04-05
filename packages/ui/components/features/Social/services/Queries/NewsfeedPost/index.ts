@@ -5,3 +5,5 @@ export * from "./useAdminGetProfile";
 export * from "./useGetAdminFilteredNewsfeedPosts";
 export * from "./useAdminDeleteNewsfeedPost";
 export * from "./useGetMyNewsfeedPosts";
+export * from "./useAdminGetPost";
+export * from "./useAdminUpdatePost";

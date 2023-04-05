@@ -1,10 +1,10 @@
 import { ObjectType, Field, Int, ID, Directive } from '@nestjs/graphql';
 
 @ObjectType()
-@Directive('@key(fields: "ownerId, id")')
+@Directive('@key(fields: "id")')
 export class BillingAddress {
   @Field((type) => ID)
-  ownerId: String;
+  userId: String;
 
   @Field((type) => ID)
   id: string;
@@ -35,4 +35,10 @@ export class BillingAddress {
 
   @Field((type) => String)
   phone: string;
+
+  @Field(() => String)
+  createdAt: Date;
+
+  @Field(() => String)
+  updatedAt: Date;
 }

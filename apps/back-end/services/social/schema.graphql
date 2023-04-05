@@ -57,8 +57,45 @@ type NewsfeedPost {
   tags: [PostTag!]!
   createdAt: String!
   updatedAt: String!
+  enableComments: Boolean!
+  commentsVisibility: CommentsVisibility!
   publisher: Profile
   authorProfileId: ID!
+}
+
+enum CommentsVisibility {
+  hidden
+  public
+}
+
+type AdminNewsfeedPost {
+  id: ID!
+  userId: ID!
+  title: String!
+  content: String!
+  attachments: [String!]!
+  hashtags: [Hashtag!]!
+  reactionNum: Int!
+  comments: Int!
+  shares: Int!
+  views: Int!
+  mentions: [PostMention!]!
+  location: PostLocation
+  tags: [PostTag!]!
+  createdAt: String!
+  updatedAt: String!
+  enableComments: Boolean!
+  commentsVisibility: CommentsVisibility!
+  publisher: Profile
+  authorProfileId: ID!
+  visibility: PostVisibility!
+}
+
+enum PostVisibility {
+  hidden
+  public
+  followers
+  following
 }
 
 type Attachment {
@@ -261,18 +298,6 @@ type ProductPost {
   product: Product!
   createdAt: String!
   updatedAt: String!
-}
-
-enum PostVisibility {
-  hidden
-  public
-  followers
-  following
-}
-
-enum CommentsVisibility {
-  hidden
-  public
 }
 
 type Affiliation {
@@ -503,6 +528,7 @@ type Query {
   getAdminProfile(id: String!): Profile!
   getProfileNewsfeedPosts(getUserNewsfeedPosts: GetNewsfeedPostsByUserIdInput!): [NewsfeedPost!]!
   getFilteredNewsfeedPosts(args: GetAdminFilteredNewsfeedPostsInput!): [NewsfeedPost!]!
+  adminGetNewsfeedPost(id: String!): AdminNewsfeedPost!
   updateComment(updateCommentInput: UpdateCommentInput!): PaginationCommentsResponse!
   getContentComments(getContentCommentsArgs: GetContentCommentsInput!): [Comment!]!
   adminGetContentComments(args: AdminGetContentCommentsInput!): [Comment!]!
@@ -746,6 +772,7 @@ type Mutation {
   createComment(createCommentInput: CreateCommentInput!): Comment!
   updateComment(updateCommentInput: UpdateCommentInput!): Comment!
   removeComment(id: Int!): Comment!
+  adminDeleteComment(commentId: String!): Boolean!
   shareContent(createContentShareInput: CreateContentShareInput!): ContentShare!
   deleteStory(deleteStoryInput: DeleteStoryInput!): Story!
   createStory(createStoryInput: CreateStoryInput!): Boolean!
@@ -792,6 +819,8 @@ input CreateNewsfeedPostInput {
   hashtags: [HashtagInput!]!
   tags: [PostTagInput!]!
   visibility: PostVisibility
+  enableComments: Boolean
+  commentsVisibility: CommentsVisibility
   location: PostLocationInput
 }
 
@@ -817,6 +846,8 @@ input UpdateNewsfeedPostInput {
   hashtags: [HashtagInput!]
   tags: [PostTagInput!]
   visibility: PostVisibility
+  enableComments: Boolean
+  commentsVisibility: CommentsVisibility
   location: PostLocationInput
   id: ID!
 }
@@ -838,6 +869,8 @@ input UpdatePostAdminInput {
   hashtags: [HashtagInput!]
   tags: [PostTagInput!]
   visibility: PostVisibility
+  enableComments: Boolean
+  commentsVisibility: CommentsVisibility
   location: PostLocationInput
   id: ID!
   userId: ID!

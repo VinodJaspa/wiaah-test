@@ -22,7 +22,13 @@ export type GetOrdersQuery = { __typename?: "Query" } & {
   getMyOrders: Array<
     { __typename?: "Order" } & Pick<
       Order,
-      "id" | "buyerId" | "sellerId" | "createdAt" | "updatedAt" | "paid"
+      | "id"
+      | "buyerId"
+      | "sellerId"
+      | "createdAt"
+      | "updatedAt"
+      | "paid"
+      | "trackingLink"
     > & {
         buyer?: Maybe<
           { __typename?: "Account" } & Pick<Account, "id"> & {
@@ -74,6 +80,7 @@ export const useGetMyOrdersQuery = (input: GetMyOrdersInput) => {
                 buyerId
                 sellerId
                 paid
+                trackingLink
                 shippingAddress {
                   id
                   ownerId

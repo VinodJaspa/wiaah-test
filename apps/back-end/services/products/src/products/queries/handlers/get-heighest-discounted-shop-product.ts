@@ -14,7 +14,7 @@ export class GetHeighestDiscountedShopProductHandler
   async execute({
     id,
   }: GetHeighestDiscountedShopProduct): Promise<GetHeighestDiscountedShopProductRes> {
-    const res = await this.repo.getTopDiscountedByShop(id);
+    const res = await this.repo.getTopDiscountedBySellerId(id);
 
     return {
       id: res.id,

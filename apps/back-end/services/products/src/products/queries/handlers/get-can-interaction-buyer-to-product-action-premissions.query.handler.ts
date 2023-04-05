@@ -8,6 +8,7 @@ import { Product } from '@products/entities';
 import { BuyerToProductActions } from '@products/const';
 import { KafkaMessageHandler, KAFKA_MESSAGES, SERVICES } from 'nest-utils';
 import {
+  BuyerToProductActionsType,
   CanPreformProductActionMessage,
   CanPreformProductActionMessageReply,
 } from 'nest-dto';
@@ -49,7 +50,7 @@ export class GetCanPreformBuyerToProductActionQueryHandler
           action,
         ),
         new CanPreformProductActionMessage({
-          action,
+          action: action as BuyerToProductActionsType,
           product: {
             id: product.id,
           },

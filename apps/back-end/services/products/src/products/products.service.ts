@@ -82,7 +82,6 @@ export class ProductsService {
         discount: {
           create: createProductInput.discount,
         },
-        shopId,
         sellerId: user.id,
         presentations: res.map((v) => {
           const type = this.uploadService.getFileTypeFromMimetype(v.mimetype);
@@ -298,15 +297,6 @@ export class ProductsService {
     }
   }
 
-  async getAllByShopId(shopId: string, lang: UserPreferedLang = 'en') {
-    const res = await this.prisma.product.findMany({
-      where: {
-        shopId,
-      },
-    });
-    return res.map((v) => this.formatProduct(v, lang));
-  }
-
   async getAllBySellerId(
     sellerId: string,
     lang: UserPreferedLang = 'en',
@@ -421,7 +411,7 @@ export class ProductsService {
     if (product.visibility !== 'public')
       throw new UnauthorizedException('this product is private');
 
-    const isShopOwner = await this.isOwnerOfShop(reviewerId, product.shopId);
+    const isShopOwner = await this.isOwnerOfShop(reviewerId, product.sellerId);
 
     if (isShopOwner)
       throw new UnauthorizedException('you cant review you own products');

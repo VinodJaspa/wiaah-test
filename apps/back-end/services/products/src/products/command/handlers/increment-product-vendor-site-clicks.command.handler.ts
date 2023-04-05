@@ -13,10 +13,11 @@ export class IncrementProductVendorSiteCountCommandHandler
     productId,
     lang = 'en',
   }: IncrementProductVendorSiteCountCommand): Promise<Product> {
-    return this.productrepo.update(productId, {
-      vendor_external_link_clicks: {
-        increment: 1,
-      },
-    });
+    // return this.productrepo.update(productId, {
+    //   vendor_external_link_clicks: {
+    //     increment: 1,
+    //   },
+    // });
+    return this.productrepo.getProduct(productId, lang);
   }
 }

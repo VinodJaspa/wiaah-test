@@ -7,7 +7,6 @@ export class GetProductMetaDataMessage extends KafkaMessage<{
 
 export class GetProductMetaDataMessageReply extends KafkaMessageReply<{
   thumbnail: string;
-  shopId: string;
   price: number;
   name: string;
   keywords: string[];

@@ -1,5 +1,5 @@
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
-import { StripeService } from '@stripe';
+import { StripeService } from 'nest-utils';
 
 import { StripeCustomerCreatedEvent } from '../../events';
 import { CreateStripeCustomerCommand } from '../impl';

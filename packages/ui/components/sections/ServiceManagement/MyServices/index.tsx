@@ -17,36 +17,34 @@ export * from "./MyServicesList";
 export * from "./DiscoverOurServiceForm";
 
 interface MyServicesCtxValues {
-  AddingNew: boolean;
+  ServiceIdFormState: string | boolean;
   AddNewService: () => any;
   CancelAddingNewService: () => any;
+  EditService: (id: string) => any;
 }
 
 export const MyServicesCtx = React.createContext<MyServicesCtxValues>({
-  AddingNew: false,
+  ServiceIdFormState: false,
   AddNewService: () => {},
+  EditService: () => {},
   CancelAddingNewService: () => {},
 });
 
 export const MyServicesSection: React.FC = () => {
-  const [AddingNew, setAddingNew] = React.useState<boolean>(false);
-
-  function handleAddNewService() {
-    setAddingNew(true);
-  }
-  function handleCancelAddingNewService() {
-    setAddingNew(false);
-  }
+  const [state, setState] = React.useState<string | boolean>(false);
 
   return (
     <MyServicesCtx.Provider
       value={{
-        AddingNew,
-        AddNewService: handleAddNewService,
-        CancelAddingNewService: handleCancelAddingNewService,
+        ServiceIdFormState: state,
+        EditService: (id) => setState(id),
+        CancelAddingNewService: () => {
+          setState(false);
+        },
+        AddNewService: () => setState(true),
       }}
     >
-      <AddNewService />
+      {state === false ? <MyServicesList /> : <AddNewService />}
     </MyServicesCtx.Provider>
   );
 };

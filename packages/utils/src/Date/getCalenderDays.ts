@@ -10,6 +10,25 @@ export const weekDays: WeekDays[] = [
   "Sat",
 ];
 
+export type WeekDayLong =
+  | "Sunday"
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday";
+
+export const weekDayLong: WeekDayLong[] = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
 export interface FormatedDays {
   dayNum: number;
   currentMonth: boolean;

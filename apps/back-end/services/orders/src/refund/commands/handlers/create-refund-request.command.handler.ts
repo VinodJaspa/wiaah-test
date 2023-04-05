@@ -12,6 +12,7 @@ import { GetOrderQuery } from '@refund/queries';
 import { OrderType } from '@refund/queries/handlers';
 import { RefundRepository } from '@refund/repository';
 import { DBErrorException } from 'nest-utils';
+import { PrismaService } from 'prismaService';
 
 @CommandHandler(CreateRefundRequestCommand)
 export class CreateRefundRequestCommandHandler
@@ -21,20 +22,29 @@ export class CreateRefundRequestCommandHandler
     private readonly repo: RefundRepository,
     private readonly eventBus: EventBus,
     private readonly querybus: QueryBus,
+    private readonly prisma: PrismaService,
   ) {}
 
   async execute({
     input,
     userId,
   }: CreateRefundRequestCommand): Promise<Refund> {
-    const order = await this.querybus.execute<GetOrderQuery, OrderType>(
-      new GetOrderQuery(input.id),
-    );
-    if (!order) throw new NotFoundException('order not found');
-    if (order.buyerId !== userId)
+    const orderItem = await this.prisma.orderItem.findUnique({
+      where: {
+        id: input.orderItemId,
+      },
+      include: {
+        Order: true,
+      },
+    });
+    if (orderItem?.Order?.buyerId !== userId)
       throw new UnauthorizedException('you can only refund your orders');
     try {
-      const res = await this.repo.createOne(input, order.sellerId, userId);
+      const res = await this.repo.createOne(
+        input,
+        orderItem.Order.sellerId,
+        userId,
+      );
       this.eventBus.publish(new RefundRequestCreatedEvent(res));
       return res;
     } catch (error) {
