@@ -47,6 +47,7 @@ export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
   const { t } = useTranslation();
   const [lang, setLang] = React.useState<string>("en");
   const { mutate } = useCreateServiceMutation();
+  const [data, setData] = React.useState<Record<string, any>>({});
 
   const isEdit = typeof ServiceIdFormState === "string";
 
@@ -85,7 +86,7 @@ export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
           onSubmit={(data) => mutate(data)}
           isEdit={isEdit || false}
           data={data}
-          serviceType={serviceType || "hotel"}
+          serviceType={"vehicle"}
         />
       </FormTranslationWrapper>
     </div>
@@ -326,11 +327,9 @@ export const NewServiceStepper: React.FC<{
                 {t("Cancel")}
               </Button>
 
-              {currentStepIdx === 0 ? null : (
-                <Button className="w-fit self-end" onClick={() => nextStep()}>
-                  {t("Next")}
-                </Button>
-              )}
+              <Button className="w-fit self-end" onClick={() => nextStep()}>
+                {t("Next")}
+              </Button>
             </div>
           </>
         )}

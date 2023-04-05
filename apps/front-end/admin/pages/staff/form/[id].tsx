@@ -21,7 +21,11 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
 import { useForm } from "utils";
-import { AccountType, StaffAccountType } from "@features/API";
+import {
+  AccountGenderEnum,
+  AccountType,
+  StaffAccountType,
+} from "@features/API";
 
 const manageStaff: NextPage = () => {
   const { t } = useTranslation();
@@ -38,7 +42,7 @@ const manageStaff: NextPage = () => {
     inputProps: updateInputProps,
     selectProps: updateSelectProps,
   } = useForm<Parameters<typeof update>[0]>(
-    { id, ...data, type: data.type as unknown as StaffAccountType },
+    { id, ...data, type: data?.accountType as unknown as StaffAccountType },
     { id }
   );
   const {
@@ -52,6 +56,8 @@ const manageStaff: NextPage = () => {
     lastName: "",
     password: "",
     photo: "",
+    birthDate: "",
+    gender: AccountGenderEnum.Male,
     type: StaffAccountType.Moderator,
   });
   const { mutate: update } = useAdminUpdateStaffAccountMutation();
@@ -63,7 +69,12 @@ const manageStaff: NextPage = () => {
   return (
     <section className="flex flex-col gap-4 w-full">
       <div className="flex justify-end">
-        <Button className="fill-white text-white">
+        <Button
+          onClick={() => {
+            isNew ? create(createForm) : update(updateForm);
+          }}
+          className="fill-white text-white"
+        >
           <SaveIcon />
         </Button>
       </div>

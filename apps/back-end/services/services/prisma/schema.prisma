@@ -48,13 +48,10 @@ enum ServiceCategoryStatus {
 }
 
 model ServiceWorkingSchedule {
-  id                  String                          @id @map("_id") @db.ObjectId
-  weekdays            ServiceWeekDaysWorkingHours?
-  specialDays         ServiceSpecialWorkingHoursDay[]
-  HealthCenterService HealthCenterService[]
-  BeautyCenterService BeautyCenterService[]
-  VehicleService      VehicleService[]
-  HotelService        HotelService[]
+  id           String                          @id @map("_id") @db.ObjectId
+  weekdays     ServiceWeekDaysWorkingHours?
+  specialDays  ServiceSpecialWorkingHoursDay[]
+  HotelService HotelService[]
 }
 
 model ServiceOwnerShip {
@@ -68,7 +65,6 @@ model ServiceOwnerShip {
 
 model Service {
   id                  String                       @id @default(auto()) @map("_id") @db.ObjectId
-  type                ServiceType
   ownerId             String                       @unique @db.ObjectId
   dayClicksId         String?
   createdAt           DateTime                     @default(now())
@@ -76,40 +72,35 @@ model Service {
   status              ServiceStatus                @default(inActive)
   presentations       ServicePresentation[]
   serviceMetaInfo     ServiceMetaTranslationInfo[]
-  contact             ServiceContact
   policies            ServiceTranslationPolicies[]
   payment_methods     ServicePaymentMethods[]
   location            Location
-  thumbnail           String
   vat                 Int
   cancelationPolicies ServiceCancelationPolicy[]
   lowest_price        Float                        @default(0)
   highest_price       Float                        @default(0)
-  rating              Float                        @default(0)
-  reviews             Int                          @default(0)
-  type_of_seller      ServiceTypeOfSeller
   suspensionReason    String?
 
-  // hotel
-  rooms HotelRoom[]
+  // // hotel
+  // rooms HotelRoom[]
 
-  // restaurant
-  menus                  RestaurantMenu[]
-  establishmentTypeId    String?          @db.ObjectId
-  cuisinesTypeId         String?          @db.ObjectId
-  setting_and_ambianceId String?          @db.ObjectId
-  michelin_guide_stars   Int?
+  // // restaurant
+  // menus                  RestaurantMenu[]
+  // establishmentTypeId    String?          @db.ObjectId
+  // cuisinesTypeId         String?          @db.ObjectId
+  // setting_and_ambianceId String?          @db.ObjectId
+  // michelin_guide_stars   Int?
 
-  // health center
-  doctors HealthCenterDoctor[]
+  // // health center
+  // doctors HealthCenterDoctor[]
 
-  // beauty center
-  treatments BeautyCenterTreatment[]
+  // // beauty center
+  // treatments BeautyCenterTreatment[]
 
-  // vehicle
-  vehicles   Vehicle[]
-  discountId String?
-  cashbackId String?
+  // // vehicle
+  // vehicles   Vehicle[]
+  // discountId String?
+  // cashbackId String?
 }
 
 model ServiceDayClicks {
@@ -118,118 +109,6 @@ model ServiceDayClicks {
   serviceId String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model HotelService {
-  id                  String                       @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId             String                       @unique @db.ObjectId
-  createdAt           DateTime                     @default(now())
-  updatedAt           DateTime                     @updatedAt
-  status              ServiceStatus                @default(inActive)
-  presentations       ServicePresentation[]
-  serviceMetaInfo     ServiceMetaTranslationInfo[]
-  contact             ServiceContact
-  workingHours        ServiceWorkingSchedule?      @relation(fields: [ownerId], references: [id])
-  policies            ServiceTranslationPolicies[]
-  payment_methods     ServicePaymentMethods[]
-  location            Location
-  vat                 Int                          @default(0)
-  cancelationPolicies ServiceCancelationPolicy[]
-  rooms               HotelRoom[]
-  lowest_price        Float                        @default(0)
-  highest_price       Float                        @default(0)
-}
-
-model RestaurantService {
-  id                     String                       @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId                String                       @unique @db.ObjectId
-  createdAt              DateTime                     @default(now())
-  updatedAt              DateTime                     @updatedAt
-  vat                    Int                          @default(0)
-  status                 ServiceStatus                @default(inActive)
-  presentations          ServicePresentation[]
-  policies               ServiceTranslationPolicies[]
-  serviceMetaInfo        ServiceMetaTranslationInfo[]
-  payment_methods        ServicePaymentMethods[]
-  cancelationPolicies    ServiceCancelationPolicy[]
-  contact                ServiceContact
-  location               Location
-  lowest_price           Float                        @default(0)
-  highest_price          Float                        @default(0)
-  menus                  RestaurantMenu[]
-  establishmentTypeId    String                       @db.ObjectId
-  cuisinesTypeId         String                       @db.ObjectId
-  setting_and_ambianceId String                       @db.ObjectId
-  michelin_guide_stars   Int
-  rating                 Float                        @default(0)
-  reviews                Int                          @default(0)
-}
-
-model HealthCenterService {
-  id                  String                       @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId             String                       @db.ObjectId
-  createdAt           DateTime                     @default(now())
-  updatedAt           DateTime                     @updatedAt
-  vat                 Float                        @default(0)
-  rating              Float                        @default(0)
-  totalReviews        Int                          @default(0)
-  lowest_price        Float                        @default(0)
-  highest_price       Float                        @default(0)
-  status              ServiceStatus                @default(inActive)
-  location            Location
-  presentations       ServicePresentation[]
-  policies            ServiceTranslationPolicies[]
-  serviceMetaInfo     ServiceMetaTranslationInfo[]
-  payment_methods     ServicePaymentMethods[]
-  cancelationPolicies ServiceCancelationPolicy[]
-  contact             ServiceContact
-  doctors             HealthCenterDoctor[]
-  workingHours        ServiceWorkingSchedule       @relation(fields: [ownerId], references: [id])
-}
-
-model BeautyCenterService {
-  id                   String                       @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId              String                       @db.ObjectId
-  createdAt            DateTime                     @default(now())
-  updatedAt            DateTime                     @updatedAt
-  vat                  Float                        @default(0)
-  rating               Float                        @default(0)
-  totalReviews         Int                          @default(0)
-  beauty_center_typeId String                       @db.ObjectId
-  lowest_price         Float                        @default(0)
-  heigest_price        Float                        @default(0)
-  location             Location
-  status               ServiceStatus                @default(inActive)
-  presentations        ServicePresentation[]
-  policies             ServiceTranslationPolicies[]
-  serviceMetaInfo      ServiceMetaTranslationInfo[]
-  payment_methods      ServicePaymentMethods[]
-  cancelationPolicies  ServiceCancelationPolicy[]
-  type_of_seller       ServiceTypeOfSeller
-  treatments           BeautyCenterTreatment[]
-  workingHours         ServiceWorkingSchedule       @relation(fields: [ownerId], references: [id])
-}
-
-model VehicleService {
-  id                  String                       @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId             String                       @db.ObjectId
-  createdAt           DateTime                     @default(now())
-  updatedAt           DateTime                     @updatedAt
-  vat                 Float                        @default(0)
-  rating              Float                        @default(0)
-  totalReviews        Int                          @default(0)
-  lowest_price        Float                        @default(0)
-  highest_price       Float                        @default(0)
-  status              ServiceStatus                @default(active)
-  location            Location
-  presentations       ServicePresentation[]
-  policies            ServiceTranslationPolicies[]
-  serviceMetaInfo     ServiceMetaTranslationInfo[]
-  payment_methods     ServicePaymentMethods[]
-  cancelationPolicies ServiceCancelationPolicy[]
-  vehicles            Vehicle[]
-  contact             ServiceContact
-  workingHours        ServiceWorkingSchedule       @relation(fields: [ownerId], references: [id])
 }
 
 model VehicleType {
@@ -251,7 +130,7 @@ model BeautyCenterTreatmentCategory {
 
 model HealthCenterDoctor {
   id                String                               @id @default(auto()) @map("_id") @db.ObjectId
-  healthCenter      HealthCenterService                  @relation(fields: [healthCenterId], references: [id])
+  // healthCenter      HealthCenterService                  @relation(fields: [healthCenterId], references: [id])
   speciality        HealthCenterSpecialty                @relation(fields: [specialityId], references: [id])
   speakingLanguages HealthCenterDoctorSpeakingLanguage[]
   healthCenterId    String                               @db.ObjectId
@@ -262,8 +141,7 @@ model HealthCenterDoctor {
   price             Float
   description       TranslationText[]
   availablityStatus HealthCenterDoctorAvailablityStatus  @default(unavailable)
-  Service           Service?                             @relation(fields: [serviceId], references: [id])
-  serviceId         String?                              @db.ObjectId
+  shopId            String?                              @db.ObjectId
 }
 
 model HealthCenterSpecialty {
@@ -304,8 +182,6 @@ model RestaurnatSettingAndAmbiance {
 
 model HotelRoom {
   id                  String                         @id @default(auto()) @map("_id") @db.ObjectId
-  hotel               HotelService                   @relation(fields: [hotelId], references: [id])
-  hotelId             String                         @db.ObjectId
   sellerId            String                         @db.ObjectId
   createdAt           DateTime                       @default(now())
   updatedAt           DateTime                       @updatedAt
@@ -329,8 +205,7 @@ model HotelRoom {
   extras              ServiceExtra[]
   includedAmenities   TranslationArrayText[]
   measurements        PropertyMeasurements
-  Service             Service?                       @relation(fields: [serviceId], references: [id])
-  serviceId           String?                        @db.ObjectId
+  shopId              String?                        @db.ObjectId
 }
 
 model Vehicle {
@@ -345,10 +220,6 @@ model Vehicle {
   insurance           Float
   properties          VehicleProperties
   cancelationPolicies ServiceCancelationPolicy[]
-  parantServiceId     String                     @db.ObjectId
-  parantService       VehicleService             @relation(fields: [parantServiceId], references: [id])
-  Service             Service?                   @relation(fields: [serviceId], references: [id])
-  serviceId           String?                    @db.ObjectId
 }
 
 model ServiceInsurance {
@@ -384,10 +255,7 @@ model RestaurantMenu {
   id           String            @id @default(auto()) @map("_id") @db.ObjectId()
   name         TranslationText[]
   restaurantId String            @db.ObjectId
-  restaurant   RestaurantService @relation(fields: [restaurantId], references: [id])
   dishs        RestaurantDish[]
-  Service      Service?          @relation(fields: [serviceId], references: [id])
-  serviceId    String?           @db.ObjectId
 }
 
 model RestaurantDish {
@@ -419,16 +287,13 @@ type HotelRoomTranslationMetaInfo {
 }
 
 model BeautyCenterTreatment {
-  id                    String               @id @default(auto()) @map("_id") @db.ObjectId
+  id                    String            @id @default(auto()) @map("_id") @db.ObjectId
   treatmentCategoryId   String
   title                 TranslationText[]
   price                 Float
   duration              Int[]
   discount              ServiceDiscount
-  BeautyCenterService   BeautyCenterService? @relation(fields: [beautyCenterServiceId], references: [id])
-  beautyCenterServiceId String?              @db.ObjectId
-  Service               Service?             @relation(fields: [serviceId], references: [id])
-  serviceId             String?              @db.ObjectId
+  beautyCenterServiceId String?           @db.ObjectId
   thumbnail             String
 }
 

@@ -20,14 +20,15 @@ import {
   Input,
   useGetAdminProductCategoriesQuery,
 } from "ui";
-import { mapArray, SeperatedStringArray } from "utils";
+import { mapArray, SeperatedStringArray, useForm } from "utils";
 
 export default () => {
   const { t } = useTranslation();
   const { controls, pagination } = usePaginationControls();
-  const { data, refetch } = useGetAdminProductCategoriesQuery({
-    pagination,
-  });
+  const { form, inputProps } = useForm<
+    Parameters<typeof useGetAdminProductCategoriesQuery>[0]
+  >({ pagination });
+  const { data, refetch } = useGetAdminProductCategoriesQuery(form);
   const { visit, getCurrentPath } = useRouting();
 
   const categories =
@@ -108,10 +109,13 @@ export default () => {
             <Th>{t("Action")}</Th>
             <Tr>
               <Th>
-                <Input placeholder={t("Type Category name")} />
+                <Input
+                  {...inputProps("name")}
+                  placeholder={t("Type Category name")}
+                />
               </Th>
               <Th>
-                <Input type="number" />
+                <Input {...inputProps("sortOrder")} type="number" />
               </Th>
             </Tr>
           </THead>

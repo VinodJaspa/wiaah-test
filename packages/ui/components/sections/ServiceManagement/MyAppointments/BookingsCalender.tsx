@@ -19,6 +19,7 @@ import {
   TBody,
   Td,
   TableContainer,
+  ArrowLeftIcon,
 } from "@UI";
 import { ServiceType } from "@features/API";
 import {
@@ -33,7 +34,7 @@ import {
 import { BookDetailsSection, BookingsSectionCtx } from ".";
 import { random } from "lodash";
 import { ArrElement } from "@UI/../types/src";
-import { BiCalendar } from "react-icons/bi";
+import { BiCalendar, BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { FaClock } from "react-icons/fa";
 import { BsFillInfoCircleFill } from "react-icons/bs";
 
@@ -109,12 +110,6 @@ export const BookingsCalenderSection: React.FC<
     ).toString();
   }
 
-  React.useEffect(() => {
-    if (data && data?.pages.length < 2) {
-      fetchNextPage();
-    }
-  }, [data]);
-
   const pages = data?.pages!;
 
   function bookings(
@@ -155,267 +150,249 @@ export const BookingsCalenderSection: React.FC<
           />
         </ModalContent>
       </Modal>
-      <SectionHeader sectionTitle={t("my_appointments", "My Appointments")} />
-      <div className="flex gap-4 w-full">
-        <div
-          style={{ height: `calc(100vh - 18vh)`, width: `calc(100vw - 40vw)` }}
-        >
-          <div className="overflow-hidden w-full h-full">
-            <DraggableSlider
-              vertical
-              activeIndex={activeWeek}
-              draggingActive={false}
-            >
-              {mapArray(data?.pages, (page, i) => {
-                const Bookings = bookings(page);
-                return (
-                  <div className="h-full w-full thinScroll overflow-scroll">
-                    <Table
-                      ThProps={{
-                        className: "min-w-[13rem] first:min-w-fit",
-                      }}
-                      TdProps={{
-                        className:
-                          "border-y first:whitespace-nowrap first:font-semibold first:text-gray-600",
-                        valign: "top",
-                      }}
-                      className="w-full h-full"
-                      key={i}
-                    >
-                      <THead>
-                        <Tr className="">
-                          <Th></Th>
-                          {weekDayLong.map((v) => (
-                            <Th className="">{v}</Th>
-                          ))}
-                        </Tr>
-                        <Tr>
-                          <Th>{t("Time")}</Th>
-                          {mapArray(Bookings, ([day], i) => {
-                            const istoday =
-                              new Date().getDate() === parseInt(day);
+      <SectionHeader sectionTitle={t("My Appointments")} />
+      <div style={{ width: `calc(100vw - 40vw)` }}>
+        <div className="flex flex-col items-center py-2 justify-center gap-1">
+          <p className="font-semibold uppercase text-sm">{t("Switch Week")}</p>
+          <HStack className="">
+            <BiChevronLeft
+              onClick={() => fetchPreviousPage()}
+              className="text-2xl text-primary"
+            />
+            <p className="text-lg font-bold">
+              {new Date(
+                data?.pages[activeWeek]?.cursor || new Date()
+              ).toLocaleDateString("en-us", {
+                day: "numeric",
+                month: "short",
+              })}
+              -
+              {new Date(
+                new Date(data?.pages[activeWeek]?.cursor || new Date()).setDate(
+                  new Date(
+                    data?.pages[activeWeek]?.cursor || new Date()
+                  ).getDate() + 6
+                )
+              ).toLocaleDateString("en-us", {
+                day: "numeric",
+                month: "short",
+              })}
+            </p>
+            <BiChevronRight
+              onClick={() => fetchNextPage()}
+              className="text-2xl text-primary"
+            />
+          </HStack>
+        </div>
+        <div className="w-full h-full">
+          {mapArray(data?.pages, (page, i) => {
+            const Bookings = bookings(page);
+            return (
+              <div className="h-full w-full">
+                <Table
+                  ThProps={{
+                    className: "border",
+                  }}
+                  TdProps={{
+                    className:
+                      "border first:whitespace-nowrap first:font-semibold first:text-gray-600",
+                    valign: "top",
+                  }}
+                  className="w-full h-full"
+                  key={i}
+                >
+                  <THead>
+                    <Tr className="">
+                      <Th></Th>
+                      {weekDayLong.map((v) => (
+                        <Th className="">{v}</Th>
+                      ))}
+                    </Tr>
+                    <Tr>
+                      <Th>{t("Time")}</Th>
+                      {mapArray(Bookings, ([day], i) => {
+                        const istoday = new Date().getDate() === parseInt(day);
+                        return (
+                          <Th>
+                            <HStack className="text-semibold justify-center">
+                              <BiCalendar />
+                              <p className={istoday ? "text-primary" : ""}>
+                                {istoday
+                                  ? t("Today")
+                                  : `${day}/${
+                                      new Date(
+                                        page?.cursor || new Date()
+                                      ).getMonth() + 1
+                                    }/${new Date(
+                                      page?.cursor || new Date()
+                                    ).getFullYear()}`}
+                              </p>
+                            </HStack>
+                          </Th>
+                        );
+                      })}
+                    </Tr>
+                  </THead>
+                  <TBody>
+                    {mapArray([...Array(24)], (_, i) => {
+                      const date = new Date(
+                        new Date().getFullYear(),
+                        new Date().getMonth(),
+                        new Date().getDate(),
+                        i,
+                        0,
+                        0,
+                        0
+                      );
+                      return (
+                        <Tr key={i} className="h-full">
+                          <Td>
+                            {date.toLocaleTimeString("en-us", {
+                              hour: "2-digit",
+                              hour12: true,
+                            })}
+                          </Td>
+
+                          {mapArray(Bookings, (_, bi) => {
+                            const cursorDate = new Date(page.cursor!);
+                            const targetDate = isNaN(
+                              new Date(page?.cursor || "").getTime()
+                            )
+                              ? null
+                              : new Date(
+                                  cursorDate.getFullYear(),
+                                  cursorDate.getMonth(),
+                                  cursorDate.getDate() + bi,
+                                  i
+                                );
+
+                            const end = new Date(
+                              new Date(targetDate!).setHours(
+                                targetDate!?.getHours() + 1
+                              )
+                            );
+                            const bookings = targetDate
+                              ? page.data?.filter((v) => {
+                                  const start = new Date(v.checkin);
+                                  return start >= targetDate && start <= end;
+                                })
+                              : null;
                             return (
-                              <Th>
-                                <HStack className="text-semibold justify-center">
-                                  <BiCalendar />
-                                  <p className={istoday ? "text-primary" : ""}>
-                                    {istoday
-                                      ? t("Today")
-                                      : `${day}/${
-                                          new Date(
-                                            page?.cursor || new Date()
-                                          ).getMonth() + 1
-                                        }/${new Date(
-                                          page?.cursor || new Date()
-                                        ).getFullYear()}`}
-                                  </p>
-                                </HStack>
-                              </Th>
+                              <Td>
+                                <div className="w-full h-full text-xs">
+                                  <CalenderBookingsList
+                                    length={bookings?.length || 0}
+                                  >
+                                    {mapArray(bookings || [], (v, i) => {
+                                      const color =
+                                        contrastColors[
+                                          randomNum(contrastColors.length)
+                                        ];
+
+                                      const buyerName = `${v.buyer.firstName} ${v.buyer.lastName}`;
+                                      const serviceTitle = (() => {
+                                        switch (v.type) {
+                                          case ServiceType.Hotel:
+                                            return v.room?.title || "";
+
+                                          case ServiceType.Restaurant:
+                                            const shownDishs = v.dishs.slice(
+                                              0,
+                                              2
+                                            );
+                                            const dishsLeft =
+                                              v.dishs.length -
+                                              shownDishs.length;
+                                            return `${shownDishs
+                                              .map((v) => v.name)
+                                              .join(", ")}` +
+                                              (dishsLeft > 0)
+                                              ? `, ${t("and")} ${dishsLeft} ${t(
+                                                  "more dishs"
+                                                )}`
+                                              : "";
+
+                                          case ServiceType.HealthCenter:
+                                            return `${
+                                              v.doctor.speciality?.name
+                                                ? `${v.doctor.speciality.name}: `
+                                                : ""
+                                            }${v.doctor.name}`;
+
+                                          case ServiceType.BeautyCenter:
+                                            const shownTreats =
+                                              v.treatments.slice(0, 2);
+                                            const treatsLeft =
+                                              v.treatments.length -
+                                              shownTreats.length;
+                                            return `${shownTreats
+                                              .map((v) => v.title)
+                                              .join(", ")}` +
+                                              (treatsLeft > 0)
+                                              ? `, ${t(
+                                                  "and"
+                                                )} ${treatsLeft} ${t(
+                                                  "more dishs"
+                                                )}`
+                                              : "";
+                                          case ServiceType.Vehicle:
+                                            return `${v.vehicle?.title || ""}`;
+
+                                          case ServiceType.HolidayRentals:
+                                            return `${v.room?.title || ""}`;
+                                          default:
+                                            break;
+                                        }
+                                      })();
+
+                                      return (
+                                        <div
+                                          style={{
+                                            backgroundColor: color,
+                                          }}
+                                          className={`text-white p-2 border-white border rounded`}
+                                          //  first:static absolute top-0 left-0 group-hover:first:translate-x-0 group-hover:translate-x-[110%] first:translate-x-0 translate-x-4 duration-300 transform transition-all w-[95%] h-full -z-10 group-hover:z-10 `}
+                                        >
+                                          <HStack className="">
+                                            <FaClock />
+                                            <p>
+                                              <span className="font-semibold">
+                                                {new Date(
+                                                  v.checkin
+                                                ).toLocaleTimeString("en-us", {
+                                                  hour: "2-digit",
+                                                  hour12: true,
+                                                  minute: "2-digit",
+                                                })}
+                                              </span>{" "}
+                                            </p>
+                                          </HStack>
+                                          <p>{buyerName}</p>
+                                          <p className="inline">
+                                            {serviceTitle}{" "}
+                                            <BsFillInfoCircleFill
+                                              onClick={() =>
+                                                setBookDetialsId(v.id)
+                                              }
+                                              className="inline cursor-pointer"
+                                            />
+                                          </p>
+                                        </div>
+                                      );
+                                    })}
+                                  </CalenderBookingsList>
+                                </div>
+                              </Td>
                             );
                           })}
                         </Tr>
-                      </THead>
-                      <TBody>
-                        {mapArray([...Array(24)], (_, i) => {
-                          const date = new Date(
-                            new Date().getFullYear(),
-                            new Date().getMonth(),
-                            new Date().getDate(),
-                            i,
-                            0,
-                            0,
-                            0
-                          );
-                          return (
-                            <Tr key={i} className="h-full">
-                              <Td>
-                                {date.toLocaleTimeString("en-us", {
-                                  hour: "2-digit",
-                                  hour12: true,
-                                })}
-                              </Td>
-
-                              {mapArray(Bookings, (_, bi) => {
-                                const cursorDate = new Date(page.cursor!);
-                                const targetDate = isNaN(
-                                  new Date(page?.cursor || "").getTime()
-                                )
-                                  ? null
-                                  : new Date(
-                                      cursorDate.getFullYear(),
-                                      cursorDate.getMonth(),
-                                      cursorDate.getDate() + bi,
-                                      i
-                                    );
-
-                                const end = new Date(
-                                  new Date(targetDate!).setHours(
-                                    targetDate!?.getHours() + 1
-                                  )
-                                );
-                                const bookings = targetDate
-                                  ? page.data?.filter((v) => {
-                                      const start = new Date(v.checkin);
-                                      return (
-                                        start >= targetDate && start <= end
-                                      );
-                                    })
-                                  : null;
-                                return (
-                                  <Td>
-                                    <div className="w-full h-full">
-                                      <CalenderBookingsList
-                                        length={bookings?.length || 0}
-                                      >
-                                        {mapArray(bookings || [], (v, i) => {
-                                          const color =
-                                            contrastColors[
-                                              randomNum(contrastColors.length)
-                                            ];
-
-                                          const buyerName = `${v.buyer.firstName} ${v.buyer.lastName}`;
-                                          const serviceTitle = (() => {
-                                            switch (v.type) {
-                                              case ServiceType.Hotel:
-                                                return v.room?.title || "";
-
-                                              case ServiceType.Restaurant:
-                                                const shownDishs =
-                                                  v.dishs.slice(0, 2);
-                                                const dishsLeft =
-                                                  v.dishs.length -
-                                                  shownDishs.length;
-                                                return `${shownDishs
-                                                  .map((v) => v.name)
-                                                  .join(", ")}` +
-                                                  (dishsLeft > 0)
-                                                  ? `, ${t(
-                                                      "and"
-                                                    )} ${dishsLeft} ${t(
-                                                      "more dishs"
-                                                    )}`
-                                                  : "";
-
-                                              case ServiceType.HealthCenter:
-                                                return `${
-                                                  v.doctor.speciality?.name
-                                                    ? `${v.doctor.speciality.name}: `
-                                                    : ""
-                                                }${v.doctor.name}`;
-
-                                              case ServiceType.BeautyCenter:
-                                                const shownTreats =
-                                                  v.treatments.slice(0, 2);
-                                                const treatsLeft =
-                                                  v.treatments.length -
-                                                  shownTreats.length;
-                                                return `${shownTreats
-                                                  .map((v) => v.title)
-                                                  .join(", ")}` +
-                                                  (treatsLeft > 0)
-                                                  ? `, ${t(
-                                                      "and"
-                                                    )} ${treatsLeft} ${t(
-                                                      "more dishs"
-                                                    )}`
-                                                  : "";
-                                              case ServiceType.Vehicle:
-                                                return `${
-                                                  v.vehicle?.title || ""
-                                                }`;
-
-                                              case ServiceType.HolidayRentals:
-                                                return `${v.room?.title || ""}`;
-                                              default:
-                                                break;
-                                            }
-                                          })();
-
-                                          return (
-                                            <div
-                                              style={{
-                                                backgroundColor: color,
-                                              }}
-                                              className={`text-white p-2 border-white border rounded`}
-                                              //  first:static absolute top-0 left-0 group-hover:first:translate-x-0 group-hover:translate-x-[110%] first:translate-x-0 translate-x-4 duration-300 transform transition-all w-[95%] h-full -z-10 group-hover:z-10 `}
-                                            >
-                                              <HStack className="">
-                                                <FaClock />
-                                                <p>
-                                                  <span className="font-semibold">
-                                                    {new Date(
-                                                      v.checkin
-                                                    ).toLocaleTimeString(
-                                                      "en-us",
-                                                      {
-                                                        hour: "2-digit",
-                                                        hour12: true,
-                                                        minute: "2-digit",
-                                                      }
-                                                    )}
-                                                  </span>{" "}
-                                                </p>
-                                              </HStack>
-                                              <p>{buyerName}</p>
-                                              <p className="inline">
-                                                {serviceTitle}{" "}
-                                                <BsFillInfoCircleFill
-                                                  onClick={() =>
-                                                    setBookDetialsId(v.id)
-                                                  }
-                                                  className="inline cursor-pointer"
-                                                />
-                                              </p>
-                                            </div>
-                                          );
-                                        })}
-                                      </CalenderBookingsList>
-                                    </div>
-                                  </Td>
-                                );
-                              })}
-                            </Tr>
-                          );
-                        })}
-                      </TBody>
-                    </Table>
-                  </div>
-                );
-              })}
-            </DraggableSlider>
-          </div>
-        </div>
-        <div className="h-fill flex flex-col gap-2 justify-between">
-          <Button
-            loading={isFetchingPreviousPage}
-            onClick={() => {
-              if (isFetchingPreviousPage) return;
-              fetchPreviousPage().then((v) => {
-                if (v.data?.pages && v.data.pages.length > 0) {
-                  setActiveWeek((v) => v - 1);
-                }
-              });
-            }}
-            className="text-xl p-2"
-            center
-          >
-            <ArrowUpIcon />
-          </Button>
-          <Button
-            loading={isFetchingNextPage}
-            onClick={() => {
-              if (isFetchingNextPage) return;
-              fetchNextPage().then((v) => {
-                if (v.data?.pages && v.data.pages.length > 0) {
-                  setActiveWeek((v) => v + 1);
-                }
-              });
-            }}
-            className="text-xl p-2"
-            center
-          >
-            <ArrowDownIcon />
-          </Button>
+                      );
+                    })}
+                  </TBody>
+                </Table>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -12,6 +12,7 @@ export function useForm<TForm>(
     key: Tkey,
     v: Tvalue
   ) {
+    console.log("change", key, v);
     setData((old) => ({ ...old, [key]: v, ...constents }));
   }
 
@@ -25,6 +26,43 @@ export function useForm<TForm>(
     return {
       [valueKey]: data[key] as TForm[Tkey],
       [onChangeKey]: (e: any) => handleChange(key, mapOnChange(e)),
+      label:
+        options?.addLabel && typeof key === "string"
+          ? startCase(key)
+          : undefined,
+
+      placeholder:
+        options?.addPlaceholder && typeof key === "string"
+          ? startCase(key)
+          : undefined,
+    };
+  }
+
+  function translationInputProps<Tkey extends keyof TForm>(
+    key: Tkey,
+    lang: string,
+    valueKey: string = "value",
+    onChangeKey: string = "onChange",
+    mapOnChange: (value: any) => any = (e) => e.target.value
+  ) {
+    if (!data) return {};
+    const stateTrans = (data[key] as { langId: string; value: any }[]) || [];
+    const value = stateTrans.find((v) => v.langId === lang)?.value || "";
+
+    const onChange = (e: any) => {
+      const value = mapOnChange(e);
+      console.log(stateTrans);
+      handleChange(key, [
+        ...stateTrans.filter((v) => v.langId !== lang),
+        { langId: lang, value },
+      ]);
+    };
+
+    console.log({ data });
+
+    return {
+      [valueKey]: value,
+      [onChangeKey]: onChange,
       label:
         options?.addLabel && typeof key === "string"
           ? startCase(key)
@@ -96,5 +134,6 @@ export function useForm<TForm>(
     dateInputProps,
     switchInputProps,
     setValue: (v: TForm) => setData({ ...v, constents }),
+    translationInputProps,
   };
 }

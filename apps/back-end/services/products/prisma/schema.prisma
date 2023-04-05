@@ -12,12 +12,14 @@ datasource db {
 }
 
 model ProductCategory {
-  id        String                @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  sortOrder Int
-  status    ProductCategoryStatus
-  thumbnail String?
-  parantId  String?
+  id                 String                @id @default(auto()) @map("_id") @db.ObjectId
+  name               String
+  sortOrder          Int
+  status             ProductCategoryStatus
+  thumbnail          String?
+  metaTagTitle       TranslationText[]
+  metaTagDescription TranslationText[]
+  parantId           String?
 }
 
 enum ProductCategoryStatus {
@@ -108,24 +110,69 @@ enum ProductCondition {
 }
 
 model Shop {
-  id              String                    @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId         String                    @unique
-  name            String
-  banner          String
-  description     String
-  verified        Boolean
-  createdAt       DateTime                  @default(now())
-  updatedAt       DateTime                  @updatedAt()
-  phone           String?
-  location        Location
-  storeType       StoreType[]
-  businessType    BusinessType
-  targetGenders   TargetGenders[]
-  vat             VatSettings?
-  type_of_seller  ServiceTypeOfSeller
-  shopMetaInfo    ShopMetaTranslationInfo[]
-  status          ShopStatus                @default(inActive)
-  payment_methods ShopPaymentMethods[]
+  id                       String                    @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId                  String                    @unique
+  name                     String
+  banner                   String
+  description              String
+  verified                 Boolean
+  createdAt                DateTime                  @default(now())
+  updatedAt                DateTime                  @updatedAt()
+  phone                    String
+  email                    String
+  thumbnail                String
+  location                 Location
+  storeType                StoreType[]
+  businessType             BusinessType
+  targetGenders            TargetGenders[]
+  vat                      VatSettings?
+  type_of_seller           TypeOfSeller
+  shopMetaInfo             ShopMetaTranslationInfo[]
+  status                   ShopStatus                @default(inActive)
+  payment_methods          ShopPaymentMethods[]
+  type                     ServiceType?
+  videos                   String[]
+  images                   String[]
+  reviews                  Int                       @default(0)
+  rating                   Float                     @default(0)
+  serviceWorkingScheduleId String?                   @db.ObjectId
+  ServiceWorkingSchedule   ServiceWorkingSchedule?
+}
+
+model ServiceWorkingSchedule {
+  id          String                          @id @map("_id") @db.ObjectId
+  weekdays    ServiceWeekDaysWorkingHours
+  specialDays ServiceSpecialWorkingHoursDay[]
+  Shop        Shop                            @relation(fields: [shopId], references: [id])
+  shopId      String                          @unique @db.ObjectId
+}
+
+type ServiceWeekDaysWorkingHours {
+  mo ServiceDayWorkingHours?
+  tu ServiceDayWorkingHours?
+  we ServiceDayWorkingHours?
+  th ServiceDayWorkingHours?
+  fr ServiceDayWorkingHours?
+  sa ServiceDayWorkingHours?
+  su ServiceDayWorkingHours?
+}
+
+type ServiceDayWorkingHours {
+  periods DateTime[]
+}
+
+type ServiceSpecialWorkingHoursDay {
+  date         DateTime
+  workingHours ServiceDayWorkingHours
+}
+
+enum ServiceType {
+  hotel
+  holiday_rentals
+  restaurant
+  health_center
+  beauty_center
+  vehicle
 }
 
 enum ShopPaymentMethods {
@@ -155,7 +202,7 @@ type ShopMetaInfo {
   hashtags           String[]
 }
 
-enum ServiceTypeOfSeller {
+enum TypeOfSeller {
   individual
   professional
 }

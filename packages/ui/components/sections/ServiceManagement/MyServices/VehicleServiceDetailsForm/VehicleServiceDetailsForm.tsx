@@ -18,6 +18,9 @@ import {
   SelectOption,
   InputProps,
   HashTagInput,
+  Input,
+  Checkbox,
+  InputGroup,
 } from "@UI";
 import { HiFolderAdd, HiVideoCamera } from "react-icons/hi";
 
@@ -133,6 +136,15 @@ export const VehicleServiceDetailsForm: React.FC<
                   },
                 ]}
               />
+
+              <FormikInput
+                type="number"
+                name="seats"
+                label={t("Number of Seats")}
+              />
+              <Input type="number" name="speed" label={t("Max seepd (KM/h)")} />
+              <Checkbox>{t("GPS Available")}</Checkbox>
+              <Checkbox>{t("Air Condition")}</Checkbox>
             </Form>
           );
         }}

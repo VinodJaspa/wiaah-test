@@ -43,7 +43,7 @@ query adminGetAccount($id:String!){
     profile{
       username
     }
-    type
+    accountType
     photo
   }
 }

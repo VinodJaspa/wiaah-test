@@ -364,7 +364,7 @@ query getRestaurant($args:GetRestaurantInput!){
                 },
               ],
               id: "menu789",
-              name: "Drinks Menu",
+              name: "Drinks",
             },
           ],
           michelin_guide_stars: 1,

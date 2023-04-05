@@ -54,29 +54,15 @@ const Dashboard: NextPage = () => {
 
   const { data: recentSales } = useGetAdminRecentSalesQuery(10);
   const { data: latestOrders } = useAdminGetLatestOrdersQuery(10);
-  // const { data: recentSellers } = useGetRecentSellers(
-  //   { page: 1, take: 100000 },
-  //   SubtractFromDate(new Date(), { hours: 12 })
-  // );
+  const { data: recentSellers } = useGetRecentSellers(
+    { page: 1, take: 100000 },
+    SubtractFromDate(new Date(), { hours: 12 })
+  );
 
-  // const { data: recentBuyers } = useGetRecentBuyers(
-  //   { page: 1, take: 100000 },
-  //   SubtractFromDate(new Date(), { hours: 12 })
-  // );
-
-  const recentSellers: GetRecentSellersQuery["getFilteredSellers"] = [
-    ...Array(10),
-  ].map((_, i) => ({
-    createdAt: AddToDate(new Date(), { hours: i }),
-    id: getRandomUser().id,
-  }));
-
-  const recentBuyers: GetRecentBuyersQuery["getFilteredBuyers"] = [
-    ...Array(10),
-  ].map((_, i) => ({
-    createdAt: AddToDate(new Date(), { hours: i }),
-    id: i.toString(),
-  }));
+  const { data: recentBuyers } = useGetRecentBuyers(
+    { page: 1, take: 100000 },
+    SubtractFromDate(new Date(), { hours: 12 })
+  );
 
   const accounts = [...(recentBuyers || []), ...(recentSellers || [])];
 
