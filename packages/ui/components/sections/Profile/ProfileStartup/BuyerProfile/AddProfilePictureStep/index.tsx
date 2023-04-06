@@ -43,9 +43,9 @@ export const AddProfilePictureStep: React.FC<AddProfilePictureProps> = () => {
       <Formik initialValues={{}} onSubmit={() => {}}>
         {() => (
           <Form>
-            <div className="centered-step flex  flex-col items-center justify-center md:p-0 lg:flex-row lg:p-12">
+            <div className="flex  flex-col items-center justify-center md:p-0 lg:flex-row lg:p-12">
               <div className="mb-4  justify-center lg:w-4/12">
-                <div className="profile-pic-container relative h-80 w-80 overflow-hidden rounded-xl lg:h-96 lg:w-96">
+                <div className=" relative h-80 w-80 overflow-hidden rounded-xl lg:h-96 lg:w-96">
                   {!webCamOn && (
                     <>
                       <img
@@ -94,7 +94,7 @@ export const AddProfilePictureStep: React.FC<AddProfilePictureProps> = () => {
                 name="photo"
                 accept="image/png, image/jpeg"
               />
-              <div className="w-full justify-center px-4 lg:w-fit">
+              <div className="w-full justify-center px-4 lg:w-full">
                 <div className="flex flex-col items-center cursor-pointer justify-center">
                   <Button
                     className={`w-[min(100%,15rem)] rounded-full`}

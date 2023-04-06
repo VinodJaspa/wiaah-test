@@ -8,7 +8,6 @@ import {
   PaymentPortal,
   NewShippingSettings,
   FindYourFriendsStep,
-  AddProfilePictureStep,
   Container,
   StepperFormController,
   StepperFormHandler,
@@ -27,8 +26,8 @@ import {
   HealthCenterIncludedServices,
   ServiceSectionWithSchemaType,
   MyVerificationSection,
-  AccountSettingsSection,
   BillingAccount,
+  ServicePoliciesInputSection,
 } from "@UI";
 
 import { ServicesType, StepperStepType } from "types";
@@ -37,10 +36,11 @@ import { runIfFn } from "utils";
 import { NewServiceSchemas } from "validation";
 import { useCreateServiceMutation } from "@features/Services/Services/mutation";
 import { AccountSignup } from "@features/Auth/views";
+import { ServiceType } from "@features/API";
 
 export const SellerProfileStartupView: React.FC = ({}) => {
   const { t } = useTranslation();
-  const [currentStep, setCurrentStep] = React.useState<number>(2);
+  const [currentStep, setCurrentStep] = React.useState<number>(0);
   const [submitRequests, setSubmitRequests] = React.useState<
     Record<number, () => any>
   >({});
@@ -79,24 +79,24 @@ export const SellerProfileStartupView: React.FC = ({}) => {
         />
       ),
     },
-    {
-      stepName: t("Email Verification"),
-      key: 1,
-      stepComponent: (
-        <AccountSignup
-          onSuccess={handleNextStep}
-          ref={(v: { submit: () => any }) => {
-            if (
-              v &&
-              typeof v.submit === "function" &&
-              typeof submitRequests[1] !== "function"
-            ) {
-              addSubmitRequest(1, v.submit);
-            }
-          }}
-        />
-      ),
-    },
+    // {
+    //   stepName: t("Email Verification"),
+    //   key: 1,
+    //   stepComponent: (
+    //     <AccountSignup
+    //       onSuccess={handleNextStep}
+    //       ref={(v: { submit: () => any }) => {
+    //         if (
+    //           v &&
+    //           typeof v.submit === "function" &&
+    //           typeof submitRequests[1] !== "function"
+    //         ) {
+    //           addSubmitRequest(1, v.submit);
+    //         }
+    //       }}
+    //     />
+    //   ),
+    // },
     {
       key: 2,
       stepComponent: (
@@ -117,37 +117,44 @@ export const SellerProfileStartupView: React.FC = ({}) => {
     },
     {
       stepName: t("Shop information"),
-      stepComponent: ShopInformationStep,
+      stepComponent: <ShopInformationStep />,
       key: 3,
     },
     {
       stepName: t("Verify Your Identity"),
       key: 4,
-      stepComponent: MyVerificationSection,
+      stepComponent: <MyVerificationSection />,
     },
     {
       stepName: t("Select a plan"),
-      stepComponent: SelectPackageStep,
+      stepComponent: (
+        <SelectPackageStep shopType="" value="" onChange={() => {}} />
+      ),
       key: 5,
     },
     {
       key: 6,
       stepName: t("Listing"),
-      stepComponent: SellerListing,
+      stepComponent: (
+        <SellerListing
+          getNextFn={(v) => (v ? addSubmitRequest(7, v) : null)}
+          getPrevFn={() => {}}
+        />
+      ),
     },
     {
       stepName: t("Payment_Gate", "Payment Gate"),
-      stepComponent: PaymentPortal,
+      stepComponent: <PaymentPortal />,
       key: 7,
     },
     {
       stepName: t("Shipping Settings", "Shipping Settings"),
-      stepComponent: NewShippingSettings,
+      stepComponent: <NewShippingSettings />,
       key: 8,
     },
     {
       stepName: t("Find_your_freinds", "Find your freinds"),
-      stepComponent: FindYourFriendsStep,
+      stepComponent: <FindYourFriendsStep />,
       key: 9,
     },
   ];
@@ -272,7 +279,7 @@ const ServicesDetailsSections: ServiceSectionWithSchemaType[] = [
 
 const includedServiceSections: ServiceSectionWithSchemaType[] = [
   {
-    key: "placeBooking",
+    key: "hotel",
     component: IncludedServices,
     schema: NewServiceSchemas.hotelIncludedServicesSchema,
   },
@@ -297,11 +304,13 @@ const SellerListing = ({
   getNextFn,
   getPrevFn,
 }: {
-  getNextFn: (fn: (() => any) | null) => any;
-  getPrevFn: (fn: (() => any) | null) => any;
+  getNextFn?: (fn: (() => any) | null) => any;
+  getPrevFn?: (fn: (() => any) | null) => any;
 }) => {
   const { t } = useTranslation();
-  const [serviceType, setServiceType] = React.useState<any>();
+  const [serviceType, setServiceType] = React.useState<ServiceType>(
+    ServiceType.Hotel
+  );
   const includedServiceSection = includedServiceSections.find(
     (s) => s.key === serviceType
   ) || {
@@ -316,8 +325,12 @@ const SellerListing = ({
 
   React.useEffect(() => {
     return () => {
-      getNextFn(null);
-      getPrevFn(null);
+      if (getNextFn) {
+        getNextFn(null);
+      }
+      if (getPrevFn) {
+        getPrevFn(null);
+      }
     };
   }, []);
 
@@ -330,13 +343,7 @@ const SellerListing = ({
           handlerKey="generalDetails"
         >
           {({ validate }) => {
-            return (
-              <>
-                {detailsSection ? (
-                  <detailsSection.component onChange={validate} />
-                ) : null}
-              </>
-            );
+            return <>{detailsSection ? <detailsSection.component /> : null}</>;
           }}
         </StepperFormHandler>
       ),
@@ -351,10 +358,7 @@ const SellerListing = ({
         <StepperFormHandler handlerKey="servicePolicies">
           {({ validate }) => (
             <>
-              <ServicePoliciesSection
-                title={t("Service Policies")}
-                policies={[]}
-              />
+              <ServicePoliciesInputSection />
             </>
           )}
         </StepperFormHandler>
@@ -425,13 +429,10 @@ const SellerListing = ({
         }}
       >
         {({ nextStep, currentStepIdx, goToStep, previousStep }) => {
-          getNextFn &&
-            getNextFn(currentStepIdx === steps.length - 1 ? null : nextStep);
-          getPrevFn && getPrevFn(currentStepIdx === 0 ? null : previousStep);
           return (
             <>
               <CheckMarkStepper
-                currentStepIdx={currentStepIdx}
+                currentStepIdx={1}
                 onStepChange={(step) => goToStep(step)}
                 steps={steps}
               />

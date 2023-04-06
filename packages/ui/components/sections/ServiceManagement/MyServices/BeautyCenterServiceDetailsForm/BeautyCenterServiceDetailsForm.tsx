@@ -91,22 +91,12 @@ export const BeautyCenterServiceDetailsForm: React.FC<
               />
 
               <FormikInput<MultiChooseInputProps>
-                placeholder={t("Choose type of seller")}
-                as={Select}
-                label={t("Type of seller")}
+                placeholder={t("Duration of the treatment")}
+                label={t("Duration (minutes)")}
+                type="number"
                 labelProps={{ className: "text-lg" }}
-                onChange={(v) => setFieldValue("type_of_seller", v)}
-                value={values["type_of_seller"]}
-                suggestions={["Individual", "Professional"]}
-                name="type_of_seller"
-              >
-                <SelectOption value="individual">
-                  {t("Individual")}
-                </SelectOption>
-                <SelectOption value="professional">
-                  {t("Professional")}
-                </SelectOption>
-              </FormikInput>
+                name="duration"
+              ></FormikInput>
 
               <Stack col divider={Divider}>
                 <FormikInput<MultiChooseInputProps>

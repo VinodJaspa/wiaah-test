@@ -1,7 +1,14 @@
 import React from "react";
 import { IoTicket } from "react-icons/io5";
 import yup, { object, string } from "yup";
-import { BoxShadow, Input, Button, InputGroup, InputLeftElement } from "@UI";
+import {
+  BoxShadow,
+  Input,
+  Button,
+  InputGroup,
+  InputLeftElement,
+  DiscountTicketIcon,
+} from "@UI";
 import { useTranslation } from "react-i18next";
 
 const VoucherSchema = object().shape({
@@ -50,27 +57,32 @@ export const VoucherInput: React.FC<VoucherInputProps> = ({ onSuccess }) => {
     }
   }
   return (
-    <BoxShadow>
-      <div className="bg-white">
-        <div className="flex flex-col px-4 py-4 gap-4 items-end">
-          <div className="w-full">
-            <p className="text-3xl">{t("Voucher")}</p>
-          </div>
-          <InputGroup className="w-full">
-            <InputLeftElement>
-              <IoTicket />
+    <div className="bg-white p-6 rounded-3xl">
+      <div className="flex flex-col gap-6 items-end">
+        <div className="w-full">
+          <p className="font-semibold text-2xl">{t("Voucher")}</p>
+        </div>
+        <div className="flex flex-col gap-8 w-full">
+          <InputGroup className="w-full rounded-xl">
+            <InputLeftElement className="text-2xl pr-[0px]">
+              <DiscountTicketIcon />
             </InputLeftElement>
             <Input
-              placeholder={t("voucher...")}
-              className="w-full h-12"
+              placeholder={t("Voucher")}
+              className="w-full h-12 pl-[0.25rem] placeholder-[#B2B2B2] placeholder-"
               id="VoucherInput"
             />
           </InputGroup>
-          <Button id="ApplyVoucherButton" onClick={handleSubmit}>
+          <Button
+            className="self-end text-lg font-semibold px-[1.5rem] py-[0.75rem]"
+            colorScheme="darkbrown"
+            id="ApplyVoucherButton"
+            onClick={handleSubmit}
+          >
             {t("Apply")}
           </Button>
         </div>
       </div>
-    </BoxShadow>
+    </div>
   );
 };

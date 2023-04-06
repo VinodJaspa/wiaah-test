@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import {
   Membership,
   MembershipIncludedItem,
+  MembershipRecurring,
   MembershipTurnoverRule,
 } from "@features/API";
 import { CommissionOn, CommissionType } from "@features/API";
@@ -68,7 +69,7 @@ export const useGetMembershipsQuery = () => {
     const mockRes: GetMembershipsQuery["getSubscriableMemberships"] = [
       {
         id: "test",
-        commissionOn: CommissionOn.Sale,
+        commissionOn: CommissionOn.Revenue,
         includings: [
           {
             title: "20% commission on sales",
@@ -76,7 +77,7 @@ export const useGetMembershipsQuery = () => {
         ],
         name: "Free",
         priceId: "test",
-        recurring: 31,
+        recurring: MembershipRecurring.Month,
         turnover_rules: [
           {
             commission: 5,
@@ -98,18 +99,18 @@ export const useGetMembershipsQuery = () => {
       },
       {
         id: "Pay",
-        commissionOn: CommissionOn.Sale,
+        commissionOn: CommissionOn.ExternalClick,
         includings: [
           {
             title: "5% commission on sales",
           },
           {
-            title: "5$ fixed commission on sales",
+            title: "20$ fixed monthly fee",
           },
         ],
         name: "Pay",
         priceId: "test",
-        recurring: 31,
+        recurring: MembershipRecurring.Month,
         turnover_rules: [
           {
             commission: 5,
@@ -142,7 +143,7 @@ export const useGetMembershipsQuery = () => {
         ],
         name: "Pay Per Click",
         priceId: "test",
-        recurring: 31,
+        recurring: MembershipRecurring.Month,
         turnover_rules: [
           {
             commission: 0.001,

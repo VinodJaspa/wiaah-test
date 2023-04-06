@@ -2,7 +2,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { BiCalendarEdit } from "react-icons/bi";
-import { Menu, MenuButton, MenuList, DateInput, Select } from "@UI";
+import { Menu, MenuButton, MenuList, DateInput, Select, Input } from "@UI";
 import { SelectOption } from "@UI";
 
 export interface NewProductDiscountOptionsProps {
@@ -38,6 +38,7 @@ export const NewProductDiscountOptions: React.FC<
                   </SelectOption>
                 ))}
               </Select>
+              <Input type="number" placeholder={t("Units")}></Input>
               <div className="flex gap-4 px-1 py-1 w-full border-[1px] items-center border-gray-300">
                 <Menu>
                   <MenuButton>
@@ -49,7 +50,6 @@ export const NewProductDiscountOptions: React.FC<
                     />
                   </MenuList>
                 </Menu>
-
                 <p>{t("start_date", "Start Date")}</p>
               </div>
               <div className="flex gap-4 px-1 py-1 w-full border-[1px] items-center border-gray-300">

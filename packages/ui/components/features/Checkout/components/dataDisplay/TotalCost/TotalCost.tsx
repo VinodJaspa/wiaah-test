@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import { VoucherState } from "@src/state";
-import { FlexStack, BoldText, Text, PriceDisplay, Divider } from "@UI";
+import { FlexStack, BoldText, Text, PriceDisplay, Divider, HStack } from "@UI";
 import { useTranslation } from "react-i18next";
 import { CalculateVat } from "utils";
 
@@ -22,81 +22,50 @@ export const TotalCost: React.FC<TotalCostProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const [Voucher, setVoucher] = useRecoilState(VoucherState);
   const totalPrice = subTotal;
 
   const TotalWithFee = totalPrice + shippingFee;
   const finaleTotal = TotalWithFee + CalculateVat(TotalWithFee, vat);
 
-  function handleRemoveVoucher() {
-    // call backend endpoint to remove voucher
-    // ok is true if the server removes the voucher successfully
-    let ok = true;
-    if (ok) {
-      setVoucher(undefined);
-    }
-  }
-
   return (
-    <div className="text-lg">
-      <FlexStack direction="vertical" verticalSpacingInRem={0.5}>
-        <FlexStack justify="between">
-          <p className="font-bold">{t("Subtotal")}</p>
-          <p className="font-bold">
+    <div className="p-6">
+      <div className="flex flex-col gap-2 w-full">
+        <HStack className="justify-between">
+          <p className="font-semibold text-lg">{t("Subtotal")}</p>
+          <p className="font-bold text-xl">
             <PriceDisplay priceObject={{ amount: totalPrice }} />
           </p>
-        </FlexStack>
-        {Voucher && (
-          <FlexStack justify="between">
-            <BoldText>{t("voucher", "Voucher")}</BoldText>
-            <Text size="md">
-              <FlexStack direction="vertical">
-                <span className="text-green-500">
-                  {Voucher.voucherName} - {Voucher.value}
-                  {Voucher.unit} {t("off", "OFF")}
-                </span>
+        </HStack>
 
-                {voucherRemoveable && (
-                  <span
-                    className="cursor-pointer text-red-500"
-                    onClick={handleRemoveVoucher}
-                  >
-                    {t("remove", "Remove")}
-                  </span>
-                )}
-              </FlexStack>
-            </Text>
-          </FlexStack>
-        )}
-        {shippingFee > 0 ? (
-          <FlexStack justify="between">
-            <BoldText>{t("shipping_fee", "Shipping Fee")}</BoldText>
-            <BoldText>
-              <PriceDisplay priceObject={{ amount: shippingFee }} />
-            </BoldText>
-          </FlexStack>
+        {saved && saved > 0 ? (
+          <HStack className="justify-between">
+            <p className="font-semibold text-lg">{t("Voucher")}</p>
+            <div className="text-[#E20000] font-medium text-lg flex gap-2 items-center">
+              <p>{t("You Have Saved")}</p>
+              <PriceDisplay price={saved} />
+            </div>
+          </HStack>
         ) : null}
         <div className="flex justify-between">
-          <p className="font-bold">{`${t("VAT", "VAT")} (${vat}%)`}</p>
+          <p className="font-bold">
+            {`${t("VAT")}`}{" "}
+            <span className="text-base font-medium">{`(${vat}%)`}</span>
+          </p>
           <PriceDisplay
-            className="font-bold"
+            className="font-bold text-xl"
             priceObject={{ amount: CalculateVat(TotalWithFee, vat) }}
           />
         </div>
-        {saved > 0 ? (
-          <span className="w-full flex justify-end font-bold text-primary uppercase gap-2">
-            {`${t("you have saved")}`}
-            <PriceDisplay priceObject={{ amount: saved }} />
-          </span>
-        ) : null}
-        <Divider />
+
+        <Divider className="border-black my-3" />
         <FlexStack justify="between">
-          <BoldText>{t("total_to_pay", "Total to Pay")}</BoldText>
-          <BoldText>
-            <PriceDisplay priceObject={{ amount: finaleTotal }} />
-          </BoldText>
+          <p className="text-2xl font-semibold">{t("Total to Pay")}</p>
+          <PriceDisplay
+            className="font-bold text-2xl"
+            priceObject={{ amount: finaleTotal }}
+          />
         </FlexStack>
-      </FlexStack>
+      </div>
     </div>
   );
 };

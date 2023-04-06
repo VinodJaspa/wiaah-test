@@ -3,6 +3,8 @@ import {
   BoxShadow,
   Button,
   FormikInput,
+  Image,
+  Input,
   SpinnerFallback,
   useGetCheckoutPaymentIntentQuery,
 } from "@UI";
@@ -14,6 +16,7 @@ import { loadStripe, StripeElementsOptions } from "@stripe/stripe-js";
 import { PaymentElement } from "@stripe/react-stripe-js";
 import { Formik, Form } from "formik";
 import schema from "yup/lib/schema";
+import { useForm } from "@UI/../utils/src";
 
 const CheckoutForm = () => {
   const { t } = useTranslation();
@@ -34,7 +37,7 @@ const CheckoutForm = () => {
     }
 
     const { error } = await stripe.confirmPayment({
-      //`Elements` instance that was used to create the Payment Element
+      //`Elements` instance that was ussed to create the Payment Element
       elements,
       confirmParams: {
         return_url: `${EnvVars.domain}`,
@@ -65,106 +68,78 @@ const CheckoutForm = () => {
   );
 };
 
-export interface PaymentGatewayProps {}
+type PaymentData = {
+  cardNumber: string;
+  month: number;
+  year: number;
+  cvc: string;
+};
+export interface PaymentGatewayProps {
+  onSuccess: (data: PaymentData) => any;
+}
 
-export const PaymentGateway: React.FC<PaymentGatewayProps> = () => {
+export const PaymentGateway: React.FC<PaymentGatewayProps> = ({
+  onSuccess,
+}) => {
   const { t } = useTranslation();
-
-  const [clientSecret, setClientSecret] = React.useState<string>();
-
-  const { mutate, isLoading, isError, error } =
-    useGetCheckoutPaymentIntentQuery();
-
-  React.useEffect(() => {
-    mutate(
-      {},
-      {
-        onSuccess(data, variables, context) {
-          setClientSecret(data.client_secret);
-        },
-      }
-    );
-  }, []);
-
-  const options: StripeElementsOptions = {
-    clientSecret,
-  };
+  const { inputProps } = useForm<PaymentData>({
+    cardNumber: "",
+    cvc: "",
+    month: new Date().getMonth(),
+    year: parseInt(new Date().toLocaleDateString("en-us", { year: "2-digit" })),
+  });
 
   return (
     <>
-      {/* {JSON.stringify(error)} */}
-      {/* <SpinnerFallback isLoading={isLoading} isError={isError}> */}
-      {/* {clientSecret ? (
-        <Elements stripe={stripePromise} options={options}>
-          <CheckoutForm />
-        </Elements>
-      ) : null} */}
-      {/* </SpinnerFallback> */}
       <BoxShadow>
-        <div className="bg-white">
+        <div className="bg-white rounded-3xl">
           <div className="flex flex-col items-start gap-4 p-4">
             <div className="flex w-full items-center justify-between">
-              <span id="PaymentTitle" className="text-3xl leading-loose">
-                {t("payment", "Payment")}
+              <span
+                id="PaymentTitle"
+                className="text-2xl font-semibold leading-loose"
+              >
+                {t("Payment")}
               </span>
               <div className="flex h-12 items-center gap-2">
-                <img className="h-full" src="/visa.svg" />
-                <img className="h-full" src="/mastercard.svg" />
-                <img className="h-full" src="/amex.svg" />
-                <img className="h-full" src="/discover.png" />
-                <img className="h-full" src="/american_express.png" />
+                <Image src="/visa.png" />
+                <Image src="/mastercard.png" />
+                <Image src="/discover.png" />
+                <Image src="/american_express.png" />
               </div>
             </div>
-            <Formik
-              validationSchema={schema}
-              initialValues={{
-                cardNumber: "",
-                expiryDate: "",
-                cvv: "",
-              }}
-              onSubmit={(res) => {}}
-            >
-              {({ errors, touched }) => (
-                <Form className="w-full">
-                  <div className="w-full items-end gap-4 flex flex-col">
-                    <div className="w-full flex flex-col gap-2">
-                      <span>{t("card_number", "Card Number")}</span>
-                      <FormikInput
-                        placeholder="1234...14"
-                        id="CardNumberInput"
-                        name="cardNumber"
-                      />
-                    </div>
-                    <div className="w-full grid grid-cols-2 gap-4">
-                      <div className="w-full flex flex-col gap-2">
-                        <span>{t("expiry_date", "Expiry Date")}</span>
-                        <FormikInput
-                          id="CardExpiryDateInput"
-                          placeholder="MM/YY"
-                          name="expiryDate"
-                        />
-                      </div>
-                      <div className="w-full gap-2 flex flex-col">
-                        <span>{t("cvc/cvv", "CVC/CVV")}</span>
-                        <FormikInput
-                          id="CardCvvInput"
-                          placeholder="1234"
-                          name="cvv"
-                          fullWidth
-                        />
-                      </div>
-                    </div>
-                    <Button
-                      id="PayNowButton"
-                      className="bg-black w-full px-8 py-2"
-                      type="submit"
-                    >
-                      {t("pay_now", "Pay now")}
-                    </Button>
-                  </div>
-                </Form>
-              )}
-            </Formik>
+            <div className="w-full items-end gap-6 flex flex-col">
+              <div className="w-full flex flex-col gap-2">
+                <span className="text-lg font-medium">{t("Card Number")}</span>
+                <Input
+                  placeholder="1234...14"
+                  id="CardNumberInput"
+                  name="cardNumber"
+                />
+              </div>
+              <div className="w-full grid grid-cols-2 gap-4">
+                <div className="w-full flex flex-col gap-2">
+                  <span className="text-lg font-semibold">
+                    {t("Expiry Date")}
+                  </span>
+                  <Input id="CardExpiryDateInput" placeholder="MM/YY" />
+                </div>
+                <div className="w-full gap-2 flex flex-col">
+                  <span className="uppercase text-lg font-semibold">
+                    {t("cvc/cvv")}
+                  </span>
+                  <Input id="CardCvvInput" placeholder="1234" name="cvv" />
+                </div>
+              </div>
+              <Button
+                colorScheme="darkbrown"
+                id="PayNowButton"
+                className="self-end text-lg font-semibold px-[1.5rem] py-[0.75rem]"
+                type="submit"
+              >
+                {t("Pay now")}
+              </Button>
+            </div>
           </div>
         </div>
       </BoxShadow>

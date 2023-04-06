@@ -1,5 +1,6 @@
 import { FormatedSearchableFilter } from "api";
 import { AsyncReturnType } from "types";
+import { ServiceType } from "ui";
 
 import { randomNum } from "utils";
 import {
@@ -94,7 +95,42 @@ export const getCheckoutDataFetcher = async (
           },
         },
         {
-          type: "resturant",
+          type: ServiceType.Vehicle,
+          data: {
+            serviceType: "hotel",
+            bookedDates: {
+              from: new Date(Date.now()).toString(),
+              to: new Date(Date.now()).toString(),
+            },
+            rate: randomNum(5),
+            refundingRule: {
+              cost: 12,
+              duration: 3,
+              id: "12",
+            },
+
+            reviews: randomNum(153),
+            thumbnail: "/place-1.jpg",
+            id: "123",
+            rateReason: "cleanliness",
+            title: "Citadines Montmartre Paris",
+            duration: [30, 60],
+            extras: [
+              {
+                name: "Breakfast + book now, pay later",
+                price: randomNum(100),
+              },
+            ],
+            guests: randomNum(5),
+            cashback: {
+              amount: randomNum(20),
+              type: "percent",
+            },
+            price: randomNum(500),
+          },
+        },
+        {
+          type: ServiceType.Restaurant,
           data: {
             serviceType: "restaurant",
             bookedDates: {
@@ -491,5 +527,5 @@ export const getCheckoutDataFetcher = async (
       vat: 7,
     },
   };
-  return CheckValidation(ServiceCheckoutDataApiResponseValidationSchema, res);
+  return res;
 };

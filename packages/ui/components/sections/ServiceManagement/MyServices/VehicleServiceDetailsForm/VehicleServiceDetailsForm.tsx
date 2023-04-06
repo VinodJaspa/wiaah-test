@@ -95,14 +95,18 @@ export const VehicleServiceDetailsForm: React.FC<
               <Stack col divider={Divider}>
                 <FormikInput<MultiChooseInputProps>
                   placeholder={t("Choose vehicle type")}
-                  as={MultiChooseInput}
+                  as={Select}
                   label={t("Vehicle type")}
                   labelProps={{ className: "text-lg" }}
                   onChange={(v) => setFieldValue("vehicle_type", v)}
                   value={values["vehicle_type"]}
                   suggestions={["Boat", "Car", "Bike"]}
                   name="vehicle_type"
-                />
+                >
+                  <SelectOption value={`${0}`}>{t("Car")}</SelectOption>
+                  <SelectOption value={`${100}`}>{"Bike"}</SelectOption>
+                  <SelectOption value={`${200}`}>{"$200"}</SelectOption>
+                </FormikInput>
 
                 <FormikInput<SelectProps>
                   placeholder={t("Choose security deposit")}

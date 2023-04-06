@@ -16,9 +16,6 @@ const ServiceCheckout: NextPage = () => {
             <CheckoutView />
           </Container>
         </div>
-        <Container>
-          <Collaboration />
-        </Container>
       </SellerLayout>
     </>
   );

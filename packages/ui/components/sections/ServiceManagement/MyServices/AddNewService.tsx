@@ -86,7 +86,7 @@ export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
           onSubmit={(data) => mutate(data)}
           isEdit={isEdit || false}
           data={data}
-          serviceType={"vehicle"}
+          serviceType={"hotel"}
         />
       </FormTranslationWrapper>
     </div>
@@ -265,6 +265,7 @@ export const NewServiceStepper: React.FC<{
                     fallbackText: "Service Policy Details",
                   },
                 },
+
                 {
                   key: "includedServices",
                   stepComponent: (
@@ -288,22 +289,22 @@ export const NewServiceStepper: React.FC<{
                     fallbackText: "Included Service",
                   },
                 },
-                {
-                  key: "extraServiceOptions",
-                  stepComponent: (
-                    <StepperFormHandler
-                      handlerKey="extraServiceOptions"
-                      validationSchema={NewServiceSchemas.extraSreivce}
-                    >
-                      {({ validate }) => (
-                        <ExtraServiceOptions onChange={validate} />
-                      )}
-                    </StepperFormHandler>
-                  ),
-                  stepName: {
-                    translationKey: "Extra Service",
-                  },
-                },
+                // {
+                //   key: "extraServiceOptions",
+                //   stepComponent: (
+                //     <StepperFormHandler
+                //       handlerKey="extraServiceOptions"
+                //       validationSchema={NewServiceSchemas.extraSreivce}
+                //     >
+                //       {({ validate }) => (
+                //         <ExtraServiceOptions onChange={validate} />
+                //       )}
+                //     </StepperFormHandler>
+                //   ),
+                //   stepName: {
+                //     translationKey: "Extra Service",
+                //   },
+                // },
                 {
                   key: "discount",
                   stepComponent: (
@@ -323,7 +324,11 @@ export const NewServiceStepper: React.FC<{
               ]}
             />
             <div className="w-full justify-between flex">
-              <Button onClick={() => CancelAddingNewService()}>
+              <Button
+                colorScheme="danger"
+                outline
+                onClick={() => CancelAddingNewService()}
+              >
                 {t("Cancel")}
               </Button>
 

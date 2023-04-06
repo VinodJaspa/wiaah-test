@@ -1,19 +1,36 @@
 import React from "react";
 import { startCase } from "lodash";
+import * as yup from "yup";
 
 export function useForm<TForm>(
   initial: TForm,
   constents?: Partial<TForm>,
-  options?: { addLabel?: boolean; addPlaceholder?: boolean }
+  options?: {
+    addLabel?: boolean;
+    addPlaceholder?: boolean;
+    yupSchema?: yup.AnyObjectSchema;
+  }
 ) {
   const [data, setData] = React.useState<TForm>(initial);
+
+  const [errors, setErros] = React.useState<Record<string, string>>({});
+
+  const schema = options?.yupSchema;
 
   function handleChange<Tkey extends keyof TForm, Tvalue extends TForm[Tkey]>(
     key: Tkey,
     v: Tvalue
   ) {
-    console.log("change", key, v);
-    setData((old) => ({ ...old, [key]: v, ...constents }));
+    setData((old) => {
+      const newV = { ...old, [key]: v, ...constents };
+      if (schema) {
+        const res = schema.validateSync(newV);
+
+        // TODO: get errors and setErrros with the key:error pair
+      }
+
+      return newV;
+    });
   }
 
   function inputProps<Tkey extends keyof TForm>(
@@ -35,6 +52,7 @@ export function useForm<TForm>(
         options?.addPlaceholder && typeof key === "string"
           ? startCase(key)
           : undefined,
+      errorMessage: errors[key as string],
     };
   }
 
@@ -72,6 +90,7 @@ export function useForm<TForm>(
         options?.addPlaceholder && typeof key === "string"
           ? startCase(key)
           : undefined,
+      errorMessage: errors[key as string],
     };
   }
 
@@ -89,6 +108,7 @@ export function useForm<TForm>(
         options?.addLabel && typeof key === "string"
           ? startCase(key)
           : undefined,
+      errorMessage: errors[key as string],
     };
   }
 
@@ -106,6 +126,7 @@ export function useForm<TForm>(
         options?.addLabel && typeof key === "string"
           ? startCase(key)
           : undefined,
+      errorMessage: errors[key as string],
     };
   }
 
@@ -123,6 +144,7 @@ export function useForm<TForm>(
         options?.addLabel && typeof key === "string"
           ? startCase(key)
           : undefined,
+      errorMessage: errors[key as string],
     };
   }
 

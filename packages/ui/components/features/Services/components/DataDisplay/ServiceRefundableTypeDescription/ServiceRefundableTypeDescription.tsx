@@ -21,7 +21,7 @@ export const ServiceRefundableTypeDescription: React.FC<
   return (
     <div className="flex items-center gap-4 justify-between">
       {duration > 0 ? (
-        <p>
+        <p className="text-base text-[#FF0000] font-medium">
           {t("Fully refundable before")} {date?.month_short} {date?.day}
         </p>
       ) : cost > 0 ? (
@@ -30,7 +30,7 @@ export const ServiceRefundableTypeDescription: React.FC<
         <p>{t("Non-refundable")}</p>
       )}
       {displayCost && cost > 0 ? (
-        <PriceDisplay className="font-bold" price={cost} />
+        <PriceDisplay className="font-bold text-xl" price={cost} />
       ) : null}
     </div>
   );

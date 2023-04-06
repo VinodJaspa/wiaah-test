@@ -51,15 +51,17 @@ export function MultiChooseInput({
           </span>
         ))}
 
-        <Input
-          placeholder={placeholder}
-          className="h-[2rem] border-none w-[fit-content]"
-          onKeyDown={(e) => {
-            e.code === "Enter" ? addItem(inputValue) : null;
-          }}
-          onChange={(e) => setInputInputValue(e.target.value)}
-          value={inputValue}
-        />
+        <div className="w-48">
+          <Input
+            placeholder={placeholder}
+            className="h-[2rem] border-none"
+            onKeyDown={(e) => {
+              e.code === "Enter" ? addItem(inputValue) : null;
+            }}
+            onChange={(e) => setInputInputValue(e.target.value)}
+            value={inputValue}
+          />
+        </div>
       </label>
       <InputSuggestions>
         <div className="flex flex-col">

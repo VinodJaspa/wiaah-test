@@ -31,7 +31,7 @@ export const RestaurantAddMenuForm: React.FC<RestaurantAddMenuFormProps> = ({
               placeholder={t("New menu Name")}
               name="title"
             />
-            <Button onClick={() => handleSubmit()} className="self-end">
+            <Button onClick={() => handleSubmit()} className="self-end mb-3">
               {t("Add")}
             </Button>
           </div>

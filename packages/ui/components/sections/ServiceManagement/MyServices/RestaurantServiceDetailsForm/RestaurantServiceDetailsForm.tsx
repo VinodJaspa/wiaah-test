@@ -214,7 +214,7 @@ export const RestaurantServiceDetailsForm: React.FC<
                 </SelectOption>
               </FormikInput>
 
-              <FormikInput<SelectProps>
+              {/* <FormikInput<SelectProps>
                 placeholder={t("Choose your special offer")}
                 label={t("Special offer")}
                 labelProps={{ className: "text-lg" }}
@@ -226,7 +226,7 @@ export const RestaurantServiceDetailsForm: React.FC<
                     `-{i * 10}% {t("on the menu")}`
                   </SelectOption>
                 ))}
-              </FormikInput>
+              </FormikInput> */}
 
               <ChooseWithInput
                 title={t("Cancel fees")}

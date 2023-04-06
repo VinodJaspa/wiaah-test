@@ -19,6 +19,7 @@ export interface SelectProps<SelectOptionType = string>
   value?: string | boolean | number;
   flushed?: boolean;
   label?: string;
+  labelClassName?: string;
 }
 
 export function Select<ValueType = string>({
@@ -29,6 +30,7 @@ export function Select<ValueType = string>({
   flushed,
   onOptionSelect,
   label,
+  labelClassName,
   ...props
 }: SelectProps<ValueType>) {
   const ph = placeholder ? (
@@ -81,14 +83,18 @@ export function Select<ValueType = string>({
     setOpen((state) => !state);
   }
   return (
-    <div className="w-full flex flex-col gap-2">
-      {label ? <p className="font-semibold">{label}</p> : null}
+    <div className="w-full flex flex-col gap-1">
+      {label ? (
+        <p className={`${labelClassName ? labelClassName : "font-semibold"}`}>
+          {label}
+        </p>
+      ) : null}
       <div
         {...props}
         ref={ref}
         className={`${className || ""} ${
           flushed ? "border-b-2" : "border-2"
-        } bg-white border-gray-200 items-center flex rounded relative`}
+        } bg-white border-[#EDEDED] items-center flex rounded-xl relative`}
       >
         <div
           onClick={handleToggle}
@@ -104,7 +110,10 @@ export function Select<ValueType = string>({
                 React.cloneElement(selectedOption, { selectable: false })}
             </div>
           </div>
-          <ArrowDownIcon className="text-xl" />
+          <div className="flex h-full gap-2">
+            <div className="h-6 border-l border-black"></div>
+            <ArrowDownIcon className="text-xl" />
+          </div>
         </div>
         <div
           data-testid="SelectOptionsContainer"

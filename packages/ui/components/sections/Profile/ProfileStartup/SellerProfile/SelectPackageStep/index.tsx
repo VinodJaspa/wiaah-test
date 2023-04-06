@@ -42,7 +42,7 @@ export const SelectPackageStep: React.FC<SelectPackageStepProps> = ({
                   <AiOutlineInbox />
                 </div>
                 <div>
-                  <div className="text-lg text-white">{t("Pay Plan")}</div>
+                  <div className="text-lg text-white">{data.name}</div>
                   <div className="text-gray-400">
                     {data.turnover_rules.at(0)?.commissionType ===
                     CommissionType.Fixed ? (
