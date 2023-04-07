@@ -169,27 +169,37 @@ type Location {
   state: String!
 }
 
-type VatSettings {
-  VatID: String!
-  location: Location!
-}
-
 type Shop {
   id: ID!
-  name: String!
   ownerId: String!
-  location: Location!
-  description: String!
+  name: String!
   banner: String!
+  description: String!
   verified: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  phone: String!
+  email: String!
+  thumbnail: String!
+  location: Location!
   storeType: [StoreType!]!
   businessType: BusinessType!
   targetGenders: [TargetGenders!]!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  vat: VatSettings
+  type_of_seller: TypeOfSeller!
+  status: ShopStatus!
+  payment_methods: [ShopPaymentMethod!]!
+  type: ServiceType
+  videos: [String!]!
+  images: [String!]!
+  reviews: Int!
+  rating: Float!
   service: Service!
 }
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
 
 enum StoreType {
   product
@@ -206,10 +216,33 @@ enum TargetGenders {
   female
 }
 
-"""
-A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
-"""
-scalar DateTime
+enum TypeOfSeller {
+  individual
+  professional
+}
+
+enum ShopStatus {
+  inActive
+  active
+  suspended
+}
+
+enum ShopPaymentMethod {
+  credit_card
+  visa
+  mastercard
+  check
+  cash
+}
+
+enum ServiceType {
+  hotel
+  holiday_rentals
+  restaurant
+  health_center
+  beauty_center
+  vehicle
+}
 
 type Service {
   ownerId: ID!
@@ -259,7 +292,6 @@ type ShippingTypeRule {
 
 type Query {
   getNearShops(GetNearShopsInput: GetNearShopsInput!): [Shop!]!
-  getAllShops: [Shop!]!
   getShopById(id: String!): Shop!
   getFilteredShops(filteredShopsArgs: FilteredShopsInput!): [Shop!]!
   getProductById(id: String!, isClick: Boolean!): Product!
@@ -390,14 +422,31 @@ type Mutation {
 }
 
 input CreateShopInput {
-  name: String!
+  name: [TranslationTextInput!]!
   banner: String!
-  description: String!
+  description: [TranslationTextInput!]!
+  phone: String!
+  email: String!
+  thumbnail: String!
   location: LocationInput!
   storeType: [StoreType!]!
   businessType: BusinessType!
   targetGenders: [TargetGenders!]!
   vat: VatSettingsPartialInput
+  type_of_seller: TypeOfSeller!
+  status: ShopStatus!
+  payment_methods: [ShopPaymentMethod!]!
+  type: ServiceType
+  vidoes: [String!]!
+  images: [String!]!
+  metaTagDescription: String!
+  metaTagKeywords: [String!]!
+  hashtags: [String!]!
+}
+
+input TranslationTextInput {
+  langId: String!
+  value: String!
 }
 
 input LocationInput {
@@ -415,14 +464,26 @@ input VatSettingsPartialInput {
 }
 
 input UpdateShopInput {
-  name: String
+  name: [TranslationTextInput!]
   banner: String
-  description: String
+  description: [TranslationTextInput!]
+  phone: String
+  email: String
+  thumbnail: String
   location: LocationInput
   storeType: [StoreType!]
   businessType: BusinessType
   targetGenders: [TargetGenders!]
   vat: VatSettingsPartialInput
+  type_of_seller: TypeOfSeller
+  status: ShopStatus
+  payment_methods: [ShopPaymentMethod!]
+  type: ServiceType
+  vidoes: [String!]
+  images: [String!]
+  metaTagDescription: String
+  metaTagKeywords: [String!]
+  hashtags: [String!]
 }
 
 input CreateProductInput {

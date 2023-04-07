@@ -1,7 +1,7 @@
 import { ServiceCheckoutDataType } from "api";
-import { ServiceCheckoutCard } from "@UI";
+import { ProductCheckoutCard, ServiceCheckoutCard } from "@UI";
 import React from "react";
-import { ServiceType } from "@features/API";
+import { ProductType, ServiceType } from "@features/API";
 
 export interface ServiceCheckoutCardSwitcherProps {
   service: ServiceCheckoutDataType;
@@ -36,17 +36,14 @@ export const ServiceCheckoutCardSwitcher: React.FC<
           name="Standard room"
           thumbnail="https://cdn.loewshotels.com/loewshotels.com-2466770763/cms/cache/v2/5f5a6e0d12749.jpg/1920x1080/fit/80/86e685af18659ee9ecca35c465603812.jpg"
           total={500}
-          serviceType={ServiceType.Vehicle}
+          serviceType={ServiceType.Hotel}
         />
       );
     case ServiceType.Restaurant:
       return (
         <ServiceCheckoutCard
           shopName="Padma Resort Legian"
-          amenities={[
-            { slug: "wifi", label: "Free WIFI" },
-            { label: "Free Movies", slug: "movies" },
-          ]}
+          amenities={[]}
           cancelationPolicy={{
             cost: 50,
             duration: 15,
@@ -63,6 +60,84 @@ export const ServiceCheckoutCardSwitcher: React.FC<
           thumbnail="https://www.hotel-montana.ch/bilder/hauptbilder/restaurant-bar/_1200xAUTO_crop_center-center_100_none/2210_Scala-4.jpg"
           total={500}
           serviceType={ServiceType.Restaurant}
+          menus={[
+            {
+              name: "Starter",
+              dishs: [
+                {
+                  name: "Fried Calamari",
+                  ingredints: ["Tomato", "Mozzarella", "Basil"],
+                  price: 100,
+                  qty: 2,
+                  thumbnail: "/dish-1.png",
+                },
+                {
+                  name: "Shrimp cocktail",
+                  ingredints: ["Tomato", "Mozzarella", "Basil"],
+                  price: 100,
+                  qty: 1,
+                  thumbnail: "/dish-2.png",
+                },
+              ],
+            },
+            {
+              name: "Main dish",
+              dishs: [
+                {
+                  name: "Grilled salmon",
+                  ingredints: ["Tomato", "Mozzarella", "Basil"],
+                  price: 100,
+                  qty: 2,
+                  thumbnail: "/dish-3.png",
+                },
+                {
+                  name: "Beef Bourguignon",
+                  ingredints: ["Tomato", "Mozzarella", "Basil"],
+                  price: 100,
+                  qty: 1,
+                  thumbnail: "/dish-4.png",
+                },
+              ],
+            },
+            {
+              name: "Dessert",
+              dishs: [
+                {
+                  name: "Chocolate mousse",
+                  ingredints: ["Tomato", "Mozzarella", "Basil"],
+                  price: 100,
+                  qty: 2,
+                  thumbnail: "/dish-5.png",
+                },
+                {
+                  name: "Strawberry cake",
+                  ingredints: ["Tomato", "Mozzarella", "Basil"],
+                  price: 100,
+                  qty: 1,
+                  thumbnail: "/dish-6.png",
+                },
+              ],
+            },
+            {
+              name: "Drinks",
+              dishs: [
+                {
+                  name: "Mojito",
+                  ingredints: ["Tomato", "Mozzarella", "Basil"],
+                  price: 100,
+                  qty: 2,
+                  thumbnail: "/dish-7.png",
+                },
+                {
+                  name: "Whiskey sour",
+                  ingredints: ["Tomato", "Mozzarella", "Basil"],
+                  price: 100,
+                  qty: 1,
+                  thumbnail: "/dish-8.png",
+                },
+              ],
+            },
+          ]}
         />
       );
 
@@ -70,10 +145,7 @@ export const ServiceCheckoutCardSwitcher: React.FC<
       return (
         <ServiceCheckoutCard
           shopName="Oasis Wellness Center"
-          amenities={[
-            { slug: "wifi", label: "Free WIFI" },
-            { label: "Free Movies", slug: "movies" },
-          ]}
+          amenities={[]}
           cancelationPolicy={{
             cost: 50,
             duration: 15,
@@ -90,13 +162,33 @@ export const ServiceCheckoutCardSwitcher: React.FC<
           thumbnail="https://www.alamedahealthconsortium.org/wp-content/uploads/2018/12/Braley_20121120_7963.jpg"
           total={500}
           serviceType={ServiceType.HealthCenter}
+          doctors={[
+            {
+              thumbnail: "/doctor-1.png",
+              name: "Dr. Michael Chen",
+              price: 100,
+              speciality: "Cardiologist",
+            },
+            {
+              thumbnail: "/doctor-2.png",
+              name: "Dr. Sarah Johnson",
+              price: 1000,
+              speciality: "Gastroenterologist",
+            },
+            {
+              thumbnail: "/doctor-3.png",
+              name: "Dr. Maria Rodriguez",
+              price: 400,
+              speciality: "Infectious Disease Specialist",
+            },
+          ]}
         />
       );
     case ServiceType.BeautyCenter:
       return (
         <ServiceCheckoutCard
           shopName="Velvet Beauty Parior"
-          amenities={[{ label: "Free Movies", slug: "movies" }]}
+          amenities={[]}
           cancelationPolicy={{
             cost: 50,
             duration: 15,
@@ -113,6 +205,23 @@ export const ServiceCheckoutCardSwitcher: React.FC<
           thumbnail="https://mostaql.hsoubcdn.com/uploads/thumbnails/835649/5fb1c7c34bc0a/Beauty-Centre-1.jpg"
           total={500}
           serviceType={ServiceType.BeautyCenter}
+          treatments={[
+            {
+              name: "Body treatment - back pain treatment",
+              price: 100,
+              thumbnail: "/treatment-back.png",
+            },
+            {
+              name: "Microdermabrasion - dead skin cells treatment",
+              price: 1000,
+              thumbnail: "/treatment-skincare.png",
+            },
+            {
+              name: "treatmentChemical peel - remove the top layer of dead skin cells",
+              price: 400,
+              thumbnail: "/treatment-peel.png",
+            },
+          ]}
         />
       );
     case ServiceType.Vehicle:
@@ -144,8 +253,46 @@ export const ServiceCheckoutCardSwitcher: React.FC<
         />
       );
     case "product":
-      return null;
-    // return <ProductCheckoutCard {...passingProps} {...item.data} />;
+      return item.data.type === ProductType.Goods ? (
+        <ProductCheckoutCard
+          id="1"
+          color="#F5E0A1"
+          price={100}
+          qty={5}
+          shippingMethods={[
+            { name: "European Union", deliveryRange: [5, 7], price: 50 },
+            { name: "Click & Collect", deliveryRange: [5, 7], price: 50 },
+            { name: "International", deliveryRange: [5, 7], price: 50 },
+          ]}
+          type={ProductType.Goods}
+          shopName="Nike"
+          shopVerified={true}
+          size="XL"
+          thumbnail="https://static.nike.com/a/images/f_auto,cs_srgb/w_1536,c_limit/g1ljiszo4qhthfpluzbt/nike-joyride.jpg"
+          title="Nike Joyride"
+          total={500}
+        />
+      ) : (
+        <ProductCheckoutCard
+          id="1"
+          color="#F5E0A1"
+          price={100}
+          qty={5}
+          shippingMethods={[
+            { name: "European Union", deliveryRange: [5, 7], price: 50 },
+            { name: "Click & Collect", deliveryRange: [5, 7], price: 50 },
+            { name: "International", deliveryRange: [5, 7], price: 50 },
+          ]}
+          type={ProductType.Digital}
+          shopName="Studio"
+          shopVerified={true}
+          size="XL"
+          thumbnail="https://yt3.googleusercontent.com/ytc/AL5GRJUJ6B0I0wJMRqqQ9AilX4jHKkTzrcN2c2scntUOcQ=s900-c-k-c0x00ffffff-no-rj"
+          title="Figma eCommerce Wireframe"
+          total={500}
+          format="FIG"
+        />
+      );
     default:
       return "";
   }

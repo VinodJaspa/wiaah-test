@@ -135,3 +135,7 @@ export * from "./VisaIcon";
 export * from "./MasterCardIcon";
 export * from "./AmericanExpressCreditCardIcon";
 export * from "./DiscoverCreditCardIcon";
+export * from "./HexagonStatsIcon";
+export * from "./ShoppingBagOutlineIcon";
+export * from "./ReturnArrowIcon";
+export * from "./PersonGroupIcon";

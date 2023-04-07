@@ -14,6 +14,8 @@ import {
   AuthorizationDecodedUser,
   SERVICES,
   KAFKA_MESSAGES,
+  GetLang,
+  UserPreferedLang,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 
@@ -37,25 +39,22 @@ export class ShopResolver implements OnModuleInit {
   @Query((type) => [Shop])
   getNearShops(
     @Args('GetNearShopsInput') getNearShopsInput: GetNearShopsInput,
+    @GetLang() langId: UserPreferedLang,
   ) {
-    return this.shopService.getNearShops(getNearShopsInput);
-  }
-
-  @Query(() => [Shop])
-  getAllShops() {
-    return this.shopService.findAll();
+    return this.shopService.getNearShops(getNearShopsInput, langId);
   }
 
   @Query(() => Shop)
-  getShopById(@Args('id') id: string) {
-    return this.shopService.getShopById(id);
+  getShopById(@Args('id') id: string, @GetLang() lang: UserPreferedLang) {
+    return this.shopService.getShopById(id, lang);
   }
 
   @Query(() => [Shop])
   getFilteredShops(
     @Args('filteredShopsArgs') filteredShopsInput: FilteredShopsInput,
+    @GetLang() lang: UserPreferedLang,
   ) {
-    return this.shopService.getFilteredShops(filteredShopsInput);
+    return this.shopService.getFilteredShops(filteredShopsInput, lang);
   }
 
   @UseGuards(new GqlAuthorizationGuard(['seller']))
@@ -76,13 +75,17 @@ export class ShopResolver implements OnModuleInit {
   updateMyShop(
     @Args('updateMyShopInput') input: UpdateShopInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @GetLang() lang: UserPreferedLang,
   ) {
-    return this.shopService.updateShopData(input, user.id);
+    return this.shopService.updateShopData(input, user.id, lang);
   }
 
   @ResolveReference()
-  shop(ref: { __typename: string; id: string; name: string; ownerId: string }) {
-    return this.shopService.getShopById(ref.id);
+  shop(
+    ref: { __typename: string; id: string; name: string; ownerId: string },
+    @GetLang() lang: UserPreferedLang,
+  ) {
+    return this.shopService.getShopById(ref.id, lang);
   }
 
   @ResolveField(() => Service)

@@ -8,6 +8,7 @@ export interface PriceDisplayProps extends HtmlDivProps {
   price?: number;
   symbol?: boolean;
   decimel?: boolean;
+  compact?: boolean;
 }
 
 export const PriceDisplay: React.FC<PriceDisplayProps> = ({
@@ -16,6 +17,7 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
   price = 0,
   symbol = true,
   decimel,
+  compact,
   ...props
 }) => {
   return (
@@ -24,6 +26,7 @@ export const PriceDisplay: React.FC<PriceDisplayProps> = ({
         amount: priceObject ? priceObject.amount || price : price,
         symbol,
         decimel,
+        compact,
       })}
     </p>
   );
@@ -33,16 +36,19 @@ export const PriceConverter = ({
   amount,
   symbol,
   decimel = false,
+  compact = false,
 }: {
   amount: number;
   symbol: boolean;
   decimel?: boolean;
+  compact?: boolean;
 }): string | null => {
   const currency = useRecoilValue(PreferedCurrencyState);
   if (typeof amount !== "number") return null;
   return currency
     ? `${symbol ? currency.currencySymbol : ""}${Intl.NumberFormat(undefined, {
         minimumFractionDigits: decimel ? 2 : 0,
+        notation: compact ? "compact" : undefined,
       }).format(amount * currency.currencyRateToUsd)}${
         !symbol ? ` ${currency.currencyCode}` : ""
       }`

@@ -48,10 +48,10 @@ enum ServiceCategoryStatus {
 }
 
 model ServiceWorkingSchedule {
-  id           String                          @id @map("_id") @db.ObjectId
-  weekdays     ServiceWeekDaysWorkingHours?
-  specialDays  ServiceSpecialWorkingHoursDay[]
-  HotelService HotelService[]
+  id          String                          @id @map("_id") @db.ObjectId
+  shopId      String
+  weekdays    ServiceWeekDaysWorkingHours?
+  specialDays ServiceSpecialWorkingHoursDay[]
 }
 
 model ServiceOwnerShip {
@@ -64,43 +64,77 @@ model ServiceOwnerShip {
 // ------------------------------------------------services------------------------------------------------------------
 
 model Service {
-  id                  String                       @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId             String                       @unique @db.ObjectId
-  dayClicksId         String?
-  createdAt           DateTime                     @default(now())
-  updatedAt           DateTime                     @updatedAt
-  status              ServiceStatus                @default(inActive)
-  presentations       ServicePresentation[]
-  serviceMetaInfo     ServiceMetaTranslationInfo[]
-  policies            ServiceTranslationPolicies[]
-  payment_methods     ServicePaymentMethods[]
-  location            Location
-  vat                 Int
+  id                  String                     @id @default(auto()) @map("_id") @db.ObjectId
+  sellerId            String                     @unique @db.ObjectId
+  name                TranslationText[]
+  description         TranslationText[]
+  price               Float
+  thumbnail           String
+  rating              Float                      @default(0)
+  reviews             Int                        @default(0)
+  discount            ServiceDiscount
   cancelationPolicies ServiceCancelationPolicy[]
-  lowest_price        Float                        @default(0)
-  highest_price       Float                        @default(0)
-  suspensionReason    String?
 
-  // // hotel
-  // rooms HotelRoom[]
+  createdAt        DateTime                     @default(now())
+  updatedAt        DateTime                     @updatedAt
+  dayClicksId      String?
+  status           ServiceStatus                @default(inActive)
+  presentations    ServicePresentation[]
+  serviceMetaInfo  ServiceMetaTranslationInfo[]
+  policies         ServiceTranslationPolicies[]
+  payment_methods  ServicePaymentMethods[]
+  location         Location
+  vat              Int
+  suspensionReason String?
 
-  // // restaurant
-  // menus                  RestaurantMenu[]
-  // establishmentTypeId    String?          @db.ObjectId
-  // cuisinesTypeId         String?          @db.ObjectId
-  // setting_and_ambianceId String?          @db.ObjectId
-  // michelin_guide_stars   Int?
+  // hotel
+  includedServices  TranslationArrayText[]
+  popularAmenities  TranslationArrayText[]
+  extras            ServiceExtra[]
+  includedAmenities TranslationArrayText[]
+  measurements      PropertyMeasurements?
+  dailyPrices       ServiceDailyPrices?
+  dailyPrice        Boolean                @default(false)
+  beds              Int?
+  bathrooms         Int?
+  num_of_rooms      Int?
 
-  // // health center
-  // doctors HealthCenterDoctor[]
+  // vehicle
+  brand      String?
+  model      String?
+  properties VehicleProperties?
 
-  // // beauty center
-  // treatments BeautyCenterTreatment[]
+  // beauty center 
+  seatNo   Int?
+  duration Int[]
 
-  // // vehicle
-  // vehicles   Vehicle[]
-  // discountId String?
-  // cashbackId String?
+  // health center
+  speakingLanguages HealthCenterDoctorSpeakingLanguage[]
+  availablityStatus HealthCenterDoctorAvailablityStatus  @default(unavailable)
+  specialityId      String?
+
+  // restaurant table
+  tableNo  Int?
+  maxSeats Int?
+  minSeats Int?
+
+  // shared (restaurant/beautycenter)
+  available Boolean @default(false)
+}
+
+model RestaruantTable {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  sellerId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TreatmentSeat {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ServiceDayClicks {
@@ -133,14 +167,14 @@ model HealthCenterDoctor {
   // healthCenter      HealthCenterService                  @relation(fields: [healthCenterId], references: [id])
   speciality        HealthCenterSpecialty                @relation(fields: [specialityId], references: [id])
   speakingLanguages HealthCenterDoctorSpeakingLanguage[]
-  healthCenterId    String                               @db.ObjectId
+  availablityStatus HealthCenterDoctorAvailablityStatus  @default(unavailable)
   specialityId      String                               @db.ObjectId
+  healthCenterId    String                               @db.ObjectId
   rating            Float                                @default(0)
   name              String
   thumbnail         String
   price             Float
   description       TranslationText[]
-  availablityStatus HealthCenterDoctorAvailablityStatus  @default(unavailable)
   shopId            String?                              @db.ObjectId
 }
 
@@ -213,11 +247,11 @@ model Vehicle {
   typeId              String                     @db.ObjectId
   title               TranslationText[]
   presentations       ServicePresentation[]
-  brand               String
-  model               String
   price               Int
   rating              Float                      @default(0)
   insurance           Float
+  brand               String
+  model               String
   properties          VehicleProperties
   cancelationPolicies ServiceCancelationPolicy[]
 }
@@ -292,8 +326,8 @@ model BeautyCenterTreatment {
   title                 TranslationText[]
   price                 Float
   duration              Int[]
-  discount              ServiceDiscount
   beautyCenterServiceId String?           @db.ObjectId
+  discount              ServiceDiscount
   thumbnail             String
 }
 

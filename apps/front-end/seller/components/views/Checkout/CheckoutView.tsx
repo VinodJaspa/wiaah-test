@@ -62,7 +62,12 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
       <div className="md:table-row">
         <div className="md:table-cell md:w-[99%] md:pr-4">
           <div className="flex flex-col w-full gap-4">
-            <div className="bg-white rounded-3xl flex flex-col gap-8 p-6">
+            <div
+              style={{
+                boxShadow: "0px 0px 59px rgba(0, 0, 0, 0.06)",
+              }}
+              className="bg-white rounded-3xl flex flex-col gap-8 p-6"
+            >
               <p className="text-center font-bold text-[2rem]">
                 {t("Checkout")}
               </p>
@@ -181,7 +186,7 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
           </div>
         </div>
         <div className="md:table-cell">
-          <BoxShadow className="h-full transform -translate-y-4 w-full overflow-hidden rounded-3xl md:w-[min(36rem,100vw)]">
+          <BoxShadow className="h-full transform -translate-y-3 w-full overflow-hidden rounded-3xl md:w-[min(36rem,100vw)]">
             <div className="bg-white h-full">
               <div className="flex flex-col h-full">
                 <div className="w-full border-b pb-2 p-6 flex justify-between items-center">
@@ -202,10 +207,13 @@ export const CheckoutView: React.FC<ServiceCheckoutViewProps> = () => {
                       <SpinnerFallback isError={isError} isLoading={isLoading}>
                         {res
                           ? res.data.bookedServices.map((service, i) => (
-                              <ServiceCheckoutCardSwitcher
-                                key={i}
-                                service={service}
-                              />
+                              <>
+                                <ServiceCheckoutCardSwitcher
+                                  key={i}
+                                  service={service}
+                                />
+                                <Divider className="my-6"></Divider>
+                              </>
                             ))
                           : null}
                       </SpinnerFallback>

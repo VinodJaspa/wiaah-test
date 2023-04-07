@@ -110,41 +110,40 @@ enum ProductCondition {
 }
 
 model Shop {
-  id                       String                    @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId                  String                    @unique
-  name                     String
-  banner                   String
-  description              String
-  verified                 Boolean
-  createdAt                DateTime                  @default(now())
-  updatedAt                DateTime                  @updatedAt()
-  phone                    String
-  email                    String
-  thumbnail                String
-  location                 Location
-  storeType                StoreType[]
-  businessType             BusinessType
-  targetGenders            TargetGenders[]
-  vat                      VatSettings?
-  type_of_seller           TypeOfSeller
-  shopMetaInfo             ShopMetaTranslationInfo[]
-  status                   ShopStatus                @default(inActive)
-  payment_methods          ShopPaymentMethods[]
-  type                     ServiceType?
-  videos                   String[]
-  images                   String[]
-  reviews                  Int                       @default(0)
-  rating                   Float                     @default(0)
-  serviceWorkingScheduleId String?                   @db.ObjectId
-  ServiceWorkingSchedule   ServiceWorkingSchedule?
+  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId            String               @unique
+  name               TranslationText[]
+  banner             String
+  description        TranslationText[]
+  verified           Boolean
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt()
+  phone              String
+  email              String
+  thumbnail          String
+  location           Location
+  storeType          StoreType[]
+  businessType       BusinessType
+  targetGenders      TargetGenders[]
+  vat                VatSettings?
+  type_of_seller     TypeOfSeller
+  status             ShopStatus           @default(inActive)
+  payment_methods    ShopPaymentMethods[]
+  type               ServiceType?
+  videos             String[]
+  images             String[]
+  reviews            Int                  @default(0)
+  rating             Float                @default(0)
+  metaTagDescription String
+  metaTagKeywords    String[]
+  hashtags           String[]
 }
 
 model ServiceWorkingSchedule {
   id          String                          @id @map("_id") @db.ObjectId
+  shopId      String                          @unique @db.ObjectId
   weekdays    ServiceWeekDaysWorkingHours
   specialDays ServiceSpecialWorkingHoursDay[]
-  Shop        Shop                            @relation(fields: [shopId], references: [id])
-  shopId      String                          @unique @db.ObjectId
 }
 
 type ServiceWeekDaysWorkingHours {
@@ -187,19 +186,6 @@ enum ShopStatus {
   inActive
   active
   suspended
-}
-
-type ShopMetaTranslationInfo {
-  langId String
-  value  ShopMetaInfo
-}
-
-type ShopMetaInfo {
-  title              String
-  description        String
-  metaTagDescription String
-  metaTagKeywords    String[]
-  hashtags           String[]
 }
 
 enum TypeOfSeller {

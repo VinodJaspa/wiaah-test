@@ -28,11 +28,22 @@ export interface HotelCheckoutCardProps {
   checkout: Date;
   total: number;
   serviceType: ServiceType;
-  doctors?: { name: string; speciality: string; price: number }[];
-  treatments?: { name: string; price: number }[];
+  doctors?: {
+    thumbnail: string;
+    name: string;
+    speciality: string;
+    price: number;
+  }[];
+  treatments?: { name: string; price: number; thumbnail: string }[];
   menus?: {
     name: string;
-    dishs: { name: string; price: number; qty: number }[];
+    dishs: {
+      name: string;
+      price: number;
+      qty: number;
+      ingredints: string[];
+      thumbnail: string;
+    }[];
   }[];
 }
 
@@ -49,13 +60,16 @@ export const ServiceCheckoutCard: React.FC<HotelCheckoutCardProps> = ({
   guests,
   total,
   serviceType,
+  doctors,
+  menus,
+  treatments,
 }) => {
   const { t } = useTranslation();
 
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
 
   return (
-    <div className="flex font-inter flex-col gap-6 w-full pb-2">
+    <div className="flex font-inter flex-col gap-4 w-full pb-2">
       <div className="flex gap-3">
         <Image
           src={thumbnail}
@@ -130,10 +144,85 @@ export const ServiceCheckoutCard: React.FC<HotelCheckoutCardProps> = ({
         </div>
       ) : null}
 
-      {showOn([ServiceType.Hotel]) ? (
+      {showOn([
+        ServiceType.Hotel,
+        ServiceType.BeautyCenter,
+        ServiceType.HealthCenter,
+        ServiceType.Restaurant,
+      ]) ? (
         <div className="flex flex-col w-full gap-2">
           <p className="text-[22px] font-semibold">{t("You are booking")}:</p>
-          <p>{name}</p>
+          {showOn([ServiceType.Hotel]) ? <p>{name}</p> : null}
+
+          {showOn([ServiceType.BeautyCenter]) ? (
+            <div className="flex flex-col gap-2 mt-2">
+              <p className="font-medium">{t("Treatments")}</p>
+              {mapArray(treatments, (v, i) => (
+                <div className="flex justify-between gap-8">
+                  <div className="flex gap-4">
+                    <Image src={v.thumbnail} className="w-[4.563rem] h-16" />
+                    <p className="font-semibold text-lg">{v.name}</p>
+                  </div>
+                  <div className="flex items-center text-xl font-semibold">
+                    <PriceDisplay price={v.price}></PriceDisplay>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : null}
+
+          {showOn([ServiceType.HealthCenter]) ? (
+            <div className="flex flex-col gap-2 mt-2">
+              <p className="font-medium">{t("Dcotors")}</p>
+              {mapArray(doctors, (v, i) => (
+                <div className="flex justify-between gap-8">
+                  <div className="flex gap-4">
+                    <Image src={v.thumbnail} className="w-[4.563rem] h-16" />
+                    <div className="font-semibold text-lg flex flex-col gap-2">
+                      <p>{v.name}</p>
+                      <p>{v.speciality}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center text-xl font-semibold">
+                    <PriceDisplay price={v.price}></PriceDisplay>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : null}
+
+          {showOn([ServiceType.Restaurant]) ? (
+            <div className="flex flex-col gap-6 mt-2">
+              {mapArray(menus, (v, i) => (
+                <div className="flex flex-col gap-4 w-full">
+                  <p className="font-semibold">{v.name}</p>
+                  {mapArray(v.dishs, (v, i) => (
+                    <div
+                      key={i}
+                      className="flex justify-between items-center gap-8"
+                    >
+                      <div className="flex gap-4">
+                        <Image
+                          src={v.thumbnail}
+                          className="w-[4.563rem] h-16"
+                        />
+                        <div className="font-semibold text-lg flex flex-col">
+                          <p>{v.name}</p>
+                          <p className="font-medium text-[#868686]">
+                            {v.ingredints.join(", ")}
+                          </p>
+                        </div>
+                      </div>
+                      <p className="font-semibold text-xl">X{v.qty}</p>
+                      <div className="flex items-center text-xl font-semibold">
+                        <PriceDisplay price={v.price}></PriceDisplay>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          ) : null}
         </div>
       ) : null}
       <div className="pt-2 flex flex-col w-full gap-4">
@@ -142,8 +231,17 @@ export const ServiceCheckoutCard: React.FC<HotelCheckoutCardProps> = ({
         <div className="flex justify-between">
           <div className="flex flex-col gap-4">
             <p className="font-semibold text-[19px] border-b-2 border-black w-fit pb-2">
-              {showOn([ServiceType.Hotel]) ? t("Check in") : null}
+              {showOn([
+                ServiceType.Hotel,
+                ServiceType.BeautyCenter,
+                ServiceType.Restaurant,
+              ])
+                ? t("Check in")
+                : null}
               {showOn([ServiceType.Vehicle]) ? t("Rental starts") : null}
+              {showOn([ServiceType.HealthCenter])
+                ? t("Consultation starts")
+                : null}
             </p>
             <p className="font-medium">
               {new Date(checkin).toLocaleDateString("en-us", {
@@ -179,24 +277,29 @@ export const ServiceCheckoutCard: React.FC<HotelCheckoutCardProps> = ({
               {showOn([ServiceType.Hotel]) ? t("Check out") : null}
               {showOn([ServiceType.Vehicle]) ? t("Rental ends") : null}
             </p>
-            <p className="font-medium">
-              {new Date(checkout).toLocaleDateString("en-us", {
-                weekday: "short",
-                day: "numeric",
-                month: "short",
-                year: "numeric",
-              })}
-            </p>
-            <p className="">
-              {t("Until")}{" "}
-              <span className="font-bold">
-                {new Date(checkout).toLocaleTimeString("en-us", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
+            {showOn([ServiceType.Hotel]) ? (
+              <p className="font-medium">
+                {new Date(checkout).toLocaleDateString("en-us", {
+                  weekday: "short",
+                  day: "numeric",
+                  month: "short",
+                  year: "numeric",
                 })}
-              </span>
-            </p>
+              </p>
+            ) : null}
+
+            {showOn([ServiceType.Hotel]) ? (
+              <p className="">
+                {t("Until")}{" "}
+                <span className="font-bold">
+                  {new Date(checkout).toLocaleTimeString("en-us", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                  })}
+                </span>
+              </p>
+            ) : null}
 
             {showOn([ServiceType.Hotel]) ? (
               <p className="font-medium">

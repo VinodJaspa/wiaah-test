@@ -1,7 +1,4 @@
-import {
-  GetFilteredProductsAdminInput,
-  ProductUsageStatus,
-} from "@features/API";
+import { ProductUsageStatus } from "@features/API";
 import { NextPage } from "next";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -60,7 +57,6 @@ const Products: NextPage = () => {
                 <Th>{t("Price")}</Th>
                 <Th>{t("Stock")}</Th>
                 <Th>{t("Status")}</Th>
-                <Th>{t("Views")}</Th>
                 <Th>{t("Date modified")}</Th>
                 <Th>{t("Action")}</Th>
               </Tr>
@@ -74,7 +70,7 @@ const Products: NextPage = () => {
                   <Input {...inputProps("seller")} />
                 </Th>
                 <Th>
-                  <Input {...inputProps("id")} />
+                  <Input {...inputProps("productId")} />
                 </Th>
                 <Th>
                   <Select {...inputProps("type")}>
@@ -133,7 +129,6 @@ const Products: NextPage = () => {
                   </Td>
                   <Td align="center">{prod.stock}</Td>
                   <Td>{prod.status}</Td>
-                  <Td>{1698}</Td>
                   <Td>{new Date(prod.updatedAt).toDateString()}</Td>
                   <Td>
                     <div className="grid grid-cols-2d justify-center gap-2 fill-white text-white text-sm ">

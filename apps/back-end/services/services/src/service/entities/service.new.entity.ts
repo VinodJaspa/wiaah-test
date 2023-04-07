@@ -1,6 +1,5 @@
 import { BeautyCenterTreatmentCategory } from '@beauty-center';
 import {
-  Hotel,
   ServicePresentation,
   ServiceDailyPrices,
   ServiceDiscount,
@@ -9,10 +8,12 @@ import {
   ServiceExtra,
   ServicePropertyMeasurements,
 } from '@entities';
-import { HealthCenterSpecialty } from '@health-center';
 import { Field, Float, ID, Int, ObjectType } from '@nestjs/graphql';
 import { VehicleProperties } from '@vehicle-service';
-import { HealthCenterDoctorAvailablityStatus } from 'prismaClient';
+import {
+  HealthCenterDoctorAvailablityStatus,
+  HealthCenterDoctorSpeakingLanguage,
+} from 'prismaClient';
 
 @ObjectType()
 export class Service {
@@ -38,9 +39,6 @@ export class Service {
   @Field(() => Int)
   price: number;
 
-  @Field(() => [ServicePresentation])
-  presentations: ServicePresentation[];
-
   @Field(() => String)
   thumbnail: string;
 
@@ -56,6 +54,7 @@ export class Service {
   @Field(() => [ServiceCancelationPolicy])
   cancelationPolicies: ServiceCancelationPolicy[];
 
+  // hotel room
   @Field(() => [ServiceAmenity], { nullable: true })
   popularAmenities: ServiceAmenity[];
 
@@ -67,8 +66,6 @@ export class Service {
 
   @Field(() => [String], { nullable: true })
   includedAmenities: string[];
-
-  // hotel room
 
   @Field(() => Boolean, { nullable: true })
   dailyPrice?: boolean;
@@ -104,9 +101,6 @@ export class Service {
   @Field(() => ID, { nullable: true })
   treatmentCategoryId?: string;
 
-  @Field(() => BeautyCenterTreatmentCategory, { nullable: true })
-  category?: BeautyCenterTreatmentCategory;
-
   @Field(() => [Int], { nullable: true })
   duration?: number[];
 
@@ -114,6 +108,9 @@ export class Service {
 
   @Field(() => ID, { nullable: true })
   specialityId?: string;
+
+  @Field(() => [HealthCenterDoctorSpeakingLanguage])
+  speakingLanguages: HealthCenterDoctorSpeakingLanguage[];
 
   @Field(() => HealthCenterDoctorAvailablityStatus, { nullable: true })
   availablityStatus?: HealthCenterDoctorAvailablityStatus;

@@ -20,6 +20,8 @@ import {
   ReturnedOrders,
   OrdersSection,
   DownloadableManagement,
+  SalesStatistics,
+  MySalesStatistics,
 } from "ui";
 import { getRouting } from "routing";
 import { FcSettings } from "react-icons/fc";
@@ -70,6 +72,12 @@ const sections: SettingsSectionType[] = [
     panelIcon: BsBoxArrowInUp({}),
     panelUrl: "/orders",
     panelComponent: <OrdersSection shopping={false} />,
+  },
+  {
+    panelName: "Sales Statistics",
+    panelIcon: BsBoxArrowInUp({}),
+    panelUrl: "/sales-stats",
+    panelComponent: <MySalesStatistics />,
   },
   {
     panelName: "Affiliation System",

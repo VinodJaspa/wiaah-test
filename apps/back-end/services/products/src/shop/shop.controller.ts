@@ -44,6 +44,7 @@ export class ShopController {
     try {
       const shop = await this.shopService.getShopByOwnerId(
         payload.value.input.accountId,
+        'en',
       );
       if (!shop) {
         throw new NotFoundException('no shop with the given id was found');
@@ -75,6 +76,7 @@ export class ShopController {
     try {
       const shop = await this.shopService.getShopById(
         payload.value.input.shopId,
+        'en',
       );
       if (!shop) {
         throw new NotFoundException('no shop with the given id was found');
@@ -113,11 +115,14 @@ export class ShopController {
   ) {
     const { lat, lon, userId } = value.input;
 
-    const shops = await this.shopService.getNearShops({
-      distance: 50,
-      lat,
-      lon,
-    });
+    const shops = await this.shopService.getNearShops(
+      {
+        distance: 50,
+        lat,
+        lon,
+      },
+      value.input.userlang,
+    );
 
     if (shops.length < 1) return false;
 
