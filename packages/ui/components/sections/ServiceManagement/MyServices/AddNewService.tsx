@@ -209,46 +209,7 @@ export const NewServiceStepper: React.FC<{
                     fallbackText: "Service general details",
                   },
                 },
-                {
-                  key: "Discover our service",
-                  stepComponent: (
-                    <StepperFormHandler handlerKey="discoverOurService">
-                      {({ validate }) => {
-                        return (
-                          <>
-                            {detailsSection ? (
-                              <DiscoverOurServiceForm
-                                onChange={validate}
-                                serviceLabel={(() => {
-                                  switch (serviceType) {
-                                    case "hotel":
-                                      return t("Hotel");
-                                    case "restaurant":
-                                      return t("Restaurant");
-                                    case "healthCenter":
-                                      return t("Health Center");
-                                    case "beautyCenter":
-                                      return t("Beauty Center");
-                                    case "holidayRentals":
-                                      return t("Holiday Rentals");
-                                    case "vehicle":
-                                      return t("Vehicles");
-                                    default:
-                                      return t("Service");
-                                  }
-                                })()}
-                              />
-                            ) : null}
-                          </>
-                        );
-                      }}
-                    </StepperFormHandler>
-                  ),
-                  stepName: {
-                    translationKey: "discover_our_service",
-                    fallbackText: "Discover Our Service",
-                  },
-                },
+
                 {
                   key: "servicePolicies",
                   stepComponent: (

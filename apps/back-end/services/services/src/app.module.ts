@@ -73,12 +73,12 @@ export class GlobalPrismaService {}
     GlobalPrismaService,
     TranslationModule,
     CategoryModule,
-    HotelModule,
-    RestaurantModule,
-    ServiceOwnershipModule,
-    HealthCenterModule,
-    BeautyCenterModule,
-    VehicleModule,
+    // HotelModule,
+    // RestaurantModule,
+    // ServiceOwnershipModule,
+    // HealthCenterModule,
+    // BeautyCenterModule,
+    // VehicleModule,
   ],
 })
 export class AppModule {}

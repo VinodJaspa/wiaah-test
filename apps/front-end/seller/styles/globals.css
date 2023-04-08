@@ -25,13 +25,13 @@
 
 /* Track */
 .thinScroll::-webkit-scrollbar-track {
-  background: #fff;
+  background: #f1f1f1;
 }
 
 /* Handle */
 .thinScroll::-webkit-scrollbar-thumb {
   border-radius: 10rem;
-  background: #999999;
+  background: #c6c6c6;
 }
 
 /* Handle on hover */

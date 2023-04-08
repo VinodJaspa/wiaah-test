@@ -70,32 +70,7 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
               <span className="text-2xl font-semibold">
                 {t("Name & Description")}
               </span>
-              <FormikTransalationInput
-                formikSetField={setFieldValue}
-                formikValues={values}
-                name="name"
-                as={Textarea}
-                placeholder={t("The name of the serivce")}
-              />
-              <FormikTransalationInput
-                formikSetField={setFieldValue}
-                formikValues={values}
-                name="description"
-                as={Textarea}
-                placeholder={t("The Description of the serivce")}
-              />
-              <FormikInput
-                name={"numOfStars"}
-                placeholder={t("Number of stars")}
-              />
-              <FormikTransalationInput
-                formikSetField={setFieldValue}
-                formikValues={values}
-                name="metaTagDescription"
-                className="bg-white"
-                as={Textarea}
-                placeholder={t("Meta Tag Description")}
-              />
+
               <FormikTransalationInput
                 formikSetField={setFieldValue}
                 formikValues={values}
@@ -266,7 +241,7 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
                   onChange={(amis) => setFieldValue("common_amenites", amis)}
                   value={values["common_amenites"]}
                   name="common_amenites"
-                  suggestions={res?.data.amenites}
+                  suggestions={res?.data.amenites || []}
                   label={t("Room common amenites")}
                 />
 

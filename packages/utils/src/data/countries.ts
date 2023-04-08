@@ -18,22 +18,37 @@ export const getStateByCodeAndCountry = (
   countryCode: string
 ) => State.getStateByCodeAndCountry(stateCode, countryCode);
 
+enum WiaahLangId {
+  EN = "en",
+  FR = "fr",
+  ES = "es",
+  DE = "de",
+}
+
 export const WiaahLanguageCountriesIsoCodes = ["GB", "FR", "DE", "ES"];
-export const WiaahLanguageCountries: { code: string; name: string }[] = [
+export const WiaahLanguageCountries: {
+  code: string;
+  name: string;
+  langId: WiaahLangId;
+}[] = [
   {
     code: "GB",
     name: "English",
+    langId: WiaahLangId.EN,
   },
   {
     code: "FR",
     name: "France",
+    langId: WiaahLangId.FR,
   },
   {
     code: "DE",
     name: "Germany",
+    langId: WiaahLangId.DE,
   },
   {
     code: "ES",
     name: "Spanish",
+    langId: WiaahLangId.ES,
   },
 ];

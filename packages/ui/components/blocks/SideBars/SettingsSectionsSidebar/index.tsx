@@ -13,6 +13,7 @@ export interface SettingsSectionsSidebarProps {
   currentActive?: string | null;
   sub?: boolean;
   deepSlugs?: string[];
+  iconOnly?: boolean;
 }
 
 export const SettingsSectionsSidebar: React.FC<
@@ -24,9 +25,8 @@ export const SettingsSectionsSidebar: React.FC<
   currentActive,
   sub,
   deepSlugs = [],
+  iconOnly = false,
 }) => {
-  const { t } = useTranslation();
-  const { visit } = useRouting();
   return (
     <div
       className={`flex cursor-pointer flex-col ${
@@ -67,20 +67,25 @@ export const SettingsSectionsSidebar: React.FC<
                   }}
                   className={`${
                     currentActive === panelUrl ? "bg-primary-50" : ""
-                  } hover:bg-primary-light flex justify-between gap-2 py-4 px-8 items-center`}
+                  } hover:bg-primary-light flex justify-between gap-2 ${
+                    iconOnly ? "px-2" : "px-8"
+                  } py-4 px-8 items-center`}
                 >
                   <div className="flex gap-2 items-center">
                     {PassPropsToFnOrElem(Icon, { className: "" })}
-                    <div className="flex flex-col">
-                      <TranslationText
-                        className="font-bold"
-                        translationObject={panelName}
-                      />
-                    </div>
+
+                    {iconOnly ? null : (
+                      <div className="flex flex-col">
+                        <TranslationText
+                          className="font-bold"
+                          translationObject={panelName}
+                        />
+                      </div>
+                    )}
                   </div>
                   {hasSub ? open ? <ArrowDownIcon /> : <ArrowUpIcon /> : null}
                 </div>
-                {hasSub && open ? (
+                {hasSub && open && !iconOnly ? (
                   <div className="pl-4">
                     <SettingsSectionsSidebar
                       onPanelClick={onPanelClick}

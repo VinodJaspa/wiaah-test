@@ -139,3 +139,5 @@ export * from "./HexagonStatsIcon";
 export * from "./ShoppingBagOutlineIcon";
 export * from "./ReturnArrowIcon";
 export * from "./PersonGroupIcon";
+export * from "./MoneyHandIcon";
+export * from "./CashBackIcon";

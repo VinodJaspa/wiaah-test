@@ -99,7 +99,7 @@ export function Select<ValueType = string>({
         <div
           onClick={handleToggle}
           data-testid="SelectBar"
-          className="flex w-full p-2 items-center justify-between"
+          className="flex w-full px-2 py-[0.375rem] items-center justify-between"
         >
           <div className="flex flex-col gap-1">
             <div
@@ -163,7 +163,7 @@ export const SelectOption: React.FC<SelectListProps> = ({
       onClick={() => onOptionSelect && onOptionSelect(value)}
       className={`${className || ""} ${
         selectable
-          ? "px-4 py-2 cursor-pointer hover:bg-gray-200 active:bg-gray-300 w-full"
+          ? "px-4 py-[0.375rem] cursor-pointer hover:bg-gray-200 active:bg-gray-300 w-full"
           : "px-2"
       }
        select-none `}
