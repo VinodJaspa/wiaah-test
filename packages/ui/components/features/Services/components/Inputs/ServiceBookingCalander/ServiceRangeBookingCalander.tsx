@@ -1,5 +1,5 @@
 import { useOutsideClick, useOutsideHover } from "@UI/../hooks";
-import { mapArray } from "@UI/../utils/src";
+import { isDate, isSameDay, mapArray } from "@UI/../utils/src";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
@@ -19,7 +19,7 @@ interface ServiceRangeBookingCalanderProps {
 
   bookedDates: date[];
   value: [date?, date?];
-  onChange: (v: [date, date?]) => any;
+  onChange: (v: [date?, date?]) => any;
 }
 
 export const ServiceRangeBookingCalander: React.FC<
@@ -163,19 +163,13 @@ const DayComp: React.FC<
     const baseDate = new Date(
       date.getFullYear(),
       date.getMonth(),
-      date.getDate(),
-      0,
-      0,
-      0
+      date.getDate()
     );
 
     const endDate = new Date(
       date.getFullYear(),
       date.getMonth(),
-      date.getDate() + 1,
-      0,
-      0,
-      0
+      date.getDate() + 1
     );
 
     const targetDate = new Date(currentDate);
@@ -188,10 +182,34 @@ const DayComp: React.FC<
       onMouseOver={() => setHover(true)}
       ref={ref}
       onClick={() => {
+        if (!currentMonth || isBooked) return;
         const from = value[0];
         const to = value[1];
 
-        if (!from) return onChange([currentDate]);
+        if (hover) {
+          console.log("hover", { from, to });
+          if (from && isSameDay(new Date(from), new Date(currentDate))) {
+            console.log("from", { from, to });
+            return onChange([undefined, to]);
+          }
+
+          if (to && isSameDay(new Date(to), new Date(currentDate))) {
+            console.log("to", { from, to });
+            return onChange([from, undefined]);
+          }
+        }
+
+        if (!from) {
+          if (
+            !!to &&
+            isDate(to) &&
+            isDate(currentDate) &&
+            new Date(currentDate) > new Date(to)
+          ) {
+            return onChange([to, currentDate]);
+          }
+          return onChange([currentDate, to]);
+        }
 
         if (currentDate < from!) return onChange([currentDate, to]);
 
@@ -199,7 +217,7 @@ const DayComp: React.FC<
       }}
       className={`${
         isBooked
-          ? "text-gray-400 line-through"
+          ? "text-gray-400 cursor-not-allowed line-through"
           : isSelected
           ? "bg-black text-white cursor-pointer"
           : !currentMonth

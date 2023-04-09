@@ -18,6 +18,8 @@ const preview: NextPage = () => {
           }}
           value={value}
         />
+        <p>from :{value[0] ? new Date(value[0]).toDateString() : ""}</p>
+        <p>to :{value[1] ? new Date(value[1]).toDateString() : ""}</p>
       </div>
     </div>
   );
