@@ -1,16 +1,7 @@
-import { useOutsideClick, useOutsideHover } from "@UI/../hooks";
+import { useOutsideHover } from "@UI/../hooks";
 import { isDate, isSameDay, mapArray } from "@UI/../utils/src";
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  HStack,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-} from "@partials";
+import { ArrowLeftIcon, ArrowRightIcon, HStack } from "@partials";
 import React from "react";
-import { useTranslation } from "react-i18next";
 
 type date = number | string | Date;
 
@@ -26,8 +17,6 @@ export const ServiceRangeBookingCalander: React.FC<
   ServiceRangeBookingCalanderProps
 > = ({ date, ...rest }) => {
   const [currentDate, setCurrentDate] = React.useState<Date>(new Date(date));
-
-  const { t } = useTranslation();
 
   const currentMonthLastDayDate = new Date(
     currentDate.getFullYear(),
@@ -187,14 +176,11 @@ const DayComp: React.FC<
         const to = value[1];
 
         if (hover) {
-          console.log("hover", { from, to });
           if (from && isSameDay(new Date(from), new Date(currentDate))) {
-            console.log("from", { from, to });
             return onChange([undefined, to]);
           }
 
           if (to && isSameDay(new Date(to), new Date(currentDate))) {
-            console.log("to", { from, to });
             return onChange([from, undefined]);
           }
         }

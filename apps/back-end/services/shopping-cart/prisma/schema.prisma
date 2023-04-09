@@ -12,10 +12,9 @@ datasource db {
 }
 
 model Cart {
-  id               String          @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId          String          @unique @db.ObjectId
+  id               String  @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId          String  @unique @db.ObjectId
   appliedVoucherId String?
-  BookedService    BookedService[]
 }
 
 model CartProduct {
@@ -24,37 +23,6 @@ model CartProduct {
   attributesJson String
   productId      String
   shippingRuleId String
-}
-
-model BookedService {
-  id                  String              @id @default(auto()) @map("_id") @db.ObjectId
-  serviceId           String              @db.ObjectId
-  ownerId             String              @db.ObjectId
-  providerId          String              @db.ObjectId
-  createdAt           DateTime            @default(now())
-  updatedAt           DateTime            @updatedAt
-  purchased           Boolean             @default(false)
-  status              BookedServiceStatus @default(pending)
-  originalTotal       Float?
-  total               Float?
-  payment             String?
-  rejectReason        String?
-  type                String
-  checkin             DateTime
-  checkout            DateTime?
-  duration            Int?
-  guests              Int
-  cancelationPolicyId String
-  dishsIds            String[]
-  extrasIds           String[]
-  treatmentsIds       String[]
-  roomId              String?
-  doctorId            String?
-  vehicleId           String?
-  discountId          String?
-  cashbackId          String?
-  Cart                Cart?               @relation(fields: [cartId], references: [id])
-  cartId              String?             @db.ObjectId
 }
 
 type AppliedVoucher {
@@ -68,14 +36,4 @@ type AppliedVoucher {
 enum CartItemType {
   service
   product
-}
-
-enum BookedServiceStatus {
-  completed
-  continuing
-  restitute
-  canceled_by_buyer
-  pending
-
-  @@map("ServiceStatus")
 }

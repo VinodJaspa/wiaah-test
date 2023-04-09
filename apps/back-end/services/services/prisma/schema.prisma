@@ -72,7 +72,7 @@ model Service {
   thumbnail           String
   rating              Float                      @default(0)
   reviews             Int                        @default(0)
-  discount            ServiceDiscount
+  discount            ServiceDiscount?
   cancelationPolicies ServiceCancelationPolicy[]
 
   createdAt        DateTime                     @default(now())
@@ -135,6 +135,43 @@ model TreatmentSeat {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model BookedService {
+  id                  String              @id @default(auto()) @map("_id") @db.ObjectId
+  serviceId           String              @db.ObjectId
+  ownerId             String              @db.ObjectId
+  providerId          String              @db.ObjectId
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  purchased           Boolean             @default(false)
+  status              BookedServiceStatus @default(pending)
+  originalTotal       Float?
+  total               Float?
+  payment             String?
+  rejectReason        String?
+  type                String
+  checkin             DateTime
+  checkout            DateTime?
+  duration            Int?
+  guests              Int
+  cancelationPolicyId String
+  dishsIds            String[]
+  extrasIds           String[]
+  treatmentsIds       String[]
+  roomId              String?
+  doctorId            String?
+  vehicleId           String?
+  discountId          String?
+  cashbackId          String?
+}
+
+enum BookedServiceStatus {
+  completed
+  continuing
+  restitute
+  canceled_by_buyer
+  pending
 }
 
 model ServiceDayClicks {

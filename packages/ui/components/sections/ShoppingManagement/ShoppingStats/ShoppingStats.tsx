@@ -230,7 +230,9 @@ export const ShoppingStats: React.FC<{
       <div className="h-[30.563rem] col-span-9 rounded-[0.625rem] bg-white overflow-hidden">
         <div className="flex flex-col w-full  gap-4 ">
           <div className="px-4 pt-4 flex flex-col w-full gap-4">
-            <p className="font-semibold text-[1.375rem]">{t("Orders")}</p>
+            <p className="font-semibold text-[1.375rem]">
+              {t("Affiliated Orders")}
+            </p>
             <div className="w-full grid grid-cols-8 font-semibold">
               <p className="col-span-2">{t("Image")}</p>
               <p className="text-center">{t("Name")}</p>
@@ -290,7 +292,9 @@ export const ShoppingStats: React.FC<{
       <div className="flex flex-col col-span-7 gap-6">
         {/* recent orders */}
         <div className="h-[32rem] p-4 rounded-[0.625rem] bg-white overflow-hidden">
-          <p className="font-semibold  text-[1.375rem]">{t("Recent Orders")}</p>
+          <p className="font-semibold  text-[1.375rem]">
+            {t("Recent Cashback")}
+          </p>
           <Divider />
           <div className="flex flex-col overflow-y-scroll pr-2 h-full thinScroll gap-6">
             {mapArray(recentOrders, (v, i) => (

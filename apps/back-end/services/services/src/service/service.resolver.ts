@@ -27,7 +27,7 @@ import {
 import { PrismaService } from 'prismaService';
 import { FileTypeEnum, UploadService } from '@wiaah/upload';
 import { WorkingSchedule } from '@working-schedule/entities';
-import { RestaurantEstablishmentType } from '@restaurant';
+// import { RestaurantEstablishmentType } from '@restaurant';
 import { Account } from '@entities';
 import {
   BuyerToProductActionsType,
@@ -35,11 +35,11 @@ import {
   CanPreformProductActionMessageReply,
 } from 'nest-dto';
 import { ClientKafka } from '@nestjs/microservices';
+import { HotelAvailablity } from './entities/service-availablity.entity';
 
 @Resolver(() => Service)
 export class ServiceResolver {
   constructor(
-    private readonly serviceService: ServiceService,
     private readonly prisma: PrismaService,
     private readonly uploadService: UploadService,
     @Inject(SERVICES.SERVICES_SERIVCE.token)
@@ -101,7 +101,7 @@ export class ServiceResolver {
     const res = await this.prisma.service.create({
       data: {
         ...rest,
-        ownerId: user.id,
+        sellerId: user.id,
         thumbnail: thumb[0].src,
         presentations: servicePresenetations.map((v) => ({
           src: v.src,
@@ -137,7 +137,7 @@ export class ServiceResolver {
             return {
               ...v,
               hotelId: res.id,
-              sellerId: res.ownerId,
+              sellerId: res.sellerId,
               presentations: pres.map((v) => ({
                 src: v.src,
                 type:
@@ -292,7 +292,7 @@ export class ServiceResolver {
             id,
           },
           seller: {
-            id: service.ownerId,
+            id: service.sellerId,
           },
         }),
       );
@@ -383,16 +383,16 @@ export class ServiceResolver {
     };
   }
 
-  @ResolveField(() => RestaurantEstablishmentType)
-  establishmentType(@Parent() service: Service) {
-    if (service.establishmentTypeId) {
-      return this.prisma.restaurantEstablishmentType.findUnique({
-        where: {
-          id: service.establishmentTypeId,
-        },
-      });
-    } else return null;
-  }
+  // @ResolveField(() => RestaurantEstablishmentType)
+  // establishmentType(@Parent() service: Service) {
+  //   if (service.establishmentTypeId) {
+  //     return this.prisma.restaurantEstablishmentType.findUnique({
+  //       where: {
+  //         id: service.establishmentTypeId,
+  //       },
+  //     });
+  //   } else return null;
+  // }
 
   @ResolveField(() => Int, { nullable: true })
   async dayClicks(@Parent() service: Service) {
@@ -408,4 +408,10 @@ export class ServiceResolver {
 
     return clicks.clicks;
   }
+
+  @Query(() => HotelAvailablity)
+  getHotelAvailablity(
+    @Args('id') id: string,
+    @Args('monthDate') date: string,
+  ) {}
 }

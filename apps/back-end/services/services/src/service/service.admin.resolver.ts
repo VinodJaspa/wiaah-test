@@ -11,7 +11,7 @@ export class AdminServiceResolver {
   adminGetAccountService(@Args('accountId') id: string) {
     return this.prisma.service.findUnique({
       where: {
-        ownerId: id,
+        sellerId: id,
       },
     });
   }
