@@ -20,11 +20,13 @@ import {
   Td,
   TableContainer,
   ArrowLeftIcon,
+  WeekSwitcher,
 } from "@UI";
 import { ServiceType } from "@features/API";
 import {
   AddToDate,
   SubtractFromDate,
+  isDate,
   mapArray,
   randomNum,
   runIfFn,
@@ -154,35 +156,15 @@ export const BookingsCalenderSection: React.FC<
       <div style={{ width: `calc(100vw - 40vw)` }}>
         <div className="flex flex-col items-center py-2 justify-center gap-1">
           <p className="font-semibold uppercase text-sm">{t("Switch Week")}</p>
-          <HStack className="">
-            <BiChevronLeft
-              onClick={() => fetchPreviousPage()}
-              className="text-2xl text-primary"
-            />
-            <p className="text-lg font-bold">
-              {new Date(
-                data?.pages[activeWeek]?.cursor || new Date()
-              ).toLocaleDateString("en-us", {
-                day: "numeric",
-                month: "short",
-              })}
-              -
-              {new Date(
-                new Date(data?.pages[activeWeek]?.cursor || new Date()).setDate(
-                  new Date(
-                    data?.pages[activeWeek]?.cursor || new Date()
-                  ).getDate() + 6
-                )
-              ).toLocaleDateString("en-us", {
-                day: "numeric",
-                month: "short",
-              })}
-            </p>
-            <BiChevronRight
-              onClick={() => fetchNextPage()}
-              className="text-2xl text-primary"
-            />
-          </HStack>
+          <WeekSwitcher
+            date={
+              isDate(data?.pages[activeWeek].cursor!)
+                ? new Date(data?.pages[activeWeek].cursor!)
+                : undefined
+            }
+            onNext={() => fetchNextPage()}
+            onPrev={() => fetchPreviousPage()}
+          />
         </div>
         <div className="w-full h-full">
           {mapArray(data?.pages, (page, i) => {

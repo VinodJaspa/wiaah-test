@@ -2,6 +2,7 @@ interface MathDateOptions {
   hours?: number;
   minutes?: number;
   days?: number;
+  month?: number;
 }
 
 export function SubtractFromDate(date: Date, opt: MathDateOptions): Date {
@@ -38,6 +39,8 @@ export function AddToDate(date: Date, opt: MathDateOptions): Date {
   if (opt.minutes) {
     newDate.setMinutes(newDate.getMinutes() + opt.minutes);
   }
-
+  if (opt.month) {
+    newDate.setMonth(newDate.getMonth() + opt.month);
+  }
   return newDate;
 }

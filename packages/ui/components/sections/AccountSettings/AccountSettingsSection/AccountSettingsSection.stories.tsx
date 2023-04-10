@@ -2,7 +2,7 @@ import React from "react";
 import {
   StorybookImplemntationLayout,
   storybookSectionsTitle,
-} from "@UI/utils";
+} from "utils";
 import { AccountSettingsSection } from "@UI";
 import { ComponentMeta } from "@storybook/react";
 

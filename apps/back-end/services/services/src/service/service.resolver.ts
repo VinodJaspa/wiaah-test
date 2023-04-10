@@ -8,14 +8,15 @@ import {
   Resolver,
   ResolveReference,
 } from '@nestjs/graphql';
-import { ServiceService } from './service.service';
 import { Service } from './entities/service.entity';
 import { ServicePresentationType, ServiceType } from 'prismaClient';
 import { CreateServiceInput } from './dto/create-service.input';
-import { Inject, UseGuards } from '@nestjs/common';
+import { BadRequestException, Inject, UseGuards } from '@nestjs/common';
 import {
   accountType,
+  AddToDate,
   AuthorizationDecodedUser,
+  GetDateOfDayInWeekOfMonth,
   GetLang,
   GqlAuthorizationGuard,
   GqlCurrentUser,
@@ -36,6 +37,16 @@ import {
 } from 'nest-dto';
 import { ClientKafka } from '@nestjs/microservices';
 import { HotelAvailablity } from './entities/service-availablity.entity';
+
+enum weekdaysNum {
+  su = 0,
+  mo = 1,
+  tu = 2,
+  we = 3,
+  th = 4,
+  fr = 5,
+  sa = 6,
+}
 
 @Resolver(() => Service)
 export class ServiceResolver {
@@ -410,8 +421,92 @@ export class ServiceResolver {
   }
 
   @Query(() => HotelAvailablity)
-  getHotelAvailablity(
+  async getHotelAvailablity(
     @Args('id') id: string,
     @Args('monthDate') date: string,
-  ) {}
+  ): Promise<HotelAvailablity> {
+    const service = await this.prisma.service.findUnique({
+      where: {
+        id: id,
+      },
+    });
+
+    if (
+      !(
+        [ServiceType.holiday_rentals, ServiceType.hotel] as ServiceType[]
+      ).includes(service.type)
+    )
+      throw new BadRequestException('service is not a hotel nor rentals');
+
+    const bookings = await this.prisma.bookedService.findMany({
+      where: {
+        AND: [
+          {
+            serviceId: id,
+          },
+          {
+            OR: [
+              {
+                AND: [
+                  {
+                    checkin: {
+                      gte: new Date(date),
+                    },
+                  },
+                  {
+                    checkin: {
+                      lte: AddToDate(new Date(date), { month: 1 }),
+                    },
+                  },
+                ],
+              },
+              {
+                AND: [
+                  {
+                    checkout: {
+                      gte: new Date(date),
+                    },
+                  },
+                  {
+                    checkout: {
+                      lte: AddToDate(new Date(date), { month: 1 }),
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            status: 'paid',
+          },
+        ],
+      },
+    });
+
+    const offDays = await this.prisma.serviceWorkingSchedule.findUnique({
+      where: {
+        id: service.sellerId,
+      },
+    });
+
+    const weekOfDates = Object.entries(offDays.weekdays).reduce(
+      (acc, curr, i) => {
+        if (!!curr[1]) {
+          return acc;
+        } else {
+          const dayNum = weekdaysNum[curr[0]];
+
+          const dates = GetDateOfDayInWeekOfMonth(new Date(date), dayNum);
+          return [acc, dates];
+        }
+      },
+      [],
+    );
+
+    // TODO: get dates between checkin and checkout of every booked service
+
+    return {
+      bookedDates: weekOfDates.concat(bookings),
+    };
+  }
 }

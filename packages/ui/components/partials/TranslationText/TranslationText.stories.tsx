@@ -1,7 +1,7 @@
 import {
   storybookPartailsTitle,
   StorybookImplemntationLayout,
-} from "@UI/utils";
+} from "utils";
 import React from "react";
 import { ComponentMeta } from "@storybook/react";
 import { TranslationText } from "@UI";

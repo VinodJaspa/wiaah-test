@@ -1,5 +1,5 @@
 import React from "react";
-import { storybookBlocksTitle, StorybookImplemntationLayout } from "@UI/utils";
+import { storybookBlocksTitle, StorybookImplemntationLayout } from "utils";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
 import { Button } from "@UI";
 

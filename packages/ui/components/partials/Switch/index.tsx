@@ -1,4 +1,4 @@
-import { setTestid } from "@UI/utils/test-utils";
+import { setTestid } from "utils/src/test-utils";
 import React from "react";
 import { IoCheckmark } from "react-icons/io5";
 import { MdClose } from "react-icons/md";

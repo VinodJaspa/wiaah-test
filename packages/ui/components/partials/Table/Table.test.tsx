@@ -1,6 +1,5 @@
 import { Table, Tr, TBody, THead, Td, Th } from "@UI/components/partials/Table";
-import { waitFor } from "@UI/utils/test-utils";
-import { shallow, ShallowWrapper, mount, ReactWrapper } from "enzyme";
+import { shallow, mount, ReactWrapper } from "enzyme";
 import React from "react";
 
 const selectors = {};

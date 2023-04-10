@@ -1,6 +1,6 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
-import { StorybookImplemntationLayout } from "@UI/utils";
+import { StorybookImplemntationLayout } from "utils";
 import {
   Stepper,
   StepperContent,

@@ -4,7 +4,7 @@ import { Table, TBody, THead, Td, Th, Tr } from "@UI";
 import {
   StorybookImplemntationLayout,
   storybookPartailsTitle,
-} from "@UI/utils";
+} from "utils";
 
 export default {
   title: storybookPartailsTitle + "Table",

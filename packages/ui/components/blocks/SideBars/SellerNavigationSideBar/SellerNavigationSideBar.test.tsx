@@ -1,11 +1,11 @@
 import React from "react";
-import { NavigationLinkType } from "types/sharedTypes/misc/SellerNavigationLink";
+import { NavigationLinkType } from "types";
 import {
   render,
   getRoleId,
   RenderResult,
   fireEvent,
-} from "@UI/utils/test-utils";
+} from "utils/src/test/test-utils";
 import { SellerNavigationSideBar } from ".";
 import {
   HiUserGroup,

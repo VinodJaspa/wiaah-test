@@ -3,7 +3,7 @@ export function getDatesInRange(start: Date, end: Date): Date[] {
   let currentDate = new Date(start);
 
   // Iterate through each hour between the two dates
-  console.log({ start, end });
+
   while (currentDate.getTime() <= end.getTime()) {
     dates.push(new Date(currentDate));
     currentDate.setHours(currentDate.getHours() + 1);

@@ -2,7 +2,7 @@ import { NotificationsSettingsSection } from "@UI";
 import {
   StorybookImplemntationLayout,
   storybookSectionsTitle,
-} from "@UI/utils";
+} from "utils";
 import React from "react";
 import { ComponentMeta } from "@storybook/react";
 

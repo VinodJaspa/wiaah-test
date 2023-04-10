@@ -3,3 +3,4 @@ export * from "./DisplayFoundServices";
 export * from "./ServiceRefundableTypeDescription";
 export * from "./LocationAddress";
 export * from "./ServicesSearchBadgeList";
+export * from "./weekSwitcher";

@@ -54,11 +54,11 @@ export class ShoppingCartResolver implements Hooks {
   }
 
   @Mutation((type) => Boolean)
-  removeItemFromCart(
+  removeProductFromCart(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @Args('removeItemFromCartArgs') input: RemoveShoppingCartItemInput,
   ): Promise<boolean> {
-    return this.shoppingCartService.removeItem(user, input);
+    return this.shoppingCartService.removeShoppingCartProduct(user, input);
   }
 
   @Mutation((type) => ShoppingCart)

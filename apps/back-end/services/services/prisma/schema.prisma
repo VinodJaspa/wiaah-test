@@ -49,7 +49,7 @@ enum ServiceCategoryStatus {
 
 model ServiceWorkingSchedule {
   id          String                          @id @map("_id") @db.ObjectId
-  shopId      String
+  sellerId    String                          @unique
   weekdays    ServiceWeekDaysWorkingHours?
   specialDays ServiceSpecialWorkingHoursDay[]
 }
@@ -64,28 +64,28 @@ model ServiceOwnerShip {
 // ------------------------------------------------services------------------------------------------------------------
 
 model Service {
-  id                  String                     @id @default(auto()) @map("_id") @db.ObjectId
-  sellerId            String                     @unique @db.ObjectId
+  id                  String                       @id @default(auto()) @map("_id") @db.ObjectId
+  sellerId            String                       @unique @db.ObjectId
   name                TranslationText[]
   description         TranslationText[]
   price               Float
   thumbnail           String
-  rating              Float                      @default(0)
-  reviews             Int                        @default(0)
+  rating              Float                        @default(0)
+  reviews             Int                          @default(0)
   discount            ServiceDiscount?
   cancelationPolicies ServiceCancelationPolicy[]
-
-  createdAt        DateTime                     @default(now())
-  updatedAt        DateTime                     @updatedAt
-  dayClicksId      String?
-  status           ServiceStatus                @default(inActive)
-  presentations    ServicePresentation[]
-  serviceMetaInfo  ServiceMetaTranslationInfo[]
-  policies         ServiceTranslationPolicies[]
-  payment_methods  ServicePaymentMethods[]
-  location         Location
-  vat              Int
-  suspensionReason String?
+  type                ServiceType
+  createdAt           DateTime                     @default(now())
+  updatedAt           DateTime                     @updatedAt
+  dayClicksId         String?
+  status              ServiceStatus                @default(inActive)
+  presentations       ServicePresentation[]
+  serviceMetaInfo     ServiceMetaTranslationInfo[]
+  policies            ServiceTranslationPolicies[]
+  payment_methods     ServicePaymentMethods[]
+  location            Location
+  vat                 Int
+  suspensionReason    String?
 
   // hotel
   includedServices  TranslationArrayText[]
@@ -172,6 +172,7 @@ enum BookedServiceStatus {
   restitute
   canceled_by_buyer
   pending
+  paid
 }
 
 model ServiceDayClicks {
@@ -393,13 +394,13 @@ type PropertyMeasurements {
 }
 
 type ServiceDailyPrices {
+  su Int
   mo Int
   tu Int
   we Int
   th Int
   fr Int
   sa Int
-  su Int
 }
 
 type ServiceExtra {

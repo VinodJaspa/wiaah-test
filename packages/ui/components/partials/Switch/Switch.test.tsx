@@ -1,4 +1,4 @@
-import { setTestid, getTestId } from "@UI/utils/test-utils";
+import { getTestId } from "utils/src/test";
 import { shallow, mount, ShallowWrapper } from "enzyme";
 import React from "react";
 import { Switch } from "@UI/components/partials/Switch";

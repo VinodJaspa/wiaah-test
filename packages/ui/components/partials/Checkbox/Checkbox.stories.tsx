@@ -1,9 +1,6 @@
 import { ComponentMeta, ComponentStory } from "@storybook/react";
 import React from "react";
-import {
-  StorybookImplemntationLayout,
-  storybookPartailsTitle,
-} from "@UI/utils";
+import { StorybookImplemntationLayout, storybookPartailsTitle } from "utils";
 import { Checkbox } from "./";
 
 export default {

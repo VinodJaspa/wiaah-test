@@ -110,22 +110,15 @@ export class ShoppingCartService {
     return res;
   }
 
-  async removeItem(
+  async removeShoppingCartProduct(
     user: AuthorizationDecodedUser,
     input: RemoveShoppingCartItemInput,
   ) {
-    const res =
-      input.type === 'product'
-        ? await this.prisma.cartProduct.delete({
-            where: {
-              id: input.itemId,
-            },
-          })
-        : await this.prisma.bookedService.delete({
-            where: {
-              id: input.itemId,
-            },
-          });
+    const res = await this.prisma.cartProduct.delete({
+      where: {
+        id: input.itemId,
+      },
+    });
 
     return true;
   }
