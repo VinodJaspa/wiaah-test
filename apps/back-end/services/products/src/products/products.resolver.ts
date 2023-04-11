@@ -21,7 +21,7 @@ import {
   SERVICES,
 } from 'nest-utils';
 import { UploadService } from '@wiaah/upload';
-import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import { CommandBus } from '@nestjs/cqrs';
 import { ProductsService } from '@products/products.service';
 import { Discount, Product, Cashback } from '@products/entities';
 import { CreateProductInput, GetFilteredProductsInput } from '@products/dto';

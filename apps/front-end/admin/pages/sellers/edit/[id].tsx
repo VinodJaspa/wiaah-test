@@ -1,3 +1,4 @@
+import { StoreType } from "@features/API";
 import { AccountAddressBook } from "components/views/sellers/AccountAddressBook";
 import { AccountBlockList } from "components/views/sellers/AccountBlockList";
 import { AccountNewsletterSettings } from "components/views/sellers/AccountNewsletterSettings";
@@ -38,6 +39,7 @@ import {
   SimpleTabItemList,
   SimpleTabHead,
   ProfileStatistics,
+  useGetUserShopType,
 } from "ui";
 
 const Edit = () => {
@@ -45,7 +47,9 @@ const Edit = () => {
   const { t } = useTranslation();
   const id = getParam("id");
 
-  const isProducts = false;
+  const {data:shop} = useGetUserShopType({userId:id})
+  
+  const isProducts = shop.storeType === StoreType.Product
 
   const productsTitle = isProducts ? "Products" : "Services";
 

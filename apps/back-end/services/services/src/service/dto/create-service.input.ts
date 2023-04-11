@@ -186,6 +186,9 @@ export class CreateServiceInput {
   @Field(() => ServiceStatus)
   status: ServiceStatus;
 
+  @Field(() => Float)
+  price: number;
+
   @Field(() => ServiceContactInput)
   contact: ServiceContactInput;
 

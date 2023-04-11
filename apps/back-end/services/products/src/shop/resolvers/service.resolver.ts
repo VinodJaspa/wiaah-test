@@ -12,7 +12,7 @@ export class ServiceResolver {
   shop(@Parent() service: Service) {
     return this.prisma.shop.findUnique({
       where: {
-        ownerId: service.ownerId,
+        ownerId: service.sellerId,
       },
     });
   }

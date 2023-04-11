@@ -1,5 +1,4 @@
 import React from "react";
-import { ProfileInfo } from "types";
 import { SocialStoryViewerHeader } from "../SocialStoryViewerHeader";
 import {
   SocialStoriesCarousel,

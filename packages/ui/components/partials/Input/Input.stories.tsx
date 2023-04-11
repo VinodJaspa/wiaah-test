@@ -2,7 +2,7 @@ import { ComponentMeta } from "@storybook/react";
 import {
   storybookPartailsTitle,
   StorybookImplemntationLayout,
-} from "@UI/utils";
+} from "utils";
 import { Input, InputGroup, InputLeftElement, InputRightElement } from "@UI";
 import React from "react";
 import { HiOutlineSearch, HiOutlineSortAscending } from "react-icons/hi";

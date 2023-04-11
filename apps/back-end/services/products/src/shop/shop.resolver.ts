@@ -7,13 +7,23 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
+import {
+  Inject,
+  NotFoundException,
+  OnModuleInit,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
   AuthorizationDecodedUser,
   SERVICES,
   KAFKA_MESSAGES,
+  GetLang,
+  UserPreferedLang,
+  accountType,
+  AccountType,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 
@@ -37,25 +47,28 @@ export class ShopResolver implements OnModuleInit {
   @Query((type) => [Shop])
   getNearShops(
     @Args('GetNearShopsInput') getNearShopsInput: GetNearShopsInput,
+    @GetLang() langId: UserPreferedLang,
   ) {
-    return this.shopService.getNearShops(getNearShopsInput);
-  }
-
-  @Query(() => [Shop])
-  getAllShops() {
-    return this.shopService.findAll();
+    return this.shopService.getNearShops(getNearShopsInput, langId);
   }
 
   @Query(() => Shop)
-  getShopById(@Args('id') id: string) {
-    return this.shopService.getShopById(id);
+  async getUserShop(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('userId') id: string,
+    @GetLang() lang: UserPreferedLang,
+  ) {
+    await this.validateShopPremissions(user, id);
+
+    return this.shopService.getShopByOwnerId(id, lang);
   }
 
   @Query(() => [Shop])
   getFilteredShops(
     @Args('filteredShopsArgs') filteredShopsInput: FilteredShopsInput,
+    @GetLang() lang: UserPreferedLang,
   ) {
-    return this.shopService.getFilteredShops(filteredShopsInput);
+    return this.shopService.getFilteredShops(filteredShopsInput, lang);
   }
 
   @UseGuards(new GqlAuthorizationGuard(['seller']))
@@ -76,13 +89,28 @@ export class ShopResolver implements OnModuleInit {
   updateMyShop(
     @Args('updateMyShopInput') input: UpdateShopInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @GetLang() lang: UserPreferedLang,
   ) {
-    return this.shopService.updateShopData(input, user.id);
+    return this.shopService.updateShopData(input, user.id, lang);
+  }
+
+  async validateShopPremissions(
+    user: AuthorizationDecodedUser,
+    userId: string,
+  ) {
+    const shop = await this.shopService.getShopByOwnerId(userId, 'en');
+
+    if (shop.status === 'active') throw new NotFoundException('shop not found');
+
+    return shop;
   }
 
   @ResolveReference()
-  shop(ref: { __typename: string; id: string; name: string; ownerId: string }) {
-    return this.shopService.getShopById(ref.id);
+  shop(
+    ref: { __typename: string; id: string; name: string; ownerId: string },
+    @GetLang() lang: UserPreferedLang,
+  ) {
+    return this.shopService.getShopById(ref.id, lang);
   }
 
   @ResolveField(() => Service)

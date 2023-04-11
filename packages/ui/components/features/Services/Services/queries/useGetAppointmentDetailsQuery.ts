@@ -9,7 +9,7 @@ import {
   ServiceLocation,
 } from "@features/API";
 import { createGraphqlRequestClient } from "@UI/../api";
-import { useQuery } from "react-query";
+import { useQuery, UseQueryOptions } from "react-query";
 
 export type GetAppointmentDetailsQueryVariables = Exact<{
   id: Scalars["String"];
@@ -37,7 +37,8 @@ export type GetAppointmentDetailsQuery = { __typename?: "Query" } & {
 };
 
 export const useGetAppointmentDetailsQuery = (
-  id: GetAppointmentDetailsQueryVariables["id"]
+  id: GetAppointmentDetailsQueryVariables["id"],
+  options?: UseQueryOptions<any, any, any, any>
 ) => {
   const client = createGraphqlRequestClient();
 
@@ -79,9 +80,13 @@ export const useGetAppointmentDetailsQuery = (
     id,
   });
 
-  return useQuery(["appointment-details", { id }], async () => {
-    const res = await client.send<GetAppointmentDetailsQuery>();
+  return useQuery(
+    ["appointment-details", { id }],
+    async () => {
+      const res = await client.send<GetAppointmentDetailsQuery>();
 
-    return res.data.getBookedServiceDetails;
-  });
+      return res.data.getBookedServiceDetails;
+    },
+    options
+  );
 };

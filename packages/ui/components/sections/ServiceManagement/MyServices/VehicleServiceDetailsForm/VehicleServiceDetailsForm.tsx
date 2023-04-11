@@ -31,9 +31,6 @@ export interface VehicleServiceDetailsFormProps {
 export const VehicleServiceDetailsForm: React.FC<
   VehicleServiceDetailsFormProps
 > = ({ onChange }) => {
-  const { emit } = useReactPubsub((keys) => keys.openFileUploadModal);
-  const [images, setImages] = React.useState<FileRes[]>([]);
-  const [videos, setVideos] = React.useState<string[]>([]);
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
@@ -49,26 +46,7 @@ export const VehicleServiceDetailsForm: React.FC<
               <span className="text-2xl font-semibold">
                 {t("Name & Description")}
               </span>
-              <FormikInput
-                name="name"
-                as={Textarea}
-                placeholder={t("The name of the serivce")}
-              />
-              <FormikInput
-                name="description"
-                as={Textarea}
-                placeholder={t("The Description of the serivce")}
-              />
-              <FormikInput
-                name={"numOfStars"}
-                placeholder={t("Number of stars")}
-              />
-              <FormikInput
-                name="metaTagDescription"
-                className="bg-white"
-                as={Textarea}
-                placeholder={t("Meta Tag Description")}
-              />
+
               <FormikInput
                 name="metaTagKeyword"
                 className="bg-white"
@@ -95,14 +73,18 @@ export const VehicleServiceDetailsForm: React.FC<
               <Stack col divider={Divider}>
                 <FormikInput<MultiChooseInputProps>
                   placeholder={t("Choose vehicle type")}
-                  as={MultiChooseInput}
+                  as={Select}
                   label={t("Vehicle type")}
                   labelProps={{ className: "text-lg" }}
                   onChange={(v) => setFieldValue("vehicle_type", v)}
                   value={values["vehicle_type"]}
                   suggestions={["Boat", "Car", "Bike"]}
                   name="vehicle_type"
-                />
+                >
+                  <SelectOption value={`${0}`}>{t("Car")}</SelectOption>
+                  <SelectOption value={`${100}`}>{"Bike"}</SelectOption>
+                  <SelectOption value={`${200}`}>{"$200"}</SelectOption>
+                </FormikInput>
 
                 <FormikInput<SelectProps>
                   placeholder={t("Choose security deposit")}

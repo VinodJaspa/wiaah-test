@@ -1,8 +1,5 @@
-import { CancelAppointmentDto } from "dto";
-import { Formik, Form } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { FormOptionType, OrdersFilter, TranslationTextType } from "types";
 import {
   Tabs,
   TabTitle,
@@ -20,11 +17,7 @@ import {
   PriceDisplay,
   SearchIcon,
   Button,
-  ControlledModal,
-  FormikInput,
-  ModalButton,
   ModalCloseButton,
-  ModalExtendedWrapper,
   ModalFooter,
   Textarea,
   CancelIcon,
@@ -40,27 +33,40 @@ import {
   Modal,
   ModalContent,
   ModalOverlay,
-  ModalHeader,
-  CloseIcon,
   HStack,
+  ModalHeader,
+  CalanderPage,
+  Divider,
+  QrcodeDisplay,
+  useGetAppointmentDetailsQuery,
 } from "@UI";
 import { useCancelAppointmentMutation } from "@src/Hooks";
-import { ReturnDeclineRequestValidationSchema } from "validation";
 import { bookingsHistoryCtx } from ".";
-import { useTypedReactPubsub } from "@libs";
 import { BookedServiceStatus, CashbackType, ServiceType } from "@features/API";
+import { useForm } from "@UI/../utils/src";
+import { atom, selector, useRecoilValue, useSetRecoilState } from "recoil";
+
+const BookingHistoryAtom = atom<{
+  paybackId?: string;
+  viewId?: string;
+  cancelId?: string;
+}>({
+  key: "bookingHistoryAtom",
+  default: {
+    paybackId: undefined,
+    cancelId: undefined,
+    viewId: undefined,
+  },
+});
 
 export const BookingsHistorySection: React.FC = () => {
-  const { viewAppointment, shopping } = React.useContext(bookingsHistoryCtx);
-  const { emit: openConfirmationModal } = useTypedReactPubsub(
-    (keys) => keys.openBookConfirmationModal
-  );
+  const { shopping } = React.useContext(bookingsHistoryCtx);
+
   const [Filter, setFilter] = React.useState<BookedServiceStatus>();
   const [q, setQ] = React.useState<string>("");
   const { t } = useTranslation();
 
   const { pagination, controls } = usePaginationControls();
-  const [paybackId, setPaybackId] = React.useState<string>();
   const { refetch } = useGetMyBookingsHistoryQuery({
     status: Filter,
     pagination,
@@ -70,6 +76,8 @@ export const BookingsHistorySection: React.FC = () => {
   React.useEffect(() => {
     refetch();
   }, [Filter]);
+
+  const setBookingHistoryState = useSetRecoilState(BookingHistoryAtom);
 
   const data: GetMyBookingsQuery["getBookingHistory"] = [...Array(5)].map(
     (v, i) => ({
@@ -111,13 +119,6 @@ export const BookingsHistorySection: React.FC = () => {
       type: ServiceType.Hotel,
     })
   );
-
-  const {
-    mutate: cancelAppointment,
-    isLoading: appointmentCancelationLoading,
-  } = useCancelAppointmentMutation();
-
-  console.log({ data });
 
   return (
     <div className="flex flex-col gap-4">
@@ -213,40 +214,37 @@ export const BookingsHistorySection: React.FC = () => {
                         }
                       />
                     </Td>
-                    <Td onClick={() => viewAppointment(id)}>{id}</Td>
-                    <Td onClick={() => viewAppointment(id)}>{service.title}</Td>
-                    <Td onClick={() => viewAppointment(id)}>
+                    <Td>{id}</Td>
+                    <Td>{service.title}</Td>
+                    <Td>
                       <p>
                         {shopping
                           ? buyer.profile?.username
                           : seller.profile?.username}
                       </p>
                     </Td>
-                    <Td onClick={() => viewAppointment(id)}>
+                    <Td>
                       {new Date(checkin).toLocaleDateString("en", {
                         day: "2-digit",
                         month: "2-digit",
                         year: "numeric",
                       })}
                     </Td>
-                    <Td onClick={() => viewAppointment(id)}>
+                    <Td>
                       {new Date(checkout).toLocaleDateString("en", {
                         day: "2-digit",
                         month: "2-digit",
                         year: "numeric",
                       })}
                     </Td>
-                    <Td onClick={() => viewAppointment(id)}>
+                    <Td>
                       <PriceDisplay price={service.price} />
                     </Td>
-                    <Td onClick={() => viewAppointment(id)}>
+                    <Td>
                       <Badge
                         cases={{
                           success: BookedServiceStatus.Completed,
-                          fail: [
-                            BookedServiceStatus.CanceledByBuyer,
-                            BookedServiceStatus.CanceledBySeller,
-                          ],
+                          fail: [BookedServiceStatus.CanceledByBuyer],
                           info: BookedServiceStatus.Continuing,
                           warning: BookedServiceStatus.Restitute,
                           off: BookedServiceStatus.Pending,
@@ -256,71 +254,41 @@ export const BookingsHistorySection: React.FC = () => {
                         {status}
                       </Badge>
                     </Td>
-                    <Td onClick={() => viewAppointment(id)}>{payment}</Td>
+                    <Td>{payment}</Td>
                     <Td>
                       <div className="flex w-full justify-center">
                         <EyeIcon
                           onClick={() =>
-                            openConfirmationModal({
-                              id: id,
-                            })
+                            setBookingHistoryState((v) => ({
+                              ...v,
+                              viewId: id,
+                            }))
                           }
                         />
                       </div>
                     </Td>
                     {shopping ? (
-                      <Td>
-                        <ModalExtendedWrapper>
-                          <ModalButton>
-                            <div className="w-full flex justify-center">
-                              <CancelIcon className="mx-auto" />
-                            </div>
-                          </ModalButton>
-                          <ControlledModal>
-                            <Formik<CancelAppointmentDto>
-                              onSubmit={(data) => {
-                                cancelAppointment(data);
-                              }}
-                              initialValues={{
-                                appointmentId: id,
-                                cancelationReason: "",
-                              }}
-                              validationSchema={
-                                ReturnDeclineRequestValidationSchema
-                              }
-                            >
-                              <Form className="flex flex-col gap-4">
-                                <FormikInput
-                                  label={t(
-                                    "cancelation_reason",
-                                    "Cancelation Reason"
-                                  )}
-                                  as={Textarea}
-                                  className="min-h-[10rem]"
-                                  name="cancelationReason"
-                                />
-                                <ModalFooter>
-                                  <ModalCloseButton>
-                                    <Button colorScheme="white">
-                                      {t("close", "Close")}
-                                    </Button>
-                                  </ModalCloseButton>
-                                  <Button
-                                    loading={appointmentCancelationLoading}
-                                    type="submit"
-                                  >
-                                    {t("submit", "Submit")}
-                                  </Button>
-                                </ModalFooter>
-                              </Form>
-                            </Formik>
-                          </ControlledModal>
-                        </ModalExtendedWrapper>
+                      <Td
+                        onClick={() =>
+                          setBookingHistoryState((v) => ({
+                            ...v,
+                            cancelId: id,
+                          }))
+                        }
+                      >
+                        <div className="w-full flex justify-center">
+                          <CancelIcon className="mx-auto" />
+                        </div>
                       </Td>
                     ) : (
                       <Td>
                         <div
-                          onClick={() => setPaybackId(id)}
+                          onClick={() =>
+                            setBookingHistoryState((v) => ({
+                              ...v,
+                              paybackId: id,
+                            }))
+                          }
                           className="flex w-full justify-center"
                         >
                           <CashPaymentIcon />
@@ -342,31 +310,212 @@ export const BookingsHistorySection: React.FC = () => {
           </TBody>
         </Table>
       </TableContainer>
-      <Modal
-        isOpen={!!paybackId}
-        onClose={() => {
-          setPaybackId(undefined);
-        }}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader
-            className="font-bold text-xl"
-            title={t("Assurance Payback")}
-          />
-          <HStack className="font-semibold text-xl min-h-[10rem]">
-            <p>{t("Pay back client's assurance of")}</p>
-            <PriceDisplay price={250} /> <p>?</p>
-          </HStack>
-          <ModalFooter>
-            <HStack className="justify-end">
-              <Button colorScheme="danger">{t("Cancel")}</Button>
-              <Button>{t("Confirm")}</Button>
-            </HStack>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
       <Pagination controls={controls} />
+      <BookingPayBackModal />
+      <BookingCancelationModal />
+      <BookingViewModal />
     </div>
+  );
+};
+
+const BookingViewModal: React.FC = () => {
+  const { t } = useTranslation();
+  const id = useRecoilValue(
+    selector({
+      key: "bookingViewIdState",
+      get: ({ get }) => {
+        const state = get(BookingHistoryAtom);
+
+        return state.viewId;
+      },
+    })
+  );
+
+  const setId = useSetRecoilState(BookingHistoryAtom);
+
+  const cancel = () => setId((v) => ({ ...v, viewId: undefined }));
+
+  const { data: service } = useGetAppointmentDetailsQuery(id!, {
+    enabled: !!id,
+  });
+
+  return (
+    <Modal isOpen={!!id} onClose={cancel}>
+      <ModalOverlay></ModalOverlay>
+      <ModalContent className="max-w-[min(90vw)] overflow-y-scroll thinScroll">
+        <ModalHeader
+          className="font-semibold text-xl"
+          title={t("Check in details")}
+        />
+
+        <Divider />
+        <div className="flex flex-col gap-4 py-2">
+          <HStack className="justify-between">
+            <div className="w-32">
+              <QrcodeDisplay value={service?.id || ""} />
+            </div>
+            <Button colorScheme="darkbrown">{t("Save QR")}</Button>
+          </HStack>
+          <p className="font-medium">
+            {t("Booking Number")}: <span className="font-semibold">{id}</span>
+          </p>
+
+          <div className="flex gap-4 justify-between">
+            <div className="flex flex-col gap-2">
+              <p className="font-semibold">{t("Check in")}:</p>
+              <CalanderPage
+                bgColor="#3AD398"
+                textColor="#000"
+                date={new Date()}
+              />
+              <p className="self-center">
+                {t("From")}{" "}
+                <span className="font-semibold">
+                  {new Date().toLocaleTimeString("en-us", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>{" "}
+                |{" "}
+                <span className="font-semibold">
+                  {t("Guest")}: {3}
+                </span>
+              </p>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <p className="font-semibold">{t("Check out")}:</p>
+              <CalanderPage
+                bgColor="#3AD398"
+                textColor="#000"
+                date={new Date()}
+              />
+              <p className="self-center">
+                {t("Until")}{" "}
+                <span className="font-semibold">
+                  {new Date().toLocaleTimeString("en-us", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>{" "}
+                |{" "}
+                <span className="font-semibold">
+                  {t("Nights")}: {3}
+                </span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <ModalFooter>
+          <HStack className="justify-end">
+            <Button onClick={cancel} colorScheme="danger">
+              {t("Cancel the booking")}
+            </Button>
+          </HStack>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};
+
+const BookingPayBackModal: React.FC = () => {
+  const { t } = useTranslation();
+  const id = useRecoilValue(
+    selector({
+      key: "bookingPaybackIdState",
+      get: ({ get }) => {
+        const state = get(BookingHistoryAtom);
+
+        return state.paybackId;
+      },
+    })
+  );
+
+  const setId = useSetRecoilState(BookingHistoryAtom);
+
+  const cancel = () => setId((v) => ({ ...v, paybackId: undefined }));
+
+  return (
+    <Modal isOpen={!!id} onClose={cancel}>
+      <ModalOverlay />
+      <ModalContent>
+        <HStack className="w-full justify-center font-semibold text-xl min-h-[10rem]">
+          <p>{t("Pay back client's assurance of")}</p>
+          <PriceDisplay price={250} /> <p>?</p>
+        </HStack>
+        <ModalFooter>
+          <HStack className="justify-end">
+            <Button onClick={cancel} colorScheme="danger">
+              {t("Cancel")}
+            </Button>
+            <Button
+              onClick={() => {
+                // TODO: create useBookPayback assurance mutation
+              }}
+            >
+              {t("Confirm")}
+            </Button>
+          </HStack>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+  );
+};
+
+const BookingCancelationModal: React.FC = (props) => {
+  const { t } = useTranslation();
+  const id = useRecoilValue(
+    selector({
+      key: "bookingCancelationIdState",
+      get: ({ get }) => {
+        const state = get(BookingHistoryAtom);
+
+        return state.cancelId;
+      },
+    })
+  );
+
+  const setId = useSetRecoilState(BookingHistoryAtom);
+
+  const { mutate, isLoading } = useCancelAppointmentMutation();
+  const { form, inputProps } = useForm<Parameters<typeof mutate>[0]>(
+    {
+      appointmentId: id || "",
+      cancelationReason: "",
+    },
+    { appointmentId: id || "" }
+  );
+
+  return (
+    <Modal
+      isOpen={!!id}
+      onClose={() => setId((v) => ({ ...v, cancelId: undefined }))}
+    >
+      <ModalOverlay />
+      <ModalContent>
+        <div className="flex flex-col gap-4">
+          <label>
+            <p>{t("Cancelation Reason")}</p>
+            <Textarea
+              {...inputProps("cancelationReason")}
+              className="min-h-[10rem]"
+            />
+          </label>
+          <ModalFooter>
+            <ModalCloseButton>
+              <Button colorScheme="white">{t("close", "Close")}</Button>
+            </ModalCloseButton>
+            <Button
+              loading={isLoading}
+              onClick={() => {
+                mutate(form);
+              }}
+            >
+              {t("Submit")}
+            </Button>
+          </ModalFooter>
+        </div>
+      </ModalContent>
+    </Modal>
   );
 };

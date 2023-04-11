@@ -34,15 +34,6 @@ export const HealthCenterAddDoctorForm: React.FC<
   const [add, setAdd] = React.useState<boolean>(false);
   return add ? (
     <Formik<DoctorInputData>
-      // validationSchema={object({
-      //   name: string().required(),
-      //   specialist: string().required(),
-      //   picture: mixed().test({
-      //     name: "doctor photo",
-      //     message: "please provide a valid photo",
-      //     test: (v) => true,
-      //   }),
-      // })}
       initialValues={{ name: "", picture: "", specialist: "" }}
       onSubmit={(values, { resetForm }) => {
         console.log("submited", values);
@@ -64,7 +55,6 @@ export const HealthCenterAddDoctorForm: React.FC<
               isValid ? "items-end" : "items-center"
             } flex gap-2 w-full`}
           >
-            <pre>{JSON.stringify(values)}</pre>
             <FormikInput
               onChange={(e) => setFieldValue("name", e.target.value)}
               value={values.name}
@@ -92,7 +82,7 @@ export const HealthCenterAddDoctorForm: React.FC<
                 </SelectOption>
               </FormikInput>
             </div>
-            <div className="flex flex-col gap-2 w-full">
+            <div className="flex flex-col -translate-y-2 transform gap-2 w-full">
               <p className="font-semibold">{t("Photo")}</p>
               <div
                 {...setTestid("DoctorPhotoButton")}

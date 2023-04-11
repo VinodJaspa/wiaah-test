@@ -68,13 +68,13 @@ export const AffiliationHistorySection: React.FC<
         >
           <THead>
             <Tr>
-              <Th>{t("product_image", "Product Image")}</Th>
-              <Th>{t("product_name", "Product Name")}</Th>
-              <Th>{t("product_price", "Product Price")}</Th>
-              <Th>{t("affilator", "Affilator")}</Th>
-              <Th>{t("purchaser", "Purchaser")}</Th>
-              <Th>{t("commission", "Commission")}</Th>
-              <Th>{t("commission_amount", "Commission Amount")}</Th>
+              <Th>{t("Product Image")}</Th>
+              <Th>{t("Product Name")}</Th>
+              <Th>{t("Product Price")}</Th>
+              <Th>{t("Affilator")}</Th>
+              <Th>{t("Purchaser")}</Th>
+              <Th>{t("Commission")}</Th>
+              <Th>{t("Commission Amount")}</Th>
             </Tr>
           </THead>
           <TBody>

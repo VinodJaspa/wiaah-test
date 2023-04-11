@@ -53,13 +53,11 @@ export interface ProductDetailsTableProps {
   >[];
   onDelete: (id: string) => any;
   filters: any;
-  onFiltersChange: (filters: any) => any;
 }
 
 export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
   products,
   onDelete,
-  onFiltersChange,
 }) => {
   const { AddNewProduct, EditProduct } = useEditProductData();
   const [input, setInput] = React.useState<
@@ -80,8 +78,11 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
         )}
       </SectionHeader>
       <div className="flex flex-col gap-4 shadow p-4">
-        <TableContainer>
-          <Table ThProps={{ className: "whitespace-nowrap" }} className="w-fit">
+        <TableContainer className="w-full">
+          <Table
+            ThProps={{ className: "whitespace-nowrap" }}
+            className="w-full"
+          >
             <THead>
               <Tr>
                 <Th>{t("Image")}</Th>
@@ -89,7 +90,6 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
                 <Th>{t("Price")}</Th>
                 <Th>{t("Stock Status")}</Th>
                 <Th>{t("Status")}</Th>
-                <Th>{t("Views")}</Th>
                 <Th>{t("Action")}</Th>
               </Tr>
               <Tr>
@@ -155,7 +155,6 @@ export const ProductDetailsTable: React.FC<ProductDetailsTableProps> = ({
                   </Td>
                   <Td align="center">{product.stock}</Td>
                   <Td align="center">{product.status}</Td>
-                  <Td>165</Td>
                   <Td align="center">
                     <div className="flex items-center gap-2">
                       <EditIcon

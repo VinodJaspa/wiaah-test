@@ -7,3 +7,4 @@ export * from "./dateDetails";
 export * from "./IsDate";
 export * from "./subtractFromDate";
 export * from "./getDividedDateRange";
+export * from "./isSameDate";

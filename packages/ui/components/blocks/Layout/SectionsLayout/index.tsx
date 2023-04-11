@@ -2,7 +2,14 @@ import React from "react";
 import { useResponsive, useDimensions } from "hooks";
 import { SectionContext } from "state";
 import { SettingsSectionType, TranslationTextType } from "types";
-import { SettingsSectionsSidebar, TranslationText } from "@UI";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  Button,
+  HStack,
+  SettingsSectionsSidebar,
+  TranslationText,
+} from "@UI";
 import { useRouting } from "routing";
 import { IoMdReturnLeft } from "react-icons/io";
 import { useTranslation } from "react-i18next";
@@ -35,6 +42,7 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
   handleSectionChange,
   handleRetrun,
 }) => {
+  const [opened, setOpen] = React.useState<boolean>(true);
   const { t } = useTranslation();
   const { visit } = useRouting();
   const flatedSections = flatenSections(sections);
@@ -48,10 +56,6 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
   const minGap = isTablet ? 0 : 48;
 
   const leftPanelRef = React.useRef<HTMLDivElement>(null);
-
-  const { width } = useDimensions(leftPanelRef);
-
-  const leftPanelwidth = width || null;
 
   const CurrentSection = (): React.ReactElement => {
     if (mainSection) {
@@ -81,19 +85,34 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
   return (
     <SectionContext.Provider value={{ onReturn: HandleReturn }}>
       <div className="h-full w-full flex justify-end gap-8">
-        <div className="fixed h-full left-[13rem]" ref={leftPanelRef}>
+        <div className="fixed h-full left-[13rem]">
           {!isMobile && (
-            <div className="gap-4 w-full sm:w-40 md:w-[15rem] h-full xl:w-[20rem] flex flex-col px-2">
+            <div
+              className={`${
+                opened ? "md:w-[15rem] xl:w-[20rem] sm:w-40" : ""
+              } gap-4 w-full h-full flex flex-col px-2`}
+            >
               <div
                 onClick={() => visit((r) => r.management())}
                 className="px-6 cursor-pointer w-fit text-xl py-2 my-2 flex gap-4 items-center"
               >
                 <IoMdReturnLeft />
-                <p>{t("Return")}</p>
+                {opened ? <p>{t("Return")}</p> : null}
               </div>
-              <p className="text-xl px-4 font-bold">
-                <TranslationText translationObject={name} />
-              </p>
+              <HStack>
+                {opened ? (
+                  <p className="text-xl px-4 font-bold">
+                    <TranslationText translationObject={name} />
+                  </p>
+                ) : null}
+                <Button
+                  className="text-xl px-6"
+                  onClick={() => setOpen((v) => !v)}
+                  colorScheme="white"
+                >
+                  {opened ? <ArrowLeftIcon /> : <ArrowRightIcon />}
+                </Button>
+              </HStack>
               <NestedSettingsSectionsSidebar
                 sections={sections}
                 activePanel={section}
@@ -103,13 +122,14 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
                   handleSectionChange &&
                   handleSectionChange(url)
                 }
+                iconOnly={!opened}
               />
             </div>
           )}
         </div>
         <div
           style={{
-            width: `calc(100% - ${leftPanelwidth || 0}px)`,
+            width: `calc(100% - ${opened ? 320 || 0 : 32}px)`,
             paddingRight: minGap,
             paddingLeft: minGap,
           }}
@@ -126,11 +146,12 @@ export interface NestedSettingsSectionsSidebarProps {
   sections: SettingsSectionType[];
   activePanel: string;
   onChange?: (url: string) => any;
+  iconOnly?: boolean;
 }
 
 export const NestedSettingsSectionsSidebar: React.FC<
   NestedSettingsSectionsSidebarProps
-> = ({ sections, activePanel, onChange }) => {
+> = ({ sections, activePanel, onChange, iconOnly }) => {
   const flatedSections = flatenSections(sections);
 
   const section = flatedSections.find(
@@ -143,6 +164,7 @@ export const NestedSettingsSectionsSidebar: React.FC<
         currentActive={section ? section.panelUrl : null}
         onPanelClick={(url) => onChange && onChange(url)}
         panelsInfo={sections}
+        iconOnly={iconOnly}
       />
     </>
   );

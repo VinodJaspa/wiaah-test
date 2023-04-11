@@ -1,17 +1,35 @@
 import {
   ObjectType,
   Field,
-  Int,
   ID,
   Float,
   registerEnumType,
   Directive,
+  Int,
 } from '@nestjs/graphql';
-import { BusinessType, StoreType, TargetGenders } from '@prisma-client';
+import {
+  BusinessType,
+  ServiceType,
+  ShopPaymentMethods,
+  ShopStatus,
+  StoreType,
+  TargetGenders,
+  TypeOfSeller,
+} from '@prisma-client';
+import { CreateObjectGqlTranslationInputField } from 'nest-utils';
 
 registerEnumType(StoreType, { name: 'StoreType' });
 registerEnumType(TargetGenders, { name: 'TargetGenders' });
 registerEnumType(BusinessType, { name: 'BusinessType' });
+registerEnumType(TypeOfSeller, { name: 'TypeOfSeller' });
+registerEnumType(ShopStatus, { name: 'ShopStatus' });
+registerEnumType(ShopPaymentMethods, { name: 'ShopPaymentMethod' });
+registerEnumType(ServiceType, { name: 'ServiceType' });
+
+@ObjectType()
+export class TranslationText extends CreateObjectGqlTranslationInputField(
+  String,
+) {}
 
 @ObjectType()
 export class Location {
@@ -34,14 +52,14 @@ export class Location {
   state: string;
 }
 
-@ObjectType()
-export class VatSettings {
-  @Field(() => String)
-  VatID: string;
+// @ObjectType()
+// export class VatSettings {
+//   @Field(() => String)
+//   VatID: string;
 
-  @Field(() => Location)
-  location: Location;
-}
+//   @Field(() => Location)
+//   location: Location;
+// }
 
 @ObjectType()
 @Directive('@key(fields: "id")')
@@ -52,31 +70,19 @@ export class Shop {
   id: string;
 
   @Field((type) => String)
-  name: string;
-
-  @Field((type) => String)
   ownerId: string;
 
-  @Field((type) => Location)
-  location: Location;
-
-  @Field(() => String)
-  description: string;
+  @Field((type) => String)
+  name: string;
 
   @Field(() => String)
   banner: string;
 
+  @Field(() => String)
+  description: string;
+
   @Field(() => Boolean)
   verified: boolean;
-
-  @Field((type) => [StoreType])
-  storeType: StoreType[];
-
-  @Field((type) => BusinessType)
-  businessType: BusinessType;
-
-  @Field((type) => [TargetGenders])
-  targetGenders: TargetGenders[];
 
   @Field((type) => Date)
   createdAt: Date;
@@ -84,6 +90,51 @@ export class Shop {
   @Field((type) => Date)
   updatedAt: Date;
 
-  @Field(() => VatSettings, { nullable: true })
-  vat?: VatSettings;
+  @Field(() => String)
+  phone: string;
+
+  @Field(() => String)
+  email: string;
+
+  @Field(() => String)
+  thumbnail: string;
+
+  @Field((type) => Location)
+  location: Location;
+
+  @Field((type) => StoreType)
+  storeType: StoreType;
+
+  @Field((type) => BusinessType)
+  businessType: BusinessType;
+
+  @Field((type) => [TargetGenders])
+  targetGenders: TargetGenders[];
+
+  // @Field(() => VatSettings, { nullable: true })
+  // vat?: VatSettings;
+
+  @Field(() => TypeOfSeller)
+  type_of_seller: TypeOfSeller;
+
+  @Field(() => ShopStatus)
+  status: ShopStatus;
+
+  @Field(() => [ShopPaymentMethods])
+  payment_methods: ShopPaymentMethods[];
+
+  @Field(() => ServiceType, { nullable: true })
+  type: ServiceType;
+
+  @Field(() => [String])
+  videos: string[];
+
+  @Field(() => [String])
+  images: string[];
+
+  @Field(() => Int)
+  reviews: number;
+
+  @Field(() => Float)
+  rating: number;
 }

@@ -1,4 +1,4 @@
-import { storybookSectionsTitle } from "@UI/utils";
+import { storybookSectionsTitle } from "utils";
 import { ComponentMeta } from "@storybook/react";
 import { AccountDeletionSection } from "@UI";
 

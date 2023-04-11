@@ -11,7 +11,7 @@ export class AccountResolver {
   service(@Parent() account: Account) {
     return this.prisma.service.findUnique({
       where: {
-        ownerId: account.id,
+        sellerId: account.id,
       },
     });
   }

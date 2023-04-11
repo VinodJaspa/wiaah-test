@@ -1,7 +1,23 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { SectionHeader, AspectRatioImage, EditIcon, Divider } from "@UI";
-import { mapArray } from "utils";
+import {
+  SectionHeader,
+  AspectRatioImage,
+  EditIcon,
+  Divider,
+  Input,
+  Textarea,
+  useUpdateMyShopMutation,
+  HStack,
+  FlagIcon,
+  Button,
+} from "@UI";
+import {
+  WiaahLanguageCountries,
+  WiaahLanguageCountriesIsoCodes,
+  mapArray,
+  useForm,
+} from "utils";
 
 export interface EditServicePresentationSectionProps {}
 
@@ -9,6 +25,9 @@ export const EditServicePresentationSection: React.FC<
   EditServicePresentationSectionProps
 > = () => {
   const { t } = useTranslation();
+  const { translationInputProps } = useForm<Parameters<typeof mutate>[0]>({});
+  const { mutate } = useUpdateMyShopMutation();
+  const [lang, setLang] = React.useState<string>("en");
 
   const imagesData: {
     imageId: string;
@@ -33,8 +52,31 @@ export const EditServicePresentationSection: React.FC<
   ];
 
   return (
-    <div className="flex flex-col gap-8 w-full">
+    <div className="flex flex-col pb-4 gap-8 w-full">
       <SectionHeader sectionTitle={t("Edit Service Presentation")} />
+      <HStack>
+        {mapArray(WiaahLanguageCountries, (v, i) => (
+          <HStack
+            className={`${
+              lang === v.langId ? "border-b" : ""
+            } border-primary p-2 cursor-pointer`}
+            onClick={() => setLang(v.langId)}
+            key={i}
+          >
+            <FlagIcon code={v.code} />
+            <p>{v.name}</p>
+          </HStack>
+        ))}
+      </HStack>
+      <label>
+        <p>{t("Name")}</p>
+        <Input {...translationInputProps("name", lang)} />
+      </label>
+
+      <label>
+        <p>{t("Description")}</p>
+        <Textarea {...translationInputProps("description", lang)} />
+      </label>
 
       <div className="flex flex-col gap-2">
         <p className="font-semibold text-xl">{t("video")}</p>
@@ -73,6 +115,9 @@ export const EditServicePresentationSection: React.FC<
           ))}
         </div>
       </div>
+      <HStack className="justify-end">
+        <Button onClick={() => {}}>{t("Update")}</Button>
+      </HStack>
     </div>
   );
 };

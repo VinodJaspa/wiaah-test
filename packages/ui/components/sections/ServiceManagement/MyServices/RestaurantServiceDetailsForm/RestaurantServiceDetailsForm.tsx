@@ -29,9 +29,6 @@ export interface RestaurantServiceDetailsFormProps {
 export const RestaurantServiceDetailsForm: React.FC<
   RestaurantServiceDetailsFormProps
 > = ({ onChange }) => {
-  const { emit } = useReactPubsub((keys) => keys.openFileUploadModal);
-  const [images, setImages] = React.useState<FileRes[]>([]);
-  const [videos, setVideos] = React.useState<string[]>([]);
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
@@ -47,32 +44,7 @@ export const RestaurantServiceDetailsForm: React.FC<
               <span className="text-2xl font-semibold">
                 {t("Name & Description")}
               </span>
-              <FormikTransalationInput
-                formikSetField={setFieldValue}
-                formikValues={values}
-                name="name"
-                as={Textarea}
-                placeholder={t("The name of the serivce")}
-              />
-              <FormikTransalationInput
-                formikSetField={setFieldValue}
-                formikValues={values}
-                name="description"
-                as={Textarea}
-                placeholder={t("The Description of the serivce")}
-              />
-              <FormikInput
-                name={"numOfStars"}
-                placeholder={t("Number of stars")}
-              />
-              <FormikTransalationInput
-                formikSetField={setFieldValue}
-                formikValues={values}
-                name="metaTagDescription"
-                className="bg-white"
-                as={Textarea}
-                placeholder={t("Meta Tag Description")}
-              />
+
               <FormikTransalationInput
                 formikSetField={setFieldValue}
                 formikValues={values}
@@ -214,7 +186,7 @@ export const RestaurantServiceDetailsForm: React.FC<
                 </SelectOption>
               </FormikInput>
 
-              <FormikInput<SelectProps>
+              {/* <FormikInput<SelectProps>
                 placeholder={t("Choose your special offer")}
                 label={t("Special offer")}
                 labelProps={{ className: "text-lg" }}
@@ -226,7 +198,7 @@ export const RestaurantServiceDetailsForm: React.FC<
                     `-{i * 10}% {t("on the menu")}`
                   </SelectOption>
                 ))}
-              </FormikInput>
+              </FormikInput> */}
 
               <ChooseWithInput
                 title={t("Cancel fees")}

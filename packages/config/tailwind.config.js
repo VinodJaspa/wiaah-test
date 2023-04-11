@@ -42,6 +42,7 @@ module.exports = {
           900: "#00170c",
         },
         darkBrown: "#484848",
+        brownBtn: "#1C1C1C",
         lightBlue: "#729FE5",
         secondaryRed: "#F67171",
         transparentBlue: "rgba(40,119,197,0.7)",

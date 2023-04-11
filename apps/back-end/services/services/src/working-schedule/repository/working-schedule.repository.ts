@@ -10,6 +10,7 @@ export class WorkingScheduleRepository {
     return this.prisma.serviceWorkingSchedule.create({
       data: {
         id,
+        sellerId: id,
         weekdays: {
           set: {
             fr: null,

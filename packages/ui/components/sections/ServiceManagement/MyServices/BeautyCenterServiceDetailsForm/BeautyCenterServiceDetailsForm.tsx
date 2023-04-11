@@ -27,9 +27,6 @@ export interface BeautyCenterServiceDetailsFormProps {
 export const BeautyCenterServiceDetailsForm: React.FC<
   BeautyCenterServiceDetailsFormProps
 > = ({ onChange }) => {
-  const { emit } = useReactPubsub((keys) => keys.openFileUploadModal);
-  const [images, setImages] = React.useState<FileRes[]>([]);
-  const [videos, setVideos] = React.useState<string[]>([]);
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
@@ -45,26 +42,6 @@ export const BeautyCenterServiceDetailsForm: React.FC<
               <span className="text-2xl font-semibold">
                 {t("Name & Description")}
               </span>
-              <FormikInput
-                name="name"
-                as={Textarea}
-                placeholder={t("The name of the serivce")}
-              />
-              <FormikInput
-                name="description"
-                as={Textarea}
-                placeholder={t("The Description of the serivce")}
-              />
-              <FormikInput
-                name={"numOfStars"}
-                placeholder={t("Number of stars")}
-              />
-              <FormikInput
-                name="metaTagDescription"
-                className="bg-white"
-                as={Textarea}
-                placeholder={t("Meta Tag Description")}
-              />
               <FormikInput
                 name="metaTagKeyword"
                 className="bg-white"
@@ -91,22 +68,12 @@ export const BeautyCenterServiceDetailsForm: React.FC<
               />
 
               <FormikInput<MultiChooseInputProps>
-                placeholder={t("Choose type of seller")}
-                as={Select}
-                label={t("Type of seller")}
+                placeholder={t("Duration of the treatment")}
+                label={t("Duration (minutes)")}
+                type="number"
                 labelProps={{ className: "text-lg" }}
-                onChange={(v) => setFieldValue("type_of_seller", v)}
-                value={values["type_of_seller"]}
-                suggestions={["Individual", "Professional"]}
-                name="type_of_seller"
-              >
-                <SelectOption value="individual">
-                  {t("Individual")}
-                </SelectOption>
-                <SelectOption value="professional">
-                  {t("Professional")}
-                </SelectOption>
-              </FormikInput>
+                name="duration"
+              ></FormikInput>
 
               <Stack col divider={Divider}>
                 <FormikInput<MultiChooseInputProps>

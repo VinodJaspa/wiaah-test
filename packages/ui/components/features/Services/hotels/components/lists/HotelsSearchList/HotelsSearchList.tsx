@@ -33,7 +33,7 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({
   let filters = {};
   let getLocationFilterQuery = "";
   const [services, setServices] = React.useState<FilteredHotelsMetaDataType[]>(
-    rooms.map((v) => ({
+    rooms?.map((v) => ({
       date: v.createdAt,
       description: v.description,
       id: v.id,
@@ -47,7 +47,7 @@ export const HotelsSearchList: React.FC<HotelsSearchListProps> = ({
       thumbnail: v?.presentations[0]?.src,
       title: v.title,
       totalPrice: v.pricePerNight,
-    }))
+    })) || []
   );
   const { isTablet } = useResponsive();
 

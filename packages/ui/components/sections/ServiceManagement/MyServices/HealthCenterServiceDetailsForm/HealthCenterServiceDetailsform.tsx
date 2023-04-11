@@ -25,9 +25,6 @@ export interface HealthCenterServiceDetailsFormProps {
 export const HealthCenterServiceDetailsForm: React.FC<
   HealthCenterServiceDetailsFormProps
 > = ({ onChange, lang = "en" }) => {
-  const { emit } = useReactPubsub((keys) => keys.openFileUploadModal);
-  const [images, setImages] = React.useState<FileRes[]>([]);
-  const [videos, setVideos] = React.useState<string[]>([]);
   const { t } = useTranslation();
   return (
     <div className="w-full flex flex-col gap-4">
@@ -54,26 +51,6 @@ export const HealthCenterServiceDetailsForm: React.FC<
               <span className="text-2xl font-semibold">
                 {t("Name & Description")}
               </span>
-              <FormikInput
-                name="name"
-                as={Textarea}
-                placeholder={t("The name of the serivce")}
-              />
-              <FormikInput
-                name="description"
-                as={Textarea}
-                placeholder={t("The Description of the serivce")}
-              />
-              <FormikInput
-                name={"numOfStars"}
-                placeholder={t("Number of stars")}
-              />
-              <FormikInput
-                name="metaTagDescription"
-                className="bg-white"
-                as={Textarea}
-                placeholder={t("Meta Tag Description")}
-              />
               <FormikInput
                 name="metaTagKeyword"
                 className="bg-white"

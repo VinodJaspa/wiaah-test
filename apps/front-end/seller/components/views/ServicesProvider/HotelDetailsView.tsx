@@ -21,6 +21,7 @@ import {
   Button,
   Divider,
   LocationOnPointFillIcon,
+  ServiceRangeBookingCalander,
 } from "ui";
 import { useTranslation } from "react-i18next";
 
@@ -212,7 +213,14 @@ export const HotelDetailsView: React.FC = () => {
       </SpinnerFallback>
       <StaticSideBarWrapper
         sidebar={() =>
-          res ? <ServiceReservastion serviceId={res.id} /> : null
+          res ? (
+            <ServiceRangeBookingCalander
+              bookedDates={[]}
+              date={new Date()}
+              onChange={() => {}}
+              value={[]}
+            />
+          ) : null
         }
       >
         <Tabs>

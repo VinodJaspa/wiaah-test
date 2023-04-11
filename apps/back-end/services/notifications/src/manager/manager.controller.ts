@@ -215,6 +215,7 @@ export class ManagerController extends NotifciationBaseController {
           lat,
           lon,
           userId: id,
+          userlang: 'en',
         }),
       );
     }

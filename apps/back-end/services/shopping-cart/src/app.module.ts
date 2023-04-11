@@ -1,6 +1,5 @@
 import { Global, Module } from '@nestjs/common';
 import { ShoppingCartModule } from './shopping-cart/shopping-cart.module';
-import { BookServiceModule } from './book-service/book-service.module';
 import { PrismaService } from 'prismaService';
 
 @Global()
@@ -11,7 +10,7 @@ import { PrismaService } from 'prismaService';
 class PrismaModule {}
 
 @Module({
-  imports: [ShoppingCartModule, BookServiceModule, PrismaModule],
+  imports: [ShoppingCartModule, PrismaModule],
   controllers: [],
   providers: [],
 })

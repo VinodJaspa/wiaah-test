@@ -44,7 +44,7 @@ export const Input: React.FC<InputProps> = ({
 
   return (
     <div className="w-full">
-      {label ? <p className="font-semibold pb-1">{label}</p> : null}
+      {label ? <p className="font-medium text-lg">{label}</p> : null}
       <input
         onFocus={(e) => {
           props.onFocus && props.onFocus(e);
@@ -58,7 +58,7 @@ export const Input: React.FC<InputProps> = ({
             ? "border-b-2 border-t-0 border-l-0 border-r-0"
             : "border-2"
         }
-      focus:border-primary-200 border-gray-200 rounded px-3 w-full h-10`}
+      focus:border-primary-200 border-[#EDEDED] rounded-xl px-3 w-full h-10`}
       />
       {description ? <p>{description}</p> : null}
       {error ? (
@@ -109,7 +109,7 @@ export const InputGroup: React.FC<InputGroupProps> = ({
         className={`${className ?? ""} ${
           isGroup ? (flushed ? "border-b-2" : "border-2") : ""
         } ${
-          focused ? "border-primary-200" : "border-gray-200"
+          focused ? "border-primary-200" : "border-[#EDEDED]"
         } flex gap-1 items-center relative`}
       >
         {leftElement && <>{runIfFn(leftElement, {})}</>}

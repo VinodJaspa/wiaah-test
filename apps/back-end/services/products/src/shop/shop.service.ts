@@ -7,16 +7,19 @@ import {
   AuthorizationDecodedUser,
   createRadiusCoordsByKm,
   ExtractPagination,
+  getTranslatedResource,
+  UserPreferedLang,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import { EventBus } from '@nestjs/cqrs';
 
-import { Shop } from './entities';
+import { Shop as ShopEntity } from './entities';
 import { CreateShopInput } from './dto/create-shop.input';
 import { FilteredShopsInput } from './dto/filter-shops.input';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
 import { ShopCreatedEvent, ShopCreationFailedEvent } from './events';
 import { UpdateShopInput } from './dto';
+import { Shop } from '@prisma-client';
 
 @Injectable()
 export class ShopService {
@@ -28,7 +31,7 @@ export class ShopService {
   async CreateShop(
     createShopInput: CreateShopInput,
     user: AuthorizationDecodedUser,
-  ): Promise<Shop> {
+  ): Promise<ShopEntity> {
     const userHasShop = await this.hasShop(user.id);
 
     if (userHasShop)
@@ -43,7 +46,7 @@ export class ShopService {
       this.eventBus.publish<ShopCreatedEvent>(
         new ShopCreatedEvent(user.id, createdShop),
       );
-      return createdShop;
+      return this.formatShopData(createdShop);
     } catch (error) {
       this.eventBus.publish<ShopCreationFailedEvent>(
         new ShopCreationFailedEvent(error),
@@ -62,12 +65,17 @@ export class ShopService {
     return !!shop;
   }
 
-  async getShopByOwnerId(ownerId: string): Promise<Shop> {
-    return this.prisma.shop.findUnique({
+  async getShopByOwnerId(
+    ownerId: string,
+    langId: UserPreferedLang,
+  ): Promise<ShopEntity> {
+    const shop = await this.prisma.shop.findUnique({
       where: {
         ownerId,
       },
     });
+
+    return this.formatShopData(shop, langId);
   }
 
   async findAll() {
@@ -80,12 +88,14 @@ export class ShopService {
     }
   }
 
-  getShopById(id: string) {
-    return this.prisma.shop.findUnique({
+  async getShopById(id: string, langId: UserPreferedLang): Promise<ShopEntity> {
+    const shop = await this.prisma.shop.findUnique({
       where: {
         id,
       },
     });
+
+    return this.formatShopData(shop, langId);
   }
 
   async removeAllShops(): Promise<boolean> {
@@ -97,7 +107,10 @@ export class ShopService {
     }
   }
 
-  async getNearShops(input: GetNearShopsInput): Promise<Shop[]> {
+  async getNearShops(
+    input: GetNearShopsInput,
+    langId: UserPreferedLang,
+  ): Promise<ShopEntity[]> {
     const { maxLat, maxLon, minLat, minLon } = await createRadiusCoordsByKm({
       lat: input.lat,
       lon: input.lon,
@@ -126,10 +139,14 @@ export class ShopService {
         },
       },
     });
-    return shops;
+    return shops.map((v, i) => this.formatShopData(v, langId));
   }
 
-  async updateShopData(input: UpdateShopInput, userId: string): Promise<Shop> {
+  async updateShopData(
+    input: UpdateShopInput,
+    userId: string,
+    langId: UserPreferedLang,
+  ): Promise<ShopEntity> {
     try {
       const shop = await this.prisma.shop.update({
         where: {
@@ -138,13 +155,16 @@ export class ShopService {
         data: input,
       });
 
-      return shop;
+      return this.formatShopData(shop, langId);
     } catch (error) {
       throw new BadRequestException('error validating shop authority');
     }
   }
 
-  async getFilteredShops(input: FilteredShopsInput): Promise<Shop[]> {
+  async getFilteredShops(
+    input: FilteredShopsInput,
+    langId: UserPreferedLang,
+  ): Promise<ShopEntity[]> {
     const searchQueries = [];
     const { skip, take } = ExtractPagination(input.pagination);
 
@@ -188,13 +208,26 @@ export class ShopService {
       });
     }
 
-    const shops = this.prisma.shop.findMany({
+    const shops = await this.prisma.shop.findMany({
       where: {
         AND: searchQueries,
       },
       skip,
       take,
     });
-    return shops;
+
+    return shops.map((v) => this.formatShopData(v, langId));
+  }
+
+  formatShopData(shop: Shop, langId: string = 'en'): ShopEntity {
+    shop.videos;
+    return {
+      ...shop,
+      name: getTranslatedResource({ langId, resource: shop.name }),
+      description: getTranslatedResource({
+        langId,
+        resource: shop.description,
+      }),
+    };
   }
 }

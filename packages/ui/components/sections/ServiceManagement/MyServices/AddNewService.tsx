@@ -20,12 +20,10 @@ import { MyServicesCtx } from "./index";
 import { ServicePoliciesInputSection } from "./ServicePoliciesSection";
 import { NewProductDiscountOptions } from "@sections/ShopManagement";
 import { SectionHeader } from "@sections";
-import { DiscoverOurServiceForm } from "./DiscoverOurServiceForm";
 import { NewServiceSchemas } from "validation";
 import { WiaahLanguageCountries } from "utils";
 import { ServiceGeneralDetails } from "./ServiceGeneralDetails";
 import { IncludedServices } from "./IncludedServices";
-import { ExtraServiceOptions } from "./ExtraServiceOptions";
 import { RestaurantServiceDetailsForm } from "./RestaurantServiceDetailsForm";
 import { HealthCenterServiceDetailsForm } from "./HealthCenterServiceDetailsForm";
 import { VehicleServiceDetailsForm } from "./VehicleServiceDetailsForm";
@@ -86,7 +84,7 @@ export const AddNewService: React.FC<AddNewServiceProps> = ({ children }) => {
           onSubmit={(data) => mutate(data)}
           isEdit={isEdit || false}
           data={data}
-          serviceType={"vehicle"}
+          serviceType={"hotel"}
         />
       </FormTranslationWrapper>
     </div>
@@ -209,46 +207,7 @@ export const NewServiceStepper: React.FC<{
                     fallbackText: "Service general details",
                   },
                 },
-                {
-                  key: "Discover our service",
-                  stepComponent: (
-                    <StepperFormHandler handlerKey="discoverOurService">
-                      {({ validate }) => {
-                        return (
-                          <>
-                            {detailsSection ? (
-                              <DiscoverOurServiceForm
-                                onChange={validate}
-                                serviceLabel={(() => {
-                                  switch (serviceType) {
-                                    case "hotel":
-                                      return t("Hotel");
-                                    case "restaurant":
-                                      return t("Restaurant");
-                                    case "healthCenter":
-                                      return t("Health Center");
-                                    case "beautyCenter":
-                                      return t("Beauty Center");
-                                    case "holidayRentals":
-                                      return t("Holiday Rentals");
-                                    case "vehicle":
-                                      return t("Vehicles");
-                                    default:
-                                      return t("Service");
-                                  }
-                                })()}
-                              />
-                            ) : null}
-                          </>
-                        );
-                      }}
-                    </StepperFormHandler>
-                  ),
-                  stepName: {
-                    translationKey: "discover_our_service",
-                    fallbackText: "Discover Our Service",
-                  },
-                },
+
                 {
                   key: "servicePolicies",
                   stepComponent: (
@@ -265,6 +224,7 @@ export const NewServiceStepper: React.FC<{
                     fallbackText: "Service Policy Details",
                   },
                 },
+
                 {
                   key: "includedServices",
                   stepComponent: (
@@ -288,22 +248,22 @@ export const NewServiceStepper: React.FC<{
                     fallbackText: "Included Service",
                   },
                 },
-                {
-                  key: "extraServiceOptions",
-                  stepComponent: (
-                    <StepperFormHandler
-                      handlerKey="extraServiceOptions"
-                      validationSchema={NewServiceSchemas.extraSreivce}
-                    >
-                      {({ validate }) => (
-                        <ExtraServiceOptions onChange={validate} />
-                      )}
-                    </StepperFormHandler>
-                  ),
-                  stepName: {
-                    translationKey: "Extra Service",
-                  },
-                },
+                // {
+                //   key: "extraServiceOptions",
+                //   stepComponent: (
+                //     <StepperFormHandler
+                //       handlerKey="extraServiceOptions"
+                //       validationSchema={NewServiceSchemas.extraSreivce}
+                //     >
+                //       {({ validate }) => (
+                //         <ExtraServiceOptions onChange={validate} />
+                //       )}
+                //     </StepperFormHandler>
+                //   ),
+                //   stepName: {
+                //     translationKey: "Extra Service",
+                //   },
+                // },
                 {
                   key: "discount",
                   stepComponent: (
@@ -323,7 +283,11 @@ export const NewServiceStepper: React.FC<{
               ]}
             />
             <div className="w-full justify-between flex">
-              <Button onClick={() => CancelAddingNewService()}>
+              <Button
+                colorScheme="danger"
+                outline
+                onClick={() => CancelAddingNewService()}
+              >
                 {t("Cancel")}
               </Button>
 

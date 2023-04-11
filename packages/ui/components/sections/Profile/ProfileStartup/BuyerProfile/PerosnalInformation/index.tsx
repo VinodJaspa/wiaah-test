@@ -99,19 +99,6 @@ export const PersonalInformationStep: React.FC<
                     name="email"
                     placeholder={t("Email", "Email") + "*"}
                   />
-                  <FormikInput
-                    name="typeOfAccount"
-                    as={Select}
-                    placeholder={t("type_of_account", "Type Of Account") + "*"}
-                  >
-                    {accountTypes.map(({ value, name }, i) => (
-                      <SelectOption key={value + i} value={value}>
-                        {t(
-                          typeof name === "string" ? name : name.translationKey
-                        )}
-                      </SelectOption>
-                    ))}
-                  </FormikInput>
                   <Menu className="w-[100%]">
                     <MenuButton>
                       <Input

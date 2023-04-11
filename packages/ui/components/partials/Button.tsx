@@ -9,7 +9,8 @@ type ColorScheme =
   | "info"
   | "gray"
   | "white"
-  | "lightGray";
+  | "lightGray"
+  | "darkbrown";
 
 export interface ButtonProps extends HtmlButtonProps {
   outline?: boolean;
@@ -28,24 +29,61 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
   center,
   ...props
 }) => {
-  const colors = (scheme: ColorScheme): string => {
+  const colors = (scheme: ColorScheme): { outline: string; solid: string } => {
     switch (scheme) {
       case "primary":
-        return "bg-primary border-primary text-white hover:bg-primary-600 active:bg-primary-700";
+        return {
+          outline:
+            "border-primary border text-primary hover:bg-primary-100 active:bg-primary-200",
+          solid:
+            "bg-primary border-primary text-white hover:bg-primary-600 active:bg-primary-700",
+        };
       case "danger":
-        return "bg-red-500 border-red-500 text-white hover:bg-red-600 active:bg-red-700";
+        return {
+          outline:
+            "border-red-500 border text-red-500 hover:bg-red-100 active:bg-red-200",
+          solid:
+            "bg-[#E20000] border-red-500 text-white hover:bg-red-600 active:bg-red-700",
+        };
       case "info":
-        return "bg-cyan-500 border-cyan-400 text-white hover:bg-cyan-600 active:bg-cyan-700";
-      case "success":
-        return "scheme-success";
+        return {
+          outline:
+            "border-cyan-400 border text-cyan-400 hover:bg-cyan-100 active:bg-cyan-200\\",
+          solid:
+            "bg-cyan-500 border-cyan-400 text-white hover:bg-cyan-600 active:bg-cyan-700",
+        };
+
       case "gray":
-        return "bg-gray-500 border-gray-400 text-white hover:bg-gray-600 active:bg-gray-700";
+        return {
+          outline:
+            "border-gray-400 border text-gray-400 hover:bg-gray-100 active:bg-gray-200",
+          solid:
+            "bg-gray-500 border-gray-400 text-white hover:bg-gray-600 active:bg-gray-700",
+        };
       case "white":
-        return "bg-white border-gray-200 text-black hover:bg-gray-100 active:bg-gray-200";
+        return {
+          outline:
+            "border-white border text-white hover:bg-gray-100 active:bg-gray-200",
+          solid:
+            "bg-white border-gray-200 text-black hover:bg-gray-100 active:bg-gray-200",
+        };
       case "lightGray":
-        return "bg-lightGray border-gray-400 text-white hover:bg-gray-600 active:bg-gray-700";
+        return {
+          outline:
+            "border-gray-400 border text-gray-400 hover:bg-gray-100 active:bg-gray-200",
+          solid:
+            "bg-lightGray border-gray-400 text-white hover:bg-gray-600 active:bg-gray-700",
+        };
+      case "darkbrown":
+        return {
+          outline: "border border-brownBtn text-brownBtn",
+          solid: "bg-brownBtn text-white",
+        };
       default:
-        return "scheme-primary";
+        return {
+          outline: "",
+          solid: "",
+        };
     }
   };
 
@@ -56,10 +94,10 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
         loading ? undefined : onClick && onClick(e);
       }}
       className={` ${className ? className : ""} ${
-        outline ? "border-2 text-black hover:text-white bg-transparent" : ""
-      } ${colors(colorScheme)} ${
+        outline ? colors(colorScheme).outline : colors(colorScheme).solid
+      } ${
         center ? "flex justify-center items-center" : "px-4 py-2"
-      } transition-colors rounded-md`}
+      } transition-colors rounded-md bg-`}
     >
       {loading ? <CgSpinner className="animate-spin" /> : children}
     </button>

@@ -1,7 +1,7 @@
 import { ComponentMeta } from "@storybook/react";
 import React from "react";
 import { Rate, RateProps } from "./";
-import { StorybookImplemntationLayout } from "@UI/utils";
+import { StorybookImplemntationLayout } from "utils";
 
 export default {
   title: "UI / partials / Rate",

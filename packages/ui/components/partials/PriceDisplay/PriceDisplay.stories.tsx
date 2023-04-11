@@ -1,7 +1,7 @@
 import {
   storybookPartailsTitle,
   StorybookImplemntationLayout,
-} from "@UI/utils";
+} from "utils";
 import { ComponentMeta } from "@storybook/react";
 import React from "react";
 import { PriceDisplay } from "@UI";

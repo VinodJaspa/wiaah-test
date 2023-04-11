@@ -1,5 +1,4 @@
 import { ObjectType, Field, ID, Directive } from '@nestjs/graphql';
-import { BookedService } from '../book-service';
 
 @ObjectType()
 @Directive('@extends')
@@ -44,9 +43,6 @@ export class ShoppingCart {
 
   @Field(() => ID)
   ownerId: string;
-
-  @Field(() => [BookedService], { nullable: true })
-  cartServices?: BookedService[];
 
   @Field(() => [CartProduct], { nullable: true })
   cartProduct?: CartProduct[];

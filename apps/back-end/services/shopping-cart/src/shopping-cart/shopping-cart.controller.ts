@@ -44,7 +44,7 @@ export class ShoppingCartController implements OnModuleInit {
     @Payload() payload: KafkaPayload<GetShoppingCartItemsMessage>,
   ): Promise<GetShoppingCartItemsMessageReply> {
     try {
-      const { cartProduct, cartServices, appliedVoucherId } =
+      const { cartProduct, appliedVoucherId } =
         await this.shoppingCartService.getShoppingCartByOwnerId(
           payload.value.input.ownerId,
         );
@@ -58,11 +58,6 @@ export class ShoppingCartController implements OnModuleInit {
               id: v.id,
               qty: 1,
               type: 'product',
-            })) || []),
-            ...(cartServices?.map((v) => ({
-              id: v.id,
-              qty: 1,
-              type: 'service',
             })) || []),
           ],
           voucherId: appliedVoucherId,

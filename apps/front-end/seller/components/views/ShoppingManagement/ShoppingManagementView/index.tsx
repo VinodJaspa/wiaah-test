@@ -6,6 +6,7 @@ import {
   AddressBookSection,
   BookingsHistory,
   MyReturnsSection,
+  MyShoppingStats,
   MyWishListSection,
   OrdersSection,
   PaymentMethodsSection,
@@ -18,6 +19,7 @@ import { IoReturnUpBackSharp } from "react-icons/io5";
 import { GiPostStamp } from "react-icons/gi";
 import { RiBookLine } from "react-icons/ri";
 import { getRouting } from "routing";
+import { FcStatistics } from "react-icons/fc";
 
 export const ShoppingManagementView: React.FC = () => {
   const baseRoute = getRouting((r) => r.visitShoppingManagement());
@@ -51,6 +53,12 @@ const sections: SettingsSectionType[] = [
     panelIcon: MdList({}),
     panelUrl: "/my-wishlist",
     panelComponent: <MyWishListSection />,
+  },
+  {
+    panelName: "Shopping Statistics",
+    panelIcon: <FcStatistics />,
+    panelUrl: "/shopping-stats",
+    panelComponent: <MyShoppingStats />,
   },
   {
     panelName: "Orders",

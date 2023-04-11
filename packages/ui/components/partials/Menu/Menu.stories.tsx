@@ -4,7 +4,7 @@ import {
   storybookPartailsTitle,
   StorybookImplemntationLayout,
   Counter,
-} from "@UI/utils";
+} from "utils";
 import React from "react";
 
 export default {

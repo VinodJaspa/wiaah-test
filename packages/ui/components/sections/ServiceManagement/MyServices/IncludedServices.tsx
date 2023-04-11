@@ -34,7 +34,7 @@ export const IncludedServices: React.FC<IncludedServicesProps> = ({
 
   return (
     <HStack className="gap-2 w-full flex-col md:flex-row">
-      <div className="grid-cols-2 grid w-full gap-16 py-16">
+      <div className="grid-cols-2  grid w-full gap-16 py-16">
         {IncludableServices.map((service, i) => (
           <HStack className="">
             <Checkbox
@@ -51,17 +51,19 @@ export const IncludedServices: React.FC<IncludedServicesProps> = ({
           </HStack>
         ))}
       </div>
-      <Select<IncludedServicesCost>
-        className="w-48"
-        onOptionSelect={(opt) => setCost(opt)}
-      >
-        <SelectOption value={"free"}>
-          <p>{t("free")}</p>
-        </SelectOption>
-        <SelectOption value={"paid"}>
-          <p>{t("paid")}</p>
-        </SelectOption>
-      </Select>
+      <div className="w-48">
+        <Select<IncludedServicesCost>
+          className=""
+          onOptionSelect={(opt) => setCost(opt)}
+        >
+          <SelectOption value={"free"}>
+            <p>{t("free")}</p>
+          </SelectOption>
+          <SelectOption value={"paid"}>
+            <p>{t("paid")}</p>
+          </SelectOption>
+        </Select>
+      </div>
     </HStack>
   );
 };

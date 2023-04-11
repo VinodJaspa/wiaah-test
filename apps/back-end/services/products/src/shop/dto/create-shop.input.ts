@@ -1,5 +1,19 @@
 import { InputType, Field, Float, PartialType } from '@nestjs/graphql';
-import { BusinessType, StoreType, TargetGenders } from '@prisma-client';
+import {
+  BusinessType,
+  ServiceType,
+  ShopPaymentMethods,
+  ShopStatus,
+  StoreType,
+  TargetGenders,
+  TypeOfSeller,
+} from '@prisma-client';
+import { CreateInputGqlTranslationInputField } from 'nest-utils';
+
+@InputType()
+export class TranslationTextInput extends CreateInputGqlTranslationInputField(
+  String,
+) {}
 
 @InputType()
 export class LocationInput {
@@ -36,20 +50,29 @@ export class VatSettingsPartialInput extends PartialType(VatSettingsInput) {}
 
 @InputType()
 export class CreateShopInput {
-  @Field((type) => String)
-  name: string;
+  @Field((type) => [TranslationTextInput])
+  name: TranslationTextInput[];
 
   @Field(() => String)
   banner: string;
 
+  @Field(() => [TranslationTextInput])
+  description: TranslationTextInput[];
+
   @Field(() => String)
-  description: string;
+  phone: string;
+
+  @Field(() => String)
+  email: string;
+
+  @Field(() => String)
+  thumbnail: string;
 
   @Field((type) => LocationInput)
   location: LocationInput;
 
-  @Field((type) => [StoreType])
-  storeType: StoreType[];
+  @Field((type) => StoreType)
+  storeType: StoreType;
 
   @Field((type) => BusinessType)
   businessType: BusinessType;
@@ -59,4 +82,31 @@ export class CreateShopInput {
 
   @Field(() => VatSettingsPartialInput, { nullable: true })
   vat?: VatSettingsPartialInput;
+
+  @Field(() => TypeOfSeller)
+  type_of_seller: TypeOfSeller;
+
+  @Field(() => ShopStatus)
+  status: ShopStatus;
+
+  @Field(() => [ShopPaymentMethods])
+  payment_methods: ShopPaymentMethods[];
+
+  @Field(() => ServiceType, { nullable: true })
+  type: ServiceType;
+
+  @Field(() => [String])
+  vidoes: string[];
+
+  @Field(() => [String])
+  images: string[];
+
+  @Field(() => String)
+  metaTagDescription: string;
+
+  @Field(() => [String])
+  metaTagKeywords: string[];
+
+  @Field(() => [String])
+  hashtags: string[];
 }

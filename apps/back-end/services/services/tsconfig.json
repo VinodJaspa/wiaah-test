@@ -41,7 +41,8 @@
       "@service/*": ["src/service/*"],
       "@insurance/*": ["src/insurance/*"],
       "@service-discovery/*": ["src/service-discovery/*"],
-      "@kafka-module": ["src/kafka.module"]
+      "@kafka-module": ["src/kafka.module"],
+      "@book-service/*": ["src/book-service/*"]
     }
   }
 }

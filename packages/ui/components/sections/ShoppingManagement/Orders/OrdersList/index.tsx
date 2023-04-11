@@ -36,6 +36,8 @@ import {
   LinkIcon,
   Pagination,
   Modal,
+  ModalContent,
+  ModalOverlay,
 } from "@partials";
 
 import {
@@ -135,8 +137,6 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
                 const date = AddToDate(createdAt, {
                   days: shipping.deliveryTimeRange.to,
                 });
-                const orderDate = DateDetails(date);
-
                 function handleGoToTrackingLink(link: string) {}
                 return (
                   <Tr className="cursor-pointer" key={i}>
@@ -219,144 +219,10 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
                     {shopping ? (
                       <Td>
                         <div className="w-full flex justify-center">
-                          <CancelIcon className="mx-auto" />
-                          <Modal
-                            isOpen={!!refundOrderId}
-                            onClose={() => setRefundOrderId(undefined)}
-                          >
-                            <Formik<Parameters<typeof mutate>[0]>
-                              onSubmit={(data) => {
-                                mutate(data);
-                              }}
-                              initialValues={{
-                                reason: "",
-                                type: RefundType.Money,
-                                fullAmount: true,
-                                amount: 0,
-                                opened: false,
-                                orderItemId: refundOrderId || "",
-                                qty: 0,
-                              }}
-                              validationSchema={
-                                ReturnDeclineRequestValidationSchema
-                              }
-                            >
-                              {({ setFieldValue, values }) => (
-                                <Form className="flex w-full items-center flex-col gap-4">
-                                  <p className="font-bold text-xl">
-                                    {t("Refund Request For Order")} #{id}
-                                  </p>
-                                  <div className="flex gap-2 whitespace-nowrap">
-                                    {t("Paid")} <PriceDisplay price={paid} />{" "}
-                                    {t("on")}{" "}
-                                    {orderDate
-                                      ? `${orderDate.month_long} ${orderDate.day}, ${orderDate.year_num}`
-                                      : null}
-                                  </div>
-                                  <div className="grid grid-cols-3 gap-4 w-full">
-                                    <p>{t("I would like to get")}</p>
-                                    <div className="flex col-span-2 flex-col gap-2">
-                                      <Radio
-                                        checked={
-                                          values.type === RefundType.Money
-                                        }
-                                        onChange={(e) =>
-                                          e.target.checked
-                                            ? setFieldValue(
-                                                "type",
-                                                RefundType.Money
-                                              )
-                                            : null
-                                        }
-                                      >
-                                        {t("My money back")}
-                                      </Radio>
-
-                                      <Radio
-                                        checked={
-                                          values.type === RefundType.Credit
-                                        }
-                                        onChange={(e) =>
-                                          e.target.checked
-                                            ? setFieldValue(
-                                                "type",
-                                                RefundType.Credit
-                                              )
-                                            : null
-                                        }
-                                      >
-                                        {t("Credit note for future purchase")}
-                                      </Radio>
-                                    </div>
-                                    <p>{t("For")}</p>
-                                    <div className="flex flex-col col-span-2 gap-2">
-                                      <Radio
-                                        checked={values.fullAmount || false}
-                                        onChange={(e) =>
-                                          e.target.checked
-                                            ? setFieldValue("fullAmount", true)
-                                            : null
-                                        }
-                                      >
-                                        {t("Full amount")}
-                                      </Radio>
-                                      <Radio
-                                        checked={!values.fullAmount}
-                                        onChange={(e) =>
-                                          e.target.checked
-                                            ? setFieldValue("fullAmount", false)
-                                            : null
-                                        }
-                                        className="whitespace-nowrap"
-                                      >
-                                        <p className="whitespace-nowrap">
-                                          {t("Partial amount of")}{" "}
-                                        </p>
-                                        {values.fullAmount ? null : (
-                                          <Input
-                                            value={values.amount?.toString()}
-                                            type={"number"}
-                                            onChange={(e) =>
-                                              setFieldValue(
-                                                "amount",
-                                                parseInt(e.target.value)
-                                              )
-                                            }
-                                          />
-                                        )}
-                                      </Radio>
-                                    </div>
-                                    <p>{t("Because")}</p>
-                                    <FormikInput
-                                      containerProps={{
-                                        className: "col-span-2",
-                                      }}
-                                      name="cancelationReason"
-                                      as={Textarea}
-                                    />
-                                  </div>
-                                  <ModalFooter>
-                                    <ModalCloseButton>
-                                      <Button
-                                        type={"submit"}
-                                        loading={RefundLoading}
-                                      >
-                                        {t("Send my request")}
-                                      </Button>
-                                    </ModalCloseButton>
-                                    <Button
-                                      onClick={() => {
-                                        setRefundOrderId(undefined);
-                                      }}
-                                      colorScheme="white"
-                                    >
-                                      {t("Cancel")}
-                                    </Button>
-                                  </ModalFooter>
-                                </Form>
-                              )}
-                            </Formik>
-                          </Modal>
+                          <CancelIcon
+                            onClick={() => setRefundOrderId(id)}
+                            className="mx-auto"
+                          />
                         </div>
                       </Td>
                     ) : null}
@@ -368,84 +234,134 @@ export const OrdersList: React.FC<OrdersListProps> = () => {
         </Table>
       </TableContainer>
       <Pagination controls={controls} />
+      <Modal
+        isOpen={!!refundOrderId}
+        onClose={() => setRefundOrderId(undefined)}
+      >
+        <ModalOverlay />
+        <ModalContent>
+          <Formik<Parameters<typeof mutate>[0]>
+            onSubmit={(data) => {
+              mutate(data);
+            }}
+            initialValues={{
+              reason: "",
+              type: RefundType.Money,
+              fullAmount: true,
+              amount: 0,
+              opened: false,
+              orderItemId: refundOrderId || "",
+              qty: 0,
+            }}
+            validationSchema={ReturnDeclineRequestValidationSchema}
+          >
+            {({ setFieldValue, values }) => {
+              const order = orders?.find((v) => v.id === refundOrderId);
+              const date = AddToDate(order?.createdAt, {
+                days: order?.shipping.deliveryTimeRange.to,
+              });
+              const orderDate = DateDetails(date);
+              return (
+                <Form className="flex w-full items-center flex-col gap-4">
+                  <p className="font-bold text-xl">
+                    {t("Refund Request For Order")} #{order?.id}
+                  </p>
+                  <div className="flex gap-2 whitespace-nowrap">
+                    {t("Paid")} <PriceDisplay price={order?.paid} /> {t("on")}{" "}
+                    {orderDate
+                      ? `${orderDate.month_long} ${orderDate.day}, ${orderDate.year_num}`
+                      : null}
+                  </div>
+                  <div className="grid grid-cols-3 gap-4 w-full">
+                    <p>{t("I would like to get")}</p>
+                    <div className="flex col-span-2 flex-col gap-2">
+                      <Radio
+                        checked={values.type === RefundType.Money}
+                        onChange={(e) =>
+                          e.target.checked
+                            ? setFieldValue("type", RefundType.Money)
+                            : null
+                        }
+                      >
+                        {t("My money back")}
+                      </Radio>
+
+                      <Radio
+                        checked={values.type === RefundType.Credit}
+                        onChange={(e) =>
+                          e.target.checked
+                            ? setFieldValue("type", RefundType.Credit)
+                            : null
+                        }
+                      >
+                        {t("Credit note for future purchase")}
+                      </Radio>
+                    </div>
+                    <p>{t("For")}</p>
+                    <div className="flex flex-col col-span-2 gap-2">
+                      <Radio
+                        checked={values.fullAmount || false}
+                        onChange={(e) =>
+                          e.target.checked
+                            ? setFieldValue("fullAmount", true)
+                            : null
+                        }
+                      >
+                        {t("Full amount")}
+                      </Radio>
+                      <Radio
+                        checked={!values.fullAmount}
+                        onChange={(e) =>
+                          e.target.checked
+                            ? setFieldValue("fullAmount", false)
+                            : null
+                        }
+                        className="whitespace-nowrap"
+                      >
+                        <p className="whitespace-nowrap">
+                          {t("Partial amount of")}{" "}
+                        </p>
+                        {values.fullAmount ? null : (
+                          <Input
+                            value={values.amount?.toString()}
+                            type={"number"}
+                            onChange={(e) =>
+                              setFieldValue("amount", parseInt(e.target.value))
+                            }
+                          />
+                        )}
+                      </Radio>
+                    </div>
+                    <p>{t("Because")}</p>
+                    <FormikInput
+                      containerProps={{
+                        className: "col-span-2",
+                      }}
+                      name="cancelationReason"
+                      as={Textarea}
+                    />
+                  </div>
+                  <ModalFooter>
+                    <ModalCloseButton>
+                      <Button type={"submit"} loading={RefundLoading}>
+                        {t("Send my request")}
+                      </Button>
+                    </ModalCloseButton>
+                    <Button
+                      onClick={() => {
+                        setRefundOrderId(undefined);
+                      }}
+                      colorScheme="white"
+                    >
+                      {t("Cancel")}
+                    </Button>
+                  </ModalFooter>
+                </Form>
+              );
+            }}
+          </Formik>
+        </ModalContent>
+      </Modal>
     </div>
   );
 };
-
-const OrdersTabs: {
-  tabName: TranslationTextType;
-  filter: OrdersFilter;
-}[] = [
-  {
-    tabName: {
-      translationKey: "all_orders",
-      fallbackText: "All Orders",
-    },
-    filter: "all",
-  },
-  {
-    tabName: {
-      translationKey: "completed",
-      fallbackText: "Completed",
-    },
-    filter: "completed",
-  },
-  {
-    tabName: {
-      translationKey: "continuing",
-      fallbackText: "Continuing",
-    },
-    filter: "continuing",
-  },
-  {
-    tabName: {
-      translationKey: "restitute",
-      fallbackText: "Restitute",
-    },
-    filter: "restitue",
-  },
-  {
-    tabName: {
-      translationKey: "canceled",
-      fallbackText: "Canceled",
-    },
-    filter: "canceled",
-  },
-];
-
-export const statusOptions: FormOptionType[] = [
-  {
-    name: {
-      translationKey: "active",
-      fallbackText: "Active",
-    },
-    value: "active",
-  },
-  {
-    name: {
-      translationKey: "pending",
-      fallbackText: "Pending",
-    },
-    value: "pending",
-  },
-];
-type OrderInfoData = {
-  orderId: string;
-  orderStatus: string;
-  productsNum: number;
-  total: PriceType;
-  customer: string;
-  dateAdded: string;
-};
-
-const orders: OrderInfoData[] = [...Array(10)].map(() => ({
-  customer: "customer",
-  dateAdded: new Date(Date.now()).toDateString(),
-  orderId: `${randomNum(100000)}`,
-  orderStatus: "confirmed",
-  productsNum: randomNum(10),
-  total: {
-    amount: randomNum(5000),
-    currency: "USD",
-  },
-}));

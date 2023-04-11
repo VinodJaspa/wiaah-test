@@ -46,11 +46,8 @@ const MAX_PRODUCTS_IMAGE = 4;
 export const HolidayRentalsGeneralDetailsForm: React.FC<
   HolidayRantalsDetailsProps
 > = ({ onChange }) => {
-  const [images, setImages] = React.useState<FileRes[]>([]);
-  const [videos, setVideos] = React.useState<string[]>([]);
   const { t } = useTranslation();
   const { data: res } = useGetHotelAmenitesQuery();
-  const { emit } = useReactPubsub((keys) => keys.openLoginPopup);
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -91,26 +88,6 @@ export const HolidayRentalsGeneralDetailsForm: React.FC<
               <span className="text-2xl font-semibold">
                 {t("Name & Description")}
               </span>
-              <FormikInput
-                name="name"
-                as={Textarea}
-                placeholder={t("The name of the serivce")}
-              />
-              <FormikInput
-                name="description"
-                as={Textarea}
-                placeholder={t("The Description of the serivce")}
-              />
-              <FormikInput
-                name={"numOfStars"}
-                placeholder={t("Number of stars")}
-              />
-              <FormikInput
-                name="metaTagDescription"
-                className="bg-white"
-                as={Textarea}
-                placeholder={t("Meta Tag Description")}
-              />
               <FormikInput
                 name="metaTagKeyword"
                 className="bg-white"
@@ -276,7 +253,7 @@ export const HolidayRentalsGeneralDetailsForm: React.FC<
                   onChange={(amis) => setFieldValue("common_amenites", amis)}
                   value={values["common_amenites"]}
                   name="common_amenites"
-                  suggestions={res?.data.amenites}
+                  suggestions={res?.data.amenites || []}
                   label={t("Room common amenites")}
                 />
 

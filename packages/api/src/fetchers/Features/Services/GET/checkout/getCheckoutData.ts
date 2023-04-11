@@ -1,5 +1,6 @@
 import { FormatedSearchableFilter } from "api";
 import { AsyncReturnType } from "types";
+import { ServiceType } from "ui";
 
 import { randomNum } from "utils";
 import {
@@ -94,7 +95,42 @@ export const getCheckoutDataFetcher = async (
           },
         },
         {
-          type: "resturant",
+          type: ServiceType.Vehicle,
+          data: {
+            serviceType: "hotel",
+            bookedDates: {
+              from: new Date(Date.now()).toString(),
+              to: new Date(Date.now()).toString(),
+            },
+            rate: randomNum(5),
+            refundingRule: {
+              cost: 12,
+              duration: 3,
+              id: "12",
+            },
+
+            reviews: randomNum(153),
+            thumbnail: "/place-1.jpg",
+            id: "123",
+            rateReason: "cleanliness",
+            title: "Citadines Montmartre Paris",
+            duration: [30, 60],
+            extras: [
+              {
+                name: "Breakfast + book now, pay later",
+                price: randomNum(100),
+              },
+            ],
+            guests: randomNum(5),
+            cashback: {
+              amount: randomNum(20),
+              type: "percent",
+            },
+            price: randomNum(500),
+          },
+        },
+        {
+          type: ServiceType.Restaurant,
           data: {
             serviceType: "restaurant",
             bookedDates: {
@@ -309,175 +345,8 @@ export const getCheckoutDataFetcher = async (
                 value: "international",
               },
             ],
-            color: "red",
-            size: "One Size",
-            cashback: {
-              amount: 4,
-              type: "cash",
-            },
-            discount: 10,
-            description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto doloremque molestiae perferendis saepe? Tenetur, eligendi. Excepturi voluptate harum fuga! Consequatur?`,
-          },
-        },
-        {
-          type: "product",
-          data: {
-            location: {
-              address: "address",
-              city: "city",
-              cords: {
-                lat: 15,
-                lng: 16,
-              },
-              country: "country",
-              countryCode: "CH",
-              postalCode: 13254,
-              state: "state",
-            },
-            id: "2",
-            type: "downloadable",
-            thumbnail:
-              "https://cdn.mena-tech.com/wp-content/uploads/2021/08/MR-Future-Products-2020-2.png",
-            name: "item1",
-            price: 15,
-            qty: 3,
-            shippingMethods: [],
-            color: "red",
-            size: "One Size",
-            cashback: {
-              amount: 4,
-              type: "cash",
-            },
-            discount: 10,
-            description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto doloremque molestiae perferendis saepe? Tenetur, eligendi. Excepturi voluptate harum fuga! Consequatur?`,
-          },
-        },
-        {
-          type: "product",
-          data: {
-            location: {
-              address: "address",
-              city: "city",
-              cords: {
-                lat: 15,
-                lng: 16,
-              },
-              country: "country",
-              countryCode: "CH",
-              postalCode: 13254,
-              state: "state",
-            },
-            id: "2",
-            thumbnail:
-              "https://cdn.mena-tech.com/wp-content/uploads/2021/08/MR-Future-Products-2020-2.png",
-            name: "item1",
-            price: 15,
-            qty: 3,
-            type: "goods",
-            shippingMethods: [
-              {
-                cost: 15,
-                description: "test",
-                id: "12",
-                deliveryTime: {
-                  from: 5,
-                  to: 7,
-                },
-                name: "European union",
-                value: "european_union",
-              },
-              {
-                cost: 0,
-                description: "test",
-                id: "12",
-                deliveryTime: {
-                  from: 1,
-                  to: 3,
-                },
-                name: "Click & Collect",
-                value: "click_and_collect",
-              },
-              {
-                cost: 20,
-                description: "test",
-                id: "12",
-                deliveryTime: {
-                  from: 6,
-                  to: 8,
-                },
-                name: "International",
-                value: "international",
-              },
-            ],
-            color: "red",
-            size: "One Size",
-            cashback: {
-              amount: 4,
-              type: "cash",
-            },
-            discount: 10,
-            description: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto doloremque molestiae perferendis saepe? Tenetur, eligendi. Excepturi voluptate harum fuga! Consequatur?`,
-          },
-        },
-        {
-          type: "product",
-          data: {
-            location: {
-              address: "address",
-              city: "city",
-              cords: {
-                lat: 15,
-                lng: 16,
-              },
-              country: "country",
-              countryCode: "CH",
-              postalCode: 13254,
-              state: "state",
-            },
-            id: "2",
-            thumbnail:
-              "https://cdn.mena-tech.com/wp-content/uploads/2021/08/MR-Future-Products-2020-2.png",
-            name: "item1",
-            price: 15,
-            qty: 3,
-            type: "downloadable",
-            shippingMethods: [
-              {
-                cost: 15,
-                description: "test",
-                id: "12",
-                deliveryTime: {
-                  from: 5,
-                  to: 7,
-                },
-                name: "European union",
-                value: "european_union",
-              },
-              {
-                cost: 0,
-                description: "test",
-                id: "12",
-                deliveryTime: {
-                  from: 1,
-                  to: 3,
-                },
-                name: "Click & Collect",
-                value: "click_and_collect",
-              },
-              {
-                cost: 20,
-                description: "test",
-                id: "12",
-                deliveryTime: {
-                  from: 6,
-                  to: 8,
-                },
-                name: "International",
-                value: "international",
-              },
-            ],
-            color: "red",
-            size: "One Size",
+            color: "#F5E0A1",
+            size: "XL",
             cashback: {
               amount: 4,
               type: "cash",
@@ -491,5 +360,5 @@ export const getCheckoutDataFetcher = async (
       vat: 7,
     },
   };
-  return CheckValidation(ServiceCheckoutDataApiResponseValidationSchema, res);
+  return res;
 };

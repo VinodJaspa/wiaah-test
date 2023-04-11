@@ -2,7 +2,7 @@ import {
   storybookPartailsTitle,
   StorybookImplemntationLayout,
   Counter,
-} from "@UI/utils";
+} from "utils";
 import { ComponentMeta } from "@storybook/react";
 import React from "react";
 import { useTranslation } from "react-i18next";

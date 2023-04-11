@@ -1,9 +1,7 @@
 import {
   FormatedSearchableFilter,
   getGeneralServicesData,
-  PaginationFetchedData,
   QueryPaginationInputs,
-  ServiceData,
 } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 import { AsyncReturnType } from "types";

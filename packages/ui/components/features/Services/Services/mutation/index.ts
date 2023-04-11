@@ -5,3 +5,4 @@ export * from "./useAdminUpdateServiceMutation";
 export * from "./useDeclinePendingAppointmentMutation";
 export * from "./useAcceptPendingAppointmentMutation";
 export * from "./useUpdateWeekWorkingHoursMutation";
+export * from "./useDeleteService";
