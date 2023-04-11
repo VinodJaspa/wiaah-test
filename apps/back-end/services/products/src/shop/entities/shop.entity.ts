@@ -102,8 +102,8 @@ export class Shop {
   @Field((type) => Location)
   location: Location;
 
-  @Field((type) => [StoreType])
-  storeType: StoreType[];
+  @Field((type) => StoreType)
+  storeType: StoreType;
 
   @Field((type) => BusinessType)
   businessType: BusinessType;

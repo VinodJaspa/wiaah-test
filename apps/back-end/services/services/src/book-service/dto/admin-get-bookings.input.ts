@@ -1,5 +1,5 @@
 import { Field, Float, InputType, PartialType } from '@nestjs/graphql';
-import { BookedServiceStatus } from '@prisma-client';
+import { BookedServiceStatus } from 'prismaClient';
 import { GqlPaginationInput } from 'nest-utils';
 
 @InputType()

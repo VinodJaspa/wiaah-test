@@ -1,158 +1,141 @@
-import { Treatment } from '@beauty-center';
 import {
-  HotelRoom,
-  ServiceContact,
-  ServiceLocation,
-  ServiceMetaInfo,
-  ServicePolicy,
-  ServicePresentation,
+  ServiceDailyPrices,
+  ServiceDiscount,
+  ServiceCancelationPolicy,
+  ServiceExtra,
+  ServicePropertyMeasurements,
 } from '@entities';
-import { Doctor } from '@health-center';
-import { Directive, Field, Float, ID, Int, ObjectType } from '@nestjs/graphql';
-import { RestaurantMenu } from '@restaurant';
-import { Vehicle } from '@vehicle-service';
 import {
-  CreateGqlObjectTranslationInputFields,
-  CreateObjectGqlTranslationInputField,
-} from 'nest-utils';
+  Directive,
+  Field,
+  Float,
+  ID,
+  Int,
+  ObjectType,
+  registerEnumType,
+} from '@nestjs/graphql';
+import { VehicleProperties } from '@vehicle-service';
 import {
-  ServicePaymentMethods,
+  HealthCenterDoctorAvailablityStatus,
+  HealthCenterDoctorSpeakingLanguage,
+  RestaurantDishType,
   ServiceType,
-  ServiceTypeOfSeller,
 } from 'prismaClient';
 
-// @ObjectType()
-// @Directive('@key(fields:"id")')
-// @Directive('@key(fields:"id, serviceType")')
-// export class Service {
-//   @Field(() => ID)
-//   id: string;
-
-//   @Field(() => ServiceType)
-//   @Directive('@shareable')
-//   serviceType: ServiceType;
-
-//   @Field(() => String)
-//   title: string;
-
-//   @Field(() => Float)
-//   price: number;
-
-//   @Field(() => Float)
-//   rating: number;
-
-//   @Field(() => String)
-//   thumbnail: string;
-
-//   @Field(() => [ServicePresentation], { nullable: true })
-//   presentation?: ServicePresentation[];
-
-//   @Field(() => [String])
-//   hashtags: string[];
-
-//   @Field(() => ServiceLocation)
-//   location: ServiceLocation;
-
-//   @Field(() => ServiceContact)
-//   contact: ServiceContact;
-// }
-
-@ObjectType()
-export class TranslationText extends CreateObjectGqlTranslationInputField(
-  String,
-) {}
+registerEnumType(HealthCenterDoctorSpeakingLanguage, {
+  name: 'DoctorSpeakingLanguage',
+});
 
 @ObjectType()
 @Directive('@key(fields:"id")')
-@Directive('@key(fields:"ownerId")')
+@Directive('@key(fields:"sellerId")')
 export class Service {
+  // base
   @Field(() => ID)
   id: string;
 
   @Field(() => ID)
-  ownerId: string;
-
-  @Field(() => String)
-  dayClicksId: string;
+  sellerId: string;
 
   @Field(() => ServiceType)
   type: ServiceType;
 
-  @Field(() => Date)
-  createdAt: Date;
-
   @Field(() => String)
-  title: string;
+  name: string;
 
   @Field(() => String)
   description: string;
 
   @Field(() => String)
-  metaTagDescription: string;
+  createdAt: Date;
 
-  @Field(() => [String])
-  metaTagKeywords: string[];
-
-  @Field(() => [String])
-  hashtags: string[];
-
-  @Field(() => Date)
+  @Field(() => String)
   updatedAt: Date;
 
-  @Field(() => ServiceLocation)
-  location: ServiceLocation;
-
-  @Field(() => [ServicePresentation])
-  presentations: ServicePresentation[];
+  @Field(() => Int)
+  price: number;
 
   @Field(() => String)
   thumbnail: string;
 
-  @Field(() => [ServicePolicy])
-  policies: ServicePolicy[];
-
-  @Field(() => ServiceMetaInfo)
-  serviceMetaInfo: ServiceMetaInfo;
-
-  @Field(() => ServiceContact)
-  contact: ServiceContact;
-
   @Field(() => Float)
-  lowest_price: number;
+  rating: number;
 
-  @Field(() => Float)
-  highest_price: number;
+  @Field(() => Int)
+  reviews: number;
 
-  @Field(() => [ServicePaymentMethods])
-  payment_methods: ServicePaymentMethods[];
+  @Field(() => ServiceDiscount)
+  discount: ServiceDiscount;
 
-  @Field(() => ServiceTypeOfSeller)
-  type_of_seller: ServiceTypeOfSeller;
+  @Field(() => [ServiceCancelationPolicy])
+  cancelationPolicies: ServiceCancelationPolicy[];
 
-  @Field(() => [HotelRoom], { nullable: true })
-  rooms?: HotelRoom[];
+  // hotel room
+  @Field(() => [String], { nullable: true })
+  popularAmenities: string[];
 
-  @Field(() => [RestaurantMenu], { nullable: true })
-  menus?: RestaurantMenu[];
+  @Field(() => [String], { nullable: true })
+  includedServices: string[];
 
-  @Field(() => ID, { nullable: true })
-  setting_and_ambianceId?: string;
+  @Field(() => [ServiceExtra], { nullable: true })
+  extras: ServiceExtra[];
 
-  @Field(() => ID, { nullable: true })
-  establishmentTypeId?: string;
+  @Field(() => [String], { nullable: true })
+  includedAmenities: string[];
 
-  @Field(() => ID, { nullable: true })
-  cuisinesTypeId?: string;
+  @Field(() => Boolean, { nullable: true })
+  dailyPrice?: boolean;
+
+  @Field(() => ServiceDailyPrices, { nullable: true })
+  dailyPrices?: ServiceDailyPrices;
 
   @Field(() => Int, { nullable: true })
-  michelin_guide_stars?: number;
+  beds?: number;
 
-  @Field(() => [Doctor], { nullable: true })
-  doctors?: Doctor[];
+  @Field(() => Int, { nullable: true })
+  bathrooms?: number;
 
-  @Field(() => [Treatment], { nullable: true })
-  treatments?: Treatment[];
+  @Field(() => Int, { nullable: true })
+  num_of_rooms?: number;
 
-  @Field(() => [Vehicle], { nullable: true })
-  vehicles?: Vehicle[];
+  @Field(() => ServicePropertyMeasurements, { nullable: true })
+  measurements?: ServicePropertyMeasurements;
+
+  // vehicle
+
+  @Field(() => String, { nullable: true })
+  brand?: string;
+
+  @Field(() => String, { nullable: true })
+  model?: string;
+
+  @Field(() => VehicleProperties, { nullable: true })
+  properties?: VehicleProperties;
+
+  // beauty center
+
+  @Field(() => ID, { nullable: true })
+  treatmentCategoryId?: string;
+
+  @Field(() => [Int], { nullable: true })
+  duration?: number[];
+
+  // health center
+
+  @Field(() => ID, { nullable: true })
+  specialityId?: string;
+
+  @Field(() => [HealthCenterDoctorSpeakingLanguage])
+  speakingLanguages: HealthCenterDoctorSpeakingLanguage[];
+
+  @Field(() => HealthCenterDoctorAvailablityStatus, { nullable: true })
+  availablityStatus?: HealthCenterDoctorAvailablityStatus;
+
+  // restaurant
+
+  @Field(() => [String], { nullable: true })
+  ingredients?: string[];
+
+  @Field(() => RestaurantDishType, { nullable: true })
+  menuType?: RestaurantDishType;
 }

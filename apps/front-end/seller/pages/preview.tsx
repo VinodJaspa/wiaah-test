@@ -7,11 +7,16 @@ import React from "react";
 
 const preview: NextPage = () => {
   const [value, setValue] = React.useState<any>([]);
+  const [week, setWeek] = React.useState<Date>(new Date());
 
   return (
     <div className="w-screen h-screen flex justify-center items-center">
       <div className={"w-1/2 h-3/4 overflow-y-scroll"}>
         <ServiceAppontmentDurationTimeTableInput
+          onWeekChange={(v) => {
+            setWeek(v);
+          }}
+          week={week}
           workingDates={[
             [
               new Date(new Date().setHours(3)),

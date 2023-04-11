@@ -71,8 +71,8 @@ export class CreateShopInput {
   @Field((type) => LocationInput)
   location: LocationInput;
 
-  @Field((type) => [StoreType])
-  storeType: StoreType[];
+  @Field((type) => StoreType)
+  storeType: StoreType;
 
   @Field((type) => BusinessType)
   businessType: BusinessType;

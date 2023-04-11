@@ -9,7 +9,11 @@ export const ServiceAppontmentDurationTimeTableInput: React.FC<{
   workingDates: [Date, Date][];
   value: Date[];
   onChange: (v: Date[]) => any;
-}> = ({ onChange, value, workingDates }) => {
+  onWeekChange: (v: Date) => any;
+  week: Date;
+}> = ({ workingDates, onChange, onWeekChange, week }) => {
+  const [value, setValue] = React.useState<Date[]>([]);
+
   const { form, handleChange } = useForm<{
     sessionDurationMin: number;
   }>({ sessionDurationMin: 30 });
@@ -61,18 +65,43 @@ export const ServiceAppontmentDurationTimeTableInput: React.FC<{
         </HStack>
       </HStack>
       <div className="mx-auto">
-        <WeekSwitcher onNext={() => {}} onPrev={() => {}} />
+        <WeekSwitcher
+          date={week}
+          onNext={() => {
+            onWeekChange(new Date(new Date().setDate(week.getDate() + 6)));
+          }}
+          onPrev={() => {
+            onWeekChange(new Date(new Date().setDate(week.getDate() - 6)));
+          }}
+        />
       </div>
 
-      <HStack className="justify-between h-full overflow-y-scroll thinScroll">
-        {mapArray(weekDays, (v) => (
-          <ServiceAppointmentDurationTimeListInput
-            onChange={() => {}}
-            value={[]}
-            allowedPeriods={workingDates}
-            durationInMin={form.sessionDurationMin}
-          />
-        ))}
+      <HStack className="flex justify-between  thinScroll">
+        {mapArray([...Array(7)], (_, i) => {
+          const days = week.getDay();
+
+          const targetDate = week.getDate() - days;
+          const _week = new Date(
+            week.getFullYear(),
+            week.getMonth(),
+            targetDate + i
+          );
+
+          return (
+            <div className="flex flex-col gap-2">
+              {_week.toDateString()}
+              <ServiceAppointmentDurationTimeListInput
+                baseDate={_week}
+                onChange={(e) => {
+                  setValue(e);
+                }}
+                value={value}
+                allowedPeriods={workingDates}
+                durationInMin={form.sessionDurationMin}
+              />
+            </div>
+          );
+        })}
       </HStack>
     </div>
   );

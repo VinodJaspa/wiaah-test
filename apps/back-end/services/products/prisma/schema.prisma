@@ -122,7 +122,7 @@ model Shop {
   email              String
   thumbnail          String
   location           Location
-  storeType          StoreType[]
+  storeType          StoreType
   businessType       BusinessType
   targetGenders      TargetGenders[]
   vat                VatSettings?

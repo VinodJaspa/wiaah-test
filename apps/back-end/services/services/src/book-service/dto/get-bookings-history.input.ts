@@ -1,5 +1,5 @@
 import { Field, ID, InputType, registerEnumType } from '@nestjs/graphql';
-import { BookedServiceStatus } from '@prisma-client';
+import { BookedServiceStatus } from 'prismaClient';
 import { accountType, GqlPaginationInput } from 'nest-utils';
 
 registerEnumType(BookedServiceStatus, { name: 'BookedServiceStatus' });

@@ -1,4 +1,4 @@
-import { BookedService } from '@prisma-client';
+import { BookedService } from 'prismaClient';
 
 export class ServiceBookedEvent {
   constructor(

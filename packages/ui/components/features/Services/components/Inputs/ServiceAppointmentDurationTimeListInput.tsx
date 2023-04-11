@@ -45,25 +45,19 @@ interface ServiceAppointmentDurationTimeListInputProps {
   allowedPeriods: [Date, Date][];
   value: Date[];
   onChange: (selected: Date[]) => any;
+  baseDate: Date;
 }
 
 export const ServiceAppointmentDurationTimeListInput: React.FC<
   ServiceAppointmentDurationTimeListInputProps
-> = ({ durationInMin, value, allowedPeriods, onChange }) => {
+> = ({ durationInMin, value, allowedPeriods, onChange, baseDate }) => {
+  const base = isDateInstance(baseDate) ? new Date(baseDate) : new Date();
   const AllDates = getDividedDatesByMinInDateRange(
+    new Date(base.getFullYear(), base.getMonth(), base.getDate(), 0, 0, 0, 0),
     new Date(
-      new Date().getFullYear(),
-      new Date().getMonth(),
-      new Date().getDate(),
-      0,
-      0,
-      0,
-      0
-    ),
-    new Date(
-      new Date().getFullYear(),
-      new Date().getMonth(),
-      new Date().getDate() + 1,
+      base.getFullYear(),
+      base.getMonth(),
+      base.getDate() + 1,
       0,
       0,
       0,

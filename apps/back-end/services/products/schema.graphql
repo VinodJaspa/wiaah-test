@@ -182,7 +182,7 @@ type Shop {
   email: String!
   thumbnail: String!
   location: Location!
-  storeType: [StoreType!]!
+  storeType: StoreType!
   businessType: BusinessType!
   targetGenders: [TargetGenders!]!
   type_of_seller: TypeOfSeller!
@@ -245,7 +245,7 @@ enum ServiceType {
 }
 
 type Service {
-  ownerId: ID!
+  sellerId: ID!
   shop: Shop!
 }
 
@@ -292,7 +292,7 @@ type ShippingTypeRule {
 
 type Query {
   getNearShops(GetNearShopsInput: GetNearShopsInput!): [Shop!]!
-  getShopById(id: String!): Shop!
+  getUserShop(userId: String!): Shop!
   getFilteredShops(filteredShopsArgs: FilteredShopsInput!): [Shop!]!
   getProductById(id: String!, isClick: Boolean!): Product!
   getMyProducts(filterInput: GetFilteredProductsInput!): [Product!]!
@@ -429,7 +429,7 @@ input CreateShopInput {
   email: String!
   thumbnail: String!
   location: LocationInput!
-  storeType: [StoreType!]!
+  storeType: StoreType!
   businessType: BusinessType!
   targetGenders: [TargetGenders!]!
   vat: VatSettingsPartialInput
@@ -471,7 +471,7 @@ input UpdateShopInput {
   email: String
   thumbnail: String
   location: LocationInput
-  storeType: [StoreType!]
+  storeType: StoreType
   businessType: BusinessType
   targetGenders: [TargetGenders!]
   vat: VatSettingsPartialInput

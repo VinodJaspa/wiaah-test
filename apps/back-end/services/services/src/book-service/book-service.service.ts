@@ -17,7 +17,7 @@ import {
 } from './dto';
 import { BookedService } from './entities/book-service.entity';
 import { QueryBus } from '@nestjs/cqrs';
-import { Prisma } from '@prisma-client';
+import { Prisma } from 'prismaClient';
 import {
   GetServiceMetaDataMessage,
   GetServiceMetaDataMessageReply,

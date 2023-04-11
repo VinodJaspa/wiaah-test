@@ -2,6 +2,7 @@ import {
   Args,
   Int,
   Mutation,
+  ObjectType,
   Parent,
   Query,
   ResolveField,
@@ -11,15 +12,23 @@ import {
 import { Service } from './entities/service.entity';
 import { ServicePresentationType, ServiceType } from 'prismaClient';
 import { CreateServiceInput } from './dto/create-service.input';
-import { BadRequestException, Inject, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import {
   accountType,
   AddToDate,
   AuthorizationDecodedUser,
+  CreateGqlCursorPaginatedResponse,
   GetDateOfDayInWeekOfMonth,
   GetLang,
+  getTranslatedResource,
   GqlAuthorizationGuard,
   GqlCurrentUser,
+  GqlCursorPaginationInput,
   KAFKA_MESSAGES,
   KafkaMessageHandler,
   SERVICES,
@@ -28,7 +37,6 @@ import {
 import { PrismaService } from 'prismaService';
 import { FileTypeEnum, UploadService } from '@wiaah/upload';
 import { WorkingSchedule } from '@working-schedule/entities';
-// import { RestaurantEstablishmentType } from '@restaurant';
 import { Account } from '@entities';
 import {
   BuyerToProductActionsType,
@@ -37,6 +45,8 @@ import {
 } from 'nest-dto';
 import { ClientKafka } from '@nestjs/microservices';
 import { HotelAvailablity } from './entities/service-availablity.entity';
+import { Service as ServicePrisma } from 'prismaClient';
+import { BeautyCenterTreatmentCategory } from '@beauty-center';
 
 enum weekdaysNum {
   su = 0,
@@ -48,6 +58,11 @@ enum weekdaysNum {
   sa = 6,
 }
 
+@ObjectType()
+class ServicesCursorPaginationResponse extends CreateGqlCursorPaginatedResponse(
+  Service,
+) {}
+
 @Resolver(() => Service)
 export class ServiceResolver {
   constructor(
@@ -56,6 +71,39 @@ export class ServiceResolver {
     @Inject(SERVICES.SERVICES_SERIVCE.token)
     private readonly eventClient: ClientKafka,
   ) {}
+
+  @Query(() => ServicesCursorPaginationResponse)
+  @UseGuards(
+    new GqlAuthorizationGuard([
+      accountType.ADMIN,
+      accountType.SELLER,
+      accountType.MOD,
+    ]),
+  )
+  async getUserServices(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('userId') userId: string,
+    @Args('pagination') pagination: GqlCursorPaginationInput,
+    @GetLang() userLang: UserPreferedLang,
+  ): Promise<ServicesCursorPaginationResponse> {
+    this.validateUserPremission(user, userId);
+
+    const res = await this.prisma.service.findMany({
+      where: {
+        sellerId: userId,
+      },
+      cursor: {
+        id: pagination.cursor,
+      },
+      take: pagination.take + 1,
+    });
+
+    return {
+      cursor: res[res.length - 1].id,
+      data: res.map((v) => this.formatService(v, userLang)),
+      hasMore: res.length > pagination.take,
+    };
+  }
 
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
@@ -368,56 +416,26 @@ export class ServiceResolver {
     return service as any; // TODO: format service data to user prefered lang
   }
 
-  @ResolveReference()
-  reslove(ref: { id: string }) {
-    return this.prisma.service.findUnique({
+  @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([accountType.SELLER, accountType.ADMIN]))
+  async deleteService(
+    @Args('id') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const service = await this.prisma.service.findUnique({
       where: {
-        id: ref.id,
+        id,
       },
     });
-  }
+    await this.validateUserPremission(user, service.sellerId);
 
-  @ResolveField(() => WorkingSchedule, { nullable: true })
-  workingHours(@Parent() service: Service) {
-    return this.prisma.serviceWorkingSchedule.findUnique({
+    await this.prisma.service.delete({
       where: {
-        id: service.id,
-      },
-    });
-  }
-
-  @ResolveField(() => Account)
-  owner(@Parent() service: Service) {
-    return {
-      __typename: 'Account',
-      id: service.ownerId,
-    };
-  }
-
-  // @ResolveField(() => RestaurantEstablishmentType)
-  // establishmentType(@Parent() service: Service) {
-  //   if (service.establishmentTypeId) {
-  //     return this.prisma.restaurantEstablishmentType.findUnique({
-  //       where: {
-  //         id: service.establishmentTypeId,
-  //       },
-  //     });
-  //   } else return null;
-  // }
-
-  @ResolveField(() => Int, { nullable: true })
-  async dayClicks(@Parent() service: Service) {
-    if (service.dayClicksId) return null;
-
-    const clicks = await this.prisma.serviceDayClicks.findUnique({
-      where: {
-        id: service.dayClicksId,
+        id,
       },
     });
 
-    if (typeof clicks?.clicks !== 'number') return null;
-
-    return clicks.clicks;
+    return true;
   }
 
   @Query(() => HotelAvailablity)
@@ -509,4 +527,125 @@ export class ServiceResolver {
       bookedDates: weekOfDates.concat(bookings),
     };
   }
+
+  validateUserPremission(
+    user: AuthorizationDecodedUser,
+    requestedUserId: string,
+  ) {
+    if (user.id !== requestedUserId && user.accountType === accountType.ADMIN)
+      throw new UnauthorizedException('not allowed');
+  }
+
+  formatService(service: ServicePrisma, langId: string): Service {
+    return {
+      ...service,
+      name: getTranslatedResource({ langId, resource: service.name }),
+      description: getTranslatedResource({
+        langId,
+        resource: service.description,
+      }),
+      popularAmenities: getTranslatedResource({
+        langId,
+        resource: service.popularAmenities,
+      }),
+      includedServices: getTranslatedResource({
+        langId,
+        resource: service.includedServices,
+      }),
+      extras: service.extras.map((v) => ({
+        ...v,
+        name: getTranslatedResource({ langId, resource: v.name }),
+      })),
+      includedAmenities: getTranslatedResource({
+        langId,
+        resource: service.includedAmenities,
+      }),
+      ingredients: getTranslatedResource({
+        langId,
+        resource: service.ingredients,
+      }),
+    };
+  }
+
+  @ResolveReference()
+  reslove(ref: { id: string }) {
+    return this.prisma.service.findUnique({
+      where: {
+        id: ref.id,
+      },
+    });
+  }
+
+  @ResolveField(() => WorkingSchedule, { nullable: true })
+  workingHours(@Parent() service: Service) {
+    return this.prisma.serviceWorkingSchedule.findUnique({
+      where: {
+        id: service.id,
+      },
+    });
+  }
+
+  @ResolveField(() => Account)
+  owner(@Parent() service: Service) {
+    return {
+      __typename: 'Account',
+      id: service.sellerId,
+    };
+  }
+
+  @ResolveField(() => String, { nullable: true })
+  async speciality(
+    @Parent() service: Service,
+    @GetLang() langId: UserPreferedLang,
+  ): Promise<string> {
+    const res = await this.prisma.healthCenterSpecialty.findUnique({
+      where: {
+        id: service.specialityId,
+      },
+    });
+
+    return getTranslatedResource({ langId, resource: res.name });
+  }
+
+  @ResolveField(() => String, { nullable: true })
+  async treatmentCategory(
+    @Parent() service: Service,
+    @GetLang() langId: UserPreferedLang,
+  ) {
+    const res = await this.prisma.beautyCenterTreatmentCategory.findUnique({
+      where: {
+        id: service.treatmentCategoryId,
+      },
+    });
+
+    if (!res) return null;
+
+    return getTranslatedResource({ langId, resource: res.title });
+  }
+
+  // @ResolveField(() => RestaurantEstablishmentType)
+  // establishmentType(@Parent() service: Service) {
+  //   if (service.establishmentTypeId) {
+  //     return this.prisma.restaurantEstablishmentType.findUnique({
+  //       where: {
+  //         id: service.establishmentTypeId,
+  //       },
+  //     });
+  //   } else return null;
+  // }
+
+  // @ResolveField(() => Int, { nullable: true })
+  // async dayClicks(@Parent() service: Service) {
+  //   if (service.dayClicksId) return null;
+
+  //   const clicks = await this.prisma.serviceDayClicks.findUnique({
+  //     where: {
+  //       id: service.dayClicksId,
+  //     },
+  //   });
+
+  //   if (typeof clicks?.clicks !== 'number') return null;
+
+  //   return clicks.clicks;
+  // }
 }

@@ -1,5 +1,5 @@
 import { ObjectType, Field, Int, ID, Directive } from '@nestjs/graphql';
-import { BookedServiceStatus } from '@prisma-client';
+import { BookedServiceStatus } from 'prismaClient';
 import {
   GqlCursorPaginationInput,
   GqlCursorPaginationResponse,

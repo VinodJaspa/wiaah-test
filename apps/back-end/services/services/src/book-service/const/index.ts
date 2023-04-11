@@ -1,4 +1,4 @@
-import { BookedServiceStatus } from '@prisma-client';
+import { BookedServiceStatus } from 'prismaClient';
 
 export const bookedServiceStatus: Record<
   BookedServiceStatus,
@@ -9,4 +9,5 @@ export const bookedServiceStatus: Record<
   continuing: 'continuing',
   pending: 'pending',
   restitute: 'restitute',
+  paid: 'paid',
 };

@@ -7,7 +7,13 @@ import {
   ResolveField,
   Parent,
 } from '@nestjs/graphql';
-import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
+import {
+  Inject,
+  NotFoundException,
+  OnModuleInit,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import {
   GqlAuthorizationGuard,
   GqlCurrentUser,
@@ -16,6 +22,8 @@ import {
   KAFKA_MESSAGES,
   GetLang,
   UserPreferedLang,
+  accountType,
+  AccountType,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 
@@ -45,8 +53,14 @@ export class ShopResolver implements OnModuleInit {
   }
 
   @Query(() => Shop)
-  getShopById(@Args('id') id: string, @GetLang() lang: UserPreferedLang) {
-    return this.shopService.getShopById(id, lang);
+  async getUserShop(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('userId') id: string,
+    @GetLang() lang: UserPreferedLang,
+  ) {
+    await this.validateShopPremissions(user, id);
+
+    return this.shopService.getShopByOwnerId(id, lang);
   }
 
   @Query(() => [Shop])
@@ -78,6 +92,17 @@ export class ShopResolver implements OnModuleInit {
     @GetLang() lang: UserPreferedLang,
   ) {
     return this.shopService.updateShopData(input, user.id, lang);
+  }
+
+  async validateShopPremissions(
+    user: AuthorizationDecodedUser,
+    userId: string,
+  ) {
+    const shop = await this.shopService.getShopByOwnerId(userId, 'en');
+
+    if (shop.status === 'active') throw new NotFoundException('shop not found');
+
+    return shop;
   }
 
   @ResolveReference()
