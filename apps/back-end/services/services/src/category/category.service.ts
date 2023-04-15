@@ -57,47 +57,13 @@ export class CategoryService {
 
     if (filter?.name)
       filters.push({
-        OR: [
-          {
-            name: {
-              some: {
-                value: {
-                  contains: filter.name,
-                },
-              },
+        name: {
+          some: {
+            value: {
+              contains: filter.name,
             },
           },
-          {
-            filters: {
-              some: {
-                filterGroupName: {
-                  some: {
-                    value: {
-                      contains: filter.name,
-                    },
-                  },
-                },
-              },
-            },
-          },
-          {
-            filters: {
-              some: {
-                filterValues: {
-                  some: {
-                    name: {
-                      some: {
-                        value: {
-                          contains: filter.name,
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
-        ],
+        },
       });
 
     if (filter?.sortOrder)

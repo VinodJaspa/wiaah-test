@@ -11,7 +11,7 @@ export const WeekSwitcher: React.FC<{
     <HStack className="">
       <BiChevronLeft
         onClick={() => onPrev && onPrev()}
-        className="text-2xl text-primary"
+        className="text-3xl cursor-pointer text-primary"
       />
       <p className="text-lg font-bold">
         {new Date(date || new Date()).toLocaleDateString("en-us", {
@@ -30,7 +30,7 @@ export const WeekSwitcher: React.FC<{
       </p>
       <BiChevronRight
         onClick={() => onNext && onNext()}
-        className="text-2xl text-primary"
+        className="text-3xl cursor-pointer text-primary"
       />
     </HStack>
   );

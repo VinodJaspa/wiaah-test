@@ -21,6 +21,7 @@ import {
   HStack,
   useDeleteServiceMutation,
   useUserData,
+  Th,
 } from "@UI";
 import { ServiceType } from "@features/API";
 export interface MyServicesListProps {}
@@ -37,8 +38,8 @@ export const UserServicesList: React.FC<{ accountId: string }> = () => {
 
   const { data: res } = useGetMyServicesQuery(props, {
     onSuccess(data) {
-      getHasMore(data.hasMore || false);
-      getNextCursor(data.cursor);
+      getHasMore(data?.hasMore || false);
+      getNextCursor(data?.cursor);
     },
   });
 
@@ -51,12 +52,17 @@ export const UserServicesList: React.FC<{ accountId: string }> = () => {
 
   return (
     <div className="flex flex-col gap-8 w-full">
+      <Button onClick={() => AddNewService()} className="self-end">
+        {t("Add new service")}
+      </Button>
       <ScrollCursorPaginationWrapper controls={controls}>
-        <Table>
+        <Table className="w-full">
           <THead>
-            <Td></Td>
-            <Td>{t("Image")}</Td>
-            <Td>
+            <Th>
+              <Checkbox></Checkbox>
+            </Th>
+            <Th>{t("Image")}</Th>
+            <Th>
               {(() => {
                 switch (data?.type) {
                   case ServiceType.Hotel:
@@ -80,32 +86,32 @@ export const UserServicesList: React.FC<{ accountId: string }> = () => {
                     return t("Service");
                 }
               })()}
-            </Td>
-            <Td>{t("Price")}</Td>
+            </Th>
+            <Th>{t("Price")}</Th>
             {showOn([ServiceType.Restaurant]) ? (
               <>
-                <Td>{t("Menu type")}</Td>
+                <Th>{t("Menu type")}</Th>
               </>
             ) : null}
             {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
               <>
-                <Td>{t("Bedroom")}</Td>
-                <Td>{t("Beds")}</Td>
-                <Td>{t("Bathroom")}</Td>
+                <Th>{t("Bedroom")}</Th>
+                <Th>{t("Beds")}</Th>
+                <Th>{t("Bathroom")}</Th>
               </>
             ) : null}
             {showOn([ServiceType.HealthCenter]) ? (
               <>
-                <Td>{t("Speciality")}</Td>
+                <Th>{t("Speciality")}</Th>
               </>
             ) : null}
             {showOn([ServiceType.BeautyCenter]) ? (
               <>
-                <Td>{t("Category")}</Td>
+                <Th>{t("Category")}</Th>
               </>
             ) : null}
-            <Td>{t("Date")}</Td>
-            <Td>{t("action")}</Td>
+            <Th>{t("Date")}</Th>
+            <Th>{t("action")}</Th>
           </THead>
         </Table>
         {res
@@ -165,9 +171,6 @@ export const UserServicesList: React.FC<{ accountId: string }> = () => {
             })
           : null}
       </ScrollCursorPaginationWrapper>
-      <Button onClick={() => AddNewService()} className="self-end">
-        {t("Add new service")}
-      </Button>
 
       <Modal isOpen={!!deleteId} onClose={() => setDeleteId(undefined)}>
         <ModalContent>

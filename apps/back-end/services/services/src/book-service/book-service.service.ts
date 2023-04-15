@@ -1,14 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import {
-  AddToDate,
-  ExtractPagination,
-  GetDateBoundaries,
-  GqlPaginationInput,
-  KAFKA_MESSAGES,
-  KafkaMessageHandler,
-  SERVICES,
-  mockedUser,
-} from 'nest-utils';
+import { AddToDate, ExtractPagination, SERVICES, mockedUser } from 'nest-utils';
 import { PrismaService } from 'prismaService';
 import {
   BookServiceInput,
@@ -17,18 +8,13 @@ import {
 } from './dto';
 import { BookedService } from './entities/book-service.entity';
 import { QueryBus } from '@nestjs/cqrs';
-import { Prisma } from 'prismaClient';
-import {
-  GetServiceMetaDataMessage,
-  GetServiceMetaDataMessageReply,
-} from 'nest-dto';
+import { Prisma, Service } from 'prismaClient';
 import { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
 export class BookServiceService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly querybus: QueryBus,
     @Inject(SERVICES.SHOPPING_CART_SERVICE.token)
     private readonly eventsClient: ClientKafka,
   ) {}
@@ -60,11 +46,10 @@ export class BookServiceService {
             ownerId: buyerId,
           },
           {
-            status: input.status
-              ? input.status
-              : {
-                  notIn: ['pending'],
-                },
+            status: input.status,
+          },
+          {
+            purchased: true,
           },
         ],
       },
@@ -89,11 +74,10 @@ export class BookServiceService {
             providerId: sellerId,
           },
           {
-            status: input.status
-              ? input.status
-              : {
-                  notIn: ['pending'],
-                },
+            status: input.status,
+          },
+          {
+            purchased: true,
           },
         ],
       },
@@ -106,8 +90,13 @@ export class BookServiceService {
   }
 
   async getServiceProviderId(serviceId: string): Promise<string> {
-    //TODO: Get service owner id using kafka message
-    return mockedUser.id;
+    const seller = await this.prisma.service.findUnique({
+      where: {
+        id: serviceId,
+      },
+    });
+
+    return seller.sellerId;
   }
 
   async getMyBooknigs(
@@ -147,29 +136,24 @@ export class BookServiceService {
     input: BookServiceInput,
     userId: string,
   ): Promise<BookedService> {
-    const {
-      results: { data, error, success },
-    } = await KafkaMessageHandler<
-      string,
-      GetServiceMetaDataMessage,
-      GetServiceMetaDataMessageReply
-    >(
-      this.eventsClient,
-      KAFKA_MESSAGES.SERVICES_MESSAGES.getServiceMetaData,
-      new GetServiceMetaDataMessage({
-        serviceId: input.serviceId,
-        userId: userId,
-      }),
-    );
-    if (!success) throw error;
-    const { name, price, providerId, thumbnail, type } = data;
+    const service = await this.CanBookService(input.serviceId, userId);
 
     const res = await this.prisma.bookedService.create({
       data: {
         ...input,
-        type,
+        type: service.type,
         ownerId: userId,
-        providerId,
+        providerId: service.sellerId,
+      },
+    });
+
+    return res;
+  }
+
+  async CanBookService(serviceId: string, userId: string): Promise<Service> {
+    const res = await this.prisma.service.findUnique({
+      where: {
+        id: serviceId,
       },
     });
 

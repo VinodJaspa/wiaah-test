@@ -1,22 +1,38 @@
 import React from "react";
 import { WeekSwitcher } from "../DataDisplay";
-import { mapArray, useForm, weekDays } from "@UI/../utils/src";
+import { mapArray, useForm } from "@UI/../utils/src";
 import { ServiceAppointmentDurationTimeListInput } from "./ServiceAppointmentDurationTimeListInput";
-import { Button, HStack, Input } from "@partials";
+import { Badge, Button, ExclamationCircleIcon, HStack, Input } from "@partials";
 import { useTranslation } from "react-i18next";
+import { HtmlDivProps } from "@UI/../types/src";
+
+type value = { sessionDuration?: number; selected: Date[] };
 
 export const ServiceAppontmentDurationTimeTableInput: React.FC<{
   workingDates: [Date, Date][];
-  value: Date[];
-  onChange: (v: Date[]) => any;
+  value: value;
+  onChange: (v: value) => any;
   onWeekChange: (v: Date) => any;
   week: Date;
-}> = ({ workingDates, onChange, onWeekChange, week }) => {
-  const [value, setValue] = React.useState<Date[]>([]);
+  selectionContainerProps?: HtmlDivProps;
+}> = ({
+  workingDates,
+  onChange,
+  value,
+  onWeekChange,
+  week,
+  selectionContainerProps,
+}) => {
+  const [_value, setValue] = React.useState<Record<number, Date[]>>({});
 
   const { form, handleChange } = useForm<{
     sessionDurationMin: number;
-  }>({ sessionDurationMin: 30 });
+  }>(
+    { sessionDurationMin: value.sessionDuration || 30 }
+    // value.sessionDuration
+    //   ? { sessionDurationMin: value.sessionDuration }
+    //   : undefined
+  );
   const { t } = useTranslation();
 
   const defaultSessionDuration: {
@@ -33,8 +49,31 @@ export const ServiceAppontmentDurationTimeTableInput: React.FC<{
     if (!form.sessionDurationMin) handleChange("sessionDurationMin", 30);
   }, [form.sessionDurationMin]);
 
+  const handleValueChange = (idx: number, dates: Date[]) => {
+    if (onChange) {
+      const newObject = { ..._value };
+      delete newObject[idx];
+      onChange({
+        selected: [
+          ...Object.values(newObject).reduce(
+            (acc, curr) => [...acc, ...curr],
+            []
+          ),
+        ],
+        sessionDuration: form.sessionDurationMin,
+      });
+    }
+    setValue((v) => ({ ...v, [idx]: dates }));
+  };
+
   return (
-    <div className="flex flex-col h-full gap-4 p-4 rounded-lg shadow">
+    <div className="flex flex-col h-full gap-4 select-none p-4 rounded-lg shadow">
+      <HStack>
+        <ExclamationCircleIcon />
+        <p className="font-bold">
+          {t("Select the duration of your service single session in minutes")}
+        </p>
+      </HStack>
       <HStack className="flex-wrap">
         {mapArray(defaultSessionDuration, (v, i) => (
           <Button
@@ -75,8 +114,16 @@ export const ServiceAppontmentDurationTimeTableInput: React.FC<{
           }}
         />
       </div>
+      <HStack>
+        <ExclamationCircleIcon />
+        <p className="font-bold">
+          {t(
+            "Select the sessions you would like to be available to book or unSelect sessions you would not."
+          )}
+        </p>
+      </HStack>
 
-      <HStack className="flex justify-between  thinScroll">
+      <HStack className="justify-between">
         {mapArray([...Array(7)], (_, i) => {
           const days = week.getDay();
 
@@ -89,13 +136,46 @@ export const ServiceAppontmentDurationTimeTableInput: React.FC<{
 
           return (
             <div className="flex flex-col gap-2">
-              {_week.toDateString()}
+              <div className="flex flex-col py-2 justify-center items-center gap-1">
+                <p className="font-bold">
+                  {_week.toLocaleDateString("en-us", { weekday: "long" })}
+                </p>
+                <p className="text-xs">
+                  {_week.toLocaleDateString("en-us", {
+                    month: "short",
+                    day: "numeric",
+                  })}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </HStack>
+
+      <HStack
+        {...selectionContainerProps}
+        className={`${
+          selectionContainerProps?.className || ""
+        } flex justify-between h-full overflow-y-scroll thinScroll`}
+      >
+        {mapArray([...Array(7)], (_, i) => {
+          const days = week.getDay();
+
+          const targetDate = week.getDate() - days;
+          const _week = new Date(
+            week.getFullYear(),
+            week.getMonth(),
+            targetDate + i
+          );
+
+          return (
+            <div className="flex flex-col gap-2">
               <ServiceAppointmentDurationTimeListInput
                 baseDate={_week}
                 onChange={(e) => {
-                  setValue(e);
+                  handleValueChange(i, e);
                 }}
-                value={value}
+                value={value.selected}
                 allowedPeriods={workingDates}
                 durationInMin={form.sessionDurationMin}
               />

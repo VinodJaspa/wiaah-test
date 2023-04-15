@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MongoClient, ServerApiVersion } from 'mongodb';
+import { graphqlUploadExpress } from 'graphql-upload';
 require('dotenv').config();
 
 const uri = process.env.ACCOUNTS_DB_URI || '';
@@ -14,6 +15,7 @@ export const client = new MongoClient(uri, {
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(graphqlUploadExpress());
   app.enableCors({
     origin: [
       'http://localhost:3000',

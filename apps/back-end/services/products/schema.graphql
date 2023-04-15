@@ -167,6 +167,7 @@ type Location {
   country: String!
   city: String!
   state: String!
+  postalCode: String!
 }
 
 type Shop {
@@ -185,7 +186,6 @@ type Shop {
   storeType: StoreType!
   businessType: BusinessType!
   targetGenders: [TargetGenders!]!
-  type_of_seller: TypeOfSeller!
   status: ShopStatus!
   payment_methods: [ShopPaymentMethod!]!
   type: ServiceType
@@ -193,7 +193,7 @@ type Shop {
   images: [String!]!
   reviews: Int!
   rating: Float!
-  service: Service!
+  workingSchedule: ShopWorkingSchedule!
 }
 
 """
@@ -214,11 +214,6 @@ enum BusinessType {
 enum TargetGenders {
   male
   female
-}
-
-enum TypeOfSeller {
-  individual
-  professional
 }
 
 enum ShopStatus {
@@ -244,9 +239,30 @@ enum ServiceType {
   vehicle
 }
 
-type Service {
+type ShopDayWorkingHours {
+  periods: [String!]!
+}
+
+type ShopSpecialDayWorkingHours {
+  date: String!
+  workingHours: ShopDayWorkingHours!
+}
+
+type ShopWeekdaysWorkingHours {
+  mo: ShopDayWorkingHours
+  tu: ShopDayWorkingHours
+  we: ShopDayWorkingHours
+  th: ShopDayWorkingHours
+  fr: ShopDayWorkingHours
+  sa: ShopDayWorkingHours
+  su: ShopDayWorkingHours
+}
+
+type ShopWorkingSchedule {
+  id: ID!
   sellerId: ID!
-  shop: Shop!
+  weekdays: ShopWeekdaysWorkingHours!
+  specialDays: [ShopSpecialDayWorkingHours!]!
 }
 
 type ShippingCountry {
@@ -291,6 +307,8 @@ type ShippingTypeRule {
 }
 
 type Query {
+  adminGetAccountWorkingSchedule(accountId: String!): ShopWorkingSchedule!
+  getMyWorkingSchedule: ShopWorkingSchedule!
   getNearShops(GetNearShopsInput: GetNearShopsInput!): [Shop!]!
   getUserShop(userId: String!): Shop!
   getFilteredShops(filteredShopsArgs: FilteredShopsInput!): [Shop!]!
@@ -396,6 +414,8 @@ input AdminGetShippingGeoZoneRulesInput {
 }
 
 type Mutation {
+  adminUpdateAccountWorkingSchedule(args: UpdateWorkingScheduleInput!, accountId: String!): ShopWorkingSchedule!
+  updateMyWorkingSchedule(args: UpdateWorkingScheduleInput!): ShopWorkingSchedule!
   createShop(createShopInput: CreateShopInput!): Shop!
   removeAllShops: Boolean!
   updateMyShop(updateMyShopInput: UpdateShopInput!): Shop!
@@ -421,10 +441,34 @@ type Mutation {
   deleteShippingRule(id: ID!): ShippingRule!
 }
 
+input UpdateWorkingScheduleInput {
+  weekdays: UpdateWeekdaysWorkingHoursInput
+  specialDays: [SpecialDayWorkingHoursInput!]
+}
+
+input UpdateWeekdaysWorkingHoursInput {
+  mo: ServiceDayWorkingHoursInput
+  tu: ServiceDayWorkingHoursInput
+  we: ServiceDayWorkingHoursInput
+  th: ServiceDayWorkingHoursInput
+  fr: ServiceDayWorkingHoursInput
+  sa: ServiceDayWorkingHoursInput
+  su: ServiceDayWorkingHoursInput
+}
+
+input ServiceDayWorkingHoursInput {
+  periods: [String!]!
+}
+
+input SpecialDayWorkingHoursInput {
+  date: String!
+  workingHours: ServiceDayWorkingHoursInput!
+}
+
 input CreateShopInput {
   name: [TranslationTextInput!]!
-  banner: String!
   description: [TranslationTextInput!]!
+  banner: String!
   phone: String!
   email: String!
   thumbnail: String!
@@ -433,14 +477,11 @@ input CreateShopInput {
   businessType: BusinessType!
   targetGenders: [TargetGenders!]!
   vat: VatSettingsPartialInput
-  type_of_seller: TypeOfSeller!
   status: ShopStatus!
   payment_methods: [ShopPaymentMethod!]!
   type: ServiceType
   vidoes: [String!]!
   images: [String!]!
-  metaTagDescription: String!
-  metaTagKeywords: [String!]!
   hashtags: [String!]!
 }
 
@@ -456,6 +497,7 @@ input LocationInput {
   country: String!
   city: String!
   state: String!
+  postalCode: String!
 }
 
 input VatSettingsPartialInput {
@@ -465,8 +507,8 @@ input VatSettingsPartialInput {
 
 input UpdateShopInput {
   name: [TranslationTextInput!]
-  banner: String
   description: [TranslationTextInput!]
+  banner: String
   phone: String
   email: String
   thumbnail: String
@@ -475,14 +517,11 @@ input UpdateShopInput {
   businessType: BusinessType
   targetGenders: [TargetGenders!]
   vat: VatSettingsPartialInput
-  type_of_seller: TypeOfSeller
   status: ShopStatus
   payment_methods: [ShopPaymentMethod!]
   type: ServiceType
   vidoes: [String!]
   images: [String!]
-  metaTagDescription: String
-  metaTagKeywords: [String!]
   hashtags: [String!]
 }
 

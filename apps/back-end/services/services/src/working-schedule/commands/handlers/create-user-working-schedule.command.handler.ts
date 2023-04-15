@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CreateUserWorkingScheduleCommand } from '@working-schedule/commands/impl';
-import { WorkingSchedule } from '@working-schedule/entities';
+import { ServiceWorkingSchedule } from '@working-schedule/entities';
 import { WorkingScheduleRepository } from '@working-schedule/repository';
 
 @CommandHandler(CreateUserWorkingScheduleCommand)
@@ -11,7 +11,7 @@ export class CreateUserWorkingScheduleCommandHandler
 
   async execute({
     id,
-  }: CreateUserWorkingScheduleCommand): Promise<WorkingSchedule> {
+  }: CreateUserWorkingScheduleCommand): Promise<ServiceWorkingSchedule> {
     const res = await this.repo.createDefault(id);
     return res;
   }

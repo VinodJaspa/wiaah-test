@@ -50,7 +50,7 @@ interface ServiceAppointmentDurationTimeListInputProps {
 
 export const ServiceAppointmentDurationTimeListInput: React.FC<
   ServiceAppointmentDurationTimeListInputProps
-> = ({ durationInMin, value, allowedPeriods, onChange, baseDate }) => {
+> = ({ durationInMin, value = [], allowedPeriods, onChange, baseDate }) => {
   const base = isDateInstance(baseDate) ? new Date(baseDate) : new Date();
   const AllDates = getDividedDatesByMinInDateRange(
     new Date(base.getFullYear(), base.getMonth(), base.getDate(), 0, 0, 0, 0),
@@ -65,6 +65,27 @@ export const ServiceAppointmentDurationTimeListInput: React.FC<
     ),
     durationInMin
   );
+
+  React.useEffect(() => {
+    const allDates = AllDates.filter((v) => {
+      const isDisabled = !!allowedPeriods.some((e) => {
+        if (!isDateInstance(e[0]) || !isDateInstance(e[1])) return;
+
+        const first = !isDateWithin(v, e[0], e[1]);
+        const second = !isDateWithin(
+          new Date(new Date(v).setMinutes(v.getMinutes() + durationInMin)),
+          e[0],
+          e[1]
+        );
+
+        return first || second;
+      });
+
+      return !isDisabled;
+    });
+
+    onChange(allDates);
+  }, []);
 
   return (
     <div className="flex flex-col gap-2">
@@ -100,7 +121,7 @@ export const ServiceAppointmentDurationTimeListInput: React.FC<
               isDisabled
                 ? "text-gray-400 line-through bg-gray-100 cursor-not-allowed"
                 : "cursor-pointer"
-            } rounded text-center select-none`}
+            } rounded text-center select-none px-2`}
             key={i}
           >
             {v.toLocaleTimeString("en-us", {

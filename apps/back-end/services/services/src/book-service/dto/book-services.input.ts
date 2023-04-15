@@ -17,9 +17,6 @@ class required {
 
   @Field(() => Int)
   guests: number;
-
-  @Field(() => ID)
-  cancelationPolicyId: string;
 }
 
 @InputType()

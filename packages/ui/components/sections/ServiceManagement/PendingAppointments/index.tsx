@@ -37,8 +37,6 @@ export const PendingAppointmentsSection: React.FC<
     q: "",
   });
 
-  console.log({ data }, "services");
-
   return (
     <div className="flex flex-col gap-4">
       <SectionHeader

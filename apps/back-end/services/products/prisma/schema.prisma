@@ -110,38 +110,35 @@ enum ProductCondition {
 }
 
 model Shop {
-  id                 String               @id @default(auto()) @map("_id") @db.ObjectId
-  ownerId            String               @unique
-  name               TranslationText[]
-  banner             String
-  description        TranslationText[]
-  verified           Boolean
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt()
-  phone              String
-  email              String
-  thumbnail          String
-  location           Location
-  storeType          StoreType
-  businessType       BusinessType
-  targetGenders      TargetGenders[]
-  vat                VatSettings?
-  type_of_seller     TypeOfSeller
-  status             ShopStatus           @default(inActive)
-  payment_methods    ShopPaymentMethods[]
-  type               ServiceType?
-  videos             String[]
-  images             String[]
-  reviews            Int                  @default(0)
-  rating             Float                @default(0)
-  metaTagDescription String
-  metaTagKeywords    String[]
-  hashtags           String[]
+  id              String               @id @default(auto()) @map("_id") @db.ObjectId
+  ownerId         String               @unique
+  name            TranslationText[]
+  description     TranslationText[]
+  banner          String
+  verified        Boolean
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt()
+  phone           String
+  email           String
+  thumbnail       String
+  location        Location
+  storeType       StoreType
+  businessType    BusinessType
+  targetGenders   TargetGenders[]
+  vat             VatSettings?
+  status          ShopStatus           @default(inActive)
+  payment_methods ShopPaymentMethods[]
+  type            ServiceType?
+  videos          String[]
+  images          String[]
+  reviews         Int                  @default(0)
+  rating          Float                @default(0)
+  hashtags        String[]
 }
 
 model ServiceWorkingSchedule {
   id          String                          @id @map("_id") @db.ObjectId
-  shopId      String                          @unique @db.ObjectId
+  sellerId    String                          @unique @db.ObjectId
   weekdays    ServiceWeekDaysWorkingHours
   specialDays ServiceSpecialWorkingHoursDay[]
 }
@@ -244,13 +241,14 @@ enum PresentationType {
 }
 
 type Location {
-  lat      Float?
-  long     Float?
-  country  String
-  city     String
-  state    String
-  address  String
-  address2 String?
+  lat        Float?
+  long       Float?
+  country    String
+  city       String
+  state      String
+  address    String
+  address2   String?
+  postalCode String
 }
 
 enum StoreType {

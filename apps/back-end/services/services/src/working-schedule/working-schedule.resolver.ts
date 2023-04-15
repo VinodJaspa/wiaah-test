@@ -5,7 +5,7 @@ import {
   Resolver,
   ResolveReference,
 } from '@nestjs/graphql';
-import { WorkingSchedule } from '@working-schedule/entities';
+import { ServiceWorkingSchedule } from '@working-schedule/entities';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import {
   accountType,
@@ -19,7 +19,7 @@ import { UpdateUserWorkingSchedule } from '@working-schedule/commands';
 import { UpdateWorkingScheduleInput } from '@working-schedule/dto';
 import { PrismaService } from 'prismaService';
 
-@Resolver(() => WorkingSchedule)
+@Resolver(() => ServiceWorkingSchedule)
 @UseGuards(new GqlAuthorizationGuard([accountType.SELLER]))
 export class WorkingScheduleResolver {
   constructor(
@@ -28,7 +28,7 @@ export class WorkingScheduleResolver {
     private readonly prisma: PrismaService,
   ) {}
 
-  @Query(() => WorkingSchedule)
+  @Query(() => ServiceWorkingSchedule)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   adminGetAccountWorkingSchedule(@Args('accountId') id: string) {
     return this.prisma.serviceWorkingSchedule.findUnique({
@@ -38,7 +38,7 @@ export class WorkingScheduleResolver {
     });
   }
 
-  @Mutation(() => WorkingSchedule)
+  @Mutation(() => ServiceWorkingSchedule)
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   adminUpdateAccountWorkingSchedule(
     @Args('args') input: UpdateWorkingScheduleInput,
@@ -49,14 +49,14 @@ export class WorkingScheduleResolver {
     );
   }
 
-  @Query(() => WorkingSchedule)
+  @Query(() => ServiceWorkingSchedule)
   getMyWorkingSchedule(@GqlCurrentUser() user: AuthorizationDecodedUser) {
     return this.querybus.execute<GetWorkingScheduleQuery>(
       new GetWorkingScheduleQuery(user.id),
     );
   }
 
-  @Mutation(() => WorkingSchedule)
+  @Mutation(() => ServiceWorkingSchedule)
   updateMyWorkingSchedule(
     @Args('args') input: UpdateWorkingScheduleInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,

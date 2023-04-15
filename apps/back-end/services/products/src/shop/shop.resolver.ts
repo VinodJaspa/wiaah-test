@@ -11,7 +11,6 @@ import {
   Inject,
   NotFoundException,
   OnModuleInit,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -22,8 +21,6 @@ import {
   KAFKA_MESSAGES,
   GetLang,
   UserPreferedLang,
-  accountType,
-  AccountType,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 
@@ -34,7 +31,7 @@ import { GetNearShopsInput } from './dto/get-near-shops.dto';
 import { FilteredShopsInput } from './dto/filter-shops.input';
 import { UpdateShopInput } from './dto';
 import { PrismaService } from 'prismaService';
-import { Service } from './entities/extends/service.extends.entity';
+import { ShopWorkingSchedule } from 'src/working-schedule/entities';
 
 @Resolver(() => Shop)
 export class ShopResolver implements OnModuleInit {
@@ -113,12 +110,13 @@ export class ShopResolver implements OnModuleInit {
     return this.shopService.getShopById(ref.id, lang);
   }
 
-  @ResolveField(() => Service)
-  service(@Parent() shop: Shop) {
-    return {
-      __typename: 'Service',
-      ownerId: shop.ownerId,
-    };
+  @ResolveField(() => ShopWorkingSchedule)
+  workingSchedule(@Parent() shop: Shop) {
+    return this.prisma.serviceWorkingSchedule.findUnique({
+      where: {
+        sellerId: shop.ownerId,
+      },
+    });
   }
 
   async onModuleInit() {

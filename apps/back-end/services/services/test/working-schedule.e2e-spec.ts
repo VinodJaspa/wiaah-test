@@ -1,7 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import { UpdateWorkingScheduleInput } from '@working-schedule/dto';
-import { WorkingSchedule } from '@working-schedule/entities';
+import { ServiceWorkingSchedule } from '@working-schedule/entities';
 import {
   accountType,
   AuthorizationDecodedUser,
@@ -85,7 +85,7 @@ describe('first', () => {
         tu: null,
         we: null,
       },
-    } as WorkingSchedule);
+    } as ServiceWorkingSchedule);
   });
 
   it('should update working schedule', async () => {

@@ -59,7 +59,7 @@ const BookingHistoryAtom = atom<{
   },
 });
 
-export const BookingsHistorySection: React.FC = () => {
+export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
   const { shopping } = React.useContext(bookingsHistoryCtx);
 
   const [Filter, setFilter] = React.useState<BookedServiceStatus>();
@@ -117,6 +117,9 @@ export const BookingsHistorySection: React.FC = () => {
       status: BookedServiceStatus.Completed,
       treatments: [],
       type: ServiceType.Hotel,
+      insurance: {
+        amount: 250,
+      },
     })
   );
 
@@ -190,7 +193,6 @@ export const BookingsHistorySection: React.FC = () => {
                     buyer,
                     checkin,
                     seller,
-                    service,
                     status,
                     type,
                     checkout,

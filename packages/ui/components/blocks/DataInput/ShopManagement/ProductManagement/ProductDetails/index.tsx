@@ -19,6 +19,7 @@ import {
   useGetProductCategories,
   FormatCategoryFilters,
   Image,
+  useCreateNewProductMutation,
 } from "@UI";
 import { FileRes } from "utils";
 import { ProductCondition, ProductType } from "@features/API";
@@ -39,6 +40,9 @@ export const ProductGeneralDetails: React.FC<ProductGeneralDetailsProps> = ({
   const [images, setImages] = React.useState<FileRes[]>(values?.images || []);
   const [videos, setVideos] = React.useState<string[]>(values?.videos || []);
   const { data: categories } = useGetProductCategories();
+
+  const { mutate } = useCreateNewProductMutation();
+
   const { t } = useTranslation();
 
   return (

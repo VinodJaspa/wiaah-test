@@ -8,11 +8,11 @@ import {
   LocationAddressDisplay,
 } from "@UI";
 import { runIfFn } from "utils";
-import { ServiceLocation } from "api";
+import { Location } from "@features/API";
 
 export interface ServiceReachOutSectionProps {
   email: string;
-  location: ServiceLocation;
+  location: Location;
   telephone: string;
 }
 

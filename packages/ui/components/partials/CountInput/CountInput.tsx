@@ -8,6 +8,8 @@ export interface CountInputProps {
   count?: number;
   min?: number;
   max?: number;
+  label?: string;
+  errors?: string[];
 }
 export const CountInput: React.FC<CountInputProps> = ({
   onCountChange,

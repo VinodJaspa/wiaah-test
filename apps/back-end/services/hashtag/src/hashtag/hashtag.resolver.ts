@@ -48,16 +48,27 @@ export class HashtagResolver {
     );
   }
 
-  @Query(() => Hashtag)
-  async getAddableHashtags(@Args('args') args: GetAddableHashtagsInput) {
-    const { skip, take } = ExtractPagination(args.pagination);
+  @Query(() => [Hashtag])
+  async getAddableHashtags(
+    @Args('args') args: GetAddableHashtagsInput,
+  ): Promise<Hashtag[]> {
+    const { take, cursor } = args.pagination;
 
     const res = await this.prisma.hashtag.findMany({
       where: {
         status: 'active',
+        tag: args.q
+          ? {
+              contains: args.q,
+            }
+          : null,
       },
       take,
-      skip,
+      cursor: cursor
+        ? {
+            id: cursor,
+          }
+        : undefined,
     });
 
     return res;

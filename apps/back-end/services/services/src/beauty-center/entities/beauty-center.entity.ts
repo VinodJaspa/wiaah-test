@@ -16,7 +16,7 @@ import {
   registerEnumType,
   Directive,
 } from '@nestjs/graphql';
-import { WorkingSchedule } from '@working-schedule/entities';
+import { ServiceWorkingSchedule } from '@working-schedule/entities';
 import {
   ServicePaymentMethods,
   ServiceStatus,
@@ -90,6 +90,6 @@ export class BeautyCenter {
   @Field(() => [Treatment])
   treatments: Treatment[];
 
-  @Field(() => WorkingSchedule, { nullable: true })
-  workingHours?: WorkingSchedule;
+  @Field(() => ServiceWorkingSchedule, { nullable: true })
+  workingHours?: ServiceWorkingSchedule;
 }

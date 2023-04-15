@@ -1,6 +1,6 @@
 import { CommandBus, IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { CreateUserWorkingScheduleCommand } from '@working-schedule/commands';
-import { WorkingSchedule } from '@working-schedule/entities';
+import { ServiceWorkingSchedule } from '@working-schedule/entities';
 import { GetWorkingScheduleQuery } from '@working-schedule/queries/impl';
 import { WorkingScheduleRepository } from '@working-schedule/repository';
 
@@ -13,12 +13,14 @@ export class GetWorkingScheduleQueryHandler
     private readonly commandbus: CommandBus,
   ) {}
 
-  async execute({ id }: GetWorkingScheduleQuery): Promise<WorkingSchedule> {
+  async execute({
+    id,
+  }: GetWorkingScheduleQuery): Promise<ServiceWorkingSchedule> {
     const res = await this.repo.getOne(id);
     if (!res)
       return this.commandbus.execute<
         CreateUserWorkingScheduleCommand,
-        WorkingSchedule
+        ServiceWorkingSchedule
       >(new CreateUserWorkingScheduleCommand(id));
 
     return res;

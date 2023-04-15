@@ -36,6 +36,8 @@ export type PhoneNumberValue = {
 export interface PhoneNumberInputProps {
   value?: PhoneNumberValue;
   onChange?: (value: PhoneNumberValue) => any;
+  label?: string;
+  errors?: string;
 }
 
 export const PhoneNumberInput: React.FC<PhoneNumberInputProps> = ({

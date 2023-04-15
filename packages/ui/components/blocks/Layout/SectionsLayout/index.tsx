@@ -42,7 +42,7 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
   handleSectionChange,
   handleRetrun,
 }) => {
-  const [opened, setOpen] = React.useState<boolean>(true);
+  const [opened, setOpen] = React.useState<boolean>(false);
   const { t } = useTranslation();
   const { visit } = useRouting();
   const flatedSections = flatenSections(sections);
@@ -53,7 +53,7 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
 
   const { isMobile, isTablet } = useResponsive();
 
-  const minGap = isTablet ? 0 : 48;
+  const minGap = isTablet ? 0 : 32;
 
   const leftPanelRef = React.useRef<HTMLDivElement>(null);
 
@@ -129,7 +129,7 @@ export const SectionsLayout: React.FC<SettingsLayoutProps> = ({
         </div>
         <div
           style={{
-            width: `calc(100% - ${opened ? 320 || 0 : 32}px)`,
+            width: `calc(100% - ${opened ? 320 : 96}px)`,
             paddingRight: minGap,
             paddingLeft: minGap,
           }}

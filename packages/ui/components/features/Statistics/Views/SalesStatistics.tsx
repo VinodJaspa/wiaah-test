@@ -6,7 +6,6 @@ import {
   runIfFn,
 } from "utils";
 import {
-  Badge,
   Divider,
   EyeIcon,
   HStack,
@@ -34,7 +33,7 @@ import {
   YAxis,
 } from "recharts";
 import { random } from "lodash";
-import { ServiceStatus, ServiceType } from "@features/API";
+import { ServiceType } from "@features/API";
 import { PieChart } from "recharts";
 import { startCase } from "lodash";
 import { useResponsive } from "@UI/../hooks";
@@ -126,6 +125,7 @@ export const SalesStatistics: React.FC<{
   React.useEffect(() => {
     const w = ref.current?.getBoundingClientRect().width;
     const h = ref.current?.getBoundingClientRect().height;
+    console.log("resize", { h, w });
 
     if (w && h) {
       setChartDims({ h, w });
@@ -210,7 +210,7 @@ export const SalesStatistics: React.FC<{
   };
 
   const isPayPerClick = false;
-  const isProductShop = true;
+  const isProductShop = false;
 
   return (
     <div
@@ -360,7 +360,7 @@ export const SalesStatistics: React.FC<{
           </div>
           <Divider />
           <div className="px-4 w-full gap-4 font-medium grid grid-cols-8 h-full overflow-y-scroll pr-2 thinScroll">
-            {isPayPerClick
+            {!isPayPerClick
               ? mapArray(services, (v, i) => (
                   <React.Fragment key={i}>
                     <p className="text-xl col-span-2 font-semibold">{v.name}</p>

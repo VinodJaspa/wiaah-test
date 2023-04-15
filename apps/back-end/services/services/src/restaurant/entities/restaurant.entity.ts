@@ -16,7 +16,7 @@ import {
   Float,
   Directive,
 } from '@nestjs/graphql';
-import { WorkingSchedule } from '@working-schedule/entities';
+import { ServiceWorkingSchedule } from '@working-schedule/entities';
 import { ServicePaymentMethods, ServiceStatus } from 'prismaClient';
 import { RestaurantMenu } from './restaurant-menu.entity';
 
@@ -32,8 +32,8 @@ export class Restaurant {
   @Field(() => ServiceContact)
   contact: ServiceContact;
 
-  @Field(() => WorkingSchedule, { nullable: true })
-  workingHours?: WorkingSchedule;
+  @Field(() => ServiceWorkingSchedule, { nullable: true })
+  workingHours?: ServiceWorkingSchedule;
 
   @Field(() => ID)
   id: string;

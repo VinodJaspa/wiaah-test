@@ -19,6 +19,7 @@ import { ShippingTypeRuleModule } from './shipping-type-rule/shipping-type-rule.
 import { ShippingDetailsModule } from './shipping-details/shipping-details.module';
 import { DiscountModule } from './discount/discount.module';
 import { CashbackModule } from './cashback/cashback.module';
+import { WorkingScheduleModule } from './working-schedule/working-schedule.module';
 
 @Global()
 @Module({
@@ -54,6 +55,7 @@ export class PrismaGlobalModule {}
         return { req, res, user };
       },
     }),
+    WorkingScheduleModule,
     ShopModule,
     ProductsModule,
     CategoryModule,

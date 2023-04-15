@@ -4,7 +4,6 @@ import {
   TabList,
   TabTitle,
   TabsHeader,
-  useGetServicesProviderQuery,
   ServiceReachOutSection,
   ServiceOnMapLocalizationSection,
   ServicePoliciesSection,
@@ -21,20 +20,24 @@ import {
   Button,
   Divider,
   LocationOnPointFillIcon,
+  useGetShopDetailsQuery,
+  SimpleTabs,
 } from "ui";
 import { useTranslation } from "react-i18next";
+import { ServiceType } from "@features/API";
 
 export const ServiceDetailsView: React.FC<{
-  serviceId: string;
-}> = ({ serviceId }) => {
+  userId: string;
+}> = ({ userId }) => {
+  const { data: shop } = useGetShopDetailsQuery(userId);
   const {
-    data: res,
+    data: services,
     isError,
     isLoading,
-  } = useGetServicesProviderQuery(serviceId);
+  } = useGetMyServicesQuery(serviceId);
   const { t } = useTranslation();
 
-  const serviceType = res.service
+  const serviceType = shop?.type || ServiceType.Hotel;
 
   const ServicesProviderTabs: { name: string; component: React.ReactNode }[] =
     React.useMemo(
@@ -43,15 +46,15 @@ export const ServiceDetailsView: React.FC<{
           name: "Description",
           component: (
             <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
+              {shop ? (
                 <div className="flex flex-col gap-8">
                   <ServicesProviderDescriptionSection
-                    description={res.serviceMetaInfo.description}
-                    bathrooms={2}
-                    bedrooms={3}
-                    bikes={3}
-                    cars={2}
-                    pets={1}
+                    description={shop.description}
+                    // bathrooms={2}
+                    // bedrooms={3}
+                    // bikes={3}
+                    // cars={2}
+                    // pets={1}
                   />
                 </div>
               ) : null}
@@ -62,12 +65,12 @@ export const ServiceDetailsView: React.FC<{
           name: "Contact",
           component: (
             <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
+              {shop ? (
                 <>
                   <ServiceReachOutSection
-                    email={res.contact.email}
-                    location={res.location}
-                    telephone={res.contact.phone}
+                    email={shop.email}
+                    location={shop.location}
+                    telephone={shop.phone}
                   />
                 </>
               ) : null}
@@ -78,7 +81,7 @@ export const ServiceDetailsView: React.FC<{
           name: "Policies",
           component: (
             <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
+              {shop ? (
                 <>
                   <ServicePoliciesSection
                     title={"Check-in Checsdkout Terms"}
@@ -94,10 +97,10 @@ export const ServiceDetailsView: React.FC<{
           name: "Working hours",
           component: (
             <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res && res.workingHours ? (
+              {shop && shop.workingSchedule ? (
                 <>
                   <SellerServiceWorkingHoursSection
-                    workingDays={Object.values(res.workingHours.weekdays)}
+                    workingDays={Object.values(shop?.workingSchedule?.weekdays)}
                   />
                 </>
               ) : null}
@@ -108,9 +111,9 @@ export const ServiceDetailsView: React.FC<{
           name: "Rooms",
           component: (
             <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
+              {shop ? (
                 <>
-                  <HotelServiceRoomsSection rooms={res.rooms} />
+                  <HotelServiceRoomsSection rooms={shop.rooms} />
                 </>
               ) : null}
             </SpinnerFallback>
@@ -120,9 +123,9 @@ export const ServiceDetailsView: React.FC<{
           name: "Localization",
           component: (
             <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
+              {shop ? (
                 <>
-                  <ServiceOnMapLocalizationSection location={res.location} />
+                  <ServiceOnMapLocalizationSection location={shop.location} />
                 </>
               ) : null}
             </SpinnerFallback>
@@ -132,10 +135,11 @@ export const ServiceDetailsView: React.FC<{
           name: "Customer reviews",
           component: (
             <SpinnerFallback isLoading={isLoading} isError={isError}>
-              {res ? (
+              {shop ? (
                 <>
+                  {/* TODO: BIND SERVICE RATING */}
                   <ServiceDetailsReviewsSection
-                    overAllRating={5}
+                    overAllRating={shop.rating}
                     ratingLevels={[
                       {
                         rate: 4.9,
@@ -172,7 +176,7 @@ export const ServiceDetailsView: React.FC<{
           ),
         },
       ],
-      [res]
+      [shop]
     );
 
   return (
@@ -181,21 +185,15 @@ export const ServiceDetailsView: React.FC<{
         <div className="flex flex-col items-center sm:items-start sm:flex-row gap-4">
           <Image
             className="w-40 h-28 sm:h-20 sm:w-28 rounded-xl object-cover"
-            src={
-              res
-                ? "https://www.murhotels.com/cache/40/b3/40b3566310d686be665d9775f59ca9cd.jpg"
-                : ""
-            }
+            src={shop ? shop.thumbnail : ""}
           />
           <div className="flex flex-col">
-            <p className=" font-bold text-xl">
-              {res ? res.serviceMetaInfo.title : null}
-            </p>
+            <p className=" font-bold text-xl">{shop ? shop.name : null}</p>
             <div className="flex text-black gap-1 items-center">
               <LocationOnPointFillIcon />
-              {res ? (
+              {shop ? (
                 <p>
-                  {res.location.city}, {res.location.country}
+                  {shop.location.city}, {shop.location.country}
                 </p>
               ) : null}
             </div>
@@ -223,7 +221,7 @@ export const ServiceDetailsView: React.FC<{
           res ? <ServiceReservastion serviceId={res.id} /> : null
         }
       >
-        <Tabs>
+        <SimpleTabs>
           {({ currentTabIdx }) => {
             return (
               <>
@@ -249,7 +247,7 @@ export const ServiceDetailsView: React.FC<{
               </>
             );
           }}
-        </Tabs>
+        </SimpleTabs>
       </StaticSideBarWrapper>
     </div>
   );

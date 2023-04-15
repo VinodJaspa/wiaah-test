@@ -74,6 +74,21 @@ export class InsuranceResolver {
     );
   }
 
+  @Mutation(() => Boolean)
+  @UseGuards(new GqlAuthorizationGuard([]))
+  async refundInsurance(
+    @Args('id', { type: () => ID }) id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ) {
+    const insurance = await this.prisma.serviceInsurance.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    // TODO: send funds with stripe to buyer and update insurance status to refunded
+  }
+
   @Query(() => [Insurance])
   @UseGuards(new GqlAuthorizationGuard([accountType.ADMIN]))
   async getServiceInsuranceHistory(
@@ -141,9 +156,17 @@ export class InsuranceResolver {
     }
 
     if (args.service) {
+      const bookings = await this.prisma.bookedService.findMany({
+        where: {
+          serviceId: {
+            in: serviceIds.map((v) => v.id),
+          },
+        },
+      });
+
       filters.push({
-        itemId: {
-          in: serviceIds.map((v) => v.id),
+        bookId: {
+          in: bookings.map((v) => v.id),
         },
       });
     }

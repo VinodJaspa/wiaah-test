@@ -132,7 +132,7 @@ export function useForm<TForm>(
 
   function switchInputProps<Tkey extends keyof TForm>(
     key: Tkey,
-    valueKey: string = "value",
+    valueKey: string = "checked",
     onChangeKey: string = "onChange",
     mapOnChange: (value: any) => any = (e) => e
   ) {

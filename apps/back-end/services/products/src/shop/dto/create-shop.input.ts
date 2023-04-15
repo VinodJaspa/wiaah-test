@@ -6,7 +6,6 @@ import {
   ShopStatus,
   StoreType,
   TargetGenders,
-  TypeOfSeller,
 } from '@prisma-client';
 import { CreateInputGqlTranslationInputField } from 'nest-utils';
 
@@ -34,6 +33,9 @@ export class LocationInput {
 
   @Field((type) => String)
   state: string;
+
+  @Field(() => String)
+  postalCode: string;
 }
 
 @InputType()
@@ -53,11 +55,11 @@ export class CreateShopInput {
   @Field((type) => [TranslationTextInput])
   name: TranslationTextInput[];
 
-  @Field(() => String)
-  banner: string;
-
   @Field(() => [TranslationTextInput])
   description: TranslationTextInput[];
+
+  @Field(() => String)
+  banner: string;
 
   @Field(() => String)
   phone: string;
@@ -83,9 +85,6 @@ export class CreateShopInput {
   @Field(() => VatSettingsPartialInput, { nullable: true })
   vat?: VatSettingsPartialInput;
 
-  @Field(() => TypeOfSeller)
-  type_of_seller: TypeOfSeller;
-
   @Field(() => ShopStatus)
   status: ShopStatus;
 
@@ -100,12 +99,6 @@ export class CreateShopInput {
 
   @Field(() => [String])
   images: string[];
-
-  @Field(() => String)
-  metaTagDescription: string;
-
-  @Field(() => [String])
-  metaTagKeywords: string[];
 
   @Field(() => [String])
   hashtags: string[];

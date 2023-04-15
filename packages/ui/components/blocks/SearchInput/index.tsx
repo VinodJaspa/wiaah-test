@@ -5,6 +5,8 @@ import {
   InputLeftElement,
   InputProps,
   InputRightElement,
+  ScrollCursorPaginationWrapper,
+  useCursorScrollPaginationControls,
 } from "@UI";
 import { Input } from "@UI";
 import { HtmlInputProps } from "types";
@@ -16,6 +18,7 @@ export interface SearchFilterInputProps extends InputProps {
   components?: Component[];
   onSelection?: (value: string) => void;
   onNotFound?: (found: boolean) => any;
+  controls: useCursorScrollPaginationControls;
 }
 interface Component {
   name: string;
@@ -30,6 +33,7 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
   value,
   rightElement,
   onNotFound,
+  controls,
   ...props
 }) => {
   const [dropdownOpen, setDropdownOpen] = React.useState<boolean>(false);
@@ -86,7 +90,10 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
         {...props}
       />
       {Components && dropdownOpen && (
-        <div className="thinScroll absolute left-0 top-[110%] z-10 flex max-h-16 w-full flex-col gap-0.5 overflow-scroll bg-white">
+        <ScrollCursorPaginationWrapper
+          controls={controls}
+          className="thinScroll absolute left-0 top-[110%] z-10 flex max-h-16 w-full flex-col gap-0.5 overflow-scroll bg-white"
+        >
           {Components.map((comp, i) => (
             <div
               className="cursor-pointer bg-white p-2 hover:bg-gray-100"
@@ -96,7 +103,7 @@ export const SearchFilterInput: React.FC<SearchFilterInputProps> = ({
               {comp.comp}
             </div>
           ))}
-        </div>
+        </ScrollCursorPaginationWrapper>
       )}
     </InputGroup>
   );
