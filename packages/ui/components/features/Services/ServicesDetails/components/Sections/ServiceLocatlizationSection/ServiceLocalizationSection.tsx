@@ -1,11 +1,11 @@
 import React from "react";
-import { ServiceLocation } from "api";
 import { HStack, WrappedMap, Marker, AspectRatio } from "@UI";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
+import { Location } from "@features/API";
 
 export interface ServiceOnMapLocalizationSectionProps {
-  location: ServiceLocation;
+  location: Location;
 }
 
 export const ServiceOnMapLocalizationSection: React.FC<
@@ -23,10 +23,10 @@ export const ServiceOnMapLocalizationSection: React.FC<
         <AspectRatio ratio={3 / 5}>
           <WrappedMap
             className="w-full h-full"
-            center={{ lat: location.lat, lng: location.lon }}
+            center={{ lat: location.lat, lng: location.long }}
             zoom={12}
           >
-            <Marker position={{ lat: location.lat, lng: location.lon }} />
+            <Marker position={{ lat: location.lat, lng: location.long }} />
           </WrappedMap>
         </AspectRatio>
       </HStack>

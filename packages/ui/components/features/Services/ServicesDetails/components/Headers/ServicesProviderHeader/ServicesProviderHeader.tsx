@@ -7,20 +7,20 @@ export interface ServicesProviderHeaderProps {
   serviceTitle: string;
   rating: number;
   reviewsCount: number;
-  travelPeriod?: {
-    arrival: Date;
-    departure: Date;
-  };
+  // travelPeriod?: {
+  //   arrival: Date;
+  //   departure: Date;
+  // };
 }
 
 export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
   serviceTitle,
   rating,
   reviewsCount,
-  travelPeriod,
+  // travelPeriod,
 }) => {
-  const departure = travelPeriod ? DateDetails(travelPeriod.departure) : null;
-  const arrival = travelPeriod ? DateDetails(travelPeriod.arrival) : null;
+  // const departure = travelPeriod ? DateDetails(travelPeriod.departure) : null;
+  // const arrival = travelPeriod ? DateDetails(travelPeriod.arrival) : null;
 
   const { t } = useTranslation();
   return (
@@ -44,7 +44,7 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
           <ShareIcon className="text-lg text-lightBlack" />
         </div>
       </div>
-      <div className="flex justify-between items-end flex-col">
+      {/* <div className="flex justify-between items-end flex-col">
         <div className="flex flex-wrap gap-4">
           {travelPeriod && arrival && departure ? (
             <>
@@ -68,7 +68,7 @@ export const ServicesProviderHeader: React.FC<ServicesProviderHeaderProps> = ({
             </>
           ) : null}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

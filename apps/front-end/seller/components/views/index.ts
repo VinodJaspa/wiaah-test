@@ -24,3 +24,4 @@ export * from "./ServicesProvider";
 export * from "./Search";
 export * from "./Saved";
 export * from "./Management";
+export * from "./Shop";

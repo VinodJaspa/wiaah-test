@@ -1,39 +1,46 @@
-import { SearchFilterInput } from "@UI";
+import { SearchFilterInput, useCursorScrollPagination } from "@UI";
 import React from "react";
 import { MdClose } from "react-icons/md";
 import { useTranslation } from "react-i18next";
+import { mapArray } from "@UI/../utils/src";
+import { useGetHashtagsQuery } from "@features/Hashtag/services/useGetHashtagsQuery";
 
 export interface HashTagInputProps {
   onChange?: (HashTags: string[]) => any;
   value?: string[];
+  label?: string;
+  error?: string;
 }
 
-export const HashTagInput: React.FC<HashTagInputProps> = ({ onChange }) => {
+export const HashTagInput: React.FC<HashTagInputProps> = ({
+  onChange,
+  value = [],
+}) => {
   const { t } = useTranslation();
-  const [value, setValue] = React.useState<string>("");
-  const [selectedhashTags, setSelectedHashTags] = React.useState<string[]>([]);
-
-  React.useEffect(() => {
-    onChange && onChange(selectedhashTags);
-  }, [selectedhashTags]);
+  const [searchValue, setValue] = React.useState<string>("");
+  const { controls, getHasMore, getNextCursor, props } =
+    useCursorScrollPagination({ take: 10 });
+  const { data: hashtags } = useGetHashtagsQuery({
+    args: { pagination: props },
+  });
 
   function resetSearch() {
     setValue("");
   }
 
   function addHashTag(tag: string) {
-    setSelectedHashTags((state) => [...state, tag]);
+    onChange && onChange([...value, tag]);
     resetSearch();
   }
 
   function removeHashTag(tag: string) {
-    setSelectedHashTags((state) => state.filter((Tag) => Tag !== tag));
+    onChange && onChange(value.filter((Tag) => Tag !== tag));
   }
   return (
-    <div className="border-[1px] flex gap-2 items-center px-2 border-gray-300">
-      {selectedhashTags.map((tag, i) => (
+    <div className="border rounded-xl flex gap-2 items-center px-2 border-gray-300">
+      {mapArray(value, (tag, i) => (
         <span
-          key={tag + 1}
+          key={tag + i}
           className="bg-primary rounded py-1 text-white h-fit flex gap-2 px-2 items-center"
         >
           <p className="whitespace-nowrap">#{tag}</p>
@@ -44,15 +51,16 @@ export const HashTagInput: React.FC<HashTagInputProps> = ({ onChange }) => {
         </span>
       ))}
       <SearchFilterInput
+        controls={controls}
         placeholder={t("Add Hashtag")}
-        value={value}
+        value={searchValue}
         onChange={(e) => setValue(e.target.value)}
         className="border-none border-l-2 "
         onSelection={addHashTag}
         onKeyDown={(e) => {
-          e.code === "Enter" ? addHashTag(value) : "";
+          e.code === "Enter" ? addHashTag(searchValue) : "";
         }}
-        components={hashtags.map((tag, i) => ({
+        components={mapArray(hashtags || [], ({ tag }, i) => ({
           name: `#${tag}`,
           comp: <p>#{tag}</p>,
           value: tag,
@@ -61,13 +69,3 @@ export const HashTagInput: React.FC<HashTagInputProps> = ({ onChange }) => {
     </div>
   );
 };
-
-const hashtags: string[] = [
-  "mood",
-  "fun",
-  "gaming",
-  "fashion",
-  "testing",
-  "development",
-  "shopping",
-];

@@ -1,5 +1,6 @@
 import { TranslationTextInput } from '@dto';
 import { InputType, Int, Field } from '@nestjs/graphql';
+import { ServiceType } from 'prismaClient';
 
 @InputType()
 export class ServiceCategoryFilterValueInput {
@@ -33,11 +34,11 @@ export class CreateServiceCategoryInput {
   @Field(() => [TranslationTextInput])
   name: TranslationTextInput[];
 
-  @Field(() => [ServiceCategoryFilterInput])
-  filters: ServiceCategoryFilterInput[];
+  @Field(() => [ServiceCategoryFilterValueInput])
+  filters: ServiceCategoryFilterValueInput[];
 
-  @Field(() => String)
-  slug: string;
+  @Field(() => ServiceType)
+  type: ServiceType;
 
   @Field(() => Int)
   sortOrder: number;

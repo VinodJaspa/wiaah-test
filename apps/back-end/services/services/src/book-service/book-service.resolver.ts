@@ -6,18 +6,14 @@ import {
   ID,
   ResolveField,
   Parent,
+  Field,
 } from '@nestjs/graphql';
 import { BookServiceService } from '@book-service/book-service.service';
 import {
-  Account,
   BookedService,
   Cashback,
   Discount,
-  Dish,
-  Doctor,
   MyBookings,
-  Service,
-  Treatment,
 } from '@book-service/entities';
 import {
   AdminGetBookingsInput,
@@ -46,7 +42,11 @@ import {
   DeclinePendingAppointmentCommand,
 } from '@book-service/commands';
 import { PrismaService } from 'prismaService';
-import { Prisma } from 'prismaClient';
+import { Prisma, ServiceType } from 'prismaClient';
+import { Account, HotelRoom } from '@entities';
+import { Service } from '@service/entities/service.entity';
+import { Dish } from '@restaurant';
+import { Insurance } from '@insurance/entities';
 
 @Resolver(() => BookedService)
 export class BookServiceResolver {
@@ -301,29 +301,36 @@ export class BookServiceResolver {
 
   @ResolveField(() => Service)
   service(@Parent() bookedService: BookedService) {
-    return {
-      __typename: 'Service',
-      id: bookedService.serviceId,
-    };
+    return this.prisma.service.findUnique({
+      where: {
+        id: bookedService.serviceId,
+      },
+    });
   }
 
-  @ResolveField(() => [Treatment])
+  @ResolveField(() => [Service])
   treatments(@Parent() service: BookedService) {
-    return service.treatmentsIds.map((id) => ({
-      __typename: 'Treatment',
-      id,
-    }));
+    return this.prisma.service.findMany({
+      where: {
+        id: {
+          in: service.treatmentsIds,
+        },
+      },
+    });
   }
 
-  @ResolveField(() => [Dish])
+  @ResolveField(() => [Service])
   dishs(@Parent() service: BookedService) {
-    return service.treatmentsIds.map((id) => ({
-      __typename: 'Dish',
-      id,
-    }));
+    return this.prisma.service.findMany({
+      where: {
+        id: {
+          in: service.dishsIds,
+        },
+      },
+    });
   }
 
-  @ResolveField(() => Doctor)
+  @ResolveField(() => Service)
   doctor(@Parent() service: BookedService) {
     return service.treatmentsIds.map((id) => ({
       __typename: 'Doctor',
@@ -345,5 +352,36 @@ export class BookServiceResolver {
       __typename: 'Discount',
       id: service.discountId,
     };
+  }
+
+  @ResolveField(() => HotelRoom, { nullable: true })
+  room(@Parent() service: Service) {
+    if (service.type === ServiceType.hotel) {
+      return this.prisma.service.findUnique({
+        where: {
+          id: service.id,
+        },
+      });
+    } else return null;
+  }
+
+  @ResolveField(() => Dish, { nullable: true })
+  dish(@Parent() service: Service) {
+    if (service.type === ServiceType.restaurant) {
+      return this.prisma.service.findUnique({
+        where: {
+          id: service.id,
+        },
+      });
+    } else return null;
+  }
+
+  @ResolveField(() => Insurance, { nullable: true })
+  insurance(@Parent() book: BookedService) {
+    return this.prisma.serviceInsurance.findUnique({
+      where: {
+        bookId: book.id,
+      },
+    });
   }
 }

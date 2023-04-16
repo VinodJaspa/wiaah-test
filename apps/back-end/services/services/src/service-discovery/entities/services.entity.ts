@@ -21,7 +21,7 @@ import {
 } from '@nestjs/graphql';
 import { RestaurantMenu } from '@restaurant';
 import { Vehicle } from '@vehicle-service';
-import { WorkingSchedule } from '@working-schedule/entities';
+import { ServiceWorkingSchedule } from '@working-schedule/entities';
 import {
   ServicePaymentMethods,
   ServiceStatus,
@@ -60,8 +60,8 @@ export class ServiceShopRaw {
   @Field(() => ServiceContact)
   contact: ServiceContact;
 
-  @Field(() => WorkingSchedule, { nullable: true })
-  workingHours?: WorkingSchedule;
+  @Field(() => ServiceWorkingSchedule, { nullable: true })
+  workingHours?: ServiceWorkingSchedule;
 
   @Field(() => [ServiceTranslationPolicy])
   policies: ServiceTranslationPolicy[];

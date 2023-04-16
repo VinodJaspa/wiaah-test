@@ -8,7 +8,7 @@ import {
   ServicePresentation,
 } from '@entities';
 import { ObjectType, Field, Int, ID, Float, Directive } from '@nestjs/graphql';
-import { WorkingSchedule } from '@working-schedule/entities';
+import { ServiceWorkingSchedule } from '@working-schedule/entities';
 import { ServicePaymentMethods, ServiceStatus } from 'prismaClient';
 import { Doctor } from './health-center-doctor.entity';
 
@@ -59,7 +59,4 @@ export class HealthCenter {
 
   @Field(() => [Doctor])
   doctors: Doctor[];
-
-  @Field(() => WorkingSchedule)
-  workingHours: WorkingSchedule;
 }

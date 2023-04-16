@@ -51,8 +51,16 @@ export const useMediaUploadControls = (): useMediaUploadControlsReturn => {
 };
 
 export interface MediaUploadModalProps {
-  onImgUpload?: (converted: FileRes, raw?: File) => any;
-  onVidUpload?: (converted: string, raw?: File) => any;
+  onImgUpload?: (
+    converted: FileRes,
+    raw?: File,
+    getBlob?: () => Blob | undefined
+  ) => any;
+  onVidUpload?: (
+    converted: string,
+    raw?: File,
+    getBlob?: () => Blob | undefined
+  ) => any;
   controls?: MediaUploadModalControls;
   multiple?: boolean;
   onImgServerUploaded?: (url: string) => any;
@@ -64,8 +72,6 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
   onVidUpload,
   multiple,
   controls,
-  onImgServerUploaded,
-  onVidServerUploaded,
 }) => {
   const { cancelUpload: _cancelUpload, uploadType: _uploadType } =
     useFileUploadModal();
@@ -78,7 +84,7 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
   const [recordVideo, setRecordVideo] = React.useState<boolean>(false);
   const [imageFiles, setImageFiles] = React.useState<File[]>([]);
 
-  const [videoFiles, setVideoFiles] = React.useState<File[] | Blob[]>([]);
+  const [videoFiles, setVideoFiles] = React.useState<File[]>([]);
 
   React.useEffect(() => {
     try {
@@ -123,15 +129,21 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
 
   function sendVideo(vidSrc: string, idx: number) {
     if (!vidSrc) return;
+
+    const raw = videoFiles ? videoFiles[idx] : null;
     onVidUpload &&
-      onVidUpload(vidSrc, videoFiles ? videoFiles[idx] : undefined);
+      onVidUpload(vidSrc, raw ? raw : (undefined as any), () =>
+        raw ? new Blob([raw], { type: raw.type }) : undefined
+      );
 
     cancelUpload();
   }
 
   function SendImage(img: FileRes, idx: number) {
     if (!img) return;
-    onImgUpload && onImgUpload(img, imageFiles[idx]);
+    const raw = imageFiles[idx];
+    onImgUpload &&
+      onImgUpload(img, raw, () => new Blob([raw], { type: raw.type }));
   }
   function handleOpen() {}
 
@@ -193,7 +205,7 @@ export const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
                 onOpen={() => setRecordVideo(true)}
                 isOpen={recordVideo}
                 onVideoRecored={(vid) => {
-                  setVideoFiles([vid]);
+                  setVideoFiles([new File([vid], `record`)]);
                 }}
                 onClose={() => setRecordVideo(false)}
               />

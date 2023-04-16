@@ -1,81 +1,6 @@
 import { ObjectType, Field, Int, ID, Directive } from '@nestjs/graphql';
 import { BookedServiceStatus } from 'prismaClient';
-import {
-  GqlCursorPaginationInput,
-  GqlCursorPaginationResponse,
-} from 'nest-utils';
-
-@ObjectType()
-@Directive('@extends')
-@Directive('@key(fields:"id")')
-export class HotelRoom {
-  @Field(() => ID)
-  @Directive('@external')
-  id: string;
-}
-
-@ObjectType()
-@Directive('@extends')
-@Directive('@key(fields:"id")')
-export class Restaurant {
-  @Field(() => ID)
-  @Directive('@external')
-  id: string;
-}
-
-@ObjectType()
-@Directive('@extends')
-@Directive('@key(fields:"id")')
-export class HealthCenter {
-  @Field(() => ID)
-  @Directive('@external')
-  id: string;
-}
-
-@ObjectType()
-@Directive('@extends')
-@Directive('@key(fields:"id")')
-export class BeautyCenter {
-  @Field(() => ID)
-  @Directive('@external')
-  id: string;
-}
-
-@ObjectType()
-@Directive('@extends')
-@Directive('@key(fields:"id")')
-export class Vehicle {
-  @Field(() => ID)
-  @Directive('@external')
-  id: string;
-}
-
-@ObjectType()
-@Directive('@extends')
-@Directive('@key(fields:"id")')
-export class Treatment {
-  @Field(() => ID)
-  @Directive('@external')
-  id: string;
-}
-
-@ObjectType()
-@Directive('@extends')
-@Directive('@key(fields:"id")')
-export class Dish {
-  @Field(() => ID)
-  @Directive('@external')
-  id: string;
-}
-
-@ObjectType()
-@Directive('@extends')
-@Directive('@key(fields:"id")')
-export class Doctor {
-  @Field(() => ID)
-  @Directive('@external')
-  id: string;
-}
+import { GqlCursorPaginationResponse } from 'nest-utils';
 
 @ObjectType()
 export class BookedService {
@@ -112,9 +37,6 @@ export class BookedService {
   @Field(() => Int)
   guests: number;
 
-  @Field(() => ID)
-  cancelationPolicyId: string;
-
   @Field(() => [ID], { nullable: true })
   dishsIds?: string[];
 
@@ -130,20 +52,20 @@ export class BookedService {
   @Field(() => ID, { nullable: true })
   doctorId?: string;
 
-  @Field(() => HotelRoom, { nullable: true })
-  room?: HotelRoom;
+  // @Field(() => HotelRoom, { nullable: true })
+  // room?: HotelRoom;
 
-  @Field(() => Restaurant, { nullable: true })
-  restaurant?: Restaurant;
+  // @Field(() => Restaurant, { nullable: true })
+  // restaurant?: Restaurant;
 
-  @Field(() => HealthCenter, { nullable: true })
-  healthCenter?: HealthCenter;
+  // @Field(() => HealthCenter, { nullable: true })
+  // healthCenter?: HealthCenter;
 
-  @Field(() => BeautyCenter, { nullable: true })
-  beautyCenter?: BeautyCenter;
+  // @Field(() => BeautyCenter, { nullable: true })
+  // beautyCenter?: BeautyCenter;
 
-  @Field(() => Vehicle, { nullable: true })
-  vehicle?: Vehicle;
+  // @Field(() => Vehicle, { nullable: true })
+  // vehicle?: Vehicle;
 
   @Field(() => String, { nullable: true })
   discountId?: string;

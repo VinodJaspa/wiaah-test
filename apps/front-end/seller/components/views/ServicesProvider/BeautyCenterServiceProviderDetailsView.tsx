@@ -13,7 +13,6 @@ import {
   SectionTabType,
   ServicePresentationCarosuel,
   StaticSideBarWrapper,
-  SectionsScrollTabList,
   useGetBeautyCenterDetailsQuery,
   BeautyCenterTreatmentsList,
   Tabs,
@@ -27,9 +26,7 @@ import {
   LocationOnPointFillIcon,
   Button,
 } from "ui";
-import { reviews } from "placeholder";
 import { useTranslation } from "react-i18next";
-import { randomNum } from "utils";
 import { useRouting } from "routing";
 
 export const BeautyCenterServiceDetailsView: React.FC = () => {

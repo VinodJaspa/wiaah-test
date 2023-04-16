@@ -1,11 +1,13 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { MicroserviceOptions } from '@nestjs/microservices';
 import { KafkaCustomTransport, KAFKA_BROKERS, SERVICES } from 'nest-utils';
 import { AppModule } from './app.module';
+import { graphqlUploadExpress } from 'graphql-upload';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(graphqlUploadExpress());
 
   app.connectMicroservice<MicroserviceOptions>({
     strategy: new KafkaCustomTransport({

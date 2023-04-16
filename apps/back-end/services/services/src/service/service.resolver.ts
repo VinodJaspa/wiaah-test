@@ -1,6 +1,7 @@
 import {
   Args,
-  Int,
+  Field,
+  InputType,
   Mutation,
   ObjectType,
   Parent,
@@ -10,7 +11,7 @@ import {
   ResolveReference,
 } from '@nestjs/graphql';
 import { Service } from './entities/service.entity';
-import { ServicePresentationType, ServiceType } from 'prismaClient';
+import { ServiceType } from 'prismaClient';
 import { CreateServiceInput } from './dto/create-service.input';
 import {
   BadRequestException,
@@ -35,8 +36,8 @@ import {
   UserPreferedLang,
 } from 'nest-utils';
 import { PrismaService } from 'prismaService';
-import { FileTypeEnum, UploadService } from '@wiaah/upload';
-import { WorkingSchedule } from '@working-schedule/entities';
+import { UploadService } from '@wiaah/upload';
+import { ServiceWorkingSchedule } from '@working-schedule/entities';
 import { Account } from '@entities';
 import {
   BuyerToProductActionsType,
@@ -46,7 +47,7 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { HotelAvailablity } from './entities/service-availablity.entity';
 import { Service as ServicePrisma } from 'prismaClient';
-import { BeautyCenterTreatmentCategory } from '@beauty-center';
+import { FileUpload, GraphQLUpload, Upload } from 'graphql-upload';
 
 enum weekdaysNum {
   su = 0,
@@ -63,6 +64,15 @@ class ServicesCursorPaginationResponse extends CreateGqlCursorPaginatedResponse(
   Service,
 ) {}
 
+@InputType()
+export class TestUploadFile {
+  @Field(() => GraphQLUpload)
+  file: Upload;
+
+  @Field(() => String)
+  test: string;
+}
+
 @Resolver(() => Service)
 export class ServiceResolver {
   constructor(
@@ -71,6 +81,20 @@ export class ServiceResolver {
     @Inject(SERVICES.SERVICES_SERIVCE.token)
     private readonly eventClient: ClientKafka,
   ) {}
+
+  @Mutation(() => Boolean)
+  async uploadFile(
+    @Args({ name: 'file', type: () => TestUploadFile })
+    file: TestUploadFile,
+  ): Promise<boolean> {
+    console.log({ file });
+
+    const res = await file.file.promise;
+    console.log({ res });
+
+    const stream = file.file.file.createReadStream();
+    return true;
+  }
 
   @Query(() => ServicesCursorPaginationResponse)
   @UseGuards(
@@ -111,34 +135,26 @@ export class ServiceResolver {
     @Args('args') args: CreateServiceInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
   ) {
-    const {
-      rooms,
-      menus,
-      doctors,
-      treatments,
-      vehicles,
-      presentations,
-      ...rest
-    } = args;
+    const { ...rest } = args;
 
-    const servicePresenetations = await this.uploadService.uploadFiles(
-      presentations.map((v) => ({
-        file: {
-          stream: v.file.createReadStream(),
-          meta: {
-            name: v.file.filename,
-            mimetype: v.file.mimetype,
-          },
-        },
-        options: {
-          allowedMimtypes: [
-            ...this.uploadService.mimetypes.image.all,
-            ...this.uploadService.mimetypes.videos.all,
-          ],
-          maxSecDuration: 60 * 10 * 1000,
-        },
-      })),
-    );
+    // const servicePresenetations = await this.uploadService.uploadFiles(
+    //   presentations.map((v) => ({
+    //     file: {
+    //       stream: v.file.createReadStream(),
+    //       meta: {
+    //         name: v.file.filename,
+    //         mimetype: v.file.mimetype,
+    //       },
+    //     },
+    //     options: {
+    //       allowedMimtypes: [
+    //         ...this.uploadService.mimetypes.image.all,
+    //         ...this.uploadService.mimetypes.videos.all,
+    //       ],
+    //       maxSecDuration: 60 * 10 * 1000,
+    //     },
+    //   })),
+    // );
 
     const thumbnail = args.thumbnail.file;
     const thumb = await this.uploadService.uploadFiles([
@@ -159,162 +175,19 @@ export class ServiceResolver {
 
     const res = await this.prisma.service.create({
       data: {
+        type: 'hotel',
         ...rest,
         sellerId: user.id,
         thumbnail: thumb[0].src,
-        presentations: servicePresenetations.map((v) => ({
-          src: v.src,
-          type:
-            v.mimetype === FileTypeEnum.video
-              ? ServicePresentationType.vid
-              : ServicePresentationType.img,
-        })),
+        // presentations: servicePresenetations.map((v) => ({
+        //   src: v.src,
+        //   type:
+        //     v.mimetype === FileTypeEnum.video
+        //       ? ServicePresentationType.vid
+        //       : ServicePresentationType.img,
+        // })),
       },
     });
-
-    if (rooms) {
-      await this.prisma.hotelRoom.createMany({
-        data: await Promise.all(
-          rooms.map(async (v) => {
-            const pres = await this.uploadService.uploadFiles(
-              v.presentations.map((e) => ({
-                file: {
-                  meta: {
-                    mimetype: e.file.mimetype,
-                    name: e.file.filename,
-                  },
-                  stream: e.file.createReadStream(),
-                },
-                options: {
-                  allowedMimtypes: [
-                    ...this.uploadService.mimetypes.image.all,
-                    ...this.uploadService.mimetypes.videos.all,
-                  ],
-                },
-              })),
-            );
-            return {
-              ...v,
-              hotelId: res.id,
-              sellerId: res.sellerId,
-              presentations: pres.map((v) => ({
-                src: v.src,
-                type:
-                  this.uploadService.getFileTypeFromMimetype(v.mimetype) ===
-                  FileTypeEnum.video
-                    ? ServicePresentationType.vid
-                    : ServicePresentationType.img,
-              })),
-            };
-          }),
-        ),
-      });
-    }
-
-    if (menus) {
-      await this.prisma.restaurantMenu.createMany({
-        data: menus.map((v) => ({ ...v, restaurantId: res.id })),
-      });
-    }
-
-    if (doctors) {
-      await this.prisma.healthCenterDoctor.createMany({
-        data: await Promise.all(
-          doctors.map(async (v) => {
-            const file = v.thumbnail.file;
-            const thumbnail = await this.uploadService.uploadFiles([
-              {
-                file: {
-                  stream: file.createReadStream(),
-                  meta: {
-                    mimetype: file.mimetype,
-                    name: file.filename,
-                  },
-                },
-                options: {
-                  allowedMimtypes: [...this.uploadService.mimetypes.image.all],
-                  maxSizeKb: 10 * 1000,
-                },
-              },
-            ]);
-
-            const src = thumbnail[0];
-
-            return {
-              ...v,
-              healthCenterId: res.id,
-              thumbnail: src.src,
-            };
-          }),
-        ),
-      });
-    }
-
-    if (treatments) {
-      await this.prisma.beautyCenterTreatment.createMany({
-        data: await Promise.all(
-          treatments.map(async (v) => {
-            const thumbnail = v.thumbnail.file;
-            const thumb = await this.uploadService.uploadFiles([
-              {
-                file: {
-                  meta: {
-                    mimetype: thumbnail.mimetype,
-                    name: thumbnail.filename,
-                  },
-                  stream: thumbnail.createReadStream(),
-                },
-                options: {
-                  allowedMimtypes: this.uploadService.mimetypes.image.all,
-                  maxSizeKb: 10 * 1000, // <= 10MB
-                },
-              },
-            ]);
-
-            return { ...v, thumbnail: thumb[0].src };
-          }),
-        ),
-      });
-    }
-
-    if (vehicles) {
-      await this.prisma.vehicle.createMany({
-        data: await Promise.all(
-          vehicles.map(async (v) => {
-            const pres = await this.uploadService.uploadFiles(
-              v.presentations.map((e) => ({
-                file: {
-                  stream: e.file.createReadStream(),
-                  meta: {
-                    mimetype: e.file.mimetype,
-                    name: e.file.filename,
-                  },
-                },
-                options: {
-                  allowedMimtypes: [
-                    ...this.uploadService.mimetypes.image.all,
-                    ...this.uploadService.mimetypes.videos.all,
-                  ],
-                },
-              })),
-            );
-
-            return {
-              ...v,
-              parantServiceId: res.id,
-              presentations: pres.map((v) => ({
-                src: v.src,
-                type:
-                  this.uploadService.getFileTypeFromMimetype(v.mimetype) ===
-                  FileTypeEnum.video
-                    ? ServicePresentationType.vid
-                    : ServicePresentationType.img,
-              })),
-            };
-          }),
-        ),
-      });
-    }
 
     return true;
   }
@@ -414,6 +287,24 @@ export class ServiceResolver {
     }
 
     return service as any; // TODO: format service data to user prefered lang
+  }
+
+  @Query(() => [Service])
+  async getUserServicesByIds(
+    @Args('sellerId') sellerId: string,
+    @Args('servicesIds', { type: () => [String] }) ids: string[],
+  ) {
+    const res = await this.prisma.service.findMany({
+      where: {
+        sellerId,
+        id: {
+          in: ids,
+        },
+        status: 'active',
+      },
+    });
+
+    return res;
   }
 
   @Mutation(() => Boolean)
@@ -576,7 +467,7 @@ export class ServiceResolver {
     });
   }
 
-  @ResolveField(() => WorkingSchedule, { nullable: true })
+  @ResolveField(() => ServiceWorkingSchedule, { nullable: true })
   workingHours(@Parent() service: Service) {
     return this.prisma.serviceWorkingSchedule.findUnique({
       where: {

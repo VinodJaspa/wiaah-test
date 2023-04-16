@@ -1,6 +1,5 @@
-import { CreateBeautyCenterTreatmentInput } from '@beauty-center';
 import { SERVICE_MAX_VAT_PERCENT, SERVICE_MIN_VAT_PERCENT } from '@const';
-import { ServicePresentationsLength, TranslationsInput } from '@decorators';
+import { TranslationsInput } from '@decorators';
 import {
   ServiceAmenitiesInput,
   ServiceCancelationPolicyInput,
@@ -9,8 +8,6 @@ import {
   ServiceExtraInput,
   ServiceIncludedAmenitiesInput,
   ServiceIncludedServicesInput,
-  ServiceLocationInput,
-  ServiceMetaInfoTranslationInput,
   ServicePolicyTranslatedInput,
   ServicePropertyMeasurementsInput,
   TranslationTextArrayInput,
@@ -20,16 +17,23 @@ import { InputType, Field, ID, Int, Float } from '@nestjs/graphql';
 import { CreateVehiclePropertiesInput } from '@vehicle-service/dto/create-vehicle.input';
 import { Max, Min } from 'class-validator';
 import {
+  Adaptation,
+  CancelationType,
   HealthCenterDoctorAvailablityStatus,
-  ServicePaymentMethods,
-  ServiceStatus,
+  HealthCenterDoctorSpeakingLanguage,
+  RentalPropertyType,
+  RentalTypeOfPlace,
+  RestaurantDishType,
+  Restriction,
   ServiceType,
-  ServiceTypeOfSeller,
 } from 'prismaClient';
 
 import { GraphQLUpload, Upload } from 'graphql-upload';
-import { CreateInputGqlTranslationInputField, FieldRequired } from 'nest-utils';
-import { ServiceContactInput } from '@hotel/dto';
+import {
+  CreateInputGqlTranslationInputField,
+  FieldRequired,
+  IsValidTranslationArray,
+} from 'nest-utils';
 
 @InputType()
 class ServiceHotelRoomMetaInfoInput {
@@ -180,41 +184,26 @@ export class ServiceVehicleInput {
 
 @InputType()
 export class CreateServiceInput {
-  @Field(() => ServiceType)
-  type: ServiceType;
-
-  @Field(() => ServiceStatus)
-  status: ServiceStatus;
-
   @Field(() => Float)
   price: number;
 
-  @Field(() => ServiceContactInput)
-  contact: ServiceContactInput;
+  @Field(() => [TranslationTextInput])
+  @IsValidTranslationArray()
+  name: TranslationTextInput[];
 
-  @Field(() => [GraphQLUpload])
-  @ServicePresentationsLength()
-  presentations: Upload[];
-
-  @Field(() => ServiceLocationInput)
-  location: ServiceLocationInput;
+  @Field(() => [TranslationTextInput])
+  @IsValidTranslationArray()
+  description: TranslationTextInput[];
 
   @Field(() => [ServicePolicyTranslatedInput])
-  @TranslationsInput()
   policies: ServicePolicyTranslatedInput[];
 
-  @Field(() => [ServiceMetaInfoTranslationInput])
-  @TranslationsInput()
-  serviceMetaInfo: ServiceMetaInfoTranslationInput[];
+  @Field(() => Boolean)
+  cancelable: boolean;
 
-  @Field(() => [ServicePaymentMethods])
-  payment_methods: ServicePaymentMethods[];
-
-  @Field(() => ServiceTypeOfSeller)
-  type_of_seller: ServiceTypeOfSeller;
-
-  @Field(() => [ServiceCancelationPolicyInput])
-  cancelationPolicies: ServiceCancelationPolicyInput[];
+  @Field(() => CancelationType, { nullable: true })
+  @FieldRequired('cancelable', true)
+  cancelationPolicy: CancelationType;
 
   @Field(() => Float)
   @Max(SERVICE_MAX_VAT_PERCENT)
@@ -224,39 +213,153 @@ export class CreateServiceInput {
   @Field(() => GraphQLUpload)
   thumbnail: Upload;
 
-  @Field(() => [ServiceHotelRoomInput], { nullable: true })
+  @Field(() => [String])
+  hashtags: string[];
+
+  // Hotel room & rental
+  @Field(() => [TranslationTextInput], { nullable: true })
   @FieldRequired('type', ServiceType.hotel)
-  rooms?: ServiceHotelRoomInput[];
+  @IsValidTranslationArray()
+  popularAmenities: TranslationTextInput[];
 
-  @Field(() => [ServiceRestaurantMenuInput], { nullable: true })
-  @FieldRequired('type', ServiceType.restaurant)
-  menus?: ServiceRestaurantMenuInput[];
+  // @Field(() => [TranslationTextInput], { nullable: true })
+  // @IsValidTranslationArray()
+  // @FieldRequired('type', ServiceType.hotel)
+  // includedServices: TranslationTextInput[];
 
-  @Field(() => ID, { nullable: true })
-  @FieldRequired('type', ServiceType.restaurant)
-  establishmentTypeId?: string;
+  @Field(() => [ServiceExtraInput], { nullable: true })
+  @FieldRequired('type', ServiceType.hotel)
+  extras: ServiceExtraInput[];
 
-  @Field(() => ID, { nullable: true })
-  @FieldRequired('type', ServiceType.restaurant)
-  cuisinesTypeId?: string;
+  @Field(() => [TranslationTextInput], { nullable: true })
+  @IsValidTranslationArray()
+  @FieldRequired('type', ServiceType.hotel)
+  includedAmenities: TranslationTextInput[];
 
-  @Field(() => ID, { nullable: true })
-  @FieldRequired('type', ServiceType.restaurant)
-  setting_and_ambianceId?: string;
+  @Field(() => Boolean, { nullable: true })
+  @FieldRequired('type', ServiceType.hotel)
+  dailyPrice?: boolean;
+
+  @Field(() => ServiceDailyPricesInput, { nullable: true })
+  @FieldRequired('type', ServiceType.hotel)
+  dailyPrices?: ServiceDailyPricesInput;
 
   @Field(() => Int, { nullable: true })
-  @FieldRequired('type', ServiceType.restaurant)
-  michelin_guide_stars?: number;
+  @FieldRequired('type', ServiceType.hotel)
+  beds?: number;
 
-  @Field(() => [ServiceHealthCenterDoctorInput], { nullable: true })
-  @FieldRequired('type', ServiceType.health_center)
-  doctors?: ServiceHealthCenterDoctorInput[];
+  @Field(() => Int, { nullable: true })
+  @FieldRequired('type', ServiceType.hotel)
+  bathrooms?: number;
 
-  @Field(() => [CreateBeautyCenterTreatmentInput], { nullable: true })
-  @FieldRequired('type', ServiceType.beauty_center)
-  treatments?: CreateBeautyCenterTreatmentInput[];
+  @Field(() => Int, { nullable: true })
+  @FieldRequired('type', ServiceType.hotel)
+  num_of_rooms?: number;
 
-  @Field(() => [ServiceVehicleInput], { nullable: true })
+  @Field(() => ServicePropertyMeasurementsInput, { nullable: true })
+  @FieldRequired('type', ServiceType.hotel)
+  measurements?: ServicePropertyMeasurementsInput;
+
+  @Field(() => [Adaptation], { nullable: true })
+  @FieldRequired('type', ServiceType.hotel)
+  adaptedFor: Adaptation[];
+
+  @Field(() => [Restriction], { nullable: true })
+  @FieldRequired('type', ServiceType.hotel)
+  restriction: Restriction[];
+
+  @Field(() => Boolean, { nullable: true })
+  @FieldRequired('type', ServiceType.hotel)
+  deposit?: boolean;
+
+  @Field(() => Int, { nullable: true })
+  @FieldRequired('deposit', true)
+  depositAmount?: number;
+
+  @Field(() => Int, { nullable: true })
+  @FieldRequired('type', ServiceType.hotel)
+  units?: number;
+
+  // rental only
+
+  @Field(() => RentalTypeOfPlace, { nullable: true })
+  @FieldRequired('type', ServiceType.holiday_rentals)
+  typeOfPlace?: RentalTypeOfPlace;
+
+  @Field(() => RentalPropertyType, { nullable: true })
+  @FieldRequired('type', ServiceType.holiday_rentals)
+  propertyType?: RentalPropertyType;
+
+  // vehicle
+  @Field(() => String, { nullable: true })
   @FieldRequired('type', ServiceType.vehicle)
-  vehicles?: ServiceVehicleInput[];
+  brand?: string;
+
+  @Field(() => String, { nullable: true })
+  @FieldRequired('type', ServiceType.vehicle)
+  model?: string;
+
+  @Field(() => Int, { nullable: true })
+  @FieldRequired('type', ServiceType.vehicle)
+  seats: number;
+
+  @Field(() => Int, { nullable: true })
+  @FieldRequired('type', ServiceType.vehicle)
+  windows: number;
+
+  @Field(() => Int, { nullable: true })
+  @FieldRequired('type', ServiceType.vehicle)
+  maxSpeedInKm: number;
+
+  @Field(() => Int, { nullable: true })
+  @FieldRequired('type', ServiceType.vehicle)
+  lugaggeCapacity: number;
+
+  @Field(() => Boolean, { nullable: true })
+  @FieldRequired('type', ServiceType.vehicle)
+  gpsAvailable: boolean;
+
+  @Field(() => Boolean, { nullable: true })
+  @FieldRequired('type', ServiceType.vehicle)
+  airCondition: boolean;
+
+  @Field(() => String, { nullable: true })
+  @FieldRequired('type', ServiceType.vehicle)
+  vehicleCategoryId: string;
+
+  // beauty center
+  @Field(() => ID, { nullable: true })
+  @FieldRequired('type', ServiceType.beauty_center)
+  treatmentCategoryId?: string;
+
+  @Field(() => Int, { nullable: true })
+  @FieldRequired('type', ServiceType.beauty_center)
+  duration?: number;
+
+  // health center
+  @Field(() => ID, { nullable: true })
+  @FieldRequired('type', ServiceType.health_center)
+  specialityId?: string;
+
+  @Field(() => [HealthCenterDoctorSpeakingLanguage])
+  @FieldRequired('type', ServiceType.health_center)
+  speakingLanguages: HealthCenterDoctorSpeakingLanguage[];
+
+  @Field(() => [String], { nullable: true })
+  @FieldRequired('type', [ServiceType.health_center])
+  availableAppointments?: Date[];
+
+  @Field(() => Int, { nullable: true })
+  @FieldRequired('type', [ServiceType.health_center])
+  sessionDurationMins: number;
+
+  // restaurant
+  @Field(() => [TranslationTextArrayInput], { nullable: true })
+  @IsValidTranslationArray()
+  @FieldRequired('type', ServiceType.restaurant)
+  ingredients?: TranslationTextArrayInput[];
+
+  @Field(() => RestaurantDishType, { nullable: true })
+  @FieldRequired('type', ServiceType.restaurant)
+  menuType?: RestaurantDishType;
 }

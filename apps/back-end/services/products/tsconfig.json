@@ -29,7 +29,8 @@
       "@shipping-rules/*": ["src/shipping-rules/*"],
       "@shipping-rules": ["src/shipping-rules"],
       "@shipping-settings": ["src/shipping-settings"],
-      "@products/*": ["src/products/*"]
+      "@products/*": ["src/products/*"],
+      "@working-schedule/*": ["src/working-schedule/*"]
     }
   }
 }

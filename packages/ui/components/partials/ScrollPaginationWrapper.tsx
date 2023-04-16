@@ -1,7 +1,24 @@
 import React from "react";
 import { usePaginationControlsOptions } from "..";
+import { HtmlDivProps } from "@UI/../types/src";
 
-export const useCursorScrollPagination = ({ take = 10 }: { take: number }) => {
+export type useCursorScrollPaginationControls = {
+  next: () => any;
+  hasMore: boolean;
+};
+
+export const useCursorScrollPagination = (props?: {
+  take?: number;
+}): {
+  props: {
+    cursor?: string;
+    take: number;
+  };
+  controls: useCursorScrollPaginationControls;
+  getNextCursor: (v?: string) => any;
+  getHasMore: (v: boolean) => any;
+} => {
+  const take = props && props.take ? props.take : 10;
   const [nextCursor, setNextCursor] = React.useState<string>();
   const [cursor, setCursor] = React.useState<string>();
   const [hasMore, setHasMore] = React.useState<boolean>(true);
@@ -49,9 +66,13 @@ export const ScrollPaginationWrapper: React.FC<{
   return <div ref={ref}>{children}</div>;
 };
 
-export const ScrollCursorPaginationWrapper: React.FC<{
+interface ScrollCursorPaginationWrapperProps extends HtmlDivProps {
   controls: ReturnType<typeof useCursorScrollPagination>["controls"];
-}> = ({ children, controls }) => {
+}
+
+export const ScrollCursorPaginationWrapper: React.FC<
+  ScrollCursorPaginationWrapperProps
+> = ({ children, controls, ...rest }) => {
   const [endTriggered, setEndTriggered] = React.useState<boolean>(false);
   const ref = React.useRef<HTMLDivElement>(null);
 
@@ -75,5 +96,9 @@ export const ScrollCursorPaginationWrapper: React.FC<{
     });
   }
 
-  return <div ref={ref}>{children}</div>;
+  return (
+    <div {...rest} ref={ref}>
+      {children}
+    </div>
+  );
 };

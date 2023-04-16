@@ -6,22 +6,25 @@ import { TranslationText } from "@UI";
 import { runIfFn } from "utils";
 
 export interface CheckMarkStepperProps {
-  steps: StepperStepType[];
+  steps: (StepperStepType | undefined)[];
   currentStepIdx: number;
   onStepChange?: (stepIdx: number) => any;
   className?: string;
   stepHeaderClassName?: string;
+  stepContentContainerProps?: HtmlDivProps;
 }
 
 export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
-  steps,
+  steps: _steps,
   currentStepIdx,
   onStepChange,
   className,
   stepHeaderClassName,
+  stepContentContainerProps,
 }) => {
+  const steps = _steps.filter((v) => !!v);
   const CurrentComp = steps[currentStepIdx]
-    ? steps[currentStepIdx].stepComponent
+    ? steps[currentStepIdx]?.stepComponent
     : null;
 
   function handleGoToStep(step: number) {
@@ -46,7 +49,7 @@ export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
         />
         {steps.map((step, i) => (
           <div
-            key={step.key + i}
+            key={(step?.key || "") + i}
             onClick={() => handleGoToStep(i)}
             className="cursor-pointer text-xl relative flex flex-col"
           >
@@ -69,12 +72,13 @@ export const CheckMarkStepper: React.FC<CheckMarkStepperProps> = ({
                   ? "left-0"
                   : "-translate-x-1/2 left-1/2"
               }`}
-              translationObject={step.stepName}
+              translationObject={step?.stepName || ""}
             />
           </div>
         ))}
       </div>
-      {runIfFn(CurrentComp, {})}
+
+      <div {...stepContentContainerProps}>{runIfFn(CurrentComp, {})}</div>
     </div>
   );
 };

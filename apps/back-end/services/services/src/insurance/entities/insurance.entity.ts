@@ -6,13 +6,11 @@ export class Insurance {
   @Field(() => ID)
   id: string;
   @Field(() => ID)
-  itemId: string;
+  bookId: string;
   @Field(() => ID)
   buyerId: string;
   @Field(() => ID)
   sellerId: string;
-  @Field(() => String)
-  itemType: string;
   @Field(() => Float)
   amount: number;
   @Field(() => ServiceInsuranceStatusEnum)

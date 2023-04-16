@@ -28,6 +28,7 @@ import { Form, Formik } from "formik";
 import { FormOptionType } from "types";
 import { ParkingAvailablity } from "dto";
 import { NewServiceSchemas } from "validation";
+
 export interface ServiceGeneralDetailsProps {
   onChange?: (data: Record<string, any>) => any;
 }
@@ -79,12 +80,6 @@ export const ServiceGeneralDetails: React.FC<ServiceGeneralDetailsProps> = ({
                 as={Textarea}
                 placeholder={t("Meta Tag Keyword")}
               />
-              {/* <FormikInput
-                name="serviceTag"
-                className="bg-white"
-                as={Textarea}
-                placeholder={t("Service Tag")}
-              /> */}
               <HashTagInput
                 value={values["hashtags"]}
                 onChange={(v) => setFieldValue("hashtags", v)}

@@ -33,7 +33,7 @@ type Account {
 
 type Query {
   getTopHashtags(args: GetTopHashtagsInput!): [Hashtag!]!
-  getAddableHashtags(args: GetAddableHashtagsInput!): Hashtag!
+  getAddableHashtags(args: GetAddableHashtagsInput!): [Hashtag!]!
   adminGetHashtag(args: GetFilteredHashtagsInput!): [Hashtag!]!
 }
 
@@ -48,7 +48,13 @@ input GqlPaginationInput {
 }
 
 input GetAddableHashtagsInput {
-  pagination: GqlPaginationInput!
+  pagination: GqlCursorPaginationInput!
+  q: String
+}
+
+input GqlCursorPaginationInput {
+  take: Int!
+  cursor: String
 }
 
 input GetFilteredHashtagsInput {

@@ -2,8 +2,11 @@ import { HealthCenterSpecialty } from "@features/API";
 import { Avatar, HealthCenterDoctor, PriceDisplay } from "@UI";
 import React from "react";
 export interface HealthCenterDoctorCardProps {
-  doctor: Pick<HealthCenterDoctor, "name" | "thumbnail" | "price"> & {
-    speciality: Pick<HealthCenterSpecialty, "name">;
+  doctor: {
+    thumbnail: string;
+    name: string;
+    speciality: string;
+    price: number;
   };
 }
 
@@ -16,7 +19,7 @@ export const HealthCenterDoctorCard: React.FC<HealthCenterDoctorCardProps> = ({
         <Avatar src={doctor.thumbnail} alt={doctor.name} />
         <div className="flex flex-col ">
           <p className="font-semibold">{doctor.name}</p>
-          <p>{doctor.speciality?.name}</p>
+          <p>{doctor.speciality}</p>
         </div>
       </div>
       <PriceDisplay price={doctor.price} />

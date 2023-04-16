@@ -32,6 +32,7 @@ export const Stepper: React.FC<StepperProps> = ({ children, controls }) => {
   const [stepsLength, setStepsLength] = React.useState<number>(0);
 
   function handleNextStep() {
+    console.log("next");
     if (controls) {
       controls.onChange(
         controls.value + 1 >= stepsLength ? controls.value : controls.value + 1
@@ -77,7 +78,10 @@ export const Stepper: React.FC<StepperProps> = ({ children, controls }) => {
 
 export interface StepperContentProps {}
 
-export const StepperContent: React.FC<StepperContentProps> = ({ children }) => {
+export const StepperContent: React.FC<StepperContentProps> = ({
+  children: _children,
+}) => {
+  const children = React.Children.toArray(_children).filter((v) => !!v);
   const { currentStepIdx, setStepsLength } = React.useContext(StepperContext);
 
   React.useEffect(() => {

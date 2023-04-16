@@ -155,20 +155,9 @@ export const ServiceCheckoutCard: React.FC<HotelCheckoutCardProps> = ({
           {showOn([ServiceType.Hotel]) ? <p>{name}</p> : null}
 
           {showOn([ServiceType.BeautyCenter]) ? (
-            <div className="flex flex-col gap-2 mt-2">
-              <p className="font-medium">{t("Treatments")}</p>
-              {mapArray(treatments, (v, i) => (
-                <div className="flex justify-between gap-8">
-                  <div className="flex gap-4">
-                    <Image src={v.thumbnail} className="w-[4.563rem] h-16" />
-                    <p className="font-semibold text-lg">{v.name}</p>
-                  </div>
-                  <div className="flex items-center text-xl font-semibold">
-                    <PriceDisplay price={v.price}></PriceDisplay>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <TreatmentsCheckoutList
+              treatments={treatments || []}
+            ></TreatmentsCheckoutList>
           ) : null}
 
           {showOn([ServiceType.HealthCenter]) ? (
@@ -192,36 +181,7 @@ export const ServiceCheckoutCard: React.FC<HotelCheckoutCardProps> = ({
           ) : null}
 
           {showOn([ServiceType.Restaurant]) ? (
-            <div className="flex flex-col gap-6 mt-2">
-              {mapArray(menus, (v, i) => (
-                <div className="flex flex-col gap-4 w-full">
-                  <p className="font-semibold">{v.name}</p>
-                  {mapArray(v.dishs, (v, i) => (
-                    <div
-                      key={i}
-                      className="flex justify-between items-center gap-8"
-                    >
-                      <div className="flex gap-4">
-                        <Image
-                          src={v.thumbnail}
-                          className="w-[4.563rem] h-16"
-                        />
-                        <div className="font-semibold text-lg flex flex-col">
-                          <p>{v.name}</p>
-                          <p className="font-medium text-[#868686]">
-                            {v.ingredints.join(", ")}
-                          </p>
-                        </div>
-                      </div>
-                      <p className="font-semibold text-xl">X{v.qty}</p>
-                      <div className="flex items-center text-xl font-semibold">
-                        <PriceDisplay price={v.price}></PriceDisplay>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ))}
-            </div>
+            <RestaurantDishsCheckoutList menus={menus || []} />
           ) : null}
         </div>
       ) : null}
@@ -338,6 +298,72 @@ export const ServiceCheckoutCard: React.FC<HotelCheckoutCardProps> = ({
           </Button>
         </div>
       </div>
+    </div>
+  );
+};
+
+export const TreatmentsCheckoutList: React.FC<{
+  treatments: {
+    thumbnail: string;
+    price: number;
+    name: string;
+  }[];
+}> = ({ treatments }) => {
+  const { t } = useTranslation();
+  return (
+    <div className="flex flex-col gap-2 mt-2">
+      <p className="font-medium">{t("Treatments")}</p>
+      {mapArray(treatments, (v, i) => (
+        <div className="flex justify-between gap-8">
+          <div className="flex gap-4">
+            <Image src={v.thumbnail} className="w-[4.563rem] h-16" />
+            <p className="font-semibold text-lg">{v.name}</p>
+          </div>
+          <div className="flex items-center text-xl font-semibold">
+            <PriceDisplay price={v.price}></PriceDisplay>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export const RestaurantDishsCheckoutList: React.FC<{
+  menus: {
+    name: string;
+    dishs: {
+      thumbnail: string;
+      name: string;
+      ingredints: string[];
+      price: number;
+      qty: number;
+    }[];
+  }[];
+}> = ({ menus }) => {
+  return (
+    <div className="flex flex-col gap-6 mt-2">
+      {mapArray(menus, (v, i) => (
+        <div className="flex flex-col gap-4 w-full">
+          <p className="font-semibold text-lg">{v.name}</p>
+          {mapArray(v.dishs, (v, i) => (
+            <div key={i} className="flex justify-between items-center gap-8">
+              <div className="flex gap-4">
+                <Image src={v.thumbnail} className="w-[4.563rem] h-16" />
+                <div className="font-semibold text-lg flex flex-col">
+                  <p>{v.name}</p>
+                  <p className="font-medium text-sm text-[#868686]">
+                    {v.ingredints.join(", ")}
+                  </p>
+                </div>
+              </div>
+              <p className="font-semibold text-xl">X{v.qty}</p>
+              <div className="flex items-center text-xl font-semibold">
+                <PriceDisplay price={v.price}></PriceDisplay>
+              </div>
+            </div>
+          ))}
+        </div>
+      ))}
     </div>
   );
 };

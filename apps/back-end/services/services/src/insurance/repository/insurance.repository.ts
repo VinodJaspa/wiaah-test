@@ -33,21 +33,13 @@ export class InsuranceRepository {
     });
   }
 
-  createOne({
-    amount,
-    buyerId,
-    itemId,
-    itemType,
-    bookId,
-    sellerId,
-  }: CreateInsuranceInput) {
+  createOne({ amount, buyerId, bookId, sellerId }: CreateInsuranceInput) {
     return this.prisma.serviceInsurance.create({
       data: {
         sellerId,
         amount,
         buyerId,
-        itemId,
-        itemType,
+        bookId,
         status: 'pending',
         id: bookId,
       },

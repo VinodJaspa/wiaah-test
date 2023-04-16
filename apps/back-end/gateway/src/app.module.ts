@@ -38,6 +38,21 @@ import { ObjectId } from 'mongodb';
           return new RemoteGraphQLDataSource({
             url,
             willSendRequest({ context, request, kind }) {
+              try {
+                const contentType = (context as any)?.req?.headers[
+                  'content-type'
+                ];
+                console.log({ contentType });
+                if (
+                  contentType &&
+                  contentType.startsWith('multipart/form-data')
+                ) {
+                  console.log({ contentType });
+                  request.http.headers.set('content-type', contentType);
+                }
+              } catch (error) {
+                console.error('will send request error', { error });
+              }
               const user = context['user'];
               console.log({ uSer: user });
               request.http.headers.set(

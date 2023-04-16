@@ -1,8 +1,11 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { GqlPaginationInput } from 'nest-utils';
+import { GqlCursorPaginationInput, GqlPaginationInput } from 'nest-utils';
 
 @InputType()
 export class GetAddableHashtagsInput {
-  @Field(() => GqlPaginationInput)
-  pagination: GqlPaginationInput;
+  @Field(() => GqlCursorPaginationInput)
+  pagination: GqlCursorPaginationInput;
+
+  @Field(() => String, { nullable: true })
+  q?: string;
 }

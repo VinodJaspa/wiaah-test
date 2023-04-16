@@ -39,6 +39,7 @@ import {
   Divider,
   QrcodeDisplay,
   useGetAppointmentDetailsQuery,
+  usePaybackServiceInsuranceMutation,
 } from "@UI";
 import { useCancelAppointmentMutation } from "@src/Hooks";
 import { bookingsHistoryCtx } from ".";
@@ -47,7 +48,10 @@ import { useForm } from "@UI/../utils/src";
 import { atom, selector, useRecoilValue, useSetRecoilState } from "recoil";
 
 const BookingHistoryAtom = atom<{
-  paybackId?: string;
+  paybackId?: {
+    id: string;
+    amount: number;
+  };
   viewId?: string;
   cancelId?: string;
 }>({
@@ -59,7 +63,7 @@ const BookingHistoryAtom = atom<{
   },
 });
 
-export const BookingsHistorySection: React.FC = () => {
+export const BookingsHistorySection: React.FC<{ accountId: string }> = () => {
   const { shopping } = React.useContext(bookingsHistoryCtx);
 
   const [Filter, setFilter] = React.useState<BookedServiceStatus>();
@@ -117,6 +121,9 @@ export const BookingsHistorySection: React.FC = () => {
       status: BookedServiceStatus.Completed,
       treatments: [],
       type: ServiceType.Hotel,
+      insurance: {
+        amount: 250,
+      },
     })
   );
 
@@ -190,11 +197,10 @@ export const BookingsHistorySection: React.FC = () => {
                     buyer,
                     checkin,
                     seller,
-                    service,
                     status,
-                    type,
                     checkout,
                     payment,
+                    ...rest
                   },
                   i
                 ) => (
@@ -282,17 +288,22 @@ export const BookingsHistorySection: React.FC = () => {
                       </Td>
                     ) : (
                       <Td>
-                        <div
-                          onClick={() =>
-                            setBookingHistoryState((v) => ({
-                              ...v,
-                              paybackId: id,
-                            }))
-                          }
-                          className="flex w-full justify-center"
-                        >
-                          <CashPaymentIcon />
-                        </div>
+                        {rest?.insurance ? (
+                          <div
+                            onClick={() =>
+                              setBookingHistoryState((v) => ({
+                                ...v,
+                                paybackId: {
+                                  id: rest.insurance?.id || "",
+                                  amount: rest.insurance?.amount || 0,
+                                },
+                              }))
+                            }
+                            className="flex w-full justify-center"
+                          >
+                            <CashPaymentIcon />
+                          </div>
+                        ) : null}
                       </Td>
                     )}
                   </Tr>
@@ -420,7 +431,7 @@ const BookingViewModal: React.FC = () => {
 
 const BookingPayBackModal: React.FC = () => {
   const { t } = useTranslation();
-  const id = useRecoilValue(
+  const payback = useRecoilValue(
     selector({
       key: "bookingPaybackIdState",
       get: ({ get }) => {
@@ -430,27 +441,31 @@ const BookingPayBackModal: React.FC = () => {
       },
     })
   );
+  const { mutate, isLoading } = usePaybackServiceInsuranceMutation();
 
   const setId = useSetRecoilState(BookingHistoryAtom);
 
   const cancel = () => setId((v) => ({ ...v, paybackId: undefined }));
 
   return (
-    <Modal isOpen={!!id} onClose={cancel}>
+    <Modal isOpen={!!payback?.id} onClose={cancel}>
       <ModalOverlay />
       <ModalContent>
         <HStack className="w-full justify-center font-semibold text-xl min-h-[10rem]">
           <p>{t("Pay back client's assurance of")}</p>
-          <PriceDisplay price={250} /> <p>?</p>
+          <PriceDisplay price={payback?.amount} /> <p>?</p>
         </HStack>
         <ModalFooter>
           <HStack className="justify-end">
-            <Button onClick={cancel} colorScheme="danger">
+            <Button loading={isLoading} onClick={cancel} colorScheme="danger">
               {t("Cancel")}
             </Button>
             <Button
+              loading={isLoading}
               onClick={() => {
-                // TODO: create useBookPayback assurance mutation
+                if (payback?.id) {
+                  mutate({ id: payback.id });
+                }
               }}
             >
               {t("Confirm")}
@@ -462,7 +477,7 @@ const BookingPayBackModal: React.FC = () => {
   );
 };
 
-const BookingCancelationModal: React.FC = (props) => {
+const BookingCancelationModal: React.FC = () => {
   const { t } = useTranslation();
   const id = useRecoilValue(
     selector({

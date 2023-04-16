@@ -6,7 +6,7 @@ import {
   ServiceLocation,
 } from '@entities';
 import { HotelRoom } from './hotelRoom.entity';
-import { WorkingSchedule } from '@working-schedule/entities';
+import { ServiceWorkingSchedule } from '@working-schedule/entities';
 
 @ObjectType()
 export class ServiceContact {
@@ -73,6 +73,6 @@ export class Hotel {
   @Field(() => ServiceContact)
   contact: ServiceContact;
 
-  @Field(() => WorkingSchedule, { nullable: true })
-  workingHours?: WorkingSchedule;
+  @Field(() => ServiceWorkingSchedule, { nullable: true })
+  workingHours?: ServiceWorkingSchedule;
 }

@@ -47,9 +47,9 @@ const Edit = () => {
   const { t } = useTranslation();
   const id = getParam("id");
 
-  const {data:shop} = useGetUserShopType({userId:id})
-  
-  const isProducts = shop.storeType === StoreType.Product
+  const { data: shop } = useGetUserShopType({ userId: id });
+
+  const isProducts = shop.storeType === StoreType.Product;
 
   const productsTitle = isProducts ? "Products" : "Services";
 
@@ -108,7 +108,7 @@ const Edit = () => {
 
         <SimpleTabItemList>
           <AccountGeneralView accountId={id} />
-          <SellerListing></SellerListing>
+          <SellerListing accountId={id}></SellerListing>
           <AccountFeesTab accountId={id} />
           <AccountAffiliation showList accountId={id} />
           {isProducts ? (

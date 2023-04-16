@@ -11,6 +11,7 @@ import {
   GetBookingsHistoryInput,
   HealthCenterSpecialty,
   HotelRoom,
+  Insurance,
   Maybe,
   Profile,
   Service,
@@ -51,21 +52,6 @@ export type GetMyBookingsQuery = { __typename?: "Query" } & {
             { __typename?: "Profile" } & Pick<Profile, "username" | "photo">
           >;
         };
-        service: { __typename?: "Service" } & Pick<
-          Service,
-          "price" | "title"
-        > & {
-            location: { __typename?: "ServiceLocation" } & Pick<
-              ServiceLocation,
-              | "address"
-              | "city"
-              | "country"
-              | "lat"
-              | "lon"
-              | "postalCode"
-              | "state"
-            >;
-          };
         room?: Maybe<
           { __typename?: "HotelRoom" } & Pick<
             HotelRoom,
@@ -85,34 +71,23 @@ export type GetMyBookingsQuery = { __typename?: "Query" } & {
             }
         >;
         dishs: Array<
-          { __typename?: "Dish" } & Pick<
-            Dish,
+          { __typename?: "Service" } & Pick<
+            Service,
             "id" | "name" | "price" | "thumbnail" | "ingredients"
           >
         >;
-        doctor: { __typename?: "Doctor" } & Pick<
-          Doctor,
-          "name" | "thumbnail" | "rating" | "price" | "id"
-        > & {
-            speciality?: Maybe<
-              { __typename?: "HealthCenterSpecialty" } & Pick<
-                HealthCenterSpecialty,
-                "description" | "id" | "name"
-              >
-            >;
-          };
+        doctor: { __typename?: "Service" } & Pick<
+          Service,
+          "id" | "name" | "speciality" | "thumbnail" | "rating" | "price"
+        >;
         treatments: Array<
-          { __typename?: "Treatment" } & Pick<
-            Treatment,
-            "id" | "duration" | "title" | "price"
-          > & {
-              category?: Maybe<
-                { __typename?: "BeautyCenterTreatmentCategory" } & Pick<
-                  BeautyCenterTreatmentCategory,
-                  "title" | "id"
-                >
-              >;
-            }
+          { __typename?: "Service" } & Pick<
+            Service,
+            "id" | "duration" | "price" | "name"
+          >
+        >;
+        insurance?: Maybe<
+          { __typename?: "Insurance" } & Pick<Insurance, "amount" | "id">
         >;
       }
   >;
@@ -158,10 +133,6 @@ query getMyBookings(
         photo
       }
     }
-    service{
-      price
-      title
-    }
     payment
     room{
       bathrooms
@@ -185,11 +156,7 @@ query getMyBookings(
     doctor{
       id
       name
-      speciality{
-        description
-        id
-        name
-      }
+      speciality
       thumbnail
       rating
       price
@@ -197,12 +164,12 @@ query getMyBookings(
     treatments{
       id
       duration
-      category{
-        title
-        id
-      }
-      title
       price
+      name
+    }
+    insurance{
+      amount
+      id
     }
   }
 }
@@ -277,6 +244,10 @@ query getMyBookings(
           dailyPrice: true,
           pricePerNight: 150,
           description: "room desc",
+        },
+        checkout: new Date(),
+        insurance: {
+          amount: randomNum(150),
         },
       }));
 

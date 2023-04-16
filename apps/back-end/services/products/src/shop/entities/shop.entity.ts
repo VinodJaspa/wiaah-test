@@ -14,14 +14,12 @@ import {
   ShopStatus,
   StoreType,
   TargetGenders,
-  TypeOfSeller,
 } from '@prisma-client';
 import { CreateObjectGqlTranslationInputField } from 'nest-utils';
 
 registerEnumType(StoreType, { name: 'StoreType' });
 registerEnumType(TargetGenders, { name: 'TargetGenders' });
 registerEnumType(BusinessType, { name: 'BusinessType' });
-registerEnumType(TypeOfSeller, { name: 'TypeOfSeller' });
 registerEnumType(ShopStatus, { name: 'ShopStatus' });
 registerEnumType(ShopPaymentMethods, { name: 'ShopPaymentMethod' });
 registerEnumType(ServiceType, { name: 'ServiceType' });
@@ -50,6 +48,9 @@ export class Location {
 
   @Field((type) => String)
   state: string;
+
+  @Field(() => String)
+  postalCode: string;
 }
 
 // @ObjectType()
@@ -113,9 +114,6 @@ export class Shop {
 
   // @Field(() => VatSettings, { nullable: true })
   // vat?: VatSettings;
-
-  @Field(() => TypeOfSeller)
-  type_of_seller: TypeOfSeller;
 
   @Field(() => ShopStatus)
   status: ShopStatus;

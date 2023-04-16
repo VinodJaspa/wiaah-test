@@ -13,18 +13,13 @@ import {
 import { ErrorMessages } from '@utils';
 import { ElasticsearchModule } from '@nestjs/elasticsearch';
 import { PrismaService } from 'prismaService';
-import { HotelModule } from './hotel/hotel.module';
-import { RestaurantModule } from './restaurant/restaurant.module';
-import { ServiceOwnershipModule } from './service-ownership/service-ownership.module';
-import { HealthCenterModule } from './health-center/health-center.module';
-import { BeautyCenterModule } from './beauty-center/beauty-center.module';
-import { VehicleModule } from './vehicle/vehicle.module';
 import { ServiceModule } from './service/service.module';
 import { WorkingScheduleModule } from './working-schedule/working-schedule.module';
 import { InsuranceModule } from './insurance/insurance.module';
 import { ServiceDiscoveryModule } from './service-discovery/service-discovery.module';
 import { ServiceDiscountModule } from './service-discount/service-discount.module';
 import { ServiceCashbackModule } from './service-cashback/service-cashback.module';
+import { BookServiceModule } from '@book-service/book-service.module';
 
 @Global()
 @Module({
@@ -67,18 +62,12 @@ export class GlobalPrismaService {}
     ServiceDiscountModule,
     ServiceCashbackModule,
     ServiceModule,
-    WorkingScheduleModule,
     InsuranceModule,
     ServiceDiscoveryModule,
     GlobalPrismaService,
     TranslationModule,
     CategoryModule,
-    // HotelModule,
-    // RestaurantModule,
-    // ServiceOwnershipModule,
-    // HealthCenterModule,
-    // BeautyCenterModule,
-    // VehicleModule,
+    BookServiceModule,
   ],
 })
 export class AppModule {}

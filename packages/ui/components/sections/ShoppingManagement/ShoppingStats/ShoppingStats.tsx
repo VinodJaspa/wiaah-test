@@ -1,6 +1,5 @@
 import { useUserData } from "@UI/../hooks";
-import { mapArray, randomNum } from "@UI/../utils/src";
-import { NumberShortner } from "@UI/components/helpers";
+import { getRandomName, mapArray, randomNum } from "@UI/../utils/src";
 import {
   SalesStatisticsCard,
   CustomTooltip,
@@ -14,20 +13,21 @@ import {
   ReturnArrowIcon,
   PersonGroupIcon,
   PriceDisplay,
-  EyeIcon,
   HStack,
   Select,
   Divider,
   Image,
   CashBackIcon,
+  AspectRatio,
 } from "@partials";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { AreaChart, XAxis, YAxis, Tooltip, Area } from "recharts";
-import { startCase } from "lodash";
 import { ServiceType } from "@features/API";
 import MoneyHandIcon from "@UI/components/partials/icons/MoneyHandIcon";
 import { useResponsive } from "@src/index";
+import { getRandomImage } from "@UI/placeholder";
+import { useRouting } from "@UI/../routing";
 
 const services: {
   name: string;
@@ -37,21 +37,29 @@ const services: {
   earning: number;
   views: number;
   status: "compeleted" | "available";
+  createdAt: string;
+  thumbnail: string;
+  id: string;
+  sellerName: string;
 }[] = [...Array(20)].map((_, i) => ({
   name: getRandomHotelRoomName(),
   discount: randomNum(100),
-  earning: randomNum(20000),
+  earning: randomNum(200),
   price: 180,
   status: randomNum(100) > 50 ? "compeleted" : "available",
   type: ServiceType.Hotel,
   views: randomNum(10000),
+  createdAt: new Date().toString(),
+  thumbnail: getRandomImage(),
+  id: i.toString(),
+  sellerName: getRandomName().firstName,
 }));
 
 const recentOrders: {
   thumbnail: string;
   name: string;
   createdAt: string;
-  qty: number;
+  sellerName: string;
   price: number;
 }[] = [...Array(20)].map(() => ({
   thumbnail:
@@ -60,11 +68,13 @@ const recentOrders: {
   name: getRandomHotelRoomName(),
   price: randomNum(500),
   qty: randomNum(5),
+  sellerName: `${getRandomName().firstName} ${getRandomName().lastName}`,
 }));
 
 export const ShoppingStats: React.FC<{
   accountId: string;
 }> = ({ accountId }) => {
+  const { visit } = useRouting();
   const { isMobile } = useResponsive();
   const { t } = useTranslation();
   const ref = React.useRef<HTMLDivElement>(null);
@@ -179,7 +189,7 @@ export const ShoppingStats: React.FC<{
         <div className="flex flex-col gap-12 w-full h-[25.813rem] p-4 bg-white overflow-hidden rounded-[0.625rem] shadow">
           <HStack className="justify-between">
             <p className="font-medium text-[1.375rem]">
-              {t("Sales Statistics")}
+              {t("Earning Statistics")}
             </p>
             <div className="w-fit">
               <Select>
@@ -233,58 +243,51 @@ export const ShoppingStats: React.FC<{
             <p className="font-semibold text-[1.375rem]">
               {t("Affiliated Orders")}
             </p>
-            <div className="w-full grid grid-cols-8 font-semibold">
-              <p className="col-span-2">{t("Image")}</p>
-              <p className="text-center">{t("Name")}</p>
+            <div className="w-full grid grid-cols-6 font-semibold">
+              <p className="text-center col-span-1">{t("Image")}</p>
+              <p className="text-center col-span-2">{t("Name")}</p>
               <p className="text-center">{t("Price")}</p>
               <p className="text-center">{t("Reward")}</p>
+              <p className="text-center">{t("Date")}</p>
             </div>
           </div>
         </div>
         <Divider />
-        <div className="px-4 w-full gap-4 font-medium grid grid-cols-8 h-full overflow-y-scroll pr-2 thinScroll ">
+        <div className="px-4 w-full gap-4 font-medium grid grid-cols-6 h-full overflow-y-scroll pr-2 thinScroll ">
           {mapArray(services, (v, i) => (
             <React.Fragment key={i}>
-              <p className="text-xl col-span-2 font-semibold">{v.name}</p>
-              <p className="items-center flex justify-center">
-                {startCase(v.type)}
+              <p
+                onClick={() => visit((r) => r.visitProduct(v.id), false)}
+                className="cursor-pointer text-xl col-span-1 font-semibold"
+              >
+                <AspectRatio ratio={9 / 16}>
+                  <Image
+                    className="object-cover w-full h-full"
+                    src={v.thumbnail}
+                  />
+                </AspectRatio>
+              </p>
+              <p
+                onClick={() => visit((r) => r.visitProduct(v.id))}
+                className="cursor-pointer text-xl col-span-2 font-semibold"
+              >
+                {v.name}
               </p>
               <div className="flex flex-col items-center justify-center">
-                <HStack className="gap-0">
-                  <PriceDisplay
-                    className="flex items-center justify-center"
-                    price={v.price}
-                    compact
-                    decimel
-                  />
-                  /
-                </HStack>
-                <p className="text-[#8A8A8A] text-xs">{t("Night")}</p>
+                <PriceDisplay
+                  className="flex items-center justify-center"
+                  price={v.price}
+                  compact
+                  decimel
+                />
               </div>
-              <PriceDisplay
-                className="flex items-center justify-center"
-                price={v.discount}
-                compact
-                decimel
-              />
               <PriceDisplay
                 className="flex items-center justify-center"
                 price={v.earning}
                 compact
                 decimel
               />
-              <HStack className="text-center">
-                <EyeIcon />
-                <p>{NumberShortner(v.views)}</p>
-              </HStack>
-              <p
-                style={{
-                  color: v.status === "compeleted" ? "red" : "green",
-                }}
-                className="flex text-xs  items-center justify-center"
-              >
-                {startCase(v.status)}
-              </p>
+              <p>{new Date(v.createdAt).toDateString()}</p>
             </React.Fragment>
           ))}
         </div>
@@ -311,12 +314,12 @@ export const ShoppingStats: React.FC<{
                     </p>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 gap-16 w-1/3">
-                  <div className="flex justify-center items-center font-semibold">
-                    {v.qty}X
+                <div className="grid grid-cols-2 gap-16 w-2/5">
+                  <div className="flex justify-center w-full whitespace-nowrap items-center font-semibold">
+                    {v.sellerName}
                   </div>
-                  <div className="flex justify-end font-semibold text-sm">
-                    <PriceDisplay price={v.price} />
+                  <div className="flex justify-end font-semibold text-sm text-primary">
+                    <PriceDisplay price={v.price} /> +
                   </div>
                 </div>
               </div>

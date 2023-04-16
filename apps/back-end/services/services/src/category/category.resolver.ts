@@ -12,6 +12,7 @@ import {
 import { UseGuards } from '@nestjs/common';
 import { GetFilteredCategoriesInput } from './dto/get-filtered-categories.input';
 import { PrismaService } from 'prismaService';
+import { ServiceType } from 'prismaClient';
 
 @Resolver(() => ServiceCategory)
 export class CategoryResolver {
@@ -28,14 +29,15 @@ export class CategoryResolver {
     return this.categoryService.getCategoryById(id, user.id);
   }
 
-  @Query(() => ServiceCategory)
-  async getServiceCategoryBySlug(
-    @Args('slug') slug: string,
+  @Query(() => [ServiceCategory])
+  async getServiceCategoryByType(
+    @Args('type', { type: () => ServiceType }) type: ServiceType,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
-  ) {
-    const res = await this.prisma.serviceCategory.findUnique({
+  ): Promise<ServiceCategory[]> {
+    const res = await this.prisma.serviceCategory.findMany({
       where: {
-        slug,
+        type,
+        status: 'active',
       },
     });
 

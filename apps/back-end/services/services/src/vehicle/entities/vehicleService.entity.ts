@@ -15,7 +15,7 @@ import {
   Float,
   registerEnumType,
 } from '@nestjs/graphql';
-import { WorkingSchedule } from '@working-schedule/entities';
+import { ServiceWorkingSchedule } from '@working-schedule/entities';
 import { ServicePaymentMethods } from 'prismaClient';
 import { Vehicle } from './vehicle.entity';
 
@@ -32,8 +32,8 @@ export class VehicleService {
   @Field(() => Account)
   owner: Account;
 
-  @Field(() => WorkingSchedule)
-  workingHours: WorkingSchedule;
+  @Field(() => ServiceWorkingSchedule)
+  workingHours: ServiceWorkingSchedule;
 
   @Field(() => ServiceContact)
   contact: ServiceContact;

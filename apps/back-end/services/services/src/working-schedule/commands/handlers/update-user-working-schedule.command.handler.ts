@@ -1,6 +1,6 @@
 import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
 import { UpdateUserWorkingSchedule } from '@working-schedule/commands/impl';
-import { WorkingSchedule } from '@working-schedule/entities';
+import { ServiceWorkingSchedule } from '@working-schedule/entities';
 import { WorkingScheduleRepository } from '@working-schedule/repository';
 import { WorkingScheduleUpdatedEvent } from '@working-schedule/events';
 
@@ -17,7 +17,7 @@ export class UpdateUserWorkingScheduleCommandHandler
     id,
     userId,
     input,
-  }: UpdateUserWorkingSchedule): Promise<WorkingSchedule> {
+  }: UpdateUserWorkingSchedule): Promise<ServiceWorkingSchedule> {
     const res = await this.prisma.update(id, input);
     this.eventbus.publish<WorkingScheduleUpdatedEvent>(
       new WorkingScheduleUpdatedEvent(res),

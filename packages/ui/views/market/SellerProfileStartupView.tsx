@@ -20,7 +20,6 @@ import {
   HealthCenterServiceDetailsForm,
   VehicleServiceDetailsForm,
   BeautyCenterServiceDetailsForm,
-  ServicePoliciesSection,
   RestaurantIncludedServicesSection,
   HolidayRentalsGeneralDetailsForm,
   HealthCenterIncludedServices,
@@ -40,7 +39,7 @@ import { ServiceType } from "@features/API";
 
 export const SellerProfileStartupView: React.FC = ({}) => {
   const { t } = useTranslation();
-  const [currentStep, setCurrentStep] = React.useState<number>(0);
+  const [currentStep, setCurrentStep] = React.useState<number>(2);
   const [submitRequests, setSubmitRequests] = React.useState<
     Record<number, () => any>
   >({});
@@ -424,7 +423,6 @@ const SellerListing = ({
         lock={false}
         stepsNum={steps.length}
         onFormComplete={(data) => {
-          console.log(data);
           mutate({ serviceType: serviceType as ServicesType, ...data });
         }}
       >

@@ -9,12 +9,14 @@ type BedType = {
 };
 
 export interface HotelBedsInputProps {
-  value: BedType[];
-  onChange: (beds: BedType[]) => any;
+  value?: BedType[];
+  onChange?: (beds: BedType[]) => any;
+  label?: string;
+  errors?: string[];
 }
 
 export const HotelBedsInput: React.FC<HotelBedsInputProps> = ({
-  onChange,
+  onChange = () => {},
   value = [],
 }) => {
   const [add, setAdd] = React.useState<boolean>(false);
