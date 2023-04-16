@@ -10,27 +10,13 @@ import { runIfFn } from "utils";
 
 export interface ResturantFindTableFilterStepperHeaderProps {
   currentStepIdx: number;
-  stepsLen?: number;
+  steps: { icon: React.ReactElement; name: string }[];
 }
 
 export const ResturantFindTableFilterStepperHeader: React.FC<
   ResturantFindTableFilterStepperHeaderProps
-> = ({ currentStepIdx = 0, stepsLen = 3 }) => {
-  const steps: { icon: React.ReactNode; name: string }[] = [
-    {
-      icon: CalenderIcon,
-      name: "Date",
-    },
-    {
-      icon: ClockIcon,
-      name: "Time",
-    },
-    {
-      icon: PersonIcon,
-      name: "Guests",
-    },
-  ];
-
+> = ({ currentStepIdx = 0, steps }) => {
+  const stepsLen = steps.length;
   return (
     <div className="relative overflow-hidden h-8 flex items-center w-full">
       <div className="absolute z-[1] items-center justify-evenly w-full flex ">

@@ -13,12 +13,19 @@ export const HotelGuestsInput: React.FC<HotelGuestsInputProps> = ({
   count,
 }) => {
   return (
-    <div className="text-xl p-4 flex items-center w-full bg-white justify-between">
+    <div className="flex items-center w-full bg-white justify-between">
       <div className="flex flex-col gap-1">
         <p className="font-bold">{name || ""}</p>
-        <p>{description || ""}</p>
+        <p className="font-medium">{description || ""}</p>
       </div>
-      <CountInput count={count} onCountChange={onCountChange} max={5} min={0} />
+      <div className="text-xl">
+        <CountInput
+          count={count}
+          onCountChange={onCountChange}
+          max={5}
+          min={0}
+        />
+      </div>
     </div>
   );
 };

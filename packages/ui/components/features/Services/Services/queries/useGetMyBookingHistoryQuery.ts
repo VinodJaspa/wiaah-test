@@ -87,7 +87,7 @@ export type GetMyBookingsQuery = { __typename?: "Query" } & {
           >
         >;
         insurance?: Maybe<
-          { __typename?: "Insurance" } & Pick<Insurance, "amount">
+          { __typename?: "Insurance" } & Pick<Insurance, "amount" | "id">
         >;
       }
   >;
@@ -169,6 +169,7 @@ query getMyBookings(
     }
     insurance{
       amount
+      id
     }
   }
 }

@@ -12,7 +12,7 @@ import {
   ServicesProviderDescriptionSection,
   ServicePresentationCarosuel,
   StaticSideBarWrapper,
-  ServiceReservastion,
+  ServiceReservastionForm,
   SpinnerFallback,
   ServiceDetailsReviewsSection,
   SellerServiceWorkingHoursSection,

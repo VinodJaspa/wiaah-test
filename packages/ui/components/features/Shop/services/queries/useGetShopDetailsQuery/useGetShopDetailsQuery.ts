@@ -1,13 +1,17 @@
+import { isDev } from "@UI/../utils/src";
 import {
+  BusinessType,
   Exact,
   Location,
   Maybe,
   Scalars,
-  ServiceDayWorkingHours,
+  ServiceType,
   Shop,
+  ShopWorkingSchedule,
   SpecialDayWorkingHours,
-  WorkingSchedule,
+  StoreType,
 } from "@features/API";
+import { ServiceDayWorkingHours } from "@features/Services";
 import { createGraphqlRequestClient } from "api";
 import { useQuery, UseQueryOptions } from "react-query";
 
@@ -34,13 +38,14 @@ export type GetShopDetailsQuery = { __typename?: "Query" } & {
     | "type"
     | "storeType"
     | "verified"
+    | "ownerId"
   > & {
       location: { __typename?: "Location" } & Pick<
         Location,
         "address" | "city" | "country" | "lat" | "long" | "postalCode" | "state"
       >;
       workingSchedule: { __typename?: "WorkingSchedule" } & Pick<
-        WorkingSchedule,
+        ShopWorkingSchedule,
         "sellerId" | "id"
       > & {
           weekdays: { __typename?: "WeekdaysWorkingHours" } & {
@@ -101,22 +106,76 @@ export type GetShopDetailsQuery = { __typename?: "Query" } & {
         };
     };
 };
+export const getShopDetailsQueryKey = (userId: string) => [
+  "shopDetails",
+  { userId },
+];
 
-export const useGetShopDetailsQuery = (
-  userId: string,
-  options?: UseQueryOptions<
-    any,
-    unknown,
-    GetShopDetailsQuery["getUserShop"],
-    any
-  >
-) => {
-  return useQuery(
-    ["shopDetails", { userId }],
-    async () => {
-      const client = createGraphqlRequestClient();
+export const getShopDetailsQueryFetcher = async (userId: string) => {
+  if (isDev) {
+    const resMock: GetShopDetailsQuery["getUserShop"] = {
+      storeType: StoreType.Service,
+      type: ServiceType.Hotel,
+      ownerId: "",
+      banner: "",
+      businessType: BusinessType.Individual,
+      createdAt: new Date().toUTCString(),
+      description: "test shop description",
+      email: "test@email.com",
+      id: "testid",
+      images: [],
+      location: {
+        address: "address 1",
+        city: "city",
+        country: "country",
+        lat: 45,
+        long: 65,
+        postalCode: "1546",
+        state: "state",
+      },
+      name: "service name",
+      phone: "1324658",
+      rating: 5,
+      reviews: 160,
+      thumbnail: "",
+      verified: true,
+      videos: [],
+      workingSchedule: {
+        id: "",
+        sellerId: "",
+        specialDays: [],
+        weekdays: {
+          mo: {
+            periods: [new Date().toUTCString(), new Date().toUTCString()],
+          },
+          tu: {
+            periods: [new Date().toUTCString(), new Date().toUTCString()],
+          },
+          we: {
+            periods: [new Date().toUTCString(), new Date().toUTCString()],
+          },
+          th: {
+            periods: [new Date().toUTCString(), new Date().toUTCString()],
+          },
+          fr: {
+            periods: [new Date().toUTCString(), new Date().toUTCString()],
+          },
+          sa: {
+            periods: [new Date().toUTCString(), new Date().toUTCString()],
+          },
+          su: {
+            periods: [new Date().toUTCString(), new Date().toUTCString()],
+          },
+        },
+      },
+    };
 
-      client.setQuery(`
+    return resMock;
+  }
+
+  const client = createGraphqlRequestClient();
+
+  client.setQuery(`
 query getShopDetails($userId:String!){
   getUserShop(userId:$userId){
     banner
@@ -136,6 +195,7 @@ query getShopDetails($userId:String!){
     }
     email
     id
+    ownerId
     name
     phone
     rating
@@ -181,12 +241,25 @@ query getShopDetails($userId:String!){
 }
     `);
 
-      const res = await client
-        .setVariables<GetShopDetailsQueryVariables>({ userId })
-        .send<GetShopDetailsQuery>();
+  const res = await client
+    .setVariables<GetShopDetailsQueryVariables>({ userId })
+    .send<GetShopDetailsQuery>();
 
-      return res.data.getUserShop;
-    },
+  return res.data.getUserShop;
+};
+
+export const useGetShopDetailsQuery = (
+  userId: string,
+  options?: UseQueryOptions<
+    any,
+    unknown,
+    GetShopDetailsQuery["getUserShop"],
+    any
+  >
+) => {
+  return useQuery(
+    getShopDetailsQueryKey(userId),
+    () => getShopDetailsQueryFetcher(userId),
     options
   );
 };

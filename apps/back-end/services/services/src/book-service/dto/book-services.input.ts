@@ -1,11 +1,4 @@
-import {
-  InputType,
-  Int,
-  Field,
-  ID,
-  PartialType,
-  IntersectionType,
-} from '@nestjs/graphql';
+import { InputType, Int, Field, ID, IntersectionType } from '@nestjs/graphql';
 
 @InputType()
 class required {
@@ -24,26 +17,14 @@ class optional {
   @Field(() => Date)
   checkout: Date;
 
-  @Field(() => ID)
-  roomId: string;
-
   @Field(() => [ID])
   extrasIds: string[];
 
   @Field(() => [ID])
   treatmentsIds: string[];
 
-  @Field(() => ID)
-  doctorId: string;
-
-  @Field(() => Int)
-  duration: number;
-
   @Field(() => [ID])
   dishsIds: string[];
-
-  @Field(() => String)
-  vehicleId: string;
 }
 
 @InputType()

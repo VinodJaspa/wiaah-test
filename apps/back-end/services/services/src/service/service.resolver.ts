@@ -289,6 +289,24 @@ export class ServiceResolver {
     return service as any; // TODO: format service data to user prefered lang
   }
 
+  @Query(() => [Service])
+  async getUserServicesByIds(
+    @Args('sellerId') sellerId: string,
+    @Args('servicesIds', { type: () => [String] }) ids: string[],
+  ) {
+    const res = await this.prisma.service.findMany({
+      where: {
+        sellerId,
+        id: {
+          in: ids,
+        },
+        status: 'active',
+      },
+    });
+
+    return res;
+  }
+
   @Mutation(() => Boolean)
   @UseGuards(new GqlAuthorizationGuard([accountType.SELLER, accountType.ADMIN]))
   async deleteService(

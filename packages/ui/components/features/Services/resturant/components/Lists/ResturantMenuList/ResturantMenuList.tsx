@@ -1,17 +1,13 @@
 import React from "react";
-import {
-  Divider,
-  PriceDisplay,
-  CountInput,
-  AspectRatioImage,
-  Badge,
-} from "@UI";
+import { PriceDisplay, CountInput, AspectRatioImage } from "@UI";
 import { mapArray } from "utils";
-import { RestaurantMenu } from "@features/API";
+import { Dish, RestaurantMenu } from "@features/API";
 
 export interface ResturantMenuListProps {
   onMenuListChange: (menuItemId: string, quantity: number) => any;
-  menu: RestaurantMenu;
+  menu: Pick<RestaurantMenu, "name" | "id"> & {
+    dishs: Pick<Dish, "name" | "thumbnail" | "ingredients" | "price" | "id">[];
+  };
 }
 
 export const ResturantMenuList: React.FC<ResturantMenuListProps> = ({

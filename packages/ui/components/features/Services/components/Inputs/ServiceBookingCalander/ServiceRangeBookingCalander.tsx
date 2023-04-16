@@ -1,6 +1,6 @@
 import { useOutsideHover } from "@UI/../hooks";
 import { isDate, isSameDay, mapArray } from "@UI/../utils/src";
-import { ArrowLeftIcon, ArrowRightIcon, HStack } from "@partials";
+import { ArrowLeftIcon, ArrowRightIcon, AspectRatio, HStack } from "@partials";
 import React from "react";
 
 type date = number | string | Date;
@@ -80,7 +80,7 @@ export const ServiceRangeBookingCalander: React.FC<
   ];
 
   return (
-    <div className="select-none w-fit">
+    <div className="select-none w-full">
       <HStack className="text-3xl justify-between mx-[0.5em]">
         <ArrowLeftIcon onClick={() => prevMonth()} />
         <p className="font-bold text-lg text-center">
@@ -167,59 +167,61 @@ const DayComp: React.FC<
   });
 
   return (
-    <p
-      onMouseOver={() => setHover(true)}
-      ref={ref}
-      onClick={() => {
-        if (!currentMonth || isBooked) return;
-        const from = value[0];
-        const to = value[1];
+    <AspectRatio ratio={1}>
+      <p
+        onMouseOver={() => setHover(true)}
+        ref={ref}
+        onClick={() => {
+          if (!currentMonth || isBooked) return;
+          const from = value[0];
+          const to = value[1];
 
-        if (hover) {
-          if (from && isSameDay(new Date(from), new Date(currentDate))) {
-            return onChange([undefined, to]);
+          if (hover) {
+            if (from && isSameDay(new Date(from), new Date(currentDate))) {
+              return onChange([undefined, to]);
+            }
+
+            if (to && isSameDay(new Date(to), new Date(currentDate))) {
+              return onChange([from, undefined]);
+            }
           }
 
-          if (to && isSameDay(new Date(to), new Date(currentDate))) {
-            return onChange([from, undefined]);
+          if (!from) {
+            if (
+              !!to &&
+              isDate(to) &&
+              isDate(currentDate) &&
+              new Date(currentDate) > new Date(to)
+            ) {
+              return onChange([to, currentDate]);
+            }
+            return onChange([currentDate, to]);
           }
-        }
 
-        if (!from) {
-          if (
-            !!to &&
-            isDate(to) &&
-            isDate(currentDate) &&
-            new Date(currentDate) > new Date(to)
-          ) {
-            return onChange([to, currentDate]);
-          }
-          return onChange([currentDate, to]);
-        }
+          if (currentDate < from!) return onChange([currentDate, to]);
 
-        if (currentDate < from!) return onChange([currentDate, to]);
-
-        onChange([from!, currentDate]);
-      }}
-      className={`${
-        isBooked
-          ? "text-gray-400 cursor-not-allowed line-through"
-          : isSelected
-          ? "bg-black text-white cursor-pointer"
-          : !currentMonth
-          ? "cursor-not-allowed text-gray-400"
-          : "text-black cursor-pointer"
-      } w-[2.5em] h-[2.5em] flex justify-center items-center rounded-full font-bold text-center`}
-    >
-      {currentMonth ? (
-        isSelected && hover ? (
-          "X"
+          onChange([from!, currentDate]);
+        }}
+        className={`${
+          isBooked
+            ? "text-gray-400 cursor-not-allowed line-through"
+            : isSelected
+            ? "bg-black text-white cursor-pointer"
+            : !currentMonth
+            ? "cursor-not-allowed text-gray-400"
+            : "text-black cursor-pointer"
+        } w-full h-full flex justify-center items-center rounded-full font-bold text-center`}
+      >
+        {currentMonth ? (
+          isSelected && hover ? (
+            "X"
+          ) : (
+            new Date(currentDate).getDate()
+          )
         ) : (
-          new Date(currentDate).getDate()
-        )
-      ) : (
-        <span className="font-bold text-2xl leading-3">-</span>
-      )}
-    </p>
+          <span className="font-bold text-2xl leading-3">-</span>
+        )}
+      </p>
+    </AspectRatio>
   );
 };

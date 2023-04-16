@@ -36,6 +36,10 @@ export type GetUserServicesQuery = { __typename?: "Query" } & {
           | "type"
           | "menuType"
           | "treatmentCategory"
+          | "ingredients"
+          | "description"
+          | "rating"
+          | "reviews"
         >
       >;
     };
@@ -69,6 +73,8 @@ query getUserServices($userId:String!, $pagination:GqlCursorPaginationInput!) {
     data {
       id
       name
+      reviews
+      rating
       thumbnail
       price
       beds
@@ -81,6 +87,8 @@ query getUserServices($userId:String!, $pagination:GqlCursorPaginationInput!) {
       type
       menuType
       treatmentCategory
+      ingredients
+      description
     }
   }
 }

@@ -565,6 +565,7 @@ type Cashback {
 type Query {
   getUserServices(userId: String!, pagination: GqlCursorPaginationInput!): ServicesCursorPaginationResponse!
   getServiceDetails(id: String!, isClick: Boolean!): Service
+  getUserServicesByIds(sellerId: String!, servicesIds: [String!]!): [Service!]!
   getHotelAvailablity(id: String!, monthDate: String!): HotelAvailablity!
   adminGetAccountService(accountId: String!): Service!
   adminGetDishs(args: AdminGetDishsInput!): [Dish!]!
@@ -1067,13 +1068,9 @@ input DeclineAppointmentInput {
 
 input BookServiceInput {
   checkout: DateTime!
-  roomId: ID!
   extrasIds: ID!
   treatmentsIds: ID!
-  doctorId: ID!
-  duration: Int!
   dishsIds: ID!
-  vehicleId: String!
   serviceId: ID!
   checkin: DateTime!
   guests: Int!

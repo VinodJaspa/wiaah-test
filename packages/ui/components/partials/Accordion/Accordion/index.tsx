@@ -6,6 +6,8 @@ export interface AccordionProps {
   isLazy?: boolean;
   defaultOpen?: boolean;
   defaultOpenItems?: AccordionKeyType[];
+  onChange?: (v: AccordionKeyType[]) => any;
+  value?: AccordionKeyType[];
 }
 
 export const Accordion: React.FC<AccordionProps> = ({
@@ -13,11 +15,16 @@ export const Accordion: React.FC<AccordionProps> = ({
   isLazy,
   defaultOpenItems,
   defaultOpen = false,
+  onChange: _onChange,
+  value: _value,
   ...props
 }) => {
   const [itemsOpen, setItemsOpen] = React.useState<AccordionKeyType[]>(
     defaultOpenItems || []
   );
+
+  const value = _value ?? itemsOpen;
+  const onChange = _onChange ?? setItemsOpen;
 
   function toggleItem(key: AccordionKeyType) {
     const isOpen = isItemOpen(key);
@@ -29,30 +36,25 @@ export const Accordion: React.FC<AccordionProps> = ({
   }
 
   function openItem(key: AccordionKeyType) {
-    setItemsOpen((state) => {
-      if (controled) {
-        return [key];
-      }
-      return [...state, key];
-    });
+    onChange(controled ? [key] : [...value, key]);
   }
 
   function isItemOpen(key: AccordionKeyType): boolean {
-    const item = itemsOpen.findIndex((item) => item === key);
+    const item = value.findIndex((item) => item === key);
     return item > -1;
   }
 
   function closeItem(key: AccordionKeyType) {
-    setItemsOpen((state) => state.filter((item) => item !== key));
+    onChange(value.filter((item) => item !== key));
   }
   function closeAll() {
-    setItemsOpen([]);
+    onChange([]);
   }
 
   return (
     <AccordionContext.Provider
       value={{
-        itemsOpen,
+        itemsOpen: value,
         isLazy: !!isLazy,
         closeAll,
         closeItem,

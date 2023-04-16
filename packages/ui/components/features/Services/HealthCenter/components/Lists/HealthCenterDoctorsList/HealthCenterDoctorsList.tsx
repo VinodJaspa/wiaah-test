@@ -6,13 +6,14 @@ import {
   HealthCenterDoctorCard,
   HealthCenterDoctor,
   ServiceCancelationPolicy,
+  HealthCenterDoctorCardProps,
 } from "@UI";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
 
 export interface HealthCenterDoctorsListProps {
-  doctors: HealthCenterDoctor[];
+  doctors: HealthCenterDoctorCardProps["doctor"][];
   cancelation: ServiceCancelationPolicy[];
 }
 

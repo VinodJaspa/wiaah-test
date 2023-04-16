@@ -1,43 +1,58 @@
-import { Form, Formik } from "formik";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useRouting } from "routing";
-import { useGetBookedServicesState } from "state";
 import {
-  useGetServicesProviderQuery,
-  useSearchFilters,
   Divider,
-  LocationIcon,
-  Select,
-  SelectOption,
-  TwoPersonIcon,
   CalenderIcon,
   HStack,
-  ArrowDownIcon,
-  Menu,
-  MenuList,
-  MenuButton,
-  DateInput,
   Button,
   BookedServicesCostDetails,
-  GuestsInput,
-  Input,
+  useGetServiceDataQuery,
+  ServiceRangeBookingCalander,
+  useBookServiceMutation,
+  HotelGuestsInput,
+  Stepper,
+  ResturantFindTableFilterStepperHeader,
+  StepperContent,
+  PersonIcon,
+  PriceDisplay,
+  ClockIcon,
+  TimeInput,
+  useGetShopServicesQuery,
+  useGetShopDetailsQuery,
+  RestaurantDishsCheckoutList,
+  TreatmentsCheckoutList,
 } from "@UI";
-import { isDate } from "utils";
-import { useDisclouser } from "hooks";
+import { useForm } from "utils";
+import { ServiceType } from "@features/API";
 
-export const ServiceReservastion: React.FC<{
+export const ServiceReservastionForm: React.FC<{
   serviceId: string;
-}> = ({ serviceId }) => {
-  const { visit } = useRouting();
-  const { handleClose, handleOpen, isOpen } = useDisclouser();
-  const { bookedServices } = useGetBookedServicesState();
-  const { filters } = useSearchFilters();
-  const {
-    data: res,
-    isError,
-    isLoading,
-  } = useGetServicesProviderQuery(serviceId);
+  sellerId: string;
+  selectedServicesIds?: string[];
+}> = ({ serviceId, selectedServicesIds, sellerId }) => {
+  const { data: service } = useGetServiceDataQuery(serviceId);
+
+  const { form, handleChange, inputProps } = useForm<
+    Parameters<typeof mutate>[0]
+  >({});
+
+  const showOn = (types: ServiceType[]) =>
+    types.includes(ServiceType.Restaurant);
+
+  const { data: shop } = useGetShopDetailsQuery(sellerId);
+
+  const { data: services } = useGetShopServicesQuery(
+    { ids: selectedServicesIds!, sellerId },
+    {
+      enabled:
+        // !!selectedServicesIds &&
+        // !!sellerId &&
+        showOn([ServiceType.Restaurant, ServiceType.BeautyCenter]),
+    }
+  );
+
+  const { mutate } = useBookServiceMutation();
+
   const [guests, setGuests] = React.useState<{
     adults: number;
     childrens: number;
@@ -49,144 +64,186 @@ export const ServiceReservastion: React.FC<{
   });
   const { t } = useTranslation();
 
+  const formatedDishs = services?.reduce((acc, curr) => {
+    const menu = acc.find((v) => v.menuName === curr.menuType);
+
+    if (menu) {
+      return acc
+        .filter((v) => v.menuName !== curr.menuType)
+        .concat([
+          {
+            menuName: curr.menuType || "",
+            dishs: [...(menu?.dishs || []), menu],
+          },
+        ]);
+    } else {
+      return acc.concat([
+        {
+          menuName: curr.menuType || "",
+          dishs: [...(menu?.dishs || []), curr],
+        },
+      ]);
+    }
+  }, [] as { menuName: string; dishs: typeof services }[]);
+
   return (
-    <div className="flex flex-col gap-[1.875rem]">
+    <div className="pl-16 flex flex-col gap-[1.875rem]">
       <div
         style={{ boxShadow: "0px 0px 6px rgba(0, 0, 0, 0.2)" }}
-        className="pt-5 pb-10 flex flex-col gap-4 rounded-[1.25rem]"
+        className="pt-5 pb-10 flex flex-col gap-4 p-4 rounded-[1.25rem]"
       >
         <p className="w-full text-center font-bold text-lg text-black">
-          {t("Start booking hotel")}
+          {t("Start your reservation")}
         </p>
         <Divider />
-        <Formik initialValues={{} as Record<string, any>} onSubmit={() => {}}>
-          {({ values, setFieldValue }) => (
-            <Form className="px-9 flex flex-col gap-[3.25rem]">
-              <div className="flex items-center gap-8 justify-between">
-                <div className="flex w-full flex-col gap-1">
-                  <div className="flex items-center gap-2">
-                    <LocationIcon className="text-primary text-[1.25rem]" />
-                    <p className="font-semibold text-base text-lightBlack">
-                      {t("Location")}
-                    </p>
-                  </div>
-                  <Select flushed>
-                    <SelectOption className="px-[0]" value={"paris"}>
-                      <p className="font-semibold text-lg">
-                        {t("Paris") + ", " + t("france")}
-                      </p>
-                    </SelectOption>
-                  </Select>
-                </div>
-                <div className="flex w-full flex-col gap-1">
-                  <div className="flex items-center gap-2">
-                    <TwoPersonIcon className="text-primary fill-primary text-[1.25rem]" />
-                    <p className="font-semibold text-base text-lightBlack">
-                      {t("Guests")}
-                    </p>
-                  </div>
-                  <GuestsInput onChange={(v) => setGuests(v)} value={guests}>
-                    <Input
-                      onFocus={() => handleOpen()}
-                      onBlur={() => handleClose()}
-                      value={`${guests.adults} ${t("Adults")} ${
-                        guests.childrens > 0
-                          ? `${guests.childrens}, ${t("childrens")}`
-                          : ""
-                      } ${
-                        guests.infants > 0
-                          ? `${guests.infants}, ${guests.infants}`
-                          : ""
-                      }`}
+
+        <Stepper>
+          {({ currentStepIdx, nextStep, previousStep, stepsLength }) => {
+            return (
+              <div className="flex flex-col gap-4 w-full">
+                <ResturantFindTableFilterStepperHeader
+                  currentStepIdx={currentStepIdx}
+                  steps={
+                    [
+                      {
+                        icon: <CalenderIcon />,
+                        name: t("Date"),
+                      },
+                      showOn([ServiceType.Restaurant])
+                        ? { icon: <ClockIcon />, name: t("Time") }
+                        : undefined,
+                      showOn([
+                        ServiceType.Hotel,
+                        ServiceType.HolidayRentals,
+                        ServiceType.Restaurant,
+                      ])
+                        ? {
+                            icon: <PersonIcon />,
+                            name: t("Guests"),
+                          }
+                        : undefined,
+                    ].filter((v) => !!v) as any
+                  }
+                />
+                <StepperContent>
+                  {showOn([
+                    ServiceType.Hotel,
+                    ServiceType.HolidayRentals,
+                    ServiceType.Vehicle,
+                    ServiceType.Restaurant,
+                  ]) ? (
+                    <ServiceRangeBookingCalander
+                      bookedDates={[new Date()]}
+                      date={new Date().toUTCString()}
+                      onChange={([from, to]) => {
+                        handleChange("checkin", from);
+                        handleChange("checkout", to);
+                      }}
+                      value={[form?.checkin, form?.checkout]}
                     />
-                  </GuestsInput>
-                </div>
-              </div>
+                  ) : undefined}
 
-              <div className="flex items-center justify-between gap-8">
-                <div className="flex flex-col w-full gap-1">
-                  <HStack>
-                    <CalenderIcon className="text-primary fill-primary text-[1.25rem] gap-1" />
-                    <p className="text-lightBlack font-bold">{t("Check-in")}</p>
-                  </HStack>
+                  {showOn([ServiceType.Restaurant]) ? <TimeInput /> : undefined}
 
-                  <Menu>
-                    <MenuButton>
-                      <div className="flex gap-1 px-2 justify-between items-center">
-                        <p className="text-black font-semibold text-lg">
-                          {isDate(values["checkin_date"])
-                            ? new Date(
-                                values["checkin_date"]
-                              ).toLocaleDateString("en", {
-                                dateStyle: "short",
-                              })
-                            : "dd/mm/yy"}
-                        </p>
-                        <ArrowDownIcon className="text-xl" />
-                      </div>
-                    </MenuButton>
-                    <MenuList>
-                      <DateInput
-                        value={values["checkin_date"]}
-                        onDaySelect={(date) => {
-                          console.log("date", date);
-                          setFieldValue("checkin_date", date);
-                        }}
-                      />
-                    </MenuList>
-                  </Menu>
-                </div>
-
-                <div className="flex flex-col w-full gap-1">
-                  <HStack>
-                    <CalenderIcon className="text-primary fill-primary text-[1.25rem] gap-1" />
-                    <p className="text-lightBlack font-bold">
-                      {t("Check-out")}
-                    </p>
-                  </HStack>
-
-                  <Menu>
-                    <MenuButton>
-                      <div className="flex gap-1 px-2 justify-between items-center">
-                        <p className="text-black font-semibold text-lg">
-                          {isDate(values["checkout_date"])
-                            ? new Date(
-                                values["checkout_date"]
-                              ).toLocaleDateString("en", {
-                                dateStyle: "short",
-                              })
-                            : "dd/mm/yy"}
-                        </p>
-                        <ArrowDownIcon className="text-2xl" />
-                      </div>
-                    </MenuButton>
-                    <MenuList>
-                      <DateInput
-                        value={values["checkout_date"]}
-                        onDaySelect={(date) =>
-                          setFieldValue("checkout_date", date)
+                  {showOn([
+                    ServiceType.Hotel,
+                    ServiceType.HolidayRentals,
+                    ServiceType.Restaurant,
+                  ]) ? (
+                    <div className="flex flex-col gap-4">
+                      <HotelGuestsInput
+                        name={t("Adults")}
+                        count={guests.adults}
+                        description={`${t("Age")} 13+`}
+                        onCountChange={(v) =>
+                          setGuests({ ...guests, adults: v })
                         }
                       />
-                    </MenuList>
-                  </Menu>
-                </div>
+                      <HotelGuestsInput
+                        count={guests.childrens}
+                        name={t("Children")}
+                        description={`${t("Ages")} 2-12`}
+                        onCountChange={(v) =>
+                          setGuests({ ...guests, adults: v })
+                        }
+                      />
+                      <HotelGuestsInput
+                        name={t("Infants")}
+                        count={guests.infants}
+                        description={`${t("Under")} 2 ${t("years old")}`}
+                        onCountChange={(v) =>
+                          setGuests({ ...guests, adults: v })
+                        }
+                      />
+                    </div>
+                  ) : null}
+                </StepperContent>
+                <HStack className="justify-between">
+                  {currentStepIdx === 0 ? (
+                    <div></div>
+                  ) : (
+                    <Button colorScheme="gray" onClick={() => previousStep()}>
+                      {t("Previous")}
+                    </Button>
+                  )}
+                  {currentStepIdx === stepsLength - 1 ? (
+                    <div></div>
+                  ) : (
+                    <Button
+                      onClick={() => nextStep()}
+                      // disabled={
+                      //   typeof form.checkin !== "string" ||
+                      //   typeof form.checkout !== "string"
+                      // }
+                    >
+                      {t("Next")}
+                    </Button>
+                  )}
+                </HStack>
               </div>
-              <Button className="text-[1.375rem]">
-                {t("Check availablity")}
-              </Button>
-            </Form>
-          )}
-        </Formik>
-      </div>
-      <div className="px-11">
-        <BookedServicesCostDetails title="Rooms" vat={12 || 0}>
-          <div className="font-medium text-sm text-black flex justify-between items-center">
-            <p>{t("Rooms")}</p>
-            <p className="text-black text-sm font-medium text-opacity-50">
-              {bookedServices.length}
-            </p>
-          </div>
-        </BookedServicesCostDetails>
+            );
+          }}
+        </Stepper>
+        <Divider />
+        <div className="flex flex-col gap-4">
+          {showOn([ServiceType.Restaurant]) ? (
+            <RestaurantDishsCheckoutList
+              menus={
+                formatedDishs?.map((v) => ({
+                  name: v.menuName,
+                  dishs: v.dishs.map((e) => ({
+                    name: e.name,
+                    thumbnail: e.thumbnail,
+                    price: e.price,
+                    ingredints: e.ingredients,
+                    qty: v.dishs.filter((d) => d.id === e.id).length,
+                  })),
+                })) || []
+              }
+            />
+          ) : null}
+          {showOn([ServiceType.BeautyCenter]) ? (
+            <TreatmentsCheckoutList
+              treatments={
+                services?.map((v) => ({
+                  name: v.name,
+                  price: v.price,
+                  thumbnail: v.thumbnail,
+                })) || []
+              }
+            />
+          ) : null}
+        </div>
+        <Divider />
+        <div className="">
+          <BookedServicesCostDetails title="Rooms" vat={12 || 0}>
+            <div className="font-medium text-sm text-black flex justify-between items-center">
+              <p>{t("Deposit")}</p>
+              <PriceDisplay price={250} />
+            </div>
+          </BookedServicesCostDetails>
+        </div>
+        <Button className="text-[1.375rem]">{t("Book")}</Button>
       </div>
     </div>
   );

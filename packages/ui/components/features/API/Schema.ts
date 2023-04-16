@@ -625,14 +625,10 @@ export type BookServiceInput = {
   checkin: Scalars["DateTime"];
   checkout: Scalars["DateTime"];
   dishsIds: Scalars["ID"];
-  doctorId: Scalars["ID"];
-  duration: Scalars["Int"];
   extrasIds: Scalars["ID"];
   guests: Scalars["Int"];
-  roomId: Scalars["ID"];
   serviceId: Scalars["ID"];
   treatmentsIds: Scalars["ID"];
-  vehicleId: Scalars["String"];
 };
 
 export type BookedService = {
@@ -3907,6 +3903,7 @@ export type Query = {
   getUserProductPosts: Array<ProductPost>;
   getUserServicePosts: Array<ServicePost>;
   getUserServices: ServicesCursorPaginationResponse;
+  getUserServicesByIds: Array<Service>;
   getUserShop: Shop;
   getUserStory: Story;
   getUserWishelist: Array<WishedItem>;
@@ -4543,6 +4540,11 @@ export type QueryGetUserServicePostsArgs = {
 export type QueryGetUserServicesArgs = {
   pagination: GqlCursorPaginationInput;
   userId: Scalars["String"];
+};
+
+export type QueryGetUserServicesByIdsArgs = {
+  sellerId: Scalars["String"];
+  servicesIds: Array<Scalars["String"]>;
 };
 
 export type QueryGetUserShopArgs = {
