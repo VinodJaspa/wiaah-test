@@ -48,7 +48,7 @@ export const ResturantMenuListSection: React.FC<
             />
           ))
         : null}
-      <div className="flex flex-col gap-1">
+      {/* <div className="flex flex-col gap-1">
         <p className="font-bold">{t("Cancelation policy")}</p>
         {mapArray(cancelation, (policy, i) => (
           <ServiceCancelationPolicyInput
@@ -58,7 +58,7 @@ export const ResturantMenuListSection: React.FC<
             key={`${i}-${policy.cost}`}
           />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

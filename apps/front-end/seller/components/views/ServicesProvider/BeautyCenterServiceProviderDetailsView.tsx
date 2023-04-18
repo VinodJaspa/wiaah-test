@@ -2,15 +2,10 @@ import React from "react";
 import {
   ServicesProviderHeader,
   SpinnerFallback,
-  useSearchFilters,
   Divider,
   ServiceReachOutSection,
   ServiceOnMapLocalizationSection,
   ServicePoliciesSection,
-  ServiceWorkingHoursSection,
-  ServicesProviderDescriptionSection,
-  Reviews,
-  SectionTabType,
   ServicePresentationCarosuel,
   StaticSideBarWrapper,
   useGetBeautyCenterDetailsQuery,
@@ -25,6 +20,7 @@ import {
   Image,
   LocationOnPointFillIcon,
   Button,
+  ServiceReservastionForm,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -213,7 +209,17 @@ export const BeautyCenterServiceDetailsView: React.FC = () => {
           />
         ) : null}
       </SpinnerFallback>
-      <StaticSideBarWrapper sidebar={null}>
+      <StaticSideBarWrapper
+        sidebar={() => {
+          return (
+            <ServiceReservastionForm
+              sellerId={"test"}
+              selectedServicesIds={[]}
+              serviceId={""}
+            />
+          );
+        }}
+      >
         <Tabs>
           {({ currentTabIdx }) => {
             return (

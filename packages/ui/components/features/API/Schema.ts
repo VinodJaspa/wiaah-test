@@ -4802,6 +4802,7 @@ export type SellerProductsRating = {
 export type Service = {
   __typename?: "Service";
   adaptedFor?: Maybe<Array<ServiceAdaptation>>;
+  airCondition?: Maybe<Scalars["Boolean"]>;
   availableAppointments?: Maybe<Array<Scalars["String"]>>;
   bathrooms?: Maybe<Scalars["Int"]>;
   beds?: Maybe<Scalars["Int"]>;
@@ -4817,10 +4818,13 @@ export type Service = {
   discount?: Maybe<ServiceDiscount>;
   duration?: Maybe<Scalars["Int"]>;
   extras?: Maybe<Array<ServiceExtra>>;
+  gpsAvailable?: Maybe<Scalars["Boolean"]>;
   id: Scalars["ID"];
   includedAmenities?: Maybe<Array<Scalars["String"]>>;
   includedServices?: Maybe<Array<Scalars["String"]>>;
   ingredients?: Maybe<Array<Scalars["String"]>>;
+  lugaggeCapacity?: Maybe<Scalars["Int"]>;
+  maxSpeedInKm?: Maybe<Scalars["Int"]>;
   measurements?: Maybe<ServicePropertyMeasurements>;
   menuType?: Maybe<RestaurantDishType>;
   model?: Maybe<Scalars["String"]>;
@@ -4833,6 +4837,7 @@ export type Service = {
   rating: Scalars["Float"];
   restriction?: Maybe<Array<ServiceRestriction>>;
   reviews: Scalars["Int"];
+  seats?: Maybe<Scalars["Int"]>;
   sellerId: Scalars["ID"];
   sessionDurationMins?: Maybe<Scalars["Int"]>;
   speakingLanguages?: Maybe<Array<DoctorSpeakingLanguage>>;
@@ -4846,6 +4851,7 @@ export type Service = {
   units?: Maybe<Scalars["Int"]>;
   updatedAt: Scalars["String"];
   vehicleCategoryId?: Maybe<Scalars["String"]>;
+  windows?: Maybe<Scalars["Int"]>;
   workingHours?: Maybe<ServiceWorkingSchedule>;
 };
 

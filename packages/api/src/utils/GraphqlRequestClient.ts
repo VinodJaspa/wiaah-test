@@ -1,6 +1,32 @@
-import { gql, request, GraphQLClient } from "graphql-request";
+import { gql, GraphQLClient } from "graphql-request";
+import { ReactPubsubClient } from "react-pubsub";
 
-export class GraphqlRequestClinet extends GraphQLClient {
+const GraphqlPubsubClient = new ReactPubsubClient();
+
+enum KnownErrorCodes {
+  unAuthorized = 0,
+}
+
+const pubsubEvents = {
+  errorCode: (code: any) => {
+    return `graphql-request-error-${code}`;
+  },
+};
+
+export const useGraphqlRequestErrorCode = (
+  getCode: (codes: typeof KnownErrorCodes) => KnownErrorCodes,
+  cb: () => any
+) => {
+  console.log("subscring");
+  GraphqlPubsubClient.Subscribe(
+    pubsubEvents.errorCode(
+      typeof getCode === "function" ? getCode(KnownErrorCodes) : ""
+    ),
+    cb
+  );
+};
+
+export class GraphqlRequestClient extends GraphQLClient {
   private query: string | null = null;
   private vars: any = {};
 
@@ -24,15 +50,34 @@ export class GraphqlRequestClinet extends GraphQLClient {
 
   async send<TRes>() {
     console.log("send");
-    if (!this.query) throw new Error("no query");
+    try {
+      if (!this.query) throw new Error("no query");
 
-    const res = await this.rawRequest<TRes>(this.query, this.vars);
-    return res;
+      const res = await this.rawRequest<TRes>(this.query, this.vars);
+      return res;
+    } catch (error) {
+      // @ts-ignore
+      const errors = error?.response?.errors.map((v) => ({
+        code: v?.extensions?.exception?.code,
+      }));
+
+      const validErrors = errors?.filter(
+        // @ts-ignore
+        (v) => typeof v.code === "string" || typeof v.code === "number"
+      );
+
+      validErrors?.forEach((v: typeof KnownErrorCodes) => {
+        console.log("publishing");
+        GraphqlPubsubClient.Publish(pubsubEvents.errorCode(v));
+      });
+
+      return null as unknown as { data: TRes };
+    }
   }
 }
 
 export function createGraphqlRequestClient(cred: boolean = true) {
-  const client = new GraphqlRequestClinet("http://localhost:3003/graphql", {
+  const client = new GraphqlRequestClient("http://localhost:3003/graphql", {
     credentials: cred ? "include" : undefined,
   });
   return client;

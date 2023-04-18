@@ -2,12 +2,19 @@ import {
   Injectable,
   CanActivate,
   ExecutionContext,
-  UnauthorizedException,
+  HttpException,
 } from "@nestjs/common";
 import { GqlExecutionContext } from "@nestjs/graphql";
 import { Observable } from "rxjs";
 import { AccountType, AuthorizationDecodedUser } from "../types";
 import { accountType } from "../constants";
+import { KnownError, PublicErrorCodes } from "../Errors/knownError";
+
+class AuthorizationRequired extends KnownError {
+  constructor(msg: string) {
+    super(msg, PublicErrorCodes.unAuthorized);
+  }
+}
 
 @Injectable()
 export class GqlAuthorizationGuard implements CanActivate {
@@ -30,8 +37,8 @@ export class GqlAuthorizationGuard implements CanActivate {
       if (isPublic) {
         return true;
       } else {
-        throw new UnauthorizedException(
-          "this account can not preform this action"
+        throw new AuthorizationRequired(
+          "this account can not preform this actionawjdhkja"
         );
       }
     }
@@ -39,13 +46,15 @@ export class GqlAuthorizationGuard implements CanActivate {
     if (this.roles) {
       if (this.roles.length === 0) return true;
       if (!user.accountType || !this.roles.includes(user.accountType)) {
-        throw new UnauthorizedException(
-          "this account can not preform this action"
+        throw new AuthorizationRequired(
+          "this account can not preform this action1324654"
         );
       }
     } else {
       return false;
     }
+
+    console.log("checking with user");
 
     return !!user;
   }

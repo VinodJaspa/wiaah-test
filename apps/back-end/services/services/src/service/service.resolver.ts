@@ -24,7 +24,9 @@ import {
   AddToDate,
   AuthorizationDecodedUser,
   CreateGqlCursorPaginatedResponse,
+  GetDateDiff,
   GetDateOfDayInWeekOfMonth,
+  getDatesInRangeDays,
   GetLang,
   getTranslatedResource,
   GqlAuthorizationGuard,
@@ -47,7 +49,10 @@ import {
 import { ClientKafka } from '@nestjs/microservices';
 import { HotelAvailablity } from './entities/service-availablity.entity';
 import { Service as ServicePrisma } from 'prismaClient';
-import { FileUpload, GraphQLUpload, Upload } from 'graphql-upload';
+import { GraphQLUpload, Upload } from 'graphql-upload';
+import { BookingCost } from './entities/booking-cost.entity';
+import { GetBookingCostInput } from './dto/get-booking-cost.input';
+import { Weekdays } from './utils';
 
 enum weekdaysNum {
   su = 0,
@@ -417,6 +422,51 @@ export class ServiceResolver {
     return {
       bookedDates: weekOfDates.concat(bookings),
     };
+  }
+
+  @Query(() => BookingCost, { nullable: true })
+  async getBookingCost(
+    @Args('args') input: GetBookingCostInput,
+  ): Promise<BookingCost> {
+    const { checkinDate, checkoutDate, extrasIds, servicesIds, checkinTime } =
+      input;
+
+    if (servicesIds.length < 1) return null;
+
+    const services = await this.prisma.service.findMany({
+      where: {
+        id: {
+          in: servicesIds,
+        },
+      },
+    });
+
+    const serviceType = services.at(0).type;
+
+    const multipleServices = (
+      [ServiceType.beauty_center, ServiceType.restaurant] as ServiceType[]
+    ).includes(serviceType);
+
+    const validServices = multipleServices
+      ? services.filter((v) => v.type === serviceType)
+      : [services.at(0)];
+
+    let totalCost = 0;
+
+    validServices.forEach((v, i) => {
+      const hotel = v;
+      const dates = multipleServices
+        ? [new Date(checkinDate)]
+        : getDatesInRangeDays(new Date(checkinDate), new Date(checkoutDate));
+
+      const serviceDailyPrices = hotel.dailyPrice ? hotel.dailyPrices : [];
+
+      dates.forEach((v) => {
+        const weekDay = v.getDay();
+        const price = serviceDailyPrices[Weekdays[weekDay]] || hotel.price;
+        totalCost += price;
+      });
+    });
   }
 
   validateUserPremission(

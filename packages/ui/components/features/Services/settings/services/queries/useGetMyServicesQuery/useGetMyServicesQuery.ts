@@ -1,8 +1,16 @@
+import { isDev } from "@UI/../utils/src";
 import {
   Exact,
   GqlCursorPaginationInput,
+  Maybe,
+  RestaurantDishType,
   Scalars,
   Service,
+  ServiceAdaptation,
+  ServiceDiscount,
+  ServiceExtra,
+  ServicePropertyMeasurements,
+  ServiceType,
   ServicesCursorPaginationResponse,
 } from "@features/API";
 import { useUserData } from "@src/index";
@@ -24,6 +32,8 @@ export type GetUserServicesQuery = { __typename?: "Query" } & {
           Service,
           | "id"
           | "name"
+          | "reviews"
+          | "rating"
           | "thumbnail"
           | "price"
           | "beds"
@@ -38,9 +48,40 @@ export type GetUserServicesQuery = { __typename?: "Query" } & {
           | "treatmentCategory"
           | "ingredients"
           | "description"
-          | "rating"
-          | "reviews"
-        >
+          | "seats"
+          | "windows"
+          | "gpsAvailable"
+          | "airCondition"
+          | "lugaggeCapacity"
+          | "maxSpeedInKm"
+          | "includedAmenities"
+          | "adaptedFor"
+          | "treatmentCategoryId"
+          | "sellerId"
+          | "duration"
+        > & {
+            extras?: Maybe<
+              Array<
+                { __typename?: "ServiceExtra" } & Pick<
+                  ServiceExtra,
+                  "cost" | "name"
+                >
+              >
+            >;
+            measurements?: Maybe<
+              { __typename?: "ServicePropertyMeasurements" } & Pick<
+                ServicePropertyMeasurements,
+                "inFeet" | "inMeter"
+              >
+            >;
+            discount?: Maybe<
+              { __typename?: "ServiceDiscount" } & Pick<
+                ServiceDiscount,
+                "units" | "value"
+              >
+            >;
+            treatmentCategory?: string;
+          }
       >;
     };
 };
@@ -60,10 +101,62 @@ export const useGetUserServicesQuery = (
 ) => {
   return useQuery(
     getUserServicesQueryKey({ pagination, userId }),
-    () => {
+    async () => {
+      if (isDev) {
+        const mockRes: GetUserServicesQuery["getUserServices"] = {
+          data: [...Array(10)].map((_, i) => ({
+            id: i.toString(),
+            createdAt: new Date().toString(),
+            description: "hotel room description placeholder",
+            name: "Standard room",
+            price: 130,
+            rating: 4.5,
+            reviews: 162,
+            thumbnail:
+              "https://cdn.loewshotels.com/loewshotels.com-2466770763/cms/cache/v2/5f5a6e0d12749.jpg/1920x1080/fit/80/86e685af18659ee9ecca35c465603812.jpg",
+            type: ServiceType.Hotel,
+            bathrooms: 3,
+            beds: 4,
+            brand: "Brand",
+            num_of_rooms: 5,
+            menuType: RestaurantDishType.Starter,
+            ingredients: ["tomate", "onion"],
+            duration: 45,
+            measurements: {
+              inFeet: 156,
+              inMeter: 70,
+            },
+            model: "Model",
+            speciality: "Dentist",
+            discount: {
+              units: 5,
+              value: 10,
+            },
+            adaptedFor: [ServiceAdaptation.Children, ServiceAdaptation.NewBorn],
+            treatmentCategory: "Facial",
+            includedAmenities: ["wi-fi", "pool"],
+            extras: [
+              { name: "parking", cost: 40 },
+              { name: "breakfast", cost: 20 },
+            ],
+            airCondition: true,
+            gpsAvailable: true,
+            lugaggeCapacity: 2,
+            maxSpeedInKm: 160,
+            seats: 5,
+            windows: 4,
+            treatmentCategoryId: "",
+            sellerId: "",
+          })),
+          cursor: "",
+          hasMore: false,
+        };
+        return mockRes;
+      }
+
       const client = createGraphqlRequestClient();
 
-      const res = client
+      const res = await client
         .setQuery(
           `
 query getUserServices($userId:String!, $pagination:GqlCursorPaginationInput!) {
@@ -72,6 +165,7 @@ query getUserServices($userId:String!, $pagination:GqlCursorPaginationInput!) {
     hasMore
     data {
       id
+      sellerId
       name
       reviews
       rating
@@ -89,6 +183,28 @@ query getUserServices($userId:String!, $pagination:GqlCursorPaginationInput!) {
       treatmentCategory
       ingredients
       description
+      seats
+      windows
+      gpsAvailable
+      airCondition
+      lugaggeCapacity
+      maxSpeedInKm
+      extras {
+        cost
+        name
+      }
+      includedAmenities
+      measurements{
+        inFeet
+        inMeter
+      }
+      discount{
+        units
+        value
+      }
+      adaptedFor
+      treatmentCategory
+      duration
     }
   }
 }
@@ -99,6 +215,8 @@ query getUserServices($userId:String!, $pagination:GqlCursorPaginationInput!) {
           userId: userId,
         })
         .send<GetUserServicesQuery>();
+
+      return res.data.getUserServices;
     },
     options
   );

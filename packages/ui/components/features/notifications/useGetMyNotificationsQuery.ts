@@ -45,10 +45,12 @@ export type GetMyNotificationsQueryQuery = { __typename?: "Query" } & {
 };
 
 export const useGetMyNotificationsQuery = () =>
-  useQuery(["get-my-notifications"], async () => {
-    const client = createGraphqlRequestClient();
+  useQuery(
+    ["get-my-notifications"],
+    async () => {
+      const client = createGraphqlRequestClient();
 
-    client.setQuery(`
+      client.setQuery(`
     query getMyNotificationsQuery{
 	getMyNotifications{total
     data{
@@ -72,7 +74,9 @@ export const useGetMyNotificationsQuery = () =>
   }
 }
     `);
-    const res = await client.send<GetMyNotificationsQueryQuery>();
+      const res = await client.send<GetMyNotificationsQueryQuery>();
 
-    return res.data.getMyNotifications;
-  });
+      return res?.data?.getMyNotifications;
+    },
+    { cacheTime: 0 }
+  );

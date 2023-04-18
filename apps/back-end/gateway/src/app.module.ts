@@ -2,7 +2,13 @@ import { Module } from '@nestjs/common';
 import { IntrospectAndCompose, RemoteGraphQLDataSource } from '@apollo/gateway';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloGatewayDriver, ApolloGatewayDriverConfig } from '@nestjs/apollo';
-import { parseCookies, VerifyAndGetUserFromContext } from 'nest-utils';
+import {
+  KnownError,
+  parseCookies,
+  PublicErrorCodes,
+  UnknownError,
+  VerifyAndGetUserFromContext,
+} from 'nest-utils';
 import { subgraphs } from '@lib';
 import { client } from './main';
 import { ObjectId } from 'mongodb';
@@ -31,6 +37,27 @@ import { ObjectId } from 'mongodb';
             ...ctx,
             user: { ...user, id: (user['_id'] as ObjectId)?.toHexString() },
           };
+        },
+        formatError(error) {
+          const exception = error?.extensions?.exception;
+
+          const errorCodesValues = Object.values(PublicErrorCodes);
+
+          const values = errorCodesValues.slice(
+            errorCodesValues.length / 2,
+            errorCodesValues.length,
+          );
+
+          const isKnownError = values.includes(exception.code);
+
+          console.log({ isKnownError, values, code: exception.code });
+          if (isKnownError) {
+            console.log('true', exception.code);
+            return error;
+          } else {
+            console.log('false', exception?.code);
+            return new UnknownError();
+          }
         },
       },
       gateway: {

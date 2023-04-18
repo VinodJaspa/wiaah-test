@@ -35,9 +35,9 @@ export const getShopServicesQueryFetcher = async (args: args) => {
     const mockRes: GetShopServicesByIdsQuery["getUserServicesByIds"] = [
       {
         id: "",
-        name: "Shrimp cocktail",
+        name: "Body treatment - back pain treatment",
         price: 100,
-        thumbnail: "/dish-2.png",
+        thumbnail: "/treatment-back.png",
         ingredients: ["Tomato", "Mozzarella", "Basil"],
         menuType: RestaurantDishType.Starter,
       },

@@ -16,6 +16,8 @@ export class ReactPubsubClient {
       "key"
     );
 
+    // console.log("subscried", key);
+
     this.Subscribers = updatedSubscribers;
   }
 

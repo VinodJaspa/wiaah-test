@@ -1,5 +1,10 @@
 import { useOutsideHover } from "@UI/../hooks";
-import { isDate, isSameDay, mapArray } from "@UI/../utils/src";
+import {
+  getNextNearestDate,
+  isDate,
+  isSameDay,
+  mapArray,
+} from "@UI/../utils/src";
 import { ArrowLeftIcon, ArrowRightIcon, AspectRatio, HStack } from "@partials";
 import React from "react";
 
@@ -7,10 +12,10 @@ type date = number | string | Date;
 
 interface ServiceRangeBookingCalanderProps {
   date: date;
-
+  single?: boolean;
   bookedDates: date[];
   value: [date?, date?];
-  onChange: (v: [date?, date?]) => any;
+  onChange: (v: [date?, date?], complete?: boolean) => any;
 }
 
 export const ServiceRangeBookingCalander: React.FC<
@@ -115,7 +120,14 @@ const DayComp: React.FC<
     currentDate: Date;
     currentMonth: boolean;
   }
-> = ({ bookedDates, onChange, value, currentMonth, currentDate }) => {
+> = ({
+  bookedDates,
+  onChange: _onChange,
+  value,
+  currentMonth,
+  currentDate,
+  single,
+}) => {
   const [hover, setHover] = React.useState(false);
   const ref = React.useRef<HTMLParagraphElement>(null);
 
@@ -146,6 +158,15 @@ const DayComp: React.FC<
     return baseDate <= targetDate && endDate > targetDate;
   });
 
+  const nextDate = value[0]
+    ? getNextNearestDate(
+        bookedDates.map((v) => new Date(v)),
+        new Date(value[0])
+      )
+    : null;
+
+  const notAllowed = nextDate ? currentDate > nextDate : false;
+
   const isSelected = !!value.find((e) => {
     if (!e) return false;
     const date = new Date(e);
@@ -166,15 +187,28 @@ const DayComp: React.FC<
     return baseDate <= targetDate && endDate > targetDate;
   });
 
+  const onChange = (...props: Parameters<typeof _onChange>) => {
+    _onChange(
+      props[0],
+      typeof props[1] === "boolean"
+        ? props[1]
+        : isDate(props[0][0]) && isDate(props[0][1])
+        ? true
+        : false
+    );
+  };
+
   return (
     <AspectRatio ratio={1}>
       <p
         onMouseOver={() => setHover(true)}
         ref={ref}
         onClick={() => {
-          if (!currentMonth || isBooked) return;
+          if (!currentMonth || isBooked || notAllowed) return;
           const from = value[0];
           const to = value[1];
+
+          if (single) return onChange([currentDate, undefined], true);
 
           if (hover) {
             if (from && isSameDay(new Date(from), new Date(currentDate))) {
@@ -203,7 +237,7 @@ const DayComp: React.FC<
           onChange([from!, currentDate]);
         }}
         className={`${
-          isBooked
+          isBooked || (notAllowed && currentMonth)
             ? "text-gray-400 cursor-not-allowed line-through"
             : isSelected
             ? "bg-black text-white cursor-pointer"
@@ -213,7 +247,7 @@ const DayComp: React.FC<
         } w-full h-full flex justify-center items-center rounded-full font-bold text-center`}
       >
         {currentMonth ? (
-          isSelected && hover ? (
+          isSelected && hover && !single ? (
             "X"
           ) : (
             new Date(currentDate).getDate()

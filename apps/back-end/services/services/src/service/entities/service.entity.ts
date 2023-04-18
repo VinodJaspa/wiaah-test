@@ -156,6 +156,24 @@ export class Service {
   @Field(() => String, { nullable: true })
   model?: string;
 
+  @Field(() => Int, { nullable: true })
+  seats?: number;
+
+  @Field(() => Int, { nullable: true })
+  windows?: number;
+
+  @Field(() => Int, { nullable: true })
+  maxSpeedInKm?: number;
+
+  @Field(() => Int, { nullable: true })
+  lugaggeCapacity?: number;
+
+  @Field(() => Boolean, { nullable: true })
+  gpsAvailable?: boolean;
+
+  @Field(() => Boolean, { nullable: true })
+  airCondition?: boolean;
+
   @Field(() => String, { nullable: true })
   vehicleCategoryId?: string;
 

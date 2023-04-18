@@ -21,6 +21,7 @@ import {
   LocationOnPointFillIcon,
   Button,
   Divider,
+  ServiceReservastionForm,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -212,7 +213,17 @@ export const RestaurantDetailsView: React.FC = () => {
           />
         ) : null}
       </SpinnerFallback>
-      <StaticSideBarWrapper sidebar={ResturantFindTableFilterStepper}>
+      <StaticSideBarWrapper
+        sidebar={() => {
+          return (
+            <ServiceReservastionForm
+              sellerId={""}
+              selectedServicesIds={[]}
+              serviceId={""}
+            />
+          );
+        }}
+      >
         <Tabs>
           {({ currentTabIdx }) => {
             return (

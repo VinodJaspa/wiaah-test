@@ -301,31 +301,31 @@ export class CreateServiceInput {
 
   @Field(() => Int, { nullable: true })
   @FieldRequired('type', ServiceType.vehicle)
-  seats: number;
+  seats?: number;
 
   @Field(() => Int, { nullable: true })
   @FieldRequired('type', ServiceType.vehicle)
-  windows: number;
+  windows?: number;
 
   @Field(() => Int, { nullable: true })
   @FieldRequired('type', ServiceType.vehicle)
-  maxSpeedInKm: number;
+  maxSpeedInKm?: number;
 
   @Field(() => Int, { nullable: true })
   @FieldRequired('type', ServiceType.vehicle)
-  lugaggeCapacity: number;
+  lugaggeCapacity?: number;
 
   @Field(() => Boolean, { nullable: true })
   @FieldRequired('type', ServiceType.vehicle)
-  gpsAvailable: boolean;
+  gpsAvailable?: boolean;
 
   @Field(() => Boolean, { nullable: true })
   @FieldRequired('type', ServiceType.vehicle)
-  airCondition: boolean;
+  airCondition?: boolean;
 
   @Field(() => String, { nullable: true })
   @FieldRequired('type', ServiceType.vehicle)
-  vehicleCategoryId: string;
+  vehicleCategoryId?: string;
 
   // beauty center
   @Field(() => ID, { nullable: true })

@@ -17,6 +17,7 @@ import {
   SellerServiceWorkingHoursSection,
   DateAndTimeInput,
   VehicleServiceDescriptionSection,
+  ServiceReservastionForm,
 } from "ui";
 import { useTranslation } from "react-i18next";
 import { useRouting } from "routing";
@@ -181,18 +182,15 @@ export const VehicleServiceDetailsView: React.FC = () => {
         ) : null}
       </SpinnerFallback>
       <StaticSideBarWrapper
-        sidebar={
-          <div className="flex flex-col gap-2 text-xl">
-            <DateAndTimeInput
-              onDateChange={() => {}}
-              dateLabel={t("Pick-up Date")}
+        sidebar={() => {
+          return (
+            <ServiceReservastionForm
+              sellerId={""}
+              selectedServicesIds={[]}
+              serviceId={""}
             />
-            <DateAndTimeInput
-              onDateChange={() => {}}
-              dateLabel={t("Return Date")}
-            />
-          </div>
-        }
+          );
+        }}
       >
         <Tabs>
           {({ currentTabIdx }) => {

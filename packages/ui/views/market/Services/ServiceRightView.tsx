@@ -14,7 +14,7 @@ import {
   HStack,
 } from "@UI";
 import { Event } from "@UI";
-import { useGetServiceDataQuery } from "@UI";
+import { useGetServiceMetadataQuery } from "@UI";
 import { getTimeInAmPm } from "utils";
 import { useTranslation } from "react-i18next";
 import { useServiceBookedRange, useServiceBookingModal } from "state";
@@ -28,7 +28,7 @@ export const ServiceRightView: React.FC<ServiceRightViewProps> = ({
 }) => {
   const { range } = useServiceBookedRange();
   const { openBookEvent, openBookRange } = useServiceBookingModal();
-  const { data, isLoading, isError } = useGetServiceDataQuery(serviceId);
+  const { data, isLoading, isError } = useGetServiceMetadataQuery(serviceId);
 
   const { t } = useTranslation();
   const { AddNewItem } = useCartSummary();

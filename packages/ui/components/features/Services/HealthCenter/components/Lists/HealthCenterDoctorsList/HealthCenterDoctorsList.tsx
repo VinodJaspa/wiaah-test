@@ -36,19 +36,6 @@ export const HealthCenterDoctorsList: React.FC<
               </label>
             ))
           : null}
-
-        <div className="flex flex-col gap-1">
-          <p className="font-bold">{t("Cancelation policy")}</p>
-          {cancelation.map((policy, i) => (
-            <ServiceCancelationPolicyInput
-              {...policy}
-              name="cancelationPolicy"
-              onSelected={() => {}}
-              key={`${i}-${policy.cost}`}
-            />
-          ))}
-        </div>
-        <Button className="w-fit self-end">{t("Book now")}</Button>
       </div>
     </div>
   );

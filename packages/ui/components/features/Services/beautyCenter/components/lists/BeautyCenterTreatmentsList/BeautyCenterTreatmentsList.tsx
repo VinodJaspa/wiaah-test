@@ -1,12 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { usePublishRef } from "state";
-import {
-  Button,
-  BeautyCenterTreatmentCard,
-  ServiceCancelationPolicyInput,
-  ServiceCancelationPolicy,
-} from "@UI";
+import { BeautyCenterTreatmentCard, ServiceCancelationPolicy } from "@UI";
 import { randomNum } from "utils";
 import { Treatment } from "@features/API";
 
@@ -34,7 +29,7 @@ export const BeautyCenterTreatmentsList: React.FC<
           />
         ))}
       </div>
-
+      {/* 
       <div className="flex flex-col gap-1">
         <p className="font-bold">{t("Cancelation policy")}</p>
         {cancelation.map((policy, i) => (
@@ -45,9 +40,7 @@ export const BeautyCenterTreatmentsList: React.FC<
             key={`${i}-${policy.cost}`}
           />
         ))}
-      </div>
-
-      <Button className="self-end mr-4">{t("Book now")}</Button>
+      </div> */}
     </div>
   );
 };

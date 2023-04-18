@@ -13,11 +13,20 @@ import NextHead from "next/head";
 import { RoutingProvider } from "routing";
 import { useRouter } from "next/router";
 import { ClearNextJSQuery } from "utils";
+import { useGraphqlRequestErrorCode } from "api";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [queryClient] = React.useState(() => new QueryClient());
 
   const router = useRouter();
+
+  console.log("_app sellers sub");
+  useGraphqlRequestErrorCode(
+    (v) => v.unAuthorized,
+    () => {
+      console.log("unauth, redirect!");
+    }
+  );
 
   return (
     <QueryClientProvider client={queryClient}>

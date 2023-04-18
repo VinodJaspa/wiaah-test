@@ -6,7 +6,7 @@ import {
   HStack,
   Button,
   BookedServicesCostDetails,
-  useGetServiceDataQuery,
+  useGetServiceMetadataQuery,
   ServiceRangeBookingCalander,
   useBookServiceMutation,
   HotelGuestsInput,
@@ -21,6 +21,8 @@ import {
   useGetShopDetailsQuery,
   RestaurantDishsCheckoutList,
   TreatmentsCheckoutList,
+  Image,
+  WorkingDaysCalender,
 } from "@UI";
 import { useForm } from "utils";
 import { ServiceType } from "@features/API";
@@ -30,14 +32,14 @@ export const ServiceReservastionForm: React.FC<{
   sellerId: string;
   selectedServicesIds?: string[];
 }> = ({ serviceId, selectedServicesIds, sellerId }) => {
-  const { data: service } = useGetServiceDataQuery(serviceId);
+  const { data: service } = useGetServiceMetadataQuery({ id: serviceId || "" });
 
   const { form, handleChange, inputProps } = useForm<
     Parameters<typeof mutate>[0]
   >({});
 
   const showOn = (types: ServiceType[]) =>
-    types.includes(ServiceType.Restaurant);
+    types.includes(ServiceType.BeautyCenter);
 
   const { data: shop } = useGetShopDetailsQuery(sellerId);
 
@@ -87,7 +89,7 @@ export const ServiceReservastionForm: React.FC<{
   }, [] as { menuName: string; dishs: typeof services }[]);
 
   return (
-    <div className="pl-16 flex flex-col gap-[1.875rem]">
+    <div className="pl-4 flex flex-col gap-[1.875rem]">
       <div
         style={{ boxShadow: "0px 0px 6px rgba(0, 0, 0, 0.2)" }}
         className="pt-5 pb-10 flex flex-col gap-4 p-4 rounded-[1.25rem]"
@@ -95,21 +97,66 @@ export const ServiceReservastionForm: React.FC<{
         <p className="w-full text-center font-bold text-lg text-black">
           {t("Start your reservation")}
         </p>
+        {showOn([
+          ServiceType.Hotel,
+          ServiceType.HolidayRentals,
+          ServiceType.Vehicle,
+          ServiceType.HealthCenter,
+        ]) ? (
+          <div className="flex gap-2">
+            <Image
+              className="w-20 h-16 rounded-lg"
+              src={service?.thumbnail}
+              alt={service?.name}
+            />
+            <div className="flex h-full flex-col font-medium gap-1">
+              <p>{service?.name}</p>
+              {showOn([ServiceType.Hotel]) ? (
+                <HStack>
+                  <p>
+                    {service?.num_of_rooms} {t("Rooms")}
+                  </p>
+                  <p>
+                    {service?.beds} {t("Beds")}
+                  </p>
+                  <p>
+                    {service?.bathrooms} {t("Bathrooms")}
+                  </p>
+                </HStack>
+              ) : null}
+            </div>
+          </div>
+        ) : null}
         <Divider />
 
         <Stepper>
-          {({ currentStepIdx, nextStep, previousStep, stepsLength }) => {
+          {({ currentStepIdx, goToStep, nextStep }) => {
             return (
               <div className="flex flex-col gap-4 w-full">
                 <ResturantFindTableFilterStepperHeader
+                  onChange={(idx) => {
+                    if (idx < currentStepIdx) goToStep(idx);
+                  }}
                   currentStepIdx={currentStepIdx}
                   steps={
                     [
-                      {
-                        icon: <CalenderIcon />,
-                        name: t("Date"),
-                      },
-                      showOn([ServiceType.Restaurant])
+                      showOn([
+                        ServiceType.BeautyCenter,
+                        ServiceType.HolidayRentals,
+                        ServiceType.Hotel,
+                        ServiceType.Restaurant,
+                        ServiceType.Vehicle,
+                      ])
+                        ? {
+                            icon: <CalenderIcon />,
+                            name: t("Date"),
+                          }
+                        : undefined,
+                      showOn([
+                        ServiceType.Restaurant,
+                        ServiceType.BeautyCenter,
+                        ServiceType.HealthCenter,
+                      ])
                         ? { icon: <ClockIcon />, name: t("Time") }
                         : undefined,
                       showOn([
@@ -126,24 +173,149 @@ export const ServiceReservastionForm: React.FC<{
                   }
                 />
                 <StepperContent>
+                  {showOn([ServiceType.HealthCenter]) ? (
+                    <div className="mx-4">
+                      <WorkingDaysCalender
+                        workingDates={[
+                          {
+                            date: new Date().toString(),
+                            workingHoursRanges: [
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                            ],
+                          },
+                          {
+                            date: new Date().toString(),
+                            workingHoursRanges: [
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                            ],
+                          },
+                          {
+                            date: new Date().toString(),
+                            workingHoursRanges: [
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                            ],
+                          },
+                          {
+                            date: new Date().toString(),
+                            workingHoursRanges: [
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                            ],
+                          },
+                          {
+                            date: new Date().toString(),
+                            workingHoursRanges: [
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                              {
+                                from: new Date().toString(),
+                                to: new Date().toString(),
+                              },
+                            ],
+                          },
+                        ]}
+                      />
+                    </div>
+                  ) : undefined}
                   {showOn([
                     ServiceType.Hotel,
                     ServiceType.HolidayRentals,
                     ServiceType.Vehicle,
                     ServiceType.Restaurant,
+                    ServiceType.BeautyCenter,
                   ]) ? (
                     <ServiceRangeBookingCalander
+                      single={showOn([
+                        ServiceType.HealthCenter,
+                        ServiceType.Restaurant,
+                        ServiceType.BeautyCenter,
+                      ])}
                       bookedDates={[new Date()]}
                       date={new Date().toUTCString()}
-                      onChange={([from, to]) => {
+                      onChange={([from, to], complete) => {
                         handleChange("checkin", from);
                         handleChange("checkout", to);
+                        if (complete) nextStep();
                       }}
                       value={[form?.checkin, form?.checkout]}
                     />
                   ) : undefined}
 
-                  {showOn([ServiceType.Restaurant]) ? <TimeInput /> : undefined}
+                  {showOn([
+                    ServiceType.Restaurant,
+                    ServiceType.BeautyCenter,
+                  ]) ? (
+                    <TimeInput />
+                  ) : undefined}
 
                   {showOn([
                     ServiceType.Hotel,
@@ -178,62 +350,47 @@ export const ServiceReservastionForm: React.FC<{
                     </div>
                   ) : null}
                 </StepperContent>
-                <HStack className="justify-between">
-                  {currentStepIdx === 0 ? (
-                    <div></div>
-                  ) : (
-                    <Button colorScheme="gray" onClick={() => previousStep()}>
-                      {t("Previous")}
-                    </Button>
-                  )}
-                  {currentStepIdx === stepsLength - 1 ? (
-                    <div></div>
-                  ) : (
-                    <Button
-                      onClick={() => nextStep()}
-                      // disabled={
-                      //   typeof form.checkin !== "string" ||
-                      //   typeof form.checkout !== "string"
-                      // }
-                    >
-                      {t("Next")}
-                    </Button>
-                  )}
-                </HStack>
               </div>
             );
           }}
         </Stepper>
-        <Divider />
-        <div className="flex flex-col gap-4">
-          {showOn([ServiceType.Restaurant]) ? (
-            <RestaurantDishsCheckoutList
-              menus={
-                formatedDishs?.map((v) => ({
-                  name: v.menuName,
-                  dishs: v.dishs.map((e) => ({
-                    name: e.name,
-                    thumbnail: e.thumbnail,
-                    price: e.price,
-                    ingredints: e.ingredients,
-                    qty: v.dishs.filter((d) => d.id === e.id).length,
-                  })),
-                })) || []
-              }
-            />
-          ) : null}
-          {showOn([ServiceType.BeautyCenter]) ? (
-            <TreatmentsCheckoutList
-              treatments={
-                services?.map((v) => ({
-                  name: v.name,
-                  price: v.price,
-                  thumbnail: v.thumbnail,
-                })) || []
-              }
-            />
-          ) : null}
-        </div>
+        {showOn([ServiceType.Restaurant, ServiceType.BeautyCenter]) ? (
+          <>
+            <Divider />
+            <div className="flex flex-col gap-4">
+              {showOn([ServiceType.Restaurant]) ? (
+                <RestaurantDishsCheckoutList
+                  menus={
+                    formatedDishs?.map((v) => ({
+                      name: v.menuName,
+                      dishs: v.dishs.map((e) => ({
+                        name: e.name,
+                        thumbnail: e.thumbnail,
+                        price: e.price,
+                        ingredints: e.ingredients,
+                        qty: v.dishs.filter((d) => d.id === e.id).length,
+                      })),
+                    })) || []
+                  }
+                />
+              ) : null}
+              {showOn([ServiceType.BeautyCenter]) ? (
+                <TreatmentsCheckoutList
+                  treatments={
+                    services?.map((v) => ({
+                      name: v.name,
+                      price: v.price,
+                      thumbnail: v.thumbnail,
+                      qty:
+                        selectedServicesIds?.filter((e) => e === v.id).length ||
+                        1,
+                    })) || []
+                  }
+                />
+              ) : null}
+            </div>
+          </>
+        ) : null}
         <Divider />
         <div className="">
           <BookedServicesCostDetails title="Rooms" vat={12 || 0}>

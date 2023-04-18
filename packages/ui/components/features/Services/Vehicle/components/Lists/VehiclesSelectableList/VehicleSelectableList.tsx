@@ -50,7 +50,7 @@ export const VehiclesSelectableList: React.FC<{
                 return (
                   <div className="flex flex-col gap-2 mx-4">
                     <VehicleSearchCard showTotal={false} key={i} {...vehicle} />
-                    <div className="flex flex-col gap-1">
+                    {/* <div className="flex flex-col gap-1">
                       <p className="font-bold">{t("Cancelation policy")}</p>
                       {vehicle.cancelationPolicies.map((policy, i) => (
                         <ServiceCancelationPolicyInput
@@ -60,7 +60,7 @@ export const VehiclesSelectableList: React.FC<{
                           key={`${i}-${JSON.stringify(policy)}`}
                         />
                       ))}
-                    </div>
+                    </div> */}
                     <Button
                       onClick={() =>
                         selected

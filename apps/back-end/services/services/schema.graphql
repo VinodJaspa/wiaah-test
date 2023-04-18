@@ -250,6 +250,12 @@ type Service {
   depositAmount: Int
   brand: String
   model: String
+  seats: Int
+  windows: Int
+  maxSpeedInKm: Int
+  lugaggeCapacity: Int
+  gpsAvailable: Boolean
+  airCondition: Boolean
   vehicleCategoryId: String
   treatmentCategoryId: ID
   duration: Int

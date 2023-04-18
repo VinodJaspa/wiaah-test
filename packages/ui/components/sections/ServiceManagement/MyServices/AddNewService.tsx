@@ -154,7 +154,7 @@ export const NewServiceStepper: React.FC<{
 
   const { controls, uploadImage } = useMediaUploadControls();
 
-  const serviceType = shop?.type || ServiceType.Vehicle;
+  const serviceType = shop?.type || ServiceType.BeautyCenter;
 
   const showOn = (types: ServiceType[]) => types.includes(serviceType);
 
@@ -352,113 +352,36 @@ export const NewServiceStepper: React.FC<{
                               {t("Select Treatment Category")}
                             </SelectOption>
                           </Select>
-                          <Input
-                            type="number"
-                            min={1}
-                            defaultValue={1}
-                            {...inputProps("duration")}
-                            label={t("Treatment Duration in minutes")}
-                          />
-                          <Input
-                            type="number"
-                            min={1}
-                            defaultValue={1}
-                            {...inputProps("duration")}
-                            label={t("Max number of orders per day")}
-                          />
+
+                          <Select {...selectProps("duration")}>
+                            <SelectOption value={15}>
+                              15 {t("minutes")}
+                            </SelectOption>
+                            <SelectOption value={30}>
+                              30 {t("minutes")}
+                            </SelectOption>
+                            <SelectOption value={45}>
+                              45 {t("minutes")}
+                            </SelectOption>
+                            <SelectOption value={60}>
+                              1 {t("hour")}
+                            </SelectOption>
+                            <SelectOption value={90}>
+                              1 {t("hour")} 30 {t("minutes")}
+                            </SelectOption>
+                            <SelectOption value={120}>
+                              2 {t("hours")}
+                            </SelectOption>
+                          </Select>
+
+                          <Select {...selectProps("units")}>
+                            {mapArray([...Array(20)], (_, i) => (
+                              <SelectOption value={i + 1}>
+                                {i + 1} {t("days")}
+                              </SelectOption>
+                            ))}
+                          </Select>
                         </div>
-                      ) : null}
-
-                      <div>
-                        <p className="font-medium">{t("Hashtags")}</p>
-                        <HashTagInput
-                          {...inputProps(
-                            "hashtags",
-                            undefined,
-                            undefined,
-                            (v) => v
-                          )}
-                        />
-                      </div>
-                      <span className="text-2xl font-semibold">
-                        {t("Price & Attributes")}
-                      </span>
-
-                      <Input
-                        min={1}
-                        type="number"
-                        {...inputProps("price")}
-                        label={
-                          showOn([ServiceType.Vehicle])
-                            ? t("Price per day")
-                            : t("Price")
-                        }
-                      ></Input>
-
-                      {showOn([
-                        ServiceType.Hotel,
-                        ServiceType.HolidayRentals,
-                      ]) ? (
-                        <>
-                          <div className="flex gap-2">
-                            <p>{t("Enable Daily Price")}</p>
-                            <Switch
-                              checked={form.dailyPrice || false}
-                              onChange={(v) => handleChange("dailyPrice", v)}
-                            />
-                          </div>
-                          {form.dailyPrice ? (
-                            <DailyPriceInput
-                              onChange={(v) => {
-                                handleChange("dailyPrices", {
-                                  mo: v[0],
-                                  tu: v[1],
-                                  we: v[2],
-                                  th: v[3],
-                                  fr: v[4],
-                                  sa: v[5],
-                                  su: v[6],
-                                });
-                              }}
-                              value={{
-                                0: form.dailyPrices?.mo || form.price,
-                                1: form.dailyPrices?.tu || form.price,
-                                2: form.dailyPrices?.we || form.price,
-                                3: form.dailyPrices?.th || form.price,
-                                4: form.dailyPrices?.fr || form.price,
-                                5: form.dailyPrices?.sa || form.price,
-                                6: form.dailyPrices?.su || form.price,
-                              }}
-                            />
-                          ) : null}
-
-                          <Input
-                            min={1}
-                            type="number"
-                            {...inputProps("vat")}
-                            placeholder={t("VAT %")}
-                          ></Input>
-
-                          <ChooseWithInput
-                            title={t("Cleaning fees")}
-                            name="cancelFees"
-                            onOptionChange={(opt) => {
-                              // add cancelation fee
-                            }}
-                            options={[
-                              {
-                                title: t("Free"),
-                                key: "free",
-                                input: null,
-                              },
-                              {
-                                title: t("Paid"),
-                                key: "paid",
-                                input: { placeholder: "$" },
-                              },
-                            ]}
-                          />
-                        </>
                       ) : null}
 
                       {showOn([ServiceType.HealthCenter]) ? (
@@ -487,6 +410,96 @@ export const NewServiceStepper: React.FC<{
                           />
                         </div>
                       ) : null}
+
+                      <div>
+                        <p className="font-medium">{t("Hashtags")}</p>
+                        <HashTagInput
+                          {...inputProps(
+                            "hashtags",
+                            undefined,
+                            undefined,
+                            (v) => v
+                          )}
+                        />
+                      </div>
+
+                      <span className="text-2xl font-semibold">
+                        {t("Price & Attributes")}
+                      </span>
+
+                      <Input
+                        min={1}
+                        type="number"
+                        {...inputProps("price")}
+                        label={
+                          showOn([
+                            ServiceType.Vehicle,
+                            ServiceType.HolidayRentals,
+                            ServiceType.Hotel,
+                          ])
+                            ? t("Price per day")
+                            : t("Price")
+                        }
+                      />
+
+                      <div className="flex gap-2">
+                        <p>{t("Enable Daily Price")}</p>
+                        <Switch
+                          checked={form.dailyPrice || false}
+                          onChange={(v) => handleChange("dailyPrice", v)}
+                        />
+                      </div>
+                      {form.dailyPrice ? (
+                        <DailyPriceInput
+                          onChange={(v) => {
+                            handleChange("dailyPrices", {
+                              mo: v[0],
+                              tu: v[1],
+                              we: v[2],
+                              th: v[3],
+                              fr: v[4],
+                              sa: v[5],
+                              su: v[6],
+                            });
+                          }}
+                          value={{
+                            0: form.dailyPrices?.mo || form.price,
+                            1: form.dailyPrices?.tu || form.price,
+                            2: form.dailyPrices?.we || form.price,
+                            3: form.dailyPrices?.th || form.price,
+                            4: form.dailyPrices?.fr || form.price,
+                            5: form.dailyPrices?.sa || form.price,
+                            6: form.dailyPrices?.su || form.price,
+                          }}
+                        />
+                      ) : null}
+
+                      <Input
+                        min={1}
+                        type="number"
+                        {...inputProps("vat")}
+                        placeholder={t("VAT %")}
+                      />
+
+                      <ChooseWithInput
+                        title={t("Cleaning fees")}
+                        name="cancelFees"
+                        onOptionChange={(opt) => {
+                          // add cleaning fee
+                        }}
+                        options={[
+                          {
+                            title: t("Free"),
+                            key: "free",
+                            input: null,
+                          },
+                          {
+                            title: t("Paid"),
+                            key: "paid",
+                            input: { placeholder: "$" },
+                          },
+                        ]}
+                      />
 
                       {showOn([ServiceType.Vehicle]) ? (
                         <div className="flex flex-col gap-2">
@@ -559,6 +572,7 @@ export const NewServiceStepper: React.FC<{
                       stepComponent: (
                         <div className="flex flex-col gap-4 w-full">
                           <ServiceAppontmentDurationTimeTableInput
+                            input
                             selectionContainerProps={{ className: "h-[29vh]" }}
                             onWeekChange={(v) => {
                               setWeek(v);
@@ -864,47 +878,54 @@ export const NewServiceStepper: React.FC<{
                         />
                       </div>
 
-                      <div className="flex flex-col gap-2 w-full">
-                        <p>{t("When can guests check in?")}</p>
-                        <HStack className="flex flex-col sm:flex-row">
-                          <Select
-                            placeholder={t("Select a time")}
-                            label={t("From")}
-                          >
-                            {mapArray([...Array(10)], (_, i) => (
-                              <SelectOption value={i}>
-                                <p>
-                                  {new Date(
-                                    new Date().setHours(i + 1)
-                                  ).toLocaleDateString("en-us", {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                    hour12: true,
-                                  })}
-                                </p>
-                              </SelectOption>
-                            ))}
-                          </Select>
-                          <Select
-                            placeholder={t("Select a time")}
-                            label={t("To")}
-                          >
-                            {mapArray([...Array(10)], (_, i) => (
-                              <SelectOption value={i}>
-                                <p>
-                                  {new Date(
-                                    new Date().setHours(i + 1)
-                                  ).toLocaleDateString("en-us", {
-                                    hour: "2-digit",
-                                    minute: "2-digit",
-                                    hour12: true,
-                                  })}
-                                </p>
-                              </SelectOption>
-                            ))}
-                          </Select>
-                        </HStack>
-                      </div>
+                      {showOn([
+                        ServiceType.Hotel,
+                        ServiceType.HolidayRentals,
+                      ]) ? (
+                        <>
+                          <div className="flex flex-col gap-2 w-full">
+                            <p>{t("When can guests check in?")}</p>
+                            <HStack className="flex flex-col sm:flex-row">
+                              <Select
+                                placeholder={t("Select a time")}
+                                label={t("From")}
+                              >
+                                {mapArray([...Array(10)], (_, i) => (
+                                  <SelectOption value={i}>
+                                    <p>
+                                      {new Date(
+                                        new Date().setHours(i + 1)
+                                      ).toLocaleDateString("en-us", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                        hour12: true,
+                                      })}
+                                    </p>
+                                  </SelectOption>
+                                ))}
+                              </Select>
+                              <Select
+                                placeholder={t("Select a time")}
+                                label={t("To")}
+                              >
+                                {mapArray([...Array(10)], (_, i) => (
+                                  <SelectOption value={i}>
+                                    <p>
+                                      {new Date(
+                                        new Date().setHours(i + 1)
+                                      ).toLocaleDateString("en-us", {
+                                        hour: "2-digit",
+                                        minute: "2-digit",
+                                        hour12: true,
+                                      })}
+                                    </p>
+                                  </SelectOption>
+                                ))}
+                              </Select>
+                            </HStack>
+                          </div>
+                        </>
+                      ) : null}
                     </div>
                   ),
                   stepName: {

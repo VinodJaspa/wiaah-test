@@ -43,8 +43,12 @@ interface SimpleTabHeadProps {
   children: MaybeFn<SimpleTabHeadChildProps>;
 }
 
-export const SimpleTabHead: React.FC<SimpleTabHeadProps> = ({ children }) => {
-  console.log("tab childs", children);
+export const SimpleTabHead: React.FC<SimpleTabHeadProps> = ({
+  children: _children,
+}) => {
+  const children = _children
+    ? React.Children.toArray(_children).filter((v) => !!v)
+    : [];
   const { setCurrIdx, currIdx } = React.useContext(SimpleTabsContext);
   return (
     <>
@@ -60,7 +64,10 @@ export const SimpleTabHead: React.FC<SimpleTabHeadProps> = ({ children }) => {
   );
 };
 
-export const SimpleTabItemList: React.FC = ({ children }) => {
+export const SimpleTabItemList: React.FC = ({ children: _children }) => {
+  const children = _children
+    ? React.Children.toArray(_children).filter((v) => !!v)
+    : [];
   const { currIdx } = React.useContext(SimpleTabsContext);
   return <>{React.Children.toArray(children).at(currIdx)}</>;
 };

@@ -1,39 +1,59 @@
-import { HotelRoom } from "api";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
-  Slider,
   PriceDisplay,
   AspectRatio,
   Button,
   HStack,
-  ServiceCancelationPolicyInput,
   MathPowerDisplay,
   UnDiscountedPriceDisplay,
   ServicePropertiesSwticher,
   PropertyDimensionsIcon,
   Stack,
   Divider,
+  Image,
   Checkbox,
+  Badge,
+  CloseIcon,
 } from "@UI";
+import {
+  Discount,
+  Service,
+  ServiceAdaptation,
+  ServiceExtra,
+} from "@features/API";
 import { mapArray } from "utils";
 import { Form, Formik } from "formik";
+import { startCase } from "lodash";
+import { ImCheckmark } from "react-icons/im";
 
-export interface HotelRoomDetailsCardProps extends HotelRoom {
+export interface HotelRoomDetailsCardProps {
   onBook?: (roomId: string) => any;
+  room: Pick<
+    Service,
+    | "id"
+    | "name"
+    | "bathrooms"
+    | "beds"
+    | "adaptedFor"
+    | "cancelationPolicy"
+    | "cancelable"
+    | "dailyPrice"
+    | "measurements"
+    | "price"
+    | "rating"
+    | "reviews"
+    | "includedAmenities"
+    | "thumbnail"
+  > & {
+    discount?: Pick<Discount, "amount" | "units">;
+    extras?: Pick<ServiceExtra, "cost" | "name">[];
+  };
 }
 
 export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
-  cancelationPolicies,
-  discount,
-  measurements,
-  pricePerNight,
-  title,
-  extras,
-  includedAmenities,
-  includedServices,
-
-  hotel,
+  room,
+  onBook,
 }) => {
   const { t } = useTranslation();
   return (
@@ -44,35 +64,25 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="min-w-[11.25rem] h-fit overflow-hidden rounded-xl">
                 <AspectRatio ratio={1}>
-                  <Slider>
-                    {mapArray(
-                      [
-                        "https://cdn.loewshotels.com/loewshotels.com-2466770763/cms/cache/v2/5f5a6e0d12749.jpg/1920x1080/fit/80/86e685af18659ee9ecca35c465603812.jpg",
-                      ],
-                      (src, i) => (
-                        <img
-                          src={src}
-                          key={i}
-                          className="w-full h-full object-cover"
-                        />
-                      )
-                    )}
-                  </Slider>
+                  <Image
+                    src={room.thumbnail}
+                    className="w-full h-full object-cover"
+                  />
                 </AspectRatio>
               </div>
               <div className="flex flex-col w-full gap-5">
                 <div className="flex gap-4 justify-between">
-                  <p className="font-bold text-base text-title">{title}</p>
-                  {measurements ? (
+                  <p className="font-bold text-base text-title">{room.name}</p>
+                  {room.measurements ? (
                     <div className="flex items-center gap-2 text-lightBlack">
                       <PropertyDimensionsIcon className="text-sm" />
                       <div className="flex items-center">
-                        {measurements.inMeter}
+                        {room.measurements.inMeter}
                         <MathPowerDisplay power={2}>m</MathPowerDisplay>
                       </div>
                       /
                       <div className="flex items-center">
-                        {measurements.inFeet}
+                        {room.measurements.inFeet}
                         <MathPowerDisplay power={2}>ft</MathPowerDisplay>
                       </div>
                     </div>
@@ -80,7 +90,7 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  {mapArray(includedServices!, (data, i) => (
+                  {mapArray(room.includedAmenities!, (data, i) => (
                     <div
                       key={i}
                       className="bg-primary-100 rounded-full px-2 py-1 text-primary-400"
@@ -93,7 +103,7 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
                   style={{ gridTemplateColumns: `repeat(${3},1fr)` }}
                   className={`w-full grid gap-4 text-primary text-xl thinScroll overflow-y-scroll`}
                 >
-                  {mapArray(includedAmenities!, (ame, i) => (
+                  {mapArray(room.includedAmenities!, (ame, i) => (
                     <HStack key={i}>
                       <ServicePropertiesSwticher slug={ame} />
                       <p className="font-medium text-darkBrown text-xs">
@@ -105,26 +115,32 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
               </div>
             </div>
             <div className="flex flex-col w-full gap-6">
-              <div className="flex gap-x-10 gap-y-2 flex-wrap">
-                {mapArray(extras!, (extra, i) => (
+              {/* <div className="flex gap-x-10 gap-y-2 flex-wrap">
+                {mapArray(room.extras!, (extra, i) => (
                   <p className="text-lightBlack text-xs font-semibold" key={i}>
                     {extra.name} - {extra.cost}
                   </p>
                 ))}
-              </div>
+              </div> */}
               <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
                 <div className="flex flex-col gap-4">
                   <p className="text-base font-bold text-title">
-                    {t("Cancelation Policy")}
+                    {t("Adapeted for")}
                   </p>
                   <div className="flex flex-col gap-4">
-                    {mapArray(cancelationPolicies, (data, i) => (
-                      <ServiceCancelationPolicyInput
-                        onSelected={() => {}}
-                        name={"hotelCancelationPolicy"}
-                        {...data}
-                        key={i}
-                      />
+                    {mapArray(Object.values(ServiceAdaptation), (data, i) => (
+                      <HStack>
+                        {room.adaptedFor?.includes(data) ? (
+                          <div className="text-primary p-2">
+                            <ImCheckmark />
+                          </div>
+                        ) : (
+                          <div className="text-red-500 p-2 ">
+                            <CloseIcon />
+                          </div>
+                        )}
+                        <p>{startCase(data)}</p>
+                      </HStack>
                     ))}
                   </div>
                 </div>
@@ -133,9 +149,12 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
                     {t("Extras")}
                   </p>
                   <div className="flex flex-col gap-4">
-                    {mapArray(extras!, (data, i) => (
-                      <div className="flex items-center text-xs font-normal text-lightBlack justify-between gap-4">
-                        <Checkbox className="">{data.name}</Checkbox>
+                    {mapArray(room.extras!, (data, i) => (
+                      <div
+                        key={i}
+                        className="flex items-center text-xs font-normal text-lightBlack justify-between gap-4"
+                      >
+                        <p className=" font-semibold text-lg">{data.name}</p>
                         {data.cost > 0 ? (
                           <PriceDisplay
                             className="text-primary font-bold"
@@ -153,21 +172,31 @@ export const HotelRoomDetailsCard: React.FC<HotelRoomDetailsCardProps> = ({
             <div className="flex flex-col gap-5 w-full">
               <div className="flex items-center flex-wrap gap-5">
                 <div className="text-lg items-center flex gap-2 font-bold text-black">
-                  <PriceDisplay price={pricePerNight} />
+                  <PriceDisplay price={room.price} />
 
-                  <div className="text-sm flex gap-1 text-lightBlack items-center font-normal">
-                    <UnDiscountedPriceDisplay
-                      amount={pricePerNight + discount.value * pricePerNight}
-                      discount={discount.value}
-                    />
-                    /<p className="text-black">{t("night")}</p>
-                  </div>
+                  {room.discount ? (
+                    <>
+                      <div className="text-sm flex gap-1 text-lightBlack items-center font-normal">
+                        <UnDiscountedPriceDisplay
+                          amount={
+                            room.price + room.discount.amount * room.price
+                          }
+                          discount={room.discount.amount}
+                        />
+                        /<p className="text-black">{t("night")}</p>
+                      </div>
+                    </>
+                  ) : null}
                 </div>
-                <p className="text-secondaryRed text-sm font-medium">
-                  {t("Only") +
-                    ` ${discount.units} ` +
-                    t("Tickets left at this price on our site")}
-                </p>
+                {room.discount ? (
+                  <>
+                    <p className="text-secondaryRed text-sm font-medium">
+                      {t("Only") +
+                        ` ${room.discount.units} ` +
+                        t("Tickets left at this price on our site")}
+                    </p>
+                  </>
+                ) : null}
                 {/* {fees ? (
                   <p className="text-lightBlack">{t("Include tax & fees")}</p>
                 ) : (
