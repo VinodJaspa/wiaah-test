@@ -1,5 +1,12 @@
-import { mapArray } from "@UI/../utils/src";
-import { AspectRatio, Avatar, HStack, Image, Slider } from "@partials";
+import { NumberShortner, mapArray } from "@UI/../utils/src";
+import {
+  AspectRatio,
+  Avatar,
+  HStack,
+  HeartIcon,
+  Image,
+  Slider,
+} from "@partials";
 import React from "react";
 
 interface SocialNewsfeedPostMobileCardProps {
@@ -13,6 +20,7 @@ interface SocialNewsfeedPostMobileCardProps {
     likes: number;
     comments: number;
     shares: number;
+    liked: boolean;
   };
 }
 
@@ -20,6 +28,19 @@ export const SocialNewsfeedPostMobileCard: React.FC<
   SocialNewsfeedPostMobileCardProps
 > = ({ post }) => {
   const [activeImage, setActiveImage] = React.useState<number>(0);
+
+  const interactions: {
+    value: string;
+    icon: React.ReactNode;
+    active: boolean;
+  }[] = [
+    {
+      value: NumberShortner(post.likes),
+      active: post.liked,
+      icon: HeartIcon,
+    },
+  ];
+
   return (
     <div className="flex flex-col gap-4">
       <HStack className="justify-between">
@@ -31,7 +52,7 @@ export const SocialNewsfeedPostMobileCard: React.FC<
           </div>
         </HStack>
       </HStack>
-      {/* // social newsfeed responsive design */}
+
       <div className="flex flex-col gap-2">
         <p>{post.content}</p>
         <Slider>
