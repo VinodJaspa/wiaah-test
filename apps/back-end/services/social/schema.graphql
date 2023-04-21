@@ -158,7 +158,6 @@ enum ActiveStatus {
 
 enum ProfileVisibility {
   public
-  followers
   private
 }
 

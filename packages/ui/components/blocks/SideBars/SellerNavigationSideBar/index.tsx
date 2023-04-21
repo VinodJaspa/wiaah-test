@@ -99,7 +99,7 @@ export const SellerNavigationSideBar: React.FC<SellerSideBarProps> = ({
       className={`${className} flex z-20 fixed ${
         isMobile
           ? "flex-row z-10 left-0 bottom-0 w-full bg-white"
-          : "flex-col left-0 w-52 h-screen top-0 bg-primary"
+          : "flex-col left-0 w-52 z-[51] h-screen top-0 bg-primary"
       } items-center flex py-3`}
       {...props}
     >

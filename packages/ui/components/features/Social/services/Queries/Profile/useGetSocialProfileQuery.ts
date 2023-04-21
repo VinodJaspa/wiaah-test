@@ -6,6 +6,8 @@ import {
   Profile,
   ProfileVisibility,
   Query,
+  Shop,
+  StoreType,
 } from "@features/API";
 import { Account } from "@features/API";
 import { useQuery } from "react-query";
@@ -37,7 +39,15 @@ export type GetProfileByIdQuery = { __typename?: "Query" } & Pick<
       | "verified"
     > & {
         user?: Maybe<
-          { __typename?: "Account" } & Pick<Account, "id" | "verified" | "type">
+          { __typename?: "Account" } & Pick<
+            Account,
+            "id" | "verified" | "accountType"
+          > & {
+              shop: { __typename?: "Shop" } & Pick<
+                Shop,
+                "type" | "storeType" | "id"
+              >;
+            }
         >;
       };
   };
@@ -46,7 +56,7 @@ export const useGetSocialProfileQuery = (id: string) => {
   const client = createGraphqlRequestClient();
 
   client.setQuery(`
-  query getProfileById(
+query getProfileById(
       $id:String!
   ){
       getProfile(
@@ -68,9 +78,14 @@ export const useGetSocialProfileQuery = (id: string) => {
           visibility
           verified
           user {
+            shop {
+              id
+              type
+              storeType
+            }
             id
             verified
-            type
+            accountType
           }
       }
       
@@ -101,14 +116,20 @@ export const useGetSocialProfileQuery = (id: string) => {
       updatedAt: new Date().toString(),
       username: "Nike",
       verified: true,
-      visibility: ProfileVisibility.Public,
-      isFollowed: true,
+      visibility: ProfileVisibility.Private,
+      isFollowed: false,
       user: {
+        shop: {
+          id: "",
+          storeType: StoreType.Product,
+        },
+        accountType: AccountType.Seller,
         id: "",
-        type: AccountType.Seller,
         verified: true,
       },
-    } as GetProfileByIdQuery["getProfile"];
+    } as GetProfileByIdQuery["getProfile"] & {
+      isFollowed: GetProfileByIdQuery["isFollowed"];
+    };
 
     const res = await client.send<GetProfileByIdQuery>();
 

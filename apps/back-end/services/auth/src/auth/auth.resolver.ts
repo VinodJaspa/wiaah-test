@@ -40,7 +40,7 @@ import {
   GetAdminAccountByEmailMesssage,
 } from 'nest-dto';
 
-@Resolver((of) => Registeration)
+@Resolver(() => Registeration)
 export class AuthResolver implements OnModuleInit {
   constructor(
     private readonly authService: AuthService,
@@ -103,7 +103,12 @@ export class AuthResolver implements OnModuleInit {
 
     if (ctx && ctx.res && ctx.res.cookie) {
       console.log('settings jwt token', this.cookiesKey, data);
-      ctx.res.cookie(this.cookiesKey, data.access_token, { httpOnly: true });
+      ctx.res.cookie(this.cookiesKey, data.access_token, {
+        secure: true,
+        httpOnly: true,
+        sameSite: 'None',
+        domain: process.env.CLIENT_DOMAIN,
+      });
     }
 
     return {

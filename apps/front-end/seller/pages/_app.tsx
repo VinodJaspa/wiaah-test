@@ -17,7 +17,6 @@ import { useGraphqlRequestErrorCode } from "api";
 
 const handleAutoRedirect = (route: string, router: NextRouter) => {
   const currRoute = router.route;
-  console.log({ currRoute, route });
   if (currRoute !== route && currRoute !== "/404") {
     // router.push(`/${route}`);
   }

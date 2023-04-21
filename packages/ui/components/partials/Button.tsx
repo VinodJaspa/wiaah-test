@@ -77,7 +77,8 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
       case "darkbrown":
         return {
           outline: "border border-brownBtn text-brownBtn",
-          solid: "bg-brownBtn text-white",
+          solid:
+            "bg-brownBtn disabled:bg-[#D3D3D3] disabled:text-[#969696]  text-white",
         };
       default:
         return {
@@ -91,7 +92,7 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
     <button
       {...props}
       onClick={(e) => {
-        loading ? undefined : onClick && onClick(e);
+        loading || !!props?.disabled ? undefined : onClick && onClick(e);
       }}
       className={` ${className ? className : ""} ${
         outline ? colors(colorScheme).outline : colors(colorScheme).solid

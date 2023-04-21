@@ -3749,7 +3749,6 @@ export type ProfileStatistics = {
 };
 
 export enum ProfileVisibility {
-  Followers = "followers",
   Private = "private",
   Public = "public",
 }

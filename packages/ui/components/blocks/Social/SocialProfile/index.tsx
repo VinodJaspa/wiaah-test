@@ -21,13 +21,14 @@ import {
   ShoppingBagIcon,
   ShoppingCartIcon,
 } from "@UI";
-import { mapArray, NumberShortner } from "utils";
+import { NumberShortner } from "utils";
 import { useTranslation } from "react-i18next";
 import { useDisclouser } from "hooks";
 import { useSendFollowRequestMutation } from "@features/Social";
 
 import { useUnFollowProfileMutation } from "@features/Social";
-import { ProfileVisibility, StoreType } from "@features/API";
+import { StoreType } from "@features/API";
+import { useRouting } from "@UI/../routing";
 
 export interface SocialProfileProps {
   profileInfo: {
@@ -35,35 +36,38 @@ export interface SocialProfileProps {
     photo: string;
     username: string;
     profession: string;
-    verified: string;
+    verified: boolean;
     publications: number;
     followers: number;
     following: number;
     bio: string;
     ownerId: string;
+    shopId: string;
   };
   isFollowed: boolean;
   isPublic: boolean;
+  storeType: StoreType;
 }
 
 export const SocialProfile: React.FC<SocialProfileProps> = ({
   profileInfo,
   isFollowed,
   isPublic,
+  storeType,
 }) => {
   const { t } = useTranslation();
   const [storyProfileId, setStoryProfileId] = React.useState<string>();
+  const { visit } = useRouting();
 
   const { mutate: unFollowProfile } = useUnFollowProfileMutation();
   const { mutate: followProfile } = useUnFollowProfileMutation();
   const { mutate: sendFollowReq } = useSendFollowRequestMutation();
 
-  const { data: shop } = useGetUserShopType({ userId: profileInfo.ownerId });
-
-  const { user } = useUserData();
   const isProfilePublic = isPublic;
 
-  const ownProfile = true;
+  const { user } = useUserData();
+
+  const ownProfile = user?.id === profileInfo?.ownerId;
 
   function handleFollowProfile() {
     if (isFollowed) {
@@ -80,7 +84,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
     sendFollowReq(profileInfo.id);
   }
 
-  const isProductShop = shop?.storeType === StoreType.Product;
+  const isProductShop = storeType === StoreType.Product;
 
   const { isOpen, handleClose, handleOpen } = useDisclouser();
 
@@ -89,6 +93,8 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
     handleOpen: subscriptionsOnOpen,
     handleClose: subscriptionsOnClose,
   } = useDisclouser();
+
+  const isPrivateForUser = !isFollowed && !isPublic;
 
   if (!profileInfo) return null;
 
@@ -159,14 +165,23 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
             divider={<Divider variant="vert" className="mx-[1.25rem]" />}
             className="w-[fit-content]"
           >
-            <VStack className="cursor-pointer border-2 border-white">
+            <VStack
+              className={`${
+                isPrivateForUser ? "text-[#969696]" : ""
+              } cursor-pointer border-2 border-white`}
+            >
               <p className="font-medium text-sm">{t("Posts")}</p>
               <p className="font-bold text-xl">
                 {NumberShortner(profileInfo.publications)}
               </p>
             </VStack>
 
-            <VStack className="cursor-pointer" onClick={() => handleOpen()}>
+            <VStack
+              className={`${
+                isPrivateForUser ? "text-[#969696]" : ""
+              } cursor-pointer`}
+              onClick={() => handleOpen()}
+            >
               <p className="font-medium text-sm">{t("Followers")}</p>
               <p className="font-bold text-xl">
                 {NumberShortner(profileInfo.followers)}
@@ -174,7 +189,9 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
             </VStack>
 
             <VStack
-              className="cursor-pointer"
+              className={`${
+                isPrivateForUser ? "text-[#969696]" : ""
+              } cursor-pointer border-2 border-white`}
               onClick={() => subscriptionsOnOpen()}
             >
               <p className="font-medium text-sm">{t("Following")}</p>
@@ -204,6 +221,7 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                 </Button>
 
                 <Button
+                  disabled={isPrivateForUser}
                   colorScheme="darkbrown"
                   onClick={handleFollowProfile}
                   className="whitespace-nowrap w-full"
@@ -212,7 +230,13 @@ export const SocialProfile: React.FC<SocialProfileProps> = ({
                 </Button>
               </HStack>
 
-              <Button colorScheme="darkbrown">
+              <Button
+                onClick={() => {
+                  visit((r) => r.visitShop({ id: profileInfo.shopId }));
+                }}
+                disabled={isPrivateForUser}
+                colorScheme="darkbrown"
+              >
                 <HStack className="justify-center">
                   {isProductShop ? (
                     <>

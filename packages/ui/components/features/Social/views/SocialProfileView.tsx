@@ -31,6 +31,7 @@ import {
   useUserData,
   useGetUserShopType,
   SocialProfileActionList,
+  LockOutlineCircleIcon,
 } from "@UI";
 import { TabType } from "types";
 import { useTranslation } from "react-i18next";
@@ -49,15 +50,8 @@ export const SocialProfileView: React.FC<SocialViewProps> = ({ username }) => {
     isLoading,
     isError,
   } = useGetSocialProfileQuery(username);
-  const { data: shop } = useGetUserShopType(
-    { userId: profileInfo?.ownerId! },
-    {
-      enabled: !!profileInfo?.ownerId,
-    }
-  );
-  const cols = useBreakpointValue({ base: 3 });
 
-  const { getParam, visit, getCurrentPath } = useRouting();
+  const { getParam, visit } = useRouting();
   const idx = getParam("tab");
   const onChange = (idx: string) =>
     visit((r) => r.addQuery({ tab: idx }), false);
@@ -70,12 +64,12 @@ export const SocialProfileView: React.FC<SocialViewProps> = ({ username }) => {
 
   const showOn = (types: AccountType[]) =>
     types.includes(
-      (profileInfo.user?.type as AccountType) || AccountType.Buyer
+      (profileInfo.user?.accountType as AccountType) || AccountType.Buyer
     );
 
   const tabValue = parseInt(idx || "0");
 
-  const productsShop = true;
+  const productsShop = profileInfo?.user?.shop?.storeType === StoreType.Product;
 
   const tabs: { solid: React.ReactNode; outline: React.ReactNode }[] = [
     { solid: NewsFeedIcon, outline: NewsFeedOutlineIcon },
@@ -107,15 +101,23 @@ export const SocialProfileView: React.FC<SocialViewProps> = ({ username }) => {
     ])
     .filter((v) => !!v);
 
+  const isPublic = profileInfo.visibility === ProfileVisibility.Public;
+
   return (
     <div className="flex flex-col h-full">
       <SpinnerFallback isLoading={isLoading} isError={isError}>
         <Container className="flex-grow flex-col flex gap-2">
-          {profileInfo ? <SocialProfile profileInfo={profileInfo} /> : null}
+          {profileInfo ? (
+            <SocialProfile
+              profileInfo={profileInfo}
+              isFollowed={profileInfo.isFollowed}
+              isPublic={isPublic}
+            />
+          ) : null}
           <Divider />
           {profileInfo && (
             <>
-              {profileInfo.visibility === ProfileVisibility.Public ? (
+              {isPublic || ownProfile || profileInfo.isFollowed ? (
                 <SimpleTabs
                   onChange={(v) => onChange(String(v))}
                   value={parseInt(idx || "0")}
@@ -155,9 +157,13 @@ export const SocialProfileView: React.FC<SocialViewProps> = ({ username }) => {
                 </SimpleTabs>
               ) : (
                 <>
-                  <div className="h-full flex items-center justify-center">
-                    <p className="font-bold w-fit text-4xl">
+                  <div className="h-full flex flex-col mt-10 gap-4 items-center justify-center">
+                    <LockOutlineCircleIcon className="text-8xl" />
+                    <p className="font-semibold w-fit text-2xl">
                       {t("This Profile is Private")}
+                    </p>
+                    <p className="font-normal text-sm">
+                      {t("Follow this account to see their contents")}
                     </p>
                   </div>
                 </>

@@ -187,7 +187,6 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   });
 
   const showHeader = !isMobile || getCurrentPath() === "/";
-  console.log({ path: getCurrentPath() });
 
   return (
     <Root>
