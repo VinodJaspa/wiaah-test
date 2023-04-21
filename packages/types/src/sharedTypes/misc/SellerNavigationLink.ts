@@ -3,7 +3,9 @@ import { IconProps } from "@chakra-ui/react";
 export type NavigationLinkType = {
   name: string;
   icon: React.ReactNode;
+  activeIcon: React.ReactNode;
   url: string;
   mobileOnly?: boolean;
+
   size?: Pick<IconProps, "w" | "h">;
 };

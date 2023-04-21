@@ -5,3 +5,4 @@ export * from "./SocialProfileNewsfeeds";
 export * from "./SocialProfileAffiliationPostsList";
 export * from "./SocialProfileServicePosts";
 export * from "./SocialProfileShopPostsList";
+export * from "./SocialProfileActionList";

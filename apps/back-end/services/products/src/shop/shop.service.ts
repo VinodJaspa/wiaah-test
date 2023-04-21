@@ -18,7 +18,7 @@ import { CreateShopInput } from './dto/create-shop.input';
 import { FilteredShopsInput } from './dto/filter-shops.input';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
 import { ShopCreatedEvent, ShopCreationFailedEvent } from './events';
-import { UpdateShopInput } from './dto';
+import { UpdateUserShopInput } from './dto';
 import { Shop } from '@prisma-client';
 
 @Injectable()
@@ -143,7 +143,7 @@ export class ShopService {
   }
 
   async updateShopData(
-    input: UpdateShopInput,
+    input: UpdateUserShopInput,
     userId: string,
     langId: UserPreferedLang,
   ): Promise<ShopEntity> {

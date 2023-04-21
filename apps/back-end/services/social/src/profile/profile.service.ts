@@ -165,7 +165,7 @@ export class ProfileService {
     });
   }
 
-  updateMyProfile(newData: UpdateProfileInput, userId: string) {
+  updateUserProfile(newData: UpdateProfileInput, userId: string) {
     try {
       return this.prisma.profile.update({
         where: {

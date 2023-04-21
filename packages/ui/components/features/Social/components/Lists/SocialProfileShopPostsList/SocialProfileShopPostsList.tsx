@@ -1,17 +1,7 @@
-import { FilterModal, GridListOrganiser, usePaginationControls } from "@blocks";
+import { GridListOrganiser, usePaginationControls } from "@blocks";
 import { useGetProfileShopPosts } from "@features/Social/services";
-import {
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
-  ScrollPaginationWrapper,
-} from "@partials";
+import { Image, ScrollPaginationWrapper } from "@partials";
 import React from "react";
-import { SocialShopPostcard } from "@features/Social/components/Cards";
-import { FaChevronDown } from "react-icons/fa";
-import { useTranslation } from "react-i18next";
-import { useTypedReactPubsub } from "@libs";
 import { useResponsive } from "@UI/../hooks";
 
 export const SocialProfileShopPostsList: React.FC<{
@@ -22,17 +12,12 @@ export const SocialProfileShopPostsList: React.FC<{
     pagination,
     authorId: userId,
   });
-  const [filterOpen, setFilterOpen] = React.useState<boolean>(false);
-  const { t } = useTranslation();
-  const { emit } = useTypedReactPubsub(
-    (events) => events.openSocialShopPostsFilterDrawer
-  );
 
   const { isMobile, isTablet } = useResponsive();
 
   return (
     <ScrollPaginationWrapper controls={controls}>
-      <div className="flex flex-col gap-4">
+      {/* <div className="flex flex-col gap-4">
         <div className="flex justify-between">
           <Menu>
             <MenuButton>
@@ -58,198 +43,193 @@ export const SocialProfileShopPostsList: React.FC<{
             <FaChevronDown className="ml-2" />
           </div>
         </div>
-        <FilterModal />
+        <FilterModal /> */}
 
-        <GridListOrganiser
-          rowSize={isMobile ? "6rem" : isTablet ? "10rem" : "14.5rem"}
-          presets={
-            isMobile
-              ? [
-                  {
-                    cols: 3,
-                    points: [
-                      {
-                        c: 2,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 2,
-                        r: 2,
-                      },
-                      {
-                        c: 2,
-                        r: 1,
-                      },
-                    ],
-                  },
-                  {
-                    cols: 3,
-                    points: [
-                      { c: 2, r: 2 },
-                      { c: 1, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 2, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 2, r: 1 },
-                      { c: 1, r: 1 },
-                    ],
-                  },
+      <GridListOrganiser
+        rowSize={isMobile ? "5rem" : isTablet ? "10rem" : "14.5rem"}
+        gap={0.1}
+        presets={
+          // isMobile
+          // ?
+          [
+            {
+              cols: 5,
+              points: [
+                {
+                  c: 3,
+                  r: 2,
+                },
+                {
+                  c: 2,
+                  r: 3,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+                {
+                  c: 1,
+                  r: 1,
+                },
+              ],
+            },
+            // {
+            //   cols: 3,
+            //   points: [
+            //     { c: 2, r: 2 },
+            //     { c: 1, r: 1 },
+            //     { c: 1, r: 1 },
+            //     { c: 2, r: 1 },
+            //     { c: 1, r: 1 },
+            //     { c: 2, r: 1 },
+            //     { c: 1, r: 1 },
+            //   ],
+            // },
 
-                  {
-                    cols: 2,
-                    points: [
-                      {
-                        c: 2,
-                        r: 1,
-                      },
-                      {
-                        c: 2,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 2,
-                        r: 1,
-                      },
-                    ],
-                  },
-                ]
-              : [
-                  {
-                    cols: 5,
-                    points: [
-                      {
-                        c: 2,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                    ],
-                  },
-                  {
-                    cols: 5,
-                    points: [
-                      { c: 1, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 1, r: 2 },
-                      { c: 2, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 1, r: 1 },
-                    ],
-                  },
+            // {
+            //   cols: 2,
+            //   points: [
+            //     {
+            //       c: 2,
+            //       r: 1,
+            //     },
+            //     {
+            //       c: 2,
+            //       r: 2,
+            //     },
+            //     {
+            //       c: 1,
+            //       r: 2,
+            //     },
+            //     {
+            //       c: 1,
+            //       r: 2,
+            //     },
+            //     {
+            //       c: 1,
+            //       r: 1,
+            //     },
+            //     {
+            //       c: 1,
+            //       r: 1,
+            //     },
+            //     {
+            //       c: 1,
+            //       r: 1,
+            //     },
+            //     {
+            //       c: 1,
+            //       r: 1,
+            //     },
+            //     {
+            //       c: 2,
+            //       r: 1,
+            //     },
+            //   ],
+            // },
+          ]
+          // : [
+          //     {
+          //       cols: 5,
+          //       points: [
+          //         {
+          //           c: 2,
+          //           r: 2,
+          //         },
+          //         {
+          //           c: 1,
+          //           r: 1,
+          //         },
+          //         {
+          //           c: 1,
+          //           r: 2,
+          //         },
+          //         {
+          //           c: 1,
+          //           r: 1,
+          //         },
+          //         {
+          //           c: 1,
+          //           r: 1,
+          //         },
+          //         {
+          //           c: 1,
+          //           r: 1,
+          //         },
+          //       ],
+          //     },
+          //     {
+          //       cols: 5,
+          //       points: [
+          //         { c: 1, r: 1 },
+          //         { c: 1, r: 1 },
+          //         { c: 1, r: 1 },
+          //         { c: 1, r: 1 },
+          //         { c: 1, r: 2 },
+          //         { c: 2, r: 1 },
+          //         { c: 1, r: 1 },
+          //         { c: 1, r: 1 },
+          //       ],
+          //     },
 
-                  {
-                    cols: 4,
-                    points: [
-                      {
-                        c: 2,
-                        r: 1,
-                      },
-                      {
-                        c: 2,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 2,
-                        r: 1,
-                      },
-                    ],
-                  },
-                ]
-          }
-        >
-          {items?.map((shop, i) => (
-            <SocialShopPostcard
-              key={i}
-              postInfo={{
-                createdAt: new Date().toString(),
-                id: shop.id,
-                comments: shop.comments,
-                reactionNum: shop.reactionNum,
-                shares: shop.shares,
-                product: shop.product,
-                userId: shop.user?.id,
-              }}
-              profileInfo={shop.user?.profile!}
-            />
-          )) || null}
-        </GridListOrganiser>
-      </div>
+          //     {
+          //       cols: 4,
+          //       points: [
+          //         {
+          //           c: 2,
+          //           r: 1,
+          //         },
+          //         {
+          //           c: 2,
+          //           r: 2,
+          //         },
+          //         {
+          //           c: 1,
+          //           r: 2,
+          //         },
+          //         {
+          //           c: 1,
+          //           r: 2,
+          //         },
+          //         {
+          //           c: 1,
+          //           r: 1,
+          //         },
+          //         {
+          //           c: 1,
+          //           r: 1,
+          //         },
+          //         {
+          //           c: 1,
+          //           r: 1,
+          //         },
+          //         {
+          //           c: 1,
+          //           r: 1,
+          //         },
+          //         {
+          //           c: 2,
+          //           r: 1,
+          //         },
+          //       ],
+          //     },
+          //   ]
+        }
+      >
+        {items?.map((prod, i) => (
+          // <AspectRatio className="bg-gray-200" ratio={1}>
+          <Image
+            className="w-full h-full object-cover"
+            src={prod?.product?.thumbnail || ""}
+          />
+          // </AspectRatio>
+        )) || null}
+      </GridListOrganiser>
+      {/* </div> */}
     </ScrollPaginationWrapper>
   );
 };

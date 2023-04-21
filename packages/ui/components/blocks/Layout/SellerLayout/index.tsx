@@ -35,10 +35,16 @@ import {
   usePaginationControls,
   useGetRecentStories,
   useGetDiscoverHashtags,
+  HomeOutlineIcon,
+  DiscoverOutlineIcon,
+  VideosOutlinePlayIcon,
+  ShoppingCartOutlineIcon,
+  ServicesOutlineIcon,
+  AffiliationIconOutline,
 } from "@UI";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
-import { getRouting } from "routing";
+import { getRouting, useRouting } from "routing";
 import { BsShop } from "react-icons/bs";
 import { BiWallet } from "react-icons/bi";
 import { useGetDiscoverPlaces } from "@features/Social/services/Queries/Discover/useGetDiscoverPlaces";
@@ -146,41 +152,10 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
   sideBar = true,
   noContainer = false,
 }) => {
-  const NavigationLinks: NavigationLinkType[] = [
-    {
-      name: "Home",
-      icon: HomeIcon,
-      url: "",
-    },
-    {
-      name: "discover",
-      icon: DiscoverIcon,
-      url: "discover",
-    },
-    {
-      name: "action",
-      icon: PlayButtonFillIcon,
-      url: "action",
-    },
-    {
-      name: "shop",
-      icon: ShoppingCartIcon,
-      url: "shop",
-    },
-    {
-      name: "service",
-      icon: ServicesIcon,
-      url: "services",
-    },
-    {
-      name: "affiliation",
-      icon: AffiliationIcon,
-      url: "affiliation",
-    },
-  ];
+  const { isMobile } = useResponsive();
+  const { getCurrentPath } = useRouting();
   const { accountType } = useAccountType();
   const setDrawerOpen = useSetRecoilState(SellerDrawerOpenState);
-  const { isMobile } = useResponsive();
   const headerRef = React.useRef<HTMLDivElement>(null);
   const headerHeight = headerRef?.current?.offsetHeight;
   const router = useRouter();
@@ -211,6 +186,9 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
     pagination: hashtagPagi,
   });
 
+  const showHeader = !isMobile || getCurrentPath() === "/";
+  console.log({ path: getCurrentPath() });
+
   return (
     <Root>
       <SocialReportModal />
@@ -223,7 +201,6 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
           headerElement={
             <HiMenu cursor={"pointer"} onClick={() => setDrawerOpen(true)} />
           }
-          links={NavigationLinks}
           onLinkClick={handleLinkClick}
           activeLink={route}
         >
@@ -273,13 +250,11 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
       )}
       <Container
         noContainer={true}
-        className={`${
-          isMobile ? "px-4" : sideBar ? "pl-56 pr-4" : "px-8"
-        } h-full`}
+        className={`${isMobile ? "" : sideBar ? "pl-56 pr-4" : "px-8"} h-full`}
       >
-        {header && header !== null && (
+        {header && header !== null && showHeader ? (
           <div
-            className={`bg-white fixed z-10 w-full top-0 left-0 ${
+            className={`bg-white fixed z-50 w-full top-0 left-0 ${
               isMobile ? "px-4" : sideBar ? "pl-60 pr-8" : "px-8"
             }`}
             ref={headerRef}
@@ -289,7 +264,7 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
               headerType={header}
             />
           </div>
-        )}
+        ) : null}
         <div className="w-full h-full gap-4 flex flex-col justify-between">
           <main
             style={{

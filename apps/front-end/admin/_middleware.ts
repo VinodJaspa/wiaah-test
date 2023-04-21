@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { extractUserfromNextjsCookies } from "utils";
 
-const loginUrl = "/auth/login";
+const loginUrl = "/login";
 
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {

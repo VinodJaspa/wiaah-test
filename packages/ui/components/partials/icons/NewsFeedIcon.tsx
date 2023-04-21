@@ -1,33 +1,41 @@
+import { HtmlSvgProps } from "@UI/../types/src";
 import React from "react";
 import { IconType } from "react-icons";
 
-export const NewsFeedIcon: IconType = () => {
+export const NewsFeedIcon: React.FC<HtmlSvgProps> = (props) => {
   return (
     <svg
-      className="p-1.5"
-      version="1.1"
-      id="Capa_1"
-      x="0px"
-      y="0px"
-      viewBox="0 0 60 60"
+      {...props}
+      width="1em"
+      height="0.9em"
+      viewBox="0 0 20 18"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
     >
-      <g>
-        <path d="M47,4H23v6h24V4z M45,8H25V6h20V8z" />
-        <g>
-          <rect x="19" y="18" width="10" height="10" />
-          <rect x="41" y="42" width="10" height="10" />
-          <path
-            d="M58.99,12.952V0H11v30H1v24c0,3.309,2.691,6,6,6h46c3.303,0,5.99-2.688,5.99-5.99V13.048C58.991,13.031,59,13.017,59,13
-			S58.991,12.969,58.99,12.952z M11,54c0,2.206-1.794,4-4,4s-4-1.794-4-4V32h8V54z M34,54H19c-0.553,0-1-0.447-1-1s0.447-1,1-1h15
-			c0.553,0,1,0.447,1,1S34.553,54,34,54z M17,30V16h14v14H17z M34,48H19c-0.553,0-1-0.447-1-1s0.447-1,1-1h15c0.553,0,1,0.447,1,1
-			S34.553,48,34,48z M34,42H19c-0.553,0-1-0.447-1-1s0.447-1,1-1h15c0.553,0,1,0.447,1,1S34.553,42,34,42z M53,54H39V40h14V54z
-			 M52,36H19c-0.553,0-1-0.447-1-1s0.447-1,1-1h33c0.553,0,1,0.447,1,1S52.553,36,52,36z M52,30H36c-0.553,0-1-0.447-1-1
-			s0.447-1,1-1h16c0.553,0,1,0.447,1,1S52.553,30,52,30z M52,24H36c-0.553,0-1-0.447-1-1s0.447-1,1-1h16c0.553,0,1,0.447,1,1
-			S52.553,24,52,24z M52,18H36c-0.553,0-1-0.447-1-1s0.447-1,1-1h16c0.553,0,1,0.447,1,1S52.553,18,52,18z M56.99,12H13V2h43.99V12z
-			"
-          />
-        </g>
-      </g>
+      <path
+        d="M3 3.5H2.5V4V10V10.5H3H8H8.5V10V4V3.5H8H3ZM17 14.5H17.5V14V12V11.5H17H3H2.5V12V14V14.5H3H17ZM17 10.5H17.5V10V8V7.5H17H10H9.5V8V10V10.5H10H17ZM17 6.5H17.5V6V4V3.5H17H10H9.5V4V6V6.5H10H17ZM2 0.5H18C18.8339 0.5 19.5 1.16614 19.5 2V16C19.5 16.8339 18.8339 17.5 18 17.5H2C1.16614 17.5 0.5 16.8339 0.5 16V2C0.5 1.16614 1.16614 0.5 2 0.5Z"
+        fill="#111312"
+        stroke="#111312"
+      />
+    </svg>
+  );
+};
+
+export const NewsFeedOutlineIcon: React.FC<HtmlSvgProps> = (props) => {
+  return (
+    <svg
+      {...props}
+      width="1em"
+      height="0.9em"
+      viewBox="0 0 22 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M19 1H3C1.89 1 1 1.89 1 3V17C1 18.11 1.89 19 3 19H19C20.11 19 21 18.11 21 17V3C21 1.89 20.11 1 19 1ZM4 5H9V11H4V5ZM18 15H4V13H18V15ZM18 11H11V9H18V11ZM18 7H11V5H18V7Z"
+        stroke="#111312"
+        stroke-linejoin="round"
+      />
     </svg>
   );
 };

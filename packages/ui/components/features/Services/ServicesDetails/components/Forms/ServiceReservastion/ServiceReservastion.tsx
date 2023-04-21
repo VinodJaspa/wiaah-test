@@ -6,7 +6,6 @@ import {
   HStack,
   Button,
   BookedServicesCostDetails,
-  useGetServiceMetadataQuery,
   ServiceRangeBookingCalander,
   useBookServiceMutation,
   HotelGuestsInput,
@@ -17,43 +16,55 @@ import {
   PriceDisplay,
   ClockIcon,
   TimeInput,
-  useGetShopServicesQuery,
   useGetShopDetailsQuery,
   RestaurantDishsCheckoutList,
   TreatmentsCheckoutList,
   Image,
   WorkingDaysCalender,
+  useGetBookingCostQuery,
 } from "@UI";
-import { useForm } from "utils";
-import { ServiceType } from "@features/API";
+import { isDate, useForm } from "utils";
+import { Service, ServiceType } from "@features/API";
 
 export const ServiceReservastionForm: React.FC<{
-  serviceId: string;
   sellerId: string;
   selectedServicesIds?: string[];
-}> = ({ serviceId, selectedServicesIds, sellerId }) => {
-  const { data: service } = useGetServiceMetadataQuery({ id: serviceId || "" });
-
+}> = ({ selectedServicesIds, sellerId }) => {
   const { form, handleChange, inputProps } = useForm<
     Parameters<typeof mutate>[0]
   >({});
 
-  const showOn = (types: ServiceType[]) =>
-    types.includes(ServiceType.BeautyCenter);
+  const { mutate } = useBookServiceMutation();
 
   const { data: shop } = useGetShopDetailsQuery(sellerId);
+  const serviceType = shop?.type || ServiceType.Hotel;
 
-  const { data: services } = useGetShopServicesQuery(
-    { ids: selectedServicesIds!, sellerId },
-    {
-      enabled:
-        // !!selectedServicesIds &&
-        // !!sellerId &&
-        showOn([ServiceType.Restaurant, ServiceType.BeautyCenter]),
-    }
+  const {
+    form: bookingForm,
+    inputProps: bookingCostInput,
+    handleChange: handleBookingCostChange,
+    dateInputProps,
+    selectProps,
+  } = useForm<Parameters<typeof useGetBookingCostQuery>[0]>({
+    checkinDate: "",
+    servicesIds: selectedServicesIds || [],
+    checkinTime: "",
+    checkoutDate: "",
+    extrasIds: [],
+  });
+  const { data: costData } = useGetBookingCostQuery(bookingForm, {
+    enabled:
+      selectedServicesIds &&
+      selectedServicesIds.length > 0 &&
+      isDate(bookingForm.checkinDate),
+  });
+
+  const services = React.useMemo(
+    () => costData?.services.map((v) => v.service) || [],
+    [costData]
   );
 
-  const { mutate } = useBookServiceMutation();
+  const service = Array.isArray(services) ? services[0] : ({} as Service);
 
   const [guests, setGuests] = React.useState<{
     adults: number;
@@ -88,8 +99,10 @@ export const ServiceReservastionForm: React.FC<{
     }
   }, [] as { menuName: string; dishs: typeof services }[]);
 
+  const showOn = (types: ServiceType[]) => types.includes(serviceType);
+
   return (
-    <div className="pl-4 flex flex-col gap-[1.875rem]">
+    <div className="pl-4 flex flex-col max-h-screen overflow-y-scroll thinScroll gap-[1.875rem]">
       <div
         style={{ boxShadow: "0px 0px 6px rgba(0, 0, 0, 0.2)" }}
         className="pt-5 pb-10 flex flex-col gap-4 p-4 rounded-[1.25rem]"
@@ -106,21 +119,24 @@ export const ServiceReservastionForm: React.FC<{
           <div className="flex gap-2">
             <Image
               className="w-20 h-16 rounded-lg"
-              src={service?.thumbnail}
+              src={
+                service?.thumbnail ||
+                "https://www.amaviacollection.com/wp-content/uploads/2022/05/Villa-Gaia-1-scaled.jpeg"
+              }
               alt={service?.name}
             />
             <div className="flex h-full flex-col font-medium gap-1">
-              <p>{service?.name}</p>
-              {showOn([ServiceType.Hotel]) ? (
+              <p>{service?.name || "Dolce Vita Villa"}</p>
+              {showOn([ServiceType.Hotel, ServiceType.HolidayRentals]) ? (
                 <HStack>
                   <p>
-                    {service?.num_of_rooms} {t("Rooms")}
+                    {service?.num_of_rooms || 4} {t("Rooms")}
                   </p>
                   <p>
-                    {service?.beds} {t("Beds")}
+                    {service?.beds || 6} {t("Beds")}
                   </p>
                   <p>
-                    {service?.bathrooms} {t("Bathrooms")}
+                    {service?.bathrooms || 5} {t("Bathrooms")}
                   </p>
                 </HStack>
               ) : null}
@@ -393,10 +409,22 @@ export const ServiceReservastionForm: React.FC<{
         ) : null}
         <Divider />
         <div className="">
-          <BookedServicesCostDetails title="Rooms" vat={12 || 0}>
+          <BookedServicesCostDetails
+            subTotal={150}
+            total={450}
+            title="Rooms"
+            vat={10 || 0}
+            vatAmount={45}
+            deposit={0}
+          >
             <div className="font-medium text-sm text-black flex justify-between items-center">
               <p>{t("Deposit")}</p>
               <PriceDisplay price={250} />
+            </div>
+            <Divider></Divider>
+            <div className="font-medium text-sm text-black flex justify-between items-center">
+              <p>{t("Cleaning fee")}</p>
+              <PriceDisplay price={50} />
             </div>
           </BookedServicesCostDetails>
         </div>

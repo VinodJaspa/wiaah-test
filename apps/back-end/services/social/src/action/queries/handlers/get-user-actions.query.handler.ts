@@ -1,20 +1,41 @@
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { GetUserActionsQuery } from '@action/queries';
-import { Action } from '@action/entities';
+import { Action, GetActionsCursorResponse } from '@action/entities';
 import { ActionRepository } from '@action/repository';
+import { PrismaService } from 'prismaService';
 
 @QueryHandler(GetUserActionsQuery)
 export class GetUserActionsQueryHandler
   implements IQueryHandler<GetUserActionsQuery>
 {
-  constructor(private readonly repo: ActionRepository) {}
+  constructor(
+    private readonly repo: ActionRepository,
+    private readonly primsa: PrismaService,
+  ) {}
 
   async execute({
-    userId,
-    pagination,
-  }: GetUserActionsQuery): Promise<Action[]> {
-    const res = await this.repo.getAllByUserId(userId, pagination);
+    args: { take, userId, cursor },
+  }: GetUserActionsQuery): Promise<GetActionsCursorResponse> {
+    const res = await this.primsa.action.findMany({
+      where: {
+        userId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      cursor: {
+        id: cursor,
+      },
+      take: take + 1,
+    });
 
-    return res;
+    return {
+      cursor,
+      data:
+        res.length > take
+          ? res.slice(0, res.length - 2)
+          : res.slice(0, res.length - 1),
+      hasMore: res.length > take,
+    };
   }
 }

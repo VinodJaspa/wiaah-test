@@ -6,6 +6,7 @@ import { UploadModule, UploadServiceProviders } from '@wiaah/upload';
 import { resolvers } from './resolvers';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
+import { PrismaService } from 'prismaService';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { KAFKA_BROKERS, SERVICES } from 'nest-utils';
     ServiceResolver,
     ServiceService,
     AdminServiceResolver,
+    PrismaService,
     ...resolvers,
   ],
 })

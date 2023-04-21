@@ -25,21 +25,21 @@ async function clearDB() {
   await prisma.beautyCenterTreatmentCategory.deleteMany();
   await prisma.serviceWorkingSchedule.deleteMany();
 
-  client.deleteByQuery({
-    index: '*',
-    query: {
-      match_all: {},
-    },
-  });
+  //   client.deleteByQuery({
+  //     index: '*',
+  //     query: {
+  //       match_all: {},
+  //     },
+  //   });
 }
 
-const client = new Client({
-  node: process.env.ELASTIC_HOST_TEST,
-  auth: {
-    username: process.env.ELASTIC_USERNAME_TEST,
-    password: process.env.ELASTIC_PASSWORD_TEST,
-  },
-});
+// const client = new Client({
+//   node: process.env.ELASTIC_HOST_TEST,
+//   auth: {
+//     username: process.env.ELASTIC_USERNAME_TEST,
+//     password: process.env.ELASTIC_PASSWORD_TEST,
+//   },
+// });
 const prisma = new PrismaService();
 beforeAll(async () => {
   await clearDB();

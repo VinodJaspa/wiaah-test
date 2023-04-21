@@ -10,8 +10,8 @@ import {
   Resolver,
   ResolveReference,
 } from '@nestjs/graphql';
-import { Service } from './entities/service.entity';
-import { ServiceType } from 'prismaClient';
+import { RawService, Service } from './entities/service.entity';
+import { ServiceStatus, ServiceType } from 'prismaClient';
 import { CreateServiceInput } from './dto/create-service.input';
 import {
   BadRequestException,
@@ -24,7 +24,6 @@ import {
   AddToDate,
   AuthorizationDecodedUser,
   CreateGqlCursorPaginatedResponse,
-  GetDateDiff,
   GetDateOfDayInWeekOfMonth,
   getDatesInRangeDays,
   GetLang,
@@ -102,13 +101,6 @@ export class ServiceResolver {
   }
 
   @Query(() => ServicesCursorPaginationResponse)
-  @UseGuards(
-    new GqlAuthorizationGuard([
-      accountType.ADMIN,
-      accountType.SELLER,
-      accountType.MOD,
-    ]),
-  )
   async getUserServices(
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @Args('userId') userId: string,
@@ -117,9 +109,17 @@ export class ServiceResolver {
   ): Promise<ServicesCursorPaginationResponse> {
     this.validateUserPremission(user, userId);
 
+    // const status: ServiceStatus[] =
+    //   [accountType.ADMIN, accountType.MOD].includes(
+    //     user.accountType as accountType,
+    //   ) || user.id === userId
+    //     ? ['active', 'inActive', 'suspended']
+    //     : ['active'];
+
     const res = await this.prisma.service.findMany({
       where: {
         sellerId: userId,
+        status: 'active',
       },
       cursor: {
         id: pagination.cursor,
@@ -195,6 +195,22 @@ export class ServiceResolver {
     });
 
     return true;
+  }
+
+  @Query(() => RawService)
+  @UseGuards(new GqlAuthorizationGuard([]))
+  async getServiceRawData(
+    @Args('id') id: string,
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<RawService> {
+    const service = await this.prisma.service.findUnique({
+      where: {
+        id,
+      },
+    });
+    await this.validateUserPremission(user, service.sellerId);
+
+    return service;
   }
 
   @Query(() => Service, { nullable: true })
@@ -291,7 +307,7 @@ export class ServiceResolver {
       }
     }
 
-    return service as any; // TODO: format service data to user prefered lang
+    return this.formatService(service, lang);
   }
 
   @Query(() => [Service])
@@ -427,46 +443,83 @@ export class ServiceResolver {
   @Query(() => BookingCost, { nullable: true })
   async getBookingCost(
     @Args('args') input: GetBookingCostInput,
+    @GetLang() lang: UserPreferedLang,
   ): Promise<BookingCost> {
     const { checkinDate, checkoutDate, extrasIds, servicesIds, checkinTime } =
       input;
 
     if (servicesIds.length < 1) return null;
 
-    const services = await this.prisma.service.findMany({
+    const firstService = await this.prisma.service.findUnique({
       where: {
-        id: {
-          in: servicesIds,
-        },
+        id: servicesIds[0],
       },
     });
 
-    const serviceType = services.at(0).type;
+    const serviceType = firstService.type;
 
     const multipleServices = (
       [ServiceType.beauty_center, ServiceType.restaurant] as ServiceType[]
     ).includes(serviceType);
 
+    if (servicesIds.length > 1 && !multipleServices)
+      throw new BadRequestException('you can only book 1 service a time');
+
+    const services = multipleServices
+      ? await this.prisma.service.findMany({
+          where: {
+            id: {
+              in: servicesIds,
+            },
+            sellerId: firstService.sellerId,
+            type: serviceType,
+          },
+        })
+      : [firstService];
+
     const validServices = multipleServices
       ? services.filter((v) => v.type === serviceType)
       : [services.at(0)];
 
-    let totalCost = 0;
+    let totalVatAmount = 0;
+    let subTotal = 0;
 
-    validServices.forEach((v, i) => {
-      const hotel = v;
+    validServices.forEach((service, i) => {
       const dates = multipleServices
         ? [new Date(checkinDate)]
         : getDatesInRangeDays(new Date(checkinDate), new Date(checkoutDate));
 
-      const serviceDailyPrices = hotel.dailyPrice ? hotel.dailyPrices : [];
+      const serviceDailyPrices = service.dailyPrice ? service.dailyPrices : [];
+
+      const qty = multipleServices
+        ? servicesIds.filter((e) => e === service.id).length || 1
+        : 1;
+
+      const vat = service.vat / 100;
 
       dates.forEach((v) => {
         const weekDay = v.getDay();
-        const price = serviceDailyPrices[Weekdays[weekDay]] || hotel.price;
-        totalCost += price;
+        const weekDayPrice = serviceDailyPrices[Weekdays[weekDay]];
+        const price = service.dailyPrice
+          ? weekDayPrice || service.price
+          : service.price;
+        const totalPrice = price * qty;
+
+        subTotal += totalPrice;
+        totalVatAmount += vat * totalPrice;
       });
     });
+
+    return {
+      total: subTotal + totalVatAmount,
+      services: validServices.map((v) => ({
+        qty: servicesIds.filter((e) => e === v.id).length,
+        service: this.formatService(v, lang),
+      })),
+      subTotal,
+      vatAmount: totalVatAmount,
+      vatPercent: (subTotal / totalVatAmount) * 100,
+    };
   }
 
   validateUserPremission(

@@ -4,12 +4,14 @@ import { randomNum } from "utils";
 export interface GridListOrganiser {
   presets: GridPreset[];
   rowSize?: string;
+  gap?: number;
 }
 
 export const GridListOrganiser: React.FC<GridListOrganiser> = ({
   presets,
   children,
   rowSize,
+  gap = 1,
 }) => {
   const [childsCount, setChildCount] = React.useState<number>(0);
   const [presetDisplayers, setPresetDisplayers] = React.useState<
@@ -34,11 +36,11 @@ export const GridListOrganiser: React.FC<GridListOrganiser> = ({
   }
 
   return (
-    <div className="flex flex-col w-full gap-4">
+    <div className={`flex flex-col w-full gap-[${gap}rem]`}>
       {Array.isArray(presetDisplayers)
         ? presetDisplayers.map(({ preset, childsPos: [from, to] }, idx) => (
             <React.Fragment key={idx}>
-              <GridPresetOrganiser rowSize={rowSize} preset={preset}>
+              <GridPresetOrganiser gap={gap} rowSize={rowSize} preset={preset}>
                 {React.Children.toArray(children).slice(from, to)}
               </GridPresetOrganiser>
               {/* <Divider /> */}
@@ -60,11 +62,13 @@ export type GridPreset = {
 export interface GridPresetOrganiserProps {
   preset: GridPreset;
   rowSize?: string;
+  gap?: number;
 }
 export const GridPresetOrganiser: React.FC<GridPresetOrganiserProps> = ({
   children,
   preset,
   rowSize = "14.5rem",
+  gap = 1,
 }) => {
   const pointsum = preset.points.reduce((acc, curr) => {
     return acc + curr.c * curr.r;
@@ -79,7 +83,7 @@ export const GridPresetOrganiser: React.FC<GridPresetOrganiserProps> = ({
           style={{
             gridAutoRows: rowSize,
           }}
-          className={`grid gap-4 ${
+          className={`grid gap-[${gap}rem] ${
             preset ? `grid-cols-${preset.cols || 1}` : ""
           }`}
         >

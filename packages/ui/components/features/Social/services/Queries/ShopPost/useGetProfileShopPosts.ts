@@ -42,6 +42,7 @@ export type GetProfileShopPostsQuery = { __typename?: "Query" } & {
           | "cashback"
           | "discount"
           | "price"
+          | "thumbnail"
         >;
         user?: Maybe<
           { __typename?: "Account" } & Pick<Account, "id" | "type"> & {
@@ -79,8 +80,10 @@ export const useGetProfileShopPosts = (args: GetUserProductPostsInput) => {
             views
             reactionNum
             productId
+            
             product {
-                id
+            thumbnail
+              id
                 presentations
                 hashtags
                 title
@@ -141,6 +144,7 @@ export const useGetProfileShopPosts = (args: GetUserProductPostsInput) => {
         presentations: [
           { src: getRandomImage(), type: PresentationType.Image },
         ],
+        thumbnail: getRandomImage(),
         price: random(150),
         title: "test title",
       },

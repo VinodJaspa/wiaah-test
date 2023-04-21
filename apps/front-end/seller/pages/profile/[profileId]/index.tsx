@@ -4,7 +4,7 @@ import React from "react";
 import { dehydrate, QueryClient } from "react-query";
 import { getSocialProfileData } from "api";
 import { SellerLayout, useGetSocialProfile } from "ui";
-import { SocialView } from "@components";
+import { SocialProfileView } from "ui";
 import { extractUserfromNextjsCookies } from "utils";
 import { getRouting } from "routing";
 
@@ -57,7 +57,7 @@ const profile: NextPage<ProfilePageProps> = ({ profileId }) => {
         <title>{data ? data.data.name : "Seller | profile"}</title>
       </Head>
       <SellerLayout>
-        <SocialView profileId={profileId} />
+        <SocialProfileView profileId={profileId} />
       </SellerLayout>
     </>
   );

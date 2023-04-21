@@ -115,7 +115,7 @@ export const getShopDetailsQueryFetcher = async (userId: string) => {
   if (isDev) {
     const resMock: GetShopDetailsQuery["getUserShop"] = {
       storeType: StoreType.Service,
-      type: ServiceType.Hotel,
+      type: ServiceType.HolidayRentals,
       ownerId: "",
       banner: "",
       businessType: BusinessType.Individual,

@@ -3,13 +3,17 @@ import {
   Exact,
   GqlCursorPaginationInput,
   Maybe,
+  RentalPropertyType,
+  RentalTypeOfPlace,
   RestaurantDishType,
   Scalars,
   Service,
   ServiceAdaptation,
+  ServiceCancelationType,
   ServiceDiscount,
   ServiceExtra,
   ServicePropertyMeasurements,
+  ServiceRestriction,
   ServiceType,
   ServicesCursorPaginationResponse,
 } from "@features/API";
@@ -59,6 +63,12 @@ export type GetUserServicesQuery = { __typename?: "Query" } & {
           | "treatmentCategoryId"
           | "sellerId"
           | "duration"
+          | "cleaningFee"
+          | "cancelable"
+          | "cancelationPolicy"
+          | "restriction"
+          | "propertyType"
+          | "typeOfPlace"
         > & {
             extras?: Maybe<
               Array<
@@ -108,13 +118,13 @@ export const useGetUserServicesQuery = (
             id: i.toString(),
             createdAt: new Date().toString(),
             description: "hotel room description placeholder",
-            name: "Standard room",
+            name: "Dolce Vita Villa",
             price: 130,
             rating: 4.5,
             reviews: 162,
             thumbnail:
-              "https://cdn.loewshotels.com/loewshotels.com-2466770763/cms/cache/v2/5f5a6e0d12749.jpg/1920x1080/fit/80/86e685af18659ee9ecca35c465603812.jpg",
-            type: ServiceType.Hotel,
+              "https://www.amaviacollection.com/wp-content/uploads/2022/05/Villa-Gaia-1-scaled.jpeg",
+            type: ServiceType.BeautyCenter,
             bathrooms: 3,
             beds: 4,
             brand: "Brand",
@@ -147,6 +157,12 @@ export const useGetUserServicesQuery = (
             windows: 4,
             treatmentCategoryId: "",
             sellerId: "",
+            cleaningFee: 45,
+            cancelable: true,
+            cancelationPolicy: ServiceCancelationType.Moderate,
+            propertyType: RentalPropertyType.Villa,
+            restriction: [ServiceRestriction.Event, ServiceRestriction.Pets],
+            typeOfPlace: RentalTypeOfPlace.Entire,
           })),
           cursor: "",
           hasMore: false,
@@ -189,6 +205,12 @@ query getUserServices($userId:String!, $pagination:GqlCursorPaginationInput!) {
       airCondition
       lugaggeCapacity
       maxSpeedInKm
+      cleaningFee
+      cancelable
+      cancelationPolicy
+      restriction
+      propertyType
+      typeOfPlace
       extras {
         cost
         name

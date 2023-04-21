@@ -58,7 +58,7 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
           outline:
             "border-gray-400 border text-gray-400 hover:bg-gray-100 active:bg-gray-200",
           solid:
-            "bg-gray-500 border-gray-400 text-white hover:bg-gray-600 active:bg-gray-700",
+            "bg-[#E5E5E5] border-gray-400 text-black hover:bg-gray-600 active:bg-gray-700",
         };
       case "white":
         return {
@@ -72,7 +72,7 @@ export const Button: React.FunctionComponent<ButtonProps> = ({
           outline:
             "border-gray-400 border text-gray-400 hover:bg-gray-100 active:bg-gray-200",
           solid:
-            "bg-lightGray border-gray-400 text-white hover:bg-gray-600 active:bg-gray-700",
+            "bg-lightGray border-gray-400 text-black hover:bg-gray-600 active:bg-gray-700",
         };
       case "darkbrown":
         return {

@@ -244,6 +244,7 @@ type Service {
   units: Int
   typeOfPlace: RentalTypeOfPlace
   propertyType: RentalPropertyType
+  cleaningFee: Float
   adaptedFor: [ServiceAdaptation!]
   restriction: [ServiceRestriction!]
   deposit: Boolean
@@ -316,8 +317,35 @@ enum RestaurantDishType {
   drinks
 }
 
+type RawService {
+  id: String!
+  sellerId: String!
+  name: [TranslationText!]!
+  description: [TranslationText!]!
+  price: Float!
+  thumbnail: String!
+  rating: Float!
+  reviews: Int!
+  discount: ServiceDiscount!
+}
+
 type HotelAvailablity {
   bookedDates: [String!]!
+}
+
+type BookingCostService {
+  service: Service!
+  qty: Int!
+}
+
+type BookingCost {
+  total: Float!
+  subTotal: Float!
+  vatPercent: Float!
+  vatAmount: Float!
+  deposit: Float!
+  extras: Float!
+  services: [BookingCostService!]!
 }
 
 type ServicesCursorPaginationResponse {
@@ -570,9 +598,11 @@ type Cashback {
 
 type Query {
   getUserServices(userId: String!, pagination: GqlCursorPaginationInput!): ServicesCursorPaginationResponse!
+  getServiceRawData(id: String!): RawService!
   getServiceDetails(id: String!, isClick: Boolean!): Service
   getUserServicesByIds(sellerId: String!, servicesIds: [String!]!): [Service!]!
   getHotelAvailablity(id: String!, monthDate: String!): HotelAvailablity!
+  getBookingCost(args: GetBookingCostInput!): BookingCost
   adminGetAccountService(accountId: String!): Service!
   adminGetDishs(args: AdminGetDishsInput!): [Dish!]!
   getInsurances(args: GetInsurancesInput!): [Insurance!]!
@@ -595,6 +625,14 @@ type Query {
 input GqlCursorPaginationInput {
   take: Int!
   cursor: String
+}
+
+input GetBookingCostInput {
+  servicesIds: [String!]!
+  extrasIds: [String!]
+  checkinDate: String!
+  checkinTime: String
+  checkoutDate: String
 }
 
 input AdminGetDishsInput {
@@ -733,6 +771,7 @@ input CreateServiceInput {
   units: Int
   typeOfPlace: RentalTypeOfPlace
   propertyType: RentalPropertyType
+  cleaningFee: Float
   brand: String
   model: String
   seats: Int
@@ -823,6 +862,7 @@ input UpdateServiceInput {
   units: Int
   typeOfPlace: RentalTypeOfPlace
   propertyType: RentalPropertyType
+  cleaningFee: Float
   brand: String
   model: String
   seats: Int

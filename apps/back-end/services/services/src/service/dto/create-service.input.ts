@@ -290,6 +290,9 @@ export class CreateServiceInput {
   @FieldRequired('type', ServiceType.holiday_rentals)
   propertyType?: RentalPropertyType;
 
+  @Field(() => Float, { nullable: true })
+  cleaningFee?: number;
+
   // vehicle
   @Field(() => String, { nullable: true })
   @FieldRequired('type', ServiceType.vehicle)

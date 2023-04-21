@@ -23,8 +23,9 @@ import {
   TrashIcon,
   ModalFooter,
   CheckMarkStepper,
+  useCreateActionMutation,
 } from "@UI";
-import { useDisclouser, useUserData } from "hooks";
+import { useUserData } from "hooks";
 import { FileRes, mapArray, useForm } from "utils";
 import { FiAtSign } from "react-icons/fi";
 import { GrLocationPin } from "react-icons/gr";
@@ -33,33 +34,40 @@ export interface AddNewPostModalProps {}
 
 const MAX_UPLOAD_LIMIT = 5;
 
+const MAX_ACTION_SIZE = 2 * 1024 * 1024 * 1024;
+
 enum AddPostSectionEnum {
   action = 1,
 }
 
 export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
   const { isOpen, CloseModal, OpenModal } = useNewPost();
-  const [uploadiLimitHit, setUploadLimitHit] = React.useState<boolean>(false);
 
-  const { form, handleChange } = useForm<{
-    video: string;
-    cover: string;
-  }>({ video: "", cover: "" });
+  const { form, handleChange } = useForm<Parameters<typeof mutate>[0]>({
+    src: "",
+    cover: "",
+  });
+
+  const { mutate } = useCreateActionMutation();
+
   const [actionVidBlob, setActionVidBlob] = React.useState<Blob>();
+
   const coversRef = React.useRef<Record<number, HTMLVideoElement>>({});
+
   const [imageIdx, setImageIdx] = React.useState<number>(0);
 
   const [mediaType, setMediaType] = React.useState<"photo" | "video">();
+
   const [media, setMedia] = React.useState<FileList>();
 
   const setCoversRef = (idx: number, node: HTMLVideoElement) => {
     coversRef.current = { ...coversRef.current, [idx]: node };
   };
 
-  const [uploadedImages, setUploadedImages] = React.useState<FileRes[]>([]);
-  const [uploadedVideos, setUploadedVideos] = React.useState<string[]>([]);
   const { user } = useUserData();
+
   const { t } = useTranslation();
+
   const [step, setStep] = React.useState<number>(0);
 
   React.useEffect(() => {
@@ -68,11 +76,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
     }
   }, [isOpen]);
 
-  function cleanUpStates() {
-    setUploadLimitHit(false);
-    setUploadedImages([]);
-    setUploadedVideos([]);
-  }
+  function cleanUpStates() {}
 
   const vidTypes = ["mp4", "mov"];
   const imgTypes = ["jpeg", "jpg", "png"];
@@ -213,6 +217,7 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
                             video={media.item(0)!}
                             maxDuration={180}
                             onFinish={(data) => {
+                              if (data.size > MAX_ACTION_SIZE) return;
                               setActionVidBlob(data);
                               handleChange("video", URL.createObjectURL(data));
                               setStep(1);
@@ -383,58 +388,3 @@ export const AddNewPostModal: React.FC<AddNewPostModalProps> = () => {
     </>
   ) : null;
 };
-
-// const buttons: {
-//   icon: React.ReactNode;
-//   name: string;
-//   enabled: boolean;
-//   note: string;
-//   className: string;
-//   onClick?: () => any;
-// }[] = [
-//   {
-//     icon: ImageIcon,
-//     name: t("Picture"),
-//     enabled: true,
-//     note: "",
-//     className: "bg-red-100 fill-red-500 text-red-500",
-//   },
-//   {
-//     icon: SmilingFaceEmoji,
-//     name: t("Feeling"),
-//     enabled: true,
-//     note: "",
-//     className: "bg-yellow-100 fill-yellow-500 text-yellow-500",
-//   },
-//   {
-//     icon: VideoCameraIcon,
-//     name: t("Live"),
-//     enabled: false,
-//     note: t("Cooming Soon"),
-//     className: "bg-blue-100 fill-blue-500 text-blue-500",
-//   },
-//   {
-//     icon: LocationOnPointIcon,
-//     name: t("Location"),
-//     enabled: true,
-//     note: "",
-//     className: "bg-primary-100 fill-primary-500 text-primary-500",
-//   },
-//   {
-//     icon: PlayButtonFillIcon,
-//     name: t("Action"),
-//     note: "",
-//     className: "bg-purple-100 fill-purple-500 text-purple-500",
-//     enabled: true,
-//     onClick() {
-//       setStep(AddPostSectionEnum.action);
-//     },
-//   },
-//   {
-//     icon: PersonIcon,
-//     name: t("Idenity"),
-//     enabled: true,
-//     note: "",
-//     className: "bg-indigo-100 fill-indigo-500 text-indigo-500",
-//   },
-// ];

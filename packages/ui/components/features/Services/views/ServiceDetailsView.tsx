@@ -33,11 +33,24 @@ import {
   ClockIcon,
   CountInput,
   Pagination,
+  Stack,
+  PropertyDimensionsIcon,
+  MathPowerDisplay,
+  ServicePropertiesSwticher,
+  CloseIcon,
 } from "ui";
 import { useTranslation } from "react-i18next";
-import { ServicePresentationType, ServiceType } from "@features/API";
+import {
+  ServiceAdaptation,
+  ServiceCancelationType,
+  ServicePresentationType,
+  ServiceRestriction,
+  ServiceType,
+} from "@features/API";
 import { mapArray } from "@UI/../utils/src";
 import { useRouting } from "@UI/../routing";
+import { ImCheckmark } from "react-icons/im";
+import { startCase } from "lodash";
 
 export const ServiceDetailsView: React.FC<{
   userId: string;
@@ -67,8 +80,7 @@ export const ServiceDetailsView: React.FC<{
 
   const serviceType = shop?.type || ServiceType.Hotel;
 
-  const showOn = (types: ServiceType[]) =>
-    types.includes(ServiceType.BeautyCenter);
+  const showOn = (types: ServiceType[]) => types.includes(serviceType);
 
   const formatedDishs = services?.data?.reduce((acc, curr) => {
     const menu = acc.find((v) => v.menuName === curr.menuType);
@@ -145,7 +157,6 @@ export const ServiceDetailsView: React.FC<{
               <ServiceReservastionForm
                 sellerId={shop?.ownerId!}
                 selectedServicesIds={selectedServicesids}
-                serviceId={serviceId}
               />
             );
           } else {
@@ -264,18 +275,272 @@ export const ServiceDetailsView: React.FC<{
                         beds: v.beds,
                         measurements: v.measurements,
                         adaptedFor: v.adaptedFor,
-                        discount: v.discount,
+                        discount: {
+                          ...v,
+                          amount: v.discount?.value,
+                        },
                         includedAmenities: v.includedAmenities,
                         extras: v.extras,
                       })) || []
                     }
                   />
                 ) : null}
+                {showOn([ServiceType.HolidayRentals]) ? (
+                  <>
+                    {mapArray(services?.data, (room, i) => (
+                      <div key={i}>
+                        <Stack col divider={<Divider className="my-5" />}>
+                          <div className="flex flex-col sm:flex-row gap-4">
+                            <div className="min-w-[11.25rem] h-fit overflow-hidden rounded-xl">
+                              <AspectRatio ratio={1}>
+                                <Image
+                                  src={room.thumbnail}
+                                  className="w-full h-full object-cover"
+                                />
+                              </AspectRatio>
+                            </div>
+                            <div className="flex flex-col justify-between w-full gap-4">
+                              <div className="flex flex-col gap-5">
+                                <div className="flex gap-4 justify-between">
+                                  <p className="font-bold text-base text-title">
+                                    {room.name}
+                                  </p>
+                                  {room.measurements ? (
+                                    <div className="flex items-center gap-2 text-lightBlack">
+                                      <PropertyDimensionsIcon className="text-sm" />
+                                      <div className="flex items-center">
+                                        {room.measurements.inMeter}
+                                        <MathPowerDisplay power={2}>
+                                          m
+                                        </MathPowerDisplay>
+                                      </div>
+                                      /
+                                      <div className="flex items-center">
+                                        {room.measurements.inFeet}
+                                        <MathPowerDisplay power={2}>
+                                          ft
+                                        </MathPowerDisplay>
+                                      </div>
+                                    </div>
+                                  ) : null}
+                                </div>
+
+                                <div
+                                  style={{
+                                    gridTemplateColumns: `repeat(${3},1fr)`,
+                                  }}
+                                  className={`w-full grid gap-4 text-primary text-xl thinScroll overflow-y-scroll`}
+                                >
+                                  {mapArray(
+                                    room.includedAmenities!,
+                                    (ame, i) => (
+                                      <HStack key={i}>
+                                        <ServicePropertiesSwticher slug={ame} />
+                                        <p className="font-medium text-darkBrown text-xs">
+                                          {t(ame)}
+                                        </p>
+                                      </HStack>
+                                    )
+                                  )}
+                                </div>
+                              </div>
+                              <div>
+                                <Divider></Divider>
+                                <HStack className="flex-wrap  gap-4">
+                                  <HStack>
+                                    <p className="font-semibold">
+                                      {t("Property Type")}:
+                                    </p>
+                                    <p>{startCase(room.propertyType || "")}</p>
+                                  </HStack>
+                                  <HStack>
+                                    <p className="font-semibold">
+                                      {t("Type of Place")}:
+                                    </p>
+                                    <p>{startCase(room.typeOfPlace || "")}</p>
+                                  </HStack>
+                                </HStack>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex flex-col w-full gap-6">
+                            <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+                              <div className="flex flex-col gap-4">
+                                <p className="text-base font-bold text-title">
+                                  {t("Adapeted for")}
+                                </p>
+                                <div className="flex flex-col gap-4">
+                                  {mapArray(
+                                    Object.values(ServiceAdaptation),
+                                    (data, i) => (
+                                      <HStack key={i}>
+                                        {room.adaptedFor?.includes(data) ? (
+                                          <div className="text-primary p-2">
+                                            <ImCheckmark />
+                                          </div>
+                                        ) : (
+                                          <div className="text-red-500 p-2 ">
+                                            <CloseIcon />
+                                          </div>
+                                        )}
+                                        <p>{startCase(data)}</p>
+                                      </HStack>
+                                    )
+                                  )}
+                                </div>
+                              </div>
+                              <div className="flex flex-col gap-4">
+                                <p className="text-base font-bold text-title">
+                                  {t("Restrictions")}
+                                </p>
+                                <div className="flex flex-col gap-4">
+                                  {mapArray(
+                                    Object.values(ServiceRestriction),
+                                    (data, i) => (
+                                      <HStack key={i}>
+                                        {room.restriction?.includes(data) ? (
+                                          <div className="text-primary p-2">
+                                            <ImCheckmark />
+                                          </div>
+                                        ) : (
+                                          <div className="text-red-500 p-2 ">
+                                            <CloseIcon />
+                                          </div>
+                                        )}
+                                        <p>{startCase(data)}</p>
+                                      </HStack>
+                                    )
+                                  )}
+                                </div>
+                              </div>
+                              <div className="flex flex-col col-span-2 gap-4">
+                                <p className="text-base font-bold text-title">
+                                  {t("Extras")}
+                                </p>
+                                <div className="flex flex-col gap-4">
+                                  {mapArray(room.extras!, (data, i) => (
+                                    <div
+                                      key={i}
+                                      className="flex items-center text-xs font-normal text-lightBlack justify-between gap-4"
+                                    >
+                                      <p className=" font-semibold text-lg">
+                                        {startCase(data.name)}
+                                      </p>
+                                      {data.cost > 0 ? (
+                                        <PriceDisplay
+                                          className="text-primary font-bold"
+                                          price={data.cost}
+                                        />
+                                      ) : (
+                                        t("FREE")
+                                      )}
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                              <p className="font-semibold text-lg">
+                                {t("Policy")}
+                              </p>
+                              <HStack className="justify-between">
+                                <p className="font-medium">
+                                  {t("Cleaning fees")}
+                                </p>
+                                <span className="font-bold">
+                                  <PriceDisplay
+                                    price={room?.cleaningFee || 0}
+                                  />
+                                </span>
+                              </HStack>
+                              <Divider></Divider>
+                              <HStack>
+                                <p className="font-medium">
+                                  {t("Cancelation")}:
+                                </p>
+                                {room.cancelable ? (
+                                  <>
+                                    {(() => {
+                                      switch (room.cancelationPolicy) {
+                                        case ServiceCancelationType.Simple:
+                                          return t(
+                                            "You can cancel any time before your reservation date"
+                                          );
+                                        case ServiceCancelationType.Moderate:
+                                          return t(
+                                            "You can cancel any time up to 24 hours before your reservation date"
+                                          );
+                                        case ServiceCancelationType.Strict:
+                                          return [
+                                            ServiceType.BeautyCenter,
+                                            ServiceType.Restaurant,
+                                            ServiceType.HealthCenter,
+                                          ].includes(room.type)
+                                            ? t(
+                                                "if you cancel within 5 hours of the schduled date, 50% of the reservation price will taken"
+                                              )
+                                            : t(
+                                                "if you cancel within 30 days of the schduled date, 50% of the reservation price will taken"
+                                              );
+                                      }
+                                    })()}
+                                  </>
+                                ) : (
+                                  t("Not Allowed")
+                                )}
+                              </HStack>
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-5 w-full">
+                            <div className="flex items-center flex-wrap gap-5">
+                              <div className="text-lg items-center flex gap-2 font-bold text-black">
+                                <PriceDisplay price={room.price} />
+
+                                {room.discount ? (
+                                  <>
+                                    <div className="text-sm flex gap-1 text-lightBlack items-center font-normal">
+                                      <UnDiscountedPriceDisplay
+                                        amount={
+                                          room.price +
+                                          room.discount.value * room.price
+                                        }
+                                        discount={room.discount.value}
+                                      />
+                                      /
+                                      <p className="text-black">{t("night")}</p>
+                                    </div>
+                                  </>
+                                ) : null}
+                              </div>
+                              {room.discount ? (
+                                <>
+                                  <p className="text-secondaryRed text-sm font-medium">
+                                    {t("Only") +
+                                      ` ${room.discount.units} ` +
+                                      t(
+                                        "Tickets left at this price on our site"
+                                      )}
+                                  </p>
+                                </>
+                              ) : null}
+                            </div>
+                            <Button
+                              onClick={() => setSelectedServicesIds([room.id])}
+                              className="text-[1.375rem] text-white font-bold"
+                            >
+                              {t("Book Now")}
+                            </Button>
+                          </div>
+                        </Stack>
+                      </div>
+                    ))}
+                  </>
+                ) : null}
                 {showOn([ServiceType.BeautyCenter]) ? (
                   <>
                     {mapArray(services?.data, (v) => (
                       <div className="flex w-full  select-none justify-between">
-                        <div className="flex gap-2">
+                        <div className="flex gap-2 w-2/3">
                           <Image
                             className="w-32 h-24 rounded-lg"
                             src={v.thumbnail}
@@ -294,7 +559,11 @@ export const ServiceDetailsView: React.FC<{
                             </div>
                           </div>
                         </div>
-                        <div className="flex gap-4">
+                        <div className="flex gap-4 justify-between w-1/3">
+                          <div></div>
+                          <span className="text-xl">
+                            <CountInput />
+                          </span>
                           <div className="flex font-semibold flex-col gap-1 items-end">
                             <PriceDisplay
                               symbol
@@ -306,9 +575,6 @@ export const ServiceDetailsView: React.FC<{
                               discount={v?.discount?.value || 0}
                             />
                           </div>
-                          <span className="text-xl">
-                            <CountInput />
-                          </span>
                         </div>
                       </div>
                     ))}
@@ -346,7 +612,7 @@ export const ServiceDetailsView: React.FC<{
                 ) : null}
                 {showOn([ServiceType.Vehicle]) ? (
                   <div className="flex flex-col items-center w-full">
-                    <div className="flex flex-wrap gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 w-full gap-6">
                       {mapArray(services?.data, (v) => (
                         <div className="flex flex-col gap-2">
                           <AspectRatio ratio={9 / 16}>
@@ -392,7 +658,11 @@ export const ServiceDetailsView: React.FC<{
                             ) : (
                               <div></div>
                             )}
-                            <Button>{t("Select")}</Button>
+                            <Button
+                              onClick={() => setSelectedServicesIds(v.id)}
+                            >
+                              {t("Select")}
+                            </Button>
                           </div>
                         </div>
                       ))}

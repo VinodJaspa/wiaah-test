@@ -106,6 +106,15 @@ model NewsfeedPost {
   legend             String
 }
 
+model MediaUpload {
+  id        String          @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String          @db.ObjectId
+  src       String
+  type      ContentHostType
+  mimeType  String
+  createdAt DateTime        @default(now())
+}
+
 type MarketingTag {
   id   String
   type MarketingTagType
@@ -422,6 +431,7 @@ enum ContentHostType {
   comment
   action
   story
+  chat_message
 }
 
 enum ContentReactionType {

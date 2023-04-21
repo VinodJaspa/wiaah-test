@@ -35,7 +35,7 @@ import {
 } from "recharts";
 import {
   AddToDate,
-  getDatesInRange,
+  getDatesInRangeHours,
   mapArray,
   randomNum,
   SnakeCaseToText,
@@ -69,7 +69,7 @@ const Dashboard: NextPage = () => {
   const dateSorted = accounts.sort(
     (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
   );
-  const dates = getDatesInRange(
+  const dates = getDatesInRangeHours(
     new Date(accounts[0]?.createdAt),
     new Date(accounts[accounts.length - 1]?.createdAt)
   );

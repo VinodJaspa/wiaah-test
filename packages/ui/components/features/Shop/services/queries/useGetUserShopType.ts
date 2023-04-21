@@ -18,7 +18,7 @@ export type GetUserShopTypeQueryVariables = Exact<{
 export type GetUserShopTypeQuery = { __typename?: "Query" } & {
   getUserShop: { __typename?: "Shop" } & Pick<
     Shop,
-    "type" | "businessType" | "createdAt" | "id" | "storeType"
+    "type" | "businessType" | "createdAt" | "id" | "storeType" | "ownerId"
   >;
 };
 
@@ -34,8 +34,9 @@ export const useGetUserShopType = (
           businessType: BusinessType.Individual,
           createdAt: new Date(),
           id: "",
-          storeType: StoreType.Service,
+          storeType: StoreType.Product,
           type: ServiceType.Hotel,
+          ownerId: "",
         };
       }
 
@@ -51,6 +52,7 @@ query getUserShopType($userId:String!){
     createdAt
     id
     storeType
+    ownerId
   }
 }
     `

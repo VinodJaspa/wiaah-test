@@ -1,9 +1,4 @@
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  HttpException,
-} from "@nestjs/common";
+import { Injectable, CanActivate, ExecutionContext } from "@nestjs/common";
 import { GqlExecutionContext } from "@nestjs/graphql";
 import { Observable } from "rxjs";
 import { AccountType, AuthorizationDecodedUser } from "../types";
@@ -13,6 +8,12 @@ import { KnownError, PublicErrorCodes } from "../Errors/knownError";
 class AuthorizationRequired extends KnownError {
   constructor(msg: string) {
     super(msg, PublicErrorCodes.unAuthorized);
+  }
+}
+
+class PremissionDenied extends KnownError {
+  constructor(msg: string) {
+    super(msg, PublicErrorCodes.premissionDenied);
   }
 }
 
@@ -28,9 +29,6 @@ export class GqlAuthorizationGuard implements CanActivate {
     const ctx = GqlExecutionContext.create(context);
     const user: AuthorizationDecodedUser = ctx.getContext().user;
 
-    // return true;
-    console.log("user", { user });
-
     const isPublic = this.roles.includes(accountType.PUBLIC);
 
     if (!user || typeof user !== "object" || typeof user.id !== "string") {
@@ -38,7 +36,7 @@ export class GqlAuthorizationGuard implements CanActivate {
         return true;
       } else {
         throw new AuthorizationRequired(
-          "this account can not preform this actionawjdhkja"
+          "you need to sign in to preform this action"
         );
       }
     }
@@ -46,15 +44,11 @@ export class GqlAuthorizationGuard implements CanActivate {
     if (this.roles) {
       if (this.roles.length === 0) return true;
       if (!user.accountType || !this.roles.includes(user.accountType)) {
-        throw new AuthorizationRequired(
-          "this account can not preform this action1324654"
-        );
+        throw new PremissionDenied("this account can not preform this action");
       }
     } else {
       return false;
     }
-
-    console.log("checking with user");
 
     return !!user;
   }

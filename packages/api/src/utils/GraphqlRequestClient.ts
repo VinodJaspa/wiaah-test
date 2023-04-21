@@ -5,6 +5,7 @@ const GraphqlPubsubClient = new ReactPubsubClient();
 
 enum KnownErrorCodes {
   unAuthorized = 0,
+  deniedPremission = 1,
 }
 
 const pubsubEvents = {
@@ -17,7 +18,6 @@ export const useGraphqlRequestErrorCode = (
   getCode: (codes: typeof KnownErrorCodes) => KnownErrorCodes,
   cb: () => any
 ) => {
-  console.log("subscring");
   GraphqlPubsubClient.Subscribe(
     pubsubEvents.errorCode(
       typeof getCode === "function" ? getCode(KnownErrorCodes) : ""
@@ -49,7 +49,6 @@ export class GraphqlRequestClient extends GraphQLClient {
   }
 
   async send<TRes>() {
-    console.log("send");
     try {
       if (!this.query) throw new Error("no query");
 
@@ -66,9 +65,9 @@ export class GraphqlRequestClient extends GraphQLClient {
         (v) => typeof v.code === "string" || typeof v.code === "number"
       );
 
-      validErrors?.forEach((v: typeof KnownErrorCodes) => {
-        console.log("publishing");
-        GraphqlPubsubClient.Publish(pubsubEvents.errorCode(v));
+      validErrors?.forEach((v: { code: typeof KnownErrorCodes }) => {
+        const code = pubsubEvents.errorCode(v.code);
+        GraphqlPubsubClient.Publish(code);
       });
 
       return null as unknown as { data: TRes };

@@ -1,7 +1,6 @@
 import { PostLocationInput } from '@input';
 import { InputType, Field, registerEnumType } from '@nestjs/graphql';
 import { ActionType, CommentsVisibility } from 'prismaClient';
-import { Upload, GraphQLUpload } from 'graphql-upload';
 import { IsDomain } from 'nest-utils';
 
 const domains = process.env.FRONTEND_DOMAINS;
@@ -9,11 +8,11 @@ const domains = process.env.FRONTEND_DOMAINS;
 registerEnumType(ActionType, { name: 'ActionType' });
 @InputType()
 export class CreateActionInput {
-  @Field(() => GraphQLUpload)
-  src: Upload;
+  @Field(() => String)
+  srcUploadId: string;
 
-  @Field(() => GraphQLUpload)
-  cover: Upload;
+  @Field(() => String)
+  coverUploadId: string;
 
   @Field(() => [String], { nullable: true, defaultValue: [] })
   mentions: string[];

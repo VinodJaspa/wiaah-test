@@ -38,6 +38,6 @@ export const useGetServiceCategoryBySlug = (slug: string) => {
       GqlResponse<Category, "getServiceCategoryBySlug">
     >();
 
-    return res.data.getServiceCategoryBySlug;
+    return res.data.data.getServiceCategoryBySlug;
   });
 };

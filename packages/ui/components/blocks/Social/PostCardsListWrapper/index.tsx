@@ -10,6 +10,8 @@ import {
   ListWrapperProps,
 } from "@UI/components/blocks/Wrappers";
 import { useResponsive } from "@UI/../hooks";
+import { AspectRatio } from "@partials";
+import { mapArray } from "@UI/../utils/src";
 
 export interface PostCardsListWrapperProps extends ListWrapperProps {
   posts: (PostCardProps["postInfo"] & {
@@ -58,181 +60,107 @@ export const PostCardsListWrapper: React.FC<PostCardsListWrapperProps> = ({
         }}
       />
       {grid ? (
-        <GridListOrganiser
-          rowSize={isMobile ? "6rem" : isTablet ? "10rem" : "14.5rem"}
-          presets={
-            isMobile
-              ? [
+        isMobile ? (
+          <div className="grid grid-cols-3 gap-[1px]">
+            {mapArray(childPosts, (v, i) => (
+              <AspectRatio key={i} ratio={1.24}>
+                {v}
+              </AspectRatio>
+            ))}
+          </div>
+        ) : (
+          <GridListOrganiser
+            rowSize={isMobile ? "6rem" : isTablet ? "10rem" : "14.5rem"}
+            presets={[
+              {
+                cols: 5,
+                points: [
                   {
-                    cols: 3,
-                    points: [
-                      {
-                        c: 2,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 2,
-                        r: 2,
-                      },
-                      {
-                        c: 2,
-                        r: 1,
-                      },
-                    ],
+                    c: 2,
+                    r: 2,
                   },
                   {
-                    cols: 3,
-                    points: [
-                      { c: 2, r: 2 },
-                      { c: 1, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 2, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 2, r: 1 },
-                      { c: 1, r: 1 },
-                    ],
+                    c: 1,
+                    r: 1,
                   },
+                  {
+                    c: 1,
+                    r: 2,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                ],
+              },
+              {
+                cols: 5,
+                points: [
+                  { c: 1, r: 1 },
+                  { c: 1, r: 1 },
+                  { c: 1, r: 1 },
+                  { c: 1, r: 1 },
+                  { c: 1, r: 2 },
+                  { c: 2, r: 1 },
+                  { c: 1, r: 1 },
+                  { c: 1, r: 1 },
+                ],
+              },
 
+              {
+                cols: 4,
+                points: [
                   {
-                    cols: 2,
-                    points: [
-                      {
-                        c: 2,
-                        r: 1,
-                      },
-                      {
-                        c: 2,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 2,
-                        r: 1,
-                      },
-                    ],
-                  },
-                ]
-              : [
-                  {
-                    cols: 5,
-                    points: [
-                      {
-                        c: 2,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                    ],
+                    c: 2,
+                    r: 1,
                   },
                   {
-                    cols: 5,
-                    points: [
-                      { c: 1, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 1, r: 2 },
-                      { c: 2, r: 1 },
-                      { c: 1, r: 1 },
-                      { c: 1, r: 1 },
-                    ],
+                    c: 2,
+                    r: 2,
                   },
-
                   {
-                    cols: 4,
-                    points: [
-                      {
-                        c: 2,
-                        r: 1,
-                      },
-                      {
-                        c: 2,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 2,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 1,
-                        r: 1,
-                      },
-                      {
-                        c: 2,
-                        r: 1,
-                      },
-                    ],
+                    c: 1,
+                    r: 2,
                   },
-                ]
-          }
-        >
-          {childPosts}
-        </GridListOrganiser>
+                  {
+                    c: 1,
+                    r: 2,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                  {
+                    c: 1,
+                    r: 1,
+                  },
+                  {
+                    c: 2,
+                    r: 1,
+                  },
+                ],
+              },
+            ]}
+          >
+            {childPosts}
+          </GridListOrganiser>
+        )
       ) : (
         <ListWrapper cols={cols}>{childPosts}</ListWrapper>
       )}

@@ -28,3 +28,4 @@ export * from "./Vouchers";
 export * from "./notifications";
 export * from "./MediaEditing";
 export * from "./Statistics";
+export * from "./Settings";

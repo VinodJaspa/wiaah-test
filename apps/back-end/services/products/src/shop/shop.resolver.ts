@@ -11,6 +11,7 @@ import {
   Inject,
   NotFoundException,
   OnModuleInit,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import {
@@ -21,15 +22,16 @@ import {
   KAFKA_MESSAGES,
   GetLang,
   UserPreferedLang,
+  accountType,
 } from 'nest-utils';
 import { ClientKafka } from '@nestjs/microservices';
 
 import { ShopService } from './shop.service';
-import { Shop } from './entities/shop.entity';
+import { RawShop, Shop } from './entities/shop.entity';
 import { CreateShopInput } from './dto/create-shop.input';
 import { GetNearShopsInput } from './dto/get-near-shops.dto';
 import { FilteredShopsInput } from './dto/filter-shops.input';
-import { UpdateShopInput } from './dto';
+import { UpdateUserShopInput } from './dto';
 import { PrismaService } from 'prismaService';
 import { ShopWorkingSchedule } from 'src/working-schedule/entities';
 
@@ -60,6 +62,20 @@ export class ShopResolver implements OnModuleInit {
     return this.shopService.getShopByOwnerId(id, lang);
   }
 
+  @Query(() => RawShop)
+  async getUserRawShop(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+    @Args('userId') id: string,
+  ): Promise<RawShop> {
+    await this.validateShopEditPremissions(user, id);
+
+    return this.prisma.shop.findUnique({
+      where: {
+        ownerId: id,
+      },
+    });
+  }
+
   @Query(() => [Shop])
   getFilteredShops(
     @Args('filteredShopsArgs') filteredShopsInput: FilteredShopsInput,
@@ -83,12 +99,13 @@ export class ShopResolver implements OnModuleInit {
   }
 
   @Mutation(() => Shop)
-  updateMyShop(
-    @Args('updateMyShopInput') input: UpdateShopInput,
+  async updateShop(
+    @Args('args') input: UpdateUserShopInput,
     @GqlCurrentUser() user: AuthorizationDecodedUser,
     @GetLang() lang: UserPreferedLang,
   ) {
-    return this.shopService.updateShopData(input, user.id, lang);
+    await this.validateShopEditPremissions(user, input.userId);
+    return this.shopService.updateShopData(input, input.userId, lang);
   }
 
   async validateShopPremissions(
@@ -100,6 +117,14 @@ export class ShopResolver implements OnModuleInit {
     if (shop.status === 'active') throw new NotFoundException('shop not found');
 
     return shop;
+  }
+
+  async validateShopEditPremissions(
+    user: AuthorizationDecodedUser,
+    userId: string,
+  ) {
+    if (user.id !== userId && user.accountType !== accountType.ADMIN)
+      throw new UnauthorizedException('Invalid Premissions');
   }
 
   @ResolveReference()

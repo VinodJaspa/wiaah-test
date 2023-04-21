@@ -6,12 +6,14 @@ import {
   registerEnumType,
   Directive,
   Int,
+  OmitType,
 } from '@nestjs/graphql';
 import {
   BusinessType,
   ServiceType,
   ShopPaymentMethods,
   ShopStatus,
+  StoreFor,
   StoreType,
   TargetGenders,
 } from '@prisma-client';
@@ -23,6 +25,7 @@ registerEnumType(BusinessType, { name: 'BusinessType' });
 registerEnumType(ShopStatus, { name: 'ShopStatus' });
 registerEnumType(ShopPaymentMethods, { name: 'ShopPaymentMethod' });
 registerEnumType(ServiceType, { name: 'ServiceType' });
+registerEnumType(StoreFor, { name: 'StoreFor' });
 
 @ObjectType()
 export class TranslationText extends CreateObjectGqlTranslationInputField(
@@ -112,6 +115,9 @@ export class Shop {
   @Field((type) => [TargetGenders])
   targetGenders: TargetGenders[];
 
+  @Field(() => [StoreFor])
+  storeFor: StoreFor[];
+
   // @Field(() => VatSettings, { nullable: true })
   // vat?: VatSettings;
 
@@ -135,4 +141,13 @@ export class Shop {
 
   @Field(() => Float)
   rating: number;
+}
+
+@ObjectType()
+export class RawShop extends OmitType(Shop, ['description', 'name']) {
+  @Field(() => [TranslationText])
+  description: TranslationText[];
+
+  @Field(() => [TranslationText])
+  name: TranslationText[];
 }

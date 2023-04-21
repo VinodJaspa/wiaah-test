@@ -53,7 +53,7 @@ export const UserServicesList: React.FC<{ accountId: string }> = () => {
 
   return (
     <div className="flex flex-col gap-8 w-full">
-      <Button onClick={() => AddNewService()} className="self-end">
+      <Button onClick={() => AddNewService()} className="self-end mr-4">
         {t("Add new service")}
       </Button>
       <ScrollCursorPaginationWrapper controls={controls}>
@@ -112,7 +112,7 @@ export const UserServicesList: React.FC<{ accountId: string }> = () => {
               </>
             ) : null}
             <Th>{t("Date")}</Th>
-            <Th>{t("Action")}</Th>
+            <Th align="right">{t("Action")}</Th>
           </THead>
           <TBody>
             {res
@@ -153,7 +153,7 @@ export const UserServicesList: React.FC<{ accountId: string }> = () => {
                         </>
                       ) : null}
                       <Td>{new Date(service.createdAt).toDateString()}</Td>
-                      <Td>
+                      <Td align="right">
                         <HStack>
                           <Button
                             onClick={() => setDeleteId(service.id)}

@@ -1,7 +1,6 @@
 import React from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import { useBreakpointValue, useForm } from "utils";
 import {
   PostCardsListWrapper,
   PostViewPopup,
@@ -22,6 +21,8 @@ import { newsfeedPosts } from "ui";
 import { useRouter } from "next/router";
 import { PostCardInfo } from "types";
 import { StoryModal } from "@components";
+import { useBreakpointValue } from "utils";
+import { useForm } from "utils";
 
 const Seller: NextPage = () => {
   const router = useRouter();
