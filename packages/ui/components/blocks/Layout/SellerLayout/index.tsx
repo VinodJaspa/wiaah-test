@@ -15,12 +15,7 @@ import {
   Root,
   Container,
   UsersProfiles,
-  HomeIcon,
-  DiscoverIcon,
-  AffiliationIcon,
-  ShoppingCartIcon,
   ServicesIcon,
-  PlayButtonFillIcon,
   HStack,
   HashtagIcon,
   LocationButton,
@@ -35,12 +30,6 @@ import {
   usePaginationControls,
   useGetRecentStories,
   useGetDiscoverHashtags,
-  HomeOutlineIcon,
-  DiscoverOutlineIcon,
-  VideosOutlinePlayIcon,
-  ShoppingCartOutlineIcon,
-  ServicesOutlineIcon,
-  AffiliationIconOutline,
 } from "@UI";
 import { useResponsive, useAccountType } from "hooks";
 import { HtmlDivProps } from "types";
@@ -267,7 +256,9 @@ export const SellerLayout: React.FC<SellerLayoutProps> = ({
         <div className="w-full h-full gap-4 flex flex-col justify-between">
           <main
             style={{
-              paddingTop: `calc(${headerHeight || 0}px + 2rem)`,
+              paddingTop: showHeader
+                ? `calc(${headerHeight || 0}px + 2rem)`
+                : undefined,
             }}
             className={`${
               containerProps?.className || ""

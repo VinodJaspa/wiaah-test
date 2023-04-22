@@ -23,6 +23,7 @@ import {
   useUserData,
   AddNewPostModal,
   useMasterLocationMapModal,
+  Image,
 } from "@UI";
 import { useSetRecoilState } from "recoil";
 import { useRouter } from "next/router";
@@ -65,13 +66,9 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
       }
     >
       <div className="flex items-center gap-2 h-full">
-        {isMobile && (
-          <HiMenu
-            className="text-2xl md:text-4xl cursor-pointer mt-3"
-            onClick={() => setDrawerOpen(true)}
-          />
-        )}
-        {isMobile ? null : (
+        {isMobile ? (
+          <Image src="/wiaah_logo.png" className="w-24 h-10 object-cover" />
+        ) : (
           <div className="flex items-center gap-4">
             <WavingHand className="text-[2rem]" />
             <div className="flex flex-col">
@@ -110,10 +107,9 @@ export const SellerHeader: React.FC<SellerHeaderProps> = ({
           <AddNewPostModal />
         </>
         {/* ) : null} */}
-          <NotifiactionsMenu>
-            <BellOutlineIcon className="text-icon text-lightBlack" />
-          </NotifiactionsMenu>
-        
+        <NotifiactionsMenu>
+          <BellOutlineIcon className="text-icon text-lightBlack" />
+        </NotifiactionsMenu>
 
         <div className="relative" onClick={() => router.push("/chat")}>
           <span className="h-4 w-4 text-[0.5rem]  border-2 border-white rounded-full absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 flex justify-center items-center text-white bg-primary">

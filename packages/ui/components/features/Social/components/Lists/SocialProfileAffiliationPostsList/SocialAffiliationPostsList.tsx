@@ -3,9 +3,9 @@ import {
   usePaginationControls,
 } from "@blocks";
 import { useGetProfileAffiliationPosts } from "@features/Social/services";
-import { ScrollPaginationWrapper } from "@partials";
+import { AspectRatio, Image, ScrollPaginationWrapper } from "@partials";
 import { useResponsive } from "hooks";
-import { useBreakpointValue } from "utils";
+import { mapArray, useBreakpointValue } from "utils";
 import React from "react";
 
 export const SocialProfileAffiliationPostsList: React.FC<{
@@ -21,11 +21,24 @@ export const SocialProfileAffiliationPostsList: React.FC<{
 
   return (
     <ScrollPaginationWrapper controls={controls}>
-      <AffiliationOffersCardListWrapper
-        grid={isMobile}
-        cols={cols}
-        items={data || []}
-      />
+      {isMobile ? (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 xl:grid-cols-5">
+          {mapArray(data, (v, i) => (
+            <AspectRatio ratio={1}>
+              <Image
+                className="w-full h-full object-cover"
+                src={v.affiliation.product?.thumbnail}
+              />
+            </AspectRatio>
+          ))}
+        </div>
+      ) : (
+        <AffiliationOffersCardListWrapper
+          grid={isMobile}
+          cols={cols}
+          items={data || []}
+        />
+      )}
     </ScrollPaginationWrapper>
   );
 };

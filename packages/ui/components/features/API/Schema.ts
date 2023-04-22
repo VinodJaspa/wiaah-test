@@ -3877,6 +3877,7 @@ export type Query = {
   getMyProductReviews: Array<ProductReview>;
   getMyProducts: Array<Product>;
   getMyProductsAffiliationHistory: Array<AffiliationPurchase>;
+  getMyRecommendedAction: Action;
   getMyReturnedOrders: Array<Refund>;
   getMySavedPosts: UserSavedPostsGroup;
   getMySellerProductsRating: SellerProductsRating;

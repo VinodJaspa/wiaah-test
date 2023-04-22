@@ -564,6 +564,7 @@ type Query {
   getRecommendedAffiliationPosts(args: GetRecommendedAffiliationPostsInput!): [AffiliationPost!]!
   getHashtagTopAffiliationPost(tag: String!): HashtagTopAffiliationPost
   getUserActions(args: GetUserActionsInput!): GetActionsCursorResponse!
+  getMyRecommendedAction: Action!
   getAction(id: String!): [Action!]!
   getServicePost(id: String!): ServicePost!
   getUserServicePosts(args: GetUserServicesPostsInput!): [ServicePost!]!

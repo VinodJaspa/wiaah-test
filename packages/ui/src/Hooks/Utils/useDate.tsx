@@ -9,6 +9,7 @@ export interface useDateProps {
 export interface SinceReturn {
   value: number;
   timeUnit: string;
+  timeUnitNarrow: string;
 }
 
 export interface useDateReturnType {
@@ -43,41 +44,49 @@ export const useDateDiff = ({ from, to }: useDateProps): useDateReturnType => {
     if (seconds < 0)
       return {
         timeUnit: t("seconds", "seconds"),
+        timeUnitNarrow: "s",
         value: 0,
       };
     if (days > 365) {
       return {
         timeUnit: t("years", "years"),
+        timeUnitNarrow: "y",
         value: Math.floor(years),
       };
     } else if (days > 30) {
       return {
         timeUnit: t("months", "months"),
+        timeUnitNarrow: "mo",
         value: Math.floor(months),
       };
     } else if (days > 7) {
       return {
         timeUnit: t("weeks", "weeks"),
+        timeUnitNarrow: "w",
         value: Math.floor(weeks),
       };
     } else if (days > 1) {
       return {
         timeUnit: t("days", "days"),
+        timeUnitNarrow: "d",
         value: Math.floor(days),
       };
     } else if (hours > 1) {
       return {
         timeUnit: t("hours", "hours"),
+        timeUnitNarrow: "h",
         value: Math.floor(hours),
       };
     } else if (minutes > 1) {
       return {
         timeUnit: t("minutes", "minutes"),
+        timeUnitNarrow: "m",
         value: Math.floor(minutes),
       };
     } else {
       return {
         timeUnit: t("seconds", "seconds"),
+        timeUnitNarrow: "s",
         value: Math.floor(seconds),
       };
     }

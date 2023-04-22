@@ -109,7 +109,13 @@ export const SocialProfileView: React.FC<SocialViewProps> = ({ username }) => {
         <Container className="flex-grow flex-col flex gap-2">
           {profileInfo ? (
             <SocialProfile
-              profileInfo={profileInfo}
+              profileInfo={{
+                ...profileInfo,
+                shopId: profileInfo.user?.shop?.id || "",
+              }}
+              storeType={
+                profileInfo?.user?.shop?.storeType || StoreType.Product
+              }
               isFollowed={profileInfo.isFollowed}
               isPublic={isPublic}
             />

@@ -141,3 +141,4 @@ export * from "./ReturnArrowIcon";
 export * from "./PersonGroupIcon";
 export * from "./MoneyHandIcon";
 export * from "./CashBackIcon";
+export * from "./VolumeIcon";

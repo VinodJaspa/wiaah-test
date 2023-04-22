@@ -70,6 +70,9 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
       setShowMore(true);
     }
   }, [MaxLines]);
+
+  console.log({ textEllipsising, showMore });
+
   return (
     <div className="relative font-semibold flex flex-col">
       <p
@@ -87,18 +90,20 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         {children}
         {content}
       </Text>
-      {!textEllipsising || !ShowMore ? null : showMore === true ? (
+      {textEllipsising ? (
+        <p></p>
+      ) : showMore === true ? (
         <div className="absolute bottom-0 right-0 justify-end flex w-full text-primary capitalize transform-cpu">
           <div
             className={`${
-              showMoreColor ? showMoreColor : "bg-primary-50"
+              showMoreColor ? showMoreColor : "bg-white"
             } flex gap-2`}
           >
             <p className="text-black" ref={EllipsisRef}>
               ...
             </p>
-            <p className="cursor-pointer w-fit" onClick={handleShowMore}>
-              {t("show_more", "show more")}
+            <p className="cursor-pointer" onClick={handleShowMore}>
+              {t("more")}
             </p>
           </div>
         </div>
@@ -108,7 +113,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         flex justify-end absolute bottom-0 right-0 cursor-pointer text-primary capitalize"
           onClick={handleShowLess}
         >
-          <p className="w-fit pl-2 bg-primary">{t("show_less", "show less")}</p>
+          <p className="w-fit pl-2 bg-primary">{t("show less")}</p>
         </div>
       )}
     </div>

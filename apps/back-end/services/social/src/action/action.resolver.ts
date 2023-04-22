@@ -165,6 +165,13 @@ export class ActionResolver {
     );
   }
 
+  @Query(() => Action)
+  async getMyRecommendedAction(
+    @GqlCurrentUser() user: AuthorizationDecodedUser,
+  ): Promise<Action> {
+    return {} as Action;
+  }
+
   @Query(() => [Action])
   getAction(
     @Args('id') id: string,
