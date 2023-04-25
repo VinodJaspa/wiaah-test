@@ -96,6 +96,8 @@ type Product {
   discountId: String
   cashbackId: String
   presentations: [ProductPresentation!]!
+  sizes: [ProductSize!]!
+  colors: [String!]!
   thumbnail: String!
   rate: Int!
   brand: String!
@@ -124,6 +126,16 @@ type Product {
   external_clicks: Int!
 }
 
+enum ProductSize {
+  s
+  m
+  l
+  xl
+  xxl
+  xxxl
+  xxxxl
+}
+
 enum VisibilityEnum {
   hidden
   public
@@ -146,6 +158,13 @@ enum ProductCondition {
   new
   used
   recondition
+}
+
+type ProductsCursorPaginationResponse {
+  data: [Product!]!
+  cursor: String!
+  nextCursor: String!
+  hasMore: Boolean!
 }
 
 type ProductFilterGroupValue {
@@ -355,6 +374,7 @@ type Query {
   getProductById(id: String!, isClick: Boolean!): Product!
   getMyProducts(filterInput: GetFilteredProductsInput!): [Product!]!
   getProduct(id: ID!): Product!
+  getSellerProducts(args: GetSellerProductsInput!): ProductsCursorPaginationResponse!
   getProductCategories: [Category!]!
   getFilteredProductCategories(args: GetFilteredCategory): [Category!]!
   getAdminProductsFilters(getFiltersArgs: GetFiltersInput!): [Filter!]!
@@ -407,6 +427,12 @@ input GetFilteredProductsInput {
 enum ProductType {
   goods
   digital
+}
+
+input GetSellerProductsInput {
+  sellerId: String!
+  idCursor: String
+  take: Int!
 }
 
 input GetFilteredCategory {
@@ -584,6 +610,8 @@ input CreateProductInput {
   visibility: VisibilityEnum!
   vat: Float!
   condition: ProductCondition!
+  sizes: [ProductSize!]!
+  colors: [String!]!
 }
 
 input StringTranslationField {
@@ -626,6 +654,8 @@ input UpdateProductInput {
   visibility: VisibilityEnum
   vat: Float
   condition: ProductCondition
+  sizes: [ProductSize!]
+  colors: [String!]
   id: ID!
   oldPresentations: [ProductPresentationInput!]!
 }

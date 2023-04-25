@@ -1095,11 +1095,13 @@ export type CreateProductInput = {
   brand: Scalars["String"];
   cashback: CashBackInput;
   categoryId: Scalars["ID"];
+  colors: Array<Scalars["String"]>;
   condition: ProductCondition;
   description: Array<StringTranslationField>;
   discount: DiscountInput;
   presentations: Array<Scalars["Upload"]>;
   price: Scalars["Float"];
+  sizes: Array<ProductSize>;
   stock: Scalars["Int"];
   thumbnail: Scalars["String"];
   title: Array<StringTranslationField>;
@@ -1910,6 +1912,12 @@ export type GetSalesDurningPeriodInput = {
   searchPeriod?: Maybe<OrderSearchPeriod>;
   seller?: Maybe<Scalars["String"]>;
   status?: Maybe<OrderStatusEnum>;
+};
+
+export type GetSellerProductsInput = {
+  idCursor?: Maybe<Scalars["String"]>;
+  sellerId: Scalars["String"];
+  take: Scalars["Int"];
 };
 
 export type GetShopRecommendedPostsInput = {
@@ -3541,6 +3549,7 @@ export type Product = {
   cashbackId?: Maybe<Scalars["String"]>;
   category?: Maybe<Category>;
   categoryId: Scalars["ID"];
+  colors: Array<Scalars["String"]>;
   condition: ProductCondition;
   createdAt: Scalars["String"];
   description: Scalars["String"];
@@ -3561,6 +3570,7 @@ export type Product = {
   sellerId: Scalars["ID"];
   shippingDetails?: Maybe<ShippingDetails>;
   shippingRulesIds: Array<Scalars["ID"]>;
+  sizes: Array<ProductSize>;
   status: ProductStatus;
   stock: Scalars["Int"];
   thumbnail: Scalars["String"];
@@ -3652,6 +3662,16 @@ export type ProductReview = {
   updatedAt: Scalars["DateTime"];
 };
 
+export enum ProductSize {
+  L = "l",
+  M = "m",
+  S = "s",
+  Xl = "xl",
+  Xxl = "xxl",
+  Xxxl = "xxxl",
+  Xxxxl = "xxxxl",
+}
+
 export enum ProductStatus {
   Active = "active",
   Deleted = "deleted",
@@ -3669,6 +3689,14 @@ export enum ProductUsageStatus {
   New = "new",
   Used = "used",
 }
+
+export type ProductsCursorPaginationResponse = {
+  __typename?: "ProductsCursorPaginationResponse";
+  cursor: Scalars["String"];
+  data: Array<Product>;
+  hasMore: Scalars["Boolean"];
+  nextCursor: Scalars["String"];
+};
 
 export type Profession = {
   __typename?: "Profession";
@@ -3934,6 +3962,7 @@ export type Query = {
   getReports: Array<Report>;
   getRoomMessages: Array<ChatMessage>;
   getSalesDurningPeriod: Array<OrderItem>;
+  getSellerProducts: ProductsCursorPaginationResponse;
   getServiceCategories: Array<ServiceCategory>;
   getServiceCategoryById: ServiceCategory;
   getServiceCategoryByType: Array<ServiceCategory>;
@@ -4502,6 +4531,10 @@ export type QueryGetRoomMessagesArgs = {
 
 export type QueryGetSalesDurningPeriodArgs = {
   args: GetSalesDurningPeriodInput;
+};
+
+export type QueryGetSellerProductsArgs = {
+  args: GetSellerProductsInput;
 };
 
 export type QueryGetServiceCategoryByIdArgs = {
@@ -5918,6 +5951,7 @@ export type UpdateProductInput = {
   brand?: Maybe<Scalars["String"]>;
   cashback?: Maybe<CashBackInput>;
   categoryId?: Maybe<Scalars["ID"]>;
+  colors?: Maybe<Array<Scalars["String"]>>;
   condition?: Maybe<ProductCondition>;
   description?: Maybe<Array<StringTranslationField>>;
   discount?: Maybe<DiscountInput>;
@@ -5925,6 +5959,7 @@ export type UpdateProductInput = {
   oldPresentations: Array<ProductPresentationInput>;
   presentations?: Maybe<Array<Scalars["Upload"]>>;
   price?: Maybe<Scalars["Float"]>;
+  sizes?: Maybe<Array<ProductSize>>;
   stock?: Maybe<Scalars["Int"]>;
   thumbnail?: Maybe<Scalars["String"]>;
   title?: Maybe<Array<StringTranslationField>>;

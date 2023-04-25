@@ -75,6 +75,7 @@ export const ScrollPaginationWrapper: React.FC<
 
 interface ScrollCursorPaginationWrapperProps extends HtmlDivProps {
   controls: ReturnType<typeof useCursorScrollPagination>["controls"];
+  axis?: "x" | "y";
 }
 
 export const ScrollCursorPaginationWrapper: React.FC<

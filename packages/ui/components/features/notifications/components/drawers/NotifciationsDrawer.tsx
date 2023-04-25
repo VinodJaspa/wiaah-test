@@ -105,9 +105,11 @@ export const NotifciationsDrawer: React.FC = () => {
                   <NotifiactionCard
                     username={v.author?.profile?.username}
                     createdAt={v.createdAt}
+                    orderId={"18642"}
                     type={v.type}
                     count={1}
                     thumbnail={v.author?.profile?.photo}
+                    seen={!isToday(new Date(v.createdAt))}
                   />
                 </div>
               );

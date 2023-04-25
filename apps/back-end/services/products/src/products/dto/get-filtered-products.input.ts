@@ -87,3 +87,15 @@ export class AdminGetAccountProductsInput extends PartialType(input) {
   @Field(() => ID)
   accountId: string;
 }
+
+@InputType()
+export class GetSellerProductsInput {
+  @Field(() => String)
+  sellerId: string;
+
+  @Field(() => String, { nullable: true })
+  idCursor?: string;
+
+  @Field(() => Int)
+  take: number;
+}

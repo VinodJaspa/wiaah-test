@@ -12,12 +12,16 @@ import {
   CashbackType,
   PresentationType,
   ProductCondition,
+  ProductSize,
   ProductStatus,
   ProductUsageStatus,
   VisibilityEnum,
 } from '@prisma-client';
 import { ShippingDetails } from '@products/entities/extends';
-import { CreateGqlPaginatedResponse } from 'nest-utils';
+import {
+  CreateGqlCursorPaginatedResponse,
+  CreateGqlPaginatedResponse,
+} from 'nest-utils';
 
 registerEnumType(VisibilityEnum, { name: 'VisibilityEnum' });
 registerEnumType(ProductUsageStatus, { name: 'ProductUsageStatus' });
@@ -115,6 +119,12 @@ export class Product {
   @Field((type) => [ProductPresentation])
   presentations: ProductPresentation[];
 
+  @Field(() => [ProductSize])
+  sizes: ProductSize[];
+
+  @Field(() => [String])
+  colors: string[];
+
   @Field(() => String)
   thumbnail: string;
 
@@ -186,5 +196,10 @@ export class Product {
 
 @ObjectType()
 export class ProductSearchPaginationResponse extends CreateGqlPaginatedResponse(
+  Product,
+) {}
+
+@ObjectType()
+export class ProductsCursorPaginationResponse extends CreateGqlCursorPaginatedResponse(
   Product,
 ) {}

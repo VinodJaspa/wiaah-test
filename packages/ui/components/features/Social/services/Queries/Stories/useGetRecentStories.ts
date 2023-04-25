@@ -4,6 +4,7 @@ import { useQuery } from "react-query";
 import { GetRecentStoriesInput, Profile, RecentStory } from "@features/API";
 import { Account } from "@features/API";
 import { getRandomName, isDev } from "@UI/../utils/src";
+import { getRandomImage } from "@UI/placeholder";
 
 export type GetRecentStoriesQueryVariables = Exact<{
   args: GetRecentStoriesInput;
@@ -65,7 +66,7 @@ export const useGetRecentStories = (input: GetRecentStoriesInput) => {
           id: "Teasd",
           profile: {
             id: "Teasd",
-            photo: "/profile (1).jfif",
+            photo: getRandomImage(),
             profession: "prof",
             username: `${getRandomName().firstName} ${
               getRandomName().lastName

@@ -11,10 +11,10 @@ import {
   PresentationType,
   ProdcutType,
   ProductCondition,
+  ProductSize,
   ProductStatus,
   VisibilityEnum,
 } from '@prisma-client';
-
 import { GraphQLUpload, Upload } from 'graphql-upload';
 import { CreateInputGqlTranslationInputField } from 'nest-utils';
 
@@ -22,6 +22,7 @@ registerEnumType(PresentationType, { name: 'PresentationType' });
 registerEnumType(CashbackType, { name: 'CashbackType' });
 registerEnumType(ProdcutType, { name: 'ProductType' });
 registerEnumType(ProductStatus, { name: 'ProductStatus' });
+registerEnumType(ProductSize, { name: 'ProductSize' });
 
 @InputType()
 export class ProductPresentationInput {
@@ -113,4 +114,10 @@ export class CreateProductInput {
 
   @Field(() => ProductCondition)
   condition: ProductCondition;
+
+  @Field(() => [ProductSize])
+  sizes: ProductSize[];
+
+  @Field(() => [String])
+  colors: string[];
 }

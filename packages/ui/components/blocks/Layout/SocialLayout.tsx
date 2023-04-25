@@ -8,6 +8,7 @@ import {
 } from "@blocks/Modals";
 import { PostViewPopup } from "@blocks/Popups";
 import { MasterLocationMapModal } from "@features/GeoLocation";
+import { ProductDetailsDrawer } from "@features/Products";
 import {
   SocialPostMentionsModal,
   SocialPostSettingsPopup,
@@ -32,6 +33,7 @@ interface SocialAtomValue {
   newStory?: boolean;
   unknown: unknown;
   msgNewUser?: boolean;
+  productDetailsId?: string;
 }
 
 const socialAtom = atom<SocialAtomValue>({
@@ -44,6 +46,7 @@ const socialAtom = atom<SocialAtomValue>({
     newStory: false,
     unknown: null,
     msgNewUser: false,
+    productDetailsId: undefined,
   },
 });
 
@@ -71,7 +74,6 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
     TKey extends keyof SocialAtomValue,
     TValue extends SocialAtomValue[TKey]
   >(key: TKey, value: TValue) {
-    console.log("set COntrols", key, value);
     setState((v) => ({ ...v, [key]: value }));
   }
 
@@ -109,6 +111,8 @@ export function useSocialControls<TKey extends keyof SocialAtomValue>(
     },
     msgNewUser: () => setControls("msgNewUser", true),
     cancelMsgNewUser: () => setControls("msgNewUser", false),
+    viewProductDetails: (id: string) => setControls("productDetailsId", id),
+    cancelViewProductDetails: () => setControls("productDetailsId", undefined),
     value,
   };
 }
@@ -124,6 +128,7 @@ export const SocialLayout: React.FC = ({ children }) => {
       <SocialPostSettingsPopup />
       <SocialPostMentionsModal />
       <MasterLocationMapModal />
+      <ProductDetailsDrawer />
       <PostViewPopup
         fetcher={async ({ queryKey }) => {
           const id = queryKey[1].postId;

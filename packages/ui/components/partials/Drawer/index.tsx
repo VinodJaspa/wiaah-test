@@ -106,7 +106,7 @@ export const DrawerContent: React.FC<DrawerContentProps> = ({
       style={{ ...setPositionClasses().styles, ...props.style }}
       className={`${className || ""} ${
         setPositionClasses().className
-      } z-50 transform transition-all fixed bg-white`}
+      } z-50 transform transition-all pointer-events-auto overflow-y-scroll thinScroll fixed bg-white`}
     >
       {children}
     </div>

@@ -128,9 +128,15 @@ export class ServiceResolver {
     });
 
     return {
-      cursor: res[res.length - 1].id,
-      data: res.map((v) => this.formatService(v, userLang)),
+      cursor: pagination.cursor,
+      data:
+        res.length > pagination.take
+          ? res
+              .slice(0, res.length - 2)
+              .map((v) => this.formatService(v, userLang))
+          : res.map((v) => this.formatService(v, userLang)),
       hasMore: res.length > pagination.take,
+      nextCursor: res.at(res.length - 1).id,
     };
   }
 

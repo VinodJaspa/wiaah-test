@@ -10,6 +10,7 @@ export interface EllipsisTextProps {
   ShowMore?: boolean;
   showMoreColor?: string;
   showMoreTextColor?: string;
+  displayShowMore?: boolean;
 }
 
 export const EllipsisText: React.FC<EllipsisTextProps> = ({
@@ -19,6 +20,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
   ShowMore = true,
   showMoreColor,
   children,
+  displayShowMore,
 }) => {
   const { t } = useTranslation();
   const [MaxLines, setMaxLines] = React.useState<number>(maxLines);
@@ -88,9 +90,7 @@ export const EllipsisText: React.FC<EllipsisTextProps> = ({
         {children}
         {content}
       </Text>
-      {textEllipsising ? (
-        <p></p>
-      ) : showMore === true ? (
+      {textEllipsising && !displayShowMore ? null : showMore === true ? (
         <div className="absolute bottom-0 right-0 justify-end flex w-full text-primary capitalize transform-cpu">
           <div className={`${showMoreColor ? showMoreColor : "bg-white"} flex`}>
             <p className="text-primary" ref={EllipsisRef}>

@@ -10,3 +10,5 @@ export * from "./useGetMyProductsReviews";
 export * from "./useGetRecentSales";
 export * from "./categories";
 export * from "./filters";
+export * from "./useGetProductQuery";
+export * from "./useGetUserProducts";

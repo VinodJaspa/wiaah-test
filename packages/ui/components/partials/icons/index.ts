@@ -147,3 +147,8 @@ export * from "./CheckIcon";
 export * from "./LocationDistanceIcon";
 export * from "./digitalCamera";
 export * from "./ExclamationCircle";
+export * from "./HotelIcon";
+export * from "./HolidayRentalsIcon";
+export * from "./HealthCenterIcon";
+export * from "./VehicleIcon";
+export * from "./BeautyCenterIcon";

@@ -1,6 +1,6 @@
 import React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { PreferedCurrencyState } from "state";
+import { PreferedCurrencyState, usePreferedCurrency } from "state";
 import { HtmlDivProps, PriceType } from "types";
 
 export interface PriceDisplayProps extends HtmlDivProps {
@@ -9,24 +9,38 @@ export interface PriceDisplayProps extends HtmlDivProps {
   symbol?: boolean;
   decimel?: boolean;
   compact?: boolean;
+  displayCurrency?: boolean;
+  symbolProps?: HtmlDivProps;
 }
 
 export const PriceDisplay: React.FC<PriceDisplayProps> = ({
   priceObject,
   className,
+  displayCurrency = true,
   price = 0,
   symbol = true,
   decimel,
   compact,
+  symbolProps,
   ...props
 }) => {
+  const { preferedCurrency } = usePreferedCurrency();
   return (
     <p {...props} className={`${className || ""} whitespace-nowrap`}>
+      {symbolProps ? (
+        <span
+          {...symbolProps}
+          className={`${symbolProps.className || ""} pr-1`}
+        >
+          {preferedCurrency.currencySymbol}
+        </span>
+      ) : null}
       {PriceConverter({
         amount: priceObject ? priceObject.amount || price : price,
-        symbol,
+        symbol: symbolProps ? false : symbol,
         decimel,
         compact,
+        displayCurrency: symbolProps ? false : displayCurrency,
       })}
     </p>
   );
@@ -37,11 +51,13 @@ export const PriceConverter = ({
   symbol,
   decimel = false,
   compact = false,
+  displayCurrency = true,
 }: {
   amount: number;
   symbol: boolean;
   decimel?: boolean;
   compact?: boolean;
+  displayCurrency?: boolean;
 }): string | null => {
   const currency = useRecoilValue(PreferedCurrencyState);
   if (typeof amount !== "number") return null;
@@ -50,7 +66,7 @@ export const PriceConverter = ({
         minimumFractionDigits: decimel ? 2 : 0,
         notation: compact ? "compact" : undefined,
       }).format(amount * currency.currencyRateToUsd)}${
-        !symbol ? ` ${currency.currencyCode}` : ""
+        !symbol && displayCurrency ? ` ${currency.currencyCode}` : ""
       }`
     : `${symbol ? "$" : ""}${amount.toFixed(decimel ? 2 : 0)}${
         symbol ? "" : " usd"

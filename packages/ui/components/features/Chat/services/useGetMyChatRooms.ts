@@ -1,4 +1,4 @@
-import { isDev } from "@UI/../utils/src";
+import { getRandomName, isDev, randomNum } from "@UI/../utils/src";
 import { getRandomImage } from "@UI/placeholder";
 import {
   ActiveStatus,
@@ -99,7 +99,9 @@ query getMyChatRooms {
             {
               profile: {
                 ownerId: "",
-                username: "tes",
+                username: `${getRandomName().firstName} ${
+                  getRandomName().lastName
+                }`,
                 activeStatus: ActiveStatus.Active,
                 photo: getRandomImage(),
               },
@@ -128,7 +130,7 @@ query getMyChatRooms {
             },
           ],
           roomType: RoomTypes.Group,
-          unSeenMessages: 2,
+          unSeenMessages: randomNum(5),
         })
       );
       return mockRes;
